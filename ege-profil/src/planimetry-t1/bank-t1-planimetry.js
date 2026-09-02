@@ -1,0 +1,1134 @@
+/* =========================================================================
+   БАНК ЗАДАЧ · ЗАДАНИЕ 1 ПРОФИЛЬНОГО ЕГЭ · ПЛАНИМЕТРИЯ
+   Прототипы — сборник И.В. Ященко «36 типовых вариантов», 2026.
+   19 типов: каждый сюжет сборника повторён в двух соседних вариантах.
+
+   Файл самодостаточный: <script src="bank-t1-planimetry.js">, объект YB1.
+   API и формат задачи — те же, что у bank-t2-vectors.js.
+
+   Классы для CSS страницы:
+     .fig                — сам <svg>
+     .shape .shape2      — контур фигуры (второй — без заливки, для вписанных)
+     .sg .sg2 .aux       — линия, выделенная линия, вспомогательная (пунктир)
+     .tk .ar             — штрих равенства, дужка угла
+     .nd .nd2            — узел, центр окружности
+     .lb                 — подпись точки
+   ========================================================================= */
+var YB1 = (function () {
+  "use strict";
+
+  /* ------------------------------ случайность ------------------------------ */
+  var _seed = 1;
+  function srand(s) { _seed = (s >>> 0) || 1; }
+  function rnd() {
+    _seed ^= _seed << 13; _seed >>>= 0;
+    _seed ^= _seed >> 17;
+    _seed ^= _seed << 5; _seed >>>= 0;
+    return _seed / 4294967296;
+  }
+  function ri(a, b) { return a + Math.floor(rnd() * (b - a + 1)); }
+  function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+  function shuffle(a) {
+    a = a.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+
+  /* -------------------------------- числа --------------------------------- */
+  function round(x, n) { var k = Math.pow(10, n === undefined ? 6 : n); return Math.round(x * k) / k; }
+  function nice(x, d) {
+    d = d === undefined ? 3 : d;
+    var k = Math.pow(10, d);
+    return Math.abs(x * k - Math.round(x * k)) < 1e-7;
+  }
+  function num(x) {
+    var v = round(x, 6);
+    if (Object.is(v, -0)) v = 0;
+    var s = String(v);
+    if (s.indexOf('e') >= 0) s = v.toFixed(6).replace(/0+$/, '').replace(/\.$/, '');
+    return s.replace('.', ',');
+  }
+  function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a; }
+  function surd(n) {                       // n = a²·b → {a, b}, b свободно от квадратов
+    var a = 1, b = n;
+    for (var k = 2; k * k <= b; k++) { while (b % (k * k) === 0) { b /= k * k; a *= k; } }
+    return { a: a, b: b };
+  }
+  function surdStr(a, b) {
+    if (b === 1) return num(a);
+    if (a === 1) return '√' + b;
+    return num(a) + '√' + b;
+  }
+  function fracSurd(q, N) {                // q/√N → q√N/N, сокращённая
+    var s = surd(N), top = q * s.a, bot = N;
+    var g = gcd(top, bot); top /= g; bot /= g;
+    var t = (top === 1 ? '' : num(top)) + '√' + s.b;
+    return bot === 1 ? t : t + '/' + num(bot);
+  }
+
+  /* ------------------------------- чертёж --------------------------------- */
+  var D = Math.PI / 180;
+  function fitter(pts, w, h, pad) {        // вписать набор точек в холст, ось y вверх
+    pad = pad === undefined ? 26 : pad;
+    var xs = [], ys = [], i;
+    for (i = 0; i < pts.length; i++) { xs.push(pts[i][0]); ys.push(pts[i][1]); }
+    var minx = Math.min.apply(null, xs), maxx = Math.max.apply(null, xs);
+    var miny = Math.min.apply(null, ys), maxy = Math.max.apply(null, ys);
+    var dx = Math.max(1e-9, maxx - minx), dy = Math.max(1e-9, maxy - miny);
+    var s = Math.min((w - 2 * pad) / dx, (h - 2 * pad) / dy);
+    var ox = pad + ((w - 2 * pad) - s * dx) / 2;
+    var oy = pad + ((h - 2 * pad) - s * dy) / 2;
+    return function (p) { return [round(ox + s * (p[0] - minx), 2), round(h - oy - s * (p[1] - miny), 2)]; };
+  }
+  function svg(w, h, inner) {
+    return '<svg class="fig" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h +
+      '" xmlns="http://www.w3.org/2000/svg" role="img">' + inner + '</svg>';
+  }
+  function seg(p, q, cls) {
+    return '<line class="' + (cls || 'sg') + '" x1="' + p[0] + '" y1="' + p[1] + '" x2="' + q[0] + '" y2="' + q[1] + '"/>';
+  }
+  function poly(ps, cls) {
+    return '<polygon class="' + (cls || 'shape') + '" points="' +
+      ps.map(function (p) { return p[0] + ',' + p[1]; }).join(' ') + '"/>';
+  }
+  function circ(c, r, cls) {
+    return '<circle class="' + (cls || 'sg') + '" cx="' + c[0] + '" cy="' + c[1] + '" r="' + round(r, 2) + '" fill="none"/>';
+  }
+  function dot(p, cls) { return '<circle class="' + (cls || 'nd') + '" cx="' + p[0] + '" cy="' + p[1] + '" r="2.6"/>'; }
+  function lab(p, t, dx, dy) {
+    return '<text class="lb" x="' + round(p[0] + (dx || 0), 1) + '" y="' + round(p[1] + (dy || 0), 1) + '">' + t + '</text>';
+  }
+  function labAway(p, from, t, d) {        // подпись наружу от центра фигуры
+    d = d || 14;
+    var vx = p[0] - from[0], vy = p[1] - from[1], n = Math.hypot(vx, vy) || 1;
+    return lab(p, t, vx / n * d - 4, vy / n * d + 5);
+  }
+  function tick(p, q, k) {                 // штрихи равенства на отрезке
+    k = k || 1;
+    var mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2;
+    var vx = q[0] - p[0], vy = q[1] - p[1], n = Math.hypot(vx, vy) || 1;
+    vx /= n; vy /= n;
+    var out = '', i;
+    for (i = 0; i < k; i++) {
+      var off = (i - (k - 1) / 2) * 5;
+      var cx = mx + vx * off, cy = my + vy * off;
+      out += '<line class="tk" x1="' + round(cx - vy * 4.5, 1) + '" y1="' + round(cy + vx * 4.5, 1) +
+        '" x2="' + round(cx + vy * 4.5, 1) + '" y2="' + round(cy - vx * 4.5, 1) + '"/>';
+    }
+    return out;
+  }
+  function cross(v, a, b) { return (a[0] - v[0]) * (b[1] - v[1]) - (a[1] - v[1]) * (b[0] - v[0]); }
+  function ang(v, a, b, r, cls) {          // дужка угла a–v–b
+    r = r || 20;
+    function u(p) { var vx = p[0] - v[0], vy = p[1] - v[1], n = Math.hypot(vx, vy) || 1; return [v[0] + vx / n * r, v[1] + vy / n * r]; }
+    var p1 = u(a), p2 = u(b);
+    return '<path class="' + (cls || 'ar') + '" fill="none" d="M ' + round(p1[0], 1) + ' ' + round(p1[1], 1) +
+      ' A ' + r + ' ' + r + ' 0 0 ' + (cross(v, a, b) > 0 ? 0 : 1) + ' ' + round(p2[0], 1) + ' ' + round(p2[1], 1) + '"/>';
+  }
+  function sq(v, a, b, r) {                // значок прямого угла
+    r = r || 11;
+    function u(p) { var vx = p[0] - v[0], vy = p[1] - v[1], n = Math.hypot(vx, vy) || 1; return [vx / n * r, vy / n * r]; }
+    var e1 = u(a), e2 = u(b);
+    return '<path class="ar" fill="none" d="M ' + round(v[0] + e1[0], 1) + ' ' + round(v[1] + e1[1], 1) +
+      ' L ' + round(v[0] + e1[0] + e2[0], 1) + ' ' + round(v[1] + e1[1] + e2[1], 1) +
+      ' L ' + round(v[0] + e2[0], 1) + ' ' + round(v[1] + e2[1], 1) + '"/>';
+  }
+  function interP(p1, p2, p3, p4) {
+    var a1 = p2[1] - p1[1], b1 = p1[0] - p2[0], c1 = a1 * p1[0] + b1 * p1[1];
+    var a2 = p4[1] - p3[1], b2 = p3[0] - p4[0], c2 = a2 * p3[0] + b2 * p3[1];
+    var dt = a1 * b2 - a2 * b1;
+    return [(b2 * c1 - b1 * c2) / dt, (a1 * c2 - a2 * c1) / dt];
+  }
+
+  /* ================================ ТИП 1 ================================
+     Равнобедренный треугольник, биссектриса из вершины основания.
+     Прототипы: варианты 1, 2.                                            */
+  var T1 = {
+    id: 't1', name: 'Равнобедренный треугольник и биссектриса', src: 'варианты 1, 2',
+    gen: function () {
+      var beta = pick([40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 100]);
+      var alpha = (180 - beta) / 2;              // углы при основании, всегда чётные
+      var half = alpha / 2;
+      var askC = rnd() < 0.5;
+      var ans = askC ? 180 - alpha - half : alpha + half;
+
+      var A = [0, 0], C = [1, 0], B = [0.5, 0.5 * Math.tan(alpha * D)];
+      var dir = [Math.cos(half * D), Math.sin(half * D)];
+      var F = interP(A, [A[0] + dir[0], A[1] + dir[1]], B, C);
+      var f = fitter([A, B, C, F], 300, 190, 30);
+      var a = f(A), b = f(B), c = f(C), fp = f(F);
+      var g = poly([a, b, c]) + seg(a, fp, 'sg2') +
+        tick(a, b, 1) + tick(b, c, 1) +
+        ang(a, c, fp, 17) + ang(a, fp, b, 23) +
+        dot(a) + dot(b) + dot(c) + dot(fp) +
+        lab(a, 'A', -14, 6) + lab(b, 'B', -4, -8) + lab(c, 'C', 8, 6) + lab(fp, 'F', 7, -3);
+
+      return {
+        text: 'В равнобедренном треугольнике <i>ABC</i> с основанием <i>AC</i> провели биссектрису <i>AF</i>. ' +
+          'Найдите угол <i>' + (askC ? 'AFC' : 'AFB') + '</i>, если угол <i>ABC</i> равен ' + beta + '°. Ответ дайте в градусах.',
+        fig: svg(300, 190, g), ans: ans,
+        steps: [
+          'Треугольник равнобедренный с основанием <i>AC</i>, значит углы при основании равны: ∠<i>A</i> = ∠<i>C</i> = (180° − ' + beta + '°) : 2 = ' + alpha + '°.',
+          '<i>AF</i> — биссектриса угла <i>A</i>, поэтому ∠<i>FAC</i> = ' + alpha + '° : 2 = ' + half + '°.',
+          askC
+            ? 'В треугольнике <i>AFC</i>: ∠<i>AFC</i> = 180° − ' + half + '° − ' + alpha + '° = <b>' + ans + '°</b>.'
+            : '∠<i>AFB</i> — внешний угол треугольника <i>AFC</i> при вершине <i>F</i>: ∠<i>AFB</i> = ' + half + '° + ' + alpha + '° = <b>' + ans + '°</b>.'
+        ],
+        traps: [
+          { v: askC ? alpha + half : 180 - alpha - half, msg: 'Это второй из двух углов при точке <i>F</i>. Смотри внимательно, какой именно угол спрашивают: <i>' + (askC ? 'AFC' : 'AFB') + '</i>.' },
+          { v: alpha, msg: 'Это угол при основании, а не угол при точке <i>F</i>.' },
+          { v: half, msg: 'Это половина угла <i>A</i> — только первый шаг решения.' }
+        ]
+      };
+    }
+  };
+
+  /* ================================ ТИП 2 ================================
+     Биссектриса тупого угла параллелограмма делит противоположную сторону.
+     Прототип: вариант 3.                                                  */
+  var T2 = {
+    id: 't2', name: 'Биссектриса угла параллелограмма', src: 'вариант 3',
+    gen: function () {
+      var mn = pick([[3, 4], [2, 5], [3, 5], [2, 3], [5, 4], [4, 5], [3, 7], [5, 6]]);
+      var m = mn[0], n = mn[1];
+      var t, P, big, small, guard = 0;
+      do {
+        t = pick([0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.1, 2.5, 3, 3.5, 4]);
+        P = 2 * (2 * m + n) * t;
+        big = (m + n) * t; small = m * t;
+        guard++;
+      } while (guard < 80 && !(nice(P, 0) && P >= 20 && P <= 90 && nice(big, 2) && nice(small, 2)));
+      if (guard >= 80) { m = 3; n = 4; t = 2.1; P = 42; big = 14.7; small = 6.3; }
+      var askBig = rnd() < 0.5;
+      var ans = askBig ? big : small;
+
+      var S = m / (m + n) * 0.62 + 0.28, sh = 0.42;
+      var A = [0, 0], Dp = [1, 0], B = [sh * S, S * 0.72], C = [1 + sh * S, S * 0.72];
+      var K = [m / (m + n), 0];
+      var f = fitter([A, B, C, Dp, K], 300, 165, 28);
+      var a = f(A), b = f(B), c = f(C), d = f(Dp), k = f(K);
+      var g = poly([a, b, c, d]) + seg(b, k, 'sg2') +
+        tick(a, b, 1) + tick(a, k, 1) + ang(b, a, k, 16) + ang(b, k, c, 22) +
+        dot(a) + dot(b) + dot(c) + dot(d) + dot(k) +
+        lab(a, 'A', -14, 6) + lab(b, 'B', -12, -4) + lab(c, 'C', 6, -4) + lab(d, 'D', 8, 6) + lab(k, 'K', -3, 16);
+
+      return {
+        text: 'Биссектриса тупого угла параллелограмма делит противоположную сторону в отношении ' + m + ' : ' + n +
+          ', считая от вершины острого угла. Найдите ' + (askBig ? 'бо́льшую' : 'меньшую') +
+          ' сторону параллелограмма, если его периметр равен ' + num(P) + '.',
+        fig: svg(300, 165, g), ans: ans,
+        steps: [
+          '<i>BK</i> — биссектриса, поэтому ∠<i>ABK</i> = ∠<i>KBC</i>. Но ∠<i>KBC</i> = ∠<i>AKB</i> как накрест лежащие при <i>BC</i> ∥ <i>AD</i>.',
+          'Значит ∠<i>ABK</i> = ∠<i>AKB</i>, треугольник <i>ABK</i> равнобедренный и <i>AB</i> = <i>AK</i>.',
+          'Пусть <i>AK</i> = ' + m + '<i>t</i>, <i>KD</i> = ' + n + '<i>t</i>. Тогда <i>AD</i> = ' + (m + n) + '<i>t</i>, а <i>AB</i> = <i>AK</i> = ' + m + '<i>t</i>.',
+          'Периметр: 2(' + m + '<i>t</i> + ' + (m + n) + '<i>t</i>) = ' + (2 * (2 * m + n)) + '<i>t</i> = ' + num(P) + ', откуда <i>t</i> = ' + num(t) + '.',
+          (askBig ? 'Бо́льшая сторона <i>AD</i> = ' + (m + n) + '<i>t</i> = <b>' + num(big) + '</b>.'
+                  : 'Меньшая сторона <i>AB</i> = ' + m + '<i>t</i> = <b>' + num(small) + '</b>.')
+        ],
+        traps: [
+          { v: askBig ? small : big, msg: 'Это другая сторона параллелограмма. Бо́льшая — та, которую делит биссектриса.' },
+          { v: t, msg: 'Это коэффициент <i>t</i>, а не сама сторона.' },
+          { v: P / 2, msg: 'Это полупериметр — сумма двух соседних сторон.' }
+        ]
+      };
+    }
+  };
+
+  /* ================================ ТИП 3 ================================
+     Биссектрисы двух углов при одной стороне пересекаются на противоположной.
+     Прототип: вариант 4.                                                  */
+  var T3 = {
+    id: 't3', name: 'Биссектрисы двух углов параллелограмма', src: 'вариант 4',
+    gen: function () {
+      var P = pick([12, 15, 18, 21, 24, 27, 30, 33, 36, 42, 45, 48, 54, 60]);
+      var small = P / 6, big = P / 3;
+      var askSmall = rnd() < 0.5;
+      var ans = askSmall ? small : big;
+
+      var A = [0, 0], Dp = [1, 0], B = [0.22, 0.46], C = [1.22, 0.46], K = [0.61, 0];
+      var f = fitter([A, B, C, Dp], 300, 160, 28);
+      var a = f(A), b = f(B), c = f(C), d = f(Dp), k = f(K);
+      var g = poly([a, b, c, d]) + seg(b, k, 'sg2') + seg(c, k, 'sg2') +
+        ang(b, a, k, 15) + ang(b, k, c, 21) + ang(c, k, b, 15) + ang(c, k, d, 21) +
+        dot(a) + dot(b) + dot(c) + dot(d) + dot(k) +
+        lab(a, 'A', -14, 6) + lab(b, 'B', -12, -4) + lab(c, 'C', 6, -4) + lab(d, 'D', 8, 6) + lab(k, 'K', -3, 16);
+
+      return {
+        text: 'Точка пересечения биссектрис двух углов параллелограмма, прилежащих к одной стороне, принадлежит противоположной стороне. ' +
+          'Найдите ' + (askSmall ? 'меньшую' : 'бо́льшую') + ' сторону параллелограмма, если его периметр равен ' + num(P) + '.',
+        fig: svg(300, 160, g), ans: ans,
+        steps: [
+          'Биссектрисы углов <i>B</i> и <i>C</i> пересекаются в точке <i>K</i> на стороне <i>AD</i>.',
+          'Как и в предыдущем сюжете, треугольники <i>ABK</i> и <i>DCK</i> равнобедренные: <i>AK</i> = <i>AB</i> и <i>DK</i> = <i>DC</i>.',
+          'Значит <i>AD</i> = <i>AK</i> + <i>KD</i> = <i>AB</i> + <i>DC</i> = 2·<i>AB</i>: бо́льшая сторона вдвое больше меньшей.',
+          'Периметр: 2(<i>AB</i> + 2<i>AB</i>) = 6·<i>AB</i> = ' + num(P) + ', откуда <i>AB</i> = ' + num(small) + ', <i>AD</i> = ' + num(big) + '.',
+          'Ответ: <b>' + num(ans) + '</b>.'
+        ],
+        traps: [
+          { v: askSmall ? big : small, msg: 'Это другая сторона: бо́льшая ровно вдвое больше меньшей.' },
+          { v: P / 4, msg: 'Стороны не равны между собой — это не квадрат.' },
+          { v: P / 2, msg: 'Это полупериметр, сумма двух соседних сторон.' }
+        ]
+      };
+    }
+  };
+
+  /* ================================ ТИП 4 ================================
+     Равнобедренный треугольник, высота к боковой стороне, синус/косинус.
+     Прототипы: варианты 5, 6.                                             */
+  var T4 = {
+    id: 't4', name: 'Высота к боковой стороне и синус угла', src: 'варианты 5, 6',
+    gen: function () {
+      /* Спрашиваемое отношение обязано быть конечной десятичной дробью,
+         поэтому знаменатель (гипотенуза AC) — только вида 2^i·5^j.
+           sin      — годится любая высота: sin α = AH : AC;
+           cos+тройка — нужна пифагорова тройка, высота целая;
+           cos+корень — высота иррациональна, косинус рационален (сюжет варианта 6). */
+      var mode = pick(['sin', 'sin', 'cosTriple', 'cosSurd']);
+      var AC, AH, ansSin, ansCos, AHtxt, askSin;
+
+      if (mode === 'sin') {
+        AC = pick([10, 20, 20, 25, 25, 50]);
+        var lo = Math.max(2, Math.round(AC * 0.2)), hi = Math.round(AC * 0.7);
+        AH = ri(lo, hi);
+        AHtxt = num(AH);
+        ansSin = AH / AC; ansCos = Math.sqrt(1 - ansSin * ansSin);
+        askSin = true;
+      } else if (mode === 'cosTriple') {
+        var tr = pick([[3, 4, 5], [6, 8, 10], [12, 16, 20], [7, 24, 25], [15, 20, 25], [14, 48, 50], [30, 40, 50]]);
+        var k = pick([1, 1, 2, 3]);
+        AC = tr[2] * k; AH = tr[0] * k; AHtxt = num(AH);
+        ansSin = tr[0] / tr[2]; ansCos = tr[1] / tr[2];
+        askSin = false;
+      } else {
+        AC = pick([25, 25, 50, 20, 10]);
+        var qq;
+        if (AC === 25) qq = pick([23, 24, 21, 19]);
+        else if (AC === 50) qq = pick([49, 48, 47, 46, 43]);
+        else if (AC === 20) qq = pick([19, 18, 17]);
+        else qq = pick([9, 8, 7]);
+        var s2 = AC * AC - qq * qq, sd = surd(s2);
+        AH = Math.sqrt(s2); AHtxt = surdStr(sd.a, sd.b);
+        ansSin = AH / AC; ansCos = qq / AC;
+        askSin = false;
+      }
+      var ans = round(askSin ? ansSin : ansCos, 6);
+
+      var alpha = Math.asin(Math.min(0.999, ansSin));
+      var A = [0, 0], C = [1, 0], B = [0.5, 0.5 * Math.tan(alpha)];
+      var ux = B[0] - C[0], uy = B[1] - C[1], un = Math.hypot(ux, uy); ux /= un; uy /= un;
+      var pr = (A[0] - C[0]) * ux + (A[1] - C[1]) * uy;
+      var H = [C[0] + ux * pr, C[1] + uy * pr];
+      var f = fitter([A, B, C, H], 300, 175, 30);
+      var a = f(A), b = f(B), c = f(C), h = f(H);
+      var g = poly([a, b, c]) + seg(c, h, 'aux') + seg(a, h, 'sg2') +
+        sq(h, a, c) + tick(a, b, 1) + tick(b, c, 1) +
+        dot(a) + dot(b) + dot(c) + dot(h) +
+        lab(a, 'A', -14, 6) + lab(b, 'B', 6, 10) + lab(c, 'C', 8, 6) + lab(h, 'H', -2, -7);
+
+      return {
+        text: 'В треугольнике <i>ABC</i> высота <i>AH</i> равна ' + AHtxt + ', <i>AB</i> = <i>BC</i>, <i>AC</i> = ' + num(AC) + '. ' +
+          'Найдите ' + (askSin ? 'синус' : 'косинус') + ' угла <i>CAB</i>.',
+        fig: svg(300, 175, g), ans: ans,
+        steps: [
+          'Треугольник равнобедренный: <i>AB</i> = <i>BC</i>, значит ∠<i>CAB</i> = ∠<i>ACB</i>. Обозначим этот угол α.',
+          'Высота <i>AH</i> опущена на прямую <i>BC</i>, поэтому треугольник <i>AHC</i> прямоугольный с прямым углом при <i>H</i>, а <i>AC</i> — его гипотенуза.',
+          'Угол <i>ACH</i> — это тот же угол ∠<i>ACB</i> = α. Значит sin α = <i>AH</i> : <i>AC</i> = ' + AHtxt + ' : ' + num(AC) + ' = ' + num(round(ansSin, 6)) + '.',
+          askSin ? 'Ответ: <b>' + num(ans) + '</b>.'
+                 : 'Тогда cos α = √(1 − sin²α) = ' + num(round(ansCos, 6)) + ' — угол острый, косинус положителен. Ответ: <b>' + num(ans) + '</b>.'
+        ],
+        traps: [
+          { v: round(askSin ? ansCos : ansSin, 6), msg: 'Ты посчитал(а) другую функцию того же угла. Отношение «высота к гипотенузе» — это синус.' },
+          { v: round(ansSin / ansCos, 6), msg: 'Это тангенс: катет поделён на катет, а нужна гипотенуза <i>AC</i>.' }
+        ]
+      };
+    }
+  };
+
+  /* ================================ ТИП 5 ================================
+     Вписанный четырёхугольник: два угла даны.  Прототипы: варианты 7, 8.  */
+  var T5 = {
+    id: 't5', name: 'Углы вписанного четырёхугольника', src: 'варианты 7, 8',
+    gen: function () {
+      var x, y, guard = 0;
+      do {
+        x = ri(25, 130); y = ri(25, 130); guard++;
+      } while (guard < 200 && (x === y || x + y === 180));
+      var askBig = rnd() < 0.5;
+      var rest = [180 - x, 180 - y];
+      var ans = askBig ? Math.max(rest[0], rest[1]) : Math.min(rest[0], rest[1]);
+
+      var f = fitter([[-1, -1], [1, 1]], 250, 200, 24);
+      var Cc = f([0, 0]), rr = Math.abs(f([1, 0])[0] - Cc[0]);
+      var P = [110, 40, 320, 215].map(function (d) { return f([Math.cos(d * D), Math.sin(d * D)]); });
+      var g = circ(Cc, rr) + poly(P, 'shape2') + P.map(function (p) { return dot(p); }).join('') +
+        lab(P[0], 'B', -12, -4) + lab(P[1], 'C', 7, -2) + lab(P[2], 'D', 6, 12) + lab(P[3], 'A', -14, 8);
+
+      return {
+        text: 'Два угла вписанного в окружность четырёхугольника равны ' + x + '° и ' + y + '°. ' +
+          'Найдите ' + (askBig ? 'больший' : 'меньший') + ' из оставшихся углов. Ответ дайте в градусах.',
+        fig: svg(250, 200, g), ans: ans,
+        steps: [
+          'Сумма противоположных углов вписанного четырёхугольника равна 180°.',
+          x + '° + ' + y + '° = ' + (x + y) + '° ≠ 180°, значит данные углы — соседние, а не противоположные.',
+          'Оставшиеся углы противоположны данным: 180° − ' + x + '° = ' + (180 - x) + '° и 180° − ' + y + '° = ' + (180 - y) + '°.',
+          (askBig ? 'Больший' : 'Меньший') + ' из них равен <b>' + ans + '°</b>.'
+        ],
+        traps: [
+          { v: askBig ? Math.min(rest[0], rest[1]) : Math.max(rest[0], rest[1]), msg: 'Это второй из оставшихся углов. Перечитай, больший или меньший спрашивают.' },
+          { v: 360 - x - y, msg: 'Сумма всех четырёх углов равна 360°, но каждый оставшийся считается отдельно — через своего противоположного соседа.' }
+        ]
+      };
+    }
+  };
+
+  /* ================================ ТИП 6 ================================
+     Угол между биссектрисами / центр вписанной окружности.
+     Прототипы: варианты 9, 10.                                            */
+  var T6 = {
+    id: 't6', name: 'Угол между биссектрисами треугольника', src: 'варианты 9, 10',
+    gen: function () {
+      var beta = ri(15, 55) * 2;
+      var ans = 90 + beta / 2;
+      var viaIncenter = rnd() < 0.5;
+
+      var A = [0, 0], C = [1, 0];
+      var aA = ri(35, 70) * D;
+      var aC = (180 - beta) * D - aA;
+      if (aC < 25 * D) { aC = 25 * D; aA = (180 - beta) * D - aC; }
+      var bx = (Math.tan(aC) * 1) / (Math.tan(aA) + Math.tan(aC));
+      var B = [bx, bx * Math.tan(aA)];
+      var la = Math.hypot(B[0] - C[0], B[1] - C[1]), lb = 1, lc = Math.hypot(B[0], B[1]);
+      var O = [(la * A[0] + lb * B[0] + lc * C[0]) / (la + lb + lc), (la * A[1] + lb * B[1] + lc * C[1]) / (la + lb + lc)];
+      var f = fitter([A, B, C], 290, 175, 30);
+      var a = f(A), b = f(B), c = f(C), o = f(O);
+      var g = poly([a, b, c]) + seg(a, o, 'sg2') + seg(c, o, 'sg2') +
+        ang(b, a, c, 18) + ang(o, a, c, 15) +
+        dot(a) + dot(b) + dot(c) + dot(o) +
+        lab(a, 'A', -14, 6) + lab(b, 'B', -4, -8) + lab(c, 'C', 8, 6) + lab(o, 'O', 4, 14);
+
+      return {
+        text: viaIncenter
+          ? 'В треугольнике <i>ABC</i> угол <i>B</i> равен ' + beta + '°. Найдите угол <i>AOC</i>, где <i>O</i> — центр вписанной окружности. Ответ дайте в градусах.'
+          : 'В треугольнике <i>ABC</i> угол <i>B</i> равен ' + beta + '°, биссектрисы углов <i>BAC</i> и <i>ACB</i> пересекаются в точке <i>O</i>. Найдите угол <i>AOC</i>. Ответ дайте в градусах.',
+        fig: svg(290, 175, g), ans: ans,
+        steps: [
+          (viaIncenter ? 'Центр вписанной окружности — точка пересечения биссектрис. ' : '') +
+            'Обозначим ∠<i>BAC</i> = 2α, ∠<i>BCA</i> = 2γ. Тогда 2α + 2γ = 180° − ' + beta + '° = ' + (180 - beta) + '°, то есть α + γ = ' + ((180 - beta) / 2) + '°.',
+          'В треугольнике <i>AOC</i> углы при <i>A</i> и <i>C</i> — половинки: α и γ.',
+          '∠<i>AOC</i> = 180° − (α + γ) = 180° − ' + ((180 - beta) / 2) + '° = <b>' + ans + '°</b>.',
+          'Стоит запомнить формулу: ∠<i>AOC</i> = 90° + ∠<i>B</i> : 2.'
+        ],
+        traps: [
+          { v: 180 - beta, msg: 'Это сумма углов <i>A</i> и <i>C</i> целиком, а в треугольнике <i>AOC</i> работают их половины.' },
+          { v: (180 - beta) / 2, msg: 'Это сумма половинок α + γ. Осталось вычесть её из 180°.' },
+          { v: 90 - beta / 2, msg: 'Знак перепутан: угол <i>AOC</i> всегда тупой, это 90° + ∠<i>B</i>/2.' }
+        ]
+      };
+    }
+  };
+
+  /* ================================ ТИП 7 ================================
+     Средняя линия трапеции и диагональ.  Прототипы: варианты 11, 12.      */
+  var T7 = {
+    id: 't7', name: 'Средняя линия трапеции и диагональ', src: 'варианты 11, 12',
+    gen: function () {
+      var pq, m, b1, b2, guard = 0;
+      do {
+        pq = pick([[2, 3], [3, 5], [1, 3], [3, 4], [4, 5], [2, 7], [3, 7], [5, 6], [1, 4]]);
+        m = ri(4, 20) * 3;
+        b1 = 2 * m * pq[0] / (pq[0] + pq[1]);
+        b2 = 2 * m * pq[1] / (pq[0] + pq[1]);
+        guard++;
+      } while (guard < 100 && !(nice(b1, 2) && nice(b2, 2) && b1 !== b2));
+      if (guard >= 100) { pq = [2, 3]; m = 24; b1 = 19.2; b2 = 28.8; }
+      var askBig = rnd() < 0.5;
+      var small = Math.min(b1, b2), big = Math.max(b1, b2);
+      var ans = askBig ? big : small;
+
+      var top = 0.62, w = small / big;
+      var A = [0, 0], Dp = [1, 0], Bb = [(1 - w) / 2 - 0.06, top], Cb = [(1 + w) / 2 - 0.06, top];
+      var f = fitter([A, Dp, Bb, Cb], 290, 165, 28);
+      var a = f(A), d = f(Dp), b = f(Bb), c = f(Cb);
+      var m1 = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], m2 = [(c[0] + d[0]) / 2, (c[1] + d[1]) / 2];
+      var K = interP(m1, m2, b, d);
+      var g = poly([a, b, c, d]) + seg(m1, m2, 'sg2') + seg(b, d, 'aux') +
+        dot(a) + dot(b) + dot(c) + dot(d) + dot(m1) + dot(m2) + dot(K) +
+        lab(a, 'A', -14, 6) + lab(b, 'B', -12, -3) + lab(c, 'C', 6, -3) + lab(d, 'D', 8, 6) + lab(K, 'K', -4, -6);
+
+      return {
+        text: 'Средняя линия трапеции равна ' + num(m) + '. Одна из диагоналей делит среднюю линию в отношении ' + pq[0] + ' : ' + pq[1] + '. ' +
+          'Найдите ' + (askBig ? 'бо́льшее' : 'меньшее') + ' основание трапеции.',
+        fig: svg(290, 165, g), ans: ans,
+        steps: [
+          'Диагональ <i>BD</i> пересекает среднюю линию в точке <i>K</i>. Отрезок <i>MK</i> — средняя линия треугольника <i>ABD</i>, а <i>KN</i> — средняя линия треугольника <i>BCD</i>.',
+          'Значит части средней линии равны половинам оснований: <i>MK</i> = <i>AD</i> : 2, <i>KN</i> = <i>BC</i> : 2.',
+          'Части средней линии: ' + num(m * pq[0] / (pq[0] + pq[1])) + ' и ' + num(m * pq[1] / (pq[0] + pq[1])) + '.',
+          'Основания вдвое больше: ' + num(b1) + ' и ' + num(b2) + '. ' + (askBig ? 'Бо́льшее' : 'Меньшее') + ' равно <b>' + num(ans) + '</b>.'
+        ],
+        traps: [
+          { v: askBig ? small : big, msg: 'Это второе основание. Проверь, какое просят.' },
+          { v: round(m * (askBig ? Math.max(pq[0], pq[1]) : Math.min(pq[0], pq[1])) / (pq[0] + pq[1]), 6), msg: 'Это часть средней линии. Основание вдвое больше.' },
+          { v: 2 * m, msg: 'Средняя линия — полусумма оснований, а не половина одного из них.' }
+        ]
+      };
+    }
+  };
+
+  /* ================================ ТИП 8 ================================
+     Высота, биссектриса и медиана из вершины прямого угла.
+     Прототипы: варианты 13, 14.                                           */
+  var T8 = {
+    id: 't8', name: 'Высота, биссектриса и медиана из прямого угла', src: 'варианты 13, 14',
+    gen: function () {
+      var kind = pick(['hb', 'bm', 'hm']);
+      var beta, guard = 0;
+      do { beta = ri(20, 70); guard++; }
+      while (guard < 200 && (beta === 45 || (kind === 'hm' && Math.abs(2 * beta - 90) < 4)));
+      var alpha = 90 - beta;
+      var ans = kind === 'hm' ? Math.abs(2 * beta - 90) : Math.abs(45 - beta);
+
+      var A = [0, 0], B = [1, 0];
+      var Cx = Math.pow(Math.cos(alpha * D), 2), Cy = Math.cos(alpha * D) * Math.sin(alpha * D);
+      var C = [Cx, Cy], H = [Cx, 0], M = [0.5, 0];
+      var AC = Math.hypot(C[0], C[1]), CB = Math.hypot(C[0] - 1, C[1]);
+      var Dd = [AC / (AC + CB), 0];
+      var f = fitter([A, B, C], 300, 165, 30);
+      var a = f(A), b = f(B), c = f(C), h = f(H), mm = f(M), dd = f(Dd);
+      var pts = kind === 'hb' ? [['H', h], ['D', dd]] : kind === 'bm' ? [['D', dd], ['M', mm]] : [['H', h], ['M', mm]];
+      var g = poly([a, b, c]) +
+        pts.map(function (p) { return seg(c, p[1], 'sg2'); }).join('') +
+        (kind !== 'bm' ? sq(h, c, b, 9) : '') + sq(c, a, b, 12) +
+        dot(a) + dot(b) + dot(c) + pts.map(function (p) { return dot(p[1]); }).join('') +
+        lab(a, 'A', -13, 12) + lab(b, 'B', 6, 12) + lab(c, 'C', -3, -8) +
+        pts.map(function (p) { return lab(p[1], p[0], -4, 15); }).join('');
+
+      var names = {
+        hb: ['высотой <i>CH</i>', 'биссектрисой <i>CD</i>'],
+        bm: ['биссектрисой <i>CD</i>', 'медианой <i>CM</i>'],
+        hm: ['высотой <i>CH</i>', 'медианой <i>CM</i>']
+      };
+      var st;
+      if (kind === 'hb') {
+        st = ['Биссектриса делит прямой угол пополам: ∠<i>BCD</i> = 45°.',
+          'В прямоугольном треугольнике <i>CHB</i>: ∠<i>BCH</i> = 90° − ∠<i>B</i> = ' + alpha + '°.',
+          'Искомый угол — разность: |45° − ' + alpha + '°| = <b>' + ans + '°</b>. Короткая формула: |∠<i>A</i> − ∠<i>B</i>| : 2.'];
+      } else if (kind === 'bm') {
+        st = ['Медиана из вершины прямого угла равна половине гипотенузы: <i>CM</i> = <i>MB</i>, треугольник <i>CMB</i> равнобедренный.',
+          'Значит ∠<i>BCM</i> = ∠<i>B</i> = ' + beta + '°.',
+          'Биссектриса делит прямой угол пополам: ∠<i>BCD</i> = 45°.',
+          'Искомый угол: |45° − ' + beta + '°| = <b>' + ans + '°</b>.'];
+      } else {
+        st = ['В прямоугольном треугольнике <i>CHB</i>: ∠<i>BCH</i> = 90° − ' + beta + '° = ' + alpha + '°.',
+          'Медиана из прямого угла равна половине гипотенузы, поэтому ∠<i>BCM</i> = ∠<i>B</i> = ' + beta + '°.',
+          'Искомый угол: |' + beta + '° − ' + alpha + '°| = <b>' + ans + '°</b>.'];
+      }
+
+      return {
+        text: 'Острый угол <i>B</i> прямоугольного треугольника <i>ABC</i> равен ' + beta + '°. Найдите угол между ' +
+          names[kind][0] + ' и ' + names[kind][1] + ', проведёнными из вершины прямого угла. Ответ дайте в градусах.',
+        fig: svg(300, 165, g), ans: ans, steps: st,
+        traps: [
+          { v: alpha, msg: 'Это второй острый угол треугольника, а не угол между двумя линиями.' },
+          { v: 45, msg: 'Биссектриса даёт 45° от катета — но вторая линия идёт под другим углом.' },
+          { v: kind === 'hm' ? Math.abs(45 - beta) : Math.abs(2 * beta - 90), msg: 'Похоже, взят угол с другой парой линий. Проверь, какие именно две линии в условии.' }
+        ]
+      };
+    }
+  };
+
+  /* ================================ ТИП 9 ================================
+     Четырёхугольник с вписанной окружностью.  Прототипы: варианты 15, 16. */
+  var T9 = {
+    id: 't9', name: 'Четырёхугольник с вписанной окружностью', src: 'варианты 15, 16',
+    gen: function () {
+      var byPerimeter = rnd() < 0.5;
+      var AB, BC, CD, AD, P, ans, text, st, tr;
+      if (!byPerimeter) {
+        AB = ri(5, 16); BC = ri(4, 14); CD = ri(5, 16);
+        AD = AB + CD - BC;
+        if (AD <= 1) { CD += 6; AD = AB + CD - BC; }
+        ans = AD;
+        text = 'В четырёхугольник <i>ABCD</i> вписана окружность, <i>AB</i> = ' + AB + ', <i>BC</i> = ' + BC + ' и <i>CD</i> = ' + CD + '. Найдите четвёртую сторону четырёхугольника.';
+        st = ['В описанном около окружности четырёхугольнике суммы противоположных сторон равны: <i>AB</i> + <i>CD</i> = <i>BC</i> + <i>AD</i>.',
+          AB + ' + ' + CD + ' = ' + BC + ' + <i>AD</i>, откуда <i>AD</i> = ' + (AB + CD) + ' − ' + BC + ' = <b>' + ans + '</b>.'];
+        tr = [{ v: AB + CD + BC, msg: 'Это сумма трёх сторон, а не четвёртая сторона.' },
+              { v: Math.abs(AB - CD + BC), msg: 'Проверь, какие стороны противоположные: <i>AB</i> и <i>CD</i>, <i>BC</i> и <i>AD</i>.' }];
+      } else {
+        P = ri(8, 30) * 2;
+        AB = ri(4, Math.floor(P / 2) - 3);
+        CD = P / 2 - AB; ans = CD;
+        text = 'В четырёхугольник <i>ABCD</i>, периметр которого равен ' + P + ', вписана окружность, <i>AB</i> = ' + AB + '. Найдите <i>CD</i>.';
+        st = ['Суммы противоположных сторон описанного четырёхугольника равны: <i>AB</i> + <i>CD</i> = <i>BC</i> + <i>AD</i>.',
+          'Значит каждая из этих сумм равна половине периметра: <i>AB</i> + <i>CD</i> = ' + P + ' : 2 = ' + (P / 2) + '.',
+          '<i>CD</i> = ' + (P / 2) + ' − ' + AB + ' = <b>' + ans + '</b>.'];
+        tr = [{ v: P - AB, msg: 'Сторона вычтена из полного периметра, а нужна половина периметра.' },
+              { v: P / 4, msg: 'Стороны не обязаны быть равными — это не ромб.' }];
+      }
+
+      var A = [0, 0], B = [1, 0], C = [1.15, 0.62], Dp = [0.42, 1.15];
+      var f = fitter([A, B, C, Dp], 250, 210, 26);
+      var a = f(A), b = f(B), c = f(C), d = f(Dp);
+      var cx = (a[0] + b[0] + c[0] + d[0]) / 4, cy = (a[1] + b[1] + c[1] + d[1]) / 4;
+      var g = poly([a, b, c, d]) + circ([cx, cy + 6], 40) +
+        dot(a) + dot(b) + dot(c) + dot(d) +
+        lab(a, 'A', -14, 8) + lab(b, 'B', 6, 12) + lab(c, 'C', 8, 2) + lab(d, 'D', -2, -8);
+
+      return { text: text, fig: svg(250, 210, g), ans: ans, steps: st, traps: tr };
+    }
+  };
+
+  /* =============================== ТИП 10 ===============================
+     Площадь, сторона и высота.  Прототипы: варианты 17, 18.               */
+  var T10 = {
+    id: 't10', name: 'Площадь, сторона и высота', src: 'варианты 17, 18',
+    gen: function () {
+      var isPar = rnd() < 0.5;
+      if (isPar) {
+        /* стороны кратны 5, а S = a·b/m с m вида 2^i·5^j — тогда обе высоты
+           (a/m и b/m) записываются конечной десятичной дробью */
+        var a1, b1, m, S, guard = 0;
+        do {
+          a1 = ri(3, 12) * 5; b1 = a1 + ri(1, 6) * 5;
+          m = pick([2, 4, 5, 8, 10, 20]);
+          S = a1 * b1 / m;
+          guard++;
+        } while (guard < 120 && !(nice(S, 2) && nice(a1 / m, 3) && nice(b1 / m, 3) && S >= 10));
+        if (guard >= 120) { a1 = 60; b1 = 80; m = 20; S = 240; }
+        var askSmall = rnd() < 0.5;
+        var ans = askSmall ? S / b1 : S / a1;
+
+        var A = [0, 0], B = [0.28, 0.6], C = [1.28, 0.6], Dp = [1, 0];
+        var f = fitter([A, B, C, Dp], 290, 160, 26);
+        var pa = f(A), pb = f(B), pc = f(C), pd = f(Dp);
+        var foot = [pb[0], pa[1]];
+        var g = poly([pa, pb, pc, pd]) + seg(pb, foot, 'sg2') + sq(foot, pb, pd, 9) +
+          dot(pa) + dot(pb) + dot(pc) + dot(pd) +
+          lab(pa, 'A', -14, 8) + lab(pb, 'B', -6, -6) + lab(pc, 'C', 7, -6) + lab(pd, 'D', 8, 8);
+
+        return {
+          text: 'Площадь параллелограмма равна ' + num(S) + ', две его стороны равны ' + a1 + ' и ' + b1 + '. ' +
+            'Найдите ' + (askSmall ? 'меньшую' : 'бо́льшую') + ' высоту этого параллелограмма.',
+          fig: svg(290, 160, g), ans: ans,
+          steps: [
+            'Площадь параллелограмма равна произведению стороны на высоту, проведённую к этой стороне.',
+            'К стороне ' + b1 + ': <i>h</i> = ' + num(S) + ' : ' + b1 + ' = ' + num(S / b1) + '. К стороне ' + a1 + ': <i>h</i> = ' + num(S) + ' : ' + a1 + ' = ' + num(S / a1) + '.',
+            'К бо́льшей стороне проводится меньшая высота. ' + (askSmall ? 'Меньшая' : 'Бо́льшая') + ' высота равна <b>' + num(ans) + '</b>.'
+          ],
+          traps: [
+            { v: askSmall ? S / a1 : S / b1, msg: 'Это высота к другой стороне. Чем больше сторона, тем меньше высота к ней.' },
+            { v: round(S / (a1 * b1), 6), msg: 'Делить нужно на одну сторону, а не на произведение сторон.' }
+          ]
+        };
+      }
+      /* задаём отношение сторон r = s2 : s1 «хорошим», тогда высота к меньшей
+         стороне равна hb·r и тоже записывается конечной дробью */
+      var s1, s2, hb, r2, S2, ans2, guard2 = 0;
+      do {
+        s1 = ri(3, 12) * 2;
+        r2 = pick([1.25, 1.5, 2, 2.5]);
+        s2 = s1 * r2;
+        hb = ri(2, Math.max(3, s1 - 1));
+        ans2 = hb * r2;
+        S2 = s2 * hb / 2;
+        guard2++;
+      } while (guard2 < 120 && !(Number.isInteger(s2) && nice(ans2, 2) && ans2 <= s2 && hb < s1));
+      if (guard2 >= 120) { s1 = 16; s2 = 20; hb = 14; ans2 = 17.5; S2 = 140; }
+
+      var A2 = [0, 0], B2 = [1.15, 0.1], C2 = [0.42, 0.78];
+      var f2 = fitter([A2, B2, C2], 290, 165, 26);
+      var pa2 = f2(A2), pb2 = f2(B2), pc2 = f2(C2);
+      function footOf(p, u, v) {
+        var ux = v[0] - u[0], uy = v[1] - u[1];
+        var t = ((p[0] - u[0]) * ux + (p[1] - u[1]) * uy) / (ux * ux + uy * uy);
+        return [u[0] + ux * t, u[1] + uy * t];
+      }
+      var f1p = footOf(pa2, pb2, pc2), f2p = footOf(pb2, pa2, pc2);
+      var g2 = poly([pa2, pb2, pc2]) + seg(pa2, f1p, 'sg2') + seg(pb2, f2p, 'sg2') +
+        sq(f1p, pa2, pc2, 8) + sq(f2p, pb2, pa2, 8) + dot(pa2) + dot(pb2) + dot(pc2);
+
+      return {
+        text: 'В треугольнике со сторонами ' + s1 + ' и ' + s2 + ' проведены высоты к этим сторонам. ' +
+          'Высота, опущенная на бо́льшую из этих сторон, равна ' + hb + '. Найдите высоту, опущенную на меньшую из этих сторон.',
+        fig: svg(290, 165, g2), ans: ans2,
+        steps: [
+          'Площадь считается через любую сторону и высоту к ней: <i>S</i> = ½·' + s2 + '·' + hb + ' = ' + num(S2) + '.',
+          'Через меньшую сторону: <i>S</i> = ½·' + s1 + '·<i>h</i>, значит <i>h</i> = 2·' + num(S2) + ' : ' + s1 + ' = <b>' + num(ans2) + '</b>.',
+          'Проще запомнить: <i>a</i>₁·<i>h</i>₁ = <i>a</i>₂·<i>h</i>₂ — произведение стороны на высоту к ней одно и то же.'
+        ],
+        traps: [
+          { v: S2, msg: 'Это площадь треугольника — промежуточный результат.' },
+          { v: round(s1 * hb / s2, 6), msg: 'Отношение перевёрнуто: к меньшей стороне проводится бо́льшая высота.' }
+        ]
+      };
+    }
+  };
+
+  /* =============================== ТИП 11 ===============================
+     Углы, опирающиеся на одну дугу.  Прототипы: варианты 19, 20.          */
+  var T11 = {
+    id: 't11', name: 'Углы, опирающиеся на одну дугу', src: 'варианты 19, 20',
+    gen: function () {
+      var forward = rnd() < 0.5;
+      var x = ri(20, 75), y = ri(20, 75), guard = 0;
+      while (x + y > 150 && guard++ < 100) y = ri(20, 60);
+      var ans, text, st;
+      if (forward) {
+        ans = x + y;
+        text = 'Четырёхугольник <i>ABCD</i> вписан в окружность. Угол <i>ABD</i> равен ' + x + '°, угол <i>CAD</i> равен ' + y + '°. Найдите угол <i>ABC</i>. Ответ дайте в градусах.';
+        st = ['Углы <i>CAD</i> и <i>CBD</i> вписанные и опираются на одну и ту же дугу <i>CD</i>, значит они равны: ∠<i>CBD</i> = ' + y + '°.',
+          'Угол <i>ABC</i> состоит из двух частей: ∠<i>ABC</i> = ∠<i>ABD</i> + ∠<i>DBC</i> = ' + x + '° + ' + y + '° = <b>' + ans + '°</b>.'];
+      } else {
+        var z = x + y;
+        ans = y;
+        text = 'Четырёхугольник <i>ABCD</i> вписан в окружность. Угол <i>ABC</i> равен ' + z + '°, угол <i>ABD</i> равен ' + x + '°. Найдите угол <i>CAD</i>. Ответ дайте в градусах.';
+        st = ['∠<i>DBC</i> = ∠<i>ABC</i> − ∠<i>ABD</i> = ' + z + '° − ' + x + '° = ' + y + '°.',
+          'Углы <i>DBC</i> и <i>DAC</i> вписанные и опираются на одну дугу <i>DC</i>, значит они равны.',
+          '∠<i>CAD</i> = <b>' + ans + '°</b>.'];
+      }
+
+      var f = fitter([[-1, -1], [1, 1]], 250, 210, 26);
+      var Cc = f([0, 0]), rr = Math.abs(f([1, 0])[0] - Cc[0]);
+      var P = [72, 20, 300, 168].map(function (d) { return f([Math.cos(d * D), Math.sin(d * D)]); });
+      var g = circ(Cc, rr) + poly(P, 'shape2') + seg(P[0], P[2], 'aux') + seg(P[3], P[1], 'aux') +
+        P.map(function (p) { return dot(p); }).join('') +
+        lab(P[0], 'B', -6, -8) + lab(P[1], 'C', 8, 0) + lab(P[2], 'D', 4, 14) + lab(P[3], 'A', -15, 4);
+
+      return {
+        text: text, fig: svg(250, 210, g), ans: ans, steps: st,
+        traps: [
+          { v: forward ? Math.abs(x - y) : x + y, msg: 'Проверь, складываются части угла или вычитаются: ∠<i>ABC</i> = ∠<i>ABD</i> + ∠<i>DBC</i>.' },
+          { v: 180 - ans, msg: 'Это противоположный угол четырёхугольника (в сумме с искомым даёт 180°).' }
+        ]
+      };
+    }
+  };
+
+  /* =============================== ТИП 12 ===============================
+     Прямоугольный треугольник: катет по синусу или косинусу.
+     Прототипы: варианты 21, 22.                                           */
+  var T12 = {
+    id: 't12', name: 'Прямоугольный треугольник: катет по синусу', src: 'варианты 21, 22',
+    gen: function () {
+      var rational = rnd() < 0.5;
+      var text, ans, st, tr;
+      if (rational) {
+        var tr0 = pick([[3, 4, 5], [7, 24, 25], [15, 20, 25], [20, 15, 25], [24, 7, 25], [4, 3, 5]]);
+        var k = pick([1, 1, 2, 3, 4]);
+        var BC = tr0[0] * k, AC = tr0[1] * k, AB = tr0[2] * k;
+        var sinA = tr0[0] / tr0[2], cosA = tr0[1] / tr0[2];
+        var giveSin = rnd() < 0.5;
+        ans = AC;
+        text = 'В треугольнике <i>ABC</i> угол <i>C</i> равен 90°, <i>AB</i> = ' + AB + ', ' +
+          (giveSin ? 'sin <i>A</i> = ' + num(sinA) : 'cos <i>A</i> = ' + num(cosA)) + '. Найдите <i>AC</i>.';
+        st = giveSin
+          ? ['sin <i>A</i> — отношение противолежащего катета <i>BC</i> к гипотенузе: <i>BC</i> = ' + AB + '·' + num(sinA) + ' = ' + num(BC) + '.',
+             'По теореме Пифагора <i>AC</i> = √(' + (AB * AB) + ' − ' + num(BC * BC) + ') = <b>' + num(AC) + '</b>.',
+             'Быстрее: cos <i>A</i> = √(1 − sin²<i>A</i>) = ' + num(cosA) + ', и <i>AC</i> = <i>AB</i>·cos <i>A</i>.']
+          : ['cos <i>A</i> — отношение прилежащего катета <i>AC</i> к гипотенузе <i>AB</i>.',
+             '<i>AC</i> = <i>AB</i>·cos <i>A</i> = ' + AB + '·' + num(cosA) + ' = <b>' + num(AC) + '</b>.'];
+        tr = [{ v: BC, msg: 'Это второй катет <i>BC</i>, противолежащий углу <i>A</i>.' },
+              { v: AB, msg: 'Это гипотенуза из условия, а нужен катет.' }];
+      } else {
+        var p = 1, q = 2, guard = 0;
+        do {
+          p = pick([1, 2, 3]); q = pick([2, 3, 4, 5]); guard++;
+        } while (guard < 100 && (gcd(p, q) !== 1 || Math.abs(Math.sqrt(p * p + q * q) - Math.round(Math.sqrt(p * p + q * q))) < 1e-9));
+        var t = ri(2, 7);
+        var BC2 = p * t, AC2 = q * t, N = p * p + q * q;
+        ans = AC2;
+        text = 'В треугольнике <i>ABC</i> угол <i>C</i> равен 90°, <i>BC</i> = ' + BC2 + ', cos <i>A</i> = ' + fracSurd(q, N) + '. Найдите <i>AC</i>.';
+        st = ['Из основного тождества: sin <i>A</i> = √(1 − cos²<i>A</i>) = ' + fracSurd(p, N) + ' — угол острый, синус положителен.',
+          'Тангенс — отношение синуса к косинусу: tg <i>A</i> = ' + p + ' : ' + q + '.',
+          'В прямоугольном треугольнике tg <i>A</i> = <i>BC</i> : <i>AC</i> (противолежащий катет к прилежащему).',
+          '<i>AC</i> = <i>BC</i>·' + q + ' : ' + p + ' = <b>' + AC2 + '</b>.'];
+        tr = [{ v: round(BC2 * p / q, 6), msg: 'Отношение перевёрнуто: tg <i>A</i> = <i>BC</i> : <i>AC</i>, поэтому <i>AC</i> = <i>BC</i> : tg <i>A</i>.' },
+              { v: round(BC2 * Math.sqrt(N) / p, 6), msg: 'Это гипотенуза <i>AB</i>, а нужен катет <i>AC</i>.' }];
+      }
+
+      var A = [0, 0], B = [1, 0], C = [0.72, 0.42];
+      var f = fitter([A, B, C], 280, 150, 26);
+      var pa = f(A), pb = f(B), pc = f(C);
+      var g = poly([pa, pb, pc]) + sq(pc, pa, pb, 10) + ang(pa, pb, pc, 20) +
+        dot(pa) + dot(pb) + dot(pc) + lab(pa, 'A', -14, 8) + lab(pb, 'B', 7, 8) + lab(pc, 'C', 2, -8);
+
+      return { text: text, fig: svg(280, 150, g), ans: ans, steps: st, traps: tr };
+    }
+  };
+
+  /* =============================== ТИП 13 ===============================
+     Угол между секущими и дуги окружности.  Прототипы: варианты 23, 24.   */
+  var T13 = {
+    id: 't13', name: 'Угол между секущими и дуги', src: 'варианты 23, 24',
+    gen: function () {
+      var findC = rnd() < 0.5;
+      var big, small, guard = 0;
+      do {
+        big = ri(15, 39) * 3; small = ri(4, 14) * 3; guard++;
+      } while (guard < 200 && (small >= big - 12 || big + small > 300));
+      var angC = (big - small) / 2, angIn = small / 2;
+      var ans = findC ? angC : angIn;
+
+      var f = fitter([[-1.05, -1.05], [1.05, 1.35]], 250, 230, 24);
+      var Cc = f([0, 0]), rr = Math.abs(f([1, 0])[0] - Cc[0]);
+      var A = f([Math.cos(-80 * D), Math.sin(-80 * D)]);
+      var Bp = f([Math.cos(175 * D), Math.sin(175 * D)]);
+      var Dp = f([Math.cos(63 * D), Math.sin(63 * D)]);
+      var E = f([Math.cos(18 * D), Math.sin(18 * D)]);
+      var Cext = interP(Bp, Dp, A, E);
+      var g = circ(Cc, rr) + seg(Bp, Cext) + seg(A, Cext) + seg(A, Dp, 'sg2') + seg(Bp, Dp) +
+        dot(A) + dot(Bp) + dot(Dp) + dot(E) + dot(Cext) +
+        lab(A, 'A', -4, 16) + lab(Bp, 'B', -15, 4) + lab(Dp, 'D', -2, -8) + lab(E, 'E', 8, 6) + lab(Cext, 'C', 6, -4);
+
+      return {
+        text: findC
+          ? 'Найдите угол <i>ACB</i>, если вписанные углы <i>ADB</i> и <i>DAE</i> опираются на дуги окружности, градусные меры которых равны соответственно ' + big + '° и ' + small + '°. Ответ дайте в градусах.'
+          : 'Угол <i>ACB</i> равен ' + num(angC) + '°. Градусная мера дуги <i>AB</i> окружности, не содержащей точек <i>D</i> и <i>E</i>, равна ' + big + '°. Найдите угол <i>DAE</i>. Ответ дайте в градусах.',
+        fig: svg(250, 230, g), ans: ans,
+        steps: findC
+          ? ['Вписанный угол <i>ADB</i> опирается на дугу <i>AB</i> = ' + big + '°, вписанный угол <i>DAE</i> — на дугу <i>DE</i> = ' + small + '°.',
+             'Угол между двумя секущими, пересекающимися вне окружности, равен полуразности дуг: ∠<i>ACB</i> = (' + big + '° − ' + small + '°) : 2 = <b>' + num(ans) + '°</b>.',
+             'Иначе: ∠<i>ACB</i> — внешний угол треугольника <i>ACD</i>, поэтому ∠<i>ACB</i> = ' + num(big / 2) + '° − ' + num(small / 2) + '°.']
+          : ['Угол между секущими равен полуразности дуг: ' + num(angC) + '° = (' + big + '° − дуга <i>DE</i>) : 2.',
+             'Отсюда дуга <i>DE</i> = ' + big + '° − 2·' + num(angC) + '° = ' + small + '°.',
+             'Угол <i>DAE</i> вписанный и опирается на дугу <i>DE</i>, значит равен её половине: <b>' + num(ans) + '°</b>.'],
+        traps: [
+          { v: findC ? big - small : small, msg: 'Забыто деление пополам: угол равен полуразности дуг (а дуга — это ещё не угол).' },
+          { v: (big + small) / 2, msg: 'Дуги вычитаются, а не складываются: вершина лежит вне окружности.' },
+          { v: big / 2, msg: 'Это вписанный угол, опирающийся на бо́льшую дугу.' }
+        ]
+      };
+    }
+  };
+
+  /* =============================== ТИП 14 ===============================
+     Хорда и вписанный угол.  Прототипы: варианты 25, 26.                  */
+  var T14 = {
+    id: 't14', name: 'Хорда и вписанный угол', src: 'варианты 25, 26',
+    gen: function () {
+      var th = pick([30, 45, 60]);
+      var kmul = { 30: 1, 45: 2, 60: 3 }[th];
+      var a = pick([1, 1, 2, 3, 0.5, 1.5]), b = pick([1, 2, 3, 5, 6, 7]);
+      var Rv = a * Math.sqrt(b);
+      var sd = surd(kmul * b);
+      var chordA = a * sd.a, chordB = sd.b;
+      var chordV = chordA * Math.sqrt(chordB);
+      var Rtxt = surdStr(a, b), Ctxt = surdStr(chordA, chordB);
+      var findAngle = rnd() < 0.5;
+      var obtuse = 180 - th;
+      var ans = findAngle ? obtuse : round(chordV, 6);
+      if (!findAngle && !nice(chordV, 3)) { findAngle = true; ans = obtuse; }
+
+      var f = fitter([[-1.05, -1.05], [1.05, 1.05]], 230, 210, 22);
+      var Cc = f([0, 0]), rr = Math.abs(f([1, 0])[0] - Cc[0]);
+      var P1 = f([Math.cos(200 * D), Math.sin(200 * D)]);
+      var P2 = f([Math.cos((-20 + 180 - 2 * th) * D), Math.sin((-20 + 180 - 2 * th) * D)]);
+      var Vt = f([Math.cos(300 * D), Math.sin(300 * D)]);
+      var g = circ(Cc, rr) + seg(P1, P2, 'sg2') + seg(P1, Vt) + seg(P2, Vt) +
+        ang(Vt, P1, P2, 18) + dot(P1) + dot(P2) + dot(Vt) + dot(Cc, 'nd2');
+
+      return {
+        text: findAngle
+          ? 'Радиус окружности равен ' + Rtxt + '. Найдите величину тупого вписанного угла, опирающегося на хорду, равную ' + Ctxt + '. Ответ дайте в градусах.'
+          : 'Найдите хорду, на которую опирается угол ' + obtuse + '°, вписанный в окружность радиуса ' + Rtxt + '.',
+        fig: svg(230, 210, g), ans: ans,
+        steps: findAngle
+          ? ['Хорда = 2<i>R</i>·sin α, где α — вписанный угол, опирающийся на эту хорду.',
+             'sin α = ' + Ctxt + ' : (2·' + Rtxt + ') = ' + num(round(chordV / (2 * Rv), 4)) + ' — это синус ' + th + '°.',
+             'Таких углов два: ' + th + '° и ' + obtuse + '°. По условию угол тупой, значит <b>' + obtuse + '°</b>.',
+             'Геометрический смысл: острый и тупой углы опираются на одну хорду с разных сторон от неё.']
+          : ['Хорда = 2<i>R</i>·sin α, где α — вписанный угол, опирающийся на неё.',
+             'sin ' + obtuse + '° = sin ' + th + '° = ' + num(round(Math.sin(th * D), 4)) + '.',
+             'Хорда = 2·' + Rtxt + '·' + num(round(Math.sin(th * D), 4)) + ' = ' + Ctxt + ' = <b>' + num(ans) + '</b>.'],
+        traps: findAngle
+          ? [{ v: th, msg: 'Это острый угол. В условии просят тупой: он равен 180° − ' + th + '°.' },
+             { v: 2 * th, msg: 'Это центральный угол, опирающийся на ту же хорду.' }]
+          : [{ v: round(Rv * Math.sin(th * D), 6), msg: 'Пропущена двойка: хорда = 2<i>R</i>·sin α.' },
+             { v: round(2 * Rv * Math.cos(th * D), 6), msg: 'Нужен синус вписанного угла, а не косинус.' }]
+      };
+    }
+  };
+
+  /* =============================== ТИП 15 ===============================
+     Площади: отсечённая трапеция.  Прототипы: варианты 27, 28.            */
+  var T15 = {
+    id: 't15', name: 'Площади: отсечённая трапеция', src: 'варианты 27, 28',
+    gen: function () {
+      var isTri = rnd() < 0.5;
+      var T = ri(4, 30) * 3;
+      var S = T * 4 / 3;
+
+      if (isTri) {
+        var A = [0, 0], B = [1, 0], C = [0.62, 0.8];
+        var Dd = [(A[0] + C[0]) / 2, (A[1] + C[1]) / 2], E = [(B[0] + C[0]) / 2, (B[1] + C[1]) / 2];
+        var f = fitter([A, B, C], 280, 170, 28);
+        var pa = f(A), pb = f(B), pc = f(C), pd = f(Dd), pe = f(E);
+        var g = poly([pa, pb, pc]) + seg(pd, pe, 'sg2') +
+          tick(pa, pd, 1) + tick(pd, pc, 1) + tick(pb, pe, 2) + tick(pe, pc, 2) +
+          dot(pa) + dot(pb) + dot(pc) + dot(pd) + dot(pe) +
+          lab(pa, 'A', -14, 8) + lab(pb, 'B', 7, 8) + lab(pc, 'C', 0, -8) + lab(pd, 'D', -14, 2) + lab(pe, 'E', 8, 2);
+        return {
+          text: 'В треугольнике <i>ABC</i> средняя линия <i>DE</i> параллельна стороне <i>AB</i>. Найдите площадь треугольника <i>ABC</i>, если площадь трапеции <i>ABED</i> равна ' + T + '.',
+          fig: svg(280, 170, g), ans: S,
+          steps: [
+            'Треугольник <i>CDE</i> подобен треугольнику <i>CAB</i> с коэффициентом ½ (средняя линия).',
+            'Площади подобных фигур относятся как квадрат коэффициента: <i>S</i>(<i>CDE</i>) = <i>S</i> : 4.',
+            'Трапеция — это то, что осталось: <i>S</i>(<i>ABED</i>) = <i>S</i> − <i>S</i>/4 = ¾<i>S</i> = ' + T + '.',
+            '<i>S</i> = ' + T + '·4/3 = <b>' + num(S) + '</b>.'
+          ],
+          traps: [
+            { v: T * 2, msg: 'Средняя линия делит площадь не пополам: отсечённый треугольник — ровно четверть.' },
+            { v: T / 3, msg: 'Это площадь маленького треугольника <i>CDE</i>.' },
+            { v: T * 4, msg: 'Вчетверо больше — это если бы трапеция была равна маленькому треугольнику.' }
+          ]
+        };
+      }
+      var A2 = [0, 0], E2 = [0.5, 0], D2 = [1, 0], B2 = [0.3, 0.65], C2 = [1.3, 0.65];
+      var f2 = fitter([A2, D2, B2, C2], 285, 160, 26);
+      var pa2 = f2(A2), pd2 = f2(D2), pb2 = f2(B2), pc2 = f2(C2), pe2 = f2(E2);
+      var g2 = poly([pa2, pb2, pc2, pd2]) + seg(pb2, pe2, 'sg2') +
+        tick(pa2, pe2, 1) + tick(pe2, pd2, 1) +
+        dot(pa2) + dot(pb2) + dot(pc2) + dot(pd2) + dot(pe2) +
+        lab(pa2, 'A', -6, 15) + lab(pb2, 'B', -12, -4) + lab(pc2, 'C', 7, -4) + lab(pd2, 'D', 8, 12) + lab(pe2, 'E', -3, 15);
+      return {
+        text: 'В параллелограмме <i>ABCD</i> точка <i>E</i> — середина стороны <i>AD</i>. Найдите площадь параллелограмма <i>ABCD</i>, если площадь трапеции <i>BCDE</i> равна ' + T + '.',
+        fig: svg(285, 160, g2), ans: S,
+        steps: [
+          'Треугольник <i>ABE</i> имеет основание <i>AE</i> = <i>AD</i> : 2 и ту же высоту, что и параллелограмм.',
+          '<i>S</i>(<i>ABE</i>) = ½·(<i>AD</i>/2)·<i>h</i> = <i>S</i> : 4.',
+          'Трапеция <i>BCDE</i> — оставшаяся часть: ¾<i>S</i> = ' + T + '.',
+          '<i>S</i> = ' + T + '·4/3 = <b>' + num(S) + '</b>.'
+        ],
+        traps: [
+          { v: T * 2, msg: 'Отсечённый треугольник — четверть параллелограмма, а не половина.' },
+          { v: T / 3, msg: 'Это площадь треугольника <i>ABE</i>.' }
+        ]
+      };
+    }
+  };
+
+  /* =============================== ТИП 16 ===============================
+     Трапеция: середины диагоналей / перпендикулярные диагонали.
+     Прототипы: варианты 29, 30.                                           */
+  var T16 = {
+    id: 't16', name: 'Трапеция: диагонали и средняя линия', src: 'варианты 29, 30',
+    gen: function () {
+      var kind = rnd() < 0.5 ? 'mid' : 'perp';
+      if (kind === 'mid') {
+        var p = ri(10, 45), q = p + ri(3, 30);
+        var ans = (q - p) / 2;
+        var A = [0, 0], Dp = [q, 0], B = [q * 0.22, q * 0.6], C = [q * 0.22 + p, q * 0.6];
+        var f = fitter([A, Dp, B, C], 290, 165, 26);
+        var pa = f(A), pd = f(Dp), pb = f(B), pc = f(C);
+        var m1 = [(pa[0] + pc[0]) / 2, (pa[1] + pc[1]) / 2], m2 = [(pb[0] + pd[0]) / 2, (pb[1] + pd[1]) / 2];
+        var g = poly([pa, pb, pc, pd]) + seg(pa, pc, 'aux') + seg(pb, pd, 'aux') + seg(m1, m2, 'sg2') +
+          dot(pa) + dot(pb) + dot(pc) + dot(pd) + dot(m1) + dot(m2);
+        return {
+          text: 'Основания трапеции равны ' + p + ' и ' + q + '. Найдите отрезок, соединяющий середины диагоналей трапеции.',
+          fig: svg(290, 165, g), ans: ans,
+          steps: [
+            'Середины диагоналей лежат на средней линии трапеции.',
+            'Вся средняя линия равна полусумме оснований, а от её конца до ближней середины откладывается половина меньшего основания.',
+            'Отрезок между серединами диагоналей равен полуразности оснований: (' + q + ' − ' + p + ') : 2 = <b>' + num(ans) + '</b>.'
+          ],
+          traps: [
+            { v: (p + q) / 2, msg: 'Это средняя линия — полусумма. Между серединами диагоналей — полуразность.' },
+            { v: q - p, msg: 'Забыто деление разности пополам.' }
+          ]
+        };
+      }
+      var h = ri(6, 40) * 2;
+      var askMid = rnd() < 0.6;
+      var A2 = [0, 0], D2 = [1, 0], B2 = [0.3, 0.42], C2 = [0.7, 0.42];
+      var f2 = fitter([A2, D2, B2, C2], 285, 165, 26);
+      var pa = f2(A2), pd = f2(D2), pb = f2(B2), pc = f2(C2);
+      var mid = [(pa[0] + pd[0]) / 2, pa[1]];
+      var g2 = poly([pa, pb, pc, pd]) + seg(pa, pc, 'aux') + seg(pb, pd, 'aux') +
+        seg([(pa[0] + pb[0]) / 2, (pa[1] + pb[1]) / 2], [(pc[0] + pd[0]) / 2, (pc[1] + pd[1]) / 2], 'sg2') +
+        seg(mid, [mid[0], pb[1]], 'sg2') + sq(mid, pa, [mid[0], pb[1]], 9) +
+        dot(pa) + dot(pb) + dot(pc) + dot(pd);
+      return {
+        text: askMid
+          ? 'В равнобедренной трапеции диагонали перпендикулярны. Высота трапеции равна ' + h + '. Найдите её среднюю линию.'
+          : 'В равнобедренной трапеции диагонали перпендикулярны. Средняя линия трапеции равна ' + h + '. Найдите её высоту.',
+        fig: svg(285, 165, g2), ans: h,
+        steps: [
+          'Перенесём одну диагональ параллельно себе: получится прямоугольный треугольник, основание которого равно сумме оснований трапеции.',
+          'Треугольник равнобедренный и прямоугольный, а высота трапеции — его высота к гипотенузе, то есть половина этой гипотенузы.',
+          'Половина суммы оснований — это и есть средняя линия. Значит в такой трапеции средняя линия равна высоте.',
+          'Ответ: <b>' + num(h) + '</b>.'
+        ],
+        traps: [
+          { v: h / 2, msg: 'Делить пополам здесь не нужно: средняя линия и высота просто равны.' },
+          { v: h * 2, msg: 'Умножать тоже не нужно: эти две величины совпадают.' }
+        ]
+      };
+    }
+  };
+
+  /* =============================== ТИП 17 ===============================
+     Трапеция, описанная около окружности.  Прототипы: варианты 31, 32.    */
+  var T17 = {
+    id: 't17', name: 'Описанная трапеция и средняя линия', src: 'варианты 31, 32',
+    gen: function () {
+      var bySides = rnd() < 0.5;
+      var c, d, P, ans, text, st, tr;
+      if (bySides) {
+        c = ri(3, 18); d = ri(3, 18);
+        ans = (c + d) / 2;
+        text = 'Боковые стороны трапеции, описанной около окружности, равны ' + c + ' и ' + d + '. Найдите среднюю линию трапеции.';
+        st = ['В описанном около окружности четырёхугольнике суммы противоположных сторон равны, то есть сумма оснований равна сумме боковых сторон.',
+          'Сумма оснований = ' + c + ' + ' + d + ' = ' + (c + d) + '.',
+          'Средняя линия — полусумма оснований: ' + (c + d) + ' : 2 = <b>' + num(ans) + '</b>.'];
+        tr = [{ v: c + d, msg: 'Это сумма оснований. Средняя линия — её половина.' },
+              { v: 2 * (c + d), msg: 'Это периметр трапеции.' }];
+      } else {
+        P = ri(6, 30) * 2;
+        ans = P / 4;
+        text = 'Около окружности описана трапеция, периметр которой равен ' + P + '. Найдите длину её средней линии.';
+        st = ['Сумма оснований равна сумме боковых сторон, значит каждая из этих сумм — половина периметра: ' + P + ' : 2 = ' + (P / 2) + '.',
+          'Средняя линия — полусумма оснований: ' + (P / 2) + ' : 2 = <b>' + num(ans) + '</b>.'];
+        tr = [{ v: P / 2, msg: 'Это сумма оснований (она же сумма боковых сторон). Средняя линия вдвое меньше.' },
+              { v: P / 8, msg: 'Поделено пополам лишний раз.' }];
+      }
+
+      var A = [0, 0], Dp = [1, 0], B = [0.2, 0.55], C = [0.62, 0.55];
+      var f = fitter([A, Dp, B, C], 270, 165, 26);
+      var pa = f(A), pd = f(Dp), pb = f(B), pc = f(C);
+      var cx = (pa[0] + pd[0] + pb[0] + pc[0]) / 4, cy = (pa[1] + pb[1]) / 2;
+      var g = poly([pa, pb, pc, pd]) + circ([cx, cy], Math.abs(pa[1] - pb[1]) / 2) +
+        seg([(pa[0] + pb[0]) / 2, (pa[1] + pb[1]) / 2], [(pc[0] + pd[0]) / 2, (pc[1] + pd[1]) / 2], 'sg2') +
+        dot(pa) + dot(pb) + dot(pc) + dot(pd);
+
+      return { text: text, fig: svg(270, 165, g), ans: ans, steps: st, traps: tr };
+    }
+  };
+
+  /* =============================== ТИП 18 ===============================
+     Ромб: площадь через диагонали.  Прототипы: варианты 33, 34.           */
+  var T18 = {
+    id: 't18', name: 'Ромб: площадь через диагонали', src: 'варианты 33, 34',
+    gen: function () {
+      var direct = rnd() < 0.5;
+      var S, d1, d2, ans, text, st, tr, guard = 0;
+      if (direct) {
+        do { d1 = ri(2, 20); S = ri(4, 60); d2 = 2 * S / d1; guard++; }
+        while (guard < 200 && (!nice(d2, 2) || d2 > 60 || d2 < 1));
+        if (guard >= 200) { d1 = 8; S = 10; d2 = 2.5; }
+        ans = d2;
+        text = 'Площадь ромба равна ' + num(S) + '. Одна из его диагоналей равна ' + d1 + '. Найдите другую диагональ.';
+        st = ['Площадь ромба равна половине произведения диагоналей: <i>S</i> = ½·<i>d</i>₁·<i>d</i>₂.',
+          num(S) + ' = ½·' + d1 + '·<i>d</i>₂, откуда <i>d</i>₂ = 2·' + num(S) + ' : ' + d1 + ' = <b>' + num(ans) + '</b>.'];
+        tr = [{ v: round(S / d1, 6), msg: 'Забыта двойка: <i>S</i> = ½·<i>d</i>₁·<i>d</i>₂, поэтому <i>d</i>₂ = 2<i>S</i> : <i>d</i>₁.' },
+              { v: round(S * d1, 6), msg: 'На известную диагональ нужно делить, а не умножать.' }];
+      } else {
+        var k = pick([2, 8, 18, 32, 50, 9, 12]);
+        var small = pick([0.5, 1, 1.5, 2, 2.5, 3, 4]);
+        S = k * small * small / 2;
+        guard = 0;
+        while (guard++ < 200 && (!nice(S, 2) || S > 400)) { k = pick([2, 8, 18, 32]); small = pick([1, 1.5, 2]); S = k * small * small / 2; }
+        ans = small;
+        text = 'Площадь ромба равна ' + num(S) + '. Одна из его диагоналей в ' + k + ' раз больше другой. Найдите меньшую диагональ.';
+        st = ['Пусть меньшая диагональ равна <i>d</i>, тогда бо́льшая равна ' + k + '<i>d</i>.',
+          '<i>S</i> = ½·<i>d</i>·' + k + '<i>d</i> = ' + num(k / 2) + '<i>d</i>² = ' + num(S) + '.',
+          '<i>d</i>² = ' + num(2 * S / k) + ', значит <i>d</i> = <b>' + num(ans) + '</b>.'];
+        tr = [{ v: round(small * k, 6), msg: 'Это бо́льшая диагональ. В условии просят меньшую.' },
+              { v: round(2 * S / k, 6), msg: 'Это квадрат диагонали — осталось извлечь корень.' }];
+      }
+
+      var f = fitter([[0, 0], [1, 0.55], [2, 0], [1, -0.55]], 250, 160, 24);
+      var P = [[0, 0], [1, 0.55], [2, 0], [1, -0.55]].map(f);
+      var g = poly(P) + seg(P[0], P[2], 'sg2') + seg(P[1], P[3], 'sg2') +
+        P.map(function (p) { return dot(p); }).join('');
+
+      return { text: text, fig: svg(250, 160, g), ans: ans, steps: st, traps: tr };
+    }
+  };
+
+  /* =============================== ТИП 19 ===============================
+     Дуги, стягиваемые сторонами вписанного четырёхугольника.
+     Прототипы: варианты 35, 36.                                           */
+  var T19 = {
+    id: 't19', name: 'Дуги вписанного четырёхугольника', src: 'варианты 35, 36',
+    gen: function () {
+      var byRatio = rnd() < 0.5;
+      var arcs, ans, text, st, r, sum, unit, guard = 0;
+
+      if (!byRatio) {
+        var a1, a2, a3, a4;
+        do {
+          a1 = ri(10, 40) * 2; a2 = ri(10, 45) * 2; a3 = ri(10, 45) * 2;
+          a4 = 360 - a1 - a2 - a3; guard++;
+        } while (guard < 300 && (a4 < 30 || a4 > 160));
+        if (guard >= 300) { a1 = 46; a2 = 116; a3 = 122; a4 = 76; }
+        arcs = [a1, a2, a3, a4];
+        ans = (arcs[2] + arcs[3]) / 2;
+        text = 'Стороны <i>AB</i>, <i>BC</i>, <i>CD</i> и <i>AD</i> четырёхугольника <i>ABCD</i> стягивают дуги описанной окружности, ' +
+          'градусные величины которых равны соответственно ' + arcs[0] + '°, ' + arcs[1] + '°, ' + arcs[2] + '°, ' + arcs[3] + '°. Найдите угол <i>ABC</i>. Ответ дайте в градусах.';
+        st = ['Вписанный угол <i>ABC</i> опирается на дугу <i>AC</i>, не содержащую точку <i>B</i>. Эта дуга состоит из дуг <i>CD</i> и <i>AD</i>.',
+          'Дуга <i>ADC</i> = ' + arcs[2] + '° + ' + arcs[3] + '° = ' + (arcs[2] + arcs[3]) + '°.',
+          'Вписанный угол равен половине дуги: ∠<i>ABC</i> = ' + (arcs[2] + arcs[3]) + '° : 2 = <b>' + num(ans) + '°</b>.',
+          'Проверка: все четыре дуги в сумме дают 360°.'];
+      } else {
+        do {
+          r = [ri(2, 14), ri(2, 14), ri(2, 14), ri(2, 14)];
+          sum = r[0] + r[1] + r[2] + r[3];
+          guard++;
+        } while (guard < 400 && (360 % sum !== 0 || sum < 8));
+        if (guard >= 400) { r = [12, 4, 7, 13]; sum = 36; }
+        unit = 360 / sum;
+        arcs = r.map(function (x) { return x * unit; });
+        ans = (arcs[1] + arcs[2]) / 2;
+        text = 'Точки <i>A</i>, <i>B</i>, <i>C</i>, <i>D</i>, расположенные на окружности, делят эту окружность на четыре дуги <i>AB</i>, <i>BC</i>, <i>CD</i> и <i>AD</i>, ' +
+          'градусные величины которых относятся соответственно как ' + r[0] + ' : ' + r[1] + ' : ' + r[2] + ' : ' + r[3] + '. Найдите угол <i>BAD</i>. Ответ дайте в градусах.';
+        st = ['Пусть одна часть отношения равна <i>x</i>°. Тогда (' + r.join(' + ') + ')<i>x</i> = 360°, то есть ' + sum + '<i>x</i> = 360° и <i>x</i> = ' + num(unit) + '°.',
+          'Дуги: ' + arcs.map(num).join('°, ') + '°.',
+          'Угол <i>BAD</i> опирается на дугу <i>BCD</i> = ' + num(arcs[1]) + '° + ' + num(arcs[2]) + '° = ' + num(arcs[1] + arcs[2]) + '°.',
+          '∠<i>BAD</i> = ' + num(arcs[1] + arcs[2]) + '° : 2 = <b>' + num(ans) + '°</b>.'];
+      }
+
+      var f = fitter([[-1.05, -1.05], [1.05, 1.05]], 235, 215, 24);
+      var Cc = f([0, 0]), rr = Math.abs(f([1, 0])[0] - Cc[0]);
+      var acc = 0, angs = [], i;
+      for (i = 0; i < 4; i++) { angs.push(140 - acc); acc += arcs[i]; }
+      var P = angs.map(function (t) { return f([Math.cos(t * D), Math.sin(t * D)]); });
+      var g = circ(Cc, rr) + poly(P, 'shape2') + P.map(function (p) { return dot(p); }).join('') +
+        labAway(P[0], Cc, 'A') + labAway(P[1], Cc, 'B') + labAway(P[2], Cc, 'C') + labAway(P[3], Cc, 'D');
+
+      return {
+        text: text, fig: svg(235, 215, g), ans: ans, steps: st,
+        traps: [
+          { v: byRatio ? arcs[1] + arcs[2] : arcs[2] + arcs[3], msg: 'Это градусная мера дуги. Вписанный угол вдвое меньше.' },
+          { v: byRatio ? (arcs[0] + arcs[3]) / 2 : (arcs[0] + arcs[1]) / 2, msg: 'Взята не та дуга: угол опирается на дугу, которая не содержит его вершину.' },
+          { v: 180 - ans, msg: 'Это противоположный угол четырёхугольника.' }
+        ]
+      };
+    }
+  };
+
+  /* ================================ РЕЕСТР ================================ */
+  var ITEMS = [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19];
+  var byId = {};
+  ITEMS.forEach(function (t) { byId[t.id] = t; });
+
+  function make(id) {
+    var t = byId[id];
+    if (!t) return null;
+    var q = t.gen();
+    q.id = id; q.name = t.name; q.line = 1; q.src = t.src;
+    /* ловушка имеет смысл, только если отличается от верного ответа и от других ловушек */
+    var seen = [];
+    q.traps = (q.traps || []).filter(function (tr) {
+      if (!isFinite(tr.v)) return false;
+      if (Math.abs(tr.v - q.ans) < 1e-9) return false;
+      for (var i = 0; i < seen.length; i++) if (Math.abs(seen[i] - tr.v) < 1e-9) return false;
+      seen.push(tr.v);
+      return true;
+    });
+    return q;
+  }
+  function random() { return make(ITEMS[Math.floor(rnd() * ITEMS.length)].id); }
+
+  return { items: ITEMS, byId: byId, make: make, random: random, srand: srand, num: num };
+})();
+if (typeof module !== 'undefined') module.exports = YB1;

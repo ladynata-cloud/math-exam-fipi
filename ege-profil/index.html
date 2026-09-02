@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Профильный ЕГЭ · математика — курс-навигатор</title>
+<style>
+  :root{
+    --paper:#FAFAF4;
+    --cell:rgba(88,140,190,.16);
+    --ink:#1E3A9F;
+    --ink-strong:#16307F;
+    --graphite:#2A2F38;
+    --red:#C22F2A;
+    --muted:#67707E;
+    --line:rgba(42,47,56,.16);
+    --cellsize:26px;
+    --margin-x:72px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+  body{
+    margin:0;
+    color:var(--graphite);
+    font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--cell) 1px, transparent 1px),
+      linear-gradient(90deg, var(--cell) 1px, transparent 1px);
+    background-size:var(--cellsize) var(--cellsize);
+  }
+  /* красная линия полей — как в тетради */
+  body::before{
+    content:"";
+    position:fixed; inset:0 auto 0 var(--margin-x);
+    width:1.5px; background:var(--red); opacity:.55;
+    pointer-events:none;
+  }
+  .sheet{ max-width:1060px; margin:0 auto; padding:52px 28px 64px calc(var(--margin-x) + 34px); }
+
+  a{ color:var(--ink); }
+  a:focus-visible, button:focus-visible{ outline:3px solid rgba(30,58,159,.4); outline-offset:2px; border-radius:4px; }
+
+  .eyebrow{
+    font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+    margin:0 0 14px;
+  }
+  h1{
+    margin:0 0 10px;
+    font-size:clamp(30px,5vw,50px); line-height:1.04; letter-spacing:-.02em;
+    font-weight:800; color:var(--ink-strong);
+  }
+  h1 .mark{ position:relative; white-space:nowrap; }
+  h1 .mark svg{ position:absolute; left:0; right:0; bottom:-.14em; width:100%; height:.32em; }
+  .lede{ max-width:640px; margin:0 0 18px; font-size:17px; }
+  .facts{
+    margin:0 0 6px;
+    font:500 13px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    color:var(--muted);
+  }
+
+  section{ margin-top:56px; }
+  h2{
+    margin:0 0 6px;
+    font-size:clamp(21px,3vw,27px); letter-spacing:-.01em; font-weight:800; color:var(--ink-strong);
+  }
+  .section-note{ margin:0 0 22px; color:var(--muted); max-width:620px; }
+
+  /* ---------- маршрут: 19 линий ---------- */
+  .part-label{
+    font:700 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--red);
+    margin:26px 0 10px;
+  }
+  ol.route{ list-style:none; margin:0; padding:0; }
+  .line{
+    display:grid;
+    grid-template-columns:44px minmax(0,1fr) auto;
+    gap:8px 16px; align-items:start;
+    padding:11px 0 12px;
+    border-bottom:1px dashed var(--line);
+  }
+  .num{
+    width:36px; height:36px; margin-top:2px;
+    display:flex; align-items:center; justify-content:center;
+    border:1.5px solid var(--ink); border-radius:6px;
+    font:700 15px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    color:var(--ink); background:rgba(250,250,244,.7);
+  }
+  .line-name{ font-weight:700; }
+  .line-proto{ font-size:13.5px; color:var(--muted); }
+  .line-links{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:flex-end; max-width:340px; }
+  .pill{
+    display:inline-block; padding:5px 11px 6px;
+    border:1.5px solid var(--ink); border-radius:999px;
+    font-size:13.5px; font-weight:600; text-decoration:none;
+    background:rgba(250,250,244,.7);
+  }
+  .ghostlink{
+    font:500 12.5px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    color:var(--muted); text-decoration:none; border-bottom:1px dotted var(--muted);
+    padding-bottom:2px; white-space:nowrap;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .pill{ transition:background .15s ease, color .15s ease; }
+  }
+  .pill:hover{ background:var(--ink); color:#fff; }
+  .ghostlink:hover{ color:var(--ink); border-bottom-color:var(--ink); }
+
+  /* ---------- карточки тренажёров ---------- */
+  .cards{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .card{
+    border:1.5px solid var(--ink);
+    border-radius:10px;
+    background:rgba(250,250,244,.88);
+    padding:18px 18px 16px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .card h3{ margin:0; font-size:18px; letter-spacing:-.01em; color:var(--ink-strong); }
+  .card .for{
+    font:600 11.5px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--red);
+  }
+  .card p{ margin:0; font-size:14.5px; }
+  .card .meta{ font:500 12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; color:var(--muted); }
+  .progress{ display:flex; align-items:center; gap:10px; min-height:18px; }
+  .cellsbar{ display:flex; gap:3px; }
+  .cellsbar span{ width:12px; height:12px; border:1px solid var(--ink); border-radius:2px; background:transparent; }
+  .cellsbar span.filled{ background:var(--ink); }
+  .progress .txt{ font:500 12.5px/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; color:var(--muted); }
+  .progress .txt.done{ color:var(--red); font-weight:700; }
+  .card .open{ margin-top:auto; padding-top:6px; }
+  .btn{
+    display:inline-block; padding:8px 16px 9px;
+    background:var(--ink); color:#fff; border:1.5px solid var(--ink);
+    border-radius:8px; font-weight:700; font-size:14.5px; text-decoration:none;
+  }
+  .btn:hover{ background:var(--ink-strong); }
+  .btn.secondary{ background:transparent; color:var(--ink); }
+  .btn.secondary:hover{ background:var(--ink); color:#fff; }
+
+  /* ---------- экзаменационный режим ---------- */
+  .exam{
+    border:1.5px solid var(--red);
+    border-radius:10px;
+    background:rgba(250,250,244,.88);
+    padding:20px;
+    display:grid; grid-template-columns:minmax(0,1fr) auto; gap:16px; align-items:center;
+  }
+  .exam h3{ margin:0 0 6px; font-size:19px; color:var(--ink-strong); }
+  .exam p{ margin:0; font-size:14.5px; }
+  .exam .progress{ margin-top:8px; }
+  .exam-actions{ display:flex; flex-direction:column; gap:10px; align-items:stretch; }
+
+  footer{
+    margin-top:64px; padding-top:18px; border-top:1px solid var(--line);
+    font-size:13px; color:var(--muted); max-width:680px;
+  }
+  footer p{ margin:0 0 8px; }
+
+  /* панель кода прогресса в подвале */
+  .linkbtn{ border:0; background:none; padding:0; color:var(--ink); font:inherit; text-decoration:underline; cursor:pointer; }
+  .codepanel{ margin:8px 0 0; }
+  .codebox{ width:100%; font:600 12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    border:1.5px solid var(--line); border-radius:8px; padding:10px; background:#fff; color:var(--graphite); resize:vertical; }
+  .codeactions{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0 0; }
+  .codepanel .btn{ display:inline-block; border:1.5px solid var(--ink); background:var(--ink); color:#fff;
+    border-radius:8px; padding:9px 13px; min-height:44px; font:700 13px/1.6 inherit; cursor:pointer; }
+  .codepanel .btn.ghost{ background:transparent; color:var(--ink); }
+  .codepanel .btn[disabled]{ opacity:.55; cursor:default; }
+  .qrframe{ max-width:220px; margin:12px 0 0; border:1.5px solid var(--line); border-radius:8px; padding:8px; background:#fff; }
+  .codepanel .status.bad{ color:var(--red); font-weight:700; }
+
+  @media (max-width:820px){
+    :root{ --margin-x:22px; }
+    .sheet{ padding:36px 18px 48px calc(var(--margin-x) + 18px); }
+    .cards{ grid-template-columns:1fr; }
+    .line{ grid-template-columns:40px minmax(0,1fr); }
+    .line-links{ grid-column:2; justify-content:flex-start; max-width:none; }
+    .exam{ grid-template-columns:1fr; }
+    .exam-actions{ flex-direction:row; flex-wrap:wrap; }
+  }
+  .route-steps{list-style:none;counter-reset:rs;margin:14px 0 6px;padding:0;display:grid;gap:10px}
+  .route-steps li{counter-increment:rs;border:1.5px solid var(--ink,#1E3A9F);border-radius:10px;background:rgba(255,255,255,.7);padding:12px 14px 12px 52px;position:relative}
+  .route-steps li::before{content:counter(rs);position:absolute;left:14px;top:12px;width:26px;height:26px;border-radius:50%;background:var(--ink,#1E3A9F);color:#fff;font:800 14px/26px ui-monospace,SFMono-Regular,Menlo,monospace;text-align:center}
+  .route-steps li.now{border-color:var(--red,#C22F2A);box-shadow:0 0 0 3px rgba(194,47,42,.14)}
+  .route-steps li.now::after{content:"вы здесь";position:absolute;right:12px;top:11px;font:700 10.5px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--red,#C22F2A)}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <p class="eyebrow">курс-навигатор · работает офлайн</p>
+    <h1>Профильный <span class="mark">ЕГЭ<svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 Q 12 2, 24 8 T 46 8 T 68 8 T 90 8 T 114 7" fill="none" stroke="#C22F2A" stroke-width="3.4" stroke-linecap="round"/></svg></span> · математика</h1>
+    <p class="lede">Маршрут по всем 19 заданиям: там, где есть специализированный тренажёр — учись в нём, остальное отрабатывай в экзаменационном режиме.</p>
+    <p class="facts">17 тренажёров на все 19 заданий + тренажёр эксперта · пробный экзамен на 3&nbsp;ч&nbsp;55&nbsp;мин с переводом в тестовые баллы · работа над ошибками и умный разбор ловушек · маршрут «с чего начать» · 143 задачи стереометрии в&nbsp;3D</p>
+  </header>
+
+  <section id="start" aria-labelledby="start-h">
+    <h2 id="start-h">С чего начать</h2>
+    <ol class="route-steps" id="routeSteps">
+      <li data-step="1"><b>Диагностика.</b> Напишите <a href="exam/full-exam.html" target="_blank" rel="noopener">пробный экзамен</a> — можно решить только первую часть и завершить досрочно. Он покажет, какие линии проседают, и заполнит журнал ошибок.</li>
+      <li data-step="2"><b>Первая часть до автоматизма.</b> Задания 1–12 — это 12 первичных баллов, около 70 тестовых. Пройдите зачёты в тренажёрах первой части: серия без промахов важнее количества решённого.</li>
+      <li data-step="3"><b>Вторая часть по отдаче.</b> Порядок входа: уравнение 13 → неравенство 15 → экономическая 16 → планиметрия 17 → стереометрия 14. Параметр 18 и числа 19 — когда первые пять стабильны. Параллельно загляните в <a href="trainers/expert.html" target="_blank" rel="noopener">тренажёр эксперта</a>, чтобы писать под критерии.</li>
+      <li data-step="4"><b>Цикл до экзамена.</b> Раз в неделю-две пробник в полном хронометраже → <a href="review.html" target="_blank" rel="noopener">работа над ошибками</a> → закрыть открытые типы → следующий пробник.</li>
+    </ol>
+    <p class="facts" id="routeNow"></p>
+  </section>
+
+  <section id="route" aria-labelledby="route-h">
+    <h2 id="route-h">Маршрут экзамена</h2>
+    <p class="section-note">Номер — это номер задания в варианте. Синие ссылки ведут в тренажёры по теме, «вариант» открывает эту линию в экзаменационном тренажёре.</p>
+
+    <p class="part-label">Часть 1 · краткий ответ · задания 1–12</p>
+    <ol class="route">
+      <li class="line"><span class="num">1</span>
+        <div><div class="line-name">Планиметрия</div><div class="line-proto">треугольники, четырёхугольники, окружность, площади, углы</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/planimetry-t1.html">Планиметрия без промахов</a><a class="pill" target="_blank" rel="noopener" href="trainers/pryamougolny-treugolnik-trenazher.html">Прямоугольный треугольник</a><a class="pill" target="_blank" rel="noopener" href="trainers/planimetry-yashchenko-t1.html">Задание 1 по Ященко</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=1">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">2</span>
+        <div><div class="line-name">Векторы и координаты</div><div class="line-proto">координаты, длина, сумма, скалярное произведение</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-t2.html">Векторы</a><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-yashchenko-t2.html">Задание 2 по Ященко</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=2">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">3</span>
+        <div><div class="line-name">Стереометрия</div><div class="line-proto">куб, призма, пирамида, цилиндр, конус, шар, комбинации тел</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/stereo/index.html">Стереометрия в 3D</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=3">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">4</span>
+        <div><div class="line-name">Вероятность: классика</div><div class="line-proto">равновозможные исходы, кубик, монета, лотерея</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/probability-t45.html">Вероятность</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=4">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">5</span>
+        <div><div class="line-name">Вероятность: сложные модели</div><div class="line-proto">независимые события, схема Бернулли, противоположное событие</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/probability-t45.html">Вероятность</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=5">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">6</span>
+        <div><div class="line-name">Уравнения</div><div class="line-proto">рациональные, иррациональные, показательные, логарифмические, тригонометрические</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/trigonometry.html">Практикум: трек «Уравнение»</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=6">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">7</span>
+        <div><div class="line-name">Вычисления и преобразования</div><div class="line-proto">степени и корни, логарифмы, тригонометрия, тождества</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/trigonometry.html">Тригонометрия: таблица, радианы, приведение</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=7">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">8</span>
+        <div><div class="line-name">Производная и её график</div><div class="line-proto">значение производной, касательная, монотонность</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/derivative-t8.html">Производная по графику</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=8">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">9</span>
+        <div><div class="line-name">Прикладная задача</div><div class="line-proto">подстановка в формулу, физический и геометрический смысл</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/applied-t910.html">Формулы и текстовые задачи</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=9">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">10</span>
+        <div><div class="line-name">Текстовые задачи</div><div class="line-proto">движение, работа, смеси, проценты, прогрессии</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/applied-t910.html">Формулы и текстовые задачи</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=10">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">11</span>
+        <div><div class="line-name">Анализ графика</div><div class="line-proto">значения функции, экстремумы, число корней</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/functions-t1112.html">Графики и наибольшее значение</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=11">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">12</span>
+        <div><div class="line-name">Наибольшее и наименьшее значение</div><div class="line-proto">критические точки, значения на отрезке, оптимизация</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/functions-t1112.html">Графики и наибольшее значение</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=12">вариант</a></div>
+      </li>
+    </ol>
+
+    <p class="part-label">Часть 2 · развёрнутый ответ · задания 13–19</p>
+    <ol class="route">
+      <li class="line"><span class="num">13</span>
+        <div><div class="line-name">Уравнение с отбором корней</div><div class="line-proto">тригонометрические, показательные, логарифмические, смешанные</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/trigonometry.html">Тригонометрия: полный курс</a><a class="pill" target="_blank" rel="noopener" href="trainers/trig-sum-to-product.html">Сумма → произведение</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=13">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">14</span>
+        <div><div class="line-name">Стереометрия: углы и расстояния</div><div class="line-proto">сечения, углы между прямыми и плоскостями, объёмы</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/stereo-t14.html">Стереометрия с доказательством</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=14">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">15</span>
+        <div><div class="line-name">Неравенство</div><div class="line-proto">рациональные, показательные, логарифмические, комбинированные</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/interval-method.html">1 · Метод интервалов</a><a class="pill" target="_blank" rel="noopener" href="trainers/inequalities.html">2 · Курс по неравенствам</a><a class="pill" target="_blank" rel="noopener" href="trainers/rationalization.html">3 · Рационализация</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=15">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">16</span>
+        <div><div class="line-name">Финансовая математика</div><div class="line-proto">кредиты, вклады, платежи, нестандартные схемы</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/finance.html">Нестандартные схемы</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=16">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">17</span>
+        <div><div class="line-name">Планиметрия: доказательство и вычисление</div><div class="line-proto">окружности, подобие, отношения площадей</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/planimetry-t17.html">Планиметрия с доказательством</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=17">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">18</span>
+        <div><div class="line-name">Задача с параметром</div><div class="line-proto">число решений, графический метод, системы</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/parameters-t18.html">Параметр на графике</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=18">вариант</a></div>
+      </li>
+      <li class="line"><span class="num">19</span>
+        <div><div class="line-name">Числа и их свойства</div><div class="line-proto">делимость, оценки, инварианты, крайние случаи</div></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/numbers-t19.html">Числа и их свойства</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=19">вариант</a></div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="trainers" aria-labelledby="trainers-h">
+    <h2 id="trainers-h">Тренажёры</h2>
+    <p class="section-note">Каждый открывается в новой вкладке и работает сам по себе — можно давать ссылку на любой из них отдельно.</p>
+    <div class="cards">
+
+      <article class="card">
+        <p class="for">задание 1</p>
+        <h3>Планиметрия без промахов</h3>
+        <p>Восемь типовых моделей по трём темам: углы треугольника, площади, окружность. Режим распознавания условия, гиды по решению и марафон.</p>
+        <p class="meta">8 типов задач · 3 темы · зачёт</p>
+        <div class="progress" data-progress="planimetry"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/planimetry-t1.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 1 · фундамент</p>
+        <h3>Прямоугольный треугольник: sin, cos, tg</h3>
+        <p>Шесть тем: от определений до углов между высотой, биссектрисой и медианой. Честный чертёж с новыми буквами каждый раз, лесенка шагов и адресный разбор типичных ошибок.</p>
+        <p class="meta">6 тем · кликабельный чертёж · журнал ошибок</p>
+        <div class="progress" data-progress="righttri"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/pryamougolny-treugolnik-trenazher.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 1</p>
+        <h3>Планиметрия по Ященко-2026</h3>
+        <p>Девятнадцать типов сборника в четырёх темах: треугольники, параллелограмм и ромб, трапеции, окружность. Адресная диагностика, разбор по шагам, зачёт из десяти задач.</p>
+        <p class="meta">19 типов · 4 темы · зачёт 10 из 10</p>
+        <div class="progress" data-progress="plan1y"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/planimetry-yashchenko-t1.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 2</p>
+        <h3>Векторы по Ященко-2026</h3>
+        <p>Семь типов из сборника: координаты, скалярное произведение, косинус угла, клетчатая бумага. Адресная диагностика ошибок, разбор по шагам, зачёт из семи задач.</p>
+        <p class="meta">7 типов · зачёт 7 из 7 · журнал ошибок</p>
+        <div class="progress" data-progress="vec2y"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/vectors-yashchenko-t2.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 3</p>
+        <h3>Стереометрия в 3D</h3>
+        <p>Задачи с интерактивными чертежами: вращай фигуру, кликай по рёбрам, строй отрезки и смотри поэтапные построения — сечения, апофемы, уровни жидкости.</p>
+        <p class="meta">143 задачи · 9 тем · чертежи Three.js</p>
+        <div class="progress" data-progress="stereo"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/stereo/index.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задания 6 · 7 · 13</p>
+        <h3>Тригонометрия: от треугольника к окружности</h3>
+        <p>Полный маршрут: откуда берутся синус и косинус, число π, числовая окружность, синусоида — и ЕГЭ-практикум с семью треками от таблицы значений до уравнений.</p>
+        <p class="meta">теория + тренажёр + практикум · 7 треков</p>
+        <div class="progress" data-progress="trig"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/trigonometry.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 8</p>
+        <h3>Производная по графику</h3>
+        <p>Функция или производная? Интерактивная связка двух графиков, распознавание формулировок, восемь треков задач — от экстремумов до первообразной и физического смысла.</p>
+        <p class="meta">генератор графиков · 8 треков · зачёт из 10 задач</p>
+        <div class="progress" data-progress="derivative"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/derivative-t8.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 13</p>
+        <h3>Сумма и разность синусов → произведение</h3>
+        <p>Вывод четырёх формул с нуля: сборка по шагам, «найди ошибку», финальный тест. Есть режим учителя со всеми формулами и прогрессом ученика.</p>
+        <p class="meta">4 формулы · ловушки · тест</p>
+        <div class="progress" data-progress="stp"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/trig-sum-to-product.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 15 · шаг 1</p>
+        <h3>Метод интервалов</h3>
+        <p>Главный инструмент неравенств: идея знака, алгоритм из семи шагов, чётные степени и флажки, пять ошибок, которые ловят всех.</p>
+        <p class="meta">интерактивная теория · задачник на 24 неравенства</p>
+        <div class="progress" data-progress="none"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/interval-method.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 15 · шаг 2</p>
+        <h3>Неравенства: интерактивный курс</h3>
+        <p>Десять глав — от линейных и квадратных до показательных, логарифмических и метода рационализации. Разборы по шагам, «проверь себя» и диагностические работы.</p>
+        <p class="meta">10 глав · диагностические работы · разборы</p>
+        <div class="progress" data-progress="none"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/inequalities.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 15 · шаг 3</p>
+        <h3>Метод рационализации</h3>
+        <p>Как заменить логарифмическое неравенство на рациональное: знак log<sub>a</sub>b — это знак (a−1)(b−1). С нуля и до выбора верной замены.</p>
+        <p class="meta">продвинутый приём · интерактивные графики</p>
+        <div class="progress" data-progress="none"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/rationalization.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 16</p>
+        <h3>Финансовая математика: нестандартные схемы</h3>
+        <p>Вклады с пополнениями, платежи x, x/2, x/3, пени, льготные кредиты, две фазы погашения, оптимизация — всё, что выходит за рамки равных платежей.</p>
+        <p class="meta">27 задач · 11 схем · режимы ученик / практика / учитель</p>
+        <div class="progress" data-progress="finance"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/finance.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 17</p>
+        <h3>Планиметрия с доказательством</h3>
+        <p>Шесть задач формата «а) докажите, б) найдите»: доказательство собирается из перемешанных шагов, и каждый шаг подсвечивает на чертеже ровно то, о чём говорит. Плюс восемь опор-теорем.</p>
+        <p class="meta">6 задач · сборка доказательств · самооценка 0–3</p>
+        <div class="progress" data-progress="p17"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/planimetry-t17.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задания 13–17 · критерии</p>
+        <h3>Проверь как эксперт</h3>
+        <p>Двенадцать чужих работ по заданиям 13, 14, 15 и 17 — в части спрятаны ошибки и пробелы в обоснованиях. Найдите дефект, поставьте балл и сверьтесь с вердиктом эксперта: кто проверял чужое, свою работу пишет иначе.</p>
+        <p class="meta">12 работ · поиск ошибки + оценка · вердикты по критериям</p>
+        <div class="progress" data-progress="expert"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/expert.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 18</p>
+        <h3>Параметр на графике</h3>
+        <p>Параметр как семейство: ползунок двигает картинку, а вы считаете решения. Шесть разобранных задач трёх методов, ключ-вопросы с автопроверкой и дриллы «сколько решений».</p>
+        <p class="meta">6 задач · интерактивы с ползунком · зачёт-серия из 8</p>
+        <div class="progress" data-progress="p18"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/parameters-t18.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 19</p>
+        <h3>Числа и их свойства</h3>
+        <p>Инвариант, оценка и пример — три жанра работы вместо формул. Восемь приёмов, шесть задач с пунктами а), б), в), где ответ «нет» нужно ещё и обосновать, и генератор быстрых вопросов.</p>
+        <p class="meta">6 задач · 18 пунктов · зачёт из 8 вопросов</p>
+        <div class="progress" data-progress="numbers"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/numbers-t19.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 2</p>
+        <h3>Векторы</h3>
+        <p>Длина и координаты, скалярное произведение, векторы в прямоугольнике, ромбе и треугольнике, угол между векторами. Каждая задача создаётся заново, решение разбирается по шагам.</p>
+        <p class="meta">19 генераторов · пять режимов · разбор по шагам</p>
+        <div class="progress" data-progress="none"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/vectors-t2.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задания 4–5</p>
+        <h3>Вероятность</h3>
+        <p>Дерево событий с ползунками, восемь схем решения и генератор задач обеих линий: от шаров в урне до полной вероятности и «хотя бы одного».</p>
+        <p class="meta">13 типов задач · зачёт из 10</p>
+        <div class="progress" data-progress="prob"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/probability-t45.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задания 9–10</p>
+        <h3>Формулы и текстовые задачи</h3>
+        <p>Конструктор таблицы «расстояние — скорость — время», задачи с готовой формулой из физики и экономики и текстовые задачи на движение, работу и смеси.</p>
+        <p class="meta">11 типов задач · зачёт из 8</p>
+        <div class="progress" data-progress="applied"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/applied-t910.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задания 11–12</p>
+        <h3>Графики и наибольшее значение</h3>
+        <p>Графики рисуются заново каждый раз: по узлам клетки восстанавливаем коэффициенты. Рядом — задачи на производную: экстремум на отрезке и точка максимума.</p>
+        <p class="meta">11 типов задач · зачёт из 10</p>
+        <div class="progress" data-progress="funcs"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/functions-t1112.html">Открыть</a></p>
+      </article>
+
+      <article class="card">
+        <p class="for">задание 14</p>
+        <h3>Стереометрия с доказательством</h3>
+        <p>Шесть задач с чертежом: доказательство собирается по шагам, и каждый шаг подсвечивает на рисунке то, о чём говорит. Рядом — счётные навыки пункта б) и самооценка по критериям.</p>
+        <p class="meta">6 задач · подсветка на чертеже · зачёт по счёту</p>
+        <div class="progress" data-progress="p14"></div>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/stereo-t14.html">Открыть</a></p>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="exam" aria-labelledby="exam-h">
+    <h2 id="exam-h">Экзаменационный режим</h2>
+    <p class="section-note">Тренажёр по всем 19 линиям сразу: короткий ответ с автопроверкой, развёрнутые задания с эталоном и самооценкой по критериям.</p>
+    <div class="exam">
+      <div>
+        <h3>Тренажёр варианта</h3>
+        <p>Три уровня сложности · тренировка по теме · смешанный режим · полный вариант из 19 заданий · подсказки и решения.</p>
+        <div class="progress" data-progress="exam"></div>
+      </div>
+      <div class="exam-actions">
+        <a class="btn" target="_blank" rel="noopener" href="exam/variant.html">Открыть тренажёр</a>
+        <a class="btn secondary" target="_blank" rel="noopener" href="exam/variant.html?m=19">Сразу к №19</a>
+      </div>
+    </div>
+
+    <div class="exam">
+      <div>
+        <h3>Пробный экзамен</h3>
+        <p>Все 19 заданий подряд · таймер на 3 часа 55 минут по реальному времени · автопроверка первой части · самооценка второй по критериям · первичный балл и перевод в тестовый по шкале 2026 года.</p>
+        <div class="progress" data-progress="fullexam"></div>
+      </div>
+      <div class="exam-actions">
+        <a class="btn" target="_blank" rel="noopener" href="exam/full-exam.html">Написать пробник</a>
+      </div>
+    </div>
+
+    <div class="exam">
+      <div>
+        <h3>Работа над ошибками</h3>
+        <p>Тренажёры записывают каждый промах. Тип закрывается тремя верными ответами подряд — журнал показывает, что осталось, и открывает тренажёр сразу в режиме повтора.</p>
+        <div class="progress" data-progress="review"></div>
+      </div>
+      <div class="exam-actions">
+        <a class="btn" target="_blank" rel="noopener" href="review.html">Открыть журнал</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Прогресс каждого тренажёра хранится в браузере на этом устройстве. Сводка на этой странице появляется, когда курс открыт как сайт или через локальный сервер; если открывать файлы с диска, браузер может изолировать хранилища — тогда прогресс виден внутри самих тренажёров.</p>
+    <p>Собрано из тренажёров проекта Mathexam.space. Интернет не нужен: всё работает офлайн.</p>
+    <p><a href="teacher.html">Кабинет учителя</a> · <a href="review.html">работа над ошибками</a></p>
+    <div id="myCode"></div>
+  </footer>
+
+</div>
+
+<script src="progress-adapters.js"></script>
+<script src="qr.js"></script>
+<script src="progress-code.js"></script>
+<script>
+PROGRESS.mount(document, PROGRESS.liveStore());
+PROGRESS_CODE.mount(document.getElementById("myCode"), { compact:true });
+</script>
+</body>
+</html>

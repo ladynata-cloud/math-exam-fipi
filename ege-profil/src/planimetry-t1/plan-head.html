@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Планиметрия · задание 1 — тренажёр по Ященко-2026</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --ink:#1E3A9F; --text:#26304a; --muted:#7a8299;
+    --line:#e2e2d6; --curve:#C77B48; --dot:#7A4A1E; --ok:#0f8a59; --bad:#b3402a; --teal:#0f766e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--text); font:16px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:900px; margin:0 auto; padding:24px 20px 64px}
+
+  .crumbs{display:inline-block; margin:0 0 6px; color:var(--muted); text-decoration:none; font-weight:700; font-size:.9rem}
+  .crumbs:hover{color:var(--ink)}
+  header.top{display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:start; margin-bottom:14px}
+  h1{font-size:26px; color:var(--ink); margin:0 0 4px; letter-spacing:-.01em}
+  .sub{color:var(--muted); margin:0; font-size:15px}
+  .btn{font:inherit; font-weight:600; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:9px; padding:9px 16px; cursor:pointer}
+  .btn:hover{border-color:var(--ink)}
+  .btn.primary{color:#fff; background:var(--ink); border-color:var(--ink)}
+  .btn.warm{color:#7a3c12; background:#fdf1e7; border-color:#ecd9c4}
+  .btn:disabled{opacity:.45; cursor:default}
+
+  .panel{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px; align-items:center}
+  .chip{font:inherit; font-size:14px; font-weight:600; color:var(--text); background:#fff; border:1px solid var(--line); border-radius:99px; padding:7px 13px; cursor:pointer; display:inline-flex; align-items:center; gap:7px}
+  .chip[aria-pressed="true"]{color:#fff; background:var(--ink); border-color:var(--ink)}
+  .chip .cnt{font-weight:700; font-size:12px; color:var(--muted)}
+  .chip[aria-pressed="true"] .cnt{color:#cdd6ff}
+  #types .chip{font-size:13px; padding:6px 11px}
+  .chip .dots{display:inline-flex; gap:3px}
+  .chip .dots i{width:6px; height:6px; border-radius:50%; background:#d8dcea; display:inline-block}
+  .chip .dots i.on{background:var(--ok)}
+  .chip[aria-pressed="true"] .dots i{background:rgba(255,255,255,.35)}
+  .chip[aria-pressed="true"] .dots i.on{background:#8ef0c0}
+  .seg{display:inline-flex; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#fff}
+  .seg button{font:inherit; font-size:14px; font-weight:600; border:0; background:transparent; color:var(--text); padding:8px 15px; cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--ink); color:#fff}
+  #modeHelp{color:var(--muted); font-size:14px; margin:8px 0 16px}
+  #modeHelp b{color:var(--teal)}
+
+  .card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-bottom:16px}
+  .tag{display:inline-block; font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); background:#eef1fb; border-radius:99px; padding:4px 11px; margin-bottom:10px}
+  .tag em{font-style:normal; color:var(--muted); font-weight:500; text-transform:none; letter-spacing:0}
+  .q{margin:0 0 12px}
+  .figwrap{margin:12px 0; padding:10px; border:1px solid var(--line); border-radius:9px; background:#fff; max-width:100%; overflow-x:auto}
+  .inrow{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:8px}
+  .lab{font-weight:700}
+  input.num{font:inherit; font-size:17px; width:150px; padding:9px 12px; border:1.6px solid var(--line); border-radius:9px; background:#fff}
+  input.num:focus{outline:none; border-color:var(--ink)}
+  input.num.bad{border-color:var(--bad); background:#fdf3f1}
+  input.num.ok{border-color:var(--ok); background:#f1faf5}
+  .fieldnote{font-size:13px; color:var(--muted)}
+  .fb{margin-top:10px; border-radius:9px; padding:10px 13px; font-size:15px}
+  .fb.ok{background:#eef8f2; color:#0c6b46; border:1px solid #cdeadb}
+  .fb.bad{background:#fdf3f1; color:#8f3322; border:1px solid #f0d6cf}
+  .fb.hint{background:#f4f6fd; color:#31418f; border:1px solid #dde3f7}
+  .steps{margin:12px 0 0; padding-left:20px; color:#3d4560}
+  .steps li{margin:6px 0}
+  .ansline{margin:10px 0 0; font-weight:700}
+  .ansline b{color:var(--ok)}
+  .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+  .spacer{flex:1}
+
+  .zdots{display:flex; gap:6px; margin:2px 0 12px; flex-wrap:wrap}
+  .zdots i{width:12px; height:12px; border-radius:50%; background:#e3e6f0; display:inline-block}
+  .zdots i.cur{outline:2px solid var(--ink); outline-offset:2px}
+  .zdots i.ok{background:var(--ok)}
+  .zdots i.bad{background:var(--bad)}
+  .zres{font-size:20px; font-weight:800; color:var(--ink); margin:4px 0 10px}
+  details.zmiss{border:1px solid var(--line); border-radius:9px; padding:10px 14px; margin:10px 0}
+  details.zmiss summary{cursor:pointer; font-weight:700}
+
+  /* --- чертёж (классы банка планиметрии) --- */
+  svg.fig{display:block; max-width:100%; height:auto}
+  .shape{fill:rgba(30,58,159,.05); stroke:var(--ink); stroke-width:1.7; stroke-linejoin:round}
+  .shape2{fill:none; stroke:var(--ink); stroke-width:1.7; stroke-linejoin:round}
+  .sg{stroke:var(--ink); stroke-width:1.5; fill:none}
+  .sg2{stroke:var(--curve); stroke-width:2; fill:none}
+  .aux{stroke:var(--muted); stroke-width:1.2; stroke-dasharray:5 4; fill:none}
+  .tk{stroke:var(--dot); stroke-width:1.6}
+  .ar{stroke:var(--dot); stroke-width:1.4}
+  .nd{fill:var(--ink)}
+  .nd2{fill:var(--muted)}
+  .lb{font:italic 600 14px "Segoe UI",sans-serif; fill:var(--text)}
+
+  html.board body{font-size:19px}
+  html.board h1{font-size:31px}
+  html.board input.num{font-size:21px; width:190px}
+  html.board .steps{font-size:18px}
+
+  @media (max-width:640px){
+    header.top{grid-template-columns:1fr}
+    .wrap{padding:18px 12px 48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="crumbs" href="../index.html">← Курс профильного ЕГЭ</a>
+  <header class="top">
+    <div>
+      <h1>Планиметрия: задание 1</h1>
+      <p class="sub">Девятнадцать типов из сборника Ященко-2026 в четырёх темах: треугольники, параллелограмм и ромб, трапеции, окружность. Ответ — число; после проверки открывается разбор по шагам.</p>
+    </div>
+    <div><button class="btn" id="boardBtn" aria-pressed="false" title="Крупный шрифт для показа на доске">Режим доски</button></div>
+  </header>
+
+  <div class="panel" id="groups" role="tablist" aria-label="Темы"></div>
+  <div class="panel" id="types" role="tablist" aria-label="Типы задач"></div>
+  <div class="panel">
+    <div class="seg" id="modeSeg" role="tablist" aria-label="Режим">
+      <button data-mode="learn" aria-pressed="false">Разбор</button>
+      <button data-mode="train" aria-pressed="true">Тренировка</button>
+      <button data-mode="exam" aria-pressed="false">Зачёт</button>
+    </div>
+  </div>
+  <p id="modeHelp"></p>
+
+  <div id="taskArea"></div>
+</div>
+</body>
+</html>

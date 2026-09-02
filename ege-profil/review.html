@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Работа над ошибками · профиль ЕГЭ</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:700px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.94);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    padding:8px 14px;font:700 14px/1 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+    border-bottom:1px dashed var(--line);padding:11px 0}
+  .row:last-child{border-bottom:none}
+  .row .name{font-weight:700;color:var(--ink-strong)}
+  .row .meta{font:600 12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .pillline{display:inline-block;border:1.5px solid var(--red);color:var(--red);border-radius:999px;
+    font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:4px 9px;margin-right:8px;letter-spacing:.06em}
+  .closedbar{display:inline-flex;gap:3px;vertical-align:middle;margin-left:6px}
+  .closedbar span{width:10px;height:10px;border:1.5px solid var(--ink);border-radius:2px}
+  .closedbar span.on{background:var(--ink)}
+  .bigcount{font:800 34px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
+  .okline{color:var(--ok);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Курс</a>
+  <p class="eyebrow">журнал курса · обновляется сам</p>
+  <h1>Работа над ошибками</h1>
+  <p class="lede">Тренажёры запоминают каждый промах. Тип задачи считается закрытым, когда после последней ошибки набраны три верных ответа этого же типа. Здесь — всё, что пока открыто.</p>
+
+  <div class="card" id="summaryCard"></div>
+  <div class="card" id="openCard" style="display:none">
+    <h2>К повтору</h2>
+    <div id="openList"></div>
+  </div>
+  <div class="card red" id="examCard" style="display:none">
+    <h2>Потери последнего пробника</h2>
+    <p class="small muted" id="examMeta"></p>
+    <div id="examList"></div>
+  </div>
+  <div class="card" id="closedCard" style="display:none">
+    <h2 class="okline">Закрыто</h2>
+    <p class="small muted">Эти типы были ошибочными, но добиты тремя верными подряд. Новый промах вернёт их наверх.</p>
+    <div id="closedList"></div>
+  </div>
+  <p><button class="btn ghost" id="clearBtn">Очистить журнал ошибок</button></p>
+</div>
+
+<script src="registry.js"></script>
+
+<script>
+/* ================= ИНТЕРФЕЙС ================= */
+(function(){
+  "use strict";
+  var KEY = "mathExamCourseProgress.v1";
+  function readAll(){ try{ return JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ return {}; } }
+
+  function rowHtml(it, withBtn){
+    var meta = RV.nameOf(it.key);
+    var tr = RV.TRAINERS[it.tid];
+    var name = meta ? meta.n : it.type;
+    var line = meta ? meta.line : "?";
+    var when = it.last ? new Date(it.last).toLocaleDateString("ru-RU") : "";
+    var barr = "";
+    for (var i = 0; i < 3; i++) barr += '<span class="' + (i < it.r ? "on" : "") + '"></span>';
+    return '<div class="row"><div>' +
+      '<span class="pillline">задание ' + line + '</span>' +
+      '<span class="name">' + name + '</span>' +
+      '<div class="meta">' + (tr ? tr.title : it.tid) + ' · промахов: ' + it.w +
+      ' · закрыто <span class="closedbar">' + barr + '</span> из 3' +
+      (when ? ' · последний: ' + when : '') + '</div></div>' +
+      (withBtn && tr ? '<a class="btn" href="' + tr.file + (tr.review ? "?mode=review" : "") + '">Повторить</a>' : '') +
+      '</div>';
+  }
+
+  var all = readAll();
+  var mk = all.mistakes || {};
+  var open = RV.open(mk), closed = RV.closed(mk);
+
+  var sc = document.getElementById("summaryCard");
+  if (!open.length && !closed.length){
+    sc.innerHTML = '<h2>Журнал пока пуст</h2>' +
+      '<p>Ошибки появятся здесь сами: тренажёры записывают каждый промах в тренировках и зачётах. ' +
+      'Начните с любого тренажёра или напишите <a href="exam/full-exam.html">пробный экзамен</a> — он покажет, какие линии проседают.</p>';
+  } else {
+    sc.innerHTML = '<p class="bigcount">' + open.length + '<span class="muted" style="font-size:18px"> к повтору</span>' +
+      ' · <span class="okline">' + closed.length + '</span><span class="muted" style="font-size:18px"> закрыто</span></p>' +
+      (open.length
+        ? '<p class="small muted">Начинайте сверху — это самые свежие промахи. Три верных ответа того же типа закрывают строку.</p>'
+        : '<p class="okline">Все известные ошибки закрыты. Новые промахи снова появятся здесь.</p>');
+  }
+
+  if (open.length){
+    document.getElementById("openCard").style.display = "block";
+    document.getElementById("openList").innerHTML = open.map(function(it){ return rowHtml(it, true); }).join("");
+  }
+  if (closed.length){
+    document.getElementById("closedCard").style.display = "block";
+    document.getElementById("closedList").innerHTML = closed.map(function(it){ return rowHtml(it, false); }).join("");
+  }
+
+  /* последний пробник */
+  var fe = all["full-exam"];
+  var at = fe && fe.attempts && fe.attempts.length ? fe.attempts[fe.attempts.length - 1] : null;
+  if (at && at.lines){
+    var MAXP = { 1:1,2:1,3:1,4:1,5:1,6:1,7:1,8:1,9:1,10:1,11:1,12:1, 13:2, 14:3, 15:2, 16:2, 17:3, 18:4, 19:4 };
+    var LINE_TRAINER = {
+      1:"trainers/planimetry-t1.html", 2:"trainers/vectors-t2.html", 3:"trainers/stereo/index.html",
+      4:"trainers/probability-t45.html", 5:"trainers/probability-t45.html",
+      6:"trainers/trigonometry.html", 7:"trainers/trigonometry.html", 8:"trainers/derivative-t8.html",
+      9:"trainers/applied-t910.html", 10:"trainers/applied-t910.html",
+      11:"trainers/functions-t1112.html", 12:"trainers/functions-t1112.html",
+      13:"trainers/trigonometry.html", 14:"trainers/stereo-t14.html", 15:"trainers/inequalities.html",
+      16:"trainers/finance.html", 17:"trainers/planimetry-t17.html",
+      18:"trainers/parameters-t18.html", 19:"trainers/numbers-t19.html"
+    };
+    var lost = [];
+    for (var i = 1; i <= 19; i++){
+      var got = at.lines[i] || 0;
+      if (got < MAXP[i]) lost.push({ line:i, got:got, max:MAXP[i] });
+    }
+    if (lost.length){
+      document.getElementById("examCard").style.display = "block";
+      document.getElementById("examMeta").textContent = "попытка от " +
+        new Date(at.ts).toLocaleDateString("ru-RU") + " · " + at.primary + " перв. · " + at.test + " тест.";
+      document.getElementById("examList").innerHTML = lost.map(function(x){
+        return '<div class="row"><div>' +
+          '<span class="pillline">задание ' + x.line + '</span>' +
+          '<span class="name">' + x.got + ' из ' + x.max + (x.max === 1 ? " балла" : " баллов") + '</span></div>' +
+          '<a class="btn ghost" href="' + LINE_TRAINER[x.line] + '">Отработать</a></div>';
+      }).join("");
+    }
+  }
+
+  document.getElementById("clearBtn").addEventListener("click", function(){
+    if (!confirm("Стереть весь журнал ошибок? Прогресс тренажёров и результаты пробников останутся.")) return;
+    var a = readAll();
+    delete a.mistakes;
+    try{ localStorage.setItem(KEY, JSON.stringify(a)); }catch(e){}
+    location.reload();
+  });
+})();
+</script>
+</body>
+</html>
