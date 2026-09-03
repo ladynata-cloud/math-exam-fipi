@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<title>Сумма синусов и косинусов → произведение</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* surfaces */
+  --paper:#f6f1e7;
+  --paper-soft:#fbf7ee;
+  --paper-deep:#ede4d2;
+  --ink:#1d1a14;
+  --ink-soft:#4a4438;
+  --ink-faint:#80776a;
+  --line:#d8cdb6;
+  --line-soft:#e7decd;
+
+  /* the four semantic colors – used everywhere consistently */
+  --gold:#b8881f;            /* полусумма (α+β)/2 */
+  --gold-bg:#fff1c8;
+  --gold-bg-strong:#fde29c;
+  --gold-line:#e5b94a;
+
+  --blue:#1f5aa8;            /* полуразность (α−β)/2 */
+  --blue-bg:#dde9fb;
+  --blue-bg-strong:#bcd2f5;
+  --blue-line:#7ba3d8;
+
+  --rust:#9a3a1b;            /* минус в cos α − cos β */
+  --rust-bg:#fadccf;
+  --rust-line:#d4805c;
+
+  --leaf:#2f6a3a;            /* сокращающиеся слагаемые */
+  --leaf-bg:#d3e7d4;
+  --leaf-line:#7aae7c;
+
+  --warn:#a44a07;
+  --ok:#2f6a3a;
+
+  /* type */
+  --display:'Fraunces',Georgia,serif;
+  --body:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+
+  --radius:14px;
+  --shadow:0 1px 0 rgba(29,26,20,.06), 0 8px 24px -12px rgba(29,26,20,.18);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--body);
+  background:
+    radial-gradient(1200px 600px at 110% -10%, #ffe9b7 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, #d9e7f9 0%, transparent 55%),
+    var(--paper);
+  color:var(--ink);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+}
+
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.11  0 0 0 0 0.1  0 0 0 0 0.08  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity:.4;mix-blend-mode:multiply;
+}
+
+.app{
+  position:relative;z-index:1;
+  max-width:1180px;margin:0 auto;padding:28px 24px 80px;
+}
+
+/* ── HEADER ───────────────────────────────────────── */
+header.top{
+  display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;
+  padding-bottom:18px;border-bottom:1px solid var(--line);
+}
+.brand{display:flex;flex-direction:column;gap:2px}
+.brand .eyebrow{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:600;
+}
+.brand h1{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(22px,3.4vw,32px);line-height:1.05;
+  margin:2px 0 0;letter-spacing:-.01em;
+}
+.brand h1 em{font-style:italic;color:var(--rust);font-weight:500}
+
+.modes{display:flex;gap:6px;background:var(--paper-deep);padding:5px;border-radius:999px;border:1px solid var(--line)}
+.modes button{
+  font:600 13px/1 var(--body);
+  border:0;background:transparent;color:var(--ink-soft);
+  padding:9px 14px;border-radius:999px;cursor:pointer;
+  letter-spacing:.01em;transition:background .15s,color .15s;
+}
+.modes button:hover{color:var(--ink)}
+.modes button.active{background:var(--ink);color:var(--paper-soft)}
+
+/* ── PROGRESS STRIP ─────────────────────────────────── */
+.lesson-strip{
+  display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 22px;
+}
+.lesson-pill{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 13px;border-radius:10px;
+  border:1px solid var(--line);background:var(--paper-soft);
+  cursor:pointer;font-size:13px;color:var(--ink-soft);
+  transition:transform .12s,border-color .12s,background .12s;
+}
+.lesson-pill:hover{transform:translateY(-1px);border-color:var(--ink)}
+.lesson-pill .n{
+  font-family:var(--display);font-weight:600;font-size:14px;
+  width:22px;height:22px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--paper-deep);color:var(--ink);
+}
+.lesson-pill.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.lesson-pill.active .n{background:var(--gold-bg-strong);color:var(--ink)}
+.lesson-pill.done .n{background:var(--leaf);color:#fff}
+.lesson-pill.done::after{content:"✓";color:var(--leaf);font-weight:700;margin-left:-2px}
+.lesson-pill.active.done::after{color:var(--gold-bg-strong)}
+
+/* ── PANELS / CARDS ─────────────────────────────────── */
+.card{
+  background:var(--paper-soft);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:26px;
+}
+.card + .card{margin-top:18px}
+.card h2{
+  font-family:var(--display);font-weight:600;font-size:24px;
+  margin:0 0 6px;letter-spacing:-.01em;
+}
+.card .sub{color:var(--ink-faint);font-size:14px;margin-bottom:18px}
+
+/* split layout: target on the left, work on the right */
+.split{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);
+  gap:18px;align-items:stretch;
+}
+@media (max-width:860px){
+  .split{grid-template-columns:1fr}
+}
+
+/* ── MATH TYPOGRAPHY ───────────────────────────────── */
+.math{
+  font-family:var(--display);font-weight:500;
+  font-feature-settings:"ss01","ss02";
+  font-size:21px;line-height:1.55;letter-spacing:.005em;
+}
+.math.big{font-size:26px}
+.math.huge{font-size:30px}
+.math em.var{font-style:italic;font-weight:500}
+.fr{display:inline-flex;flex-direction:column;align-items:center;
+    vertical-align:-0.5em;margin:0 .12em;line-height:1;font-size:.78em}
+.fr .num,.fr .den{padding:0 .25em}
+.fr .num{border-bottom:1.4px solid currentColor;padding-bottom:1px}
+.fr .den{padding-top:1px}
+
+/* color tokens — used everywhere consistently */
+.tok-gold{background:var(--gold-bg);border:1px solid var(--gold-line);
+  color:#5a4108;padding:1px 8px;border-radius:7px;white-space:nowrap}
+.tok-gold .fr{color:#5a4108}
+.tok-blue{background:var(--blue-bg);border:1px solid var(--blue-line);
+  color:#0e2a55;padding:1px 8px;border-radius:7px;white-space:nowrap}
+.tok-blue .fr{color:#0e2a55}
+.tok-rust{color:var(--rust);font-weight:700}
+.tok-rust-pill{background:var(--rust-bg);border:1px solid var(--rust-line);
+  color:#4d1a08;padding:1px 8px;border-radius:7px;font-weight:600}
+.tok-leaf{background:var(--leaf-bg);border:1px solid var(--leaf-line);
+  color:#15401e;padding:1px 8px;border-radius:7px;text-decoration:line-through;
+  text-decoration-color:var(--leaf);text-decoration-thickness:1.6px}
+
+/* color-key strip (shown once near top) */
+.colorkey{
+  display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 0;
+  font-size:12px;color:var(--ink-soft);
+}
+.colorkey span{display:inline-flex;align-items:center;gap:6px}
+.colorkey i{width:14px;height:14px;border-radius:4px;border:1px solid var(--line)}
+
+/* ── BUTTONS ──────────────────────────────────────── */
+.btn{
+  font:600 14px/1 var(--body);
+  padding:11px 18px;border-radius:10px;cursor:pointer;
+  border:1px solid var(--ink);background:var(--ink);color:var(--paper-soft);
+  transition:transform .1s,background .15s,box-shadow .15s;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 0 -2px rgba(0,0,0,.2)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--paper-deep)}
+.btn.small{padding:8px 12px;font-size:13px}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.rust{background:var(--rust);border-color:var(--rust);color:#fff}
+
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+
+/* ── CHOICE & BLOCK INTERACTIONS ────────────────────── */
+.choices{display:flex;flex-direction:column;gap:10px}
+.choice{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border:1px solid var(--line);
+  background:var(--paper-soft);border-radius:12px;cursor:pointer;
+  transition:border-color .12s,background .12s,transform .1s;
+  text-align:left;font:inherit;width:100%;
+}
+.choice:hover{border-color:var(--ink-soft);transform:translateY(-1px)}
+.choice .marker{
+  width:26px;height:26px;border-radius:50%;
+  border:1.5px solid var(--ink-faint);
+  display:grid;place-items:center;font-family:var(--display);
+  font-weight:600;color:var(--ink-faint);flex-shrink:0;
+}
+.choice .body{flex:1;font-size:17px;font-family:var(--display);font-weight:500}
+.choice.correct{border-color:var(--leaf);background:var(--leaf-bg)}
+.choice.correct .marker{border-color:var(--leaf);background:var(--leaf);color:#fff}
+.choice.wrong{border-color:var(--rust);background:var(--rust-bg)}
+.choice.wrong .marker{border-color:var(--rust);background:var(--rust);color:#fff}
+.choice.locked{pointer-events:none;opacity:.7}
+.choice.locked.correct{opacity:1}
+
+/* construction zone */
+.bank{
+  display:flex;flex-wrap:wrap;gap:8px;
+  padding:14px;background:var(--paper);border:1px dashed var(--line);
+  border-radius:12px;min-height:56px;
+}
+.bank .hint-empty{color:var(--ink-faint);font-size:13px;font-style:italic;padding:8px}
+.tile{
+  font-family:var(--display);font-weight:500;font-size:18px;
+  padding:8px 14px;border-radius:10px;
+  background:var(--paper-soft);border:1px solid var(--line);
+  cursor:pointer;user-select:none;
+  transition:transform .1s,border-color .12s,background .12s;
+}
+.tile:hover{transform:translateY(-1px);border-color:var(--ink-soft);background:var(--paper-deep)}
+.tile.op{font-family:var(--mono);font-weight:600;font-size:17px;padding:8px 12px}
+.tile.placed{opacity:.35;pointer-events:none}
+.slots{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  padding:16px;background:var(--paper-soft);
+  border:1.5px solid var(--ink);border-radius:12px;min-height:62px;
+}
+.slots .placeholder{
+  color:var(--ink-faint);font-style:italic;font-family:var(--display);
+}
+.slots .tile{cursor:pointer}
+.slots .tile:hover{background:var(--rust-bg);border-color:var(--rust-line)}
+.constructor-status{
+  margin-top:12px;padding:10px 14px;border-radius:10px;
+  font-size:14px;display:none;
+}
+.constructor-status.ok{display:block;background:var(--leaf-bg);color:#15401e;border:1px solid var(--leaf-line)}
+.constructor-status.bad{display:block;background:var(--rust-bg);color:#4d1a08;border:1px solid var(--rust-line)}
+
+/* ── TIMELINE OF DERIVATION ─────────────────────────── */
+.timeline{display:flex;flex-direction:column;gap:10px}
+.tl-row{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:14px 16px;border-radius:12px;background:var(--paper);
+  border:1px solid var(--line-soft);
+  animation:fade .35s ease;
+}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.tl-row.muted{opacity:.55}
+.tl-row .step-n{
+  font-family:var(--display);font-weight:600;font-size:14px;
+  width:26px;height:26px;border-radius:50%;
+  background:var(--ink);color:var(--paper);
+  display:grid;place-items:center;flex-shrink:0;
+}
+.tl-row .step-body{flex:1;min-width:0}
+.tl-row .step-label{font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:4px;font-weight:600}
+.tl-row.current{background:#fff;border-color:var(--ink);box-shadow:var(--shadow)}
+
+/* ── ALERT / NOTE ──────────────────────────────────── */
+.note{
+  padding:14px 16px;border-radius:12px;
+  background:var(--gold-bg);border:1px solid var(--gold-line);
+  color:#4d3503;font-size:14px;
+}
+.note.blue{background:var(--blue-bg);border-color:var(--blue-line);color:#0e2a55}
+.note.leaf{background:var(--leaf-bg);border-color:var(--leaf-line);color:#15401e}
+.note.rust{background:var(--rust-bg);border-color:var(--rust-line);color:#4d1a08}
+.note strong{font-weight:700}
+
+/* ── ONBOARDING ────────────────────────────────────── */
+.onboarding{
+  display:grid;gap:22px;
+  grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
+  align-items:stretch;
+}
+@media (max-width:860px){.onboarding{grid-template-columns:1fr}}
+.onb-left{
+  background:linear-gradient(180deg,#fff8e6 0%,#fbf7ee 100%);
+  border:1px solid var(--gold-line);
+  border-radius:var(--radius);padding:28px;
+  position:relative;overflow:hidden;
+}
+.onb-left::before{
+  content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;
+  background:radial-gradient(closest-side,var(--gold-bg-strong),transparent 70%);
+  z-index:0;
+}
+.onb-left > *{position:relative;z-index:1}
+.onb-eyebrow{
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin-bottom:10px;
+}
+.onb-left h2{
+  font-family:var(--display);font-size:32px;font-weight:600;
+  line-height:1.08;margin:0 0 14px;letter-spacing:-.01em;
+}
+.onb-left p{margin:0 0 10px;color:var(--ink-soft);font-size:15px}
+.onb-right{display:flex;flex-direction:column;gap:10px;justify-content:center}
+.onb-action{
+  display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+  padding:18px 20px;border-radius:14px;
+  border:1px solid var(--line);background:var(--paper-soft);
+  cursor:pointer;text-align:left;font:inherit;
+  transition:transform .12s,border-color .12s,background .15s;
+}
+.onb-action:hover{transform:translateY(-2px);border-color:var(--ink);background:#fff}
+.onb-action .tag{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:700;
+}
+.onb-action .title{font-family:var(--display);font-size:19px;font-weight:600;line-height:1.2}
+.onb-action.primary{
+  background:var(--ink);color:var(--paper-soft);border-color:var(--ink);
+}
+.onb-action.primary .tag{color:var(--gold-bg-strong)}
+.onb-action.primary:hover{background:#000}
+
+/* ── PQ INTRO ──────────────────────────────────────── */
+.pq-stage{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;
+}
+@media (max-width:860px){.pq-stage{grid-template-columns:1fr}}
+.pq-display{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:24px;display:flex;flex-direction:column;gap:14px;align-items:center;
+  justify-content:center;text-align:center;
+}
+
+/* ── FINAL TEST RESULT ─────────────────────────────── */
+.score-ring{
+  width:120px;height:120px;border-radius:50%;
+  display:grid;place-items:center;margin:0 auto;
+  background:conic-gradient(var(--leaf) calc(var(--p)*1%),var(--paper-deep) 0);
+  position:relative;
+}
+.score-ring::after{
+  content:"";position:absolute;inset:10px;background:var(--paper-soft);border-radius:50%;
+}
+.score-ring span{position:relative;z-index:1;font-family:var(--display);font-size:28px;font-weight:600}
+
+/* ── TEACHER ───────────────────────────────────────── */
+.teacher-grid{
+  display:grid;gap:14px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+}
+.teacher-card{
+  padding:18px;border:1px solid var(--line);border-radius:12px;
+  background:#fff;
+}
+.teacher-card .num{
+  font-family:var(--display);font-size:30px;font-weight:600;line-height:1;
+}
+.teacher-card .lbl{font-size:12px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+
+/* ── SECTION TABS (inside lesson) ──────────────────── */
+.subtabs{
+  display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.subtabs button{
+  font:600 13px/1 var(--body);background:transparent;border:0;cursor:pointer;
+  padding:11px 14px;border-bottom:2px solid transparent;
+  color:var(--ink-faint);margin-bottom:-1px;
+}
+.subtabs button:hover{color:var(--ink)}
+.subtabs button.active{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* ── UTIL ──────────────────────────────────────────── */
+.hidden{display:none !important}
+.flex-between{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.muted{color:var(--ink-faint)}
+.kbd{font-family:var(--mono);font-size:12px;padding:1px 6px;background:var(--paper-deep);border-radius:4px;border:1px solid var(--line)}
+
+/* mobile tightening */
+@media (max-width:600px){
+  .app{padding:16px 14px 60px}
+  .card{padding:18px}
+  .modes button{padding:8px 11px;font-size:12px}
+  .brand h1{font-size:22px}
+  .math{font-size:18px}
+  .math.big{font-size:21px}
+  .math.huge{font-size:24px}
+  .tile{font-size:16px;padding:7px 11px}
+  .choice .body{font-size:15px}
+  .lesson-pill{font-size:12px;padding:7px 10px}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <!-- everything is rendered by JS -->
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   1. MATH RENDERING HELPERS
+   Tiny inline-math renderer — no LaTeX, just styled HTML.
+   Token colors are reused EVERYWHERE for consistency.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const v = x => `<em class="var">${x}</em>`;                       // italic variable
+const fn = x => `<span style="font-style:normal;font-family:var(--body);font-weight:600">${x}</span>`;  // sin / cos
+const frac = (num, den) =>
+  `<span class="fr"><span class="num">${num}</span><span class="den">${den}</span></span>`;
+
+// half-sum (α+β)/2 — ALWAYS gold
+const hSum = (a='α', b='β') =>
+  `<span class="tok-gold">${frac(`${v(a)}+${v(b)}`, '2')}</span>`;
+
+// half-diff (α−β)/2 — ALWAYS blue
+const hDiff = (a='α', b='β') =>
+  `<span class="tok-blue">${frac(`${v(a)}−${v(b)}`, '2')}</span>`;
+
+// rust-coloured minus
+const rMinus = '<span class="tok-rust">−</span>';
+const rMinusPill = '<span class="tok-rust-pill">−</span>';
+
+// strike-through cancelling term — leaf green
+const cancel = s => `<span class="tok-leaf">${s}</span>`;
+
+/* ═══════════════════════════════════════════════════════════════════
+   2. THE FOUR FORMULAS — quick reference
+   ═══════════════════════════════════════════════════════════════════ */
+
+const FORMULAS = {
+  ssum:  `${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} = 2 · ${fn('sin')} ${hSum()} · ${fn('cos')} ${hDiff()}`,
+  sdiff: `${fn('sin')} ${v('α')} − ${fn('sin')} ${v('β')} = 2 · ${fn('cos')} ${hSum()} · ${fn('sin')} ${hDiff()}`,
+  csum:  `${fn('cos')} ${v('α')} + ${fn('cos')} ${v('β')} = 2 · ${fn('cos')} ${hSum()} · ${fn('cos')} ${hDiff()}`,
+  cdiff: `${fn('cos')} ${v('α')} ${rMinusPill} ${fn('cos')} ${v('β')} = ${rMinusPill} 2 · ${fn('sin')} ${hSum()} · ${fn('sin')} ${hDiff()}`
+};
+
+const LESSONS_META = [
+  {id:'ssum',  num:1, title:'Сумма синусов',     lhs:`${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')}`},
+  {id:'sdiff', num:2, title:'Разность синусов',  lhs:`${fn('sin')} ${v('α')} − ${fn('sin')} ${v('β')}`},
+  {id:'csum',  num:3, title:'Сумма косинусов',   lhs:`${fn('cos')} ${v('α')} + ${fn('cos')} ${v('β')}`},
+  {id:'cdiff', num:4, title:'Разность косинусов',lhs:`${fn('cos')} ${v('α')} ${rMinus} ${fn('cos')} ${v('β')}`}
+];
+
+/* ═══════════════════════════════════════════════════════════════════
+   3. PQ MINI-INTRO  — "Почему p и q?"
+   ═══════════════════════════════════════════════════════════════════ */
+
+const PQ_INTRO = {
+  steps:[
+    {
+      prompt:`Введём обозначения: ${hSum()} назовём <strong>p</strong>, ${hDiff()} назовём <strong>q</strong>.<br>Чему равно <strong>p + q</strong>?`,
+      choices:[
+        {body:`${v('α')}`,                  correct:true,  feedback:`Да! Дроби сложились — двойки в знаменателе сократились с 2 в числителе.`},
+        {body:`${v('β')}`,                  correct:false, feedback:`Это будет p − q, а не p + q.`},
+        {body:`${v('α')}+${v('β')}`,        correct:false, feedback:`Не забывай: у каждой дроби в знаменателе стоит 2.`},
+        {body:`${v('α')}−${v('β')}`,        correct:false, feedback:`Складываем, а не вычитаем.`}
+      ]
+    },
+    {
+      prompt:`Теперь чему равно <strong>p − q</strong>?`,
+      choices:[
+        {body:`${v('β')}`,                  correct:true,  feedback:`Точно. ${v('α')} сократилось, осталось ${v('β')}.`},
+        {body:`${v('α')}`,                  correct:false, feedback:`Это было p + q.`},
+        {body:`${v('α')}−${v('β')}`,        correct:false, feedback:`Знаменатели 2 ещё не учтены.`},
+        {body:`${v('α')}+${v('β')}`,        correct:false, feedback:`Это сумма, а нужна разность.`}
+      ]
+    }
+  ],
+  outro:`<strong>Вот зачем нужна замена.</strong> ${v('α')} превращается в <strong>p+q</strong>, ${v('β')} превращается в <strong>p−q</strong>. Теперь можно раскрывать ${fn('sin')}(p+q) и ${fn('sin')}(p−q) по формулам сложения, которые ты уже знаешь.`
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   4. LESSON STEPS — derivations as interactive sequences.
+
+   Each step has a `type`:
+     - "info"      : just shows a line of math, user clicks "Дальше"
+     - "choice"    : 3-4 options, pick one
+     - "construct" : tile-bank — click tiles in the right order
+     - "final"     : shows the resulting formula prominently
+
+   For "construct":
+     answer    — exact sequence of tile texts the user must build
+     pool      — all tiles shown in the bank (includes distractors)
+   ═══════════════════════════════════════════════════════════════════ */
+
+// reusable tile sets
+const SIN_BANK = ['sin p cos q', 'cos p sin q', 'sin p sin q', 'cos p cos q', '+', '−'];
+const COS_BANK = ['cos p cos q', 'sin p sin q', 'sin p cos q', 'cos p sin q', '+', '−'];
+
+const LESSONS = {
+
+  /* ─────────────  sin α + sin β  ───────────── */
+  ssum:{
+    title:`${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} → произведение`,
+    goal:`Превратить сумму ${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} в произведение.`,
+    steps:[
+      { type:'info',
+        label:'Замена переменных',
+        html:`Вводим <strong>p = ${hSum()}</strong>, <strong>q = ${hDiff()}</strong>.<br>Тогда ${v('α')} = p + q, ${v('β')} = p − q.`},
+      { type:'info',
+        label:'Подстановка',
+        html:`${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} = ${fn('sin')}(p+q) + ${fn('sin')}(p−q)`},
+      { type:'construct',
+        label:'Раскрываем sin(p+q) по формуле синуса суммы',
+        target:`${fn('sin')}(p+q) =`,
+        pool:SIN_BANK,
+        answer:['sin p cos q','+','cos p sin q'],
+        hint:`Формула: sin(p+q) = sin p · cos q + cos p · sin q.`},
+      { type:'construct',
+        label:'Раскрываем sin(p−q) по формуле синуса разности',
+        target:`${fn('sin')}(p−q) =`,
+        pool:SIN_BANK,
+        answer:['sin p cos q','−','cos p sin q'],
+        hint:`Формула: sin(p−q) = sin p · cos q − cos p · sin q. Меняется только знак.`},
+      { type:'info',
+        label:'Складываем',
+        html:`${fn('sin')}(p+q) + ${fn('sin')}(p−q) = (sin p cos q + cos p sin q) + (sin p cos q − cos p sin q)`},
+      { type:'choice',
+        label:'Что сократится при сложении?',
+        prompt:`После раскрытия скобок какие слагаемые сократятся?`,
+        choices:[
+          {body:`${cancel('cos p sin q')} и ${cancel('− cos p sin q')}`, correct:true,
+           feedback:`Верно. Они отличаются только знаком — в сумме дают 0.`},
+          {body:`sin p cos q и sin p cos q`, correct:false,
+           feedback:`Эти два одинаковые — они <strong>удваиваются</strong>, а не сокращаются.`},
+          {body:`Ничего не сократится`, correct:false,
+           feedback:`Посмотри внимательно: cos p sin q стоит с плюсом, и cos p sin q — с минусом.`}
+        ]},
+      { type:'info',
+        label:'Получаем',
+        html:`= 2 · sin p · cos q`},
+      { type:'info',
+        label:'Возвращаемся к α и β',
+        html:`Подставляем обратно: p = ${hSum()}, q = ${hDiff()}.`},
+      { type:'final',
+        formulaId:'ssum'}
+    ]
+  },
+
+  /* ─────────────  sin α − sin β  ───────────── */
+  sdiff:{
+    title:`${fn('sin')} ${v('α')} − ${fn('sin')} ${v('β')} → произведение`,
+    goal:`Превратить разность ${fn('sin')} ${v('α')} − ${fn('sin')} ${v('β')} в произведение.`,
+    steps:[
+      { type:'info',
+        label:'Та же замена',
+        html:`Снова берём <strong>p = ${hSum()}</strong>, <strong>q = ${hDiff()}</strong>. Тогда ${v('α')} = p + q, ${v('β')} = p − q.`},
+      { type:'info',
+        label:'Подстановка',
+        html:`${fn('sin')} ${v('α')} − ${fn('sin')} ${v('β')} = ${fn('sin')}(p+q) − ${fn('sin')}(p−q)`},
+      { type:'info',
+        label:'Раскрываем обе скобки',
+        html:`= (sin p cos q + cos p sin q) − (sin p cos q − cos p sin q)`},
+      { type:'construct',
+        label:'Раскрываем минус перед второй скобкой',
+        target:`= sin p cos q + cos p sin q`,
+        pool:SIN_BANK,
+        answer:['−','sin p cos q','+','cos p sin q'],
+        hint:`Минус перед скобкой меняет <strong>каждый</strong> знак внутри: −(sin p cos q − cos p sin q) = − sin p cos q + cos p sin q.`},
+      { type:'choice',
+        label:'Что теперь сократится?',
+        prompt:`Какие слагаемые исчезают?`,
+        choices:[
+          {body:`${cancel('sin p cos q')} и ${cancel('− sin p cos q')}`, correct:true,
+           feedback:`Да. Теперь сокращаются sin p cos q, а cos p sin q удваивается.`},
+          {body:`cos p sin q и cos p sin q`, correct:false,
+           feedback:`Они оба с плюсом — это удвоение, не сокращение.`},
+          {body:`Сократится sin p и cos q`, correct:false,
+           feedback:`Сокращаются только целые слагаемые, а не их части.`}
+        ]},
+      { type:'info',
+        label:'Получаем',
+        html:`= 2 · cos p · sin q`},
+      { type:'final',
+        formulaId:'sdiff'}
+    ]
+  },
+
+  /* ─────────────  cos α + cos β  ───────────── */
+  csum:{
+    title:`${fn('cos')} ${v('α')} + ${fn('cos')} ${v('β')} → произведение`,
+    goal:`Превратить сумму ${fn('cos')} ${v('α')} + ${fn('cos')} ${v('β')} в произведение.`,
+    steps:[
+      { type:'info',
+        label:'Замена',
+        html:`<strong>p = ${hSum()}</strong>, <strong>q = ${hDiff()}</strong>, и ${fn('cos')} ${v('α')} + ${fn('cos')} ${v('β')} = ${fn('cos')}(p+q) + ${fn('cos')}(p−q).`},
+      { type:'construct',
+        label:'Раскрываем cos(p+q)',
+        target:`${fn('cos')}(p+q) =`,
+        pool:COS_BANK,
+        answer:['cos p cos q','−','sin p sin q'],
+        hint:`У косинуса суммы — <em>минус</em>: cos(p+q) = cos p cos q − sin p sin q.`},
+      { type:'construct',
+        label:'Раскрываем cos(p−q)',
+        target:`${fn('cos')}(p−q) =`,
+        pool:COS_BANK,
+        answer:['cos p cos q','+','sin p sin q'],
+        hint:`А у косинуса разности — <em>плюс</em>: cos(p−q) = cos p cos q + sin p sin q.`},
+      { type:'choice',
+        label:'Складываем и смотрим, что сократится',
+        prompt:`cos(p+q) + cos(p−q) = (cos p cos q − sin p sin q) + (cos p cos q + sin p sin q). Что сократится?`,
+        choices:[
+          {body:`${cancel('− sin p sin q')} и ${cancel('+ sin p sin q')}`, correct:true,
+           feedback:`Да! Они противоположны по знаку — в сумме 0.`},
+          {body:`cos p cos q и cos p cos q`, correct:false,
+           feedback:`Они оба с плюсом — удваиваются.`},
+          {body:`Минус и плюс между скобками`, correct:false,
+           feedback:`Сокращаются слагаемые, а не отдельные знаки.`}
+        ]},
+      { type:'info',
+        label:'Получаем',
+        html:`= 2 · cos p · cos q`},
+      { type:'final',
+        formulaId:'csum'}
+    ]
+  },
+
+  /* ─────────────  cos α − cos β  ───────────── */
+  cdiff:{
+    title:`${fn('cos')} ${v('α')} ${rMinus} ${fn('cos')} ${v('β')} → произведение`,
+    goal:`Превратить разность ${fn('cos')} ${v('α')} ${rMinus} ${fn('cos')} ${v('β')} в произведение. <span class="tok-rust">Внимание: здесь появится минус перед всей формулой!</span>`,
+    steps:[
+      { type:'info',
+        label:'Замена',
+        html:`${fn('cos')} ${v('α')} ${rMinus} ${fn('cos')} ${v('β')} = ${fn('cos')}(p+q) ${rMinus} ${fn('cos')}(p−q).`},
+      { type:'info',
+        label:'Раскрываем обе скобки',
+        html:`= (cos p cos q − sin p sin q) ${rMinus} (cos p cos q + sin p sin q)`},
+      { type:'construct',
+        label:'Раскрываем минус перед второй скобкой — БУДЬ ВНИМАТЕЛЕН со знаками',
+        target:`= cos p cos q − sin p sin q`,
+        pool:['cos p cos q', 'sin p sin q', 'sin p cos q', 'cos p sin q', '+', '−', '−'],
+        answer:['−','cos p cos q','−','sin p sin q'],
+        hint:`Минус меняет каждый знак: −(cos p cos q + sin p sin q) = − cos p cos q − sin p sin q. У второго слагаемого знак тоже меняется!`},
+      { type:'choice',
+        label:'Что сократится?',
+        prompt:`Имеем: cos p cos q − sin p sin q − cos p cos q − sin p sin q. Что сокращается?`,
+        choices:[
+          {body:`${cancel('cos p cos q')} и ${cancel('− cos p cos q')}`, correct:true,
+           feedback:`Точно. Они дают 0, остаются −sin p sin q − sin p sin q = −2 sin p sin q.`},
+          {body:`Оба − sin p sin q`, correct:false,
+           feedback:`Они одинаковые по знаку — складываются, дают <strong>−2</strong> sin p sin q.`},
+          {body:`Ничего, минусы между ними мешают`, correct:false,
+           feedback:`Минусы как раз помогают увидеть: cos p cos q с плюсом и cos p cos q с минусом сокращаются.`}
+        ]},
+      { type:'info',
+        label:'Получаем (с минусом!)',
+        html:`= ${rMinusPill} 2 · sin p · sin q`},
+      { type:'final',
+        formulaId:'cdiff'}
+    ]
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   5. ASSEMBLIES — quick "build the right side" without derivation.
+   For each formula: show LHS, give tile pool, user assembles RHS.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const RHS_BANK = [
+  '2', 'sin', 'cos',
+  hSum(), hDiff(),
+  '·', rMinusPill
+];
+
+const ASSEMBLIES = {
+  ssum:  { lhs:`${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} =`,
+           answer:['2','·','sin', hSum(), '·','cos', hDiff()] },
+  sdiff: { lhs:`${fn('sin')} ${v('α')} − ${fn('sin')} ${v('β')} =`,
+           answer:['2','·','cos', hSum(), '·','sin', hDiff()] },
+  csum:  { lhs:`${fn('cos')} ${v('α')} + ${fn('cos')} ${v('β')} =`,
+           answer:['2','·','cos', hSum(), '·','cos', hDiff()] },
+  cdiff: { lhs:`${fn('cos')} ${v('α')} ${rMinus} ${fn('cos')} ${v('β')} =`,
+           answer:[rMinusPill,'2','·','sin', hSum(), '·','sin', hDiff()] }
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   6. PRODUCT EXAMPLES — apply formula to specific α, β.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const PRODUCTS = {
+  ssum:[
+    {a:'75°', b:'15°',
+     question:`Преобразовать ${fn('sin')} 75° + ${fn('sin')} 15°.`,
+     halfSum:'45°', halfDiff:'30°',
+     answer:`2 · ${fn('sin')} 45° · ${fn('cos')} 30° = 2 · ${frac('√2','2')} · ${frac('√3','2')} = ${frac('√6','2')}`},
+    {a:'5x', b:'3x',
+     question:`Преобразовать ${fn('sin')} 5x + ${fn('sin')} 3x.`,
+     halfSum:'4x', halfDiff:'x',
+     answer:`2 · ${fn('sin')} 4x · ${fn('cos')} x`}
+  ],
+  sdiff:[
+    {a:'7x', b:'3x',
+     question:`Преобразовать ${fn('sin')} 7x − ${fn('sin')} 3x.`,
+     halfSum:'5x', halfDiff:'2x',
+     answer:`2 · ${fn('cos')} 5x · ${fn('sin')} 2x`}
+  ],
+  csum:[
+    {a:'4x', b:'2x',
+     question:`Преобразовать ${fn('cos')} 4x + ${fn('cos')} 2x.`,
+     halfSum:'3x', halfDiff:'x',
+     answer:`2 · ${fn('cos')} 3x · ${fn('cos')} x`}
+  ],
+  cdiff:[
+    {a:'5x', b:'3x',
+     question:`Преобразовать ${fn('cos')} 5x ${rMinus} ${fn('cos')} 3x.`,
+     halfSum:'4x', halfDiff:'x',
+     answer:`${rMinusPill} 2 · ${fn('sin')} 4x · ${fn('sin')} x`}
+  ]
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   7. TRAPS — error-finding puzzles
+   ═══════════════════════════════════════════════════════════════════ */
+
+const TRAPS = [
+  { id:'t1',
+    wrong:`${fn('cos')} ${v('α')} − ${fn('cos')} ${v('β')} = 2 · ${fn('sin')} ${hSum()} · ${fn('sin')} ${hDiff()}`,
+    options:[
+      'забыли минус перед 2',
+      'перепутали полусумму и полуразность',
+      'нужно было cos, а не sin'
+    ],
+    correct:0,
+    explain:`У разности косинусов всегда появляется минус перед двойкой: ${FORMULAS.cdiff}.`},
+
+  { id:'t2',
+    wrong:`${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} = ${fn('sin')} ${hSum()} · ${fn('cos')} ${hDiff()}`,
+    options:[
+      'забыли коэффициент 2',
+      'перепутали sin и cos',
+      'перепутали полусумму и полуразность'
+    ],
+    correct:0,
+    explain:`Во всех формулах сумма/разность синусов и косинусов превращается в произведение с двойкой впереди.`},
+
+  { id:'t3',
+    wrong:`${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} = 2 · ${fn('cos')} ${hSum()} · ${fn('sin')} ${hDiff()}`,
+    options:[
+      'перепутали sin и cos',
+      'забыли коэффициент 2',
+      'неправильно записали полусумму'
+    ],
+    correct:0,
+    explain:`Для суммы синусов: ${fn('sin')} стоит при ${hSum()}, ${fn('cos')} — при ${hDiff()}. Здесь они поменяны местами.`},
+
+  { id:'t4',
+    wrong:`${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} = 2 · ${fn('sin')} ${hDiff()} · ${fn('cos')} ${hSum()}`,
+    options:[
+      'перепутали полусумму и полуразность',
+      'забыли коэффициент 2',
+      'нужен минус перед 2'
+    ],
+    correct:0,
+    explain:`У синуса должна стоять <span class="tok-gold">${frac('α+β','2')}</span>, у косинуса — <span class="tok-blue">${frac('α−β','2')}</span>. Здесь они переставлены.`},
+
+  { id:'t5',
+    wrong:`${fn('cos')} ${v('α')} + ${fn('cos')} ${v('β')} = 2 · ${fn('sin')} ${hSum()} · ${fn('cos')} ${hDiff()}`,
+    options:[
+      'перепутали sin и cos',
+      'забыли минус перед 2',
+      'перепутали полусумму и полуразность'
+    ],
+    correct:0,
+    explain:`Сумма косинусов превращается в произведение двух косинусов: ${FORMULAS.csum}.`},
+
+  { id:'t6',
+    wrong:`${fn('sin')} ${v('α')} − ${fn('sin')} ${v('β')} = 2 · ${fn('sin')} ${hSum()} · ${fn('cos')} ${hDiff()}`,
+    options:[
+      'перепутали sin и cos',
+      'нужен минус перед 2',
+      'перепутали полусумму и полуразность'
+    ],
+    correct:0,
+    explain:`Для разности синусов: ${FORMULAS.sdiff}. У ${hSum()} стоит cos, у ${hDiff()} — sin.`},
+
+  { id:'t7',
+    wrong:`−(${fn('sin')} p ${fn('cos')} q − ${fn('cos')} p ${fn('sin')} q) = − ${fn('sin')} p ${fn('cos')} q − ${fn('cos')} p ${fn('sin')} q`,
+    options:[
+      'при раскрытии скобки с минусом не поменяли знак второго слагаемого',
+      'неправильно раскрыли первый член',
+      'надо было оставить скобки'
+    ],
+    correct:0,
+    explain:`Минус меняет знак <strong>каждого</strong> слагаемого в скобке: должно быть − sin p cos q <strong>+</strong> cos p sin q.`},
+
+  { id:'t8',
+    wrong:`${fn('sin')} p ${fn('cos')} q + ${fn('cos')} p ${fn('sin')} q + ${fn('sin')} p ${fn('cos')} q − ${fn('cos')} p ${fn('sin')} q = 2 ${fn('sin')} p ${fn('cos')} q + 2 ${fn('cos')} p ${fn('sin')} q`,
+    options:[
+      'неправильно сократили: cos p · sin q должно исчезнуть',
+      'забыли удвоить sin p · cos q',
+      'нужно было вычесть, а не сложить'
+    ],
+    correct:0,
+    explain:`+ cos p sin q и − cos p sin q дают 0. Должно получиться просто 2 sin p cos q.`},
+
+  { id:'t9',
+    wrong:`${fn('cos')} ${v('α')} − ${fn('cos')} ${v('β')} = − 2 · ${fn('cos')} ${hSum()} · ${fn('cos')} ${hDiff()}`,
+    options:[
+      'перепутали sin и cos',
+      'забыли минус',
+      'перепутали полусумму и полуразность'
+    ],
+    correct:0,
+    explain:`Минус правильный, но функции — нет. У разности косинусов оба сомножителя — <strong>синусы</strong>: ${FORMULAS.cdiff}.`},
+
+  { id:'t10',
+    wrong:`${fn('sin')} ${v('α')} − ${fn('sin')} ${v('β')} = 2 · ${fn('cos')} ${hDiff()} · ${fn('sin')} ${hSum()}`,
+    options:[
+      'перепутали полусумму и полуразность',
+      'перепутали sin и cos',
+      'забыли коэффициент 2'
+    ],
+    correct:0,
+    explain:`У ${fn('cos')} должна стоять <span class="tok-gold">${frac('α+β','2')}</span>, у ${fn('sin')} — <span class="tok-blue">${frac('α−β','2')}</span>. Здесь они переставлены.`}
+];
+
+/* ═══════════════════════════════════════════════════════════════════
+   8. FINAL TEST — 5 random tasks at the very end
+   ═══════════════════════════════════════════════════════════════════ */
+
+function buildFinalTest(){
+  const pool = [];
+  // 2 assembly tasks (any 2 of the 4 formulas)
+  const aIds = shuffle(Object.keys(ASSEMBLIES)).slice(0,2);
+  aIds.forEach(id => pool.push({kind:'assembly', id}));
+  // 2 "choose the right formula" tasks
+  const cIds = shuffle(Object.keys(FORMULAS)).slice(0,2);
+  cIds.forEach(id => pool.push({kind:'pick', id}));
+  // 1 trap
+  pool.push({kind:'trap', id:shuffle(TRAPS)[0].id});
+  return pool;
+}
+function shuffle(a){
+  const x = a.slice();
+  for(let i=x.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [x[i],x[j]]=[x[j],x[i]];
+  }
+  return x;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   9. STATE  +  LOCALSTORAGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+const LS_KEY = 'trig-stp-trainer-v2';
+const DEFAULT_STATE = {
+  view:'onboarding',           // onboarding | pqIntro | lesson | assemblyHub | traps | finalTest | teacher | done
+  mode:'learn',                // learn | practice | teacher
+  lesson:'ssum',
+  section:'derive',            // derive | assemble | product (inside a lesson)
+  stepIx:0,
+  pqIx:0,
+  assemblyIx:0,
+  productIx:0,
+  trapIx:0,
+  testIx:0,
+  testAnswers:[],
+  test:null,
+  progress:{                   // tracks completion per lesson per section
+    pqIntroDone:false,
+    ssum:{derive:false,assemble:false,product:false},
+    sdiff:{derive:false,assemble:false,product:false},
+    csum:{derive:false,assemble:false,product:false},
+    cdiff:{derive:false,assemble:false,product:false},
+    trapsCleared:0,
+    testBest:0
+  },
+  hintsUsed:0,
+  errors:0
+};
+
+var state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    const parsed = JSON.parse(raw);
+    // gentle merge — keeps backward compatibility
+    return Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), parsed, {
+      progress: Object.assign({}, DEFAULT_STATE.progress, parsed.progress||{})
+    });
+  }catch(e){
+    return JSON.parse(JSON.stringify(DEFAULT_STATE));
+  }
+}
+function saveState(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){}
+}
+function resetProgress(){
+  if(!confirm('Сбросить весь прогресс?')) return;
+  state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  saveState();
+  render();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   10. ROOT RENDERER
+   ═══════════════════════════════════════════════════════════════════ */
+
+const $app = document.getElementById('app');
+
+/** innerHTML doesn't execute injected <script> tags — we re-create them here. */
+function runScripts(root){
+  root.querySelectorAll('script').forEach(old=>{
+    const s = document.createElement('script');
+    if(old.src) s.src = old.src;
+    s.textContent = old.textContent;
+    old.parentNode.replaceChild(s, old);
+  });
+}
+
+function render(){
+  saveState();
+
+  // teacher mode always overrides view
+  if(state.mode==='teacher'){
+    renderShell(renderTeacher());
+    return;
+  }
+
+  const views = {
+    onboarding: renderOnboarding,
+    pqIntro:    renderPQIntro,
+    lesson:     renderLesson,
+    assemblyHub:renderAssemblyHub,
+    traps:      renderTraps,
+    finalTest:  renderFinalTest,
+    done:       renderDone
+  };
+  const fn = views[state.view] || renderOnboarding;
+  renderShell(fn());
+}
+
+function renderShell(content){
+  $app.innerHTML = `
+    <header class="top">
+      <div class="brand">
+        <div class="eyebrow">10 КЛАСС · ТРИГОНОМЕТРИЯ</div>
+        <h1>Сумма и разность <em>sin</em> / <em>cos</em> → произведение</h1>
+<details class="kim-ref" style="margin:16px 0;border:1.5px dashed #C22F2A;border-radius:10px;background:rgba(255,255,255,.85);padding:0 16px;max-width:660px;">
+  <summary style="cursor:pointer;padding:11px 0;font-weight:800;color:#16307F;">Справочные материалы КИМ — то, из чего выводятся формулы этого тренажёра</summary>
+  <div style="padding:2px 0 13px;font-size:16.5px;line-height:1.85;color:#2A2F38;">
+    <div>sin 2α = 2 sin α · cos α</div>
+    <div>cos 2α = cos²α − sin²α</div>
+    <div>sin (α + β) = sin α · cos β + cos α · sin β</div>
+    <div>cos (α + β) = cos α · cos β − sin α · sin β</div>
+    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.6;color:#67707E;">Формул этого тренажёра — суммы и разности в произведение — на листке НЕТ, и в этом вся соль: они выводятся ровно из этих четырёх. Замените β на −β, сложите синус суммы с синусом разности — справа останется 2 sin α · cos β. Дальше подстановка α = (p + q)/2, β = (p − q)/2 превращает левую часть в sin p + sin q, и формула готова. То есть на экзамене вам выдают не ответ, а исходники: полусумма и полуразность — единственное, что нужно помнить сверх листка.</p>
+  </div>
+</details>
+
+        <div class="colorkey">
+          <span><i style="background:var(--gold-bg);border-color:var(--gold-line)"></i>полусумма ${frac('α+β','2')}</span>
+          <span><i style="background:var(--blue-bg);border-color:var(--blue-line)"></i>полуразность ${frac('α−β','2')}</span>
+          <span><i style="background:var(--rust-bg);border-color:var(--rust-line)"></i>минус-ловушка</span>
+          <span><i style="background:var(--leaf-bg);border-color:var(--leaf-line)"></i>сокращается</span>
+        </div>
+      </div>
+      <div class="modes" role="tablist">
+        <button class="${state.mode==='learn'?'active':''}"    data-mode="learn">Обучение</button>
+        <button class="${state.mode==='practice'?'active':''}" data-mode="practice">Тренировка</button>
+        <button class="${state.mode==='teacher'?'active':''}"  data-mode="teacher">Учитель</button>
+      </div>
+    </header>
+
+    ${state.mode!=='teacher' && state.view!=='onboarding'
+        ? renderLessonStrip() : ''}
+
+    ${content}
+
+    <div style="margin-top:32px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink-faint)">
+      <span>Прогресс сохраняется в браузере автоматически.</span>
+      <button class="btn ghost small" onclick="resetProgress()">сбросить прогресс</button>
+    </div>
+  `;
+
+  // wire mode buttons
+  $app.querySelectorAll('.modes button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const m = b.dataset.mode;
+      state.mode = m;
+      if(m==='practice'){ state.view='traps'; state.trapIx=0; }
+      else if(m==='teacher'){ /* teacher view rendered separately */ }
+      else { state.view = state.view==='traps' || state.view==='finalTest' ? 'onboarding' : state.view; }
+      render();
+    });
+  });
+
+  // execute injected scripts
+  runScripts($app);
+}
+
+function renderLessonStrip(){
+  if(state.mode==='practice') return ''; // strip not relevant in traps
+  return `<div class="lesson-strip">
+    ${LESSONS_META.map(l=>{
+      const p = state.progress[l.id];
+      const allDone = p && p.derive && p.assemble && p.product;
+      const active = (state.view==='lesson' && state.lesson===l.id);
+      return `<button class="lesson-pill ${active?'active':''} ${allDone?'done':''}" data-lesson="${l.id}">
+        <span class="n">${l.num}</span><span>${l.title}</span>
+      </button>`;
+    }).join('')}
+    <button class="lesson-pill" data-lesson="_hub" title="Только сборка формул">
+      <span class="n">⚡</span><span>Только сборка</span>
+    </button>
+    <button class="lesson-pill" data-lesson="_traps">
+      <span class="n">!</span><span>Ловушки</span>
+    </button>
+  </div>
+  <script>
+    document.querySelectorAll('.lesson-pill[data-lesson]').forEach(p=>{
+      p.addEventListener('click',()=>{
+        const id = p.dataset.lesson;
+        if(id==='_hub'){ state.view='assemblyHub'; }
+        else if(id==='_traps'){ state.view='traps'; state.trapIx=0; }
+        else { state.view='lesson'; state.lesson=id; state.section='derive'; state.stepIx=0; }
+        render();
+      });
+    });
+  <\/script>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   11. VIEW: ONBOARDING
+   ═══════════════════════════════════════════════════════════════════ */
+
+function renderOnboarding(){
+  const anyDone = LESSONS_META.some(l=>{
+    const p = state.progress[l.id]; return p && (p.derive||p.assemble||p.product);
+  });
+
+  return `
+  <section class="card" style="padding:0;overflow:hidden">
+    <div class="onboarding">
+      <div class="onb-left">
+        <div class="onb-eyebrow">С чего начать?</div>
+        <h2>Сегодня учимся превращать сумму и разность ${fn('sin')} и ${fn('cos')} в произведение.</h2>
+        <p>Не надо зубрить сразу все четыре формулы. Сначала поймём одну — самую простую — и разберём, откуда вообще берётся загадочное ${hSum()} и ${hDiff()}.</p>
+        <p>${anyDone?'У тебя уже есть прогресс — можно продолжить там, где остановился.':'Если знакомо — переходи сразу к сборке. Если нет — спокойно идём с самого начала.'}</p>
+      </div>
+      <div class="onb-right">
+        <button class="onb-action primary" data-onb="pq">
+          <span class="tag">Шаг 1 · С НУЛЯ</span>
+          <span class="title">Начать с самой простой формулы: ${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')}</span>
+        </button>
+        <button class="onb-action" data-onb="assembly">
+          <span class="tag">Я уже знаю формулы</span>
+          <span class="title">Перейти сразу к сборке</span>
+        </button>
+        <button class="onb-action" data-onb="traps">
+          <span class="tag">Знаю — проверь меня</span>
+          <span class="title">Режим «Ловушки»</span>
+        </button>
+        <button class="onb-action" data-onb="teacher">
+          <span class="tag">Преподавателю</span>
+          <span class="title">Открыть режим учителя</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll('[data-onb]').forEach(b=>{
+      b.addEventListener('click',()=>{
+        const a = b.dataset.onb;
+        if(a==='pq'){
+          if(!state.progress.pqIntroDone){ state.view='pqIntro'; state.pqIx=0; }
+          else { state.view='lesson'; state.lesson='ssum'; state.section='derive'; state.stepIx=0; }
+        }
+        else if(a==='assembly'){ state.view='assemblyHub'; }
+        else if(a==='traps'){ state.mode='practice'; state.view='traps'; state.trapIx=0; }
+        else if(a==='teacher'){ state.mode='teacher'; }
+        render();
+      });
+    });
+  <\/script>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   12. VIEW: PQ INTRO — "Why p and q?"
+   ═══════════════════════════════════════════════════════════════════ */
+
+function renderPQIntro(){
+  const step = PQ_INTRO.steps[state.pqIx];
+  const last = state.pqIx >= PQ_INTRO.steps.length;
+
+  if(last){
+    return `
+    <section class="card">
+      <div class="onb-eyebrow" style="color:var(--leaf)">Понял ✓</div>
+      <h2 style="font-family:var(--display);font-size:26px;margin:6px 0 12px">Зачем p и q — теперь понятно</h2>
+      <div class="note leaf" style="font-size:15px;line-height:1.6">${PQ_INTRO.outro}</div>
+      <div class="pq-stage" style="margin-top:18px">
+        <div class="pq-display">
+          <div class="math big">p = ${hSum()}</div>
+          <div class="math big">q = ${hDiff()}</div>
+        </div>
+        <div class="pq-display">
+          <div class="math big">${v('α')} = p + q</div>
+          <div class="math big">${v('β')} = p − q</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="pq-next">Перейти к выводу формулы ${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} →</button>
+        <button class="btn ghost" id="pq-skip">Пропустить и сразу к сборке</button>
+      </div>
+    </section>
+    <script>
+      document.getElementById('pq-next').onclick = ()=>{
+        state.progress.pqIntroDone = true;
+        state.view='lesson'; state.lesson='ssum'; state.section='derive'; state.stepIx=0;
+        render();
+      };
+      document.getElementById('pq-skip').onclick = ()=>{
+        state.progress.pqIntroDone = true;
+        state.view='assemblyHub';
+        render();
+      };
+    <\/script>`;
+  }
+
+  return `
+  <section class="card">
+    <div class="onb-eyebrow">Мини-разминка · ${state.pqIx+1} / ${PQ_INTRO.steps.length}</div>
+    <h2 style="font-family:var(--display);font-size:26px;margin:6px 0 6px">Почему именно p и q?</h2>
+    <p class="sub">Эта замена делает всю тему понятной. Сделаем её руками — два простых выбора.</p>
+    <div class="math big" style="margin:18px 0 18px;text-align:center">${step.prompt}</div>
+    <div class="choices" id="pq-choices">
+      ${step.choices.map((c,i)=>`
+        <button class="choice" data-i="${i}">
+          <span class="marker">${'ABCD'[i]}</span>
+          <span class="body math">${c.body}</span>
+        </button>`).join('')}
+    </div>
+    <div id="pq-fb" style="margin-top:14px"></div>
+    <div class="btn-row">
+      <button class="btn ghost" id="pq-back">← Назад на главную</button>
+    </div>
+  </section>
+  <script>
+    const choices = ${JSON.stringify(step.choices)};
+    document.querySelectorAll('#pq-choices .choice').forEach(b=>{
+      b.addEventListener('click',()=>{
+        const i = +b.dataset.i;
+        const ch = choices[i];
+        document.querySelectorAll('#pq-choices .choice').forEach(x=>x.classList.add('locked'));
+        b.classList.add(ch.correct?'correct':'wrong');
+        const fb = document.getElementById('pq-fb');
+        if(ch.correct){
+          fb.innerHTML = '<div class="note leaf">'+ch.feedback+'</div>';
+          setTimeout(()=>{ state.pqIx++; render(); }, 1200);
+        } else {
+          state.errors++;
+          fb.innerHTML = '<div class="note rust">'+ch.feedback+' Попробуй ещё.</div>';
+          setTimeout(()=>{
+            b.classList.remove('locked','wrong');
+            document.querySelectorAll('#pq-choices .choice').forEach(x=>x.classList.remove('locked'));
+          }, 1400);
+        }
+      });
+    });
+    document.getElementById('pq-back').onclick=()=>{state.view='onboarding';render();};
+  <\/script>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   13. VIEW: LESSON  (derive / assemble / product)
+   ═══════════════════════════════════════════════════════════════════ */
+
+function renderLesson(){
+  const meta = LESSONS_META.find(l=>l.id===state.lesson);
+  const lesson = LESSONS[state.lesson];
+
+  return `
+  <section class="card">
+    <div class="flex-between">
+      <div>
+        <div class="onb-eyebrow">УРОК ${meta.num} · ${meta.title.toUpperCase()}</div>
+        <h2 style="font-family:var(--display);font-size:24px;margin:4px 0 0">${lesson.title}</h2>
+      </div>
+      <div class="math" style="font-size:15px;color:var(--ink-faint)">Цель: <span style="color:var(--ink)">превратить в произведение</span></div>
+    </div>
+
+    <div class="subtabs" style="margin-top:18px">
+      <button class="${state.section==='derive'?'active':''}"   data-sec="derive">1. Вывод формулы</button>
+      <button class="${state.section==='assemble'?'active':''}" data-sec="assemble">2. Сборка</button>
+      <button class="${state.section==='product'?'active':''}"  data-sec="product">3. Применение</button>
+    </div>
+
+    ${ state.section==='derive'   ? renderDerivation(lesson, meta) :
+       state.section==='assemble' ? renderAssemblyOne(meta.id) :
+                                    renderProductOne(meta.id) }
+  </section>
+
+  <script>
+    document.querySelectorAll('[data-sec]').forEach(b=>{
+      b.addEventListener('click',()=>{
+        state.section = b.dataset.sec;
+        state.stepIx = 0; state.assemblyIx = 0; state.productIx = 0;
+        render();
+      });
+    });
+  <\/script>
+  `;
+}
+
+/* ── 13a. Derivation (shows timeline of completed steps + current step) ── */
+function renderDerivation(lesson, meta){
+  const ix = state.stepIx;
+  const steps = lesson.steps;
+  const done = ix >= steps.length;
+
+  // history of completed steps
+  const history = steps.slice(0, ix).map((s,i)=>renderHistoryRow(s,i,lesson));
+
+  if(done){
+    state.progress[meta.id].derive = true;
+    return `
+    <div class="note leaf" style="margin-top:14px"><strong>Готово.</strong> Вывод формулы пройден.</div>
+    <div class="timeline" style="margin-top:18px">${history.join('')}</div>
+    <div class="card" style="margin-top:18px;background:#fff;border-color:var(--gold-line)">
+      <div class="onb-eyebrow" style="color:var(--gold)">Итог</div>
+      <div class="math huge" style="margin-top:8px;text-align:center">${FORMULAS[meta.id]}</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn gold" onclick="state.section='assemble';state.assemblyIx=0;render()">Перейти к сборке этой формулы →</button>
+      <button class="btn ghost" onclick="state.stepIx=0;render()">Пройти вывод заново</button>
+    </div>`;
+  }
+
+  const step = steps[ix];
+
+  return `
+    <div class="split" style="margin-top:8px">
+      <div>
+        <div class="onb-eyebrow">Шаг ${ix+1} из ${steps.length} · ${step.label}</div>
+        <div style="margin-top:10px">
+          ${renderCurrentStep(step, ix, lesson, meta)}
+        </div>
+      </div>
+      <div>
+        <div class="onb-eyebrow" style="margin-bottom:8px">Ход вывода</div>
+        <div class="timeline">
+          ${history.length ? history.join('') : '<div class="muted" style="font-style:italic;font-size:13px;padding:8px 4px">Здесь будет накапливаться вывод.</div>'}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderHistoryRow(step, i, lesson){
+  let body;
+  if(step.type==='info' || step.type==='final'){
+    body = step.type==='final'
+      ? `<div class="math big" style="text-align:center">${FORMULAS[lesson._formulaId||state.lesson]}</div>`
+      : `<div class="math">${step.html}</div>`;
+  } else if(step.type==='choice'){
+    body = `<div class="math" style="font-size:16px">${step.prompt}</div>`;
+  } else if(step.type==='construct'){
+    body = `<div class="math">${step.target} <strong>${step.answer.join(' ')}</strong></div>`;
+  }
+  return `<div class="tl-row">
+    <div class="step-n">${i+1}</div>
+    <div class="step-body">
+      <div class="step-label">${step.label||''}</div>
+      ${body}
+    </div>
+  </div>`;
+}
+
+function renderCurrentStep(step, ix, lesson, meta){
+  if(step.type==='info'){
+    return `
+      <div class="tl-row current">
+        <div class="step-n">${ix+1}</div>
+        <div class="step-body">
+          <div class="step-label">${step.label}</div>
+          <div class="math big">${step.html}</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="state.stepIx++;render()">Дальше →</button>
+        ${ix>0?'<button class="btn ghost" onclick="state.stepIx--;render()">← Назад</button>':''}
+      </div>
+    `;
+  }
+
+  if(step.type==='final'){
+    return `
+      <div class="card" style="background:#fff;border-color:var(--gold-line);text-align:center;padding:32px 20px">
+        <div class="onb-eyebrow" style="color:var(--gold)">Финальная формула</div>
+        <div class="math huge" style="margin-top:12px">${FORMULAS[meta.id]}</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn gold" onclick="state.stepIx++;render()">Завершить вывод →</button>
+      </div>
+    `;
+  }
+
+  if(step.type==='choice'){
+    return `
+      <div class="math big" style="margin-bottom:12px">${step.prompt}</div>
+      <div class="choices" id="lc-${ix}">
+        ${step.choices.map((c,i)=>`
+          <button class="choice" data-i="${i}">
+            <span class="marker">${'ABCD'[i]}</span>
+            <span class="body math">${c.body}</span>
+          </button>`).join('')}
+      </div>
+      <div id="lc-fb-${ix}" style="margin-top:14px"></div>
+      <script>
+        const ch = ${JSON.stringify(step.choices)};
+        document.querySelectorAll('#lc-${ix} .choice').forEach(b=>{
+          b.addEventListener('click',()=>{
+            const i=+b.dataset.i;
+            const c=ch[i];
+            document.querySelectorAll('#lc-${ix} .choice').forEach(x=>x.classList.add('locked'));
+            b.classList.add(c.correct?'correct':'wrong');
+            const fb=document.getElementById('lc-fb-${ix}');
+            if(c.correct){
+              fb.innerHTML='<div class="note leaf">'+c.feedback+'</div>';
+              setTimeout(()=>{state.stepIx++;render();}, 1300);
+            } else {
+              state.errors++;
+              fb.innerHTML='<div class="note rust">'+c.feedback+' Попробуй ещё.</div>';
+              setTimeout(()=>{
+                document.querySelectorAll('#lc-${ix} .choice').forEach(x=>{x.classList.remove('locked','wrong');});
+              }, 1500);
+            }
+          });
+        });
+      <\/script>
+    `;
+  }
+
+  if(step.type==='construct'){
+    return renderConstructor(step, ix);
+  }
+}
+
+/* ── 13b. CONSTRUCTOR — click-to-place tiles ── */
+function renderConstructor(step, ix){
+  // unique poolIds (in case a tile name repeats, but we use position-indexed clicks)
+  const poolHtml = step.pool.map((t,i)=>
+    `<button class="tile ${['+','−'].includes(t)?'op':''}" data-pi="${i}" data-t="${escapeHtml(t)}">${t}</button>`
+  ).join('');
+
+  return `
+    <div class="math big" style="margin-bottom:10px">${step.target}</div>
+
+    <div class="onb-eyebrow" style="margin-bottom:6px">Собери выражение →</div>
+    <div class="slots" id="slots-${ix}">
+      <span class="placeholder">кликай по плитке снизу...</span>
+    </div>
+
+    <div class="onb-eyebrow" style="margin:14px 0 6px">Доступные блоки</div>
+    <div class="bank" id="bank-${ix}">${poolHtml}</div>
+
+    <div class="constructor-status" id="status-${ix}"></div>
+
+    <div class="btn-row">
+      <button class="btn" id="check-${ix}">Проверить</button>
+      <button class="btn ghost" id="clear-${ix}">Очистить</button>
+      <button class="btn ghost" id="hint-${ix}">Подсказка</button>
+      ${ix>0?'<button class="btn ghost" onclick="state.stepIx--;render()">← Назад</button>':''}
+    </div>
+    <div id="hint-box-${ix}" style="margin-top:10px"></div>
+
+    <script>
+      (function(){
+        const answer = ${JSON.stringify(step.answer)};
+        const placed = []; // array of {pi, text}
+        const slots  = document.getElementById('slots-${ix}');
+        const bank   = document.getElementById('bank-${ix}');
+        const status = document.getElementById('status-${ix}');
+
+        function repaintSlots(){
+          if(placed.length===0){
+            slots.innerHTML = '<span class="placeholder">кликай по плитке снизу...</span>';
+            return;
+          }
+          slots.innerHTML = placed.map((p,idx)=>
+            '<button class="tile '+((['+','−'].includes(p.text))?'op':'')+'" data-idx="'+idx+'">'+p.text+'</button>'
+          ).join('');
+          slots.querySelectorAll('button').forEach(b=>{
+            b.addEventListener('click',()=>{
+              const idx=+b.dataset.idx;
+              const rem=placed.splice(idx,1)[0];
+              bank.querySelector('[data-pi="'+rem.pi+'"]').classList.remove('placed');
+              repaintSlots();
+              status.className='constructor-status';
+              status.textContent='';
+            });
+          });
+        }
+
+        bank.querySelectorAll('.tile').forEach(b=>{
+          b.addEventListener('click',()=>{
+            if(b.classList.contains('placed')) return;
+            b.classList.add('placed');
+            placed.push({pi:+b.dataset.pi, text:b.dataset.t});
+            repaintSlots();
+          });
+        });
+
+        document.getElementById('check-${ix}').onclick = ()=>{
+          const got = placed.map(p=>p.text);
+          if(got.length===answer.length && got.every((x,i)=>x===answer[i])){
+            status.className='constructor-status ok';
+            status.innerHTML = '<strong>Верно.</strong> Идём дальше.';
+            setTimeout(()=>{ state.stepIx++; render(); }, 1200);
+          } else if(got.length===0){
+            status.className='constructor-status bad';
+            status.textContent='Поле пустое — сначала собери выражение из блоков.';
+          } else {
+            state.errors++;
+            status.className='constructor-status bad';
+            status.innerHTML = '<strong>Пока не то.</strong> Проверь порядок и знаки. Подсказка → ниже.';
+          }
+        };
+        document.getElementById('clear-${ix}').onclick = ()=>{
+          placed.length=0;
+          bank.querySelectorAll('.tile').forEach(x=>x.classList.remove('placed'));
+          repaintSlots();
+          status.className='constructor-status';status.textContent='';
+        };
+        document.getElementById('hint-${ix}').onclick = ()=>{
+          state.hintsUsed++;
+          document.getElementById('hint-box-${ix}').innerHTML =
+            '<div class="note">'+${JSON.stringify(step.hint||'Вспомни формулы синуса/косинуса суммы и разности.')}+'</div>';
+        };
+      })();
+    <\/script>
+  `;
+}
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* ── 13c. Assembly inside a lesson ── */
+function renderAssemblyOne(lessonId){
+  return renderAssemblyWidget(lessonId, 'lesson');
+}
+
+function handleAssemblyDone(lessonId, mode){
+  state.progress[lessonId].assemble = true;
+  if(mode==='lesson'){
+    state.section='product'; state.productIx=0;
+    render();
+  } else {
+    // hub mode — advance to next quick-assembly
+    setTimeout(()=>{ state.assemblyIx++; render(); }, 1100);
+  }
+}
+
+function renderAssemblyWidget(lessonId, mode){
+  const a = ASSEMBLIES[lessonId];
+
+  // shuffled pool with distractors
+  const correctSet = a.answer;
+  const distractor = {
+    ssum: [rMinusPill, hSum(), hDiff(), '2', 'sin'],
+    sdiff:[rMinusPill, hSum(), hDiff(), '2', 'cos'],
+    csum: [rMinusPill, hSum(), hDiff(), '2'],
+    cdiff:[hSum(), hDiff(), '2', 'cos']
+  }[lessonId];
+
+  const pool = shuffle([...correctSet, ...distractor]);
+
+  return `
+    <div class="math big" style="margin-top:14px">${a.lhs}</div>
+    <div class="onb-eyebrow" style="margin:12px 0 6px">Собери правую часть</div>
+    <div class="slots" id="asm-slots">
+      <span class="placeholder">собирай по порядку...</span>
+    </div>
+    <div class="onb-eyebrow" style="margin:14px 0 6px">Блоки</div>
+    <div class="bank" id="asm-bank">
+      ${pool.map((t,i)=>`<button class="tile" data-pi="${i}" data-t="${escapeHtml(t)}">${t}</button>`).join('')}
+    </div>
+    <div class="constructor-status" id="asm-status"></div>
+    <div class="btn-row">
+      <button class="btn" id="asm-check">Проверить</button>
+      <button class="btn ghost" id="asm-clear">Очистить</button>
+      <button class="btn ghost" id="asm-hint">Подсказка</button>
+    </div>
+    <div id="asm-hint-box" style="margin-top:10px"></div>
+
+    <script>
+      (function(){
+        const answer = ${JSON.stringify(correctSet)};
+        const lessonId = ${JSON.stringify(lessonId)};
+        const mode = ${JSON.stringify(mode)};
+        const placed = [];
+        const slots  = document.getElementById('asm-slots');
+        const bank   = document.getElementById('asm-bank');
+        const status = document.getElementById('asm-status');
+        function repaint(){
+          if(!placed.length){ slots.innerHTML='<span class="placeholder">собирай по порядку...</span>'; return; }
+          slots.innerHTML = placed.map((p,idx)=>'<button class="tile" data-idx="'+idx+'">'+p.text+'</button>').join('');
+          slots.querySelectorAll('button').forEach(b=>{
+            b.addEventListener('click',()=>{
+              const idx=+b.dataset.idx;
+              const rem=placed.splice(idx,1)[0];
+              bank.querySelector('[data-pi="'+rem.pi+'"]').classList.remove('placed');
+              repaint();status.className='constructor-status';status.textContent='';
+            });
+          });
+        }
+        bank.querySelectorAll('.tile').forEach(b=>{
+          b.addEventListener('click',()=>{
+            if(b.classList.contains('placed'))return;
+            b.classList.add('placed');
+            placed.push({pi:+b.dataset.pi, text:b.dataset.t});
+            repaint();
+          });
+        });
+        document.getElementById('asm-check').onclick=()=>{
+          const got = placed.map(p=>p.text);
+          if(got.length===answer.length && got.every((x,i)=>x===answer[i])){
+            status.className='constructor-status ok';
+            status.innerHTML = '<strong>Точно.</strong> Формула собрана.';
+            window.handleAssemblyDone(lessonId, mode);
+          } else {
+            state.errors++;
+            status.className='constructor-status bad';
+            status.innerHTML = 'Пока не то. Проверь, какие функции стоят при полусумме и полуразности, и не забыт ли коэффициент 2.';
+          }
+        };
+        document.getElementById('asm-clear').onclick=()=>{
+          placed.length=0;
+          bank.querySelectorAll('.tile').forEach(x=>x.classList.remove('placed'));
+          repaint();status.className='constructor-status';status.textContent='';
+        };
+        document.getElementById('asm-hint').onclick=()=>{
+          state.hintsUsed++;
+          const FORMULAS_MAP = ${JSON.stringify(FORMULAS)};
+          document.getElementById('asm-hint-box').innerHTML =
+            '<div class="note">Правильно так: ' + FORMULAS_MAP[lessonId] + '</div>';
+        };
+      })();
+    <\/script>
+  `;
+}
+
+/* ── 13d. Product application (one example) ── */
+function renderProductOne(lessonId){
+  const list = PRODUCTS[lessonId];
+  const ix = Math.min(state.productIx, list.length-1);
+  const p  = list[ix];
+
+  return `
+    <div class="math big" style="margin-top:14px">${p.question}</div>
+
+    <div class="split" style="margin-top:14px">
+      <div class="card" style="background:#fff;padding:18px">
+        <div class="onb-eyebrow">Подставляем</div>
+        <div class="math" style="margin-top:8px">
+          ${hSum(p.a, p.b)} = <strong>${p.halfSum}</strong><br>
+          ${hDiff(p.a, p.b)} = <strong>${p.halfDiff}</strong>
+        </div>
+      </div>
+      <div class="card" style="background:var(--paper);padding:18px">
+        <div class="onb-eyebrow" style="color:var(--gold)">Получаем</div>
+        <div class="math big" style="margin-top:8px">${p.answer}</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      ${list.length>1 && ix<list.length-1
+        ? '<button class="btn" onclick="state.productIx++;render()">Следующий пример →</button>'
+        : `<button class="btn gold" onclick="finishLesson('${lessonId}')">Урок ${LESSONS_META.find(l=>l.id===lessonId).num} завершён ✓</button>`}
+      <button class="btn ghost" onclick="state.section='derive';state.stepIx=0;render()">↻ К выводу</button>
+    </div>
+  `;
+}
+
+function finishLesson(lessonId){
+  state.progress[lessonId].product = true;
+  // pick next lesson or go to mix/test
+  const order = ['ssum','sdiff','csum','cdiff'];
+  const idx = order.indexOf(lessonId);
+  if(idx < order.length-1){
+    state.lesson = order[idx+1]; state.section='derive'; state.stepIx=0;
+  } else {
+    // all 4 lessons done — go to final test prompt
+    state.view='finalTest'; state.test = buildFinalTest(); state.testIx=0; state.testAnswers=[];
+  }
+  render();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   14. VIEW: ASSEMBLY HUB — quick formula-only mode
+   ═══════════════════════════════════════════════════════════════════ */
+
+function renderAssemblyHub(){
+  const ids = ['ssum','sdiff','csum','cdiff'];
+  const ix = state.assemblyIx;
+  if(ix >= ids.length){
+    return `
+      <section class="card">
+        <div class="onb-eyebrow" style="color:var(--leaf)">Все четыре формулы собраны ✓</div>
+        <h2 style="font-family:var(--display);font-size:26px;margin:6px 0 10px">Готово.</h2>
+        <p class="sub">Все четыре формулы ты собрал руками. Дальше — применять и не попадаться в ловушки.</p>
+        <div class="btn-row">
+          <button class="btn" onclick="state.mode='practice';state.view='traps';state.trapIx=0;render()">Пройти «Ловушки» →</button>
+          <button class="btn ghost" onclick="state.assemblyIx=0;render()">Собрать ещё раз</button>
+          <button class="btn ghost" onclick="state.view='onboarding';render()">На главную</button>
+        </div>
+      </section>`;
+  }
+
+  const lessonId = ids[ix];
+  const meta = LESSONS_META.find(l=>l.id===lessonId);
+
+  return `
+    <section class="card">
+      <div class="flex-between">
+        <div>
+          <div class="onb-eyebrow">Быстрая сборка · ${ix+1} / 4</div>
+          <h2 style="font-family:var(--display);font-size:24px;margin:4px 0 0">${meta.title}</h2>
+        </div>
+        <div class="muted" style="font-size:13px">без вывода — только структура</div>
+      </div>
+      ${renderAssemblyWidget(lessonId, 'hub')}
+    </section>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   15. VIEW: TRAPS — find the mistake
+   ═══════════════════════════════════════════════════════════════════ */
+
+function renderTraps(){
+  const ix = state.trapIx;
+  if(ix >= TRAPS.length){
+    state.progress.trapsCleared = TRAPS.length;
+    return `
+      <section class="card">
+        <div class="onb-eyebrow" style="color:var(--leaf)">Ловушки пройдены ✓</div>
+        <h2 style="font-family:var(--display);font-size:26px;margin:6px 0 10px">${TRAPS.length} из ${TRAPS.length} — отлично.</h2>
+        <p class="sub">Ты видишь, где обычно ошибаются: знак, коэффициент, какая функция при какой полусумме.</p>
+        <div class="btn-row">
+          <button class="btn" onclick="state.test = buildFinalTest(); state.testIx=0; state.testAnswers=[]; state.view='finalTest'; render()">Финальный мини-тест →</button>
+          <button class="btn ghost" onclick="state.trapIx=0;render()">Пройти ловушки ещё раз</button>
+          <button class="btn ghost" onclick="state.mode='learn';state.view='onboarding';render()">На главную</button>
+        </div>
+      </section>`;
+  }
+
+  const t = TRAPS[ix];
+  return `
+    <section class="card">
+      <div class="flex-between">
+        <div>
+          <div class="onb-eyebrow">Ловушка ${ix+1} / ${TRAPS.length}</div>
+          <h2 style="font-family:var(--display);font-size:22px;margin:4px 0 6px">Найди ошибку</h2>
+        </div>
+        <div class="muted" style="font-size:13px">смотри внимательно: знак, функция, полусумма/полуразность</div>
+      </div>
+
+      <div class="card" style="background:var(--rust-bg);border-color:var(--rust-line);margin-top:14px">
+        <div class="onb-eyebrow" style="color:var(--rust)">Ученик написал так</div>
+        <div class="math big" style="margin-top:6px">${t.wrong}</div>
+      </div>
+
+      <div class="onb-eyebrow" style="margin-top:18px">Что не так?</div>
+      <div class="choices" id="trap-c">
+        ${t.options.map((o,i)=>`
+          <button class="choice" data-i="${i}">
+            <span class="marker">${'ABC'[i]}</span>
+            <span class="body" style="font-family:var(--body);font-weight:500;font-size:15px">${o}</span>
+          </button>`).join('')}
+      </div>
+      <div id="trap-fb" style="margin-top:14px"></div>
+      <div class="btn-row">
+        ${ix>0?'<button class="btn ghost" onclick="state.trapIx--;render()">← Назад</button>':''}
+        <button class="btn ghost" onclick="state.mode='learn';state.view='onboarding';render()">На главную</button>
+      </div>
+    </section>
+
+    <script>
+      const correct = ${t.correct};
+      const explain = ${JSON.stringify(t.explain)};
+      document.querySelectorAll('#trap-c .choice').forEach(b=>{
+        b.addEventListener('click',()=>{
+          const i=+b.dataset.i;
+          document.querySelectorAll('#trap-c .choice').forEach(x=>x.classList.add('locked'));
+          if(i===correct){
+            b.classList.add('correct');
+            document.getElementById('trap-fb').innerHTML='<div class="note leaf">'+explain+'</div>';
+            setTimeout(()=>{ state.trapIx++; render(); }, 1700);
+          } else {
+            state.errors++;
+            b.classList.add('wrong');
+            // mark the correct one too
+            document.querySelectorAll('#trap-c .choice')[correct].classList.add('correct');
+            document.getElementById('trap-fb').innerHTML='<div class="note rust">Не та ошибка. '+explain+'</div>';
+            setTimeout(()=>{ state.trapIx++; render(); }, 2400);
+          }
+        });
+      });
+    <\/script>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   16. VIEW: FINAL TEST
+   ═══════════════════════════════════════════════════════════════════ */
+
+function renderFinalTest(){
+  if(!state.test){ state.test = buildFinalTest(); state.testIx=0; state.testAnswers=[]; }
+  const ix = state.testIx;
+  const total = state.test.length;
+
+  if(ix >= total){
+    const correct = state.testAnswers.filter(Boolean).length;
+    const pct = Math.round(correct/total*100);
+    state.progress.testBest = Math.max(state.progress.testBest, correct);
+    return `
+      <section class="card" style="text-align:center;padding:34px 24px">
+        <div class="onb-eyebrow" style="color:var(--leaf)">Готово</div>
+        <h2 style="font-family:var(--display);font-size:30px;margin:8px 0 18px">Финальный тест: ${correct} / ${total}</h2>
+        <div class="score-ring" style="--p:${pct}"><span>${pct}%</span></div>
+        <p class="sub" style="margin-top:18px">${correct===total
+          ? 'Готово: можно переходить к применению формул в задачах.'
+          : correct>=3
+            ? 'Хорошая база. Перед задачами ещё раз пробеги «Ловушки» и слабый урок.'
+            : 'Стоит вернуться к выводу — пройди один урок ещё раз с самого начала.'}</p>
+        <div class="btn-row" style="justify-content:center">
+          <button class="btn" onclick="state.test=buildFinalTest();state.testIx=0;state.testAnswers=[];render()">Пройти тест заново</button>
+          <button class="btn ghost" onclick="state.mode='learn';state.view='onboarding';render()">На главную</button>
+        </div>
+      </section>`;
+  }
+
+  const q = state.test[ix];
+  let body = '';
+
+  if(q.kind==='pick'){
+    // show "X = ?" and 4 options (1 correct, 3 distractors from other formulas)
+    const correctTxt = FORMULAS[q.id];
+    const wrong = Object.keys(FORMULAS).filter(k=>k!==q.id).map(k=>FORMULAS[k]);
+    const opts = shuffle([correctTxt, ...wrong]).slice(0,4);
+    if(!opts.includes(correctTxt)) opts[0]=correctTxt;
+    const correctIx = opts.indexOf(correctTxt);
+    const lhs = LESSONS_META.find(l=>l.id===q.id).lhs;
+    body = `
+      <div class="math big">Выбери верную формулу для:</div>
+      <div class="math huge" style="margin:14px 0 18px;text-align:center">${lhs}</div>
+      <div class="choices" id="ft-c">
+        ${opts.map((o,i)=>`
+          <button class="choice" data-i="${i}">
+            <span class="marker">${'ABCD'[i]}</span>
+            <span class="body math" style="font-size:15px">${o}</span>
+          </button>`).join('')}
+      </div>
+      <script>
+        const ci = ${correctIx};
+        document.querySelectorAll('#ft-c .choice').forEach(b=>{
+          b.addEventListener('click',()=>{
+            const i=+b.dataset.i;
+            document.querySelectorAll('#ft-c .choice').forEach(x=>x.classList.add('locked'));
+            const ok = i===ci;
+            b.classList.add(ok?'correct':'wrong');
+            if(!ok) document.querySelectorAll('#ft-c .choice')[ci].classList.add('correct');
+            state.testAnswers.push(ok);
+            setTimeout(()=>{ state.testIx++; render(); }, 1300);
+          });
+        });
+      <\/script>
+    `;
+  }
+  else if(q.kind==='assembly'){
+    // mini assembly with auto-next
+    const a = ASSEMBLIES[q.id];
+    const lhs = a.lhs;
+    const correctSet = a.answer;
+    const distractor = [rMinusPill, hSum(), hDiff(), '2', 'sin', 'cos'].filter(x=>!correctSet.includes(x));
+    const pool = shuffle([...correctSet, ...distractor]);
+    body = `
+      <div class="math big">Собери правую часть:</div>
+      <div class="math big" style="margin:8px 0 14px">${lhs}</div>
+      <div class="slots" id="ft-slots"><span class="placeholder">собирай по порядку...</span></div>
+      <div class="onb-eyebrow" style="margin:14px 0 6px">Блоки</div>
+      <div class="bank" id="ft-bank">
+        ${pool.map((t,i)=>`<button class="tile" data-pi="${i}" data-t="${escapeHtml(t)}">${t}</button>`).join('')}
+      </div>
+      <div class="constructor-status" id="ft-status"></div>
+      <div class="btn-row">
+        <button class="btn" id="ft-check">Ответить</button>
+        <button class="btn ghost" id="ft-clear">Очистить</button>
+      </div>
+      <script>
+        (function(){
+          const answer=${JSON.stringify(correctSet)};
+          const placed=[];
+          const slots=document.getElementById('ft-slots');
+          const bank=document.getElementById('ft-bank');
+          const status=document.getElementById('ft-status');
+          function repaint(){
+            if(!placed.length){slots.innerHTML='<span class="placeholder">собирай по порядку...</span>';return;}
+            slots.innerHTML = placed.map((p,idx)=>'<button class="tile" data-idx="'+idx+'">'+p.text+'</button>').join('');
+            slots.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+              const idx=+b.dataset.idx;
+              const rem=placed.splice(idx,1)[0];
+              bank.querySelector('[data-pi="'+rem.pi+'"]').classList.remove('placed');
+              repaint();
+            }));
+          }
+          bank.querySelectorAll('.tile').forEach(b=>b.addEventListener('click',()=>{
+            if(b.classList.contains('placed'))return;
+            b.classList.add('placed');
+            placed.push({pi:+b.dataset.pi,text:b.dataset.t});repaint();
+          }));
+          document.getElementById('ft-check').onclick=()=>{
+            const got=placed.map(p=>p.text);
+            const ok = got.length===answer.length && got.every((x,i)=>x===answer[i]);
+            status.className='constructor-status '+(ok?'ok':'bad');
+            status.innerHTML = ok ? '<strong>Верно.</strong>' : '<strong>Не верно.</strong> Правильный ответ покажется на экране результатов.';
+            state.testAnswers.push(ok);
+            setTimeout(()=>{state.testIx++;render();}, 1300);
+          };
+          document.getElementById('ft-clear').onclick=()=>{
+            placed.length=0;
+            bank.querySelectorAll('.tile').forEach(x=>x.classList.remove('placed'));
+            repaint();
+          };
+        })();
+      <\/script>
+    `;
+  }
+  else if(q.kind==='trap'){
+    const t = TRAPS.find(x=>x.id===q.id);
+    body = `
+      <div class="math big">Найди ошибку в записи:</div>
+      <div class="card" style="background:var(--rust-bg);border-color:var(--rust-line);margin:12px 0">
+        <div class="math big">${t.wrong}</div>
+      </div>
+      <div class="choices" id="ft-tc">
+        ${t.options.map((o,i)=>`
+          <button class="choice" data-i="${i}">
+            <span class="marker">${'ABC'[i]}</span>
+            <span class="body" style="font-family:var(--body);font-weight:500;font-size:15px">${o}</span>
+          </button>`).join('')}
+      </div>
+      <script>
+        const ci = ${t.correct};
+        document.querySelectorAll('#ft-tc .choice').forEach(b=>{
+          b.addEventListener('click',()=>{
+            const i=+b.dataset.i;
+            document.querySelectorAll('#ft-tc .choice').forEach(x=>x.classList.add('locked'));
+            const ok=i===ci;
+            b.classList.add(ok?'correct':'wrong');
+            if(!ok) document.querySelectorAll('#ft-tc .choice')[ci].classList.add('correct');
+            state.testAnswers.push(ok);
+            setTimeout(()=>{state.testIx++;render();}, 1400);
+          });
+        });
+      <\/script>
+    `;
+  }
+
+  return `
+    <section class="card">
+      <div class="flex-between">
+        <div>
+          <div class="onb-eyebrow" style="color:var(--rust)">Финальный тест · ${ix+1} / ${total}</div>
+          <h2 style="font-family:var(--display);font-size:22px;margin:4px 0 0">${q.kind==='assembly'?'Сборка':q.kind==='pick'?'Выбор формулы':'Ловушка'}</h2>
+        </div>
+        <div class="muted" style="font-size:13px">подсказки отключены</div>
+      </div>
+      <div style="margin-top:18px">${body}</div>
+    </section>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   17. VIEW: DONE (after test from finishLesson)
+   ═══════════════════════════════════════════════════════════════════ */
+
+function renderDone(){
+  return `<section class="card">
+    <h2>Готово</h2>
+    <p>Все уроки и тест пройдены.</p>
+    <div class="btn-row">
+      <button class="btn" onclick="state.view='onboarding';render()">На главную</button>
+    </div>
+  </section>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   18. VIEW: TEACHER MODE
+   ═══════════════════════════════════════════════════════════════════ */
+
+function renderTeacher(){
+  const p = state.progress;
+  const lessonsDone = LESSONS_META.filter(l=>{const x=p[l.id];return x&&x.derive&&x.assemble&&x.product;}).length;
+
+  return `
+    <section class="card">
+      <div class="onb-eyebrow">РЕЖИМ УЧИТЕЛЯ</div>
+      <h2>Все формулы и прогресс ученика</h2>
+      <p class="sub">Для урока — открой этот режим на проекторе. Все четыре формулы видны сразу.</p>
+
+      <div class="teacher-grid" style="margin-top:18px">
+        <div class="teacher-card"><div class="num">${lessonsDone}/4</div><div class="lbl">уроков завершено</div></div>
+        <div class="teacher-card"><div class="num">${p.trapsCleared}/${TRAPS.length}</div><div class="lbl">ловушек пройдено</div></div>
+        <div class="teacher-card"><div class="num">${p.testBest}/5</div><div class="lbl">лучший тест</div></div>
+        <div class="teacher-card"><div class="num">${state.errors}</div><div class="lbl">ошибок · ${state.hintsUsed} подсказок</div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Все четыре формулы</h2>
+      <div style="display:grid;gap:12px;margin-top:10px">
+        ${LESSONS_META.map(l=>`
+          <div class="card" style="padding:18px;background:#fff;margin:0">
+            <div class="onb-eyebrow">Урок ${l.num} · ${l.title}</div>
+            <div class="math big" style="margin-top:8px">${FORMULAS[l.id]}</div>
+          </div>
+        `).join('')}
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Цветовая система — как читать запись</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
+        <div class="card" style="padding:14px;margin:0">
+          <div class="onb-eyebrow" style="color:var(--gold)">Золотой</div>
+          <div class="math" style="margin-top:6px">${hSum()} — полусумма</div>
+        </div>
+        <div class="card" style="padding:14px;margin:0">
+          <div class="onb-eyebrow" style="color:var(--blue)">Синий</div>
+          <div class="math" style="margin-top:6px">${hDiff()} — полуразность</div>
+        </div>
+        <div class="card" style="padding:14px;margin:0">
+          <div class="onb-eyebrow" style="color:var(--rust)">Ржавый</div>
+          <div class="math" style="margin-top:6px">${rMinusPill} в формуле ${fn('cos')} ${v('α')} ${rMinus} ${fn('cos')} ${v('β')}</div>
+        </div>
+        <div class="card" style="padding:14px;margin:0">
+          <div class="onb-eyebrow" style="color:var(--leaf)">Зелёный</div>
+          <div class="math" style="margin-top:6px">${cancel('cos p sin q')} — сокращается</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Стратегия урока</h2>
+      <ol style="font-size:15px;line-height:1.7;padding-left:22px">
+        <li>Запусти «Почему p и q?» — две карточки, ученик отвечает руками.</li>
+        <li>Урок 1: вывод ${fn('sin')} ${v('α')} + ${fn('sin')} ${v('β')} → произведение. Тут самое важное — собрать sin(p±q) из блоков.</li>
+        <li>Уроки 2–4 идут быстрее, потому что схема та же. На уроке 4 (разность косинусов) подчеркни <span class="tok-rust">красный минус</span>.</li>
+        <li>Режим «Ловушки» — 10 типичных ошибок. Хорошо запускать на повторении.</li>
+        <li>Финальный тест из 5 случайных заданий — оценка готовности к задачам.</li>
+      </ol>
+    </section>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   19. BOOT
+   ═══════════════════════════════════════════════════════════════════ */
+
+window.state = state; // expose for inline onclick handlers
+window.render = render;
+window.finishLesson = finishLesson;
+window.resetProgress = resetProgress;
+window.buildFinalTest = buildFinalTest;
+window.handleAssemblyDone = handleAssemblyDone;
+
+render();
+</script>
+
+</body>
+</html>

@@ -149,7 +149,7 @@ var RV = (function(){
      Тренажёры на своих ключах (stereo3.status, ep_progress_v1,
      trig-stp-trainer-v2, profile-ege-course-v1) в перенос не попадают. */
   var CABINET = [
-    { tid:"ege-t1-planimetry-generator", adapter:"planimetry", title:"Планиметрия без промахов",       file:"../trainers/ege-t1-planimetry-generator.html",                     line:1 },
+    { tid:"ege-t1-planimetry-generator", adapter:"planimetry", title:"Планиметрия без промахов",       file:"trainers/planimetry-t1.html",                     line:1 },
     { tid:"righttri-t1",                 adapter:"righttri",   title:"Прямоугольный треугольник",      file:"trainers/pryamougolny-treugolnik-trenazher.html", line:1 },
     { tid:"ege-t1-yashchenko",           adapter:"plan1y",     title:"Планиметрия по Ященко-2026",     file:"trainers/planimetry-yashchenko-t1.html",          line:1 },
     { tid:"ege-t2-yashchenko",           adapter:"vec2y",      title:"Векторы по Ященко-2026",         file:"trainers/vectors-yashchenko-t2.html",             line:2 },

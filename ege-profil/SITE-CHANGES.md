@@ -58,7 +58,30 @@
 в `review.html`, `file` из `RV.TRAINERS` и `RV.CABINET`. Непереданная часть
 курса — 20 адресов — перечислена в `PENDING`; список проверяется в обе стороны.
 
-## Пять адресов переписаны на корневой trainers/
+## Выложены одиннадцать тренажёров и банк экзамена
+`trainers/`: expert, inequalities, interval-method, numbers-t19, parameters-t18,
+planimetry-t1, planimetry-t17, probability-t45, trigonometry,
+trig-sum-to-product, vectors-t2; плюс `exam/bank.js`.
+
+Имена в присланной папке были перепутаны, поэтому каждый файл сверен по
+содержимому до копирования: у кого есть TID/TOPIC_ID — с тем, что ждут
+`registry.js` и `CABINET`, у остальных — по `<title>` с названием карточки
+в `index.html`. Расхождений ноль.
+
+## Решение по пятёрке перенаправлений
+Три ссылки вернулись на локальные файлы курса, две остались на корневой
+`trainers/` — по тому, разошлись версии или нет (сравнение с нормализованными
+концами строк):
+
+| Тренажёр | Различий с корневой версией | Решение |
+| --- | --- | --- |
+| finance | 0 — файлы совпадают побайтно, разница только в концах строк | ссылка на корень, дубля нет |
+| stereo | 1 строка в `index.html` и `trainer.html`: в корне подключён `js/progress-mail.js`; вдобавок в архиве `js/data.js` — не скрипт, а описание пакета | ссылка на корень, дубля нет |
+| trig-sum-to-product | 5438 — версия курса пишет `trig-stp-trainer-v2`, который читает адаптер; корневая пишет общий ключ | локальная версия курса |
+| planimetry-t1 | 1405 — в архиве «обучающий тренажёр», в корне «генератор»; TID у обоих один | локальная версия курса |
+| vectors-t2 | 54 — в версии курса есть ссылка «← Курс» и правило зазоров подписей | локальная версия курса |
+
+## Пять адресов переписаны на корневой trainers/ (предыдущий шаг)
 Эти тренажёры уже опубликованы на сайте под своими именами, поэтому курс
 ссылается на них, а не хранит копию под коротким именем. Правки в
 `index.html` (карточка и пилюля), `review.html` (`LINE_TRAINER`) и
@@ -77,7 +100,7 @@
 - `node tests/teacher-test.js` — 75
 - `node tests/board-mirror-test.js` — 43
 - `node tests/qr-test.js` — 85
-- `node tests/links-test.js` — 66
+- `node tests/links-test.js` — 50
 - `node tests/ui-plan-test.js trainers/planimetry-yashchenko-t1.html` — 127
 - `node tests/ui-test.js trainers/pryamougolny-treugolnik-trenazher.html` — 847
 - `node tests/ui-vec-test.js trainers/vectors-yashchenko-t2.html` — 138

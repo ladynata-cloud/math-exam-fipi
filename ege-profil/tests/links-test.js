@@ -28,17 +28,9 @@ const PENDING = new Set([
   'exam/variant.html',
   'trainers/applied-t910.html',
   'trainers/derivative-t8.html',
-  'trainers/expert.html',
   'trainers/functions-t1112.html',
-  'trainers/inequalities.html',
-  'trainers/interval-method.html',
-  'trainers/numbers-t19.html',
-  'trainers/parameters-t18.html',
-  'trainers/planimetry-t17.html',
-  'trainers/probability-t45.html',
   'trainers/rationalization.html',
-  'trainers/stereo-t14.html',
-  'trainers/trigonometry.html'
+  'trainers/stereo-t14.html'
 ]);
 
 /* Куда ссылаются: адрес -> откуда на него ссылаются. */
@@ -146,19 +138,24 @@ function collect(w, where){
 
 /* ================= 7. Пятёрка из корневого trainers/ ================= */
 {
-  /* Эти тренажёры курс не хранит у себя — он ссылается на корневой каталог
-     сайта. Проверка названа отдельно, чтобы переименование в корне давало
-     внятное сообщение, а не общее «битая ссылка». */
+  /* Два тренажёра курс у себя не хранит: пришедшие версии совпали с теми,
+     что уже опубликованы в корневом trainers/, — дубля быть не должно.
+     Проверка названа отдельно, чтобы переименование в корне давало внятное
+     сообщение, а не общее «битая ссылка». */
   const SHARED = [
-    '../trainers/ege-t1-planimetry-generator.html',
     '../trainers/finance-nonstandard-trainer.html',
-    '../trainers/trig-sum-to-product-trainer.html',
-    '../trainers/ege-t2-vectors-trainer.html',
     '../trainers/ege-profile-stereometry-3d/index.html'
   ];
   for (const f of SHARED){
     ok(fs.existsSync(path.join(ROOT, f)), 'общий с сайтом тренажёр на месте: ' + f);
     ok(seen.has(f), 'на него ссылается страница курса: ' + f);
+    ok(!fs.existsSync(path.join(ROOT, 'trainers', path.basename(f))), 'дубля в курсе нет: ' + path.basename(f));
+  }
+  /* Стереометрия тянет ресурсы относительно себя — они должны лежать рядом
+     с той страницей, на которую ведёт ссылка. */
+  for (const r of ['css/style.css', 'js/three.min.js', 'js/data.js', 'js/trainer.js']){
+    const p = path.join(ROOT, '../trainers/ege-profile-stereometry-3d', r);
+    ok(fs.existsSync(p), 'стереометрия: ресурс на месте — ' + r);
   }
 }
 

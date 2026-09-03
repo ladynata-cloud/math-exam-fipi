@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 19 · Числа и их свойства</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA; --badbg:#FBEAE9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:680px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0 0 6px;font-size:16.5px;color:var(--ink-strong)}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+  .tab{border:1.5px solid var(--ink);background:rgba(250,250,244,.8);color:var(--ink);border-radius:999px;
+    padding:8px 16px;font:700 14px/1 inherit;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.92);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    padding:9px 16px;font:700 14.5px/1 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:disabled{opacity:.45;cursor:default}
+  input[type=text]{border:1.5px solid var(--ink);border-radius:8px;background:#fff;padding:9px 12px;font:600 16px/1 inherit;width:150px}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .feedback{margin-top:12px;border-radius:8px;padding:10px 12px;font-weight:600;display:none}
+  .feedback.on{display:block}
+  .feedback.ok{background:var(--okbg);color:var(--ok)}
+  .feedback.bad{background:var(--badbg);color:var(--red)}
+  .feedback.hint{background:rgba(30,58,159,.08);color:var(--ink-strong)}
+  .anatomy{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:10px}
+  .rule{border:1px dashed var(--line);border-radius:8px;padding:12px;background:rgba(255,255,255,.6)}
+  .rule b{color:var(--ink-strong)}
+  .board{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 10px}
+  .board button{border:1.5px solid var(--ink);background:#fff;color:var(--ink-strong);border-radius:8px;
+    min-width:48px;padding:11px 8px;font:700 17px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;cursor:pointer}
+  .board button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .liveinfo{font:700 15px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong);margin:6px 0 0}
+  details.support{border:1px dashed var(--line);border-radius:8px;background:rgba(255,255,255,.6);padding:10px 12px;margin-bottom:10px}
+  details.support summary{cursor:pointer;font-weight:700;color:var(--ink-strong)}
+  details.support p{margin:8px 0 0}
+  .plist{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .pcard{border:1.5px solid var(--ink);border-radius:10px;background:#fff;padding:14px;cursor:pointer;text-align:left;font:inherit}
+  .pcard:hover{background:rgba(30,58,159,.06)}
+  .pcard .tag{font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--red)}
+  .pcard .done{color:var(--ok);font-weight:700;font-size:13px}
+  .point{border-left:3px solid var(--ink);background:rgba(255,255,255,.62);padding:12px 14px;margin-bottom:14px}
+  .point.solved{border-left-color:var(--ok)}
+  .opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 0}
+  .opt{border:1.5px solid var(--ink);background:#fff;color:var(--ink-strong);border-radius:8px;padding:9px 13px;
+    font:600 14px/1.35 inherit;cursor:pointer;text-align:left}
+  .opt:hover{background:rgba(30,58,159,.07)}
+  .opt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+  .opt.bad{background:var(--badbg);border-color:var(--red);color:var(--red)}
+  .steps .step{border-left:3px solid var(--muted);background:rgba(255,255,255,.7);padding:8px 11px;margin:8px 0 0;display:none}
+  .steps .step.on{display:block}
+  .answerline{border-left:3px solid var(--red);background:rgba(255,255,255,.7);padding:8px 11px;margin-top:8px;display:none;font-weight:700}
+  .answerline.on{display:block}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .chips button{border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;
+    padding:6px 12px;font:600 13px/1 inherit;cursor:pointer}
+  .chips button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .selfrow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .selfrow button{border:1.5px solid var(--ink);background:#fff;color:var(--ink-strong);border-radius:8px;
+    min-width:44px;padding:8px 0;font:700 15px/1 inherit;cursor:pointer}
+  .selfrow button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .crit{font-size:13px;color:var(--muted);margin:4px 0 0}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+  .dots span{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px}
+  .dots span.ok{background:var(--ink)}
+  .dots span.bad{background:var(--red);border-color:var(--red)}
+  .bigscore{font:800 34px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
+  .view{display:none}
+  .view.on{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Курс</a>
+  <p class="eyebrow">задание 19 · развёрнутый ответ · 4 балла</p>
+  <h1>Числа и их свойства</h1>
+  <p class="lede">Самая «нешкольная» задача варианта: здесь не подставляют в формулу, а ищут инвариант, строят пример и доказывают оценку. Три пункта — три разных жанра работы, и каждый оценивается отдельно.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="idea">Идея</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="tricks">Приёмы</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="tasks">Задачи</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="drill">Дриллы и зачёт</button>
+  </div>
+
+  <!-- ИДЕЯ -->
+  <section class="view on" id="view-idea">
+    <div class="card">
+      <h2>Анатомия задачи 19</h2>
+      <div class="anatomy">
+        <div class="rule"><b>а) «Можно ли…?»</b> Почти всегда ответ «да». Ничего доказывать не нужно — предъявите один пример и проверьте его. Экономьте время: это самый дешёвый балл в задаче.</div>
+        <div class="rule"><b>б) Тот же вопрос, другое число.</b> Почти всегда ответ «нет». Значит, ищем инвариант: чётность, остаток при делении, оценку снизу. Ответ «нет» без доказательства не стоит ничего.</div>
+        <div class="rule"><b>в) «Наибольшее / наименьшее».</b> Две независимые половины: <i>оценка</i> — доказать, что больше не бывает, и <i>пример</i> — показать, что столько бывает. За каждую половину дают отдельный результат.</div>
+      </div>
+      <p class="small muted" style="margin-top:12px">В критериях перечислены четыре результата: ответ в а), ответ в б), оценка в в), пример в в). Четыре результата — 4 балла, три — 3, два — 2, один — 1. Поэтому даже «не решил» почти всегда стоит 1–2 балла, если написать то, что видно сразу.</p>
+    </div>
+    <div class="card">
+      <h2>Инвариант: то, что не меняется</h2>
+      <p>На доске числа от 1 до 7. Выберите любые два — они заменятся модулем своей разности. Так до последнего числа. Следите за нижней строкой: сумма скачет, а вот её чётность…</p>
+      <div class="board" id="board"></div>
+      <p class="liveinfo" id="boardInfo"></p>
+      <p style="margin-top:12px"><button class="btn ghost" id="boardReset">Начать заново</button></p>
+      <p class="small muted" style="margin-top:10px">Почему так: |a − b| и a + b всегда одной чётности, поэтому каждый ход меняет сумму на чётное число. Чётность суммы — инвариант, и именно он отвечает на вопрос «а может ли получиться…».</p>
+    </div>
+  </section>
+
+  <!-- ПРИЁМЫ -->
+  <section class="view" id="view-tricks">
+    <div class="card">
+      <h2>Восемь приёмов</h2>
+      <p class="small muted">Развернуть и проговорить своими словами. Почти любая задача 19 собирается из двух-трёх таких кирпичей.</p>
+      <details class="support"><summary>Инвариант</summary><p>Спросите: что не меняется при разрешённой операции? Сумма, её чётность, остаток при делении на 3, количество нечётных чисел, произведение знаков. Если у начальной и требуемой конфигурации инварианты разные — ответ «нет», и это готовое доказательство.</p></details>
+      <details class="support"><summary>Сумма цифр и остаток по модулю 9</summary><p>Число и сумма его цифр дают одинаковый остаток при делении на 9: N ≡ S(N) (mod 9). Отсюда: разность N − S(N) всегда делится на 9; число делится на 9 тогда и только тогда, когда делится его сумма цифр; при перестановке цифр остаток по модулю 9 не меняется.</p></details>
+      <details class="support"><summary>Оценка + пример</summary><p>В пункте в) нужны обе половины. Оценка: цепочка неравенств, доказывающая «больше нельзя». Пример: конкретный набор, на котором достигается. Ответ без примера — недоказанный ответ, пример без оценки — недоказанная максимальность.</p></details>
+      <details class="support"><summary>Минимальная сумма различных чисел</summary><p>k различных натуральных чисел в сумме дают не меньше 1 + 2 + … + k = k(k + 1)/2. Главное неравенство всех задач про наборы: оно ограничивает и количество чисел, и величину наибольшего из них.</p></details>
+      <details class="support"><summary>Крайний элемент</summary><p>Посмотрите на наибольшее число набора. Группа, в которую оно попало, имеет сумму не меньше него; набор, в котором оно лежит, не короче его самого. Крайний элемент почти всегда даёт оценку в пункте в).</p></details>
+      <details class="support"><summary>Чётность суммы и разности</summary><p>a + b и a − b всегда одной чётности. Отсюда: a² − b² = (a − b)(a + b) либо нечётно, либо делится на 4; сумма двух чисел чётна ровно тогда, когда они одной чётности.</p></details>
+      <details class="support"><summary>Сумма подряд идущих чисел</summary><p>Сумма k подряд идущих натуральных чисел, начиная с a, равна ka + k(k − 1)/2. Удвоив: 2N = k(2a + k − 1), причём множители k и 2a + k − 1 разной чётности. Отсюда сразу видно, какие k возможны.</p></details>
+      <details class="support"><summary>Перебор после оценки</summary><p>Сначала сужаем диапазон неравенством (обычно до десятка вариантов), потом честно перебираем оставшееся. Перебор без оценки — не решение; оценка без перебора — не доведённое решение.</p></details>
+    </div>
+  </section>
+
+  <!-- ЗАДАЧИ -->
+  <section class="view" id="view-tasks">
+    <div id="taskList" class="plist"></div>
+    <div id="taskView" style="display:none">
+      <p><button class="btn ghost" id="backToList">← Ко всем задачам</button></p>
+      <div class="card">
+        <p class="mono small" id="tTag" style="color:var(--red);font-weight:700"></p>
+        <h2 id="tTitle"></h2>
+        <p id="tCond" style="font-size:17px"></p>
+      </div>
+      <div id="tPoints"></div>
+      <div class="card red">
+        <h3>Самооценка по критериям</h3>
+        <p class="small muted">Запишите все три пункта на бумаге, сверьтесь с разбором и поставьте балл, как поставил бы эксперт.</p>
+        <div class="selfrow" id="tSelf"></div>
+        <p class="crit">Считаются четыре результата: обоснованный ответ в а), обоснованный ответ в б), оценка в в), пример в в). 4 — верны все четыре · 3 — три · 2 — два · 1 — один · 0 — ни одного.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ДРИЛЛЫ -->
+  <section class="view" id="view-drill">
+    <div class="card">
+      <h2>Быстрые вопросы</h2>
+      <p class="small muted">Шесть типов реакций, из которых собираются пункты а) и б). Считать нужно в уме или на полях — большие числа здесь не встречаются.</p>
+      <div class="chips" id="drillChips"></div>
+      <p id="dText" style="font-size:17px"></p>
+      <div class="row" id="dNum">
+        <input type="text" id="dAnswer" inputmode="numeric" autocomplete="off" aria-label="Ответ">
+        <button class="btn" id="dCheck">Проверить</button>
+      </div>
+      <div class="row" id="dYN" style="display:none">
+        <button class="btn" id="dYes">Да</button>
+        <button class="btn" id="dNo">Нет</button>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn ghost" id="dSol">Разбор</button>
+        <button class="btn ghost" id="dNext">Другой вопрос</button>
+      </div>
+      <div class="feedback" id="dFb"></div>
+      <p class="small mono muted" style="margin-top:10px">Серия верных подряд: <b id="dStreak">0</b></p>
+    </div>
+    <div class="card red">
+      <h2>Зачёт: 8 вопросов</h2>
+      <p class="small muted">Все шесть типов вперемешку, без разбора по ходу. Зачёт сдан от 7 верных. Результат виден на главной странице курса.</p>
+      <div class="dots" id="zDots"></div>
+      <div id="zDone" style="display:none">
+        <p class="bigscore" id="zScore"></p>
+        <p id="zVerdict"></p>
+      </div>
+      <p><button class="btn" id="zStart">Начать зачёт</button></p>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ================= ЛОГИКА (без DOM) ================= */
+var N19 = (function(){
+  "use strict";
+  function rnd(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  function tri(k){ return k*(k+1)/2; }
+  function digitSum(n){ var s = 0; n = Math.abs(n); while (n > 0){ s += n % 10; n = Math.floor(n/10); } return s; }
+  function isNat(x){ return typeof x === "number" && isFinite(x) && x > 0 && Math.floor(x) === x; }
+  function isSquare(x){ if (x < 0) return false; var r = Math.round(Math.sqrt(x)); return r*r === x; }
+
+  /* наибольшее количество различных натуральных чисел с суммой S */
+  function maxCount(S){ var k = 0; while (tri(k+1) <= S) k++; return k; }
+  /* n различных натуральных, среднее m: наибольшее возможное значение наибольшего */
+  function maxElement(n, m){ return n*m - tri(n-1); }
+  /* можно ли 1..n разбить на k групп равной суммы */
+  function groupsOK(n, k){ var T = tri(n); return k >= 2 && T % k === 0 && T/k >= n; }
+  /* первое слагаемое в представлении N суммой k подряд идущих натуральных, иначе null */
+  function consecStart(N, k){
+    var t = 2*N/k;
+    if (t !== Math.floor(t)) return null;
+    var x = t - k + 1;
+    if (x <= 0 || x % 2 !== 0) return null;
+    return x/2;
+  }
+  /* доска 1..n, ход: a,b → a+b−c; итоговое число */
+  function invariantFinal(n, c){ return tri(n) - c*(n-1); }
+
+  var PRED = {
+    p1a: function(v){ return isNat(v) && v - digitSum(v) === 2025; },
+    p6a: function(v){ return isNat(v) && v*v > 2025 && isSquare(v*v - 2025); }
+  };
+
+  /* ---------- генераторы дриллов ---------- */
+  function dInvariant(){
+    var n = rnd(6,10), c = pick([1,1,2]);
+    var ans = invariantFinal(n, c);
+    return { type:"invariant", kind:"num", p:{n:n,c:c}, answer:ans,
+      text:"На доске написаны числа 1, 2, 3, …, " + n + ". За один ход стирают любые два числа a и b и пишут вместо них a + b − " + c + ". Какое число останется на доске через " + (n-1) + " ходов?",
+      sol:"Каждый ход уменьшает количество чисел на 1, а сумму — ровно на " + c + ". Сумма 1 + 2 + … + " + n + " = " + tri(n) + "; за " + (n-1) + " ходов она уменьшится на " + (c*(n-1)) + ". Останется " + ans + "." };
+  }
+  function dMaxCount(){
+    var k = rnd(4,12), S = tri(k) + rnd(0, k);
+    return { type:"maxcount", kind:"num", p:{S:S}, answer:k,
+      text:"Какое наибольшее количество различных натуральных чисел может в сумме давать " + S + "?",
+      sol:"Сумма k различных натуральных чисел не меньше 1 + 2 + … + k = k(k + 1)/2. При k = " + (k+1) + " минимум равен " + tri(k+1) + " > " + S + " — не годится. При k = " + k + " минимум " + tri(k) + " ≤ " + S + ", а излишек " + (S - tri(k)) + " прибавляем к наибольшему числу. Ответ: " + k + "." };
+  }
+  function dMaxElement(){
+    var n = rnd(5,10), m = rnd(n, 3*n);
+    var ans = maxElement(n, m);
+    return { type:"maxelem", kind:"num", p:{n:n,m:m}, answer:ans,
+      text:"Среднее арифметическое " + n + " различных натуральных чисел равно " + m + ". Какое наибольшее значение может принимать наибольшее из них?",
+      sol:"Сумма всех чисел равна " + n + " · " + m + " = " + (n*m) + ". Остальные " + (n-1) + " чисел различны, поэтому их сумма не меньше 1 + 2 + … + " + (n-1) + " = " + tri(n-1) + ". Значит наибольшее не превосходит " + (n*m) + " − " + tri(n-1) + " = " + ans + "; пример: 1, 2, …, " + (n-1) + " и " + ans + "." };
+  }
+  function dGroups(){
+    var n = rnd(6,14), T = tri(n), good = [], bad = [];
+    for (var k = 2; k <= n; k++) (groupsOK(n,k) ? good : bad).push(k);
+    var want = Math.random() < 0.5;
+    if (want && !good.length) want = false;
+    var kk = want ? pick(good) : pick(bad);
+    var why;
+    if (groupsOK(n, kk)) why = "Сумма 1 + 2 + … + " + n + " = " + T + " делится на " + kk + ", в группе получается " + (T/kk) + " — это не меньше наибольшего числа " + n + ", и такое разбиение существует.";
+    else if (T % kk) why = "Сумма 1 + 2 + … + " + n + " = " + T + " не делится на " + kk + " — равных групп быть не может.";
+    else why = "Сумма 1 + 2 + … + " + n + " = " + T + " делится на " + kk + ", но в группе вышло бы " + (T/kk) + " — меньше числа " + n + ", а группа с ним имеет сумму не меньше " + n + ".";
+    return { type:"groups", kind:"yn", p:{n:n,k:kk}, answer:groupsOK(n,kk),
+      text:"Можно ли числа 1, 2, 3, …, " + n + " разбить на " + kk + " групп(ы) с равными суммами?",
+      sol:why };
+  }
+  function dConsec(){
+    var want = Math.random() < 0.5, N, k, a, guard = 0;
+    do {
+      N = rnd(40, 400); k = rnd(2, 9); a = consecStart(N, k); guard++;
+    } while ((a !== null) !== want && guard < 300);
+    var ok = a !== null;
+    return { type:"consec", kind:"yn", p:{N:N,k:k}, answer:ok,
+      text:"Можно ли представить число " + N + " в виде суммы " + k + " идущих подряд натуральных чисел?",
+      sol: ok
+        ? "Сумма " + k + " подряд идущих чисел, начиная с a, равна " + k + "a + " + tri(k-1) + ". Из " + k + "a + " + tri(k-1) + " = " + N + " получаем a = " + a + ": подходит набор " + a + " + " + (a+1) + " + … + " + (a+k-1) + "."
+        : "Сумма " + k + " подряд идущих чисел, начиная с a, равна " + k + "a + " + tri(k-1) + ". Уравнение " + k + "a + " + tri(k-1) + " = " + N + " не имеет натуральных решений, поэтому представления нет." };
+  }
+  function dDigits(){
+    /* «да» строим от готового числа: не всякое кратное 9 достижимо (например, 90) */
+    if (Math.random() < 0.5){
+      var w = rnd(50, 4000), M = w - digitSum(w);
+      return { type:"digits", kind:"yn", p:{M:M, w:w}, answer:true,
+        text:"Существует ли натуральное число N, для которого N − S(N) = " + M + "? Здесь S(N) — сумма цифр числа N.",
+        sol:"Разность N − S(N) всегда делится на 9, и " + M + " кратно 9: " + M + " = 9 · " + (M/9) + ". Пример: N = " + w + ", ведь S(" + w + ") = " + digitSum(w) + " и " + w + " − " + digitSum(w) + " = " + M + "." };
+    }
+    var Mb = 9*rnd(3,150) + rnd(1,8);
+    return { type:"digits", kind:"yn", p:{M:Mb}, answer:false,
+      text:"Существует ли натуральное число N, для которого N − S(N) = " + Mb + "? Здесь S(N) — сумма цифр числа N.",
+      sol:"Число и сумма его цифр дают одинаковый остаток при делении на 9, поэтому разность N − S(N) всегда делится на 9. А " + Mb + " на 9 не делится (сумма цифр " + digitSum(Mb) + "), значит такого N нет." };
+  }
+  var GENS = { invariant:dInvariant, maxcount:dMaxCount, maxelem:dMaxElement, groups:dGroups, consec:dConsec, digits:dDigits };
+  var TYPES = [
+    { id:"invariant", label:"Инвариант" },
+    { id:"maxcount", label:"Сколько чисел" },
+    { id:"maxelem", label:"Наибольшее в наборе" },
+    { id:"groups", label:"Группы равной суммы" },
+    { id:"consec", label:"Подряд идущие" },
+    { id:"digits", label:"Сумма цифр" }
+  ];
+  function drill(type){
+    if (!type || type === "mix") type = pick(TYPES).id;
+    return GENS[type]();
+  }
+
+  /* ---------- шесть задач ---------- */
+  var PROBLEMS = [
+    { id:"p1", tag:"цифры и девятка", title:"Число минус сумма его цифр",
+      cond:"Для натурального числа N через S(N) обозначим сумму его цифр.",
+      points:[
+        { id:"a", kind:"pred", prompt:"а) Существует ли N, для которого N − S(N) = 2025? Если да — введите пример такого N.",
+          placeholder:"пример N", pred:"p1a",
+          steps:[
+            "В пункте а) обосновывать нечего: достаточно предъявить одно число и проверить его.",
+            "Ищем N чуть больше 2025. Возьмём N = 2030: сумма цифр 2 + 0 + 3 + 0 = 5, и 2030 − 5 = 2025."
+          ],
+          ans:"Ответ: да. Например, N = 2030 (подойдёт любое число от 2030 до 2039)." },
+        { id:"b", kind:"yn", prompt:"б) Существует ли N, для которого N − S(N) = 2026?", answer:false,
+          why:{ q:"Почему?", options:[
+            "Разность N − S(N) всегда делится на 9, а 2026 на 9 не делится",
+            "Разность N − S(N) всегда чётна, а 2026 нечётно",
+            "N − S(N) не может превосходить 2025"], correct:0 },
+          steps:[
+            "Число и сумма его цифр дают одинаковый остаток при делении на 9: N ≡ S(N) (mod 9).",
+            "Значит разность N − S(N) всегда делится на 9.",
+            "Сумма цифр числа 2026 равна 10, поэтому 2026 на 9 не делится — такого N нет."
+          ],
+          ans:"Ответ: нет." },
+        { id:"c", kind:"num", prompt:"в) Найдите наибольшее N, для которого N − S(N) = 2025.", answer:2039,
+          steps:[
+            "Из равенства N = 2025 + S(N) видно, что N > 2025, а сумма цифр четырёхзначного числа не превосходит 36. Значит 2026 ≤ N ≤ 2061.",
+            "Все такие числа имеют вид N = 2000 + 10x + y, где x — цифра десятков, y — цифра единиц.",
+            "Тогда N − S(N) = (2000 + 10x + y) − (2 + 0 + x + y) = 1998 + 9x. Условие даёт 1998 + 9x = 2025, откуда x = 3.",
+            "Подходят ровно числа 2030, 2031, …, 2039 — цифра единиц любая. Наибольшее из них 2039; проверка: 2039 − 14 = 2025."
+          ],
+          ans:"Ответ: 2039." }
+      ] },
+
+    { id:"p2", tag:"инвариант", title:"Доска и модули разностей",
+      cond:"На доске написаны числа 1, 2, 3, …, 10. За один ход разрешается стереть любые два числа и написать вместо них модуль их разности. Так делают девять раз, пока на доске не останется одно число.",
+      points:[
+        { id:"a", kind:"yn", prompt:"а) Может ли в итоге остаться число 0?", answer:false,
+          why:{ q:"Почему?", options:[
+            "Чётность суммы всех чисел на доске не меняется, а 1 + 2 + … + 10 = 55 нечётно",
+            "Числа на доске всегда различны, поэтому ноль появиться не может",
+            "Модуль разности двух разных чисел всегда положителен"], correct:0 },
+          steps:[
+            "Модуль разности и сумма имеют одинаковую чётность: |a − b| ≡ a + b (mod 2).",
+            "Значит каждый ход меняет сумму всех чисел на доске на чётное число — чётность суммы не меняется никогда. Это инвариант.",
+            "Вначале сумма равна 1 + 2 + … + 10 = 55 и нечётна. В конце сумма — это единственное оставшееся число, поэтому оно нечётно, а 0 чётен."
+          ],
+          ans:"Ответ: нет." },
+        { id:"b", kind:"yn", prompt:"б) Может ли в итоге остаться число 5?", answer:true,
+          why:{ q:"Почему?", options:[
+            "5 нечётно, запрет из пункта а) не мешает — и есть явная последовательность ходов",
+            "5 — это среднее арифметическое чисел от 1 до 10",
+            "5 делит сумму 55, поэтому пятёрка обязательно останется"], correct:0 },
+          steps:[
+            "Число 5 нечётно, значит инвариант из пункта а) не запрещает такой итог. Остаётся предъявить ходы.",
+            "Первый ход: (10, 5) → 5. Затем сворачиваем в ноль оставшиеся 1, 2, 3, 4, 6, 7, 8, 9: (1, 2) → 1, (3, 4) → 1, (6, 7) → 1, (8, 9) → 1, потом (1, 1) → 0, (1, 1) → 0 и (0, 0) → 0.",
+            "Последний, девятый ход: (5, 0) → 5."
+          ],
+          ans:"Ответ: да." },
+        { id:"c", kind:"num", prompt:"в) Какое наибольшее число может остаться на доске?", answer:9,
+          steps:[
+            "Оценка. Модуль разности не превосходит большего из двух чисел, поэтому наибольшее число на доске никогда не растёт: итог не больше 10.",
+            "По пункту а) итог нечётен, значит он не больше 9.",
+            "Пример. (10, 1) → 9; затем числа 2, 3, …, 9 сворачиваем в ноль: (2, 3) → 1, (4, 5) → 1, (6, 7) → 1, (8, 9) → 1, (1, 1) → 0, (1, 1) → 0, (0, 0) → 0; наконец (9, 0) → 9."
+          ],
+          ans:"Ответ: 9." }
+      ] },
+
+    { id:"p3", tag:"наборы и среднее", title:"Среднее арифметическое десяти чисел",
+      cond:"Среднее арифметическое десяти различных натуральных чисел равно 16.",
+      points:[
+        { id:"a", kind:"yn", prompt:"а) Может ли наибольшее из этих чисел равняться 100?", answer:true,
+          why:{ q:"Почему?", options:[
+            "Сумма равна 160, на девять остальных остаётся 60 — это не меньше минимальной суммы 1 + 2 + … + 9 = 45",
+            "100 меньше суммы 160, поэтому такое число возможно всегда",
+            "Среднее 16 меньше 100, значит наибольшее может быть любым"], correct:0 },
+          steps:[
+            "Сумма всех десяти чисел равна 10 · 16 = 160.",
+            "Если наибольшее равно 100, то на остальные девять остаётся 60. Девять различных натуральных чисел дают в сумме не меньше 1 + 2 + … + 9 = 45, а 60 ≥ 45 — значит набор подобрать можно.",
+            "Пример: 1, 2, 3, 4, 5, 6, 7, 8, 24, 100. Все числа различны, сумма равна 160."
+          ],
+          ans:"Ответ: да." },
+        { id:"b", kind:"yn", prompt:"б) Может ли наибольшее из этих чисел равняться 116?", answer:false,
+          why:{ q:"Почему?", options:[
+            "Девять остальных чисел различны, их сумма не меньше 45, а 116 + 45 = 161 больше 160",
+            "116 не делится на 16",
+            "Наибольшее число не может превосходить сумму всех остальных"], correct:0 },
+          steps:[
+            "Сумма всех чисел равна 160.",
+            "Девять остальных чисел различны и натуральны, поэтому их сумма не меньше 1 + 2 + … + 9 = 45.",
+            "Тогда общая сумма была бы не меньше 116 + 45 = 161 > 160 — противоречие."
+          ],
+          ans:"Ответ: нет." },
+        { id:"c", kind:"num", prompt:"в) Какое наибольшее значение может принимать наибольшее из этих чисел?", answer:115,
+          steps:[
+            "Оценка. Сумма всех чисел равна 160, а девять остальных дают не меньше 45, поэтому наибольшее не превосходит 160 − 45 = 115.",
+            "Пример. Набор 1, 2, 3, 4, 5, 6, 7, 8, 9, 115: десять различных натуральных чисел, сумма 45 + 115 = 160, среднее арифметическое 16.",
+            "Оценка достигается, значит ответ 115."
+          ],
+          ans:"Ответ: 115." }
+      ] },
+
+    { id:"p4", tag:"группы равной суммы", title:"Разбиение чисел от 1 до 12",
+      cond:"Числа 1, 2, 3, …, 12 разбивают на несколько групп так, чтобы суммы чисел во всех группах были равны.",
+      points:[
+        { id:"a", kind:"yn", prompt:"а) Можно ли разбить их на 3 группы?", answer:true,
+          why:{ q:"Почему?", options:[
+            "Сумма всех чисел равна 78, она делится на 3, и разбиение с суммой 26 в каждой группе существует",
+            "Количество чисел 12 делится на 3, поэтому группы равной суммы найдутся всегда",
+            "Любой набор подряд идущих чисел разбивается на три равные группы"], correct:0 },
+          steps:[
+            "Сумма всех чисел равна 1 + 2 + … + 12 = 78, значит в каждой из трёх групп должно быть 78 : 3 = 26.",
+            "Пример: {12, 11, 3}, {10, 9, 7}, {8, 6, 5, 4, 2, 1} — суммы равны 26, 26 и 26."
+          ],
+          ans:"Ответ: да." },
+        { id:"b", kind:"yn", prompt:"б) Можно ли разбить их на 5 групп?", answer:false,
+          why:{ q:"Почему?", options:[
+            "Общая сумма 78 не делится на 5",
+            "В группе не может быть меньше трёх чисел",
+            "Число 5 не делит количество чисел 12"], correct:0 },
+          steps:[
+            "Если групп пять и суммы равны, то общая сумма делится на 5.",
+            "Но 78 на 5 не делится — разбиения нет."
+          ],
+          ans:"Ответ: нет." },
+        { id:"c", kind:"num", prompt:"в) На какое наибольшее число групп можно разбить эти числа?", answer:6,
+          steps:[
+            "Оценка. Группа, в которую попало число 12, имеет сумму не меньше 12. Значит и все группы имеют сумму не меньше 12, откуда число групп k ≤ 78 : 12 = 6,5, то есть k ≤ 6.",
+            "Кроме того, 78 должно делиться на k.",
+            "Пример для k = 6: суммы по 13 — (1, 12), (2, 11), (3, 10), (4, 9), (5, 8), (6, 7)."
+          ],
+          ans:"Ответ: 6." }
+      ] },
+
+    { id:"p5", tag:"подряд идущие", title:"Сумма подряд идущих чисел",
+      cond:"Сумма нескольких (не менее двух) идущих подряд натуральных чисел равна 2025.",
+      points:[
+        { id:"a", kind:"yn", prompt:"а) Может ли слагаемых быть 5?", answer:true,
+          why:{ q:"Почему?", options:[
+            "Сумма пяти подряд идущих равна упятерённому среднему, а 2025 = 5 · 405",
+            "Любое нечётное число представимо суммой пяти подряд идущих",
+            "2025 = 45², а квадрат всегда раскладывается на пять слагаемых"], correct:0 },
+          steps:[
+            "Сумма пяти подряд идущих чисел равна (a − 2) + (a − 1) + a + (a + 1) + (a + 2) = 5a, то есть впятеро больше среднего.",
+            "2025 = 5 · 405, значит подходит набор 403, 404, 405, 406, 407."
+          ],
+          ans:"Ответ: да." },
+        { id:"b", kind:"yn", prompt:"б) Может ли слагаемых быть 4?", answer:false,
+          why:{ q:"Почему?", options:[
+            "Сумма четырёх подряд идущих равна 4a + 6 — это чётное число, а 2025 нечётно",
+            "2025 не делится на 4",
+            "Четырёх подряд идущих натуральных чисел с суммой больше 2000 не бывает"], correct:0 },
+          steps:[
+            "Сумма четырёх подряд идущих чисел равна a + (a + 1) + (a + 2) + (a + 3) = 4a + 6.",
+            "Число 4a + 6 чётно при любом a, а 2025 нечётно — равенство невозможно."
+          ],
+          ans:"Ответ: нет." },
+        { id:"c", kind:"num", prompt:"в) Какое наибольшее количество слагаемых может быть?", answer:54,
+          steps:[
+            "Пусть слагаемых k, первое равно a ≥ 1. Тогда 2025 = ka + k(k − 1)/2, то есть 4050 = k(2a + k − 1).",
+            "Оценка. Из a ≥ 1 следует 2025 ≥ k + k(k − 1)/2 = k(k + 1)/2, значит k(k + 1) ≤ 4050 и k ≤ 63.",
+            "Число k должно делить 4050 = 2 · 3⁴ · 5². Наибольший делитель, не превосходящий 63, — это 54.",
+            "Проверка: 4050 : 54 = 75 = 2a + 53, откуда a = 11. Пример: 11 + 12 + … + 64 = 2025."
+          ],
+          ans:"Ответ: 54." }
+      ] },
+
+    { id:"p6", tag:"разность квадратов", title:"Красивые числа",
+      cond:"Назовём натуральное число красивым, если его можно представить в виде разности квадратов двух натуральных чисел.",
+      points:[
+        { id:"a", kind:"pred", prompt:"а) Является ли красивым число 2025? Если да — введите большее из двух чисел, квадраты которых вы возьмёте.",
+          placeholder:"большее число", pred:"p6a",
+          steps:[
+            "Разность квадратов соседних чисел даёт любое нечётное число: (n + 1)² − n² = 2n + 1.",
+            "2025 = 2 · 1012 + 1, поэтому 2025 = 1013² − 1012². Годятся и другие пары, например 205² − 200² = 42025 − 40000 = 2025."
+          ],
+          ans:"Ответ: да, например 2025 = 1013² − 1012²." },
+        { id:"b", kind:"yn", prompt:"б) Является ли красивым число 2026?", answer:false,
+          why:{ q:"Почему?", options:[
+            "a² − b² = (a − b)(a + b), множители одной чётности, поэтому произведение либо нечётно, либо делится на 4 — а 2026 не такое",
+            "2026 не является полным квадратом",
+            "Разность квадратов всегда нечётна"], correct:0 },
+          steps:[
+            "a² − b² = (a − b)(a + b), причём множители a − b и a + b всегда одной чётности: их сумма 2a чётна.",
+            "Если оба множителя нечётны, произведение нечётно; если оба чётны, произведение делится на 4.",
+            "Число 2026 чётно, но на 4 не делится (2026 = 4 · 506 + 2) — значит оно не красиво."
+          ],
+          ans:"Ответ: нет." },
+        { id:"c", kind:"num", prompt:"в) Сколько красивых чисел среди чисел от 1 до 20?", answer:13,
+          steps:[
+            "Нечётные числа: 2n + 1 = (n + 1)² − n², и нужно n ≥ 1. Значит красивы все нечётные, начиная с 3: это 3, 5, 7, 9, 11, 13, 15, 17, 19 — девять чисел.",
+            "Кратные четырём: 4k = (k + 1)² − (k − 1)², и нужно k − 1 ≥ 1, то есть 4k ≥ 8. Годятся 8, 12, 16, 20 — четыре числа.",
+            "Числа вида 4k + 2 не красивы по пункту б). Не красивы также 1 и 4: в разложении пришлось бы взять b = 0.",
+            "Итого 9 + 4 = 13."
+          ],
+          ans:"Ответ: 13." }
+      ] }
+  ];
+
+  return { rnd:rnd, pick:pick, tri:tri, digitSum:digitSum, isNat:isNat, isSquare:isSquare,
+           maxCount:maxCount, maxElement:maxElement, groupsOK:groupsOK, consecStart:consecStart,
+           invariantFinal:invariantFinal, PRED:PRED, GENS:GENS, TYPES:TYPES, drill:drill, PROBLEMS:PROBLEMS };
+})();
+if (typeof module !== "undefined") module.exports = N19;
+</script>
+
+<script>
+/* ================= ИНТЕРФЕЙС ================= */
+(function(){
+  "use strict";
+  function parseNum(s){
+    if (s == null) return NaN;
+    s = String(s).trim().replace(",", ".").replace("−", "-").replace(/\s+/g, "");
+    return s ? Number(s) : NaN;
+  }
+
+  /* ---------- хранение ---------- */
+  var TID = "numbers-t19";
+  function readAll(){ try{ return JSON.parse(localStorage.getItem("mathExamCourseProgress.v1") || "{}"); }catch(e){ return {}; } }
+  function st(){ return readAll()[TID] || {}; }
+  function save(fn){
+    try{
+      var all = readAll();
+      var s = all[TID] || (all[TID] = { tasks:{}, runs:0, drillBest:0, passed:false });
+      s.tasks = s.tasks || {};
+      fn(s);
+      localStorage.setItem("mathExamCourseProgress.v1", JSON.stringify(all));
+    }catch(e){}
+  }
+
+  /* ---------- вкладки ---------- */
+  document.querySelectorAll(".tab").forEach(function(tab){
+    tab.addEventListener("click", function(){
+      document.querySelectorAll(".tab").forEach(function(t){ t.setAttribute("aria-selected", t === tab ? "true" : "false"); });
+      document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("on"); });
+      document.getElementById("view-" + tab.dataset.view).classList.add("on");
+    });
+  });
+
+  /* ---------- доска на вкладке «Идея» ---------- */
+  var boardNums = [1,2,3,4,5,6,7], sel = -1;
+  function renderBoard(){
+    var host = document.getElementById("board");
+    host.innerHTML = "";
+    boardNums.forEach(function(v, i){
+      var b = document.createElement("button");
+      b.textContent = v;
+      b.setAttribute("aria-pressed", sel === i ? "true" : "false");
+      b.addEventListener("click", function(){
+        if (boardNums.length === 1) return;
+        if (sel === -1){ sel = i; }
+        else if (sel === i){ sel = -1; }
+        else {
+          var res = Math.abs(boardNums[sel] - boardNums[i]);
+          var keep = boardNums.filter(function(_, j){ return j !== sel && j !== i; });
+          keep.push(res);
+          boardNums = keep; sel = -1;
+        }
+        renderBoard();
+      });
+      host.appendChild(b);
+    });
+    var S = boardNums.reduce(function(a, b){ return a + b; }, 0);
+    var info = document.getElementById("boardInfo");
+    if (boardNums.length === 1){
+      info.textContent = "Осталось число " + boardNums[0] + " — чётное. Иначе и быть не могло: сумма 1 + 2 + … + 7 = 28 чётна, а её чётность не менялась ни разу.";
+    } else {
+      info.textContent = "чисел на доске: " + boardNums.length + " · сумма: " + S + " — " + (S % 2 ? "нечётная" : "чётная");
+    }
+  }
+  document.getElementById("boardReset").addEventListener("click", function(){
+    boardNums = [1,2,3,4,5,6,7]; sel = -1; renderBoard();
+  });
+  renderBoard();
+
+  /* ---------- список задач ---------- */
+  var listHost = document.getElementById("taskList");
+  function renderList(){
+    listHost.innerHTML = "";
+    var tasks = st().tasks || {};
+    N19.PROBLEMS.forEach(function(p){
+      var t = tasks[p.id] || {};
+      var n = ["a","b","c"].filter(function(k){ return t[k]; }).length;
+      var b = document.createElement("button");
+      b.className = "pcard";
+      b.innerHTML = '<span class="tag">' + p.tag + '</span><h3 style="margin:6px 0 4px">' + p.title + '</h3>' +
+        '<span class="small muted">' + p.cond.slice(0, 78) + '…</span>' +
+        ((n || t.self != null) ? '<div class="done">' + (n ? "пунктов: " + n + " из 3" : "") +
+          (t.self != null ? (n ? " · " : "") + "самооценка: " + t.self : "") + '</div>' : "");
+      b.addEventListener("click", function(){ openTask(p); });
+      listHost.appendChild(b);
+    });
+  }
+  var cur = null;
+  function openTask(p){
+    cur = p;
+    document.getElementById("taskList").style.display = "none";
+    document.getElementById("taskView").style.display = "block";
+    document.getElementById("tTag").textContent = "приём: " + p.tag;
+    document.getElementById("tTitle").textContent = p.title;
+    document.getElementById("tCond").textContent = p.cond;
+    renderPoints();
+    renderSelf();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  function renderPoints(){
+    var host = document.getElementById("tPoints");
+    host.innerHTML = "";
+    var solved = (st().tasks || {})[cur.id] || {};
+    cur.points.forEach(function(pt){
+      var card = document.createElement("div");
+      card.className = "card";
+      var box = document.createElement("div");
+      box.className = "point" + (solved[pt.id] ? " solved" : "");
+      var h = document.createElement("h3");
+      h.textContent = pt.prompt;
+      box.appendChild(h);
+
+      var fb = document.createElement("div");
+      fb.className = "feedback";
+
+      function markSolved(){
+        save(function(s){ (s.tasks[cur.id] = s.tasks[cur.id] || {})[pt.id] = true; });
+        box.classList.add("solved");
+      }
+
+      if (pt.kind === "yn"){
+        var row = document.createElement("div");
+        row.className = "opts";
+        [["Да", true], ["Нет", false]].forEach(function(o){
+          var b = document.createElement("button");
+          b.className = "opt";
+          b.style.minWidth = "84px";
+          b.style.textAlign = "center";
+          b.textContent = o[0];
+          b.addEventListener("click", function(){
+            if (o[1] === pt.answer){
+              b.classList.add("ok");
+              row.querySelectorAll(".opt").forEach(function(x){ x.disabled = true; });
+              if (pt.why){
+                fb.className = "feedback on hint";
+                fb.textContent = "Ответ верный. Осталось назвать причину — она и есть доказательство.";
+                askWhy();
+              } else {
+                fb.className = "feedback on ok"; fb.textContent = "Верно.";
+                markSolved();
+              }
+            } else {
+              b.classList.add("bad");
+              fb.className = "feedback on bad";
+              fb.textContent = "Пока нет. Загляните в приёмы или раскройте разбор.";
+            }
+          });
+          row.appendChild(b);
+        });
+        box.appendChild(row);
+      } else {
+        var row2 = document.createElement("div");
+        row2.className = "row";
+        row2.style.marginTop = "8px";
+        var inp = document.createElement("input");
+        inp.type = "text";
+        inp.setAttribute("inputmode", "numeric");
+        inp.autocomplete = "off";
+        inp.setAttribute("aria-label", "Ответ");
+        if (pt.placeholder) inp.placeholder = pt.placeholder;
+        var btn = document.createElement("button");
+        btn.className = "btn";
+        btn.textContent = "Проверить";
+        function check(){
+          var v = parseNum(inp.value);
+          var ok = pt.kind === "pred" ? N19.PRED[pt.pred](v) : (!isNaN(v) && v === pt.answer);
+          fb.className = "feedback on " + (ok ? "ok" : "bad");
+          fb.textContent = ok
+            ? (pt.kind === "pred" ? "Верно — пример подходит." : "Верно.")
+            : "Пока нет. Раскройте разбор по шагам.";
+          if (ok) markSolved();
+        }
+        btn.addEventListener("click", check);
+        inp.addEventListener("keydown", function(e){ if (e.key === "Enter") check(); });
+        row2.appendChild(inp); row2.appendChild(btn);
+        box.appendChild(row2);
+      }
+
+      function askWhy(){
+        var wrap = document.createElement("div");
+        wrap.style.marginTop = "10px";
+        var q = document.createElement("p");
+        q.style.margin = "0 0 4px";
+        q.style.fontWeight = "700";
+        q.textContent = pt.why.q;
+        wrap.appendChild(q);
+        var opts = document.createElement("div");
+        opts.className = "opts";
+        var order = pt.why.options.map(function(_, i){ return i; }).sort(function(){ return Math.random() - 0.5; });
+        order.forEach(function(i){
+          var b = document.createElement("button");
+          b.className = "opt";
+          b.textContent = pt.why.options[i];
+          b.addEventListener("click", function(){
+            if (i === pt.why.correct){
+              b.classList.add("ok");
+              opts.querySelectorAll(".opt").forEach(function(x){ x.disabled = true; });
+              fb.className = "feedback on ok";
+              fb.textContent = "Точно. Пункт засчитан.";
+              markSolved();
+            } else {
+              b.classList.add("bad");
+              fb.className = "feedback on bad";
+              fb.textContent = "Это не доказательство. Посмотрите разбор.";
+            }
+          });
+          opts.appendChild(b);
+        });
+        wrap.appendChild(opts);
+        box.insertBefore(wrap, fb);
+      }
+
+      box.appendChild(fb);
+
+      var ctrl = document.createElement("div");
+      ctrl.className = "row";
+      ctrl.style.marginTop = "10px";
+      var sb = document.createElement("button");
+      sb.className = "btn ghost";
+      sb.textContent = "Следующий шаг разбора";
+      var ab = document.createElement("button");
+      ab.className = "btn ghost";
+      ab.textContent = "Разбор целиком";
+      ctrl.appendChild(sb); ctrl.appendChild(ab);
+      box.appendChild(ctrl);
+
+      var steps = document.createElement("div");
+      steps.className = "steps";
+      pt.steps.forEach(function(s){
+        var d = document.createElement("div");
+        d.className = "step";
+        d.textContent = s;
+        steps.appendChild(d);
+      });
+      box.appendChild(steps);
+      var ansLine = document.createElement("div");
+      ansLine.className = "answerline";
+      ansLine.textContent = pt.ans;
+      box.appendChild(ansLine);
+
+      var ix = 0;
+      sb.addEventListener("click", function(){
+        var list = steps.querySelectorAll(".step");
+        if (ix < list.length){ list[ix].classList.add("on"); ix++; }
+        if (ix >= list.length){ sb.disabled = true; ansLine.classList.add("on"); }
+      });
+      ab.addEventListener("click", function(){
+        steps.querySelectorAll(".step").forEach(function(s){ s.classList.add("on"); });
+        sb.disabled = true;
+        ansLine.classList.add("on");
+      });
+
+      card.appendChild(box);
+      host.appendChild(card);
+    });
+  }
+  function renderSelf(){
+    var host = document.getElementById("tSelf");
+    host.innerHTML = "";
+    var chosen = ((st().tasks || {})[cur.id] || {}).self;
+    for (var i = 0; i <= 4; i++)(function(i){
+      var b = document.createElement("button");
+      b.textContent = i;
+      b.setAttribute("aria-pressed", chosen === i ? "true" : "false");
+      b.addEventListener("click", function(){
+        save(function(s){ (s.tasks[cur.id] = s.tasks[cur.id] || {}).self = i; });
+        renderSelf();
+      });
+      host.appendChild(b);
+    })(i);
+  }
+  document.getElementById("backToList").addEventListener("click", function(){
+    document.getElementById("taskView").style.display = "none";
+    document.getElementById("taskList").style.display = "grid";
+    renderList();
+  });
+  renderList();
+
+  /* ---------- дриллы ---------- */
+  var D = null, streak = 0, curType = "mix";
+  var Z = { active:false, i:0, score:0, marks:[] };
+  var chipsHost = document.getElementById("drillChips");
+  [{ id:"mix", label:"вперемешку" }].concat(N19.TYPES).forEach(function(t){
+    var b = document.createElement("button");
+    b.textContent = t.label;
+    b.setAttribute("aria-pressed", t.id === curType ? "true" : "false");
+    b.addEventListener("click", function(){
+      if (Z.active) return;
+      curType = t.id;
+      chipsHost.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      newDrill();
+    });
+    chipsHost.appendChild(b);
+  });
+  function newDrill(){
+    D = N19.drill(Z.active ? "mix" : curType);
+    document.getElementById("dText").textContent = (Z.active ? (Z.i + 1) + " из 8. " : "") + D.text;
+    document.getElementById("dNum").style.display = D.kind === "num" ? "flex" : "none";
+    document.getElementById("dYN").style.display = D.kind === "yn" ? "flex" : "none";
+    document.getElementById("dAnswer").value = "";
+    document.getElementById("dFb").className = "feedback";
+    document.getElementById("dSol").disabled = Z.active;
+    document.getElementById("dNext").disabled = Z.active;
+  }
+  function zDots(){
+    var host = document.getElementById("zDots");
+    host.innerHTML = "";
+    for (var i = 0; i < 8; i++){
+      var s = document.createElement("span");
+      if (i < Z.i) s.className = Z.marks[i] ? "ok" : "bad";
+      host.appendChild(s);
+    }
+  }
+  function mlog(type, ok){
+    try{
+      var all = JSON.parse(localStorage.getItem("mathExamCourseProgress.v1") || "{}");
+      var mk = all.mistakes = all.mistakes || {};
+      var e = mk["numbers-t19|" + type] = mk["numbers-t19|" + type] || { w:0, r:0 };
+      if (ok){ if (e.w) e.r = (e.r || 0) + 1; }
+      else { e.w = (e.w || 0) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem("mathExamCourseProgress.v1", JSON.stringify(all));
+    }catch(err){}
+  }
+  function answer(ok){
+    mlog(D.type, ok);
+    var fb = document.getElementById("dFb");
+    fb.className = "feedback on " + (ok ? "ok" : "bad");
+    fb.textContent = ok ? "Верно." : ("Неверно. " + (D.kind === "yn" ? (D.answer ? "Правильный ответ: да." : "Правильный ответ: нет.") : "Правильный ответ: " + D.answer + "."));
+    if (Z.active){
+      Z.marks.push(ok); if (ok) Z.score++;
+      Z.i++; zDots();
+      if (Z.i >= 8){
+        Z.active = false;
+        var passed = Z.score >= 7;
+        document.getElementById("zDone").style.display = "block";
+        document.getElementById("zScore").textContent = Z.score + " / 8";
+        document.getElementById("zVerdict").textContent = passed
+          ? "Зачёт сдан: реакции на месте, можно идти в задачи целиком."
+          : "Зачёт не сдан: нужно 7 из 8. Потренируйте слабый тип в свободном режиме и вернитесь.";
+        save(function(s){ s.drillBest = Math.max(s.drillBest || 0, Z.score); if (passed) s.passed = true; });
+        newDrill();
+      } else {
+        setTimeout(newDrill, 800);
+      }
+    } else {
+      streak = ok ? streak + 1 : 0;
+      document.getElementById("dStreak").textContent = streak;
+    }
+  }
+  document.getElementById("dCheck").addEventListener("click", function(){
+    var v = parseNum(document.getElementById("dAnswer").value);
+    if (isNaN(v)) return;
+    answer(v === D.answer);
+    if (v !== D.answer && typeof D.answer === "number" && Math.abs(v - D.answer) === 1){
+      var fbN = document.getElementById("dFb");
+      if (fbN) fbN.textContent += " Ошибка ровно на единицу — обычно теряется или лишний раз считается крайний случай.";
+    }
+  });
+  document.getElementById("dAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("dCheck").click(); });
+  document.getElementById("dYes").addEventListener("click", function(){ answer(D.answer === true); });
+  document.getElementById("dNo").addEventListener("click", function(){ answer(D.answer === false); });
+  document.getElementById("dSol").addEventListener("click", function(){
+    var fb = document.getElementById("dFb");
+    fb.className = "feedback on hint";
+    fb.textContent = D.sol;
+  });
+  document.getElementById("dNext").addEventListener("click", function(){ if (!Z.active) newDrill(); });
+  document.getElementById("zStart").addEventListener("click", function(){
+    Z = { active:true, i:0, score:0, marks:[] };
+    save(function(s){ s.runs = (s.runs || 0) + 1; });
+    document.getElementById("zDone").style.display = "none";
+    zDots(); newDrill();
+    document.getElementById("dText").scrollIntoView({ behavior:"smooth", block:"center" });
+  });
+  newDrill();
+})();
+</script>
+</body>
+</html>
