@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Прямоугольный треугольник: sin, cos, tg — тренажёр</title>
+<meta name="description" content="Пошаговый тренажёр по прямоугольному треугольнику: разминка на понимание синуса, косинуса и тангенса, затем задачи на сторону и отношение, высоту на гипотенузу, площадь и углы. Новые числа, буквы и чертежи каждый раз.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fbfbf7; --grid:#e9edf3; --grid-strong:#dbe1ec;
+    --ink:#1b2a4a; --ink-soft:#54607a; --ink-faint:#8a93a6;
+    --teal:#0f766e; --teal-soft:#e3f4f1; --teal-line:#8fd3c8; --teal-deep:#0b5d57;
+    --amber:#b45309; --amber-soft:#fff4e0; --amber-line:#f5c87a;
+    --ok:#15803d; --ok-soft:#e7f6ec; --ok-line:#9ad4ae;
+    --bad:#b91c1c; --bad-soft:#fdecec; --bad-line:#f3b4b4;
+    --card:#fff; --line:#e4e9f2; --r:16px;
+    --shadow:0 1px 2px rgba(27,42,74,.05), 0 8px 24px rgba(27,42,74,.07);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; font-size:16px}
+  html.board{font-size:21px}
+  body{
+    margin:0; font-family:"Nunito",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:var(--ink); background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid-strong) 1px, transparent 1px), linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:120px 120px,120px 120px,24px 24px,24px 24px; background-position:-1px -1px;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  button, input{font:inherit}
+  .wrap{max-width:1000px; margin:0 auto; padding:0 1rem 5rem}
+  a{color:var(--teal)}
+
+  header.top{display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:start; padding:1.6rem 0 .6rem}
+  .crumbs{display:inline-block; margin:0 0 .3rem; color:var(--ink-soft); text-decoration:none; font-weight:800; font-size:.9rem}
+  .crumbs:hover{color:var(--ink)}
+  .figure svg .hit{pointer-events:none}
+  .figure.picking svg .hit{pointer-events:stroke; cursor:pointer}
+  .figure.picking svg .hit:hover{stroke:rgba(15,118,110,.22)}
+  .figure.picking{outline:2px dashed rgba(15,118,110,.45); outline-offset:4px; border-radius:10px}
+  .clickcue{margin:.35rem 0 0; font-weight:700; color:#0f766e; font-size:.92rem}
+  .clickcue::before{content:'👆 '; filter:grayscale(1)}
+  .brand{display:inline-flex; align-items:center; gap:.5rem; color:var(--ink-soft); font-weight:800; font-size:.85rem; text-decoration:none}
+  .brand .sigma{display:inline-grid; place-items:center; width:1.7em; height:1.7em; border-radius:8px; background:var(--ink); color:#fff; font-size:1rem; font-weight:900}
+  h1.title{font-size:clamp(1.5rem,3.6vw,2.2rem); line-height:1.1; font-weight:900; margin:.4rem 0 .35rem; letter-spacing:-.01em}
+  .sub{margin:0; color:var(--ink-soft); font-weight:600; max-width:64ch}
+  .topbtns{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:flex-end; padding-top:.3rem}
+
+  .btn{border:0; cursor:pointer; font-weight:800; font-size:.95rem; padding:.62em 1em; border-radius:12px; transition:.15s; background:#fff; color:var(--ink); border:1.5px solid var(--line); line-height:1.2; display:inline-flex; align-items:center; gap:.4em}
+  .btn:hover{border-color:var(--ink)}
+  .btn.primary{background:var(--teal); color:#fff; border-color:var(--teal); box-shadow:var(--shadow)}
+  .btn.primary:hover{background:var(--teal-deep); border-color:var(--teal-deep)}
+  .btn.warm{background:var(--amber-soft); color:var(--amber); border-color:var(--amber-line)}
+  .btn.warm:hover{border-color:var(--amber)}
+  .btn.small{font-size:.85rem; padding:.45em .8em; border-radius:10px}
+  .btn:disabled{opacity:.45; cursor:default}
+  .btn:focus-visible, .opt:focus-visible, .seg button:focus-visible, input:focus-visible, .chip:focus-visible{outline:3px solid var(--teal-line); outline-offset:2px}
+
+  nav.topics{display:flex; gap:.45rem; flex-wrap:wrap; margin:.9rem 0 .5rem}
+  .chip{border:1.5px solid var(--line); background:#fff; color:var(--ink); cursor:pointer; border-radius:999px; padding:.4em .9em .4em .55em; font-weight:800; font-size:.92rem; display:inline-flex; align-items:center; gap:.5em; transition:.15s}
+  .chip .n{display:inline-grid; place-items:center; min-width:1.9em; height:1.9em; border-radius:999px; background:var(--teal-soft); color:var(--teal-deep); font-weight:900; font-size:.9em}
+  .chip.warm-chip .n{background:var(--amber-soft); color:var(--amber)}
+  .chip:hover{border-color:var(--teal)}
+  .chip[aria-selected="true"]{background:var(--ink); color:#fff; border-color:var(--ink)}
+  .chip[aria-selected="true"] .n{background:rgba(255,255,255,.2); color:#fff}
+
+  .controls{display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin:.4rem 0 1rem}
+  .seg{display:inline-flex; background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:3px; gap:2px}
+  .seg button{border:0; background:transparent; cursor:pointer; padding:.45em .9em; border-radius:9px; font-weight:800; color:var(--ink-soft); font-size:.92rem}
+  .seg button[aria-pressed="true"]{background:var(--teal); color:#fff}
+  .seg button:hover:not([aria-pressed="true"]){background:var(--teal-soft); color:var(--teal-deep)}
+  .ctl-label{font-weight:800; color:var(--ink-soft); font-size:.9rem; margin-right:.35rem}
+  .modehelp{color:var(--ink-soft); font-weight:600; font-size:.92rem; margin:-.5rem 0 1rem}
+
+  .task{background:var(--card); border-radius:var(--r); box-shadow:var(--shadow); padding:1.4rem 1.5rem 1.2rem; margin:0 0 1rem}
+  .task-top{display:flex; justify-content:space-between; gap:1rem; align-items:baseline; flex-wrap:wrap; margin-bottom:.6rem}
+  .tnum{font-weight:900; color:var(--teal-deep); font-size:1.05rem}
+  .tname{font-weight:700; color:var(--ink-soft)}
+  .pill{display:inline-block; font-weight:800; font-size:.78rem; padding:.25em .7em; border-radius:999px; background:var(--teal-soft); color:var(--teal-deep)}
+  .pill.demo{background:var(--amber-soft); color:var(--amber)}
+  .statement{font-size:1.18rem; line-height:1.6; font-weight:600; max-width:70ch; flex:1 1 32ch; min-width:0}
+  .figwrap{display:flex; gap:1rem; align-items:flex-start; flex-wrap:wrap}
+  .figure{margin:.2rem 0 .2rem; background:#fff; border:1px solid var(--line); border-radius:12px; padding:.5rem; width:280px; max-width:100%; flex:0 0 auto}
+  @media(max-width:640px){.figure{margin-top:.6rem}}
+  .figure svg{display:block; width:100%; height:auto}
+
+  sup{font-size:.72em; line-height:0} sub{font-size:.72em; line-height:0}
+  .frac{display:inline-flex; flex-direction:column; text-align:center; vertical-align:middle; line-height:1.05; margin:0 .08em; font-size:.92em}
+  .frac .nu{padding:0 .3em} .frac .de{padding:0 .3em; border-top:2px solid currentColor}
+  .sqrt{display:inline-flex; align-items:stretch; vertical-align:middle}
+  .sqrt .rad{font-size:1.1em; line-height:1; align-self:flex-end; transform:translateY(-.02em)}
+  .sqrt .ov{border-top:1.5px solid currentColor; padding:0 .12em; line-height:1.15}
+  .ans-suf{font-weight:800; margin-left:.25em}
+  .fieldnote{color:var(--ink-faint); font-weight:700; font-size:.85rem}
+
+  details.memo{margin:.9rem 0 .4rem; border:1.5px solid var(--line); border-radius:12px; background:#fbfcfe}
+  details.memo summary{cursor:pointer; font-weight:800; padding:.6rem .9rem; color:var(--teal-deep); list-style:none; display:flex; align-items:center; gap:.5rem}
+  details.memo summary::-webkit-details-marker{display:none}
+  details.memo summary::before{content:"▸"; transition:.15s; display:inline-block}
+  details.memo[open] summary::before{transform:rotate(90deg)}
+  .memo-body{padding:0 .9rem .8rem}
+  .memo-row{display:grid; grid-template-columns:minmax(9em,15em) 1fr; gap:.4rem 1rem; padding:.45rem 0; border-top:1px dashed var(--line); font-size:.98rem}
+  .memo-row .k{font-weight:800; color:var(--ink-soft)} .memo-row .v{font-weight:700}
+  @media(max-width:600px){.memo-row{grid-template-columns:1fr}}
+  .trapbox{display:flex; gap:.7rem; background:var(--amber-soft); border:1px solid var(--amber-line); border-radius:12px; padding:.75rem .95rem; color:#7c4a08; font-weight:600; margin:.7rem 0 0; font-size:.98rem}
+  .trapbox b{font-weight:900; white-space:nowrap}
+
+  ol.ladder{list-style:none; margin:1.2rem 0 0; padding:0; position:relative}
+  ol.ladder::before{content:""; position:absolute; left:1.05rem; top:.9rem; bottom:.9rem; border-left:3px dotted var(--teal-line)}
+  .step{display:grid; grid-template-columns:2.2rem 1fr; gap:.7rem; padding:.55rem 0; position:relative}
+  .step .dot{width:2.2rem; height:2.2rem; border-radius:50%; display:grid; place-items:center; font-weight:900; background:#fff; border:2.5px solid var(--line); color:var(--ink-faint); position:relative; z-index:1; font-size:.95rem}
+  .step.done .dot{background:var(--teal); border-color:var(--teal); color:#fff}
+  .step.current .dot{border-color:var(--teal); color:var(--teal-deep); box-shadow:0 0 0 5px var(--teal-soft)}
+  .step .body{min-width:0; padding-top:.2rem}
+  .step .title{font-weight:900; margin:0 0 .2rem; font-size:1.02rem}
+  .step.todo .title{color:var(--ink-faint); font-weight:800}
+  .step.todo .body{padding-top:.45rem}
+  .step .q{font-size:1.08rem; font-weight:600; line-height:1.6}
+  .step.done .q{color:var(--ink-soft); font-weight:600}
+  .step .result{font-weight:800; margin:.25rem 0 0; color:var(--ok)}
+  .step .result::before{content:"→ "; color:var(--teal-line)}
+  .step .explain{margin:.35rem 0 0; color:var(--ink-soft); font-weight:600; font-size:.98rem; line-height:1.55}
+  .step.done .explain{background:#fbfcfe; border-left:3px solid var(--teal-line); padding:.4rem .7rem; border-radius:0 8px 8px 0}
+  .step.info .q{color:var(--ink)}
+  .infofig{display:flex; gap:1rem; align-items:flex-start; flex-wrap:wrap}
+  .infofig .q{flex:1 1 26ch; min-width:0}
+  .infofig .figure.small{width:250px; margin:0}
+
+  .inputs{display:flex; flex-direction:column; gap:.55rem; margin:.7rem 0 .3rem}
+  .inrow{display:flex; align-items:center; gap:.6rem; flex-wrap:wrap}
+  .inrow .lab{font-weight:700; font-size:1.05rem}
+  input.num{width:7.5em; max-width:100%; padding:.45em .7em; border:2px solid var(--line); border-radius:10px; font-weight:800; font-size:1.05rem; color:var(--ink); background:#fff}
+  input.num.wide{width:9.5em}
+  input.num::placeholder{color:#b5bccb; font-weight:600}
+  input.num.ok{border-color:var(--ok); background:var(--ok-soft)}
+  input.num.bad{border-color:var(--bad); background:var(--bad-soft)}
+  .unit{color:var(--ink-soft); font-weight:700}
+  .stepbtns{display:flex; gap:.5rem; flex-wrap:wrap; margin:.6rem 0 .2rem; align-items:center}
+  .fb{margin:.55rem 0 0; padding:.6rem .85rem; border-radius:10px; font-weight:700; line-height:1.5}
+  .fb.ok{background:var(--ok-soft); color:var(--ok); border:1px solid var(--ok-line)}
+  .fb.bad{background:var(--bad-soft); color:var(--bad); border:1px solid var(--bad-line)}
+  .fb.hint{background:var(--amber-soft); color:#7c4a08; border:1px solid var(--amber-line)}
+  .fb.note{background:var(--teal-soft); color:var(--teal-deep); border:1px solid var(--teal-line)}
+
+  .opts{display:grid; gap:.5rem; margin:.7rem 0 .3rem}
+  .opt{text-align:left; border:2px solid var(--line); background:#fff; border-radius:12px; padding:.6rem .9rem; cursor:pointer; font-weight:700; font-size:1.05rem; color:var(--ink); display:flex; align-items:center; gap:.7rem; transition:.12s; line-height:1.5}
+  .opt .lt{width:1.7em; height:1.7em; border-radius:50%; border:2px solid var(--line); display:grid; place-items:center; font-size:.85rem; font-weight:900; color:var(--ink-faint); flex:none}
+  .opt:hover{border-color:var(--teal)}
+  .opt.ok{border-color:var(--ok); background:var(--ok-soft)} .opt.ok .lt{background:var(--ok); border-color:var(--ok); color:#fff}
+  .opt.bad{border-color:var(--bad-line); background:var(--bad-soft)} .opt.bad .lt{border-color:var(--bad); color:var(--bad)}
+  .opt:disabled{cursor:default} .opt:disabled:not(.ok):not(.bad){opacity:.55}
+
+  .final{margin:1.1rem 0 0; padding:1rem 1.1rem; border-radius:14px; background:#fbfcfe; border:1.5px solid var(--line)}
+  .final .lab{font-weight:900; font-size:1.05rem; margin-right:.5rem}
+  .final .answer-line{font-size:1.25rem; font-weight:800}
+  .final.ok{background:var(--ok-soft); border-color:var(--ok-line)}
+  .actions{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1rem; align-items:center}
+  .actions .spacer{flex:1}
+  .stats{color:var(--ink-soft); font-weight:700; font-size:.92rem; display:flex; gap:.9rem; flex-wrap:wrap; margin:.2rem 0 0}
+  .stats b{color:var(--ink)}
+
+  footer{color:var(--ink-soft); font-weight:600; font-size:.88rem; margin-top:2rem; max-width:75ch; line-height:1.55}
+
+  html.board .sub, html.board footer, html.board .brand, html.board .modehelp, html.board .stats{display:none}
+  html.board header.top{padding:.8rem 0 .2rem}
+  html.board h1.title{font-size:1.4rem; margin:.2rem 0}
+  html.board .wrap{max-width:1180px}
+  html.board .task{padding:1.6rem 1.8rem}
+  html.board .statement{font-size:1.3rem}
+  html.board .step .q{font-size:1.18rem}
+  html.board input.num{font-size:1.15rem}
+  html.board .opt{font-size:1.12rem}
+  html.mirror body{transform:scaleX(-1)}
+  #fsBtn{display:none}
+  html.board #fsBtn{display:inline-flex}
+
+  @media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important}}
+  @media(max-width:640px){
+    nav.topics{flex-wrap:nowrap; overflow-x:auto; padding-bottom:.35rem; -webkit-overflow-scrolling:touch}
+    nav.topics .chip{flex:none}
+    header.top{grid-template-columns:1fr}
+    .topbtns{justify-content:flex-start}
+    .task{padding:1.1rem 1rem}
+    .step{grid-template-columns:1.9rem 1fr; gap:.5rem}
+    .step .dot{width:1.9rem; height:1.9rem; font-size:.85rem}
+    ol.ladder::before{left:.9rem}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <a class="brand" href="https://mathexam.space"><span class="sigma">∑</span> mathexam.space</a>
+      <a class="crumbs" href="../index.html">← Курс профильного ЕГЭ</a>
+      <h1 class="title">Прямоугольный треугольник: sin, cos, tg</h1>
+      <p class="sub">Сначала разминка — что такое синус, косинус и тангенс, потом задачи: сторона и отношение, высота на гипотенузу, площадь, углы биссектрисы и медианы, треугольник 30°-60°-90°. Числа, буквы и чертёж — каждый раз новые.</p>
+    </div>
+    <div class="topbtns">
+      <button class="btn" id="boardBtn" aria-pressed="false" title="Крупный шрифт для показа на доске или экране">Режим доски</button>
+      <button class="btn" id="mirrorBtn" aria-pressed="false" title="Для проекторов, дающих зеркальное изображение">Зеркало</button>
+      <button class="btn" id="fsBtn" title="Развернуть страницу на весь экран">Во весь экран</button>
+    </div>
+  </header>
+
+  <nav class="topics" id="topics" aria-label="Выбор темы"></nav>
+
+  <div class="controls">
+    <div><span class="ctl-label">Режим</span>
+      <div class="seg" id="modeSeg" role="group" aria-label="Режим работы">
+        <button data-mode="learn">Учимся</button>
+        <button data-mode="steps">Пошагово</button>
+        <button data-mode="solo">Сам</button>
+      </div>
+    </div>
+    <div id="levelWrap"><span class="ctl-label">Уровень</span>
+      <div class="seg" id="levelSeg" role="group" aria-label="Уровень сложности">
+        <button data-level="1">1</button>
+        <button data-level="2">2</button>
+        <button data-level="3">3</button>
+      </div>
+    </div>
+  </div>
+  <p class="modehelp" id="modeHelp"></p>
+
+  <main id="taskArea"></main>
+
+  <footer>
+    Тренажёр отрабатывает базовые задачи на прямоугольный треугольник: определения синуса/косинуса/тангенса, теорему Пифагора, свойства высоты на гипотенузу, площадь и углы между высотой, биссектрисой и медианой из вершины прямого угла. Буквы вершин, числа и чертёж создаются заново каждый раз, поэтому вариантов бесконечно много. Прогресс сохраняется в браузере. © mathexam.space
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   Ядро: генератор случайных чисел, мини-разметка формул,
+   разбор ответов ученика. Без обращения к DOM — тестируется в node.
+   ============================================================ */
+'use strict';
+
+/* ---------- Детерминированный ГСЧ (для кодов вариантов) ---------- */
+function mulberry32(seed){
+  let a = seed >>> 0;
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function ri(a, b, rng){ return a + Math.floor(rng() * (b - a + 1)); }
+function pick(arr, rng){ return arr[Math.floor(rng() * arr.length)]; }
+function shuffle(arr, rng){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function nonzero(a, b, rng){ let v = 0; while (v === 0) v = ri(a, b, rng); return v; }
+
+/* ---------- Мини-разметка формул ----------
+   ^{...}  верхний индекс         _{...} нижний индекс
+   √{...}  квадратный корень      ∛{...} кубический корень
+   {{a}/{b}} дробь «этажеркой»
+   Всё остальное — как есть. Один текст даёт и HTML, и plain-text. */
+function grabBraces(s, i){           // s[i] === '{'
+  let depth = 0, j = i;
+  for (; j < s.length; j++){
+    if (s[j] === '{') depth++;
+    else if (s[j] === '}'){ depth--; if (depth === 0) break; }
+  }
+  return [s.slice(i + 1, j), j + 1];
+}
+function parseMarkup(s, out){
+  let i = 0, res = '';
+  while (i < s.length){
+    const ch = s[i];
+    if (ch === '^' && s[i + 1] === '{'){
+      const [inner, j] = grabBraces(s, i + 1); res += out.sup(parseMarkup(inner, out)); i = j; continue;
+    }
+    if (ch === '_' && s[i + 1] === '{'){
+      const [inner, j] = grabBraces(s, i + 1); res += out.sub(parseMarkup(inner, out)); i = j; continue;
+    }
+    if ((ch === '√' || ch === '∛') && s[i + 1] === '{'){
+      const [inner, j] = grabBraces(s, i + 1); res += out.root(ch, parseMarkup(inner, out)); i = j; continue;
+    }
+    if (ch === '{' && s[i + 1] === '{'){
+      const [a, j] = grabBraces(s, i + 1);
+      if (s[j] === '/' && s[j + 1] === '{'){
+        const [b, k] = grabBraces(s, j + 1);
+        res += out.frac(parseMarkup(a, out), parseMarkup(b, out));
+        i = (s[k] === '}') ? k + 1 : k; continue;
+      }
+    }
+    res += out.text(ch); i++;
+  }
+  return res;
+}
+const escapeHtml = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const HTML_OUT = {
+  text: escapeHtml,
+  sup: x => `<sup>${x}</sup>`,
+  sub: x => `<sub>${x}</sub>`,
+  root: (k, x) => `<span class="sqrt"><span class="rad">${k}</span><span class="ov">${x}</span></span>`,
+  frac: (a, b) => `<span class="frac"><span class="nu">${a}</span><span class="de">${b}</span></span>`
+};
+const SUP_MAP = { '0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻','−':'⁻','+':'⁺','n':'ⁿ','(':'⁽',')':'⁾' };
+const SUB_MAP = { '0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉' };
+const PLAIN_OUT = {
+  text: s => s,
+  sup: x => [...x].every(c => SUP_MAP[c]) ? [...x].map(c => SUP_MAP[c]).join('') : `^(${x})`,
+  sub: x => [...x].every(c => SUB_MAP[c]) ? [...x].map(c => SUB_MAP[c]).join('') : `_(${x})`,
+  root: (k, x) => /^[0-9a-zA-Zа-я]+$/.test(x) ? `${k}${x}` : `${k}(${x})`,
+  frac: (a, b) => {
+    const wrap = t => /[\s+\-−·:]/.test(t) ? `(${t})` : t;
+    return `${wrap(a)}/${wrap(b)}`;
+  }
+};
+const M = s => parseMarkup(String(s), HTML_OUT);   // → HTML
+const P = s => parseMarkup(String(s), PLAIN_OUT);  // → обычный текст
+
+/* ---------- Форматирование чисел ---------- */
+const MINUS = '−';
+function fmt(x){                                    // 2.5 → «2,5», −3 → «−3»
+  if (typeof x !== 'number' || !isFinite(x)) return String(x);
+  const r = Math.round(x * 1e6) / 1e6;
+  let [ip, fp] = String(Math.abs(r)).split('.');
+  if (ip.length >= 5) ip = ip.replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0');   // 450000 → «450 000»
+  return (r < 0 ? MINUS : '') + ip + (fp ? ',' + fp : '');
+}
+function par(x){ return x < 0 ? `(${fmt(x)})` : fmt(x); }   // отрицательное — в скобках
+function gcd(a, b){ a = Math.abs(a); b = Math.abs(b); while (b){ [a, b] = [b, a % b]; } return a || 1; }
+function fracMk(n, d){                              // дробь в разметке, сокращённая
+  if (d < 0){ n = -n; d = -d; }
+  const g = gcd(n, d); n /= g; d /= g;
+  if (d === 1) return fmt(n);
+  return (n < 0 ? MINUS : '') + `{{${Math.abs(n)}}/{${d}}}`;
+}
+function fracPlain(n, d){
+  if (d < 0){ n = -n; d = -d; }
+  const g = gcd(n, d); n /= g; d /= g;
+  return d === 1 ? fmt(n) : `${n < 0 ? MINUS : ''}${Math.abs(n)}/${d}`;
+}
+/* Многочлен: coefs[k] — коэффициент при v^k. → разметка вида «5t^{3} − t^{2} + 7t + 10» */
+function polyMk(coefs, v){
+  let out = '';
+  for (let k = coefs.length - 1; k >= 0; k--){
+    const c = coefs[k]; if (!c) continue;
+    const sign = c < 0 ? MINUS : '+';
+    const ac = Math.abs(c);
+    let term;
+    if (k === 0) term = String(ac);
+    else {
+      const coefStr = ac === 1 ? '' : String(ac);
+      term = coefStr + v + (k === 1 ? '' : `^{${k}}`);
+    }
+    if (out === '') out = (c < 0 ? MINUS : '') + term;
+    else out += ` ${sign} ${term}`;
+  }
+  return out || '0';
+}
+function polyDeriv(coefs){
+  const d = [];
+  for (let k = 1; k < coefs.length; k++) d[k - 1] = k * (coefs[k] || 0);
+  while (d.length && !d[d.length - 1]) d.pop();
+  return d.length ? d : [0];
+}
+function polyEval(coefs, t){ return coefs.reduce((s, c, k) => s + (c || 0) * Math.pow(t, k), 0); }
+/* Линейный член «k·y»: 1 → «y», −1 → «−y» */
+function lin(k, v){ if (k === 1) return v; if (k === -1) return MINUS + v; return fmt(k) + v; }
+/* Сумма/разность с правильным знаком: «a ± b·y» */
+function plusTerm(k, v){ if (k === 0) return ''; return (k < 0 ? ` ${MINUS} ` : ' + ') + (Math.abs(k) === 1 ? v : fmt(Math.abs(k)) + v); }
+
+/* ---------- Разбор ответа ученика ---------- */
+function parseNum(str){
+  if (str == null) return NaN;
+  let s = String(str).trim().toLowerCase();
+  if (!s) return NaN;
+  s = s.replace(/\s+/g, '').replace(/[−–—]/g, '-').replace(/,/g, '.');
+  s = s.replace(/[·*]?(√3|sqrt\(3\)|корень3|корень\(3\))$/, ''); // ученик дописал «√3» в поле «число перед √3»
+  s = s.replace(/^\+/, '');
+  if (/^-?\d+(\.\d+)?$/.test(s)) return parseFloat(s);
+  if (/^-?\.\d+$/.test(s)) return parseFloat(s.replace('.', '0.'));
+  let m = s.match(/^(-?)(\d+)\/(-?\d+)$/);
+  if (m){ const d = +m[3]; if (d === 0) return NaN; return (m[1] ? -1 : 1) * (+m[2]) / d; }
+  m = s.match(/^(-?)\((\d+)\/(\d+)\)$/);
+  if (m) return (m[1] ? -1 : 1) * (+m[2]) / (+m[3]);
+  m = s.match(/^(-?)(\d+)\.(\d+)\/(\d+)$/);            // «2,5/3» — редко, но пусть
+  if (m) return (m[1] ? -1 : 1) * parseFloat(m[2] + '.' + m[3]) / (+m[4]);
+  return NaN;
+}
+function nearly(a, b, tol){ tol = tol == null ? 1e-6 : tol; return Math.abs(a - b) <= tol * Math.max(1, Math.abs(b)); }
+/* Сравнение неупорядоченных наборов чисел (корни уравнения) */
+function sameSet(got, want){
+  if (got.length !== want.length) return false;
+  const g = got.slice().sort((a, b) => a - b), w = want.slice().sort((a, b) => a - b);
+  return g.every((x, i) => nearly(x, w[i]));
+}
+
+/* ---------- Конструкторы шагов ---------- */
+/* pickSide: клик по стороне чертежа. want — канонический ключ 'AC'|'BC'|'AB',
+   o = {why:{AC,BC,AB} — адресные сообщения для НЕВЕРНЫХ сторон, hint, explain, label — подпись стороны буквами схемы} */
+function pickSide(title, q, want, o){ o = o || {}; return { kind:'pickSide', title, q, want, why:o.why || {}, hint:o.hint || '', explain:o.explain || '', label:o.label || want }; }
+/* ansSide: финальный ответ-клик. */
+function ansSide(want, o){ o = o || {}; return { kind:'side', want, q:o.q || '', why:o.why || {}, display:o.display || '', label:o.label || want }; }
+
+/* num: одно числовое поле. o = {suffix, unit, explain, hint, traps:[{value,msg}]} */
+function num(title, q, ans, o){ o = o || {}; return { kind:'num', title, q, ans, suffix:o.suffix||'', unit:o.unit||'', explain:o.explain||'', hint:o.hint||'', traps:o.traps||[], display:o.display }; }
+/* multi: несколько подписанных полей. inputs = [{label, ans, suffix}] */
+function multi(title, q, inputs, o){ o = o || {}; return { kind:'multi', title, q, inputs, unordered:!!o.unordered, explain:o.explain||'', hint:o.hint||'' }; }
+/* choice: варианты. options = [{text, why}] или строки; correct — индекс верного */
+function choice(title, q, options, correct, o){
+  o = o || {};
+  const opts = options.map(x => typeof x === 'string' ? { text:x, why:'' } : x);
+  return { kind:'choice', title, q, options:opts, correct, explain:o.explain||'', hint:o.hint||'' };
+}
+/* info: без вопроса — просто следующая строчка рассуждения */
+function info(title, text){ return { kind:'info', title, text }; }
+
+/* Перемешать варианты выбора, сохранив индекс верного */
+function shuffledChoice(opts, correctIdx, rng){
+  const idx = shuffle(opts.map((_, i) => i), rng);
+  return { options: idx.map(i => opts[i]), correct: idx.indexOf(correctIdx) };
+}
+
+/* Экспорт для node-тестов */
+if (typeof module !== 'undefined'){
+  module.exports = { pickSide, ansSide, mulberry32, ri, pick, shuffle, nonzero, M, P, fmt, par, gcd, fracMk, fracPlain,
+    polyMk, polyDeriv, polyEval, lin, plusTerm, parseNum, nearly, sameSet, num, multi, choice, info,
+    shuffledChoice, MINUS };
+}
+
+/* ============================================================
+   Тренажёр «Прямоугольный треугольник»: разминка sin/cos/tg,
+   тригонометрия острого угла, высота на гипотенузу, площадь,
+   углы между биссектрисой/медианой/высотой, треугольник 30°-60°-90°.
+   ============================================================ */
+if (typeof module !== 'undefined'){ Object.assign(global, require('./core.js')); }
+
+/* ---------- буквенные схемы вершин (третья буква — прямой угол) ---------- */
+const SCHEMES = [['A', 'B', 'C'], ['K', 'L', 'M'], ['P', 'Q', 'R'], ['X', 'Y', 'Z'], ['E', 'F', 'G']];
+function pickScheme(rng){
+  const [A, B, C] = pick(SCHEMES, rng);
+  const used = new Set([A, B, C]);
+  const H = used.has('H') ? 'N' : 'H';
+  const D = used.has('D') ? 'E' : 'D';
+  let Med = 'M'; if (used.has(Med) || Med === H || Med === D) Med = ['N', 'O', 'P', 'Q'].find(x => !used.has(x) && x !== H && x !== D);
+  return { A, B, C, H, D, Med };
+}
+
+/* ---------- Пифагоровы тройки (a — против A, b — против B = прилежащий A, c — гипотенуза) ---------- */
+const TRIPLES = [[3, 4, 5], [4, 3, 5], [5, 12, 13], [12, 5, 13], [8, 15, 17], [15, 8, 17], [7, 24, 25], [24, 7, 25], [20, 21, 29], [21, 20, 29], [9, 40, 41], [40, 9, 41]];
+/* пары чевиан для подсветки в теме 4 */
+const CEV_HL = { hd: ['cevH', 'cevD'], dm: ['cevD', 'cevM'], hm: ['cevH', 'cevM'] };
+function pickTriple(rng, small){ return pick(small ? TRIPLES.slice(0, 6) : TRIPLES, rng); }
+const TOPICS = {};
+const TOPIC_ORDER = [0, 1, 2, 3, 4, 5];
+
+/* ============================================================
+   ТЕМА 0. Разминка: что такое синус, косинус, тангенс
+   ============================================================ */
+TOPICS[0] = {
+  num: 0, name: 'Разминка: sin, cos, tg', short: 'Азбука отношений сторон',
+  memo: [
+    ['Гипотенуза', 'сторона напротив прямого угла — самая длинная'],
+    ['Для угла A', 'напротив него — ПРОТИВОлежащий катет; тот, что его касается (кроме гипотенузы), — ПРИлежащий'],
+    ['sin A', '= {{противолежащий}/{гипотенуза}}'],
+    ['cos A', '= {{прилежащий}/{гипотенуза}}'],
+    ['tg A', '= {{противолежащий}/{прилежащий}} — только катеты, гипотенузы здесь нет'],
+    ['Как запомнить', 'КОСинус — КАСается угла: прилежащий. СИНус — Смотрит на угол издалека: противолежащий. У обоих в знаменателе гипотенуза.']
+  ],
+  trap: 'Прилежащий и противолежащий зависят от УГЛА: у соседнего острого угла те же катеты меняются ролями!',
+  demos: [
+    { task: 'sides', seed: 1, angle: 'A', ask: 'opp' },
+    { task: 'ratios', seed: 2, angle: 'A', fask: 'sin' },
+    { task: 'sides', seed: 3, angle: 'B', ask: 'adj' }
+  ],
+  params(level, rng){
+    const angle = level === 1 ? 'A' : pick(['A', 'B'], rng);
+    if (rng() < 0.5) return { task: 'sides', seed: ri(1, 99999, rng), angle, ask: pick(['hyp', 'opp', 'adj'], rng) };
+    return { task: 'ratios', seed: ri(1, 99999, rng), angle, fask: pick(['sin', 'cos', 'tan', 'rev'], rng) };
+  },
+  build(p){
+    const rng = mulberry32((p.seed || 1) * 97 + 13);
+    const S = pickScheme(rng);
+    const which = p.angle || 'A';
+    const ang = which === 'A' ? S.A : S.B;                        // буква разбираемого угла
+    const other = which === 'A' ? S.B : S.A;
+    const OPP = which === 'A' ? 'BC' : 'AC';                      // канонические ключи сторон
+    const ADJ = which === 'A' ? 'AC' : 'BC';
+    const nm = k => ({ AC: S.A + S.C, BC: S.B + S.C, AB: S.A + S.B })[k];
+    const oppLeg = nm(OPP), adjLeg = nm(ADJ), hyp = nm('AB');
+    const fig = { kind: 'tri', S, t: pick([0.32, 0.38, 0.62, 0.68], rng), angleAt: ang };
+
+    /* адресные объяснения для каждого НЕВЕРНОГО клика */
+    const whyHyp = {};
+    whyHyp[OPP] = `${oppLeg} — катет: он образует прямой угол. Гипотенуза лежит НАПРОТИВ прямого угла ${S.C} и она самая длинная.`;
+    whyHyp[ADJ] = `${adjLeg} — катет: он образует прямой угол. Гипотенуза лежит НАПРОТИВ прямого угла ${S.C} и она самая длинная.`;
+    const whyOpp = {};
+    whyOpp[ADJ] = `${adjLeg} КАСАЕТСЯ угла ${ang} — значит, это ПРИлежащий катет. Нужен тот, что виден из вершины ${ang} «через треугольник».`;
+    whyOpp.AB = `${hyp} — гипотенуза, она лежит напротив ПРЯМОГО угла ${S.C}. Напротив угла ${ang} лежит катет ${oppLeg}.`;
+    const whyAdj = {};
+    whyAdj[OPP] = `${oppLeg} лежит НАПРОТИВ угла ${ang} — это ПРОТИВОлежащий катет. Прилежащий — тот, что касается угла.`;
+    whyAdj.AB = `${hyp} тоже касается угла ${ang}, но это гипотенуза. Прилежащим называют КАТЕТ, который касается угла.`;
+    const whyNum = {};
+    whyNum[ADJ] = `${adjLeg} — ПРИлежащий катет, он стоит в числителе у КОСИНУСА. У синуса наверху — противолежащий.`;
+    whyNum.AB = `${hyp} — гипотенуза: у синуса она в ЗНАМЕНАТЕЛЕ, а не в числителе.`;
+
+    if (p.task === 'sides'){
+      const text = `На чертеже — прямоугольный треугольник ${S.A}${S.B}${S.C} с прямым углом ${S.C}. Учимся показывать стороны для угла ${ang} — прямо кликами по чертежу.`;
+      const steps = [
+        pickSide('Гипотенуза', `Кликните ГИПОТЕНУЗУ — сторону напротив прямого угла ${S.C}.`, 'AB',
+          { why: whyHyp, hint: `Прямой угол — при вершине ${S.C}. Гипотенуза его «не трогает», и она самая длинная сторона.`,
+            explain: `Гипотенуза — ${hyp}: соединяет вершины острых углов и лежит против прямого угла.`, label: hyp }),
+        pickSide(`Напротив угла ${ang}`, `Кликните катет, который лежит НАПРОТИВ угла ${ang} (не касается его).`, OPP,
+          { why: whyOpp, hint: `Встаньте мысленно в вершину ${ang} и посмотрите «через» треугольник.`,
+            explain: `Противолежащий катет для угла ${ang} — это ${oppLeg}.`, label: oppLeg }),
+        pickSide(`Рядом с углом ${ang}`, `Кликните катет, ПРИЛЕЖАЩИЙ к углу ${ang} — он его касается (гипотенуза не в счёт).`, ADJ,
+          { why: whyAdj, hint: `Из вершины ${ang} выходят две стороны. Одна — гипотенуза, вторая и есть прилежащий катет.`,
+            explain: `Прилежащий катет для угла ${ang} — это ${adjLeg}.`, label: adjLeg })
+      ];
+      const ASKMAP = {
+        hyp: { want: 'AB', q: `Кликните ГИПОТЕНУЗУ треугольника ${S.A}${S.B}${S.C}.`, why: whyHyp, label: hyp },
+        opp: { want: OPP, q: `Кликните катет, ПРОТИВОЛЕЖАЩИЙ углу ${ang}.`, why: whyOpp, label: oppLeg },
+        adj: { want: ADJ, q: `Кликните катет, ПРИЛЕЖАЩИЙ к углу ${ang}.`, why: whyAdj, label: adjLeg }
+      };
+      const a = ASKMAP[p.ask || 'opp'];
+      return { topic: 0, text, steps, answer: ansSide(a.want, { q: a.q, why: a.why, display: `сторона ${a.label}`, label: a.label }), p, unitFinal: '', figure: fig };
+    }
+
+    /* подтип ratios: собираем дроби sin / cos / tg и читаем их «наоборот» */
+    const text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°. Разберём, как для угла ${ang} записываются sin, cos и tg.`;
+    const mk = (correctText, wrongs) => shuffledChoice([{ text: correctText, why: '' }, ...wrongs], 0, rng);
+    const c4 = mk(`{{${oppLeg}}/{${hyp}}}`, [
+      { text: `{{${adjLeg}}/{${hyp}}}`, why: `Это cos ${ang}: в числителе ПРИлежащий катет. У синуса наверху противолежащий ${oppLeg}.` },
+      { text: `{{${oppLeg}}/{${adjLeg}}}`, why: `Это tg ${ang} — отношение катетов. У синуса в знаменателе гипотенуза ${hyp}.` },
+      { text: `{{${hyp}}/{${oppLeg}}}`, why: `Дробь перевёрнута: гипотенуза у синуса стоит в ЗНАМЕНАТЕЛЕ.` }
+    ]);
+    const c5 = mk(`{{${adjLeg}}/{${hyp}}}`, [
+      { text: `{{${oppLeg}}/{${hyp}}}`, why: `Это sin ${ang}: в числителе ПРОТИВОлежащий катет. КОСинус КАСается угла — наверху ${adjLeg}.` },
+      { text: `{{${adjLeg}}/{${oppLeg}}}`, why: `Гипотенузы нет — это не cos. Косинус — прилежащий катет к ГИПОТЕНУЗЕ.` }
+    ]);
+    const c6 = mk(`{{${oppLeg}}/{${adjLeg}}}`, [
+      { text: `{{${adjLeg}}/{${oppLeg}}}`, why: `Дробь перевёрнута — это tg угла ${other}. У tg ${ang} наверху противолежащий ${oppLeg}.` },
+      { text: `{{${oppLeg}}/{${hyp}}}`, why: `Это sin ${ang}: в тангенсе гипотенузы быть не должно — только катеты.` }
+    ]);
+    const kinds = [
+      { fr: `{{${oppLeg}}/{${hyp}}}`, key: 'sin' },
+      { fr: `{{${adjLeg}}/{${hyp}}}`, key: 'cos' },
+      { fr: `{{${oppLeg}}/{${adjLeg}}}`, key: 'tan' },
+      { fr: `{{${hyp}}/{${oppLeg}}}`, key: 'none' }
+    ];
+    const kv = pick(kinds, rng);
+    const optsRev = [
+      { text: `sin ${ang}`, why: `sin ${ang} = {{${oppLeg}}/{${hyp}}} — противолежащий катет к гипотенузе. Сравните с данной дробью.` },
+      { text: `cos ${ang}`, why: `cos ${ang} = {{${adjLeg}}/{${hyp}}} — прилежащий катет к гипотенузе. Сравните с данной дробью.` },
+      { text: `tg ${ang}`, why: `tg ${ang} = {{${oppLeg}}/{${adjLeg}}} — катет к катету, без гипотенузы. Сравните с данной дробью.` },
+      { text: 'ни одно из трёх', why: `Одно из трёх отношений здесь всё-таки записано — сверьте дробь с формулами sin, cos и tg.` }
+    ];
+    const rightIdx = kv.key === 'none' ? 3 : ['sin', 'cos', 'tan'].indexOf(kv.key);
+    optsRev[rightIdx] = { text: optsRev[rightIdx].text, why: '' };
+    const c7 = shuffledChoice(optsRev, rightIdx, rng);
+    const steps = [
+      pickSide(`Числитель sin ${ang}`, `В дроби sin ${ang} что стоит в ЧИСЛИТЕЛЕ? Кликните эту сторону на чертеже.`, OPP,
+        { why: whyNum, hint: 'СИНус Смотрит на угол издалека: наверху — противолежащий катет.',
+          explain: `sin ${ang} начинается с противолежащего катета ${oppLeg}; в знаменателе — гипотенуза ${hyp}.`, label: oppLeg }),
+      choice(`sin ${ang}`, `Соберите дробь целиком: sin ${ang} = ?`, c4.options, c4.correct, {}),
+      choice(`cos ${ang}`, `cos ${ang} = ?`, c5.options, c5.correct, {}),
+      choice(`tg ${ang}`, `tg ${ang} = ?`, c6.options, c6.correct, {}),
+      choice('Читаем наоборот', `Перед вами отношение ${kv.fr}. Что это для угла ${ang}?`, c7.options, c7.correct, {})
+    ];
+    const FMAP = { sin: c4, cos: c5, tan: c6, rev: c7 };
+    const fa = FMAP[p.fask || 'tan'];
+    return { topic: 0, text, steps, answer: ansChoice(fa.options, fa.correct), p, unitFinal: '', figure: fig };
+  }
+};
+
+/* ============================================================
+   ТЕМА 1. Тригонометрия острого угла: сторона + отношение
+   ============================================================ */
+TOPICS[1] = {
+  num: 1, name: 'Синус, косинус, тангенс', short: 'Сторона и отношение → другая сторона',
+  memo: [
+    ['sin A', '= {{против.}/{гипотенуза}}'],
+    ['cos A', '= {{прилеж.}/{гипотенуза}}'],
+    ['tg A', '= {{против.}/{прилеж.}}'],
+    ['Теорема Пифагора', 'гипотенуза^{2} = катет₁^{2} + катет₂^{2}']
+  ],
+  trap: 'sin и cos — это отношения к ГИПОТЕНУЗЕ, а tg — отношение одного катета к другому, гипотенузы там нет.',
+  demos: [
+    { triple: [7, 24, 25], mode: 'findSide', given: 'AC', findSide: 'AB', ratio: 'cos', mSeed: 1 },
+    { triple: [4, 3, 5], mode: 'findSide', given: 'BC', findSide: 'AC', ratio: 'tan', mSeed: 2 },
+    { triple: [3, 4, 5], mode: 'findRatio', findRatio: 'sin', mSeed: 3 }
+  ],
+  params(level, rng){
+    const triple = pickTriple(rng, level === 1);
+    const sides = ['AC', 'BC', 'AB'];
+    if (level >= 2 && rng() < 0.35){
+      const findRatio = pick(['sin', 'cos', 'tan'], rng);
+      return { triple, mode: 'findRatio', findRatio, mSeed: ri(1, 99999, rng) };
+    }
+    const given = pick(sides, rng);
+    const findSide = pick(sides.filter(s => s !== given), rng);
+    const ratio = pick(['sin', 'cos', 'tan'], rng);
+    return { triple, mode: 'findSide', given, findSide, ratio, mSeed: ri(1, 99999, rng) };
+  },
+  build(p){
+    const rng = mulberry32((p.mSeed || 1) * 131 + 7);
+    const S = pickScheme(rng);
+    const [a, b, c] = p.triple;                                  // a=BC (против A), b=AC (прилежащий A), c=AB
+    const triVal = { AC: b, BC: a, AB: c };
+    const nameOf = { AC: S.A + S.C, BC: S.B + S.C, AB: S.A + S.B };
+    const ratioSides = { sin: ['BC', 'AB'], cos: ['AC', 'AB'], tan: ['BC', 'AC'] };
+    const ratioName = { sin: 'sin', cos: 'cos', tan: 'tg' };
+    if (p.mode === 'findRatio'){
+      const scale = pick([1, 1, 2, 3], rng);
+      const AC = b * scale, BC = a * scale, AB = c * scale;
+      const text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${nameOf.AC} = ${AC}, ${nameOf.BC} = ${BC}. Найдите ${ratioName[p.findRatio]} ${S.A}.`;
+      const rebuilt = shuffledChoice(['sin', 'cos', 'tan'].map(k => ({ text: `{{${nameOf[ratioSides[k][0]]}}/{${nameOf[ratioSides[k][1]]}}}`, why: k === p.findRatio ? '' : `Это ${ratioName[k]} ${S.A}, а нужен ${ratioName[p.findRatio]} ${S.A}.` })), ['sin', 'cos', 'tan'].indexOf(p.findRatio), rng);
+      const ansVal = triVal[ratioSides[p.findRatio][0]] / triVal[ratioSides[p.findRatio][1]];
+      const steps = [
+        num('Гипотенуза', `По теореме Пифагора: ${nameOf.AB}^{2} = ${nameOf.AC}^{2} + ${nameOf.BC}^{2} = ${AC}^{2} + ${BC}^{2} = ?`, AB * AB,
+          { hint: `${AC}^{2} = ${AC * AC}, ${BC}^{2} = ${BC * BC}. Сложите.`, explain: `${nameOf.AB}^{2} = ${AC * AC} + ${BC * BC} = ${AB * AB}.` }),
+        num('Извлекаем корень', `${nameOf.AB} = √{${AB * AB}} = ?`, AB, { hint: `Какое число в квадрате даёт ${AB * AB}?`, explain: `${nameOf.AB} = ${AB}.` }),
+        choice('Какие стороны в отношении?', `${ratioName[p.findRatio]} ${S.A} — это отношение каких сторон?`, rebuilt.options, rebuilt.correct, {}),
+        num(`Вычисляем ${ratioName[p.findRatio]} ${S.A}`, `${ratioName[p.findRatio]} ${S.A} = {{${triVal[ratioSides[p.findRatio][0]] * scale}}/{${triVal[ratioSides[p.findRatio][1]] * scale}}} = ?`, ansVal,
+          { hint: `Сократите дробь ${triVal[ratioSides[p.findRatio][0]] * scale}/${triVal[ratioSides[p.findRatio][1]] * scale}.`, explain: `${ratioName[p.findRatio]} ${S.A} = ${fracMk(triVal[ratioSides[p.findRatio][0]], triVal[ratioSides[p.findRatio][1]])}.` })
+      ];
+      return { topic: 1, text, steps, answer: ansNum(ansVal, { display: fracMk(triVal[ratioSides[p.findRatio][0]], triVal[ratioSides[p.findRatio][1]]) }), p, figure: { kind: 'tri', S, t: (b * b) / (c * c), angleAt: S.A, labels: { AC, BC } } };
+    }
+    /* mode findSide */
+    const [s1, s2] = ratioSides[p.ratio];
+    const inRatio = p.given === s1 || p.given === s2;
+    const scale = pick([1, 1, 1, 2, 3, 4], rng);
+    const values = { AC: triVal.AC * scale, BC: triVal.BC * scale, AB: triVal.AB * scale };
+    const given = values[p.given];
+    const text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${nameOf[p.given]} = ${given}, ${ratioName[p.ratio]} ${S.A} = ${fracMk(triVal[s1], triVal[s2])}. Найдите ${nameOf[p.findSide]}.`;
+    const steps = [];
+    if (!inRatio){
+      const known = ratioSides[p.ratio];
+      const hypIn = known.includes('AB');
+      steps.push(num('Достраиваем тройку', hypIn
+        ? `${ratioName[p.ratio]} ${S.A} связывает стороны ${nameOf[known[0]]} и ${nameOf[known[1]]} — их «табличные» числа ${triVal[known[0]]} и ${triVal[known[1]]}. Сторона ${nameOf[p.given]} — третья, катет; по теореме Пифагора её число: √{${triVal.AB}^{2} − ${(known[0] === 'AB' ? triVal[known[1]] : triVal[known[0]])}^{2}}. Чему оно равно?`
+        : `${ratioName[p.ratio]} ${S.A} связывает стороны ${nameOf[known[0]]} и ${nameOf[known[1]]} — их «табличные» числа ${triVal[known[0]]} и ${triVal[known[1]]} (это два катета). Гипотенуза ${nameOf[p.given]} по теореме Пифагора: √{${triVal[known[0]]}^{2} + ${triVal[known[1]]}^{2}}. Чему оно равно?`,
+        triVal[p.given], { hint: `Подставьте числа ${triVal[known[0]]} и ${triVal[known[1]]} и посчитайте.`, explain: `Табличное число стороны ${nameOf[p.given]} равно ${triVal[p.given]}.` }));
+    }
+    steps.push(num('Масштаб', `«Табличное» число стороны ${nameOf[p.given]} равно ${triVal[p.given]}, а в этом треугольнике она равна ${given}. Во сколько раз стороны крупнее таблицы? k = ${given} : ${triVal[p.given]} = ?`, scale,
+      { hint: `Разделите ${given} на ${triVal[p.given]}.`, explain: `k = ${scale}.` }));
+    steps.push(num(`Находим ${nameOf[p.findSide]}`, `«Табличное» число стороны ${nameOf[p.findSide]} равно ${triVal[p.findSide]}. Умножьте его на масштаб: ${nameOf[p.findSide]} = ${triVal[p.findSide]} · ${scale} = ?`, values[p.findSide],
+      { hint: `${triVal[p.findSide]} умножить на ${scale}.`, explain: `${nameOf[p.findSide]} = ${values[p.findSide]}.` }));
+    return { topic: 1, text, steps, answer: ansNum(values[p.findSide]), p, figure: { kind: 'tri', S, t: (b * b) / (c * c), angleAt: S.A, labels: { [p.given]: given }, hl: [p.findSide] } };
+  }
+};
+
+/* ============================================================
+   ТЕМА 2. Высота, опущенная на гипотенузу
+   ============================================================ */
+TOPICS[2] = {
+  num: 2, name: 'Высота на гипотенузу', short: 'CH, AH, BH — геометрическое среднее',
+  memo: [
+    ['Высота из прямого угла', 'высота ⟂ гипотенузе, её основание H лежит между A и B'],
+    ['Три подобных треугольника', 'ACH ~ ABC ~ CBH — у всех те же углы A и B'],
+    ['Катет²', 'AC^{2} = AH · AB,   BC^{2} = BH · AB'],
+    ['Высота²', 'CH^{2} = AH · BH'],
+    ['Через углы', 'sin A = {{BH}/{BC}} = {{BC}/{AB}},   cos A = {{AH}/{AC}} = {{AC}/{AB}},   tg A = {{CH}/{AH}}']
+  ],
+  trap: 'CH² = AH·BH — высота в квадрате равна произведению ОТРЕЗКОВ гипотенузы, а не отрезка на весь катет. Не перепутайте с AC² = AH·AB.',
+  demos: [
+    { triple: [3, 4, 5], m: 1, recipe: 'sinFromSeg', mSeed: 1 },
+    { triple: [4, 3, 5], m: 1, recipe: 'legFromSeg', mSeed: 2 },
+    { triple: [3, 4, 5], m: 2, recipe: 'altFromSegs', mSeed: 3 }
+  ],
+  params(level, rng){
+    const triple = pickTriple(rng, level === 1);
+    const recipes = level === 1 ? ['sinFromSeg', 'legFromSeg', 'altFromSegs'] : ['sinFromSeg', 'legFromSeg', 'altFromSegs', 'hypFromLegSeg', 'tanFromAHtg', 'altFromLegRatio'];
+    const recipe = pick(recipes, rng);
+    const m = level === 3 ? pick([1, 2, 3], rng) : pick([1, 1, 2], rng);
+    return { triple, recipe, m, mSeed: ri(1, 99999, rng) };
+  },
+  build(p){
+    const rng = mulberry32((p.mSeed || 1) * 151 + 3);
+    const S = pickScheme(rng);
+    const [a, b, c] = p.triple, m = p.m;                        // AB=c²m, AC=bcm, BC=acm, CH=abm, AH=b²m, BH=a²m
+    const AB = c * c * m, AC = b * c * m, BC = a * c * m, CH = a * b * m, AH = b * b * m, BH = a * a * m;
+    const N = { AB: S.A + S.B, AC: S.A + S.C, BC: S.B + S.C, CH: S.C + S.H, AH: S.A + S.H, BH: S.B + S.H };
+    const tanA = fracMk(a, b);
+    const R = p.recipe;
+    let text, steps, answer;
+    if (R === 'sinFromSeg'){
+      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.BC} = ${BC}, ${N.BH} = ${BH}. Найдите sin ${S.A}.`;
+      steps = [
+        info('Похожие треугольники', `Треугольники ${S.C}${S.B}${S.H} и ${S.A}${S.B}${S.C} подобны (у обоих есть угол ${S.B} и прямой угол). В маленьком треугольнике ${S.C}${S.B}${S.H}: cos ${S.B} = {{${N.BH}}/{${N.BC}}}. А раз угол ${S.A} + угол ${S.B} = 90°, то sin ${S.A} = cos ${S.B}.`),
+        num(`sin ${S.A} через отрезок`, `sin ${S.A} = cos ${S.B} = {{${N.BH}}/{${N.BC}}} = {{${BH}}/{${BC}}} = ?`, BH / BC, { hint: `Сократите дробь ${BH}/${BC}.`, explain: `sin ${S.A} = ${fracMk(BH, BC)}.` })
+      ];
+      answer = ansNum(BH / BC, { display: fracMk(BH, BC) });
+    } else if (R === 'legFromSeg'){
+      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.AB} = ${AB}, ${N.AH} = ${AH}. Найдите ${N.AC}.`;
+      steps = [
+        info('Формула', `Катет ${N.AC} связан с отрезком ${N.AH} и всей гипотенузой ${N.AB} формулой: ${N.AC}^{2} = ${N.AH} · ${N.AB}.`),
+        num('Подставляем числа', `${N.AC}^{2} = ${N.AH} · ${N.AB} = ${AH} · ${AB} = ?`, AC * AC, { hint: `Перемножьте ${AH} и ${AB}.`, explain: `${N.AC}^{2} = ${AC * AC}.` }),
+        num('Извлекаем корень', `${N.AC} = √{${AC * AC}} = ?`, AC, { hint: `Какое число в квадрате даёт ${AC * AC}?`, explain: `${N.AC} = ${AC}.` })
+      ];
+      answer = ansNum(AC);
+    } else if (R === 'altFromSegs'){
+      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.AH} = ${AH}, ${N.BH} = ${BH}. Найдите ${N.CH}.`;
+      steps = [
+        info('Формула', `Высота ${N.CH} — среднее геометрическое отрезков гипотенузы: ${N.CH}^{2} = ${N.AH} · ${N.BH}.`),
+        num('Подставляем числа', `${N.CH}^{2} = ${AH} · ${BH} = ?`, CH * CH, { hint: `Перемножьте ${AH} и ${BH}.`, explain: `${N.CH}^{2} = ${CH * CH}.` }),
+        num('Извлекаем корень', `${N.CH} = √{${CH * CH}} = ?`, CH, { hint: `Какое число в квадрате даёт ${CH * CH}?`, explain: `${N.CH} = ${CH}.` })
+      ];
+      answer = ansNum(CH);
+    } else if (R === 'hypFromLegSeg'){
+      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.BC} = ${BC}, ${N.BH} = ${BH}. Найдите ${N.AB}.`;
+      steps = [
+        info('Формула', `Катет ${N.BC} связан с отрезком ${N.BH} и всей гипотенузой ${N.AB}: ${N.BC}^{2} = ${N.BH} · ${N.AB}.`),
+        num('Выражаем гипотенузу', `${BC}^{2} = ${BH} · ${N.AB}, значит ${N.AB} = ${BC}^{2} : ${BH} = ${BC * BC} : ${BH} = ?`, AB,
+          { hint: `Сначала ${BC}^{2} = ${BC * BC}, потом разделите на ${BH}.`, explain: `${N.AB} = ${AB}.` })
+      ];
+      answer = ansNum(AB);
+    } else if (R === 'tanFromAHtg'){
+      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.AH} = ${AH}, tg ${S.A} = ${tanA}. Найдите ${N.BH}.`;
+      steps = [
+        info('Сначала высота', `В треугольнике ${S.A}${S.C}${S.H}: tg ${S.A} = {{${N.CH}}/{${N.AH}}}, значит ${N.CH} = ${N.AH} · tg ${S.A}.`),
+        num('Находим высоту', `${N.CH} = ${AH} · ${tanA} = ?`, CH, { hint: `Умножьте ${AH} на ${tanA}.`, explain: `${N.CH} = ${CH}.` }),
+        info('Теперь формула высоты', `${N.CH}^{2} = ${N.AH} · ${N.BH}, откуда ${N.BH} = ${N.CH}^{2} : ${N.AH}.`),
+        num('Находим BH', `${N.BH} = ${CH}^{2} : ${AH} = ${CH * CH} : ${AH} = ?`, BH, { hint: `Сначала ${CH}^{2} = ${CH * CH}, потом разделите на ${AH}.`, explain: `${N.BH} = ${BH}.` })
+      ];
+      answer = ansNum(BH);
+    } else {
+      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.AC} = ${AC}, ${N.BC} = ${BC}. Найдите ${N.CH}.`;
+      steps = [
+        info('Площадь двумя способами', `Площадь треугольника ${S.A}${S.B}${S.C} можно найти через катеты: S = {{${N.AC} · ${N.BC}}/{2}}, а можно через гипотенузу и высоту: S = {{${N.AB} · ${N.CH}}/{2}}. Значит ${N.AC} · ${N.BC} = ${N.AB} · ${N.CH}.`),
+        num('Гипотенуза', `${N.AB} = √{${N.AC}^{2} + ${N.BC}^{2}} = √{${AC}^{2} + ${BC}^{2}} = ?`, AB, { hint: `${AC}^{2}=${AC * AC}, ${BC}^{2}=${BC * BC}. Сложите и извлеките корень.`, explain: `${N.AB} = ${AB}.` }),
+        num('Находим высоту', `${N.CH} = {{${N.AC} · ${N.BC}}/{${N.AB}}} = {{${AC * BC}}/{${AB}}} = ?`, CH, { hint: `Перемножьте катеты, потом разделите на гипотенузу.`, explain: `${N.CH} = ${CH}.` })
+      ];
+      answer = ansNum(CH);
+    }
+    const givenSides = {
+      sinFromSeg: { BC, BH }, legFromSeg: { AB, AH }, altFromSegs: { AH, BH },
+      hypFromLegSeg: { BC, BH }, tanFromAHtg: { AH }, altFromLegRatio: { AC, BC }
+    }[R];
+    /* подсветка = искомое; дуга угла — там, где угол участвует в вопросе */
+    const hlSought = { sinFromSeg: [], legFromSeg: ['AC'], altFromSegs: ['CH'], hypFromLegSeg: ['AB'], tanFromAHtg: ['BH'], altFromLegRatio: ['CH'] }[R];
+    const angleAt = (R === 'sinFromSeg' || R === 'tanFromAHtg') ? S.A : null;
+    return { topic: 2, text, steps, answer, p, figure: { kind: 'tri', S, t: (b * b) / (c * c), angleAt, withAltitude: true, labels: givenSides, hl: hlSought } };
+  }
+};
+
+/* ============================================================
+   ТЕМА 3. Площадь прямоугольного треугольника
+   ============================================================ */
+TOPICS[3] = {
+  num: 3, name: 'Площадь треугольника', short: 'Катеты, гипотенуза и площадь',
+  memo: [
+    ['Площадь', 'S = {{катет · катет}/{2}} (в прямоугольном — катеты и есть высота с основанием)'],
+    ['Теорема Пифагора', 'гипотенуза^{2} = катет₁^{2} + катет₂^{2}']
+  ],
+  trap: 'Площадь через катеты — это половина их ПРОИЗВЕДЕНИЯ, а не произведение. Не забудьте разделить на 2!',
+  demos: [{ kind: 'legHyp', leg: 6, hyp: 10, mSeed: 1 }, { kind: 'diff', l1: 6, l2: 8, mSeed: 2 }],
+  params(level, rng){
+    if (level <= 2 && rng() < 0.6){
+      const triple = pickTriple(rng, true); const m = pick([1, 1, 2], rng);
+      const leg = pick([triple[0], triple[1]], rng) * m, hyp = triple[2] * m;
+      return { kind: 'legHyp', leg, hyp, mSeed: ri(1, 99999, rng) };
+    }
+    const l1 = ri(3, 12, rng), d = ri(1, 6, rng);
+    return { kind: 'diff', l1, l2: l1 + d, mSeed: ri(1, 99999, rng) };
+  },
+  build(p){
+    const rng = mulberry32((p.mSeed || 1) * 173 + 11);
+    const S = pickScheme(rng);
+    const N = { AB: S.A + S.B, AC: S.A + S.C, BC: S.B + S.C };
+    if (p.kind === 'legHyp'){
+      const { leg, hyp } = p;
+      const other = Math.round(Math.sqrt(hyp * hyp - leg * leg));
+      const text = `Найдите площадь прямоугольного треугольника ${S.A}${S.B}${S.C} (угол ${S.C} = 90°), если его катет ${N.AC} и гипотенуза ${N.AB} равны соответственно ${leg} и ${hyp}.`;
+      const steps = [
+        num('Второй катет', `По теореме Пифагора: ${N.BC} = √{${N.AB}^{2} − ${N.AC}^{2}} = √{${hyp}^{2} − ${leg}^{2}} = √{${hyp * hyp} − ${leg * leg}} = ?`, other,
+          { hint: `${hyp}^{2}=${hyp * hyp}, ${leg}^{2}=${leg * leg}. Вычтите и извлеките корень.`, explain: `${N.BC} = ${other}.` }),
+        num('Площадь', `S = {{${N.AC} · ${N.BC}}/{2}} = {{${leg} · ${other}}/{2}} = ?`, leg * other / 2, { hint: `Перемножьте катеты, потом разделите на 2.`, explain: `S = ${fmt(leg * other / 2)}.` })
+      ];
+      return { topic: 3, text, steps, answer: ansNum(leg * other / 2), p, figure: { kind: 'tri', S, t: (leg * leg) / (hyp * hyp), labels: { AC: leg, AB: hyp } } };
+    }
+    const { l1, l2 } = p, area = l1 * l2 / 2, D = l2 - l1;
+    const disc = D * D + 8 * area;
+    const text = `Площадь прямоугольного треугольника ${S.A}${S.B}${S.C} (угол ${S.C} = 90°) равна ${fmt(area)}. Один из его катетов на ${D} больше другого. Найдите меньший катет.`;
+    const steps = [
+      info('Составляем уравнение', `Пусть меньший катет — x, тогда больший — x + ${D}. Площадь: S = {{x(x + ${D})}/{2}} = ${fmt(area)}, значит x² + ${D}x − ${2 * area} = 0.`),
+      num('Дискриминант', `D = ${D}^{2} + 4 · ${2 * area} = ${D * D} + ${8 * area} = ?`, disc, { hint: `Посчитайте ${D}² и 4·${2 * area}, сложите.`, explain: `D = ${disc}.` }),
+      num('Корень из дискриминанта', `√{${disc}} = ?`, Math.round(Math.sqrt(disc)), { hint: `Какое число в квадрате даёт ${disc}?`, explain: `√{${disc}} = ${Math.round(Math.sqrt(disc))}.` }),
+      num('Меньший катет', `x = {{−${D} + √{${disc}}}/{2}} = {{${-D} + ${Math.round(Math.sqrt(disc))}}/{2}} = ?`, l1, { hint: `Сложите −${D} и ${Math.round(Math.sqrt(disc))}, потом разделите на 2.`, explain: `Меньший катет x = ${l1}.` })
+    ];
+    return { topic: 3, text, steps, answer: ansNum(l1), p, figure: { kind: 'tri', S, t: (l1 * l1) / (l1 * l1 + l2 * l2), labels: {}, areaText: 'S = ' + fmt(area) } };
+  }
+};
+
+/* ============================================================
+   ТЕМА 4. Углы: биссектриса, медиана, высота из прямого угла
+   ============================================================ */
+TOPICS[4] = {
+  num: 4, name: 'Углы в прямоугольном треугольнике', short: 'Биссектриса, медиана, высота из вершины C',
+  memo: [
+    ['Сумма острых углов', 'A + B = 90°'],
+    ['Медиана к гипотенузе', 'CM = AM = BM (M — середина AB), значит угол ACM = A, угол BCM = B'],
+    ['Высота из прямого угла', 'угол ACH = B, угол BCH = A (H — основание высоты)'],
+    ['Биссектриса прямого угла', 'угол ACD = угол BCD = 45°'],
+    ['Между высотой и биссектрисой', '= между биссектрисой и медианой = {{|A − B|}/{2}}'],
+    ['Между высотой и медианой', '= |A − B|']
+  ],
+  trap: 'Высота, биссектриса и медиана из вершины прямого угла — РАЗНЫЕ отрезки (кроме случая равнобедренного прямоугольного треугольника). Не путайте формулы для углов между ними.',
+  demos: [
+    { kind: 'sum', given: 'diff', D: 32, mSeed: 1 },
+    { kind: 'median', B: 58, mSeed: 2 },
+    { kind: 'hdm', A: 61, B: 29, pair: 'hd', ask: 'angleBetween', mSeed: 3 }
+  ],
+  params(level, rng){
+    if (level === 1 && rng() < 0.4){
+      const D = ri(3, 15, rng) * 2;                     // чётное — чтобы (90 − D) делилось на 2 без остатка
+      return { kind: 'sum', given: pick(['diff', 'times'], rng), D, mult: pick([2, 4, 5, 8], rng), mSeed: ri(1, 99999, rng) };
+    }
+    if (rng() < 0.3){ const B = ri(10, 80, rng); return { kind: 'median', B, mSeed: ri(1, 99999, rng) }; }
+    let A = ri(5, 84, rng); if (A >= 45) A += 1;   // 45° исключён: чевианы совпали бы, угол между ними 0°
+    const pair = pick(['hd', 'dm', 'hm'], rng);
+    const ask = level === 1 ? 'angleBetween' : pick(['angleBetween', 'findAcute'], rng);
+    return { kind: 'hdm', A, B: 90 - A, pair, ask, mSeed: ri(1, 99999, rng) };
+  },
+  build(p){
+    const rng = mulberry32((p.mSeed || 1) * 197 + 5);
+    const S = pickScheme(rng);
+    const N = { A: S.A, B: S.B, C: S.C, H: S.C + S.H, D: S.C + S.D, M: S.C + S.Med };
+    if (p.kind === 'sum'){
+      if (p.given === 'diff'){
+        const smaller = (90 - p.D) / 2, bigger = smaller + p.D;
+        const text = `Один острый угол прямоугольного треугольника ${S.A}${S.B}${S.C} на ${p.D}° больше другого. Найдите больший острый угол. Ответ дайте в градусах.`;
+        const steps = [
+          info('Уравнение', `Пусть меньший угол — x, тогда больший — x + ${p.D}°. Сумма острых углов прямоугольного треугольника равна 90°: x + (x + ${p.D}) = 90.`),
+          num('Меньший угол', `2x + ${p.D} = 90 ⟹ x = (90 − ${p.D}) : 2 = ?`, smaller, { hint: `90 − ${p.D} = ${90 - p.D}, разделите на 2.`, explain: `x = ${smaller}°.` }),
+          num('Больший угол', `x + ${p.D} = ${smaller} + ${p.D} = ?`, bigger, { hint: `Прибавьте ${p.D} к ${smaller}.`, explain: `Больший угол = ${bigger}°.` })
+        ];
+        return { topic: 4, text, steps, answer: ansNum(bigger), p, unitFinal: '°', figure: { kind: 'tri', S, t: 0.62 } };
+      }
+      const smaller = 90 / (p.mult + 1), bigger = 90 - smaller;   // множители подобраны так, что деление точное
+      const text = `Один острый угол прямоугольного треугольника ${S.A}${S.B}${S.C} в ${p.mult} раза больше другого. Найдите больший острый угол. Ответ дайте в градусах.`;
+      const steps = [
+        info('Уравнение', `Пусть меньший угол — x, тогда больший — ${p.mult}x. Сумма острых углов: x + ${p.mult}x = 90.`),
+        num('Меньший угол', `${p.mult + 1}x = 90 ⟹ x = 90 : ${p.mult + 1} = ?`, smaller, { hint: `Разделите 90 на ${p.mult + 1}.`, explain: `x = ${smaller}°.` }),
+        num('Больший угол', `${p.mult}x = ${p.mult} · ${smaller} = ?`, bigger, { hint: `Умножьте ${p.mult} на ${smaller}.`, explain: `Больший угол = ${bigger}°.` })
+      ];
+      return { topic: 4, text, steps, answer: ansNum(bigger), p, unitFinal: '°', figure: { kind: 'tri', S, t: 0.62 } };
+    }
+    if (p.kind === 'median'){
+      const B = p.B, ans = 90 - B, Mn = N.M[1] || 'M';
+      const text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, угол ${S.B} равен ${B}°, ${S.C}${Mn} — медиана. Найдите угол ${S.A}${S.C}${Mn}.`;
+      const steps = [
+        info('Медиана к гипотенузе', `${S.C}${Mn} = ${S.A}${Mn} = ${S.B}${Mn} — медиана к гипотенузе равна её половине, поэтому треугольники ${S.A}${S.C}${Mn} и ${S.B}${S.C}${Mn} равнобедренные.`),
+        info('Равнобедренный треугольник', `В треугольнике ${S.B}${S.C}${Mn}: ${S.B}${Mn} = ${S.C}${Mn}, значит углы при основании равны: угол ${Mn}${S.C}${S.B} = угол ${S.B} = ${B}°.`),
+        num(`Угол ${S.A}${S.C}${Mn}`, `Угол ${S.C} треугольника ${S.A}${S.B}${S.C} равен 90° и делится медианой на угол ${S.A}${S.C}${Mn} и угол ${Mn}${S.C}${S.B} = ${B}°. Найдите угол ${S.A}${S.C}${Mn} = 90° − ${B}° = ?`, ans,
+          { hint: `Вычтите ${B} из 90.`, explain: `Угол ${S.A}${S.C}${Mn} = ${ans}°.` })
+      ];
+      return { topic: 4, text, steps, answer: ansNum(ans), p, unitFinal: '°', figure: { kind: 'tri', S, t: Math.pow(Math.sin(B * Math.PI / 180), 2), angleAt: S.B, angleText: B + '°', withMedian: true, hl: ['cevM'] } };
+    }
+    /* hdm: высота(H) — биссектриса(D) — медиана(M) */
+    const { A, B } = p, between = Math.abs(A - B), half = between / 2;
+    const Mn = N.M[1] || 'M';
+    const pairMap = { hd: [N.H, N.D, half, `${S.C}${S.H}`, `${S.C}${S.D}`], dm: [N.D, `${S.C}${Mn}`, half, `${S.C}${S.D}`, `${S.C}${Mn}`], hm: [N.H, `${S.C}${Mn}`, between, `${S.C}${S.H}`, `${S.C}${Mn}`] };
+    const [X, Y, val] = pairMap[p.pair];
+    if (p.ask === 'angleBetween'){
+      const text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, угол ${S.A} равен ${A}°. ${S.C}${S.H} — высота, ${S.C}${S.D} — биссектриса, ${S.C}${Mn} — медиана, проведённые из вершины ${S.C}. Найдите угол между ${X} и ${Y}. Ответ дайте в градусах.`;
+      const steps = [
+        info(`Угол ${S.B}`, `Угол ${S.B} = 90° − ${A}° = ${90 - A}°.`),
+        info('Формула', p.pair === 'hm'
+          ? `Угол между высотой и медианой из вершины прямого угла равен |A − B|.`
+          : `Угол между высотой и биссектрисой (а также между биссектрисой и медианой) из вершины прямого угла равен {{|A − B|}/{2}}.`),
+        num('Вычисляем', p.pair === 'hm' ? `|${A} − ${90 - A}| = ?` : `{{|${A} − ${90 - A}|}/{2}} = ?`, val, { hint: `Найдите разность углов A и B${p.pair === 'hm' ? '' : ', потом разделите на 2'}.`, explain: `Угол между ${X} и ${Y} равен ${fmt(val)}°.` })
+      ];
+      return { topic: 4, text, steps, answer: ansNum(val), p, unitFinal: '°', figure: { kind: 'tri', S, t: Math.pow(Math.cos(A * Math.PI / 180), 2), angleAt: S.A, angleText: A + '°', withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair] } };
+    }
+    const givenAngle = val, wantSmaller = rng() < 0.5;
+    const diff = p.pair === 'hm' ? givenAngle : givenAngle * 2;
+    const smaller = (90 - diff) / 2, bigger = 90 - smaller;
+    const text = `Угол между ${X} и ${Y}, проведёнными из вершины прямого угла прямоугольного треугольника ${S.A}${S.B}${S.C}, равен ${fmt(givenAngle)}°. Найдите ${wantSmaller ? 'меньший' : 'больший'} угол этого треугольника. Ответ дайте в градусах.`;
+    const steps = [
+      info('Формула', p.pair === 'hm'
+        ? `Угол между высотой и медианой равен |A − B| = ${fmt(givenAngle)}°.`
+        : `Угол между этими отрезками равен {{|A − B|}/{2}} = ${fmt(givenAngle)}°, значит |A − B| = ${fmt(diff)}°.`),
+      info('Система', `Известно: A + B = 90°, |A − B| = ${fmt(diff)}°. Меньший угол = (90 − ${fmt(diff)}) : 2, больший = 90 − меньший.`),
+      num(wantSmaller ? 'Меньший угол' : 'Больший угол', wantSmaller ? `(90 − ${fmt(diff)}) : 2 = ?` : `90 − (90 − ${fmt(diff)}) : 2 = ?`, wantSmaller ? smaller : bigger,
+        { hint: wantSmaller ? `Вычтите ${fmt(diff)} из 90, разделите на 2.` : `Сначала найдите меньший угол: (90 − ${fmt(diff)}):2 = ${fmt(smaller)}, потом вычтите его из 90.`, explain: `${wantSmaller ? 'Меньший' : 'Больший'} угол = ${fmt(wantSmaller ? smaller : bigger)}°.` })
+    ];
+    return { topic: 4, text, steps, answer: ansNum(wantSmaller ? smaller : bigger), p, unitFinal: '°', figure: { kind: 'tri', S, t: 0.62, withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair], betweenArc: { pair: p.pair, text: fmt(givenAngle) + '°' } } };
+  }
+};
+
+/* ============================================================
+   ТЕМА 5. Треугольник с углом 30°
+   ============================================================ */
+TOPICS[5] = {
+  num: 5, name: 'Треугольник с углом 30°', short: 'Половина гипотенузы и высота с √3',
+  memo: [
+    ['Катет против угла 30°', 'равен половине гипотенузы'],
+    ['Другой катет', '= гипотенуза · {{√{3}}/{2}}'],
+    ['Отрезки высоты', 'больший — {{3}/{4}} гипотенузы (у вершины 30°), меньший — {{1}/{4}} (у вершины 60°)'],
+    ['Высота', '= {{√{3}}/{4}} · гипотенузу']
+  ],
+  trap: 'Половина гипотенузы — это катет ПРОТИВ угла 30°. Больший отрезок гипотенузы (после высоты) прилегает к вершине с углом 30°, а не 60°.',
+  demos: [{ AB: 8, ask: 'CH', mSeed: 1 }, { AB: 8, ask: 'AH', mSeed: 2 }, { AB: 8, ask: 'BH', mSeed: 3 }],
+  params(level, rng){
+    const AB = pick([4, 8, 12, 16, 20], rng);
+    const ask = pick(['CH', 'AH', 'BH'], rng);
+    return { AB, ask, swap: level === 3 && rng() < 0.5, mSeed: ri(1, 99999, rng) };
+  },
+  build(p){
+    const rng = mulberry32((p.mSeed || 1) * 223 + 19);
+    const S = pickScheme(rng);
+    const angName = p.swap ? S.B : S.A;
+    const AB = p.AB;
+    if (p.ask === 'CH'){
+      const CH = AB / 4;
+      const text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, угол ${angName} равен 30°, ${S.A}${S.B} = ${AB}. Найдите высоту ${S.C}${S.H}.`;
+      const steps = [
+        info('Формула высоты', `Для треугольника с углом 30° высота на гипотенузу равна {{√{3}}/{4}} · гипотенузу.`),
+        num('Считаем', `${S.C}${S.H} = {{√{3}}/{4}} · ${AB} = ?  (впишите только число перед √{3})`, CH, { suffix: '√3', hint: `Разделите ${AB} на 4.`, explain: `${S.C}${S.H} = ${fmt(CH)}√{3}.` })
+      ];
+      return { topic: 5, text, steps, answer: ansNum(CH, { suffix: '√3', display: CH === 1 ? '√{3}' : `${fmt(CH)}√{3}` }), p, figure: { kind: 'tri', S, t: angName === S.A ? 0.75 : 0.25, angleAt: angName, angleText: '30°', withAltitude: true, labels: { AB }, hl: ['CH'] } };
+    }
+    if (p.ask === 'AH'){
+      const nearer = angName === S.A;
+      const AHval = nearer ? AB * 3 / 4 : AB / 4;
+      const text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${S.C}${S.H} — высота, угол ${angName} равен 30°, ${S.A}${S.B} = ${AB}. Найдите ${S.A}${S.H}.`;
+      const steps = [
+        info('Какой отрезок больше', `Отрезок гипотенузы у вершины с углом 30° — БОЛЬШИЙ (${'{{3}/{4}}'} гипотенузы), у вершины с углом 60° — меньший (${'{{1}/{4}}'} гипотенузы). Угол ${S.A} здесь равен ${nearer ? '30' : '60'}°.`),
+        num(`${S.A}${S.H}`, `${S.A}${S.H} = ${nearer ? '{{3}/{4}}' : '{{1}/{4}}'} · ${AB} = ?`, AHval, { hint: `${nearer ? 'Три четверти' : 'Четверть'} от ${AB}.`, explain: `${S.A}${S.H} = ${fmt(AHval)}.` })
+      ];
+      return { topic: 5, text, steps, answer: ansNum(AHval), p, figure: { kind: 'tri', S, t: angName === S.A ? 0.75 : 0.25, angleAt: angName, angleText: '30°', withAltitude: true, labels: { AB }, hl: ['AH'] } };
+    }
+    const nearer = angName === S.B;
+    const BHval = nearer ? AB * 3 / 4 : AB / 4;
+    const text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${S.C}${S.H} — высота, угол ${angName} равен 30°, ${S.A}${S.B} = ${AB}. Найдите ${S.B}${S.H}.`;
+    const steps = [
+      info('Какой отрезок больше', `Отрезок гипотенузы у вершины с углом 30° — больший (${'{{3}/{4}}'} гипотенузы), у вершины с углом 60° — меньший (${'{{1}/{4}}'} гипотенузы). Угол ${S.B} здесь равен ${nearer ? '30' : '60'}°.`),
+      num(`${S.B}${S.H}`, `${S.B}${S.H} = ${nearer ? '{{3}/{4}}' : '{{1}/{4}}'} · ${AB} = ?`, BHval, { hint: `${nearer ? 'Три четверти' : 'Четверть'} от ${AB}.`, explain: `${S.B}${S.H} = ${fmt(BHval)}.` })
+    ];
+    return { topic: 5, text, steps, answer: ansNum(BHval), p, figure: { kind: 'tri', S, t: angName === S.A ? 0.75 : 0.25, angleAt: angName, angleText: '30°', withAltitude: true, labels: { AB }, hl: ['BH'] } };
+  }
+};
+
+/* ---------- ответы, точки входа ---------- */
+function ansNum(value, o){ o = o || {}; return { kind: 'num', value, suffix: o.suffix || '', display: o.display || fmt(value) + (o.suffix || ''), traps: o.traps || [] }; }
+function ansChoice(options, correct){ return { kind: 'choice', options, correct, display: options[correct].text }; }
+function makeTask(topic, level, rng){
+  const T = TOPICS[topic];
+  const task = T.build(T.params(level, rng));
+  task.level = level;
+  task.type = typeOf(task);
+  if (task.answer && task.answer.kind === 'num') task.answer.traps = finalTraps(task);
+  return task;
+}
+function makeDemo(topic, idx){
+  const T = TOPICS[topic];
+  const task = T.build(T.demos[idx % T.demos.length]);
+  task.level = 1; task.demo = true;
+  task.type = typeOf(task);
+  if (task.answer && task.answer.kind === 'num') task.answer.traps = finalTraps(task);
+  return task;
+}
+
+/* ---------- журнал ошибок: тип задачи, типичные ловушки, диагностика ----------
+   typeOf(task) — стабильный ключ типа для лога "righttri-t1|<type>".
+   finalTraps(task) — список {value, msg}: типичные ОШИБОЧНЫЕ значения ответа
+   с адресным объяснением, откуда они берутся. Считаются из параметров задачи,
+   значения рядом с верным ответом и дубликаты отбрасываются.
+   diagnoseFinal(v, task) — вернуть сообщение ближайшей ловушки или null. */
+function typeOf(task){
+  const p = task.p || {};
+  switch (task.topic){
+    case 1: return p.mode === 'findRatio' ? 't1-ratio' : 't1-side';
+    case 2: return 't2-' + p.recipe;
+    case 3: return p.kind === 'diff' ? 't3-diff' : 't3-legHyp';
+    case 4: return p.kind === 'sum' ? 't4-sum' : p.kind === 'median' ? 't4-median' : (p.ask === 'findAcute' ? 't4-findAcute' : 't4-hdm');
+    case 5: return p.ask === 'CH' ? 't5-height30' : 't5-seg30';
+    default: return null;
+  }
+}
+const REVIEW_TYPES = ['t1-ratio', 't1-side', 't2-sinFromSeg', 't2-legFromSeg', 't2-altFromSegs', 't2-hypFromLegSeg', 't2-tanFromAHtg', 't2-altFromLegRatio', 't3-legHyp', 't3-diff', 't4-sum', 't4-median', 't4-hdm', 't4-findAcute', 't5-height30', 't5-seg30'];
+
+function trapTol(v){ return Math.max(0.011, 0.004 * Math.abs(v)); }
+function finalTraps(task){
+  const p = task.p || {}, a = task.answer;
+  if (!a || a.kind !== 'num') return [];
+  const out = [];
+  function add(v, msg){
+    if (!isFinite(v)) return;
+    if (Math.abs(v - a.value) <= trapTol(v)) return;           // не ловим верный ответ
+    for (const t of out) if (Math.abs(t.value - v) < 1e-9) return;
+    out.push({ value: v, msg });
+  }
+  const S = (task.figure && task.figure.S) || { A: 'A', B: 'B', C: 'C', H: 'H' };
+  const nm = k => ({ AC: S.A + S.C, BC: S.B + S.C, AB: S.A + S.B, AH: S.A + S.H, BH: S.B + S.H, CH: S.C + S.H })[k] || k;
+
+  if (task.topic === 1 && p.mode === 'findRatio'){
+    const [aa, bb, cc] = p.triple;
+    if (p.findRatio === 'sin'){
+      add(bb / cc, 'Это косинус: взят ПРИлежащий катет. Синус — противолежащий катет к гипотенузе.');
+      add(cc / aa, 'Дробь перевёрнута: у синуса гипотенуза стоит в знаменателе.');
+      add(aa / bb, 'Это тангенс — отношение катетов. Синус — противолежащий катет к гипотенузе.');
+    } else if (p.findRatio === 'cos'){
+      add(aa / cc, 'Это синус: взят ПРОТИВОлежащий катет. Косинус — прилежащий катет к гипотенузе.');
+      add(cc / bb, 'Дробь перевёрнута: у косинуса гипотенуза стоит в знаменателе.');
+      add(aa / bb, 'Это тангенс — отношение катетов. Косинус — прилежащий катет к гипотенузе.');
+    } else {
+      add(bb / aa, 'Это тангенс ДРУГОГО острого угла: дробь перевёрнута. В числителе tg — противолежащий катет.');
+      add(aa / cc, 'Это синус. Тангенс — отношение двух катетов, гипотенуза в нём не участвует.');
+      add(bb / cc, 'Это косинус. Тангенс — отношение двух катетов, гипотенуза в нём не участвует.');
+    }
+  }
+  if (task.topic === 1 && p.mode === 'findSide'){
+    const [aa, bb, cc] = p.triple;
+    const tri = { AC: bb, BC: aa, AB: cc };
+    const m = a.value / tri[p.findSide];
+    if (Math.abs(m - 1) > 1e-9) add(tri[p.findSide], 'Это сторона ТАБЛИЧНОЙ тройки без масштаба. Умножьте на k = данная сторона : табличная.');
+    for (const k of ['AC', 'BC', 'AB']) if (k !== p.findSide)
+      add(tri[k] * m, k === p.given
+        ? `Это данная сторона ${nm(k)} из условия, а найти нужно ${nm(p.findSide)}.`
+        : `Это сторона ${nm(k)}, а спрашивают ${nm(p.findSide)}. Сверьтесь с чертежом, где какая.`);
+  }
+  if (task.topic === 2){
+    const [aa, bb, cc] = p.triple, m = p.m;
+    const AB = cc * cc * m, AC = bb * cc * m, BC = aa * cc * m, CH = aa * bb * m, AH = bb * bb * m, BH = aa * aa * m;
+    const R = p.recipe;
+    if (R === 'sinFromSeg'){
+      add(BC / BH, `Дробь перевёрнута: в прямоугольном треугольнике ${S.C}${S.B}${S.H} гипотенуза — ${nm('BC')}, она в знаменателе.`);
+      add(CH / BC, `Это косинус этого угла (через катет ${nm('CH')}), а спрашивают синус — через ${nm('BH')}.`);
+    }
+    if (R === 'legFromSeg'){
+      add(AH * AB, `Не извлечён корень: ${nm('AC')}² = ${nm('AH')} · ${nm('AB')}, ответ — корень из этого произведения.`);
+      add(CH, `Под корнем взято ${nm('AH')} · ${nm('BH')} — это формула ВЫСОТЫ. Для катета: квадрат катета = отрезок · вся гипотенуза.`);
+      add(BH, `Это второй отрезок гипотенузы, а спрашивают катет ${nm('AC')}.`);
+    }
+    if (R === 'altFromSegs'){
+      add(AH * BH, `Не извлечён корень: ${nm('CH')}² = ${nm('AH')} · ${nm('BH')}, ответ — корень из этого произведения.`);
+      add(AC, `Под корнем взято ${nm('AH')} · ${nm('AB')} — так получается КАТЕТ. Для высоты перемножают два ОТРЕЗКА гипотенузы.`);
+      add(AB / 2, `Это половина гипотенузы — столько было бы у МЕДИАНЫ. Высота: корень из ${nm('AH')} · ${nm('BH')}.`);
+    }
+    if (R === 'hypFromLegSeg'){
+      add(BC * BC, `Это ${nm('BC')}². Осталось разделить на отрезок: ${nm('AB')} = ${nm('BC')}² : ${nm('BH')}.`);
+      add(CH, `Это высота ${nm('CH')} (Пифагор в треугольнике ${S.C}${S.B}${S.H}), а спрашивают ВСЮ гипотенузу.`);
+      add(AH, `Это отрезок ${nm('AH')}, а спрашивают всю гипотенузу: ${nm('AB')} = ${nm('BC')}² : ${nm('BH')}.`);
+    }
+    if (R === 'tanFromAHtg'){
+      add(CH, `Это высота ${nm('CH')} = ${nm('AH')} · tg — сделан только первый шаг. Дальше: ${nm('BH')} = ${nm('CH')} · tg (в треугольнике ${S.C}${S.B}${S.H} тот же угол).`);
+      add(AB, `Это вся гипотенуза ${nm('AB')}, а спрашивают отрезок ${nm('BH')}.`);
+    }
+    if (R === 'altFromLegRatio'){
+      add(AC * BC, `Забыли разделить на гипотенузу: ${nm('CH')} = ${nm('AC')} · ${nm('BC')} : ${nm('AB')}.`);
+      add(AC * BC / 2, `Это ПЛОЩАДЬ треугольника. В формуле высоты делят на гипотенузу ${nm('AB')}, а не на 2.`);
+      add(AB, `Это гипотенуза — верный промежуточный шаг. Теперь ${nm('CH')} = ${nm('AC')} · ${nm('BC')} : ${nm('AB')}.`);
+    }
+  }
+  if (task.topic === 3 && p.kind === 'legHyp'){
+    const other = Math.sqrt(p.hyp * p.hyp - p.leg * p.leg);
+    add(p.leg * other, 'Забыли разделить на 2: площадь равна ПОЛОВИНЕ произведения катетов.');
+    add(p.leg * p.hyp / 2, 'Гипотенуза в формулу площади не входит: нужны два КАТЕТА, второй найдите по Пифагору.');
+    add(other, 'Это второй катет — верный промежуточный шаг. Теперь S = (катет · катет) : 2.');
+  }
+  if (task.topic === 3 && p.kind === 'diff'){
+    const area = p.l1 * p.l2 / 2, D = p.l2 - p.l1;
+    add(p.l2, 'Это БОЛЬШИЙ катет. Перечитайте вопрос: спрашивают меньший.');
+    add((-D + Math.sqrt(D * D + 4 * area)) / 2, 'Произведение катетов приравняли к S. Но S = a · b : 2, значит a · b = 2S — удвойте площадь.');
+  }
+  if (task.topic === 4 && p.kind === 'sum'){
+    if (p.given === 'diff'){
+      add((90 - p.D) / 2, 'Это МЕНЬШИЙ угол, а спрашивают больший.');
+      add(45 + p.D, 'Разность распределяется поровну: больший угол = 45° + D : 2, а не 45° + D.');
+      add(90 - p.D, 'Сумма острых углов 90°: x + (x + D) = 90, откуда больший = (90 + D) : 2.');
+    } else {
+      add(90 / (p.mult + 1), `Это МЕНЬШИЙ угол. Больший в ${p.mult} раз больше — умножьте.`);
+    }
+  }
+  if (task.topic === 4 && p.kind === 'median'){
+    add(p.B, 'Это данный угол. Медиана к гипотенузе равна её половине, треугольник равнобедренный — искомый угол = 90° − данный.');
+    add(45, 'Медиана НЕ делит прямой угол пополам, это делает биссектриса. Используйте равнобедренный треугольник с медианой.');
+    add((90 - p.B) / 2, 'Лишнее деление на 2: искомый угол = 90° − данный, без половин.');
+  }
+  if (task.topic === 4 && p.kind === 'hdm' && p.ask !== 'findAcute'){
+    const base = Math.abs(2 * p.A - 90);
+    add(90 - p.A, 'Это второй острый угол треугольника, а не угол между проведёнными отрезками.');
+    if (p.pair === 'hm') add(base / 2, 'Это ПОЛОВИНА. Между высотой и медианой лежит полный угол |α − β|, пополам его делит биссектриса.');
+    else add(base, 'Это угол между высотой и МЕДИАНОЙ, то есть |α − β| целиком. Биссектриса делит его пополам — разделите на 2.');
+  }
+  if (task.topic === 4 && p.kind === 'hdm' && p.ask === 'findAcute'){
+    const base = Math.abs(2 * p.A - 90);
+    const given = (p.pair === 'hm' ? 1 : 0.5) * base;
+    const smaller = Math.min(p.A, 90 - p.A);
+    const wantSmaller = Math.abs(a.value - smaller) < 1e-9;
+    add(wantSmaller ? 90 - smaller : smaller, `Найден другой из двух углов: спрашивают ${wantSmaller ? 'МЕНЬШИЙ' : 'БОЛЬШИЙ'}.`);
+    if (p.pair === 'hm'){
+      add(45 - given, 'Между высотой и медианой лежит ПОЛНЫЙ |α − β| — сначала разделите данный угол на 2.');
+      add(45 + given, 'Между высотой и медианой лежит ПОЛНЫЙ |α − β| — сначала разделите данный угол на 2.');
+    } else {
+      add(45 - given / 2, 'Данный угол — с участием биссектрисы, он УЖЕ половина |α − β|. Второй раз делить не нужно.');
+      add(45 + given / 2, 'Данный угол — с участием биссектрисы, он УЖЕ половина |α − β|. Второй раз делить не нужно.');
+    }
+    add(given, 'Это данный угол между проведёнными отрезками, а спрашивают угол самого ТРЕУГОЛЬНИКА.');
+  }
+  if (task.topic === 5){
+    if (p.ask === 'CH'){
+      add(p.AB / 2, 'Это катет против 30° — половина гипотенузы. Высота меньше: четверть гипотенузы, и она умножается на √3.');
+      add(p.AB * 3 / 4, 'Это БОЛЬШИЙ отрезок гипотенузы, а спрашивают высоту (и не потеряйте √3 в записи).');
+    } else {
+      add(p.AB - a.value, 'Отрезки перепутаны: у вершины с углом 30° лежит БОЛЬШИЙ отрезок (¾ гипотенузы), у 60° — четверть.');
+      add(p.AB / 2, 'Это половина гипотенузы — столько отсекала бы МЕДИАНА. Высота делит гипотенузу как ¼ и ¾.');
+    }
+  }
+  return out;
+}
+function diagnoseFinal(v, task){
+  if (!isFinite(v) || !task || !task.answer) return null;
+  const list = task.answer.traps || [];
+  let best = null, bd = Infinity;
+  for (const t of list){
+    const d = Math.abs(v - t.value);
+    if (d <= trapTol(t.value) && d < bd){ bd = d; best = t; }
+  }
+  return best ? best.msg : null;
+}
+
+if (typeof module !== 'undefined'){ module.exports = { TOPICS, TOPIC_ORDER, makeTask, makeDemo, ansNum, ansChoice, pickScheme, TRIPLES, typeOf, finalTraps, diagnoseFinal, REVIEW_TYPES, trapTol }; }
+
+/* ============================================================
+   Интерфейс: режимы, лесенка шагов, проверка, режим доски,
+   чертёж прямоугольного треугольника.
+   ============================================================ */
+'use strict';
+if (typeof module !== 'undefined'){ Object.assign(global, require('./core.js'), require('./gens.js')); }
+
+const COURSE_KEY = 'mathExamCourseProgress.v1';
+const TID = 'righttri-t1';
+const LEGACY_KEY = 'pt-trainer-v1';
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+const LETTERS = ['А', 'Б', 'В', 'Г', 'Д'];
+const PRAISE = ['Верно!', 'Точно!', 'Да, так!', 'Правильно!', 'Есть!'];
+const MODE_HELP = {
+  learn: 'Разбор для доски: пример раскрывается шаг за шагом. Нажимайте «Дальше» (или стрелки → и ← на клавиатуре). «Случайные числа» — новая задача того же типа.',
+  steps: 'Задача с новыми числами. Каждый шаг проверяется отдельно: «Подсказка» — если застряли, «Показать ответ» — если совсем никак.',
+  solo: 'Как на экзамене: только ответ. После проверки можно открыть полное решение по шагам.'
+};
+
+let RNG = mulberry32((Date.now() ^ (Math.random() * 1e9)) >>> 0);
+
+const state = {
+  topic: 0, mode: 'learn', level: 1, task: null,
+  stepIdx: 0, stepFails: [], stepRevealed: [], stepFb: null, stepWrongOpts: [],
+  revealed: 0, demoIdx: 0, learnRandom: false,
+  finished: false, soloFails: 0, soloRevealed: false, counted: false, showSolution: false, soloFb: null, soloWrongOpts: [],
+  review: false, reviewEmpty: false, picked: []
+};
+let stats = loadStats();
+
+/* ---------- хранение: единый ключ курса + журнал ошибок ----------
+   Прогресс лежит в mathExamCourseProgress.v1 под TID — его видят главная
+   страница курса и «Работа над ошибками». Старый ключ pt-trainer-v1
+   мигрируется один раз и остаётся нетронутым (безопасный откат). */
+function readAll(){ try { return JSON.parse(localStorage.getItem(COURSE_KEY) || '{}'); } catch (e){ return {}; } }
+function loadStats(){
+  try {
+    const all = readAll();
+    if (!all[TID]){
+      const old = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null');
+      if (old && old.topics){ all[TID] = { topics: old.topics, board: !!old.board }; localStorage.setItem(COURSE_KEY, JSON.stringify(all)); }
+    }
+    const s = all[TID] || {};
+    return { topics: s.topics || {}, board: !!s.board };
+  } catch (e){ return { topics: {}, board: false }; }
+}
+function saveStats(){ try { const all = readAll(); all[TID] = stats; localStorage.setItem(COURSE_KEY, JSON.stringify(all)); } catch (e){ /* приватный режим — не сохраняем */ } }
+/* журнал ошибок: как в тренажёре вероятности — тип закрывается тремя верными подряд */
+function mlog(type, okFlag){
+  try {
+    const all = readAll();
+    const mk = all.mistakes = all.mistakes || {};
+    const e = mk[TID + '|' + type] = mk[TID + '|' + type] || { w: 0, r: 0 };
+    if (okFlag){ if (e.w) e.r = (e.r || 0) + 1; }
+    else { e.w = (e.w || 0) + 1; e.r = 0; e.lastWrong = Date.now(); }
+    e.last = Date.now();
+    localStorage.setItem(COURSE_KEY, JSON.stringify(all));
+  } catch (e){}
+}
+function logOutcome(okFlag){
+  if (state.mode !== 'solo') return;
+  const ty = state.task && state.task.type;
+  if (ty) mlog(ty, okFlag);
+}
+function openTypes(){
+  const mk = readAll().mistakes || {}, pre = TID + '|', res = [];
+  for (const k in mk) if (k.indexOf(pre) === 0 && (mk[k].w || 0) > 0 && (mk[k].r || 0) < 3 && REVIEW_TYPES.includes(k.slice(pre.length))) res.push(k.slice(pre.length));
+  return res;
+}
+function reviewTask(){
+  const ts = openTypes();
+  if (!ts.length) return null;
+  const ty = ts[Math.floor(RNG() * ts.length)];
+  const tp = +ty.slice(1, ty.indexOf('-'));
+  for (let i = 0; i < 400; i++){
+    const t = makeTask(tp, state.level, RNG);
+    if (t.type === ty) return t;
+  }
+  return null;
+}
+
+function tstat(t){ return stats.topics[t] || (stats.topics[t] = { steps: 0, solved: 0, correct: 0, streak: 0, best: 0 }); }
+
+function resetStepState(){
+  state.picked = [];
+  state.stepIdx = 0; state.stepFails = []; state.stepRevealed = []; state.stepFb = null; state.stepWrongOpts = [];
+  state.finished = false; state.soloFails = 0; state.soloRevealed = false; state.counted = false; state.showSolution = false; state.soloFb = null; state.soloWrongOpts = [];
+  state.revealed = 0;
+}
+function newTask(){
+  resetStepState();
+  if (state.mode === 'learn'){
+    const T = TOPICS[state.topic];
+    if (state.demoIdx < T.demos.length){ state.task = makeDemo(state.topic, state.demoIdx); state.learnRandom = false; }
+    else { state.task = makeTask(state.topic, state.level, RNG); state.learnRandom = true; }
+  } else if (state.review){
+    const rt = reviewTask();
+    if (rt){ state.task = rt; state.topic = rt.topic; }
+    else { state.review = false; state.reviewEmpty = true; state.task = makeTask(state.topic, state.level, RNG); }
+  } else {
+    state.task = makeTask(state.topic, state.level, RNG);
+  }
+  render();
+}
+function setTopic(t){ state.review = false; state.reviewEmpty = false; state.topic = t; state.demoIdx = 0; newTask(); location.hash = 't' + t; }
+function setMode(m){ state.review = false; state.reviewEmpty = false; state.mode = m; state.demoIdx = 0; newTask(); }
+function setLevel(l){ state.level = l; if (state.mode === 'learn' && !state.learnRandom){ render(); return; } newTask(); }
+
+function render(){ renderTopics(); renderControls(); renderTask(); }
+function renderTopics(){
+  const nav = $('#topics');
+  nav.innerHTML = TOPIC_ORDER.map(t => {
+    const T = TOPICS[t], s = tstat(t), n = Math.min(3, s.correct);
+    const dots = [0, 1, 2].map(i => `<i class="${i < n ? 'on' : ''}"></i>`).join('');
+    return `<button class="chip ${t === 0 ? 'warm-chip' : ''}" role="tab" aria-selected="${t === state.topic}" data-topic="${t}" title="${T.name}. Решено самостоятельно: ${s.solved}, верно с первого раза: ${s.correct}"><span class="n">${t === 0 ? '★' : T.num}</span>${T.name}</button>`;
+  }).join('');
+  if (nav.scrollWidth > nav.clientWidth + 4){
+    const sel = nav.querySelector('[aria-selected="true"]');
+    if (sel) nav.scrollLeft = Math.max(0, sel.offsetLeft - (nav.clientWidth - sel.offsetWidth) / 2);
+  }
+}
+function renderControls(){
+  $$('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === state.mode));
+  $$('#levelSeg button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.level === state.level));
+  const mh = $('#modeHelp');
+  if (state.review){
+    const n = openTypes().length;
+    mh.innerHTML = `<b style="color:#0f766e">Работа над ошибками:</b> задачи только из ваших открытых типов (${n}). Тип закрывается тремя верными подряд. ` + MODE_HELP[state.mode];
+  } else if (state.reviewEmpty){
+    mh.innerHTML = '<b style="color:#0f766e">Открытых ошибок нет</b> — отличная новость. Ниже обычный режим. ' + MODE_HELP[state.mode];
+  } else {
+    mh.textContent = MODE_HELP[state.mode];
+  }
+  $('#levelWrap').style.display = state.topic === 0 ? 'none' : '';
+}
+
+function statementHtml(task){ return M(task.text); }
+function niceVal(v){
+  if (Number.isInteger(v) || Math.abs(v * 100 - Math.round(v * 100)) < 1e-9) return fmt(v);
+  for (let d = 2; d <= 100; d++){ const n = v * d; if (Math.abs(n - Math.round(n)) < 1e-9) return M(fracMk(Math.round(n), d)); }
+  return fmt(v);
+}
+function stepAnswerText(st){
+  if (st.kind === 'num') return `${niceVal(st.ans)}${st.suffix ? M(st.suffix) : ''}${st.unit ? (st.unit === '°' ? '' : ' ') + st.unit : ''}`;
+  if (st.kind === 'multi') return st.inputs.map(i => `${M(i.label)} ${niceVal(i.ans)}${i.suffix ? M(i.suffix) : ''}`).join(';&nbsp; ');
+  if (st.kind === 'choice') return M(st.options[st.correct].text);
+  if (st.kind === 'pickSide') return `сторона ${st.label}`;
+  return '';
+}
+function stepFigure(st, task){
+  task = task || state.task;
+  return st.showFigure ? figureHtml(task, true) : '';
+}
+function withFig(st, inner, task){
+  const fig = stepFigure(st, task);
+  return fig ? `<div class="infofig"><div class="q">${inner}</div><div class="figure small">${fig}</div></div>` : `<div class="q">${inner}</div>`;
+}
+function infoBody(st, task){ return withFig(st, M(st.text), task); }
+function doneStepHtml(st, i, withResult, task){
+  const isInfo = st.kind === 'info';
+  return `<li class="step done ${isInfo ? 'info' : ''}"><span class="dot">${isInfo ? '·' : '✓'}</span><div class="body">
+    <p class="title">${escapeHtml(st.title)}</p>
+    ${isInfo ? infoBody(st, task) : `${withFig(st, M(st.q), task)}${withResult ? `<p class="result">${stepAnswerText(st)}</p>` : ''}${st.explain ? `<div class="explain">${M(st.explain)}</div>` : ''}`}
+  </div></li>`;
+}
+function todoStepHtml(st, i){
+  return `<li class="step todo"><span class="dot">${i + 1}</span><div class="body"><p class="title">${escapeHtml(st.title)}</p></div></li>`;
+}
+function currentStepHtml(st, i){
+  let inner = '';
+  if (st.kind === 'info'){
+    inner = `${withFig(st, M(st.text))}<div class="stepbtns"><button class="btn primary" data-action="info-next">Понятно, дальше</button></div>`;
+  } else if (st.kind === 'num'){
+    inner = `${withFig(st, M(st.q))}<div class="inputs"><div class="inrow"><input class="num" type="text" inputmode="text" autocomplete="off" placeholder="число" data-step="${i}" data-k="0" aria-label="Ответ шага">${st.suffix ? `<span class="ans-suf">${M(st.suffix)}</span><span class="fieldnote">впишите только число перед ${M(st.suffix)}</span>` : ''}${st.unit ? `<span class="unit">${escapeHtml(st.unit)}</span>` : ''}</div></div>`;
+  } else if (st.kind === 'multi'){
+    inner = `${withFig(st, M(st.q))}<div class="inputs">${st.inputs.map((inp, k) => `<div class="inrow"><span class="lab">${M(inp.label)}</span><input class="num" type="text" inputmode="text" autocomplete="off" placeholder="число" data-step="${i}" data-k="${k}" aria-label="${escapeHtml(P(inp.label))}">${inp.suffix ? `<span class="ans-suf">${M(inp.suffix)}</span>` : ''}</div>`).join('')}</div>`;
+  } else if (st.kind === 'pickSide'){
+    inner = `${withFig(st, M(st.q))}<p class="clickcue">Ответ — клик по стороне на чертеже сверху.</p>`;
+  } else if (st.kind === 'choice'){
+    inner = `${withFig(st, M(st.q))}<div class="opts">${st.options.map((o, k) => `<button class="opt ${state.stepWrongOpts.includes(k) ? 'bad' : ''}" data-action="opt" data-step="${i}" data-opt="${k}"><span class="lt">${LETTERS[k]}</span><span>${M(o.text)}</span></button>`).join('')}</div>`;
+  }
+  if (st.kind !== 'info'){
+    const fails = state.stepFails[i] || 0;
+    inner += `<div class="stepbtns">${st.kind !== 'choice' && st.kind !== 'pickSide' ? `<button class="btn primary" data-action="check">Проверить</button>` : ''}${st.hint ? `<button class="btn" data-action="hint">Подсказка</button>` : ''}${fails >= 1 ? `<button class="btn warm" data-action="reveal">Показать ответ</button>` : ''}</div>`;
+    inner += `<div class="fbwrap">${fbHtml(state.stepFb)}</div>`;
+  }
+  return `<li class="step current"><span class="dot">${i + 1}</span><div class="body"><p class="title">${escapeHtml(st.title)}</p>${inner}</div></li>`;
+}
+function fbHtml(fb){ return fb ? `<div class="fb ${fb.type}" role="status">${fb.html}</div>` : ''; }
+
+function ladderHtml(task){
+  const steps = task.steps;
+  if (state.mode === 'learn') return `<ol class="ladder">${steps.map((st, i) => i < state.revealed ? doneStepHtml(st, i, true) : todoStepHtml(st, i)).join('')}</ol>`;
+  if (state.mode === 'steps') return `<ol class="ladder">${steps.map((st, i) => i < state.stepIdx ? doneStepHtml(st, i, true) : (i === state.stepIdx ? currentStepHtml(st, i) : todoStepHtml(st, i))).join('')}</ol>`;
+  if (!state.showSolution) return '';
+  return `<h3 class="sol-title" style="margin:1.2rem 0 0;font-size:1.1rem">Решение по шагам</h3><ol class="ladder">${steps.map((st, i) => doneStepHtml(st, i, true)).join('')}</ol>`;
+}
+function answerHtml(ans){ return `<span class="answer-line">${M(ans.display)}${ans.kind === 'num' && state.task.unitFinal ? (state.task.unitFinal === '°' ? '' : ' ') + state.task.unitFinal : ''}</span>`; }
+function finalHtml(task){
+  const a = task.answer;
+  if (state.mode === 'learn'){
+    if (state.revealed < task.steps.length) return '';
+    return `<div class="final ok"><span class="lab">Ответ:</span>${answerHtml(a)}</div>`;
+  }
+  if (state.mode === 'steps'){
+    if (!state.finished) return '';
+    const helped = state.stepRevealed.some(Boolean);
+    return `<div class="final ok"><span class="lab">Ответ:</span>${answerHtml(a)}<p style="margin:.4rem 0 0;font-weight:700;color:var(--ink-soft)">${helped ? 'Задача пройдена с подсказками. Попробуйте ещё одну такую же — уже без «Показать ответ».' : 'Все шаги пройдены самостоятельно — отлично.'}</p></div>`;
+  }
+  if (state.finished){
+    return `<div class="final ${state.soloRevealed ? '' : 'ok'}"><span class="lab">Ответ:</span>${answerHtml(a)}${fbHtml(state.soloFb)}</div>`;
+  }
+  let inner = '';
+  if (a.kind === 'side'){
+    inner = `<div class="inrow"><span class="lab">Задание:</span><span class="q" style="font-weight:600">${M(a.q)}</span></div><p class="clickcue">Ответ — клик по стороне на чертеже сверху.</p>`;
+  } else if (a.kind === 'num'){
+    inner = `<div class="inrow"><span class="lab">Ответ:</span><input class="num wide" type="text" inputmode="text" autocomplete="off" placeholder="число" data-final="0" aria-label="Ответ">${a.suffix ? `<span class="ans-suf">${M(a.suffix)}</span>` : ''}${task.unitFinal ? `<span class="unit">${task.unitFinal}</span>` : ''}<button class="btn primary" data-action="final-check">Проверить</button></div>${a.suffix ? `<p class="fieldnote" style="margin:.3rem 0 0">Ответ вида N${M(a.suffix)}: в поле впишите только число N.</p>` : ''}`;
+  } else {
+    inner = `<span class="lab">Выберите ответ:</span><div class="opts">${a.options.map((o, k) => `<button class="opt ${state.soloWrongOpts.includes(k) ? 'bad' : ''}" data-action="final-opt" data-opt="${k}"><span class="lt">${LETTERS[k]}</span><span>${M(o.text)}</span></button>`).join('')}</div>`;
+  }
+  return `<div class="final">${inner}<div class="fbwrap">${fbHtml(state.soloFb)}</div></div>`;
+}
+function actionsHtml(task){
+  const s = tstat(state.topic);
+  const statsHtml = `<div class="stats"><span>решено сам: <b>${s.solved}</b></span><span>верно с первого раза: <b>${s.correct}</b></span><span>серия: <b>${s.streak}</b></span><span>пошагово пройдено: <b>${s.steps}</b></span></div>`;
+  if (state.mode === 'learn'){
+    const all = state.revealed >= task.steps.length;
+    return `<div class="actions"><button class="btn primary" data-action="next" ${all ? 'disabled' : ''}>Дальше</button><button class="btn" data-action="show-all" ${all ? 'disabled' : ''}>Показать всё</button><span class="spacer"></span><button class="btn" data-action="next-demo">${state.demoIdx + 1 < TOPICS[state.topic].demos.length ? 'Следующий пример' : 'Случайные числа'}</button></div>`;
+  }
+  if (state.mode === 'steps'){
+    return `<div class="actions"><button class="btn ${state.finished ? 'primary' : ''}" data-action="new">Новая задача</button><span class="spacer"></span>${statsHtml}</div>`;
+  }
+  return `<div class="actions"><button class="btn ${state.finished ? 'primary' : ''}" data-action="new">Новая задача</button>${state.finished ? `<button class="btn" data-action="toggle-solution">${state.showSolution ? 'Скрыть решение' : 'Показать решение'}</button>` : (state.soloFails >= 2 ? `<button class="btn warm" data-action="give-up">Показать решение</button>` : '')}<span class="spacer"></span>${statsHtml}</div>`;
+}
+function memoHtml(T, task){
+  const rows = T.memo.map(([k, v]) => `<div class="memo-row"><span class="k">${M(k)}</span><span class="v">${M(v)}</span></div>`).join('');
+  return `<details class="memo" ${state.mode === 'learn' ? 'open' : ''}><summary>Памятка${T.trap ? ' и ловушка' : ''}</summary><div class="memo-body">${rows}${T.trap ? `<div class="trapbox"><b>Ловушка:</b><span>${M(T.trap)}</span></div>` : ''}</div></details>`;
+}
+function renderTask(){
+  const task = state.task, T = TOPICS[state.topic];
+  const badge = state.mode === 'learn'
+    ? (task.demo ? `<span class="pill demo">Пример</span>` : `<span class="pill demo">Случайные числа${state.topic === 0 ? '' : ' · уровень ' + task.level}</span>`)
+    : `<span class="pill">${state.topic === 0 ? 'Разминка' : 'Уровень ' + task.level}</span>`;
+  let pickedSet = state.picked;
+  if (state.mode === 'learn'){
+    pickedSet = [];
+    task.steps.forEach((st, i) => { if (i < state.revealed && st.kind === 'pickSide') pickedSet.push(st.want); });
+    if (state.revealed >= task.steps.length && task.answer.kind === 'side') pickedSet.push(task.answer.want);
+  }
+  const curStep = task.steps[state.stepIdx];
+  const picking = (state.mode === 'steps' && !state.finished && curStep && curStep.kind === 'pickSide')
+               || (state.mode === 'solo' && !state.finished && task.answer.kind === 'side');
+  const fig = figureHtml(task, state.mode !== 'solo' || state.showSolution, pickedSet);
+  const html = `<article class="task" id="taskCard">
+    <div class="task-top"><div><span class="tnum">${state.topic === 0 ? 'Разминка.' : 'Тема ' + T.num + '.'}</span> <span class="tname">${T.name}</span></div><div>${badge}</div></div>
+    <div class="figwrap"><div class="statement">${statementHtml(task)}</div>${fig ? `<div class="figure${picking ? ' picking' : ''}">${fig}</div>` : ''}</div>
+    ${memoHtml(T, task)}
+    ${ladderHtml(task)}
+    ${finalHtml(task)}
+    ${actionsHtml(task)}
+  </article>`;
+  $('#taskArea').innerHTML = html;
+  const first = $('#taskArea input.num');
+  if (first && !state.finished && document.activeElement && document.activeElement.tagName !== 'INPUT') first.focus({ preventScroll: true });
+}
+
+/* ---------- клики по сторонам чертежа ---------- */
+function flashBad(el){
+  if (!el) return;
+  el.style.stroke = 'rgba(179,64,42,.45)';
+  setTimeout(() => { el.style.stroke = ''; }, 550);
+}
+function onSideClick(side, el){
+  const task = state.task;
+  if (state.mode === 'solo' && !state.finished && task.answer.kind === 'side'){
+    const a = task.answer;
+    if (side === a.want){ if (!state.picked.includes(side)) state.picked.push(side); return soloSolved(); }
+    flashBad(el);
+    return soloFailed(a.why[side] ? M(a.why[side]) : null);
+  }
+  if (state.mode === 'steps' && !state.finished){
+    const i = state.stepIdx, st = task.steps[i];
+    if (!st || st.kind !== 'pickSide') return;
+    if (side === st.want){ if (!state.picked.includes(side)) state.picked.push(side); return stepSucceeded(i); }
+    flashBad(el);
+    return stepFailed(i, st.why[side] ? M(st.why[side]) : null, { trap: !!st.why[side] });
+  }
+}
+
+/* ---------- проверка шагов ---------- */
+function setStepFb(type, html){
+  state.stepFb = { type, html };
+  const w = $('#taskArea .step.current .fbwrap'); if (w) w.innerHTML = fbHtml(state.stepFb);
+}
+function ensureRevealBtn(){
+  const row = $('#taskArea .step.current .stepbtns');
+  if (row && !row.querySelector('[data-action="reveal"]')) row.insertAdjacentHTML('beforeend', `<button class="btn warm" data-action="reveal">Показать ответ</button>`);
+}
+function rootMultiplied(val, ans){ const k = val / ans; return isFinite(k) && ans !== 0 && k > 1.68 && k < 1.78; }
+function stepFailed(i, msgHtml, opts){
+  opts = opts || {};
+  state.stepFails[i] = (state.stepFails[i] || 0) + 1;
+  const st = state.task.steps[i];
+  let html = msgHtml || pick(['Пока не так.', 'Не сходится.', 'Здесь ошибка.'], RNG);
+  if (state.stepFails[i] === 1 && st.hint && !opts.trap) html += ` Подсказка: ${M(st.hint)}`;
+  if (state.stepFails[i] >= 2) html += ` Можно нажать «Показать ответ» и разобрать этот шаг.`;
+  setStepFb('bad', html);
+  ensureRevealBtn();
+}
+function stepSucceeded(i){
+  state.stepFb = null; state.stepWrongOpts = [];
+  state.stepIdx = i + 1;
+  if (state.stepIdx >= state.task.steps.length) finishSteps();
+  render();
+  const cur = $('#taskArea .step.current'); if (cur) cur.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+function finishSteps(){
+  state.finished = true;
+  if (!state.counted){ state.counted = true; tstat(state.topic).steps++; saveStats(); }
+}
+function checkStep(){
+  const i = state.stepIdx, st = state.task.steps[i];
+  if (!st || st.kind === 'info' || st.kind === 'choice' || st.kind === 'pickSide') return;
+  const inputs = $$(`#taskArea input.num[data-step="${i}"]`);
+  const vals = inputs.map(inp => parseNum(inp.value));
+  inputs.forEach(inp => inp.classList.remove('ok', 'bad'));
+  if (vals.some(v => isNaN(v))){
+    inputs.forEach((inp, k) => { if (isNaN(vals[k])) inp.classList.add('bad'); });
+    setStepFb('hint', 'Введите число. Можно десятичную дробь (0,5) или обыкновенную (1/2). Отрицательное — со знаком минус.');
+    return;
+  }
+  if (st.kind === 'num'){
+    if (nearly(vals[0], st.ans)){ inputs[0].classList.add('ok'); return stepSucceeded(i); }
+    inputs[0].classList.add('bad');
+    if (st.suffix && rootMultiplied(vals[0], st.ans)) return stepFailed(i, `Похоже, вы умножили на ${M(st.suffix)} ≈ 1,73. Ответ записывают как число перед ${M(st.suffix)}: в поле нужно только это число.`, { trap: true });
+    const tr = (st.traps || []).find(t => Math.abs(vals[0] - t.value) <= trapTol(t.value));
+    if (tr) return stepFailed(i, M(tr.msg), { trap: true });
+    if (Math.abs(vals[0] - st.ans) < 0.01 * Math.max(1, Math.abs(st.ans))) return stepFailed(i, 'Почти! Ответ округлён. Запишите точно — обыкновенной дробью, например 1/6 или 9/2.');
+    return stepFailed(i, null);
+  }
+  const want = st.inputs.map(x => x.ans);
+  if (st.unordered){
+    if (sameSet(vals, want)){ inputs.forEach(inp => inp.classList.add('ok')); return stepSucceeded(i); }
+    inputs.forEach((inp, k) => inp.classList.add(want.some(w => nearly(vals[k], w)) ? 'ok' : 'bad'));
+    return stepFailed(i, null);
+  }
+  let allOk = true;
+  inputs.forEach((inp, k) => { const good = nearly(vals[k], want[k]); inp.classList.add(good ? 'ok' : 'bad'); if (!good) allOk = false; });
+  if (allOk) return stepSucceeded(i);
+  if (sameSet(vals, want)) return stepFailed(i, 'Числа верные, но стоят не на своих местах. Проверьте, какое число к какой подписи относится.');
+  return stepFailed(i, 'Проверьте выделенные поля.');
+}
+function chooseStep(i, k){
+  const st = state.task.steps[i];
+  if (i !== state.stepIdx || st.kind !== 'choice') return;
+  if (k === st.correct) return stepSucceeded(i);
+  state.stepWrongOpts = (state.stepWrongOpts || []).concat(k);
+  const btn = $(`#taskArea .opt[data-step="${i}"][data-opt="${k}"]`); if (btn) btn.classList.add('bad');
+  stepFailed(i, st.options[k].why ? M(st.options[k].why) : null, { trap: !!st.options[k].why });
+}
+function showHint(){
+  const st = state.task.steps[state.stepIdx]; if (!st || !st.hint) return;
+  setStepFb('hint', `Подсказка: ${M(st.hint)}`);
+}
+function revealStep(){
+  const i = state.stepIdx;
+  const st = state.task.steps[i];
+  if (st && st.kind === 'pickSide' && !state.picked.includes(st.want)) state.picked.push(st.want);
+  state.stepRevealed[i] = true;
+  stepSucceeded(i);
+}
+
+/* ---------- проверка итогового ответа («Сам») ---------- */
+function soloOutcome(correct){
+  const s = tstat(state.topic);
+  if (correct){
+    if (!state.counted){ state.counted = true; s.solved++; if (state.soloFails === 0){ s.correct++; s.streak++; s.best = Math.max(s.best, s.streak); } }
+  } else if (!state.counted && state.soloFails === 1){ s.streak = 0; }
+  saveStats();
+}
+function soloFailed(msgHtml){
+  state.soloFails++;
+  soloOutcome(false);
+  logOutcome(false);
+  let html = msgHtml || pick(['Пока не так. Проверьте вычисления.', 'Не сходится. Пересчитайте ещё раз.'], RNG);
+  if (state.soloFails >= 2) html += ' Если хотите — откройте решение по шагам и разберите, где ошибка.';
+  state.soloFb = { type: 'bad', html };
+  const w = $('#taskArea .final .fbwrap'); if (w) w.innerHTML = fbHtml(state.soloFb);
+  if (state.soloFails >= 2 && !$('#taskArea [data-action="give-up"]')){
+    const acts = $('#taskArea .actions .spacer'); if (acts) acts.insertAdjacentHTML('beforebegin', `<button class="btn warm" data-action="give-up">Показать решение</button>`);
+  }
+}
+function soloSolved(){
+  state.finished = true; soloOutcome(true); logOutcome(true);
+  state.soloFb = { type: 'ok', html: `${pick(PRAISE, RNG)}${state.soloFails ? ' Со второй попытки, но верно.' : ''}` };
+  render();
+}
+function checkFinal(){
+  const a = state.task.answer;
+  const inputs = $$('#taskArea input.num[data-final]');
+  const vals = inputs.map(inp => parseNum(inp.value));
+  inputs.forEach(inp => inp.classList.remove('ok', 'bad'));
+  if (vals.some(v => isNaN(v))){
+    inputs.forEach((inp, k) => { if (isNaN(vals[k])) inp.classList.add('bad'); });
+    state.soloFb = { type: 'hint', html: 'Введите число. Можно десятичную дробь (0,5) или обыкновенную (1/2).' };
+    const w = $('#taskArea .final .fbwrap'); if (w) w.innerHTML = fbHtml(state.soloFb);
+    return;
+  }
+  if (nearly(vals[0], a.value)) return soloSolved();
+  inputs[0].classList.add('bad');
+  if (a.suffix && rootMultiplied(vals[0], a.value)) return soloFailed(`Похоже, вы умножили на ${M(a.suffix)} ≈ 1,73. Ответ записывают как число перед ${M(a.suffix)}: в поле нужно только это число.`);
+  const dg = diagnoseFinal(vals[0], state.task);
+  if (dg) return soloFailed(M(dg));
+  if (Math.abs(vals[0] - a.value) < 0.01 * Math.max(1, Math.abs(a.value))) return soloFailed('Почти! Ответ округлён. Запишите точно — обыкновенной дробью.');
+  return soloFailed(null);
+}
+function chooseFinal(k){
+  const a = state.task.answer;
+  if (k === a.correct) return soloSolved();
+  state.soloWrongOpts.push(k);
+  const btn = $(`#taskArea .opt[data-action="final-opt"][data-opt="${k}"]`); if (btn) btn.classList.add('bad');
+  soloFailed(a.options[k].why ? M(a.options[k].why) : null);
+}
+function giveUp(){
+  state.finished = true; state.soloRevealed = true; state.showSolution = true;
+  const a = state.task.answer;
+  if (a.kind === 'side' && !state.picked.includes(a.want)) state.picked.push(a.want);
+  if (!state.counted){ state.counted = true; const s = tstat(state.topic); s.solved++; s.streak = 0; saveStats(); }
+  state.soloFb = { type: 'note', html: 'Разберите решение по шагам, а затем нажмите «Новая задача» — числа будут другие, а ход решения тот же.' };
+  render();
+}
+
+/* ---------- режим «Учимся» ---------- */
+function learnNext(){
+  if (state.revealed < state.task.steps.length){ state.revealed++; render();
+    const items = $$('#taskArea .step.done'); const last = items[items.length - 1]; if (last) last.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+}
+function learnBack(){ if (state.revealed > 0){ state.revealed--; render(); } }
+function learnAll(){ state.revealed = state.task.steps.length; render(); }
+function learnNextDemo(){ state.demoIdx++; newTask(); }
+function onGlobalKey(e){
+  if (state.mode !== 'learn') return;
+  const t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'BUTTON' || t.tagName === 'SUMMARY' || t.isContentEditable)) return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' '){ e.preventDefault(); learnNext(); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); learnBack(); }
+}
+
+/* ---------- обработчики ---------- */
+function onTaskClick(e){
+  const sideEl = e.target.closest('[data-side]');
+  if (sideEl) return onSideClick(sideEl.dataset.side, sideEl);
+  const btn = e.target.closest('[data-action]'); if (!btn) return;
+  const act = btn.dataset.action;
+  if (act === 'check') checkStep();
+  else if (act === 'hint') showHint();
+  else if (act === 'reveal') revealStep();
+  else if (act === 'info-next') stepSucceeded(state.stepIdx);
+  else if (act === 'opt') chooseStep(+btn.dataset.step, +btn.dataset.opt);
+  else if (act === 'final-check') checkFinal();
+  else if (act === 'final-opt') chooseFinal(+btn.dataset.opt);
+  else if (act === 'new') newTask();
+  else if (act === 'toggle-solution'){ state.showSolution = !state.showSolution; render(); }
+  else if (act === 'give-up') giveUp();
+  else if (act === 'next') learnNext();
+  else if (act === 'show-all') learnAll();
+  else if (act === 'next-demo') learnNextDemo();
+}
+function onTaskKey(e){
+  if (e.key !== 'Enter') return;
+  const inp = e.target.closest('input.num'); if (!inp) return;
+  e.preventDefault();
+  if (inp.dataset.final != null) checkFinal(); else checkStep();
+}
+
+/* ---------- режим доски ---------- */
+function setBoard(on){
+  document.documentElement.classList.toggle('board', on);
+  $('#boardBtn').setAttribute('aria-pressed', on);
+  $('#boardBtn').textContent = on ? 'Обычный вид' : 'Режим доски';
+  stats.board = on; saveStats();
+}
+
+/* ---------- чертёж прямоугольного треугольника (честная геометрия) ----------
+   Контракт figure: { kind:'tri', S, t, angleAt, angleText, withAltitude, withMedian,
+   withBisector, labels:{AC,BC,AB,AH,BH,CH}, hl:['AC'|'BC'|'AB'|'AH'|'BH'|'CH'|'cevH'|'cevD'|'cevM'],
+   areaText, betweenArc:{pair,text} }.
+   t = AH/AB задаёт форму: C стоит на окружности с диаметром AB (Фалес), поэтому
+   прямой угол при C — настоящий; высота CH — настоящий перпендикуляр (C над H);
+   D — по теореме о биссектрисе, всегда между H и серединой M.
+   labels — только данное из условия; hl — искомое (подсветка без числа). */
+const SVG_STYLE = `fill:none;stroke:#1b2a4a;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round`;
+const LBL = `font-family:Nunito,sans-serif;font-weight:800;font-size:14px;fill:#1b2a4a`;
+const ACC = `fill:none;stroke:#0f766e;stroke-width:2`;
+const HALO = 'paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round';
+const T = (x, y, txt, extra) => `<text x="${(+x).toFixed(1)}" y="${(+y).toFixed(1)}" style="${LBL};${HALO}${extra ? ';' + extra : ''}">${txt}</text>`;
+const TEAL = 'fill:#0f766e', SOFT = 'fill:#54607a';
+const HLW = 'fill:none;stroke:#0f766e;stroke-width:3.4;stroke-linecap:round;opacity:.9';
+
+function triGeometry(f){
+  let t = f && isFinite(f.t) ? f.t : 0.62;
+  t = Math.min(0.9, Math.max(0.1, t));
+  const W = 228, Ax = 26, baseY = 156;
+  const A = [Ax, baseY], B = [Ax + W, baseY];
+  const C = [Ax + t * W, baseY - Math.sqrt(t * (1 - t)) * W];   // Фалес ⇒ угол ACB = 90°
+  const H = [C[0], baseY];                                      // основание высоты: строго под C
+  const Mid = [Ax + W / 2, baseY];
+  const st = Math.sqrt(t), su = Math.sqrt(1 - t);
+  const D = [Ax + W * st / (st + su), baseY];                   // AD:DB = AC:CB = √t:√(1−t)
+  return { A, B, C, H, Mid, D, t, W, baseY };
+}
+function nrm(vx, vy){ const L = Math.hypot(vx, vy) || 1; return [vx / L, vy / L]; }
+const pj = q => q[0].toFixed(1) + ',' + q[1].toFixed(1);
+function ln(a, b, style){ return `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" style="${style}"/>`; }
+
+function figureHtml(task, showHl, picked){
+  const f = task.figure; if (!f || f.kind !== 'tri') return '';
+  const pk = new Set(picked || []);
+  const S = f.S, g = triGeometry(f);
+  const { A, B, C, H, Mid, D, baseY } = g;
+  const L = f.labels || {};
+  const hl = new Set((showHl && f.hl) || []);
+  const feetRow = !!(f.withAltitude || f.withMedian || f.withBisector);
+  const anyCev = ['cevH', 'cevD', 'cevM'].some(k => hl.has(k));
+  const dim = key => anyCev && !hl.has(key) ? ';opacity:.4' : '';
+  let svg = `<svg viewBox="-6 0 292 224" role="img" aria-label="Прямоугольный треугольник ${S.A}${S.B}${S.C}, прямой угол при вершине ${S.C}">`;
+  svg += `<polygon points="${pj(A)} ${pj(B)} ${pj(C)}" style="${SVG_STYLE};fill:#f4f6fa"/>`;
+
+  /* прямой угол при C: квадратик по направлениям на A и B */
+  const uA = nrm(A[0] - C[0], A[1] - C[1]), uB = nrm(B[0] - C[0], B[1] - C[1]), s0 = 10;
+  const q1 = [C[0] + uA[0] * s0, C[1] + uA[1] * s0], q3 = [C[0] + uB[0] * s0, C[1] + uB[1] * s0];
+  const q2 = [q1[0] + uB[0] * s0, q1[1] + uB[1] * s0];
+  svg += `<polyline points="${pj(q1)} ${pj(q2)} ${pj(q3)}" style="${SVG_STYLE};stroke-width:1.3"/>`;
+
+  /* подсветка искомых катетов и верно указанных сторон */
+  if (hl.has('AC') || pk.has('AC')) svg += ln(A, C, HLW);
+  if (hl.has('BC') || pk.has('BC')) svg += ln(B, C, HLW);
+  if (pk.has('AB')) svg += ln(A, B, HLW);
+
+  /* высота из C: перпендикуляр по построению (C и H на одной вертикали) */
+  if (f.withAltitude){
+    svg += ln(C, H, `${SVG_STYLE};stroke-dasharray:5 4${dim('cevH')}`);
+    if (hl.has('CH') || hl.has('cevH')) svg += ln(C, H, HLW);
+    const d8 = (H[0] < Mid[0] ? 1 : -1) * 8;                    // квадратик прямого угла при H — в сторону длинного отрезка
+    svg += `<polyline points="${(H[0] + d8).toFixed(1)},${baseY} ${(H[0] + d8).toFixed(1)},${baseY - 8} ${H[0].toFixed(1)},${baseY - 8}" style="${SVG_STYLE};stroke-width:1.1${dim('cevH')}"/>`;
+    svg += `<circle cx="${H[0].toFixed(1)}" cy="${baseY}" r="2.6" fill="#1b2a4a"/>`;
+    svg += T(H[0], baseY + 16, S.H, 'text-anchor:middle');
+  }
+  if (f.withBisector){
+    svg += ln(C, D, `${ACC};stroke-width:1.6;stroke-dasharray:2 3${dim('cevD')}`);
+    if (hl.has('cevD')) svg += ln(C, D, HLW);
+    svg += `<circle cx="${D[0].toFixed(1)}" cy="${baseY}" r="2.4" fill="#0f766e"/>`;
+    svg += T(D[0], baseY + 16, S.D, 'text-anchor:middle;' + TEAL + ';font-size:12px');
+  }
+  if (f.withMedian){
+    svg += ln(C, Mid, `${ACC};stroke-dasharray:6 4${dim('cevM')}`);
+    if (hl.has('cevM')) svg += ln(C, Mid, HLW);
+    svg += `<circle cx="${Mid[0].toFixed(1)}" cy="${baseY}" r="2.6" fill="#0f766e"/>`;
+    svg += T(Mid[0], baseY + 16, S.Med, 'text-anchor:middle;' + TEAL + ';font-size:12px');
+  }
+
+  /* подсветка отрезков гипотенузы и всей гипотенузы — чертой под основанием */
+  if (hl.has('AH')) svg += ln([A[0], baseY + 5], [H[0], baseY + 5], HLW);
+  if (hl.has('BH')) svg += ln([H[0], baseY + 5], [B[0], baseY + 5], HLW);
+  if (hl.has('AB')) svg += ln([A[0], baseY + 5], [B[0], baseY + 5], HLW);
+
+  /* вершины */
+  svg += T(A[0] - 6, A[1] + 6, S.A, 'text-anchor:end') + T(B[0] + 6, B[1] + 6, S.B) + T(C[0], C[1] - 9, S.C, 'text-anchor:middle');
+
+  /* дуга и подпись угла при фактической вершине из условия */
+  if (f.angleAt === S.A || f.angleAt === S.B){
+    const atA = f.angleAt === S.A, V = atA ? A : B, O = atA ? B : A;
+    svg += `<path d="${arcAt(V, O, C, 20)}" style="${ACC};stroke-width:1.6"/>`;
+    if (f.angleText){
+      const d1 = nrm(O[0] - V[0], O[1] - V[1]), d2 = nrm(C[0] - V[0], C[1] - V[1]);
+      const bb = nrm(d1[0] + d2[0], d1[1] + d2[1]);
+      svg += T(V[0] + bb[0] * 38, V[1] + bb[1] * 38 + 4, f.angleText, 'text-anchor:middle;font-size:12px;' + SOFT);
+    }
+  }
+
+  /* дан угол между двумя чевианами — подпись между их основаниями */
+  if (f.betweenArc){
+    const foot = { cevH: H, cevD: D, cevM: Mid };
+    const pm = { hd: ['cevH', 'cevD'], dm: ['cevD', 'cevM'], hm: ['cevH', 'cevM'] }[f.betweenArc.pair];
+    if (pm){
+      const F1 = foot[pm[0]], F2 = foot[pm[1]];
+      svg += T((F1[0] + F2[0]) / 2, baseY - 12, f.betweenArc.text, 'text-anchor:middle;font-size:12px;' + TEAL);
+    }
+  }
+
+  /* площадь (если дана) — внутри треугольника */
+  if (f.areaText){
+    svg += T((A[0] + B[0] + C[0]) / 3, (A[1] + B[1] + C[1]) / 3 + 8, f.areaText, 'text-anchor:middle;font-size:12.5px;' + SOFT);
+  }
+
+  /* подписи данных — только то, что есть в условии */
+  const sideLbl = (P1, P2, val) => {                            // катет: число снаружи, по нормали от центра
+    const mx = (P1[0] + P2[0]) / 2, my = (P1[1] + P2[1]) / 2;
+    let nx = -(P2[1] - P1[1]), ny = P2[0] - P1[0];
+    const gx = (A[0] + B[0] + C[0]) / 3 - mx, gy = (A[1] + B[1] + C[1]) / 3 - my;
+    if (nx * gx + ny * gy > 0){ nx = -nx; ny = -ny; }
+    const nn = nrm(nx, ny);
+    svg += T(mx + nn[0] * 13, my + nn[1] * 13 + 4, fmt(val), 'text-anchor:middle;font-size:12px;' + SOFT);
+  };
+  if (L.AC != null) sideLbl(A, C, L.AC);
+  if (L.BC != null) sideLbl(B, C, L.BC);
+  if (L.CH != null){
+    const side = H[0] < Mid[0] ? 1 : -1;                        // подпись высоты — в сторону длинного отрезка
+    svg += T(H[0] + side * 9, (C[1] + baseY) / 2 + 4, fmt(L.CH), (side > 0 ? '' : 'text-anchor:end;') + 'font-size:12px;' + SOFT);
+  }
+  const segNum = (x1, x2, val) => {                             // отрезки гипотенузы; короткий — строкой ниже, чтобы не задеть букву H
+    const y = Math.abs(x2 - x1) < 42 ? baseY + 30 : baseY + 16;
+    svg += T((x1 + x2) / 2, y, fmt(val), 'text-anchor:middle;font-size:12px;' + SOFT);
+  };
+  if (L.AH != null) segNum(A[0], H[0], L.AH);
+  if (L.BH != null) segNum(H[0], B[0], L.BH);
+  if (L.AB != null){                                           // вся гипотенуза — выносная линия-размер под чертежом
+    const y2 = baseY + (feetRow || L.AH != null || L.BH != null ? 40 : 16);
+    svg += ln([A[0], y2], [B[0], y2], `${SVG_STYLE};stroke-width:1.1`);
+    svg += ln([A[0], y2 - 4], [A[0], y2 + 4], `${SVG_STYLE};stroke-width:1.1`);
+    svg += ln([B[0], y2 - 4], [B[0], y2 + 4], `${SVG_STYLE};stroke-width:1.1`);
+    svg += T((A[0] + B[0]) / 2, y2 + 14, fmt(L.AB), 'text-anchor:middle;font-size:12px;' + SOFT);
+  }
+  /* невидимые «толстые» стороны для кликов (активны только с классом .picking) */
+  const hit = (P1, P2, key) => `<line x1="${P1[0].toFixed(1)}" y1="${P1[1].toFixed(1)}" x2="${P2[0].toFixed(1)}" y2="${P2[1].toFixed(1)}" class="hit" data-side="${key}" stroke="transparent" stroke-width="17" fill="none"><title>сторона ${({AC:S.A+S.C,BC:S.B+S.C,AB:S.A+S.B})[key]}</title></line>`;
+  svg += hit(A, C, 'AC') + hit(B, C, 'BC') + hit(A, B, 'AB');
+  svg += '</svg>';
+  return svg;
+}
+function arcAt(V, P1, P2, r){
+  const a1 = Math.atan2(P1[1] - V[1], P1[0] - V[0]), a2 = Math.atan2(P2[1] - V[1], P2[0] - V[0]);
+  let d = a2 - a1; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI;
+  const x1 = V[0] + r * Math.cos(a1), y1 = V[1] + r * Math.sin(a1), x2 = V[0] + r * Math.cos(a1 + d), y2 = V[1] + r * Math.sin(a1 + d);
+  return `M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 ${d > 0 ? 1 : 0} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+}
+
+/* Зеркало не сохраняется: это настройка проектора, а не ученика. */
+function setMirror(on){
+  document.documentElement.classList.toggle('mirror', on);
+  const b = $('#mirrorBtn'); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? 'Убрать зеркало' : 'Зеркало';
+}
+function canFullscreen(){
+  const r = document.documentElement;
+  return !!(r.requestFullscreen || r.webkitRequestFullscreen);
+}
+function toggleFullscreen(){
+  const r = document.documentElement;
+  try{
+    if (document.fullscreenElement || document.webkitFullscreenElement)
+      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else
+      (r.requestFullscreen || r.webkitRequestFullscreen).call(r);
+  }catch(e){ /* на доске без поддержки просто ничего не происходит */ }
+}
+function urlFlag(name){
+  return new RegExp('(^|[?&])' + name + '=1(&|$)').test(location.search || '');
+}
+
+/* ---------- запуск ---------- */
+function init(){
+  $('#topics').addEventListener('click', e => { const c = e.target.closest('[data-topic]'); if (c) setTopic(+c.dataset.topic); });
+  $('#modeSeg').addEventListener('click', e => { const b = e.target.closest('[data-mode]'); if (b) setMode(b.dataset.mode); });
+  $('#levelSeg').addEventListener('click', e => { const b = e.target.closest('[data-level]'); if (b) setLevel(+b.dataset.level); });
+  $('#taskArea').addEventListener('click', onTaskClick);
+  $('#taskArea').addEventListener('keydown', onTaskKey);
+  $('#boardBtn').addEventListener('click', () => setBoard(!document.documentElement.classList.contains('board')));
+  document.addEventListener('keydown', onGlobalKey);
+  $('#mirrorBtn').addEventListener('click', () => setMirror(!document.documentElement.classList.contains('mirror')));
+  if (canFullscreen()) $('#fsBtn').addEventListener('click', toggleFullscreen);
+  else $('#fsBtn').remove();
+  if (stats.board) setBoard(true);
+  if (urlFlag('board')) setBoard(true);
+  if (urlFlag('mirror')) setMirror(true);
+  const h = (location.hash || '').replace('#', '');
+  const mt = h.match(/^t(\d+)$/);
+  if (mt && TOPICS[+mt[1]]) state.topic = +mt[1];
+  if (/(^|[?&])mode=review/.test(location.search || '')){ state.review = true; state.mode = 'solo'; }
+  newTask();
+}
+if (typeof document !== 'undefined') document.addEventListener('DOMContentLoaded', init);
+if (typeof module !== 'undefined'){ module.exports = { figureHtml, triGeometry }; }
+
+</script>
+</body>
+</html>

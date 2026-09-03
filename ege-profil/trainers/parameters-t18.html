@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 18 · Параметр на графике</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA; --badbg:#FBEAE9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:660px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0 0 6px;font-size:16.5px;color:var(--ink-strong)}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+  .tab{border:1.5px solid var(--ink);background:rgba(250,250,244,.8);color:var(--ink);border-radius:999px;
+    padding:8px 16px;font:700 14px/1 inherit;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.92);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    padding:9px 16px;font:700 14.5px/1 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:disabled{opacity:.45;cursor:default}
+  input[type=text]{border:1.5px solid var(--ink);border-radius:8px;background:#fff;padding:9px 12px;font:600 16px/1 inherit;width:130px}
+  input[type=range]{width:min(340px,100%);accent-color:var(--ink)}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .feedback{margin-top:12px;border-radius:8px;padding:10px 12px;font-weight:600;display:none}
+  .feedback.on{display:block}
+  .feedback.ok{background:var(--okbg);color:var(--ok)}
+  .feedback.bad{background:var(--badbg);color:var(--red)}
+  .figure{margin:12px 0;overflow-x:auto}
+  svg{display:block;max-width:100%}
+  .methods{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:6px}
+  .rule{border:1px dashed var(--line);border-radius:8px;padding:12px;background:rgba(255,255,255,.6)}
+  .rule b{color:var(--ink-strong)}
+  .plist{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .pcard{border:1.5px solid var(--ink);border-radius:10px;background:#fff;padding:14px;cursor:pointer;text-align:left;font:inherit}
+  .pcard:hover{background:rgba(30,58,159,.06)}
+  .pcard .tag{font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--red)}
+  .pcard .done{color:var(--ok);font-weight:700;font-size:13px}
+  .liveinfo{font:700 15px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong);margin-top:6px}
+  .steps{margin-top:10px}
+  .step{border-left:3px solid var(--ink);background:rgba(255,255,255,.65);padding:9px 12px;margin-bottom:8px;display:none}
+  .step.on{display:block}
+  .answerline{border-left:3px solid var(--red);background:rgba(255,255,255,.65);padding:9px 12px;margin-top:8px;display:none;font-weight:700}
+  .answerline.on{display:block}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .chips button{border:1.5px solid var(--ink);background:#fff;color:var(--ink-strong);border-radius:8px;min-width:44px;padding:8px 0;font:700 15px/1 inherit;cursor:pointer}
+  .chips button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+  .dots span{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px}
+  .dots span.ok{background:var(--ink)}
+  .dots span.bad{background:var(--red);border-color:var(--red)}
+  .bigscore{font:800 34px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
+  .view{display:none}
+  .view.on{display:block}
+  .crit{font-size:13px;color:var(--muted);margin:4px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Курс</a>
+  <p class="eyebrow">задание 18 · развёрнутый ответ · 4 балла</p>
+  <h1>Параметр на графике</h1>
+  <p class="lede">Параметр — это не «страшная буква», а семейство: одна картинка, которую двигает ползунок. Здесь этот взгляд ставится руками — на шести задачах трёх главных методов.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="idea">Идея</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="tasks">Задачи</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="drill">Дриллы и зачёт</button>
+  </div>
+
+  <!-- ИДЕЯ -->
+  <section class="view on" id="view-idea">
+    <div class="card">
+      <h2>Уравнение f(x) = a — это вопрос про горизонталь</h2>
+      <p>Сколько решений у уравнения |x − 2| + |x + 2| = a? Двигайте a и следите, как горизонталь y = a режет график.</p>
+      <div class="row"><label class="mono small" for="heroA">a</label><input type="range" id="heroA" min="0" max="8" step="0.25" value="2"><span class="mono small" id="heroVal"></span></div>
+      <div class="figure" id="heroFig"></div>
+      <p class="liveinfo" id="heroInfo"></p>
+      <p class="small muted">Опасные значения a — там, где картинка перестраивается: высота «полочки», локальные максимумы и минимумы, касания. Ответ почти всегда собирается из таких порогов.</p>
+    </div>
+    <div class="card">
+      <h2>Три метода задания 18</h2>
+      <div class="methods">
+        <div class="rule"><b>Графический.</b> Построй график левой части и режь его горизонталью y = a (или двигай прямую/окружность семейства). Пороги: полочки, вершины, экстремумы, касания.</div>
+        <div class="rule"><b>Аналитический.</b> Квадратное уравнение — это дискриминант, Виета и расположение корней. Но сначала попробуй разложить на множители: корни вида a и a + 1 экономят полстраницы выкладок.</div>
+        <div class="rule"><b>Замена и симметрия.</b> t = |x|, t = √(…), t = 2ˣ: считай решения по t и помни, сколько x даёт каждое t. Если условие не меняется при x → −x, единственность решения заставляет x = 0 — начни с этого случая.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАДАЧИ -->
+  <section class="view" id="view-tasks">
+    <div id="taskList" class="plist"></div>
+    <div id="taskView" style="display:none">
+      <p><button class="btn ghost" id="backToList">← Ко всем задачам</button></p>
+      <div class="card">
+        <p class="mono small" id="tMethod" style="color:var(--red);font-weight:700"></p>
+        <h2 id="tTitle"></h2>
+        <p id="tCond" style="font-size:17px"></p>
+        <div class="row" id="tSliderRow"><label class="mono small" for="tSlider">a</label><input type="range" id="tSlider"><span class="mono small" id="tSliderVal"></span></div>
+        <div class="figure" id="tFig"></div>
+        <p class="liveinfo" id="tLive"></p>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" id="tStepBtn">Следующий шаг разбора</button>
+          <button class="btn ghost" id="tAnsBtn">Показать ответ</button>
+        </div>
+        <div class="steps" id="tSteps"></div>
+        <div class="answerline" id="tAnswer"></div>
+      </div>
+      <div class="card">
+        <h3>Ключ-вопрос</h3>
+        <p id="tKeyQ"></p>
+        <div class="row">
+          <input type="text" id="tKeyInput" inputmode="decimal" autocomplete="off" aria-label="Ответ на ключ-вопрос">
+          <button class="btn" id="tKeyCheck">Проверить</button>
+        </div>
+        <div class="feedback" id="tKeyFb"></div>
+      </div>
+      <div class="card red">
+        <h3>Самооценка по критериям</h3>
+        <p class="small muted">Решите задачу на бумаге полностью, сверьтесь с разбором и поставьте себе балл, как поставил бы эксперт.</p>
+        <div class="chips" id="tSelf"></div>
+        <p class="crit">4 — обоснованно получен верный ответ · 3 — верный ответ, но в обосновании пробел или потерян краевой случай · 2 — верно разобран один из существенных случаев · 1 — задача сведена к исследованию семейства (замена, график), но не доведена · 0 — решение не соответствует критериям</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ДРИЛЛЫ -->
+  <section class="view" id="view-drill">
+    <div class="card">
+      <h2>Сколько решений?</h2>
+      <p class="small muted">Главный навык графического метода — мгновенно считать пересечения. График f дан на отрезке [−6; 6], уровень a показан пунктиром.</p>
+      <p id="dText" style="font-size:17px"></p>
+      <div class="figure" id="dFig"></div>
+      <div class="row">
+        <input type="text" id="dAnswer" inputmode="numeric" autocomplete="off" aria-label="Число решений">
+        <button class="btn" id="dCheck">Проверить</button>
+        <button class="btn ghost" id="dNext">Другой график</button>
+      </div>
+      <div class="feedback" id="dFb"></div>
+      <p class="small mono muted" style="margin-top:10px">Серия верных подряд: <b id="dStreak">0</b></p>
+    </div>
+    <div class="card red">
+      <h2>Зачёт: серия из 8</h2>
+      <p class="small muted">Восемь графиков подряд, без права на ошибку в счёте: зачёт от 7 верных. Результат виден на главной странице курса.</p>
+      <div class="dots" id="zDots"></div>
+      <div id="zDone" style="display:none">
+        <p class="bigscore" id="zScore"></p>
+        <p id="zVerdict"></p>
+      </div>
+      <p><button class="btn" id="zStart">Начать зачёт</button></p>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ================= ЛОГИКА (без DOM) ================= */
+var P18 = (function(){
+  "use strict";
+  function rnd(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  /* Ломаная-«зигзаг» для дриллов: узлы x=-6..6, целые значения в [-3;3], допускаются полочки */
+  function zigzag(){
+    var vals = [rnd(-2,2)];
+    var flat = 0;
+    for (var i = 1; i < 13; i++){
+      var v = vals[i-1], d;
+      var tries = 0;
+      do {
+        d = pick([-2,-1,0,0,1,2]);
+        tries++;
+      } while ((Math.abs(v+d) > 3 || (d === 0 && flat >= 2)) && tries < 20);
+      if (Math.abs(v+d) > 3) d = -Math.sign(v);
+      if (d === 0 && flat >= 2) d = pick([-1,1]) * (Math.abs(v) === 3 ? Math.sign(-v) || 1 : 1);
+      flat = d === 0 ? flat + 1 : 0;
+      vals.push(v + d);
+    }
+    var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+    if (mx - mn < 3) return zigzag();
+    return vals;
+  }
+  /* Число решений f(x)=a для полуцелого a: узлы и полочки никогда не равны a,
+     поэтому решения — только строгие пересечения отрезков */
+  function countA(vals, a){
+    var n = 0;
+    for (var i = 0; i < vals.length - 1; i++){
+      if ((vals[i] - a) * (vals[i+1] - a) < 0) n++;
+    }
+    return n;
+  }
+  function drill(){
+    var vals, a, n, guard = 0;
+    do {
+      vals = zigzag();
+      var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+      a = rnd(mn, mx - 1) + 0.5;
+      n = countA(vals, a);
+      guard++;
+    } while (n < 1 && guard < 50);
+    return { vals: vals, a: a, n: n };
+  }
+  function fmt(n){
+    var s = (Math.round(n * 100) / 100).toString();
+    return s.replace(".", ",").replace("-", "−");
+  }
+  function parseAns(s){
+    if (s == null) return NaN;
+    s = String(s).trim().replace(",", ".").replace("−", "-").replace(/\s+/g,"");
+    if (!s) return NaN;
+    return Number(s);
+  }
+  function eq(user, right){
+    var u = parseAns(user);
+    return !isNaN(u) && Math.abs(u - right) < 1e-6;
+  }
+  return { rnd:rnd, pick:pick, zigzag:zigzag, countA:countA, drill:drill, fmt:fmt, parseAns:parseAns, eq:eq };
+})();
+P18.diagnose = function(input, n){
+  var s = String(input == null ? "" : input).trim().replace(",", ".");
+  var v = s ? Number(s) : NaN;
+  if (isNaN(v)) return null;
+  if (Math.abs(v - n) === 1) return "Разница ровно на одну точку: касание — это одна общая точка, и стык кусков графика не считается дважды.";
+  return null;
+};
+if (typeof module !== "undefined") module.exports = P18;
+</script>
+
+<script>
+/* ================= РИСОВАНИЕ И ИНТЕРФЕЙС ================= */
+(function(){
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var CELL = 24;
+  function el(tag, attrs){
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function makePlot(xmin, xmax, ymin, ymax){
+    var w = (xmax - xmin) * CELL + 20, h = (ymax - ymin) * CELL + 20;
+    var svg = el("svg", { viewBox: "0 0 " + w + " " + h, width: w, height: h, role: "img" });
+    var X = function(x){ return 10 + (x - xmin) * CELL; };
+    var Y = function(y){ return 10 + (ymax - y) * CELL; };
+    for (var gx = Math.ceil(xmin); gx <= xmax; gx++)
+      svg.appendChild(el("line",{x1:X(gx),y1:Y(ymin),x2:X(gx),y2:Y(ymax),stroke:"rgba(88,140,190,.28)","stroke-width":1}));
+    for (var gy = Math.ceil(ymin); gy <= ymax; gy++)
+      svg.appendChild(el("line",{x1:X(xmin),y1:Y(gy),x2:X(xmax),y2:Y(gy),stroke:"rgba(88,140,190,.28)","stroke-width":1}));
+    if (ymin < 0 && ymax > 0){
+      svg.appendChild(el("line",{x1:X(xmin),y1:Y(0),x2:X(xmax),y2:Y(0),stroke:"#2A2F38","stroke-width":1.6}));
+      svg.appendChild(el("path",{d:"M"+X(xmax)+" "+Y(0)+" l-9 -4 v8 z",fill:"#2A2F38"}));
+    }
+    if (xmin < 0 && xmax > 0){
+      svg.appendChild(el("line",{x1:X(0),y1:Y(ymin),x2:X(0),y2:Y(ymax),stroke:"#2A2F38","stroke-width":1.6}));
+      svg.appendChild(el("path",{d:"M"+X(0)+" "+Y(ymax)+" l-4 9 h8 z",fill:"#2A2F38"}));
+    }
+    var t1 = el("text",{x:X(Math.min(1,xmax-0.5))+3,y:Y(0)+15,"font-size":11,fill:"#67707E"}); t1.textContent="1"; svg.appendChild(t1);
+    return { svg:svg, X:X, Y:Y, xmin:xmin, xmax:xmax, ymin:ymin, ymax:ymax };
+  }
+  function curve(p, f, x0, x1, color, width, dash){
+    var d = "";
+    for (var x = x0; x <= x1 + 1e-9; x += 0.05){
+      var y = f(Math.min(x, x1));
+      if (y < p.ymin - 0.5 || y > p.ymax + 0.5){ if (d) d += " M" + p.X(x) + " " + p.Y(Math.max(p.ymin, Math.min(p.ymax, y))); continue; }
+      d += (d ? " L" : "M") + p.X(x) + " " + p.Y(y);
+    }
+    var a = {d:d,fill:"none",stroke:color||"#1E3A9F","stroke-width":width||3};
+    if (dash) a["stroke-dasharray"] = dash;
+    p.svg.appendChild(el("path", a));
+  }
+  function level(p, a, label){
+    p.svg.appendChild(el("line",{x1:p.X(p.xmin),y1:p.Y(a),x2:p.X(p.xmax),y2:p.Y(a),
+      stroke:"#C22F2A","stroke-width":2,"stroke-dasharray":"6 5"}));
+    var t = el("text",{x:p.X(p.xmax)-58,y:p.Y(a)-6,"font-size":12,fill:"#C22F2A","font-weight":"700"});
+    t.textContent = label || ("y = a"); p.svg.appendChild(t);
+  }
+
+  var TID = "parameters-t18";
+  function readAll(){ try{ return JSON.parse(localStorage.getItem("mathExamCourseProgress.v1")||"{}"); }catch(e){ return {}; } }
+  function st(){ var a = readAll(); return a[TID] || {}; }
+  function save(patch){
+    try{
+      var all = readAll();
+      var s = all[TID] || (all[TID] = { keys:{}, self:{}, runs:0, drillBest:0, passed:false });
+      s.keys = s.keys || {}; s.self = s.self || {};
+      if (patch.key) s.keys[patch.key] = true;
+      if (patch.self) s.self[patch.self[0]] = patch.self[1];
+      if (patch.runs) s.runs = (s.runs||0) + 1;
+      if (patch.drillBest != null) s.drillBest = Math.max(s.drillBest||0, patch.drillBest);
+      if (patch.passed) s.passed = true;
+      localStorage.setItem("mathExamCourseProgress.v1", JSON.stringify(all));
+    }catch(e){}
+  }
+
+  document.querySelectorAll(".tab").forEach(function(tab){
+    tab.addEventListener("click", function(){
+      document.querySelectorAll(".tab").forEach(function(t){ t.setAttribute("aria-selected", t===tab ? "true":"false"); });
+      document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("on"); });
+      document.getElementById("view-" + tab.dataset.view).classList.add("on");
+    });
+  });
+
+  /* ---------- герой ---------- */
+  function heroDraw(a){
+    var f = function(x){ return Math.abs(x-2) + Math.abs(x+2); };
+    var p = makePlot(-5.4, 5.4, -0.6, 8.4);
+    curve(p, f, -5.2, 5.2);
+    level(p, a);
+    document.getElementById("heroFig").innerHTML = "";
+    document.getElementById("heroFig").appendChild(p.svg);
+    var info;
+    if (Math.abs(a - 4) < 1e-9) info = "решений бесконечно много: подходит весь отрезок [−2; 2]";
+    else if (a < 4) info = "0 решений: горизонталь ниже «полочки»";
+    else info = "ровно 2 решения";
+    document.getElementById("heroInfo").textContent = "a = " + P18.fmt(a) + " → " + info;
+    document.getElementById("heroVal").textContent = P18.fmt(a);
+  }
+  var heroA = document.getElementById("heroA");
+  heroA.addEventListener("input", function(){ heroDraw(parseFloat(heroA.value)); });
+  heroDraw(2);
+
+  /* ---------- задачи ---------- */
+  var TASKS = [
+    { id:"z1", method:"графический", title:"Полочка из модулей",
+      cond:"Найдите все значения a, при каждом из которых уравнение |x − 1| + |x + 3| = a имеет ровно два решения.",
+      slider:{min:0,max:8,step:0.25,val:2},
+      draw:function(a){
+        var f = function(x){ return Math.abs(x-1)+Math.abs(x+3); };
+        var p = makePlot(-6.4, 4.4, -0.6, 8.4);
+        curve(p, f, -6.2, 4.2); level(p, a);
+        return { svg:p.svg, info: Math.abs(a-4)<1e-9 ? "бесконечно много: весь отрезок [−3; 1]" : a<4 ? "0 решений" : "2 решения" };
+      },
+      steps:[
+        "f(x) = |x − 1| + |x + 3| — сумма расстояний от точки x до точек 1 и −3 на числовой прямой.",
+        "Если x лежит между −3 и 1, сумма расстояний равна расстоянию между самими точками: f(x) = 4. Это «полочка».",
+        "Вне отрезка [−3; 1] обе величины растут: график уходит вверх лучами с наклоном ±2.",
+        "Горизонталь y = a: при a < 4 — нет решений; при a = 4 — решением служит каждая точка отрезка [−3; 1], их бесконечно много; при a > 4 — ровно два пересечения."
+      ],
+      answer:"Ответ: a ∈ (4; +∞).",
+      key:{ q:"При каком значении a решений бесконечно много?", a:4 } },
+
+    { id:"z2", method:"графический", title:"Касание прямой и окружности",
+      cond:"Найдите все значения a, при каждом из которых система { x² + y² = 9; y = x + a } имеет ровно одно решение.",
+      slider:{min:-6,max:6,step:0.1,val:1},
+      draw:function(a){
+        var p = makePlot(-5.4, 5.4, -5.4, 5.4);
+        var d = "";
+        for (var t = 0; t <= 2*Math.PI + 0.05; t += 0.05)
+          d += (d?" L":"M") + p.X(3*Math.cos(t)) + " " + p.Y(3*Math.sin(t));
+        p.svg.appendChild(el("path",{d:d,fill:"none",stroke:"#1E3A9F","stroke-width":3}));
+        curve(p, function(x){ return x + a; }, -5.2, 5.2, "#C22F2A", 2.5, "7 5");
+        var dist = Math.abs(a)/Math.SQRT2;
+        var n = Math.abs(dist-3) < 0.035 ? 1 : dist < 3 ? 2 : 0;
+        return { svg:p.svg, info: "расстояние от центра до прямой: |a|/√2 ≈ " + P18.fmt(dist) + " → " + (n===1?"касание, 1 решение":n+" решений") };
+      },
+      steps:[
+        "Первое уравнение — окружность радиуса 3 с центром в начале координат. Второе — семейство параллельных прямых с наклоном 1: параметр a двигает прямую.",
+        "Ровно одно общее решение ⇔ прямая касается окружности ⇔ расстояние от центра O(0; 0) до прямой равно радиусу 3.",
+        "Записываем прямую как x − y + a = 0. Расстояние от O: d = |a| / √2.",
+        "|a| / √2 = 3 ⇒ |a| = 3√2 ⇒ a = ±3√2. При меньших |a| — две точки пересечения, при больших — ни одной."
+      ],
+      answer:"Ответ: a = −3√2 или a = 3√2.",
+      key:{ q:"Чему равно a², если решение единственно?", a:18 } },
+
+    { id:"z3", method:"аналитический", title:"Корни, которые видно без дискриминанта",
+      cond:"Найдите все значения a, при каждом из которых оба корня уравнения x² − (2a + 1)x + a² + a = 0 принадлежат интервалу (−2; 4).",
+      slider:{min:-4,max:5,step:0.5,val:0},
+      draw:function(a){
+        var p = makePlot(-5.4, 6.4, -1.2, 1.2);
+        p.svg.appendChild(el("rect",{x:p.X(-2),y:p.Y(0.6),width:6*CELL,height:1.2*CELL,fill:"rgba(194,47,42,.10)"}));
+        [[-2],[4]].forEach(function(v){
+          var t = el("text",{x:p.X(v[0])-6,y:p.Y(0)+22,"font-size":12,fill:"#C22F2A","font-weight":"700"});
+          t.textContent = String(v[0]).replace("-","−"); p.svg.appendChild(t);
+          p.svg.appendChild(el("circle",{cx:p.X(v[0]),cy:p.Y(0),r:4,fill:"none",stroke:"#C22F2A","stroke-width":2}));
+        });
+        [a, a+1].forEach(function(r,i){
+          p.svg.appendChild(el("circle",{cx:p.X(r),cy:p.Y(0),r:5,fill:"#1E3A9F"}));
+          var t = el("text",{x:p.X(r)-14,y:p.Y(0)-12,"font-size":12,fill:"#16307F","font-weight":"700"});
+          t.textContent = i ? "a+1" : "a"; p.svg.appendChild(t);
+        });
+        var ok = a > -2 && a + 1 < 4;
+        return { svg:p.svg, info: "корни: " + P18.fmt(a) + " и " + P18.fmt(a+1) + " → " + (ok ? "оба внутри (−2; 4) ✓" : "не помещаются") };
+      },
+      steps:[
+        "Прежде чем считать дискриминант, пробуем разложить: свободный член a² + a = a(a + 1), а сумма корней 2a + 1 = a + (a + 1).",
+        "Значит уравнение равносильно (x − a)(x − (a + 1)) = 0: корни x₁ = a и x₂ = a + 1 при любом a, и они всегда различны.",
+        "Оба корня в интервале (−2; 4) ⇔ меньший корень a > −2 и больший корень a + 1 < 4.",
+        "Пересечение условий: −2 < a < 3."
+      ],
+      answer:"Ответ: a ∈ (−2; 3).",
+      key:{ q:"Сколько целых значений a входит в ответ?", a:4 } },
+
+    { id:"z4", method:"замена и отбор", title:"Ровно три корня",
+      cond:"Найдите все значения a, при каждом из которых уравнение x² − 2a|x| + a² − 1 = 0 имеет ровно три различных корня.",
+      slider:{min:-3,max:3,step:0.5,val:0},
+      draw:function(a){
+        var p = makePlot(-4.4, 4.4, -1.2, 1.2);
+        p.svg.appendChild(el("rect",{x:p.X(0),y:p.Y(0.6),width:4.4*CELL,height:1.2*CELL,fill:"rgba(30,58,159,.08)"}));
+        var lbl = el("text",{x:p.X(1.4),y:p.Y(0.8),"font-size":12,fill:"#16307F"}); lbl.textContent="t ≥ 0"; p.svg.appendChild(lbl);
+        var roots = [a-1, a+1], total = 0, parts = [];
+        roots.forEach(function(t,i){
+          var col = t > 0 ? "#1E3A9F" : t === 0 ? "#C22F2A" : "#67707E";
+          p.svg.appendChild(el("circle",{cx:p.X(t),cy:p.Y(0),r:5,fill:col}));
+          var tt = el("text",{x:p.X(t)-14,y:p.Y(0)-12,"font-size":12,fill:col,"font-weight":"700"});
+          tt.textContent = i ? "a+1" : "a−1"; p.svg.appendChild(tt);
+          var add = t > 0 ? 2 : t === 0 ? 1 : 0;
+          total += add; parts.push("t = " + P18.fmt(t) + " → " + add + " x");
+        });
+        return { svg:p.svg, info: parts.join(" · ") + " · всего корней: " + total };
+      },
+      steps:[
+        "Замена t = |x|, t ≥ 0: уравнение превращается в t² − 2at + (a² − 1) = 0.",
+        "Дискриминант: D = 4a² − 4(a² − 1) = 4, поэтому t = a ± 1 — два значения, всегда различающиеся на 2.",
+        "Обратная замена: каждое t > 0 даёт два корня x = ±t, значение t = 0 даёт один корень x = 0, а t < 0 не даёт ничего.",
+        "Три корня получаются, только если один из t равен нулю, а второй положителен. t = 0 при a = 1 (тогда второе t = 2 > 0 — подходит) или при a = −1 (второе t = −2 < 0 — не подходит)."
+      ],
+      answer:"Ответ: a = 1.",
+      key:{ q:"Введите это единственное значение a.", a:1 } },
+
+    { id:"z5", method:"графический", title:"Кубическая парабола и уровень",
+      cond:"Найдите все значения a, при каждом из которых уравнение x³ − 3x = a имеет ровно одно решение.",
+      slider:{min:-4,max:4,step:0.1,val:0},
+      draw:function(a){
+        var p = makePlot(-3.4, 3.4, -4.4, 4.4);
+        curve(p, function(x){ return x*x*x - 3*x; }, -2.05, 2.05);
+        level(p, a);
+        var n = Math.abs(Math.abs(a)-2) < 0.05 ? 2 : Math.abs(a) > 2 ? 1 : 3;
+        return { svg:p.svg, info: "решений: " + n };
+      },
+      steps:[
+        "Исследуем g(x) = x³ − 3x: производная g′(x) = 3x² − 3 обращается в ноль при x = ±1.",
+        "Локальный максимум g(−1) = 2, локальный минимум g(1) = −2 — две ключевые высоты картинки.",
+        "Горизонталь y = a: три решения при −2 < a < 2, два решения при a = ±2 (касание в вершине плюс пересечение), одно — когда горизонталь выше максимума или ниже минимума.",
+        "Ровно одно решение ⇔ a < −2 или a > 2."
+      ],
+      answer:"Ответ: a ∈ (−∞; −2) ∪ (2; +∞).",
+      key:{ q:"Наименьшее целое a, при котором решение единственно?", a:3 } },
+
+    { id:"z6", method:"замена и график", title:"Корень против прямой",
+      cond:"Найдите все значения a, при каждом из которых уравнение √(x + 3) = x + a имеет ровно два решения.",
+      slider:{min:0,max:4,step:0.05,val:2},
+      draw:function(a){
+        var p = makePlot(-0.9, 3.4, -0.9, 4.4);
+        curve(p, function(t){ return -t*t + t + 3; }, 0, 2.55);
+        p.svg.appendChild(el("circle",{cx:p.X(0),cy:p.Y(3),r:4.5,fill:"#1E3A9F"}));
+        var cap = el("text",{x:p.X(0.15),y:p.Y(4.15),"font-size":12,fill:"#16307F","font-weight":"700"});
+        cap.textContent = "a = g(t) = −t² + t + 3, t ≥ 0"; p.svg.appendChild(cap);
+        var tx = el("text",{x:p.X(3.05),y:p.Y(0)-8,"font-size":12,fill:"#2A2F38","font-style":"italic"});
+        tx.textContent = "t"; p.svg.appendChild(tx);
+        level(p, a);
+        var n;
+        if (Math.abs(a - 3.25) < 0.026) n = "1 (касание в вершине)";
+        else if (a > 3.25) n = "0";
+        else if (a >= 3 - 1e-9) n = "2";
+        else n = "1";
+        return { svg:p.svg, info: "решений по t (и по x): " + n };
+      },
+      steps:[
+        "Замена t = √(x + 3), t ≥ 0. Тогда x = t² − 3, и соответствие между допустимыми x и t взаимно однозначно.",
+        "Уравнение принимает вид t = t² − 3 + a, то есть a = −t² + t + 3 = g(t) при t ≥ 0.",
+        "Число решений исходного уравнения равно числу пересечений горизонтали y = a с графиком g на луче t ≥ 0: g(0) = 3, вершина в t = 1/2 на высоте 13/4, дальше график убывает.",
+        "Два пересечения — когда горизонталь проходит между уровнем g(0) = 3 (включительно: при a = 3 решениями будут t = 0 и t = 1) и вершиной 13/4 (не включая: там касание, одно решение). Итог: 3 ≤ a < 13/4."
+      ],
+      answer:"Ответ: a ∈ [3; 13/4).",
+      key:{ q:"Левая граница промежутка значений a?", a:3 } }
+  ];
+
+  var listHost = document.getElementById("taskList");
+  function renderList(){
+    listHost.innerHTML = "";
+    var s = st();
+    TASKS.forEach(function(t){
+      var b = document.createElement("button");
+      b.className = "pcard";
+      var done = s.keys && s.keys[t.id];
+      var self = s.self && s.self[t.id];
+      b.innerHTML = '<span class="tag">' + t.method + '</span><h3 style="margin:6px 0 4px">' + t.title + '</h3>' +
+        '<span class="small muted">' + t.cond.slice(0, 74) + '…</span>' +
+        (done || self != null ? '<div class="done">' + (done ? "ключ ✓" : "") + (self != null ? " · самооценка: " + self : "") + '</div>' : "");
+      b.addEventListener("click", function(){ openTask(t); });
+      listHost.appendChild(b);
+    });
+  }
+  var cur = null, stepIx = 0;
+  function openTask(t){
+    cur = t; stepIx = 0;
+    document.getElementById("taskList").style.display = "none";
+    document.getElementById("taskView").style.display = "block";
+    document.getElementById("tMethod").textContent = "метод: " + t.method;
+    document.getElementById("tTitle").textContent = t.title;
+    document.getElementById("tCond").textContent = t.cond;
+    var stepsHost = document.getElementById("tSteps");
+    stepsHost.innerHTML = "";
+    t.steps.forEach(function(s){
+      var d = document.createElement("div"); d.className = "step"; d.textContent = s;
+      stepsHost.appendChild(d);
+    });
+    var ans = document.getElementById("tAnswer");
+    ans.className = "answerline"; ans.textContent = t.answer;
+    document.getElementById("tKeyQ").textContent = t.key.q;
+    document.getElementById("tKeyInput").value = "";
+    document.getElementById("tKeyFb").className = "feedback";
+    var slider = document.getElementById("tSlider");
+    slider.min = t.slider.min; slider.max = t.slider.max; slider.step = t.slider.step; slider.value = t.slider.val;
+    redraw();
+    renderSelf();
+  }
+  function redraw(){
+    var a = parseFloat(document.getElementById("tSlider").value);
+    document.getElementById("tSliderVal").textContent = "a = " + P18.fmt(a);
+    var r = cur.draw(a);
+    var fig = document.getElementById("tFig");
+    fig.innerHTML = ""; fig.appendChild(r.svg);
+    document.getElementById("tLive").textContent = r.info;
+  }
+  document.getElementById("tSlider").addEventListener("input", redraw);
+  document.getElementById("tStepBtn").addEventListener("click", function(){
+    var steps = document.querySelectorAll("#tSteps .step");
+    if (stepIx < steps.length){ steps[stepIx].classList.add("on"); stepIx++; }
+    if (stepIx >= steps.length) this.disabled = true;
+  });
+  document.getElementById("tAnsBtn").addEventListener("click", function(){
+    document.querySelectorAll("#tSteps .step").forEach(function(s){ s.classList.add("on"); });
+    document.getElementById("tStepBtn").disabled = true;
+    document.getElementById("tAnswer").classList.add("on");
+  });
+  document.getElementById("backToList").addEventListener("click", function(){
+    document.getElementById("taskView").style.display = "none";
+    document.getElementById("taskList").style.display = "grid";
+    document.getElementById("tStepBtn").disabled = false;
+    renderList();
+  });
+  document.getElementById("tKeyCheck").addEventListener("click", function(){
+    var fb = document.getElementById("tKeyFb");
+    if (P18.eq(document.getElementById("tKeyInput").value, cur.key.a)){
+      fb.className = "feedback on ok"; fb.textContent = "Верно.";
+      save({ key: cur.id });
+    } else {
+      fb.className = "feedback on bad"; fb.textContent = "Пока нет — сверьтесь с разбором.";
+    }
+  });
+  document.getElementById("tKeyInput").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("tKeyCheck").click(); });
+  function renderSelf(){
+    var host = document.getElementById("tSelf");
+    host.innerHTML = "";
+    var chosen = (st().self || {})[cur.id];
+    for (var i = 0; i <= 4; i++)(function(i){
+      var b = document.createElement("button");
+      b.textContent = i;
+      b.setAttribute("aria-pressed", chosen === i ? "true" : "false");
+      b.addEventListener("click", function(){
+        save({ self: [cur.id, i] });
+        renderSelf();
+      });
+      host.appendChild(b);
+    })(i);
+  }
+  renderList();
+
+  /* ---------- дриллы ---------- */
+  var D = null, streak = 0;
+  var Z = { active:false, i:0, score:0, marks:[] };
+  function drawDrill(){
+    D = P18.drill();
+    document.getElementById("dText").textContent = (Z.active ? (Z.i+1) + " из 8. " : "") + "Сколько решений имеет уравнение f(x) = " + P18.fmt(D.a) + "?";
+    var p = makePlot(-6.6, 6.6, -3.6, 3.6);
+    var d = "";
+    for (var i = 0; i < D.vals.length; i++) d += (i?" L":"M") + p.X(i-6) + " " + p.Y(D.vals[i]);
+    p.svg.appendChild(el("path",{d:d,fill:"none",stroke:"#1E3A9F","stroke-width":3,"stroke-linejoin":"round"}));
+    level(p, D.a, "y = " + P18.fmt(D.a));
+    var cap = el("text",{x:p.X(-6.3),y:p.Y(3.6)+14,"font-size":13,fill:"#16307F","font-weight":"700"});
+    cap.textContent = "y = f(x)"; p.svg.appendChild(cap);
+    var fig = document.getElementById("dFig");
+    fig.innerHTML = ""; fig.appendChild(p.svg);
+    document.getElementById("dAnswer").value = "";
+    document.getElementById("dFb").className = "feedback";
+  }
+  function zDots(){
+    var host = document.getElementById("zDots"); host.innerHTML = "";
+    for (var i = 0; i < 8; i++){
+      var s = document.createElement("span");
+      if (i < Z.i) s.className = Z.marks[i] ? "ok" : "bad";
+      host.appendChild(s);
+    }
+  }
+  function mlog(type, ok){
+    try{
+      var all = JSON.parse(localStorage.getItem("mathExamCourseProgress.v1") || "{}");
+      var mk = all.mistakes = all.mistakes || {};
+      var e = mk["parameters-t18|" + type] = mk["parameters-t18|" + type] || { w:0, r:0 };
+      if (ok){ if (e.w) e.r = (e.r || 0) + 1; }
+      else { e.w = (e.w || 0) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem("mathExamCourseProgress.v1", JSON.stringify(all));
+    }catch(err){}
+  }
+  document.getElementById("dCheck").addEventListener("click", function(){
+    var ok = P18.eq(document.getElementById("dAnswer").value, D.n);
+    mlog("drill", ok);
+    var fb = document.getElementById("dFb");
+    fb.className = "feedback on " + (ok ? "ok" : "bad");
+    var diagP = ok ? null : P18.diagnose(document.getElementById("dAnswer").value, D.n);
+    fb.textContent = ok ? "Верно: " + D.n : "Неверно. Правильный ответ: " + D.n + ". " + (diagP || "Пересчитайте пересечения с пунктиром.");
+    if (Z.active){
+      Z.marks.push(ok); if (ok) Z.score++;
+      Z.i++; zDots();
+      if (Z.i >= 8){
+        Z.active = false;
+        var passed = Z.score >= 7;
+        document.getElementById("zDone").style.display = "block";
+        document.getElementById("zScore").textContent = Z.score + " / 8";
+        document.getElementById("zVerdict").textContent = passed
+          ? "Зачёт сдан: пересечения считаются на автомате."
+          : "Зачёт не сдан: нужно 7 из 8. Потренируйтесь в свободном режиме и вернитесь.";
+        save({ drillBest: Z.score, passed: passed });
+      } else {
+        setTimeout(drawDrill, 700);
+      }
+    } else {
+      streak = ok ? streak + 1 : 0;
+      document.getElementById("dStreak").textContent = streak;
+      if (ok) setTimeout(drawDrill, 650);
+    }
+  });
+  document.getElementById("dAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("dCheck").click(); });
+  document.getElementById("dNext").addEventListener("click", function(){ if (!Z.active) drawDrill(); });
+  document.getElementById("zStart").addEventListener("click", function(){
+    Z = { active:true, i:0, score:0, marks:[] };
+    save({ runs: 1 });
+    document.getElementById("zDone").style.display = "none";
+    zDots(); drawDrill();
+    document.getElementById("dFig").scrollIntoView({ behavior:"smooth", block:"center" });
+  });
+  drawDrill();
+})();
+</script>
+</body>
+</html>

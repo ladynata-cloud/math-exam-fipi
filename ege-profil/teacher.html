@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кабинет учителя · профиль ЕГЭ</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA;
+  }
+  *{box-sizing:border-box}
+  /* .btn задаёт display, поэтому штатный hidden без этого правила не работает */
+  [hidden]{display:none !important}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible,textarea:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-9999px}
+  .skip:focus{position:static;display:inline-block;margin-bottom:8px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:700px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0;font-size:17px;font-weight:800;color:var(--ink-strong)}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.94);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .bad{color:var(--red);font-weight:700}
+  .okline{color:var(--ok);font-weight:700}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    padding:10px 14px;min-height:44px;font:700 14px/1.4 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn[disabled]{opacity:.55;cursor:default}
+  .tools{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+  .pillline{display:inline-block;border:1.5px solid var(--red);color:var(--red);border-radius:999px;
+    font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:4px 9px;margin-right:8px;letter-spacing:.06em}
+  .tid{font:600 12px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .trow{border-bottom:1px dashed var(--line);padding:14px 0}
+  .trow:last-child{border-bottom:none}
+  .thead{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;justify-content:space-between}
+  .progress{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 4px;
+    font:600 13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .cellsbar{display:inline-flex;gap:3px}
+  .cellsbar span{width:10px;height:10px;border:1.5px solid var(--ink);border-radius:2px}
+  .cellsbar span.filled{background:var(--ink)}
+  .progress .txt.done{color:var(--ok)}
+  .types{margin:6px 0 0;padding:0;list-style:none;font-size:13.5px}
+  .types li{padding:2px 0}
+  .types .mark{display:inline-block;width:1.4em;font-weight:800}
+  .types .open .mark{color:var(--red)}
+  .types .shut .mark{color:var(--ok)}
+  .codebox{width:100%;font:600 12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    border:1.5px solid var(--line);border-radius:8px;padding:10px;background:#fff;color:var(--graphite);resize:vertical}
+  .codeactions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:10px 0 0}
+  .qrframe{max-width:240px;margin:12px 0 0;border:1.5px solid var(--line);border-radius:8px;padding:8px;background:#fff}
+  .linkbtn{border:0;background:none;padding:0;color:var(--ink);font:inherit;text-decoration:underline;cursor:pointer}
+  .empty{color:var(--muted)}
+
+  html.board body{font-size:19px}
+  html.board h1{font-size:34px}
+  html.board h2{font-size:25px}
+  html.board h3{font-size:20px}
+  html.board .small,html.board .types{font-size:16px}
+  html.board .progress{font-size:15px}
+  html.mirror body{transform:scaleX(-1)}
+  #fsBtn{display:none}
+  html.board #fsBtn{display:inline-block}
+
+  @media (prefers-reduced-motion:reduce){ *{transition:none !important;animation:none !important} }
+  @media print{
+    .tools,.nocode,.back,.skip{display:none !important}
+    body{background:none}
+    .card{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="skip" href="#summary">Перейти к сводке</a>
+  <a class="back" href="index.html">← Курс</a>
+  <p class="eyebrow">кабинет учителя · всё считается в браузере</p>
+  <h1>Проверка прогресса</h1>
+  <p class="lede">Сайт работает без сервера и без учётных записей, поэтому прогресс не «приходит» сам — его приносит ученик кодом. Ниже сводка по этому браузеру; вставьте код ученика, чтобы посмотреть его прогресс, ничего здесь не меняя.</p>
+
+  <div class="tools">
+    <button class="btn ghost" id="boardBtn" type="button" aria-pressed="false" title="Крупный шрифт для показа на доске">Режим доски</button>
+    <button class="btn ghost" id="mirrorBtn" type="button" aria-pressed="false" title="Для проекторов, дающих зеркальное изображение">Зеркало</button>
+    <button class="btn ghost" id="fsBtn" type="button" title="Развернуть страницу на весь экран">Во весь экран</button>
+  </div>
+
+  <div class="card nocode">
+    <h2>Код прогресса этого браузера</h2>
+    <div id="myCode"></div>
+  </div>
+
+  <div class="card nocode">
+    <h2>Код ученика</h2>
+    <p class="small muted">Вставьте строку, которая начинается с <span class="tid">MEP1.</span> — сводка ниже переключится на просмотр. Пока вы только смотрите, в этом браузере ничего не меняется.</p>
+    <textarea class="codebox" id="inBox" rows="4" placeholder="MEP1.…" aria-label="Код прогресса ученика"></textarea>
+    <p class="codeactions">
+      <button class="btn" id="showBtn" type="button">Показать прогресс</button>
+      <button class="btn ghost" id="loadBtn" type="button">Загрузить в этот браузер</button>
+      <button class="btn ghost" id="restoreBtn" type="button" hidden>Вернуть прежний прогресс</button>
+      <button class="btn ghost" id="mineBtn" type="button" hidden>Вернуться к своему браузеру</button>
+    </p>
+    <p class="small" id="inStatus" role="status" aria-live="polite"></p>
+  </div>
+
+  <div class="card" id="summary">
+    <h2>Сводка</h2>
+    <p class="small muted" id="sourceLine"></p>
+    <div id="cards"></div>
+    <p class="small muted" id="foot">Тренажёры со своим ключом хранения (стереометрия в 3D, тригонометрия, «сумма и разность синусов», тренажёр варианта) в код прогресса не входят и здесь не показаны — их прогресс виден только внутри самих тренажёров.</p>
+  </div>
+</div>
+
+<script src="registry.js"></script>
+<script src="progress-adapters.js"></script>
+<script src="qr.js"></script>
+<script src="progress-code.js"></script>
+<script src="board-mirror.js"></script>
+
+<script>
+(function(){
+  "use strict";
+
+  var doc = document;
+  function $(sel){ return doc.querySelector(sel); }
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, function(c){
+      return c === "&" ? "&amp;" : c === "<" ? "&lt;" : c === ">" ? "&gt;" : "&quot;";
+    });
+  }
+  function dateOf(ts){ return ts ? new Date(ts).toLocaleDateString("ru-RU") : ""; }
+
+  /* ---------- сводка ---------- */
+  /* view === null — этот браузер; иначе объект прогресса ученика. */
+  var view = null;
+
+  function typesHtml(journal){
+    var rows = [], i, it, meta;
+    function line(it, shut){
+      meta = RV.nameOf(it.key);
+      return '<li class="' + (shut ? "shut" : "open") + '">' +
+        '<span class="mark">' + (shut ? "✓" : "•") + '</span>' +
+        esc(meta ? meta.n : it.type) +
+        ' <span class="muted">· промахов: ' + it.w + ' · подряд верных: ' + it.r + ' из 3' +
+        (it.last ? " · " + dateOf(it.last) : "") + '</span></li>';
+    }
+    for (i = 0; i < journal.open.length; i++) rows.push(line(journal.open[i], false));
+    for (i = 0; i < journal.closed.length; i++) rows.push(line(journal.closed[i], true));
+    if (!rows.length) return '<p class="small empty">В журнале ошибок по этому тренажёру пусто.</p>';
+    return '<ul class="types">' + rows.join("") + '</ul>';
+  }
+
+  function renderCards(){
+    var all = view || PROGRESS_CODE.readLive();
+    var mk = all.mistakes || {};
+    var host = $("#cards");
+    var html = [], i, t, last;
+
+    for (i = 0; i < RV.CABINET.length; i++){
+      t = RV.CABINET[i];
+      last = RV.lastActivity(mk, t.tid);
+      html.push(
+        '<div class="trow">' +
+          '<div class="thead">' +
+            '<h3>' + (t.line ? '<span class="pillline">задание ' + t.line + '</span>' : "") + esc(t.title) + '</h3>' +
+            '<span class="tid">' + esc(t.tid) + '</span>' +
+          '</div>' +
+          '<div class="progress" data-progress="' + esc(t.adapter) + '"></div>' +
+          '<p class="small muted">последняя ошибка в журнале: ' + (last ? dateOf(last) : "записей нет") + '</p>' +
+          typesHtml(RV.journalOf(mk, t.tid)) +
+        '</div>'
+      );
+    }
+    host.innerHTML = html.join("");
+    PROGRESS.apply(host, view ? PROGRESS.snapshotStore(view) : PROGRESS.liveStore());
+
+    $("#sourceLine").textContent = view
+      ? "Показан прогресс из вставленного кода. В этом браузере ничего не изменено."
+      : "Показан прогресс этого браузера.";
+    $("#mineBtn").hidden = !view;
+  }
+
+  /* ---------- код прогресса этого браузера ---------- */
+  PROGRESS_CODE.mount($("#myCode"), { id:"codeBtn" });
+
+  /* ---------- код ученика ---------- */
+  var inBox = $("#inBox"), inStatus = $("#inStatus");
+  function say(text, bad){
+    inStatus.textContent = text || "";
+    inStatus.className = "small" + (bad ? " bad" : "");
+  }
+  function withCode(next){
+    PROGRESS_CODE.decode(inBox.value).then(next).catch(function(err){
+      say((err && err.message) || "Код не прочитан.", true);
+    });
+  }
+
+  $("#showBtn").addEventListener("click", function(){
+    withCode(function(obj){
+      view = obj;
+      renderCards();
+      say("Код прочитан. Это просмотр: прогресс в этом браузере не тронут.");
+    });
+  });
+
+  $("#loadBtn").addEventListener("click", function(){
+    withCode(function(obj){
+      if (!confirm("Заменить прогресс в этом браузере прогрессом из кода?\n\nПрежний прогресс будет сохранён в резервной копии, вернуть его можно кнопкой «Вернуть прежний прогресс».")) return;
+      try{
+        PROGRESS_CODE.loadInto(obj);
+        view = null;
+        renderCards();
+        $("#restoreBtn").hidden = false;
+        say("Прогресс загружен. Прежний сохранён в резервной копии.");
+      }catch(err){
+        say((err && err.message) || "Не получилось записать прогресс.", true);
+      }
+    });
+  });
+
+  $("#restoreBtn").addEventListener("click", function(){
+    if (!confirm("Вернуть прогресс из резервной копии? Загруженный сейчас прогресс будет заменён.")) return;
+    try{
+      PROGRESS_CODE.restoreBackup();
+      view = null;
+      renderCards();
+      say("Прежний прогресс возвращён.");
+    }catch(err){
+      say((err && err.message) || "Резервной копии нет.", true);
+    }
+  });
+
+  $("#mineBtn").addEventListener("click", function(){
+    view = null;
+    renderCards();
+    say("");
+  });
+
+  /* ---------- доска, зеркало, полный экран ---------- */
+  BOARD.init(doc);
+
+  $("#restoreBtn").hidden = !PROGRESS_CODE.hasBackup();
+  renderCards();
+})();
+</script>
+</body>
+</html>

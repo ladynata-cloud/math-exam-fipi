@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Проверь как эксперт · вторая часть</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA; --badbg:#FBEAE9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:900px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:700px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:20px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0 0 6px;font-size:16.5px;color:var(--ink-strong)}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.94);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    padding:9px 16px;font:700 14.5px/1 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:disabled{opacity:.45;cursor:default}
+  .plist{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+  .pcard{border:1.5px solid var(--ink);border-radius:10px;background:#fff;padding:14px;cursor:pointer;text-align:left;font:inherit}
+  .pcard:hover{background:rgba(30,58,159,.06)}
+  .pcard .tag{font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--red)}
+  .pcard .done{color:var(--ok);font-weight:700;font-size:13px;margin-top:6px}
+  ol.work{margin:12px 0 0;padding-left:24px;counter-reset:none}
+  ol.work li{margin-bottom:7px;border-left:3px solid var(--ink);padding:8px 11px;background:rgba(255,255,255,.72);cursor:pointer}
+  ol.work li:hover{background:rgba(30,58,159,.08)}
+  ol.work li.pick{outline:2.5px solid var(--red);background:var(--badbg)}
+  ol.work li.iserr{border-left-color:var(--red);background:var(--badbg)}
+  ol.work li.clean{border-left-color:var(--ok)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .chips button{border:1.5px solid var(--ink);background:#fff;color:var(--ink-strong);border-radius:8px;
+    min-width:44px;padding:8px 12px;font:700 15px/1 inherit;cursor:pointer}
+  .chips button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .feedback{margin-top:12px;border-radius:8px;padding:11px 13px;font-weight:600;display:none}
+  .feedback.on{display:block}
+  .feedback.ok{background:var(--okbg);color:var(--ok)}
+  .feedback.bad{background:var(--badbg);color:var(--red)}
+  .crit{font-size:13px;color:var(--muted);border-left:3px solid var(--red);padding:6px 10px;background:rgba(255,255,255,.6);margin-top:10px}
+  .scoreline{font:700 14px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Курс</a>
+  <p class="eyebrow">вторая часть · критерии оценивания</p>
+  <h1>Проверь как эксперт</h1>
+  <p class="lede">Перед вами двенадцать чужих работ по заданиям 13, 14, 15 и 17. В части из них спрятана ошибка — вычислительная, логическая или пробел в обосновании. Найдите её (или убедитесь, что работа чистая), поставьте балл и сверьтесь с настоящим экспертом. Кто проверял чужое — свою работу пишет иначе.</p>
+  <p class="scoreline" id="totalLine"></p>
+
+  <div id="list" class="plist"></div>
+
+  <div id="workView" style="display:none">
+    <p><button class="btn ghost" id="backBtn">← Ко всем работам</button></p>
+    <div class="card">
+      <p class="mono small" id="wTag" style="color:var(--red);font-weight:700"></p>
+      <h2 id="wTitle"></h2>
+      <p id="wCond" style="font-size:16.5px"></p>
+    </div>
+    <div class="card">
+      <h3>Работа ученика</h3>
+      <p class="small muted">Шаг 1. Нажмите на строку, где, по-вашему, ошибка или пробел, — либо кнопку «работа чистая».</p>
+      <ol class="work" id="wSteps"></ol>
+      <p style="margin-top:10px"><button class="btn ghost" id="cleanBtn">Работа чистая, ошибок нет</button></p>
+      <p class="small muted" style="margin-top:14px">Шаг 2. Поставьте балл, как поставил бы эксперт:</p>
+      <div class="chips" id="wChips"></div>
+      <p><button class="btn" id="wCheck" disabled>Свериться с экспертом</button></p>
+      <div class="feedback" id="wFb"></div>
+      <div class="crit" id="wCrit" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= РАБОТЫ (без DOM) ================= */
+var EXW = (function(){
+  "use strict";
+  /* err — индекс дефектной строки (с нуля) или -1, expert — балл эксперта */
+  var WORKS = [
+    /* ─────────── задание 13 ─────────── */
+    { id:"w13a", line:13, max:2, title:"Уравнение: работа Алисы",
+      cond:"а) Решите уравнение 2cos²x + 3sin x − 3 = 0. б) Укажите корни, принадлежащие отрезку [−5π/2; −π].",
+      steps:[
+        "2(1 − sin²x) + 3sin x − 3 = 0, раскрываем: −2sin²x + 3sin x − 1 = 0, умножаем на −1: 2sin²x − 3sin x + 1 = 0.",
+        "Замена t = sin x, |t| ≤ 1: 2t² − 3t + 1 = 0, корни t = 1 и t = 1/2 — оба допустимы.",
+        "sin x = 1 ⇒ x = π/2 + 2πn; sin x = 1/2 ⇒ x = π/6 + 2πn или x = 5π/6 + 2πn, n ∈ ℤ.",
+        "б) Перебор n = −1: π/2 − 2π = −3π/2 ∈ отрезку; π/6 − 2π = −11π/6 ∈; 5π/6 − 2π = −7π/6 ∈. Другие n не дают попаданий. Ответ б): −3π/2; −11π/6; −7π/6."
+      ],
+      err:-1, expert:2,
+      why:"Работа чистая: замена с ограничением, обе серии для sin x = 1/2, отбор с перебором и проверкой каждого кандидата. Эксперт ставит максимум.",
+      crit:"2 балла — обоснованно получены верные ответы в обоих пунктах." },
+
+    { id:"w13b", line:13, max:2, title:"Уравнение: работа Бориса",
+      cond:"а) Решите уравнение 2cos²x + 3sin x − 3 = 0. б) Укажите корни, принадлежащие отрезку [−5π/2; −π].",
+      steps:[
+        "2(1 − sin²x) + 3sin x − 3 = 0 ⇒ 2sin²x − 3sin x + 1 = 0.",
+        "t = sin x: 2t² − 3t + 1 = 0, t = 1 или t = 1/2.",
+        "sin x = 1 ⇒ x = π/2 + 2πn; sin x = 1/2 ⇒ x = π/6 + 2πn или x = 5π/6 + 2πn.",
+        "б) При n = −1: π/2 − 2π = −3π/2 ∈ отрезку; 5π/6 − 2π = −7π/6 ∈. Ответ б): −3π/2; −7π/6."
+      ],
+      err:3, expert:1,
+      why:"Пункт а) безупречен, но в отборе проверены не все серии: из x = π/6 + 2πn при n = −1 получается −11π/6, и он лежит в отрезке. Потерян корень — б) не зачтён.",
+      crit:"1 балл — обоснованно получен верный ответ только в пункте а)." },
+
+    { id:"w13c", line:13, max:2, title:"Уравнение: работа Веры",
+      cond:"а) Решите уравнение 2cos²x + 3sin x − 3 = 0. б) Укажите корни, принадлежащие отрезку [−5π/2; −π].",
+      steps:[
+        "2(1 − sin²x) + 3sin x − 3 = 0 ⇒ 2sin²x − 3sin x + 1 = 0.",
+        "t = sin x: 2t² − 3t + 1 = 0, t = 1 или t = 1/2.",
+        "sin x = 1 ⇒ x = π/2 + 2πn; sin x = 1/2 ⇒ x = π/6 + 2πn.",
+        "б) При n = −1: −3π/2 и −11π/6 лежат в отрезке. Ответ б): −3π/2; −11π/6."
+      ],
+      err:2, expert:0,
+      why:"У уравнения sin x = 1/2 две серии решений, а записана одна: потеряна серия x = 5π/6 + 2πn. Значит уже пункт а) неверен, и отбор в б) сделан по неполному набору — корень −7π/6 пропал. Оба пункта не зачтены.",
+      crit:"0 баллов — решение не соответствует ни одному критерию: в а) потеряна серия корней." },
+
+    /* ─────────── задание 14 ─────────── */
+    { id:"w14a", line:14, max:3, title:"Стереометрия: работа Глеба",
+      cond:"В правильной четырёхугольной пирамиде SABCD сторона основания равна 6, высота равна 4, K — середина BC. а) Докажите, что BD ⊥ SC. б) Найдите расстояние от точки A до плоскости SBC.",
+      steps:[
+        "BD ⊥ AC как диагонали квадрата ABCD.",
+        "SO — высота пирамиды, поэтому SO ⊥ плоскости ABCD, а значит SO ⊥ BD.",
+        "Прямые AC и SO пересекаются в точке O и лежат в плоскости SAC; BD перпендикулярна обеим, поэтому по признаку BD ⊥ плоскости SAC.",
+        "SC лежит в плоскости SAC, значит BD ⊥ SC. Пункт а) доказан.",
+        "б) OK = 3, апофема SK = √(SO² + OK²) = √(16 + 9) = 5; площадь S(SBC) = ½ · 6 · 5 = 15.",
+        "Объём пирамиды ASBC: V = ⅓ · S(ABC) · SO = ⅓ · 18 · 4 = 24. Тогда 24 = ⅓ · 15 · d, откуда d = 72/15 = 4,8. Ответ: 4,8."
+      ],
+      err:-1, expert:3,
+      why:"Образцовая работа: в признаке названы обе прямые, сказано, что они пересекаются и лежат в плоскости; метод объёмов доведён до ответа без арифметических потерь.",
+      crit:"3 балла — доказательство а) полное, б) обоснованно верно." },
+
+    { id:"w14b", line:14, max:3, title:"Стереометрия: работа Даши",
+      cond:"Та же пирамида: сторона 6, высота 4. а) Докажите, что BD ⊥ SC. б) Найдите расстояние от точки A до плоскости SBC.",
+      steps:[
+        "BD ⊥ AC как диагонали квадрата.",
+        "SO ⊥ плоскости основания, значит SO ⊥ BD.",
+        "Раз BD ⊥ AC и BD ⊥ SO, то BD ⊥ плоскости SAC.",
+        "SC лежит в этой плоскости, поэтому BD ⊥ SC.",
+        "б) SK = √(16 + 9) = 5, S(SBC) = 15, V(ASBC) = ⅓ · 18 · 4 = 24.",
+        "24 = ⅓ · 15 · d ⇒ d = 4,8. Ответ: 4,8."
+      ],
+      err:2, expert:2,
+      why:"В третьей строке признак применён с пробелом: не сказано, что AC и SO — ПЕРЕСЕКАЮЩИЕСЯ прямые, лежащие в плоскости SAC. Без этого признак не работает, и а) не засчитывают целиком. Пункт б) безупречен и даёт верный ответ.",
+      crit:"2 балла — верно получен ответ в б); в доказательстве а) есть пробел." },
+
+    { id:"w14c", line:14, max:3, title:"Стереометрия: работа Егора",
+      cond:"Та же пирамида: сторона 6, высота 4. а) Докажите, что BD ⊥ SC. б) Найдите расстояние от точки A до плоскости SBC.",
+      steps:[
+        "BD ⊥ AC как диагонали квадрата.",
+        "SO ⊥ плоскости основания ⇒ SO ⊥ BD.",
+        "AC и SO — пересекающиеся прямые плоскости SAC, обе перпендикулярны BD, значит по признаку BD ⊥ плоскости SAC.",
+        "SC лежит в плоскости SAC, следовательно BD ⊥ SC.",
+        "б) SK = √(16 + 9) = 5, S(SBC) = ½ · 6 · 5 = 15.",
+        "Объём: V = S(ABC) · SO = 18 · 4 = 72. Тогда 72 = ⅓ · 15 · d, откуда d = 216/15 = 14,4. Ответ: 14,4."
+      ],
+      err:5, expert:1,
+      why:"Пункт а) полный. В б) объём пирамиды посчитан по формуле призмы — потерян множитель ⅓. Это не вычислительная описка, а ошибка в формуле, поэтому пункт б) не зачтён вовсе. Остаётся балл за доказательство.",
+      crit:"1 балл — верно доказан только пункт а)." },
+
+    /* ─────────── задание 15 ─────────── */
+    { id:"w15a", line:15, max:2, title:"Неравенство: работа Жени",
+      cond:"Решите неравенство log₂(x − 1) + log₂(x + 1) ≤ 3.",
+      steps:[
+        "ОДЗ: x − 1 > 0 и x + 1 > 0, то есть x > 1.",
+        "На ОДЗ сумма логарифмов равна логарифму произведения: log₂((x − 1)(x + 1)) ≤ 3, значит (x − 1)(x + 1) ≤ 8.",
+        "x² − 1 ≤ 8 ⇒ x² ≤ 9 ⇒ −3 ≤ x ≤ 3.",
+        "Пересекаем с ОДЗ x > 1: получаем 1 < x ≤ 3. Ответ: (1; 3]."
+      ],
+      err:-1, expert:2,
+      why:"Всё на месте: ОДЗ до преобразований, законное сворачивание суммы, честное пересечение в конце. Точка 3 включена, потому что неравенство нестрогое; точка 1 исключена ОДЗ.",
+      crit:"2 балла — обоснованно получен верный ответ." },
+
+    { id:"w15b", line:15, max:2, title:"Неравенство: работа Зои",
+      cond:"Решите неравенство log₂(x − 1) + log₂(x + 1) ≤ 3.",
+      steps:[
+        "ОДЗ: x > 1.",
+        "log₂((x − 1)(x + 1)) ≤ 3 ⇒ x² − 1 ≤ 8.",
+        "x² ≤ 9 ⇒ −3 ≤ x ≤ 3.",
+        "С учётом ОДЗ ответ: [1; 3]."
+      ],
+      err:3, expert:1,
+      why:"Весь ход верен, но в ответ включена точка x = 1, которая не входит в ОДЗ: log₂ 0 не существует. Ответ отличается от верного только граничной точкой — за это по критериям дают один балл, не ноль.",
+      crit:"1 балл — ответ отличается от верного исключением/включением граничных точек." },
+
+    { id:"w15c", line:15, max:2, title:"Неравенство: работа Ильи",
+      cond:"Решите неравенство log₂(x − 1) + log₂(x + 1) ≤ 3.",
+      steps:[
+        "ОДЗ: x > 1.",
+        "Перенесём: log₂(x − 1) ≤ 3 − log₂(x + 1). Уберём логарифмы из обеих частей: x − 1 ≤ 8 − (x + 1).",
+        "x − 1 ≤ 7 − x ⇒ 2x ≤ 8 ⇒ x ≤ 4.",
+        "С учётом ОДЗ ответ: (1; 4]."
+      ],
+      err:1, expert:0,
+      why:"Логарифмы «сняты» почленно у выражения, где справа стоит разность с логарифмом, — так делать нельзя: 3 − log₂(x + 1) это не log₂ 8 минус что-то удобное. Верный путь — свернуть сумму в логарифм произведения. Грубая ошибка метода обнуляет работу.",
+      crit:"0 баллов — решение не соответствует критериям: неверный переход разрушает равносильность." },
+
+    /* ─────────── задание 17 ─────────── */
+    { id:"w17a", line:17, max:3, title:"Планиметрия: работа Киры",
+      cond:"Из точки M к окружности проведены касательная MA (A — точка касания) и секущая, пересекающая окружность в точках B и C, причём MB < MC. а) Докажите, что MA² = MB · MC. б) Найдите MC, если MA = 6, MB = 4.",
+      steps:[
+        "Рассмотрим треугольники MAB и MCA: угол M у них общий.",
+        "Угол MAB — угол между касательной MA и хордой AB; он равен вписанному углу ACB, опирающемуся на ту же хорду AB.",
+        "Значит △MAB ∼ △MCA по двум углам.",
+        "Из подобия MA/MC = MB/MA, откуда MA² = MB · MC. Пункт а) доказан.",
+        "б) 36 = 4 · MC, поэтому MC = 9. Ответ: 9."
+      ],
+      err:-1, expert:3,
+      why:"Чистое решение: равенство углов обосновано теоремой об угле между касательной и хордой, подобие названо с признаком, пропорция выписана в правильном порядке.",
+      crit:"3 балла — доказательство а) полное и б) обоснованно верно." },
+
+    { id:"w17b", line:17, max:3, title:"Планиметрия: работа Льва",
+      cond:"Та же конфигурация. а) Докажите, что MA² = MB · MC. б) Найдите MC, если MA = 6, MB = 4.",
+      steps:[
+        "Рассмотрим треугольники MAB и MCA: угол M общий.",
+        "∠MAB = ∠MCA — это хорошо видно на аккуратном чертеже.",
+        "Значит △MAB ∼ △MCA по двум углам, и MA/MC = MB/MA, то есть MA² = MB · MC.",
+        "б) 36 = 4 · MC, MC = 9. Ответ: 9."
+      ],
+      err:1, expert:2,
+      why:"Ссылка на чертёж — не обоснование: равенство ∠MAB и ∠MCA держится на теореме об угле между касательной и хордой, и её нужно назвать. В а) пробел, б) верно — типичная работа на два балла.",
+      crit:"2 балла — б) верно, но в доказательстве а) есть пробел." },
+
+    { id:"w17c", line:17, max:3, title:"Планиметрия: работа Майи",
+      cond:"Та же конфигурация. а) Докажите, что MA² = MB · MC. б) Найдите MC, если MA = 6, MB = 4.",
+      steps:[
+        "Угол M общий для треугольников MAB и MCA.",
+        "Угол между касательной MA и хордой AB равен вписанному углу ACB, опирающемуся на AB.",
+        "△MAB ∼ △MCA по двум углам, значит MA/MC = MB/MA и MA² = MB · MC.",
+        "б) По доказанному MC = MB²/MA = 16/6 = 8/3. Ответ: 8/3."
+      ],
+      err:3, expert:1,
+      why:"Доказательство безупречно, но в б) формула применена вывернутой: из MA² = MB · MC следует MC = MA²/MB = 36/4 = 9, а не MB²/MA. Это не описка в арифметике, а неверный ход — пункт б) не зачтён.",
+      crit:"1 балл — верно выполнен только пункт а)." }
+  ];
+  function byLine(){
+    var m = {};
+    WORKS.forEach(function(w){ (m[w.line] = m[w.line] || []).push(w); });
+    return m;
+  }
+  function verdict(w, pickedLine, pickedMark){
+    var lineOk = (w.err === -1) ? (pickedLine === -1) : (pickedLine === w.err);
+    var markOk = pickedMark === w.expert;
+    return { lineOk: lineOk, markOk: markOk, hit: lineOk && markOk };
+  }
+  return { WORKS: WORKS, byLine: byLine, verdict: verdict };
+})();
+if (typeof module !== "undefined") module.exports = EXW;
+</script>
+
+<script>
+/* ================= ИНТЕРФЕЙС ================= */
+(function(){
+  "use strict";
+  var KEY = "mathExamCourseProgress.v1", TID = "expert-t";
+  function readAll(){ try{ return JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ return {}; } }
+  function st(){ return readAll()[TID] || { done:{} }; }
+  function save(id, rec){
+    try{
+      var all = readAll();
+      var s = all[TID] = all[TID] || { done:{} };
+      s.done = s.done || {};
+      s.done[id] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    }catch(e){}
+  }
+  function totals(){
+    var d = st().done || {}, n = 0, hit = 0, k;
+    for (k in d){ n++; if (d[k].hit) hit++; }
+    return { n:n, hit:hit };
+  }
+  function paintTotal(){
+    var t = totals();
+    document.getElementById("totalLine").textContent = t.n
+      ? "проверено работ: " + t.n + " из " + EXW.WORKS.length + " · вердикт совпал с экспертом: " + t.hit
+      : "проверено работ: 0 из " + EXW.WORKS.length;
+  }
+
+  var listHost = document.getElementById("list");
+  function renderList(){
+    listHost.innerHTML = "";
+    var done = st().done || {};
+    EXW.WORKS.forEach(function(w){
+      var b = document.createElement("button");
+      b.className = "pcard";
+      var d = done[w.id];
+      b.innerHTML = '<span class="tag">задание ' + w.line + ' · до ' + w.max + ' баллов</span>' +
+        '<h3 style="margin:6px 0 4px">' + w.title + '</h3>' +
+        (d ? '<div class="done">' + (d.hit ? "вердикт совпал ✓" : "проверено · эксперт: " + w.expert) + '</div>' : "");
+      b.addEventListener("click", function(){ openWork(w); });
+      listHost.appendChild(b);
+    });
+    paintTotal();
+  }
+
+  var cur = null, pickLine = null, pickMark = null;
+  function openWork(w){
+    cur = w; pickLine = null; pickMark = null;
+    listHost.style.display = "none";
+    document.getElementById("workView").style.display = "block";
+    document.getElementById("wTag").textContent = "задание " + w.line + " · максимум " + w.max;
+    document.getElementById("wTitle").textContent = w.title;
+    document.getElementById("wCond").textContent = w.cond;
+    var ol = document.getElementById("wSteps");
+    ol.innerHTML = "";
+    w.steps.forEach(function(s, i){
+      var li = document.createElement("li");
+      li.textContent = s;
+      li.addEventListener("click", function(){
+        if (li.classList.contains("iserr") || li.classList.contains("clean")) return;
+        pickLine = i;
+        ol.querySelectorAll("li").forEach(function(x){ x.classList.remove("pick"); });
+        li.classList.add("pick");
+        document.getElementById("cleanBtn").setAttribute("aria-pressed", "false");
+        maybeEnable();
+      });
+      ol.appendChild(li);
+    });
+    var chips = document.getElementById("wChips");
+    chips.innerHTML = "";
+    for (var m = 0; m <= w.max; m++)(function(m){
+      var b = document.createElement("button");
+      b.textContent = m;
+      b.addEventListener("click", function(){
+        pickMark = m;
+        chips.querySelectorAll("button").forEach(function(z){ z.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true");
+        maybeEnable();
+      });
+      chips.appendChild(b);
+    })(m);
+    document.getElementById("wFb").className = "feedback";
+    document.getElementById("wCrit").style.display = "none";
+    document.getElementById("wCheck").disabled = true;
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+  document.getElementById("cleanBtn").addEventListener("click", function(){
+    pickLine = -1;
+    document.querySelectorAll("#wSteps li").forEach(function(x){ x.classList.remove("pick"); });
+    maybeEnable();
+  });
+  function maybeEnable(){
+    document.getElementById("wCheck").disabled = !(pickLine !== null && pickMark !== null);
+  }
+  document.getElementById("wCheck").addEventListener("click", function(){
+    var v = EXW.verdict(cur, pickLine, pickMark);
+    var lis = document.querySelectorAll("#wSteps li");
+    lis.forEach(function(li, i){
+      li.classList.remove("pick");
+      li.classList.add(cur.err === i ? "iserr" : "clean");
+    });
+    var fb = document.getElementById("wFb");
+    fb.className = "feedback on " + (v.hit ? "ok" : "bad");
+    fb.innerHTML = (v.hit
+        ? "Вердикт совпал с экспертом: " + cur.expert + (cur.expert === 1 ? " балл" : (cur.expert < 5 && cur.expert > 1 ? " балла" : " баллов")) + "."
+        : "Эксперт поставил <b>" + cur.expert + "</b>" +
+          (v.lineOk ? "" : (cur.err === -1 ? " — ошибки в работе нет" : " — дефект в строке " + (cur.err + 1))) + ".") +
+      " " + cur.why;
+    var cr = document.getElementById("wCrit");
+    cr.textContent = "Критерий: " + cur.crit;
+    cr.style.display = "block";
+    save(cur.id, { pick: pickLine, mark: pickMark, hit: v.hit });
+    paintTotal();
+  });
+  document.getElementById("backBtn").addEventListener("click", function(){
+    document.getElementById("workView").style.display = "none";
+    listHost.style.display = "grid";
+    renderList();
+  });
+  renderList();
+})();
+</script>
+</body>
+</html>
