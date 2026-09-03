@@ -58,6 +58,20 @@
 в `review.html`, `file` из `RV.TRAINERS` и `RV.CABINET`. Непереданная часть
 курса — 20 адресов — перечислена в `PENDING`; список проверяется в обе стороны.
 
+## Пять адресов переписаны на корневой trainers/
+Эти тренажёры уже опубликованы на сайте под своими именами, поэтому курс
+ссылается на них, а не хранит копию под коротким именем. Правки в
+`index.html` (карточка и пилюля), `review.html` (`LINE_TRAINER`) и
+`registry.js` (`CABINET.file`):
+
+| Было | Стало | Чем подтверждено тождество |
+| --- | --- | --- |
+| `trainers/planimetry-t1.html` | `../trainers/ege-t1-planimetry-generator.html` | `TID='ege-t1-planimetry-generator'` |
+| `trainers/finance.html` | `../trainers/finance-nonstandard-trainer.html` | `TOPIC_ID='financeNonstandardTrainer'` |
+| `trainers/trig-sum-to-product.html` | `../trainers/trig-sum-to-product-trainer.html` | `TOPIC_ID='trigSumToProductTrainer'` |
+| `trainers/vectors-t2.html` | `../trainers/ege-t2-vectors-trainer.html` | тема |
+| `trainers/stereo/index.html` | `../trainers/ege-profile-stereometry-3d/index.html` | тема |
+
 ## Проверки
 - `node tests/site-test.js` — 32
 - `node tests/teacher-test.js` — 75

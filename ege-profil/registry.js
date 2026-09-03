@@ -149,7 +149,7 @@ var RV = (function(){
      Тренажёры на своих ключах (stereo3.status, ep_progress_v1,
      trig-stp-trainer-v2, profile-ege-course-v1) в перенос не попадают. */
   var CABINET = [
-    { tid:"ege-t1-planimetry-generator", adapter:"planimetry", title:"Планиметрия без промахов",       file:"trainers/planimetry-t1.html",                     line:1 },
+    { tid:"ege-t1-planimetry-generator", adapter:"planimetry", title:"Планиметрия без промахов",       file:"../trainers/ege-t1-planimetry-generator.html",                     line:1 },
     { tid:"righttri-t1",                 adapter:"righttri",   title:"Прямоугольный треугольник",      file:"trainers/pryamougolny-treugolnik-trenazher.html", line:1 },
     { tid:"ege-t1-yashchenko",           adapter:"plan1y",     title:"Планиметрия по Ященко-2026",     file:"trainers/planimetry-yashchenko-t1.html",          line:1 },
     { tid:"ege-t2-yashchenko",           adapter:"vec2y",      title:"Векторы по Ященко-2026",         file:"trainers/vectors-yashchenko-t2.html",             line:2 },
@@ -158,7 +158,7 @@ var RV = (function(){
     { tid:"applied-t910",                adapter:"applied",    title:"Формулы и текстовые задачи",     file:"trainers/applied-t910.html",                      line:9 },
     { tid:"functions-t1112",             adapter:"funcs",      title:"Графики и наибольшее значение",  file:"trainers/functions-t1112.html",                   line:11 },
     { tid:"stereo-t14",                  adapter:"p14",        title:"Стереометрия с доказательством", file:"trainers/stereo-t14.html",                        line:14 },
-    { tid:"financeNonstandardTrainer",   adapter:"finance",    title:"Финансовая математика",          file:"trainers/finance.html",                           line:16 },
+    { tid:"financeNonstandardTrainer",   adapter:"finance",    title:"Финансовая математика",          file:"../trainers/finance-nonstandard-trainer.html",                           line:16 },
     { tid:"planimetry-t17",              adapter:"p17",        title:"Планиметрия с доказательством",  file:"trainers/planimetry-t17.html",                    line:17 },
     { tid:"parameters-t18",              adapter:"p18",        title:"Параметр на графике",            file:"trainers/parameters-t18.html",                    line:18 },
     { tid:"numbers-t19",                 adapter:"numbers",    title:"Числа и их свойства",            file:"trainers/numbers-t19.html",                       line:19 },

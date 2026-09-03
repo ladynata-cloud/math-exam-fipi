@@ -17,28 +17,28 @@ const errors = [];
 const boot = makeBoot(errors);
 const KEY = 'mathExamCourseProgress.v1';
 
-/* Тренажёры и страницы курса, которых в репозитории пока нет. */
+/* Тренажёры и страницы курса, которых в репозитории пока нет.
+
+   Пять адресов ушли отсюда не потому, что файлы приехали, а потому что
+   нашлись на месте: эти тренажёры давно лежат в корневом trainers/ под
+   своими именами, и страницы курса теперь ссылаются туда через ../ ,
+   а не ждут копию под коротким именем. */
 const PENDING = new Set([
   'exam/full-exam.html',
   'exam/variant.html',
   'trainers/applied-t910.html',
   'trainers/derivative-t8.html',
   'trainers/expert.html',
-  'trainers/finance.html',
   'trainers/functions-t1112.html',
   'trainers/inequalities.html',
   'trainers/interval-method.html',
   'trainers/numbers-t19.html',
   'trainers/parameters-t18.html',
-  'trainers/planimetry-t1.html',
   'trainers/planimetry-t17.html',
   'trainers/probability-t45.html',
   'trainers/rationalization.html',
   'trainers/stereo-t14.html',
-  'trainers/stereo/index.html',
-  'trainers/trig-sum-to-product.html',
-  'trainers/trigonometry.html',
-  'trainers/vectors-t2.html'
+  'trainers/trigonometry.html'
 ]);
 
 /* Куда ссылаются: адрес -> откуда на него ссылаются. */
@@ -140,6 +140,24 @@ function collect(w, where){
                    'trainers/pryamougolny-treugolnik-trenazher.html',
                    'trainers/vectors-yashchenko-t2.html']){
     ok(fs.existsSync(path.join(ROOT, f)), 'выложен: ' + f);
+    ok(seen.has(f), 'на него ссылается страница курса: ' + f);
+  }
+}
+
+/* ================= 7. Пятёрка из корневого trainers/ ================= */
+{
+  /* Эти тренажёры курс не хранит у себя — он ссылается на корневой каталог
+     сайта. Проверка названа отдельно, чтобы переименование в корне давало
+     внятное сообщение, а не общее «битая ссылка». */
+  const SHARED = [
+    '../trainers/ege-t1-planimetry-generator.html',
+    '../trainers/finance-nonstandard-trainer.html',
+    '../trainers/trig-sum-to-product-trainer.html',
+    '../trainers/ege-t2-vectors-trainer.html',
+    '../trainers/ege-profile-stereometry-3d/index.html'
+  ];
+  for (const f of SHARED){
+    ok(fs.existsSync(path.join(ROOT, f)), 'общий с сайтом тренажёр на месте: ' + f);
     ok(seen.has(f), 'на него ссылается страница курса: ' + f);
   }
 }
