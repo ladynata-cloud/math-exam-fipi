@@ -1,10 +1,10 @@
 {
   "name": "ege-profil",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Kurs-navigator: profile EGE course pages, trainers and jsdom gates.",
   "scripts": {
-    "test": "node tests/site-test.js && node tests/teacher-test.js && node tests/board-mirror-test.js && node tests/qr-test.js && node tests/ui-plan-test.js trainers/planimetry-yashchenko-t1.html && node tests/verify-t1-planimetry.js"
+    "test": "node tests/site-test.js && node tests/teacher-test.js && node tests/board-mirror-test.js && node tests/qr-test.js && node tests/links-test.js && node tests/ui-plan-test.js trainers/planimetry-yashchenko-t1.html && node tests/ui-test.js trainers/pryamougolny-treugolnik-trenazher.html && node tests/ui-vec-test.js trainers/vectors-yashchenko-t2.html && node tests/verify-t1-planimetry.js"
   },
   "devDependencies": {
     "jsdom": "^24.1.3"

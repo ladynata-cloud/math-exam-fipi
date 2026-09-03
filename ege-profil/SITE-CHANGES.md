@@ -40,10 +40,31 @@
    в `init()` — обработчики новых кнопок и разбор `?board=1` / `?mirror=1`.
    `setBoard` не изменена, сохранение настройки доски работает как раньше.
 
+## trainers/pryamougolny-treugolnik-trenazher.html
+Те же четыре правки, что и в планиметрии, с двумя отличиями по месту:
+кнопки добавлены в существующий `.topbtns` (у него уже нужная раскладка,
+и мобильный оверрайд остаётся рабочим), а `html.board #fsBtn` — `inline-flex`,
+как у остальных `.btn` этого файла. Порядок в `init()`: сохранённая настройка
+доски, затем `?board=1`, `?mirror=1`, затем разбор `#t<номер>` и `?mode=review`.
+Клики по сторонам чертежа идут через `closest('[data-side]')` — от зеркала
+не зависят, но проверены под ним отдельно.
+
+## trainers/vectors-yashchenko-t2.html
+Те же четыре правки. Одиночный `<div>` с кнопкой доски заменён на
+`.boardtools` с тремя кнопками; `html.board #fsBtn` — `inline-block`.
+
+## tests/links-test.js (новый)
+Целостность ссылок: карточки и пилюли `index.html`, «Повторить» и «Отработать»
+в `review.html`, `file` из `RV.TRAINERS` и `RV.CABINET`. Непереданная часть
+курса — 20 адресов — перечислена в `PENDING`; список проверяется в обе стороны.
+
 ## Проверки
 - `node tests/site-test.js` — 32
 - `node tests/teacher-test.js` — 75
 - `node tests/board-mirror-test.js` — 43
 - `node tests/qr-test.js` — 85
+- `node tests/links-test.js` — 66
 - `node tests/ui-plan-test.js trainers/planimetry-yashchenko-t1.html` — 127
+- `node tests/ui-test.js trainers/pryamougolny-treugolnik-trenazher.html` — 847
+- `node tests/ui-vec-test.js trainers/vectors-yashchenko-t2.html` — 138
 - `node tests/verify-t1-planimetry.js` — 7600 задач, расхождений 0

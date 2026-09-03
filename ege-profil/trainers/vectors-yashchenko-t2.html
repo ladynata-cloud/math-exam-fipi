@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Векторы · задание 2 — тренажёр по Ященко-2026</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --ink:#1E3A9F; --text:#26304a; --muted:#7a8299;
+    --line:#e2e2d6; --grid:#d9dfec; --axis:#9aa6c4;
+    --curve:#C77B48; --dot:#7A4A1E; --ok:#0f8a59; --bad:#b3402a; --teal:#0f766e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--text); font:16px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:900px; margin:0 auto; padding:24px 20px 64px}
+
+  /* --- шапка --- */
+  .crumbs{display:inline-block; margin:0 0 6px; color:var(--muted); text-decoration:none; font-weight:700; font-size:.9rem}
+  .crumbs:hover{color:var(--ink)}
+  header.top{display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:start; margin-bottom:14px}
+  h1{font-size:26px; color:var(--ink); margin:0 0 4px; letter-spacing:-.01em}
+  .sub{color:var(--muted); margin:0; font-size:15px}
+  .btn{font:inherit; font-weight:600; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:9px; padding:9px 16px; cursor:pointer}
+  .btn:hover{border-color:var(--ink)}
+  .btn.primary{color:#fff; background:var(--ink); border-color:var(--ink)}
+  .btn.warm{color:#7a3c12; background:#fdf1e7; border-color:#ecd9c4}
+  .btn:disabled{opacity:.45; cursor:default}
+
+  /* --- панели --- */
+  .panel{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px}
+  .chip{font:inherit; font-size:14px; font-weight:600; color:var(--text); background:#fff; border:1px solid var(--line); border-radius:99px; padding:7px 13px; cursor:pointer; display:inline-flex; align-items:center; gap:7px}
+  .chip[aria-pressed="true"]{color:#fff; background:var(--ink); border-color:var(--ink)}
+  .chip .dots{display:inline-flex; gap:3px}
+  .chip .dots i{width:7px; height:7px; border-radius:50%; background:#d8dcea; display:inline-block}
+  .chip .dots i.on{background:var(--ok)}
+  .chip[aria-pressed="true"] .dots i{background:rgba(255,255,255,.35)}
+  .chip[aria-pressed="true"] .dots i.on{background:#8ef0c0}
+  .seg{display:inline-flex; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#fff}
+  .seg button{font:inherit; font-size:14px; font-weight:600; border:0; background:transparent; color:var(--text); padding:8px 15px; cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--ink); color:#fff}
+  #modeHelp{color:var(--muted); font-size:14px; margin:8px 0 16px}
+  #modeHelp b{color:var(--teal)}
+
+  /* --- карточка задачи --- */
+  .card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-bottom:16px}
+  .tag{display:inline-block; font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); background:#eef1fb; border-radius:99px; padding:4px 11px; margin-bottom:10px}
+  .tag em{font-style:normal; color:var(--muted); font-weight:500; text-transform:none; letter-spacing:0}
+  .q{margin:0 0 12px}
+  .figwrap{margin:12px 0; padding:10px; border:1px solid var(--line); border-radius:9px; background:#fff; max-width:100%; overflow-x:auto}
+  .inrow{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:8px}
+  .lab{font-weight:700}
+  input.num{font:inherit; font-size:17px; width:150px; padding:9px 12px; border:1.6px solid var(--line); border-radius:9px; background:#fff}
+  input.num:focus{outline:none; border-color:var(--ink)}
+  input.num.bad{border-color:var(--bad); background:#fdf3f1}
+  input.num.ok{border-color:var(--ok); background:#f1faf5}
+  .fieldnote{font-size:13px; color:var(--muted)}
+  .fb{margin-top:10px; border-radius:9px; padding:10px 13px; font-size:15px}
+  .fb.ok{background:#eef8f2; color:#0c6b46; border:1px solid #cdeadb}
+  .fb.bad{background:#fdf3f1; color:#8f3322; border:1px solid #f0d6cf}
+  .fb.hint{background:#f4f6fd; color:#31418f; border:1px solid #dde3f7}
+  .steps{margin:12px 0 0; padding-left:20px; color:#3d4560}
+  .steps li{margin:6px 0}
+  .ansline{margin:10px 0 0; font-weight:700}
+  .ansline b{color:var(--ok)}
+  .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+  .spacer{flex:1}
+
+  /* --- зачёт --- */
+  .zdots{display:flex; gap:6px; margin:2px 0 12px}
+  .zdots i{width:12px; height:12px; border-radius:50%; background:#e3e6f0; display:inline-block}
+  .zdots i.cur{outline:2px solid var(--ink); outline-offset:2px}
+  .zdots i.ok{background:var(--ok)}
+  .zdots i.bad{background:var(--bad)}
+  .zres{font-size:20px; font-weight:800; color:var(--ink); margin:4px 0 10px}
+  details.zmiss{border:1px solid var(--line); border-radius:9px; padding:10px 14px; margin:10px 0}
+  details.zmiss summary{cursor:pointer; font-weight:700}
+
+  /* --- стрелка над буквой вектора --- */
+  .vv{position:relative; font-style:italic; padding-right:1px}
+  .vv::after{content:"\2192"; position:absolute; left:0; right:0; top:-.72em; font-size:.8em; font-style:normal; text-align:center; line-height:1}
+
+  /* --- чертёж --- */
+  svg.fig{display:block; max-width:none; height:auto}
+  .gd{stroke:var(--grid); stroke-width:1}
+  .ax{stroke:var(--axis); stroke-width:1.6}
+  .vc{stroke-width:2.4; fill:none; stroke-linecap:round}
+  .vh{stroke:none}
+  .v0{stroke:var(--ink)}      .v0.vh{fill:var(--ink)}
+  .v1{stroke:var(--curve)}    .v1.vh{fill:var(--curve)}
+  .v2{stroke:var(--dot)}      .v2.vh{fill:var(--dot)}
+  .lb{font:italic 600 13px "Segoe UI",sans-serif; fill:var(--text)}
+  .lb.sm{font:400 11px "Segoe UI",sans-serif; fill:var(--muted); font-style:normal}
+  .lb.vt{font-size:14px}
+
+  /* --- режим доски --- */
+  html.board body{font-size:19px}
+  html.board h1{font-size:31px}
+  html.board input.num{font-size:21px; width:190px}
+  html.board .steps{font-size:18px}
+  html.mirror body{transform:scaleX(-1)}
+  .boardtools{display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end}
+  #fsBtn{display:none}
+  html.board #fsBtn{display:inline-block}
+
+  @media (max-width:640px){
+    header.top{grid-template-columns:1fr}
+    .wrap{padding:18px 12px 48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="crumbs" href="../index.html">← Курс профильного ЕГЭ</a>
+  <header class="top">
+    <div>
+      <h1>Векторы: задание 2</h1>
+      <p class="sub">Семь типов из сборника Ященко-2026: координаты, скалярное произведение, косинус угла и клетчатая бумага. Ответ — число; после проверки открывается разбор по шагам.</p>
+    </div>
+    <div class="boardtools">
+      <button class="btn" id="boardBtn" aria-pressed="false" title="Крупный шрифт для показа на доске">Режим доски</button>
+      <button class="btn" id="mirrorBtn" aria-pressed="false" title="Для проекторов, дающих зеркальное изображение">Зеркало</button>
+      <button class="btn" id="fsBtn" title="Развернуть страницу на весь экран">Во весь экран</button>
+    </div>
+  </header>
+
+  <div class="panel" id="types" role="tablist" aria-label="Типы задач"></div>
+  <div class="panel">
+    <div class="seg" id="modeSeg" role="tablist" aria-label="Режим">
+      <button data-mode="learn" aria-pressed="false">Разбор</button>
+      <button data-mode="train" aria-pressed="true">Тренировка</button>
+      <button data-mode="exam" aria-pressed="false">Зачёт</button>
+    </div>
+  </div>
+  <p id="modeHelp"></p>
+
+  <div id="taskArea"></div>
+</div>
+
+<script>
+/* =========================================================================
+   БАНК ЗАДАЧ · ЗАДАНИЕ 2 ПРОФИЛЬНОГО ЕГЭ · ВЕКТОРЫ
+   Прототипы — сборник И.В. Ященко «36 типовых вариантов», 2026.
+
+   Файл самодостаточный: подключается один <script src="bank-t2-vectors.js">,
+   глобальный объект YB2. Зависимостей нет.
+
+   API:
+     YB2.items                 — список типов [{id, name, src, gen}]
+     YB2.make('v2')            — сгенерировать задачу указанного типа
+     YB2.random()              — задача случайного типа
+     YB2.srand(n)              — зафиксировать генератор (для тестов)
+
+   Задача:
+     { id, name, src,          — тип
+       text,                   — условие (HTML)
+       fig,                    — чертёж (строка SVG) или ''
+       ans,                    — числовой ответ
+       steps: [...],           — разбор по шагам (HTML)
+       traps: [{v, msg}] }     — диагностика типичных неверных ответов
+
+   Классы, которые нужно описать в CSS страницы:
+     .fig            — сам <svg>
+     .gd .ax         — клетка и оси
+     .vc .vh         — линия вектора и наконечник (модификаторы .v0 .v1 .v2)
+     .lb .sm .vt     — подписи
+     .vv             — имя вектора в тексте (стрелка сверху через ::after)
+   ========================================================================= */
+var YB2 = (function () {
+  "use strict";
+
+  /* ------------------------------ случайность ------------------------------ */
+  var _seed = 1;
+  function srand(s) { _seed = (s >>> 0) || 1; }
+  function rnd() {
+    _seed ^= _seed << 13; _seed >>>= 0;
+    _seed ^= _seed >> 17;
+    _seed ^= _seed << 5; _seed >>>= 0;
+    return _seed / 4294967296;
+  }
+  function ri(a, b) { return a + Math.floor(rnd() * (b - a + 1)); }
+  function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+
+  /* -------------------------------- числа --------------------------------- */
+  function round(x, n) { var k = Math.pow(10, n === undefined ? 6 : n); return Math.round(x * k) / k; }
+  function nice(x, d) {                     // конечная десятичная дробь, ≤ d знаков
+    d = d === undefined ? 3 : d;
+    var k = Math.pow(10, d);
+    return Math.abs(x * k - Math.round(x * k)) < 1e-7;
+  }
+  function num(x) {                         // 2.5 → «2,5»
+    var v = round(x, 6);
+    if (Object.is(v, -0)) v = 0;
+    var s = String(v);
+    if (s.indexOf('e') >= 0) s = v.toFixed(6).replace(/0+$/, '').replace(/\.$/, '');
+    return s.replace('.', ',');
+  }
+  function isInt(x) { return Math.abs(x - Math.round(x)) < 1e-9; }
+
+  /* ------------------------------- векторы -------------------------------- */
+  function vlen(v) { return Math.hypot(v[0], v[1]); }
+  function vdot(a, b) { return a[0] * b[0] + a[1] * b[1]; }
+  function vcomb() {                        // vcomb(k1, a, k2, b, ...)
+    var x = 0, y = 0, i;
+    for (i = 0; i < arguments.length; i += 2) { x += arguments[i] * arguments[i + 1][0]; y += arguments[i] * arguments[i + 1][1]; }
+    return [x, y];
+  }
+  function nz(a) { return a[0] !== 0 || a[1] !== 0; }
+  function vstr(v) { return '(' + num(v[0]) + '; ' + num(v[1]) + ')'; }
+  function vec(n) { return '<span class="vv">' + n + '</span>'; }
+  function combTxt(pairs) {                 // [[3,'a'],[-2,'b']] → «3a − 2b»
+    var s = '', i, k, n;
+    for (i = 0; i < pairs.length; i++) {
+      k = pairs[i][0]; n = pairs[i][1];
+      if (i === 0) s += (k === 1 ? '' : k === -1 ? '−' : num(k)) + vec(n);
+      else s += (k < 0 ? ' − ' : ' + ') + (Math.abs(k) === 1 ? '' : num(Math.abs(k))) + vec(n);
+    }
+    return s;
+  }
+
+  /* --------------------- чертёж «векторы на клетчатой бумаге» --------------------- */
+  function svg(w, h, inner) {
+    return '<svg class="fig" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h +
+      '" xmlns="http://www.w3.org/2000/svg" role="img">' + inner + '</svg>';
+  }
+  var CELL = 21;                            // размер клетки, px — используется и проверкой
+  function gridFig(items) {
+    var pts = [[0, 0]], i;
+    for (i = 0; i < items.length; i++) {
+      pts.push(items[i].s);
+      pts.push([items[i].s[0] + items[i].v[0], items[i].s[1] + items[i].v[1]]);
+    }
+    var xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; });
+    var x0 = Math.min.apply(null, xs) - 1, x1 = Math.max.apply(null, xs) + 1;
+    var y0 = Math.min.apply(null, ys) - 1, y1 = Math.max.apply(null, ys) + 1;
+    var W = (x1 - x0) * CELL, H = (y1 - y0) * CELL;
+    function X(x) { return round((x - x0) * CELL, 1); }
+    function Y(y) { return round((y1 - y) * CELL, 1); }
+    var g = '', k;
+    for (k = x0; k <= x1; k++) g += '<line class="gd" x1="' + X(k) + '" y1="0" x2="' + X(k) + '" y2="' + H + '"/>';
+    for (k = y0; k <= y1; k++) g += '<line class="gd" x1="0" y1="' + Y(k) + '" x2="' + W + '" y2="' + Y(k) + '"/>';
+    g += '<line class="ax" x1="0" y1="' + Y(0) + '" x2="' + W + '" y2="' + Y(0) + '"/>';
+    g += '<line class="ax" x1="' + X(0) + '" y1="0" x2="' + X(0) + '" y2="' + H + '"/>';
+    g += '<text class="lb sm" x="' + (X(0) - 11) + '" y="' + (Y(0) + 14) + '">0</text>';
+    g += '<text class="lb sm" x="' + (X(1) - 3) + '" y="' + (Y(0) + 14) + '">1</text>';
+    g += '<text class="lb sm" x="' + (X(0) - 11) + '" y="' + (Y(1) + 4) + '">1</text>';
+    g += '<text class="lb sm" x="' + (W - 10) + '" y="' + (Y(0) - 6) + '">x</text>';
+    g += '<text class="lb sm" x="' + (X(0) + 6) + '" y="10">y</text>';
+    for (i = 0; i < items.length; i++) {
+      var it = items[i];
+      var sx = X(it.s[0]), sy = Y(it.s[1]);
+      var ex = X(it.s[0] + it.v[0]), ey = Y(it.s[1] + it.v[1]);
+      var dx = ex - sx, dy = ey - sy, n = Math.hypot(dx, dy) || 1;
+      var ux = dx / n, uy = dy / n, hl = 9, hw = 3.6;
+      var bx = ex - ux * hl, by = ey - uy * hl;
+      var cls = 'v' + (i % 3);
+      g += '<line class="vc ' + cls + '" x1="' + sx + '" y1="' + sy + '" x2="' + round(bx, 1) + '" y2="' + round(by, 1) + '"/>';
+      g += '<polygon class="vh ' + cls + '" points="' + ex + ',' + ey + ' ' +
+        round(bx - uy * hw, 1) + ',' + round(by + ux * hw, 1) + ' ' +
+        round(bx + uy * hw, 1) + ',' + round(by - ux * hw, 1) + '"/>';
+      var mx = (sx + ex) / 2, my = (sy + ey) / 2;
+      g += '<text class="lb vt" x="' + round(mx - uy * 13 - 4, 1) + '" y="' + round(my + ux * 13 + 5, 1) + '">' + it.name + '</text>';
+    }
+    return svg(W, H, g);
+  }
+  /* непересекающиеся места старта для стрелок, чтобы подписи не наезжали */
+  function slots(n) {
+    var base = [[-4, 2], [2, 2], [-2, -4], [3, -3], [-5, -1]];
+    var out = [], i;
+    for (i = 0; i < n; i++) out.push([base[i][0] + ri(-1, 1), base[i][1] + ri(-1, 1)]);
+    return out;
+  }
+
+  /* ============================== ТИП В1 ==============================
+     Длина линейной комбинации по координатам.
+     Прототипы: варианты 1, 2, 31, 32.                                   */
+  var V1 = {
+    id: 'v1', line: 2, name: 'Длина линейной комбинации',
+    src: 'варианты 1, 2, 31, 32',
+    gen: function () {
+      var three = rnd() < 0.4;
+      var a, b, c, k1, k2, k3, r, guard = 0;
+      do {
+        guard++;
+        if (three) {
+          k1 = 1; k2 = pick([-1, 1]); k3 = pick([-1, 1]);
+          a = [ri(-9, 9), ri(-9, 9)]; b = [ri(-9, 9), ri(-9, 9)]; c = [ri(-9, 9), ri(-9, 9)];
+          r = vcomb(k1, a, k2, b, k3, c);
+        } else {
+          k1 = pick([2, 3, 4, 5, -2, -3, -5]); k2 = pick([2, 3, 4, 5, -2, -3, -4]);
+          a = [ri(-9, 9), ri(-9, 9)]; b = [ri(-9, 9), ri(-9, 9)];
+          c = null;
+          r = vcomb(k1, a, k2, b);
+        }
+      } while (guard < 4000 && !(nz(a) && nz(b) && (!three || nz(c)) && isInt(vlen(r)) &&
+        vlen(r) >= 5 && vlen(r) <= 90 && r[0] !== 0 && r[1] !== 0));
+
+      var pairs = three ? [[k1, 'a'], [k2, 'b'], [k3, 'c']] : [[k1, 'a'], [k2, 'b']];
+      var L = round(vlen(r), 6);
+      var given = three
+        ? 'Даны векторы ' + vec('a') + vstr(a) + ', ' + vec('b') + vstr(b) + ' и ' + vec('c') + vstr(c)
+        : 'Даны векторы ' + vec('a') + vstr(a) + ' и ' + vec('b') + vstr(b);
+
+      return {
+        tid: 'v1',
+        text: given + '. Найдите длину вектора ' + combTxt(pairs) + '.',
+        fig: '', ans: L,
+        steps: [
+          'При умножении вектора на число умножаются обе его координаты, а складываются векторы покоординатно.',
+          combTxt(pairs) + ' = ' + vstr(r) + '.',
+          'Длина вектора — корень из суммы квадратов координат: √(' + num(r[0] * r[0]) + ' + ' + num(r[1] * r[1]) + ') = √' + num(r[0] * r[0] + r[1] * r[1]) + ' = <b>' + num(L) + '</b>.'
+        ],
+        traps: [
+          { v: round(r[0] * r[0] + r[1] * r[1], 6), msg: 'Это квадрат длины — осталось извлечь корень.' },
+          { v: round(Math.abs(r[0]) + Math.abs(r[1]), 6), msg: 'Координаты не складываются: длина — корень из суммы их квадратов.' },
+          { v: round(vlen(vcomb(Math.abs(k1), a, Math.abs(k2), b)), 6), msg: 'Проверь знаки коэффициентов: минус меняет знак у обеих координат.' }
+        ]
+      };
+    }
+  };
+
+  /* ============================== ТИП В2 ==============================
+     Скалярное произведение по координатам.
+     Прототипы: варианты 7, 8, 11, 12.                                   */
+  var V2 = {
+    id: 'v2', line: 2, name: 'Скалярное произведение по координатам',
+    src: 'варианты 7, 8, 11, 12',
+    gen: function () {
+      var dec = rnd() < 0.35;
+      var a, b, guard = 0;
+      do {
+        guard++;
+        a = [ri(-16, 16), ri(-16, 16)];
+        b = [ri(-16, 16), ri(-16, 16)];
+        if (dec) a[rnd() < 0.5 ? 0 : 1] = round(ri(-40, 40) / 10, 1);
+      } while (guard < 2000 && !(nz(a) && nz(b) && Math.abs(vdot(a, b)) >= 2 && nice(vdot(a, b), 2)));
+      var ans = round(vdot(a, b), 6);
+      return {
+        tid: 'v2',
+        text: 'Даны векторы ' + vec('a') + vstr(a) + ' и ' + vec('b') + vstr(b) + '. Найдите скалярное произведение ' + vec('a') + '·' + vec('b') + '.',
+        fig: '', ans: ans,
+        steps: [
+          'В координатах скалярное произведение — сумма произведений одноимённых координат: ' + vec('a') + '·' + vec('b') + ' = <i>x</i>₁<i>x</i>₂ + <i>y</i>₁<i>y</i>₂.',
+          num(a[0]) + '·' + num(b[0]) + ' + (' + num(a[1]) + ')·(' + num(b[1]) + ') = ' + num(round(a[0] * b[0], 6)) + ' + ' + num(round(a[1] * b[1], 6)) + ' = <b>' + num(ans) + '</b>.',
+          'Ответ — число, а не вектор: скалярное произведение всегда скаляр.'
+        ],
+        traps: [
+          { v: round(a[0] * b[0] - a[1] * b[1], 6), msg: 'Потерян знак второго слагаемого: произведения координат складываются.' },
+          { v: round(a[0] * b[1] + a[1] * b[0], 6), msg: 'Перемножены разноимённые координаты: <i>x</i> с <i>x</i>, <i>y</i> с <i>y</i>.' },
+          { v: round(vlen(a) * vlen(b), 6), msg: 'Это произведение длин. Скалярное произведение меньше на множитель cos α.' }
+        ]
+      };
+    }
+  };
+
+  /* ============================== ТИП В3 ==============================
+     Косинус угла между векторами, заданными координатами.
+     Прототипы: варианты 5, 19, 20.                                      */
+  var V3 = {
+    id: 'v3', line: 2, name: 'Косинус угла между векторами',
+    src: 'варианты 5, 19, 20',
+    gen: function () {
+      var TR = [[3, 4], [4, 3], [6, 8], [8, 6], [5, 12], [12, 5], [8, 15], [15, 8],
+        [7, 24], [24, 7], [9, 12], [12, 9], [20, 21], [21, 20], [9, 40], [40, 9]];
+      var a, b, ans, guard = 0;
+      do {
+        guard++;
+        a = TR[Math.floor(rnd() * TR.length)].slice();
+        b = TR[Math.floor(rnd() * TR.length)].slice();
+        if (rnd() < 0.5) a[0] = -a[0];
+        if (rnd() < 0.5) a[1] = -a[1];
+        if (rnd() < 0.5) b[0] = -b[0];
+        if (rnd() < 0.5) b[1] = -b[1];
+        ans = round(vdot(a, b) / (vlen(a) * vlen(b)), 6);
+      } while (guard < 3000 && !(nice(ans, 4) && Math.abs(ans) > 0.02 && Math.abs(ans) < 0.999));
+      return {
+        tid: 'v3',
+        text: 'Даны векторы ' + vec('a') + vstr(a) + ' и ' + vec('b') + vstr(b) + '. Найдите косинус угла между векторами ' + vec('a') + ' и ' + vec('b') + '.',
+        fig: '', ans: ans,
+        steps: [
+          'cos α = (' + vec('a') + '·' + vec('b') + ') : (|' + vec('a') + '|·|' + vec('b') + '|).',
+          'Скалярное произведение: ' + a[0] + '·' + b[0] + ' + (' + a[1] + ')·(' + b[1] + ') = ' + vdot(a, b) + '.',
+          'Длины: |' + vec('a') + '| = √' + (a[0] * a[0] + a[1] * a[1]) + ' = ' + num(round(vlen(a), 6)) +
+            ', |' + vec('b') + '| = √' + (b[0] * b[0] + b[1] * b[1]) + ' = ' + num(round(vlen(b), 6)) + '.',
+          'cos α = ' + vdot(a, b) + ' : ' + num(round(vlen(a) * vlen(b), 6)) + ' = <b>' + num(ans) + '</b>.'
+        ],
+        traps: [
+          { v: round(vdot(a, b), 6), msg: 'Это только числитель — скалярное произведение. Его нужно поделить на произведение длин.' },
+          { v: round(-ans, 6), msg: 'Знак косинуса совпадает со знаком скалярного произведения. Проверь арифметику со знаками.' },
+          { v: round(Math.sqrt(Math.max(0, 1 - ans * ans)), 6), msg: 'Это синус угла, а спрашивают косинус.' }
+        ]
+      };
+    }
+  };
+
+  /* ============================== ТИП В4 ==============================
+     Скалярное произведение векторов с числовыми коэффициентами.
+     Прототипы: варианты 27, 28.                                         */
+  var V4 = {
+    id: 'v4', line: 2, name: 'Скалярное произведение с коэффициентами',
+    src: 'варианты 27, 28',
+    gen: function () {
+      var k1 = pick([0.5, 0.6, 1.5, 2, 3, 0.4, 1.2, 2.5]);
+      var k2 = pick([1.4, 2, 4, 0.5, 1.5, 3, 2.5]);
+      var a, b, ans, guard = 0;
+      do {
+        guard++;
+        a = [ri(-9, 9), ri(-9, 9)];
+        b = [ri(-9, 9), ri(-9, 9)];
+        ans = round(k1 * k2 * vdot(a, b), 6);
+      } while (guard < 2000 && !(nz(a) && nz(b) && Math.abs(vdot(a, b)) > 1 && nice(ans, 3) && Math.abs(ans) < 900));
+      return {
+        tid: 'v4',
+        text: 'Даны векторы ' + vec('a') + vstr(a) + ' и ' + vec('b') + vstr(b) +
+          '. Найдите скалярное произведение векторов ' + num(k1) + vec('a') + ' и ' + num(k2) + vec('b') + '.',
+        fig: '', ans: ans,
+        steps: [
+          'Числовые множители выносятся за знак скалярного произведения: (' + num(k1) + vec('a') + ')·(' + num(k2) + vec('b') + ') = ' + num(round(k1 * k2, 6)) + '·(' + vec('a') + '·' + vec('b') + ').',
+          vec('a') + '·' + vec('b') + ' = ' + a[0] + '·' + b[0] + ' + (' + a[1] + ')·(' + b[1] + ') = ' + vdot(a, b) + '.',
+          'Ответ: ' + num(round(k1 * k2, 6)) + '·' + vdot(a, b) + ' = <b>' + num(ans) + '</b>.'
+        ],
+        traps: [
+          { v: round(vdot(a, b), 6), msg: 'Коэффициенты забыты: их произведение умножается на скалярное произведение.' },
+          { v: round((k1 + k2) * vdot(a, b), 6), msg: 'Коэффициенты перемножаются, а не складываются.' },
+          { v: round(k1 * vdot(a, b), 6), msg: 'Учтён только первый коэффициент. Множитель равен ' + num(round(k1 * k2, 6)) + '.' }
+        ]
+      };
+    }
+  };
+
+  /* ============================== ТИП В5 ==============================
+     Неизвестная координата вектора из условия.
+     Прототипы: варианты 16, 24, 35, 36.
+     Все четыре сюжета собираются «от ответа» — перебора нет.            */
+  var V5 = {
+    id: 'v5', line: 2, name: 'Неизвестная координата вектора',
+    src: 'варианты 16, 24, 35, 36',
+    gen: function () {
+      var kind = pick(['perp', 'len', 'sum', 'inner']);
+      var a, b, ans, text, st, tr;
+
+      if (kind === 'perp') {
+        /* b = k·(a₂; −a₁) перпендикулярен a при любом k */
+        do { a = [ri(-9, 9), ri(-9, 9)]; } while (a[0] === 0 || a[1] === 0);
+        var k = pick([1, -1, 2, -2, 3, -3]);
+        var b2 = -k * a[0];
+        ans = round(k * a[1], 6);
+        text = 'Даны векторы ' + vec('a') + vstr(a) + ' и ' + vec('b') + '(<i>b</i>₀; ' + num(b2) + '). Найдите <i>b</i>₀, если ' + vec('a') + '·' + vec('b') + ' = 0.';
+        st = [
+          'Скалярное произведение равно нулю ровно тогда, когда векторы перпендикулярны.',
+          'Запишем его в координатах: ' + a[0] + '·<i>b</i>₀ + (' + a[1] + ')·(' + num(b2) + ') = 0.',
+          num(a[0]) + '<i>b</i>₀ + ' + num(a[1] * b2) + ' = 0, откуда <i>b</i>₀ = <b>' + num(ans) + '</b>.'
+        ];
+        tr = [
+          { v: round(-ans, 6), msg: 'Знак потерян при переносе слагаемого через равенство.' },
+          { v: round(a[1] * b2, 6), msg: 'Это свободное слагаемое, а не координата: нужно ещё поделить на ' + num(a[0]) + '.' }
+        ];
+
+      } else if (kind === 'len') {
+        /* |b| = k·|a|: обе длины берём из «египетских» троек, ответ — целый катет */
+        var TR = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15], [12, 16, 20], [7, 24, 25], [20, 21, 29]];
+        var ta, tb, kk, s, b0, b2v, tries = 0, done = false;
+        do {
+          tries++;
+          ta = pick(TR); tb = pick(TR);
+          kk = pick([0.5, 1.5, 2, 2.5, 3]);
+          s = kk * ta[2] / tb[2];                 // масштаб для b
+          b0 = round(s * tb[0], 6);
+          b2v = round(s * tb[1], 6) * (rnd() < 0.5 ? -1 : 1);
+          done = nice(b0, 2) && isInt(b2v) && b0 > 0 && b0 <= 60 && Math.abs(b2v) <= 60;
+        } while (tries < 120 && !done);
+        if (!done) { ta = [3, 4, 5]; tb = [6, 8, 10]; kk = 2; b0 = 6; b2v = 8; }
+        a = [ta[0], ta[1] * (rnd() < 0.5 ? -1 : 1)];
+        ans = round(b0, 6);
+        text = 'Даны векторы ' + vec('a') + vstr(a) + ' и ' + vec('b') + '(<i>b</i>₀; ' + num(b2v) + '). Найдите <i>b</i>₀, если |' + vec('b') + '| = ' + num(kk) + '|' + vec('a') + '|. ' +
+          'Если таких значений несколько, в ответ запишите большее из них.';
+        var A2 = a[0] * a[0] + a[1] * a[1], B2 = kk * kk * A2;
+        st = [
+          '|' + vec('a') + '|² = ' + a[0] + '² + (' + a[1] + ')² = ' + A2 + ', значит |' + vec('a') + '| = ' + num(round(Math.sqrt(A2), 6)) + '.',
+          'Возведём условие в квадрат: |' + vec('b') + '|² = ' + num(round(kk * kk, 6)) + '·' + A2 + ' = ' + num(round(B2, 6)) + '.',
+          '<i>b</i>₀² + (' + num(b2v) + ')² = ' + num(round(B2, 6)) + ', то есть <i>b</i>₀² = ' + num(round(B2 - b2v * b2v, 6)) + '.',
+          'Отсюда <i>b</i>₀ = ±' + num(ans) + '. По условию берём большее: <b>' + num(ans) + '</b>.'
+        ];
+        tr = [
+          { v: round(-ans, 6), msg: 'Подходят оба знака, но в ответ просят большее из значений.' },
+          { v: round(B2 - b2v * b2v, 6), msg: 'Это квадрат искомой координаты — извлеки корень.' },
+          { v: round(kk * Math.sqrt(A2), 6), msg: 'Это длина вектора ' + vec('b') + ' целиком, а нужна только его первая координата.' }
+        ];
+
+      } else if (kind === 'sum') {
+        /* (a+b)·c = 0: берём c = j·(s₂; −s₁), где s = a+b */
+        var s0, s1, j;
+        do {
+          a = [ri(-8, 8), ri(-8, 8)];
+          b = [ri(-8, 8), ri(-8, 8)];
+          s0 = a[0] + b[0]; s1 = a[1] + b[1];
+        } while (s0 === 0 || s1 === 0 || Math.abs(s0) > 9 || Math.abs(s1) > 9);
+        j = pick([1, -1, 0.5, -0.5]);
+        var c2 = -j * s0, c0 = j * s1;
+        if (!isInt(c2)) { j = j < 0 ? -1 : 1; c2 = -j * s0; c0 = j * s1; }
+        ans = round(c0, 6);
+        text = 'Даны векторы ' + vec('a') + vstr(a) + ', ' + vec('b') + vstr(b) + ' и ' + vec('c') + '(<i>c</i>₀; ' + num(c2) + '). Найдите <i>c</i>₀, если (' + vec('a') + ' + ' + vec('b') + ')·' + vec('c') + ' = 0.';
+        st = [
+          'Сначала складываем: ' + vec('a') + ' + ' + vec('b') + ' = ' + vstr([s0, s1]) + '.',
+          'Условие перпендикулярности в координатах: ' + num(s0) + '·<i>c</i>₀ + (' + num(s1) + ')·(' + num(c2) + ') = 0.',
+          num(s0) + '<i>c</i>₀ = ' + num(-s1 * c2) + ', откуда <i>c</i>₀ = <b>' + num(ans) + '</b>.'
+        ];
+        tr = [
+          { v: round(-ans, 6), msg: 'Проверь знак при переносе слагаемого через равенство.' },
+          { v: round(-s1 * c2, 6), msg: 'Осталось поделить на первую координату суммы (' + num(s0) + ').' }
+        ];
+
+      } else {
+        /* a·(b+c) = 0: берём w = b+c = j·(a₂; −a₁), затем c = w − b */
+        do { a = [ri(-8, 8), ri(-8, 8)]; b = [ri(-8, 8), ri(-8, 8)]; } while (a[0] === 0 || a[1] === 0);
+        var jj = pick([1, -1, 2, -2]);
+        var w = [jj * a[1], -jj * a[0]];
+        var cc = [w[0] - b[0], w[1] - b[1]];
+        ans = round(cc[0], 6);
+        text = 'Даны векторы ' + vec('a') + vstr(a) + ', ' + vec('b') + vstr(b) + ' и ' + vec('c') + '(<i>c</i>₀; ' + num(cc[1]) + '). Найдите <i>c</i>₀, если ' + vec('a') + '·(' + vec('b') + ' + ' + vec('c') + ') = 0.';
+        st = [
+          'Сложим внутри скобки: ' + vec('b') + ' + ' + vec('c') + ' = (' + num(b[0]) + ' + <i>c</i>₀; ' + num(b[1]) + ' + ' + num(cc[1]) + ') = (' + num(b[0]) + ' + <i>c</i>₀; ' + num(w[1]) + ').',
+          'Скалярное произведение: ' + num(a[0]) + '·(' + num(b[0]) + ' + <i>c</i>₀) + (' + num(a[1]) + ')·(' + num(w[1]) + ') = 0.',
+          num(a[0]) + '<i>c</i>₀ + ' + num(a[0] * b[0] + a[1] * w[1]) + ' = 0, откуда <i>c</i>₀ = <b>' + num(ans) + '</b>.',
+          'Обрати внимание: раскрывать скобку до конца не обязательно — достаточно сложить ' + vec('b') + ' и ' + vec('c') + ' покоординатно.'
+        ];
+        tr = [
+          { v: round(-ans, 6), msg: 'Знак при переносе слагаемого потерян.' },
+          { v: round(-(a[1] * w[1]) / a[0], 6), msg: 'Забыто слагаемое с первой координатой вектора ' + vec('b') + '.' }
+        ];
+      }
+      return { tid: 'v5', text: text, fig: '', ans: ans, steps: st, traps: tr };
+    }
+  };
+
+  /* ============================== ТИП В6 ==============================
+     Клетчатая бумага: скалярное произведение.
+     Прототипы: варианты 3, 17, 18, 21, 22, 33, 34.                      */
+  var V6 = {
+    id: 'v6', line: 2, name: 'Клетчатая бумага: скалярное произведение',
+    src: 'варианты 3, 17, 18, 21, 22, 33, 34',
+    gen: function () {
+      var three = rnd() < 0.35;
+      var withK = !three && rnd() < 0.45;
+      var a, b, c, k1 = 1, k2 = 1, ans, guard = 0;
+      do {
+        guard++;
+        a = [ri(-6, 6), ri(-5, 5)];
+        b = [ri(-6, 6), ri(-5, 5)];
+        c = [ri(-5, 5), ri(-4, 4)];
+        if (withK) { k1 = pick([1, 2, 2, 3]); k2 = pick([1, 2, 3]); if (k1 === 1 && k2 === 1) k2 = 2; }
+        ans = three ? vdot(a, [b[0] + c[0], b[1] + c[1]]) : k1 * k2 * vdot(a, b);
+      } while (guard < 3000 && !(nz(a) && nz(b) && (!three || nz(c)) && Math.abs(ans) >= 3 && Math.abs(ans) <= 160));
+
+      var sl = slots(three ? 3 : 2);
+      var items = [{ s: sl[0], v: a, name: 'a' }, { s: sl[1], v: b, name: 'b' }];
+      if (three) items.push({ s: sl[2], v: c, name: 'c' });
+
+      var q = three
+        ? vec('a') + '·(' + vec('b') + ' + ' + vec('c') + ')'
+        : 'векторов ' + (k1 === 1 ? '' : num(k1)) + vec('a') + ' и ' + (k2 === 1 ? '' : num(k2)) + vec('b');
+      var lead = 'На координатной плоскости изображены векторы ' + vec('a') + ', ' + vec('b') + (three ? ' и ' + vec('c') : '') +
+        ', координаты этих векторов — целые числа. Найдите скалярное произведение ' + q + '.';
+
+      var st = ['Считаем координаты каждого вектора по клеткам, от начала стрелки к её концу: ' +
+        vec('a') + vstr(a) + ', ' + vec('b') + vstr(b) + (three ? ', ' + vec('c') + vstr(c) : '') + '.'];
+      if (three) {
+        st.push(vec('b') + ' + ' + vec('c') + ' = ' + vstr([b[0] + c[0], b[1] + c[1]]) + '.');
+        st.push(vec('a') + '·(' + vec('b') + ' + ' + vec('c') + ') = ' + a[0] + '·' + (b[0] + c[0]) + ' + (' + a[1] + ')·(' + (b[1] + c[1]) + ') = <b>' + ans + '</b>.');
+      } else {
+        st.push(vec('a') + '·' + vec('b') + ' = ' + a[0] + '·' + b[0] + ' + (' + a[1] + ')·(' + b[1] + ') = ' + vdot(a, b) + '.');
+        st.push('Множители выносятся за скобку: ответ равен ' + num(k1 * k2) + '·' + vdot(a, b) + ' = <b>' + ans + '</b>.');
+      }
+      st.push('Важно: положение вектора на плоскости не влияет на его координаты — важна только разность «конец минус начало».');
+
+      return {
+        tid: 'v6', text: lead, fig: gridFig(items), ans: ans, steps: st,
+        traps: [
+          { v: vdot(a, b), msg: three ? 'Учтён только вектор ' + vec('b') + ': перед умножением сложи ' + vec('b') + ' и ' + vec('c') + '.' : 'Коэффициенты перед векторами не учтены.' },
+          { v: -ans, msg: 'Знак противоположный: похоже, у одного из векторов перепутаны начало и конец стрелки.' },
+          { v: three ? a[0] * (b[1] + c[1]) + a[1] * (b[0] + c[0]) : k1 * k2 * (a[0] * b[1] + a[1] * b[0]), msg: 'Перемножены разноимённые координаты: <i>x</i> с <i>x</i>, <i>y</i> с <i>y</i>.' }
+        ]
+      };
+    }
+  };
+
+  /* ============================== ТИП В7 ==============================
+     Клетчатая бумага: длина комбинации и косинус угла.
+     Прототипы: варианты 4, 6, 10, 13, 14, 25, 26, 29, 30.               */
+  var V7 = {
+    id: 'v7', line: 2, name: 'Клетчатая бумага: длина и угол',
+    src: 'варианты 4, 6, 10, 13, 14, 25, 26, 29, 30',
+    gen: function () {
+      var mode = pick(['len', 'len3', 'cos']);
+      var a, b, c, k1, k2, ans, r, guard = 0;
+
+      if (mode === 'cos') {
+        var TR = [[3, 4], [4, 3], [6, 8], [8, 6], [5, 12], [12, 5], [3, 0], [0, 4], [6, 0], [0, 5], [4, 0]];
+        do {
+          guard++;
+          a = TR[Math.floor(rnd() * TR.length)].slice();
+          b = TR[Math.floor(rnd() * TR.length)].slice();
+          if (rnd() < 0.5) a[0] = -a[0];
+          if (rnd() < 0.5) a[1] = -a[1];
+          if (rnd() < 0.5) b[0] = -b[0];
+          if (rnd() < 0.5) b[1] = -b[1];
+          ans = nz(a) && nz(b) ? round(vdot(a, b) / (vlen(a) * vlen(b)), 6) : 2;
+        } while (guard < 4000 && !(Math.abs(ans) < 0.999 && Math.abs(ans) > 0.02 && nice(ans, 4) &&
+          Math.abs(a[0]) <= 8 && Math.abs(a[1]) <= 6 && Math.abs(b[0]) <= 8 && Math.abs(b[1]) <= 6));
+      } else if (mode === 'len') {
+        do {
+          guard++;
+          k1 = pick([1, 2, 3, 4, 5, 6]); k2 = pick([1, 2, 3, 4, 5]);
+          if (k1 === 1 && k2 === 1) k2 = 2;
+          a = [ri(-5, 5), ri(-4, 4)];
+          b = [ri(-5, 5), ri(-4, 4)];
+          r = vcomb(k1, a, -k2, b);
+          ans = round(vlen(r), 6);
+        } while (guard < 5000 && !(nz(a) && nz(b) && isInt(ans) && ans >= 5 && ans <= 60 && r[0] !== 0 && r[1] !== 0));
+      } else {
+        do {
+          guard++;
+          a = [ri(-5, 5), ri(-4, 4)];
+          b = [ri(-5, 5), ri(-4, 4)];
+          c = [ri(-5, 5), ri(-4, 4)];
+          r = vcomb(1, a, 1, b, 1, c);
+          ans = round(vlen(r), 6);
+        } while (guard < 5000 && !(nz(a) && nz(b) && nz(c) && isInt(ans) && ans >= 5 && ans <= 40 && r[0] !== 0 && r[1] !== 0));
+      }
+
+      var sl = slots(mode === 'len3' ? 3 : 2);
+      var items = [{ s: sl[0], v: a, name: 'a' }, { s: sl[1], v: b, name: 'b' }];
+      if (mode === 'len3') items.push({ s: sl[2], v: c, name: 'c' });
+
+      var lead = 'На координатной плоскости изображены векторы ' + vec('a') + ', ' + vec('b') + (mode === 'len3' ? ' и ' + vec('c') : '') +
+        ', координаты этих векторов — целые числа. ';
+      var st, tr;
+
+      if (mode === 'cos') {
+        lead += 'Найдите cos α, где α — угол между векторами ' + vec('a') + ' и ' + vec('b') + '.';
+        st = [
+          'Снимаем координаты с рисунка: ' + vec('a') + vstr(a) + ', ' + vec('b') + vstr(b) + '.',
+          vec('a') + '·' + vec('b') + ' = ' + a[0] + '·' + b[0] + ' + (' + a[1] + ')·(' + b[1] + ') = ' + vdot(a, b) + '.',
+          '|' + vec('a') + '| = √' + (a[0] * a[0] + a[1] * a[1]) + ' = ' + num(round(vlen(a), 6)) +
+            ', |' + vec('b') + '| = √' + (b[0] * b[0] + b[1] * b[1]) + ' = ' + num(round(vlen(b), 6)) + '.',
+          'cos α = ' + vdot(a, b) + ' : ' + num(round(vlen(a) * vlen(b), 6)) + ' = <b>' + num(ans) + '</b>.'
+        ];
+        tr = [
+          { v: round(vdot(a, b), 6), msg: 'Это скалярное произведение. Его ещё нужно поделить на произведение длин.' },
+          { v: round(-ans, 6), msg: 'Знак другой: проверь направление стрелок, где начало и где конец каждого вектора.' }
+        ];
+      } else if (mode === 'len') {
+        lead += 'Найдите длину вектора ' + combTxt([[k1, 'a'], [-k2, 'b']]) + '.';
+        st = [
+          'Снимаем координаты: ' + vec('a') + vstr(a) + ', ' + vec('b') + vstr(b) + '.',
+          combTxt([[k1, 'a'], [-k2, 'b']]) + ' = ' + vstr(r) + '.',
+          'Длина: √(' + (r[0] * r[0]) + ' + ' + (r[1] * r[1]) + ') = √' + (r[0] * r[0] + r[1] * r[1]) + ' = <b>' + num(ans) + '</b>.'
+        ];
+        tr = [
+          { v: round(vlen(vcomb(k1, a, k2, b)), 6), msg: 'Знак перед вторым вектором потерян: там вычитание.' },
+          { v: r[0] * r[0] + r[1] * r[1], msg: 'Это квадрат длины — осталось извлечь корень.' }
+        ];
+      } else {
+        lead += 'Найдите длину вектора ' + vec('a') + ' + ' + vec('b') + ' + ' + vec('c') + '.';
+        st = [
+          'Снимаем координаты: ' + vec('a') + vstr(a) + ', ' + vec('b') + vstr(b) + ', ' + vec('c') + vstr(c) + '.',
+          'Складываем покоординатно: ' + vstr(r) + '.',
+          'Длина: √' + (r[0] * r[0] + r[1] * r[1]) + ' = <b>' + num(ans) + '</b>.'
+        ];
+        tr = [
+          { v: r[0] * r[0] + r[1] * r[1], msg: 'Это квадрат длины — извлеки корень.' },
+          { v: round(vlen(a) + vlen(b) + vlen(c), 6), msg: 'Длины не складываются: сначала складываем координаты, потом считаем длину.' }
+        ];
+      }
+      return { tid: 'v7', text: lead, fig: gridFig(items), ans: ans, steps: st, traps: tr };
+    }
+  };
+
+  /* ================================ РЕЕСТР ================================ */
+  var ITEMS = [V1, V2, V3, V4, V5, V6, V7];
+  var byId = {};
+  ITEMS.forEach(function (t) { byId[t.id] = t; });
+
+  function make(id) {
+    var t = byId[id];
+    if (!t) return null;
+    var q = t.gen();
+    q.id = id; q.name = t.name; q.line = 2; q.src = t.src;
+    /* ловушка имеет смысл, только если она отличается от верного ответа
+       и не дублирует другую ловушку: иначе диагностика соврёт ученику */
+    var seen = [];
+    q.traps = (q.traps || []).filter(function (tr) {
+      if (!isFinite(tr.v)) return false;
+      if (Math.abs(tr.v - q.ans) < 1e-9) return false;
+      for (var i = 0; i < seen.length; i++) if (Math.abs(seen[i] - tr.v) < 1e-9) return false;
+      seen.push(tr.v);
+      return true;
+    });
+    return q;
+  }
+  function random() { return make(ITEMS[Math.floor(rnd() * ITEMS.length)].id); }
+
+  return {
+    items: ITEMS, byId: byId, make: make, random: random,
+    srand: srand, num: num, CELL: CELL
+  };
+})();
+if (typeof module !== 'undefined') module.exports = YB2;
+
+</script>
+<script>
+/* ============================================================
+   Векторы · задание 2 (Ященко-2026) — интерфейс поверх банка YB2.
+   Режимы: Разбор (автопоказ), Тренировка (с диагностикой), Зачёт (7 задач).
+   Прогресс и журнал ошибок — в едином ключе курса.
+   ============================================================ */
+'use strict';
+if (typeof module !== 'undefined'){ Object.assign(global, { YB2: require('./bank-t2-vectors.js') }); }
+
+const COURSE_KEY = 'mathExamCourseProgress.v1';
+const TID = 'ege-t2-yashchenko';
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const PRAISE = ['Верно!', 'Точно!', 'Да, так!', 'Правильно!', 'Есть!'];
+const SHORT = { v1: 'Длина', v2: 'Скалярное', v3: 'Косинус', v4: 'С коэффициентами', v5: 'Координата', v6: 'Клетка: a·b', v7: 'Клетка: длина и угол' };
+const MODE_HELP = {
+  learn: 'Разбор для доски: задача показана сразу с решением по шагам. «Ещё пример» — новая задача того же типа.',
+  train: 'Решайте и проверяйте. При промахе тренажёр подскажет, откуда взялось именно ваше число, — а разбор можно открыть в любой момент.',
+  exam: 'Семь задач — по одной каждого типа, в случайном порядке. Разбор откроется после финиша. Зачёт — 7 из 7.'
+};
+const TYPE_IDS = ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7'];
+
+/* ---------- хранение ---------- */
+function readAll(){ try { return JSON.parse(localStorage.getItem(COURSE_KEY) || '{}'); } catch (e){ return {}; } }
+function writeAll(all){ try { localStorage.setItem(COURSE_KEY, JSON.stringify(all)); } catch (e){} }
+let stats = loadStats();
+function loadStats(){
+  const s = readAll()[TID] || {};
+  return { types: s.types || {}, runs: s.runs || 0, best: s.best || 0, passed: !!s.passed, board: !!s.board };
+}
+function saveStats(){ const all = readAll(); all[TID] = stats; writeAll(all); }
+function tstat(id){ return stats.types[id] || (stats.types[id] = { solved: 0, correct: 0, streak: 0, best: 0 }); }
+
+/* журнал ошибок: тип закрывается тремя верными подряд */
+function mlog(type, okFlag){
+  const all = readAll();
+  const mk = all.mistakes = all.mistakes || {};
+  const e = mk[TID + '|' + type] = mk[TID + '|' + type] || { w: 0, r: 0 };
+  if (okFlag){ if (e.w) e.r = (e.r || 0) + 1; }
+  else { e.w = (e.w || 0) + 1; e.r = 0; e.lastWrong = Date.now(); }
+  e.last = Date.now();
+  writeAll(all);
+}
+function openTypes(){
+  const mk = readAll().mistakes || {}, pre = TID + '|', res = [];
+  for (const k in mk) if (k.indexOf(pre) === 0 && (mk[k].w || 0) > 0 && (mk[k].r || 0) < 3 && TYPE_IDS.includes(k.slice(pre.length))) res.push(k.slice(pre.length));
+  return res;
+}
+
+/* ---------- состояние ---------- */
+const state = {
+  type: 'mix', mode: 'train', task: null,
+  fails: 0, finished: false, counted: false, showSteps: false, fb: null,
+  review: false, reviewEmpty: false,
+  z: null            // зачёт: { plan:[], i, marks:[], tasks:[], answers:[], done }
+};
+
+function newTask(){
+  state.fails = 0; state.finished = false; state.counted = false; state.showSteps = false; state.fb = null;
+  if (state.review){
+    const open = openTypes();
+    if (open.length){
+      const ty = open[Math.floor(Math.random() * open.length)];
+      state.task = YB2.make(ty);
+    } else { state.review = false; state.reviewEmpty = true; state.task = makeByFilter(); }
+  } else {
+    state.task = makeByFilter();
+  }
+  render();
+}
+function makeByFilter(){ return state.type === 'mix' ? YB2.random() : YB2.make(state.type); }
+function setType(t){ state.review = false; state.reviewEmpty = false; state.type = t; if (state.mode === 'exam') state.z = null; newTask(); }
+function setMode(m){
+  state.review = false; state.reviewEmpty = false; state.mode = m;
+  if (m === 'exam'){ state.z = null; renderExamIntro(); return; }
+  newTask();
+}
+
+/* ---------- разметка задачи ---------- */
+function esc(s){ return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+function tagHtml(t){ return `<span class="tag">${esc(SHORT[t.id] || t.id)} <em>· прототип: ${esc(t.src)}</em></span>`; }
+function figHtml(t){ return t.fig ? `<div class="figwrap">${t.fig}</div>` : ''; }
+function stepsHtml(t){ return `<ol class="steps">${t.steps.map(s => `<li>${s}</li>`).join('')}</ol>`; }
+function fbHtml(){ return state.fb ? `<div class="fb ${state.fb.type}" role="status">${state.fb.html}</div>` : ''; }
+
+function renderTypes(){
+  const host = $('#types');
+  const chip = (id, label, dots) => `<button class="chip" data-type="${id}" aria-pressed="${state.type === id && !state.review}">${label}${dots}</button>`;
+  let html = chip('mix', 'Все типы', '');
+  for (const it of YB2.items){
+    const s = tstat(it.id);
+    const n = Math.min(3, s.streak >= 3 ? 3 : s.streak);
+    const closed = s.best >= 3;
+    const dots = `<span class="dots" title="серия верных с первой попытки">${[0, 1, 2].map(i => `<i class="${(closed ? 3 : n) > i ? 'on' : ''}"></i>`).join('')}</span>`;
+    html += chip(it.id, esc(SHORT[it.id]), dots);
+  }
+  host.innerHTML = html;
+}
+function renderHelp(){
+  const mh = $('#modeHelp');
+  if (state.review){
+    mh.innerHTML = `<b>Работа над ошибками:</b> задачи только из ваших открытых типов (${openTypes().length}). Тип закрывается тремя верными подряд. ` + MODE_HELP[state.mode];
+  } else if (state.reviewEmpty){
+    mh.innerHTML = '<b>Открытых ошибок нет</b> — отличная новость. Ниже обычный режим. ' + MODE_HELP[state.mode];
+  } else mh.textContent = MODE_HELP[state.mode];
+}
+
+function renderTrainCard(){
+  const t = state.task;
+  const done = state.finished;
+  const inputRow = done
+    ? `<p class="ansline">Ответ: <b>${YB2.num(t.ans)}</b></p>${fbHtml()}`
+    : `<div class="inrow"><span class="lab">Ответ:</span><input class="num" type="text" inputmode="text" autocomplete="off" placeholder="число" aria-label="Ответ"><button class="btn primary" data-action="check">Проверить</button></div>
+       <p class="fieldnote">Можно с запятой (0,25) или с точкой; отрицательное — со знаком минус.</p>${fbHtml()}`;
+  const stepsBlock = (state.mode === 'learn' || state.showSteps)
+    ? `<p class="ansline" style="margin-top:14px">Решение:</p>${stepsHtml(t)}${state.mode === 'learn' ? `<p class="ansline">Ответ: <b>${YB2.num(t.ans)}</b></p>` : ''}`
+    : '';
+  const actions = state.mode === 'learn'
+    ? `<div class="actions"><button class="btn primary" data-action="new">Ещё пример</button></div>`
+    : `<div class="actions">
+         ${done || state.fails >= 1 ? `<button class="btn ${state.showSteps ? '' : 'warm'}" data-action="steps">${state.showSteps ? 'Скрыть разбор' : 'Показать разбор'}</button>` : ''}
+         <span class="spacer"></span><button class="btn" data-action="new">Новая задача</button>
+       </div>`;
+  $('#taskArea').innerHTML = `<article class="card">
+    ${tagHtml(t)}
+    <p class="q">${t.text}</p>
+    ${figHtml(t)}
+    ${state.mode === 'learn' ? '' : inputRow}
+    ${stepsBlock}
+    ${actions}
+  </article>`;
+  const inp = $('#taskArea input.num'); if (inp) inp.focus();
+}
+
+/* ---------- зачёт ---------- */
+function shuffle(a){ for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function startExam(){
+  const plan = shuffle(TYPE_IDS.slice());
+  state.z = { plan, i: 0, marks: [], tasks: plan.map(id => YB2.make(id)), answers: [], done: false };
+  state.fb = null; state.fails = 0;
+  renderExam();
+}
+function renderExamIntro(){
+  renderTypes(); renderHelp();
+  $('#taskArea').innerHTML = `<article class="card">
+    <p class="q"><b>Зачёт:</b> семь задач подряд — по одной каждого типа, порядок случайный. Разбор и правильные ответы откроются после последней задачи. Результат записывается; зачёт сдан при 7 из 7.</p>
+    <p class="q" style="color:var(--muted)">Лучший результат: ${stats.best} из 7${stats.passed ? ' · зачёт сдан ✓' : ''} · запусков: ${stats.runs}</p>
+    <div class="actions"><button class="btn primary" data-action="exam-start">Начать зачёт</button></div>
+  </article>`;
+}
+function zDots(){
+  const z = state.z;
+  return `<div class="zdots">${z.plan.map((_, k) => `<i class="${k === z.i && !z.done ? 'cur ' : ''}${z.marks[k] === true ? 'ok' : z.marks[k] === false ? 'bad' : ''}"></i>`).join('')}</div>`;
+}
+function renderExam(){
+  renderTypes(); renderHelp();
+  const z = state.z;
+  if (!z){ renderExamIntro(); return; }
+  if (z.done) return renderExamResult();
+  const t = z.tasks[z.i];
+  $('#taskArea').innerHTML = `<article class="card">
+    ${zDots()}
+    ${tagHtml(t)}
+    <p class="q">${t.text}</p>
+    ${figHtml(t)}
+    <div class="inrow"><span class="lab">Ответ:</span><input class="num" type="text" inputmode="text" autocomplete="off" placeholder="число" aria-label="Ответ"><button class="btn primary" data-action="exam-check">Ответить</button></div>
+    <p class="fieldnote">В зачёте одна попытка на задачу. Можно с запятой или точкой.</p>
+    ${fbHtml()}
+  </article>`;
+  const inp = $('#taskArea input.num'); if (inp) inp.focus();
+}
+function renderExamResult(){
+  const z = state.z;
+  const score = z.marks.filter(Boolean).length;
+  const misses = z.plan.map((id, k) => ({ id, k, t: z.tasks[k], given: z.answers[k], ok: z.marks[k] })).filter(x => !x.ok);
+  const missHtml = misses.length
+    ? misses.map(m => `<details class="zmiss"><summary>${esc(SHORT[m.id])}: ваш ответ ${m.given === '' ? '—' : esc(m.given)}, верный ${YB2.num(m.t.ans)}</summary><p class="q" style="margin-top:10px">${m.t.text}</p>${figHtml(m.t)}${stepsHtml(m.t)}</details>`).join('')
+    : `<p class="q" style="color:var(--ok);font-weight:700">Все семь — верно. Это и есть зачёт.</p>`;
+  $('#taskArea').innerHTML = `<article class="card">
+    ${zDots()}
+    <p class="zres">Результат: ${score} из 7${score === 7 ? ' — зачёт сдан ✓' : ''}</p>
+    ${missHtml}
+    <div class="actions"><button class="btn primary" data-action="exam-start">Ещё раз</button><span class="spacer"></span><button class="btn" data-action="to-train">В тренировку</button></div>
+  </article>`;
+}
+
+/* ---------- проверка ---------- */
+function parseNum(str){
+  let s = String(str == null ? '' : str).trim().replace(/\s+/g, '').replace(',', '.').replace('\u2212', '-');
+  if (!s) return NaN;
+  const m = s.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);
+  if (m) return Number(m[1]) / Number(m[2]);
+  return /^-?\d+(?:\.\d+)?$/.test(s) ? Number(s) : NaN;
+}
+const EPS = 1e-6;
+function diagnose(x, t){
+  const hit = (t.traps || []).find(tr => Math.abs(tr.v - x) < EPS);
+  return hit ? hit.msg : null;
+}
+function checkTrain(){
+  const t = state.task;
+  const inp = $('#taskArea input.num');
+  const x = parseNum(inp.value);
+  inp.classList.remove('ok', 'bad');
+  if (isNaN(x)){ inp.classList.add('bad'); state.fb = { type: 'hint', html: 'Введите число: с запятой (0,25), с точкой или обыкновенной дробью (1/4).' }; return renderTrainCard(); }
+  const s = tstat(state.task.id);
+  if (Math.abs(x - t.ans) < EPS){
+    state.finished = true;
+    if (!state.counted){
+      state.counted = true; s.solved++;
+      if (state.fails === 0){ s.correct++; s.streak++; s.best = Math.max(s.best, s.streak); }
+      saveStats();
+    }
+    if (state.mode === 'train') mlog(t.id, true);
+    state.fb = { type: 'ok', html: `${PRAISE[Math.floor(Math.random() * PRAISE.length)]}${state.fails ? ' Со второй попытки, но верно.' : ''}` };
+    return render();
+  }
+  state.fails++;
+  if (!state.counted && state.fails === 1){ s.streak = 0; saveStats(); }
+  if (state.mode === 'train') mlog(t.id, false);
+  inp.classList.add('bad');
+  const dg = diagnose(x, t);
+  let html = dg || (Math.abs(x - t.ans) < 0.01 * Math.max(1, Math.abs(t.ans))
+    ? 'Почти! Похоже на округление. Ответ — конечная десятичная дробь, запишите точно.'
+    : 'Пока не так. Проверьте вычисления по координатам.');
+  if (state.fails >= 2 && !dg) html += ' Откройте разбор и сверьтесь по шагам.';
+  state.fb = { type: 'bad', html };
+  renderTrainCard();
+}
+function examCheck(){
+  const z = state.z, t = z.tasks[z.i];
+  const inp = $('#taskArea input.num');
+  const x = parseNum(inp.value);
+  if (isNaN(x)){ state.fb = { type: 'hint', html: 'Введите число — иначе ответ не засчитается.' }; return renderExam(); }
+  const okAns = Math.abs(x - t.ans) < EPS;
+  z.marks[z.i] = okAns; z.answers[z.i] = inp.value.trim();
+  mlog(t.id, okAns);
+  const s = tstat(t.id); s.solved++; if (okAns){ s.correct++; } else { s.streak = 0; }
+  state.fb = null;
+  z.i++;
+  if (z.i >= z.plan.length){
+    z.done = true;
+    const score = z.marks.filter(Boolean).length;
+    stats.runs++; stats.best = Math.max(stats.best, score); if (score === 7) stats.passed = true;
+  }
+  saveStats();
+  renderExam();
+}
+
+/* ---------- каркас ---------- */
+function render(){
+  renderTypes(); renderHelp();
+  if (state.mode === 'exam') return renderExam();
+  renderTrainCard();
+}
+function setBoard(on){
+  document.documentElement.classList.toggle('board', on);
+  const b = $('#boardBtn'); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? 'Обычный вид' : 'Режим доски';
+  stats.board = on; saveStats();
+}
+/* Зеркало не сохраняется: это настройка проектора, а не ученика. */
+function setMirror(on){
+  document.documentElement.classList.toggle('mirror', on);
+  const b = $('#mirrorBtn'); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? 'Убрать зеркало' : 'Зеркало';
+}
+function canFullscreen(){
+  const r = document.documentElement;
+  return !!(r.requestFullscreen || r.webkitRequestFullscreen);
+}
+function toggleFullscreen(){
+  const r = document.documentElement;
+  try{
+    if (document.fullscreenElement || document.webkitFullscreenElement)
+      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else
+      (r.requestFullscreen || r.webkitRequestFullscreen).call(r);
+  }catch(e){ /* на доске без поддержки просто ничего не происходит */ }
+}
+function urlFlag(name){
+  return new RegExp('(^|[?&])' + name + '=1(&|$)').test(location.search || '');
+}
+function init(){
+  $('#types').addEventListener('click', e => { const c = e.target.closest('[data-type]'); if (c) setType(c.dataset.type); });
+  $('#modeSeg').addEventListener('click', e => {
+    const b = e.target.closest('[data-mode]'); if (!b) return;
+    $$('#modeSeg [data-mode]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    setMode(b.dataset.mode);
+  });
+  $('#taskArea').addEventListener('click', e => {
+    const btn = e.target.closest('[data-action]'); if (!btn) return;
+    const act = btn.dataset.action;
+    if (act === 'check') checkTrain();
+    else if (act === 'new') newTask();
+    else if (act === 'steps'){ state.showSteps = !state.showSteps; renderTrainCard(); }
+    else if (act === 'exam-start') startExam();
+    else if (act === 'exam-check') examCheck();
+    else if (act === 'to-train'){ $$('#modeSeg [data-mode]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.mode === 'train'))); setMode('train'); }
+  });
+  $('#taskArea').addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || !e.target.classList.contains('num')) return;
+    if (state.mode === 'exam') examCheck(); else checkTrain();
+  });
+  $('#boardBtn').addEventListener('click', () => setBoard(!document.documentElement.classList.contains('board')));
+  $('#mirrorBtn').addEventListener('click', () => setMirror(!document.documentElement.classList.contains('mirror')));
+  if (canFullscreen()) $('#fsBtn').addEventListener('click', toggleFullscreen);
+  else $('#fsBtn').remove();
+  if (stats.board) setBoard(true);
+  if (urlFlag('board')) setBoard(true);
+  if (urlFlag('mirror')) setMirror(true);
+  if (/(^|[?&])mode=review/.test(location.search || '')){ state.review = true; state.mode = 'train'; }
+  newTask();
+}
+if (typeof document !== 'undefined') document.addEventListener('DOMContentLoaded', init);
+if (typeof module !== 'undefined'){ module.exports = { parseNum, diagnose }; }
+
+</script>
+</body>
+</html>
