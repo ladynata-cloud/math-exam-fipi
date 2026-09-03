@@ -1,0 +1,102 @@
+
+/* Серия «Стройность школьного курса геометрии» */
+.series-page{padding:34px 0 0}
+.series-article{max-width:900px;margin:0 auto}
+.series-header{border-left:4px solid var(--margin-red);padding:4px 0 4px 25px;margin-bottom:28px}
+.series-header .series-label{margin:0 0 7px;color:var(--margin-red);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.82rem}
+.series-header .lead{font-size:1.16rem;max-width:47em}
+.series-header .byline{margin-top:14px}
+.series-note{padding:15px 18px;border:1px solid var(--line);border-left:4px solid var(--pen);background:rgba(255,255,255,.86);border-radius:0 10px 10px 0;margin:22px 0}
+.series-note.warning{border-left-color:var(--margin-red)}
+.series-note.good{border-left-color:var(--ok)}
+.series-note h3{margin:0 0 5px;font-size:1.04rem}
+.series-article section{margin:34px 0}
+.series-article h2{margin-top:0;padding-top:4px}
+.series-article h3{margin-top:1.3em}
+.series-article p{max-width:48em}
+.series-article blockquote{margin:20px 0;padding:12px 20px;border-left:4px solid var(--margin-red);background:rgba(255,255,255,.82);font-family:"PT Serif",Georgia,serif;font-size:1.07rem}
+.series-article blockquote p{margin:.3em 0}
+.series-figure{margin:28px 0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;box-shadow:0 2px 7px rgba(34,48,74,.07)}
+.series-figure img{display:block;width:100%;height:auto;border-radius:7px}
+.series-figure figcaption{color:var(--ink-soft);font-size:.9rem;line-height:1.45;padding:10px 6px 2px}
+.series-figure.source-fragment{max-width:760px}
+.series-figure.source-fragment img{max-height:860px;object-fit:contain;background:#fff}
+.infographic{max-width:980px;margin-left:auto;margin-right:auto}
+.article-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:12px;margin:22px 0}
+.summary-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px 16px}
+.summary-card strong{display:block;font-family:"PT Serif",Georgia,serif;margin-bottom:4px}
+.summary-card p{font-size:.94rem;color:var(--ink-soft);margin:0}
+.comparison-table{width:100%;border-collapse:collapse;background:#fff;margin:20px 0;font-size:.94rem}
+.comparison-table th,.comparison-table td{border:1px solid var(--line);padding:10px 12px;vertical-align:top}
+.comparison-table th{background:#eef3fb;text-align:left;font-family:"PT Serif",Georgia,serif}
+.comparison-table td:first-child{font-weight:700;min-width:150px}
+.series-article table{width:100%;border-collapse:collapse;background:#fff;margin:20px 0;font-size:.94rem}
+.series-article th,.series-article td{border:1px solid var(--line);padding:10px 12px;vertical-align:top}
+.series-article th{background:#eef3fb;text-align:left}
+.series-article ul,.series-article ol{max-width:48em}
+.source-list{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.source-list h2,.source-list h3{margin-top:0}
+.source-list ul{margin-bottom:0}
+.source-list li{margin:.55em 0}
+.source-list .edition{color:var(--ink-soft)}
+.article-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:38px 0 10px}
+.article-nav a{display:block;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--ink)}
+.article-nav a:hover{border-color:var(--pen);color:var(--pen)}
+.article-nav .next{text-align:right}
+.article-nav small{display:block;color:var(--ink-soft)}
+.series-progress{display:flex;gap:5px;margin:10px 0 24px}
+.series-progress span{height:6px;flex:1;background:var(--line);border-radius:4px}
+.series-progress span.done,.series-progress span.current{background:var(--pen)}
+.series-progress span.current{box-shadow:0 0 0 2px rgba(43,87,196,.18)}
+.series-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
+.series-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.series-card .number{font:700 1.4rem "PT Serif",Georgia,serif;color:var(--margin-red)}
+.series-card h2,.series-card h3{font-size:1.12rem;margin:0}
+.series-card p{color:var(--ink-soft);font-size:.94rem;margin:0;flex:1}
+.series-card a{font-weight:700;text-decoration:none}
+.corpus-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.corpus-item{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+.corpus-item h3{font-size:1rem;margin-bottom:5px}
+.corpus-item p{font-size:.91rem;color:var(--ink-soft);margin:0 0 8px}
+.method-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:25px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.method-strip div{background:#fff;padding:14px;border-right:1px solid var(--line)}
+.method-strip div:last-child{border-right:0}
+.method-strip strong{display:block;color:var(--pen)}
+.tagline{font-family:"PT Serif",Georgia,serif;font-size:1.22rem;line-height:1.45;max-width:42em}
+.smallprint{color:var(--ink-soft);font-size:.86rem}
+.screen-only{}
+@media print{
+  .site-header,.site-footer,.article-nav,.screen-only{display:none!important}
+  body{background:#fff;font-size:11pt}
+  .series-page{padding:0}
+  .series-article{max-width:none}
+  a{color:inherit;text-decoration:none}
+  .series-figure{break-inside:avoid;box-shadow:none}
+  .series-article section{break-inside:auto}
+  h2,h3{break-after:avoid}
+}
+@media(max-width:700px){
+  .series-header{padding-left:16px}
+  .article-nav{grid-template-columns:1fr}
+  .article-nav .next{text-align:left}
+  .method-strip{grid-template-columns:1fr 1fr}
+  .method-strip div:nth-child(2){border-right:0}
+}
+@media(max-width:470px){
+  .method-strip{grid-template-columns:1fr}
+  .method-strip div{border-right:0;border-bottom:1px solid var(--line)}
+  .method-strip div:last-child{border-bottom:0}
+  .series-figure{margin-left:-8px;margin-right:-8px}
+}
+
+/* Длинные сравнительные таблицы остаются читаемыми на телефоне. */
+.series-article{overflow-wrap:anywhere}
+@media(max-width:700px){
+  .series-article table{
+    display:block;
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    white-space:normal;
+  }
+}
