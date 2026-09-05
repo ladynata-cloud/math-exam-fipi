@@ -187,9 +187,10 @@
     host.innerHTML = html.join("");
     PROGRESS.apply(host, view ? PROGRESS.snapshotStore(view) : PROGRESS.liveStore());
 
-    $("#sourceLine").textContent = view
+    var who = (all.student && all.student.name) ? String(all.student.name) : "";
+    $("#sourceLine").textContent = (view
       ? "Показан прогресс из вставленного кода. В этом браузере ничего не изменено."
-      : "Показан прогресс этого браузера.";
+      : "Показан прогресс этого браузера.") + (who ? " Ученик: " + who + "." : "");
     $("#mineBtn").hidden = !view;
   }
 
