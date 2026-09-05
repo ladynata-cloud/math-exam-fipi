@@ -38,7 +38,8 @@ function solveCurrent(w, d, S){
 {
   const { d } = boot();
   const css = qa(d, 'style').map(s => s.textContent).join('\n');
-  ok(/\.figure\{[^}]*width:360px/.test(css), 'чертёж крупнее: .figure width 360px');
+  ok(/\.figure\{[^}]*width:560px/.test(css), 'чертёж крупный сразу: .figure width 560px');
+  ok(/html\.board \.figure\{width:720px\}/.test(css), 'на доске ещё крупнее: 720px');
   ok(/@media\(max-width:640px\)\{\.figure\{[^}]*width:100%/.test(css), 'на телефоне чертёж во всю ширину');
   ok(/@keyframes eqblink/.test(css) && /\.eqang\.blink\{animation/.test(css), 'мерцание равных углов объявлено');
   ok(/prefers-reduced-motion: reduce\)\{\*\{transition:none !important; animation:none !important\}/.test(css), 'мерцание выключается при prefers-reduced-motion');
@@ -51,9 +52,20 @@ function solveCurrent(w, d, S){
   click(w, q(d, '#topics .chip[data-topic="2"]'));
   click(w, q(d, '#modeSeg [data-mode="learn"]'));                    // «Учимся»: демо 0 = sinFromSeg
   ok(S().task.p.recipe === 'sinFromSeg', 'демо 0 темы 2 — задача на sin A');
-  const g1 = qa(d, '.figure .eqang.g1.blink'), g2 = qa(d, '.figure .eqang.g2.blink');
-  ok(g1.length === 2, `угол A и угол BCH — две одинаковые мерцающие дуги (${g1.length})`);
-  ok(g2.length === 4, `угол B и угол ACH — двойные дуги другого цвета (${g2.length} путей)`);
+  const arcs = qa(d, '.figure .eqang');
+  ok(arcs.length === 4, `дуги всех четырёх углов видны всегда (${arcs.length})`);
+  ok(qa(d, '.figure .eqang.blink').length === 0, 'без нажатия ничего не мигает');
+  const colOf = el => (el.getAttribute('style').match(/stroke:(#[0-9a-f]{6})/) || [])[1];
+  const cols = arcs.map(colOf);
+  ok(new Set(cols).size === 2 && cols.filter(c => c === cols[0]).length === 2, 'два класса равенства — два цвета, по две дуги каждого');
+  const chips2 = qa(d, '.figure .achip');
+  ok(chips2.length === 4, 'четыре чипа углов под чертежом');
+  click(w, chips2[0]);
+  const lit = qa(d, '.figure .eqang.g4.blink');
+  ok(lit.length >= 1 && lit.every(p => /stroke-width:3\.4/.test(p.getAttribute('style'))), 'нажатие: равный угол стал толще и мигает');
+  ok(/∠[A-Z]+ = ∠[A-Z]+/.test(q(d, '.figure svg').textContent), 'подпись равенства на чертеже');
+  click(w, q(d, '.figure .achip.on'));
+  ok(qa(d, '.figure .eqang.blink').length === 0, 'повторное нажатие: мигание выключено');
   ok(qa(d, '.figure .stepang').length === 0, 'до первого шага сектор угла не показан');
   click(w, q(d, '[data-action="next"]'));                          // шаг 1: где ещё угол A? — подсвечен сам угол A
   ok(qa(d, '.figure .stepang').length === 1, 'после шага 1 на чертеже один сектор');
@@ -90,7 +102,7 @@ function solveCurrent(w, d, S){
   ok(S().finished, 'высота найдена за три шага');
 }
 
-/* ---------- 4. Тема 4: сектор угла переезжает по шагам, равные углы мигают ---------- */
+/* ---------- 4. Тема 4: сектор угла переезжает по шагам; живые углы ---------- */
 {
   const { w, d, S } = boot();
   click(w, q(d, '#topics .chip[data-topic="4"]'));
@@ -99,26 +111,67 @@ function solveCurrent(w, d, S){
   let guard = 0;
   while (S().task.p.kind !== 'hdm' && guard++ < 60) click(w, q(d, '[data-action="new"]'));
   ok(S().task.p.kind === 'hdm', 'задача про высоту/биссектрису/медиану');
-  const seq = [];
-  for (let i = 0; i < 3; i++){
-    const w1 = q(d, '.figure .stepang');
-    seq.push(w1 ? w1.getAttribute('d') : null);
-    if (S().task.steps[i].fig && S().task.steps[i].fig.eq) ok(qa(d, '.figure .eqang.blink').length >= 1, `шаг ${i + 1}: парный равный угол мигает (у угла с сектором вторая дуга не дублируется)`);
-    /* шкала углов при C */
-    ok(!!q(d, '.figure .angbar'), `шаг ${i + 1}: шкала углов на месте`);
-    ok(qa(d, '.figure .angtick').length === 3, `шаг ${i + 1}: три засечки — высота, биссектриса, медиана`);
-    ok(!!q(d, '.figure .angspan'), `шаг ${i + 1}: на шкале выделен угол текущего шага`);
-    const vals = qa(d, '.figure .angbar text').filter(tx => /font-weight:900/.test(tx.getAttribute('style')) && /°$/.test(tx.textContent) && !/^\?$/.test(tx.textContent)).length;
-    ok(vals === i, `шаг ${i + 1}: на шкале подписано ${i} найденных значений (${vals})`);
-    ok(/высота/.test(q(d, '.figure .legend').textContent) && /медиана/.test(q(d, '.figure .legend').textContent), `шаг ${i + 1}: легенда цветов под чертежом`);
-    ok(/viewBox="-6 0 292 294"/.test(q(d, '.figure').innerHTML), `шаг ${i + 1}: чертёж вырос под шкалу`);
-    ok(!!q(d, '.step.current .formula'), `шаг ${i + 1}: есть крупная формула`);
+  ok(!q(d, '.figure .angbar'), 'шкалы углов больше нет');
+  ok(/viewBox="-6 0 292 224"/.test(q(d, '.figure').innerHTML), 'чертёж прежней высоты');
+  /* живые углы: чипы под чертежом и зоны касания на самом чертеже */
+  const chips = qa(d, '.figure .achip');
+  ok(chips.length >= 4, `чипы углов под чертежом (${chips.length})`);
+  ok(qa(d, '.figure .anghit').length === chips.length, 'на каждый чип — своя зона касания на чертеже');
+  ok(/высота/.test(q(d, '.figure .legend').textContent), 'легенда цветов под чертежом');
+  const stepWedge = q(d, '.figure .stepang').getAttribute('d');
+  /* нажимаем угол, у которого есть равный: загораются оба и одним цветом */
+  const F = w.eval('angleFacts(state.task).filter(F => F.partners.length)[0]');
+  ok(!!F && F.step != null, 'есть угол с равным ему, найденный на некотором шаге');
+  const achChip = chips.find(c => c.dataset.ang === F.key);
+  const partnerChip = chips.find(c => c.dataset.ang === F.partners[0].key);
+  ok(!!achChip && !!partnerChip, 'чипы угла и равного ему на месте');
+  ok(achChip.style.getPropertyValue('--c') === partnerChip.style.getPropertyValue('--c'), 'равные углы — одного цвета на чипах');
+  const single = chips.find(c => c.dataset.ang !== F.key && !F.partners.some(p => p.key === c.dataset.ang) && (w.eval('angleFacts(state.task)').find(x => x.key === c.dataset.ang) || {}).partners.length === 0);
+  if (single) ok(single.style.getPropertyValue('--c') !== achChip.style.getPropertyValue('--c'), 'одиночный угол — другого цвета');
+  click(w, achChip);
+  ok(S().tapAngle === achChip.dataset.ang, 'нажатие на чип запоминается в состоянии');
+  ok(q(d, '.figure .achip.on') && q(d, '.figure .achip.on').dataset.ang === achChip.dataset.ang, 'чип подсвечен как активный');
+  ok(/∠[A-Z]+ = ∠[A-Z]+/.test(q(d, '.figure svg').textContent), 'на чертеже подпись «∠… = ∠…»');
+  const partnerArc = qa(d, '.figure .eqang.g4.blink');
+  ok(partnerArc.length >= 1, 'равный угол загорелся (мерцающая дуга)');
+  ok(partnerArc.every(p => p.getAttribute('style').includes(F.col)) && q(d, '.figure .stepang').getAttribute('style').includes(F.col), 'сектор и дуга равного угла — один цвет');
+  ok(!/= \d+°/.test(q(d, '.figure svg').textContent) || S().stepIdx > F.step, 'значение не показано, пока угол не найден по шагам');
+  /* повторное нажатие снимает выделение; другой угол — переезд сектора */
+  click(w, q(d, `.figure .achip[data-ang="${achChip.dataset.ang}"]`));
+  ok(S().tapAngle === null && q(d, '.figure .stepang').getAttribute('d') === stepWedge, 'повторное нажатие возвращает подсветку шага');
+  {
+    const other = qa(d, '.figure .achip').find(c => c.dataset.ang !== S().task.steps[0].fig.angles[0].at + ':' + [S().task.steps[0].fig.angles[0].rays[0], S().task.steps[0].fig.angles[0].rays[1]].sort().join(''));
+    click(w, other);
+    ok(q(d, '.figure .stepang').getAttribute('d') !== stepWedge, 'нажали другой угол — сектор переехал на него');
+    click(w, q(d, `.figure .achip[data-ang="${other.dataset.ang}"]`));
+    ok(S().tapAngle === null, 'снятие выделения через тот же чип');
+  }
+  /* касание по самому чертежу тоже работает */
+  click(w, q(d, `.figure .anghit[data-ang="${achChip.dataset.ang}"]`));
+  ok(S().tapAngle === achChip.dataset.ang, 'зона касания на чертеже выбирает угол');
+  click(w, q(d, `.figure .anghit[data-ang="${achChip.dataset.ang}"]`));
+  /* решаем шаги до того, где находится этот угол — его значение появляется на чипе и при нажатии */
+  const seq = [q(d, '.figure .stepang').getAttribute('d')];
+  ok(!!q(d, '.step.current .formula'), 'шаг 1: есть крупная формула');
+  solveCurrent(w, d, S);
+  ok(S().tapAngle === null, 'после решённого шага выделение угла сброшено');
+  let guardK = 0;
+  while (S().stepIdx <= F.step && !S().finished && guardK++ < 5){ seq.push(q(d, '.figure .stepang').getAttribute('d')); solveCurrent(w, d, S); }
+  const chipAfter = qa(d, '.figure .achip').find(c => c.dataset.ang === achChip.dataset.ang);
+  ok(!!chipAfter && new RegExp('= ' + F.val + '°').test(chipAfter.textContent), `после шага чип показывает найденное значение (${chipAfter && chipAfter.textContent})`);
+  click(w, chipAfter);
+  ok(new RegExp('= ' + F.val + '°').test(q(d, '.figure svg').textContent), 'при нажатии найденное значение показано на чертеже');
+  click(w, q(d, `.figure .achip[data-ang="${achChip.dataset.ang}"]`));
+  ok(S().tapAngle === null, 'выделение снято перед продолжением шагов');
+  let guardR = 0;
+  while (!S().finished && guardR++ < 5){
+    seq.push(q(d, '.figure .stepang').getAttribute('d'));
+    ok(!!q(d, '.step.current .formula'), `шаг ${S().stepIdx + 1}: есть крупная формула`);
     solveCurrent(w, d, S);
   }
   ok(seq.every(Boolean) && new Set(seq).size === 3, 'сектор угла на чертеже разный на каждом из трёх шагов');
   ok(S().finished, 'тема 4 решена по шагам');
-  const finalLbl = qa(d, '.figure .angbar text').map(tx => tx.textContent);
-  ok(finalLbl.some(s => /^\d+°$/.test(s)) && !finalLbl.includes('?'), 'после решения на шкале стоит ответ вместо «?»');
+  ok(/\d+°/.test(q(d, '.figure svg').textContent), 'после решения на чертеже стоит найденный угол');
 }
 
 /* ---------- 5. Тема 5: одношаговых задач больше нет; равные 30° и 60° мигают ---------- */
@@ -133,7 +186,7 @@ function solveCurrent(w, d, S){
   click(w, q(d, '#levelSeg [data-level="2"]'));
   let guard = 0;
   while (S().task.p.ask !== 'CH' && guard++ < 60) click(w, q(d, '[data-action="new"]'));
-  ok(qa(d, '.figure .eqang.g1.blink').length >= 1 && qa(d, '.figure .eqang.g2.blink').length === 4, 'высота при 30°: пара 60° — двойными дугами, парный 30° мигает рядом с сектором шага');
+  ok(qa(d, '.figure .eqang').length >= 3 && qa(d, '.figure .eqang.blink').length === 0, 'высота при 30°: дуги пар 30° и 60° видны, без нажатия не мигают');
   ok(S().task.steps[0].kind === 'choice' || S().task.steps[1].kind === 'choice', 'вопрос «какая сторона против 30°» стоит в начале лесенки');
   let g = 0; while (!S().finished && g++ < 12) solveCurrent(w, d, S);
   ok(S().finished, 'высота при 30° решена по шагам');
