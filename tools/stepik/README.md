@@ -12,7 +12,7 @@ so the result is **not** a complete autonomous backup of Stepik.
 - The only permitted POST is OAuth client-credentials token acquisition at the
   exact URL `https://stepik.org/oauth2/token/`.
 - There are no create, update, delete or publish commands.
-- Authorization is removed on cross-origin redirects.
+- All HTTP redirects are blocked before a follow-up request, including API and OAuth redirects.
 - TLS verification remains enabled.
 - Credentials are read only from `STEPIK_CLIENT_ID` and `STEPIK_CLIENT_SECRET`.
   The token stays in memory and is never written or logged.
@@ -29,6 +29,26 @@ python3 tools/stepik/export_course.py --help
 
 The tests use only artificial API responses. They do not prove access to a real
 Stepik account or compatibility with the current live API.
+
+## Completeness and partial results
+
+`sections`, `units`, and `steps` must be present as lists. IDs must be positive
+integers; booleans, strings, and other types are rejected. Response collections
+must be lists of objects, singular IDs must match the request, and batch IDs
+must belong to the requested set. Violations produce errors and `INCOMPLETE`;
+received JSON is saved before these checks. A valid `sections=[]` is complete.
+
+Pagination yields one page at a time. Each page is written before requesting
+the next, so a later timeout leaves earlier pages and their checksums on disk.
+An unavailable course produces an `INCOMPLETE` manifest when output is writable.
+Authentication failure before a course request remains a CLI error.
+
+The PR #117 correction passed 24 synthetic tests, including missing fields,
+invalid IDs and response shapes, page-two timeout retention, API/OAuth redirect
+blocking, preserved order/reused lessons, and recalculated SHA-256 checksums.
+Use `python3 tools/stepik/gate.py` for tests, compilation, and CLI help.
+On Windows set `PYTHONUTF8=1` for the process and `PYTHONPYCACHEPREFIX` to an
+external temporary directory; do not change system settings or store logs here.
 
 ## Later, explicitly authorized cloud run
 

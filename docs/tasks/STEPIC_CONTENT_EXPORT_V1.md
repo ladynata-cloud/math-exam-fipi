@@ -8,7 +8,9 @@
 - Base branch: `main`
 - Base SHA: `5774dbb31a34bc43c73a6fe29ce5af0863d44bf6`
 - Base tree: `863d4dbff7e00a5dba30fbe9ee47ff8bd210211e`
-- Planned branch: `codex/stepik-content-export-v1`
+- Current branch: `codex/-stepik`
+- Existing PR: #117
+- Correction starting HEAD: `75750410bb342ba1f9fd2656fdca402ab8c1f526`
 - Review level: `MEDIUM`
 - Related issue or ADR: none
 
@@ -38,8 +40,8 @@ contents to an explicitly selected directory outside the repository.
 
 - `tools/stepik/`: standard-library Python exporter, tests and owner instructions.
 - This task specification.
-- A minimal `.gitignore` addition only if required.
-- Local commits and a portable binary diff/archive after passing local checks.
+- Local correction commits and ordinary push to the existing `codex/-stepik` branch
+  of `ladynata-cloud/math-exam-fipi`, followed by updating PR #117.
 
 ### Out of scope
 
@@ -47,12 +49,12 @@ contents to an explicitly selected directory outside the repository.
 - Student data, personal data, attempts, comments, payments, or grades.
 - Stepik create, edit, delete, publish, or any other content mutation.
 - Site, trainer, board, registry, server, existing-check, workflow, or Git setting changes.
-- GitHub Actions, automatic execution, push, PR, merge, deployment, or Stepik changes.
+- GitHub Actions, automatic execution, new PRs, force push, merge, auto-merge,
+  main changes, deployment, or Stepik changes.
 
 ### Files or areas that must not change
 
-- Everything outside `tools/stepik/` and this task specification, except a
-  strictly necessary `.gitignore` line.
+- Everything outside `tools/stepik/` and this task specification.
 
 ## Acceptance criteria
 
@@ -71,10 +73,18 @@ contents to an explicitly selected directory outside the repository.
 - [x] Authentication secrets come only from environment variables; tokens and
       authorization data are neither logged nor written to output.
 - [x] Only GET is allowed for API reads; the sole POST exception is the exact OAuth
-      token URL. Cross-origin redirects never receive authorization.
+      token URL. All redirects are blocked before follow-up, including OAuth.
 - [x] Synthetic tests cover order, pagination, repeated lessons, empty course,
       unavailable step-source, authorization failure, timeout, rate limiting,
       incomplete status, and pre-send mutation blocking.
+
+- [x] Required reference lists and positive integer IDs are validated; response
+      collections contain objects, singular IDs match, and batch IDs belong to
+      the request. Raw responses are written before validation.
+- [x] Pages are yielded and saved sequentially; a later timeout retains earlier
+      pages and produces an `INCOMPLETE` manifest with the reason.
+- [x] An unavailable course produces `INCOMPLETE` with a manifest when writable;
+      a valid empty course remains `COMPLETE`.
 
 ## Checks and gates
 
@@ -82,7 +92,8 @@ contents to an explicitly selected directory outside the repository.
 - Required static checks: `python3 -m py_compile tools/stepik/*.py tools/stepik/tests/*.py`
 - Manual checks: CLI help, forbidden in-repository output, secret/path scan.
 - Final gate marker: `STEPIC_CONTENT_EXPORT_V1_LOCAL_GATE_OK`
-- Not run: real Stepik access, push, PR, merge, deployment.
+- Required gate: `python3 tools/stepik/gate.py`; `git diff --check`; changed-file scope check.
+- Not run: real Stepik access, merge, auto-merge, deployment.
 
 ## Review plan
 
@@ -103,17 +114,26 @@ contents to an explicitly selected directory outside the repository.
 
 - `START` granted in current conversation: yes
 - Branch creation, local implementation, tests, and local commit: yes
-- Push and Draft PR in this iteration: no
+- Current owner request authorizes ordinary push only to `codex/-stepik` and
+  updating existing PR #117 after successful checks; no new PR.
+- Check authoritative remote branch HEAD before push and stop on divergence.
+- This record is not external-review evidence; any earlier-head verdict requires
+  review of the corrected head.
 - Merge, auto-merge, deployment, and Stepik mutation: no
 
 ## Execution record
 
-- Actual branch: `codex/stepik-content-export-v1`
+- Actual branch: `codex/-stepik`; continuing existing PR #117.
 - Actual base SHA/tree: as specified above.
-- Tests passed: 14 synthetic unit tests; Python compilation; CLI help; scope,
-  secret-pattern, and diff checks; local gate marker emitted.
+- Tests passed in the correction run: 24 synthetic unit tests; Python compilation;
+  CLI help; scope, secret/path and diff checks; local gate marker emitted.
+- Regression coverage: missing sections/units/steps, invalid list types and IDs,
+  mismatched singular and batch IDs, malformed response collections, second-page
+  timeout with first-page persistence, API/OAuth redirects, empty and unavailable
+  courses, order/reused lessons, and recalculated file checksums.
 - Tests failed: none.
 - Tests not run: official-document retrieval, real Stepik access, real course-title
-  verification, push, PR, merge, and deployment.
+  verification, merge, auto-merge, and deployment.
+- Publication outcome and final head are recorded in the PR and final handoff.
 - Scope deviations: none.
 - Commit: recorded in the final handoff because recording it here would change it.

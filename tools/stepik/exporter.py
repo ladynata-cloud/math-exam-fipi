@@ -16,7 +16,7 @@ import os
 from pathlib import Path
 import sys
 import time
-from typing import Any, Callable
+from typing import Any, Callable, Iterator
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -48,17 +48,10 @@ class MethodNotAllowed(ExportError):
 
 
 class SafeRedirectHandler(urllib.request.HTTPRedirectHandler):
-    """Never forward authorization when a redirect changes origin."""
+    """Block every redirect before any follow-up request, including OAuth."""
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: ANN001
-        redirected = super().redirect_request(req, fp, code, msg, headers, newurl)
-        if redirected is None:
-            return None
-        old = urllib.parse.urlsplit(req.full_url)
-        new = urllib.parse.urlsplit(newurl)
-        if (old.scheme, old.hostname, old.port) != (new.scheme, new.hostname, new.port):
-            redirected.remove_header("Authorization")
-        return redirected
+        raise ExportError("HTTP redirect blocked before follow-up request")
 
 
 class StepikClient:
@@ -169,13 +162,14 @@ class StepikClient:
             raise AuthorizationError("Stepik OAuth response did not contain an access token")
         return cls(token=token, **kwargs)
 
-    def paginated(self, path: str) -> list[tuple[dict[str, Any], bytes, str]]:
+    def paginated(self, path: str) -> Iterator[tuple[dict[str, Any], bytes, str]]:
         url = urllib.parse.urljoin(API_ROOT, path)
-        pages: list[tuple[dict[str, Any], bytes, str]] = []
         while url:
             payload, raw = self.get_json(url)
-            pages.append((payload, raw, url))
-            meta = payload.get("meta") or {}
+            yield payload, raw, url
+            meta = payload.get("meta", {})
+            if not isinstance(meta, dict):
+                raise ExportError("Stepik pagination meta is not an object")
             has_next = bool(meta.get("has_next") or meta.get("has-page-next"))
             if not has_next:
                 break
@@ -184,14 +178,21 @@ class StepikClient:
             current = int((query.get("page") or [1])[-1])
             query["page"] = [str(current + 1)]
             url = urllib.parse.urlunsplit(parsed._replace(query=urllib.parse.urlencode(query, doseq=True)))
-        return pages
 
 
 def _objects(payload: dict[str, Any], key: str) -> list[dict[str, Any]]:
-    value = payload.get(key, [])
+    if key not in payload:
+        raise ExportError(f"Stepik response field {key!r} is missing")
+    value = payload[key]
     if not isinstance(value, list):
         raise ExportError(f"Stepik response field {key!r} is not a list")
-    return [item for item in value if isinstance(item, dict)]
+    if any(not isinstance(item, dict) for item in value):
+        raise ExportError(f"Stepik response field {key!r} contains a non-object")
+    return value
+
+
+def _valid_id(value: Any) -> bool:
+    return type(value) is int and value > 0
 
 
 class CourseExporter:
@@ -212,65 +213,74 @@ class CourseExporter:
     def _write_json(self, relative: str, value: Any) -> None:
         self._write_raw(relative, (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode())
 
+    def _references(self, obj: dict[str, Any], key: str, resource: str) -> list[int]:
+        value = obj.get(key)
+        if not isinstance(value, list):
+            self.errors.append({"resource": resource, "id": obj.get("id"),
+                                "error": f"required field {key!r} missing or not a list"})
+            return []
+        if any(not _valid_id(item) for item in value):
+            self.errors.append({"resource": resource, "id": obj.get("id"),
+                                "error": f"field {key!r} contains a non-positive-integer ID"})
+        return [item for item in value if _valid_id(item)]
+
     def _get_one(self, resource: str, object_id: int) -> dict[str, Any] | None:
-        url = f"{API_ROOT}{resource}/{object_id}"
         try:
-            payload, raw = self.client.get_json(url)
+            if not _valid_id(object_id):
+                raise ExportError("requested ID must be a positive integer")
+            payload, raw = self.client.get_json(f"{API_ROOT}{resource}/{object_id}")
+            self._write_raw(f"raw/{resource}/{object_id}.json", raw)
+            values = _objects(payload, resource)
+            if len(values) != 1:
+                raise ExportError("expected exactly one object in response")
+            if not _valid_id(values[0].get("id")) or values[0]["id"] != object_id:
+                raise ExportError("response ID does not match requested ID")
+            return values[0]
         except ExportError as exc:
             self.errors.append({"resource": resource, "id": object_id, "error": str(exc)})
             self.unavailable.append({"resource": resource, "id": object_id})
             return None
-        self._write_raw(f"raw/{resource}/{object_id}.json", raw)
-        values = _objects(payload, resource)
-        if not values:
-            self.errors.append({"resource": resource, "id": object_id, "error": "object missing from response"})
-            self.unavailable.append({"resource": resource, "id": object_id})
-            return None
-        return values[0]
 
-    def _get_pages(self, resource: str, query: str, batch: int) -> list[dict[str, Any]]:
+    def _get_pages(self, resource: str, query: str, batch: int,
+                   requested: set[int]) -> list[dict[str, Any]]:
         found: list[dict[str, Any]] = []
-        for index, (payload, raw, _url) in enumerate(self.client.paginated(f"{resource}?{query}"), 1):
-            self._write_raw(f"raw/{resource}/batch-{batch}-page-{index}.json", raw)
-            found.extend(_objects(payload, resource))
+        try:
+            for index, (payload, raw, _url) in enumerate(self.client.paginated(f"{resource}?{query}"), 1):
+                self._write_raw(f"raw/{resource}/batch-{batch}-page-{index}.json", raw)
+                for item in _objects(payload, resource):
+                    if not _valid_id(item.get("id")) or item["id"] not in requested:
+                        self.errors.append({"resource": resource, "batch": batch,
+                                            "error": "response ID outside requested set or invalid"})
+                        continue
+                    found.append(item)
+        except ExportError as exc:
+            self.errors.append({"resource": resource, "batch": batch, "error": str(exc)})
         return found
 
-    def _get_referenced_collection(self, resource: str, ids: list[Any]) -> list[dict[str, Any]]:
-        numeric_ids = [item for item in ids if isinstance(item, int)]
-        if not numeric_ids:
-            return []
+    def _get_referenced_collection(self, resource: str, ids: list[int]) -> list[dict[str, Any]]:
         found: list[dict[str, Any]] = []
-        for batch, start in enumerate(range(0, len(numeric_ids), 100), 1):
-            query = urllib.parse.urlencode(
-                [("ids[]", item) for item in numeric_ids[start : start + 100]]
-            )
-            found.extend(self._get_pages(resource, query, batch))
+        for batch, start in enumerate(range(0, len(ids), 100), 1):
+            requested = ids[start : start + 100]
+            query = urllib.parse.urlencode([("ids[]", item) for item in requested])
+            found.extend(self._get_pages(resource, query, batch, set(requested)))
         return found
 
     def export(self, course_id: int) -> dict[str, Any]:
         course = self._get_one("courses", course_id)
         if course is None:
-            raise ExportError(f"Course {course_id} is unavailable")
+            course = {"id": course_id, "sections": []}
         title = course.get("title")
         if not isinstance(title, str) or not title.strip():
             self.errors.append({"resource": "courses", "id": course_id, "error": "course title missing"})
             title = "(title unavailable)"
 
-        section_order = course.get("sections") if isinstance(course.get("sections"), list) else []
+        section_order = self._references(course, "sections", "courses")
         sections = self._get_referenced_collection("sections", section_order)
-        sections_by_id = {item.get("id"): item for item in sections}
-        if not section_order:
-            section_order = [item.get("id") for item in sections]
-        unit_ids = [
-            unit_id
-            for section_id in section_order
-            for unit_id in (
-                sections_by_id.get(section_id, {}).get("units", [])
-                if isinstance(sections_by_id.get(section_id, {}).get("units"), list)
-                else []
-            )
-            if isinstance(unit_id, int)
-        ]
+        sections_by_id = {item["id"]: item for item in sections}
+        unit_orders = {key: self._references(section, "units", "sections")
+                       for key, section in sections_by_id.items()}
+        unit_ids = [unit_id for section_id in section_order
+                    for unit_id in unit_orders.get(section_id, [])]
         units = self._get_referenced_collection("units", unit_ids)
         units_by_id = {item.get("id"): item for item in units}
 
@@ -286,7 +296,7 @@ class CourseExporter:
                 self.errors.append({"resource": "sections", "id": section_id, "error": "referenced section unavailable"})
                 self.unavailable.append({"resource": "sections", "id": section_id})
                 continue
-            unit_order = section.get("units") if isinstance(section.get("units"), list) else []
+            unit_order = unit_orders[section_id]
             module = {"section_id": section_id, "title": section.get("title", ""), "lessons": []}
             for unit_id in unit_order:
                 unit = units_by_id.get(unit_id)
@@ -295,7 +305,7 @@ class CourseExporter:
                     self.unavailable.append({"resource": "units", "id": unit_id})
                     continue
                 lesson_id = unit.get("lesson")
-                if not isinstance(lesson_id, int):
+                if not _valid_id(lesson_id):
                     self.errors.append({"resource": "units", "id": unit_id, "error": "lesson reference missing"})
                     continue
                 if lesson_id not in lesson_cache:
@@ -305,10 +315,8 @@ class CourseExporter:
                 lesson_entry = {"unit_id": unit_id, "lesson_id": lesson_id, "title": "", "steps": []}
                 if lesson is not None:
                     lesson_entry["title"] = lesson.get("title", "")
-                    step_ids = lesson.get("steps") if isinstance(lesson.get("steps"), list) else []
+                    step_ids = self._references(lesson, "steps", "lessons")
                     for step_id in step_ids:
-                        if not isinstance(step_id, int):
-                            continue
                         unique_steps.add(step_id)
                         if step_id not in step_cache:
                             step_cache[step_id] = self._get_one("step-sources", step_id)
