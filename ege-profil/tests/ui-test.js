@@ -39,6 +39,9 @@ const TOPICS_LIST = [0, 1, 2, 3, 4, 5];
   ok(qa(d, '#topics .chip').length === 6, 'шесть тем');
   ok(S().topic === 0 && S().mode === 'learn', 'по умолчанию разминка, режим учимся');
   ok(q(d, '#levelWrap').style.display === 'none', 'у разминки уровень скрыт');
+  ok(q(d, '[data-action="show-all"]') == null, '«Показать всё» без режима доски не показывается');
+  click(w, q(d, '#boardBtn'));                                        // «Показать всё» — только у доски
+  ok(q(d, '[data-action="show-all"]') != null, '«Показать всё» есть в режиме доски');
   for (const t of TOPICS_LIST){
     click(w, q(d, `#topics .chip[data-topic="${t}"]`));
     ok(S().topic === t && S().demoIdx === 0, `переключение на тему ${t}`);
@@ -65,7 +68,7 @@ function solveStepsCorrectly(w, d, S){
     if (st.kind === 'info') click(w, cur.querySelector('[data-action="info-next"]'));
     else if (st.kind === 'choice') click(w, cur.querySelector(`.opt[data-opt="${st.correct}"]`));
     else if (st.kind === 'pickSide') click(w, q(d, `.figure [data-side="${st.want}"]`));
-    else if (st.kind === 'num'){ cur.querySelector('input.num').value = ansStr(st.ans); click(w, cur.querySelector('[data-action="check"]')); }
+    else if (st.kind === 'num'){ cur.querySelector('input.num').value = ansStr(st.ans) + (st.suffix ? '√3' : ''); click(w, cur.querySelector('[data-action="check"]')); }   // ответ вида N√3 пишется с корнем
     else { st.inputs.forEach((inp, k) => { cur.querySelector(`input.num[data-k="${k}"]`).value = ansStr(inp.ans); }); click(w, cur.querySelector('[data-action="check"]')); }
     if (S().stepIdx !== i + 1){ ok(false, `шаг ${i} (${st.kind}, тема ${task.topic}) не принят: ${q(d, '.fb') ? q(d, '.fb').textContent : ''}`); return false; }
   }
@@ -126,6 +129,7 @@ function solveStepsCorrectly(w, d, S){
   ok(S().stepRevealed[S().stepIdx - 1] === true, '«Показать ответ» помечает шаг как раскрытый');
   // ловушка умножения на корень 3 (тема 5)
   click(w, q(d, '#topics .chip[data-topic="5"]'));
+  click(w, q(d, '#levelSeg [data-level="2"]'));                   // высота с ответом N√3 — со второго уровня
   let t5 = S().task, guard = 0;
   while (t5.p.ask !== 'CH' && guard++ < 30){ click(w, q(d, '[data-action="new"]')); t5 = S().task; }
   // дойти до шага с ответом вида N√3: предыдущие шаги закрываются верными ответами
@@ -168,7 +172,7 @@ function solveStepsCorrectly(w, d, S){
         if (rep) click(w, q(d, '[data-action="new"]'));
         const a = S().task.answer;
         noJunk(q(d, '#taskArea').innerHTML, `solo ${t}/${L}`);
-        if (a.kind === 'num'){ q(d, 'input[data-final="0"]').value = ansStr(a.value); click(w, q(d, '[data-action="final-check"]')); }
+        if (a.kind === 'num'){ q(d, 'input[data-final="0"]').value = ansStr(a.value) + (a.suffix ? '√3' : ''); click(w, q(d, '[data-action="final-check"]')); }
         else if (a.kind === 'side'){ click(w, q(d, `.figure [data-side="${a.want}"]`)); }
         else { click(w, q(d, `.opt[data-action="final-opt"][data-opt="${a.correct}"]`)); }
         ok(S().finished && q(d, '.final.ok') != null, `сам: тема ${t} уровень ${L} верный ответ принят`);
@@ -188,8 +192,10 @@ function solveStepsCorrectly(w, d, S){
   ok(q(d, '[data-action="give-up"]') != null, 'после второй ошибки появляется «показать решение»');
   const solvedBefore = stats().topics[1].solved;
   click(w, q(d, '[data-action="give-up"]'));
-  ok(S().finished && S().soloRevealed && qa(d, '.step.done').length === S().task.steps.length, 'сдаться: решение раскрыто');
-  ok(stats().topics[1].solved === solvedBefore + 1, 'сдача учтена как решённая');
+  ok(S().finished && S().soloRevealed && qa(d, '.step.done').length === 0 && q(d, '[data-action="next"]') != null, 'сдаться: решение открывается по шагам, а не целиком');
+  let gg = 0; while (q(d, '[data-action="next"]') && gg++ < 20) click(w, q(d, '[data-action="next"]'));
+  ok(qa(d, '.step.done').length === S().task.steps.length && q(d, '.final .answer-line') != null, 'сдаться: после всех шагов показан ответ');
+  ok(stats().topics[1].solved === solvedBefore, 'сдача не считается решённой самостоятельно');
   // localStorage
   const saved = JSON.parse(w.localStorage.getItem('mathExamCourseProgress.v1'))['righttri-t1'];
   ok(saved && saved.topics && saved.topics['1'].solved > 0, 'статистика сохраняется в localStorage');
@@ -300,7 +306,7 @@ function solveStepsCorrectly(w, d, S){
   w.eval(`state.mode='steps'; state.review=false; state.topic=0;`);
   w.eval(`(function(){ const r = mulberry32(21); let t; do { t = makeTask(0, 1, r); } while (t.p.task !== 'sides'); resetStepState(); state.task = t; })()`);
   w.eval('render()');
-  const hits = qa(d, '.figure [data-side]');
+  const hits = qa(d, '.figure.picking [data-side]');                 // кликабельный чертёж один: в «Пошагово» — внутри шага
   ok(hits.length === 3 && new Set(hits.map(h => h.dataset.side)).size === 3, 'чертёж: три кликабельные стороны');
   ok(!!q(d, '.figure.picking'), 'пошагово: чертёж в режиме выбора (picking)');
   const st0 = w.eval('state.task.steps[0]');                     // шаг «гипотенуза», want='AB'
@@ -406,7 +412,7 @@ const reviewSeed = win => win.localStorage.setItem('mathExamCourseProgress.v1', 
   w.eval(`state.mode='steps'; state.review=false; state.topic=0;`);
   w.eval(`(function(){ const r = mulberry32(21); let t; do { t = makeTask(0, 1, r); } while (t.p.task !== 'sides'); resetStepState(); state.task = t; })()`);
   w.eval('render()');
-  const hits = qa(d, '.figure [data-side]');
+  const hits = qa(d, '.figure.picking [data-side]');                 // кликабельный чертёж один: в «Пошагово» — внутри шага
   ok(hits.length === 3 && new Set(hits.map(h => h.dataset.side)).size === 3, 'под зеркалом три кликабельные стороны');
   ok(!!q(d, '.figure.picking'), 'под зеркалом чертёж в режиме выбора');
   const st0 = w.eval('state.task.steps[0]');

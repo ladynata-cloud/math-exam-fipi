@@ -176,6 +176,16 @@
   #fsBtn{display:none}
   html.board #fsBtn{display:inline-flex}
 
+  .skip{position:absolute; left:-999px; top:0; background:var(--ink); color:#fff; padding:.6em 1em; border-radius:0 0 10px 0; font-weight:800; z-index:10}
+  .skip:focus{left:0}
+  .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+  .btn, .chip, .opt, input.num, details.memo summary{min-height:44px}
+  .seg button{min-height:38px}
+  .figure.picking svg .hit:focus{outline:none; stroke:rgba(15,118,110,.35)}
+  @media print{
+    .topbtns, nav.topics, .controls, .modehelp, .actions, .stepbtns, .clickcue, details.memo, footer, .skip, .fb, .stats{display:none !important}
+    body{background:#fff} .task{box-shadow:none; border:1px solid #999}
+  }
   @media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important}}
   @media(max-width:640px){
     nav.topics{flex-wrap:nowrap; overflow-x:auto; padding-bottom:.35rem; -webkit-overflow-scrolling:touch}
@@ -191,6 +201,7 @@
 </head>
 <body>
 <div class="wrap">
+  <a class="skip" href="#taskArea">Перейти к заданию</a>
   <header class="top">
     <div>
       <a class="brand" href="https://mathexam.space"><span class="sigma">∑</span> mathexam.space</a>
@@ -225,7 +236,8 @@
   </div>
   <p class="modehelp" id="modeHelp"></p>
 
-  <main id="taskArea"></main>
+  <div id="live" class="sr-only" aria-live="polite"></div>
+  <main id="taskArea" tabindex="-1"></main>
 
   <footer>
     Тренажёр отрабатывает базовые задачи на прямоугольный треугольник: определения синуса/косинуса/тангенса, теорему Пифагора, свойства высоты на гипотенузу, площадь и углы между высотой, биссектрисой и медианой из вершины прямого угла. Буквы вершин, числа и чертёж создаются заново каждый раз, поэтому вариантов бесконечно много. Прогресс сохраняется в браузере. © mathexam.space
@@ -380,7 +392,6 @@ function parseNum(str){
   let s = String(str).trim().toLowerCase();
   if (!s) return NaN;
   s = s.replace(/\s+/g, '').replace(/[−–—]/g, '-').replace(/,/g, '.');
-  s = s.replace(/[·*]?(√3|sqrt\(3\)|корень3|корень\(3\))$/, ''); // ученик дописал «√3» в поле «число перед √3»
   s = s.replace(/^\+/, '');
   if (/^-?\d+(\.\d+)?$/.test(s)) return parseFloat(s);
   if (/^-?\.\d+$/.test(s)) return parseFloat(s.replace('.', '0.'));
@@ -391,6 +402,21 @@ function parseNum(str){
   m = s.match(/^(-?)(\d+)\.(\d+)\/(\d+)$/);            // «2,5/3» — редко, но пусть
   if (m) return (m[1] ? -1 : 1) * parseFloat(m[2] + '.' + m[3]) / (+m[4]);
   return NaN;
+}
+/* Разбор ответа с корнем: «2√3», «2*√3», «2 корень из 3», «√12» (= 2√3), «√3» (= 1√3).
+   Возвращает {value, hasRoot, rad, isFraction}: value — число перед √3, если под корнем 3. */
+function parseAns(str){
+  if (str == null) return { value: NaN };
+  const s = String(str).trim().toLowerCase().replace(/\s+/g, '').replace(/[−–—]/g, '-').replace(/,/g, '.');
+  const m = s.match(/^(-?[\d.\/]*)[·*]?(?:√|sqrt|koren|корень(?:из)?)\(?(\d+)\)?$/);
+  if (m){
+    const coef = m[1] === '' ? 1 : (m[1] === '-' ? -1 : parseNum(m[1]));
+    let r = +m[2], k = 1;
+    if (!isFinite(coef) || !(r > 0)) return { value: NaN };
+    for (let d = 2; d * d <= r; d++) while (r % (d * d) === 0){ r /= d * d; k *= d; }   // √12 = 2√3
+    return { value: coef * k, hasRoot: true, rad: r, isFraction: false };
+  }
+  return { value: parseNum(s), hasRoot: false, rad: 1, isFraction: /\//.test(s) };
 }
 function nearly(a, b, tol){ tol = tol == null ? 1e-6 : tol; return Math.abs(a - b) <= tol * Math.max(1, Math.abs(b)); }
 /* Сравнение неупорядоченных наборов чисел (корни уравнения) */
@@ -479,7 +505,7 @@ TOPICS[0] = {
     { task: 'sides', seed: 3, angle: 'B', ask: 'adj' }
   ],
   params(level, rng){
-    const angle = level === 1 ? 'A' : pick(['A', 'B'], rng);
+    const angle = rng() < 0.55 ? 'A' : 'B';                        // уровень для разминки скрыт — угол B должен выпадать всегда
     if (rng() < 0.5) return { task: 'sides', seed: ri(1, 99999, rng), angle, ask: pick(['hyp', 'opp', 'adj'], rng) };
     return { task: 'ratios', seed: ri(1, 99999, rng), angle, fask: pick(['sin', 'cos', 'tan', 'rev'], rng) };
   },
@@ -501,7 +527,7 @@ TOPICS[0] = {
     whyHyp[ADJ] = `${adjLeg} — катет: он образует прямой угол. Гипотенуза лежит НАПРОТИВ прямого угла ${S.C} и она самая длинная.`;
     const whyOpp = {};
     whyOpp[ADJ] = `${adjLeg} КАСАЕТСЯ угла ${ang} — значит, это ПРИлежащий катет. Нужен тот, что виден из вершины ${ang} «через треугольник».`;
-    whyOpp.AB = `${hyp} — гипотенуза, она лежит напротив ПРЯМОГО угла ${S.C}. Напротив угла ${ang} лежит катет ${oppLeg}.`;
+    whyOpp.AB = `${hyp} — гипотенуза, она лежит напротив ПРЯМОГО угла ${S.C}. Напротив угла ${ang} лежит КАТЕТ — посмотрите из вершины ${ang} «через» треугольник.`;
     const whyAdj = {};
     whyAdj[OPP] = `${oppLeg} лежит НАПРОТИВ угла ${ang} — это ПРОТИВОлежащий катет. Прилежащий — тот, что касается угла.`;
     whyAdj.AB = `${hyp} тоже касается угла ${ang}, но это гипотенуза. Прилежащим называют КАТЕТ, который касается угла.`;
@@ -566,7 +592,7 @@ TOPICS[0] = {
     const steps = [
       pickSide(`Числитель sin ${ang}`, `В дроби sin ${ang} что стоит в ЧИСЛИТЕЛЕ? Кликните эту сторону на чертеже.`, OPP,
         { why: whyNum, hint: 'СИНус Смотрит на угол издалека: наверху — противолежащий катет.',
-          explain: `sin ${ang} начинается с противолежащего катета ${oppLeg}; в знаменателе — гипотенуза ${hyp}.`, label: oppLeg }),
+          explain: `Верно: наверху у sin ${ang} — противолежащий катет ${oppLeg}. Что в знаменателе — следующий шаг.`, label: oppLeg }),
       choice(`sin ${ang}`, `Соберите дробь целиком: sin ${ang} = ?`, c4.options, c4.correct, {}),
       choice(`cos ${ang}`, `cos ${ang} = ?`, c5.options, c5.correct, {}),
       choice(`tg ${ang}`, `tg ${ang} = ?`, c6.options, c6.correct, {}),
@@ -574,7 +600,12 @@ TOPICS[0] = {
     ];
     const FMAP = { sin: c4, cos: c5, tan: c6, rev: c7 };
     const fa = FMAP[p.fask || 'tan'];
-    return { topic: 0, text, steps, answer: ansChoice(fa.options, fa.correct), p, unitFinal: '', figure: fig };
+    const fName = ({ sin: 'sin', cos: 'cos', tan: 'tg' })[p.fask || 'tan'];
+    const fq = p.fask === 'rev' ? `Перед вами отношение ${kv.fr}. Что это для угла ${ang}?` : `${fName} ${ang} = ?`;
+    const fdisp = p.fask === 'rev'
+      ? `${kv.fr} — это ${kv.key === 'none' ? 'ни sin, ни cos, ни tg угла ' + ang : optsRev[rightIdx].text}`
+      : `${fName} ${ang} = ${fa.options[fa.correct].text}`;
+    return { topic: 0, text, steps, answer: ansChoice(fa.options, fa.correct, { q: fq, display: fdisp }), p, unitFinal: '', figure: fig };
   }
 };
 
@@ -593,27 +624,34 @@ TOPICS[1] = {
   ],
   trap: 'sin и cos — это отношения к ГИПОТЕНУЗЕ, а tg — отношение одного катета к другому, гипотенузы там нет.',
   demos: [
-    { triple: [3, 4, 5], mode: 'findSide', given: 'AB', findSide: 'BC', ratio: 'sin', mSeed: 1 },
-    { triple: [4, 3, 5], mode: 'findSide', given: 'AB', findSide: 'AC', ratio: 'sin', mSeed: 2 },
-    { triple: [3, 4, 5], mode: 'findSide', given: 'AC', findSide: 'BC', ratio: 'sin', mSeed: 3 },
-    { triple: [3, 4, 5], mode: 'findRatio', findRatio: 'sin', mSeed: 4 }
+    { triple: [3, 4, 5], mode: 'findSide', given: 'AB', findSide: 'BC', ratio: 'sin', scale: 2, mSeed: 1 },
+    { triple: [4, 3, 5], mode: 'findSide', given: 'AB', findSide: 'AC', ratio: 'sin', scale: 3, mSeed: 2 },
+    { triple: [3, 4, 5], mode: 'findSide', given: 'AC', findSide: 'BC', ratio: 'sin', scale: 2, mSeed: 3 },
+    { triple: [3, 4, 5], mode: 'findRatio', findRatio: 'sin', scale: 2, mSeed: 4 }
   ],
+  /* Уровни: 1 — обе стороны из данного отношения, масштаб ≥ 2 (ответа в дроби не видно);
+     2 — данная сторона в отношении, искомая третья, плюс «найти отношение» на малых тройках;
+     3 — данная сторона вне отношения (тождество или «катеты a·x и b·x»), большие тройки.
+     Тройка 9-40-41 исключена из «найти отношение»: 9/40 и 9/41 различаются меньше допуска ловушек. */
   params(level, rng){
-    const triple = pickTriple(rng, level === 1);
     const sides = ['AC', 'BC', 'AB'];
-    if (level >= 2 && rng() < 0.35){
-      const findRatio = pick(['sin', 'cos', 'tan'], rng);
-      return { triple, mode: 'findRatio', findRatio, mSeed: ri(1, 99999, rng) };
-    }
     const ratio = pick(['sin', 'cos', 'tan'], rng);
     const pair = { sin: ['BC', 'AB'], cos: ['AC', 'AB'], tan: ['BC', 'AC'] }[ratio];
-    let given, findSide;
-    if (level === 1){                                             // уровень 1: обе стороны — из данного отношения
-      given = pick(pair, rng); findSide = pair.find(s => s !== given);
-    } else {
-      given = pick(sides, rng); findSide = pick(sides.filter(s => s !== given), rng);
+    const mSeed = ri(1, 99999, rng);
+    if (level === 1){
+      const given = pick(pair, rng);
+      return { triple: pickTriple(rng, true), mode: 'findSide', given, findSide: pair.find(s => s !== given), ratio, scale: pick([2, 3, 4, 5], rng), mSeed };
     }
-    return { triple, mode: 'findSide', given, findSide, ratio, mSeed: ri(1, 99999, rng) };
+    if (rng() < 0.35){
+      const triple = level === 2 ? pickTriple(rng, true) : pick(TRIPLES.filter(t => t[2] <= 29), rng);
+      return { triple, mode: 'findRatio', findRatio: ratio, scale: pick(level === 2 ? [2, 3] : [2, 3, 4], rng), mSeed };
+    }
+    if (level === 2){
+      const given = pick(pair, rng);
+      return { triple: pickTriple(rng, true), mode: 'findSide', given, findSide: sides.find(s => !pair.includes(s)), ratio, scale: pick([1, 2, 3], rng), mSeed };
+    }
+    const triple = pick(TRIPLES.filter(t => t[2] <= 25), rng);   // до 25·3 = 75: квадраты считаются столбиком
+    return { triple, mode: 'findSide', given: sides.find(s => !pair.includes(s)), findSide: pick(pair, rng), ratio, scale: pick([2, 3], rng), mSeed };
   },
   build(p){
     const rng = mulberry32((p.mSeed || 1) * 131 + 7);
@@ -626,21 +664,24 @@ TOPICS[1] = {
     const ratioWords = { sin: 'противолежащего катета к гипотенузе', cos: 'прилежащего катета к гипотенузе', tan: 'противолежащего катета к прилежащему' };
     const defChoice = k => shuffledChoice(['sin', 'cos', 'tan'].map(x => ({ text: '{{' + nameOf[ratioSides[x][0]] + '}/{' + nameOf[ratioSides[x][1]] + '}}', why: x === k ? '' : 'Это ' + ratioName[x] + ' ' + S.A + ', а нужен ' + ratioName[k] + ' ' + S.A + ' — отношение ' + ratioWords[k] + '.' })), ['sin', 'cos', 'tan'].indexOf(k), rng);
     if (p.mode === 'findRatio'){
-      const scale = pick([1, 1, 2, 3], rng);
+      const scale = p.scale || pick([2, 3], rng);                  // дробь обязана сокращаться — иначе последний шаг пуст
       const AC = b * scale, BC = a * scale, AB = c * scale;
-      const text = 'В треугольнике ' + S.A + S.B + S.C + ' угол ' + S.C + ' равен 90°, ' + nameOf.AC + ' = ' + AC + ', ' + nameOf.BC + ' = ' + BC + '. Найдите ' + ratioName[p.findRatio] + ' ' + S.A + '.';
+      const rn = ratioName[p.findRatio];
+      const text = 'В треугольнике ' + S.A + S.B + S.C + ' угол ' + S.C + ' равен 90°, ' + nameOf.AC + ' = ' + AC + ', ' + nameOf.BC + ' = ' + BC + '. Найдите ' + rn + ' ' + S.A + '.';
       const rebuilt = defChoice(p.findRatio);
       const [n1, n2] = ratioSides[p.findRatio];
       const ansVal = triVal[n1] / triVal[n2];
-      const steps = [
-        num('Уравнение для гипотенузы', 'Обозначим ' + nameOf.AB + ' = x. По теореме Пифагора x^{2} = ' + nameOf.AC + '^{2} + ' + nameOf.BC + '^{2} = ' + AC + '^{2} + ' + BC + '^{2} = ?', AB * AB,
-          { hint: AC + '^{2} = ' + AC * AC + ', ' + BC + '^{2} = ' + BC * BC + '. Сложите.', explain: nameOf.AB + '^{2} = ' + AC * AC + ' + ' + BC * BC + ' = ' + AB * AB + '.',
-            traps: [{ value: Math.abs(AC * AC - BC * BC), msg: 'Квадраты катетов нужно СЛОЖИТЬ: гипотенуза — самая длинная сторона.' }] }),
-        num('Находим гипотенузу', 'x^{2} = ' + AB * AB + ', x > 0, значит ' + nameOf.AB + ' = x = ?', AB, { hint: 'Какое положительное число в квадрате даёт ' + AB * AB + '?', explain: nameOf.AB + ' = ' + AB + '.', traps: [{ value: AB * AB, msg: 'Это x^{2} — осталось извлечь корень.' }] }),
-        choice('Какие стороны в отношении?', ratioName[p.findRatio] + ' ' + S.A + ' — это отношение каких сторон?', rebuilt.options, rebuilt.correct, {}),
-        num('Вычисляем ' + ratioName[p.findRatio] + ' ' + S.A, ratioName[p.findRatio] + ' ' + S.A + ' = {{' + (triVal[n1] * scale) + '}/{' + (triVal[n2] * scale) + '}} = ?', ansVal,
-          { hint: 'Сократите дробь ' + (triVal[n1] * scale) + '/' + (triVal[n2] * scale) + '.', explain: ratioName[p.findRatio] + ' ' + S.A + ' = ' + fracMk(triVal[n1], triVal[n2]) + '.' })
-      ];
+      const g = gcd(triVal[n1] * scale, triVal[n2] * scale);
+      /* сначала — какие стороны нужны; гипотенузу ищем только если она нужна (для tg — нет) */
+      const steps = [choice('Какие стороны в отношении?', rn + ' ' + S.A + ' — это отношение каких сторон?', rebuilt.options, rebuilt.correct, {})];
+      if (p.findRatio !== 'tan'){
+        steps.push(num('Уравнение для гипотенузы', 'Гипотенузы ' + nameOf.AB + ' в условии нет — найдём её. Обозначим ' + nameOf.AB + ' = x. По теореме Пифагора x^{2} = ' + nameOf.AC + '^{2} + ' + nameOf.BC + '^{2} = ' + AC + '^{2} + ' + BC + '^{2} = ?', AB * AB,
+          { hint: AC + '^{2} = ' + AC * AC + ', ' + BC + '^{2} = ' + BC * BC + '. Сложите.', explain: 'x^{2} = ' + AC * AC + ' + ' + BC * BC + ' = ' + AB * AB + '.',
+            traps: [{ value: Math.abs(AC * AC - BC * BC), msg: 'Квадраты катетов нужно СЛОЖИТЬ: гипотенуза — самая длинная сторона.' }] }));
+        steps.push(num('Находим гипотенузу', 'x^{2} = ' + AB * AB + ', x > 0, значит ' + nameOf.AB + ' = x = ?', AB, { hint: 'Какое положительное число в квадрате даёт ' + AB * AB + '?', explain: nameOf.AB + ' = ' + AB + '.', traps: [{ value: AB * AB, msg: 'Это x^{2} — осталось извлечь корень.' }] }));
+      }
+      steps.push(num('Вычисляем ' + rn + ' ' + S.A, rn + ' ' + S.A + ' = {{' + nameOf[n1] + '}/{' + nameOf[n2] + '}} = {{' + (triVal[n1] * scale) + '}/{' + (triVal[n2] * scale) + '}} = ?', ansVal,
+        { hint: 'Сократите дробь на ' + g + '.', explain: rn + ' ' + S.A + ' = ' + fracMk(triVal[n1], triVal[n2]) + '.' }));
       return { topic: 1, text, steps, answer: ansNum(ansVal, { display: fracMk(triVal[n1], triVal[n2]) }), p, figure: { kind: 'tri', S, t: (b * b) / (c * c), angleAt: S.A, labels: { AC, BC } } };
     }
 
@@ -649,7 +690,7 @@ TOPICS[1] = {
        и искомая стороны не входят в одно отношение — идём через третью сторону:
        теорема Пифагора, основное тригонометрическое тождество, «катеты a·x и b·x». */
     const [s1, s2] = ratioSides[p.ratio];                        // числитель и знаменатель данного отношения
-    const scale = pick([1, 1, 1, 2, 3, 4], rng);
+    const scale = p.scale || pick([1, 2, 3, 4], rng);
     const V = { AC: b * scale, BC: a * scale, AB: c * scale };
     const given = V[p.given], want = V[p.findSide];
     const rName = ratioName[p.ratio], rFrac = fracMk(triVal[s1], triVal[s2]);
@@ -730,26 +771,32 @@ TOPICS[1] = {
    ТЕМА 2. Высота, опущенная на гипотенузу
    ============================================================ */
 TOPICS[2] = {
-  num: 2, name: 'Высота на гипотенузу', short: 'CH, AH, BH — подобие и уравнение',
+  num: 2, name: 'Высота на гипотенузу', short: 'Пропорциональные отрезки: подобие и уравнение',
   memo: [
-    ['Высота из прямого угла', 'CH ⟂ AB, её основание H лежит между A и B'],
+    ['Высота из прямого угла', 'CH ⟂ AB; отрезки AH и BH — проекции катетов AC и BC на гипотенузу'],
     ['Углы', 'A + B = 90°. В треугольнике ACH угол ACH = 90° − A = B; в треугольнике CBH угол BCH = A'],
-    ['Подобие', 'ACH ~ ABC ~ CBH — у всех те же острые углы A и B'],
-    ['Из подобия', '{{AC}/{AB}} = {{AH}/{AC}} ⟹ AC^{2} = AH · AB;   {{BC}/{AB}} = {{BH}/{BC}} ⟹ BC^{2} = BH · AB;   {{CH}/{AH}} = {{BH}/{CH}} ⟹ CH^{2} = AH · BH'],
-    ['Ход решения', 'обозначить искомый отрезок x, записать пропорцию из подобия (или определение sin, tg в нужном треугольнике) как уравнение и решить']
+    ['Подобие', 'ACH ~ ABC ~ CBH по первому признаку (по двум углам): у всех те же острые углы A и B'],
+    ['Пропорциональные отрезки (п. 63)', 'катет — среднее пропорциональное между гипотенузой и своей проекцией: AC^{2} = AH · AB, BC^{2} = BH · AB; высота — среднее пропорциональное между проекциями катетов: CH^{2} = AH · BH'],
+    ['Ход решения', 'обозначить искомый отрезок x, записать пропорцию из подобия (или sin, tg в нужном треугольнике) как уравнение и решить; корень из произведения берём по множителям: √{64 · 289} = 8 · 17']
   ],
-  trap: 'CH² = AH·BH — высота в квадрате равна произведению ОТРЕЗКОВ гипотенузы, а не отрезка на весь катет. Не перепутайте с AC² = AH·AB.',
+  trap: 'CH² = AH·BH — высота в квадрате равна произведению ПРОЕКЦИЙ катетов (отрезков гипотенузы). Не путайте с формулой катета AC² = AH·AB, где проекция умножается на ВСЮ гипотенузу.',
   demos: [
     { triple: [3, 4, 5], m: 1, recipe: 'sinFromSeg', mSeed: 1 },
     { triple: [4, 3, 5], m: 1, recipe: 'legFromSeg', mSeed: 2 },
-    { triple: [3, 4, 5], m: 2, recipe: 'altFromSegs', mSeed: 3 }
+    { triple: [5, 12, 13], m: 1, recipe: 'altFromSegs', mSeed: 3 },
+    { triple: [3, 4, 5], m: 1, recipe: 'altFromLegRatio', mSeed: 4 }
   ],
+  /* Числа — как в задачниках. Под корнем всегда произведение полных квадратов (m = 1 или 4):
+     √(64 · 289) = 8 · 17. «Гипотенуза по катету и его проекции» и «высота через площадь» — на
+     тройке 3-4-5 (25m, 20m, 15m, 12m), чтобы деление было устным. Уровень 1 — три базовых
+     рецепта, 2 — все шесть, 3 — все шесть на больших числах. */
   params(level, rng){
-    const triple = pickTriple(rng, true);                      // только малые тройки: AB = c²·m, с большими тройками числа уходят за 1000
+    const mSeed = ri(1, 99999, rng);
     const recipes = level === 1 ? ['sinFromSeg', 'legFromSeg', 'altFromSegs'] : ['sinFromSeg', 'legFromSeg', 'altFromSegs', 'hypFromLegSeg', 'tanFromAHtg', 'altFromLegRatio'];
     const recipe = pick(recipes, rng);
-    const m = level === 1 ? 1 : (level === 2 ? pick([1, 2], rng) : pick([1, 2, 3], rng));
-    return { triple, recipe, m, mSeed: ri(1, 99999, rng) };
+    if (recipe === 'hypFromLegSeg' || recipe === 'altFromLegRatio') return { triple: pick(TRIPLES.slice(0, 2), rng), recipe, m: level === 3 ? pick([2, 3], rng) : pick([1, 2], rng), mSeed };
+    if (recipe === 'legFromSeg' || recipe === 'altFromSegs') return { triple: pickTriple(rng, true), recipe, m: level === 3 ? 4 : 1, mSeed };
+    return { triple: pickTriple(rng, true), recipe, m: level === 1 ? 1 : (level === 2 ? pick([1, 2], rng) : pick([2, 3], rng)), mSeed };
   },
   build(p){
     const rng = mulberry32((p.mSeed || 1) * 151 + 3);
@@ -762,54 +809,57 @@ TOPICS[2] = {
     const ACH = S.A + S.C + S.H, CBH = S.C + S.B + S.H, ABC = S.A + S.B + S.C;
     const angACH = S.A + S.C + S.H, angBCH = S.B + S.C + S.H;
     const head = 'В треугольнике ' + ABC + ' угол ' + S.C + ' равен 90°, ' + N.CH + ' — высота, ';
+    const rt = Math.round;
     /* углы в отсечённых треугольниках — через сумму углов */
     const angleWalk = info('Углы в отсечённых треугольниках', 'Сумма острых углов: угол ' + S.A + ' + угол ' + S.B + ' = 90°. В треугольнике ' + ACH + ' угол ' + S.H + ' прямой, значит угол ' + angACH + ' = 90° − угол ' + S.A + ' = угол ' + S.B + '. Так же в треугольнике ' + CBH + ' угол ' + angBCH + ' = 90° − угол ' + S.B + ' = угол ' + S.A + '.');
-    const rootStep = (nameX, s, val) => num('Находим ' + nameX, 'x^{2} = ' + s + ', x > 0, значит ' + nameX + ' = x = ?', val, { hint: 'Какое положительное число в квадрате даёт ' + s + '?', explain: nameX + ' = ' + val + '.', traps: [{ value: s, msg: 'Это x^{2} — осталось извлечь корень.' }] });
+    /* корень из произведения двух полных квадратов — по множителям, как в тетради */
+    const rootOfProduct = (nameX, f1, f2, val, wrongProd) => num('Находим ' + nameX, 'x^{2} = ' + f1 + ' · ' + f2 + '. Оба множителя — полные квадраты: ' + f1 + ' = ' + rt(Math.sqrt(f1)) + '^{2}, ' + f2 + ' = ' + rt(Math.sqrt(f2)) + '^{2}. Значит x^{2} = (' + rt(Math.sqrt(f1)) + ' · ' + rt(Math.sqrt(f2)) + ')^{2}, и x = ' + rt(Math.sqrt(f1)) + ' · ' + rt(Math.sqrt(f2)) + ' = ?', val,
+      { hint: 'Корень из произведения равен произведению корней: √{' + f1 + '} · √{' + f2 + '}.', explain: nameX + ' = ' + rt(Math.sqrt(f1)) + ' · ' + rt(Math.sqrt(f2)) + ' = ' + val + '.',
+        traps: [{ value: f1 * f2, msg: 'Это x^{2} — произведение перемножать не нужно, извлекайте корень из каждого множителя.' }].concat(wrongProd ? [wrongProd] : []) });
     let text, steps, answer;
     if (R === 'sinFromSeg'){
       text = head + N.BC + ' = ' + BC + ', ' + N.BH + ' = ' + BH + '. Найдите sin ' + S.A + '.';
       steps = [
         angleWalk,
         num('sin ' + S.A + ' из треугольника ' + CBH, 'Угол ' + angBCH + ' = угол ' + S.A + ', поэтому sin ' + S.A + ' = sin ' + angBCH + '. В прямоугольном треугольнике ' + CBH + ' против угла ' + angBCH + ' лежит катет ' + N.BH + ', а гипотенуза — ' + N.BC + ': sin ' + S.A + ' = {{' + N.BH + '}/{' + N.BC + '}} = {{' + BH + '}/{' + BC + '}} = ?', BH / BC,
-          { hint: 'Сократите дробь ' + BH + '/' + BC + '.', explain: 'sin ' + S.A + ' = ' + fracMk(BH, BC) + '.', traps: [{ value: BC / BH, msg: 'Дробь перевёрнута: в треугольнике ' + CBH + ' гипотенуза — ' + N.BC + ', она стоит в знаменателе.' }, { value: CH / BC, msg: 'Это отношение катета ' + N.CH + ' к гипотенузе — косинус угла ' + angBCH + '. Синус — через противолежащий катет ' + N.BH + '.' }] })
+          { hint: 'Сократите дробь ' + BH + '/' + BC + '.', explain: 'sin ' + S.A + ' = ' + fracMk(BH, BC) + '.',
+            traps: [{ value: BC / BH, msg: 'Дробь перевёрнута: в треугольнике ' + CBH + ' гипотенуза — ' + N.BC + ', она стоит в знаменателе.' }, { value: CH / BC, msg: 'Это отношение катета ' + N.CH + ' к гипотенузе — косинус угла ' + angBCH + '. Синус — через противолежащий катет ' + N.BH + '.' }, { value: BH / CH, msg: 'Это отношение катетов — тангенс угла ' + angBCH + '. Синус — противолежащий катет к ГИПОТЕНУЗЕ ' + N.BC + '.' }] })
       ];
       answer = ansNum(BH / BC, { display: fracMk(BH, BC) });
     } else if (R === 'legFromSeg'){
       text = head + N.AB + ' = ' + AB + ', ' + N.AH + ' = ' + AH + '. Найдите ' + N.AC + '.';
       steps = [
-        info('Подобие', 'Треугольники ' + ACH + ' и ' + ABC + ' подобны: угол ' + S.A + ' у них общий, углы ' + S.H + ' и ' + S.C + ' прямые. Сходственные стороны пропорциональны — гипотенуза к гипотенузе, катет при угле ' + S.A + ' к катету при угле ' + S.A + ': {{' + N.AC + '}/{' + N.AB + '}} = {{' + N.AH + '}/{' + N.AC + '}}, откуда ' + N.AC + '^{2} = ' + N.AH + ' · ' + N.AB + '.'),
-        num('Уравнение', 'Обозначим ' + N.AC + ' = x: x^{2} = ' + N.AH + ' · ' + N.AB + ' = ' + AH + ' · ' + AB + ' = ?', AC * AC,
-          { hint: 'Перемножьте ' + AH + ' и ' + AB + '.', explain: 'x^{2} = ' + AC * AC + '.', traps: [{ value: AH * BH, msg: 'Взяли ' + N.AH + ' · ' + N.BH + ' — так получается ВЫСОТА. Для катета: квадрат катета = его отрезок гипотенузы · ВСЯ гипотенуза.' }] }),
-        rootStep(N.AC, AC * AC, AC)
+        info('Подобие', 'Треугольники ' + ACH + ' и ' + ABC + ' подобны по первому признаку (по двум углам): угол ' + S.A + ' у них общий, углы ' + S.H + ' и ' + S.C + ' прямые. Сходственные стороны пропорциональны — гипотенуза к гипотенузе, катет при угле ' + S.A + ' к катету при угле ' + S.A + ': {{' + N.AC + '}/{' + N.AB + '}} = {{' + N.AH + '}/{' + N.AC + '}}, откуда ' + N.AC + '^{2} = ' + N.AH + ' · ' + N.AB + ' — катет есть среднее пропорциональное между гипотенузой и своей проекцией ' + N.AH + '.'),
+        info('Уравнение', 'Обозначим ' + N.AC + ' = x: x^{2} = ' + N.AH + ' · ' + N.AB + ' = ' + AH + ' · ' + AB + '.'),
+        rootOfProduct(N.AC, AH, AB, AC, { value: CH, msg: 'Взяли ' + N.AH + ' · ' + N.BH + ' — так получается ВЫСОТА. Для катета: его проекция умножается на ВСЮ гипотенузу ' + N.AB + '.' })
       ];
       answer = ansNum(AC);
     } else if (R === 'altFromSegs'){
       text = head + N.AH + ' = ' + AH + ', ' + N.BH + ' = ' + BH + '. Найдите ' + N.CH + '.';
       steps = [
         angleWalk,
-        info('Подобие', 'Треугольники ' + ACH + ' и ' + CBH + ' подобны: угол ' + S.A + ' = угол ' + angBCH + ', угол ' + angACH + ' = угол ' + S.B + ', углы при ' + S.H + ' прямые. Катет против угла ' + S.A + ' к катету при угле ' + S.A + ' — в обоих одинаково: {{' + N.CH + '}/{' + N.AH + '}} = {{' + N.BH + '}/{' + N.CH + '}}, откуда ' + N.CH + '^{2} = ' + N.AH + ' · ' + N.BH + '.'),
-        num('Уравнение', 'Обозначим ' + N.CH + ' = x: x^{2} = ' + N.AH + ' · ' + N.BH + ' = ' + AH + ' · ' + BH + ' = ?', CH * CH,
-          { hint: 'Перемножьте ' + AH + ' и ' + BH + '.', explain: 'x^{2} = ' + CH * CH + '.', traps: [{ value: AH * AB, msg: 'Взяли ' + N.AH + ' · ' + N.AB + ' — так получается КАТЕТ ' + N.AC + '. Для высоты перемножают два ОТРЕЗКА гипотенузы.' }] }),
-        rootStep(N.CH, CH * CH, CH)
+        info('Подобие', 'Треугольники ' + ACH + ' и ' + CBH + ' подобны по первому признаку (по двум углам): угол ' + S.A + ' = угол ' + angBCH + ', угол ' + angACH + ' = угол ' + S.B + '. Катет против угла ' + S.A + ' к катету при угле ' + S.A + ' — в обоих одинаково: {{' + N.CH + '}/{' + N.AH + '}} = {{' + N.BH + '}/{' + N.CH + '}}, откуда ' + N.CH + '^{2} = ' + N.AH + ' · ' + N.BH + ' — высота есть среднее пропорциональное между проекциями катетов.'),
+        info('Уравнение', 'Обозначим ' + N.CH + ' = x: x^{2} = ' + N.AH + ' · ' + N.BH + ' = ' + AH + ' · ' + BH + '.'),
+        rootOfProduct(N.CH, AH, BH, CH, { value: AC, msg: 'Взяли ' + N.AH + ' · ' + N.AB + ' — так получается КАТЕТ ' + N.AC + '. Для высоты перемножают две ПРОЕКЦИИ: ' + N.AH + ' и ' + N.BH + '.' })
       ];
       answer = ansNum(CH);
     } else if (R === 'hypFromLegSeg'){
       text = head + N.BC + ' = ' + BC + ', ' + N.BH + ' = ' + BH + '. Найдите ' + N.AB + '.';
       steps = [
-        info('Подобие', 'Треугольники ' + CBH + ' и ' + ABC + ' подобны: угол ' + S.B + ' общий, углы ' + S.H + ' и ' + S.C + ' прямые. Гипотенуза к гипотенузе, катет при угле ' + S.B + ' к катету при угле ' + S.B + ': {{' + N.BC + '}/{' + N.AB + '}} = {{' + N.BH + '}/{' + N.BC + '}}, откуда ' + N.BC + '^{2} = ' + N.BH + ' · ' + N.AB + '.'),
+        info('Подобие', 'Треугольники ' + CBH + ' и ' + ABC + ' подобны по первому признаку (по двум углам): угол ' + S.B + ' общий, углы ' + S.H + ' и ' + S.C + ' прямые. Гипотенуза к гипотенузе, катет при угле ' + S.B + ' к катету при угле ' + S.B + ': {{' + N.BC + '}/{' + N.AB + '}} = {{' + N.BH + '}/{' + N.BC + '}}, откуда ' + N.BC + '^{2} = ' + N.BH + ' · ' + N.AB + ' — катет есть среднее пропорциональное между гипотенузой и своей проекцией ' + N.BH + '.'),
         num('Уравнение', 'Обозначим ' + N.AB + ' = x: ' + N.BH + ' · x = ' + N.BC + '^{2}, то есть ' + BH + 'x = ' + BC + '^{2}. Вычислите правую часть: ' + BC + '^{2} = ?', BC * BC,
           { hint: BC + ' умножить на ' + BC + '.', explain: BH + 'x = ' + BC * BC + '.' }),
         num('Находим ' + N.AB, BH + 'x = ' + BC * BC + ', значит x = ' + BC * BC + ' : ' + BH + ' = ?', AB,
-          { hint: 'Разделите ' + BC * BC + ' на ' + BH + '.', explain: N.AB + ' = ' + AB + '.', traps: [{ value: BC * BC, msg: 'Это ' + N.BC + '^{2}, а x ещё нужно найти: разделите на ' + BH + '.' }, { value: AH, msg: 'Это отрезок ' + N.AH + ', а спрашивают всю гипотенузу.' }] })
+          { hint: 'Разделите ' + BC * BC + ' на ' + BH + '.', explain: N.AB + ' = ' + AB + '.', traps: [{ value: BC * BC, msg: 'Это ' + N.BC + '^{2}, а x ещё нужно найти: разделите на ' + BH + '.' }, { value: AH, msg: 'Это проекция ' + N.AH + ', а спрашивают всю гипотенузу.' }] })
       ];
       answer = ansNum(AB);
     } else if (R === 'tanFromAHtg'){
       text = head + N.AH + ' = ' + AH + ', tg ' + S.A + ' = ' + tanA + '. Найдите ' + N.BH + '.';
       steps = [
         num('Высота из треугольника ' + ACH, 'В прямоугольном треугольнике ' + ACH + ' tg ' + S.A + ' = {{' + N.CH + '}/{' + N.AH + '}}. Обозначим ' + N.CH + ' = x: {{x}/{' + AH + '}} = ' + tanA + ', откуда x = ' + AH + ' · ' + tanA + ' = ?', CH,
-          { hint: 'Умножьте ' + AH + ' на ' + tanA + '.', explain: N.CH + ' = ' + CH + '.', traps: [{ value: AH / (a / b), msg: 'Разделили на tg, а надо умножить: ' + N.CH + ' стоит в числителе определения тангенса.' }] }),
+          { hint: 'Умножьте ' + AH + ' на ' + tanA + ': разделите на знаменатель, умножьте на числитель.', explain: N.CH + ' = ' + CH + '.', traps: [{ value: AH / (a / b), msg: 'Разделили на tg, а надо умножить: ' + N.CH + ' стоит в числителе определения тангенса.' }] }),
         angleWalk,
-        num('Отрезок ' + N.BH + ' из треугольника ' + CBH, 'Угол ' + angBCH + ' = угол ' + S.A + ', значит tg ' + angBCH + ' = tg ' + S.A + ' = ' + tanA + '. В прямоугольном треугольнике ' + CBH + ' tg ' + angBCH + ' = {{' + N.BH + '}/{' + N.CH + '}}. Обозначим ' + N.BH + ' = y: {{y}/{' + CH + '}} = ' + tanA + ', откуда y = ' + CH + ' · ' + tanA + ' = ?', BH,
+        num('Проекция ' + N.BH + ' из треугольника ' + CBH, 'Угол ' + angBCH + ' = угол ' + S.A + ', значит tg ' + angBCH + ' = tg ' + S.A + ' = ' + tanA + '. В прямоугольном треугольнике ' + CBH + ' tg ' + angBCH + ' = {{' + N.BH + '}/{' + N.CH + '}}. Обозначим ' + N.BH + ' = y: {{y}/{' + CH + '}} = ' + tanA + ', откуда y = ' + CH + ' · ' + tanA + ' = ?', BH,
           { hint: 'Умножьте ' + CH + ' на ' + tanA + '.', explain: N.BH + ' = ' + BH + '.', traps: [{ value: CH / (a / b), msg: 'Разделили на tg, а надо умножить: ' + N.BH + ' — катет ПРОТИВ угла ' + angBCH + ', он в числителе.' }] })
       ];
       answer = ansNum(BH);
@@ -818,7 +868,7 @@ TOPICS[2] = {
       steps = [
         num('Уравнение для гипотенузы', 'Обозначим ' + N.AB + ' = x. По теореме Пифагора x^{2} = ' + N.AC + '^{2} + ' + N.BC + '^{2} = ' + AC + '^{2} + ' + BC + '^{2} = ?', AB * AB,
           { hint: AC + '^{2} = ' + AC * AC + ', ' + BC + '^{2} = ' + BC * BC + '. Сложите.', explain: 'x^{2} = ' + AB * AB + '.', traps: [{ value: Math.abs(AC * AC - BC * BC), msg: 'Квадраты катетов нужно СЛОЖИТЬ.' }] }),
-        rootStep(N.AB, AB * AB, AB),
+        num('Находим ' + N.AB, 'x^{2} = ' + AB * AB + ', x > 0, значит ' + N.AB + ' = x = ?', AB, { hint: 'Какое положительное число в квадрате даёт ' + AB * AB + '?', explain: N.AB + ' = ' + AB + '.', traps: [{ value: AB * AB, msg: 'Это x^{2} — осталось извлечь корень.' }] }),
         info('Площадь двумя способами', 'Площадь треугольника ' + ABC + ' можно записать через катеты: S = {{' + N.AC + ' · ' + N.BC + '}/{2}}, а можно через гипотенузу и высоту к ней: S = {{' + N.AB + ' · ' + N.CH + '}/{2}}. Это одна и та же площадь.'),
         num('Уравнение для высоты', 'Обозначим ' + N.CH + ' = y: {{' + AB + ' · y}/{2}} = {{' + AC + ' · ' + BC + '}/{2}}, то есть ' + AB + 'y = ' + AC + ' · ' + BC + '. Решите: y = ?', CH,
           { hint: 'Перемножьте катеты, потом разделите на ' + AB + '.', explain: AB + 'y = ' + AC * BC + ', y = ' + CH + '. Значит ' + N.CH + ' = ' + CH + '.', traps: [{ value: AC * BC, msg: 'Это ' + N.AC + ' · ' + N.BC + ' — правая часть уравнения. Разделите на ' + AB + '.' }, { value: AC * BC / 2, msg: 'Это площадь S. Из уравнения ' + AB + 'y = ' + AC + ' · ' + BC + ' делят на ' + AB + ', а не на 2.' }] })
@@ -842,18 +892,22 @@ TOPICS[2] = {
 TOPICS[3] = {
   num: 3, name: 'Площадь треугольника', short: 'Катеты, гипотенуза и площадь',
   memo: [
-    ['Площадь', 'S = {{катет · катет}/{2}} (в прямоугольном — катеты и есть высота с основанием)'],
-    ['Теорема Пифагора', 'гипотенуза^{2} = катет₁^{2} + катет₂^{2}']
+    ['Площадь', 'S = {{катет · катет}/{2}} — в прямоугольном треугольнике катеты и есть основание и высота'],
+    ['Теорема Пифагора', 'гипотенуза^{2} = катет₁^{2} + катет₂^{2}; для неизвестного катета: x^{2} = гипотенуза^{2} − другой катет^{2}'],
+    ['Дана площадь и связь катетов', 'обозначить меньший катет x, выразить второй через x, записать площадь как уравнение и решить'],
+    ['Квадратное уравнение', 'ax^{2} + bx + c = 0: D = b^{2} − 4ac, x = {{−b ± √{D}}/{2a}}; отрицательный корень длиной быть не может']
   ],
-  trap: 'Площадь через катеты — это половина их ПРОИЗВЕДЕНИЯ, а не произведение. Не забудьте разделить на 2!',
-  demos: [{ kind: 'legHyp', leg: 6, hyp: 10, mSeed: 1 }, { kind: 'diff', l1: 6, l2: 8, mSeed: 2 }],
+  trap: 'Площадь через катеты — это ПОЛОВИНА их произведения. В уравнении x(x + d) = 2S справа стоит удвоенная площадь — не потеряйте двойку.',
+  demos: [{ kind: 'legHyp', leg: 6, hyp: 10, legKey: 'AC', mSeed: 1 }, { kind: 'diff', l1: 6, l2: 8, mSeed: 2 }],
+  /* Уровни: 1 — катет и гипотенуза на малых тройках; 2 — все тройки с множителями и
+     квадратное уравнение с малыми числами; 3 — в основном квадратное уравнение, числа шире. */
   params(level, rng){
-    if (level <= 2 && rng() < 0.6){
-      const triple = pickTriple(rng, true); const m = pick([1, 1, 2], rng);
-      const leg = pick([triple[0], triple[1]], rng) * m, hyp = triple[2] * m;
-      return { kind: 'legHyp', leg, hyp, mSeed: ri(1, 99999, rng) };
-    }
-    const l1 = ri(3, 12, rng), d = ri(1, 6, rng);
+    const legHyp = () => {
+      const triple = pickTriple(rng, level === 1), m = level === 1 ? pick([1, 2], rng) : pick([1, 2, 3], rng);
+      return { kind: 'legHyp', leg: pick([triple[0], triple[1]], rng) * m, hyp: triple[2] * m, legKey: pick(['AC', 'BC'], rng), mSeed: ri(1, 99999, rng) };
+    };
+    if (level === 1 || (level === 2 && rng() < 0.5) || (level === 3 && rng() < 0.25)) return legHyp();
+    const l1 = level === 2 ? ri(3, 8, rng) : ri(3, 20, rng), d = level === 2 ? ri(1, 3, rng) : ri(1, 9, rng);
     return { kind: 'diff', l1, l2: l1 + d, mSeed: ri(1, 99999, rng) };
   },
   build(p){
@@ -861,27 +915,54 @@ TOPICS[3] = {
     const S = pickScheme(rng);
     const N = { AB: S.A + S.B, AC: S.A + S.C, BC: S.B + S.C };
     if (p.kind === 'legHyp'){
-      const { leg, hyp } = p;
+      const { leg, hyp } = p, gk = p.legKey || 'AC', ok = gk === 'AC' ? 'BC' : 'AC';   // gk — данный катет, ok — искомый
       const other = Math.round(Math.sqrt(hyp * hyp - leg * leg));
-      const text = `Найдите площадь прямоугольного треугольника ${S.A}${S.B}${S.C} (угол ${S.C} = 90°), если его катет ${N.AC} и гипотенуза ${N.AB} равны соответственно ${leg} и ${hyp}.`;
+      const text = 'Найдите площадь прямоугольного треугольника ' + S.A + S.B + S.C + ' (угол ' + S.C + ' = 90°), если его катет ' + N[gk] + ' и гипотенуза ' + N.AB + ' равны соответственно ' + leg + ' и ' + hyp + '.';
+      const pc = shuffledChoice([
+        { text: 'x^{2} = ' + hyp + '^{2} − ' + leg + '^{2}', why: '' },
+        { text: 'x^{2} = ' + hyp + '^{2} + ' + leg + '^{2}', why: 'Так ищут ГИПОТЕНУЗУ. Здесь неизвестен катет ' + N[ok] + ', а гипотенуза ' + N.AB + ' = ' + hyp + ' дана: из её квадрата вычитают квадрат другого катета.' },
+        { text: 'x = ' + hyp + ' − ' + leg, why: 'Теорема Пифагора — о КВАДРАТАХ сторон, а не о самих сторонах.' }
+      ], 0, rng);
       const steps = [
-        num('Уравнение для второго катета', 'Обозначим ' + N.BC + ' = x. По теореме Пифагора x^{2} + ' + N.AC + '^{2} = ' + N.AB + '^{2}: x^{2} + ' + leg + '^{2} = ' + hyp + '^{2}, x^{2} = ' + hyp * hyp + ' − ' + leg * leg + ' = ?', other * other,
-          { hint: hyp + '^{2} = ' + hyp * hyp + ', ' + leg + '^{2} = ' + leg * leg + '. Вычтите.', explain: 'x^{2} = ' + other * other + '.', traps: [{ value: hyp * hyp + leg * leg, msg: 'Квадраты сложили, а ' + N.BC + ' — катет: из квадрата гипотенузы ВЫЧИТАЮТ квадрат другого катета.' }] }),
-        num('Второй катет', 'x^{2} = ' + other * other + ', x > 0, значит ' + N.BC + ' = x = ?', other, { hint: 'Какое положительное число в квадрате даёт ' + other * other + '?', explain: N.BC + ' = ' + other + '.', traps: [{ value: other * other, msg: 'Это x^{2} — извлеките корень.' }] }),
+        choice('Уравнение по теореме Пифагора', 'Обозначим неизвестный катет ' + N[ok] + ' = x. Как записать для него теорему Пифагора?', pc.options, pc.correct, {}),
+        num('Находим x^{2}', 'x^{2} = ' + hyp + '^{2} − ' + leg + '^{2} = ?', other * other,
+          { hint: 'Возведите в квадрат ' + hyp + ' и ' + leg + ', из большего вычтите меньшее.', explain: 'x^{2} = ' + hyp * hyp + ' − ' + leg * leg + ' = ' + other * other + '.',
+            traps: [{ value: hyp * hyp + leg * leg, msg: 'Квадраты сложили, а ' + N[ok] + ' — катет: из квадрата гипотенузы ВЫЧИТАЮТ квадрат другого катета.' }, { value: other, msg: 'Это x, а на этом шаге нужен x^{2} — число до извлечения корня.' }] }),
+        num('Второй катет', 'x^{2} = ' + other * other + ', x > 0, значит ' + N[ok] + ' = x = ?', other, { hint: 'Какое положительное число в квадрате даёт ' + other * other + '?', explain: N[ok] + ' = ' + other + '.', traps: [{ value: other * other, msg: 'Это x^{2} — извлеките корень.' }] }),
         num('Площадь', 'S = {{' + N.AC + ' · ' + N.BC + '}/{2}} = {{' + leg + ' · ' + other + '}/{2}} = ?', leg * other / 2, { hint: 'Перемножьте катеты, потом разделите на 2.', explain: 'S = ' + fmt(leg * other / 2) + '.', traps: [{ value: leg * other, msg: 'Это произведение катетов — площадь равна его ПОЛОВИНЕ.' }] })
       ];
-      return { topic: 3, text, steps, answer: ansNum(leg * other / 2), p, figure: { kind: 'tri', S, t: (leg * leg) / (hyp * hyp), labels: { AC: leg, AB: hyp } } };
+      const AC = gk === 'AC' ? leg : other;
+      return { topic: 3, text, steps, answer: ansNum(leg * other / 2), p, figure: { kind: 'tri', S, t: (AC * AC) / (hyp * hyp), labels: { [gk]: leg, AB: hyp }, hl: [ok] } };
     }
-    const { l1, l2 } = p, area = l1 * l2 / 2, D = l2 - l1;
-    const disc = D * D + 8 * area;
-    const text = `Площадь прямоугольного треугольника ${S.A}${S.B}${S.C} (угол ${S.C} = 90°) равна ${fmt(area)}. Один из его катетов на ${D} больше другого. Найдите меньший катет.`;
+    /* diff: площадь и разность катетов — квадратное уравнение по всем правилам тетради */
+    const { l1, l2 } = p, area = l1 * l2 / 2, d = l2 - l1, twoS = l1 * l2;
+    const disc = d * d + 4 * twoS, root = l1 + l2;                                   // (l1 + l2)² = d² + 4·l1·l2 — корень всегда целый
+    const eqText = 'x^{2} + ' + lin(d, 'x') + ' − ' + twoS + ' = 0';
+    const text = 'Площадь прямоугольного треугольника ' + S.A + S.B + S.C + ' (угол ' + S.C + ' = 90°) равна ' + fmt(area) + '. Один из его катетов на ' + d + ' больше другого. Найдите меньший катет.';
+    const eqc = shuffledChoice([
+      { text: '{{x(x + ' + d + ')}/{2}} = ' + fmt(area), why: '' },
+      { text: 'x(x + ' + d + ') = ' + fmt(area), why: 'Площадь — ПОЛОВИНА произведения катетов, а здесь произведение приравняли к площади целиком.' },
+      { text: '{{x + (x + ' + d + ')}/{2}} = ' + fmt(area), why: 'Это полусумма катетов. Площадь — половина их ПРОИЗВЕДЕНИЯ.' }
+    ], 0, rng);
+    const pickc = shuffledChoice([
+      { text: 'x = ' + l1, why: '' },
+      { text: 'x = ' + MINUS + l2, why: 'Длина катета не может быть отрицательной — этот корень не подходит.' },
+      { text: 'оба корня', why: 'Отрицательный корень длиной быть не может — подходит только один.' }
+    ], 0, rng);
     const steps = [
-      info('Составляем уравнение', `Пусть меньший катет — x, тогда больший — x + ${D}. Площадь: S = {{x(x + ${D})}/{2}} = ${fmt(area)}, значит x² + ${D}x − ${2 * area} = 0.`),
-      num('Дискриминант', `D = ${D}^{2} + 4 · ${2 * area} = ${D * D} + ${8 * area} = ?`, disc, { hint: `Посчитайте ${D}² и 4·${2 * area}, сложите.`, explain: `D = ${disc}.` }),
-      num('Корень из дискриминанта', `√{${disc}} = ?`, Math.round(Math.sqrt(disc)), { hint: `Какое число в квадрате даёт ${disc}?`, explain: `√{${disc}} = ${Math.round(Math.sqrt(disc))}.` }),
-      num('Меньший катет', `x = {{−${D} + √{${disc}}}/{2}} = {{${-D} + ${Math.round(Math.sqrt(disc))}}/{2}} = ?`, l1, { hint: `Сложите −${D} и ${Math.round(Math.sqrt(disc))}, потом разделите на 2.`, explain: `Меньший катет x = ${l1}.` })
+      info('Обозначим катеты', 'Пусть меньший катет — x, тогда больший — x + ' + d + '.'),
+      choice('Уравнение площади', 'Площадь равна ' + fmt(area) + '. Какое уравнение получается?', eqc.options, eqc.correct, {}),
+      num('Умножим обе части на 2', 'x(x + ' + d + ') = 2 · ' + fmt(area) + ' = ?', twoS, { hint: 'Удвойте площадь.', explain: 'x(x + ' + d + ') = ' + twoS + '.', traps: [{ value: area, msg: 'Это сама площадь. Обе части умножили на 2 — справа должно стоять 2S.' }] }),
+      info('Приводим к стандартному виду', 'Раскроем скобки и перенесём ' + twoS + ' влево: ' + eqText + '. Это квадратное уравнение: a = 1, b = ' + d + ', c = ' + MINUS + twoS + '.'),
+      num('Дискриминант', 'D = b^{2} − 4ac = ' + d + '^{2} − 4 · 1 · (' + MINUS + twoS + ') = ?', disc,
+        { hint: 'Минус на минус даёт плюс: ' + d + '^{2} + 4 · ' + twoS + '.', explain: 'D = ' + d * d + ' + ' + 4 * twoS + ' = ' + disc + '.',
+          traps: [{ value: d * d - 4 * twoS, msg: 'c = ' + MINUS + twoS + ' отрицательное, поэтому −4ac становится плюсом: D = ' + d + '^{2} + 4 · ' + twoS + '.' }, { value: d * d + 4 * area, msg: 'Взяли c = ' + MINUS + fmt(area) + ', а в уравнении c = ' + MINUS + twoS + ': площадь была удвоена.' }] }),
+      num('Корень из дискриминанта', '√{' + disc + '} = ?', root, { hint: 'Какое число в квадрате даёт ' + disc + '?', explain: '√{' + disc + '} = ' + root + '.', traps: [{ value: disc, msg: 'Это сам дискриминант — извлеките из него корень.' }] }),
+      multi('Корни уравнения', 'x = {{−b ± √{D}}/{2a}} = {{' + MINUS + d + ' ± ' + root + '}/{2}}. Найдите оба корня.', [{ label: 'x₁ =', ans: -l2 }, { label: 'x₂ =', ans: l1 }],
+        { unordered: true, hint: 'Один корень — с минусом перед ' + root + ', другой — с плюсом; оба делите на 2.', explain: 'x₁ = (' + MINUS + d + ' − ' + root + ') : 2 = ' + MINUS + l2 + ', x₂ = (' + MINUS + d + ' + ' + root + ') : 2 = ' + l1 + '.' }),
+      choice('Какой корень подходит?', 'x — длина катета. Чему равен меньший катет?', pickc.options, pickc.correct, {})
     ];
-    return { topic: 3, text, steps, answer: ansNum(l1), p, figure: { kind: 'tri', S, t: (l1 * l1) / (l1 * l1 + l2 * l2), labels: {}, areaText: 'S = ' + fmt(area) } };
+    return { topic: 3, text, steps, answer: ansNum(l1), p, figure: { kind: 'tri', S, t: (l1 * l1) / (l1 * l1 + l2 * l2), labels: {}, areaText: 'S = ' + fmt(area), hl: ['AC'] } };
   }
 };
 
@@ -905,19 +986,19 @@ TOPICS[4] = {
     { kind: 'hdm', A: 32, B: 58, pair: 'hm', ask: 'angleBetween', mSeed: 3 },
     { kind: 'hdm', A: 61, B: 29, pair: 'hd', ask: 'angleBetween', mSeed: 4 }
   ],
+  /* Уровни: 1 — сумма острых углов, медиана, прямая задача про угол между отрезками;
+     2 — прямая задача и медиана; 3 — только обратная задача (дан угол между отрезками). */
   params(level, rng){
-    if (level === 1 && rng() < 0.4){
-      const D = ri(3, 15, rng) * 2;                     // чётное — чтобы (90 − D) делилось на 2 без остатка
-      return { kind: 'sum', given: pick(['diff', 'times'], rng), D, mult: pick([2, 4, 5, 8], rng), mSeed: ri(1, 99999, rng) };
-    }
-    if (rng() < 0.3){ let B = ri(20, 69, rng); if (B >= 45) B += 1; return { kind: 'median', B, mSeed: ri(1, 99999, rng) }; }   // без 45°: ловушка «медиана ≠ биссектриса» совпала бы с ответом
-    /* 20°…40° и 50°…70°: без 45° (чевианы совпали бы) и без углов около 45°,
-       при которых основания H, D, M сливаются на чертеже; крайние углы дают
-       плоский треугольник, который не прочитать */
-    let A = ri(20, 61, rng); if (A > 40) A += 9;
+    const mSeed = ri(1, 99999, rng);
+    const sumTask = () => { const D = ri(3, 15, rng) * 2; return { kind: 'sum', given: pick(['diff', 'times'], rng), D, mult: pick([2, 4, 5, 8], rng), mSeed }; };   // D чётное — (90 − D) делится на 2
+    const medianTask = () => { let B = ri(20, 69, rng); if (B >= 45) B += 1; return { kind: 'median', B, mSeed }; };   // без 45°: ловушка «медиана ≠ биссектриса» совпала бы с ответом
+    /* 20°…40° и 50°…70° без 45° (отрезки совпали бы) и без 60° (угол между высотой и медианой
+       совпал бы с углом B, и две ловушки слились бы в одну); крайние углы дают нечитаемый чертёж */
+    let A = ri(20, 61, rng); if (A > 40) A += 9; if (A === 60) A = 62;
     const pair = pick(['hd', 'dm', 'hm'], rng);
-    const ask = level === 1 ? 'angleBetween' : pick(['angleBetween', 'findAcute'], rng);
-    return { kind: 'hdm', A, B: 90 - A, pair, ask, mSeed: ri(1, 99999, rng) };
+    if (level === 1){ const r = rng(); if (r < 0.35) return sumTask(); if (r < 0.65) return medianTask(); return { kind: 'hdm', A, B: 90 - A, pair, ask: 'angleBetween', mSeed }; }
+    if (level === 2){ if (rng() < 0.25) return medianTask(); return { kind: 'hdm', A, B: 90 - A, pair, ask: 'angleBetween', mSeed }; }
+    return { kind: 'hdm', A, B: 90 - A, pair, ask: 'findAcute', mSeed };
   },
   build(p){
     const rng = mulberry32((p.mSeed || 1) * 197 + 5);
@@ -985,30 +1066,50 @@ TOPICS[4] = {
           { unit: '°', hint: 'Из большего угла вычтите меньший.', explain: 'Угол между ' + cevName[c1] + ' и ' + cevName[c2] + ' равен ' + fmt(val) + '°.',
             traps: [{ value: angVal[big] + angVal[small], msg: 'Углы сложили, а нужно вычесть: оба отложены от стороны ' + S.C + S.A + ', один лежит внутри другого.' }] })
       ];
-      return { topic: 4, text, steps, answer: ansNum(val), p, unitFinal: '°', figure: { kind: 'tri', S, t: tAt(A), angleAt: S.A, angleText: A + '°', withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair] } };
+      return { topic: 4, text, steps, answer: ansNum(val), p, unitFinal: '°', figure: { kind: 'tri', S, t: tAt(A), angleAt: S.A, angleText: A + '°', withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair], betweenArc: { pair: p.pair, text: '' } } };
     }
     /* findAcute: дан угол между чевианами, найти острый угол треугольника */
     const givenAngle = val, wantSmaller = rng() < 0.5;
     const smaller = Math.min(A, 90 - A), bigger = 90 - smaller;
-    const descr = {
-      cevH: 'в прямоугольном треугольнике ' + S.A + S.C + S.H + ' угол ' + angName.cevH + ' = 180° − 90° − x = 90° − x',
-      cevM: S.C + Mn + ' = ' + S.A + Mn + ' (медиана к гипотенузе равна её половине), треугольник ' + S.A + S.C + Mn + ' равнобедренный, поэтому угол ' + angName.cevM + ' = x',
-      cevD: 'биссектриса делит прямой угол пополам, угол ' + angName.cevD + ' = 45°'
+    const g = fmt(givenAngle), isHM = p.pair === 'hm';
+    const kindWord = { cevH: 'высота', cevD: 'биссектриса', cevM: 'медиана' };
+    const exprOf = { cevH: '90° − x', cevM: 'x', cevD: '45°' };
+    const exprWhy = {
+      cevH: { 'x': 'x — это сам угол ' + S.A + '. В треугольнике ' + S.A + S.C + S.H + ' угол ' + S.H + ' прямой, поэтому угол ' + angName.cevH + ' = 180° − 90° − x.', '45°': '45° — это угол при БИССЕКТРИСЕ. Высота делит прямой угол не пополам: считайте через сумму углов треугольника ' + S.A + S.C + S.H + '.', '180° − x': 'Сумма углов треугольника 180°, но есть ещё прямой угол ' + S.H + ': 180° − 90° − x.' },
+      cevM: { '90° − x': '90° − x — это угол ' + S.B + '. Треугольник ' + S.A + S.C + Mn + ' равнобедренный с основанием ' + S.A + S.C + ' (медиана к гипотенузе равна её половине), поэтому угол ' + angName.cevM + ' = угол ' + S.A + ' = x.', '45°': 'Медиана не делит прямой угол пополам — это делает биссектриса. Используйте равнобедренный треугольник ' + S.A + S.C + Mn + '.' },
+      cevD: { 'x': 'Биссектриса делит пополам угол ' + S.C + ' = 90°, угол ' + S.A + ' тут ни при чём.', '90° − x': 'Биссектриса делит пополам прямой угол ' + S.C + ', а не угол ' + S.B + '.' }
     };
-    const isHM = p.pair === 'hm';
-    const eq = isHM
-      ? '(90° − x) − x = ' + fmt(givenAngle) + '° или x − (90° − x) = ' + fmt(givenAngle) + '°, то есть 90° − 2x = ' + fmt(givenAngle) + '° или 2x − 90° = ' + fmt(givenAngle) + '°. Отсюда x = (90° − ' + fmt(givenAngle) + '°) : 2 или x = (90° + ' + fmt(givenAngle) + '°) : 2'
-      : '45° − x = ' + fmt(givenAngle) + '° или x − 45° = ' + fmt(givenAngle) + '°. Отсюда x = 45° − ' + fmt(givenAngle) + '° или x = 45° + ' + fmt(givenAngle) + '°';
-    const text = 'Угол между ' + cevName[c1] + ' и ' + cevName[c2] + ', проведёнными из вершины прямого угла прямоугольного треугольника ' + S.A + S.B + S.C + ', равен ' + fmt(givenAngle) + '°. Найдите ' + (wantSmaller ? 'меньший' : 'больший') + ' острый угол этого треугольника. Ответ дайте в градусах.';
+    const exprChoice = c => shuffledChoice([{ text: exprOf[c], why: '' }, ...Object.keys(exprWhy[c]).map(k => ({ text: k, why: exprWhy[c][k] }))], 0, rng);
+    const reason = { cevH: 'Треугольник ' + S.A + S.C + S.H + ' прямоугольный (' + S.C + S.H + ' — высота)', cevM: S.C + Mn + ' = ' + S.A + Mn + ' — медиана к гипотенузе равна её половине, треугольник ' + S.A + S.C + Mn + ' равнобедренный', cevD: S.C + S.D + ' — биссектриса прямого угла ' + S.C };
+    const ec1 = exprChoice(c1), ec2 = exprChoice(c2);
+    const e1 = exprOf[c1], e2 = exprOf[c2];
+    const eqc = shuffledChoice([
+      { text: '(' + e1 + ') − (' + e2 + ') = ' + g + '° или (' + e2 + ') − (' + e1 + ') = ' + g + '°', why: '' },
+      { text: '(' + e1 + ') + (' + e2 + ') = ' + g + '°', why: 'Оба луча отложены от стороны ' + S.C + S.A + ', один угол лежит внутри другого — угол между лучами равен РАЗНОСТИ, а не сумме.' },
+      { text: '(' + e1 + ') − (' + e2 + ') = 90°', why: '90° — это весь угол ' + S.C + '. Данный угол ' + g + '° — между двумя лучами внутри него.' }
+    ], 0, rng);
+    const roots = isHM ? [(90 - givenAngle) / 2, (90 + givenAngle) / 2] : [45 - givenAngle, 45 + givenAngle];
+    const simplify = isHM
+      ? 'Упростим: (90° − x) − x = 90° − 2x, а x − (90° − x) = 2x − 90°. Получаем два уравнения: 90° − 2x = ' + g + '° или 2x − 90° = ' + g + '°. Найдите x из каждого.'
+      : (p.pair === 'hd'
+        ? 'Упростим: (90° − x) − 45° = 45° − x. Получаем два уравнения: 45° − x = ' + g + '° или x − 45° = ' + g + '°. Найдите x из каждого.'
+        : 'Получаем два уравнения: 45° − x = ' + g + '° или x − 45° = ' + g + '°. Найдите x из каждого.');
+    const solveHint = isHM
+      ? 'Из 90° − 2x = ' + g + '°: 2x = 90° − ' + g + '°. Из 2x − 90° = ' + g + '°: 2x = 90° + ' + g + '°. Потом разделите на 2.'
+      : 'Из 45° − x = ' + g + '°: x = 45° − ' + g + '°. Из x − 45° = ' + g + '°: x = 45° + ' + g + '°.';
+    const text = 'В прямоугольном треугольнике ' + S.A + S.B + S.C + ' с прямым углом ' + S.C + ' проведены ' + kindWord[c1] + ' ' + cevName[c1] + ' и ' + kindWord[c2] + ' ' + cevName[c2] + '. Угол между ними равен ' + g + '°. Найдите ' + (wantSmaller ? 'меньший' : 'больший') + ' острый угол треугольника. Ответ дайте в градусах.';
     const steps = [
-      info('Обозначим угол', 'Пусть угол ' + S.A + ' = x. Тогда: ' + descr[c1] + '; ' + descr[c2] + '.'),
-      info('Уравнение', 'Угол между ' + cevName[c1] + ' и ' + cevName[c2] + ' — разность этих углов (оба отложены от стороны ' + S.C + S.A + '), а какой из них больше, мы не знаем. Поэтому ' + eq + '. Два корня — это два острых угла треугольника: в сумме они дают 90°.'),
-      num(wantSmaller ? 'Меньший угол' : 'Больший угол', wantSmaller
-        ? (isHM ? '(90 − ' + fmt(givenAngle) + ') : 2 = ?' : '45 − ' + fmt(givenAngle) + ' = ?')
-        : (isHM ? '(90 + ' + fmt(givenAngle) + ') : 2 = ?' : '45 + ' + fmt(givenAngle) + ' = ?'), wantSmaller ? smaller : bigger,
-        { unit: '°', hint: wantSmaller ? 'Меньший корень.' : 'Больший корень. Проверка: сумма двух корней должна быть 90°.', explain: (wantSmaller ? 'Меньший' : 'Больший') + ' угол = ' + fmt(wantSmaller ? smaller : bigger) + '°.' })
+      info('Обозначим угол', 'Пусть угол ' + S.A + ' = x. Выразим через x углы, которые ' + cevName[c1] + ' и ' + cevName[c2] + ' образуют со стороной ' + S.C + S.A + '.'),
+      choice('Угол ' + angName[c1], reason[c1] + '. Чему равен угол ' + angName[c1] + '?', ec1.options, ec1.correct, {}),
+      choice('Угол ' + angName[c2], reason[c2] + '. Чему равен угол ' + angName[c2] + '?', ec2.options, ec2.correct, {}),
+      choice('Уравнение', 'Угол между ' + cevName[c1] + ' и ' + cevName[c2] + ' равен ' + g + '°, а какой из двух углов больше, мы не знаем. Какое уравнение получается?', eqc.options, eqc.correct, {}),
+      multi('Решаем оба уравнения', simplify, [{ label: 'x₁ =', ans: roots[0], suffix: '°' }, { label: 'x₂ =', ans: roots[1], suffix: '°' }],
+        { unordered: true, hint: solveHint, explain: 'x = ' + fmt(roots[0]) + '° или x = ' + fmt(roots[1]) + '°. Оба корня подходят — это два острых угла треугольника, в сумме они дают 90°.' }),
+      num(wantSmaller ? 'Меньший угол' : 'Больший угол', 'Корни ' + fmt(roots[0]) + '° и ' + fmt(roots[1]) + '° — это углы ' + S.A + ' и ' + S.B + '. Спрашивают ' + (wantSmaller ? 'меньший' : 'больший') + ' острый угол: ?', wantSmaller ? smaller : bigger,
+        { unit: '°', hint: (wantSmaller ? 'Меньший' : 'Больший') + ' из двух корней.', explain: (wantSmaller ? 'Меньший' : 'Больший') + ' угол = ' + fmt(wantSmaller ? smaller : bigger) + '°.',
+          traps: [{ value: wantSmaller ? bigger : smaller, msg: 'Это ' + (wantSmaller ? 'больший' : 'меньший') + ' из двух углов, а спрашивают ' + (wantSmaller ? 'меньший' : 'больший') + '.' }] })
     ];
-    return { topic: 4, text, steps, answer: ansNum(wantSmaller ? smaller : bigger), p, unitFinal: '°', figure: { kind: 'tri', S, t: tAt(A), withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair], betweenArc: { pair: p.pair, text: fmt(givenAngle) + '°' } } };
+    return { topic: 4, text, steps, answer: ansNum(wantSmaller ? smaller : bigger), p, unitFinal: '°', figure: { kind: 'tri', S, t: tAt(A), withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair], betweenArc: { pair: p.pair, text: g + '°' } } };
   }
 };
 
@@ -1019,16 +1120,21 @@ TOPICS[5] = {
   num: 5, name: 'Треугольник с углом 30°', short: 'Катет против 30° — половина гипотенузы',
   memo: [
     ['Катет против угла 30°', 'равен половине гипотенузы — единственное, что нужно помнить'],
-    ['Второй острый угол', '180° − 90° − 30° = 60°'],
-    ['Высота CH', 'отрезает прямоугольные треугольники ACH и BCH, и в каждом снова есть углы 30° и 60°'],
-    ['Отсюда получается', 'отрезок гипотенузы у вершины с углом 60° — четверть гипотенузы, у вершины с углом 30° — три четверти; высота — по теореме Пифагора: {{√{3}}/{4}} гипотенузы']
+    ['Второй острый угол', '180° − 90° − 30° = 60°; если дан угол 60°, то второй острый — 30°'],
+    ['Высота к гипотенузе', 'отсекает два прямоугольных треугольника, и в одном из них снова есть угол 30° — примените ту же теорему ещё раз'],
+    ['Ход решения', 'обозначить неизвестное, найти катет против 30° как половину гипотенузы, дойти до нужного угла через сумму углов; высота — по теореме Пифагора, в её записи остаётся √3']
   ],
-  trap: 'Половина гипотенузы — это катет ПРОТИВ угла 30°, а не прилежащий к нему. Больший отрезок гипотенузы (после высоты) прилегает к вершине с углом 30°, а не 60°.',
-  demos: [{ AB: 8, ask: 'CH', mSeed: 1 }, { AB: 8, ask: 'AH', mSeed: 2 }, { AB: 8, ask: 'BH', mSeed: 3 }],
+  trap: 'Половина гипотенузы — это катет ПРОТИВ угла 30°, а не прилежащий к нему. Высота — не отрезок гипотенузы: в её записи остаётся √3.',
+  demos: [{ AB: 8, ask: 'CH', given: 'AB', angleGiven: 30, mSeed: 1 }, { AB: 12, ask: 'AH', given: 'AB', angleGiven: 30, mSeed: 2 }, { AB: 8, ask: 'BH', given: 'AB', angleGiven: 60, swap: true, mSeed: 3 }],
+  /* Уровни: 1 — сама теорема (катет, гипотенуза, отрезки), угол 30° при A, гипотенуза дана;
+     2 — высота и отрезки, угол 30° или 60° при любой вершине; 3 — то же, но может быть дан катет, а не гипотенуза.
+     AB кратно 8, чтобы четверть была ≥ 2 и ответ «1√3» не появлялся. */
   params(level, rng){
-    const AB = level === 1 ? pick([4, 8], rng) : pick([8, 12, 16, 20], rng);
-    const ask = pick(['CH', 'AH', 'BH'], rng);
-    return { AB, ask, swap: level === 3 && rng() < 0.5, mSeed: ri(1, 99999, rng) };
+    const AB = level === 1 ? pick([8, 12, 16], rng) : pick([8, 12, 16, 20, 24], rng);
+    const mSeed = ri(1, 99999, rng);
+    if (level === 1){ const ask = pick(['leg', 'hyp', 'AH', 'BH'], rng); return { AB, ask, given: ask === 'hyp' ? 'leg' : 'AB', angleGiven: 30, swap: false, mSeed }; }
+    const ask = pick(level === 2 ? ['CH', 'AH', 'BH'] : ['CH', 'CH', 'AH', 'BH'], rng);
+    return { AB, ask, given: level === 3 && rng() < 0.4 ? 'leg' : 'AB', angleGiven: rng() < 0.4 ? 60 : 30, swap: rng() < 0.5, mSeed };
   },
   build(p){
     const rng = mulberry32((p.mSeed || 1) * 223 + 19);
@@ -1036,53 +1142,73 @@ TOPICS[5] = {
     const AB = p.AB, half = AB / 2, quarter = AB / 4;
     const Pv = p.swap ? S.B : S.A, Qv = p.swap ? S.A : S.B;       // Pv — вершина с углом 30°, Qv — с углом 60°
     const hyp = S.A + S.B, CH = S.C + S.H;
-    const legQ = Qv + S.C;                                          // катет против угла 30°
-    const segQ = Qv + S.H, segP = Pv + S.H;                          // отрезки гипотенузы у вершин Qv и Pv
-    const segQkey = p.swap ? 'AH' : 'BH';
-    const small = S.C + S.H + Qv;                                    // прямоугольный треугольник CHQ
-    const stepLeg = num('Катет против угла 30°', 'В треугольнике ' + S.A + S.B + S.C + ' катет ' + legQ + ' лежит напротив угла ' + Pv + ' = 30°, значит он равен половине гипотенузы: ' + legQ + ' = ' + hyp + ' : 2 = ?', half,
-      { hint: 'Половина от ' + AB + '.', explain: legQ + ' = ' + fmt(half) + '.',
-        traps: [{ value: AB, msg: 'Это вся гипотенуза. Катет против угла 30° — её ПОЛОВИНА.' }, { value: quarter, msg: 'Это четверть. Катет против угла 30° равен ПОЛОВИНЕ гипотенузы; четверть появится позже — у отрезка гипотенузы.' }] });
+    const legQ = Qv + S.C, legP = Pv + S.C;                         // legQ — катет против угла 30° (прилежит к вершине Qv)
+    const legQkey = Qv === S.A ? 'AC' : 'BC';
+    const segQ = Qv + S.H, segP = Pv + S.H;                          // отрезки гипотенузы у вершин Qv (четверть) и Pv (три четверти)
+    const small = S.C + S.H + Qv;                                    // прямоугольный треугольник CHQ, в нём снова угол 30°
+    const givenLeg = p.given === 'leg', ang60 = p.angleGiven === 60;
+    const askSeg = p.ask === 'AH' || p.ask === 'BH';
+    const cond = 'В треугольнике ' + S.A + S.B + S.C + ' угол ' + S.C + ' равен 90°, ' + (ang60 ? 'угол ' + Qv + ' равен 60°' : 'угол ' + Pv + ' равен 30°') + ', ' + (givenLeg ? legQ + ' = ' + fmt(half) : hyp + ' = ' + AB) + ((askSeg || p.ask === 'CH') ? ', ' + CH + ' — высота' : '');
+    const steps = [];
+    if (ang60) steps.push(num('Угол ' + Pv, 'Сумма углов треугольника 180°. Угол ' + Pv + ' = 180° − 90° − 60° = ?', 30,
+      { unit: '°', hint: 'Из 180° вычтите прямой угол и данный угол 60°.', explain: 'Угол ' + Pv + ' = 30°.',
+        traps: [{ value: 120, msg: 'Вычли только 60°, а прямой угол ' + S.C + ' тоже входит в сумму 180°.' }, { value: 60, msg: 'Это данный угол ' + Qv + '. Второй острый угол дополняет его до 90°.' }] }));
+    if (givenLeg) steps.push(num('Гипотенуза', 'Катет ' + legQ + ' лежит напротив угла ' + Pv + ' = 30°, значит он равен половине гипотенузы. Обозначим ' + hyp + ' = x: x : 2 = ' + fmt(half) + ', откуда x = ?', AB,
+      { hint: 'Гипотенуза вдвое длиннее катета против угла 30°.', explain: hyp + ' = ' + AB + '.',
+        traps: [{ value: half / 2, msg: 'Разделили пополам, а гипотенуза ВДВОЕ БОЛЬШЕ катета против угла 30°.' }, { value: half, msg: 'Это сам катет ' + legQ + '. Гипотенуза вдвое больше.' }] }));
+    else steps.push(num('Катет против угла 30°', 'В треугольнике ' + S.A + S.B + S.C + ' катет ' + legQ + ' лежит напротив угла ' + Pv + ' = 30°. Обозначим ' + legQ + ' = x: чему он равен?', half,
+      { hint: 'Катет против угла 30° равен половине гипотенузы.', explain: legQ + ' = ' + hyp + ' : 2 = ' + fmt(half) + '.',
+        traps: [{ value: AB, msg: 'Это вся гипотенуза. Катет против угла 30° — её ПОЛОВИНА.' }, { value: quarter, msg: 'Это четверть гипотенузы. Катет против угла 30° равен её ПОЛОВИНЕ.' }] }));
     const stepAng = num('Угол ' + Qv + S.C + S.H, 'Сумма углов треугольника 180°, поэтому угол ' + Qv + ' = 180° − 90° − 30° = 60°. В треугольнике ' + small + ' угол ' + S.H + ' прямой (' + CH + ' — высота), значит угол ' + Qv + S.C + S.H + ' = 180° − 90° − 60° = ?', 30,
-      { unit: '°', hint: '180 − 90 − 60.', explain: 'Угол ' + Qv + S.C + S.H + ' = 30° — в треугольнике ' + small + ' снова есть угол 30°.',
+      { unit: '°', hint: 'Из 180° вычтите прямой угол ' + S.H + ' и угол ' + Qv + '.', explain: 'Угол ' + Qv + S.C + S.H + ' = 30° — в треугольнике ' + small + ' снова есть угол 30°.',
         traps: [{ value: 60, msg: 'Это угол ' + Qv + '. Нужен угол при вершине ' + S.C + ' треугольника ' + small + ': 180° − 90° − 60°.' }] });
-    const stepSeg = num('Отрезок ' + segQ, 'В прямоугольном треугольнике ' + small + ' катет ' + segQ + ' лежит напротив угла ' + Qv + S.C + S.H + ' = 30°, значит ' + segQ + ' = ' + legQ + ' : 2 = ' + fmt(half) + ' : 2 = ?', quarter,
-      { hint: 'Половина от ' + fmt(half) + '.', explain: segQ + ' = ' + fmt(quarter) + ' — четверть гипотенузы.',
-        traps: [{ value: half, msg: 'Это катет ' + legQ + ' — гипотенуза треугольника ' + small + '. Катет ' + segQ + ' против угла 30° — его половина.' }] });
-    let text, steps, answer, hl;
-    if (p.ask === 'CH'){
+    const stepSeg = num('Отрезок ' + segQ, 'В прямоугольном треугольнике ' + small + ' катет ' + segQ + ' лежит напротив угла ' + Qv + S.C + S.H + ' = 30°, а гипотенуза этого треугольника — ' + legQ + ' = ' + fmt(half) + '. Обозначим ' + segQ + ' = y: чему он равен?', quarter,
+      { hint: 'Снова катет против угла 30° — половина гипотенузы, но теперь гипотенуза — ' + legQ + '.', explain: segQ + ' = ' + legQ + ' : 2 = ' + fmt(quarter) + '.',
+        traps: [{ value: half, msg: 'Это катет ' + legQ + ' — гипотенуза треугольника ' + small + '. Катет ' + segQ + ' против угла 30° — его половина.' }, { value: AB - quarter, msg: 'Это другой отрезок, ' + segP + '. В треугольнике ' + small + ' против угла 30° лежит ' + segQ + ' — половина от ' + legQ + '.' }] });
+    let text, answer, hl;
+    if (p.ask === 'leg'){
+      text = cond + '. Найдите катет ' + legQ + '.';
+      answer = ansNum(half); hl = [legQkey];
+    } else if (p.ask === 'hyp'){
+      text = cond + '. Найдите гипотенузу ' + hyp + '.';
+      answer = ansNum(AB); hl = ['AB'];
+    } else if (askSeg){
+      const askQ = (p.ask === 'AH') === (Qv === S.A);                // спрашивают отрезок у вершины с углом 60° (четверть)?
+      const name = p.ask === 'AH' ? S.A + S.H : S.B + S.H;
+      text = cond + '. Найдите ' + name + '.';
+      steps.push(stepAng, stepSeg);
+      if (!askQ) steps.push(num('Отрезок ' + segP, segP + ' = ' + hyp + ' − ' + segQ + ' = ' + AB + ' − ' + fmt(quarter) + ' = ?', AB - quarter,
+        { hint: 'Отрезки ' + segP + ' и ' + segQ + ' вместе составляют гипотенузу.', explain: segP + ' = ' + fmt(AB - quarter) + '.',
+          traps: [{ value: quarter, msg: 'Это отрезок ' + segQ + ', а спрашивают ' + segP + ' — остаток гипотенузы.' }, { value: half, msg: 'Это половина гипотенузы — катет ' + legQ + '. Отрезок ' + segP + ' — вся гипотенуза без ' + segQ + '.' }] }));
+      answer = ansNum(askQ ? quarter : AB - quarter); hl = [p.ask];
+    } else {
       const sq = 3 * AB * AB / 16, q2 = quarter * quarter;           // CH² = (AB/2)² − (AB/4)² = 3·(AB/4)²
-      text = 'В треугольнике ' + S.A + S.B + S.C + ' угол ' + S.C + ' равен 90°, угол ' + Pv + ' равен 30°, ' + hyp + ' = ' + AB + '. Найдите высоту ' + CH + '.';
-      steps = [stepLeg, stepAng, stepSeg,
+      text = cond + '. Найдите высоту ' + CH + '.';
+      steps.push(stepAng, stepSeg,
         num('Уравнение для высоты', 'Обозначим ' + CH + ' = x. В треугольнике ' + small + ' высота ' + CH + ' — катет, ' + legQ + ' — гипотенуза, и по теореме Пифагора x^{2} + ' + segQ + '^{2} = ' + legQ + '^{2}: x^{2} + ' + fmt(quarter) + '^{2} = ' + fmt(half) + '^{2}, x^{2} = ' + half * half + ' − ' + q2 + ' = ?', sq,
           { hint: fmt(half) + '^{2} = ' + half * half + ', ' + fmt(quarter) + '^{2} = ' + q2 + '. Вычтите.', explain: 'x^{2} = ' + half * half + ' − ' + q2 + ' = ' + sq + '.',
             traps: [{ value: half * half + q2, msg: 'Квадраты сложили, а высота — КАТЕТ треугольника ' + small + ': из квадрата гипотенузы ' + legQ + ' вычитают квадрат катета ' + segQ + '.' }] }),
-        num('Находим высоту', quarter === 1 ? 'x^{2} = 3, x > 0, значит ' + CH + ' = √{3} = ?' : 'x^{2} = ' + sq + ', x > 0, значит ' + CH + ' = √{' + sq + '} = √{' + q2 + ' · 3} = ?', quarter,
-          { suffix: '√3', hint: quarter === 1 ? 'Число перед √3 здесь равно 1.' : 'Вынесите полный квадрат из-под корня: ' + sq + ' = ' + q2 + ' · 3, а √{' + q2 + '} = ' + fmt(quarter) + '.', explain: CH + ' = ' + (quarter === 1 ? '' : fmt(quarter)) + '√{3}.',
-            traps: [{ value: sq, msg: 'Это ' + CH + '^{2}. Извлеките корень и запишите ответ в виде числа перед √3.' }] })
+        num('Находим высоту', 'x^{2} = ' + sq + ', x > 0, значит ' + CH + ' = √{' + sq + '}. Вынесите из-под корня полный квадрат: ответ вида N√3.', quarter,
+          { suffix: '√3', hint: 'Разложите ' + sq + ' на два множителя так, чтобы один был полным квадратом, и вынесите его корень за знак корня.', explain: CH + ' = √{' + q2 + ' · 3} = ' + fmt(quarter) + '√{3}.',
+            traps: [{ value: half, msg: fmt(half) + '√3 — это катет ' + legP + ', прилежащий к углу 30°, а не высота.' }],
+            noRootTraps: [{ value: sq, msg: 'Это x^{2}. Извлеките корень: √{' + sq + '} = √{' + q2 + ' · 3} = ' + fmt(quarter) + '√{3}.' }, { value: quarter, msg: 'Число перед корнем верное, но сам корень потерян: под корнем остаётся 3. Запишите ' + fmt(quarter) + '√3.' }] }));
+      answer = ansNum(quarter, { suffix: '√3', display: fmt(quarter) + '√{3}' });
+      answer.noRootTraps = [
+        { value: quarter, msg: 'Это отрезок ' + segQ + ' — четверть гипотенузы, катет треугольника ' + small + ' против угла 30°. Высота — второй катет этого треугольника: ' + CH + '^{2} = ' + legQ + '^{2} − ' + segQ + '^{2}, и в ответе остаётся √3.' },
+        { value: half, msg: 'Это катет ' + legQ + ' против угла 30° — половина гипотенузы, а не высота. Высота ' + CH + ' перпендикулярна гипотенузе — ищите её в треугольнике ' + small + '.' },
+        { value: AB - quarter, msg: 'Это больший отрезок гипотенузы ' + segP + ', а спрашивают высоту ' + CH + '.' },
+        { value: sq, msg: 'Это ' + CH + '^{2}. Извлеките корень: √{' + sq + '} = √{' + q2 + ' · 3} = ' + fmt(quarter) + '√{3}.' }
       ];
-      answer = ansNum(quarter, { suffix: '√3', display: quarter === 1 ? '√{3}' : fmt(quarter) + '√{3}' });
       hl = ['CH'];
-    } else {
-      const askName = (p.ask === 'AH' ? S.A : S.B) + S.H;
-      text = 'В треугольнике ' + S.A + S.B + S.C + ' угол ' + S.C + ' равен 90°, ' + CH + ' — высота, угол ' + Pv + ' равен 30°, ' + hyp + ' = ' + AB + '. Найдите ' + askName + '.';
-      if (p.ask === segQkey){ steps = [stepLeg, stepAng, stepSeg]; answer = ansNum(quarter); }
-      else {
-        steps = [stepLeg, stepAng, stepSeg,
-          num('Отрезок ' + segP, segP + ' = ' + hyp + ' − ' + segQ + ' = ' + AB + ' − ' + fmt(quarter) + ' = ?', AB - quarter,
-            { hint: 'Вычтите ' + fmt(quarter) + ' из ' + AB + '.', explain: segP + ' = ' + fmt(AB - quarter) + ' — три четверти гипотенузы, у вершины с углом 30°.',
-              traps: [{ value: quarter, msg: 'Это отрезок ' + segQ + '. Спрашивают ' + segP + ' — остаток гипотенузы: ' + AB + ' − ' + fmt(quarter) + '.' }] })];
-        answer = ansNum(AB - quarter);
-      }
-      hl = [p.ask];
     }
-    return { topic: 5, text, steps, answer, p, figure: { kind: 'tri', S, t: Pv === S.A ? 0.75 : 0.25, angleAt: Pv, angleText: '30°', withAltitude: true, labels: { AB }, hl } };
+    const figure = { kind: 'tri', S, t: Pv === S.A ? 0.75 : 0.25, angleAt: ang60 ? Qv : Pv, angleText: ang60 ? '60°' : '30°', withAltitude: askSeg || p.ask === 'CH', labels: givenLeg ? { [legQkey]: half } : { AB }, hl };
+    return { topic: 5, text, steps, answer, p, figure };
   }
 };
 
 /* ---------- ответы, точки входа ---------- */
 function ansNum(value, o){ o = o || {}; return { kind: 'num', value, suffix: o.suffix || '', display: o.display || fmt(value) + (o.suffix || ''), traps: o.traps || [] }; }
-function ansChoice(options, correct){ return { kind: 'choice', options, correct, display: options[correct].text }; }
+function ansChoice(options, correct, o){ o = o || {}; return { kind: 'choice', options, correct, q: o.q || '', display: o.display || options[correct].text }; }
 function makeTask(topic, level, rng){
   const T = TOPICS[topic];
   const task = T.build(T.params(level, rng));
@@ -1154,6 +1280,11 @@ function finalTraps(task){
     const tri = { AC: bb, BC: aa, AB: cc };
     const m = a.value / tri[p.findSide];
     if (Math.abs(m - 1) > 1e-9) add(tri[p.findSide], 'Похоже, число из дроби взято как длина стороны. Дробь — это ОТНОШЕНИЕ сторон: выразите искомую сторону через данную.');
+    const RS = { sin: ['BC', 'AB'], cos: ['AC', 'AB'], tan: ['BC', 'AC'] }[p.ratio] || [];
+    if (RS.includes(p.given) && RS.includes(p.findSide)){          // прямой маршрут: типичная ошибка — пропорция наоборот
+      const r = tri[RS[0]] / tri[RS[1]], gv = tri[p.given] * m, outNum = p.findSide === RS[0];
+      add(outNum ? gv / r : gv * r, 'Пропорция записана наоборот: ' + nm(p.findSide) + ' стоит в ' + (outNum ? 'ЧИСЛИТЕЛЕ' : 'ЗНАМЕНАТЕЛЕ') + ' определения ' + ({ sin: 'sin', cos: 'cos', tan: 'tg' })[p.ratio] + ' ' + S.A + ' = ' + nm(RS[0]) + '/' + nm(RS[1]) + '. Запишите пропорцию с x на этом месте и решите её.');
+    }
     for (const k of ['AC', 'BC', 'AB']) if (k !== p.findSide)
       add(tri[k] * m, k === p.given
         ? `Это данная сторона ${nm(k)} из условия, а найти нужно ${nm(p.findSide)}.`
@@ -1166,6 +1297,8 @@ function finalTraps(task){
     if (R === 'sinFromSeg'){
       add(BC / BH, `Дробь перевёрнута: в прямоугольном треугольнике ${S.C}${S.B}${S.H} гипотенуза — ${nm('BC')}, она в знаменателе.`);
       add(CH / BC, `Это косинус этого угла (через катет ${nm('CH')}), а спрашивают синус — через ${nm('BH')}.`);
+      add(BH / CH, `Это отношение катетов ${nm('BH')} и ${nm('CH')} — тангенс. Синус — противолежащий катет к ГИПОТЕНУЗЕ ${nm('BC')}.`);
+      add(CH / BH, `Это отношение катетов — тангенс другого угла. Синус — противолежащий катет ${nm('BH')} к гипотенузе ${nm('BC')}.`);
     }
     if (R === 'legFromSeg'){
       add(AH * AB, `Не извлечён корень: ${nm('AC')}² = ${nm('AH')} · ${nm('AB')}, ответ — корень из этого произведения.`);
@@ -1185,6 +1318,7 @@ function finalTraps(task){
     if (R === 'tanFromAHtg'){
       add(CH, `Это высота ${nm('CH')} = ${nm('AH')} · tg — сделан только первый шаг. Дальше: ${nm('BH')} = ${nm('CH')} · tg (в треугольнике ${S.C}${S.B}${S.H} тот же угол).`);
       add(AB, `Это вся гипотенуза ${nm('AB')}, а спрашивают отрезок ${nm('BH')}.`);
+      add(AH, `Это данный отрезок ${nm('AH')}: высоту разделили на tg, а надо умножить — ${nm('BH')} стоит в ЧИСЛИТЕЛЕ tg угла ${S.B}${S.C}${S.H}.`);
     }
     if (R === 'altFromLegRatio'){
       add(AC * BC, `Забыли разделить на гипотенузу: ${nm('CH')} = ${nm('AC')} · ${nm('BC')} : ${nm('AB')}.`);
@@ -1201,16 +1335,18 @@ function finalTraps(task){
   if (task.topic === 3 && p.kind === 'diff'){
     const area = p.l1 * p.l2 / 2, D = p.l2 - p.l1;
     add(p.l2, 'Это БОЛЬШИЙ катет. Перечитайте вопрос: спрашивают меньший.');
+    add(-p.l2, 'Длина катета не может быть отрицательной: этот корень уравнения не подходит, ответ — второй корень.');
     add((-D + Math.sqrt(D * D + 4 * area)) / 2, 'Произведение катетов приравняли к S. Но S = a · b : 2, значит a · b = 2S — удвойте площадь.');
   }
   if (task.topic === 4 && p.kind === 'sum'){
     if (p.given === 'diff'){
-      add((90 - p.D) / 2, 'Это МЕНЬШИЙ угол, а спрашивают больший.');
-      add(45 + p.D, 'Разность распределяется поровну: больший угол = 45° + D : 2, а не 45° + D.');
-      add(90 - p.D, 'Сумма острых углов 90°: x + (x + D) = 90, откуда больший = (90 + D) : 2.');
+      const x = (90 - p.D) / 2;
+      add(x, 'Это МЕНЬШИЙ угол, а спрашивают больший.');
+      add(45 + p.D, 'Вы прибавили всю разность ' + p.D + '° к 45°. Составьте уравнение: x + (x + ' + p.D + ') = 90, откуда x = ' + fmt(x) + ', а больший угол — ' + fmt(x) + ' + ' + p.D + '.');
+      add(90 - p.D, 'Это 90° − ' + p.D + '° = 2x, то есть удвоенный меньший угол. Разделите на 2 и прибавьте ' + p.D + '°.');
     } else {
-      add(90 / (p.mult + 1), `Это МЕНЬШИЙ угол. Больший в ${p.mult} ${razA(p.mult)} больше — умножьте.`);
-      add(90 / p.mult * (p.mult - 1), `Делили 90 на ${p.mult}, а частей ${p.mult + 1}: x + ${p.mult}x = ${p.mult + 1}x.`);
+      add(90 / (p.mult + 1), 'Это МЕНЬШИЙ угол. Больший в ' + p.mult + ' ' + razA(p.mult) + ' больше — умножьте.');
+      add(90 / p.mult * (p.mult - 1), 'Делили 90 на ' + p.mult + ', а частей ' + (p.mult + 1) + ': x + ' + p.mult + 'x = ' + (p.mult + 1) + 'x.');
     }
   }
   if (task.topic === 4 && p.kind === 'median'){
@@ -1219,35 +1355,42 @@ function finalTraps(task){
     add((90 - p.B) / 2, 'Лишнее деление на 2: искомый угол = 90° − данный, без половин.');
   }
   if (task.topic === 4 && p.kind === 'hdm' && p.ask !== 'findAcute'){
-    const base = Math.abs(2 * p.A - 90);
-    add(90 - p.A, 'Это второй острый угол треугольника, а не угол между проведёнными отрезками.');
-    if (p.pair === 'hm') add(base / 2, 'Это ПОЛОВИНА. Между высотой и медианой лежит полный угол |α − β|, пополам его делит биссектриса.');
-    else add(base, 'Это угол между высотой и МЕДИАНОЙ, то есть |α − β| целиком. Биссектриса делит его пополам — разделите на 2.');
+    const A = p.A, B = 90 - A, hm = Math.abs(A - B);              // угол между высотой и медианой = |ACM − ACH| = |A − (90° − A)|
+    add(B, 'Это второй острый угол треугольника, а не угол между проведёнными отрезками. Найдите углы ' + S.A + S.C + S.H + ', ' + S.A + S.C + S.D + ', ' + S.A + S.C + (S.Med || 'M') + ' и вычтите.');
+    if (p.pair === 'hm') add(hm / 2, 'Это половина. Между высотой и медианой лежит весь угол: угол ' + S.A + S.C + (S.Med || 'M') + ' − угол ' + S.A + S.C + S.H + ' = ' + A + '° − ' + B + '° по модулю; пополам его делила бы биссектриса, а её здесь нет.');
+    else add(hm, 'Это угол между высотой и МЕДИАНОЙ: ' + Math.max(A, B) + '° − ' + Math.min(A, B) + '°. Спрашивают угол с биссектрисой, а угол ' + S.A + S.C + S.D + ' = 45°: вычитайте 45° из большего угла или из 45° меньший.');
   }
   if (task.topic === 4 && p.kind === 'hdm' && p.ask === 'findAcute'){
     const base = Math.abs(2 * p.A - 90);
-    const given = (p.pair === 'hm' ? 1 : 0.5) * base;
+    const given = (p.pair === 'hm' ? 1 : 0.5) * base, g = fmt(given);
     const smaller = Math.min(p.A, 90 - p.A);
     const wantSmaller = Math.abs(a.value - smaller) < 1e-9;
-    add(wantSmaller ? 90 - smaller : smaller, `Найден другой из двух углов: спрашивают ${wantSmaller ? 'МЕНЬШИЙ' : 'БОЛЬШИЙ'}.`);
+    add(wantSmaller ? 90 - smaller : smaller, 'Найден другой из двух углов: спрашивают ' + (wantSmaller ? 'МЕНЬШИЙ' : 'БОЛЬШИЙ') + '.');
     if (p.pair === 'hm'){
-      add(45 - given, 'Между высотой и медианой лежит ПОЛНЫЙ |α − β| — сначала разделите данный угол на 2.');
-      add(45 + given, 'Между высотой и медианой лежит ПОЛНЫЙ |α − β| — сначала разделите данный угол на 2.');
+      const m = 'Угол между высотой и медианой равен (90° − x) − x = 90° − 2x. Из 90° − 2x = ' + g + '° получается x = (90° − ' + g + '°) : 2, а не 45° − ' + g + '°.';
+      add(45 - given, m); add(45 + given, m);
     } else {
-      add(45 - given / 2, 'Данный угол — с участием биссектрисы, он УЖЕ половина |α − β|. Второй раз делить не нужно.');
-      add(45 + given / 2, 'Данный угол — с участием биссектрисы, он УЖЕ половина |α − β|. Второй раз делить не нужно.');
+      const m = 'Угол с биссектрисой равен 45° − x или x − 45°. Из 45° − x = ' + g + '° сразу x = 45° − ' + g + '°: делить ' + g + '° пополам не нужно.';
+      add(45 - given / 2, m); add(45 + given / 2, m);
     }
     add(given, 'Это данный угол между проведёнными отрезками, а спрашивают угол самого ТРЕУГОЛЬНИКА.');
   }
   if (task.topic === 5){
-    if (p.ask === 'CH'){
-      add(p.AB / 2, 'Это катет против 30° — половина гипотенузы. Высота меньше: четверть гипотенузы, и она умножается на √3.');
-      add(p.AB * 3 / 4, 'Это БОЛЬШИЙ отрезок гипотенузы, а спрашивают высоту (и не потеряйте √3 в записи).');
-      add(3 * p.AB * p.AB / 16, 'Это квадрат высоты. Извлеките корень и запишите число перед √3.');
-      add(p.AB / 4 * 1.5, 'Похоже, вы взяли √3 ≈ 1,5. Считайте точно: под корнем остаётся 3, а перед корнем — число, которое вынесли.');
+    const AB = p.AB, half = AB / 2, quarter = AB / 4;
+    const Qv = p.swap ? S.A : S.B, Pv = p.swap ? S.B : S.A;
+    const legQ = Qv + S.C, segQ = Qv + S.H, segP = Pv + S.H, small = S.C + S.H + Qv;
+    if (p.ask === 'leg'){
+      add(AB, 'Это вся гипотенуза. Катет против угла 30° — её ПОЛОВИНА.');
+      add(quarter, 'Это четверть гипотенузы. Катет против угла 30° равен её ПОЛОВИНЕ.');
+    } else if (p.ask === 'hyp'){
+      add(quarter, 'Разделили пополам, а гипотенуза ВДВОЕ БОЛЬШЕ катета против угла 30°.');
+      add(half, 'Это сам катет ' + legQ + ' из условия. Гипотенуза вдвое больше.');
+    } else if (p.ask === 'CH'){
+      add(half, fmt(half) + '√3 — это катет ' + Pv + S.C + ', прилежащий к углу 30° (по теореме Пифагора из ' + S.A + S.B + '^{2} − ' + legQ + '^{2}), а не высота. Высота ' + S.C + S.H + ' перпендикулярна гипотенузе — ищите её в треугольнике ' + small + '.');
+      add(quarter * 1.5, 'Похоже, вы взяли √3 ≈ 1,5. Считайте точно: под корнем остаётся 3, а перед корнем — число, которое вынесли.');
     } else {
-      add(p.AB - a.value, 'Отрезки перепутаны: у вершины с углом 30° лежит БОЛЬШИЙ отрезок (¾ гипотенузы), у 60° — четверть.');
-      add(p.AB / 2, 'Это половина гипотенузы — столько отсекала бы МЕДИАНА. Высота делит гипотенузу как ¼ и ¾.');
+      add(AB - a.value, 'Отрезки перепутаны: у вершины с углом 60° лежит отрезок в четверть гипотенузы (в треугольнике ' + small + ' он против угла 30°), у вершины с углом 30° — три четверти.');
+      add(half, 'Половина гипотенузы — это катет ' + legQ + ' против угла 30° (или отрезок, который отсекла бы медиана). Отрезок ' + segQ + ' — катет треугольника ' + small + ' против угла 30°: ' + segQ + ' = ' + legQ + ' : 2, а ' + segP + ' — остаток гипотенузы.');
     }
   }
   return out;
@@ -1281,7 +1424,7 @@ const LETTERS = ['А', 'Б', 'В', 'Г', 'Д'];
 const PRAISE = ['Верно!', 'Точно!', 'Да, так!', 'Правильно!', 'Есть!'];
 const MODE_HELP = {
   learn: 'Разбор для доски: пример раскрывается шаг за шагом. Нажимайте «Дальше» (или стрелки → и ← на клавиатуре). «Случайные числа» — новая задача того же типа.',
-  steps: 'Задача с новыми числами. Каждый шаг проверяется отдельно: «Подсказка» — если застряли, «Показать ответ» — если совсем никак.',
+  steps: 'Задача с новыми числами. Каждый шаг проверяется отдельно: «Подсказка» — если застряли, «Показать ответ» — если совсем никак. Ни то ни другое ничего не отнимает: баллов здесь нет, только отметка, что шаг разобран с помощью.',
   solo: 'Как на экзамене: только ответ. После проверки можно открыть полное решение по шагам.'
 };
 
@@ -1300,7 +1443,7 @@ let stats = loadStats();
    Прогресс лежит в mathExamCourseProgress.v1 под TID — его видят главная
    страница курса и «Работа над ошибками». Старый ключ pt-trainer-v1
    мигрируется один раз и остаётся нетронутым (безопасный откат). */
-function readAll(){ try { return JSON.parse(localStorage.getItem(COURSE_KEY) || '{}'); } catch (e){ return {}; } }
+function readAll(){ try { const v = JSON.parse(localStorage.getItem(COURSE_KEY) || '{}'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; } catch (e){ return {}; } }
 function loadStats(){
   try {
     const all = readAll();
@@ -1308,8 +1451,13 @@ function loadStats(){
       const old = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null');
       if (old && old.topics){ all[TID] = { topics: old.topics, board: !!old.board }; localStorage.setItem(COURSE_KEY, JSON.stringify(all)); }
     }
-    const s = all[TID] || {};
-    return { topics: s.topics || {}, board: !!s.board };
+    const s = (all[TID] && typeof all[TID] === 'object') ? all[TID] : {};
+    const topics = {};                                            // схема проверяется поле за полем, мусор отбрасывается
+    if (s.topics && typeof s.topics === 'object') for (const k in s.topics){
+      const v = s.topics[k];
+      if (v && typeof v === 'object' && TOPICS[+k]) topics[k] = { steps: +v.steps || 0, solved: +v.solved || 0, correct: +v.correct || 0, streak: +v.streak || 0, best: +v.best || 0 };
+    }
+    return { topics, board: !!s.board };
   } catch (e){ return { topics: {}, board: false }; }
 }
 function saveStats(){ try { const all = readAll(); all[TID] = stats; localStorage.setItem(COURSE_KEY, JSON.stringify(all)); } catch (e){ /* приватный режим — не сохраняем */ } }
@@ -1405,11 +1553,11 @@ function renderControls(){
 function statementHtml(task){ return M(task.text); }
 function niceVal(v){
   if (Number.isInteger(v) || Math.abs(v * 100 - Math.round(v * 100)) < 1e-9) return fmt(v);
-  for (let d = 2; d <= 100; d++){ const n = v * d; if (Math.abs(n - Math.round(n)) < 1e-9) return M(fracMk(Math.round(n), d)); }
+  for (let d = 2; d <= 2000; d++){ const n = v * d; if (Math.abs(n - Math.round(n)) < 1e-9) return M(fracMk(Math.round(n), d)); }
   return fmt(v);
 }
 function stepAnswerText(st){
-  if (st.kind === 'num') return `${niceVal(st.ans)}${st.suffix ? M(st.suffix) : ''}${st.unit ? (st.unit === '°' ? '' : ' ') + st.unit : ''}`;
+  if (st.kind === 'num') return `${st.suffix && st.ans === 1 ? '' : niceVal(st.ans)}${st.suffix ? M(st.suffix) : ''}${st.unit ? (st.unit === '°' ? '' : ' ') + st.unit : ''}`;
   if (st.kind === 'multi') return st.inputs.map(i => `${M(i.label)} ${niceVal(i.ans)}${i.suffix ? M(i.suffix) : ''}`).join(';&nbsp; ');
   if (st.kind === 'choice') return M(st.options[st.correct].text);
   if (st.kind === 'pickSide') return `сторона ${st.label}`;
@@ -1439,11 +1587,11 @@ function currentStepHtml(st, i){
   if (st.kind === 'info'){
     inner = `${withFig(st, M(st.text))}<div class="stepbtns"><button class="btn primary" data-action="info-next">Понятно, дальше</button></div>`;
   } else if (st.kind === 'num'){
-    inner = `${withFig(st, M(st.q))}<div class="inputs"><div class="inrow"><input class="num" type="text" inputmode="text" autocomplete="off" placeholder="число" data-step="${i}" data-k="0" aria-label="Ответ шага">${st.suffix ? `<span class="ans-suf">${M(st.suffix)}</span><span class="fieldnote">впишите только число перед ${M(st.suffix)}</span>` : ''}${st.unit ? `<span class="unit">${escapeHtml(st.unit)}</span>` : ''}</div></div>`;
+    inner = `${withFig(st, M(st.q))}<div class="inputs"><div class="inrow"><input class="num" type="text" inputmode="text" autocomplete="off" placeholder="${st.suffix ? 'например 2√3' : 'число'}" data-step="${i}" data-k="0" aria-label="Ответ шага">${st.suffix ? `<span class="fieldnote">ответ вида N√3 — так и пишите: 2√3 или √12</span>` : ''}${st.unit ? `<span class="unit">${escapeHtml(st.unit)}</span>` : ''}</div></div>`;
   } else if (st.kind === 'multi'){
     inner = `${withFig(st, M(st.q))}<div class="inputs">${st.inputs.map((inp, k) => `<div class="inrow"><span class="lab">${M(inp.label)}</span><input class="num" type="text" inputmode="text" autocomplete="off" placeholder="число" data-step="${i}" data-k="${k}" aria-label="${escapeHtml(P(inp.label))}">${inp.suffix ? `<span class="ans-suf">${M(inp.suffix)}</span>` : ''}</div>`).join('')}</div>`;
   } else if (st.kind === 'pickSide'){
-    inner = `${withFig(st, M(st.q))}<p class="clickcue">Ответ — клик по стороне на чертеже сверху.</p>`;
+    inner = `<div class="infofig"><div class="q">${M(st.q)}</div><div class="figure small picking">${figureHtml(state.task, true, state.picked, true)}</div></div><p class="clickcue">Ответ — клик по стороне на этом чертеже (с клавиатуры: Tab и Enter).</p>`;
   } else if (st.kind === 'choice'){
     inner = `${withFig(st, M(st.q))}<div class="opts">${st.options.map((o, k) => `<button class="opt ${state.stepWrongOpts.includes(k) ? 'bad' : ''}" data-action="opt" data-step="${i}" data-opt="${k}"><span class="lt">${LETTERS[k]}</span><span>${M(o.text)}</span></button>`).join('')}</div>`;
   }
@@ -1461,6 +1609,8 @@ function ladderHtml(task){
   if (state.mode === 'learn') return `<ol class="ladder">${steps.map((st, i) => i < state.revealed ? doneStepHtml(st, i, true) : todoStepHtml(st, i)).join('')}</ol>`;
   if (state.mode === 'steps') return `<ol class="ladder">${steps.map((st, i) => i < state.stepIdx ? doneStepHtml(st, i, true) : (i === state.stepIdx ? currentStepHtml(st, i) : todoStepHtml(st, i))).join('')}</ol>`;
   if (!state.showSolution) return '';
+  if (state.soloRevealed)                                       // после «Показать решение» — лесенка по одному шагу, как в «Учимся»
+    return `<h3 class="sol-title" style="margin:1.2rem 0 0;font-size:1.1rem">Решение по шагам</h3><ol class="ladder">${steps.map((st, i) => i < state.revealed ? doneStepHtml(st, i, true) : todoStepHtml(st, i)).join('')}</ol>`;
   return `<h3 class="sol-title" style="margin:1.2rem 0 0;font-size:1.1rem">Решение по шагам</h3><ol class="ladder">${steps.map((st, i) => doneStepHtml(st, i, true)).join('')}</ol>`;
 }
 function answerHtml(ans){ return `<span class="answer-line">${M(ans.display)}${ans.kind === 'num' && state.task.unitFinal ? (state.task.unitFinal === '°' ? '' : ' ') + state.task.unitFinal : ''}</span>`; }
@@ -1476,15 +1626,16 @@ function finalHtml(task){
     return `<div class="final ok"><span class="lab">Ответ:</span>${answerHtml(a)}<p style="margin:.4rem 0 0;font-weight:700;color:var(--ink-soft)">${helped ? 'Задача пройдена с подсказками. Попробуйте ещё одну такую же — уже без «Показать ответ».' : 'Все шаги пройдены самостоятельно — отлично.'}</p></div>`;
   }
   if (state.finished){
+    if (state.soloRevealed && state.revealed < task.steps.length) return `<div class="final">${fbHtml(state.soloFb)}</div>`;   // ответ — только после всех шагов
     return `<div class="final ${state.soloRevealed ? '' : 'ok'}"><span class="lab">Ответ:</span>${answerHtml(a)}${fbHtml(state.soloFb)}</div>`;
   }
   let inner = '';
   if (a.kind === 'side'){
-    inner = `<div class="inrow"><span class="lab">Задание:</span><span class="q" style="font-weight:600">${M(a.q)}</span></div><p class="clickcue">Ответ — клик по стороне на чертеже сверху.</p>`;
+    inner = `<div class="inrow"><span class="lab">Задание:</span><span class="q" style="font-weight:600">${M(a.q)}</span></div><p class="clickcue">Ответ — клик по стороне на чертеже сверху (с клавиатуры: Tab и Enter).</p>`;
   } else if (a.kind === 'num'){
-    inner = `<div class="inrow"><span class="lab">Ответ:</span><input class="num wide" type="text" inputmode="text" autocomplete="off" placeholder="число" data-final="0" aria-label="Ответ">${a.suffix ? `<span class="ans-suf">${M(a.suffix)}</span>` : ''}${task.unitFinal ? `<span class="unit">${task.unitFinal}</span>` : ''}<button class="btn primary" data-action="final-check">Проверить</button></div>${a.suffix ? `<p class="fieldnote" style="margin:.3rem 0 0">Ответ вида N${M(a.suffix)}: в поле впишите только число N.</p>` : ''}`;
+    inner = `<div class="inrow"><span class="lab">Ответ:</span><input class="num wide" type="text" inputmode="text" autocomplete="off" placeholder="${a.suffix ? 'например 2√3' : 'число'}" data-final="0" aria-label="Ответ">${task.unitFinal ? `<span class="unit">${task.unitFinal}</span>` : ''}<button class="btn primary" data-action="final-check">Проверить</button></div>${a.suffix ? `<p class="fieldnote" style="margin:.3rem 0 0">Ответ вида N√3 — так и пишите: 2√3 (можно 2*√3, 2 корень из 3 или √12).</p>` : ''}`;
   } else {
-    inner = `<span class="lab">Выберите ответ:</span><div class="opts">${a.options.map((o, k) => `<button class="opt ${state.soloWrongOpts.includes(k) ? 'bad' : ''}" data-action="final-opt" data-opt="${k}"><span class="lt">${LETTERS[k]}</span><span>${M(o.text)}</span></button>`).join('')}</div>`;
+    inner = `${a.q ? `<div class="inrow"><span class="lab">Задание:</span><span class="q" style="font-weight:600">${M(a.q)}</span></div>` : ''}<span class="lab">Выберите ответ:</span><div class="opts">${a.options.map((o, k) => `<button class="opt ${state.soloWrongOpts.includes(k) ? 'bad' : ''}" data-action="final-opt" data-opt="${k}"><span class="lt">${LETTERS[k]}</span><span>${M(o.text)}</span></button>`).join('')}</div>`;
   }
   return `<div class="final">${inner}<div class="fbwrap">${fbHtml(state.soloFb)}</div></div>`;
 }
@@ -1493,12 +1644,15 @@ function actionsHtml(task){
   const statsHtml = `<div class="stats"><span>решено сам: <b>${s.solved}</b></span><span>верно с первого раза: <b>${s.correct}</b></span><span>серия: <b>${s.streak}</b></span><span>пошагово пройдено: <b>${s.steps}</b></span></div>`;
   if (state.mode === 'learn'){
     const all = state.revealed >= task.steps.length;
-    return `<div class="actions"><button class="btn primary" data-action="next" ${all ? 'disabled' : ''}>Дальше</button><button class="btn" data-action="show-all" ${all ? 'disabled' : ''}>Показать всё</button><span class="spacer"></span><button class="btn" data-action="next-demo">${state.demoIdx + 1 < TOPICS[state.topic].demos.length ? 'Следующий пример' : 'Случайные числа'}</button></div>`;
+    const onBoard = document.documentElement.classList.contains('board');   // «Показать всё» — только учителю у доски
+    return `<div class="actions"><button class="btn primary" data-action="next" ${all ? 'disabled' : ''}>Дальше</button>${onBoard ? `<button class="btn" data-action="show-all" ${all ? 'disabled' : ''}>Показать всё</button>` : ''}<span class="spacer"></span><button class="btn" data-action="next-demo">${state.demoIdx + 1 < TOPICS[state.topic].demos.length ? 'Следующий пример' : (state.topic === 0 ? 'Другой треугольник' : 'Случайные числа')}</button></div>`;
   }
   if (state.mode === 'steps'){
     return `<div class="actions"><button class="btn ${state.finished ? 'primary' : ''}" data-action="new">Новая задача</button><span class="spacer"></span>${statsHtml}</div>`;
   }
-  return `<div class="actions"><button class="btn ${state.finished ? 'primary' : ''}" data-action="new">Новая задача</button>${state.finished ? `<button class="btn" data-action="toggle-solution">${state.showSolution ? 'Скрыть решение' : 'Показать решение'}</button>` : (state.soloFails >= 2 ? `<button class="btn warm" data-action="give-up">Показать решение</button>` : '')}<span class="spacer"></span>${statsHtml}</div>`;
+  if (state.finished && state.soloRevealed && state.revealed < task.steps.length)
+    return `<div class="actions"><button class="btn primary" data-action="next">Следующий шаг</button><button class="btn" data-action="new">Новая задача</button><span class="spacer"></span>${statsHtml}</div>`;
+  return `<div class="actions"><button class="btn ${state.finished ? 'primary' : ''}" data-action="new">Новая задача</button>${state.finished && !state.soloRevealed ? `<button class="btn" data-action="toggle-solution">${state.showSolution ? 'Скрыть решение' : 'Показать решение'}</button>` : (!state.finished && state.soloFails >= 2 ? `<button class="btn warm" data-action="give-up">Показать решение</button>` : '')}<span class="spacer"></span>${statsHtml}</div>`;
 }
 function memoHtml(T, task){
   const rows = T.memo.map(([k, v]) => `<div class="memo-row"><span class="k">${M(k)}</span><span class="v">${M(v)}</span></div>`).join('');
@@ -1507,7 +1661,7 @@ function memoHtml(T, task){
 function renderTask(){
   const task = state.task, T = TOPICS[state.topic];
   const badge = state.mode === 'learn'
-    ? (task.demo ? `<span class="pill demo">Пример</span>` : `<span class="pill demo">Случайные числа${state.topic === 0 ? '' : ' · уровень ' + task.level}</span>`)
+    ? (task.demo ? `<span class="pill demo">Пример</span>` : `<span class="pill demo">${state.topic === 0 ? 'Другой треугольник' : 'Случайные числа · уровень ' + task.level}</span>`)
     : `<span class="pill">${state.topic === 0 ? 'Разминка' : 'Уровень ' + task.level}</span>`;
   let pickedSet = state.picked;
   if (state.mode === 'learn'){
@@ -1516,11 +1670,10 @@ function renderTask(){
     if (state.revealed >= task.steps.length && task.answer.kind === 'side') pickedSet.push(task.answer.want);
   }
   const curStep = task.steps[state.stepIdx];
-  const picking = (state.mode === 'steps' && !state.finished && curStep && curStep.kind === 'pickSide')
-               || (state.mode === 'solo' && !state.finished && task.answer.kind === 'side');
-  const fig = figureHtml(task, state.mode !== 'solo' || state.showSolution, pickedSet);
+  const picking = state.mode === 'solo' && !state.finished && task.answer.kind === 'side';   // в «Пошагово» кликабельный чертёж живёт внутри шага
+  const fig = figureHtml(task, state.mode !== 'solo' || state.showSolution, pickedSet, picking);
   const html = `<article class="task" id="taskCard">
-    <div class="task-top"><div><span class="tnum">${state.topic === 0 ? 'Разминка.' : 'Тема ' + T.num + '.'}</span> <span class="tname">${T.name}</span></div><div>${badge}</div></div>
+    <div class="task-top"><div>${state.topic === 0 ? `<span class="tnum">${T.name}</span>` : `<span class="tnum">Тема ${T.num}.</span> <span class="tname">${T.name}</span>`}</div><div>${badge}</div></div>
     <div class="figwrap"><div class="statement">${statementHtml(task)}</div>${fig ? `<div class="figure${picking ? ' picking' : ''}">${fig}</div>` : ''}</div>
     ${memoHtml(T, task)}
     ${ladderHtml(task)}
@@ -1556,8 +1709,10 @@ function onSideClick(side, el){
 }
 
 /* ---------- проверка шагов ---------- */
+function announce(html){ const el = $('#live'); if (el) el.textContent = String(html || '').replace(/<[^>]+>/g, ''); }
 function setStepFb(type, html){
   state.stepFb = { type, html };
+  announce(html);
   const w = $('#taskArea .step.current .fbwrap'); if (w) w.innerHTML = fbHtml(state.stepFb);
 }
 function ensureRevealBtn(){
@@ -1590,20 +1745,36 @@ function checkStep(){
   const i = state.stepIdx, st = state.task.steps[i];
   if (!st || st.kind === 'info' || st.kind === 'choice' || st.kind === 'pickSide') return;
   const inputs = $$(`#taskArea input.num[data-step="${i}"]`);
-  const vals = inputs.map(inp => parseNum(inp.value));
+  const parsed = inputs.map(inp => parseAns(inp.value));
+  const vals = parsed.map(x => x.value);
   inputs.forEach(inp => inp.classList.remove('ok', 'bad'));
   if (vals.some(v => isNaN(v))){
     inputs.forEach((inp, k) => { if (isNaN(vals[k])) inp.classList.add('bad'); });
-    setStepFb('hint', 'Введите число. Можно десятичную дробь (0,5) или обыкновенную (1/2). Отрицательное — со знаком минус.');
+    setStepFb('hint', st.suffix ? 'Введите ответ вида 2√3 — можно так: 2*√3, 2 корень из 3 или √12.' : 'Введите число. Можно десятичную дробь (0,5) или обыкновенную (1/2). Отрицательное — со знаком минус.');
     return;
   }
   if (st.kind === 'num'){
-    if (nearly(vals[0], st.ans)){ inputs[0].classList.add('ok'); return stepSucceeded(i); }
+    const v = vals[0], px = parsed[0];
+    if (st.suffix){                                                // ответ вида N√3 — корень обязателен
+      if (px.hasRoot && px.rad === 3 && nearly(v, st.ans)){ inputs[0].classList.add('ok'); return stepSucceeded(i); }
+      inputs[0].classList.add('bad');
+      if (!px.hasRoot){
+        const nr = (st.noRootTraps || []).find(t => Math.abs(v - t.value) <= trapTol(t.value));
+        if (nr) return stepFailed(i, M(nr.msg), { trap: true });
+        if (rootMultiplied(v, st.ans)) return stepFailed(i, `Похоже, вы умножили на √3 ≈ 1,73 и записали десятичной дробью. Запишите точно: ${niceVal(st.ans)}√3.`, { trap: true });
+        return stepFailed(i, 'В ответе должен остаться корень: под корнем 3 — не полный квадрат. Запишите ответ в виде N√3.', { trap: true });
+      }
+      if (px.rad !== 3) return stepFailed(i, 'Под корнем должно остаться 3: вынесите полный квадрат (например, √12 = 2√3).', { trap: true });
+      const tr = (st.traps || []).find(t => Math.abs(v - t.value) <= trapTol(t.value));
+      if (tr) return stepFailed(i, M(tr.msg), { trap: true });
+      return stepFailed(i, null);
+    }
+    if (px.hasRoot) return stepFailed(i, 'Здесь ответ — обычное число, без корня.', { trap: true });
+    if (nearly(v, st.ans)){ inputs[0].classList.add('ok'); return stepSucceeded(i); }
     inputs[0].classList.add('bad');
-    if (st.suffix && rootMultiplied(vals[0], st.ans)) return stepFailed(i, `Похоже, вы умножили на ${M(st.suffix)} ≈ 1,73. Ответ записывают как число перед ${M(st.suffix)}: в поле нужно только это число.`, { trap: true });
-    const tr = (st.traps || []).find(t => Math.abs(vals[0] - t.value) <= trapTol(t.value));
+    const tr = (st.traps || []).find(t => Math.abs(v - t.value) <= trapTol(t.value));
     if (tr) return stepFailed(i, M(tr.msg), { trap: true });
-    if (Math.abs(vals[0] - st.ans) < 0.01 * Math.max(1, Math.abs(st.ans))) return stepFailed(i, 'Почти! Ответ округлён. Запишите точно — обыкновенной дробью, например 1/6 или 9/2.');
+    if (!px.isFraction && !Number.isInteger(st.ans) && Math.abs(v - st.ans) < 0.01 * Math.max(1, Math.abs(st.ans))) return stepFailed(i, 'Почти! Ответ округлён. Запишите точно — обыкновенной дробью, например 1/6 или 9/2.');
     return stepFailed(i, null);
   }
   const want = st.inputs.map(x => x.ans);
@@ -1653,6 +1824,7 @@ function soloFailed(msgHtml){
   let html = msgHtml || pick(['Пока не так. Проверьте вычисления.', 'Не сходится. Пересчитайте ещё раз.'], RNG);
   if (state.soloFails >= 2) html += ' Если хотите — откройте решение по шагам и разберите, где ошибка.';
   state.soloFb = { type: 'bad', html };
+  announce(html);
   const w = $('#taskArea .final .fbwrap'); if (w) w.innerHTML = fbHtml(state.soloFb);
   if (state.soloFails >= 2 && !$('#taskArea [data-action="give-up"]')){
     const acts = $('#taskArea .actions .spacer'); if (acts) acts.insertAdjacentHTML('beforebegin', `<button class="btn warm" data-action="give-up">Показать решение</button>`);
@@ -1661,25 +1833,40 @@ function soloFailed(msgHtml){
 function soloSolved(){
   state.finished = true; soloOutcome(true); logOutcome(true);
   state.soloFb = { type: 'ok', html: `${pick(PRAISE, RNG)}${state.soloFails ? ' Со второй попытки, но верно.' : ''}` };
+  announce(state.soloFb.html);
   render();
 }
 function checkFinal(){
   const a = state.task.answer;
   const inputs = $$('#taskArea input.num[data-final]');
-  const vals = inputs.map(inp => parseNum(inp.value));
+  const px = parseAns(inputs[0] ? inputs[0].value : null), v = px.value;
   inputs.forEach(inp => inp.classList.remove('ok', 'bad'));
-  if (vals.some(v => isNaN(v))){
-    inputs.forEach((inp, k) => { if (isNaN(vals[k])) inp.classList.add('bad'); });
-    state.soloFb = { type: 'hint', html: 'Введите число. Можно десятичную дробь (0,5) или обыкновенную (1/2).' };
+  if (isNaN(v)){
+    inputs.forEach(inp => inp.classList.add('bad'));
+    state.soloFb = { type: 'hint', html: a.suffix ? 'Введите ответ вида 2√3 — можно так: 2*√3, 2 корень из 3 или √12.' : 'Введите число. Можно десятичную дробь (0,5) или обыкновенную (1/2).' };
     const w = $('#taskArea .final .fbwrap'); if (w) w.innerHTML = fbHtml(state.soloFb);
+    announce(state.soloFb.html);
     return;
   }
-  if (nearly(vals[0], a.value)) return soloSolved();
+  if (a.suffix){                                                   // ответ вида N√3: без корня не принимаем
+    if (px.hasRoot && px.rad === 3 && nearly(v, a.value)) return soloSolved();
+    inputs[0].classList.add('bad');
+    if (!px.hasRoot){
+      const nr = (a.noRootTraps || []).find(t => Math.abs(v - t.value) <= trapTol(t.value));
+      if (nr) return soloFailed(M(nr.msg));
+      if (rootMultiplied(v, a.value)) return soloFailed(`Похоже, вы умножили на √3 ≈ 1,73 и записали десятичной дробью. Запишите точно: ${niceVal(a.value)}√3.`);
+      return soloFailed('В ответе должен остаться корень: под корнем 3 — не полный квадрат. Запишите ответ в виде N√3.');
+    }
+    if (px.rad !== 3) return soloFailed('Под корнем должно остаться 3: вынесите полный квадрат (например, √12 = 2√3).');
+    const dg = diagnoseFinal(v, state.task);
+    return soloFailed(dg ? M(dg) : null);
+  }
+  if (px.hasRoot){ inputs[0].classList.add('bad'); return soloFailed('Здесь ответ — обычное число, без корня.'); }
+  if (nearly(v, a.value)) return soloSolved();
   inputs[0].classList.add('bad');
-  if (a.suffix && rootMultiplied(vals[0], a.value)) return soloFailed(`Похоже, вы умножили на ${M(a.suffix)} ≈ 1,73. Ответ записывают как число перед ${M(a.suffix)}: в поле нужно только это число.`);
-  const dg = diagnoseFinal(vals[0], state.task);
+  const dg = diagnoseFinal(v, state.task);
   if (dg) return soloFailed(M(dg));
-  if (Math.abs(vals[0] - a.value) < 0.01 * Math.max(1, Math.abs(a.value))) return soloFailed('Почти! Ответ округлён. Запишите точно — обыкновенной дробью.');
+  if (!px.isFraction && !Number.isInteger(a.value) && Math.abs(v - a.value) < 0.01 * Math.max(1, Math.abs(a.value))) return soloFailed('Почти! Ответ округлён. Запишите точно — обыкновенной дробью.');
   return soloFailed(null);
 }
 function chooseFinal(k){
@@ -1690,11 +1877,12 @@ function chooseFinal(k){
   soloFailed(a.options[k].why ? M(a.options[k].why) : null);
 }
 function giveUp(){
-  state.finished = true; state.soloRevealed = true; state.showSolution = true;
+  state.finished = true; state.soloRevealed = true; state.showSolution = true; state.revealed = 0;
   const a = state.task.answer;
   if (a.kind === 'side' && !state.picked.includes(a.want)) state.picked.push(a.want);
-  if (!state.counted){ state.counted = true; const s = tstat(state.topic); s.solved++; s.streak = 0; saveStats(); }
-  state.soloFb = { type: 'note', html: 'Разберите решение по шагам, а затем нажмите «Новая задача» — числа будут другие, а ход решения тот же.' };
+  if (!state.counted){ state.counted = true; const s = tstat(state.topic); s.streak = 0; saveStats(); }   // в «решено сам» не идёт: задача не решена
+  state.soloFb = { type: 'note', html: 'Решение открывается по шагам — нажимайте «Следующий шаг». Потом «Новая задача»: числа будут другие, а ход решения тот же.' };
+  announce(state.soloFb.html);
   render();
 }
 
@@ -1734,6 +1922,9 @@ function onTaskClick(e){
   else if (act === 'next-demo') learnNextDemo();
 }
 function onTaskKey(e){
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('[data-side]')){
+    e.preventDefault(); const el = e.target.closest('[data-side]'); return onSideClick(el.dataset.side, el);
+  }
   if (e.key !== 'Enter') return;
   const inp = e.target.closest('input.num'); if (!inp) return;
   e.preventDefault();
@@ -1746,6 +1937,7 @@ function setBoard(on){
   $('#boardBtn').setAttribute('aria-pressed', on);
   $('#boardBtn').textContent = on ? 'Обычный вид' : 'Режим доски';
   stats.board = on; saveStats();
+  if (state.task) render();                                       // у доски появляется «Показать всё»
 }
 
 /* ---------- чертёж прямоугольного треугольника (честная геометрия) ----------
@@ -1781,7 +1973,7 @@ function nrm(vx, vy){ const L = Math.hypot(vx, vy) || 1; return [vx / L, vy / L]
 const pj = q => q[0].toFixed(1) + ',' + q[1].toFixed(1);
 function ln(a, b, style){ return `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" style="${style}"/>`; }
 
-function figureHtml(task, showHl, picked){
+function figureHtml(task, showHl, picked, interactive){
   const f = task.figure; if (!f || f.kind !== 'tri') return '';
   const pk = new Set(picked || []);
   const S = f.S, g = triGeometry(f);
@@ -1792,7 +1984,7 @@ function figureHtml(task, showHl, picked){
   const feetRow = !!(f.withAltitude || f.withMedian || f.withBisector);
   const anyCev = ['cevH', 'cevD', 'cevM'].some(k => hl.has(k));
   const dim = key => anyCev && !hl.has(key) ? ';opacity:.4' : '';
-  let svg = `<svg viewBox="-6 0 292 224" role="img" aria-label="Прямоугольный треугольник ${S.A}${S.B}${S.C}, прямой угол при вершине ${S.C}">`;
+  let svg = `<svg viewBox="-6 0 292 224" role="${interactive ? 'group' : 'img'}" aria-label="Прямоугольный треугольник ${S.A}${S.B}${S.C}, прямой угол при вершине ${S.C}">`;
   svg += `<polygon points="${pj(A)} ${pj(B)} ${pj(C)}" style="${SVG_STYLE};fill:#f4f6fa"/>`;
 
   /* прямой угол при C: квадратик по направлениям на A и B */
@@ -1855,13 +2047,25 @@ function figureHtml(task, showHl, picked){
     }
   }
 
-  /* дан угол между двумя чевианами — подпись между их основаниями */
+  /* угол между двумя чевианами: дуга у вершины C; подпись — по биссектрисе угла, а для узкого угла — сбоку с выноской */
   if (f.betweenArc){
     const foot = { cevH: H, cevD: D, cevM: Mid };
     const pm = { hd: ['cevH', 'cevD'], dm: ['cevD', 'cevM'], hm: ['cevH', 'cevM'] }[f.betweenArc.pair];
     if (pm){
       const F1 = foot[pm[0]], F2 = foot[pm[1]];
-      svg += T((F1[0] + F2[0]) / 2, baseY - 12, f.betweenArc.text, 'text-anchor:middle;font-size:12px;' + TEAL);
+      svg += `<path d="${arcAt(C, F1, F2, 30)}" style="${ACC};stroke-width:1.6"/>`;
+      if (f.betweenArc.text){
+        const d1 = nrm(F1[0] - C[0], F1[1] - C[1]), d2 = nrm(F2[0] - C[0], F2[1] - C[1]);
+        const bb = nrm(d1[0] + d2[0], d1[1] + d2[1]);
+        const deg = Math.acos(Math.max(-1, Math.min(1, d1[0] * d2[0] + d1[1] * d2[1]))) * 180 / Math.PI;
+        if (deg >= 14) svg += T(C[0] + bb[0] * 50, C[1] + bb[1] * 50 + 4, f.betweenArc.text, 'text-anchor:middle;font-size:12px;' + TEAL);
+        else {
+          const side = C[0] < Mid[0] ? 1 : -1;
+          const P0 = [C[0] + bb[0] * 32, C[1] + bb[1] * 32], P1 = [C[0] + side * 30, C[1] + 10];
+          svg += ln(P0, P1, `${ACC};stroke-width:1`);
+          svg += T(P1[0] + side * 3, P1[1] + 4, f.betweenArc.text, (side > 0 ? '' : 'text-anchor:end;') + 'font-size:12px;' + TEAL);
+        }
+      }
     }
   }
 
@@ -1899,7 +2103,12 @@ function figureHtml(task, showHl, picked){
     svg += T((A[0] + B[0]) / 2, y2 + 14, fmt(L.AB), 'text-anchor:middle;font-size:12px;' + SOFT);
   }
   /* невидимые «толстые» стороны для кликов (активны только с классом .picking) */
-  const hit = (P1, P2, key) => `<line x1="${P1[0].toFixed(1)}" y1="${P1[1].toFixed(1)}" x2="${P2[0].toFixed(1)}" y2="${P2[1].toFixed(1)}" class="hit" data-side="${key}" stroke="transparent" stroke-width="17" fill="none"><title>сторона ${({AC:S.A+S.C,BC:S.B+S.C,AB:S.A+S.B})[key]}</title></line>`;
+  const hit = (P1, P2, key) => {                              // зона 44 ед. ≈ 44 px при ширине чертежа 280 px; у вершин укорочена, чтобы клик там не был двусмысленным
+    const u = nrm(P2[0] - P1[0], P2[1] - P1[1]), s = 14;
+    const Q1 = [P1[0] + u[0] * s, P1[1] + u[1] * s], Q2 = [P2[0] - u[0] * s, P2[1] - u[1] * s];
+    const nm = ({ AC: S.A + S.C, BC: S.B + S.C, AB: S.A + S.B })[key];
+    return `<line x1="${Q1[0].toFixed(1)}" y1="${Q1[1].toFixed(1)}" x2="${Q2[0].toFixed(1)}" y2="${Q2[1].toFixed(1)}" class="hit" data-side="${key}" stroke="transparent" stroke-width="44" fill="none"${interactive ? ` tabindex="0" role="button" aria-label="сторона ${nm}"` : ''}><title>сторона ${nm}</title></line>`;
+  };
   svg += hit(A, C, 'AC') + hit(B, C, 'BC') + hit(A, B, 'AB');
   svg += '</svg>';
   if (g.clamped) svg += '<p class="figcap">чертёж не в масштабе</p>';
@@ -1978,8 +2187,18 @@ function selfTest(){
         if (!isFinite(st.ans)) bad.push(where + ': шаг ' + i + ' без числового ответа');
         (st.traps || []).forEach(t => { if (!isFinite(t.value) || Math.abs(t.value - st.ans) <= trapTol(t.value)) bad.push(where + ': шаг ' + i + ': ловушка совпала с ответом шага'); });
       }
-      if (st.kind === 'choice' && !(st.options[st.correct])) bad.push(where + ': шаг ' + i + ': нет верного варианта');
+      if (st.kind === 'choice'){
+        if (!(st.options[st.correct])) bad.push(where + ': шаг ' + i + ': нет верного варианта');
+        const texts = st.options.map(o => o.text);
+        if (new Set(texts).size !== texts.length) bad.push(where + ': шаг ' + i + ': одинаковые варианты');
+        st.options.forEach((o, k) => { if (k !== st.correct && !o.why) bad.push(where + ': шаг ' + i + ': у неверного варианта нет объяснения'); });
+      }
     });
+    if (a && a.kind === 'choice'){
+      if (!a.q) bad.push(where + ': итог-выбор без вопроса');
+      a.options.forEach((o, k) => { if (k !== a.correct && !o.why) bad.push(where + ': итог-выбор: у неверного варианта нет объяснения'); });
+    }
+    if (a && a.kind === 'num' && a.suffix && !(a.noRootTraps && a.noRootTraps.length)) bad.push(where + ': ответ с √3 без ловушек на ввод без корня');
   };
   for (const t of TOPIC_ORDER){
     TOPICS[t].demos.forEach((_, i) => checkTask(makeDemo(t, i), 'тема ' + t + ' пример ' + i));
