@@ -139,6 +139,7 @@ function solveStepsCorrectly(w, d, S){
   for (let g = 0; g < 10 && !S().task.steps[S().stepIdx].suffix; g++){
     const st = S().task.steps[S().stepIdx], c = q(d, '.step.current');
     if (st.kind === 'info') click(w, c.querySelector('[data-action="info-next"]'));
+    else if (st.kind === 'choice') click(w, c.querySelector('.opt[data-opt="' + st.correct + '"]'));
     else { c.querySelector('input.num').value = ansStr(st.ans); click(w, c.querySelector('[data-action="check"]')); }
   }
   ok(!!S().task.steps[S().stepIdx].suffix, 'тема 5: дошли до шага с ответом вида N√3');
