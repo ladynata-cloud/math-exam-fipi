@@ -589,7 +589,7 @@ TOPICS[1] = {
     ['tg A', '= {{против.}/{прилеж.}}'],
     ['Теорема Пифагора', 'гипотенуза^{2} = катет₁^{2} + катет₂^{2}'],
     ['Основное тождество', 'sin^{2} A + cos^{2} A = 1 — зная синус, находим косинус (и наоборот)'],
-    ['Ход решения', 'выписать определение данного отношения и выразить из него сторону. Если данная и искомая стороны не входят в одно отношение — идём через третью сторону: теорема Пифагора или основное тождество']
+    ['Ход решения', 'обозначить искомую сторону x, записать определение отношения как уравнение (пропорцию) и решить его. Если данная и искомая стороны не входят в одно отношение — идти через третью сторону: теорема Пифагора, основное тождество или «пусть катеты равны 3x и 4x»']
   ],
   trap: 'sin и cos — это отношения к ГИПОТЕНУЗЕ, а tg — отношение одного катета к другому, гипотенузы там нет.',
   demos: [
@@ -633,10 +633,10 @@ TOPICS[1] = {
       const [n1, n2] = ratioSides[p.findRatio];
       const ansVal = triVal[n1] / triVal[n2];
       const steps = [
-        num('Гипотенуза', 'По теореме Пифагора: ' + nameOf.AB + '^{2} = ' + nameOf.AC + '^{2} + ' + nameOf.BC + '^{2} = ' + AC + '^{2} + ' + BC + '^{2} = ?', AB * AB,
+        num('Уравнение для гипотенузы', 'Обозначим ' + nameOf.AB + ' = x. По теореме Пифагора x^{2} = ' + nameOf.AC + '^{2} + ' + nameOf.BC + '^{2} = ' + AC + '^{2} + ' + BC + '^{2} = ?', AB * AB,
           { hint: AC + '^{2} = ' + AC * AC + ', ' + BC + '^{2} = ' + BC * BC + '. Сложите.', explain: nameOf.AB + '^{2} = ' + AC * AC + ' + ' + BC * BC + ' = ' + AB * AB + '.',
             traps: [{ value: Math.abs(AC * AC - BC * BC), msg: 'Квадраты катетов нужно СЛОЖИТЬ: гипотенуза — самая длинная сторона.' }] }),
-        num('Извлекаем корень', nameOf.AB + ' = √{' + AB * AB + '} = ?', AB, { hint: 'Какое число в квадрате даёт ' + AB * AB + '?', explain: nameOf.AB + ' = ' + AB + '.' }),
+        num('Находим гипотенузу', 'x^{2} = ' + AB * AB + ', x > 0, значит ' + nameOf.AB + ' = x = ?', AB, { hint: 'Какое положительное число в квадрате даёт ' + AB * AB + '?', explain: nameOf.AB + ' = ' + AB + '.', traps: [{ value: AB * AB, msg: 'Это x^{2} — осталось извлечь корень.' }] }),
         choice('Какие стороны в отношении?', ratioName[p.findRatio] + ' ' + S.A + ' — это отношение каких сторон?', rebuilt.options, rebuilt.correct, {}),
         num('Вычисляем ' + ratioName[p.findRatio] + ' ' + S.A, ratioName[p.findRatio] + ' ' + S.A + ' = {{' + (triVal[n1] * scale) + '}/{' + (triVal[n2] * scale) + '}} = ?', ansVal,
           { hint: 'Сократите дробь ' + (triVal[n1] * scale) + '/' + (triVal[n2] * scale) + '.', explain: ratioName[p.findRatio] + ' ' + S.A + ' = ' + fracMk(triVal[n1], triVal[n2]) + '.' })
@@ -644,8 +644,10 @@ TOPICS[1] = {
       return { topic: 1, text, steps, answer: ansNum(ansVal, { display: fracMk(triVal[n1], triVal[n2]) }), p, figure: { kind: 'tri', S, t: (b * b) / (c * c), angleAt: S.A, labels: { AC, BC } } };
     }
 
-    /* mode findSide — как в школе: определение отношения, теорема Пифагора,
-       основное тригонометрическое тождество, «пусть катеты равны 3x и 4x». */
+    /* mode findSide — как в школе: обозначаем искомую сторону x, записываем
+       определение отношения как уравнение (пропорцию) и решаем его. Если данная
+       и искомая стороны не входят в одно отношение — идём через третью сторону:
+       теорема Пифагора, основное тригонометрическое тождество, «катеты a·x и b·x». */
     const [s1, s2] = ratioSides[p.ratio];                        // числитель и знаменатель данного отношения
     const scale = pick([1, 1, 1, 2, 3, 4], rng);
     const V = { AC: b * scale, BC: a * scale, AB: c * scale };
@@ -655,60 +657,68 @@ TOPICS[1] = {
     const inPair = k => k === s1 || k === s2;
     const linkOf = (x, y) => ['sin', 'cos', 'tan'].find(k => ratioSides[k].includes(x) && ratioSides[k].includes(y));
     const sq = x => x * x;
+    const red = (n, d) => { const g = gcd(n, d); return [n / g, d / g]; };
 
-    /* выразить сторону out из отношения k, зная сторону known (обе — из этого отношения) */
-    const viaRatio = (k, known, out, title) => {
-      const [n1, n2] = ratioSides[k], kn = ratioName[k], fr = fracMk(triVal[n1], triVal[n2]);
-      const knownVal = V[known], outVal = V[out], r = triVal[n1] / triVal[n2];
-      const def = kn + ' ' + S.A + ' = {{' + nameOf[n1] + '}/{' + nameOf[n2] + '}}';
-      if (known === n2)                                          // известен знаменатель → умножаем
-        return num(title || ('Находим ' + nameOf[out]), def + ', значит ' + nameOf[out] + ' = ' + nameOf[known] + ' · ' + kn + ' ' + S.A + ' = ' + knownVal + ' · ' + fr + ' = ?', outVal,
-          { hint: 'Умножьте ' + knownVal + ' на ' + fr + '.', explain: nameOf[out] + ' = ' + fmt(outVal) + '.',
-            traps: [{ value: knownVal / r, msg: nameOf[known] + ' разделили на ' + kn + ' ' + S.A + ', а надо умножить: ' + nameOf[out] + ' стоит в ЧИСЛИТЕЛЕ дроби.' }] });
-      return num(title || ('Находим ' + nameOf[out]), def + ', значит ' + nameOf[out] + ' = ' + nameOf[known] + ' : ' + kn + ' ' + S.A + ' = ' + knownVal + ' : ' + fr + ' = ?', outVal,
-        { hint: 'Разделить на дробь — значит умножить на перевёрнутую: ' + knownVal + ' · ' + fracMk(triVal[n2], triVal[n1]) + '.', explain: nameOf[out] + ' = ' + fmt(outVal) + '.',
-          traps: [{ value: knownVal * r, msg: nameOf[known] + ' умножили на ' + kn + ' ' + S.A + ', а надо разделить: ' + nameOf[known] + ' стоит в числителе, искомая ' + nameOf[out] + ' — в ЗНАМЕНАТЕЛЕ.' }] });
+    /* уравнение-пропорция: отношение k, известна сторона known, искомая out (обе из этого отношения) */
+    const eqStep = (k, known, out) => {
+      const [n1, n2] = ratioSides[k], kn = ratioName[k];
+      const [nn, dd] = red(triVal[n1], triVal[n2]);
+      const fr = fracMk(nn, dd), r = nn / dd;
+      const knownVal = V[known], outVal = V[out];
+      const outIsNum = out === n1;                                     // искомая стоит в числителе определения
+      const prop = outIsNum ? fr + ' = {{x}/{' + knownVal + '}}' : fr + ' = {{' + knownVal + '}/{x}}';
+      const cross = outIsNum ? dd + 'x = ' + nn + ' · ' + knownVal : nn + 'x = ' + dd + ' · ' + knownVal;
+      const solve = outIsNum ? nn + ' · ' + knownVal + ' : ' + dd : dd + ' · ' + knownVal + ' : ' + nn;
+      return num('Уравнение для ' + nameOf[out], 'Обозначим ' + nameOf[out] + ' = x. Так как ' + kn + ' ' + S.A + ' = {{' + nameOf[n1] + '}/{' + nameOf[n2] + '}}, получаем уравнение ' + prop + '. Решите его: x = ?', outVal, {
+        hint: 'Произведение крайних членов пропорции равно произведению средних: ' + cross + ', откуда x = ' + solve + '.',
+        explain: cross + ', x = ' + fmt(outVal) + '. Значит ' + nameOf[out] + ' = ' + fmt(outVal) + '.',
+        traps: [{ value: outIsNum ? knownVal / r : knownVal * r, msg: outIsNum
+          ? 'Пропорция записана наоборот: ' + nameOf[out] + ' стоит в ЧИСЛИТЕЛЕ определения, поэтому ' + cross + '.'
+          : 'Пропорция записана наоборот: ' + nameOf[out] + ' стоит в ЗНАМЕНАТЕЛЕ определения, поэтому ' + cross + '.' }]
+      });
     };
-    /* третья сторона по двум известным — теорема Пифагора, два шага */
+    /* третья сторона по двум известным — уравнение по теореме Пифагора, два шага */
     const pyth = out => {
       const otherLeg = out === 'AB' ? null : (out === 'AC' ? 'BC' : 'AC');
       const s = sq(V[out]);
       const q = out === 'AB'
-        ? 'По теореме Пифагора ' + nameOf.AB + '^{2} = ' + nameOf.AC + '^{2} + ' + nameOf.BC + '^{2} = ' + V.AC + '^{2} + ' + V.BC + '^{2} = ?'
-        : 'По теореме Пифагора ' + nameOf[out] + '^{2} = ' + nameOf.AB + '^{2} − ' + nameOf[otherLeg] + '^{2} = ' + V.AB + '^{2} − ' + V[otherLeg] + '^{2} = ?';
+        ? 'Обозначим ' + nameOf.AB + ' = x. По теореме Пифагора x^{2} = ' + nameOf.AC + '^{2} + ' + nameOf.BC + '^{2} = ' + V.AC + '^{2} + ' + V.BC + '^{2} = ?'
+        : 'Обозначим ' + nameOf[out] + ' = x. По теореме Пифагора x^{2} + ' + nameOf[otherLeg] + '^{2} = ' + nameOf.AB + '^{2}, то есть x^{2} + ' + V[otherLeg] + '^{2} = ' + V.AB + '^{2}. Найдите x^{2} = ?';
       const traps = out === 'AB'
         ? [{ value: Math.abs(sq(V.AC) - sq(V.BC)), msg: 'Квадраты катетов нужно СЛОЖИТЬ: гипотенуза длиннее любого катета.' }]
-        : [{ value: sq(V.AB) + sq(V[otherLeg]), msg: 'Катет короче гипотенузы: из квадрата гипотенузы ВЫЧИТАЮТ квадрат другого катета.' }];
+        : [{ value: sq(V.AB) + sq(V[otherLeg]), msg: 'Катет короче гипотенузы: x^{2} = ' + nameOf.AB + '^{2} − ' + nameOf[otherLeg] + '^{2}, квадраты ВЫЧИТАЮТ.' }];
       return [
-        num(nameOf[out] + ' в квадрате', q, s, { hint: out === 'AB' ? V.AC + '^{2} = ' + sq(V.AC) + ', ' + V.BC + '^{2} = ' + sq(V.BC) + '. Сложите.' : V.AB + '^{2} = ' + sq(V.AB) + ', ' + V[otherLeg] + '^{2} = ' + sq(V[otherLeg]) + '. Вычтите.', explain: nameOf[out] + '^{2} = ' + s + '.', traps }),
-        num('Извлекаем корень', nameOf[out] + ' = √{' + s + '} = ?', V[out], { hint: 'Какое число в квадрате даёт ' + s + '?', explain: nameOf[out] + ' = ' + V[out] + '.', traps: [{ value: s, msg: 'Это квадрат стороны — осталось извлечь корень.' }] })
+        num('Уравнение по теореме Пифагора', q, s, { hint: out === 'AB' ? V.AC + '^{2} = ' + sq(V.AC) + ', ' + V.BC + '^{2} = ' + sq(V.BC) + '. Сложите.' : V.AB + '^{2} = ' + sq(V.AB) + ', ' + V[otherLeg] + '^{2} = ' + sq(V[otherLeg]) + '. Вычтите.', explain: 'x^{2} = ' + s + '.', traps }),
+        num('Находим ' + nameOf[out], 'x^{2} = ' + s + ', x > 0, значит ' + nameOf[out] + ' = x = ?', V[out], { hint: 'Какое положительное число в квадрате даёт ' + s + '?', explain: nameOf[out] + ' = ' + V[out] + '.', traps: [{ value: s, msg: 'Это x^{2} — осталось извлечь корень.' }] })
       ];
     };
 
     const dch = defChoice(p.ratio);
     const steps = [choice('Что такое ' + rName + ' ' + S.A, rName + ' ' + S.A + ' — это отношение каких сторон?', dch.options, dch.correct, {})];
-    if (inPair(p.given) && inPair(p.findSide)){                  // обе стороны в отношении — один шаг
-      steps.push(viaRatio(p.ratio, p.given, p.findSide));
-    } else if (inPair(p.given)){                                 // данная в отношении, искомая — третья: через Пифагора
+    if (inPair(p.given) && inPair(p.findSide)){                  // обе стороны в отношении — одно уравнение
+      steps.push(eqStep(p.ratio, p.given, p.findSide));
+    } else if (inPair(p.given)){                                 // данная в отношении, искомая — третья: уравнение, потом Пифагор
       const other = p.given === s1 ? s2 : s1;
-      steps.push(viaRatio(p.ratio, p.given, other));
+      steps.push(eqStep(p.ratio, p.given, other));
       steps.push(...pyth(p.findSide));
-    } else if (p.ratio !== 'tan'){                               // дана третья сторона, отношение sin или cos: тождество
+    } else if (p.ratio !== 'tan'){                               // дана третья сторона, отношение sin или cos: основное тождество
       const otherR = p.ratio === 'sin' ? 'cos' : 'sin', oN = ratioName[otherR];
       const [o1, o2] = ratioSides[otherR];
       const rSq = fracMk(sq(triVal[s1]), sq(triVal[s2])), oSq = fracMk(sq(triVal[o1]), sq(triVal[o2]));
-      steps.push(num(oN + ' ' + S.A + ' в квадрате', 'Основное тригонометрическое тождество: sin^{2} ' + S.A + ' + cos^{2} ' + S.A + ' = 1. Значит ' + oN + '^{2} ' + S.A + ' = 1 − ' + rName + '^{2} ' + S.A + ' = 1 − (' + rFrac + ')^{2} = ?', sq(triVal[o1]) / sq(triVal[o2]),
+      steps.push(num(oN + ' ' + S.A + ' в квадрате', 'Сторона ' + nameOf[p.given] + ' в ' + rName + ' ' + S.A + ' не входит, зато входит в ' + oN + ' ' + S.A + '. Найдём его из основного тригонометрического тождества sin^{2} ' + S.A + ' + cos^{2} ' + S.A + ' = 1: ' + oN + '^{2} ' + S.A + ' = 1 − ' + rName + '^{2} ' + S.A + ' = 1 − (' + rFrac + ')^{2} = ?', sq(triVal[o1]) / sq(triVal[o2]),
         { hint: '(' + rFrac + ')^{2} = ' + rSq + '. Вычтите это из 1.', explain: oN + '^{2} ' + S.A + ' = 1 − ' + rSq + ' = ' + oSq + '.',
           traps: [{ value: 1 - triVal[s1] / triVal[s2], msg: 'Из 1 вычли сам ' + rName + ' ' + S.A + ', а в тождестве стоит его КВАДРАТ.' }] }));
       steps.push(num(oN + ' ' + S.A, oN + ' ' + S.A + ' = √{' + oSq + '} = ?', triVal[o1] / triVal[o2],
         { hint: 'Извлеките корень отдельно из числителя и из знаменателя.', explain: oN + ' ' + S.A + ' = ' + fracMk(triVal[o1], triVal[o2]) + ' (угол острый, поэтому берём «плюс»).' }));
       const need = linkOf(p.given, p.findSide);
-      if (need === otherR){ steps.push(viaRatio(otherR, p.given, p.findSide)); }
-      else { steps.push(viaRatio(otherR, p.given, 'AB', 'Гипотенуза')); steps.push(viaRatio(p.ratio, 'AB', p.findSide)); }
+      if (need === otherR){ steps.push(eqStep(otherR, p.given, p.findSide)); }
+      else { steps.push(eqStep(otherR, p.given, 'AB')); steps.push(eqStep(p.ratio, 'AB', p.findSide)); }
     } else {                                                     // дана гипотенуза, отношение tg: «пусть катеты a·x и b·x»
-      steps.push(info('Обозначим катеты', 'tg ' + S.A + ' = {{' + nameOf.BC + '}/{' + nameOf.AC + '}} = ' + rFrac + ': катеты относятся как ' + a + ' : ' + b + '. Обозначим ' + nameOf.BC + ' = ' + a + 'x, ' + nameOf.AC + ' = ' + b + 'x.'));
-      steps.push(num('Теорема Пифагора', nameOf.AB + '^{2} = (' + a + 'x)^{2} + (' + b + 'x)^{2} = ' + sq(a) + 'x^{2} + ' + sq(b) + 'x^{2} = ' + sq(c) + 'x^{2}, значит ' + nameOf.AB + ' = ' + c + 'x. По условию ' + nameOf.AB + ' = ' + given + ', откуда x = ' + given + ' : ' + c + ' = ?', scale,
-        { hint: 'Разделите ' + given + ' на ' + c + '.', explain: 'x = ' + scale + '.', traps: [{ value: given * c, msg: given + ' умножили на ' + c + ', а надо разделить: ' + c + 'x = ' + given + '.' }] }));
+      steps.push(info('Обозначим катеты', 'tg ' + S.A + ' = {{' + nameOf.BC + '}/{' + nameOf.AC + '}} = ' + rFrac + ': катеты относятся как ' + a + ' : ' + b + '. Обозначим ' + nameOf.BC + ' = ' + a + 'x, ' + nameOf.AC + ' = ' + b + 'x (x > 0).'));
+      const xTraps = scale === 1 ? [] : [{ value: scale, msg: 'Это x, а на этом шаге спрашивают x^{2}.' }];
+      steps.push(num('Уравнение по теореме Пифагора', nameOf.BC + '^{2} + ' + nameOf.AC + '^{2} = ' + nameOf.AB + '^{2}: (' + a + 'x)^{2} + (' + b + 'x)^{2} = ' + given + '^{2}, то есть ' + sq(a) + 'x^{2} + ' + sq(b) + 'x^{2} = ' + sq(given) + ', ' + sq(c) + 'x^{2} = ' + sq(given) + '. Найдите x^{2} = ?', sq(scale),
+        { hint: 'Разделите ' + sq(given) + ' на ' + sq(c) + '.', explain: 'x^{2} = ' + sq(given) + ' : ' + sq(c) + ' = ' + sq(scale) + '.', traps: xTraps }));
+      steps.push(num('Находим x', 'x^{2} = ' + sq(scale) + ', x > 0, значит x = ?', scale, { hint: 'Какое положительное число в квадрате даёт ' + sq(scale) + '?', explain: 'x = ' + scale + '.' }));
       steps.push(num('Находим ' + nameOf[p.findSide], nameOf[p.findSide] + ' = ' + triVal[p.findSide] + 'x = ' + triVal[p.findSide] + ' · ' + scale + ' = ?', want,
         { hint: triVal[p.findSide] + ' умножить на ' + scale + '.', explain: nameOf[p.findSide] + ' = ' + want + '.' }));
     }
@@ -720,13 +730,13 @@ TOPICS[1] = {
    ТЕМА 2. Высота, опущенная на гипотенузу
    ============================================================ */
 TOPICS[2] = {
-  num: 2, name: 'Высота на гипотенузу', short: 'CH, AH, BH — геометрическое среднее',
+  num: 2, name: 'Высота на гипотенузу', short: 'CH, AH, BH — подобие и уравнение',
   memo: [
-    ['Высота из прямого угла', 'высота ⟂ гипотенузе, её основание H лежит между A и B'],
-    ['Три подобных треугольника', 'ACH ~ ABC ~ CBH — у всех те же углы A и B'],
-    ['Катет²', 'AC^{2} = AH · AB,   BC^{2} = BH · AB'],
-    ['Высота²', 'CH^{2} = AH · BH'],
-    ['Через углы', 'sin A = {{BH}/{BC}} = {{BC}/{AB}},   cos A = {{AH}/{AC}} = {{AC}/{AB}},   tg A = {{CH}/{AH}}']
+    ['Высота из прямого угла', 'CH ⟂ AB, её основание H лежит между A и B'],
+    ['Углы', 'A + B = 90°. В треугольнике ACH угол ACH = 90° − A = B; в треугольнике CBH угол BCH = A'],
+    ['Подобие', 'ACH ~ ABC ~ CBH — у всех те же острые углы A и B'],
+    ['Из подобия', '{{AC}/{AB}} = {{AH}/{AC}} ⟹ AC^{2} = AH · AB;   {{BC}/{AB}} = {{BH}/{BC}} ⟹ BC^{2} = BH · AB;   {{CH}/{AH}} = {{BH}/{CH}} ⟹ CH^{2} = AH · BH'],
+    ['Ход решения', 'обозначить искомый отрезок x, записать пропорцию из подобия (или определение sin, tg в нужном треугольнике) как уравнение и решить']
   ],
   trap: 'CH² = AH·BH — высота в квадрате равна произведению ОТРЕЗКОВ гипотенузы, а не отрезка на весь катет. Не перепутайте с AC² = AH·AB.',
   demos: [
@@ -735,10 +745,10 @@ TOPICS[2] = {
     { triple: [3, 4, 5], m: 2, recipe: 'altFromSegs', mSeed: 3 }
   ],
   params(level, rng){
-    const triple = pickTriple(rng, level === 1);
+    const triple = pickTriple(rng, true);                      // только малые тройки: AB = c²·m, с большими тройками числа уходят за 1000
     const recipes = level === 1 ? ['sinFromSeg', 'legFromSeg', 'altFromSegs'] : ['sinFromSeg', 'legFromSeg', 'altFromSegs', 'hypFromLegSeg', 'tanFromAHtg', 'altFromLegRatio'];
     const recipe = pick(recipes, rng);
-    const m = level === 3 ? pick([1, 2, 3], rng) : pick([1, 1, 2], rng);
+    const m = level === 1 ? 1 : (level === 2 ? pick([1, 2], rng) : pick([1, 2, 3], rng));
     return { triple, recipe, m, mSeed: ri(1, 99999, rng) };
   },
   build(p){
@@ -749,53 +759,69 @@ TOPICS[2] = {
     const N = { AB: S.A + S.B, AC: S.A + S.C, BC: S.B + S.C, CH: S.C + S.H, AH: S.A + S.H, BH: S.B + S.H };
     const tanA = fracMk(a, b);
     const R = p.recipe;
+    const ACH = S.A + S.C + S.H, CBH = S.C + S.B + S.H, ABC = S.A + S.B + S.C;
+    const angACH = S.A + S.C + S.H, angBCH = S.B + S.C + S.H;
+    const head = 'В треугольнике ' + ABC + ' угол ' + S.C + ' равен 90°, ' + N.CH + ' — высота, ';
+    /* углы в отсечённых треугольниках — через сумму углов */
+    const angleWalk = info('Углы в отсечённых треугольниках', 'Сумма острых углов: угол ' + S.A + ' + угол ' + S.B + ' = 90°. В треугольнике ' + ACH + ' угол ' + S.H + ' прямой, значит угол ' + angACH + ' = 90° − угол ' + S.A + ' = угол ' + S.B + '. Так же в треугольнике ' + CBH + ' угол ' + angBCH + ' = 90° − угол ' + S.B + ' = угол ' + S.A + '.');
+    const rootStep = (nameX, s, val) => num('Находим ' + nameX, 'x^{2} = ' + s + ', x > 0, значит ' + nameX + ' = x = ?', val, { hint: 'Какое положительное число в квадрате даёт ' + s + '?', explain: nameX + ' = ' + val + '.', traps: [{ value: s, msg: 'Это x^{2} — осталось извлечь корень.' }] });
     let text, steps, answer;
     if (R === 'sinFromSeg'){
-      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.BC} = ${BC}, ${N.BH} = ${BH}. Найдите sin ${S.A}.`;
+      text = head + N.BC + ' = ' + BC + ', ' + N.BH + ' = ' + BH + '. Найдите sin ' + S.A + '.';
       steps = [
-        info('Похожие треугольники', `Треугольники ${S.C}${S.B}${S.H} и ${S.A}${S.B}${S.C} подобны (у обоих есть угол ${S.B} и прямой угол). В маленьком треугольнике ${S.C}${S.B}${S.H}: cos ${S.B} = {{${N.BH}}/{${N.BC}}}. А раз угол ${S.A} + угол ${S.B} = 90°, то sin ${S.A} = cos ${S.B}.`),
-        num(`sin ${S.A} через отрезок`, `sin ${S.A} = cos ${S.B} = {{${N.BH}}/{${N.BC}}} = {{${BH}}/{${BC}}} = ?`, BH / BC, { hint: `Сократите дробь ${BH}/${BC}.`, explain: `sin ${S.A} = ${fracMk(BH, BC)}.` })
+        angleWalk,
+        num('sin ' + S.A + ' из треугольника ' + CBH, 'Угол ' + angBCH + ' = угол ' + S.A + ', поэтому sin ' + S.A + ' = sin ' + angBCH + '. В прямоугольном треугольнике ' + CBH + ' против угла ' + angBCH + ' лежит катет ' + N.BH + ', а гипотенуза — ' + N.BC + ': sin ' + S.A + ' = {{' + N.BH + '}/{' + N.BC + '}} = {{' + BH + '}/{' + BC + '}} = ?', BH / BC,
+          { hint: 'Сократите дробь ' + BH + '/' + BC + '.', explain: 'sin ' + S.A + ' = ' + fracMk(BH, BC) + '.', traps: [{ value: BC / BH, msg: 'Дробь перевёрнута: в треугольнике ' + CBH + ' гипотенуза — ' + N.BC + ', она стоит в знаменателе.' }, { value: CH / BC, msg: 'Это отношение катета ' + N.CH + ' к гипотенузе — косинус угла ' + angBCH + '. Синус — через противолежащий катет ' + N.BH + '.' }] })
       ];
       answer = ansNum(BH / BC, { display: fracMk(BH, BC) });
     } else if (R === 'legFromSeg'){
-      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.AB} = ${AB}, ${N.AH} = ${AH}. Найдите ${N.AC}.`;
+      text = head + N.AB + ' = ' + AB + ', ' + N.AH + ' = ' + AH + '. Найдите ' + N.AC + '.';
       steps = [
-        info('Формула', `Катет ${N.AC} связан с отрезком ${N.AH} и всей гипотенузой ${N.AB} формулой: ${N.AC}^{2} = ${N.AH} · ${N.AB}.`),
-        num('Подставляем числа', `${N.AC}^{2} = ${N.AH} · ${N.AB} = ${AH} · ${AB} = ?`, AC * AC, { hint: `Перемножьте ${AH} и ${AB}.`, explain: `${N.AC}^{2} = ${AC * AC}.` }),
-        num('Извлекаем корень', `${N.AC} = √{${AC * AC}} = ?`, AC, { hint: `Какое число в квадрате даёт ${AC * AC}?`, explain: `${N.AC} = ${AC}.` })
+        info('Подобие', 'Треугольники ' + ACH + ' и ' + ABC + ' подобны: угол ' + S.A + ' у них общий, углы ' + S.H + ' и ' + S.C + ' прямые. Сходственные стороны пропорциональны — гипотенуза к гипотенузе, катет при угле ' + S.A + ' к катету при угле ' + S.A + ': {{' + N.AC + '}/{' + N.AB + '}} = {{' + N.AH + '}/{' + N.AC + '}}, откуда ' + N.AC + '^{2} = ' + N.AH + ' · ' + N.AB + '.'),
+        num('Уравнение', 'Обозначим ' + N.AC + ' = x: x^{2} = ' + N.AH + ' · ' + N.AB + ' = ' + AH + ' · ' + AB + ' = ?', AC * AC,
+          { hint: 'Перемножьте ' + AH + ' и ' + AB + '.', explain: 'x^{2} = ' + AC * AC + '.', traps: [{ value: AH * BH, msg: 'Взяли ' + N.AH + ' · ' + N.BH + ' — так получается ВЫСОТА. Для катета: квадрат катета = его отрезок гипотенузы · ВСЯ гипотенуза.' }] }),
+        rootStep(N.AC, AC * AC, AC)
       ];
       answer = ansNum(AC);
     } else if (R === 'altFromSegs'){
-      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.AH} = ${AH}, ${N.BH} = ${BH}. Найдите ${N.CH}.`;
+      text = head + N.AH + ' = ' + AH + ', ' + N.BH + ' = ' + BH + '. Найдите ' + N.CH + '.';
       steps = [
-        info('Формула', `Высота ${N.CH} — среднее геометрическое отрезков гипотенузы: ${N.CH}^{2} = ${N.AH} · ${N.BH}.`),
-        num('Подставляем числа', `${N.CH}^{2} = ${AH} · ${BH} = ?`, CH * CH, { hint: `Перемножьте ${AH} и ${BH}.`, explain: `${N.CH}^{2} = ${CH * CH}.` }),
-        num('Извлекаем корень', `${N.CH} = √{${CH * CH}} = ?`, CH, { hint: `Какое число в квадрате даёт ${CH * CH}?`, explain: `${N.CH} = ${CH}.` })
+        angleWalk,
+        info('Подобие', 'Треугольники ' + ACH + ' и ' + CBH + ' подобны: угол ' + S.A + ' = угол ' + angBCH + ', угол ' + angACH + ' = угол ' + S.B + ', углы при ' + S.H + ' прямые. Катет против угла ' + S.A + ' к катету при угле ' + S.A + ' — в обоих одинаково: {{' + N.CH + '}/{' + N.AH + '}} = {{' + N.BH + '}/{' + N.CH + '}}, откуда ' + N.CH + '^{2} = ' + N.AH + ' · ' + N.BH + '.'),
+        num('Уравнение', 'Обозначим ' + N.CH + ' = x: x^{2} = ' + N.AH + ' · ' + N.BH + ' = ' + AH + ' · ' + BH + ' = ?', CH * CH,
+          { hint: 'Перемножьте ' + AH + ' и ' + BH + '.', explain: 'x^{2} = ' + CH * CH + '.', traps: [{ value: AH * AB, msg: 'Взяли ' + N.AH + ' · ' + N.AB + ' — так получается КАТЕТ ' + N.AC + '. Для высоты перемножают два ОТРЕЗКА гипотенузы.' }] }),
+        rootStep(N.CH, CH * CH, CH)
       ];
       answer = ansNum(CH);
     } else if (R === 'hypFromLegSeg'){
-      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.BC} = ${BC}, ${N.BH} = ${BH}. Найдите ${N.AB}.`;
+      text = head + N.BC + ' = ' + BC + ', ' + N.BH + ' = ' + BH + '. Найдите ' + N.AB + '.';
       steps = [
-        info('Формула', `Катет ${N.BC} связан с отрезком ${N.BH} и всей гипотенузой ${N.AB}: ${N.BC}^{2} = ${N.BH} · ${N.AB}.`),
-        num('Выражаем гипотенузу', `${BC}^{2} = ${BH} · ${N.AB}, значит ${N.AB} = ${BC}^{2} : ${BH} = ${BC * BC} : ${BH} = ?`, AB,
-          { hint: `Сначала ${BC}^{2} = ${BC * BC}, потом разделите на ${BH}.`, explain: `${N.AB} = ${AB}.` })
+        info('Подобие', 'Треугольники ' + CBH + ' и ' + ABC + ' подобны: угол ' + S.B + ' общий, углы ' + S.H + ' и ' + S.C + ' прямые. Гипотенуза к гипотенузе, катет при угле ' + S.B + ' к катету при угле ' + S.B + ': {{' + N.BC + '}/{' + N.AB + '}} = {{' + N.BH + '}/{' + N.BC + '}}, откуда ' + N.BC + '^{2} = ' + N.BH + ' · ' + N.AB + '.'),
+        num('Уравнение', 'Обозначим ' + N.AB + ' = x: ' + N.BH + ' · x = ' + N.BC + '^{2}, то есть ' + BH + 'x = ' + BC + '^{2}. Вычислите правую часть: ' + BC + '^{2} = ?', BC * BC,
+          { hint: BC + ' умножить на ' + BC + '.', explain: BH + 'x = ' + BC * BC + '.' }),
+        num('Находим ' + N.AB, BH + 'x = ' + BC * BC + ', значит x = ' + BC * BC + ' : ' + BH + ' = ?', AB,
+          { hint: 'Разделите ' + BC * BC + ' на ' + BH + '.', explain: N.AB + ' = ' + AB + '.', traps: [{ value: BC * BC, msg: 'Это ' + N.BC + '^{2}, а x ещё нужно найти: разделите на ' + BH + '.' }, { value: AH, msg: 'Это отрезок ' + N.AH + ', а спрашивают всю гипотенузу.' }] })
       ];
       answer = ansNum(AB);
     } else if (R === 'tanFromAHtg'){
-      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.AH} = ${AH}, tg ${S.A} = ${tanA}. Найдите ${N.BH}.`;
+      text = head + N.AH + ' = ' + AH + ', tg ' + S.A + ' = ' + tanA + '. Найдите ' + N.BH + '.';
       steps = [
-        info('Сначала высота', `В треугольнике ${S.A}${S.C}${S.H}: tg ${S.A} = {{${N.CH}}/{${N.AH}}}, значит ${N.CH} = ${N.AH} · tg ${S.A}.`),
-        num('Находим высоту', `${N.CH} = ${AH} · ${tanA} = ?`, CH, { hint: `Умножьте ${AH} на ${tanA}.`, explain: `${N.CH} = ${CH}.` }),
-        info('Теперь формула высоты', `${N.CH}^{2} = ${N.AH} · ${N.BH}, откуда ${N.BH} = ${N.CH}^{2} : ${N.AH}.`),
-        num('Находим BH', `${N.BH} = ${CH}^{2} : ${AH} = ${CH * CH} : ${AH} = ?`, BH, { hint: `Сначала ${CH}^{2} = ${CH * CH}, потом разделите на ${AH}.`, explain: `${N.BH} = ${BH}.` })
+        num('Высота из треугольника ' + ACH, 'В прямоугольном треугольнике ' + ACH + ' tg ' + S.A + ' = {{' + N.CH + '}/{' + N.AH + '}}. Обозначим ' + N.CH + ' = x: {{x}/{' + AH + '}} = ' + tanA + ', откуда x = ' + AH + ' · ' + tanA + ' = ?', CH,
+          { hint: 'Умножьте ' + AH + ' на ' + tanA + '.', explain: N.CH + ' = ' + CH + '.', traps: [{ value: AH / (a / b), msg: 'Разделили на tg, а надо умножить: ' + N.CH + ' стоит в числителе определения тангенса.' }] }),
+        angleWalk,
+        num('Отрезок ' + N.BH + ' из треугольника ' + CBH, 'Угол ' + angBCH + ' = угол ' + S.A + ', значит tg ' + angBCH + ' = tg ' + S.A + ' = ' + tanA + '. В прямоугольном треугольнике ' + CBH + ' tg ' + angBCH + ' = {{' + N.BH + '}/{' + N.CH + '}}. Обозначим ' + N.BH + ' = y: {{y}/{' + CH + '}} = ' + tanA + ', откуда y = ' + CH + ' · ' + tanA + ' = ?', BH,
+          { hint: 'Умножьте ' + CH + ' на ' + tanA + '.', explain: N.BH + ' = ' + BH + '.', traps: [{ value: CH / (a / b), msg: 'Разделили на tg, а надо умножить: ' + N.BH + ' — катет ПРОТИВ угла ' + angBCH + ', он в числителе.' }] })
       ];
       answer = ansNum(BH);
     } else {
-      text = `В треугольнике ${S.A}${S.B}${S.C} угол ${S.C} равен 90°, ${N.CH} — высота, ${N.AC} = ${AC}, ${N.BC} = ${BC}. Найдите ${N.CH}.`;
+      text = head + N.AC + ' = ' + AC + ', ' + N.BC + ' = ' + BC + '. Найдите ' + N.CH + '.';
       steps = [
-        info('Площадь двумя способами', `Площадь треугольника ${S.A}${S.B}${S.C} можно найти через катеты: S = {{${N.AC} · ${N.BC}}/{2}}, а можно через гипотенузу и высоту: S = {{${N.AB} · ${N.CH}}/{2}}. Значит ${N.AC} · ${N.BC} = ${N.AB} · ${N.CH}.`),
-        num('Гипотенуза', `${N.AB} = √{${N.AC}^{2} + ${N.BC}^{2}} = √{${AC}^{2} + ${BC}^{2}} = ?`, AB, { hint: `${AC}^{2}=${AC * AC}, ${BC}^{2}=${BC * BC}. Сложите и извлеките корень.`, explain: `${N.AB} = ${AB}.` }),
-        num('Находим высоту', `${N.CH} = {{${N.AC} · ${N.BC}}/{${N.AB}}} = {{${AC * BC}}/{${AB}}} = ?`, CH, { hint: `Перемножьте катеты, потом разделите на гипотенузу.`, explain: `${N.CH} = ${CH}.` })
+        num('Уравнение для гипотенузы', 'Обозначим ' + N.AB + ' = x. По теореме Пифагора x^{2} = ' + N.AC + '^{2} + ' + N.BC + '^{2} = ' + AC + '^{2} + ' + BC + '^{2} = ?', AB * AB,
+          { hint: AC + '^{2} = ' + AC * AC + ', ' + BC + '^{2} = ' + BC * BC + '. Сложите.', explain: 'x^{2} = ' + AB * AB + '.', traps: [{ value: Math.abs(AC * AC - BC * BC), msg: 'Квадраты катетов нужно СЛОЖИТЬ.' }] }),
+        rootStep(N.AB, AB * AB, AB),
+        info('Площадь двумя способами', 'Площадь треугольника ' + ABC + ' можно записать через катеты: S = {{' + N.AC + ' · ' + N.BC + '}/{2}}, а можно через гипотенузу и высоту к ней: S = {{' + N.AB + ' · ' + N.CH + '}/{2}}. Это одна и та же площадь.'),
+        num('Уравнение для высоты', 'Обозначим ' + N.CH + ' = y: {{' + AB + ' · y}/{2}} = {{' + AC + ' · ' + BC + '}/{2}}, то есть ' + AB + 'y = ' + AC + ' · ' + BC + '. Решите: y = ?', CH,
+          { hint: 'Перемножьте катеты, потом разделите на ' + AB + '.', explain: AB + 'y = ' + AC * BC + ', y = ' + CH + '. Значит ' + N.CH + ' = ' + CH + '.', traps: [{ value: AC * BC, msg: 'Это ' + N.AC + ' · ' + N.BC + ' — правая часть уравнения. Разделите на ' + AB + '.' }, { value: AC * BC / 2, msg: 'Это площадь S. Из уравнения ' + AB + 'y = ' + AC + ' · ' + BC + ' делят на ' + AB + ', а не на 2.' }] })
       ];
       answer = ansNum(CH);
     }
@@ -839,9 +865,10 @@ TOPICS[3] = {
       const other = Math.round(Math.sqrt(hyp * hyp - leg * leg));
       const text = `Найдите площадь прямоугольного треугольника ${S.A}${S.B}${S.C} (угол ${S.C} = 90°), если его катет ${N.AC} и гипотенуза ${N.AB} равны соответственно ${leg} и ${hyp}.`;
       const steps = [
-        num('Второй катет', `По теореме Пифагора: ${N.BC} = √{${N.AB}^{2} − ${N.AC}^{2}} = √{${hyp}^{2} − ${leg}^{2}} = √{${hyp * hyp} − ${leg * leg}} = ?`, other,
-          { hint: `${hyp}^{2}=${hyp * hyp}, ${leg}^{2}=${leg * leg}. Вычтите и извлеките корень.`, explain: `${N.BC} = ${other}.` }),
-        num('Площадь', `S = {{${N.AC} · ${N.BC}}/{2}} = {{${leg} · ${other}}/{2}} = ?`, leg * other / 2, { hint: `Перемножьте катеты, потом разделите на 2.`, explain: `S = ${fmt(leg * other / 2)}.` })
+        num('Уравнение для второго катета', 'Обозначим ' + N.BC + ' = x. По теореме Пифагора x^{2} + ' + N.AC + '^{2} = ' + N.AB + '^{2}: x^{2} + ' + leg + '^{2} = ' + hyp + '^{2}, x^{2} = ' + hyp * hyp + ' − ' + leg * leg + ' = ?', other * other,
+          { hint: hyp + '^{2} = ' + hyp * hyp + ', ' + leg + '^{2} = ' + leg * leg + '. Вычтите.', explain: 'x^{2} = ' + other * other + '.', traps: [{ value: hyp * hyp + leg * leg, msg: 'Квадраты сложили, а ' + N.BC + ' — катет: из квадрата гипотенузы ВЫЧИТАЮТ квадрат другого катета.' }] }),
+        num('Второй катет', 'x^{2} = ' + other * other + ', x > 0, значит ' + N.BC + ' = x = ?', other, { hint: 'Какое положительное число в квадрате даёт ' + other * other + '?', explain: N.BC + ' = ' + other + '.', traps: [{ value: other * other, msg: 'Это x^{2} — извлеките корень.' }] }),
+        num('Площадь', 'S = {{' + N.AC + ' · ' + N.BC + '}/{2}} = {{' + leg + ' · ' + other + '}/{2}} = ?', leg * other / 2, { hint: 'Перемножьте катеты, потом разделите на 2.', explain: 'S = ' + fmt(leg * other / 2) + '.', traps: [{ value: leg * other, msg: 'Это произведение катетов — площадь равна его ПОЛОВИНЕ.' }] })
       ];
       return { topic: 3, text, steps, answer: ansNum(leg * other / 2), p, figure: { kind: 'tri', S, t: (leg * leg) / (hyp * hyp), labels: { AC: leg, AB: hyp } } };
     }
@@ -1027,10 +1054,10 @@ TOPICS[5] = {
       const sq = 3 * AB * AB / 16, q2 = quarter * quarter;           // CH² = (AB/2)² − (AB/4)² = 3·(AB/4)²
       text = 'В треугольнике ' + S.A + S.B + S.C + ' угол ' + S.C + ' равен 90°, угол ' + Pv + ' равен 30°, ' + hyp + ' = ' + AB + '. Найдите высоту ' + CH + '.';
       steps = [stepLeg, stepAng, stepSeg,
-        num('Высота по теореме Пифагора', 'В треугольнике ' + small + ' высота ' + CH + ' — катет, ' + legQ + ' — гипотенуза: ' + CH + '^{2} = ' + legQ + '^{2} − ' + segQ + '^{2} = ' + fmt(half) + '^{2} − ' + fmt(quarter) + '^{2} = ?', sq,
-          { hint: fmt(half) + '^{2} = ' + half * half + ', ' + fmt(quarter) + '^{2} = ' + q2 + '. Вычтите.', explain: CH + '^{2} = ' + half * half + ' − ' + q2 + ' = ' + sq + '.',
+        num('Уравнение для высоты', 'Обозначим ' + CH + ' = x. В треугольнике ' + small + ' высота ' + CH + ' — катет, ' + legQ + ' — гипотенуза, и по теореме Пифагора x^{2} + ' + segQ + '^{2} = ' + legQ + '^{2}: x^{2} + ' + fmt(quarter) + '^{2} = ' + fmt(half) + '^{2}, x^{2} = ' + half * half + ' − ' + q2 + ' = ?', sq,
+          { hint: fmt(half) + '^{2} = ' + half * half + ', ' + fmt(quarter) + '^{2} = ' + q2 + '. Вычтите.', explain: 'x^{2} = ' + half * half + ' − ' + q2 + ' = ' + sq + '.',
             traps: [{ value: half * half + q2, msg: 'Квадраты сложили, а высота — КАТЕТ треугольника ' + small + ': из квадрата гипотенузы ' + legQ + ' вычитают квадрат катета ' + segQ + '.' }] }),
-        num('Извлекаем корень', quarter === 1 ? CH + ' = √{3} = ?' : CH + ' = √{' + sq + '} = √{' + q2 + ' · 3} = ?', quarter,
+        num('Находим высоту', quarter === 1 ? 'x^{2} = 3, x > 0, значит ' + CH + ' = √{3} = ?' : 'x^{2} = ' + sq + ', x > 0, значит ' + CH + ' = √{' + sq + '} = √{' + q2 + ' · 3} = ?', quarter,
           { suffix: '√3', hint: quarter === 1 ? 'Число перед √3 здесь равно 1.' : 'Вынесите полный квадрат из-под корня: ' + sq + ' = ' + q2 + ' · 3, а √{' + q2 + '} = ' + fmt(quarter) + '.', explain: CH + ' = ' + (quarter === 1 ? '' : fmt(quarter)) + '√{3}.',
             traps: [{ value: sq, msg: 'Это ' + CH + '^{2}. Извлеките корень и запишите ответ в виде числа перед √3.' }] })
       ];
