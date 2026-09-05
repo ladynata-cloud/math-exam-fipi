@@ -183,6 +183,7 @@
   .seg button{min-height:38px}
   .linklike{border:0;background:none;color:var(--teal-deep);font:inherit;font-weight:800;text-decoration:underline;cursor:pointer;padding:0}
   .onboard-banner{margin:.2rem 0 1rem;padding:.7rem .95rem;border:1.5px solid var(--teal-line);background:var(--teal-soft);color:var(--teal-deep);border-radius:12px;font-weight:700;line-height:1.5}
+  .onboard-banner .linklike{display:inline-flex;align-items:center;min-height:44px;padding:.2em .35em;vertical-align:middle}
   html.onboarding .topbtns, html.onboarding nav.topics, html.onboarding .controls, html.onboarding .modehelp{display:none}
   .small{font-size:.88rem}
   .muted{color:var(--ink-soft)}
@@ -745,10 +746,13 @@ var PROGRESS_CODE = (function(){
     try{ json = JSON.stringify(obj == null ? {} : obj); }
     catch(e){ return Promise.reject(new Error("Прогресс не сериализуется в JSON.")); }
     var bytes = toUtf8(json);
-    if (!hasCompression()) return Promise.resolve(PREFIX + b64urlEncode(concat(RAW, bytes)));
-    return deflate(bytes)
-      .then(function(z){ return PREFIX + b64urlEncode(concat(DEFLATED, z)); })
-      .catch(function(){ return PREFIX + b64urlEncode(concat(RAW, bytes)); });
+    var rawCode = PREFIX + b64urlEncode(concat(RAW, bytes));
+    if (!hasCompression()) return Promise.resolve(rawCode);
+    try {
+      return deflate(bytes)
+        .then(function(z){ return PREFIX + b64urlEncode(concat(DEFLATED, z)); })
+        .catch(function(){ return rawCode; });
+    } catch (e){ return Promise.resolve(rawCode); }   /* new CompressionStream может бросить синхронно */
   }
 
   function decode(code){
@@ -2422,6 +2426,8 @@ function exitOnboarding(persist){
   state.onboarding = false;
   document.documentElement.classList.remove('onboarding');
   render();
+  const live = $('#live'); if (live) live.textContent = 'Открыты все темы и режимы. Кнопка «Сдать учителю» — вверху страницы.';
+  const area = $('#taskArea'); if (area){ try { area.focus({ preventScroll: true }); } catch (e){} }
 }
 function checkStep(){
   const i = state.stepIdx, st = state.task.steps[i];
@@ -2941,19 +2947,23 @@ function openTeacherPanel(){
   renderTeacherSummary();
   buildTeacherCode();
   $('#tpTitle').focus();
-  p.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  p.scrollIntoView({ block: 'start', behavior: (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth' });
 }
 function closeTeacherPanel(){ const p = $('#teacherPanel'); if (p) p.hidden = true; const b = $('#teacherBtn'); if (b) b.focus(); }
 function copyTeacherCode(){
   const box = $('#tpCode'), status = $('#tpStatus');
-  if (!box.value){ buildTeacherCode(); return; }
-  try { box.focus(); box.select(); } catch (e){}
-  if (navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(box.value).then(() => { status.textContent = 'Скопировано в буфер обмена.'; }).catch(() => { status.textContent = 'Выделите строку и нажмите Ctrl+C.'; });
-    return;
-  }
-  let done = false; try { done = document.execCommand('copy'); } catch (e){ done = false; }
-  status.textContent = done ? 'Скопировано в буфер обмена.' : 'Выделите строку и нажмите Ctrl+C.';
+  if (typeof PROGRESS_CODE === 'undefined'){ status.textContent = 'Кодер прогресса недоступен.'; return; }
+  status.textContent = 'Собираю код…';
+  PROGRESS_CODE.encode(PROGRESS_CODE.readLive()).then(code => {   /* пересобираем — вдруг имя только что ввели */
+    box.value = code; $('#tpLen').textContent = 'длина: ' + code.length + ' симв.'; drawTeacherQr(code);
+    try { box.focus(); box.select(); } catch (e){}
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code).then(() => { status.textContent = 'Скопировано в буфер обмена.'; }).catch(() => { status.textContent = 'Выделите строку и нажмите Ctrl+C.'; });
+      return;
+    }
+    let done = false; try { done = document.execCommand('copy'); } catch (e){ done = false; }
+    status.textContent = done ? 'Скопировано в буфер обмена.' : 'Выделите строку и нажмите Ctrl+C.';
+  }).catch(err => { status.textContent = (err && err.message) || 'Не получилось собрать код.'; });
 }
 
 /* ---------- запуск ---------- */
@@ -2966,8 +2976,8 @@ function init(){
   $('#boardBtn').addEventListener('click', () => setBoard(!document.documentElement.classList.contains('board')));
   document.addEventListener('keydown', onGlobalKey);
   $('#mirrorBtn').addEventListener('click', () => setMirror(!document.documentElement.classList.contains('mirror')));
-  if (canFullscreen()) $('#fsBtn').addEventListener('click', toggleFullscreen);
-  else $('#fsBtn').remove();
+  const fsBtn = $('#fsBtn');
+  if (fsBtn){ if (canFullscreen()) fsBtn.addEventListener('click', toggleFullscreen); else fsBtn.remove(); }
   $('#teacherBtn').addEventListener('click', openTeacherPanel);
   $('#tpClose').addEventListener('click', closeTeacherPanel);
   $('#tpCopy').addEventListener('click', copyTeacherCode);
@@ -2982,7 +2992,7 @@ function init(){
   if (mt && TOPICS[+mt[1]]) state.topic = +mt[1];
   if (/(^|[?&])mode=review/.test(location.search || '')){ state.review = true; state.mode = 'solo'; }
   /* Первый заход ученика: сразу пошаговый разбор разминки, всё лишнее скрыто до первого решённого задания. */
-  const fresh = !stats.onboarded && !hasAnyProgress() && !state.review
+  const fresh = !stats.onboarded && !hasAnyProgress() && !state.review && !stats.board
     && !urlFlag('board') && !urlFlag('mirror') && !(mt && TOPICS[+mt[1]]);
   if (fresh){ state.onboarding = true; state.mode = 'steps'; state.topic = 0; state.level = 1; }
   newTask();
