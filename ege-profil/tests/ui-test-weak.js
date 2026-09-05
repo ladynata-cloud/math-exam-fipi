@@ -103,12 +103,22 @@ function solveCurrent(w, d, S){
   for (let i = 0; i < 3; i++){
     const w1 = q(d, '.figure .stepang');
     seq.push(w1 ? w1.getAttribute('d') : null);
-    if (S().task.steps[i].fig && S().task.steps[i].fig.eq) ok(qa(d, '.figure .eqang.blink').length >= 2, `шаг ${i + 1}: равные углы мигают`);
+    if (S().task.steps[i].fig && S().task.steps[i].fig.eq) ok(qa(d, '.figure .eqang.blink').length >= 1, `шаг ${i + 1}: парный равный угол мигает (у угла с сектором вторая дуга не дублируется)`);
+    /* шкала углов при C */
+    ok(!!q(d, '.figure .angbar'), `шаг ${i + 1}: шкала углов на месте`);
+    ok(qa(d, '.figure .angtick').length === 3, `шаг ${i + 1}: три засечки — высота, биссектриса, медиана`);
+    ok(!!q(d, '.figure .angspan'), `шаг ${i + 1}: на шкале выделен угол текущего шага`);
+    const vals = qa(d, '.figure .angbar text').filter(tx => /font-weight:900/.test(tx.getAttribute('style')) && /°$/.test(tx.textContent) && !/^\?$/.test(tx.textContent)).length;
+    ok(vals === i, `шаг ${i + 1}: на шкале подписано ${i} найденных значений (${vals})`);
+    ok(/высота/.test(q(d, '.figure .legend').textContent) && /медиана/.test(q(d, '.figure .legend').textContent), `шаг ${i + 1}: легенда цветов под чертежом`);
+    ok(/viewBox="-6 0 292 294"/.test(q(d, '.figure').innerHTML), `шаг ${i + 1}: чертёж вырос под шкалу`);
     ok(!!q(d, '.step.current .formula'), `шаг ${i + 1}: есть крупная формула`);
     solveCurrent(w, d, S);
   }
   ok(seq.every(Boolean) && new Set(seq).size === 3, 'сектор угла на чертеже разный на каждом из трёх шагов');
   ok(S().finished, 'тема 4 решена по шагам');
+  const finalLbl = qa(d, '.figure .angbar text').map(tx => tx.textContent);
+  ok(finalLbl.some(s => /^\d+°$/.test(s)) && !finalLbl.includes('?'), 'после решения на шкале стоит ответ вместо «?»');
 }
 
 /* ---------- 5. Тема 5: одношаговых задач больше нет; равные 30° и 60° мигают ---------- */
@@ -123,7 +133,7 @@ function solveCurrent(w, d, S){
   click(w, q(d, '#levelSeg [data-level="2"]'));
   let guard = 0;
   while (S().task.p.ask !== 'CH' && guard++ < 60) click(w, q(d, '[data-action="new"]'));
-  ok(qa(d, '.figure .eqang.g1.blink').length === 2 && qa(d, '.figure .eqang.g2.blink').length === 4, 'высота при 30°: два угла 30° и два угла 60° отмечены парами');
+  ok(qa(d, '.figure .eqang.g1.blink').length >= 1 && qa(d, '.figure .eqang.g2.blink').length === 4, 'высота при 30°: пара 60° — двойными дугами, парный 30° мигает рядом с сектором шага');
   ok(S().task.steps[0].kind === 'choice' || S().task.steps[1].kind === 'choice', 'вопрос «какая сторона против 30°» стоит в начале лесенки');
   let g = 0; while (!S().finished && g++ < 12) solveCurrent(w, d, S);
   ok(S().finished, 'высота при 30° решена по шагам');

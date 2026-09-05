@@ -96,6 +96,7 @@
   html.board .formula{font-size:1.7rem}
   html.board .figure{width:460px}
   .figcap{margin:.2rem 0 0; text-align:right; color:var(--ink-faint); font-weight:700; font-size:.78rem}
+  .figcap.legend{text-align:left; display:flex; flex-wrap:wrap; gap:.2rem .8rem; font-size:.82rem}
 
   sup{font-size:.72em; line-height:0} sub{font-size:.72em; line-height:0}
   .frac{display:inline-flex; flex-direction:column; text-align:center; vertical-align:middle; line-height:1.05; margin:0 .08em; font-size:.92em}
@@ -1786,14 +1787,24 @@ TOPICS[4] = {
           traps: [{ value: A, msg: 'Это угол ' + S.A + '. Биссектриса делит пополам угол ' + S.C + ' = 90°, угол ' + S.A + ' тут ни при чём.' }, { value: 90 - A, msg: 'Это угол ' + S.B + '. Биссектриса делит пополам угол ' + S.C + ' = 90°.' }] })
     };
     const big = angVal[c1] >= angVal[c2] ? c1 : c2, small = big === c1 ? c2 : c1;
+    /* шкала углов при C: три засечки (все лучи есть на чертеже); известные значения накапливаются по шагам */
+    const barMarks = known => ['cevH', 'cevD', 'cevM'].map(k => ({ key: k, deg: angVal[k], name: cevName[k], val: known && known[k] != null ? known[k] : null }));
+    const barOf = (known, span) => ({ marks: barMarks(known), span: span || null });
+    const wedgeOf = (k, label) => ({ at: 'C', rays: ['A', { cevH: 'H', cevD: 'D', cevM: 'M' }[k]], label });
+    const betweenWedge = label => ({ at: 'C', rays: [{ cevH: 'H', cevD: 'D', cevM: 'M' }[c1], { cevH: 'H', cevD: 'D', cevM: 'M' }[c2]], label });
     if (p.ask === 'angleBetween'){
       const text = 'В треугольнике ' + S.A + S.B + S.C + ' угол ' + S.C + ' равен 90°, угол ' + S.A + ' равен ' + A + '°. ' + S.C + S.H + ' — высота, ' + S.C + S.D + ' — биссектриса, ' + S.C + Mn + ' — медиана, проведённые из вершины ' + S.C + '. Найдите угол между ' + cevName[c1] + ' и ' + cevName[c2] + '. Ответ дайте в градусах.';
-      const steps = [stepFor[c1](), stepFor[c2](),
+      const s1 = stepFor[c1](), s2 = stepFor[c2]();
+      const k1 = {}; k1[c1] = angVal[c1] + '°';
+      const k2 = Object.assign({}, k1); k2[c2] = angVal[c2] + '°';
+      s1.fig.bar = barOf({}, { a: 0, b: angVal[c1], label: '?', key: c1 });
+      s2.fig.bar = barOf(k1, { a: 0, b: angVal[c2], label: '?', key: c2 });
+      const steps = [s1, s2,
         num('Угол между ' + cevName[c1] + ' и ' + cevName[c2], 'Угол между ' + cevName[c1] + ' и ' + cevName[c2] + ' = угол ' + angName[big] + ' − угол ' + angName[small] + ' = ' + angVal[big] + '° − ' + angVal[small] + '° = ? (Оба угла отсчитаны от стороны ' + S.C + S.A + ' — на чертеже один сектор лежит внутри другого, поэтому вычитаем.)', val,
-          { unit: '°', formula: 'угол между = угол ' + angName[big] + ' − угол ' + angName[small], fig: { angles: [{ at: 'C', rays: [{ cevH: 'H', cevD: 'D', cevM: 'M' }[c1], { cevH: 'H', cevD: 'D', cevM: 'M' }[c2]], label: '?' }] }, hint: 'Из большего угла вычтите меньший.', explain: 'Угол между ' + cevName[c1] + ' и ' + cevName[c2] + ' равен ' + fmt(val) + '°.',
+          { unit: '°', formula: 'угол между = угол ' + angName[big] + ' − угол ' + angName[small], fig: { angles: [betweenWedge('?')], bar: barOf(k2, { a: angVal[c1], b: angVal[c2], label: '?' }) }, hint: 'Из большего угла вычтите меньший.', explain: 'Угол между ' + cevName[c1] + ' и ' + cevName[c2] + ' равен ' + fmt(val) + '°.',
             traps: [{ value: angVal[big] + angVal[small], msg: 'Углы сложили, а нужно вычесть: оба отложены от стороны ' + S.C + S.A + ', один лежит внутри другого.' }] })
       ];
-      return { topic: 4, text, steps, answer: ansNum(val), p, unitFinal: '°', figure: { kind: 'tri', S, t: tAt(A), angleAt: S.A, angleText: A + '°', withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair], betweenArc: { pair: p.pair, text: '' } } };
+      return { topic: 4, text, steps, answer: ansNum(val), p, unitFinal: '°', figure: { kind: 'tri', S, t: tAt(A), angleAt: S.A, angleText: A + '°', withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair], betweenArc: { pair: p.pair, text: '' } , bar: barOf({}) }, figFinal: { angles: [betweenWedge(fmt(val) + '°')], bar: barOf(k2, { a: angVal[c1], b: angVal[c2], label: fmt(val) + '°' }) } };
     }
     /* findAcute: дан угол между чевианами, найти острый угол треугольника */
     const givenAngle = val, wantSmaller = rng() < 0.5;
@@ -1810,6 +1821,10 @@ TOPICS[4] = {
     const reason = { cevH: 'Треугольник ' + S.A + S.C + S.H + ' прямоугольный (' + S.C + S.H + ' — высота)', cevM: S.C + Mn + ' = ' + S.A + Mn + ' — медиана к гипотенузе равна её половине, треугольник ' + S.A + S.C + Mn + ' равнобедренный', cevD: S.C + S.D + ' — биссектриса прямого угла ' + S.C };
     const ec1 = exprChoice(c1), ec2 = exprChoice(c2);
     const e1 = exprOf[c1], e2 = exprOf[c2];
+    const shortX = { cevH: '90°−x', cevM: 'x', cevD: '45°' };
+    const KX1 = {}; KX1[c1] = shortX[c1];
+    const KX2 = Object.assign({}, KX1); KX2[c2] = shortX[c2];
+    const KNUM = { cevH: (90 - A) + '°', cevD: '45°', cevM: A + '°' };
     const eqc = shuffledChoice([
       { text: '(' + e1 + ') − (' + e2 + ') = ' + g + '° или (' + e2 + ') − (' + e1 + ') = ' + g + '°', why: '' },
       { text: '(' + e1 + ') + (' + e2 + ') = ' + g + '°', why: 'Оба луча отложены от стороны ' + S.C + S.A + ', один угол лежит внутри другого — угол между лучами равен РАЗНОСТИ, а не сумме.' },
@@ -1826,17 +1841,17 @@ TOPICS[4] = {
       : 'Из 45° − x = ' + g + '°: x = 45° − ' + g + '°. Из x − 45° = ' + g + '°: x = 45° + ' + g + '°.';
     const text = 'В прямоугольном треугольнике ' + S.A + S.B + S.C + ' с прямым углом ' + S.C + ' проведены ' + kindWord[c1] + ' ' + cevName[c1] + ' и ' + kindWord[c2] + ' ' + cevName[c2] + '. Угол между ними равен ' + g + '°. Найдите ' + (wantSmaller ? 'меньший' : 'больший') + ' острый угол треугольника. Ответ дайте в градусах.';
     const steps = [
-      info('Обозначим угол', 'Пусть угол ' + S.A + ' = x. Выразим через x углы, которые ' + cevName[c1] + ' и ' + cevName[c2] + ' образуют со стороной ' + S.C + S.A + '.', { fig: { angles: [{ at: 'A', rays: ['B', 'C'], label: 'x' }] } }),
-      choice('Угол ' + angName[c1], reason[c1] + '. Чему равен угол ' + angName[c1] + '?', ec1.options, ec1.correct, { fig: { angles: [{ at: 'C', rays: ['A', { cevH: 'H', cevD: 'D', cevM: 'M' }[c1]], label: '?' }] } }),
-      choice('Угол ' + angName[c2], reason[c2] + '. Чему равен угол ' + angName[c2] + '?', ec2.options, ec2.correct, { fig: { angles: [{ at: 'C', rays: ['A', { cevH: 'H', cevD: 'D', cevM: 'M' }[c2]], label: '?' }] } }),
-      choice('Уравнение', 'Угол между ' + cevName[c1] + ' и ' + cevName[c2] + ' равен ' + g + '°, а какой из двух углов больше, мы не знаем. Какое уравнение получается?', eqc.options, eqc.correct, {}),
+      info('Обозначим угол', 'Пусть угол ' + S.A + ' = x. Выразим через x углы, которые ' + cevName[c1] + ' и ' + cevName[c2] + ' образуют со стороной ' + S.C + S.A + '.', { fig: { angles: [{ at: 'A', rays: ['B', 'C'], label: 'x' }], bar: barOf({}) } }),
+      choice('Угол ' + angName[c1], reason[c1] + '. Чему равен угол ' + angName[c1] + '?', ec1.options, ec1.correct, { fig: { angles: [wedgeOf(c1, '?')], bar: barOf({}, { a: 0, b: angVal[c1], label: '?', key: c1 }) } }),
+      choice('Угол ' + angName[c2], reason[c2] + '. Чему равен угол ' + angName[c2] + '?', ec2.options, ec2.correct, { fig: { angles: [wedgeOf(c2, '?')], bar: barOf(KX1, { a: 0, b: angVal[c2], label: '?', key: c2 }) } }),
+      choice('Уравнение', 'Угол между ' + cevName[c1] + ' и ' + cevName[c2] + ' равен ' + g + '°, а какой из двух углов больше, мы не знаем. Какое уравнение получается?', eqc.options, eqc.correct, { fig: { angles: [betweenWedge(g + '°')], bar: barOf(KX2, { a: angVal[c1], b: angVal[c2], label: g + '°' }) } }),
       multi('Решаем оба уравнения', simplify, [{ label: 'x₁ =', ans: roots[0], suffix: '°' }, { label: 'x₂ =', ans: roots[1], suffix: '°' }],
         { unordered: true, hint: solveHint, explain: 'x = ' + fmt(roots[0]) + '° или x = ' + fmt(roots[1]) + '°. Оба корня подходят — это два острых угла треугольника, в сумме они дают 90°.' }),
       num(wantSmaller ? 'Меньший угол' : 'Больший угол', 'Корни ' + fmt(roots[0]) + '° и ' + fmt(roots[1]) + '° — это углы ' + S.A + ' и ' + S.B + '. Спрашивают ' + (wantSmaller ? 'меньший' : 'больший') + ' острый угол: ?', wantSmaller ? smaller : bigger,
         { unit: '°', hint: (wantSmaller ? 'Меньший' : 'Больший') + ' из двух корней.', explain: (wantSmaller ? 'Меньший' : 'Больший') + ' угол = ' + fmt(wantSmaller ? smaller : bigger) + '°.',
           traps: [{ value: wantSmaller ? bigger : smaller, msg: 'Это ' + (wantSmaller ? 'больший' : 'меньший') + ' из двух углов, а спрашивают ' + (wantSmaller ? 'меньший' : 'больший') + '.' }] })
     ];
-    return { topic: 4, text, steps, answer: ansNum(wantSmaller ? smaller : bigger), p, unitFinal: '°', figure: { kind: 'tri', S, t: tAt(A), withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair], betweenArc: { pair: p.pair, text: g + '°' } } };
+    return { topic: 4, text, steps, answer: ansNum(wantSmaller ? smaller : bigger), p, unitFinal: '°', figure: { kind: 'tri', S, t: tAt(A), withAltitude: true, withBisector: true, withMedian: true, hl: CEV_HL[p.pair], betweenArc: { pair: p.pair, text: g + '°' } , bar: barOf({}) }, figFinal: { angles: [{ at: wantSmaller === (A <= 45) ? 'A' : 'B', rays: wantSmaller === (A <= 45) ? ['B', 'C'] : ['A', 'C'], label: fmt(wantSmaller ? smaller : bigger) + '°' }], bar: barOf(KNUM, { a: angVal[c1], b: angVal[c2], label: g + '°' }) } };
   }
 };
 
@@ -2335,6 +2350,8 @@ function stepAnswerText(st){
 function activeStepFig(task){
   const steps = task.steps || [];
   let st = null;
+  if (state.mode === 'steps' && state.finished && task.figFinal) return task.figFinal;
+  if (state.mode === 'learn' && state.revealed >= steps.length && task.figFinal) return task.figFinal;
   if (state.mode === 'steps') st = state.finished ? steps[steps.length - 1] : steps[state.stepIdx];
   else if (state.mode === 'learn') st = state.revealed > 0 ? steps[Math.min(state.revealed, steps.length) - 1] : null;
   else if (state.showSolution && state.soloRevealed) st = state.revealed > 0 ? steps[Math.min(state.revealed, steps.length) - 1] : null;
@@ -2772,13 +2789,19 @@ function figureHtml(task, showHl, picked, interactive, stepFig){
   const sf = stepFig || {};
   const hlSegs = new Set(sf.segs || []);                                  // отрезки текущего шага — толстой teal-линией
   const segLine = { AC: [A, C], BC: [B, C], AB: [A, B], CH: [C, H], AH: [A, H], BH: [B, H], CD: [C, D], CM: [C, Mid] };
+  /* когда из C выходит несколько линий, у каждой свой цвет — он же в подписях, на шкале и в легенде */
+  const colored = !!((f.withAltitude ? 1 : 0) + (f.withBisector ? 1 : 0) + (f.withMedian ? 1 : 0) >= 2);
+  const CEV = { cevH: { col: '#2563eb', foot: 'H', name: 'высота' }, cevD: { col: '#d97706', foot: 'D', name: 'биссектриса' }, cevM: { col: '#7c3aed', foot: 'M', name: 'медиана' } };
+  const colOf = key => colored ? CEV[key].col : '#0f766e';
+  const bar = sf.bar || f.bar || null;
+  const VBH = bar ? 294 : 224;
   const feet = [];                                                // подписи оснований H, D, M — раскладываются после
   const L = f.labels || {};
   const hl = new Set((showHl && f.hl) || []);
   const feetRow = !!(f.withAltitude || f.withMedian || f.withBisector);
   const anyCev = ['cevH', 'cevD', 'cevM'].some(k => hl.has(k));
   const dim = key => anyCev && !hl.has(key) ? ';opacity:.4' : '';
-  let svg = `<svg viewBox="-6 0 292 224" role="${interactive ? 'group' : 'img'}" aria-label="Прямоугольный треугольник ${S.A}${S.B}${S.C}, прямой угол при вершине ${S.C}">`;
+  let svg = `<svg viewBox="-6 0 292 ${VBH}" role="${interactive ? 'group' : 'img'}" aria-label="Прямоугольный треугольник ${S.A}${S.B}${S.C}, прямой угол при вершине ${S.C}">`;
   svg += `<polygon points="${pj(A)} ${pj(B)} ${pj(C)}" style="${SVG_STYLE};fill:#f4f6fa"/>`;
 
   /* прямой угол при C: квадратик по направлениям на A и B */
@@ -2794,24 +2817,24 @@ function figureHtml(task, showHl, picked, interactive, stepFig){
 
   /* высота из C: перпендикуляр по построению (C и H на одной вертикали) */
   if (f.withAltitude){
-    svg += ln(C, H, `${SVG_STYLE};stroke-dasharray:5 4${dim('cevH')}`);
-    if (hl.has('CH') || hl.has('cevH')) svg += ln(C, H, HLW);
+    svg += ln(C, H, `${SVG_STYLE};stroke-dasharray:5 4${colored ? ';stroke:' + CEV.cevH.col : ''}${dim('cevH')}`);
+    if (hl.has('CH') || hl.has('cevH')) svg += ln(C, H, colored ? `fill:none;stroke:${CEV.cevH.col};stroke-width:3.4;stroke-linecap:round;opacity:.9` : HLW);
     const d8 = (H[0] < Mid[0] ? 1 : -1) * 8;                    // квадратик прямого угла при H — в сторону длинного отрезка
     svg += `<polyline points="${(H[0] + d8).toFixed(1)},${baseY} ${(H[0] + d8).toFixed(1)},${baseY - 8} ${H[0].toFixed(1)},${baseY - 8}" style="${SVG_STYLE};stroke-width:1.1${dim('cevH')}"/>`;
-    svg += `<circle cx="${H[0].toFixed(1)}" cy="${baseY}" r="2.6" fill="#1b2a4a"/>`;
-    feet.push({ x: H[0], txt: S.H, extra: 'text-anchor:middle' });
+    svg += `<circle cx="${H[0].toFixed(1)}" cy="${baseY}" r="2.6" fill="${colored ? CEV.cevH.col : '#1b2a4a'}"/>`;
+    feet.push({ x: H[0], txt: S.H, extra: 'text-anchor:middle' + (colored ? ';fill:' + CEV.cevH.col : '') });
   }
   if (f.withBisector){
-    svg += ln(C, D, `${ACC};stroke-width:1.6;stroke-dasharray:2 3${dim('cevD')}`);
-    if (hl.has('cevD')) svg += ln(C, D, HLW);
-    svg += `<circle cx="${D[0].toFixed(1)}" cy="${baseY}" r="2.4" fill="#0f766e"/>`;
-    feet.push({ x: D[0], txt: S.D, extra: 'text-anchor:middle;' + TEAL + ';font-size:12px' });
+    svg += ln(C, D, `fill:none;stroke:${colOf('cevD')};stroke-width:1.6;stroke-dasharray:2 3${dim('cevD')}`);
+    if (hl.has('cevD')) svg += ln(C, D, `fill:none;stroke:${colOf('cevD')};stroke-width:3.4;stroke-linecap:round;opacity:.9`);
+    svg += `<circle cx="${D[0].toFixed(1)}" cy="${baseY}" r="2.4" fill="${colOf('cevD')}"/>`;
+    feet.push({ x: D[0], txt: S.D, extra: 'text-anchor:middle;fill:' + colOf('cevD') + ';font-size:12px' });
   }
   if (f.withMedian){
-    svg += ln(C, Mid, `${ACC};stroke-dasharray:6 4${dim('cevM')}`);
-    if (hl.has('cevM')) svg += ln(C, Mid, HLW);
-    svg += `<circle cx="${Mid[0].toFixed(1)}" cy="${baseY}" r="2.6" fill="#0f766e"/>`;
-    feet.push({ x: Mid[0], txt: S.Med, extra: 'text-anchor:middle;' + TEAL + ';font-size:12px' });
+    svg += ln(C, Mid, `fill:none;stroke:${colOf('cevM')};stroke-width:2;stroke-dasharray:6 4${dim('cevM')}`);
+    if (hl.has('cevM')) svg += ln(C, Mid, `fill:none;stroke:${colOf('cevM')};stroke-width:3.4;stroke-linecap:round;opacity:.9`);
+    svg += `<circle cx="${Mid[0].toFixed(1)}" cy="${baseY}" r="2.6" fill="${colOf('cevM')}"/>`;
+    feet.push({ x: Mid[0], txt: S.Med, extra: 'text-anchor:middle;fill:' + colOf('cevM') + ';font-size:12px' });
   }
   /* подписи оснований: соседи ближе 14 px уходят строкой ниже, чтобы буквы не слипались */
   feet.sort((p1, p2) => p1.x - p2.x);
@@ -2834,9 +2857,11 @@ function figureHtml(task, showHl, picked, interactive, stepFig){
      sf.eq — группы текущего шага. Группа 1 — одинарная teal-дуга, группа 2 — двойная янтарная. */
   const eqGroups = [].concat(f.angles || [], sf.eq || []);
   const grpCount = {}; eqGroups.forEach(a => { grpCount[a.grp || 0] = (grpCount[a.grp || 0] || 0) + 1; });
+  const wedgeKey = a => a.at + ':' + [a.rays[0], a.rays[1]].sort().join('');
+  const wedged = new Set((sf.angles || []).map(wedgeKey));
   for (const a of eqGroups){
     const V = PT[a.at], P1 = PT[a.rays[0]], P2 = PT[a.rays[1]];
-    if (!V || !P1 || !P2) continue;
+    if (!V || !P1 || !P2 || wedged.has(wedgeKey(a))) continue;                  // у этого угла уже есть сектор — дуга поверх только мешает
     const grp = a.grp || 0, blink = grpCount[grp] >= 2 ? ' blink' : '';
     const cls = grp === 2 ? 'eqang g2' : grp === 3 ? 'eqang g3' : 'eqang g1';
     const r = a.r || 24;                                                // крупнее стандартной дуги, чтобы малый угол при A читался
@@ -2858,13 +2883,15 @@ function figureHtml(task, showHl, picked, interactive, stepFig){
     const a1 = Math.atan2(P1[1] - V[1], P1[0] - V[0]), a2 = Math.atan2(P2[1] - V[1], P2[0] - V[0]);
     let dd = a2 - a1; while (dd > Math.PI) dd -= 2 * Math.PI; while (dd < -Math.PI) dd += 2 * Math.PI;
     const x1 = V[0] + r * Math.cos(a1), y1 = V[1] + r * Math.sin(a1), x2 = V[0] + r * Math.cos(a1 + dd), y2 = V[1] + r * Math.sin(a1 + dd);
-    svg += `<path d="M${V[0].toFixed(1)} ${V[1].toFixed(1)} L${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 ${dd > 0 ? 1 : 0} ${x2.toFixed(1)} ${y2.toFixed(1)} Z" class="stepang"/>`;
-    svg += `<path d="${arcAt(V, P1, P2, r)}" class="stepang-arc"/>`;
+    const feetKeys = a.rays.filter(k => k === 'H' || k === 'D' || k === 'M');
+    const wcol = colored && feetKeys.length === 1 ? CEV[{ H: 'cevH', D: 'cevD', M: 'cevM' }[feetKeys[0]]].col : '#0f766e';
+    svg += `<path d="M${V[0].toFixed(1)} ${V[1].toFixed(1)} L${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 ${dd > 0 ? 1 : 0} ${x2.toFixed(1)} ${y2.toFixed(1)} Z" class="stepang" style="fill:${wcol};fill-opacity:.16;stroke:none"/>`;
+    svg += `<path d="${arcAt(V, P1, P2, r)}" class="stepang-arc" style="fill:none;stroke:${wcol};stroke-width:2.6;stroke-linecap:round"/>`;
     if (a.label){
       const d1 = nrm(P1[0] - V[0], P1[1] - V[1]), d2 = nrm(P2[0] - V[0], P2[1] - V[1]);
       const bb = nrm(d1[0] + d2[0], d1[1] + d2[1]);
       const deg = Math.acos(Math.max(-1, Math.min(1, d1[0] * d2[0] + d1[1] * d2[1]))) * 180 / Math.PI;
-      if (deg >= 12) svg += T(V[0] + bb[0] * (r + 14), V[1] + bb[1] * (r + 14) + 4, a.label, 'text-anchor:middle;font-size:12px;font-weight:800;' + TEAL);
+      if (deg >= 12) svg += T(V[0] + bb[0] * (r + 14), V[1] + bb[1] * (r + 14) + 4, a.label, 'text-anchor:middle;font-size:12px;font-weight:800;fill:' + wcol);
       else {                                                            // узкий угол — подпись выноской в сторону от треугольника
         const side = V[0] < Mid[0] ? -1 : 1;
         const P0 = [V[0] + bb[0] * (r + 2), V[1] + bb[1] * (r + 2)], PL = [V[0] + side * 34, V[1] - 6];
@@ -2880,22 +2907,26 @@ function figureHtml(task, showHl, picked, interactive, stepFig){
   /* дуга и подпись угла при фактической вершине из условия */
   if (f.angleAt === S.A || f.angleAt === S.B){
     const atA = f.angleAt === S.A, V = atA ? A : B, O = atA ? B : A;
-    svg += `<path d="${arcAt(V, O, C, 20)}" style="${ACC};stroke-width:1.6"/>`;
-    if (f.angleText){
+    const wedgeHere = (sf.angles || []).some(a => a.at === (atA ? 'A' : 'B'));
+    if (!wedgeHere) svg += `<path d="${arcAt(V, O, C, 20)}" style="${ACC};stroke-width:1.6"/>`;
+    if (f.angleText && !wedgeHere){
       const d1 = nrm(O[0] - V[0], O[1] - V[1]), d2 = nrm(C[0] - V[0], C[1] - V[1]);
       const bb = nrm(d1[0] + d2[0], d1[1] + d2[1]);
-      svg += T(V[0] + bb[0] * 38, V[1] + bb[1] * 38 + 4, f.angleText, 'text-anchor:middle;font-size:12px;' + SOFT);
+      const degV = Math.acos(Math.max(-1, Math.min(1, d1[0] * d2[0] + d1[1] * d2[1]))) * 180 / Math.PI;
+      if (degV > 50) svg += T(atA ? V[0] - 4 : V[0] + 4, baseY - 14, f.angleText, (atA ? 'text-anchor:end;' : '') + 'font-size:12px;' + SOFT);   // внутри крутого угла тесно — подпись снаружи, рядом с вершиной
+      else svg += T(V[0] + bb[0] * 38, V[1] + bb[1] * 38 + 4, f.angleText, 'text-anchor:middle;font-size:12px;' + SOFT);
     }
   }
 
   /* угол между двумя чевианами: дуга у вершины C; подпись — по биссектрисе угла, а для узкого угла — сбоку с выноской */
-  if (f.betweenArc){
+  const wedgeAtC = (sf.angles || []).some(a => a.at === 'C');
+  if (f.betweenArc && !wedgeAtC){
     const foot = { cevH: H, cevD: D, cevM: Mid };
     const pm = { hd: ['cevH', 'cevD'], dm: ['cevD', 'cevM'], hm: ['cevH', 'cevM'] }[f.betweenArc.pair];
     if (pm){
       const F1 = foot[pm[0]], F2 = foot[pm[1]];
       svg += `<path d="${arcAt(C, F1, F2, 30)}" style="${ACC};stroke-width:1.6"/>`;
-      if (f.betweenArc.text){
+      if (f.betweenArc.text && !(sf.angles || []).length){
         const d1 = nrm(F1[0] - C[0], F1[1] - C[1]), d2 = nrm(F2[0] - C[0], F2[1] - C[1]);
         const bb = nrm(d1[0] + d2[0], d1[1] + d2[1]);
         const deg = Math.acos(Math.max(-1, Math.min(1, d1[0] * d2[0] + d1[1] * d2[1]))) * 180 / Math.PI;
@@ -2951,7 +2982,47 @@ function figureHtml(task, showHl, picked, interactive, stepFig){
     return `<line x1="${Q1[0].toFixed(1)}" y1="${Q1[1].toFixed(1)}" x2="${Q2[0].toFixed(1)}" y2="${Q2[1].toFixed(1)}" class="hit" data-side="${key}" stroke="transparent" stroke-width="44" fill="none"${interactive ? ` tabindex="0" role="button" aria-label="сторона ${nm}"` : ''}><title>сторона ${nm}</title></line>`;
   };
   svg += hit(A, C, 'AC') + hit(B, C, 'BC') + hit(A, B, 'AB');
+
+  /* шкала углов при C: прямой угол развёрнут в отрезок 0°…90°, каждый луч — засечка.
+     «Угол между» — расстояние между засечками: один сектор внутри другого ⇒ вычитаем. */
+  if (bar){
+    const y0 = 256, xL = 4, xR = 282, X = deg => xL + (xR - xL) * deg / 90;
+    svg += `<g class="angbar" aria-label="Шкала углов при вершине ${S.C}: от луча ${S.C}${S.A} к лучу ${S.C}${S.B}">`;
+    svg += T(xL, 222, 'Углы при вершине ' + S.C + ' — от ' + S.C + S.A + ' до ' + S.C + S.B, 'font-size:10.5px;' + SOFT);
+    /* засечки с найденными значениями (над шкалой, до двух рядов) */
+    const marks = (bar.marks || []).slice().sort((p1, p2) => p1.deg - p2.deg);
+    const rowsBelow = [-1e9, -1e9], rowsAbove = [-1e9, -1e9];
+    const pickRow = (rows, x, gap) => { const d0 = x - rows[0], d1 = x - rows[1]; const r = d0 >= gap ? 0 : (d1 >= gap ? 1 : (d0 >= d1 ? 0 : 1)); rows[r] = x; return r; };
+    if (bar.span){
+      const sx1 = X(Math.min(bar.span.a, bar.span.b)), sx2 = X(Math.max(bar.span.a, bar.span.b));
+      const scol = bar.span.col || (colored && bar.span.key && CEV[bar.span.key] ? CEV[bar.span.key].col : '#0f766e');
+      svg += `<rect x="${sx1.toFixed(1)}" y="${y0 - 6}" width="${(sx2 - sx1).toFixed(1)}" height="12" rx="3" class="angspan" style="fill:${scol};fill-opacity:.24"/>`;
+    }
+    svg += `<line x1="${xL}" y1="${y0}" x2="${xR}" y2="${y0}" style="${SVG_STYLE};stroke-width:1.6"/>`;
+    svg += `<line x1="${xL}" y1="${y0 - 8}" x2="${xL}" y2="${y0 + 8}" style="${SVG_STYLE};stroke-width:1.6"/><line x1="${xR}" y1="${y0 - 8}" x2="${xR}" y2="${y0 + 8}" style="${SVG_STYLE};stroke-width:1.6"/>`;
+    svg += T(xL, y0 + 21, S.C + S.A + ' (0°)', 'font-size:10.5px') + T(xR, y0 + 21, S.C + S.B + ' (90°)', 'text-anchor:end;font-size:10.5px');
+    for (const mk of marks){
+      const x = X(mk.deg), col = colored ? (CEV[mk.key] || {}).col || '#0f766e' : '#0f766e';
+      svg += `<line x1="${x.toFixed(1)}" y1="${y0 - 7}" x2="${x.toFixed(1)}" y2="${y0 + 7}" class="angtick" style="stroke:${col};stroke-width:2.4;stroke-linecap:round"/>`;
+      const rb = pickRow(rowsBelow, x, 26);
+      svg += T(x, y0 + 21 + rb * 12, mk.name, 'text-anchor:middle;font-size:10.5px;fill:' + col);
+      if (mk.val != null){
+        const ra = pickRow(rowsAbove, x, 26);
+        svg += T(x, y0 - 12 - ra * 12, String(mk.val), 'text-anchor:middle;font-size:10.5px;font-weight:900;fill:' + col);
+      }
+    }
+    if (bar.span && bar.span.label){                                  // подпись полосы — поверх засечек, белый ореол прикрывает засечку под ней
+      const sx1 = X(Math.min(bar.span.a, bar.span.b)), sx2 = X(Math.max(bar.span.a, bar.span.b));
+      const scol = bar.span.col || (colored && bar.span.key && CEV[bar.span.key] ? CEV[bar.span.key].col : '#0f766e');
+      svg += T((sx1 + sx2) / 2, y0 + 4.5, bar.span.label, 'text-anchor:middle;font-size:11px;font-weight:900;fill:' + scol);
+    }
+    svg += '</g>';
+  }
   svg += '</svg>';
+  if (colored){
+    const items = [f.withAltitude ? ['cevH', S.C + S.H] : null, f.withBisector ? ['cevD', S.C + S.D] : null, f.withMedian ? ['cevM', S.C + S.Med] : null].filter(Boolean);
+    svg += '<p class="figcap legend">' + items.map(([k, nm]) => `<span style="color:${CEV[k].col}">■ ${nm} — ${CEV[k].name}</span>`).join(' ') + '</p>';
+  }
   if (g.clamped) svg += '<p class="figcap">чертёж не в масштабе</p>';
   return svg;
 }
@@ -2999,7 +3070,8 @@ function selfTest(){
     let m;
     while ((m = re.exec(svg))){
       const x = +m[1], y = +m[2], st = m[3], txt = m[4];
-      const fs = +((st.match(/font-size:([\d.]+)px/) || [])[1] || 14);
+      const fsAll = st.match(/font-size:([\d.]+)px/g) || [];
+      const fs = fsAll.length ? +fsAll[fsAll.length - 1].match(/([\d.]+)px/)[1] : 14;   // браузер применяет последнее объявление
       const w = txt.length * fs * 0.62;
       let x0 = x, x1 = x + w;
       if (/text-anchor:middle/.test(st)){ x0 = x - w / 2; x1 = x + w / 2; }
@@ -3008,16 +3080,24 @@ function selfTest(){
     }
     return out;
   };
-  const checkTask = (task, where) => {
-    const svg = figureHtml(task, true, []);
-    const all = [task.text, svg].concat(task.steps.map(st => [st.title, st.q || st.text || '', st.hint || '', st.explain || ''].join(' ')));
-    all.forEach(s => { if (/NaN|undefined|Infinity|\[object/.test(String(s)) || /\{\{|\}\}/.test(M(String(s)))) bad.push(where + ': мусор в тексте: ' + String(s).slice(0, 80)); });
+  const checkSvg = (svg, where) => {
+    const vbm = svg.match(/viewBox="(-?[\d.]+) (-?[\d.]+) ([\d.]+) ([\d.]+)"/);
+    const vb = vbm ? { x0: +vbm[1], y0: +vbm[2], x1: +vbm[1] + +vbm[3], y1: +vbm[2] + +vbm[4] } : VB;
+    if (/NaN|undefined|Infinity|\[object/.test(svg)) bad.push(where + ': мусор в SVG');
     const bx = textBoxes(svg);
-    for (const b of bx) if (b.x0 < VB.x0 || b.x1 > VB.x1 || b.y0 < VB.y0 || b.y1 > VB.y1) bad.push(where + ': подпись «' + b.txt + '» за пределами чертежа');
+    for (const b of bx) if (b.x0 < vb.x0 || b.x1 > vb.x1 || b.y0 < vb.y0 || b.y1 > vb.y1) bad.push(where + ': подпись «' + b.txt + '» за пределами чертежа');
     for (let i = 0; i < bx.length; i++) for (let j = i + 1; j < bx.length; j++){
       const ox = Math.min(bx[i].x1, bx[j].x1) - Math.max(bx[i].x0, bx[j].x0), oy = Math.min(bx[i].y1, bx[j].y1) - Math.max(bx[i].y0, bx[j].y0);
       if (ox > 1 && oy > 1) bad.push(where + ': подписи «' + bx[i].txt + '» и «' + bx[j].txt + '» накладываются');
     }
+  };
+  const checkTask = (task, where) => {
+    const svg = figureHtml(task, true, []);
+    const all = [task.text, svg].concat(task.steps.map(st => [st.title, st.q || st.text || '', st.hint || '', st.explain || '', st.formula || ''].join(' ')));
+    all.forEach(s => { if (/NaN|undefined|Infinity|\[object/.test(String(s)) || /\{\{|\}\}/.test(M(String(s)))) bad.push(where + ': мусор в тексте: ' + String(s).slice(0, 80)); });
+    checkSvg(svg, where);
+    task.steps.forEach((st, i) => { if (st.fig) checkSvg(figureHtml(task, true, [], false, st.fig), where + ' шаг ' + (i + 1)); });
+    if (task.figFinal) checkSvg(figureHtml(task, true, [], false, task.figFinal), where + ' итог');
     const a = task.answer;
     if (a && a.kind === 'num'){
       const vals = (a.traps || []).map(t => t.value);
