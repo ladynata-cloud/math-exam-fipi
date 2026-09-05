@@ -181,6 +181,28 @@
   .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
   .btn, .chip, .opt, input.num, details.memo summary{min-height:44px}
   .seg button{min-height:38px}
+  .linklike{border:0;background:none;color:var(--teal-deep);font:inherit;font-weight:800;text-decoration:underline;cursor:pointer;padding:0}
+  .onboard-banner{margin:.2rem 0 1rem;padding:.7rem .95rem;border:1.5px solid var(--teal-line);background:var(--teal-soft);color:var(--teal-deep);border-radius:12px;font-weight:700;line-height:1.5}
+  .onboard-banner .linklike{display:inline-flex;align-items:center;min-height:44px;padding:.2em .35em;vertical-align:middle}
+  html.onboarding .topbtns, html.onboarding nav.topics, html.onboarding .controls, html.onboarding .modehelp{display:none}
+  .small{font-size:.88rem}
+  .muted{color:var(--ink-soft)}
+  .okline{color:var(--ok);font-weight:800}
+  .teacher-panel{background:var(--card);border:1.5px solid var(--teal-line);border-radius:var(--r);box-shadow:var(--shadow);padding:1.2rem 1.4rem 1.3rem;margin:0 0 1.2rem}
+  .teacher-panel h2{margin:0;font-size:1.25rem;font-weight:900;color:var(--teal-deep)}
+  .teacher-panel .tp-h3{margin:1.1rem 0 .3rem;font-size:1.02rem;font-weight:900;color:var(--ink)}
+  .tp-head{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+  .tp-name{display:flex;flex-direction:column;gap:.3rem;font-weight:800;color:var(--ink-soft);margin:.9rem 0 .2rem;max-width:24em}
+  .tp-name input{min-height:44px;padding:.45em .7em;border:2px solid var(--line);border-radius:10px;font:inherit;font-weight:700;color:var(--ink);background:#fff}
+  .tp-summary{margin:.6rem 0 .2rem}
+  .tp-row{padding:.4rem 0;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:.15rem;font-size:.98rem}
+  .tp-row b{color:var(--ink)} .tp-row span{color:var(--ink-soft);font-weight:600}
+  .tp-review{margin:.7rem 0 0;font-weight:700}
+  .tp-code{width:100%;font:600 12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;border:2px solid var(--line);border-radius:10px;padding:.6rem;background:#fff;color:var(--ink);resize:vertical}
+  .tp-actions{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin:.6rem 0 0}
+  .qrframe{max-width:230px;margin:.8rem 0 0;border:1.5px solid var(--line);border-radius:10px;padding:8px;background:#fff}
+  .qrframe svg{display:block;width:100%;height:auto}
+  .tp-status{margin:.5rem 0 0}
   .figure.picking svg .hit:focus{outline:none; stroke:rgba(15,118,110,.35)}
   @media print{
     .topbtns, nav.topics, .controls, .modehelp, .actions, .stepbtns, .clickcue, details.memo, footer, .skip, .fb, .stats{display:none !important}
@@ -210,6 +232,7 @@
       <p class="sub">Сначала разминка — что такое синус, косинус и тангенс, потом задачи: сторона и отношение, высота на гипотенузу, площадь, углы биссектрисы и медианы, треугольник 30°-60°-90°. Числа, буквы и чертёж — каждый раз новые.</p>
     </div>
     <div class="topbtns">
+      <button class="btn primary" id="teacherBtn" title="Собрать код прогресса для кабинета учителя">Сдать учителю</button>
       <button class="btn" id="boardBtn" aria-pressed="false" title="Крупный шрифт для показа на доске или экране">Режим доски</button>
       <button class="btn" id="mirrorBtn" aria-pressed="false" title="Для проекторов, дающих зеркальное изображение">Зеркало</button>
       <button class="btn" id="fsBtn" title="Развернуть страницу на весь экран">Во весь экран</button>
@@ -217,6 +240,7 @@
   </header>
 
   <nav class="topics" id="topics" aria-label="Выбор темы"></nav>
+  <p class="onboard-banner" id="onboardBanner" hidden></p>
 
   <div class="controls">
     <div><span class="ctl-label">Режим</span>
@@ -239,11 +263,654 @@
   <div id="live" class="sr-only" aria-live="polite"></div>
   <main id="taskArea" tabindex="-1"></main>
 
+  <section id="teacherPanel" class="teacher-panel" aria-labelledby="tpTitle" hidden>
+    <div class="tp-head"><h2 id="tpTitle" tabindex="-1">Сдать учителю</h2><button class="btn small" id="tpClose" type="button">Закрыть</button></div>
+    <label class="tp-name">Имя ученика (по желанию)<input type="text" id="tpName" maxlength="60" autocomplete="name" placeholder="например: Аня П., 9А" aria-label="Имя ученика"></label>
+    <div id="tpSummary" class="tp-summary"></div>
+    <h3 class="tp-h3">Код прогресса для кабинета учителя</h3>
+    <p class="small muted">Строка ниже — весь ваш прогресс в этом браузере. Она <b>не отправляется в сеть</b>: только копируется в буфер обмена или показывается QR-кодом. Учитель вставляет её в «Кабинет учителя» курса и видит вашу сводку.</p>
+    <textarea class="tp-code" id="tpCode" readonly rows="4" aria-label="Код прогресса"></textarea>
+    <div class="tp-actions"><button class="btn primary" id="tpCopy" type="button">Копировать код</button><span class="small muted" id="tpLen"></span></div>
+    <div class="tp-qr" id="tpQr" aria-live="polite"></div>
+    <p class="small tp-status" id="tpStatus" role="status" aria-live="polite"></p>
+  </section>
+
   <footer>
-    Тренажёр отрабатывает базовые задачи на прямоугольный треугольник: определения синуса/косинуса/тангенса, теорему Пифагора, свойства высоты на гипотенузу, площадь и углы между высотой, биссектрисой и медианой из вершины прямого угла. Буквы вершин, числа и чертёж создаются заново каждый раз, поэтому вариантов бесконечно много. Прогресс сохраняется в браузере. © mathexam.space
+    Тренажёр отрабатывает базовые задачи на прямоугольный треугольник: определения синуса/косинуса/тангенса, теорему Пифагора, свойства высоты на гипотенузу, площадь и углы между высотой, биссектрисой и медианой из вершины прямого угла. Буквы вершин, числа и чертёж создаются заново каждый раз, поэтому вариантов бесконечно много. Прогресс сохраняется в браузере этого устройства. Кнопка «Сдать учителю» собирает код прогресса для «Кабинета учителя» курса — данные никуда не отправляются. © mathexam.space
   </footer>
 </div>
 
+<script>
+/* ==== встроено из qr.js — генератор QR-кода, работает офлайн ==== */
+/* =========================================================================
+   QR-код — минимальный собственный кодировщик. Внешних библиотек и CDN нет.
+
+   Умеет ровно то, что нужно курсу: байтовый режим, уровень коррекции L,
+   версии 1–40, автоматический выбор версии и маски. Результат — матрица
+   булевых модулей и готовый SVG.
+
+   QR.encode(text)            -> { size, modules, version, mask } | null
+   QR.svg(qr, opts)           -> строка <svg>
+   QR.CAPACITY_L_BYTES        -> сколько байт влезает максимум (2953)
+
+   null возвращается, когда текст длиннее версии 40: вызывающий код обязан
+   это обработать и предложить передать строку текстом.
+   ========================================================================= */
+var QR = (function(){
+  "use strict";
+
+  /* ---------- арифметика GF(256), примитивный многочлен 0x11D ---------- */
+  var EXP = new Array(256), LOG = new Array(256);
+  (function(){
+    var x = 1;
+    for (var i = 0; i < 255; i++){
+      EXP[i] = x; LOG[x] = i;
+      x <<= 1;
+      if (x & 0x100) x ^= 0x11D;
+    }
+  })();
+  function gmul(a, b){
+    if (!a || !b) return 0;
+    return EXP[(LOG[a] + LOG[b]) % 255];
+  }
+
+  /* Многочлен-генератор Рида — Соломона степени deg. */
+  function rsGenerator(deg){
+    var res = [1], i, j, root = 1;
+    for (i = 0; i < deg; i++){
+      res.push(0);
+      for (j = res.length - 1; j > 0; j--) res[j] = res[j] ^ gmul(res[j - 1], root);
+      res[0] = gmul(res[0], root);
+      root = gmul(root, 2);
+    }
+    return res.reverse();
+  }
+  /* Остаток от деления данных на генератор — это и есть проверочные байты. */
+  function rsRemainder(data, gen){
+    var res = new Array(gen.length).fill(0), i, j, factor;
+    for (i = 0; i < data.length; i++){
+      factor = data[i] ^ res.shift();
+      res.push(0);
+      for (j = 0; j < gen.length; j++) res[j] ^= gmul(gen[j], factor);
+    }
+    return res;
+  }
+
+  /* ---------- таблицы уровня L, версии 1..40 ---------- */
+  var ECC_PER_BLOCK_L = [
+    7, 10, 15, 20, 26, 18, 20, 24, 30, 18, 20, 24, 26, 30, 22, 24, 28, 30, 28, 28,
+    28, 28, 30, 30, 26, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30
+  ];
+  var BLOCKS_L = [
+    1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 4, 6, 6, 6, 6, 7, 8,
+    8, 9, 9, 10, 12, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 20, 21, 22, 24, 25
+  ];
+
+  /* Сколько всего кодовых слов помещается в версию (без служебных модулей). */
+  function totalCodewords(ver){
+    var res = (16 * ver + 128) * ver + 64, n;
+    if (ver >= 2){
+      n = Math.floor(ver / 7) + 2;
+      res -= (25 * n - 10) * n - 55;
+      if (ver >= 7) res -= 36;
+    }
+    return Math.floor(res / 8);
+  }
+  function dataCodewords(ver){
+    return totalCodewords(ver) - ECC_PER_BLOCK_L[ver - 1] * BLOCKS_L[ver - 1];
+  }
+  function lengthBits(ver){ return ver <= 9 ? 8 : 16; }
+
+  var CAPACITY_L_BYTES = dataCodewords(40) - 3;   /* 4 бита режима + 16 бит длины */
+
+  function alignPositions(ver){
+    if (ver === 1) return [];
+    var size = ver * 4 + 17;
+    var n = Math.floor(ver / 7) + 2;
+    var step = (ver === 32) ? 26 : Math.ceil((ver * 4 + 4) / (n * 2 - 2)) * 2;
+    var res = [6], pos;
+    for (pos = size - 7; res.length < n; pos -= step) res.splice(1, 0, pos);
+    return res;
+  }
+
+  /* ---------- разметка служебных модулей ---------- */
+  function newGrid(size, val){
+    var g = new Array(size), y;
+    for (y = 0; y < size; y++) g[y] = new Array(size).fill(val);
+    return g;
+  }
+  function drawFinder(mods, fn, size, cx, cy){
+    for (var dy = -4; dy <= 4; dy++){
+      for (var dx = -4; dx <= 4; dx++){
+        var x = cx + dx, y = cy + dy, d = Math.max(Math.abs(dx), Math.abs(dy));
+        if (x < 0 || y < 0 || x >= size || y >= size) continue;
+        fn[y][x] = true;
+        mods[y][x] = (d !== 2 && d !== 4);
+      }
+    }
+  }
+  function drawAlign(mods, fn, cx, cy){
+    for (var dy = -2; dy <= 2; dy++){
+      for (var dx = -2; dx <= 2; dx++){
+        fn[cy + dy][cx + dx] = true;
+        mods[cy + dy][cx + dx] = (Math.max(Math.abs(dx), Math.abs(dy)) !== 1);
+      }
+    }
+  }
+  function reserveFormat(fn, size){
+    var i;
+    for (i = 0; i <= 8; i++){
+      if (i !== 6){ fn[8][i] = true; fn[i][8] = true; }
+    }
+    fn[8][6] = true; fn[6][8] = true; fn[8][8] = true;
+    for (i = 0; i < 8; i++){ fn[size - 1 - i][8] = true; fn[8][size - 1 - i] = true; }
+    fn[size - 8][8] = true;   /* всегда тёмный модуль */
+  }
+  function drawFunctionPatterns(ver){
+    var size = ver * 4 + 17;
+    var mods = newGrid(size, false), fn = newGrid(size, false), i, j, pos;
+
+    for (i = 0; i < size; i++){                      /* синхрополосы */
+      mods[6][i] = (i % 2 === 0); fn[6][i] = true;
+      mods[i][6] = (i % 2 === 0); fn[i][6] = true;
+    }
+    drawFinder(mods, fn, size, 3, 3);
+    drawFinder(mods, fn, size, size - 4, 3);
+    drawFinder(mods, fn, size, 3, size - 4);
+
+    pos = alignPositions(ver);
+    for (i = 0; i < pos.length; i++){
+      for (j = 0; j < pos.length; j++){
+        var skip = (i === 0 && j === 0) || (i === 0 && j === pos.length - 1) ||
+                   (i === pos.length - 1 && j === 0);
+        if (!skip) drawAlign(mods, fn, pos[j], pos[i]);
+      }
+    }
+    reserveFormat(fn, size);
+    mods[size - 8][8] = true;
+
+    if (ver >= 7){                                   /* сведения о версии */
+      var rem = ver, k;
+      for (k = 0; k < 12; k++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1F25);
+      var bits = (ver << 12) | rem;
+      for (k = 0; k < 18; k++){
+        var b = ((bits >>> k) & 1) === 1;
+        var a = size - 11 + (k % 3), c = Math.floor(k / 3);
+        mods[a][c] = b; fn[a][c] = true;
+        mods[c][a] = b; fn[c][a] = true;
+      }
+    }
+    return { size:size, modules:mods, fn:fn };
+  }
+  function drawFormat(mods, size, mask){
+    var data = (1 << 3) | mask;        /* 01 — уровень L */
+    var rem = data, i;
+    for (i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
+    var bits = ((data << 10) | rem) ^ 0x5412;
+    function bit(k){ return ((bits >>> k) & 1) === 1; }
+
+    /* mods[y][x]. Первая копия — вокруг левого верхнего поискового узора. */
+    for (i = 0; i <= 5; i++) mods[i][8] = bit(i);
+    mods[7][8] = bit(6);
+    mods[8][8] = bit(7);
+    mods[8][7] = bit(8);
+    for (i = 9; i < 15; i++) mods[8][14 - i] = bit(i);
+
+    /* Вторая копия — вдоль правого верхнего и левого нижнего узоров. */
+    for (i = 0; i < 8; i++) mods[8][size - 1 - i] = bit(i);
+    for (i = 8; i < 15; i++) mods[size - 15 + i][8] = bit(i);
+    mods[size - 8][8] = true;   /* всегда тёмный модуль */
+  }
+
+  /* ---------- данные ---------- */
+  function utf8Bytes(text){
+    if (typeof TextEncoder !== "undefined") return Array.from(new TextEncoder().encode(text));
+    var out = [], i, c;
+    for (i = 0; i < text.length; i++){
+      c = text.charCodeAt(i);
+      if (c < 0x80) out.push(c);
+      else if (c < 0x800){ out.push(0xC0 | (c >> 6), 0x80 | (c & 63)); }
+      else { out.push(0xE0 | (c >> 12), 0x80 | ((c >> 6) & 63), 0x80 | (c & 63)); }
+    }
+    return out;
+  }
+  function pickVersion(len){
+    for (var v = 1; v <= 40; v++){
+      if (dataCodewords(v) >= Math.ceil((4 + lengthBits(v) + len * 8) / 8)) return v;
+    }
+    return 0;
+  }
+  function toCodewords(bytes, ver){
+    var bits = [], i, k;
+    function push(val, n){ for (k = n - 1; k >= 0; k--) bits.push((val >>> k) & 1); }
+    push(4, 4);                              /* байтовый режим */
+    push(bytes.length, lengthBits(ver));
+    for (i = 0; i < bytes.length; i++) push(bytes[i], 8);
+
+    var cap = dataCodewords(ver) * 8;
+    push(0, Math.min(4, cap - bits.length));
+    while (bits.length % 8 !== 0) bits.push(0);
+
+    var cw = [];
+    for (i = 0; i < bits.length; i += 8){
+      var b = 0;
+      for (k = 0; k < 8; k++) b = (b << 1) | bits[i + k];
+      cw.push(b);
+    }
+    for (i = 0; cw.length < dataCodewords(ver); i++) cw.push(i % 2 === 0 ? 0xEC : 0x11);
+    return cw;
+  }
+  /* Блоки + коррекция + чередование: сначала данные по столбцам, затем
+     проверочные байты по столбцам — как в стандарте. */
+  function interleave(data, ver){
+    var numBlocks = BLOCKS_L[ver - 1], eccLen = ECC_PER_BLOCK_L[ver - 1];
+    var raw = totalCodewords(ver);
+    var shortLen = Math.floor(raw / numBlocks);
+    var numShort = numBlocks - raw % numBlocks;
+    var gen = rsGenerator(eccLen), dats = [], eccs = [], k = 0, i, j, maxLen = 0;
+
+    for (i = 0; i < numBlocks; i++){
+      var len = shortLen - eccLen + (i < numShort ? 0 : 1);
+      var dat = data.slice(k, k + len); k += len;
+      maxLen = Math.max(maxLen, len);
+      dats.push(dat);
+      eccs.push(rsRemainder(dat, gen));
+    }
+    var out = [];
+    for (i = 0; i < maxLen; i++)
+      for (j = 0; j < numBlocks; j++) if (i < dats[j].length) out.push(dats[j][i]);
+    for (i = 0; i < eccLen; i++)
+      for (j = 0; j < numBlocks; j++) out.push(eccs[j][i]);
+    return out;
+  }
+  /* Змейка снизу вверх, по два столбца, пропуская служебные модули. */
+  function eachDataModule(size, fn, visit){
+    var right, y, j, x, upward, vert, i = 0;
+    for (right = size - 1; right >= 1; right -= 2){
+      if (right === 6) right = 5;
+      for (vert = 0; vert < size; vert++){
+        for (j = 0; j < 2; j++){
+          x = right - j;
+          upward = ((right + 1) & 2) === 0;
+          y = upward ? size - 1 - vert : vert;
+          if (fn[y][x]) continue;
+          visit(x, y, i++);
+        }
+      }
+    }
+  }
+  function maskBit(m, x, y){
+    switch (m){
+      case 0: return (x + y) % 2 === 0;
+      case 1: return y % 2 === 0;
+      case 2: return x % 3 === 0;
+      case 3: return (x + y) % 3 === 0;
+      case 4: return (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0;
+      case 5: return x * y % 2 + x * y % 3 === 0;
+      case 6: return (x * y % 2 + x * y % 3) % 2 === 0;
+      default: return ((x + y) % 2 + x * y % 3) % 2 === 0;
+    }
+  }
+
+  /* ---------- штрафы, чтобы выбрать маску ---------- */
+  var FINDERISH = [true,false,true,true,true,false,true,false,false,false,false];
+  function penalty(mods, size){
+    var score = 0, x, y, dark = 0;
+
+    /* Правила 1 и 3: длинные одноцветные серии и узор 1:1:3:1:1 с полем. */
+    function line(get){
+      var run = 1, colour = get(0), i, c, j, hit;
+      for (i = 1; i < size; i++){
+        c = get(i);
+        if (c === colour){ run++; if (run === 5) score += 3; else if (run > 5) score += 1; }
+        else { run = 1; colour = c; }
+      }
+      for (i = 0; i + FINDERISH.length <= size; i++){
+        hit = true;
+        for (j = 0; j < FINDERISH.length; j++) if (get(i + j) !== FINDERISH[j]){ hit = false; break; }
+        if (hit) score += 40;
+        hit = true;
+        for (j = 0; j < FINDERISH.length; j++)
+          if (get(i + j) !== FINDERISH[FINDERISH.length - 1 - j]){ hit = false; break; }
+        if (hit) score += 40;
+      }
+    }
+    for (y = 0; y < size; y++) line(function(i){ return mods[y][i]; });
+    for (x = 0; x < size; x++) line(function(i){ return mods[i][x]; });
+
+    for (y = 0; y < size - 1; y++){
+      for (x = 0; x < size - 1; x++){
+        var v = mods[y][x];
+        if (v === mods[y][x + 1] && v === mods[y + 1][x] && v === mods[y + 1][x + 1]) score += 3;
+      }
+    }
+    for (y = 0; y < size; y++) for (x = 0; x < size; x++) if (mods[y][x]) dark++;
+    var k = Math.floor(Math.abs(dark * 20 - size * size * 10) / (size * size));
+    return score + k * 10;
+  }
+
+  /* ---------- сборка ---------- */
+  function encode(text){
+    var bytes = utf8Bytes(String(text));
+    var ver = pickVersion(bytes.length);
+    if (!ver) return null;
+
+    var codewords = interleave(toCodewords(bytes, ver), ver);
+    var best = null, m;
+    for (m = 0; m < 8; m++){
+      var g = drawFunctionPatterns(ver);
+      eachDataModule(g.size, g.fn, function(x, y, i){
+        var byte = codewords[i >>> 3];
+        var bit = byte === undefined ? 0 : (byte >>> (7 - (i & 7))) & 1;
+        g.modules[y][x] = (bit === 1) !== maskBit(m, x, y);
+      });
+      drawFormat(g.modules, g.size, m);
+      var p = penalty(g.modules, g.size);
+      if (!best || p < best.penalty) best = { size:g.size, modules:g.modules, fn:g.fn, version:ver, mask:m, penalty:p };
+    }
+    return { size:best.size, modules:best.modules, fn:best.fn,
+             version:best.version, mask:best.mask, codewords:codewords };
+  }
+
+  /* Чтение матрицы обратно — служит проверкой размещения и маски. */
+  function readCodewords(qr){
+    var bits = [];
+    eachDataModule(qr.size, qr.fn, function(x, y){
+      bits.push((qr.modules[y][x] !== maskBit(qr.mask, x, y)) ? 1 : 0);
+    });
+    var out = [], i, k, b;
+    for (i = 0; i + 8 <= bits.length; i += 8){
+      b = 0;
+      for (k = 0; k < 8; k++) b = (b << 1) | bits[i + k];
+      out.push(b);
+    }
+    return out;
+  }
+
+  function svg(qr, opts){
+    opts = opts || {};
+    var border = opts.border == null ? 3 : opts.border;
+    var dim = qr.size + border * 2;
+    var path = [], x, y;
+    for (y = 0; y < qr.size; y++){
+      for (x = 0; x < qr.size; x++){
+        if (qr.modules[y][x]) path.push("M" + (x + border) + "," + (y + border) + "h1v1h-1z");
+      }
+    }
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + dim + ' ' + dim + '" ' +
+      'role="img" aria-label="' + (opts.label || "QR-код с кодом прогресса") + '" ' +
+      'style="width:100%;height:auto;shape-rendering:crispEdges">' +
+      '<rect width="' + dim + '" height="' + dim + '" fill="#FFFFFF"/>' +
+      '<path d="' + path.join("") + '" fill="#16307F"/></svg>';
+  }
+
+  return { encode:encode, svg:svg, readCodewords:readCodewords,
+           CAPACITY_L_BYTES:CAPACITY_L_BYTES,
+           _internal:{ totalCodewords:totalCodewords, dataCodewords:dataCodewords,
+                       alignPositions:alignPositions, penalty:penalty } };
+})();
+if (typeof module !== "undefined") module.exports = QR;
+
+/* ==== встроено из progress-code.js — код прогресса для кабинета учителя ==== */
+/* =========================================================================
+   КОД ПРОГРЕССА — перенос прогресса от ученика к учителю без сервера.
+
+   Формат строки:  MEP1.<base64url>
+   Внутри base64url: первый байт — способ упаковки (1 — deflate-raw,
+   0 — как есть), дальше сам JSON объекта mathExamCourseProgress.v1
+   в UTF-8. Байт-заголовок нужен, чтобы код, собранный в браузере без
+   CompressionStream, читался там, где CompressionStream есть, и наоборот.
+
+   Ключ localStorage, TID и формат прогресса не меняются: объект берётся
+   и кладётся целиком, как есть.
+   ========================================================================= */
+var PROGRESS_CODE = (function(){
+  "use strict";
+
+  var KEY = "mathExamCourseProgress.v1";
+  var BACKUP = KEY + ".backup";
+  var PREFIX = "MEP1.";
+  var RAW = 0, DEFLATED = 1;
+
+  /* ---------- байты и base64url ---------- */
+  function toUtf8(str){
+    if (typeof TextEncoder !== "undefined") return new TextEncoder().encode(str);
+    var out = [], i, c;
+    for (i = 0; i < str.length; i++){
+      c = str.charCodeAt(i);
+      if (c < 0x80) out.push(c);
+      else if (c < 0x800) out.push(0xC0 | (c >> 6), 0x80 | (c & 63));
+      else out.push(0xE0 | (c >> 12), 0x80 | ((c >> 6) & 63), 0x80 | (c & 63));
+    }
+    return new Uint8Array(out);
+  }
+  function fromUtf8(bytes){
+    if (typeof TextDecoder !== "undefined") return new TextDecoder("utf-8", { fatal:true }).decode(bytes);
+    var s = "", i = 0, c, c2, c3;
+    while (i < bytes.length){
+      c = bytes[i++];
+      if (c < 0x80) s += String.fromCharCode(c);
+      else if (c < 0xE0){ c2 = bytes[i++]; s += String.fromCharCode(((c & 31) << 6) | (c2 & 63)); }
+      else { c2 = bytes[i++]; c3 = bytes[i++]; s += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63)); }
+    }
+    return s;
+  }
+  function b64urlEncode(bytes){
+    var bin = "", i, CHUNK = 0x8000;
+    for (i = 0; i < bytes.length; i += CHUNK)
+      bin += String.fromCharCode.apply(null, Array.prototype.slice.call(bytes, i, i + CHUNK));
+    return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function b64urlDecode(str){
+    var s = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (s.length % 4) s += "=";
+    var bin = atob(s), out = new Uint8Array(bin.length), i;
+    for (i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  function concat(head, tail){
+    var out = new Uint8Array(1 + tail.length);
+    out[0] = head;
+    out.set(tail, 1);
+    return out;
+  }
+
+  /* ---------- сжатие ---------- */
+  function hasCompression(){ return typeof CompressionStream !== "undefined"; }
+  function hasDecompression(){ return typeof DecompressionStream !== "undefined"; }
+
+  function pump(stream, bytes){
+    var writer = stream.writable.getWriter();
+    writer.write(bytes);
+    writer.close();
+    var reader = stream.readable.getReader(), chunks = [], total = 0;
+    function step(){
+      return reader.read().then(function(res){
+        if (res.done){
+          var out = new Uint8Array(total), off = 0, i;
+          for (i = 0; i < chunks.length; i++){ out.set(chunks[i], off); off += chunks[i].length; }
+          return out;
+        }
+        chunks.push(res.value); total += res.value.length;
+        return step();
+      });
+    }
+    return step();
+  }
+  function deflate(bytes){ return pump(new CompressionStream("deflate-raw"), bytes); }
+  function inflate(bytes){ return pump(new DecompressionStream("deflate-raw"), bytes); }
+
+  /* ---------- кодирование и разбор ---------- */
+  function encode(obj){
+    var json;
+    try{ json = JSON.stringify(obj == null ? {} : obj); }
+    catch(e){ return Promise.reject(new Error("Прогресс не сериализуется в JSON.")); }
+    var bytes = toUtf8(json);
+    var rawCode = PREFIX + b64urlEncode(concat(RAW, bytes));
+    if (!hasCompression()) return Promise.resolve(rawCode);
+    try {
+      return deflate(bytes)
+        .then(function(z){ return PREFIX + b64urlEncode(concat(DEFLATED, z)); })
+        .catch(function(){ return rawCode; });
+    } catch (e){ return Promise.resolve(rawCode); }   /* new CompressionStream может бросить синхронно */
+  }
+
+  function decode(code){
+    var s = String(code == null ? "" : code).replace(/\s+/g, "");
+    if (!s) return Promise.reject(new Error("Код пустой — вставьте строку, которая начинается с MEP1."));
+    if (s.slice(0, PREFIX.length) !== PREFIX)
+      return Promise.reject(new Error("Это не код прогресса: строка должна начинаться с MEP1."));
+    var body = s.slice(PREFIX.length);
+    if (!/^[A-Za-z0-9\-_]+$/.test(body))
+      return Promise.reject(new Error("Код повреждён: в нём есть посторонние символы. Скопируйте строку целиком, без переносов."));
+
+    var bytes;
+    try{ bytes = b64urlDecode(body); }
+    catch(e){ return Promise.reject(new Error("Код повреждён: не читается как base64.")); }
+    if (!bytes.length) return Promise.reject(new Error("Код повреждён: пустая полезная часть."));
+
+    var flag = bytes[0], rest = bytes.slice(1);
+    var payload;
+    if (flag === RAW) payload = Promise.resolve(rest);
+    else if (flag === DEFLATED){
+      if (!hasDecompression())
+        return Promise.reject(new Error("Этот браузер не умеет распаковывать код (нет DecompressionStream). Откройте кабинет в свежем Chrome, Edge или Firefox."));
+      payload = inflate(rest).catch(function(){ throw new Error("Код повреждён: не распаковывается."); });
+    }
+    else return Promise.reject(new Error("Неизвестная версия кода прогресса."));
+
+    return payload.then(function(raw){
+      var text;
+      try{ text = fromUtf8(raw); }
+      catch(e){ throw new Error("Код повреждён: внутри не текст UTF-8."); }
+      var obj;
+      try{ obj = JSON.parse(text); }
+      catch(e){ throw new Error("Код повреждён: внутри не JSON."); }
+      if (!obj || typeof obj !== "object" || Array.isArray(obj))
+        throw new Error("Код прочитан, но это не объект прогресса.");
+      return obj;
+    });
+  }
+
+  /* ---------- localStorage ---------- */
+  function readLive(){
+    try{ var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : {}; }
+    catch(e){ return {}; }
+  }
+  /* Пишет прогресс в этот браузер, сохранив прежний под ключом .backup.
+     Возвращает true, если резервная копия сделана. */
+  function loadInto(obj){
+    var cur;
+    try{ cur = localStorage.getItem(KEY); }catch(e){ cur = null; }
+    try{
+      localStorage.setItem(BACKUP, cur === null ? "{}" : cur);
+      localStorage.setItem(KEY, JSON.stringify(obj));
+    }catch(e){ throw new Error("Браузер не дал записать прогресс (хранилище переполнено или запрещено)."); }
+    return true;
+  }
+  function hasBackup(){
+    try{ return localStorage.getItem(BACKUP) !== null; }catch(e){ return false; }
+  }
+  function restoreBackup(){
+    var b;
+    try{ b = localStorage.getItem(BACKUP); }catch(e){ b = null; }
+    if (b === null) throw new Error("Резервной копии нет.");
+    try{ localStorage.setItem(KEY, b); }
+    catch(e){ throw new Error("Браузер не дал записать прогресс."); }
+    return true;
+  }
+
+  /* ---------- интерфейс выдачи кода ---------- */
+  /* host — узел, внутрь которого рисуется панель. compact:true — короткий
+     вид для подвала главной. Ничего не пишет в localStorage. */
+  function mount(host, opts){
+    opts = opts || {};
+    var d = host.ownerDocument;
+    host.innerHTML = "";
+
+    var openBtn = d.createElement("button");
+    openBtn.type = "button";
+    openBtn.className = opts.compact ? "linkbtn" : "btn";
+    openBtn.id = opts.id || "codeBtn";
+    openBtn.textContent = "Скопировать код прогресса";
+    host.appendChild(openBtn);
+
+    var panel = d.createElement("div");
+    panel.className = "codepanel";
+    panel.hidden = true;
+    panel.innerHTML =
+      '<p class="small muted">Строка ниже — весь прогресс этого браузера. Передайте её учителю: скопируйте текст или покажите QR-код.</p>' +
+      '<textarea class="codebox" readonly rows="4" aria-label="Код прогресса"></textarea>' +
+      '<p class="codeactions"><button type="button" class="btn ghost copy">Копировать</button>' +
+      '<span class="codelen small muted"></span></p>' +
+      '<div class="qr" aria-live="polite"></div>' +
+      '<p class="status small" role="status" aria-live="polite"></p>';
+    host.appendChild(panel);
+
+    var box = panel.querySelector(".codebox");
+    var status = panel.querySelector(".status");
+    var qrBox = panel.querySelector(".qr");
+    var lenEl = panel.querySelector(".codelen");
+
+    function say(text, bad){
+      status.textContent = text || "";
+      status.className = "status small" + (bad ? " bad" : "");
+    }
+    function drawQr(code){
+      qrBox.innerHTML = "";
+      if (typeof QR === "undefined") return;
+      var qr = null;
+      try{ qr = QR.encode(code); }catch(e){ qr = null; }
+      if (!qr){
+        qrBox.innerHTML = '<p class="small muted">Прогресс уже слишком большой для QR-кода — передайте строку текстом.</p>';
+        return;
+      }
+      var wrap = d.createElement("div");
+      wrap.className = "qrframe";
+      wrap.innerHTML = QR.svg(qr, { label:"QR-код с кодом прогресса" });
+      qrBox.appendChild(wrap);
+    }
+
+    openBtn.addEventListener("click", function(){
+      panel.hidden = false;
+      openBtn.disabled = true;
+      say("Собираю код…");
+      encode(readLive()).then(function(code){
+        box.value = code;
+        lenEl.textContent = "длина: " + code.length + " симв.";
+        drawQr(code);
+        say("Код готов. Он не уходит в сеть — только в буфер обмена или на экран.");
+        openBtn.disabled = false;
+        try{ box.focus(); box.select(); }catch(e){}
+      }).catch(function(err){
+        say((err && err.message) || "Не получилось собрать код.", true);
+        openBtn.disabled = false;
+      });
+    });
+
+    panel.querySelector(".copy").addEventListener("click", function(){
+      if (!box.value){ say("Сначала соберите код.", true); return; }
+      try{ box.focus(); box.select(); }catch(e){}
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(box.value)
+          .then(function(){ say("Скопировано в буфер обмена."); })
+          .catch(function(){ say("Скопируйте выделенную строку вручную: Ctrl+C."); });
+        return;
+      }
+      var done = false;
+      try{ done = d.execCommand("copy"); }catch(e){ done = false; }
+      say(done ? "Скопировано в буфер обмена." : "Скопируйте выделенную строку вручную: Ctrl+C.");
+    });
+
+    return { panel:panel, box:box, button:openBtn };
+  }
+
+  return { KEY:KEY, BACKUP:BACKUP, PREFIX:PREFIX,
+           encode:encode, decode:decode, readLive:readLive,
+           loadInto:loadInto, hasBackup:hasBackup, restoreBackup:restoreBackup,
+           hasCompression:hasCompression, mount:mount };
+})();
+</script>
 <script>
 /* ============================================================
    Ядро: генератор случайных чисел, мини-разметка формул,
@@ -1431,7 +2098,7 @@ const MODE_HELP = {
 let RNG = mulberry32((Date.now() ^ (Math.random() * 1e9)) >>> 0);
 
 const state = {
-  topic: 0, mode: 'learn', level: 1, task: null,
+  topic: 0, mode: 'steps', level: 1, task: null, onboarding: false, justOnboarded: false,
   stepIdx: 0, stepFails: [], stepRevealed: [], stepFb: null, stepWrongOpts: [],
   revealed: 0, demoIdx: 0, learnRandom: false,
   finished: false, soloFails: 0, soloRevealed: false, counted: false, showSolution: false, soloFb: null, soloWrongOpts: [],
@@ -1457,10 +2124,13 @@ function loadStats(){
       const v = s.topics[k];
       if (v && typeof v === 'object' && TOPICS[+k]) topics[k] = { steps: +v.steps || 0, solved: +v.solved || 0, correct: +v.correct || 0, streak: +v.streak || 0, best: +v.best || 0 };
     }
-    return { topics, board: !!s.board };
-  } catch (e){ return { topics: {}, board: false }; }
+    return { topics, board: !!s.board, onboarded: !!s.onboarded };
+  } catch (e){ return { topics: {}, board: false, onboarded: false }; }
 }
 function saveStats(){ try { const all = readAll(); all[TID] = stats; localStorage.setItem(COURSE_KEY, JSON.stringify(all)); } catch (e){ /* приватный режим — не сохраняем */ } }
+function readStudentName(){ try { const a = readAll(); return (a.student && typeof a.student.name === 'string') ? a.student.name : ''; } catch (e){ return ''; } }
+function saveStudentName(v){ try { const a = readAll(); a.student = Object.assign({}, a.student, { name: String(v || '').slice(0, 60) }); localStorage.setItem(COURSE_KEY, JSON.stringify(a)); } catch (e){} }
+function hasAnyProgress(){ const tp = stats.topics || {}; for (const k in tp){ const t = tp[k] || {}; if ((t.solved || 0) + (t.steps || 0) + (t.correct || 0) > 0) return true; } return false; }
 /* журнал ошибок: как в тренажёре вероятности — тип закрывается тремя верными подряд */
 function mlog(type, okFlag){
   try {
@@ -1536,6 +2206,12 @@ function renderTopics(){
   }
 }
 function renderControls(){
+  document.documentElement.classList.toggle('onboarding', !!state.onboarding);
+  const banner = $('#onboardBanner');
+  if (banner){
+    banner.hidden = !state.onboarding;
+    if (state.onboarding) banner.innerHTML = 'Начнём с разминки — реши задание по шагам. Как справишься, откроются все темы, режимы и кнопка «Сдать учителю». <button class="linklike" data-onboard-skip type="button">Показать всё сразу →</button>';
+  }
   $$('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === state.mode));
   $$('#levelSeg button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.level === state.level));
   const mh = $('#modeHelp');
@@ -1544,6 +2220,9 @@ function renderControls(){
     mh.innerHTML = `<b style="color:#0f766e">Работа над ошибками:</b> задачи только из ваших открытых типов (${n}). Тип закрывается тремя верными подряд. ` + MODE_HELP[state.mode];
   } else if (state.reviewEmpty){
     mh.innerHTML = '<b style="color:#0f766e">Открытых ошибок нет</b> — отличная новость. Ниже обычный режим. ' + MODE_HELP[state.mode];
+  } else if (state.justOnboarded){
+    mh.innerHTML = '<b style="color:#0f766e">Открыты все темы и режимы.</b> Когда захотите показать результат учителю — кнопка «Сдать учителю» вверху. ' + MODE_HELP[state.mode];
+    state.justOnboarded = false;
   } else {
     mh.textContent = MODE_HELP[state.mode];
   }
@@ -1740,6 +2419,15 @@ function stepSucceeded(i){
 function finishSteps(){
   state.finished = true;
   if (!state.counted){ state.counted = true; tstat(state.topic).steps++; saveStats(); }
+  if (state.onboarding) exitOnboarding(true);                     // первый пройденный разбор открывает всё
+}
+function exitOnboarding(persist){
+  if (persist && !stats.onboarded){ stats.onboarded = true; state.justOnboarded = true; saveStats(); }
+  state.onboarding = false;
+  document.documentElement.classList.remove('onboarding');
+  render();
+  const live = $('#live'); if (live) live.textContent = 'Открыты все темы и режимы. Кнопка «Сдать учителю» — вверху страницы.';
+  const area = $('#taskArea'); if (area){ try { area.focus({ preventScroll: true }); } catch (e){} }
 }
 function checkStep(){
   const i = state.stepIdx, st = state.task.steps[i];
@@ -2213,6 +2901,71 @@ function selfTest(){
   return uniq;
 }
 
+
+/* ---------- панель «Сдать учителю» ---------- */
+const TYPE_NAMES = {"t1-ratio":"sin, cos, tg по двум сторонам","t1-side":"сторона по отношению","t2-sinFromSeg":"синус через высоту к гипотенузе","t2-legFromSeg":"катет через отрезок гипотенузы","t2-altFromSegs":"высота по отрезкам гипотенузы","t2-hypFromLegSeg":"гипотенуза по катету и отрезку","t2-tanFromAHtg":"отрезок гипотенузы через тангенс","t2-altFromLegRatio":"высота через два катета","t3-legHyp":"площадь по катету и гипотенузе","t3-diff":"катеты через площадь (уравнение)","t4-sum":"острые углы: сумма 90°","t4-median":"угол с медианой из прямого угла","t4-hdm":"угол между высотой, биссектрисой и медианой","t4-findAcute":"угол треугольника по углу между чевианами","t5-height30":"высота в треугольнике с углом 30°","t5-seg30":"отрезки гипотенузы при угле 30°"};
+function renderTeacherSummary(){
+  const mk = (readAll().mistakes) || {};
+  const rows = TOPIC_ORDER.map(t => {
+    const st = stats.topics[t] || {}, T = TOPICS[t];
+    const head = t === 0 ? T.name : 'Тема ' + T.num + '. ' + T.name;
+    return '<div class="tp-row"><b>' + escapeHtml(head) + '</b>' +
+      '<span>решено самостоятельно: ' + (st.solved || 0) + ' · верно с первого раза: ' + (st.correct || 0) +
+      ' · лучшая серия: ' + (st.best || 0) + ' · пошагово пройдено: ' + (st.steps || 0) + '</span></div>';
+  }).join('');
+  const open = [], closed = [];
+  for (const ty of REVIEW_TYPES){ const e = mk[TID + '|' + ty]; if (!e) continue; if ((e.w || 0) > 0 && (e.r || 0) < 3) open.push(ty); else if ((e.r || 0) >= 3) closed.push(ty); }
+  let review;
+  if (open.length) review = '<p class="tp-review"><b>Нужно повторить:</b> ' + open.map(t => escapeHtml(TYPE_NAMES[t] || t)).join('; ') + '.</p>';
+  else if (closed.length) review = '<p class="tp-review okline">Все встреченные типы закрыты — три верных подряд в каждом.</p>';
+  else review = '<p class="tp-review muted">Работа над ошибками пока пуста: порешайте в режиме «Сам».</p>';
+  $('#tpSummary').innerHTML = rows + review;
+}
+function drawTeacherQr(code){
+  const box = $('#tpQr'); box.innerHTML = '';
+  if (typeof QR === 'undefined') return;
+  let qr = null; try { qr = QR.encode(code); } catch (e){ qr = null; }
+  if (!qr){ box.innerHTML = '<p class="small muted">Прогресс уже великоват для QR-кода — передайте строку текстом.</p>'; return; }
+  const w = document.createElement('div'); w.className = 'qrframe';
+  w.innerHTML = QR.svg(qr, { label: 'QR-код с кодом прогресса' });
+  box.appendChild(w);
+}
+function buildTeacherCode(){
+  const status = $('#tpStatus'); status.textContent = 'Собираю код…';
+  if (typeof PROGRESS_CODE === 'undefined'){ status.textContent = 'Кодер прогресса недоступен.'; return; }
+  PROGRESS_CODE.encode(PROGRESS_CODE.readLive()).then(code => {
+    $('#tpCode').value = code;
+    $('#tpLen').textContent = 'длина: ' + code.length + ' симв.';
+    drawTeacherQr(code);
+    status.textContent = 'Код готов. Он не уходит в сеть — только в буфер обмена или на экран.';
+  }).catch(err => { status.textContent = (err && err.message) || 'Не получилось собрать код.'; });
+}
+function openTeacherPanel(){
+  const p = $('#teacherPanel'); if (!p) return;
+  p.hidden = false;
+  $('#tpName').value = readStudentName();
+  renderTeacherSummary();
+  buildTeacherCode();
+  $('#tpTitle').focus();
+  p.scrollIntoView({ block: 'start', behavior: (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth' });
+}
+function closeTeacherPanel(){ const p = $('#teacherPanel'); if (p) p.hidden = true; const b = $('#teacherBtn'); if (b) b.focus(); }
+function copyTeacherCode(){
+  const box = $('#tpCode'), status = $('#tpStatus');
+  if (typeof PROGRESS_CODE === 'undefined'){ status.textContent = 'Кодер прогресса недоступен.'; return; }
+  status.textContent = 'Собираю код…';
+  PROGRESS_CODE.encode(PROGRESS_CODE.readLive()).then(code => {   /* пересобираем — вдруг имя только что ввели */
+    box.value = code; $('#tpLen').textContent = 'длина: ' + code.length + ' симв.'; drawTeacherQr(code);
+    try { box.focus(); box.select(); } catch (e){}
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code).then(() => { status.textContent = 'Скопировано в буфер обмена.'; }).catch(() => { status.textContent = 'Выделите строку и нажмите Ctrl+C.'; });
+      return;
+    }
+    let done = false; try { done = document.execCommand('copy'); } catch (e){ done = false; }
+    status.textContent = done ? 'Скопировано в буфер обмена.' : 'Выделите строку и нажмите Ctrl+C.';
+  }).catch(err => { status.textContent = (err && err.message) || 'Не получилось собрать код.'; });
+}
+
 /* ---------- запуск ---------- */
 function init(){
   $('#topics').addEventListener('click', e => { const c = e.target.closest('[data-topic]'); if (c) setTopic(+c.dataset.topic); });
@@ -2223,8 +2976,14 @@ function init(){
   $('#boardBtn').addEventListener('click', () => setBoard(!document.documentElement.classList.contains('board')));
   document.addEventListener('keydown', onGlobalKey);
   $('#mirrorBtn').addEventListener('click', () => setMirror(!document.documentElement.classList.contains('mirror')));
-  if (canFullscreen()) $('#fsBtn').addEventListener('click', toggleFullscreen);
-  else $('#fsBtn').remove();
+  const fsBtn = $('#fsBtn');
+  if (fsBtn){ if (canFullscreen()) fsBtn.addEventListener('click', toggleFullscreen); else fsBtn.remove(); }
+  $('#teacherBtn').addEventListener('click', openTeacherPanel);
+  $('#tpClose').addEventListener('click', closeTeacherPanel);
+  $('#tpCopy').addEventListener('click', copyTeacherCode);
+  $('#tpName').addEventListener('input', e => saveStudentName(e.target.value));
+  $('#tpName').addEventListener('change', () => { buildTeacherCode(); });
+  $('#onboardBanner').addEventListener('click', e => { if (e.target.closest('[data-onboard-skip]')) exitOnboarding(true); });
   if (stats.board) setBoard(true);
   if (urlFlag('board')) setBoard(true);
   if (urlFlag('mirror')) setMirror(true);
@@ -2232,6 +2991,10 @@ function init(){
   const mt = h.match(/^t(\d+)$/);
   if (mt && TOPICS[+mt[1]]) state.topic = +mt[1];
   if (/(^|[?&])mode=review/.test(location.search || '')){ state.review = true; state.mode = 'solo'; }
+  /* Первый заход ученика: сразу пошаговый разбор разминки, всё лишнее скрыто до первого решённого задания. */
+  const fresh = !stats.onboarded && !hasAnyProgress() && !state.review && !stats.board
+    && !urlFlag('board') && !urlFlag('mirror') && !(mt && TOPICS[+mt[1]]);
+  if (fresh){ state.onboarding = true; state.mode = 'steps'; state.topic = 0; state.level = 1; }
   newTask();
   if (urlFlag('selftest')) selfTest();
 }

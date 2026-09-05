@@ -16,6 +16,7 @@ function boot(url = 'https://mathexam.space/trainers/pt.html', seed){
   w.HTMLElement.prototype.scrollIntoView = function(){};
   w.addEventListener('error', e => errors.push('window error: ' + e.message));
   w.document.dispatchEvent(new w.Event('DOMContentLoaded'));
+  if (!(seed && seed.keepOnboarding)) w.eval("if (state.onboarding) exitOnboarding(true);");
   return { dom, w, d: w.document, S: () => w.eval('state'), stats: () => w.eval('stats') };
 }
 function click(w, el){ el.dispatchEvent(new w.MouseEvent('click', { bubbles: true, cancelable: true })); }
@@ -37,7 +38,9 @@ const TOPICS_LIST = [0, 1, 2, 3, 4, 5];
 {
   const { w, d, S } = boot();
   ok(qa(d, '#topics .chip').length === 6, 'шесть тем');
-  ok(S().topic === 0 && S().mode === 'learn', 'по умолчанию разминка, режим учимся');
+  ok(S().topic === 0 && S().mode === 'steps', 'после онбординга разминка, рабочий режим «Пошагово»');
+  click(w, q(d, '#modeSeg [data-mode="learn"]'));
+  ok(S().mode === 'learn', 'режим «Учимся» включается');
   ok(q(d, '#levelWrap').style.display === 'none', 'у разминки уровень скрыт');
   ok(q(d, '[data-action="show-all"]') == null, '«Показать всё» без режима доски не показывается');
   click(w, q(d, '#boardBtn'));                                        // «Показать всё» — только у доски
@@ -213,6 +216,7 @@ function solveStepsCorrectly(w, d, S){
   ok(!d.documentElement.classList.contains('board'), 'режим доски выключается');
   // стрелки для листания в режиме учимся
   click(w, q(d, '#topics .chip[data-topic="0"]'));
+  click(w, q(d, '#modeSeg [data-mode="learn"]'));
   const before = S().revealed;
   d.body.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }));
   ok(S().revealed === before + 1, 'стрелка вправо раскрывает следующий шаг');
@@ -349,7 +353,8 @@ function solveStepsCorrectly(w, d, S){
 /* ---------- 14. Разминка в «Учимся»: раскрытие с подсветкой ---------- */
 {
   const { w, d } = boot();
-  click(w, q(d, '#topics .chip[data-topic="0"]'));               // learn, демо sides
+  click(w, q(d, '#topics .chip[data-topic="0"]'));
+  click(w, q(d, '#modeSeg [data-mode="learn"]'));                // демо sides в «Учимся»
   w.eval('learnAll()');
   ok(/сторона [А-ЯA-Z]{2}/.test(d.body.textContent), 'учимся: ответ шага называет сторону буквами');
   ok(/stroke:#0f766e/.test(q(d, '.figure').innerHTML), 'учимся: раскрытые pickSide-шаги подсвечены на чертеже');
@@ -360,6 +365,7 @@ function solveStepsCorrectly(w, d, S){
 /* ---------- 15. Доска, зеркало и полный экран через URL ---------- */
 const PT_URL = 'https://mathexam.space/trainers/pryamougolny-treugolnik-trenazher.html';
 function cls(w){ return w.document.documentElement.classList; }
+function getVisible(w, d, sel){ const el = d.querySelector(sel); if (!el) return false; return w.getComputedStyle(el).display !== "none"; }
 const reviewSeed = win => win.localStorage.setItem('mathExamCourseProgress.v1', JSON.stringify({
   mistakes: { 'righttri-t1|t5-seg30': { w: 2, r: 0, lastWrong: 1, last: 1 } }
 }));
@@ -432,6 +438,45 @@ const reviewSeed = win => win.localStorage.setItem('mathExamCourseProgress.v1', 
   ok(cls(w).contains('mirror'), 'зеркало не слетело от кликов по чертежу');
 }
 
+/* ---------- 16. Онбординг: первый заход — сразу пошаговый разбор ---------- */
+{
+  const { w, d, S } = boot('https://mathexam.space/trainers/pt.html', Object.assign(function(){}, { keepOnboarding: true }));
+  ok(S().onboarding === true && S().mode === 'steps' && S().topic === 0, 'первый заход: онбординг, режим Пошагово, разминка');
+  ok(cls(w).contains('onboarding'), 'html помечен классом onboarding');
+  ok(q(d, '#onboardBanner') && q(d, '#onboardBanner').hidden === false, 'баннер онбординга виден');
+  ok(getVisible(w, d, '.controls') === false, 'переключатель режимов скрыт в онбординге');
+  ok(getVisible(w, d, '.topbtns') === false, 'кнопки шапки скрыты в онбординге');
+  const okFin = solveStepsCorrectly(w, d, S);
+  ok(okFin, 'онбординг: первый разбор пройден по шагам');
+  ok(S().onboarding === false && !cls(w).contains('onboarding'), 'после первого разбора онбординг снят');
+  ok(JSON.parse(w.localStorage.getItem('mathExamCourseProgress.v1'))['righttri-t1'].onboarded === true, 'флаг onboarded сохранён');
+  ok(getVisible(w, d, '.topbtns') === true, 'после онбординга кнопки шапки показаны');
+  ok(errors.length === 0, 'нет JS-ошибок в онбординге: ' + errors.join(' | '));
+}
+/* ---------- 17. «Показать всё сразу» выходит из онбординга без решения ---------- */
+{
+  const { w, d, S } = boot('https://mathexam.space/trainers/pt.html', Object.assign(function(){}, { keepOnboarding: true }));
+  ok(S().onboarding === true, 'онбординг активен');
+  click(w, q(d, '#onboardBanner [data-onboard-skip]'));
+  ok(S().onboarding === false && JSON.parse(w.localStorage.getItem('mathExamCourseProgress.v1'))['righttri-t1'].onboarded === true, 'показать всё снимает онбординг и запоминает это');
+}
+/* ---------- 18. Панель «Сдать учителю»: имя, сводка, код ---------- */
+{
+  const { w, d, S } = boot();
+  click(w, q(d, '#topics .chip[data-topic="1"]'));
+  click(w, q(d, '#modeSeg [data-mode="solo"]'));
+  const a = S().task.answer;
+  if (a.kind === 'num'){ q(d, 'input[data-final="0"]').value = ansStr(a.value) + (a.suffix ? '√3' : ''); click(w, q(d, '[data-action="final-check"]')); }
+  click(w, q(d, '#teacherBtn'));
+  ok(q(d, '#teacherPanel').hidden === false, 'панель Сдать учителю открывается');
+  ok(q(d, '#tpSummary .tp-row'), 'в панели есть построчная сводка по темам');
+  const nameInput = q(d, '#tpName'); nameInput.value = 'Аня П., 9А';
+  nameInput.dispatchEvent(new w.Event('input', { bubbles: true }));
+  ok(JSON.parse(w.localStorage.getItem('mathExamCourseProgress.v1')).student.name === 'Аня П., 9А', 'имя ученика сохранено в .student');
+  click(w, q(d, '#tpClose'));
+  ok(q(d, '#teacherPanel').hidden === true, 'панель закрывается');
+  ok(errors.length === 0, 'нет JS-ошибок в панели учителя: ' + errors.join(' | '));
+}
 console.log(`\nПроверок: ${checks}, отказов: ${fails}, JS-ошибок: ${errors.length}`);
 if (errors.length) console.log(errors.slice(0, 5).join('\n'));
 process.exit(fails || errors.length ? 1 : 0);

@@ -50,7 +50,7 @@ var RV = (function(){
     "ege-t2-yashchenko|v6": { n:"клетчатая бумага: скалярное произведение", line:2 },
     "ege-t2-yashchenko|v7": { n:"клетчатая бумага: длина и угол", line:2 },
     "righttri-t1|t1-ratio":          { n:"sin/cos/tg по двум сторонам", line:1 },
-    "righttri-t1|t1-side":           { n:"сторона по отношению (табличные тройки)", line:1 },
+    "righttri-t1|t1-side":           { n:"сторона по отношению (уравнение)", line:1 },
     "righttri-t1|t2-sinFromSeg":     { n:"синус через высоту к гипотенузе", line:1 },
     "righttri-t1|t2-legFromSeg":     { n:"катет через отрезок гипотенузы", line:1 },
     "righttri-t1|t2-altFromSegs":    { n:"высота по отрезкам гипотенузы", line:1 },
