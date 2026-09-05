@@ -128,7 +128,13 @@ function solveStepsCorrectly(w, d, S){
   click(w, q(d, '#topics .chip[data-topic="5"]'));
   let t5 = S().task, guard = 0;
   while (t5.p.ask !== 'CH' && guard++ < 30){ click(w, q(d, '[data-action="new"]')); t5 = S().task; }
-  while (S().task.steps[S().stepIdx].kind === 'info'){ click(w, q(d, '.step.current [data-action="info-next"]')); }
+  // дойти до шага с ответом вида N√3: предыдущие шаги закрываются верными ответами
+  for (let g = 0; g < 10 && !S().task.steps[S().stepIdx].suffix; g++){
+    const st = S().task.steps[S().stepIdx], c = q(d, '.step.current');
+    if (st.kind === 'info') click(w, c.querySelector('[data-action="info-next"]'));
+    else { c.querySelector('input.num').value = ansStr(st.ans); click(w, c.querySelector('[data-action="check"]')); }
+  }
+  ok(!!S().task.steps[S().stepIdx].suffix, 'тема 5: дошли до шага с ответом вида N√3');
   const wrongVal = (t5.answer.value * 1.732).toFixed(2).replace('.', ',');
   q(d, '.step.current input.num').value = wrongVal;
   click(w, q(d, '.step.current [data-action="check"]'));
