@@ -243,7 +243,60 @@
     "errors": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
     "unresolvedQuestions": { "$ref": "#/$defs/stringArray" }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "sourceKind": { "const": "repo" } }
+      },
+      "then": {
+        "properties": { "hashBasis": { "const": "GIT_OBJECT" } }
+      },
+      "else": {
+        "properties": { "hashBasis": { "const": "FILESYSTEM_BYTES" } }
+      }
+    },
+    {
+      "if": {
+        "properties": { "sourceSha256": { "type": "null" } }
+      },
+      "then": {
+        "properties": {
+          "sourceKind": { "const": "repo" },
+          "hashBasis": { "const": "GIT_OBJECT" },
+          "sizeBytes": { "type": "null" },
+          "errors": {
+            "type": "array",
+            "contains": { "$ref": "#/$defs/candidateReadFailure" },
+            "maxContains": 1,
+            "items": {
+              "type": "string",
+              "anyOf": [
+                { "not": { "pattern": "^GIT_OBJECT_READ_FAILED" } },
+                { "$ref": "#/$defs/candidateReadFailure" }
+              ]
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "sizeBytes": { "type": "integer", "minimum": 0 },
+          "errors": {
+            "type": "array",
+            "not": {
+              "contains": { "type": "string", "pattern": "^GIT_OBJECT_READ_FAILED" }
+            }
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
+    "candidateReadFailure": {
+      "$comment": "Structural failure prefix only. bindDescriptorSchema binds this definition to the exact canonicalPath; the executable validator independently checks the same-path relation.",
+      "type": "string",
+      "pattern": "^GIT_OBJECT_READ_FAILED:"
+    },
     "stringArray": {
       "type": "array",
       "items": { "type": "string" },

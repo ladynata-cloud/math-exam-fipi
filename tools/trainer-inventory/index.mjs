@@ -17,6 +17,7 @@ export const TOOL_VERSION = '1.0.1';
 export const CANONICAL_ORIGIN = 'https://mathexam.space';
 export const DESCRIPTOR_VERSION = 1;
 export const REPORT_SCHEMA_VERSION = 1;
+const HTML_ANALYSIS_VERSION = 2;
 export const HASH_BASES = Object.freeze([
   'GIT_OBJECT',
   'FILESYSTEM_BYTES'
@@ -387,7 +388,7 @@ function sanitizedEvidenceText(value, key = '') {
   return value;
 }
 
-function classifyReference(value, canonicalPath) {
+function classifyReference(value, canonicalPath, asset = false) {
   if (!value || value.startsWith('#') || /^(?:data|blob|mailto|tel):/i.test(value)) {
     return { kind: 'ignored' };
   }
@@ -399,6 +400,18 @@ function classifyReference(value, canonicalPath) {
     }
     if (parsed.origin !== CANONICAL_ORIGIN) {
       return { kind: 'external', origin: parsed.origin };
+    }
+    if (asset) {
+      // Validate encoded syntax before WHATWG URL normalization can erase it.
+      const rawPath = splitIdentitySuffix(value).identity
+        .replace(/^(?:[a-z][a-z\d+.-]*:)?\/\/[^/]*/i, '');
+      const decoded = decodeURIComponent(rawPath);
+      if (
+        /%(?:2f|5c)/i.test(rawPath)
+        || UNSAFE_RAW_PATH.test(decoded)
+        || decoded.includes('\\')
+        || decoded.split('/').some(segment => segment === '.' || segment === '..')
+      ) return { kind: 'malformed', fingerprint: evidenceFingerprint(value) };
     }
     return {
       kind: 'internal',
@@ -424,7 +437,7 @@ export function analyzeHtml(html, canonicalPath) {
   }
   const referenced = allReferencedValues(html).map(value => classifyReference(value, canonicalPath));
   const assetReferenced = assetReferencedValues(html)
-    .map(value => classifyReference(value, canonicalPath));
+    .map(value => classifyReference(value, canonicalPath, true));
   const internalAssets = uniqueSorted(
     assetReferenced
       .filter(item => item.kind === 'internal')
@@ -432,7 +445,7 @@ export function analyzeHtml(html, canonicalPath) {
       .filter(item => item && item !== canonicalPath)
   );
   const malformedReferences = uniqueSorted(
-    referenced
+    [...referenced, ...assetReferenced]
       .filter(item => item.kind === 'malformed' || item.kind === 'unsupported')
       .map(item => item.fingerprint)
   );
@@ -465,6 +478,9 @@ export function analyzeHtml(html, canonicalPath) {
   }
   if (!title) htmlErrors.push('HTML_TITLE_MISSING');
   if (malformedReferences.length) htmlErrors.push('HTML_REFERENCE_MALFORMED');
+  if (assetReferenced.some(item => item.kind === 'malformed')) {
+    htmlErrors.push('HTML_ASSET_PATH_MALFORMED');
+  }
   return {
     html: {
       title,
@@ -539,16 +555,51 @@ export function crossCheckRuntimeDescriptor(descriptor, manifest, validation = n
   return { ok: true };
 }
 
+// Draft 2020-12 cannot concatenate two instance values. Bind a copy of the
+// structural schema to this descriptor before standards-compliant validation.
+export function bindDescriptorSchema(schema, descriptor) {
+  if (
+    !isPlainObject(schema)
+    || schema.$schema !== 'https://json-schema.org/draft/2020-12/schema'
+    || !isPlainObject(schema.properties?.canonicalPath)
+    || !isPlainObject(schema.$defs?.candidateReadFailure)
+  ) throw new Error('DESCRIPTOR_SCHEMA_INVALID');
+  if (!isPlainObject(descriptor) || typeof descriptor.canonicalPath !== 'string') {
+    throw new Error('DESCRIPTOR_SCHEMA_PATH_REQUIRED');
+  }
+  const bound = structuredClone(schema);
+  // Each bound copy has different constants; do not reuse the static cache ID.
+  delete bound.$id;
+  bound.properties.canonicalPath.const = descriptor.canonicalPath;
+  bound.$defs.candidateReadFailure.const = 'GIT_OBJECT_READ_FAILED:' + descriptor.canonicalPath;
+  return bound;
+}
+
 export function validateDescriptorShape(descriptor) {
   if (!isPlainObject(descriptor)) return { ok: false, error: 'DESCRIPTOR_INVALID' };
   const unknown = Object.keys(descriptor).filter(key => !DESCRIPTOR_KEYS.has(key));
   const missing = [...DESCRIPTOR_KEYS].filter(key => !Object.hasOwn(descriptor, key));
   if (unknown.length) return { ok: false, error: `DESCRIPTOR_UNKNOWN:${unknown.join(',')}` };
   if (missing.length) return { ok: false, error: `DESCRIPTOR_MISSING:${missing.join(',')}` };
+  if (
+    typeof descriptor.canonicalPath !== 'string'
+    || !Array.isArray(descriptor.errors)
+    || !descriptor.errors.every(error => typeof error === 'string')
+    || !isPlainObject(descriptor.duplicate)
+  ) return { ok: false, error: 'DESCRIPTOR_FIELD_INVALID' };
   const hashUnavailable = descriptor.sourceSha256 === null && descriptor.sizeBytes === null;
-  const hashReadFailed = descriptor.errors.some(
-    error => typeof error === 'string' && error.startsWith('GIT_OBJECT_READ_FAILED')
-  );
+  const readFailures = descriptor.errors.filter(error => error.startsWith('GIT_OBJECT_READ_FAILED'));
+  const exactFailure = 'GIT_OBJECT_READ_FAILED:' + descriptor.canonicalPath;
+  const failureState = descriptor.sourceKind === 'repo'
+    && descriptor.hashBasis === 'GIT_OBJECT'
+    && hashUnavailable
+    && readFailures.length === 1
+    && readFailures[0] === exactFailure;
+  const successState = typeof descriptor.sourceSha256 === 'string'
+    && /^[a-f0-9]{64}$/.test(descriptor.sourceSha256)
+    && Number.isInteger(descriptor.sizeBytes)
+    && descriptor.sizeBytes >= 0
+    && readFailures.length === 0;
   const expectedHashBasis = descriptor.sourceKind === 'repo'
     ? 'GIT_OBJECT'
     : 'FILESYSTEM_BYTES';
@@ -556,18 +607,8 @@ export function validateDescriptorShape(descriptor) {
     descriptor.descriptorVersion !== DESCRIPTOR_VERSION
     || !/^inv-(?:repo|intake|synthetic)-[a-f0-9]{24}$/.test(descriptor.inventoryId)
     || !['repo', 'intake', 'synthetic'].includes(descriptor.sourceKind)
-    || !HASH_BASES.includes(descriptor.hashBasis)
     || descriptor.hashBasis !== expectedHashBasis
-    || (
-      !hashUnavailable
-      && (
-        !/^[a-f0-9]{64}$/.test(descriptor.sourceSha256)
-        || !Number.isInteger(descriptor.sizeBytes)
-        || descriptor.sizeBytes < 0
-      )
-    )
-    || (hashUnavailable && !hashReadFailed)
-    || ((descriptor.sourceSha256 === null) !== (descriptor.sizeBytes === null))
+    || (!failureState && !successState)
     || !DUPLICATE_STATUSES.includes(descriptor.duplicate.status)
   ) {
     return { ok: false, error: 'DESCRIPTOR_FIELD_INVALID' };
@@ -585,23 +626,19 @@ async function gitOutput(repoRoot, args) {
   return stdout.trim();
 }
 
-async function gitTreeFiles(repoRoot, sourceGitHead) {
+async function gitTreeIndex(repoRoot, sourceGitHead) {
   const { stdout } = await execFileAsync(
     'git',
-    ['ls-tree', '-r', '-z', '--name-only', sourceGitHead],
-    {
-      cwd: repoRoot,
-      encoding: 'buffer',
-      windowsHide: true,
-      maxBuffer: 64 * 1024 * 1024
-    }
+    ['ls-tree', '-r', '-t', '-z', sourceGitHead],
+    { cwd: repoRoot, encoding: 'buffer', windowsHide: true, maxBuffer: 64 * 1024 * 1024 }
   );
-  return stdout
-    .toString('utf8')
-    .split('\0')
-    .filter(Boolean)
-    .map(value => value.replaceAll('\\', '/'))
-    .sort();
+  const entries = new Map();
+  for (const record of stdout.toString('utf8').split('\0').filter(Boolean)) {
+    const match = record.match(/^([0-7]{6}) (blob|tree|commit) ([a-f0-9]+)\t([\s\S]+)$/);
+    if (!match || entries.has(match[4])) throw new Error('GIT_TREE_PROTOCOL_FAILED');
+    entries.set(match[4], { mode: match[1], type: match[2], objectId: match[3] });
+  }
+  return entries;
 }
 
 async function readGitObjects(repoRoot, sourceGitHead, canonicalPaths) {
@@ -620,6 +657,7 @@ async function readGitObjects(repoRoot, sourceGitHead, canonicalPaths) {
     const output = [];
     child.stdout.on('data', chunk => output.push(chunk));
     child.stderr.resume();
+    child.stdin.on('error', () => reject(new Error('GIT_OBJECT_BATCH_FAILED')));
     child.on('error', () => reject(new Error('GIT_OBJECT_BATCH_START_FAILED')));
     child.on('close', code => {
       if (code !== 0) {
@@ -641,7 +679,7 @@ async function readGitObjects(repoRoot, sourceGitHead, canonicalPaths) {
       .toString('utf8')
       .replace(/\r$/, '');
     offset = newline + 1;
-    if (header.endsWith(' missing')) {
+    if (header === specs[index] + ' missing') {
       records.set(relative, {
         bytes: null,
         objectId: null,
@@ -649,7 +687,7 @@ async function readGitObjects(repoRoot, sourceGitHead, canonicalPaths) {
       });
       continue;
     }
-    const match = header.match(/^([a-f0-9]+) blob ([0-9]+)$/);
+    const match = header.match(/^([a-f0-9]{40}|[a-f0-9]{64}) blob ([0-9]+)$/);
     if (!match) throw new Error('GIT_OBJECT_BATCH_PROTOCOL_FAILED');
     const size = Number(match[2]);
     const end = offset + size;
@@ -815,18 +853,27 @@ function collectReferenceSources(paths, gitObjects) {
   return { sources, failures };
 }
 
-function candidateErrorsForMissingAssets(repoRoot, dependencies, sourceKind) {
-  if (sourceKind !== 'repo') return Promise.resolve([]);
-  return Promise.all(
-    dependencies.internalAssets.map(async asset => {
-      try {
-        const stat = await lstat(path.join(repoRoot, ...asset.split('/')));
-        return stat.isFile() ? '' : `ASSET_NOT_FILE:${asset}`;
-      } catch {
-        return `ASSET_MISSING:${asset}`;
-      }
-    })
-  ).then(values => uniqueSorted(values));
+function candidateErrorsForMissingAssets(repositoryTree, dependencies, sourceKind) {
+  if (sourceKind !== 'repo' || dependencies.internalAssets.length === 0) return [];
+  if (!(repositoryTree instanceof Map)) throw new Error('REPOSITORY_TREE_EVIDENCE_REQUIRED');
+  return uniqueSorted(dependencies.internalAssets.map(asset => {
+    let decoded;
+    try {
+      decoded = decodeURIComponent(asset);
+    } catch {
+      return 'ASSET_PATH_MALFORMED:' + evidenceFingerprint(asset);
+    }
+    if (
+      /%(?:2f|5c)/i.test(asset)
+      || UNSAFE_RAW_PATH.test(decoded)
+      || decoded.includes('\\')
+      || decoded.startsWith('/')
+      || decoded.split('/').some(segment => segment === '.' || segment === '..')
+    ) return 'ASSET_PATH_MALFORMED:' + evidenceFingerprint(asset);
+    const entry = repositoryTree.get(decoded);
+    if (!entry) return 'ASSET_MISSING:' + decoded;
+    return entry.type === 'blob' ? '' : 'ASSET_NOT_FILE:' + decoded;
+  }));
 }
 
 function descriptorFingerprintPayload(report) {
@@ -860,7 +907,10 @@ export function applyDuplicateAnalysis(descriptors) {
     add(groups.canonicalPath, descriptor.canonicalPath, descriptor);
     add(groups.caseFoldPath, descriptor.canonicalPath?.replace(/[A-Z]/g, char => char.toLowerCase()), descriptor);
     add(groups.canonicalUrl, descriptor.canonicalUrl, descriptor);
-    add(groups.sourceSha256, descriptor.sourceSha256, descriptor);
+    const readFailed = Array.isArray(descriptor.errors) && descriptor.errors.some(
+      error => typeof error === 'string' && error.startsWith('GIT_OBJECT_READ_FAILED')
+    );
+    if (!readFailed) add(groups.sourceSha256, descriptor.sourceSha256, descriptor);
     add(groups.basename, descriptor.basename, descriptor);
   }
   const blockerRecords = [];
@@ -898,6 +948,53 @@ export function applyDuplicateAnalysis(descriptors) {
   };
 }
 
+function cachedAnalysisValid(descriptor) {
+  if (!validateDescriptorShape(descriptor).ok || descriptor.sourceSha256 === null) return false;
+  const html = descriptor.html;
+  const dependencies = descriptor.dependencies;
+  if (!isPlainObject(html) || !isPlainObject(dependencies) || !isPlainObject(html.metadata)) return false;
+  const booleanKeys = ['hasViewport', 'usesRandom', 'usesBridge', 'usesPostMessage', 'usesSocketIo'];
+  const countKeys = ['inlineScriptCount', 'inlineStyleCount', 'iframeCount'];
+  const htmlKeys = ['title', 'metadata', 'language', 'stateSignals', ...booleanKeys, ...countKeys];
+  const dependencyKeys = ['internalAssets', 'externalOrigins', 'networkSignals', 'storageSignals',
+    'scriptSources', 'styleSources', 'malformedReferences'];
+  const strings = value => Array.isArray(value) && value.every(item => typeof item === 'string');
+  return Object.keys(html).length === htmlKeys.length
+    && htmlKeys.every(key => Object.hasOwn(html, key))
+    && typeof html.title === 'string'
+    && (html.language === null || typeof html.language === 'string')
+    && Object.entries(html.metadata).every(([key, value]) => key.length > 0 && typeof value === 'string')
+    && booleanKeys.every(key => typeof html[key] === 'boolean')
+    && countKeys.every(key => Number.isInteger(html[key]) && html[key] >= 0)
+    && strings(html.stateSignals)
+    && Object.keys(dependencies).length === dependencyKeys.length
+    && dependencyKeys.every(key => strings(dependencies[key]));
+}
+
+function validatedPreviousDescriptors(report) {
+  try {
+    if (
+      !isPlainObject(report)
+      || report.schemaVersion !== REPORT_SCHEMA_VERSION
+      || report.toolVersion !== TOOL_VERSION
+      || report.canonicalOrigin !== CANONICAL_ORIGIN
+      || report.inputs?.analysisVersion !== HTML_ANALYSIS_VERSION
+      || !Array.isArray(report.descriptors)
+      || !report.descriptors.every(cachedAnalysisValid)
+      || sha256(stableStringify(descriptorFingerprintPayload(report))) !== report.deterministicFingerprint
+    ) return new Map();
+    const result = new Map();
+    for (const descriptor of report.descriptors) {
+      const key = descriptor.sourceKind + '\0' + descriptor.canonicalPath;
+      if (result.has(key)) return new Map();
+      result.set(key, descriptor);
+    }
+    return result;
+  } catch {
+    return new Map();
+  }
+}
+
 export async function inventoryCandidates(options) {
   const {
     repoRoot,
@@ -905,6 +1002,7 @@ export async function inventoryCandidates(options) {
     manifest,
     referenceSources = [],
     referenceReadFailures = [],
+    repositoryTree = null,
     previousReport = null,
     includeRunMetadata = true,
     sourceGitHead = null,
@@ -916,9 +1014,7 @@ export async function inventoryCandidates(options) {
   if (!validation.ok) throw new Error(`RUNTIME_MANIFEST_INVALID:${validation.error}`);
   const manifestByFile = new Map(manifest.trainers.map(entry => [entry.file, entry]));
   const referenceIndex = buildReferenceIndex(referenceSources);
-  const previousByPath = new Map(
-    (previousReport?.descriptors ?? []).map(descriptor => [descriptor.canonicalPath, descriptor])
-  );
+  const previousByPath = validatedPreviousDescriptors(previousReport);
   const descriptors = [];
   let incrementalReused = 0;
   for (const candidate of [...candidates].sort((a, b) => a.canonicalPath.localeCompare(b.canonicalPath))) {
@@ -934,9 +1030,14 @@ export async function inventoryCandidates(options) {
     }
     const sourceSha256 = bytes === null ? null : sha256(bytes);
     const sizeBytes = bytes === null ? null : bytes.length;
-    const previous = previousByPath.get(candidate.canonicalPath);
+    const previous = previousByPath.get(candidate.sourceKind + '\0' + candidate.canonicalPath);
     let analysis;
-    if (sourceSha256 !== null && previous?.sourceSha256 === sourceSha256) {
+    if (
+      sourceSha256 !== null
+      && previous?.sourceSha256 === sourceSha256
+      && previous.sizeBytes === sizeBytes
+      && previous.hashBasis === hashBasis
+    ) {
       analysis = {
         html: previous.html,
         dependencies: previous.dependencies,
@@ -951,7 +1052,7 @@ export async function inventoryCandidates(options) {
       analysis = analyzeHtml(bytes?.toString('utf8') ?? '', candidate.canonicalPath);
     }
     errors.push(...analysis.errors);
-    errors.push(...await candidateErrorsForMissingAssets(repoRoot, analysis.dependencies, candidate.sourceKind));
+    errors.push(...candidateErrorsForMissingAssets(repositoryTree, analysis.dependencies, candidate.sourceKind));
     const normalized = normalizePublicUrl(`/${candidate.canonicalPath}`);
     if (!normalized.ok) errors.push(`CANONICAL_URL_INVALID:${normalized.error}`);
     const canonicalUrl = normalized.ok ? normalized.canonicalResult : null;
@@ -1077,6 +1178,7 @@ export async function inventoryCandidates(options) {
     toolVersion: TOOL_VERSION,
     canonicalOrigin: CANONICAL_ORIGIN,
     inputs: {
+      analysisVersion: HTML_ANALYSIS_VERSION,
       manifestSha256: sha256(stableStringify(manifest)),
       candidateSetSha256: sha256(stableStringify(inputEntries)),
       candidates: inputEntries
@@ -1110,8 +1212,10 @@ export async function inventoryCandidates(options) {
 
 export async function collectRepositoryInputs(repoRoot, options = {}) {
   const sourceGitHead = await gitOutput(repoRoot, ['rev-parse', '--verify', 'HEAD']);
-  const sourceGitTree = await gitOutput(repoRoot, ['rev-parse', '--verify', 'HEAD^{tree}']);
-  const treePaths = await gitTreeFiles(repoRoot, sourceGitHead);
+  const sourceGitTree = await gitOutput(repoRoot, ['rev-parse', '--verify', sourceGitHead + '^{tree}']);
+  const repositoryTree = await gitTreeIndex(repoRoot, sourceGitHead);
+  const treePaths = [...repositoryTree].filter(([, entry]) => entry.type !== 'tree')
+    .map(([relative]) => relative).sort();
   const trackedTrainerHtml = treePaths.filter(
     relative => relative.startsWith('trainers/') && relative.endsWith('.html')
   );
@@ -1158,6 +1262,7 @@ export async function collectRepositoryInputs(repoRoot, options = {}) {
     manifest,
     referenceSources: referenceEvidence.sources,
     referenceReadFailures: referenceEvidence.failures,
+    repositoryTree,
     sourceGitHead,
     sourceGitTree
   };

@@ -84,13 +84,49 @@ candidate hash source explicitly:
   from the analyzed Git `HEAD`, and Git-object byte size;
 - explicitly approved unpublished intake candidates use
   `hashBasis: FILESYSTEM_BYTES` and exact raw filesystem bytes;
-- source Git head and tree are non-authoritative run evidence;
-- a tracked object-read failure is explicit and fail-closed, never a hidden
-  fallback to checkout bytes.
+- candidate HTML, manifest, reference surfaces, and the internal asset tree
+  index all come from the same captured source head;
+- exact asset paths resolve by Git object type: blob present, non-blob
+  `ASSET_NOT_FILE`, absent `ASSET_MISSING`; no repository asset check uses
+  checkout existence;
+- source Git head and tree are non-authoritative run evidence outside the
+  content-based fingerprint; identical evidence at different heads may share
+  a fingerprint;
+- per-path missing objects produce isolated explicit evidence, while a failed
+  Git process or corrupt whole-batch protocol aborts the run; neither falls
+  back to checkout bytes.
 
-This keeps repository descriptors, duplicate groups, reuse, and deterministic
-fingerprints independent of checkout line endings and Git filters while
-preserving byte-exact intake identity.
+This keeps repository descriptors and findings independent of checkout line
+endings, Git filters, sparse layouts, missing checkout assets, and untracked
+files while preserving byte-exact intake identity.
+
+Internal asset lookup percent-decodes once and preserves exact spaces and
+Cyrillic characters. Raw encoded separators/dot segments are rejected before
+URL normalization can hide them; malformed escapes and decoded controls,
+backslashes, or dot segments fail closed. This is separate from the unchanged
+public-URL identity rules below.
+
+Both-null hash/size evidence is valid only for `repo/GIT_OBJECT` with an exact
+same-path `GIT_OBJECT_READ_FAILED:<canonicalPath>` error. Successful evidence
+must be non-null and free of that failure; intake/synthetic failure forgery and
+half-null pairs are invalid. Null hashes do not establish exact duplicates.
+
+The portable static Draft 2020-12 schema enforces source/basis, null-pair, and
+failure presence/absence constraints. Its structural rules cannot compare an
+arbitrary error suffix to the sibling path, so they can accept a foreign-path
+null failure. Complete schema validation uses the committed
+`bindDescriptorSchema(schema, descriptor)` helper to bind the canonical path
+and exact failure string; `validateDescriptorShape()` independently rejects
+same-path violations. The same 22 vectors cover code and bound-schema behavior;
+real schema execution uses temporary external Ajv when configured, with no
+repository package dependency.
+
+Incremental reports declare `inputs.analysisVersion: 2`. Reuse requires
+compatible report/tool versions, valid descriptor and analysis shapes, and a
+matching report digest, followed by identical source kind, canonical path,
+hash basis, non-null hash, and size. Asset, reference, manifest, and duplicate
+findings are recomputed. See the
+[output format](../TRAINER_INVENTORY_FORMAT.md) for the full contract.
 
 ## Authority boundary
 
@@ -176,6 +212,14 @@ the final marker.
 Version 1.0.1 additionally emits
 `TRAINER_FACTORY_INVENTORY_HASH_BASIS_V1_GATE_OK` only after that same complete
 sequence passes with the cross-platform hash-basis regressions.
+
+## Exact-head remediation review
+
+The PR #92 old-head review is `REQUEST_CHANGES`, not an approval of the
+remediation. Its verified provenance and the two blockers are recorded in
+[the hash-basis task](TRAINER_INVENTORY_HASH_BASIS_V1.md). The new head remains
+`PENDING_NEW_EXACT_HEAD_HIGH_REVIEW`; local gate success does not replace
+independent review or owner release authorization.
 
 ## Rollback
 
