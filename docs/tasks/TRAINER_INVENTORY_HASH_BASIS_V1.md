@@ -266,3 +266,27 @@ remain unauthorized.
 - Commits: recorded after publication.
 - Tests passed/failed/not run: recorded in the final handoff and Draft PR.
 - Scope deviations: none expected.
+
+## OGE task 6 focused fix: intentional Pilot A identity change
+
+The original v1.0.1 baseline table above remains historical root-cause evidence.
+This change record belongs to `OGE_TASK6_FRACTIONS_FOCUSED_FIX` on
+`fix/oge-task6-fractions-focused`, based on main
+`fbd46afd92a58875b1b89af329b9d37a676abe52`. The owner authorized this current
+Pilot A expectation for the focused fix Draft PR; it becomes the main baseline
+only after a separately authorized merge. It does not amend PR #92 history
+or reuse its review approval. The final handoff and Draft PR identify the head.
+
+| Git-object evidence | Before focused fix | Focused fix candidate |
+| --- | --- | --- |
+| Blob SHA-1 | `cc71b02fbcdbe3f5b03a8d8e8131ce2b5b180e92` | `e668932c602fae5e6f4fe5c78ed3bef38af891d8` |
+| SHA-256 | `24f7b404bc944fa9a528d50a3b76ece0c4526afb66eed3b96453fd94965fcd03` | `54c7b7671ae13f180b1dd4d09440053c76c801d9b07a119b0009ea2b61f610ab` |
+| Git bytes | 82390 | 90714 |
+
+Reason: intentional parser, session-result provenance, navigation and accessible
+presentation fixes in `trainers/oge-task6-fractions.html`. Evidence comes from
+`git cat-file blob`, including the existing leading UTF-8 BOM, not checkout
+newline conventions. The 68,034-byte TASKS declaration and all 174 tasks remain
+byte-identical. Other Pilot A expectations, inventory logic, schema and gate
+are unchanged. The owner separately authorized only the exact six-file scope
+guard extension needed to validate this task without broadening its allowlist.

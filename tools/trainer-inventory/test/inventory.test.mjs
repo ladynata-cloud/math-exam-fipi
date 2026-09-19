@@ -41,8 +41,8 @@ const schemaPath = path.join(
 const emptyManifest = Object.freeze({ version: 1, schemaVersion: 1, trainers: [] });
 const pilotExpected = Object.freeze({
   'trainers/oge-task6-fractions.html': {
-    sha256: '24f7b404bc944fa9a528d50a3b76ece0c4526afb66eed3b96453fd94965fcd03',
-    sizeBytes: 82390
+    sha256: '54c7b7671ae13f180b1dd4d09440053c76c801d9b07a119b0009ea2b61f610ab',
+    sizeBytes: 90714
   },
   'trainers/oge-task8-powers-roots.html': {
     sha256: 'df283d5147edaf536a885203dc8b8cc540c424f32d29369cb176e79823d6120a',
@@ -1057,7 +1057,23 @@ test('working diff stays inside the approved docs, skill, fixture, and tool scop
     ...changed,
     ...committedStdout.split(/\r?\n/).filter(Boolean).map(value => value.replaceAll('\\', '/'))
   ];
-  const allowed = allChanged.filter(relative => (
+  // Owner-approved focused trainer fix: keep its exact six-file boundary
+  // separate from the historical inventory-only task boundary below.
+  const focusedFiles = new Set([
+    'trainers/oge-task6-fractions.html',
+    'tools/oge-task6-fractions-focused.test.mjs',
+    'tools/oge-task6-fractions-focused.browser.mjs',
+    'docs/tasks/OGE_TASK6_FRACTIONS_FOCUSED_FIX.md',
+    'tools/trainer-inventory/test/inventory.test.mjs',
+    'docs/tasks/TRAINER_INVENTORY_HASH_BASIS_V1.md'
+  ]);
+  const focusedTask = allChanged.some(relative => (
+    relative === 'trainers/oge-task6-fractions.html'
+    || relative === 'tools/oge-task6-fractions-focused.test.mjs'
+    || relative === 'tools/oge-task6-fractions-focused.browser.mjs'
+    || relative === 'docs/tasks/OGE_TASK6_FRACTIONS_FOCUSED_FIX.md'
+  ));
+  const allowed = allChanged.filter(relative => focusedTask ? focusedFiles.has(relative) : (
     relative === '.gitignore'
     || relative === '.agents/skills/trainer-inventory/SKILL.md'
     || relative === 'docs/TRAINER_INVENTORY_FORMAT.md'
