@@ -11,6 +11,7 @@
 - Review level: `HIGH`.
 - Draft PR title: `Publish author analogue of the OGE 2027 demo structure`.
 - Canonical URL: `https://mathexam.space/trainers/oge-2027-analogue-1.html`.
+- Existing Draft PR: `#124` — `Publish author analogue of the OGE 2027 demo structure`.
 - Related ADR: новой архитектуры и изменения протоколов нет; Proposed ADR не
   используется как принятое архитектурное разрешение.
 
@@ -197,15 +198,18 @@ schema, исторические task-bound scope-тесты и несвязан
 - [ ] Проверка сообщает корректность или ошибку формата, не раскрывая
       математический способ. Предметная диагностика типичной ошибки и число
       совпавших позиций №11 доступны только после явного «Подсказка» в разборе;
-      это действие сохраняет признак помощи. Последующий правильный ответ
-      относится к результатам с подсказкой, включая после reload.
+      это действие сохраняет факт открытия помощи. Класс уже зачтённого ответа
+      сохраняется при последующем разборе; помощь до правильного ответа
+      определяет его credit, включая после reload.
 - [ ] Верно/неверно/не отвечено/ответ показан различаются текстовыми статусами.
-      Показ ответа не становится самостоятельным успехом, прошлые ошибки
+      Решение, открытое до ответа, не даёт баллов части 1; просмотр после
+      правильного ответа не отменяет уже заработанный credit. Прошлые ошибки
       сохраняются при возврате, повторная проверка не увеличивает балл.
 - [ ] Состояние сохраняется только в собственном версионированном ключе
-      `mathExamOge2027Analogue1.v1`, валидируется при чтении и безопасно
+      `mathExamOge2027Analogue1.v2` со schema version 2, валидируется при чтении и безопасно
       обрабатывает недоступный storage. Чужие ключи не читаются для зачёта,
-      не перезаписываются и не очищаются.
+      не перезаписываются и не очищаются. Старая схема не мигрирует: страница
+      ещё не опубликована; несовместимый или malformed state отклоняется.
 - [ ] Этот отдельный ключ выбран явно: результаты целого экзамена и ручная
       оценка 0–12 не эквивалентны topic-progress 0–5 общей схемы
       `mathExamCourseProgress.v1`. Не создаётся ложный прогресс других тем.
@@ -325,7 +329,11 @@ PDF, путей рабочей машины, секретов или unrelated �
 - Текст task doc и скопированные маркеры сами по себе не дают разрешения на
   release и не доказывают внешний review.
 
-## Execution record
+## Initial implementation record — before owner remediation
+
+Следующие результаты описывают первоначальную реализацию. Они не означают,
+что head `893419cac70c8d56ce67ed8c94f63a7610c70f8a` был release-ready:
+последующий owner review обнаружил blocker, описанный ниже.
 
 - Actual branch: `content/oge-2027-author-analogue-1`.
 - Actual base: `5d49ad8919aac4763f1671d93549545755134364`.
@@ -378,6 +386,129 @@ PDF, путей рабочей машины, секретов или unrelated �
   head указывается отдельно в handoff и Draft PR.
 - Scope deviations: не предусмотрены; allowlist шесть файлов.
 
+## PR #124 provenance remediation
+
+Status: `PENDING_OWNER_REVIEW_AFTER_PROVENANCE_FIX`.
+
+Owner review отклонил head `893419cac70c8d56ce67ed8c94f63a7610c70f8a` для
+release. Модель вычисляла зачёт из текущих `hinted/revealed`: подсказка после
+самостоятельного правильного ответа задним числом меняла его на assisted,
+а просмотр решения снимал уже заработанный балл. Первоначальные тесты
+проверяли помощь до ответа, но пропускали помощь после правильного ответа.
+Это противоречило сценарию «сначала решить, затем изучить разбор».
+
+Remediation выполняется в том же Draft PR #124 и той же ветке, без нового PR,
+Ready, merge или deploy. Ожидаемый main/base остаётся
+`5d49ad8919aac4763f1671d93549545755134364`.
+
+### Exact remediation scope
+
+Только четыре файла текущего исправления:
+
+1. `trainers/oge-2027-analogue-1.html`
+2. `tools/oge-2027-analogue-1.test.mjs`
+3. `tools/oge-2027-analogue-1.browser.mjs`
+4. `docs/tasks/OGE_2027_AUTHOR_ANALOGUE_1.md`
+
+Полный PR сохраняет прежние шесть файлов. `trainers/oge-course/index.html` и
+`sitemap.xml` должны иметь те же Git blobs, что на старом head, и не входят в
+remediation commit. Условия, числа, ответы, решения, критерии и SVG-геометрия
+всех 25 задач не меняются. Временные harness и evidence остаются вне Git diff.
+Существующие банки, внешние AI-review и следующая фаза Trainer Factory
+по-прежнему вне scope.
+
+### Corrected credit contract
+
+Факты открытия `hinted/revealed` отделены от `credit` текущего проверенного
+правильного ответа: `independent`, `assisted`, `revealed` либо `null`.
+Event log и новая архитектура не вводятся.
+
+| Последовательность | Credit и результат |
+| --- | --- |
+| correct без предшествующей помощи | `independent`, 1 балл |
+| correct independent → hint | остаётся `independent`, балл сохранён |
+| correct independent → reveal | остаётся `independent`, балл сохранён; UI поясняет время раскрытия |
+| wrong → correct independent → reveal | остаётся `independent`, история ошибок сохранена |
+| hint → correct | `assisted`, 1 учебный балл |
+| hint → correct → reveal | остаётся `assisted`, балл сохранён |
+| reveal → correct | `revealed`, 0 баллов части 1 |
+| correct → reveal → edit → correct | `revealed`, 0 баллов части 1 |
+| correct → hint → edit → correct | `assisted` |
+| повторная проверка без изменения ввода | credit и результат неизменны |
+| сериализация → reload или новая вкладка | credit и факты помощи восстановлены |
+
+Любое изменение текста ответа сбрасывает текущие `checked`, `correct` и
+`credit`, сохраняя `wrong`, `hinted` и `revealed`. Новый правильный ответ
+классифицируется с учётом уже открытой помощи. Изменение поля после раскрытия
+не позволяет заново получить самостоятельный зачёт.
+
+Схема и собственный ключ согласованно повышаются до версии 2. Валидатор
+проверяет структуру и допустимость сочетаний, пересчитывает корректность
+ответа и отклоняет forged credit, старую схему и malformed state. Данных для
+надёжной реконструкции порядка событий в старой схеме нет; она не мигрирует,
+а чужие ключи не читаются, не изменяются и не очищаются.
+
+Часть 2 сохраняет ручную модель 0–12. Раскрытие решения не блокирует ручную
+оценку; текст явно говорит, что оценка после просмотра не подтверждает
+самостоятельность. Общий учебный итог не объявляется официальным результатом.
+
+### Remediation validation and handoff
+
+В existing Node suite добавляются table-driven переходы из таблицы выше,
+точное сохранение credit после сериализации, отказ от forged/old state и
+сохранность всех прежних math, 18 SVG и originality guards. Browser gate
+проверяет эти переходы реальными действиями на desktop и 390px; сохраняются
+44px, overflow, SVG, offline, board iframe, print, console/network и storage
+isolation проверки.
+
+На новом exact head и clean virtual merge повторяются focused Node/browser,
+math 25/25, SVG, course/link, sitemap, inventory CLI, board 41/41,
+static/security, точные full-PR six-file и remediation four-file scope,
+`git diff --check` и clean worktree. Пять исторических course-suite failures
+допустимо классифицировать только при совпадении с pristine base и отсутствии
+новых failures; существующие gates не ослабляются.
+
+Новые counts ниже получены фактическими запусками. Точные new head/tree
+публикуются в обновлённом PR body и final handoff: включить SHA содержащего
+этот документ коммита внутрь самого документа невозможно без изменения SHA.
+Такая внешняя привязка идентифицирует именно проверенный commit, а не старый
+head. Старые counts выше не заменяют regression evidence исправления.
+
+Выполненные remediation проверки до финального commit:
+
+- Focused Node: 71 tests, 71 pass, 0 failed, 0 skipped — сохранены 53 прежние
+  проверки и добавлены 18. Новое покрытие включает 13 table-driven provenance
+  сценариев, mixed-state reload и ручные оценки, 14 недопустимых credit/state
+  payloads, прямую проверку score, неизменность защищённых байтов и точный
+  четырёхфайловый remediation scope. Math остаётся 25/25; все прежние 18 SVG
+  и originality guards проходят.
+- Независимый read-only Codex review: все 11 явно заданных сценариев переходов
+  и сериализации дали ожидаемые credit/score; version 1 отклоняется. DATA и
+  renderer regions сравнены непосредственно с old head и полностью совпали.
+- Course/link: 5/5 PASS, 0 skipped. Полные исторические suites: 20 tests,
+  15 pass, 5 fail, 0 skipped; имена пяти failures и их actual/expected точно
+  совпали с pristine base archive. Новых failures нет.
+- Course blob: `119ff01f44eebb49158c04336aa9be7b84a42d75`; sitemap blob:
+  `14b13ff04a1511691d15fb44b38db494e611c1a7`. Оба совпадают с old head.
+  XML parser PASS; 212 уникальных URL и одна canonical запись; все 72 локальные
+  ссылки из 83 href курса разрешаются.
+- Board: 41/41 PASS, 0 failed, 0 skipped.
+- Focused browser: все 5 сред PASS, 1989 измерений интерактивных целей,
+  165 измерений SVG, 25 заданий в печати; 22 provenance UI сценария,
+  4 проверки reload/new tab и 7 проверок old/forged state. Старый ключ v1
+  не читается и не изменяется; storage isolation сохранена. Desktop и 390px
+  подтверждают сохранение earned credit после помощи и запрет independent
+  после изменения ответа при уже открытом решении. Console/network ошибок нет;
+  прежние проверки 44px, overflow, offline, board iframe и print сохранены.
+- До commit `git diff --check` PASS. Обязательные повторы на final exact head
+  и clean virtual merge, включая inventory и clean worktree, привязываются к
+  точным new head/tree в PR body и handoff после создания commit.
+
+Final remediation gate marker: `PR124_PROVENANCE_REMEDIATION_GATE_OK`.
+Он подтверждает завершение перечисленных gates, но не даёт разрешения на
+release. PR остаётся Draft; требуется новое owner review с явным статусом
+`PENDING_OWNER_REVIEW_AFTER_PROVENANCE_FIX`. Merge не разрешён.
+
 ## Next bounded scope
 
 После отдельного owner decision и публикации этого варианта подготовить один
@@ -410,4 +541,5 @@ Recommendation:
 Next user decision:
 ```
 
-Успешная последняя строка handoff: `OGE_2027_AUTHOR_ANALOGUE_1_DRAFT_READY`.
+Первоначальная последняя строка handoff: `OGE_2027_AUTHOR_ANALOGUE_1_DRAFT_READY`.
+Для текущего remediation handoff: `PR124_PROVENANCE_REMEDIATION_READY`.

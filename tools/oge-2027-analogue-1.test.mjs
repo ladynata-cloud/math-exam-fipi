@@ -25,7 +25,7 @@ const context = vm.createContext({});
 vm.runInContext(modelScript[2], context, { timeout: 2000 });
 const model = context.ExamModel;
 assert.ok(model, 'Model exports are available without DOM');
-const { TASKS, parseAnswer, blankState, checkAnswer, reveal, score, validateState, renderDiagram, STORAGE_KEY } = model;
+const { TASKS, parseAnswer, blankState, checkAnswer, hint, reveal, editAnswer, score, validateState, renderDiagram, STORAGE_KEY } = model;
 const tasks = Array.from(TASKS);
 const task = number => tasks.find(item => item.number === number);
 const plain = value => JSON.parse(JSON.stringify(value));
@@ -575,7 +575,8 @@ gate('security: no outbound APIs or executable input, only one declared versione
   excludes(html, /<script\b[^>]*src\s*=|@import\b|url\(\s*["']?(?:https?:)?\/\//i);
   excludes(executable, /\b(?:sessionStorage|indexedDB)\b|localStorage\.clear\s*\(|document\.cookie/);
   assert.equal(typeof STORAGE_KEY, 'string');
-  assert.ok(/v1/.test(STORAGE_KEY));
+  assert.equal(STORAGE_KEY, 'mathExamOge2027Analogue1.v2');
+  assert.equal(blankState().version, 2);
   const writes = [...executable.matchAll(/localStorage\.(?:setItem|removeItem)\s*\(\s*([^,)\n]+)/g)];
   assert.ok(writes.length > 0);
     includes(executable, /const\s+M\s*=\s*globalThis\.ExamModel/);
@@ -611,7 +612,7 @@ gate('changed-file scope is limited to the six owner-approved paths', () => {
     ...git('diff', '--name-only', '5d49ad8919aac4763f1671d93549545755134364').trim().split(/\r?\n/),
     ...git('ls-files', '--others', '--exclude-standard').trim().split(/\r?\n/),
   ].filter(Boolean));
-  assert.ok(changed.size <= 7);
+  assert.deepEqual([...changed].sort(), [...allowed].sort());
   for (const file of changed) assert.ok(allowed.has(file), 'Out of scope: ' + file);
 });
 gate('model updates are pure and fresh attempts do not share mutable records', () => {
@@ -624,6 +625,10 @@ gate('model updates are pure and fresh attempts do not share mutable records', (
   checkAnswer(task(6), original);
   assert.deepEqual(original, before);
   reveal(original);
+  assert.deepEqual(original, before);
+  hint(original);
+  assert.deepEqual(original, before);
+  editAnswer(original, '0');
   assert.deepEqual(original, before);
 });
 
@@ -861,7 +866,7 @@ gate('saved-state validation rejects malformed and forged credit while preservin
   valid.entries[1] = plain(checkAnswer(task(2), { ...reveal(valid.entries[1]), input: '102,5' }));
   valid.entries[19].manual = 1;
   assert.deepEqual(plain(validateState(valid)), valid);
-  const invalid = [null, [], {}, { ...valid, version: 2 }, { ...valid, mode: 'other' },
+  const invalid = [null, [], {}, { ...valid, version: 1 }, { ...valid, version: 3 }, { ...valid, mode: 'other' },
     { ...valid, entries: valid.entries.slice(1) }, { ...valid, foreign: 1 }];
   const mutate = change => { const state = plain(blankState()); change(state); invalid.push(state); };
   mutate(s => { s.entries[0].wrong = -1; });
@@ -916,4 +921,166 @@ gate('visible scoring criteria do not disclose the final answers before solution
   }
   // In proof task 24 the target similarity is already part of the question;
   // stating that target in a rubric does not reveal its proof.
+});
+
+// Provenance fixtures describe user-visible histories. Expected credit is fixed
+// by the owner's rules, rather than recalculated from runtime help booleans.
+const provenanceCases = [
+  { name: 'independent correct then hint', events: ['correct', 'hint'], credit: 'independent', points: [1, 0], hinted: true },
+  { name: 'independent correct then reveal', events: ['correct', 'reveal'], credit: 'independent', points: [1, 0], revealed: true },
+  { name: 'wrong then independent correct then reveal', events: ['wrong', 'correct', 'reveal'], credit: 'independent', points: [1, 0], revealed: true, wrong: 1 },
+  { name: 'hint before correct', events: ['hint', 'correct'], credit: 'assisted', points: [0, 1], hinted: true },
+  { name: 'assisted correct then reveal', events: ['hint', 'correct', 'reveal'], credit: 'assisted', points: [0, 1], hinted: true, revealed: true },
+  { name: 'reveal before correct', events: ['reveal', 'correct'], credit: 'revealed', points: [0, 0], revealed: true },
+  { name: 'independent correct then reveal then changed text then correct', events: ['correct', 'reveal', 'edit', 'check'], credit: 'revealed', points: [0, 0], revealed: true },
+  { name: 'independent correct then hint then changed text then correct', events: ['correct', 'hint', 'edit', 'check'], credit: 'assisted', points: [0, 1], hinted: true },
+  { name: 'repeated checking without editing retains independent credit', events: ['correct', 'hint', 'reveal', 'check', 'check', 'check'], credit: 'independent', points: [1, 0], hinted: true, revealed: true },
+  { name: 'same text input event retains historical credit', events: ['correct', 'reveal', 'same-input', 'check'], credit: 'independent', points: [1, 0], revealed: true },
+  { name: 'serialized independent reload after both forms of help', events: ['wrong', 'correct', 'hint', 'reveal', 'reload', 'check'], credit: 'independent', points: [1, 0], hinted: true, revealed: true, wrong: 1 },
+  { name: 'serialized assisted reload after solution reveal', events: ['hint', 'correct', 'reveal', 'reload', 'check'], credit: 'assisted', points: [0, 1], hinted: true, revealed: true },
+  { name: 'serialized revealed reload and repeated checks remain zero credit', events: ['reveal', 'correct', 'reload', 'check', 'check'], credit: 'revealed', points: [0, 0], revealed: true },
+];
+for (const scenario of provenanceCases) {
+  gate('historical credit: ' + scenario.name, () => {
+    let entry = plain(blankState().entries[5]);
+    for (const event of scenario.events) {
+      const before = plain(entry), oldCredit = entry.credit;
+      const stateBefore = plain(blankState()); stateBefore.entries[5] = entry;
+      const scoreBefore = plain(score(stateBefore));
+      let result;
+      if (event === 'correct' || event === 'wrong') {
+        const edited = editAnswer(entry, event === 'correct' ? '12,96' : '0');
+        result = checkAnswer(task(6), edited);
+      } else if (event === 'check') result = checkAnswer(task(6), entry);
+      else if (event === 'hint') result = hint(entry);
+      else if (event === 'reveal') result = reveal(entry);
+      else if (event === 'edit') result = editAnswer(entry, '12.96');
+      else if (event === 'same-input') result = editAnswer(entry, entry.input);
+      else if (event === 'reload') {
+        const serialized = JSON.parse(JSON.stringify(stateBefore));
+        const loaded = validateState(serialized);
+        assert.ok(loaded, 'A reachable state must reload');
+        assert.deepEqual(plain(loaded), serialized);
+        result = loaded.entries[5];
+      } else assert.fail('Unrecognized fixture event: ' + event);
+      assert.deepEqual(entry, before, event + ' mutated its input');
+      entry = plain(result);
+      const stateAfter = plain(blankState()); stateAfter.entries[5] = entry;
+      assert.ok(validateState(stateAfter), event + ' produced an invalid reachable state');
+      if (event === 'hint' || event === 'reveal' || event === 'same-input' || event === 'reload') {
+        assert.equal(entry.credit, oldCredit, event + ' rewrote historical credit');
+        assert.deepEqual(plain(score(stateAfter)), scoreBefore, event + ' changed earned points');
+      }
+      if (event === 'edit') {
+        assert.equal(entry.input, '12.96');
+        assert.equal(entry.checked, false);
+        assert.equal(entry.correct, false);
+        assert.equal(entry.credit, null);
+        assert.equal(entry.hinted, before.hinted);
+        assert.equal(entry.revealed, before.revealed);
+        assert.equal(entry.wrong, before.wrong);
+        assert.equal(score(stateAfter).part1, 0);
+      }
+    }
+    assert.equal(entry.correct, true);
+    assert.equal(entry.checked, true);
+    assert.equal(entry.credit, scenario.credit);
+    assert.equal(entry.hinted, !!scenario.hinted);
+    assert.equal(entry.revealed, !!scenario.revealed);
+    assert.equal(entry.wrong, scenario.wrong || 0);
+    const state = plain(blankState()); state.entries[5] = entry;
+    const [independent, assisted] = scenario.points;
+    assert.deepEqual(plain(score(state)), {
+      independent, assisted, part1: independent + assisted, manual: 0, total: independent + assisted,
+    });
+  });
+}
+
+gate('mixed provenance and manual grades survive exact serialized reload', () => {
+  const state = plain(blankState());
+  state.mode = 'review';
+  state.entries[5] = plain(reveal(hint(checkAnswer(task(6), editAnswer(state.entries[5], '12,96')))));
+  state.entries[7] = plain(reveal(checkAnswer(task(8), editAnswer(hint(state.entries[7]), '81'))));
+  state.entries[8] = plain(checkAnswer(task(9), editAnswer(reveal(state.entries[8]), '-7')));
+  for (let i = 19; i < 25; i++) state.entries[i] = { ...plain(reveal(state.entries[i])), manual: 2 };
+  assert.deepEqual(state.entries.slice(5, 9).map(entry => entry.credit), ['independent', null, 'assisted', 'revealed']);
+  const wire = JSON.stringify(state);
+  const restored = validateState(JSON.parse(wire));
+  assert.ok(restored);
+  assert.equal(JSON.stringify(restored), wire);
+  assert.deepEqual(plain(score(restored)), { independent: 1, assisted: 1, part1: 2, manual: 12, total: 14 });
+  for (let i = 19; i < 25; i++) {
+    assert.equal(restored.entries[i].credit, null);
+    assert.equal(restored.entries[i].revealed, true);
+    assert.equal(restored.entries[i].checked, false);
+    assert.equal(restored.entries[i].correct, false);
+  }
+});
+
+gate('historical credit validation rejects old schemas and impossible classifications', () => {
+  const mutations = [
+    ['old version', s => { s.version = 1; }],
+    ['missing credit', s => { delete s.entries[5].credit; }],
+    ['unknown credit', s => { s.entries[5].credit = 'partial'; }],
+    ['unchecked independent credit', s => { s.entries[5].credit = 'independent'; }],
+    ['unchecked correct credit', s => { Object.assign(s.entries[5], { input: '12,96', correct: true, credit: 'independent' }); }],
+    ['wrong answer with independent credit', s => { Object.assign(s.entries[5], { input: '0', checked: true, correct: false, credit: 'independent' }); }],
+    ['correct answer with no classification', s => { Object.assign(s.entries[5], { input: '12,96', checked: true, correct: true }); }],
+    ['assisted without opened hint', s => { Object.assign(s.entries[5], { input: '12,96', checked: true, correct: true, credit: 'assisted' }); }],
+    ['revealed credit without opened solution', s => { Object.assign(s.entries[5], { input: '12,96', checked: true, correct: true, credit: 'revealed' }); }],
+    ['correct flag contradicts wrong input', s => { Object.assign(s.entries[5], { input: '0', checked: true, correct: true, credit: 'independent' }); }],
+    ['incorrect flag contradicts checked correct input', s => { Object.assign(s.entries[5], { input: '12,96', checked: true, correct: false }); }],
+    ['Part 2 independent credit', s => { s.entries[19].credit = 'independent'; }],
+    ['Part 2 assisted credit', s => { Object.assign(s.entries[19], { hinted: true, credit: 'assisted' }); }],
+    ['Part 2 revealed credit', s => { Object.assign(s.entries[19], { revealed: true, credit: 'revealed' }); }],
+  ];
+  for (const [name, mutate] of mutations) {
+    const candidate = plain(blankState());
+    mutate(candidate);
+    assert.equal(validateState(JSON.parse(JSON.stringify(candidate))), null, name);
+  }
+  // Post-answer help is compatible with independent/assisted credit. A compact
+  // saved state verifies feasible combinations, not cryptographic chronology.
+  for (const credit of ['independent', 'assisted', 'revealed']) {
+    const reachable = plain(blankState());
+    Object.assign(reachable.entries[5], { input: '12,96', checked: true, correct: true, hinted: true, revealed: true, credit });
+    assert.deepEqual(plain(validateState(reachable)), reachable, credit);
+  }
+});
+
+gate('score requires checked correct classified answers and ignores current help flags', () => {
+  const state = plain(blankState());
+  state.entries[0] = { ...state.entries[0], checked: true, correct: true, credit: 'independent', hinted: true, revealed: true };
+  state.entries[1] = { ...state.entries[1], checked: true, correct: true, credit: 'assisted', hinted: true, revealed: true };
+  state.entries[2] = { ...state.entries[2], checked: true, correct: true, credit: 'revealed', revealed: true };
+  state.entries[3] = { ...state.entries[3], checked: false, correct: true, credit: 'independent' };
+  state.entries[4] = { ...state.entries[4], checked: true, correct: false, credit: 'independent' };
+  state.entries[5] = { ...state.entries[5], checked: true, correct: true, credit: null };
+  assert.deepEqual(plain(score(state)), { independent: 1, assisted: 1, part1: 2, manual: 0, total: 2 });
+});
+
+gate('all task content and SVG renderer bytes match the pre-remediation reviewed head', () => {
+  function sliceBetween(start, end, includeEnd = false) {
+    const begin = html.indexOf(start), finish = html.indexOf(end, begin);
+    assert.ok(begin >= 0 && finish > begin, 'Protected block boundaries exist');
+    assert.equal(html.indexOf(start, begin + start.length), -1, 'Unique protected block start');
+    return Buffer.from(html.slice(begin, finish + (includeEnd ? end.length : 0)), 'utf8');
+  }
+  const data = sliceBetween('/*__OGE2027_DATA_START__*/', '/*__OGE2027_DATA_END__*/', true);
+  const renderer = sliceBetween('function svgWrap(', '\nglobalThis.ExamModel=');
+  assert.equal(data.length, 31876);
+  assert.equal(digest(data), '7d233be445a64d997016f3b92597fec140e2a19a8653e1b2f9e2933d4b8eeaef');
+  assert.equal(renderer.length, 9655);
+  assert.equal(digest(renderer), '2f8b953df89e8a7583a656077899eee8c944631f9bfdcdc45ffc9d240611b1a3');
+});
+
+gate('provenance remediation changes only the four approved implementation test and doc files', () => {
+  const allowed = new Set([
+    relativeTrainer, 'tools/oge-2027-analogue-1.test.mjs',
+    'tools/oge-2027-analogue-1.browser.mjs', 'docs/tasks/OGE_2027_AUTHOR_ANALOGUE_1.md',
+  ]);
+  const changed = execFileSync('git', [
+    '-c', 'safe.directory=' + root, 'diff', '--name-only', '893419cac70c8d56ce67ed8c94f63a7610c70f8a',
+  ], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
+  for (const file of changed) assert.ok(allowed.has(file), 'Remediation exceeded scope: ' + file);
 });

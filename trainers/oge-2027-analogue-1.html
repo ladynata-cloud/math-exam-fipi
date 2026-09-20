@@ -29,7 +29,7 @@
 <h2>Ваш вариант, ваш темп</h2>
 <p>В части 1 запишите короткие ответы. В №7 и №13 нужен номер варианта — одна цифра; в №11 — три цифры подряд. В остальных полях вводите число, десятичную дробь можно записать через запятую или точку. Единицы измерения и пробелы между цифрами не нужны.</p>
 <p>В части 2 запишите ход решения на бумаге или в черновике под условием. Её оценивает человек: сравните работу с авторскими критериями или попросите преподавателя. Автоматическая проверка не выставляет эти баллы.</p>
-<p class="no-print">В режиме разбора доступны подсказки и решения. Подсказка не отнимает учебные баллы: такие ответы учитываются отдельно как выполненные с помощью. Открытый ответ не засчитывается в части 1. История ошибок сохраняется до начала нового прохождения.</p>
+<p class="no-print">В режиме разбора доступны подсказки и решения. Если подсказка открыта до правильного ответа, он засчитывается с помощью; если раньше открыто решение — балл не начисляется. Разбор после правильного ответа сохраняет заработанный балл и его самостоятельность. При изменении ответа зачёт сбрасывается, а уже открытая помощь учитывается при новой проверке. История ошибок сохраняется до начала нового прохождения.</p>
 <div class="toolbar no-print" aria-label="Режим работы"><button id="mode-exam" aria-pressed="true">Режим экзамена</button><button id="mode-review" aria-pressed="false">Режим разбора</button><button id="print">Печать варианта</button><button id="reset">Начать заново</button></div>
 <div id="reset-dialog" hidden class="no-print" role="group" aria-label="Подтверждение нового прохождения"><p>Очистить ответы, черновики, историю ошибок и ручные оценки этого варианта?</p><div class="toolbar"><button id="confirm-reset">Да, начать заново</button><button id="cancel-reset">Продолжить работу</button></div></div>
 <p id="storage-notice" role="status">Ответы и черновики сохраняются только в этом браузере. Данные никуда не отправляются.</p>
@@ -76,15 +76,49 @@ const TASKS=[
 {number:25,topic:'Площадь трапеции',answerType:'expanded',answer:480,prompt:'<p>В трапеции ABCD с основаниями AD и BC известны AB = 24, CD = 40, BC = 4. Отрезок из вершины D к середине M стороны AB делит угол ADC пополам. Вычислите площадь трапеции, обосновав все вспомогательные построения.</p>',hint:'Продлите DM до прямой BC. Используйте параллельность оснований и равные углы биссектрисы, чтобы найти равнобедренный треугольник. Затем перенесите боковую сторону параллельно самой себе.',solution:'<ol><li>Продлим луч DM до прямой BC; назовём точку пересечения K. Так как M — внутренняя точка стороны AB выпуклой трапеции, луч после M выходит за эту сторону и встречает продолжение BC за B. На прямой точки расположены в порядке K–B–C.</li><li>DM — биссектриса, значит ∠CDK = ∠KDA. Из KC ∥ AD следует ∠DKC = ∠KDA. Поэтому в треугольнике KCD углы при D и K равны, а KC = CD = 40.</li><li>KB = KC − BC = 40 − 4 = 36.</li><li>В треугольниках AMD и BMK равны AM и BM, углы при M вертикальные, а углы MAD и MBK равны при параллельных AD и BK. Треугольники равны по стороне и двум прилежащим углам. Значит, AD = BK = 36.</li><li>Проведём CP ∥ AB до AD. ABCP — параллелограмм, поэтому CP = AB = 24, AP = BC = 4, PD = 36 − 4 = 32.</li><li>В треугольнике CPD имеем 24² + 32² = 40². По обратной теореме Пифагора угол CPD прямой. Следовательно, CP — высота трапеции.</li><li>S = (AD + BC) · CP / 2 = (36 + 4) · 24 / 2 = <b>480</b>.</li></ol>',diagram:{kind:'trapezoid',points:{A:[0,0],B:[0,24],C:[4,24],D:[36,0],M:[0,12]}},solutionDiagram:{kind:'trapezoidProof',points:{A:[0,0],B:[0,24],C:[4,24],D:[36,0],M:[0,12],P:[4,0],K:[-36,24]}},rubric:['Связи для основания и высоты не доказаны; числовая площадь без обоснования не даёт балла.','Идея с продолжением биссектрисы и переносом стороны верна, но один переход не завершён либо есть небольшая вычислительная ошибка.','Дополнительные построения обоснованы; найдены второе основание и высота, площадь вычислена верно.']}
 ].map(t=>({...t,id:`oge2027-analogue-1-task-${String(t.number).padStart(2,'0')}`,part:t.number<=19?1:2,sourceKind:'author-analogue',variantId:'oge-2027-analogue-1'}));
 /*__OGE2027_DATA_END__*/
-const STORAGE_KEY='mathExamOge2027Analogue1.v1';
+const STORAGE_KEY='mathExamOge2027Analogue1.v2';
 function parseAnswer(task,raw){const text=typeof raw==='string'?raw:'';if(task.answerType==='choice')return text.length===1&&/^[1-4]$/.test(text)?{valid:true,value:Number(text)}:{valid:false,value:null};if(task.answerType==='sequence')return text.length===3&&/^[1-3]{3}$/.test(text)?{valid:true,value:text}:{valid:false,value:null};const s=text.trim().replace(/^−/,'-');if(task.answerType!=='number'||!/^[-+]?\d+(?:[.,]\d+)?$/.test(s))return {valid:false,value:null};const n=Number(s.replace(',','.'));return Number.isFinite(n)?{valid:true,value:n}:{valid:false,value:null};}
-function blankState(){return {version:1,mode:'exam',entries:TASKS.map(()=>({input:'',wrong:0,checked:false,correct:false,hinted:false,revealed:false,manual:null}))};}
+const CREDIT_CLASSES=['independent','assisted','revealed'];
+function blankState(){return {version:2,mode:'exam',entries:TASKS.map(()=>({input:'',wrong:0,checked:false,correct:false,credit:null,hinted:false,revealed:false,manual:null}))};}
 function decimalKey(value){const s=String(value).trim().replace(/^−/,'-').replace(',','.');const negative=s.startsWith('-');const unsigned=s.replace(/^[-+]/,'');const [whole,fraction='']=unsigned.split('.');const w=whole.replace(/^0+(?=\d)/,'');const f=fraction.replace(/0+$/,'');return `${negative&&(w!=='0'||f)?'-':''}${w}${f?'.'+f:''}`;}
 function isCorrect(task,input){const parsed=parseAnswer(task,input);return parsed.valid&&(task.answerType==='number'?decimalKey(input)===decimalKey(task.answer):parsed.value===task.answer);}
-function checkAnswer(task,entry){if(task.part!==1)return {...entry};const correct=isCorrect(task,entry.input);return {...entry,checked:true,correct,wrong:Math.min(100000,entry.wrong+(!correct&&entry.input.trim()!==''?1:0))};}
+function checkAnswer(task,entry){
+  if(task.part!==1)return {...entry};
+  const correct=isCorrect(task,entry.input);
+  // Credit records how this answer was earned. Later study never reclassifies it.
+  const credit=correct
+    ? (entry.checked&&entry.correct&&CREDIT_CLASSES.includes(entry.credit)
+      ? entry.credit
+      : entry.revealed?'revealed':entry.hinted?'assisted':'independent')
+    : null;
+  return {...entry,checked:true,correct,credit,wrong:Math.min(100000,entry.wrong+(!correct&&entry.input.trim()!==''?1:0))};
+}
+function hint(entry){return {...entry,hinted:true};}
 function reveal(entry){return {...entry,revealed:true};}
-function score(state){let independent=0,assisted=0,manual=0;state.entries.forEach((e,i)=>{if(i<19&&e.correct&&!e.revealed){if(e.hinted)assisted++;else independent++;}if(i>=19&&e.manual!==null)manual+=e.manual;});return {independent,assisted,part1:independent+assisted,manual,total:independent+assisted+manual};}
-function validateState(raw){if(!raw||raw.version!==1||!['exam','review'].includes(raw.mode)||!Array.isArray(raw.entries)||raw.entries.length!==25||Object.keys(raw).sort().join(',')!=='entries,mode,version')return null;const entries=[];for(let i=0;i<25;i++){const e=raw.entries[i];if(!e||Object.keys(e).sort().join(',')!=='checked,correct,hinted,input,manual,revealed,wrong'||typeof e.input!=='string'||e.input.length>(i<19?100:12000)||!Number.isInteger(e.wrong)||e.wrong<0||e.wrong>100000||!['checked','correct','hinted','revealed'].every(k=>typeof e[k]==='boolean')||!(e.manual===null||(i>=19&&[0,1,2].includes(e.manual))))return null;const correct=i<19&&e.checked&&isCorrect(TASKS[i],e.input);if(e.correct!==correct||(i>=19&&e.checked))return null;entries.push({...e});}return {version:1,mode:raw.mode,entries};}
+function editAnswer(entry,input){return input===entry.input?{...entry}:{...entry,input,checked:false,correct:false,credit:null};}
+function score(state){
+  let independent=0,assisted=0,manual=0;
+  state.entries.forEach((e,i)=>{
+    if(i<19&&e.checked&&e.correct){if(e.credit==='independent')independent++;else if(e.credit==='assisted')assisted++;}
+    if(i>=19&&e.manual!==null)manual+=e.manual;
+  });
+  return {independent,assisted,part1:independent+assisted,manual,total:independent+assisted+manual};
+}
+function validateState(raw){
+  if(!raw||raw.version!==2||!['exam','review'].includes(raw.mode)||!Array.isArray(raw.entries)||raw.entries.length!==25||Object.keys(raw).sort().join(',')!=='entries,mode,version')return null;
+  const entries=[];
+  for(let i=0;i<25;i++){
+    const e=raw.entries[i];
+    if(!e||Object.keys(e).sort().join(',')!=='checked,correct,credit,hinted,input,manual,revealed,wrong'||typeof e.input!=='string'||e.input.length>(i<19?100:12000)||!Number.isInteger(e.wrong)||e.wrong<0||e.wrong>100000||!['checked','correct','hinted','revealed'].every(k=>typeof e[k]==='boolean')||!(e.manual===null||(i>=19&&[0,1,2].includes(e.manual))))return null;
+    const correct=i<19&&e.checked&&isCorrect(TASKS[i],e.input);
+    if(e.correct!==correct||(i>=19&&e.checked))return null;
+    if(correct?!CREDIT_CLASSES.includes(e.credit):e.credit!==null)return null;
+    if(e.credit==='assisted'&&!e.hinted||e.credit==='revealed'&&!e.revealed)return null;
+    // Independent credit may coexist with help opened after that correct answer.
+    entries.push({...e});
+  }
+  return {version:2,mode:raw.mode,entries};
+}
 function esc(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function format(value){return String(value).replace(/\./g,',').replace(/-/g,'−');}
 function svgWrap(title,body,w=420,h=280){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title>${body}</svg>`;}
@@ -109,7 +143,7 @@ if(d.kind==='trapezoid'||d.kind==='trapezoidProof'){edges=[['A','B'],['B','C'],[
 const g=geometry(points,{circleRadius:d.kind==='cyclic'?d.radius:0,edges,aux,labels,marks});if(d.kind==='bisector'){g.body+=label(g.px([.23,.03]),`${d.angleC}°`,0,-8);for(const [u,v]of [['A','K'],['C','K']]){const a=g.px(points[u]),b=g.px(points[v]),mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy);g.body+=line([mx-dy/len*5,my+dx/len*5],[mx+dy/len*5,my-dx/len*5]);}const A=g.px(points.A),B=g.px(points.B),C=g.px(points.C),K=g.px(points.K);const arc=(q,r)=>{let s=Math.atan2(q[1]-A[1],q[0]-A[0]),e=Math.atan2(r[1]-A[1],r[0]-A[0]);while(e<s)e+=2*Math.PI;const p=t=>[A[0]+22*Math.cos(t),A[1]+22*Math.sin(t)];return `<path d="M${p(s).join(',')} A22,22 0 0 1 ${p(e).join(',')}" class="aux"/>`;};g.body+=arc(B,K)+arc(K,C);}
 return figure(svgWrap(d.kind==='cyclic'?'Вписанный четырёхугольник ABCD и пересечение диагоналей E':d.kind==='bisector'?'Треугольник ABC, биссектриса AK; AK = CK':'Трапеция ABCD и вспомогательные отрезки',g.body,g.w,g.h));}
 function tyreContext(){const r=TYRES.factory.rim*TYRES.inch/2,R=r+TYRES.factory.width*TYRES.factory.profile/100,s=0.34,c=[150,120];let b=`<circle cx="150" cy="120" r="${R*s}" fill="#e2ebe8" stroke="#12635e" stroke-width="2"/><circle cx="150" cy="120" r="${r*s}" fill="white" stroke="#12635e" stroke-width="2"/>`;b+=line([150,120-R*s],[150,120-r*s])+label([151,120-(R+r)/2*s],'H',8,4)+line([270,120-R*s],[270,120+R*s],'axis')+label([270,120],'D',9,4)+line([150-r*s,120],[150+r*s,120],'aux')+label([150,120],'d · 25,4',-25,23);return `<section class="context" aria-label="Данные для заданий 1–5"><h3>К заданиям 1–5 · Читаем маркировку шин</h3><p>В записи <b>185/65 R14</b> число 185 — ширина в миллиметрах; 65 — высота боковины в процентах от этой ширины; 14 — диаметр диска в дюймах. Для перевода дюймов в миллиметры используйте множитель <b>25,4</b>.</p><p>Наружный диаметр складывается из диаметра диска и двух боковин: <b>D = d · 25,4 + 2H</b>. Заводская комплектация этого автомобиля — <b>185/65 R14</b>.</p>${figure(svgWrap('Схема колеса: наружный диаметр D, диск d, высота боковины H',b,340,240),'Схема в масштабе заводского колеса.')}<table><caption>Разрешённые размеры шин</caption><thead><tr><th scope="col">Ширина, мм</th>${TYRES.rims.map(r=>`<th scope="col">R${r}</th>`).join('')}</tr></thead><tbody>${TYRES.rows.map(row=>`<tr><th scope="row">${row[0]}</th>${row.slice(1).map(n=>`<td>${n===null?'—':`${row[0]}/${n}`}</td>`).join('')}</tr>`).join('')}</tbody></table></section>`;}
-globalThis.ExamModel={TASKS,TYRES,parseAnswer,blankState,checkAnswer,reveal,score,validateState,renderDiagram,tyreContext,functionValue,STORAGE_KEY,esc,format};
+globalThis.ExamModel={TASKS,TYRES,parseAnswer,blankState,checkAnswer,hint,reveal,editAnswer,score,validateState,renderDiagram,tyreContext,functionValue,STORAGE_KEY,esc,format};
 </script>
 <script id="app">
 (()=>{'use strict';
@@ -118,15 +152,42 @@ if(!selftest){try{const text=localStorage.getItem(M.STORAGE_KEY);if(text)state=M
 function notice(){ $('storage-notice').textContent=storageOK?'Ответы и черновики сохраняются только в этом браузере. Данные никуда не отправляются.':'Хранилище браузера недоступно: работа сохраняется только до закрытия или перезагрузки этой страницы. Данные никуда не отправляются.';}
 function save(){if(selftest)return;try{localStorage.setItem(M.STORAGE_KEY,JSON.stringify(state));storageOK=true;}catch{storageOK=false;}notice();}
 function renderTask(t){const n=t.number;return `<article class="task" id="task-${n}" data-number="${n}" data-part="${t.part}" tabindex="-1"><div class="task-header"><h3><span class="number">${n}.</span> ${M.esc(t.topic)}</h3></div><div class="prompt">${t.prompt}</div>${M.renderDiagram(t.diagram)}${t.part===1?`<div class="answer-row no-print"><label for="answer-${n}">Ответ<input id="answer-${n}" type="text" inputmode="${t.answerType==='number'?'decimal':'numeric'}" maxlength="100" autocomplete="off" spellcheck="false" aria-describedby="feedback-${n}"></label><button data-action="check" data-number="${n}">Проверить</button></div>`:`<label class="work-label no-print" for="work-${n}">Черновик решения (или решите на бумаге)</label><textarea id="work-${n}" maxlength="12000" aria-label="Черновик решения задания ${n}"></textarea>`}<p class="feedback no-print" id="feedback-${n}" role="status"></p><div class="toolbar review-only no-print"><button data-action="hint" data-number="${n}" aria-controls="hint-${n}" aria-expanded="false">Подсказка</button><button data-action="reveal" data-number="${n}" aria-controls="solution-${n}" aria-expanded="false">Показать решение</button></div><div class="help review-only" id="hint-${n}" hidden><b>Идея для следующего шага</b><p>${M.esc(t.hint)}</p></div><div class="help solution review-only" id="solution-${n}" hidden><h4>Разбор задания ${n}</h4>${M.renderDiagram(t.solutionDiagram)}${t.solution}</div>${t.part===2?`<div class="rubric review-only no-print"><h4>Авторские критерии · ручная оценка</h4><dl>${[2,1,0].map(v=>`<dt>${v} ${v===1?'балл':'балла'}</dt><dd>${M.esc(t.rubric[v])}</dd>`).join('')}</dl><label class="manual-label" for="manual-${n}">Оценка задания ${n}<select id="manual-${n}"><option value="">Не оценено</option><option value="0">0 баллов</option><option value="1">1 балл</option><option value="2">2 балла</option></select></label><p class="small">Выставляет ученик или преподаватель. Показ решения отмечается отдельно.</p></div>`:''}<div class="print-space">${t.part===1?'Ответ: __________________':'Место для решения'}</div></article>`;}
-function updateFeedback(t){const e=state.entries[t.number-1],el=$(`feedback-${t.number}`);let msg='',status='blank';if(e.revealed){msg=t.part===1?'Ответ показан — в баллы части 1 не включён.':'Решение показано. Ручная оценка не подтверждает самостоятельность.';status='revealed';}else if(t.part===2){msg=e.input?'Черновик сохранён. Оценка решения — вручную.':'Решение ещё не записано.';status=e.input?'draft':'blank';}else if(!e.input.trim()){msg='Не отвечено.';}else if(!e.checked){msg='Ответ ещё не проверен.';status='pending';}else if(e.correct){msg=e.hinted?'Верно · с подсказкой.':'Верно · самостоятельно.';status='correct';}else{status='wrong';const p=M.parseAnswer(t,e.input);if(!p.valid)msg=t.answerType==='choice'?'Нужна одна цифра от 1 до 4.':t.answerType==='sequence'?'Нужны три цифры от 1 до 3 подряд, без пробелов.':'Запишите одно число: запятая или точка, без единиц и пробелов внутри.';else msg='Неверно. Можно исправить ответ и проверить ещё раз.';}if(e.wrong)msg+=` Неверных попыток: ${e.wrong}.`;if(e.hinted&&!e.revealed&&!e.correct)msg+=' Подсказка использована.';el.textContent=msg;el.dataset.status=status;}
+function updateFeedback(t){
+  const e=state.entries[t.number-1],el=$(`feedback-${t.number}`);
+  let msg='',status='blank';
+  if(t.part===2){
+    msg=e.revealed?'Решение показано. Ручная оценка не подтверждает самостоятельность.':e.input?'Черновик сохранён. Оценка решения — вручную.':'Решение ещё не записано.';
+    status=e.revealed?'revealed':e.input?'draft':'blank';
+  }else if(e.checked&&e.correct){
+    if(e.credit==='independent'){
+      msg='Верно · самостоятельно.';
+      if(e.revealed)msg+=' Решение открыто после самостоятельного ответа; балл сохранён.';
+      else if(e.hinted)msg+=' Подсказка открыта после самостоятельного ответа; балл сохранён.';
+    }else if(e.credit==='assisted'){
+      msg='Верно · с подсказкой.';
+      if(e.revealed)msg+=' Решение открыто после правильного ответа с подсказкой; балл сохранён.';
+    }else msg='Верный ответ введён после показа решения — в баллы части 1 не включён.';
+    status=e.credit==='revealed'?'revealed':'correct';
+  }else if(e.revealed){msg='Решение уже открыто. Новый ответ не даст балла части 1.';status='revealed';}
+  else if(!e.input.trim())msg='Не отвечено.';
+  else if(!e.checked){msg='Ответ ещё не проверен.';status='pending';}
+  else{
+    status='wrong';const p=M.parseAnswer(t,e.input);
+    if(!p.valid)msg=t.answerType==='choice'?'Нужна одна цифра от 1 до 4.':t.answerType==='sequence'?'Нужны три цифры от 1 до 3 подряд, без пробелов.':'Запишите одно число: запятая или точка, без единиц и пробелов внутри.';
+    else msg='Неверно. Можно исправить ответ и проверить ещё раз.';
+  }
+  if(e.wrong)msg+=` Неверных попыток: ${e.wrong}.`;
+  if(e.hinted&&!e.revealed&&!e.correct)msg+=' Подсказка использована.';
+  el.textContent=msg;el.dataset.status=status;
+}
 function diagnostic(t,e){if(t.part===1&&e.checked&&!e.correct){const p=M.parseAnswer(t,e.input);if(p.valid){if(t.answerType==='sequence'){const n=String(p.value).split('').filter((x,i)=>x===t.answer[i]).length;return `Совпало позиций: ${n} из 3. Проверьте порядок АБВ. `+t.hint;}if(t.errors[String(p.value)])return t.errors[String(p.value)]+' '+t.hint;}}return t.hint;}
 function update(){document.body.dataset.mode=state.mode;$('mode-exam').setAttribute('aria-pressed',String(state.mode==='exam'));$('mode-review').setAttribute('aria-pressed',String(state.mode==='review'));const s=M.score(state);for(const k of ['independent','assisted','part1','manual','total'])$(`score-${k}`).textContent=s[k];$('manual-count').textContent=state.entries.slice(19).filter(e=>e.manual!==null).length;for(const t of M.TASKS){const n=t.number,e=state.entries[n-1];$(`hint-${n}`).hidden=!e.hinted;$(`hint-${n}`).querySelector('p').textContent=diagnostic(t,e);$(`solution-${n}`).hidden=!e.revealed;document.querySelector(`[data-action="hint"][data-number="${n}"]`).setAttribute('aria-expanded',String(e.hinted));document.querySelector(`[data-action="reveal"][data-number="${n}"]`).setAttribute('aria-expanded',String(e.revealed));updateFeedback(t);}}
 $('tyre-context').innerHTML=M.tyreContext();$('part1').innerHTML=M.TASKS.filter(t=>t.part===1).map(renderTask).join('');$('part2').innerHTML=M.TASKS.filter(t=>t.part===2).map(renderTask).join('');
 function restoreInputs(){for(const t of M.TASKS){const e=state.entries[t.number-1];$(t.part===1?`answer-${t.number}`:`work-${t.number}`).value=e.input;if(t.part===2)$(`manual-${t.number}`).value=e.manual===null?'':String(e.manual);}}
 restoreInputs();update();notice();
-document.addEventListener('input',event=>{const hit=/^(answer|work)-(\d+)$/.exec(event.target.id);if(!hit)return;const n=Number(hit[2]);state.entries[n-1]={...state.entries[n-1],input:event.target.value,checked:false,correct:false};save();update();});
+document.addEventListener('input',event=>{const hit=/^(answer|work)-(\d+)$/.exec(event.target.id);if(!hit)return;const n=Number(hit[2]);state.entries[n-1]=M.editAnswer(state.entries[n-1],event.target.value);save();update();});
 document.addEventListener('change',event=>{const hit=/^manual-(\d+)$/.exec(event.target.id);if(!hit)return;state.entries[Number(hit[1])-1].manual=event.target.value===''?null:Number(event.target.value);save();update();});
-document.addEventListener('click',event=>{const btn=event.target.closest('button[data-action]');if(!btn)return;const n=Number(btn.dataset.number),t=M.TASKS[n-1],e=state.entries[n-1];if(btn.dataset.action==='check')state.entries[n-1]=M.checkAnswer(t,e);if(btn.dataset.action==='hint')state.entries[n-1]={...e,hinted:true};if(btn.dataset.action==='reveal')state.entries[n-1]=M.reveal(e);save();update();});
+document.addEventListener('click',event=>{const btn=event.target.closest('button[data-action]');if(!btn)return;const n=Number(btn.dataset.number),t=M.TASKS[n-1],e=state.entries[n-1];if(btn.dataset.action==='check')state.entries[n-1]=M.checkAnswer(t,e);if(btn.dataset.action==='hint')state.entries[n-1]=M.hint(e);if(btn.dataset.action==='reveal')state.entries[n-1]=M.reveal(e);save();update();});
 document.addEventListener('keydown',event=>{if(event.key==='Enter'&&event.target.id.startsWith('answer-')){event.preventDefault();const n=Number(event.target.id.slice(7));state.entries[n-1]=M.checkAnswer(M.TASKS[n-1],state.entries[n-1]);save();update();}});
 for(const mode of ['exam','review'])$(`mode-${mode}`).addEventListener('click',()=>{state.mode=mode;save();update();});
 $('check-all').addEventListener('click',()=>{state.entries=state.entries.map((e,i)=>i<19?M.checkAnswer(M.TASKS[i],e):e);save();update();});
