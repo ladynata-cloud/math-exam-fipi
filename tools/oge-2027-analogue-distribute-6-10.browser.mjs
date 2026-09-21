@@ -636,6 +636,12 @@ async function runSurface(number, surface, options) {
       await page.locator('#trainerUrl').fill(relative); await page.locator('#openTrainer').click();
       target = await (await page.locator('#trainerFrame').elementHandle()).contentFrame();
       await target.waitForURL(value => value.pathname === relative, { waitUntil: 'load' });
+      // The board saves its selection with a debounce after loading the iframe.
+      // Observe that write before taking the trainer's foreign-storage baseline.
+      await page.waitForFunction(expected => {
+        const saved = JSON.parse(localStorage.getItem('mathexam.trainerBoard.v1') || '{}');
+        return saved.trainerUrl === expected && document.getElementById('trainerUrl').value === expected;
+      }, relative, { polling: 25 });
     } else {
       const response = await page.goto(url, { waitUntil: 'load' });
       if (surface !== 'file-offline') assert.equal(response.status(), 200);
@@ -692,7 +698,9 @@ try {
   port = server.address().port; origin = 'http://127.0.0.1:' + port;
   const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || process.env.BROWSER_EXECUTABLE_PATH;
   browserServer = await chromium.launchServer({ headless: true, ...(executablePath ? { executablePath } : { channel: 'msedge' }),
-    args: ['--disable-background-mode', '--disable-extensions', '--no-first-run', '--disable-background-networking'] });
+    // Software rendering avoids stalled animation frames in Windows headless Edge.
+    // Normal actionability checks and all UI/storage assertions remain enabled.
+    args: ['--disable-gpu', '--disable-background-mode', '--disable-extensions', '--no-first-run', '--disable-background-networking'] });
   evidence.browserPid = browserServer.process().pid;
   browser = await chromium.connect(browserServer.wsEndpoint());
   for (const number of files.keys()) {
