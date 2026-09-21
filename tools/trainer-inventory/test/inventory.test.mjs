@@ -1033,30 +1033,29 @@ test('scoped CLI marker cannot claim the full gate', async () => {
   assert.match(gateSource, /Committed diff check/);
 });
 
-test('working diff stays inside the approved docs, skill, fixture, and tool scope', async () => {
-  const { stdout } = await execFileAsync(
-    'git',
-    ['status', '--porcelain=v1', '-uall'],
-    { cwd: repoRoot, windowsHide: true }
-  );
-  const changed = stdout
-    .split(/\r?\n/)
-    .filter(Boolean)
-    .map(line => line.slice(3).replaceAll('\\', '/'));
-  const { stdout: baseStdout } = await execFileAsync(
-    'git',
-    ['merge-base', 'HEAD', 'origin/main'],
-    { cwd: repoRoot, windowsHide: true }
-  );
-  const { stdout: committedStdout } = await execFileAsync(
-    'git',
-    ['diff', '--name-only', `${baseStdout.trim()}..HEAD`],
-    { cwd: repoRoot, windowsHide: true }
-  );
-  const allChanged = [
-    ...changed,
-    ...committedStdout.split(/\r?\n/).filter(Boolean).map(value => value.replaceAll('\\', '/'))
-  ];
+// Historical allowlists stay attached to closed task snapshots. The current
+// owner-approved task always runs its independent exact six-file check below.
+const distributionBase = '7ebbd328d7b59b691eb50d01324d4c438aa8404c';
+const distributionScope = Object.freeze([
+  'trainers/oge-1-5-trainers/practice-1-5-tires.html',
+  'tools/oge-2027-analogue-distribute-1-5.test.mjs',
+  'tools/oge-2027-analogue-distribute-1-5.browser.mjs',
+  'docs/tasks/OGE_2027_ANALOGUE_DISTRIBUTE_1_5.md',
+  'tools/oge-2027-analogue-1.test.mjs',
+  'tools/trainer-inventory/test/inventory.test.mjs'
+]);
+const historicalPr124Scope = Object.freeze([
+  'trainers/oge-2027-analogue-1.html',
+  'tools/oge-2027-analogue-1.test.mjs',
+  'tools/oge-2027-analogue-1.browser.mjs',
+  'docs/tasks/OGE_2027_AUTHOR_ANALOGUE_1.md',
+  'trainers/oge-course/index.html',
+  'sitemap.xml'
+]);
+function assertExactTaskScope(changed, allowed) {
+  assert.deepEqual([...changed].sort(), [...allowed].sort());
+}
+function assertHistoricalInventoryScope(allChanged) {
   // Owner-approved focused trainer fix: keep its exact six-file boundary
   // separate from the historical inventory-only task boundary below.
   const focusedFiles = new Set([
@@ -1083,6 +1082,50 @@ test('working diff stays inside the approved docs, skill, fixture, and tool scop
     || relative.startsWith('tools/trainer-inventory/')
   ));
   assert.deepEqual(allChanged.sort(), allowed.sort());
+}
+
+test('working diff stays inside the approved docs, skill, fixture, and tool scope', async () => {
+  const snapshots = [
+    ['10363b151cd22da5b997c0f83c5d5f8b48c26df6', 'fbd46afd92a58875b1b89af329b9d37a676abe52'],
+    ['fbd46afd92a58875b1b89af329b9d37a676abe52', '5d49ad8919aac4763f1671d93549545755134364']
+  ];
+  for (const [base, head] of snapshots) {
+    const { stdout } = await git(repoRoot, ['diff', '--name-only', '--no-renames', '-z', base, head, '--']);
+    const allChanged = stdout.split('\0').filter(Boolean);
+    assert.ok(allChanged.length > 0, 'Historical task scope is not empty');
+    assertHistoricalInventoryScope(allChanged);
+  }
+});
+
+test('OGE_2027_ANALOGUE_DISTRIBUTE_1_5 has exactly its six approved changed files', async () => {
+  await git(repoRoot, ['merge-base', '--is-ancestor', distributionBase, 'HEAD']);
+  const { stdout: tracked } = await git(repoRoot, ['diff', '--name-only', '--no-renames', '-z', distributionBase, '--']);
+  const { stdout: untracked } = await git(repoRoot, ['ls-files', '--others', '--exclude-standard', '-z']);
+  const changed = new Set([...tracked.split('\0'), ...untracked.split('\0')].filter(Boolean));
+  assertExactTaskScope(changed, distributionScope);
+});
+
+test('historical PR124 scope remains exactly its original six paths', async () => {
+  const { stdout } = await git(repoRoot, [
+    'diff', '--name-only', '--no-renames', '-z', '5d49ad8919aac4763f1671d93549545755134364', distributionBase, '--'
+  ]);
+  assertExactTaskScope(stdout.split('\0').filter(Boolean), historicalPr124Scope);
+});
+
+test('task scope fixtures reject missing, extra, substituted and historical paths', () => {
+  for (const allowed of [distributionScope, historicalPr124Scope]) {
+    assert.equal(allowed.length, 6);
+    assert.equal(new Set(allowed).size, 6);
+    assertExactTaskScope(allowed, allowed);
+    for (let index = 0; index < allowed.length; index++) {
+      assert.throws(() => assertExactTaskScope(allowed.filter((_, i) => i !== index), allowed));
+    }
+    assert.throws(() => assertExactTaskScope([...allowed, 'tools/unapproved.test.mjs'], allowed));
+    assert.throws(() => assertExactTaskScope([...allowed.slice(0, -1), 'tools/unapproved.test.mjs'], allowed));
+    assert.throws(() => assertExactTaskScope([...allowed, allowed[0]], allowed));
+  }
+  assert.throws(() => assertExactTaskScope(historicalPr124Scope, distributionScope));
+  assert.throws(() => assertExactTaskScope(distributionScope, historicalPr124Scope));
 });
 
 test('committed-scope sources contain no secret assignment or machine absolute path', async () => {

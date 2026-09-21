@@ -314,6 +314,29 @@
 
   @keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* The longer author label must not stretch the existing variant selector. */
+  .variant-select{max-width:100%;min-width:0}
+  .author-source{margin-top:14px;padding:14px 18px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;background:var(--gold-soft);color:var(--accent)}
+  .author-source p{margin-top:4px;font-size:14px;color:var(--ink-soft)}
+  body[data-source-kind="author-analogue"] :is(button,input,select,.back-link){min-height:44px;min-width:44px}
+  body[data-source-kind="author-analogue"] .vb-arrow{width:44px;height:44px}
+  body[data-source-kind="author-analogue"] :is(button,input,select,a):focus-visible{outline:3px solid var(--gold-deep);outline-offset:3px}
+  body[data-source-kind="author-analogue"] .topnav{position:static}
+  body[data-source-kind="author-analogue"] :is(.card,.substep,.teacher-block,.variant-bar){overflow-wrap:anywhere}
+  body[data-source-kind="author-analogue"] .layout>main{min-width:0}
+  body[data-source-kind="author-analogue"] .substep-input{max-width:100%}
+  body[data-source-kind="author-analogue"] .compat-table{min-width:0}
+  body[data-source-kind="author-analogue"] .compat-table :is(th,td){padding:9px 3px}
+  body[data-source-kind="author-analogue"] .ref-mini table{min-width:0}
+  body[data-source-kind="author-analogue"] .ref-mini :is(th,td){padding:7px 3px}
+  body[data-source-kind="author-analogue"] .substep-label .step-icon{flex-shrink:0}
+  body[data-source-kind="author-analogue"] .author-wheel{width:100%;height:auto}
+  @media(max-width:560px){
+    body[data-source-kind="author-analogue"] .wrap{padding-left:14px;padding-right:14px}
+    body[data-source-kind="author-analogue"] .card{padding:16px}
+    body[data-source-kind="author-analogue"] .variant-select{width:100%;font-family:inherit;font-size:13px}
+    body[data-source-kind="author-analogue"] .variant-bar{gap:12px}
+  }
 </style>
 </head>
 <body data-mode="learn">
@@ -342,12 +365,17 @@
 
   <div class="variant-bar">
     <span class="vb-label">Вариант</span>
-    <select class="variant-select" id="variant-select"></select>
+    <select class="variant-select" id="variant-select" aria-label="Вариант"></select>
     <span class="vb-factory">завод ставит <b id="vb-factory">—</b></span>
     <div class="vb-nav">
       <button class="vb-arrow" id="vb-prev" title="предыдущий вариант">‹</button>
       <button class="vb-arrow" id="vb-next" title="следующий вариант">›</button>
     </div>
+  </div>
+
+  <div id="author-source" class="author-source" hidden>
+    <strong></strong>
+    <p>Авторский комплект MathExam. Не является официальным материалом ФИПИ.</p>
   </div>
 
   <div class="roadmap">
@@ -471,6 +499,26 @@ const VARIANTS = [
    {w:265,cells:{17:'265/70',18:'265/65',20:null}},{w:275,cells:{17:'275/70; 275/65',18:'275/65; 275/60',20:'275/55'}},{w:285,cells:{17:'285/65; 285/60',18:'285/60',20:'285/50'}}]}}},
 ];
 
+/* One complete author set; the twenty historical records above stay untouched. */
+const AUTHOR_VARIANT = {
+  code:'oge-2027-analogue-1',
+  label:'Авторский аналог ОГЭ-2027 · Вариант 1',
+  sourceKind:'author-analogue',
+  sourceTaskIds:[
+    'oge2027-analogue-1-task-01','oge2027-analogue-1-task-02',
+    'oge2027-analogue-1-task-03','oge2027-analogue-1-task-04','oge2027-analogue-1-task-05'
+  ],
+  factory:'185/65 R14', t2:'205/50 R16', t4:'195/60 R15',
+  t4Base:'185/60 R15', t4Measure:'radius', t5:'195/60 R15',
+  t1:{disk:15,mode:'max',compat:{disks:[14,15,16],rows:[
+    {w:175,cells:{14:'175/70',15:'175/65',16:null}},
+    {w:185,cells:{14:'185/65',15:'185/60',16:null}},
+    {w:195,cells:{14:null,15:'195/60',16:'195/55'}},
+    {w:205,cells:{14:null,15:'205/55',16:'205/50'}}
+  ]}}
+};
+VARIANTS.push(AUTHOR_VARIANT);
+
 /* ===== HELPERS & MODEL ===== */
 const INCH = 25.4;
 const r1 = x => Math.round(x*10)/10;
@@ -487,19 +535,21 @@ function tire(m){
 
 function buildVariant(v){
   const factory=tire(v.factory), t2=tire(v.t2), t4=tire(v.t4), t5=tire(v.t5);
+  const t4Base=v.t4Base ? tire(v.t4Base) : factory;
   // unique tire rows in reading order: factory, t2, t4, t5
   const order=[factory,t2,t4,t5], seen={}, rows=[];
+  if(v.t4Base) order.push(t4Base);
   order.forEach(t=>{ if(!seen[t.m]){ seen[t.m]=true; rows.push(t); } });
   rows.forEach((t,i)=>{
     t.id='r'+i;
-    const tasks=[]; if(t2.m===t.m) tasks.push(2); if(t4.m===t.m) tasks.push(4); if(t5.m===t.m) tasks.push(5);
+    const tasks=[]; if(t2.m===t.m) tasks.push(2); if(t4.m===t.m || (v.t4Base && t4Base.m===t.m)) tasks.push(4); if(t5.m===t.m) tasks.push(5);
     const parts=[]; const isF=(factory.m===t.m); t.isFactory=isF;
     if(isF) parts.push('заводская');
     if(tasks.length) parts.push('задач'+(tasks.length>1?'и':'а')+' '+tasks.join(', '));
     t.role=parts.join(' · ');
   });
   const byId={}; rows.forEach(t=>byId[t.id]=t);
-  const dir4 = t4.D>=factory.D ? 'inc' : 'dec';
+  const dir4 = t4.D>=t4Base.D ? 'inc' : 'dec';
   const dir5 = t5.D>=factory.D ? 'inc' : 'dec';
   // task-1 answer
   const {disk,mode,compat}=v.t1;
@@ -509,11 +559,11 @@ function buildVariant(v){
     t1: t1ans,
     t2: t2.H,
     t3: factory.D,
-    t4: r1(Math.abs(t4.D - factory.D)),
+    t4: r1(Math.abs(t4.D - t4Base.D)/(v.t4Measure==='radius'?2:1)),
     t5: r1(Math.abs(t5.D/factory.D - 1)*100),
     t5x: r1(t5.D*100/factory.D),        // new relative to old, %
   };
-  return { v, factory, t2, t4, t5, rows, byId, dir4, dir5, ans, okW };
+  return { v, factory, t2, t4, t5, rows, byId, dir4, dir5, ans, okW, ...(v.t4Base?{t4Base}:{}) };
 }
 
 /* ===== STATE + STORAGE ===== */
@@ -771,13 +821,13 @@ function renderMarking(){
     <div class="marking-display"><div class="marking-line">
       <span class="seg hl-B">${f.B}</span><span class="sep">/</span><span class="seg hl-p">${f.p}</span><span class="seg hl-R">R</span><span class="seg hl-d">${f.d}</span>
     </div><div class="marking-label">маркировка заводской шины</div></div>
-    <div class="figures">
+    ${VD.v.sourceKind==='author-analogue' ? `<figure class="fig"><svg class="wheel author-wheel" id="author-wheel" viewBox="0 0 600 380" role="img" aria-label="Диаметр заводского колеса: две боковины и диск"></svg><figcaption>Авторская схема MathExam: D = H + d + H</figcaption></figure>` : `<div class="figures">
       <figure class="fig"><img src="${RIS1}" alt="шина с маркировкой 195/65 R15"><figcaption>Рис. 1 — пример: маркировка 195/65 R15 на боковине</figcaption></figure>
       <figure class="fig"><img src="${RIS2}" alt="схема размеров шины: D, d, H, B"><figcaption>Рис. 2 — из чего складывается колесо</figcaption></figure>
-    </div>
+    </div>`}
     <div class="dim-legend">
-      <div class="dl-title">разберём Рис. 2 — четыре размера</div>
-      <div class="dl-item"><span class="dl-key b">B</span><span><b>ширина шины</b> — первое число маркировки (${f.B} мм). На схеме — ширина внизу.</span></div>
+      <div class="dl-title">${VD.v.sourceKind==='author-analogue'?'четыре размера колеса':'разберём Рис. 2 — четыре размера'}</div>
+      <div class="dl-item"><span class="dl-key b">B</span><span><b>ширина шины</b> — первое число маркировки (${f.B} мм). ${VD.v.sourceKind==='author-analogue'?'Ширина измеряется поперёк шины.':'На схеме — ширина внизу.'}</span></div>
       <div class="dl-item"><span class="dl-key h">H</span><span><b>высота боковины</b> — резина от диска до края, сверху и снизу по H. Прямо не пишется — считается из процента: H = B · p / 100.</span></div>
       <div class="dl-item"><span class="dl-key d">d</span><span><b>диаметр диска</b> — число после R (${f.d}″), внутренняя часть на схеме. В миллиметрах: d · 25,4.</span></div>
       <div class="dl-item"><span class="dl-key dd">D</span><span><b>полный диаметр колеса</b> — по схеме это H + d + H, то есть <b>D = 2H + d</b>. Его и спрашивают в задаче 3.</span></div>
@@ -807,6 +857,7 @@ function renderMarking(){
     </div>
     ${navRow(null,'',1,'Собрать таблицу варианта')}
   </div>`;
+  if(VD.v.sourceKind==='author-analogue') renderCrossSection(document.getElementById('author-wheel'),f);
   // wire marking quizzes
   QUIZDONE={B:false,p:false,Rd:false};
   sec.querySelectorAll('.quiz-options[data-mquiz] .quiz-opt').forEach(btn=>{
@@ -871,7 +922,7 @@ function renderTable(){
       <b>Таблица собрана!</b> Все диаметры посчитаны и продублированы в панель «Твоя таблица» справа. Теперь переходи к задачам — ответы читаются прямо из неё.
     </div>
 
-    <div class="schema-ref"><img src="${RIS2}" alt="схема шины из условия"><div class="sr-text">Как на схеме из условия (Рис. 2): сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Сложи их по высоте — получишь полный диаметр: <b>D = H + d + H = 2H + d</b>. Ниже — то же самое, но с числами твоей шины.</div></div>
+    ${VD.v.sourceKind==='author-analogue' ? `<div class="schema-ref"><div class="sr-text">Сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Поэтому <b>D = H + d + H = 2H + d</b>. Ниже — авторская схема с размерами заводского колеса.</div></div>` : `<div class="schema-ref"><img src="${RIS2}" alt="схема шины из условия"><div class="sr-text">Как на схеме из условия (Рис. 2): сверху боковина <b>H</b>, посередине диск <b>d</b>, снизу ещё боковина <b>H</b>. Сложи их по высоте — получишь полный диаметр: <b>D = H + d + H = 2H + d</b>. Ниже — то же самое, но с числами твоей шины.</div></div>`}
     <div class="wheel-svg-wrap"><svg class="wheel" viewBox="0 0 600 380" id="cross-svg" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="d-box">D = H + d<sub style="font-size:.7em">мм</sub> + H = 2H + d<sub style="font-size:.7em">мм</sub><small>сверху боковина H, диск d, снизу ещё боковина H — поэтому 2H</small></div>
 
@@ -1011,6 +1062,7 @@ function renderTask3(){
 
 /* ===== RENDER: TASK 4 (ΔD, from table) ===== */
 function renderTask4(){
+  if(VD.v.t4Measure==='radius') return renderTask4Radius();
   const sec=document.getElementById('section-5'); const f=VD.factory, t=VD.t4, dir=VD.dir4, diff=VD.ans.t4;
   const dirWord=dir==='inc'?'увеличится':'уменьшится';
   const hi=fmt(Math.max(f.D,t.D)), lo=fmt(Math.min(f.D,t.D));
@@ -1035,6 +1087,33 @@ function renderTask4(){
     ${navRow(4,'Задача 3',6,'Задача 5')}
   </div>`;
   CHECKS['t4-diff']={correct:diff,tol:0.1,stepIdx:5,isFinal:true,hint:v=>{ if(v<0 && Math.abs(Math.abs(v)-diff)<0.1) return 'Знак минус не нужен — в ответ модуль (положительное число).'; if(Math.abs(v-Math.abs(f.dm-t.dm))<0.2 && Math.abs(f.dm-t.dm)>0.2) return `Похоже, вычел только диски. Нужна разность диаметров: ${hi} − ${lo}.`; return `${hi} − ${lo} = ${fmt(diff)}.`; }};
+}
+
+/* The author question compares radii of two specified tyres, not the factory. */
+function renderTask4Radius(){
+  const sec=document.getElementById('section-5'), f=VD.t4Base, t=VD.t4, diff=VD.ans.t4;
+  sec.innerHTML=`<div class="card">
+    <div class="card-header"><span class="card-tag blue">Задача 4</span><h2>Сравни <em>радиусы колёс</em></h2></div>
+    <p class="card-intro">На сколько миллиметров радиус колеса с шиной <b>${t.m}</b> больше радиуса колеса с шиной <b>${f.m}</b>?</p>
+    ${gateNote()}
+    <div class="task-body" style="display:none">
+      ${refMini('твоя таблица · сравниваем две строки',[f.id,t.id])}
+      ${scHTML('t4-dir','?','Что произошло с радиусом?',`Радиус — половина диаметра. Из таблицы: D₁ = <b>${fmt(f.D)}</b>, D₂ = <b>${fmt(t.D)}</b>. Радиус увеличился или уменьшился?`,[
+        {t:'увеличился',c:true},
+        {t:'уменьшился',e:`${fmt(t.D)} > ${fmt(f.D)}: больше диаметр — больше и радиус.`}],false)}
+      ${subHTML('t4-diff','=','На сколько мм больше радиус?',`R₂ − R₁ = (D₂ − D₁) / 2 = <span class="math">(${fmt(t.D)} − ${fmt(f.D)}) / 2</span> = ?`,'мм',`(${fmt(t.D)} − ${fmt(f.D)}) / 2 = ${fmt(diff)}. Диаметры дисков одинаковы, поэтому можно также вычесть высоты боковин: ${fmt(t.H)} − ${fmt(f.H)}.`,true)}
+      <div class="teacher-block"><div class="label">Решение задачи 4</div>
+        <div class="step">D₁ (${f.m}) = ${fmt(f.D)} мм; D₂ (${t.m}) = ${fmt(t.D)} мм.</div>
+        <div class="step">R₁ = ${fmt(f.D/2)} мм; R₂ = ${fmt(t.D/2)} мм.</div>
+        <div class="step">R₂ − R₁ = (${fmt(t.D)} − ${fmt(f.D)}) / 2 = <b>${fmt(diff)} мм</b>.</div>
+        <div class="step">Или: диски одинаковые, значит разность радиусов равна разности боковин: ${t.B} · ${t.p} / 100 − ${f.B} · ${f.p} / 100 = ${fmt(diff)} мм.</div>
+        <span class="answer-display">Ответ: ${fmt(diff)}</span>
+        <div class="note">Разность диаметров равна ${fmt(t.D-f.D)} мм. Вопрос о радиусах: обязательно раздели её на 2.</div>
+      </div>
+    </div>
+    ${navRow(4,'Задача 3',6,'Задача 5')}
+  </div>`;
+  CHECKS['t4-diff']={correct:diff,tol:0.1,stepIdx:5,isFinal:true,hint:v=>Math.abs(v-(t.D-f.D))<0.1 ? 'Это разность диаметров. Для радиусов раздели её на 2.' : `(${fmt(t.D)} − ${fmt(f.D)}) / 2 = ${fmt(diff)} мм.`};
 }
 
 /* ===== RENDER: TASK 5 (percent + animation) ===== */
@@ -1213,9 +1292,18 @@ function goToStep(idx){
 /* ===== VARIANTS ===== */
 function populateVariants(){
   const sel=document.getElementById('variant-select'); sel.innerHTML='';
-  VARIANTS.forEach((v,i)=>{ const o=document.createElement('option'); o.value=String(i); o.textContent=(i+1)+'. группа '+v.code+' · завод '+v.factory; sel.appendChild(o); });
+  VARIANTS.forEach((v,i)=>{ const o=document.createElement('option'); o.value=String(i); o.textContent=v.label || (i+1)+'. группа '+v.code+' · завод '+v.factory; sel.appendChild(o); });
 }
 function refreshVariantBar(){
+  const v=VARIANTS[state.variantIdx], author=v.sourceKind==='author-analogue';
+  document.body.dataset.sourceKind=v.sourceKind || 'legacy';
+  const source=document.getElementById('author-source');
+  if(source){ source.hidden=!author; source.querySelector('strong').textContent=author?v.label:''; }
+  document.title=author ? 'Шины · '+v.label : 'Шины · тренажёр 1–5 (весь банк ФИПИ)';
+  document.querySelector('.eyebrow').textContent=author ? 'задачи 1–5 ОГЭ · авторский комплект MathExam' : 'задачи 1–5 ОГЭ · весь банк ФИПИ';
+  document.querySelector('.subtitle').textContent=author
+    ? 'Один авторский комплект: общая заводская шина и таблица допустимых размеров для всех пяти задач. Сначала собери таблицу, затем используй её для решения.'
+    : 'Все 20 вариантов банка устроены одинаково. Секрет — не считать диаметр заново в каждой задаче, а один раз собрать таблицу для всех шин варианта и потом просто читать из неё ответы.';
   const sel=document.getElementById('variant-select'); if(sel) sel.value=String(state.variantIdx);
   const vf=document.getElementById('vb-factory'); if(vf) vf.textContent=VARIANTS[state.variantIdx].factory;
 }
@@ -1229,12 +1317,18 @@ function loadVariant(idx){
   saveStore();
 }
 
+function initialVariantIndex(saved, search){
+  const parameters=new URLSearchParams(search), requested=parameters.get('variant');
+  if(parameters.getAll('variant').length===1 && requested===AUTHOR_VARIANT.code) return VARIANTS.findIndex(v=>v.code===requested);
+  const index=VARIANTS.findIndex(v=>v.code===saved.selectedCode);
+  return index>=0 ? index : 0;
+}
+
 /* ===== INIT ===== */
 function init(){
   const s=loadStore();
   if(s.mode && ['learn','practice','teacher'].indexOf(s.mode)>=0) state.mode=s.mode;
-  let idx=0;
-  if(s.selectedCode){ const i=VARIANTS.findIndex(v=>v.code===s.selectedCode); if(i>=0) idx=i; }
+  const idx=initialVariantIndex(s,location.search);
   state.variantIdx=idx;
   populateVariants();
 

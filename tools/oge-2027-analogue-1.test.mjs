@@ -599,6 +599,54 @@ gate('one course card and one sitemap entry point to the author page', () => {
   assert.equal(urls.filter(url => url === target.href).length, 1);
 });
 
+// Closed PR124 scopes are immutable snapshots. The new task has its own
+// unconditional exact scope; missing files cannot select a historical fallback.
+const distributionBase = '7ebbd328d7b59b691eb50d01324d4c438aa8404c';
+const distributionScope = Object.freeze([
+  'trainers/oge-1-5-trainers/practice-1-5-tires.html',
+  'tools/oge-2027-analogue-distribute-1-5.test.mjs',
+  'tools/oge-2027-analogue-distribute-1-5.browser.mjs',
+  'docs/tasks/OGE_2027_ANALOGUE_DISTRIBUTE_1_5.md',
+  'tools/oge-2027-analogue-1.test.mjs',
+  'tools/trainer-inventory/test/inventory.test.mjs',
+]);
+const historicalPr124Scope = Object.freeze([
+  relativeTrainer, 'tools/oge-2027-analogue-1.test.mjs',
+  'tools/oge-2027-analogue-1.browser.mjs', 'docs/tasks/OGE_2027_AUTHOR_ANALOGUE_1.md',
+  'trainers/oge-course/index.html', 'sitemap.xml',
+]);
+function assertExactTaskScope(changed, allowed) {
+  assert.deepEqual([...changed].sort(), [...allowed].sort());
+}
+
+gate('OGE_2027_ANALOGUE_DISTRIBUTE_1_5 has exactly its six approved changed files', () => {
+  const git = (...args) => execFileSync('git', ['-c', 'safe.directory=' + root, ...args], {
+    cwd: root, encoding: 'utf8',
+  });
+  git('merge-base', '--is-ancestor', distributionBase, 'HEAD');
+  const changed = new Set([
+    ...git('diff', '--name-only', '--no-renames', '-z', distributionBase, '--').split('\0'),
+    ...git('ls-files', '--others', '--exclude-standard', '-z').split('\0'),
+  ].filter(Boolean));
+  assertExactTaskScope(changed, distributionScope);
+});
+
+gate('task scope fixtures reject missing, extra, substituted and historical paths', () => {
+  for (const allowed of [distributionScope, historicalPr124Scope]) {
+    assert.equal(allowed.length, 6);
+    assert.equal(new Set(allowed).size, 6);
+    assertExactTaskScope(allowed, allowed);
+    for (let index = 0; index < allowed.length; index++) {
+      assert.throws(() => assertExactTaskScope(allowed.filter((_, i) => i !== index), allowed));
+    }
+    assert.throws(() => assertExactTaskScope([...allowed, 'tools/unapproved.test.mjs'], allowed));
+    assert.throws(() => assertExactTaskScope([...allowed.slice(0, -1), 'tools/unapproved.test.mjs'], allowed));
+    assert.throws(() => assertExactTaskScope([...allowed, allowed[0]], allowed));
+  }
+  assert.throws(() => assertExactTaskScope(historicalPr124Scope, distributionScope));
+  assert.throws(() => assertExactTaskScope(distributionScope, historicalPr124Scope));
+});
+
 gate('changed-file scope is limited to the six owner-approved paths', () => {
   const allowed = new Set([
     relativeTrainer, 'tools/oge-2027-analogue-1.test.mjs',
@@ -609,8 +657,7 @@ gate('changed-file scope is limited to the six owner-approved paths', () => {
     cwd: root, encoding: 'utf8',
   });
   const changed = new Set([
-    ...git('diff', '--name-only', '5d49ad8919aac4763f1671d93549545755134364').trim().split(/\r?\n/),
-    ...git('ls-files', '--others', '--exclude-standard').trim().split(/\r?\n/),
+    ...git('diff', '--name-only', '5d49ad8919aac4763f1671d93549545755134364', distributionBase).trim().split(/\r?\n/),
   ].filter(Boolean));
   assert.deepEqual([...changed].sort(), [...allowed].sort());
   for (const file of changed) assert.ok(allowed.has(file), 'Out of scope: ' + file);
@@ -1080,7 +1127,7 @@ gate('provenance remediation changes only the four approved implementation test 
     'tools/oge-2027-analogue-1.browser.mjs', 'docs/tasks/OGE_2027_AUTHOR_ANALOGUE_1.md',
   ]);
   const changed = execFileSync('git', [
-    '-c', 'safe.directory=' + root, 'diff', '--name-only', '893419cac70c8d56ce67ed8c94f63a7610c70f8a',
+    '-c', 'safe.directory=' + root, 'diff', '--name-only', '893419cac70c8d56ce67ed8c94f63a7610c70f8a', distributionBase,
   ], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
   for (const file of changed) assert.ok(allowed.has(file), 'Remediation exceeded scope: ' + file);
 });
