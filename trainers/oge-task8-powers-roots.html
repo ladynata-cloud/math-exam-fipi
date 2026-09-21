@@ -1164,7 +1164,7 @@ function marCard(t){
   div.className="mtask"+(author?" author-task":"")+(marState[t.id]==="ok"?" ok":marState[t.id]==="shown"?" shown":"");
   div.innerHTML=`<div class="mid"><span>№ ${t.id} · ${g.name}</span>
       <span class="crosslink" data-a="learn">теория</span></div>
-    ${author?`<div class="author-source" data-source-task-id="${AUTHOR_SOURCE.sourceTaskId}"><b>${AUTHOR_SOURCE.label}</b><p>${AUTHOR_SOURCE.disclaimer}</p><p data-author-status>${authorProgressText()}</p></div>`:""}
+    ${author?`<div class="author-source" data-source-task-id="${AUTHOR_SOURCE.sourceTaskId}"><b>${AUTHOR_SOURCE.label}</b><p>${AUTHOR_SOURCE.disclaimer}</p><p data-author-status>${authorProgressText()}</p><p data-author-repeat-note>Поля очищаются, но результат и история помощи сохраняются до обновления страницы.</p></div>`:""}
     <div class="expr">${renderTask(t)}</div>
     <div class="mrow">
       <input class="ans" placeholder="ответ">
@@ -1222,7 +1222,7 @@ function marCard(t){
     }});
   };
   if(author){
-    const restart=document.createElement("button");restart.className="act sec";restart.textContent="Начать заново";
+    const restart=document.createElement("button");restart.className="act sec";restart.textContent="Повторить задачу";
     restart.onclick=()=>div.replaceWith(marCard(t));div.querySelector(".mrow").appendChild(restart);
   }
   return div;

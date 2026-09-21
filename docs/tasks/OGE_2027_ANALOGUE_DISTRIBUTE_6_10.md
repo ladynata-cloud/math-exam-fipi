@@ -86,3 +86,52 @@ Final committed-head, virtual-merge and Draft PR evidence is reported in the PR 
 - Browser gate: `OGE_2027_ANALOGUE_6_10_BROWSER_OK`.
 - Complete gate: `OGE_2027_ANALOGUE_DISTRIBUTE_6_10_GATE_OK`.
 - Draft handoff: `OGE_2027_ANALOGUE_DISTRIBUTE_6_10_DRAFT_READY`.
+
+## PR #126 owner-review remediation: honest repeat labels
+
+Owner-approved task `PR126_REPEAT_LABEL_REMEDIATION` continues this existing
+Draft PR and branch. The finding was reproduced on head
+`d2b936d515cebcb65246a8a8f86654d1904894c1`, tree
+`542ce764aad09febfe86af04e9b079dd7b0970ed`, with unchanged main
+`d5c9d0388ab3b22bcffec10d11504a0624e2b598`.
+
+In tasks 7 and 8, the old **Начать заново** button recreated the card while
+retaining author help/reveal history, status and earned credit. Its label
+incorrectly implied a fresh attempt with no history. The replacement label is
+**Повторить задачу**, with this visible explanation beside the author status:
+
+> Поля очищаются, но результат и история помощи сохраняются до обновления страницы.
+
+The existing handlers remain unchanged. Repeating clears inputs, choices,
+feedback and open steps so the task can be solved again. It preserves earned
+credit and all help/reveal provenance; it neither reduces the score nor grants
+additional independent credit. A shown or assisted attempt cannot become an
+independent result through this button. Reload continues to clear session-only
+author progress. Controls and behavior in tasks 6, 9 and 10 are unchanged.
+
+The remediation changes exactly six existing full-PR paths:
+
+1. `trainers/oge-task7-number-line.html`
+2. `trainers/oge-task8-powers-roots.html`
+3. `tools/oge-2027-analogue-distribute-6-10.browser.mjs`
+4. `docs/tasks/OGE_2027_ANALOGUE_DISTRIBUTE_6_10.md`
+5. `tools/trainer-inventory/test/inventory.test.mjs`
+6. `docs/tasks/TRAINER_INVENTORY_HASH_BASIS_V1.md`
+
+The full PR still has its exact eleven-path scope. Task data, mathematics,
+SVG/data, old records, IDs, order, answers, solutions and defaults are preserved.
+Only Pilot A row 8 changes because its HTML blob changes; rows 6, 9 and 20 stay
+fixed, and hash-basis history receives one appended change record.
+
+The browser gate explicitly tests independent/reveal repeat cases for task 7
+and independent/hint/reveal repeat cases for task 8 on all five surfaces. It
+checks cleared controls, unchanged credit/status/counters, visible explanation,
+reload behavior, 44px controls, keyboard focus, overflow, storage and errors.
+Source assertions reject the old label in these author controls. Final exact
+head/tree, gate counts, fresh virtual merge and task-8 Git-object evidence are
+recorded in the PR body and handoff after execution.
+
+One ordinary remediation commit and push are authorized. PR #126 remains
+Draft; merge/deploy and tasks 11–14 remain unauthorized. Rollback is a normal
+revert of that remediation commit. Review status:
+`PENDING_OWNER_REVIEW_AFTER_REPEAT_LABEL_FIX`.

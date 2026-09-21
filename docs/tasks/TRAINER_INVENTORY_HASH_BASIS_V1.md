@@ -304,3 +304,13 @@ One tagged author record and its local cohort/provenance UI are added in each af
 | `trainers/oge-task9-equations.html` | `fde6982c69734dc47e5be4909829fc21706b819c` | `46931359f06bc3789ce4aefe2b78610ad37594ec` | `c4813016e37b4e5b87524f1e3270cb3856027b01f89c616d4bcd619d58f343be` | `aa388060ddec214ac09b7301bdd7cb47fd24b636e7b84d40c951048d227e7a8d` | 181899 | 185610 |
 
 Task 20 remains `839f2fcd27bea701be1e3178ff3863bd72283905b91c57c626395404629e90ad`, 163028 Git bytes. Tasks 7 and 10 are not added to Pilot A. Inventory logic, schema, CLI, gate and `PILOT_A_PATHS` remain unchanged.
+
+## PR #126 repeat-label remediation: task 8 Pilot A change
+
+Owner-approved `PR126_REPEAT_LABEL_REMEDIATION` continues the same Draft PR and branch. Previous head: `d2b936d515cebcb65246a8a8f86654d1904894c1`. Only the button label and a visible explanation change in task 8; its task records, expression, answers, handlers and sticky provenance remain unchanged. This is a candidate identity for the Draft, not a merged baseline. Every preceding history byte is preserved.
+
+| Trainer | Old Git blob | New Git blob | Old SHA-256 | New SHA-256 | Old sizeBytes | New sizeBytes |
+|---|---|---|---|---|---:|---:|
+| `trainers/oge-task8-powers-roots.html` | `49ba82532c19cf1f64260d42593ac86402de0b0c` | `79e45d69cde459e495d5683d67d60de739a0445e` | `1cd5dc87372ad5578152a95f793bce3e303f59fa9332f1ab06eadc6c2ec433b0` | `33e569643e2f682b21a4c4fb5cc6a55c8c01ac813fd91a41ce4f0dab6c63b43e` | 103158 | 103345 |
+
+Both measurements use `git cat-file blob` bytes, including the existing UTF-8 BOM. Only Pilot row 8 changes. Rows 6, 9 and 20, inventory logic/schema/CLI/gate and the eleven-file full-PR scope are unchanged.

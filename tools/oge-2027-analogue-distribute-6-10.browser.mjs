@@ -12,7 +12,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_CORE_PATH || 'playwright-core');
 const evidenceDir = fs.mkdtempSync(path.join(os.tmpdir(), 'oge2027-6-10-browser-'));
-const evidence = { surfaces: [], errors: [], externalRequests: [], cleanup: [], evidenceDir };
+const evidence = { surfaces: [], repeatContracts: [], errors: [], externalRequests: [], cleanup: [], evidenceDir };
 const files = new Map([
   [6, 'oge-task6-fractions.html'], [7, 'oge-task7-number-line.html'],
   [8, 'oge-task8-powers-roots.html'], [9, 'oge-task9-equations.html'], [10, 'oge-task10-probability.html']
@@ -20,6 +20,21 @@ const files = new Map([
 const authorId = number => 'oge2027-analogue-1-task-' + String(number).padStart(2, '0');
 const label = 'Авторский аналог ОГЭ-2027 · Вариант 1';
 const disclaimer = 'Авторский материал MathExam. Не является официальным материалом ФИПИ.';
+const repeatLabel = 'Повторить задачу';
+const repeatNote = 'Поля очищаются, но результат и история помощи сохраняются до обновления страницы.';
+// The author control repeats the UI; its copy must not promise a provenance reset.
+for (const [number, startToken, endToken] of [
+  [7, 'function renderMarTask(){', '/* ---------- Самопроверка при загрузке ---------- */'],
+  [8, 'function marCard(t){', '/* ================= старт ================= */'],
+]) {
+  const html = fs.readFileSync(path.join(root, 'trainers', files.get(number)), 'utf8');
+  const start = html.indexOf(startToken), end = html.indexOf(endToken, start);
+  assert.ok(start >= 0 && end > start, 'bounded author card source ' + number);
+  const controlsSource = html.slice(start, end);
+  assert.ok(!controlsSource.includes('Начать заново'), 'no misleading author reset label ' + number);
+  assert.ok(controlsSource.includes(repeatLabel), 'explicit repeat label ' + number);
+  assert.ok(html.includes('<p data-author-repeat-note>' + repeatNote + '</p>'), 'exact visible repeat explanation source ' + number);
+}
 const foreign = { 'browser-test.foreign-progress': 'retain-exactly', 'mathExamOge2027Analogue1.v2': '{"foreign":true}' };
 const { loadTrainerRegistry } = require(path.join(root, 'board-server/trainer-registry.js'));
 const registry = loadTrainerRegistry({ baseDir: path.join(root, 'board-server'), env: {} });
@@ -508,17 +523,17 @@ async function flow7(page,surface='task7'){
   const measured=await controls(page,`${cohort},#marTask button,#marTask input`,surface);
   await focus(page.locator('#marTask .optbtn').nth(1));
   const revealFirst=/offline|iframe|board/i.test(String(surface));
-  if(revealFirst){await page.locator('#marTask').getByRole('button',{name:'Показать ответ',exact:true}).click();await page.locator('#marTask').getByRole('button',{name:'Начать заново',exact:true}).click();}
+  if(revealFirst){await page.locator('#marTask').getByRole('button',{name:'Показать ответ',exact:true}).click();await page.locator('#marTask').getByRole('button',{name:repeatLabel,exact:true}).click();}
   await page.locator('#marTask .optbtn').nth(0).click();
   assert.match(await page.locator('#marTask > .msg').innerText(),/A левее 7/);
   await page.locator('#marTask .optbtn').nth(1).press('Enter');
   assert.match(await page.locator('#marTask > .msg').innerText(),/верно/);
   assert.equal(await page.evaluate(()=>authorProgress.credited),!revealFirst);
   const credit=await page.evaluate(()=>marStatus[142].state);
-  await page.locator('#marTask').getByRole('button',{name:'Начать заново',exact:true}).click();
+  await page.locator('#marTask').getByRole('button',{name:repeatLabel,exact:true}).click();
   await page.locator('#marTask .optbtn').nth(1).click();
   assert.equal(await page.evaluate(()=>marStatus[142].state),credit);
-  await page.locator('#marTask').getByRole('button',{name:'Начать заново',exact:true}).click();
+  await page.locator('#marTask').getByRole('button',{name:repeatLabel,exact:true}).click();
   await page.locator('#marTask').getByRole('button',{name:'Решить по шагам',exact:true}).click();
   await noOverflow(page,surface+' expanded steps');
   await controls(page,`${cohort},#marTask button,#marTask input`,surface);
@@ -586,7 +601,7 @@ async function flow8(page,surface='task8'){
   await noOverflow(page,surface+' expanded hint');
   await controls(page,`${cohort},.author-task button,.author-task input`,surface);
   assert.equal(await page.evaluate(()=>authorProgress.assisted),true);
-  await card.getByRole('button',{name:'Начать заново',exact:true}).click();
+  await card.getByRole('button',{name:repeatLabel,exact:true}).click();
   card=page.locator('#marGrid > .author-task');
   await card.locator('input').first().fill('81');await card.locator('input').first().press('Enter');
   assert.match(await card.locator('.fb').first().innerText(),/верно/);
@@ -594,7 +609,7 @@ async function flow8(page,surface='task8'){
   assert.equal(await page.evaluate(()=>score.solved),expectedScore);
   await card.locator('input').first().press('Enter');
   assert.equal(await page.evaluate(()=>score.solved),expectedScore);
-  await card.getByRole('button',{name:'Начать заново',exact:true}).click();
+  await card.getByRole('button',{name:repeatLabel,exact:true}).click();
   card=page.locator('#marGrid > .author-task');
   await card.locator('.bs').click();
   for(const values of [['5'],['2','0'],['81']]){
@@ -605,7 +620,7 @@ async function flow8(page,surface='task8'){
   assert.equal(await page.evaluate(()=>score.solved),expectedScore,'hint plus rerendered clean steps cannot mint independent credit');
   await expandedEvidence(page,8,surface);
   assert.equal(await page.evaluate(()=>authorProgress.credited),cleanFirst);
-  await card.getByRole('button',{name:'Начать заново',exact:true}).click();
+  await card.getByRole('button',{name:repeatLabel,exact:true}).click();
   card=page.locator('#marGrid > .author-task');
   await card.locator('.sa').click();assert.equal(await card.locator('input').first().inputValue(),'81');
   assert.equal(await page.evaluate(()=>authorProgress.revealed),true);
@@ -620,6 +635,114 @@ async function flow8(page,surface='task8'){
   assert.match(await page.locator('[data-author-status]').innerText(),cleanFirst?/Решено самостоятельно/:/Ответ показан/);
   assert.deepEqual(await storage(page),beforeStorage);
   return {task:8,surface,legacy:160,canonical:161,answer:81,cleanFirst,independentCredit:Number(cleanFirst),controls:measured,storage:'unchanged'};
+}
+
+async function repeatSnapshot(target, number) {
+  return target.evaluate(number => number === 7 ? {
+    progress: { ...authorProgress }, state: { ...marStatus[marIdx] },
+    independentCount: marStatus.filter(item => item.state === 'ok').length,
+    counter: document.querySelector('#marCnt').innerText,
+    status: document.querySelector('[data-author-status]').innerText,
+    options: [...document.querySelectorAll('#marTask .optbtn')].map(button => ({
+      disabled: button.disabled, marked: button.classList.contains('good') || button.classList.contains('bad'),
+    })),
+    inputs: [...document.querySelectorAll('#marTask input')].map(input => input.value),
+    steps: document.querySelectorAll('#marTask .stepcard').length,
+    feedback: document.querySelector('#marTask > .msg').textContent,
+  } : {
+    progress: { ...authorProgress }, state: marState[AUTHOR_SOURCE.localTaskId] ?? null,
+    score: { ...score }, status: document.querySelector('[data-author-status]').innerText,
+    inputs: [...document.querySelectorAll('#marGrid .author-task input')].map(input => input.value),
+    inputClass: document.querySelector('#marGrid .author-task input').className,
+    steps: document.querySelector('#marGrid .author-task .msteps').childElementCount,
+    feedback: document.querySelector('#marGrid .author-task .fb').textContent,
+  }, number);
+}
+function stickyRepeatState(snapshot, number) {
+  return number === 7 ? {
+    progress: snapshot.progress, state: snapshot.state, independentCount: snapshot.independentCount,
+    counter: snapshot.counter, status: snapshot.status,
+  } : { progress: snapshot.progress, state: snapshot.state, score: snapshot.score, status: snapshot.status };
+}
+function assertRepeatUiCleared(snapshot, number, name) {
+  assert.equal(snapshot.feedback, '', name + ': answer feedback cleared');
+  assert.equal(snapshot.steps, 0, name + ': expanded steps removed');
+  if (number === 7) {
+    assert.deepEqual(snapshot.inputs, [], name + ': old step input removed');
+    assert.equal(snapshot.options.length, 4);
+    assert.ok(snapshot.options.every(option => !option.disabled && !option.marked), name + ': choices enabled with no answer marks');
+  } else {
+    assert.deepEqual(snapshot.inputs, [''], name + ': answer input cleared');
+    assert.equal(snapshot.inputClass, 'ans', name + ': answer input styling cleared');
+  }
+}
+async function assertRepeatCopy(card, name) {
+  const repeat = card.getByRole('button', { name: repeatLabel, exact: true });
+  assert.equal(await repeat.count(), 1, name + ': exactly one repeat control');
+  assert.ok(await repeat.isVisible());
+  assert.equal(await card.getByRole('button', { name: 'Начать заново', exact: true }).count(), 0);
+  const note = card.locator('[data-author-repeat-note]');
+  assert.equal(await note.count(), 1);
+  assert.ok(await note.isVisible(), name + ': sticky provenance explanation visible');
+  assert.equal(await note.innerText(), repeatNote);
+  return repeat;
+}
+async function verifyRepeatContracts(target, number, surface, url) {
+  const savedStorage = await storageSnapshot(target);
+  const scenarios = number === 7 ? ['independent', 'reveal'] : ['independent', 'hint', 'reveal'];
+  for (const scenario of scenarios) {
+    const name = `${number}:${surface}:${scenario}`;
+    await target.goto(url + '?task=' + authorId(number), { waitUntil: 'load' });
+    const card = target.locator(number === 7 ? '#marTask' : '#marGrid .author-task');
+    const repeat = await assertRepeatCopy(card, name);
+    const initial = await repeatSnapshot(target, number);
+    assert.deepEqual(initial.progress, { assisted: false, revealed: false, credited: false }, name + ': fresh session');
+    const answer = async () => {
+      if (number === 7) await card.locator('.optbtn').nth(1).click();
+      else { await card.locator('input').first().fill('81'); await card.locator('input').first().press('Enter'); }
+    };
+    if (scenario === 'independent') await answer();
+    if (scenario === 'reveal') await card.getByRole('button', { name: 'Показать ответ', exact: true }).click();
+    if (scenario === 'hint') {
+      await card.locator('.bs').click();
+      await card.locator('.msteps .hb').first().click();
+      await card.locator('input').first().fill('9');
+      await card.locator('.msteps input:not([disabled])').first().fill('777');
+    }
+    if (number === 7 && scenario === 'reveal') {
+      await card.getByRole('button', { name: 'Решить по шагам', exact: true }).click();
+      await card.locator('.stepcard input').first().fill('99');
+    }
+    const before = await repeatSnapshot(target, number);
+    assert.equal(before.progress.credited, scenario === 'independent', name + ': initial credit');
+    if (scenario !== 'independent') assert.equal(before.progress.assisted, true);
+    if (scenario === 'reveal') assert.equal(before.progress.revealed, true);
+    if (number === 7 && scenario === 'reveal') assert.equal(before.inputs[0], '99');
+    if (scenario === 'hint') assert.ok(before.inputs.includes('9') && before.inputs.includes('777'));
+    await targets44(target, number === 7 ? '#marTask button,#marTask input' : '.author-task button,.author-task input', name);
+    await focusVisible(target, repeat, name);
+    await repeat.press('Enter');
+    const repeated = await repeatSnapshot(target, number);
+    assertRepeatUiCleared(repeated, number, name);
+    assert.deepEqual(stickyRepeatState(repeated, number), stickyRepeatState(before, number), name + ': repeat preserves result and all help history');
+    await assertRepeatCopy(card, name);
+    await noOverflow(target, name);
+    await answer();
+    const answeredAgain = await repeatSnapshot(target, number);
+    assert.deepEqual(stickyRepeatState(answeredAgain, number), stickyRepeatState(before, number), name + ': second correct answer adds no independent credit');
+    if (number === 7) assert.equal(answeredAgain.independentCount, scenario === 'independent' ? 1 : 0);
+    else assert.equal(answeredAgain.score.solved, scenario === 'independent' ? 1 : 0);
+    await commonChecks(target, number);
+    assert.deepEqual(await storageSnapshot(target), savedStorage, name + ': repeat leaves all persistent storage untouched');
+    await target.goto(target.url(), { waitUntil: 'load' });
+    const reloaded = await repeatSnapshot(target, number);
+    assert.deepEqual(stickyRepeatState(reloaded, number), stickyRepeatState(initial, number), name + ': reload starts session-only progress afresh');
+    assertRepeatUiCleared(reloaded, number, name + ': reload');
+    await assertRepeatCopy(card, name + ': reload');
+    assert.deepEqual(await storageSnapshot(target), savedStorage);
+    evidence.repeatContracts.push({ number, surface, scenario, status: 'PASS', uiCleared: true,
+      resultPreserved: true, helpPreserved: true, noExtraCredit: true, reloadClearsSession: true });
+  }
 }
 
 async function runSurface(number, surface, options) {
@@ -661,6 +784,7 @@ async function runSurface(number, surface, options) {
     }[number];
     assert.deepEqual(await defaults(), expectedDefault, name + ': legacy defaults');
     await ({ 6: flow6, 7: flow7, 8: flow8, 9: flow9, 10: flow10 })[number](target, surface);
+    if (number === 7 || number === 8) await verifyRepeatContracts(target, number, surface, url);
     const savedStorage = await storageSnapshot(target);
     // A fresh navigation proves exact direct link, reload, and fail-closed query behavior.
     await target.goto(url + '?task=' + authorId(number), { waitUntil: 'load' });
@@ -710,6 +834,7 @@ try {
     }
   }
   assert.equal(evidence.surfaces.length, 25);
+  assert.equal(evidence.repeatContracts.length, 25, 'five repeat scenarios on each of five surfaces');
   assert.deepEqual(evidence.errors, []); assert.deepEqual(evidence.externalRequests, []);
 } catch (error) { failure = error; }
 finally {

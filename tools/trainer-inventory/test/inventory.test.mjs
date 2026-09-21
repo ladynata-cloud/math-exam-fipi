@@ -45,8 +45,8 @@ const pilotExpected = Object.freeze({
     sizeBytes: 93434
   },
   'trainers/oge-task8-powers-roots.html': {
-    sha256: '1cd5dc87372ad5578152a95f793bce3e303f59fa9332f1ab06eadc6c2ec433b0',
-    sizeBytes: 103158
+    sha256: '33e569643e2f682b21a4c4fb5cc6a55c8c01ac813fd91a41ce4f0dab6c63b43e',
+    sizeBytes: 103345
   },
   'trainers/oge-task9-equations.html': {
     sha256: 'aa388060ddec214ac09b7301bdd7cb47fd24b636e7b84d40c951048d227e7a8d',
