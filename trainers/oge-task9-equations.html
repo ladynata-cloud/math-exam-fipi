@@ -240,6 +240,13 @@ kbd{font-family:var(--math); background:#eef2f7; border:1px solid var(--line);
 .mara-banner b{font-family:var(--math);}
 .mara-banner .bx{margin-left:auto; border:none; background:none; color:var(--accent); cursor:pointer;
   font-family:var(--ui); font-size:13.5px; font-weight:600; text-decoration:underline; padding:2px 4px;}
+.author-cohort{max-width:100%;white-space:normal;text-align:left}
+.author-task .src-badge{position:static;display:block;white-space:normal;margin-bottom:8px}
+.author-task .task-q{margin-right:0}
+.author-disclaimer{font-size:13px;line-height:1.5;margin:6px 0 10px}
+.author-task button,.author-task input,.author-task textarea,.author-cohort{min-height:44px;min-width:44px}
+.author-task :focus-visible,.author-cohort:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.author-task .step{animation:none;transition:none}}
 @media (max-width:640px){
   body{font-size:15px;}
   .wrap{padding:0 10px 70px;}
@@ -2056,6 +2063,23 @@ const PF=[
 ];
 PF.forEach((d,i)=>BANK.push(bk('pf-'+(i+1),d[0],'proto','Прототип · дробные, №'+(i+1),d[1],d[2],d[3])));
 
+const AUTHOR_SOURCE = {
+  sourceKind:'author-analogue', variantId:'oge-2027-analogue-1',
+  sourceTaskId:'oge2027-analogue-1-task-09', localTaskId:'oge2027-analogue-1-task-09',
+  status:'MISSING_APPENDED', label:'Авторский аналог ОГЭ-2027 · Вариант 1',
+  disclaimer:'Авторский материал MathExam. Не является официальным материалом ФИПИ.'
+};
+// Append to the canonical bank without changing any of the 135 preceding records.
+BANK.push(Object.assign(bk(AUTHOR_SOURCE.localTaskId,'LB','author',AUTHOR_SOURCE.label,
+  {Lt:[BR(5,[X(1),N(4)]),BR(-3,[X(1),N(-2)])],Rt:[N(12)]},null,'-7'),{
+  sourceKind:AUTHOR_SOURCE.sourceKind, variantId:AUTHOR_SOURCE.variantId, sourceTaskId:AUTHOR_SOURCE.sourceTaskId
+}));
+function isAuthorTask(task){return task.id===AUTHOR_SOURCE.localTaskId;}
+function authorTaskFromQuery(search){
+  if(/%(?![0-9a-f]{2})/i.test(search))return null;
+  const ids=new URLSearchParams(search).getAll('task');
+  return ids.length===1&&ids[0]===AUTHOR_SOURCE.sourceTaskId?ids[0]:null;
+}
 if(typeof module!=='undefined')module.exports={BANK};
 /* ============ ДВИЖОК ШАГОВ (общий рендер + прогон) ============ */
 'use strict';
@@ -2506,7 +2530,7 @@ function quizBlock(ch, titleHTML){
   const bNew=elt('button','btn ghost small','Другая задача'); row.appendChild(bNew);
   box.appendChild(row);
 
-  const pool=BANK.filter(t=>FAMMETA[t.fam].ch===ch);
+  const pool=BANK.filter(t=>!isAuthorTask(t)&&FAMMETA[t.fam].ch===ch);
   function newQ(){
     host.innerHTML='';
     const t=pool[Math.floor(Math.random()*pool.length)];
@@ -2801,9 +2825,12 @@ const MARA_FILTERS=[
   {id:'lin', label:'Линейные'},
   {id:'quad', label:'Квадратные'},
   {id:'frac', label:'Дробные'},
+  {id:'author', label:AUTHOR_SOURCE.label},
 ];
 function taskChapter(t){ return FAMMETA[t.fam].ch; }
 const maraState={filter:'all', caseFilter:null, solved:new Set(), clean:new Set()};
+// Author help/credit survives card re-renders; all progress remains local to this page.
+const authorMaraProgress={helpUsed:false, independent:false};
 
 function buildMaraTab(root){
   root.innerHTML='';
@@ -2826,6 +2853,7 @@ function buildMaraTab(root){
   MARA_FILTERS.forEach(f=>{
     const b=document.createElement('button'); b.className='chip'+(f.id===maraState.filter?' on':''); b.type='button';
     b.style.fontFamily='var(--ui)'; b.style.fontSize='14px'; b.textContent=f.label;
+    if(f.id==='author'){b.classList.add('author-cohort');b.setAttribute('data-author-cohort',AUTHOR_SOURCE.variantId);}
     b.addEventListener('click',()=>{ maraState.filter=f.id; maraState.caseFilter=null;
       filt.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); b.classList.add('on');
       renderList(); });
@@ -2851,6 +2879,7 @@ function buildMaraTab(root){
     return BANK.filter(t=>{
       if(maraState.filter==='all')return true;
       if(maraState.filter==='demo')return t.src==='demo';
+      if(maraState.filter==='author')return isAuthorTask(t);
       return taskChapter(t)===maraState.filter;
     });
   }
@@ -2882,10 +2911,13 @@ function buildMaraTab(root){
 }
 
 function makeMaraCard(t, onProgress){
+  const author=isAuthorTask(t);
   const card=document.createElement('div'); card.className='task-card'+(maraState.solved.has(t.id)?' solved':'');
+  if(author){card.classList.add('author-task');card.setAttribute('data-source-task-id',AUTHOR_SOURCE.sourceTaskId);}
   const badge=document.createElement('div'); badge.className='src-badge';
-  badge.textContent=(t.src==='demo'?'Демо-2026':(taskChapter(t)==='lin'?'линейное':taskChapter(t)==='quad'?'квадратное':'дробное'));
+  badge.textContent=author?AUTHOR_SOURCE.label:(t.src==='demo'?'Демо-2026':(taskChapter(t)==='lin'?'линейное':taskChapter(t)==='quad'?'квадратное':'дробное'));
   card.appendChild(badge);
+  if(author){const note=document.createElement('p');note.className='author-disclaimer';note.textContent=AUTHOR_SOURCE.disclaimer;card.appendChild(note);}
 
   const no=document.createElement('div'); no.className='task-no'; no.textContent=t.tag; card.appendChild(no);
   const q=document.createElement('div'); q.className='task-q'; q.innerHTML=taskInstrHTML(t); card.appendChild(q);
@@ -2895,6 +2927,7 @@ function makeMaraCard(t, onProgress){
   const a=mkAns('?'); ansField.appendChild(a); card.appendChild(ansField);
 
   const fb=document.createElement('div'); fb.className='fb'; card.appendChild(fb);
+  if(author){fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');a._input.setAttribute('aria-label','Ответ на авторскую задачу 9');}
   const stepHost=document.createElement('div');
 
   const row=document.createElement('div'); row.className='btn-row';
@@ -2905,10 +2938,13 @@ function makeMaraCard(t, onProgress){
   card.appendChild(row);
   card.appendChild(stepHost);
 
-  let usedHelp=false;
+  let usedHelp=author?authorMaraProgress.helpUsed:false;
   function markSolved(clean){
     maraState.solved.add(t.id);
-    if(clean && !usedHelp)maraState.clean.add(t.id); else maraState.clean.delete(t.id);
+    if(author){
+      if(clean&&!authorMaraProgress.helpUsed)authorMaraProgress.independent=true;
+      if(authorMaraProgress.independent)maraState.clean.add(t.id);else maraState.clean.delete(t.id);
+    }else if(clean && !usedHelp)maraState.clean.add(t.id); else maraState.clean.delete(t.id);
     card.classList.add('solved');
     onProgress&&onProgress();
   }
@@ -2921,17 +2957,33 @@ function makeMaraCard(t, onProgress){
   a._input.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault(); doCheck();} });
   bAns.addEventListener('click',()=>{
     usedHelp=true;
+    if(author)authorMaraProgress.helpUsed=true;
     const key=taskKey(t);
     fb.className='fb shown';
     fb.innerHTML='Ответ: <b>'+numHTML(key)+'</b>'+(fisint(key)?'':' <span class="pen-note">(в бланк: '+decStr(key)+')</span>');
-    maraState.clean.delete(t.id);
+    if(!author||!authorMaraProgress.independent)maraState.clean.delete(t.id);
+    if(author&&onProgress)onProgress();
   });
   bStep.addEventListener('click',()=>{
-    usedHelp=true; maraState.clean.delete(t.id);
+    usedHelp=true;
+    if(author)authorMaraProgress.helpUsed=true;
+    if(!author||!authorMaraProgress.independent)maraState.clean.delete(t.id);
+    if(author&&onProgress)onProgress();
     if(stepHost.dataset.open){ stepHost.innerHTML=''; delete stepHost.dataset.open; bStep.textContent='Решить по шагам'; return; }
     stepHost.dataset.open='1'; bStep.textContent='Свернуть шаги';
     solveInline(stepHost, t);
   });
+  if(author){
+    const reset=document.createElement('button');reset.className='btn ghost small';reset.type='button';
+    reset.textContent='Начать авторскую задачу заново';
+    reset.addEventListener('click',()=>{
+      authorMaraProgress.helpUsed=false;authorMaraProgress.independent=false;
+      maraState.solved.delete(t.id);maraState.clean.delete(t.id);
+      const fresh=makeMaraCard(t,onProgress);card.replaceWith(fresh);
+      if(onProgress)onProgress();fresh.querySelector('input').focus();
+    });
+    row.appendChild(reset);
+  }
   return card;
 }
 
@@ -2973,6 +3025,7 @@ function selfCheckBank(){
     btn.addEventListener('click',function(){ activate(btn.getAttribute('data-pane')); });
   });
   window.gotoTab=activate;
+  if(authorTaskFromQuery(location.search)){maraState.filter='author';activate('mara',true);}
 
   /* связь Справочника с Марафоном: кнопки «порешать» + счётчики задач */
   (function wireRefJumps(){

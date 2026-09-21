@@ -290,3 +290,17 @@ newline conventions. The 68,034-byte TASKS declaration and all 174 tasks remain
 byte-identical. Other Pilot A expectations, inventory logic, schema and gate
 are unchanged. The owner separately authorized only the exact six-file scope
 guard extension needed to validate this task without broadening its allowlist.
+
+## OGE 2027 author analogue tasks 6–10: intentional Pilot A changes
+
+Owner-approved task `OGE_2027_ANALOGUE_DISTRIBUTE_6_10`, branch `content/oge-2027-analogue-distribute-6-10`, base `d5c9d0388ab3b22bcffec10d11504a0624e2b598`. These are candidate identities for a Draft PR, not a merged baseline. All historical text above remains byte-identical.
+
+One tagged author record and its local cohort/provenance UI are added in each affected trainer. Existing mathematical records, IDs, order, answers and solutions remain unchanged. SHA-256 and sizes below are computed from `git cat-file blob` of the written Git objects; checkout newline conversion is not the hash source.
+
+| Trainer | Old blob | New blob | Old SHA-256 | New SHA-256 | Old bytes | New bytes |
+|---|---|---|---|---|---:|---:|
+| `trainers/oge-task6-fractions.html` | `e668932c602fae5e6f4fe5c78ed3bef38af891d8` | `4aee6f319f5fe79664d49147b741b8ac503a22c7` | `54c7b7671ae13f180b1dd4d09440053c76c801d9b07a119b0009ea2b61f610ab` | `b710dda8a9c5f3b8c73aed6c4aaf4385c5b6583d38bbcac3415a86736cb540e1` | 90714 | 93434 |
+| `trainers/oge-task8-powers-roots.html` | `e93f6e6dc035733d6ecf7f4d80c2a331ec617dd2` | `49ba82532c19cf1f64260d42593ac86402de0b0c` | `df283d5147edaf536a885203dc8b8cc540c424f32d29369cb176e79823d6120a` | `1cd5dc87372ad5578152a95f793bce3e303f59fa9332f1ab06eadc6c2ec433b0` | 98568 | 103158 |
+| `trainers/oge-task9-equations.html` | `fde6982c69734dc47e5be4909829fc21706b819c` | `46931359f06bc3789ce4aefe2b78610ad37594ec` | `c4813016e37b4e5b87524f1e3270cb3856027b01f89c616d4bcd619d58f343be` | `aa388060ddec214ac09b7301bdd7cb47fd24b636e7b84d40c951048d227e7a8d` | 181899 | 185610 |
+
+Task 20 remains `839f2fcd27bea701be1e3178ff3863bd72283905b91c57c626395404629e90ad`, 163028 Git bytes. Tasks 7 and 10 are not added to Pilot A. Inventory logic, schema, CLI, gate and `PILOT_A_PATHS` remain unchanged.

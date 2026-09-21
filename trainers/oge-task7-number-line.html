@@ -131,6 +131,11 @@ details.bank summary{cursor:pointer;font-weight:600;color:var(--blue)}
   h1{font-size:21px}
 }
 
+.author-cohort{min-height:44px;max-width:100%;white-space:normal;text-align:left}
+.author-task button,.author-task input{min-height:44px;min-width:44px}
+.author-cohort:focus-visible,.author-task button:focus-visible,.author-task input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.author-source{color:var(--blue);overflow-wrap:anywhere}
+.author-source p{margin:4px 0;font-size:13px;font-weight:400}
 </style>
 </head>
 <body>
@@ -2021,10 +2026,38 @@ verifyGenTask=function(t){
   return _verifyGenTask(t);
 };
 
+/* Локальная авторская задача: старый банк выше сохранён без изменений. */
+const AUTHOR_SOURCE=Object.freeze({
+  sourceKind:"author-analogue",variantId:"oge-2027-analogue-1",
+  sourceTaskId:"oge2027-analogue-1-task-07",localTaskId:"oge2027-analogue-1-task-07",
+  status:"MISSING_APPENDED",label:"Авторский аналог ОГЭ-2027 · Вариант 1",
+  disclaimer:"Авторский материал MathExam. Не является официальным материалом ФИПИ."
+});
+pushTask({id:AUTHOR_SOURCE.localTaskId,sourceTaskId:AUTHOR_SOURCE.sourceTaskId,
+  sourceKind:AUTHOR_SOURCE.sourceKind,variantId:AUTHOR_SOURCE.variantId,
+  src:AUTHOR_SOURCE.label,srcId:AUTHOR_SOURCE.variantId,kind:"C",sub:"genRoot",
+  N:50,k:7,key:2,halfLeft:true,
+  text:"Числу "+sqrtHtml(50)+" соответствует одна из четырёх отмеченных точек. Выберите её и запишите номер ответа.",
+  pic:{lo:5.8,hi:8.2,ticks:"int",labels:[6,7,8],semantic:true,
+    pts:[{name:"A",x:6.6},{name:"B",x:Math.sqrt(50)},{name:"C",x:7.45},{name:"D",x:7.8}]},
+  opts:["A","B","C","D"].map(s=>({html:vi(s)})),
+  customSteps:t=>[
+    stepInt2("Зажми "+sqrtHtml(50)+" между соседними целыми: ?² &lt; 50 &lt; ?². Введи основания:",7,8,
+      "7² = 49, 8² = 64. Корень чуть больше 7.","от","до"),
+    stepInt("Уточним: 7,1² = ? (в сотых: для 50,41 введи 5041)",5041,"71 · 71 = 5041, поэтому 7,1² = 50,41."),
+    stepChoice("49 &lt; 50 &lt; 50,41. Значит, 7 &lt; √50 &lt; 7,1. Какая точка стоит сразу справа от 7, до 7,1?",
+      ["A","B","C","D"],1,"A левее 7; C около 7,45; D около 7,8. Между 7 и 7,1 находится B."),
+    stepInt("В ответ запиши номер варианта, а не приближённое значение корня:",2,"B — второй вариант ответа.")
+  ]
+});
+const authorProgress={assisted:false,revealed:false,credited:false};
+function isAuthorTask(t){return t.id===AUTHOR_SOURCE.localTaskId;}
+function authorProgressText(){return authorProgress.credited?"Решено самостоятельно":authorProgress.revealed?"Ответ показан":authorProgress.assisted?"Решение с помощью":"Ещё не решено";}
+
 /* ---------- Экспорт для node-тестов ---------- */
 if(typeof module!=="undefined"&&module.exports){
   module.exports={Q,qadd,qsub,qmul,qdiv,qneg,qcmp,qlt,qgt,qfloor,qnum,qFromDec,parseQ,parseIntStrict,
-    BANK,verifyBank,computeBKey,computeCKey,buildSteps,buildStepsAny,verifySteps,verifyGenTask,
+    BANK,AUTHOR_SOURCE,verifyBank,computeBKey,computeCKey,buildSteps,buildStepsAny,verifySteps,verifyGenTask,
     genA1,genA2,genA3,genA4,genB_fracBetweenInt,genB_fracTenths,genB_rootBetween,genB_rootInRange,genB_fracInRange,
     genC_root,genC_frac,genC_decOrder,isqrtFloor,verifyL};
 }
@@ -2040,7 +2073,7 @@ function svgLine(pic){
   const padL=14,padR=30;
   const y=hasFracLabels?44:42;
   const sx=v=>padL+(v-pic.lo)/(pic.hi-pic.lo)*(W-padL-padR);
-  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">';
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" style="max-width:100%"'+(pic.semantic?' role="img" aria-label="Координатная прямая с делениями 6, 7, 8 и точками A, B, C, D"':'')+'>';
   s+='<line x1="'+padL+'" y1="'+y+'" x2="'+(W-10)+'" y2="'+y+'" stroke="#26323f" stroke-width="1.6"/>';
   s+='<polygon points="'+(W-10)+','+y+' '+(W-19)+','+(y-4.5)+' '+(W-19)+','+(y+4.5)+'" fill="#26323f"/>';
   s+='<text x="'+(W-8)+'" y="'+(y+16)+'" font-size="14" font-style="italic" font-family="Georgia,serif" fill="#26323f">x</text>';
@@ -2066,7 +2099,7 @@ function svgLine(pic){
   }
   (pic.pts||[]).forEach(p=>{
     const x=sx(p.x);
-    s+='<circle cx="'+x+'" cy="'+y+'" r="3.6" fill="#f29722" stroke="#c56f00" stroke-width="1"/>';
+    s+='<circle '+(pic.semantic?'data-point="'+p.name+'" data-value="'+p.x+'" ':'')+'cx="'+x+'" cy="'+y+'" r="3.6" fill="#f29722" stroke="#c56f00" stroke-width="1"/>';
     if(p.name) s+='<text x="'+x+'" y="'+(y-10)+'" font-size="14.5" font-style="italic" font-family="Georgia,serif" text-anchor="middle" fill="#26323f">'+p.name+'</text>';
   });
   return s+'</svg>';
@@ -2181,7 +2214,8 @@ function mountSteps(container, steps, cb){
 /* ---------- Рендер условия задачи ---------- */
 function taskConditionHtml(t){
   let s="";
-  if(t.src) s+='<div class="src">'+t.src+'</div>';
+  if(isAuthorTask(t)) s+='<div class="src author-source" data-source-task-id="'+AUTHOR_SOURCE.sourceTaskId+'"><b>'+AUTHOR_SOURCE.label+'</b><p>'+AUTHOR_SOURCE.disclaimer+'</p><p data-author-status>'+authorProgressText()+'</p></div>';
+  else if(t.src) s+='<div class="src">'+t.src+'</div>';
   const text = t.text || defaultAText(t);
   s+='<div class="taskline">'+text+'</div>';
   if(t.pic) s+='<div class="svgbox">'+svgLine(t.pic)+'</div>';
@@ -2471,12 +2505,13 @@ const MAR_SRC=[
   {id:"reshu",label:"РЕШУ ОГЭ"},
   {id:"bank7",label:"банк7"},
   {id:"m100",label:"math100"},
-  {id:"formula",label:"formulaoge"}];
+  {id:"formula",label:"formulaoge"},
+  {id:AUTHOR_SOURCE.variantId,label:AUTHOR_SOURCE.label}];
 let marFilter="all", marSrc="all", marIdx=0;
 const marStatus=BANK.map(()=>({state:"none"})); // none|ok|steps|shown
 
 function marList(){ return BANK.map((t,i)=>({t,i})).filter(x=>
-  (marFilter==="all"||x.t.kind===marFilter)&&(marSrc==="all"||x.t.srcId===marSrc)); }
+  (marFilter==="all"||x.t.kind===marFilter)&&(marSrc===AUTHOR_SOURCE.variantId?isAuthorTask(x.t):!isAuthorTask(x.t)&&(marSrc==="all"||x.t.srcId===marSrc))); }
 function marReset(){ const L=marList(); if(!L.length){marFilter="all";marSrc="all";} if(!marList().some(x=>x.i===marIdx)) marIdx=marList()[0].i; }
 function renderMarChips(){
   const box=el("marChips"); box.innerHTML="";
@@ -2488,7 +2523,8 @@ function renderMarChips(){
   const sbox=el("marSrcChips"); sbox.innerHTML="";
   MAR_SRC.forEach(f=>{
     const c=h("button","chip"+(f.id===marSrc?" active":""),f.label);
-    c.onclick=()=>{ marSrc=f.id; marReset(); renderMarChips(); renderMarGrid(); renderMarTask(); };
+    if(f.id===AUTHOR_SOURCE.variantId){c.classList.add("author-cohort");c.dataset.authorCohort=AUTHOR_SOURCE.variantId;}
+    c.onclick=()=>{ marSrc=f.id; if(marSrc===AUTHOR_SOURCE.variantId)marFilter="all"; marReset(); renderMarChips(); renderMarGrid(); renderMarTask(); };
     sbox.appendChild(c);
   });
 }
@@ -2503,24 +2539,40 @@ function renderMarGrid(){
   });
 }
 function updMarCnt(){
-  const ok=marStatus.filter(s=>s.state==="ok").length;
-  const st=marStatus.filter(s=>s.state==="steps").length;
-  const sh=marStatus.filter(s=>s.state==="shown").length;
-  el("marCnt").innerHTML="решено: <b>"+ok+"</b> \u00B7 по шагам: "+st+" \u00B7 <span class='shown'>показан ответ: "+sh+"</span> \u00B7 всего задач: "+BANK.length;
+  const statuses=marStatus.filter((_,i)=>isAuthorTask(BANK[i])===(marSrc===AUTHOR_SOURCE.variantId));
+  const ok=statuses.filter(s=>s.state==="ok").length;
+  const st=statuses.filter(s=>s.state==="steps").length;
+  const sh=statuses.filter(s=>s.state==="shown").length;
+  el("marCnt").innerHTML="решено: <b>"+ok+"</b> \u00B7 по шагам: "+st+" \u00B7 <span class='shown'>показан ответ: "+sh+"</span> \u00B7 всего задач: "+statuses.length;
 }
 function setMarStatus(i,state){
+  if(isAuthorTask(BANK[i])){
+    if(state==="shown"){authorProgress.assisted=true;authorProgress.revealed=true;}
+    if(state==="steps")authorProgress.assisted=true;
+    if(state==="ok"&&!authorProgress.assisted)authorProgress.credited=true;
+    marStatus[i].state=authorProgress.credited?"ok":authorProgress.revealed?"shown":authorProgress.assisted?"steps":"none";
+    const status=el("marTask").querySelector("[data-author-status]");if(status)status.textContent=authorProgressText();
+    renderMarGrid();updMarCnt();return;
+  }
   const rank={none:0,shown:1,steps:2,ok:3};
   // ухудшать статус нельзя, но «показан ответ» фиксируется, если задача не была решена
   if(rank[state]>rank[marStatus[i].state]||(state==="shown"&&marStatus[i].state==="none"))
     marStatus[i].state=state;
   renderMarGrid(); updMarCnt();
 }
+let legacyMarHeader=null;
 function renderMarTask(){
   const t=BANK[marIdx];
+  const heading=document.querySelector('#mode-mar h2'),intro=document.querySelector('#mode-mar .card > p.note');
+  if(!legacyMarHeader)legacyMarHeader={title:heading.innerHTML,intro:intro.innerHTML};
+  heading.innerHTML=isAuthorTask(t)?'Марафон · авторская задача №7':legacyMarHeader.title;
+  intro.innerHTML=isAuthorTask(t)?'Координатная прямая из авторского аналога ОГЭ-2027. Выберите номер ответа или разберите задачу по шагам.':legacyMarHeader.intro;
   const box=el("marTask");
+  box.classList.toggle("author-task",isAuthorTask(t));
   box.innerHTML=taskConditionHtml(t);
   const opts=h("div","optlist");
   const msg=h("div","msg",""); msg.style.marginLeft="0";
+  if(isAuthorTask(t))msg.setAttribute("aria-live","polite");
   t.opts.forEach((o,i)=>{
     const b=h("button","optbtn",'<span class="onum">'+(i+1)+")</span><span>"+optHtml(o)+"</span>");
     b.onclick=()=>{
@@ -2531,7 +2583,7 @@ function renderMarTask(){
         if(marStatus[marIdx].state!=="shown") setMarStatus(marIdx, stepsUsed?"steps":"ok"); else {renderMarGrid();updMarCnt();}
       } else {
         b.classList.add("bad"); b.disabled=true;
-        msg.className="msg bad"; msg.textContent="не то, попробуй ещё";
+        msg.className="msg bad"; msg.textContent=isAuthorTask(t)?["A левее 7, а √50 больше 7.","","C около 7,45, а √50 меньше 7,1.","D около 7,8, а √50 чуть больше 7."][i]:"не то, попробуй ещё";
       }
     };
     opts.appendChild(b);
@@ -2545,6 +2597,7 @@ function renderMarTask(){
   const stBox=h("div");
   stepsBtn.onclick=()=>{
     stepsUsed=true; stepsBtn.disabled=true;
+    if(isAuthorTask(t))authorProgress.assisted=true;
     mountSteps(stBox,buildStepsAny(t,"school"),(usedShow)=>{
       if(usedShow) setMarStatus(marIdx,"shown"); else setMarStatus(marIdx,"steps");
       // подсветить верный вариант
@@ -2562,7 +2615,12 @@ function renderMarTask(){
     marIdx=L[(pos+1)%L.length].i; renderMarGrid(); renderMarTask();
   };
   row.appendChild(stepsBtn); row.appendChild(showBtn); row.appendChild(nextBtn);
+  if(isAuthorTask(t)){
+    const restart=h("button","btn","Начать заново");
+    restart.onclick=renderMarTask;row.appendChild(restart);
+  }
   box.appendChild(row); box.appendChild(stBox);
+  updMarCnt();
 }
 
 /* ---------- Самопроверка при загрузке ---------- */
@@ -2591,6 +2649,11 @@ window.addEventListener("DOMContentLoaded",()=>{
   renderStepChips(); newStepTask(); updStepCnt();
   renderMarChips(); renderMarGrid(); renderMarTask(); updMarCnt();
   selfCheck();
+  const taskQuery=new URLSearchParams(window.location.search).getAll("task");
+  if(!/%(?![0-9a-f]{2})/i.test(window.location.search)&&taskQuery.length===1&&taskQuery[0]===AUTHOR_SOURCE.sourceTaskId){
+    marSrc=AUTHOR_SOURCE.variantId;marFilter="all";marIdx=BANK.findIndex(isAuthorTask);
+    renderMarChips();renderMarGrid();renderMarTask();switchTab("mar");
+  }
 });
 
 </script>

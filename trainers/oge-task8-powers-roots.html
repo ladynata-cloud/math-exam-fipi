@@ -152,6 +152,11 @@ a.jump{color:var(--pen)}
   .m{font-size:17px} .big{font-size:19px}
   .refrow .formula{min-width:100%}
 }
+.author-cohort{font:inherit;min-height:44px;max-width:100%;white-space:normal;text-align:left}
+.author-task button,.author-task input{min-height:44px;min-width:44px}
+.author-cohort:focus-visible,.author-task button:focus-visible,.author-task input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.author-source{color:var(--pen);overflow-wrap:anywhere;font-size:14px}
+.author-source p{margin:4px 0;font-size:13px;font-weight:400}
 </style>
 </head>
 <body>
@@ -571,6 +576,19 @@ function buildSteps(t){
 <script>
 "use strict";
 /* ================= счёт ================= */
+const AUTHOR_SOURCE=Object.freeze({
+  sourceKind:"author-analogue",variantId:"oge-2027-analogue-1",
+  sourceTaskId:"oge2027-analogue-1-task-08",localTaskId:"oge2027-analogue-1-task-08",
+  status:"MISSING_APPENDED",label:"Авторский аналог ОГЭ-2027 · Вариант 1",
+  disclaimer:"Авторский материал MathExam. Не является официальным материалом ФИПИ."
+});
+const LEGACY_BANK=BANK.slice();
+BANK.push({id:AUTHOR_SOURCE.localTaskId,sourceTaskId:AUTHOR_SOURCE.sourceTaskId,
+  sourceKind:AUTHOR_SOURCE.sourceKind,variantId:AUTHOR_SOURCE.variantId,
+  type:"pow_prodbase_div",p:{b1:9,p:7,b2:10,q:5,r:5},ans:[81,1]});
+const authorProgress={assisted:false,revealed:false,credited:false};
+function isAuthorTask(t){return t.id===AUTHOR_SOURCE.localTaskId;}
+function authorProgressText(){return authorProgress.credited?"Решено самостоятельно":authorProgress.revealed?"Ответ показан":authorProgress.assisted?"Решение с помощью":"Ещё не решено";}
 const score={solved:0,hints:0,shown:0};
 function updScore(){
   document.getElementById("scorebar").innerHTML=
@@ -638,7 +656,7 @@ function mountSteps(box, steps, opts={}){
           ?`<span class="gold-ink">Задача разобрана с показом — в «решено» не идёт. Возьми похожую и добей сам!</span>`
           :`<span class="ok-ink">✓ Задача решена${usedHint?" (с подсказкой)":""} — молодец!</span>`;
         wrap.appendChild(fin);
-        if(!usedShow){score.solved++;}
+        if(!usedShow&&(!opts.canCredit||opts.canCredit())){score.solved++;}
         updScore();
         if(opts.onSolved)opts.onSolved(!usedShow);
       }
@@ -656,8 +674,10 @@ function mountSteps(box, steps, opts={}){
     };
     const hb=div.querySelector(".hb");
     if(hb)hb.onclick=()=>{div.querySelector(".hint").classList.add("on");
+      if(opts.onHelp)opts.onHelp(false);
       if(!usedHint){usedHint=true;score.hints++;updScore();}};
     div.querySelector(".sb").onclick=()=>{
+      if(opts.onHelp)opts.onHelp(true);
       ins.forEach((inp,i)=>{inp.value=fmtFr(s.ins[i].val);inp.classList.add("ok");});
       fb.innerHTML=`— ${last?"ответ показан":"шаг показан"}`;fb.className="fb shown";
       if(s.show){const d2=document.createElement("div");d2.className="hint on";d2.innerHTML=s.show;div.appendChild(d2);}
@@ -949,7 +969,7 @@ const QUIZFAMS=[
 ];
 let quizTask=null;
 window.quizNew=function(){
-  quizTask=BANK[Math.floor(Math.random()*BANK.length)];
+  quizTask=LEGACY_BANK[Math.floor(Math.random()*LEGACY_BANK.length)];
   const fam=QUIZFAMS.find(f=>f.g.includes(typeGroup[quizTask.type]));
   const box=document.getElementById("quizBox");
   box.innerHTML=`<div class="tl">задача №${quizTask.id} из банка</div>
@@ -1108,6 +1128,7 @@ window.stepNew=function(){
 /* ================= МАРАФОН ================= */
 let marFilter="all";
 const marState={}; // id -> "ok"|"shown"
+let legacyMarHeader=null;
 function buildMar(){
   const v=document.getElementById("view-mar");
   v.innerHTML=`<div class="card">
@@ -1118,14 +1139,18 @@ function buildMar(){
   </div>
   <div class="mgrid" id="marGrid"></div>`;
   const ch=document.getElementById("marChips");
-  ch.innerHTML=`<span class="pill" data-k="all">все</span>`+GROUPS.map(g=>`<span class="pill" data-k="${g.k}">${g.nums} ${g.name}</span>`).join("");
+  ch.innerHTML=`<span class="pill" data-k="all">все</span>`+GROUPS.map(g=>`<span class="pill" data-k="${g.k}">${g.nums} ${g.name}</span>`).join("")+`<button class="pill author-cohort" data-k="author" data-author-cohort="${AUTHOR_SOURCE.variantId}">${AUTHOR_SOURCE.label}</button>`;
   ch.querySelectorAll(".pill").forEach(p=>p.onclick=()=>marSetFilter(p.dataset.k));
   marSetFilter("all");
 }
 window.marSetFilter=function(k){
   marFilter=k;
+  const heading=document.querySelector('#view-mar h2'),intro=document.querySelector('#view-mar .card > p');
+  if(!legacyMarHeader)legacyMarHeader={title:heading.innerHTML,intro:intro.innerHTML};
+  heading.innerHTML=k==="author"?'Марафон · авторская задача №8':legacyMarHeader.title;
+  intro.innerHTML=k==="author"?'Степени из авторского аналога ОГЭ-2027. Найдите значение выражения; при необходимости откройте проверяемые шаги решения.':legacyMarHeader.intro;
   document.querySelectorAll("#marChips .pill").forEach(p=>p.classList.toggle("on",p.dataset.k===k));
-  const list=BANK.filter(t=>k==="all"||typeGroup[t.type]===k);
+  const list=k==="author"?BANK.filter(isAuthorTask):LEGACY_BANK.filter(t=>k==="all"||typeGroup[t.type]===k);
   document.getElementById("marCount").textContent=`показано задач: ${list.length}`;
   const grid=document.getElementById("marGrid");
   grid.innerHTML="";
@@ -1135,9 +1160,11 @@ function marCard(t){
   const g=grpByK[typeGroup[t.type]];
   const ansFr=Fr(t.ans[0],t.ans[1]);
   const div=document.createElement("div");
-  div.className="mtask"+(marState[t.id]==="ok"?" ok":marState[t.id]==="shown"?" shown":"");
+  const author=isAuthorTask(t);
+  div.className="mtask"+(author?" author-task":"")+(marState[t.id]==="ok"?" ok":marState[t.id]==="shown"?" shown":"");
   div.innerHTML=`<div class="mid"><span>№ ${t.id} · ${g.name}</span>
       <span class="crosslink" data-a="learn">теория</span></div>
+    ${author?`<div class="author-source" data-source-task-id="${AUTHOR_SOURCE.sourceTaskId}"><b>${AUTHOR_SOURCE.label}</b><p>${AUTHOR_SOURCE.disclaimer}</p><p data-author-status>${authorProgressText()}</p></div>`:""}
     <div class="expr">${renderTask(t)}</div>
     <div class="mrow">
       <input class="ans" placeholder="ответ">
@@ -1147,7 +1174,18 @@ function marCard(t){
     <div class="mrow"><button class="act sec bs">🪜 Решить по шагам</button></div>
     <div class="msteps"></div>`;
   const inp=div.querySelector("input"),fb=div.querySelector(".fb");
+  if(author){inp.setAttribute("aria-label","Ответ к авторскому заданию 8");fb.setAttribute("aria-live","polite");}
+  const authorStatus=()=>{
+    marState[t.id]=authorProgress.credited?"ok":authorProgress.assisted?"shown":undefined;
+    div.classList.toggle("ok",authorProgress.credited);div.classList.toggle("shown",!authorProgress.credited&&authorProgress.assisted);
+    div.querySelector("[data-author-status]").textContent=authorProgressText();
+  };
   const markDone=(shown)=>{
+    if(author){
+      if(shown){authorProgress.assisted=true;authorProgress.revealed=true;}
+      else if(!authorProgress.assisted&&!authorProgress.credited){authorProgress.credited=true;score.solved++;updScore();}
+      authorStatus();return;
+    }
     if(marState[t.id])return;
     marState[t.id]=shown?"shown":"ok";
     div.classList.add(shown?"shown":"ok");
@@ -1159,28 +1197,40 @@ function marCard(t){
     if(v&&feq(v,ansFr)){inp.classList.remove("no");inp.classList.add("ok");
       fb.textContent="верно ✓";fb.className="fb ok";markDone(false);}
     else{inp.classList.remove("ok");inp.classList.add("no");
-      fb.textContent="не то, попробуй ещё";fb.className="fb no";}
+      fb.textContent=author?(inp.value.trim()==="9"?"После сокращения остаётся 9², а не 9.":inp.value.trim()==="2"?"2 — показатель степени. Вычисли 9².":"Разложи 90⁵ как 9⁵ · 10⁵ и вычти показатели одинаковых оснований."):"не то, попробуй ещё";fb.className="fb no";}
   };
   inp.addEventListener("keydown",e=>{if(e.key==="Enter")div.querySelector(".ck").click();});
   div.querySelector(".sa").onclick=()=>{
     inp.value=fmtFr(ansFr);inp.classList.add("ok");inp.classList.remove("no");
     fb.textContent="— ответ показан";fb.className="fb shown";
-    score.shown++;updScore();markDone(true);
+    if(!author||!authorProgress.revealed){score.shown++;updScore();}markDone(true);
   };
   div.querySelector(".bs").onclick=()=>{
     const box=div.querySelector(".msteps");
     if(box.childElementCount){box.innerHTML="";return;}
-    mountSteps(box,buildSteps(t),{onSolved:(clean)=>{
+    mountSteps(box,buildSteps(t),{canCredit:author?()=>{
+      if(authorProgress.assisted||authorProgress.credited)return false;
+      authorProgress.credited=true;return true;
+    }:undefined,onHelp:author?(shown)=>{
+      authorProgress.assisted=true;if(shown)authorProgress.revealed=true;authorStatus();
+    }:undefined,onSolved:(clean)=>{
+      if(author){authorStatus();return;}
       if(marState[t.id])return;
       // счёт уже обновил mountSteps; здесь только помечаем карточку
       marState[t.id]=clean?"ok":"shown";
       div.classList.add(clean?"ok":"shown");
     }});
   };
+  if(author){
+    const restart=document.createElement("button");restart.className="act sec";restart.textContent="Начать заново";
+    restart.onclick=()=>div.replaceWith(marCard(t));div.querySelector(".mrow").appendChild(restart);
+  }
   return div;
 }
 /* ================= старт ================= */
 buildRef();buildLearn();buildStep();buildMar();updScore();
+const taskQuery=new URLSearchParams(window.location.search).getAll("task");
+if(!/%(?![0-9a-f]{2})/i.test(window.location.search)&&taskQuery.length===1&&taskQuery[0]===AUTHOR_SOURCE.sourceTaskId){marSetFilter("author");showView("mar");}
 </script>
 </body>
 </html>
