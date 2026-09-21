@@ -147,7 +147,9 @@ gate('exact one source mapping and one append per author task; no answer-only de
   assert.equal(old[9].run('BANK.find(t=>t.id==="pf-10").exp'),'-7','same answer exists but is a different equation');
   assert.notEqual(signatures[9](old[9].run('BANK.find(t=>t.id==="pf-10")')),signatures[9](authored(9)));
   assert.ok(old[8].run('BANK.some(t=>t.ans[0]===81*t.ans[1])'),'same power answer is not exact source identity');
-  assert.ok(!old[10].run('FIXED_MINIS').some(t=>clean(t.text||'')===clean(authored(10).text)));
+  const probabilityMinis=old[10].run('FIXED_MINIS');
+  assert.ok(probabilityMinis.every(t=>typeof t.html==='string'&&t.html.length>0));
+  assert.ok(!probabilityMinis.some(t=>clean(t.html)===clean(authored(10).text)));
   assert.doesNotMatch(old[10].run('gen102.toString()'),/violet|remainder|маркеров/,'old two-colour family does not express the five-colour remainder statement');
 });
 
