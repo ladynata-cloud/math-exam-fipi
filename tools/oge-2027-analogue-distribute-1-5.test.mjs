@@ -8,6 +8,8 @@ import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const BASE='7ebbd328d7b59b691eb50d01324d4c438aa8404c';
+// The batch is merged (PR125): its scope and protected files are checked on the closed snapshot.
+const MERGED='d5c9d0388ab3b22bcffec10d11504a0624e2b598';
 const targetPath='trainers/oge-1-5-trainers/practice-1-5-tires.html';
 const sourcePath='trainers/oge-2027-analogue-1.html';
 const AUTHOR_ID='oge-2027-analogue-1';
@@ -274,11 +276,11 @@ gate('inline JavaScript is valid and no new external execution, source PDF or fo
 gate('changed files stay inside the six paths approved for this bounded batch',()=>{
   const allowed=new Set([targetPath,'tools/oge-2027-analogue-distribute-1-5.test.mjs','tools/oge-2027-analogue-distribute-1-5.browser.mjs',
     'docs/tasks/OGE_2027_ANALOGUE_DISTRIBUTE_1_5.md','tools/trainer-inventory/test/inventory.test.mjs','tools/oge-2027-analogue-1.test.mjs']);
-  const changed=new Set([...git('diff','--name-only',BASE).toString().trim().split(/\r?\n/),
-    ...git('ls-files','--others','--exclude-standard').toString().trim().split(/\r?\n/)].filter(Boolean));
+  git('merge-base','--is-ancestor',MERGED,'HEAD');
+  const changed=new Set(git('diff','--name-only',BASE,MERGED).toString().trim().split(/\r?\n/).filter(Boolean));
   assert.deepEqual([...changed].sort(),[...allowed].sort());
   for(const file of changed)assert.ok(allowed.has(file),'Out of scope: '+file);
   for(const file of [sourcePath,'sitemap.xml','trainers/oge-course/index.html','trainers/board-compat.json']){
-    assert.equal(git('diff','--name-only',BASE,'--',file).toString().trim(),'','Protected file changed: '+file);
+    assert.equal(git('diff','--name-only',BASE,MERGED,'--',file).toString().trim(),'','Protected file changed: '+file);
   }
 });
