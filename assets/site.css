@@ -93,6 +93,11 @@ a:hover{ color:var(--pen-dark); }
 .site-nav a[aria-current="page"]{
   border-bottom-color:var(--margin-red); font-weight:700;
 }
+/* На телефоне с пунктом «ЕГЭ профиль» шапка на части страниц уходила в три
+   строки; более узкий зазор держит её в двух, как было. */
+@media (max-width:520px){
+  .site-nav{ column-gap:14px; }
+}
 
 /* ---------- Герой с «полями тетради» ---------- */
 .hero{
