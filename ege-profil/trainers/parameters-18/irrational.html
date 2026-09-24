@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 18 · Глава 4 · Иррациональные уравнения</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA; --badbg:#FBEAE9; --amber:#B5720E; --amberbg:#FBF2DF;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:680px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0 0 6px;font-size:16.5px;color:var(--ink-strong)}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+  .tab{border:1.5px solid var(--ink);background:rgba(250,250,244,.8);color:var(--ink);border-radius:999px;
+    min-height:44px;padding:8px 16px;font:700 14px/1 inherit;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.92);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .fx{font-family:"Cambria Math",Georgia,"Times New Roman",serif;font-size:1.06em}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    min-height:44px;padding:9px 16px;font:700 14.5px/1 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:disabled{opacity:.45;cursor:default}
+  input[type=text],input[type=number]{border:1.5px solid var(--ink);border-radius:8px;background:#fff;min-height:44px;padding:9px 12px;font:600 16px/1 inherit;width:96px}
+  input[type=range]{width:min(340px,100%);accent-color:var(--ink)}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .feedback{margin-top:12px;border-radius:8px;padding:10px 12px;font-weight:600;display:none}
+  .feedback.on{display:block}
+  .feedback.ok{background:var(--okbg);color:var(--ok)}
+  .feedback.bad{background:var(--badbg);color:var(--red)}
+  .feedback.warn{background:var(--amberbg);color:var(--amber)}
+  .figure{margin:12px 0;overflow-x:auto}
+  svg{display:block;max-width:100%}
+  .cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:8px}
+  .rule{border:1px dashed var(--line);border-radius:8px;padding:12px;background:rgba(255,255,255,.6)}
+  .rule b{color:var(--ink-strong)}
+  .liveinfo{font:700 15px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong);margin-top:8px;min-height:44px}
+  .score{font:700 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .score b{color:var(--ink-strong)}
+  .view{display:none}
+  .view.on{display:block}
+  .sol{border-left:3px solid var(--ink);background:rgba(255,255,255,.7);padding:10px 14px;margin-top:10px;display:none;white-space:pre-line}
+  .sol.on{display:block}
+  .verdict{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
+  .qtask{font-size:16.5px;margin:2px 0 8px}
+  .qsol{white-space:pre-line}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+  .dots span{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px}
+  .dots span.ok{background:var(--ink)}
+  .dots span.bad{background:var(--red);border-color:var(--red)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Оглавление</a>
+  <p class="eyebrow">задание 18 · глава 4 · иррациональные уравнения</p>
+  <h1>Иррациональные уравнения</h1>
+  <p class="lede">Возведение в квадрат — сделка с дьяволом: корень исчезает, но к уравнению тайно подклеивается второе, «призрачное». Плата за сделку — условие на знак правой части, и кто его забывает, тот получает посторонние корни. В этой главе призраков видно глазами.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="idea">Идея</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="live">Живые модели</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="err">Найди ошибку</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="test">Квиз и ДЗ</button>
+  </div>
+
+  <!-- ============ ИДЕЯ ============ -->
+  <section class="view on" id="view-idea">
+    <div class="card">
+      <h2>Равносильные переходы — три штампа</h2>
+      <p>Учи их как таблицу умножения; ОДЗ отдельно выписывать не нужно — она уже внутри:</p>
+      <div class="cases">
+        <div class="rule"><b>√A = B</b> ⇔ A = B² <b>и</b> B ≥ 0.<br><span class="small muted">Без условия B ≥ 0 квадрат склеивает √A = B с призраком −√A = B.</span></div>
+        <div class="rule"><b>√A ≤ B</b> ⇔ 0 ≤ A ≤ B².<br><span class="small muted">Здесь B ≥ 0 получается само: A ≥ 0 и A ≤ B².</span></div>
+        <div class="rule"><b>√A ≥ B</b> ⇔ A ≥ B², если B ≥ 0; и просто A ≥ 0, если B &lt; 0.<br><span class="small muted">Отрицательному B корень проигрывает автоматически — вся ОДЗ подходит.</span></div>
+      </div>
+      <div class="feedback warn on" style="margin-top:14px">С параметром знак правой части часто зависит от параметра — и разбор «B ≥ 0 или B &lt; 0» превращается в разбор значений параметра. Это и есть типовой сюжет задач теста 0510.</div>
+    </div>
+
+    <div class="card">
+      <h2>Замена t = √(…)</h2>
+      <p>Если корень входит в уравнение целиком, замена <span class="fx">t = √(x + a)</span> снимает его одним движением — но приносит условие <span class="fx">t ≥ 0</span>. Например, <span class="fx">8√(x + a) = x + 4</span> при <span class="fx">x = t² − a</span> превращается в <span class="fx">t² − 8t + 4 − a = 0</span>, и дальше считаются только <b>неотрицательные</b> корни по t. Каждый годный t даёт ровно один x — счёт корней переносится с x на t.</p>
+    </div>
+
+    <div class="card">
+      <h2>Сдвиг кривой</h2>
+      <p>График <span class="fx">y = √(x + a)</span> — одна и та же кривая, сдвинутая на a влево. Семейство сдвигов против неподвижной прямой — готовый графический метод: перестройки числа корней происходят в момент касания и в момент, когда прямая проходит через <b>начало кривой</b> (точку излома ОДЗ). Оба момента увидишь в живых моделях.</p>
+    </div>
+  </section>
+
+  <!-- ============ ЖИВЫЕ МОДЕЛИ ============ -->
+  <section class="view" id="view-live">
+
+    <div class="card">
+      <h2>Корень против прямой — и призрачная ветвь</h2>
+      <p>Уравнение <span class="fx">√(x + a) = x</span>. Сплошная кривая — левая часть, прямая — правая. Пунктирная нижняя дуга — <b>призрак</b> <span class="fx">y = −√(x + a)</span>, которого возведение в квадрат подклеивает к задаче. Красный ✕ — посторонний корень: он живёт на призрачной ветви.</p>
+      <div class="row" style="margin:10px 0 2px">
+        <label class="mono small" for="sa">a =</label><input type="range" id="sa" min="-2.5" max="3" step="0.05" value="1"><span class="mono" id="sav" style="min-width:52px;display:inline-block"></span>
+      </div>
+      <div class="figure" id="sFig"></div>
+      <p class="liveinfo" id="sInfo"></p>
+      <p>При каком значении a прямая <b>касается</b> кривой (ровно один корень касанием)?</p>
+      <div class="row">
+        <input type="text" id="sAns" inputmode="decimal" autocomplete="off" aria-label="значение a">
+        <button class="btn" id="sCheck">Проверить</button>
+      </div>
+      <div class="feedback" id="sFb"></div>
+    </div>
+
+    <div class="card">
+      <h2>Загадочный корень</h2>
+      <p>Перед тобой график <span class="fx">y = k·√(x − h) + v</span>. Отмечены начало кривой и ещё один узел. Восстанови коэффициенты.</p>
+      <div class="figure" id="rFig"></div>
+      <div class="row" style="margin-top:6px">
+        <label class="mono small" for="rk">k =</label><input type="number" id="rk" step="1" inputmode="numeric" autocomplete="off">
+        <label class="mono small" for="rh">h =</label><input type="number" id="rh" step="1" inputmode="numeric" autocomplete="off">
+        <label class="mono small" for="rv">v =</label><input type="number" id="rv" step="1" inputmode="numeric" autocomplete="off">
+        <button class="btn" id="rCheck">Проверить</button>
+        <button class="btn ghost" id="rNew">Новый график</button>
+      </div>
+      <div class="feedback" id="rFb"></div>
+      <p class="score" style="margin-top:10px">разгадано подряд: <b id="rStreak">0</b> · рекорд серии: <b id="rBest">0</b></p>
+      <p class="small muted">Подсказка: начало кривой — точка (h; v). Дальше k = (y − v)/√(x − h) по второму узлу; знак k показывает, вверх или вниз смотрит ветвь.</p>
+    </div>
+
+    <div class="card">
+      <h2>Отрезок и луч: неравенство теста 0510</h2>
+      <p>Неравенство <span class="fx">√(x − 2) ≤ p</span>. При p &lt; 0 решений нет вовсе, а при p ≥ 0 решения — отрезок <span class="fx">[2; 2 + p²]</span>. Двигай p и следи за длиной: равные шаги параметра дают неравные приращения — длина растёт как p².</p>
+      <div class="row" style="margin:10px 0 2px">
+        <label class="mono small" for="pa">p =</label><input type="range" id="pa" min="-1" max="4" step="0.5" value="2"><span class="mono" id="pav" style="min-width:44px;display:inline-block"></span>
+      </div>
+      <div class="figure" id="pFig"></div>
+      <p class="liveinfo" id="pInfo"></p>
+      <p>При каком значении p длина отрезка решений равна 9?</p>
+      <div class="row">
+        <input type="text" id="pAns" inputmode="decimal" autocomplete="off" aria-label="значение p">
+        <button class="btn" id="pCheck">Проверить</button>
+      </div>
+      <div class="feedback" id="pFb"></div>
+    </div>
+  </section>
+
+  <!-- ============ НАЙДИ ОШИБКУ ============ -->
+  <section class="view" id="view-err">
+    <div class="card">
+      <h2>Перевёртыши: найди ошибку</h2>
+      <p>На доске — решения иррациональных задач с параметром. <b>Не в каждом есть ошибка</b> — реши сам и вынеси вердикт. Все местные ошибки — про отбор корней и знак правой части.</p>
+      <p class="score" style="margin-top:6px">верных вердиктов: <b id="eScore">0</b> из <b id="eSeen">0</b></p>
+    </div>
+    <div class="card" id="errCard">
+      <p class="mono small" style="color:var(--red);font-weight:700" id="eTag"></p>
+      <p class="qtask fx" id="eProblem"></p>
+      <div class="sol on" id="eWork" style="border-left-color:var(--muted)"></div>
+      <div class="verdict">
+        <button class="btn ghost" id="eOk">Решено верно</button>
+        <button class="btn ghost" id="eBad">Есть ошибка</button>
+      </div>
+      <div class="feedback" id="eFb"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="eNext" disabled>Следующее решение →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ КВИЗ И ДЗ ============ -->
+  <section class="view" id="view-test">
+    <div class="card red">
+      <h2>Квиз по тесту 0510</h2>
+      <p class="small muted">Пять вопросов. Ответ — число; дробь пиши через точку, запятую или как -1/4.</p>
+      <div class="dots" id="quizDots"></div>
+      <div id="quizList"></div>
+      <div class="row" style="margin-top:6px">
+        <button class="btn" id="quizCheck">Проверить всё</button>
+        <button class="btn ghost" id="quizReset">Сбросить</button>
+      </div>
+      <div class="feedback" id="quizFb"></div>
+    </div>
+
+    <div class="card">
+      <h2>Домашнее задание</h2>
+      <p class="small muted">Реши на бумаге, затем открой разбор и сверься.</p>
+      <div id="hwList"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s,r){return (r||document).querySelector(s);};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+  var TID="param18-irrational";
+
+  /* Хранилище: мусор молча отбрасывается. Прочитанный ключ принимается, только
+     если это объект; своя запись { keys:{имя:true}, drillBest, passed } проверяется
+     по типу (clean), мусор заменяется значением по умолчанию. Запись — перечитать
+     ключ, поменять только свою ветку, записать: чужие ветки остаются как лежат. */
+  var KEY="mathExamCourseProgress.v1";
+  function isObj(v){ return !!v && typeof v==="object" && !Array.isArray(v); }
+  function readAll(){
+    try{ var v=JSON.parse(localStorage.getItem(KEY)||"{}"); return isObj(v)?v:{}; }
+    catch(e){ return {}; }
+  }
+  function clean(s){
+    s=isObj(s)?s:{};
+    var keys=isObj(s.keys)?s.keys:{}, k;
+    for(k in keys) if(keys[k]!==true) delete keys[k];
+    s.keys=keys;
+    s.drillBest=(typeof s.drillBest==="number"&&isFinite(s.drillBest)&&s.drillBest>=0)?s.drillBest:0;
+    s.passed=s.passed===true;
+    return s;
+  }
+  function save(patch){
+    try{
+      var all=readAll(); var s=all[TID]=clean(all[TID]);
+      if(patch.key) s.keys[patch.key]=true;
+      if(patch.drillBest!=null) s.drillBest=Math.max(s.drillBest,patch.drillBest);
+      if(patch.passed) s.passed=true;
+      localStorage.setItem(KEY,JSON.stringify(all));
+    }catch(e){}
+  }
+  var saved=clean(readAll()[TID]);
+
+  $$(".tab").forEach(function(t){
+    t.addEventListener("click",function(){
+      $$(".tab").forEach(function(x){x.setAttribute("aria-selected","false");});
+      t.setAttribute("aria-selected","true");
+      $$(".view").forEach(function(v){v.classList.remove("on");});
+      $("#view-"+t.dataset.view).classList.add("on");
+    });
+  });
+
+  function pnum(v){
+    v=(v==null?"":(""+v)).trim().replace(",",".");
+    if(v==="") return null;
+    var m=v.match(/^(-?)(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
+    if(m){ var n=parseFloat(m[2])/parseFloat(m[3]); return m[1]?-n:n; }
+    var n2=parseFloat(v); return isNaN(n2)?NaN:n2;
+  }
+  function fmt(x){ return Number.isInteger(x)?(""+x):(""+(Math.round(x*100)/100)).replace(".",","); }
+  function rint(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+  function pick(arr){return arr[rint(0,arr.length-1)];}
+
+  /* =======================================================
+     КОРЕНЬ ПРОТИВ ПРЯМОЙ:  √(x + a) = x  + призрачная ветвь
+  ======================================================= */
+  (function(){
+    var sa=$("#sa"), fig=$("#sFig"), info=$("#sInfo");
+    var xmin=-4,xmax=6,ymin=-3,ymax=6,u=32;
+    var ox=20+4*u, oy=16+6*u, W=40+10*u, H=32+9*u;
+    function PX(x){return ox+x*u;} function PY(y){return oy-y*u;}
+    function branch(a,sign){
+      var d="",pen=false;
+      for(var t=0;t<=12;t+=0.05){
+        var x=t*t-a;
+        if(x>xmax+0.3) break;
+        d+=(pen?" L":" M")+PX(x).toFixed(1)+" "+PY(sign*t).toFixed(1);
+        pen=true;
+      }
+      return d;
+    }
+    function render(){
+      var a=+sa.value; a=Math.round(a*100)/100;
+      $("#sav").textContent=fmt(a);
+      var grid="";
+      for(var i=xmin;i<=xmax;i++)
+        grid+='<line x1="'+PX(i)+'" y1="'+PY(ymin)+'" x2="'+PX(i)+'" y2="'+PY(ymax)+'" stroke="rgba(88,140,190,.18)"/>';
+      for(var j=ymin;j<=ymax;j++)
+        grid+='<line x1="'+PX(xmin)+'" y1="'+PY(j)+'" x2="'+PX(xmax)+'" y2="'+PY(j)+'" stroke="rgba(88,140,190,.18)"/>';
+      var axes='<line x1="'+PX(xmin)+'" y1="'+PY(0)+'" x2="'+PX(xmax)+'" y2="'+PY(0)+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<line x1="'+PX(0)+'" y1="'+PY(ymin)+'" x2="'+PX(0)+'" y2="'+PY(ymax)+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<path d="M'+PX(xmax)+' '+PY(0)+' l-7 -4 v8 z" fill="#2A2F38"/>'
+        +'<path d="M'+PX(0)+' '+PY(ymax)+' l-4 7 h8 z" fill="#2A2F38"/>';
+      var lineXY='<line x1="'+PX(-3)+'" y1="'+PY(-3)+'" x2="'+PX(6)+'" y2="'+PY(6)+'" stroke="#1E3A9F" stroke-width="2.5" clip-path="url(#clipIr)"/>'
+        +'<text x="'+(PX(5)-2)+'" y="'+(PY(5)-10)+'" font-size="12" fill="#1E3A9F" font-family="ui-monospace,monospace">y = x</text>';
+      var curve='<path d="'+branch(a,1)+'" fill="none" stroke="#C77B48" stroke-width="2.5" clip-path="url(#clipIr)"/>'
+        +'<path d="'+branch(a,-1)+'" fill="none" stroke="#C77B48" stroke-width="2" stroke-dasharray="6 5" opacity=".55" clip-path="url(#clipIr)"/>';
+      var s2=1+4*a, dots="", msg, col, n;
+      if(s2<0){
+        n=0; msg="a = "+fmt(a)+" · прямая не достаёт до кривой · корней: 0"; col="#C22F2A";
+      } else {
+        var s=Math.sqrt(s2), x1=(1-s)/2, x2=(1+s)/2;
+        if(Math.abs(a+0.25)<1e-9){
+          n=1; col="#B5720E";
+          dots='<circle cx="'+PX(0.5)+'" cy="'+PY(0.5)+'" r="6" fill="#B5720E"/>';
+          msg="a = −0,25 · касание! прямая коснулась кривой · корней: 1";
+        } else if(a<=0){
+          n=2; col="#16307F";
+          dots='<circle cx="'+PX(x1)+'" cy="'+PY(x1)+'" r="5.5" fill="#16307F"/><circle cx="'+PX(x2)+'" cy="'+PY(x2)+'" r="5.5" fill="#16307F"/>';
+          msg="a = "+fmt(a)+" · корни x = "+fmt(Math.round(x1*100)/100)+" и x = "+fmt(Math.round(x2*100)/100)+" · корней: 2";
+        } else {
+          n=1; col="#16307F";
+          dots='<circle cx="'+PX(x2)+'" cy="'+PY(x2)+'" r="5.5" fill="#16307F"/>'
+            +'<line x1="'+(PX(x1)-6)+'" y1="'+(PY(x1)-6)+'" x2="'+(PX(x1)+6)+'" y2="'+(PY(x1)+6)+'" stroke="#C22F2A" stroke-width="2.5"/>'
+            +'<line x1="'+(PX(x1)-6)+'" y1="'+(PY(x1)+6)+'" x2="'+(PX(x1)+6)+'" y2="'+(PY(x1)-6)+'" stroke="#C22F2A" stroke-width="2.5"/>';
+          msg="a = "+fmt(a)+" · корней: 1 (x = "+fmt(Math.round(x2*100)/100)+") · ✕ — посторонний: он на призрачной ветви, там x < 0";
+        }
+      }
+      fig.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img" aria-label="кривая корня, призрачная ветвь и прямая y равно x">'
+        +'<defs><clipPath id="clipIr"><rect x="'+PX(xmin)+'" y="'+PY(ymax)+'" width="'+(10*u)+'" height="'+(9*u)+'"/></clipPath></defs>'
+        +grid+axes+curve+lineXY+dots+'</svg>';
+      info.textContent=msg; info.style.color=col;
+    }
+    sa.addEventListener("input",render); render();
+    $("#sCheck").addEventListener("click",function(){
+      var n=pnum($("#sAns").value), fb=$("#sFb");
+      if(n===null){ fb.className="feedback warn on"; fb.textContent="Впиши значение a."; return; }
+      if(!isNaN(n)&&Math.abs(n+0.25)<1e-9){
+        fb.className="feedback ok on";
+        fb.textContent="Верно: a = −1/4. Алгебраически это D = 0 у уравнения x² − x − a = 0, полученного возведением в квадрат. Касание — всегда граница между «два корня» и «ни одного».";
+        save({key:"kasanie"});
+      } else {
+        fb.className="feedback bad on";
+        fb.textContent="Не то. Лови ползунком момент, когда две синие точки сливаются в одну.";
+      }
+    });
+    $("#sAns").addEventListener("keydown",function(e){ if(e.key==="Enter") $("#sCheck").click(); });
+  })();
+
+  /* =======================================================
+     ЗАГАДОЧНЫЙ КОРЕНЬ:  y = k·√(x − h) + v
+  ======================================================= */
+  (function(){
+    var fig=$("#rFig"), fb=$("#rFb");
+    var xmin=-6,xmax=6,ymin=-6,ymax=6,u=26,ox=170,oy=170;
+    function PX(x){return ox+x*u;} function PY(y){return oy-y*u;}
+    var cur=null, streak=0, best=saved.drillBest||0;
+    $("#rBest").textContent=best;
+    function gen(){
+      var k,h,v;
+      for(var t=0;t<300;t++){
+        k=pick([-2,-1,1,2]); h=rint(-4,2); v=rint(-3,3);
+        if(Math.abs(v+2*k)>5) continue;
+        break;
+      }
+      cur={k:k,h:h,v:v};
+      draw();
+      $("#rk").value="";$("#rh").value="";$("#rv").value="";
+      fb.className="feedback"; $("#rk").focus();
+    }
+    function curvePath(k,h,v){
+      var d="",pen=false;
+      for(var t=0;t<=6;t+=0.04){
+        var x=h+t*t;
+        if(x>xmax+0.3) break;
+        d+=(pen?" L":" M")+PX(x).toFixed(1)+" "+PY(v+k*t).toFixed(1);
+        pen=true;
+      }
+      return d;
+    }
+    function draw(){
+      var grid="";
+      for(var i=xmin;i<=xmax;i++){
+        grid+='<line x1="'+PX(i)+'" y1="'+PY(ymin)+'" x2="'+PX(i)+'" y2="'+PY(ymax)+'" stroke="rgba(88,140,190,.18)"/>'
+            +'<line x1="'+PX(xmin)+'" y1="'+PY(i)+'" x2="'+PX(xmax)+'" y2="'+PY(i)+'" stroke="rgba(88,140,190,.18)"/>';
+      }
+      var p2={x:cur.h+4,y:cur.v+2*cur.k};
+      var pts='<circle cx="'+PX(cur.h)+'" cy="'+PY(cur.v)+'" r="6" fill="#7A4A1E"/>'
+        +'<text x="'+(PX(cur.h)+8)+'" y="'+(PY(cur.v)-8)+'" font-size="11" fill="#7A4A1E" font-family="ui-monospace,monospace">('+cur.h+'; '+cur.v+')</text>'
+        +'<circle cx="'+PX(p2.x)+'" cy="'+PY(p2.y)+'" r="4.5" fill="#7A4A1E"/>'
+        +'<text x="'+(PX(p2.x)+8)+'" y="'+(PY(p2.y)-8)+'" font-size="11" fill="#7A4A1E" font-family="ui-monospace,monospace">('+p2.x+'; '+p2.y+')</text>';
+      fig.innerHTML='<svg viewBox="0 0 340 340" width="340" role="img" aria-label="график корневой функции">'
+        +'<defs><clipPath id="clipRt"><rect x="'+PX(xmin)+'" y="'+PY(ymax)+'" width="'+(12*u)+'" height="'+(12*u)+'"/></clipPath></defs>'
+        +grid
+        +'<line x1="'+PX(xmin)+'" y1="'+oy+'" x2="'+PX(xmax)+'" y2="'+oy+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<line x1="'+ox+'" y1="'+PY(ymin)+'" x2="'+ox+'" y2="'+PY(ymax)+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<path d="M'+PX(xmax)+' '+oy+' l-7 -4 v8 z" fill="#2A2F38"/>'
+        +'<path d="M'+ox+' '+PY(ymax)+' l-4 7 h8 z" fill="#2A2F38"/>'
+        +'<path d="'+curvePath(cur.k,cur.h,cur.v)+'" fill="none" stroke="#C77B48" stroke-width="2.5" clip-path="url(#clipRt)"/>'
+        +pts+'</svg>';
+    }
+    $("#rCheck").addEventListener("click",function(){
+      if(!cur) return;
+      var k=pnum($("#rk").value), h=pnum($("#rh").value), v=pnum($("#rv").value);
+      if(k===null||h===null||v===null){ fb.className="feedback warn on"; fb.textContent="Впиши все три коэффициента."; return; }
+      var ok=Math.abs(k-cur.k)<1e-9&&Math.abs(h-cur.h)<1e-9&&Math.abs(v-cur.v)<1e-9;
+      if(ok){
+        streak++; if(streak>best){best=streak; save({drillBest:best});}
+        $("#rStreak").textContent=streak; $("#rBest").textContent=best;
+        fb.className="feedback ok on";
+        fb.textContent="Верно: y = "+cur.k+"·√(x "+(cur.h>=0?"− "+cur.h:"+ "+(-cur.h))+") "+(cur.v>=0?"+ "+cur.v:"− "+(-cur.v))+". Следующий график →";
+        setTimeout(gen,700);
+      } else {
+        streak=0; $("#rStreak").textContent=0;
+        fb.className="feedback bad on";
+        fb.textContent="Не сходится. Начало кривой сразу даёт (h; v); второй узел стоит на 4 правее — там √(x − h) = 2, значит k = (y − v)/2.";
+      }
+    });
+    $("#rNew").addEventListener("click",gen);
+    ["#rk","#rh","#rv"].forEach(function(id){ $(id).addEventListener("keydown",function(e){ if(e.key==="Enter") $("#rCheck").click(); }); });
+    gen();
+  })();
+
+  /* =======================================================
+     ОТРЕЗОК И ЛУЧ:  √(x − 2) ≤ p
+  ======================================================= */
+  (function(){
+    var pa=$("#pa"), fig=$("#pFig"), info=$("#pInfo");
+    var W=560,H=100, sx0=36,sx1=W-24, xmin=0,xmax=19, base=56;
+    function SX(v){ return sx0+(v-xmin)/(xmax-xmin)*(sx1-sx0); }
+    function render(){
+      var p=+pa.value;
+      $("#pav").textContent=fmt(p);
+      var ticks="";
+      for(var t=xmin;t<=xmax-1;t++){
+        ticks+='<line x1="'+SX(t)+'" y1="'+(base-5)+'" x2="'+SX(t)+'" y2="'+(base+5)+'" stroke="rgba(42,47,56,.45)"/>';
+        if(t%2===0) ticks+='<text x="'+SX(t)+'" y="'+(base+24)+'" font-size="11" text-anchor="middle" fill="#67707E" font-family="ui-monospace,monospace">'+t+'</text>';
+      }
+      var body="", msg, col;
+      if(p<0){
+        msg="p = "+fmt(p)+" · корень неотрицателен, а p < 0 · решений нет"; col="#C22F2A";
+      } else {
+        var R=2+p*p;
+        body='<line x1="'+SX(2)+'" y1="'+base+'" x2="'+SX(R)+'" y2="'+base+'" stroke="#1E3A9F" stroke-width="7" stroke-linecap="round" opacity=".85"/>'
+          +'<circle cx="'+SX(2)+'" cy="'+base+'" r="5.5" fill="#16307F"/>'
+          +'<circle cx="'+SX(R)+'" cy="'+base+'" r="5.5" fill="#16307F"/>';
+        if(p===0){ msg="p = 0 · решения: [2; 2] — отрезок схлопнулся в точку · длина: 0"; col="#B5720E"; }
+        else { msg="p = "+fmt(p)+" · решения: [2; 2 + p²] = [2; "+fmt(R)+"] · длина: p² = "+fmt(p*p); col="#16307F"; }
+      }
+      fig.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img" aria-label="множество решений на числовой прямой">'
+        +'<text x="'+sx0+'" y="18" font-size="11" fill="#67707E" font-family="ui-monospace,monospace">множество решений неравенства</text>'
+        +'<line x1="'+sx0+'" y1="'+base+'" x2="'+sx1+'" y2="'+base+'" stroke="#2A2F38" stroke-width="1.5"/>'
+        +'<path d="M'+sx1+' '+base+' l-8 -4 v8 z" fill="#2A2F38"/>'
+        +ticks+body+'</svg>';
+      info.textContent=msg; info.style.color=col;
+    }
+    pa.addEventListener("input",render); render();
+    $("#pCheck").addEventListener("click",function(){
+      var n=pnum($("#pAns").value), fb=$("#pFb");
+      if(n===null){ fb.className="feedback warn on"; fb.textContent="Впиши значение p."; return; }
+      if(!isNaN(n)&&Math.abs(n-3)<1e-9){
+        fb.className="feedback ok on";
+        fb.textContent="Верно: длина отрезка равна p², и p² = 9 при p = 3 (p = −3 не годится — при отрицательном p решений нет вовсе). В тесте 0510 та же задача была с длиной 25 — ответ 5.";
+        save({key:"otrezok"});
+      } else {
+        fb.className="feedback bad on";
+        fb.textContent="Не то. Длина отрезка — это p², а не p. Какое p даёт p² = 9 и при этом вообще имеет решения?";
+      }
+    });
+    $("#pAns").addEventListener("keydown",function(e){ if(e.key==="Enter") $("#pCheck").click(); });
+  })();
+
+  /* =======================================================
+     ПЕРЕВЁРТЫШИ
+  ======================================================= */
+  (function(){
+    var items=[
+      { p:"Решите уравнение √(x + 3) = x − 3.", err:true,
+        work:"Возведём обе части в квадрат:\nx + 3 = x² − 6x + 9 → x² − 7x + 6 = 0.\nКорни: x = 1 и x = 6.\nОтвет: 1; 6.",
+        why:"Ошибка — не отсеяны посторонние корни: правая часть обязана быть неотрицательной. При x = 1: левая √4 = 2, правая −2 — не годится (это призрачная ветвь). При x = 6: √9 = 3 = 3 ✓. Верный ответ: x = 6." },
+      { p:"При каких a уравнение √(x + a) = 2 имеет корень?", err:false,
+        work:"Правая часть 2 > 0, возведение равносильно:\nx + a = 4 → x = 4 − a.\nПроверка: √(4 − a + a) = √4 = 2 при любом a.\nОтвет: при любом a (корень x = 4 − a).",
+        why:"Верно. Когда правая часть — положительная константа, условия на знак выполняются сами, и разбора случаев нет." },
+      { p:"Решите уравнение √(2x − a) = x при каждом a.", err:true,
+        work:"ОДЗ: 2x − a ≥ 0.\nВозводим: 2x − a = x² → x² − 2x + a = 0.\nx = 1 ± √(1 − a).\nОтвет: при a ≤ 1 корни x = 1 ± √(1 − a); при a > 1 корней нет.",
+        why:"Ошибка — выписана ОДЗ, но забыто главное условие x ≥ 0 (правая часть). При a < 0 корень 1 − √(1 − a) отрицателен и посторонний: например, при a = −3 он равен −1, а √(2·(−1) + 3) = 1 ≠ −1. Верно: при a < 0 один корень 1 + √(1 − a); при 0 ≤ a ≤ 1 оба корня; при a > 1 корней нет." },
+      { p:"Решите неравенство √(x + 3) ≥ p при каждом p.", err:true,
+        work:"Возводим обе части в квадрат:\nx + 3 ≥ p² → x ≥ p² − 3.\nОтвет: x ∈ [p² − 3; +∞) при любом p.",
+        why:"Ошибка — при p ≤ 0 возводить нельзя: корень и так не меньше отрицательного числа, подходит вся ОДЗ x ≥ −3. Формула x ≥ p² − 3 при p < 0 теряет кусок [−3; p² − 3). Верно: при p ≤ 0 x ≥ −3; при p > 0 x ≥ p² − 3." },
+      { p:"При каком p неравенство √(px² + px + 1) ≤ 0 имеет единственное решение?", err:false,
+        work:"Корень неотрицателен, поэтому ≤ 0 означает = 0:\npx² + px + 1 = 0.\np = 0: уравнение 1 = 0 — решений нет.\np ≠ 0: единственное решение при D = p² − 4p = 0 → p = 4.\nПроверка: 4x² + 4x + 1 = (2x + 1)² = 0 → x = −0,5.\nОтвет: p = 4.",
+        why:"Верно, включая проверку p = 0: при обнулении старшего коэффициента уравнение перестаёт быть квадратным, и этот случай разобран отдельно." },
+      { p:"Известно, что решения √(x − 2) ≤ p образуют отрезок длины 5. Найдите p.", err:true,
+        work:"Решения: отрезок от 2 до 2 + p.\nДлина равна p, значит p = 5.\nОтвет: p = 5.",
+        why:"Ошибка — после возведения в квадрат x − 2 ≤ p², правый конец равен 2 + p², и длина отрезка — это p², а не p. Верно: p² = 5 → p = √5." }
+    ];
+    for(var i=items.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=items[i];items[i]=items[j];items[j]=t;}
+    var idx=0, seen=0, score=0, answered=false;
+    var tag=$("#eTag"),prob=$("#eProblem"),work=$("#eWork"),fb=$("#eFb"),next=$("#eNext");
+    function show(){
+      answered=false;
+      var it=items[idx];
+      tag.textContent="Решение "+(idx+1)+" из "+items.length;
+      prob.textContent=it.p; work.textContent=it.work;
+      fb.className="feedback"; next.disabled=true;
+      $("#eOk").disabled=false; $("#eBad").disabled=false;
+    }
+    function verdict(userSaysError){
+      if(answered) return; answered=true; seen++;
+      var it=items[idx];
+      var right=(userSaysError===it.err);
+      if(right) score++;
+      $("#eScore").textContent=score; $("#eSeen").textContent=seen;
+      fb.className="feedback "+(right?"ok":"bad")+" on";
+      fb.textContent=(right?"Верный вердикт. ":"Неверно. ")+(it.err?"Здесь ошибка. ":"Здесь всё верно. ")+it.why;
+      $("#eOk").disabled=true; $("#eBad").disabled=true; next.disabled=false;
+      if(seen>=items.length && score===items.length) save({key:"pereverts"});
+    }
+    $("#eOk").addEventListener("click",function(){verdict(false);});
+    $("#eBad").addEventListener("click",function(){verdict(true);});
+    next.addEventListener("click",function(){ idx=(idx+1)%items.length; show(); });
+    show();
+  })();
+
+  /* =======================================================
+     КВИЗ ПО ТЕСТУ 0510
+  ======================================================= */
+  (function(){
+    var quiz=[
+      { t:"1. При каком значении p множество решений неравенства √(x − 2) ≤ p — отрезок длины 25?", a:5,
+        s:"p < 0: решений нет. p ≥ 0: решения [2; 2 + p²], длина p².\np² = 25 → p = 5 (p = −5 отброшено).\nОтвет: 5." },
+      { t:"2. При каком значении p множество решений неравенства √(x + 3) ≥ p — луч [13; +∞)?", a:4,
+        s:"p ≤ 0: подходит вся ОДЗ, луч [−3; +∞) — не то.\np > 0: x ≥ p² − 3, луч [p² − 3; +∞).\np² − 3 = 13 → p² = 16 → p = 4.\nОтвет: 4." },
+      { t:"3. При каком значении p неравенство √(px² + px + 1) ≤ 0 имеет единственное решение?", a:4,
+        s:"Сводится к px² + px + 1 = 0.\np = 0 → 1 = 0, решений нет.\np ≠ 0: единственное решение при D = p² − 4p = 0 → p = 4.\nОтвет: 4." },
+      { t:"4. При каком значении a уравнение √(x + a) = x имеет ровно один корень, полученный касанием?", a:-0.25,
+        s:"Возводим (с условием x ≥ 0): x² − x − a = 0.\nКасание — двойной корень: D = 1 + 4a = 0 → a = −1/4.\nКорень x = 1/2 ≥ 0 — условие выполнено.\nОтвет: −0,25." },
+      { t:"5. Сколько корней имеет уравнение 8√(x + a) = x + 4 при a = 0?", a:2,
+        s:"Замена t = √x ≥ 0: 8t = t² + 4 → t² − 8t + 4 = 0.\nt = 4 ± √12 — оба корня положительны.\nКаждый t ≥ 0 даёт ровно один x.\nОтвет: 2." }
+    ];
+    var list=$("#quizList"), dots=$("#quizDots");
+    quiz.forEach(function(q,i){
+      var wrap=document.createElement("div");
+      wrap.className="card"; wrap.style.background="rgba(255,255,255,.55)"; wrap.style.borderColor="var(--line)"; wrap.style.marginBottom="12px";
+      wrap.innerHTML='<p class="qtask fx">'+q.t+'</p>'
+        +'<div class="row"><label class="mono small">Ответ:</label>'
+        +'<input type="text" inputmode="decimal" autocomplete="off" data-i="'+i+'" aria-label="ответ на вопрос '+(i+1)+'">'
+        +'<button class="btn ghost" data-sol="'+i+'">Разбор</button></div>'
+        +'<div class="sol qsol" id="qsol'+i+'">'+q.s+'</div>';
+      list.appendChild(wrap);
+      dots.appendChild(document.createElement("span"));
+    });
+    $$("[data-sol]",list).forEach(function(btn){
+      btn.addEventListener("click",function(){ $("#qsol"+btn.dataset.sol).classList.toggle("on"); });
+    });
+    $("#quizCheck").addEventListener("click",function(){
+      var right=0, filled=0;
+      $$("input[data-i]",list).forEach(function(inp,i){
+        var n=pnum(inp.value); var d=dots.children[i];
+        d.className="";
+        if(n===null) return;
+        filled++;
+        if(!isNaN(n)&&Math.abs(n-quiz[i].a)<1e-9){ right++; d.className="ok"; }
+        else d.className="bad";
+      });
+      var fb=$("#quizFb");
+      if(filled<quiz.length){ fb.className="feedback warn on"; fb.textContent="Заполнены не все поля: "+filled+" из "+quiz.length+"."; }
+      else if(right===quiz.length){ fb.className="feedback ok on"; fb.textContent="5 из 5 — глава закрыта. Призраки больше не пройдут в твой ответ."; save({passed:true,key:"quiz"}); }
+      else { fb.className="feedback bad on"; fb.textContent="Верно "+right+" из "+quiz.length+". Открой разбор в неверных: почти всегда дело в знаке правой части."; }
+    });
+    $("#quizReset").addEventListener("click",function(){
+      $$("input[data-i]",list).forEach(function(inp){inp.value="";});
+      Array.prototype.forEach.call(dots.children,function(d){d.className="";});
+      $("#quizFb").className="feedback";
+      $$(".qsol",list).forEach(function(s){s.classList.remove("on");});
+    });
+  })();
+
+  /* =======================================================
+     ДОМАШНЕЕ ЗАДАНИЕ
+  ======================================================= */
+  (function(){
+    var hw=[
+      { t:"При каких значениях a уравнение 8√(x + a) = x + 4 имеет ровно один корень?",
+        s:"Замена t = √(x + a) ≥ 0, тогда x = t² − a:\n8t = t² − a + 4 → t² − 8t + (4 − a) = 0.\nКорни по t: t = 4 ± √(12 + a). Каждый неотрицательный t даёт ровно один x.\n\na < −12: подкоренное 12 + a < 0 — корней нет.\na = −12: t = 4 (двойной) — один корень.\n−12 < a ≤ 4: √(12 + a) ≤ 4, оба значения t неотрицательны — два корня.\na > 4: √(12 + a) > 4, корень t = 4 − √(12 + a) < 0 отброшен — один корень.\n\nОтвет: a = −12 или a > 4, то есть a ∈ {−12} ∪ (4; +∞)." },
+      { t:"Решите неравенство √(x + 3) ≥ p при каждом значении p.",
+        s:"ОДЗ: x ≥ −3; левая часть неотрицательна.\n\np ≤ 0: корень всегда ≥ 0 ≥ p — подходит вся ОДЗ: x ∈ [−3; +∞).\np > 0: обе части неотрицательны, возводим: x + 3 ≥ p² → x ∈ [p² − 3; +∞).\n\nОтвет: при p ≤ 0 x ≥ −3; при p > 0 x ≥ p² − 3.\n\nКонтроль по тесту 0510: луч [13; +∞) получается при p² − 3 = 13, то есть p = 4." },
+      { t:"Решите уравнение √(2x − a) = x при каждом значении a.",
+        s:"Штамп: √A = B ⇔ A = B² и B ≥ 0.\n2x − a = x², x ≥ 0 → x² − 2x + a = 0, x ≥ 0.\nКорни: x = 1 ± √(1 − a) — существуют при a ≤ 1. ОДЗ 2x − a ≥ 0 выполняется сама: 2x − a = x² ≥ 0.\n\na > 1: корней нет.\na = 1: единственный корень x = 1.\n0 ≤ a < 1: √(1 − a) ≤ 1, оба корня неотрицательны — x = 1 ± √(1 − a).\na < 0: √(1 − a) > 1, корень 1 − √(1 − a) < 0 посторонний — остаётся x = 1 + √(1 − a).\n\nОтвет: при a > 1 корней нет; при a = 1 x = 1; при 0 ≤ a < 1 x = 1 ± √(1 − a); при a < 0 x = 1 + √(1 − a)." }
+    ];
+    var list=$("#hwList");
+    hw.forEach(function(q,i){
+      var wrap=document.createElement("div");
+      wrap.style.borderTop="1px solid var(--line)"; wrap.style.paddingTop="12px"; wrap.style.marginTop="12px";
+      if(i===0){wrap.style.borderTop="none";wrap.style.paddingTop="0";wrap.style.marginTop="0";}
+      wrap.innerHTML='<p class="qtask"><b>'+(i+1)+'.</b> <span class="fx">'+q.t+'</span></p>'
+        +'<button class="btn ghost" data-h="'+i+'">Показать разбор</button>'
+        +'<div class="sol" id="hsol'+i+'">'+q.s+'</div>';
+      list.appendChild(wrap);
+    });
+    $$("[data-h]",list).forEach(function(btn){
+      btn.addEventListener("click",function(){
+        var el=$("#hsol"+btn.dataset.h); el.classList.toggle("on");
+        btn.textContent=el.classList.contains("on")?"Скрыть разбор":"Показать разбор";
+        if(el.classList.contains("on")) save({key:"hw"+btn.dataset.h});
+      });
+    });
+  })();
+
+})();
+</script>
+</body>
+</html>

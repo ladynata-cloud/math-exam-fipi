@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задания 9–10 · Формулы и текстовые задачи</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA; --badbg:#FBEAE9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:680px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0 0 6px;font-size:16.5px;color:var(--ink-strong)}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+  .tab{border:1.5px solid var(--ink);background:rgba(250,250,244,.8);color:var(--ink);border-radius:999px;
+    padding:8px 16px;font:700 14px/1 inherit;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.92);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    padding:9px 16px;font:700 14.5px/1 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:disabled{opacity:.45;cursor:default}
+  input[type=text]{border:1.5px solid var(--ink);border-radius:8px;background:#fff;padding:9px 12px;font:600 16px/1 inherit;width:150px}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .feedback{margin-top:12px;border-radius:8px;padding:10px 12px;font-weight:600;display:none}
+  .feedback.on{display:block}
+  .feedback.ok{background:var(--okbg);color:var(--ok)}
+  .feedback.bad{background:var(--badbg);color:var(--red)}
+  .feedback.hint{background:rgba(30,58,159,.08);color:var(--ink-strong)}
+  table.tbl{border-collapse:collapse;margin:12px 0;background:#fff;font-size:15px}
+  table.tbl th,table.tbl td{border:1.5px solid var(--ink);padding:9px 14px;text-align:center;min-width:104px}
+  table.tbl th{background:rgba(30,58,159,.08);font-weight:700;color:var(--ink-strong)}
+  table.tbl td.empty{background:rgba(194,47,42,.07);color:var(--muted);font-style:italic}
+  table.tbl td.filled{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:700;color:var(--ink-strong)}
+  table.tbl td.aim{outline:3px solid rgba(194,47,42,.35);outline-offset:-3px}
+  .pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .pool button{border:1.5px solid var(--ink);background:#fff;color:var(--ink-strong);border-radius:8px;
+    padding:9px 14px;font:700 15px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;cursor:pointer}
+  .pool button:hover{background:rgba(30,58,159,.07)}
+  .pool button.bad{border-color:var(--red);color:var(--red);background:var(--badbg)}
+  .eqline{border-left:3px solid var(--red);background:rgba(255,255,255,.7);padding:10px 13px;margin-top:12px;
+    font:700 17px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong);display:none}
+  .eqline.on{display:block}
+  details.support{border:1px dashed var(--line);border-radius:8px;background:rgba(255,255,255,.6);padding:10px 12px;margin-bottom:10px}
+  /* заголовок-переключатель — зона нажатия не меньше 44 px; отрицательное поле
+     съедает прибавку, так что блок выглядит как раньше (как в exam/full-exam.html) */
+  details.support summary{cursor:pointer;font-weight:700;color:var(--ink-strong);padding:10px 0;margin:-10px 0}
+  details.support p{margin:8px 0 0}
+  /* вкладки под палец — не ниже 44 px; мышью на десктопе вид прежний */
+  @media (pointer:coarse){ .tab{min-height:44px} }
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+  .chips button{border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;
+    padding:6px 13px;font:600 13px/1 inherit;cursor:pointer}
+  .chips button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .task{font-size:17px;margin:6px 0 12px}
+  .formula{font:700 18px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong);
+    background:rgba(30,58,159,.07);border-radius:8px;padding:10px 14px;margin:10px 0;display:inline-block}
+  .tagline{font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--red);margin:0 0 8px}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+  .dots span{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px}
+  .dots span.ok{background:var(--ink)}
+  .dots span.bad{background:var(--red);border-color:var(--red)}
+  .bigscore{font:800 34px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
+  .stat{font:600 13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .view{display:none}
+  .view.on{display:block}
+  /* узкий экран: таблица «расстояние / скорость / время» целиком в 360 px, клетки не ниже 44 px;
+     мягкие переносы (&shy;) в заголовках включаются только на совсем узких экранах (< 360 px) */
+  table.tbl th{-webkit-hyphens:none;hyphens:none}
+  @media (max-width:520px){
+    .wrap{padding-left:16px;padding-right:16px}
+    .card{padding:16px 14px}
+    table.tbl{font-size:14px}
+    table.tbl th{font-size:13px}
+    table.tbl th,table.tbl td{min-width:0;padding:6px 5px;height:44px}
+    .pool button{min-height:44px}
+  }
+  @media (max-width:359px){
+    table.tbl{font-size:13px}
+    table.tbl th{-webkit-hyphens:manual;hyphens:manual}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Курс</a>
+  <p class="eyebrow">задания 9 и 10 · краткий ответ · 2 балла</p>
+  <h1>Формулы и текстовые задачи</h1>
+  <p class="lede">Две соседние линии с общей сутью: всё сводится к уравнению. В девятом задании его уже написали за вас — надо подставить и решить. В десятом уравнение нужно составить самому, и почти всегда через таблицу.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="idea">Идея</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="drill">Тренажёр</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="exam">Зачёт</button>
+  </div>
+
+  <!-- ИДЕЯ -->
+  <section class="view on" id="view-idea">
+    <div class="card">
+      <h2>Таблица вместо размышлений</h2>
+      <p><b>Задача.</b> Расстояние между городами 240 км. Автомобиль проехал из A в B, а обратно ехал на 20 км/ч быстрее и потратил на час меньше. Найдите скорость на пути из A в B.</p>
+      <p class="small muted">Обозначим искомую скорость через x и заполним таблицу: выбирайте выражение для подсвеченной клетки.</p>
+      <table class="tbl" id="tbl">
+        <tr><th></th><th>рас&shy;сто&shy;яние</th><th>ско&shy;рость</th><th>время</th></tr>
+        <tr><th>туда</th><td class="filled">240</td><td class="empty" data-cell="0">?</td><td class="empty" data-cell="1">?</td></tr>
+        <tr><th>об&shy;рат&shy;но</th><td class="filled">240</td><td class="empty" data-cell="2">?</td><td class="empty" data-cell="3">?</td></tr>
+      </table>
+      <div class="pool" id="pool"></div>
+      <div class="eqline" id="eq"></div>
+      <p class="small muted" style="margin-top:12px">Дальше — техника: привести к общему знаменателю, получить x² + 20x − 4800 = 0 и выбрать положительный корень x = 60. Проверка: 240 : 60 = 4 ч и 240 : 80 = 3 ч, разница ровно час.</p>
+    </div>
+    <div class="card">
+      <h2>Что спрашивают в каждой линии</h2>
+      <details class="support"><summary>Задание 9 — формула уже дана</summary><p>В условии написана формула из физики или экономики и значения всех величин, кроме одной. Работа механическая: подставить и решить уравнение. Три ловушки — единицы измерения (минуты против часов), отбор корня по смыслу (время положительно) и вопрос «наибольшее/наименьшее значение», требующий взять нужный конец промежутка.</p></details>
+      <details class="support"><summary>Задание 10 — уравнение надо составить</summary><p>Обозначьте буквой то, что спрашивают, и заполните таблицу: для движения это «расстояние — скорость — время», для работы «объём — производительность — время», для смесей «масса — доля — масса вещества». Уравнение возникает из последнего неиспользованного условия: «на час меньше», «встретились», «вместе за».</p></details>
+      <details class="support"><summary>Три типовые таблицы</summary><p>Движение: t = s/v, при встречном движении скорости складываются, при движении по течению прибавляется скорость течения. Работа: производительность = 1/время, при совместной работе производительности складываются. Смеси: масса вещества = масса раствора × долю.</p></details>
+      <details class="support"><summary>Проверка ответа</summary><p>Всегда подставляйте найденное обратно в условие: скорость 60 и 80, время 4 и 3, разница час — сходится. Эта проверка занимает двадцать секунд и ловит почти все ошибки знака и потерянного корня.</p></details>
+    </div>
+  </section>
+
+  <!-- ТРЕНАЖЁР -->
+  <section class="view" id="view-drill">
+    <div class="card">
+      <div class="chips" id="modeChips"></div>
+      <p class="tagline" id="dTag"></p>
+      <p class="task" id="dText"></p>
+      <p id="dFormulaWrap" style="display:none"><span class="formula" id="dFormula"></span></p>
+      <p class="task" id="dAsk" style="font-weight:600"></p>
+      <div class="row">
+        <input type="text" id="dAnswer" inputmode="decimal" autocomplete="off" aria-label="Ответ">
+        <button class="btn" id="dCheck">Проверить</button>
+        <button class="btn ghost" id="dSol">Разбор</button>
+        <button class="btn ghost" id="dNext">Другая задача</button>
+      </div>
+      <div class="feedback" id="dFb"></div>
+      <p class="stat" style="margin-top:12px">решено: <b id="stSolved">0</b> · серия верных подряд: <b id="stStreak">0</b></p>
+    </div>
+  </section>
+
+  <!-- ЗАЧЁТ -->
+  <section class="view" id="view-exam">
+    <div class="card red">
+      <h2>Зачёт: 8 задач</h2>
+      <p class="small muted">Четыре задачи с формулой и четыре текстовые, вперемешку и без разбора по ходу. Зачёт сдан от 7 верных.</p>
+      <div class="dots" id="zDots"></div>
+      <div id="zBox" style="display:none">
+        <p class="tagline" id="zTag"></p>
+        <p class="task" id="zText"></p>
+        <p id="zFormulaWrap" style="display:none"><span class="formula" id="zFormula"></span></p>
+        <p class="task" id="zAsk" style="font-weight:600"></p>
+        <div class="row">
+          <input type="text" id="zAnswer" inputmode="decimal" autocomplete="off" aria-label="Ответ">
+          <button class="btn" id="zCheck">Ответить</button>
+        </div>
+        <div class="feedback" id="zFb"></div>
+      </div>
+      <div id="zDone" style="display:none">
+        <p class="bigscore" id="zScore"></p>
+        <p id="zVerdict"></p>
+      </div>
+      <p><button class="btn" id="zStart">Начать зачёт</button></p>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ================= ЛОГИКА (без DOM) ================= */
+var AP = (function(){
+  "use strict";
+  function rnd(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  function gcd(a,b){ return b ? gcd(b, a % b) : a; }
+  function lcm(a,b){ return a / gcd(a,b) * b; }
+  function num(x){ return String(Math.round(x*1e6)/1e6).replace(".", ","); }
+  function decl(n, one, few, many){
+    var a = n % 100, b = n % 10;
+    if (a > 10 && a < 20) return many;
+    if (b === 1) return one;
+    if (b >= 2 && b <= 4) return few;
+    return many;
+  }
+
+  /* ---------- ЗАДАНИЕ 9: формула дана ---------- */
+  function f9ball(){
+    var t1 = rnd(1,4), d = pick([2,3,4,5,6]), t2 = t1 + d;
+    var v0 = 5*(t1+t2), H = 5*t1*t2;
+    return { line:9, type:"ball", answer:d,
+      text:"Высота над землёй брошенного вверх мяча меняется по закону h(t) = −5t² + " + v0 + "t, где h — высота в метрах, t — время в секундах.",
+      formula:"h(t) = −5t² + " + v0 + "t",
+      ask:"Сколько секунд мяч будет находиться на высоте не менее " + H + " м?",
+      sol:"Решаем −5t² + " + v0 + "t ≥ " + H + ", то есть 5t² − " + v0 + "t + " + H + " ≤ 0. Корни квадратного уравнения: t = " + t1 + " и t = " + t2 + ". Между ними мяч выше нужной отметки, значит время равно " + t2 + " − " + t1 + " = " + d + " с." };
+  }
+  function f9power(){
+    var I = rnd(2,10), R = pick([2,3,4,5,10,20,25]), P = I*I*R;
+    return { line:9, type:"power", answer:I,
+      text:"Мощность постоянного тока вычисляется по формуле P = I²R, где I — сила тока в амперах, R — сопротивление в омах.",
+      formula:"P = I²R",
+      ask:"Найдите силу тока (в амперах), если мощность равна " + P + " Вт, а сопротивление — " + R + " Ом.",
+      sol:"Из P = I²R получаем I² = P : R = " + P + " : " + R + " = " + (I*I) + ". Сила тока положительна, поэтому I = " + I + " А." };
+  }
+  function f9decay(){
+    var T = pick([5,10,15,20,30,45,60]), k = rnd(2,5), mEnd = pick([1,2,3,5,10]);
+    var m0 = mEnd*Math.pow(2,k);
+    return { line:9, type:"decay", answer:k*T,
+      text:"В ходе распада радиоактивного изотопа его масса уменьшается по закону m = m₀ · 2^(−t/T), где m₀ — начальная масса, T — период полураспада, t — время в минутах.",
+      formula:"m = m₀ · 2^(−t/T)",
+      ask:"Начальная масса изотопа " + m0 + " мг, период полураспада " + T + " мин. Через сколько минут масса станет равной " + mEnd + " мг?",
+      sol:"Масса уменьшилась в " + m0 + " : " + mEnd + " = " + Math.pow(2,k) + " раз, то есть в 2^" + k + " раз. Значит прошло ровно " + k + " " + decl(k,"период","периода","периодов") + " полураспада: t = " + k + " · " + T + " = " + (k*T) + " мин." };
+  }
+  function f9horizon(){
+    var l = pick([80,160,240,320,400]), R = 6400;
+    var h = l*l/(2*R);
+    return { line:9, type:"horizon", answer:h,
+      text:"Расстояние до горизонта вычисляется по формуле l = √(2Rh), где R = 6400 км — радиус Земли, h — высота наблюдателя в километрах.",
+      formula:"l = √(2Rh)",
+      ask:"На какой высоте (в километрах) находится наблюдатель, если он видит горизонт на расстоянии " + l + " км?",
+      sol:"Возводим в квадрат: l² = 2Rh, откуда h = l² : (2R) = " + (l*l) + " : 12800 = " + num(h) + " км." };
+  }
+  function f9current(){
+    var I = pick([2,4,5,8,10]), r = rnd(1,6), R = rnd(4,30);
+    var U = I*(R+r);
+    return { line:9, type:"current", answer:R,
+      text:"Сила тока в цепи вычисляется по формуле I = U/(R + r), где U — напряжение источника в вольтах, R — сопротивление нагрузки, r — внутреннее сопротивление источника (оба в омах).",
+      formula:"I = U/(R + r)",
+      ask:"При каком наименьшем сопротивлении нагрузки R сила тока не превысит " + I + " А, если U = " + U + " В, а r = " + r + " Ом?",
+      sol:"Из условия U/(R + r) ≤ " + I + " следует R + r ≥ " + U + " : " + I + " = " + (R+r) + ", откуда R ≥ " + (R+r) + " − " + r + " = " + R + " Ом. Наименьшее значение — " + R + "." };
+  }
+  function f9revenue(){
+    var b = pick([1,2,5,10]), p1 = rnd(5,20), p2 = p1 + pick([5,10,15,20]);
+    var a = b*(p1+p2), Rr = b*p1*p2;
+    return { line:9, type:"revenue", answer:p2,
+      text:"Зависимость объёма спроса q (единиц в месяц) на продукцию предприятия от цены p (тыс. руб.) задаётся формулой q = " + a + " − " + b + "p. Выручка за месяц равна r = q · p.",
+      formula:"q = " + a + " − " + b + "p,  r = q · p",
+      ask:"Определите наибольшую цену p (в тыс. руб.), при которой месячная выручка составит не менее " + Rr + " тыс. руб.",
+      sol:"Выручка r = p(" + a + " − " + b + "p) ≥ " + Rr + ", то есть " + b + "p² − " + a + "p + " + Rr + " ≤ 0. Корни: p = " + p1 + " и p = " + p2 + ", неравенство выполняется между ними. Наибольшая цена — " + p2 + " тыс. руб." };
+  }
+
+  /* ---------- ЗАДАНИЕ 10: уравнение составляем ---------- */
+  function f10meet(){
+    var v1 = rnd(10,20), v2 = rnd(10,20), t = rnd(2,6);
+    var S = (v1+v2)*t;
+    return { line:10, type:"meet", answer:v2,
+      text:"Из пунктов A и B, расстояние между которыми " + S + " км, одновременно навстречу друг другу выехали два велосипедиста и встретились через " + t + " " + decl(t,"час","часа","часов") + ". Скорость первого равна " + v1 + " км/ч.",
+      ask:"Найдите скорость второго велосипедиста (в км/ч).",
+      sol:"При встречном движении скорость сближения равна сумме скоростей: " + S + " : " + t + " = " + (v1+v2) + " км/ч. Тогда скорость второго " + (v1+v2) + " − " + v1 + " = " + v2 + " км/ч." };
+  }
+  function f10river(){
+    var c = rnd(1,5), v = rnd(c+6, 24);
+    var L = lcm(v+c, v-c), S = L*rnd(1,3);
+    var t1 = S/(v+c), t2 = S/(v-c), T = rnd(1,10), H = t1 + t2 + T;
+    return { line:10, type:"river", answer:c,
+      text:"Теплоход проходит по течению реки до пункта назначения " + S + " км и после стоянки возвращается в пункт отправления. Собственная скорость теплохода " + v + " км/ч, стоянка длится " + T + " " + decl(T,"час","часа","часов") + ", а в пункт отправления теплоход возвращается через " + H + " " + decl(H,"час","часа","часов") + " после отплытия из него.",
+      ask:"Найдите скорость течения (в км/ч).",
+      sol:"Пусть скорость течения x. Тогда " + S + "/(" + v + " + x) + " + S + "/(" + v + " − x) + " + T + " = " + H + ", то есть на дорогу ушло " + (H-T) + " ч. Подходит x = " + c + ": " + S + " : " + (v+c) + " = " + t1 + " ч по течению и " + S + " : " + (v-c) + " = " + t2 + " ч против течения, в сумме " + (t1+t2) + " ч." };
+  }
+  var WORK_PAIRS = [[6,3],[12,6],[10,15],[20,30],[4,12],[8,24],[9,18],[14,35],[12,24],[21,28],[20,5],[18,9],[30,20],[16,48],[15,10]];
+  function f10work(){
+    var pr = pick(WORK_PAIRS), a = pr[0], b = pr[1];
+    var t = a*b/(a+b);
+    var thing = pick([["первая труба","вторая труба","бассейн"],["первый рабочий","второй рабочий","заказ"],["первый насос","второй насос","резервуар"]]);
+    return { line:10, type:"work", answer:t,
+      text:"Заказ на изготовление деталей " + thing[0] + " выполняет за " + a + " " + decl(a,"час","часа","часов") + ", а " + thing[1] + " — за " + b + " " + decl(b,"час","часа","часов") + ".",
+      ask:"За сколько часов они выполнят весь заказ, работая вместе?",
+      sol:"Производительности складываются: 1/" + a + " + 1/" + b + " = " + (a+b) + "/" + (a*b) + " заказа в час. Значит вместе понадобится " + (a*b) + " : " + (a+b) + " = " + num(t) + " " + decl(Math.round(t),"час","часа","часов") + "." };
+  }
+  function f10prod(){
+    var x = rnd(4,12), k = pick([1,2,3,4]), j = rnd(1,4);
+    var N = x*(x+k)*j, m = k*j;
+    return { line:10, type:"prod", answer:x+k,
+      text:"Заказ на " + N + " деталей первый рабочий выполняет на " + m + " " + decl(m,"час","часа","часов") + " быстрее, чем второй. За час первый рабочий делает на " + k + " " + decl(k,"деталь","детали","деталей") + " больше, чем второй.",
+      ask:"Сколько деталей в час делает первый рабочий?",
+      sol:"Пусть второй делает x деталей в час, первый — x + " + k + ". Тогда " + N + "/x − " + N + "/(x + " + k + ") = " + m + ". Подходит x = " + x + ": " + N + " : " + x + " = " + (N/x) + " ч и " + N + " : " + (x+k) + " = " + (N/(x+k)) + " ч, разница " + m + " ч. Первый делает " + (x+k) + " " + decl(x+k,"деталь","детали","деталей") + " в час." };
+  }
+  function f10alloy(){
+    var a, b, p, q, r, guard = 0;
+    do {
+      a = rnd(2,15); b = rnd(2,15); p = rnd(5,40); r = rnd(Math.min(p,40)+1, 60);
+      q = ((a+b)*r - a*p)/b;
+      guard++;
+    } while ((q !== Math.floor(q) || q <= 0 || q >= 100 || q === p) && guard < 400);
+    if (guard >= 400){ a = 4; b = 6; p = 15; q = 25; r = 21; }
+    return { line:10, type:"alloy", answer:r,
+      text:"Смешали " + a + " кг раствора, содержащего " + p + " % кислоты, и " + b + " кг раствора, содержащего " + q + " % кислоты.",
+      ask:"Сколько процентов кислоты содержится в получившемся растворе?",
+      sol:"Кислоты стало " + a + " · 0," + (p < 10 ? "0" + p : p) + " + " + b + " · 0," + (q < 10 ? "0" + q : q) + " = " + num((a*p + b*q)/100) + " кг, а всего раствора " + a + " + " + b + " = " + (a+b) + " кг. Доля кислоты: " + num((a*p+b*q)/100) + " : " + (a+b) + " = " + num(r/100) + ", то есть " + r + " %." };
+  }
+
+  var G9 = [f9ball, f9power, f9decay, f9horizon, f9current, f9revenue];
+  var G10 = [f10meet, f10river, f10work, f10prod, f10alloy];
+
+  function task(mode){
+    if (mode === "t9") return pick(G9)();
+    if (mode === "t10") return pick(G10)();
+    return Math.random() < 0.5 ? pick(G9)() : pick(G10)();
+  }
+  function parse(s){
+    if (s == null) return NaN;
+    s = String(s).trim().replace(",", ".").replace("−", "-").replace(/\s+/g, "");
+    return s ? Number(s) : NaN;
+  }
+  function check(input, t){
+    var v = parse(input);
+    return !isNaN(v) && Math.abs(v - t.answer) < 1e-6;
+  }
+  return { rnd:rnd, pick:pick, lcm:lcm, num:num, task:task, parse:parse, check:check, G9:G9, G10:G10 };
+})();
+if (typeof module !== "undefined") module.exports = AP;
+</script>
+
+<script>
+/* ================= ИНТЕРФЕЙС ================= */
+(function(){
+  "use strict";
+  var TID = "applied-t910";
+  /* Хранилище: мусор молча отбрасывается. Прочитанный ключ принимается, только
+     если это объект; своя запись и её поля проверяются по типу (clean), мусор
+     заменяется значением по умолчанию. Запись — перечитать ключ, поменять только
+     свою ветку, записать: чужие ветки остаются как лежат. */
+  var KEY = "mathExamCourseProgress.v1";
+  function isObj(v){ return !!v && typeof v === "object" && !Array.isArray(v); }
+  function cnt(v){ return (typeof v === "number" && isFinite(v) && v >= 0) ? v : 0; }
+  function readAll(){
+    try{ var v = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(v) ? v : {}; }
+    catch(e){ return {}; }
+  }
+  function clean(s){
+    s = isObj(s) ? s : {};
+    s.solved9 = cnt(s.solved9); s.solved10 = cnt(s.solved10);
+    s.runs = cnt(s.runs); s.best = cnt(s.best);
+    s.passed = s.passed === true; s.table = s.table === true;
+    return s;
+  }
+  function st(){ return clean(readAll()[TID]); }
+  function save(fn){
+    try{
+      var all = readAll();
+      var s = all[TID] = clean(all[TID]);
+      fn(s);
+      localStorage.setItem(KEY, JSON.stringify(all));
+    }catch(e){}
+  }
+
+  document.querySelectorAll(".tab").forEach(function(tab){
+    tab.addEventListener("click", function(){
+      document.querySelectorAll(".tab").forEach(function(t){ t.setAttribute("aria-selected", t === tab ? "true" : "false"); });
+      document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("on"); });
+      document.getElementById("view-" + tab.dataset.view).classList.add("on");
+    });
+  });
+
+  /* ---------- конструктор таблицы ---------- */
+  var CELLS = ["x", "240/x", "x + 20", "240/(x + 20)"];
+  var POOL = ["x", "x + 20", "x − 20", "240/x", "240/(x + 20)", "240x"];
+  var step = 0;
+  function markAim(){
+    document.querySelectorAll("#tbl td.empty").forEach(function(td){
+      td.classList.toggle("aim", parseInt(td.dataset.cell, 10) === step);
+    });
+  }
+  function buildPool(){
+    var host = document.getElementById("pool");
+    host.innerHTML = "";
+    POOL.slice().sort(function(){ return Math.random() - 0.5; }).forEach(function(v){
+      var b = document.createElement("button");
+      b.textContent = v;
+      b.addEventListener("click", function(){
+        if (step >= CELLS.length) return;
+        if (v === CELLS[step]){
+          var td = document.querySelector('#tbl td[data-cell="' + step + '"]');
+          td.textContent = v;
+          td.className = "filled";
+          step++;
+          markAim();
+          if (step >= CELLS.length){
+            var eq = document.getElementById("eq");
+            eq.textContent = "240/x − 240/(x + 20) = 1";
+            eq.classList.add("on");
+            host.innerHTML = "";
+            save(function(s){ s.table = true; });
+          }
+        } else {
+          b.classList.add("bad");
+          setTimeout(function(){ b.classList.remove("bad"); }, 500);
+        }
+      });
+      host.appendChild(b);
+    });
+  }
+  markAim(); buildPool();
+
+  /* ---------- тренажёр ---------- */
+  var mode = "mix", D = null, streak = 0;
+  var chips = document.getElementById("modeChips");
+  [["mix","вперемешку"],["t9","задание 9"],["t10","задание 10"]].forEach(function(m){
+    var b = document.createElement("button");
+    b.textContent = m[1];
+    b.setAttribute("aria-pressed", m[0] === mode ? "true" : "false");
+    b.addEventListener("click", function(){
+      mode = m[0];
+      chips.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+      b.setAttribute("aria-pressed","true");
+      newTask();
+    });
+    chips.appendChild(b);
+  });
+  function refreshStats(){
+    var s = st();
+    document.getElementById("stSolved").textContent = (s.solved9 || 0) + (s.solved10 || 0);
+    document.getElementById("stStreak").textContent = streak;
+  }
+  function show(t, ids){
+    document.getElementById(ids.tag).textContent = ids.prefix + "задание " + t.line;
+    document.getElementById(ids.text).textContent = t.text;
+    document.getElementById(ids.ask).textContent = t.ask;
+    var wrap = document.getElementById(ids.fw);
+    if (t.formula){
+      document.getElementById(ids.formula).textContent = t.formula;
+      wrap.style.display = "block";
+    } else wrap.style.display = "none";
+  }
+  function newTask(){
+    D = AP.task(mode);
+    show(D, { tag:"dTag", text:"dText", ask:"dAsk", fw:"dFormulaWrap", formula:"dFormula", prefix:"" });
+    document.getElementById("dAnswer").value = "";
+    document.getElementById("dFb").className = "feedback";
+    refreshStats();
+  }
+  document.getElementById("dCheck").addEventListener("click", function(){
+    if (isNaN(AP.parse(document.getElementById("dAnswer").value))) return;
+    var fb = document.getElementById("dFb");
+    if (AP.check(document.getElementById("dAnswer").value, D)){
+      fb.className = "feedback on ok"; fb.textContent = "Верно.";
+      streak++;
+      save(function(s){ if (D.line === 9) s.solved9 = (s.solved9||0) + 1; else s.solved10 = (s.solved10||0) + 1; });
+      refreshStats();
+      setTimeout(newTask, 950);
+    } else {
+      fb.className = "feedback on bad";
+      fb.textContent = "Неверно. Правильный ответ: " + AP.num(D.answer) + ". Посмотрите разбор.";
+      streak = 0; refreshStats();
+    }
+  });
+  document.getElementById("dAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("dCheck").click(); });
+  document.getElementById("dSol").addEventListener("click", function(){
+    var fb = document.getElementById("dFb");
+    fb.className = "feedback on hint"; fb.textContent = D.sol;
+  });
+  document.getElementById("dNext").addEventListener("click", newTask);
+  newTask();
+
+  /* ---------- зачёт ---------- */
+  var Z = { active:false, i:0, score:0, marks:[], plan:[], cur:null };
+  function zDots(){
+    var host = document.getElementById("zDots");
+    host.innerHTML = "";
+    for (var i = 0; i < 8; i++){
+      var s = document.createElement("span");
+      if (i < Z.i) s.className = Z.marks[i] ? "ok" : "bad";
+      host.appendChild(s);
+    }
+  }
+  function zNext(){
+    Z.cur = AP.task(Z.plan[Z.i]);
+    show(Z.cur, { tag:"zTag", text:"zText", ask:"zAsk", fw:"zFormulaWrap", formula:"zFormula", prefix:(Z.i+1) + " из 8 · " });
+    document.getElementById("zAnswer").value = "";
+    document.getElementById("zFb").className = "feedback";
+    document.getElementById("zAnswer").focus();
+  }
+  document.getElementById("zStart").addEventListener("click", function(){
+    var plan = ["t9","t9","t9","t9","t10","t10","t10","t10"].sort(function(){ return Math.random() - 0.5; });
+    Z = { active:true, i:0, score:0, marks:[], plan:plan, cur:null };
+    save(function(s){ s.runs = (s.runs || 0) + 1; });
+    document.getElementById("zDone").style.display = "none";
+    document.getElementById("zBox").style.display = "block";
+    zDots(); zNext();
+  });
+  document.getElementById("zCheck").addEventListener("click", function(){
+    if (!Z.active) return;
+    if (isNaN(AP.parse(document.getElementById("zAnswer").value))) return;
+    var ok = AP.check(document.getElementById("zAnswer").value, Z.cur);
+    var fb = document.getElementById("zFb");
+    fb.className = "feedback on " + (ok ? "ok" : "bad");
+    fb.textContent = ok ? "Верно." : "Неверно: " + AP.num(Z.cur.answer) + ".";
+    Z.marks.push(ok); if (ok) Z.score++;
+    Z.i++; zDots();
+    if (Z.i >= 8){
+      Z.active = false;
+      var passed = Z.score >= 7;
+      document.getElementById("zBox").style.display = "none";
+      document.getElementById("zDone").style.display = "block";
+      document.getElementById("zScore").textContent = Z.score + " / 8";
+      document.getElementById("zVerdict").textContent = passed
+        ? "Зачёт сдан: и подстановка, и составление уравнения держатся."
+        : "Зачёт не сдан: нужно 7 из 8. Разберите промахи в тренажёре и вернитесь.";
+      save(function(s){ s.best = Math.max(s.best || 0, Z.score); if (passed) s.passed = true; });
+    } else {
+      setTimeout(zNext, 900);
+    }
+  });
+  document.getElementById("zAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("zCheck").click(); });
+  zDots();
+})();
+</script>
+</body>
+</html>

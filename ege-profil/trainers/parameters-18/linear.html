@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 18 · Глава 1 · Линейные уравнения</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA; --badbg:#FBEAE9; --amber:#B5720E; --amberbg:#FBF2DF;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:680px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0 0 6px;font-size:16.5px;color:var(--ink-strong)}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+  .tab{border:1.5px solid var(--ink);background:rgba(250,250,244,.8);color:var(--ink);border-radius:999px;
+    min-height:44px;padding:8px 16px;font:700 14px/1 inherit;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.92);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .fx{font-family:"Cambria Math",Georgia,"Times New Roman",serif;font-size:1.06em}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    min-height:44px;padding:9px 16px;font:700 14.5px/1 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:disabled{opacity:.45;cursor:default}
+  input[type=text],input[type=number]{border:1.5px solid var(--ink);border-radius:8px;background:#fff;min-height:44px;padding:9px 12px;font:600 16px/1 inherit;width:96px}
+  input[type=range]{width:min(320px,100%);accent-color:var(--ink)}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .feedback{margin-top:12px;border-radius:8px;padding:10px 12px;font-weight:600;display:none}
+  .feedback.on{display:block}
+  .feedback.ok{background:var(--okbg);color:var(--ok)}
+  .feedback.bad{background:var(--badbg);color:var(--red)}
+  .feedback.warn{background:var(--amberbg);color:var(--amber)}
+  .figure{margin:12px 0;overflow-x:auto}
+  svg{display:block;max-width:100%}
+  .cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:8px}
+  .rule{border:1px dashed var(--line);border-radius:8px;padding:12px;background:rgba(255,255,255,.6)}
+  .rule b{color:var(--ink-strong)}
+  .liveinfo{font:700 15px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong);margin-top:8px;min-height:44px}
+  .score{font:700 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .score b{color:var(--ink-strong)}
+  .view{display:none}
+  .view.on{display:block}
+  .two{display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:720px){.two{grid-template-columns:1fr 1fr}}
+  .sol{border-left:3px solid var(--ink);background:rgba(255,255,255,.7);padding:10px 14px;margin-top:10px;display:none;white-space:pre-line}
+  .sol.on{display:block}
+  .answerline{border-left:3px solid var(--red);background:rgba(255,255,255,.7);padding:9px 12px;margin-top:8px;font-weight:700}
+  .verdict{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
+  .qtask{font-size:16.5px;margin:2px 0 8px}
+  .qsol{white-space:pre-line}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+  .dots span{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px}
+  .dots span.ok{background:var(--ink)}
+  .dots span.bad{background:var(--red);border-color:var(--red)}
+  .pill-done{display:inline-block;margin-left:8px;color:var(--ok);font:700 12px/1 ui-monospace,monospace}
+  ul.tight{margin:6px 0 0;padding-left:20px}
+  ul.tight li{margin:3px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Оглавление</a>
+  <p class="eyebrow">задание 18 · глава 1 · линейные уравнения и неравенства</p>
+  <h1>Линейные уравнения и неравенства</h1>
+  <p class="lede">Всё уравнение <span class="fx">k·x = b</span> с параметром держится на одном вопросе: <b>не обнулился ли коэффициент при x</b>. Пока <span class="fx">k ≠ 0</span> — корень единственный. Как только <span class="fx">k = 0</span> — начинаются особые случаи, и именно за них ставят баллы.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="idea">Идея</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="live">Живые модели</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="err">Найди ошибку</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="test">Квиз и ДЗ</button>
+  </div>
+
+  <!-- ============ ИДЕЯ ============ -->
+  <section class="view on" id="view-idea">
+    <div class="card">
+      <h2>Один рефлекс на всю главу</h2>
+      <p>Любое линейное уравнение сводится к виду <span class="fx">k·x = b</span>, где <span class="fx">k</span> и <span class="fx">b</span> — выражения с параметром. Дальше — развилка, и её нельзя проскочить:</p>
+      <div class="cases">
+        <div class="rule"><b>k ≠ 0.</b> Делим на коэффициент: единственный корень <span class="fx">x = b/k</span>.</div>
+        <div class="rule"><b>k = 0, b ≠ 0.</b> Получилось <span class="fx">0·x = b</span> — левая часть всегда 0, правая нет. Корней <b>нет</b>.</div>
+        <div class="rule"><b>k = 0, b = 0.</b> Получилось <span class="fx">0·x = 0</span> — верно при любом x. Корень <b>любой</b> — подходит вся числовая прямая.</div>
+      </div>
+      <div class="feedback warn on" style="margin-top:14px">Главная ошибка задания — сразу написать <span class="fx">x = b/k</span> и «потерять» случай <span class="fx">k = 0</span>. Сначала приравняй коэффициент при x к нулю — это и есть подозрительные значения параметра.</div>
+    </div>
+
+    <div class="card">
+      <h2>Когда коэффициент при x — число</h2>
+      <p>Если перед <span class="fx">x</span> стоит <b>ненулевая константа</b> (например, <span class="fx">3x = a</span>), обнуляться нечему — развилки нет, ответ сразу <span class="fx">x = a/3</span> при любом <span class="fx">a</span>. А вот в <span class="fx">a·x = 3</span> коэффициент — сам параметр, и случай <span class="fx">a = 0</span> обязателен.</p>
+    </div>
+
+    <div class="card">
+      <h2>«И не только линейные» — что дальше в курсе</h2>
+      <p>К этому же вагону цепляются уравнения, которые после одного шага становятся линейными или почти линейными:</p>
+      <ul class="tight">
+        <li><span class="fx">√x = a</span> — есть корень только при <span class="fx">a ≥ 0</span> (тогда <span class="fx">x = a²</span>), при <span class="fx">a &lt; 0</span> корней нет.</li>
+        <li><span class="fx">|x| = −b</span> — модуль неотрицателен: при <span class="fx">−b &lt; 0</span> корней нет, при <span class="fx">−b = 0</span> один корень <span class="fx">x = 0</span>, при <span class="fx">−b &gt; 0</span> два корня <span class="fx">x = ±(−b)</span>.</li>
+        <li><span class="fx">(x+1)/(x+a) = 0</span> — дробь равна нулю, когда числитель ноль <b>и</b> знаменатель нет: <span class="fx">x = −1</span> подходит только при <span class="fx">a ≠ 1</span>.</li>
+      </ul>
+      <p class="small muted">Эти сюжеты подробно разбираются в главах про дроби, корни и модули — здесь важно просто их узнавать.</p>
+    </div>
+  </section>
+
+  <!-- ============ ЖИВЫЕ МОДЕЛИ ============ -->
+  <section class="view" id="view-live">
+    <div class="card">
+      <h2>Две прямые: y = k·x и y = b</h2>
+      <p>Уравнение <span class="fx">k·x = b</span> — это вопрос «где прямая <span class="fx">y = kx</span> пересекает горизонталь <span class="fx">y = b</span>». Двигай коэффициенты и лови два особых положения ручки <span class="fx">k</span>: график наверху объясняет, что происходит с корнями внизу.</p>
+      <div class="row" style="margin:10px 0 2px">
+        <label class="mono small" for="pk">k =</label><input type="range" id="pk" min="-4" max="4" step="1" value="2"><span class="mono" id="pkv" style="width:26px;display:inline-block"></span>
+      </div>
+      <div class="row">
+        <label class="mono small" for="pb">b =</label><input type="range" id="pb" min="-6" max="6" step="1" value="4"><span class="mono" id="pbv" style="width:26px;display:inline-block"></span>
+      </div>
+      <div class="figure" id="crossFig"></div>
+      <div class="figure" id="trainFig"></div>
+      <p class="liveinfo" id="trainInfo"></p>
+    </div>
+
+    <div class="card">
+      <h2>Загадочная прямая</h2>
+      <p>Перед тобой график <span class="fx">y = k·x + b</span>. По двум отмеченным узлам восстанови коэффициенты и впиши их. Это тренировка глаза перед графическим методом.</p>
+      <div class="figure" id="lineFig"></div>
+      <div class="row" style="margin-top:6px">
+        <label class="mono small" for="gk">k =</label><input type="number" id="gk" step="1" inputmode="numeric" autocomplete="off">
+        <label class="mono small" for="gb">b =</label><input type="number" id="gb" step="1" inputmode="numeric" autocomplete="off">
+        <button class="btn" id="gCheck">Проверить</button>
+        <button class="btn ghost" id="gNew">Новый график</button>
+      </div>
+      <div class="feedback" id="gFb"></div>
+      <p class="score" style="margin-top:10px">разгадано подряд: <b id="gStreak">0</b> · рекорд серии: <b id="gBest">0</b></p>
+    </div>
+  </section>
+
+  <!-- ============ НАЙДИ ОШИБКУ ============ -->
+  <section class="view" id="view-err">
+    <div class="card">
+      <h2>Перевёртыши: найди ошибку</h2>
+      <p>На доске — решения линейных уравнений и неравенств с параметром. <b>Не в каждом есть ошибка</b> — реши сам и вынеси вердикт. Находить чужие ошибки труднее, чем решать: в этом и смысл.</p>
+      <p class="score" style="margin-top:6px">верных вердиктов: <b id="eScore">0</b> из <b id="eSeen">0</b></p>
+    </div>
+    <div class="card" id="errCard">
+      <p class="mono small" style="color:var(--red);font-weight:700" id="eTag"></p>
+      <p class="qtask fx" id="eProblem"></p>
+      <div class="sol on" id="eWork" style="border-left-color:var(--muted)"></div>
+      <div class="verdict">
+        <button class="btn ghost" id="eOk">Решено верно</button>
+        <button class="btn ghost" id="eBad">Есть ошибка</button>
+      </div>
+      <div class="feedback" id="eFb"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="eNext" disabled>Следующее решение →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ КВИЗ И ДЗ ============ -->
+  <section class="view" id="view-test">
+    <div class="card red">
+      <h2>Мини-тест 2109</h2>
+      <p class="small muted">Пять коротких вопросов на крайние случаи линейного уравнения. Впиши число — ответ проверится. Дробь пиши через точку или запятую (например, 2.5).</p>
+      <div class="dots" id="quizDots"></div>
+      <div id="quizList"></div>
+      <div class="row" style="margin-top:6px">
+        <button class="btn" id="quizCheck">Проверить всё</button>
+        <button class="btn ghost" id="quizReset">Сбросить</button>
+      </div>
+      <div class="feedback" id="quizFb"></div>
+    </div>
+
+    <div class="card">
+      <h2>Домашнее задание</h2>
+      <p class="small muted">Реши на бумаге, затем открой разбор и сверься.</p>
+      <div id="hwList"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s,r){return (r||document).querySelector(s);};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+  var TID="param18-linear";
+
+  /* ---------- прогресс (общий журнал курса) ---------- */
+  /* Хранилище: мусор молча отбрасывается. Прочитанный ключ принимается, только
+     если это объект; своя запись { keys:{имя:true}, drillBest, passed } проверяется
+     по типу (clean), мусор заменяется значением по умолчанию. Запись — перечитать
+     ключ, поменять только свою ветку, записать: чужие ветки остаются как лежат. */
+  var KEY="mathExamCourseProgress.v1";
+  function isObj(v){ return !!v && typeof v==="object" && !Array.isArray(v); }
+  function readAll(){
+    try{ var v=JSON.parse(localStorage.getItem(KEY)||"{}"); return isObj(v)?v:{}; }
+    catch(e){ return {}; }
+  }
+  function clean(s){
+    s=isObj(s)?s:{};
+    var keys=isObj(s.keys)?s.keys:{}, k;
+    for(k in keys) if(keys[k]!==true) delete keys[k];
+    s.keys=keys;
+    s.drillBest=(typeof s.drillBest==="number"&&isFinite(s.drillBest)&&s.drillBest>=0)?s.drillBest:0;
+    s.passed=s.passed===true;
+    return s;
+  }
+  function save(patch){
+    try{
+      var all=readAll(); var s=all[TID]=clean(all[TID]);
+      if(patch.key) s.keys[patch.key]=true;
+      if(patch.drillBest!=null) s.drillBest=Math.max(s.drillBest,patch.drillBest);
+      if(patch.passed) s.passed=true;
+      localStorage.setItem(KEY,JSON.stringify(all));
+    }catch(e){}
+  }
+  var saved=clean(readAll()[TID]);
+
+  /* ---------- вкладки ---------- */
+  $$(".tab").forEach(function(t){
+    t.addEventListener("click",function(){
+      $$(".tab").forEach(function(x){x.setAttribute("aria-selected","false");});
+      t.setAttribute("aria-selected","true");
+      $$(".view").forEach(function(v){v.classList.remove("on");});
+      $("#view-"+t.dataset.view).classList.add("on");
+    });
+  });
+
+  /* =======================================================
+     ДВЕ ПРЯМЫЕ: график y=kx против y=b + числовая прямая
+  ======================================================= */
+  (function(){
+    var pk=$("#pk"), pb=$("#pb"), gfig=$("#crossFig"), sfig=$("#trainFig"), info=$("#trainInfo");
+    var u=24, xmin=-6,xmax=6,ymin=-6,ymax=6, ox=20+6*u, oy=16+6*u, GW=40+12*u, GH=32+12*u;
+    function PX(x){return ox+x*u;} function PY(y){return oy-y*u;}
+    var W=560,H=86, sx0=40,sx1=W-20;
+    function SX(v){ return sx0+(v-xmin)/(xmax-xmin)*(sx1-sx0); }
+    function render(){
+      var k=+pk.value, b=+pb.value;
+      $("#pkv").textContent=k; $("#pbv").textContent=b;
+      var grid="";
+      for(var i=xmin;i<=xmax;i++){
+        grid+='<line x1="'+PX(i)+'" y1="'+PY(ymin)+'" x2="'+PX(i)+'" y2="'+PY(ymax)+'" stroke="rgba(88,140,190,.18)"/>'
+            +'<line x1="'+PX(xmin)+'" y1="'+PY(i)+'" x2="'+PX(xmax)+'" y2="'+PY(i)+'" stroke="rgba(88,140,190,.18)"/>';
+      }
+      var axes='<line x1="'+PX(xmin)+'" y1="'+oy+'" x2="'+PX(xmax)+'" y2="'+oy+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<line x1="'+ox+'" y1="'+PY(ymin)+'" x2="'+ox+'" y2="'+PY(ymax)+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<path d="M'+PX(xmax)+' '+oy+' l-7 -4 v8 z" fill="#2A2F38"/>'
+        +'<path d="M'+ox+' '+PY(ymax)+' l-4 7 h8 z" fill="#2A2F38"/>';
+      var l1;
+      if(k===0){ l1='<line x1="'+PX(xmin)+'" y1="'+oy+'" x2="'+PX(xmax)+'" y2="'+oy+'" stroke="#1E3A9F" stroke-width="2.5"/>'; }
+      else{
+        var xa,xb;
+        if(k>0){ xa=Math.max(xmin, ymin/k); xb=Math.min(xmax, ymax/k); }
+        else   { xa=Math.max(xmin, ymax/k); xb=Math.min(xmax, ymin/k); }
+        l1='<line x1="'+PX(xa)+'" y1="'+PY(k*xa)+'" x2="'+PX(xb)+'" y2="'+PY(k*xb)+'" stroke="#1E3A9F" stroke-width="2.5"/>';
+      }
+      var l2='<line x1="'+PX(xmin)+'" y1="'+PY(b)+'" x2="'+PX(xmax)+'" y2="'+PY(b)+'" stroke="#C22F2A" stroke-width="2.5"/>';
+      var kk=(k===1?"":(k===-1?"−":""+k));
+      var legend='<text x="'+(PX(xmin)+4)+'" y="'+(PY(ymax)+14)+'" font-size="12" font-family="ui-monospace,monospace" fill="#1E3A9F">y = '+kk+'x</text>'
+        +'<text x="'+(PX(xmin)+4)+'" y="'+(PY(ymax)+30)+'" font-size="12" font-family="ui-monospace,monospace" fill="#C22F2A">y = '+b+'</text>';
+      var extra="", msg, color, root=null, mode="one";
+      if(k!==0){
+        root=b/k;
+        if(root>=xmin&&root<=xmax){
+          extra='<line x1="'+PX(root)+'" y1="'+PY(b)+'" x2="'+PX(root)+'" y2="'+oy+'" stroke="#2A2F38" stroke-dasharray="4 4"/>'
+            +'<circle cx="'+PX(root)+'" cy="'+PY(b)+'" r="5" fill="#16307F"/>'
+            +'<circle cx="'+PX(root)+'" cy="'+oy+'" r="4" fill="#C22F2A"/>';
+        }
+        var rt=Number.isInteger(root)?root:(Math.round(root*100)/100);
+        msg="k = "+k+" ≠ 0 → прямые пересекаются в одной точке: x = b/k = "+rt; color="#16307F";
+      } else if(b!==0){
+        mode="none";
+        msg="k = 0, b = "+b+" ≠ 0 → прямые параллельны: 0·x = "+b+", корней нет"; color="#C22F2A";
+      } else {
+        mode="all";
+        msg="k = 0, b = 0 → прямые совпали: 0·x = 0, x — любой"; color="#1E7A3C";
+      }
+      gfig.innerHTML='<svg viewBox="0 0 '+GW+' '+GH+'" width="'+GW+'" role="img" aria-label="прямые y=kx и y=b">'+grid+axes+l1+l2+extra+legend+'</svg>';
+      var ticks="";
+      for(var t=xmin;t<=xmax;t++){
+        ticks+='<line x1="'+SX(t)+'" y1="34" x2="'+SX(t)+'" y2="42" stroke="rgba(42,47,56,.5)"/>';
+        if(t%2===0) ticks+='<text x="'+SX(t)+'" y="58" font-size="11" text-anchor="middle" fill="#67707E" font-family="ui-monospace,monospace">'+t+'</text>';
+      }
+      var mark="";
+      if(mode==="one"&&root!=null&&root>=xmin&&root<=xmax){
+        mark='<circle cx="'+SX(root)+'" cy="38" r="5" fill="#C22F2A"/>';
+      } else if(mode==="all"){
+        mark='<line x1="'+SX(xmin)+'" y1="38" x2="'+SX(xmax)+'" y2="38" stroke="#1E7A3C" stroke-width="6" stroke-linecap="round" opacity=".55"/>';
+      }
+      sfig.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img" aria-label="множество корней на числовой прямой">'
+        +'<text x="'+sx0+'" y="16" font-size="11" fill="#67707E" font-family="ui-monospace,monospace">корни на числовой прямой</text>'
+        +'<line x1="'+sx0+'" y1="38" x2="'+sx1+'" y2="38" stroke="#2A2F38" stroke-width="1.5"/>'
+        +'<path d="M'+sx1+' 38 l-8 -4 v8 z" fill="#2A2F38"/>'+ticks+mark+'</svg>';
+      info.textContent=msg; info.style.color=color;
+    }
+    pk.addEventListener("input",render); pb.addEventListener("input",render); render();
+  })();
+
+  /* =======================================================
+     ЗАГАДОЧНАЯ ПРЯМАЯ:  угадай k и b у y = kx + b
+  ======================================================= */
+  (function(){
+    var fig=$("#lineFig"), gk=$("#gk"), gb=$("#gb"), fb=$("#gFb");
+    var streakEl=$("#gStreak"), bestEl=$("#gBest");
+    var xmin=-6,xmax=6,ymin=-6,ymax=6,u=26,ox=170,oy=170; // 340x340
+    var cur=null, streak=0, best=saved.drillBest||0;
+    bestEl.textContent=best;
+    function PX(x){return ox+x*u;} function PY(y){return oy-y*u;}
+    function rint(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+    // отрезок линии внутри рамки
+    function clip(k,b){
+      var pts=[], cand=[
+        {x:xmin,y:k*xmin+b},{x:xmax,y:k*xmax+b},
+        {x:(ymin-b)/k,y:ymin},{x:(ymax-b)/k,y:ymax}
+      ];
+      cand.forEach(function(p){
+        if(k===0){return;}
+        if(p.x>=xmin-1e-9&&p.x<=xmax+1e-9&&p.y>=ymin-1e-9&&p.y<=ymax+1e-9){
+          if(!pts.some(function(q){return Math.abs(q.x-p.x)<1e-6&&Math.abs(q.y-p.y)<1e-6;})) pts.push(p);
+        }
+      });
+      return pts.slice(0,2);
+    }
+    function gen(){
+      var k,b,dots;
+      for(var tries=0;tries<200;tries++){
+        k=rint(-3,3); b=rint(-4,4);
+        if(k===0) continue;
+        dots=[];
+        for(var x=xmin+1;x<=xmax-1;x++){
+          var y=k*x+b;
+          if(Number.isInteger(y)&&y>=ymin+1&&y<=ymax-1) dots.push({x:x,y:y});
+        }
+        if(dots.length>=2) break;
+      }
+      // выбираем два наиболее разнесённых узла
+      dots.sort(function(a,b){return a.x-b.x;});
+      var d=[dots[0],dots[dots.length-1]];
+      cur={k:k,b:b,dots:d};
+      draw();
+      gk.value=""; gb.value=""; fb.className="feedback"; gk.focus();
+    }
+    function draw(){
+      var grid="";
+      for(var i=xmin;i<=xmax;i++){
+        grid+='<line x1="'+PX(i)+'" y1="'+PY(ymin)+'" x2="'+PX(i)+'" y2="'+PY(ymax)+'" stroke="rgba(88,140,190,.18)"/>';
+        grid+='<line x1="'+PX(xmin)+'" y1="'+PY(i)+'" x2="'+PX(xmax)+'" y2="'+PY(i)+'" stroke="rgba(88,140,190,.18)"/>';
+      }
+      var seg=clip(cur.k,cur.b);
+      var line = seg.length===2
+        ? '<line x1="'+PX(seg[0].x)+'" y1="'+PY(seg[0].y)+'" x2="'+PX(seg[1].x)+'" y2="'+PY(seg[1].y)+'" stroke="#C77B48" stroke-width="2.5"/>'
+        : '';
+      var dots=cur.dots.map(function(p){
+        return '<circle cx="'+PX(p.x)+'" cy="'+PY(p.y)+'" r="4.5" fill="#7A4A1E"/>'
+          +'<text x="'+(PX(p.x)+8)+'" y="'+(PY(p.y)-8)+'" font-size="11" fill="#7A4A1E" font-family="ui-monospace,monospace">('+p.x+'; '+p.y+')</text>';
+      }).join("");
+      fig.innerHTML='<svg viewBox="0 0 340 340" width="340" role="img" aria-label="график прямой">'
+        +grid
+        +'<line x1="'+PX(xmin)+'" y1="'+oy+'" x2="'+PX(xmax)+'" y2="'+oy+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<line x1="'+ox+'" y1="'+PY(ymin)+'" x2="'+ox+'" y2="'+PY(ymax)+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<path d="M'+PX(xmax)+' '+oy+' l-7 -4 v8 z" fill="#2A2F38"/>'
+        +'<path d="M'+ox+' '+PY(ymax)+' l-4 7 h8 z" fill="#2A2F38"/>'
+        +line+dots+'</svg>';
+    }
+    function norm(v){ return (v==null?"":(""+v).trim().replace(",",".")); }
+    $("#gCheck").addEventListener("click",function(){
+      if(!cur) return;
+      var ak=norm(gk.value), ab=norm(gb.value);
+      if(ak===""||ab===""){ fb.className="feedback warn on"; fb.textContent="Впиши оба коэффициента."; return; }
+      var ok=(+ak===cur.k)&&(+ab===cur.b);
+      if(ok){
+        streak++; if(streak>best){best=streak; save({drillBest:best});}
+        streakEl.textContent=streak; bestEl.textContent=best;
+        fb.className="feedback ok on";
+        fb.textContent="Верно: y = "+cur.k+"x "+(cur.b>=0?"+ "+cur.b:"− "+(-cur.b))+". Следующий график →";
+        setTimeout(gen,650);
+      } else {
+        streak=0; streakEl.textContent=0;
+        fb.className="feedback bad on";
+        fb.textContent="Не сходится. Подсказка: k — это «на сколько вверх за шаг вправо» между узлами, b — высота при x = 0.";
+      }
+    });
+    $("#gNew").addEventListener("click",gen);
+    [gk,gb].forEach(function(inp){ inp.addEventListener("keydown",function(e){ if(e.key==="Enter") $("#gCheck").click(); }); });
+    gen();
+  })();
+
+  /* =======================================================
+     ПЕРЕВЁРТЫШИ: найди ошибку
+  ======================================================= */
+  (function(){
+    var items=[
+      { p:"a·x = 3", err:true,
+        work:"a = 0, то 0·x = 3 — нет корней.\na ≠ 0, то x = 3/a.\nОтвет: x = 3/a при любом a.",
+        why:"Ошибка в ответе. Строчки разбора верные, но итог «при любом a» стирает случай a = 0, где корней нет. Правильно: при a = 0 корней нет; при a ≠ 0  x = 3/a." },
+      { p:"3x = a", err:false,
+        work:"x = a/3 при любом a.\nОтвет: x = a/3 при любом a.",
+        why:"Верно. Коэффициент при x — число 3 ≠ 0, обнуляться нечему, развилки нет." },
+      { p:"b·x = 1", err:true,
+        work:"b = 0, то 0·x = 1 — x любое.\nb ≠ 0, то x = 1/b.\nОтвет: при b = 0 x любое; при b ≠ 0 x = 1/b.",
+        why:"Ошибка в случае b = 0. Запись 0·x = 1 не выполняется ни при каком x → корней НЕТ (а не «x любое»). «Любое» бывает только у 0·x = 0." },
+      { p:"−5x ≤ 1 − b", err:true,
+        work:"Делим на −5:\nx ≤ (1 − b)/(−5).\nОтвет: x ≤ (1 − b)/(−5) при любом b.",
+        why:"Ошибка: при делении неравенства на отрицательное число знак не перевернули. Верно: 5x ≥ b − 1, то есть x ≥ (b − 1)/5." },
+      { p:"(1 − b)·x = −5", err:false,
+        work:"b = 1, то 0·x = −5 — корней нет.\nb ≠ 1, то x = −5/(1 − b).\nОтвет: при b = 1 нет корней; при b ≠ 1 x = 5/(b − 1).",
+        why:"Верно. Развилка по коэффициенту 1 − b разобрана правильно, а −5/(1 − b) = 5/(b − 1) — то же число." },
+      { p:"|x| = −b", err:true,
+        work:"Модуль не бывает отрицательным, значит уравнение\nне имеет корней ни при каком b.\nОтвет: корней нет.",
+        why:"Ошибка: разобрали только b > 0. При b = 0  |x| = 0 → x = 0 (один корень); при b < 0  −b > 0 → x = ±(−b) (два корня). Ответ зависит от знака b." },
+      { p:"(2p − 5)·x = 5p − 2  — при каком p нет корней?", err:false,
+        work:"Нет корней, когда коэффициент 0, а правая часть нет.\n2p − 5 = 0 → p = 2,5.\nПроверка: 5·2,5 − 2 = 10,5 ≠ 0 → 0·x = 10,5, корней нет.\nОтвет: p = 2,5.",
+        why:"Верно, и — что важно — проверка правой части сделана. Без неё был бы риск попасть в случай «бесконечно много корней»." }
+    ];
+    // перемешиваем
+    for(var i=items.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=items[i];items[i]=items[j];items[j]=t;}
+    var idx=0, seen=0, score=0, answered=false;
+    var tag=$("#eTag"),prob=$("#eProblem"),work=$("#eWork"),fb=$("#eFb"),next=$("#eNext");
+    function show(){
+      answered=false;
+      var it=items[idx];
+      tag.textContent="Решение "+(idx+1)+" из "+items.length;
+      prob.textContent=it.p;
+      work.textContent=it.work;
+      fb.className="feedback"; next.disabled=true;
+      $("#eOk").disabled=false; $("#eBad").disabled=false;
+    }
+    function verdict(userSaysError){
+      if(answered) return; answered=true; seen++;
+      var it=items[idx];
+      var right=(userSaysError===it.err);
+      if(right) score++;
+      $("#eScore").textContent=score; $("#eSeen").textContent=seen;
+      fb.className="feedback "+(right?"ok":"bad")+" on";
+      fb.textContent=(right?"Верный вердикт. ":"Неверно. ")+(it.err?"Здесь ошибка. ":"Здесь всё верно. ")+it.why;
+      $("#eOk").disabled=true; $("#eBad").disabled=true; next.disabled=false;
+      if(seen>=items.length && score===items.length) save({key:"pereverts"});
+    }
+    $("#eOk").addEventListener("click",function(){verdict(false);});
+    $("#eBad").addEventListener("click",function(){verdict(true);});
+    next.addEventListener("click",function(){ idx=(idx+1)%items.length; show(); });
+    show();
+  })();
+
+  /* =======================================================
+     МИНИ-ТЕСТ 2109
+  ======================================================= */
+  (function(){
+    var quiz=[
+      { t:"1. При каком значении p уравнение (2p − 5)·x = 5p − 2 не имеет корней?", a:2.5,
+        s:"Нет корней ⇔ коэффициент 0, правая часть ≠ 0.\n2p − 5 = 0 → p = 2,5; тогда 5·2,5 − 2 = 10,5 ≠ 0.\nОтвет: 2,5." },
+      { t:"2. При каком значении p уравнение p·x + 25 = p² − 5x имеет бесконечно много корней?", a:-5,
+        s:"px + 5x = p² − 25 → (p + 5)x = (p − 5)(p + 5).\nБесконечно много корней ⇔ 0·x = 0: p + 5 = 0 и (p−5)(p+5)=0 → p = −5.\nОтвет: −5." },
+      { t:"3. При каком отрицательном p уравнение x² = p·x − 100 имеет единственный корень?", a:-20,
+        s:"x² − px + 100 = 0, D = p² − 400 = 0 → p = ±20.\nОтрицательное: p = −20.\nОтвет: −20." },
+      { t:"4. При каком p решением неравенства p·x − 10x + 10 ≥ 0 является любое число?", a:10,
+        s:"(p − 10)x ≥ −10. Любое x подходит ⇔ 0·x ≥ −10 (верно всегда): p − 10 = 0.\nОтвет: 10." },
+      { t:"5. При каком положительном p решением неравенства x² − 7x − p·x + 7p < 0 является интервал длины 23?", a:30,
+        s:"x² − 7x − px + 7p = x(x−7) − p(x−7) = (x − 7)(x − p) < 0.\nРешение — между корнями 7 и p, длина |p − 7| = 23 → p = 30 (положительное).\nОтвет: 30." }
+    ];
+    var list=$("#quizList"), dots=$("#quizDots");
+    quiz.forEach(function(q,i){
+      var wrap=document.createElement("div");
+      wrap.className="card"; wrap.style.background="rgba(255,255,255,.55)"; wrap.style.borderColor="var(--line)"; wrap.style.marginBottom="12px";
+      wrap.innerHTML='<p class="qtask fx">'+q.t+'</p>'
+        +'<div class="row"><label class="mono small">Ответ:</label>'
+        +'<input type="text" inputmode="decimal" autocomplete="off" data-i="'+i+'" aria-label="ответ на вопрос '+(i+1)+'">'
+        +'<button class="btn ghost" data-sol="'+i+'">Разбор</button></div>'
+        +'<div class="sol qsol" id="qsol'+i+'">'+q.s+'</div>';
+      list.appendChild(wrap);
+      var d=document.createElement("span"); dots.appendChild(d);
+    });
+    $$("[data-sol]",list).forEach(function(btn){
+      btn.addEventListener("click",function(){ $("#qsol"+btn.dataset.sol).classList.toggle("on"); });
+    });
+    function num(v){ v=(v||"").trim().replace(",","."); if(v==="") return null; var n=parseFloat(v); return isNaN(n)?NaN:n; }
+    $("#quizCheck").addEventListener("click",function(){
+      var right=0, filled=0;
+      $$("input[data-i]",list).forEach(function(inp,i){
+        var n=num(inp.value); var d=dots.children[i];
+        d.className="";
+        if(n===null){ return; }
+        filled++;
+        if(!isNaN(n)&&Math.abs(n-quiz[i].a)<1e-9){ right++; d.className="ok"; }
+        else{ d.className="bad"; }
+      });
+      var fb=$("#quizFb");
+      if(filled<quiz.length){ fb.className="feedback warn on"; fb.textContent="Заполнены не все поля: "+filled+" из "+quiz.length+". Пустые не засчитаны."; }
+      else if(right===quiz.length){ fb.className="feedback ok on"; fb.textContent="5 из 5 — глава закрыта. Зачёт по линейным уравнениям сдан."; save({passed:true,key:"quiz2109"}); }
+      else { fb.className="feedback bad on"; fb.textContent="Верно "+right+" из "+quiz.length+". Открой разбор в неверных и попробуй снова."; }
+    });
+    $("#quizReset").addEventListener("click",function(){
+      $$("input[data-i]",list).forEach(function(inp){inp.value="";});
+      Array.prototype.forEach.call(dots.children,function(d){d.className="";});
+      $("#quizFb").className="feedback";
+      $$(".qsol",list).forEach(function(s){s.classList.remove("on");});
+    });
+  })();
+
+  /* =======================================================
+     ДОМАШНЕЕ ЗАДАНИЕ
+  ======================================================= */
+  (function(){
+    var hw=[
+      { t:"Для каждого значения параметра p решить уравнение (p − 1)(p + 2)·x = p³ + 2p².",
+        s:"Правую часть раскладываем: p³ + 2p² = p²(p + 2).\nКоэффициент при x: (p − 1)(p + 2). Приравниваем к нулю → подозрительные p = 1 и p = −2.\n\np = 1: (0)·x = 1²·3 = 3 → 0·x = 3, корней нет.\np = −2: (−3)·0·x = 4·0 = 0 → 0·x = 0, x — любое.\np ≠ 1, p ≠ −2: x = p²(p + 2) / [(p − 1)(p + 2)] = p²/(p − 1).\n\nОтвет: p = 1 — решений нет; p = −2 — x ∈ ℝ; иначе x = p²/(p − 1)." },
+      { t:"Для каждого значения параметра a решить неравенство −a·x ≥ −3.",
+        s:"Умножим на −1 (знак переворачивается): a·x ≤ 3.\n\na = 0: 0·x ≤ 3 — верно при любом x, значит x ∈ ℝ.\na > 0: делим на a (знак сохраняется): x ≤ 3/a.\na < 0: делим на a (знак переворачивается): x ≥ 3/a.\n\nОтвет: a = 0 — x ∈ ℝ; a > 0 — x ∈ (−∞; 3/a]; a < 0 — x ∈ [3/a; +∞)." },
+      { t:"При каких p системы уравнений x + p·y = 1 и p·x + y = 2p имеют хотя бы одно общее решение?",
+        s:"Это две прямые; общее решение есть, если они не параллельны без пересечения.\nЕдинственное решение ⇔ определитель 1·1 − p·p = 1 − p² ≠ 0, т.е. p ≠ ±1.\n\nПроверяем особые p:\np = 1: x + y = 1 и x + y = 2 — противоречие, общих решений нет.\np = −1: x − y = 1 и −x + y = −2 ⇒ x − y = 1 и x − y = 2 — противоречие, нет.\n\nОтвет: p ∈ (−∞; −1) ∪ (−1; 1) ∪ (1; +∞)." }
+    ];
+    var list=$("#hwList");
+    hw.forEach(function(q,i){
+      var wrap=document.createElement("div");
+      wrap.style.borderTop="1px solid var(--line)"; wrap.style.paddingTop="12px"; wrap.style.marginTop="12px";
+      if(i===0){wrap.style.borderTop="none";wrap.style.paddingTop="0";wrap.style.marginTop="0";}
+      wrap.innerHTML='<p class="qtask"><b>'+(i+1)+'.</b> <span class="fx">'+q.t+'</span></p>'
+        +'<button class="btn ghost" data-h="'+i+'">Показать разбор</button>'
+        +'<div class="sol" id="hsol'+i+'">'+q.s+'</div>';
+      list.appendChild(wrap);
+    });
+    $$("[data-h]",list).forEach(function(btn){
+      btn.addEventListener("click",function(){
+        var el=$("#hsol"+btn.dataset.h); el.classList.toggle("on");
+        btn.textContent=el.classList.contains("on")?"Скрыть разбор":"Показать разбор";
+        if(el.classList.contains("on")) save({key:"hw"+btn.dataset.h});
+      });
+    });
+  })();
+
+})();
+</script>
+</body>
+</html>
