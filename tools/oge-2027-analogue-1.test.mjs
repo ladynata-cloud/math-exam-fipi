@@ -602,7 +602,9 @@ gate('one course card and one sitemap entry point to the author page', () => {
 // Closed PR124/PR125 scopes are immutable snapshots. The new task has its own
 // unconditional exact scope; missing files cannot select a historical fallback.
 const distributionBase = '7ebbd328d7b59b691eb50d01324d4c438aa8404c';
-const distribution6To10Base = 'd5c9d0388ab3b22bcffec10d11504a0624e2b598';
+// PR125 merge commit on main: its scope is checked as a closed snapshot.
+const pr125MergeHead = 'd5c9d0388ab3b22bcffec10d11504a0624e2b598';
+const distribution6To10Base = 'f1eb11261a32dd30afb614bc563975d1d9865e7d';
 const OGE_2027_ANALOGUE_DISTRIBUTE_6_10 = Object.freeze([
   'trainers/oge-task6-fractions.html',
   'trainers/oge-task7-number-line.html',
@@ -639,7 +641,7 @@ gate('OGE_2027_ANALOGUE_DISTRIBUTE_1_5 has exactly its six approved changed file
   });
   git('merge-base', '--is-ancestor', distributionBase, 'HEAD');
   const changed = new Set([
-    ...git('diff', '--name-only', '--no-renames', '-z', distributionBase, distribution6To10Base, '--').split('\0'),
+    ...git('diff', '--name-only', '--no-renames', '-z', distributionBase, pr125MergeHead, '--').split('\0'),
   ].filter(Boolean));
   assertExactTaskScope(changed, distributionScope);
 });

@@ -483,7 +483,7 @@
         </div>
       </details>
 
-      
+
     </aside>
   </div>
 
@@ -1754,7 +1754,7 @@ function writeupHtml(){
 }
 function parseAns(raw){
   if(raw==null)return NaN;
-  let t=raw.toString().trim().replace(/\u2212/g,"-").replace(",",".").replace(/\s+/g,"");
+  let t=raw.toString().trim().replace(/−/g,"-").replace(",",".").replace(/\s+/g,"");
   if(t==="")return NaN;
   return Number(t);
 }

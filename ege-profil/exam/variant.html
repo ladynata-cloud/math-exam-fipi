@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Курс-тренажёр ЕГЭ по профильной математике</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --page: Canvas;
+      --text: CanvasText;
+      --panel: Field;
+      --panel-text: FieldText;
+      --border: color-mix(in srgb, CanvasText 22%, transparent);
+      --muted: color-mix(in srgb, CanvasText 66%, transparent);
+      --soft: color-mix(in srgb, AccentColor 12%, Canvas);
+      --accent: AccentColor;
+      --accent-text: AccentColorText;
+      --ok: color-mix(in srgb, #16813a 82%, CanvasText);
+      --bad: color-mix(in srgb, #b3261e 82%, CanvasText);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--page); color: var(--text); }
+    button, input, select, textarea { font: inherit; }
+    button, input, select, textarea {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      color: var(--panel-text);
+    }
+    button { min-height: 44px; padding: 9px 13px; cursor: pointer; }
+    button:hover { background: var(--soft); }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      outline-offset: 2px;
+    }
+    button.primary, button[aria-pressed="true"] {
+      background: var(--accent);
+      color: var(--accent-text);
+      border-color: var(--accent);
+    }
+    button.ghost { background: transparent; }
+    button:disabled { opacity: .5; cursor: default; }
+    .shell { width: min(1220px, 100%); margin: 0 auto; padding: 24px; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 8px; font-size: clamp(28px, 4vw, 46px); line-height: 1.05; }
+    h2 { margin-bottom: 10px; }
+    .subtitle { max-width: 800px; color: var(--muted); margin-bottom: 0; }
+    .progress-summary { min-width: 220px; }
+    .progress-label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; font-size: 14px; }
+    progress { width: 100%; height: 12px; accent-color: var(--accent); }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .toolbar .spacer { flex: 1 1 30px; }
+    .field { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); }
+    select, input[type="text"], textarea { padding: 10px 12px; }
+    select, input[type="text"] { min-height: 44px; }
+    .back { display: inline-flex; align-items: center; min-height: 44px; margin: -6px 0 6px; color: var(--muted); font: 600 13px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-decoration: none; }
+    .back:hover { color: var(--text); }
+    .back:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset: 2px; border-radius: 4px; }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 370px) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--panel);
+      color: var(--panel-text);
+      padding: 18px;
+    }
+    .modules { display: grid; gap: 6px; max-height: 760px; overflow: auto; padding-right: 4px; }
+    .group-label {
+      margin: 12px 0 3px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .group-label:first-child { margin-top: 0; }
+    .module {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr) auto;
+      gap: 9px;
+      align-items: center;
+      text-align: left;
+      background: transparent;
+      border-color: transparent;
+    }
+    .module.active { background: var(--soft); border-color: color-mix(in srgb, var(--accent) 38%, transparent); }
+    .module-number {
+      width: 28px; height: 28px; display: grid; place-items: center;
+      border-radius: 9px; background: color-mix(in srgb, CanvasText 8%, transparent);
+      font-size: 13px; font-weight: 700;
+    }
+    .module-title { line-height: 1.2; }
+    .module-state { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .module-state.done { color: var(--ok); font-weight: 700; }
+    .trainer { min-height: 650px; }
+    .trainer-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: start; }
+    .eyebrow { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
+    .score { color: var(--muted); font-size: 14px; }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      margin-left: 6px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--panel-text);
+      font-size: 12px;
+      vertical-align: middle;
+    }
+    .theory { border-left: 4px solid var(--accent); padding: 11px 14px; margin: 16px 0 8px; background: var(--soft); border-radius: 0 12px 12px 0; }
+    .prototypes { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+    .task { min-height: 180px; display: grid; align-content: start; gap: 14px; }
+    .task-text { font-size: clamp(18px, 2.4vw, 24px); line-height: 1.48; }
+    .task-visual { overflow-x: auto; }
+    .formula { font-family: Cambria, "Times New Roman", serif; font-size: 1.08em; }
+    table { border-collapse: collapse; min-width: 360px; }
+    th, td { border: 1px solid var(--border); padding: 8px 11px; text-align: center; }
+    th { background: var(--soft); }
+    .graph { width: min(420px, 100%); height: auto; color: var(--text); }
+    .answer-row { display: grid; grid-template-columns: minmax(180px, 1fr) auto; gap: 10px; margin-top: 18px; align-items: end; }
+    #short-answer { width: 100%; min-height: 46px; font-size: 18px; }
+    #written-solution { width: 100%; min-height: 125px; resize: vertical; line-height: 1.45; }
+    .actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 12px; }
+    .feedback { min-height: 58px; margin-top: 16px; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, CanvasText 6%, transparent); line-height: 1.5; }
+    .feedback.ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 10%, transparent); }
+    .feedback.bad { color: var(--bad); background: color-mix(in srgb, var(--bad) 10%, transparent); }
+    .feedback.hint { background: var(--soft); }
+    .solution-steps { margin: 8px 0; padding-left: 22px; color: var(--panel-text); }
+    .grade-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .variant-banner { display: none; margin-bottom: 16px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; }
+    .variant-banner.visible { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .source { margin: 20px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .hidden { display: none; }
+    @media (max-width: 840px) {
+      .shell { padding: 16px; }
+      .hero { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 1fr; }
+      .modules { max-height: none; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .group-label { grid-column: 1 / -1; }
+      .module { grid-template-columns: 28px minmax(0, 1fr); }
+      .module-state { grid-column: 2; }
+    }
+    @media (max-width: 540px) {
+      .modules { grid-template-columns: 1fr; }
+      .answer-row { grid-template-columns: 1fr; }
+      .toolbar > button { flex: 1 1 130px; }
+      .field { width: 100%; justify-content: space-between; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <a class="back" href="../index.html">← Курс</a>
+    <section class="hero" aria-labelledby="course-title">
+      <div>
+        <h1 id="course-title">Профиль без паники</h1>
+        <p class="subtitle">Курс-тренажёр по всем 19 линиям профильного ЕГЭ. Первая часть проверяется автоматически, во второй части можно сопоставить своё решение с эталоном и оценить полноту записи.</p>
+<details class="kim-ref" style="margin:16px 0;border:1.5px dashed #C22F2A;border-radius:10px;background:rgba(255,255,255,.85);padding:0 16px;max-width:660px;">
+  <summary style="cursor:pointer;padding:11px 0;font-weight:800;color:#16307F;">Справочные материалы КИМ — этот листок выдают на экзамене</summary>
+  <div style="padding:2px 0 13px;font-size:16.5px;line-height:1.85;color:#2A2F38;">
+    <div>sin 2α = 2 sin α · cos α</div>
+    <div>cos 2α = cos²α − sin²α</div>
+    <div>sin (α + β) = sin α · cos β + cos α · sin β</div>
+    <div>cos (α + β) = cos α · cos β − sin α · sin β</div>
+    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.6;color:#67707E;">Из этих четырёх выводится многое: замените β на −β — получите формулы разности (sin меняет знак, cos — нет); подставьте sin²α = 1 − cos²α в cos 2α — выйдет cos 2α = 1 − 2sin²α = 2cos²α − 1, а отсюда — понижение степени. Наизусть остаются: основное тождество sin²α + cos²α = 1, табличные значения и формулы приведения — их листок не выдаёт.</p>
+  </div>
+</details>
+
+      </div>
+      <div class="progress-summary">
+        <div class="progress-label"><span>Освоено линий</span><strong id="mastered-label">0 из 19</strong></div>
+        <progress id="course-progress" max="19" value="0">0 из 19</progress>
+      </div>
+    </section>
+
+    <nav class="toolbar" aria-label="Режим тренировки">
+      <button class="primary" data-mode="topic" aria-pressed="true">По теме</button>
+      <button data-mode="mix" aria-pressed="false">Смешанная</button>
+      <button data-mode="variant" aria-pressed="false">Вариант из 19 заданий</button>
+      <span class="spacer"></span>
+      <label class="field" for="difficulty">Уровень
+        <select id="difficulty">
+          <option value="1">Разминка</option>
+          <option value="2" selected>Экзамен</option>
+          <option value="3">Сложнее</option>
+        </select>
+      </label>
+      <button class="ghost" id="reset-progress">Сбросить прогресс</button>
+    </nav>
+
+    <div class="layout">
+      <aside class="card" aria-labelledby="modules-heading">
+        <h2 id="modules-heading">Линии экзамена</h2>
+        <div class="modules" id="modules"></div>
+      </aside>
+
+      <section class="card trainer" aria-live="polite">
+        <div id="variant-banner" class="variant-banner">
+          <span id="variant-step">Задание 1 из 19</span>
+          <strong id="variant-score">Решено: 0</strong>
+        </div>
+        <div class="trainer-top">
+          <div>
+            <div class="eyebrow" id="topic-group">Краткий ответ · №1</div>
+            <h2 id="topic-title">Планиметрия 1</h2>
+          </div>
+          <div class="score" id="topic-score">0 верных из 0</div>
+        </div>
+        <p class="theory" id="theory"></p>
+        <p class="prototypes" id="prototypes"></p>
+        <div class="task">
+          <div class="task-text" id="task-text"></div>
+          <div class="task-visual" id="task-visual"></div>
+        </div>
+
+        <div id="short-zone" class="answer-row">
+          <label>
+            <span class="eyebrow">Краткий ответ</span>
+            <input id="short-answer" type="text" inputmode="decimal" autocomplete="off" placeholder="Введите число">
+          </label>
+          <button class="primary" id="check-short">Проверить</button>
+        </div>
+
+        <div id="written-zone" class="hidden">
+          <label>
+            <span class="eyebrow">Ваше развёрнутое решение</span>
+            <textarea id="written-solution" placeholder="Запишите преобразования, обоснования и ответ так, как написали бы эксперту."></textarea>
+          </label>
+          <div class="actions">
+            <button class="primary" id="show-model">Показать эталон и оценить</button>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="hint">Подсказка</button>
+          <button id="next">Новое задание</button>
+        </div>
+        <div class="feedback" id="feedback">Решите задачу. Для заданий второй части важен не только ответ, но и видимый ход решения.</div>
+      </section>
+    </div>
+
+    <p class="source">Методическая карта построена по 19 линиям офлайн-сборника открытого банка ФИПИ: 1 083 задачи и 468 прототипов, обновление 03.06.2026. Формулировки и числовые параметры тренажёра создаются заново по типовым моделям, а не копируются дословно.</p>
+  </main>
+
+  <script src="bank.js"></script>
+  <script>
+    (() => {
+      const $ = (selector) => document.querySelector(selector);
+      /* Лестница: первая ошибка — ещё попытка, не ответ. Попытка при этом
+         уже записана в статистику (attempts+1, без балла): если задачу
+         бросить «Новым заданием», сменой режима или закрытием вкладки,
+         неудача не исчезнет и не завысит точность, от которой зависит
+         «освоено». Решение со второй попытки добавляет только верный ответ. */
+      let secondTry = false;
+      const LINE_TRAINER = {
+        1:"../trainers/planimetry-t1.html", 2:"../trainers/vectors-t2.html", 3:"../trainers/stereo/index.html",
+        4:"../trainers/probability-t45.html", 5:"../trainers/probability-t45.html",
+        6:"../trainers/trigonometry.html", 7:"../trainers/trigonometry.html",
+        8:"../trainers/derivative-t8.html", 9:"../trainers/applied-t910.html", 10:"../trainers/applied-t910.html",
+        11:"../trainers/functions-t1112.html", 12:"../trainers/functions-t1112.html",
+        13:"../trainers/trigonometry.html", 14:"../trainers/stereo-t14.html", 15:"../trainers/inequalities.html",
+        16:"../trainers/finance.html", 17:"../trainers/planimetry-t17.html",
+        18:"../trainers/parameters-t18.html", 19:"../trainers/numbers-t19.html"
+      };
+      const currentModule = () => modules.find(module => module.id === currentId);
+      const mastered = (id) => {
+        const module = modules.find(item => item.id === id);
+        const s = stat(id);
+        if (module.detailed) return s.attempts >= 3 && s.points / s.attempts >= 1.5;
+        return s.correct >= 3 && s.correct / Math.max(1, s.attempts) >= .7;
+      };
+      /* В хранилище пишется только изменившееся: статистика линии — через
+         bumpStat (дельта поверх свежей записи), номер линии — только когда он
+         сменился. Простой показ задачи ничего не пишет. */
+      let persistedId = saved.currentId;
+      const persistId = () => {
+        if (currentId === persistedId) return;
+        if (writeSaved(all => { all.currentId = currentId; })) persistedId = currentId;
+      };
+
+      function renderModules() {
+        const root = $("#modules");
+        root.innerHTML = "";
+        let group = "";
+        modules.forEach(module => {
+          if (module.group !== group) {
+            group = module.group;
+            const label = document.createElement("div");
+            label.className = "group-label";
+            label.textContent = group;
+            root.append(label);
+          }
+          const s = stat(module.id);
+          const button = document.createElement("button");
+          button.className = `module${module.id === currentId ? " active" : ""}`;
+          button.innerHTML = `<span class="module-number">${module.id}</span><span class="module-title">${module.title}</span><span class="module-state ${mastered(module.id) ? "done" : ""}">${mastered(module.id) ? "освоено" : module.detailed ? `${s.points}/${s.attempts*2 || 0} б.` : `${s.correct}/${s.attempts}`}</span>`;
+          button.addEventListener("click", () => {
+            currentId = module.id;
+            setMode("topic");
+          });
+          root.append(button);
+        });
+      }
+
+      function renderProgress() {
+        const count = modules.filter(module => mastered(module.id)).length;
+        $("#mastered-label").textContent = `${count} из 19`;
+        $("#course-progress").value = count;
+      }
+
+      function parseNumber(value) {
+        const normalized = value.trim().replace(",", ".").replace(/\s/g, "");
+        if (/^-?\d+\/-?\d+$/.test(normalized)) {
+          const [a,b] = normalized.split("/").map(Number);
+          return b ? a/b : NaN;
+        }
+        return Number(normalized);
+      }
+
+      function showTask(initial) {
+        syncSaved();
+        const module = currentModule();
+        const s = stat(module.id);
+        $("#topic-group").innerHTML = `${module.group} · №${module.id}<span class="badge">${module.detailed ? "самооценка 0–2" : "автопроверка"}</span>`;
+        $("#topic-title").textContent = module.title;
+        $("#theory").textContent = module.theory + " ";
+        const theoryLink = document.createElement("a");
+        theoryLink.href = LINE_TRAINER[module.id];
+        theoryLink.target = "_blank"; theoryLink.rel = "noopener";
+        theoryLink.textContent = "Опоры и тренажёр этой линии →";
+        $("#theory").appendChild(theoryLink);
+        $("#prototypes").textContent = module.prototypes;
+        $("#topic-score").textContent = module.detailed ? `${s.points} баллов за ${s.attempts} попыток` : `${s.correct} верных из ${s.attempts}`;
+        $("#task-text").innerHTML = currentTask.text;
+        $("#task-visual").innerHTML = currentTask.visual || "";
+        $("#short-zone").classList.toggle("hidden", module.detailed);
+        $("#written-zone").classList.toggle("hidden", !module.detailed);
+        $("#short-answer").value = "";
+        $("#written-solution").value = "";
+        $("#short-answer").disabled = false;
+        $("#written-solution").disabled = false;
+        $("#check-short").disabled = false;
+        $("#show-model").disabled = false;
+        $("#next").disabled = false;
+        $("#feedback").className = "feedback";
+        $("#feedback").textContent = module.detailed
+          ? "Запишите решение полностью. Затем сравните его с эталоном и выставьте себе 0, 1 или 2 балла."
+          : "Введите краткий ответ. Десятичную дробь можно записать через запятую.";
+        answered = false;
+        secondTry = false;
+        renderModules();
+        renderProgress();
+        persistId();
+        /* при загрузке — без прокрутки: «← Курс» и заголовок остаются на экране */
+        if (!module.detailed) $("#short-answer").focus(initial ? { preventScroll: true } : undefined);
+      }
+
+      function newTask() {
+        if (mode === "mix") {
+          const pool = modules.filter(module => !mastered(module.id));
+          currentId = pick(pool.length ? pool : modules).id;
+        } else if (mode === "variant") {
+          currentId = variantIndex + 1;
+          $("#variant-step").textContent = `Задание ${variantIndex + 1} из 19`;
+          $("#variant-score").textContent = `Решено: ${variantSolved}`;
+        }
+        currentTask = currentModule().make();
+        showTask();
+      }
+
+      const scoreText = (module, s) => module.detailed ? `${s.points} баллов за ${s.attempts} попыток` : `${s.correct} верных из ${s.attempts}`;
+
+      /* alreadyCounted — попытка записана раньше, на первой ошибке */
+      function recordResult(points, alreadyCounted) {
+        const module = currentModule();
+        const full = points === (module.detailed ? 2 : 1);
+        const s = bumpStat(module.id, r => {
+          if (!alreadyCounted) r.attempts++;
+          r.points += points;
+          if (full) r.correct++;
+        });
+        if (full && mode === "variant") variantSolved++;
+        answered = true;
+        $("#short-answer").disabled = true;
+        $("#written-solution").disabled = true;
+        $("#check-short").disabled = true;
+        $("#show-model").disabled = true;
+        $("#topic-score").textContent = scoreText(module, s);
+        renderModules();
+        renderProgress();
+      }
+
+      function checkShort() {
+        if (answered) return;
+        const value = parseNumber($("#short-answer").value);
+        if (!Number.isFinite(value)) {
+          $("#feedback").className = "feedback bad";
+          $("#feedback").textContent = "Введите числовой ответ. Дробь можно записать как 3/4 или 0,75.";
+          return;
+        }
+        const correct = Math.abs(value - currentTask.answer) < 1e-8;
+        if (!correct && !secondTry) {
+          secondTry = true;
+          const module = currentModule();
+          const s = bumpStat(module.id, r => { r.attempts++; });   /* ровно один раз на задачу */
+          $("#topic-score").textContent = scoreText(module, s);
+          renderModules();
+          renderProgress();
+          $("#feedback").className = "feedback hint";
+          $("#feedback").innerHTML = "<strong>Пока неверно.</strong> Попробуйте ещё раз — вторая попытка. Подсказка рядом, если нужна.";
+          $("#short-answer").select();
+          return;
+        }
+        $("#feedback").className = `feedback ${correct ? "ok" : "bad"}`;
+        $("#feedback").innerHTML = correct
+          ? `<strong>Верно.</strong> ${currentTask.explain}`
+          : `<strong>Пока неверно.</strong> Правильный ответ: ${fmt(currentTask.answer)}. ${currentTask.explain}`;
+        recordResult(correct ? 1 : 0, secondTry);
+      }
+
+      function showModel() {
+        if (answered) return;
+        const draft = $("#written-solution").value.trim();
+        const steps = currentTask.model.map(step => `<li>${step}</li>`).join("");
+        $("#feedback").className = "feedback hint";
+        $("#feedback").innerHTML = `${draft ? "<strong>Сравните вашу запись с эталоном.</strong>" : "<strong>Эталонное решение.</strong>"}<ol class="solution-steps">${steps}</ol><strong>${currentTask.answerLine}</strong><div class="grade-row"><button data-grade="0">0 — решения нет</button><button data-grade="1">1 — идея есть</button><button class="primary" data-grade="2">2 — полное решение</button></div>`;
+        document.querySelectorAll("[data-grade]").forEach(button => button.addEventListener("click", () => {
+          const grade = Number(button.dataset.grade);
+          $("#feedback").className = `feedback ${grade === 2 ? "ok" : grade === 0 ? "bad" : "hint"}`;
+          $("#feedback").innerHTML = `<strong>Записано: ${grade} из 2.</strong> ${grade === 2 ? "Решение можно считать полным." : "Вернитесь к эталону и восстановите пропущенные переходы."}<ol class="solution-steps">${steps}</ol><strong>${currentTask.answerLine}</strong>`;
+          recordResult(grade);
+        }));
+      }
+
+      function advance() {
+        if (mode === "variant") {
+          if (!answered) {
+            $("#feedback").className = "feedback hint";
+            $("#feedback").textContent = "Сначала проверьте краткий ответ или оцените развёрнутое решение.";
+            return;
+          }
+          if (variantIndex === 18) {
+            $("#feedback").className = "feedback ok";
+            $("#feedback").innerHTML = `<strong>Вариант завершён: полностью решено ${variantSolved} из 19 заданий.</strong> Для нового варианта нажмите кнопку режима ещё раз.`;
+            $("#next").disabled = true;
+            return;
+          }
+          variantIndex++;
+        }
+        newTask();
+      }
+
+      function setMode(nextMode) {
+        mode = nextMode;
+        document.querySelectorAll("[data-mode]").forEach(button => {
+          const active = button.dataset.mode === mode;
+          button.setAttribute("aria-pressed", String(active));
+          button.classList.toggle("primary", active);
+        });
+        $("#variant-banner").classList.toggle("visible", mode === "variant");
+        if (mode === "variant") {
+          variantIndex = 0;
+          variantSolved = 0;
+        }
+        newTask();
+      }
+
+      document.querySelectorAll("[data-mode]").forEach(button => button.addEventListener("click", () => setMode(button.dataset.mode)));
+      $("#check-short").addEventListener("click", checkShort);
+      $("#short-answer").addEventListener("keydown", event => { if (event.key === "Enter") checkShort(); });
+      $("#show-model").addEventListener("click", showModel);
+      $("#hint").addEventListener("click", () => {
+        $("#feedback").className = "feedback hint";
+        $("#feedback").textContent = currentTask.hint;
+      });
+      $("#next").addEventListener("click", advance);
+      $("#difficulty").addEventListener("change", newTask);
+      $("#reset-progress").addEventListener("click", () => {
+        if (!confirm("Сбросить весь сохранённый прогресс курса?")) return;
+        Object.keys(progress).forEach(key => delete progress[key]);
+        writeSaved(all => { all.progress = {}; });
+        newTask();
+      });
+
+      try {
+        const requested = parseInt(new URLSearchParams(location.search).get("m"), 10);
+        if (requested >= 1 && requested <= 19) currentId = requested;
+      } catch {}
+
+      /* Другая вкладка записала свою статистику — показать её и здесь. */
+      window.addEventListener("storage", event => {
+        if (event.key !== storageKey && event.key !== null) return;
+        syncSaved();
+        const module = currentModule();
+        $("#topic-score").textContent = scoreText(module, stat(module.id));
+        renderModules();
+        renderProgress();
+      });
+
+      currentTask = currentModule().make();
+      showTask(true);
+    })();
+  </script>
+</body>
+</html>

@@ -1033,10 +1033,11 @@ test('scoped CLI marker cannot claim the full gate', async () => {
   assert.match(gateSource, /Committed diff check/);
 });
 
-// Historical allowlists stay attached to closed task snapshots. The current
-// owner-approved task always runs its independent exact eleven-file check below.
+// Historical allowlists stay attached to closed task snapshots. PR125 is
+// closed: its exact six-file check runs on 7ebbd32..PR125 merge commit.
 const distributionBase = '7ebbd328d7b59b691eb50d01324d4c438aa8404c';
-const distribution6To10Base = 'd5c9d0388ab3b22bcffec10d11504a0624e2b598';
+const pr125MergeHead = 'd5c9d0388ab3b22bcffec10d11504a0624e2b598';
+const distribution6To10Base = 'f1eb11261a32dd30afb614bc563975d1d9865e7d';
 const OGE_2027_ANALOGUE_DISTRIBUTE_6_10 = Object.freeze([
   'trainers/oge-task6-fractions.html',
   'trainers/oge-task7-number-line.html',
@@ -1113,7 +1114,7 @@ test('working diff stays inside the approved docs, skill, fixture, and tool scop
 
 test('OGE_2027_ANALOGUE_DISTRIBUTE_1_5 has exactly its six approved changed files', async () => {
   await git(repoRoot, ['merge-base', '--is-ancestor', distributionBase, 'HEAD']);
-  const { stdout: tracked } = await git(repoRoot, ['diff', '--name-only', '--no-renames', '-z', distributionBase, distribution6To10Base, '--']);
+  const { stdout: tracked } = await git(repoRoot, ['diff', '--name-only', '--no-renames', '-z', distributionBase, pr125MergeHead, '--']);
   const changed = new Set(tracked.split('\0').filter(Boolean));
   assertExactTaskScope(changed, distributionScope);
 });

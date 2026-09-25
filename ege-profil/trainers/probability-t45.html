@@ -363,7 +363,7 @@ PR.traps = function(t){
   return out;
 };
 PR.diagnose = function(input, t){
-  var s = String(input == null ? "" : input).trim().replace(",", ".").replace("\u2212", "-").replace(/\s+/g, "");
+  var s = String(input == null ? "" : input).trim().replace(",", ".").replace("−", "-").replace(/\s+/g, "");
   var v = s ? Number(s) : NaN;
   if (isNaN(v)) return null;
   var list = PR.traps(t) || [];

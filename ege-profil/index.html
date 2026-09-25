@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Профильный ЕГЭ по математике: маршрут по всем 19 заданиям. Там, где есть специализированный тренажёр, — учись в нём, остальное отрабатывай в экзаменационном режиме.">
 <title>Профильный ЕГЭ · математика — курс-навигатор</title>
 <style>
   :root{
@@ -108,6 +109,15 @@
   }
   .pill:hover{ background:var(--ink); color:#fff; }
   .ghostlink:hover{ color:var(--ink); border-bottom-color:var(--ink); }
+  /* касание: пилюли маршрута и «вариант» — зона нажатия не ниже 44 px;
+     мышью на десктопе вид прежний */
+  @media (pointer:coarse){
+    .pill{ display:inline-flex; align-items:center; min-height:44px; }
+    .ghostlink{
+      display:inline-flex; align-items:center; min-height:44px; padding:0 4px;
+      border-bottom:0; text-decoration:underline dotted; text-underline-offset:3px;
+    }
+  }
 
   /* ---------- карточки тренажёров ---------- */
   .cards{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
@@ -133,7 +143,7 @@
   .progress .txt.done{ color:var(--red); font-weight:700; }
   .card .open{ margin-top:auto; padding-top:6px; }
   .btn{
-    display:inline-block; padding:8px 16px 9px;
+    display:inline-block; padding:9px 16px 10px; min-height:44px;
     background:var(--ink); color:#fff; border:1.5px solid var(--ink);
     border-radius:8px; font-weight:700; font-size:14.5px; text-decoration:none;
   }
@@ -161,7 +171,9 @@
   footer p{ margin:0 0 8px; }
 
   /* панель кода прогресса в подвале */
-  .linkbtn{ border:0; background:none; padding:0; color:var(--ink); font:inherit; text-decoration:underline; cursor:pointer; }
+  /* ссылка-кнопка кода прогресса: текст мелкий, зона нажатия — не меньше 44 px */
+  .linkbtn{ display:inline-flex; align-items:center; min-height:44px; border:0; background:none; padding:0 2px; margin:0 -2px;
+    color:var(--ink); font:inherit; text-decoration:underline; cursor:pointer; }
   .codepanel{ margin:8px 0 0; }
   .codebox{ width:100%; font:600 12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     border:1.5px solid var(--line); border-radius:8px; padding:10px; background:#fff; color:var(--graphite); resize:vertical; }
@@ -196,7 +208,7 @@
     <p class="eyebrow">курс-навигатор · работает офлайн</p>
     <h1>Профильный <span class="mark">ЕГЭ<svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 Q 12 2, 24 8 T 46 8 T 68 8 T 90 8 T 114 7" fill="none" stroke="#C22F2A" stroke-width="3.4" stroke-linecap="round"/></svg></span> · математика</h1>
     <p class="lede">Маршрут по всем 19 заданиям: там, где есть специализированный тренажёр — учись в нём, остальное отрабатывай в экзаменационном режиме.</p>
-    <p class="facts">17 тренажёров на все 19 заданий + тренажёр эксперта · пробный экзамен на 3&nbsp;ч&nbsp;55&nbsp;мин с переводом в тестовые баллы · работа над ошибками и умный разбор ловушек · маршрут «с чего начать» · 143 задачи стереометрии в&nbsp;3D</p>
+    <p class="facts">19 тренажёров по всем 19 заданиям + тренажёр эксперта и мини-курс по параметрам · пробный экзамен на 3&nbsp;ч&nbsp;55&nbsp;мин с переводом в тестовые баллы · работа над ошибками и умный разбор ловушек · маршрут «с чего начать» · 281 задача стереометрии в&nbsp;3D и 7 «Развёрток» · финансовая математика: 14 задач, 11 схем</p>
   </header>
 
   <section id="start" aria-labelledby="start-h">
@@ -226,7 +238,7 @@
       </li>
       <li class="line"><span class="num">3</span>
         <div><div class="line-name">Стереометрия</div><div class="line-proto">куб, призма, пирамида, цилиндр, конус, шар, комбинации тел</div></div>
-        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="../trainers/ege-profile-stereometry-3d/index.html">Стереометрия в 3D</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=3">вариант</a></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/stereo/index.html">Стереометрия в 3D</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=3">вариант</a></div>
       </li>
       <li class="line"><span class="num">4</span>
         <div><div class="line-name">Вероятность: классика</div><div class="line-proto">равновозможные исходы, кубик, монета, лотерея</div></div>
@@ -278,11 +290,11 @@
       </li>
       <li class="line"><span class="num">15</span>
         <div><div class="line-name">Неравенство</div><div class="line-proto">рациональные, показательные, логарифмические, комбинированные</div></div>
-        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/interval-method.html">1 · Метод интервалов</a><a class="pill" target="_blank" rel="noopener" href="trainers/inequalities.html">2 · Курс по неравенствам</a><a class="pill" target="_blank" rel="noopener" href="trainers/rationalization.html">3 · Рационализация</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=15">вариант</a></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/interval-method.html">1 · Метод интервалов</a><a class="pill" target="_blank" rel="noopener" href="trainers/inequalities.html">2 · Курс по неравенствам</a><a class="pill" target="_blank" rel="noopener" href="trainers/inequalities.html#m8">3 · Рационализация</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=15">вариант</a></div>
       </li>
       <li class="line"><span class="num">16</span>
         <div><div class="line-name">Финансовая математика</div><div class="line-proto">кредиты, вклады, платежи, нестандартные схемы</div></div>
-        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="../trainers/finance-nonstandard-trainer.html">Нестандартные схемы</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=16">вариант</a></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/finance.html">Нестандартные схемы</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=16">вариант</a></div>
       </li>
       <li class="line"><span class="num">17</span>
         <div><div class="line-name">Планиметрия: доказательство и вычисление</div><div class="line-proto">окружности, подобие, отношения площадей</div></div>
@@ -290,7 +302,7 @@
       </li>
       <li class="line"><span class="num">18</span>
         <div><div class="line-name">Задача с параметром</div><div class="line-proto">число решений, графический метод, системы</div></div>
-        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/parameters-t18.html">Параметр на графике</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=18">вариант</a></div>
+        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/parameters-t18.html">Параметр на графике</a><a class="pill" target="_blank" rel="noopener" href="trainers/parameters-18/index.html">Мини-курс: параметры с нуля</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=18">вариант</a></div>
       </li>
       <li class="line"><span class="num">19</span>
         <div><div class="line-name">Числа и их свойства</div><div class="line-proto">делимость, оценки, инварианты, крайние случаи</div></div>
@@ -317,7 +329,7 @@
         <p class="for">задание 1 · фундамент</p>
         <h3>Прямоугольный треугольник: sin, cos, tg</h3>
         <p>Шесть тем: от определений до углов между высотой, биссектрисой и медианой. Честный чертёж с новыми буквами каждый раз, лесенка шагов и адресный разбор типичных ошибок.</p>
-        <p class="meta">6 тем · кликабельный чертёж · журнал ошибок</p>
+        <p class="meta">6 тем · 16 типов задач · журнал ошибок</p>
         <div class="progress" data-progress="righttri"></div>
         <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/pryamougolny-treugolnik-trenazher.html">Открыть</a></p>
       </article>
@@ -344,9 +356,9 @@
         <p class="for">задание 3</p>
         <h3>Стереометрия в 3D</h3>
         <p>Задачи с интерактивными чертежами: вращай фигуру, кликай по рёбрам, строй отрезки и смотри поэтапные построения — сечения, апофемы, уровни жидкости.</p>
-        <p class="meta">143 задачи · 9 тем · чертежи Three.js</p>
+        <p class="meta">281 задача · 9 тем + 7 «Развёрток» · чертежи Three.js</p>
         <div class="progress" data-progress="stereo"></div>
-        <p class="open"><a class="btn" target="_blank" rel="noopener" href="../trainers/ege-profile-stereometry-3d/index.html">Открыть</a></p>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/stereo/index.html">Открыть</a></p>
       </article>
 
       <article class="card">
@@ -398,18 +410,18 @@
         <p class="for">задание 15 · шаг 3</p>
         <h3>Метод рационализации</h3>
         <p>Как заменить логарифмическое неравенство на рациональное: знак log<sub>a</sub>b — это знак (a−1)(b−1). С нуля и до выбора верной замены.</p>
-        <p class="meta">продвинутый приём · интерактивные графики</p>
+        <p class="meta">продвинутый приём · разобран модулем 9 курса неравенств — ссылка открывает его сразу</p>
         <div class="progress" data-progress="none"></div>
-        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/rationalization.html">Открыть</a></p>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/inequalities.html#m8">Открыть</a></p>
       </article>
 
       <article class="card">
         <p class="for">задание 16</p>
         <h3>Финансовая математика: нестандартные схемы</h3>
         <p>Вклады с пополнениями, платежи x, x/2, x/3, пени, льготные кредиты, две фазы погашения, оптимизация — всё, что выходит за рамки равных платежей.</p>
-        <p class="meta">27 задач · 11 схем · режимы ученик / практика / учитель</p>
+        <p class="meta">14 задач · 11 схем · обучение и тренировка</p>
         <div class="progress" data-progress="finance"></div>
-        <p class="open"><a class="btn" target="_blank" rel="noopener" href="../trainers/finance-nonstandard-trainer.html">Открыть</a></p>
+        <p class="open"><a class="btn" target="_blank" rel="noopener" href="trainers/finance.html">Открыть</a></p>
       </article>
 
       <article class="card">

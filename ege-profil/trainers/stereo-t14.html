@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 14 · Стереометрия с доказательством</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA; --badbg:#FBEAE9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:680px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0 0 6px;font-size:16.5px;color:var(--ink-strong)}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+  .tab{border:1.5px solid var(--ink);background:rgba(250,250,244,.8);color:var(--ink);border-radius:999px;
+    padding:8px 16px;font:700 14px/1 inherit;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.92);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    padding:9px 16px;font:700 14.5px/1 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:disabled{opacity:.45;cursor:default}
+  input[type=text]{border:1.5px solid var(--ink);border-radius:8px;background:#fff;padding:9px 12px;font:600 16px/1 inherit;width:160px}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .feedback{margin-top:12px;border-radius:8px;padding:10px 12px;font-weight:600;display:none}
+  .feedback.on{display:block}
+  .feedback.ok{background:var(--okbg);color:var(--ok)}
+  .feedback.bad{background:var(--badbg);color:var(--red)}
+  .feedback.hint{background:rgba(30,58,159,.08);color:var(--ink-strong)}
+  details.support{border:1px dashed var(--line);border-radius:8px;background:rgba(255,255,255,.6);padding:10px 12px;margin-bottom:10px}
+  /* заголовок-переключатель — зона нажатия не меньше 44 px; отрицательное поле
+     съедает прибавку, так что блок выглядит как раньше (как в exam/full-exam.html) */
+  details.support summary{cursor:pointer;font-weight:700;color:var(--ink-strong);padding:10px 0;margin:-10px 0}
+  details.support p{margin:8px 0 0}
+  /* вкладки под палец — не ниже 44 px; мышью на десктопе вид прежний */
+  @media (pointer:coarse){ .tab{min-height:44px} }
+  .figure{margin:12px 0;overflow-x:auto}
+  svg{display:block;max-width:100%}
+  .hintline{font-size:13px;color:var(--muted);margin:6px 0 0}
+  .plist{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .pcard{border:1.5px solid var(--ink);border-radius:10px;background:#fff;padding:14px;cursor:pointer;text-align:left;font:inherit}
+  .pcard:hover{background:rgba(30,58,159,.06)}
+  .pcard .tag{font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--red)}
+  .pcard .done{color:var(--ok);font-weight:700;font-size:13px;margin-top:6px}
+  ol.proof{margin:10px 0 0;padding-left:22px}
+  ol.proof li{margin-bottom:6px;border-left:3px solid var(--ink);padding:6px 10px;background:rgba(255,255,255,.65);cursor:pointer;list-style-position:outside}
+  ol.proof li:hover{background:rgba(30,58,159,.08)}
+  .pool{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .pool button{border:1.5px solid var(--ink);background:#fff;color:var(--graphite);border-radius:8px;
+    padding:10px 13px;font:500 14.5px/1.45 inherit;cursor:pointer;text-align:left}
+  .pool button:hover{background:rgba(30,58,159,.07)}
+  .pool button.bad{border-color:var(--red);background:var(--badbg)}
+  .steps .step{border-left:3px solid var(--ink);background:rgba(255,255,255,.65);padding:9px 12px;margin-bottom:8px;display:none}
+  .steps .step.on{display:block}
+  .answerline{border-left:3px solid var(--red);background:rgba(255,255,255,.7);padding:9px 12px;margin-top:8px;display:none;font-weight:700}
+  .answerline.on{display:block}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .chips button{border:1.5px solid var(--ink);background:#fff;color:var(--ink-strong);border-radius:8px;
+    min-width:44px;padding:8px 12px;font:700 15px/1 inherit;cursor:pointer}
+  .chips button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .crit{font-size:13px;color:var(--muted);margin:4px 0 0}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+  .dots span{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px}
+  .dots span.ok{background:var(--ink)}
+  .dots span.bad{background:var(--red);border-color:var(--red)}
+  .bigscore{font:800 34px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
+  .view{display:none}
+  .view.on{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Курс</a>
+  <p class="eyebrow">задание 14 · развёрнутый ответ · 3 балла</p>
+  <h1>Стереометрия с доказательством</h1>
+  <p class="lede">Пункт а) стоит целый балл и почти всегда решается одним признаком в три строчки — его сдают реже всего, потому что не пишут. Пункт б) считается по знакомой схеме: объём, апофема, линейный угол.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="support">Опоры</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="tasks">Задачи</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="drill">Быстрый счёт</button>
+  </div>
+
+  <!-- ОПОРЫ -->
+  <section class="view on" id="view-support">
+    <div class="card">
+      <h2>Восемь опор</h2>
+      <p class="small muted">Почти каждый пункт а) — это одна из первых четырёх карточек, а почти каждый пункт б) — одна из последних четырёх.</p>
+      <details class="support"><summary>Признак перпендикулярности прямой и плоскости</summary><p>Если прямая перпендикулярна двум <b>пересекающимся</b> прямым плоскости, она перпендикулярна всей плоскости — а значит и любой прямой в ней. Слово «пересекающимся» обязано прозвучать в доказательстве: без него признак неверен и балл не ставят.</p></details>
+      <details class="support"><summary>Теорема о трёх перпендикулярах</summary><p>Прямая в плоскости перпендикулярна наклонной тогда и только тогда, когда она перпендикулярна её проекции. Это главный инструмент построения линейного угла и доказательства перпендикулярности апофемы ребру основания.</p></details>
+      <details class="support"><summary>Признак перпендикулярности плоскостей</summary><p>Если плоскость проходит через прямую, перпендикулярную другой плоскости, то плоскости перпендикулярны. Схема доказательства всегда одна: сначала показываем, что прямая перпендикулярна плоскости, потом замечаем, что она лежит во второй плоскости.</p></details>
+      <details class="support"><summary>Параллельность и сечения</summary><p>Две параллельные плоскости пересекаются третьей по параллельным прямым — это позволяет достроить сечение. Прямая параллельна плоскости, если она параллельна какой-нибудь прямой этой плоскости.</p></details>
+      <details class="support"><summary>Метод объёмов</summary><p>Расстояние от точки до плоскости: d = 3V/S, где V — объём пирамиды с вершиной в этой точке, а S — площадь грани, лежащей в плоскости. Объём одной и той же пирамиды считают двумя способами — это самый надёжный путь в пункте б).</p></details>
+      <details class="support"><summary>Линейный угол двугранного угла</summary><p>Из точки на ребре проводим в обеих гранях перпендикуляры к ребру — угол между ними и есть искомый. В правильной пирамиде это угол между апофемой и её проекцией: косинус равен отношению радиуса вписанной окружности основания к апофеме.</p></details>
+      <details class="support"><summary>Правильная пирамида: три треугольника</summary><p>Высота h, апофема m, радиус вписанной окружности основания r и радиус описанной R связаны двумя прямоугольными треугольниками: m² = h² + r² (для боковой грани) и l² = h² + R² (для бокового ребра). Почти любой счёт сводится к этим двум равенствам.</p></details>
+      <details class="support"><summary>Как писать пункт а)</summary><p>Три строчки: что перпендикулярно чему и почему (ссылка на теорему), что прямые пересекаются, вывод по признаку. Чертёж обязателен, но сам по себе не доказательство. Фразы «очевидно» и «из рисунка видно» балла не приносят.</p></details>
+    </div>
+  </section>
+
+  <!-- ЗАДАЧИ -->
+  <section class="view" id="view-tasks">
+    <div id="taskList" class="plist"></div>
+    <div id="taskView" style="display:none">
+      <p><button class="btn ghost" id="backToList">← Ко всем задачам</button></p>
+      <div class="card">
+        <p class="mono small" id="tTag" style="color:var(--red);font-weight:700"></p>
+        <h2 id="tTitle"></h2>
+        <p id="tCond" style="font-size:17px"></p>
+        <div class="figure" id="tFig"></div>
+        <p class="hintline">Наведите на шаг доказательства или нажмите на него — на чертеже подсветится то, о чём он говорит.</p>
+      </div>
+      <div class="card">
+        <h3>Пункт а) — соберите доказательство</h3>
+        <p class="small muted" id="tAskA"></p>
+        <p class="small muted">Выбирайте шаги в правильном порядке. Ошибки: <b class="mono" id="tErr">0</b></p>
+        <ol class="proof" id="tProof"></ol>
+        <div class="pool" id="tPool"></div>
+        <div class="feedback" id="tProofFb"></div>
+        <p style="margin-top:10px"><button class="btn ghost" id="tShowAll">Показать доказательство целиком</button></p>
+      </div>
+      <div class="card">
+        <h3>Пункт б) — вычислите</h3>
+        <p id="tCondB" style="font-size:16.5px"></p>
+        <div class="row">
+          <input type="text" id="tB" inputmode="decimal" autocomplete="off" aria-label="Ответ пункта б">
+          <button class="btn" id="tBCheck">Проверить</button>
+          <button class="btn ghost" id="tBSol">Решение по шагам</button>
+        </div>
+        <div class="feedback" id="tBFb"></div>
+        <div class="steps" id="tBSteps"></div>
+        <div class="answerline" id="tBAns"></div>
+      </div>
+      <div class="card red">
+        <h3>Самооценка по критериям</h3>
+        <p class="small muted">Запишите оба пункта на бумаге полностью, сверьтесь с разбором и поставьте балл, как поставил бы эксперт.</p>
+        <div class="chips" id="tSelf"></div>
+        <p class="crit">3 — доказательство а) полное и б) обоснованно верно · 2 — верно получен ответ в б) (или а) безупречно, а в б) только вычислительная ошибка) · 1 — верно доказан пункт а) · 0 — решение не соответствует критериям</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЫСТРЫЙ СЧЁТ -->
+  <section class="view" id="view-drill">
+    <div class="card">
+      <h2>Пять счётных навыков</h2>
+      <p class="small muted">То, что в пункте б) считают на автомате: апофема, медиана, объём, расстояние через объём, косинус двугранного угла.</p>
+      <p class="mono small" id="dTag" style="color:var(--red);font-weight:700"></p>
+      <p id="dText" style="font-size:17px"></p>
+      <div class="row">
+        <input type="text" id="dAnswer" inputmode="decimal" autocomplete="off" aria-label="Ответ">
+        <button class="btn" id="dCheck">Проверить</button>
+        <button class="btn ghost" id="dSol">Разбор</button>
+        <button class="btn ghost" id="dNext">Другой вопрос</button>
+      </div>
+      <div class="feedback" id="dFb"></div>
+      <p class="mono small muted" style="margin-top:12px">серия верных подряд: <b id="dStreak">0</b></p>
+    </div>
+    <div class="card red">
+      <h2>Зачёт: 8 вопросов</h2>
+      <p class="small muted">Все пять типов вперемешку, без разбора по ходу. Зачёт сдан от 7 верных.</p>
+      <div class="dots" id="zDots"></div>
+      <div id="zDone" style="display:none">
+        <p class="bigscore" id="zScore"></p>
+        <p id="zVerdict"></p>
+      </div>
+      <p><button class="btn" id="zStart">Начать зачёт</button></p>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ================= ГЕОМЕТРИЯ И ДАННЫЕ (без DOM) ================= */
+var G14 = (function(){
+  "use strict";
+  function rnd(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  var S3 = Math.sqrt(3);
+
+  /* --- вектора --- */
+  function sub(a,b){ return [a[0]-b[0], a[1]-b[1], a[2]-b[2]]; }
+  function add(a,b){ return [a[0]+b[0], a[1]+b[1], a[2]+b[2]]; }
+  function mul(a,k){ return [a[0]*k, a[1]*k, a[2]*k]; }
+  function dot(a,b){ return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]; }
+  function cross(a,b){ return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]; }
+  function len(a){ return Math.sqrt(dot(a,a)); }
+  function dist(a,b){ return len(sub(a,b)); }
+  function mid(a,b){ return mul(add(a,b), 0.5); }
+  function triArea(a,b,c){ return len(cross(sub(b,a), sub(c,a)))/2; }
+  function tetVol(a,b,c,d){ return Math.abs(dot(sub(b,a), cross(sub(c,a), sub(d,a))))/6; }
+  function planeDist(p,a,b,c){
+    var n = cross(sub(b,a), sub(c,a));
+    return Math.abs(dot(sub(p,a), n))/len(n);
+  }
+  /* проекция на плоскость чертежа: глубина уходит вправо-вверх */
+  function proj(p){ return [p[0] + 0.45*p[1], p[2] + 0.30*p[1]]; }
+  /* имя вида "A1BD" → отсортированный ключ "A1,B,D" */
+  function tok(name){
+    var m = String(name).match(/[A-Z]\d?/g) || [];
+    return m.slice().sort().join(",");
+  }
+
+  /* --- фигуры --- */
+  var FIGS = {
+    cube: function(a){
+      return {
+        V:{ A:[0,0,0], B:[a,0,0], C:[a,a,0], D:[0,a,0],
+            A1:[0,0,a], B1:[a,0,a], C1:[a,a,a], D1:[0,a,a] },
+        edges:[["A","B"],["B","C"],["A1","B1"],["B1","C1"],["C1","D1"],["D1","A1"],
+               ["A","A1"],["B","B1"],["C","C1"]],
+        hidden:[["A","D"],["D","C"],["D","D1"]]
+      };
+    },
+    pyr4: function(a,h){
+      return {
+        V:{ A:[0,0,0], B:[a,0,0], C:[a,a,0], D:[0,a,0], S:[a/2,a/2,h], O:[a/2,a/2,0] },
+        edges:[["A","B"],["B","C"],["S","A"],["S","B"],["S","C"],["S","D"]],
+        hidden:[["A","D"],["D","C"]]
+      };
+    },
+    prism3: function(a,h){
+      return {
+        V:{ A:[0,0,0], B:[a,0,0], C:[a/2, a*S3/2, 0],
+            A1:[0,0,h], B1:[a,0,h], C1:[a/2, a*S3/2, h] },
+        edges:[["A","B"],["A1","B1"],["B1","C1"],["C1","A1"],["A","A1"],["B","B1"],["C","C1"]],
+        hidden:[["A","C"],["C","B"]]
+      };
+    },
+    pyr3: function(a,h){
+      var C = [a/2, a*S3/2, 0], O = [a/2, a*S3/6, 0];
+      return {
+        V:{ A:[0,0,0], B:[a,0,0], C:C, S:[O[0],O[1],h], O:O },
+        edges:[["A","B"],["S","A"],["S","B"],["S","C"]],
+        hidden:[["A","C"],["C","B"]]
+      };
+    }
+  };
+
+  /* --- задачи --- */
+  var PROBLEMS = [
+    { id:"t1", tag:"признак перпендикулярности", title:"Диагональ куба и плоскость",
+      fig:["cube",6],
+      derive:{},
+      extra:[["A","C1"],["B","D"],["A1","B"],["A1","D"],["A","C"],["A","B1"]],
+      faces:[["A1","B","D"]],
+      cond:"Дан куб ABCDA₁B₁C₁D₁ с ребром 6.",
+      askA:"а) Докажите, что прямая AC₁ перпендикулярна плоскости A₁BD.",
+      proof:[
+        { t:"Диагонали квадрата ABCD перпендикулярны, поэтому BD ⊥ AC.", hl:["BD","AC"] },
+        { t:"Ребро AA₁ перпендикулярно плоскости основания, значит AA₁ ⊥ BD.", hl:["AA1","BD"] },
+        { t:"Прямая BD перпендикулярна двум пересекающимся прямым AC и AA₁ плоскости ACC₁A₁, поэтому BD ⊥ плоскости ACC₁A₁, а значит BD ⊥ AC₁.", hl:["BD","AC1"] },
+        { t:"Четырёхугольник AB₁C₁D — прямоугольник, ведь AB₁ ∥ DC₁ и AB₁ = DC₁. Поэтому прямая AC₁ лежит в плоскости AB₁D.", hl:["AB1","AC1","AD"] },
+        { t:"В квадрате ABB₁A₁ диагонали перпендикулярны: A₁B ⊥ AB₁. Кроме того AD ⊥ плоскости ABB₁A₁, откуда A₁B ⊥ AD.", hl:["A1B","AB1","AD"] },
+        { t:"Значит A₁B перпендикулярна двум пересекающимся прямым AB₁ и AD плоскости AB₁D, то есть A₁B ⊥ плоскости AB₁D, и потому A₁B ⊥ AC₁.", hl:["A1B","AC1"] },
+        { t:"Итак, AC₁ перпендикулярна пересекающимся прямым BD и A₁B плоскости A₁BD. По признаку AC₁ ⊥ плоскости A₁BD.", hl:["AC1","A1BD"] }
+      ],
+      askB:"б) Найдите расстояние от точки A до плоскости A₁BD. Ответ округлите до сотых.",
+      answer:2*Math.sqrt(3), tol:0.011,
+      bSteps:[
+        "Возьмём пирамиду с вершиной A₁ и основанием ABD. Её объём V = ⅓ · S(ABD) · AA₁ = ⅓ · 18 · 6 = 36.",
+        "Треугольник A₁BD равносторонний: его стороны — диагонали граней куба, каждая равна 6√2.",
+        "Площадь равностороннего треугольника со стороной 6√2 равна (√3/4) · 72 = 18√3.",
+        "Тот же объём через искомое расстояние d: V = ⅓ · S(A₁BD) · d, откуда d = 3V : S = 108 : 18√3 = 6/√3 = 2√3."
+      ],
+      bAns:"Ответ: 2√3 ≈ 3,46." },
+
+    { id:"t2", tag:"метод объёмов", title:"Пирамида: расстояние до боковой грани",
+      fig:["pyr4",6,4],
+      derive:{ K:["mid","B","C"] },
+      extra:[["A","C"],["B","D"],["S","O"],["S","K"],["A","K"]],
+      faces:[["S","B","C"]],
+      cond:"В правильной четырёхугольной пирамиде SABCD сторона основания равна 6, а высота равна 4. Точка K — середина ребра BC.",
+      askA:"а) Докажите, что прямая BD перпендикулярна прямой SC.",
+      proof:[
+        { t:"Основание — квадрат, поэтому его диагонали перпендикулярны: BD ⊥ AC.", hl:["BD","AC"] },
+        { t:"Высота SO перпендикулярна плоскости основания, а BD лежит в этой плоскости, значит SO ⊥ BD.", hl:["SO","BD"] },
+        { t:"Прямые AC и SO пересекаются в точке O и лежат в плоскости SAC, а BD перпендикулярна обеим. По признаку BD ⊥ плоскости SAC.", hl:["BD","AC","SO"] },
+        { t:"Прямая SC лежит в плоскости SAC, а прямая, перпендикулярная плоскости, перпендикулярна каждой прямой этой плоскости. Значит BD ⊥ SC.", hl:["BD","SC"] }
+      ],
+      askB:"б) Найдите расстояние от точки A до плоскости SBC.",
+      answer:4.8, tol:1e-6,
+      bSteps:[
+        "SK — апофема: она равна √(SO² + OK²) = √(16 + 9) = 5, где OK = 3 — половина стороны основания.",
+        "Площадь боковой грани: S(SBC) = ½ · BC · SK = ½ · 6 · 5 = 15.",
+        "Объём всей пирамиды равен ⅓ · 36 · 4 = 48, а треугольник ABC — половина квадрата, поэтому объём тетраэдра ASBC равен 24.",
+        "Тот же объём через искомое расстояние: 24 = ⅓ · 15 · d, откуда d = 72 : 15 = 4,8."
+      ],
+      bAns:"Ответ: 4,8." },
+
+    { id:"t3", tag:"перпендикулярность плоскости", title:"Призма: медиана как высота",
+      fig:["prism3",6,8],
+      derive:{ M:["mid","A","B"] },
+      extra:[["C","M"],["A","B1"]],
+      faces:[["A","B","B1","A1"]],
+      cond:"В правильной треугольной призме ABCA₁B₁C₁ сторона основания равна 6, а боковое ребро равно 8. Точка M — середина ребра AB.",
+      askA:"а) Докажите, что прямая CM перпендикулярна плоскости ABB₁A₁.",
+      proof:[
+        { t:"Треугольник ABC равносторонний, а CM — его медиана. В равностороннем треугольнике медиана является высотой, поэтому CM ⊥ AB.", hl:["CM","AB"] },
+        { t:"Боковое ребро AA₁ перпендикулярно плоскости основания, а CM лежит в этой плоскости, значит AA₁ ⊥ CM.", hl:["AA1","CM"] },
+        { t:"Прямые AB и AA₁ пересекаются в точке A и лежат в плоскости ABB₁A₁, а CM перпендикулярна обеим. По признаку CM ⊥ плоскости ABB₁A₁.", hl:["CM","ABB1A1"] }
+      ],
+      askB:"б) Найдите объём пирамиды с вершиной C и основанием ABB₁A₁. Ответ округлите до сотых.",
+      answer:48*Math.sqrt(3), tol:0.011,
+      bSteps:[
+        "По пункту а) отрезок CM перпендикулярен плоскости основания пирамиды, то есть CM — её высота.",
+        "В равностороннем треугольнике со стороной 6 медиана равна 6 · √3/2 = 3√3.",
+        "Грань ABB₁A₁ — прямоугольник со сторонами 6 и 8, его площадь равна 48.",
+        "V = ⅓ · 48 · 3√3 = 48√3."
+      ],
+      bAns:"Ответ: 48√3 ≈ 83,14." },
+
+    { id:"t4", tag:"сечение", title:"Сечение куба через середину ребра",
+      fig:["cube",6],
+      derive:{ E:["mid","C","C1"], F:["mid","D","C"] },
+      extra:[["A","B1"],["B1","E"],["E","F"],["F","A"]],
+      faces:[["A","B1","E","F"]],
+      cond:"Дан куб ABCDA₁B₁C₁D₁ с ребром 6. Точка E — середина ребра CC₁, точка F — середина ребра DC.",
+      askA:"а) Докажите, что сечение куба плоскостью AB₁E — трапеция AB₁EF.",
+      proof:[
+        { t:"Грани ABB₁A₁ и DCC₁D₁ параллельны, а секущая плоскость пересекает их по прямым AB₁ и EF. Две параллельные плоскости пересекаются третьей по параллельным прямым, поэтому AB₁ ∥ EF.", hl:["AB1","EF"] },
+        { t:"Прямая, проходящая через E параллельно AB₁, пересекает ребро DC в его середине F: спускаясь от E на 3 вниз, мы смещаемся на 3 в сторону D.", hl:["EF","F"] },
+        { t:"Значит сечение — четырёхугольник AB₁EF, у которого стороны AB₁ и EF параллельны.", hl:["AB1EF"] },
+        { t:"AB₁ — диагональ грани и равна 6√2, а EF = 3√2, потому что треугольник ECF — половина такого же квадрата. Стороны разной длины, поэтому AB₁EF — трапеция, а не параллелограмм.", hl:["AB1","EF"] }
+      ],
+      askB:"б) Найдите площадь этого сечения.",
+      answer:40.5, tol:1e-6,
+      bSteps:[
+        "Основания трапеции: AB₁ = 6√2 и EF = 3√2.",
+        "Боковые стороны равны: AF = √(6² + 3²) = 3√5 и B₁E = √(6² + 3²) = 3√5, значит трапеция равнобокая.",
+        "Проекция боковой стороны на большее основание равна (6√2 − 3√2) : 2 = 1,5√2, поэтому высота трапеции h = √(45 − 4,5) = 4,5√2.",
+        "S = ½ · (6√2 + 3√2) · 4,5√2 = 4,5√2 · 4,5√2 = 40,5."
+      ],
+      bAns:"Ответ: 40,5." },
+
+    { id:"t5", tag:"противоположные рёбра", title:"Тетраэдр: ребро и высота грани",
+      fig:["pyr3",12,6],
+      derive:{ M:["mid","B","C"] },
+      extra:[["A","M"],["S","M"],["S","O"]],
+      faces:[["S","B","C"]],
+      cond:"В правильной треугольной пирамиде SABC сторона основания равна 12, а высота равна 6. Точка M — середина ребра BC.",
+      askA:"а) Докажите, что рёбра SA и BC перпендикулярны.",
+      proof:[
+        { t:"Треугольник ABC равносторонний, AM — его медиана, а значит и высота: BC ⊥ AM.", hl:["AM","BC"] },
+        { t:"Боковые рёбра правильной пирамиды равны, поэтому треугольник SBC равнобедренный и его медиана SM — тоже высота: BC ⊥ SM.", hl:["SM","BC"] },
+        { t:"Прямые AM и SM пересекаются в точке M и лежат в плоскости SAM, а BC перпендикулярна обеим. По признаку BC ⊥ плоскости SAM.", hl:["BC","AM","SM"] },
+        { t:"Прямая SA лежит в плоскости SAM, поэтому BC ⊥ SA.", hl:["BC","AS"] }
+      ],
+      askB:"б) Найдите расстояние от точки A до плоскости SBC.",
+      answer:9, tol:1e-6,
+      bSteps:[
+        "Площадь основания: S(ABC) = (√3/4) · 144 = 36√3, объём пирамиды V = ⅓ · 36√3 · 6 = 72√3.",
+        "Медиана основания AM = 12 · √3/2 = 6√3, а центр O делит её в отношении 2 : 1, поэтому OM = 2√3.",
+        "Апофема SM = √(SO² + OM²) = √(36 + 12) = 4√3, значит S(SBC) = ½ · 12 · 4√3 = 24√3.",
+        "Расстояние через объём: d = 3V : S(SBC) = 216√3 : 24√3 = 9."
+      ],
+      bAns:"Ответ: 9." },
+
+    { id:"t6", tag:"двугранный угол", title:"Угол между гранью и основанием",
+      fig:["pyr4",8,3],
+      derive:{ K:["mid","B","C"] },
+      extra:[["A","C"],["B","D"],["S","O"],["S","K"],["O","K"]],
+      faces:[["S","B","C"],["S","B","D"]],
+      cond:"В правильной четырёхугольной пирамиде SABCD сторона основания равна 8, а высота равна 3. Точка K — середина ребра BC.",
+      askA:"а) Докажите, что плоскость SBD перпендикулярна плоскости SAC.",
+      proof:[
+        { t:"Диагонали квадрата перпендикулярны: BD ⊥ AC.", hl:["BD","AC"] },
+        { t:"Высота SO перпендикулярна плоскости основания, поэтому SO ⊥ BD.", hl:["SO","BD"] },
+        { t:"Прямые AC и SO пересекаются и лежат в плоскости SAC, значит BD ⊥ плоскости SAC.", hl:["BD","AC","SO"] },
+        { t:"Прямая BD лежит в плоскости SBD. Плоскость, проходящая через прямую, перпендикулярную другой плоскости, перпендикулярна этой плоскости. Значит SBD ⊥ SAC.", hl:["BD","SBD"] }
+      ],
+      askB:"б) Найдите косинус угла между плоскостью SBC и плоскостью основания.",
+      answer:0.8, tol:1e-6,
+      bSteps:[
+        "Ребро двугранного угла — прямая BC. Отрезок OK перпендикулярен BC, так как O — центр квадрата, а K — середина стороны.",
+        "Апофема SK тоже перпендикулярна BC: по теореме о трёх перпендикулярах, ведь OK — проекция SK на плоскость основания.",
+        "Значит ∠SKO — линейный угол искомого двугранного угла. В нём OK = 4 (половина стороны), SO = 3, поэтому SK = √(9 + 16) = 5.",
+        "cos∠SKO = OK : SK = 4 : 5 = 0,8."
+      ],
+      bAns:"Ответ: 0,8." }
+  ];
+
+  /* собираем все точки задачи: вершины фигуры + производные */
+  function points(p){
+    var f = FIGS[p.fig[0]].apply(null, p.fig.slice(1));
+    var V = {}, k;
+    for (k in f.V) V[k] = f.V[k];
+    for (k in (p.derive || {})){
+      var d = p.derive[k];
+      if (d[0] === "mid") V[k] = mid(V[d[1]], V[d[2]]);
+    }
+    return { V:V, edges:f.edges, hidden:f.hidden };
+  }
+
+  /* ---------- быстрый счёт ---------- */
+  var TRIPLES = [[3,4,5],[6,8,10],[5,12,13],[8,15,17],[9,12,15],[12,16,20],[7,24,25]];
+  function dApothem(){
+    var t = pick(TRIPLES), h = t[0], r = t[1], m = t[2];
+    return { type:"apothem", answer:m,
+      text:"В правильной четырёхугольной пирамиде сторона основания равна " + (2*r) + ", а высота равна " + h + ". Найдите апофему.",
+      sol:"Апофема, высота и половина стороны основания образуют прямоугольный треугольник: m = √(" + h + "² + " + r + "²) = √" + (h*h + r*r) + " = " + m + "." };
+  }
+  function dMedian(){
+    var a = pick([4,6,8,10,12,14,16,20]);
+    var ans = Math.round(a*Math.sqrt(3)/2*100)/100;
+    return { type:"median", answer:ans, tol:0.011,
+      text:"Найдите высоту равностороннего треугольника со стороной " + a + ". Ответ округлите до сотых.",
+      sol:"Высота равностороннего треугольника равна a·√3/2 = " + a + " · 0,866… = " + (a/2) + "√3 ≈ " + ans + "." };
+  }
+  function dVolume(){
+    var a = pick([3,4,6,9,12]), h = pick([4,5,6,8,10,12]);
+    return { type:"volume", answer:a*a*h/3,
+      text:"Найдите объём правильной четырёхугольной пирамиды со стороной основания " + a + " и высотой " + h + ".",
+      sol:"V = ⅓ · S · h = ⅓ · " + (a*a) + " · " + h + " = " + (a*a*h/3) + "." };
+  }
+  function dDistance(){
+    var d = pick([2,3,4,5,6,8]), S = pick([6,9,12,15,18,24,30]);
+    var V = d*S/3;
+    return { type:"distance", answer:d,
+      text:"Объём пирамиды равен " + V + ", а площадь грани, лежащей в плоскости α, равна " + S + ". Найдите расстояние от вершины, не принадлежащей α, до этой плоскости.",
+      sol:"Из V = ⅓ · S · d получаем d = 3V : S = " + (3*V) + " : " + S + " = " + d + "." };
+  }
+  function dDihedral(){
+    var t = pick(TRIPLES), h = t[0], r = t[1], m = t[2];
+    return { type:"dihedral", answer:Math.round(r/m*1000)/1000,
+      text:"В правильной четырёхугольной пирамиде сторона основания равна " + (2*r) + ", а высота равна " + h + ". Найдите косинус угла между боковой гранью и плоскостью основания.",
+      sol:"Косинус равен отношению радиуса вписанной окружности основания к апофеме: r : m = " + r + " : " + m + " = " + (Math.round(r/m*1000)/1000) + "." };
+  }
+  var GENS = [dApothem, dMedian, dVolume, dDistance, dDihedral];
+  function drill(){ return pick(GENS)(); }
+
+  function parse(s){
+    if (s == null) return NaN;
+    s = String(s).trim().replace(",", ".").replace("−", "-").replace(/\s+/g, "");
+    return s ? Number(s) : NaN;
+  }
+  function check(input, t){
+    var v = parse(input);
+    return !isNaN(v) && Math.abs(v - t.answer) <= (t.tol || 1e-6);
+  }
+
+  return { rnd:rnd, pick:pick, sub:sub, add:add, mul:mul, dot:dot, cross:cross, len:len, dist:dist,
+           mid:mid, triArea:triArea, tetVol:tetVol, planeDist:planeDist, proj:proj, tok:tok,
+           FIGS:FIGS, PROBLEMS:PROBLEMS, points:points, drill:drill, GENS:GENS, parse:parse, check:check };
+})();
+if (typeof module !== "undefined") module.exports = G14;
+</script>
+
+<script>
+/* ================= ИНТЕРФЕЙС ================= */
+(function(){
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  /* ---------- сцена ---------- */
+  function buildScene(p){
+    var geom = G14.points(p), V = geom.V;
+    var flat = {}, k;
+    for (k in V) flat[k] = G14.proj(V[k]);
+    var used = {};
+    function useNames(list){ (list || []).forEach(function(e){ e.forEach(function(n){ used[n] = 1; }); }); }
+    useNames(geom.edges); useNames(geom.hidden); useNames(p.extra); useNames(p.faces);
+    for (k in (p.derive || {})) used[k] = 1;
+    var names = Object.keys(flat).filter(function(n){ return used[n]; });
+    var xs = names.map(function(n){ return flat[n][0]; });
+    var ys = names.map(function(n){ return flat[n][1]; });
+    var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+    var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+    var pad = 34, W = 440, H = 330;
+    var sc = Math.min((W - 2*pad)/Math.max(0.001, maxX-minX), (H - 2*pad)/Math.max(0.001, maxY-minY));
+    var cx = (minX+maxX)/2, cy = (minY+maxY)/2;
+    function X(n){ return W/2 + (flat[n][0] - cx)*sc; }
+    function Y(n){ return H/2 - (flat[n][1] - cy)*sc; }
+    var svg = el("svg", { viewBox:"0 0 " + W + " " + H, width:W, height:H, role:"img", "aria-label":"чертёж" });
+    var HL = {};
+    function reg(name, node){
+      var key = G14.tok(name);
+      (HL[key] = HL[key] || []).push(node);
+      return node;
+    }
+    /* грани */
+    (p.faces || []).forEach(function(f){
+      var poly = el("polygon", {
+        points: f.map(function(n){ return X(n) + "," + Y(n); }).join(" "),
+        fill:"rgba(30,58,159,.10)", stroke:"none"
+      });
+      poly.__face = true;
+      svg.appendChild(poly);
+      reg(f.join(""), poly);
+    });
+    /* рёбра */
+    function seg(a, b, opt){
+      var line = el("line", { x1:X(a), y1:Y(a), x2:X(b), y2:Y(b),
+        stroke:opt.color, "stroke-width":opt.w, "stroke-linecap":"round" });
+      if (opt.dash) line.setAttribute("stroke-dasharray", "6 5");
+      if (opt.op) line.setAttribute("opacity", opt.op);
+      svg.appendChild(line);
+      return reg(a + b, line);
+    }
+    (p.extra || []).forEach(function(e){ seg(e[0], e[1], { color:"#67707E", w:1.8 }); });
+    geom.hidden.forEach(function(e){ seg(e[0], e[1], { color:"#2A2F38", w:1.7, dash:true, op:".45" }); });
+    geom.edges.forEach(function(e){ seg(e[0], e[1], { color:"#2A2F38", w:2.2 }); });
+    /* вершины и подписи */
+    var ccx = 0, ccy = 0;
+    names.forEach(function(n){ ccx += X(n); ccy += Y(n); });
+    ccx /= names.length; ccy /= names.length;
+    names.forEach(function(n){
+      var dot = el("circle", { cx:X(n), cy:Y(n), r:3.2, fill:"#2A2F38" });
+      svg.appendChild(dot); reg(n, dot);
+      var dx = X(n) - ccx, dy = Y(n) - ccy, L = Math.max(1, Math.sqrt(dx*dx + dy*dy));
+      var t = el("text", { x:X(n) + 16*dx/L, y:Y(n) + 16*dy/L + 4, "font-size":13.5,
+        fill:"#16307F", "font-weight":700, "text-anchor":"middle" });
+      t.textContent = n.replace("1", "₁");
+      svg.appendChild(t); reg(n, t);
+    });
+    return { svg:svg, HL:HL };
+  }
+  function applyHl(sc, names){
+    if (!sc) return;
+    var want = {};
+    (names || []).forEach(function(n){ want[G14.tok(n)] = 1; });
+    Object.keys(sc.HL).forEach(function(key){
+      sc.HL[key].forEach(function(node){
+        if (node.__base === undefined){
+          node.__base = { stroke:node.getAttribute("stroke"), w:node.getAttribute("stroke-width"),
+                          fill:node.getAttribute("fill") };
+        }
+        var on = !!want[key];
+        if (node.tagName === "polygon"){
+          node.setAttribute("fill", on ? "rgba(194,47,42,.18)" : node.__base.fill);
+        } else if (node.tagName === "text"){
+          node.setAttribute("fill", on ? "#C22F2A" : "#16307F");
+        } else if (node.tagName === "circle"){
+          node.setAttribute("fill", on ? "#C22F2A" : node.__base.fill);
+        } else {
+          node.setAttribute("stroke", on ? "#C22F2A" : node.__base.stroke);
+          node.setAttribute("stroke-width", on ? Math.max(3.2, +node.__base.w) : node.__base.w);
+        }
+      });
+    });
+  }
+
+  /* ---------- хранение ---------- */
+  var TID = "stereo-t14";
+  /* Хранилище: мусор молча отбрасывается. Прочитанный ключ принимается, только
+     если это объект; своя запись и её поля проверяются по типу (clean), мусор
+     заменяется значением по умолчанию. Запись — перечитать ключ, поменять только
+     свою ветку, записать: чужие ветки остаются как лежат. */
+  var KEY = "mathExamCourseProgress.v1";
+  function isObj(v){ return !!v && typeof v === "object" && !Array.isArray(v); }
+  function cnt(v){ return (typeof v === "number" && isFinite(v) && v >= 0) ? v : 0; }
+  function readAll(){
+    try{ var v = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(v) ? v : {}; }
+    catch(e){ return {}; }
+  }
+  /* tasks[id]: { proof:true, b:true, self:0..3 } — прочее отбрасывается */
+  function clean(s){
+    s = isObj(s) ? s : {};
+    var tasks = isObj(s.tasks) ? s.tasks : {}, k, t;
+    for (k in tasks){
+      t = tasks[k];
+      if (!isObj(t)){ delete tasks[k]; continue; }
+      if (t.proof !== undefined && t.proof !== true) delete t.proof;
+      if (t.b !== undefined && t.b !== true) delete t.b;
+      if (t.self !== undefined && !(typeof t.self === "number" && t.self % 1 === 0 && t.self >= 0 && t.self <= 3)) delete t.self;
+    }
+    s.tasks = tasks;
+    s.runs = cnt(s.runs); s.drillBest = cnt(s.drillBest);
+    s.passed = s.passed === true;
+    return s;
+  }
+  function st(){ return clean(readAll()[TID]); }
+  function save(fn){
+    try{
+      var all = readAll();
+      var s = all[TID] = clean(all[TID]);
+      fn(s);
+      localStorage.setItem(KEY, JSON.stringify(all));
+    }catch(e){}
+  }
+  function saveTask(id, patch){
+    save(function(s){
+      var t = s.tasks[id] = s.tasks[id] || {};
+      for (var k in patch) t[k] = patch[k];
+    });
+  }
+
+  document.querySelectorAll(".tab").forEach(function(tab){
+    tab.addEventListener("click", function(){
+      document.querySelectorAll(".tab").forEach(function(x){ x.setAttribute("aria-selected", x === tab ? "true" : "false"); });
+      document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("on"); });
+      document.getElementById("view-" + tab.dataset.view).classList.add("on");
+    });
+  });
+
+  /* ---------- список задач ---------- */
+  var listHost = document.getElementById("taskList");
+  function renderList(){
+    listHost.innerHTML = "";
+    var tasks = st().tasks || {};
+    G14.PROBLEMS.forEach(function(p){
+      var t = tasks[p.id] || {};
+      var b = document.createElement("button");
+      b.className = "pcard";
+      b.innerHTML = '<span class="tag">' + p.tag + '</span>' +
+        '<h3 style="margin:6px 0 4px">' + p.title + '</h3>' +
+        '<span class="small muted">' + p.cond.slice(0, 76) + '…</span>' +
+        ((t.proof || t.b || t.self != null) ? '<div class="done">' +
+          (t.proof ? "а) собрано ✓ " : "") + (t.b ? "· б) ✓ " : "") +
+          (t.self != null ? "· балл: " + t.self : "") + '</div>' : "");
+      b.addEventListener("click", function(){ openTask(p); });
+      listHost.appendChild(b);
+    });
+  }
+  var cur = null, curScene = null, expected = 0, errCount = 0;
+
+  function openTask(p){
+    cur = p; expected = 0; errCount = 0;
+    document.getElementById("taskList").style.display = "none";
+    document.getElementById("taskView").style.display = "block";
+    document.getElementById("tTag").textContent = "приём: " + p.tag;
+    document.getElementById("tTitle").textContent = p.title;
+    document.getElementById("tCond").textContent = p.cond;
+    document.getElementById("tAskA").textContent = p.askA;
+    document.getElementById("tCondB").textContent = p.askB;
+    var fig = document.getElementById("tFig");
+    fig.innerHTML = "";
+    curScene = buildScene(p);
+    fig.appendChild(curScene.svg);
+    document.getElementById("tErr").textContent = "0";
+    document.getElementById("tProof").innerHTML = "";
+    document.getElementById("tProofFb").className = "feedback";
+    document.getElementById("tB").value = "";
+    document.getElementById("tBFb").className = "feedback";
+    document.getElementById("tBAns").className = "answerline";
+    var steps = document.getElementById("tBSteps");
+    steps.innerHTML = "";
+    p.bSteps.forEach(function(s){
+      var d = document.createElement("div");
+      d.className = "step"; d.textContent = s;
+      steps.appendChild(d);
+    });
+    document.getElementById("tBAns").textContent = p.bAns;
+    buildPool(p);
+    renderSelf();
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+  function addProofStep(i){
+    var li = document.createElement("li");
+    li.textContent = cur.proof[i].t;
+    li.addEventListener("mouseenter", function(){ applyHl(curScene, cur.proof[i].hl); });
+    li.addEventListener("click", function(){ applyHl(curScene, cur.proof[i].hl); });
+    document.getElementById("tProof").appendChild(li);
+    applyHl(curScene, cur.proof[i].hl);
+  }
+  function buildPool(p){
+    var pool = document.getElementById("tPool");
+    pool.innerHTML = "";
+    var order = p.proof.map(function(_, i){ return i; }).sort(function(){ return Math.random() - 0.5; });
+    order.forEach(function(i){
+      var b = document.createElement("button");
+      b.textContent = p.proof[i].t;
+      b.dataset.step = i;
+      b.addEventListener("mouseenter", function(){ applyHl(curScene, p.proof[i].hl); });
+      b.addEventListener("click", function(){
+        if (parseInt(b.dataset.step, 10) === expected){
+          addProofStep(expected);
+          b.remove();
+          expected++;
+          if (expected >= p.proof.length){
+            var fb = document.getElementById("tProofFb");
+            fb.className = "feedback on ok";
+            fb.textContent = "Доказательство собрано. Теперь запишите его на бумаге своими словами — именно это оценивает эксперт.";
+            saveTask(p.id, { proof:true });
+            renderList();
+          }
+        } else {
+          errCount++;
+          document.getElementById("tErr").textContent = errCount;
+          b.classList.add("bad");
+          setTimeout(function(){ b.classList.remove("bad"); }, 480);
+        }
+      });
+      pool.appendChild(b);
+    });
+  }
+  document.getElementById("tShowAll").addEventListener("click", function(){
+    while (expected < cur.proof.length){ addProofStep(expected); expected++; }
+    document.getElementById("tPool").innerHTML = "";
+    var fb = document.getElementById("tProofFb");
+    fb.className = "feedback on hint";
+    fb.textContent = "Доказательство целиком. Проверьте, что в вашей записи есть слово «пересекающимся» и ссылка на признак.";
+  });
+  document.getElementById("tBCheck").addEventListener("click", function(){
+    var fb = document.getElementById("tBFb");
+    if (isNaN(G14.parse(document.getElementById("tB").value))) return;
+    if (G14.check(document.getElementById("tB").value, cur)){
+      fb.className = "feedback on ok"; fb.textContent = "Верно.";
+      saveTask(cur.id, { b:true });
+      renderList();
+    } else {
+      fb.className = "feedback on bad";
+      fb.textContent = "Пока нет. Откройте решение по шагам.";
+    }
+  });
+  document.getElementById("tB").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("tBCheck").click(); });
+  document.getElementById("tBSol").addEventListener("click", function(){
+    var list = document.querySelectorAll("#tBSteps .step");
+    var shown = 0;
+    list.forEach(function(s){ if (s.classList.contains("on")) shown++; });
+    if (shown < list.length){ list[shown].classList.add("on"); shown++; }
+    if (shown >= list.length) document.getElementById("tBAns").classList.add("on");
+  });
+  function renderSelf(){
+    var host = document.getElementById("tSelf");
+    host.innerHTML = "";
+    var chosen = ((st().tasks || {})[cur.id] || {}).self;
+    for (var i = 0; i <= 3; i++)(function(i){
+      var b = document.createElement("button");
+      b.textContent = i;
+      b.setAttribute("aria-pressed", chosen === i ? "true" : "false");
+      b.addEventListener("click", function(){ saveTask(cur.id, { self:i }); renderSelf(); renderList(); });
+      host.appendChild(b);
+    })(i);
+  }
+  document.getElementById("backToList").addEventListener("click", function(){
+    document.getElementById("taskView").style.display = "none";
+    document.getElementById("taskList").style.display = "grid";
+    renderList();
+  });
+  renderList();
+
+  /* ---------- быстрый счёт ---------- */
+  var D = null, streak = 0;
+  var Z = { active:false, i:0, score:0, marks:[] };
+  function newDrill(){
+    D = G14.drill();
+    document.getElementById("dTag").textContent = Z.active ? "зачёт · вопрос " + (Z.i + 1) + " из 8" : "тренировка";
+    document.getElementById("dText").textContent = D.text;
+    document.getElementById("dAnswer").value = "";
+    document.getElementById("dFb").className = "feedback";
+    document.getElementById("dSol").disabled = Z.active;
+    document.getElementById("dNext").disabled = Z.active;
+  }
+  function zDots(){
+    var host = document.getElementById("zDots");
+    host.innerHTML = "";
+    for (var i = 0; i < 8; i++){
+      var s = document.createElement("span");
+      if (i < Z.i) s.className = Z.marks[i] ? "ok" : "bad";
+      host.appendChild(s);
+    }
+  }
+  document.getElementById("dCheck").addEventListener("click", function(){
+    if (isNaN(G14.parse(document.getElementById("dAnswer").value))) return;
+    var ok = G14.check(document.getElementById("dAnswer").value, D);
+    var fb = document.getElementById("dFb");
+    fb.className = "feedback on " + (ok ? "ok" : "bad");
+    fb.textContent = ok ? "Верно." : "Неверно. Правильный ответ: " + D.answer + ".";
+    if (Z.active){
+      Z.marks.push(ok); if (ok) Z.score++;
+      Z.i++; zDots();
+      if (Z.i >= 8){
+        Z.active = false;
+        var passed = Z.score >= 7;
+        document.getElementById("zDone").style.display = "block";
+        document.getElementById("zScore").textContent = Z.score + " / 8";
+        document.getElementById("zVerdict").textContent = passed
+          ? "Зачёт сдан: счётная часть пункта б) не подведёт."
+          : "Зачёт не сдан: нужно 7 из 8. Потренируйтесь в свободном режиме и вернитесь.";
+        save(function(s){ s.drillBest = Math.max(s.drillBest || 0, Z.score); if (passed) s.passed = true; });
+        newDrill();
+      } else setTimeout(newDrill, 850);
+    } else {
+      streak = ok ? streak + 1 : 0;
+      document.getElementById("dStreak").textContent = streak;
+    }
+  });
+  document.getElementById("dAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("dCheck").click(); });
+  document.getElementById("dSol").addEventListener("click", function(){
+    var fb = document.getElementById("dFb");
+    fb.className = "feedback on hint"; fb.textContent = D.sol;
+  });
+  document.getElementById("dNext").addEventListener("click", function(){ if (!Z.active) newDrill(); });
+  document.getElementById("zStart").addEventListener("click", function(){
+    Z = { active:true, i:0, score:0, marks:[] };
+    save(function(s){ s.runs = (s.runs || 0) + 1; });
+    document.getElementById("zDone").style.display = "none";
+    zDots(); newDrill();
+    document.getElementById("dText").scrollIntoView({ behavior:"smooth", block:"center" });
+  });
+  newDrill(); zDots();
+})();
+</script>
+</body>
+</html>

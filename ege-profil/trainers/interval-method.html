@@ -19,7 +19,7 @@ window.MathJax = {
   options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
 };
 </script>
-<script defer id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<script defer id="MathJax-script" src="lib/mathjax/tex-chtml.js"></script>
 
 <style>
   :root{
@@ -343,6 +343,29 @@ window.MathJax = {
     .hero{padding:28px 20px 24px;}
     .tr{padding:18px 16px 16px;}
   }
+</style>
+<style>
+/* курс: мобильная шапка и длинные формулы */
+.navchips{min-width:0; flex:1 1 auto;}
+mjx-container{max-width:100%; overflow-x:auto; overflow-y:hidden; padding-bottom:2px;}
+.ans{min-width:0;}
+/* на этой странице слева внизу живёт переключатель разделов — уводим плашку курса вправо */
+.course-back{left:auto !important; right:14px !important;}
+.ans > span{min-width:0; max-width:100%; overflow-x:auto; overflow-y:hidden;}
+@media (max-width:640px){
+  .topbar-in{gap:10px; padding:8px 12px;}
+  .brand-sub{display:none;}
+}
+/* плашка «← Курс» (fixed, 44 px) не закрывает конец страницы и элемент в фокусе */
+html{scroll-padding-bottom:72px;}
+footer{padding-bottom:76px;}
+/* задачник: открытые решения с длинной формулой не растягивают колонку и страницу */
+@media (max-width:760px){
+  mjx-assistive-mml{max-width:100%;} /* невидимая копия формулы не должна делать блок прокручиваемым */
+  .bank-grid{grid-template-columns:minmax(0,1fr);}
+  .bp{min-width:0;}
+  .bp-task, .bp-red, .bp-note, .bp-ans{min-width:0; max-width:100%; overflow-x:auto; overflow-y:hidden;}
+}
 </style>
 </head>
 <body>
@@ -1871,5 +1894,7 @@ if(document.readyState==='loading'){
 }
 })();
 </script>
+<!-- курс: возврат в навигатор -->
+<a href="../index.html" class="course-back" style="position:fixed;left:14px;bottom:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;padding:9px 14px;min-height:44px;border-radius:999px;background:#FFFFFF;border:1px solid rgba(30,58,159,.28);color:#1E3A9F;font:600 13px/1 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.14)">← Курс</a>
 </body>
 </html>

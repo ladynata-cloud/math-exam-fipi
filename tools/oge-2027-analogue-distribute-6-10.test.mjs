@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const BASE = 'd5c9d0388ab3b22bcffec10d11504a0624e2b598';
+const BASE = 'f1eb11261a32dd30afb614bc563975d1d9865e7d';
 const variantId = 'oge-2027-analogue-1';
 const label = 'Авторский аналог ОГЭ-2027 · Вариант 1';
 const disclaimer = 'Авторский материал MathExam. Не является официальным материалом ФИПИ.';

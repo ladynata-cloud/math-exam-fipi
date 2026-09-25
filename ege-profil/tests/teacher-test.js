@@ -84,6 +84,9 @@ async function run(){
   const w = boot('teacher.html', seedFull);
   const d = w.document;
   await flush();
+  /* кабинет учителя не для поисковиков (в sitemap его нет) */
+  const robots = d.querySelector('head meta[name="robots"]');
+  ok(!!robots && /noindex/.test(robots.content) && /nofollow/.test(robots.content), 'кабинет: meta robots noindex,nofollow');
 
   ok(/Показан прогресс этого браузера/.test(d.getElementById('sourceLine').textContent),
      'сводка помечена как своя');
@@ -299,6 +302,137 @@ for (const [label, seedStreams] of [['без сжатия', false], ['через
   ok(!!d.querySelector('footer .qr svg'), 'index: QR-код нарисован');
   const back = await w.PROGRESS_CODE.decode(code);
   ok(JSON.stringify(back) === JSON.stringify(SEED), 'index: код подвала читается обратно');
+}
+
+/* ================= 7. Финансы и стерео в кабинете (слияние архива) ================= */
+{
+  /* Финансы лежат в mathExamCourseProgress.v1 — кабинет показывает их и в
+     своём браузере, и в просмотре кода; решено = записи stats.doneTasks из 14. */
+  const FIN = { financeNonstandardTrainer: { mode: 'learn', lastTaskId: 'dep-1',
+    stats: { solved: 5, correct: 5, attempts: 11, hints: 0, doneTasks: { a: true, b: true, c: true, d: true, e: true } } } };
+  const w = boot('teacher.html', win => win.localStorage.setItem(KEY, JSON.stringify(FIN)));
+  const d = w.document;
+  await flush();
+  const finRow = () => Array.from(d.querySelectorAll('#cards .trow')).find(r => r.querySelector('.tid').textContent === 'financeNonstandardTrainer');
+  ok(!!finRow() && /решено задач: 5 из 14/.test(finRow().querySelector('.progress').textContent),
+     'кабинет: финансы — решено задач по doneTasks из 14: ' + (finRow() && finRow().querySelector('.progress').textContent));
+  ok(w.RV.CABINET.some(c => c.tid === 'financeNonstandardTrainer' && c.file === 'trainers/finance.html'), 'кабинет: финансы ведут на локальную копию');
+
+  const code = await w.PROGRESS_CODE.encode(FIN);
+  const t = boot('teacher.html');
+  await flush();
+  t.document.getElementById('inBox').value = code;
+  click(t, t.document.getElementById('showBtn'));
+  await flush(8);
+  const row = Array.from(t.document.querySelectorAll('#cards .trow')).find(r => r.querySelector('.tid').textContent === 'financeNonstandardTrainer');
+  ok(!!row && /решено задач: 5 из 14/.test(row.querySelector('.progress').textContent), 'кабинет: финансы видны и в просмотре кода ученика');
+
+  /* Стерео — на своём ключе stereo3.status: в этом браузере общий адаптер
+     считает решённые задания 3 без «Развёрток», в снимке из кода — «не начат». */
+  const s = boot('teacher.html', win => win.localStorage.setItem('stereo3.status', JSON.stringify({
+    '27043': { st: 'ok' }, 'kon-05': { st: 'ok' }, 'razv-03': { st: 'ok' }, '5091': { st: 'fail' } })));
+  await flush();
+  const host = s.document.createElement('div');
+  host.innerHTML = '<div data-progress="stereo"></div>';
+  s.PROGRESS.apply(host, s.PROGRESS.liveStore());
+  ok(/решено задач: 2 из 281/.test(host.textContent), 'общий адаптер стерео: 2 из 281 без razv-*: ' + host.textContent);
+  host.innerHTML = '<div data-progress="stereo"></div>';
+  s.PROGRESS.apply(host, s.PROGRESS.snapshotStore(FIN));
+  ok(/не начат/.test(host.textContent), 'стерео в снимке кода — «не начат» (свой ключ в код не входит)');
+}
+
+/* ================= 8. Производная: тренировка и журнал в кабинете ================= */
+{
+  /* Решённые во вкладке «Тренажёр» лежат в derivative-t8.solvedByType, промахи —
+     в общем журнале под типами реестра: кабинет видит и то и другое. */
+  const DER = { 'derivative-t8': { runs: 0, best: 0, passed: false, solvedByType: { extrema: 2, physics: 1 } },
+    mistakes: { 'derivative-t8|physics': { w: 1, r: 0, lastWrong: T0, last: T0 } } };
+  const rowOf = (win, tid) => Array.from(win.document.querySelectorAll('#cards .trow')).find(r => r.querySelector('.tid').textContent === tid);
+  const w = boot('teacher.html', win => win.localStorage.setItem(KEY, JSON.stringify(DER)));
+  await flush();
+  const row = rowOf(w, 'derivative-t8');
+  ok(!!row && /решено задач: 3/.test(row.querySelector('.progress').textContent),
+     'кабинет: производная — решённые в тренажёре: ' + (row && row.querySelector('.progress').textContent));
+  ok(!!row && /скорость и путь/.test(row.textContent) && row.querySelectorAll('.types li.open').length === 1 && /17\.02\.2026/.test(row.textContent),
+     'кабинет: промах производной — в журнале с именем типа и датой');
+
+  const code = await w.PROGRESS_CODE.encode(DER);
+  const t = boot('teacher.html');
+  await flush();
+  t.document.getElementById('inBox').value = code;
+  click(t, t.document.getElementById('showBtn'));
+  await flush(8);
+  const row2 = rowOf(t, 'derivative-t8');
+  ok(!!row2 && /решено задач: 3/.test(row2.querySelector('.progress').textContent) && /скорость и путь/.test(row2.textContent),
+     'кабинет: производная видна и в просмотре кода ученика');
+}
+
+/* ================= 9. Мусор в записях: сводка без NaN/undefined/чужих строк ================= */
+{
+  /* Код прогресса ученика — такой же объект, как в localStorage, и может
+     прийти с мусором в полях. Адаптеры считают мусор «нет данных»: строка
+     кабинета не пропадает и не показывает сырые значения. */
+  const JUNK = { passed: 'zz', best: 'zz', runs: 'zz', drillBest: 'zz', solved4: 'zz', solved5: 'x', solved9: 'zz',
+    solved11: 'zz', types: { t1: null, t2: 'zz', t3: { best: 'zz', solved: 'zz' } }, tasks: { 1: null, 2: 'zz' },
+    keys: 'zz', done: { a: null, b: 'zz' }, attempts: 'zz', topics: { 1: null, 2: { correct: 'zz', solved: 'zz' } },
+    stats: 'zz', solvedByType: { extrema: 'zz', foo: 7 }, xp: 'zz' };
+  const w0 = boot('teacher.html');
+  await flush();
+  const MAIN = {};
+  w0.RV.CABINET.forEach(c => { MAIN[c.tid] = JUNK; });
+  const BAD = /NaN|undefined|null|Infinity|\[object|zz/;
+  const progressTexts = win => Array.from(win.document.querySelectorAll('#cards .trow')).map(r =>
+    r.querySelector('.tid').textContent + ': ' + ((r.querySelector('.progress') || {}).textContent || '—'));
+
+  /* свой браузер: мусор в каждой записи кабинета */
+  const w = boot('teacher.html', win => win.localStorage.setItem(KEY, JSON.stringify(MAIN)));
+  await flush();
+  const rows = progressTexts(w);
+  ok(rows.length === w.RV.CABINET.length, 'мусор в записях: строк кабинета ' + rows.length + ' из ' + w.RV.CABINET.length);
+  const bad = rows.filter(t => BAD.test(t.replace(/^[^:]+: /, '')));
+  ok(!bad.length, 'мусор в записях: в метриках кабинета нет NaN/undefined/чужих строк: ' + bad.join(' | '));
+  ok(!w.document.querySelector('#cards .progress .txt.done'), 'мусор в записях: ничего не отмечено сданным');
+
+  /* просмотр кода ученика: тот же мусор в снимке */
+  const code = await w0.PROGRESS_CODE.encode(MAIN);
+  const t = boot('teacher.html');
+  await flush();
+  t.document.getElementById('inBox').value = code;
+  click(t, t.document.getElementById('showBtn'));
+  await flush(8);
+  ok(/Показан прогресс из вставленного кода/.test(t.document.getElementById('sourceLine').textContent), 'мусор в коде: режим просмотра включён');
+  const rows2 = progressTexts(t);
+  const bad2 = rows2.filter(x => BAD.test(x.replace(/^[^:]+: /, '')));
+  ok(rows2.length === t.RV.CABINET.length && !bad2.length, 'мусор в коде: метрики без мусора: ' + bad2.join(' | '));
+
+  /* общий адаптер на снимках-не-объектах и на каждом имени адаптера */
+  const names = Object.keys(w0.PROGRESS.adapters).filter(n => n !== 'none');
+  const snaps = [null, 'zz', [1, 2], 42, MAIN, { mistakes: { a: null, b: 'zz', c: { w: 'zz' } } }];
+  const leaks = [];
+  let lost = 0;
+  snaps.forEach(sn => names.forEach(n => {
+    const host = w0.document.createElement('div');
+    host.innerHTML = '<div data-progress="' + n + '"></div>';
+    w0.PROGRESS.apply(host, w0.PROGRESS.snapshotStore(sn));
+    const h = host.querySelector('[data-progress]');
+    if (!h){ lost++; leaks.push(n + ' пропал на ' + JSON.stringify(sn).slice(0, 20)); return; }
+    if (BAD.test(h.textContent) || h.querySelector('.txt.done')) leaks.push(n + ': ' + h.textContent);
+  }));
+  ok(!leaks.length && lost === 0, 'адаптеры (' + names.length + ') на 6 мусорных снимках: без исключений и мусора: ' + leaks.slice(0, 4).join(' | '));
+
+  /* стерео и производная в своём браузере: посторонние ключи и один трек */
+  const s = boot('teacher.html', win => {
+    win.localStorage.setItem('stereo3.status', JSON.stringify({ foo: { st: 'ok' }, 'id7': { st: 'ok' }, '27043': { st: 'ok' } }));
+    win.localStorage.setItem(KEY, JSON.stringify({ 'derivative-t8': { solvedByType: { extrema: 24 } } }));
+  });
+  await flush();
+  const host = s.document.createElement('div');
+  host.innerHTML = '<div data-progress="stereo"></div><div data-progress="derivative"></div>';
+  s.PROGRESS.apply(host, s.PROGRESS.liveStore());
+  const [hs, hd] = host.querySelectorAll('[data-progress]');
+  ok(/решено задач: 1 из 281/.test(hs.textContent), 'кабинет: стерео считает только id банка: ' + hs.textContent);
+  ok(/решено задач: 24/.test(hd.textContent) && hd.querySelectorAll('.cellsbar span.filled').length === 1,
+     'кабинет: производная — 24 одного трека не закрашивают полосу: ' + hd.textContent);
 }
 
 ok(errors.length === 0, 'нет JS-ошибок: ' + errors.join(' | '));

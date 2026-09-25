@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Пробный экзамен · профиль, 19 заданий</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA; --badbg:#FBEAE9;
+  }
+  *{box-sizing:border-box}
+  /* Переход по бланку и фокус в поле ставят задание ниже липкой шапки:
+     --topbar-h — её фактическая высота, скрипт обновляет её при каждом
+     изменении размера (0, пока шапка скрыта). */
+  html{scroll-padding-top:calc(var(--topbar-h, 0px) + 10px)}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 80px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{display:inline-flex;align-items:center;min-height:44px;font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:700px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0 0 6px;font-size:16.5px;color:var(--ink-strong)}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.94);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    padding:9px 16px;font:700 14.5px/1.2 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn.danger{border-color:var(--red);background:var(--red)}
+  input[type=text]{border:1.5px solid var(--ink);border-radius:8px;background:#fff;padding:9px 12px;font:600 16px/1 inherit;width:170px;min-height:44px}
+  /* флажок с подписью: нажимается вся строка, не меньше 44 px */
+  .check{display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+  .check input{width:20px;height:20px;margin:0;flex:0 0 auto;accent-color:var(--ink)}
+  textarea{border:1.5px solid var(--ink);border-radius:8px;background:#fff;padding:9px 12px;font:600 15px/1.5 inherit;width:100%;min-height:52px;resize:vertical}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(30,58,159,.07);
+    border-radius:6px;padding:1px 6px;white-space:nowrap}
+  svg.graph{display:block;margin:10px 0;max-width:100%;background:#fff;border-radius:8px}
+  /* Шапка экзамена — одна строка: часы · бланк · «Завершить». Бланк на
+     узком экране не переносится, а прокручивается внутри шапки: шапка
+     остаётся низкой и не съедает экран с условием. */
+  .topbar{position:sticky;top:0;z-index:5;background:rgba(250,250,244,.97);border-bottom:1.5px solid var(--ink);
+    margin:0 -20px 18px;padding:8px 20px;display:none;flex-wrap:nowrap;gap:10px;align-items:center;justify-content:space-between}
+  .topbar.on{display:flex}
+  #clock{flex:0 0 auto;font:800 24px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
+  #clock.warn{color:var(--red)}
+  #finishBtn{flex:0 0 auto}
+  .navgrid{flex:1 1 auto;min-width:0;display:flex;flex-wrap:nowrap;gap:4px;overflow-x:auto;overscroll-behavior-x:contain;
+    scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+  .navgrid a{flex:0 0 44px;width:44px;height:44px;border:1.5px solid var(--ink);border-radius:7px;display:flex;align-items:center;
+    justify-content:center;font:700 14px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--ink-strong);background:#fff}
+  .navgrid a.done{background:var(--ink);color:#fff}
+  /* текущее задание — красная рамка; фокус — внутренний контур, его не срежет прокрутка бланка */
+  .navgrid a[aria-current="true"]{border-color:var(--red);box-shadow:inset 0 0 0 1.5px var(--red)}
+  .navgrid a:focus-visible{outline:3px solid var(--red);outline-offset:-5px;border-radius:7px}
+  /* на широком экране бланк виден целиком — в две строки */
+  @media (min-width:700px){ .navgrid{flex-wrap:wrap;overflow:visible} }
+  @media (max-width:480px){
+    .topbar{padding:6px 12px;gap:8px;margin:0 -20px 14px}
+    #clock{font-size:17px}
+    #finishBtn{padding:9px 11px;font-size:14px}
+  }
+  .tasknum{font:700 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--red);margin:0 0 8px}
+  .taskbody{font-size:17px}
+  .verdict{border-radius:8px;padding:8px 12px;font-weight:700;display:inline-block;margin:4px 0}
+  .verdict.ok{background:var(--okbg);color:var(--ok)}
+  .verdict.bad{background:var(--badbg);color:var(--red)}
+  details.support{border:1px dashed var(--line);border-radius:8px;background:rgba(255,255,255,.6);padding:10px 12px;margin-top:10px}
+  /* заголовок-переключатель — зона нажатия не меньше 44 px; отрицательное поле
+     съедает прибавку, так что блок выглядит как раньше */
+  details.support summary{cursor:pointer;font-weight:700;color:var(--ink-strong);padding:10px 0;margin:-10px 0}
+  details.support p{margin:8px 0 0}
+  ol.model{margin:10px 0 0;padding-left:22px}
+  ol.model li{margin-bottom:6px;border-left:3px solid var(--ink);padding:6px 10px;background:rgba(255,255,255,.65)}
+  .answerline{border-left:3px solid var(--red);background:rgba(255,255,255,.75);padding:9px 12px;margin-top:8px;font-weight:700}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+  .chips button{border:1.5px solid var(--ink);background:#fff;color:var(--ink-strong);border-radius:8px;
+    min-width:44px;min-height:44px;padding:8px 12px;font:700 15px/1 inherit;cursor:pointer}
+  .chips button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .score{font:800 42px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
+  .score small{font-size:20px;color:var(--muted)}
+  table.scale{border-collapse:collapse;font:600 13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  table.scale td,table.scale th{border:1px solid var(--line);padding:3px 9px;text-align:center}
+  .practice{font-size:13.5px}
+  .view{display:none}
+  .view.on{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Курс</a>
+
+  <div class="topbar" id="topbar">
+    <div id="clock">3:55:00</div>
+    <div class="navgrid" id="navgrid"></div>
+    <button class="btn danger" id="finishBtn">Завершить</button>
+  </div>
+
+  <!-- СТАРТ -->
+  <section class="view on" id="view-start">
+    <p class="eyebrow">пробный экзамен · 19 заданий · 3 часа 55 минут</p>
+    <h1>Экзамен целиком</h1>
+    <p class="lede">Вариант собирается заново из банка всех 19 линий. Первая часть проверяется автоматически, вторую вы решаете на бумаге и оцениваете по критериям — как эксперт. В конце — первичный балл и перевод в тестовый по шкале 2026 года.</p>
+<details class="kim-ref" style="margin:16px 0;border:1.5px dashed #C22F2A;border-radius:10px;background:rgba(255,255,255,.85);padding:0 16px;max-width:660px;">
+  <summary style="cursor:pointer;padding:11px 0;font-weight:800;color:#16307F;">Справочные материалы КИМ — этот листок выдают на экзамене</summary>
+  <div style="padding:2px 0 13px;font-size:16.5px;line-height:1.85;color:#2A2F38;">
+    <div>sin 2α = 2 sin α · cos α</div>
+    <div>cos 2α = cos²α − sin²α</div>
+    <div>sin (α + β) = sin α · cos β + cos α · sin β</div>
+    <div>cos (α + β) = cos α · cos β − sin α · sin β</div>
+    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.6;color:#67707E;">Из этих четырёх выводится многое: замените β на −β — получите формулы разности (sin меняет знак, cos — нет); подставьте sin²α = 1 − cos²α в cos 2α — выйдет cos 2α = 1 − 2sin²α = 2cos²α − 1, а отсюда — понижение степени. Наизусть остаются: основное тождество sin²α + cos²α = 1, табличные значения и формулы приведения — их листок не выдаёт.</p>
+  </div>
+</details>
+
+    <div class="card">
+      <h2>Перед стартом</h2>
+      <p>Приготовьте бумагу, ручку и линейку — калькулятор на экзамене запрещён, здесь тоже обойдитесь без него. Таймер идёт по реальному времени: перезагрузка страницы и закрытие вкладки его не останавливают, ровно как на экзамене.</p>
+      <p class="small muted"><label class="check"><input type="checkbox" id="optNoTimer"> тренировочный режим без таймера</label></p>
+      <p class="row">
+        <button class="btn" id="startBtn">Начать экзамен</button>
+        <button class="btn ghost" id="resumeBtn" style="display:none"></button>
+        <button class="btn ghost" id="dropBtn" style="display:none">Сбросить попытку</button>
+      </p>
+    </div>
+    <div class="card" id="historyCard" style="display:none">
+      <h3>Прошлые попытки</h3>
+      <div id="historyList" class="small mono"></div>
+    </div>
+  </section>
+
+  <!-- ЭКЗАМЕН -->
+  <section class="view" id="view-exam">
+<details class="kim-ref" style="margin:16px 0;border:1.5px dashed #C22F2A;border-radius:10px;background:rgba(255,255,255,.85);padding:0 16px;max-width:660px;">
+  <summary style="cursor:pointer;padding:11px 0;font-weight:800;color:#16307F;">Справочные материалы КИМ — этот листок выдают на экзамене</summary>
+  <div style="padding:2px 0 13px;font-size:16.5px;line-height:1.85;color:#2A2F38;">
+    <div>sin 2α = 2 sin α · cos α</div>
+    <div>cos 2α = cos²α − sin²α</div>
+    <div>sin (α + β) = sin α · cos β + cos α · sin β</div>
+    <div>cos (α + β) = cos α · cos β − sin α · sin β</div>
+    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.6;color:#67707E;">Из этих четырёх выводится многое: замените β на −β — получите формулы разности (sin меняет знак, cos — нет); подставьте sin²α = 1 − cos²α в cos 2α — выйдет cos 2α = 1 − 2sin²α = 2cos²α − 1, а отсюда — понижение степени. Наизусть остаются: основное тождество sin²α + cos²α = 1, табличные значения и формулы приведения — их листок не выдаёт.</p>
+  </div>
+</details>
+    <div id="taskHost"></div>
+    <div class="card red">
+      <h3>Готово?</h3>
+      <p class="small muted">Проверьте бланк в шапке: тёмные клетки — задания с ответом. После завершения вернуться к решению нельзя.</p>
+      <p><button class="btn danger" id="finishBtn2">Завершить экзамен</button></p>
+    </div>
+  </section>
+
+  <!-- РЕЗУЛЬТАТ -->
+  <section class="view" id="view-result">
+    <div class="card red">
+      <h2 id="resTitle">Результат</h2>
+      <p class="score"><span id="resPrimary">0</span><small> из 32 первичных</small> · <span id="resTest">0</span><small> из 100 тестовых</small></p>
+      <p class="small muted" id="resTime"></p>
+      <p class="small" id="resThreshold"></p>
+      <p class="small muted">Во второй части поставьте себе баллы по критериям под каждым заданием — итог пересчитается сам.</p>
+      <details class="support"><summary>Шкала перевода 2026 года</summary><div id="scaleHost" style="overflow-x:auto;margin-top:8px"></div></details>
+    </div>
+    <div id="resultHost"></div>
+    <p><a class="btn ghost" href="../index.html">← На главную курса</a> <button class="btn ghost" id="againBtn">Новый вариант</button></p>
+  </section>
+</div>
+
+<script src="bank.js"></script>
+<script>
+/* ================= ЛОГИКА (без DOM) ================= */
+var FE = (function(){
+  "use strict";
+  var MAXP = { 1:1,2:1,3:1,4:1,5:1,6:1,7:1,8:1,9:1,10:1,11:1,12:1, 13:2, 14:3, 15:2, 16:2, 17:3, 18:4, 19:4 };
+  /* индекс — первичный балл; утверждённая шкала 2026 года */
+  var SCALE = [0,6,11,17,22,27,34,40,46,52,58,64,70,72,74,76,78,80,82,84,86,88,90,92,94,95,96,97,98,99,100,100,100];
+  var DURATION = 235 * 60; /* 3 часа 55 минут в секундах */
+  var TRAINER = {
+    1:"../trainers/planimetry-t1.html", 2:"../trainers/vectors-t2.html", 3:"../trainers/stereo/index.html",
+    4:"../trainers/probability-t45.html", 5:"../trainers/probability-t45.html",
+    6:"../trainers/trigonometry.html", 7:"../trainers/trigonometry.html",
+    8:"../trainers/derivative-t8.html", 9:"../trainers/applied-t910.html", 10:"../trainers/applied-t910.html",
+    11:"../trainers/functions-t1112.html", 12:"../trainers/functions-t1112.html",
+    13:"../trainers/trigonometry.html", 14:"../trainers/stereo-t14.html", 15:"../trainers/inequalities.html",
+    16:"../trainers/finance.html", 17:"../trainers/planimetry-t17.html",
+    18:"../trainers/parameters-t18.html", 19:"../trainers/numbers-t19.html"
+  };
+  function maxPrimary(){
+    var s = 0, k;
+    for (k in MAXP) s += MAXP[k];
+    return s;
+  }
+  function toTest(p){
+    p = Math.max(0, Math.min(SCALE.length - 1, Math.round(p)));
+    return SCALE[p];
+  }
+  function parse(s){
+    if (s == null) return NaN;
+    s = String(s).trim().replace(",", ".").replace("−", "-").replace(/\s+/g, "");
+    return s ? Number(s) : NaN;
+  }
+  function checkShort(input, answer){
+    var v = parse(input);
+    return !isNaN(v) && Math.abs(v - answer) < 1e-6;
+  }
+  function clampMark(line, m){
+    m = Math.round(Number(m) || 0);
+    return Math.max(0, Math.min(MAXP[line] || 0, m));
+  }
+  /* part1ok — объект {1:true/false,...,12:...}, selfMarks — {13:0..2,...,19:0..4} */
+  function scoreExam(part1ok, selfMarks){
+    var primary = 0, lines = {}, i;
+    for (i = 1; i <= 12; i++){
+      var ok = !!(part1ok && part1ok[i]);
+      lines[i] = ok ? 1 : 0;
+      if (ok) primary += 1;
+    }
+    for (i = 13; i <= 19; i++){
+      var m = clampMark(i, selfMarks && selfMarks[i]);
+      lines[i] = m;
+      primary += m;
+    }
+    return { primary: primary, test: toTest(primary), lines: lines };
+  }
+  function fmtNum(n){
+    return Number.isInteger(n) ? String(n) : String(Number(n.toFixed(6))).replace(".", ",");
+  }
+  function fmtClock(sec){
+    sec = Math.max(0, Math.floor(sec));
+    var h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), s = sec%60;
+    return h + ":" + String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
+  }
+  return { MAXP:MAXP, SCALE:SCALE, DURATION:DURATION, TRAINER:TRAINER, maxPrimary:maxPrimary,
+           toTest:toTest, parse:parse, checkShort:checkShort, clampMark:clampMark,
+           scoreExam:scoreExam, fmtNum:fmtNum, fmtClock:fmtClock };
+})();
+if (typeof module !== "undefined") module.exports = FE;
+</script>
+
+<script>
+/* ================= ИНТЕРФЕЙС ================= */
+(function(){
+  "use strict";
+  var KEY = "mathExamCourseProgress.v1";
+  /* Восстановление проверяет схему и молча отбрасывает мусор: ключ принимается,
+     только если это объект; своя запись (full-exam, full-exam-active) и её поля
+     проверяются по типу. Запись — перечитать ключ, поменять свою ветку, записать:
+     чужие ветки остаются как лежат. */
+  function isObj(v){ return !!v && typeof v === "object" && !Array.isArray(v); }
+  function isNum(v){ return typeof v === "number" && isFinite(v); }
+  function readAll(){
+    try{ var v = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(v) ? v : {}; }
+    catch(e){ return {}; }
+  }
+  function writeAll(all){ try{ localStorage.setItem(KEY, JSON.stringify(all)); }catch(e){} }
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+  /* попытка в истории: объект с числовым временем; баллы — числа, иначе 0 */
+  function cleanAttempt(x){
+    if (!isObj(x) || !isNum(x.ts)) return null;
+    if (!isNum(x.primary) || x.primary < 0) x.primary = 0;
+    if (!isNum(x.test) || x.test < 0) x.test = 0;
+    if (!isObj(x.lines)) x.lines = {};
+    return x;
+  }
+  /* ветка full-exam из all: всегда { attempts: [...] } без мусорных попыток */
+  function examBranch(all){
+    var fe = isObj(all["full-exam"]) ? all["full-exam"] : (all["full-exam"] = {});
+    fe.attempts = (Array.isArray(fe.attempts) ? fe.attempts : []).map(cleanAttempt).filter(Boolean);
+    return fe;
+  }
+  /* незавершённая попытка: seed и start — числа, answers и marks — объекты */
+  function cleanActive(a){
+    if (!isObj(a) || a.done || !isNum(a.seed) || !isNum(a.start)) return null;
+    if (!isObj(a.answers)) a.answers = {};
+    if (!isObj(a.marks)) a.marks = {};
+    var k;
+    for (k in a.answers) if (typeof a.answers[k] !== "string") delete a.answers[k];
+    for (k in a.marks) if (!isNum(a.marks[k])) delete a.marks[k];
+    a.noTimer = a.noTimer === true;
+    a.done = false;
+    return a;
+  }
+
+  var A = null;        /* активная попытка: {seed, start, noTimer, answers, marks, done} */
+  var TASKS = [];      /* [{id, title, detailed, t}] */
+  var ticker = null;
+
+  function show(view){
+    document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("on"); });
+    document.getElementById("view-" + view).classList.add("on");
+    document.getElementById("topbar").classList.toggle("on", view === "exam");
+    syncTopbar();
+  }
+  function loadActive(){
+    return cleanActive(readAll()["full-exam-active"]);
+  }
+  function saveActive(){
+    var all = readAll();
+    all["full-exam-active"] = A;
+    writeAll(all);
+  }
+  function dropActive(){
+    var all = readAll();
+    delete all["full-exam-active"];
+    writeAll(all);
+  }
+  function genTasks(seed){
+    bankSeed(seed);
+    return modules.map(function(m){ return { id:m.id, title:m.title, detailed:!!m.detailed, t:m.make() }; });
+  }
+
+  /* ---------- стартовый экран ---------- */
+  function renderStart(){
+    var a = loadActive();
+    var rb = document.getElementById("resumeBtn"), db = document.getElementById("dropBtn");
+    if (a){
+      var mins = Math.floor((Date.now() - a.start)/60000);
+      rb.textContent = "Продолжить попытку (прошло " + mins + " мин)";
+      rb.style.display = ""; db.style.display = "";   /* вид берётся из .btn */
+    } else { rb.style.display = "none"; db.style.display = "none"; }
+    var hist = examBranch(readAll()).attempts;
+    var hc = document.getElementById("historyCard");
+    if (hist.length){
+      hc.style.display = "block";
+      document.getElementById("historyList").innerHTML = hist.slice(-8).reverse().map(function(x){
+        return esc(new Date(x.ts).toLocaleDateString("ru-RU") + " — " + x.primary + " перв. · " + x.test + " тест.");
+      }).join("<br>");
+    } else hc.style.display = "none";
+  }
+  document.getElementById("startBtn").addEventListener("click", function(){
+    A = { seed: (Date.now() ^ (Math.random()*1e9)) >>> 0, start: Date.now(),
+          noTimer: document.getElementById("optNoTimer").checked, answers:{}, marks:{}, done:false };
+    saveActive();
+    beginExam();
+  });
+  document.getElementById("resumeBtn").addEventListener("click", function(){
+    A = loadActive();
+    if (A) beginExam();
+  });
+  document.getElementById("dropBtn").addEventListener("click", function(){
+    if (confirm("Удалить незавершённую попытку?")){ dropActive(); renderStart(); }
+  });
+
+  /* ---------- экзамен ---------- */
+  function beginExam(){
+    TASKS = genTasks(A.seed);
+    var host = document.getElementById("taskHost");
+    host.innerHTML = "";
+    TASKS.forEach(function(x){
+      var card = document.createElement("div");
+      card.className = "card";
+      card.id = "task-" + x.id;
+      var maxp = FE.MAXP[x.id];
+      card.innerHTML =
+        '<p class="tasknum">задание ' + x.id + ' · ' + x.title.toLowerCase() + ' · ' +
+          maxp + (maxp === 1 ? " балл" : (maxp < 5 ? " балла" : " баллов")) + '</p>' +
+        '<div class="taskbody">' + x.t.text + (x.t.visual || "") + '</div>';
+      if (x.detailed){
+        card.insertAdjacentHTML("beforeend",
+          '<p class="small muted" style="margin-top:10px">Полное решение пишите на бумаге. Сюда можно занести только ответ — для самопроверки после экзамена.</p>' +
+          '<textarea data-line="' + x.id + '" placeholder="ответ (не обязательно)"></textarea>');
+      } else {
+        card.insertAdjacentHTML("beforeend",
+          '<p class="row" style="margin-top:10px"><input type="text" inputmode="decimal" autocomplete="off" data-line="' + x.id + '" aria-label="Ответ на задание ' + x.id + '"></p>');
+      }
+      host.appendChild(card);
+    });
+    host.querySelectorAll("[data-line]").forEach(function(inp){
+      var line = inp.dataset.line;
+      if (A.answers[line] != null) inp.value = A.answers[line];
+      inp.addEventListener("input", function(){
+        A.answers[line] = inp.value;
+        saveActive(); paintNav();
+      });
+    });
+    buildNav(); paintNav();
+    show("exam");
+    queueMark();
+    if (ticker) clearInterval(ticker);
+    ticker = setInterval(tick, 1000);
+    tick();
+    window.scrollTo(0, 0);
+  }
+  function buildNav(){
+    var g = document.getElementById("navgrid");
+    g.innerHTML = "";
+    curLine = null;
+    TASKS.forEach(function(x){
+      var a = document.createElement("a");
+      a.href = "#task-" + x.id;
+      a.textContent = x.id;
+      a.dataset.line = x.id;
+      g.appendChild(a);
+    });
+  }
+  function paintNav(){
+    document.querySelectorAll("#navgrid a").forEach(function(a){
+      var v = A.answers[a.dataset.line];
+      a.classList.toggle("done", v != null && String(v).trim() !== "");
+    });
+  }
+  function tick(){
+    var clock = document.getElementById("clock");
+    if (A.noTimer){
+      clock.textContent = FE.fmtClock((Date.now() - A.start)/1000);
+      clock.classList.remove("warn");
+      return;
+    }
+    var left = FE.DURATION - (Date.now() - A.start)/1000;
+    clock.textContent = FE.fmtClock(left);
+    clock.classList.toggle("warn", left < 30*60);
+    if (left <= 0) finish(true);
+  }
+  function askFinish(){
+    var empty = TASKS.filter(function(x){
+      var v = A.answers[x.id];
+      return v == null || String(v).trim() === "";
+    }).length;
+    if (empty && !confirm("Без ответа осталось заданий: " + empty + ". Завершить экзамен?")) return;
+    finish(false);
+  }
+  document.getElementById("finishBtn").addEventListener("click", askFinish);
+  document.getElementById("finishBtn2").addEventListener("click", askFinish);
+
+  /* ---------- результат ---------- */
+  var attemptRef = null;
+  function finish(byTimer){
+    if (ticker){ clearInterval(ticker); ticker = null; }
+    A.done = true;
+    var spent = Math.round((Date.now() - A.start)/1000);
+    dropActive();
+    if (!TASKS.length) TASKS = genTasks(A.seed);
+
+    var part1ok = {};
+    TASKS.forEach(function(x){
+      if (!x.detailed) part1ok[x.id] = FE.checkShort(A.answers[x.id], x.t.answer);
+    });
+    var all = readAll();
+    var fe = examBranch(all);
+    attemptRef = { ts: Date.now(), seed: A.seed, spent: spent, primary: 0, test: 0, lines: {} };
+    fe.attempts.push(attemptRef);
+    if (fe.attempts.length > 12) fe.attempts = fe.attempts.slice(-12);
+    writeAll(all);
+
+    document.getElementById("resTitle").textContent = byTimer ? "Время вышло" : "Результат";
+    document.getElementById("resTime").textContent = "затрачено: " + FE.fmtClock(spent) +
+      (A.noTimer ? " (без таймера)" : " из 3:55:00");
+    renderResult(part1ok);
+    recount(part1ok);
+    show("result");
+    window.scrollTo(0, 0);
+  }
+  function recount(part1ok){
+    var r = FE.scoreExam(part1ok, A.marks);
+    document.getElementById("resPrimary").textContent = r.primary;
+    document.getElementById("resTest").textContent = r.test;
+    var th = document.getElementById("resThreshold");
+    th.textContent = r.test >= 27
+      ? "Минимальный порог 27 тестовых пройден."
+      : "Минимальный порог — 27 тестовых баллов: пока не достигнут.";
+    /* обновляем СВОЮ попытку (attemptRef: время и seed), а не последнюю:
+       в другой вкладке за это время могла завершиться новая */
+    if (!attemptRef) return;
+    attemptRef.primary = r.primary; attemptRef.test = r.test; attemptRef.lines = r.lines;
+    var all = readAll();
+    var fe = examBranch(all), mine = null, i;
+    for (i = 0; i < fe.attempts.length; i++){
+      if (fe.attempts[i].ts === attemptRef.ts && fe.attempts[i].seed === attemptRef.seed){ mine = fe.attempts[i]; break; }
+    }
+    if (mine){
+      mine.primary = r.primary; mine.test = r.test; mine.lines = r.lines;
+    } else {
+      /* своей записи в ключе нет (ключ очищен или испорчен) — вернуть её на место по времени */
+      fe.attempts.push(attemptRef);
+      fe.attempts.sort(function(p, q){ return p.ts - q.ts; });
+      if (fe.attempts.length > 12) fe.attempts = fe.attempts.slice(-12);
+    }
+    writeAll(all);
+  }
+  function renderResult(part1ok){
+    /* шкала */
+    var sc = '<table class="scale"><tr><th>перв.</th>';
+    for (var p = 0; p <= 32; p++) sc += "<td>" + p + "</td>";
+    sc += '</tr><tr><th>тест.</th>';
+    for (p = 0; p <= 32; p++) sc += "<td>" + FE.SCALE[p] + "</td>";
+    sc += "</tr></table>";
+    document.getElementById("scaleHost").innerHTML = sc;
+
+    var host = document.getElementById("resultHost");
+    host.innerHTML = "";
+    TASKS.forEach(function(x){
+      var card = document.createElement("div");
+      card.className = "card";
+      var head = '<p class="tasknum">задание ' + x.id + ' · ' + x.title.toLowerCase() + '</p>' +
+                 '<div class="taskbody small">' + x.t.text + (x.t.visual || "") + '</div>';
+      if (!x.detailed){
+        var ok = part1ok[x.id];
+        var mine = (A.answers[x.id] == null || String(A.answers[x.id]).trim() === "") ? "—" : A.answers[x.id];
+        head += '<p><span class="verdict ' + (ok ? "ok" : "bad") + '">' + (ok ? "верно · 1 балл" : "неверно · 0 баллов") + '</span></p>' +
+          '<p class="small">ваш ответ: <b class="mono">' + esc(mine) + '</b> · верный: <b class="mono">' + FE.fmtNum(x.t.answer) + '</b></p>' +
+          '<details class="support"><summary>Как решать</summary><p>' + x.t.hint + '</p><p>' + x.t.explain + '</p></details>';
+        if (!ok) head += '<p class="practice"><a href="' + FE.TRAINER[x.id] + '">→ отработать эту линию в тренажёре</a></p>';
+        card.innerHTML = head;
+      } else {
+        var mine2 = A.answers[x.id] ? esc(A.answers[x.id]) : "—";
+        head += '<p class="small">ваш ответ: <b class="mono">' + mine2 + '</b></p>' +
+          '<details class="support" open><summary>Эталонное решение</summary><ol class="model">' +
+          x.t.model.map(function(s){ return "<li>" + s + "</li>"; }).join("") +
+          '</ol><p class="answerline">' + x.t.answerLine + '</p></details>' +
+          '<p class="small muted" style="margin-top:10px">Сверьте свою запись на бумаге и поставьте балл, как поставил бы эксперт (максимум ' + FE.MAXP[x.id] + '):</p>' +
+          '<div class="chips" data-line="' + x.id + '"></div>' +
+          '<p class="practice"><a href="' + FE.TRAINER[x.id] + '">→ отработать эту линию в тренажёре</a></p>';
+        card.innerHTML = head;
+        var chips = card.querySelector(".chips");
+        for (var m = 0; m <= FE.MAXP[x.id]; m++)(function(m){
+          var b = document.createElement("button");
+          b.textContent = m;
+          b.setAttribute("aria-pressed", (A.marks[x.id] || 0) === m ? "true" : "false");
+          b.addEventListener("click", function(){
+            A.marks[x.id] = m;
+            chips.querySelectorAll("button").forEach(function(z){ z.setAttribute("aria-pressed","false"); });
+            b.setAttribute("aria-pressed","true");
+            recount(part1ok);
+          });
+          chips.appendChild(b);
+        })(m);
+      }
+      host.appendChild(card);
+    });
+  }
+  document.getElementById("againBtn").addEventListener("click", function(){
+    A = null; TASKS = [];
+    renderStart(); show("start");
+    window.scrollTo(0, 0);
+  });
+
+  /* ---------- шапка: высота, текущее задание, поле в фокусе ---------- */
+  /* Фактическая высота шапки -> --topbar-h -> html{scroll-padding-top}:
+     переход по клетке бланка и фокус с клавиатуры ставят карточку ниже шапки. */
+  function syncTopbar(){
+    var tb = document.getElementById("topbar");
+    var h = tb.classList.contains("on") ? Math.ceil(tb.getBoundingClientRect().height) : 0;
+    document.documentElement.style.setProperty("--topbar-h", h + "px");
+    return h;
+  }
+  if (typeof ResizeObserver === "function"){
+    try{ new ResizeObserver(function(){ syncTopbar(); }).observe(document.getElementById("topbar")); }catch(e){}
+  }
+  window.addEventListener("resize", syncTopbar);
+
+  /* Текущее задание подсвечено в бланке, и его клетка не уезжает из
+     прокручиваемой строки. Пересчёт — один кадр на серию событий прокрутки. */
+  var curLine = null, curQueued = false;
+  function markCurrent(){
+    curQueued = false;
+    var tb = document.getElementById("topbar");
+    if (!tb.classList.contains("on")) return;
+    var head = tb.getBoundingClientRect().bottom;
+    var cards = document.querySelectorAll("#taskHost > .card"), line = null, i;
+    for (i = 0; i < cards.length; i++){
+      if (cards[i].getBoundingClientRect().bottom > head + 48){ line = cards[i].id.slice(5); break; }
+    }
+    if (line === curLine) return;
+    curLine = line;
+    var g = document.getElementById("navgrid"), cur = null;
+    g.querySelectorAll("a").forEach(function(a){
+      if (a.dataset.line === line){ a.setAttribute("aria-current", "true"); cur = a; }
+      else a.removeAttribute("aria-current");
+    });
+    if (cur && g.scrollWidth > g.clientWidth + 1){
+      var ar = cur.getBoundingClientRect(), gr = g.getBoundingClientRect();
+      if (ar.left < gr.left) g.scrollLeft -= gr.left - ar.left + 8;
+      else if (ar.right > gr.right) g.scrollLeft += ar.right - gr.right + 8;
+    }
+  }
+  function queueMark(){
+    if (curQueued) return;
+    curQueued = true;
+    requestAnimationFrame(markCurrent);
+  }
+  window.addEventListener("scroll", queueMark, { passive:true });
+
+  /* Поле ответа в фокусе не прячется под шапкой. Если карточка от номера
+     задания до поля помещается в видимую часть экрана, условие ставится
+     сразу под шапку; если нет — поле у нижнего края, над ним сколько
+     поместится условия. visualViewport учитывает экранную клавиатуру. */
+  function keepFieldInView(inp){
+    var tb = document.getElementById("topbar");
+    if (!tb.classList.contains("on") || !document.body.contains(inp)) return;
+    var card = inp.closest(".card");
+    if (!card) return;
+    var vv = window.visualViewport;
+    var vTop = vv ? vv.offsetTop : 0;
+    var vBottom = vv ? vv.offsetTop + vv.height : window.innerHeight;
+    var top = Math.max(vTop, tb.getBoundingClientRect().bottom) + 8;
+    var bottom = vBottom - 8;
+    /* начало условия — строка с номером задания */
+    var cr = (card.querySelector(".tasknum") || card).getBoundingClientRect();
+    var ir = inp.getBoundingClientRect();
+    var dy = 0;
+    if (ir.bottom - cr.top <= bottom - top){
+      if (cr.top < top - 1 || ir.bottom > bottom) dy = cr.top - top;
+    } else if (cr.top < top - 1 || ir.top < top || ir.bottom > bottom){
+      dy = ir.bottom - bottom;
+    }
+    if (Math.abs(dy) > 1) window.scrollBy(0, dy);
+  }
+  function isAnswerField(el){
+    return !!(el && el.hasAttribute && el.hasAttribute("data-line") && /^(INPUT|TEXTAREA)$/.test(el.tagName));
+  }
+  document.getElementById("taskHost").addEventListener("focusin", function(e){
+    var t = e.target;
+    if (isAnswerField(t)) requestAnimationFrame(function(){ keepFieldInView(t); });
+  });
+  if (window.visualViewport){
+    window.visualViewport.addEventListener("resize", function(){
+      var a = document.activeElement;
+      if (isAnswerField(a)) requestAnimationFrame(function(){ keepFieldInView(a); });
+    });
+  }
+
+  /* ---------- вход ---------- */
+  renderStart();
+  var a0 = loadActive();
+  if (a0 && !a0.noTimer && (Date.now() - a0.start)/1000 >= FE.DURATION){
+    A = a0;
+    TASKS = genTasks(A.seed);
+    finish(true);
+  }
+})();
+</script>
+</body>
+</html>
