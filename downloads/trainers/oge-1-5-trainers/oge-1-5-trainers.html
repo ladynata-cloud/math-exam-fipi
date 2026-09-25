@@ -206,9 +206,12 @@
   .foot button {
     font-family: var(--font-body); font-weight: 800; font-size: 13px; color: var(--ink-soft);
     background: #f1f3fb; border: 1.5px solid var(--line); padding: 9px 16px; border-radius: 11px; cursor: pointer;
+    min-height: 44px;
     transition: border-color .2s, color .2s, background .2s;
   }
   .foot button:hover { border-color: #F43F5E; color: #F43F5E; background: #fff; }
+  .reset-msg { margin: 12px 0 0; font-size: 14px; font-weight: 600; color: var(--ink-soft); }
+  .reset-msg:empty { margin: 0; }
 
   /* ---------- АНИМАЦИЯ ПОЯВЛЕНИЯ ---------- */
   @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
@@ -442,6 +445,7 @@
     <div>Прогресс сохраняется в этом браузере · ключ <code>mathExamCourseProgress.v1</code></div>
     <button id="reset-btn">Сбросить прогресс</button>
   </footer>
+  <p id="reset-msg" class="reset-msg" role="status" aria-live="polite"></p>
 
 </div>
 
@@ -506,11 +510,99 @@
     document.getElementById('tasks-solved').textContent = solvedAll;
   }
 
-  document.getElementById('reset-btn').addEventListener('click', () => {
-    if (confirm('Сбросить весь прогресс? Данные по всем тренажёрам будут удалены.')) {
-      localStorage.removeItem(STORAGE_KEY);
-      applyProgress();
+  /*__RESET_OWN_PROGRESS_START__*/
+  /* Сброс только своего прогресса.
+     key — общий ключ mathExamCourseProgress.v1. own.tids — свои ветки верхнего
+     уровня, own.topics — свои ветки внутри topics; записи журнала mistakes
+     с префиксом «<ветка>|» удаляются вместе с ними. own.keys — собственные
+     отдельные ключи тренажёров страницы, удаляются целиком. Чужие ветки общего
+     ключа (курс ЕГЭ, student, full-exam, другие тренажёры) и чужие ключи
+     не трогаются. Общий ключ перечитывается прямо перед записью.
+     Если в общем ключе мусор (не JSON-объект), прочитать из него нельзя
+     ничего, а тренажёры не могут в него сохранять, — он заменяется на {}.
+     Ответ: 'reset' — своего прогресса больше нет (удалён или его не было);
+     'cleaned' — мусор в общем ключе заменён на {}; 'failed' — хранилище
+     недоступно или запись не удалась, сброс не выполнен или выполнен не до конца. */
+  function resetOwnProgress(key, own, storage) {
+    var has = Object.prototype.hasOwnProperty, names = [], changed = false,
+      status = 'reset', raw, all, list, i, k;
+    function isObj(v) { return !!v && typeof v === 'object' && !Array.isArray(v); }
+    function strs(a) {
+      var out = [], j;
+      if (Array.isArray(a)) for (j = 0; j < a.length; j++) if (typeof a[j] === 'string' && a[j]) out.push(a[j]);
+      return out;
     }
+    own = own || {};
+    try {
+      storage = storage || window.localStorage;
+      raw = storage.getItem(key);
+    } catch (e) { return 'failed'; }
+    if (raw !== null) {
+      try { all = JSON.parse(raw); } catch (e) { all = null; }
+      if (!isObj(all)) {
+        try { storage.setItem(key, '{}'); } catch (e) { return 'failed'; }
+        status = 'cleaned';
+      } else {
+        list = strs(own.tids);
+        for (i = 0; i < list.length; i++) {
+          names.push(list[i]);
+          if (has.call(all, list[i])) { delete all[list[i]]; changed = true; }
+        }
+        list = strs(own.topics);
+        for (i = 0; i < list.length; i++) {
+          names.push(list[i]);
+          if (isObj(all.topics) && has.call(all.topics, list[i])) { delete all.topics[list[i]]; changed = true; }
+        }
+        if (isObj(all.mistakes)) {
+          for (k in all.mistakes) {
+            if (!has.call(all.mistakes, k)) continue;
+            for (i = 0; i < names.length; i++) {
+              if (k.indexOf(names[i] + '|') === 0) { delete all.mistakes[k]; changed = true; break; }
+            }
+          }
+        }
+        if (changed) {
+          try { storage.setItem(key, JSON.stringify(all)); } catch (e) { return 'failed'; }
+        }
+      }
+    }
+    list = strs(own.keys);
+    for (i = 0; i < list.length; i++) {
+      if (list[i] === key) continue;
+      try { if (storage.getItem(list[i]) !== null) storage.removeItem(list[i]); } catch (e) { return 'failed'; }
+    }
+    return status;
+  }
+  /*__RESET_OWN_PROGRESS_END__*/
+
+  /* Что пишут тренажёры этой карты (сверено по их коду; список закреплён
+     в tools/reset-own-progress.test.mjs): каждый — ветку верхнего уровня
+     с именем data-topic своей карточки; «Листы» — ещё и
+     topics.practicePaperSheetsTrainer. Проценты, участки, тарифы, шины и
+     схема дорог держат ещё и свой отдельный ключ и при следующем открытии
+     переписывают из него свою ветку, поэтому эти ключи сбрасываются тоже;
+     никакая другая страница сайта их не читает и не пишет. */
+  const OWN_TOPICS = ['practicePaperSheetsTrainer'];
+  const OWN_KEYS = ['percentTrainer.v1', 'landPlotsTrainer.v2', 'tariffsTrainer.v2', 'tiresTrainerV2', 'ogeRoadsTrainer.v2'];
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    const own = {
+      tids: cards.map(card => card.dataset.topic),
+      topics: OWN_TOPICS,
+      keys: OWN_KEYS
+    };
+    if (!confirm('Сбросить прогресс этой страницы — тренажёров заданий 1–5 ОГЭ? Прогресс других тренажёров и курса ЕГЭ сохранится.')) return;
+    const status = resetOwnProgress(STORAGE_KEY, own);
+    const note = document.getElementById('reset-msg');
+    if (status === 'failed') {
+      note.textContent = 'Не удалось сбросить прогресс: хранилище браузера недоступно или переполнено. Попробуйте ещё раз.';
+      return;
+    }
+    if (status === 'cleaned') {
+      note.textContent = 'Прогресс заданий 1–5 сброшен. Запись прогресса в этом браузере была повреждена: она очищена, и прогресс снова сохраняется.';
+      return;
+    }
+    location.reload();
   });
 
   applyProgress();

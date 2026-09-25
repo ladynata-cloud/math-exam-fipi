@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Python: for и вложенный if — тренажёр</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#eef2f7;color:#111827;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}.wrap{width:min(1100px,94vw);margin:0 auto;padding:22px 0 44px}.top{display:flex;align-items:center;gap:14px;justify-content:space-between;margin-bottom:16px}.back{color:#2563eb;text-decoration:none;font-weight:800}.hero{background:#101827;color:white;border-radius:14px;padding:20px 22px;margin-bottom:16px}h1{margin:0 0 6px;font-size:clamp(26px,4vw,42px);line-height:1.05}.hero p{margin:0;color:#cbd5e1}.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px}.panel{background:white;border:1px solid #d9e2ef;border-radius:12px;padding:18px;box-shadow:0 12px 30px rgba(15,23,42,.07)}.side{display:grid;gap:12px;align-content:start}.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat div{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center}.stat b{display:block;font-size:24px}.mut{color:#64748b}.taskTitle{font-size:22px;font-weight:900;margin:0 0 8px}.pills{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.pill{background:#e0f2fe;color:#075985;border:1px solid #bae6fd;border-radius:999px;padding:5px 10px;font-weight:800;font-size:13px}.setup{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:10px;white-space:pre-wrap;color:#7c2d12}.code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#111827;color:#f8fafc;border-radius:12px;padding:14px;white-space:pre-wrap;min-height:126px;overflow:auto}.steps{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.dot{width:12px;height:12px;border-radius:999px;background:#cbd5e1}.dot.on{background:#2563eb}.dot.done{background:#16a34a}.choices{display:grid;gap:8px;margin-top:12px}.choice{font:inherit;text-align:left;border:1px solid #cbd5e1;background:white;border-radius:10px;padding:11px 12px;cursor:pointer}.choice:hover{border-color:#2563eb;background:#eff6ff}.choice.good{border-color:#16a34a;background:#dcfce7}.choice.bad{border-color:#dc2626;background:#fee2e2}.choice:disabled{cursor:default}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:pointer;background:#e2e8f0;color:#111827}.btn.primary{background:#2563eb;color:#fff}.btn.good{background:#16a34a;color:white}.btn.warn{background:#f59e0b;color:#111827}.btn.danger{background:#fee2e2;color:#991b1b}.btn:disabled{opacity:.45;cursor:default}input,textarea{width:100%;border:1.5px solid #cbd5e1;border-radius:10px;padding:11px 12px;font:inherit}textarea{min-height:210px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical}.msg{margin-top:10px;border-radius:10px;padding:10px 12px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a}.msg.ok{background:#dcfce7;border-color:#bbf7d0;color:#14532d}.msg.err{background:#fee2e2;border-color:#fecaca;color:#991b1b}.tasks{display:grid;gap:8px}.taskBtn{text-align:left}.taskBtn.solved{background:#dcfce7;color:#14532d}.small{font-size:13px}.hide{display:none!important}@media(max-width:860px){.grid{grid-template-columns:1fr}.top{display:block}.back{display:inline-block;margin-bottom:10px}}
+*{box-sizing:border-box}body{margin:0;background:#eef2f7;color:#111827;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}.wrap{width:min(1100px,94vw);margin:0 auto;padding:22px 0 44px}.top{display:flex;align-items:center;gap:14px;justify-content:space-between;margin-bottom:16px}.back{color:#2563eb;text-decoration:none;font-weight:800}.hero{background:#101827;color:white;border-radius:14px;padding:20px 22px;margin-bottom:16px}h1{margin:0 0 6px;font-size:clamp(26px,4vw,42px);line-height:1.05}.hero p{margin:0;color:#cbd5e1}.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px}.panel{background:white;border:1px solid #d9e2ef;border-radius:12px;padding:18px;box-shadow:0 12px 30px rgba(15,23,42,.07)}.side{display:grid;gap:12px;align-content:start}.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat div{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center}.stat b{display:block;font-size:24px}.mut{color:#64748b}.taskTitle{font-size:22px;font-weight:900;margin:0 0 8px}.pills{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.pill{background:#e0f2fe;color:#075985;border:1px solid #bae6fd;border-radius:999px;padding:5px 10px;font-weight:800;font-size:13px}.setup{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:10px;white-space:pre-wrap;color:#7c2d12}.code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#111827;color:#f8fafc;border-radius:12px;padding:14px;white-space:pre-wrap;min-height:126px;overflow:auto}.steps{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.dot{width:12px;height:12px;border-radius:999px;background:#cbd5e1}.dot.on{background:#2563eb}.dot.done{background:#16a34a}.choices{display:grid;gap:8px;margin-top:12px}.choice{font:inherit;text-align:left;border:1px solid #cbd5e1;background:white;border-radius:10px;padding:11px 12px;cursor:pointer}.choice:hover{border-color:#2563eb;background:#eff6ff}.choice.good{border-color:#16a34a;background:#dcfce7}.choice.bad{border-color:#dc2626;background:#fee2e2}.choice:disabled{cursor:default}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:pointer;background:#e2e8f0;color:#111827}.btn.primary{background:#2563eb;color:#fff}.btn.good{background:#16a34a;color:white}.btn.warn{background:#f59e0b;color:#111827}.btn.danger{background:#fee2e2;color:#991b1b}.btn:disabled{opacity:.45;cursor:default}#reset{min-height:44px}input,textarea{width:100%;border:1.5px solid #cbd5e1;border-radius:10px;padding:11px 12px;font:inherit}textarea{min-height:210px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical}.msg{margin-top:10px;border-radius:10px;padding:10px 12px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a}.msg.ok{background:#dcfce7;border-color:#bbf7d0;color:#14532d}.msg.err{background:#fee2e2;border-color:#fecaca;color:#991b1b}.tasks{display:grid;gap:8px}.taskBtn{text-align:left}.taskBtn.solved{background:#dcfce7;color:#14532d}.small{font-size:13px}.hide{display:none!important}@media(max-width:860px){.grid{grid-template-columns:1fr}.top{display:block}.back{display:inline-block;margin-bottom:10px}}
 </style>
 </head>
 <body>
@@ -21,7 +21,7 @@
       <div class="setup" id="setup"></div>
       <div class="steps" id="dots"></div>
       <div id="stepBox"></div>
-      <div class="msg" id="msg">Выбери первую строку кода.</div>
+      <div class="msg" id="msg" aria-live="polite">Выбери первую строку кода.</div>
     </div>
     <aside class="side">
       <div class="panel">
@@ -49,6 +49,70 @@ const tasks=[
 ];
 let state={i:0,step:0,built:[],tries:0,right:0,solved:{}};
 function $(id){return document.getElementById(id)}function esc(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+/*__RESET_OWN_PROGRESS_START__*/
+/* Сброс только своего прогресса.
+   key — общий ключ mathExamCourseProgress.v1. own.tids — свои ветки верхнего
+   уровня, own.topics — свои ветки внутри topics; записи журнала mistakes
+   с префиксом «<ветка>|» удаляются вместе с ними. own.keys — собственные
+   отдельные ключи тренажёров страницы, удаляются целиком. Чужие ветки общего
+   ключа (курс ЕГЭ, student, full-exam, другие тренажёры) и чужие ключи
+   не трогаются. Общий ключ перечитывается прямо перед записью.
+   Если в общем ключе мусор (не JSON-объект), прочитать из него нельзя
+   ничего, а тренажёры не могут в него сохранять, — он заменяется на {}.
+   Ответ: 'reset' — своего прогресса больше нет (удалён или его не было);
+   'cleaned' — мусор в общем ключе заменён на {}; 'failed' — хранилище
+   недоступно или запись не удалась, сброс не выполнен или выполнен не до конца. */
+function resetOwnProgress(key, own, storage) {
+  var has = Object.prototype.hasOwnProperty, names = [], changed = false,
+    status = 'reset', raw, all, list, i, k;
+  function isObj(v) { return !!v && typeof v === 'object' && !Array.isArray(v); }
+  function strs(a) {
+    var out = [], j;
+    if (Array.isArray(a)) for (j = 0; j < a.length; j++) if (typeof a[j] === 'string' && a[j]) out.push(a[j]);
+    return out;
+  }
+  own = own || {};
+  try {
+    storage = storage || window.localStorage;
+    raw = storage.getItem(key);
+  } catch (e) { return 'failed'; }
+  if (raw !== null) {
+    try { all = JSON.parse(raw); } catch (e) { all = null; }
+    if (!isObj(all)) {
+      try { storage.setItem(key, '{}'); } catch (e) { return 'failed'; }
+      status = 'cleaned';
+    } else {
+      list = strs(own.tids);
+      for (i = 0; i < list.length; i++) {
+        names.push(list[i]);
+        if (has.call(all, list[i])) { delete all[list[i]]; changed = true; }
+      }
+      list = strs(own.topics);
+      for (i = 0; i < list.length; i++) {
+        names.push(list[i]);
+        if (isObj(all.topics) && has.call(all.topics, list[i])) { delete all.topics[list[i]]; changed = true; }
+      }
+      if (isObj(all.mistakes)) {
+        for (k in all.mistakes) {
+          if (!has.call(all.mistakes, k)) continue;
+          for (i = 0; i < names.length; i++) {
+            if (k.indexOf(names[i] + '|') === 0) { delete all.mistakes[k]; changed = true; break; }
+          }
+        }
+      }
+      if (changed) {
+        try { storage.setItem(key, JSON.stringify(all)); } catch (e) { return 'failed'; }
+      }
+    }
+  }
+  list = strs(own.keys);
+  for (i = 0; i < list.length; i++) {
+    if (list[i] === key) continue;
+    try { if (storage.getItem(list[i]) !== null) storage.removeItem(list[i]); } catch (e) { return 'failed'; }
+  }
+  return status;
+}
+/*__RESET_OWN_PROGRESS_END__*/
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY));const t=d&&d.topics&&d.topics[TOPIC];if(t)state={...state,...t,built:[],step:0}}catch(e){}}
 function save(){let d;try{d=JSON.parse(localStorage.getItem(KEY))||{topics:{}}}catch(e){d={topics:{}}}d.topics=d.topics||{};const solved=Object.keys(state.solved).length;d.topics[TOPIC]={...state,total:state.tries,right:state.right,solved,homeworkSolved:solved,homeworkTotal:tasks.length,lastAt:new Date().toISOString()};localStorage.setItem(KEY,JSON.stringify(d))}
 function sol(t){return (t.setup?t.setup+'\n\n':'')+'for '+t.item+' in '+t.col+':\n    if '+t.conds[0]+':\n        if '+t.conds[1]+':\n            print('+t.item+')'}
@@ -65,7 +129,7 @@ function norm(s){return s.replace(/\s+/g,'')}function checkCode(){const t=tasks[
 function checkOut(){const t=tasks[state.i],v=$('out').value.split(/[ ,;]+/).filter(Boolean).map(Number),ok=JSON.stringify(v)===JSON.stringify(t.ans);state.tries++;if(ok){state.right++;state.solved[t.id]=true;msg('Верно: '+t.ans.join(', ')+'. Задача отмечена решённой.','ok')}else msg('Проверь ещё раз. Правильный вывод: '+t.ans.join(', ')+'.','err');save();renderStats();renderTaskList()}
 function msg(text,kind=''){$('msg').className='msg '+kind;$('msg').textContent=text}
 function openTask(i){state.i=i;state.step=0;state.built=[];save();render();msg('Выбери первую строку кода.')}
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.choice)pick(b.dataset.choice,b);if(b.dataset.task!==undefined)openTask(Number(b.dataset.task));if(b.id==='prev')openTask(state.i-1);if(b.id==='next')openTask(state.i+1);if(b.id==='checkOut')checkOut();if(b.id==='writeMode')$('writeBox').classList.toggle('hide');if(b.id==='checkCode')checkCode();if(b.id==='showSolution'){const t=tasks[state.i];$('stepBox').innerHTML='<h3>Готовое решение</h3><div class="code">'+esc(sol(t))+'</div><p><b>Вывод:</b> '+t.ans.join(', ')+'</p>';msg('Разбери решение и попробуй следующую задачу.')}if(b.id==='reset'&&confirm('Сбросить прогресс?')){localStorage.removeItem(KEY);state={i:0,step:0,built:[],tries:0,right:0,solved:{}};render();msg('Прогресс сброшен.')}});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.choice)pick(b.dataset.choice,b);if(b.dataset.task!==undefined)openTask(Number(b.dataset.task));if(b.id==='prev')openTask(state.i-1);if(b.id==='next')openTask(state.i+1);if(b.id==='checkOut')checkOut();if(b.id==='writeMode')$('writeBox').classList.toggle('hide');if(b.id==='checkCode')checkCode();if(b.id==='showSolution'){const t=tasks[state.i];$('stepBox').innerHTML='<h3>Готовое решение</h3><div class="code">'+esc(sol(t))+'</div><p><b>Вывод:</b> '+t.ans.join(', ')+'</p>';msg('Разбери решение и попробуй следующую задачу.')}if(b.id==='reset'&&confirm('Сбросить прогресс этой страницы? Прогресс других тренажёров и курса ЕГЭ сохранится.')){const r=resetOwnProgress(KEY,{topics:[TOPIC]});if(r==='failed'){msg('Не удалось сбросить прогресс: хранилище браузера недоступно или переполнено. Попробуйте ещё раз.','err');return}state={i:0,step:0,built:[],tries:0,right:0,solved:{}};render();msg(r==='cleaned'?'Прогресс этой страницы сброшен. Запись прогресса в этом браузере была повреждена: она очищена, и прогресс снова сохраняется.':'Прогресс этой страницы сброшен.')}});
 load();render();
 </script>
 </body>
