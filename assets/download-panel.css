@@ -37,7 +37,7 @@
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  min-height:42px;
+  min-height:44px;
   padding:10px 16px;
   border:1px solid #1e419c;
   border-radius:8px;
@@ -82,5 +82,36 @@
   }
   .download-actions a{
     width:100%;
+  }
+}
+
+/* Панель всегда отдельной строкой, даже если body тренажёра — flex-ряд
+   (например, body{display:flex;justify-content:center}): иначе панель
+   встаёт соседом основного контейнера и сжимает тренажёр.
+   Явные боковые поля дополняют ширину панели ровно до 100% родителя:
+   в обычном (block) потоке это та же ширина и та же центровка, что
+   margin:auto выше, а во flex-ряду панель не помещается рядом с
+   тренажёром и уходит на свою строку. flex-wrap и align-self действуют
+   только во flex-раскладке, на block-страницах они ничего не меняют.
+   align-content здесь нельзя: на block-body он создаёт новый контекст
+   форматирования и меняет схлопывание полей.
+   Правило на body без :has() и без @supports: этот файл подключается
+   только вместе с панелью, прямым ребёнком body (сборщик
+   scripts/build-trainer-downloads.mjs вставляет и вырезает их вместе:
+   injectPanel / stripDownloadPanel; гейт
+   tools/download-panel-layout.browser.mjs это проверяет). Так правка
+   работает и в браузерах без :has() — iOS < 15.4, Firefox < 121. */
+body{
+  flex-wrap:wrap;
+}
+.download-panel{
+  align-self:flex-start;
+  margin-left:max(16px, calc((100% - 1040px) / 2));
+  margin-right:max(16px, calc((100% - 1040px) / 2));
+}
+@media (max-width:640px){
+  .download-panel{
+    margin-left:10px;
+    margin-right:10px;
   }
 }
