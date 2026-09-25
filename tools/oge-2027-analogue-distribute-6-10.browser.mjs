@@ -37,6 +37,7 @@ for (const [number, startToken, endToken] of [
 }
 const foreign = { 'browser-test.foreign-progress': 'retain-exactly', 'mathExamOge2027Analogue1.v2': '{"foreign":true}' };
 const { loadTrainerRegistry } = require(path.join(root, 'board-server/trainer-registry.js'));
+progress('loading registry');
 const registry = loadTrainerRegistry({ baseDir: path.join(root, 'board-server'), env: {} });
 assert.equal(registry.loaded, true);
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
@@ -278,7 +279,11 @@ async function flow9(page, surface = 'task9') {
   assert.equal(await page.locator('#mara-list .task-card').count(), 1);
   const card = page.locator(`[data-source-task-id="${sourceId}"]`);
   const input = card.locator('input[aria-label="Ответ на авторскую задачу 9"]');
-  const answer = async value => { await input.fill(value); await input.press('Enter'); };
+  const answer = async (value, keyboard = false) => {
+    await input.fill(value);
+    if (keyboard) await input.press('Enter');
+    else await card.getByRole('button', { name: 'Проверить', exact: true }).first().click();
+  };
   const reset = async () => { await card.getByRole('button',{name:'Начать авторскую задачу заново',exact:true}).click(); };
   const assertLegacy = async () => {
     const current = await state();
@@ -301,7 +306,7 @@ async function flow9(page, surface = 'task9') {
   assert.equal((await state()).solved.includes(sourceId), true);
   assert.equal((await state()).clean.includes(sourceId), true);
   const once = await state();
-  await answer('−7');
+  await answer('−7', true);
   await answer('-14/2');
   assert.deepEqual(await state(), once, `${surface}: repeats and equivalent numbers cannot mint credit`);
   await assertLegacy();
@@ -332,7 +337,8 @@ async function flow9(page, surface = 'task9') {
     await page.waitForFunction(() => document.activeElement === document.querySelector('.author-task .step.active input'));
     for(let i=0;i<row.length;i++) await inputs.nth(i).fill(row[i]);
     assert.deepEqual(await inputs.evaluateAll(elements => elements.map(element => element.value)), row);
-    await inputs.last().press('Enter');
+    if (index % 2) await inputs.last().press('Enter');
+    else await step.getByRole('button', { name: 'Проверить', exact: true }).click();
     assert.equal(await card.locator('.step.done').count(), index+1, `${surface}: step ${index+1} accepted`);
   }
   assert.equal(await card.locator('.step.active').count(), 0);
@@ -747,6 +753,7 @@ async function verifyRepeatContracts(target, number, surface, url) {
 
 async function runSurface(number, surface, options) {
   const name = number + ':' + surface;
+  progress(name + ' start');
   const context = await makeContext(options);
   let page;
   try {
@@ -799,7 +806,7 @@ async function runSurface(number, surface, options) {
     }, number);
     assert.equal(fresh, true, name + ': author progress remains session-only on reload');
     assert.deepEqual(await storageSnapshot(target), savedStorage, name + ': navigation/reload preserves persistent legacy and foreign state');
-    if (surface === 'desktop' || surface === 'mobile360') await page.screenshot({ path: path.join(evidenceDir, name.replace(':', '-') + '.png'), fullPage: true });
+    if (surface === 'desktop' || surface === 'mobile360') await page.screenshot({ path: path.join(evidenceDir, name.replace(':', '-') + '.png'), fullPage: true, timeout: 60000 });
     for (const query of ['', '?task=unknown', '?task=' + authorId(number) + '-extra',
       '?task=' + authorId(number) + '&task=' + authorId(number), '?task=unknown&task=' + authorId(number),
       '?task=' + authorId(number) + '&bad=%ZZ']) {
@@ -807,10 +814,24 @@ async function runSurface(number, surface, options) {
       assert.equal(await target.locator('[data-source-task-id]:visible').count(), 0, name + ': invalid query changed default');
       assert.deepEqual(await defaults(), expectedDefault, name + ': invalid query changes mode/filter');
     }
-    evidence.surfaces.push({ number, surface, status: 'PASS', directLink: true, invalidQueries: 6 });
+    if (surface === 'board-iframe') {
+      // Also open the exact link through the board UI. Frame-local navigations
+      // above independently cover reload and malformed query handling.
+      const boardLink = relative + '?task=' + authorId(number);
+      await page.locator('#trainerUrl').fill(boardLink);
+      await page.locator('#openTrainer').click();
+      await target.waitForURL(value => value.pathname + value.search === boardLink, { waitUntil: 'load' });
+      await page.waitForFunction(expected => {
+        const saved = JSON.parse(localStorage.getItem('mathexam.trainerBoard.v1') || '{}');
+        return saved.trainerUrl === expected && document.getElementById('trainerUrl').value === expected;
+      }, boardLink);
+      await commonChecks(target, number);
+    }
+    evidence.surfaces.push({ number, surface, status: 'PASS', directLink: true, invalidQueries: 6,
+      boardUiDeepLink: surface === 'board-iframe' });
     progress(name + ' PASS');
   } catch (error) {
-    if (page) await page.screenshot({ path: path.join(evidenceDir, 'failure-' + name.replace(':', '-') + '.png'), fullPage: true }).catch(() => {});
+    if (page) await page.screenshot({ path: path.join(evidenceDir, 'failure-' + name.replace(':', '-') + '.png'), fullPage: true, timeout: 60000 }).catch(() => {});
     throw error;
   } finally {
     if (page) await closeStage(name + ' page', () => page.close());
@@ -821,12 +842,15 @@ try {
   await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve); });
   port = server.address().port; origin = 'http://127.0.0.1:' + port;
   const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || process.env.BROWSER_EXECUTABLE_PATH;
+  progress('launch browser');
   browserServer = await chromium.launchServer({ headless: true, ...(executablePath ? { executablePath } : { channel: 'msedge' }),
     // Software rendering avoids stalled animation frames in Windows headless Edge.
     // Normal actionability checks and all UI/storage assertions remain enabled.
     args: ['--disable-gpu', '--disable-background-mode', '--disable-extensions', '--no-first-run', '--disable-background-networking'] });
   evidence.browserPid = browserServer.process().pid;
+  progress('connect browser');
   browser = await chromium.connect(browserServer.wsEndpoint());
+  progress('browser connected');
   for (const number of files.keys()) {
     for (const [surface, width, height, mobile] of [['desktop', 1280, 900, false], ['mobile390', 390, 844, true],
       ['mobile360', 360, 844, true], ['board-iframe', 1280, 900, false], ['file-offline', 360, 844, true]]) {

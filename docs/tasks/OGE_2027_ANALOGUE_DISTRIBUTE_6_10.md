@@ -135,3 +135,28 @@ One ordinary remediation commit and push are authorized. PR #126 remains
 Draft; merge/deploy and tasks 11–14 remain unauthorized. Rollback is a normal
 revert of that remediation commit. Review status:
 `PENDING_OWNER_REVIEW_AFTER_REPEAT_LABEL_FIX`.
+
+## Current-main readiness update (2026-09-25)
+
+The owner's current two-stage request authorizes updating this existing branch
+against current main, resolving actual conflicts, rerunning all gates, and
+marking PR #126 ready for review only after those gates pass. Stage 11–14 is a
+separate branch and Draft PR, permitted only after this readiness update is
+complete. These permissions supersede the earlier run-specific deferral above.
+Merge into main, auto-merge and deployment remain unauthorized.
+
+The verified main is `f1eb11261a32dd30afb614bc563975d1d9865e7d`.
+Concurrent changes are PR #127 (planimetry best-result correction) and PR #128
+(profile EGE course update). The ordinary merge into the task branch preserves
+both. Its only content conflicts are in the source-page and inventory test
+scope regions. Their resolution keeps main's closed PR #125 snapshot and this
+PR's separate exact eleven-file gate. Historical allowlists are unchanged;
+only the active PR #126 base moves to current main. No trainer HTML conflicts
+occurred, and no profile EGE, shared navigation, board or deployment edits are
+part of this update.
+
+Browser regression adds actual clicks on task 9's answer and step-check
+buttons while retaining keyboard checks. All actionability, assistance,
+repeat-credit, storage and error assertions remain required. Final counts,
+baseline comparisons and fresh virtual-merge identity are recorded in the PR
+handoff after execution; this paragraph does not claim an unrun gate passed.
