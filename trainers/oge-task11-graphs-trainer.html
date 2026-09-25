@@ -1904,6 +1904,8 @@ const AUTHOR_PROGRESS = {assisted:false, revealed:false, solved:false, credited:
 let authorActive = false;
 // AUTHOR11_PURE_END
 const author11LegacyCard = $("m4-title").closest(".card");
+const author11Intro = document.querySelector("#m4 .intro p");
+const author11LegacyIntro = author11Intro.innerHTML;
 const author11Cohort = document.createElement("button");
 author11Cohort.type = "button";
 author11Cohort.id = "author11-cohort";
@@ -1964,6 +1966,8 @@ function renderAuthorTask(){
 }
 function selectAuthorCohort(active){
   authorActive = active;
+  if (active) author11Intro.textContent = "Сопоставь графики А, Б, В с формулами 1, 2, 3. Запиши три цифры подряд в порядке А, Б, В. Подсказка и решение доступны отдельными кнопками.";
+  else author11Intro.innerHTML = author11LegacyIntro;
   author11LegacyCard.hidden = active;
   // The legacy .card rule does not change the semantic hidden attribute.
   author11LegacyCard.style.display = active ? "none" : "";

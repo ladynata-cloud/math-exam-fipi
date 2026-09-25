@@ -147,6 +147,7 @@ async function targets44(page, selector, surface) {
 
 async function flow11(target, surface) {
   const url = target.url();
+  const legacyIntro = await target.locator('#m4 .intro p').innerHTML();
   const state = () => target.evaluate(() => ({...AUTHOR_PROGRESS}));
   const enter = async () => {await target.locator('#tabs button[data-m="m4"]').click();await target.locator('#author11-cohort').click();};
   const fresh = async () => {await target.goto(url,{waitUntil:'load'});await enter();};
@@ -157,7 +158,13 @@ async function flow11(target, surface) {
     else await card.getByRole('button',{name:'Проверить',exact:true}).click();
   };
   const repeat = () => target.locator('#author11-repeat').click();
-  const revisit = async () => {await target.locator('#m4-chips button[data-t="t41"]').click();await target.locator('#author11-cohort').click();};
+  const revisit = async () => {
+    await target.locator('#m4-chips button[data-t="t41"]').click();
+    assert.equal(await target.locator('#m4 .intro p').innerHTML(),legacyIntro,'legacy matching instructions restored exactly');
+    await target.locator('#author11-cohort').click();
+    assert.match(await target.locator('#m4 .intro p').innerText(),/А, Б, В.*формулами 1, 2, 3/);
+    assert.doesNotMatch(await target.locator('#m4 .intro p').innerText(),/списками/);
+  };
   await enter();
   const saved = await storageSnapshot(target);
   const stats = await target.evaluate(()=>JSON.stringify(STATS));
@@ -444,6 +451,7 @@ async function flow14(target, surface = 'task14') {
   const switchBack = async () => {
     const before = await progress();
     await target.locator('#m-filters [data-all]').click();
+    assert.equal(await target.locator('#m-intro').textContent(),legacyIntro14,'legacy marathon instructions restored exactly');
     assert.equal(await card.count(),0);
     assert.equal(await target.evaluate(()=>__M.author),false);
     await cohort.click();
@@ -458,6 +466,8 @@ async function flow14(target, surface = 'task14') {
   assert.equal(await target.locator('.page.active').getAttribute('id'),'page-ref');
   assert.equal(await target.evaluate(()=>Object.keys(T14.GENS).length),9);
   await target.locator('[data-page="marathon"]').click();
+  const legacyIntro14 = await target.locator('#m-intro').textContent();
+  assert.match(legacyIntro14,/После первой ошибки — одна подсказка/);
   assert.equal(await target.evaluate(()=>__M.author),false);
   const previousTotal = await target.evaluate(()=>JSON.parse(localStorage.getItem('oge14_progress_v1')||'{}').totalOk||0);
   const legacyAnswer = await target.evaluate(()=>T14.fmtN(__M.task.ans).replace(/[\u202f\u00a0]/g,''));
@@ -467,6 +477,8 @@ async function flow14(target, surface = 'task14') {
   const baseline = await storage();
   const streak = await target.evaluate(()=>__M.streak);
   await cohort.click();
+  assert.match(await target.locator('#m-intro').textContent(),/После ошибки можно исправить ответ или открыть подсказку/);
+  assert.doesNotMatch(await target.locator('#m-intro').textContent(),/После первой ошибки — одна подсказка/);
   assert.equal(await cohort.count(),1);
   assert.equal(await card.count(),1);
   assert.equal(await card.locator('.author-label').innerText(),'Авторский аналог ОГЭ-2027 · Вариант 1');

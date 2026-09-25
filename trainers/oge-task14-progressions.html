@@ -2224,11 +2224,13 @@ function renderMarathon(el){
   el.innerHTML=`
   <div class="card">
     <h2>Марафон: как на экзамене</h2>
-    <p>Только условие и поле ответа. После первой ошибки — одна подсказка, после второй — предложение разобрать по шагам. Ответ всегда целое число или конечная десятичная дробь.</p>
+    <p id="m-intro">Только условие и поле ответа. После первой ошибки — одна подсказка, после второй — предложение разобрать по шагам. Ответ всегда целое число или конечная десятичная дробь.</p>
     <div class="filters" id="m-filters"></div>
     <div class="mstats" id="m-stats"></div>
   </div>
   <div id="m-task"></div>`;
+  const intro=document.getElementById("m-intro");
+  intro.dataset.legacyText=intro.textContent;
   buildFilters();
   renderStats();
   nextMarathon();
@@ -2261,6 +2263,10 @@ function activeCodes(){
   return [...set];
 }
 function renderStats(){
+  const intro=document.getElementById("m-intro");
+  if(intro) intro.textContent=M.author
+    ? "Попробуй решить задачу самостоятельно. После ошибки можно исправить ответ или открыть подсказку. Пошаговый разбор и ответ доступны отдельными кнопками; история помощи сохраняется."
+    : intro.dataset.legacyText;
   if(M.author){
     document.getElementById("m-stats").innerHTML=`<div class="stat">Самостоятельно: <b>${authorProgress.credited?1:0}/1</b></div><div class="stat">С помощью: <b>${authorProgress.solved&&!authorProgress.credited?1:0}/1</b></div>`;
     return;
