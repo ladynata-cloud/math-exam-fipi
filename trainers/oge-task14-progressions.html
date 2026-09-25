@@ -159,6 +159,14 @@ details.spoil{border:1.4px dashed var(--line);border-radius:10px;padding:8px 12p
 details.spoil summary{cursor:pointer;color:var(--pen);font-weight:600;font-size:14.5px}
 hr.thin{border:0;border-top:1px solid var(--line);margin:14px 0}
 .footer-note{color:var(--muted);font-size:13px;margin-top:8px}
+/* Авторская задача: локальные доступные элементы, без изменения старых режимов. */
+.author14-cohort{max-width:100%;white-space:normal;text-align:left;min-height:44px;min-width:44px}
+.author14-task button,.author14-task input{min-height:44px;min-width:44px;max-width:100%;scroll-margin-top:76px}
+.author14-task :focus-visible,.author14-cohort:focus-visible{outline:3px solid var(--pen);outline-offset:3px}
+.author14-task .author-label{font-weight:700;color:var(--pen);overflow-wrap:anywhere}
+.author14-task .author-note{font-size:13.5px;color:var(--muted)}
+.author14-task .author-status{font-weight:700}
+.author14-task .ansfield{max-width:100%}
 </style>
 </head>
 <body>
@@ -1954,6 +1962,27 @@ function drawCompare(){
 T.renderCompare=renderCompare;
 })(typeof T14!=="undefined"?T14:module.exports);
 
+/* ===== Авторский аналог: отдельная фиксированная задача, вне случайного банка ===== */
+(function(T){
+T.AUTHOR_SOURCE=Object.freeze({sourceKind:"author-analogue",variantId:"oge-2027-analogue-1",
+  sourceTaskId:"oge2027-analogue-1-task-14",localTaskId:"oge2027-analogue-1-task-14",
+  coverageStatus:"MISSING_APPENDED",answerType:"numeric",
+  label:"Авторский аналог ОГЭ-2027 · Вариант 1",
+  disclaimer:"Авторский материал MathExam. Не является официальным материалом ФИПИ."});
+T.AUTHOR_TASK=Object.freeze({id:T.AUTHOR_SOURCE.localTaskId,code:"GP-VAL",gp:true,
+  text:"За каждые 6 минут масса образца уменьшается вдвое. В начале наблюдения масса равна 320 мг. Сколько миллиграммов останется через 18 минут?",
+  unit:"мг",ans:T.F(40),facts:Object.freeze({sub:"decay",q:T.F(2),k:3,P:6,T:18,m0:T.F(320)}),
+  hint1:"Сначала найди число полных периодов: раздели время наблюдения на длину одного периода. Затем дели начальную массу пополам столько раз.",
+  methods:Object.freeze(["formula","table"])});
+T.authorRequested=function(search){
+  try{
+    decodeURIComponent(search.replace(/\+/g," "));
+    const params=new URLSearchParams(search);
+    return params.getAll("task").length===1 && params.get("task")===T.AUTHOR_SOURCE.sourceTaskId;
+  }catch(e){return false;}
+};
+})(typeof T14!=="undefined"?T14:module.exports);
+
 /* ===== ОГЭ №14: режимы «Пошагово» и «Марафон» ===== */
 "use strict";
 (function(T){
@@ -2182,7 +2211,10 @@ function showStepDone(){
 }
 
 /* ================= МАРАФОН ================= */
-const M={ filters:new Set(), streak:0 };
+const M={ filters:new Set(), streak:0, author:false };
+const authorProgress={assisted:false,revealed:false,credited:false,solved:false};
+T.AUTHOR_PROGRESS=authorProgress;
+T.selectAuthorMarathon=()=>{M.author=true;};
 try{ if(typeof window!=="undefined") window.__M=M; }catch(e){}
 const STORE_KEY="oge14_progress_v1";
 function loadStore(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY))||{}; }catch(e){ return {}; } }
@@ -2192,18 +2224,20 @@ function renderMarathon(el){
   el.innerHTML=`
   <div class="card">
     <h2>Марафон: как на экзамене</h2>
-    <p>Только условие и поле ответа. После первой ошибки — одна подсказка, после второй — предложение разобрать по шагам. Ответ всегда целое число или конечная десятичная дробь.</p>
+    <p id="m-intro">Только условие и поле ответа. После первой ошибки — одна подсказка, после второй — предложение разобрать по шагам. Ответ всегда целое число или конечная десятичная дробь.</p>
     <div class="filters" id="m-filters"></div>
     <div class="mstats" id="m-stats"></div>
   </div>
   <div id="m-task"></div>`;
+  const intro=document.getElementById("m-intro");
+  intro.dataset.legacyText=intro.textContent;
   buildFilters();
   renderStats();
   nextMarathon();
 }
 function buildFilters(){
   const host=document.getElementById("m-filters");
-  let h=`<button class="fchip ${M.filters.size===0?"on":""}" data-all="1">Все типы</button>`;
+  let h=`<button class="fchip ${!M.author&&M.filters.size===0?"on":""}" data-all="1">Все типы</button>`;
   const chips=[
     ["ap","Арифметическая",["AP-VAL","AP-SUM","AP-2PT","AP-SUM2DAY"]],
     ["gp","Геометрическая",["GP-VAL","GP-COMPL"]],
@@ -2213,12 +2247,14 @@ function buildFilters(){
     ["trap","Ловушки",["GP-COMPL","TAXI","THRESH"]],
   ];
   M.chipDefs=chips;
-  chips.forEach(([id,label])=>{ h+=`<button class="fchip ${M.filters.has(id)?"on":""}" data-f="${id}">${label}</button>`; });
+  chips.forEach(([id,label])=>{ h+=`<button class="fchip ${!M.author&&M.filters.has(id)?"on":""}" data-f="${id}">${label}</button>`; });
+  h+=`<button class="fchip author14-cohort ${M.author?"on":""}" data-author-cohort="oge-2027-analogue-1">${T.AUTHOR_SOURCE.label}</button>`;
   host.innerHTML=h;
-  host.querySelector("[data-all]").onclick=()=>{ M.filters.clear(); buildFilters(); nextMarathon(); };
+  host.querySelector("[data-all]").onclick=()=>{ M.author=false; M.filters.clear(); buildFilters(); renderStats(); nextMarathon(); };
   host.querySelectorAll("[data-f]").forEach(b=>{
-    b.onclick=()=>{ const id=b.dataset.f; if(M.filters.has(id)) M.filters.delete(id); else M.filters.add(id); buildFilters(); nextMarathon(); };
+    b.onclick=()=>{ M.author=false; const id=b.dataset.f; if(M.filters.has(id)) M.filters.delete(id); else M.filters.add(id); buildFilters(); renderStats(); nextMarathon(); };
   });
+  host.querySelector("[data-author-cohort]").onclick=()=>{M.author=true;buildFilters();renderStats();nextMarathon();};
 }
 function activeCodes(){
   if(M.filters.size===0) return null;
@@ -2227,6 +2263,14 @@ function activeCodes(){
   return [...set];
 }
 function renderStats(){
+  const intro=document.getElementById("m-intro");
+  if(intro) intro.textContent=M.author
+    ? "Попробуй решить задачу самостоятельно. После ошибки можно исправить ответ или открыть подсказку. Пошаговый разбор и ответ доступны отдельными кнопками; история помощи сохраняется."
+    : intro.dataset.legacyText;
+  if(M.author){
+    document.getElementById("m-stats").innerHTML=`<div class="stat">Самостоятельно: <b>${authorProgress.credited?1:0}/1</b></div><div class="stat">С помощью: <b>${authorProgress.solved&&!authorProgress.credited?1:0}/1</b></div>`;
+    return;
+  }
   const s=loadStore();
   const host=document.getElementById("m-stats");
   const today=new Date().toISOString().slice(0,10);
@@ -2281,6 +2325,7 @@ function bump(field, code){
   saveStore(s);
 }
 function nextMarathon(){
+  if(M.author){renderAuthorMarathon();return;}
   const seed=Math.floor(Math.random()*1e9);
   const task=T.randomTask(activeCodes(), seed);
   M.task=task; M.tries=0; M.done=false;
@@ -2427,6 +2472,84 @@ function fillActiveM(div,s,i,local,task){
   div.querySelector("#mssh"+i).onclick=()=>{ s._peeked=true; ans.fill(s.a); fb.className="fb info"; fb.innerHTML=s.reveal; setTimeout(()=>{local.cur=i+1;drawMStep(local,task);},50); };
 }
 
+/* Авторские действия хранят только память этой страницы и не вызывают bump/saveStore. */
+function authorStatus(){
+  if(authorProgress.credited) return "Решено самостоятельно";
+  if(authorProgress.revealed) return "Ответ или шаг показан; самостоятельного зачёта нет";
+  if(authorProgress.solved) return "Решено с помощью";
+  return authorProgress.assisted?"Использована помощь; самостоятельного зачёта нет":"Ещё не решено";
+}
+function updateAuthorStatus(){
+  const status=document.querySelector("[data-author-status]");
+  if(status) status.textContent=authorStatus();
+  renderStats();
+}
+function renderAuthorMarathon(){
+  const task=T.AUTHOR_TASK, source=T.AUTHOR_SOURCE;
+  const host=document.getElementById("m-task");
+  host.innerHTML=`<div class="card author14-task" data-source-task-id="${source.sourceTaskId}">
+    <p class="author-label">${source.label}</p><p class="author-note">${source.disclaimer}</p>
+    <p class="task-text">${task.text}</p>
+    <p class="author-status" data-author-status role="status">${authorStatus()}</p>
+    <label for="author14-answer">Ответ в миллиграммах</label>
+    <div class="ansrow"><span class="ansfield"><input id="author14-answer" type="text" inputmode="decimal" autocomplete="off" aria-label="Ответ на авторскую задачу 14"></span><span class="unit">мг</span></div>
+    <div class="btnrow"><button class="btn" data-author-check>Проверить</button><button class="ghost btn" data-author-hint>Подсказка</button><button class="ghost btn" data-author-steps>Решить по шагам</button><button class="peekbtn btn" data-author-reveal>Показать ответ и решение</button><button class="soft btn" data-author-repeat>Повторить задачу</button></div>
+    <p class="author-note" data-author-repeat-note>Поля очищаются, но результат и история помощи сохраняются до обновления страницы.</p>
+    <div class="fb" data-author-feedback role="status" aria-live="polite"></div><div data-author-work></div>
+  </div>`;
+  const input=host.querySelector("#author14-answer"), fb=host.querySelector("[data-author-feedback]");
+  const check=()=>{
+    const value=T.parseDec(input.value);
+    if(!value){fb.className="fb try";fb.textContent="Впиши число.";return;}
+    if(!Fr.eq(value,task.ans)){fb.className="fb try";fb.textContent="Пока неверно. Попробуй ещё раз или открой подсказку.";return;}
+    authorProgress.solved=true;
+    if(!authorProgress.assisted&&!authorProgress.revealed) authorProgress.credited=true;
+    updateAuthorStatus();
+    fb.className="fb ok";fb.textContent=authorProgress.credited?"Верно! Самостоятельное решение засчитано один раз.":"Верно! История помощи сохранена; самостоятельного зачёта нет.";
+  };
+  host.querySelector("[data-author-check]").onclick=check;
+  input.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();check();}};
+  host.querySelector("[data-author-hint]").onclick=()=>{
+    authorProgress.assisted=true;updateAuthorStatus();fb.className="fb info";fb.textContent=task.hint1;
+  };
+  host.querySelector("[data-author-reveal]").onclick=()=>{
+    authorProgress.assisted=true;authorProgress.revealed=true;updateAuthorStatus();
+    input.value=fmtN(task.ans);fb.className="fb info";fb.textContent="Ответ: 40 мг. Показ решения не даёт самостоятельного зачёта.";
+    const ways=T.ways(task);
+    host.querySelector("[data-author-work]").innerHTML=`<div class="ways"><div class="way wf"><h4>По формуле</h4>${ways.f}</div><div class="way wt"><h4>По шагам времени</h4>${ways.t}</div></div>`;
+  };
+  host.querySelector("[data-author-steps]").onclick=()=>{
+    authorProgress.assisted=true;updateAuthorStatus();
+    const steps=T.buildSteps(task,"formula"), work=host.querySelector("[data-author-work]");
+    let current=0;
+    work.innerHTML="";
+    function next(){
+      if(current===steps.length){authorProgress.solved=true;updateAuthorStatus();return;}
+      const index=current, step=steps[index], card=document.createElement("div");
+      card.className="step active";
+      card.innerHTML=`<div class="stq">${step.q}</div><label for="author14-step-${index}">Ответ на шаг ${index+1}</label><div class="ansrow"><span class="ansfield"><input id="author14-step-${index}" inputmode="decimal" autocomplete="off"></span></div><div class="btnrow"><button class="btn mini" data-step-check>Проверить шаг</button><button class="ghost btn mini" data-step-hint>Подсказка к шагу</button><button class="peekbtn btn mini" data-step-show>Показать шаг</button></div><div class="fb" role="status" aria-live="polite"></div>`;
+      work.appendChild(card);
+      const field=card.querySelector("input"), feedback=card.querySelector(".fb");
+      function finish(shown){
+        card.className=shown?"step done peeked":"step done";
+        card.innerHTML=`<div class="stq">${step.q}</div><div class="stgot">${fmtN(step.a)}</div>${shown?'<p class="peeknote">Шаг показан</p>':""}`;
+        current++;next();
+      }
+      const checkStep=()=>{
+        const value=T.parseDec(field.value);
+        if(value&&Fr.eq(value,step.a)){finish(false);return;}
+        feedback.className="fb try";feedback.textContent=value?"Пока неверно. Попробуй ещё раз или открой подсказку к шагу.":"Впиши число.";
+      };
+      card.querySelector("[data-step-check]").onclick=checkStep;
+      field.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();checkStep();}};
+      card.querySelector("[data-step-hint]").onclick=()=>{feedback.className="fb info";feedback.textContent=step.hint;};
+      card.querySelector("[data-step-show]").onclick=()=>{authorProgress.revealed=true;updateAuthorStatus();finish(true);};
+    }
+    next();
+  };
+  host.querySelector("[data-author-repeat]").onclick=renderAuthorMarathon;
+}
+
 T.renderStepsMode=renderStepsMode;
 T.renderMarathon=renderMarathon;
 })(typeof T14!=="undefined"?T14:module.exports);
@@ -2454,7 +2577,8 @@ document.getElementById("tabs").addEventListener("click",e=>{
   const b=e.target.closest(".tab"); if(!b) return; show(b.dataset.page);
 });
 /* стартовая страница */
-show("ref");
+if(T.authorRequested(location.search)){T.selectAuthorMarathon();show("marathon");}
+else show("ref");
 
 /* ---- Самопроверка генераторов на странице ---- */
 function selfCheck(){

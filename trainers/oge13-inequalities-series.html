@@ -8,6 +8,22 @@
 *{box-sizing:border-box}body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#1f2937;padding:18px}.app{max-width:1120px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}.title{font-size:20px;font-weight:900}.sub{font-size:12px;opacity:.72;margin-top:2px}.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}.back:hover{color:#fff}.main{display:grid;grid-template-columns:minmax(0,1fr) 340px}.boardWrap{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}.board{width:100%;height:auto;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;display:block}.panel{padding:14px;display:flex;flex-direction:column;gap:10px}.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}.task{font-size:22px;font-weight:900;font-family:Georgia,serif;text-align:center;color:#111827;line-height:1.35}.small{font-size:12px;color:#64748b;line-height:1.45}.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}.info{background:#eff6ff;color:#1d4ed8}.ok{background:#f0fdf4;color:#15803d}.err{background:#fef2f2;color:#b91c1c}.warn{background:#fff7ed;color:#c2410c}.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb}button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:8px 13px;font:800 13px system-ui;cursor:pointer}button:hover{background:#f3f4f6}.primary{background:#1a1a2e;color:white;border-color:#1a1a2e}.good{background:#15803d;color:white;border-color:#15803d}.warnBtn{background:#fff7ed;color:#c2410c;border-color:#fdba74}.danger{background:#fee2e2;color:#991b1b;border-color:#fecaca}.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.tab{min-height:52px}.tab.on{background:#1a1a2e;color:white;border-color:#1a1a2e}.choices{display:grid;gap:8px}.choice{display:block;width:100%;text-align:left;border-radius:12px;padding:10px 12px;background:#fff;font-weight:850;line-height:1.35}.choice.on{background:#dbeafe;border-color:#2563eb;color:#1d4ed8}.choice.goodC{background:#dcfce7;border-color:#16a34a;color:#166534}.choice.badC{background:#fee2e2;border-color:#dc2626;color:#991b1b}.chipRow{display:flex;gap:8px;flex-wrap:wrap}.chip{display:inline-flex;align-items:center;border:1px solid #d1d5db;background:#fff;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:800}.chip.on{background:#dcfce7;border-color:#86efac;color:#166534}.row{display:flex;justify-content:space-between;gap:10px;font-size:14px;line-height:1.5;border-bottom:1px dashed #e5e7eb;padding:5px 0}.row:last-child{border-bottom:0}.value{font-weight:900}.hintBox{display:none;background:#fff7ed;color:#9a3412;border:1.5px solid #fed7aa;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}.hintBox.on{display:block}.zone{cursor:pointer}.zone:hover{opacity:.88}.tickLabel{font:800 12px Georgia,serif;fill:#374151}.rootLabel{font:900 14px Georgia,serif;fill:#7c3aed}.formula{font-family:Georgia,serif;font-weight:900;color:#111827}.statLine{font-size:12px;color:#64748b}.stepList{margin:8px 0 0;padding-left:18px;color:#374151;font-size:13px;line-height:1.55}.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;font-size:12px;margin-top:6px}
 @media(max-width:860px){body{padding:8px}.main{grid-template-columns:1fr}.boardWrap{border-right:0;border-bottom:1px solid #e5e2d9}.head{flex-direction:column;align-items:flex-start}.task{font-size:19px}.tabs{grid-template-columns:1fr}}
 </style>
+<style id="author13-style">
+body.author13-mode .panel,body.author13-mode .boardWrap{min-width:0}
+body.author13-mode .task{white-space:pre-line;overflow-wrap:anywhere}
+body.author13-mode button,body.author13-mode input{min-height:44px}
+body.author13-mode button:focus-visible,body.author13-mode input:focus-visible,body.author13-mode a:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+body.author13-mode .back{min-height:44px;display:inline-flex;align-items:center}
+body.author13-mode .bar button{flex:1 1 140px}
+.author13-meta{font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.author13-meta h2{font-size:14px;text-transform:none;letter-spacing:normal;color:#3730a3}
+.author13-meta p{margin:8px 0}
+.author13-answer{display:grid;gap:8px;margin-top:12px;font-size:14px;font-weight:700}
+.author13-answer input{width:100%;min-width:0;border:2px solid #64748b;border-radius:8px;padding:8px 12px;font:700 18px system-ui;color:#111827;background:white}
+.author13-solution{margin-top:12px;padding:12px;border-radius:10px;background:#fff7ed;line-height:1.6;font-size:15px}
+.author13-solution[hidden],.author13-meta[hidden]{display:none}
+@media(max-width:860px){body.author13-mode .panel{padding:12px}body.author13-mode .title{font-size:18px}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -78,6 +94,194 @@ function current(){return DATA[mod][idx[mod]%DATA[mod].length]}function renderPa
 function renderChips(t){let box=$('chips');if(!box)return;box.innerHTML='';[0,1,2].forEach(i=>{let sp=document.createElement('span');sp.className='chip '+(selectedZones[i]?'on':'');sp.textContent=zlab(i,t);sp.onclick=()=>toggleZone(i);box.appendChild(sp)});$('ansPrev').textContent=answerText(t)}function toggleZone(i){if(checked||solution)return;selectedZones[i]=!selectedZones[i];renderAll()}function resetState(){selectedChoice=null;selectedZones=[false,false,false];checked=false;solution=false;setMsg('Выберите ответ и нажмите «Проверить».','info')}function renderAll(){renderTabs();renderPanel();renderStats()}function checkAnswer(){let t=current(),ok=false;if(mod==='quad'){ok=selectedZones.every((v,i)=>v===correctZones(t)[i])}else ok=selectedChoice===t.ans;checked=true;if(ok){setMsg('Верно!','ok');rec(true)}else{setMsg('Пока ошибка. Нажмите «Подсказка» или «Показать решение».','err');rec(false)}renderAll();if(mod!=='quad'){[...document.querySelectorAll('.choice')].forEach(b=>{let txt=b.textContent.replace(/^\d+\)\s*/,'').trim();if(txt===t.ans)b.classList.add('goodC');else if(txt===selectedChoice)b.classList.add('badC')})}}
 function showSolution(){let t=current();solution=true;checked=true;if(mod==='quad'){selectedZones=correctZones(t).slice();setMsg('Решение: <b>'+answerText(t)+'</b>','warn')}else{selectedChoice=t.ans;setMsg('Правильный ответ: <b>'+t.ans+'</b>','warn')}renderAll();if(mod!=='quad'){[...document.querySelectorAll('.choice')].forEach(b=>{let txt=b.textContent.replace(/^\d+\)\s*/,'').trim();if(txt===t.ans)b.classList.add('goodC')})}}
 function toggleHint(){$('hintBox').classList.toggle('on')}function nextTask(){idx[mod]=(idx[mod]+1)%DATA[mod].length;resetState();renderAll()}renderAll();
+</script>
+<script id="author13-model">
+const AUTHOR13_ID = 'oge2027-analogue-1-task-13';
+const AUTHOR13_LABEL = 'Авторский аналог ОГЭ-2027 · Вариант 1';
+const AUTHOR13_DISCLAIMER = 'Авторский материал MathExam. Не является официальным материалом ФИПИ.';
+const AUTHOR13_TASK = Object.freeze({
+  id: AUTHOR13_ID, sourceId: AUTHOR13_ID, sourceVariantId: 'oge-2027-analogue-1', sourceTask: 13,
+  answerType: 'choice-number', answer: '3',
+  e: Object.freeze(['2x − 6 ≤ 0', 'x + 3 > 0']),
+  options: Object.freeze(['[−3; 3]', '(−∞; −3) ∪ (3; +∞)', '(−3; 3]', '[−3; 3)']),
+  interval: Object.freeze({ left: -3, right: 3, leftClosed: false, rightClosed: true }),
+  hint: 'Решите каждое неравенство отдельно и найдите общую часть решений. Знак ≤ включает граничную точку, а знак > не включает её.'
+});
+function author13ParseAnswer(input) {
+  if (typeof input !== 'string') return null;
+  const value = input.trim();
+  return /^[1-4]$/.test(value) ? value : null;
+}
+function author13InitialResult() { return { hinted: false, revealed: false, hadWrong: false, credit: null }; }
+function author13ApplyEvent(previous, event, input) {
+  const result = { ...previous };
+  if (event === 'hint') result.hinted = true;
+  if (event === 'reveal') result.revealed = true;
+  if (event === 'check') {
+    const answer = author13ParseAnswer(input);
+    if (answer !== null && answer !== AUTHOR13_TASK.answer) result.hadWrong = true;
+    if (answer === AUTHOR13_TASK.answer && result.credit === null) {
+      result.credit = result.revealed ? 'revealed' : result.hinted ? 'assisted' : 'independent';
+    }
+  }
+  return result;
+}
+function author13IsDeepLink(search) {
+  if (typeof search !== 'string' || /%(?![0-9a-f]{2})/i.test(search)) return false;
+  try { decodeURIComponent(search.replace(/\+/g, ' ')); } catch { return false; }
+  const values = new URLSearchParams(search).getAll('task');
+  return values.length === 1 && values[0] === AUTHOR13_ID;
+}
+DATA.author = [AUTHOR13_TASK];
+MODS.push(['author', AUTHOR13_LABEL]);
+// Author13 browser wiring. The original trainer and its storage remain unchanged.
+const AUTHOR13_LEGACY = { renderTabs, renderPanel, renderStats, checkAnswer, showSolution, toggleHint, nextTask, resetStats };
+let author13Result = author13InitialResult();
+let author13Ui = { input: '', hintOpen: false, solutionOpen: false, message: 'Выберите вариант или введите его номер, затем нажмите «Проверить».', tone: 'info' };
+idx.author = 0;
+const author13LegacyStats = $('solved').closest('.card');
+const author13Meta = document.createElement('section');
+author13Meta.id = 'author13Meta';
+author13Meta.className = 'card author13-meta';
+author13Meta.hidden = true;
+author13Meta.innerHTML = '<h2></h2><p id="author13Disclaimer"></p><p id="author13Status" role="status" aria-live="polite"></p><p>Поля очищаются, но результат и история помощи сохраняются до обновления страницы.</p>';
+author13Meta.querySelector('h2').textContent = AUTHOR13_LABEL;
+author13Meta.querySelector('#author13Disclaimer').textContent = AUTHOR13_DISCLAIMER;
+$('taskText').closest('.card').before(author13Meta);
+const author13Controls = [...document.querySelectorAll('.bar button')];
+['author13Check', 'author13Hint', 'author13Reveal', 'author13Repeat'].forEach((id, i) => { author13Controls[i].id = id; });
+function author13RenderStatus() {
+  const status = $('author13Status');
+  const independent = Number(author13Result.credit === 'independent');
+  const assisted = Number(author13Result.credit === 'assisted');
+  status.textContent = 'Самостоятельно: ' + independent + ' из 1. С подсказкой: ' + assisted + ' из 1. '
+    + 'Подсказка: ' + (author13Result.hinted ? 'использована' : 'не использована') + '. '
+    + 'Решение: ' + (author13Result.revealed ? 'просмотрено' : 'не открывалось') + '.'
+    + (author13Result.credit === 'revealed' ? ' Ответ после просмотра решения не даёт самостоятельного зачёта.' : '')
+    + (author13Result.hadWrong ? ' Ранее была ошибка.' : '');
+  status.dataset.independent = String(independent);
+  status.dataset.assisted = String(assisted);
+  status.dataset.hinted = String(author13Result.hinted);
+  status.dataset.revealed = String(author13Result.revealed);
+  status.dataset.credit = author13Result.credit || 'none';
+}
+function author13SvgText(group, x, y, value, size = 16) {
+  const text = make('text', { x, y, 'font-family': 'system-ui, sans-serif', 'font-size': size, fill: '#111827' });
+  text.textContent = value; group.appendChild(text); return text;
+}
+function author13DrawOptions() {
+  const svg = $('board');
+  svg.setAttribute('viewBox', '0 0 360 360');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', 'Четыре варианта числовых промежутков. Закрашенная точка входит в промежуток, пустая не входит.');
+  svg.replaceChildren();
+  const bounds = [[true, true], [false, false], [false, true], [true, false]];
+  AUTHOR13_TASK.options.forEach((option, i) => {
+    const group = make('g', { 'data-author13-option': i + 1 });
+    const y = 53 + i * 86, left = 128, right = 242;
+    const selected = author13ParseAnswer(author13Ui.input) === String(i + 1);
+    if (selected) group.appendChild(make('rect', { x: 12, y: y - 39, width: 336, height: 79, rx: 8, fill: '#dbeafe' }));
+    author13SvgText(group, 24, y - 14, (i + 1) + '. ' + option, 15);
+    group.appendChild(make('line', { x1: 48, y1: y, x2: 326, y2: y, stroke: '#64748b', 'stroke-width': 2 }));
+    group.appendChild(make('polygon', { points: `326,${y} 318,${y - 4} 318,${y + 4}`, fill: '#64748b' }));
+    const segments = i === 1 ? [[48, left], [right, 326]] : [[left, right]];
+    segments.forEach(([x1, x2]) => group.appendChild(make('line', { x1, y1: y, x2, y2: y, stroke: '#2563eb', 'stroke-width': 7 })));
+    if (i === 1) {
+      group.appendChild(make('polygon', { points: `48,${y} 57,${y - 5} 57,${y + 5}`, fill: '#2563eb' }));
+      group.appendChild(make('polygon', { points: `326,${y} 317,${y - 5} 317,${y + 5}`, fill: '#2563eb' }));
+    }
+    [left, right].forEach((x, j) => {
+      group.appendChild(make('circle', { cx: x, cy: y, r: 6, fill: bounds[i][j] ? '#111827' : '#fff', stroke: '#111827', 'stroke-width': 2, 'data-boundary': j ? 'right' : 'left', 'data-closed': String(bounds[i][j]) }));
+      author13SvgText(group, x, y + 26, j ? '3' : '−3').setAttribute('text-anchor', 'middle');
+    });
+    svg.appendChild(group);
+  });
+}
+function author13SyncChoices() {
+  const selected = author13ParseAnswer(author13Ui.input);
+  document.querySelectorAll('#author13Choices button').forEach((button, i) => {
+    const on = selected === String(i + 1);
+    button.classList.toggle('on', on);
+    button.setAttribute('aria-pressed', String(on));
+  });
+  author13DrawOptions();
+}
+function author13RenderPanel() {
+  $('taskText').textContent = 'Решите систему:\n' + AUTHOR13_TASK.e.join('\n');
+  $('taskNote').textContent = 'В ответ запишите номер верного варианта: 1, 2, 3 или 4. Сам промежуток вводить не нужно.';
+  const panel = $('modulePanel');
+  panel.dataset.sourceTaskId = AUTHOR13_ID;
+  panel.innerHTML = '<div class="card"><h2>Варианты ответа</h2><div id="author13Choices" class="choices"></div><label class="author13-answer" for="author13Answer">Номер ответа<input id="author13Answer" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" aria-describedby="taskNote"></label><div id="author13Solution" class="author13-solution" hidden></div></div>';
+  AUTHOR13_TASK.options.forEach((option, i) => {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'choice'; button.id = 'author13-choice-' + (i + 1);
+    button.textContent = (i + 1) + ') ' + option;
+    button.onclick = () => { author13Ui.input = String(i + 1); $('author13Answer').value = author13Ui.input; author13SyncChoices(); };
+    $('author13Choices').appendChild(button);
+  });
+  const input = $('author13Answer'); input.value = author13Ui.input;
+  input.addEventListener('input', () => { author13Ui.input = input.value; author13SyncChoices(); });
+  input.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); author13Check(); } });
+  $('hintBox').textContent = AUTHOR13_TASK.hint;
+  $('hintBox').className = 'hintBox' + (author13Ui.hintOpen ? ' on' : '');
+  const explanation = $('author13Solution');
+  explanation.textContent = '2x − 6 ≤ 0 ⇒ 2x ≤ 6 ⇒ x ≤ 3. Далее: x + 3 > 0 ⇒ x > −3. Общая часть: (−3; 3]. Точка −3 не входит, а точка 3 входит. Это вариант 3. Экзаменационный ответ: 3.';
+  explanation.hidden = !author13Ui.solutionOpen;
+  setMsg(author13Ui.message, author13Ui.tone);
+  author13SyncChoices(); author13RenderStatus();
+}
+function author13Check() {
+  const restoreAnswerFocus = document.activeElement === $('author13Answer');
+  const answer = author13ParseAnswer(author13Ui.input);
+  if (answer === null) { author13Ui.message = 'Введите только номер варианта: 1, 2, 3 или 4.'; author13Ui.tone = 'err'; }
+  else {
+    author13Result = author13ApplyEvent(author13Result, 'check', author13Ui.input);
+    author13Ui.message = answer === AUTHOR13_TASK.answer ? 'Верно! Номер ответа — 3.' : 'Пока неверно. Попробуйте ещё раз или откройте подсказку.';
+    author13Ui.tone = answer === AUTHOR13_TASK.answer ? 'ok' : 'err';
+  }
+  author13RenderPanel();
+  if (restoreAnswerFocus) $('author13Answer').focus({ preventScroll: true });
+}
+renderTabs = function () {
+  AUTHOR13_LEGACY.renderTabs();
+  [...$('tabs').querySelectorAll('button')].forEach((button, i) => { button.dataset.cohort = MODS[i][0]; });
+};
+renderPanel = function () {
+  const author = mod === 'author';
+  document.body.classList.toggle('author13-mode', author);
+  author13Meta.hidden = !author; author13LegacyStats.hidden = author;
+  author13Controls[3].textContent = author ? 'Повторить задачу' : 'Следующее задание';
+  if (author) return author13RenderPanel();
+  delete $('modulePanel').dataset.sourceTaskId;
+  $('board').setAttribute('viewBox', '0 0 740 560');
+  $('board').removeAttribute('role'); $('board').removeAttribute('aria-label');
+  return AUTHOR13_LEGACY.renderPanel();
+};
+renderStats = function () { return mod === 'author' ? author13RenderStatus() : AUTHOR13_LEGACY.renderStats(); };
+checkAnswer = function () { return mod === 'author' ? author13Check() : AUTHOR13_LEGACY.checkAnswer(); };
+showSolution = function () {
+  if (mod !== 'author') return AUTHOR13_LEGACY.showSolution();
+  author13Result = author13ApplyEvent(author13Result, 'reveal');
+  author13Ui.solutionOpen = true;
+  author13Ui.message = 'Решение открыто. Его просмотр не даёт самостоятельного зачёта.'; author13Ui.tone = 'warn';
+  author13RenderPanel();
+};
+toggleHint = function () {
+  if (mod !== 'author') return AUTHOR13_LEGACY.toggleHint();
+  if (!author13Ui.hintOpen) author13Result = author13ApplyEvent(author13Result, 'hint');
+  author13Ui.hintOpen = !author13Ui.hintOpen; author13RenderPanel();
+};
+nextTask = function () {
+  if (mod !== 'author') return AUTHOR13_LEGACY.nextTask();
+  author13Ui = { input: '', hintOpen: false, solutionOpen: false, message: 'Поля очищены. Результат и история помощи сохранены.', tone: 'info' };
+  author13RenderPanel();
+};
+resetStats = function () {
+  if (mod !== 'author') return AUTHOR13_LEGACY.resetStats();
+  author13Ui.message = 'Результат и история помощи сохраняются до обновления страницы.'; author13Ui.tone = 'info'; author13RenderPanel();
+};
+if (author13IsDeepLink(location.search)) mod = 'author';
+renderAll();
 </script>
 </body>
 </html>
