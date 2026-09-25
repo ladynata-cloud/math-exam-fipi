@@ -156,6 +156,12 @@ details.bytype td,details.bytype th{border:1px solid #cdd9e6;padding:3px 10px;fo
   .card{padding:12px 12px}
 }
 button:focus-visible,input:focus-visible,.chip:focus-visible{outline:3px solid #7fb0e8;outline-offset:2px}
+[data-author-cohort]{min-height:44px;max-width:100%;white-space:normal}
+.author-source{margin:8px 0;padding:8px 10px;border-left:3px solid var(--pen);background:#eef4fc;font-size:.9em;overflow-wrap:anywhere}
+.author-source small{display:block;margin-top:4px}
+.author-task button,.author-task input{min-height:44px}
+.author-task .aw-tog{padding:6px 4px}
+#mar-stats [data-author-reset]{min-height:44px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -690,6 +696,47 @@ function checkAnswer(task,userF){
   return false;
 }
 
+/* Один опубликованный авторский пример в существующем банке марафона. */
+const AUTHOR_SOURCE=Object.freeze({
+  sourceKind:'author-analogue',variantId:'oge-2027-analogue-1',
+  sourceTaskId:'oge2027-analogue-1-task-10',localTaskId:'oge2027-analogue-1-task-10',
+  status:'MISSING_APPENDED',label:'Авторский аналог ОГЭ-2027 · Вариант 1',
+  disclaimer:'Авторский материал MathExam. Не является официальным материалом ФИПИ.'
+});
+const AUTHOR_TASKS=[{
+  id:AUTHOR_SOURCE.localTaskId,source:AUTHOR_SOURCE,code:'10.2',name:'Один выбор предмета',
+  text:'В коробке магазина лежат 250 маркеров: 35 красных, 45 зелёных и 50 фиолетовых. Остаток поровну разделён между синими и чёрными. Покупатель наугад берёт один маркер. Какова вероятность, что он окажется красным или чёрным?',
+  answer:F(19,50),meta:{total:250,red:35,green:45,violet:50,remainder:120,blue:60,black:60,fav:95},
+  hints:[
+    'Найдите остаток после трёх названных цветов и разделите его пополам. Затем сложите количества подходящих маркеров.',
+    'Осталось 250 − 35 − 45 − 50 = 120 маркеров. Чёрных 120 : 2 = 60. Красных или чёрных 35 + 60 = 95; разделите 95 на 250.'
+  ],
+  steps:[
+    pStep('Сколько синих и чёрных маркеров вместе?',F(120),'250 − 35 − 45 − 50 = 120.'),
+    pStep('Сколько чёрных маркеров, если синих и чёрных поровну?',F(60),'120 : 2 = 60 чёрных маркеров.'),
+    pStep('Сколько маркеров подходят: красные или чёрные?',F(95),'35 + 60 = 95 подходящих маркеров.'),
+    pStep('Найди вероятность: '+probStepText(),F(19,50),'P = 95 : 250 = 19/50 = 0,38.')
+  ],
+  razbor:'Синих и чёрных вместе 250 − 35 − 45 − 50 = 120. Чёрных 120 : 2 = 60. Подходят 35 + 60 = 95 маркеров из 250: P = '+fracHTMLraw(95,250)+' = '+fracHTMLraw(19,50)+' = <b>0,38</b>.'
+}];
+const AUTHOR_PROGRESS={assisted:false,credited:false,shown:false};
+function recordAuthor(kind){
+  if(kind==='shown'){AUTHOR_PROGRESS.assisted=true;AUTHOR_PROGRESS.shown=true;}
+  else if(!AUTHOR_PROGRESS.assisted)AUTHOR_PROGRESS.credited=true;
+  renderStats();
+}
+function authorWrongFeedback(value){
+  if(fEq(value,F(7,50)))return ' Учтены только красные маркеры. Чёрные тоже подходят.';
+  if(fEq(value,F(6,25)))return ' Учтены только чёрные маркеры. Красные тоже подходят.';
+  if(fEq(value,F(12,25)))return ' Весь остаток включает и синие маркеры. Нужны красные и чёрные.';
+  return '';
+}
+function requestedAuthorTask(){
+  if(typeof location==='undefined'||/%(?![0-9a-f]{2})/i.test(location.search))return false;
+  const ids=new URLSearchParams(location.search).getAll('task');
+  return ids.length===1&&ids[0]===AUTHOR_SOURCE.sourceTaskId;
+}
+
 /* ===== САМОПРОВЕРКА (фазз) ===== */
 function selfTest(itersPerType){
   let checks=0;
@@ -852,7 +899,8 @@ function treeStepHooks(svgEl,idxArr){
 }
 
 function taskHead(t){
-  return `<div class="tnum">${t.code} · ${t.name}</div><div style="margin:6px 0">${t.text}</div>${t.svg||''}`;
+  const provenance=t.source===AUTHOR_SOURCE?`<div class="author-source" data-source-task-id="${AUTHOR_SOURCE.sourceTaskId}"><b>${AUTHOR_SOURCE.label}</b><small>${AUTHOR_SOURCE.disclaimer}</small></div>`:'';
+  return provenance+`<div class="tnum">${t.code} · ${t.name}</div><div style="margin:6px 0">${t.text}</div>${t.svg||''}`;
 }
 function razborHTML(t){
   return `<div class="razbor"><div class="rz-t">Разбор</div>${t.razborSVG||''}${t.razbor}<div style="margin-top:6px"><b>Ответ:</b> ${t.needRound?fToDec(t.rounded)+' (точно: '+fracHTMLraw(t.answer.n,t.answer.d)+')':ansHTML(t.answer)}</div></div>`;
@@ -906,7 +954,15 @@ function record(kind,code){
   else {STATS.shown++;STATS.streak=0;bt.shown++;}
   saveStats();renderStats();
 }
+function renderAuthorStats(){
+  el('mar-stats').innerHTML=
+    '<span>Авторская задача · в этой сессии</span><span>Самостоятельно: <b>'+Number(AUTHOR_PROGRESS.credited)+'/1</b></span>'+
+    '<span>С подсказкой или разбором: <b>'+Number(AUTHOR_PROGRESS.shown)+'/1</b></span>'+
+    '<button class="act ghost" id="mar-reset" data-author-reset style="margin:0">Сбросить авторскую попытку</button>';
+  el('mar-reset').onclick=()=>{Object.assign(AUTHOR_PROGRESS,{assisted:false,credited:false,shown:false});renderStats();marNew();};
+}
 function renderStats(){
+  if(marFilter==='author'){renderAuthorStats();return;}
   const s=STATS;
   let rows='';TYPE_LIST.forEach(([c,n])=>{const b=s.byType[c];if(b&&(b.correct||b.shown))rows+=`<tr><td>${c} ${n}</td><td>${b.correct}</td><td>${b.shown}</td></tr>`;});
   el('mar-stats').innerHTML=
@@ -921,20 +977,27 @@ function marChips(){
   const box=el('mar-chips');box.innerHTML='';
   const all=document.createElement('button');
   all.className='chip'+(marFilter==='all'?' on':'');all.textContent='Все типы вперемешку';
-  all.onclick=()=>{marFilter='all';marChips();marNew();};
+  all.onclick=()=>{marFilter='all';renderStats();marChips();marNew();};
   box.appendChild(all);
   TYPE_LIST.forEach(([code,name])=>{
     const b=document.createElement('button');
     b.className='chip'+(code===marFilter?' on':'');b.textContent=code+' '+name;
-    b.onclick=()=>{marFilter=code;marChips();marNew();};
+    b.onclick=()=>{marFilter=code;renderStats();marChips();marNew();};
     box.appendChild(b);
   });
+  const author=document.createElement('button');
+  author.className='chip'+(marFilter==='author'?' on':'');author.textContent=AUTHOR_SOURCE.label;
+  author.dataset.authorCohort=AUTHOR_SOURCE.variantId;
+  author.onclick=()=>{marFilter='author';renderStats();marChips();marNew();};
+  box.appendChild(author);
 }
 function marNew(){
   const root=el('mar-root');root.innerHTML='';
-  const t=marFilter==='all'?genRandom(RT):genTask(marFilter,RT);
+  const t=marFilter==='author'?AUTHOR_TASKS[0]:(marFilter==='all'?genRandom(RT):genTask(marFilter,RT));
+  const isAuthor=t.source===AUTHOR_SOURCE;
+  const recordResult=kind=>isAuthor?recordAuthor(kind):record(kind,t.code);
   let hintN=0, finished=false;
-  const card=document.createElement('div');card.className='card';
+  const card=document.createElement('div');card.className='card'+(isAuthor?' author-task':'');
   const id='w'+(++UID);
   card.innerHTML=taskHead(t)
     +`<div style="margin:10px 0"><b>Ответ:</b> `+awHTML(id,false)+`</div>`
@@ -942,14 +1005,17 @@ function marNew(){
     +`<button class="act ghost" id="${id}-hint">Подсказка</button>`
     +`<button class="act ghost" id="${id}-steps">Решить по шагам</button>`
     +`<button class="act show" id="${id}-sh">Показать разбор</button></div>`
-    +`<div id="${id}-hintbox"></div><span class="fb" id="${id}-fb"></span><div id="${id}-after"></div>`;
+    +`<div id="${id}-hintbox"></div><span class="fb" id="${id}-fb"${isAuthor?' role="status" aria-live="polite"':''}></span><div id="${id}-after"></div>`;
   root.appendChild(card);
+  if(isAuthor)card.addEventListener('keydown',event=>{
+    if(event.key==='Enter'&&event.target.tagName==='INPUT')event.preventDefault();
+  });
   const marTreeSvg = t.code==='10.6' ? card.querySelector('svg') : null;
   const after=()=>{
     finished=true;
     el(id+'-hint').disabled=true;el(id+'-steps').disabled=true;el(id+'-sh').disabled=true;
     const a=el(id+'-after');
-    a.innerHTML+=`<button class="act" id="${id}-next">Следующая задача</button>`;
+    a.innerHTML+=`<button class="act" id="${id}-next">${isAuthor?'Повторить задачу':'Следующая задача'}</button>`;
     el(id+'-next').onclick=()=>marNew();
     el(id+'-next').focus();
   };
@@ -958,20 +1024,21 @@ function marNew(){
     const v=awRead(id);
     if(!v){setFB(id,'warn',MSG_EMPTY);return;}
     if(checkAnswer(t,v)){
-      setFB(id,'ok','Верно!');awLock(id);record('correct',t.code);
+      setFB(id,'ok',isAuthor&&AUTHOR_PROGRESS.assisted?'Верно. Были подсказки или разбор — самостоятельное решение не засчитано.':'Верно!');awLock(id);recordResult('correct');
       el(id+'-after').innerHTML=razborHTML(t);after();
     } else {
-      setFB(id,'no',MSG_WRONG+(t.needRound?' Не забудь про округление до сотых (точную дробь тоже приму).':''));
+      setFB(id,'no',MSG_WRONG+(isAuthor?authorWrongFeedback(v):(t.needRound?' Не забудь про округление до сотых (точную дробь тоже приму).':'')));
     }
   };
   el(id+'-ck').onclick=check;bindEnter(id,check);
   el(id+'-hint').onclick=()=>{
+    if(isAuthor)recordAuthor('shown');
     if(hintN<2){el(id+'-hintbox').innerHTML+=`<div class="hintbox"><b>Подсказка ${hintN+1}.</b> ${t.hints[hintN]}</div>`;hintN++;}
     if(hintN>=2)el(id+'-hint').disabled=true;
   };
   el(id+'-sh').onclick=()=>{
     if(finished)return;
-    awLock(id);record('shown',t.code);
+    awLock(id);recordResult('shown');
     setFB(id,'', '<span class="redink">Разбор показан — задача не засчитана. Реши похожую!</span>');
     el(id+'-after').innerHTML=razborHTML(t);after();
   };
@@ -979,12 +1046,12 @@ function marNew(){
     if(finished)return;
     awLock(id);el(id+'-steps').disabled=true;el(id+'-ck').disabled=true;
     const box=document.createElement('div');el(id+'-after').appendChild(box);
-    const hooks = marTreeSvg ? treeStepHooks(marTreeSvg, t.meta.idx) : null;
+    const hooks = marTreeSvg ? treeStepHooks(marTreeSvg, t.meta.idx) : (isAuthor?{onResolved:(i,independent)=>{if(!independent)recordAuthor('shown');}}:null);
     mountSteps(box,t,(st)=>{
       if(marTreeSvg) treeWink(marTreeSvg,TREE_KEYS,false);
-      if(st.shown){record('shown',t.code);
+      if(st.shown||(isAuthor&&AUTHOR_PROGRESS.assisted)){recordResult('shown');
         el(id+'-after').insertAdjacentHTML('beforeend','<p><span class="redink">Были показанные шаги — задача не засчитана.</span></p>'+razborHTML(t));}
-      else {record('correct',t.code);
+      else {recordResult('correct');
         el(id+'-after').insertAdjacentHTML('beforeend','<p class="okline">Решено по шагам самостоятельно — засчитано!</p>'+razborHTML(t));}
       after();
     }, hooks);
@@ -1166,7 +1233,9 @@ function boot(){
   });
   buildUch();
   stepChips();stepNew();
-  loadStats();renderStats();marChips();marNew();
+  loadStats();
+  if(requestedAuthorTask()){marFilter='author';showTab('mar');}
+  renderStats();marChips();marNew();
   const badge=el('selfcheck');
   setTimeout(()=>{
     try{const n=selfTest(60);badge.className='ok';badge.textContent='самопроверка пройдена: '+n.toLocaleString('ru-RU')+' проверок';}
