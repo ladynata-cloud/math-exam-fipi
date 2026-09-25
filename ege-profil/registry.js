@@ -121,19 +121,56 @@ var RV = (function(){
     "derivative-t8|physics":   { n:"скорость и путь", line:8 },
     "derivative-t8|antider":   { n:"первообразная по графику", line:8 }
   };
+  /* ---------- недоверенные данные ----------
+     Журнал приходит из localStorage или из кода прогресса ученика (MEP1).
+     Всё, что из него попадает в innerHTML или в атрибут, — имя типа, TID,
+     числа, имя ученика — проходит через esc(). Запись-мусор пропускается,
+     а не роняет страницу и не выводит NaN. */
+  var hasOwn = Object.prototype.hasOwnProperty;
+  function own(o, k){ return !!o && hasOwn.call(o, k); }
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  /* текст для innerHTML и для значения атрибута в кавычках */
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return c === "&" ? "&amp;" : c === "<" ? "&lt;" : c === ">" ? "&gt;" : c === '"' ? "&quot;" : "&#39;";
+    });
+  }
+  /* конечное число ≥ 0; у меток времени — ещё и в пределах Date */
+  var MAX_TS = 8.64e15;
+  function count(v){ return typeof v === "number" && isFinite(v) && v >= 0; }
+  function stamp(v){ return v === undefined || (count(v) && v <= MAX_TS); }
+  /* Запись журнала { w, r, lastWrong, last }: объект; w — число ≥ 0;
+     r, lastWrong, last — числа ≥ 0 или их нет. Возвращает нормализованную
+     копию (w и r — целые) или null, если запись — мусор.
+     То же правило (вместе с keyOk) повторено в адаптере review в
+     progress-adapters.js: главная не подключает registry.js. Менять — в обоих
+     местах; совпадение сторон на сгенерированных записях сверяет гейт
+     tests/cabinet-safety-test.js. */
+  function entry(e){
+    if (!isObj(e) || !count(e.w)) return null;
+    if (e.r !== undefined && !count(e.r)) return null;
+    if (!stamp(e.lastWrong) || !stamp(e.last)) return null;
+    return { w:Math.floor(e.w), r:Math.floor(e.r || 0),
+             lastWrong:e.lastWrong || 0, last:e.last || 0 };
+  }
+  /* ключ журнала «TID|тип»: обе части непустые */
+  function keyOk(k){ var i = k.indexOf("|"); return i > 0 && i < k.length - 1; }
+
   function split(key){
     var i = key.indexOf("|");
     return [key.slice(0, i), key.slice(i + 1)];
   }
   function items(mk, wantOpen){
     var res = [], k, e;
-    for (k in (mk || {})){
-      e = mk[k];
-      if ((e.w || 0) <= 0) continue;
-      var closed = (e.r || 0) >= 3;
+    if (!isObj(mk)) return res;
+    for (k in mk){
+      if (!own(mk, k) || !keyOk(k)) continue;
+      e = entry(mk[k]);
+      if (!e || e.w <= 0) continue;
+      var closed = e.r >= 3;
       if (closed === !wantOpen){
         var p = split(k);
-        res.push({ key:k, tid:p[0], type:p[1], w:e.w, r:e.r || 0,
+        res.push({ key:k, tid:p[0], type:p[1], w:e.w, r:e.r,
                    last:e.lastWrong || e.last || 0 });
       }
     }
@@ -142,7 +179,23 @@ var RV = (function(){
   }
   function open(mk){ return items(mk, true); }
   function closed(mk){ return items(mk, false); }
-  function nameOf(key){ return NAMES[key] || null; }
+  function nameOf(key){ return own(NAMES, key) ? NAMES[key] : null; }
+  function trainerOf(tid){ return own(TRAINERS, tid) ? TRAINERS[tid] : null; }
+
+  /* «Загрузить в этот браузер»: копия прогресса, из журнала которой убраны
+     записи-мусор (и ключи не вида «TID|тип»). Ветка mistakes, которая не
+     объект, отбрасывается целиком. Всё остальное — как было. */
+  function cleanJournal(obj){
+    var out = JSON.parse(JSON.stringify(obj)), mk, k, dropped = 0, branch = false;
+    if (own(out, "mistakes")){
+      mk = out.mistakes;
+      if (!isObj(mk)){ delete out.mistakes; branch = true; }
+      else for (k in mk){
+        if (own(mk, k) && !(keyOk(k) && entry(mk[k]))){ delete mk[k]; dropped++; }
+      }
+    }
+    return { obj:out, dropped:dropped, branch:branch };
+  }
 
   /* Кабинет учителя. Здесь только те тренажёры, чей прогресс лежит внутри
      mathExamCourseProgress.v1 — именно они переносятся кодом прогресса.
@@ -170,11 +223,13 @@ var RV = (function(){
      Журнала может не быть вовсе: тогда 0. */
   function lastActivity(mk, tid){
     var best = 0, k, e;
-    for (k in (mk || {})){
-      if (k.indexOf("|") < 0) continue;
+    if (!isObj(mk)) return best;
+    for (k in mk){
+      if (!own(mk, k) || !keyOk(k)) continue;
       if (split(k)[0] !== tid) continue;
-      e = mk[k] || {};
-      best = Math.max(best, e.last || 0, e.lastWrong || 0);
+      e = entry(mk[k]);
+      if (!e) continue;
+      best = Math.max(best, e.last, e.lastWrong);
     }
     return best;
   }
@@ -186,7 +241,8 @@ var RV = (function(){
   }
 
   return { TRAINERS:TRAINERS, NAMES:NAMES, CABINET:CABINET, split:split,
-           open:open, closed:closed, nameOf:nameOf,
-           lastActivity:lastActivity, journalOf:journalOf };
+           open:open, closed:closed, nameOf:nameOf, trainerOf:trainerOf,
+           lastActivity:lastActivity, journalOf:journalOf,
+           esc:esc, isObj:isObj, entry:entry, cleanJournal:cleanJournal };
 })();
 if (typeof module !== "undefined") module.exports = RV;

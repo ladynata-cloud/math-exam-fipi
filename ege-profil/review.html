@@ -83,28 +83,36 @@
 (function(){
   "use strict";
   var KEY = "mathExamCourseProgress.v1";
-  function readAll(){ try{ return JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ return {}; } }
+  /* хранилище — только объект: "null", строка, массив и битый JSON — пустой журнал */
+  function readAll(){
+    try{ var a = JSON.parse(localStorage.getItem(KEY) || "{}"); return RV.isObj(a) ? a : {}; }
+    catch(e){ return {}; }
+  }
+  var esc = RV.esc;
+  function isCount(v){ return typeof v === "number" && isFinite(v) && v >= 0; }
 
+  /* Имя типа и TID берутся из ключа журнала, а он — из хранилища или из кода
+     ученика: в разметку всё идёт только через esc(). */
   function rowHtml(it, withBtn){
     var meta = RV.nameOf(it.key);
-    var tr = RV.TRAINERS[it.tid];
+    var tr = RV.trainerOf(it.tid);
     var name = meta ? meta.n : it.type;
     var line = meta ? meta.line : "?";
     var when = it.last ? new Date(it.last).toLocaleDateString("ru-RU") : "";
     var barr = "";
     for (var i = 0; i < 3; i++) barr += '<span class="' + (i < it.r ? "on" : "") + '"></span>';
     return '<div class="row"><div>' +
-      '<span class="pillline">задание ' + line + '</span>' +
-      '<span class="name">' + name + '</span>' +
-      '<div class="meta">' + (tr ? tr.title : it.tid) + ' · промахов: ' + it.w +
+      '<span class="pillline">задание ' + esc(line) + '</span>' +
+      '<span class="name">' + esc(name) + '</span>' +
+      '<div class="meta">' + esc(tr ? tr.title : it.tid) + ' · промахов: ' + esc(it.w) +
       ' · закрыто <span class="closedbar">' + barr + '</span> из 3' +
-      (when ? ' · последний: ' + when : '') + '</div></div>' +
-      (withBtn && tr ? '<a class="btn" href="' + tr.file + (tr.review ? "?mode=review" : "") + '">Повторить</a>' : '') +
+      (when ? ' · последний: ' + esc(when) : '') + '</div></div>' +
+      (withBtn && tr ? '<a class="btn" href="' + esc(tr.file + (tr.review ? "?mode=review" : "")) + '">Повторить</a>' : '') +
       '</div>';
   }
 
   var all = readAll();
-  var mk = all.mistakes || {};
+  var mk = all.mistakes;
   var open = RV.open(mk), closed = RV.closed(mk);
 
   var sc = document.getElementById("summaryCard");
@@ -129,10 +137,24 @@
     document.getElementById("closedList").innerHTML = closed.map(function(it){ return rowHtml(it, false); }).join("");
   }
 
-  /* последний пробник */
-  var fe = all["full-exam"];
-  var at = fe && fe.attempts && fe.attempts.length ? fe.attempts[fe.attempts.length - 1] : null;
-  if (at && at.lines){
+  /* последний пробник — последняя попытка, которую признают и страница
+     пробника (cleanAttempt в exam/full-exam.html: объект с числовым ts), и
+     главная (examAttempts в progress-adapters.js: числовые primary и test);
+     для разбора по линиям нужен ещё объект lines, а ts — в пределах Date.
+     Попытка-мусор в конце истории не выдаётся за результат: берётся
+     предыдущая верная. Баллы линий — числа ≥ 0, иначе 0. */
+  function isNum(v){ return typeof v === "number" && isFinite(v); }
+  function examOk(a){
+    return RV.isObj(a) && isNum(a.ts) && Math.abs(a.ts) <= 8.64e15 &&
+           isNum(a.primary) && isNum(a.test) && RV.isObj(a.lines);
+  }
+  var fe = all["full-exam"], at = null;
+  if (RV.isObj(fe) && Array.isArray(fe.attempts)){
+    for (var j = fe.attempts.length - 1; j >= 0; j--){
+      if (examOk(fe.attempts[j])){ at = fe.attempts[j]; break; }
+    }
+  }
+  if (at){
     var MAXP = { 1:1,2:1,3:1,4:1,5:1,6:1,7:1,8:1,9:1,10:1,11:1,12:1, 13:2, 14:3, 15:2, 16:2, 17:3, 18:4, 19:4 };
     var LINE_TRAINER = {
       1:"trainers/planimetry-t1.html", 2:"trainers/vectors-t2.html", 3:"trainers/stereo/index.html",
@@ -146,13 +168,15 @@
     };
     var lost = [];
     for (var i = 1; i <= 19; i++){
-      var got = at.lines[i] || 0;
+      var got = isCount(at.lines[i]) ? at.lines[i] : 0;
       if (got < MAXP[i]) lost.push({ line:i, got:got, max:MAXP[i] });
     }
     if (lost.length){
       document.getElementById("examCard").style.display = "block";
+      /* баллы — как на главной: первичный целый, отрицательные — 0 */
       document.getElementById("examMeta").textContent = "попытка от " +
-        new Date(at.ts).toLocaleDateString("ru-RU") + " · " + at.primary + " перв. · " + at.test + " тест.";
+        new Date(at.ts).toLocaleDateString("ru-RU") + " · " +
+        Math.floor(Math.max(0, at.primary)) + " перв. · " + Math.max(0, at.test) + " тест.";
       document.getElementById("examList").innerHTML = lost.map(function(x){
         return '<div class="row"><div>' +
           '<span class="pillline">задание ' + x.line + '</span>' +
