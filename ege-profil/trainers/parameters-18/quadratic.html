@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 18 · Глава 2 · Квадратные уравнения</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C; --okbg:#E7F3EA; --badbg:#FBEAE9; --amber:#B5720E; --amberbg:#FBF2DF;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:680px;margin:0 0 20px}
+  h2{margin:0 0 8px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  h3{margin:0 0 6px;font-size:16.5px;color:var(--ink-strong)}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+  .tab{border:1.5px solid var(--ink);background:rgba(250,250,244,.8);color:var(--ink);border-radius:999px;
+    min-height:44px;padding:8px 16px;font:700 14px/1 inherit;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .card{border:1.5px solid var(--ink);border-radius:10px;background:rgba(250,250,244,.92);padding:18px;margin-bottom:16px}
+  .card.red{border-color:var(--red)}
+  .muted{color:var(--muted)}
+  .small{font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .fx{font-family:"Cambria Math",Georgia,"Times New Roman",serif;font-size:1.06em}
+  .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
+    min-height:44px;padding:9px 16px;font:700 14.5px/1 inherit;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--ink-strong)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:disabled{opacity:.45;cursor:default}
+  input[type=text]{border:1.5px solid var(--ink);border-radius:8px;background:#fff;min-height:44px;padding:9px 12px;font:600 16px/1 inherit;width:110px}
+  input[type=range]{width:min(340px,100%);accent-color:var(--ink)}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .feedback{margin-top:12px;border-radius:8px;padding:10px 12px;font-weight:600;display:none}
+  .feedback.on{display:block}
+  .feedback.ok{background:var(--okbg);color:var(--ok)}
+  .feedback.bad{background:var(--badbg);color:var(--red)}
+  .feedback.warn{background:var(--amberbg);color:var(--amber)}
+  .figure{margin:12px 0;overflow-x:auto}
+  svg{display:block;max-width:100%}
+  .cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:8px}
+  .rule{border:1px dashed var(--line);border-radius:8px;padding:12px;background:rgba(255,255,255,.6)}
+  .rule b{color:var(--ink-strong)}
+  .liveinfo{font:700 15px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong);margin-top:8px;min-height:44px}
+  .score{font:700 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .score b{color:var(--ink-strong)}
+  .view{display:none}
+  .view.on{display:block}
+  .sol{border-left:3px solid var(--ink);background:rgba(255,255,255,.7);padding:10px 14px;margin-top:10px;display:none;white-space:pre-line}
+  .sol.on{display:block}
+  .verdict{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
+  .qtask{font-size:16.5px;margin:2px 0 8px}
+  .qsol{white-space:pre-line}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+  .dots span{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px}
+  .dots span.ok{background:var(--ink)}
+  .dots span.bad{background:var(--red);border-color:var(--red)}
+  .flip{border:1px dashed var(--line);border-radius:8px;padding:12px;background:rgba(255,255,255,.6)}
+  .flip .ans{display:none;margin-top:8px;font-weight:700;color:var(--ink-strong)}
+  .flip.on .ans{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Оглавление</a>
+  <p class="eyebrow">задание 18 · глава 2 · квадратные уравнения</p>
+  <h1>Квадратные уравнения с параметром</h1>
+  <p class="lede">Три инструмента решают почти всё: <b>разложение на множители</b> (корни вида a и a + 1 экономят полстраницы), <b>дискриминант</b> (число корней) и <b>Виета</b> (сумма и произведение — но только если корни существуют). Здесь каждый инструмент — с живым графиком.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="idea">Идея</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="live">Живые графики</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="err">Найди ошибку</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="test">Квиз и ДЗ</button>
+  </div>
+
+  <!-- ============ ИДЕЯ ============ -->
+  <section class="view on" id="view-idea">
+    <div class="card">
+      <h2>Сначала попробуй разложить</h2>
+      <p>Прежде чем считать дискриминант с параметром, поищи разложение подбором по Виете: сумма и произведение часто подсказывают корни-выражения. Проверь себя на трёх карточках:</p>
+      <div class="cases">
+        <div class="flip" data-flip>
+          <p class="fx" style="margin:0">x² + (a² + a)x + a³ = 0</p>
+          <button class="btn ghost" style="margin-top:8px">Показать корни</button>
+          <p class="ans fx">x² + (a² + a)x + a²·a = 0  →  x₁ = −a², x₂ = −a</p>
+        </div>
+        <div class="flip" data-flip>
+          <p class="fx" style="margin:0">x² − 6x + 6a − a² = 0</p>
+          <button class="btn ghost" style="margin-top:8px">Показать корни</button>
+          <p class="ans fx">x² − 6x + a(6 − a) = 0  →  x₁ = a, x₂ = 6 − a</p>
+        </div>
+        <div class="flip" data-flip>
+          <p class="fx" style="margin:0">x² − x − (a² − a) = 0</p>
+          <button class="btn ghost" style="margin-top:8px">Показать корни</button>
+          <p class="ans fx">x² − x + a(1 − a) = 0  →  x₁ = a, x₂ = 1 − a</p>
+        </div>
+      </div>
+      <p class="small muted" style="margin-top:10px">Проверка всегда одна: сумма корней = −(коэффициент при x), произведение = свободный член.</p>
+    </div>
+
+    <div class="card">
+      <h2>Три ловушки главы</h2>
+      <div class="cases">
+        <div class="rule"><b>Виета без проверки.</b> Нашёл параметр из суммы или произведения корней — подставь обратно и проверь, что корни вообще существуют (D ≥ 0). Половина «красивых» значений отсеивается.</div>
+        <div class="rule"><b>Старший коэффициент с параметром.</b> Уравнение (a − 1)x² + … при a = 1 — вовсе не квадратное. Этот случай разбирается отдельно, как k = 0 в первой главе.</div>
+        <div class="rule"><b>Расположение корней.</b> «Корни по разные стороны от числа M» — это не про дискриминант, а про знак: при старшем коэффициенте &gt; 0 достаточно f(M) &lt; 0.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ЖИВЫЕ ГРАФИКИ ============ -->
+  <section class="view" id="view-live">
+
+    <div class="card">
+      <h2>Загадочная парабола</h2>
+      <p>Перед тобой график <span class="fx">y = ax² + bx + c</span>. Отмечены вершина и две симметричные точки. Восстанови коэффициенты. Дробный a пиши как 0.5 или 1/2.</p>
+      <div class="figure" id="parFig"></div>
+      <div class="row" style="margin-top:6px">
+        <label class="mono small" for="qa">a =</label><input type="text" id="qa" inputmode="decimal" autocomplete="off">
+        <label class="mono small" for="qb">b =</label><input type="text" id="qb" inputmode="decimal" autocomplete="off">
+        <label class="mono small" for="qc">c =</label><input type="text" id="qc" inputmode="decimal" autocomplete="off">
+        <button class="btn" id="qCheck">Проверить</button>
+        <button class="btn ghost" id="qNew">Новый график</button>
+      </div>
+      <div class="feedback" id="qFb"></div>
+      <p class="score" style="margin-top:10px">разгадано подряд: <b id="qStreak">0</b> · рекорд серии: <b id="qBest">0</b></p>
+      <p class="small muted">Подсказка: a виден по «шагу» параболы (на 1 вправо от вершины — вверх на a), b = −2a·h, c = высота при x = 0.</p>
+    </div>
+
+    <div class="card">
+      <h2>Касание оси: живой дискриминант</h2>
+      <p>Уравнение <span class="fx">x² − 2a·x + a + 3 = 0</span>. Двигай параметр и лови момент, когда парабола <b>касается</b> оси — это и есть D = 0.</p>
+      <div class="row" style="margin:10px 0 2px">
+        <label class="mono small" for="ka">a =</label><input type="range" id="ka" min="-2.5" max="3.5" step="0.05" value="0.5"><span class="mono" id="kav" style="min-width:44px;display:inline-block"></span>
+      </div>
+      <div class="figure" id="kasFig"></div>
+      <p class="liveinfo" id="kasInfo"></p>
+      <p>Ровно один корень — при D = 0, то есть когда <span class="fx">a² − a − 3 = 0</span>. Корни этого уравнения по параметру иррациональны: <span class="fx">a = (1 ± √13)/2</span>. Но Виета работает и для параметра — проверь себя:</p>
+      <div class="row">
+        <label class="mono small" for="ksum">a₁ + a₂ =</label><input type="text" id="ksum" inputmode="decimal" autocomplete="off" style="width:80px">
+        <label class="mono small" for="kprod">a₁ · a₂ =</label><input type="text" id="kprod" inputmode="decimal" autocomplete="off" style="width:80px">
+        <button class="btn" id="kCheck">Проверить</button>
+      </div>
+      <div class="feedback" id="kFb"></div>
+    </div>
+
+    <div class="card">
+      <h2>Корни по разные стороны от точки</h2>
+      <p>Задача из теста 0510: при каких p один корень уравнения <span class="fx">(p² + p + 1)·x² + (2p − 3)·x + p = 11</span> меньше 2, а другой больше 2?</p>
+      <p class="small muted">Старший коэффициент p² + p + 1 &gt; 0 при всех p, значит ветви всегда вверх, и условие «x₁ &lt; 2 &lt; x₂» равносильно одному неравенству: <b>f(2) &lt; 0</b>. Двигай p и смотри на точку графика над x = 2.</p>
+      <div class="row" style="margin:10px 0 2px">
+        <label class="mono small" for="rp">p =</label><input type="range" id="rp" min="-5" max="3" step="0.05" value="0"><span class="mono" id="rpv" style="min-width:52px;display:inline-block"></span>
+      </div>
+      <div class="figure" id="rocFig"></div>
+      <p class="liveinfo" id="rocInfo"></p>
+      <p>f(2) = 4p² + 9p − 13 = (p − 1)(4p + 13). Реши неравенство f(2) &lt; 0 и впиши границы интервала:</p>
+      <div class="row">
+        <label class="mono small" for="rl">от</label><input type="text" id="rl" inputmode="decimal" autocomplete="off" style="width:90px">
+        <label class="mono small" for="rr">до</label><input type="text" id="rr" inputmode="decimal" autocomplete="off" style="width:90px">
+        <button class="btn" id="rCheck">Проверить</button>
+      </div>
+      <div class="feedback" id="rFb"></div>
+    </div>
+  </section>
+
+  <!-- ============ НАЙДИ ОШИБКУ ============ -->
+  <section class="view" id="view-err">
+    <div class="card">
+      <h2>Перевёртыши: найди ошибку</h2>
+      <p>На доске — решения квадратных задач с параметром. <b>Не в каждом есть ошибка</b> — реши сам и вынеси вердикт.</p>
+      <p class="score" style="margin-top:6px">верных вердиктов: <b id="eScore">0</b> из <b id="eSeen">0</b></p>
+    </div>
+    <div class="card" id="errCard">
+      <p class="mono small" style="color:var(--red);font-weight:700" id="eTag"></p>
+      <p class="qtask fx" id="eProblem"></p>
+      <div class="sol on" id="eWork" style="border-left-color:var(--muted)"></div>
+      <div class="verdict">
+        <button class="btn ghost" id="eOk">Решено верно</button>
+        <button class="btn ghost" id="eBad">Есть ошибка</button>
+      </div>
+      <div class="feedback" id="eFb"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="eNext" disabled>Следующее решение →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ КВИЗ И ДЗ ============ -->
+  <section class="view" id="view-test">
+    <div class="card red">
+      <h2>Виета с ловушкой</h2>
+      <p class="small muted">Три задачи, где параметр находится из Виеты — а потом проверяется существование корней. Если подходящих значений несколько, перечисли их через точку с запятой (например: 0; -1).</p>
+      <div class="dots" id="quizDots"></div>
+      <div id="quizList"></div>
+      <div class="row" style="margin-top:6px">
+        <button class="btn" id="quizCheck">Проверить всё</button>
+        <button class="btn ghost" id="quizReset">Сбросить</button>
+      </div>
+      <div class="feedback" id="quizFb"></div>
+    </div>
+
+    <div class="card">
+      <h2>Домашнее задание</h2>
+      <p class="small muted">Реши на бумаге, затем открой разбор и сверься.</p>
+      <div id="hwList"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s,r){return (r||document).querySelector(s);};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+  var TID="param18-quadratic";
+
+  /* Хранилище: мусор молча отбрасывается. Прочитанный ключ принимается, только
+     если это объект; своя запись { keys:{имя:true}, drillBest, passed } проверяется
+     по типу (clean), мусор заменяется значением по умолчанию. Запись — перечитать
+     ключ, поменять только свою ветку, записать: чужие ветки остаются как лежат. */
+  var KEY="mathExamCourseProgress.v1";
+  function isObj(v){ return !!v && typeof v==="object" && !Array.isArray(v); }
+  function readAll(){
+    try{ var v=JSON.parse(localStorage.getItem(KEY)||"{}"); return isObj(v)?v:{}; }
+    catch(e){ return {}; }
+  }
+  function clean(s){
+    s=isObj(s)?s:{};
+    var keys=isObj(s.keys)?s.keys:{}, k;
+    for(k in keys) if(keys[k]!==true) delete keys[k];
+    s.keys=keys;
+    s.drillBest=(typeof s.drillBest==="number"&&isFinite(s.drillBest)&&s.drillBest>=0)?s.drillBest:0;
+    s.passed=s.passed===true;
+    return s;
+  }
+  function save(patch){
+    try{
+      var all=readAll(); var s=all[TID]=clean(all[TID]);
+      if(patch.key) s.keys[patch.key]=true;
+      if(patch.drillBest!=null) s.drillBest=Math.max(s.drillBest,patch.drillBest);
+      if(patch.passed) s.passed=true;
+      localStorage.setItem(KEY,JSON.stringify(all));
+    }catch(e){}
+  }
+  var saved=clean(readAll()[TID]);
+
+  $$(".tab").forEach(function(t){
+    t.addEventListener("click",function(){
+      $$(".tab").forEach(function(x){x.setAttribute("aria-selected","false");});
+      t.setAttribute("aria-selected","true");
+      $$(".view").forEach(function(v){v.classList.remove("on");});
+      $("#view-"+t.dataset.view).classList.add("on");
+    });
+  });
+
+  $$("[data-flip]").forEach(function(box){
+    $("button",box).addEventListener("click",function(){
+      box.classList.toggle("on");
+      this.textContent=box.classList.contains("on")?"Скрыть":"Показать корни";
+    });
+  });
+
+  function pnum(v){
+    v=(v==null?"":(""+v)).trim().replace(",",".");
+    if(v==="") return null;
+    var m=v.match(/^(-?)(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
+    if(m){ var n=parseFloat(m[2])/parseFloat(m[3]); return m[1]?-n:n; }
+    var n2=parseFloat(v); return isNaN(n2)?NaN:n2;
+  }
+
+  function fnPath(f,x0,x1,step,PX,PY){
+    var d="",pen=false;
+    for(var x=x0;x<=x1+1e-9;x+=step){
+      var y=f(x);
+      if(!isFinite(y)){ pen=false; continue; }
+      d+=(pen?" L":" M")+PX(x).toFixed(1)+" "+PY(y).toFixed(1);
+      pen=true;
+    }
+    return d;
+  }
+
+  /* ===== Загадочная парабола ===== */
+  (function(){
+    var fig=$("#parFig"), fb=$("#qFb");
+    var xmin=-6,xmax=6,ymin=-6,ymax=8,u=24;
+    var ox=20+6*u, oy=14+8*u, W=40+12*u, H=28+14*u;
+    function PX(x){return ox+x*u;} function PY(y){return oy-y*u;}
+    var cur=null, streak=0, best=saved.drillBest||0;
+    $("#qBest").textContent=best;
+    function rint(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+    function pick(arr){return arr[rint(0,arr.length-1)];}
+    function gen(){
+      var a,h,k,d;
+      for(var t=0;t<300;t++){
+        a=pick([-2,-1,-0.5,0.5,1,2]);
+        d=(Math.abs(a)===0.5)?2:1;
+        h=(Math.abs(a)===0.5)?pick([-2,0,2]):rint(-3,3);
+        k=rint(-4,4);
+        var y2=k+a*d*d;
+        if(y2<ymin||y2>ymax) continue;
+        if(h-d<xmin||h+d>xmax) continue;
+        break;
+      }
+      cur={a:a,h:h,k:k,d:d,b:-2*a*h,c:a*h*h+k};
+      draw();
+      $("#qa").value="";$("#qb").value="";$("#qc").value="";
+      fb.className="feedback"; $("#qa").focus();
+    }
+    function draw(){
+      var grid="";
+      for(var i=xmin;i<=xmax;i++)
+        grid+='<line x1="'+PX(i)+'" y1="'+PY(ymin)+'" x2="'+PX(i)+'" y2="'+PY(ymax)+'" stroke="rgba(88,140,190,.18)"/>';
+      for(var j=ymin;j<=ymax;j++)
+        grid+='<line x1="'+PX(xmin)+'" y1="'+PY(j)+'" x2="'+PX(xmax)+'" y2="'+PY(j)+'" stroke="rgba(88,140,190,.18)"/>';
+      var f=function(x){return cur.a*(x-cur.h)*(x-cur.h)+cur.k;};
+      var path=fnPath(f,xmin,xmax,0.05,PX,PY);
+      var dots=[{x:cur.h,y:cur.k,big:true},{x:cur.h-cur.d,y:f(cur.h-cur.d)},{x:cur.h+cur.d,y:f(cur.h+cur.d)}]
+        .map(function(p){
+          return '<circle cx="'+PX(p.x)+'" cy="'+PY(p.y)+'" r="'+(p.big?6:4.5)+'" fill="#7A4A1E"/>'
+            +'<text x="'+(PX(p.x)+8)+'" y="'+(PY(p.y)-8)+'" font-size="11" fill="#7A4A1E" font-family="ui-monospace,monospace">('+p.x+'; '+p.y+')</text>';
+        }).join("");
+      fig.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img" aria-label="график параболы">'
+        +'<defs><clipPath id="clipPar"><rect x="'+PX(xmin)+'" y="'+PY(ymax)+'" width="'+(12*u)+'" height="'+(14*u)+'"/></clipPath></defs>'
+        +grid
+        +'<line x1="'+PX(xmin)+'" y1="'+PY(0)+'" x2="'+PX(xmax)+'" y2="'+PY(0)+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<line x1="'+PX(0)+'" y1="'+PY(ymin)+'" x2="'+PX(0)+'" y2="'+PY(ymax)+'" stroke="#2A2F38" stroke-width="1.3"/>'
+        +'<path d="M'+PX(xmax)+' '+PY(0)+' l-7 -4 v8 z" fill="#2A2F38"/>'
+        +'<path d="M'+PX(0)+' '+PY(ymax)+' l-4 7 h8 z" fill="#2A2F38"/>'
+        +'<path d="'+path+'" fill="none" stroke="#C77B48" stroke-width="2.5" clip-path="url(#clipPar)"/>'
+        +dots+'</svg>';
+    }
+    $("#qCheck").addEventListener("click",function(){
+      if(!cur) return;
+      var a=pnum($("#qa").value), b=pnum($("#qb").value), c=pnum($("#qc").value);
+      if(a===null||b===null||c===null){ fb.className="feedback warn on"; fb.textContent="Впиши все три коэффициента."; return; }
+      if(isNaN(a)||isNaN(b)||isNaN(c)){ fb.className="feedback bad on"; fb.textContent="Не разобрал число. Дробь пиши как 0.5 или 1/2."; return; }
+      var ok=Math.abs(a-cur.a)<1e-9&&Math.abs(b-cur.b)<1e-9&&Math.abs(c-cur.c)<1e-9;
+      if(ok){
+        streak++; if(streak>best){best=streak; save({drillBest:best});}
+        $("#qStreak").textContent=streak; $("#qBest").textContent=best;
+        fb.className="feedback ok on";
+        fb.textContent="Верно: a = "+cur.a+", b = "+cur.b+", c = "+cur.c+". Следующий график →";
+        setTimeout(gen,700);
+      } else {
+        streak=0; $("#qStreak").textContent=0;
+        fb.className="feedback bad on";
+        fb.textContent="Не сходится. Вершина (h; k) даёт b = −2a·h и c = a·h² + k; сам a виден по шагу от вершины.";
+      }
+    });
+    $("#qNew").addEventListener("click",gen);
+    ["#qa","#qb","#qc"].forEach(function(id){ $(id).addEventListener("keydown",function(e){ if(e.key==="Enter") $("#qCheck").click(); }); });
+    gen();
+  })();
+
+  /* ===== Касание оси ===== */
+  (function(){
+    var ka=$("#ka"), fig=$("#kasFig"), info=$("#kasInfo");
+    var xmin=-5,xmax=6,ymin=-6,ymax=10,ux=30,uy=18;
+    var ox=24-xmin*ux, oy=16+ymax*uy, W=44+(xmax-xmin)*ux, H=30+(ymax-ymin)*uy;
+    function PX(x){return ox+x*ux;} function PY(y){return oy-y*uy;}
+    function fnP(f){
+      var d="",pen=false;
+      for(var x=xmin;x<=xmax+1e-9;x+=0.05){
+        var y=f(x);
+        d+=(pen?" L":" M")+PX(x).toFixed(1)+" "+PY(y).toFixed(1); pen=true;
+      }
+      return d;
+    }
+    function render(){
+      var a=+ka.value;
+      $("#kav").textContent=a.toFixed(2);
+      var f=function(x){return x*x-2*a*x+a+3;};
+      var D=4*(a*a-a-3);
+      var grid="";
+      for(var i=xmin;i<=xmax;i++)
+        grid+='<line x1="'+PX(i)+'" y1="'+PY(ymin)+'" x2="'+PX(i)+'" y2="'+PY(ymax)+'" stroke="rgba(88,140,190,.14)"/>';
+      for(var j=ymin;j<=ymax;j+=2)
+        grid+='<line x1="'+PX(xmin)+'" y1="'+PY(j)+'" x2="'+PX(xmax)+'" y2="'+PY(j)+'" stroke="rgba(88,140,190,.14)"/>';
+      var roots="";
+      if(D>=0){
+        var s=Math.sqrt(a*a-a-3);
+        [a-s,a+s].forEach(function(r){
+          if(r>=xmin&&r<=xmax)
+            roots+='<circle cx="'+PX(r)+'" cy="'+PY(0)+'" r="4.5" fill="#C22F2A"/>';
+        });
+      }
+      var vx=a, vy=3+a-a*a;
+      var vertex=(vx>=xmin&&vx<=xmax&&vy>=ymin&&vy<=ymax)
+        ? '<circle cx="'+PX(vx)+'" cy="'+PY(vy)+'" r="4" fill="#16307F"/>' : "";
+      fig.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img" aria-label="парабола и ось">'
+        +'<defs><clipPath id="clipKas"><rect x="'+PX(xmin)+'" y="'+PY(ymax)+'" width="'+((xmax-xmin)*ux)+'" height="'+((ymax-ymin)*uy)+'"/></clipPath></defs>'
+        +grid
+        +'<line x1="'+PX(xmin)+'" y1="'+PY(0)+'" x2="'+PX(xmax)+'" y2="'+PY(0)+'" stroke="#2A2F38" stroke-width="1.4"/>'
+        +'<line x1="'+PX(0)+'" y1="'+PY(ymin)+'" x2="'+PX(0)+'" y2="'+PY(ymax)+'" stroke="#2A2F38" stroke-width="1.2"/>'
+        +'<path d="'+fnP(f)+'" fill="none" stroke="#C77B48" stroke-width="2.5" clip-path="url(#clipKas)"/>'
+        +vertex+roots+'</svg>';
+      var st, col;
+      if(Math.abs(a*a-a-3)<0.03){ st="почти касание: D ≈ 0 — один корень"; col="#B5720E"; }
+      else if(D>0){ st="D = "+D.toFixed(2)+" > 0 — два корня"; col="#16307F"; }
+      else { st="D = "+D.toFixed(2)+" < 0 — корней нет"; col="#C22F2A"; }
+      info.textContent="a = "+a.toFixed(2)+" · "+st;
+      info.style.color=col;
+    }
+    ka.addEventListener("input",render); render();
+    $("#kCheck").addEventListener("click",function(){
+      var s=pnum($("#ksum").value), p=pnum($("#kprod").value), fb=$("#kFb");
+      if(s===null||p===null){ fb.className="feedback warn on"; fb.textContent="Впиши оба значения."; return; }
+      var ok=Math.abs(s-1)<1e-9&&Math.abs(p+3)<1e-9;
+      if(ok){ fb.className="feedback ok on"; fb.textContent="Верно: для a² − a − 3 = 0 сумма корней 1, произведение −3 — Виета работает и по параметру."; save({key:"kasanie"}); }
+      else { fb.className="feedback bad on"; fb.textContent="Не сходится. Виета для a² − a − 3 = 0: сумма = −(−1), произведение = −3."; }
+    });
+  })();
+
+  /* ===== Корни по разные стороны от 2 ===== */
+  (function(){
+    var rp=$("#rp"), fig=$("#rocFig"), info=$("#rocInfo");
+    var xmin=-6,xmax=8,ymin=-40,ymax=60,ux=34,uy=3;
+    var ox=30-xmin*ux, oy=18+ymax*uy, W=52+(xmax-xmin)*ux, H=34+(ymax-ymin)*uy;
+    function PX(x){return ox+x*ux;} function PY(y){return oy-y*uy;}
+    function render(){
+      var p=+rp.value;
+      $("#rpv").textContent=p.toFixed(2);
+      var A=p*p+p+1, B=2*p-3, C=p-11;
+      var f=function(x){return A*x*x+B*x+C;};
+      var f2=4*p*p+9*p-13;
+      var grid="";
+      for(var i=xmin;i<=xmax;i++)
+        grid+='<line x1="'+PX(i)+'" y1="'+PY(ymin)+'" x2="'+PX(i)+'" y2="'+PY(ymax)+'" stroke="rgba(88,140,190,.12)"/>';
+      for(var j=ymin;j<=ymax;j+=10)
+        grid+='<line x1="'+PX(xmin)+'" y1="'+PY(j)+'" x2="'+PX(xmax)+'" y2="'+PY(j)+'" stroke="rgba(88,140,190,.14)"/>'
+          +(j!==0?'<text x="'+(PX(xmin)-4)+'" y="'+(PY(j)+4)+'" font-size="10" text-anchor="end" fill="#67707E" font-family="ui-monospace,monospace">'+j+'</text>':"");
+      var d="",pen=false;
+      for(var x=xmin;x<=xmax+1e-9;x+=0.05){
+        d+=(pen?" L":" M")+PX(x).toFixed(1)+" "+PY(f(x)).toFixed(1); pen=true;
+      }
+      var roots="", Dq=B*B-4*A*C;
+      if(Dq>=0){
+        var s=Math.sqrt(Dq);
+        [(-B-s)/(2*A),(-B+s)/(2*A)].forEach(function(r){
+          if(r>=xmin&&r<=xmax) roots+='<circle cx="'+PX(r)+'" cy="'+PY(0)+'" r="4.5" fill="#C22F2A"/>';
+        });
+      }
+      var inside=f2<0;
+      fig.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img" aria-label="парабола и точка x=2">'
+        +'<defs><clipPath id="clipRoc"><rect x="'+PX(xmin)+'" y="'+PY(ymax)+'" width="'+((xmax-xmin)*ux)+'" height="'+((ymax-ymin)*uy)+'"/></clipPath></defs>'
+        +grid
+        +'<line x1="'+PX(xmin)+'" y1="'+PY(0)+'" x2="'+PX(xmax)+'" y2="'+PY(0)+'" stroke="#2A2F38" stroke-width="1.4"/>'
+        +'<line x1="'+PX(0)+'" y1="'+PY(ymin)+'" x2="'+PX(0)+'" y2="'+PY(ymax)+'" stroke="#2A2F38" stroke-width="1.1"/>'
+        +'<line x1="'+PX(2)+'" y1="'+PY(ymin)+'" x2="'+PX(2)+'" y2="'+PY(ymax)+'" stroke="#67707E" stroke-dasharray="5 5" stroke-width="1.3"/>'
+        +'<text x="'+(PX(2)+5)+'" y="'+(PY(ymax)+12)+'" font-size="12" fill="#67707E" font-family="ui-monospace,monospace">x = 2</text>'
+        +'<path d="'+d+'" fill="none" stroke="#C77B48" stroke-width="2.5" clip-path="url(#clipRoc)"/>'
+        +roots
+        +((f2>=ymin&&f2<=ymax)?'<circle cx="'+PX(2)+'" cy="'+PY(f2)+'" r="6" fill="'+(inside?"#C22F2A":"#1E7A3C")+'"/>':"")
+        +'</svg>';
+      info.textContent="p = "+p.toFixed(2)+" · f(2) = "+f2.toFixed(2)+" → "
+        +(inside?"f(2) < 0: точка x = 2 между корнями ✓":"f(2) ≥ 0: точка x = 2 не между корнями");
+      info.style.color=inside?"#1E7A3C":"#C22F2A";
+    }
+    rp.addEventListener("input",render); render();
+    $("#rCheck").addEventListener("click",function(){
+      var l=pnum($("#rl").value), r=pnum($("#rr").value), fb=$("#rFb");
+      if(l===null||r===null){ fb.className="feedback warn on"; fb.textContent="Впиши обе границы."; return; }
+      var ok=Math.abs(l+3.25)<1e-9&&Math.abs(r-1)<1e-9;
+      if(ok){ fb.className="feedback ok on"; fb.textContent="Верно: (p − 1)(4p + 13) < 0 при −3,25 < p < 1. В тесте это и были ответы: а) −3,25; б) 1."; save({key:"rootsloc"}); }
+      else { fb.className="feedback bad on"; fb.textContent="Не сходится. Корни выражения f(2): p = 1 и p = −13/4; между ними произведение отрицательно."; }
+    });
+  })();
+
+  /* ===== Перевёртыши ===== */
+  (function(){
+    var items=[
+      { p:"x² + (a² − 9)x + a = 0 — при каком a сумма корней равна 0?", err:true,
+        work:"По Виете: x₁ + x₂ = 9 − a² = 0.\nЗначит a = ±3.\nОтвет: a = 3 или a = −3.",
+        why:"Ошибка — Виета применена без проверки существования корней. При a = 3 уравнение x² + 3 = 0 корней не имеет; при a = −3 уравнение x² − 3 = 0 имеет корни. Верный ответ: a = −3." },
+      { p:"x² − (a + 2)x + 2a = 0 — при каком a уравнение имеет один корень?", err:false,
+        work:"Сумма корней a + 2, произведение 2a — подходит разложение:\n(x − 2)(x − a) = 0, корни 2 и a.\nОдин корень ⇔ корни совпали ⇔ a = 2.\nОтвет: a = 2.",
+        why:"Верно. Разложение честное, и D = (a + 2)² − 8a = (a − 2)² это подтверждает: ноль ровно при a = 2." },
+      { p:"(a − 1)x² + 2x − 1 = 0 — при каких a ровно один корень?", err:true,
+        work:"Один корень ⇔ D = 0.\nD = 4 + 4(a − 1) = 4a = 0 → a = 0.\nОтвет: a = 0.",
+        why:"Ошибка — потерян случай, когда уравнение не квадратное. При a = 1 оно линейное: 2x − 1 = 0, один корень. Верный ответ: a = 0 или a = 1." },
+      { p:"a·x² + 4x + a > 0 при всех x — при каких a?", err:true,
+        work:"Нужно D < 0:\n16 − 4a² < 0 → a² > 4 → a < −2 или a > 2.\nОтвет: a < −2 или a > 2.",
+        why:"Ошибка — забыто направление ветвей. Для «> 0 при всех x» нужно ещё a > 0; при a < −2 парабола смотрит вниз. Верный ответ: a > 2." },
+      { p:"x² − 6x + 6a − a² = 0 — решить при каждом a.", err:false,
+        work:"Подбором по Виете: сумма 6, произведение a(6 − a).\nКорни: x₁ = a, x₂ = 6 − a.\nОтвет: x₁ = a, x₂ = 6 − a при любом a.",
+        why:"Верно. D = 36 − 4(6a − a²) = 4(a − 3)² ≥ 0 при всех a, так что корни существуют всегда (при a = 3 совпадают: x = 3)." },
+      { p:"(p² + p + 1)x² + (2p − 3)x + p − 11 = 0 — корни по разные стороны от 2?", err:true,
+        work:"Условие: f(2) > 0.\n4p² + 9p − 13 > 0 → (p − 1)(4p + 13) > 0.\nОтвет: p < −13/4 или p > 1.",
+        why:"Ошибка в знаке. Ветви вверх (p² + p + 1 > 0), значит МЕЖДУ корнями функция отрицательна: нужно f(2) < 0. Верный ответ: −13/4 < p < 1." }
+    ];
+    for(var i=items.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=items[i];items[i]=items[j];items[j]=t;}
+    var idx=0, seen=0, score=0, answered=false;
+    var tag=$("#eTag"),prob=$("#eProblem"),work=$("#eWork"),fb=$("#eFb"),next=$("#eNext");
+    function show(){
+      answered=false;
+      var it=items[idx];
+      tag.textContent="Решение "+(idx+1)+" из "+items.length;
+      prob.textContent=it.p; work.textContent=it.work;
+      fb.className="feedback"; next.disabled=true;
+      $("#eOk").disabled=false; $("#eBad").disabled=false;
+    }
+    function verdict(userSaysError){
+      if(answered) return; answered=true; seen++;
+      var it=items[idx];
+      var right=(userSaysError===it.err);
+      if(right) score++;
+      $("#eScore").textContent=score; $("#eSeen").textContent=seen;
+      fb.className="feedback "+(right?"ok":"bad")+" on";
+      fb.textContent=(right?"Верный вердикт. ":"Неверно. ")+(it.err?"Здесь ошибка. ":"Здесь всё верно. ")+it.why;
+      $("#eOk").disabled=true; $("#eBad").disabled=true; next.disabled=false;
+      if(seen>=items.length && score===items.length) save({key:"pereverts"});
+    }
+    $("#eOk").addEventListener("click",function(){verdict(false);});
+    $("#eBad").addEventListener("click",function(){verdict(true);});
+    next.addEventListener("click",function(){ idx=(idx+1)%items.length; show(); });
+    show();
+  })();
+
+  /* ===== Виета с ловушкой ===== */
+  (function(){
+    var quiz=[
+      { t:"1. x² + x + a² + a = 0. При каких a произведение корней равно 0?", a:[-1,0],
+        s:"x₁·x₂ = a² + a = 0 → a = 0 или a = −1.\nПроверка корней: в обоих случаях уравнение одно и то же — x² + x = 0, корни 0 и −1 есть.\nОтвет: 0; −1." },
+      { t:"2. x² + (a² − 9)x + a = 0. При каких a сумма корней равна 0?", a:[-3],
+        s:"x₁ + x₂ = 9 − a² = 0 → a = ±3.\nПроверка: a = 3 → x² + 3 = 0, корней нет — отбрасываем.\na = −3 → x² − 3 = 0, корни ±√3 есть.\nОтвет: −3." },
+      { t:"3. x² + 2a·x + 6a = 0. При каких a сумма квадратов корней равна 40?", a:[-2],
+        s:"x₁² + x₂² = (x₁ + x₂)² − 2x₁x₂ = 4a² − 12a = 40 → a² − 3a − 10 = 0 → a = 5 или a = −2.\nПроверка: a = 5 → x² + 10x + 30, D = 100 − 120 < 0 — корней нет.\na = −2 → x² − 4x − 12, D = 64 — корни есть.\nОтвет: −2." }
+    ];
+    var list=$("#quizList"), dots=$("#quizDots");
+    quiz.forEach(function(q,i){
+      var wrap=document.createElement("div");
+      wrap.className="card"; wrap.style.background="rgba(255,255,255,.55)"; wrap.style.borderColor="var(--line)"; wrap.style.marginBottom="12px";
+      wrap.innerHTML='<p class="qtask fx">'+q.t+'</p>'
+        +'<div class="row"><label class="mono small">Ответ:</label>'
+        +'<input type="text" inputmode="decimal" autocomplete="off" data-i="'+i+'" style="width:150px" aria-label="ответ на вопрос '+(i+1)+'">'
+        +'<button class="btn ghost" data-sol="'+i+'">Разбор</button></div>'
+        +'<div class="sol qsol" id="qsol'+i+'">'+q.s+'</div>';
+      list.appendChild(wrap);
+      dots.appendChild(document.createElement("span"));
+    });
+    $$("[data-sol]",list).forEach(function(btn){
+      btn.addEventListener("click",function(){ $("#qsol"+btn.dataset.sol).classList.toggle("on"); });
+    });
+    function pset(v){
+      v=(v||"").trim();
+      if(!v) return null;
+      var parts=v.split(/[;\s]+/).filter(Boolean).map(pnum);
+      if(parts.some(function(x){return x==null||isNaN(x);})) return NaN;
+      parts.sort(function(a,b){return a-b;});
+      return parts.filter(function(x,i){return i===0||Math.abs(x-parts[i-1])>1e-9;});
+    }
+    function sameSet(u,a){
+      if(!u||typeof u==="number"||u.length!==a.length) return false;
+      for(var i=0;i<a.length;i++) if(Math.abs(u[i]-a[i])>1e-9) return false;
+      return true;
+    }
+    $("#quizCheck").addEventListener("click",function(){
+      var right=0, filled=0;
+      $$("input[data-i]",list).forEach(function(inp,i){
+        var u=pset(inp.value); var d=dots.children[i];
+        d.className="";
+        if(u===null) return;
+        filled++;
+        if(sameSet(u,quiz[i].a)){ right++; d.className="ok"; }
+        else d.className="bad";
+      });
+      var fb=$("#quizFb");
+      if(filled<quiz.length){ fb.className="feedback warn on"; fb.textContent="Заполнены не все поля: "+filled+" из "+quiz.length+"."; }
+      else if(right===quiz.length){ fb.className="feedback ok on"; fb.textContent="3 из 3 — глава закрыта. Виета с проверкой корней — твоя."; save({passed:true,key:"vieta"}); }
+      else { fb.className="feedback bad on"; fb.textContent="Верно "+right+" из "+quiz.length+". Помни: значение из Виеты подставляется обратно, и корни должны существовать."; }
+    });
+    $("#quizReset").addEventListener("click",function(){
+      $$("input[data-i]",list).forEach(function(inp){inp.value="";});
+      Array.prototype.forEach.call(dots.children,function(d){d.className="";});
+      $("#quizFb").className="feedback";
+      $$(".qsol",list).forEach(function(s){s.classList.remove("on");});
+    });
+  })();
+
+  /* ===== ДЗ ===== */
+  (function(){
+    var hw=[
+      { t:"При каких значениях параметра p уравнение x⁴ − (3p − 1)·x² + 2p² − p = 0 имеет ровно два корня?",
+        s:"Замена t = x²: t² − (3p − 1)t + p(2p − 1) = 0.\nПодбором по Виете: t₁ = p, t₂ = 2p − 1 (сумма 3p − 1 ✓, произведение p(2p − 1) ✓).\nКаждый t > 0 даёт два x, t = 0 — один x, t < 0 — ни одного.\n\nРовно два корня по x возможны двумя путями:\n1) Совпавший положительный t: 2p − 1 = p → p = 1, тогда t = 1 > 0 — два корня ✓.\n2) Один t положительный, другой отрицательный: p·(2p − 1) < 0 → 0 < p < 1/2 ✓.\n\nГраницы проверяем отдельно:\np = 0: t ∈ {0; −1} → один корень x = 0 — не подходит.\np = 1/2: t ∈ {1/2; 0} → 2 + 1 = 3 корня — не подходит.\n\nОтвет: p ∈ (0; 1/2) ∪ {1}." },
+      { t:"Найти все значения параметра p, для которых неравенство (p − 1)·x² + 2(p + 1)·x + p − 2 ≤ 0 выполняется при всех x.",
+        s:"Случай p = 1: неравенство 4x − 1 ≤ 0 — не при всех x, не подходит.\n\nСлучай p ≠ 1: нужна парабола ветвями вниз, целиком не выше оси:\n{ p − 1 < 0;\n  D/4 = (p + 1)² − (p − 1)(p − 2) ≤ 0.\n\nD/4 = p² + 2p + 1 − (p² − 3p + 2) = 5p − 1 ≤ 0 → p ≤ 1/5.\nВместе с p < 1 получаем p ≤ 0,2.\n\nОтвет: p ≤ 0,2." },
+      { t:"При каких a уравнение (x² + 2x − a + 1)·(x − a + 3) = 0 имеет ровно два различных корня?",
+        s:"Первый множитель: x² + 2x + 1 = a, то есть (x + 1)² = a.\n a < 0 — корней нет; a = 0 — один корень x = −1; a > 0 — два корня x = −1 ± √a.\nВторой множитель всегда даёт корень x = a − 3.\n\nСчитаем различные корни:\n a < 0: только x = a − 3 → 1 корень.\n a = 0: {−1; −3} → 2 корня ✓.\n a > 0: три кандидата; их станет два, если a − 3 совпал с −1 ± √a:\n a − 2 = ±√a → a² − 5a + 4 = 0 → a = 1 или a = 4.\n Проверка: a = 1 → корни {−2; 0; −2} = {−2; 0} ✓; a = 4 → {−3; 1; 1} = {−3; 1} ✓.\n Прочие a > 0 дают 3 корня.\n\nОтвет: a ∈ {0; 1; 4}." }
+    ];
+    var list=$("#hwList");
+    hw.forEach(function(q,i){
+      var wrap=document.createElement("div");
+      wrap.style.borderTop="1px solid var(--line)"; wrap.style.paddingTop="12px"; wrap.style.marginTop="12px";
+      if(i===0){wrap.style.borderTop="none";wrap.style.paddingTop="0";wrap.style.marginTop="0";}
+      wrap.innerHTML='<p class="qtask"><b>'+(i+1)+'.</b> <span class="fx">'+q.t+'</span></p>'
+        +'<button class="btn ghost" data-h="'+i+'">Показать разбор</button>'
+        +'<div class="sol" id="hsol'+i+'">'+q.s+'</div>';
+      list.appendChild(wrap);
+    });
+    $$("[data-h]",list).forEach(function(btn){
+      btn.addEventListener("click",function(){
+        var el=$("#hsol"+btn.dataset.h); el.classList.toggle("on");
+        btn.textContent=el.classList.contains("on")?"Скрыть разбор":"Показать разбор";
+        if(el.classList.contains("on")) save({key:"hw"+btn.dataset.h});
+      });
+    });
+  })();
+
+})();
+</script>
+</body>
+</html>

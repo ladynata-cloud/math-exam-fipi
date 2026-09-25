@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 18 · Параметры · Оглавление курса</title>
+<style>
+  :root{
+    --paper:#FAFAF4; --cell:rgba(88,140,190,.16); --ink:#1E3A9F; --ink-strong:#16307F;
+    --graphite:#2A2F38; --red:#C22F2A; --muted:#67707E; --line:rgba(42,47,56,.16);
+    --ok:#1E7A3C;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--graphite);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+    background-size:26px 26px;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--ink)}
+  a:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
+  .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
+  h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
+  .lede{max-width:700px;margin:0 0 26px}
+  h2{margin:28px 0 4px;font-size:21px;font-weight:800;color:var(--ink-strong)}
+  .gsub{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .tcard{position:relative;display:flex;flex-direction:column;gap:8px;border:1.5px solid var(--ink);border-radius:10px;
+    background:rgba(250,250,244,.92);padding:16px;text-decoration:none;color:inherit;
+    transition:transform .12s ease, box-shadow .12s ease}
+  a.tcard:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(22,48,127,.14)}
+  .tcard.soon{border-style:dashed;border-color:var(--muted);opacity:.75}
+  .tfor{font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+  .tcard.soon .tfor{color:var(--muted)}
+  .th{font-size:17.5px;font-weight:800;color:var(--ink-strong);line-height:1.2}
+  .td{font-size:14px;color:var(--graphite);margin:0}
+  .kit{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .chip{font:600 11.5px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);
+    border:1px solid rgba(30,58,159,.35);border-radius:999px;padding:4px 8px;background:rgba(255,255,255,.6)}
+  .tcard.soon .chip{color:var(--muted);border-color:rgba(103,112,126,.4)}
+  .prog{margin-top:auto;padding-top:8px;font:700 12.5px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .prog b{color:var(--ink-strong)}
+  .prog .done{color:var(--ok)}
+  .soonmark{font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../index.html">← Курс</a>
+  <p class="eyebrow">задание 18 · профильный ЕГЭ · параметры</p>
+  <h1>Параметры: от kx = b до плоскости XOA</h1>
+  <p class="lede">Курс собран по главам: сначала уравнения-«кирпичи» (линейные, квадратные, дробные, корни, модули), затем методы решения задач с параметром и большой практикум. В каждой главе — живые графики, перевёртыши «найди ошибку», квиз и домашнее задание. Прогресс сохраняется в этом браузере.</p>
+
+  <h2>Главы</h2>
+  <p class="gsub">База: каждое семейство уравнений — отдельная глава с живыми моделями.</p>
+  <div class="grid" id="gChapters"></div>
+
+  <h2>Методы</h2>
+  <p class="gsub">Три взгляда на одну задачу: аналитика, графики в плоскости XOY, плоскость XOA.</p>
+  <div class="grid" id="gMethods"></div>
+
+  <h2>Практикум и зачёт</h2>
+  <p class="gsub">Задачи в формате ЕГЭ: разбор, дриллы «сколько решений» и зачётная серия.</p>
+  <div class="grid" id="gFinal"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* Хранилище только читается. Мусор молча отбрасывается: ключ принимается,
+     только если это объект, запись главы — только объект; keys считается,
+     только если это объект, drillBest — только неотрицательное число
+     (строка из хранилища в innerHTML не попадает). */
+  function isObj(v){ return !!v && typeof v==="object" && !Array.isArray(v); }
+  function readAll(){
+    try{ var v=JSON.parse(localStorage.getItem("mathExamCourseProgress.v1")||"{}"); return isObj(v)?v:{}; }
+    catch(e){ return {}; }
+  }
+  function keyCount(s){ return isObj(s.keys)?Object.keys(s.keys).length:0; }
+  function best(s){ return (typeof s.drillBest==="number"&&isFinite(s.drillBest)&&s.drillBest>0)?s.drillBest:0; }
+
+  function chapterProg(tid,drillName){
+    var s=readAll()[tid];
+    if(!isObj(s)) return "ещё не начата";
+    var parts=[];
+    var keys=keyCount(s);
+    if(keys) parts.push("ключей: "+keys);
+    if(best(s)) parts.push(drillName+": "+best(s));
+    if(s.passed===true) parts.push('<span class="done">квиз ✓</span>');
+    return parts.length?parts.join(" · "):"открыта, прогресса пока нет";
+  }
+
+  function practProg(){
+    var s=readAll()["parameters-t18"];
+    if(!isObj(s)) return "ещё не начат";
+    var parts=[];
+    var keys=keyCount(s);
+    parts.push("ключей: "+keys+"/6");
+    if(best(s)) parts.push("дриллы: "+best(s)+"/8");
+    if(s.passed===true) parts.push('<span class="done">зачёт ✓</span>');
+    return parts.join(" · ");
+  }
+
+  var chapters=[
+    { for:"урок 0 · старт", h:"Что такое параметр", href:"intro.html", ready:true,
+      d:"Две роли буквы, ответ-словарь и первое особое значение. Живые модели: безобидная и опасная буква, дрилл «Три исхода» и графический счётчик |x| = a.",
+      kit:["две роли буквы","Три исхода","|x| = a","ответ-словарь"],
+      prog:function(){return chapterProg("param18-intro","серия");} },
+    { for:"глава 1 · база", h:"Линейные уравнения и неравенства", href:"linear.html", ready:true,
+      d:"Рефлекс k·x = b: три случая по коэффициенту при x. Две прямые на графике, Загадочная прямая и мини-тест 2109.",
+      kit:["две прямые","Загадочная прямая","перевёртыши","тест 2109"],
+      prog:function(){return chapterProg("param18-linear","серия");} },
+    { for:"глава 2 · квадратные", h:"Квадратные уравнения", href:"quadratic.html", ready:true,
+      d:"Разложение подбором, живой дискриминант «касание оси», расположение корней относительно точки и Виета с проверкой.",
+      kit:["Загадочная парабола","касание оси","корни и точка","Виета"],
+      prog:function(){return chapterProg("param18-quadratic","серия");} },
+    { for:"глава 3 · дроби", h:"Дробно-рациональные уравнения", href:"fractional.html", ready:true,
+      d:"Числитель даёт кандидатов, знаменатель — выколотые точки. Считаем выживших: живая дробь, Загадочная гипербола и вырождение дробно-линейной.",
+      kit:["живая дробь","Загадочная гипербола","вырождение","задачи 9–10"],
+      prog:function(){return chapterProg("param18-fractional","серия");} },
+    { for:"глава 4 · корни", h:"Иррациональные уравнения", href:"irrational.html", ready:true,
+      d:"Возведение в квадрат рождает призрачную ветвь — посторонние корни видно глазами. Касание прямой, Загадочный корень и отрезки-лучи теста 0510.",
+      kit:["корень против прямой","Загадочный корень","отрезок и луч","тест 0510"],
+      prog:function(){return chapterProg("param18-irrational","серия");} },
+    { for:"глава 5 · модули", h:"Уравнения с модулем", href:null, ready:false,
+      d:"«Резиновая галочка» |x − a| + b: движение вершины, счёт решений, два модуля на одной оси.",
+      kit:["галочка","|x−a|=|x−b|","три корня"] },
+    { for:"глава 6 · системы", h:"Системы и окружности", href:null, ready:false,
+      d:"Окружность против многоугольника: касания, углы, счёт общих точек. Задачи №13–14 банка.",
+      kit:["окружность и ромб","две окружности","касания"] }
+  ];
+
+  var methods=[
+    { for:"метод · аналитика", h:"Аналитический метод", href:null, ready:false,
+      d:"Равносильные переходы, замена, симметрия корней. Уроки 8–10 исходного курса: 6 + 3 + 6 задач.",
+      kit:["равносильность","замена","симметрия"] },
+    { for:"метод · графики", h:"Графики и плоскость XOA", href:null, ready:false,
+      d:"Семейства кривых в XOY и метод плоскости XOA: параметр становится второй координатой.",
+      kit:["семейства","XOA","полигоны"] }
+  ];
+
+  var finals=[
+    { for:"практикум · 6 задач", h:"Параметр на графике", href:"graphic.html", ready:true,
+      d:"Шесть задач формата ЕГЭ с разбором по шагам, дриллы «сколько решений» и зачётная серия из 8 вопросов.",
+      kit:["6 задач","дриллы","зачёт-серия 8"],
+      prog:practProg },
+    { for:"экзамен · линия 18", h:"Вариант по линии 18", href:"../../exam/variant.html?m=18", ready:true,
+      d:"Экзаменационный тренажёр всего курса: генератор задач по параметрам из всех глав — линейные, Виета, расположение корней, дроби, модуль и корень. Каждая задача с разбором по шагам.",
+      kit:["8 генераторов","разбор по шагам","формат ЕГЭ"],
+      prog:function(){return "решения по шагам · журнал в общем экзамене";} },
+    { for:"зачёт · финал", h:"Зачётные задачи курса", href:null, ready:false,
+      d:"|2x − a| ≤ |x − 1| с отрезком длины 1 и задача со звёздочкой про корни по обе стороны от −3.",
+      kit:["отрезок длины 1","звёздочка"] }
+  ];
+
+  function card(t){
+    var el=document.createElement(t.ready?"a":"div");
+    el.className="tcard"+(t.ready?"":" soon");
+    if(t.ready) el.href=t.href;
+    var kit=(t.kit||[]).map(function(k){return '<span class="chip">'+k+'</span>';}).join("");
+    var prog=t.ready
+      ? '<p class="prog">прогресс: <b>'+t.prog()+'</b></p>'
+      : '<p class="prog"><span class="soonmark">скоро — глава в сборке</span></p>';
+    el.innerHTML='<p class="tfor">'+t.for+'</p>'
+      +'<p class="th">'+t.h+'</p>'
+      +'<p class="td">'+t.d+'</p>'
+      +'<div class="kit">'+kit+'</div>'
+      +prog;
+    return el;
+  }
+
+  chapters.forEach(function(t){ document.getElementById("gChapters").appendChild(card(t)); });
+  methods.forEach(function(t){ document.getElementById("gMethods").appendChild(card(t)); });
+  finals.forEach(function(t){ document.getElementById("gFinal").appendChild(card(t)); });
+})();
+</script>
+</body>
+</html>
