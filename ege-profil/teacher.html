@@ -22,9 +22,11 @@
   a{color:var(--ink)}
   a:focus-visible,button:focus-visible,textarea:focus-visible{outline:3px solid rgba(30,58,159,.4);outline-offset:2px;border-radius:4px}
   .skip{position:absolute;left:-9999px}
-  .skip:focus{position:static;display:inline-block;margin-bottom:8px}
+  .skip:focus{position:static;display:inline-flex;align-items:center;min-height:44px;margin-bottom:8px}
   .back{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
   .back:hover{color:var(--ink)}
+  /* касание: «← Курс» — зона нажатия не ниже 44 px; мышью вид прежний (как в review.html) */
+  @media (pointer:coarse){ .back{display:inline-flex;align-items:center;min-height:44px} }
   .eyebrow{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:16px 0 8px}
   h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;font-weight:800;color:var(--ink-strong)}
   .lede{max-width:700px;margin:0 0 20px}
@@ -137,11 +139,8 @@
 
   var doc = document;
   function $(sel){ return doc.querySelector(sel); }
-  function esc(s){
-    return String(s).replace(/[&<>"]/g, function(c){
-      return c === "&" ? "&amp;" : c === "<" ? "&lt;" : c === ">" ? "&gt;" : "&quot;";
-    });
-  }
+  /* общий esc() из registry.js: всё из хранилища и из кода ученика — только через него */
+  var esc = RV.esc;
   function dateOf(ts){ return ts ? new Date(ts).toLocaleDateString("ru-RU") : ""; }
 
   /* ---------- сводка ---------- */
@@ -155,8 +154,8 @@
       return '<li class="' + (shut ? "shut" : "open") + '">' +
         '<span class="mark">' + (shut ? "✓" : "•") + '</span>' +
         esc(meta ? meta.n : it.type) +
-        ' <span class="muted">· промахов: ' + it.w + ' · подряд верных: ' + it.r + ' из 3' +
-        (it.last ? " · " + dateOf(it.last) : "") + '</span></li>';
+        ' <span class="muted">· промахов: ' + esc(it.w) + ' · подряд верных: ' + esc(it.r) + ' из 3' +
+        (it.last ? " · " + esc(dateOf(it.last)) : "") + '</span></li>';
     }
     for (i = 0; i < journal.open.length; i++) rows.push(line(journal.open[i], false));
     for (i = 0; i < journal.closed.length; i++) rows.push(line(journal.closed[i], true));
@@ -165,8 +164,9 @@
   }
 
   function renderCards(){
+    /* readLive() и decode() отдают только объект; мусор в журнале RV пропускает */
     var all = view || PROGRESS_CODE.readLive();
-    var mk = all.mistakes || {};
+    var mk = all.mistakes;
     var host = $("#cards");
     var html = [], i, t, last;
 
@@ -180,7 +180,7 @@
             '<span class="tid">' + esc(t.tid) + '</span>' +
           '</div>' +
           '<div class="progress" data-progress="' + esc(t.adapter) + '"></div>' +
-          '<p class="small muted">последняя ошибка в журнале: ' + (last ? dateOf(last) : "записей нет") + '</p>' +
+          '<p class="small muted">последняя ошибка в журнале: ' + (last ? esc(dateOf(last)) : "записей нет") + '</p>' +
           typesHtml(RV.journalOf(mk, t.tid)) +
         '</div>'
       );
@@ -188,7 +188,8 @@
     host.innerHTML = html.join("");
     PROGRESS.apply(host, view ? PROGRESS.snapshotStore(view) : PROGRESS.liveStore());
 
-    var who = (all.student && all.student.name) ? String(all.student.name) : "";
+    /* имя ученика — только строка и только как текст */
+    var who = (RV.isObj(all.student) && typeof all.student.name === "string") ? all.student.name : "";
     $("#sourceLine").textContent = (view
       ? "Показан прогресс из вставленного кода. В этом браузере ничего не изменено."
       : "Показан прогресс этого браузера.") + (who ? " Ученик: " + who + "." : "");
@@ -210,11 +211,18 @@
     });
   }
 
+  /* сколько испорченного нашлось в журнале кода — для сообщения */
+  function junkNote(c, verb){
+    if (c.branch) return " Журнал ошибок в коде испорчен и " + (verb ? "не загружен." : "не показан.");
+    if (c.dropped) return " Испорченных записей журнала ошибок " + (verb ? "отброшено" : "пропущено") + ": " + c.dropped + ".";
+    return "";
+  }
+
   $("#showBtn").addEventListener("click", function(){
     withCode(function(obj){
       view = obj;
       renderCards();
-      say("Код прочитан. Это просмотр: прогресс в этом браузере не тронут.");
+      say("Код прочитан. Это просмотр: прогресс в этом браузере не тронут." + junkNote(RV.cleanJournal(obj), false));
     });
   });
 
@@ -222,11 +230,13 @@
     withCode(function(obj){
       if (!confirm("Заменить прогресс в этом браузере прогрессом из кода?\n\nПрежний прогресс будет сохранён в резервной копии, вернуть его можно кнопкой «Вернуть прежний прогресс».")) return;
       try{
-        PROGRESS_CODE.loadInto(obj);
+        /* данные ученика — как есть; из журнала уходят только записи-мусор */
+        var c = RV.cleanJournal(obj);
+        PROGRESS_CODE.loadInto(c.obj);
         view = null;
         renderCards();
         $("#restoreBtn").hidden = false;
-        say("Прогресс загружен. Прежний сохранён в резервной копии.");
+        say("Прогресс загружен. Прежний сохранён в резервной копии." + junkNote(c, true));
       }catch(err){
         say((err && err.message) || "Не получилось записать прогресс.", true);
       }

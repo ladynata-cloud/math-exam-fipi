@@ -322,13 +322,23 @@ var PROGRESS = (function(){
       bar(host, best/100, "последний: " + cnt(last.primary) + " перв. · " + num(last.test) + " тест. · лучший: " + best, best >= 100);
     },
     review: function(host){
+      /* То же правило записи, что entry() и keyOk() в registry.js (страница
+         «Работа над ошибками»): ключ «TID|тип», запись — объект, w — число ≥ 0,
+         r и метки времени — числа ≥ 0 или их нет. Иначе запись не в счёт.
+         Менять — в обоих местах: гейт tests/cabinet-safety-test.js сверяет
+         этот счёт с RV.open()/RV.closed() на сгенерированных записях. */
       var all = read(KEY);
       var mk = isObj(all) && isObj(all.mistakes) ? all.mistakes : null;
       if (!mk){ bar(host, null, "журнал пуст"); return; }
-      var open = 0, closed = 0, k, e;
+      var open = 0, closed = 0, k, e, i;
+      function opt(v, max){ return v === undefined || (typeof v === "number" && isFinite(v) && v >= 0 && v <= max); }
       for (k in mk){
+        if (!Object.prototype.hasOwnProperty.call(mk, k)) continue;
+        i = k.indexOf("|");
+        if (!(i > 0 && i < k.length - 1)) continue;
         e = mk[k];
-        if (!isObj(e)) continue;
+        if (!isObj(e) || e.w === undefined || !opt(e.w, Infinity) || !opt(e.r, Infinity) ||
+            !opt(e.lastWrong, 8.64e15) || !opt(e.last, 8.64e15)) continue;
         if (cnt(e.w) > 0){ if (cnt(e.r) >= 3) closed++; else open++; }
       }
       if (!open && !closed){ bar(host, null, "журнал пуст"); return; }

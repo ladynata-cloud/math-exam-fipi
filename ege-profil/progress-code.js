@@ -136,13 +136,18 @@ var PROGRESS_CODE = (function(){
   }
 
   /* ---------- localStorage ---------- */
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  /* Прогресс этого браузера — только объект: "null", строка, массив, число
+     и битый JSON молча читаются как пустой прогресс. */
   function readLive(){
-    try{ var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : {}; }
+    try{ var raw = localStorage.getItem(KEY), obj = raw ? JSON.parse(raw) : {}; return isObj(obj) ? obj : {}; }
     catch(e){ return {}; }
   }
   /* Пишет прогресс в этот браузер, сохранив прежний под ключом .backup.
+     Верх прогресса — только объект, иначе отказ и ничего не записано.
      Возвращает true, если резервная копия сделана. */
   function loadInto(obj){
+    if (!isObj(obj)) throw new Error("Код не загружен: внутри не объект прогресса.");
     var cur;
     try{ cur = localStorage.getItem(KEY); }catch(e){ cur = null; }
     try{
