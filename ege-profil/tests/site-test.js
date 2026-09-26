@@ -497,7 +497,11 @@ const der = (seed, store) => boot(DER, win => {
   if (store) win.localStorage.setItem(KEY, JSON.stringify(store));
 });
 const flushTimers = () => { while (timers.length) timers.shift()(); };
-const shownAnswer = d => { d.getElementById('taskSol').click(); const m = d.getElementById('taskSolBox').textContent.match(/Ответ: (.+)\.$/); return m && m[1]; };
+/* ответ задачи — с последней ступени лестницы разбора: «Разбор по шагам» показывает
+   вопрос первой ступени, дальше «Ответ шага» / «Следующий шаг» до .lfinal («Ответ: X.»);
+   walkLadder возвращает число нажатий кнопки лестницы */
+const walkLadder = d => { d.getElementById('taskSol').click(); const box = d.getElementById('taskSolBox'); const btn = box.querySelector('.ladder-btn'); let n = 0; while (!box.querySelector('.lfinal') && n < 40){ btn.click(); n++; } return n; };
+const shownAnswer = d => { walkLadder(d); const f = d.getElementById('taskSolBox').querySelector('.lfinal'); const m = f && f.textContent.match(/^Ответ: (.+)\.$/); return m && m[1]; };
 const recOf = w => JSON.parse(w.localStorage.getItem(KEY) || '{}');
 /* решённые по треку extrema; отсутствие записи — 0, а не исключение */
 const solvedEx = w => (((recOf(w)['derivative-t8'] || {}).solvedByType || {}).extrema) || 0;
@@ -532,16 +536,70 @@ const RVN = require('../registry.js').NAMES;
   checkDer(w, '654321');
   ok((missEx(w) || {}).w === 1, 'derivative: второй неверный ответ на ту же задачу промахов не множит');
 
-  /* ответ, открытый «Решением», в счёт решённых не идёт */
+  /* ответ, открытый лестницей разбора, в счёт решённых не идёт */
   d.getElementById('taskNext').click();
   fb = checkDer(w, shownAnswer(d));
   ok(/ok/.test(fb.className) && /в счёт решённых не идёт/.test(fb.textContent) && solvedEx(w) === 1 && (missEx(w) || {}).r === 0,
      'derivative: после открытого ответа задача не засчитана и тип не закрывает');
+}
+{
+  /* лестница разбора: вопрос ступени → отдельным нажатием её ответ → …;
+     итог «Ответ: X.» — только вместе с ответом последней ступени; задача,
+     решённая после открытых ступеней без итога, засчитана (ступени ничего
+     не отнимают), решённая после итога — нет, и ученику это сказано без упрёка */
+  const answer = shownAnswer(der(20260926).document);
+  const w = der(20260926);
+  const d = w.document;
+  const box = d.getElementById('taskSolBox');
+  d.getElementById('taskSol').click();
+  const btn = box.querySelector('.ladder-btn');
+  ok(box.classList.contains('on') && !!btn && box.querySelectorAll('.lq').length === 1 && box.querySelectorAll('.la').length === 0 && btn.textContent === 'Ответ шага',
+     'derivative: «Разбор по шагам» открывает только вопрос первой ступени');
+  btn.click();
+  ok(box.querySelectorAll('.la').length === 1 && btn.textContent === 'Следующий шаг' && !/Ответ:/.test(box.textContent),
+     'derivative: «Ответ шага» — ответ первой ступени, итога в разборе нет');
+  btn.click();
+  ok(box.querySelectorAll('.lq').length === 2 && box.querySelectorAll('.la').length === 1, 'derivative: «Следующий шаг» — вопрос второй ступени без её ответа');
+  let fb = checkDer(w, answer);
+  ok(/ok/.test(fb.className) && solvedEx(w) === 1 && !/не идёт/.test(fb.textContent), 'derivative: задача, решённая после открытых ступеней без итога, засчитана');
+  d.getElementById('taskNext').click();
+  ok(!box.classList.contains('on') && box.textContent === '', 'derivative: новая задача закрывает лестницу');
+  const presses = walkLadder(d);
+  const q = box.querySelectorAll('.lq').length, a = box.querySelectorAll('.la').length;
+  const btn2 = box.querySelector('.ladder-btn');
+  ok(q >= 3 && q === a && presses === 2 * q - 1, 'derivative: лестница пройдена по одной ступени: вопросов ' + q + ', ответов ' + a + ', нажатий ' + presses);
+  ok(btn2.disabled && /в счёт решённых она не пойдёт/.test(box.textContent), 'derivative: после итога кнопка выключена, ученику сказано без упрёка');
+  ok(/в счёт решённых не пойдёт \(промахом это не считается\)/.test(box.querySelector('.ladder-note').textContent), 'derivative: подпись над лестницей предупреждает об открытом итоге до последнего нажатия');
+  fb = checkDer(w, '999');
+  ok(/bad/.test(fb.className) && /уже открыт/.test(fb.textContent) && !/разбор по шагам/.test(fb.textContent) && !missEx(w),
+     'derivative: неверный ответ после итога — сверить запись, в разбор не зовёт, промаха нет: ' + fb.textContent);
+  const fin = box.querySelector('.lfinal').textContent;
+  const m = fin.match(/^Ответ: (.+)\.$/);
+  fb = checkDer(w, m && m[1]);
+  ok(/ok/.test(fb.className) && /в счёт решённых не идёт/.test(fb.textContent) && solvedEx(w) === 1, 'derivative: решённая после итога задача не засчитана: ' + fin);
+  d.getElementById('taskSol').click();
+  ok(box.querySelectorAll('.lq').length === q, 'derivative: повторное «Разбор по шагам» лестницу не пересоздаёт');
+  ok(!box.querySelector('script, img') && box.querySelectorAll('.lq, .la, .lfinal').length === 2 * q + 1, 'derivative: ступени вставлены текстом, разметки в них нет');
 
   /* карточка навигатора и строка кабинета видят тренировку */
   const hd = boot('index.html', win => win.localStorage.setItem(KEY, w.localStorage.getItem(KEY))).document.querySelector('[data-progress="derivative"]');
   ok(/решено задач: 1/.test(hd.textContent) && hd.querySelectorAll('.cellsbar span.filled').length === 1,
      'derivative: карточка на навигаторе сдвинулась с «не начат»: ' + hd.textContent);
+}
+{
+  /* трек «График f: точки»: ступени называют точки так, как они подписаны на чертеже — x₁ … x₆,
+     абсцисса в скобках; голых «x = −3», которые пришлось бы искать по клеткам, в ступенях нет */
+  const w = der(20260927);
+  const d = w.document;
+  Array.from(d.querySelectorAll('#trackChips .chip')).find(b => /График f: точки/.test(b.textContent)).click();
+  const figLabels = Array.from(d.querySelectorAll('#taskFig text')).map(t => t.textContent).filter(t => /^x[₁₂₃₄₅₆]$/.test(t));
+  walkLadder(d);
+  const rows = Array.from(d.querySelectorAll('#taskSolBox .la')).map(e => e.textContent).join(' ');
+  const MARKS = [-5, -3, -1, 1, 3, 5], SUB = '₁₂₃₄₅₆';
+  const named = Array.from(rows.matchAll(/x([₁₂₃₄₅₆]) \(x = (−?\d)\)/g));
+  ok(figLabels.length === 6 && named.length >= 6 && named.every(m => MARKS[SUB.indexOf(m[1])] === Number(m[2].replace('−', '-'))) && !/(^|[^(])x = −?\d/.test(rows),
+     'derivative/marked: ступени называют точки подписями чертежа x₁ … x₆ с верной абсциссой (' + named.length + '), голых «x = …» нет');
+  w.close();
 }
 {
   /* подсказка ничего не отнимает: решённая после подсказки задача засчитана и шагает к закрытию типа */
@@ -629,6 +687,173 @@ const RVN = require('../registry.js').NAMES;
   }
   ok(!bad.length, 'physics: 60 генераций без «0t»/«1t»/«+ −», ответы сходятся с пересчётом: ' + bad.slice(0, 3).join(' | '));
   ok(kinds.v >= 5 && kinds.t >= 5, 'physics: встретились обе разновидности: ' + JSON.stringify(kinds));
+}
+
+/* 19а. trainers/probability-t45.html: две попытки, адресная диагностика, лестница разбора */
+const PRB = 'trainers/probability-t45.html';
+const prob = (seed, store) => boot(PRB, win => {
+  win.Math.random = rng(seed);
+  win.setTimeout = fn => { timers.push(fn); return timers.length; };
+  if (store) win.localStorage.setItem(KEY, JSON.stringify(store));
+});
+const prRec = w => recOf(w)['probability-t45'] || {};
+const prSolved = w => (prRec(w).solved4 || 0) + (prRec(w).solved5 || 0);
+const prMiss = w => recOf(w).mistakes || {};
+const checkPr = (w, v) => { const d = w.document; d.getElementById('dAnswer').value = v; d.getElementById('dCheck').click(); return d.getElementById('dFb'); };
+const prBox = d => d.getElementById('dSolBox');
+/* нажимает кнопку лестницы до итога .lfinal, возвращает число нажатий */
+const walkPr = d => { const btn = prBox(d).querySelector('.ladder-btn'); let n = 0; while (btn && !prBox(d).querySelector('.lfinal') && n < 40){ btn.click(); n++; } return n; };
+const finalPr = d => { const f = prBox(d).querySelector('.lfinal'); const m = f && f.textContent.match(/^Ответ: (.+)\.$/); return m && m[1]; };
+const decRu = x => String(Math.round(x * 1e6) / 1e6).replace('.', ',');
+const hasNum = (text, num) => new RegExp('(^|[^0-9,])' + num.replace(',', '[.,]') + '(?![0-9])').test(text);
+/* задача о билетах: по тексту известны n и k — значит, известны и ответ (n − k)/n, и типичная ошибка k/n */
+const findTickets = () => {
+  for (let s = 1; s <= 400; s++){
+    const w = prob(s);
+    const m = w.document.getElementById('dText').textContent.match(/^На экзамене (\d+) билетов, .+ не выучила? (\d+) из них/);
+    if (m) return { seed: s, w, n: +m[1], k: +m[2] };
+    w.close();
+  }
+  return null;
+};
+timers.length = 0;
+{
+  const found = findTickets();
+  ok(!!found, 'probability: найдена задача о билетах');
+  const { w, n, k } = found, d = w.document;
+  const answer = decRu((n - k) / n), trap = decRu(k / n);
+  ok(d.getElementById('dFb').getAttribute('aria-live') === 'polite' && d.getElementById('zFb').getAttribute('aria-live') === 'polite' && prBox(d).getAttribute('aria-live') === 'polite',
+     'probability: сообщения проверки и лестница — aria-live');
+  ok(d.getElementById('dSol').textContent === 'Разбор по шагам', 'probability: кнопка разбора — «Разбор по шагам»');
+  /* первая ошибка: адресно, без ответа, вторая попытка; промах в журнале один */
+  let fb = checkPr(w, trap);
+  ok(/bad/.test(fb.className) && /Пока неверно/.test(fb.textContent) && /невыученного билета/.test(fb.textContent) && /Попробуйте ещё раз/.test(fb.textContent),
+     'probability: первая ошибка k/n — адресно про невыученный билет, вторая попытка: ' + fb.textContent);
+  ok(!hasNum(fb.textContent, answer) && !prBox(d).classList.contains('on'), 'probability: после первой ошибки ответ не показан, лестница не открыта');
+  const e1 = prMiss(w)['probability-t45|tickets'];
+  ok(!!e1 && e1.w === 1 && e1.r === 0 && e1.lastWrong > 0 && e1.last > 0 && prSolved(w) === 0, 'probability: промах записан один раз: ' + JSON.stringify(e1));
+  ok(!!RVN['probability-t45|tickets'], 'probability: тип журнала есть в NAMES реестра');
+  /* верно со второй попытки — засчитано, журнал r + 1: попытка ничего не отняла */
+  fb = checkPr(w, answer);
+  const r1 = prRec(w);
+  ok(/ok/.test(fb.className) && prSolved(w) === 1 && r1.solved4 === 1 && r1.solved5 === 0 && r1.runs === 0 && r1.best === 0 && r1.passed === false,
+     'probability: верно со второй попытки — solved4 = 1, форма записи прежняя: ' + JSON.stringify(r1));
+  ok(prMiss(w)['probability-t45|tickets'].r === 1, 'probability: верный ответ после промаха — шаг к закрытию типа, r = 1');
+  /* неверный ввод в те 900 мс, пока верный ответ ждёт смены задачи: ни промаха, ни обнуления серии, ни нового сообщения */
+  checkPr(w, '1,5');
+  ok(prMiss(w)['probability-t45|tickets'].w === 1 && prMiss(w)['probability-t45|tickets'].r === 1 && d.getElementById('stStreak').textContent === '1' && /ok/.test(d.getElementById('dFb').className),
+     'probability: неверный ввод после верного до смены задачи журнал, серию и сообщение не трогает: ' + JSON.stringify(prMiss(w)['probability-t45|tickets']));
+  ok(timers.length === 1, 'probability: следующая задача запланирована таймером');
+  flushTimers();
+  ok(!prBox(d).classList.contains('on') && prBox(d).textContent === '', 'probability: новая задача — лестница закрыта');
+  /* вторая ошибка открывает лестницу; итог — последней ступенью; решённая после итога не засчитана */
+  fb = checkPr(w, '1,5');
+  ok(/bad/.test(fb.className) && /от 0 до 1/.test(fb.textContent) && !prBox(d).classList.contains('on'), 'probability: значение больше 1 — общее объяснение, лестницы ещё нет');
+  const missBefore = JSON.stringify(Object.entries(prMiss(w)).map(([key, e]) => [key, e.w, e.r]));
+  fb = checkPr(w, '1,5');
+  const box = prBox(d), btn = box.querySelector('.ladder-btn');
+  ok(/bad/.test(fb.className) && /Снова неверно/.test(fb.textContent) && /разбор по шагам/.test(fb.textContent), 'probability: вторая ошибка — приглашение в разбор: ' + fb.textContent);
+  ok(box.classList.contains('on') && !!btn && box.querySelectorAll('.lq').length === 1 && box.querySelectorAll('.la').length === 0 && btn.textContent === 'Ответ шага' && !/Ответ:/.test(box.textContent),
+     'probability: лестница открыта на вопросе первой ступени, итога нет');
+  ok(/в счёт решённых не пойдёт \(промахом это не считается\)/.test(box.querySelector('.ladder-note').textContent), 'probability: подпись над лестницей предупреждает об открытом итоге до последнего нажатия');
+  ok(JSON.stringify(Object.entries(prMiss(w)).map(([key, e]) => [key, e.w, e.r])) === missBefore, 'probability: вторая ошибка промахов не множит');
+  btn.click();
+  ok(box.querySelectorAll('.la').length === 1 && btn.textContent === 'Следующий шаг' && !/Ответ:/.test(box.textContent), 'probability: «Ответ шага» — ответ первой ступени, итога нет');
+  const presses = walkPr(d) + 1;
+  const q = box.querySelectorAll('.lq').length, a = box.querySelectorAll('.la').length;
+  ok(q >= 3 && q === a && presses === 2 * q - 1 && btn.disabled && /в счёт решённых она не пойдёт/.test(box.textContent),
+     'probability: лестница пройдена по одной ступени: вопросов ' + q + ', нажатий ' + presses + ', после итога кнопка выключена');
+  ok(!box.querySelector('script, img') && box.querySelectorAll('.lq, .la, .lfinal').length === 2 * q + 1, 'probability: ступени вставлены текстом');
+  const fin = finalPr(d);
+  fb = checkPr(w, '1,5');
+  ok(/bad/.test(fb.className) && /уже открыт/.test(fb.textContent) && box.querySelectorAll('.lq').length === q, 'probability: ошибка после итога — сверить запись, лестница не пересоздаётся');
+  fb = checkPr(w, fin);
+  ok(/ok/.test(fb.className) && /в счёт решённых не идёт/.test(fb.textContent) && prSolved(w) === 1 && timers.length === 0,
+     'probability: решённая после итога задача не засчитана: ' + fb.textContent);
+  const open = Object.entries(prMiss(w)).filter(([key, e]) => e.w === 1 && e.r === 0);
+  ok(open.length === 1 && open[0][0] !== 'probability-t45|tickets', 'probability: тип разобранной задачи в журнале остался открытым: ' + open.map(x => x[0]).join());
+  /* лестница по своей воле, без ошибок: журнал не трогает, но задача в счёт не идёт */
+  d.getElementById('dNext').click();
+  const jBefore = JSON.stringify(prMiss(w));
+  d.getElementById('dSol').click();
+  walkPr(d);
+  fb = checkPr(w, finalPr(d));
+  ok(/ok/.test(fb.className) && /в счёт решённых не идёт/.test(fb.textContent) && prSolved(w) === 1 && JSON.stringify(prMiss(w)) === jBefore,
+     'probability: разбор без ошибок — не засчитано, промаха в журнале нет');
+  /* карточка навигатора видит одну решённую */
+  const hp = boot('index.html', win => win.localStorage.setItem(KEY, w.localStorage.getItem(KEY))).document.querySelector('[data-progress="prob"]');
+  ok(/решено задач: 1/.test(hp.textContent), 'probability: навигатор показывает решённую: ' + hp.textContent);
+  w.close();
+}
+{
+  /* ответ в процентах — адресно; журнал после ошибок хранит тип, кабинет и review его понимают */
+  const found = findTickets();
+  const { w, n, k } = found;
+  const fb = checkPr(w, decRu((n - k) / n * 100));
+  ok(/bad/.test(fb.className) && /в процентах/.test(fb.textContent) && !hasNum(fb.textContent, decRu((n - k) / n)),
+     'probability: ответ в процентах — адресное объяснение без числа ответа: ' + fb.textContent);
+  const rv = boot('review.html', win => win.localStorage.setItem(KEY, w.localStorage.getItem(KEY))).document;
+  ok(/невыученный билет|билет/.test(rv.getElementById('openList').textContent) && /задание 4/.test(rv.getElementById('openList').textContent),
+     'probability: журнал ошибок показывает открытый тип «билеты» линии 4');
+  w.close();
+}
+{
+  /* мусор в хранилище молча отбрасывается: массив вместо объекта не роняет тренажёр и лестницу */
+  const w = boot(PRB, win => { win.Math.random = rng(3); win.setTimeout = fn => { timers.push(fn); return timers.length; }; win.localStorage.setItem(KEY, '[1,2,3]'); });
+  const d = w.document;
+  checkPr(w, '1,5'); checkPr(w, '1,5');
+  ok(prBox(d).classList.contains('on') && walkPr(d) > 0 && !!finalPr(d), 'probability: при мусоре в хранилище лестница работает');
+  w.close();
+}
+
+/* 19б. trainers/inequalities.html: итог не одним нажатием. Кнопки «Показать всё» нет;
+   24 блока «Проверь себя» — «Ход решения» + кнопка «Показать ответ» внутри, ответ скрыт;
+   «Ход решения» не заканчивается итогом в другой записи; диагностическая работа без
+   отдельного «Ответ»; разбор mountSteps — по одному шагу, ответ последним нажатием.
+   MathJax в jsdom нет — mj() пустой, разметка ступеней остаётся сырым TeX */
+{
+  const w = boot('trainers/inequalities.html', win => { win.scrollTo = () => {}; });
+  const d = w.document;
+  ok(!Array.from(d.querySelectorAll('button, summary')).some(b => /Показать всё/.test(b.textContent)), 'inequalities: кнопки «Показать всё» в документе нет');
+  const labs = Array.from(d.querySelectorAll('details.reveal > summary > span')).map(s => s.textContent.trim());
+  const conv = Array.from(d.querySelectorAll('details.reveal')).filter(x => x.querySelector(':scope > .solution > button.reveal-answer'));
+  ok(conv.length === 24 && labs.filter(t => t === 'Ход решения').length === 24 && !labs.includes('Показать ответ') && labs.filter(t => t === 'Показать решение').length === 10,
+     'inequalities: 24 блока «Ход решения» с кнопкой ответа, 10 разобранных примеров теории не тронуты: ' + JSON.stringify(labs.reduce((m, t) => (m[t] = (m[t] || 0) + 1, m), {})));
+  ok(conv.every(x => { const a = x.querySelector(':scope > .solution > .answer'); return !!a && a.style.display === 'none' && x.querySelector('button.reveal-answer').textContent === 'Показать ответ'; }),
+     'inequalities: ответ каждого блока скрыт до нажатия «Показать ответ»');
+  /* «Ход решения» — ступень, а не ответ в другой записи: последняя формула абзаца не должна быть
+     неравенством по x (x > 2, x ≤ −3, −3 < x < 4, x − 1 < 0), и запись ответа в абзаце не встречается */
+  const norm = s => s.replace(/\\[()]/g, '').replace(/\\[,;!]/g, '').replace(/\s+/g, '');
+  const xIneq = /^(?:-?\d+\s*(?:<|\\leq)\s*)?x\s*(?:[-+]\s*\d+\s*)?(?:<|>|\\leq|\\geq)\s*-?\d+$/;
+  const leaks = conv.map(x => {
+    const p = x.querySelector(':scope > .solution > p'), a = x.querySelector(':scope > .solution > .answer');
+    const text = p ? p.textContent : '';
+    const forms = text.match(/\\\(([\s\S]*?)\\\)/g) || [];
+    const last = forms.length ? forms[forms.length - 1].slice(2, -2).split('\\Rightarrow').pop().trim() : '';
+    return (!p || xIneq.test(last) || norm(text).includes(norm(a.textContent))) ? (x.closest('.example').querySelector('.example-task') || {}).textContent : null;
+  }).filter(Boolean);
+  ok(leaks.length === 0, 'inequalities: ни один «Ход решения» не заканчивается итогом: ' + leaks.join(' | '));
+  const first = conv[0], fbtn = first.querySelector('button.reveal-answer');
+  fbtn.click();
+  ok(first.querySelector(':scope > .solution > .answer').style.display === '' && !first.querySelector('button.reveal-answer'), 'inequalities: «Показать ответ» открывает ответ и убирает кнопку');
+  /* диагностическая работа № 13: у карточек только «Подсказка» и «Решение по шагам» */
+  const sums = Array.from(d.querySelectorAll('details > summary')).map(s => s.textContent.trim());
+  ok(!sums.includes('Ответ') && sums.filter(s => s === 'Решение по шагам').length === 24 && sums.filter(s => s === 'Подсказка').length === 24,
+     'inequalities: диагностическая работа — 24 карточки с «Подсказка» и «Решение по шагам», отдельного «Ответ» нет');
+  /* mountSteps: шаги по одному, «Показать ответ» — только на последнем шаге, «Сначала» сбрасывает */
+  const foots = Array.from(d.querySelectorAll('.quiz-foot')).filter(f => Array.from(f.querySelectorAll('button')).some(b => b.textContent === 'Следующий шаг'));
+  ok(foots.length >= 20 && foots.every(f => Array.from(f.querySelectorAll('button')).map(b => b.textContent).join('|') === 'Следующий шаг|Сначала'),
+     'inequalities: подвалы разборов (' + foots.length + ') — только «Следующий шаг» и «Сначала»');
+  const sbox = foots[0].parentElement, sbtn = foots[0].querySelector('button');
+  const st = () => ({ steps: sbox.querySelectorAll('.step-body').length, ans: !!sbox.querySelector('.answer'), btn: sbtn.textContent, dis: sbtn.disabled });
+  const seq = [];
+  for (let i = 0; i < 12; i++){ const s = st(); seq.push(s.steps + (s.ans ? '+A' : '')); if (s.ans || s.dis) break; sbtn.click(); }
+  const end = st();
+  ok(end.ans && end.dis && end.steps >= 2 && seq.slice(0, -1).every(s => !/A/.test(s)) && seq.length === end.steps + 2,
+     'inequalities: разбор по одному шагу, ответ только последним нажатием «Показать ответ»: ' + seq.join(' → '));
+  Array.from(foots[0].querySelectorAll('button')).find(b => b.textContent === 'Сначала').click();
+  ok(st().steps === 0 && !st().ans && !st().dis && st().btn === 'Следующий шаг', 'inequalities: «Сначала» сбрасывает разбор');
+  w.close();
 }
 
 /* ================= exam/variant.html: честный счёт попыток ================= */
