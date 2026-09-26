@@ -66,6 +66,11 @@ var PROGRESS = (function(){
      и цель трека (GOAL там же) */
   var TRIG_TRACKS = ["table", "rad", "sign", "red", "ident", "eq", "sup"];
   var TRIG_GOAL = 8;
+  /* зачёт «Планиметрии без промахов»: EXAM_N в trainers/planimetry-t1.html и
+     MARATHON_N в генераторе ege-t1-planimetry-generator — по одной задаче
+     каждого из 8 типов; passed пишут только при 8 из 8 чисто (EXAM_PASS /
+     MARATHON_PASS там же) */
+  var PLAN_EXAM_N = 8;
 
   function bar(host, ratio, label, done){
     host.innerHTML = "";
@@ -129,9 +134,19 @@ var PROGRESS = (function(){
       bar(host, sum/goal, "практикум: " + sum + " из " + goal + " очков", sum >= goal);
     },
     planimetry: function(host){
+      /* passed ставят курс, trainers/ege-t1-planimetry-trainer.html и генератор
+         только при 8 из 8 и не отзывают; best — лучший счёт зачёта/марафона
+         из 8 у всех трёх. До 26.09.2026 passed ставился при любом счёте, поэтому
+         отметка читается только вместе с best ≥ 8: старая запись {best:3, passed:true}
+         показывает «лучший зачёт: 3 из 8» (хранилище не мигрируется, меняется
+         только толкование; так же читают хабы курса и генератора). Без сдачи —
+         «лучший зачёт: N из 8», как «зачёт: N из 10» у plan1y; ничего, кроме
+         запусков, — «запусков: N». */
       var st = rec("ege-t1-planimetry-generator");
       if (!st){ bar(host, null, "не начат"); return; }
-      if (st.passed === true){ bar(host, 1, "зачёт сдан ✓", true); return; }
+      if (st.passed === true && cnt(st.best) >= PLAN_EXAM_N){ bar(host, 1, "зачёт сдан ✓", true); return; }
+      var best = Math.min(PLAN_EXAM_N, cnt(st.best));
+      if (best){ bar(host, best/PLAN_EXAM_N, "лучший зачёт: " + best + " из " + PLAN_EXAM_N); return; }
       bar(host, null, "запусков: " + cnt(st.runs));
     },
     plan1y: function(host){

@@ -164,6 +164,38 @@ const KEY = 'mathExamCourseProgress.v1';
   ok(/19 из 19/.test(host.textContent) && /зачёт сдан ✓/.test(host.textContent) && !!host.querySelector('.txt.done'), 'index: полный прогресс планиметрии с done');
 }
 
+/* 10а. index: адаптер «Планиметрии без промахов» (TID ege-t1-planimetry-generator):
+   «зачёт сдан ✓» только при passed === true и best ≥ 8; без сдачи — «лучший зачёт: N из 8»;
+   ни одного зачёта — «запусков: N». passed пишут курс, trainers/ege-t1-planimetry-trainer.html
+   и генератор только при 8 из 8; до 26.09.2026 он ставился при любом счёте, поэтому старая
+   запись {best:3, passed:true} читается как «лучший зачёт: 3 из 8», без ✓. */
+{
+  const ph = rec => {
+    const w = boot('index.html', win => win.localStorage.setItem(KEY, JSON.stringify({ 'ege-t1-planimetry-generator': rec })));
+    return w.document.querySelector('[data-progress="planimetry"]');
+  };
+  let h = ph({ runs: 2, best: 0, events: [] });
+  ok(/^запусков: 2$/.test(h.textContent) && !h.querySelector('.cellsbar'), 'planimetry: запуски без зачёта — «запусков: 2»: ' + h.textContent);
+  h = ph({ runs: 3, best: 5, hist: [3, 5], events: [] });
+  ok(/^лучший зачёт: 5 из 8$/.test(h.textContent) && !h.querySelector('.txt.done') && h.querySelectorAll('.cellsbar span.filled').length === 6,
+     'planimetry: 5 из 8 без сдачи — «лучший зачёт: 5 из 8», 6 клеток, без done: ' + h.textContent);
+  h = ph({ runs: 4, best: 7, hist: [7], events: [], passed: false });
+  ok(/^лучший зачёт: 7 из 8$/.test(h.textContent) && !h.querySelector('.txt.done'), 'planimetry: 7 из 8, passed:false — не сдан: ' + h.textContent);
+  h = ph({ runs: 5, best: 8, hist: [5, 8], events: [], passed: true });
+  ok(/^зачёт сдан ✓$/.test(h.textContent) && !!h.querySelector('.txt.done') && h.querySelectorAll('.cellsbar span.filled').length === 10,
+     'planimetry: passed:true — «зачёт сдан ✓», полная полоса, done: ' + h.textContent);
+  h = ph({ runs: 1, best: 3, passed: true });
+  ok(/^лучший зачёт: 3 из 8$/.test(h.textContent) && !h.querySelector('.txt.done'), 'planimetry: старая запись passed:true при best:3 (поставлена до порога) — без ✓, «лучший зачёт: 3 из 8»: ' + h.textContent);
+  h = ph({ runs: 1, best: 7, passed: true });
+  ok(/^лучший зачёт: 7 из 8$/.test(h.textContent) && !h.querySelector('.txt.done'), 'planimetry: старая запись passed:true при best:7 — без ✓: ' + h.textContent);
+  h = ph({ runs: 1, best: '8', passed: true });
+  ok(/^запусков: 1$/.test(h.textContent) && !h.querySelector('.txt.done'), 'planimetry: passed:true при best-строке — мусор, без ✓, «запусков: 1»: ' + h.textContent);
+  h = ph({ runs: 1, best: 12, passed: 'true' });
+  ok(/^лучший зачёт: 8 из 8$/.test(h.textContent) && !h.querySelector('.txt.done'), 'planimetry: passed-строка — не сдан, best обрезан до 8: ' + h.textContent);
+  h = ph({ runs: '3', best: '7' });
+  ok(/^запусков: 0$/.test(h.textContent), 'planimetry: числа строками — мусор, «запусков: 0»: ' + h.textContent);
+}
+
 /* ================= слияние архива: финансы, стерео, мини-курс ================= */
 
 /* 11. index: карточки и пилюли по решению владельца (24.09.2026) */
