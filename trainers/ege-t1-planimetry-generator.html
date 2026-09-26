@@ -121,7 +121,7 @@
     <a class="back" href="./">← к каталогу</a>
   </div>
 
-  <div class="success" id="successBar">✓ Серия пройдена! Итоги ниже.</div>
+  <div class="success" id="successBar" aria-live="polite">✓ Серия пройдена! Итоги ниже.</div>
 
   <div class="hub show" id="hub"></div>
 
@@ -155,7 +155,7 @@
   <div class="fin" id="fin">
     <div class="score" id="finScore">0 / 8</div>
     <div class="subttl" id="finSub"></div>
-    <div class="subttl" id="finStats" style="font-weight:700"></div>
+    <div class="subttl" id="finStats" style="font-weight:700" aria-live="polite"></div>
     <div class="dots" id="finDots"></div>
     <div class="law">
       <h3 id="lawTitle">Закон задачи 1</h3>
@@ -198,6 +198,16 @@ const eq=(a,b)=>Math.abs(a-b)<0.01;
 const D2R=Math.PI/180;
 
 /* журнал прогресса */
+/* Порог зачёта: все MARATHON_PASS задач марафона чисто (без ошибок; MARATHON_PASS = MARATHON_N = 8).
+   В марафоне каждый из 8 типов встречается ровно один раз, поэтому любой промах — пробел в конкретном типе.
+   Марафон — зачёт без подсказок, как «Зачёт» курса: кнопка подсказки скрыта (setControls), giveHint не
+   срабатывает, поэтому подсказка не может стоить зачёта. В тренировке типа подсказки остаются.
+   Тот же порог — в курсе (ege-profil/trainers/planimetry-t1.html, EXAM_PASS) и в адаптере planimetry курса.
+   Сданный зачёт не отзывается: passed никогда не сбрасывается в false.
+   Отметка «зачёт сдан ✓» читается только вместе с best ≥ MARATHON_PASS: до 26.09.2026 passed ставился при
+   любом счёте, и у старых записей {best:3, passed:true} отметка ничего не подтверждает; хранилище
+   не мигрируется, меняется только толкование. Тот же порядок чтения — в курсе и в адаптере. */
+const MARATHON_PASS=8;
 function journal(e,extra){
   try{
     const key='mathExamCourseProgress.v1';
@@ -207,8 +217,9 @@ function journal(e,extra){
     if(st.events.length>300) st.events=st.events.slice(-300);
     if(e==='start') st.runs=(st.runs||0)+1;
     if(e==='finish'){
-      st.best=Math.max(st.best||0, extra&&extra.score||0);
-      st.passed=true;
+      const score=extra&&extra.score||0;
+      st.best=Math.max(st.best||0, score);
+      if(score>=MARATHON_PASS) st.passed=true;
     }
     localStorage.setItem(key, JSON.stringify(all));
   }catch(err){}
@@ -927,8 +938,8 @@ function renderHub(){
         '<b>разбор</b> проигрывает решение на чертеже по шагам, <b>тренировка</b> — '+TYPE_N+' задачи со случайными числами и диагностикой промахов. '+
         'Марафон перемешивает все типы, как на экзамене.</div>';
   h+='<div class="mcard"><div class="grow"><div class="mtitle">🏁 Марафон: все типы подряд</div>'+
-     '<div class="mdesc">'+MARATHON_N+' задач, по одной каждого типа, в экзаменационном темпе</div></div>'+
-     '<span class="mbest">'+((typeof st.best==='number'&&isFinite(st.best)&&st.best>=0)?('лучшее: '+st.best+' / '+MARATHON_N):'')+'</span>'+
+     '<div class="mdesc">'+MARATHON_N+' задач, по одной каждого типа, в экзаменационном темпе, без подсказок. Зачёт сдан при '+MARATHON_PASS+' из '+MARATHON_N+' чисто: верный ответ с первой попытки</div></div>'+
+     '<span class="mbest">'+((typeof st.best==='number'&&isFinite(st.best)&&st.best>=0)?('лучшее: '+st.best+' / '+MARATHON_N+(st.passed===true&&st.best>=MARATHON_PASS?' · зачёт сдан ✓':'')):'')+'</span>'+
      '<button class="btn-check" onclick="openMarathon()">Начать</button></div>';
   h+='<div class="tgrid">';
   TYPE_META.forEach(function(m,i){
@@ -966,7 +977,8 @@ function setControls(view){
   state.view=view;
   $('modeBadge').textContent = view==='demo' ? 'Разбор' : (state.typeIdx<0 ? 'Марафон' : 'Тренировка');
   $('inputRow').style.display = view==='demo' ? 'none' : '';
-  $('hintBtn').style.display  = view==='demo' ? 'none' : '';
+  /* марафон (typeIdx<0) — зачёт без подсказок; в тренировке типа кнопка есть */
+  $('hintBtn').style.display  = (view==='demo' || state.typeIdx<0) ? 'none' : '';
   $('skipBtn').style.display  = view==='demo' ? '' : 'none';
 }
 
@@ -1054,7 +1066,7 @@ function initTask(){
   $('proof').className='proof'; $('proof').innerHTML='';
   $('solBtn').classList.remove('show');
   $('nextBtn').classList.remove('show');
-  showMsg('info','Искомое пульсирует синим, данное отмечено янтарным. Ответ — числом.');
+  showMsg('info',(state.typeIdx<0&&state.i===0?'Марафон без подсказок, как на экзамене. ':'')+'Искомое пульсирует синим, данное отмечено янтарным. Ответ — числом.');
   renderProgress();
   journal('task_start',{task:state.i+1, kind:t.kind});
 }
@@ -1106,7 +1118,7 @@ function revealSolution(){
   $('proof').innerHTML='<b>Решение (показано).</b>'+t.sol+'<div style="margin-top:6px">Ответ: <b>'+t.answer+'</b></div>';
 }
 function giveHint(){
-  if(state.view!=='train'||state.done||state.finished) return;
+  if(state.view!=='train'||state.typeIdx<0||state.done||state.finished) return; // марафон — без подсказок
   const t=TASKS[state.i];
   if(state.hints===0){ state.hints=1; journal('hint',{task:state.i+1}); }
   showMsg('warn','💡 '+t.hint);
@@ -1136,7 +1148,9 @@ function showFin(){
   $('lawTitle').textContent = marathon ? 'Закон задачи 1' : ('Опора типа: '+TYPE_META[state.typeIdx].name);
   $('lawText').innerHTML = marathon ? MARATHON_LAW : TYPE_META[state.typeIdx].law;
   $('successBar').textContent = marathon
-    ? '✓ Марафон из '+MARATHON_N+' задач пройден! Итоги ниже.'
+    ? (good>=MARATHON_PASS
+        ? '✓ Зачёт сдан: '+good+' из '+MARATHON_N+' чисто! Итоги ниже.'
+        : 'Марафон завершён: '+good+' из '+MARATHON_N+' чисто. Зачёт сдан при '+MARATHON_PASS+' из '+MARATHON_N+' — итоги ниже.')
     : '✓ Тип «'+TYPE_META[state.typeIdx].name+'» отработан! Итоги ниже.';
   $('mainArea').style.display='none';
   $('bar').style.display='none';
@@ -1150,7 +1164,7 @@ function showFin(){
     const all2=readStore(); const st2=all2[TID]||st;
     st2.hist=(st2.hist||[]); st2.hist.push(good); st2.hist=st2.hist.slice(-8);
     writeStore(all2);
-    statLine='Лучший результат: '+Math.max(st2.best||0,good)+' / '+MARATHON_N;
+    statLine='Лучший результат: '+Math.max(st2.best||0,good)+' / '+MARATHON_N+(st2.passed===true&&st2.best>=MARATHON_PASS?' · зачёт сдан ✓':' · зачёт сдан при '+MARATHON_PASS+' из '+MARATHON_N);
     if(st2.hist.length>1) statLine+=' · прошлые серии: '+st2.hist.slice(0,-1).join(', ');
   }else{
     journal('type_finish',{score:good, type:state.typeIdx});

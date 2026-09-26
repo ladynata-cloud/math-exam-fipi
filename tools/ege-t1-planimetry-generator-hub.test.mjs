@@ -11,8 +11,16 @@
      • bestBadge: null, undefined, -1 и мусор → «ещё не тренировался»; 0 → «лучшее: 0 / 4»;
        3 → «лучшее: 3 / 4»; 4 → класс g; мусор не попадает в разметку;
      • renderHub на записи, как её оставляет курс: карточка с best:-1 — «ещё не тренировался»,
-       нигде нет «лучшее: -…»; бейдж марафона не показывает -1 и мусор;
-     • bestBadge и renderHub во всех копиях совпадают.
+       нигде нет «лучшее: -…»; бейдж марафона не показывает -1 и мусор, а «зачёт сдан ✓»
+       дописывает только при passed === true и best ≥ MARATHON_PASS (старая запись
+       {best:3, passed:true}, поставленная до порога, — без отметки); карточка марафона
+       называет порог и «без подсказок»;
+     • journal('finish'): passed только при score ≥ MARATHON_PASS (= MARATHON_N = 8), сданный
+       зачёт не отзывается, старые записи не мигрируются;
+     • марафон — зачёт без подсказок: setControls прячет #hintBtn при typeIdx < 0 (в тренировке
+       типа кнопка есть, в разборе — нет), giveHint в марафоне не срабатывает;
+     • #successBar и #finStats объявляются вслух (aria-live="polite");
+     • bestBadge, renderHub, journal, setControls и giveHint во всех копиях совпадают.
    Архив разбирается встроенным кодом (центральный каталог → локальный заголовок → inflateRaw),
    CRC-32 сверяется.
 
@@ -114,10 +122,37 @@ function checkSource({label, text}) {
   ok(TYPE_N === 4 && MARATHON_N === 8, `TYPE_N=${TYPE_N}, MARATHON_N=${MARATHON_N}; ожидались 4 и 8 (как в курсе)`);
   const tidOk = /const TID='ege-t1-planimetry-generator';/.test(text);
   ok(tidOk, 'TID генератора изменился');
+  /* порог зачёта: все 8 задач марафона чисто (тот же порог — EXAM_PASS в курсе planimetry-t1) */
+  const passM = text.match(/const MARATHON_PASS=(\d+);/);
+  ok(!!passM, 'нет строки const MARATHON_PASS=…;');
+  const MARATHON_PASS = passM ? +passM[1] : 8;
+  ok(MARATHON_PASS === MARATHON_N, `MARATHON_PASS=${MARATHON_PASS} ≠ MARATHON_N=${MARATHON_N}: порог зачёта разошёлся с длиной марафона`);
 
   const badgeSrc = cutFunction(text, 'bestBadge', label);
   const hubSrc = cutFunction(text, 'renderHub', label);
+  const journalSrc = cutFunction(text, 'journal', label);
   const bestBadge = new Function(badgeSrc + '\nreturn bestBadge;')();
+
+  /* journal('finish'): passed только при score ≥ MARATHON_PASS, сданный зачёт не отзывается, best — максимум */
+  const runJournal = (store, events) => {
+    let raw = store == null ? null : JSON.stringify(store);
+    const localStorage = {getItem: () => raw, setItem: (k, v) => { raw = v; }};
+    const journal = new Function('localStorage', 'TID', 'MARATHON_PASS', journalSrc + '\nreturn journal;')(localStorage, 'ege-t1-planimetry-generator', MARATHON_PASS);
+    for (const [e, extra] of events) journal(e, extra);
+    return JSON.parse(raw)['ege-t1-planimetry-generator'];
+  };
+  for (const score of [0, 5, 6, 7]) {
+    const st = runJournal(null, [['start', {type: 'marathon'}], ['finish', {score}]]);
+    ok(st.passed !== true && st.best === score && st.runs === 1, `finish ${score}/8: passed=${st.passed}, best=${st.best}, runs=${st.runs}; ожидалось без passed`);
+  }
+  {
+    const st = runJournal(null, [['start', {type: 'marathon'}], ['finish', {score: 8}]]);
+    ok(st.passed === true && st.best === 8, `finish 8/8: passed=${st.passed}, best=${st.best}; ожидалось passed=true`);
+    const again = runJournal({'ege-t1-planimetry-generator': st}, [['start', {type: 'marathon'}], ['finish', {score: 5}]]);
+    ok(again.passed === true && again.best === 8 && again.runs === 2, `после 8/8 серия 5/8: passed=${again.passed}, best=${again.best}; сданный зачёт не отзывается`);
+    const old = runJournal({'ege-t1-planimetry-generator': {runs: 1, best: 3, passed: true, events: []}}, [['finish', {score: 0}]]);
+    ok(old.passed === true && old.best === 3, `старая запись passed:true + 0/8: passed=${old.passed}, best=${old.best}; прошлые записи не мигрируются и не отзываются`);
+  }
 
   /* bestBadge: значения из задания */
   const notYet = [null, undefined, -1];
@@ -142,9 +177,9 @@ function checkSource({label, text}) {
     const nodes = {};
     const $ = id => (nodes[id] = nodes[id] || {innerHTML: ''});
     const TYPE_META = Array.from({length: 8}, (_, i) => ({name: 'Тип ' + (i + 1), desc: 'описание ' + (i + 1)}));
-    const fn = new Function('$', 'readStore', 'TID', 'TYPE_META', 'TYPE_N', 'MARATHON_N', 'bestBadge',
+    const fn = new Function('$', 'readStore', 'TID', 'TYPE_META', 'TYPE_N', 'MARATHON_N', 'MARATHON_PASS', 'bestBadge',
       hubSrc + '\nrenderHub(); return $("hub").innerHTML;');
-    return fn($, () => store, 'ege-t1-planimetry-generator', TYPE_META, TYPE_N, MARATHON_N, bestBadge);
+    return fn($, () => store, 'ege-t1-planimetry-generator', TYPE_META, TYPE_N, MARATHON_N, MARATHON_PASS, bestBadge);
   };
   const cards = h => h.split('<div class="tcard">').slice(1);
   const mbest = h => ((h.match(/<span class="mbest">([\s\S]*?)<\/span>/) || [])[1]);
@@ -173,8 +208,52 @@ function checkSource({label, text}) {
   }
   h = runHub({'ege-t1-planimetry-generator': {best: 6, hist: [6]}});
   ok(mbest(h) === 'лучшее: 6 / 8', 'бейдж марафона при best:6 = ' + JSON.stringify(mbest(h)));
+  /* отметка «зачёт сдан ✓» — только при passed === true */
+  h = runHub({'ege-t1-planimetry-generator': {best: 8, hist: [8], passed: true}});
+  ok(mbest(h) === 'лучшее: 8 / 8 · зачёт сдан ✓', 'бейдж марафона при best:8, passed:true = ' + JSON.stringify(mbest(h)));
+  for (const p of [false, undefined, 1, 'true', 'zz']) {
+    h = runHub({'ege-t1-planimetry-generator': {best: 8, hist: [8], passed: p}});
+    ok(mbest(h) === 'лучшее: 8 / 8', 'бейдж марафона при best:8, passed=' + String(p) + ' = ' + JSON.stringify(mbest(h)) + ' (отметка только при true)');
+  }
+  ok(/Зачёт сдан при 8 из 8/.test(h), 'карточка марафона не называет порог «Зачёт сдан при 8 из 8»');
+  ok(/без подсказок/.test(h), 'карточка марафона не предупреждает «без подсказок»');
+  /* старая запись: passed:true поставлен до порога при любом счёте — отметка только при best ≥ MARATHON_PASS */
+  for (const b of [0, 3, 7]) {
+    h = runHub({'ege-t1-planimetry-generator': {best: b, hist: [b], passed: true}});
+    ok(mbest(h) === 'лучшее: ' + b + ' / 8', 'бейдж марафона при best:' + b + ', passed:true = ' + JSON.stringify(mbest(h)) + ' (отметка только при best ≥ 8)');
+  }
 
-  return {badgeSrc, hubSrc};
+  /* марафон — зачёт без подсказок: setControls прячет #hintBtn при typeIdx < 0, giveHint молчит */
+  const controlsSrc = cutFunction(text, 'setControls', label);
+  const hintSrc = cutFunction(text, 'giveHint', label);
+  const runControls = (view, typeIdx) => {
+    const nodes = {};
+    const $ = id => (nodes[id] = nodes[id] || {style: {}, textContent: ''});
+    const state = {view: 'hub', typeIdx};
+    new Function('$', 'state', 'view', controlsSrc + '\nsetControls(view);')($, state, view);
+    return {hint: nodes.hintBtn.style.display, input: nodes.inputRow.style.display, badge: nodes.modeBadge.textContent, view: state.view};
+  };
+  let c = runControls('train', -1);
+  ok(c.hint === 'none' && c.input === '' && c.badge === 'Марафон' && c.view === 'train', 'марафон: setControls должен прятать #hintBtn: ' + JSON.stringify(c));
+  c = runControls('train', 0);
+  ok(c.hint === '' && c.input === '' && c.badge === 'Тренировка', 'тренировка типа: setControls должен показывать #hintBtn: ' + JSON.stringify(c));
+  c = runControls('demo', 2);
+  ok(c.hint === 'none' && c.input === 'none' && c.badge === 'Разбор', 'разбор: setControls прячет ввод и подсказку: ' + JSON.stringify(c));
+  const runHint = typeIdx => {
+    const state = {view: 'train', typeIdx, done: false, finished: false, i: 0, hints: 0};
+    const calls = [];
+    new Function('state', 'TASKS', 'journal', 'showMsg', hintSrc + '\ngiveHint();')(
+      state, [{hint: 'h'}], e => calls.push('journal:' + e), cls => calls.push('msg:' + cls));
+    return {hints: state.hints, calls};
+  };
+  let g = runHint(-1);
+  ok(g.hints === 0 && g.calls.length === 0, 'марафон: giveHint не должен срабатывать: ' + JSON.stringify(g));
+  g = runHint(3);
+  ok(g.hints === 1 && g.calls.join() === 'journal:hint,msg:warn', 'тренировка типа: giveHint выдаёт подсказку: ' + JSON.stringify(g));
+  ok(/<div class="success" id="successBar" aria-live="polite">/.test(text) && /id="finStats" style="font-weight:700" aria-live="polite">/.test(text),
+     'нет aria-live="polite" на #successBar / #finStats');
+
+  return {badgeSrc, hubSrc, journalSrc, controlsSrc, hintSrc};
 }
 
 const rels = process.argv.length > 2 ? process.argv.slice(2) : DEFAULT_SOURCES;
@@ -188,6 +267,9 @@ if (extracted.length > 1) {
   for (const x of rest) {
     ok(x.badgeSrc === first.badgeSrc, 'bestBadge в ' + x.rel + ' отличается от ' + first.rel);
     ok(x.hubSrc === first.hubSrc, 'renderHub в ' + x.rel + ' отличается от ' + first.rel);
+    ok(x.journalSrc === first.journalSrc, 'journal в ' + x.rel + ' отличается от ' + first.rel);
+    ok(x.controlsSrc === first.controlsSrc, 'setControls в ' + x.rel + ' отличается от ' + first.rel);
+    ok(x.hintSrc === first.hintSrc, 'giveHint в ' + x.rel + ' отличается от ' + first.rel);
   }
 }
 console.log(`копий ${extracted.length} из ${rels.length}, проверок ${checks}, ошибок ${bad}`);
