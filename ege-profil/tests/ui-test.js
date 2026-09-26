@@ -206,6 +206,93 @@ function solveStepsCorrectly(w, d, S){
   ok(errors.length === 0, 'нет JS-ошибок после режима сам: ' + errors.join(' | '));
 }
 
+/* ---------- 4а. «С чего начать?» ничего не отнимает: серия и «верно с первого раза» растут ---------- */
+{
+  const { w, d, S, stats } = boot();
+  click(w, q(d, '#modeSeg [data-mode="solo"]'));
+  click(w, q(d, '#topics .chip[data-topic="1"]'));
+  click(w, q(d, '#levelSeg [data-level="1"]'));
+  ok(/ничего не отнимает/.test(q(d, '#modeHelp').textContent), 'сам: справка режима говорит, что «С чего начать?» ничего не отнимает');
+  const t1 = () => stats().topics[1];
+  const solveSolo = () => { const a = S().task.answer; if (a.kind === 'num'){ q(d, 'input[data-final="0"]').value = ansStr(a.value) + (a.suffix ? '√3' : ''); click(w, q(d, '[data-action="final-check"]')); } else click(w, q(d, `.opt[data-action="final-opt"][data-opt="${a.correct}"]`)); };
+  const failSolo = () => { const a = S().task.answer; if (a.kind === 'num'){ q(d, 'input[data-final="0"]').value = '999999'; click(w, q(d, '[data-action="final-check"]')); } else click(w, q(d, `.opt[data-action="final-opt"][data-opt="${a.options.findIndex((o, i) => i !== a.correct)}"]`)); };
+  // разгон серии без подсказки
+  solveSolo(); click(w, q(d, '[data-action="new"]')); solveSolo(); click(w, q(d, '[data-action="new"]'));
+  const before = Object.assign({}, t1());
+  ok(before.streak === 2 && before.correct === 2 && before.solved === 2 && before.hinted === 0, `разгон: серия ${before.streak}, верно с первого раза ${before.correct}, с подсказкой ${before.hinted}`);
+  const row = q(d, '.starthint-row');
+  ok(!!row && !!row.querySelector('[data-action="start-hint"]') && /ничего не отнимает/.test(row.textContent), 'рядом с кнопкой «С чего начать?» сказано, что подсказка ничего не отнимает');
+  click(w, q(d, '[data-action="start-hint"]'));
+  ok(S().soloHinted === true && q(d, '.starthint') != null && /С чего начать:/.test(q(d, '.starthint').textContent), 'кнопка раскрывает подсказку первого шага');
+  ok(q(d, '[data-action="start-hint"]') == null && /ничего не отнимает/.test(q(d, '.starthint').textContent), 'в раскрытой подсказке кнопки больше нет, а фраза сохраняется');
+  ok(/задача того же типа/.test(q(d, '.starthint').textContent) && !/та же задача/.test(q(d, '.starthint').textContent), 'подсказка честно говорит: в «Пошагово» будет задача того же типа, а не эта же');
+  ok(/\.starthint-row \.fieldnote, \.starthint \.fieldnote\{color:var\(--ink-soft\)\}/.test(html), 'фраза «ничего не отнимает» набрана цветом --ink-soft (контраст 6:1), а не --ink-faint (3:1)');
+  const printSel = (html.match(/@media print\{\s*([^{]*)\{display:none/) || [])[1] || '';
+  ok(/\.starthint-row/.test(printSel) && /\.starthint(?![-\w])/.test(printSel), 'при печати кнопка «С чего начать?» и раскрытая подсказка скрыты: ' + printSel.trim().slice(0, 160));
+  ok(t1().solved === before.solved && t1().hinted === 0 && t1().streak === before.streak, 'нажатие само по себе ничего не меняет в статистике');
+  solveSolo();
+  ok(S().finished && q(d, '.final.ok') != null, 'после подсказки верный ответ принят');
+  ok(t1().solved === before.solved + 1, 'решено сам: +1');
+  ok(t1().correct === before.correct + 1, `верно с первого раза растёт после подсказки: ${before.correct} → ${t1().correct}`);
+  ok(t1().streak === before.streak + 1 && t1().best === before.streak + 1, `серия растёт после подсказки: ${before.streak} → ${t1().streak}`);
+  ok(t1().hinted === 1, 'обращение к подсказке посчитано отдельно (hinted = 1)');
+  ok(/серия: 3/.test(q(d, '.stats').textContent) && /верно с первого раза: 3/.test(q(d, '.stats').textContent), 'ученик видит серию 3 и «верно с первого раза: 3»');
+  const saved = JSON.parse(w.localStorage.getItem('mathExamCourseProgress.v1'))['righttri-t1'].topics['1'];
+  ok(saved.streak === 3 && saved.correct === 3 && saved.solved === 3 && saved.best === 3 && saved.hinted === 1, 'запись righttri-t1: streak/correct выросли, hinted добавлен');
+  ok(['steps', 'solved', 'correct', 'streak', 'best', 'hinted'].every(k => typeof saved[k] === 'number'), 'запись righttri-t1: все поля числовые');
+  // ошибка, потом подсказка, потом верно: серию рвёт ошибка, а не подсказка
+  click(w, q(d, '[data-action="new"]'));
+  failSolo();
+  ok(t1().streak === 0, 'ошибка обнуляет серию');
+  click(w, q(d, '[data-action="start-hint"]'));
+  solveSolo();
+  ok(S().finished && t1().solved === 4 && t1().correct === 3 && t1().streak === 0 && t1().hinted === 2, `ошибка + подсказка + верно: решено 4, верно с первого раза 3, серия 0, с подсказкой 2 (${JSON.stringify(t1())})`);
+  // подсказка не тянется на следующую задачу
+  click(w, q(d, '[data-action="new"]'));
+  ok(S().soloHinted === false && q(d, '[data-action="start-hint"]') != null, 'новая задача: подсказка снова свёрнута');
+  solveSolo();
+  ok(t1().solved === 5 && t1().correct === 4 && t1().streak === 1 && t1().hinted === 2, 'без подсказки: hinted не растёт, серия начинается заново');
+  // сводка учителю показывает подсказки отдельно
+  click(w, q(d, '#teacherBtn'));
+  const rowText = qa(d, '#tpSummary .tp-row').map(r => r.textContent).find(t => /Тема 1\./.test(t)) || '';
+  ok(/решено самостоятельно: 5/.test(rowText) && /С чего начать\?»: 2/.test(rowText) && /верно с первого раза: 4/.test(rowText), 'сводка учителю: решено 5, после «С чего начать?» 2, верно с первого раза 4: ' + rowText.slice(0, 120));
+  ok(errors.length === 0, 'нет JS-ошибок в разделе 4а: ' + errors.join(' | '));
+}
+
+/* ---------- 4б. Восстановление записи: hinted читается, мусор отбрасывается ---------- */
+{
+  const seed = win => win.localStorage.setItem('mathExamCourseProgress.v1', JSON.stringify({
+    'righttri-t1': { topics: { '2': { steps: 1, solved: 4, correct: 2, streak: 1, best: 2, hinted: 3 }, '3': { steps: 0, solved: 1, correct: 1, streak: 1, best: 1, hinted: 'abc' }, '4': { solved: 2, correct: 2, streak: 2, best: 2 } } }
+  }));
+  const { w } = boot(undefined, seed);
+  ok(w.eval(`stats.topics['2'].hinted`) === 3, 'hinted читается из записи');
+  ok(w.eval(`stats.topics['3'].hinted`) === 0, 'hinted-мусор отбрасывается в 0');
+  ok(w.eval(`stats.topics['4'].hinted`) === 0 && w.eval(`stats.topics['4'].correct`) === 2, 'старая запись без hinted читается как раньше, hinted = 0');
+}
+
+/* ---------- 4в. «С чего начать?» у задачи с info-шагом первым показывает текст шага, а не только заголовок ---------- */
+{
+  const { w, d, S } = boot();
+  click(w, q(d, '#modeSeg [data-mode="solo"]'));
+  let found = false;
+  for (const [t, L] of [[3, 1], [3, 2], [3, 3], [4, 3], [4, 2], [4, 1]]){
+    click(w, q(d, `#topics .chip[data-topic="${t}"]`)); click(w, q(d, `#levelSeg [data-level="${L}"]`));
+    for (let i = 0; i < 40 && !found; i++){ const f = S().task.steps[0]; if (f.kind === 'info' && !f.hint) found = true; else click(w, q(d, '[data-action="new"]')); }
+    if (found) break;
+  }
+  ok(found, 'нашлась задача, у которой первый шаг — info без hint (t3-diff / t4-findAcute)');
+  if (found){
+    const first = S().task.steps[0];
+    click(w, q(d, '[data-action="start-hint"]'));
+    const more = q(d, '.starthint .starthint-more');
+    const tmp = d.createElement('div'); tmp.innerHTML = w.eval('M(state.task.steps[0].text)');
+    ok(!!more && more.textContent === tmp.textContent, `«С чего начать?» показывает текст info-шага (${S().task.type}): ${more ? more.textContent.slice(0, 80) : '—'}`);
+    noJunk(q(d, '.starthint').innerHTML, 'раскрытая подсказка info-шага');
+    const ans = S().task.answer;
+    ok(!(ans.kind === 'num' && new RegExp('(^|[^\\d,.])' + String(ans.value).replace('.', '[.,]') + '(?![\\d,.])').test(first.text)), 'текст info-шага не содержит итоговый ответ');
+  }
+  ok(errors.length === 0, 'нет JS-ошибок в разделе 4в: ' + errors.join(' | '));
+}
 /* ---------- 5. Режим доски, hash, клавиатура ---------- */
 {
   const { w, d, S } = boot('https://mathexam.space/trainers/pt.html#t3');
@@ -270,6 +357,27 @@ function solveStepsCorrectly(w, d, S){
   const all = JSON.parse(w.localStorage.getItem('mathExamCourseProgress.v1'));
   ok(all['righttri-t1'] && all['righttri-t1'].topics['2'].correct === 4, 'миграция: прогресс сохранён под TID');
   ok(w.localStorage.getItem('pt-trainer-v1') != null, 'миграция: старый ключ не тронут (откат возможен)');
+}
+/* ---------- 9а. ?selftest=1 не трогает localStorage ученика ---------- */
+{
+  const legacy = { topics: { '2': { steps: 3, solved: 5, correct: 4, streak: 2, best: 3 } }, board: false };
+  const logs = [], errs = [];
+  const onLog = m => logs.push(String(m)), onErr = m => errs.push(String(m));
+  vc.on('log', onLog); vc.on('error', onErr);
+  const seed = Object.assign(win => win.localStorage.setItem('pt-trainer-v1', JSON.stringify(legacy)), { keepOnboarding: true });
+  const { w } = boot('https://mathexam.space/trainers/pt.html?selftest=1', seed);
+  vc.off('log', onLog); vc.off('error', onErr);
+  ok(logs.some(m => /RIGHTTRI_SELFTEST_OK/.test(m)), 'selftest: маркер RIGHTTRI_SELFTEST_OK напечатан');
+  ok(!errs.some(m => /RIGHTTRI_SELFTEST_FAIL/.test(m)), 'selftest: дефектов нет: ' + errs.filter(m => /SELFTEST/.test(m)).join(' | ').slice(0, 300));
+  ok(w.localStorage.getItem('mathExamCourseProgress.v1') == null, 'selftest: ключ курса не создан — миграция pt-trainer-v1 не записана');
+  ok(w.localStorage.getItem('pt-trainer-v1') === JSON.stringify(legacy), 'selftest: старый ключ побайтно цел');
+  ok(w.eval(`stats.topics['2'] && stats.topics['2'].solved`) === 5, 'selftest: старый прогресс виден в памяти, страница не «свежая»');
+  ok(w.localStorage.length === 1, 'selftest: в хранилище остался ровно один ключ — старый');
+}
+{
+  const seed = Object.assign(function(){}, { keepOnboarding: true });
+  const { w } = boot('https://mathexam.space/trainers/pt.html?selftest=1', seed);
+  ok(w.localStorage.length === 0, 'selftest на пустом хранилище: ничего не записано');
 }
 
 /* ---------- 10. Режим разбора ?mode=review ---------- */
