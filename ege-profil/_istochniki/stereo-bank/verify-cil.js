@@ -19,6 +19,18 @@ const dist = (m, a, b) => {
 };
 const chk = (id, cond, msg) => { if (!cond) errs.push(id + ": " + msg); };
 
+/* число при слове условия («высота … 8», «радиус … 5») — для условий,
+   написанных своими словами (26.09.2026), где высота названа раньше
+   радиуса. Число по-прежнему берётся только из текста; лишнее число
+   в условии ловит проверка «ровно два числа» в модели */
+const named = (p, re) => {
+  const m = p.cond.match(re);
+  chk(p.id, !!m, "в условии нет числа по " + re);
+  return m ? parseFloat(m[1].replace(",", ".")) : NaN;
+};
+const RE_H = /[Вв]ысот[аеуы][^0-9.]*?(\d+(?:,\d+)?)/, RE_R = /[Рр]адиус[^0-9.]*?(\d+(?:,\d+)?)/;
+const onlyRH = (p, n, r, h) => chk(p.id, n.length === 2 && n.includes(r) && n.includes(h), "в условии не ровно два числа: r и h");
+
 /* id -> проверка: возвращает ожидаемый ответ, попутно сверяя сцену */
 const MODELS = {
   "cil-01": (p, n, m) => {                     /* V/π по r и h */
@@ -37,14 +49,16 @@ const MODELS = {
     chk(p.id, eq(dist(m, "O", "A"), r), "OA не равно радиусу");
     return r;
   },
-  "cil-04": (p, n) => {                        /* боковая поверхность */
-    const [r, h] = n;
+  "cil-04": (p, n) => {                        /* боковая поверхность; в тексте высота раньше радиуса */
+    const h = named(p, RE_H), r = named(p, RE_R);
+    onlyRH(p, n, r, h);
     const b = p.scene.bodies[0];
     chk(p.id, b.r === r && b.h === h, "r/h сцены не из условия");
     return 2 * r * h;
   },
-  "cil-05": (p, n) => {                        /* полная поверхность */
-    const [r, h] = n;
+  "cil-05": (p, n) => {                        /* полная поверхность; в тексте высота раньше радиуса */
+    const h = named(p, RE_H), r = named(p, RE_R);
+    onlyRH(p, n, r, h);
     const b = p.scene.bodies[0];
     chk(p.id, b.r === r && b.h === h, "r/h сцены не из условия");
     return 2 * r * (r + h);

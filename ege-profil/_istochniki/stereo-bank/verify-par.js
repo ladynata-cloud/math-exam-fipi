@@ -14,6 +14,15 @@ const nums = s => (stripV(s).match(/\d+(?:,\d+)?/g) || []).map(t => parseFloat(t
 const sq = x => x * x;
 const surf = (a, b, c) => 2 * (a * b + b * c + a * c);
 
+/* числа при словах условия — для условий, написанных своими словами
+   (26.09.2026), где порядок чисел в тексте не совпадает с порядком
+   аргументов модели. Нет числа — модель падает (расхождение) */
+const grab = (p, re) => {
+  const m = stripV(p.cond).match(re);
+  if (!m) throw new Error("в условии нет числа по " + re);
+  return m.slice(1).map(t => parseFloat(t.replace(",", ".")));
+};
+
 /* геометрия сцены */
 function ptsOf(p) {
   const pts = {};
@@ -54,7 +63,12 @@ const MODELS = {
   "par-15": (n, D) => ({ ans: sq(n[0]) + sq(n[1]) + sq(n[2]), geo: [["AB", D("A", "B"), n[0]], ["AD", D("A", "D"), n[1]], ["AA1", D("A", "A1"), n[2]], ["AC1²", sq(D("A", "C1")), sq(n[0]) + sq(n[1]) + sq(n[2])]] }),
   "par-16": (n, D) => ({ ans: Math.hypot(n[0], n[1]) * n[2], geo: [["AB", D("A", "B"), n[0]], ["BC", D("B", "C"), n[1]], ["AA1", D("A", "A1"), n[2]], ["AC", D("A", "C"), Math.hypot(n[0], n[1])]] }),
   "par-17": (n, D) => ({ ans: Math.sqrt(sq(n[0]) - sq(n[1]) - sq(n[2])), geo: [["AD", D("A", "D"), n[1]], ["AA1", D("A", "A1"), n[2]], ["AC1", D("A", "C1"), n[0]], ["AB", D("A", "B"), Math.sqrt(sq(n[0]) - sq(n[1]) - sq(n[2]))]] }),
-  "par-18": (n, D) => ({ ans: Math.sqrt(sq(n[2]) - sq(n[0]) - sq(n[1])), geo: [["AD", D("A", "D"), n[0]], ["AB", D("A", "B"), n[1]], ["AC1", D("A", "C1"), n[2]], ["AA1", D("A", "A1"), Math.sqrt(sq(n[2]) - sq(n[0]) - sq(n[1]))]] }),
+  "par-18": (n, D, p) => {                    /* два измерения, потом диагональ; третье измерение — искомое */
+    const [a, b] = grab(p, /равны (\d+(?:,\d+)?) и (\d+(?:,\d+)?)/), [d] = grab(p, /[Дд]иагональ[^0-9.]*?(\d+(?:,\d+)?)/);
+    const c = Math.sqrt(sq(d) - sq(a) - sq(b));
+    return { ans: c, geo: [["AD", D("A", "D"), a], ["AB", D("A", "B"), b], ["AC1", D("A", "C1"), d], ["AA1", D("A", "A1"), c],
+      ["числа условия — ровно [a, b, d]", n.length === 3 && n[0] === a && n[1] === b && n[2] === d ? 1 : 0, 1]] };
+  },
   "par-19": (n, D) => ({ ans: Math.sqrt(sq(n[1]) - 2 * sq(n[0])), geo: [["AB", D("A", "B"), n[0]], ["AD", D("A", "D"), n[0]], ["AC1", D("A", "C1"), n[1]], ["AA1", D("A", "A1"), Math.sqrt(sq(n[1]) - 2 * sq(n[0]))]] }),
   "par-20": (n, D) => ({ ans: Math.sqrt(sq(n[0]) + sq(n[1]) + sq(n[2])), geo: [["AB", D("A", "B"), n[0]], ["AD", D("A", "D"), n[1]], ["AA1", D("A", "A1"), n[2]], ["AC1", D("A", "C1"), Math.sqrt(sq(n[0]) + sq(n[1]) + sq(n[2]))]] }),
   "par-21": (n, D) => ({ ans: Math.sqrt(sq(n[0]) + sq(n[1]) + sq(n[2])), geo: [["AB", D("A", "B"), n[0]], ["AD", D("A", "D"), n[1]], ["AA1", D("A", "A1"), n[2]], ["BD1", D("B", "D1"), Math.sqrt(sq(n[0]) + sq(n[1]) + sq(n[2]))]] }),
@@ -83,7 +97,7 @@ for (const p of api.PROBLEMS) {
   catch (e) { bad.push(p.id + ": sceneData: " + e.message); continue; }
 
   let m;
-  try { m = model(n, D); }
+  try { m = model(n, D, p); }
   catch (e) { bad.push(p.id + ": модель упала: " + e.message); continue; }
 
   /* 1) ответ */

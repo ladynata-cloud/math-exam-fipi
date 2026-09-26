@@ -90,7 +90,9 @@ const CHECK = {
     for (const sf of S.spheres) eq(p, "сцена: шар лежит на плоскости", sf.c[1], sf.r);
   },
   "shar-07"(p) {
-    const q = grab(p, /равна (\d+(?:,\d+)?)/);
+    /* большой круг задан описанием: сечение плоскостью через центр */
+    if (!/через (?:его )?центр/.test(p.cond)) errs.push(p.id + ": в cond сечение не через центр — это не большой круг");
+    const q = grab(p, /круг площадью (\d+(?:,\d+)?)/);
     eq(p, "ответ S = 4·Sкруга", num(p.ans), 4 * q);
     const S = sceneOf(p);
     const R = S.spheres[0].r;
