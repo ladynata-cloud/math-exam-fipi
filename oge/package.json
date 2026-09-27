@@ -1,0 +1,12 @@
+{
+  "name": "oge-course",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Kurs OGE: registry, progress adapters and jsdom gates.",
+  "scripts": {
+    "test": "node tests/registry-test.js && node tests/adapters-test.js && node tests/junk-test.js"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.3"
+  }
+}
