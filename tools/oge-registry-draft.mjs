@@ -134,7 +134,9 @@ if (process.argv.includes('--json')) {
   for (const [tid, r] of Object.entries(result)) {
     console.log(`  /* ${r.line} · ${r.file} · ${r.types.length} типов */`);
     for (const t of r.types) {
-      const n = (t.group ? t.group + ': ' : '') + t.n;
+      // группа не дублируется: у 25 заголовок типа уже начинается с темы
+      // («Трапеция: …»), у 21 единственный модуль «Работа» называется как группа
+      const n = !t.group || t.n === t.group || t.n.startsWith(t.group + ':') ? t.n : t.group + ': ' + t.n;
       console.log(`  ${JSON.stringify(tid + '|' + t.id)}: { n: ${JSON.stringify(n)}, line: ${r.line} },`);
     }
   }
