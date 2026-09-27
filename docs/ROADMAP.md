@@ -61,6 +61,17 @@ Publish and adapt trainers in bounded batches. Each independently reviewable
 batch receives its own task specification, branch, PR, tests, and rollback
 description.
 
+### 7. OGE course navigator
+
+Status: planned, specifications ready.
+
+Bring the OGE section to the same course mechanics as `ege-profil/`:
+progress contract and registry, navigator, error journal, teacher cabinet,
+exam mode, trainer batches. Decisions are recorded in
+[ADR 0003](adr/0003-oge-course.md); the ordered task list is in
+[OGE_COURSE_PLAN.md](OGE_COURSE_PLAN.md) and `tasks/OGE_COURSE_*.md`.
+Each task still requires its own `START` and merge authorization.
+
 ## Sequencing constraints
 
 - Do not start nested paths or roads-grid inside Workflow v1.
