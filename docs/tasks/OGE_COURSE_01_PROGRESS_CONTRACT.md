@@ -136,15 +136,28 @@ approval.
 ## Execution record
 
 - Actual branch: `feat/oge-progress-contract-v1` (черновик реестра,
-  адаптеров и тестов подготовлен Claude 28.09.2026 в локальном клоне)
-- Actual base SHA:
-- Actual head SHA:
-- PR:
-- Commits:
-- Tests passed:
-- Tests failed:
-- Tests not run:
-- Scope deviations:
+  адаптеров и тестов подготовлен Claude 28.09.2026 в локальном клоне;
+  опубликован Code 28.09.2026)
+- Actual base SHA: `738d7c8da9ada19fd268b09ae5155cad9bcd8acd` — ветка
+  `docs/oge-course-plan` над `main` `4c7d4fa`. После слияния документов
+  ветка обновляется от `main` обычным merge, без rebase и force
+  (разрешение владельца 28.09.2026).
+- Actual head SHA: `10f7640591bf2f5b4f44f324dafb479829662dee` на 28.09.2026,
+  до обновления от `main`.
+- PR: #141 (Draft)
+- Commits: `5c9a4b9` — реестр, адаптеры, тесты; `10f7640` — имена типов
+  без удвоенной темы.
+- Tests passed: `OGE_REGISTRY_OK` (34 TID, 338 имён, 2454 проверки);
+  `OGE_ADAPTERS_OK` (39); `OGE_JUNK_OK` (438); `node --check` 6/6; имена
+  реестра совпадают с выводом `tools/oge-registry-draft.mjs` по 244
+  ключам; `git diff --check` чисто.
+- Tests failed: нет.
+- Tests not run: браузерный смоук — страниц нет. Независимое ревью `HIGH`
+  проводит отдельная сессия на окончательном head (ADR 0003, решение 5).
+- Scope deviations: `oge/package-lock.json` не назван в объёме, добавлен,
+  как у `ege-profil/`. Пять имён типов с удвоенной темой исправлены до
+  ревью по решению делегата владельца (модель Fable) 28.09.2026,
+  обоснование — в #141.
 
 ## Required handoff
 
