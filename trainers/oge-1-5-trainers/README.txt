@@ -1,61 +1,50 @@
 КАРТА ТРЕНАЖЁРОВ ОГЭ · ЗАДАНИЯ 1–5
 ===================================
 
-Статический сайт. Никакой сборки не нужно — просто раздайте эту папку
-как обычные статические файлы (любой static-хостинг: GitHub Pages,
-Netlify, Vercel, nginx и т. п.).
+Статические файлы, сборка не нужна. Раздел живёт на сайте по адресу
+/trainers/oge-1-5-trainers/ и входит в курс ОГЭ (/oge/).
 
 ТОЧКА ВХОДА
 -----------
-  index.html  — перенаправляет на карту (practice-1-5-map.html).
-  Карту можно открыть и напрямую: practice-1-5-map.html
+  index.html                 — перенаправляет на карту (practice-1-5-map.html).
+  practice-1-5-map.html      — карта: 12 карточек, прогресс по каждой,
+                               «Сбросить прогресс» стирает только свои ветки.
 
-КАК УСТРОЕНО
-------------
-  practice-1-5-map.html — хаб-карта. Ссылается на 9 страниц-тем
-  и показывает прогресс по каждой. Прогресс каждого тренажёра
-  и карты хранится в localStorage браузера
-  (ключ: mathExamCourseProgress.v1). Сервер/база не нужны.
+КАРТОЧКИ КАРТЫ (12)
+-------------------
+  practice-1-5-entry-diagnostic-2026.html  Входная диагностика (10 заданий)
+  percent-table-trainer.html               Проценты — таблица 2×2 («Начни отсюда»)
+  practice-1-5-roads-grid.html             01 Дороги по клеткам
+  practice-1-5-roads-schema.html           02 Дороги без клеток
+  practice-1-5-tires.html                  03 Шины (20 вариантов + авторский)
+  practice-1-5-stoves.html                 04 Печки
+  practice-1-5-land-plots.html             05 Участки
+  practice-1-5-apartments.html             06 Квартиры
+  practice-1-5-tariffs.html                07 Тарифы
+  practice-1-5-paper-sheets.html           08 Листы
+  practice-1-5-plan-reading.html           2.1 Чтение плана
+  practice-1-5-routes-checkpoint-2026.html 2.4 Проверочная по маршрутам
 
-  Внешние зависимости — только шрифты Google Fonts по CDN.
-  Всё остальное (логика, графика, SVG) — внутри файлов.
-
-ТРЕНАЖЁРЫ (все 9 карточек готовы)
----------------------------------
-  percent-table-trainer.html       Проценты и таблицы (карточка «Начни отсюда»)
-  practice-1-5-land-plots.html     Участок
-  practice-1-5-roads-grid.html     Дороги (числовая таблица)
-  practice-1-5-roads-schema.html   Дороги (схема)
-  practice-1-5-tires.html          Шины
-  practice-1-5-stoves.html         Печи
-  practice-1-5-apartments.html     Квартиры
-  practice-1-5-tariffs.html        Тарифы (график)
-  practice-1-5-paper-sheets.html   Листы бумаги
-
-Все девять страниц — рабочие тренажёры. Заглушек больше нет.
-
-ОБЩИЙ МОДУЛЬ ПРОГРЕССА (progress.js)
-------------------------------------
-  Каноническая реализация контракта хранения. Новые тренажёры должны
-  писать прогресс только через него:
-    <script src="progress.js"></script>
-    CourseProgress.write('НазваниеТемы', solvedЧисло, totalЧисло);
-    CourseProgress.clear('НазваниеТемы');   // сброс темы
-    CourseProgress.readAll();               // чтение (использует карта)
-  Карта, «Проценты», «Тарифы» и «Участок» уже подключены к модулю
-  (с фолбэком: одиночный файл без progress.js продолжает работать).
+ПРОГРЕСС
+--------
+  Ключ localStorage: mathExamCourseProgress.v1 (общий для всего сайта).
+  Каждый тренажёр пишет только свою ветку. progress.js (CourseProgress)
+  подключают «Проценты», «Участки» и «Тарифы»; остальные пишут ключ сами.
+  Единая единица прогресса «сюжет освоен» — задача OGE_COURSE_05_LINE_1_5
+  (docs/tasks/), контракт — docs/OGE_PROGRESS_CONTRACT.md.
 
 ВОСПРОИЗВОДИМЫЕ ВАРИАНТЫ
 ------------------------
-  «Тарифы» и «Участок» генерируют задания от номера варианта:
-  ссылка вида practice-1-5-tariffs.html?v=7 всегда открывает один и
-  тот же вариант — удобно давать ученикам и разбирать вместе.
+  «Тарифы» и «Участки» генерируют задания от номера варианта: ссылка
+  practice-1-5-tariffs.html?v=7 всегда открывает один и тот же вариант.
+  Шины: practice-1-5-tires.html?variant=oge-2027-analogue-1 — авторский
+  набор по структуре демоверсии 2027.
 
-ТЕСТЫ (папка tests/)
---------------------
-  cd tests && npm install && npm test
-  math-goldens.js — эталонная математика, пересчитанная независимо.
-  smoke.js — живая загрузка каждой страницы: без JS-ошибок, контракт
-  карты пишется числами, неверный ответ отклоняется, ?v= воспроизводим.
-  Прогоняйте перед каждой выкладкой.
-
+ПРОВЕРКИ (из корня репозитория)
+-------------------------------
+  node tools/oge-1-5-entry-diagnostic.test.mjs
+  node tools/oge-plans-routes-stepik-trainers.test.mjs   (SHA-пины двух файлов)
+  node tools/reset-own-progress.test.mjs
+  node tools/oge-2027-analogue-distribute-1-5.test.mjs   (шины, авторский набор)
+  node tools/oge-percent-guided-showcase-v2.test.mjs     (проценты)
+  node tools/oge-check-links.mjs                         (ссылки раздела ОГЭ)
