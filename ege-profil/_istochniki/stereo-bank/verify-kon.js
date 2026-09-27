@@ -164,8 +164,10 @@ const MODELS = {
     chk(p.id, eq(dist(m, "S", "A"), l), "SA не равно образующей");
     return r;
   },
-  "kon-16": (p, n, m) => {
-    const [r, l] = n;
+  "kon-16": (p, n, m) => {                     /* условие своими словами: образующая названа раньше радиуса */
+    const grab = re => { const g = p.cond.match(re); chk(p.id, !!g, "в условии нет числа по " + re); return g ? parseFloat(g[1].replace(",", ".")) : NaN; };
+    const l = grab(/[Оо]бразующ[^0-9.]*?(\d+(?:,\d+)?)/), r = grab(/[Рр]адиус[^0-9.]*?(\d+(?:,\d+)?)/);
+    chk(p.id, n.length === 2 && n.includes(r) && n.includes(l), "в условии не ровно два числа: r и l");
     pyth(p.id, 3, 4, 5);
     baseCone(p, r, Math.sqrt(l * l - r * r), m, true);
     chk(p.id, eq(dist(m, "S", "A"), l), "SA не равно образующей");
