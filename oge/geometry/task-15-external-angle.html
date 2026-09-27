@@ -7,10 +7,7 @@
     <meta name="description" content="Разбор задания 15 ОГЭ: нахождение внешнего угла треугольника. Подробное решение, формула, типичная ошибка и наглядный чертёж.">
     <link rel="stylesheet" href="/style.css">
     <!-- MathJax для отображения формул -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <!-- Иконки FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .task-container { max-width: 850px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .task-header { border-bottom: 2px solid #eaeaea; padding-bottom: 1rem; margin-bottom: 1.5rem; }
@@ -41,9 +38,11 @@
             color: #4285f4;
             margin-right: 10px;
         }
-        .geometry-image {
-            max-width: 90%;
+        .geometry-figure {
+            width: 100%;
+            max-width: 520px;
             height: auto;
+            background: #fff;
             border-radius: 10px;
             box-shadow: 0 6px 16px rgba(0,0,0,0.12);
             border: 2px solid #fff;
@@ -64,7 +63,7 @@
             color: #2c3e50;
         }
 
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 2.5rem; }
+        .nav-buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: space-between; margin-top: 2.5rem; }
         .btn { padding: 0.8rem 1.8rem; background: #3498db; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; border: none; cursor: pointer; }
         .btn:hover { background: #2980b9; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(41, 128, 185, 0.3); }
         .btn-secondary { background: #9c27b0; }
@@ -76,15 +75,13 @@
     <header class="header">
         <div class="container">
             <div class="logo">
-                <h1><i class="fas fa-calculator"></i> Math Exam FIPI</h1>
+                <h1>Math Exam FIPI</h1>
                 <p class="tagline">Спокойная подготовка к экзаменам</p>
             </div>
             <nav class="nav">
                 <a href="/" class="nav-link">Главная</a>
                 <a href="/oge/" class="nav-link active">ОГЭ</a>
-                <a href="/ege-profile/" class="nav-link">ЕГЭ Профиль</a>
-                <a href="/ege-base/" class="nav-link">ЕГЭ База</a>
-                <a href="/vpr/" class="nav-link">ВПР</a>
+                <a href="/ege-profil/" class="nav-link">ЕГЭ Профиль</a>
             </nav>
         </div>
     </header>
@@ -98,7 +95,7 @@
 
             <!-- Условие -->
             <div class="step">
-                <h2><i class="fas fa-question-circle"></i> Условие задачи</h2>
+                <h2>Условие задачи</h2>
                 <p>В треугольнике \( ABC \) угол \( C \) равен \( 142^\circ \). Найдите внешний угол при вершине \( C \). Ответ дайте в градусах.</p>
                 <div class="formula">
                     <strong>Дано:</strong> \( \angle C = 142^\circ \)<br>
@@ -108,10 +105,22 @@
 
             <!-- Наглядный чертеж -->
             <div class="diagram">
-                <h3><i class="fas fa-drafting-compass"></i> Наглядный чертёж</h3>
-                <img src="/images/oge/geometry/task-15-geometry.png"
-                     alt="Геометрический чертёж к задаче 15. Треугольник ABC. Внутренний угол при вершине C отмечен дугой и равен 142°. Внешний угол, смежный с ним, равен 38°. Показано, что их сумма составляет 180°."
-                     class="geometry-image">
+                <h3>Наглядный чертёж</h3>
+<svg class="geometry-figure" viewBox="0 0 440 230" role="img" aria-labelledby="fig15-title fig15-desc" xmlns="http://www.w3.org/2000/svg">
+                    <title id="fig15-title">Треугольник ABC, угол C равен 142°, внешний угол при вершине C равен 38°</title>
+                    <desc id="fig15-desc">Сторона AC продолжена за точку C до точки D. Внутренний угол ACB равен 142°, внешний угол BCD равен 38°, вместе они составляют развёрнутый угол 180°.</desc>
+                    <line x1="240" y1="170" x2="400" y2="170" stroke="#7f8c8d" stroke-width="2" stroke-dasharray="6 5"/>
+                    <polygon points="40,170 374,65 240,170" fill="#e3f2fd" stroke="#2c3e50" stroke-width="2.5" stroke-linejoin="round"/>
+                    <path d="M210,170 A30,30 0 0 1 263.6,151.5" fill="none" stroke="#e67e22" stroke-width="2.5"/>
+                    <path d="M262,170 A22,22 0 0 0 257.3,156.5" fill="none" stroke="#27ae60" stroke-width="2.5"/>
+                    <text x="200" y="145" font-size="15" font-weight="700" fill="#e67e22" text-anchor="middle">142°</text>
+                    <text x="288" y="164" font-size="15" font-weight="700" fill="#27ae60">38°</text>
+                    <text x="28" y="192" font-size="17" font-weight="700" fill="#2c3e50">A</text>
+                    <text x="380" y="58" font-size="17" font-weight="700" fill="#2c3e50">B</text>
+                    <text x="234" y="194" font-size="17" font-weight="700" fill="#2c3e50">C</text>
+                    <text x="404" y="192" font-size="17" font-weight="700" fill="#7f8c8d">D</text>
+                    <text x="220" y="218" font-size="13" fill="#555" text-anchor="middle">∠ACB + ∠BCD = 142° + 38° = 180°</text>
+                </svg>
                 <p class="diagram-caption">
                     <strong>Рис. 1:</strong> В треугольнике ABC угол C равен 142°. Внешний угол при вершине C равен 38°, так как сумма смежных углов равна 180°.
                 </p>
@@ -119,7 +128,7 @@
 
             <!-- Решение -->
             <div class="step">
-                <h2><i class="fas fa-search"></i> Решение</h2>
+                <h2>Решение</h2>
                 <p><strong>Шаг 1.</strong> Вспомним определение. Внешний угол треугольника при данной вершине — это угол, смежный с внутренним углом треугольника при этой вершине.</p>
                 <p><strong>Шаг 2.</strong> Сумма смежных углов равна \( 180^\circ \).</p>
                 <p><strong>Шаг 3.</strong> Так как внутренний угол \( \angle C = 142^\circ \), то внешний угол при этой же вершине вычисляется по формуле:</p>
@@ -138,19 +147,19 @@
 
             <!-- Ответ -->
             <div class="answer-box">
-                <strong><i class="fas fa-check-circle"></i> Ответ:</strong> \( 38^\circ \)
+                <strong>Ответ:</strong> \( 38^\circ \)
             </div>
 
             <!-- Типичная ошибка -->
             <div class="warning-box">
-                <h3><i class="fas fa-exclamation-triangle"></i> Типичная ошибка</h3>
+                <h3>Типичная ошибка</h3>
                 <p>Самая распространённая ошибка — <strong>выдать значение внутреннего угла за внешний</strong>. Ученик видит число \( 142^\circ \) в условии и автоматически записывает его в ответ, не вдумываясь в вопрос.</p>
                 <p><strong>Важно:</strong> Внешний угол всегда <em>смежный</em> с внутренним, поэтому их сумма равна \( 180^\circ \). Если внутренний угол больше \( 90^\circ \) (как здесь), то внешний будет <em>острым</em> (меньше \( 90^\circ \)).</p>
             </div>
 
             <!-- Совет -->
             <div class="tip-box">
-                <h3><i class="fas fa-lightbulb"></i> Совет для решения</h3>
+                <h3>Совет для решения</h3>
                 <p>Чтобы никогда не путаться, можно мысленно представлять или помечать на чертеже:</p>
                 <ol>
                     <li>Отметьте внутренний угол \( \angle C \) внутри треугольника.</li>
@@ -162,9 +171,9 @@
 
             <!-- Навигация -->
             <div class="nav-buttons">
-                <a href="/oge/algebra/task-14-sequences.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Задание 14</a>
-                <a href="/oge/" class="btn"><i class="fas fa-list"></i> К списку заданий ОГЭ</a>
-                <a href="/oge/geometry/task-16.html" class="btn btn-secondary">Задание 16 <i class="fas fa-arrow-right"></i></a>
+                <a href="/trainers/oge-task14-progressions.html" class="btn btn-secondary">← Задание 14</a>
+                <a href="/oge/" class="btn">К списку заданий ОГЭ</a>
+                <a href="/trainers/oge-task16-circle.html" class="btn btn-secondary">Задание 16 →</a>
             </div>
         </div>
     </main>
@@ -172,7 +181,7 @@
     <footer class="footer">
         <div class="container">
             <p>© 2024 Math Exam FIPI. Образовательный проект.</p>
-            <p class="footer-note">Задание из открытого банка ФИПИ. Чертеж создан в GeoGebra.</p>
+            <p class="footer-note">Тип задания — из открытого банка ФИПИ. Чертёж построен по условию.</p>
         </div>
     </footer>
 </body>
