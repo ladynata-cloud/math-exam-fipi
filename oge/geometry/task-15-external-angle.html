@@ -68,6 +68,14 @@
         .btn:hover { background: #2980b9; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(41, 128, 185, 0.3); }
         .btn-secondary { background: #9c27b0; }
         .btn-secondary:hover { background: #7b1fa2; }
+
+        /* Узкий экран: вложенные отступы съедали ширину чертежа (200 px на 360 px),
+           подписи углов и формула под чертежом остаются крупнее 12 px */
+        @media (max-width: 480px) {
+            .task-container { padding: 12px; }
+            .diagram { padding: 12px 8px; }
+            .geometry-figure .fig-angle, .geometry-figure .fig-sum { font-size: 17px; }
+        }
     </style>
 </head>
 <body>
@@ -113,13 +121,13 @@
                     <polygon points="40,170 374,65 240,170" fill="#e3f2fd" stroke="#2c3e50" stroke-width="2.5" stroke-linejoin="round"/>
                     <path d="M210,170 A30,30 0 0 1 263.6,151.5" fill="none" stroke="#e67e22" stroke-width="2.5"/>
                     <path d="M262,170 A22,22 0 0 0 257.3,156.5" fill="none" stroke="#27ae60" stroke-width="2.5"/>
-                    <text x="200" y="145" font-size="15" font-weight="700" fill="#e67e22" text-anchor="middle">142°</text>
-                    <text x="288" y="164" font-size="15" font-weight="700" fill="#27ae60">38°</text>
+                    <text class="fig-angle" x="252" y="130" font-size="15" font-weight="700" fill="#e67e22" text-anchor="middle">142°</text>
+                    <text class="fig-angle" x="288" y="164" font-size="15" font-weight="700" fill="#27ae60">38°</text>
                     <text x="28" y="192" font-size="17" font-weight="700" fill="#2c3e50">A</text>
                     <text x="380" y="58" font-size="17" font-weight="700" fill="#2c3e50">B</text>
                     <text x="234" y="194" font-size="17" font-weight="700" fill="#2c3e50">C</text>
                     <text x="404" y="192" font-size="17" font-weight="700" fill="#7f8c8d">D</text>
-                    <text x="220" y="218" font-size="13" fill="#555" text-anchor="middle">∠ACB + ∠BCD = 142° + 38° = 180°</text>
+                    <text class="fig-sum" x="220" y="218" font-size="13" fill="#555" text-anchor="middle">∠ACB + ∠BCD = 142° + 38° = 180°</text>
                 </svg>
                 <p class="diagram-caption">
                     <strong>Рис. 1:</strong> В треугольнике ABC угол C равен 142°. Внешний угол при вершине C равен 38°, так как сумма смежных углов равна 180°.
