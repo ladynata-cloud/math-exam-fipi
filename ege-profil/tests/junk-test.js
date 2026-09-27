@@ -362,10 +362,16 @@ TRAINERS.forEach(T => {
     } catch (e) { errors.push('boot ' + DER + ': ' + e.message); }
     return { w, d: w && w.document, errs: () => errors.slice(before) };
   };
-  /* ответ первой задачи — из «пробной» загрузки через кнопку «Решение» */
+  /* ответ первой задачи — из «пробной» загрузки: лестница разбора до последней ступени */
   const probe = openDer(null);
   let answer = null;
-  act(probe, d => { d.getElementById('taskSol').click(); const m = d.getElementById('taskSolBox').textContent.match(/Ответ: (.+)\.$/); answer = m && m[1]; }, 'derivative пробная загрузка');
+  act(probe, d => {
+    d.getElementById('taskSol').click();
+    const box = d.getElementById('taskSolBox'), btn = box.querySelector('.ladder-btn');
+    for (let n = 0; n < 40 && !box.querySelector('.lfinal'); n++) btn.click();
+    const f = box.querySelector('.lfinal'), m = f && f.textContent.match(/^Ответ: (.+)\.$/);
+    answer = m && m[1];
+  }, 'derivative пробная загрузка');
   ok(!!answer, 'derivative: ответ пробной задачи прочитан: ' + answer);
   if (probe.w) probe.w.close();
 

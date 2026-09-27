@@ -70,6 +70,16 @@
   .opt.bad{background:var(--badbg);border-color:var(--red);color:var(--red)}
   .sol{border-left:3px solid var(--ink);padding:8px 12px;margin-top:10px;background:rgba(255,255,255,.6);display:none}
   .sol.on{display:block}
+  .ladder{margin:8px 0 0;padding:0;list-style:none;counter-reset:step}
+  .ladder li{position:relative;padding:8px 0 8px 36px;border-top:1px dashed var(--line)}
+  .ladder li:first-child{border-top:0}
+  .ladder li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:9px;width:26px;height:26px;border-radius:50%;
+    background:var(--ink);color:#fff;font:700 13px/26px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-align:center}
+  .ladder .lq{font-weight:700;color:var(--ink-strong)}
+  .ladder .la{margin-top:4px}
+  .ladder .lfinal{margin-top:8px;font-weight:800;font-size:17px;color:var(--ink-strong)}
+  .ladder-note{margin:0 0 4px}
+  .ladder-done{margin:8px 0 10px;font-weight:600;color:var(--ink-strong)}
 </style>
 </head>
 <body>
@@ -131,11 +141,11 @@
         <input type="text" id="taskAnswer" inputmode="decimal" autocomplete="off" aria-label="Ответ">
         <button class="btn" id="taskCheck">Проверить</button>
         <button class="btn ghost" id="taskHint">Подсказка</button>
-        <button class="btn ghost" id="taskSol">Решение</button>
+        <button class="btn ghost" id="taskSol">Разбор по шагам</button>
         <button class="btn ghost" id="taskNext">Другая задача</button>
       </div>
       <div class="feedback" id="taskFb" role="status" aria-live="polite"></div>
-      <div class="sol" id="taskSolBox"></div>
+      <div class="sol" id="taskSolBox" aria-live="polite"></div>
     </div>
   </section>
 
@@ -204,25 +214,52 @@ var T8 = (function(){
   function signLeft(g, z){ return valAt(g, z - 1) > 0 ? 1 : -1; }
   function maxima(g){ return g.zeros.filter(function(z){ return signLeft(g,z) > 0 && signRight(g,z) < 0; }); }
   function minima(g){ return g.zeros.filter(function(z){ return signLeft(g,z) < 0 && signRight(g,z) > 0; }); }
-  function countSign(g, a, b, positive){
-    var n = 0;
+  /* в buildSigned каждый нуль — строгая смена знака, поэтому нуль — либо максимум, либо минимум */
+  function kindAt(g, z){ return (signLeft(g,z) > 0 && signRight(g,z) < 0) ? "max" : "min"; }
+  function zerosIn(g, a, b){ return g.zeros.filter(function(z){ return z >= a && z <= b; }); }
+  /* целые точки отрезка [a;b] с нужным знаком f′ (нули не входят) */
+  function intsWithSign(g, a, b, positive){
+    var out = [];
     for (var x = a; x <= b; x++){
       var v = valAt(g,x);
-      if (positive ? v > 0 : v < 0) n++;
+      if (positive ? v > 0 : v < 0) out.push(x);
     }
-    return n;
+    return out;
   }
-  /* решения f'(x)=k на [-6;6]: пересечения ломаной с уровнем k (узлы-касания учитываются один раз) */
-  function countLevel(g, k){
-    var n = 0;
+  function countSign(g, a, b, positive){ return intsWithSign(g, a, b, positive).length; }
+  /* промежутки знакопостоянства ломаной на отрезке [a;b]: между соседними
+     нулями (или краем), обрезанные отрезком; конец промежутка закрыт, если он —
+     край отрезка, а не нуль ломаной */
+  function signRuns(g, a, b, positive){
+    var bounds = [-6].concat(g.zeros, [6]), out = [];
+    for (var r = 0; r < bounds.length - 1; r++){
+      var L = bounds[r], R = bounds[r+1];
+      var s = (g.zeros.indexOf(L) < 0) ? valAt(g, L) : valAt(g, L + 1);
+      if (positive ? s <= 0 : s >= 0) continue;
+      var lo = Math.max(L, a), hi = Math.min(R, b);
+      if (lo >= hi) continue;
+      out.push({ L: lo, R: hi, Lclosed: g.zeros.indexOf(lo) < 0, Rclosed: g.zeros.indexOf(hi) < 0 });
+    }
+    return out;
+  }
+  /* решения f'(x)=k на [-6;6]: пересечения ломаной с уровнем k слева направо —
+     узел на уровне ({at:x}) или пересечение внутри звена ({between:[x,x+1]}) */
+  function levelHits(g, k){
+    var out = [];
     for (var i = 0; i < g.vals.length; i++){
-      if (g.vals[i] === k) n++;
+      if (g.vals[i] === k) out.push({ at: i - 6 });
       if (i < g.vals.length - 1){
         var a = g.vals[i] - k, b = g.vals[i+1] - k;
-        if (a * b < 0) n++;
+        if (a * b < 0) out.push({ between: [i - 6, i - 5] });
       }
     }
-    return n;
+    return out;
+  }
+  function countLevel(g, k){ return levelHits(g, k).length; }
+  /* есть ли горизонтальное звено ломаной на уровне k (бесконечно много решений f'(x)=k) */
+  function hasFlatAt(g, k){
+    for (var i = 0; i < g.vals.length - 1; i++) if (g.vals[i] === k && g.vals[i+1] === k) return true;
+    return false;
   }
   /* f как интеграл ломаной: значения f в узлах + кусочно-квадратичная выборка для рисования */
   function integrate(g){
@@ -257,6 +294,8 @@ var T8 = (function(){
     return Math.abs(u - right) < 1e-6;
   }
   return { rnd:rnd, pick:pick, buildSigned:buildSigned, valAt:valAt, maxima:maxima, minima:minima,
+           kindAt:kindAt, zerosIn:zerosIn, intsWithSign:intsWithSign, signRuns:signRuns,
+           levelHits:levelHits, hasFlatAt:hasFlatAt,
            countSign:countSign, countLevel:countLevel, integrate:integrate, fSample:fSample,
            fmt:fmt, parseAns:parseAns, eq:eq };
 })();
@@ -493,65 +532,127 @@ if (typeof module !== "undefined") module.exports = T8;
     });
   });
 
-  /* ---------- генераторы задач ---------- */
+  /* ---------- генераторы задач ----------
+     Каждая задача: text, draw, answer, hint, steps, params.
+     steps — лестница разбора: массив { q: вопрос шага, a: ответ на него } в
+     порядке школьного рассуждения: что дано → какое правило применяем →
+     что находим по чертежу → считаем. Итоговое число ученику показывает
+     только последняя ступень интерфейса (mountLadder), и только тогда
+     задача считается открытой (TS.revealed). params — числа задачи для
+     независимого пересчёта ответа в самопроверке (?selftest=1). */
   function subRange(g){
     var a = T8.rnd(-6, -3), b = T8.rnd(3, 6);
     return [a, b];
   }
+  function seg(r){ return "[" + T8.fmt(r[0]) + "; " + T8.fmt(r[1]) + "]"; }
+  function listX(xs){ return xs.map(function(x){ return "x = " + T8.fmt(x); }).join("; "); }
+  /* отмеченные точки — так, как они подписаны на чертеже (x₁ … x₆), с абсциссой в скобках:
+     ученик сверяет ступень с рисунком, а не пересчитывает клетки */
+  function markName(x, marks){ return "x" + "₁₂₃₄₅₆₇"[marks.indexOf(x)] + " (x = " + T8.fmt(x) + ")"; }
+  function listMarks(xs, marks){ return xs.map(function(x){ return markName(x, marks); }).join("; "); }
+  /* смена знака в нуле z — словами, как пишут в тетради;
+     fn — имя функции на чертеже (f′ или f), F — чьи это экстремумы */
+  function changeLine(g, z, fn, F){
+    var mx = T8.kindAt(g, z) === "max";
+    return "x = " + T8.fmt(z) + ": слева " + fn + (mx ? " > 0, справа " + fn + " < 0 — точка максимума " : " < 0, справа " + fn + " > 0 — точка минимума ") + F;
+  }
+  function runsText(g, r, positive){
+    return T8.signRuns(g, r[0], r[1], positive).map(function(s){
+      return (s.Lclosed ? "[" : "(") + T8.fmt(s.L) + "; " + T8.fmt(s.R) + (s.Rclosed ? "]" : ")");
+    }).join(", ");
+  }
   var GEN = {
     extrema: function(){
-      var g, kind, list, r;
+      var g, kind, list, r, mx, mn, zin;
       do {
         g = T8.buildSigned(); r = subRange(g);
         kind = T8.pick(["max","min","all"]);
-        var mx = T8.maxima(g).filter(function(z){ return z >= r[0] && z <= r[1]; });
-        var mn = T8.minima(g).filter(function(z){ return z >= r[0] && z <= r[1]; });
-        list = kind === "max" ? mx : kind === "min" ? mn : mx.concat(mn);
+        zin = T8.zerosIn(g, r[0], r[1]);
+        mx = zin.filter(function(z){ return T8.kindAt(g, z) === "max"; });
+        mn = zin.filter(function(z){ return T8.kindAt(g, z) === "min"; });
+        list = kind === "max" ? mx : kind === "min" ? mn : mx.concat(mn).sort(function(a,b){ return a-b; });
       } while (list.length < 1);
       var word = kind === "max" ? "точек максимума" : kind === "min" ? "точек минимума" : "точек экстремума";
+      var last = kind === "max" ? "Точек максимума — " + mx.length + ": " + listX(mx) + "."
+        : kind === "min" ? "Точек минимума — " + mn.length + ": " + listX(mn) + "."
+        : "Точек максимума " + mx.length + ", точек минимума " + mn.length + "; всего точек экстремума " + list.length + ".";
       return {
-        text: "На рисунке изображён график y = f′(x) — производной функции f, определённой на интервале (−7; 7). Найдите количество " + word + " функции f на отрезке [" + T8.fmt(r[0]) + "; " + T8.fmt(r[1]) + "].",
+        text: "На рисунке изображён график y = f′(x) — производной функции f, определённой на интервале (−7; 7). Найдите количество " + word + " функции f на отрезке " + seg(r) + ".",
         draw: function(host){ drawPoly(host, g, { band: r }); },
         answer: list.length,
         hint: "Экстремумы f — это нули f′ со сменой знака. Максимум: «+» сменяется на «−», минимум — наоборот.",
-        sol: "Нули f′ со сменой знака на отрезке: x = " + list.map(T8.fmt).join("; ") + ". Всего " + list.length + "."
+        params: { vals: g.vals.slice(), r: r.slice(), kind: kind },
+        steps: [
+          { q: "Что изображено на рисунке — график функции f или её производной? Что нужно найти?",
+            a: "Дан график производной f′. Найти нужно " + word.replace("точек", "количество точек") + " самой функции f — о них будем судить по знаку производной." },
+          { q: "Как по графику f′ узнать точки экстремума функции f?",
+            a: "Точка экстремума — это нуль производной, в котором f′ меняет знак: с «+» на «−» — точка максимума, с «−» на «+» — точка минимума. Нуль без смены знака экстремумом не является." },
+          { q: "Найдите нули f′ на отрезке " + seg(r) + " — точки, где график пересекает ось x.",
+            a: (zin.length === 1 ? "На отрезке график пересекает ось в одной точке: " : "На отрезке график пересекает ось в точках ") + listX(zin) + "." },
+          { q: "Определите, как меняется знак f′ в каждой из этих точек.",
+            a: zin.map(function(z){ return changeLine(g, z, "f′", "f"); }).join("; ") + "." },
+          { q: "Сколько " + word + " получилось?", a: last }
+        ]
       };
     },
     onemax: function(){
-      var g, target, r;
+      var g, target, r, kind;
       do {
         g = T8.buildSigned();
-        var kind = T8.pick(["max","min"]);
+        kind = T8.pick(["max","min"]);
         var list = kind === "max" ? T8.maxima(g) : T8.minima(g);
         if (!list.length) continue;
         target = T8.pick(list);
         var others = list.filter(function(z){ return z !== target; });
         var lo = Math.max(-6, target - T8.rnd(1,3)), hi = Math.min(6, target + T8.rnd(1,3));
         var okRange = others.every(function(z){ return z < lo || z > hi; });
-        if (okRange){ r = [lo, hi]; GEN._kindWord = kind; break; }
+        if (okRange){ r = [lo, hi]; break; }
       } while (true);
-      var w = GEN._kindWord === "max" ? "максимума" : "минимума";
+      var w = kind === "max" ? "максимума" : "минимума";
+      var zin = T8.zerosIn(g, r[0], r[1]);
       return {
-        text: "На рисунке изображён график y = f′(x) — производной функции f. Найдите точку " + w + " функции f на отрезке [" + T8.fmt(r[0]) + "; " + T8.fmt(r[1]) + "].",
+        text: "На рисунке изображён график y = f′(x) — производной функции f. Найдите точку " + w + " функции f на отрезке " + seg(r) + ".",
         draw: function(host){ drawPoly(host, g, { band: r }); },
         answer: target,
-        hint: "Ищем ноль производной, где знак меняется " + (GEN._kindWord === "max" ? "с «+» на «−»." : "с «−» на «+»."),
-        sol: "На отрезке ровно один такой ноль: x = " + T8.fmt(target) + "."
+        hint: "Ищем ноль производной, где знак меняется " + (kind === "max" ? "с «+» на «−»." : "с «−» на «+»."),
+        params: { vals: g.vals.slice(), r: r.slice(), kind: kind },
+        steps: [
+          { q: "Что изображено на рисунке и что нужно найти?",
+            a: "Дан график производной f′. Нужна точка " + w + " самой функции f на отрезке " + seg(r) + " — по графику производной." },
+          { q: "Каким признаком точки " + w + " пользуемся?",
+            a: "Точка " + w + " — это нуль f′, в котором знак производной меняется " + (kind === "max" ? "с «+» на «−»: функция сначала возрастала, потом убывает." : "с «−» на «+»: функция сначала убывала, потом возрастает.") },
+          { q: "Найдите нули f′ на отрезке " + seg(r) + ".",
+            a: (zin.length === 1 ? "На отрезке один нуль производной: " : "На отрезке нули производной: ") + listX(zin) + "." },
+          { q: "Проверьте смену знака f′ в " + (zin.length === 1 ? "этой точке." : "каждой из них."),
+            a: zin.map(function(z){ return changeLine(g, z, "f′", "f"); }).join("; ") + "." },
+          { q: "Какая точка подходит под условие?",
+            a: "Условию удовлетворяет одна точка: x = " + T8.fmt(target) + " — точка " + w + " функции f." }
+        ]
       };
     },
     intpoints: function(){
       var g = T8.buildSigned(), r = subRange(g);
       var positive = T8.pick([true, false]);
-      var n = T8.countSign(g, r[0], r[1], positive);
+      var pts = T8.intsWithSign(g, r[0], r[1], positive);
+      var n = pts.length;
       if (n === 0) return GEN.intpoints();
       var w = positive ? "положительна" : "отрицательна";
       var w2 = positive ? "возрастания" : "убывания";
       return {
-        text: "На рисунке изображён график y = f′(x) — производной функции f. Найдите количество целых точек отрезка [" + T8.fmt(r[0]) + "; " + T8.fmt(r[1]) + "], в которых производная " + w + " (то есть целых точек, входящих в промежутки " + w2 + " функции f).",
+        text: "На рисунке изображён график y = f′(x) — производной функции f. Найдите количество целых точек отрезка " + seg(r) + ", в которых производная " + w + " (то есть целых точек, входящих в промежутки " + w2 + " функции f).",
         draw: function(host){ drawPoly(host, g, { band: r }); },
         answer: n,
         hint: "Целые точки — это узлы сетки. Считаем те, где график f′ " + (positive ? "выше" : "ниже") + " оси x. Нули не считаются.",
-        sol: "Таких целых точек " + n + "."
+        params: { vals: g.vals.slice(), r: r.slice(), positive: positive },
+        steps: [
+          { q: "Что изображено на рисунке и что нужно найти?",
+            a: "Дан график производной f′. Нужны целые точки отрезка " + seg(r) + ", в которых f′ " + w + ": там функция f " + (positive ? "возрастает" : "убывает") + "." },
+          { q: "Где на отрезке " + seg(r) + " производная " + w + "?",
+            a: "Там, где график f′ лежит " + (positive ? "выше" : "ниже") + " оси x: на " + runsText(g, r, positive) + "." },
+          { q: "Какие целые точки лежат в этих промежутках? (В нулях f′ производная равна нулю — они не подходят.)",
+            a: "Это точки " + listX(pts) + "." },
+          { q: "Сколько их?", a: "Всего таких целых точек " + n + "." }
+        ]
       };
     },
     marked: function(){
@@ -559,28 +660,52 @@ if (typeof module !== "undefined") module.exports = T8;
       var marks = [];
       for (var x = -5; x <= 5; x += 2) marks.push(x);
       var mode = T8.pick(["countNeg","countPos","argmax"]);
+      var up = marks.filter(function(m){ return T8.valAt(g,m) > 0; });
+      var down = marks.filter(function(m){ return T8.valAt(g,m) < 0; });
+      var flat = marks.filter(function(m){ return T8.valAt(g,m) === 0; });
+      var sortLine = "Возрастает (f′ > 0): " + (up.length ? listMarks(up, marks) : "таких точек нет") + ". Убывает (f′ < 0): " + (down.length ? listMarks(down, marks) : "таких точек нет") + "." + (flat.length ? " В " + (flat.length === 1 ? "точке " : "точках ") + listMarks(flat, marks) + " касательная горизонтальна: f′ = 0." : "");
       if (mode === "argmax"){
         var best = marks[0];
         marks.forEach(function(m){ if (T8.valAt(g,m) > T8.valAt(g,best)) best = m; });
         var ties = marks.filter(function(m){ return T8.valAt(g,m) === T8.valAt(g,best); });
         if (ties.length > 1) return GEN.marked();
+        var bv = T8.valAt(g, best);
         return {
           text: "На рисунке изображён график функции y = f(x). На нём отмечены точки x₁ … x₆. В какой из них значение производной наибольшее? В ответе укажите эту точку (её абсциссу).",
           draw: function(host){ drawSmooth(host, g, { marks: marks }); },
           answer: best,
           hint: "Производная наибольшая там, где график круче всего идёт вверх.",
-          sol: "Самый крутой подъём — в точке x = " + T8.fmt(best) + "."
+          params: { vals: g.vals.slice(), marks: marks.slice(), mode: mode },
+          steps: [
+            { q: "Что изображено на рисунке? Что означает значение производной в точке геометрически?",
+              a: "Дан график самой функции f. Значение f′(x₀) — это угловой коэффициент касательной в точке x₀: где график поднимается круче, производная больше; где график идёт вниз, производная отрицательна; в вершинах она равна нулю." },
+            { q: "Разберите отмеченные точки: в каких функция возрастает, в каких убывает?",
+              a: sortLine },
+            { q: "В какой точке производная наибольшая?",
+              a: bv > 0
+                ? "Среди точек возрастания круче всего график поднимается в точке " + markName(best, marks) + ": касательная там наклонена сильнее всего, значит f′ в ней наибольшая."
+                : "Ни в одной отмеченной точке функция не возрастает, поэтому наибольшее значение производной — там, где " + (bv === 0 ? "касательная горизонтальна" : "график убывает наиболее полого") + ": " + markName(best, marks) + "." }
+          ]
         };
       }
       var neg = mode === "countNeg";
-      var n = marks.filter(function(m){ var v = T8.valAt(g,m); return neg ? v < 0 : v > 0; }).length;
+      var sel = neg ? down : up;
+      var n = sel.length;
       if (n === 0) return GEN.marked();
       return {
         text: "На рисунке изображён график функции y = f(x). На нём отмечены точки x₁ … x₆. В скольких из этих точек производная функции " + (neg ? "отрицательна" : "положительна") + "?",
         draw: function(host){ drawSmooth(host, g, { marks: marks }); },
         answer: n,
         hint: neg ? "Производная отрицательна там, где график убывает (идёт вниз слева направо)." : "Производная положительна там, где график возрастает.",
-        sol: "Подходящих точек: " + n + "."
+        params: { vals: g.vals.slice(), marks: marks.slice(), mode: mode },
+        steps: [
+          { q: "Что изображено на рисунке? Как по графику функции судить о знаке её производной?",
+            a: "Дан график самой функции f. Производная положительна там, где f возрастает (график идёт вверх слева направо), отрицательна — где убывает, и равна нулю в вершинах, где касательная горизонтальна." },
+          { q: "Разберите отмеченные точки: в каких график идёт вверх, в каких — вниз?",
+            a: sortLine },
+          { q: "Сколько точек, в которых производная " + (neg ? "отрицательна" : "положительна") + "?",
+            a: "Таких точек " + n + ": " + listMarks(sel, marks) + "." }
+        ]
       };
     },
     tangent: function(){
@@ -593,27 +718,55 @@ if (typeof module !== "undefined") module.exports = T8;
       var x2 = x1 + dx, y2 = y1 + dy;
       if (Math.abs(y2) > 4) return GEN.tangent();
       var x0 = x1 + T8.rnd(0, dx);
+      var pt = function(x, y){ return "(" + T8.fmt(x) + "; " + T8.fmt(y) + ")"; };
       return {
         text: "На рисунке изображена касательная к графику функции y = f(x) в точке x₀. Прямая проходит через отмеченные узлы клетчатой сетки. Найдите значение производной f′(x₀).",
         draw: function(host){ drawTangent(host, x1, y1, x2, y2, x0); },
         answer: k,
         hint: "f′(x₀) — угловой коэффициент касательной: k = Δy / Δx по двум отмеченным узлам. Следите за знаком.",
-        sol: "Между узлами Δx = " + dx + ", Δy = " + T8.fmt(dy) + ". Значит f′(x₀) = " + T8.fmt(dy) + " / " + dx + " = " + T8.fmt(k) + "."
+        params: { x1: x1, y1: y1, x2: x2, y2: y2 },
+        steps: [
+          { q: "Что нужно найти и как это связано с касательной?",
+            a: "По геометрическому смыслу производной f′(x₀) равна угловому коэффициенту касательной, проведённой в точке x₀: f′(x₀) = k." },
+          { q: "Как найти угловой коэффициент прямой по клетчатой сетке?",
+            a: "Возьмём два отмеченных узла, через которые проходит прямая, и построим на них прямоугольный треугольник с катетами вдоль клеток: k = Δy / Δx, где Δx — сдвиг по горизонтали, Δy — по вертикали, со знаком." },
+          { q: "Сосчитайте Δx и Δy между узлами " + pt(x1, y1) + " и " + pt(x2, y2) + ".",
+            a: "Δx = " + T8.fmt(x2) + " − " + T8.fmt(x1) + " = " + dx + " (клеток вправо), Δy = " + T8.fmt(y2) + " − " + (y1 < 0 ? "(" + T8.fmt(y1) + ")" : T8.fmt(y1)) + " = " + T8.fmt(dy) + ": прямая идёт " + (dy > 0 ? "вверх, поэтому Δy положительно." : "вниз, поэтому Δy отрицательно.") },
+          { q: "Вычислите k.",
+            a: "k = Δy / Δx = " + T8.fmt(dy) + " / " + dx + " = " + T8.fmt(k) + ". Значит f′(x₀) = " + T8.fmt(k) + "." }
+        ]
       };
     },
     parallel: function(){
       var g = T8.buildSigned();
       var k = T8.pick([-2, -1, 1, 2]);
-      var n = T8.countLevel(g, k);
+      /* на горизонтальном участке ломаной, лежащем на уровне k, решений
+         f′(x) = k бесконечно много — такие чертежи не годятся */
+      if (T8.hasFlatAt(g, k)) return GEN.parallel();
+      var hits = T8.levelHits(g, k);
+      var n = hits.length;
       if (n < 1 || n > 6) return GEN.parallel();
       var b = T8.rnd(-6, 6);
       var line = "y = " + (k === 1 ? "" : k === -1 ? "−" : T8.fmt(k)) + "x " + (b >= 0 ? "+ " + b : "− " + (-b));
+      var where = hits.map(function(h){
+        return h.at !== undefined ? "в точке x = " + T8.fmt(h.at) : "между x = " + T8.fmt(h.between[0]) + " и x = " + T8.fmt(h.between[1]);
+      }).join(", ");
       return {
         text: "На рисунке изображён график y = f′(x) — производной функции f. Найдите количество точек, в которых касательная к графику функции y = f(x) параллельна прямой " + line + " или совпадает с ней.",
         draw: function(host){ drawPoly(host, g, { level: k }); },
         answer: n,
         hint: "Касательная параллельна прямой с угловым коэффициентом k = " + T8.fmt(k) + " там, где f′(x) = " + T8.fmt(k) + ". Считаем точки пересечения графика f′ с пунктирным уровнем.",
-        sol: "График f′ пересекает уровень y = " + T8.fmt(k) + " ровно " + n + " раз(а)."
+        params: { vals: g.vals.slice(), k: k },
+        steps: [
+          { q: "Что изображено на рисунке? При каком условии касательная к графику f параллельна данной прямой?",
+            a: "Дан график производной f′. Прямые параллельны (или совпадают), когда равны их угловые коэффициенты. Угловой коэффициент касательной в точке x₀ равен f′(x₀), значит нужно решить уравнение f′(x) = k." },
+          { q: "Чему равен угловой коэффициент прямой " + line + "?",
+            a: "k = " + T8.fmt(k) + " — коэффициент при x." },
+          { q: "Как по графику найти все x, для которых f′(x) = " + T8.fmt(k) + "?",
+            a: "Это точки пересечения графика f′ с горизонтальной прямой y = " + T8.fmt(k) + " (пунктир на рисунке): в каждой из них значение производной равно " + T8.fmt(k) + "." },
+          { q: "Сосчитайте точки пересечения слева направо.",
+            a: "График пересекает уровень y = " + T8.fmt(k) + " " + where + ". Всего " + n + (n === 1 ? " точка." : n < 5 ? " точки." : " точек.") }
+        ]
       };
     },
     physics: function(){
@@ -623,53 +776,97 @@ if (typeof module !== "undefined") module.exports = T8;
         if (v <= 0) return GEN.physics();
         var vt = poly([[3, "t²"], [2*b2, "t"], [c, ""]]);
         var parts = [3*t0*t0, 2*b2*t0, c].filter(function(n){ return n !== 0; });
+        var law = poly([[1, "t³"], [b2, "t²"], [c, "t"], [d, ""]]);
+        var termRules = ["(t³)′ = 3t²"];
+        if (b2) termRules.push("(" + poly([[b2, "t²"]]) + ")′ = " + poly([[2*b2, "t"]]));
+        if (c) termRules.push("(" + poly([[c, "t"]]) + ")′ = " + T8.fmt(c));
+        termRules.push("(" + d + ")′ = 0");
+        var subst = "3·" + t0 + "²" + (b2 ? (b2 > 0 ? " + " : " − ") + Math.abs(2*b2) + "·" + t0 : "") + (c ? (c > 0 ? " + " : " − ") + Math.abs(c) : "");
         return {
-          text: "Материальная точка движется прямолинейно по закону x(t) = " + poly([[1, "t³"], [b2, "t²"], [c, "t"], [d, ""]]) + ", где x — расстояние в метрах, t — время в секундах. Найдите её скорость (в м/с) в момент t = " + t0 + " с.",
+          text: "Материальная точка движется прямолинейно по закону x(t) = " + law + ", где x — расстояние в метрах, t — время в секундах. Найдите её скорость (в м/с) в момент t = " + t0 + " с.",
           draw: function(host){ host.innerHTML = ""; },
           answer: v,
           hint: "Скорость — производная координаты: v(t) = x′(t) = " + vt + ".",
-          sol: "v(t) = " + vt + "; v(" + t0 + ") = " + (parts.length > 1 ? poly(parts.map(function(n){ return [n, ""]; })) + " = " : "") + v + "."
+          params: { law: "cubic", b: b2, c: c, d: d, t0: t0 },
+          steps: [
+            { q: "Как связаны координата x(t) и скорость v(t)?",
+              a: "По механическому смыслу производной скорость — это производная координаты по времени: v(t) = x′(t)." },
+            { q: "Найдите производную x(t) = " + law + ".",
+              a: "Дифференцируем почленно: " + termRules.join(", ") + ". Получаем v(t) = " + vt + "." },
+            { q: "Найдите скорость в момент t = " + t0 + " с.",
+              a: "v(" + t0 + ") = " + subst + " = " + (parts.length > 1 ? poly(parts.map(function(n){ return [n, ""]; })) + " = " : "") + v + " (м/с)." }
+          ]
         };
       }
-      var p = T8.rnd(2, 7), q = T8.rnd(1, 6), V = 2*0; // x(t)=t²−2pt+q·? проще: x = t² + Bt + C
-      var B = -2 * p; V = T8.rnd(2, 10);
+      var p = T8.rnd(2, 7), V = T8.rnd(2, 10);
+      var B = -2 * p;
       var t = (V - B) / 2;
       if (t <= 0 || t !== Math.floor(t)) return GEN.physics();
       var C = T8.rnd(1, 9);
       var vt2 = poly([[2, "t"], [B, ""]]);
+      var law2 = poly([[1, "t²"], [B, "t"], [C, ""]]);
       return {
-        text: "Материальная точка движется прямолинейно по закону x(t) = " + poly([[1, "t²"], [B, "t"], [C, ""]]) + " (x — в метрах, t — в секундах). В какой момент времени (в секундах) её скорость была равна " + V + " м/с?",
+        text: "Материальная точка движется прямолинейно по закону x(t) = " + law2 + " (x — в метрах, t — в секундах). В какой момент времени (в секундах) её скорость была равна " + V + " м/с?",
         draw: function(host){ host.innerHTML = ""; },
         answer: t,
         hint: "v(t) = x′(t) = " + vt2 + ". Приравняйте к " + V + ".",
-        sol: vt2 + " = " + V + " ⇒ t = " + t + "."
+        params: { law: "quad", B: B, C: C, V: V },
+        steps: [
+          { q: "Как связаны координата x(t) и скорость v(t)?",
+            a: "Скорость — производная координаты по времени: v(t) = x′(t)." },
+          { q: "Найдите v(t) для x(t) = " + law2 + ".",
+            a: "(t²)′ = 2t, (" + poly([[B, "t"]]) + ")′ = " + T8.fmt(B) + ", (" + C + ")′ = 0. Получаем v(t) = " + vt2 + "." },
+          { q: "Составьте уравнение «скорость равна " + V + " м/с» и решите его.",
+            a: vt2 + " = " + V + " ⇒ 2t = " + V + " + " + (-B) + " = " + (V - B) + " ⇒ t = " + (V - B) + " : 2 = " + t + " (с)." }
+        ]
       };
     },
     antider: function(){
       var g, r, chg;
       do {
         g = T8.buildSigned(); r = subRange(g);
-        chg = g.zeros.filter(function(z){ return z >= r[0] && z <= r[1]; });
+        chg = T8.zerosIn(g, r[0], r[1]);
       } while (chg.length < 1);
       var mode = T8.pick(["extr","int"]);
       if (mode === "extr"){
         return {
-          text: "На рисунке изображён график функции y = f(x). F(x) — одна из первообразных функции f. Найдите количество точек экстремума функции F на отрезке [" + T8.fmt(r[0]) + "; " + T8.fmt(r[1]) + "].",
+          text: "На рисунке изображён график функции y = f(x). F(x) — одна из первообразных функции f. Найдите количество точек экстремума функции F на отрезке " + seg(r) + ".",
           draw: function(host){ drawPoly(host, g, { band: r, label: "y = f(x)" }); },
           answer: chg.length,
           hint: "F′ = f, поэтому экстремумы F — в нулях f со сменой знака. Это та же логика, что «график производной», сдвинутая на строку.",
-          sol: "Нули f со сменой знака: x = " + chg.map(T8.fmt).join("; ") + ". Всего " + chg.length + "."
+          params: { vals: g.vals.slice(), r: r.slice(), mode: mode },
+          steps: [
+            { q: "Что изображено на рисунке и как связаны F и f?",
+              a: "Дан график функции f, а F — её первообразная: F′ = f. Значит для F данный график — это график её производной, и об экстремумах F судим по нему." },
+            { q: "Как найти точки экстремума F по графику f?",
+              a: "Точки экстремума F — нули F′ = f, в которых f меняет знак: там, где график f пересекает ось x, переходя с одной стороны на другую." },
+            { q: "Найдите нули f на отрезке " + seg(r) + ".",
+              a: (chg.length === 1 ? "На отрезке один нуль: " : "На отрезке нули: ") + listX(chg) + "." },
+            { q: "Проверьте смену знака f в " + (chg.length === 1 ? "этой точке." : "каждой из них."),
+              a: chg.map(function(z){ return changeLine(g, z, "f", "функции F"); }).join("; ") + "." },
+            { q: "Сколько точек экстремума у F на отрезке?", a: "Знак меняется в " + (chg.length === 1 ? "единственном нуле" : "каждом из " + chg.length + " нулей") + ", всего точек экстремума " + chg.length + "." }
+          ]
         };
       }
       var positive = T8.pick([true,false]);
-      var n = T8.countSign(g, r[0], r[1], positive);
+      var pts = T8.intsWithSign(g, r[0], r[1], positive);
+      var n = pts.length;
       if (n === 0) return GEN.antider();
       return {
-        text: "На рисунке изображён график функции y = f(x). F(x) — одна из первообразных f. Найдите количество целых точек отрезка [" + T8.fmt(r[0]) + "; " + T8.fmt(r[1]) + "], входящих в промежутки " + (positive ? "возрастания" : "убывания") + " функции F.",
+        text: "На рисунке изображён график функции y = f(x). F(x) — одна из первообразных f. Найдите количество целых точек отрезка " + seg(r) + ", входящих в промежутки " + (positive ? "возрастания" : "убывания") + " функции F.",
         draw: function(host){ drawPoly(host, g, { band: r, label: "y = f(x)" }); },
         answer: n,
         hint: "F возрастает там, где F′ = f > 0" + (positive ? "." : "; убывает — где f < 0."),
-        sol: "Целых точек с нужным знаком f: " + n + "."
+        params: { vals: g.vals.slice(), r: r.slice(), mode: mode, positive: positive },
+        steps: [
+          { q: "Что изображено на рисунке и как связаны F и f?",
+            a: "Дан график функции f, а F — её первообразная: F′ = f. Промежутки " + (positive ? "возрастания" : "убывания") + " F ищем по знаку её производной, то есть по знаку f." },
+          { q: "Где на отрезке " + seg(r) + " функция F " + (positive ? "возрастает" : "убывает") + "?",
+            a: "Там, где F′ = f " + (positive ? "> 0 — график f выше оси x" : "< 0 — график f ниже оси x") + ": на " + runsText(g, r, positive) + "." },
+          { q: "Какие целые точки лежат в этих промежутках? (Нули f не подходят: там F′ = 0.)",
+            a: "Это точки " + listX(pts) + "." },
+          { q: "Сколько их?", a: "Всего таких целых точек " + n + "." }
+        ]
       };
     }
   };
@@ -716,9 +913,10 @@ if (typeof module !== "undefined") module.exports = T8;
 
   var fb = document.getElementById("taskFb");
   /* Состояние текущей задачи для записи прогресса: трек задачи, засчитана
-     ли она, записан ли уже промах, открыт ли ответ кнопкой «Решение».
-     Подсказка ничего не отнимает; решённая после открытого ответа задача
-     в счёт решённых не идёт — ответ был виден. */
+     ли она, записан ли уже промах, дошёл ли ученик лестницей разбора до
+     итогового числа (revealed). Подсказка и промежуточные ступени ничего
+     не отнимают; задача, разобранная до ответа, в счёт решённых не идёт —
+     ответ был виден. */
   var TS = { track:null, done:false, missed:false, revealed:false };
   function newTask(){
     currentTask = GEN[currentTrack]();
@@ -729,6 +927,45 @@ if (typeof module !== "undefined") module.exports = T8;
     document.getElementById("taskAnswer").value = "";
     fb.className = "feedback";
     var sb = document.getElementById("taskSolBox"); sb.className = "sol"; sb.textContent = "";
+  }
+  /* ---------- лестница разбора ----------
+     Шаги открываются по одному: сначала вопрос шага, потом — отдельным
+     нажатием — ответ на него. Итоговое число появляется только вместе с
+     ответом последней ступени; тогда вызывается onReveal. Тексты вставляются
+     через textContent — разметкой они не становятся. */
+  function mountLadder(host, steps, answerText, onReveal){
+    host.innerHTML = "";
+    host.className = "sol on";
+    var note = document.createElement("p"); note.className = "small muted ladder-note";
+    /* предупреждение об открытом итоге — заранее, а не после необратимого нажатия */
+    note.textContent = "Разбор открывается по одному шагу: сначала вопрос, потом его ответ. Подсказки и ступени ничего не отнимают. Ответ задачи — на последней ступени: если открыть его, задача в счёт решённых не пойдёт (промахом это не считается).";
+    var list = document.createElement("ol"); list.className = "ladder";
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "btn ghost ladder-btn";
+    var i = 0, asked = false;   /* asked: вопрос шага i показан, ждём его ответа */
+    function step(){
+      if (i >= steps.length) return;
+      if (!asked){
+        var li = document.createElement("li");
+        var q = document.createElement("div"); q.className = "lq"; q.textContent = steps[i].q;
+        li.appendChild(q); list.appendChild(li);
+        asked = true; btn.textContent = "Ответ шага";
+        return;
+      }
+      var a = document.createElement("div"); a.className = "la"; a.textContent = steps[i].a;
+      list.lastElementChild.appendChild(a);
+      asked = false; i++;
+      if (i < steps.length){ btn.textContent = "Следующий шаг"; return; }
+      var fin = document.createElement("div"); fin.className = "lfinal"; fin.textContent = "Ответ: " + answerText + ".";
+      list.lastElementChild.appendChild(fin);
+      var done = document.createElement("p"); done.className = "ladder-done";
+      done.textContent = "Задача разобрана до ответа — в счёт решённых она не пойдёт. Возьмите другую задачу этого трека и решите её сами.";
+      host.appendChild(done);
+      btn.disabled = true; btn.textContent = "Разбор окончен";
+      if (onReveal) onReveal();
+    }
+    btn.addEventListener("click", step);
+    host.appendChild(note); host.appendChild(list); host.appendChild(btn);
+    step();   /* первый вопрос — сразу: нажатие «Разбор по шагам» уже было */
   }
   document.getElementById("taskCheck").addEventListener("click", function(){
     var raw = document.getElementById("taskAnswer").value;
@@ -743,7 +980,7 @@ if (typeof module !== "undefined") module.exports = T8;
       var msg = "Верно: " + T8.fmt(currentTask.answer) + ".";
       if (!TS.done){
         TS.done = true;
-        if (TS.revealed) msg += " Ответ был открыт в решении — эта задача в счёт решённых не идёт.";
+        if (TS.revealed) msg += " Ответ был открыт в разборе — эта задача в счёт решённых не идёт.";
         else {
           var total = saveSolved(TS.track);
           mlog(TS.track, true);
@@ -754,7 +991,11 @@ if (typeof module !== "undefined") module.exports = T8;
     } else {
       /* промах записывается один раз на задачу и только пока ответ не был виден */
       if (!TS.missed && !TS.done && !TS.revealed){ TS.missed = true; mlog(TS.track, false); }
-      fb.textContent = "Пока нет. Проверьте себя по опоре трека или откройте решение.";
+      if (TS.revealed){   /* разбор окончен, «Ответ: X.» уже на экране — звать в разбор бессмысленно */
+        fb.textContent = "Неверно. Ответ уже открыт на последней ступени разбора — сверьте запись числа (знак и запятая в дроби).";
+        return;
+      }
+      fb.textContent = "Пока нет. Проверьте себя по опоре трека, возьмите подсказку или пройдите разбор по шагам.";
     }
   });
   document.getElementById("taskAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("taskCheck").click(); });
@@ -763,9 +1004,8 @@ if (typeof module !== "undefined") module.exports = T8;
   });
   document.getElementById("taskSol").addEventListener("click", function(){
     var sb = document.getElementById("taskSolBox");
-    sb.className = "sol on";
-    sb.textContent = currentTask.sol + " Ответ: " + T8.fmt(currentTask.answer) + ".";
-    TS.revealed = true;
+    if (sb.classList.contains("on")) return;   /* лестница уже открыта — идём по ней дальше */
+    mountLadder(sb, currentTask.steps, T8.fmt(currentTask.answer), function(){ TS.revealed = true; });
   });
   document.getElementById("taskNext").addEventListener("click", newTask);
   newTask();
@@ -898,6 +1138,124 @@ if (typeof module !== "undefined") module.exports = T8;
   });
   document.getElementById("examAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("examCheck").click(); });
   document.getElementById("examRestart").addEventListener("click", function(){ document.getElementById("examStart").click(); });
+
+  /* ---------- самопроверка: ?selftest=1 ----------
+     Генераторы всех треков прогоняются по N раз. У каждой задачи: текст без
+     NaN/undefined/Infinity, конечный ответ, лестница из ≥3 ступеней с
+     непустыми вопросом и ответом, params — и ответ пересчитывается по params
+     другим кодом, не тем, из которого он получен. Затем лестница каждого
+     трека монтируется в отдельный узел и проходится: «Ответ:» появляется
+     только вместе с ответом последней ступени, до этого его в тексте нет.
+     Прогресс ученика не трогается: localStorage не пишется. Печатает
+     DERIVATIVE_T8_SELFTEST_OK или DERIVATIVE_T8_SELFTEST_FAIL. */
+  if (/[?&]selftest=1/.test(location.search)){
+    (function(){
+      var N = 300, fails = [], checked = 0;
+      var BADTXT = /NaN|undefined|Infinity|null|\[object/;
+      function bad(m){ fails.push(m); }
+      /* независимый пересчёт: работает только с массивом значений в узлах */
+      function at(vals, x){ return vals[x + 6]; }
+      function zeroKind(vals, x){   /* "max" | "min" | null — по соседним узлам */
+        if (x <= -6 || x >= 6 || at(vals, x) !== 0) return null;
+        var l = at(vals, x - 1), r = at(vals, x + 1);
+        if (l > 0 && r < 0) return "max";
+        if (l < 0 && r > 0) return "min";
+        return null;
+      }
+      function recompute(track, p){
+        var x, c, kinds;
+        if (track === "extrema" || track === "onemax" || (track === "antider" && p.mode === "extr")){
+          kinds = [];
+          for (x = p.r[0]; x <= p.r[1]; x++){ var kd = zeroKind(p.vals, x); if (kd) kinds.push({ x: x, k: kd }); }
+          if (track === "onemax"){
+            var hits = kinds.filter(function(e){ return e.k === p.kind; });
+            return hits.length === 1 ? hits[0].x : NaN;
+          }
+          if (track === "antider") return kinds.length;
+          return kinds.filter(function(e){ return p.kind === "all" || e.k === p.kind; }).length;
+        }
+        if (track === "intpoints" || (track === "antider" && p.mode === "int")){
+          c = 0;
+          for (x = p.r[0]; x <= p.r[1]; x++){ var v = at(p.vals, x); if (p.positive ? v > 0 : v < 0) c++; }
+          return c;
+        }
+        if (track === "marked"){
+          var vs = p.marks.map(function(m){ return at(p.vals, m); });
+          if (p.mode === "argmax"){
+            var mx = Math.max.apply(null, vs);
+            var idx = vs.map(function(v, i){ return v === mx ? i : -1; }).filter(function(i){ return i >= 0; });
+            return idx.length === 1 ? p.marks[idx[0]] : NaN;
+          }
+          return vs.filter(function(v){ return p.mode === "countNeg" ? v < 0 : v > 0; }).length;
+        }
+        if (track === "tangent") return (p.y2 - p.y1) / (p.x2 - p.x1);
+        if (track === "parallel"){
+          /* решения f'(x)=k по звеньям: узел на уровне — одно решение, пересечение внутри звена — одно,
+             горизонтальное звено на уровне — бесконечно много (задача негодна) */
+          c = 0;
+          for (var i = 0; i < 13; i++){
+            if (p.vals[i] === p.k) c++;
+            if (i < 12){
+              if (p.vals[i] === p.k && p.vals[i+1] === p.k) return Infinity;
+              var lo = Math.min(p.vals[i], p.vals[i+1]), hi = Math.max(p.vals[i], p.vals[i+1]);
+              if (lo < p.k && p.k < hi) c++;
+            }
+          }
+          return c;
+        }
+        if (track === "physics"){
+          if (p.law === "cubic") return 3*p.t0*p.t0 + 2*p.b*p.t0 + p.c;
+          return (p.V - p.B) / 2;
+        }
+        return NaN;
+      }
+      TRACKS.forEach(function(t){
+        for (var n = 0; n < N; n++){
+          var task;
+          try { task = GEN[t.id](); } catch (e){ bad(t.id + ": генератор упал: " + e.message); continue; }
+          checked++;
+          var tag = t.id + " #" + n;
+          if (typeof task.text !== "string" || !task.text || BADTXT.test(task.text)) bad(tag + ": текст задачи: " + task.text);
+          if (typeof task.answer !== "number" || !isFinite(task.answer)) bad(tag + ": ответ не число: " + task.answer);
+          if (typeof task.hint !== "string" || !task.hint || BADTXT.test(task.hint)) bad(tag + ": подсказка: " + task.hint);
+          if (!Array.isArray(task.steps) || task.steps.length < 3) bad(tag + ": лестница короче 3 ступеней");
+          else task.steps.forEach(function(s, i){
+            if (!s || typeof s.q !== "string" || !s.q.trim() || typeof s.a !== "string" || !s.a.trim()) bad(tag + ": ступень " + (i+1) + " без вопроса или ответа");
+            else if (BADTXT.test(s.q) || BADTXT.test(s.a)) bad(tag + ": мусор в ступени " + (i+1) + ": " + s.q + " / " + s.a);
+          });
+          if (!task.params) bad(tag + ": нет params");
+          else {
+            var re = recompute(t.id, task.params);
+            if (!(Math.abs(re - task.answer) < 1e-9)) bad(tag + ": независимый пересчёт " + re + " ≠ ответ " + task.answer + " · " + JSON.stringify(task.params));
+          }
+        }
+      });
+      /* лестница в DOM: итог — только на последней ступени */
+      TRACKS.forEach(function(t){
+        var task = GEN[t.id]();
+        var host = document.createElement("div");
+        var revealed = 0;
+        mountLadder(host, task.steps, T8.fmt(task.answer), function(){ revealed++; });
+        var btn = host.querySelector(".ladder-btn");
+        var presses = 1;   /* первый вопрос показан при монтировании */
+        for (var k = 0; k < 2 * task.steps.length - 1; k++){
+          var before = host.querySelectorAll(".lq").length + "/" + host.querySelectorAll(".la").length;
+          if (host.textContent.indexOf("Ответ:") >= 0) bad(t.id + ": «Ответ:» виден до последней ступени (нажатий " + presses + ", ступеней " + before + ")");
+          if (revealed) bad(t.id + ": onReveal раньше последней ступени");
+          btn.click(); presses++;
+        }
+        var fin = host.querySelector(".lfinal");
+        if (!fin || fin.textContent !== "Ответ: " + T8.fmt(task.answer) + ".") bad(t.id + ": последняя ступень без «Ответ: …»: " + (fin && fin.textContent));
+        if (revealed !== 1) bad(t.id + ": onReveal вызван " + revealed + " раз");
+        if (!btn.disabled) bad(t.id + ": кнопка лестницы не выключена после ответа");
+        if (host.querySelectorAll(".lq").length !== task.steps.length || host.querySelectorAll(".la").length !== task.steps.length) bad(t.id + ": число ступеней в DOM не совпадает");
+      });
+      var okAll = !fails.length;
+      console.log((okAll ? "DERIVATIVE_T8_SELFTEST_OK" : "DERIVATIVE_T8_SELFTEST_FAIL") + " · задач: " + checked + " · ошибок: " + fails.length);
+      fails.slice(0, 20).forEach(function(m){ console.log("  " + m); });
+      window.DERIVATIVE_T8_SELFTEST = { ok: okAll, checked: checked, fails: fails };
+    })();
+  }
 })();
 </script>
 </body>
