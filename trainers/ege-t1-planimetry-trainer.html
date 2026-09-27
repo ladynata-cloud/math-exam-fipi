@@ -171,7 +171,7 @@
     <a class="back" href="../index.html">← к оглавлению</a>
   </div>
 
-  <div class="success" id="successBar">✓ Серия пройдена! Итоги ниже.</div>
+  <div class="success" id="successBar" aria-live="polite">✓ Серия пройдена! Итоги ниже.</div>
 
   <div class="hub show" id="hub"></div>
 
@@ -213,7 +213,7 @@
   <div class="fin" id="fin">
     <div class="score" id="finScore">0 / 8</div>
     <div class="subttl" id="finSub"></div>
-    <div class="subttl" id="finStats" style="font-weight:700"></div>
+    <div class="subttl" id="finStats" style="font-weight:700" aria-live="polite"></div>
     <div class="dots" id="finDots"></div>
     <div class="route" id="route">
       <h3>Маршрут: что подтянуть</h3>
@@ -275,10 +275,20 @@ function shuffle(arr){
   }
   return a;
 }
-const eq=(a,b)=>Math.abs(a-b)<0.01;
+let EQ_SPY=null;   /* селфтест: перехват eq(v, ловушка) внутри diag, см. runSelfTest */
+const eq=(a,b)=>{ if(EQ_SPY)EQ_SPY(a,b); return Math.abs(a-b)<0.01; };
 const D2R=Math.PI/180;
 
 /* журнал прогресса */
+/* Порог зачёта: все EXAM_PASS задач чисто (EXAM_PASS = EXAM_N = 8). В зачёте каждый из 8 типов
+   встречается ровно один раз, поэтому любой промах — пробел в конкретном типе (на него же
+   указывает маршрут после зачёта), а не «шероховатость». Тот же порог — в генераторе
+   (ege-t1-planimetry-generator.html, MARATHON_PASS) и в адаптере planimetry курса.
+   Сданный зачёт не отзывается: passed никогда не сбрасывается в false.
+   Отметка «зачёт сдан ✓» читается только вместе с best ≥ EXAM_PASS: до 26.09.2026 passed ставился при
+   любом счёте, и у старых записей {best:3, passed:true} отметка ничего не подтверждает; хранилище
+   не мигрируется, меняется только толкование. Тот же порядок чтения — в адаптере и в генераторе. */
+const EXAM_PASS=8;
 function journal(e,extra){
   try{
     const key='mathExamCourseProgress.v1';
@@ -288,8 +298,9 @@ function journal(e,extra){
     if(st.events.length>300) st.events=st.events.slice(-300);
     if(e==='start') st.runs=(st.runs||0)+1;
     if(e==='finish'){
-      st.best=Math.max(st.best||0, extra&&extra.score||0);
-      st.passed=true;
+      const score=extra&&extra.score||0;
+      st.best=Math.max(st.best||0, score);
+      if(score>=EXAM_PASS) st.passed=true;
     }
     localStorage.setItem(key, JSON.stringify(all));
   }catch(err){}
@@ -428,6 +439,7 @@ function(){
   const va=Math.random()<0.5;
   if(va){
     let x=ri(34,76); if(x===60)x=61;
+    if(x===45)x=46;                   // 45: ловушки «дан угол при основании» (x) и «вычел из 90°» (90−x) совпадают
     const ans=180-2*x;
     const tri=fitTriangle(x,x,{x:110,y:95,w:420,h:290});
     return {
@@ -445,6 +457,7 @@ function(){
     };
   }else{
     let y=ri(16,54)*2; if(y===60)y=62;
+    if(y===90)y=92;                   // 90: ловушки «дан угол при вершине» (y) и «сумма углов при основании» (180−y) совпадают
     const base=(180-y)/2;
     const tri=fitTriangle(base,base,{x:110,y:95,w:420,h:290});
     return {
@@ -468,6 +481,7 @@ function(){
   const va=Math.random()<0.5;
   if(va){
     let y=ri(16,50)*2; if(y===60)y=62;
+    if(y===90)y=92;                   // 90: ловушки «дан угол C» (y) и «сумма углов при основании» (180−y) совпадают
     const base=(180-y)/2, ext=180-base;
     const tri=fitTriangle(base,base,{x:80,y:95,w:400,h:290});
     return {
@@ -475,16 +489,16 @@ function(){
       prompt:'В треугольнике <b>ABC</b> известно, что <b>AC = BC</b>, угол <b>C</b> равен <b>'+y+'°</b>. Найдите внешний угол <b>CBD</b>. Ответ дайте в градусах.',
       hint:'Сначала внутренний угол B (углы при основании равны), затем внешний: он смежен с внутренним, вместе — 180°.',
       diag:function(v){
-        if(eq(v,base))return 'Это ВНУТРЕННИЙ угол ABC. Внешний угол CBD смежен с ним: 180° − ∠ABC.';
+        if(eq(v,base))return 'Это ВНУТРЕННИЙ угол ABC (то же самое, что 90° минус половина ∠C). Внешний угол CBD смежен с ним: 180° − ∠ABC.';
         if(eq(v,y))return y+'° — это данный угол C, а спрашивают внешний угол при вершине B.';
         if(eq(v,180-y))return '180° − ∠C — это сумма ДВУХ углов при основании, а не внешний угол.';
-        if(eq(v,90-y/2))return 'Похоже, вы отняли половину ∠C от 90°. Внешний угол = 180° − внутренний при B.';
         return null;
       },
       sol:'<ol><li>∠ABC = (180° − '+y+'°) : 2 = '+base+'° (углы при основании равны).</li><li>Внешний угол смежен с внутренним: ∠CBD = 180° − '+base+'° = <b>'+ext+'°</b>.</li><li>Проверка: внешний = сумме двух несмежных = '+y+'° + '+base+'° = '+ext+'°. Сошлось.</li></ol>'
     };
   }else{
-    const e=ri(49,69)*2;              // внешний 98..138, C = 2e−180 в 16..96
+    let e=ri(49,69)*2;                // внешний 98..138, C = 2e−180 в 16..96
+    if(e===120)e=122;                 // 120: ответ 60 совпадает с ловушками 180−e и e/2, а e = 180−e/2
     const base=180-e, y=180-2*base;
     const tri=fitTriangle(base,base,{x:80,y:95,w:400,h:290});
     return {
@@ -507,7 +521,8 @@ function(){
 function(){
   const va=Math.random()<0.5;
   if(va){
-    const d=ri(5,20)*2;
+    let d=ri(5,20)*2;
+    if(d===30)d=32;                   // 30: «вычел d из 90°» даёт 60 — это и есть ответ
     const small=(90-d)/2, big=(90+d)/2;
     const tri=fitTriangle(small,big,{x:110,y:110,w:420,h:280});
     return {
@@ -544,7 +559,8 @@ function(){
 
 /* 4. Площадь прямоугольного треугольника по катетам */
 function(){
-  const a=ri(4,12), b=ri(3,10)*2 ;   // b чётный — площадь целая
+  let a=ri(4,12); const b=ri(3,10)*2;  // b чётный — площадь целая
+  if((a-4)*(b-4)===16)a--;           // (5,20),(6,12),(8,8),(12,6): 2(a+b) = ab/2 — «периметр» совпал бы с ответом
   const tri=rightTri(a,b,{x:130,y:80,w:380,h:320});
   return {
     kind:'areaLegs', tri:tri, a:a, b:b, answer:a*b/2,
@@ -562,7 +578,7 @@ function(){
 
 /* 5. Катет и гипотенуза → площадь (Пифагор) */
 function(){
-  const tr=pick([[6,8,10],[9,12,15],[12,16,20],[5,12,13],[8,15,17]]);
+  const tr=pick([[15,20,25],[9,12,15],[12,16,20],[10,24,26],[8,15,17]]);   // без 6-8-10 и 5-12-13: там периметр = площадь (24, 30), «периметр» совпадал с ответом
   const giveSmall=Math.random()<0.5;
   const a=giveSmall?tr[0]:tr[1], b=giveSmall?tr[1]:tr[0], c=tr[2];
   const tri=rightTri(a,b,{x:130,y:80,w:380,h:320});
@@ -586,7 +602,7 @@ function(){
 function(){
   const w=pick(['a','b','d']);
   if(w==='a'){
-    const x=ri(17,65);
+    let x=ri(17,65); if(x===60)x=61;  // 60: ловушка 180−x = 120 = ответ 2x
     return mkCins(x, 'a', 2*x,
       'Треугольник <b>ABC</b> вписан в окружность с центром <b>O</b>. Найдите угол <b>BOC</b>, если угол <b>BAC</b> равен <b>'+x+'°</b>. Ответ дайте в градусах.',
       'Вписанный угол BAC и центральный BOC опираются на одну дугу BC. Центральный вдвое БОЛЬШЕ вписанного.',
@@ -600,7 +616,8 @@ function(){
       '<ol><li>∠BAC и ∠BOC опираются на одну дугу BC.</li><li>Центральный вдвое больше вписанного: ∠BOC = 2 · '+x+'° = <b>'+(2*x)+'°</b>.</li></ol>');
   }
   if(w==='b'){
-    const y=ri(20,65)*2;
+    let y=ri(20,65)*2;
+    if(y===60||y===90||y===120)y+=2;  // 60: 2y = 180−y; 90: y = 180−y; 120: 180−y = ответ y/2
     return mkCins(y/2, 'b', y/2,
       'Треугольник <b>ABC</b> вписан в окружность с центром <b>O</b>. Центральный угол <b>BOC</b> равен <b>'+y+'°</b>. Найдите вписанный угол <b>BAC</b>. Ответ дайте в градусах.',
       'Вписанный угол равен ПОЛОВИНЕ центрального, опирающегося на ту же дугу.',
@@ -618,7 +635,7 @@ function(){
     'Обозначьте вписанный угол x: тогда центральный равен 2x и одновременно x + '+d+'°. Уравнение: 2x = x + '+d+'.',
     function(v){
       if(eq(v,2*d))return 'Это ЦЕНТРАЛЬНЫЙ угол ('+2*d+'°). Спрашивают вписанный — он вдвое меньше.';
-      if(eq(v,d/2))return 'Из уравнения 2x = x + '+d+'° получается x = '+d+'°, а не половина.';
+      if(eq(v,d/2))return 'Половина здесь не появляется. Уравнение 2x = x + '+d+'°: убери по x с обеих сторон — что останется справа?';
       if(eq(v,180-d))return 'Сумма 180° не нужна: центральный вдвое больше вписанного, 2x = x + '+d+'°.';
       return null;
     },
@@ -656,7 +673,7 @@ function(){
 
 /* 8. Дуги в отношении → больший угол */
 function(){
-  const set=pick([[1,2,3],[1,3,5],[2,3,4],[3,4,5],[1,2,6],[1,4,7],[2,3,7]]);
+  const set=pick([[4,5,6],[1,3,5],[2,3,4],[3,4,5],[1,2,6],[1,4,7],[2,3,7]]);   // без 1:2:3: дуга 180° даёт угол 90° = 180° − 90°, ловушка совпадала с ответом
   const ratio=set.slice();
   const ssum=ratio[0]+ratio[1]+ratio[2];
   const arcs=ratio.map(k=>360*k/ssum);            // все чётные по подбору наборов
@@ -1362,8 +1379,8 @@ function renderHub(){
     '<b>Разбор</b> → <b>По шагам</b> (ты сам совершаешь каждый ход) → <b>Сам решаю</b> (только ответ). '+
     '<b>Зачёт</b> — 8 задач всех типов, как на экзамене. Смешанная тренировка начинается с распознавания: тип скрыт.</div>';
   h+='<div class="modes">';
-  h+='<div class="mcard"><div class="mtitle">🏁 Зачёт</div><div class="mdesc">8 задач, по одной каждого типа. Только ответ, без подсказок. В конце — маршрут, что подтянуть.</div>'+
-     '<span class="mbest">'+(st.best?('лучшее: '+st.best+' / '+EXAM_N):'&nbsp;')+'</span>'+
+  h+='<div class="mcard"><div class="mtitle">🏁 Зачёт</div><div class="mdesc">8 задач, по одной каждого типа. Только ответ, без подсказок. Сдан при '+EXAM_PASS+' из '+EXAM_N+'. В конце — маршрут, что подтянуть.</div>'+
+     '<span class="mbest">'+((typeof st.best==='number'&&isFinite(st.best)&&st.best>0)?('лучшее: '+st.best+' / '+EXAM_N+(st.passed===true&&st.best>=EXAM_PASS?' · зачёт сдан ✓':'')):'&nbsp;')+'</span>'+
      '<button class="btn-check" onclick="openExam()">Начать</button></div>';
   h+='<div class="mcard"><div class="mtitle">🔀 Смешанная тренировка</div><div class="mdesc">'+MIXED_N+' задач по шагам, тип скрыт — сначала распознай приём. Слабые типы попадаются чаще.</div>'+
      '<span class="mbest">&nbsp;</span>'+
@@ -1874,7 +1891,9 @@ function showFin(){
   if(state.scope==='exam'){
     $('lawTitle').textContent='Закон задачи 1';
     $('lawText').innerHTML=termify(MARATHON_LAW);
-    $('successBar').textContent='✓ Зачёт из '+EXAM_N+' задач пройден! Итоги ниже.';
+    $('successBar').textContent= good>=EXAM_PASS
+      ? '✓ Зачёт сдан: '+good+' из '+EXAM_N+'! Итоги ниже.'
+      : 'Зачёт завершён: '+good+' из '+EXAM_N+'. Сдан при '+EXAM_PASS+' из '+EXAM_N+' — маршрут ниже.';
     const failed=state.failedTypes.filter(function(v,i,a){return a.indexOf(v)===i;});
     if(failed.length){
       $('route').className='route show';
@@ -1891,7 +1910,7 @@ function showFin(){
       const all=readStore(); const st=all[TID]||(all[TID]={});
       st.hist=(st.hist||[]); st.hist.push(good); st.hist=st.hist.slice(-8);
       writeStore(all);
-      statLine='Лучший зачёт: '+Math.max(st.best||0,good)+' / '+EXAM_N;
+      statLine='Лучший зачёт: '+Math.max(st.best||0,good)+' / '+EXAM_N+(st.passed===true&&st.best>=EXAM_PASS?' · зачёт сдан ✓':' · сдан при '+EXAM_PASS+' из '+EXAM_N);
       if(st.hist.length>1) statLine+=' · прошлые: '+st.hist.slice(0,-1).join(', ');
     }catch(e){}
   } else if(state.mixed){
@@ -1961,8 +1980,14 @@ function refGo(mode,i){
   if(mode===0) openDemo(i); else openGuided(i);
 }
 
-/* ===================== селфтест (9-bis) ===================== */
-function runSelfTest(){
+/* ===================== селфтест (9-bis): ?selftest=1 =====================
+   Запускается только по ?selftest=1, прогресс ученика не трогает (только читает схему и генерирует
+   задачи в памяти). Проверяет: коллизии ключей RECOG, согласованность GUIDES/HLMAP/CONSTRUCT,
+   EXAM_PASS = EXAM_N, и на reps (по умолчанию 2000) генерациях каждого шаблона — что ловушки diag
+   уникальны и не совпадают с верным ответом. Ловушки не перечислены отдельно: EQ_SPY перехватывает
+   каждое eq(v, ловушка) внутри «сырого» diag шаблона при зондировании значением-сигналом.
+   В консоль печатает PLANIMETRY_T1_SELFTEST_OK или PLANIMETRY_T1_SELFTEST_FAIL со списком дефектов. */
+function runSelfTest(reps){
   const errs=[];
   const keys=RECOG.map(function(r){return r.key;});
   keys.forEach(function(k,i){
@@ -1988,10 +2013,47 @@ function runSelfTest(){
     if(!TYPE_META[+k]) errs.push('CONSTRUCT: ключ '+k+' вне SUBS');
     if(typeof CONSTRUCT[k].status!=='function') errs.push('CONSTRUCT['+k+'].status не функция');
   }
-  return errs;
+  if(EXAM_PASS!==EXAM_N) errs.push('EXAM_PASS='+EXAM_PASS+' ≠ EXAM_N='+EXAM_N+': порог зачёта разошёлся с длиной зачёта');
+  /* ловушки: сырой diag шаблона (без обёртки genOne) зондируется сигналом, EQ_SPY собирает все eq(v, ловушка).
+     Ловушка со значением ≤ 0 отключена своим условием (…&&90-x>0) и в счёт не идёт. */
+  const SENT=-987654.321;
+  const N=reps>0?reps:2000;
+  const where=function(i,t){
+    const keys=['given','variant','x','d','k','a','b','c','ratio'];
+    return 'тип '+(i+1)+' '+t.kind+' {'+keys.filter(function(q){return t[q]!==undefined;}).map(function(q){return q+'='+t[q];}).join(', ')+'}';
+  };
+  for(let i=0;i<TEMPLATES.length;i++){
+    for(let rep=0;rep<N;rep++){
+      const t=TEMPLATES[i]();
+      const traps=[];
+      EQ_SPY=function(a,b){ if(a===SENT) traps.push(b); };
+      let probe;
+      try{ probe=t.diag(SENT); } finally{ EQ_SPY=null; }
+      const w=where(i,t);
+      if(probe!==null) errs.push(w+': diag ответил на сигнал — ловушка без eq()');
+      if(!isFinite(t.answer)) errs.push(w+': ответ не число');
+      const live=traps.filter(function(v){return v>0;});
+      if(!live.length) errs.push(w+': нет ловушек');
+      live.forEach(function(v,k){
+        if(!isFinite(v)) errs.push(w+': ловушка не число');
+        if(eq(v,t.answer)) errs.push(w+': ловушка '+v+' совпала с ответом');
+        for(let m=k+1;m<live.length;m++) if(eq(v,live[m])) errs.push(w+': две ловушки совпали: '+v);
+        if(typeof t.diag(v)!=='string'||!t.diag(v)) errs.push(w+': ловушка '+v+' без сообщения');
+      });
+    }
+  }
+  return errs.filter(function(m,k){return errs.indexOf(m)===k;});
 }
-const SELFTEST=runSelfTest();
-if(SELFTEST.length){ try{ console.warn('SELFTEST FAILED', SELFTEST); }catch(e){} }
+const SELFTEST_MODE=(typeof location!=='undefined')&&/(^|[?&])selftest=1(&|$)/.test(location.search||'');
+let SELFTEST=null;
+if(SELFTEST_MODE){
+  try{ SELFTEST=runSelfTest(2000); }
+  catch(err){ SELFTEST=['исключение в runSelfTest: '+(err&&err.message||err)]; }
+  try{
+    if(SELFTEST.length) console.error('PLANIMETRY_T1_SELFTEST_FAIL\n'+SELFTEST.slice(0,40).join('\n'));
+    else console.log('PLANIMETRY_T1_SELFTEST_OK');
+  }catch(e){}
+}
 
 /* ===================== события UI ===================== */
 function submitInput(){
@@ -2068,6 +2130,8 @@ globalThis.openRef=openRef;
 globalThis.refGo=refGo;
 globalThis.goHub=goHub;
 globalThis.goSolo=function(){ openSolo(globalThis.__soloOfferType||0); };
+/* selftest — список дефектов последнего runSelfTest по ?selftest=1; при обычной загрузке null
+   (самопроверка не запускается); runSelfTest(reps) можно вызвать руками. */
 globalThis.__dbg=function(){return {state:state, TEMPLATES:TEMPLATES, genOne:genOne, genAll:genAll,
   GUIDES:GUIDES, RECOG:RECOG, HLMAP:HLMAP, CONSTRUCT:CONSTRUCT, TERMS:TERMS, TYPE_META:TYPE_META,
   NOTSHEET:NOTSHEET, DEMOS:DEMOS, termify:termify, runSelfTest:runSelfTest, selftest:SELFTEST,

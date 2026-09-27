@@ -435,6 +435,27 @@ for (const [label, seedStreams] of [['без сжатия', false], ['через
      'кабинет: производная — 24 одного трека не закрашивают полосу: ' + hd.textContent);
 }
 
+/* ================= 10. «Планиметрия без промахов» в кабинете: зачёт сдан только при passed и best ≥ 8 ================= */
+{
+  const card = async rec => {
+    const t = boot('teacher.html', win => win.localStorage.setItem(KEY, JSON.stringify({ 'ege-t1-planimetry-generator': rec })));
+    await flush();
+    const row = Array.from(t.document.querySelectorAll('#cards .trow')).find(r => r.querySelector('.tid').textContent === 'ege-t1-planimetry-generator');
+    return row ? row.querySelector('.progress') : null;
+  };
+  let p = await card({ runs: 3, best: 5, hist: [3, 5], events: [] });
+  ok(!!p && /^лучший зачёт: 5 из 8$/.test(p.textContent) && !p.querySelector('.txt.done'),
+     'кабинет: планиметрия 5 из 8 без сдачи — «лучший зачёт: 5 из 8», без done: ' + (p && p.textContent));
+  p = await card({ runs: 4, best: 8, hist: [8], events: [], passed: true });
+  ok(!!p && /^зачёт сдан ✓$/.test(p.textContent) && !!p.querySelector('.txt.done'),
+     'кабинет: планиметрия passed:true — «зачёт сдан ✓» с done: ' + (p && p.textContent));
+  p = await card({ runs: 1, best: 3, hist: [3], events: [], passed: true });
+  ok(!!p && /^лучший зачёт: 3 из 8$/.test(p.textContent) && !p.querySelector('.txt.done'),
+     'кабинет: старая запись passed:true при best:3 (поставлена до порога) — без ✓, «лучший зачёт: 3 из 8»: ' + (p && p.textContent));
+  p = await card({ runs: 2, best: 0, events: [] });
+  ok(!!p && /^запусков: 2$/.test(p.textContent), 'кабинет: планиметрия без зачёта — «запусков: 2»: ' + (p && p.textContent));
+}
+
 ok(errors.length === 0, 'нет JS-ошибок: ' + errors.join(' | '));
 console.log(`\nПроверок: ${checks}, отказов: ${fails}, JS-ошибок: ${errors.length}`);
 if (errors.length) console.log(errors.slice(0, 5).join('\n'));
