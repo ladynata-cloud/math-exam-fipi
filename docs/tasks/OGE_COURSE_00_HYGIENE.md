@@ -154,15 +154,29 @@ approval.
 ## Execution record
 
 - Actual branch: `fix/oge-hygiene-v1` (подготовлена Claude 28.09.2026 в
-  локальном клоне; см. `docs/OGE_COURSE_PLAN.md`)
-- Actual base SHA: `be2740ba268437dcc1d33e864b6e2e53c91b61ef`
-- Actual head SHA:
-- PR:
-- Commits:
-- Tests passed:
-- Tests failed:
-- Tests not run:
-- Scope deviations:
+  локальном клоне, пересобрана на `4c7d4fa`; опубликована Code 28.09.2026)
+- Actual base SHA: `4c7d4fae3aa84919be575101fb1cb8eeffb1e447`. Спецификация
+  писалась на `be2740b`; ни один из 12 файлов задачи между ними не менялся.
+- Actual head SHA: `760b3ae1c0b38abf1f6aded7b4903e8da3ecf757`
+- PR: #140 (Draft)
+- Commits: `34d54e6` — объём спецификации; `760b3ae` — чертёж 15 на 360 px
+  и второе вхождение «задания 1-12, 14-25» в `oge/index.html:35`.
+- Tests passed: `OGE_CHECK_LINKS_OK` (33 страницы, битых 0);
+  `oge-1-5-entry-diagnostic` 5/5; `oge-plans-routes-stepik-trainers` 7/7;
+  `RESET_OWN_PROGRESS_OK` (778 проверок); `trainer-inventory` 54/54, пины
+  не изменились; `node --check` встроенных скриптов 7, 16 и двух хабов;
+  `polyfill.io` в `oge` и `trainers/oge-*` не найден; Chromium 360×740 с
+  касанием на восьми страницах ОГЭ без горизонтальной прокрутки и ошибок
+  консоли; замер чертежа 15: SVG 282 px на 360 px, подписи 13 px, углы по
+  координатам 141,9° и 38,1°, подписи не пересекаются с линиями;
+  `git diff --check` чисто.
+- Tests failed: нет.
+- Tests not run: смоук самих тренажёров — их поведение не менялось.
+- Scope deviations: `oge/index.html:35` сверх списка объёма — тот же
+  дефект, что в `index.html:41`; медиазапрос ≤ 480 px на странице 15 —
+  читаемость SVG из пункта объёма. Оба решения принял делегат владельца
+  (модель Fable) 28.09.2026, обоснование — в #140. Побочно: 6 строк
+  `oge/index.html` переведены из CRLF в LF.
 
 ## Required handoff
 
