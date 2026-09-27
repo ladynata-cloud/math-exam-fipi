@@ -107,10 +107,11 @@
   .lgbtn:focus-visible{outline:3px solid var(--teal-line); outline-offset:2px}
   .lgnote{color:var(--ink-faint); font-weight:600; margin-left:.2rem}
   .statement b{color:var(--ink)}
-  .starthint-row{margin-top:.6rem}
+  .starthint-row{margin-top:.6rem; display:flex; flex-wrap:wrap; align-items:center; gap:.3rem .8rem}
   .starthint{margin-top:.6rem; padding:.6rem .8rem; border-radius:10px; background:#fbfcfe; border:1px dashed var(--line); font-size:.98rem}
   .starthint .formula.small{font-size:1.05rem; padding:.15rem .5rem; margin:0}
   .starthint-more{margin-top:.3rem; color:var(--ink-soft)}
+  .starthint-row .fieldnote, .starthint .fieldnote{color:var(--ink-soft)}   /* фраза «ничего не отнимает» читаема: контраст 6:1, а не 3:1 как у --ink-faint */
   .statement .find{background:var(--teal-soft); color:var(--teal-deep); border-radius:6px; padding:.05rem .3rem; box-decoration-break:clone; -webkit-box-decoration-break:clone}
 
   sup{font-size:.72em; line-height:0} sub{font-size:.72em; line-height:0}
@@ -232,7 +233,7 @@
   .tp-status{margin:.5rem 0 0}
   .figure.picking svg .hit:focus{outline:none; stroke:rgba(15,118,110,.35)}
   @media print{
-    .topbtns, nav.topics, .controls, .modehelp, .actions, .stepbtns, .clickcue, details.memo, footer, .skip, .fb, .stats{display:none !important}
+    .topbtns, nav.topics, .controls, .modehelp, .actions, .stepbtns, .clickcue, details.memo, footer, .skip, .fb, .stats, .starthint-row, .starthint{display:none !important}
     body{background:#fff} .task{box-shadow:none; border:1px solid #999}
   }
   @media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important}}
@@ -2199,8 +2200,10 @@ const PRAISE = ['Верно!', 'Точно!', 'Да, так!', 'Правильн
 const MODE_HELP = {
   learn: 'Разбор для доски: пример раскрывается шаг за шагом. Нажимайте «Дальше» (или стрелки → и ← на клавиатуре). «Случайные числа» — новая задача того же типа.',
   steps: 'Задача с новыми числами. Каждый шаг проверяется отдельно: «Подсказка» — если застряли, «Показать ответ» — если совсем никак. Ни то ни другое ничего не отнимает: баллов здесь нет, только отметка, что шаг разобран с помощью.',
-  solo: 'Как на экзамене: только ответ. После проверки можно открыть полное решение по шагам.'
+  solo: 'Как на экзамене: только ответ. «С чего начать?» подсказывает первый шаг и ничего не отнимает. После проверки можно открыть полное решение по шагам.'
 };
+/* Канон: подсказки ничего не отнимают — и это сказано ученику рядом с самой подсказкой. */
+const HINT_NOTE = 'Подсказка ничего не отнимает: серия и «верно с первого раза» растут как обычно.';
 
 let RNG = mulberry32((Date.now() ^ (Math.random() * 1e9)) >>> 0);
 
@@ -2216,20 +2219,23 @@ let stats = loadStats();
 /* ---------- хранение: единый ключ курса + журнал ошибок ----------
    Прогресс лежит в mathExamCourseProgress.v1 под TID — его видят главная
    страница курса и «Работа над ошибками». Старый ключ pt-trainer-v1
-   мигрируется один раз и остаётся нетронутым (безопасный откат). */
+   мигрируется один раз и остаётся нетронутым (безопасный откат).
+   При ?selftest=1 миграция живёт только в памяти: самопроверка ничего не пишет.
+   Поле hinted — сколько задач «Сам» решено после «С чего начать?»; оно
+   ничего не отнимает у correct/streak, а лишь считается отдельно для учителя. */
 function readAll(){ try { const v = JSON.parse(localStorage.getItem(COURSE_KEY) || '{}'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; } catch (e){ return {}; } }
 function loadStats(){
   try {
     const all = readAll();
     if (!all[TID]){
       const old = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null');
-      if (old && old.topics){ all[TID] = { topics: old.topics, board: !!old.board }; localStorage.setItem(COURSE_KEY, JSON.stringify(all)); }
+      if (old && old.topics){ all[TID] = { topics: old.topics, board: !!old.board }; if (!urlFlag('selftest')) localStorage.setItem(COURSE_KEY, JSON.stringify(all)); }
     }
     const s = (all[TID] && typeof all[TID] === 'object') ? all[TID] : {};
     const topics = {};                                            // схема проверяется поле за полем, мусор отбрасывается
     if (s.topics && typeof s.topics === 'object') for (const k in s.topics){
       const v = s.topics[k];
-      if (v && typeof v === 'object' && TOPICS[+k]) topics[k] = { steps: +v.steps || 0, solved: +v.solved || 0, correct: +v.correct || 0, streak: +v.streak || 0, best: +v.best || 0 };
+      if (v && typeof v === 'object' && TOPICS[+k]) topics[k] = { steps: +v.steps || 0, solved: +v.solved || 0, correct: +v.correct || 0, streak: +v.streak || 0, best: +v.best || 0, hinted: +v.hinted || 0 };
     }
     return { topics, board: !!s.board, onboarded: !!s.onboarded };
   } catch (e){ return { topics: {}, board: false, onboarded: false }; }
@@ -2272,7 +2278,7 @@ function reviewTask(){
   return null;
 }
 
-function tstat(t){ return stats.topics[t] || (stats.topics[t] = { steps: 0, solved: 0, correct: 0, streak: 0, best: 0 }); }
+function tstat(t){ return stats.topics[t] || (stats.topics[t] = { steps: 0, solved: 0, correct: 0, streak: 0, best: 0, hinted: 0 }); }
 
 function resetStepState(){
   state.picked = [];
@@ -2519,11 +2525,14 @@ function finalHtml(task){
   } else {
     inner = `${a.q ? `<div class="inrow"><span class="lab">Задание:</span><span class="q" style="font-weight:600">${M(a.q)}</span></div>` : ''}<span class="lab">Выберите ответ:</span><div class="opts">${a.options.map((o, k) => `<button class="opt ${state.soloWrongOpts.includes(k) ? 'bad' : ''}" data-action="final-opt" data-opt="${k}"><span class="lt">${LETTERS[k]}</span><span>${M(o.text)}</span></button>`).join('')}</div>`;
   }
+  /* «С чего начать?» — первая ступень лесенки: заголовок, формула и подсказка шага. У info-шага
+     подсказки нет — показываем его текст (обозначение неизвестного, не ответ). Переключение на
+     «Пошагово» строит новую задачу того же типа (setMode → newTask), и подпись говорит именно так. */
   const first = (task.steps || [])[0];
   const startHint = first && !state.finished && task.answer.kind !== 'side'
     ? (state.soloHinted
-        ? `<div class="starthint"><b>С чего начать:</b> ${escapeHtml(first.title)}${first.formula ? ` — <span class="formula small">${M(first.formula)}</span>` : ''}${first.hint ? `<div class="starthint-more">${M(first.hint)}</div>` : ''}<div class="fieldnote">Если не идёт — переключитесь на «Пошагово»: там та же задача разложена на шаги.</div></div>`
-        : `<div class="starthint-row"><button class="btn ghost" data-action="start-hint">С чего начать?</button></div>`)
+        ? `<div class="starthint"><b>С чего начать:</b> ${escapeHtml(first.title)}${first.formula ? ` — <span class="formula small">${M(first.formula)}</span>` : ''}${first.hint ? `<div class="starthint-more">${M(first.hint)}</div>` : (first.kind === 'info' && first.text ? `<div class="starthint-more">${M(first.text)}</div>` : '')}<div class="fieldnote">${HINT_NOTE} Если не идёт — переключитесь на «Пошагово»: там задача того же типа разложена на шаги.</div></div>`
+        : `<div class="starthint-row"><button class="btn ghost" data-action="start-hint">С чего начать?</button><span class="fieldnote">${HINT_NOTE}</span></div>`)
     : '';
   return `<div class="final">${inner}<div class="fbwrap">${fbHtml(state.soloFb)}</div>${startHint}</div>`;
 }
@@ -2710,11 +2719,20 @@ function revealStep(){
   stepSucceeded(i);
 }
 
-/* ---------- проверка итогового ответа («Сам») ---------- */
+/* ---------- проверка итогового ответа («Сам») ----------
+   Зачёт решённой задачи. Подсказка «С чего начать?» ничего не отнимает:
+   серия и «верно с первого раза» растут так же, как без неё, а обращение
+   к подсказке считается отдельно (hinted) — для сводки учителю. Серию
+   прерывает только ошибка. Чистая функция: её же гоняет ?selftest=1. */
+function creditSolo(s, fails, hinted){
+  s.solved++;
+  if (hinted) s.hinted = (s.hinted || 0) + 1;
+  if (fails === 0){ s.correct++; s.streak++; s.best = Math.max(s.best, s.streak); }
+}
 function soloOutcome(correct){
   const s = tstat(state.topic);
   if (correct){
-    if (!state.counted){ state.counted = true; s.solved++; if (state.soloFails === 0 && !state.soloHinted){ s.correct++; s.streak++; s.best = Math.max(s.best, s.streak); } }
+    if (!state.counted){ state.counted = true; creditSolo(s, state.soloFails, state.soloHinted); }
   } else if (!state.counted && state.soloFails === 1){ s.streak = 0; }
   saveStats();
 }
@@ -3155,8 +3173,11 @@ function urlFlag(name){
 /* ---------- самопроверка: ?selftest=1 ----------
    Прогоняет все темы и уровни: строит задачи, лесенки и чертежи, ищет мусор
    (NaN/undefined/{{), подписи за пределами viewBox и наложения подписей,
-   ловушки, совпадающие с верным ответом или друг с другом. Прогресс ученика
-   не трогает. В консоль печатает RIGHTTRI_SELFTEST_OK или список дефектов. */
+   ловушки, совпадающие с верным ответом или друг с другом, правило зачёта
+   в «Сам» (подсказка ничего не отнимает) и фразу об этом в разметке.
+   Прогресс ученика не трогает (и миграция pt-trainer-v1 при ?selftest=1
+   не пишется — см. loadStats). В консоль печатает RIGHTTRI_SELFTEST_OK
+   или список дефектов. */
 function selfTest(){
   const bad = [];
   const VB = { x0: -6, y0: 0, x1: 286, y1: 224 };
@@ -3225,8 +3246,34 @@ function selfTest(){
     for (const L of [1, 2, 3]) for (let i = 0; i < 80; i++){
       const task = makeTask(t, L, rng);
       checkTask(task, 'тема ' + t + ' уровень ' + L + ' ' + task.type);
+      const f0 = (task.steps || [])[0];                                   // «С чего начать?» — не голый заголовок
+      if (f0 && task.answer && task.answer.kind !== 'side' && !(f0.hint || f0.formula || (f0.kind === 'info' && f0.text))) bad.push('тема ' + t + ' ' + task.type + ': «С чего начать?» показал бы только заголовок шага');
     }
   }
+  /* зачёт в «Сам»: подсказка «С чего начать?» ничего не отнимает, серию рвёт только ошибка */
+  const cs = { steps: 0, solved: 0, correct: 0, streak: 2, best: 2, hinted: 0 };
+  creditSolo(cs, 0, true);
+  if (!(cs.solved === 1 && cs.correct === 1 && cs.streak === 3 && cs.best === 3 && cs.hinted === 1)) bad.push('зачёт «Сам»: подсказка «С чего начать?» отняла серию или «верно с первого раза»');
+  creditSolo(cs, 1, false);
+  if (!(cs.solved === 2 && cs.correct === 1 && cs.hinted === 1)) bad.push('зачёт «Сам»: ответ не с первой попытки попал в «верно с первого раза»');
+  creditSolo(cs, 0, false);
+  if (!(cs.solved === 3 && cs.correct === 2 && cs.hinted === 1)) bad.push('зачёт «Сам»: задача без подсказки посчитана как решённая с подсказкой');
+  if (!/не отнимает/.test(HINT_NOTE) || !/не отнимает/.test(MODE_HELP.solo)) bad.push('в интерфейсе не сказано, что подсказка ничего не отнимает');
+  /* разметка «Сам» без DOM и без хранилища: фраза стоит рядом с кнопкой и остаётся после её нажатия */
+  const keep = { mode: state.mode, finished: state.finished, soloHinted: state.soloHinted, soloFb: state.soloFb, soloWrongOpts: state.soloWrongOpts, task: state.task };
+  try {
+    Object.assign(state, { mode: 'solo', finished: false, soloFb: null, soloWrongOpts: [], task: makeTask(1, 1, rng), soloHinted: false });
+    const closed = finalHtml(state.task);
+    state.soloHinted = true;
+    const opened = finalHtml(state.task);
+    if (!/data-action="start-hint"/.test(closed) || !/не отнимает/.test(closed)) bad.push('«Сам»: рядом с кнопкой «С чего начать?» нет фразы, что подсказка ничего не отнимает');
+    if (/data-action="start-hint"/.test(opened) || !/class="starthint"/.test(opened) || !/не отнимает/.test(opened)) bad.push('«Сам»: после «С чего начать?» подсказка не раскрыта или фраза пропала');
+    if (/та же задача/.test(opened) || !/задача того же типа/.test(opened)) bad.push('«Сам»: подсказка обещает «ту же задачу» в «Пошагово», а setMode строит новую того же типа');
+    let infoTask = null;                                                 // t3-diff / t4-findAcute: первый шаг — info без hint
+    for (let i = 0; i < 60 && !infoTask; i++){ const tk = makeTask(i % 2 ? 3 : 4, 1 + (i % 3), rng); const f = (tk.steps || [])[0]; if (f && f.kind === 'info' && !f.hint) infoTask = tk; }
+    if (!infoTask) bad.push('самопроверка: не нашлась задача с info-шагом первым');
+    else { state.task = infoTask; if (!/class="starthint-more"/.test(finalHtml(infoTask))) bad.push('«Сам» ' + infoTask.type + ': «С чего начать?» у info-шага показывает только заголовок, без текста шага'); }
+  } finally { Object.assign(state, keep); }
   const uniq = Array.from(new Set(bad));
   if (uniq.length){ console.error('RIGHTTRI_SELFTEST_FAIL\n' + uniq.slice(0, 40).join('\n')); }
   else console.log('RIGHTTRI_SELFTEST_OK');
@@ -3242,7 +3289,7 @@ function renderTeacherSummary(){
     const st = stats.topics[t] || {}, T = TOPICS[t];
     const head = t === 0 ? T.name : 'Тема ' + T.num + '. ' + T.name;
     return '<div class="tp-row"><b>' + escapeHtml(head) + '</b>' +
-      '<span>решено самостоятельно: ' + (st.solved || 0) + ' · верно с первого раза: ' + (st.correct || 0) +
+      '<span>решено самостоятельно: ' + (st.solved || 0) + ' (из них после «С чего начать?»: ' + (st.hinted || 0) + ') · верно с первого раза: ' + (st.correct || 0) +
       ' · лучшая серия: ' + (st.best || 0) + ' · пошагово пройдено: ' + (st.steps || 0) + '</span></div>';
   }).join('');
   const open = [], closed = [];
