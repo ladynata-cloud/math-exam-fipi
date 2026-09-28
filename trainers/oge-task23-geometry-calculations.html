@@ -346,8 +346,17 @@ function parseAns(s){
   if(m){const d=parseFloat(m[2]);return d?parseFloat(m[1])/d:NaN;}
   return /^-?\d+(?:\.\d+)?$/.test(s)?parseFloat(s):NaN;
 }
-/* сравнение ответа с эталоном: относительный допуск (радикалы можно вводить десятичным приближением) */
-function ansEq(val,exp){if(!isFinite(val)||!isFinite(exp))return false;return Math.abs(val-exp)<=Math.max(0.02,Math.abs(exp)*0.012);}
+/* сравнение ответа с эталоном (спецификация 03A): целые и десятичные с двумя знаками — точно;
+   корни и бесконечные дроби — относительный допуск 1e-6, ответ вводится точно (3√2, 60/13).
+   Прежний допуск max(0,02; 1,2 %) при ответе 84 принимал 83 и 85. */
+const isDec2=x=>Math.abs(x*100-Math.round(x*100))<1e-7;
+const tolAns=x=>(isDec2(x)?1e-9:1e-6)*Math.max(1,Math.abs(x));
+function ansEq(val,exp){if(!isFinite(val)||!isFinite(exp))return false;return Math.abs(val-exp)<=tolAns(exp);}
+/* промежуточный шаг проводки можно ввести приближённо — итог задачи всё равно точный */
+function stepEq(val,exp){if(!isFinite(val)||!isFinite(exp))return false;return Math.abs(val-exp)<=Math.max(0.02,Math.abs(exp)*0.012);}
+/* точная запись числа: целое, десятичная с двумя знаками или несократимая обыкновенная дробь */
+function exactStr(x){if(isDec2(x))return fmt(x);for(let d=2;d<=2000;d++){const n=x*d;if(Math.abs(n-Math.round(n))<1e-7*d)return Math.round(n)+'/'+d;}return fmt(x);}
+const APPROX_MSG='Похоже, это приближённое значение. В задании 23 ответ записывают точно — целым числом, дробью (например, 60/13) или с корнем (например, 3√2).';
 
 /* упрощение k·√(rad)/den  →  {k,m}  (результат целочисленный коэффициент, m — радиканд) */
 function simpRad(coef,den,rad){
@@ -462,7 +471,6 @@ const near2=(a,b,e)=>Math.abs(a-b)<=(e==null?0.02:e);
    одно и то же число задевает одновременно, сводятся в одну (решения F1 и
    Q2 делегата владельца): две разные ошибки — одно объединённое сообщение
    «найдите свою», три и больше — честный общий текст. */
-const tolAns=x=>Math.max(0.02,Math.abs(x)*0.012);
 function trapPair(m1,m2){return 'Такой ответ получается при одной из двух ошибок — найдите свою:<br>• '+m1+'<br>• '+m2;}
 const TRAP_MANY='Не сходится. Это число получается при нескольких разных ошибках — сверьте решение по шагам в «🪜 Шаг за шагом».';
 function mergeTraps(list){
@@ -489,7 +497,9 @@ function trapsOf(sub,p){
 }
 function diagOf(sub,v,p){
   for(const t of trapsOf(sub,p))if(Math.abs(v-t.v)<=t.e)return t.m;
-  const S=SUBS[sub];return S.other?S.other(v,p):null;
+  const S=SUBS[sub],a=S.calc(p);
+  if(!isDec2(a)&&stepEq(v,a))return APPROX_MSG;
+  return S.other?S.other(v,p):null;
 }
 
 /* апекс треугольника: A=(0,0),C=(AC,0); вершина B с |BC|=sideCB, x≈fx·AC (иначе клампим), y>0 */
@@ -743,7 +753,7 @@ SUBS.hAB={theme:'tri',name:'Высота к гипотенузе (2 катета
   sol(p){const c=Math.hypot(p.a,p.b),h=SUBS.hAB.calc(p);return [
     `Гипотенуза: c = √(${p.a}² + ${p.b}²) = √${p.a*p.a+p.b*p.b} = ${fmt(c)}.`,
     `Площадь считаем двумя способами: S = ${T('1','2')}·${p.a}·${p.b} = ${T('1','2')}·c·h.`,
-    `Отсюда h = (${p.a}·${p.b}) / ${fmt(c)} = ${p.a*p.b} / ${fmt(c)} = <b>${fmt(h)}</b>.`];},
+    `Отсюда h = (${p.a}·${p.b}) / ${fmt(c)} = ${p.a*p.b} / ${fmt(c)} = <b>${exactStr(h)}</b>${isDec2(h)?'':' ≈ '+fmt(h)}.`];},
   traps(p){const c=Math.hypot(p.a,p.b);return [
     {v:c,m:'Это гипотенуза, а не высота к ней. Высота h = (произведение катетов) / гипотенуза.'},
     {v:p.a*p.b,m:'Это произведение катетов. Его нужно ещё разделить на гипотенузу: h = ab / c.'},
@@ -769,7 +779,7 @@ SUBS.hAC={theme:'tri',name:'Высота к гипотенузе (катет и 
   sol(p){const b=Math.sqrt(p.c*p.c-p.a*p.a),h=SUBS.hAC.calc(p);return [
     `Второй катет по теореме Пифагора: b = √(c² − a²) = √(${p.c}² − ${p.a}²) = √${p.c*p.c-p.a*p.a} = ${fmt(b)}.`,
     `Через площадь: ${T('1','2')}·${p.a}·${fmt(b)} = ${T('1','2')}·${p.c}·h.`,
-    `h = (${p.a}·${fmt(b)}) / ${p.c} = <b>${fmt(h)}</b>.`];},
+    `h = (${p.a}·${fmt(b)}) / ${p.c} = <b>${exactStr(h)}</b>${isDec2(h)?'':' ≈ '+fmt(h)}.`];},
   traps(p){const b=Math.sqrt(p.c*p.c-p.a*p.a);return [
     {v:b,m:'Это второй катет, найденный по теореме Пифагора. Осталось найти высоту: h = (a·b) / c.'},
     {v:p.a*p.a/p.c,m:'Это проекция катета на гипотенузу, а не высота. Высота h = (a·b) / c, где b = √(c² − a²).'}];},
@@ -1148,9 +1158,9 @@ GUIDE.trapBis=p=>{const c=Math.sqrt(p.AF*p.AF+p.BF*p.BF);return [
 
 GUIDE.trapLeg=p=>{const h=p.CD*S30[p.be],AB=h/S30[p.al];
   return [
-  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Опустим высоту из вершины C на нижнее основание. Высота трапеции <b>h = CD·sin C</b> = '+p.CD+'·sin '+p.be+'°. Чему равна h? (можно десятичной дробью)',
+  {t:'num',ans:h,accept:v=>stepEq(v,h),q:'Опустим высоту из вершины C на нижнее основание. Высота трапеции <b>h = CD·sin C</b> = '+p.CD+'·sin '+p.be+'°. Чему равна h? (можно десятичной дробью)',
    tip:'sin '+p.be+'° = '+fmt(S30[p.be])+', умножь на '+p.CD+'.',ok:'Верно: боковая сторона × синус угла при основании даёт высоту.',res:'h = '+fmt(h)},
-  {t:'num',ans:AB,accept:v=>ansEq(v,AB),q:'Та же высота получается из вершины B: <b>h = AB·sin B</b>, значит AB = h / sin B = h / sin '+p.al+'°. Найди AB (в виде k√m или десятичной дробью).',
+  {t:'num',ans:AB,accept:v=>ansEq(v,AB),q:'Та же высота получается из вершины B: <b>h = AB·sin B</b>, значит AB = h / sin B = h / sin '+p.al+'°. Найди AB точно — в виде k√m.',
    tip:'Раздели '+fmt(h)+' на sin '+p.al+'° = '+fmt(S30[p.al])+'.',ok:'Отлично!',res:'AB = '+SUBS.trapLeg.ansStr(p)}];};   /* итог — тот же, что в решении и в проверке */
 
 GUIDE.rhombAng=p=>{const s=2*p.d/p.D,phi=Math.round(Math.asin(Math.min(1,s))*180/Math.PI);return [
@@ -1181,14 +1191,14 @@ GUIDE.circR=p=>{const A=180-p.be-p.ga,BC=2*p.R*Math.sin(A*Math.PI/180);return [
 GUIDE.hAB=p=>{const c=Math.hypot(p.a,p.b),h=p.a*p.b/c;return [
   {t:'num',ans:c,q:'Сначала гипотенуза по Пифагору: <b>c = √('+p.a+'² + '+p.b+'²)</b>. Чему равна c?',
    tip:'√'+(p.a*p.a+p.b*p.b)+'.',ok:'Верно.',res:'c = '+fmt(c)},
-  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Площадь считаем двумя способами: '+F('1','2')+'·'+p.a+'·'+p.b+' = '+F('1','2')+'·c·h. Отсюда высота <b>h = '+F(p.a+'·'+p.b,'c')+'</b>. Найди h.',
-   tip:(p.a*p.b)+' / '+fmt(c)+'.',ok:'Отлично!',res:'h = '+fmt(h)}];};
+  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Площадь считаем двумя способами: '+F('1','2')+'·'+p.a+'·'+p.b+' = '+F('1','2')+'·c·h. Отсюда высота <b>h = '+F(p.a+'·'+p.b,'c')+'</b>. Найди h точно: целым числом или дробью (например, 60/13).',
+   tip:(p.a*p.b)+' / '+fmt(c)+'.',ok:'Отлично!',res:'h = '+exactStr(h)}];};
 
 GUIDE.hAC=p=>{const b=Math.sqrt(p.c*p.c-p.a*p.a),h=p.a*b/p.c;return [
   {t:'num',ans:b,accept:v=>ansEq(v,b),q:'Второй катет по Пифагору: <b>b = √(c² − a²) = √('+p.c+'² − '+p.a+'²)</b>. Чему равен b?',
    tip:'√'+(p.c*p.c-p.a*p.a)+'.',ok:'Верно.',res:'b = '+fmt(b)},
-  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Теперь высота к гипотенузе через площадь: <b>h = '+F(p.a+'·'+fmt(b),p.c)+'</b>. Найди h.',
-   tip:(p.a)+'·'+fmt(b)+' / '+p.c+'.',ok:'Готово!',res:'h = '+fmt(h)}];};
+  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Теперь высота к гипотенузе через площадь: <b>h = '+F(p.a+'·'+fmt(b),p.c)+'</b>. Найди h точно: целым числом или дробью (например, 60/13).',
+   tip:(p.a)+'·'+fmt(b)+' / '+p.c+'.',ok:'Готово!',res:'h = '+exactStr(h)}];};
 
 GUIDE.projAB=p=>{const AB=Math.sqrt(p.AH*p.AC);return [
   {t:'choice',ci:0,opts:['гипотенузой AC и отрезком AH','двумя отрезками AH и HC','высотой BH и гипотенузой'],
@@ -1423,7 +1433,7 @@ function clear(n){while(n&&n.firstChild)n.removeChild(n.firstChild);}
 function ansDisplay(sub,p){const S=SUBS[sub];
   if(sub==='trapLeg')return S.ansStr(p);
   if(sub==='rhombAng'){const a=S.calc(p);return fmt(a)+'° и '+fmt(180-a)+'°';}
-  return fmt(S.calc(p));}
+  return exactStr(S.calc(p));}
 
 /* ---------- пул задач для тренировки: сначала банк (реальные), потом генерация ---------- */
 function archivePool(filter){return ARCHIVE.filter(it=>filter==='all'?true:(filter.startsWith('t:')?it.theme===filter.slice(2):it.sub===filter));}
@@ -1498,7 +1508,7 @@ function buildTask(mount,task,mode,onDone){
     if(resolved)return;
     const raw=inp.value;const val=parseAns(raw);
     /* пустое или нечисловое поле — не попытка и не промах */
-    if(!isFinite(val)){fb.className='fb warn';fb.innerHTML=raw.trim()?'Впишите число: например, 12, 7,5 или 3√2.':'Впишите ответ в поле.';return;}
+    if(!isFinite(val)){fb.className='fb warn';fb.innerHTML=raw.trim()?'Впишите число: например, 12, 7,5, 60/13 или 3√2.':'Впишите ответ в поле.';return;}
     const ok=S.ansEqCustom?S.ansEqCustom(val,task.p):ansEq(val,task.exp!=null?task.exp:S.calc(task.p));
     tries++;
     if(mode==='quiz')CP.mlog(task.sub,ok);   // зачёт: одна попытка — один вердикт в журнал
@@ -1792,7 +1802,7 @@ function buildGuided(mount,task,onDone,opts){
       function chk(){if(box.classList.contains('done'))return;
         const val=parseAns(inp.value);
         /* пустое или нечисловое поле — не попытка и не промах */
-        if(!isFinite(val)){fb.className='fb warn';fb.innerHTML=inp.value.trim()?'Впишите число: например, 12, 7,5 или 3√2.':'Впишите ответ шага.';return;}
+        if(!isFinite(val)){fb.className='fb warn';fb.innerHTML=inp.value.trim()?'Впишите число: например, 12, 7,5, 60/13 или 3√2.':'Впишите ответ шага.';return;}
         const ok=st.accept?st.accept(val):ansEq(val,st.ans);
         if(ok){fb.className='fb good';fb.innerHTML='✓ Верно';inp.disabled=true;b.disabled=true;ev('step_ok',{sub:task.sub,step:idx});advance(false);return;}
         tries++;miss();ev('opt_wrong',{sub:task.sub,mode:'guided',step:idx});
@@ -1835,7 +1845,7 @@ function renderQuiz(main){
   clear(main);
   const weak=weakStats().slice(0,3);
   const intro=el('div','quiz-intro');
-  intro.innerHTML='<b>Зачёт.</b> 10 задач: 3 на треугольники, 3 на четырёхугольники, 4 на окружности. Одна попытка на задачу, тип скрыт, подсказок нет — как на экзамене. Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'.';
+  intro.innerHTML='<b>Зачёт.</b> 10 задач: 3 на треугольники, 3 на четырёхугольники, 4 на окружности. Одна попытка на задачу, тип скрыт, подсказок нет — как на экзамене. Ответ записывайте точно: целым числом, дробью (60/13) или с корнем (3√2). Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'.';
   main.appendChild(intro);
   if(weak.length){const w=el('div','weakbox');w.innerHTML='<b>Твои слабые места</b> (стоит повторить перед стартом): '+weak.map(x=>SUBS[x.sub].name+' <span class="wn">'+x.n+'</span>').join(', ');main.appendChild(w);}
   const startWrap=el('div','center');
