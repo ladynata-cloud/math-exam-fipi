@@ -614,7 +614,7 @@ GENS["AP-VAL"] = {
       { v:Fr.add(facts.a1, Fr.mul(facts.d, F(trans-1))),
         hint: facts.base===1
           ? "Похоже, переходов получилось на один меньше. От 1-го до "+facts.n+"-го шага их "+trans+"."
-          : "Здесь отсчёт идёт от начального момента (0 минут), поэтому переходов ровно столько, сколько минут прошло: "+trans+"." },
+          : "Здесь отсчёт идёт от начального момента, поэтому переходов ровно столько, сколько минут прошло: "+trans+"." },
       facts.d.n<0n ? { v:Fr.sub(facts.a1, Fr.mul(facts.d, F(trans))),
         hint:"Температура уменьшалась, значит на каждом шаге число не прибавляется, а вычитается." } : null
     ], ans);
@@ -1167,14 +1167,26 @@ T.GEN_ORDER=[
 ];
 T.GEN_WEIGHTS={ "AP-VAL":3,"AP-SUM":2,"AP-2PT":3,"AP-SUM2DAY":2,"GP-VAL":2,"GP-COMPL":1,"THRESH":2,"PIC":2,"TAXI":2 };
 T.GENS=GENS;
-/* задача без совпавших ловушек: перевыбор по производному зерну, не больше 20 попыток;
+/* число v стоит в тексте отдельным числом (разрядные пробелы не мешают) */
+function hasNum14(text,v){
+  const plain=h=>String(h).replace(/<[^>]*>/g," ").replace(/(\d)[   ](?=\d{3})/g,"$1").replace(/−/g,"-");
+  const f=plain(fmtN(v)).trim();
+  return new RegExp("(^|[^\\d,])"+f.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?![\\d]|,\\d)").test(plain(text));
+}
+T.hasNum=hasNum14;
+/* ориентир или ловушка называет число, равное ответу, которого нет в условии (решение D20) */
+function answerLeaks14(t){
+  if(hasNum14(t.text,t.ans)) return false;
+  return [t.hint1].concat(t.distract.map(d=>d.hint)).some(h=>hasNum14(h,t.ans));
+}
+/* задача без совпавших ловушек и без «утечки» ответа (D20): перевыбор по производному зерну, не больше 20 попыток;
    дальше совпавшая ловушка снимается, задача остаётся (решение D46) */
 T.makeTask=function(code,seed){
   let t=null;
   for(let i=0;i<20;i++){
     const sd=i===0?seed:((Math.imul(seed|0,-1640531535)+i*40503)>>>0)%1000000000+1;
     t=GENS[code].gen(sd);
-    if(!t.distract.lost) return t;
+    if(!t.distract.lost && !answerLeaks14(t)) return t;
   }
   return t;
 };
@@ -2267,6 +2279,8 @@ function runLadder(ctx){
 
 /* ================= ПОШАГОВО ================= */
 const stepsUI={ review:false };
+/* тип задачи повтора: случайный из открытых в журнале (решение D22) */
+T.reviewCode=function(){ const open=T.GEN_CODES.filter(c=>CP.openTypes().indexOf(c)>=0); return open.length? open[Math.floor(Math.random()*open.length)] : null; };
 function renderStepsMode(el){
   el.innerHTML=`
   <div class="card">
@@ -2330,15 +2344,15 @@ function newStepTask(){
   const seed=Math.floor(Math.random()*1e9);
   let task;
   if(stepsUI.review){
-    const open=T.GEN_CODES.filter(c=>CP.openTypes().indexOf(c)>=0);
-    if(!open.length){
+    const code=T.reviewCode();
+    if(!code){
       stepsUI.review=false;
       const box=document.getElementById("st-review");
       box.innerHTML="<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип ниже.";
       document.getElementById("st-task").innerHTML="";
       return;
     }
-    task=T.makeTask(open[Math.floor(Math.random()*open.length)], seed);
+    task=T.makeTask(code, seed);
   } else task=T.makeTask(stepsUI.code, seed);
   const method=stepsUI.review? task.methods[0] : stepsUI.method;
   stepsUI.task=task;

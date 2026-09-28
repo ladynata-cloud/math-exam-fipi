@@ -1052,6 +1052,17 @@ GENS.push({t:10,make:function(){
   };
 }});
 
+/* подсказка или сообщение ловушки называет число, равное ответу, которого нет в условии (решение D20):
+   такие числа (например, B₀ = 2·c·n, где вычитаемое равно ответу) перевыбираются; hasNum — в самопроверке ниже */
+function answerLeaks(t){
+  if(hasNum(t.story,t.answer))return false;
+  return t.hints.concat(t.distract.map(function(d){return d.msg})).some(function(h){return hasNum(h,t.answer)});
+}
+GENS.forEach(function(g){
+  var make=g.make;
+  g.make=function(){var t;for(var i=0;i<30;i++){t=make();if(!answerLeaks(t))return t}return t};
+});
+
 /* ===================== режимы ===================== */
 var MODES=[
   {id:'quick',label:'1. Быстрый старт',desc:'Лёгкие задания «подставить и посчитать» — чтобы почувствовать, что задание 12 тебе по силам.'},

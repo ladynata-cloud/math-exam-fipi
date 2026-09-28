@@ -116,3 +116,82 @@ export function solve(task) {
   if (askRound === terminates(key)) return { bad: code + ': просьба округлить ' + (askRound ? 'при конечной дроби' : 'не стоит, а дробь бесконечная') };
   return { key, rounded: askRound ? round2(key) : null };
 }
+
+/* ловушки итогового ответа, пересчитанные по условию и чертежу (решение D27):
+   значения без сообщений; равная ответу снимается, повтор значения — один раз;
+   в 10.5 сравнение — по округлённому до сотых, если дробь бесконечная */
+export function trapValues(task) {
+  const code = String(task.code).replace('_', '.');
+  const sol = solve(task);
+  if (sol.bad) return null;
+  const t = strip(task.text), B = bolds(task.text), out = [];
+  const add = (v) => { if (v) out.push(v); };   // здесь add — «записать ловушку»; сложение дробей — add2
+  const ONE = R(1);
+  if (code === '10.1') {
+    const m = /ровно (\d+) равновозможных .*? благоприятствуют (\d+) из них/.exec(t);
+    const N = BigInt(m[1]), k = BigInt(m[2]);
+    add(R(N, k)); add(R(N - k, N)); if (N - k) add(R(k, N - k));
+  } else if (code === '10.2') {
+    const m = /лежат (\d+) ([а-яё]+) и (\d+) ([а-яё]+) .*? окажется ([а-яё]+)\./.exec(t);
+    const st = (w) => w.slice(0, -1), a = BigInt(m[1]), b = BigInt(m[3]);
+    const fav = st(m[5]) === st(m[2]) ? a : b, tot = a + b;
+    add(R(tot, fav)); add(R(tot - fav, tot)); add(R(fav, tot - fav));
+  } else if (code === '10.3') {
+    const m = /лежат (\d+) ([а-яё]+) и (\d+) ([а-яё]+) .*? тоже окажется ([а-яё]+)\./.exec(t);
+    const st = (w) => w.slice(0, -2), n1 = BigInt(m[1]), n2 = BigInt(m[3]);
+    const g = st(m[5]) === st(m[2]) ? n1 : n2, y = g === n1 ? n2 : n1, T = g + y;
+    add(R(g, T)); add(R(g - 1n, T)); add(R(g, T - 1n)); add(R(y, T - 1n)); add(R(T - 1n, g - 1n));
+  } else if (code === '10.4') {
+    const m = /Монету бросили (\d+) раз\. .*? орёл выпал ровно (\d+) раз/.exec(t);
+    const N = BigInt(m[1]), h = BigInt(m[2]), tl = N - h;
+    add(R(1, 2)); add(R(h, N)); add(R(N, tl)); add(R(tl, h));
+  } else if (code === '10.5') {
+    // условие → множество подходящих сумм; упорядоченные и неупорядоченные пары считаются перебором
+    const sums = [];
+    const pairs = []; for (let a = 1; a <= 6; a++) for (let b = 1; b <= 6; b++) pairs.push([a, b]);
+    const okSum = (() => {
+      if (/не меньше \d+ и не больше \d+/.test(t)) { const [lo, hi] = B.map(Number); return (s) => s >= lo && s <= hi; }
+      if (/выпадет \d+, \d+ или \d+ очк/.test(t)) { const set = new Set(B.map(Number)); return (s) => set.has(s); }
+      if (/в сумме выпадет \d+ очк/.test(t)) { const s0 = Number(B[0]); return (s) => s === s0; }
+      if (/нечётной/.test(t)) return (s) => s % 2 === 1;
+      return (s) => s % 2 === 0;
+    })();
+    for (let s = 2; s <= 12; s++) if (okSum(s)) sums.push(s);
+    const cnt = pairs.filter(([a, b]) => okSum(a + b)).length;
+    const u = pairs.filter(([a, b]) => a <= b && okSum(a + b)).length;
+    add(R(BigInt(sums.length), 11n)); add(R(BigInt(u), 21n)); add(R(BigInt(cnt), 12n));
+    if (sol.rounded) { const x = sol.key.n * 100n / sol.key.d, tr = R(x, 100n); if (!eq(tr, sol.rounded)) add(tr); }
+  } else if (code === '10.6') {
+    const T = svgTexts(task.svg);
+    const e = [[96, 66], [96, 158], [240, 18], [240, 86], [240, 140], [240, 212]].map(([x, y]) => num(at(T, x, y)));
+    const leaves = [16, 88, 136, 208].map((y) => at(T, 320, y + 5));
+    const bl = leaves.map((l, i) => (l === 'B' ? i : -1)).filter((i) => i >= 0);
+    const first = (i) => (i < 2 ? e[0] : e[1]), second = (i) => e[2 + i];
+    const lf = bl.map((i) => mul(first(i), second(i))), ps = bl.map((i) => add2(first(i), second(i)));
+    add(add2(ps[0], ps[1])); add(mul(lf[0], lf[1])); add(lf[0]); add(lf[1]); add(sub1(ONE, sol.key));
+  } else if (code === '10.7') {
+    const T = svgTexts(task.svg);
+    const [oA, oI, oB, oO] = [[122, 112], [200, 112], [278, 112], [360, 192]].map(([x, y]) => num(at(T, x, y)));
+    const counts = /указано число равновозможных/.test(t), tot = add2(add2(oA, oI), add2(oB, oO));
+    const P = (v) => (counts ? div(v, tot) : v);
+    let ev;
+    if (/произойдёт событие A, но не произойдёт B/.test(t)) ev = 'AnotB';
+    else if (/события A и B произойдут одновременно/.test(t)) ev = 'AiB';
+    else if (/хотя бы одно из событий A, B/.test(t)) ev = 'AuB';
+    else if (/произойдёт событие A\./.test(t)) ev = 'A';
+    else ev = 'B';
+    const other = { A: add2(oB, oI), B: add2(oA, oI), AnotB: oB }[ev];
+    if (other) add(P(other));
+    const fav = { A: add2(oA, oI), B: add2(oB, oI), AiB: oI, AuB: add2(add2(oA, oI), oB), AnotB: oA }[ev];
+    if (counts) add(div(fav, sub1(tot, oO)));
+    if (ev === 'AuB') { add(P(add2(add2(oA, oB), mul(R(2), oI)))); add(P(oI)); }
+    if (ev === 'AiB') add(P(add2(add2(oA, oI), oB)));
+    add(sub1(ONE, sol.key));
+  }
+  const keyOf = (v) => (code === '10.5' && !terminates(v) ? round2(v) : v);
+  const ak = sol.rounded || sol.key, res = [];
+  for (const v of out) { const k = keyOf(v); if (eq(k, ak) || res.some((r) => eq(keyOf(r), k))) continue; res.push(v); }
+  return res;
+}
+const add2 = (a, b) => add(a, b);
+const sub1 = (a, b) => R(a.n * b.d - b.n * a.d, a.d * b.d);
