@@ -45,12 +45,12 @@ const pilotExpected = Object.freeze({
     sizeBytes: 90714
   },
   'trainers/oge-task8-powers-roots.html': {
-    sha256: 'df283d5147edaf536a885203dc8b8cc540c424f32d29369cb176e79823d6120a',
-    sizeBytes: 98568
+    sha256: 'be230828080ead58d1a92cb88a4ac835baff3df046bb057975f0af06091752d5',
+    sizeBytes: 131339
   },
   'trainers/oge-task9-equations.html': {
-    sha256: 'c4813016e37b4e5b87524f1e3270cb3856027b01f89c616d4bcd619d58f343be',
-    sizeBytes: 181899
+    sha256: 'ebc457c822f4071fa74e03edad16e8d98ca40a61ef253a4e6040d3c77f3fc06c',
+    sizeBytes: 212685
   },
   'trainers/oge-task20-equations.html': {
     sha256: '839f2fcd27bea701be1e3178ff3863bd72283905b91c57c626395404629e90ad',

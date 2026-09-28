@@ -290,3 +290,25 @@ newline conventions. The 68,034-byte TASKS declaration and all 174 tasks remain
 byte-identical. Other Pilot A expectations, inventory logic, schema and gate
 are unchanged. The owner separately authorized only the exact six-file scope
 guard extension needed to validate this task without broadening its allowlist.
+
+## OGE course 03D (algebra, part A): intentional Pilot A identity change
+
+The v1.0.1 baseline table and the task 6 record above remain history. This
+change record belongs to `OGE_COURSE_03D_ALGEBRA` (part A) on
+`feat/oge-algebra-contract-a`, based on main `78ee9d5f8326e3c571a3a2eaecf70e1dfd7278cc`.
+ADR 0003 (Consequences) makes hash-pin updates part of the same PR as the
+trainer change; the pins become the main baseline only after the owner merges.
+The final handoff and Draft PR identify the head.
+
+| Git-object evidence | `trainers/oge-task8-powers-roots.html` | `trainers/oge-task9-equations.html` |
+| --- | --- | --- |
+| Blob SHA-1 | `e93f6e6dc035733d6ecf7f4d80c2a331ec617dd2` → `f8fbe123e5e47505e79880bd552b497c6f410e68` | `fde6982c69734dc47e5be4909829fc21706b819c` → `631b0bfe915e2352ad6360166dfde535731f77b6` |
+| SHA-256 | `df283d5147edaf536a885203dc8b8cc540c424f32d29369cb176e79823d6120a` → `be230828080ead58d1a92cb88a4ac835baff3df046bb057975f0af06091752d5` | `c4813016e37b4e5b87524f1e3270cb3856027b01f89c616d4bcd619d58f343be` → `ebc457c822f4071fa74e03edad16e8d98ca40a61ef253a4e6040d3c77f3fc06c` |
+| Git bytes | 98568 → 131339 | 181899 → 212685 |
+
+Reason: intentional progress-contract, journal, review-mode, test-mode, trap
+and accessibility changes in both trainers (task specification
+`docs/tasks/OGE_COURSE_03D_ALGEBRA.md`). Evidence comes from `git cat-file blob`
+(task 8 keeps its leading UTF-8 BOM: yes), not checkout newline
+conventions. The task banks (`BANK`) of both trainers are unchanged. Other
+Pilot A expectations, inventory logic, schema and gate are unchanged.
