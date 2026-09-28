@@ -189,7 +189,7 @@ button.btn:disabled{opacity:.45;cursor:default}
 .type-stats .redo{color:var(--amber)}
 
 details.teacher{margin-top:20px;background:#fff;border:1px solid var(--soft);border-radius:var(--radius);padding:12px 17px}
-details.teacher summary{cursor:pointer;font-weight:600;font-size:16px}
+details.teacher summary{cursor:pointer;font-weight:600;font-size:16px;padding:10px 0;line-height:24px}
 details.teacher li{margin:4px 0}
 .note{font-size:13.5px;color:var(--ink-soft);margin-top:6px}
 .review-box{background:#fff7e6;border:1px solid #ecd9ae;border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:15px;color:#6b4a0c}
@@ -1206,7 +1206,7 @@ function checkNumeric(inputEl,task){
 
 /* ===================== рендер режимов ===================== */
 function renderTask(){
-  focusLine(cur.t);
+  if(mode!=='diag')focusLine(cur.t);
   if(mode==='find')return renderFind();
   if(mode==='subst')return renderSubst();
   if(mode==='steps')return renderSteps();
@@ -1254,6 +1254,12 @@ function renderPlain(){
 function nextTask(){userActed=true;newTask()}
 
 /* --- режим «Найди, что спрашивают» (подготовительный, прогресс не пишет) --- */
+/* неверный выбор величины: данная в условии — «дана», остальные — «не спрашивают» (ревью, канон «адресно») */
+function findWrongMsg(L){
+  return /,\s*−?\d/.test(L.lab)
+    ?'Это '+L.n+' — оно дано в условии. Перечитай вопрос задачи: что нужно найти?'
+    :'Величину '+L.n+' ('+esc(letterName(L))+') в этой задаче не спрашивают. Перечитай вопрос: что нужно найти?';
+}
 function renderFind(){
   var q1='<div class="step-cur"><div class="prompt">Вопрос 1. Какую величину нужно найти?</div><div class="mc" id="mc1">'+
     cur.letters.map(function(L,i){return '<button data-i="'+i+'"><b>'+L.n+'</b> — '+esc(letterName(L))+'</button>'}).join('')+'</div></div>';
@@ -1284,7 +1290,7 @@ function renderFind(){
         askRearrQuestion();
       }else{
         b.classList.add('dim');
-        showFeedback('warn','Это '+cur.letters[i].n+' — оно дано в условии. Перечитай вопрос задачи: что нужно найти?');
+        showFeedback('warn',findWrongMsg(cur.letters[i]));
       }
     };
   });
@@ -1607,7 +1613,7 @@ function startQuiz(){
 }
 function renderQuizTask(){
   if(!quiz)return startQuiz();
-  focusLine(cur.t);
+  $('#focus').textContent='Зачёт: тип задания не называется, как на экзамене. Одна попытка, подсказок нет.';   // тип скрыт (D15)
   var top='<p class="diag-bar">Зачёт: задание '+(quiz.idx+1)+' из '+QUIZ_TOTAL+'. Одна попытка, подсказок нет — как на экзамене.</p>';
   $('#taskArea').innerHTML='<div class="card">'+top+
     '<p class="story">'+cur.story+'</p>'+
@@ -1634,7 +1640,7 @@ function renderQuizTask(){
     var nb=$('#qNext');nb.hidden=false;try{nb.focus({preventScroll:true})}catch(e){}
   }
   $('#checkBtn').onclick=submit;
-  $('#ansIn').addEventListener('keydown',function(e){if(e.key==='Enter'){if(answered)$('#qNext').click();else submit()}});
+  $('#ansIn').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();if(answered)$('#qNext').click();else submit()}});
   $('#qNext').onclick=function(){
     if(!answered||moved)return;moved=true;
     quiz.idx++;
@@ -1925,6 +1931,8 @@ const ASTK={
 };
 /*__ALG_SELFTEST_KIT_END__*/
 
+/* число из подписи величины («скорость, 12 км/ч» → 12) или null */
+function labelNum(L){var m=/,\s*(−?\d[\d\u2009 ]*(?:,\d+)?)/.exec(L.lab);return m?m[1]:null}
 /* число v стоит в тексте отдельным числом (разрядные пробелы не мешают) */
 function hasNum(text,v){
   var s=fmt(v).replace(/[−]/g,'-'),t=String(text).replace(/<[^>]*>/g,' ').replace(/(\d)[    ](?=\d{3})/g,'$1').replace(/−/g,'-');
@@ -1955,6 +1963,7 @@ function selftest12(){
       /* подписи величин без чисел и без подсказок (D43); искомая буква одна */
       t.letters.forEach(function(L){var nm=letterName(L);if(/\d/.test(nm)||/ищем|спрашива|нужна/.test(nm))errs.push(tag+': подпись «'+nm+'» выдаёт ответ')});
       if(t.letters.filter(function(L){return L.n===t.target}).length!==1)errs.push(tag+': искомой буквы нет среди букв');
+      t.letters.forEach(function(L){if(L.n!==t.target&&labelNum(L)===null&&/дано в условии/.test(findWrongMsg(L)))errs.push(tag+': про '+L.n+' сказано «дано в условии», а числа нет')});
       /* подстановка: шаблон даёт ответ; перестановка внутри коммутативной группы значение не меняет (D42) */
       if(t.subst){
         if(!near(t.subst.ev(t.subst.vals),t.answer))errs.push(tag+': подстановка не даёт ответ');

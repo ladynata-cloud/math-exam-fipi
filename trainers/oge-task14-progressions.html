@@ -2117,7 +2117,9 @@ function localDate(){ const d=new Date(), p=x=>(x<10?"0":"")+x; return d.getFull
 
 /* ---------- учёт задачи (решения D1, D49, D50): промах — сразу и один раз, решено — без показа ---------- */
 function newRec(task){ return { task, missed:false, shown:false, done:false }; }
-function recMiss(rec){ if(rec.missed||rec.shown||rec.done) return; rec.missed=true; CP.mlog(rec.task.code,false); }
+function recMiss(rec){ if(rec.missed||rec.shown||rec.done) return; rec.missed=true; CP.mlog(rec.task.code,false); streakReset(); }
+/* серия верных обнуляется первой ошибкой и уходом с нерешённой задачи — как было до контракта */
+function streakReset(){ CP.saveExt(e=>{ e.streak=0; }); if(document.getElementById("m-stats")) renderStats(); }
 function recDone(rec){
   if(rec.done) return null;
   rec.done=true;
@@ -2487,7 +2489,7 @@ function resetProgress(){
 function nextMarathon(){
   const seed=Math.floor(Math.random()*1e9);
   const task=T.randomTask(activeCodes(), seed);
-  M.task=task; M.rec=newRec(task); M.done=false;
+  M.task=task; M.rec=newRec(task); M.done=false; M.ladder=false;
   const host=document.getElementById("m-task");
   host.innerHTML=`
   <div class="card">
@@ -2507,7 +2509,7 @@ function nextMarathon(){
   M.ans=ans;
   const fb=host.querySelector("#m-fb");
   host.querySelector("#m-ck").onclick=()=>checkMarathon(ans,fb);
-  host.querySelector("#m-skip").onclick=()=>{ userActed=true; nextMarathon(); };
+  host.querySelector("#m-skip").onclick=()=>{ userActed=true; if(!M.done) streakReset(); nextMarathon(); };
   host.querySelector("#m-solve").onclick=()=>{ userActed=true; solveInMarathon(); };
   ans.focus();
 }
@@ -2711,7 +2713,7 @@ function selftest14(){
   const plain=h=>String(h).replace(/<[^>]*>/g,' ').replace(/(\d)[   ](?=\d{3})/g,'$1').replace(/−/g,'-');
   const hasNum=(text,v)=>{
     const f=plain(T.fmtN(v)).trim();
-    return new RegExp('(^|[^\\d,])'+f.replace(/[.*+?^${}()|[\]\\]/g,'\\/* ===== ОГЭ №14: запуск ===== */')+'(?![\\d]|,\\d)').test(plain(text));
+    return new RegExp('(^|[^\\d,])'+f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![\\d]|,\\d)').test(plain(text));
   };
   T.GEN_CODES.forEach(code=>{
     let full=0;

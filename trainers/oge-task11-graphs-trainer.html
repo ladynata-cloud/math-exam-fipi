@@ -1869,6 +1869,12 @@ $("m5-reset").addEventListener("click", () => {
 });
 
 /* =================== МОДУЛЬ 6. ЗАЧЁТ (решения D15, D34) =================== */
+/* формулировка зачёта — как в КИМ: без подсказки метода (D15, D34) */
+function examLine(T){
+  return T.type === "t41"
+    ? 'На рисунках изображены графики функций вида <span class="math"><i>y</i> = <i>a</i><i>x</i><sup>2</sup> + <i>b</i><i>x</i> + <i>c</i></span>. Установи соответствие между знаками коэффициентов и графиками.'
+    : "Установи соответствие между формулами и графиками.";
+}
 function buildQuiz11(){ return shuffle(TYPE_IDS.concat(TYPE_IDS)).map(m4Make); }
 function renderQuizIntro(){
   $("m6-box").innerHTML = '<div class="card"><h2>Зачёт: ' + QUIZ_TOTAL + ' задач</h2>' +
@@ -1884,7 +1890,7 @@ function runQuiz11(){
     if (idx >= quiz.length) return finishQuiz11(quiz, res);
     const T = quiz[idx];
     $("m6-box").innerHTML = '<div class="card"><div class="note">Задача ' + (idx + 1) + " из " + quiz.length + "</div>" +
-      "<p>" + T.taskline + '</p><div id="m6-match"></div>' +
+      "<p>" + examLine(T) + '</p><div id="m6-match"></div>' +
       '<div class="btnrow"><button class="btn btn-primary" type="button" id="m6-ok">Ответить</button>' +
       '<button class="btn" type="button" id="m6-next" hidden>' + (idx + 1 < quiz.length ? "Дальше →" : "Итоги →") + "</button></div>" +
       '<div class="fb" id="m6-fb" aria-live="polite"></div></div>';
@@ -2191,6 +2197,7 @@ function selftest11(){
         if (d.right === 2) errs.push(tag + ": «верно 2 из 3» при взаимно однозначном ответе");
         if (!d.cats.length) errs.push(tag + ": у ошибки нет признака");
       });
+      if (/Не угадывай|Сначала|семейств/.test(examLine(T))) errs.push(tag + ": формулировка зачёта подсказывает метод");
       if (type === "t44") T.items.forEach(it => { const pt = hypPoint(it.m); if (Math.abs(pt[1]) > 6 || pt[0] * pt[1] !== it.m) errs.push(tag + ": контрольная точка вне чертежа"); });
     }
   });

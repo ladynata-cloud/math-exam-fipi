@@ -470,7 +470,7 @@ function gen102(pk){
       `Сначала все предметы: ${a}&nbsp;+&nbsp;${b}. Потом те, про которые спрашивают, — и дели.`
     ],
     steps:[
-      pStep(`Сколько всего ${obj.what} в коробке?`,F(total),`Всего: ${a} + ${b} = ${total}.`,'сумма всех предметов'),
+      pStep(`Сколько всего ${obj.what} в коробке?`,F(total),`Всего: ${a} + ${b} = ${total}.`,'сумму всех предметов'),
       pStep(`Сколько из них ${cAsk[0]} (благоприятные исходы)?`,F(fav),`Благоприятных: ${fav}.`,'сколько предметов того цвета, про который спрашивают'),
       pStep('Найди вероятность: '+probStepText(),ans,`P = ${fav} : ${total}.`,'деление нужных на все')
     ],
@@ -616,7 +616,7 @@ function gen106(pk){
     steps:[
       pStep(`Найди вероятность первого листа B: перемножь вероятности на рёбрах пути (${pathTxt(idx[0])}).`,leafP[idx[0]],`${pathTxt(idx[0])} = ${fToDec(leafP[idx[0]])}. По пути — умножаем, а не складываем!`,'произведение вероятностей вдоль первого пути',[{v:pathSum(idx[0]),m:'Вдоль пути вероятности перемножают, а не складывают.'}]),
       pStep(`Найди вероятность второго листа B (${pathTxt(idx[1])}).`,leafP[idx[1]],`${pathTxt(idx[1])} = ${fToDec(leafP[idx[1]])}.`,'произведение вероятностей вдоль второго пути',[{v:pathSum(idx[1]),m:'Вдоль пути вероятности перемножают, а не складывают.'}]),
-      pStep('Сложи вероятности всех листьев B.',ans,`${fToDec(leafP[idx[0]])} + ${fToDec(leafP[idx[1]])} = ${fToDec(ans)}.`,'сумма двух листьев B')
+      pStep('Сложи вероятности всех листьев B.',ans,`${fToDec(leafP[idx[0]])} + ${fToDec(leafP[idx[1]])} = ${fToDec(ans)}.`,'сумму двух листьев B')
     ],
     razbor:`Смотри на выделенные зелёным пути к листьям B. <b>Шаг 1 — умножаем вдоль каждого пути:</b> верхний лист B — ${pathTxt(idx[0])}&nbsp;=&nbsp;${pA}; второй лист B — ${pathTxt(idx[1])}&nbsp;=&nbsp;${pB}. <b>Шаг 2 — складываем листья B:</b> P(B)&nbsp;=&nbsp;${pA}&nbsp;+&nbsp;${pB}&nbsp;=&nbsp;<b>${fToDec(ans)}</b>.`
   };
@@ -756,13 +756,13 @@ function gen107(pk){
   const regCount={A:2,B:2,AiB:1,AuB:3,AnotB:1}[evKey]; // из скольких областей состоит событие
   const oneReg=regCount===1;
   const steps= mode==='counts' ? [
-    pStep(`Сколько исходов входит в нужное событие? Нужные области: ${zoneNames[evKey]}.`,F(fav),`Благоприятных исходов: ${fav}.`,'сумма нужных областей'),
-    pStep('Сколько всего элементарных исходов (сложи ВСЕ четыре области, включая внешнюю)?',F(total),`Всего: ${onlyA} + ${inter} + ${onlyB} + ${outside} = ${total}.`,'сумма всех четырёх областей',[{v:F(total-outside),m:'Внешнюю область тоже считаем: она входит в общее число исходов.'}]),
+    pStep(`Сколько исходов входит в нужное событие? Нужные области: ${zoneNames[evKey]}.`,F(fav),`Благоприятных исходов: ${fav}.`,'сумму нужных областей'),
+    pStep('Сколько всего элементарных исходов (сложи ВСЕ четыре области, включая внешнюю)?',F(total),`Всего: ${onlyA} + ${inter} + ${onlyB} + ${outside} = ${total}.`,'сумму всех четырёх областей',[{v:F(total-outside),m:'Внешнюю область тоже считаем: она входит в общее число исходов.'}]),
     pStep('Найди вероятность: '+probStepText(),answer,`P = ${fav} : ${total} = ${fToDec(answer)}.`,'деление благоприятных исходов на все')
   ] : [
     oneReg
       ? pStep(`Сколько областей входит в событие? Всего одна — ${zoneNames[evKey]}. Её вероятность указана на диаграмме; запиши её.`,answer,`Область одна (${zoneNames[evKey]}), складывать нечего — просто списываем её вероятность: ${fToDec(answer)}.`,'вероятность нужной области')
-      : pStep(`Какие области входят в событие? (${zoneNames[evKey]}.) Сложи их вероятности.`,answer,`Сумма вероятностей нужных областей: ${fToDec(answer)}.`,'сумма вероятностей нужных областей')
+      : pStep(`Какие области входят в событие? (${zoneNames[evKey]}.) Сложи их вероятности.`,answer,`Сумма вероятностей нужных областей: ${fToDec(answer)}.`,'сумму вероятностей нужных областей')
   ];
   return {
     code:'10.7', name:'Диаграмма Эйлера', text, svg, answer,
@@ -1000,7 +1000,7 @@ function awRead(id){
 function awLock(id){['-dec','-n','-d','-tofrac','-todec','-ck','-sh'].forEach(s=>{const e=el(id+s);if(e)e.disabled=true;});}
 function awFocus(id){if(!userActed)return;const f=el(id+'-dec');if(f&&!f.disabled)try{f.focus({preventScroll:true});}catch(e){}}
 function setFB(id,cls,html){const f=el(id+'-fb');if(!f)return;f.className='fb'+(cls?' '+cls:'');f.innerHTML=html;}
-function bindEnter(id,fn){['-dec','-n','-d'].forEach(s=>{const e=el(id+s);if(e)e.addEventListener('keydown',ev=>{if(ev.key==='Enter')fn();});});}
+function bindEnter(id,fn){['-dec','-n','-d'].forEach(s=>{const e=el(id+s);if(e)e.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();fn();}});});}
 const MSG_EMPTY='Введи ответ: десятичной дробью (например 0,25) или этажной дробью справа.';
 const MSG_WRONG='Пока неверно — попробуй ещё раз.';
 const OVER1=' И проверь себя: вероятность не бывает больше 1.';
@@ -1648,6 +1648,7 @@ function selftest10(){
       /* ступени: есть «что проверяет», ловушка ступени не равна её ответу */
       t.steps.forEach((s,i)=>{
         if(!s.chk)errs.push(tag+': у ступени '+(i+1)+' нет «что проверяет»');
+        else if(/^[а-яё]+а(\s|$)/i.test(s.chk))errs.push(tag+': «проверь '+s.chk+'» — не винительный падеж');
         (s.traps||[]).forEach(x=>{if(fEq(x.v,s.ans))errs.push(tag+': ловушка ступени '+(i+1)+' = её ответу');});
       });
       if(code==='10.6'&&!(t.meta.idx[0]<2&&t.meta.idx[1]>=2))errs.push(tag+': листья B не из разных ветвей');

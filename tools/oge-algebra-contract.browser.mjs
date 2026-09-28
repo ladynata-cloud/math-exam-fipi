@@ -75,7 +75,7 @@ async function openPage(ctx, url) {
 }
 const store = page => page.evaluate(k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return 'junk'; } }, KEY);
 /* кнопки и поля ниже 44 px; ссылка внутри фразы — исключение (размер задан строкой текста) */
-const small = page => page.evaluate(() => [...document.querySelectorAll('button,input:not([type=radio]):not([type=checkbox]),select,a[href]')]
+const small = page => page.evaluate(() => [...document.querySelectorAll('button,input:not([type=radio]):not([type=checkbox]),select,a[href],summary')]
   .filter(e => !(e.tagName === 'A' && getComputedStyle(e).display === 'inline' && e.parentElement &&
     e.parentElement.textContent.trim().length > e.textContent.trim().length + 20))
   .filter(e => { const r = e.getBoundingClientRect(); return r.width && r.height && r.height < 43.5; })
@@ -469,6 +469,40 @@ async function main() {
     ok(await page.evaluate(() => document.documentElement.scrollWidth <= 360), 'C14', '«змейка»: страница не шире экрана');
     ok(!errs.length, 'C14', errs.slice(0, 2).join(' | '));
     await ctx.close();
+  });
+
+  await run('RV. по ревью: лестница 14 после «Другой задачи»; тип в зачёте 12 скрыт; Enter в зачёте показывает вердикт; серия 14', async () => {
+    { // 14: «Разобрать по шагам» → «Другая задача» → «Разобрать по шагам» — лестница снова открывается
+      const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + TBn(14).file);
+      await page.locator('#tabs .tab[data-page=marathon]').tap();
+      await page.locator('#m-solve').tap(); await page.locator('#m-skip').tap(); await page.locator('#m-solve').tap();
+      ok(await page.locator('#mstep-list').count() === 1, 'RV', '14: лестница открывается снова после «Другой задачи»');
+      await page.locator('#m-skip').tap();
+      const a14 = await page.evaluate(() => T14.fmtN(window.__M.task.ans).replace(/[  ]/g, '').replace('−', '-'));
+      await page.locator('#m-dec').fill(a14); await page.locator('#m-ck').tap();
+      ok(/Серия верных: 1/.test(await page.locator('#m-stats').innerText()), 'RV', '14: верное решение продлевает серию');
+      await page.locator('#m-next').tap();
+      await page.locator('#m-dec').fill('999999'); await page.locator('#m-ck').tap();
+      ok(/Серия верных: 0/.test(await page.locator('#m-stats').innerText()), 'RV', '14: ошибка обнуляет серию верных');
+      ok(!errs.length, 'RV', '14: ' + errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+    for (const n of [10, 12, 14]) { // Enter в поле зачёта: вердикт виден, задача та же
+      const t = TBn(n);
+      const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + t.file);
+      let input, fbSel, counter;
+      if (n === 10) { await page.locator('#tabb-quiz').tap(); await page.locator('#quiz-start').tap(); input = '#quiz-root .aw-dec'; fbSel = '#quiz-root .fb'; counter = () => page.locator('#quiz-root .note').first().innerText(); }
+      else if (n === 12) { await page.locator('#modes button[data-id=diag]').tap(); input = '#ansIn'; fbSel = '#fb'; counter = () => page.locator('.diag-bar').innerText();
+        const f = await page.locator('#focus').innerText();
+        ok(!/тренируем|риск/.test(f) && await page.locator('#taskArea .badge').count() === 0, 'RV', '12: в зачёте тип задания не показан: «' + f.slice(0, 60) + '»'); }
+      else { await page.locator('#tabs .tab[data-page=quiz]').tap(); await page.locator('#q-start').tap(); input = '#q-dec'; fbSel = '#q-fb'; counter = () => page.locator('#q-box .small').first().innerText(); }
+      const c0 = await counter();
+      await page.locator(input).fill('999999'); await page.locator(input).press('Enter');
+      await sleep(150);
+      ok(/Неверно/.test(await page.locator(fbSel).first().innerText()) && (await counter()) === c0, 'RV', n + ': Enter в зачёте показывает вердикт и не перелистывает');
+      ok(!errs.length, 'RV', n + ': ' + errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
   });
 
   await run('QB. Зачёт 10, 11, 12, 14: 10/10 → passed; двойное касание — один ответ', async () => {
