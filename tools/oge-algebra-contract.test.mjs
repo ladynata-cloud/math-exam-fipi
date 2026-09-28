@@ -212,13 +212,14 @@ section('5. ловушки и адресная диагностика', () => {
         if (!d || !d.m) return err('нет сообщения');
         if (/вариант\s*\d/.test(d.m.replace(/<[^>]*>/g, ''))) err('сообщение называет номер варианта');
         if (d.k === 'shift') { // особые записи (списки чисел) своим разбором не читаются — их посылку проверяет самопроверка
-          const want = t.mode !== 'неверно', sh = Object.assign({}, t.vals);
-          sh[d.v] = { n: t.vals[d.v].n + BigInt(d.s) * t.vals[d.v].d, d: t.vals[d.v].d };
-          const t1 = R7.truth(t.opts[i].html, sh), t0 = R7.truth(t.opts[i].html, t.vals);
-          if (t1 === null || t0 === null) nspecial++;
-          else { nshift++; if (t1 !== want || t0 === want) err('посылка сдвига'); }
-          // числа в сообщении: промежуток на рисунке и соседний — своим делением с округлением вниз
+          const want = t.mode !== 'неверно';
           const q = t.vals[d.v], lo = Number(q.n >= 0n ? q.n / q.d : -((-q.n + q.d - 1n) / q.d));
+          // «было бы верно на соседнем отрезке» — на всём отрезке: девять точек через десятую
+          const t1s = Array.from({ length: 9 }, (_, j) => { const sh = Object.assign({}, t.vals); sh[d.v] = { n: BigInt(10 * (lo + d.s) + j + 1), d: 10n }; return R7.truth(t.opts[i].html, sh); });
+          const t0 = R7.truth(t.opts[i].html, t.vals);
+          if (t1s.some(x => x === null) || t0 === null) nspecial++;
+          else { nshift++; if (t1s.some(x => x !== want) || t0 === want) err('посылка сдвига не на всём отрезке'); }
+          // числа в сообщении: промежуток на рисунке и соседний — своим делением с округлением вниз
           const f = (x) => String(x).replace('-', '−');
           const txt = d.m.replace(/<[^>]*>/g, '');
           if (!txt.includes('между ' + f(lo + d.s) + ' и ' + f(lo + d.s + 1)) || !txt.includes('между ' + f(lo) + ' и ' + f(lo + 1))) err('числа промежутков в сообщении');
@@ -231,6 +232,28 @@ section('5. ловушки и адресная диагностика', () => {
     }
     ok(!bad, '5', `7: ${all.length} задач, нарушений ${bad} ${ex}`);
     ok(nshift > 100 && nspecial <= 20, '5', '7: сообщений «соседний отрезок» проверено ' + nshift + ', особых записей ' + nspecial);
+    // ловушки ступеней — по виду ступени: на чтении рисунка нет корней (не выдать ответ),
+    // в дробях и делении нет «точки», у «крест-накрест» ловушек нет
+    const steps = J(T, `BANK.concat(TYPE_IDS.flatMap(tt=>Array.from({length:60},()=>genType(tt)))).flatMap(t=>stepsFor(t,"school")
+      .filter(s=>s.traps2).map(s=>({id:t.id||t.tt,q:s.q,a:[s.ans1,s.ans2],tr:s.traps2})))`);
+    let sb = 0, sex = '';
+    for (const s of steps) {
+      const q = s.q, ms = s.tr.map(x => x.m).join(' | ');
+      const e = (m) => { sb++; sex = sex || s.id + ': ' + m + ' — ' + q.replace(/<[^>]*>/g, '').slice(0, 50); };
+      if (/крест-накрест/.test(q)) e('ловушки на ступени «крест-накрест»');
+      if (/рисун|Точка/.test(q) && /sqrt|√/.test(ms)) e('на чтении рисунка ловушка с корнем');
+      if (/Подели с остатком|лежит между целыми/.test(q) && !/sqrt/.test(q) && /точк|Точк/.test(ms)) e('в дроби или делении ловушка про точку');
+      if (/Подели с остатком/.test(q) && s.tr.some(x => !/Остаток/.test(x.m))) e('в делении — не ловушка остатка');
+      if (s.tr.some(x => x.v1 === s.a[0] && x.v2 === s.a[1])) e('ловушка = ответу');
+    }
+    ok(!sb, '5', `7 ступени: ${steps.length} с ловушками, нарушений ${sb} ${sex}`);
+  }
+  { // 9: строка «если корней несколько» — как в КИМ, и при постороннем корне (не выдаёт ОДЗ)
+    const T = loadTrainer(TR[2].file, { seed: SEED });
+    const all = J(T, `BANK.concat(Object.keys(GENS).flatMap(g=>Array.from({length:200},()=>genTask(g)))).map(t=>{const s=taskSolve(t);
+      return {id:t.id||t.gid,n:s.roots.length+s.excluded.length,line:/более одного корня/.test(taskInstrHTML(t))};})`);
+    const bad = all.filter(t => (t.n >= 2) !== t.line);
+    ok(!bad.length, '5', `9: строка о корнях не по правилу в ${bad.length} задачах: ${bad.slice(0, 3).map(t => t.id).join(', ')}`);
   }
 });
 

@@ -287,6 +287,57 @@ async function main() {
     }
   });
 
+  await run('E. пустое поле — не промах (9); выход из повтора (9); две ошибки в номере — «разбор закончен» (7)', async () => {
+    { // 9: пустое поле уравнения и невыбранный вариант на ступени — не промах
+      const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + TR[2].file);
+      await page.locator('nav.tabs .tab[data-pane=step]').tap();
+      await page.locator('#pane-step .chip', { hasText: '(x+a)² = (x+b)²' }).tap();
+      await page.locator('#step-work .step .btn', { hasText: 'Проверить' }).first().tap();
+      await page.locator('#pane-step .chip', { hasText: 'разложено на множители' }).tap();
+      await page.locator('#step-work .step .btn', { hasText: 'Проверить' }).first().tap();
+      const fb = (await page.locator('#step-work .step .fb').first().innerText()).trim();
+      const s = await store(page);
+      ok(!s || !s.mistakes || !Object.keys(s.mistakes).length, 'E', '9: пустое поле или невыбранный вариант записаны промахом: ' + JSON.stringify(s && s.mistakes));
+      ok(/Выбери вариант|Заполни поле/.test(fb), 'E', '9: подсказка «выбери вариант / заполни поле»: «' + fb + '»');
+      ok(!errs.length, 'E', errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+    { // 9: последний открытый тип закрыт — обычный режим с чипсами
+      const ctx = await fresh();
+      await ctx.addInitScript(([k, v]) => { try { localStorage.setItem(k, v); } catch (e) {} },
+        [KEY, JSON.stringify({ mistakes: { 'oge-t9-uravneniya|L': { w: 1, r: 2, last: 1 } } })]);
+      const { page, errs } = await openPage(ctx, base + TR[2].file + '?mode=review');
+      await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')); s.mistakes['oge-t9-uravneniya|L'].r = 3; localStorage.setItem('mathExamCourseProgress.v1', JSON.stringify(s)); });
+      await page.locator('#pane-step .btn', { hasText: 'Следующая задача' }).first().tap();
+      const chips = await page.locator('#pane-step .chip').count();
+      ok(chips >= 10 && /Все ошибки исправлены/.test(await page.locator('#pane-step').innerText()), 'E', '9: после закрытия последнего типа — сообщение и чипсы (' + chips + ')');
+      ok(!errs.length, 'E', errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+    { // 7: две ошибки в номере варианта на последней ступени — «Разбор закончен», не «решена»
+      const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + TR[0].file);
+      await page.locator('.tab[data-t=mar]').tap();
+      const q = await page.evaluate(() => ({ key: BANK[marIdx].key, tt: typeOf(BANK[marIdx]), steps: stepsFor(BANK[marIdx], 'school').map(s => ({ type: s.type, ans: s.ans, ans1: s.ans1, ans2: s.ans2, qans: s.qans ? qShow(s.qans) : null, correct: s.correct })) }));
+      await page.locator('#marTask .btn', { hasText: 'Решить по шагам' }).tap();
+      const wr = [1, 2, 3, 4].filter(x => x !== q.key);
+      for (let j = 0; j < q.steps.length; j++) {
+        const st = q.steps[j], card = page.locator('#marTask .stepcard').nth(j);
+        if (st.type === 'choice') { await card.locator('button.choice').nth(st.correct).tap(); continue; }
+        const ins = card.locator('input.ans');
+        if (j === q.steps.length - 1) for (const w of wr.slice(0, 2)) { await ins.nth(0).fill(String(w)); await card.locator('.btn.primary').tap(); }
+        await ins.nth(0).fill(String(st.qans != null ? st.qans : st.type === 'int' ? st.ans : st.ans1).replace('-', '−'));
+        if (st.type === 'int2') await ins.nth(1).fill(String(st.ans2));
+        await card.locator('.btn.primary').tap();
+      }
+      const txt = await page.locator('#marTask').innerText();
+      ok(/Разбор закончен/.test(txt) && !/Задача решена/.test(txt), 'E', '7: после двух ошибок в номере — «Разбор закончен», не «Задача решена»');
+      const s = await store(page);
+      ok(!(s && s[TR[0].tid] && s[TR[0].tid].solvedByType && s[TR[0].tid].solvedByType[q.tt]), 'E', '7: две ошибки в номере — задача в счёт не идёт');
+      ok(!errs.length, 'E', errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+  });
+
   await browser.close();
   server.close();
   console.log('\nпроверок: ' + checks + ', провалов: ' + fails);

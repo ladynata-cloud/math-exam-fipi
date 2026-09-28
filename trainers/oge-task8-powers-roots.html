@@ -315,6 +315,7 @@ const TP=(i,v,m)=>({i,v:(typeof v==="object"&&v.n!==undefined)?v:Fr(v),m});
 const TM={
   addNotMul:"При умножении степеней с одинаковым основанием показатели складываются, а не перемножаются.",
   mulNotAdd:"Степень в степени: показатели перемножаются, а не складываются.",
+  sub:"При делении степеней с одинаковым основанием показатели вычитаются: из показателя делимого вычти показатель делителя.",
   subNeg:"При делении степеней с одинаковым основанием показатели вычитаются: из показателя делимого вычти показатель делителя. Вычесть отрицательное — значит прибавить.",
   signLost:"Потерян минус у показателя: считай со знаком.",
   recip:"Знак показателя перепутан — получилось обратное число. Помни: a⁻ⁿ = 1/aⁿ.",
@@ -323,7 +324,7 @@ const TM={
   recipSign:"1/aⁿ = a⁻ⁿ: когда степень переходит из знаменателя, знак показателя меняется.",
   cTimesQ:"cⁿ — это c, умноженное само на себя n раз, а не c · n.",
   commaWay:"Запятая сдвинута не в ту сторону: при отрицательном показателе десятки число уменьшается, при положительном — растёт.",
-  bracketSign:"Знак в скобке — как у среднего члена: минус перед ab даёт минус в скобке.",
+  bracketSign:(K)=>"Знак в скобке — как у среднего члена: "+(K<0?"минус":"плюс")+" перед ab даёт "+(K<0?"минус":"плюс")+" в скобке.",
   absNeeded:"Корень из квадрата — это модуль: √(x²) = |x|, ответ не бывает отрицательным.",
   rootOfSum:"Корень из суммы нельзя извлекать по слагаемым: √(x² + y²) ≠ x + y. Сначала сверни выражение под корнем в квадрат скобки.",
 };
@@ -346,6 +347,8 @@ function cleanTraps(s){
   s.trapDropped=n0-out.reduce((k,o)=>k+o.ms.length,0);
   return s;
 }
+/* «вычесть отрицательное» — только когда вычитаемое и правда отрицательное */
+const subM=x=>x<0?TM.subNeg:TM.sub;
 /* ловушки итогового ответа задачи — ловушки последней ступени */
 function finalTraps(t){ const st=buildSteps(t); return st[st.length-1].traps; }
 
@@ -475,10 +478,10 @@ function buildSteps(t){
       [TP(0,p.p*p.q,TM.addNotMul),p.p<0&&TP(0,-p.p+p.q,TM.signLost)]));
     st.push(S(`При делении — вычитаются: ${M(fr(pw(p.b,e1),pw(p.b,p.r))+" = "+pw(p.b,"?"))}`,
       [I(e,"показатель")],`${e1} − ${p.r} = ?`,`${M(pw(p.b,e))}.`,
-      [TP(0,e1+p.r,TM.subNeg)]));
+      [TP(0,e1+p.r,subM(p.r))]));
     st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
       [e!==0&&TP(0,fpow(Fr(p.b),-e),TM.recip),e!==1&&TP(0,p.b*e,TM.baseTimesExp),
-       TP(0,fpow(Fr(p.b),p.p*p.q-p.r),TM.addNotMul),TP(0,fpow(Fr(p.b),e1+p.r),TM.subNeg)]));
+       TP(0,fpow(Fr(p.b),p.p*p.q-p.r),TM.addNotMul),TP(0,fpow(Fr(p.b),e1+p.r),subM(p.r))]));
     break;}
   case "pow_pow_div":{
     const e1=p.p*p.q, e=e1-p.r, v=fpow(Fr(p.b),e);
@@ -487,10 +490,10 @@ function buildSteps(t){
       [TP(0,p.p+p.q,TM.mulNotAdd),e1<0&&TP(0,-e1,TM.signLost)]));
     st.push(S(`Деление — показатели вычитаются: ${M(fr(pw(p.b,e1),pw(p.b,p.r))+" = "+pw(p.b,"?"))}`,
       [I(e,"показатель")],`(${e1}) − (${p.r}) = ? Минус на минус даёт плюс.`,`${M(pw(p.b,e))}.`,
-      [TP(0,e1+p.r,TM.subNeg)]));
+      [TP(0,e1+p.r,subM(p.r))]));
     st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
       [e!==0&&TP(0,fpow(Fr(p.b),-e),TM.recip),e!==1&&TP(0,p.b*e,TM.baseTimesExp),
-       TP(0,fpow(Fr(p.b),p.p+p.q-p.r),TM.mulNotAdd),TP(0,fpow(Fr(p.b),e1+p.r),TM.subNeg)]));
+       TP(0,fpow(Fr(p.b),p.p+p.q-p.r),TM.mulNotAdd),TP(0,fpow(Fr(p.b),e1+p.r),subM(p.r))]));
     break;}
   case "pow_mul_pow":{
     const e1=p.q*p.r, e=p.p+e1, v=fpow(Fr(p.b),e);
@@ -513,10 +516,10 @@ function buildSteps(t){
       [I(ea,String(p.b1)),I(eb,String(p.b2))],
       `${p.b1}: ${p.p} − ${p.r}; ${p.b2}: ${p.q} − ${p.r}.`,
       `Осталось ${M(pw(p.b1,ea)+(eb?" · "+pw(p.b2,eb):""))}.`,
-      [TP(0,p.p+p.r,TM.subNeg),TP(1,p.q+p.r,TM.subNeg)]));
+      [TP(0,p.p+p.r,subM(p.r)),TP(1,p.q+p.r,subM(p.r))]));
     st.push(S(`Вычисли: ${M((ea?pw(p.b1,ea):"")+(ea&&eb?" · ":"")+(eb?pw(p.b2,eb):""))} = ?`,
       [I(v,"ответ")],``,`${V(v)}.`,
-      [TP(0,fpow(Fr(p.b1*p.b2),ea+eb),TM.basesAdd),TP(0,fmul(fpow(Fr(p.b1),p.p+p.r),fpow(Fr(p.b2),p.q+p.r)),TM.subNeg)]));
+      [TP(0,fpow(Fr(p.b1*p.b2),ea+eb),TM.basesAdd),TP(0,fmul(fpow(Fr(p.b1),p.p+p.r),fpow(Fr(p.b2),p.q+p.r)),subM(p.r))]));
     break;}
   case "prodbase_over":{
     const ea=p.p-p.q, eb=p.p-p.r;
@@ -527,9 +530,9 @@ function buildSteps(t){
       [I(ea,String(p.b1)),I(eb,String(p.b2))],
       `${p.b1}: ${p.p} − ${p.q}; ${p.b2}: ${p.p} − ${p.r}.`,
       `Осталось ${M((ea?pw(p.b1,ea):"1")+(eb?" · "+pw(p.b2,eb):""))}.`,
-      [TP(0,p.p+p.q,TM.subNeg),TP(1,p.p+p.r,TM.subNeg)]));
+      [TP(0,p.p+p.q,subM(p.q)),TP(1,p.p+p.r,subM(p.r))]));
     st.push(S(`Вычисли: = ?`,[I(v,"ответ")],``,`${V(v)}.`,
-      [TP(0,fpow(Fr(p.b1*p.b2),ea+eb),TM.basesAdd),TP(0,fmul(fpow(Fr(p.b1),p.p+p.q),fpow(Fr(p.b2),p.p+p.r)),TM.subNeg)]));
+      [TP(0,fpow(Fr(p.b1*p.b2),ea+eb),TM.basesAdd),TP(0,fmul(fpow(Fr(p.b1),p.p+p.q),fpow(Fr(p.b2),p.p+p.r)),subM(Math.min(p.q,p.r)))]));
     break;}
   case "sqsum":{
     const k2=p.k*p.k, v=p.m+k2, sgn=p.sign>0?"+":"−";
@@ -546,9 +549,9 @@ function buildSteps(t){
       [I(q,"показатель")],`${p.b} · ${p.b} = ${p.b*p.b}, дальше сам.`,`${p.d} = ${M(pw(p.b,q))}.`));
     st.push(S(`Деление степеней: ${M(fr(pw(p.b,p.p),pw(p.b,q))+" = "+pw(p.b,"?"))}`,
       [I(e,"показатель")],`${p.p} − ${q} = ?`,`${M(pw(p.b,e))}.`,
-      [TP(0,p.p+q,TM.subNeg)]));
+      [TP(0,p.p+q,subM(q))]));
     st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
-      [e!==0&&TP(0,fpow(Fr(p.b),-e),TM.recip),e!==1&&TP(0,p.b*e,TM.baseTimesExp),TP(0,fpow(Fr(p.b),p.p+q),TM.subNeg)]));
+      [e!==0&&TP(0,fpow(Fr(p.b),-e),TM.recip),e!==1&&TP(0,p.b*e,TM.baseTimesExp),TP(0,fpow(Fr(p.b),p.p+q),subM(q))]));
     break;}
   case "recip_pow":{
     const e1=-p.p, e2=-p.q, e=e1+e2, v=fpow(Fr(p.b),e);
@@ -570,10 +573,10 @@ function buildSteps(t){
       [TP(0,p.pp+p.q,TM.mulNotAdd),e1<0&&TP(0,-e1,TM.signLost)]));
     st.push(S(`Деление — показатели вычитаются: ${M("a"+sup(e1)+" : a"+sup(p.r)+" = a<sup>?</sup>")}`,
       [I(e,"показатель")],`(${e1}) − (${p.r}) = ? Вычесть минус — значит прибавить.`,`${M("a"+sup(e))}.`,
-      [TP(0,e1+p.r,TM.subNeg)]));
+      [TP(0,e1+p.r,subM(p.r))]));
     st.push(S(`Подставь a = ${p.a}: ${M(pw(p.a,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
       [e!==0&&TP(0,fpow(Fr(p.a),-e),TM.recip),e!==1&&TP(0,p.a*e,TM.baseTimesExp),
-       TP(0,fpow(Fr(p.a),p.pp+p.q-p.r),TM.mulNotAdd),TP(0,fpow(Fr(p.a),e1+p.r),TM.subNeg)]));
+       TP(0,fpow(Fr(p.a),p.pp+p.q-p.r),TM.mulNotAdd),TP(0,fpow(Fr(p.a),e1+p.r),subM(p.r))]));
     break;}
   case "pow_ab":{
     const e1=p.q*p.r, ea=p.pp-p.s, eb=e1-p.s, v=fpow(Fr(p.a),ea);
@@ -584,7 +587,7 @@ function buildSteps(t){
       [I(ea,"a"),I(eb,"b")],
       `a: ${p.pp} − ${p.s}; b: ${e1} − ${p.s}.`,
       `Осталось ${M("a"+sup(ea)+(eb?"b"+sup(eb):""))}.`,
-      [TP(0,p.pp+p.s,TM.subNeg),TP(1,e1+p.s,TM.subNeg)]));
+      [TP(0,p.pp+p.s,subM(p.s)),TP(1,e1+p.s,subM(p.s))]));
     st.push(S(`Показатель b получился ${eb} — буква b ${eb===0?"исчезла (b⁰ = 1)! Подставлять b = "+M(rt(p.a))+" вообще не нужно":"остался"}. Подставь a = ${p.a}: ${M(pw(p.a,ea))} = ?`,
       [I(v,"ответ")],``,`${V(v)}.`,
       [ea!==0&&TP(0,fpow(Fr(p.a),-ea),TM.recip),ea!==1&&TP(0,p.a*ea,TM.baseTimesExp)]));
@@ -640,14 +643,16 @@ function buildSteps(t){
       `${M(rt(par((sa===1?"":sa)+"a "+(sg<0?"−":"+")+" "+(sb===1?"":sb)+"b")+"<sup>2</sup>"))}.`));
     const wrongIn=fadd(fmul(Fr(sa),a),fmul(Fr(-sg*sb),b));   // знак в скобке перепутан
     const parts=fadd(fmul(Fr(sa),a),fmul(Fr(sb),b));          // корень «по слагаемым»: √(A·a²) + √(B·b²)
+    const absWrong=wrongIn.n<0n?fmul(wrongIn,Fr(-1)):wrongIn;
     st.push(S(`Подставь a = ${M(numFr(a))}, b = ${M(numFr(b))} внутрь скобки: ${(sa===1?"":sa+" · ")}a ${sg<0?"−":"+"} ${(sb===1?"":sb+" · ")}b = ? (может выйти отрицательное число или дробь — пиши как есть)`,
       [I(inner,"в скобке")],
       `${a.d!==1n?`Знаменатели одинаковые — складывай числители: считай в тринадцатых/одиннадцатых и т. п.`:`Обычная арифметика со знаками.`}`,
       `В скобке: ${fmtFr(inner)}.`,
-      [TP(0,wrongIn,TM.bracketSign)]));
+      [TP(0,wrongIn,"Проверь знаки при подстановке: "+(sb===1?"":sb+" · ")+"("+fmtFr(b).replace("-","\u2212")+") = "+fmtFr(fmul(Fr(sb),b)).replace("-","\u2212")+", и перед этим слагаемым в скобке стоит «"+(sg<0?"\u2212":"+")+"».")]));
     st.push(S(`Корень из квадрата — это модуль: ${M(rt("(…)"+"<sup>2</sup>"))} = |…|. Ответ = |${fmtFr(inner)}| = ?`,
       [I(v,"ответ")],`Модуль убирает минус.`,`${V(v)}.`,
-      [inner.n<0n&&TP(0,inner,TM.absNeeded),TP(0,wrongIn.n<0n?fmul(wrongIn,Fr(-1)):wrongIn,TM.bracketSign),TP(0,parts,TM.rootOfSum)]));
+      [inner.n<0n&&TP(0,inner,TM.absNeeded),TP(0,absWrong,TM.bracketSign(p.K)),
+       !feq(parts,v)&&!feq(parts,inner)&&!feq(parts,absWrong)&&TP(0,parts,TM.rootOfSum)]));   // «по частям» — только различимый (решение D7)
     break;}
   case "sci":{
     const cq=Number(ipow(BigInt(p.c),p.q)), e1=p.pp*p.q;
@@ -1593,7 +1598,7 @@ function finishQuiz8(list,res){
     <div class="card"><h3>Разбор зачёта</h3>${res.map((r,i)=>`<div class="qrow">
       <div>${i+1}. ${renderTask(r.t)}</div>
       <div class="${r.ok?"ok-ink":"red-ink"}">${r.ok?"✓ верно: "+fmtFr(quizAns(r.t)):"✗ твой ответ "+fmtFr(r.x)+"; верный: "+fmtFr(quizAns(r.t))}</div>
-      ${r.ok?"":`<div class="qdiag">${r.diag||"Ошибка в вычислениях — разбери такую задачу по шагам во вкладке «Пошагово» («"+grpByK[typeGroup[r.t.type]].name+"»)."}</div>`}</div>`).join("")}
+      ${r.ok?"":`<div class="qdiag">${r.diag||"Ошибка в вычислениях — разбери такую задачу по шагам во вкладке «Пошагово» («"+FAMS.find(f=>f.gens.includes(r.t.type)).name+"»)."}</div>`}</div>`).join("")}
     <p><button class="act" id="quizAgain">Пройти ещё раз</button></p></div>`;
   document.getElementById("quizAgain").onclick=runQuiz8;
 }

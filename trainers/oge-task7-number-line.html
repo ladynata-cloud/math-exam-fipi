@@ -2251,9 +2251,11 @@ function diagOpt(t,i){
       return {k:"text",m:"Разность "+o.html+" другого знака: сравни, какая буква правее (правее \u2014 больше)."};
     }
     for(const v of Object.keys(t.vals)) for(const s of [-1,1]){
-      const sh=Object.assign({},t.vals); sh[v]=qadd(t.vals[v],Q(s));
-      if(o.test(sh)===want){
-        const lo=qfloor(t.vals[v]);
+      // «было бы верно на соседнем отрезке» — только если так на всём отрезке (десятые доли), а не в одной точке
+      const lo=qfloor(t.vals[v]);
+      let all=true;
+      for(let j=1;j<=9&&all;j++){ const sh=Object.assign({},t.vals); sh[v]=Q(10*(lo+s)+j,10); if(o.test(sh)!==want) all=false; }
+      if(all){
         return {k:"shift",v,s,m:"Это было бы "+(want?"верно":"неверно")+", если бы "+vi(v)+" лежало между "+fmtN(lo+s)+" и "+fmtN(lo+s+1)+
           "; на рисунке "+vi(v)+" — между "+fmtN(lo)+" и "+fmtN(lo+1)+"."};
       }
@@ -2297,41 +2299,56 @@ function diagOpt(t,i){
 }
 function optDiag(t){ if(!t._dg) t._dg=t.opts.map((o,i)=>diagOpt(t,i)); return t._dg; }
 
-/* --- ловушки ступеней лестницы (решение D6): по отношению к числам задачи ---
-   int2 «между какими целыми» (lo; lo+1): соседние отрезки и перевёрнутая пара;
-   «зажми √N между квадратами» (k; k+1): сами квадраты и соседние основания;
-   квадраты границ (k²; (k+1)²): сами границы и удвоение; числители (k·d; (k+1)·d):
-   сами границы; деление с остатком (q; r): остаток не меньше делителя. */
+/* --- ловушки ступеней лестницы (решение D6): вид ступени — по её вопросу ---
+   чтение рисунка («…на рисунке», «Точка … между какими целыми»): соседние отрезки
+   и перевёрнутая пара; «зажми √N между квадратами: ?² < N < ?²»: сами квадраты и
+   соседние основания; «√N / m/n лежит между целыми»: соседние промежутки — через
+   квадраты или k·n; квадраты границ: сами границы и удвоение; числители: сами
+   границы; деление с остатком: остаток не меньше делителя. Прочим ступеням
+   (крест-накрест и др.) ловушки не ставятся. */
 function stepTraps7(t,s){
   if(s.type!=="int2") return [];
-  const a=s.ans1, b=s.ans2, out=[];
+  const a=s.ans1, b=s.ans2, q=String(s.q), out=[];
   const T=(x,y,m)=>{ if(!(x===a&&y===b)&&!out.some(o=>o.v1===x&&o.v2===y)) out.push({v1:x,v2:y,m}); };
-  const N=t.N||0;
-  if(b===a+1){
-    if(N&&a===isqrtFloor(N)&&a*a<N){
-      T(a*a,b*b,"Это сами квадраты, а нужны числа, которые возводят в квадрат.");
-      T(a+1,a+2,(a+1)+"² = "+((a+1)*(a+1))+" больше "+N+", значит "+sqrtHtml(N)+" &lt; "+(a+1)+".");
-      if(a>1) T(a-1,a,a+"² = "+(a*a)+" меньше "+N+", значит "+sqrtHtml(N)+" &gt; "+a+".");
-    } else {
-      T(a-1,a,"Это соседний отрезок слева: точка стоит правее. Считай деления от нуля.");
-      T(a+1,a+2,"Это соседний отрезок справа: точка стоит левее. Считай деления от нуля.");
+  const N=t.N||0, den=t.den||t.n;
+  if(/крест-накрест/.test(q)) return out;
+  if(/Подели с остатком/.test(q)){
+    if(t.n&&t.m&&a===Math.floor(t.m/t.n)&&b===t.m-a*t.n&&a>=1) T(a-1,b+t.n,"Остаток должен быть меньше делителя "+t.n+": "+t.n+" помещается ещё раз.");
+    return out;
+  }
+  const rootNb=()=>{ // соседние основания для √N
+    T(a+1,a+2,(a+1)+"² = "+((a+1)*(a+1))+" больше "+N+", значит "+sqrtHtml(N)+" &lt; "+(a+1)+".");
+    if(a>1) T(a-1,a,a+"² = "+(a*a)+" меньше "+N+", значит "+sqrtHtml(N)+" &gt; "+a+".");
+  };
+  if(b===a+1&&N&&/\?²/.test(q)){ // «зажми √N между квадратами»
+    T(a*a,b*b,"Это сами квадраты, а нужны числа, которые возводят в квадрат.");
+    rootNb(); T(b,a,"Сначала меньшее число, потом большее.");
+    return out;
+  }
+  if(b===a+1&&/лежит между целыми/.test(q)){ // вывод из предыдущей ступени
+    if(N&&/class="sqrt"/.test(q)) rootNb();
+    else if(t.m&&t.n){
+      T(a+1,a+2,fracHtml(t.m,t.n)+" &lt; "+(a+1)+": "+t.m+" &lt; "+(a+1)+"·"+t.n+" = "+((a+1)*t.n)+".");
+      T(a-1,a,fracHtml(t.m,t.n)+" &gt; "+a+": "+t.m+" &gt; "+a+"·"+t.n+" = "+(a*t.n)+".");
     }
     T(b,a,"Сначала меньшее число, потом большее.");
     return out;
   }
+  if(b===a+1&&/рисун|Точка/.test(q)){ // чтение рисунка
+    T(a-1,a,"Это соседний отрезок слева: точка стоит правее. Считай деления от нуля.");
+    T(a+1,a+2,"Это соседний отрезок справа: точка стоит левее. Считай деления от нуля.");
+    T(b,a,"Сначала меньшее число, потом большее.");
+    return out;
+  }
   const r=Math.round(Math.sqrt(a)), r2=Math.round(Math.sqrt(b));
-  if(r>=1&&r*r===a&&r2===r+1&&r2*r2===b){
+  if(/квадрат/.test(q)&&r>=1&&r*r===a&&r2===r+1&&r2*r2===b){ // квадраты границ отрезка
     T(r,r2,"Это сами границы, а нужны их квадраты.");
     const u=r===2?r2:r;   // 2² = 2·2 — берём ту границу, где удвоение с квадратом не совпадает
     T(2*r,2*r2,u+"² — это "+u+"·"+u+", а не 2·"+u+".");
     return out;
   }
-  if(t.den&&a%t.den===0&&b===a+t.den){
-    T(a/t.den,b/t.den,"Это сами границы, а нужны числители дробей со знаменателем "+t.den+".");
-    return out;
-  }
-  if(t.n&&t.m&&a===Math.floor(t.m/t.n)&&b===t.m-a*t.n&&a>=1){
-    T(a-1,b+t.n,"Остаток должен быть меньше делителя "+t.n+": "+t.n+" помещается ещё раз.");
+  if(/числител/.test(q)&&den&&a%den===0&&b===a+den){ // границы дробями со знаменателем den
+    T(a/den,b/den,"Это сами границы, а нужны числители дробей со знаменателем "+den+".");
   }
   return out;
 }
@@ -2403,6 +2420,10 @@ const CNT={step:{solved:0,hinted:0,shown:0}, mar:{solved:0,bySteps:0,shown:0}, q
 function el(id){return document.getElementById(id);}
 function h(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e;}
 
+/* первое касание или клавиша ученика: до него ступени фокус не забирают (решение D13) */
+let userActed=false;
+["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev,()=>{userActed=true;},{capture:true,once:true}));
+
 /* ---------- Движок шагов ----------
  mountSteps(container, steps, opts | onDone)
  opts: {onDone(usedShow, usedHint), onMiss(), onHint(), onShow(), onFinalMiss() → число промахов
@@ -2415,10 +2436,12 @@ function mountSteps(container, steps, opts){
   if(opts.note){ // решение D3: правило сказано до первого нажатия
     container.appendChild(h("p","ladder-note","Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени."));
   }
-  let idx=0, usedShow=false, usedHint=false, finalMiss=0;
+  let idx=0, usedShow=false, usedHint=false, finalMiss=0, lastTotal=0;
   function renderStep(){
     if(idx>=steps.length){
-      const done=h("div","stepcard done",'<div class="stepq" style="color:var(--green);font-weight:700">Задача решена'+(usedShow?" (с показанными шагами)":usedHint?" (с подсказками)":"")+' ✓</div>');
+      const done=opts.onFinalMiss&&lastTotal>1&&!usedShow   // больше одной ошибки в ответе — разбор закончен, но не «решена» (решение D2)
+        ?h("div","stepcard",'<div class="stepq" style="font-weight:700">Разбор закончен. В счёт задача не идёт: ошибок в номере варианта больше одной.</div>')
+        :h("div","stepcard done",'<div class="stepq" style="color:var(--green);font-weight:700">Задача решена'+(usedShow?" (с показанными шагами)":usedHint?" (с подсказками)":"")+' ✓</div>');
       container.appendChild(done);
       opts.onDone&&opts.onDone(usedShow,usedHint);
       return;
@@ -2471,8 +2494,10 @@ function mountSteps(container, steps, opts){
           if(!(n>=1&&n<=s.nOpts)){ msg.className="msg bad"; msg.textContent="Номер варианта — число от 1 до "+s.nOpts+"."; return; }
           finalMiss++;
           const total=opts.onFinalMiss?opts.onFinalMiss():finalMiss;
+          lastTotal=total;   // правило «не больше одной ошибки» — только там, где задача идёт в счёт
           const d=s.diag&&s.diag[n-1];
-          miss((d?d.m:"Этот вариант не подходит.")+(total>=2?" Это вторая ошибка в ответе — задача в счёт не пойдёт; найди верный номер, чтобы закончить разбор.":""));
+          miss((d?d.m:"Этот вариант не подходит.")+(!opts.onFinalMiss?"":total===2?" Это вторая ошибка в ответе — задача в счёт не пойдёт; найди верный номер, чтобы закончить разбор."
+            :total>2?" Найди верный номер, чтобы закончить разбор.":""));
           return;
         }
         const tr=in2&&(s.traps2||[]).find(t=>qcmp(v1,Q(t.v1))===0&&qcmp(v2,Q(t.v2))===0);
@@ -2525,7 +2550,7 @@ function mountSteps(container, steps, opts){
     cardEl.appendChild(row); cardEl.appendChild(hintbox);
     container.appendChild(cardEl);
     const firstInput=cardEl.querySelector("input");
-    if(firstInput) firstInput.focus({preventScroll:true});   // без прыжка страницы при загрузке
+    if(firstInput&&userActed) firstInput.focus({preventScroll:true});   // фокус — только после действия ученика, не при загрузке
   }
   renderStep();
 }
@@ -2722,7 +2747,7 @@ function newQuiz(){
   const classStep=stepChoice("С чего начать? Каким приёмом решается такая задача?",
     ["читаем рисунок и переводим утверждения","оцениваем число: зажимаем между соседними","оцениваем число и ищем его место среди точек"],
     ci,"посмотри, что дано: рисунок с буквами, «голое» число или точки с числом");
-  const steps=[classStep].concat(buildStepsAny(t,"school"));
+  const steps=[classStep].concat(stepsFor(t,"school"));   // подсказки без номера варианта (решение D5)
   mountSteps(stBox,steps,(usedShow)=>{
     if(usedShow) CNT.quiz.shown++; else CNT.quiz.solved++;
     el("p6cnt").innerHTML="решено: <b>"+CNT.quiz.solved+"</b> \u00B7 <span class='shown'>с показом: "+CNT.quiz.shown+"</span>";
@@ -3021,8 +3046,10 @@ function selftest7(){
       ASTK.text(d.m,sj,errs);
       if(/вариант\s*\d/.test(d.m.replace(/<[^>]*>/g,""))) errs.push(sj+": диагностика называет номер варианта");
       const want=t.mode!=="неверно";
-      if(d.k==="shift"){ const sh=Object.assign({},t.vals); sh[d.v]=qadd(t.vals[d.v],Q(d.s));
-        if(t.opts[i].test(sh)!==want||t.opts[i].test(t.vals)===want) errs.push(sj+": посылка сдвига неверна"); }
+      if(d.k==="shift"){ // на всём соседнем отрезке (десятые доли) утверждение ведёт себя, как сказано
+        const lo=qfloor(t.vals[d.v]); let bad=t.opts[i].test(t.vals)===want;
+        for(let j=1;j<=9;j++){ const sh=Object.assign({},t.vals); sh[d.v]=Q(10*(lo+d.s)+j,10); if(t.opts[i].test(sh)!==want) bad=true; }
+        if(bad) errs.push(sj+": посылка сдвига неверна"); }
       if(d.k==="counter"&&t.opts[i].holds(d.s)) errs.push(sj+": контрпример не опровергает утверждение");
       if(d.k==="int"||d.k==="half"){ const P=t.pic.pts[i], tg=targetOf(t), same=Math.floor(P.x)===Math.floor(tg.X);
         if(same!==(d.k==="half")||Math.floor(P.x)!==d.f) errs.push(sj+": посылка про промежуток неверна"); }
