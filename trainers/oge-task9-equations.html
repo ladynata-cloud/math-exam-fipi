@@ -2853,6 +2853,11 @@ function genByFam(fam){
   }
   return null;
 }
+/* задача режима повтора: семейство — из открытых типов журнала (или null) */
+function reviewTask(){
+  for(const fam of shuffle(CP.openTypes().filter(k=>FAM_GENS[k]))){ const t=genByFam(fam); if(t)return t; }
+  return null;
+}
 
 /* --- запись прогресса задачи, решаемой по шагам (решения F8, D1) ---
    лестница, где все ступени ввёл ученик, — решено; «Показать шаг» —
@@ -2944,9 +2949,8 @@ function renderGenTask(item, card){
   card.innerHTML='';
   let task;
   if(item.review){ // повтор: семейство из открытых типов; закрытые по ходу выпадают
-    const open=CP.openTypes().filter(k=>FAM_GENS[k]);
-    if(!open.length){ card.innerHTML='<p class="fb good" aria-live="polite">Все ошибки исправлены: открытых типов не осталось. Можно выбрать любой тип во вкладке «Пошагово» (без режима повтора).</p>'; return; }
-    for(const fam of shuffle(open)){ task=genByFam(fam); if(task)break; }
+    if(!CP.openTypes().some(k=>FAM_GENS[k])){ card.innerHTML='<p class="fb good" aria-live="polite">Все ошибки исправлены: открытых типов не осталось. Можно выбрать любой тип во вкладке «Пошагово» (без режима повтора).</p>'; return; }
+    task=reviewTask();
     if(!task){ card.innerHTML='<p class="fb bad">Не удалось собрать задачу, обнови страницу.</p>'; return; }
     item={review:true, method:task.gid==='g_qf'};
   } else {

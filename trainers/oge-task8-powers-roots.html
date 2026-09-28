@@ -1303,16 +1303,20 @@ window.stepSetFam=function(k){
   L.onclick=()=>gotoLearn(f.learn);
   stepNew();
 };
+/* задача режима повтора: группа — из открытых типов журнала (или null) */
+function reviewTask(){
+  const open=CP.openTypes().filter(k=>genTypesOf(k).length);
+  return open.length?GEN[pick(genTypesOf(pick(open)))]():null;
+}
 window.stepNew=function(){
   let t;
   if(reviewOn){ // группа — из открытых; закрытые по ходу выпадают
-    const open=CP.openTypes().filter(k=>genTypesOf(k).length);
-    if(!open.length){
+    t=reviewTask();
+    if(!t){
       reviewOn=false;
       document.getElementById("stepReview").innerHTML="<b>Работа над ошибками.</b> Все ошибки исправлены — открытых групп не осталось. Выбери любое семейство ниже.";
       stepSetFam(curFam); return;
     }
-    t=GEN[pick(genTypesOf(pick(open)))]();
   } else {
     const f=FAMS.find(f=>f.k===curFam);
     t=GEN[pick(f.gens)]();
