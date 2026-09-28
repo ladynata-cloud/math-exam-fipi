@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Задание 9 ОГЭ · Уравнения — тренажёр</title>
 <style>
 :root{
@@ -240,6 +240,35 @@ kbd{font-family:var(--math); background:#eef2f7; border:1px solid var(--line);
 .mara-banner b{font-family:var(--math);}
 .mara-banner .bx{margin-left:auto; border:none; background:none; color:var(--accent); cursor:pointer;
   font-family:var(--ui); font-size:13.5px; font-weight:600; text-decoration:underline; padding:2px 4px;}
+
+/* ── доступность (канон): кнопки и поля не ниже 44 px, видимый фокус ── */
+.tab,.btn,.btn.small,.chip,.ref-jump,.mara-banner .bx{min-height:44px;}
+.ans{min-height:44px; padding:8px 4px 6px;}
+:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+.crumbs{display:inline-flex; align-items:center; min-height:44px; font-family:var(--ui); font-size:14.5px;
+  font-weight:600; color:var(--accent); text-decoration:none;}
+.crumbs:hover{text-decoration:underline;}
+.ladder-note{margin:4px 0 2px;}
+
+/* ── работа над ошибками и зачёт ── */
+.review-box{border:2px solid var(--peek); background:var(--peek-bg); border-radius:11px; padding:11px 15px; margin:12px 0;}
+.review-box b{color:var(--ink);}
+.quiz-prog{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:6px 0 10px;}
+.quiz-prog .qd{width:12px; height:12px; border-radius:50%; background:var(--grid); display:inline-block;}
+.quiz-prog .qd.cur{background:var(--accent);}
+.quiz-prog .qd.g{background:var(--green);}
+.quiz-prog .qd.r{background:var(--red);}
+.quiz-prog .qtxt{font-family:var(--hand); color:var(--pencil); font-size:14px; margin-left:6px;}
+.quiz-score{font-family:var(--math); font-size:30px; font-weight:700;}
+.quiz-row{border-top:1px dashed var(--line); padding:9px 0;}
+.quiz-row.bad .qr-v{color:var(--red);}
+.quiz-row .qr-v{font-family:var(--hand); font-size:15px;}
+.quiz-row .qr-diag{font-family:var(--hand); font-size:15px; color:var(--ink); margin-top:3px;}
+@media print{
+  nav.tabs,.crumbs,.btn,.btn-row,.chips,.filter-row,.ref-jumps,.counters,.progress-bar,.step,.fb,.quiz-prog,.ladder-note,.field,.mara-banner{display:none !important;}
+  body{background:#fff;}
+  .card,.task-card{box-shadow:none; break-inside:avoid;}
+}
 @media (max-width:640px){
   body{font-size:15px;}
   .wrap{padding:0 10px 70px;}
@@ -256,6 +285,7 @@ kbd{font-family:var(--math); background:#eef2f7; border:1px solid var(--line);
 <body>
 <div class="wrap">
 <header>
+  <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
   <div class="sub">ОГЭ · математика · 2026</div>
   <h1>Задание 9. Уравнения</h1>
   <div class="sub">линейные · квадратные · дробно-рациональные</div>
@@ -266,6 +296,7 @@ kbd{font-family:var(--math); background:#eef2f7; border:1px solid var(--line);
   <button class="tab" data-pane="learn">Учимся</button>
   <button class="tab" data-pane="step">Пошагово</button>
   <button class="tab" data-pane="mara">Марафон</button>
+  <button class="tab" data-pane="quiz">Зачёт</button>
 </nav>
 
 <!-- ═══════════ СПРАВОЧНИК ═══════════ -->
@@ -345,11 +376,94 @@ kbd{font-family:var(--math); background:#eef2f7; border:1px solid var(--line);
 <section class="pane" id="pane-learn"></section>
 <section class="pane" id="pane-step"></section>
 <section class="pane" id="pane-mara"></section>
+<section class="pane" id="pane-quiz"></section>
 
 </div><!-- /.wrap -->
 <script>
 /* ================= ЯДРО: точная рациональная арифметика ================= */
 'use strict';
+
+/* ================= Контракт прогресса курса ОГЭ =================
+   docs/OGE_PROGRESS_CONTRACT.md, разделы 3–5: ядро записи, журнал ошибок,
+   режим повтора. Тела функций — как в контракте; обёрнуты в CP, чтобы не
+   столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
+   свои записи журнала, после свежего чтения ключа — две вкладки не
+   затирают друг друга. В ?selftest=1 ничего не пишется. Своего старого
+   ключа у тренажёра не было — миграции нет. */
+const TID='oge-t9-uravneniya';
+const TYPE_IDS=["L","LB","LF","LSQ","QNB","QNC","QNCm","QF","QR","QP","PROP","Z","NZ","XF","S2","SB"];
+/* имена типов — как в oge/registry.js (без названия группы); плашка «Работа над ошибками» */
+const TYPE_NAMES={L:'Линейное: перенос слагаемых',LB:'Линейное со скобками',LF:'Линейное с дробями',
+  LSQ:'Сводится к линейному через квадраты',QNB:'Неполное квадратное: без b',QNC:'Неполное квадратное: без c',
+  QNCm:'Неполное квадратное: x² = kx',QF:'Полное квадратное: дискриминант',QR:'x² с обеих сторон — перенести и привести',
+  QP:'Квадратное с произведением скобок',PROP:'Пропорция',Z:'Сумма двух дробей равна нулю',
+  NZ:'Дробь равна нулю, в числителе квадратный трёхчлен',XF:'Вида x + a/x = b',S2:'Сумма двух дробей равна числу',
+  SB:'Замена t = 1/(x − k)'};
+const QUIZ_TOTAL=10;   // размер зачёта
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes };
+})();
+
 function bgcd(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b];}return a;}
 function F(n,d){ // дробь n/d, BigInt, нормализованная
   if(typeof n==='number')n=BigInt(n); if(d===undefined)d=1n;
@@ -745,7 +859,7 @@ function blankNote(f){
 }
 
 /* ================= ШАГИ (общие построители) ================= */
-function needMsg(){return {ok:false,msg:'Заполни поле — и проверим.'};}
+function needMsg(){return {ok:false,need:true,msg:'Заполни поле числом — и проверим.'};}   // need: пустой или нечитаемый ввод — не промах
 function parseAll(vals){ const out=[]; for(const v of vals){const f=parseNum(v); if(f===null)return null; out.push(f);} return out; }
 
 /* «собери x слева, числа справа»: ☐·x = ☐ */
@@ -897,7 +1011,8 @@ function stD(){
         const v=f[0];
         if(feq(v,Dv)){st.D=Dv;return {ok:true};}
         if(feq(v,fadd(fmul(b,b),fmul(F(4),fmul(a,c)))))return {ok:false,msg:'Минус перед 4ac потерялся: D = b² <b>−</b> 4ac.'};
-        if(feq(v,fsub(fneg(fmul(b,b)),fmul(F(4),fmul(a,c)))))return {ok:false,msg:'(−'+numHTML(fabs(b))+')² = '+numHTML(fmul(b,b))+': квадрат отрицательного числа положителен.'};
+        // при b = 0 это число совпадает с верным D — ловушка снимается (решение D8)
+        if(!fzero(b)&&feq(v,fsub(fneg(fmul(b,b)),fmul(F(4),fmul(a,c)))))return {ok:false,msg:'(−'+numHTML(fabs(b))+')² = '+numHTML(fmul(b,b))+': квадрат отрицательного числа положителен.'};
         return {ok:false,msg:'Пересчитай: сначала b·b, потом 4·a·c, потом разность. Минус на минус даёт плюс.'};
       },
       reveal:{vals:[valStr(Dv)],html:'D = ('+numHTML(b)+')² − 4·('+numHTML(a)+')·('+numHTML(c)+') = '+numHTML(Dv)}
@@ -2208,7 +2323,7 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
   const uir=renderUI(def.ui, tryCheck);
   card.appendChild(uir.node);
 
-  const fb=document.createElement('div'); fb.className='fb'; card.appendChild(fb);
+  const fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('aria-live','polite'); card.appendChild(fb);
   const revealBox=document.createElement('div'); revealBox.style.display='none';
   card.appendChild(revealBox);
 
@@ -2234,7 +2349,8 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
     if(resolved)return;
     let res;
     try{ res=def.check(uir.read(), state); }
-    catch(e){ res={ok:false,msg:'Что-то в записи не так — проверь формат.'}; }
+    catch(e){ res={ok:false,need:true,msg:'Что-то в записи не так — проверь формат.'}; }
+    fb.style.color='';   // цвет подсказки не «прилипает» к следующему вердикту
     if(res.ok){
       fb.className='fb good';
       fb.innerHTML=(res.msg? res.msg+' ' : '')+'✓ верно';
@@ -2243,12 +2359,14 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
     } else {
       fb.className='fb bad';
       fb.innerHTML=res.msg||'Пока не то — попробуй ещё раз.';
+      if(!res.need&&tally.onMiss)tally.onMiss();   // промах задачи — только на прочитанное число
     }
   }
   bCheck.addEventListener('click',tryCheck);
   bHint.addEventListener('click',()=>{
     if(resolved)return;
     if(!hintUsed){ hintUsed=true; tally.hinted++; onTally(); }
+    if(tally.onHint)tally.onHint();
     fb.className='fb'; fb.style.color='var(--accent)';
     fb.innerHTML='💡 '+def.hint;
   });
@@ -2259,6 +2377,7 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
     revealBox.className='reveal-box'; revealBox.style.display='block';
     revealBox.innerHTML=def.reveal.html+'<span class="tag">— подсмотрено, шаг не засчитан</span>';
     tally.shown++; onTally();
+    if(tally.onShow)tally.onShow();
     lock('shown');
   });
 
@@ -2272,6 +2391,13 @@ function runSteps(container, factories, opts){
   container.innerHTML='';
   const state={};
   const tally=Tally(); tally.total=factories.length;
+  /* запись прогресса задачи (Пошагово, Марафон): промах, показ, подсказка — наружу */
+  tally.onMiss=opts.onMiss||null; tally.onShow=opts.onShow||null; tally.onHint=opts.onHint||null;
+  if(opts.note){ // решение D3: правило сказано до первого нажатия
+    const note=document.createElement('p'); note.className='pen-note ladder-note';
+    note.textContent='Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.';
+    container.appendChild(note);
+  }
   const counterEl=document.createElement('div'); counterEl.className='counters';
   const stepsWrap=document.createElement('div');
   container.appendChild(stepsWrap);
@@ -2544,7 +2670,7 @@ function buildLearnTab(root){
   root.innerHTML='';
   const intro=elt('div','card tinted');
   intro.innerHTML='<div class="eyebrow">по порядку, с разборами</div><h2>Учимся решать уравнения</h2>'+
-    '<p>Три главы: линейные → квадратные → дробные. Каждый пункт — маленький шаг с разбором и тренировкой. В конце главы — проверка себя на живых задачах открытый банк.</p>';
+    '<p>Три главы: линейные → квадратные → дробные. Каждый пункт — маленький шаг с разбором и тренировкой. В конце главы — проверка себя на живых задачах открытого банка.</p>';
   root.appendChild(intro);
 
   /* ГЛАВА 1 — линейные */
@@ -2577,7 +2703,7 @@ function buildLearnTab(root){
   c1.appendChild(tie('А если коэффициенты — дроби? Избавимся от них одним умножением — пункт 6.'));
   c1.appendChild(point(6,'Дробные коэффициенты → умножаем на НОК',[
     'Умножь <b>каждое</b> слагаемое на общий знаменатель (удобнее — НОК), и дроби исчезнут. Дальше — обычное линейное.',
-    elt('p','link-note','Как искать НОК знаменателей — подробно в тренаж`ре по действиям с дробями (задание 6).'),
+    elt('p','link-note','Как искать НОК знаменателей — подробно в тренажёре по действиям с дробями (задание 6).'),
     worked(illus('LF',{Lt:[T(1,1),FR([T(1,1)],3)],Rt:[T(8)],dens:[3]}))
   ]));
   c1.appendChild(tie('Особый вид — равенство двух квадратов. Квадраты уходят, остаётся линейное — пункт 7.'));
@@ -2655,36 +2781,89 @@ function buildLearnTab(root){
   root.appendChild(quizBlock('frac','Квиз 3 · дробные'));
 
   const outro=elt('div','card tinted');
-  outro.innerHTML='<p>Теорию прошли — теперь <b>Пошагово</b> для тренировки без конца и <b>Марафон</b> с реальными задачами открытый банк.</p>';
+  outro.innerHTML='<p>Теорию прошли — теперь <b>Пошагово</b> для тренировки без конца и <b>Марафон</b> с реальными задачами открытого банка.</p>';
   root.appendChild(outro);
 }
 /* ============ РЕЖИМЫ: Пошагово + Марафон ============ */
 'use strict';
 
+/* --- ловушки итогового ответа (Марафон, зачёт): {v, m} ---
+   Решения F1/Q2 и D8: ловушка, совпавшая с ответом, снимается (знак при
+   ключе 0); две ловушки на одном числе дают одно сообщение: в QNB «второй
+   корень» и «потерян знак» — одно действие, в остальных семействах —
+   «найди свою» из двух пунктов. */
+function finalTraps(t){
+  const key=taskKey(t), sol=taskSolve(t), raw=[];
+  if(sol.roots.length===2)raw.push({v:t.ask==='max'?sol.roots[0]:sol.roots[1],k:'other'});
+  sol.excluded.forEach(e=>raw.push({v:e,k:'excl'}));
+  raw.push({v:fneg(key),k:'sign'});
+  const other=t.ask==='max'?'меньший':'больший';
+  const ONE={other:'Это '+other+' корень. В условии просят '+askWord(t)+' — сравни корни на числовой прямой.',
+    excl:'Этот корень посторонний: он обнуляет знаменатель. Проверь ОДЗ.',
+    sign:'Верное по модулю, но знак не тот. Проверь знаки.'};
+  const ITEM={other:'это '+other+' корень, а в условии просят '+askWord(t),
+    excl:'это посторонний корень — он обнуляет знаменатель',
+    sign:'потерян знак'};
+  const out=[];
+  raw.forEach(r=>{
+    if(feq(r.v,key))return;
+    const same=out.find(o=>feq(o.v,r.v));
+    if(same){ same.k.push(r.k); return; }
+    out.push({v:r.v,k:[r.k]});
+  });
+  out.forEach(o=>{
+    if(o.k.length===1){ o.m=ONE[o.k[0]]; return; }
+    if(t.fam==='QNB'&&o.k.indexOf('other')>=0&&o.k.indexOf('sign')>=0){
+      o.m='Это второй корень: у уравнения корни '+numHTML(sol.roots[0])+' и '+numHTML(sol.roots[1])+', а по условию нужен '+askWord(t)+'.';
+      return;
+    }
+    o.m='Такой ответ получается при одной из двух ошибок — найди свою: • '+o.k.map(k=>ITEM[k]).join('; • ')+'.';
+  });
+  return out;
+}
+
 /* --- проверка финального ответа в марафоне --- */
 function checkFinal(t, raw){
   const key=taskKey(t);
   const v=parseNum(raw);
-  if(v===null)return {ok:false,msg:'Не разобрала ответ. Пиши число: например 1,5 или −2 или 3/2.'};
+  if(v===null)return {ok:false,need:true,msg:'Не разобрала ответ. Пиши число: например 1,5 или −2 или 3/2.'};
   if(feq(v,key)){
     let msg='';
     if(!fisint(key)) msg='В бланк ОГЭ: <b>'+decStr(key)+'</b> — десятичной дробью через запятую.';
     return {ok:true, msg};
   }
-  const sol=taskSolve(t);
-  if(sol.roots.length===2){
-    const other=t.ask==='max'?sol.roots[0]:sol.roots[1];
-    if(feq(v,other))return {ok:false,msg:'Это '+(t.ask==='max'?'меньший':'больший')+' корень. В условии просят '+askWord(t)+' — сравни корни на числовой прямой.'};
-  }
-  if(sol.excluded.some(e=>feq(e,v)))return {ok:false,msg:'Этот корень посторонний: он обнуляет знаменатель. Проверь ОДЗ.'};
-  if(feq(v,fneg(key)))return {ok:false,msg:'Верное по модулю, но знак не тот. Проверь знаки.'};
+  const trap=finalTraps(t).find(o=>feq(o.v,v));
+  if(trap)return {ok:false,msg:trap.m,trap:true};
   return {ok:false,msg:'Пока не сходится. Попробуй решить по шагам — кнопка ниже.'};
 }
 
 /* --- инлайн-решение задачи по шагам (общий для обоих режимов) --- */
-function solveInline(host, task, method){
+function solveInline(host, task, method, hooks){
   host.innerHTML='';
-  runSteps(host, taskSteps(task, method), {});
+  runSteps(host, taskSteps(task, method), hooks||{});
+}
+
+/* --- задача нужного семейства из генераторов (повтор, зачёт) --- */
+const FAM_GENS={L:['g_l1','g_l2'],LB:['g_lb'],LF:['g_lf'],LSQ:['g_lsq'],QNB:['g_qnb'],QNC:['g_qnc'],QNCm:['g_qnc'],
+  QF:['g_qf'],QR:['g_qr'],QP:['g_qp'],PROP:['g_prop'],Z:['g_z'],NZ:['g_nz'],XF:['g_xf'],S2:['g_heavy'],SB:['g_heavy']};
+function genByFam(fam){
+  for(let i=0;i<80;i++){
+    let t; try{ t=genTask(pick(FAM_GENS[fam])); }catch(e){ continue; }   // genTask бросает после 200 неудач
+    if(t.fam===fam)return t;
+  }
+  return null;
+}
+
+/* --- запись прогресса задачи, решаемой по шагам (решения F8, D1) ---
+   лестница, где все ступени ввёл ученик, — решено; «Показать шаг» —
+   «решение показано»; промах — один раз на задачу и сразу. */
+function stepHooks(task){
+  const rec={missed:false, shown:false, done:false};
+  return {note:true,
+    onMiss(){ if(!rec.missed&&!rec.shown){ rec.missed=true; CP.mlog(task.fam,false); } },
+    onShow(){ rec.shown=true; },
+    onHint(){},
+    onComplete(){ if(rec.done||rec.shown)return; rec.done=true; CP.solvedOne(task.fam); if(!rec.missed)CP.mlog(task.fam,true); }};
 }
 
 /* ============ ПОШАГОВО ============ */
@@ -2713,6 +2892,19 @@ const GEN_GROUPS=[
 
 function buildStepTab(root){
   root.innerHTML='';
+  /* ?mode=review: задачи только открытых типов журнала (контракт, раздел 5; решение D10) */
+  if(CP.REVIEW){
+    const box=document.createElement('div'); box.className='review-box'; box.setAttribute('aria-live','polite');
+    root.appendChild(box);
+    const open=CP.openTypes();
+    if(open.length){
+      box.innerHTML='<b>Работа над ошибками.</b> Задачи только тех типов, где были ошибки: '+open.map(k=>esc(TYPE_NAMES[k])).join('; ')+'. Тип закрывается после трёх верных решений подряд.';
+      const card=document.createElement('div'); card.className='card'; root.appendChild(card);
+      renderGenTask({review:true}, card);
+      return;
+    }
+    box.innerHTML='<b>Работа над ошибками.</b> Открытых ошибок нет — выбери любой тип ниже.';
+  }
   const intro=document.createElement('div'); intro.className='card tinted';
   intro.innerHTML='<div class="eyebrow">тренируемся по шагам</div>'+
     '<h2>Выбери тип уравнения</h2>'+
@@ -2751,7 +2943,16 @@ function startGen(item, host){
 function renderGenTask(item, card){
   card.innerHTML='';
   let task;
-  try{ task=genTask(item.gid); }catch(e){ card.innerHTML='<p class="fb bad">Не удалось собрать задачу, попробуй другой тип.</p>'; return; }
+  if(item.review){ // повтор: семейство из открытых типов; закрытые по ходу выпадают
+    const open=CP.openTypes().filter(k=>FAM_GENS[k]);
+    if(!open.length){ card.innerHTML='<p class="fb good" aria-live="polite">Все ошибки исправлены: открытых типов не осталось. Можно выбрать любой тип во вкладке «Пошагово» (без режима повтора).</p>'; return; }
+    for(const fam of shuffle(open)){ task=genByFam(fam); if(task)break; }
+    if(!task){ card.innerHTML='<p class="fb bad">Не удалось собрать задачу, обнови страницу.</p>'; return; }
+    item={review:true, method:task.gid==='g_qf'};
+  } else {
+    try{ task=genTask(item.gid); }catch(e){ card.innerHTML='<p class="fb bad">Не удалось собрать задачу, попробуй другой тип.</p>'; return; }
+  }
+  const hooks=stepHooks(task);
 
   const qEl=document.createElement('div'); qEl.className='task-q'; qEl.style.marginRight='0';
   qEl.innerHTML=taskInstrHTML(task);
@@ -2776,15 +2977,16 @@ function renderGenTask(item, card){
     sel.appendChild(note);
     card.appendChild(sel);
     card.appendChild(stepHost);
+    // смена способа начинает лестницу заново, но запись задачи одна (hooks): показ не «отмывается»
     function choose(m,btn){ method=m; bD.classList.remove('on'); bV.classList.remove('on'); btn.classList.add('on');
-      bD.style.background=bV.style.background=''; solveInline(stepHost, task, m); }
+      bD.style.background=bV.style.background=''; solveInline(stepHost, task, m, hooks); }
     bD.addEventListener('click',()=>choose(undefined,bD));
     bV.addEventListener('click',()=>{ if(!bV.disabled)choose('vieta',bV); });
     // по умолчанию дискриминант
     choose(undefined,bD);
   } else {
     card.appendChild(stepHost);
-    solveInline(stepHost, task);
+    solveInline(stepHost, task, undefined, hooks);
   }
 
   const row=document.createElement('div'); row.className='btn-row'; row.style.marginTop='14px';
@@ -2803,23 +3005,19 @@ const MARA_FILTERS=[
   {id:'frac', label:'Дробные'},
 ];
 function taskChapter(t){ return FAMMETA[t.fam].ch; }
-const maraState={filter:'all', caseFilter:null, solved:new Set(), clean:new Set()};
+/* task[id] — состояние задачи на время открытой страницы: перерисовка карточек
+   (фильтры, «порешать» из справочника) его не теряет (решение D4) */
+const maraState={filter:'all', caseFilter:null, solved:new Set(), clean:new Set(), task:{}};
+function maraRec(id){ return maraState.task[id]||(maraState.task[id]={verdict:'',shown:false,hinted:false,counted:false}); }
 
 function buildMaraTab(root){
   root.innerHTML='';
-  // самопроверка ключей
-  const check=selfCheckBank();
-  const banner=document.createElement('div');
-  banner.className='selfcheck '+(check.bad? 'err':'ok');
-  banner.innerHTML=(check.bad
-    ? '⚠ Обнаружены расхождения в '+check.bad+' задачах — сообщите разработчику.'
-    : '✓ Все '+check.total+' задач проверены автоматически: ответы сходятся.');
-  root.appendChild(banner);
+  // самопроверка банка — в режиме ?selftest=1 (консоль), ученику не показывается
 
   const intro=document.createElement('div'); intro.className='card tinted';
   intro.innerHTML='<div class="eyebrow">банк реальных задач и демоверсии</div>'+
     '<h2>Марафон · '+BANK.length+' задач</h2>'+
-    '<p>Реши сам и впиши ответ. Не выходит — <b>Решить по шагам</b>. Хочешь проверить себя — <b>Показать ответ</b> (тогда задача не идёт в зачёт «без подсказок»).</p>';
+    '<p>Реши сам и впиши ответ. Не выходит — <b>Решить по шагам</b>: ступени открываются по одной. Подсказки ничего не отнимают; «без подсказок» считаются задачи, решённые без «Подсказки» и «Показать шаг».</p>';
   root.appendChild(intro);
 
   const filt=document.createElement('div'); filt.className='filter-row';
@@ -2894,48 +3092,156 @@ function makeMaraCard(t, onProgress){
   const lbl=document.createElement('span'); lbl.className='lbl'; lbl.innerHTML='Ответ:'; ansField.appendChild(lbl);
   const a=mkAns('?'); ansField.appendChild(a); card.appendChild(ansField);
 
-  const fb=document.createElement('div'); fb.className='fb'; card.appendChild(fb);
+  const fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('aria-live','polite'); card.appendChild(fb);
   const stepHost=document.createElement('div');
 
   const row=document.createElement('div'); row.className='btn-row';
   const bCheck=document.createElement('button'); bCheck.className='btn small'; bCheck.textContent='Проверить';
-  const bAns=document.createElement('button'); bAns.className='btn reveal small'; bAns.textContent='Показать ответ';
   const bStep=document.createElement('button'); bStep.className='btn ghost small'; bStep.textContent='Решить по шагам';
-  row.appendChild(bCheck); row.appendChild(bStep); row.appendChild(bAns);
+  row.appendChild(bCheck); row.appendChild(bStep);
   card.appendChild(row);
   card.appendChild(stepHost);
 
-  let usedHelp=false;
-  function markSolved(clean){
-    maraState.solved.add(t.id);
-    if(clean && !usedHelp)maraState.clean.add(t.id); else maraState.clean.delete(t.id);
+  /* запись прогресса (решения F8, D1, D4): «Решить по шагам» — не помощь;
+     «Подсказка» и «Показать шаг» снимают «без подсказок»; после показа
+     задача в solvedByType не идёт и журнал молчит; вердикт журнала — один
+     на задачу: первый промах сразу, успех — только без промахов */
+  const st=maraRec(t.id);
+  function markSolved(){
+    if(!maraState.solved.has(t.id)){   // статус ставится один раз: разбор после решения его не меняет
+      maraState.solved.add(t.id);
+      if(!st.hinted&&!st.shown)maraState.clean.add(t.id);
+    }
     card.classList.add('solved');
+    if(!st.shown&&!st.counted){ st.counted=true; CP.solvedOne(t.fam); if(!st.verdict){ st.verdict='ok'; CP.mlog(t.fam,true); } }
     onProgress&&onProgress();
   }
+  function miss(){ if(!st.verdict&&!st.shown){ st.verdict='miss'; CP.mlog(t.fam,false); } }
   function doCheck(){
     const res=checkFinal(t, getRaw(a));
-    if(res.ok){ fb.className='fb good'; fb.innerHTML=(res.msg?res.msg+' ':'')+'✓ верно'; markSolved(true); }
-    else { fb.className='fb bad'; fb.innerHTML=res.msg; }
+    if(res.ok){ fb.className='fb good'; fb.innerHTML=(res.msg?res.msg+' ':'')+'✓ верно'; markSolved(); }
+    else { fb.className='fb bad'; fb.innerHTML=res.msg; if(!res.need)miss(); }
   }
   bCheck.addEventListener('click',doCheck);
   a._input.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault(); doCheck();} });
-  bAns.addEventListener('click',()=>{
-    usedHelp=true;
-    const key=taskKey(t);
-    fb.className='fb shown';
-    fb.innerHTML='Ответ: <b>'+numHTML(key)+'</b>'+(fisint(key)?'':' <span class="pen-note">(в бланк: '+decStr(key)+')</span>');
-    maraState.clean.delete(t.id);
-  });
+  const helped=()=>{ if(!maraState.solved.has(t.id)){ maraState.clean.delete(t.id); onProgress&&onProgress(); } };
+  const hooks={note:true,
+    onMiss:miss,
+    onHint(){ st.hinted=true; helped(); },
+    onShow(){ st.shown=true; helped(); },
+    onComplete(){ if(!st.shown)markSolved(); }};   // лестница, где всё ввёл ученик, — решено
   bStep.addEventListener('click',()=>{
-    usedHelp=true; maraState.clean.delete(t.id);
     if(stepHost.dataset.open){ stepHost.innerHTML=''; delete stepHost.dataset.open; bStep.textContent='Решить по шагам'; return; }
     stepHost.dataset.open='1'; bStep.textContent='Свернуть шаги';
-    solveInline(stepHost, t);
+    solveInline(stepHost, t, undefined, hooks);
   });
   return card;
 }
 
-/* самопроверка банка при загрузке */
+/* ============ ЗАЧЁТ: 10 задач (решение D9) ============
+   3 линейных + 4 квадратных + 3 дробно-рациональных, семейства не
+   повторяются; одна попытка, подсказок и разбора нет; в зачёте — голый
+   вердикт, в итогах — строка диагностики по ловушкам Марафона. В журнал —
+   один вердикт на задачу; solvedByType зачёт не трогает (как в 03A). */
+function pickQuizFams(){
+  const one=f=>f.indexOf('|')>=0?pick(f.split('|')):f;
+  return ['L'].concat(shuffle(['LB','LF','LSQ']).slice(0,2),
+    ['QF'], shuffle(['QNB','QNC|QNCm','QP','QR']).slice(0,3),
+    ['PROP'], shuffle(['Z','NZ','XF','S2|SB']).slice(0,2)).map(one);
+}
+function buildQuiz(){
+  const out=[];
+  for(const f of pickQuizFams()){
+    let t=genByFam(f);
+    for(const g of shuffle(TYPE_IDS)){ if(t)break; t=genByFam(g); }   // запасной путь: генератор не справился
+    if(t)out.push(t);
+  }
+  return shuffle(out);
+}
+function buildQuizTab(root){
+  root.innerHTML='';
+  const intro=document.createElement('div'); intro.className='card tinted';
+  intro.innerHTML='<div class="eyebrow">проверка себя</div><h2>Зачёт · '+QUIZ_TOTAL+' уравнений</h2>'+
+    '<p>3 линейных, 4 квадратных, 3 дробно-рациональных — вперемешку. Одна попытка на уравнение, подсказок и разбора нет — как на экзамене. Если корней несколько, в ответ — тот, который просят. Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'.</p>';
+  root.appendChild(intro);
+  const row=document.createElement('div'); row.className='btn-row';
+  const bStart=document.createElement('button'); bStart.className='btn'; bStart.type='button'; bStart.textContent='Начать зачёт';
+  row.appendChild(bStart); intro.appendChild(row);
+  bStart.addEventListener('click',()=>runQuiz(root));
+}
+function runQuiz(root){
+  root.innerHTML='';
+  const quiz=buildQuiz(), res=[];
+  let idx=0;
+  const prog=document.createElement('div'); prog.className='quiz-prog'; root.appendChild(prog);
+  const card=document.createElement('div'); card.className='card'; root.appendChild(card);
+  function dots(){
+    prog.innerHTML=quiz.map((q,i)=>'<span class="qd'+(i<res.length?(res[i].ok?' g':' r'):(i===idx?' cur':''))+'"></span>').join('')+
+      '<span class="qtxt">Задача '+Math.min(idx+1,quiz.length)+' из '+quiz.length+'</span>';
+  }
+  function show(){
+    if(idx>=quiz.length)return finishQuiz9(root,quiz,res);
+    dots();
+    const t=quiz[idx];
+    card.innerHTML='';
+    const q=document.createElement('div'); q.className='task-q'; q.style.marginRight='0'; q.innerHTML=taskInstrHTML(t); card.appendChild(q);
+    const f=document.createElement('span'); f.className='field';
+    const lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent='Ответ:'; f.appendChild(lbl);
+    const a=mkAns('?'); f.appendChild(a); card.appendChild(f);
+    const fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('aria-live','polite'); card.appendChild(fb);
+    const row=document.createElement('div'); row.className='btn-row';
+    const bOk=document.createElement('button'); bOk.className='btn'; bOk.type='button'; bOk.textContent='Ответить';
+    const bNext=document.createElement('button'); bNext.className='btn ghost'; bNext.type='button'; bNext.textContent=idx+1<quiz.length?'Дальше →':'Итоги →';
+    bNext.style.display='none';
+    row.appendChild(bOk); row.appendChild(bNext); card.appendChild(row);
+    let answered=false, moved=false;
+    function answer(){
+      if(answered)return;   // двойное касание — один ответ
+      const v=parseNum(getRaw(a));
+      if(v===null){ fb.className='fb bad'; fb.textContent='Впиши число: например 1,5 или −2 или 3/2.'; return; }   // не попытка
+      answered=true;
+      const ok=feq(v,taskKey(t));
+      const trap=ok?null:finalTraps(t).find(o=>feq(o.v,v));
+      res.push({t, v, ok, diag:trap?trap.m:''});   // в итоги идёт разобранное число, не текст ввода
+      CP.mlog(t.fam, ok);
+      a._input.disabled=true; bOk.disabled=true;
+      fb.className='fb '+(ok?'good':'bad'); fb.textContent=ok?'Верно.':'Неверно.';
+      bNext.style.display=''; dots(); bNext.focus();
+    }
+    bOk.addEventListener('click',answer);
+    a._input.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); if(answered)bNext.click(); else answer(); } });
+    bNext.addEventListener('click',()=>{ if(!answered||moved)return; moved=true; idx++; show(); });
+    setTimeout(()=>{ try{ a._input.focus(); }catch(e){} },30);
+  }
+  show();
+}
+function finishQuiz9(root,quiz,res){
+  const score=res.filter(r=>r.ok).length;
+  CP.finishQuiz(score,QUIZ_TOTAL);   // passed — только при PASS_AT из QUIZ_TOTAL и не снимается
+  root.innerHTML='';
+  const head=document.createElement('div'); head.className='card tinted'; head.setAttribute('aria-live','polite');
+  head.innerHTML='<div class="quiz-score">'+score+' / '+QUIZ_TOTAL+'</div><p>'+(score>=PASS_AT
+    ?'Зачёт сдан: '+score+' из '+QUIZ_TOTAL+' (нужно '+PASS_AT+').'
+    :'Для зачёта нужно '+PASS_AT+' из '+QUIZ_TOTAL+'. Разбери ошибки ниже — и попробуй ещё раз.')+'</p>';
+  root.appendChild(head);
+  const list=document.createElement('div'); list.className='card';
+  list.innerHTML='<h3 style="margin-top:2px">Разбор зачёта</h3>';
+  res.forEach((r,i)=>{
+    const key=taskKey(r.t);
+    const row=document.createElement('div'); row.className='quiz-row'+(r.ok?'':' bad');
+    row.innerHTML='<div class="task-q" style="margin:0">'+(i+1)+'. '+taskEqnHTML(r.t)+'</div>'+
+      '<div class="qr-v">'+(r.ok?'✓ верно: ':'✗ твой ответ '+numHTML(r.v)+'; верный: ')+numHTML(key)+'</div>'+
+      (r.ok?'':'<div class="qr-diag">'+(r.diag||'Ошибка в вычислениях: разбери такое уравнение по шагам во вкладке «Пошагово» — «'+esc(TYPE_NAMES[r.t.fam])+'».')+'</div>');
+    list.appendChild(row);
+  });
+  root.appendChild(list);
+  const row=document.createElement('div'); row.className='btn-row';
+  const again=document.createElement('button'); again.className='btn'; again.type='button'; again.textContent='Пройти ещё раз';
+  again.addEventListener('click',()=>runQuiz(root));
+  row.appendChild(again); root.appendChild(row);
+}
+
+/* самопроверка банка: ключи сходятся с записанными ответами */
 function selfCheckBank(){
   let bad=0;
   for(const t of BANK){
@@ -2948,15 +3254,125 @@ function selfCheckBank(){
   return {total:BANK.length, bad};
 }
 
+/*__ALG_SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 тренажёров алгебры курса ОГЭ (задача
+   OGE_COURSE_03D_ALGEBRA). Блок побайтно одинаков во всех тренажёрах
+   алгебры, где он есть; копии сверяет гейт tools/oge-algebra-contract.test.mjs.
+   Каждая проверка дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const ASTK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи, вариантов и сообщений: нет null, undefined, NaN, Infinity */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|\[object /.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* ловушки {v, m}: ни одна не принимается как ответ, разные сообщения не ловят
+     одно значение; same — равенство значений, show — запись значения в отчёте */
+  traps:function(list,tag,errs,isAns,same,show){
+    same=same||function(a,b){return a===b;};
+    show=show||function(v){return String(v);};
+    (list||[]).forEach(function(t,i){
+      if(!t||!t.m)errs.push(tag+': ловушка без сообщения');
+      if(isAns(t.v))errs.push(tag+': ловушка '+show(t.v)+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&same(t.v,u.v))errs.push(tag+': две ловушки ловят одно значение '+show(t.v));}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__ALG_SELFTEST_KIT_END__*/
+
+/* ?selftest=1: банк, генераторы, лестницы, ловушки итогового ответа,
+   повтор и зачёт; ничего не пишет в хранилище (CP.RO) */
+function selftest(){
+  const errs=[];
+  const key=t=>taskKey(t);
+  const chk=(t,tag)=>{
+    if(TYPE_IDS.indexOf(t.fam)<0)errs.push(tag+': семейство '+t.fam+' не из TYPE_IDS');
+    let k; try{ k=key(t); }catch(e){ errs.push(tag+': решатель бросил '+e.message); return; }
+    if(k===null||!finiteDec(k))errs.push(tag+': ответ не конечная десятичная дробь');
+    ASTK.text(taskInstrHTML(t),tag,errs);
+    let steps; try{ steps=taskSteps(t); }catch(e){ errs.push(tag+': лестница не собралась — '+e.message); return; }
+    if(!steps.length)errs.push(tag+': лестница пустая');
+    const tr=finalTraps(t);
+    ASTK.traps(tr,tag,errs,v=>feq(v,k),(a,b)=>feq(a,b),v=>v.n+'/'+v.d);
+    tr.forEach(o=>ASTK.text(o.m,tag+' ловушка',errs));
+  };
+  const b=selfCheckBank();
+  if(b.bad)errs.push('банк: расхождений с записанными ответами '+b.bad);
+  BANK.forEach(t=>chk(t,'банк '+t.id));
+  Object.keys(GENS).forEach(g=>{ for(let i=0;i<40;i++){ let t; try{ t=genTask(g); }catch(e){ errs.push(g+': '+e.message); break; } chk(t,g+'#'+i); } });
+  TYPE_IDS.forEach(f=>{
+    if(!TYPE_NAMES[f])errs.push(f+': нет имени типа');
+    const t=genByFam(f); if(!t)errs.push(f+': повтор не может собрать задачу этого типа'); else if(t.fam!==f)errs.push(f+': повтор дал '+t.fam);
+  });
+  for(let i=0;i<20;i++){
+    const fams=pickQuizFams(), ch={lin:0,quad:0,frac:0};
+    fams.forEach(f=>ch[FAMMETA[f].ch]++);
+    if(fams.length!==QUIZ_TOTAL||new Set(fams).size!==QUIZ_TOTAL||ch.lin!==3||ch.quad!==4||ch.frac!==3)errs.push('зачёт: состав '+fams.join(','));
+    if(buildQuiz().length!==QUIZ_TOTAL)errs.push('зачёт: собрано не '+QUIZ_TOTAL+' задач');
+  }
+  ASTK.done('OGE9',errs);
+  return errs;
+}
+
 /* ============ ИНИЦИАЛИЗАЦИЯ ============ */
 (function(){
-  var built={ref:true, learn:false, step:false, mara:false};
+  var built={ref:true, learn:false, step:false, mara:false, quiz:false};
   function build(id){
     if(built[id])return; built[id]=true;
     try{
       if(id==='learn')buildLearnTab(document.getElementById('pane-learn'));
       else if(id==='step')buildStepTab(document.getElementById('pane-step'));
       else if(id==='mara')buildMaraTab(document.getElementById('pane-mara'));
+      else if(id==='quiz')buildQuizTab(document.getElementById('pane-quiz'));
     }catch(e){
       var el=document.getElementById('pane-'+id);
       if(el)el.innerHTML='<div class="card"><p class="fb bad">Ошибка при построении раздела: '+(e&&e.message)+'</p></div>';
@@ -2991,6 +3407,9 @@ function selfCheckBank(){
       });
     });
   })();
+
+  if(CP.REVIEW)activate('step', true);   // ?mode=review — сразу работа над ошибками
+  if(CP.RO)selftest();                   // ?selftest=1 — маркер OGE9_SELFTEST_OK в консоли
 })();
 </script>
 </body>

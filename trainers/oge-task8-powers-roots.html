@@ -148,6 +148,28 @@ table.sq td.hl{background:#ffe9a8;font-weight:700}
 .quiz-choice button.pick-no{border-color:var(--red);color:var(--red)}
 a.jump{color:var(--pen)}
 .small{font-size:14px;color:#5b6b85}
+/* ---------- доступность (канон): кнопки и поля не ниже 44 px, видимый фокус ---------- */
+nav.tabs button,button.act,.quiz-choice button,input.ans{min-height:44px}
+button.pill{font:inherit;font-size:14px;min-height:44px}
+button.crosslink{font:inherit;background:none;border:none;padding:0 2px;min-height:44px;color:var(--pen);text-decoration:underline dotted;cursor:pointer}
+:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+.crumbs{display:inline-flex;align-items:center;min-height:44px;font-size:14.5px;font-weight:600;color:var(--pen);text-decoration:none}
+.crumbs:hover{text-decoration:underline}
+.ladder-note{font-size:14px;color:#5b6b85;margin:6px 0 2px}
+/* ---------- работа над ошибками, зачёт ---------- */
+.review-box{border:2px solid var(--gold);background:#fff8e6;border-radius:12px;padding:10px 14px;margin:14px 0}
+.qprog{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 10px}
+.qprog .qd{width:12px;height:12px;border-radius:50%;background:var(--cell)}
+.qprog .qd.cur{background:var(--pen)} .qprog .qd.g{background:var(--green)} .qprog .qd.r{background:var(--red)}
+.qscore{font-size:30px;font-weight:700;color:var(--pen)}
+.qrow{border-top:1px dashed var(--chipbd);padding:9px 0}
+.qrow .qdiag{font-size:14.5px;margin-top:3px}
+@media print{
+  nav.tabs,.crumbs,button,.score,.filters,.steps,.msteps,.fb,.ladder-note,.qprog,input{display:none !important}
+  body{background:#fff}
+  header{position:static}
+  .card,.mtask{box-shadow:none;break-inside:avoid}
+}
 @media(max-width:640px){
   .m{font-size:17px} .big{font-size:19px}
   .refrow .formula{min-width:100%}
@@ -156,6 +178,7 @@ a.jump{color:var(--pen)}
 </head>
 <body>
 <header>
+  <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
   <div class="htitle">
     <h1 class="hand">Задание 8 ОГЭ · степени и корни</h1>
     <span class="sub">числа, вычисления и алгебраические выражения</span>
@@ -165,6 +188,7 @@ a.jump{color:var(--pen)}
     <button data-v="learn">📖 Учимся</button>
     <button data-v="step">🪜 Пошагово</button>
     <button data-v="mar">🏃 Марафон</button>
+    <button data-v="quiz">🏁 Зачёт</button>
   </nav>
 </header>
 <main>
@@ -172,6 +196,7 @@ a.jump{color:var(--pen)}
 <section class="view" id="view-learn"></section>
 <section class="view" id="view-step"></section>
 <section class="view" id="view-mar"></section>
+<section class="view" id="view-quiz"></section>
 </main>
 <div class="score" id="scorebar"></div>
 <script>
@@ -275,8 +300,50 @@ R.rootfrac1=p=>fr(rt(`${p.c1}a${sup(p.p)}`)+dot+rt(`${p.c2}b${sup(p.q)}`), rt("a
    Шаг: {q: html-вопрос, ins:[{lbl, val:Fr}], hint: html, show: html}
    Последний шаг — итоговый ответ задачи (одно поле).            */
 const I=(val,lbl="")=>({lbl,val:(typeof val==="object"&&val.n!==undefined)?val:Fr(val)});
-const S=(q,ins,hint,show)=>({q,ins,hint,show});
+const S=(q,ins,hint,show,traps)=>({q,ins,hint,show,traps:(traps||[]).filter(Boolean)});   // false — ловушка к задаче не относится
 const isq=x=>{const r=isqrtB(BigInt(x));return r===null?null:Number(r)};
+/* ================= ловушки (спецификация 03D, решение D7) =================
+   Ловушка ступени {i, v, m}: число в поле i, которое получается при типичной
+   ошибке, и сообщение про эту ступень. Последняя ступень — итоговый ответ:
+   её ловушки служат и Марафону, и зачёту. Значения — из параметров задачи,
+   сравнение точное. */
+const TP=(i,v,m)=>({i,v:(typeof v==="object"&&v.n!==undefined)?v:Fr(v),m});
+const TM={
+  addNotMul:"При умножении степеней с одинаковым основанием показатели складываются, а не перемножаются.",
+  mulNotAdd:"Степень в степени: показатели перемножаются, а не складываются.",
+  subNeg:"При делении степеней с одинаковым основанием показатели вычитаются: из показателя делимого вычти показатель делителя. Вычесть отрицательное — значит прибавить.",
+  signLost:"Потерян минус у показателя: считай со знаком.",
+  recip:"Знак показателя перепутан — получилось обратное число. Помни: a⁻ⁿ = 1/aⁿ.",
+  baseTimesExp:"Степень — не произведение основания на показатель: aⁿ = a · a · … · a (n множителей).",
+  basesAdd:"Основания разные — показатели складывать нельзя: aᵐ · bⁿ ≠ (ab)ᵐ⁺ⁿ. Посчитай степени по отдельности и перемножь.",
+  recipSign:"1/aⁿ = a⁻ⁿ: когда степень переходит из знаменателя, знак показателя меняется.",
+  cTimesQ:"cⁿ — это c, умноженное само на себя n раз, а не c · n.",
+  commaWay:"Запятая сдвинута не в ту сторону: при отрицательном показателе десятки число уменьшается, при положительном — растёт.",
+  bracketSign:"Знак в скобке — как у среднего члена: минус перед ab даёт минус в скобке.",
+  absNeeded:"Корень из квадрата — это модуль: √(x²) = |x|, ответ не бывает отрицательным.",
+  rootOfSum:"Корень из суммы нельзя извлекать по слагаемым: √(x² + y²) ≠ x + y. Сначала сверни выражение под корнем в квадрат скобки.",
+};
+/* ловушка, совпавшая с верным числом поля, снимается (ошибочный путь даёт
+   верное число — диагностировать нечего); две на одном числе поля дают одно
+   сообщение «найди свою» (решения F1/Q2). trapDropped и trapMerged — сколько
+   снято и сколько чисел пришлось объединить (гейт печатает доли) */
+function cleanTraps(s){
+  const out=[], n0=(s.traps||[]).length;
+  (s.traps||[]).forEach(t=>{
+    if(!s.ins[t.i]||feq(t.v,s.ins[t.i].val))return;
+    const same=out.find(o=>o.i===t.i&&feq(o.v,t.v));
+    if(same){ if(same.ms.indexOf(t.m)<0)same.ms.push(t.m); return; }
+    out.push({i:t.i,v:t.v,ms:[t.m]});
+  });
+  s.traps=out.map(o=>({i:o.i,v:o.v,m:o.ms.length===1?o.ms[0]:o.ms.length===2
+    ?"Такой ответ получается при одной из двух ошибок — найди свою: • "+o.ms.map(x=>x.replace(/\.$/,"")).join("; • ")+"."
+    :"Такой ответ получается при нескольких разных ошибках — сверь по шагам каждое действие со степенями."}));
+  s.trapMerged=out.filter(o=>o.ms.length>1).length;
+  s.trapDropped=n0-out.reduce((k,o)=>k+o.ms.length,0);
+  return s;
+}
+/* ловушки итогового ответа задачи — ловушки последней ступени */
+function finalTraps(t){ const st=buildSteps(t); return st[st.length-1].traps; }
 
 function buildSteps(t){
   const p=t.p, ty=t.type, st=[];
@@ -400,26 +467,37 @@ function buildSteps(t){
   case "pow_mul_div":{
     const e1=p.p+p.q, e=e1-p.r, v=fpow(Fr(p.b),e);
     st.push(S(`При умножении степеней показатели складываются: ${M(pw(p.b,p.p)+" · "+pw(p.b,p.q)+" = "+pw(p.b,"?"))}`,
-      [I(e1,"показатель")],`(${p.p}) + ${p.q} = ? Минус не теряй!`,`${M(pw(p.b,e1))}.`));
+      [I(e1,"показатель")],`(${p.p}) + ${p.q} = ? Минус не теряй!`,`${M(pw(p.b,e1))}.`,
+      [TP(0,p.p*p.q,TM.addNotMul),p.p<0&&TP(0,-p.p+p.q,TM.signLost)]));
     st.push(S(`При делении — вычитаются: ${M(fr(pw(p.b,e1),pw(p.b,p.r))+" = "+pw(p.b,"?"))}`,
-      [I(e,"показатель")],`${e1} − ${p.r} = ?`,`${M(pw(p.b,e))}.`));
-    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+      [I(e,"показатель")],`${e1} − ${p.r} = ?`,`${M(pw(p.b,e))}.`,
+      [TP(0,e1+p.r,TM.subNeg)]));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
+      [e!==0&&TP(0,fpow(Fr(p.b),-e),TM.recip),e!==1&&TP(0,p.b*e,TM.baseTimesExp),
+       TP(0,fpow(Fr(p.b),p.p*p.q-p.r),TM.addNotMul),TP(0,fpow(Fr(p.b),e1+p.r),TM.subNeg)]));
     break;}
   case "pow_pow_div":{
     const e1=p.p*p.q, e=e1-p.r, v=fpow(Fr(p.b),e);
     st.push(S(`Степень в степени — показатели перемножаются: ${M(par(pw(p.b,p.p))+sup(p.q)+" = "+pw(p.b,"?"))}`,
-      [I(e1,"показатель")],`${p.p} · (${p.q}) = ?`,`${M(pw(p.b,e1))}.`));
+      [I(e1,"показатель")],`${p.p} · (${p.q}) = ?`,`${M(pw(p.b,e1))}.`,
+      [TP(0,p.p+p.q,TM.mulNotAdd),e1<0&&TP(0,-e1,TM.signLost)]));
     st.push(S(`Деление — показатели вычитаются: ${M(fr(pw(p.b,e1),pw(p.b,p.r))+" = "+pw(p.b,"?"))}`,
-      [I(e,"показатель")],`(${e1}) − (${p.r}) = ? Минус на минус даёт плюс.`,`${M(pw(p.b,e))}.`));
-    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+      [I(e,"показатель")],`(${e1}) − (${p.r}) = ? Минус на минус даёт плюс.`,`${M(pw(p.b,e))}.`,
+      [TP(0,e1+p.r,TM.subNeg)]));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
+      [e!==0&&TP(0,fpow(Fr(p.b),-e),TM.recip),e!==1&&TP(0,p.b*e,TM.baseTimesExp),
+       TP(0,fpow(Fr(p.b),p.p+p.q-p.r),TM.mulNotAdd),TP(0,fpow(Fr(p.b),e1+p.r),TM.subNeg)]));
     break;}
   case "pow_mul_pow":{
     const e1=p.q*p.r, e=p.p+e1, v=fpow(Fr(p.b),e);
     st.push(S(`Сначала степень в степени: ${M(par(pw(p.b,p.q))+sup(p.r)+" = "+pw(p.b,"?"))}`,
-      [I(e1,"показатель")],`${p.q} · ${p.r} = ?`,`${M(pw(p.b,e1))}.`));
+      [I(e1,"показатель")],`${p.q} · ${p.r} = ?`,`${M(pw(p.b,e1))}.`,
+      [TP(0,p.q+p.r,TM.mulNotAdd)]));
     st.push(S(`Теперь умножение — показатели складываются: ${M(pw(p.b,p.p)+" · "+pw(p.b,e1)+" = "+pw(p.b,"?"))}`,
-      [I(e,"показатель")],`(${p.p}) + ${e1} = ?`,`${M(pw(p.b,e))}.`));
-    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+      [I(e,"показатель")],`(${p.p}) + ${e1} = ?`,`${M(pw(p.b,e))}.`,
+      [TP(0,p.p*e1,TM.addNotMul),p.p<0&&TP(0,-p.p+e1,TM.signLost)]));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
+      [e!==0&&TP(0,fpow(Fr(p.b),-e),TM.recip),e!==1&&TP(0,p.b*e,TM.baseTimesExp),TP(0,fpow(Fr(p.b),p.p+p.q+p.r),TM.mulNotAdd)]));
     break;}
   case "pow_prodbase_div":{
     const ea=p.p-p.r, eb=p.q-p.r;
@@ -430,9 +508,11 @@ function buildSteps(t){
     st.push(S(`Сокращай: показатель ${p.b1} = ? и показатель ${p.b2} = ? (вычитание показателей)`,
       [I(ea,String(p.b1)),I(eb,String(p.b2))],
       `${p.b1}: ${p.p} − ${p.r}; ${p.b2}: ${p.q} − ${p.r}.`,
-      `Осталось ${M(pw(p.b1,ea)+(eb?" · "+pw(p.b2,eb):""))}.`));
+      `Осталось ${M(pw(p.b1,ea)+(eb?" · "+pw(p.b2,eb):""))}.`,
+      [TP(0,p.p+p.r,TM.subNeg),TP(1,p.q+p.r,TM.subNeg)]));
     st.push(S(`Вычисли: ${M((ea?pw(p.b1,ea):"")+(ea&&eb?" · ":"")+(eb?pw(p.b2,eb):""))} = ?`,
-      [I(v,"ответ")],``,`${V(v)}.`));
+      [I(v,"ответ")],``,`${V(v)}.`,
+      [TP(0,fpow(Fr(p.b1*p.b2),ea+eb),TM.basesAdd),TP(0,fmul(fpow(Fr(p.b1),p.p+p.r),fpow(Fr(p.b2),p.q+p.r)),TM.subNeg)]));
     break;}
   case "prodbase_over":{
     const ea=p.p-p.q, eb=p.p-p.r;
@@ -442,8 +522,10 @@ function buildSteps(t){
     st.push(S(`Сокращай: показатель ${p.b1} = ? и показатель ${p.b2} = ?`,
       [I(ea,String(p.b1)),I(eb,String(p.b2))],
       `${p.b1}: ${p.p} − ${p.q}; ${p.b2}: ${p.p} − ${p.r}.`,
-      `Осталось ${M((ea?pw(p.b1,ea):"1")+(eb?" · "+pw(p.b2,eb):""))}.`));
-    st.push(S(`Вычисли: = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+      `Осталось ${M((ea?pw(p.b1,ea):"1")+(eb?" · "+pw(p.b2,eb):""))}.`,
+      [TP(0,p.p+p.q,TM.subNeg),TP(1,p.p+p.r,TM.subNeg)]));
+    st.push(S(`Вычисли: = ?`,[I(v,"ответ")],``,`${V(v)}.`,
+      [TP(0,fpow(Fr(p.b1*p.b2),ea+eb),TM.basesAdd),TP(0,fmul(fpow(Fr(p.b1),p.p+p.q),fpow(Fr(p.b2),p.p+p.r)),TM.subNeg)]));
     break;}
   case "sqsum":{
     const k2=p.k*p.k, v=p.m+k2, sgn=p.sign>0?"+":"−";
@@ -459,37 +541,49 @@ function buildSteps(t){
     st.push(S(`Внизу спряталась степень: ${p.d} = ${M(pw(p.b,"?"))}`,
       [I(q,"показатель")],`${p.b} · ${p.b} = ${p.b*p.b}, дальше сам.`,`${p.d} = ${M(pw(p.b,q))}.`));
     st.push(S(`Деление степеней: ${M(fr(pw(p.b,p.p),pw(p.b,q))+" = "+pw(p.b,"?"))}`,
-      [I(e,"показатель")],`${p.p} − ${q} = ?`,`${M(pw(p.b,e))}.`));
-    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+      [I(e,"показатель")],`${p.p} − ${q} = ?`,`${M(pw(p.b,e))}.`,
+      [TP(0,p.p+q,TM.subNeg)]));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
+      [e!==0&&TP(0,fpow(Fr(p.b),-e),TM.recip),e!==1&&TP(0,p.b*e,TM.baseTimesExp),TP(0,fpow(Fr(p.b),p.p+q),TM.subNeg)]));
     break;}
   case "recip_pow":{
     const e1=-p.p, e2=-p.q, e=e1+e2, v=fpow(Fr(p.b),e);
     st.push(S(`«Единица делить на степень» — это минус в показателе: ${M(fr(1,pw(p.b,p.p))+" = "+pw(p.b,"?"))} и ${M(fr(1,pw(p.b,p.q))+" = "+pw(p.b,"?"))}`,
       [I(e1,"первый"),I(e2,"второй")],
       `1/aⁿ = a⁻ⁿ: знак показателя меняется. Минус на минус — плюс!`,
-      `${M(pw(p.b,e1)+" · "+pw(p.b,e2))}.`));
+      `${M(pw(p.b,e1)+" · "+pw(p.b,e2))}.`,
+      [TP(0,p.p,TM.recipSign),TP(1,p.q,TM.recipSign)]));
     st.push(S(`Умножение — показатели складываются: (${e1}) + (${e2}) = ?`,
-      [I(e,"показатель")],``,`${M(pw(p.b,e))}.`));
-    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+      [I(e,"показатель")],``,`${M(pw(p.b,e))}.`,
+      [TP(0,e1*e2,TM.addNotMul)]));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
+      [e!==0&&TP(0,fpow(Fr(p.b),-e),TM.recip),e!==1&&TP(0,p.b*e,TM.baseTimesExp),TP(0,fpow(Fr(p.b),e1*e2),TM.addNotMul)]));
     break;}
   case "pow_var_div":{
     const e1=p.pp*p.q, e=e1-p.r, v=fpow(Fr(p.a),e);
     st.push(S(`Степень в степени: ${M(par(pw("a",p.pp))+sup(p.q)+" = a<sup>?</sup>")}`,
-      [I(e1,"показатель")],`${p.pp} · (${p.q}) = ?`,`${M("a"+sup(e1))}.`));
+      [I(e1,"показатель")],`${p.pp} · (${p.q}) = ?`,`${M("a"+sup(e1))}.`,
+      [TP(0,p.pp+p.q,TM.mulNotAdd),e1<0&&TP(0,-e1,TM.signLost)]));
     st.push(S(`Деление — показатели вычитаются: ${M("a"+sup(e1)+" : a"+sup(p.r)+" = a<sup>?</sup>")}`,
-      [I(e,"показатель")],`(${e1}) − (${p.r}) = ? Вычесть минус — значит прибавить.`,`${M("a"+sup(e))}.`));
-    st.push(S(`Подставь a = ${p.a}: ${M(pw(p.a,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+      [I(e,"показатель")],`(${e1}) − (${p.r}) = ? Вычесть минус — значит прибавить.`,`${M("a"+sup(e))}.`,
+      [TP(0,e1+p.r,TM.subNeg)]));
+    st.push(S(`Подставь a = ${p.a}: ${M(pw(p.a,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`,
+      [e!==0&&TP(0,fpow(Fr(p.a),-e),TM.recip),e!==1&&TP(0,p.a*e,TM.baseTimesExp),
+       TP(0,fpow(Fr(p.a),p.pp+p.q-p.r),TM.mulNotAdd),TP(0,fpow(Fr(p.a),e1+p.r),TM.subNeg)]));
     break;}
   case "pow_ab":{
     const e1=p.q*p.r, ea=p.pp-p.s, eb=e1-p.s, v=fpow(Fr(p.a),ea);
     st.push(S(`Степень в степени: ${M(par(pw("b",p.q))+sup(p.r)+" = b<sup>?</sup>")}`,
-      [I(e1,"показатель")],`${p.q} · ${p.r} = ?`,`${M("b"+sup(e1))}.`));
+      [I(e1,"показатель")],`${p.q} · ${p.r} = ?`,`${M("b"+sup(e1))}.`,
+      [TP(0,p.q+p.r,TM.mulNotAdd)]));
     st.push(S(`Знаменатель: ${M(par("a · b")+sup(p.s)+" = a"+sup(p.s)+"b"+sup(p.s))}. После сокращения: показатель a = ? и показатель b = ?`,
       [I(ea,"a"),I(eb,"b")],
       `a: ${p.pp} − ${p.s}; b: ${e1} − ${p.s}.`,
-      `Осталось ${M("a"+sup(ea)+(eb?"b"+sup(eb):""))}.`));
+      `Осталось ${M("a"+sup(ea)+(eb?"b"+sup(eb):""))}.`,
+      [TP(0,p.pp+p.s,TM.subNeg),TP(1,e1+p.s,TM.subNeg)]));
     st.push(S(`Показатель b получился ${eb} — буква b ${eb===0?"исчезла (b⁰ = 1)! Подставлять b = "+M(rt(p.a))+" вообще не нужно":"остался"}. Подставь a = ${p.a}: ${M(pw(p.a,ea))} = ?`,
-      [I(v,"ответ")],``,`${V(v)}.`));
+      [I(v,"ответ")],``,`${V(v)}.`,
+      [ea!==0&&TP(0,fpow(Fr(p.a),-ea),TM.recip),ea!==1&&TP(0,p.a*ea,TM.baseTimesExp)]));
     break;}
   case "root_neg":{
     const e=p.pp+p.q, h=e/2, v=fpow(Fr(p.a),h);
@@ -540,12 +634,16 @@ function buildSteps(t){
       [I(sa,"при a"),I(sb,"при b")],
       `Крайние члены — квадраты: ${p.A}a² = (?a)², ${p.B}b² = (?b)². Средний член ${p.K}ab должен равняться 2 · (при a) · (при b) · ab ${p.K<0?"со знаком минус — значит, в скобке минус":""}.`,
       `${M(rt(par((sa===1?"":sa)+"a "+(sg<0?"−":"+")+" "+(sb===1?"":sb)+"b")+"<sup>2</sup>"))}.`));
+    const wrongIn=fadd(fmul(Fr(sa),a),fmul(Fr(-sg*sb),b));   // знак в скобке перепутан
+    const parts=fadd(fmul(Fr(sa),a),fmul(Fr(sb),b));          // корень «по слагаемым»: √(A·a²) + √(B·b²)
     st.push(S(`Подставь a = ${M(numFr(a))}, b = ${M(numFr(b))} внутрь скобки: ${(sa===1?"":sa+" · ")}a ${sg<0?"−":"+"} ${(sb===1?"":sb+" · ")}b = ? (может выйти отрицательное число или дробь — пиши как есть)`,
       [I(inner,"в скобке")],
       `${a.d!==1n?`Знаменатели одинаковые — складывай числители: считай в тринадцатых/одиннадцатых и т. п.`:`Обычная арифметика со знаками.`}`,
-      `В скобке: ${fmtFr(inner)}.`));
+      `В скобке: ${fmtFr(inner)}.`,
+      [TP(0,wrongIn,TM.bracketSign)]));
     st.push(S(`Корень из квадрата — это модуль: ${M(rt("(…)"+"<sup>2</sup>"))} = |…|. Ответ = |${fmtFr(inner)}| = ?`,
-      [I(v,"ответ")],`Модуль убирает минус.`,`${V(v)}.`));
+      [I(v,"ответ")],`Модуль убирает минус.`,`${V(v)}.`,
+      [inner.n<0n&&TP(0,inner,TM.absNeeded),TP(0,wrongIn.n<0n?fmul(wrongIn,Fr(-1)):wrongIn,TM.bracketSign),TP(0,parts,TM.rootOfSum)]));
     break;}
   case "sci":{
     const cq=Number(ipow(BigInt(p.c),p.q)), e1=p.pp*p.q;
@@ -554,29 +652,106 @@ function buildSteps(t){
     st.push(S(`Раскрой скобку: показатель ${p.q} раздаётся каждому множителю: ${M(par(p.c+" · "+pw(10,p.pp))+sup(p.q)+" = "+pw(p.c,p.q)+" · "+par(pw(10,p.pp))+sup(p.q))}. Введи ${M(pw(p.c,p.q))} = ? и показатель десятки: ${p.pp} · ${p.q} = ?`,
       [I(cq,"число"),I(e1,"показатель 10")],
       `(ab)ⁿ = aⁿbⁿ, а у десятки показатели перемножаются.`,
-      `${M(cq+" · "+pw(10,e1))}.`));
+      `${M(cq+" · "+pw(10,e1))}.`,
+      [TP(0,p.c*p.q,TM.cTimesQ),TP(1,p.pp+p.q,TM.mulNotAdd)]));
     st.push(S(`Перемножь с второй скобкой: числа ${cq} · ${p.d} = ? и показатели десятки ${e1} + (${p.r}) = ?`,
       [I(Mnum,"число"),I(E,"показатель 10")],
       `Числа — отдельно, десятки — отдельно (показатели складываются).`,
-      `${M(Mnum+" · "+pw(10,E))}.`));
+      `${M(Mnum+" · "+pw(10,E))}.`,
+      [TP(1,e1*p.r,TM.addNotMul)]));
     st.push(S(`Запиши обычным числом: ${M(Mnum+" · "+pw(10,E))} = ?`,
-      [I(v,"ответ")],`${E>=0?`Припиши ${E} нулей.`:`Сдвинь запятую на ${-E} влево.`}`,`${V(v)}.`));
+      [I(v,"ответ")],`${E>=0?`Припиши ${E} нулей.`:`Сдвинь запятую на ${-E} влево.`}`,`${V(v)}.`,
+      [TP(0,fmul(Fr(Mnum),fpow(Fr(10),-E)),TM.commaWay),TP(0,fmul(Fr(p.c*p.q*p.d),fpow(Fr(10),E)),TM.cTimesQ),
+       TP(0,fmul(Fr(Mnum),fpow(Fr(10),p.pp+p.q+p.r)),TM.mulNotAdd)]));
     break;}
   default: throw new Error("нет шагов для "+ty);
   }
-  return st;
+  return st.map(cleanTraps);
 }
 </script>
 <script>"use strict";const BANK=[{"id": "1.1", "type": "rootpow", "p": {"b": 4, "n": 6}, "ans": [64, 1]}, {"id": "1.2", "type": "rootpow", "p": {"b": 4, "n": 4}, "ans": [16, 1]}, {"id": "1.3", "type": "rootpow", "p": {"b": 6, "n": 4}, "ans": [36, 1]}, {"id": "1.4", "type": "rootpow", "p": {"b": 8, "n": 4}, "ans": [64, 1]}, {"id": "1.5", "type": "rootpow", "p": {"b": 5, "n": 6}, "ans": [125, 1]}, {"id": "2.1", "type": "rootpow", "p": {"b": 4, "n": 3}, "ans": [8, 1]}, {"id": "2.2", "type": "rootpow", "p": {"b": 9, "n": 5}, "ans": [243, 1]}, {"id": "2.3", "type": "rootpow", "p": {"b": 4, "n": 5}, "ans": [32, 1]}, {"id": "2.4", "type": "rootpow", "p": {"b": 16, "n": 3}, "ans": [64, 1]}, {"id": "2.5", "type": "rootpow", "p": {"b": 25, "n": 3}, "ans": [125, 1]}, {"id": "3.1", "type": "rootmono", "p": {"c": 49, "p": 8, "q": 4, "x": 2, "y": 3}, "ans": [1008, 1]}, {"id": "3.2", "type": "rootmono", "p": {"c": 9, "p": 4, "q": 6, "x": 5, "y": 3}, "ans": [2025, 1]}, {"id": "3.3", "type": "rootmono", "p": {"c": 36, "p": 4, "q": 4, "x": 5, "y": 3}, "ans": [1350, 1]}, {"id": "3.4", "type": "rootmono", "p": {"c": 25, "p": 4, "q": 4, "x": 3, "y": 7}, "ans": [2205, 1]}, {"id": "3.5", "type": "rootmono", "p": {"c": 16, "p": 4, "q": 6, "x": 7, "y": 2}, "ans": [1568, 1]}, {"id": "4.1", "type": "rootfrac1", "p": {"c1": 36, "p": 1, "c2": 9, "q": 5, "a": 9, "b": 4}, "ans": [288, 1]}, {"id": "4.2", "type": "rootfrac1", "p": {"c1": 36, "p": 3, "c2": 4, "q": 1, "a": 7, "b": 5}, "ans": [84, 1]}, {"id": "4.3", "type": "rootfrac1", "p": {"c1": 16, "p": 5, "c2": 36, "q": 1, "a": 4, "b": 5}, "ans": [384, 1]}, {"id": "4.4", "type": "rootfrac1", "p": {"c1": 25, "p": 3, "c2": 9, "q": 1, "a": 2, "b": 9}, "ans": [30, 1]}, {"id": "4.5", "type": "rootfrac1", "p": {"c1": 9, "p": 1, "c2": 16, "q": 5, "a": 5, "b": 2}, "ans": [48, 1]}, {"id": "5.1", "type": "rootfrac2", "p": {"c1": 25, "p": 8, "c2": 9, "q": 5, "r": 4, "s": 5, "a": 7, "b": 10}, "ans": [735, 1]}, {"id": "5.2", "type": "rootfrac2", "p": {"c1": 25, "p": 5, "c2": 36, "q": 6, "r": 5, "s": 4, "a": 4, "b": 9}, "ans": [270, 1]}, {"id": "5.3", "type": "rootfrac2", "p": {"c1": 4, "p": 11, "c2": 9, "q": 4, "r": 7, "s": 4, "a": 7, "b": 9}, "ans": [294, 1]}, {"id": "5.4", "type": "rootfrac2", "p": {"c1": 25, "p": 9, "c2": 16, "q": 8, "r": 5, "s": 8, "a": 4, "b": 7}, "ans": [320, 1]}, {"id": "5.5", "type": "rootfrac2", "p": {"c1": 4, "p": 6, "c2": 25, "q": 7, "r": 2, "s": 7, "a": 9, "b": 7}, "ans": [810, 1]}, {"id": "6.1", "type": "sq_over_d", "p": {"k": 4, "m": 2, "d": 64}, "ans": [1, 2]}, {"id": "6.2", "type": "sq_over_d", "p": {"k": 3, "m": 2, "d": 180}, "ans": [1, 10]}, {"id": "6.3", "type": "sq_over_d", "p": {"k": 2, "m": 10, "d": 160}, "ans": [1, 4]}, {"id": "6.4", "type": "sq_over_d", "p": {"k": 3, "m": 5, "d": 75}, "ans": [3, 5]}, {"id": "6.5", "type": "sq_over_d", "p": {"k": 4, "m": 3, "d": 60}, "ans": [4, 5]}, {"id": "7.1", "type": "d_over_sq", "p": {"k": 2, "m": 8, "d": 64}, "ans": [2, 1]}, {"id": "7.2", "type": "d_over_sq", "p": {"k": 2, "m": 10, "d": 360}, "ans": [9, 1]}, {"id": "7.3", "type": "d_over_sq", "p": {"k": 2, "m": 5, "d": 160}, "ans": [8, 1]}, {"id": "7.4", "type": "d_over_sq", "p": {"k": 2, "m": 5, "d": 220}, "ans": [11, 1]}, {"id": "7.5", "type": "d_over_sq", "p": {"k": 3, "m": 2, "d": 54}, "ans": [3, 1]}, {"id": "8.1", "type": "rootmuldiv", "p": {"m": 21, "n": 14, "d": 6}, "ans": [7, 1]}, {"id": "8.2", "type": "rootmuldiv", "p": {"m": 32, "n": 6, "d": 12}, "ans": [4, 1]}, {"id": "8.3", "type": "rootmuldiv", "p": {"m": 35, "n": 21, "d": 15}, "ans": [7, 1]}, {"id": "8.4", "type": "rootmuldiv", "p": {"m": 20, "n": 32, "d": 10}, "ans": [8, 1]}, {"id": "8.5", "type": "rootmuldiv", "p": {"m": 22, "n": 33, "d": 6}, "ans": [11, 1]}, {"id": "9.1", "type": "rootprod3", "p": {"k1": 5, "m1": 11, "k2": 2, "m2": 2, "m3": 22}, "ans": [220, 1]}, {"id": "9.2", "type": "rootprod3", "p": {"k1": 7, "m1": 15, "k2": 2, "m2": 2, "m3": 30}, "ans": [420, 1]}, {"id": "9.3", "type": "rootprod3", "p": {"k1": 4, "m1": 17, "k2": 5, "m2": 2, "m3": 34}, "ans": [680, 1]}, {"id": "9.4", "type": "rootprod3", "p": {"k1": 5, "m1": 7, "k2": 6, "m2": 3, "m3": 21}, "ans": [630, 1]}, {"id": "9.5", "type": "rootprod3", "p": {"k1": 5, "m1": 11, "k2": 4, "m2": 3, "m3": 33}, "ans": [660, 1]}, {"id": "10.1", "type": "rootprod2", "p": {"m": 5, "n": 12, "k": 15}, "ans": [30, 1]}, {"id": "10.2", "type": "rootprod2", "p": {"m": 7, "n": 18, "k": 14}, "ans": [42, 1]}, {"id": "10.3", "type": "rootprod2", "p": {"m": 7, "n": 12, "k": 21}, "ans": [42, 1]}, {"id": "10.4", "type": "rootprod2", "p": {"m": 2, "n": 45, "k": 10}, "ans": [30, 1]}, {"id": "10.5", "type": "rootprod2", "p": {"m": 11, "n": 18, "k": 22}, "ans": [66, 1]}, {"id": "11.1", "type": "diffsq_int", "p": {"a": 23, "b": 2}, "ans": [19, 1]}, {"id": "11.2", "type": "diffsq_int", "p": {"a": 31, "b": 3}, "ans": [22, 1]}, {"id": "11.3", "type": "diffsq_int", "p": {"a": 47, "b": 5}, "ans": [22, 1]}, {"id": "11.4", "type": "diffsq_int", "p": {"a": 19, "b": 4}, "ans": [3, 1]}, {"id": "11.5", "type": "diffsq_int", "p": {"a": 37, "b": 5}, "ans": [12, 1]}, {"id": "12.1", "type": "diffsq_root", "p": {"a": 5, "b": 2}, "ans": [3, 1]}, {"id": "12.2", "type": "diffsq_root", "p": {"a": 7, "b": 3}, "ans": [4, 1]}, {"id": "12.3", "type": "diffsq_root", "p": {"a": 7, "b": 2}, "ans": [5, 1]}, {"id": "12.4", "type": "diffsq_root", "p": {"a": 17, "b": 3}, "ans": [14, 1]}, {"id": "12.5", "type": "diffsq_root", "p": {"a": 19, "b": 5}, "ans": [14, 1]}, {"id": "13.1", "type": "distrib", "p": {"A": 27, "B": 3, "sign": -1}, "ans": [6, 1]}, {"id": "13.2", "type": "distrib", "p": {"A": 8, "B": 2, "sign": -1}, "ans": [2, 1]}, {"id": "13.3", "type": "distrib", "p": {"A": 18, "B": 2, "sign": -1}, "ans": [4, 1]}, {"id": "13.4", "type": "distrib", "p": {"A": 50, "B": 2, "sign": -1}, "ans": [8, 1]}, {"id": "13.5", "type": "distrib", "p": {"A": 32, "B": 2, "sign": -1}, "ans": [6, 1]}, {"id": "14.1", "type": "distrib", "p": {"A": 8, "B": 2, "sign": 1}, "ans": [6, 1]}, {"id": "14.2", "type": "distrib", "p": {"A": 12, "B": 3, "sign": 1}, "ans": [9, 1]}, {"id": "14.3", "type": "distrib", "p": {"A": 32, "B": 2, "sign": 1}, "ans": [10, 1]}, {"id": "14.4", "type": "distrib", "p": {"A": 27, "B": 3, "sign": 1}, "ans": [12, 1]}, {"id": "14.5", "type": "distrib", "p": {"A": 48, "B": 3, "sign": 1}, "ans": [15, 1]}, {"id": "15.1", "type": "pow_mul_div", "p": {"b": 2, "p": -7, "q": 17, "r": 8}, "ans": [4, 1]}, {"id": "15.2", "type": "pow_mul_div", "p": {"b": 7, "p": -3, "q": 13, "r": 8}, "ans": [49, 1]}, {"id": "15.3", "type": "pow_mul_div", "p": {"b": 9, "p": -6, "q": 15, "r": 7}, "ans": [81, 1]}, {"id": "15.4", "type": "pow_mul_div", "p": {"b": 3, "p": -5, "q": 15, "r": 7}, "ans": [27, 1]}, {"id": "15.5", "type": "pow_mul_div", "p": {"b": 11, "p": -3, "q": 12, "r": 8}, "ans": [11, 1]}, {"id": "16.1", "type": "pow_pow_div", "p": {"b": 8, "p": 3, "q": -7, "r": -23}, "ans": [64, 1]}, {"id": "16.2", "type": "pow_pow_div", "p": {"b": 2, "p": 9, "q": -3, "r": -29}, "ans": [4, 1]}, {"id": "16.3", "type": "pow_pow_div", "p": {"b": 5, "p": 2, "q": -8, "r": -18}, "ans": [25, 1]}, {"id": "16.4", "type": "pow_pow_div", "p": {"b": 6, "p": 2, "q": -9, "r": -20}, "ans": [36, 1]}, {"id": "16.5", "type": "pow_pow_div", "p": {"b": 7, "p": 7, "q": -3, "r": -23}, "ans": [49, 1]}, {"id": "17.1", "type": "pow_mul_pow", "p": {"b": 3, "p": -7, "q": 5, "r": 2}, "ans": [27, 1]}, {"id": "17.2", "type": "pow_mul_pow", "p": {"b": 11, "p": -5, "q": 3, "r": 2}, "ans": [11, 1]}, {"id": "17.3", "type": "pow_mul_pow", "p": {"b": 13, "p": -5, "q": 3, "r": 2}, "ans": [13, 1]}, {"id": "17.4", "type": "pow_mul_pow", "p": {"b": 7, "p": -6, "q": 2, "r": 4}, "ans": [49, 1]}, {"id": "17.5", "type": "pow_mul_pow", "p": {"b": 3, "p": -8, "q": 6, "r": 2}, "ans": [81, 1]}, {"id": "18.1", "type": "pow_prodbase_div", "p": {"b1": 4, "p": 8, "b2": 11, "q": 10, "r": 8}, "ans": [121, 1]}, {"id": "18.2", "type": "pow_prodbase_div", "p": {"b1": 2, "p": 10, "b2": 11, "q": 7, "r": 7}, "ans": [8, 1]}, {"id": "18.3", "type": "pow_prodbase_div", "p": {"b1": 7, "p": 8, "b2": 10, "q": 6, "r": 6}, "ans": [49, 1]}, {"id": "18.4", "type": "pow_prodbase_div", "p": {"b1": 3, "p": 8, "b2": 10, "q": 5, "r": 5}, "ans": [27, 1]}, {"id": "18.5", "type": "pow_prodbase_div", "p": {"b1": 7, "p": 4, "b2": 9, "q": 6, "r": 4}, "ans": [81, 1]}, {"id": "19.1", "type": "prodbase_over", "p": {"b1": 3, "b2": 4, "p": 4, "q": 2, "r": 3}, "ans": [36, 1]}, {"id": "19.2", "type": "prodbase_over", "p": {"b1": 2, "b2": 6, "p": 7, "q": 5, "r": 6}, "ans": [24, 1]}, {"id": "19.3", "type": "prodbase_over", "p": {"b1": 2, "b2": 10, "p": 5, "q": 2, "r": 4}, "ans": [80, 1]}, {"id": "19.4", "type": "prodbase_over", "p": {"b1": 2, "b2": 5, "p": 6, "q": 4, "r": 5}, "ans": [20, 1]}, {"id": "19.5", "type": "prodbase_over", "p": {"b1": 3, "b2": 6, "p": 4, "q": 2, "r": 3}, "ans": [54, 1]}, {"id": "20.1", "type": "sqsum", "p": {"m": 5, "k": 9, "sign": 1}, "ans": [86, 1]}, {"id": "20.2", "type": "sqsum", "p": {"m": 3, "k": 8, "sign": 1}, "ans": [67, 1]}, {"id": "20.3", "type": "sqsum", "p": {"m": 19, "k": 5, "sign": 1}, "ans": [44, 1]}, {"id": "20.4", "type": "sqsum", "p": {"m": 11, "k": 3, "sign": 1}, "ans": [20, 1]}, {"id": "20.5", "type": "sqsum", "p": {"m": 7, "k": 3, "sign": 1}, "ans": [16, 1]}, {"id": "21.1", "type": "sqsum", "p": {"m": 19, "k": 7, "sign": -1}, "ans": [68, 1]}, {"id": "21.2", "type": "sqsum", "p": {"m": 11, "k": 7, "sign": -1}, "ans": [60, 1]}, {"id": "21.3", "type": "sqsum", "p": {"m": 15, "k": 2, "sign": -1}, "ans": [19, 1]}, {"id": "21.4", "type": "sqsum", "p": {"m": 17, "k": 6, "sign": -1}, "ans": [53, 1]}, {"id": "21.5", "type": "sqsum", "p": {"m": 13, "k": 3, "sign": -1}, "ans": [22, 1]}, {"id": "22.1", "type": "pow_over_num", "p": {"b": 2, "p": 9, "d": 16}, "ans": [32, 1]}, {"id": "22.2", "type": "pow_over_num", "p": {"b": 2, "p": 5, "d": 4}, "ans": [8, 1]}, {"id": "22.3", "type": "pow_over_num", "p": {"b": 3, "p": 5, "d": 27}, "ans": [9, 1]}, {"id": "22.4", "type": "pow_over_num", "p": {"b": 5, "p": 5, "d": 25}, "ans": [125, 1]}, {"id": "22.5", "type": "pow_over_num", "p": {"b": 4, "p": 5, "d": 16}, "ans": [64, 1]}, {"id": "23.1", "type": "recip_pow", "p": {"b": 5, "p": -11, "q": 10}, "ans": [5, 1]}, {"id": "23.2", "type": "recip_pow", "p": {"b": 2, "p": -12, "q": 10}, "ans": [4, 1]}, {"id": "23.3", "type": "recip_pow", "p": {"b": 3, "p": -8, "q": 7}, "ans": [3, 1]}, {"id": "23.4", "type": "recip_pow", "p": {"b": 3, "p": -10, "q": 8}, "ans": [9, 1]}, {"id": "23.5", "type": "recip_pow", "p": {"b": 4, "p": -10, "q": 9}, "ans": [4, 1]}, {"id": "24.1", "type": "pow_var_div", "p": {"pp": 4, "q": -4, "r": -19, "a": 5}, "ans": [125, 1]}, {"id": "24.2", "type": "pow_var_div", "p": {"pp": 2, "q": -6, "r": -15, "a": 4}, "ans": [64, 1]}, {"id": "24.3", "type": "pow_var_div", "p": {"pp": 5, "q": -3, "r": -19, "a": 3}, "ans": [81, 1]}, {"id": "24.4", "type": "pow_var_div", "p": {"pp": 4, "q": -3, "r": -15, "a": 3}, "ans": [27, 1]}, {"id": "24.5", "type": "pow_var_div", "p": {"pp": 7, "q": -2, "r": -16, "a": 3}, "ans": [9, 1]}, {"id": "25.1", "type": "pow_ab", "p": {"pp": 21, "q": 6, "r": 3, "s": 18, "a": 3}, "ans": [27, 1]}, {"id": "25.2", "type": "pow_ab", "p": {"pp": 18, "q": 7, "r": 2, "s": 14, "a": 3}, "ans": [81, 1]}, {"id": "25.3", "type": "pow_ab", "p": {"pp": 21, "q": 9, "r": 2, "s": 18, "a": 5}, "ans": [125, 1]}, {"id": "25.4", "type": "pow_ab", "p": {"pp": 18, "q": 8, "r": 2, "s": 16, "a": 5}, "ans": [25, 1]}, {"id": "25.5", "type": "pow_ab", "p": {"pp": 14, "q": 6, "r": 2, "s": 12, "a": 6}, "ans": [36, 1]}, {"id": "26.1", "type": "root_neg", "p": {"pp": 4, "q": 6, "a": 2, "negfirst": 1}, "ans": [32, 1]}, {"id": "26.2", "type": "root_neg", "p": {"pp": 2, "q": 6, "a": 2, "negfirst": 0}, "ans": [16, 1]}, {"id": "26.3", "type": "root_neg", "p": {"pp": 4, "q": 4, "a": 2, "negfirst": 1}, "ans": [16, 1]}, {"id": "26.4", "type": "root_neg", "p": {"pp": 6, "q": 2, "a": 3, "negfirst": 0}, "ans": [81, 1]}, {"id": "26.5", "type": "root_neg", "p": {"pp": 4, "q": 2, "a": 5, "negfirst": 1}, "ans": [125, 1]}, {"id": "27.1", "type": "root_frac_a", "p": {"c": 9, "pp": 14, "q": 8, "a": 2}, "ans": [24, 1]}, {"id": "27.2", "type": "root_frac_a", "p": {"c": 4, "pp": 16, "q": 12, "a": 5}, "ans": [50, 1]}, {"id": "27.3", "type": "root_frac_a", "p": {"c": 25, "pp": 15, "q": 9, "a": 2}, "ans": [40, 1]}, {"id": "27.4", "type": "root_frac_a", "p": {"c": 9, "pp": 19, "q": 9, "a": 2}, "ans": [96, 1]}, {"id": "27.5", "type": "root_frac_a", "p": {"c": 25, "pp": 19, "q": 11, "a": 2}, "ans": [80, 1]}, {"id": "28.1", "type": "root_invc", "p": {"c": 4, "pp": 2, "q": 8, "x": 5, "y": 2}, "ans": [40, 1]}, {"id": "28.2", "type": "root_invc", "p": {"c": 4, "pp": 8, "q": 4, "x": 2, "y": 3}, "ans": [72, 1]}, {"id": "28.3", "type": "root_invc", "p": {"c": 25, "pp": 6, "q": 4, "x": 5, "y": 2}, "ans": [100, 1]}, {"id": "28.4", "type": "root_invc", "p": {"c": 25, "pp": 8, "q": 2, "x": 3, "y": 5}, "ans": [81, 1]}, {"id": "28.5", "type": "root_invc", "p": {"c": 9, "pp": 2, "q": 6, "x": 7, "y": 3}, "ans": [63, 1]}, {"id": "29.1", "type": "root_xy_frac", "p": {"c": 9, "pp": 4, "q": 6, "x": 9, "y": 3}, "ans": [9, 1]}, {"id": "29.2", "type": "root_xy_frac", "p": {"c": 9, "pp": 2, "q": 4, "x": 6, "y": 3}, "ans": [2, 1]}, {"id": "29.3", "type": "root_xy_frac", "p": {"c": 36, "pp": 2, "q": 4, "x": 6, "y": 2}, "ans": [9, 1]}, {"id": "29.4", "type": "root_xy_frac", "p": {"c": 16, "pp": 4, "q": 10, "x": 8, "y": 2}, "ans": [8, 1]}, {"id": "29.5", "type": "root_xy_frac", "p": {"c": 25, "pp": 2, "q": 4, "x": 10, "y": 5}, "ans": [2, 1]}, {"id": "30.1", "type": "fold_square", "p": {"A": 1, "K": 8, "B": 16, "an": 11, "ad": 3, "bn": 1, "bd": 3}, "ans": [5, 1]}, {"id": "30.2", "type": "fold_square", "p": {"A": 1, "K": 10, "B": 25, "an": 188, "ad": 13, "bn": 4, "bd": 13}, "ans": [16, 1]}, {"id": "30.3", "type": "fold_square", "p": {"A": 1, "K": 10, "B": 25, "an": 84, "ad": 11, "bn": 3, "bd": 11}, "ans": [9, 1]}, {"id": "30.4", "type": "fold_square", "p": {"A": 36, "K": 12, "B": 1, "an": 4, "ad": 5, "bn": 41, "bd": 5}, "ans": [13, 1]}, {"id": "30.5", "type": "fold_square", "p": {"A": 9, "K": 6, "B": 1, "an": 5, "ad": 13, "bn": 89, "bd": 13}, "ans": [8, 1]}, {"id": "31.1", "type": "fold_square", "p": {"A": 1, "K": 8, "B": 16, "an": 3, "ad": 1, "bn": -4, "bd": 1}, "ans": [13, 1]}, {"id": "31.2", "type": "fold_square", "p": {"A": 1, "K": -4, "B": 4, "an": 2, "ad": 1, "bn": -4, "bd": 1}, "ans": [10, 1]}, {"id": "31.3", "type": "fold_square", "p": {"A": 1, "K": -8, "B": 16, "an": 4, "ad": 1, "bn": 3, "bd": 1}, "ans": [8, 1]}, {"id": "31.4", "type": "fold_square", "p": {"A": 1, "K": 10, "B": 25, "an": 8, "ad": 1, "bn": -2, "bd": 1}, "ans": [2, 1]}, {"id": "31.5", "type": "fold_square", "p": {"A": 1, "K": -10, "B": 25, "an": 7, "ad": 1, "bn": 2, "bd": 1}, "ans": [3, 1]}, {"id": "32.1", "type": "sci", "p": {"c": 8, "pp": 2, "q": 2, "d": 3, "r": -2}, "ans": [19200, 1]}, {"id": "32.2", "type": "sci", "p": {"c": 6, "pp": 2, "q": 2, "d": 14, "r": -2}, "ans": [50400, 1]}, {"id": "32.3", "type": "sci", "p": {"c": 9, "pp": -2, "q": 2, "d": 11, "r": 5}, "ans": [8910, 1]}, {"id": "32.4", "type": "sci", "p": {"c": 2, "pp": 2, "q": 4, "d": 19, "r": -6}, "ans": [30400, 1]}, {"id": "32.5", "type": "sci", "p": {"c": 8, "pp": 2, "q": 3, "d": 12, "r": -5}, "ans": [61440, 1]}];</script>
 <script>
 "use strict";
+/* ================= Контракт прогресса курса ОГЭ =================
+   docs/OGE_PROGRESS_CONTRACT.md, разделы 3–5: ядро записи, журнал ошибок,
+   режим повтора. Тела функций — как в контракте; обёрнуты в CP, чтобы не
+   столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
+   свои записи журнала, после свежего чтения ключа — две вкладки не
+   затирают друг друга. В ?selftest=1 ничего не пишется. Тип журнала —
+   группа задачи (GROUPS[].k). Своего старого ключа не было — миграции нет. */
+const TID="oge-t8-stepeni";
+const TYPE_IDS=["rootdeg","letters","sqroot","prod","dsq","sqsum","fold","pow1","pow2","sci"];
+const QUIZ_TOTAL=10;   // размер зачёта: по задаче из каждой группы
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes };
+})();
 /* ================= счёт ================= */
 const score={solved:0,hints:0,shown:0};
 function updScore(){
   document.getElementById("scorebar").innerHTML=
    `<span>решено задач: <b>${score.solved}</b></span>
     <span>подсказок: <b>${score.hints}</b></span>
-    <span>показано шагов и ответов: <b>${score.shown}</b></span>`;
+    <span>показано шагов: <b>${score.shown}</b></span>`;
 }
 /* ================= вкладки ================= */
 const views={};
@@ -603,13 +778,21 @@ function gotoStep(famKey){
   stepSetFam(famKey);
 }
 /* ================= движок шагов =================
-   mountSteps(container, steps, {onSolved, taskLabel}) */
+   mountSteps(container, steps, {onSolved(clean, usedHint), onMiss, onShow, onHint, note})
+   Счёт «решено» ведёт вызывающий код (решение D4): одна задача — один счёт,
+   повторное открытие лестницы его не накручивает. Промах — только на
+   прочитанные числа; пустое поле промахом не считается (решение D1). */
 function mountSteps(box, steps, opts={}){
   box.innerHTML="";
   let idx=0, usedShow=false, usedHint=false;
+  if(opts.note){ // решение D3: правило сказано до первого нажатия
+    const n=document.createElement("p");n.className="ladder-note";
+    n.textContent="Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.";
+    box.appendChild(n);
+  }
   const wrap=document.createElement("div");wrap.className="steps";box.appendChild(wrap);
   function renderStep(){
-    const s=steps[idx], last=idx===steps.length-1;
+    const s=steps[idx];
     const div=document.createElement("div");div.className="step";
     const inputs=s.ins.map((inp,i)=>`
       <label style="display:inline-flex;align-items:center;gap:5px">${inp.lbl?`<span class="small">${inp.lbl}:</span>`:""}
@@ -618,13 +801,13 @@ function mountSteps(box, steps, opts={}){
       <div class="row">${inputs}
         <button class="act ck">Проверить</button>
         ${s.hint?`<button class="act sec hb">Подсказка</button>`:""}
-        <button class="act show sb">${last?"Показать ответ":"Показать шаг"}</button>
-        <span class="fb"></span></div>
+        <button class="act show sb">Показать шаг</button>
+        <span class="fb" aria-live="polite"></span></div>
       ${s.hint?`<div class="hint">${s.hint}</div>`:""}`;
     wrap.appendChild(div);
     const fb=div.querySelector(".fb");
     const ins=[...div.querySelectorAll("input.ans")];
-    ins[0].focus({preventScroll:true});
+    if(ins[0])ins[0].focus({preventScroll:true});
     function finish(shown){
       div.classList.add(shown?"shown":"done");
       div.querySelectorAll("button").forEach(b=>b.disabled=true);
@@ -635,33 +818,36 @@ function mountSteps(box, steps, opts={}){
         const fin=document.createElement("div");
         fin.className="step "+(usedShow?"shown":"done");
         fin.innerHTML=usedShow
-          ?`<span class="gold-ink">Задача разобрана с показом — в «решено» не идёт. Возьми похожую и добей сам!</span>`
+          ?`<span class="gold-ink">Задача разобрана с показом — в «решено» не идёт. Возьми похожую и реши её без показа!</span>`
           :`<span class="ok-ink">✓ Задача решена${usedHint?" (с подсказкой)":""} — молодец!</span>`;
         wrap.appendChild(fin);
-        if(!usedShow){score.solved++;}
-        updScore();
-        if(opts.onSolved)opts.onSolved(!usedShow);
+        if(opts.onSolved)opts.onSolved(!usedShow,usedHint);
       }
     }
     div.querySelector(".ck").onclick=()=>{
-      let allOk=true;
-      ins.forEach((inp,i)=>{
-        const v=parseAns(inp.value);
-        const ok=v&&feq(v,s.ins[i].val);
-        inp.classList.toggle("ok",!!ok);inp.classList.toggle("no",!ok);
-        if(!ok)allOk=false;
+      const vals=ins.map(inp=>parseAns(inp.value));
+      if(vals.some(v=>!v)){ // не промах: число не прочитано
+        fb.textContent="Впиши число в каждое поле: целое, десятичную дробь (0,5) или обыкновенную (1/4).";fb.className="fb no";return;}
+      let allOk=true, trap="";
+      vals.forEach((v,i)=>{
+        const ok=feq(v,s.ins[i].val);
+        ins[i].classList.toggle("ok",ok);ins[i].classList.toggle("no",!ok);
+        if(!ok){allOk=false; if(!trap){const t=(s.traps||[]).find(t=>t.i===i&&feq(t.v,v)); if(t)trap=t.m;}}
       });
       if(allOk){fb.textContent="верно ✓";fb.className="fb ok";finish(false);}
-      else{fb.textContent="не то, попробуй ещё";fb.className="fb no";}
+      else{fb.textContent=trap||("Пока не сходится — перепроверь вычисление"+(s.hint?" или открой «Подсказку»":"")+".");fb.className="fb no";
+        if(opts.onMiss)opts.onMiss();}
     };
     const hb=div.querySelector(".hb");
     if(hb)hb.onclick=()=>{div.querySelector(".hint").classList.add("on");
-      if(!usedHint){usedHint=true;score.hints++;updScore();}};
+      if(!usedHint){usedHint=true;score.hints++;updScore();}
+      if(opts.onHint)opts.onHint();};
     div.querySelector(".sb").onclick=()=>{
       ins.forEach((inp,i)=>{inp.value=fmtFr(s.ins[i].val);inp.classList.add("ok");});
-      fb.innerHTML=`— ${last?"ответ показан":"шаг показан"}`;fb.className="fb shown";
+      fb.textContent="— шаг показан";fb.className="fb shown";
       if(s.show){const d2=document.createElement("div");d2.className="hint on";d2.innerHTML=s.show;div.appendChild(d2);}
       usedShow=true;score.shown++;updScore();
+      if(opts.onShow)opts.onShow();
       finish(true);
     };
     ins.forEach(inp=>inp.addEventListener("keydown",e=>{if(e.key==="Enter")div.querySelector(".ck").click();}));
@@ -687,14 +873,14 @@ const grpByK=Object.fromEntries(GROUPS.map(g=>[g.k,g]));
 /* ================= СПРАВОЧНИК ================= */
 function chipsFor(gkeys){
   return gkeys.map(k=>{const g=grpByK[k];
-    return `<span class="pill" onclick="gotoMarathon('${k}')" title="открыть эти задачи в марафоне">${g.nums} · ${g.name}</span>`;
+    return `<button type="button" class="pill" onclick="gotoMarathon('${k}')" title="открыть эти задачи в марафоне">${g.nums} · ${g.name}</button>`;
   }).join("");
 }
 function refRow(formulaHtml, learnAnchor, gkeys, note=""){
   return `<div class="refrow">
     <div class="formula">${M('<span class="big">'+formulaHtml+'</span>')}${note?`<div class="refnote">${note}</div>`:""}</div>
     <div class="links">
-      <span class="lbl">разобраться:</span><span class="pill" onclick="gotoLearn('${learnAnchor}')">📖 объяснение</span>
+      <span class="lbl">разобраться:</span><button type="button" class="pill" onclick="gotoLearn('${learnAnchor}')">📖 объяснение</button>
       <span class="lbl">где встречается:</span>${chipsFor(gkeys)}
     </div></div>`;
 }
@@ -743,7 +929,7 @@ function buildRef(){
   </div>
   <div class="card">
     <h3>С чего начать</h3>
-    <p>Если тема новая — иди во вкладку <span class="crosslink" onclick="showView('learn')">📖 Учимся</span>: там всё по пунктам и с тренажёрчиками. Если хочешь набить руку — <span class="crosslink" onclick="showView('step')">🪜 Пошагово</span> генерирует задачи бесконечно и проверяет каждый шаг. Готов к бою — <span class="crosslink" onclick="showView('mar')">🏃 Марафон</span>: все 160 задач из реальных подборок к ОГЭ 2026.</p>
+    <p>Если тема новая — иди во вкладку <button type="button" class="crosslink" onclick="showView('learn')">📖 Учимся</button>: там всё по пунктам и с тренажёрчиками. Если хочешь набить руку — <button type="button" class="crosslink" onclick="showView('step')">🪜 Пошагово</button> генерирует задачи бесконечно и проверяет каждый шаг. Готов к бою — <button type="button" class="crosslink" onclick="showView('mar')">🏃 Марафон</button>: все 160 задач из реальных подборок к ОГЭ 2026.</p>
   </div>`;
 }
 window.sqCell=function(n){
@@ -779,11 +965,11 @@ function buildLearn(){
         <button class="act sec" onclick="ladderMove(-1)">⬇ шаг вниз</button>
         <button class="act sec" onclick="ladderMove(1)">⬆ шаг вверх</button>
         <span class="small" style="margin-left:8px">основание:</span>
-        <span class="pill" onclick="ladderBase(2)">2</span><span class="pill" onclick="ladderBase(3)">3</span><span class="pill" onclick="ladderBase(5)">5</span>
+        <button type="button" class="pill" onclick="ladderBase(2)">2</button><button type="button" class="pill" onclick="ladderBase(3)">3</button><button type="button" class="pill" onclick="ladderBase(5)">5</button>
       </div>
       <div class="hintbox" id="ladderNote"></div>
     </div>
-    <p>Вот и весь секрет: <b>отрицательная степень — это «перевернуть»</b>: ${M("a<sup>−n</sup> = "+fr(1,"a<sup>n</sup>"))}. И наоборот: ${M(fr(1,"a<sup>−n</sup>")+" = a<sup>n</sup>")} — минус выпрыгивает из знаменателя, меняя знак. Это спасает в задачах <span class="crosslink" onclick="gotoMarathon('pow1')">№15–17 и 23</span>.</p>
+    <p>Вот и весь секрет: <b>отрицательная степень — это «перевернуть»</b>: ${M("a<sup>−n</sup> = "+fr(1,"a<sup>n</sup>"))}. И наоборот: ${M(fr(1,"a<sup>−n</sup>")+" = a<sup>n</sup>")} — минус выпрыгивает из знаменателя, меняя знак. Это спасает в задачах <button type="button" class="crosslink" onclick="gotoMarathon('pow1')">№15–17 и 23</button>.</p>
     <div class="note">Никогда не путай: ${M("2<sup>−3</sup>")} — это не отрицательное число! Это ${M(fr(1,8))}. Минус в показателе про «перевернуть», а не про «ниже нуля».</div>
   </div>
 
@@ -801,7 +987,7 @@ function buildLearn(){
       <tr><td>делишь степени</td><td>вычитаются</td><td>${M(fr("2<sup>10</sup>","2<sup>8</sup>")+" = 2<sup>2</sup> = 4")}</td></tr>
       <tr><td>степень в степени</td><td>перемножаются</td><td>${M(par("2<sup>3</sup>")+"<sup>−7</sup> = 2<sup>−21</sup>")}</td></tr>
     </table>
-    <p>И ещё одно, для задач с <span class="crosslink" onclick="gotoMarathon('pow2')">двумя основаниями (№18–19)</span>: ${M(par("ab")+"<sup>n</sup> = a<sup>n</sup>b<sup>n</sup>")} — показатель раздаётся каждому множителю. Увидел ${M("44<sup>8</sup>")} под дробью, где сверху четвёрки и одиннадцатые? Разбей: ${M("44<sup>8</sup> = 4<sup>8</sup> · 11<sup>8</sup>")} — и сокращай.</p>
+    <p>И ещё одно, для задач с <button type="button" class="crosslink" onclick="gotoMarathon('pow2')">двумя основаниями (№18–19)</button>: ${M(par("ab")+"<sup>n</sup> = a<sup>n</sup>b<sup>n</sup>")} — показатель раздаётся каждому множителю. Увидел ${M("44<sup>8</sup>")} под дробью, где сверху четвёрки и одиннадцатые? Разбей: ${M("44<sup>8</sup> = 4<sup>8</sup> · 11<sup>8</sup>")} — и сокращай.</p>
   </div>
 
   <div class="card" id="p3">
@@ -813,11 +999,11 @@ function buildLearn(){
       <div class="hintbox" id="halfOut"></div>
     </div>
     <h3>Случай 1: показатель чётный</h3>
-    <p>Просто дели пополам: ${M(rt("4<sup>6</sup>")+" = 4<sup>3</sup> = 64")}. Это задачи <span class="crosslink" onclick="gotoMarathon('rootdeg')">№1</span>.</p>
+    <p>Просто дели пополам: ${M(rt("4<sup>6</sup>")+" = 4<sup>3</sup> = 64")}. Это задачи <button type="button" class="crosslink" onclick="gotoMarathon('rootdeg')">№1</button>.</p>
     <h3>Случай 2: показатель нечётный</h3>
-    <p>Пополам не делится… но посмотри на <b>основание</b>: в ОГЭ оно всегда будет полным квадратом. ${M(rt("4<sup>3</sup>"))}: замени 4 = 2², получится ${M(rt(par("2<sup>2</sup>")+"<sup>3</sup>")+" = "+rt("2<sup>6</sup>")+" = 2<sup>3</sup> = 8")}. Это задачи <span class="crosslink" onclick="gotoMarathon('rootdeg')">№2</span>.</p>
+    <p>Пополам не делится… но посмотри на <b>основание</b>: в ОГЭ оно всегда будет полным квадратом. ${M(rt("4<sup>3</sup>"))}: замени 4 = 2², получится ${M(rt(par("2<sup>2</sup>")+"<sup>3</sup>")+" = "+rt("2<sup>6</sup>")+" = 2<sup>3</sup> = 8")}. Это задачи <button type="button" class="crosslink" onclick="gotoMarathon('rootdeg')">№2</button>.</p>
     <h3>Случай 3: под корнем буквы</h3>
-    <p>То же правило работает с каждой буквой отдельно: ${M(rt("49x<sup>8</sup>y<sup>4</sup>")+" = 7x<sup>4</sup>y<sup>2</sup>")} — корень из числа по таблице квадратов, показатели букв пополам. Потом подставляй значения. Это <span class="crosslink" onclick="gotoMarathon('letters')">№3–5 и 26–29</span>.</p>
+    <p>То же правило работает с каждой буквой отдельно: ${M(rt("49x<sup>8</sup>y<sup>4</sup>")+" = 7x<sup>4</sup>y<sup>2</sup>")} — корень из числа по таблице квадратов, показатели букв пополам. Потом подставляй значения. Это <button type="button" class="crosslink" onclick="gotoMarathon('letters')">№3–5 и 26–29</button>.</p>
     <div class="note">Если встретил ${M(par("−a")+"<sup>4</sup>")} — чётная степень съедает минус: ${M(par("−a")+"<sup>4</sup> = a<sup>4</sup>")}. Задачи №26 только этим и пугают.</div>
   </div>
 
@@ -832,22 +1018,22 @@ function buildLearn(){
       <div class="hintbox" id="unOut"></div>
     </div>
     <p><b>Совет из практики:</b> не перемножай числа в лоб. Сначала сократи с знаменателем, раскладывая на множители: ${M(fr("21 · 14","6"))} = ${M(fr("3 · 7 · 2 · 7","2 · 3"))} = 49. Оба пути дают одно и то же — иди тем, который видишь.</p>
-    <p>Так решаются <span class="crosslink" onclick="gotoMarathon('prod')">№8–10, 13–14</span>.</p>
+    <p>Так решаются <button type="button" class="crosslink" onclick="gotoMarathon('prod')">№8–10, 13–14</button>.</p>
   </div>
 
   <div class="card" id="p5">
     <h2><span class="num">5</span>Формулы сокращённого умножения + корни</h2>
-    <p>Сначала — самое простое и самое важное: <b>корень в квадрате исчезает</b>: ${M(par(rt("a"))+"<sup>2</sup> = a")}. Например ${M(par("4"+rt(2))+"<sup>2</sup> = 16 · 2 = 32")} — и задачи <span class="crosslink" onclick="gotoMarathon('sqroot')">№6–7</span> уже решены.</p>
+    <p>Сначала — самое простое и самое важное: <b>корень в квадрате исчезает</b>: ${M(par(rt("a"))+"<sup>2</sup> = a")}. Например ${M(par("4"+rt(2))+"<sup>2</sup> = 16 · 2 = 32")} — и задачи <button type="button" class="crosslink" onclick="gotoMarathon('sqroot')">№6–7</button> уже решены.</p>
     <h3>Разность квадратов — корни исчезают парой</h3>
-    <p>${M(par(rt(23)+" − 2")+par(rt(23)+" + 2")+" = "+par(rt(23))+"<sup>2</sup> − 2<sup>2</sup> = 23 − 4 = 19")}. Увидел скобки-близнецы с разными знаками — это <span class="crosslink" onclick="gotoMarathon('dsq')">№11–12</span>, решается в одну строчку.</p>
+    <p>${M(par(rt(23)+" − 2")+par(rt(23)+" + 2")+" = "+par(rt(23))+"<sup>2</sup> − 2<sup>2</sup> = 23 − 4 = 19")}. Увидел скобки-близнецы с разными знаками — это <button type="button" class="crosslink" onclick="gotoMarathon('dsq')">№11–12</button>, решается в одну строчку.</p>
     <h3>Квадрат суммы — корни уничтожаются</h3>
     <div class="tool"><div class="tl">раскрывалка · смотри, как сокращается средний член</div>
       <div id="fsuShow"></div>
       <button class="act sec" onclick="fsuNext()">другой пример</button>
     </div>
-    <p>В задачах <span class="crosslink" onclick="gotoMarathon('sqsum')">№20–21</span> к квадрату всегда пристроено слагаемое, которое ровно гасит корневую часть. Значит, ответ — просто «число под корнем + квадрат числа». Проверь на любой задаче!</p>
+    <p>В задачах <button type="button" class="crosslink" onclick="gotoMarathon('sqsum')">№20–21</button> к квадрату всегда пристроено слагаемое, которое ровно гасит корневую часть. Значит, ответ — просто «число под корнем + квадрат числа». Проверь на любой задаче!</p>
     <h3>Та же формула задом наперёд</h3>
-    <p>В <span class="crosslink" onclick="gotoMarathon('fold')">№30–31</span> под корнем лежит уже раскрытый квадрат: ${M(rt("a<sup>2</sup> + 8ab + 16b<sup>2</sup>")+" = "+rt(par("a + 4b")+"<sup>2</sup>")+" = |a + 4b|")}. Узнать его просто: крайние члены — квадраты, средний — удвоенное произведение. Модуль не забудь: корень из квадрата всегда неотрицательный!</p>
+    <p>В <button type="button" class="crosslink" onclick="gotoMarathon('fold')">№30–31</button> под корнем лежит уже раскрытый квадрат: ${M(rt("a<sup>2</sup> + 8ab + 16b<sup>2</sup>")+" = "+rt(par("a + 4b")+"<sup>2</sup>")+" = |a + 4b|")}. Узнать его просто: крайние члены — квадраты, средний — удвоенное произведение. Модуль не забудь: корень из квадрата всегда неотрицательный!</p>
   </div>
 
   <div class="card" id="p6">
@@ -855,14 +1041,14 @@ function buildLearn(){
     <p>На экзамене полдела — понять, <i>какой</i> это тип. Тренируй глаз:</p>
     <table class="seen-tbl">
       <tr><th>вижу</th><th>делаю</th><th>пункт</th></tr>
-      <tr><td>${M(rt("4<sup>6</sup>"))}</td><td>показатель пополам (нечётный? основание = квадрат)</td><td><span class="crosslink" onclick="gotoLearn('p3')">п. 3</span></td></tr>
-      <tr><td>${M(rt("…")+" · "+rt("…"))}, дробь из корней</td><td>всё под один корень, сократить</td><td><span class="crosslink" onclick="gotoLearn('p4')">п. 4</span></td></tr>
-      <tr><td>скобки-близнецы (… − …)(… + …)</td><td>разность квадратов</td><td><span class="crosslink" onclick="gotoLearn('p5')">п. 5</span></td></tr>
-      <tr><td>${M(par("… ± …")+"<sup>2</sup>")} и рядом ещё корень</td><td>раскрыть квадрат — корни сократятся</td><td><span class="crosslink" onclick="gotoLearn('p5')">п. 5</span></td></tr>
-      <tr><td>под корнем a² + …ab + …b²</td><td>свернуть в квадрат, взять модуль</td><td><span class="crosslink" onclick="gotoLearn('p5')">п. 5</span></td></tr>
-      <tr><td>степени с одинаковым основанием</td><td>плюс / минус / умножить показатели</td><td><span class="crosslink" onclick="gotoLearn('p2')">п. 2</span></td></tr>
-      <tr><td>${M("44<sup>8</sup>")}, ${M("63<sup>4</sup>")} — составное основание</td><td>разбить: (ab)ⁿ = aⁿbⁿ</td><td><span class="crosslink" onclick="gotoLearn('p2')">п. 2</span></td></tr>
-      <tr><td>${M("(8 · 10<sup>2</sup>)<sup>2</sup> · …")}</td><td>числа отдельно, десятки отдельно</td><td><span class="crosslink" onclick="gotoLearn('p2')">п. 2</span></td></tr>
+      <tr><td>${M(rt("4<sup>6</sup>"))}</td><td>показатель пополам (нечётный? основание = квадрат)</td><td><button type="button" class="crosslink" onclick="gotoLearn('p3')">п. 3</button></td></tr>
+      <tr><td>${M(rt("…")+" · "+rt("…"))}, дробь из корней</td><td>всё под один корень, сократить</td><td><button type="button" class="crosslink" onclick="gotoLearn('p4')">п. 4</button></td></tr>
+      <tr><td>скобки-близнецы (… − …)(… + …)</td><td>разность квадратов</td><td><button type="button" class="crosslink" onclick="gotoLearn('p5')">п. 5</button></td></tr>
+      <tr><td>${M(par("… ± …")+"<sup>2</sup>")} и рядом ещё корень</td><td>раскрыть квадрат — корни сократятся</td><td><button type="button" class="crosslink" onclick="gotoLearn('p5')">п. 5</button></td></tr>
+      <tr><td>под корнем a² + …ab + …b²</td><td>свернуть в квадрат, взять модуль</td><td><button type="button" class="crosslink" onclick="gotoLearn('p5')">п. 5</button></td></tr>
+      <tr><td>степени с одинаковым основанием</td><td>плюс / минус / умножить показатели</td><td><button type="button" class="crosslink" onclick="gotoLearn('p2')">п. 2</button></td></tr>
+      <tr><td>${M("44<sup>8</sup>")}, ${M("63<sup>4</sup>")} — составное основание</td><td>разбить: (ab)ⁿ = aⁿbⁿ</td><td><button type="button" class="crosslink" onclick="gotoLearn('p2')">п. 2</button></td></tr>
+      <tr><td>${M("(8 · 10<sup>2</sup>)<sup>2</sup> · …")}</td><td>числа отдельно, десятки отдельно</td><td><button type="button" class="crosslink" onclick="gotoLearn('p2')">п. 2</button></td></tr>
     </table>
   </div>
 
@@ -964,7 +1150,8 @@ window.quizNew=function(){
         box.querySelectorAll(".quiz-choice button").forEach(x=>x.disabled=true);
         const s2=document.getElementById("quizStage2");
         s2.innerHTML=`<p class="ok-ink">верно ✓ — это «${fam.n}»</p><p><b>Шаг 2.</b> Теперь реши по шагам:</p><div class="qsteps"></div>`;
-        mountSteps(s2.querySelector(".qsteps"),buildSteps(quizTask));
+        // квиз «Учимся» в прогресс курса не пишет (решение D1); счёт страницы — как раньше
+        mountSteps(s2.querySelector(".qsteps"),buildSteps(quizTask),{onSolved(clean){ if(clean){score.solved++;updScore();} }});
       }else{
         b.classList.add("pick-no");
         setTimeout(()=>b.classList.remove("pick-no"),900);
@@ -1072,13 +1259,17 @@ const FAMS=[
  {k:"H",name:"Стандартный вид",gens:["sci"],learn:"p2"},
 ];
 let curFam="A";
+let reviewOn=false;   // ?mode=review: задачи только открытых групп журнала (решение D10)
+/* виды задач группы, у которых есть генератор */
+function genTypesOf(k){ return grpByK[k].types.filter(ty=>GEN[ty]); }
 function buildStep(){
   const v=document.getElementById("view-step");
-  v.innerHTML=`<div class="card">
+  v.innerHTML=`<div class="review-box" id="stepReview" aria-live="polite" hidden></div>
+  <div class="card">
     <h2>Пошаговый решатель</h2>
-    <p>Выбери семейство — тренажёр будет выдавать такие задачи бесконечно и проверять каждый шаг. Застрял — жми «Подсказка» или «Показать шаг» (показанное честно не идёт в счёт решённых).</p>
+    <p>Выбери семейство — тренажёр будет выдавать такие задачи бесконечно и проверять каждый шаг. Не выходит — открой «Подсказку» (она ничего не отнимает) или «Показать шаг» (показанное честно не идёт в счёт решённых).</p>
     <div class="filters" id="famChips"></div>
-    <div class="small" style="margin-top:6px">не помнишь приём? <span class="crosslink" id="famLearn"></span></div>
+    <div class="small" style="margin-top:6px">не помнишь приём? <button type="button" class="crosslink" id="famLearn"></button></div>
   </div>
   <div class="card">
     <div class="expr" id="stepExpr"></div>
@@ -1086,8 +1277,21 @@ function buildStep(){
     <div style="margin-top:10px"><button class="act" onclick="stepNew()">Новая задача</button></div>
   </div>`;
   const ch=document.getElementById("famChips");
-  ch.innerHTML=FAMS.map(f=>`<span class="pill" data-k="${f.k}">${f.name}</span>`).join("");
-  ch.querySelectorAll(".pill").forEach(p=>p.onclick=()=>stepSetFam(p.dataset.k));
+  ch.innerHTML=FAMS.map(f=>`<button type="button" class="pill" data-k="${f.k}">${f.name}</button>`).join("");
+  ch.querySelectorAll(".pill").forEach(p=>p.onclick=()=>{ // выбор семейства — выход из повтора
+    if(reviewOn){ reviewOn=false; document.getElementById("stepReview").hidden=true; }
+    stepSetFam(p.dataset.k);});
+  if(CP.REVIEW){
+    const box=document.getElementById("stepReview"), open=CP.openTypes().filter(k=>genTypesOf(k).length);
+    box.hidden=false;
+    if(open.length){
+      reviewOn=true;
+      box.innerHTML=`<b>Работа над ошибками.</b> Задачи только тех групп, где были ошибки: ${open.map(k=>grpByK[k].name).join("; ")}. Группа закрывается после трёх верных решений подряд. Выбор семейства ниже — выход из повтора.`;
+      const L=document.getElementById("famLearn"); L.textContent="открой объяснение в «Учимся»"; L.onclick=()=>showView("learn");
+      stepNew(); return;
+    }
+    box.innerHTML="<b>Работа над ошибками.</b> Открытых ошибок нет — выбери любое семейство ниже.";
+  }
   stepSetFam("A");
 }
 window.stepSetFam=function(k){
@@ -1100,25 +1304,52 @@ window.stepSetFam=function(k){
   stepNew();
 };
 window.stepNew=function(){
-  const f=FAMS.find(f=>f.k===curFam);
-  const t=GEN[pick(f.gens)]();
+  let t;
+  if(reviewOn){ // группа — из открытых; закрытые по ходу выпадают
+    const open=CP.openTypes().filter(k=>genTypesOf(k).length);
+    if(!open.length){
+      reviewOn=false;
+      document.getElementById("stepReview").innerHTML="<b>Работа над ошибками.</b> Все ошибки исправлены — открытых групп не осталось. Выбери любое семейство ниже.";
+      stepSetFam(curFam); return;
+    }
+    t=GEN[pick(genTypesOf(pick(open)))]();
+  } else {
+    const f=FAMS.find(f=>f.k===curFam);
+    t=GEN[pick(f.gens)]();
+  }
   document.getElementById("stepExpr").innerHTML=`<span class="small">найди значение выражения:</span><br>${renderTask(t)}`;
-  mountSteps(document.getElementById("stepBox"),buildSteps(t));
+  /* запись прогресса (решения F8, D1): лестница без показа — решено; промах —
+     один раз на задачу и сразу; после показа журнал молчит */
+  const g=typeGroup[t.type], rec={missed:false,shown:false,done:false};
+  mountSteps(document.getElementById("stepBox"),buildSteps(t),{note:true,
+    onMiss(){ if(!rec.missed&&!rec.shown){ rec.missed=true; CP.mlog(g,false); } },
+    onShow(){ rec.shown=true; },
+    onSolved(clean){
+      if(rec.done)return; rec.done=true;
+      if(!clean||rec.shown)return;
+      score.solved++; updScore();
+      CP.solvedOne(g); if(!rec.missed)CP.mlog(g,true);
+    }});
 };
 /* ================= МАРАФОН ================= */
 let marFilter="all";
-const marState={}; // id -> "ok"|"shown"
+const marState={}; // id -> "ok"|"shown" — вид карточки
+/* запись задачи на время открытой страницы (решение D4): один счёт на
+   карточку, вердикт журнала — один на задачу, показ не «отмывается»
+   повторным открытием лестницы или сменой фильтра */
+const marRec={};
+function mrec(id){ return marRec[id]||(marRec[id]={verdict:"",shown:false,hinted:false,counted:false}); }
 function buildMar(){
   const v=document.getElementById("view-mar");
   v.innerHTML=`<div class="card">
     <h2>Марафон · 160 задач формата ОГЭ 2026</h2>
-    <p>Подборка Math4Skill по заданию 8, все 32 сюжета. Вводи ответ как в бланке: целое число или десятичная дробь через запятую (например <b>0,5</b>). У каждой задачи есть «Решить по шагам» — та же задача, разобранная на проверяемые шаги.</p>
+    <p>Подборка Math4Skill по заданию 8, все 32 сюжета. Вводи ответ как в бланке: целое число или десятичная дробь через запятую (например <b>0,5</b>). У каждой задачи есть «Решить по шагам» — та же задача, разобранная на проверяемые шаги; решённая по шагам без показа засчитывается.</p>
     <div class="filters" id="marChips"></div>
     <div class="small" id="marCount" style="margin-top:6px"></div>
   </div>
   <div class="mgrid" id="marGrid"></div>`;
   const ch=document.getElementById("marChips");
-  ch.innerHTML=`<span class="pill" data-k="all">все</span>`+GROUPS.map(g=>`<span class="pill" data-k="${g.k}">${g.nums} ${g.name}</span>`).join("");
+  ch.innerHTML=`<button type="button" class="pill" data-k="all">все</button>`+GROUPS.map(g=>`<button type="button" class="pill" data-k="${g.k}">${g.nums} ${g.name}</button>`).join("");
   ch.querySelectorAll(".pill").forEach(p=>p.onclick=()=>marSetFilter(p.dataset.k));
   marSetFilter("all");
 }
@@ -1132,55 +1363,236 @@ window.marSetFilter=function(k){
   list.forEach(t=>grid.appendChild(marCard(t)));
 };
 function marCard(t){
-  const g=grpByK[typeGroup[t.type]];
+  const gk=typeGroup[t.type], g=grpByK[gk];
   const ansFr=Fr(t.ans[0],t.ans[1]);
+  const st=mrec(t.id);
   const div=document.createElement("div");
   div.className="mtask"+(marState[t.id]==="ok"?" ok":marState[t.id]==="shown"?" shown":"");
   div.innerHTML=`<div class="mid"><span>№ ${t.id} · ${g.name}</span>
-      <span class="crosslink" data-a="learn">теория</span></div>
+      <button type="button" class="crosslink" data-a="learn">теория</button></div>
     <div class="expr">${renderTask(t)}</div>
     <div class="mrow">
-      <input class="ans" placeholder="ответ">
+      <input class="ans" placeholder="ответ" aria-label="Ответ задачи № ${t.id}">
       <button class="act ck">Проверить</button>
-      <button class="act show sa">Показать ответ</button>
-      <span class="fb"></span></div>
+      <span class="fb" aria-live="polite"></span></div>
     <div class="mrow"><button class="act sec bs">🪜 Решить по шагам</button></div>
     <div class="msteps"></div>`;
   const inp=div.querySelector("input"),fb=div.querySelector(".fb");
-  const markDone=(shown)=>{
-    if(marState[t.id])return;
-    marState[t.id]=shown?"shown":"ok";
-    div.classList.add(shown?"shown":"ok");
-    if(!shown){score.solved++;updScore();}
+  const mark=(s)=>{ if(!marState[t.id]){ marState[t.id]=s; div.classList.add(s); } };   // вид карточки ставится один раз
+  const markDone=()=>{
+    mark(st.shown?"shown":"ok");
+    if(!st.shown&&!st.counted){ st.counted=true; score.solved++; updScore();
+      CP.solvedOne(gk); if(!st.verdict){ st.verdict="ok"; CP.mlog(gk,true); } }
   };
+  const miss=()=>{ if(!st.verdict&&!st.shown){ st.verdict="miss"; CP.mlog(gk,false); } };
   div.querySelector('[data-a="learn"]').onclick=()=>gotoLearn(g.learn);
   div.querySelector(".ck").onclick=()=>{
     const v=parseAns(inp.value);
-    if(v&&feq(v,ansFr)){inp.classList.remove("no");inp.classList.add("ok");
-      fb.textContent="верно ✓";fb.className="fb ok";markDone(false);}
+    if(!v){ fb.textContent="Впиши число: целое, десятичную дробь (0,5) или обыкновенную (1/4).";fb.className="fb no";return; }  // не промах
+    if(feq(v,ansFr)){inp.classList.remove("no");inp.classList.add("ok");
+      fb.textContent="верно ✓";fb.className="fb ok";markDone();}
     else{inp.classList.remove("ok");inp.classList.add("no");
-      fb.textContent="не то, попробуй ещё";fb.className="fb no";}
+      const tr=finalTraps(t).find(o=>feq(o.v,v));
+      fb.textContent=tr?tr.m:"Пока не сходится. Не выходит — «Решить по шагам»: ступени открываются по одной.";fb.className="fb no";
+      miss();}
   };
   inp.addEventListener("keydown",e=>{if(e.key==="Enter")div.querySelector(".ck").click();});
-  div.querySelector(".sa").onclick=()=>{
-    inp.value=fmtFr(ansFr);inp.classList.add("ok");inp.classList.remove("no");
-    fb.textContent="— ответ показан";fb.className="fb shown";
-    score.shown++;updScore();markDone(true);
-  };
   div.querySelector(".bs").onclick=()=>{
     const box=div.querySelector(".msteps");
     if(box.childElementCount){box.innerHTML="";return;}
-    mountSteps(box,buildSteps(t),{onSolved:(clean)=>{
-      if(marState[t.id])return;
-      // счёт уже обновил mountSteps; здесь только помечаем карточку
-      marState[t.id]=clean?"ok":"shown";
-      div.classList.add(clean?"ok":"shown");
-    }});
+    mountSteps(box,buildSteps(t),{note:true,
+      onMiss:miss,
+      onHint(){ st.hinted=true; },
+      onShow(){ st.shown=true; },
+      onSolved(clean){ if(clean&&!st.shown)markDone(); else mark("shown"); }});   // лестница без показа — решено
   };
   return div;
 }
+/* ?selftest=1: банк, генераторы, ступени, ловушки, группы и зачёт; ничего не
+   пишет в хранилище (CP.RO). Итог — маркер OGE8_SELFTEST_OK в консоли. */
+function selftest8(){
+  const errs=[];
+  const chkSteps=(st,tag)=>{
+    st.forEach((s,j)=>{
+      const sj=tag+" шаг "+(j+1);
+      ASTK.text(s.q,sj,errs); ASTK.text(s.hint||"",sj+" подсказка",errs); ASTK.text(s.show||"",sj+" показ",errs);
+      if(!s.ins.length)errs.push(sj+": нет полей");
+      s.ins.forEach((inp,i)=>{
+        if(!inp.val||typeof inp.val.n!=="bigint"||inp.val.d<=0n)errs.push(sj+": поле "+i+" без числа");
+        ASTK.traps((s.traps||[]).filter(t=>t.i===i),sj,errs,v=>feq(v,inp.val),feq,fmtFr);
+      });
+      (s.traps||[]).forEach(t=>{ if(!s.ins[t.i])errs.push(sj+": ловушка для несуществующего поля"); ASTK.text(t.m,sj+" ловушка",errs); });
+    });
+    if(st[st.length-1].ins.length!==1)errs.push(tag+": последняя ступень — не одно поле ответа");
+  };
+  BANK.forEach(t=>{
+    const tag="банк "+t.id;
+    if(!typeGroup[t.type]){ errs.push(tag+": вид без группы"); return; }
+    let st; try{ st=buildSteps(t); }catch(e){ errs.push(tag+": "+e.message); return; }
+    if(!feq(st[st.length-1].ins[0].val,Fr(t.ans[0],t.ans[1])))errs.push(tag+": ответ банка ≠ последней ступени");
+    chkSteps(st,tag); ASTK.text(renderTask(t),tag,errs);
+  });
+  Object.keys(GEN).forEach(ty=>{
+    for(let i=0;i<60;i++){
+      const tag=ty+"#"+i; let t, st;
+      try{ t=GEN[ty](); st=buildSteps(t); }catch(e){ errs.push(tag+": "+e.message); break; }
+      if(t.type!==ty||!typeGroup[t.type])errs.push(tag+": вид "+t.type);
+      chkSteps(st,tag); ASTK.text(renderTask(t),tag,errs);
+    }
+  });
+  if(JSON.stringify(GROUPS.map(g=>g.k))!==JSON.stringify(TYPE_IDS))errs.push("TYPE_IDS не совпадают с группами");
+  TYPE_IDS.forEach(k=>{ if(!grpByK[k]||!genTypesOf(k).length)errs.push(k+": у группы нет генератора (повтор, зачёт)"); });
+  for(let i=0;i<10;i++){
+    const ks=buildQuiz8().map(t=>typeGroup[t.type]);
+    if(ks.length!==QUIZ_TOTAL||new Set(ks).size!==QUIZ_TOTAL)errs.push("зачёт: состав "+ks.join(","));
+  }
+  ASTK.done("OGE8",errs);
+  return errs;
+}
+/*__ALG_SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 тренажёров алгебры курса ОГЭ (задача
+   OGE_COURSE_03D_ALGEBRA). Блок побайтно одинаков во всех тренажёрах
+   алгебры, где он есть; копии сверяет гейт tools/oge-algebra-contract.test.mjs.
+   Каждая проверка дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const ASTK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи, вариантов и сообщений: нет null, undefined, NaN, Infinity */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|\[object /.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* ловушки {v, m}: ни одна не принимается как ответ, разные сообщения не ловят
+     одно значение; same — равенство значений, show — запись значения в отчёте */
+  traps:function(list,tag,errs,isAns,same,show){
+    same=same||function(a,b){return a===b;};
+    show=show||function(v){return String(v);};
+    (list||[]).forEach(function(t,i){
+      if(!t||!t.m)errs.push(tag+': ловушка без сообщения');
+      if(isAns(t.v))errs.push(tag+': ловушка '+show(t.v)+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&same(t.v,u.v))errs.push(tag+': две ловушки ловят одно значение '+show(t.v));}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__ALG_SELFTEST_KIT_END__*/
+/* ================= ЗАЧЁТ (решение D9): по задаче из каждой из 10 групп =================
+   Вид внутри группы случайный; одна попытка, подсказок и лестницы нет; в
+   зачёте — голый вердикт, в итогах — строка диагностики по ловушкам. В журнал —
+   один вердикт на задачу; solvedByType зачёт не трогает (как в 03A). */
+function buildQuiz8(){
+  const list=GROUPS.map(g=>GEN[pick(genTypesOf(g.k))]());
+  for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]];}
+  return list;
+}
+const quizAns=t=>{const st=buildSteps(t);return st[st.length-1].ins[0].val;};
+function buildQuizView(){
+  const v=document.getElementById("view-quiz");
+  v.innerHTML=`<div class="card"><h2>Зачёт · ${QUIZ_TOTAL} задач</h2>
+    <p>По одной задаче из каждой группы — вперемешку. Одна попытка на задачу, подсказок и шагов нет — как на экзамене. Ответ — целое число или десятичная дробь (можно и обыкновенную: 1/4). Зачёт сдан при ${PASS_AT} верных из ${QUIZ_TOTAL}.</p>
+    <button class="act" id="quizStart">Начать зачёт</button></div>`;
+  document.getElementById("quizStart").onclick=runQuiz8;
+}
+function runQuiz8(){
+  const v=document.getElementById("view-quiz"), list=buildQuiz8(), res=[];
+  let idx=0;
+  v.innerHTML=`<div class="card"><div class="qprog" id="qProg"></div><div id="qBox"></div></div>`;
+  const prog=document.getElementById("qProg"), box=document.getElementById("qBox");
+  const dots=()=>{prog.innerHTML=list.map((q,i)=>`<span class="qd${i<res.length?(res[i].ok?" g":" r"):(i===idx?" cur":"")}"></span>`).join("")+
+    `<span class="small">&nbsp;Задача ${Math.min(idx+1,list.length)} из ${list.length}</span>`;};
+  function show(){
+    if(idx>=list.length)return finishQuiz8(list,res);
+    dots();
+    const t=list[idx];
+    box.innerHTML=`<div class="small">найди значение выражения:</div><div class="expr">${renderTask(t)}</div>
+      <div class="mrow"><input class="ans" placeholder="ответ" aria-label="Ответ"><button class="act qok">Ответить</button>
+      <button class="act sec qnx" hidden>${idx+1<list.length?"Дальше →":"Итоги →"}</button>
+      <span class="fb" aria-live="polite"></span></div>`;
+    const inp=box.querySelector("input"), fb=box.querySelector(".fb"), bOk=box.querySelector(".qok"), bNx=box.querySelector(".qnx");
+    let answered=false, moved=false;
+    const answer=()=>{
+      if(answered)return;   // двойное касание — один ответ
+      const x=parseAns(inp.value);
+      if(!x){ fb.textContent="Впиши число: целое, десятичную дробь (0,5) или обыкновенную (1/4).";fb.className="fb no";return; }  // не попытка
+      answered=true;
+      const ans=quizAns(t), ok=feq(x,ans), tr=ok?null:finalTraps(t).find(o=>feq(o.v,x));
+      res.push({t,x,ok,diag:tr?tr.m:""});
+      CP.mlog(typeGroup[t.type],ok);
+      inp.disabled=true; bOk.disabled=true;
+      fb.textContent=ok?"Верно.":"Неверно."; fb.className="fb "+(ok?"ok":"no");
+      bNx.hidden=false; dots(); bNx.focus();
+    };
+    bOk.onclick=answer;
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter"){ if(answered)bNx.click(); else answer(); }});
+    bNx.onclick=()=>{ if(!answered||moved)return; moved=true; idx++; show(); };
+    inp.focus({preventScroll:true});
+  }
+  show();
+}
+function finishQuiz8(list,res){
+  const pts=res.filter(r=>r.ok).length;
+  CP.finishQuiz(pts,QUIZ_TOTAL);   // passed — только при PASS_AT из QUIZ_TOTAL и не снимается
+  const v=document.getElementById("view-quiz");
+  v.innerHTML=`<div class="card" aria-live="polite"><div class="qscore">${pts} / ${QUIZ_TOTAL}</div>
+    <p>${pts>=PASS_AT?`Зачёт сдан: ${pts} из ${QUIZ_TOTAL} (нужно ${PASS_AT}).`:`Для зачёта нужно ${PASS_AT} из ${QUIZ_TOTAL}. Разбери ошибки ниже — и попробуй ещё раз.`}</p></div>
+    <div class="card"><h3>Разбор зачёта</h3>${res.map((r,i)=>`<div class="qrow">
+      <div>${i+1}. ${renderTask(r.t)}</div>
+      <div class="${r.ok?"ok-ink":"red-ink"}">${r.ok?"✓ верно: "+fmtFr(quizAns(r.t)):"✗ твой ответ "+fmtFr(r.x)+"; верный: "+fmtFr(quizAns(r.t))}</div>
+      ${r.ok?"":`<div class="qdiag">${r.diag||"Ошибка в вычислениях — разбери такую задачу по шагам во вкладке «Пошагово» («"+grpByK[typeGroup[r.t.type]].name+"»)."}</div>`}</div>`).join("")}
+    <p><button class="act" id="quizAgain">Пройти ещё раз</button></p></div>`;
+  document.getElementById("quizAgain").onclick=runQuiz8;
+}
 /* ================= старт ================= */
-buildRef();buildLearn();buildStep();buildMar();updScore();
+buildRef();buildLearn();buildStep();buildMar();buildQuizView();updScore();
+if(CP.REVIEW)showView("step");   // ?mode=review — сразу работа над ошибками
+if(CP.RO)selftest8();            // ?selftest=1 — маркер OGE8_SELFTEST_OK в консоли
 </script>
 </body>
 </html>
