@@ -2577,7 +2577,7 @@ function renderQuiz(el){
   el.querySelector("#q-start").onclick=()=>{ userActed=true; runQuiz(el); };
 }
 function runQuiz(el){
-  const quiz=buildQuiz14(), res=[];
+  const quiz=T.buildQuiz(), res=[];
   let idx=0;
   el.innerHTML='<div id="q-box"></div>';
   const box=el.querySelector("#q-box");
