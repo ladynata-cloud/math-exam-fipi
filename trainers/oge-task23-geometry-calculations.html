@@ -491,7 +491,8 @@ SUBS.trapBis={theme:'quad',name:'Боковая сторона трапеции'
 /* 4. trapLeg — боковая сторона AB (радикал); дано ∠B=α,∠C=β,CD */
 SUBS.trapLeg={theme:'quad',name:'Боковая сторона (через углы)',notSheet:true,
   ANG:{30:1,45:2,60:3,90:4,120:3,135:2,150:1},
-  gen(){const al=pick([30,45,60]),be=pick([120,135,150]);const t=rnd(6,17);
+  /* ∠B + ∠C = 180° дало бы AB ∥ CD — параллелограмм, а не трапецию */
+  gen(){const al=pick([30,45,60]),be=pick([120,135,150]);if(al+be===180)return SUBS.trapLeg.gen();const t=rnd(6,17);
     const CD=SUBS.trapLeg.ANG[al]*t;const r=simpRad(t,1,SUBS.trapLeg.ANG[al]*SUBS.trapLeg.ANG[be]);
     if(!r.ok)return SUBS.trapLeg.gen();return {al,be,CD};},
   calc(p){return p.CD*Math.sin(p.be*Math.PI/180)/Math.sin(p.al*Math.PI/180);},

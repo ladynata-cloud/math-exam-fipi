@@ -1290,10 +1290,12 @@ function gCheck(){
   const st=trS.b.steps[trS.gstep]; if(!st.ask) return;
   const inp=document.getElementById('gAsk'); const v=parseNum(inp?inp.value:'');
   if(!isFinite(v)){ trS.gfb={k:'warn',msg:'Впиши число в поле шага.'}; renderTrain(); return; }
-  if(gClose(v, st.ask.v)){
+  /* последний шаг — это ответ задачи: тот же допуск, что у поля ответа */
+  const fin=isFinalAskStep(trS.gstep);
+  if(fin ? approxEq(v, st.ask.v, 2e-3) : gClose(v, st.ask.v)){
     trS.gres[trS.gstep]='ok'; trS.gfb=null; trS.gtip=false;
     logEvent({e:'hint', task:trS.id, step:trS.gstep, kind:'guide-ok'});
-    if(isFinalAskStep(trS.gstep)){ finishGuided('ok'); return; }
+    if(fin){ finishGuided('ok'); return; }
     renderTrain();
   } else {
     trS.gfb={k:'err',msg:'Пока не сходится. Проверь вычисления' + (st.ask.tip?' или загляни в «подсказку».':'.')};

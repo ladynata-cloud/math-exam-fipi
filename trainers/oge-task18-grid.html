@@ -146,7 +146,9 @@ function CF(W,H){
   o.poly=(pts,st)=>{st=st||{};o.parts.push('<polygon points="'+pts.map(p=>X(p[0])+','+Y(p[1])).join(' ')+'" fill="'+(st.f||'rgba(45,112,179,.10)')+'" stroke="'+(st.c||INK)+'" stroke-width="'+(st.w||2.6)+'" stroke-linejoin="round"/>');};
   o.circle=(cx,cy,r,st)=>{st=st||{};o.parts.push('<circle cx="'+X(cx)+'" cy="'+Y(cy)+'" r="'+(r*G).toFixed(2)+'" fill="'+(st.f||'rgba(45,112,179,.08)')+'" stroke="'+(st.c||INK)+'" stroke-width="'+(st.w||2.4)+'"/>');};
   o.dot=(x,y,st)=>{st=st||{};o.parts.push('<circle cx="'+X(x)+'" cy="'+Y(y)+'" r="'+(st.r||4)+'" fill="'+(st.c||INK)+'"/>');};
-  o.lab=(x,y,t,dx,dy,st)=>{st=st||{};const px=X(x)+(dx==null?8:dx),py=Y(y)+(dy==null?-8:dy);
+  /* подпись не выходит за рамку чертежа: у нижнего и боковых краёв её поджимает внутрь */
+  o.lab=(x,y,t,dx,dy,st)=>{st=st||{};const w=P*2+W*G,h=P*2+H*G;
+    const px=Math.min(w-12,Math.max(2,X(x)+(dx==null?8:dx))),py=Math.min(h-4,Math.max(14,Y(y)+(dy==null?-8:dy)));
     o.parts.push('<text x="'+px+'" y="'+py+'" font-size="15" font-weight="900" fill="'+(st.c||INK)+'" stroke="rgba(255,253,247,.95)" stroke-width="4" paint-order="stroke" font-style="italic" font-family="Georgia,serif">'+esc(t)+'</text>');};
   o.rightSq=(x,y,ux,uy,vx,vy)=>{const s=.38, p1=[x+ux*s,y+uy*s], p2=[x+ux*s+vx*s,y+uy*s+vy*s], p3=[x+vx*s,y+vy*s];
     o.parts.push('<polyline points="'+[p1,p2,p3].map(p=>X(p[0])+','+Y(p[1])).join(' ')+'" fill="none" stroke="'+OKC+'" stroke-width="2.2"/>');
@@ -492,7 +494,8 @@ SUBS.tanA={topic:'rel',name:'Тангенс угла',ref:'tan',
   text:()=>'Найдите тангенс угла AOB, изображённого на рисунке.',
   calc:p=>p[0]/p[1],
   proto:[4,2],
-  gen(){const q=rnd(2,6),pp=rnd(1,4);return [q,pp];},
+  /* ответ ОГЭ — конечная десятичная дробь: при горизонтальном катете 3 вертикальный кратен 3 */
+  gen(){for(;;){const q=rnd(2,6),pp=rnd(1,4);if(pp!==3||q%3===0)return [q,pp];}},
   fig(p,aux){const[q,pp]=p,W=Math.max(pp+2,6),H=q+2,f=CF(W,H);
     const O=[1,1],A=[W-1,1],B=[1+pp,1+q];
     f.seg(O[0],O[1],A[0],A[1],{w:2.6});
