@@ -156,6 +156,8 @@ details.bytype td,details.bytype th{border:1px solid #cdd9e6;padding:3px 10px;fo
 nav.tabs button,button.act,.chip,.aw-tog,input.aw-dec,input.aw-one{min-height:44px}
 .aw-cell{height:44px}
 details.bytype summary{padding:12px 0;line-height:20px;cursor:pointer}
+/* на телефоне вкладки в две строки — не прилипают к верху, чтобы не закрывать задачу */
+@media (max-width:560px){ nav.tabs{position:static} }
 .crumbs{display:inline-flex;align-items:center;min-height:44px;font-size:.9em;color:var(--pen);text-decoration:none}
 .crumbs:hover{text-decoration:underline}
 button:focus-visible,input:focus-visible,.chip:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
