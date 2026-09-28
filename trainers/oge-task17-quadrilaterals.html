@@ -194,7 +194,7 @@ function figSquare(p){ // p:{sideLab, showDiag, diagLab}
   return F;
 }
 
-function figRect(p){ // p:{mode:'angle',alpha,askLab} | {mode:'bo',bo,ab,askLab}
+function figRect(p){ // p:{mode:'angle',alpha,askLab} | {mode:'bo',bo,ab,hn,sn,dn}
   const F=Fig(440,290);
   let w,h;
   if(p.mode==='angle'){ // угол alpha между диагональю и одной из сторон — честный аспект
@@ -212,9 +212,18 @@ function figRect(p){ // p:{mode:'angle',alpha,askLab} | {mode:'bo',bo,ab,askLab}
     F.arc(O,acute[0],acute[1],{lab:p.askLab||'?',c:CLR.ask,r:20});
   } else {
     F.tick(O,{x:0,y:0},1,'полудиагонали');F.tick(O,C,1,'полудиагонали');F.tick(O,B,1,'полудиагонали');F.tick(O,D,1,'полудиагонали');
-    F.lab('BO = '+fnum(p.bo),{x:w*0.25,y:h*0.75},{c:CLR.ink,dy:-6});
-    F.lab('AB = '+fnum(p.ab),{x:0,y:h/2},{dx:-8,anchor:'end'});
-    F.lab(p.askLab||'AC — ?',{x:w*0.75,y:h*0.25},{c:CLR.ask,dy:-6});
+    /* подписи — по данным задачи (какая половина диагонали и какая сторона даны, какая диагональ ищется) */
+    const norm=t=>t&&t.length===2&&t[0]==='O'?t[1]+'O':(t||'');
+    const HALF={AO:{x:w*0.25,y:h*0.25},CO:{x:w*0.75,y:h*0.75},BO:{x:w*0.25,y:h*0.75},DO:{x:w*0.75,y:h*0.25}};
+    const hn=norm(p.hn||'BO'), sn=p.sn||'AB', dn=p.dn||'AC';
+    F.lab(hn+' = '+fnum(p.bo),HALF[hn]||HALF.BO,{c:CLR.ink,dy:-6});
+    /* подпись стороны — внутри прямоугольника у середины стороны: снаружи она не влезала в рамку (AB слева обрезалась и раньше) */
+    const SIDE={AB:[{x:0,y:h/2},{dx:8,anchor:'start'}],BA:[{x:0,y:h/2},{dx:8,anchor:'start'}],CD:[{x:w,y:h/2},{dx:-8,anchor:'end'}],DC:[{x:w,y:h/2},{dx:-8,anchor:'end'}],
+      AD:[{x:w/2,y:0},{dy:-8}],DA:[{x:w/2,y:0},{dy:-8}],BC:[{x:w/2,y:h},{dy:16}],CB:[{x:w/2,y:h},{dy:16}]};
+    const sd=SIDE[sn]||SIDE.AB; F.lab(sn+' = '+fnum(p.ab),sd[0],sd[1]);
+    /* «?» — на свободной половине искомой диагонали */
+    const askAt=dn==='BD'?(hn==='BO'?HALF.DO:HALF.BO):(hn==='CO'?HALF.AO:HALF.CO);
+    F.lab(dn+' — ?',askAt,{c:CLR.ask,dy:-6});
   }
   F.lab('A',A,{dx:-12,dy:12});F.lab('D',D,{dx:12,dy:12});F.lab('C',C,{dx:12,dy:-6});F.lab('B',B,{dx:-12,dy:-6});
   F.lab('O',O,{dx:14,dy:-8});
@@ -536,7 +545,7 @@ def('rectDiagBO',{topic:'rect',name:'Диагональ по её половин
  calc:p=>2*p.half,
  gen:()=>{const half=ri(5,16);return {half,side:ri(3,2*half-2),hn:'BO',sn:'AB',dn:'AC'};}, proto:{half:7,side:6,hn:'BO',sn:'AB',dn:'AC'},
  text:p=>'Найдите '+p.dn+', если O — точка пересечения диагоналей AC и BD прямоугольника ABCD, '+p.hn+' = '+p.half+', '+p.sn+' = '+p.side+'.',
- fig:p=>figRect({mode:'bo',bo:p.half,ab:p.side,askLab:p.dn+' — ?'}),
+ fig:p=>figRect({mode:'bo',bo:p.half,ab:p.side,hn:p.hn,sn:p.sn,dn:p.dn}),
  sol:p=>['Диагонали прямоугольника равны: AC = BD — значит, и половины равны.',
   p.dn+' = 2·'+p.hn+' = 2·'+p.half+' = <b>'+(2*p.half)+'</b>. Сторона '+p.sn+' = '+p.side+' для ответа не нужна — это проверка на понимание.'],
  diag:p=>[{v:Math.sqrt(p.half*p.half+p.side*p.side),m:'Пифагор здесь не нужен: '+p.hn+' и '+p.sn+' — не катеты одного прямоугольного треугольника.'},
