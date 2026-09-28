@@ -200,6 +200,20 @@ details.teacher li{margin:4px 0}
   input.ans{width:140px;font-size:18px}
   header h1{font-size:22px}
 }
+
+/* Author analogue task 12: local cohort and accessible controls. */
+.author-cohorts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.author-cohorts button{min-height:44px;max-width:100%;padding:9px 13px;border:1px solid var(--soft);border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:14px;line-height:1.4;cursor:pointer;white-space:normal}
+.author-cohorts button[aria-pressed="true"]{border-color:var(--blue);background:#eef2fa;color:var(--blue-dark)}
+.author-cohorts button:focus-visible,.author-card button:focus-visible,.author-card input:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.author-active #modes,.author-active #modeDesc,.author-active #typesWrap,.author-active #focus,.author-active #progressPanel{display:none}
+.author-card{overflow-wrap:anywhere}
+.author-card button,.author-card input.ans{min-height:44px;max-width:100%}
+.author-card .formula-box{max-width:100%}
+.author-source{font-weight:600;color:var(--blue-dark);margin:0 0 4px}
+.author-status{font-size:15px;margin:8px 0}
+.author-card .note{margin:5px 0 10px}
+/* End author analogue task 12 styles. */
 </style>
 </head>
 <body>
@@ -209,6 +223,12 @@ details.teacher li{margin:4px 0}
   <p class="sub">Задание несложное — важно спокойно пройти цепочку: <b>прочитал формулу → понял, что ищем → подставил → посчитал → проверил формат ответа</b>. Это тренажёр навыка, а не тест на скорость.</p>
 </header>
 
+<!-- Author analogue task 12 cohort. -->
+<div class="author-cohorts" aria-label="Набор заданий">
+  <button id="legacyCohort" type="button" aria-pressed="true">Обычные задания</button>
+  <button id="authorCohort" type="button" aria-pressed="false" data-author-cohort="oge-2027-analogue-1">Авторский аналог ОГЭ-2027 · Вариант 1</button>
+</div>
+<!-- End author analogue task 12 cohort. -->
 <div class="modes" id="modes"></div>
 <p class="mode-desc" id="modeDesc"></p>
 
@@ -919,6 +939,30 @@ GENS.push({t:10,make:function(){
   };
 }});
 
+/* Author analogue task 12 canonical data; the forty generators remain intact. */
+var AUTHOR_SOURCE=Object.freeze({
+  sourceKind:'author-analogue',variantId:'oge-2027-analogue-1',
+  sourceTaskId:'oge2027-analogue-1-task-12',localTaskId:'oge2027-analogue-1-task-12',
+  status:'MISSING_APPENDED',label:'Авторский аналог ОГЭ-2027 · Вариант 1',
+  disclaimer:'Авторский материал MathExam. Не является официальным материалом ФИПИ.'
+});
+var AUTHOR_TASKS=Object.freeze([{
+  id:AUTHOR_SOURCE.localTaskId,sourceKind:AUTHOR_SOURCE.sourceKind,variantId:AUTHOR_SOURCE.variantId,
+  sourceTaskId:AUTHOR_SOURCE.sourceTaskId,answerType:'number',
+  t:2,target:'R',answer:50,
+  story:'Для электрической цепи используют формулу <span class="formula">P = U² / R</span>. При напряжении U = 110 В мощность P = 242 Вт. Выразите R и найдите сопротивление в омах.',
+  formula:'P = '+frac('U²','R'),
+  letters:[{n:'P',lab:'мощность, 242 Вт'},{n:'U',lab:'напряжение, 110 В'},{n:'R',lab:'сопротивление (это ищем)'}],
+  rearr:{options:[{html:'R = '+frac('U²','P'),ok:true},{html:'R = '+frac('P','U²'),ok:false},{html:'R = U² · P',ok:false},{html:'R = '+frac('U','P'),ok:false}]},
+  firstOp:{prompt:'Вычисли квадрат напряжения: 110².',value:12100,show:'110² = 110 · 110 = 12100.'},
+  hints:['Умножьте равенство на R и разделите на P. Не забудьте возвести напряжение в квадрат.','Из PR = U² получаем R = U² / P. Сначала вычислите 110 · 110, затем разделите результат на 242.'],
+  solution:['Из PR = U² следует R = U² / P.','R = 110² / 242 = 12100 / 242 = 50 Ом.','Ответ: 50.'],
+  distract:[{v:110/242,msg:'В числителе нужен квадрат напряжения, а не само напряжение.'},{v:242/12100,msg:'Перепутаны числитель и знаменатель: сопротивление равно U² / P.'},{v:2*110/242,msg:'Квадрат 110² — это 110 · 110, а не 2 · 110.'}],
+  subst:{tpl:'R = '+frac('%0²','%1'),vals:[110,242],decoys:[50],ev:function(v){return v[0]*v[0]/v[1]}},
+  mistake:{sol:'R = 242 / 110² = 0,02',label:'Перепутал числитель и знаменатель'}
+}]);
+/* End author analogue task 12 canonical data. */
+
 /* ===================== режимы ===================== */
 var MODES=[
   {id:'quick',label:'1. Быстрый старт',desc:'Лёгкие задания «подставить и посчитать» — чтобы почувствовать, что задание 12 тебе по силам.'},
@@ -1531,11 +1575,110 @@ $('#copyBtn').onclick=function(){
   copyText(buildReport(),$('#copyArea'));
 };
 
+/* Author analogue task 12 session controller; no legacy stats or storage writes. */
+var AUTHOR_PROGRESS={hinted:false,revealed:false,credit:'unanswered',wrongAttempts:0};
+var authorActive=false,authorLegacyFragment=null;
+function requestedAuthorTask(search){
+  if(typeof search!=='string'||!search)return false;
+  try{decodeURIComponent(search)}catch(e){return false}
+  var values=new URLSearchParams(search).getAll('task');
+  return values.length===1&&values[0]===AUTHOR_SOURCE.localTaskId;
+}
+function parseAuthorAnswer(raw){
+  var value=String(raw).trim().replace(/−/g,'-');
+  if(!/^[+-]?(?:\d+(?:[.,]\d*)?|[.,]\d+)$/.test(value))return null;
+  var number=Number(value.replace(',','.'));
+  return Number.isFinite(number)?number:null;
+}
+function authorResultText(){
+  var credit=AUTHOR_PROGRESS.credit;
+  var result=credit==='independent'?'Самостоятельно: 1 из 1.':
+    credit==='assisted'?'С подсказкой: 1 из 1. Самостоятельно: 0 из 1.':
+    credit==='shown'?'После показа решения: 1 из 1. Самостоятельно: 0 из 1.':
+    'Самостоятельно: 0 из 1. Задание ещё не решено.';
+  if(AUTHOR_PROGRESS.hinted)result+=' Подсказка использована.';
+  if(AUTHOR_PROGRESS.revealed)result+=' Разбор открыт.';
+  return result;
+}
+function updateAuthorResult(){var target=$('#authorResult');if(target)target.textContent=authorResultText()}
+function checkAuthorAnswer(){
+  var value=parseAuthorAnswer($('#ansIn').value);
+  if(value===null){showFeedback('info','Введи только число, без единиц измерения. Запятая и точка подходят.');return}
+  var task=AUTHOR_TASKS[0];
+  if(value===task.answer){
+    if(AUTHOR_PROGRESS.credit==='unanswered'){
+      AUTHOR_PROGRESS.credit=AUTHOR_PROGRESS.revealed?'shown':AUTHOR_PROGRESS.hinted?'assisted':'independent';
+    }
+    updateAuthorResult();
+    showFeedback('ok','Верно! Ответ: 50. '+authorResultText());
+    return;
+  }
+  AUTHOR_PROGRESS.wrongAttempts++;
+  var message='Пока не сходится. Попробуй ещё раз или открой подсказку.';
+  // Mathematical feedback is shown only after help has been explicitly recorded.
+  if(AUTHOR_PROGRESS.hinted||AUTHOR_PROGRESS.revealed){
+    message='Пока не сходится. Вырази R, затем возведи напряжение в квадрат и раздели на мощность.';
+    for(var i=0;i<task.distract.length;i++){
+      if(near(value,task.distract[i].v)){message='Пока не сходится. '+task.distract[i].msg;break}
+    }
+  }
+  showFeedback('warn',message);
+}
+function renderAuthorTask(){
+  var task=AUTHOR_TASKS[0];
+  var top='<p class="author-source">'+AUTHOR_SOURCE.label+'</p>'+
+    '<p class="note">'+AUTHOR_SOURCE.disclaimer+'</p>'+
+    '<p class="author-status" id="authorResult" role="status"></p>'+
+    '<p class="note">«Повторить задачу» очищает поле и закрывает разбор. Результат и история помощи сохраняются до обновления страницы.</p>';
+  $('#taskArea').innerHTML=plainCardHTML(task,top).replace('<div class="card">',
+    '<div class="card author-card" data-source-task-id="'+task.id+'">');
+  $('#fb').setAttribute('aria-live','polite');
+  $('#nextBtn').textContent='Повторить задачу';
+  $('#nextBtn').onclick=function(){renderAuthorTask()};
+  $('#checkBtn').onclick=checkAuthorAnswer;
+  $('#ansIn').addEventListener('keydown',function(e){if(e.key==='Enter')checkAuthorAnswer()});
+  var hintIndex=0;
+  $('#hintBtn').onclick=function(){
+    AUTHOR_PROGRESS.hinted=true;
+    showFeedback('warn','Подсказка: '+task.hints[Math.min(hintIndex,task.hints.length-1)]);
+    hintIndex++;updateAuthorResult();
+  };
+  $('#solBtn').onclick=function(){
+    AUTHOR_PROGRESS.revealed=true;
+    $('#sol').classList.add('show');updateAuthorResult();
+  };
+  updateAuthorResult();
+  $('#ansIn').focus({preventScroll:true});
+}
+function selectAuthorCohort(selected){
+  if(selected===authorActive)return;
+  var area=$('#taskArea');
+  if(selected){
+    authorLegacyFragment=document.createDocumentFragment();
+    while(area.firstChild)authorLegacyFragment.appendChild(area.firstChild);
+    authorActive=true;
+    document.body.classList.add('author-active');
+    renderAuthorTask();
+  }else{
+    authorActive=false;
+    document.body.classList.remove('author-active');
+    area.replaceChildren(authorLegacyFragment);
+    authorLegacyFragment=null;
+  }
+  $('#legacyCohort').setAttribute('aria-pressed',String(!authorActive));
+  $('#authorCohort').setAttribute('aria-pressed',String(authorActive));
+}
+$('#legacyCohort').onclick=function(){selectAuthorCohort(false)};
+$('#authorCohort').onclick=function(){selectAuthorCohort(true)};
+/* End author analogue task 12 session controller. */
+
 /* ===================== старт ===================== */
 renderModes();
 renderTypes();
 renderProgress();
 newTask();
+// Author analogue task 12 deep-link activation.
+if(requestedAuthorTask(window.location.search))selectAuthorCohort(true);
 </script>
 </body>
 </html>
