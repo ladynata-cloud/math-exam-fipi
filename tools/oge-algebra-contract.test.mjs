@@ -217,6 +217,11 @@ section('5. ловушки и адресная диагностика', () => {
           const t1 = R7.truth(t.opts[i].html, sh), t0 = R7.truth(t.opts[i].html, t.vals);
           if (t1 === null || t0 === null) nspecial++;
           else { nshift++; if (t1 !== want || t0 === want) err('посылка сдвига'); }
+          // числа в сообщении: промежуток на рисунке и соседний — своим делением с округлением вниз
+          const q = t.vals[d.v], lo = Number(q.n >= 0n ? q.n / q.d : -((-q.n + q.d - 1n) / q.d));
+          const f = (x) => String(x).replace('-', '−');
+          const txt = d.m.replace(/<[^>]*>/g, '');
+          if (!txt.includes('между ' + f(lo + d.s) + ' и ' + f(lo + d.s + 1)) || !txt.includes('между ' + f(lo) + ' и ' + f(lo + 1))) err('числа промежутков в сообщении');
         }
         if ((d.k === 'int' || d.k === 'half') && t.pts && t.X != null) {
           const same = Math.floor(t.pts[i].x) === Math.floor(t.X);
