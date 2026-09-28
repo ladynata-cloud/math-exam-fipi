@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ОГЭ · Задание 25 — геометрия повышенной сложности</title>
 <style>
   :root{
@@ -21,6 +21,9 @@
   .head{background:var(--ink); color:#f4f1ea; padding:16px 20px; display:flex;
     align-items:center; gap:14px; flex-wrap:wrap;}
   .head h1{font-size:18px; margin:0; font-weight:800; letter-spacing:.2px}
+  .head .crumbs{display:inline-block; color:#f2b134; font-size:13.5px; font-weight:700; text-decoration:none; margin-bottom:4px}
+  .head .crumbs:hover{text-decoration:underline}
+  .review-note{border-left:4px solid #6d28d9; background:#f3effd; border-radius:9px; padding:10px 14px; margin-bottom:12px; font-size:14.5px}
   .head .sub{font-size:12.5px; opacity:.72; margin-top:2px}
   .head .grow{flex:1}
   .badge{background:rgba(255,255,255,.14); border-radius:999px; padding:5px 12px;
@@ -155,12 +158,19 @@
     .head h1{font-size:16px}
     .col{min-width:100%}
   }
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="head">
     <div>
+      <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
       <h1>Задание 25 · геометрия повышенной сложности</h1>
       <div class="sub">ОГЭ по математике · 16 типов · разбор, тренировка, зачёт</div>
     </div>
@@ -187,13 +197,105 @@
    ====================================================================== */
 const TID='oge25-geometriya';
 const KEY='mathExamCourseProgress.v1';
-function loadStore(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
-function saveStore(o){ try{ localStorage.setItem(KEY,JSON.stringify(o)); }catch(e){} }
-function state(){ const s=loadStore(); if(!s[TID]) s[TID]={runs:0,best:0,events:[],passed:false,errByType:{}}; return s; }
-function commit(mut){ const s=state(); mut(s[TID]); saveStore(s); }
-function logEvent(ev){ commit(t=>{ t.events=t.events||[]; t.events.push(Object.assign({t:Date.now()},ev)); if(t.events.length>300) t.events=t.events.slice(-300); }); }
-function bumpErr(typeId){ commit(t=>{ t.errByType=t.errByType||{}; t.errByType[typeId]=(t.errByType[typeId]||0)+1; }); }
-function getErrByType(){ return (state()[TID].errByType)||{}; }
+
+/* ================= Контракт прогресса курса ОГЭ =================
+   docs/OGE_PROGRESS_CONTRACT.md, разделы 3–5: ядро записи, журнал ошибок,
+   режим повтора. Тела функций — как в контракте; обёрнуты в CP, чтобы не
+   столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
+   свои записи журнала, после свежего чтения ключа — две вкладки не
+   затирают друг друга. В ?selftest=1 ничего не пишется. */
+const TYPE_IDS=["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"];
+const QUIZ_TOTAL=8;   // размер зачёта
+const PASS_AT=6;       // зачёт сдан при 6 из 8
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* запись старой версии (без updatedAt: её писал код до контракта) могла
+     нести passed при любом результате зачёта — один раз пересчитываем
+     passed по сохранённому best; дальше запись несёт updatedAt и больше
+     не трогается */
+  function migrate(bestNorm){
+    if (RO) return;
+    var r = readAll()[TID];
+    if (!isObj(r) || typeof r.updatedAt === "number") return;
+    var b = bestNorm(r);
+    saveRec(function(rec){
+      rec.best = b;
+      rec.passed = b >= PASS_AT;
+      if (b > 0 || num(rec.runs) > 0) rec.total = QUIZ_TOTAL;
+    });
+  }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes, migrate:migrate };
+})();
+
+/* своя ветка all[TID]: чтение для показа; запись — только через CP.saveRec */
+function myRec(){ const r=CP.readAll()[TID]; return CP.isObj(r)?r:{}; }
+function commit(mut){ CP.saveRec(mut); }
+function logEvent(ev){ commit(t=>{ if(!Array.isArray(t.events)) t.events=[]; t.events.push(Object.assign({t:Date.now()},ev)); if(t.events.length>300) t.events=t.events.slice(-300); }); }
+function bumpErr(typeId){ commit(t=>{ if(!CP.isObj(t.errByType)) t.errByType={}; t.errByType[typeId]=CP.num(t.errByType[typeId])+1; }); }
+function getErrByType(){ const e=myRec().errByType, o={}; if(CP.isObj(e)) for(const k in e){ const n=CP.num(e[k]); if(n) o[k]=n; } return o; }
+/* решена ли задача и что писать в журнал (правила F8 делегата владельца):
+   показ (раскрытое число шага, «Сдаюсь») — решение показано: не решена, вердикта нет;
+   промах — один раз на задачу; доведена без промахов и без показа — верный вердикт */
+function trMiss(){ if(!trS.missed){ trS.missed=true; CP.mlog(String(trS.id), false); } }
+function trSolved(){ if(trS.shown) return; CP.solvedOne(String(trS.id)); if(!trS.missed) CP.mlog(String(trS.id), true); }
 
 /* ---------- числовое сравнение и разбор ответа ученика ---------- */
 function parseNum(s){
@@ -361,7 +463,7 @@ TYPES.push({
       {h:`Приравняем: <b>AD = BE = ${p}</b>, то есть <b>AD² = BE²</b>:<br>${frac('b² − c²','2')} = 2c² − ${frac('2b²','9')} ⇒ <b>13b² = 45c²</b> ⇒ b² = ${frac('45','13')}c².<br>Подставим в AD²: <b>${p}² = ${frac('b² − c²','2')} = ${frac('16','13')}c²</b> ⇒ c = ${frac('√13','4')}·${p}.`, why:null, ask:{label:'AB = c', v:AB, q:`Из равенства ${p}² = (16/13)·c² вырази сторону <b>c = AB</b>. Впиши число (можно округлить до сотых).`, tip:`c = (√13 / 4)·${p}, где √13 ≈ 3,606.`}},
       {h:`Стороны треугольника:<br><b>AB = ${ansAB.exact}</b>, &nbsp; <b>BC = ${ansBC.exact}</b>, &nbsp; <b>AC = ${ansAC.exact}</b>.`, why:null}
     ];
-    return {ans:[Object.assign({label:'AB'},ansAB),Object.assign({label:'BC'},ansBC),Object.assign({label:'AC'},ansAC)], steps, geo:{L}, gcta:`Ты нашёл <b>AB = c</b>. Теперь <b>BC = 2·AB</b>, а <b>AC = (3√5 / 4)·${L}</b> (√5 ≈ 2,236). Впиши все три стороны выше и нажми «Проверить».`};
+    return {ans:[Object.assign({label:'AB'},ansAB),Object.assign({label:'BC'},ansBC),Object.assign({label:'AC'},ansAC)], steps, geo:{L}, gcta:`<b>AB = c</b> найдено. Теперь <b>BC = 2·AB</b>, а <b>AC = (3√5 / 4)·${L}</b> (√5 ≈ 2,236). Впиши все три стороны выше и нажми «Проверить».`};
   },
   draw(p){
     const L=100; const c=Math.sqrt(13)/4*L, a=Math.sqrt(13)/2*L, b=3*Math.sqrt(5)/4*L;
@@ -397,8 +499,8 @@ function radScaleStr(coef, under){
   let val=coef*a; // рациональный множитель перед √u
   const vr=Math.round(val*1e6)/1e6;
   if(u===1){ return fmtNum(coef*a); }
-  // если множитель целый — красиво
-  if(Math.abs(vr-Math.round(vr))<1e-9) return `${Math.round(vr)}${rad(u)}`;
+  // если множитель целый — красиво; множитель 1 не пишем: √30, а не 1√30
+  if(Math.abs(vr-Math.round(vr))<1e-9){ const k=Math.round(vr); return `${k===1?'':k}${rad(u)}`; }
   return `${fmtNum(vr)}${rad(u)}`;
 }
 
@@ -414,7 +516,7 @@ TYPES.push({
       {h:`Углы <b>A</b> и <b>B</b> прилежат к боковой стороне AB, поэтому <b>∠A + ∠B = 180°</b>. Тогда для их половин: <b>∠KAB + ∠KBA = 90°</b>, значит в треугольнике AKB угол <b>∠AKB = 90°</b>.`, why:`Сумма углов параллелограмма, прилежащих к одной стороне, равна 180° (односторонние углы при параллельных AD ∥ BC).`},
       {h:`Точка K лежит на биссектрисе угла A ⇒ равноудалена от прямых <b>AB</b> и <b>AD</b>. K на биссектрисе угла B ⇒ равноудалена от <b>AB</b> и <b>BC</b>. Значит <b>dist(K, AD) = dist(K, BC) = dist(K, AB) = ${h}</b>.`, why:`Каждая точка биссектрисы угла равноудалена от его сторон.`},
       {h:`Стороны AD и BC параллельны, K между ними ⇒ расстояние между ними равно <b>${h} + ${h} = ${2*h}</b>. Это высота параллелограмма, опущенная на основание BC.`, why:null, ask:{label:'высота', v:2*h, q:`Точка K равноудалена от AB, от AD и от BC (лежит на двух биссектрисах). Прямые AD и BC параллельны, а K лежит между ними. Чему равна высота параллелограмма — расстояние между AD и BC?`, tip:`Это сумма двух равных расстояний от K до параллельных прямых AD и BC.`}},
-      {h:`Площадь: <b>S = BC · (высота) = ${BC} · ${2*h} = ${S}</b>.`, why:`Площадь параллелограмма = основание × высота.`, ask:{label:'S', v:S, q:`Площадь параллелограмма = основание × высоту. Основание BC = ${BC}, высоту ты нашёл на прошлом шаге. Посчитай площадь S.`, tip:`S = ${BC} × (высоту, найденную на прошлом шаге).`}}
+      {h:`Площадь: <b>S = BC · (высота) = ${BC} · ${2*h} = ${S}</b>.`, why:`Площадь параллелограмма = основание × высота.`, ask:{label:'S', v:S, q:`Площадь параллелограмма = основание × высоту. Основание BC = ${BC}, высота найдена на прошлом шаге. Посчитай площадь S.`, tip:`S = ${BC} × (высоту, найденную на прошлом шаге).`}}
     ];
     return {ans:[{label:'S',v:S,exact:''+S}], steps, geo:{BC,h}};
   },
@@ -466,7 +568,7 @@ TYPES.push({
       {h:`M — середина AB, ∠MBN = ∠MAD (накрест при AB), ∠BMN = ∠AMD (вертикальные) ⇒ <b>△MBN = △MAD</b> ⇒ <b>BN = AD</b>.`, why:`Второй признак равенства (по стороне MB = MA и двум прилежащим углам).`},
       {h:`На прямой BC: <b>CN = CB + BN = ${BC} + AD</b>, и <b>CN = CD = ${CD}</b>. Значит <b>${BC} + AD = ${CD}</b>, откуда <b>AD = ${AD}</b>.`, why:null, ask:{label:'AD', v:AD, q:`На прямой BC получилось CN = CB + BN = BC + AD, и одновременно CN = CD. Приравняй и найди большее основание AD.`, tip:`Из BC + AD = CD следует AD = CD − BC.`}},
       {h:`Найдём высоту <b>h</b>. Опустим высоты BH₁ и CH₂ на AD; пусть AH₁ = u, H₂D = v. Тогда <b>u + v = AD − BC = ${den}</b>, а из прямоугольных треугольников <b>AB² − CD² = u² − v² = (u−v)(u+v)</b> ⇒ <b>u − v = ${fmtNum(umv)}</b>. Отсюда u = ${fmtNum(u)}, v = ${fmtNum(v)}, <b>h = √(AB² − u²) = ${fmtNum(h)}</b>.`, why:`Высоты трапеции равны; разность квадратов боковых даёт разность проекций.`, ask:{label:'высота h', v:h, q:`Опусти высоты на AD; пусть u, v — проекции боковых сторон. Тогда u + v = AD − BC, а u − v = (AB² − CD²)/(AD − BC). Найди высоту h = √(AB² − u²). Можно округлить до сотых.`, tip:`Сначала u = ((u+v) + (u−v))/2, затем h = √(AB² − u²).`}},
-      {h:`Площадь: <b>S = ${frac(`BC + AD`,'2')} · h = ${frac(`${BC} + ${AD}`,'2')} · ${fmtNum(h)} = ${fmtNum(S)}</b>.`, why:`Площадь трапеции = полусумма оснований × высота.`, ask:{label:'S', v:S, q:`Площадь трапеции = полусумма оснований × высоту. Основания BC и AD известны, высоту ты нашёл. Посчитай площадь S.`, tip:`S = ((BC + AD)/2) · h.`}}
+      {h:`Площадь: <b>S = ${frac(`BC + AD`,'2')} · h = ${frac(`${BC} + ${AD}`,'2')} · ${fmtNum(h)} = ${fmtNum(S)}</b>.`, why:`Площадь трапеции = полусумма оснований × высота.`, ask:{label:'S', v:S, q:`Площадь трапеции = полусумма оснований × высоту. Основания BC и AD известны, высота найдена. Посчитай площадь S.`, tip:`S = ((BC + AD)/2) · h.`}}
     ];
     return {ans:[{label:'S',v:S,exact:fmtNum(S)}], steps, geo:{AB,CD,BC,AD,u,v,h}};
   },
@@ -513,7 +615,7 @@ TYPES.push({
       {h:`Итак, два данных отрезка — это ${frac('a+b','2')} и ${frac('a−b','2')}. Бо́льший (<b>${pmax}</b>) — средняя линия, меньший (<b>${pmin}</b>) — связка оснований:<br><b>${frac('a+b','2')} = ${pmax}</b>, &nbsp; <b>${frac('a−b','2')} = ${pmin}</b>.`, why:null, ask:{label:'большее основание a', v:a, q:`Больший из двух данных отрезков — это средняя линия (a+b)/2, меньший — связка оснований (a−b)/2. Сложи эти два равенства почленно и найди большее основание a.`, tip:`Сложи оба равенства: дробная часть с b сократится, слева останется само a.`}},
       {h:`Складывая и вычитая: <b>a = ${pmax} + ${pmin} = ${a}</b>, &nbsp; <b>b = ${pmax} − ${pmin} = ${b}</b>.`, why:null}
     ];
-    return {ans:[{label:'a (большее)',v:a,exact:''+a},{label:'b (меньшее)',v:b,exact:''+b}], steps, geo:{al,be,a,b}, gcta:`Большее основание a ты нашёл (это сумма двух отрезков). Меньшее основание <b>b</b> — их <b>разность</b> (вычти из большего отрезка меньший). Впиши оба основания выше и нажми «Проверить».`};
+    return {ans:[{label:'a (большее)',v:a,exact:''+a},{label:'b (меньшее)',v:b,exact:''+b}], steps, geo:{al,be,a,b}, gcta:`Большее основание a найдено (это сумма двух отрезков). Меньшее основание <b>b</b> — их <b>разность</b> (вычти из большего отрезка меньший). Впиши оба основания выше и нажми «Проверить».`};
   },
   draw(p){
     const [al,be,s1,s2]=p; const pmax=Math.max(s1,s2),pmin=Math.min(s1,s2); const a=pmax+pmin, b=pmax-pmin;
@@ -573,7 +675,7 @@ TYPES.push({
     const Aang=RAD(180-C), Dang=RAD(180-B);
     const Bp=rayCircle(Ap,[Math.cos(Aang),Math.sin(Aang)],O,R);
     const Cp=rayCircle(Dp,[Math.cos(Math.PI-Dang),Math.sin(Dang)],O,R);
-    const pts=[Ap,Dp,O]; if(Bp)pts.push(Bp); if(Cp)pts.push(Cp);
+    const pts=[Ap,Dp,O,[0,R],[0,-R]]; if(Bp)pts.push(Bp); if(Cp)pts.push(Cp);   // окружность целиком в кадре
     const M=fit(pts,VW,VH,PAD).m;
     const A_=M(...Ap),D_=M(...Dp),O_=M(...O),B_=Bp?M(...Bp):null,C_=Cp?M(...Cp):null;
     let s='';
@@ -707,7 +809,7 @@ TYPES.push({
       {h:`Касательная к описанной окружности в точке <b>A</b> перпендикулярна радиусу <b>AO</b>. По условию <b>BD ⟂ AO</b>, значит <b>BD ∥ (касательной в A)</b>.`, why:`Радиус, проведённый в точку касания, перпендикулярен касательной.`},
       {h:`Угол между касательной в A и хордой <b>AB</b> равен вписанному <b>∠ACB</b> (угол в другом сегменте). Так как BD параллельна касательной, <b>∠ABD = ∠ACB</b>. Кроме того, угол <b>∠A</b> общий, поэтому <b>△ABD ∼ △ACB</b>.`, why:`Угол между касательной и хордой равен вписанному углу, опирающемуся на эту хорду; далее — признак подобия по двум углам.`},
       {h:`Из подобия <b>${frac('AB','AC')} = ${frac('AD','AB')}</b> ⇒ <b>AD = ${frac('AB²','AC')} = ${frac(''+AB*AB, ''+AC)} = ${fmtNum(AD)}</b>.`, why:`Соответственные стороны подобных треугольников пропорциональны.`, ask:{label:'AD', v:AD, q:`Из подобия △ABD ∼ △ACB следует AB/AC = AD/AB, то есть AD = AB²/AC. Стороны AB и AC даны в условии. Посчитай AD (можно округлить до сотых).`, tip:`AD = AB² / AC = ${AB*AB} / ${AC}.`}},
-      {h:`<b>CD = AC − AD = ${AC} − ${fmtNum(AD)} = ${frac('AC² − AB²','AC')} = ${fmtNum(CD)}</b>.`, why:null, ask:{label:'CD', v:CD, q:`Точка D лежит на стороне AC, поэтому CD = AC − AD. Величину AD ты нашёл на прошлом шаге. Посчитай CD.`, tip:`CD = AC − AD = ${AC} − AD.`}}
+      {h:`<b>CD = AC − AD = ${AC} − ${fmtNum(AD)} = ${frac('AC² − AB²','AC')} = ${fmtNum(CD)}</b>.`, why:null, ask:{label:'CD', v:CD, q:`Точка D лежит на стороне AC, поэтому CD = AC − AD. Величина AD найдена на прошлом шаге. Посчитай CD.`, tip:`CD = AC − AD = ${AC} − AD.`}}
     ];
     return {ans:[{label:'CD',v:CD,exact:fmtNum(CD)}], steps, geo:{AB,AC}};
   },
@@ -726,7 +828,8 @@ TYPES.push({
       return [ux,uy]; }
     const O=circum(A,B,C);
     const AD=AB*AB/AC; const D=lerp(A,C,AD/AC);
-    const M=fit([A,B,C,O,D],VW,VH,PAD).m;
+    const Rc=Math.hypot(A[0]-O[0],A[1]-O[1]);   // описанная окружность целиком в кадре
+    const M=fit([A,B,C,O,D,[O[0]-Rc,O[1]],[O[0]+Rc,O[1]],[O[0],O[1]-Rc],[O[0],O[1]+Rc]],VW,VH,PAD).m;
     const A_=M(...A),B_=M(...B),C_=M(...C),O_=M(...O),D_=M(...D);
     // радиус описанной в px
     const Rpx=len2(sub(A_,O_));
@@ -759,7 +862,7 @@ TYPES.push({
       {h:`Точка M лежит на полуокружности с диаметром BC ⇒ <b>∠BMC = 90°</b>. Значит MD — высота прямоугольного треугольника BMC, опущенная на гипотенузу BC, поэтому <b>MD² = BD · DC</b>.`, why:`Вписанный угол, опирающийся на диаметр, прямой; высота из прямого угла есть среднее геометрическое проекций катетов на гипотенузу.`},
       {h:`H — ортоцентр, лежит на высоте AD. Рассмотрим прямоугольные треугольники <b>△BDH</b> и <b>△ADC</b> (прямые углы при D). У них <b>∠HBD = ∠CAD</b> (углы со взаимно перпендикулярными сторонами) ⇒ <b>△BDH ∼ △ADC</b>, откуда <b>DH · AD = BD · DC</b>.`, why:`BH ⟂ AC и AD ⟂ BC, поэтому ∠HBD = ∠DAC; подобие даёт DH·AD = BD·DC.`},
       {h:`Значит <b>DH · AD = MD²</b> ⇒ <b>DH = ${frac('MD²','AD')} = ${frac(''+MD*MD, ''+AD)} = ${fmtNum(DH)}</b>.`, why:null, ask:{label:'DH', v:DH, q:`Из MD² = BD·DC и DH·AD = BD·DC следует DH·AD = MD², то есть DH = MD²/AD. Величины AD и MD даны в условии. Посчитай DH (можно округлить до сотых).`, tip:`DH = MD² / AD = ${MD*MD} / ${AD}.`}},
-      {h:`<b>AH = AD − DH = ${AD} − ${fmtNum(DH)} = ${frac('AD² − MD²','AD')} = ${fmtNum(AH)}</b>.`, why:null, ask:{label:'AH', v:AH, q:`Точка H лежит на высоте AD, поэтому AH = AD − DH. Величину DH ты нашёл на прошлом шаге. Посчитай AH.`, tip:`AH = AD − DH = ${AD} − DH.`}}
+      {h:`<b>AH = AD − DH = ${AD} − ${fmtNum(DH)} = ${frac('AD² − MD²','AD')} = ${fmtNum(AH)}</b>.`, why:null, ask:{label:'AH', v:AH, q:`Точка H лежит на высоте AD, поэтому AH = AD − DH. Величина DH найдена на прошлом шаге. Посчитай AH.`, tip:`AH = AD − DH = ${AD} − DH.`}}
     ];
     return {ans:[{label:'AH',v:AH,exact:fmtNum(AH)}], steps, geo:{AD,MD}};
   },
@@ -803,7 +906,7 @@ TYPES.push({
     const steps=[
       {h:`Пусть O₁, O₂ — центры (радиусы r₁ = ${r1}, r₂ = ${r2}), точка касания T, <b>d = O₁O₂ = r₁ + r₂ = ${d}</b>. Общие касательные AC и BD симметричны относительно линии центров, поэтому A, B (и C, D) симметричны, а хорды <b>AB ⟂ O₁O₂</b> и <b>CD ⟂ O₁O₂</b> ⇒ <b>AB ∥ CD</b>.`, why:`Конфигурация симметрична относительно прямой центров, значит хорды перпендикулярны ей и параллельны между собой.`, ask:{label:'d = O₁O₂', v:d, q:`Окружности касаются внешним образом, поэтому расстояние между центрами d = O₁O₂ равно сумме радиусов. Посчитай d.`, tip:`d = r₁ + r₂ = ${r1} + ${r2}.`}},
       {h:`Проекции точек касания на линию центров дают положения хорд. Для внешней касательной перпендикуляры O₁A и O₂C параллельны; из подобия проекция даёт расстояние между хордами <b>${frac('d² − (r₁ − r₂)²','d')}</b>.`, why:`O₁A ∥ O₂C (обе ⟂ касательной); проекции точек касания на O₁O₂ отстоят на (d² − (r₁−r₂)²)/d.`},
-      {h:`Так как d = r₁ + r₂: <b>d² − (r₁ − r₂)² = (r₁+r₂)² − (r₁−r₂)² = 4r₁r₂</b>. Значит расстояние <b>= ${frac('4r₁r₂','r₁ + r₂')} = ${frac(''+4*r1*r2, ''+d)} = ${fmtNum(dist)}</b>.`, why:null, ask:{label:'расстояние', v:dist, q:`Расстояние между хордами = (d² − (r₁ − r₂)²)/d, а при d = r₁ + r₂ это упрощается до 4·r₁·r₂/(r₁ + r₂). Радиусы даны, d ты нашёл. Посчитай расстояние (можно округлить до сотых).`, tip:`расстояние = 4·r₁·r₂ / (r₁ + r₂) = ${4*r1*r2} / ${d}.`}}
+      {h:`Так как d = r₁ + r₂: <b>d² − (r₁ − r₂)² = (r₁+r₂)² − (r₁−r₂)² = 4r₁r₂</b>. Значит расстояние <b>= ${frac('4r₁r₂','r₁ + r₂')} = ${frac(''+4*r1*r2, ''+d)} = ${fmtNum(dist)}</b>.`, why:null, ask:{label:'расстояние', v:dist, q:`Расстояние между хордами = (d² − (r₁ − r₂)²)/d, а при d = r₁ + r₂ это упрощается до 4·r₁·r₂/(r₁ + r₂). Радиусы даны, d найдено. Посчитай расстояние (можно округлить до сотых).`, tip:`расстояние = 4·r₁·r₂ / (r₁ + r₂) = ${4*r1*r2} / ${d}.`}}
     ];
     return {ans:[{label:'расстояние',v:dist,exact:fmtNum(dist)}], steps, geo:{r1,r2}};
   },
@@ -812,7 +915,7 @@ TYPES.push({
     const nx=(r1-r2)/d, ny=Math.sqrt(Math.max(0,1-nx*nx));
     const A=[r1*nx, r1*ny], B=[r1*nx, -r1*ny];
     const C=[d+r2*nx, r2*ny], D=[d+r2*nx, -r2*ny];
-    const M=fit([O1,O2,[0,r1],[0,-r1],[d,r2],[d,-r2],A,B,C,D],VW,VH,PAD).m;
+    const M=fit([O1,O2,[0,r1],[0,-r1],[-r1,0],[d,r2],[d,-r2],[d+r2,0],A,B,C,D],VW,VH,PAD).m;   // обе окружности целиком в кадре
     const O1_=M(...O1),O2_=M(...O2),T_=M(...T),A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D);
     const r1p=len2(sub(M(r1,0),O1_)), r2p=len2(sub(M(d+r2,0),O2_));
     let s='';
@@ -1214,19 +1317,33 @@ function renderLearnDetail(id){
     <h2 style="margin-top:18px">Решение по шагам</h2>
     ${stepsHTML(b.steps)}
     <div class="ansrow"><div class="ans-final">Ответ: ${ansTxt}</div></div>
-    <div class="notsheet" style="margin-top:14px"><b>Чего на листе справочных материалов нет</b>${T.notSheet}</div>
+    ${typeof T.notSheet==='string'?`<div class="notsheet" style="margin-top:14px"><b>Чего на листе справочных материалов нет</b>${T.notSheet}</div>`:''}
     <div class="ansrow"><button class="btn blue" data-act="train-this" data-id="${T.id}">Тренировать этот тип →</button></div>`;
   $('panel-learn').innerHTML=h;
 }
 
 /* -------------------- ТРЕНИРОВКА -------------------- */
-let trS=null; // {id,p,b,hints,wrong,done,surrender}
+const PNOTE25='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без показа решения; ошибка, исправленная самостоятельно, этому не мешает. Если показано число шага («показать» в проводке) или всё решение («Сдаюсь — решение»), задача отмечается «решение показано» — к такому типу стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
+let trS=null; // {id,p,b,hints,wrong,done,surrender,missed,shown}
+let trReview=CP.REVIEW, trReviewEmpty=false;      // ?mode=review: задачи только из открытых типов журнала
+function reviewIds(){ return CP.openTypes().map(Number).filter(id=>byId(id)); }
+function nextReviewTask(){
+  const ids=reviewIds();
+  if(!ids.length){ trReview=false; trReviewEmpty=true; trS=null; renderTrain(); return; }
+  const pool=ids.length>1&&trS?ids.filter(id=>id!==trS.id):ids;
+  newTrainTask(rnd(pool.length?pool:ids));
+}
+function reviewNote(){
+  if(trReview) return `<div class="review-note" role="status"><b>Работа над ошибками:</b> задачи только из открытых типов журнала (${reviewIds().length}). Тип закрывается тремя задачами подряд, решёнными без промаха.</div>`;
+  if(trReviewEmpty) return '<div class="review-note" role="status">Открытых типов в журнале ошибок нет — обычная тренировка.</div>';
+  return '';
+}
 function renderTrain(){
-  if(!trS){ renderTrainPicker(); return; }
+  if(!trS){ if(trReview){ nextReviewTask(); return; } renderTrainPicker(); return; }
   const T=byId(trS.id), b=trS.b;
   const inputs=b.ans.map((a,i)=>`<label style="font-size:13.5px;font-weight:700">${a.label} =
-     <input class="num" data-ai="${i}" inputmode="decimal" placeholder="число" ${trS.done?'disabled':''}></label>`).join(' ');
-  let h=`<div class="backline"><button class="link" data-act="train-pick">← выбрать другой тип</button>
+     <input class="num" data-ai="${i}" inputmode="decimal" placeholder="число" value="${esc((trS.inp&&trS.inp[i])||'')}" ${trS.done?'disabled':''}></label>`).join(' ');
+  let h=reviewNote()+`<div class="backline"><button class="link" data-act="train-pick">← выбрать другой тип</button>
       &nbsp;·&nbsp; <span class="pill ${T.pill}">${PILLNAME[T.pill]}</span> <b style="font-size:13px">№${T.id}. ${T.title}</b></div>
     <div class="row">
       <div class="col" style="max-width:520px"><div class="fig">${T.draw(trS.p)}</div></div>
@@ -1239,12 +1356,13 @@ function renderTrain(){
             ${(!trS.gmode&&!trS.done)?`<button class="btn ghost small" data-act="tr-hint">🪜 Шаг за шагом</button>`:''}
             ${(!trS.done)?`<button class="btn ghost small" data-act="tr-give">Сдаюсь — решение</button>`:''}
           </div>
-          <div class="fb ${trS.fb?('show '+trS.fb.k):''}" id="trFb">${trS.fb?trS.fb.msg:''}</div>
+          <div class="fb ${trS.fb?('show '+trS.fb.k):''}" id="trFb" role="status" aria-live="polite">${trS.fb?trS.fb.msg:''}</div>
           <div class="stat">Пройдено шагов: ${trS.gres?trS.gres.filter(Boolean).length:0} · подсказок: ${trS.hints} · неверных попыток: ${trS.wrong}</div>
-          ${trS.done?'<div class="ansrow"><button class="btn" data-act="tr-next" data-id="'+trS.id+'">Следующая задача →</button></div>':''}
+          ${trS.done?'<div class="ansrow"><button class="btn" data-act="tr-next" data-id="'+trS.id+'">'+(trReview?'Следующая задача из повтора →':'Следующая задача →')+'</button></div>':''}
         </div>
       </div>
     </div>`;
+  h+=PNOTE25;
   if(trS.gmode){ h+=guidedHTML(); }
   else if(trS.reveal>0){ h+=`<div class="hintbox">${stepsHTML(b.steps, trS.reveal)}</div>`; }
   $('panel-train').innerHTML=h;
@@ -1253,10 +1371,10 @@ function renderTrain(){
 function gClose(v, target){ return approxEq(v, target, 6e-3, 0.02); }
 function gInfo(){ const steps=trS.b.steps; const last=steps.length-1; const finalAsk=!!(steps[last]&&steps[last].ask); return {last, finalAsk, gT: finalAsk?last:Math.max(0,last-1)}; }
 function isFinalAskStep(i){ const g=gInfo(); return g.finalAsk && i===g.last; }
-function gFinalCTA(){ return `<div class="gcta">${trS.b.gcta || 'Дальше — сам: доведи решение до числа, впиши ответ в поле выше и нажми «Проверить».'}</div>`; }
+function gFinalCTA(){ return `<div class="gcta">${trS.b.gcta || 'Дальше — самостоятельно: доведи решение до числа, впиши ответ в поле выше и нажми «Проверить».'}</div>`; }
 function guidedHTML(){
   const b=trS.b, steps=b.steps; const {last,finalAsk,gT}=gInfo();
-  let h='<div class="guidebox"><div class="guidehead">🪜 ПРОВОДКА ПО РЕШЕНИЮ — на каждом шаге считаешь сам</div><ol class="gsteps">';
+  let h='<div class="guidebox"><div class="guidehead">🪜 ПРОВОДКА ПО РЕШЕНИЮ — на каждом шаге считаешь самостоятельно</div><ol class="gsteps">';
   for(let i=0;i<=trS.gstep;i++){
     const st=steps[i]; const res=trS.gres[i]||''; const cur=(i===trS.gstep);
     const asking = st.ask && cur && !res;
@@ -1271,10 +1389,10 @@ function guidedHTML(){
             <button class="btn ghost small" data-act="g-reveal">показать</button>
           </div>`;
       if(st.ask.tip) h+=`<div class="gtip${trS.gtip?' on':''}">💡 ${st.ask.tip}</div>`;
-      if(trS.gfb) h+=`<div class="fb show ${trS.gfb.k}" style="margin-top:9px">${trS.gfb.msg}</div>`;
+      if(trS.gfb) h+=`<div class="fb show ${trS.gfb.k}" style="margin-top:9px" role="status" aria-live="polite">${trS.gfb.msg}</div>`;
     } else {
       h+=`<div class="gh">${st.h}</div>`;
-      if(st.ask && res) h+=`<div class="gdone ${res==='rev'?'rev':''}">${st.ask.label} = <b>${fmtNum(st.ask.v)}</b> — ${res==='rev'?'показано':'ты посчитал верно ✓'}</div>`;
+      if(st.ask && res) h+=`<div class="gdone ${res==='rev'?'rev':''}">${st.ask.label} = <b>${fmtNum(st.ask.v)}</b> — ${res==='rev'?'показано':'посчитано верно ✓'}</div>`;
       if(cur){
         if(i<gT) h+=`<div style="margin-top:9px"><button class="btn ghost small" data-act="g-next">Дальше →</button></div>`;
         else if(!finalAsk) h+= gFinalCTA();
@@ -1290,38 +1408,44 @@ function gCheck(){
   const st=trS.b.steps[trS.gstep]; if(!st.ask) return;
   const inp=document.getElementById('gAsk'); const v=parseNum(inp?inp.value:'');
   if(!isFinite(v)){ trS.gfb={k:'warn',msg:'Впиши число в поле шага.'}; renderTrain(); return; }
-  if(gClose(v, st.ask.v)){
+  /* последний шаг — это ответ задачи: тот же допуск, что у поля ответа */
+  const fin=isFinalAskStep(trS.gstep);
+  if(fin ? approxEq(v, st.ask.v, 2e-3) : gClose(v, st.ask.v)){
     trS.gres[trS.gstep]='ok'; trS.gfb=null; trS.gtip=false;
-    logEvent({e:'hint', task:trS.id, step:trS.gstep, kind:'guide-ok'});
-    if(isFinalAskStep(trS.gstep)){ finishGuided('ok'); return; }
+    logEvent({e:'step_ok', task:trS.id, step:trS.gstep});
+    if(fin){ finishGuided('ok'); return; }
     renderTrain();
   } else {
+    trMiss();
     trS.gfb={k:'err',msg:'Пока не сходится. Проверь вычисления' + (st.ask.tip?' или загляни в «подсказку».':'.')};
     renderTrain();
   }
 }
 function gReveal(){
   const st=trS.b.steps[trS.gstep]; if(!st.ask) return;
-  trS.gres[trS.gstep]='rev'; trS.gfb=null; trS.gtip=false;
+  trS.gres[trS.gstep]='rev'; trS.gfb=null; trS.gtip=false; trS.shown=true;
   if(isFinalAskStep(trS.gstep)){ finishGuided('rev'); return; }
-  trS.hints++; logEvent({e:'hint', task:trS.id, step:trS.gstep, kind:'guide-reveal'});
+  trS.hints++; logEvent({e:'shown', task:trS.id, step:trS.gstep, kind:'guide-reveal'});
   renderTrain();
 }
 function finishGuided(mode){
   trS.done=true; const b=trS.b; const ansTxt=b.ans.map(a=>`${a.label} = ${a.exact}`).join(', ');
   if(mode==='ok'){
-    trS.fb={k:'ok',msg:`Верно! Шаг за шагом ты дошёл до ответа: ${ansTxt}. Засчитано как решение по шагам.`};
-    logEvent({e:'solved', task:trS.id, via:'guided', mistakes:trS.wrong, hints:trS.hints});
+    trS.fb={k:'ok',msg:trS.shown
+      ?`Ответ верный: ${ansTxt}. Часть шагов показал тренажёр — задача отмечена как «решение показано». Попробуйте такую же сами: «Следующая задача».`
+      :`Верно! Шаг за шагом вы дошли до ответа: ${ansTxt}. Все числа вы нашли сами — задача засчитана как решённая по шагам.`};
+    trSolved();
+    logEvent({e:'solved', task:trS.id, via:trS.shown?'shown':'guided', mistakes:trS.wrong, hints:trS.hints});
   } else {
-    trS.surrender=true;
-    trS.fb={k:'warn',msg:`Ответ показан: ${ansTxt}. Эта задача засчитана как «сдалась».`};
+    trS.surrender=true; trS.shown=true;
+    trS.fb={k:'warn',msg:`Ответ показан: ${ansTxt}. Задача отмечена как «решение показано» — попробуйте такую же сами: «Следующая задача».`};
     bumpErr(trS.id); logEvent({e:'solved', task:trS.id, via:'surrender', mistakes:trS.wrong, hints:trS.hints});
   }
   renderTrain();
 }
 function renderTrainPicker(){
   const weak=topWeak(3);
-  let h='<div class="muted" style="margin-bottom:12px">Выберите тип для тренировки. Числа в каждой задаче меняются; чертёж перестраивается под них.</div>';
+  let h=reviewNote()+PNOTE25+'<div class="muted" style="margin-bottom:12px">Выберите тип для тренировки. Числа в каждой задаче меняются; чертёж перестраивается под них.</div>';
   if(weak.length){ h+='<div class="law" style="margin-bottom:14px"><h3>Стоит повторить (больше всего ошибок)</h3><div>'+weak.map(T=>`<button class="btn ghost small" data-act="train-this" data-id="${T.id}" style="margin:3px 5px 3px 0">№${T.id}. ${T.title}</button>`).join('')+'</div></div>'; }
   h+='<div class="tgrid">';
   for(const T of TYPES){ h+=`<div class="tcard" data-act="train-this" data-id="${T.id}"><div class="no">№${T.id}</div><span class="pill ${T.pill}">${PILLNAME[T.pill]}</span><div class="tt">${T.title}</div><div class="dsc">${T.tag}</div></div>`; }
@@ -1332,28 +1456,44 @@ function startTrain(id){ newTrainTask(id); switchTab('train'); }
 function newTrainTask(id){
   const T=byId(id); const p=rnd(T.pool);
   trS={id, p, b:T.build(p), hints:0, wrong:0, reveal:0, done:false, surrender:false, fb:null,
-       gmode:false, gstep:0, gres:[], gfb:null, gtip:false};
+       gmode:false, gstep:0, gres:[], gfb:null, gtip:false, missed:false, shown:false};
+  trS.traps=trapsFor(T, p, trS.b);
   logEvent({e:'task_start', task:id, kind:'train'});
   renderTrain();
 }
-function trCheck(){
-  const T=byId(trS.id), b=trS.b; let allOK=true, any=false;
-  document.querySelectorAll('#panel-train input[data-ai]').forEach(inp=>{
-    const i=+inp.dataset.ai; const v=parseNum(inp.value);
-    if(inp.value.trim()!=='') any=true;
-    if(!approxEq(v, b.ans[i].v, 2e-3)) allOK=false;
+/* поля ответа: пустое или нечисловое поле — не попытка и не промах */
+function readAns(sel){
+  const r={vals:[], raw:[], empty:0, bad:0};
+  document.querySelectorAll(sel).forEach(inp=>{
+    const i=+inp.dataset.ai, s=inp.value.trim(), v=parseNum(s);
+    r.raw[i]=inp.value; r.vals[i]=v;
+    if(s==='') r.empty++; else if(!isFinite(v)) r.bad++;
   });
-  if(!any){ trS.fb={k:'warn',msg:'Введите ответ в поле.'}; renderTrain(); return; }
+  return r;
+}
+function ansMsg(r, n){
+  if(r.bad) return 'Впишите число: целое или десятичную дробь, например 7,5.';
+  if(r.empty) return n>1 ? 'Заполните все поля ответа.' : 'Введите ответ в поле.';
+  return '';
+}
+function trCheck(){
+  if(trS.done) return;
+  const T=byId(trS.id), b=trS.b;
+  const r=readAns('#panel-train input[data-ai]'); trS.inp=r.raw;
+  const warn=ansMsg(r, b.ans.length);
+  if(warn){ trS.fb={k:'warn',msg:warn}; renderTrain(); return; }
+  const allOK=b.ans.every((a,i)=>approxEq(r.vals[i], a.v, 2e-3));
   if(allOK){
     trS.done=true;
-    const via = trS.surrender?'surrender':(trS.gmode?'guided':(trS.hints>0?'hint':'direct'));
+    const via = trS.shown?'shown':(trS.gmode?'guided':'direct');
     const ansTxt=b.ans.map(a=>`${a.label} = ${a.exact}`).join(', ');
-    const note = trS.gmode?' (по шагам)':(trS.hints>0?' (с подсказками)':'');
+    const note = trS.shown?' Часть шагов показал тренажёр — задача отмечена как «решение показано».':(trS.gmode?' (по шагам)':'');
     trS.fb={k:'ok',msg:`Верно! ${ansTxt}.${note}`};
-    if(!trS.surrender) logEvent({e:'solved', task:trS.id, via, mistakes:trS.wrong, hints:trS.hints});
+    trSolved();
+    logEvent({e:'solved', task:trS.id, via, mistakes:trS.wrong, hints:trS.hints});
   } else {
-    trS.wrong++; bumpErr(trS.id);
-    trS.fb={k:'err',msg:'Не сходится. Проверьте вычисления или откройте «🪜 Шаг за шагом».'};
+    trS.wrong++; bumpErr(trS.id); trMiss();
+    trS.fb={k:'err',msg:wrongMsg(b, trS.traps, r.vals) || 'Не сходится. Проверьте вычисления или откройте «🪜 Шаг за шагом».'};
     logEvent({e:'quiz_wrong', task:trS.id, mode:'train'});
   }
   renderTrain();
@@ -1365,12 +1505,118 @@ function trHint(){
   renderTrain();
 }
 function trGive(){
-  const b=trS.b; trS.gmode=false; trS.reveal=b.steps.length; trS.surrender=true; trS.done=true;
+  if(trS.done) return;
+  const b=trS.b; trS.gmode=false; trS.reveal=b.steps.length; trS.surrender=true; trS.shown=true; trS.done=true;
   const ansTxt=b.ans.map(a=>`${a.label} = ${a.exact}`).join(', ');
-  trS.fb={k:'warn',msg:`Полное решение открыто. Ответ: ${ansTxt}. Засчитано как «сдалась».`};
+  trS.fb={k:'warn',msg:`Полное решение открыто. Ответ: ${ansTxt}. Задача отмечена как «решение показано» — попробуйте такую же сами: «Следующая задача».`};
   bumpErr(trS.id);
   logEvent({e:'solved', task:trS.id, via:'surrender', mistakes:trS.wrong, hints:trS.hints});
   renderTrain();
+}
+
+/* -------------------- ЛОВУШКИ НА НЕВЕРНЫЙ ОТВЕТ --------------------
+   Решения F1 и Q3 делегата владельца. Для типа — функция (p, b) -> список
+   {v:[значение по каждому полю ответа, null — поле не проверяется], m:'сообщение'}.
+   Сообщение называет, что получилось и что спрашивают, но не диктует действие.
+   Ловушка ставится на конкретный набор чисел, только если её нельзя спутать
+   с ответом: не ближе 5 допусков проверки (допуск тот же, что у поля ответа),
+   ответ, округлённый до целых, десятых или сотых, не попадает в её полосу, а она,
+   округлённая, — в полосу ответа. Ловушки, которые одно число задевает сразу,
+   сводятся в одну, как в тренажёрах 16, 17, 18, 23. */
+const TRAPS={
+  1:(p)=>{const L=p;return [
+    {v:[L/Math.SQRT2,null,null],m:'Похоже, точка пересечения BE и AD принята серединой обоих отрезков. Серединой она является только для AD — в каком отношении она делит BE, нужно найти.'},
+    {v:[5*L/6,null,null],m:'Похоже, BE разделён точкой пересечения в отношении 2 : 1, как медиана. Но BE — биссектриса, а точка пересечения с AD — не точка пересечения медиан.'}];},
+  2:(p)=>{const [BC,h]=p;return [
+    {v:[BC*h],m:'Похоже, за высоту параллелограмма взято расстояние от K до стороны AB. Высота — это расстояние между прямыми AD и BC, а точка K лежит между ними.'},
+    {v:[4*BC*h],m:'Получилось вдвое больше верного. Площадь параллелограмма — произведение стороны на проведённую к ней высоту, без дополнительного множителя 2.'}];},
+  3:(p,b)=>{const [AB,CD,BC]=p,AD=CD-BC,h=b.geo.h;return [
+    {v:[(BC+CD)/2*h],m:'Похоже, основание AD принято равным боковой стороне CD. Эти отрезки не равны — найдите AD из условия про биссектрису угла D.'},
+    {v:[(BC+AD)*h],m:'Получилось вдвое больше верного: в формуле площади трапеции стоит полусумма оснований, а не их сумма.'}];},
+  4:(p)=>{const [,,s1,s2]=p,mx=Math.max(s1,s2),mn=Math.min(s1,s2);return [
+    {v:[(mx+mn)/2,(mx-mn)/2],m:'Похоже, средняя линия принята равной сумме оснований, а второй отрезок — их разности. Средняя линия трапеции равна полусумме оснований.'},
+    {v:[mx+mn/2,mx-mn/2],m:'Похоже, отрезок, соединяющий середины оснований, принят равным разности оснований. Он равен половине этой разности.'},
+    {v:[mx-mn,mx+mn],m:'Похоже, перепутано, какое основание большее: в первое поле — большее основание, во второе — меньшее.'}];},
+  5:(p,b)=>{const [BC,B,C]=p,AD=b.ans[0].v;return [
+    {v:[AD/2],m:'Это радиус описанной окружности, а AD — её диаметр.'},
+    {v:[BC/Math.sin(RAD((270-B-C)/2))],m:'Похоже, центральный угол, опирающийся на дугу BC, принят равным вписанному. Центральный угол вдвое больше вписанного, опирающегося на ту же дугу.'}];},
+  6:(p,b)=>{const {a,b:bb,h}=b.geo;return [
+    {v:[h*a/(a+bb)],m:'Это расстояние от точки пересечения диагоналей до большего основания, а спрашивают — до меньшего.'},
+    {v:[h/2],m:'Похоже, точка пересечения диагоналей принята за центр вписанной окружности. Это разные точки: высоту трапеции точка пересечения диагоналей делит не пополам.'}];},
+  7:(p)=>{const [AD,BC]=p;return [
+    {v:[AD*BC],m:'Это EK², а не EK.'},
+    {v:[AD-BC],m:'Это разность оснований — проекция боковой стороны CD на основание AD, а спрашивают расстояние от E до прямой CD.'}];},
+  8:(p)=>{const [AB,AC]=p;return [
+    {v:[AB*AB/AC],m:'Вы нашли AD — верный промежуточный результат, но спрашивают CD.'},
+    {v:[AC-AB],m:'Похоже, AD принято равным AB, но треугольник ABD не равнобедренный.'}];},
+  9:(p)=>{const [AD,MD]=p;return [
+    {v:[MD*MD/AD],m:'Вы нашли DH — верный промежуточный результат, но спрашивают AH.'},
+    {v:[AD-MD],m:'Похоже, точка H принята совпадающей с M. Это разные точки: M лежит на полуокружности, а H — точка пересечения высот.'}];},
+  10:(p)=>{const [r1,r2]=p;return [
+    {v:[r1+r2],m:'Это расстояние между центрами окружностей. Прямые AB и CD через центры не проходят.'},
+    {v:[2*Math.sqrt(r1*r2)],m:'Это длина отрезка общей касательной AC, а спрашивают расстояние между прямыми AB и CD.'}];},
+  11:(p)=>{const [AB,CD]=p;return [
+    {v:[Math.sqrt((AB*AB+CD*CD-AB*CD)/3)],m:'Похоже, в теореме косинусов взят угол 60°, а нужен 120°: от этого меняется знак перед произведением.'},
+    {v:[Math.sqrt(AB*AB+CD*CD+AB*CD)],m:'Это в √3 раз больше радиуса: сумма AB² + CD² + AB·CD равна 3R², а не R².'}];},
+  12:(p)=>{const [m,n,under,den]=p,cosA=Math.sqrt(under)/den,sinA=Math.sqrt(den*den-under)/den;return [
+    {v:[((m+n)/2+Math.sqrt(m*n)*cosA)/sinA],m:'Это радиус другой окружности — той, что касается продолжения стороны AB за точку A. По условию окружность касается луча AB.'},
+    {v:[((m+n)/2-Math.sqrt(m*(n-m))*cosA)/sinA],m:'Похоже, квадрат отрезка касательной взят равным AM·MN. По теореме о касательной и секущей он равен AM·AN.'}];},
+  13:(p)=>{const [pp,qq,BC]=p;return [
+    {v:[BC*pp/(2*qq)],m:'Похоже, в теореме синусов вместо синуса угла A взят его косинус.'},
+    {v:[BC*pp/Math.sqrt(pp*pp-qq*qq)],m:'Вы нашли диаметр описанной окружности, а спрашивают радиус.'}];},
+  14:(p)=>{const [AD,BC,AB]=p;return [
+    {v:[AB/2],m:'Похоже, AB принят за диаметр окружности. Окружность проходит через A и B, но её центр не на AB: она ещё касается прямой CD.'},
+    {v:[AB*(AD+BC)/(AD-BC)],m:'Вы нашли диаметр окружности, а спрашивают радиус.'}];},
+  15:(p,b)=>{const S=b.ans[0].v;return [
+    {v:[S/2],m:'Это площадь треугольника ABC, а спрашивают площадь параллелограмма.'},
+    {v:[2*S],m:'Получилось вдвое больше площади параллелограмма — похоже, площадь треугольника удвоена лишний раз.'}];},
+  16:(p)=>{const [AC,rB]=p;return [
+    {v:[AC*AC/rB],m:'Похоже, вместо половины основания AC взято всё основание.'},
+    {v:[(Math.sqrt(rB*rB+AC*AC)-rB)/2],m:'Похоже, перепутаны пропорциональные отрезки в прямоугольном треугольнике с прямым углом при вершине A и гипотенузой, соединяющей центры вписанной и вневписанной окружностей: половина основания в нём — высота, проведённая к гипотенузе, а не катет.'}];},
+};
+const TRAP_GAP=5;                                                          // запас в допусках проверки
+const trapBand=x=>Math.max(1e-6,2e-3*Math.max(1,Math.abs(x)));             // допуск approxEq(a, x, 2e-3)
+const roundTo=(x,k)=>Math.round(x*Math.pow(10,k))/Math.pow(10,k);
+/* ловушку t нельзя спутать с верным a (одно поле ответа) */
+function trapFar(t,a){
+  if(Math.abs(t-a)<TRAP_GAP*Math.max(trapBand(a),trapBand(t)))return false;
+  for(let k=0;k<=2;k++){
+    if(Math.abs(roundTo(a,k)-t)<=trapBand(t))return false;
+    if(Math.abs(roundTo(t,k)-a)<=trapBand(a))return false;
+  }
+  return true;
+}
+function trapPair(m1,m2){return 'Такой ответ получается при одной из двух ошибок — найдите свою:<br>• '+m1+'<br>• '+m2;}
+const TRAP_MANY='Не сходится. Это число получается при нескольких разных ошибках — сверьте решение по шагам в «🪜 Шаг за шагом».';
+/* ловушки собранной задачи: только различимые с ответом, совпавшие между собой — одним сообщением */
+function trapsFor(T,p,b){
+  const f=TRAPS[T.id];if(!f)return [];
+  const ans=b.ans.map(a=>a.v);
+  const ok=f(p,b).filter(t=>{let far=0;
+    for(let i=0;i<ans.length;i++){const x=t.v[i];if(x==null)continue;
+      if(!isFinite(x))return false;
+      if(Math.abs(x-ans[i])<=trapBand(ans[i]))continue;   // поле совпадает с верным — ловушку отличают другие поля
+      if(!trapFar(x,ans[i]))return false;
+      far++;}
+    return far>0;});
+  /* сводим ловушки, которые одно число задевает сразу */
+  const near=(t,u)=>t.v.every((x,i)=>x==null||u.v[i]==null||Math.abs(x-u.v[i])<TRAP_GAP*Math.max(trapBand(x),trapBand(u.v[i])));
+  const out=[],used=new Set();
+  ok.forEach((t,i)=>{if(used.has(i))return;
+    const g=[t];ok.forEach((u,j)=>{if(j>i&&!used.has(j)&&near(t,u)){g.push(u);used.add(j);}});
+    const ms=[...new Set(g.map(x=>x.m))];
+    const m=ms.length===1?ms[0]:(ms.length===2?trapPair(ms[0],ms[1]):TRAP_MANY);
+    g.forEach(x=>out.push({v:x.v,m}));});
+  return out;
+}
+/* сообщение на неверный ответ: ловушка; иначе — сколько полей верно, не называя каких */
+function wrongMsg(b,traps,vals){
+  for(const t of traps)if(t.v.every((x,i)=>x==null||approxEq(vals[i],x,2e-3)))return t.m;
+  const n=b.ans.length;if(n<2)return null;
+  const k=b.ans.filter((a,i)=>approxEq(vals[i],a.v,2e-3)).length;
+  if(!k)return null;
+  return n===2?'Одно из двух значений верно — найдите, какое не сходится.'
+    :(k===1?'Одно из трёх значений верно — проверьте остальные.':'Два значения из трёх верны — найдите, какое не сходится.');
 }
 
 /* -------------------- ЗАЧЁТ -------------------- */
@@ -1388,17 +1634,16 @@ function buildExam(){
 function renderExamIntro(){
   if(exS){ renderExam(); return; }
   const weak=topWeak(3);
-  const st=state()[TID];
+  const st=myRec(), best=CP.num(st.best), runs=CP.num(st.runs);
   let h=`<h2>Зачёт по заданию 25</h2>
-    <div class="muted" style="margin-bottom:12px">${Object.values(EXAM_QUOTA).reduce((a,b)=>a+b,0)} задач с квотами по темам (треугольник, трапеция, параллелограмм, четырёхугольник, окружность). Режим зачёта: <b>без подсказок, одна попытка на задачу</b>. Числа случайные.</div>`;
+    <div class="muted" style="margin-bottom:12px">${Object.values(EXAM_QUOTA).reduce((a,b)=>a+b,0)} задач с квотами по темам (треугольник, трапеция, параллелограмм, четырёхугольник, окружность). Режим зачёта: <b>без подсказок, одна попытка на задачу</b>. Числа случайные. Зачёт сдан при ${PASS_AT} верных из ${QUIZ_TOTAL}.</div>`;
   if(weak.length){ h+='<div class="law" style="margin-bottom:14px"><h3>Ваши слабые места (по тренировке)</h3><div class="muted" style="margin-bottom:6px">Эти типы стоит повторить в «Разборе» перед зачётом:</div><div>'+weak.map(T=>`<span class="pill ${T.pill}" style="margin:2px 4px 2px 0">№${T.id} · ${T.title}</span>`).join('')+'</div></div>'; }
-  if(st.best>0){ h+=`<div class="stat">Лучший результат: <b>${st.best}</b> · попыток зачёта: ${st.runs}</div>`; }
+  if(best>0||runs>0){ h+=`<div class="stat">Лучший результат: <b>${best} из ${QUIZ_TOTAL}</b> · попыток зачёта: ${runs}${st.passed===true?' · зачёт сдан':''}</div>`; }
   h+='<div class="ansrow"><button class="btn blue" data-act="exam-start">Начать зачёт →</button></div>';
   $('panel-exam').innerHTML=h;
 }
 function startExam(){
   exS={list:buildExam(), i:0, res:[]};
-  commit(t=>{ t.runs=(t.runs||0)+1; });
   logEvent({e:'start', kind:'exam'});
   renderExam();
 }
@@ -1418,20 +1663,23 @@ function renderExam(){
         <div class="ansrow">${inputs}</div>
         <div class="muted" style="margin-top:6px">Иррациональный ответ — десятичной дробью (округление до сотых).</div>
         <div class="ansrow"><button class="btn blue" data-act="exam-answer">Ответить</button></div>
-        <div class="fb" id="exFb"></div>
+        <div class="fb" id="exFb" role="status" aria-live="polite"></div>
       </div></div>
     </div>`;
   $('panel-exam').innerHTML=h;
 }
 function examAnswer(){
-  const q=exS.list[exS.i], b=q.b; let allOK=true, any=false;
-  document.querySelectorAll('#panel-exam input[data-ai]').forEach(inp=>{
-    const i=+inp.dataset.ai; if(inp.value.trim()!=='') any=true;
-    if(!approxEq(parseNum(inp.value), b.ans[i].v, 2e-3)) allOK=false;
-  });
-  if(!any){ const fb=$('exFb'); fb.className='fb show warn'; fb.textContent='Введите ответ.'; return; }
-  exS.res[exS.i]={correct:allOK};
+  if(exS.res[exS.i]) return;   /* одна попытка: первый вердикт окончательный */
+  const q=exS.list[exS.i], b=q.b;
+  const r=readAns('#panel-exam input[data-ai]');
+  const warn=ansMsg(r, b.ans.length);
+  if(warn){ const fb=$('exFb'); fb.className='fb show warn'; fb.textContent=warn; return; }
+  const allOK=b.ans.every((a,i)=>approxEq(r.vals[i], a.v, 2e-3));
+  exS.res[exS.i]={correct:allOK, diag:allOK?null:wrongMsg(b, trapsFor(byId(q.id), q.p, b), r.vals)};
+  document.querySelectorAll('#panel-exam input[data-ai]').forEach(inp=>{ inp.disabled=true; });
+  const ab=document.querySelector('#panel-exam [data-act="exam-answer"]'); if(ab) ab.disabled=true;
   if(!allOK) bumpErr(q.id);
+  CP.mlog(String(q.id), allOK);
   logEvent({e:allOK?'quiz_ok':'quiz_wrong', task:q.id, mode:'exam'});
   const fb=$('exFb'); fb.className='fb show '+(allOK?'ok':'err');
   const ansTxt=b.ans.map(a=>`${a.label} = ${a.exact}`).join(', ');
@@ -1439,23 +1687,24 @@ function examAnswer(){
   // авто-переход через короткую паузу заменяем кнопкой (среда без таймеров-эффектов): показать «Далее»
   fb.innerHTML += `<div class="ansrow"><button class="btn small" data-act="exam-next">${exS.i+1<exS.list.length?'Следующая →':'Итоги →'}</button></div>`;
 }
-function examNext(){ exS.i++; renderExam(); }
+function examNext(){ if(!exS||!exS.res[exS.i]) return; exS.i++; renderExam(); }
 function renderExamFin(){
   const total=exS.list.length, score=exS.res.filter(r=>r&&r.correct).length;
-  commit(t=>{ if(score>(t.best||0)) t.best=score; t.passed=true; });
+  CP.finishQuiz(score, total);
   logEvent({e:'finish', score, total, kind:'exam'});
   let dots=''; for(const r of exS.res){ dots+=`<div class="dot ${r&&r.correct?'g':'r'}"></div>`; }
   // разбор неверных
   let wrongList=exS.list.map((q,k)=>({q,k})).filter(x=>!(exS.res[x.k]&&exS.res[x.k].correct));
   let rev='';
   if(wrongList.length){ rev='<div class="review"><h3 style="font-size:14px;margin:14px 0 6px">Разобрать ошибки:</h3>'+
-    wrongList.map(({q})=>{ const T=byId(q.id); return `<div class="rline">№${T.id}. ${T.title} — <button class="link" data-act="train-this" data-id="${T.id}">тренировать этот тип →</button></div>`; }).join('')+'</div>'; }
+    wrongList.map(({q,k})=>{ const T=byId(q.id), d=exS.res[k]&&exS.res[k].diag; return `<div class="rline">№${T.id}. ${T.title} — <button class="link" data-act="train-this" data-id="${T.id}">тренировать этот тип →</button>${d?`<div class="muted" style="margin-top:4px">${d}</div>`:''}</div>`; }).join('')+'</div>'; }
   const law = score===total
     ? 'Отличный результат! Все ключевые теоремы вне листа справочных материалов вы применяете уверенно.'
     : 'Задание 25 держится на теоремах, которых нет на листе справочных материалов. Повторите отмеченные типы в «Разборе» — там для каждого объяснено, <i>почему</i> работает ключевой шаг.';
   let h=`<h2>Зачёт завершён</h2>
     <div style="font-size:40px;font-weight:800;color:${score===total?'var(--green)':'var(--ink)'}">${score} / ${total}</div>
     <div class="dots" style="margin:10px 0 4px">${dots}</div>
+    <div role="status" style="font-size:14.5px;font-weight:700;margin:6px 0 10px;color:${score>=PASS_AT?'var(--green)':'var(--ink)'}">${score>=PASS_AT?`Зачёт сдан: ${score} из ${total} (нужно ${PASS_AT}).`:`Для зачёта нужно ${PASS_AT} верных из ${total}. Повторите отмеченные типы и попробуйте ещё раз.`}</div>
     <div class="law"><h3>Итог</h3><div style="font-size:13.5px">${law}</div></div>
     ${rev}
     <div class="ansrow"><button class="btn blue" data-act="exam-again">Пройти ещё раз</button> <button class="btn ghost" data-act="go-learn">К разбору типов</button></div>`;
@@ -1464,8 +1713,69 @@ function renderExamFin(){
 }
 
 /* -------------------- СПРАВОЧНИК -------------------- */
+/*__SHEET_MAP_START__*/
+/* Лист справочных материалов ОГЭ по математике, раздел «Геометрия», — текстом,
+   без сканов (решение F5 делегата владельца). Блок побайтно одинаков в
+   тренажёрах 16, 17, 18, 23, 24, 25; копии сверяет гейт
+   tools/oge-geometry-contract.test.mjs. Состав листа меняется по годам:
+   перед новым учебным годом сверить с демоверсией ФИПИ этого года. */
+const SHEET_MAP={
+  caption:'Лист справочных материалов ОГЭ, раздел «Геометрия», — по демоверсии ФИПИ 2026 (стр. 5–6). Состав листа меняется по годам: сверяйте с демоверсией своего года.',
+  items:[
+    {id:'polyAngles',t:'Сумма углов выпуклого n-угольника',f:'180°·(n − 2)'},
+    {id:'midline',t:'Средняя линия треугольника и трапеции',f:'треугольник: MN ∥ AC, MN = AC/2<br>трапеция (BC ∥ AD): MN ∥ AD, MN = (BC + AD)/2'},
+    {id:'eqTri',t:'Правильный треугольник: описанная и вписанная окружности',f:'R = a√3/3, &nbsp;r = a√3/6<br>h = a√3/2, &nbsp;S = a<sup>2</sup>√3/4'},
+    {id:'sinLaw',t:'Теорема синусов',f:'a/sin A = b/sin B = c/sin C = 2R,<br>R — радиус описанной окружности'},
+    {id:'cosLaw',t:'Теорема косинусов',f:'c<sup>2</sup> = a<sup>2</sup> + b<sup>2</sup> − 2ab·cos C'},
+    {id:'circle',t:'Длина окружности и площадь круга',f:'C = 2πr, &nbsp;S = πr<sup>2</sup>'},
+    {id:'sPar',t:'Площадь параллелограмма',f:'S = a·h<sub>a</sub>, &nbsp;S = ab·sin γ'},
+    {id:'sTri',t:'Площадь треугольника',f:'S = ½·a·h<sub>a</sub>, &nbsp;S = ½·ab·sin γ'},
+    {id:'sTrap',t:'Площадь трапеции',f:'S = (a + b)/2 · h'},
+    {id:'sRhomb',t:'Площадь ромба',f:'S = ½·d<sub>1</sub>·d<sub>2</sub>, d<sub>1</sub>, d<sub>2</sub> — диагонали'},
+    {id:'rightTri',t:'Прямоугольный треугольник',f:'sin α = a/c, &nbsp;cos α = b/c, &nbsp;tg α = a/b<br>(c — гипотенуза, a — катет против угла α)'},
+    {id:'pyth',t:'Теорема Пифагора',f:'a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>'},
+    {id:'trigId',t:'Основное тригонометрическое тождество',f:'sin<sup>2</sup>α + cos<sup>2</sup>α = 1'},
+    {id:'trigTable',t:'Некоторые значения sin, cos, tg',f:'<div class="sm-tabwrap"><table class="sm-tab"><tr><th>α</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th><th>180°</th><th>270°</th><th>360°</th></tr>'
+      +'<tr><th>sin α</th><td>0</td><td>1/2</td><td>√2/2</td><td>√3/2</td><td>1</td><td>0</td><td>−1</td><td>0</td></tr>'
+      +'<tr><th>cos α</th><td>1</td><td>√3/2</td><td>√2/2</td><td>1/2</td><td>0</td><td>−1</td><td>0</td><td>1</td></tr>'
+      +'<tr><th>tg α</th><td>0</td><td>√3/3</td><td>1</td><td>√3</td><td>—</td><td>0</td><td>—</td><td>0</td></tr></table></div>'}
+  ]
+};
+const SHEET_MAP_CSS='.sm{margin:10px 0 14px}.sm-cap{font-size:13px;color:#555;margin:0 0 10px;line-height:1.45}'
+  +'.sm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}'
+  +'.sm-item{border:1px solid #d9d4c7;border-radius:10px;padding:10px 12px;background:#fff;font-size:14px;line-height:1.45;color:#1f2430;min-width:0}'
+  +'.sm-item.sm-used{border-color:#8fb3d9;background:#f5f9ff}.sm-item.sm-open{outline:3px solid #2d70b3;outline-offset:1px}'
+  +'.sm-t{font-weight:700;margin-bottom:4px}.sm-b{display:inline-block;min-width:22px;padding:0 6px;border-radius:11px;background:#2d70b3;color:#fff;font-size:12px;text-align:center}'
+  +'.sm-f{font-family:Georgia,"Times New Roman",serif;font-size:15px}.sm-na{font-size:12.5px;color:#6b6b6b;margin-top:6px}'
+  +'.sm-go{margin-top:8px;min-height:44px;padding:8px 12px;border-radius:9px;border:1px solid #2d70b3;background:#fff;color:#1d4f86;font:inherit;font-weight:600;cursor:pointer}'
+  +'.sm-go:focus-visible{outline:3px solid #f2b134;outline-offset:2px}.sm-tabwrap{overflow-x:auto;margin-top:4px}'
+  +'.sm-tab{border-collapse:collapse;font-size:13px;font-family:inherit}.sm-tab th,.sm-tab td{border:1px solid #cfc8b8;padding:3px 6px;text-align:center;white-space:nowrap;font-weight:400}'
+  +'.sm-tab th{background:#f3f0e8}@media (max-width:420px){.sm-grid{grid-template-columns:1fr}}@media print{.sm-go{display:none}}';
+/* Карта листа HTML-строкой. o.go(id) — атрибуты кнопки «задачи блока» или null
+   (блок в этом задании не нужен); o.label(id) — надпись кнопки; o.badge(id) —
+   число на значке; o.extra(id) — HTML под формулой (заметка, ссылки на типы);
+   o.open — id выделенного блока; o.unused — подпись блока, который не нужен
+   (пустая строка — без подписи). */
+function sheetMapHTML(o){
+  o=o||{};
+  try{
+    if(!document.getElementById('sm-css')){const st=document.createElement('style');st.id='sm-css';st.textContent=SHEET_MAP_CSS;document.head.appendChild(st);}
+  }catch(e){}
+  let h='<div class="sm"><p class="sm-cap">'+SHEET_MAP.caption+'</p><div class="sm-grid">';
+  SHEET_MAP.items.forEach(function(it){
+    const go=o.go?o.go(it.id):null, b=o.badge?o.badge(it.id):null, ex=o.extra?o.extra(it.id):'';
+    h+='<div class="sm-item'+(go||ex?' sm-used':'')+(o.open===it.id?' sm-open':'')+'" id="sm-'+it.id+'">'
+      +'<div class="sm-t">'+it.t+(b!=null&&b!==''?' <span class="sm-b">'+b+'</span>':'')+'</div>'
+      +'<div class="sm-f">'+it.f+'</div>'+(ex||'')
+      +(go?'<button type="button" class="sm-go" '+go+'>'+(o.label?o.label(it.id):'Задачи этого блока')+'</button>'
+        :(ex||o.unused===''?'':'<div class="sm-na">'+(o.unused||'в этом задании не встречается')+'</div>'))
+      +'</div>';
+  });
+  return h+'</div></div>';
+}
+/*__SHEET_MAP_END__*/
 function renderRef(){
-  let h=`<div class="notsheet" style="margin-bottom:16px"><b>Как устроен этот справочник</b>Задание 25 почти целиком опирается на факты, которых <b>нет</b> на официальном листе справочных материалов ОГЭ. Ниже — ключевые теоремы и приёмы по типам: что применяем, <i>почему</i> это работает и чего именно не найти на листе. По кнопке можно сразу перейти к тренировке типа.</div>`;
+  let h=`<div class="notsheet" style="margin-bottom:16px"><b>Как устроен этот справочник</b>Задание 25 почти целиком опирается на факты, которых <b>нет</b> на листе справочных материалов ОГЭ (что на нём есть — в конце страницы). Ниже — ключевые теоремы и приёмы по типам: что применяем, <i>почему</i> это работает и чего именно не найти на листе. По кнопке можно сразу перейти к тренировке типа.</div>`;
   const groups={}; for(const T of TYPES){ (groups[T.pill]=groups[T.pill]||[]).push(T); }
   for(const pill of ['tri','trap','par','quad','circ']){
     const list=groups[pill]; if(!list) continue;
@@ -1476,12 +1786,13 @@ function renderRef(){
         <div style="font-size:12.5px;color:var(--muted)">${T.tag}</div>
         <div class="kf">${T.refKey}</div>
         <div style="font-size:12.5px;color:#7a4d0c;background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:8px;padding:8px 10px;margin-top:8px"><b>Почему применимо:</b> ${T.refWhy}</div>
-        <div class="notsheet">${T.notSheet}</div>
+        ${typeof T.notSheet==='string'?`<div class="notsheet">${T.notSheet}</div>`:''}
         <div style="margin-top:10px"><button class="btn blue small" data-act="train-this" data-id="${T.id}">Тренировать →</button></div>
       </div>`;
     }
     h+='</div>';
   }
+  h+='<h2 style="margin:22px 0 8px">Что есть на листе справочных материалов</h2>'+sheetMapHTML({unused:''});
   $('panel-ref').innerHTML=h;
 }
 
@@ -1495,8 +1806,8 @@ document.addEventListener('click', function(ev){
   switch(act){
     case 'learn-open': learnType=id; renderLearn(); break;
     case 'learn-back': learnType=null; renderLearn(); break;
-    case 'train-this': trS=null; startTrain(id); break;
-    case 'train-pick': trS=null; renderTrain(); break;
+    case 'train-this': trReview=false; trReviewEmpty=false; trS=null; startTrain(id); break;
+    case 'train-pick': trReview=false; trReviewEmpty=false; trS=null; renderTrain(); break;
     case 'tr-check': trCheck(); break;
     case 'tr-hint': trHint(); break;
     case 'tr-give': trGive(); break;
@@ -1504,7 +1815,7 @@ document.addEventListener('click', function(ev){
     case 'g-reveal': gReveal(); break;
     case 'g-next': gNext(); break;
     case 'g-tip': trS.gtip=!trS.gtip; renderTrain(); break;
-    case 'tr-next': newTrainTask(id); break;
+    case 'tr-next': if(trReview) nextReviewTask(); else newTrainTask(id); break;
     case 'exam-start': startExam(); break;
     case 'exam-answer': examAnswer(); break;
     case 'exam-next': examNext(); break;
@@ -1514,8 +1825,125 @@ document.addEventListener('click', function(ev){
   }
 });
 
+/*__SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 (канон CLAUDE.md, решение F4 делегата
+   владельца). Блок побайтно одинаков в тренажёрах 16, 17, 18, 23, 24, 25;
+   копии сверяет гейт tools/oge-geometry-contract.test.mjs. Каждая проверка
+   дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const STK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи и решения: нет null, undefined, NaN, Infinity и «1√» */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|(^|[^\d,.])1√/.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* последний шаг разбора содержит проверяемый ответ хотя бы в одной записи */
+  last:function(step,forms,tag,errs){
+    const t=String(step==null?'':step).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ');
+    const norm=function(f){return String(f).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};
+    if(!forms.some(function(f){return f!=null&&norm(f)!==''&&t.indexOf(norm(f))>=0;}))
+      errs.push(tag+': последний шаг не содержит ответ ('+forms.filter(function(f){return f!=null;}).join(' / ')+')');
+  },
+  /* ловушки {v, e, m}: ни одна не принимается как ответ, разные сообщения не ловят одно число */
+  traps:function(list,tag,errs,isAns){
+    (list||[]).forEach(function(t,i){
+      if(!isFinite(t.v)){errs.push(tag+': ловушка — не число');return;}
+      if(isAns(t.v))errs.push(tag+': ловушка '+t.v+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&Math.abs(t.v-u.v)<=(t.e||0)+(u.e||0))errs.push(tag+': ловушки '+t.v+' и '+u.v+' ловят одно число');}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__SELFTEST_KIT_END__*/
+/* -------------------- САМОПРОВЕРКА (?selftest=1) -------------------- */
+function selftest(){
+  const errs=[];
+  if(TYPES.length!==TYPE_IDS.length)errs.push('типов '+TYPES.length+' ≠ TYPE_IDS '+TYPE_IDS.length);
+  TYPES.forEach(T=>{
+    if(typeof T.draw!=='function'||typeof T.build!=='function'||typeof T.cond!=='function'){errs.push('№'+T.id+': нет отрисовщика или сборки');return;}
+    if(TYPE_IDS.indexOf(String(T.id))<0)errs.push('№'+T.id+': нет в TYPE_IDS');
+    T.pool.forEach((p,j)=>{const tag='№'+T.id+'['+j+']';let b;
+      try{b=T.build(p);}catch(e){errs.push(tag+': исключение '+e.message);return;}
+      b.ans.forEach(a=>{if(!isFinite(a.v))errs.push(tag+': неконечный ответ '+a.label);});
+      STK.svg(T.draw(p),tag,errs);
+      STK.text([T.cond(p)].concat(b.steps.map(s=>s.h+' '+(s.why||'')+(s.ask?' '+s.ask.q+' '+s.ask.label:'')),
+        b.ans.map(a=>a.exact),[b.gcta||'',typeof T.notSheet==='string'?T.notSheet:'']).join(' '),tag,errs);
+      const last=b.steps[b.steps.length-1];
+      b.ans.forEach(a=>STK.last(last.h+(last.ask?' '+last.ask.label:''),[a.exact,fmtNum(a.v)],tag+' '+a.label,errs));
+      b.steps.forEach((s,k)=>{if(s.ask&&!isFinite(s.ask.v))errs.push(tag+': шаг '+(k+1)+' — неконечное значение');});
+      if(last.ask&&!b.ans.some(a=>approxEq(last.ask.v,a.v,2e-3)))errs.push(tag+': последний шаг проводки не равен ответу');
+      /* ловушки: ни одна не принимается как ответ, разные сообщения не ловят одно число */
+      const tr=trapsFor(T,p,b);
+      tr.forEach((t,i)=>{
+        if(b.ans.every((a,k)=>t.v[k]==null||approxEq(t.v[k],a.v,2e-3)))errs.push(tag+': ловушка совпадает с ответом');
+        tr.forEach((u,k)=>{if(k>i&&u.m!==t.m&&t.v.every((x,q)=>x==null||u.v[q]==null||Math.abs(x-u.v[q])<=trapBand(x)+trapBand(u.v[q])))
+          errs.push(tag+': две ловушки ловят одно число');});
+      });
+    });
+  });
+  const q=Object.values(EXAM_QUOTA).reduce((a,b)=>a+b,0);
+  if(q!==QUIZ_TOTAL)errs.push('квоты зачёта '+q+' ≠ '+QUIZ_TOTAL);
+  return errs;
+}
+
 /* -------------------- СТАРТ -------------------- */
-function init(){ commit(()=>{}); switchTab('learn'); }
+function init(){
+  if(CP.RO){   // ?selftest=1 — самопроверка; прогресс ученика не трогается
+    const e=selftest();STK.done('OGE25',e);
+    $('panel-learn').innerHTML='<div class="law"><h3>'+(e.length?'САМОПРОВЕРКА: ошибок '+e.length:'САМОПРОВЕРКА ПРОЙДЕНА')+'</h3>'+
+      e.slice(0,60).map(x=>'<div class="muted">'+esc(x)+'</div>').join('')+'</div>';
+    return;
+  }
+  CP.migrate(r=>CP.num(r.best)); switchTab(CP.REVIEW?'train':'learn');
+}
 init();
 </script>
 </body>

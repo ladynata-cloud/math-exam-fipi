@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ОГЭ · Задание 23 — Геометрические задачи на вычисление</title>
 <style>
 :root{
@@ -17,6 +17,9 @@ body{background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman'
 .head{text-align:center;padding:8px 0 4px}
 .head h1{font-size:24px;margin:0 0 4px;letter-spacing:.2px}
 .head .sub{color:#4a4a63;font-size:14.5px;margin:0 auto;max-width:560px}
+.head .crumbs{display:inline-block;color:#2d70b3;font-size:13.5px;font-weight:700;text-decoration:none;margin-bottom:4px}
+.head .crumbs:hover{text-decoration:underline}
+.review-note{border-left:4px solid #7c3aed;background:#f3effd;border-radius:9px;padding:10px 14px;margin:10px 0;font-size:14.5px;text-align:left}
 #badge{display:inline-block;margin-top:10px;font-size:13px;background:var(--canvas);border:1px solid var(--line);border-radius:999px;padding:5px 14px;color:#3a3a52}
 #badge b{color:var(--blue)}
 .tabs{display:flex;gap:6px;margin:16px 0 14px;background:var(--canvas);border:1px solid var(--line);border-radius:14px;padding:5px}
@@ -174,25 +177,11 @@ body{background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman'
 .construct-step .link-btn{margin-top:4px}
 
 /* карта листа справочных материалов */
-.sheet-page{margin-bottom:20px}
-.sheet-title{font-size:15px;font-weight:700;color:var(--ang);margin:0 0 12px;padding-bottom:6px;border-bottom:2px solid #f0e4d0;font-style:italic}
-.sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.sheet-blk{background:var(--canvas);border:1px solid var(--line);border-radius:12px;padding:13px 15px;transition:.3s;min-width:0}
-.sheet-blk.used{border-color:#bcd3ea}
-.sheet-blk.muted{opacity:.6;background:#f6f3ec}
-.sheet-blk.flash{border-color:var(--blue);box-shadow:0 0 0 3px var(--blsoft);background:#fbfdff;opacity:1}
-.blk-t{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.blk-pin{background:var(--blue);color:#fff;font-size:12px;font-weight:700;min-width:20px;height:20px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px}
-.blk-f{font-size:17px;color:var(--ink);margin:6px 0;line-height:1.7;overflow-x:auto}
+.sm-item.flash{border-color:var(--blue);box-shadow:0 0 0 3px var(--blsoft)}
 .blk-note{font-size:13px;color:#54546a;font-style:italic;margin-top:6px}
-.blk-na{font-size:12.5px;color:#9a9aa8;margin-top:6px;font-style:italic}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
 .type-chip{font-family:inherit;font-size:12.5px;font-weight:600;color:var(--blue);background:#eef4fb;border:1px solid #cfe0f0;border-radius:12px;padding:4px 11px;cursor:pointer;transition:.13s;text-align:left;max-width:100%;white-space:normal}
 .type-chip:hover{background:var(--blue);color:#fff}
-.trig{border-collapse:collapse;font-size:14px;margin-top:4px}
-.trig th,.trig td{border:1px solid var(--line);padding:4px 8px;text-align:center}
-.trig th{background:#f2ede3;font-weight:700}
-.trig td:first-child,.trig th:first-child{font-weight:700;background:#faf7f0}
 .ns-wrap{background:#fdeeee;border:1px solid #f0c9c5;border-radius:14px;padding:15px 16px;margin-top:8px}
 .ns-h{font-weight:700;color:var(--err);font-size:15px;margin-bottom:12px}
 .ns-card{background:#fff;border:1px solid #f0c9c5;border-radius:10px;padding:11px 14px;margin-bottom:9px;transition:.3s}
@@ -215,20 +204,23 @@ body{background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman'
   .head h1{font-size:20px}
   .tab{font-size:13px;padding:8px 3px}
   .r-grid{grid-template-columns:1fr}
-  .sheet-grid{grid-template-columns:1fr}
-  .trig{font-size:11.5px}
-  .trig th,.trig td{padding:2px 5px}
-  .blk-f{font-size:16px}
   .ans-row{flex-direction:column;align-items:stretch}
   .btn.primary{width:100%}
   .tools .btn{min-width:0}
   .q-text{font-size:16.5px}
 }
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="head">
+    <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
     <h1>Задание 23 · Геометрические задачи на вычисление</h1>
     <p class="sub">Все 20 типов ОГЭ: треугольники, четырёхугольники, окружности. Разбирай, тренируйся, сдавай зачёт.</p>
     <div id="badge"></div>
@@ -252,6 +244,94 @@ body{background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman'
 
 const TID='oge23-vychisleniya';
 
+/* ================= Контракт прогресса курса ОГЭ =================
+   docs/OGE_PROGRESS_CONTRACT.md, разделы 3–5: ядро записи, журнал ошибок,
+   режим повтора. Тела функций — как в контракте; обёрнуты в CP, чтобы не
+   столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
+   свои записи журнала, после свежего чтения ключа — две вкладки не
+   затирают друг друга. В ?selftest=1 ничего не пишется. */
+const TYPE_IDS=["rhombH","pgramBis","trapBis","trapLeg","rhombAng","trapEF","circR","hAB","hAC","projAB","paraBN","paraMC","chordDist","chordLen","secKP1","secKP2","rectPK","rectBH","tanSecAC","tanSecD"];
+const QUIZ_TOTAL=10;   // размер зачёта
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* запись старой версии (без updatedAt: её писал код до контракта) могла
+     нести passed при любом результате зачёта — один раз пересчитываем
+     passed по сохранённому best; дальше запись несёт updatedAt и больше
+     не трогается */
+  function migrate(bestNorm){
+    if (RO) return;
+    var r = readAll()[TID];
+    if (!isObj(r) || typeof r.updatedAt === "number") return;
+    var b = bestNorm(r);
+    saveRec(function(rec){
+      rec.best = b;
+      rec.passed = b >= PASS_AT;
+      if (b > 0 || num(rec.runs) > 0) rec.total = QUIZ_TOTAL;
+    });
+  }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes, migrate:migrate };
+})();
+
+
 /* ---------- базовые утилиты ---------- */
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -272,8 +352,17 @@ function parseAns(s){
   if(m){const d=parseFloat(m[2]);return d?parseFloat(m[1])/d:NaN;}
   return /^-?\d+(?:\.\d+)?$/.test(s)?parseFloat(s):NaN;
 }
-/* сравнение ответа с эталоном: относительный допуск (радикалы можно вводить десятичным приближением) */
-function ansEq(val,exp){if(!isFinite(val)||!isFinite(exp))return false;return Math.abs(val-exp)<=Math.max(0.02,Math.abs(exp)*0.012);}
+/* сравнение ответа с эталоном (спецификация 03A): целые и десятичные с двумя знаками — точно;
+   корни и бесконечные дроби — относительный допуск 1e-6, ответ вводится точно (3√2, 60/13).
+   Прежний допуск max(0,02; 1,2 %) при ответе 84 принимал 83 и 85. */
+const isDec2=x=>Math.abs(x*100-Math.round(x*100))<1e-7;
+const tolAns=x=>(isDec2(x)?1e-9:1e-6)*Math.max(1,Math.abs(x));
+function ansEq(val,exp){if(!isFinite(val)||!isFinite(exp))return false;return Math.abs(val-exp)<=tolAns(exp);}
+/* промежуточный шаг проводки можно ввести приближённо — итог задачи всё равно точный */
+function stepEq(val,exp){if(!isFinite(val)||!isFinite(exp))return false;return Math.abs(val-exp)<=Math.max(0.02,Math.abs(exp)*0.012);}
+/* точная запись числа: целое, десятичная с двумя знаками или несократимая обыкновенная дробь */
+function exactStr(x){if(isDec2(x))return fmt(x);for(let d=2;d<=2000;d++){const n=x*d;if(Math.abs(n-Math.round(n))<1e-7*d)return Math.round(n)+'/'+d;}return fmt(x);}
+const APPROX_MSG='Похоже, это приближённое значение. В задании 23 ответ записывают точно — целым числом, дробью (например, 60/13) или с корнем (например, 3√2).';
 
 /* упрощение k·√(rad)/den  →  {k,m}  (результат целочисленный коэффициент, m — радиканд) */
 function simpRad(coef,den,rad){
@@ -372,7 +461,7 @@ function mkFig(W,H,pad){
 
 'use strict';
 /* ============ SUBS: реестр 20 подтипов задания №23 ============
-   Каждый подтип: {theme,name, calc, gen, text, fig(→api с .svg()/.chk), sol, diag, ref, refWhy, notSheet}.
+   Каждый подтип: {theme,name, calc, gen, text, fig(→api с .svg()/.chk), sol, traps, ref, refWhy}; notSheet выводится из карты листа (SHEETREF).
    Фигуры строятся ПОД ЧИСЛА (честно), с chk-ассертами для браузер-фри геоаудита. */
 
 /* node-шим: в HTML всё склеено в глобалы, для node подтягиваем из part2 */
@@ -381,6 +470,43 @@ const SUBS={};
 const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;};
 const T=(n,d)=>frac(n,d);                     // стопочная дробь
 const near2=(a,b,e)=>Math.abs(a-b)<=(e==null?0.02:e);
+
+/* ---------- ловушки: перечислимый список и проверка на совпадения ----------
+   traps(p) подтипа -> [{v, m, e?}], e — допуск сравнения (по умолчанию 0,02).
+   Для конкретной задачи ловушка в допуске ответа снимается; ловушки, которые
+   одно и то же число задевает одновременно, сводятся в одну (решения F1 и
+   Q2 делегата владельца): две разные ошибки — одно объединённое сообщение
+   «найдите свою», три и больше — честный общий текст. */
+function trapPair(m1,m2){return 'Такой ответ получается при одной из двух ошибок — найдите свою:<br>• '+m1+'<br>• '+m2;}
+const TRAP_MANY='Не сходится. Это число получается при нескольких разных ошибках — сверьте решение по шагам в «🪜 Шаг за шагом».';
+function mergeTraps(list){
+  const up=list.map((_,i)=>i), top=i=>up[i]===i?i:(up[i]=top(up[i]));
+  for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++)
+    if(Math.abs(list[i].v-list[j].v)<=list[i].e+list[j].e)up[top(j)]=top(i);
+  const groups=new Map();
+  list.forEach((t,i)=>{const r=top(i);if(!groups.has(r))groups.set(r,[]);groups.get(r).push(t);});
+  const out=[];let clash=false;
+  for(const g of groups.values()){
+    const ms=[...new Set(g.map(t=>t.m))];
+    if(ms.length===1){g.forEach(t=>out.push(t));continue;}
+    clash=true;
+    const m=ms.length===2?trapPair(ms[0],ms[1]):TRAP_MANY;
+    g.forEach(t=>out.push({v:t.v,e:t.e,m}));
+  }
+  out.clash=clash;
+  return out;
+}
+function trapsOf(sub,p){
+  const S=SUBS[sub];if(!S.traps)return [];
+  const isAns=v=>S.ansEqCustom?S.ansEqCustom(v,p):ansEq(v,S.calc(p));
+  return mergeTraps(S.traps(p).filter(t=>t&&t.m&&isFinite(t.v)&&!isAns(t.v)).map(t=>({v:t.v,m:t.m,e:t.e==null?0.02:t.e})));
+}
+function diagOf(sub,v,p){
+  for(const t of trapsOf(sub,p))if(Math.abs(v-t.v)<=t.e)return t.m;
+  const S=SUBS[sub],a=S.calc(p);
+  if(!isDec2(a)&&stepEq(v,a))return APPROX_MSG;
+  return S.other?S.other(v,p):null;
+}
 
 /* апекс треугольника: A=(0,0),C=(AC,0); вершина B с |BC|=sideCB, x≈fx·AC (иначе клампим), y>0 */
 function triApex(AC,sideCB,fx){
@@ -392,7 +518,7 @@ function triApex(AC,sideCB,fx){
 /* ---------- четырёхугольники ---------- */
 
 /* 1. rhombH — высота ромба AH на сторону DC; дано DH,CH */
-SUBS.rhombH={theme:'quad',name:'Высота ромба',notSheet:false,
+SUBS.rhombH={theme:'quad',name:'Высота ромба',
   gen(){const tr=pick([[3,4],[6,8],[8,6],[5,12],[12,5],[8,15],[15,8],[9,12],[12,9],[7,24],[24,7],[20,21],[9,40],[12,16],[16,12],[15,20],[20,15],[10,24],[24,10],[18,24],[24,18]]);
     const s=pick([1,1,1,2]);let DH=tr[0]*s,h=tr[1]*s,a=Math.round(Math.hypot(DH,h));const CH=a-DH;
     if(CH<1)return SUBS.rhombH.gen();return {DH,CH};},
@@ -413,16 +539,15 @@ SUBS.rhombH={theme:'quad',name:'Высота ромба',notSheet:false,
     `Все стороны ромба равны, значит <b>AD = DC = DH + CH = ${p.DH} + ${p.CH} = ${a}</b>.`,
     `Высота <b>AH ⊥ DC</b>, поэтому треугольник <b>ADH</b> прямоугольный с гипотенузой <b>AD = ${a}</b> и катетом <b>DH = ${p.DH}</b>.`,
     `По теореме Пифагора: AH = √(AD² − DH²) = √(${a}² − ${p.DH}²) = √${a*a-p.DH*p.DH} = <b>${fmt(h)}</b>.`];},
-  diag(v,p){const a=p.DH+p.CH,h=SUBS.rhombH.calc(p);
-    if(near2(v,a))return 'Это сторона ромба (DH + CH). А спрашивается <b>высота</b> AH — катет прямоугольного треугольника ADH.';
-    if(near2(v,a*a-p.DH*p.DH))return 'Похоже, забыли извлечь корень: AH = √(AD² − DH²), а не AD² − DH².';
-    if(near2(v,Math.sqrt(a*a-p.CH*p.CH)))return 'В треугольнике ADH катет — это <b>DH</b> (прилежащий к D), а не CH. Подставьте DH.';
-    return null;},
+  traps(p){const a=p.DH+p.CH;return [
+    {v:a,m:'Это сторона ромба (DH + CH). А спрашивается <b>высота</b> AH — катет прямоугольного треугольника ADH.'},
+    {v:a*a-p.DH*p.DH,m:'Похоже, забыли извлечь корень: AH = √(AD² − DH²), а не AD² − DH².'},
+    {v:Math.sqrt(a*a-p.CH*p.CH),m:'В треугольнике ADH катет — это <b>DH</b> (прилежащий к D), а не CH. Подставьте DH.'}];},
   ref:`AH = √(AD² − DH²), где AD = DH + CH — сторона ромба`,
   refWhy:'Все стороны ромба равны, поэтому сторона DC = DH + CH равна стороне AD. Высота AH перпендикулярна DC, значит △ADH прямоугольный: гипотенуза — сторона AD, катеты — DH и высота AH. Отсюда теорема Пифагора.'};
 
 /* 2. pgramBis — периметр параллелограмма; биссектриса угла A режет BC в K; дано BK,CK */
-SUBS.pgramBis={theme:'quad',name:'Периметр параллелограмма',notSheet:true,
+SUBS.pgramBis={theme:'quad',name:'Периметр параллелограмма',
   gen(){const BK=rnd(4,16),CK=rnd(6,20);return {BK,CK};},
   calc(p){return 4*p.BK+2*p.CK;},
   text(p){return `Биссектриса угла <b>A</b> параллелограмма <b>ABCD</b> пересекает сторону <b>BC</b> в точке <b>K</b>. Найдите периметр параллелограмма, если <b>BK = ${p.BK}</b>, <b>CK = ${p.CK}</b>.`;},
@@ -444,16 +569,15 @@ SUBS.pgramBis={theme:'quad',name:'Периметр параллелограмм�
     `AK — биссектриса, поэтому ∠BAK = ∠KAD. А ∠KAD = ∠AKB как накрест лежащие (AD ∥ BC). Значит ∠BAK = ∠AKB и треугольник ABK равнобедренный: <b>AB = BK = ${p.BK}</b>.`,
     `Сторона <b>BC = BK + CK = ${p.BK} + ${p.CK} = ${BC}</b>.`,
     `Периметр: P = 2(AB + BC) = 2(${AB} + ${BC}) = <b>${P}</b>.`];},
-  diag(v,p){const AB=p.BK,BC=p.BK+p.CK;
-    if(near2(v,BC))return 'Это только сторона BC. Периметр — сумма всех сторон: P = 2(AB + BC).';
-    if(near2(v,AB+BC))return 'Похоже, сложили две стороны, но забыли умножить на 2: P = 2(AB + BC).';
-    if(near2(v,2*(p.BK+p.CK)))return 'AB равна BK (а не BK + CK). Треугольник ABK равнобедренный: AB = BK.';
-    return null;},
+  traps(p){const AB=p.BK,BC=p.BK+p.CK;return [
+    {v:BC,m:'Это только сторона BC. Периметр — сумма всех сторон: P = 2(AB + BC).'},
+    {v:AB+BC,m:'Похоже, сложили две стороны, но забыли умножить на 2: P = 2(AB + BC).'},
+    {v:2*(p.BK+p.CK),m:'AB равна BK (а не BK + CK). Треугольник ABK равнобедренный: AB = BK.'}];},
   ref:`P = 2(AB + BC), где AB = BK, BC = BK + CK`,
   refWhy:'Биссектриса угла A и накрест лежащие углы (AD ∥ BC) дают равнобедренный треугольник ABK, поэтому AB = BK. Сторона BC складывается из BK и CK. Периметр параллелограмма — удвоенная сумма соседних сторон.'};
 
 /* 3. trapBis — боковая сторона AB; биссектрисы углов A и B при боковой стороне; дано AF,BF */
-SUBS.trapBis={theme:'quad',name:'Боковая сторона трапеции',notSheet:true,
+SUBS.trapBis={theme:'quad',name:'Боковая сторона трапеции',
   gen(){const tr=pick([[3,4],[5,12],[8,15],[7,24],[20,21],[9,40],[6,8],[9,12],[12,16],[10,24],[15,20],[8,6],[12,5],[24,7],[24,10]]);const s=pick([1,1,2]);let AF=tr[0]*s,BF=tr[1]*s;if(Math.random()<0.5){const t=AF;AF=BF;BF=t;}return {AF,BF};},
   calc(p){return Math.hypot(p.AF,p.BF);},
   text(p){return `В трапеции <b>ABCD</b> биссектрисы углов <b>A</b> и <b>B</b> при боковой стороне <b>AB</b> пересекаются в точке <b>F</b>. Найдите <b>AB</b>, если <b>AF = ${p.AF}</b>, <b>BF = ${p.BF}</b>.`;},
@@ -480,18 +604,18 @@ SUBS.trapBis={theme:'quad',name:'Боковая сторона трапеции'
     `AD ∥ BC, поэтому ∠A + ∠B = 180° (односторонние углы). Их половины дают ∠FAB + ∠FBA = 90°.`,
     `Значит в треугольнике AFB угол при вершине F прямой: <b>∠AFB = 90°</b>.`,
     `По теореме Пифагора: AB = √(AF² + BF²) = √(${p.AF}² + ${p.BF}²) = √${p.AF*p.AF+p.BF*p.BF} = <b>${fmt(c)}</b>.`];},
-  diag(v,p){const c=SUBS.trapBis.calc(p);
-    if(near2(v,p.AF+p.BF))return 'AB — это гипотенуза, а не сумма катетов. AB = √(AF² + BF²).';
-    if(near2(v,Math.abs(p.AF-p.BF)))return 'Здесь именно сумма квадратов под корнем: AB = √(AF² + BF²).';
-    if(near2(v,p.AF*p.AF+p.BF*p.BF))return 'Забыли извлечь корень: AB = √(AF² + BF²).';
-    return null;},
+  traps(p){return [
+    {v:p.AF+p.BF,m:'AB — это гипотенуза, а не сумма катетов. AB = √(AF² + BF²).'},
+    {v:Math.abs(p.AF-p.BF),m:'Здесь именно сумма квадратов под корнем: AB = √(AF² + BF²).'},
+    {v:p.AF*p.AF+p.BF*p.BF,m:'Забыли извлечь корень: AB = √(AF² + BF²).'}];},
   ref:`AB = √(AF² + BF²),  ∠AFB = 90°`,
   refWhy:'В трапеции углы A и B при боковой стороне AB — односторонние (AD ∥ BC), их сумма 180°. Половины (биссектрисы) в сумме дают 90°, значит угол AFB прямой. AB — гипотенуза прямоугольного треугольника AFB.'};
 
 /* 4. trapLeg — боковая сторона AB (радикал); дано ∠B=α,∠C=β,CD */
-SUBS.trapLeg={theme:'quad',name:'Боковая сторона (через углы)',notSheet:true,
+SUBS.trapLeg={theme:'quad',name:'Боковая сторона (через углы)',
   ANG:{30:1,45:2,60:3,90:4,120:3,135:2,150:1},
-  gen(){const al=pick([30,45,60]),be=pick([120,135,150]);const t=rnd(6,17);
+  /* ∠B + ∠C = 180° дало бы AB ∥ CD — параллелограмм, а не трапецию */
+  gen(){const al=pick([30,45,60]),be=pick([120,135,150]);if(al+be===180)return SUBS.trapLeg.gen();const t=rnd(6,17);
     const CD=SUBS.trapLeg.ANG[al]*t;const r=simpRad(t,1,SUBS.trapLeg.ANG[al]*SUBS.trapLeg.ANG[be]);
     if(!r.ok)return SUBS.trapLeg.gen();return {al,be,CD};},
   calc(p){return p.CD*Math.sin(p.be*Math.PI/180)/Math.sin(p.al*Math.PI/180);},
@@ -515,15 +639,14 @@ SUBS.trapLeg={theme:'quad',name:'Боковая сторона (через уг�
     `Высота трапеции из вершины C: h = CD·sin C = ${p.CD}·sin ${p.be}° = ${fmt(h)}.`,
     `Та же высота из вершины B: h = AB·sin B, значит AB = h / sin B = h / sin ${p.al}°.`,
     `AB = (${p.CD}·sin ${p.be}°) / sin ${p.al}° = <b>${as}</b> ≈ ${fmt(SUBS.trapLeg.calc(p))}.`];},
-  diag(v,p){const swap=p.CD*Math.sin(p.al*Math.PI/180)/Math.sin(p.be*Math.PI/180);const hh=p.CD*Math.sin(p.be*Math.PI/180);
-    if(ansEq(v,swap)&&!ansEq(v,SUBS.trapLeg.calc(p)))return 'Синусы перепутаны местами. AB = CD·sin C / sin B (делим на синус искомого угла B).';
-    if(ansEq(v,hh))return 'Это только высота трапеции (CD·sin C). Надо ещё разделить на sin B, чтобы получить боковую сторону AB.';
-    return null;},
+  traps(p){const swap=p.CD*Math.sin(p.al*Math.PI/180)/Math.sin(p.be*Math.PI/180);const hh=p.CD*Math.sin(p.be*Math.PI/180);return [
+    {v:swap,e:tolAns(swap),m:'Синусы перепутаны местами. AB = CD·sin C / sin B (делим на синус искомого угла B).'},
+    {v:hh,e:tolAns(hh),m:'Это только высота трапеции (CD·sin C). Надо ещё разделить на sin B, чтобы получить боковую сторону AB.'}];},
   ref:`AB = ${T('CD · sin C','sin B')}  (обе боковые дают одну высоту h)`,
   refWhy:'Опустив высоты из B и C на основание AD, получаем одну и ту же высоту трапеции: h = CD·sin C = AB·sin B. Отсюда AB = CD·sin C / sin B. Синусы 30°,45°,60°,120°,135°,150° дают ответ в виде корня.'};
 
 /* 5. rhombAng — углы ромба; дано d (центр→сторона), D (диагональ) */
-SUBS.rhombAng={theme:'quad',name:'Углы ромба',notSheet:false,
+SUBS.rhombAng={theme:'quad',name:'Углы ромба',
   gen(){const d=rnd(8,22);return {d,D:4*d};},
   calc(p){const s=2*p.d/p.D;const phi=Math.asin(Math.min(1,s))*180/Math.PI;return 2*phi;},   // острый угол
   text(p){return `Расстояние от точки пересечения диагоналей ромба <b>ABCD</b> до его стороны равно <b>${p.d}</b>, а диагональ <b>AC = ${p.D}</b>. Найдите углы ромба.`;},
@@ -545,16 +668,15 @@ SUBS.rhombAng={theme:'quad',name:'Углы ромба',notSheet:false,
     `Пусть O — центр. AO = AC/2 = ${p.D}/2 = ${p.D/2}. Перпендикуляр OH к стороне AB равен ${p.d}.`,
     `В прямоугольном треугольнике AOH: sin∠OAH = OH / AO = ${p.d} / ${p.D/2} = ${fmt(s)}, значит ∠OAH = ${phi}°.`,
     `Диагональ AC делит угол A пополам, поэтому угол A = 2·${phi}° = <b>${2*phi}°</b>. Тогда углы ромба: <b>${2*phi}°, ${180-2*phi}°, ${2*phi}°, ${180-2*phi}°</b>.`];},
-  diag(v,p){const phi=Math.round(SUBS.rhombAng.calc(p)/2);
-    if(near2(v,phi,1.5))return `${phi}° — это только половина угла (∠OAH). Диагональ делит угол ромба пополам, поэтому сам угол вдвое больше: ${2*phi}°.`;
-    if(near2(v,90,1.5))return 'Диагонали ромба перпендикулярны, но углы самого ромба другие — ищите через sin∠OAH = d / (D/2).';
-    return null;},
+  traps(p){const phi=Math.round(SUBS.rhombAng.calc(p)/2);return [
+    {v:phi,e:1.5,m:`${phi}° — это только половина угла (∠OAH). Диагональ делит угол ромба пополам, поэтому сам угол вдвое больше: ${2*phi}°.`},
+    {v:90,e:1.5,m:'Диагонали ромба перпендикулярны, но углы самого ромба другие — ищите через sin∠OAH = d / (D/2).'}];},
   ansEqCustom(val,p){const a=SUBS.rhombAng.calc(p);return ansEq(val,a)||ansEq(val,180-a);},
   ref:`sin${T('∠A','2')} = ${T('d','D/2')} = ${T('2d','D')},  затем угол ромба = 2·${T('∠A','2')}`,
   refWhy:'Половина диагонали AO — гипотенуза прямоугольного треугольника AOH (OH ⊥ стороне). sin острого угла OAH = d/(D/2). Диагональ ромба является биссектрисой угла, поэтому угол вершины вдвое больше найденного.'};
 
 /* 6. trapEF — отрезок EF ∥ основаниям; E на AB, F на CD, CF:DF=m:n */
-SUBS.trapEF={theme:'quad',name:'Отрезок, параллельный основаниям',notSheet:false,
+SUBS.trapEF={theme:'quad',name:'Отрезок, параллельный основаниям',
   gen(){const BC=rnd(10,25),m=rnd(2,7),n=rnd(1,5),s=rnd(2,6),AD=BC+(m+n)*s;return {AD,BC,m,n};},
   calc(p){return p.BC+(p.AD-p.BC)*p.m/(p.m+p.n);},
   text(p){return `В трапеции <b>ABCD</b> основания <b>BC = ${p.BC}</b> и <b>AD = ${p.AD}</b>. Точки <b>E</b> и <b>F</b> лежат на боковых сторонах <b>AB</b> и <b>CD</b>, причём <b>EF ∥ AD</b> и <b>CF : DF = ${p.m} : ${p.n}</b>. Найдите <b>EF</b>.`;},
@@ -577,18 +699,17 @@ SUBS.trapEF={theme:'quad',name:'Отрезок, параллельный осн�
     `Точка F делит CD так, что CF : CD = ${p.m} : ${p.m+p.n}. Отрезок EF «переходит» от BC (у вершины C) к AD (у вершины D) пропорционально.`,
     `EF = BC + (AD − BC)·(CF : CD) = ${p.BC} + (${p.AD} − ${p.BC})·${T(p.m,p.m+p.n)}.`,
     `EF = ${p.BC} + ${p.AD-p.BC}·${T(p.m,p.m+p.n)} = ${p.BC} + ${fmt((p.AD-p.BC)*t)} = <b>${fmt(EF)}</b>.`];},
-  diag(v,p){const wrong=p.BC+(p.AD-p.BC)*p.n/(p.m+p.n),avg=(p.AD+p.BC)/2;
-    if(near2(v,wrong))return 'Доля взята не с той стороны: EF ближе к тому основанию, к которому ближе F. Используйте CF : CD = m : (m+n).';
-    if(near2(v,avg))return 'Средняя линия (AD+BC)/2 — это частный случай при m = n. Здесь деление в отношении '+p.m+' : '+p.n+', доля другая.';
-    if(near2(v,p.AD-p.BC))return 'Это разность оснований. EF же лежит между BC и AD: EF = BC + (AD − BC)·доля.';
-    return null;},
+  traps(p){const wrong=p.BC+(p.AD-p.BC)*p.n/(p.m+p.n),avg=(p.AD+p.BC)/2;return [
+    {v:wrong,m:'Доля взята не с той стороны: EF ближе к тому основанию, к которому ближе F. Используйте CF : CD = m : (m+n).'},
+    {v:avg,m:'Средняя линия (AD+BC)/2 — это частный случай при m = n. Здесь деление в отношении '+p.m+' : '+p.n+', доля другая.'},
+    {v:p.AD-p.BC,m:'Это разность оснований. EF же лежит между BC и AD: EF = BC + (AD − BC)·доля.'}];},
   ref:`EF = BC + (AD − BC)·${T('CF','CD')}`,
   refWhy:'Отрезок, параллельный основаниям, изменяется линейно от BC (при совпадении с верхним основанием) до AD (при совпадении с нижним). Доля пути задаётся отношением CF : CD = m : (m+n) — тем, насколько F спустился по боковой стороне.'};
 
 /* ---------- треугольники ---------- */
 
 /* 7. circR — сторона BC через два угла и радиус описанной; BC=2R·sinA */
-SUBS.circR={theme:'tri',name:'Сторона через описанную окружность',notSheet:true,
+SUBS.circR={theme:'tri',name:'Сторона через описанную окружность',
   gen(){const A=pick([30,30,30,90,150]);let be=rnd(35,180-A-35),ga=180-A-be;if(ga<20||be<20)return SUBS.circR.gen();const R=rnd(6,18);return {be,ga,R};},
   calc(p){const A=180-p.be-p.ga;return 2*p.R*Math.sin(A*Math.PI/180);},
   text(p){return `В треугольнике <b>ABC</b> угол <b>B = ${p.be}°</b>, угол <b>C = ${p.ga}°</b>, радиус описанной окружности <b>R = ${p.R}</b>. Найдите сторону <b>BC</b>.`;},
@@ -613,15 +734,15 @@ SUBS.circR={theme:'tri',name:'Сторона через описанную ок�
     `Сумма углов треугольника: ∠A = 180° − ${p.be}° − ${p.ga}° = <b>${A}°</b>.`,
     `По теореме синусов BC / sin A = 2R, значит BC = 2R·sin A.`,
     `BC = 2·${p.R}·sin ${A}° = 2·${p.R}·${fmt(Math.sin(A*Math.PI/180))} = <b>${fmt(bc)}</b>.`];},
-  diag(v,p){const A=180-p.be-p.ga;const wB=2*p.R*Math.sin(p.be*Math.PI/180),wC=2*p.R*Math.sin(p.ga*Math.PI/180);
-    if(near2(v,wB)||near2(v,wC))return 'Сторона BC лежит напротив угла A. Сначала найдите ∠A = 180° − ∠B − ∠C, потом BC = 2R·sin A.';
-    if(near2(v,p.R*Math.sin(A*Math.PI/180)))return 'Потерян множитель 2: по теореме синусов BC = 2R·sin A (а не R·sin A).';
-    return null;},
+  traps(p){const A=180-p.be-p.ga;const wB=2*p.R*Math.sin(p.be*Math.PI/180),wC=2*p.R*Math.sin(p.ga*Math.PI/180);return [
+    {v:wB,m:'Сторона BC лежит напротив угла A. Сначала найдите ∠A = 180° − ∠B − ∠C, потом BC = 2R·sin A.'},
+    {v:wC,m:'Сторона BC лежит напротив угла A. Сначала найдите ∠A = 180° − ∠B − ∠C, потом BC = 2R·sin A.'},
+    {v:p.R*Math.sin(A*Math.PI/180),m:'Потерян множитель 2: по теореме синусов BC = 2R·sin A (а не R·sin A).'}];},
   ref:`${T('BC','sin A')} = 2R  ⟹  BC = 2R·sin A,  где A = 180° − B − C`,
   refWhy:'Теорема синусов связывает сторону с противолежащим углом и радиусом описанной окружности: a / sin A = 2R. Сторона BC лежит против угла A, который находим из суммы углов треугольника.'};
 
 /* 8. hAB — высота к гипотенузе по двум катетам; h=ab/c */
-SUBS.hAB={theme:'tri',name:'Высота к гипотенузе (2 катета)',notSheet:false,
+SUBS.hAB={theme:'tri',name:'Высота к гипотенузе (2 катета)',
   gen(){const tr=pick([[3,4,5],[6,8,10],[5,12,13],[8,15,17],[9,12,15],[20,21,29],[7,24,25],[9,40,41],[12,16,20],[10,24,26]]);const t=pick([1,1,2]);return {a:tr[0]*t,b:tr[1]*t};},
   calc(p){const c=Math.hypot(p.a,p.b);return p.a*p.b/c;},
   text(p){return `В прямоугольном треугольнике катеты равны <b>${p.a}</b> и <b>${p.b}</b>. Найдите высоту, проведённую к гипотенузе.`;},
@@ -638,17 +759,16 @@ SUBS.hAB={theme:'tri',name:'Высота к гипотенузе (2 катета
   sol(p){const c=Math.hypot(p.a,p.b),h=SUBS.hAB.calc(p);return [
     `Гипотенуза: c = √(${p.a}² + ${p.b}²) = √${p.a*p.a+p.b*p.b} = ${fmt(c)}.`,
     `Площадь считаем двумя способами: S = ${T('1','2')}·${p.a}·${p.b} = ${T('1','2')}·c·h.`,
-    `Отсюда h = (${p.a}·${p.b}) / ${fmt(c)} = ${p.a*p.b} / ${fmt(c)} = <b>${fmt(h)}</b>.`];},
-  diag(v,p){const c=Math.hypot(p.a,p.b);
-    if(near2(v,c))return 'Это гипотенуза, а не высота к ней. Высота h = (произведение катетов) / гипотенуза.';
-    if(near2(v,p.a*p.b))return 'Это произведение катетов. Его нужно ещё разделить на гипотенузу: h = ab / c.';
-    if(near2(v,(p.a+p.b)/2))return 'Высота к гипотенузе — не среднее катетов. h = ab / c, где c = √(a² + b²).';
-    return null;},
+    `Отсюда h = (${p.a}·${p.b}) / ${fmt(c)} = ${p.a*p.b} / ${fmt(c)} = <b>${exactStr(h)}</b>${isDec2(h)?'':' ≈ '+fmt(h)}.`];},
+  traps(p){const c=Math.hypot(p.a,p.b);return [
+    {v:c,m:'Это гипотенуза, а не высота к ней. Высота h = (произведение катетов) / гипотенуза.'},
+    {v:p.a*p.b,m:'Это произведение катетов. Его нужно ещё разделить на гипотенузу: h = ab / c.'},
+    {v:(p.a+p.b)/2,m:'Высота к гипотенузе — не среднее катетов. h = ab / c, где c = √(a² + b²).'}];},
   ref:`h = ${T('a · b','c')},  c = √(a² + b²)`,
   refWhy:'Площадь прямоугольного треугольника равна половине произведения катетов и одновременно половине произведения гипотенузы на высоту к ней: ½ab = ½ch. Отсюда h = ab / c.'};
 
 /* 9. hAC — высота к гипотенузе по катету и гипотенузе; b=√(c²−a²), h=ab/c */
-SUBS.hAC={theme:'tri',name:'Высота к гипотенузе (катет и гипотенуза)',notSheet:false,
+SUBS.hAC={theme:'tri',name:'Высота к гипотенузе (катет и гипотенуза)',
   gen(){const tr=pick([[3,4,5],[6,8,10],[5,12,13],[8,15,17],[20,21,29],[7,24,25],[9,40,41],[12,16,20],[10,24,26],[16,30,34]]);const t=pick([1,1,2]);const sw=Math.random()<0.5;return {a:(sw?tr[1]:tr[0])*t,c:tr[2]*t};},
   calc(p){const b=Math.sqrt(p.c*p.c-p.a*p.a);return p.a*b/p.c;},
   text(p){return `В прямоугольном треугольнике катет равен <b>${p.a}</b>, а гипотенуза — <b>${p.c}</b>. Найдите высоту, проведённую к гипотенузе.`;},
@@ -665,16 +785,15 @@ SUBS.hAC={theme:'tri',name:'Высота к гипотенузе (катет и 
   sol(p){const b=Math.sqrt(p.c*p.c-p.a*p.a),h=SUBS.hAC.calc(p);return [
     `Второй катет по теореме Пифагора: b = √(c² − a²) = √(${p.c}² − ${p.a}²) = √${p.c*p.c-p.a*p.a} = ${fmt(b)}.`,
     `Через площадь: ${T('1','2')}·${p.a}·${fmt(b)} = ${T('1','2')}·${p.c}·h.`,
-    `h = (${p.a}·${fmt(b)}) / ${p.c} = <b>${fmt(h)}</b>.`];},
-  diag(v,p){const b=Math.sqrt(p.c*p.c-p.a*p.a);
-    if(near2(v,b))return 'Это второй катет, найденный по теореме Пифагора. Осталось найти высоту: h = (a·b) / c.';
-    if(near2(v,p.a*p.a/p.c))return 'Это проекция катета на гипотенузу, а не высота. Высота h = (a·b) / c, где b = √(c² − a²).';
-    return null;},
+    `h = (${p.a}·${fmt(b)}) / ${p.c} = <b>${exactStr(h)}</b>${isDec2(h)?'':' ≈ '+fmt(h)}.`];},
+  traps(p){const b=Math.sqrt(p.c*p.c-p.a*p.a);return [
+    {v:b,m:'Это второй катет, найденный по теореме Пифагора. Осталось найти высоту: h = (a·b) / c.'},
+    {v:p.a*p.a/p.c,m:'Это проекция катета на гипотенузу, а не высота. Высота h = (a·b) / c, где b = √(c² − a²).'}];},
   ref:`b = √(c² − a²),  затем h = ${T('a · b','c')}`,
   refWhy:'Сначала по теореме Пифагора находим второй катет b. Затем площадь ½ab = ½ch даёт высоту к гипотенузе h = ab / c.'};
 
 /* 10. projAB — катет AB через проекцию; AB=√(AH·AC) */
-SUBS.projAB={theme:'tri',name:'Катет через проекцию на гипотенузу',notSheet:true,
+SUBS.projAB={theme:'tri',name:'Катет через проекцию на гипотенузу',
   gen(){const AB=rnd(6,20);const sq=AB*AB;const divs=[];for(let d=2;d<AB;d++)if(sq%d===0)divs.push(d);if(!divs.length)return SUBS.projAB.gen();const AH=pick(divs);const AC=sq/AH;return {AH,AC};},
   calc(p){return Math.sqrt(p.AH*p.AC);},
   text(p){return `В треугольнике <b>ABC</b> угол <b>B</b> прямой, высота <b>BH</b> опущена на гипотенузу <b>AC</b>. Найдите катет <b>AB</b>, если <b>AH = ${p.AH}</b>, <b>AC = ${p.AC}</b>.`;},
@@ -692,16 +811,15 @@ SUBS.projAB={theme:'tri',name:'Катет через проекцию на ги�
     `Высота из прямого угла делит гипотенузу, и катет — среднее пропорциональное между всей гипотенузой и прилежащим к нему отрезком: AB² = AH·AC.`,
     `AB² = ${p.AH}·${p.AC} = ${p.AH*p.AC}.`,
     `AB = √${p.AH*p.AC} = <b>${fmt(ab)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AH*p.AC))return 'Забыли извлечь корень: AB = √(AH·AC), а не AH·AC.';
-    if(near2(v,Math.sqrt(p.AH*(p.AC-p.AH))))return 'Это высота BH (√(AH·HC)). Катет же равен AB = √(AH·AC) — с полной гипотенузой.';
-    if(near2(v,p.AC-p.AH))return 'Это второй отрезок HC. Катет AB = √(AH·AC).';
-    return null;},
+  traps(p){return [
+    {v:p.AH*p.AC,m:'Забыли извлечь корень: AB = √(AH·AC), а не AH·AC.'},
+    {v:Math.sqrt(p.AH*(p.AC-p.AH)),m:'Это высота BH (√(AH·HC)). Катет же равен AB = √(AH·AC) — с полной гипотенузой.'},
+    {v:p.AC-p.AH,m:'Это второй отрезок HC. Катет AB = √(AH·AC).'}];},
   ref:`AB = √(AH · AC)  — катет есть среднее пропорциональное`,
   refWhy:'Высота из вершины прямого угла образует два треугольника, подобных исходному. Из подобия катет AB — среднее пропорциональное между гипотенузой AC и прилежащим отрезком AH: AB² = AH·AC.'};
 
 /* 11. paraBN — отрезок BN при MN∥AC; BN=MN·NC/(AC−MN) */
-SUBS.paraBN={theme:'tri',name:'Подобие: отрезок при MN∥AC',notSheet:true,
+SUBS.paraBN={theme:'tri',name:'Подобие: отрезок при MN∥AC',
   gen(){const pr=pick([[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5],[1,5],[4,5],[5,6]]);const P=pr[0],Q=pr[1];const r=rnd(3,8),s=rnd(4,12);
     return {MN:P*r,AC:Q*r,NC:(Q-P)*s};},
   calc(p){return p.MN*p.NC/(p.AC-p.MN);},
@@ -722,15 +840,14 @@ SUBS.paraBN={theme:'tri',name:'Подобие: отрезок при MN∥AC',no
     `MN ∥ AC, поэтому △BMN подобен △BAC. Значит BN / BC = MN / AC.`,
     `Пусть BN = x. Тогда BC = x + NC = x + ${p.NC}, и x / (x + ${p.NC}) = ${p.MN} / ${p.AC}.`,
     `x·${p.AC} = ${p.MN}·(x + ${p.NC}) ⟹ x·(${p.AC} − ${p.MN}) = ${p.MN}·${p.NC} ⟹ BN = ${p.MN*p.NC} / ${p.AC-p.MN} = <b>${fmt(bn)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.MN*p.NC/p.AC))return 'В знаменателе должна быть разность (AC − MN), а не сам AC. BN = MN·NC / (AC − MN).';
-    if(near2(v,p.NC*(p.AC-p.MN)/p.MN))return 'Отношение перевёрнуто. Из △BMN ∼ △BAC: BN / BC = MN / AC.';
-    return null;},
+  traps(p){return [
+    {v:p.MN*p.NC/p.AC,m:'В знаменателе должна быть разность (AC − MN), а не сам AC. BN = MN·NC / (AC − MN).'},
+    {v:p.NC*(p.AC-p.MN)/p.MN,m:'Отношение перевёрнуто. Из △BMN ∼ △BAC: BN / BC = MN / AC.'}];},
   ref:`${T('BN','BC')} = ${T('MN','AC')},  BC = BN + NC  ⟹  BN = ${T('MN · NC','AC − MN')}`,
   refWhy:'Прямая MN ∥ AC отсекает треугольник BMN, подобный BAC (по двум углам). Коэффициент подобия — отношение MN / AC. Выразив BC = BN + NC, получаем уравнение на BN.'};
 
 /* 12. paraMC — отрезок диагонали при AB∥DC; MC=AC·DC/(AB+DC) */
-SUBS.paraMC={theme:'tri',name:'Подобие: диагонали трапеции',notSheet:true,
+SUBS.paraMC={theme:'tri',name:'Подобие: диагонали трапеции',
   gen(){const pr=pick([[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5],[1,5],[4,5],[5,6]]);const P=pr[0],Q=pr[1];let w=rnd(2,6),r=rnd(3,9);
     if((P+Q)*r<=(P+Q)*w/2*1.2||r<=w/2)return SUBS.paraMC.gen();
     return {AB:P*w,DC:Q*w,AC:(P+Q)*r};},
@@ -758,10 +875,9 @@ SUBS.paraMC={theme:'tri',name:'Подобие: диагонали трапеци
     `AB ∥ DC, поэтому △ABM подобен △CDM (накрест лежащие углы). Значит AM / MC = AB / DC.`,
     `Тогда AC = AM + MC делится в отношении AB : DC, и MC = AC·DC / (AB + DC).`,
     `MC = ${p.AC}·${p.DC} / (${p.AB} + ${p.DC}) = ${p.AC*p.DC} / ${p.AB+p.DC} = <b>${fmt(mc)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AC*p.AB/(p.AB+p.DC)))return 'Это отрезок AM (к вершине основания AB). Для MC в числителе стоит DC: MC = AC·DC / (AB + DC).';
-    if(near2(v,p.AC/2))return 'Точка M делит диагональ не пополам, а в отношении оснований AB : DC. MC = AC·DC / (AB + DC).';
-    return null;},
+  traps(p){return [
+    {v:p.AC*p.AB/(p.AB+p.DC),m:'Это отрезок AM (к вершине основания AB). Для MC в числителе стоит DC: MC = AC·DC / (AB + DC).'},
+    {v:p.AC/2,m:'Точка M делит диагональ не пополам, а в отношении оснований AB : DC. MC = AC·DC / (AB + DC).'}];},
   ref:`${T('AM','MC')} = ${T('AB','DC')}  ⟹  MC = ${T('AC · DC','AB + DC')}`,
   refWhy:'Диагонали трапеции образуют подобные треугольники ABM и CDM (AB ∥ DC даёт равные накрест лежащие углы). Точка пересечения делит каждую диагональ в отношении оснований AB : DC.'};
 
@@ -773,7 +889,7 @@ const RPOOL={13:[[5,12],[12,5]],25:[[7,24],[15,20],[20,15],[24,7]],
   85:[[13,84],[36,77],[40,75],[51,68],[68,51],[75,40],[77,36],[84,13]]};
 
 /* 13. chordDist — расстояние до хорды CD; R²=(AB/2)²+dAB², dCD=√(R²−(CD/2)²) */
-SUBS.chordDist={theme:'circ',name:'Расстояние от центра до хорды',notSheet:false,
+SUBS.chordDist={theme:'circ',name:'Расстояние от центра до хорды',
   gen(){const R=pick([25,25,65,85]);const ps=RPOOL[R];let a=pick(ps),b=pick(ps);let g=0;while(a[0]===b[0]&&g++<20)b=pick(ps);
     return {AB:2*a[0],dAB:a[1],CD:2*b[0],dCD_R:R};},
   calc(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);return Math.sqrt(R*R-(p.CD/2)*(p.CD/2));},
@@ -795,15 +911,14 @@ SUBS.chordDist={theme:'circ',name:'Расстояние от центра до �
     `Радиус из центра к концу хорды AB: R² = (AB/2)² + ${p.dAB}² = ${(p.AB/2)*(p.AB/2)} + ${p.dAB*p.dAB} = ${R*R}, R = ${fmt(R)}.`,
     `Для хорды CD тот же радиус: расстояние = √(R² − (CD/2)²).`,
     `= √(${R*R} − ${(p.CD/2)*(p.CD/2)}) = √${R*R-(p.CD/2)*(p.CD/2)} = <b>${fmt(dCD)}</b>.`];},
-  diag(v,p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);
-    if(near2(v,R))return 'Это радиус окружности. Нужно расстояние до хорды CD: √(R² − (CD/2)²).';
-    if(near2(v,Math.sqrt(Math.abs(R*R-p.CD*p.CD))))return 'Берётся половина хорды: √(R² − (CD/2)²), а не (R² − CD²).';
-    return null;},
+  traps(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);return [
+    {v:R,m:'Это радиус окружности. Нужно расстояние до хорды CD: √(R² − (CD/2)²).'},
+    {v:Math.sqrt(Math.abs(R*R-p.CD*p.CD)),m:'Берётся половина хорды: √(R² − (CD/2)²), а не (R² − CD²).'}];},
   ref:`R² = (${T('AB','2')})² + d²ᴬᴮ,  d_CD = √(R² − (${T('CD','2')})²)`,
   refWhy:'Радиус, проведённый к концу хорды, и перпендикуляр из центра к хорде (он делит её пополам) образуют прямоугольный треугольник: R² = (полухорды)² + (расстояния)². Радиус один и тот же, поэтому его находим по одной хорде и применяем к другой.'};
 
 /* 14. chordLen — длина хорды CD; CD=2√(R²−dCD²) */
-SUBS.chordLen={theme:'circ',name:'Длина хорды по расстоянию',notSheet:false,
+SUBS.chordLen={theme:'circ',name:'Длина хорды по расстоянию',
   gen(){const R=pick([25,25,65,85]);const ps=RPOOL[R];let a=pick(ps),b=pick(ps);let g=0;while(a[0]===b[0]&&g++<20)b=pick(ps);
     return {AB:2*a[0],dAB:a[1],dCD:b[1]};},
   calc(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);return 2*Math.sqrt(R*R-p.dCD*p.dCD);},
@@ -825,16 +940,15 @@ SUBS.chordLen={theme:'circ',name:'Длина хорды по расстояни�
     `Радиус: R² = (AB/2)² + ${p.dAB}² = ${(p.AB/2)*(p.AB/2)} + ${p.dAB*p.dAB} = ${R*R}, R = ${fmt(R)}.`,
     `Половина хорды CD: √(R² − ${p.dCD}²) = √(${R*R} − ${p.dCD*p.dCD}) = √${R*R-p.dCD*p.dCD} = ${fmt(CD/2)}.`,
     `CD = 2·${fmt(CD/2)} = <b>${fmt(CD)}</b>.`];},
-  diag(v,p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);
-    if(near2(v,CD_half(R,p.dCD)))return 'Это только половина хорды. Хорду надо удвоить: CD = 2·√(R² − d²).';
-    if(near2(v,R))return 'Это радиус. Длина хорды CD = 2√(R² − d²_CD).';
-    return null;},
+  traps(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);return [
+    {v:CD_half(R,p.dCD),m:'Это только половина хорды. Хорду надо удвоить: CD = 2·√(R² − d²).'},
+    {v:R,m:'Это радиус. Длина хорды CD = 2√(R² − d²_CD).'}];},
   ref:`CD = 2·√(R² − d²_CD)`,
   refWhy:'Перпендикуляр из центра делит хорду пополам. В прямоугольном треугольнике «радиус — расстояние — полухорда» полухорда = √(R² − d²), а вся хорда вдвое больше.'};
 function CD_half(R,d){return Math.sqrt(Math.max(R*R-d*d,0));}
 
 /* 15. secKP1 — отрезок KP; окружность через B,C; дано AK и AC=k·BC; KP=AK/k */
-SUBS.secKP1={theme:'circ',name:'Секущие: окружность через B и C (дано AK)',notSheet:true,
+SUBS.secKP1={theme:'circ',name:'Секущие: окружность через B и C (дано AK)',
   KS:[[3,2],[6,5],[5,4],[7,5],[8,5],[2,1],[7,4],[9,5]],
   gen(){const kk=pick(SUBS.secKP1.KS);const t=rnd(2,7);return {AK:kk[0]*t,k:kk[0]/kk[1],num:kk[0],den:kk[1]};},
   calc(p){return p.AK/p.k;},
@@ -863,14 +977,13 @@ SUBS.secKP1={theme:'circ',name:'Секущие: окружность через 
     `Четырёхугольник KBCP вписан в окружность, поэтому ∠AKP = ∠ACB (внешний угол вписанного четырёхугольника равен внутреннему противолежащему).`,
     `Угол A — общий, значит △AKP подобен △ACB. Отсюда KP / CB = AK / AC.`,
     `KP = CB·AK / AC = AK / (AC : CB) = ${p.AK} / ${fmt(p.k)} = <b>${fmt(kp)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AK*p.k))return 'Коэффициент применён наоборот. Так как AC больше BC в '+fmt(p.k)+' раз, KP меньше AK: KP = AK / '+fmt(p.k)+'.';
-    return null;},
+  traps(p){return [
+    {v:p.AK*p.k,m:'Коэффициент применён наоборот. Так как AC больше BC в '+fmt(p.k)+' раз, KP меньше AK: KP = AK / '+fmt(p.k)+'.'}];},
   ref:`△AKP ∼ △ACB  ⟹  KP = ${T('AK','k')},  где k = AC : BC`,
   refWhy:'Точки K, B, C, P лежат на одной окружности, поэтому KBCP — вписанный четырёхугольник и ∠AKP = ∠ACB. С общим углом A треугольники AKP и ACB подобны с коэффициентом BC : AC = 1 : k.'};
 
 /* 16. secKP2 — отрезок KP; дано AP и BC=AB/m; KP=AP/m */
-SUBS.secKP2={theme:'circ',name:'Секущие: окружность через B и C (дано AP)',notSheet:true,
+SUBS.secKP2={theme:'circ',name:'Секущие: окружность через B и C (дано AP)',
   MS:[[9,5],[3,2],[2,1],[3,1],[6,5],[7,5],[5,2],[8,5]],
   gen(){const mm=pick(SUBS.secKP2.MS);const t=rnd(2,7);return {AP:mm[0]*t,m:mm[0]/mm[1],num:mm[0],den:mm[1]};},
   calc(p){return p.AP/p.m;},
@@ -896,14 +1009,13 @@ SUBS.secKP2={theme:'circ',name:'Секущие: окружность через 
     `KBCP — вписанный четырёхугольник, поэтому ∠APK = ∠ABC. Угол A общий ⟹ △APK подобен △ABC.`,
     `Значит KP / CB = AP / AB, откуда KP = CB·AP / AB = AP / (AB : CB).`,
     `KP = ${p.AP} / ${fmt(p.m)} = <b>${fmt(kp)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AP*p.m))return 'Коэффициент наоборот: AB больше BC, поэтому KP = AP / '+fmt(p.m)+' (меньше AP).';
-    return null;},
+  traps(p){return [
+    {v:p.AP*p.m,m:'Коэффициент наоборот: AB больше BC, поэтому KP = AP / '+fmt(p.m)+' (меньше AP).'}];},
   ref:`△APK ∼ △ABC  ⟹  KP = ${T('AP','m')},  где m = AB : BC`,
   refWhy:'K, B, C, P концикличны, значит ∠APK = ∠ABC. С общим углом A треугольники APK и ABC подобны с коэффициентом BC : AB = 1 : m, поэтому KP = AP / m.'};
 
 /* 17. rectPK — отрезок PK; окружность на диаметре BH; BPHK — прямоугольник; PK=BH */
-SUBS.rectPK={theme:'circ',name:'Прямоугольник в высоте (найти PK)',notSheet:true,
+SUBS.rectPK={theme:'circ',name:'Прямоугольник в высоте (найти PK)',
   gen(){return {BH:rnd(8,20)};},
   calc(p){return p.BH;},
   text(p){return `В прямоугольном треугольнике <b>ABC</b> (угол <b>B</b> прямой) высота <b>BH</b> проведена к гипотенузе. Окружность с диаметром <b>BH</b> пересекает катеты <b>AB</b> и <b>CB</b> в точках <b>P</b> и <b>K</b>. Найдите <b>PK</b>, если <b>BH = ${p.BH}</b>.`;},
@@ -912,12 +1024,12 @@ SUBS.rectPK={theme:'circ',name:'Прямоугольник в высоте (на
     `Углы ∠BPH и ∠BKH опираются на диаметр BH, значит они прямые. Вместе с прямым углом B получается прямоугольник BPHK.`,
     `Диагонали прямоугольника равны, а PK и BH — как раз диагонали.`,
     `Поэтому PK = BH = <b>${p.BH}</b>.`];},
-  diag(v,p){if(isFinite(v)&&!near2(v,p.BH))return 'BPHK — прямоугольник (три прямых угла), а PK и BH — его диагонали. Диагонали прямоугольника равны, поэтому PK = BH.';return null;},
+  other(v,p){return 'Не сходится. Посмотрите на четырёхугольник BPHK: что это за фигура? Или откройте «🪜 Шаг за шагом».';},
   ref:`BPHK — прямоугольник  ⟹  PK = BH  (равные диагонали)`,
   refWhy:'Углы при P и K опираются на диаметр BH, поэтому они прямые. С прямым углом B четырёхугольник BPHK имеет три прямых угла — это прямоугольник. PK и BH — его диагонали, а они равны.'};
 
 /* 18. rectBH — найти BH по PK; BH=PK */
-SUBS.rectBH={theme:'circ',name:'Прямоугольник в высоте (найти BH)',notSheet:true,
+SUBS.rectBH={theme:'circ',name:'Прямоугольник в высоте (найти BH)',
   gen(){return {PK:rnd(8,20)};},
   calc(p){return p.PK;},
   text(p){return `В прямоугольном треугольнике <b>ABC</b> (угол <b>B</b> прямой) высота <b>BH</b> проведена к гипотенузе. Окружность с диаметром <b>BH</b> пересекает катеты в точках <b>P</b> и <b>K</b>, причём <b>PK = ${p.PK}</b>. Найдите <b>BH</b>.`;},
@@ -926,7 +1038,7 @@ SUBS.rectBH={theme:'circ',name:'Прямоугольник в высоте (на
     `Углы при P и K опираются на диаметр BH — они прямые. С прямым углом B четырёхугольник BPHK — прямоугольник.`,
     `PK и BH — его диагонали, а диагонали прямоугольника равны.`,
     `Значит BH = PK = <b>${p.PK}</b>.`];},
-  diag(v,p){if(isFinite(v)&&!near2(v,p.PK))return 'PK и BH — диагонали прямоугольника BPHK, они равны: BH = PK.';return null;},
+  other(v,p){return 'Не сходится. Посмотрите на четырёхугольник BPHK: что это за фигура? Или откройте «🪜 Шаг за шагом».';},
   ref:`BH = PK  (диагонали прямоугольника BPHK равны)`,
   refWhy:'Те же рассуждения: BPHK — прямоугольник, а PK и BH — равные диагонали, поэтому BH = PK.'};
 
@@ -951,7 +1063,7 @@ function rectFig(val,lblBH,lblPK,unk){
 }
 
 /* 19. tanSecAC — сторона AC; касательная AB, секущая через центр; AB²=AC(AC−D); AC=(D+√(D²+4AB²))/2 */
-SUBS.tanSecAC={theme:'circ',name:'Касательная и секущая (найти AC)',notSheet:true,
+SUBS.tanSecAC={theme:'circ',name:'Касательная и секущая (найти AC)',
   gen(){for(let k=0;k<300;k++){const AC=rnd(8,25),AB=rnd(4,AC-2);if((10*AB*AB)%AC===0){const D=Math.round((AC*AC-AB*AB)/AC*10)/10;if(D>0.5&&D<AC)return {D,AB};}}return {D:3.6,AB:8};},
   calc(p){return (p.D+Math.sqrt(p.D*p.D+4*p.AB*p.AB))/2;},
   text(p){return `Окружность с центром на стороне <b>AC</b> проходит через вершину <b>C</b> и касается стороны <b>AB</b> в точке <b>B</b>. Найдите <b>AC</b>, если диаметр окружности равен <b>${fmt(p.D)}</b>, а <b>AB = ${p.AB}</b>.`;},
@@ -960,15 +1072,14 @@ SUBS.tanSecAC={theme:'circ',name:'Касательная и секущая (на
     `AB — касательная, а AC — секущая, проходящая через центр (её внешняя часть равна AC − D). По свойству касательной и секущей: AB² = AC·(AC − D).`,
     `${p.AB}² = AC² − ${fmt(p.D)}·AC ⟹ AC² − ${fmt(p.D)}·AC − ${p.AB*p.AB} = 0.`,
     `AC = (${fmt(p.D)} + √(${fmt(p.D)}² + 4·${p.AB*p.AB})) / 2 = <b>${fmt(ac)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AB*p.AB/p.D))return 'Это внешняя часть секущей (AC − D), а не вся AC. Решите квадратное уравнение AC² − D·AC − AB² = 0.';
-    if(near2(v,Math.sqrt(p.AB*p.AB+p.D*p.D)))return 'Здесь не теорема Пифагора. Работает свойство касательной: AB² = AC·(AC − D).';
-    return null;},
+  traps(p){return [
+    {v:p.AB*p.AB/p.D,m:'Это внешняя часть секущей (AC − D), а не вся AC. Решите квадратное уравнение AC² − D·AC − AB² = 0.'},
+    {v:Math.sqrt(p.AB*p.AB+p.D*p.D),m:'Здесь не теорема Пифагора. Работает свойство касательной: AB² = AC·(AC − D).'}];},
   ref:`AB² = AC·(AC − D)  ⟹  AC = ${T('D + √(D² + 4·AB²)','2')}`,
   refWhy:'Касательная в квадрате равна произведению всей секущей на её внешнюю часть. Секущая AC проходит через центр, её длина AC, а внешняя часть — AC − D (диаметр D «съедает» часть внутри круга). Получается квадратное уравнение.'};
 
 /* 20. tanSecD — диаметр; дано AB и AC; D=(AC²−AB²)/AC */
-SUBS.tanSecD={theme:'circ',name:'Касательная и секущая (найти диаметр)',notSheet:true,
+SUBS.tanSecD={theme:'circ',name:'Касательная и секущая (найти диаметр)',
   gen(){for(let k=0;k<300;k++){const AC=rnd(8,25),AB=rnd(4,AC-2);if((100*AB*AB)%AC===0){const D=(AC*AC-AB*AB)/AC;if(D>0.5&&D<AC)return {AB,AC};}}return {AB:9,AC:12};},
   calc(p){return (p.AC*p.AC-p.AB*p.AB)/p.AC;},
   text(p){return `Окружность с центром на стороне <b>AC</b> проходит через вершину <b>C</b> и касается стороны <b>AB</b> в точке <b>B</b>. Найдите диаметр окружности, если <b>AB = ${p.AB}</b>, <b>AC = ${p.AC}</b>.`;},
@@ -977,10 +1088,9 @@ SUBS.tanSecD={theme:'circ',name:'Касательная и секущая (на�
     `Касательная и секущая: AB² = AC·(AC − D), где AC − D — внешняя часть секущей.`,
     `Отсюда AC − D = AB² / AC = ${p.AB*p.AB} / ${p.AC} = ${fmt(p.AB*p.AB/p.AC)}.`,
     `D = AC − ${fmt(p.AB*p.AB/p.AC)} = (${p.AC}² − ${p.AB}²) / ${p.AC} = <b>${fmt(D)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AB*p.AB/p.AC))return 'Это внешняя часть секущей (AC − D). Сам диаметр D = AC − AB²/AC.';
-    if(near2(v,p.AC-p.AB))return 'Нельзя просто вычесть длины. Используйте AB² = AC·(AC − D) ⟹ D = (AC² − AB²)/AC.';
-    return null;},
+  traps(p){return [
+    {v:p.AB*p.AB/p.AC,m:'Это внешняя часть секущей (AC − D). Сам диаметр D = AC − AB²/AC.'},
+    {v:p.AC-p.AB,m:'Нельзя просто вычесть длины. Используйте AB² = AC·(AC − D) ⟹ D = (AC² − AB²)/AC.'}];},
   ref:`AB² = AC·(AC − D)  ⟹  D = ${T('AC² − AB²','AC')}`,
   refWhy:'По свойству касательной и секущей AB² = AC·(AC − D). Выразив внешнюю часть AC − D = AB²/AC, получаем диаметр D = AC − AB²/AC.'};
 
@@ -1052,12 +1162,12 @@ GUIDE.trapBis=p=>{const c=Math.sqrt(p.AF*p.AF+p.BF*p.BF);return [
   {t:'num',ans:c,q:'AB — гипотенуза прямоугольного △AFB с катетами AF = '+p.AF+' и BF = '+p.BF+'. Найди AB = √(AF² + BF²).',
    tip:'√('+p.AF+'² + '+p.BF+'²) = √'+(p.AF*p.AF+p.BF*p.BF)+'.',ok:'Готово!',res:'AB = '+fmt(c)}];};
 
-GUIDE.trapLeg=p=>{const h=p.CD*S30[p.be],AB=h/S30[p.al];const ba=S30[p.al]?Math.round(1/(S30[p.al]*S30[p.al]/1)):0;
+GUIDE.trapLeg=p=>{const h=p.CD*S30[p.be],AB=h/S30[p.al];
   return [
-  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Опустим высоту из вершины C на нижнее основание. Высота трапеции <b>h = CD·sin C</b> = '+p.CD+'·sin '+p.be+'°. Чему равна h? (можно десятичной дробью)',
+  {t:'num',ans:h,accept:v=>stepEq(v,h),q:'Опустим высоту из вершины C на нижнее основание. Высота трапеции <b>h = CD·sin C</b> = '+p.CD+'·sin '+p.be+'°. Чему равна h? (можно десятичной дробью)',
    tip:'sin '+p.be+'° = '+fmt(S30[p.be])+', умножь на '+p.CD+'.',ok:'Верно: боковая сторона × синус угла при основании даёт высоту.',res:'h = '+fmt(h)},
-  {t:'num',ans:AB,accept:v=>ansEq(v,AB),q:'Та же высота получается из вершины B: <b>h = AB·sin B</b>, значит AB = h / sin B = h / sin '+p.al+'°. Найди AB (в виде k√m или десятичной дробью).',
-   tip:'Раздели '+fmt(h)+' на sin '+p.al+'° = '+fmt(S30[p.al])+'.',ok:'Отлично!',res:'AB = '+(function(){const bb=Math.round(1/(S30[p.be]*S30[p.be]));const t=p.CD/ba;const r=simpRad(t,1,ba*bb);return radStr(r.k,r.m);})()}];};
+  {t:'num',ans:AB,accept:v=>ansEq(v,AB),q:'Та же высота получается из вершины B: <b>h = AB·sin B</b>, значит AB = h / sin B = h / sin '+p.al+'°. Найди AB точно — в виде k√m.',
+   tip:'Раздели '+fmt(h)+' на sin '+p.al+'° = '+fmt(S30[p.al])+'.',ok:'Отлично!',res:'AB = '+SUBS.trapLeg.ansStr(p)}];};   /* итог — тот же, что в решении и в проверке */
 
 GUIDE.rhombAng=p=>{const s=2*p.d/p.D,phi=Math.round(Math.asin(Math.min(1,s))*180/Math.PI);return [
   {t:'num',ans:p.D/2,q:'O — точка пересечения диагоналей. Половина данной диагонали <b>AO = AC/2 = '+p.D+'/2</b>. Чему равна AO?',
@@ -1087,14 +1197,14 @@ GUIDE.circR=p=>{const A=180-p.be-p.ga,BC=2*p.R*Math.sin(A*Math.PI/180);return [
 GUIDE.hAB=p=>{const c=Math.hypot(p.a,p.b),h=p.a*p.b/c;return [
   {t:'num',ans:c,q:'Сначала гипотенуза по Пифагору: <b>c = √('+p.a+'² + '+p.b+'²)</b>. Чему равна c?',
    tip:'√'+(p.a*p.a+p.b*p.b)+'.',ok:'Верно.',res:'c = '+fmt(c)},
-  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Площадь считаем двумя способами: '+F('1','2')+'·'+p.a+'·'+p.b+' = '+F('1','2')+'·c·h. Отсюда высота <b>h = '+F(p.a+'·'+p.b,'c')+'</b>. Найди h.',
-   tip:(p.a*p.b)+' / '+fmt(c)+'.',ok:'Отлично!',res:'h = '+fmt(h)}];};
+  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Площадь считаем двумя способами: '+F('1','2')+'·'+p.a+'·'+p.b+' = '+F('1','2')+'·c·h. Отсюда высота <b>h = '+F(p.a+'·'+p.b,'c')+'</b>. Найди h точно: целым числом или дробью (например, 60/13).',
+   tip:(p.a*p.b)+' / '+fmt(c)+'.',ok:'Отлично!',res:'h = '+exactStr(h)}];};
 
 GUIDE.hAC=p=>{const b=Math.sqrt(p.c*p.c-p.a*p.a),h=p.a*b/p.c;return [
   {t:'num',ans:b,accept:v=>ansEq(v,b),q:'Второй катет по Пифагору: <b>b = √(c² − a²) = √('+p.c+'² − '+p.a+'²)</b>. Чему равен b?',
    tip:'√'+(p.c*p.c-p.a*p.a)+'.',ok:'Верно.',res:'b = '+fmt(b)},
-  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Теперь высота к гипотенузе через площадь: <b>h = '+F(p.a+'·'+fmt(b),p.c)+'</b>. Найди h.',
-   tip:(p.a)+'·'+fmt(b)+' / '+p.c+'.',ok:'Готово!',res:'h = '+fmt(h)}];};
+  {t:'num',ans:h,accept:v=>ansEq(v,h),q:'Теперь высота к гипотенузе через площадь: <b>h = '+F(p.a+'·'+fmt(b),p.c)+'</b>. Найди h точно: целым числом или дробью (например, 60/13).',
+   tip:(p.a)+'·'+fmt(b)+' / '+p.c+'.',ok:'Готово!',res:'h = '+exactStr(h)}];};
 
 GUIDE.projAB=p=>{const AB=Math.sqrt(p.AH*p.AC);return [
   {t:'choice',ci:0,opts:['гипотенузой AC и отрезком AH','двумя отрезками AH и HC','высотой BH и гипотенузой'],
@@ -1296,19 +1406,25 @@ function auditArchive(){
 /* ============ Интерактив: хранилище + 3 режима + справочник + селфтест ============ */
 
 /* ---------- хранилище ---------- */
-const NS='mathExamCourseProgress.v1';
-function _load(){try{return JSON.parse(localStorage.getItem(NS))||{};}catch(e){return {};}}
-function _persist(all){try{localStorage.setItem(NS,JSON.stringify(all));}catch(e){}}
-let ALL=_load();
-let ST=ALL[TID]||{runs:0,best:0,events:[],razbor:{},seenArch:{},passed:false};
-if(!ST.events)ST.events=[];if(!ST.razbor)ST.razbor={};if(!ST.seenArch)ST.seenArch={};if(!ST.mastery)ST.mastery={};
-function save(){ALL[TID]=ST;_persist(ALL);}
-function ev(t,d){ST.events.push(Object.assign({t,ts:Date.now()},d||{}));if(ST.events.length>300)ST.events=ST.events.slice(-300);save();}
+/* ключ mathExamCourseProgress.v1; старые поля записи (журнал событий, разборы,
+   показанные задачи банка, освоенность) пишутся через CP.saveRec — со свежим
+   чтением ключа; ST — их копия для экрана */
+function loadST(){
+  const r=CP.readAll()[TID], o=CP.isObj(r)?r:{};
+  return {runs:CP.num(o.runs), best:CP.num(o.best), passed:o.passed===true,
+    events:Array.isArray(o.events)?o.events.filter(CP.isObj):[], razbor:CP.isObj(o.razbor)?o.razbor:{},
+    seenArch:CP.isObj(o.seenArch)?o.seenArch:{}, mastery:CP.isObj(o.mastery)?o.mastery:{}};
+}
+CP.migrate(r=>CP.num(r.best));
+let ST=loadST();
+function upd(fn){CP.saveRec(fn);ST=loadST();}
+function ev(t,d){const e=Object.assign({t,ts:Date.now()},d||{});
+  upd(rec=>{rec.events=(Array.isArray(rec.events)?rec.events:[]).concat([e]).slice(-300);});}
 function weakStats(){const c={};ST.events.forEach(e=>{if((e.t==='opt_wrong'||e.t==='quiz_wrong'||e.t==='gaveup')&&e.sub)c[e.sub]=(c[e.sub]||0)+1;});
   return Object.keys(c).map(s=>({sub:s,n:c[s]})).sort((a,b)=>b.n-a.n);}
 function subErr(sub){return ST.events.filter(e=>(e.t==='opt_wrong'||e.t==='quiz_wrong'||e.t==='gaveup'||e.t==='recog_wrong')&&e.sub===sub).length;}
 function masteryOf(sub){return ST.mastery[sub]||0;}
-function recordClean(sub){ST.mastery[sub]=(ST.mastery[sub]||0)+1;save();}
+function recordClean(sub){upd(rec=>{rec.mastery=CP.isObj(rec.mastery)?rec.mastery:{};rec.mastery[sub]=CP.num(rec.mastery[sub])+1;});}
 function masteryLabel(sub){const m=masteryOf(sub);return m>=3?{t:'уверенно',c:'m-ok'}:(m>=1?{t:'закрепляю',c:'m-mid'}:null);}
 /* адаптивный вес: больше ошибок и меньше освоенности → тип выпадает чаще */
 function subWeight(sub){return Math.max(0.3, Math.min(5, 1 + 1.5*subErr(sub) - 0.7*masteryOf(sub)));}
@@ -1323,7 +1439,7 @@ function clear(n){while(n&&n.firstChild)n.removeChild(n.firstChild);}
 function ansDisplay(sub,p){const S=SUBS[sub];
   if(sub==='trapLeg')return S.ansStr(p);
   if(sub==='rhombAng'){const a=S.calc(p);return fmt(a)+'° и '+fmt(180-a)+'°';}
-  return fmt(S.calc(p));}
+  return exactStr(S.calc(p));}
 
 /* ---------- пул задач для тренировки: сначала банк (реальные), потом генерация ---------- */
 function archivePool(filter){return ARCHIVE.filter(it=>filter==='all'?true:(filter.startsWith('t:')?it.theme===filter.slice(2):it.sub===filter));}
@@ -1337,7 +1453,7 @@ function nextTask(filter){
       const sub=weightedSub(subsAvail);
       it=pick(unseen.filter(u=>u.sub===sub));
     } else it=pick(unseen);
-    ST.seenArch[it.id]=1;save();return {sub:it.sub,p:it.p,id:it.id,fromArch:true,justExhausted:unseen.length===1};
+    upd(rec=>{rec.seenArch=CP.isObj(rec.seenArch)?rec.seenArch:{};rec.seenArch[it.id]=1;});return {sub:it.sub,p:it.p,id:it.id,fromArch:true,justExhausted:unseen.length===1};
   }
   // банк исчерпан для фильтра → генерация (подтип по весу)
   let sub;
@@ -1364,14 +1480,20 @@ function buildTask(mount,task,mode,onDone){
   const inp=el('input','ans-inp');inp.type='text';inp.setAttribute('inputmode','decimal');inp.placeholder='ответ';
   const btn=el('button','btn primary','Проверить');
   row.appendChild(inp);row.appendChild(btn);card.appendChild(row);
-  const fb=el('div','fb');card.appendChild(fb);
+  const fb=el('div','fb');fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');card.appendChild(fb);
 
-  let tries=0,resolved=false,gaveHint=false,stepIdx=0;
+  let tries=0,resolved=false,gaveHint=false,stepIdx=0,reported=false;
+  /* missed — промах по задаче уже записан в журнал; shown — показан результат
+     шага или решение: задача тогда не идёт в счёт решённых самостоятельно */
+  let missed=false,shown=false;
   ev('task_start',{sub:task.sub,mode});
 
+  /* один вердикт на карточку: повторный клик не засчитывает вопрос второй раз */
+  function report(status){if(reported)return;reported=true;onDone&&onDone(status);}
   function finishCard(status){ // status: 'ok'|'okhint'|'fail'
     resolved=true;inp.disabled=true;btn.disabled=true;
     if(tools)tools.querySelectorAll('button').forEach(b=>b.disabled=true);
+    if(mode==='quiz'){report(status);return;}   // зачёт сам ведёт поток, кнопки «Следующая» нет
     if(mode==='train'&&status==='fail'){
       const back=el('div','solo-nudge');
       back.innerHTML='Не вышло сходу — это нормально. Разберём этот тип по шагам?';
@@ -1379,9 +1501,8 @@ function buildTask(mount,task,mode,onDone){
       back.appendChild(g);card.appendChild(back);
     }
     const next=el('button','btn primary wide','Следующая задача →');
-    next.onclick=()=>onDone&&onDone(status);
+    next.onclick=()=>report(status);
     card.appendChild(next);
-    if(mode==='quiz')onDone&&onDone(status);   // зачёт сам ведёт поток
   }
   function revealSolution(){
     const box=el('div','sol');box.appendChild(el('div','sol-h','Решение'));
@@ -1392,15 +1513,20 @@ function buildTask(mount,task,mode,onDone){
   function check(){
     if(resolved)return;
     const raw=inp.value;const val=parseAns(raw);
+    /* пустое или нечисловое поле — не попытка и не промах */
+    if(!isFinite(val)){fb.className='fb warn';fb.innerHTML=raw.trim()?'Впишите число: например, 12, 7,5, 60/13 или 3√2.':'Впишите ответ в поле.';return;}
     const ok=S.ansEqCustom?S.ansEqCustom(val,task.p):ansEq(val,task.exp!=null?task.exp:S.calc(task.p));
     tries++;
+    if(mode==='quiz')CP.mlog(task.sub,ok);   // зачёт: одна попытка — один вердикт в журнал
     if(ok){fb.className='fb good';fb.innerHTML='✓ Верно!'+(gaveHint?' (с подсказкой)':'');
+      if(mode==='train'&&!shown){CP.solvedOne(task.sub); if(!missed)CP.mlog(task.sub,true);}
       ev(gaveHint?'solved_hint':'solved',{sub:task.sub,mode});finishCard(gaveHint?'okhint':'ok');return;}
     if(mode==='quiz'){fb.className='fb bad';fb.innerHTML='✗ Неверно. Правильный ответ: <b>'+ansDisplay(task.sub,task.p)+'</b>';
       ev('quiz_wrong',{sub:task.sub});finishCard('fail');return;}
     // тренировка: диагностика по введённому
+    if(!missed){missed=true;CP.mlog(task.sub,false);}
     ev('opt_wrong',{sub:task.sub});
-    const hint=isFinite(val)?S.diag(val,task.p):null;
+    const hint=isFinite(val)?diagOf(task.sub,val,task.p):null;
     if(tries>=2){fb.className='fb bad';fb.innerHTML=(hint?hint+'<br>':'')+'Разберём решение ниже.';revealSolution();ev('gaveup',{sub:task.sub});finishCard('fail');}
     else{fb.className='fb warn';fb.innerHTML=(hint||'Не совсем. Попробуй ещё раз — осталась одна попытка.');}
   }
@@ -1418,19 +1544,21 @@ function buildTask(mount,task,mode,onDone){
     const bStep=el('button','btn ghost','🪜 Шаг за шагом');
     const steps=S.sol(task.p);
     bStep.onclick=()=>{gaveHint=true;
+      /* шаг с готовым вычислением («… = 12») — показ результата, а не подсказка */
+      if(/=\s*(<[^>]+>\s*)*[−-]?\d/.test(steps[stepIdx]))shown=true;
       if(stepIdx===0){card.insertBefore(el('div','stepbox','<b>Пошагово</b>'),fb);}
       const sb=card.querySelector('.stepbox');
       const isLast=stepIdx===steps.length-1;
       sb.appendChild(el('div','sol-step','<b>'+(stepIdx+1)+'.</b> '+steps[stepIdx]));
       ev('step_hint',{sub:task.sub,step:stepIdx});
       stepIdx++;
-      if(isLast){ // последний шаг = ответ = засчитывается как «сдалась»
+      if(isLast){ // последний шаг = ответ = «решение показано»
         sb.appendChild(el('div','sol-ans','Ответ: <b>'+ansDisplay(task.sub,task.p)+'</b>'));
         bStep.disabled=true;ev('gaveup',{sub:task.sub});finishCard('fail');
       } else if(stepIdx>=steps.length){bStep.disabled=true;}
     };
     const bGive=el('button','btn danger-ghost','Сдаюсь — решение');
-    bGive.onclick=()=>{if(resolved)return;fb.className='fb bad';fb.innerHTML='Правильный ответ: <b>'+ansDisplay(task.sub,task.p)+'</b>';
+    bGive.onclick=()=>{if(resolved)return;shown=true;fb.className='fb bad';fb.innerHTML='Правильный ответ: <b>'+ansDisplay(task.sub,task.p)+'</b>';
       revealSolution();ev('gaveup',{sub:task.sub});finishCard('fail');};
     tools.appendChild(bHint);tools.appendChild(bStep);tools.appendChild(bGive);
     card.appendChild(tools);
@@ -1477,7 +1605,7 @@ function openRazbor(sub){
   moreWrap.appendChild(more);solBox.appendChild(moreWrap);
   function addStep(){stepHost.appendChild(el('div','sol-step','<b>'+(i+1)+'.</b> '+steps[i]));i++;
     if(i>=steps.length){more.remove();stepHost.appendChild(el('div','sol-ans','Ответ: <b>'+ansDisplay(sub,ex.p)+'</b>'));
-      ST.razbor[sub]=1;save();
+      upd(rec=>{rec.razbor=CP.isObj(rec.razbor)?rec.razbor:{};rec.razbor[sub]=1;});
       const ref=el('div','refbox');ref.innerHTML='<div class="hint-f">'+S.ref+'</div><div class="why">'+S.refWhy+'</div>'+(S.notSheet?'<div class="notsheet-tag">⚠ этой формулы нет на листе справочных материалов — её надо помнить</div>':'');
       solBox.appendChild(ref);
       const tr=el('button','btn primary wide','Тренировать этот тип →');tr.onclick=()=>{curFilter=sub;setTab('train');};
@@ -1516,7 +1644,7 @@ CONSTRUCT.trapLeg=function(holder,p,onDone){
   svg.appendChild(pulse);
   const handle=eln('circle',{cx:SC.x,cy:SC.y,r:10,fill:CO.blue,stroke:'#fff','stroke-width':2.5,cursor:'grab'});svg.appendChild(handle);
   holder.appendChild(svg);
-  const fb=el('div','fb');holder.appendChild(fb);
+  const fb=el('div','fb');fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');holder.appendChild(fb);
   let hx=SC.x,hy=SC.y,dragging=false,solved=false;
   function raPath(){const sq=11;return 'M'+footX+' '+(baseY-sq)+' L'+(footX-sq)+' '+(baseY-sq)+' L'+(footX-sq)+' '+baseY;}
   function update(){hline.setAttribute('x2',hx);hline.setAttribute('y2',hy);foot.setAttribute('cx',hx);foot.setAttribute('cy',hy);foot.setAttribute('r',dragging||solved?3.2:0);handle.setAttribute('cx',hx);handle.setAttribute('cy',hy);
@@ -1545,20 +1673,23 @@ CONSTRUCT.trapLeg=function(holder,p,onDone){
 
 /* ================= РЕЖИМ: ТРЕНИРОВКА (обучающая, пошаговая) ================= */
 let trainMode='guided';
+const REVIEW={on:CP.REVIEW, empty:false};   // ?mode=review: задачи только из открытых типов журнала
 const nudgedSolo=new Set();
+const PNOTE23='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без показа решения; ошибка, исправленная самостоятельно, этому не мешает. Если показан шаг с готовым числом («🪜 Шаг за шагом», «Показать шаг») или всё решение («Сдаюсь — решение»), задача отмечается «решение показано» — к такому типу стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
 function renderTrain(main){
   clear(main);
   const mt=el('div','mode-toggle');
   const b1=el('button','mt'+(trainMode==='guided'?' active':''),'🪜 Веду по шагам');
-  const b2=el('button','mt'+(trainMode==='solo'?' active':''),'✍️ Сам решаю');
+  const b2=el('button','mt'+(trainMode==='solo'?' active':''),'✍️ Решаю без подсказок');
   b1.onclick=()=>{if(trainMode!=='guided'){trainMode='guided';renderTrain(main);}};
   b2.onclick=()=>{if(trainMode!=='solo'){trainMode='solo';renderTrain(main);}};
   mt.appendChild(b1);mt.appendChild(b2);main.appendChild(mt);
   main.appendChild(el('div','mode-hint',trainMode==='guided'
     ?(curFilter==='all'||curFilter.indexOf('t:')===0
-        ?'Сначала сам определи тип задачи (главный навык на экзамене), потом реши по шагам. Ошибся — получишь подсказку по шагу.'
-        :'Отрабатываешь один тип: проходи каждый шаг сам, метод закрепляется.')
-    :'Реши задачу целиком и проверь себя. Застрял — вернись в режим «по шагам».'));
+        ?'Сначала определи тип задачи самостоятельно (главный навык на экзамене), потом реши по шагам. Ошибка — получишь подсказку по шагу.'
+        :'Отрабатываешь один тип: проходи каждый шаг самостоятельно, метод закрепляется.')
+    :'Реши задачу целиком и проверь себя. Нет хода? Вернись в режим «по шагам».'));
+  main.appendChild(el('div','',PNOTE23));
   const bar=el('div','filter-bar');
   bar.appendChild(el('span','fb-lbl','Тип:'));
   const opts=[['all','Все темы'],['t:tri','Треугольники'],['t:quad','Четырёхугольники'],['t:circ','Окружности']];
@@ -1567,14 +1698,23 @@ function renderTrain(main){
   const grp=el('optgroup');grp.label='— отдельные типы —';
   ORDER.forEach(s=>{const o=el('option',null,SUBS[s].name);o.value=s;grp.appendChild(o);});
   sel.appendChild(grp);sel.value=curFilter;
-  sel.onchange=()=>{curFilter=sel.value;load();};
+  sel.onchange=()=>{REVIEW.on=false;REVIEW.empty=false;curFilter=sel.value;load();};
   bar.appendChild(sel);main.appendChild(bar);
+  const rv=el('div');rv.setAttribute('role','status');main.appendChild(rv);
   const host=el('div','train-host');main.appendChild(host);
   const note=el('div','exhaust');main.appendChild(note);
   function load(){
-    const t=nextTask(curFilter);
+    let t=null;
+    if(REVIEW.on){   // работа над ошибками: только открытые типы журнала, задачи генератора
+      const open=CP.openTypes().filter(k=>SUBS[k]);
+      if(open.length){const sub=pick(open);t={sub,p:SUBS[sub].gen(),fromArch:false};}
+      else{REVIEW.on=false;REVIEW.empty=true;}
+    }
+    rv.innerHTML=REVIEW.on?'<div class="review-note"><b>Работа над ошибками:</b> задачи только из открытых типов журнала ('+CP.openTypes().filter(k=>SUBS[k]).length+'). Тип закрывается тремя задачами подряд, решёнными без промаха.</div>'
+      :(REVIEW.empty?'<div class="exhaust">Открытых типов в журнале ошибок нет — обычная тренировка.</div>':'');
+    if(!t)t=nextTask(curFilter);
     if(t.exp==null)t.exp=SUBS[t.sub].calc(t.p);
-    if(t.justExhausted)note.innerHTML='Ты прошёл все задачи из банка по этому фильтру. Дальше — сгенерированные варианты того же типа.';
+    if(t.justExhausted)note.innerHTML='Все задачи из банка по этому фильтру пройдены. Дальше — сгенерированные варианты того же типа.';
     if(trainMode==='guided')buildGuided(host,t,()=>load(),{recognize:(curFilter==='all'||curFilter.indexOf('t:')===0)});
     else buildTask(host,t,'train',()=>load());
   }
@@ -1598,7 +1738,9 @@ function buildGuided(mount,task,onDone,opts){
   const ladder=el('div','ladder');card.appendChild(ladder);
   mount.appendChild(card);
   ev('task_start',{sub:task.sub,mode:'guided',recog:!!opts.recognize});
-  let idx=0,anyReveal=false,finalRevealed=false;
+  let idx=0,anyReveal=false,finalRevealed=false,missed=false;
+  /* журнал: один вердикт на задачу — первый промах (приём, число шага, выбор) открывает тип */
+  function miss(){if(!missed){missed=true;CP.mlog(task.sub,false);}}
   function revealType(){themeSpan.textContent=THEME_NAME[S.theme]+' · '+S.name;if(!head.querySelector('.link-btn'))head.appendChild(bf);}
   function renderRecog(){
     const box=el('div','step step-recog');
@@ -1609,7 +1751,7 @@ function buildGuided(mount,task,onDone,opts){
     os.forEach((o,k)=>{const b=el('button','choice-btn',o.t);
       b.onclick=()=>{if(box.classList.contains('done'))return;
         if(o.ok){b.classList.add('ok');box.classList.add('done');fb.className='fb good';fb.innerHTML='✓ Верно. <b>Как узнать:</b> '+RECOG[task.sub].cue;revealType();ev('recog_ok',{sub:task.sub});startSolve();}
-        else{b.classList.add('no');tries++;ev('recog_wrong',{sub:task.sub});
+        else{b.classList.add('no');tries++;miss();ev('recog_wrong',{sub:task.sub});
           if(tries>=2){os.forEach((oo,j)=>{if(oo.ok)wrap.children[j].classList.add('ok');});box.classList.add('done');fb.className='fb bad';fb.innerHTML='Верный приём отмечен. <b>Как узнать:</b> '+RECOG[task.sub].cue;revealType();startSolve();}
           else{fb.className='fb warn';fb.innerHTML='Не этот. Перечитай, что дано и что требуется найти.';}}};
       wrap.appendChild(b);});
@@ -1618,15 +1760,17 @@ function buildGuided(mount,task,onDone,opts){
   function done(){
     const clean=!anyReveal&&!finalRevealed;
     if(clean)recordClean(task.sub);
+    /* все числа шагов ввёл ученик, ничего не показано — задача решена (по шагам) */
+    if(clean){CP.solvedOne(task.sub); if(!missed)CP.mlog(task.sub,true);}
     const fin=el('div','guide-done');
-    fin.innerHTML='<div class="gd-h">'+(finalRevealed?'Решение разобрано — в следующий раз получится самому.':(anyReveal?'Решение собрано — метод закреплён.':'✓ Ты прошёл всё решение сам!'))+'</div><div class="gd-ans">Ответ: <b>'+ansDisplay(task.sub,task.p)+'</b></div>';
+    fin.innerHTML='<div class="gd-h">'+(finalRevealed?'Решение разобрано — в следующий раз получится самостоятельно.':(anyReveal?'Решение собрано — метод закреплён.':'✓ Всё решение пройдено без подсказок!'))+'</div><div class="gd-ans">Ответ: <b>'+ansDisplay(task.sub,task.p)+'</b></div>';
     card.appendChild(fin);
     ev(finalRevealed?'gaveup':'solved',{sub:task.sub,mode:'guided'});
     if(clean&&masteryOf(task.sub)>=3&&!nudgedSolo.has(task.sub)){
       nudgedSolo.add(task.sub);
       const nud=el('div','solo-nudge');
-      nud.innerHTML='🎓 Ты уверенно решаешь этот тип по шагам. Готов решать <b>без подсказок</b>?';
-      const yes=el('button','btn ghost','Решать самому →');yes.onclick=()=>{trainMode='solo';curFilter=task.sub;setTab('train');};
+      nud.innerHTML='🎓 Этот тип по шагам решается уверенно. Переходим к решению <b>без подсказок</b>?';
+      const yes=el('button','btn ghost','Решать без подсказок →');yes.onclick=()=>{trainMode='solo';curFilter=task.sub;setTab('train');};
       nud.appendChild(yes);card.appendChild(nud);
     }
     const nx=el('button','btn primary wide','Следующая задача →');nx.onclick=()=>onDone&&onDone();card.appendChild(nx);
@@ -1644,7 +1788,7 @@ function buildGuided(mount,task,onDone,opts){
       box.appendChild(el('div','step-ok','Высота построена: перпендикуляр из C на основание. Теперь посчитаем её по шагам.'));
       ev('construct_ok',{sub:task.sub}); renderStep(); }
     const api=CONSTRUCT[task.sub](holder,task.p,fin);
-    skip.onclick=()=>{ ev('construct_shown',{sub:task.sub}); api.showAnswer(); };
+    skip.onclick=()=>{ anyReveal=true; ev('construct_shown',{sub:task.sub}); api.showAnswer(); };   // построение выполнил тренажёр — это показ
   }
   function renderStep(){
     if(idx>=steps.length){done();return;}
@@ -1664,9 +1808,12 @@ function buildGuided(mount,task,onDone,opts){
       const b=el('button','btn primary','Проверить');
       row.appendChild(inp);row.appendChild(b);box.appendChild(row);box.appendChild(fb);
       function chk(){if(box.classList.contains('done'))return;
-        const val=parseAns(inp.value);const ok=st.accept?st.accept(val):ansEq(val,st.ans);
+        const val=parseAns(inp.value);
+        /* пустое или нечисловое поле — не попытка и не промах */
+        if(!isFinite(val)){fb.className='fb warn';fb.innerHTML=inp.value.trim()?'Впишите число: например, 12, 7,5, 60/13 или 3√2.':'Впишите ответ шага.';return;}
+        const ok=st.accept?st.accept(val):ansEq(val,st.ans);
         if(ok){fb.className='fb good';fb.innerHTML='✓ Верно';inp.disabled=true;b.disabled=true;ev('step_ok',{sub:task.sub,step:idx});advance(false);return;}
-        tries++;ev('opt_wrong',{sub:task.sub,mode:'guided',step:idx});
+        tries++;miss();ev('opt_wrong',{sub:task.sub,mode:'guided',step:idx});
         if(tries>=2){fb.className='fb bad';fb.innerHTML='Правильно: <b>'+(st.res||fmt(st.ans))+'</b>';inp.disabled=true;b.disabled=true;advance(true);}
         else{fb.className='fb warn';fb.innerHTML=st.tip||'Не совсем — попробуй ещё раз.';}}
       b.onclick=chk;inp.addEventListener('keydown',e=>{if(e.key==='Enter')chk();});
@@ -1677,7 +1824,7 @@ function buildGuided(mount,task,onDone,opts){
       opts.forEach((o,k)=>{const b=el('button','choice-btn',o.t);
         b.onclick=()=>{if(box.classList.contains('done'))return;
           if(o.ok){b.classList.add('ok');fb.className='fb good';fb.innerHTML='✓ '+st.ok;ev('step_ok',{sub:task.sub,step:idx});advance(false);}
-          else{b.classList.add('no');tries++;ev('opt_wrong',{sub:task.sub,mode:'guided',step:idx});
+          else{b.classList.add('no');tries++;miss();ev('opt_wrong',{sub:task.sub,mode:'guided',step:idx});
             if(tries>=2){opts.forEach((oo,j)=>{if(oo.ok)wrap.children[j].classList.add('ok');});fb.className='fb bad';fb.innerHTML=st.ok;advance(true);}
             else{fb.className='fb warn';fb.innerHTML=st.tip||'Не то — подумай ещё.';}}};
         wrap.appendChild(b);});
@@ -1706,7 +1853,7 @@ function renderQuiz(main){
   clear(main);
   const weak=weakStats().slice(0,3);
   const intro=el('div','quiz-intro');
-  intro.innerHTML='<b>Зачёт.</b> 10 задач: 3 на треугольники, 3 на четырёхугольники, 4 на окружности. Одна попытка на задачу, тип скрыт, подсказок нет — как на экзамене.';
+  intro.innerHTML='<b>Зачёт.</b> 10 задач: 3 на треугольники, 3 на четырёхугольники, 4 на окружности. Одна попытка на задачу, тип скрыт, подсказок нет — как на экзамене. Ответ записывайте точно: целым числом, дробью (60/13) или с корнем (3√2). Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'.';
   main.appendChild(intro);
   if(weak.length){const w=el('div','weakbox');w.innerHTML='<b>Твои слабые места</b> (стоит повторить перед стартом): '+weak.map(x=>SUBS[x.sub].name+' <span class="wn">'+x.n+'</span>').join(', ');main.appendChild(w);}
   const startWrap=el('div','center');
@@ -1733,9 +1880,10 @@ function finishQuiz(main,quiz,res){
   clear(main);
   const ok=res.filter(r=>r==='ok').length;const okh=res.filter(r=>r==='okhint').length;
   const score=ok+okh;
-  ST.runs++;if(score>ST.best)ST.best=score;if(score>=8)ST.passed=true;ev('finish',{score});save();updateBadge();
+  CP.finishQuiz(score,QUIZ_TOTAL);   // passed — только при PASS_AT из QUIZ_TOTAL и не снимается
+  ev('finish',{score});updateBadge();
   const head=el('div','quiz-result');
-  head.innerHTML='<div class="score-big">'+score+' / 10</div><div class="score-sub">'+(score>=8?'Отличный результат! Так держать.':score>=6?'Неплохо — ещё чуть-чуть до уверенного зачёта.':'Есть над чем поработать. Разбери ошибки ниже.')+'</div>';
+  head.innerHTML='<div class="score-big">'+score+' / 10</div><div class="score-sub">'+(score>=PASS_AT?'Зачёт сдан: '+score+' из '+QUIZ_TOTAL+' (нужно '+PASS_AT+'). Так держать!':'Для зачёта нужно '+PASS_AT+' из '+QUIZ_TOTAL+'. '+(score>=6?'Ещё чуть-чуть — разберите ошибки ниже.':'Есть над чем поработать. Разберите ошибки ниже.'))+'</div>';
   main.appendChild(head);
   // маршрут повторения — по ошибкам этого зачёта
   const wrongSubs={};quiz.forEach((q,i)=>{if(res[i]==='r'||res[i]==='fail')wrongSubs[q.sub]=(wrongSubs[q.sub]||0)+1;});
@@ -1755,28 +1903,76 @@ function finishQuiz(main,quiz,res){
 /* ================= СПРАВОЧНИК ================= */
 let refHighlight=null;
 /* ============ КАРТА ЛИСТА СПРАВОЧНЫХ МАТЕРИАЛОВ ОГЭ ============ */
-const _TRIG='<table class="trig"><tr><th>α</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th><th>180°</th><th>270°</th><th>360°</th></tr>'
- +'<tr><td>sin</td><td>0</td><td>'+frac('1','2')+'</td><td>'+frac('√2','2')+'</td><td>'+frac('√3','2')+'</td><td>1</td><td>0</td><td>−1</td><td>0</td></tr>'
- +'<tr><td>cos</td><td>1</td><td>'+frac('√3','2')+'</td><td>'+frac('√2','2')+'</td><td>'+frac('1','2')+'</td><td>0</td><td>−1</td><td>0</td><td>1</td></tr>'
- +'<tr><td>tg</td><td>0</td><td>'+frac('√3','3')+'</td><td>1</td><td>√3</td><td>—</td><td>0</td><td>—</td><td>0</td></tr></table>';
-const SHEET=[
- {page:'Геометрия',blocks:[
-   {id:'poly',t:'Сумма углов n-угольника',f:'180° · (n − 2)',uses:[]},
-   {id:'midline',t:'Средняя линия',f:'△: MN = '+frac('AC','2')+'    трапеция: MN = '+frac('BC + AD','2'),uses:['trapEF'],note:'Отрезок EF в задаче — обобщение средней линии.'},
-   {id:'regtri',t:'Правильный треугольник',f:'R = '+frac('a√3','3')+',  r = '+frac('a√3','6')+',  S = '+frac('a²√3','4'),uses:[]},
-   {id:'sine',t:'Теорема синусов',f:frac('a','sin A')+' = '+frac('b','sin B')+' = '+frac('c','sin C')+' = 2R',uses:['circR']},
-   {id:'cosine',t:'Теорема косинусов',f:'c² = a² + b² − 2ab · cos C',uses:[]},
-   {id:'circ',t:'Окружность и круг',f:'C = 2πr,    S = πr²',uses:[]}]},
- {page:'Площади и тригонометрия',blocks:[
-   {id:'pgram',t:'Параллелограмм',f:'S = a · h,    S = ab · sin γ',uses:[]},
-   {id:'triarea',t:'Треугольник',f:'S = '+frac('1','2')+' a · h,    S = '+frac('1','2')+' ab · sin γ',uses:['hAB','hAC'],note:'Высота к гипотенузе: ½ab = ½ch ⟹ h = ab/c.'},
-   {id:'traparea',t:'Трапеция',f:'S = '+frac('a + b','2')+' · h',uses:[]},
-   {id:'rhomb',t:'Ромб',f:'S = '+frac('1','2')+' d₁ · d₂',uses:[]},
-   {id:'righttri',t:'Прямоугольный треугольник',f:'sin α = '+frac('a','c')+',  cos α = '+frac('b','c')+',  tg α = '+frac('a','b'),uses:['trapLeg','rhombAng']},
-   {id:'pyth',t:'Теорема Пифагора',f:'a² + b² = c²',uses:['rhombH','trapBis','hAC','chordDist','chordLen']},
-   {id:'trigid',t:'Основное тождество',f:'sin²α + cos²α = 1',uses:[]},
-   {id:'trigval',t:'Значения sin, cos, tg',f:_TRIG,uses:['trapLeg','rhombAng','circR'],note:'Нужны значения для 30°, 45°, 60°, 120°, 135°, 150°.'}]}
-];
+/*__SHEET_MAP_START__*/
+/* Лист справочных материалов ОГЭ по математике, раздел «Геометрия», — текстом,
+   без сканов (решение F5 делегата владельца). Блок побайтно одинаков в
+   тренажёрах 16, 17, 18, 23, 24, 25; копии сверяет гейт
+   tools/oge-geometry-contract.test.mjs. Состав листа меняется по годам:
+   перед новым учебным годом сверить с демоверсией ФИПИ этого года. */
+const SHEET_MAP={
+  caption:'Лист справочных материалов ОГЭ, раздел «Геометрия», — по демоверсии ФИПИ 2026 (стр. 5–6). Состав листа меняется по годам: сверяйте с демоверсией своего года.',
+  items:[
+    {id:'polyAngles',t:'Сумма углов выпуклого n-угольника',f:'180°·(n − 2)'},
+    {id:'midline',t:'Средняя линия треугольника и трапеции',f:'треугольник: MN ∥ AC, MN = AC/2<br>трапеция (BC ∥ AD): MN ∥ AD, MN = (BC + AD)/2'},
+    {id:'eqTri',t:'Правильный треугольник: описанная и вписанная окружности',f:'R = a√3/3, &nbsp;r = a√3/6<br>h = a√3/2, &nbsp;S = a<sup>2</sup>√3/4'},
+    {id:'sinLaw',t:'Теорема синусов',f:'a/sin A = b/sin B = c/sin C = 2R,<br>R — радиус описанной окружности'},
+    {id:'cosLaw',t:'Теорема косинусов',f:'c<sup>2</sup> = a<sup>2</sup> + b<sup>2</sup> − 2ab·cos C'},
+    {id:'circle',t:'Длина окружности и площадь круга',f:'C = 2πr, &nbsp;S = πr<sup>2</sup>'},
+    {id:'sPar',t:'Площадь параллелограмма',f:'S = a·h<sub>a</sub>, &nbsp;S = ab·sin γ'},
+    {id:'sTri',t:'Площадь треугольника',f:'S = ½·a·h<sub>a</sub>, &nbsp;S = ½·ab·sin γ'},
+    {id:'sTrap',t:'Площадь трапеции',f:'S = (a + b)/2 · h'},
+    {id:'sRhomb',t:'Площадь ромба',f:'S = ½·d<sub>1</sub>·d<sub>2</sub>, d<sub>1</sub>, d<sub>2</sub> — диагонали'},
+    {id:'rightTri',t:'Прямоугольный треугольник',f:'sin α = a/c, &nbsp;cos α = b/c, &nbsp;tg α = a/b<br>(c — гипотенуза, a — катет против угла α)'},
+    {id:'pyth',t:'Теорема Пифагора',f:'a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>'},
+    {id:'trigId',t:'Основное тригонометрическое тождество',f:'sin<sup>2</sup>α + cos<sup>2</sup>α = 1'},
+    {id:'trigTable',t:'Некоторые значения sin, cos, tg',f:'<div class="sm-tabwrap"><table class="sm-tab"><tr><th>α</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th><th>180°</th><th>270°</th><th>360°</th></tr>'
+      +'<tr><th>sin α</th><td>0</td><td>1/2</td><td>√2/2</td><td>√3/2</td><td>1</td><td>0</td><td>−1</td><td>0</td></tr>'
+      +'<tr><th>cos α</th><td>1</td><td>√3/2</td><td>√2/2</td><td>1/2</td><td>0</td><td>−1</td><td>0</td><td>1</td></tr>'
+      +'<tr><th>tg α</th><td>0</td><td>√3/3</td><td>1</td><td>√3</td><td>—</td><td>0</td><td>—</td><td>0</td></tr></table></div>'}
+  ]
+};
+const SHEET_MAP_CSS='.sm{margin:10px 0 14px}.sm-cap{font-size:13px;color:#555;margin:0 0 10px;line-height:1.45}'
+  +'.sm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}'
+  +'.sm-item{border:1px solid #d9d4c7;border-radius:10px;padding:10px 12px;background:#fff;font-size:14px;line-height:1.45;color:#1f2430;min-width:0}'
+  +'.sm-item.sm-used{border-color:#8fb3d9;background:#f5f9ff}.sm-item.sm-open{outline:3px solid #2d70b3;outline-offset:1px}'
+  +'.sm-t{font-weight:700;margin-bottom:4px}.sm-b{display:inline-block;min-width:22px;padding:0 6px;border-radius:11px;background:#2d70b3;color:#fff;font-size:12px;text-align:center}'
+  +'.sm-f{font-family:Georgia,"Times New Roman",serif;font-size:15px}.sm-na{font-size:12.5px;color:#6b6b6b;margin-top:6px}'
+  +'.sm-go{margin-top:8px;min-height:44px;padding:8px 12px;border-radius:9px;border:1px solid #2d70b3;background:#fff;color:#1d4f86;font:inherit;font-weight:600;cursor:pointer}'
+  +'.sm-go:focus-visible{outline:3px solid #f2b134;outline-offset:2px}.sm-tabwrap{overflow-x:auto;margin-top:4px}'
+  +'.sm-tab{border-collapse:collapse;font-size:13px;font-family:inherit}.sm-tab th,.sm-tab td{border:1px solid #cfc8b8;padding:3px 6px;text-align:center;white-space:nowrap;font-weight:400}'
+  +'.sm-tab th{background:#f3f0e8}@media (max-width:420px){.sm-grid{grid-template-columns:1fr}}@media print{.sm-go{display:none}}';
+/* Карта листа HTML-строкой. o.go(id) — атрибуты кнопки «задачи блока» или null
+   (блок в этом задании не нужен); o.label(id) — надпись кнопки; o.badge(id) —
+   число на значке; o.extra(id) — HTML под формулой (заметка, ссылки на типы);
+   o.open — id выделенного блока; o.unused — подпись блока, который не нужен
+   (пустая строка — без подписи). */
+function sheetMapHTML(o){
+  o=o||{};
+  try{
+    if(!document.getElementById('sm-css')){const st=document.createElement('style');st.id='sm-css';st.textContent=SHEET_MAP_CSS;document.head.appendChild(st);}
+  }catch(e){}
+  let h='<div class="sm"><p class="sm-cap">'+SHEET_MAP.caption+'</p><div class="sm-grid">';
+  SHEET_MAP.items.forEach(function(it){
+    const go=o.go?o.go(it.id):null, b=o.badge?o.badge(it.id):null, ex=o.extra?o.extra(it.id):'';
+    h+='<div class="sm-item'+(go||ex?' sm-used':'')+(o.open===it.id?' sm-open':'')+'" id="sm-'+it.id+'">'
+      +'<div class="sm-t">'+it.t+(b!=null&&b!==''?' <span class="sm-b">'+b+'</span>':'')+'</div>'
+      +'<div class="sm-f">'+it.f+'</div>'+(ex||'')
+      +(go?'<button type="button" class="sm-go" '+go+'>'+(o.label?o.label(it.id):'Задачи этого блока')+'</button>'
+        :(ex||o.unused===''?'':'<div class="sm-na">'+(o.unused||'в этом задании не встречается')+'</div>'))
+      +'</div>';
+  });
+  return h+'</div></div>';
+}
+/*__SHEET_MAP_END__*/
+/* блоки листа, которые работают в задании 23: типы задач и заметка */
+const SHEETUSE={
+  midline:{uses:['trapEF'],note:'Отрезок EF в задаче — обобщение средней линии.'},
+  sinLaw:{uses:['circR']},
+  sTri:{uses:['hAB','hAC'],note:'Высота к гипотенузе: ½ab = ½ch ⟹ h = ab/c.'},
+  rightTri:{uses:['trapLeg','rhombAng']},
+  pyth:{uses:['rhombH','trapBis','hAC','chordDist','chordLen']},
+  trigTable:{uses:['trapLeg','rhombAng','circR'],note:'Нужны значения для 30°, 45°, 60°, 120°, 135°, 150°.'}
+};
 const NOTSHEET=[
  {k:'bis-pgram',t:'Биссектриса в параллелограмме → равнобедренный треугольник (AB = BK)',subs:['pgramBis']},
  {k:'bis-trap',t:'Биссектрисы при боковой стороне трапеции → прямой угол (∠AFB = 90°)',subs:['trapBis']},
@@ -1786,29 +1982,23 @@ const NOTSHEET=[
  {k:'rectcirc',t:'Прямоугольник, вписанный в высоту: PK = BH (равные диагонали)',subs:['rectPK','rectBH']},
  {k:'tansec',t:'Касательная и секущая: AB² = AC · (AC − D)',subs:['tanSecAC','tanSecD']}
 ];
-const SHEETREF={circR:'sine',rhombH:'pyth',hAC:'pyth',chordDist:'pyth',chordLen:'pyth',
- hAB:'triarea',trapLeg:'righttri',rhombAng:'righttri',trapEF:'midline',
+const SHEETREF={circR:'sinLaw',rhombH:'pyth',hAC:'pyth',chordDist:'pyth',chordLen:'pyth',
+ hAB:'sTri',trapLeg:'rightTri',rhombAng:'rightTri',trapEF:'midline',
  trapBis:'ns:bis-trap',pgramBis:'ns:bis-pgram',projAB:'ns:geommean',paraBN:'ns:similar',paraMC:'ns:similar',
  secKP1:'ns:cyclic',secKP2:'ns:cyclic',rectPK:'ns:rectcirc',rectBH:'ns:rectcirc',tanSecAC:'ns:tansec',tanSecD:'ns:tansec'};
+/* «нет на листе» у подтипа выводится из карты: ссылка на приём «надо помнить» (ns:…) */
+Object.keys(SUBS).forEach(k=>{SUBS[k].notSheet=String(SHEETREF[k]||'').indexOf('ns:')===0;});
 
 function typeChip(sub){const b=el('button','type-chip','→ '+SUBS[sub].name);b.onclick=()=>{curFilter=sub;setTab('train');};return b;}
 function renderSheetMap(main){
-  main.appendChild(el('div','mode-intro','Официальный лист справочных материалов ОГЭ. Кликни по формуле — увидишь, в каких задачах №23 она нужна, и перейдёшь к тренировке. Формулы без пометки в №23 не нужны, а красные приёмы на листе отсутствуют — их надо помнить.'));
-  SHEET.forEach(pg=>{
-    const sec=el('div','sheet-page');
-    sec.appendChild(el('div','sheet-title',pg.page));
-    const grid=el('div','sheet-grid');
-    pg.blocks.forEach(bl=>{
-      const used=bl.uses.length>0;
-      const card=el('div','sheet-blk'+(used?' used':' muted'));card.id='sheet-'+bl.id;
-      card.innerHTML='<div class="blk-t">'+bl.t+(used?'<span class="blk-pin">'+bl.uses.length+'</span>':'')+'</div><div class="blk-f">'+bl.f+'</div>';
-      if(bl.note)card.appendChild(el('div','blk-note',bl.note));
-      if(used){const chips=el('div','chips');bl.uses.forEach(s=>chips.appendChild(typeChip(s)));card.appendChild(chips);}
-      else card.appendChild(el('div','blk-na','в №23 не встречается'));
-      grid.appendChild(card);
-    });
-    sec.appendChild(grid);main.appendChild(sec);
-  });
+  main.appendChild(el('div','mode-intro','Лист справочных материалов, которым можно пользоваться на экзамене. У формул, нужных в задании 23, — типы задач: нажми, чтобы перейти к тренировке. Приёмы, которых на листе нет, собраны ниже — их надо помнить.'));
+  const box=el('div','');
+  box.innerHTML=sheetMapHTML({
+    extra:id=>{const u=SHEETUSE[id];if(!u)return '';
+      return (u.note?'<div class="blk-note">'+u.note+'</div>':'')+'<div class="chips">'+u.uses.map(k=>'<button class="type-chip" data-sub="'+k+'">→ '+SUBS[k].name+'</button>').join('')+'</div>';},
+    badge:id=>SHEETUSE[id]?SHEETUSE[id].uses.length:null, unused:'в №23 не встречается'});
+  box.querySelectorAll('[data-sub]').forEach(b=>b.onclick=()=>{curFilter=b.dataset.sub;setTab('train');});
+  main.appendChild(box);
   const nsWrap=el('div','ns-wrap');
   nsWrap.appendChild(el('div','ns-h','⚠ Приёмы, которых НЕТ на листе — надо помнить'));
   NOTSHEET.forEach(g=>{
@@ -1818,7 +2008,7 @@ function renderSheetMap(main){
     nsWrap.appendChild(c);
   });
   main.appendChild(nsWrap);
-  if(sheetHi){const t=$('sheet-'+sheetHi);if(t){t.classList.add('flash');t.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>t.classList.remove('flash'),2400);}sheetHi=null;}
+  if(sheetHi){const t=$(sheetHi.indexOf('ns:')===0?'sheet-'+sheetHi:'sm-'+sheetHi);if(t){t.classList.add('flash');t.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>t.classList.remove('flash'),2400);}sheetHi=null;}
 }
 
 function renderRef(main){
@@ -1871,9 +2061,95 @@ function updateBadge(){const b=$('badge');if(!b)return;
 function initApp(){
   document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>setTab(t.dataset.tab));
   updateBadge();
-  setTab('razbor');
+  setTab(CP.REVIEW?'train':'razbor');   // ?mode=review — сразу работа над ошибками
 }
 
+/*__SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 (канон CLAUDE.md, решение F4 делегата
+   владельца). Блок побайтно одинаков в тренажёрах 16, 17, 18, 23, 24, 25;
+   копии сверяет гейт tools/oge-geometry-contract.test.mjs. Каждая проверка
+   дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const STK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи и решения: нет null, undefined, NaN, Infinity и «1√» */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|(^|[^\d,.])1√/.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* последний шаг разбора содержит проверяемый ответ хотя бы в одной записи */
+  last:function(step,forms,tag,errs){
+    const t=String(step==null?'':step).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ');
+    const norm=function(f){return String(f).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};
+    if(!forms.some(function(f){return f!=null&&norm(f)!==''&&t.indexOf(norm(f))>=0;}))
+      errs.push(tag+': последний шаг не содержит ответ ('+forms.filter(function(f){return f!=null;}).join(' / ')+')');
+  },
+  /* ловушки {v, e, m}: ни одна не принимается как ответ, разные сообщения не ловят одно число */
+  traps:function(list,tag,errs,isAns){
+    (list||[]).forEach(function(t,i){
+      if(!isFinite(t.v)){errs.push(tag+': ловушка — не число');return;}
+      if(isAns(t.v))errs.push(tag+': ловушка '+t.v+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&Math.abs(t.v-u.v)<=(t.e||0)+(u.e||0))errs.push(tag+': ловушки '+t.v+' и '+u.v+' ловят одно число');}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__SELFTEST_KIT_END__*/
+/* общие проверки одной задачи: чертёж в рамке, текст без null/NaN, последний шаг с ответом, ловушки */
+function stkTask(sub,p,tag,errs){
+  const S=SUBS[sub],sol=S.sol(p),ans=S.calc(p);
+  STK.svg(S.fig(p).svg(),tag,errs);
+  STK.text([S.text(p)].concat(sol).join(' '),tag,errs);
+  STK.last(sol[sol.length-1],[fmt(ans),ansDisplay(sub,p)],tag,errs);
+  STK.traps(trapsOf(sub,p),tag,errs,v=>S.ansEqCustom?S.ansEqCustom(v,p):ansEq(v,ans));
+}
 /* ================= СЕЛФТЕСТ (?selftest=1) ================= */
 function selftest(){
   const out=[];let fail=0;
@@ -1905,11 +2181,16 @@ function selftest(){
   A(ORDER.every(s=>subWeight(s)>0),'subWeight положителен');
   A(ORDER.indexOf(weightedSub(ORDER.slice()))>=0,'weightedSub возвращает тип из списка');
   // 8) карта листа: каждый тип привязан (к формуле листа или к «надо помнить»), SHEETREF валиден
-  const inSheet=new Set();SHEET.forEach(pg=>pg.blocks.forEach(b=>b.uses.forEach(s=>inSheet.add(s))));
+  const inSheet=new Set();Object.keys(SHEETUSE).forEach(id=>{A(SHEET_MAP.items.some(x=>x.id===id),'блок листа существует: '+id);SHEETUSE[id].uses.forEach(s=>inSheet.add(s));});
   const inNS=new Set();NOTSHEET.forEach(g=>g.subs.forEach(s=>inNS.add(s)));
   ORDER.forEach(s=>{A(inSheet.has(s)||inNS.has(s),'тип на карте: '+s);A(!!SHEETREF[s],'SHEETREF есть: '+s);
-    const tgt=SHEETREF[s],ok=tgt.indexOf('ns:')===0?NOTSHEET.some(g=>'ns:'+g.k===tgt):SHEET.some(pg=>pg.blocks.some(b=>b.id===tgt));
+    const tgt=SHEETREF[s],ok=tgt.indexOf('ns:')===0?NOTSHEET.some(g=>'ns:'+g.k===tgt):(SHEET_MAP.items.some(b=>b.id===tgt)&&!!SHEETUSE[tgt]&&SHEETUSE[tgt].uses.indexOf(s)>=0);
     A(ok,'SHEETREF цель валидна: '+s);});
+  // 9) общие проверки канона: чертёж в рамке, текст без null/NaN, последний шаг с ответом, ловушки
+  const E=[];ARCHIVE.forEach(it=>stkTask(it.sub,it.p,it.id,E));
+  ORDER.forEach(s=>{for(let i=0;i<60;i++)stkTask(s,SUBS[s].gen(),s,E);});
+  E.slice(0,40).forEach(m=>A(false,m));A(E.length<=40,'… и ещё '+(E.length-40));
+  STK.done('OGE23',out.map(x=>x.replace(/^FAIL: /,'')));
   const box=document.body?el('pre',fail?'st-fail':'st-ok',(fail?('СЕЛФТЕСТ: '+fail+' провал(ов)\n'):'СЕЛФТЕСТ ПРОЙДЕН ✓ ('+ (ARCHIVE.length)+' задач, мат-аудит и геоаудит чисты)\n')+out.join('\n')):null;
   if(box){document.body.insertBefore(box,document.body.firstChild);}
   return {fail,out};
