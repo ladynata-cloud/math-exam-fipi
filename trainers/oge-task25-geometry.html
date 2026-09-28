@@ -1225,7 +1225,7 @@ function renderTrain(){
   if(!trS){ renderTrainPicker(); return; }
   const T=byId(trS.id), b=trS.b;
   const inputs=b.ans.map((a,i)=>`<label style="font-size:13.5px;font-weight:700">${a.label} =
-     <input class="num" data-ai="${i}" inputmode="decimal" placeholder="число" ${trS.done?'disabled':''}></label>`).join(' ');
+     <input class="num" data-ai="${i}" inputmode="decimal" placeholder="число" value="${esc((trS.inp&&trS.inp[i])||'')}" ${trS.done?'disabled':''}></label>`).join(' ');
   let h=`<div class="backline"><button class="link" data-act="train-pick">← выбрать другой тип</button>
       &nbsp;·&nbsp; <span class="pill ${T.pill}">${PILLNAME[T.pill]}</span> <b style="font-size:13px">№${T.id}. ${T.title}</b></div>
     <div class="row">
@@ -1336,14 +1336,28 @@ function newTrainTask(id){
   logEvent({e:'task_start', task:id, kind:'train'});
   renderTrain();
 }
-function trCheck(){
-  const T=byId(trS.id), b=trS.b; let allOK=true, any=false;
-  document.querySelectorAll('#panel-train input[data-ai]').forEach(inp=>{
-    const i=+inp.dataset.ai; const v=parseNum(inp.value);
-    if(inp.value.trim()!=='') any=true;
-    if(!approxEq(v, b.ans[i].v, 2e-3)) allOK=false;
+/* поля ответа: пустое или нечисловое поле — не попытка и не промах */
+function readAns(sel){
+  const r={vals:[], raw:[], empty:0, bad:0};
+  document.querySelectorAll(sel).forEach(inp=>{
+    const i=+inp.dataset.ai, s=inp.value.trim(), v=parseNum(s);
+    r.raw[i]=inp.value; r.vals[i]=v;
+    if(s==='') r.empty++; else if(!isFinite(v)) r.bad++;
   });
-  if(!any){ trS.fb={k:'warn',msg:'Введите ответ в поле.'}; renderTrain(); return; }
+  return r;
+}
+function ansMsg(r, n){
+  if(r.bad) return 'Впишите число: целое или десятичную дробь, например 7,5.';
+  if(r.empty) return n>1 ? 'Заполните все поля ответа.' : 'Введите ответ в поле.';
+  return '';
+}
+function trCheck(){
+  if(trS.done) return;
+  const T=byId(trS.id), b=trS.b;
+  const r=readAns('#panel-train input[data-ai]'); trS.inp=r.raw;
+  const warn=ansMsg(r, b.ans.length);
+  if(warn){ trS.fb={k:'warn',msg:warn}; renderTrain(); return; }
+  const allOK=b.ans.every((a,i)=>approxEq(r.vals[i], a.v, 2e-3));
   if(allOK){
     trS.done=true;
     const via = trS.surrender?'surrender':(trS.gmode?'guided':(trS.hints>0?'hint':'direct'));
@@ -1424,13 +1438,15 @@ function renderExam(){
   $('panel-exam').innerHTML=h;
 }
 function examAnswer(){
-  const q=exS.list[exS.i], b=q.b; let allOK=true, any=false;
-  document.querySelectorAll('#panel-exam input[data-ai]').forEach(inp=>{
-    const i=+inp.dataset.ai; if(inp.value.trim()!=='') any=true;
-    if(!approxEq(parseNum(inp.value), b.ans[i].v, 2e-3)) allOK=false;
-  });
-  if(!any){ const fb=$('exFb'); fb.className='fb show warn'; fb.textContent='Введите ответ.'; return; }
+  if(exS.res[exS.i]) return;   /* одна попытка: первый вердикт окончательный */
+  const q=exS.list[exS.i], b=q.b;
+  const r=readAns('#panel-exam input[data-ai]');
+  const warn=ansMsg(r, b.ans.length);
+  if(warn){ const fb=$('exFb'); fb.className='fb show warn'; fb.textContent=warn; return; }
+  const allOK=b.ans.every((a,i)=>approxEq(r.vals[i], a.v, 2e-3));
   exS.res[exS.i]={correct:allOK};
+  document.querySelectorAll('#panel-exam input[data-ai]').forEach(inp=>{ inp.disabled=true; });
+  const ab=document.querySelector('#panel-exam [data-act="exam-answer"]'); if(ab) ab.disabled=true;
   if(!allOK) bumpErr(q.id);
   logEvent({e:allOK?'quiz_ok':'quiz_wrong', task:q.id, mode:'exam'});
   const fb=$('exFb'); fb.className='fb show '+(allOK?'ok':'err');
@@ -1439,7 +1455,7 @@ function examAnswer(){
   // авто-переход через короткую паузу заменяем кнопкой (среда без таймеров-эффектов): показать «Далее»
   fb.innerHTML += `<div class="ansrow"><button class="btn small" data-act="exam-next">${exS.i+1<exS.list.length?'Следующая →':'Итоги →'}</button></div>`;
 }
-function examNext(){ exS.i++; renderExam(); }
+function examNext(){ if(!exS||!exS.res[exS.i]) return; exS.i++; renderExam(); }
 function renderExamFin(){
   const total=exS.list.length, score=exS.res.filter(r=>r&&r.correct).length;
   commit(t=>{ if(score>(t.best||0)) t.best=score; t.passed=true; });

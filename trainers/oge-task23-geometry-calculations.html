@@ -1366,12 +1366,15 @@ function buildTask(mount,task,mode,onDone){
   row.appendChild(inp);row.appendChild(btn);card.appendChild(row);
   const fb=el('div','fb');card.appendChild(fb);
 
-  let tries=0,resolved=false,gaveHint=false,stepIdx=0;
+  let tries=0,resolved=false,gaveHint=false,stepIdx=0,reported=false;
   ev('task_start',{sub:task.sub,mode});
 
+  /* один вердикт на карточку: повторный клик не засчитывает вопрос второй раз */
+  function report(status){if(reported)return;reported=true;onDone&&onDone(status);}
   function finishCard(status){ // status: 'ok'|'okhint'|'fail'
     resolved=true;inp.disabled=true;btn.disabled=true;
     if(tools)tools.querySelectorAll('button').forEach(b=>b.disabled=true);
+    if(mode==='quiz'){report(status);return;}   // зачёт сам ведёт поток, кнопки «Следующая» нет
     if(mode==='train'&&status==='fail'){
       const back=el('div','solo-nudge');
       back.innerHTML='Не вышло сходу — это нормально. Разберём этот тип по шагам?';
@@ -1379,9 +1382,8 @@ function buildTask(mount,task,mode,onDone){
       back.appendChild(g);card.appendChild(back);
     }
     const next=el('button','btn primary wide','Следующая задача →');
-    next.onclick=()=>onDone&&onDone(status);
+    next.onclick=()=>report(status);
     card.appendChild(next);
-    if(mode==='quiz')onDone&&onDone(status);   // зачёт сам ведёт поток
   }
   function revealSolution(){
     const box=el('div','sol');box.appendChild(el('div','sol-h','Решение'));
@@ -1392,6 +1394,8 @@ function buildTask(mount,task,mode,onDone){
   function check(){
     if(resolved)return;
     const raw=inp.value;const val=parseAns(raw);
+    /* пустое или нечисловое поле — не попытка и не промах */
+    if(!isFinite(val)){fb.className='fb warn';fb.innerHTML=raw.trim()?'Впишите число: например, 12, 7,5 или 3√2.':'Впишите ответ в поле.';return;}
     const ok=S.ansEqCustom?S.ansEqCustom(val,task.p):ansEq(val,task.exp!=null?task.exp:S.calc(task.p));
     tries++;
     if(ok){fb.className='fb good';fb.innerHTML='✓ Верно!'+(gaveHint?' (с подсказкой)':'');
@@ -1664,7 +1668,10 @@ function buildGuided(mount,task,onDone,opts){
       const b=el('button','btn primary','Проверить');
       row.appendChild(inp);row.appendChild(b);box.appendChild(row);box.appendChild(fb);
       function chk(){if(box.classList.contains('done'))return;
-        const val=parseAns(inp.value);const ok=st.accept?st.accept(val):ansEq(val,st.ans);
+        const val=parseAns(inp.value);
+        /* пустое или нечисловое поле — не попытка и не промах */
+        if(!isFinite(val)){fb.className='fb warn';fb.innerHTML=inp.value.trim()?'Впишите число: например, 12, 7,5 или 3√2.':'Впишите ответ шага.';return;}
+        const ok=st.accept?st.accept(val):ansEq(val,st.ans);
         if(ok){fb.className='fb good';fb.innerHTML='✓ Верно';inp.disabled=true;b.disabled=true;ev('step_ok',{sub:task.sub,step:idx});advance(false);return;}
         tries++;ev('opt_wrong',{sub:task.sub,mode:'guided',step:idx});
         if(tries>=2){fb.className='fb bad';fb.innerHTML='Правильно: <b>'+(st.res||fmt(st.ans))+'</b>';inp.disabled=true;b.disabled=true;advance(true);}

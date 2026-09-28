@@ -519,7 +519,8 @@ function menuExam(){
   // топ слабых мест по журналу
   const weak=weakTop();
   if(weak.length){h+=`<div class="arsnote"><b>Твои слабые места</b> (по прошлым прогонам): ${weak.map(w=>byId[w].title).join(' · ')}. В зачёте они попадутся в первую очередь.</div>`;}
-  h+=`<div class="menu"><div class="mcard" onclick="startExam()"><h3>Начать зачёт · 4 задачи</h3><div class="cnt">по одной из каждой темы</div></div></div>`;
+  const nq=THEMES.length, nw=(nq%10===1&&nq%100!==11)?'задача':((nq%10>=2&&nq%10<=4&&(nq%100<10||nq%100>=20))?'задачи':'задач');
+  h+=`<div class="menu"><div class="mcard" onclick="startExam()"><h3>Начать зачёт · ${nq} ${nw}</h3><div class="cnt">по одной из каждой темы</div></div></div>`;
   view().innerHTML=h;
 }
 function weakTop(){
@@ -661,7 +662,12 @@ function renderTask(opts){
   h.push('</div></div></div>');
   view().innerHTML=h.join('');
 }
-function restartTask(){loadTask();}
+/* «Сначала» в зачёте раскладывает карточки заново, но промахи и подсказки задачи сохраняет */
+function restartTask(){
+  const keep=ST.mode==='exam'?{err:ST.err,hints:ST.hints}:null;
+  loadTask();
+  if(keep){ST.err=keep.err;ST.hints=keep.hints;renderTask();}
+}
 function trainThis(){const id=curTask().id;ST={mode:'train',queue:shuffle([id,id]).slice(0,1),qi:0,results:[]};
   badge().textContent='Тренировка';renderTabs();loadTask();}
 
