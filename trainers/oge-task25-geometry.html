@@ -397,8 +397,8 @@ function radScaleStr(coef, under){
   let val=coef*a; // рациональный множитель перед √u
   const vr=Math.round(val*1e6)/1e6;
   if(u===1){ return fmtNum(coef*a); }
-  // если множитель целый — красиво
-  if(Math.abs(vr-Math.round(vr))<1e-9) return `${Math.round(vr)}${rad(u)}`;
+  // если множитель целый — красиво; множитель 1 не пишем: √30, а не 1√30
+  if(Math.abs(vr-Math.round(vr))<1e-9){ const k=Math.round(vr); return `${k===1?'':k}${rad(u)}`; }
   return `${fmtNum(vr)}${rad(u)}`;
 }
 
@@ -1214,7 +1214,7 @@ function renderLearnDetail(id){
     <h2 style="margin-top:18px">Решение по шагам</h2>
     ${stepsHTML(b.steps)}
     <div class="ansrow"><div class="ans-final">Ответ: ${ansTxt}</div></div>
-    <div class="notsheet" style="margin-top:14px"><b>Чего на листе справочных материалов нет</b>${T.notSheet}</div>
+    ${typeof T.notSheet==='string'?`<div class="notsheet" style="margin-top:14px"><b>Чего на листе справочных материалов нет</b>${T.notSheet}</div>`:''}
     <div class="ansrow"><button class="btn blue" data-act="train-this" data-id="${T.id}">Тренировать этот тип →</button></div>`;
   $('panel-learn').innerHTML=h;
 }
@@ -1492,7 +1492,7 @@ function renderRef(){
         <div style="font-size:12.5px;color:var(--muted)">${T.tag}</div>
         <div class="kf">${T.refKey}</div>
         <div style="font-size:12.5px;color:#7a4d0c;background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:8px;padding:8px 10px;margin-top:8px"><b>Почему применимо:</b> ${T.refWhy}</div>
-        <div class="notsheet">${T.notSheet}</div>
+        ${typeof T.notSheet==='string'?`<div class="notsheet">${T.notSheet}</div>`:''}
         <div style="margin-top:10px"><button class="btn blue small" data-act="train-this" data-id="${T.id}">Тренировать →</button></div>
       </div>`;
     }
