@@ -196,6 +196,7 @@ i{font-style:italic; font-family:var(--math);}
 .task-card{border:2px solid var(--line); border-radius:11px; padding:14px 16px; margin:12px 0;
   background:var(--paper); position:relative;}
 .task-card.solved{border-color:var(--green);}
+.task-card.shown{border-color:var(--peek);}
 .src-badge{position:absolute; top:10px; right:12px; font-family:var(--hand); font-size:12.5px;
   color:var(--pencil); background:var(--chip); padding:2px 9px; border-radius:11px;}
 .task-q{font-family:var(--math); font-size:17px; margin:2px 40px 12px 0; line-height:1.7;}
@@ -834,9 +835,10 @@ function taskKey(t){
 }
 function askWord(t){return t.ask==='max'?'больший':'меньший';}
 function taskInstrHTML(t){
-  const {roots}=taskSolve(t);
+  const {roots,excluded}=taskSolve(t);
   let s='Решите уравнение &nbsp;'+taskEqnHTML(t)+'.';
-  if(roots.length===2) s+=' Если уравнение имеет более одного корня, в ответ запишите <b>'+askWord(t)+'</b> из корней.';
+  // строка как в КИМ: и когда один из двух корней посторонний — иначе её отсутствие выдаёт ОДЗ
+  if(roots.length+excluded.length>=2) s+=' Если уравнение имеет более одного корня, в ответ запишите <b>'+askWord(t)+'</b> из корней.';
   return s;
 }
 
@@ -911,7 +913,7 @@ function stExpand(root, revL, revR, opts){
     hint:opts.hint||'Множитель перед скобкой умножается на <b>каждое</b> слагаемое внутри. Минус перед скобкой меняет знак каждого слагаемого.',
     check(vals){
       const e=parseEqn(vals[0]);
-      if(!e)return {ok:false,msg:'Не разобрала запись. Пиши без скобок, знак «=» — один, например: 2x − 14 = x + 7.'};
+      if(!e)return {ok:false,need:true,msg:'Не разобрала запись. Пиши без скобок, знак «=» — один, например: 2x − 14 = x + 7.'};
       const n=eqnABC(e);
       if(!fzero(n.A))return {ok:false,msg:'В записи остался x² — здесь квадраты должны взаимно уничтожиться.'};
       if(fzero(n.B))return {ok:false,msg:'Иксы совсем пропали — проверь раскрытие скобок.'};
@@ -954,7 +956,7 @@ function stAfterM(task, root){
       hint:'Каждое слагаемое: <span class="frac"><span class="tt">x</span><span class="bb">d</span></span> · '+M+' = (' +M+' ÷ d)·x. Целые слагаемые тоже умножаются на '+M+'!',
       check(vals){
         const e=parseEqn(vals[0]);
-        if(!e)return {ok:false,msg:'Не разобрала запись. Пример вида: 3x + 4x = −56.'};
+        if(!e)return {ok:false,need:true,msg:'Не разобрала запись. Пример вида: 3x + 4x = −56.'};
         const n=eqnABC(e);
         if(!fzero(n.A))return {ok:false,msg:'x² тут появиться не мог — проверь запись.'};
         if(fzero(n.B))return {ok:false,msg:'Иксы пропали — так не должно быть.'};
@@ -1077,7 +1079,7 @@ function stMoveLeft(base){ // для формы x²=kx: приведи к ...=0
     hint:'kx «перепрыгивает» через «=» и меняет знак.',
     check(vals){
       const e=parseEqn(vals[0]);
-      if(!e)return {ok:false,msg:'Не разобрала запись. Пример: x² − 5x = 0 (x² можно набрать как x^2).'};
+      if(!e)return {ok:false,need:true,msg:'Не разобрала запись. Пример: x² − 5x = 0 (x² можно набрать как x^2).'};
       const L=e.L,R=e.R;
       const zeroSide=(fzero(R.A)&&fzero(R.B)&&fzero(R.C))?'R':((fzero(L.A)&&fzero(L.B)&&fzero(L.C))?'L':null);
       if(!zeroSide)return {ok:false,msg:'С одной стороны должен остаться ноль — перенеси всё в другую.'};
@@ -1203,7 +1205,7 @@ function stCross(task, root){
       hint:'Числитель левой дроби · знаменатель правой = числитель правой · знаменатель левой. Скобки раскрой сразу.',
       check(vals){
         const e=parseEqn(vals[0]);
-        if(!e)return {ok:false,msg:'Не разобрала запись. Пиши уже без скобок, например: 30 = −5x − 30.'};
+        if(!e)return {ok:false,need:true,msg:'Не разобрала запись. Пиши уже без скобок, например: 30 = −5x − 30.'};
         const n=eqnABC(e);
         if(!fzero(n.A))return {ok:false,msg:'x² здесь появиться не должен — перемножаются число и скобка.'};
         if(fzero(n.B))return {ok:false,msg:'Иксы пропали — проверь, что умножал крест-накрест.'};
@@ -1251,7 +1253,7 @@ function stCrossProduct(task){
     hint:'Равны произведения по диагоналям. Просто запиши их через · или *, знак «=» один. Раскрывать скобки будем на следующем шаге.',
     check(vals){
       const e=parseEqn(vals[0]);
-      if(!e)return {ok:false,msg:'Не разобрала запись. Пиши произведения через <b>*</b> или <b>·</b>, например: 11*(x-12)=12*(x-13). Скобки можно оставить.'};
+      if(!e)return {ok:false,need:true,msg:'Не разобрала запись. Пиши произведения через <b>*</b> или <b>·</b>, например: 11*(x-12)=12*(x-13). Скобки можно оставить.'};
       const d=eqnABC(e);
       if(!polyProportional(d,diff))return {ok:false,msg:'Пока не сходится. Перемножай именно по диагонали: верх левой × низ правой = верх правой × низ левой.'};
       return {ok:true};
@@ -1270,7 +1272,7 @@ function stExpandProp(task){
     check(vals){
       if(/[()]/.test(vals[0]||''))return {ok:false,msg:'На этом шаге скобок уже быть не должно — раскрой их: число на каждое слагаемое внутри.'};
       const e=parseEqn(vals[0]);
-      if(!e)return {ok:false,msg:'Не разобрала запись. Пример: 11x − 132 = 12x − 156.'};
+      if(!e)return {ok:false,need:true,msg:'Не разобрала запись. Пример: 11x − 132 = 12x − 156.'};
       const d=eqnABC(e);
       if(!polyProportional(d,diff))return {ok:false,msg:'Проверь раскрытие: число умножается на каждое слагаемое, знак сохраняется.'};
       return {ok:true};
@@ -1301,7 +1303,7 @@ function stClearDenom(cfg){
     hint:cfg.hint,
     check(vals){
       const e=parseEqn(vals[0]);
-      if(!e)return {ok:false,msg:'Не разобрала запись. Пиши произведения через <b>*</b> или <b>·</b>, скобки можно оставить.'};
+      if(!e)return {ok:false,need:true,msg:'Не разобрала запись. Пиши произведения через <b>*</b> или <b>·</b>, скобки можно оставить.'};
       const d=eqnABC(e);
       if(!polyProportional(d,diff))return {ok:false,msg:'Пока не сходится. Умножь <b>каждое</b> слагаемое на общий знаменатель — под дробями всё сократится.'};
       return {ok:true};
@@ -2002,7 +2004,7 @@ function genTask(gid){
     let sol;
     try{ sol=taskSolve(t); }catch(e){ continue; }
     if(sol.roots.length===0)continue;
-    if(sol.roots.length===2&&!t.ask)t.ask=pick(['min','max']);
+    if(sol.roots.length+sol.excluded.length>=2&&!t.ask)t.ask=pick(['min','max']);   // «больший/меньший» и при постороннем корне
     const key=taskKey(t);
     if(key===null||!finiteDec(key))continue;
     if(fcmp(fabs(key),F(400))>0)continue;
@@ -2347,9 +2349,15 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
   }
   function tryCheck(){
     if(resolved)return;
+    const vals=uir.read();
     let res;
-    try{ res=def.check(uir.read(), state); }
-    catch(e){ res={ok:false,need:true,msg:'Что-то в записи не так — проверь формат.'}; }
+    // пустое поле и невыбранный вариант — не попытка и не промах (решение D1)
+    if(def.ui&&def.ui.type==='choice'&&!(vals[0]>=0)) res={ok:false,need:true,msg:'Выбери вариант — и проверим.'};
+    else if(vals.some(v=>v==='')) res={ok:false,need:true,msg:'Заполни поле — и проверим.'};
+    else{
+      try{ res=def.check(vals, state); }
+      catch(e){ res={ok:false,need:true,msg:'Что-то в записи не так — проверь формат.'}; }
+    }
     fb.style.color='';   // цвет подсказки не «прилипает» к следующему вердикту
     if(res.ok){
       fb.className='fb good';
@@ -2853,6 +2861,12 @@ function genByFam(fam){
   }
   return null;
 }
+/* где такое уравнение в «Пошагово»: «группа: чипс» или null (у семейства Z чипса нет) */
+function chipOf(fam){
+  const gids=FAM_GENS[fam]||[];
+  for(const g of GEN_GROUPS) for(const it of g.items) if(gids.indexOf(it.gid)>=0) return g.title+': '+it.label;
+  return null;
+}
 /* задача режима повтора: семейство — из открытых типов журнала (или null) */
 function reviewTask(){
   for(const fam of shuffle(CP.openTypes().filter(k=>FAM_GENS[k]))){ const t=genByFam(fam); if(t)return t; }
@@ -2895,10 +2909,15 @@ const GEN_GROUPS=[
   ]},
 ];
 
-function buildStepTab(root){
+function buildStepTab(root, opts){
   root.innerHTML='';
-  /* ?mode=review: задачи только открытых типов журнала (контракт, раздел 5; решение D10) */
-  if(CP.REVIEW){
+  /* ?mode=review: задачи только открытых типов журнала (контракт, раздел 5; решение D10);
+     opts.normal — открытых типов не осталось: сообщение и обычный режим */
+  if(opts&&opts.msg){
+    const box=document.createElement('div'); box.className='review-box'; box.setAttribute('aria-live','polite');
+    box.innerHTML=opts.msg; root.appendChild(box);
+  }
+  if(CP.REVIEW&&!(opts&&opts.normal)){
     const box=document.createElement('div'); box.className='review-box'; box.setAttribute('aria-live','polite');
     root.appendChild(box);
     const open=CP.openTypes();
@@ -2949,7 +2968,10 @@ function renderGenTask(item, card){
   card.innerHTML='';
   let task;
   if(item.review){ // повтор: семейство из открытых типов; закрытые по ходу выпадают
-    if(!CP.openTypes().some(k=>FAM_GENS[k])){ card.innerHTML='<p class="fb good" aria-live="polite">Все ошибки исправлены: открытых типов не осталось. Можно выбрать любой тип во вкладке «Пошагово» (без режима повтора).</p>'; return; }
+    if(!CP.openTypes().some(k=>FAM_GENS[k])){ // последний тип закрыт — обычный режим с сообщением
+      buildStepTab(document.getElementById('pane-step'),{normal:true,msg:'<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип ниже.'});
+      return;
+    }
     task=reviewTask();
     if(!task){ card.innerHTML='<p class="fb bad">Не удалось собрать задачу, обнови страницу.</p>'; return; }
     item={review:true, method:task.gid==='g_qf'};
@@ -3011,7 +3033,7 @@ const MARA_FILTERS=[
 function taskChapter(t){ return FAMMETA[t.fam].ch; }
 /* task[id] — состояние задачи на время открытой страницы: перерисовка карточек
    (фильтры, «порешать» из справочника) его не теряет (решение D4) */
-const maraState={filter:'all', caseFilter:null, solved:new Set(), clean:new Set(), task:{}};
+const maraState={filter:'all', caseFilter:null, solved:new Set(), clean:new Set(), shown:new Set(), task:{}};
 function maraRec(id){ return maraState.task[id]||(maraState.task[id]={verdict:'',shown:false,hinted:false,counted:false}); }
 
 function buildMaraTab(root){
@@ -3044,8 +3066,9 @@ function buildMaraTab(root){
     const shown=filteredTasks();
     const solvedN=shown.filter(t=>maraState.solved.has(t.id)).length;
     const cleanN=shown.filter(t=>maraState.clean.has(t.id)).length;
+    const shownN=shown.filter(t=>maraState.shown.has(t.id)&&!maraState.solved.has(t.id)).length;
     prog.innerHTML='<div class="counters"><span>Решено: <b>'+solvedN+'</b> из '+shown.length+'</span>'+
-      '<span>· без подсказок: <b>'+cleanN+'</b></span></div>'+
+      '<span>· без подсказок: <b>'+cleanN+'</b></span>'+(shownN?'<span>· показан разбор: <b>'+shownN+'</b></span>':'')+'</div>'+
       '<div class="progress-bar"><span style="width:'+(shown.length?Math.round(solvedN/shown.length*100):0)+'%"></span></div>';
   }
   function filteredTasks(){
@@ -3084,7 +3107,7 @@ function buildMaraTab(root){
 }
 
 function makeMaraCard(t, onProgress){
-  const card=document.createElement('div'); card.className='task-card'+(maraState.solved.has(t.id)?' solved':'');
+  const card=document.createElement('div'); card.className='task-card'+(maraState.solved.has(t.id)?' solved':maraState.shown.has(t.id)?' shown':'');
   const badge=document.createElement('div'); badge.className='src-badge';
   badge.textContent=(t.src==='demo'?'Демо-2026':(taskChapter(t)==='lin'?'линейное':taskChapter(t)==='quad'?'квадратное':'дробное'));
   card.appendChild(badge);
@@ -3112,6 +3135,9 @@ function makeMaraCard(t, onProgress){
      на задачу: первый промах сразу, успех — только без промахов */
   const st=maraRec(t.id);
   function markSolved(){
+    if(st.shown&&!maraState.solved.has(t.id)){ // ответ после показанной ступени — «показан разбор», не «решено» (как в 7 и 8)
+      maraState.shown.add(t.id); card.classList.add('shown'); onProgress&&onProgress(); return;
+    }
     if(!maraState.solved.has(t.id)){   // статус ставится один раз: разбор после решения его не меняет
       maraState.solved.add(t.id);
       if(!st.hinted&&!st.shown)maraState.clean.add(t.id);
@@ -3133,7 +3159,7 @@ function makeMaraCard(t, onProgress){
     onMiss:miss,
     onHint(){ st.hinted=true; helped(); },
     onShow(){ st.shown=true; helped(); },
-    onComplete(){ if(!st.shown)markSolved(); }};   // лестница, где всё ввёл ученик, — решено
+    onComplete(){ markSolved(); }};   // лестница, где всё ввёл ученик, — решено; с показом — «показан разбор»
   bStep.addEventListener('click',()=>{
     if(stepHost.dataset.open){ stepHost.innerHTML=''; delete stepHost.dataset.open; bStep.textContent='Решить по шагам'; return; }
     stepHost.dataset.open='1'; bStep.textContent='Свернуть шаги';
@@ -3231,11 +3257,13 @@ function finishQuiz9(root,quiz,res){
   const list=document.createElement('div'); list.className='card';
   list.innerHTML='<h3 style="margin-top:2px">Разбор зачёта</h3>';
   res.forEach((r,i)=>{
-    const key=taskKey(r.t);
+    const key=taskKey(r.t), chip=chipOf(r.t.fam);
     const row=document.createElement('div'); row.className='quiz-row'+(r.ok?'':' bad');
     row.innerHTML='<div class="task-q" style="margin:0">'+(i+1)+'. '+taskEqnHTML(r.t)+'</div>'+
       '<div class="qr-v">'+(r.ok?'✓ верно: ':'✗ твой ответ '+numHTML(r.v)+'; верный: ')+numHTML(key)+'</div>'+
-      (r.ok?'':'<div class="qr-diag">'+(r.diag||'Ошибка в вычислениях: разбери такое уравнение по шагам во вкладке «Пошагово» — «'+esc(TYPE_NAMES[r.t.fam])+'».')+'</div>');
+      (r.ok?'':'<div class="qr-diag">'+(r.diag||(chip
+        ?'Ошибка в вычислениях: разбери такое уравнение по шагам во вкладке «Пошагово» — «'+esc(chip)+'».'
+        :'Ошибка в вычислениях: разбери такое уравнение по шагам в «Марафоне» — кнопка «Решить по шагам».'))+'</div>');
     list.appendChild(row);
   });
   root.appendChild(list);
