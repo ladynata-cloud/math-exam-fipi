@@ -604,6 +604,20 @@ gate('one course card and one sitemap entry point to the author page', () => {
 const distributionBase = '7ebbd328d7b59b691eb50d01324d4c438aa8404c';
 // PR125 merge commit on main: its scope is checked as a closed snapshot.
 const pr125MergeHead = 'd5c9d0388ab3b22bcffec10d11504a0624e2b598';
+const distribution6To10Base = 'f1eb11261a32dd30afb614bc563975d1d9865e7d';
+const OGE_2027_ANALOGUE_DISTRIBUTE_6_10 = Object.freeze([
+  'trainers/oge-task6-fractions.html',
+  'trainers/oge-task7-number-line.html',
+  'trainers/oge-task8-powers-roots.html',
+  'trainers/oge-task9-equations.html',
+  'trainers/oge-task10-probability.html',
+  'tools/oge-2027-analogue-distribute-6-10.test.mjs',
+  'tools/oge-2027-analogue-distribute-6-10.browser.mjs',
+  'docs/tasks/OGE_2027_ANALOGUE_DISTRIBUTE_6_10.md',
+  'tools/oge-2027-analogue-1.test.mjs',
+  'tools/trainer-inventory/test/inventory.test.mjs',
+  'docs/tasks/TRAINER_INVENTORY_HASH_BASIS_V1.md',
+]);
 const distributionScope = Object.freeze([
   'trainers/oge-1-5-trainers/practice-1-5-tires.html',
   'tools/oge-2027-analogue-distribute-1-5.test.mjs',
@@ -630,6 +644,38 @@ gate('OGE_2027_ANALOGUE_DISTRIBUTE_1_5 has exactly its six approved changed file
     ...git('diff', '--name-only', '--no-renames', '-z', distributionBase, pr125MergeHead, '--').split('\0'),
   ].filter(Boolean));
   assertExactTaskScope(changed, distributionScope);
+});
+
+gate('OGE_2027_ANALOGUE_DISTRIBUTE_6_10 has exactly its eleven approved changed files', () => {
+  const git = (...args) => execFileSync('git', ['-c', 'safe.directory=' + root, ...args], {
+    cwd: root, encoding: 'utf8',
+  });
+  git('merge-base', '--is-ancestor', distribution6To10Base, 'HEAD');
+  const changed = new Set([
+    ...git('diff', '--name-only', '--no-renames', '-z', distribution6To10Base, '--').split('\0'),
+    ...git('ls-files', '--others', '--exclude-standard', '-z').split('\0'),
+  ].filter(Boolean));
+  assertExactTaskScope(changed, OGE_2027_ANALOGUE_DISTRIBUTE_6_10);
+});
+
+gate('six-to-ten scope rejects missing, twelfth, substituted, duplicate and cross-task paths', () => {
+  const allowed = OGE_2027_ANALOGUE_DISTRIBUTE_6_10;
+  assert.equal(allowed.length, 11);
+  assert.equal(new Set(allowed).size, 11);
+  assertExactTaskScope(allowed, allowed);
+  for (let index = 0; index < allowed.length; index++) {
+    assert.throws(() => assertExactTaskScope(allowed.filter((_, i) => i !== index), allowed));
+    assert.throws(() => assertExactTaskScope([...allowed.slice(0, index), 'tools/unapproved.test.mjs', ...allowed.slice(index + 1)], allowed));
+  }
+  assert.throws(() => assertExactTaskScope([...allowed, 'tools/unapproved.test.mjs'], allowed));
+  assert.throws(() => assertExactTaskScope([...allowed, allowed[0]], allowed));
+  for (const historical of [distributionScope, historicalPr124Scope]) {
+    assert.throws(() => assertExactTaskScope(historical, allowed));
+    assert.throws(() => assertExactTaskScope(allowed, historical));
+    for (const foreign of historical.filter(file => !allowed.includes(file))) {
+      assert.throws(() => assertExactTaskScope([...allowed.slice(0, -1), foreign], allowed));
+    }
+  }
 });
 
 gate('task scope fixtures reject missing, extra, substituted and historical paths', () => {

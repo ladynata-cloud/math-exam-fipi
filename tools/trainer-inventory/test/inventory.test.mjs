@@ -41,16 +41,16 @@ const schemaPath = path.join(
 const emptyManifest = Object.freeze({ version: 1, schemaVersion: 1, trainers: [] });
 const pilotExpected = Object.freeze({
   'trainers/oge-task6-fractions.html': {
-    sha256: '54c7b7671ae13f180b1dd4d09440053c76c801d9b07a119b0009ea2b61f610ab',
-    sizeBytes: 90714
+    sha256: 'b710dda8a9c5f3b8c73aed6c4aaf4385c5b6583d38bbcac3415a86736cb540e1',
+    sizeBytes: 93434
   },
   'trainers/oge-task8-powers-roots.html': {
-    sha256: 'df283d5147edaf536a885203dc8b8cc540c424f32d29369cb176e79823d6120a',
-    sizeBytes: 98568
+    sha256: '33e569643e2f682b21a4c4fb5cc6a55c8c01ac813fd91a41ce4f0dab6c63b43e',
+    sizeBytes: 103345
   },
   'trainers/oge-task9-equations.html': {
-    sha256: 'c4813016e37b4e5b87524f1e3270cb3856027b01f89c616d4bcd619d58f343be',
-    sizeBytes: 181899
+    sha256: 'aa388060ddec214ac09b7301bdd7cb47fd24b636e7b84d40c951048d227e7a8d',
+    sizeBytes: 185610
   },
   'trainers/oge-task20-equations.html': {
     sha256: '839f2fcd27bea701be1e3178ff3863bd72283905b91c57c626395404629e90ad',
@@ -1037,6 +1037,20 @@ test('scoped CLI marker cannot claim the full gate', async () => {
 // closed: its exact six-file check runs on 7ebbd32..PR125 merge commit.
 const distributionBase = '7ebbd328d7b59b691eb50d01324d4c438aa8404c';
 const pr125MergeHead = 'd5c9d0388ab3b22bcffec10d11504a0624e2b598';
+const distribution6To10Base = 'f1eb11261a32dd30afb614bc563975d1d9865e7d';
+const OGE_2027_ANALOGUE_DISTRIBUTE_6_10 = Object.freeze([
+  'trainers/oge-task6-fractions.html',
+  'trainers/oge-task7-number-line.html',
+  'trainers/oge-task8-powers-roots.html',
+  'trainers/oge-task9-equations.html',
+  'trainers/oge-task10-probability.html',
+  'tools/oge-2027-analogue-distribute-6-10.test.mjs',
+  'tools/oge-2027-analogue-distribute-6-10.browser.mjs',
+  'docs/tasks/OGE_2027_ANALOGUE_DISTRIBUTE_6_10.md',
+  'tools/oge-2027-analogue-1.test.mjs',
+  'tools/trainer-inventory/test/inventory.test.mjs',
+  'docs/tasks/TRAINER_INVENTORY_HASH_BASIS_V1.md'
+]);
 const distributionScope = Object.freeze([
   'trainers/oge-1-5-trainers/practice-1-5-tires.html',
   'tools/oge-2027-analogue-distribute-1-5.test.mjs',
@@ -1103,6 +1117,33 @@ test('OGE_2027_ANALOGUE_DISTRIBUTE_1_5 has exactly its six approved changed file
   const { stdout: tracked } = await git(repoRoot, ['diff', '--name-only', '--no-renames', '-z', distributionBase, pr125MergeHead, '--']);
   const changed = new Set(tracked.split('\0').filter(Boolean));
   assertExactTaskScope(changed, distributionScope);
+});
+
+test('OGE_2027_ANALOGUE_DISTRIBUTE_6_10 has exactly its eleven approved changed files', async () => {
+  await git(repoRoot, ['merge-base', '--is-ancestor', distribution6To10Base, 'HEAD']);
+  const { stdout: tracked } = await git(repoRoot, ['diff', '--name-only', '--no-renames', '-z', distribution6To10Base, '--']);
+  const { stdout: untracked } = await git(repoRoot, ['ls-files', '--others', '--exclude-standard', '-z']);
+  assertExactTaskScope(new Set([...tracked.split('\0'), ...untracked.split('\0')].filter(Boolean)), OGE_2027_ANALOGUE_DISTRIBUTE_6_10);
+});
+
+test('six-to-ten scope rejects missing, twelfth, substituted, duplicate and cross-task paths', () => {
+  const allowed = OGE_2027_ANALOGUE_DISTRIBUTE_6_10;
+  assert.equal(allowed.length, 11);
+  assert.equal(new Set(allowed).size, 11);
+  assertExactTaskScope(allowed, allowed);
+  for (let index = 0; index < allowed.length; index++) {
+    assert.throws(() => assertExactTaskScope(allowed.filter((_, i) => i !== index), allowed));
+    assert.throws(() => assertExactTaskScope([...allowed.slice(0, index), 'tools/unapproved.test.mjs', ...allowed.slice(index + 1)], allowed));
+  }
+  assert.throws(() => assertExactTaskScope([...allowed, 'tools/unapproved.test.mjs'], allowed));
+  assert.throws(() => assertExactTaskScope([...allowed, allowed[0]], allowed));
+  for (const historical of [distributionScope, historicalPr124Scope]) {
+    assert.throws(() => assertExactTaskScope(historical, allowed));
+    assert.throws(() => assertExactTaskScope(allowed, historical));
+    for (const foreign of historical.filter(file => !allowed.includes(file))) {
+      assert.throws(() => assertExactTaskScope([...allowed.slice(0, -1), foreign], allowed));
+    }
+  }
 });
 
 test('historical PR124 scope remains exactly its original six paths', async () => {
