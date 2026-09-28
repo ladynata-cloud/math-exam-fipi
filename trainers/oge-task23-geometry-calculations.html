@@ -474,6 +474,42 @@ const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;}
 const T=(n,d)=>frac(n,d);                     // стопочная дробь
 const near2=(a,b,e)=>Math.abs(a-b)<=(e==null?0.02:e);
 
+/* ---------- ловушки: перечислимый список и проверка на совпадения ----------
+   traps(p) подтипа -> [{v, m, e?}], e — допуск сравнения (по умолчанию 0,02).
+   Для конкретной задачи ловушка в допуске ответа снимается; ловушки, которые
+   одно и то же число задевает одновременно, сводятся в одну (решения F1 и
+   Q2 делегата владельца): две разные ошибки — одно объединённое сообщение
+   «найдите свою», три и больше — честный общий текст. */
+const tolAns=x=>Math.max(0.02,Math.abs(x)*0.012);
+function trapPair(m1,m2){return 'Такой ответ получается при одной из двух ошибок — найдите свою:<br>• '+m1+'<br>• '+m2;}
+const TRAP_MANY='Не сходится. Это число получается при нескольких разных ошибках — сверьте решение по шагам в «🪜 Шаг за шагом».';
+function mergeTraps(list){
+  const up=list.map((_,i)=>i), top=i=>up[i]===i?i:(up[i]=top(up[i]));
+  for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++)
+    if(Math.abs(list[i].v-list[j].v)<=list[i].e+list[j].e)up[top(j)]=top(i);
+  const groups=new Map();
+  list.forEach((t,i)=>{const r=top(i);if(!groups.has(r))groups.set(r,[]);groups.get(r).push(t);});
+  const out=[];let clash=false;
+  for(const g of groups.values()){
+    const ms=[...new Set(g.map(t=>t.m))];
+    if(ms.length===1){g.forEach(t=>out.push(t));continue;}
+    clash=true;
+    const m=ms.length===2?trapPair(ms[0],ms[1]):TRAP_MANY;
+    g.forEach(t=>out.push({v:t.v,e:t.e,m}));
+  }
+  out.clash=clash;
+  return out;
+}
+function trapsOf(sub,p){
+  const S=SUBS[sub];if(!S.traps)return [];
+  const isAns=v=>S.ansEqCustom?S.ansEqCustom(v,p):ansEq(v,S.calc(p));
+  return mergeTraps(S.traps(p).filter(t=>t&&t.m&&isFinite(t.v)&&!isAns(t.v)).map(t=>({v:t.v,m:t.m,e:t.e==null?0.02:t.e})));
+}
+function diagOf(sub,v,p){
+  for(const t of trapsOf(sub,p))if(Math.abs(v-t.v)<=t.e)return t.m;
+  const S=SUBS[sub];return S.other?S.other(v,p):null;
+}
+
 /* апекс треугольника: A=(0,0),C=(AC,0); вершина B с |BC|=sideCB, x≈fx·AC (иначе клампим), y>0 */
 function triApex(AC,sideCB,fx){
   let Bx=fx*AC, dx=Bx-AC, r2=sideCB*sideCB-dx*dx;
@@ -505,11 +541,10 @@ SUBS.rhombH={theme:'quad',name:'Высота ромба',notSheet:false,
     `Все стороны ромба равны, значит <b>AD = DC = DH + CH = ${p.DH} + ${p.CH} = ${a}</b>.`,
     `Высота <b>AH ⊥ DC</b>, поэтому треугольник <b>ADH</b> прямоугольный с гипотенузой <b>AD = ${a}</b> и катетом <b>DH = ${p.DH}</b>.`,
     `По теореме Пифагора: AH = √(AD² − DH²) = √(${a}² − ${p.DH}²) = √${a*a-p.DH*p.DH} = <b>${fmt(h)}</b>.`];},
-  diag(v,p){const a=p.DH+p.CH,h=SUBS.rhombH.calc(p);
-    if(near2(v,a))return 'Это сторона ромба (DH + CH). А спрашивается <b>высота</b> AH — катет прямоугольного треугольника ADH.';
-    if(near2(v,a*a-p.DH*p.DH))return 'Похоже, забыли извлечь корень: AH = √(AD² − DH²), а не AD² − DH².';
-    if(near2(v,Math.sqrt(a*a-p.CH*p.CH)))return 'В треугольнике ADH катет — это <b>DH</b> (прилежащий к D), а не CH. Подставьте DH.';
-    return null;},
+  traps(p){const a=p.DH+p.CH;return [
+    {v:a,m:'Это сторона ромба (DH + CH). А спрашивается <b>высота</b> AH — катет прямоугольного треугольника ADH.'},
+    {v:a*a-p.DH*p.DH,m:'Похоже, забыли извлечь корень: AH = √(AD² − DH²), а не AD² − DH².'},
+    {v:Math.sqrt(a*a-p.CH*p.CH),m:'В треугольнике ADH катет — это <b>DH</b> (прилежащий к D), а не CH. Подставьте DH.'}];},
   ref:`AH = √(AD² − DH²), где AD = DH + CH — сторона ромба`,
   refWhy:'Все стороны ромба равны, поэтому сторона DC = DH + CH равна стороне AD. Высота AH перпендикулярна DC, значит △ADH прямоугольный: гипотенуза — сторона AD, катеты — DH и высота AH. Отсюда теорема Пифагора.'};
 
@@ -536,11 +571,10 @@ SUBS.pgramBis={theme:'quad',name:'Периметр параллелограмм�
     `AK — биссектриса, поэтому ∠BAK = ∠KAD. А ∠KAD = ∠AKB как накрест лежащие (AD ∥ BC). Значит ∠BAK = ∠AKB и треугольник ABK равнобедренный: <b>AB = BK = ${p.BK}</b>.`,
     `Сторона <b>BC = BK + CK = ${p.BK} + ${p.CK} = ${BC}</b>.`,
     `Периметр: P = 2(AB + BC) = 2(${AB} + ${BC}) = <b>${P}</b>.`];},
-  diag(v,p){const AB=p.BK,BC=p.BK+p.CK;
-    if(near2(v,BC))return 'Это только сторона BC. Периметр — сумма всех сторон: P = 2(AB + BC).';
-    if(near2(v,AB+BC))return 'Похоже, сложили две стороны, но забыли умножить на 2: P = 2(AB + BC).';
-    if(near2(v,2*(p.BK+p.CK)))return 'AB равна BK (а не BK + CK). Треугольник ABK равнобедренный: AB = BK.';
-    return null;},
+  traps(p){const AB=p.BK,BC=p.BK+p.CK;return [
+    {v:BC,m:'Это только сторона BC. Периметр — сумма всех сторон: P = 2(AB + BC).'},
+    {v:AB+BC,m:'Похоже, сложили две стороны, но забыли умножить на 2: P = 2(AB + BC).'},
+    {v:2*(p.BK+p.CK),m:'AB равна BK (а не BK + CK). Треугольник ABK равнобедренный: AB = BK.'}];},
   ref:`P = 2(AB + BC), где AB = BK, BC = BK + CK`,
   refWhy:'Биссектриса угла A и накрест лежащие углы (AD ∥ BC) дают равнобедренный треугольник ABK, поэтому AB = BK. Сторона BC складывается из BK и CK. Периметр параллелограмма — удвоенная сумма соседних сторон.'};
 
@@ -572,11 +606,10 @@ SUBS.trapBis={theme:'quad',name:'Боковая сторона трапеции'
     `AD ∥ BC, поэтому ∠A + ∠B = 180° (односторонние углы). Их половины дают ∠FAB + ∠FBA = 90°.`,
     `Значит в треугольнике AFB угол при вершине F прямой: <b>∠AFB = 90°</b>.`,
     `По теореме Пифагора: AB = √(AF² + BF²) = √(${p.AF}² + ${p.BF}²) = √${p.AF*p.AF+p.BF*p.BF} = <b>${fmt(c)}</b>.`];},
-  diag(v,p){const c=SUBS.trapBis.calc(p);
-    if(near2(v,p.AF+p.BF))return 'AB — это гипотенуза, а не сумма катетов. AB = √(AF² + BF²).';
-    if(near2(v,Math.abs(p.AF-p.BF)))return 'Здесь именно сумма квадратов под корнем: AB = √(AF² + BF²).';
-    if(near2(v,p.AF*p.AF+p.BF*p.BF))return 'Забыли извлечь корень: AB = √(AF² + BF²).';
-    return null;},
+  traps(p){return [
+    {v:p.AF+p.BF,m:'AB — это гипотенуза, а не сумма катетов. AB = √(AF² + BF²).'},
+    {v:Math.abs(p.AF-p.BF),m:'Здесь именно сумма квадратов под корнем: AB = √(AF² + BF²).'},
+    {v:p.AF*p.AF+p.BF*p.BF,m:'Забыли извлечь корень: AB = √(AF² + BF²).'}];},
   ref:`AB = √(AF² + BF²),  ∠AFB = 90°`,
   refWhy:'В трапеции углы A и B при боковой стороне AB — односторонние (AD ∥ BC), их сумма 180°. Половины (биссектрисы) в сумме дают 90°, значит угол AFB прямой. AB — гипотенуза прямоугольного треугольника AFB.'};
 
@@ -608,10 +641,9 @@ SUBS.trapLeg={theme:'quad',name:'Боковая сторона (через уг�
     `Высота трапеции из вершины C: h = CD·sin C = ${p.CD}·sin ${p.be}° = ${fmt(h)}.`,
     `Та же высота из вершины B: h = AB·sin B, значит AB = h / sin B = h / sin ${p.al}°.`,
     `AB = (${p.CD}·sin ${p.be}°) / sin ${p.al}° = <b>${as}</b> ≈ ${fmt(SUBS.trapLeg.calc(p))}.`];},
-  diag(v,p){const swap=p.CD*Math.sin(p.al*Math.PI/180)/Math.sin(p.be*Math.PI/180);const hh=p.CD*Math.sin(p.be*Math.PI/180);
-    if(ansEq(v,swap)&&!ansEq(v,SUBS.trapLeg.calc(p)))return 'Синусы перепутаны местами. AB = CD·sin C / sin B (делим на синус искомого угла B).';
-    if(ansEq(v,hh))return 'Это только высота трапеции (CD·sin C). Надо ещё разделить на sin B, чтобы получить боковую сторону AB.';
-    return null;},
+  traps(p){const swap=p.CD*Math.sin(p.al*Math.PI/180)/Math.sin(p.be*Math.PI/180);const hh=p.CD*Math.sin(p.be*Math.PI/180);return [
+    {v:swap,e:tolAns(swap),m:'Синусы перепутаны местами. AB = CD·sin C / sin B (делим на синус искомого угла B).'},
+    {v:hh,e:tolAns(hh),m:'Это только высота трапеции (CD·sin C). Надо ещё разделить на sin B, чтобы получить боковую сторону AB.'}];},
   ref:`AB = ${T('CD · sin C','sin B')}  (обе боковые дают одну высоту h)`,
   refWhy:'Опустив высоты из B и C на основание AD, получаем одну и ту же высоту трапеции: h = CD·sin C = AB·sin B. Отсюда AB = CD·sin C / sin B. Синусы 30°,45°,60°,120°,135°,150° дают ответ в виде корня.'};
 
@@ -638,10 +670,9 @@ SUBS.rhombAng={theme:'quad',name:'Углы ромба',notSheet:false,
     `Пусть O — центр. AO = AC/2 = ${p.D}/2 = ${p.D/2}. Перпендикуляр OH к стороне AB равен ${p.d}.`,
     `В прямоугольном треугольнике AOH: sin∠OAH = OH / AO = ${p.d} / ${p.D/2} = ${fmt(s)}, значит ∠OAH = ${phi}°.`,
     `Диагональ AC делит угол A пополам, поэтому угол A = 2·${phi}° = <b>${2*phi}°</b>. Тогда углы ромба: <b>${2*phi}°, ${180-2*phi}°, ${2*phi}°, ${180-2*phi}°</b>.`];},
-  diag(v,p){const phi=Math.round(SUBS.rhombAng.calc(p)/2);
-    if(near2(v,phi,1.5))return `${phi}° — это только половина угла (∠OAH). Диагональ делит угол ромба пополам, поэтому сам угол вдвое больше: ${2*phi}°.`;
-    if(near2(v,90,1.5))return 'Диагонали ромба перпендикулярны, но углы самого ромба другие — ищите через sin∠OAH = d / (D/2).';
-    return null;},
+  traps(p){const phi=Math.round(SUBS.rhombAng.calc(p)/2);return [
+    {v:phi,e:1.5,m:`${phi}° — это только половина угла (∠OAH). Диагональ делит угол ромба пополам, поэтому сам угол вдвое больше: ${2*phi}°.`},
+    {v:90,e:1.5,m:'Диагонали ромба перпендикулярны, но углы самого ромба другие — ищите через sin∠OAH = d / (D/2).'}];},
   ansEqCustom(val,p){const a=SUBS.rhombAng.calc(p);return ansEq(val,a)||ansEq(val,180-a);},
   ref:`sin${T('∠A','2')} = ${T('d','D/2')} = ${T('2d','D')},  затем угол ромба = 2·${T('∠A','2')}`,
   refWhy:'Половина диагонали AO — гипотенуза прямоугольного треугольника AOH (OH ⊥ стороне). sin острого угла OAH = d/(D/2). Диагональ ромба является биссектрисой угла, поэтому угол вершины вдвое больше найденного.'};
@@ -670,11 +701,10 @@ SUBS.trapEF={theme:'quad',name:'Отрезок, параллельный осн�
     `Точка F делит CD так, что CF : CD = ${p.m} : ${p.m+p.n}. Отрезок EF «переходит» от BC (у вершины C) к AD (у вершины D) пропорционально.`,
     `EF = BC + (AD − BC)·(CF : CD) = ${p.BC} + (${p.AD} − ${p.BC})·${T(p.m,p.m+p.n)}.`,
     `EF = ${p.BC} + ${p.AD-p.BC}·${T(p.m,p.m+p.n)} = ${p.BC} + ${fmt((p.AD-p.BC)*t)} = <b>${fmt(EF)}</b>.`];},
-  diag(v,p){const wrong=p.BC+(p.AD-p.BC)*p.n/(p.m+p.n),avg=(p.AD+p.BC)/2;
-    if(near2(v,wrong))return 'Доля взята не с той стороны: EF ближе к тому основанию, к которому ближе F. Используйте CF : CD = m : (m+n).';
-    if(near2(v,avg))return 'Средняя линия (AD+BC)/2 — это частный случай при m = n. Здесь деление в отношении '+p.m+' : '+p.n+', доля другая.';
-    if(near2(v,p.AD-p.BC))return 'Это разность оснований. EF же лежит между BC и AD: EF = BC + (AD − BC)·доля.';
-    return null;},
+  traps(p){const wrong=p.BC+(p.AD-p.BC)*p.n/(p.m+p.n),avg=(p.AD+p.BC)/2;return [
+    {v:wrong,m:'Доля взята не с той стороны: EF ближе к тому основанию, к которому ближе F. Используйте CF : CD = m : (m+n).'},
+    {v:avg,m:'Средняя линия (AD+BC)/2 — это частный случай при m = n. Здесь деление в отношении '+p.m+' : '+p.n+', доля другая.'},
+    {v:p.AD-p.BC,m:'Это разность оснований. EF же лежит между BC и AD: EF = BC + (AD − BC)·доля.'}];},
   ref:`EF = BC + (AD − BC)·${T('CF','CD')}`,
   refWhy:'Отрезок, параллельный основаниям, изменяется линейно от BC (при совпадении с верхним основанием) до AD (при совпадении с нижним). Доля пути задаётся отношением CF : CD = m : (m+n) — тем, насколько F спустился по боковой стороне.'};
 
@@ -706,10 +736,10 @@ SUBS.circR={theme:'tri',name:'Сторона через описанную ок�
     `Сумма углов треугольника: ∠A = 180° − ${p.be}° − ${p.ga}° = <b>${A}°</b>.`,
     `По теореме синусов BC / sin A = 2R, значит BC = 2R·sin A.`,
     `BC = 2·${p.R}·sin ${A}° = 2·${p.R}·${fmt(Math.sin(A*Math.PI/180))} = <b>${fmt(bc)}</b>.`];},
-  diag(v,p){const A=180-p.be-p.ga;const wB=2*p.R*Math.sin(p.be*Math.PI/180),wC=2*p.R*Math.sin(p.ga*Math.PI/180);
-    if(near2(v,wB)||near2(v,wC))return 'Сторона BC лежит напротив угла A. Сначала найдите ∠A = 180° − ∠B − ∠C, потом BC = 2R·sin A.';
-    if(near2(v,p.R*Math.sin(A*Math.PI/180)))return 'Потерян множитель 2: по теореме синусов BC = 2R·sin A (а не R·sin A).';
-    return null;},
+  traps(p){const A=180-p.be-p.ga;const wB=2*p.R*Math.sin(p.be*Math.PI/180),wC=2*p.R*Math.sin(p.ga*Math.PI/180);return [
+    {v:wB,m:'Сторона BC лежит напротив угла A. Сначала найдите ∠A = 180° − ∠B − ∠C, потом BC = 2R·sin A.'},
+    {v:wC,m:'Сторона BC лежит напротив угла A. Сначала найдите ∠A = 180° − ∠B − ∠C, потом BC = 2R·sin A.'},
+    {v:p.R*Math.sin(A*Math.PI/180),m:'Потерян множитель 2: по теореме синусов BC = 2R·sin A (а не R·sin A).'}];},
   ref:`${T('BC','sin A')} = 2R  ⟹  BC = 2R·sin A,  где A = 180° − B − C`,
   refWhy:'Теорема синусов связывает сторону с противолежащим углом и радиусом описанной окружности: a / sin A = 2R. Сторона BC лежит против угла A, который находим из суммы углов треугольника.'};
 
@@ -732,11 +762,10 @@ SUBS.hAB={theme:'tri',name:'Высота к гипотенузе (2 катета
     `Гипотенуза: c = √(${p.a}² + ${p.b}²) = √${p.a*p.a+p.b*p.b} = ${fmt(c)}.`,
     `Площадь считаем двумя способами: S = ${T('1','2')}·${p.a}·${p.b} = ${T('1','2')}·c·h.`,
     `Отсюда h = (${p.a}·${p.b}) / ${fmt(c)} = ${p.a*p.b} / ${fmt(c)} = <b>${fmt(h)}</b>.`];},
-  diag(v,p){const c=Math.hypot(p.a,p.b);
-    if(near2(v,c))return 'Это гипотенуза, а не высота к ней. Высота h = (произведение катетов) / гипотенуза.';
-    if(near2(v,p.a*p.b))return 'Это произведение катетов. Его нужно ещё разделить на гипотенузу: h = ab / c.';
-    if(near2(v,(p.a+p.b)/2))return 'Высота к гипотенузе — не среднее катетов. h = ab / c, где c = √(a² + b²).';
-    return null;},
+  traps(p){const c=Math.hypot(p.a,p.b);return [
+    {v:c,m:'Это гипотенуза, а не высота к ней. Высота h = (произведение катетов) / гипотенуза.'},
+    {v:p.a*p.b,m:'Это произведение катетов. Его нужно ещё разделить на гипотенузу: h = ab / c.'},
+    {v:(p.a+p.b)/2,m:'Высота к гипотенузе — не среднее катетов. h = ab / c, где c = √(a² + b²).'}];},
   ref:`h = ${T('a · b','c')},  c = √(a² + b²)`,
   refWhy:'Площадь прямоугольного треугольника равна половине произведения катетов и одновременно половине произведения гипотенузы на высоту к ней: ½ab = ½ch. Отсюда h = ab / c.'};
 
@@ -759,10 +788,9 @@ SUBS.hAC={theme:'tri',name:'Высота к гипотенузе (катет и 
     `Второй катет по теореме Пифагора: b = √(c² − a²) = √(${p.c}² − ${p.a}²) = √${p.c*p.c-p.a*p.a} = ${fmt(b)}.`,
     `Через площадь: ${T('1','2')}·${p.a}·${fmt(b)} = ${T('1','2')}·${p.c}·h.`,
     `h = (${p.a}·${fmt(b)}) / ${p.c} = <b>${fmt(h)}</b>.`];},
-  diag(v,p){const b=Math.sqrt(p.c*p.c-p.a*p.a);
-    if(near2(v,b))return 'Это второй катет, найденный по теореме Пифагора. Осталось найти высоту: h = (a·b) / c.';
-    if(near2(v,p.a*p.a/p.c))return 'Это проекция катета на гипотенузу, а не высота. Высота h = (a·b) / c, где b = √(c² − a²).';
-    return null;},
+  traps(p){const b=Math.sqrt(p.c*p.c-p.a*p.a);return [
+    {v:b,m:'Это второй катет, найденный по теореме Пифагора. Осталось найти высоту: h = (a·b) / c.'},
+    {v:p.a*p.a/p.c,m:'Это проекция катета на гипотенузу, а не высота. Высота h = (a·b) / c, где b = √(c² − a²).'}];},
   ref:`b = √(c² − a²),  затем h = ${T('a · b','c')}`,
   refWhy:'Сначала по теореме Пифагора находим второй катет b. Затем площадь ½ab = ½ch даёт высоту к гипотенузе h = ab / c.'};
 
@@ -785,11 +813,10 @@ SUBS.projAB={theme:'tri',name:'Катет через проекцию на ги�
     `Высота из прямого угла делит гипотенузу, и катет — среднее пропорциональное между всей гипотенузой и прилежащим к нему отрезком: AB² = AH·AC.`,
     `AB² = ${p.AH}·${p.AC} = ${p.AH*p.AC}.`,
     `AB = √${p.AH*p.AC} = <b>${fmt(ab)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AH*p.AC))return 'Забыли извлечь корень: AB = √(AH·AC), а не AH·AC.';
-    if(near2(v,Math.sqrt(p.AH*(p.AC-p.AH))))return 'Это высота BH (√(AH·HC)). Катет же равен AB = √(AH·AC) — с полной гипотенузой.';
-    if(near2(v,p.AC-p.AH))return 'Это второй отрезок HC. Катет AB = √(AH·AC).';
-    return null;},
+  traps(p){return [
+    {v:p.AH*p.AC,m:'Забыли извлечь корень: AB = √(AH·AC), а не AH·AC.'},
+    {v:Math.sqrt(p.AH*(p.AC-p.AH)),m:'Это высота BH (√(AH·HC)). Катет же равен AB = √(AH·AC) — с полной гипотенузой.'},
+    {v:p.AC-p.AH,m:'Это второй отрезок HC. Катет AB = √(AH·AC).'}];},
   ref:`AB = √(AH · AC)  — катет есть среднее пропорциональное`,
   refWhy:'Высота из вершины прямого угла образует два треугольника, подобных исходному. Из подобия катет AB — среднее пропорциональное между гипотенузой AC и прилежащим отрезком AH: AB² = AH·AC.'};
 
@@ -815,10 +842,9 @@ SUBS.paraBN={theme:'tri',name:'Подобие: отрезок при MN∥AC',no
     `MN ∥ AC, поэтому △BMN подобен △BAC. Значит BN / BC = MN / AC.`,
     `Пусть BN = x. Тогда BC = x + NC = x + ${p.NC}, и x / (x + ${p.NC}) = ${p.MN} / ${p.AC}.`,
     `x·${p.AC} = ${p.MN}·(x + ${p.NC}) ⟹ x·(${p.AC} − ${p.MN}) = ${p.MN}·${p.NC} ⟹ BN = ${p.MN*p.NC} / ${p.AC-p.MN} = <b>${fmt(bn)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.MN*p.NC/p.AC))return 'В знаменателе должна быть разность (AC − MN), а не сам AC. BN = MN·NC / (AC − MN).';
-    if(near2(v,p.NC*(p.AC-p.MN)/p.MN))return 'Отношение перевёрнуто. Из △BMN ∼ △BAC: BN / BC = MN / AC.';
-    return null;},
+  traps(p){return [
+    {v:p.MN*p.NC/p.AC,m:'В знаменателе должна быть разность (AC − MN), а не сам AC. BN = MN·NC / (AC − MN).'},
+    {v:p.NC*(p.AC-p.MN)/p.MN,m:'Отношение перевёрнуто. Из △BMN ∼ △BAC: BN / BC = MN / AC.'}];},
   ref:`${T('BN','BC')} = ${T('MN','AC')},  BC = BN + NC  ⟹  BN = ${T('MN · NC','AC − MN')}`,
   refWhy:'Прямая MN ∥ AC отсекает треугольник BMN, подобный BAC (по двум углам). Коэффициент подобия — отношение MN / AC. Выразив BC = BN + NC, получаем уравнение на BN.'};
 
@@ -851,10 +877,9 @@ SUBS.paraMC={theme:'tri',name:'Подобие: диагонали трапеци
     `AB ∥ DC, поэтому △ABM подобен △CDM (накрест лежащие углы). Значит AM / MC = AB / DC.`,
     `Тогда AC = AM + MC делится в отношении AB : DC, и MC = AC·DC / (AB + DC).`,
     `MC = ${p.AC}·${p.DC} / (${p.AB} + ${p.DC}) = ${p.AC*p.DC} / ${p.AB+p.DC} = <b>${fmt(mc)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AC*p.AB/(p.AB+p.DC)))return 'Это отрезок AM (к вершине основания AB). Для MC в числителе стоит DC: MC = AC·DC / (AB + DC).';
-    if(near2(v,p.AC/2))return 'Точка M делит диагональ не пополам, а в отношении оснований AB : DC. MC = AC·DC / (AB + DC).';
-    return null;},
+  traps(p){return [
+    {v:p.AC*p.AB/(p.AB+p.DC),m:'Это отрезок AM (к вершине основания AB). Для MC в числителе стоит DC: MC = AC·DC / (AB + DC).'},
+    {v:p.AC/2,m:'Точка M делит диагональ не пополам, а в отношении оснований AB : DC. MC = AC·DC / (AB + DC).'}];},
   ref:`${T('AM','MC')} = ${T('AB','DC')}  ⟹  MC = ${T('AC · DC','AB + DC')}`,
   refWhy:'Диагонали трапеции образуют подобные треугольники ABM и CDM (AB ∥ DC даёт равные накрест лежащие углы). Точка пересечения делит каждую диагональ в отношении оснований AB : DC.'};
 
@@ -888,10 +913,9 @@ SUBS.chordDist={theme:'circ',name:'Расстояние от центра до �
     `Радиус из центра к концу хорды AB: R² = (AB/2)² + ${p.dAB}² = ${(p.AB/2)*(p.AB/2)} + ${p.dAB*p.dAB} = ${R*R}, R = ${fmt(R)}.`,
     `Для хорды CD тот же радиус: расстояние = √(R² − (CD/2)²).`,
     `= √(${R*R} − ${(p.CD/2)*(p.CD/2)}) = √${R*R-(p.CD/2)*(p.CD/2)} = <b>${fmt(dCD)}</b>.`];},
-  diag(v,p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);
-    if(near2(v,R))return 'Это радиус окружности. Нужно расстояние до хорды CD: √(R² − (CD/2)²).';
-    if(near2(v,Math.sqrt(Math.abs(R*R-p.CD*p.CD))))return 'Берётся половина хорды: √(R² − (CD/2)²), а не (R² − CD²).';
-    return null;},
+  traps(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);return [
+    {v:R,m:'Это радиус окружности. Нужно расстояние до хорды CD: √(R² − (CD/2)²).'},
+    {v:Math.sqrt(Math.abs(R*R-p.CD*p.CD)),m:'Берётся половина хорды: √(R² − (CD/2)²), а не (R² − CD²).'}];},
   ref:`R² = (${T('AB','2')})² + d²ᴬᴮ,  d_CD = √(R² − (${T('CD','2')})²)`,
   refWhy:'Радиус, проведённый к концу хорды, и перпендикуляр из центра к хорде (он делит её пополам) образуют прямоугольный треугольник: R² = (полухорды)² + (расстояния)². Радиус один и тот же, поэтому его находим по одной хорде и применяем к другой.'};
 
@@ -918,10 +942,9 @@ SUBS.chordLen={theme:'circ',name:'Длина хорды по расстояни�
     `Радиус: R² = (AB/2)² + ${p.dAB}² = ${(p.AB/2)*(p.AB/2)} + ${p.dAB*p.dAB} = ${R*R}, R = ${fmt(R)}.`,
     `Половина хорды CD: √(R² − ${p.dCD}²) = √(${R*R} − ${p.dCD*p.dCD}) = √${R*R-p.dCD*p.dCD} = ${fmt(CD/2)}.`,
     `CD = 2·${fmt(CD/2)} = <b>${fmt(CD)}</b>.`];},
-  diag(v,p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);
-    if(near2(v,CD_half(R,p.dCD)))return 'Это только половина хорды. Хорду надо удвоить: CD = 2·√(R² − d²).';
-    if(near2(v,R))return 'Это радиус. Длина хорды CD = 2√(R² − d²_CD).';
-    return null;},
+  traps(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);return [
+    {v:CD_half(R,p.dCD),m:'Это только половина хорды. Хорду надо удвоить: CD = 2·√(R² − d²).'},
+    {v:R,m:'Это радиус. Длина хорды CD = 2√(R² − d²_CD).'}];},
   ref:`CD = 2·√(R² − d²_CD)`,
   refWhy:'Перпендикуляр из центра делит хорду пополам. В прямоугольном треугольнике «радиус — расстояние — полухорда» полухорда = √(R² − d²), а вся хорда вдвое больше.'};
 function CD_half(R,d){return Math.sqrt(Math.max(R*R-d*d,0));}
@@ -956,9 +979,8 @@ SUBS.secKP1={theme:'circ',name:'Секущие: окружность через 
     `Четырёхугольник KBCP вписан в окружность, поэтому ∠AKP = ∠ACB (внешний угол вписанного четырёхугольника равен внутреннему противолежащему).`,
     `Угол A — общий, значит △AKP подобен △ACB. Отсюда KP / CB = AK / AC.`,
     `KP = CB·AK / AC = AK / (AC : CB) = ${p.AK} / ${fmt(p.k)} = <b>${fmt(kp)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AK*p.k))return 'Коэффициент применён наоборот. Так как AC больше BC в '+fmt(p.k)+' раз, KP меньше AK: KP = AK / '+fmt(p.k)+'.';
-    return null;},
+  traps(p){return [
+    {v:p.AK*p.k,m:'Коэффициент применён наоборот. Так как AC больше BC в '+fmt(p.k)+' раз, KP меньше AK: KP = AK / '+fmt(p.k)+'.'}];},
   ref:`△AKP ∼ △ACB  ⟹  KP = ${T('AK','k')},  где k = AC : BC`,
   refWhy:'Точки K, B, C, P лежат на одной окружности, поэтому KBCP — вписанный четырёхугольник и ∠AKP = ∠ACB. С общим углом A треугольники AKP и ACB подобны с коэффициентом BC : AC = 1 : k.'};
 
@@ -989,9 +1011,8 @@ SUBS.secKP2={theme:'circ',name:'Секущие: окружность через 
     `KBCP — вписанный четырёхугольник, поэтому ∠APK = ∠ABC. Угол A общий ⟹ △APK подобен △ABC.`,
     `Значит KP / CB = AP / AB, откуда KP = CB·AP / AB = AP / (AB : CB).`,
     `KP = ${p.AP} / ${fmt(p.m)} = <b>${fmt(kp)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AP*p.m))return 'Коэффициент наоборот: AB больше BC, поэтому KP = AP / '+fmt(p.m)+' (меньше AP).';
-    return null;},
+  traps(p){return [
+    {v:p.AP*p.m,m:'Коэффициент наоборот: AB больше BC, поэтому KP = AP / '+fmt(p.m)+' (меньше AP).'}];},
   ref:`△APK ∼ △ABC  ⟹  KP = ${T('AP','m')},  где m = AB : BC`,
   refWhy:'K, B, C, P концикличны, значит ∠APK = ∠ABC. С общим углом A треугольники APK и ABC подобны с коэффициентом BC : AB = 1 : m, поэтому KP = AP / m.'};
 
@@ -1005,7 +1026,7 @@ SUBS.rectPK={theme:'circ',name:'Прямоугольник в высоте (на
     `Углы ∠BPH и ∠BKH опираются на диаметр BH, значит они прямые. Вместе с прямым углом B получается прямоугольник BPHK.`,
     `Диагонали прямоугольника равны, а PK и BH — как раз диагонали.`,
     `Поэтому PK = BH = <b>${p.BH}</b>.`];},
-  diag(v,p){if(isFinite(v)&&!near2(v,p.BH))return 'BPHK — прямоугольник (три прямых угла), а PK и BH — его диагонали. Диагонали прямоугольника равны, поэтому PK = BH.';return null;},
+  other(v,p){return 'Не сходится. Посмотрите на четырёхугольник BPHK: что это за фигура? Или откройте «🪜 Шаг за шагом».';},
   ref:`BPHK — прямоугольник  ⟹  PK = BH  (равные диагонали)`,
   refWhy:'Углы при P и K опираются на диаметр BH, поэтому они прямые. С прямым углом B четырёхугольник BPHK имеет три прямых угла — это прямоугольник. PK и BH — его диагонали, а они равны.'};
 
@@ -1019,7 +1040,7 @@ SUBS.rectBH={theme:'circ',name:'Прямоугольник в высоте (на
     `Углы при P и K опираются на диаметр BH — они прямые. С прямым углом B четырёхугольник BPHK — прямоугольник.`,
     `PK и BH — его диагонали, а диагонали прямоугольника равны.`,
     `Значит BH = PK = <b>${p.PK}</b>.`];},
-  diag(v,p){if(isFinite(v)&&!near2(v,p.PK))return 'PK и BH — диагонали прямоугольника BPHK, они равны: BH = PK.';return null;},
+  other(v,p){return 'Не сходится. Посмотрите на четырёхугольник BPHK: что это за фигура? Или откройте «🪜 Шаг за шагом».';},
   ref:`BH = PK  (диагонали прямоугольника BPHK равны)`,
   refWhy:'Те же рассуждения: BPHK — прямоугольник, а PK и BH — равные диагонали, поэтому BH = PK.'};
 
@@ -1053,10 +1074,9 @@ SUBS.tanSecAC={theme:'circ',name:'Касательная и секущая (на
     `AB — касательная, а AC — секущая, проходящая через центр (её внешняя часть равна AC − D). По свойству касательной и секущей: AB² = AC·(AC − D).`,
     `${p.AB}² = AC² − ${fmt(p.D)}·AC ⟹ AC² − ${fmt(p.D)}·AC − ${p.AB*p.AB} = 0.`,
     `AC = (${fmt(p.D)} + √(${fmt(p.D)}² + 4·${p.AB*p.AB})) / 2 = <b>${fmt(ac)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AB*p.AB/p.D))return 'Это внешняя часть секущей (AC − D), а не вся AC. Решите квадратное уравнение AC² − D·AC − AB² = 0.';
-    if(near2(v,Math.sqrt(p.AB*p.AB+p.D*p.D)))return 'Здесь не теорема Пифагора. Работает свойство касательной: AB² = AC·(AC − D).';
-    return null;},
+  traps(p){return [
+    {v:p.AB*p.AB/p.D,m:'Это внешняя часть секущей (AC − D), а не вся AC. Решите квадратное уравнение AC² − D·AC − AB² = 0.'},
+    {v:Math.sqrt(p.AB*p.AB+p.D*p.D),m:'Здесь не теорема Пифагора. Работает свойство касательной: AB² = AC·(AC − D).'}];},
   ref:`AB² = AC·(AC − D)  ⟹  AC = ${T('D + √(D² + 4·AB²)','2')}`,
   refWhy:'Касательная в квадрате равна произведению всей секущей на её внешнюю часть. Секущая AC проходит через центр, её длина AC, а внешняя часть — AC − D (диаметр D «съедает» часть внутри круга). Получается квадратное уравнение.'};
 
@@ -1070,10 +1090,9 @@ SUBS.tanSecD={theme:'circ',name:'Касательная и секущая (на�
     `Касательная и секущая: AB² = AC·(AC − D), где AC − D — внешняя часть секущей.`,
     `Отсюда AC − D = AB² / AC = ${p.AB*p.AB} / ${p.AC} = ${fmt(p.AB*p.AB/p.AC)}.`,
     `D = AC − ${fmt(p.AB*p.AB/p.AC)} = (${p.AC}² − ${p.AB}²) / ${p.AC} = <b>${fmt(D)}</b>.`];},
-  diag(v,p){
-    if(near2(v,p.AB*p.AB/p.AC))return 'Это внешняя часть секущей (AC − D). Сам диаметр D = AC − AB²/AC.';
-    if(near2(v,p.AC-p.AB))return 'Нельзя просто вычесть длины. Используйте AB² = AC·(AC − D) ⟹ D = (AC² − AB²)/AC.';
-    return null;},
+  traps(p){return [
+    {v:p.AB*p.AB/p.AC,m:'Это внешняя часть секущей (AC − D). Сам диаметр D = AC − AB²/AC.'},
+    {v:p.AC-p.AB,m:'Нельзя просто вычесть длины. Используйте AB² = AC·(AC − D) ⟹ D = (AC² − AB²)/AC.'}];},
   ref:`AB² = AC·(AC − D)  ⟹  D = ${T('AC² − AB²','AC')}`,
   refWhy:'По свойству касательной и секущей AB² = AC·(AC − D). Выразив внешнюю часть AC − D = AB²/AC, получаем диаметр D = AC − AB²/AC.'};
 
@@ -1509,7 +1528,7 @@ function buildTask(mount,task,mode,onDone){
     // тренировка: диагностика по введённому
     if(!missed){missed=true;CP.mlog(task.sub,false);}
     ev('opt_wrong',{sub:task.sub});
-    const hint=isFinite(val)?S.diag(val,task.p):null;
+    const hint=isFinite(val)?diagOf(task.sub,val,task.p):null;
     if(tries>=2){fb.className='fb bad';fb.innerHTML=(hint?hint+'<br>':'')+'Разберём решение ниже.';revealSolution();ev('gaveup',{sub:task.sub});finishCard('fail');}
     else{fb.className='fb warn';fb.innerHTML=(hint||'Не совсем. Попробуй ещё раз — осталась одна попытка.');}
   }

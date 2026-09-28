@@ -1030,10 +1030,35 @@ const ARCHIVE=[
  AR('П-Тр28','trapBDA',{bda:35,bdc:58},52,FP), AR('П-Тр29','trapBDA',{bda:30,bdc:110},10,FP), AR('П-Тр30','trapBDA',{bda:24,bdc:70},62,FP)
 ];
 /* ================= СБОРКА ЗАДАЧИ ================= */
+const trapTol=x=>Math.max(1e-9,Math.abs(x)*1e-9)+1e-9;
+/* ловушки одной задачи: те, что одно и то же число задевает одновременно,
+   сводятся в одну (решения F1 и Q2 делегата владельца): две разные ошибки —
+   одно объединённое сообщение «найдите свою», три и больше — честный общий текст */
+function trapPair(m1,m2){return 'Такой ответ получается при одной из двух ошибок — найдите свою:\n• '+m1+'\n• '+m2;}
+const TRAP_MANY='Не сходится. Это число получается при нескольких разных ошибках — сверьте решение по шагам в «🪜 Шаг за шагом».';
+function mergeTraps(list){
+  const up=list.map((_,i)=>i), top=i=>up[i]===i?i:(up[i]=top(up[i]));
+  for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++)
+    if(Math.abs(list[i].v-list[j].v)<=list[i].e+list[j].e)up[top(j)]=top(i);
+  const groups=new Map();
+  list.forEach((t,i)=>{const r=top(i);if(!groups.has(r))groups.set(r,[]);groups.get(r).push(t);});
+  const out=[];let clash=false;
+  for(const g of groups.values()){
+    const ms=[...new Set(g.map(t=>t.m))];
+    if(ms.length===1){g.forEach(t=>out.push(t));continue;}
+    clash=true;
+    const m=ms.length===2?trapPair(ms[0],ms[1]):TRAP_MANY;
+    g.forEach(t=>out.push({v:t.v,e:t.e,m}));
+  }
+  out.clash=clash;
+  return out;
+}
+
 function build(k,p,meta){
   const s=S17[k]; const ans=s.calc(p);
   const F=s.fig(p);
-  const diag=(s.diag(p)||[]).filter(d=>typeof d.v==='number'&&isFinite(d.v)&&Math.abs(d.v-ans)>1e-9);
+  const diag=mergeTraps((s.diag(p)||[]).filter(d=>d&&d.m&&typeof d.v==='number'&&isFinite(d.v)&&!(typeof ans==='number'&&Math.abs(d.v-ans)<=trapTol(ans)))
+    .map(d=>({v:d.v,m:d.m,e:trapTol(d.v)})));
   const m={key:k,topic:s.topic,name:s.name,ans,ansFmt:s.ansFmt||'num',text:s.text(p),sol:s.sol(p),
     law:s.law,ref:s.ref,refWhy:s.refWhy,svg:F.svg(),chk:F.chk,diag,p};
   return Object.assign(m,meta||{});
@@ -1314,9 +1339,9 @@ function renderTrain(newTask){hdr();
       finish();}
     else{const v=parseAns(raw);
       if(!missed){missed=true;CP.mlog(t.key,false);}
-      const d=t.diag.find(d=>v!=null&&Math.abs(v-d.v)<=Math.max(1e-9,Math.abs(d.v)*1e-9)+1e-9);
+      const d=t.diag.find(d=>v!=null&&Math.abs(v-d.v)<=d.e);
       fb.className='msg err';
-      fb.innerHTML=d?'<b>Знакомая ловушка.</b> '+esc(d.m):'Пока неверно. Сверьтесь с законом (💡) — и попробуйте ещё раз.';
+      fb.innerHTML=d?'<b>Знакомая ловушка.</b> '+esc(d.m).replace(/\n/g,'<br>'):'Пока неверно. Сверьтесь с законом (💡) — и попробуйте ещё раз.';
       logE('opt_wrong',{sub:t.key,pick:raw});}};
   $('ans').addEventListener('keydown',e=>{if(e.key==='Enter')$('chk').click();});
   $('hint').onclick=()=>{fb.className='msg info';fb.innerHTML='<b>Закон:</b> '+t.law+

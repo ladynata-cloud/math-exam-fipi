@@ -1342,13 +1342,37 @@ const SHEET_MISSING=[
 ];
 
 /* ================= Сборка задач ================= */
+const trapTol=x=>Math.max(0.006,Math.abs(x)*1e-6);
+/* ловушки одной задачи: те, что одно и то же число задевает одновременно,
+   сводятся в одну (решения F1 и Q2 делегата владельца): две разные ошибки —
+   одно объединённое сообщение «найдите свою», три и больше — честный общий текст */
+function trapPair(m1,m2){return 'Такой ответ получается при одной из двух ошибок — найдите свою:<br>• '+m1+'<br>• '+m2;}
+const TRAP_MANY='Не сходится. Это число получается при нескольких разных ошибках — пройдите решение заново по чертежу: что дано и на что опирается искомое.';
+function mergeTraps(list){
+  const up=list.map((_,i)=>i), top=i=>up[i]===i?i:(up[i]=top(up[i]));
+  for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++)
+    if(Math.abs(list[i].v-list[j].v)<=list[i].e+list[j].e)up[top(j)]=top(i);
+  const groups=new Map();
+  list.forEach((t,i)=>{const r=top(i);if(!groups.has(r))groups.set(r,[]);groups.get(r).push(t);});
+  const out=[];let clash=false;
+  for(const g of groups.values()){
+    const ms=[...new Set(g.map(t=>t.m))];
+    if(ms.length===1){g.forEach(t=>out.push(t));continue;}
+    clash=true;
+    const m=ms.length===2?trapPair(ms[0],ms[1]):TRAP_MANY;
+    g.forEach(t=>out.push({v:t.v,e:t.e,m}));
+  }
+  out.clash=clash;
+  return out;
+}
 function build(k,p,meta){
   const sub=SUBS[k];
   const ans=sub.calc(p);
   const fig=sub.fig.call(sub,p);
   const text=(meta&&meta.text)||sub.text.call(sub,p);
   const sol=sub.sol.call(sub,p);
-  const diag=(sub.diag?sub.diag.call(sub,p):[]).filter(d=>isFinite(d.v)&&Math.abs(d.v-ans)>1e-9&&d.m);
+  const diag=mergeTraps((sub.diag?sub.diag.call(sub,p):[]).filter(d=>d&&d.m&&isFinite(d.v)&&!eqAns(d.v,ans)&&Math.abs(d.v-ans)>trapTol(d.v))
+    .map(d=>({v:d.v,m:d.m,e:trapTol(d.v)})));
   return Object.assign({k,sub,p,ans,fig,text,sol,diag},meta||{});
 }
 function buildGen(k){return build(k,SUBS[k].gen(),{kind:'gen'});}
@@ -1471,7 +1495,7 @@ function parseAns(s){
   return /^-?\d+(?:\.\d+)?$/.test(s)?parseFloat(s):NaN;
 }
 function eqAns(v,ans){return isFinite(v)&&Math.abs(v-ans)<=Math.max(1e-6,Math.abs(ans)*1e-6)+1e-9;}
-function matchDiag(v,diag){for(const d of diag){if(Math.abs(v-d.v)<=Math.max(0.006,Math.abs(d.v)*1e-6))return d.m;}return null;}
+function matchDiag(v,diag){for(const d of diag){if(Math.abs(v-d.v)<=d.e)return d.m;}return null;}
 
 /* ================= UI ================= */
 let TAB='razbor', streak=0;

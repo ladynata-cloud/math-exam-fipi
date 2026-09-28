@@ -1448,6 +1448,7 @@ function newTrainTask(id){
   const T=byId(id); const p=rnd(T.pool);
   trS={id, p, b:T.build(p), hints:0, wrong:0, reveal:0, done:false, surrender:false, fb:null,
        gmode:false, gstep:0, gres:[], gfb:null, gtip:false, missed:false, shown:false};
+  trS.traps=trapsFor(T, p, trS.b);
   logEvent({e:'task_start', task:id, kind:'train'});
   renderTrain();
 }
@@ -1483,7 +1484,7 @@ function trCheck(){
     logEvent({e:'solved', task:trS.id, via, mistakes:trS.wrong, hints:trS.hints});
   } else {
     trS.wrong++; bumpErr(trS.id); trMiss();
-    trS.fb={k:'err',msg:'Не сходится. Проверьте вычисления или откройте «🪜 Шаг за шагом».'};
+    trS.fb={k:'err',msg:wrongMsg(b, trS.traps, r.vals) || 'Не сходится. Проверьте вычисления или откройте «🪜 Шаг за шагом».'};
     logEvent({e:'quiz_wrong', task:trS.id, mode:'train'});
   }
   renderTrain();
@@ -1502,6 +1503,111 @@ function trGive(){
   bumpErr(trS.id);
   logEvent({e:'solved', task:trS.id, via:'surrender', mistakes:trS.wrong, hints:trS.hints});
   renderTrain();
+}
+
+/* -------------------- ЛОВУШКИ НА НЕВЕРНЫЙ ОТВЕТ --------------------
+   Решения F1 и Q3 делегата владельца. Для типа — функция (p, b) -> список
+   {v:[значение по каждому полю ответа, null — поле не проверяется], m:'сообщение'}.
+   Сообщение называет, что получилось и что спрашивают, но не диктует действие.
+   Ловушка ставится на конкретный набор чисел, только если её нельзя спутать
+   с ответом: не ближе 5 допусков проверки (допуск тот же, что у поля ответа),
+   ответ, округлённый до целых, десятых или сотых, не попадает в её полосу, а она,
+   округлённая, — в полосу ответа. Ловушки, которые одно число задевает сразу,
+   сводятся в одну, как в тренажёрах 16, 17, 18, 23. */
+const TRAPS={
+  1:(p)=>{const L=p;return [
+    {v:[L/Math.SQRT2,null,null],m:'Похоже, точка пересечения BE и AD принята серединой обоих отрезков. Серединой она является только для AD — в каком отношении она делит BE, нужно найти.'},
+    {v:[5*L/6,null,null],m:'Похоже, BE разделён точкой пересечения в отношении 2 : 1, как медиана. Но BE — биссектриса, а точка пересечения с AD — не точка пересечения медиан.'}];},
+  2:(p)=>{const [BC,h]=p;return [
+    {v:[BC*h],m:'Похоже, за высоту параллелограмма взято расстояние от K до стороны AB. Высота — это расстояние между прямыми AD и BC, а точка K лежит между ними.'},
+    {v:[4*BC*h],m:'Получилось вдвое больше верного. Площадь параллелограмма — произведение стороны на проведённую к ней высоту, без дополнительного множителя 2.'}];},
+  3:(p,b)=>{const [AB,CD,BC]=p,AD=CD-BC,h=b.geo.h;return [
+    {v:[(BC+CD)/2*h],m:'Похоже, основание AD принято равным боковой стороне CD. Эти отрезки не равны — найдите AD из условия про биссектрису угла D.'},
+    {v:[(BC+AD)*h],m:'Получилось вдвое больше верного: в формуле площади трапеции стоит полусумма оснований, а не их сумма.'}];},
+  4:(p)=>{const [,,s1,s2]=p,mx=Math.max(s1,s2),mn=Math.min(s1,s2);return [
+    {v:[(mx+mn)/2,(mx-mn)/2],m:'Похоже, средняя линия принята равной сумме оснований, а второй отрезок — их разности. Средняя линия трапеции равна полусумме оснований.'},
+    {v:[mx+mn/2,mx-mn/2],m:'Похоже, отрезок, соединяющий середины оснований, принят равным разности оснований. Он равен половине этой разности.'},
+    {v:[mx-mn,mx+mn],m:'Похоже, перепутано, какое основание большее: в первое поле — большее основание, во второе — меньшее.'}];},
+  5:(p,b)=>{const [BC,B,C]=p,AD=b.ans[0].v;return [
+    {v:[AD/2],m:'Это радиус описанной окружности, а AD — её диаметр.'},
+    {v:[BC/Math.sin(RAD((270-B-C)/2))],m:'Похоже, центральный угол, опирающийся на дугу BC, принят равным вписанному. Центральный угол вдвое больше вписанного, опирающегося на ту же дугу.'}];},
+  6:(p,b)=>{const {a,b:bb,h}=b.geo;return [
+    {v:[h*a/(a+bb)],m:'Это расстояние от точки пересечения диагоналей до большего основания, а спрашивают — до меньшего.'},
+    {v:[h/2],m:'Похоже, точка пересечения диагоналей принята за центр вписанной окружности. Это разные точки: высоту трапеции точка пересечения диагоналей делит не пополам.'}];},
+  7:(p)=>{const [AD,BC]=p;return [
+    {v:[AD*BC],m:'Это EK², а не EK.'},
+    {v:[AD-BC],m:'Это разность оснований — проекция боковой стороны CD на основание AD, а спрашивают расстояние от E до прямой CD.'}];},
+  8:(p)=>{const [AB,AC]=p;return [
+    {v:[AB*AB/AC],m:'Вы нашли AD — верный промежуточный результат, но спрашивают CD.'},
+    {v:[AC-AB],m:'Похоже, AD принято равным AB, но треугольник ABD не равнобедренный.'}];},
+  9:(p)=>{const [AD,MD]=p;return [
+    {v:[MD*MD/AD],m:'Вы нашли DH — верный промежуточный результат, но спрашивают AH.'},
+    {v:[AD-MD],m:'Похоже, точка H принята совпадающей с M. Это разные точки: M лежит на полуокружности, а H — точка пересечения высот.'}];},
+  10:(p)=>{const [r1,r2]=p;return [
+    {v:[r1+r2],m:'Это расстояние между центрами окружностей. Прямые AB и CD через центры не проходят.'},
+    {v:[2*Math.sqrt(r1*r2)],m:'Это длина отрезка общей касательной AC, а спрашивают расстояние между прямыми AB и CD.'}];},
+  11:(p)=>{const [AB,CD]=p;return [
+    {v:[Math.sqrt((AB*AB+CD*CD-AB*CD)/3)],m:'Похоже, в теореме косинусов взят угол 60°, а нужен 120°: от этого меняется знак перед произведением.'},
+    {v:[Math.sqrt(AB*AB+CD*CD+AB*CD)],m:'Это в √3 раз больше радиуса: сумма AB² + CD² + AB·CD равна 3R², а не R².'}];},
+  12:(p)=>{const [m,n,under,den]=p,cosA=Math.sqrt(under)/den,sinA=Math.sqrt(den*den-under)/den;return [
+    {v:[((m+n)/2+Math.sqrt(m*n)*cosA)/sinA],m:'Это радиус другой окружности — той, что касается продолжения стороны AB за точку A. По условию окружность касается луча AB.'},
+    {v:[((m+n)/2-Math.sqrt(m*(n-m))*cosA)/sinA],m:'Похоже, квадрат отрезка касательной взят равным AM·MN. По теореме о касательной и секущей он равен AM·AN.'}];},
+  13:(p)=>{const [pp,qq,BC]=p;return [
+    {v:[BC*pp/(2*qq)],m:'Похоже, в теореме синусов вместо синуса угла A взят его косинус.'},
+    {v:[BC*pp/Math.sqrt(pp*pp-qq*qq)],m:'Вы нашли диаметр описанной окружности, а спрашивают радиус.'}];},
+  14:(p)=>{const [AD,BC,AB]=p;return [
+    {v:[AB/2],m:'Похоже, AB принят за диаметр окружности. Окружность проходит через A и B, но её центр не на AB: она ещё касается прямой CD.'},
+    {v:[AB*(AD+BC)/(AD-BC)],m:'Вы нашли диаметр окружности, а спрашивают радиус.'}];},
+  15:(p,b)=>{const S=b.ans[0].v;return [
+    {v:[S/2],m:'Это площадь треугольника ABC, а спрашивают площадь параллелограмма.'},
+    {v:[2*S],m:'Получилось вдвое больше площади параллелограмма — похоже, площадь треугольника удвоена лишний раз.'}];},
+  16:(p)=>{const [AC,rB]=p;return [
+    {v:[AC*AC/rB],m:'Похоже, вместо половины основания AC взято всё основание.'},
+    {v:[(Math.sqrt(rB*rB+AC*AC)-rB)/2],m:'Похоже, перепутаны пропорциональные отрезки в прямоугольном треугольнике с прямым углом при вершине A и гипотенузой, соединяющей центры вписанной и вневписанной окружностей: половина основания в нём — высота, проведённая к гипотенузе, а не катет.'}];},
+};
+const TRAP_GAP=5;                                                          // запас в допусках проверки
+const trapBand=x=>Math.max(1e-6,2e-3*Math.max(1,Math.abs(x)));             // допуск approxEq(a, x, 2e-3)
+const roundTo=(x,k)=>Math.round(x*Math.pow(10,k))/Math.pow(10,k);
+/* ловушку t нельзя спутать с верным a (одно поле ответа) */
+function trapFar(t,a){
+  if(Math.abs(t-a)<TRAP_GAP*Math.max(trapBand(a),trapBand(t)))return false;
+  for(let k=0;k<=2;k++){
+    if(Math.abs(roundTo(a,k)-t)<=trapBand(t))return false;
+    if(Math.abs(roundTo(t,k)-a)<=trapBand(a))return false;
+  }
+  return true;
+}
+function trapPair(m1,m2){return 'Такой ответ получается при одной из двух ошибок — найдите свою:<br>• '+m1+'<br>• '+m2;}
+const TRAP_MANY='Не сходится. Это число получается при нескольких разных ошибках — сверьте решение по шагам в «🪜 Шаг за шагом».';
+/* ловушки собранной задачи: только различимые с ответом, совпавшие между собой — одним сообщением */
+function trapsFor(T,p,b){
+  const f=TRAPS[T.id];if(!f)return [];
+  const ans=b.ans.map(a=>a.v);
+  const ok=f(p,b).filter(t=>{let far=0;
+    for(let i=0;i<ans.length;i++){const x=t.v[i];if(x==null)continue;
+      if(!isFinite(x))return false;
+      if(Math.abs(x-ans[i])<=trapBand(ans[i]))continue;   // поле совпадает с верным — ловушку отличают другие поля
+      if(!trapFar(x,ans[i]))return false;
+      far++;}
+    return far>0;});
+  /* сводим ловушки, которые одно число задевает сразу */
+  const near=(t,u)=>t.v.every((x,i)=>x==null||u.v[i]==null||Math.abs(x-u.v[i])<TRAP_GAP*Math.max(trapBand(x),trapBand(u.v[i])));
+  const out=[],used=new Set();
+  ok.forEach((t,i)=>{if(used.has(i))return;
+    const g=[t];ok.forEach((u,j)=>{if(j>i&&!used.has(j)&&near(t,u)){g.push(u);used.add(j);}});
+    const ms=[...new Set(g.map(x=>x.m))];
+    const m=ms.length===1?ms[0]:(ms.length===2?trapPair(ms[0],ms[1]):TRAP_MANY);
+    g.forEach(x=>out.push({v:x.v,m}));});
+  return out;
+}
+/* сообщение на неверный ответ: ловушка; иначе — сколько полей верно, не называя каких */
+function wrongMsg(b,traps,vals){
+  for(const t of traps)if(t.v.every((x,i)=>x==null||approxEq(vals[i],x,2e-3)))return t.m;
+  const n=b.ans.length;if(n<2)return null;
+  const k=b.ans.filter((a,i)=>approxEq(vals[i],a.v,2e-3)).length;
+  if(!k)return null;
+  return n===2?'Одно из двух значений верно — найдите, какое не сходится.'
+    :(k===1?'Одно из трёх значений верно — проверьте остальные.':'Два значения из трёх верны — найдите, какое не сходится.');
 }
 
 /* -------------------- ЗАЧЁТ -------------------- */
@@ -1560,7 +1666,7 @@ function examAnswer(){
   const warn=ansMsg(r, b.ans.length);
   if(warn){ const fb=$('exFb'); fb.className='fb show warn'; fb.textContent=warn; return; }
   const allOK=b.ans.every((a,i)=>approxEq(r.vals[i], a.v, 2e-3));
-  exS.res[exS.i]={correct:allOK};
+  exS.res[exS.i]={correct:allOK, diag:allOK?null:wrongMsg(b, trapsFor(byId(q.id), q.p, b), r.vals)};
   document.querySelectorAll('#panel-exam input[data-ai]').forEach(inp=>{ inp.disabled=true; });
   const ab=document.querySelector('#panel-exam [data-act="exam-answer"]'); if(ab) ab.disabled=true;
   if(!allOK) bumpErr(q.id);
@@ -1582,7 +1688,7 @@ function renderExamFin(){
   let wrongList=exS.list.map((q,k)=>({q,k})).filter(x=>!(exS.res[x.k]&&exS.res[x.k].correct));
   let rev='';
   if(wrongList.length){ rev='<div class="review"><h3 style="font-size:14px;margin:14px 0 6px">Разобрать ошибки:</h3>'+
-    wrongList.map(({q})=>{ const T=byId(q.id); return `<div class="rline">№${T.id}. ${T.title} — <button class="link" data-act="train-this" data-id="${T.id}">тренировать этот тип →</button></div>`; }).join('')+'</div>'; }
+    wrongList.map(({q,k})=>{ const T=byId(q.id), d=exS.res[k]&&exS.res[k].diag; return `<div class="rline">№${T.id}. ${T.title} — <button class="link" data-act="train-this" data-id="${T.id}">тренировать этот тип →</button>${d?`<div class="muted" style="margin-top:4px">${d}</div>`:''}</div>`; }).join('')+'</div>'; }
   const law = score===total
     ? 'Отличный результат! Все ключевые теоремы вне листа справочных материалов вы применяете уверенно.'
     : 'Задание 25 держится на теоремах, которых нет на листе справочных материалов. Повторите отмеченные типы в «Разборе» — там для каждого объяснено, <i>почему</i> работает ключевой шаг.';
