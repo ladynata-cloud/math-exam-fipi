@@ -523,7 +523,7 @@ SUBS.rhombH={theme:'quad',name:'Высота ромба',
     const s=pick([1,1,1,2]);let DH=tr[0]*s,h=tr[1]*s,a=Math.round(Math.hypot(DH,h));const CH=a-DH;
     if(CH<1)return SUBS.rhombH.gen();return {DH,CH};},
   calc(p){const a=p.DH+p.CH;return Math.sqrt(a*a-p.DH*p.DH);},
-  text(p){return `Высота ромба <b>ABCD</b>, опущенная из вершины <b>A</b> на сторону <b>DC</b>, делит её на отрезки <b>DH = ${p.DH}</b> и <b>CH = ${p.CH}</b>. Найдите высоту ромба.`;},
+  text(p){return `В ромбе <b>ABCD</b> высота, проведённая из вершины <b>A</b> к стороне <b>DC</b>, делит эту сторону на отрезки <b>DH = ${p.DH}</b> и <b>CH = ${p.CH}</b>. Найдите высоту ромба.`;},
   fig(p){const a=p.DH+p.CH,h=Math.sqrt(a*a-p.DH*p.DH);
     const D={x:0,y:0},C={x:a,y:0},A={x:p.DH,y:h},B={x:a+p.DH,y:h},H={x:p.DH,y:0};
     const f=mkFig(380,300,36);
@@ -550,7 +550,7 @@ SUBS.rhombH={theme:'quad',name:'Высота ромба',
 SUBS.pgramBis={theme:'quad',name:'Периметр параллелограмма',
   gen(){const BK=rnd(4,16),CK=rnd(6,20);return {BK,CK};},
   calc(p){return 4*p.BK+2*p.CK;},
-  text(p){return `Биссектриса угла <b>A</b> параллелограмма <b>ABCD</b> пересекает сторону <b>BC</b> в точке <b>K</b>. Найдите периметр параллелограмма, если <b>BK = ${p.BK}</b>, <b>CK = ${p.CK}</b>.`;},
+  text(p){return `В параллелограмме <b>ABCD</b> биссектриса угла <b>A</b> пересекает сторону <b>BC</b> в точке <b>K</b>, причём <b>BK = ${p.BK}</b>, <b>CK = ${p.CK}</b>. Найдите периметр параллелограмма.`;},
   fig(p){const AB=p.BK,BC=p.BK+p.CK;const A={x:0,y:0},B={x:AB,y:0};
     const ang=64*Math.PI/180;const dir={x:Math.cos(ang),y:Math.sin(ang)};
     const D={x:BC*dir.x,y:BC*dir.y},C={x:B.x+BC*dir.x,y:B.y+BC*dir.y};
@@ -580,7 +580,7 @@ SUBS.pgramBis={theme:'quad',name:'Периметр параллелограмм�
 SUBS.trapBis={theme:'quad',name:'Боковая сторона трапеции',
   gen(){const tr=pick([[3,4],[5,12],[8,15],[7,24],[20,21],[9,40],[6,8],[9,12],[12,16],[10,24],[15,20],[8,6],[12,5],[24,7],[24,10]]);const s=pick([1,1,2]);let AF=tr[0]*s,BF=tr[1]*s;if(Math.random()<0.5){const t=AF;AF=BF;BF=t;}return {AF,BF};},
   calc(p){return Math.hypot(p.AF,p.BF);},
-  text(p){return `В трапеции <b>ABCD</b> биссектрисы углов <b>A</b> и <b>B</b> при боковой стороне <b>AB</b> пересекаются в точке <b>F</b>. Найдите <b>AB</b>, если <b>AF = ${p.AF}</b>, <b>BF = ${p.BF}</b>.`;},
+  text(p){return `Биссектрисы углов <b>A</b> и <b>B</b>, прилежащих к боковой стороне <b>AB</b> трапеции <b>ABCD</b>, пересекаются в точке <b>F</b>, причём <b>AF = ${p.AF}</b>, <b>BF = ${p.BF}</b>. Найдите <b>AB</b>.`;},
   fig(p){const c=Math.hypot(p.AF,p.BF);
     const A={x:0,y:0},B={x:0,y:c};
     const fy=(p.AF*p.AF-p.BF*p.BF+c*c)/(2*c),fx=Math.sqrt(Math.max(p.AF*p.AF-fy*fy,1e-9));
@@ -620,7 +620,7 @@ SUBS.trapLeg={theme:'quad',name:'Боковая сторона (через уг�
     if(!r.ok)return SUBS.trapLeg.gen();return {al,be,CD};},
   calc(p){return p.CD*Math.sin(p.be*Math.PI/180)/Math.sin(p.al*Math.PI/180);},
   ansStr(p){const ba=SUBS.trapLeg.ANG[p.al],bb=SUBS.trapLeg.ANG[p.be];const t=p.CD/ba;const r=simpRad(t,1,ba*bb);return radStr(r.k,r.m);},
-  text(p){return `В трапеции <b>ABCD</b> с основаниями <b>BC</b> и <b>AD</b> угол <b>B = ${p.al}°</b>, угол <b>C = ${p.be}°</b>, боковая сторона <b>CD = ${p.CD}</b>. Найдите боковую сторону <b>AB</b>. (Ответ можно записать в виде k√m или десятичной дробью.)`;},
+  text(p){return `В трапеции <b>ABCD</b> с основаниями <b>BC</b> и <b>AD</b> боковая сторона <b>CD</b> равна <b>${p.CD}</b>, угол <b>B</b> равен <b>${p.al}°</b>, а угол <b>C</b> — <b>${p.be}°</b>. Найдите <b>AB</b>. Ответ запишите в виде k√m.`;},
   fig(p){const al=p.al,be=p.be,CD=p.CD,h=CD*Math.sin(be*Math.PI/180);const AB=h/Math.sin(al*Math.PI/180);
     const BC=Math.max(h*0.9, (AB*Math.cos(al*Math.PI/180)+CD*Math.cos(be*Math.PI/180))*0.55+h*0.3);
     const B={x:0,y:h},C={x:BC,y:h};
@@ -649,7 +649,7 @@ SUBS.trapLeg={theme:'quad',name:'Боковая сторона (через уг�
 SUBS.rhombAng={theme:'quad',name:'Углы ромба',
   gen(){const d=rnd(8,22);return {d,D:4*d};},
   calc(p){const s=2*p.d/p.D;const phi=Math.asin(Math.min(1,s))*180/Math.PI;return 2*phi;},   // острый угол
-  text(p){return `Расстояние от точки пересечения диагоналей ромба <b>ABCD</b> до его стороны равно <b>${p.d}</b>, а диагональ <b>AC = ${p.D}</b>. Найдите углы ромба.`;},
+  text(p){return `Диагональ <b>AC</b> ромба <b>ABCD</b> равна <b>${p.D}</b>, а точка пересечения диагоналей удалена от его стороны на <b>${p.d}</b>. Найдите углы ромба.`;},
   fig(p){const pI=p.D/2,q=pI/Math.sqrt(3);        // строим 60/120-ромб
     const O={x:0,y:0},A={x:-pI,y:0},Cc={x:pI,y:0},B={x:0,y:q},D={x:0,y:-q};
     const M=V.foot(O,A,B);
@@ -679,7 +679,7 @@ SUBS.rhombAng={theme:'quad',name:'Углы ромба',
 SUBS.trapEF={theme:'quad',name:'Отрезок, параллельный основаниям',
   gen(){const BC=rnd(10,25),m=rnd(2,7),n=rnd(1,5),s=rnd(2,6),AD=BC+(m+n)*s;return {AD,BC,m,n};},
   calc(p){return p.BC+(p.AD-p.BC)*p.m/(p.m+p.n);},
-  text(p){return `В трапеции <b>ABCD</b> основания <b>BC = ${p.BC}</b> и <b>AD = ${p.AD}</b>. Точки <b>E</b> и <b>F</b> лежат на боковых сторонах <b>AB</b> и <b>CD</b>, причём <b>EF ∥ AD</b> и <b>CF : DF = ${p.m} : ${p.n}</b>. Найдите <b>EF</b>.`;},
+  text(p){return `Основания трапеции <b>ABCD</b>: <b>BC = ${p.BC}</b>, <b>AD = ${p.AD}</b>. Точка <b>E</b> лежит на боковой стороне <b>AB</b>, точка <b>F</b> — на боковой стороне <b>CD</b>, причём <b>EF ∥ AD</b>, а <b>CF : DF = ${p.m} : ${p.n}</b>. Найдите <b>EF</b>.`;},
   fig(p){const H=Math.max(p.AD,p.BC)*0.6;const off=(p.AD-p.BC)/2;
     const A={x:0,y:0},D={x:p.AD,y:0},B={x:off,y:H},C={x:off+p.BC,y:H};
     const t=p.m/(p.m+p.n);
@@ -712,7 +712,7 @@ SUBS.trapEF={theme:'quad',name:'Отрезок, параллельный осн�
 SUBS.circR={theme:'tri',name:'Сторона через описанную окружность',
   gen(){const A=pick([30,30,30,90,150]);let be=rnd(35,180-A-35),ga=180-A-be;if(ga<20||be<20)return SUBS.circR.gen();const R=rnd(6,18);return {be,ga,R};},
   calc(p){const A=180-p.be-p.ga;return 2*p.R*Math.sin(A*Math.PI/180);},
-  text(p){return `В треугольнике <b>ABC</b> угол <b>B = ${p.be}°</b>, угол <b>C = ${p.ga}°</b>, радиус описанной окружности <b>R = ${p.R}</b>. Найдите сторону <b>BC</b>.`;},
+  text(p){return `Радиус <b>R</b> окружности, описанной около треугольника <b>ABC</b>, равен <b>${p.R}</b>, угол <b>B</b> равен <b>${p.be}°</b>, а угол <b>C</b> — <b>${p.ga}°</b>. Найдите <b>BC</b>.`;},
   fig(p){const A=180-p.be-p.ga,R=p.R,O={x:0,y:0};
     const Av={x:R*Math.cos(Math.PI/2),y:R*Math.sin(Math.PI/2)};
     const Cv={x:R*Math.cos((90-2*p.be)*Math.PI/180),y:R*Math.sin((90-2*p.be)*Math.PI/180)};
@@ -745,7 +745,7 @@ SUBS.circR={theme:'tri',name:'Сторона через описанную ок�
 SUBS.hAB={theme:'tri',name:'Высота к гипотенузе (2 катета)',
   gen(){const tr=pick([[3,4,5],[6,8,10],[5,12,13],[8,15,17],[9,12,15],[20,21,29],[7,24,25],[9,40,41],[12,16,20],[10,24,26]]);const t=pick([1,1,2]);return {a:tr[0]*t,b:tr[1]*t};},
   calc(p){const c=Math.hypot(p.a,p.b);return p.a*p.b/c;},
-  text(p){return `В прямоугольном треугольнике катеты равны <b>${p.a}</b> и <b>${p.b}</b>. Найдите высоту, проведённую к гипотенузе.`;},
+  text(p){return `Найдите высоту прямоугольного треугольника, проведённую к гипотенузе, если его катеты равны <b>${p.a}</b> и <b>${p.b}</b>.`;},
   fig(p){const a=p.a,b=p.b,C={x:0,y:0},A={x:b,y:0},B={x:0,y:a};const H=V.foot(C,A,B);const c=Math.hypot(a,b);
     const f=mkFig(380,300,38);
     f.poly([C,A,B],{fill:CO.bluefill,col:CO.ink,w:2.2});
@@ -771,7 +771,7 @@ SUBS.hAB={theme:'tri',name:'Высота к гипотенузе (2 катета
 SUBS.hAC={theme:'tri',name:'Высота к гипотенузе (катет и гипотенуза)',
   gen(){const tr=pick([[3,4,5],[6,8,10],[5,12,13],[8,15,17],[20,21,29],[7,24,25],[9,40,41],[12,16,20],[10,24,26],[16,30,34]]);const t=pick([1,1,2]);const sw=Math.random()<0.5;return {a:(sw?tr[1]:tr[0])*t,c:tr[2]*t};},
   calc(p){const b=Math.sqrt(p.c*p.c-p.a*p.a);return p.a*b/p.c;},
-  text(p){return `В прямоугольном треугольнике катет равен <b>${p.a}</b>, а гипотенуза — <b>${p.c}</b>. Найдите высоту, проведённую к гипотенузе.`;},
+  text(p){return `Найдите высоту прямоугольного треугольника, проведённую к гипотенузе, если гипотенуза равна <b>${p.c}</b>, а один из катетов — <b>${p.a}</b>.`;},
   fig(p){const a=p.a,c=p.c,b=Math.sqrt(c*c-a*a);const C={x:0,y:0},A={x:b,y:0},B={x:0,y:a};const H=V.foot(C,A,B);
     const f=mkFig(380,300,38);
     f.poly([C,A,B],{fill:CO.bluefill,col:CO.ink,w:2.2});
@@ -796,7 +796,7 @@ SUBS.hAC={theme:'tri',name:'Высота к гипотенузе (катет и 
 SUBS.projAB={theme:'tri',name:'Катет через проекцию на гипотенузу',
   gen(){const AB=rnd(6,20);const sq=AB*AB;const divs=[];for(let d=2;d<AB;d++)if(sq%d===0)divs.push(d);if(!divs.length)return SUBS.projAB.gen();const AH=pick(divs);const AC=sq/AH;return {AH,AC};},
   calc(p){return Math.sqrt(p.AH*p.AC);},
-  text(p){return `В треугольнике <b>ABC</b> угол <b>B</b> прямой, высота <b>BH</b> опущена на гипотенузу <b>AC</b>. Найдите катет <b>AB</b>, если <b>AH = ${p.AH}</b>, <b>AC = ${p.AC}</b>.`;},
+  text(p){return `Угол <b>B</b> треугольника <b>ABC</b> прямой. К гипотенузе <b>AC</b> проведена высота <b>BH</b>, причём <b>AH = ${p.AH}</b>, <b>AC = ${p.AC}</b>. Найдите <b>AB</b>.`;},
   fig(p){const AC=p.AC,AH=p.AH,hB=Math.sqrt(AH*(AC-AH));const A={x:0,y:0},Cc={x:AC,y:0},H={x:AH,y:0},B={x:AH,y:hB};
     const f=mkFig(400,290,38);
     f.poly([A,B,Cc],{fill:CO.bluefill,col:CO.ink,w:2.2});
@@ -823,7 +823,7 @@ SUBS.paraBN={theme:'tri',name:'Подобие: отрезок при MN∥AC',
   gen(){const pr=pick([[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5],[1,5],[4,5],[5,6]]);const P=pr[0],Q=pr[1];const r=rnd(3,8),s=rnd(4,12);
     return {MN:P*r,AC:Q*r,NC:(Q-P)*s};},
   calc(p){return p.MN*p.NC/(p.AC-p.MN);},
-  text(p){return `В треугольнике <b>ABC</b> точки <b>M</b> и <b>N</b> лежат на сторонах <b>AB</b> и <b>BC</b>, причём <b>MN ∥ AC</b>. Найдите <b>BN</b>, если <b>MN = ${p.MN}</b>, <b>AC = ${p.AC}</b>, <b>NC = ${p.NC}</b>.`;},
+  text(p){return `Точка <b>M</b> лежит на стороне <b>AB</b> треугольника <b>ABC</b>, а точка <b>N</b> — на стороне <b>BC</b>, причём <b>MN ∥ AC</b>, <b>MN = ${p.MN}</b>, <b>AC = ${p.AC}</b>, <b>NC = ${p.NC}</b>. Найдите <b>BN</b>.`;},
   fig(p){const AC=p.AC,k=p.MN/AC,BC=p.NC/(1-k);const A={x:0,y:0},Cc={x:AC,y:0},B=triApex(AC,BC,0.42);
     const M={x:B.x+k*(A.x-B.x),y:B.y+k*(A.y-B.y)},N={x:B.x+k*(Cc.x-B.x),y:B.y+k*(Cc.y-B.y)};
     const f=mkFig(400,300,38);
@@ -852,7 +852,7 @@ SUBS.paraMC={theme:'tri',name:'Подобие: диагонали трапеци
     if((P+Q)*r<=(P+Q)*w/2*1.2||r<=w/2)return SUBS.paraMC.gen();
     return {AB:P*w,DC:Q*w,AC:(P+Q)*r};},
   calc(p){return p.AC*p.DC/(p.AB+p.DC);},
-  text(p){return `В трапеции <b>ABCD</b> основания <b>AB = ${p.AB}</b> и <b>DC = ${p.DC}</b>, диагонали пересекаются в точке <b>M</b>. Найдите <b>MC</b>, если диагональ <b>AC = ${p.AC}</b>.`;},
+  text(p){return `Диагонали трапеции <b>ABCD</b> с основаниями <b>AB</b> и <b>DC</b> пересекаются в точке <b>M</b>, причём <b>AB = ${p.AB}</b>, <b>DC = ${p.DC}</b>, <b>AC = ${p.AC}</b>. Найдите <b>MC</b>.`;},
   fig(p){const AB=p.AB,DC=p.DC,AC=p.AC;
     let cxMax=Math.min(AC-0.6,DC-0.6),cxMin=AB+0.6,cx;
     if(cxMin<cxMax-0.4)cx=cxMin+0.5*(cxMax-cxMin);else cx=0.55*Math.min(AC-0.6,DC-0.6);
@@ -893,7 +893,7 @@ SUBS.chordDist={theme:'circ',name:'Расстояние от центра до �
   gen(){const R=pick([25,25,65,85]);const ps=RPOOL[R];let a=pick(ps),b=pick(ps);let g=0;while(a[0]===b[0]&&g++<20)b=pick(ps);
     return {AB:2*a[0],dAB:a[1],CD:2*b[0],dCD_R:R};},
   calc(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);return Math.sqrt(R*R-(p.CD/2)*(p.CD/2));},
-  text(p){return `Хорды <b>AB = ${p.AB}</b> и <b>CD = ${p.CD}</b> лежат в одной окружности. Расстояние от центра до хорды <b>AB</b> равно <b>${p.dAB}</b>. Найдите расстояние от центра до хорды <b>CD</b>.`;},
+  text(p){return `В окружности проведены хорды <b>AB</b> и <b>CD</b>, причём <b>AB = ${p.AB}</b>, <b>CD = ${p.CD}</b>. Центр окружности удалён от хорды <b>AB</b> на <b>${p.dAB}</b>. Найдите расстояние от центра окружности до хорды <b>CD</b>.`;},
   fig(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);const dCD=SUBS.chordDist.calc(p);const O={x:0,y:0};
     const A={x:-p.AB/2,y:-p.dAB},B={x:p.AB/2,y:-p.dAB},Cc={x:-p.CD/2,y:dCD},Dd={x:p.CD/2,y:dCD};
     const f=mkFig(360,340,34);
@@ -922,7 +922,7 @@ SUBS.chordLen={theme:'circ',name:'Длина хорды по расстояни�
   gen(){const R=pick([25,25,65,85]);const ps=RPOOL[R];let a=pick(ps),b=pick(ps);let g=0;while(a[0]===b[0]&&g++<20)b=pick(ps);
     return {AB:2*a[0],dAB:a[1],dCD:b[1]};},
   calc(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);return 2*Math.sqrt(R*R-p.dCD*p.dCD);},
-  text(p){return `Хорда <b>AB = ${p.AB}</b> удалена от центра окружности на <b>${p.dAB}</b>. Найдите длину хорды <b>CD</b>, удалённой от центра на <b>${p.dCD}</b>.`;},
+  text(p){return `Хорда <b>AB</b> окружности равна <b>${p.AB}</b> и удалена от центра на <b>${p.dAB}</b>, а хорда <b>CD</b> той же окружности — на <b>${p.dCD}</b>. Найдите <b>CD</b>.`;},
   fig(p){const R=Math.sqrt((p.AB/2)*(p.AB/2)+p.dAB*p.dAB);const CD=SUBS.chordLen.calc(p);const O={x:0,y:0};
     const A={x:-p.AB/2,y:-p.dAB},B={x:p.AB/2,y:-p.dAB},Cc={x:-CD/2,y:p.dCD},Dd={x:CD/2,y:p.dCD};
     const f=mkFig(360,340,34);
@@ -952,7 +952,7 @@ SUBS.secKP1={theme:'circ',name:'Секущие: окружность через 
   KS:[[3,2],[6,5],[5,4],[7,5],[8,5],[2,1],[7,4],[9,5]],
   gen(){const kk=pick(SUBS.secKP1.KS);const t=rnd(2,7);return {AK:kk[0]*t,k:kk[0]/kk[1],num:kk[0],den:kk[1]};},
   calc(p){return p.AK/p.k;},
-  text(p){return `В треугольнике <b>ABC</b> сторона <b>AC = ${fmt(p.k)}·BC</b>. Окружность проходит через <b>B</b> и <b>C</b> и пересекает стороны <b>AB</b> и <b>AC</b> в точках <b>K</b> и <b>P</b>. Найдите <b>KP</b>, если <b>AK = ${p.AK}</b>.`;},
+  text(p){return `Окружность, проходящая через вершины <b>B</b> и <b>C</b> треугольника <b>ABC</b>, пересекает сторону <b>AB</b> в точке <b>K</b>, а сторону <b>AC</b> — в точке <b>P</b>. Известно, что <b>AK = ${p.AK}</b>, <b>AC = ${fmt(p.k)}·BC</b>. Найдите <b>KP</b>.`;},
   fig(p){const k=p.k,thA=Math.asin(0.9/k),AB=p.AK/0.52;
     // AC²(1−k²)+2k²·AB·cosθ·AC−k²·AB²=0
     const pa=1-k*k,qa=2*k*k*AB*Math.cos(thA),ra=-k*k*AB*AB;
@@ -987,7 +987,7 @@ SUBS.secKP2={theme:'circ',name:'Секущие: окружность через 
   MS:[[9,5],[3,2],[2,1],[3,1],[6,5],[7,5],[5,2],[8,5]],
   gen(){const mm=pick(SUBS.secKP2.MS);const t=rnd(2,7);return {AP:mm[0]*t,m:mm[0]/mm[1],num:mm[0],den:mm[1]};},
   calc(p){return p.AP/p.m;},
-  text(p){return `В треугольнике <b>ABC</b> сторона <b>AB = ${fmt(p.m)}·BC</b>. Окружность проходит через <b>B</b> и <b>C</b> и пересекает стороны <b>AB</b> и <b>AC</b> в точках <b>K</b> и <b>P</b>. Найдите <b>KP</b>, если <b>AP = ${p.AP}</b>.`;},
+  text(p){return `Окружность, проходящая через вершины <b>B</b> и <b>C</b> треугольника <b>ABC</b>, пересекает сторону <b>AB</b> в точке <b>K</b>, а сторону <b>AC</b> — в точке <b>P</b>. Известно, что <b>AP = ${p.AP}</b>, <b>AB = ${fmt(p.m)}·BC</b>. Найдите <b>KP</b>.`;},
   fig(p){const m=p.m,thA=Math.asin(0.9/m),AC=p.AP/0.52;
     const pa=1-m*m,qa=2*m*m*AC*Math.cos(thA),ra=-m*m*AC*AC;
     const disc=Math.sqrt(qa*qa-4*pa*ra);const AB=Math.max((-qa+disc)/(2*pa),(-qa-disc)/(2*pa));
@@ -1018,7 +1018,7 @@ SUBS.secKP2={theme:'circ',name:'Секущие: окружность через 
 SUBS.rectPK={theme:'circ',name:'Прямоугольник в высоте (найти PK)',
   gen(){return {BH:rnd(8,20)};},
   calc(p){return p.BH;},
-  text(p){return `В прямоугольном треугольнике <b>ABC</b> (угол <b>B</b> прямой) высота <b>BH</b> проведена к гипотенузе. Окружность с диаметром <b>BH</b> пересекает катеты <b>AB</b> и <b>CB</b> в точках <b>P</b> и <b>K</b>. Найдите <b>PK</b>, если <b>BH = ${p.BH}</b>.`;},
+  text(p){return `В прямоугольном треугольнике <b>ABC</b> с прямым углом <b>B</b> высота <b>BH</b>, проведённая к гипотенузе, равна <b>${p.BH}</b>. На <b>BH</b> как на диаметре построена окружность; она пересекает катет <b>AB</b> в точке <b>P</b>, а катет <b>CB</b> — в точке <b>K</b>. Найдите <b>PK</b>.`;},
   fig(p){return rectFig(p.BH,'BH','?','pk');},
   sol(p){return [
     `Углы ∠BPH и ∠BKH опираются на диаметр BH, значит они прямые. Вместе с прямым углом B получается прямоугольник BPHK.`,
@@ -1032,7 +1032,7 @@ SUBS.rectPK={theme:'circ',name:'Прямоугольник в высоте (на
 SUBS.rectBH={theme:'circ',name:'Прямоугольник в высоте (найти BH)',
   gen(){return {PK:rnd(8,20)};},
   calc(p){return p.PK;},
-  text(p){return `В прямоугольном треугольнике <b>ABC</b> (угол <b>B</b> прямой) высота <b>BH</b> проведена к гипотенузе. Окружность с диаметром <b>BH</b> пересекает катеты в точках <b>P</b> и <b>K</b>, причём <b>PK = ${p.PK}</b>. Найдите <b>BH</b>.`;},
+  text(p){return `Высота <b>BH</b> прямоугольного треугольника <b>ABC</b> проведена к гипотенузе из вершины прямого угла <b>B</b>. На <b>BH</b> как на диаметре построена окружность, которая пересекает катеты в точках <b>P</b> и <b>K</b>. Найдите <b>BH</b>, если <b>PK = ${p.PK}</b>.`;},
   fig(p){return rectFig(p.PK,'?','PK','bh');},
   sol(p){return [
     `Углы при P и K опираются на диаметр BH — они прямые. С прямым углом B четырёхугольник BPHK — прямоугольник.`,
@@ -1066,7 +1066,7 @@ function rectFig(val,lblBH,lblPK,unk){
 SUBS.tanSecAC={theme:'circ',name:'Касательная и секущая (найти AC)',
   gen(){for(let k=0;k<300;k++){const AC=rnd(8,25),AB=rnd(4,AC-2);if((10*AB*AB)%AC===0){const D=Math.round((AC*AC-AB*AB)/AC*10)/10;if(D>0.5&&D<AC)return {D,AB};}}return {D:3.6,AB:8};},
   calc(p){return (p.D+Math.sqrt(p.D*p.D+4*p.AB*p.AB))/2;},
-  text(p){return `Окружность с центром на стороне <b>AC</b> проходит через вершину <b>C</b> и касается стороны <b>AB</b> в точке <b>B</b>. Найдите <b>AC</b>, если диаметр окружности равен <b>${fmt(p.D)}</b>, а <b>AB = ${p.AB}</b>.`;},
+  text(p){return `Окружность касается прямой <b>AB</b> в точке <b>B</b> и проходит через точку <b>C</b>, причём её центр лежит на отрезке <b>AC</b>. Известно, что <b>AB = ${p.AB}</b>, а диаметр окружности — <b>${fmt(p.D)}</b>. Найдите <b>AC</b>.`;},
   fig(p){return tanFig(SUBS.tanSecAC.calc(p),p.D,p.AB,'ac');},
   sol(p){const ac=SUBS.tanSecAC.calc(p);return [
     `AB — касательная, а AC — секущая, проходящая через центр (её внешняя часть равна AC − D). По свойству касательной и секущей: AB² = AC·(AC − D).`,
@@ -1082,7 +1082,7 @@ SUBS.tanSecAC={theme:'circ',name:'Касательная и секущая (на
 SUBS.tanSecD={theme:'circ',name:'Касательная и секущая (найти диаметр)',
   gen(){for(let k=0;k<300;k++){const AC=rnd(8,25),AB=rnd(4,AC-2);if((100*AB*AB)%AC===0){const D=(AC*AC-AB*AB)/AC;if(D>0.5&&D<AC)return {AB,AC};}}return {AB:9,AC:12};},
   calc(p){return (p.AC*p.AC-p.AB*p.AB)/p.AC;},
-  text(p){return `Окружность с центром на стороне <b>AC</b> проходит через вершину <b>C</b> и касается стороны <b>AB</b> в точке <b>B</b>. Найдите диаметр окружности, если <b>AB = ${p.AB}</b>, <b>AC = ${p.AC}</b>.`;},
+  text(p){return `Окружность касается прямой <b>AB</b> в точке <b>B</b> и проходит через точку <b>C</b>, причём её центр лежит на отрезке <b>AC</b>. Известно, что <b>AB = ${p.AB}</b>, <b>AC = ${p.AC}</b>. Найдите диаметр окружности.`;},
   fig(p){return tanFig(p.AC,SUBS.tanSecD.calc(p),p.AB,'d');},
   sol(p){const D=SUBS.tanSecD.calc(p);return [
     `Касательная и секущая: AB² = AC·(AC − D), где AC − D — внешняя часть секущей.`,
