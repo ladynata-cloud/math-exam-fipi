@@ -78,6 +78,13 @@ input.ans{border:1.5px solid #c9c3ad;border-radius:12px;background:#fffdf7;paddi
 .offmap{background:#f3efe4;border:1px dashed #b9b19a;border-radius:8px;padding:10px 12px;margin:12px auto 0;max-width:900px;font-size:14px;color:#4a4a5a}
 .method{background:#f0f4fb;border-left:4px solid #2d70b3;border-radius:6px;padding:10px 12px;margin-top:10px;font-size:14px;color:#2a3a52;line-height:1.5}
 .method b{color:#1a2e4a}
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
+.chips .chip{display:inline-flex;align-items:center;min-height:44px}
 </style>
 </head>
 <body>
@@ -1080,12 +1087,14 @@ function chipRow(){
   h+='</div>';
   return h;
 }
+const PNOTE18='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без показа решения; ошибка, исправленная самостоятельно, этому не мешает. Если решение или подсказка с готовым числом показаны («Подсказка», «Сдаюсь — решение»), задача отмечается «решение показано» — к такому типу стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
 function drawTrain(state){
   const t=TR.task;
   let html=chipRow();
   if(REVIEW.on)html+='<div class="msg info on" role="status"><b>Работа над ошибками:</b> задачи только из открытых типов журнала ('+CP.openTypes().filter(k=>SUBS[k]).length+'). Тип закрывается тремя задачами подряд, решёнными без промаха.</div>';
   else if(REVIEW.empty)html+='<div class="note" role="status">Открытых типов в журнале ошибок нет — обычная тренировка.</div>';
   if(TR.exhausted)html+='<div class="msg info on">Готовые задачи по этому фильтру закончились — дальше работает генератор.</div>';
+  html+=PNOTE18;
   html+='<div class="card">'+
     '<h3>'+SUBS[t.sub].name+(t.id?'':' · генератор')+'</h3>'+
     '<div class="task">'+t.text+'</div>'+
@@ -1095,7 +1104,7 @@ function drawTrain(state){
     '<button class="sec" id="hintBtn">Подсказка</button>'+
     '<button class="sec" id="giveBtn">Сдаюсь — решение</button>'+
     '<button class="sec" id="nextBtn">Другая задача →</button></div>'+
-    '<div class="msg" id="fb"></div>'+
+    '<div class="msg" id="fb" role="status" aria-live="polite"></div>'+
     '<div id="solBox"></div>'+
     '<div class="note">Ответ — число; десятичная дробь через запятую (1,5), можно обыкновенной (3/2). '+refJump(t)+'</div>'+
     '</div>';
@@ -1190,7 +1199,7 @@ function drawQuiz(){
     '<div class="figwrap">'+t.fig+'</div>'+
     '<div class="row"><input class="ans" id="qIn" inputmode="decimal" placeholder="ответ" autocomplete="off">'+
     '<button class="act" id="qOk">Ответить</button></div>'+
-    '<div class="msg" id="qFb"></div></div>';
+    '<div class="msg" id="qFb" role="status" aria-live="polite"></div></div>';
   main.innerHTML=html;
   const inp=$('qIn'),fb=$('qFb');
   let answered=false;

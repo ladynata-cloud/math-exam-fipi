@@ -124,6 +124,13 @@ kbd{background:var(--soft);border:1px solid var(--line);border-radius:6px;paddin
 .sheetbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
 .trsub{background:#efe9fb;border-color:#c9b7f2;color:#5a2ecc}
 .weak{color:var(--bad);font-size:12.5px;font-weight:800;margin-top:4px}
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
+.codes a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px}
 </style>
 </head>
 <body>
@@ -1662,6 +1669,7 @@ function pickTrainTask(){
 }
 function startTrainSub(k){trReview=false;trSubOnly=k;trFilter.topic='all';trTask=null;trArchSeen.clear();trArchNote=false;switchTab('train');}
 function startRazborSub(k){rzOpen=k;rzStep=0;switchTab('razbor');}
+const PNOTE16='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без показа решения; ошибка, исправленная самостоятельно, этому не мешает. Если решение показано («Сдаюсь — решение»), задача отмечается «решение показано» — к такому типу стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
 function renderTrain(){
   if(!trTask){trTask=pickTrainTask();trAtt=2;trDone=false;trMissed=false;logEv('task_start',{kind:trTask.kind,sub:trTask.k});}
   const t=trTask;
@@ -1678,7 +1686,7 @@ function renderTrain(){
   const archNote=trArchNote?`<div class="smallnote" style="color:var(--warn);margin-bottom:8px">Архив по этому фильтру пройден полностью — дальше пойдут повторы и задачи генератора.</div>`:'';
   const subChip=trSubOnly?`<button class="chip on trsub" id="trSubOff">Тип: ${SUBS[trSubOnly].name} ✕</button>`:'';
   $('#main').innerHTML=`<div class="filters">${chips}<span style="width:10px"></span>${srcs}${subChip}</div>
-  ${reviewNote}${archNote}
+  ${reviewNote}${archNote}${PNOTE16}
   <div class="meta">${tagTopic(t.sub.topic)}${srcTag}${noteTag(t.sub)}<span class="smallnote">${t.sub.name}</span></div>
   <div class="grid"><div>${figHtml(t)}</div><div>
     <div class="task">${t.text}</div>
@@ -1686,7 +1694,7 @@ function renderTrain(){
       <button id="check">Проверить</button>
       <button class="soft" id="giveup" style="display:none">Сдаюсь — решение</button>
       <button class="blue" id="next" style="display:none">Следующая →</button></div>
-    <div class="fb" id="fb"></div>
+    <div class="fb" id="fb" role="status" aria-live="polite"></div>
     ${solHtml(t,false)}
   </div></div>`;
   bindRefcalls();
@@ -1772,7 +1780,7 @@ function renderQuiz(){
     <div class="controls"><input class="ans" id="qAns" inputmode="decimal" placeholder="ответ" autocomplete="off">
       <button id="qCheck">Ответить</button>
       <button class="blue" id="qNext" style="display:none">${qz.i===qz.items.length-1?'К результатам':'Дальше →'}</button></div>
-    <div class="fb" id="qFb"></div>
+    <div class="fb" id="qFb" role="status" aria-live="polite"></div>
     ${solHtml(t,false)}
   </div></div>`;
   bindRefcalls();

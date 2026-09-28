@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ОГЭ · Задание 25 — геометрия повышенной сложности</title>
 <style>
   :root{
@@ -158,6 +158,12 @@
     .head h1{font-size:16px}
     .col{min-width:100%}
   }
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
 </style>
 </head>
 <body>
@@ -457,7 +463,7 @@ TYPES.push({
       {h:`Приравняем: <b>AD = BE = ${p}</b>, то есть <b>AD² = BE²</b>:<br>${frac('b² − c²','2')} = 2c² − ${frac('2b²','9')} ⇒ <b>13b² = 45c²</b> ⇒ b² = ${frac('45','13')}c².<br>Подставим в AD²: <b>${p}² = ${frac('b² − c²','2')} = ${frac('16','13')}c²</b> ⇒ c = ${frac('√13','4')}·${p}.`, why:null, ask:{label:'AB = c', v:AB, q:`Из равенства ${p}² = (16/13)·c² вырази сторону <b>c = AB</b>. Впиши число (можно округлить до сотых).`, tip:`c = (√13 / 4)·${p}, где √13 ≈ 3,606.`}},
       {h:`Стороны треугольника:<br><b>AB = ${ansAB.exact}</b>, &nbsp; <b>BC = ${ansBC.exact}</b>, &nbsp; <b>AC = ${ansAC.exact}</b>.`, why:null}
     ];
-    return {ans:[Object.assign({label:'AB'},ansAB),Object.assign({label:'BC'},ansBC),Object.assign({label:'AC'},ansAC)], steps, geo:{L}, gcta:`Ты нашёл <b>AB = c</b>. Теперь <b>BC = 2·AB</b>, а <b>AC = (3√5 / 4)·${L}</b> (√5 ≈ 2,236). Впиши все три стороны выше и нажми «Проверить».`};
+    return {ans:[Object.assign({label:'AB'},ansAB),Object.assign({label:'BC'},ansBC),Object.assign({label:'AC'},ansAC)], steps, geo:{L}, gcta:`<b>AB = c</b> найдено. Теперь <b>BC = 2·AB</b>, а <b>AC = (3√5 / 4)·${L}</b> (√5 ≈ 2,236). Впиши все три стороны выше и нажми «Проверить».`};
   },
   draw(p){
     const L=100; const c=Math.sqrt(13)/4*L, a=Math.sqrt(13)/2*L, b=3*Math.sqrt(5)/4*L;
@@ -510,7 +516,7 @@ TYPES.push({
       {h:`Углы <b>A</b> и <b>B</b> прилежат к боковой стороне AB, поэтому <b>∠A + ∠B = 180°</b>. Тогда для их половин: <b>∠KAB + ∠KBA = 90°</b>, значит в треугольнике AKB угол <b>∠AKB = 90°</b>.`, why:`Сумма углов параллелограмма, прилежащих к одной стороне, равна 180° (односторонние углы при параллельных AD ∥ BC).`},
       {h:`Точка K лежит на биссектрисе угла A ⇒ равноудалена от прямых <b>AB</b> и <b>AD</b>. K на биссектрисе угла B ⇒ равноудалена от <b>AB</b> и <b>BC</b>. Значит <b>dist(K, AD) = dist(K, BC) = dist(K, AB) = ${h}</b>.`, why:`Каждая точка биссектрисы угла равноудалена от его сторон.`},
       {h:`Стороны AD и BC параллельны, K между ними ⇒ расстояние между ними равно <b>${h} + ${h} = ${2*h}</b>. Это высота параллелограмма, опущенная на основание BC.`, why:null, ask:{label:'высота', v:2*h, q:`Точка K равноудалена от AB, от AD и от BC (лежит на двух биссектрисах). Прямые AD и BC параллельны, а K лежит между ними. Чему равна высота параллелограмма — расстояние между AD и BC?`, tip:`Это сумма двух равных расстояний от K до параллельных прямых AD и BC.`}},
-      {h:`Площадь: <b>S = BC · (высота) = ${BC} · ${2*h} = ${S}</b>.`, why:`Площадь параллелограмма = основание × высота.`, ask:{label:'S', v:S, q:`Площадь параллелограмма = основание × высоту. Основание BC = ${BC}, высоту ты нашёл на прошлом шаге. Посчитай площадь S.`, tip:`S = ${BC} × (высоту, найденную на прошлом шаге).`}}
+      {h:`Площадь: <b>S = BC · (высота) = ${BC} · ${2*h} = ${S}</b>.`, why:`Площадь параллелограмма = основание × высота.`, ask:{label:'S', v:S, q:`Площадь параллелограмма = основание × высоту. Основание BC = ${BC}, высота найдена на прошлом шаге. Посчитай площадь S.`, tip:`S = ${BC} × (высоту, найденную на прошлом шаге).`}}
     ];
     return {ans:[{label:'S',v:S,exact:''+S}], steps, geo:{BC,h}};
   },
@@ -562,7 +568,7 @@ TYPES.push({
       {h:`M — середина AB, ∠MBN = ∠MAD (накрест при AB), ∠BMN = ∠AMD (вертикальные) ⇒ <b>△MBN = △MAD</b> ⇒ <b>BN = AD</b>.`, why:`Второй признак равенства (по стороне MB = MA и двум прилежащим углам).`},
       {h:`На прямой BC: <b>CN = CB + BN = ${BC} + AD</b>, и <b>CN = CD = ${CD}</b>. Значит <b>${BC} + AD = ${CD}</b>, откуда <b>AD = ${AD}</b>.`, why:null, ask:{label:'AD', v:AD, q:`На прямой BC получилось CN = CB + BN = BC + AD, и одновременно CN = CD. Приравняй и найди большее основание AD.`, tip:`Из BC + AD = CD следует AD = CD − BC.`}},
       {h:`Найдём высоту <b>h</b>. Опустим высоты BH₁ и CH₂ на AD; пусть AH₁ = u, H₂D = v. Тогда <b>u + v = AD − BC = ${den}</b>, а из прямоугольных треугольников <b>AB² − CD² = u² − v² = (u−v)(u+v)</b> ⇒ <b>u − v = ${fmtNum(umv)}</b>. Отсюда u = ${fmtNum(u)}, v = ${fmtNum(v)}, <b>h = √(AB² − u²) = ${fmtNum(h)}</b>.`, why:`Высоты трапеции равны; разность квадратов боковых даёт разность проекций.`, ask:{label:'высота h', v:h, q:`Опусти высоты на AD; пусть u, v — проекции боковых сторон. Тогда u + v = AD − BC, а u − v = (AB² − CD²)/(AD − BC). Найди высоту h = √(AB² − u²). Можно округлить до сотых.`, tip:`Сначала u = ((u+v) + (u−v))/2, затем h = √(AB² − u²).`}},
-      {h:`Площадь: <b>S = ${frac(`BC + AD`,'2')} · h = ${frac(`${BC} + ${AD}`,'2')} · ${fmtNum(h)} = ${fmtNum(S)}</b>.`, why:`Площадь трапеции = полусумма оснований × высота.`, ask:{label:'S', v:S, q:`Площадь трапеции = полусумма оснований × высоту. Основания BC и AD известны, высоту ты нашёл. Посчитай площадь S.`, tip:`S = ((BC + AD)/2) · h.`}}
+      {h:`Площадь: <b>S = ${frac(`BC + AD`,'2')} · h = ${frac(`${BC} + ${AD}`,'2')} · ${fmtNum(h)} = ${fmtNum(S)}</b>.`, why:`Площадь трапеции = полусумма оснований × высота.`, ask:{label:'S', v:S, q:`Площадь трапеции = полусумма оснований × высоту. Основания BC и AD известны, высота найдена. Посчитай площадь S.`, tip:`S = ((BC + AD)/2) · h.`}}
     ];
     return {ans:[{label:'S',v:S,exact:fmtNum(S)}], steps, geo:{AB,CD,BC,AD,u,v,h}};
   },
@@ -609,7 +615,7 @@ TYPES.push({
       {h:`Итак, два данных отрезка — это ${frac('a+b','2')} и ${frac('a−b','2')}. Бо́льший (<b>${pmax}</b>) — средняя линия, меньший (<b>${pmin}</b>) — связка оснований:<br><b>${frac('a+b','2')} = ${pmax}</b>, &nbsp; <b>${frac('a−b','2')} = ${pmin}</b>.`, why:null, ask:{label:'большее основание a', v:a, q:`Больший из двух данных отрезков — это средняя линия (a+b)/2, меньший — связка оснований (a−b)/2. Сложи эти два равенства почленно и найди большее основание a.`, tip:`Сложи оба равенства: дробная часть с b сократится, слева останется само a.`}},
       {h:`Складывая и вычитая: <b>a = ${pmax} + ${pmin} = ${a}</b>, &nbsp; <b>b = ${pmax} − ${pmin} = ${b}</b>.`, why:null}
     ];
-    return {ans:[{label:'a (большее)',v:a,exact:''+a},{label:'b (меньшее)',v:b,exact:''+b}], steps, geo:{al,be,a,b}, gcta:`Большее основание a ты нашёл (это сумма двух отрезков). Меньшее основание <b>b</b> — их <b>разность</b> (вычти из большего отрезка меньший). Впиши оба основания выше и нажми «Проверить».`};
+    return {ans:[{label:'a (большее)',v:a,exact:''+a},{label:'b (меньшее)',v:b,exact:''+b}], steps, geo:{al,be,a,b}, gcta:`Большее основание a найдено (это сумма двух отрезков). Меньшее основание <b>b</b> — их <b>разность</b> (вычти из большего отрезка меньший). Впиши оба основания выше и нажми «Проверить».`};
   },
   draw(p){
     const [al,be,s1,s2]=p; const pmax=Math.max(s1,s2),pmin=Math.min(s1,s2); const a=pmax+pmin, b=pmax-pmin;
@@ -803,7 +809,7 @@ TYPES.push({
       {h:`Касательная к описанной окружности в точке <b>A</b> перпендикулярна радиусу <b>AO</b>. По условию <b>BD ⟂ AO</b>, значит <b>BD ∥ (касательной в A)</b>.`, why:`Радиус, проведённый в точку касания, перпендикулярен касательной.`},
       {h:`Угол между касательной в A и хордой <b>AB</b> равен вписанному <b>∠ACB</b> (угол в другом сегменте). Так как BD параллельна касательной, <b>∠ABD = ∠ACB</b>. Кроме того, угол <b>∠A</b> общий, поэтому <b>△ABD ∼ △ACB</b>.`, why:`Угол между касательной и хордой равен вписанному углу, опирающемуся на эту хорду; далее — признак подобия по двум углам.`},
       {h:`Из подобия <b>${frac('AB','AC')} = ${frac('AD','AB')}</b> ⇒ <b>AD = ${frac('AB²','AC')} = ${frac(''+AB*AB, ''+AC)} = ${fmtNum(AD)}</b>.`, why:`Соответственные стороны подобных треугольников пропорциональны.`, ask:{label:'AD', v:AD, q:`Из подобия △ABD ∼ △ACB следует AB/AC = AD/AB, то есть AD = AB²/AC. Стороны AB и AC даны в условии. Посчитай AD (можно округлить до сотых).`, tip:`AD = AB² / AC = ${AB*AB} / ${AC}.`}},
-      {h:`<b>CD = AC − AD = ${AC} − ${fmtNum(AD)} = ${frac('AC² − AB²','AC')} = ${fmtNum(CD)}</b>.`, why:null, ask:{label:'CD', v:CD, q:`Точка D лежит на стороне AC, поэтому CD = AC − AD. Величину AD ты нашёл на прошлом шаге. Посчитай CD.`, tip:`CD = AC − AD = ${AC} − AD.`}}
+      {h:`<b>CD = AC − AD = ${AC} − ${fmtNum(AD)} = ${frac('AC² − AB²','AC')} = ${fmtNum(CD)}</b>.`, why:null, ask:{label:'CD', v:CD, q:`Точка D лежит на стороне AC, поэтому CD = AC − AD. Величина AD найдена на прошлом шаге. Посчитай CD.`, tip:`CD = AC − AD = ${AC} − AD.`}}
     ];
     return {ans:[{label:'CD',v:CD,exact:fmtNum(CD)}], steps, geo:{AB,AC}};
   },
@@ -856,7 +862,7 @@ TYPES.push({
       {h:`Точка M лежит на полуокружности с диаметром BC ⇒ <b>∠BMC = 90°</b>. Значит MD — высота прямоугольного треугольника BMC, опущенная на гипотенузу BC, поэтому <b>MD² = BD · DC</b>.`, why:`Вписанный угол, опирающийся на диаметр, прямой; высота из прямого угла есть среднее геометрическое проекций катетов на гипотенузу.`},
       {h:`H — ортоцентр, лежит на высоте AD. Рассмотрим прямоугольные треугольники <b>△BDH</b> и <b>△ADC</b> (прямые углы при D). У них <b>∠HBD = ∠CAD</b> (углы со взаимно перпендикулярными сторонами) ⇒ <b>△BDH ∼ △ADC</b>, откуда <b>DH · AD = BD · DC</b>.`, why:`BH ⟂ AC и AD ⟂ BC, поэтому ∠HBD = ∠DAC; подобие даёт DH·AD = BD·DC.`},
       {h:`Значит <b>DH · AD = MD²</b> ⇒ <b>DH = ${frac('MD²','AD')} = ${frac(''+MD*MD, ''+AD)} = ${fmtNum(DH)}</b>.`, why:null, ask:{label:'DH', v:DH, q:`Из MD² = BD·DC и DH·AD = BD·DC следует DH·AD = MD², то есть DH = MD²/AD. Величины AD и MD даны в условии. Посчитай DH (можно округлить до сотых).`, tip:`DH = MD² / AD = ${MD*MD} / ${AD}.`}},
-      {h:`<b>AH = AD − DH = ${AD} − ${fmtNum(DH)} = ${frac('AD² − MD²','AD')} = ${fmtNum(AH)}</b>.`, why:null, ask:{label:'AH', v:AH, q:`Точка H лежит на высоте AD, поэтому AH = AD − DH. Величину DH ты нашёл на прошлом шаге. Посчитай AH.`, tip:`AH = AD − DH = ${AD} − DH.`}}
+      {h:`<b>AH = AD − DH = ${AD} − ${fmtNum(DH)} = ${frac('AD² − MD²','AD')} = ${fmtNum(AH)}</b>.`, why:null, ask:{label:'AH', v:AH, q:`Точка H лежит на высоте AD, поэтому AH = AD − DH. Величина DH найдена на прошлом шаге. Посчитай AH.`, tip:`AH = AD − DH = ${AD} − DH.`}}
     ];
     return {ans:[{label:'AH',v:AH,exact:fmtNum(AH)}], steps, geo:{AD,MD}};
   },
@@ -900,7 +906,7 @@ TYPES.push({
     const steps=[
       {h:`Пусть O₁, O₂ — центры (радиусы r₁ = ${r1}, r₂ = ${r2}), точка касания T, <b>d = O₁O₂ = r₁ + r₂ = ${d}</b>. Общие касательные AC и BD симметричны относительно линии центров, поэтому A, B (и C, D) симметричны, а хорды <b>AB ⟂ O₁O₂</b> и <b>CD ⟂ O₁O₂</b> ⇒ <b>AB ∥ CD</b>.`, why:`Конфигурация симметрична относительно прямой центров, значит хорды перпендикулярны ей и параллельны между собой.`, ask:{label:'d = O₁O₂', v:d, q:`Окружности касаются внешним образом, поэтому расстояние между центрами d = O₁O₂ равно сумме радиусов. Посчитай d.`, tip:`d = r₁ + r₂ = ${r1} + ${r2}.`}},
       {h:`Проекции точек касания на линию центров дают положения хорд. Для внешней касательной перпендикуляры O₁A и O₂C параллельны; из подобия проекция даёт расстояние между хордами <b>${frac('d² − (r₁ − r₂)²','d')}</b>.`, why:`O₁A ∥ O₂C (обе ⟂ касательной); проекции точек касания на O₁O₂ отстоят на (d² − (r₁−r₂)²)/d.`},
-      {h:`Так как d = r₁ + r₂: <b>d² − (r₁ − r₂)² = (r₁+r₂)² − (r₁−r₂)² = 4r₁r₂</b>. Значит расстояние <b>= ${frac('4r₁r₂','r₁ + r₂')} = ${frac(''+4*r1*r2, ''+d)} = ${fmtNum(dist)}</b>.`, why:null, ask:{label:'расстояние', v:dist, q:`Расстояние между хордами = (d² − (r₁ − r₂)²)/d, а при d = r₁ + r₂ это упрощается до 4·r₁·r₂/(r₁ + r₂). Радиусы даны, d ты нашёл. Посчитай расстояние (можно округлить до сотых).`, tip:`расстояние = 4·r₁·r₂ / (r₁ + r₂) = ${4*r1*r2} / ${d}.`}}
+      {h:`Так как d = r₁ + r₂: <b>d² − (r₁ − r₂)² = (r₁+r₂)² − (r₁−r₂)² = 4r₁r₂</b>. Значит расстояние <b>= ${frac('4r₁r₂','r₁ + r₂')} = ${frac(''+4*r1*r2, ''+d)} = ${fmtNum(dist)}</b>.`, why:null, ask:{label:'расстояние', v:dist, q:`Расстояние между хордами = (d² − (r₁ − r₂)²)/d, а при d = r₁ + r₂ это упрощается до 4·r₁·r₂/(r₁ + r₂). Радиусы даны, d найдено. Посчитай расстояние (можно округлить до сотых).`, tip:`расстояние = 4·r₁·r₂ / (r₁ + r₂) = ${4*r1*r2} / ${d}.`}}
     ];
     return {ans:[{label:'расстояние',v:dist,exact:fmtNum(dist)}], steps, geo:{r1,r2}};
   },
@@ -1317,6 +1323,7 @@ function renderLearnDetail(id){
 }
 
 /* -------------------- ТРЕНИРОВКА -------------------- */
+const PNOTE25='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без показа решения; ошибка, исправленная самостоятельно, этому не мешает. Если показано число шага («показать» в проводке) или всё решение («Сдаюсь — решение»), задача отмечается «решение показано» — к такому типу стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
 let trS=null; // {id,p,b,hints,wrong,done,surrender,missed,shown}
 let trReview=CP.REVIEW, trReviewEmpty=false;      // ?mode=review: задачи только из открытых типов журнала
 function reviewIds(){ return CP.openTypes().map(Number).filter(id=>byId(id)); }
@@ -1349,12 +1356,13 @@ function renderTrain(){
             ${(!trS.gmode&&!trS.done)?`<button class="btn ghost small" data-act="tr-hint">🪜 Шаг за шагом</button>`:''}
             ${(!trS.done)?`<button class="btn ghost small" data-act="tr-give">Сдаюсь — решение</button>`:''}
           </div>
-          <div class="fb ${trS.fb?('show '+trS.fb.k):''}" id="trFb">${trS.fb?trS.fb.msg:''}</div>
+          <div class="fb ${trS.fb?('show '+trS.fb.k):''}" id="trFb" role="status" aria-live="polite">${trS.fb?trS.fb.msg:''}</div>
           <div class="stat">Пройдено шагов: ${trS.gres?trS.gres.filter(Boolean).length:0} · подсказок: ${trS.hints} · неверных попыток: ${trS.wrong}</div>
           ${trS.done?'<div class="ansrow"><button class="btn" data-act="tr-next" data-id="'+trS.id+'">'+(trReview?'Следующая задача из повтора →':'Следующая задача →')+'</button></div>':''}
         </div>
       </div>
     </div>`;
+  h+=PNOTE25;
   if(trS.gmode){ h+=guidedHTML(); }
   else if(trS.reveal>0){ h+=`<div class="hintbox">${stepsHTML(b.steps, trS.reveal)}</div>`; }
   $('panel-train').innerHTML=h;
@@ -1363,10 +1371,10 @@ function renderTrain(){
 function gClose(v, target){ return approxEq(v, target, 6e-3, 0.02); }
 function gInfo(){ const steps=trS.b.steps; const last=steps.length-1; const finalAsk=!!(steps[last]&&steps[last].ask); return {last, finalAsk, gT: finalAsk?last:Math.max(0,last-1)}; }
 function isFinalAskStep(i){ const g=gInfo(); return g.finalAsk && i===g.last; }
-function gFinalCTA(){ return `<div class="gcta">${trS.b.gcta || 'Дальше — сам: доведи решение до числа, впиши ответ в поле выше и нажми «Проверить».'}</div>`; }
+function gFinalCTA(){ return `<div class="gcta">${trS.b.gcta || 'Дальше — самостоятельно: доведи решение до числа, впиши ответ в поле выше и нажми «Проверить».'}</div>`; }
 function guidedHTML(){
   const b=trS.b, steps=b.steps; const {last,finalAsk,gT}=gInfo();
-  let h='<div class="guidebox"><div class="guidehead">🪜 ПРОВОДКА ПО РЕШЕНИЮ — на каждом шаге считаешь сам</div><ol class="gsteps">';
+  let h='<div class="guidebox"><div class="guidehead">🪜 ПРОВОДКА ПО РЕШЕНИЮ — на каждом шаге считаешь самостоятельно</div><ol class="gsteps">';
   for(let i=0;i<=trS.gstep;i++){
     const st=steps[i]; const res=trS.gres[i]||''; const cur=(i===trS.gstep);
     const asking = st.ask && cur && !res;
@@ -1381,10 +1389,10 @@ function guidedHTML(){
             <button class="btn ghost small" data-act="g-reveal">показать</button>
           </div>`;
       if(st.ask.tip) h+=`<div class="gtip${trS.gtip?' on':''}">💡 ${st.ask.tip}</div>`;
-      if(trS.gfb) h+=`<div class="fb show ${trS.gfb.k}" style="margin-top:9px">${trS.gfb.msg}</div>`;
+      if(trS.gfb) h+=`<div class="fb show ${trS.gfb.k}" style="margin-top:9px" role="status" aria-live="polite">${trS.gfb.msg}</div>`;
     } else {
       h+=`<div class="gh">${st.h}</div>`;
-      if(st.ask && res) h+=`<div class="gdone ${res==='rev'?'rev':''}">${st.ask.label} = <b>${fmtNum(st.ask.v)}</b> — ${res==='rev'?'показано':'ты посчитал верно ✓'}</div>`;
+      if(st.ask && res) h+=`<div class="gdone ${res==='rev'?'rev':''}">${st.ask.label} = <b>${fmtNum(st.ask.v)}</b> — ${res==='rev'?'показано':'посчитано верно ✓'}</div>`;
       if(cur){
         if(i<gT) h+=`<div style="margin-top:9px"><button class="btn ghost small" data-act="g-next">Дальше →</button></div>`;
         else if(!finalAsk) h+= gFinalCTA();
@@ -1437,7 +1445,7 @@ function finishGuided(mode){
 }
 function renderTrainPicker(){
   const weak=topWeak(3);
-  let h=reviewNote()+'<div class="muted" style="margin-bottom:12px">Выберите тип для тренировки. Числа в каждой задаче меняются; чертёж перестраивается под них.</div>';
+  let h=reviewNote()+PNOTE25+'<div class="muted" style="margin-bottom:12px">Выберите тип для тренировки. Числа в каждой задаче меняются; чертёж перестраивается под них.</div>';
   if(weak.length){ h+='<div class="law" style="margin-bottom:14px"><h3>Стоит повторить (больше всего ошибок)</h3><div>'+weak.map(T=>`<button class="btn ghost small" data-act="train-this" data-id="${T.id}" style="margin:3px 5px 3px 0">№${T.id}. ${T.title}</button>`).join('')+'</div></div>'; }
   h+='<div class="tgrid">';
   for(const T of TYPES){ h+=`<div class="tcard" data-act="train-this" data-id="${T.id}"><div class="no">№${T.id}</div><span class="pill ${T.pill}">${PILLNAME[T.pill]}</span><div class="tt">${T.title}</div><div class="dsc">${T.tag}</div></div>`; }
@@ -1655,7 +1663,7 @@ function renderExam(){
         <div class="ansrow">${inputs}</div>
         <div class="muted" style="margin-top:6px">Иррациональный ответ — десятичной дробью (округление до сотых).</div>
         <div class="ansrow"><button class="btn blue" data-act="exam-answer">Ответить</button></div>
-        <div class="fb" id="exFb"></div>
+        <div class="fb" id="exFb" role="status" aria-live="polite"></div>
       </div></div>
     </div>`;
   $('panel-exam').innerHTML=h;

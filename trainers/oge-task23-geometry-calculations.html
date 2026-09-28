@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ОГЭ · Задание 23 — Геометрические задачи на вычисление</title>
 <style>
 :root{
@@ -209,6 +209,12 @@ body{background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman'
   .tools .btn{min-width:0}
   .q-text{font-size:16.5px}
 }
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
 </style>
 </head>
 <body>
@@ -1474,7 +1480,7 @@ function buildTask(mount,task,mode,onDone){
   const inp=el('input','ans-inp');inp.type='text';inp.setAttribute('inputmode','decimal');inp.placeholder='ответ';
   const btn=el('button','btn primary','Проверить');
   row.appendChild(inp);row.appendChild(btn);card.appendChild(row);
-  const fb=el('div','fb');card.appendChild(fb);
+  const fb=el('div','fb');fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');card.appendChild(fb);
 
   let tries=0,resolved=false,gaveHint=false,stepIdx=0,reported=false;
   /* missed — промах по задаче уже записан в журнал; shown — показан результат
@@ -1546,7 +1552,7 @@ function buildTask(mount,task,mode,onDone){
       sb.appendChild(el('div','sol-step','<b>'+(stepIdx+1)+'.</b> '+steps[stepIdx]));
       ev('step_hint',{sub:task.sub,step:stepIdx});
       stepIdx++;
-      if(isLast){ // последний шаг = ответ = засчитывается как «сдалась»
+      if(isLast){ // последний шаг = ответ = «решение показано»
         sb.appendChild(el('div','sol-ans','Ответ: <b>'+ansDisplay(task.sub,task.p)+'</b>'));
         bStep.disabled=true;ev('gaveup',{sub:task.sub});finishCard('fail');
       } else if(stepIdx>=steps.length){bStep.disabled=true;}
@@ -1638,7 +1644,7 @@ CONSTRUCT.trapLeg=function(holder,p,onDone){
   svg.appendChild(pulse);
   const handle=eln('circle',{cx:SC.x,cy:SC.y,r:10,fill:CO.blue,stroke:'#fff','stroke-width':2.5,cursor:'grab'});svg.appendChild(handle);
   holder.appendChild(svg);
-  const fb=el('div','fb');holder.appendChild(fb);
+  const fb=el('div','fb');fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');holder.appendChild(fb);
   let hx=SC.x,hy=SC.y,dragging=false,solved=false;
   function raPath(){const sq=11;return 'M'+footX+' '+(baseY-sq)+' L'+(footX-sq)+' '+(baseY-sq)+' L'+(footX-sq)+' '+baseY;}
   function update(){hline.setAttribute('x2',hx);hline.setAttribute('y2',hy);foot.setAttribute('cx',hx);foot.setAttribute('cy',hy);foot.setAttribute('r',dragging||solved?3.2:0);handle.setAttribute('cx',hx);handle.setAttribute('cy',hy);
@@ -1669,19 +1675,21 @@ CONSTRUCT.trapLeg=function(holder,p,onDone){
 let trainMode='guided';
 const REVIEW={on:CP.REVIEW, empty:false};   // ?mode=review: задачи только из открытых типов журнала
 const nudgedSolo=new Set();
+const PNOTE23='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без показа решения; ошибка, исправленная самостоятельно, этому не мешает. Если показан шаг с готовым числом («🪜 Шаг за шагом», «Показать шаг») или всё решение («Сдаюсь — решение»), задача отмечается «решение показано» — к такому типу стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
 function renderTrain(main){
   clear(main);
   const mt=el('div','mode-toggle');
   const b1=el('button','mt'+(trainMode==='guided'?' active':''),'🪜 Веду по шагам');
-  const b2=el('button','mt'+(trainMode==='solo'?' active':''),'✍️ Сам решаю');
+  const b2=el('button','mt'+(trainMode==='solo'?' active':''),'✍️ Решаю без подсказок');
   b1.onclick=()=>{if(trainMode!=='guided'){trainMode='guided';renderTrain(main);}};
   b2.onclick=()=>{if(trainMode!=='solo'){trainMode='solo';renderTrain(main);}};
   mt.appendChild(b1);mt.appendChild(b2);main.appendChild(mt);
   main.appendChild(el('div','mode-hint',trainMode==='guided'
     ?(curFilter==='all'||curFilter.indexOf('t:')===0
-        ?'Сначала сам определи тип задачи (главный навык на экзамене), потом реши по шагам. Ошибся — получишь подсказку по шагу.'
-        :'Отрабатываешь один тип: проходи каждый шаг сам, метод закрепляется.')
-    :'Реши задачу целиком и проверь себя. Застрял — вернись в режим «по шагам».'));
+        ?'Сначала определи тип задачи самостоятельно (главный навык на экзамене), потом реши по шагам. Ошибка — получишь подсказку по шагу.'
+        :'Отрабатываешь один тип: проходи каждый шаг самостоятельно, метод закрепляется.')
+    :'Реши задачу целиком и проверь себя. Нет хода? Вернись в режим «по шагам».'));
+  main.appendChild(el('div','',PNOTE23));
   const bar=el('div','filter-bar');
   bar.appendChild(el('span','fb-lbl','Тип:'));
   const opts=[['all','Все темы'],['t:tri','Треугольники'],['t:quad','Четырёхугольники'],['t:circ','Окружности']];
@@ -1706,7 +1714,7 @@ function renderTrain(main){
       :(REVIEW.empty?'<div class="exhaust">Открытых типов в журнале ошибок нет — обычная тренировка.</div>':'');
     if(!t)t=nextTask(curFilter);
     if(t.exp==null)t.exp=SUBS[t.sub].calc(t.p);
-    if(t.justExhausted)note.innerHTML='Ты прошёл все задачи из банка по этому фильтру. Дальше — сгенерированные варианты того же типа.';
+    if(t.justExhausted)note.innerHTML='Все задачи из банка по этому фильтру пройдены. Дальше — сгенерированные варианты того же типа.';
     if(trainMode==='guided')buildGuided(host,t,()=>load(),{recognize:(curFilter==='all'||curFilter.indexOf('t:')===0)});
     else buildTask(host,t,'train',()=>load());
   }
@@ -1755,13 +1763,13 @@ function buildGuided(mount,task,onDone,opts){
     /* все числа шагов ввёл ученик, ничего не показано — задача решена (по шагам) */
     if(clean){CP.solvedOne(task.sub); if(!missed)CP.mlog(task.sub,true);}
     const fin=el('div','guide-done');
-    fin.innerHTML='<div class="gd-h">'+(finalRevealed?'Решение разобрано — в следующий раз получится самому.':(anyReveal?'Решение собрано — метод закреплён.':'✓ Ты прошёл всё решение сам!'))+'</div><div class="gd-ans">Ответ: <b>'+ansDisplay(task.sub,task.p)+'</b></div>';
+    fin.innerHTML='<div class="gd-h">'+(finalRevealed?'Решение разобрано — в следующий раз получится самостоятельно.':(anyReveal?'Решение собрано — метод закреплён.':'✓ Всё решение пройдено без подсказок!'))+'</div><div class="gd-ans">Ответ: <b>'+ansDisplay(task.sub,task.p)+'</b></div>';
     card.appendChild(fin);
     ev(finalRevealed?'gaveup':'solved',{sub:task.sub,mode:'guided'});
     if(clean&&masteryOf(task.sub)>=3&&!nudgedSolo.has(task.sub)){
       nudgedSolo.add(task.sub);
       const nud=el('div','solo-nudge');
-      nud.innerHTML='🎓 Ты уверенно решаешь этот тип по шагам. Готов решать <b>без подсказок</b>?';
+      nud.innerHTML='🎓 Этот тип по шагам решается уверенно. Переходим к решению <b>без подсказок</b>?';
       const yes=el('button','btn ghost','Решать самому →');yes.onclick=()=>{trainMode='solo';curFilter=task.sub;setTab('train');};
       nud.appendChild(yes);card.appendChild(nud);
     }

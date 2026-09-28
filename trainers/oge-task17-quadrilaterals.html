@@ -86,9 +86,16 @@ a.reflink{color:var(--accent);font-weight:800;cursor:pointer;text-decoration:und
 .pinrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 0;border-top:1px dashed #d8d2c4}
 .pinrow .nm{flex:1;min-width:160px}
 .pinrow .warn{color:#b45309;font-size:12.5px;flex-basis:100%}
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
+a.reflink{display:inline-flex;align-items:center;min-height:44px}
 </style></head><body>
 <div class="wrap">
-<div class="head"><div><a class="crumbs" href="../oge/">← Курс ОГЭ</a><h1>ОГЭ №17 · Четырёхугольники</h1><div class="sub">квадрат · прямоугольник · ромб · параллелограмм · трапеция — архив задач и генераторы + генераторы</div></div><div class="badge" id="hdBadge">…</div></div>
+<div class="head"><div><a class="crumbs" href="../oge/">← Курс ОГЭ</a><h1>ОГЭ №17 · Четырёхугольники</h1><div class="sub">квадрат · прямоугольник · ромб · параллелограмм · трапеция — архив задач и генераторы</div></div><div class="badge" id="hdBadge">…</div></div>
 <div class="app">
 <div class="tabs">
 <button class="tab on" id="tabR" data-tab="razbor">📖 Разбор</button>
@@ -1350,6 +1357,7 @@ function pickTrainTask(){
   const k=keys[Math.floor(Math.random()*keys.length)];
   return build(k,S17[k].gen(),{gen:true,srcLab:'генератор',note:S17[k].note});
 }
+const PNOTE17='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без показа решения; ошибка, исправленная самостоятельно, этому не мешает. Если показан шаг с готовым числом («Показать шаг») или всё решение («Сдаюсь — решение»), задача отмечается «решение показано» — к такому типу стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
 function renderTrain(newTask){hdr();
   let h='<div class="row" id="fchips">';
   h+='<button class="chip'+(FILT.topic==='all'&&!FILT.sub?' on':'')+'" data-t="all">Все темы</button>';
@@ -1357,7 +1365,7 @@ function renderTrain(newTask){hdr();
   h+='</div><div class="row" style="margin-top:8px">'+
    ['all','Архив + генератор','arch','Только архив','gen','Только генератор'].map((v,i,ar)=>i%2?'':'<button class="chip'+(FILT.src===ar[i]?' on':'')+'" data-s="'+ar[i]+'">'+ar[i+1]+'</button>').join('')+
    (FILT.sub?'<span class="pill">тип: '+esc(S17[FILT.sub].name)+' <a class="reflink" id="clrSub">✕</a></span>':'')+'</div>'+
-   '<div id="rvnote"></div><div id="tzone"></div>';
+   '<div id="rvnote"></div>'+PNOTE17+'<div id="tzone"></div>';
   MAIN().innerHTML=h;
   MAIN().querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{REVIEW.on=false;REVIEW.empty=false;FILT.topic=b.dataset.t;delete FILT.sub;renderTrain(true);});
   MAIN().querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{REVIEW.on=false;REVIEW.empty=false;FILT.src=b.dataset.s;renderTrain(true);});
@@ -1371,7 +1379,7 @@ function renderTrain(newTask){hdr();
   const t=CUR;
   z.innerHTML='<div class="task">'+taskHTML(t)+
    '<div class="ansrow"><input id="ans" inputmode="decimal" autocomplete="off" placeholder="Ответ'+(t.ansFmt==='concat'?' (длины подряд)':'')+'"><button class="btn primary" id="chk">Проверить</button></div>'+
-   '<div class="msg" id="fb"></div><div class="row" style="margin-top:10px">'+
+   '<div class="msg" id="fb" role="status" aria-live="polite"></div><div class="row" style="margin-top:10px">'+
    '<button class="btn ghost" id="hint">💡 Подсказка</button>'+
    '<button class="btn ghost" id="stepH">🪜 Шаг за шагом</button>'+
    '<button class="btn danger" id="give">Сдаюсь — решение</button>'+
@@ -1448,7 +1456,7 @@ function renderQuizTask(){hdr();const t=QUIZ.set[QUIZ.i];CUR=t;
    '<span class="dots">'+QUIZ.res.map(r=>'<span class="dot '+(r.m===0?'g':(r.m===1?'y':'r'))+'"></span>').join('')+'</span></div>'+
    '<div class="task">'+taskHTML(t)+
    '<div class="ansrow"><input id="ans" inputmode="decimal" autocomplete="off" placeholder="Ответ"><button class="btn primary" id="chk">Ответить</button></div>'+
-   '<div class="msg" id="fb"></div><div class="row" style="margin-top:10px"><button class="btn soft" id="nxt" style="display:none">Дальше →</button></div></div>';
+   '<div class="msg" id="fb" role="status" aria-live="polite"></div><div class="row" style="margin-top:10px"><button class="btn soft" id="nxt" style="display:none">Дальше →</button></div></div>';
   let mistakes=0,closed=false;const fb=$('fb');
   $('chk').onclick=()=>{if(closed)return;const raw=$('ans').value;
     /* пустое или нечисловое поле — не попытка и не промах */

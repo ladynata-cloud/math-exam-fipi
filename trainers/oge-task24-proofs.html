@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ОГЭ · Задание 24 — задачи на доказательство</title>
 <style>
 :root{--bg:#e8e4db;--paper:#fffdf7;--ink:#1a1a2e;--blue:#2d70b3;--ok:#16a34a;--err:#dc2626;
@@ -173,6 +173,14 @@ padding:9px 12px;font-size:13px;margin-bottom:10px}
 .hidden{display:none!important}
 .back{color:#c9c4b8;text-decoration:none;font-size:12.5px}
 .back:hover{color:#fff}
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
+span.tchip,span.chip.jump{display:inline-flex;align-items:center;min-height:44px}
+.sr-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -187,7 +195,8 @@ padding:9px 12px;font-size:13px;margin-bottom:10px}
   </div>
   <div class="tabs" id="tabs"></div>
   <div class="wrap">
-    <div class="success" id="succ"></div>
+    <div class="success" id="succ" role="status" aria-live="polite"></div>
+    <div class="sr-live" id="live" role="status" aria-live="polite"></div>
     <div id="view"></div>
   </div>
 </div>
@@ -477,6 +486,9 @@ function advancePhaseIfDone(){ // если все шаги текущей фаз
   return false;
 }
 
+const PNOTE24='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Доказательство засчитывается как собранное самостоятельно, если обошлось без «Сдаюсь» и «Поставить шаг», а подсветка («Подсказать») понадобилась не больше одного раза; ошибка, исправленная самостоятельно, этому не мешает. Иначе задача отмечается «решение показано» — к ней стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
+/* короткое сообщение для экранного диктора */
+function announce(msg){const el=document.getElementById('live');if(el)el.textContent=msg;}
 function pickCard(item){
   const t=curTask();
   if(ST.solvedNow)return;
@@ -489,6 +501,7 @@ function pickCard(item){
       ST.early.delete(item.i);
       ST.placed++;
       rec({e:'step',task:t.id,step:item.i});
+      announce('Верно: шаг '+ST.placed+' из '+t.steps.length+'.');
       if(ST.placed===t.steps.length){ onSolved(); renderTask(); return; }
       if(advancePhaseIfDone()){ renderTask({phaseDone:true}); return; }
       renderTask();
@@ -497,6 +510,7 @@ function pickCard(item){
       ST.early.add(item.i);
       if(isNew){ST.err++;missOnce();}
       rec({e:'early',task:t.id,step:item.i});
+      announce('Этот шаг верный, но не сейчас — сначала предыдущий.');
       renderTask({shakeKey:'s'+item.i, diag:'Этот шаг верный, но не сейчас — сначала предыдущий. Он помечен: выбери его щелчком, когда дойдёт очередь.'});
     }
   } else {
@@ -504,6 +518,7 @@ function pickCard(item){
     ST.dead.add(item.i);
     if(isNew){ST.err++;missOnce();}
     rec({e:'distractor',task:t.id,pick:item.i});
+    announce('Неверно: '+stripTags(t.traps[item.i].msg));
     renderTask({shakeKey:'x'+item.i});
   }
 }
@@ -616,7 +631,7 @@ function backToMenu(){
 /* --- меню Разбор --- */
 function menuStudy(){
   ST.results=[];
-  let h='<p class="lead">Тип 24 — <b>доказательство</b>. Answer здесь не число, а <b>цепочка рассуждений</b>. Выбери задачу, собери доказательство из карточек по порядку и обходи ловушки. Каждый верный шаг подсвечивается на чертеже, а рядом видно, <b>почему</b> он работает.</p>';
+  let h='<p class="lead">Тип 24 — <b>доказательство</b>. Ответ здесь не число, а <b>цепочка рассуждений</b>. Выбери задачу, собери доказательство из карточек по порядку и обходи ловушки. Каждый верный шаг подсвечивается на чертеже, а рядом видно, <b>почему</b> он работает.</p>';
   THEMES.forEach(th=>{
     h+=`<h3 style="font-size:14px;margin:16px 0 8px;color:#5b5647">${th.name}</h3><div class="menu">`;
     th.tasks.forEach(id=>{const t=byId[id];const done=STORE[TID].solved&&STORE[TID].solved[id];
@@ -632,7 +647,7 @@ function startStudy(id){ST={mode:'study',queue:[id],qi:0,results:[]};loadTask();
 /* --- меню Тренировка --- */
 function menuTrain(){
   ST.results=[];
-  let h='<p class="lead">Собирай доказательства подряд. Ловушки и «рано» считаются как промахи; после разбора можно перейти к следующей задаче. Подсказки доступны, но лучше сначала подумать.</p><div class="menu">';
+  let h='<p class="lead">Собирай доказательства подряд. Ловушки и «рано» считаются как промахи; после разбора можно перейти к следующей задаче. Подсказки доступны, но лучше сначала подумать.</p>'+PNOTE24+'<div class="menu">';
   h+=`<div class="mcard" onclick="startTrain('all')"><h3>Все 20 типов вперемешку</h3><div class="cnt">полный прогон случайным порядком</div></div>`;
   THEMES.forEach((th,idx)=>{h+=`<div class="mcard" onclick="startTrain(${idx})"><h3>${th.name}</h3><div class="cnt">${th.tasks.length} задач(и)</div>
     <div class="chips">${th.tasks.map(id=>`<span class="chip ${STORE[TID].solved&&STORE[TID].solved[id]?'done':''}">${byId[id].code.split(' · ')[0]}</span>`).join('')}</div></div>`;});
