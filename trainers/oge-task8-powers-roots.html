@@ -170,8 +170,11 @@ button.crosslink{font:inherit;background:none;border:none;padding:0 2px;min-heig
   header{position:static}
   .card,.mtask{box-shadow:none;break-inside:avoid}
 }
+/* 360 px (канон): широкие таблицы и выражения прокручиваются в своей рамке, страница — нет */
+table.sq,.seen-tbl{display:block;max-width:100%;overflow-x:auto}
+.expr,.refrow .formula{max-width:100%;overflow-x:auto}
 @media(max-width:640px){
-  .m{font-size:17px} .big{font-size:19px}
+  .m{font-size:17px;white-space:normal} .big{font-size:19px}
   .refrow .formula{min-width:100%}
 }
 </style>
