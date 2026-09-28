@@ -9,6 +9,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple
 .head{background:#1a1a2e;color:#fffdf7;border-radius:18px 18px 0 0;padding:16px 20px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
 .head h1{margin:0;font-size:clamp(19px,3vw,26px);letter-spacing:-.02em}
 .head .sub{opacity:.75;font-size:13px;margin-top:3px}
+.head .crumbs{display:inline-block;color:#f2b134;font-size:13.5px;font-weight:800;text-decoration:none;margin-bottom:4px}
+.head .crumbs:hover{text-decoration:underline}
 .badge{background:rgba(255,253,247,.14);border:1px solid rgba(255,253,247,.25);border-radius:999px;padding:6px 12px;font-weight:800;font-size:13px;white-space:nowrap}
 .app{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 34px rgba(26,26,46,.14);overflow:hidden}
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--line);background:#f6f2e9;flex-wrap:wrap}
@@ -92,7 +94,7 @@ a.reflink{color:var(--accent);font-weight:800;cursor:pointer;text-decoration:und
 .pinrow .warn{color:#b45309;font-size:12.5px;flex-basis:100%}
 </style></head><body>
 <div class="wrap">
-<div class="head"><div><h1>ОГЭ №17 · Четырёхугольники</h1><div class="sub">квадрат · прямоугольник · ромб · параллелограмм · трапеция — архив задач и генераторы + генераторы</div></div><div class="badge" id="hdBadge">…</div></div>
+<div class="head"><div><a class="crumbs" href="../oge/">← Курс ОГЭ</a><h1>ОГЭ №17 · Четырёхугольники</h1><div class="sub">квадрат · прямоугольник · ромб · параллелограмм · трапеция — архив задач и генераторы + генераторы</div></div><div class="badge" id="hdBadge">…</div></div>
 <div class="app">
 <div class="tabs">
 <button class="tab on" id="tabR" data-tab="razbor">📖 Разбор</button>
@@ -1057,11 +1059,108 @@ function isRight(task,raw){
 }
 /* ================= ХРАНИЛИЩЕ ================= */
 const TID='oge17-chetyrehugolniki', SKEY='mathExamCourseProgress.v1';
-function loadAll(){try{return JSON.parse(localStorage.getItem(SKEY)||'{}')||{}}catch(e){return{}}}
-let ST=(loadAll()[TID])||{v:1,runs:0,best:0,events:[],razborDone:{},solved:0,tried:0,usedNums:{}};
-ST.events=ST.events||[];ST.razborDone=ST.razborDone||{};ST.usedNums=ST.usedNums||{};
-function save(){try{const all=loadAll();all[TID]=ST;localStorage.setItem(SKEY,JSON.stringify(all))}catch(e){}}
-function logE(e,d){ST.events.push(Object.assign({t:Date.now(),e},d||{}));if(ST.events.length>300)ST.events=ST.events.slice(-300);save();}
+
+/* ================= Контракт прогресса курса ОГЭ =================
+   docs/OGE_PROGRESS_CONTRACT.md, разделы 3–5: ядро записи, журнал ошибок,
+   режим повтора. Тела функций — как в контракте; обёрнуты в CP, чтобы не
+   столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
+   свои записи журнала, после свежего чтения ключа — две вкладки не
+   затирают друг друга. В ?selftest=1 ничего не пишется. */
+const TYPE_IDS=["sqDiag","sqAreaSide","sqAreaPerim","rectDiagAngle","rectDiagBO","rhombAngle","rhombACD","rhombHeight","rhombAreaDiag","rhombAreaPerim","rhombAreaDist","rhombPerpDiag","rhombHeightBigDiag","rhombSideSmallDiag","rhombHeightSegments","parTrapDAEC","parTriCBE","parDiagHalf","parHeights","parAngle","parDiagAngles","parBisector","trapMid","trapArea","trapIso","trapSum","trapRect","trapDiagAO","trapMidSeg","trapDiagFindC","trapDiagBS","trapCutBase","trapDiag45h","trap45Base","trap45Area","trapBisector","trapDiagSmallBase","trapBDA"];
+const QUIZ_TOTAL=10;   // размер зачёта
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* запись старой версии (без updatedAt: её писал код до контракта) могла
+     нести passed при любом результате зачёта — один раз пересчитываем
+     passed по сохранённому best; дальше запись несёт updatedAt и больше
+     не трогается */
+  function migrate(bestNorm){
+    if (RO) return;
+    var r = readAll()[TID];
+    if (!isObj(r) || typeof r.updatedAt === "number") return;
+    var b = bestNorm(r);
+    saveRec(function(rec){
+      rec.best = b;
+      rec.passed = b >= PASS_AT;
+      if (b > 0 || num(rec.runs) > 0) rec.total = QUIZ_TOTAL;
+    });
+  }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes, migrate:migrate };
+})();
+
+/* старые поля записи (журнал событий, разборы, счётчики, использованные номера
+   архива) пишутся тоже через CP.saveRec — со свежим чтением ключа; ST — их
+   копия для экрана */
+function loadST(){
+  const r=CP.readAll()[TID], o=CP.isObj(r)?r:{};
+  return {runs:CP.num(o.runs), best:CP.num(o.best), events:Array.isArray(o.events)?o.events.filter(CP.isObj):[],
+    razborDone:CP.isObj(o.razborDone)?o.razborDone:{}, solved:CP.num(o.solved), tried:CP.num(o.tried),
+    usedNums:CP.isObj(o.usedNums)?o.usedNums:{}};
+}
+CP.migrate(r=>CP.num(r.best));
+let ST=loadST();
+function upd(fn){CP.saveRec(fn);ST=loadST();}
+function logE(e,d){const ev=Object.assign({t:Date.now(),e},d||{});
+  upd(rec=>{rec.events=(Array.isArray(rec.events)?rec.events:[]).concat([ev]).slice(-300);});}
 function weakStats(){const w={};ST.events.forEach(ev=>{
   if(ev.e==='opt_wrong'||ev.e==='quiz_wrong'||ev.e==='hint'||ev.e==='step_hint'){const k=ev.sub;if(k)w[k]=(w[k]||0)+1;}});return w;}
 /* ================= КАРТА ЛИСТА ОГЭ (стр. 6, «Геометрия») ================= */
@@ -1089,6 +1188,7 @@ PINS.forEach(pin=>pin.subs.forEach(s=>{const k=typeof s==='string'?s:s.k; if(!SU
 const $=id=>document.getElementById(id);
 const MAIN=()=>$('main');
 let MODE='razbor', CUR=null, QUIZ=null, FILT={topic:'all',src:'all'};
+const REVIEW={on:CP.REVIEW, empty:false};   // ?mode=review: задачи только из открытых типов журнала
 const SUBKEYS=Object.keys(S17);
 const QUOTA={sq:1,rect:1,rhomb:3,par:2,trap:3};
 
@@ -1148,17 +1248,23 @@ function renderRazborDetail(k){hdr();const s=S17[k];
     i++; logE('step',{sub:k,step:i});
     if(i<t.sol.length)$('stepB').textContent='Показать шаг '+(i+1)+' из '+t.sol.length;
     else{$('stepB').style.display='none';$('trainB').style.display='inline-block';
-      ST.razborDone[k]=1;save();hdr();}}};
+      upd(rec=>{rec.razborDone=CP.isObj(rec.razborDone)?rec.razborDone:{};rec.razborDone[k]=1;});hdr();}}};
   $('trainB').onclick=()=>{FILT.topic=s.topic;FILT.sub=k;setTab('train');};
 }
 /* ---------- ТРЕНИРОВКА ---------- */
 function pickTrainTask(){
+  if(REVIEW.on){   // работа над ошибками: только открытые типы журнала, задачи генератора
+    const open=CP.openTypes().filter(k=>S17[k]);
+    if(open.length){const k=open[Math.floor(Math.random()*open.length)];
+      return build(k,S17[k].gen(),{gen:true,srcLab:'генератор',note:S17[k].note});}
+    REVIEW.on=false; REVIEW.empty=true;
+  }
   const pool=k=>FILT.sub? [FILT.sub] : SUBKEYS.filter(x=>FILT.topic==='all'||S17[x].topic===FILT.topic);
   const keys=pool();
   if(FILT.src!=='gen'){ // сперва нетронутый архив
     const fresh=ARCHIVE.filter(r=>keys.includes(r.sub)&&!ST.usedNums[r.nums[0]]);
     if(fresh.length){const r=fresh[Math.floor(Math.random()*fresh.length)];
-      ST.usedNums[r.nums[0]]=1;save();
+      upd(rec=>{rec.usedNums=CP.isObj(rec.usedNums)?rec.usedNums:{};rec.usedNums[r.nums[0]]=1;});
       return build(r.sub,r.p,{gen:false,srcLab:r.src+' №'+r.nums.join(', №'),note:S17[r.sub].note});}
     if(FILT.src==='arch')return null;
   }
@@ -1172,12 +1278,15 @@ function renderTrain(newTask){hdr();
   h+='</div><div class="row" style="margin-top:8px">'+
    ['all','Архив + генератор','arch','Только архив','gen','Только генератор'].map((v,i,ar)=>i%2?'':'<button class="chip'+(FILT.src===ar[i]?' on':'')+'" data-s="'+ar[i]+'">'+ar[i+1]+'</button>').join('')+
    (FILT.sub?'<span class="pill">тип: '+esc(S17[FILT.sub].name)+' <a class="reflink" id="clrSub">✕</a></span>':'')+'</div>'+
-   '<div id="tzone"></div>';
+   '<div id="rvnote"></div><div id="tzone"></div>';
   MAIN().innerHTML=h;
-  MAIN().querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{FILT.topic=b.dataset.t;delete FILT.sub;renderTrain(true);});
-  MAIN().querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{FILT.src=b.dataset.s;renderTrain(true);});
+  MAIN().querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{REVIEW.on=false;REVIEW.empty=false;FILT.topic=b.dataset.t;delete FILT.sub;renderTrain(true);});
+  MAIN().querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{REVIEW.on=false;REVIEW.empty=false;FILT.src=b.dataset.s;renderTrain(true);});
   const cs=$('clrSub');if(cs)cs.onclick=()=>{delete FILT.sub;renderTrain(true);};
   if(newTask)CUR=pickTrainTask();
+  $('rvnote').innerHTML=REVIEW.on
+    ?'<div class="msg info" role="status" style="display:block"><b>Работа над ошибками:</b> задачи только из открытых типов журнала ('+CP.openTypes().filter(k=>S17[k]).length+'). Тип закрывается тремя задачами подряд, решёнными без промаха.</div>'
+    :(REVIEW.empty?'<div class="note" role="status">Открытых типов в журнале ошибок нет — обычная тренировка.</div>':'');
   const z=$('tzone');
   if(!CUR){z.innerHTML='<div class="msg info" style="display:block">Архив по этому фильтру пройден полностью 🎉 — переключитесь на генератор или смените тему.</div>';return;}
   const t=CUR;
@@ -1191,11 +1300,20 @@ function renderTrain(newTask){hdr();
    '<div class="sol" id="ssol"></div></div>';
   logE('task_start',{kind:'train',sub:t.key});
   const fb=$('fb');
-  const finish=()=>{$('nxt').style.display='inline-block';$('chk').disabled=true;};
-  $('chk').onclick=()=>{const raw=$('ans').value;
-    if(isRight(t,raw)){fb.className='msg ok';fb.textContent='Верно! Ответ: '+fnum(t.ans)+'.';
-      ST.solved++;save();hdr();logE('solved',{sub:t.key});finish();}
+  /* missed — промах по задаче уже записан в журнал; shown — открыт шаг решения
+     или решение целиком: задача тогда не идёт в счёт решённых самостоятельно */
+  let missed=false, shown=false, done=false;
+  const finish=()=>{done=true;$('nxt').style.display='inline-block';$('chk').disabled=true;};
+  $('chk').onclick=()=>{if(done)return;const raw=$('ans').value;
+    /* пустое или нечисловое поле — не попытка и не промах */
+    if(!raw.trim()||(t.ansFmt!=='concat'&&parseAns(raw)==null)){fb.className='msg warn';fb.textContent='Впишите ответ числом: целое, десятичная дробь или дробь вида 7/2.';return;}
+    if(isRight(t,raw)){
+      fb.className='msg ok';fb.textContent='Верно! Ответ: '+fnum(t.ans)+'.'+(shown?' Шаги решения были открыты — задача засчитана как разобранная.':'');
+      upd(rec=>{rec.solved=CP.num(rec.solved)+1;});hdr();logE('solved',{sub:t.key});
+      if(!shown){CP.solvedOne(t.key); if(!missed)CP.mlog(t.key,true);}   // один вердикт на задачу
+      finish();}
     else{const v=parseAns(raw);
+      if(!missed){missed=true;CP.mlog(t.key,false);}
       const d=t.diag.find(d=>v!=null&&Math.abs(v-d.v)<=Math.max(1e-9,Math.abs(d.v)*1e-9)+1e-9);
       fb.className='msg err';
       fb.innerHTML=d?'<b>Знакомая ловушка.</b> '+esc(d.m):'Пока неверно. Сверьтесь с законом (💡) — и попробуйте ещё раз.';
@@ -1211,13 +1329,16 @@ function renderTrain(newTask){hdr();
   const showStep=()=>{$('ssol').insertAdjacentHTML('beforeend','<div class="step"><span class="no">'+(si+1)+'</span>'+t.sol[si]+'</div>');si++;};
   $('stepH').onclick=()=>{
     if(si>=t.sol.length)return;
+    /* шаг с готовым вычислением («… = 10») — это показ результата, а не подсказка:
+       задача тогда не идёт в счёт решённых самостоятельно (решение F8 делегата владельца) */
+    if(/=\s*(<[^>]+>\s*)*[−-]?\d/.test(t.sol[si]))shown=true;
     if(si<t.sol.length-1){showStep();logE('step_hint',{sub:t.key,step:si});
       fb.className='msg info';fb.textContent='Шаг '+si+' из '+t.sol.length+' открыт — попробуйте довести до ответа сами.';
       $('stepH').textContent='🪜 Ещё шаг ('+(si+1)+' из '+t.sol.length+')';}
     else{showStep(); // последний шаг содержит ответ — честно считаем как «сдаюсь»
       fb.className='msg warn';fb.textContent='Открыт последний шаг с ответом — решение засчитано как разобранное, а не решённое.';
       logE('giveup',{sub:t.key,via:'steps'});finish();$('stepH').disabled=true;}};
-  $('give').onclick=()=>{$('ssol').innerHTML=t.sol.map((s,i)=>'<div class="step"><span class="no">'+(i+1)+'</span>'+s+'</div>').join('');
+  $('give').onclick=()=>{if(done)return;shown=true;$('ssol').innerHTML=t.sol.map((s,i)=>'<div class="step"><span class="no">'+(i+1)+'</span>'+s+'</div>').join('');
     fb.className='msg warn';fb.textContent='Разберите решение по шагам — этот тип ещё вернётся.';
     logE('giveup',{sub:t.key});finish();$('stepH').disabled=true;};
   $('nxt').onclick=()=>renderTrain(true);
@@ -1235,6 +1356,7 @@ function renderQuizStart(){hdr();
   const weak=weakStats();
   const top=Object.entries(weak).sort((a,b)=>b[1]-a[1]).slice(0,3).filter(x=>x[1]>=2);
   MAIN().innerHTML='<div class="task" style="text-align:center"><h2 style="margin:4px 0">Зачёт: 10 задач</h2>'+
+   '<div class="small">Зачёт сдан при '+PASS_AT+' верных ответах из '+QUIZ_TOTAL+' с первой попытки.</div>'+
    '<div class="small">Состав объявлен честно: квадрат — 1, прямоугольник — 1, ромб — 3, параллелограмм — 2, трапеция — 3. Без подсказок; числа — свежие, из генераторов.</div>'+
    (top.length?'<div class="msg warn" style="display:block;text-align:left"><b>Слабые места по журналу:</b> '+top.map(x=>esc(S17[x[0]].name)+' ('+x[1]+')').join('; ')+'. Можно сначала <a class="reflink" id="goTr">потренировать</a>.</div>':'')+
    '<div style="margin-top:14px"><button class="btn primary" id="go">Начать зачёт</button></div>'+
@@ -1248,21 +1370,28 @@ function renderQuizTask(){hdr();const t=QUIZ.set[QUIZ.i];CUR=t;
    '<div class="task">'+taskHTML(t)+
    '<div class="ansrow"><input id="ans" inputmode="decimal" autocomplete="off" placeholder="Ответ"><button class="btn primary" id="chk">Ответить</button></div>'+
    '<div class="msg" id="fb"></div><div class="row" style="margin-top:10px"><button class="btn soft" id="nxt" style="display:none">Дальше →</button></div></div>';
-  let mistakes=0;const fb=$('fb');
-  $('chk').onclick=()=>{const raw=$('ans').value;
+  let mistakes=0,closed=false;const fb=$('fb');
+  $('chk').onclick=()=>{if(closed)return;const raw=$('ans').value;
+    /* пустое или нечисловое поле — не попытка и не промах */
+    if(!raw.trim()||(t.ansFmt!=='concat'&&parseAns(raw)==null)){fb.className='msg warn';fb.textContent='Впишите ответ числом.';return;}
     if(isRight(t,raw)){fb.className='msg ok';fb.textContent='Верно!';logE('quiz_ok',{sub:t.key});
-      QUIZ.res.push({m:mistakes});$('chk').disabled=true;$('nxt').style.display='inline-block';}
-    else{mistakes++;logE('quiz_wrong',{sub:t.key,pick:raw});
+      if(mistakes===0)CP.mlog(t.key,true);   // журнал: один вердикт на задачу
+      closed=true;QUIZ.res.push({m:mistakes});$('chk').disabled=true;$('nxt').style.display='inline-block';}
+    else{if(mistakes===0)CP.mlog(t.key,false);
+      mistakes++;logE('quiz_wrong',{sub:t.key,pick:raw});
       if(mistakes>=2){fb.className='msg err';fb.innerHTML='Вторая ошибка — идём дальше. Верный ответ: <b>'+fnum(t.ans)+'</b>.';
-        QUIZ.res.push({m:mistakes});$('chk').disabled=true;$('nxt').style.display='inline-block';}
+        closed=true;QUIZ.res.push({m:mistakes});$('chk').disabled=true;$('nxt').style.display='inline-block';}
       else{fb.className='msg err';fb.textContent='Неверно — есть ещё одна попытка.';}}};
   $('ans').addEventListener('keydown',e=>{if(e.key==='Enter')$('chk').click();});
   $('nxt').onclick=()=>{QUIZ.i++;if(QUIZ.i<10)renderQuizTask();else renderQuizFin();};
 }
 function renderQuizFin(){const ok=QUIZ.res.filter(r=>r.m===0).length;
-  ST.runs++;ST.best=Math.max(ST.best,ok);save();hdr();logE('finish',{score:ok});
+  CP.finishQuiz(ok,QUIZ_TOTAL);   // passed — только при PASS_AT из QUIZ_TOTAL и не снимается
+  logE('finish',{score:ok});hdr();
+  const verdict=ok>=PASS_AT?'<div class="msg ok" role="status" style="display:block">Зачёт сдан: '+ok+' из '+QUIZ_TOTAL+' с первой попытки (нужно '+PASS_AT+').</div>'
+    :'<div class="msg info" role="status" style="display:block">Для зачёта нужно '+PASS_AT+' из '+QUIZ_TOTAL+' с первой попытки.</div>';
   const weak=weakStats();const top=Object.entries(weak).sort((a,b)=>b[1]-a[1]).slice(0,3).filter(x=>x[1]>=2);
-  MAIN().innerHTML='<div class="fin"><div class="score">'+ok+'/10</div>'+
+  MAIN().innerHTML='<div class="fin"><div class="score">'+ok+'/10</div>'+verdict+
    '<div class="dots">'+QUIZ.res.map(r=>'<span class="dot '+(r.m===0?'g':(r.m===1?'y':'r'))+'"></span>').join('')+'</div>'+
    '<div class="law" style="text-align:left"><b>Что запомнить:</b> в №17 почти всё решают четыре факта — диагонали (равны? делятся пополам? перпендикулярны? биссектрисы?), сумма соседних углов 180°, накрест лежащие углы при основаниях и «высота отсекает (b−a)/2». Формулы площадей есть на листе, свойства — держим в голове.</div>'+
    (top.length?'<div class="msg warn" style="display:block;text-align:left"><b>Потренировать:</b> '+top.map(x=>esc(S17[x[0]].name)).join('; ')+'</div>':'')+
@@ -1362,7 +1491,7 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab)
 if(location.search.indexOf('selftest=1')>=0){
   const r=selftest();const box=$('stbox');box.style.display='block';box.textContent=r.report;
 }
-setTab('razbor');
+setTab(CP.REVIEW?'train':'razbor');   // ?mode=review — сразу работа над ошибками
 
 </script>
 </body>

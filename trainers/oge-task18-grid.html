@@ -11,6 +11,8 @@ body{margin:0;background:#e8e4db;color:#1a1a2e;font-family:system-ui,-apple-syst
 .head{background:#1a1a2e;color:#fffdf7;padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .head h1{font-size:19px;margin:0;letter-spacing:-.02em}
 .head .sub{font-size:12.5px;color:#b8b6c9;margin-top:2px}
+.head .crumbs{display:inline-block;color:#f2b134;font-size:13px;font-weight:700;text-decoration:none;margin-bottom:3px}
+.head .crumbs:hover{text-decoration:underline}
 .head .badge{margin-left:auto;background:#2d70b3;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:800}
 .tabs{display:flex;gap:6px;padding:10px 16px;background:#f4f1e7;border-bottom:1px solid #e2ddc9;flex-wrap:wrap}
 .tabs button{border:1px solid #d8d2bc;background:#fffdf7;color:#1a1a2e;border-radius:999px;padding:8px 16px;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
@@ -91,6 +93,7 @@ input.ans{border:1.5px solid #c9c3ad;border-radius:12px;background:#fffdf7;paddi
 <div class="app">
   <div class="head">
     <div>
+      <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
       <h1>ОГЭ, задание 18 · Фигуры на клетчатой бумаге</h1>
       <div class="sub">Длины · Средние линии · Площади · Отношения — банк из 123 задач + генераторы</div>
     </div>
@@ -114,6 +117,94 @@ input.ans{border:1.5px solid #c9c3ad;border-radius:12px;background:#fffdf7;paddi
    Хранилище: mathExamCourseProgress.v1, TID='oge18-kletki'.               */
 
 const TID='oge18-kletki';
+
+/* ================= Контракт прогресса курса ОГЭ =================
+   docs/OGE_PROGRESS_CONTRACT.md, разделы 3–5: ядро записи, журнал ошибок,
+   режим повтора. Тела функций — как в контракте; обёрнуты в CP, чтобы не
+   столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
+   свои записи журнала, после свежего чтения ключа — две вкладки не
+   затирают друг друга. В ?selftest=1 ничего не пишется. */
+const TYPE_IDS=["dist","midBC","leg","rhombDiag","midTri","midTrap","areaTri","areaPar","areaRhomb","areaTrap","areaFig","tanA","segAB","segCmp","circRatio"];
+const QUIZ_TOTAL=10;   // размер зачёта
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* запись старой версии (без updatedAt: её писал код до контракта) могла
+     нести passed при любом результате зачёта — один раз пересчитываем
+     passed по сохранённому best; дальше запись несёт updatedAt и больше
+     не трогается */
+  function migrate(bestNorm){
+    if (RO) return;
+    var r = readAll()[TID];
+    if (!isObj(r) || typeof r.updatedAt === "number") return;
+    var b = bestNorm(r);
+    saveRec(function(rec){
+      rec.best = b;
+      rec.passed = b >= PASS_AT;
+      if (b > 0 || num(rec.runs) > 0) rec.total = QUIZ_TOTAL;
+    });
+  }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes, migrate:migrate };
+})();
+
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
@@ -769,15 +860,19 @@ function archTask(rec){return build(rec.sub,rec.p,{id:rec.id,exp:rec.exp});}
 function genTask(k){return build(k,SUBS[k].gen(),{});}
 
 /* ---------- Хранилище и журнал ---------- */
-const STORE_KEY='mathExamCourseProgress.v1';
-function loadAll(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||{};}catch(e){return {};}}
-function saveAll(a){try{localStorage.setItem(STORE_KEY,JSON.stringify(a));}catch(e){}}
-let DB=loadAll();
-if(!DB[TID])DB[TID]={runs:0,best:0,events:[],razbor:{},seenArch:{}};
-const ST=DB[TID];
-if(!ST.razbor)ST.razbor={};
-if(!ST.seenArch)ST.seenArch={};
-function logE(e){ST.events.push(Object.assign({t:Date.now()},e));if(ST.events.length>300)ST.events=ST.events.slice(-300);saveAll(DB);}
+/* ключ mathExamCourseProgress.v1; старые поля записи (журнал событий, разборы,
+   показанные задачи банка) пишутся через CP.saveRec — со свежим чтением ключа;
+   ST — их копия для экрана */
+function loadST(){
+  const r=CP.readAll()[TID], o=CP.isObj(r)?r:{};
+  return {runs:CP.num(o.runs), best:CP.num(o.best), events:Array.isArray(o.events)?o.events.filter(CP.isObj):[],
+    razbor:CP.isObj(o.razbor)?o.razbor:{}, seenArch:CP.isObj(o.seenArch)?o.seenArch:{}};
+}
+CP.migrate(r=>CP.num(r.best));
+let ST=loadST();
+function upd(fn){CP.saveRec(fn);ST=loadST();}
+function logE(e){const ev=Object.assign({t:Date.now()},e);
+  upd(rec=>{rec.events=(Array.isArray(rec.events)?rec.events:[]).concat([ev]).slice(-300);});}
 function weakStats(){
   const w={};
   for(const e of ST.events){
@@ -864,7 +959,7 @@ function drawRazbor(){
   main.innerHTML=html;
   main.querySelector('[data-act="back"]').onclick=()=>renderRazbor();
   const nx=main.querySelector('[data-act="next"]');
-  if(nx)nx.onclick=()=>{RZ.step++;if(RZ.step>=task.sol.length){ST.razbor[k]=true;logE({e:'solved',via:'razbor',sub:k});updHdr();}drawRazbor();};
+  if(nx)nx.onclick=()=>{RZ.step++;if(RZ.step>=task.sol.length){upd(rec=>{rec.razbor=CP.isObj(rec.razbor)?rec.razbor:{};rec.razbor[k]=true;});logE({e:'solved',via:'razbor',sub:k});updHdr();}drawRazbor();};
   const tr=main.querySelector('[data-act="train"]');
   if(tr)tr.onclick=()=>setMode('train',{sub:k});
   const rj=main.querySelector('[data-act="ref"]');
@@ -872,7 +967,9 @@ function drawRazbor(){
 }
 
 /* ---------- ТРЕНИРОВКА ---------- */
-let TR={topic:'all',sub:'all',task:null,hintUsed:false,exhausted:false};
+let TR={topic:'all',sub:'all',task:null,hintUsed:false,exhausted:false,
+  done:false,missed:false,shown:false};   // done — задача закрыта; missed — промах записан; shown — показан результат шага или решение
+const REVIEW={on:CP.REVIEW, empty:false};  // ?mode=review: задачи только из открытых типов журнала
 function poolArch(){
   return ARCHIVE.filter(r=>{
     if(TR.sub!=='all')return r.sub===TR.sub;
@@ -880,9 +977,14 @@ function poolArch(){
     return true;});
 }
 function nextTrainTask(){
+  TR.hintUsed=false; TR.done=false; TR.missed=false; TR.shown=false;
+  if(REVIEW.on){   // работа над ошибками: только открытые типы журнала, задачи генератора
+    const open=CP.openTypes().filter(k=>SUBS[k]);
+    if(open.length){TR.task=genTask(pick(open));TR.exhausted=false;logE({e:'task_start',kind:'review',sub:TR.task.sub});return;}
+    REVIEW.on=false; REVIEW.empty=true;
+  }
   const pool=poolArch().filter(r=>!ST.seenArch[r.id]);
-  TR.hintUsed=false;
-  if(pool.length){const rec=pick(pool);ST.seenArch[rec.id]=true;saveAll(DB);TR.task=archTask(rec);TR.exhausted=false;}
+  if(pool.length){const rec=pick(pool);upd(r0=>{r0.seenArch=CP.isObj(r0.seenArch)?r0.seenArch:{};r0.seenArch[rec.id]=true;});TR.task=archTask(rec);TR.exhausted=false;}
   else{
     const keys=TR.sub!=='all'?[TR.sub]:SUBKEYS.filter(k=>TR.topic==='all'||SUBS[k].topic===TR.topic);
     const wasPool=poolArch().length>0;
@@ -909,6 +1011,8 @@ function chipRow(){
 function drawTrain(state){
   const t=TR.task;
   let html=chipRow();
+  if(REVIEW.on)html+='<div class="msg info on" role="status"><b>Работа над ошибками:</b> задачи только из открытых типов журнала ('+CP.openTypes().filter(k=>SUBS[k]).length+'). Тип закрывается тремя задачами подряд, решёнными без промаха.</div>';
+  else if(REVIEW.empty)html+='<div class="note" role="status">Открытых типов в журнале ошибок нет — обычная тренировка.</div>';
   if(TR.exhausted)html+='<div class="msg info on">Готовые задачи по этому фильтру закончились — дальше работает генератор.</div>';
   html+='<div class="card">'+
     '<h3>'+SUBS[t.sub].name+(t.id?'':' · генератор')+'</h3>'+
@@ -927,17 +1031,26 @@ function drawTrain(state){
   main.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
     if(c.dataset.t){TR.topic=c.dataset.t;TR.sub='all';}
     else{TR.sub=c.dataset.s;}
+    REVIEW.on=false;REVIEW.empty=false;
     TR.exhaustedShown=false;TR.exhausted=false;nextTrainTask();drawTrain();
   });
   const fb=$('fb'),inp=$('ansIn');
+  /* после верного ответа или «Сдаюсь» задача закрыта: «Проверить» не работает до следующей */
+  const close=()=>{TR.done=true;$('chkBtn').disabled=true;inp.disabled=true;$('giveBtn').disabled=true;};
+  if(TR.done)close();
   $('chkBtn').onclick=()=>{
+    if(TR.done)return;
     const v=parseAns(inp.value);
     fb.className='msg on';
     if(isNaN(v)){fb.classList.add('warn');fb.innerHTML='Не понимаю запись. Введите число: целое, с запятой (1,5) или дробью (3/2).';return;}
     if(near(v,t.ans,1e-6)){
       fb.classList.add('ok');fb.innerHTML='Верно! Ответ '+fmt(t.ans)+'.';
       logE({e:'quiz_ok',sub:t.sub,id:t.id});
+      /* решено без показа результата — в счёт; журнал: один вердикт на задачу */
+      if(!TR.shown){CP.solvedOne(t.sub); if(!TR.missed)CP.mlog(t.sub,true);}
+      close();
     }else{
+      if(!TR.missed){TR.missed=true;CP.mlog(t.sub,false);}
       const d=t.diag.find(d=>near(v,d.v,1e-6));
       fb.classList.add('err');
       fb.innerHTML=d?d.m:'Неверно. Проверьте, какие клетки вы считали, — и загляните в подсказку.';
@@ -947,11 +1060,16 @@ function drawTrain(state){
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('chkBtn').click();});
   $('hintBtn').onclick=()=>{
     if(!TR.hintUsed){TR.hintUsed=true;logE({e:'hint',sub:t.sub});}
+    /* первый шаг с готовым вычислением («… = 5») — показ результата, а не подсказка */
+    if(!TR.done&&/=\s*(<[^>]+>\s*)*[−-]?\d/.test(t.sol[0]))TR.shown=true;
     fb.className='msg info on';fb.innerHTML=t.sol[0];
   };
   $('giveBtn').onclick=()=>{
+    if(TR.done)return;
+    TR.shown=true;
     $('solBox').innerHTML=solHtml(t)+'<div class="msg ok on">Ответ: <b>'+fmt(t.ans)+'</b></div>';
     logE({e:'give_up',sub:t.sub,id:t.id});
+    close();
   };
   $('nextBtn').onclick=()=>{nextTrainTask();drawTrain();};
   const rj=main.querySelector('[data-act="ref"]');
@@ -966,7 +1084,7 @@ function renderQuizStart(){
   const w=weakStats();
   const weakest=Object.entries(w).filter(([k,v])=>v>=2).sort((a,b)=>b[1]-a[1]).slice(0,3);
   let html='<div class="card"><h3>Зачёт: 10 задач</h3>'+
-    '<p class="small">Состав фиксированный: <b>Длины — 3</b>, <b>Средние линии — 2</b>, <b>Площади — 3</b>, <b>Отношения — 2</b>. Задачи берутся из банка и генератора, подсказок нет. Результат сохраняется.</p>';
+    '<p class="small">Состав фиксированный: <b>Длины — 3</b>, <b>Средние линии — 2</b>, <b>Площади — 3</b>, <b>Отношения — 2</b>. Задачи берутся из банка и генератора, подсказок нет. Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'. Результат сохраняется.</p>';
   if(weakest.length){
     html+='<div class="why"><b>Ваши слабые места по журналу:</b> '+weakest.map(([k])=>SUBS[k].name).join(', ')+'. Можно сначала подтянуть:</div><div class="row" style="margin-top:8px">'+
       weakest.map(([k])=>'<button class="sec" data-w="'+k+'">'+SUBS[k].name+' →</button>').join('')+'</div>';
@@ -1011,6 +1129,7 @@ function drawQuiz(){
     answered=true;
     const ok=near(v,t.ans,1e-6);
     QZ.res.push({ok,sub:t.sub});
+    CP.mlog(t.sub,ok);   // зачёт тоже пишет журнал: одна попытка — один вердикт
     logE({e:ok?'quiz_ok':'quiz_wrong',sub:t.sub,id:t.id});
     fb.className='msg on '+(ok?'ok':'err');
     fb.innerHTML=(ok?'Верно!':'Неверно. Правильный ответ: <b>'+fmt(t.ans)+'</b>.')+' <button class="act" id="qNext" style="margin-left:10px">'+(QZ.i+1<QZ.tasks.length?'Дальше →':'Итог')+'</button>';
@@ -1020,15 +1139,15 @@ function drawQuiz(){
   inp.focus();
 }
 function finishQuiz(){
-  const score=QZ.res.filter(r=>r.ok).length;
-  ST.runs=(ST.runs||0)+1;
-  if(score>ST.best)ST.best=score;
-  ST.passed=true;
+  const score=QZ.res.filter(r=>r.ok).length, total=QZ.tasks.length;
+  CP.finishQuiz(score,total);   // passed — только при PASS_AT из total и не снимается
   logE({e:'finish',score});
   updHdr();
   const wrongs=QZ.res.filter(r=>!r.ok).map(r=>r.sub);
   const uniq=[...new Set(wrongs)];
-  let html='<div class="card fin"><div class="score">'+score+' / '+QZ.tasks.length+'</div>'+
+  let html='<div class="card fin"><div class="score">'+score+' / '+total+'</div>'+
+    (score>=PASS_AT?'<div class="msg ok on" role="status">Зачёт сдан: '+score+' из '+total+' (нужно '+PASS_AT+').</div>'
+      :'<div class="msg info on" role="status">Для зачёта нужно '+PASS_AT+' верных из '+total+'.</div>')+
     '<div class="dots">'+QZ.res.map(r=>'<span class="dot '+(r.ok?'g':'r')+'"></span>').join('')+'</div>'+
     '<div class="law"><b>'+(score===10?'Идеально!':score>=7?'Хороший результат.':'Есть над чем поработать.')+'</b> Задание 18 — это счёт клеток + пять формул: Пифагор, средние линии, площади, тангенс, квадрат отношения радиусов.</div>';
   if(uniq.length)html+='<div class="why" style="text-align:left"><b>Разобрать ошибки:</b></div><div class="row" style="justify-content:center;margin-top:8px">'+
@@ -1183,7 +1302,7 @@ function runSelftest(){
 }
 
 /* ---------- Запуск ---------- */
-setMode('razbor');
+setMode(CP.REVIEW?'train':'razbor');   // ?mode=review — сразу работа над ошибками
 if(typeof location!=='undefined'&&/[?&]selftest=1/.test(location.search)){
   try{window.__selftestFails=runSelftest();}catch(e){const d=document.createElement('div');d.className='selftest';d.textContent='СЕЛФТЕСТ УПАЛ: '+e.message;main.parentNode.insertBefore(d,main);window.__selftestFails=1;}
 }

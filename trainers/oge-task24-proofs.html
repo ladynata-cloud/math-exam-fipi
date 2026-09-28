@@ -16,6 +16,8 @@ box-shadow:0 10px 34px rgba(26,26,46,.14);overflow:hidden}
 .head{background:var(--ink);color:#f5f3ee;padding:16px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .head h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.2px}
 .head .sub{font-size:12.5px;opacity:.72;margin-top:2px}
+.head .crumbs{display:inline-block;color:#f2b134;font-size:13px;font-weight:700;text-decoration:none;margin-bottom:3px}
+.head .crumbs:hover{text-decoration:underline}
 .head .badge{margin-left:auto;background:rgba(255,255,255,.12);border-radius:999px;
 padding:5px 13px;font-size:12.5px;font-weight:700}
 .tabs{display:flex;gap:4px;padding:10px 14px 0;flex-wrap:wrap;background:var(--paper)}
@@ -186,6 +188,7 @@ padding:9px 12px;font-size:13px;margin-bottom:10px}
 <div class="app">
   <div class="head">
     <div>
+      <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
       <h1>ОГЭ · Задание 24 — задачи на доказательство</h1>
       <div class="sub">20 типов · конструктор доказательства · собери цепочку и обходи ловушки</div>
     </div>
@@ -205,14 +208,112 @@ const SHEETIMG='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEB
 const byId={}; TASKS.forEach(t=>byId[t.id]=t);
 const TID='oge24-dokazatelstva';
 
+/* ================= Контракт прогресса курса ОГЭ =================
+   docs/OGE_PROGRESS_CONTRACT.md, разделы 3–5: ядро записи, журнал ошибок,
+   режим повтора. Тела функций — как в контракте; обёрнуты в CP, чтобы не
+   столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
+   свои записи журнала, после свежего чтения ключа — две вкладки не
+   затирают друг друга. В ?selftest=1 ничего не пишется. */
+const TYPE_IDS=["t1","t10","t13","t15","t2","t3","t4","t5","t7","t6","t8","t9","t12","t11","t14","t16","t17","t18","t19","t20"];
+const QUIZ_TOTAL=5;   // размер зачёта
+const PASS_AT=4;       // зачёт сдан при 4 из 5
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* запись старой версии (без updatedAt: её писал код до контракта) могла
+     нести passed при любом результате зачёта — один раз пересчитываем
+     passed по сохранённому best; дальше запись несёт updatedAt и больше
+     не трогается */
+  function migrate(bestNorm){
+    if (RO) return;
+    var r = readAll()[TID];
+    if (!isObj(r) || typeof r.updatedAt === "number") return;
+    var b = bestNorm(r);
+    saveRec(function(rec){
+      rec.best = b;
+      rec.passed = b >= PASS_AT;
+      if (b > 0 || num(rec.runs) > 0) rec.total = QUIZ_TOTAL;
+    });
+  }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes, migrate:migrate };
+})();
+
+
 /* ---------- прогресс ---------- */
-function loadStore(){try{return JSON.parse(localStorage.getItem('mathExamCourseProgress.v1'))||{}}catch(e){return {}}}
-function saveStore(o){try{localStorage.setItem('mathExamCourseProgress.v1',JSON.stringify(o))}catch(e){}}
-let STORE=loadStore();
-if(!STORE[TID])STORE[TID]={runs:0,best:0,passed:false,events:[],solved:{}};
-function rec(o){const s=STORE[TID];s.events=s.events||[];s.events.push(Object.assign({t:Date.now()},o));
-  if(s.events.length>300)s.events=s.events.slice(-300);saveStore(STORE);}
-function markSolved(id){STORE[TID].solved=STORE[TID].solved||{};STORE[TID].solved[id]=true;saveStore(STORE);}
+/* ключ mathExamCourseProgress.v1; старые поля записи (журнал событий, отметки
+   решённых) пишутся через CP.saveRec — со свежим чтением ключа; STORE[TID] —
+   их копия для экрана */
+function loadRec(){
+  const r=CP.readAll()[TID], o=CP.isObj(r)?r:{};
+  return {runs:CP.num(o.runs), best:CP.num(o.best), passed:o.passed===true,
+    events:Array.isArray(o.events)?o.events.filter(CP.isObj):[], solved:CP.isObj(o.solved)?o.solved:{}};
+}
+CP.migrate(r=>Math.floor(CP.num(r.best)*QUIZ_TOTAL/100));   // до контракта best хранился в процентах
+const STORE={}; STORE[TID]=loadRec();
+function upd(fn){CP.saveRec(fn);STORE[TID]=loadRec();}
+function rec(o){const e=Object.assign({t:Date.now()},o);
+  upd(r=>{r.events=(Array.isArray(r.events)?r.events:[]).concat([e]).slice(-300);});}
+function markSolved(id){upd(r=>{r.solved=CP.isObj(r.solved)?r.solved:{};r.solved[id]=true;});}
+/* журнал: один вердикт на задачу — первый промах (ловушка, ранний шаг, неверное
+   обоснование) открывает тип */
+function missOnce(){if(!ST.missed){ST.missed=true;CP.mlog(curTask().id,false);}}
 
 /* ================= SVG рендер ================= */
 function P(fig,n){return fig.pts[n];}
@@ -303,7 +404,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor
 
 function loadTask(){
   const t=byId[ST.queue[ST.qi]];
-  ST.placed=0; ST.dead=new Set(); ST.early=new Set(); ST.err=0; ST.hints=0; ST.revealed=false; ST.solvedNow=false; ST.gaveUp=false; ST.phase=0; ST.awaitJust=null; ST.justPool=null; ST.justDead=new Set();
+  ST.placed=0; ST.dead=new Set(); ST.early=new Set(); ST.err=0; ST.hints=0; ST.revealed=false; ST.solvedNow=false; ST.gaveUp=false; ST.glows=0; ST.placedByHint=0; ST.missed=false; ST.phase=0; ST.awaitJust=null; ST.justPool=null; ST.justDead=new Set();
   const items=[];
   t.steps.forEach((_,i)=>items.push({type:'s',i}));
   t.traps.forEach((_,i)=>items.push({type:'x',i}));
@@ -341,14 +442,14 @@ function pickCard(item){
     } else {
       const isNew=!ST.early.has(item.i);
       ST.early.add(item.i);
-      if(isNew)ST.err++;
+      if(isNew){ST.err++;missOnce();}
       rec({e:'early',task:t.id,step:item.i});
       renderTask({shakeKey:'s'+item.i, diag:'Этот шаг верный, но не сейчас — сначала предыдущий. Он помечен: выбери его щелчком, когда дойдёт очередь.'});
     }
   } else {
     const isNew=!ST.dead.has(item.i);
     ST.dead.add(item.i);
-    if(isNew)ST.err++;
+    if(isNew){ST.err++;missOnce();}
     rec({e:'distractor',task:t.id,pick:item.i});
     renderTask({shakeKey:'x'+item.i});
   }
@@ -363,7 +464,7 @@ function pickJust(idx){
   if(ST.awaitJust==null||ST.solvedNow)return;
   const opt=ST.justPool[idx];
   if(opt.ok){ resolveJust(); }
-  else { if(!ST.justDead.has(idx))ST.err++; ST.justDead.add(idx); rec({e:'just_wrong',task:curTask().id,step:ST.awaitJust,pick:idx}); renderTask({shakeJust:idx}); }
+  else { if(!ST.justDead.has(idx)){ST.err++;missOnce();} ST.justDead.add(idx); rec({e:'just_wrong',task:curTask().id,step:ST.awaitJust,pick:idx}); renderTask({shakeJust:idx}); }
 }
 function resolveJust(){
   const t=curTask(), i=ST.awaitJust;
@@ -379,16 +480,20 @@ function resolveJust(){
 }
 function onSolved(){
   ST.solvedNow=true;
-  markSolved(curTask().id);
+  const t=curTask();
+  /* собрано самостоятельно: без «Сдаюсь», без «Поставить шаг» и не больше одной
+     подсветки (решение F8 делегата владельца); только такая задача «решена» */
+  const self=!ST.gaveUp&&!ST.placedByHint&&ST.glows<=1;
+  if(self){markSolved(t.id);CP.solvedOne(t.id);if(!ST.missed)CP.mlog(t.id,true);}
   let grade='g';
-  if(ST.gaveUp||ST.err>=2)grade='r';
+  if(!self||ST.err>=2)grade='r';
   else if(ST.err>=1||ST.hints>=1)grade='y';
-  ST.results.push({id:curTask().id,grade:grade});
-  rec({e:'solved',task:curTask().id,mistakes:ST.err,hints:ST.hints,via:ST.gaveUp?'surrender':'self'});
+  ST.results.push({id:t.id,grade:grade,self:self,err:ST.err});
+  rec({e:'solved',task:t.id,mistakes:ST.err,hints:ST.hints,via:ST.gaveUp?'surrender':(ST.placedByHint?'placed':'self')});
 }
 function useHint(){
   if(ST.solvedNow)return;
-  ST.hints++;
+  ST.hints++; ST.glows++;   // подсветка — подсказка, но вторая уже означает сборку не самостоятельно
   if(ST.mode==='justify'&&ST.awaitJust!=null){ rec({e:'hint_just',task:curTask().id}); renderTask({hintJust:true}); return; }
   rec({e:'hint_glow',task:curTask().id,step:ST.placed});
   renderTask({hint:true});
@@ -396,10 +501,10 @@ function useHint(){
 function hintPlace(){
   if(ST.solvedNow)return;
   const t=curTask();
-  if(ST.mode==='justify'&&ST.awaitJust!=null){ ST.hints++; resolveJust(); return; } // авто-обоснование
+  if(ST.mode==='justify'&&ST.awaitJust!=null){ ST.hints++; ST.placedByHint++; resolveJust(); return; } // авто-обоснование — показ
   const willFinish=(ST.placed===t.steps.length-1);
   const st=t.steps[ST.placed];
-  ST.hints++;
+  ST.hints++; ST.placedByHint++;   // шаг поставил тренажёр — это показ, а не подсказка
   if(willFinish)ST.gaveUp=true;
   if(ST.mode==='justify'&&st.jc){ enterJust(ST.placed); renderTask(); return; } // сначала обоснование
   if(st.lit&&st.lit.showcirc)ST.revealed=true;
@@ -537,24 +642,25 @@ function startExam(){
     return pickFrom[Math.floor(Math.random()*pickFrom.length)];
   });
   ST={mode:'exam',queue:q,qi:0,results:[]};
-  STORE[TID].runs=(STORE[TID].runs||0)+1;saveStore(STORE);
   rec({e:'start',mode:'exam'});
   loadTask();
 }
 function finishExam(){
   const total=ST.results.length;
   const good=ST.results.filter(r=>r.grade==='g').length;
-  const score=ST.results.reduce((a,r)=>a+(r.grade==='g'?1:r.grade==='y'?0.5:0),0);
-  const pct=Math.round(score/total*100);
-  STORE[TID].best=Math.max(STORE[TID].best||0,pct);
-  STORE[TID].passed=true; saveStore(STORE);
-  rec({e:'finish',score:pct});
+  /* счёт зачёта: доказательства, собранные самостоятельно, с не больше чем одним
+     промахом (зелёные и жёлтые — целиком: подсказки ничего не отнимают) */
+  const score=ST.results.filter(r=>r.self&&r.err<=1).length;
+  CP.finishQuiz(score,total);   // passed — только при PASS_AT из total и не снимается
+  rec({e:'finish',score:score,total:total});
   const succ=document.getElementById('succ');succ.className='success show';
-  succ.textContent=`Зачёт пройден. Результат: ${pct}% (${good} из ${total} без промахов).`;
+  succ.textContent=score>=PASS_AT
+    ?`Зачёт сдан: ${score} из ${total} (нужно ${PASS_AT}); без единого промаха — ${good}.`
+    :`Зачёт пока не сдан: ${score} из ${total}, нужно ${PASS_AT}. Повторите задачи из списка ниже.`;
   const weakIds=ST.results.filter(r=>r.grade!=='g').map(r=>r.id);
   let h='<div class="fin"><div style="font-size:14px;color:#8a8474">Итог зачёта</div>';
-  h+=`<div class="score">${pct}%</div><div class="dots">${ST.results.map(r=>`<span class="dot ${r.grade}"></span>`).join('')}</div>`;
-  h+=`<div style="font-size:12.5px;color:#8a8474">🟢 без промахов · 🟠 с подсказкой/1 промахом · 🔴 больше промахов${STORE[TID].best?` · рекорд ${STORE[TID].best}%`:''}</div>`;
+  h+=`<div class="score">${score} / ${total}</div><div class="dots">${ST.results.map(r=>`<span class="dot ${r.grade}"></span>`).join('')}</div>`;
+  h+=`<div style="font-size:12.5px;color:#8a8474">🟢 без промахов · 🟠 один промах или подсказка · 🔴 больше промахов или шаг поставлен тренажёром${STORE[TID].best?` · лучший зачёт ${STORE[TID].best} из ${total}`:''}</div>`;
   if(weakIds.length){h+=`<div class="route"><h4>Что повторить</h4>${weakIds.map(id=>`• ${byId[id].title} <span class="chip jump" onclick="switchMode('study');setTimeout(()=>startStudy('${id}'),0)">разобрать →</span>`).join('<br>')}</div>`;}
   else{h+='<div class="route"><h4>Чисто!</h4>Все доказательства собраны без единого промаха. Можно идти на настоящий экзамен.</div>';}
   h+=`<div class="bar" style="justify-content:center"><button class="btn dark" onclick="switchMode('exam')">Пройти ещё раз</button></div></div>`;
@@ -570,6 +676,7 @@ function renderTask(opts){
   const showWhy=(ST.mode!=='exam'||ST.solvedNow);
   const h=[];
   // заголовок
+  if(ST.review)h.push('<div class="arsnote" role="status"><b>Работа над ошибками:</b> задачи только из открытых в журнале. Задача закрывается тремя сборками подряд без промаха.</div>');
   h.push(`<div class="taskhead"><span class="tt">${t.title}</span><span class="code">${t.code}</span>`);
   if(ST.queue.length>1)h.push(`<span class="pos">${ST.qi+1} / ${ST.queue.length}</span>`);
   h.push('</div>');
@@ -664,9 +771,12 @@ function renderTask(opts){
 }
 /* «Сначала» в зачёте раскладывает карточки заново, но промахи и подсказки задачи сохраняет */
 function restartTask(){
-  const keep=ST.mode==='exam'?{err:ST.err,hints:ST.hints}:null;
+  const keep={err:ST.err,hints:ST.hints,missed:ST.missed,glows:ST.glows,placedByHint:ST.placedByHint};
   loadTask();
-  if(keep){ST.err=keep.err;ST.hints=keep.hints;renderTask();}
+  /* та же задача: вердикт журнала и показанные шаги сохраняются */
+  ST.missed=keep.missed; ST.glows=keep.glows; ST.placedByHint=keep.placedByHint;
+  if(ST.mode==='exam'){ST.err=keep.err;ST.hints=keep.hints;}
+  renderTask();
 }
 function trainThis(){const id=curTask().id;ST={mode:'train',queue:shuffle([id,id]).slice(0,1),qi:0,results:[]};
   badge().textContent='Тренировка';renderTabs();loadTask();}
@@ -738,7 +848,12 @@ function genBlank(t){
 
 /* --- старт --- */
 renderTabs();
-switchMode('study');
+if(CP.REVIEW){   // ?mode=review — работа над ошибками: только открытые задачи журнала
+  const open=CP.openTypes().filter(id=>byId[id]);
+  if(open.length){ST={mode:'train',queue:shuffle(open),qi:0,results:[],review:true};badge().textContent='Работа над ошибками';renderTabs();loadTask();}
+  else{switchMode('train');const s=document.getElementById('succ');s.className='success show';s.textContent='Открытых задач в журнале ошибок нет — обычная тренировка.';}
+}
+else switchMode('study');
 </script>
 </body>
 </html>
