@@ -1770,7 +1770,7 @@ function buildGuided(mount,task,onDone,opts){
       nudgedSolo.add(task.sub);
       const nud=el('div','solo-nudge');
       nud.innerHTML='🎓 Этот тип по шагам решается уверенно. Переходим к решению <b>без подсказок</b>?';
-      const yes=el('button','btn ghost','Решать самому →');yes.onclick=()=>{trainMode='solo';curFilter=task.sub;setTab('train');};
+      const yes=el('button','btn ghost','Решать без подсказок →');yes.onclick=()=>{trainMode='solo';curFilter=task.sub;setTab('train');};
       nud.appendChild(yes);card.appendChild(nud);
     }
     const nx=el('button','btn primary wide','Следующая задача →');nx.onclick=()=>onDone&&onDone();card.appendChild(nx);
