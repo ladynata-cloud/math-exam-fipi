@@ -2188,8 +2188,8 @@ const fmtN=x=>fmtMinus(String(x));
 function diagRoot(N,p,q){ // промежуток [p; q] для √N
   const k=isqrtFloor(N);
   if(p*p<N&&N<q*q) return null;
-  if(p<=N&&N<=q&&p*p>N) return {k:"noroot",m:"Это соседи самого числа "+N+", а не его корня. Зажмите "+N+" между квадратами целых чисел."};
-  if(2*p<=N&&N<=2*q) return {k:"halfnum",m:"Корень — не половина числа: "+sqrtHtml(N)+" ≠ "+N+" : 2. Зажмите "+N+" между квадратами целых чисел."};
+  if(p<=N&&N<=q&&p*p>N) return {k:"noroot",m:"Это соседи самого числа "+N+", а не его корня. Зажми "+N+" между квадратами целых чисел."};
+  if(2*p<=N&&N<=2*q) return {k:"halfnum",m:"Корень — не половина числа: "+sqrtHtml(N)+" ≠ "+N+" : 2. Зажми "+N+" между квадратами целых чисел."};
   if(N<p*p) return {k:"above",m:(p===k+1&&4*N>(2*k+1)*(2*k+1)?"Ближайший к "+N+" квадрат — "+p+"² = "+(p*p)+", но ":"")+
     sqrtHtml(N)+" &lt; "+p+", потому что "+N+" &lt; "+p+"² = "+(p*p)+": число левее этого промежутка."};
   return {k:"below",m:(q===k&&4*N<(2*k+1)*(2*k+1)?"Ближайший к "+N+" квадрат — "+q+"² = "+(q*q)+", но ":"")+
@@ -2209,14 +2209,14 @@ function diagInRange(num,k,show,den){ // число show (корень из num 
   const lo=den?k*den:k*k, hi=den?(k+1)*den:(k+1)*(k+1);
   const eq=j=>den?" = "+j+"·"+den:" = "+j+"²";
   if(lo<=num&&num<=hi) return null;
-  if(num<lo) return {k:"below",m:(2*num>=2*lo-(hi-lo)?show+" ≈ "+k+", но ":"")+show+" &lt; "+k+", потому что "+num+" &lt; "+lo+eq(k)+": число левее отрезка."};
-  return {k:"above",m:(2*num<=2*hi+(hi-lo)?show+" ≈ "+(k+1)+", но ":"")+show+" &gt; "+(k+1)+", потому что "+num+" &gt; "+hi+eq(k+1)+": число правее отрезка."};
+  if(num<lo) return {k:"below",m:((den?2*num>=(2*k-1)*den:4*num>=(2*k-1)*(2*k-1))?show+" ≈ "+k+", но ":"")+show+" &lt; "+k+", потому что "+num+" &lt; "+lo+eq(k)+": число левее отрезка."};
+  return {k:"above",m:((den?2*num<(2*k+3)*den:4*num<(2*k+3)*(2*k+3))?show+" ≈ "+(k+1)+", но ":"")+show+" &gt; "+(k+1)+", потому что "+num+" &gt; "+hi+eq(k+1)+": число правее отрезка."};
 }
 /* точка x и число X (значение), промежутки между целыми */
 function diagPoint(name,x,X,label,why,midWhy){
   const f=Math.floor(x), k=Math.floor(X);
   if(f!==k) return {k:"int",f,m:"Точка "+vi(name)+" — между "+fmtN(f)+" и "+fmtN(f+1)+", а "+label+" — между "+fmtN(k)+" и "+fmtN(k+1)+(why?": "+why:"")+"."};
-  return {k:"half",f,m:"Обе точки между "+fmtN(k)+" и "+fmtN(k+1)+" — сравните с серединой: "+midWhy+"."};
+  return {k:"half",f,m:"Обе точки между "+fmtN(k)+" и "+fmtN(k+1)+" — сравни с серединой: "+midWhy+"."};
 }
 function rootWhy(N){ const k=isqrtFloor(N); return (k*k)+" &lt; "+N+" &lt; "+((k+1)*(k+1)); }
 function rootMid(N){ const k=isqrtFloor(N), h=(2*k+1)*(2*k+1)*25;
@@ -2241,14 +2241,14 @@ function diagOpt(t,i){
   const o=t.opts[i];
   if(t.kind==="L"){
     const s=t.samples.find(sm=>!o.holds(sm));
-    if(!s) return {k:"text",m:"Это утверждение выполняется не всегда — проверьте его на своих числах."};
+    if(!s) return {k:"text",m:"Это утверждение выполняется не всегда — проверь его на своих числах."};
     return {k:"counter",s,m:"Не всегда: при "+Object.keys(s).map(v=>vi(v)+" = "+decComma(s[v])).join(", ")+" утверждение "+o.html+" неверно."};
   }
   if(t.kind==="A"){
     const want=t.mode!=="неверно";
     if(t.pairs){
-      if(o.html==="ни одна из них") return {k:"text",m:"Одна из разностей подходит: для каждой сравните, какая буква правее (правее — больше)."};
-      return {k:"text",m:"Разность "+o.html+" другого знака: "+o.school()+"."};
+      if(o.html==="ни одна из них") return {k:"text",m:"Одна из разностей подходит: для каждой сравни, какая буква правее (правее — больше)."};
+      return {k:"text",m:"Разность "+o.html+" другого знака: сравни, какая буква правее (правее \u2014 больше)."};
     }
     for(const v of Object.keys(t.vals)) for(const s of [-1,1]){
       const sh=Object.assign({},t.vals); sh[v]=qadd(t.vals[v],Q(s));
@@ -2259,7 +2259,7 @@ function diagOpt(t,i){
       }
     }
     const sc=o.school?o.school():"";
-    return {k:"text",m:(want?"Это утверждение неверно":"Это утверждение как раз верно, а спрашивают неверное")+(sc?". Проверьте: "+sc+".":". Сверьте его с рисунком.")};
+    return {k:"text",m:(want?"Это утверждение неверно":"Это утверждение как раз верно, а спрашивают неверное")+(sc?". Проверь: "+sc+".":". Сверь его с рисунком.")};
   }
   if(t.kind==="B"){
     if(t.sub==="rootBetween"){ const p=t.optPairs?t.optPairs[i]:[t.optK[i],t.optK[i]+1]; return diagRoot(t.N,p[0],p[1]); }
@@ -2272,7 +2272,7 @@ function diagOpt(t,i){
       return qlt(lo,v)&&qlt(v,hi)?null:(qcmp(v,lo)<=0?{k:"below",m:"Это число не больше "+fracHtml(t.lo[0],t.lo[1])+" — оно не между границами."}
         :{k:"above",m:"Это число не меньше "+fracHtml(t.hi[0],t.hi[1])+" — оно не между границами."});
     }
-    return {k:"text",m:"Этот вариант не подходит: сравните число с границами промежутка."};
+    return {k:"text",m:"Этот вариант не подходит: сравни число с границами промежутка."};
   }
   if(t.kind==="C"){
     const pts=t.pic&&t.pic.pts, intTicks=t.pic&&t.pic.ticks==="int";
@@ -2282,16 +2282,16 @@ function diagOpt(t,i){
     if(vo&&pts&&intTicks){
       const xa=pts[0].x, f=Math.floor(vo.x), k=Math.floor(xa);
       if(f!==k) return {k:"vint",f,m:vo.lab+" — между "+fmtN(f)+" и "+fmtN(f+1)+(vo.why?" ("+vo.why+")":"")+", а точка "+vi(pts[0].name||"A")+" — между "+fmtN(k)+" и "+fmtN(k+1)+"."};
-      if(vo.mid) return {k:"vhalf",f,m:"Оба числа между "+fmtN(k)+" и "+fmtN(k+1)+" — сравните с серединой: "+vo.mid+"; точка "+vi(pts[0].name||"A")+(xa<k+0.5?" левее":" правее")+" середины."};
+      if(vo.mid) return {k:"vhalf",f,m:"Оба числа между "+fmtN(k)+" и "+fmtN(k+1)+" — сравни с серединой: "+vo.mid+"; точка "+vi(pts[0].name||"A")+(xa<k+0.5?" левее":" правее")+" середины."};
     }
     if(pts&&pts[t.key-1]&&pts[i]&&pts.length===t.opts.length){ // варианты — точки: порядок на прямой
       const left=pts[i].x<pts[t.key-1].x;
       const dec=t.sub==="decOrder"||t.sub==="decOrder2";
-      return {k:"order",left,m:"Точка "+vi(pts[i].name)+" стоит "+(left?"левее":"правее")+", чем нужное число: "+(dec?"сравните десятичные дроби, дописав нули справа, чтобы знаков после запятой стало поровну.":"сравните его с числами соседних делений.")};
+      return {k:"order",left,m:"Точка "+vi(pts[i].name)+" стоит "+(left?"левее":"правее")+", чем нужное число: "+(dec?"сравни десятичные дроби, дописав нули справа, чтобы знаков после запятой стало поровну.":"сравни его с числами соседних делений.")};
     }
     if(vo&&pts){ const left=vo.x<pts[0].x;
-      return {k:"vorder",left,m:"Число "+vo.lab+" "+(left?"меньше":"больше")+", чем отмеченное точкой: сравните его с делениями рисунка."}; }
-    return {k:"text",m:"Этот вариант не подходит: сравните числа с делениями рисунка."};
+      return {k:"vorder",left,m:"Число "+vo.lab+" "+(left?"меньше":"больше")+", чем отмеченное точкой: сравни его с делениями рисунка."}; }
+    return {k:"text",m:"Этот вариант не подходит: сравни числа с делениями рисунка."};
   }
   return {k:"text",m:"Этот вариант не подходит."};
 }
@@ -2313,8 +2313,8 @@ function stepTraps7(t,s){
       T(a+1,a+2,(a+1)+"² = "+((a+1)*(a+1))+" больше "+N+", значит "+sqrtHtml(N)+" &lt; "+(a+1)+".");
       if(a>1) T(a-1,a,a+"² = "+(a*a)+" меньше "+N+", значит "+sqrtHtml(N)+" &gt; "+a+".");
     } else {
-      T(a-1,a,"Это соседний отрезок слева: точка стоит правее. Считайте деления от нуля.");
-      T(a+1,a+2,"Это соседний отрезок справа: точка стоит левее. Считайте деления от нуля.");
+      T(a-1,a,"Это соседний отрезок слева: точка стоит правее. Считай деления от нуля.");
+      T(a+1,a+2,"Это соседний отрезок справа: точка стоит левее. Считай деления от нуля.");
     }
     T(b,a,"Сначала меньшее число, потом большее.");
     return out;
@@ -2322,7 +2322,8 @@ function stepTraps7(t,s){
   const r=Math.round(Math.sqrt(a)), r2=Math.round(Math.sqrt(b));
   if(r>=1&&r*r===a&&r2===r+1&&r2*r2===b){
     T(r,r2,"Это сами границы, а нужны их квадраты.");
-    T(2*r,2*r2,r+"² — это "+r+"·"+r+", а не 2·"+r+".");
+    const u=r===2?r2:r;   // 2² = 2·2 — берём ту границу, где удвоение с квадратом не совпадает
+    T(2*r,2*r2,u+"² — это "+u+"·"+u+", а не 2·"+u+".");
     return out;
   }
   if(t.den&&a%t.den===0&&b===a+t.den){
@@ -2341,7 +2342,7 @@ function stepsFor(t,method){
   const last=steps[steps.length-1];
   if(last&&last.type==="int"&&last.ans===t.key){
     last.final=true; last.nOpts=t.opts.length; last.diag=optDiag(t);
-    if(last.hint) last.hint=String(last.hint).replace(/\s*—\s*вариант\s*\d+/g," — найдите это число среди вариантов");
+    if(last.hint) last.hint=String(last.hint).replace(/\s*—\s*вариант\s*\d+/g," — найди это число среди вариантов");
   }
   return steps;
 }
@@ -2433,7 +2434,7 @@ function mountSteps(container, steps, opts){
       hintbox.innerHTML="Подсказка: "+s.hint; hintbox.style.display="block"; hintBtn.disabled=true;
       usedHint=true; opts.onHint&&opts.onHint();
     };
-    const tail=s.hint?" Если нужно — откройте «Подсказку».":"";
+    const tail=s.hint?" Если нужно — открой «Подсказку».":"";
     const miss=html=>{ msg.className="msg bad"; msg.innerHTML=html; opts.onMiss&&opts.onMiss(); };
     let checkFn, showFn;
 
@@ -2453,7 +2454,7 @@ function mountSteps(container, steps, opts){
       const exp1 = s.qans || Q(s.type==="int"?s.ans:s.ans1);
       checkFn=()=>{
         const v1=parseQ(in1.value), v2=in2?parseQ(in2.value):null;
-        if(!v1||(in2&&!v2)){ msg.className="msg bad"; msg.textContent="Впишите число"+(in2?" в оба поля":"")+"."; return; }  // не промах
+        if(!v1||(in2&&!v2)){ msg.className="msg bad"; msg.textContent="Впиши число"+(in2?" в оба поля":"")+"."; return; }  // не промах
         const ok=qcmp(v1,exp1)===0&&(!in2||qcmp(v2,Q(s.ans2))===0);
         if(ok){
           in1.classList.add("good"); in1.disabled=true;
@@ -2471,11 +2472,11 @@ function mountSteps(container, steps, opts){
           finalMiss++;
           const total=opts.onFinalMiss?opts.onFinalMiss():finalMiss;
           const d=s.diag&&s.diag[n-1];
-          miss((d?d.m:"Этот вариант не подходит.")+(total>=2?" Это вторая ошибка в ответе — задача в счёт не пойдёт; найдите верный номер, чтобы закончить разбор.":""));
+          miss((d?d.m:"Этот вариант не подходит.")+(total>=2?" Это вторая ошибка в ответе — задача в счёт не пойдёт; найди верный номер, чтобы закончить разбор.":""));
           return;
         }
         const tr=in2&&(s.traps2||[]).find(t=>qcmp(v1,Q(t.v1))===0&&qcmp(v2,Q(t.v2))===0);
-        miss(tr?tr.m:(in2?"Пока не сходится: проверьте оба числа.":"Пока не сходится: проверьте вычисление.")+tail);
+        miss(tr?tr.m:(in2?"Пока не сходится: проверь оба числа.":"Пока не сходится: проверь вычисление.")+tail);
       };
       showFn=()=>{
         usedShow=true;
@@ -2764,7 +2765,7 @@ function genForSelection(){
     const open=CP.openTypes();
     if(open.length) return genType(pick(open));
     reviewOn=false;
-    reviewBanner("<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выберите любой тип ниже.");
+    reviewBanner("<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип ниже.");
   }
   const subs=STEP_GROUPS[stepGroup].subs.filter(s=>s.id!=="mix").map(s=>stepGroup+"/"+s.id);
   return genType(stepSub==="mix"?pick(subs):stepGroup+"/"+stepSub);
@@ -2887,7 +2888,7 @@ function renderMarTask(){
         b.classList.add("good"); lockOpts();
         msg.className="msg good";
         msg.textContent=st.shown?"верно ✓ (после показа шага задача в счёт не идёт)"
-          :st.fm>1?"Верно, но ошибок было больше одной — задача в счёт не идёт. Разберите её по шагам.":"верно ✓";
+          :st.fm>1?"Верно, но ошибок было больше одной — задача в счёт не идёт. Разбери её по шагам.":"верно ✓";
         solved();
       } else {
         b.classList.add("bad"); b.disabled=true;
@@ -2983,7 +2984,7 @@ function finishQuiz7(list,res){
   const box=el("quizBox");
   box.innerHTML='<div aria-live="polite"><div class="qscore">'+pts+' / '+QUIZ_TOTAL+'</div><p>'+(pts>=PASS_AT
     ?"Зачёт сдан: "+pts+" из "+QUIZ_TOTAL+" (нужно "+PASS_AT+")."
-    :"Для зачёта нужно "+PASS_AT+" из "+QUIZ_TOTAL+". Разберите ошибки ниже — и попробуйте ещё раз.")+'</p></div><h3>Разбор зачёта</h3>'+
+    :"Для зачёта нужно "+PASS_AT+" из "+QUIZ_TOTAL+". Разбери ошибки ниже — и попробуй ещё раз.")+'</p></div><h3>Разбор зачёта</h3>'+
     res.map((r,i)=>'<div class="qrow">'+(r.ok
       ?'<div class="taskline" style="margin:0">'+(i+1)+'. '+typeName(r.t.tt)+'</div><div class="msg good" style="margin-left:0">✓ верно: вариант '+r.t.key+'</div>'
       :'<div class="taskline" style="margin:0">'+(i+1)+'.</div>'+taskConditionHtml(Object.assign({},r.t,{src:""}))+'<div class="optlist">'+optionsHtml(r.t)+'</div>'+
@@ -3072,7 +3073,7 @@ window.addEventListener("DOMContentLoaded",()=>{
   if(CP.REVIEW){ // ?mode=review — сразу работа над ошибками
     const open=CP.openTypes();
     if(open.length){ reviewOn=true; reviewBanner("<b>Работа над ошибками.</b> Задачи только тех типов, где были ошибки: "+open.map(typeName).join("; ")+". Тип закрывается после трёх верных решений подряд. Выбор типа ниже — выход из повтора."); }
-    else reviewBanner("<b>Работа над ошибками.</b> Открытых ошибок нет — выберите любой тип ниже.");
+    else reviewBanner("<b>Работа над ошибками.</b> Открытых ошибок нет — выбери любой тип ниже.");
     switchTab("steps");
   }
   renderStepChips(); newStepTask(); updStepCnt();
