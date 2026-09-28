@@ -193,6 +193,17 @@ details.teacher summary{cursor:pointer;font-weight:600;font-size:16px}
 details.teacher li{margin:4px 0}
 .note{font-size:13.5px;color:var(--ink-soft);margin-top:6px}
 
+/* доступность (курс ОГЭ, задача 03D): кнопки и поля не ниже 44 px, видимый фокус */
+.modes button,.types button,button.btn,.mc button,.chips button,.slot,input.ans{min-height:44px}
+:focus-visible{outline:3px solid var(--blue-dark);outline-offset:2px}
+input.ans:focus-visible{outline:3px solid var(--blue-dark);outline-offset:2px}
+.crumbs{display:inline-flex;align-items:center;min-height:44px;font-size:14.5px;color:var(--blue);text-decoration:none}
+.crumbs:hover{text-decoration:underline}
+@media print{
+  .crumbs,.modes,.mode-desc,#typesWrap,.focus,.btns,.feedback,.panel,details.teacher,.chips,.note{display:none !important}
+  .card{background-image:none;box-shadow:none}
+}
+
 @media (max-width:480px){
   body{font-size:16px}
   .card{padding:15px 13px 15px 42px;background-size:100% 100%,22px 22px,22px 22px}
@@ -204,6 +215,7 @@ details.teacher li{margin:4px 0}
 </head>
 <body>
 <div class="wrap">
+<a class="crumbs" href="../oge/">← Курс ОГЭ</a>
 <header>
   <h1>ОГЭ, задание 12: расчёты по формулам</h1>
   <p class="sub">Задание несложное — важно спокойно пройти цепочку: <b>прочитал формулу → понял, что ищем → подставил → посчитал → проверил формат ответа</b>. Это тренажёр навыка, а не тест на скорость.</p>
@@ -228,7 +240,7 @@ details.teacher li{margin:4px 0}
     <button class="btn btn-check" id="copyBtn">Скопировать для учителя</button>
     <button class="btn btn-ghost" id="resetBtn">Сбросить прогресс</button>
   </div>
-  <div id="copyArea"></div>
+  <div id="copyArea" aria-live="polite"></div>
   <p class="note">Прогресс хранится только в этом браузере. Если разбор или шаг был показан до проверки, задание не идёт в зачёт — но разобраться важнее, чем набрать очки.</p>
 </div>
 
@@ -261,7 +273,7 @@ function fmtSp(n){ /* с тонкими пробелами для чтения �
   return (neg?'−':'')+i+(s[1]?','+s[1]:'');
 }
 function frac(a,b){return '<span class="fr"><span>'+a+'</span><span>'+b+'</span></span>'}
-function esc(s){return String(s)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 
 /* нормализация ответа */
 function parseAns(raw){
@@ -1034,7 +1046,7 @@ function plainCardHTML(task,extraTop){
       '<button class="btn btn-ghost" id="solBtn">Показать разбор</button>'+
       '<button class="btn btn-next" id="nextBtn">Следующее задание</button>'+
     '</div>'+
-    '<div class="feedback" id="fb"></div>'+
+    '<div class="feedback" id="fb" aria-live="polite"></div>'+
     solutionBlock(task)+
   '</div>';
 }
@@ -1061,7 +1073,7 @@ function renderFind(){
   $('#taskArea').innerHTML='<div class="card">'+badge(cur.t)+
     '<p class="story">'+cur.story+'</p>'+
     '<div class="formula-box">'+cur.formula+'</div>'+q1+
-    '<div class="feedback" id="fb"></div>'+
+    '<div class="feedback" id="fb" aria-live="polite"></div>'+
     '<div class="btns"><button class="btn btn-hint" id="hintBtn">Подсказка</button><button class="btn btn-next" id="nextBtn">Следующее задание</button></div>'+
   '</div>';
   $('#nextBtn').onclick=newTask;
@@ -1139,7 +1151,7 @@ function renderSubst(){
       '<button class="btn btn-ghost" id="solBtn">Показать разбор</button>'+
       '<button class="btn btn-next" id="nextBtn">Следующее задание</button>'+
     '</div>'+
-    '<div class="feedback" id="fb"></div>'+
+    '<div class="feedback" id="fb" aria-live="polite"></div>'+
     solutionBlock(cur)+
   '</div>';
   var slots=Array.prototype.slice.call(document.querySelectorAll('.slot'));
@@ -1250,7 +1262,7 @@ function drawSteps(){
     '<p class="story">'+cur.story+'</p>'+
     '<div class="formula-box">'+cur.formula+'</div>'+
     doneHtml+curHtml+
-    '<div class="feedback" id="fb"></div>'+
+    '<div class="feedback" id="fb" aria-live="polite"></div>'+
     '<div class="btns" style="margin-top:14px"><button class="btn btn-next" id="nextBtn">Следующее задание</button></div>'+
   '</div>';
   $('#nextBtn').onclick=newTask;
@@ -1309,7 +1321,7 @@ function renderErrors(){
     '<div class="step-cur"><div class="prompt">В чём ошибка?</div><div class="mc" id="mcErr">'+
       options.map(function(o,i){return '<button data-i="'+i+'">'+o+'</button>'}).join('')+
     '</div></div>'+
-    '<div class="feedback" id="fb"></div>'+
+    '<div class="feedback" id="fb" aria-live="polite"></div>'+
     solutionBlock(cur)+
     '<div class="btns" style="margin-top:12px"><button class="btn btn-ghost" id="solBtn">Показать верное решение</button><button class="btn btn-next" id="nextBtn">Следующее задание</button></div>'+
   '</div>';
@@ -1354,7 +1366,7 @@ function renderDiagTask(){
       '<button class="btn btn-check" id="checkBtn">Ответить</button>'+
       '<button class="btn btn-ghost" id="skipBtn">Пропустить</button>'+
     '</div>'+
-    '<div class="feedback" id="fb"></div>'+
+    '<div class="feedback" id="fb" aria-live="polite"></div>'+
   '</div>';
   var answered=false;
   function submit(skipped){
@@ -1405,7 +1417,7 @@ function renderDiagReport(){
       '<button class="btn btn-ghost" id="copyDiagBtn">Скопировать результат</button>'+
       '<button class="btn btn-ghost" id="toStepsBtn">Перейти к режиму «Считаем по шагам»</button>'+
     '</div>'+
-    '<div id="copyDiagArea"></div>'+
+    '<div id="copyDiagArea" aria-live="polite"></div>'+
   '</div>';
   $('#againBtn').onclick=startDiag;
   $('#toStepsBtn').onclick=function(){setMode('steps')};

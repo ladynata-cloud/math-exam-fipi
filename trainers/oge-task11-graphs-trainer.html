@@ -221,12 +221,24 @@ footer.site a:hover{text-decoration:underline}
   .graphwrap svg{max-width:100%}
   table.pts input{width:52px}
 }
+/* доступность (курс ОГЭ, задача 03D): кнопки и поля не ниже 44 px, видимый фокус */
+.chips .btn,input.ans,table.pts input{min-height:44px}
+:focus-visible{outline:3px solid var(--accent-dark); outline-offset:2px}
+input.ans:focus-visible,table.pts input:focus-visible{outline:3px solid var(--accent-dark); outline-offset:2px}
+.crumbs{display:inline-flex; align-items:center; min-height:44px; font-size:.92rem; color:var(--accent-dark); text-decoration:none}
+.crumbs:hover{text-decoration:underline}
+@media print{
+  header.site nav.tabs,.crumbs,.btnrow,.btn,.chips,.fb,footer.site,.dlrow,.answer-line{display:none !important}
+  section.module{display:none !important}
+  section.module.active{display:block !important}
+}
 </style>
 </head>
 <body>
 
 <header class="site">
   <div class="wrap">
+    <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
     <div class="brand">mathexam.space · ОГЭ по математике</div>
     <h1>Задание 11. Графики функций — тренажёр, который учит читать графики</h1>
     <p class="lead">График не нужно угадывать. В задании 11 всего четыре семейства функций —
@@ -270,9 +282,9 @@ footer.site a:hover{text-decoration:underline}
       <button class="btn btn-ghost" id="m1-hint">Подсказка</button>
       <button class="btn" id="m1-next">Следующее задание</button>
     </div>
-    <div class="fb hint" id="m1-hintbox"></div>
-    <div class="fb soft" id="m1-soft"></div>
-    <div class="fb good" id="m1-good"></div>
+    <div class="fb hint" id="m1-hintbox" aria-live="polite"></div>
+    <div class="fb soft" id="m1-soft" aria-live="polite"></div>
+    <div class="fb good" id="m1-good" aria-live="polite"></div>
   </div>
 </section>
 
@@ -363,9 +375,9 @@ footer.site a:hover{text-decoration:underline}
       <button class="btn btn-ghost" id="m2g-hint">Подсказка</button>
       <button class="btn" id="m2g-next">Следующая формула</button>
     </div>
-    <div class="fb hint" id="m2g-hintbox"></div>
-    <div class="fb soft" id="m2g-soft"></div>
-    <div class="fb good" id="m2g-good"></div>
+    <div class="fb hint" id="m2g-hintbox" aria-live="polite"></div>
+    <div class="fb soft" id="m2g-soft" aria-live="polite"></div>
+    <div class="fb good" id="m2g-good" aria-live="polite"></div>
     <div class="graphwrap" id="m2g-graphwrap" style="display:none"><div id="m2g-graph"></div></div>
     <div class="calc-line math" id="m2g-calc"></div>
   </div>
@@ -479,9 +491,9 @@ footer.site a:hover{text-decoration:underline}
     <h3 id="m3-title"></h3>
     <div class="formula-big math" id="m3-formula"></div>
     <div id="m3-stage"></div>
-    <div class="fb hint" id="m3-hintbox"></div>
-    <div class="fb soft" id="m3-soft"></div>
-    <div class="fb good" id="m3-good"></div>
+    <div class="fb hint" id="m3-hintbox" aria-live="polite"></div>
+    <div class="fb soft" id="m3-soft" aria-live="polite"></div>
+    <div class="fb good" id="m3-good" aria-live="polite"></div>
     <div class="graphwrap" id="m3-graphwrap" style="display:none"><div id="m3-graph"></div></div>
     <div class="btnrow"><button class="btn" id="m3-next">Следующее задание</button></div>
   </div>
@@ -519,9 +531,9 @@ footer.site a:hover{text-decoration:underline}
       <button class="btn btn-ghost" id="m4-show">Показать разбор</button>
       <button class="btn" id="m4-next">Следующее задание</button>
     </div>
-    <div class="fb hint" id="m4-hintbox"></div>
-    <div class="fb soft" id="m4-soft"></div>
-    <div class="fb good" id="m4-good"></div>
+    <div class="fb hint" id="m4-hintbox" aria-live="polite"></div>
+    <div class="fb soft" id="m4-soft" aria-live="polite"></div>
+    <div class="fb good" id="m4-good" aria-live="polite"></div>
     <div class="fb hint" id="m4-razbor"></div>
   </div>
 </section>

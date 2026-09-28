@@ -159,10 +159,23 @@ details.spoil{border:1.4px dashed var(--line);border-radius:10px;padding:8px 12p
 details.spoil summary{cursor:pointer;color:var(--pen);font-weight:600;font-size:14.5px}
 hr.thin{border:0;border-top:1px solid var(--line);margin:14px 0}
 .footer-note{color:var(--muted);font-size:13px;margin-top:8px}
+/* доступность (курс ОГЭ, задача 03D): кнопки и поля не ниже 44 px, видимый фокус */
+.tab,button.btn,button.choice,.fchip,.togglefrac,.casebtn,.ansfield input,.fracIn input{min-height:44px}
+details.spoil summary{padding:10px 0;line-height:24px}
+:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+.ansfield input:focus-visible,.fracIn input:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+.crumbs{display:inline-flex;align-items:center;min-height:44px;font-size:14.5px;color:var(--pen);text-decoration:none}
+.crumbs:hover{text-decoration:underline}
+@media print{
+  body{background-image:none}
+  .crumbs,.tabs,.btnrow,.fb,.filters,.mstats,.togglefrac,.selfcheck{display:none !important}
+  .card{box-shadow:none}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
+<a class="crumbs" href="../oge/">← Курс ОГЭ</a>
 <header class="top">
   <h1>ОГЭ №14. Прогрессии: формулы и здравый смысл</h1>
   <p class="subtitle">Каждую задачу можно решить двумя путями: таблицей шагов и формулой из справочника. Здесь тренируем оба.</p>
@@ -1649,7 +1662,7 @@ function renderL1(seed){
     <div class="ansrow"><span class="ansfield"><input id="l1in" inputmode="numeric" placeholder="?"></span>
       <button class="btn mini" id="l1ck">Проверить</button>
       <button class="ghost btn mini peekbtn" id="l1show">Показать шаг</button></div>
-    <div class="fb" id="l1fb"></div>
+    <div class="fb" aria-live="polite" id="l1fb"></div>
     <div id="l1more"></div>
   `;
   const inp=el.querySelector("#l1in"), fb=el.querySelector("#l1fb");
@@ -1685,7 +1698,7 @@ function renderL2(seed){
     <div class="ansrow"><span class="ansfield"><input id="l2in" inputmode="numeric" placeholder="?"></span>
       <button class="btn mini" id="l2ck">Проверить</button>
       <button class="ghost btn mini peekbtn" id="l2show">Показать ответ</button></div>
-    <div class="fb" id="l2fb"></div>
+    <div class="fb" aria-live="polite" id="l2fb"></div>
     <div id="l2more"></div>
   `;
   const inp=el.querySelector("#l2in"), fb=el.querySelector("#l2fb");
@@ -1724,7 +1737,7 @@ function renderL3(seed){
     <div class="ansrow"><span class="ansfield"><input id="l3in" inputmode="numeric" placeholder="сумма"></span>
       <button class="btn mini" id="l3ck">Проверить</button>
       <button class="ghost btn mini peekbtn" id="l3show">Показать ответ</button></div>
-    <div class="fb" id="l3fb"></div>
+    <div class="fb" aria-live="polite" id="l3fb"></div>
     <div id="l3more"></div>
   `;
   const inp=el.querySelector("#l3in"), fb=el.querySelector("#l3fb");
@@ -1772,7 +1785,7 @@ function renderL4(seed){
     <div class="ansrow"><span class="ansfield"><input id="l4in" inputmode="numeric" placeholder="?"></span>
       <button class="btn mini" id="l4ck">Проверить</button>
       <button class="ghost btn mini peekbtn" id="l4show">Показать шаг</button></div>
-    <div class="fb" id="l4fb"></div>
+    <div class="fb" aria-live="polite" id="l4fb"></div>
     <div id="l4more"></div>
   `;
   const inp=el.querySelector("#l4in"), fb=el.querySelector("#l4fb");
@@ -1820,7 +1833,7 @@ function renderL5(idx){
     <div class="grouplbl">Что спрашивают?</div>
     <div id="l5b"></div>
     <div class="btnrow"><button class="btn mini" id="l5ck" disabled>Проверить</button></div>
-    <div class="fb" id="l5fb"></div>
+    <div class="fb" aria-live="polite" id="l5fb"></div>
     <div id="l5more"></div>
   `;
   const correctChange = q.type.startsWith("ap")? "add" : "mul";
@@ -2091,7 +2104,7 @@ function fillActive(div,s,i){
       <button class="btn mini" id="stp${i}-ck">Проверить</button>
       <button class="ghost btn mini peekbtn" id="stp${i}-sh">Показать шаг</button>
     </div>
-    <div class="fb" id="stp${i}-fb"></div>`;
+    <div class="fb" aria-live="polite" id="stp${i}-fb"></div>`;
   const ans=mountAnswer("stp"+i, "");
   const fb=div.querySelector("#stp"+i+"-fb");
   div.querySelector("#stp"+i+"-ck").onclick=()=>{
@@ -2111,7 +2124,7 @@ function fillActive(div,s,i){
   };
 }
 function renderChoiceStep(div,s,i){
-  div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div class="btnrow" id="stp${i}-opts"></div><div class="fb" id="stp${i}-fb"></div>`;
+  div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div class="btnrow" id="stp${i}-opts"></div><div class="fb" aria-live="polite" id="stp${i}-fb"></div>`;
   const opts=div.querySelector("#stp"+i+"-opts"), fb=div.querySelector("#stp"+i+"-fb");
   let handled=false;
   s.choice.options.forEach(o=>{
@@ -2131,7 +2144,7 @@ function renderBuildStep(div,s,i){
     <div id="stp${i}-tape"></div>
     <div class="btnrow"><button class="btn mini" id="stp${i}-add">Добавить минуту</button>
     <button class="ghost btn mini" id="stp${i}-done" disabled>Готово</button></div>
-    <div class="fb" id="stp${i}-fb"></div>`;
+    <div class="fb" aria-live="polite" id="stp${i}-fb"></div>`;
   const tape=div.querySelector("#stp"+i+"-tape"), fb=div.querySelector("#stp"+i+"-fb");
   const doneBtn=div.querySelector("#stp"+i+"-done"), addBtn=div.querySelector("#stp"+i+"-add");
   function draw(){
@@ -2295,7 +2308,7 @@ function nextMarathon(){
       <button class="btn" id="m-ck">Проверить</button>
       <button class="ghost btn" id="m-skip">Пропустить</button>
     </div>
-    <div class="fb" id="m-fb"></div>
+    <div class="fb" aria-live="polite" id="m-fb"></div>
     <div id="m-after"></div>
   </div>`;
   const ans=mountAnswer("m", task.unit);
@@ -2393,7 +2406,7 @@ function drawMStep(local, task){
 }
 function fillActiveM(div,s,i,local,task){
   if(s.choice){
-    div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div class="btnrow" id="mo${i}"></div><div class="fb" id="mf${i}"></div>`;
+    div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div class="btnrow" id="mo${i}"></div><div class="fb" aria-live="polite" id="mf${i}"></div>`;
     const opts=div.querySelector("#mo"+i), fb=div.querySelector("#mf"+i);
     s.choice.options.forEach(o=>{ const b=document.createElement("button"); b.className="choice"; b.innerHTML=o.t;
       b.onclick=()=>{ if(o.ok){ b.classList.add("sel-ok"); [...opts.children].forEach(x=>{if(x!==b)x.disabled=true;}); fb.className="fb ok"; fb.innerHTML=s.choice.why; setTimeout(()=>{local.cur=i+1;drawMStep(local,task);},50); }
@@ -2405,7 +2418,7 @@ function fillActiveM(div,s,i,local,task){
     stepsUI.buildIdx=0;
     const b=s.build;
     div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div id="mt${i}"></div>
-      <div class="btnrow"><button class="btn mini" id="ma${i}">Добавить минуту</button><button class="ghost btn mini" id="md${i}" disabled>Готово</button></div><div class="fb" id="mf${i}"></div>`;
+      <div class="btnrow"><button class="btn mini" id="ma${i}">Добавить минуту</button><button class="ghost btn mini" id="md${i}" disabled>Готово</button></div><div class="fb" aria-live="polite" id="mf${i}"></div>`;
     const tape=div.querySelector("#mt"+i), fb=div.querySelector("#mf"+i), dn=div.querySelector("#md"+i), ad=div.querySelector("#ma"+i);
     let idx=0;
     function draw(){ let h='<div class="tape">';
@@ -2418,7 +2431,7 @@ function fillActiveM(div,s,i,local,task){
     draw(); return;
   }
   div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div>${answerInput("ms"+i)}
-    <div class="btnrow"><button class="btn mini" id="msck${i}">Проверить</button><button class="ghost btn mini peekbtn" id="mssh${i}">Показать шаг</button></div><div class="fb" id="mf${i}"></div>`;
+    <div class="btnrow"><button class="btn mini" id="msck${i}">Проверить</button><button class="ghost btn mini peekbtn" id="mssh${i}">Показать шаг</button></div><div class="fb" aria-live="polite" id="mf${i}"></div>`;
   const ans=mountAnswer("ms"+i,""); const fb=div.querySelector("#mf"+i);
   div.querySelector("#msck"+i).onclick=()=>{ const v=ans.read(); if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
     if(Fr.eq(v,s.a)){ local.cur=i+1; drawMStep(local,task); }

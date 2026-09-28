@@ -155,12 +155,26 @@ details.bytype td,details.bytype th{border:1px solid #cdd9e6;padding:3px 10px;fo
   button.act{font-size:.9em;padding:7px 10px}
   .card{padding:12px 12px}
 }
-button:focus-visible,input:focus-visible,.chip:focus-visible{outline:3px solid #7fb0e8;outline-offset:2px}
-@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+/* доступность (курс ОГЭ, задача 03D): кнопки и поля не ниже 44 px, контрастный фокус */
+nav.tabs button,button.act,.chip,.aw-tog,input.aw-dec,input.aw-one{min-height:44px}
+.aw-cell{height:44px}
+.crumbs{display:inline-flex;align-items:center;min-height:44px;font-size:.9em;color:var(--pen);text-decoration:none}
+.crumbs:hover{text-decoration:underline}
+button:focus-visible,input:focus-visible,.chip:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}
+  .mk-band.mk-wink{opacity:.55}}
+@media print{
+  body{background:#fff}
+  .crumbs,nav.tabs,.chips,button,.fb,.statbar,.aw-tog{display:none !important}
+  section.tab{display:none !important}
+  section.tab.on{display:block !important}
+  .card{box-shadow:none}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
+<a class="crumbs" href="../oge/">← Курс ОГЭ</a>
 <h1>ОГЭ по математике. Задание 10: вероятность</h1>
 <div class="sub">Три режима: сначала <b>учимся</b>, потом решаем <b>по шагам</b>, затем — <b>марафон</b>. Ошибся — пробуй снова; посмотрел решение — рядом появится свежая похожая задача для второй попытки. Ответ вводим десятичной дробью (0,25) или, нажав «ввести дробью», обыкновенной.</div>
 <span id="selfcheck">самопроверка…</span>
@@ -806,7 +820,7 @@ function mountSteps(root,task,onDone,hooks){
       +awHTML(id, s.ans.d===1n)
       +` <button class="act" id="${id}-ck">Проверить</button>`
       +`<button class="act show" id="${id}-sh">Показать шаг</button>`
-      +`<span class="fb" id="${id}-fb"></span>`;
+      +`<span class="fb" aria-live="polite" id="${id}-fb"></span>`;
     root.appendChild(div);
     const check=()=>{
       const v=awRead(id);
@@ -942,7 +956,7 @@ function marNew(){
     +`<button class="act ghost" id="${id}-hint">Подсказка</button>`
     +`<button class="act ghost" id="${id}-steps">Решить по шагам</button>`
     +`<button class="act show" id="${id}-sh">Показать разбор</button></div>`
-    +`<div id="${id}-hintbox"></div><span class="fb" id="${id}-fb"></span><div id="${id}-after"></div>`;
+    +`<div id="${id}-hintbox"></div><span class="fb" aria-live="polite" id="${id}-fb"></span><div id="${id}-after"></div>`;
   root.appendChild(card);
   const marTreeSvg = t.code==='10.6' ? card.querySelector('svg') : null;
   const after=()=>{
@@ -1005,7 +1019,7 @@ function buildMini(box, spec, fixedId){
   const id=fixedId||('mini'+(++UID));
   box.innerHTML=`<div class="mq">${spec.html}</div>
   <div style="margin-top:8px">${awHTML(id,!!spec.intOnly)} <button class="act" id="${id}-ck">Проверить</button><button class="act show" id="${id}-sh">Показать</button>
-  <span class="fb" id="${id}-fb"></span></div><div id="${id}-more"></div>`;
+  <span class="fb" aria-live="polite" id="${id}-fb"></span></div><div id="${id}-more"></div>`;
   const accept=(v)=>!!v&&(fEq(v,spec.ansF)||(spec.needRound&&spec.rounded&&fEq(v,spec.rounded)));
   const more=(pre)=>{
     el(id+'-more').innerHTML=(pre||'')+`<button class="act ghost" id="${id}-again">Ещё пример этой темы →</button>`;
@@ -1127,7 +1141,7 @@ function quizNew(){
   TYPE_LIST.forEach(([code,name])=>{chips+=`<button class="chip q" data-code="${code}">${code} ${name}</button>`;});
   a.innerHTML=`<div class="card"><div style="margin:6px 0">${quizTask.text}</div>${quizTask.svg||''}
   <div><b>Какой это тип?</b></div><div class="chips">${chips}</div>
-  <span class="fb" id="quiz-fb"></span><div id="quiz-after"></div></div>`;
+  <span class="fb" aria-live="polite" id="quiz-fb"></span><div id="quiz-after"></div></div>`;
   a.querySelectorAll('.chip.q').forEach(b=>{
     b.onclick=()=>{
       if(b.dataset.code===quizTask.code){
