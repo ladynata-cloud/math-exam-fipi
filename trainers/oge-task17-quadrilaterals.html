@@ -1522,6 +1522,92 @@ function renderPinPanel(pid){const pin=PINS.find(p=>p.id===pid);
   $('pinPanel').querySelectorAll('[data-rz]').forEach(b=>b.onclick=()=>{setTab('razbor');renderRazborDetail(b.dataset.rz);});
   $('pinPanel').querySelectorAll('[data-tr]').forEach(b=>b.onclick=()=>{const k=b.dataset.tr;FILT.topic=S17[k].topic;FILT.sub=k;setTab('train');});
 }
+/*__SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 (канон CLAUDE.md, решение F4 делегата
+   владельца). Блок побайтно одинаков в тренажёрах 16, 17, 18, 23, 24, 25;
+   копии сверяет гейт tools/oge-geometry-contract.test.mjs. Каждая проверка
+   дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const STK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи и решения: нет null, undefined, NaN, Infinity и «1√» */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|(^|[^\d,.])1√/.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* последний шаг разбора содержит проверяемый ответ хотя бы в одной записи */
+  last:function(step,forms,tag,errs){
+    const t=String(step==null?'':step).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ');
+    const norm=function(f){return String(f).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};
+    if(!forms.some(function(f){return f!=null&&norm(f)!==''&&t.indexOf(norm(f))>=0;}))
+      errs.push(tag+': последний шаг не содержит ответ ('+forms.filter(function(f){return f!=null;}).join(' / ')+')');
+  },
+  /* ловушки {v, e, m}: ни одна не принимается как ответ, разные сообщения не ловят одно число */
+  traps:function(list,tag,errs,isAns){
+    (list||[]).forEach(function(t,i){
+      if(!isFinite(t.v)){errs.push(tag+': ловушка — не число');return;}
+      if(isAns(t.v))errs.push(tag+': ловушка '+t.v+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&Math.abs(t.v-u.v)<=(t.e||0)+(u.e||0))errs.push(tag+': ловушки '+t.v+' и '+u.v+' ловят одно число');}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__SELFTEST_KIT_END__*/
+/* общие проверки одной задачи: чертёж в рамке, текст без null/NaN, последний шаг с ответом, ловушки */
+function stkTask(t,tag,errs){
+  STK.svg(t.svg,tag,errs);
+  STK.text([t.text].concat(t.sol).join(' '),tag,errs);
+  if(t.ansFmt==='concat')return;
+  STK.last(t.sol[t.sol.length-1],[fnum(t.ans)],tag,errs);
+  STK.traps(t.diag,tag,errs,v=>Math.abs(v-t.ans)<=Math.max(1e-6,Math.abs(t.ans)*1e-6));
+}
 /* ---------- СЕЛФТЕСТ (?selftest=1) ---------- */
 function selftest(){const out=[];let bad=0;
   const say=s=>out.push(s), fail=s=>{bad++;out.push('✘ '+s)};
@@ -1564,13 +1650,19 @@ function selftest(){const out=[];let bad=0;
       if(!S17[k])fail('пин '+p.id+': нет подтипа '+k);});});
   for(const k in SUB2PIN)if(!PINS.some(p=>p.id===SUB2PIN[k]))fail('SUB2PIN бьёт в пустоту: '+k);
   say('карта листа: '+PINS.length+' пинов, '+pinned+' прикреплений');
+  // 7. общие проверки канона: чертёж в рамке, текст без null/NaN, последний шаг с ответом, ловушки
+  const E=[];ARCHIVE.forEach(r=>{if(S17[r.sub])stkTask(build(r.sub,r.p,{}),'№'+r.nums[0],E);});
+  SUBKEYS.forEach(k=>{for(let i=0;i<60;i++)stkTask(build(k,S17[k].gen(),{gen:true}),k,E);});
+  E.slice(0,40).forEach(fail);if(E.length>40)fail('… и ещё '+(E.length-40));
+  say('общие проверки: чертежи, тексты, последний шаг, ловушки');
   out.unshift(bad? '✘ СЕЛФТЕСТ: '+bad+' ошибок':'✔ СЕЛФТЕСТ ПРОЙДЕН');
-  return {ok:!bad,report:out.join('\n')};
+  return {ok:!bad,bad:bad,report:out.join('\n'),fails:out.filter(x=>x.indexOf('✘ ')===0&&x.indexOf('✘ СЕЛФТЕСТ')!==0)};
 }
 /* ---------- СТАРТ ---------- */
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
 if(location.search.indexOf('selftest=1')>=0){
   const r=selftest();const box=$('stbox');box.style.display='block';box.textContent=r.report;
+  STK.done('OGE17',r.fails);
 }
 setTab(CP.REVIEW?'train':'razbor');   // ?mode=review — сразу работа над ошибками
 

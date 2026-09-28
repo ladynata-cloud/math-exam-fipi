@@ -669,7 +669,7 @@ TYPES.push({
     const Aang=RAD(180-C), Dang=RAD(180-B);
     const Bp=rayCircle(Ap,[Math.cos(Aang),Math.sin(Aang)],O,R);
     const Cp=rayCircle(Dp,[Math.cos(Math.PI-Dang),Math.sin(Dang)],O,R);
-    const pts=[Ap,Dp,O]; if(Bp)pts.push(Bp); if(Cp)pts.push(Cp);
+    const pts=[Ap,Dp,O,[0,R],[0,-R]]; if(Bp)pts.push(Bp); if(Cp)pts.push(Cp);   // окружность целиком в кадре
     const M=fit(pts,VW,VH,PAD).m;
     const A_=M(...Ap),D_=M(...Dp),O_=M(...O),B_=Bp?M(...Bp):null,C_=Cp?M(...Cp):null;
     let s='';
@@ -822,7 +822,8 @@ TYPES.push({
       return [ux,uy]; }
     const O=circum(A,B,C);
     const AD=AB*AB/AC; const D=lerp(A,C,AD/AC);
-    const M=fit([A,B,C,O,D],VW,VH,PAD).m;
+    const Rc=Math.hypot(A[0]-O[0],A[1]-O[1]);   // описанная окружность целиком в кадре
+    const M=fit([A,B,C,O,D,[O[0]-Rc,O[1]],[O[0]+Rc,O[1]],[O[0],O[1]-Rc],[O[0],O[1]+Rc]],VW,VH,PAD).m;
     const A_=M(...A),B_=M(...B),C_=M(...C),O_=M(...O),D_=M(...D);
     // радиус описанной в px
     const Rpx=len2(sub(A_,O_));
@@ -908,7 +909,7 @@ TYPES.push({
     const nx=(r1-r2)/d, ny=Math.sqrt(Math.max(0,1-nx*nx));
     const A=[r1*nx, r1*ny], B=[r1*nx, -r1*ny];
     const C=[d+r2*nx, r2*ny], D=[d+r2*nx, -r2*ny];
-    const M=fit([O1,O2,[0,r1],[0,-r1],[d,r2],[d,-r2],A,B,C,D],VW,VH,PAD).m;
+    const M=fit([O1,O2,[0,r1],[0,-r1],[-r1,0],[d,r2],[d,-r2],[d+r2,0],A,B,C,D],VW,VH,PAD).m;   // обе окружности целиком в кадре
     const O1_=M(...O1),O2_=M(...O2),T_=M(...T),A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D);
     const r1p=len2(sub(M(r1,0),O1_)), r2p=len2(sub(M(d+r2,0),O2_));
     let s='';
@@ -1816,8 +1817,125 @@ document.addEventListener('click', function(ev){
   }
 });
 
+/*__SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 (канон CLAUDE.md, решение F4 делегата
+   владельца). Блок побайтно одинаков в тренажёрах 16, 17, 18, 23, 24, 25;
+   копии сверяет гейт tools/oge-geometry-contract.test.mjs. Каждая проверка
+   дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const STK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи и решения: нет null, undefined, NaN, Infinity и «1√» */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|(^|[^\d,.])1√/.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* последний шаг разбора содержит проверяемый ответ хотя бы в одной записи */
+  last:function(step,forms,tag,errs){
+    const t=String(step==null?'':step).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ');
+    const norm=function(f){return String(f).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};
+    if(!forms.some(function(f){return f!=null&&norm(f)!==''&&t.indexOf(norm(f))>=0;}))
+      errs.push(tag+': последний шаг не содержит ответ ('+forms.filter(function(f){return f!=null;}).join(' / ')+')');
+  },
+  /* ловушки {v, e, m}: ни одна не принимается как ответ, разные сообщения не ловят одно число */
+  traps:function(list,tag,errs,isAns){
+    (list||[]).forEach(function(t,i){
+      if(!isFinite(t.v)){errs.push(tag+': ловушка — не число');return;}
+      if(isAns(t.v))errs.push(tag+': ловушка '+t.v+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&Math.abs(t.v-u.v)<=(t.e||0)+(u.e||0))errs.push(tag+': ловушки '+t.v+' и '+u.v+' ловят одно число');}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__SELFTEST_KIT_END__*/
+/* -------------------- САМОПРОВЕРКА (?selftest=1) -------------------- */
+function selftest(){
+  const errs=[];
+  if(TYPES.length!==TYPE_IDS.length)errs.push('типов '+TYPES.length+' ≠ TYPE_IDS '+TYPE_IDS.length);
+  TYPES.forEach(T=>{
+    if(typeof T.draw!=='function'||typeof T.build!=='function'||typeof T.cond!=='function'){errs.push('№'+T.id+': нет отрисовщика или сборки');return;}
+    if(TYPE_IDS.indexOf(String(T.id))<0)errs.push('№'+T.id+': нет в TYPE_IDS');
+    T.pool.forEach((p,j)=>{const tag='№'+T.id+'['+j+']';let b;
+      try{b=T.build(p);}catch(e){errs.push(tag+': исключение '+e.message);return;}
+      b.ans.forEach(a=>{if(!isFinite(a.v))errs.push(tag+': неконечный ответ '+a.label);});
+      STK.svg(T.draw(p),tag,errs);
+      STK.text([T.cond(p)].concat(b.steps.map(s=>s.h+' '+(s.why||'')+(s.ask?' '+s.ask.q+' '+s.ask.label:'')),
+        b.ans.map(a=>a.exact),[b.gcta||'',typeof T.notSheet==='string'?T.notSheet:'']).join(' '),tag,errs);
+      const last=b.steps[b.steps.length-1];
+      b.ans.forEach(a=>STK.last(last.h+(last.ask?' '+last.ask.label:''),[a.exact,fmtNum(a.v)],tag+' '+a.label,errs));
+      b.steps.forEach((s,k)=>{if(s.ask&&!isFinite(s.ask.v))errs.push(tag+': шаг '+(k+1)+' — неконечное значение');});
+      if(last.ask&&!b.ans.some(a=>approxEq(last.ask.v,a.v,2e-3)))errs.push(tag+': последний шаг проводки не равен ответу');
+      /* ловушки: ни одна не принимается как ответ, разные сообщения не ловят одно число */
+      const tr=trapsFor(T,p,b);
+      tr.forEach((t,i)=>{
+        if(b.ans.every((a,k)=>t.v[k]==null||approxEq(t.v[k],a.v,2e-3)))errs.push(tag+': ловушка совпадает с ответом');
+        tr.forEach((u,k)=>{if(k>i&&u.m!==t.m&&t.v.every((x,q)=>x==null||u.v[q]==null||Math.abs(x-u.v[q])<=trapBand(x)+trapBand(u.v[q])))
+          errs.push(tag+': две ловушки ловят одно число');});
+      });
+    });
+  });
+  const q=Object.values(EXAM_QUOTA).reduce((a,b)=>a+b,0);
+  if(q!==QUIZ_TOTAL)errs.push('квоты зачёта '+q+' ≠ '+QUIZ_TOTAL);
+  return errs;
+}
+
 /* -------------------- СТАРТ -------------------- */
-function init(){ CP.migrate(r=>CP.num(r.best)); switchTab(CP.REVIEW?'train':'learn'); }
+function init(){
+  if(CP.RO){   // ?selftest=1 — самопроверка; прогресс ученика не трогается
+    const e=selftest();STK.done('OGE25',e);
+    $('panel-learn').innerHTML='<div class="law"><h3>'+(e.length?'САМОПРОВЕРКА: ошибок '+e.length:'САМОПРОВЕРКА ПРОЙДЕНА')+'</h3>'+
+      e.slice(0,60).map(x=>'<div class="muted">'+esc(x)+'</div>').join('')+'</div>';
+    return;
+  }
+  CP.migrate(r=>CP.num(r.best)); switchTab(CP.REVIEW?'train':'learn');
+}
 init();
 </script>
 </body>
