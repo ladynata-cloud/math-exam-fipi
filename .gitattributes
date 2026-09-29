@@ -1,0 +1,2 @@
+# Хаб ведётся в CRLF: CR на конце строки — не ошибка пробелов для git diff --check
+trainers/testing-hub.html whitespace=cr-at-eol
