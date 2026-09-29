@@ -62,10 +62,12 @@ section('1. синтаксис встроенных скриптов (node --che
 
 /* 2. общие блоки, сканы */
 section('2. общие блоки побайтно одинаковы, сканов листа нет', () => {
+  /* тот же блок и в тренажёре 15 (03B, решение делегата: одна копия листа во всех) */
+  const files = TR.map(t => t.file).concat(['trainers/oge-task15-triangles.html']);
   for (const [a, b] of [['/*__SHEET_MAP_START__*/', '/*__SHEET_MAP_END__*/'], ['/*__SELFTEST_KIT_START__*/', '/*__SELFTEST_KIT_END__*/']]) {
-    const copies = TR.map(t => {
-      const s = readTrainer(t.file), i = s.indexOf(a), j = s.indexOf(b);
-      ok(s.split(a).length === 2 && i >= 0 && j > i, '2', t.file + ': блок ' + a + ' должен быть ровно один');
+    const copies = files.map(f => {
+      const s = readTrainer(f), i = s.indexOf(a), j = s.indexOf(b);
+      ok(s.split(a).length === 2 && i >= 0 && j > i, '2', f + ': блок ' + a + ' должен быть ровно один');
       return i >= 0 && j > i ? s.slice(i, j + b.length) : '';
     });
     ok(copies.every(c => c && c === copies[0]), '2', 'копии блока ' + a + ' различаются');
