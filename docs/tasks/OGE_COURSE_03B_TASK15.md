@@ -94,16 +94,16 @@
 
 ## Acceptance criteria
 
-- [ ] Все типы демонстрируются в «Разборе»; чертёж меняется с числами
+- [x] Все типы демонстрируются в «Разборе»; чертёж меняется с числами
       (гейт измеряет пиксели: треугольник 3-4-5 и 5-12-13 отличаются
       пропорциями).
-- [ ] Гейт: 24+ типов × 1000 задач — расхождений с координатным
+- [x] Гейт: 24+ типов × 1000 задач — расхождений с координатным
       пересчётом 0, дублей ловушек 0, ловушка = ответ 0, NaN в SVG 0.
-- [ ] Ядро записи и журнал по контракту; `registry-test` зелёный;
+- [x] Ядро записи и журнал по контракту; `registry-test` зелёный;
       `?mode=review` работает.
-- [ ] 360 px с касанием: чертёж не вытесняет поле ответа, кнопки ≥ 44 px,
+- [x] 360 px с касанием: чертёж не вытесняет поле ответа, кнопки ≥ 44 px,
       `aria-live` на проверке, печатные стили.
-- [ ] Старый адрес перенаправляет; `tools/oge-check-links.mjs` зелёный.
+- [x] Старый адрес перенаправляет; `tools/oge-check-links.mjs` зелёный.
 
 ## Checks and gates
 
@@ -137,7 +137,8 @@
 
 ## Permissions
 
-- `START` granted by owner in the current task conversation: no
+- Implementation and remediation authorized by the owner's direct request
+  on 2026-09-30; see the current remediation record below.
 - Branch creation allowed: yes
 - Local commits allowed: yes
 - Push allowed: yes
@@ -250,6 +251,84 @@ approval.
   sin/cos/tg; доли высоты правильного треугольника — «частями».
 - **Развилка 3.** Вторые формулировки условий правильного треугольника, прототипы с
   другими числами (не 6√3 из банка).
+
+### Owner-authorized review remediation — 2026-09-30
+
+The owner requested an independent review of PR #146, then a second review
+through a student's eyes, and authorized the complete resulting remediation:
+«а ты можешь выполнить всю эту доработку?». This continues the same task and
+Draft PR, from head `64fbd65873b4e32f1f3c4671bb16343afbd50d67` on base
+`010e89c75c0fe110b57c983c728b8216fb38cd9d`, rather than starting a roadmap item.
+
+The technical gates passed at that head, but the student review found incorrect
+topic assignment for individual variants, a false statement about equal parts
+of a height, ambiguous whole-segment labels, overly narrow names and missing
+worked examples of distinct solution methods. The earlier technical verdict
+does not approve the remediated head.
+
+Approved remediation:
+
+- Keep the 26 public type IDs, the trainer TID, the progress contract and
+  existing generated variants. Select displayed topic, name, explanation and
+  quiz membership from the actual problem variant.
+- An isosceles perimeter problem must not count as the Pythagoras quiz slot or
+  show a height/Pythagoras explanation. A height found from hypotenuse segments
+  must state its actual method. Preserve targeted work on the mistaken variant
+  so an unrelated easier variant cannot close that error.
+- Replace the false assertion that the centre divides a height into three
+  equal segments with a question about three equal units in a 2:1 ratio.
+- Label whole segments explicitly where an auxiliary point divides them;
+  verify AC/HC, AB/AM, BC/NC and BH/OB distinctions in rendered figures.
+- Provide selectable examples for substantively different solution methods,
+  broaden family names and split overloaded reasoning steps. Keep correct
+  school geometry and avoid hints that disclose the final answer.
+- Qualify the altitude reference statement; preserve the first completed
+  quiz score even when zero.
+- Add regression checks, run relevant gates and visually verify affected
+  variants on desktop and at 360 px.
+- Reconcile PROJECT_STATUS.md with remote refs, PR state and a read-only
+  production check. Do not assert deployment of this Draft PR.
+
+Merge, auto-merge and deployment remain outside this authorization. The exact
+published head requires a new independent review under the HIGH policy.
+
+Remediation execution result (supersedes the earlier gate counts):
+
+- All findings above are implemented. The 26 public IDs remain unchanged;
+  all 66 semantic variants have selectable worked examples and accurate
+  names, topic routing and method explanations.
+- Variant mistake details are bounded to known variants within the trainer's
+  own record. Course journal keys remain `TID|type`; a type closes only after
+  all mistaken methods reach three clean solutions. Legacy errors without
+  method information restart method streaks conservatively and explain this
+  in the UI; other records and stored fields are preserved.
+- `OGE_TASK15_GATE_OK`: 533 checks, zero failures, including the independent
+  text/coordinate solver on 1000 cases per type and teaching regressions.
+- `OGE_TASK15_BROWSER_OK`: 452 checks, zero failures; HTTP and file mode,
+  360 px touch controls, all 66 examples, actual topic-filter clicks,
+  variant-specific review and first quiz score 0/10 with reload.
+- Additional mathematics audit: all 66 prototype answers independently
+  agree; `selftest(1000)` checks 26 026 tasks/figures without errors. All
+  9282 admissible middle-line cases pass overlap, owner-distance and frame
+  checks. The affected diagram families were also visually inspected.
+- Integration checks: registry 2469, adapters 39, junk/helper 438, links
+  33 pages, geometry 1875, geometry texts 107 templates, algebra 668,
+  reset-own-progress 778 checks including 56 mutations; inventory 114
+  including nested cases; board trainer registry 25. All pass.
+- Intermediate failures: widened middle-line labels exposed rare overlaps,
+  fixed without relaxing diagram checks. Sandbox processes stalled during
+  browser runs; the final unchanged browser gate passed outside the sandbox
+  with the same timeouts. The existing junk-test extractor requires LF:
+  its contract fixture was normalized locally for that run and restored,
+  without changing Git content. No remaining final gate failure.
+- Not rerun on this new head: historical standalone trainer-gate mutations
+  (21 Node / 16 browser in the earlier record); unrelated percentages browser
+  gate. Owner's 12-task manual acceptance, a new external exact-head review
+  and production smoke remain outstanding release steps.
+- Scope deviations: none beyond this owner-authorized remediation and the
+  required status reconciliation. The implementation agents' cross-review
+  found no remaining concrete blocker; this is not external head approval.
+- Rollback remains a PR revert; no production or shared trainer was changed.
 
 ## Required handoff
 

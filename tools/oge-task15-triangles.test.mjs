@@ -28,6 +28,9 @@
   11. контракт прогресса: ядро и порог, журнал, повтор, мусор, две вкладки, ?seed;
   12. старая страница — перенаправление, ссылки курса ведут на тренажёр;
   13. доступность в разметке: переход к заданию, reduced-motion, печать, aria-live.
+  14. методическое ревью: доли высоты, отдельные действия, подписи целых отрезков;
+  15. все 66 содержательных вариантов, фактические темы/имена, квота Пифагора;
+  16. ошибки по вариантам: решение по периметру не закрывает ошибку по Пифагору.
 */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -326,6 +329,11 @@ section('11. контракт: ядро и порог, журнал, повто�
     T.run('CP.finishQuiz(7,10)'); const r = rec(S);
     ok(r.best === 7 && r.passed !== true, '11', '7/10 в чистом профиле не сдаёт зачёт: ' + JSON.stringify(r)); }
   { const S = makeStorage(); const T = loadTrainer(FILE, { storage: S, seed: 1 });
+    T.run('CP.finishQuiz(0,10)'); let r = rec(S);
+    ok(r && r.best === 0 && r.total === 10 && r.runs === 1 && r.passed !== true, '11', 'первый зачёт 0/10 сохраняет числовой best: ' + JSON.stringify(r));
+    T.run('CP.finishQuiz(8,10);CP.finishQuiz(0,10)'); r = rec(S);
+    ok(r.best === 8 && r.passed === true && r.runs === 3, '11', '0/10 после успешного зачёта сохраняет лучший результат: ' + JSON.stringify(r)); }
+  { const S = makeStorage(); const T = loadTrainer(FILE, { storage: S, seed: 1 });
     T.run("CP.mlog('areaSin',true)"); ok(!(readKey(S) || {}).mistakes, '11', 'верный ответ без записи журнала завёл запись');
     T.run("CP.mlog('areaSin',false)"); let e = readKey(S).mistakes[TID + '|areaSin'];
     ok(e && e.w === 1 && e.r === 0, '11', 'промах: w = 1');
@@ -390,6 +398,131 @@ section('13. доступность: переход к заданию, reduced-m
   ok(/button,select,input:not\(\[type=checkbox\]\):not\(\[type=radio\]\):not\(\[type=range\]\)\{min-height:44px\}/.test(html), '13', 'цели касания 44 px');
   ok(/:focus-visible\{outline:3px solid/.test(html), '13', 'видимый фокус');
   ok(/Подсказки ничего не отнимают/.test(html), '13', '«Подсказки ничего не отнимают» сказано ученику');
+});
+
+/* 14. регрессии независимого методического ревью: предмет вопроса и подписи */
+section('14. доли высоты, последовательные действия и подписи целых отрезков', () => {
+  const T = loadTrainer(FILE, { seed: 6 });
+  const buildCase = (k, p) => J(T, `build(${JSON.stringify(k)},${JSON.stringify(p)},{})`);
+  for (const [k, p] of [['regr', { d: 'h', k: 5, f: 0 }], ['regH', { d: 'r', k: 5, f: 0 }]]) {
+    const s = buildCase(k, p).steps[0];
+    ok(s.a === 3 && /дол/.test(s.q) && !/На сколько равных частей он делит высоту/.test(s.q)
+      && !/На 3 равные части/.test(s.show), '14', `${k}: вопрос должен считать одинаковые доли, а не приписывать точке O три равных отрезка`);
+  }
+  /* При a = 5√3 отдельно вычисляются AB², AH², BH² и BH. */
+  const h = buildCase('regR', { d: 'a', k: 5, f: 0 }).steps;
+  const expected = [75, 18.75, 56.25, 7.5];
+  ok(h.length >= 5 && expected.every((a, i) => near(h[i].a, a, 1e-9)), '14', 'высота правильного треугольника: отдельные квадраты сторон, разность и корень');
+  const inverseBisector = buildCase('bisIso', { d: 'C', L: 'K', g: 28, f: 0 }).steps;
+  ok(inverseBisector.length === 4 && [84, 2, 3, 28].every((a, i) => near(inverseBisector[i].a, a, 1e-9))
+    && /биссектрис|равнобедрен/i.test(inverseBisector[1].q), '14', 'обратная задача с биссектрисой: отношение углов обосновано до подсчёта долей');
+  for (const [p, answers] of [
+    [{ g: 45, m: 8, b: 10 }, [2, 8, 40]],
+    [{ g: 60, m: 5, b: 10 }, [3, 7.5, 37.5]]
+  ]) {
+    const steps = buildCase('areaSin', p).steps;
+    ok(steps.length === 3 && answers.every((a, i) => near(steps[i].a, a, 1e-9)), '14', `площадь при ${p.g}°: сначала произведение корней, потом AB·sin A и площадь`);
+  }
+  /* Явное имя делает подпись однозначной и у линии, и в вынесенной заметке. */
+  const labels = svg => [...svg.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text>/g)]
+    .map(m => plainText(m[1]).replace(/\s/g, ''));
+  const side = (t, name, value) => labels(t.svg).includes(name + '=' + value);
+  for (const k of ['areaBH', 'midline', 'medianRt', 'regR', 'regr', 'regH']) {
+    const bad = TASKS[k].filter(t => {
+      const p = t.p;
+      if (k === 'areaBH') return !side(t, 'AC', fmt(p.ac));
+      if (k === 'midline') return !side(t, 'AB', fmt(p.x)) || !side(t, 'BC', fmt(p.y));
+      if (k === 'medianRt') return p.d === 'hl' && !side(t, 'AB', fmt(p.c));
+      if (k === 'regR' || k === 'regr') return p.d === 'h' && !side(t, 'BH', fmt(3 * p.k));
+      return ['R', 'r'].includes(p.d) && !side(t, 'BH', '?');
+    });
+    ok(!bad.length, '14', `${k}: подпись всей стороны/высоты допускает чтение как длины её части — ${bad.length}`);
+  }
+  for (const p of [{ d: 'MN', x: 10, y: 21, z: 22 }, { d: 'MN', x: 12, y: 13, z: 15 }, { d: 'P', x: 13, y: 12, z: 15 }]) {
+    const svg = buildCase('midline', p).fig.svg;
+    ok(!textClashes(svg) && !textOwners(svg), '14', 'средняя линия: именованные подписи не перекрываются и относятся к своим сторонам — ' + JSON.stringify(p));
+  }
+});
+
+/* Проверяем предмет задачи по её параметрам, независимо от подписанного topic. */
+function usesPythagoras(t) {
+  return t.k === 'pythLeg' || t.k === 'pythHyp'
+    || (t.k === 'isoLeg' && t.p.d === 'h')
+    || (t.k === 'rtAltitude' && ['CH', 'AH'].includes(t.p.d));
+}
+section('15. содержательные варианты: примеры, темы, имена и квота Пифагора', () => {
+  const T = loadTrainer(FILE, { seed: 6 });
+  /* Не считаем перестановку слов f отдельным способом решения. */
+  const expectedCounts = { angSum: 1, extAng: 2, isoBase: 2, isoApex: 1, bisIso: 2, bisExt: 2,
+    twoExt: 2, bisAlt: 2, altAlt: 2, rtAcute: 3, rtLegSin: 2, rtLegCos: 2, rtLegTan: 2,
+    rtTrig: 10, pythLeg: 2, pythHyp: 1, rtAltitude: 3, areaBH: 2, areaSin: 6, midline: 2,
+    medianRt: 2, regR: 3, regr: 3, regArea: 2, regH: 3, isoLeg: 2 };
+  const variants = J(T, 'TASK_VARIANTS.map(v=>({id:v.id,k:v.k,topic:v.topic,proto:v.proto}))');
+  ok(variants.length === 66 && new Set(variants.map(v => v.id)).size === variants.length, '15', '66 содержательных вариантов с уникальными id');
+  for (const [k, n] of Object.entries(expectedCounts)) {
+    ok(variants.filter(v => v.k === k).length === n, '15', `${k}: в разборе должны быть представлены все ${n} содержательных вариантов`);
+  }
+  for (const v of variants) {
+    const exemplar = J(T, `build(${JSON.stringify(v.k)},${JSON.stringify(v.proto)},{})`);
+    ok(exemplar.variantId === v.id && exemplar.sub.topic === v.topic && exemplar.steps.length > 0, '15', `${v.id}: пример, тема и лестница не соответствуют выбранному варианту`);
+    const generated = J(T, `Array.from({length:12},()=>buildVariant(${JSON.stringify(v.id)})).map(t=>({variantId:t.variantId,k:t.k,topic:t.sub.topic}))`);
+    ok(generated.every(t => t.variantId === v.id && t.k === v.k && t.topic === v.topic), '15', `${v.id}: тренировка выбранного варианта подмешала другой способ решения`);
+  }
+  const by = (k, p) => J(T, `build(${JSON.stringify(k)},${JSON.stringify(p)},{})`);
+  const perimeter = by('isoLeg', { d: 'P', s: 13, a: 10 });
+  ok(perimeter.sub.topic === 'iso' && /периметр/i.test(perimeter.sub.name) && !/Пифагор/.test(perimeter.sub.law), '15', 'боковая сторона по периметру не должна называться задачей на Пифагора');
+  const geometricMean = by('rtAltitude', { d: 'geo', m: 3, n: 4, t: 1 });
+  ok(geometricMean.sub.topic !== 'pyth' && /CH²\s*=\s*AH\s*[·⋅]\s*BH/.test(plainText(geometricMean.sub.law)), '15', 'высота по отрезкам гипотенузы: своя тема и объяснение среднего пропорционального');
+  const pythLinks = J(T, "variantsForPin('pyth').map(v=>({k:v.k,p:v.proto}))");
+  const needsPyth = t => usesPythagoras(t) || (t.k === 'medianRt' && t.p.d === 'legs')
+    || (t.k === 'rtTrig' && t.p.fn !== 'id' && ({ sin: ['BC', 'AB'], cos: ['AC', 'AB'], tg: ['BC', 'AC'] })[t.p.fn]
+      .some(side => !t.p.g.split(',').includes(side)));
+  ok(pythLinks.length > 0 && pythLinks.every(needsPyth), '15', 'ссылки от теоремы Пифагора в справочнике должны вести только на варианты, где она нужна');
+  for (const [k, p, name] of [
+    ['extAng', { d: 'int', a: 52, b: 71 }, /внутрен|по внеш/i],
+    ['areaBH', { d: 'h', xh: 6, h: 8, ab: 10, ac: 15 }, /высот/i],
+    ['rtAltitude', { d: 'AH', b: 6, a: 8, c: 10 }, /отрез|проекц|AH/],
+    ['regArea', { d: 'a', t: 5, f: 0 }, /сторон/i],
+    ['regArea', { d: 'P', t: 5, f: 0 }, /периметр/i]
+  ]) ok(name.test(by(k, p).sub.name), '15', `${k}/${p.d}: название должно сообщать фактически искомую величину`);
+  T.run("trTopic='pyth';trSubOnly=null;trReview=false");
+  const filtered = J(T, 'Array.from({length:250},()=>pickTrainTask()).map(t=>({k:t.k,p:t.p,topic:t.sub.topic}))');
+  ok(filtered.every(t => t.topic === 'pyth' && usesPythagoras(t)), '15', 'фильтр Пифагора (seed 6) выдал периметр либо среднее пропорциональное');
+  const quota = { ug: 2, iso: 2, pyth: 1, trig: 2, area: 2, reg: 1 };
+  for (const seed of [1, 2, 3, 6, 8, 15, 27, 42, 99, 2026]) {
+    const Q = loadTrainer(FILE, { seed });
+    const quizzes = J(Q, 'Array.from({length:12},()=>{startQuiz();return qz.items.map(t=>({k:t.k,p:t.p,topic:t.sub.topic}));})');
+    ok(quizzes.every(items => items.length === 10 && items.some(usesPythagoras)
+      && Object.entries(quota).every(([topic, n]) => items.filter(t => t.topic === topic).length === n)), '15', `seed ${seed}: зачёт не соблюдает квоты фактических способов решения`);
+  }
+});
+
+section('16. журнал вариантов: периметр не закрывает ошибку по Пифагору', () => {
+  const S = makeStorage(), T = loadTrainer(FILE, { storage: S, seed: 6 });
+  T.run("logTaskVerdict(build('isoLeg',{d:'h',m:5,h:12,s:13},{}),false)");
+  T.run("for(let i=0;i<3;i++)logTaskVerdict(build('isoLeg',{d:'P',s:13,a:10},{}),true)");
+  let all = readKey(S), branch = all[TID].mistakesByVariant['isoLeg:h'];
+  ok(branch && branch.w === 1 && branch.r === 0 && all.mistakes[TID + '|isoLeg'].r < 3, '16', 'три успеха по периметру закрыли чужую ошибку по Пифагору');
+  T.run('trReview=true');
+  const repeated = J(T, 'Array.from({length:30},()=>pickTrainTask()).map(t=>({k:t.k,p:t.p}))');
+  ok(repeated.every(t => t.k === 'isoLeg' && t.p.d === 'h'), '16', 'работа над ошибками подмешала ветку по периметру');
+  T.run("for(let i=0;i<3;i++)logTaskVerdict(build('isoLeg',{d:'h',m:5,h:12,s:13},{}),true)");
+  all = readKey(S); branch = all[TID].mistakesByVariant['isoLeg:h'];
+  ok(branch.r === 3 && all.mistakes[TID + '|isoLeg'].r === 3, '16', 'три чистых решения нужного варианта не закрыли ошибку и общий тип');
+  const legacy = makeStorage();
+  legacy.map.set(KEY, JSON.stringify({ mistakes: { [TID + '|isoLeg']: { w: 1, r: 0, last: 1 } } }));
+  const L = loadTrainer(FILE, { storage: legacy, search: '?mode=review', seed: 6 });
+  const oldReview = J(L, 'Array.from({length:60},()=>pickTrainTask()).map(t=>({k:t.k,p:t.p}))');
+  ok(oldReview.every(t => t.k === 'isoLeg') && ['h', 'P'].every(d => oldReview.some(t => t.p.d === d)), '16', 'старый журнал без варианта должен консервативно повторять обе ветки типа');
+  const legacyTwo = makeStorage();
+  legacyTwo.map.set(KEY, JSON.stringify({ mistakes: { [TID + '|isoLeg']: { w: 2, r: 2, lastWrong: 50, last: 100 } } }));
+  const L2 = loadTrainer(FILE, { storage: legacyTwo, seed: 6 });
+  L2.run("logTaskVerdict(build('isoLeg',{d:'h',m:5,h:12,s:13},{}),true)");
+  const migrated = readKey(legacyTwo), details = migrated[TID].mistakesByVariant;
+  ok(details['isoLeg:h'].r === 1 && details['isoLeg:P'].r === 0 && migrated.mistakes[TID + '|isoLeg'].r < 3,
+    '16', 'старые два успеха неизвестного способа не должны превращаться в два успеха каждой новой ветки');
+  ok(details['isoLeg:P'].w === 2 && details['isoLeg:P'].lastWrong === 50 && details['isoLeg:P'].last === 100,
+    '16', 'консервативная миграция сохраняет число и время прежних ошибок нетронутой ветки');
 });
 
 console.log('\nпроверок: ' + checks + ', провалов: ' + fails);

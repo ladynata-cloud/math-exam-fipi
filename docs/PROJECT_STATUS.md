@@ -1,76 +1,57 @@
 # MathExam project status
 
-Updated: 2026-08-15
+Updated: 2026-09-30 (Asia/Novosibirsk)
 
-This is the short operational snapshot. Reconcile it against production evidence
-at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
-and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
+## Verified repository and production evidence
 
-## Production main
+- Repository: `ladynata-cloud/math-exam-fipi`.
+- Authoritative remote `main`, checked during PR #146 remediation:
+  `010e89c75c0fe110b57c983c728b8216fb38cd9d` (merged PR #145, OGE course algebra
+  progress/accessibility work for lines 10, 11, 12 and 14).
+- Read-only production check on 2026-09-29 UTC: `https://mathexam.space/oge/`
+  responds HTTP 200 and still links task 15 to
+  `geometry/task-15-external-angle.html`; it does not link the new triangles
+  trainer. This checks that publication surface only, not the full deployed
+  tree or all production services.
+- The previous August snapshot was stale: GitHub confirms that PR #92 merged
+  on 2026-09-19 and PR #103 merged on 2026-08-15. Their historical review or
+  deployment blockers must not be presented as current open-PR state.
 
-- Repository: `ladynata-cloud/math-exam-fipi`
-- Branch: `main`
-- Commit: `e9347d544a90a8d151051ee29a047d51a906196f`
-- Confirmed state: Progress Workspaces API v1 and persistent board `/data`; the
-  Yashchenko lines 1–2, Algebra 7 control-work and DVI mathematics tasks 18–20
-  releases with student progress and teacher panels; and the DVI video studio.
-- PR `#102` is merged and its student, teacher, video-studio, registry,
-  learner-write, teacher-read, reload and autoplay-isolation production smoke
-  passed on 2026-08-15.
+## Current task
 
-## Current stage
+Draft PR #146, `OGE_COURSE_03B_TASK15`, adds the task-15 triangles trainer.
+The owner authorized independent technical and student-focused review and
+then complete remediation in the existing task/branch/PR. The task remains
+HIGH under Accepted ADR 0003 and the repository review policy.
 
-Video Factory v1 is in implementation on `agent/video-factory-v1`. It adds an
-isolated persistent render queue, server-side OpenAI/Yandex speech, Chromium and
-FFmpeg MP4 assembly, and one-click controls in the existing DVI studio. The
-first independent review findings were remediated. Re-review of head
-`b78fc9b6b5bf5e1630f8fe572465c7a4484a61e0` then found a race in automatic
-stale-lock takeover plus recovery/shutdown cleanup gaps. Automatic takeover is
-now removed fail-closed, cancellation is bounded and propagated, and cleanup
-failures are surfaced; the next exact head requires another independent review.
+The reviewed head `64fbd65873b4e32f1f3c4671bb16343afbd50d67` passed 332 main
+checks, 165 browser checks and relevant regression gates. The subsequent
+student review nevertheless found mismatched variant topics/explanations,
+an incorrect equal-parts question and ambiguous labels for whole segments.
+The remediation is implemented: 66 selectable examples, variant-specific
+topics/explanations and mistake review, explicit whole-segment labels,
+corrected teaching steps and persistence of a first zero quiz score. Final
+gates pass: 533 Node checks and 452 browser checks, plus the relevant course,
+geometry, algebra, reset, inventory and board-registry regressions. All 9282
+admissible middle-line parameter combinations pass the diagram audit.
+A review of the old head cannot approve these subsequent code changes; the
+current exact head is recorded in PR #146. No merge or deployment is performed.
 
-This is a `NEW_ARCHETYPE`. ADR 0002 is Proposed. A Draft PR may demonstrate the
-prototype, but merge/deployment remain blocked until explicit ADR acceptance,
-independent review or a policy-compliant exact-head waiver, and separate release
-authorization.
+## Other work
 
-## Open PRs
-
-- Draft PR `#92` contains the Trainer Inventory v1.0.1 cross-platform
-  Git-object hashing fix and still requires independent exact-head review.
-- Draft PR `#103` contains Video Factory v1 and remains unmergeable until its
-  remediated exact head passes independent re-review and ADR 0002 is accepted.
-- Older unrelated PRs remain open but do not alter this task's exact base.
-
-## Last confirmed gate
-
-The DVI release passed its exact-head local gates and production smoke on PR
-`#102`. Video Factory authoring, DVI regression, 23/23 worker API/storage/queue
-tests and 41/41 board-server tests pass. Local visual browser smoke is blocked
-by the browser's local-URL policy; a real Chromium/FFmpeg/TTS render remains a
-required container/staging gate.
-
-## Blockers
-
-- ADR 0002 must be accepted for the exact reviewed implementation before merge.
-- The exact head needs independent security/code review or an explicit
-  policy-compliant owner waiver.
-- The separate Amvera application needs its own persistent `/data`, TTS secret,
-  admin secret, allowlisted origins and `video.mathexam.space` domain.
-- Merge, deployment and production smoke remain separately authorized actions.
+The current open-PR listing also contains #138, #137, #129, #126, #117, #72 and
+#48. They are outside PR #146 and are not modified by this task. This snapshot
+does not re-evaluate their review or release readiness.
 
 ## Next three actions
 
-1. Publish the shutdown/lock/cleanup remediation on Draft PR `#103` and obtain
-   independent review of that exact new head.
-2. After a clean review, obtain explicit owner acceptance of ADR 0002 for the
-   exact reviewed implementation.
-3. After separate merge/deployment authorization, configure the second Amvera
-   app, publish it and run the canonical production smoke.
+1. Obtain independent review of the remediated exact head in Draft PR #146.
+2. Complete the owner's manual trainer acceptance: two tasks in each topic.
+3. After separate owner authorization for the exact PR/base/head, follow the
+   base-drift merge guard and separately authorized deployment/smoke procedure.
 
 ## Maintenance rule
 
-At the start of each approved task, compare this snapshot with actual remote
-`main`, open PRs, gates and production evidence. Update it within that task when
-stale and keep exactly the next three concrete actions. Never predict a
-successful merge or deployment before it happens.
+Reconcile this snapshot against remote refs, PRs and production evidence at the
+start of the next approved task. Do not infer successful deployment from a
+merge or create a recursive status-only PR.

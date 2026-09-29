@@ -16,12 +16,15 @@
      исправленный сам ответ засчитан; лестница, где всё введено самим, — решено,
      «Подсказка» ничего не отнимает; «Показать шаг» — не в счёт; Enter не перелистывает;
      пустой ввод — не промах; неконечная ступень — допуск и точная запись;
-  E. Зачёт 10/10 → passed; 5/10 в чистом профиле — не сдан; одна попытка, голый
+  E. Зачёт 10/10 → passed; 5/10 и 0/10 в чистом профиле — не сдан; одна попытка, голый
      вердикт; Enter после ответа не перелистывает; двойное касание — один ответ;
   F. ?mode=review — плашка с именами типов, задачи только открытых типов;
   G. ?seed — одинаковая первая задача; H. печать — навигация уходит; reduced-motion;
   I. «Перейти к заданию» переводит фокус на задание; J. старая страница 15
      перенаправляет на тренажёр.
+  K. настоящие клики фильтра Пифагора и названия выбранных вариантов;
+  L. все 66 примеров доступны в «Разборе», меняют условие, название и ступени;
+  M. доли высоты сформулированы корректно; повтор сохраняет ошибочную ветку.
 */
 import fs from 'node:fs';
 import http from 'node:http';
@@ -128,15 +131,17 @@ async function main() {
         await tap(page, '.tab[data-tab=quiz]'); await tap(page, '#qStart'); await page.evaluate(() => window.scrollTo(0, 0));
         const qb = await page.locator('#qAns').boundingBox();
         ok(qb && qb.y + qb.height <= 740, 'B', 'поле ответа в зачёте ниже первого экрана: ' + (qb && Math.round(qb.y + qb.height)));
-        /* профиль с отметками разбора всех типов: строка вкладок не переносится, поле ответа на экране (ревью, находка 2) */
-        await page.evaluate(([k, t]) => { const all = JSON.parse(localStorage.getItem(k) || '{}'); const rz = {}; window.__oge15.TYPE_IDS.forEach(x => { rz[x] = 1; }); all[t] = Object.assign(all[t] || {}, { v: 1, razbor: rz }); localStorage.setItem(k, JSON.stringify(all)); }, [KEY, TID]);
+        /* профиль со всеми 66 отметками разбора: счётчик не переносит вкладки и не вытесняет поле ответа */
+        await page.evaluate(([k, t]) => { const all = JSON.parse(localStorage.getItem(k) || '{}'); const rz = {}, variants = {};
+          window.__oge15.TYPE_IDS.forEach(x => { rz[x] = 1; }); window.__oge15.TASK_VARIANTS.forEach(v => { variants[v.id] = 1; });
+          all[t] = Object.assign(all[t] || {}, { v: 1, razbor: rz, razborVariants: variants }); localStorage.setItem(k, JSON.stringify(all)); }, [KEY, TID]);
         await page.reload({ waitUntil: 'load' }); await settle();
         await tap(page, '.tab[data-tab=train]');
         await page.evaluate(() => window.__oge15.trainWith('bisAlt', window.__oge15.SUBS.bisAlt.proto)); await page.evaluate(() => window.scrollTo(0, 0));
         const cut2 = await page.evaluate(() => [...document.querySelectorAll('.tab')].filter(e => { const r = e.getBoundingClientRect(); return r.left < 0 || r.right > innerWidth; }).map(e => e.textContent.trim()));
         const rows = await page.evaluate(() => { const rs = [...document.querySelectorAll('.tab')].map(e => e.getBoundingClientRect().top); return Math.max(...rs) - Math.min(...rs); });
         const b2 = await page.locator('#ans').boundingBox();
-        ok(!cut2.length && rows < 4 && b2 && b2.y + b2.height <= 740, 'B', 'профиль с отметками разбора: вкладки в одну строку и поле ответа на экране — ' + JSON.stringify({ cut: cut2, rows: Math.round(rows), bottom: b2 && Math.round(b2.y + b2.height) }));
+        ok(await page.locator('#cntRz').innerText() === '66/66' && !cut2.length && rows < 4 && b2 && b2.y + b2.height <= 740, 'B', 'профиль с отметками разбора: 66/66, вкладки в одну строку и поле ответа на экране — ' + JSON.stringify({ cut: cut2, rows: Math.round(rows), bottom: b2 && Math.round(b2.y + b2.height) }));
       }
       ok(!errs.length, 'B', url.slice(0, 20) + ': ' + errs.slice(0, 2).join(' | '));
       await ctx.close();
@@ -155,6 +160,7 @@ async function main() {
     await tap(page, '#rzDone');
     const r = await rec(page);
     ok(r && r.razbor && r.razbor.bisIso === 1, 'C', 'отметка разбора: ' + JSON.stringify(r));
+    ok(r && r.razborVariants && r.razborVariants['bisIso:B'] === 1 && !r.razborVariants['bisIso:C'], 'C', 'разбор одного примера не отмечает второй способ как пройденный');
     ok(!r.solvedByType || !r.solvedByType.bisIso, 'C', 'разбор не засчитывает решённую задачу');
     ok(!errs.length, 'C', errs.slice(0, 2).join(' | '));
     await ctx.close();
@@ -253,8 +259,8 @@ async function main() {
     await ctx.close();
   });
 
-  await run('E. зачёт: 10/10 → passed; 5/10 — не сдан; одна попытка, Enter, вкладки, двойное касание', async () => {
-    for (const good of [10, 5]) {
+  await run('E. зачёт: 10/10 → passed; 5/10 и 0/10 — не сдан; одна попытка, Enter, вкладки, двойное касание', async () => {
+    for (const good of [10, 5, 0]) {
       const ctx = await fresh(); const { page, errs } = await openPage(ctx, URL15 + '?seed=' + (40 + good));
       await page.keyboard.press('Shift');   // ученик уже пользовался клавиатурой — правила фокуса действуют
       await tap(page, '.tab[data-tab=quiz]'); await tap(page, '#qStart'); await settle();
@@ -296,8 +302,13 @@ async function main() {
       ok(n === 10, 'E', 'ответов в зачёте ' + n);
       if (good === 10) ok(r && r.passed === true && r.best === 10 && r.total === 10 && r.runs === 1, 'E', '10/10: ' + JSON.stringify(r));
       else {
-        ok(r && r.passed !== true && r.best === 5, 'E', '5/10: ' + JSON.stringify(r));
+        ok(r && r.passed !== true && r.best === good, 'E', good + '/10: ' + JSON.stringify(r));
         ok(/Разбор ошибок/.test(await page.locator('#main').innerText()) && /верный ответ/.test(await page.locator('#main').innerText()), 'E', 'в итогах — строки диагностики');
+      }
+      if (good === 0) {
+        ok(await page.locator('#stBest').innerText() === '0/10', 'E', 'первый нулевой зачёт отображается как 0/10');
+        await page.reload({ waitUntil: 'load' });
+        ok(await page.locator('#stBest').innerText() === '0/10', 'E', 'нулевой лучший результат сохраняется после перезагрузки');
       }
       ok(!errs.length, 'E', errs.slice(0, 2).join(' | '));
       await ctx.close();
@@ -312,7 +323,8 @@ async function main() {
     const errs = []; page.on('pageerror', e => errs.push(e.message));
     await page.goto(URL15 + '?mode=review'); await settle();
     const note = await page.locator('.review-note').innerText();
-    ok(/Работа над ошибками/.test(note) && /«Средняя линия»/.test(note) && !/высота/.test(note), 'F', 'плашка: ' + note.slice(0, 120));
+    ok(/Работа над ошибками/.test(note) && /«Найти среднюю линию»/.test(note)
+      && /«Периметр треугольника со средней линией»/.test(note) && !/высот/i.test(note), 'F', 'плашка показывает оба варианта старой ошибки midline: ' + note.slice(0, 180));
     const ks = [];
     for (let i = 0; i < 4; i++) {
       ks.push((await task(page)).k);
@@ -361,6 +373,108 @@ async function main() {
     await page.goto(base + 'oge/geometry/task-15-external-angle.html');
     await page.waitForURL(/oge-task15-triangles\.html/, { timeout: 5000 }).catch(() => {});
     ok(/\/trainers\/oge-task15-triangles\.html$/.test(page.url()), 'J', 'адрес после перехода: ' + page.url());
+    await ctx.close();
+  });
+
+  await run('K. реальные фильтры темы и подписи фактического варианта', async () => {
+    const ctx = await fresh(); const { page, errs } = await openPage(ctx, URL15 + '?seed=6');
+    await tap(page, '.tab[data-tab=train]');
+    const wrong = [];
+    for (let i = 0; i < 18; i++) {
+      await tap(page, '.chip[data-topic=pyth]');
+      const t = await page.evaluate(() => { const t = window.__oge15.debug().tr.t; return { k: t.k, p: t.p, topic: t.sub.topic }; });
+      const actualPyth = ['pythLeg', 'pythHyp'].includes(t.k) || (t.k === 'isoLeg' && t.p.d === 'h')
+        || (t.k === 'rtAltitude' && ['CH', 'AH'].includes(t.p.d));
+      if (!actualPyth || t.topic !== 'pyth') wrong.push(t);
+    }
+    ok(!wrong.length, 'K', 'seed 6, реальные клики «Теорема Пифагора»: ' + JSON.stringify(wrong.slice(0, 2)));
+    const named = [
+      ['isoLeg', { d: 'P', s: 13, a: 10 }, /периметр/i],
+      ['rtAltitude', { d: 'AH', b: 6, a: 8, c: 10 }, /отрез|проекц|AH/],
+      ['areaBH', { d: 'h', xh: 6, h: 8, ab: 10, ac: 15 }, /высот/i],
+      ['regArea', { d: 'P', t: 5, f: 0 }, /периметр/i]
+    ];
+    for (const [k, p, want] of named) {
+      await page.evaluate(([k, p]) => window.__oge15.trainWith(k, p), [k, p]);
+      const name = await page.locator('#main > .meta').innerText();
+      ok(want.test(name) && !(k === 'isoLeg' && /Пифагор/.test(name)), 'K', `${k}/${p.d}: фактический вариант в заголовке — ${name}`);
+    }
+    ok(!errs.length, 'K', errs.slice(0, 2).join(' | '));
+    await ctx.close();
+  });
+
+  await run('L. в «Разборе» выбираются все 66 содержательных вариантов', async () => {
+    const ctx = await fresh(); const { page, errs } = await openPage(ctx, URL15);
+    const groups = await page.evaluate(() => window.__oge15.TYPE_IDS.map(k => ({ k,
+      variants: window.__oge15.TASK_VARIANTS.filter(v => v.k === k).map(v => ({ id: v.id, proto: v.proto })) })));
+    let seen = 0;
+    for (const { k, variants } of groups) {
+      await page.locator(`.rzcard[data-k="${k}"]`).first().tap();
+      if (variants.length > 1) {
+        const options = await page.locator('#rzVariant option').evaluateAll(es => es.map(e => e.value));
+        ok(options.length === variants.length && variants.every(v => options.includes(v.id)), 'L', `${k}: список примеров пропустил содержательный вариант`);
+      }
+      for (const v of variants) {
+        if (variants.length > 1) await page.locator('#rzVariant').selectOption(v.id);
+        const expected = await page.evaluate(([k, p]) => { const t = window.__oge15.build(k, p, {});
+          const strip = s => { const x = document.createElement('div'); x.innerHTML = s; return x.textContent.replace(/\s+/g, ' ').trim(); };
+          return { text: strip(t.text), name: t.sub.name, first: strip(t.steps[0].q), show: strip(t.steps[0].show) };
+        }, [k, v.proto]);
+        const visible = await page.locator('#main .task').evaluate(e => e.textContent.replace(/\s+/g, ' ').trim());
+        ok(visible === expected.text && (await page.locator('#main > .meta').innerText()).includes(expected.name), 'L', `${v.id}: выбранный пример не обновил условие и название`);
+        await tap(page, '#rzNext');
+        const q = await page.locator('.rzstep').first().evaluate(e => e.textContent.replace(/\s+/g, ' ').trim());
+        ok(q.includes(expected.first) && await page.locator('.rzstep .a').count() === 0, 'L', `${v.id}: первая ступень должна соответствовать примеру и сначала скрывать ответ`);
+        await tap(page, '#rzNext');
+        const a = await page.locator('.rzstep .a').first().evaluate(e => e.textContent.replace(/\s+/g, ' ').trim());
+        ok(a === expected.show, 'L', `${v.id}: показана ступень другого варианта`);
+        seen++;
+      }
+      await tap(page, '#rzBack');
+    }
+    ok(seen === 66, 'L', 'проверено примеров: ' + seen);
+    ok(!errs.length, 'L', errs.slice(0, 2).join(' | '));
+    await ctx.close();
+  });
+
+  await run('M. вопрос о долях высоты и повтор именно ошибочного варианта', async () => {
+    const ctx = await fresh(); const { page, errs } = await openPage(ctx, URL15);
+    for (const [k, p] of [['regr', { d: 'h', k: 5, f: 0 }], ['regH', { d: 'r', k: 5, f: 0 }]]) {
+      await page.evaluate(([k, p]) => window.__oge15.trainWith(k, p), [k, p]); await settle();
+      await tap(page, '#ladBtn');
+      const s = page.locator('.lstep').first();
+      const question = await s.locator('.q').innerText();
+      ok(/дол/.test(question) && !/На сколько равных частей он делит высоту/.test(question), 'M', `${k}: математически корректный вопрос о числе долей`);
+      await s.locator('input').fill('2'); await s.locator('button').first().tap();
+      ok(!/Верно!/.test(await s.locator('.fb').innerText()), 'M', `${k}: две доли — только часть высоты`);
+      await s.locator('input').fill('3'); await s.locator('button').first().tap();
+      const accepted = await s.locator('.fb').innerText();
+      ok(/Верно!/.test(accepted) && !/На 3 равные части/.test(accepted), 'M', `${k}: три доли всей высоты приняты без ложного утверждения о трёх отрезках`);
+    }
+    /* Новый профиль: одна ошибка в ветке Пифагора, затем три чистых решения по периметру. */
+    await page.evaluate(k => localStorage.removeItem(k), KEY);
+    await page.reload({ waitUntil: 'load' });
+    await page.evaluate(() => window.__oge15.trainWith('isoLeg', { d: 'h', m: 5, h: 12, s: 13 })); await settle();
+    await page.locator('#ans').fill('1'); await tap(page, '#check');
+    for (let i = 0; i < 3; i++) {
+      await page.evaluate(() => window.__oge15.trainWith('isoLeg', { d: 'P', s: 13, a: 10 })); await settle();
+      await page.locator('#ans').fill('13'); await tap(page, '#check');
+    }
+    const error = await jr(page, 'isoLeg');
+    ok(error && error.r < 3, 'M', 'периметр не закрывает ошибку Пифагора в журнале курса');
+    await page.goto(URL15 + '?mode=review'); await settle();
+    const repeated = await page.evaluate(() => { const t = window.__oge15.debug().tr.t; return { k: t.k, p: t.p }; });
+    ok(repeated.k === 'isoLeg' && repeated.p.d === 'h', 'M', 'после перезагрузки повторена именно ошибочная ветка: ' + JSON.stringify(repeated));
+    ok(!/В старой записи/.test(await page.locator('.review-note').innerText()), 'M', 'новая ошибка с известным способом не помечена как старая запись');
+    await page.evaluate(([k, tid]) => localStorage.setItem(k, JSON.stringify({ mistakes: {
+      [tid + '|isoLeg']: { w: 2, r: 2, lastWrong: 50, last: 100 }
+    } })), [KEY, TID]);
+    await page.goto(URL15 + '?mode=review'); await settle();
+    ok(/В старой записи способ решения не сохранён/.test(await page.locator('.review-note').innerText()), 'M', 'старое общее событие объясняет ученику повтор всех способов');
+    const oldTask = await task(page);
+    await page.locator('#ans').fill(fmt(oldTask.ans)); await tap(page, '#check');
+    ok((await jr(page, 'isoLeg')).r < 3, 'M', 'один успех не закрывает старую ошибку с двумя успехами неизвестного способа');
+    ok(!errs.length, 'M', errs.slice(0, 2).join(' | '));
     await ctx.close();
   });
 
