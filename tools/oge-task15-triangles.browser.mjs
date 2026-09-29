@@ -52,6 +52,8 @@ let fails = 0, checks = 0;
 const failed = [];
 function ok(cond, sec, msg) { checks++; if (!cond) { fails++; failed.push('[' + sec + '] ' + msg); } }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+/* после смены экрана тренажёр 400 мс не принимает касания (защита от двойного касания) */
+const settle = () => sleep(450);
 async function run(title, fn) {
   const before = fails, t0 = Date.now();
   try { await fn(); } catch (e) { ok(false, title, 'исключение: ' + (e && e.message ? e.message.split('\n')[0] : e)); }
@@ -97,7 +99,7 @@ async function main() {
     await ctx.close();
   });
 
-  await run('B. http и file://: ошибок нет, 360 px без вылета, цели 44 px, чертёж не выше 40 % экрана', async () => {
+  await run('B. http и file://: ошибок нет, 360 px без вылета, цели 44 px; поле ответа на первом экране у всех типов', async () => {
     for (const url of [URL15 + '?seed=3', pathToFileURL(path.join(ROOT, FILE)).href + '?seed=3']) {
       const ctx = await fresh(); const { page, errs } = await openPage(ctx, url);
       for (const tab of ['razbor', 'train', 'quiz', 'refs']) {
@@ -108,6 +110,22 @@ async function main() {
         ok(L.sw <= 360, 'B', `${tab}: ширина ${L.sw}`);
         ok(!L.small.length, 'B', `${tab}: ниже 44 px — ${JSON.stringify(L.small.slice(0, 3))}`);
         if (tab === 'train') ok(L.fig > 0 && L.fig <= 0.4, 'B', 'чертёж занимает ' + Math.round(L.fig * 100) + '% высоты экрана');
+      }
+      if (url.startsWith('http')) {
+        /* канон: на 360 px чертёж не вытесняет поле ответа за экран — прототип и задача генератора каждого типа */
+        const low = [];
+        for (const k of await page.evaluate(() => window.__oge15.TYPE_IDS)) {
+          for (const proto of [true, false]) {
+            await page.evaluate(([k, proto]) => window.__oge15.trainWith(k, proto ? window.__oge15.SUBS[k].proto : null), [k, proto]);
+            await page.evaluate(() => window.scrollTo(0, 0));
+            const b = await page.locator('#ans').boundingBox();
+            if (!b || b.y + b.height > 740) low.push(k + (proto ? '(прототип)' : '') + ': ' + Math.round(b ? b.y + b.height : -1));
+          }
+        }
+        ok(!low.length, 'B', 'поле ответа ниже первого экрана (740 px): ' + low.slice(0, 6).join(', '));
+        await tap(page, '.tab[data-tab=quiz]'); await tap(page, '#qStart'); await page.evaluate(() => window.scrollTo(0, 0));
+        const qb = await page.locator('#qAns').boundingBox();
+        ok(qb && qb.y + qb.height <= 740, 'B', 'поле ответа в зачёте ниже первого экрана: ' + (qb && Math.round(qb.y + qb.height)));
       }
       ok(!errs.length, 'B', url.slice(0, 20) + ': ' + errs.slice(0, 2).join(' | '));
       await ctx.close();
@@ -131,13 +149,16 @@ async function main() {
     await ctx.close();
   });
 
-  await run('D. тренировка касаниями: ловушка, исправление, лестница, «Показать шаг», Enter, пустой ввод', async () => {
+  await run('D. тренировка касаниями: ловушка, исправление, лестница, «Показать шаг», Enter, вкладки, двойное касание', async () => {
     const ctx = await fresh(); const { page, errs } = await openPage(ctx, URL15 + '?seed=11');
-    // D1: ловушка → адресно, промах один раз; затем верно → засчитано без верного вердикта журнала
-    await page.evaluate(() => window.__oge15.trainWith('extAng', { d: 'ext', a: 52, b: 71 }));
+    const TW = async (k, p) => { await page.evaluate(([k, p]) => window.__oge15.trainWith(k, p), [k, p]); await settle(); };
+    // D1: пустой ввод; ловушка → адресно, промах один раз; затем верно → засчитано без верного вердикта журнала
+    await TW('extAng', { d: 'ext', a: 52, b: 71 });
     let t = await task(page);
     await page.locator('#check').tap();
     ok(/Введите число/.test(await page.locator('#fb').innerText()) && await jr(page, 'extAng') === null, 'D', 'пустой ввод — подсказка о формате, не промах');
+    await page.locator('#ans').fill('2√3'); await page.locator('#check').tap();
+    ok(/без корня/.test(await page.locator('#fb').innerText()) && await jr(page, 'extAng') === null, 'D', 'корень в ответе — объяснение формы ответа, не промах');
     await page.locator('#ans').fill(fmt(57)); await page.locator('#check').tap();
     ok(/внутренний угол при вершине C/.test(await page.locator('#fb').innerText()), 'D', 'ловушка 57 → адресное сообщение: ' + (await page.locator('#fb').innerText()).slice(0, 80));
     await page.locator('#ans').fill(fmt(128)); await page.locator('#ans').press('Enter');
@@ -148,14 +169,23 @@ async function main() {
     ok(r.solvedByType.extAng === 1 && j.w === 1 && j.r === 0, 'D', 'исправленная ошибка засчитана, верного вердикта в журнал нет: ' + JSON.stringify([r.solvedByType, j]));
     ok(/исправили сами/.test(await page.locator('#fb').innerText()), 'D', 'сообщение о самостоятельном исправлении');
     ok(await page.evaluate(() => window.__oge15.debug().streak) === 0, 'D', 'промах обнуляет серию');
-    // D2: чистое решение той же задачи → r = 1
-    await page.evaluate(() => window.__oge15.trainWith('extAng', { d: 'ext', a: 40, b: 65 }));
+    const txt = await page.locator('#taskText').innerText();
+    await settle(); await page.keyboard.press('Enter'); await page.keyboard.press('Enter');   // и после защитной паузы
+    ok(await page.locator('#taskText').innerText() === txt && /исправили сами/.test(await page.locator('#fb').innerText()), 'D', 'Enter после ответа не перелистывает задачу');
+    await tap(page, '.tab[data-tab=refs]'); await tap(page, '.tab[data-tab=train]');
+    ok(await page.locator('#next').isVisible() && await page.locator('#ans').isDisabled() && /исправили сами/.test(await page.locator('#fb').innerText()), 'D', 'после смены вкладки итог задачи и «Следующая →» сохранены');
+    await tap(page, '.tab[data-tab=train]');
+    ok(await page.locator('#next').isVisible(), 'D', 'нажатие на открытую вкладку не сбрасывает задачу');
+    await settle(); await page.locator('#next').tap(); await settle();
+    ok(await page.locator('#taskText').innerText() !== txt, 'D', '«Следующая →» после смены вкладки открывает новую задачу');
+    // D2: чистое решение того же типа → r = 1
+    await TW('extAng', { d: 'ext', a: 40, b: 65 });
     t = await task(page);
     await page.locator('#ans').fill(fmt(t.ans)); await page.locator('#check').tap();
     r = await rec(page); j = await jr(page, 'extAng');
     ok(r.solvedByType.extAng === 2 && j.r === 1, 'D', 'чистое решение: +1 и r = 1 — ' + JSON.stringify([r.solvedByType, j]));
     // D3: лестница, всё введено самим, «Подсказка» — засчитано
-    await page.evaluate(() => window.__oge15.trainWith('bisIso', { d: 'B', L: 'K', g: 28, f: 0 }));
+    await TW('bisIso', { d: 'B', L: 'K', g: 28, f: 0 });
     t = await task(page);
     await tap(page, '#ladBtn');
     ok(await page.locator('#ans').isDisabled(), 'D', '«Решить по шагам» закрывает главное поле');
@@ -169,7 +199,7 @@ async function main() {
     ok(r.solvedByType.bisIso === 1, 'D', 'лестница без показа (с подсказкой) — решено: ' + JSON.stringify(r.solvedByType));
     ok(/Все шаги решены самостоятельно/.test(await page.locator('#after').innerText()) && await page.locator('#next2').count() === 1, 'D', 'итог и «Следующая →» под лестницей');
     // D4: промах на ступени — промах задачи; «Показать шаг» — не в счёт
-    await page.evaluate(() => window.__oge15.trainWith('isoApex', { a: 38, f: 0 }));
+    await TW('isoApex', { a: 38, f: 0 });
     t = await task(page);
     await tap(page, '#ladBtn');
     await page.locator('.lstep').nth(0).locator('input').fill('13'); await page.locator('.lstep').nth(0).locator('button').first().tap();
@@ -181,20 +211,38 @@ async function main() {
     ok(!r.solvedByType.isoApex && r.train.shown === 1, 'D', '«Показать шаг» — задача не в счёт: ' + JSON.stringify([r.solvedByType, r.train]));
     ok(/Шаг был показан/.test(await page.locator('#after').innerText()), 'D', 'сообщение «Шаг был показан»');
     // D5: неконечная ступень — допуск 0,005 и точная запись
-    await page.evaluate(() => window.__oge15.trainWith('rtLegSin', { d: 'leg', p: 8, r: 15, q: 17, k: 2, f: 0 }));
+    await TW('rtLegSin', { d: 'leg', p: 8, r: 15, q: 17, k: 2, f: 0 });
     await tap(page, '#ladBtn');
     const s0 = page.locator('.lstep').nth(0);
     ok(/можно обыкновенной дробью/.test(await s0.innerText()), 'D', 'приписка о дроби у неконечной ступени');
     await s0.locator('input').fill('0,47'); await s0.locator('button').first().tap();
     ok(/Верно: точное значение —\s*8\s*17/.test(await s0.locator('.fb').innerText()), 'D', '0,47 при 8/17 — верно с точной записью: ' + (await s0.locator('.fb').innerText()).slice(0, 60));
+    // D6: лестница сохраняется при смене вкладки
+    await TW('isoBase', { b: 112, ask: 'A', f: 0 });
+    await tap(page, '#ladBtn');
+    const b0 = page.locator('.lstep').nth(0); await b0.locator('input').fill('68'); await b0.locator('button').first().tap();
+    await tap(page, '.tab[data-tab=razbor]'); await tap(page, '.tab[data-tab=train]');
+    ok(await page.locator('.lstep').count() === 2 && await page.locator('.lstep.ok').count() === 1 && !(await page.locator('.lstep').nth(1).locator('input').isDisabled()), 'D', 'лестница сохранилась после смены вкладки');
+    // D7: промах после «Показать шаг» в журнал не идёт (контракт §4)
+    await TW('twoExt', { d: 'C', A: 64, B: 47 });
+    await tap(page, '#ladBtn'); await page.locator('.lstep').nth(0).locator('button.sec').tap();
+    await page.locator('.lstep').nth(1).locator('input').fill('1'); await page.locator('.lstep').nth(1).locator('button').first().tap();
+    ok(await jr(page, 'twoExt') === null, 'D', 'промах после «Показать шаг» в журнал не пишется');
+    // D8: двойное касание «Следующая →» не открывает лестницу новой задачи
+    await TW('angSum', { a: 48, b: 67, f: 0 });
+    await page.locator('#ans').fill('65'); await page.locator('#check').tap(); await settle();
+    const nb = await page.locator('#next').boundingBox();
+    await page.touchscreen.tap(nb.x + nb.width / 2, nb.y + nb.height / 2); await page.touchscreen.tap(nb.x + nb.width / 2, nb.y + nb.height / 2);
+    await sleep(120);
+    ok(await page.evaluate(() => { const d = window.__oge15.debug(); return !!d.tr && !d.tr.ladder && !d.tr.done; }) && !(await page.locator('#ans').isDisabled()), 'D', 'двойное касание «Следующая →» не открывает лестницу новой задачи');
     ok(!errs.length, 'D', errs.slice(0, 2).join(' | '));
     await ctx.close();
   });
 
-  await run('E. зачёт: 10/10 → passed; 5/10 — не сдан; одна попытка, Enter и двойное касание', async () => {
+  await run('E. зачёт: 10/10 → passed; 5/10 — не сдан; одна попытка, Enter, вкладки, двойное касание', async () => {
     for (const good of [10, 5]) {
       const ctx = await fresh(); const { page, errs } = await openPage(ctx, URL15 + '?seed=' + (40 + good));
-      await tap(page, '.tab[data-tab=quiz]'); await tap(page, '#qStart');
+      await tap(page, '.tab[data-tab=quiz]'); await tap(page, '#qStart'); await settle();
       for (let i = 0; i < 10; i++) {
         const a = await page.evaluate(() => { const d = window.__oge15.debug(); return d.qz.items[d.qz.i].ans; });
         if (i === 0) {
@@ -203,16 +251,29 @@ async function main() {
           ok(await page.locator('.quizq').innerText() === 'Задача 1 из 10' && !/тип|Тема/.test(await page.locator('#main').innerText().then(s => s.split('\n')[0])), 'E', 'тип задачи в зачёте не показан');
         }
         await page.locator('#qAns').fill(i < good ? fmt(a) : '99999');
-        await page.locator('#qCheck').dblclick();   // двойное нажатие — один ответ
+        const cb = await page.locator('#qCheck').boundingBox();
+        await page.touchscreen.tap(cb.x + cb.width / 2, cb.y + cb.height / 2); await page.touchscreen.tap(cb.x + cb.width / 2, cb.y + cb.height / 2);   // двойное касание — один ответ
         const v = await page.locator('#qFb').innerText();
         ok(v === 'Верно.' || v === 'Неверно.', 'E', 'голый вердикт: «' + v + '»');
-        await page.locator('#qAns').press('Enter');
+        await settle(); await page.keyboard.press('Enter'); await page.keyboard.press('Enter');   // и после защитной паузы
         ok(await page.locator('.quizq').innerText() === `Задача ${i + 1} из 10`, 'E', 'Enter после ответа не перелистывает');
-        await page.locator('#qNext').tap();
+        if (i === 1) {
+          await tap(page, '.tab[data-tab=refs]'); await tap(page, '.tab[data-tab=quiz]'); await tap(page, '.tab[data-tab=quiz]');
+          ok(await page.locator('#qNext').isVisible() && await page.locator('#qAns').isDisabled() && /^(Верно|Неверно)\.$/.test(await page.locator('#qFb').innerText())
+            && await page.locator('.quizq').innerText() === 'Задача 2 из 10', 'E', 'после смены вкладки ответ, вердикт и «Дальше →» сохранены');
+        }
+        await settle();
+        if (i < 9) { await page.locator('#qNext').tap(); await settle(); }
+        else {
+          const nb = await page.locator('#qNext').boundingBox();
+          await page.touchscreen.tap(nb.x + nb.width / 2, nb.y + nb.height / 2); await page.touchscreen.tap(nb.x + nb.width / 2, nb.y + nb.height / 2);
+          await sleep(150);
+          ok(await page.locator('.fin .score').count() === 1 && await page.evaluate(() => !!window.__oge15.debug().qz), 'E', 'двойное касание «К результатам» не уводит с экрана итогов');
+        }
       }
       const r = await rec(page);
       const n = await page.evaluate(() => (window.__oge15.debug().qz || { res: [] }).res.length);
-      ok(n === 10 || n === 0, 'E', 'ответов в зачёте ' + n);
+      ok(n === 10, 'E', 'ответов в зачёте ' + n);
       if (good === 10) ok(r && r.passed === true && r.best === 10 && r.total === 10 && r.runs === 1, 'E', '10/10: ' + JSON.stringify(r));
       else {
         ok(r && r.passed !== true && r.best === 5, 'E', '5/10: ' + JSON.stringify(r));
@@ -229,11 +290,17 @@ async function main() {
     await page.goto(URL15);
     await page.evaluate(([k, t]) => localStorage.setItem(k, JSON.stringify({ mistakes: { [t + '|midline']: { w: 1, r: 0, last: 1 }, [t + '|regH']: { w: 2, r: 3, last: 1 } } })), [KEY, TID]);
     const errs = []; page.on('pageerror', e => errs.push(e.message));
-    await page.goto(URL15 + '?mode=review');
+    await page.goto(URL15 + '?mode=review'); await settle();
     const note = await page.locator('.review-note').innerText();
     ok(/Работа над ошибками/.test(note) && /«Средняя линия»/.test(note) && !/высота/.test(note), 'F', 'плашка: ' + note.slice(0, 120));
     const ks = [];
-    for (let i = 0; i < 4; i++) { ks.push((await task(page)).k); await page.evaluate(() => window.__oge15.debug()); await page.locator('#ans').fill('99999'); await page.locator('#check').tap(); await page.locator('#ladBtn').tap(); await page.locator('.lstep .sec').first().tap(); for (let s = 0; s < 6 && await page.locator('.lstep:not(.ok):not(.shown) .sec').count(); s++) await page.locator('.lstep:not(.ok):not(.shown) .sec').first().tap(); await page.locator('#next2').tap(); }
+    for (let i = 0; i < 4; i++) {
+      ks.push((await task(page)).k);
+      await page.locator('#ans').fill('99999'); await page.locator('#check').tap();
+      await page.locator('#ladBtn').tap();
+      for (let s = 0; s < 8 && await page.locator('.lstep:not(.ok):not(.shown) .sec').count(); s++) await page.locator('.lstep:not(.ok):not(.shown) .sec').first().tap();
+      await settle(); await page.locator('#next2').tap(); await settle();
+    }
     ok(ks.every(k => k === 'midline'), 'F', 'типы задач повтора: ' + ks.join(','));
     ok(!errs.length, 'F', errs.slice(0, 2).join(' | '));
     await ctx.close();

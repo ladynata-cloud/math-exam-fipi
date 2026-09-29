@@ -77,6 +77,19 @@ const LADDER_NOTE = 'Подсказки ничего не отнимают. «П
 
 /* числа текста; noDeg — без чисел с «°» */
 function nums(h, noDeg) { const r = []; plainText(h).replace(/(\d+(?:[.,]\d+)?)(\s*°)?/g, (m, x, d) => { if (!(noDeg && d)) r.push(parseFloat(x.replace(',', '.'))); return m; }); return r; }
+/* наложение подписей: рамка текста по числу знаков (≈ 0,6 кегля на знак Georgia bold);
+   возвращает первую пару налезающих подписей или '' */
+function textClashes(svg) {
+  const L = [...svg.matchAll(/<text x="(-?[\d.]+)" y="(-?[\d.]+)"[^>]*font-size="([\d.]+)"[^>]*text-anchor="(\w+)"[^>]*>([\s\S]*?)<\/text>/g)].map((m) => {
+    const t = m[5].replace(/<[^>]*>/g, ''), w = 0.6 * +m[3] * t.length + 2, x0 = m[4] === 'middle' ? +m[1] - w / 2 : m[4] === 'end' ? +m[1] - w : +m[1];
+    return { t, x0, x1: x0 + w, y0: +m[2] - 0.74 * +m[3], y1: +m[2] + 0.12 * +m[3] };
+  });
+  for (let i = 0; i < L.length; i++) for (let j = i + 1; j < L.length; j++) {
+    const a = L[i], b = L[j];
+    if (a.x0 < b.x1 - 1 && b.x0 < a.x1 - 1 && a.y0 < b.y1 - 1 && b.y0 < a.y1 - 1) return a.t + ' / ' + b.t;
+  }
+  return '';
+}
 /* вершины чертежа: <circle data-v="A" cx=… cy=…> */
 function vertices(svg) {
   const P = {};
@@ -182,34 +195,44 @@ section('6. чертёж по числам: углы по пикселям = п�
         const px = Math.hypot(P.B.x - P.H.x, P.B.y - P.H.y) / Math.hypot(P.A.x - P.C.x, P.A.y - P.C.y);
         if (Math.abs(px - want) > 0.01 * Math.max(1, want)) msg.push('BH : AC на чертеже не по условию');
       }
+      const cl = textClashes(t.svg);
+      if (cl) msg.push('подписи налезают друг на друга: ' + cl);
       if (msg.length) { bad++; ex = ex || plainText(t.text).slice(0, 90) + ' — ' + msg.join('; '); }
     }
-    ok(!bad, '6', `${k}: чертежей не по числам ${bad} — ${ex}`);
+    ok(!bad, '6', `${k}: чертежей не по числам или с наложенными подписями ${bad} — ${ex}`);
   }
   const T = loadTrainer(FILE, { seed: 3 });
   const pr = (a, b, c) => { const P = vertices(T.run(`build('pythHyp',{a:${a},b:${b},c:${c},f:0},{}).fig.svg`)); return Math.hypot(P.C.x - P.A.x, P.C.y - P.A.y) / Math.hypot(P.C.x - P.B.x, P.C.y - P.B.y); };
   const r1 = pr(3, 4, 5), r2 = pr(5, 12, 13);
   ok(Math.abs(r1 - 3 / 4) < 0.01 && Math.abs(r2 - 5 / 12) < 0.01 && Math.abs(r1 - r2) > 0.2, '6', `пропорции 3-4-5 (${r1.toFixed(3)}) и 5-12-13 (${r2.toFixed(3)})`);
 });
-section('7. ловушки: уникальны, не равны ответу, не называют ответ; полный набор ≥ 70 %', () => {
+/* допуск ловушки: конечная дробь — точно, неконечное число (800/29) — ±0,005 (как в тренажёре) */
+const trapWin = (v) => (finDec(v) ? 1e-6 : 0.005);
+section('7. ловушки: не у ответа и не друг у друга, не называют ответ; охват по задачам', () => {
   let full = 0, total = 0;
-  const per = [];
+  const per = [], cov = [];
   for (const k of IDS) {
-    let bad = 0, leak = 0, kinds = 0, f = 0, ex = '';
+    let bad = 0, leak = 0, f = 0, one = 0, two = 0, ex = '';
     for (const t of TASKS[k]) {
-      kinds = Math.max(kinds, t.defined);
       if (t.full) f++;
-      const vals = t.diag.map(d => d.v);
-      if (t.diag.some(d => near(d.v, t.ans, 1e-9) || !finDec(d.v)) || new Set(vals.map(v => v.toFixed(6))).size < vals.length) { bad++; ex = ex || JSON.stringify(t.diag.map(d => d.v)) + ' при ответе ' + t.ans; }
+      const vs = t.diag.map(d => d.v).sort((a, b) => a - b);
+      const clash = vs.some((v, i) => i && v - vs[i - 1] <= trapWin(v) + trapWin(vs[i - 1]));
+      if (t.diag.some(d => !(d.v > 0) || Math.abs(d.v - t.ans) <= trapWin(d.v)) || clash) { bad++; ex = ex || JSON.stringify(vs) + ' при ответе ' + t.ans; }
+      if (vs.length >= 1) one++;
+      if (vs.length >= 2) two++;
       const given = nums(t.text), noDeg = !/в градусах/.test(t.text);
       const hints = t.steps.map(s => s.hint).concat(t.diag.map(d => d.m));
       if (hints.some(h => nums(h, noDeg).some(x => near(x, t.ans, 1e-9) && !given.some(g => near(g, t.ans, 1e-9))))) { leak++; ex = ex || 'подсказка называет ответ: ' + plainText(t.text).slice(0, 60); }
     }
+    const n = TASKS[k].length;
     ok(!bad && !leak, '7', `${k}: ловушки ${bad}, подсказка с ответом ${leak} — ${ex}`);
-    ok(kinds >= 2, '7', `${k}: у типа меньше двух ловушек`);
-    full += f; total += TASKS[k].length; per.push(k + ' ' + Math.round(100 * f / TASKS[k].length) + '%');
+    /* канон: у типовых неверных ответов — адресное объяснение; «не менее двух на тип» — разные числа */
+    ok(one === n, '7', `${k}: задач без адресной ловушки ${n - one} из ${n}`);
+    ok(two / n >= 0.9, '7', `${k}: две разные ловушки только у ${Math.round(100 * two / n)}% задач`);
+    full += f; total += n; per.push(k + ' ' + Math.round(100 * f / n) + '%'); cov.push(k + ' ' + Math.round(100 * two / n) + '%');
   }
   console.log('      полный набор ловушек: ' + Math.round(100 * full / total) + '% (' + per.join(', ') + ')');
+  console.log('      две разные ловушки: ' + cov.join(', '));
   ok(full / total >= 0.7, '7', 'доля задач с полным набором ловушек ' + Math.round(100 * full / total) + '% < 70%');
 });
 section('8. лестницы: последняя ступень — ответ, ступени показывают свой результат; строка D3', () => {
