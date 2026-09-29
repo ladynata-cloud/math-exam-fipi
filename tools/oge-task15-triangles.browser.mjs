@@ -108,6 +108,8 @@ async function main() {
         if (tab === 'razbor') { await tap(page, '.rzcard[data-k=altAlt]'); await tap(page, '#rzNext'); }
         const L = await layout(page);
         ok(L.sw <= 360, 'B', `${tab}: ширина ${L.sw}`);
+        const cut = await page.evaluate(() => [...document.querySelectorAll('.tab')].filter(e => { const r = e.getBoundingClientRect(); return r.left < 0 || r.right > innerWidth; }).map(e => e.textContent.trim()));
+        ok(!cut.length, 'B', `${tab}: вкладки не помещаются целиком — ${cut.join(', ')}`);
         ok(!L.small.length, 'B', `${tab}: ниже 44 px — ${JSON.stringify(L.small.slice(0, 3))}`);
         if (tab === 'train') ok(L.fig > 0 && L.fig <= 0.4, 'B', 'чертёж занимает ' + Math.round(L.fig * 100) + '% высоты экрана');
       }
@@ -126,6 +128,15 @@ async function main() {
         await tap(page, '.tab[data-tab=quiz]'); await tap(page, '#qStart'); await page.evaluate(() => window.scrollTo(0, 0));
         const qb = await page.locator('#qAns').boundingBox();
         ok(qb && qb.y + qb.height <= 740, 'B', 'поле ответа в зачёте ниже первого экрана: ' + (qb && Math.round(qb.y + qb.height)));
+        /* профиль с отметками разбора всех типов: строка вкладок не переносится, поле ответа на экране (ревью, находка 2) */
+        await page.evaluate(([k, t]) => { const all = JSON.parse(localStorage.getItem(k) || '{}'); const rz = {}; window.__oge15.TYPE_IDS.forEach(x => { rz[x] = 1; }); all[t] = Object.assign(all[t] || {}, { v: 1, razbor: rz }); localStorage.setItem(k, JSON.stringify(all)); }, [KEY, TID]);
+        await page.reload({ waitUntil: 'load' }); await settle();
+        await tap(page, '.tab[data-tab=train]');
+        await page.evaluate(() => window.__oge15.trainWith('bisAlt', window.__oge15.SUBS.bisAlt.proto)); await page.evaluate(() => window.scrollTo(0, 0));
+        const cut2 = await page.evaluate(() => [...document.querySelectorAll('.tab')].filter(e => { const r = e.getBoundingClientRect(); return r.left < 0 || r.right > innerWidth; }).map(e => e.textContent.trim()));
+        const rows = await page.evaluate(() => { const rs = [...document.querySelectorAll('.tab')].map(e => e.getBoundingClientRect().top); return Math.max(...rs) - Math.min(...rs); });
+        const b2 = await page.locator('#ans').boundingBox();
+        ok(!cut2.length && rows < 4 && b2 && b2.y + b2.height <= 740, 'B', 'профиль с отметками разбора: вкладки в одну строку и поле ответа на экране — ' + JSON.stringify({ cut: cut2, rows: Math.round(rows), bottom: b2 && Math.round(b2.y + b2.height) }));
       }
       ok(!errs.length, 'B', url.slice(0, 20) + ': ' + errs.slice(0, 2).join(' | '));
       await ctx.close();
@@ -152,6 +163,7 @@ async function main() {
   await run('D. тренировка касаниями: ловушка, исправление, лестница, «Показать шаг», Enter, вкладки, двойное касание', async () => {
     const ctx = await fresh(); const { page, errs } = await openPage(ctx, URL15 + '?seed=11');
     const TW = async (k, p) => { await page.evaluate(([k, p]) => window.__oge15.trainWith(k, p), [k, p]); await settle(); };
+    await page.keyboard.press('Shift');   // ученик уже пользовался клавиатурой — правила фокуса действуют
     // D1: пустой ввод; ловушка → адресно, промах один раз; затем верно → засчитано без верного вердикта журнала
     await TW('extAng', { d: 'ext', a: 52, b: 71 });
     let t = await task(page);
@@ -164,7 +176,7 @@ async function main() {
     await page.locator('#ans').fill(fmt(128)); await page.locator('#ans').press('Enter');
     let j = await jr(page, 'extAng');
     ok(j && j.w === 1 && j.r === 0, 'D', 'второй промах той же задачи журнал не удваивает: ' + JSON.stringify(j));
-    await page.locator('#ans').fill(fmt(t.ans)); await page.locator('#check').tap();
+    await page.locator('#ans').fill(fmt(t.ans)); await page.locator('#ans').press('Enter');   // верный ответ клавишей Enter
     let r = await rec(page); j = await jr(page, 'extAng');
     ok(r.solvedByType.extAng === 1 && j.w === 1 && j.r === 0, 'D', 'исправленная ошибка засчитана, верного вердикта в журнал нет: ' + JSON.stringify([r.solvedByType, j]));
     ok(/исправили сами/.test(await page.locator('#fb').innerText()), 'D', 'сообщение о самостоятельном исправлении');
@@ -172,6 +184,8 @@ async function main() {
     const txt = await page.locator('#taskText').innerText();
     await settle(); await page.keyboard.press('Enter'); await page.keyboard.press('Enter');   // и после защитной паузы
     ok(await page.locator('#taskText').innerText() === txt && /исправили сами/.test(await page.locator('#fb').innerText()), 'D', 'Enter после ответа не перелистывает задачу');
+    await page.keyboard.press('Tab');
+    ok(await page.evaluate(() => document.activeElement && document.activeElement.id) === 'next', 'D', 'Tab с итога ведёт на «Следующая →»');
     await tap(page, '.tab[data-tab=refs]'); await tap(page, '.tab[data-tab=train]');
     ok(await page.locator('#next').isVisible() && await page.locator('#ans').isDisabled() && /исправили сами/.test(await page.locator('#fb').innerText()), 'D', 'после смены вкладки итог задачи и «Следующая →» сохранены');
     await tap(page, '.tab[data-tab=train]');
@@ -231,7 +245,7 @@ async function main() {
     // D8: двойное касание «Следующая →» не открывает лестницу новой задачи
     await TW('angSum', { a: 48, b: 67, f: 0 });
     await page.locator('#ans').fill('65'); await page.locator('#check').tap(); await settle();
-    const nb = await page.locator('#next').boundingBox();
+    await page.locator('#next').scrollIntoViewIfNeeded(); const nb = await page.locator('#next').boundingBox();
     await page.touchscreen.tap(nb.x + nb.width / 2, nb.y + nb.height / 2); await page.touchscreen.tap(nb.x + nb.width / 2, nb.y + nb.height / 2);
     await sleep(120);
     ok(await page.evaluate(() => { const d = window.__oge15.debug(); return !!d.tr && !d.tr.ladder && !d.tr.done; }) && !(await page.locator('#ans').isDisabled()), 'D', 'двойное касание «Следующая →» не открывает лестницу новой задачи');
@@ -242,6 +256,7 @@ async function main() {
   await run('E. зачёт: 10/10 → passed; 5/10 — не сдан; одна попытка, Enter, вкладки, двойное касание', async () => {
     for (const good of [10, 5]) {
       const ctx = await fresh(); const { page, errs } = await openPage(ctx, URL15 + '?seed=' + (40 + good));
+      await page.keyboard.press('Shift');   // ученик уже пользовался клавиатурой — правила фокуса действуют
       await tap(page, '.tab[data-tab=quiz]'); await tap(page, '#qStart'); await settle();
       for (let i = 0; i < 10; i++) {
         const a = await page.evaluate(() => { const d = window.__oge15.debug(); return d.qz.items[d.qz.i].ans; });
@@ -251,12 +266,17 @@ async function main() {
           ok(await page.locator('.quizq').innerText() === 'Задача 1 из 10' && !/тип|Тема/.test(await page.locator('#main').innerText().then(s => s.split('\n')[0])), 'E', 'тип задачи в зачёте не показан');
         }
         await page.locator('#qAns').fill(i < good ? fmt(a) : '99999');
-        const cb = await page.locator('#qCheck').boundingBox();
-        await page.touchscreen.tap(cb.x + cb.width / 2, cb.y + cb.height / 2); await page.touchscreen.tap(cb.x + cb.width / 2, cb.y + cb.height / 2);   // двойное касание — один ответ
+        if (i % 2) {   // двойное касание «Ответить» — один ответ
+          await page.locator('#qCheck').scrollIntoViewIfNeeded(); const cb = await page.locator('#qCheck').boundingBox();
+          await page.touchscreen.tap(cb.x + cb.width / 2, cb.y + cb.height / 2); await page.touchscreen.tap(cb.x + cb.width / 2, cb.y + cb.height / 2);
+        } else await page.locator('#qAns').press('Enter');   // ответ клавишей Enter
         const v = await page.locator('#qFb').innerText();
         ok(v === 'Верно.' || v === 'Неверно.', 'E', 'голый вердикт: «' + v + '»');
+        const fbx = await page.locator('#qFb').boundingBox(), nbx = await page.locator('#qNext').boundingBox();
+        ok(fbx && nbx && fbx.y >= -1 && nbx.y + nbx.height <= 741, 'E', 'вердикт и «Дальше →» видны на экране телефона');
         await settle(); await page.keyboard.press('Enter'); await page.keyboard.press('Enter');   // и после защитной паузы
         ok(await page.locator('.quizq').innerText() === `Задача ${i + 1} из 10`, 'E', 'Enter после ответа не перелистывает');
+        if (!(i % 2)) { await page.keyboard.press('Tab'); ok(await page.evaluate(() => document.activeElement && document.activeElement.id) === 'qNext', 'E', 'Tab с вердикта ведёт на «Дальше →»'); }
         if (i === 1) {
           await tap(page, '.tab[data-tab=refs]'); await tap(page, '.tab[data-tab=quiz]'); await tap(page, '.tab[data-tab=quiz]');
           ok(await page.locator('#qNext').isVisible() && await page.locator('#qAns').isDisabled() && /^(Верно|Неверно)\.$/.test(await page.locator('#qFb').innerText())
@@ -265,7 +285,7 @@ async function main() {
         await settle();
         if (i < 9) { await page.locator('#qNext').tap(); await settle(); }
         else {
-          const nb = await page.locator('#qNext').boundingBox();
+          await page.locator('#qNext').scrollIntoViewIfNeeded(); const nb = await page.locator('#qNext').boundingBox();
           await page.touchscreen.tap(nb.x + nb.width / 2, nb.y + nb.height / 2); await page.touchscreen.tap(nb.x + nb.width / 2, nb.y + nb.height / 2);
           await sleep(150);
           ok(await page.locator('.fin .score').count() === 1 && await page.evaluate(() => !!window.__oge15.debug().qz), 'E', 'двойное касание «К результатам» не уводит с экрана итогов');

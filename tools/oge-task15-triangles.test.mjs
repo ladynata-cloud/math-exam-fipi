@@ -90,6 +90,38 @@ function textClashes(svg) {
   }
   return '';
 }
+/* принадлежность подписей: подпись угла (data-of="A") и буква точки ближе к своей точке, чем
+   к любой другой отмеченной; подпись отрезка (data-of="B-H") ближе к своему отрезку, чем к
+   любому другому отрезку чертежа (линии короче 14 px — засечки — не считаются);
+   возвращает первую подпись не на своём месте или '' */
+const segDist = (P, A, B) => {
+  const ux = B.x - A.x, uy = B.y - A.y, l2 = ux * ux + uy * uy || 1;
+  const t = Math.max(0, Math.min(1, ((P.x - A.x) * ux + (P.y - A.y) * uy) / l2));
+  return Math.hypot(P.x - A.x - ux * t, P.y - A.y - uy * t);
+};
+function textOwners(svg) {
+  const P = vertices(svg);
+  const dd = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+  const lines = [...svg.matchAll(/<line x1="(-?[\d.]+)" y1="(-?[\d.]+)" x2="(-?[\d.]+)" y2="(-?[\d.]+)"/g)]
+    .map((m) => [{ x: +m[1], y: +m[2] }, { x: +m[3], y: +m[4] }]).filter(([a, b]) => dd(a, b) >= 14);
+  const same = (a, b, c, d) => (dd(a, c) < 1 && dd(b, d) < 1) || (dd(a, d) < 1 && dd(b, c) < 1);
+  for (const m of svg.matchAll(/<text x="(-?[\d.]+)" y="(-?[\d.]+)"(?: data-of="([A-Z]\d?(?:-[A-Z]\d?)?)")?[^>]*font-size="([\d.]+)"[^>]*>([\s\S]*?)<\/text>/g)) {
+    const t = m[5].replace(/<[^>]*>/g, ''), of = m[3] || (P[t] ? t : null);
+    if (!of) continue;
+    const c = { x: +m[1], y: +m[2] - 0.32 * +m[4] };
+    if (of.includes('-')) {
+      const [p, q] = of.split('-');
+      if (!P[p] || !P[q]) continue;
+      const d0 = segDist(c, P[p], P[q]);
+      if (lines.some(([a, b]) => !same(a, b, P[p], P[q]) && segDist(c, a, b) < d0 - 1)) return t + ' (свой отрезок ' + of + ', ближе другая линия)';
+    } else {
+      if (!P[of]) continue;
+      const d0 = dd(c, P[of]);
+      for (const q in P) if (q !== of && dd(c, P[q]) < d0) return t + ' (своя точка ' + of + ', ближе ' + q + ')';
+    }
+  }
+  return '';
+}
 /* вершины чертежа: <circle data-v="A" cx=… cy=…> */
 function vertices(svg) {
   const P = {};
@@ -197,6 +229,8 @@ section('6. чертёж по числам: углы по пикселям = п�
       }
       const cl = textClashes(t.svg);
       if (cl) msg.push('подписи налезают друг на друга: ' + cl);
+      const ow = textOwners(t.svg);
+      if (ow) msg.push('подпись стоит у чужой точки: ' + ow);
       if (msg.length) { bad++; ex = ex || plainText(t.text).slice(0, 90) + ' — ' + msg.join('; '); }
     }
     ok(!bad, '6', `${k}: чертежей не по числам или с наложенными подписями ${bad} — ${ex}`);
