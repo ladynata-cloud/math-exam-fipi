@@ -262,7 +262,7 @@ Merge, отказ от внешнего ревью HIGH и вход в GitHub о
   условия и подписям чертежа, 11 — формула пункта против ломаной графика,
   12 — формула из строки ученика с точной подстановкой, 14 — ответ из данных
   условия; по 500 задач на тип); `node tools/oge-algebra-contract.browser.mjs` —
-  371 проверок, `OGE_ALGEBRA_BROWSER_OK` (Chromium 360 px с касанием);
+  371 проверка, `OGE_ALGEBRA_BROWSER_OK` (Chromium 360 px с касанием);
   `?selftest=1` — `OGE10_SELFTEST_OK`, `OGE11_SELFTEST_OK`, `OGE12_SELFTEST_OK`,
   `OGE14_SELFTEST_OK`; `oge/tests` — `OGE_REGISTRY_OK`, `OGE_ADAPTERS_OK`,
   `OGE_JUNK_OK`; `tools/trainer-inventory/test/inventory.test.mjs` — 54 из 54;
