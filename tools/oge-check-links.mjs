@@ -27,7 +27,7 @@ const DEFAULT_PAGES = [
   'oge/algebra/task-09-linear-equations.html',
   'oge/algebra/task-14-sequences.html',
   'oge/probability/task-10-probability.html',
-  'oge/geometry/task-15-external-angle.html',
+  'trainers/oge-task15-triangles.html',
   'trainers/index.html',
   'trainers/oge-course/index.html',
   'trainers/oge-1-5-trainers/index.html',

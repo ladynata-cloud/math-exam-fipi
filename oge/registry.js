@@ -42,7 +42,7 @@ var RV = (function(){
     "oge-t12-formuly": { file:"../trainers/oge-task12-formulas-trainer.html", title:"Расчёты по формулам", line:12, review:true, contract:"line" },
     "oge-t13-neravenstva": { file:"../trainers/oge-task13-inequalities.html", title:"Неравенства", line:13, review:false, contract:"line" },
     "oge-t14-progressii": { file:"../trainers/oge-task14-progressions.html", title:"Прогрессии", line:14, review:true, contract:"line" },
-    "oge-t15-treugolniki": { file:"../trainers/oge-task15-triangles.html", title:"Треугольники", line:15, review:false, contract:"line", planned:true },
+    "oge-t15-treugolniki": { file:"../trainers/oge-task15-triangles.html", title:"Треугольники", line:15, review:true, contract:"line" },
     "oge-task16-circle": { file:"../trainers/oge-task16-circle.html", title:"Окружность", line:16, review:true, contract:"line" },
     "oge17-chetyrehugolniki": { file:"../trainers/oge-task17-quadrilaterals.html", title:"Четырёхугольники", line:17, review:true, contract:"line" },
     "oge18-kletki": { file:"../trainers/oge-task18-grid.html", title:"Клетчатая бумага", line:18, review:true, contract:"line" },
