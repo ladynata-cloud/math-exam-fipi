@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
-  Браузерный гейт OGE_COURSE_03D_ALGEBRA: тренажёры 7, 8, 9 в Chromium на 360 px
+  Браузерный гейт OGE_COURSE_03D_ALGEBRA: тренажёры 7, 8, 9, 10, 11, 12, 14 в Chromium на 360 px
   с касанием (isMobile, hasTouch).
   Внешние инструменты, ничего не устанавливает:
     PLAYWRIGHT_CORE_PATH=<каталог playwright-core или node_modules с ним>
@@ -19,7 +19,13 @@
   - 9: промах и исправление — засчитано, «без подсказок» не снимается;
     «Решить по шагам» — не помощь, «Подсказка» — помощь;
   - зачёт 10/10 → passed, двойное касание — один ответ;
-  - ?mode=review — задачи только открытого типа, плашка с его именем.
+  - ?mode=review — задачи только открытого типа, плашка с его именем;
+  - часть B (решения D15–D53): 10 — ловушка «как будто вернули», исправление засчитано,
+    лестница закрывает поле; 11 — «верно 1 из 3» без букв, тот же ответ — не попытка,
+    разбор по пунктам, две ошибки — не в счёт, три графика в строку; 12 — строка разбора,
+    подстановка в любом порядке сомножителей, подписи без чисел; 14 — «найди свою»,
+    «змейка» без вылета; зачёт 10/10 и повтор у всех четырёх; миграция старого ключа и
+    сброс только своей ветки с подтверждением на странице.
 */
 import fs from 'node:fs';
 import http from 'node:http';
@@ -38,6 +44,10 @@ const TR = [
   { n: 7, file: 'trainers/oge-task7-number-line.html', tid: 'oge-t7-pryamaya', name: 'OGE7', tabs: '.tab' },
   { n: 8, file: 'trainers/oge-task8-powers-roots.html', tid: 'oge-t8-stepeni', name: 'OGE8', tabs: 'nav.tabs button' },
   { n: 9, file: 'trainers/oge-task9-equations.html', tid: 'oge-t9-uravneniya', name: 'OGE9', tabs: 'nav.tabs .tab' },
+  { n: 10, file: 'trainers/oge-task10-probability.html', tid: 'oge-t10-veroyatnost', name: 'OGE10', tabs: 'nav.tabs button' },
+  { n: 11, file: 'trainers/oge-task11-graphs-trainer.html', tid: 'oge-t11-grafiki', name: 'OGE11', tabs: '#tabs button' },
+  { n: 12, file: 'trainers/oge-task12-formulas-trainer.html', tid: 'oge-t12-formuly', name: 'OGE12', tabs: '#modes button' },
+  { n: 14, file: 'trainers/oge-task14-progressions.html', tid: 'oge-t14-progressii', name: 'OGE14', tabs: '#tabs .tab' },
 ];
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon' };
@@ -65,7 +75,7 @@ async function openPage(ctx, url) {
 }
 const store = page => page.evaluate(k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return 'junk'; } }, KEY);
 /* кнопки и поля ниже 44 px; ссылка внутри фразы — исключение (размер задан строкой текста) */
-const small = page => page.evaluate(() => [...document.querySelectorAll('button,input:not([type=radio]):not([type=checkbox]),select,a[href]')]
+const small = page => page.evaluate(() => [...document.querySelectorAll('button,input:not([type=radio]):not([type=checkbox]),select,a[href],summary')]
   .filter(e => !(e.tagName === 'A' && getComputedStyle(e).display === 'inline' && e.parentElement &&
     e.parentElement.textContent.trim().length > e.textContent.trim().length + 20))
   .filter(e => { const r = e.getBoundingClientRect(); return r.width && r.height && r.height < 43.5; })
@@ -226,7 +236,7 @@ async function main() {
   });
 
   await run('Q. Зачёт 10/10 → passed; двойное касание — один ответ', async () => {
-    for (const t of TR) {
+    for (const t of TR.filter(x => x.n <= 9)) {   // часть B — сценарий QB
       const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + t.file);
       if (t.n === 7) {
         await page.evaluate(() => { const o = buildQuiz7; buildQuiz7 = function () { const l = o(); window.__q = l; return l; }; });
@@ -266,7 +276,7 @@ async function main() {
 
   await run('R. ?mode=review: задачи только открытого типа, плашка с именем', async () => {
     const OPEN = { 7: ['root/inrange', 'Оценка: корни: какой из корней в отрезке'], 8: ['pow1', 'Степени: одно основание'], 9: ['XF', 'Вида x + a/x = b'] };
-    for (const t of TR) {
+    for (const t of TR.filter(x => x.n <= 9)) {   // часть B — сценарий RB
       const ctx = await fresh();
       const [type, name] = OPEN[t.n];
       await ctx.addInitScript(([k, v]) => { try { localStorage.setItem(k, v); } catch (e) {} },
@@ -334,6 +344,267 @@ async function main() {
       const s = await store(page);
       ok(!(s && s[TR[0].tid] && s[TR[0].tid].solvedByType && s[TR[0].tid].solvedByType[q.tt]), 'E', '7: две ошибки в номере — задача в счёт не идёт');
       ok(!errs.length, 'E', errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+  });
+
+
+  /* ===================== часть B: 10, 11, 12, 14 ===================== */
+  const TBn = (n) => TR.find(t => t.n === n);
+
+  await run('C10. Марафон 10: ловушка — адресно; исправление — засчитано; лестница закрывает поле, показ — не в счёт', async () => {
+    const t = TBn(10);
+    const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + t.file);
+    await page.locator('#tabb-mar').tap();
+    ok(await page.locator('#mar-root button', { hasText: 'Показать разбор' }).count() === 0, 'C10', 'в Марафоне нет «Показать разбор»');
+    await page.evaluate(() => { marFilter = '10.3'; marChips(); marNew(); });
+    const q = await page.evaluate(() => { const m = /лежат (\d+) \S+ и (\d+)/.exec(document.querySelector('#mar-root .card').innerText); return { g: +m[1], y: +m[2] }; });
+    await page.locator('#mar-root .aw-tog').first().tap();
+    await page.locator('#mar-root .aw-n').fill(String(q.g)); await page.locator('#mar-root .aw-d').fill(String(q.g + q.y));
+    await page.locator('#mar-root button', { hasText: 'Проверить' }).tap();
+    const fb = page.locator('#mar-root .fb').first();
+    ok(/вернули в мешочек/.test(await fb.innerText()) && (await fb.getAttribute('aria-live')) === 'polite', 'C10', '10.3: «как будто вернули» в aria-live');
+    await page.locator('#mar-root .aw-n').fill(String(q.g - 1)); await page.locator('#mar-root .aw-d').fill(String(q.g + q.y - 1));
+    await page.locator('#mar-root button', { hasText: 'Проверить' }).tap();
+    let s = await store(page), mk = s.mistakes && s.mistakes[t.tid + '|10_3'];
+    ok(s[t.tid].solvedByType['10_3'] === 1 && mk && mk.w === 1 && mk.r === 0, 'C10', 'промах и исправление: засчитано, промах в журнале один раз');
+    await page.locator('#mar-root button', { hasText: 'Следующая задача' }).tap();
+    await page.evaluate(() => { marFilter = '10.1'; marChips(); marNew(); });
+    await page.locator('#mar-root button', { hasText: 'Решить по шагам' }).tap();
+    ok(await page.locator('#mar-root .aw-dec').first().isDisabled(), 'C10', 'лестница закрывает главное поле');
+    for (let k = 0; k < 3; k++) await page.locator('#mar-root .step .act.show').last().tap();
+    s = await store(page);
+    ok(!s[t.tid].solvedByType['10_1'] && /в счёт решённых не идёт/.test(await page.locator('#mar-root').innerText()), 'C10', 'показанные шаги — не в счёт');
+    ok(!errs.length, 'C10', errs.slice(0, 2).join(' | '));
+    await ctx.close();
+  });
+
+  await run('C11. ОГЭ-режим 11: «верно 1 из 3» без букв; тот же ответ — не попытка; разбор по пунктам; две ошибки — не в счёт', async () => {
+    const t = TBn(11);
+    const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + t.file);
+    await page.locator('#tabs button[data-m=m4]').tap();
+    await page.locator('#m4-chips .btn[data-t=t41]').tap();
+    const key = await page.evaluate(() => M4.task.key);
+    await page.locator('#m4-answer').fill([key[1], key[0], key[2]].join('')); await page.locator('#m4-check').tap();
+    const m1 = await page.locator('#m4-soft').innerText();
+    ok(/^Верно 1 из 3\./.test(m1) && !/(^|[^А-Яа-яЁё])[АБВ](\)|\s*→|,|\s)/.test(m1) && (await page.locator('#m4-soft').getAttribute('aria-live')) === 'polite', 'C11', 'сообщение без букв в aria-live: «' + m1.slice(0, 60) + '»');
+    await page.locator('#m4-check').tap();
+    ok(/Ответ не изменился/.test(await page.locator('#m4-soft').innerText()), 'C11', 'тот же ответ — не попытка');
+    await page.locator('#m4-show').tap();
+    const r1 = await page.locator('#m4-razbor').innerText();
+    ok(/А → /.test(r1) && !/Б → /.test(r1) && !/Ответ:/.test(r1), 'C11', 'разбор открывает один пункт');
+    await page.locator('#m4-answer').fill(key.join('')); await page.locator('#m4-check').tap();
+    let s = await store(page);
+    ok(!s[t.tid].solvedByType.t41, 'C11', 'после показа разбора — не в счёт');
+    await page.locator('#m4-next').tap();
+    const k2 = await page.evaluate(() => M4.task.key);
+    await page.locator('#m4-answer').fill([k2[1], k2[0], k2[2]].join('')); await page.locator('#m4-check').tap();
+    await page.locator('#m4-answer').fill([k2[2], k2[1], k2[0]].join('')); await page.locator('#m4-check').tap();
+    ok(/Две ошибки — задача в счёт не идёт/.test(await page.locator('#m4-soft').innerText()), 'C11', 'вторая ошибка — строка D2 и признак пары');
+    await page.locator('#m4-answer').fill(k2.join('')); await page.locator('#m4-check').tap();
+    await page.locator('#m4-next').tap();
+    const k3 = await page.evaluate(() => M4.task.key);
+    await page.locator('#m4-answer').fill([k3[1], k3[0], k3[2]].join('')); await page.locator('#m4-check').tap();
+    await page.locator('#m4-answer').fill(k3.join('')); await page.locator('#m4-check').tap();
+    s = await store(page);
+    ok(s[t.tid].solvedByType.t41 === 1, 'C11', 'две ошибки — не в счёт, одна ошибка и исправление — засчитано: ' + s[t.tid].solvedByType.t41);
+    const rows = await page.evaluate(() => [...document.querySelectorAll('#m4-graphs .gitem')].map(e => Math.round(e.getBoundingClientRect().top)));
+    ok(new Set(rows).size === 1, 'C11', 'три графика в одну строку на 360 px');
+    ok(!errs.length, 'C11', errs.slice(0, 2).join(' | '));
+    await ctx.close();
+  });
+
+  await run('C12. 12: исправленная ошибка — засчитано; строка разбора — не в счёт; подстановка 12 · 3 = 3 · 12; подписи без чисел', async () => {
+    const t = TBn(12);
+    const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + t.file);
+    const a1 = await page.evaluate(() => String(cur.answer).replace('.', ','));
+    await page.locator('#ansIn').fill('1'); await page.locator('#checkBtn').tap();
+    ok((await page.locator('#fb').getAttribute('aria-live')) === 'polite', 'C12', 'сообщение в aria-live');
+    await page.locator('#ansIn').fill(a1); await page.locator('#checkBtn').tap();
+    let s = await store(page), mk = s.mistakes && s.mistakes[t.tid + '|1'];
+    ok(s[t.tid].solvedByType['1'] === 1 && mk && mk.w === 1 && !/не идёт/.test(await page.locator('#fb').innerText()), 'C12', 'исправленная ошибка засчитана без оговорки');
+    await page.locator('#nextBtn').tap(); await page.locator('#solBtn').tap();
+    ok(await page.evaluate(() => document.querySelectorAll('#sol .line:not([hidden])').length) === 1, 'C12', '«Показать строку» открывает одну строку');
+    await page.locator('#ansIn').fill(await page.evaluate(() => String(cur.answer).replace('.', ','))); await page.locator('#checkBtn').tap();
+    s = await store(page);
+    ok(s[t.tid].solvedByType['1'] === 1, 'C12', 'после показа строки — не в счёт');
+    await page.locator('#modes button[data-id=subst]').tap();
+    for (let k = 0; k < 60; k++) { if (await page.evaluate(() => /^[^%]*%0 · %1$/.test(cur.subst.tpl) && cur.subst.vals[0] !== cur.subst.vals[1])) break; await page.locator('#nextBtn').tap(); }
+    const vals = await page.evaluate(() => cur.subst.vals);
+    for (const v of [vals[1], vals[0]]) await page.locator('#chips button[data-v="' + v + '"]:not([disabled])').first().tap();
+    await page.locator('#checkBtn').tap();
+    ok(/Верно/.test(await page.locator('#fb').innerText()), 'C12', 'подстановка в обратном порядке сомножителей принята');
+    await page.locator('#modes button[data-id=find]').tap();
+    const labels = await page.evaluate(() => [...document.querySelectorAll('#mc1 button')].map(b => b.innerText));
+    ok(labels.length && labels.every(l => !/\d|ищем|спрашива|нужна/.test(l.replace(/^[^—]*—/, ''))), 'C12', '«Найди, что спрашивают»: подписи без чисел ' + labels.join(' | '));
+    ok(!errs.length, 'C12', errs.slice(0, 2).join(' | '));
+    await ctx.close();
+  });
+
+  await run('C14. Марафон 14: «найди свою»; исправление — засчитано; лестница закрывает поле; «змейка» без вылета', async () => {
+    const t = TBn(14);
+    const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + t.file);
+    await page.locator('#tabs .tab[data-page=marathon]').tap();
+    ok(await page.locator('#m-task button', { hasText: 'Показать ответ' }).count() === 0, 'C14', 'в Марафоне нет «Показать ответ»');
+    await page.evaluate(() => { window.__M.filters.clear(); window.__M.filters.add('gp'); });
+    let got = null;
+    for (let k = 0; k < 40 && !got; k++) {
+      await page.locator('#m-skip').tap();
+      got = await page.evaluate(() => { const t = window.__M.task; if (t.code !== 'GP-COMPL') return null; const d = t.distract.find(x => /найди свою/.test(x.hint)); return d && d.v.d === 1n ? { trap: d.v.n.toString(), ans: t.ans.n.toString() } : null; });
+    }
+    ok(!!got, 'C14', 'нашлась задача GP-COMPL');
+    if (got) {
+      await page.locator('#m-dec').fill(got.trap); await page.locator('#m-ck').tap();
+      ok(/двумя разными ошибками — найди свою/.test(await page.locator('#m-fb').innerText()), 'C14', 'GP-COMPL: сообщение «найди свою»');
+      await page.locator('#m-dec').fill(got.ans); await page.locator('#m-ck').tap();
+      const s = await store(page), mk = s.mistakes && s.mistakes[t.tid + '|GP-COMPL'];
+      ok(s[t.tid].solvedByType['GP-COMPL'] === 1 && mk && mk.w === 1, 'C14', 'промах и исправление: засчитано, промах в журнале');
+      await page.locator('#m-next').tap();
+    }
+    await page.locator('#m-solve').tap();
+    ok(await page.locator('#m-dec').isDisabled(), 'C14', 'лестница закрывает главное поле');
+    await page.locator('#tabs .tab[data-page=steps]').tap();
+    await page.locator('.casebtn[data-code=PIC]').tap();
+    for (let k = 0; k < 30; k++) { if (/змейка/.test(await page.locator('#st-task .task-chip').innerText())) break; await page.locator('#st-new').tap(); }
+    ok(await page.evaluate(() => document.documentElement.scrollWidth <= 360), 'C14', '«змейка»: страница не шире экрана');
+    ok(!errs.length, 'C14', errs.slice(0, 2).join(' | '));
+    await ctx.close();
+  });
+
+  await run('RV. по ревью: лестница 14 после «Другой задачи»; тип в зачёте 12 скрыт; Enter в зачёте показывает вердикт; серия 14', async () => {
+    { // 14: «Разобрать по шагам» → «Другая задача» → «Разобрать по шагам» — лестница снова открывается
+      const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + TBn(14).file);
+      await page.locator('#tabs .tab[data-page=marathon]').tap();
+      await page.locator('#m-solve').tap(); await page.locator('#m-skip').tap(); await page.locator('#m-solve').tap();
+      ok(await page.locator('#mstep-list').count() === 1, 'RV', '14: лестница открывается снова после «Другой задачи»');
+      await page.locator('#m-skip').tap();
+      const a14 = await page.evaluate(() => T14.fmtN(window.__M.task.ans).replace(/[  ]/g, '').replace('−', '-'));
+      await page.locator('#m-dec').fill(a14); await page.locator('#m-ck').tap();
+      ok(/Серия верных: 1/.test(await page.locator('#m-stats').innerText()), 'RV', '14: верное решение продлевает серию');
+      await page.locator('#m-next').tap();
+      await page.locator('#m-dec').fill('999999'); await page.locator('#m-ck').tap();
+      ok(/Серия верных: 0/.test(await page.locator('#m-stats').innerText()), 'RV', '14: ошибка обнуляет серию верных');
+      ok(!errs.length, 'RV', '14: ' + errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+    for (const n of [10, 12, 14]) { // Enter в поле зачёта: вердикт виден, задача та же
+      const t = TBn(n);
+      const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + t.file);
+      let input, fbSel, counter;
+      if (n === 10) { await page.locator('#tabb-quiz').tap(); await page.locator('#quiz-start').tap(); input = '#quiz-root .aw-dec'; fbSel = '#quiz-root .fb'; counter = () => page.locator('#quiz-root .note').first().innerText(); }
+      else if (n === 12) { await page.locator('#modes button[data-id=diag]').tap(); input = '#ansIn'; fbSel = '#fb'; counter = () => page.locator('.diag-bar').innerText();
+        const f = await page.locator('#focus').innerText();
+        ok(!/тренируем|риск/.test(f) && await page.locator('#taskArea .badge').count() === 0, 'RV', '12: в зачёте тип задания не показан: «' + f.slice(0, 60) + '»'); }
+      else { await page.locator('#tabs .tab[data-page=quiz]').tap(); await page.locator('#q-start').tap(); input = '#q-dec'; fbSel = '#q-fb'; counter = () => page.locator('#q-box .small').first().innerText(); }
+      const c0 = await counter();
+      await page.locator(input).fill('999999'); await page.locator(input).press('Enter');
+      await sleep(150);
+      ok(/Неверно/.test(await page.locator(fbSel).first().innerText()) && (await counter()) === c0, 'RV', n + ': Enter в зачёте показывает вердикт и не перелистывает');
+      ok(!errs.length, 'RV', n + ': ' + errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+  });
+
+  await run('QB. Зачёт 10, 11, 12, 14: 10/10 → passed; двойное касание — один ответ', async () => {
+    for (const n of [10, 11, 12, 14]) {
+      const t = TBn(n);
+      const ctx = await fresh(); const { page, errs } = await openPage(ctx, base + t.file);
+      if (n === 10) {
+        await page.evaluate(() => { const o = buildQuiz10; buildQuiz10 = function () { const l = o(); window.__q = l; return l; }; });
+        await page.locator('#tabb-quiz').tap(); await page.locator('#quiz-start').tap();
+        for (let i = 0; i < 10; i++) {
+          const a = await page.evaluate(i => { const t = window.__q[i]; return fToDec(t.needRound ? t.rounded : t.answer); }, i);
+          await page.locator('#quiz-root .aw-dec').fill(a.replace('−', '-'));
+          const b = page.locator('#quiz-root .act', { hasText: 'Ответить' }); await b.tap(); if (i === 0) await b.tap({ force: true }).catch(() => {});
+          await page.locator('#quiz-root .act', { hasText: /Дальше|Итоги/ }).tap();
+        }
+      } else if (n === 11) {
+        await page.evaluate(() => { const o = buildQuiz11; buildQuiz11 = function () { const l = o(); window.__q = l; return l; }; });
+        await page.locator('#tabs button[data-m=m6]').tap(); await page.locator('#m6-start').tap();
+        for (let i = 0; i < 10; i++) {
+          const k = await page.evaluate(i => window.__q[i].key.join(''), i);
+          await page.locator('#m6-answer').fill(k);
+          const b = page.locator('#m6-ok'); await b.tap(); if (i === 0) await b.tap({ force: true }).catch(() => {});
+          await page.locator('#m6-next').tap();
+        }
+      } else if (n === 12) {
+        await page.evaluate(() => { const o = buildQuiz12; buildQuiz12 = function () { const l = o(); window.__q = l; return l; }; });
+        await page.locator('#modes button[data-id=diag]').tap();
+        for (let i = 0; i < 10; i++) {
+          const a = await page.evaluate(i => String(window.__q[i].answer).replace('.', ','), i);
+          await page.locator('#ansIn').fill(a);
+          const b = page.locator('#checkBtn'); await b.tap(); if (i === 0) await b.tap({ force: true }).catch(() => {});
+          await page.locator('#qNext').tap();
+        }
+      } else {
+        await page.evaluate(() => { const o = T14.buildQuiz; T14.buildQuiz = function () { const l = o(); window.__q = l; return l; }; });
+        await page.locator('#tabs .tab[data-page=quiz]').tap(); await page.locator('#q-start').tap();
+        for (let i = 0; i < 10; i++) {
+          const a = await page.evaluate(i => T14.fmtN(window.__q[i].ans).replace(/[  ]/g, '').replace('−', '-'), i);
+          await page.locator('#q-dec').fill(a);
+          const b = page.locator('#q-ok'); await b.tap(); if (i === 0) await b.tap({ force: true }).catch(() => {});
+          await page.locator('#q-next').tap();
+        }
+      }
+      await sleep(200);
+      const s = await store(page), r = s && s[t.tid];
+      ok(r && r.passed === true && r.best === 10 && r.total === 10 && r.runs === 1, 'QB', n + ': 10/10 → passed ' + JSON.stringify(r && { p: r.passed, b: r.best, t: r.total, n: r.runs }));
+      const mk = Object.keys((s && s.mistakes) || {}).filter(k => k.startsWith(t.tid + '|'));
+      ok(!mk.length, 'QB', n + ': верные ответы зачёта не заводят записей журнала: ' + mk.join(','));
+      ok(!errs.length, 'QB', n + ': ' + errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+  });
+
+  await run('RB. ?mode=review 10, 11, 12, 14: задачи только открытого типа, плашка с именем', async () => {
+    const OPEN = { 10: ['10_6', 'Дерево вероятностей', () => { const r = []; for (let i = 0; i < 12; i++) r.push(typeOf(reviewTask().code)); return r; }],
+      11: ['t44', 'Гиперболы', () => { const r = []; for (let i = 0; i < 12; i++) { m4New(); r.push(M4.task.type); } return r; }],
+      12: ['6', 'Корень', () => { const r = []; for (let i = 0; i < 12; i++) { newTask(); r.push(String(cur.t)); } return r; }],
+      14: ['TAXI', 'Старт плюс плата за минуту', () => { const r = []; for (let i = 0; i < 12; i++) r.push(T14.reviewCode()); return r; }] };
+    for (const n of [10, 11, 12, 14]) {
+      const t = TBn(n), [type, name, fn] = OPEN[n];
+      const ctx = await fresh();
+      await ctx.addInitScript(([k, v]) => { try { localStorage.setItem(k, v); } catch (e) {} },
+        [KEY, JSON.stringify({ mistakes: { [t.tid + '|' + type]: { w: 1, r: 0, last: 1 } }, other: { x: 1 } })]);
+      const { page, errs } = await openPage(ctx, base + t.file + '?mode=review');
+      await sleep(300);
+      if (n === 14) await page.waitForSelector('#st-review');
+      const text = await page.evaluate(() => document.body.innerText);
+      ok(text.includes('Работа над ошибками') && text.includes(name), 'RB', n + ': плашка с именем типа «' + name + '»');
+      const got = await page.evaluate(fn);
+      ok(got.length && got.every(x => x === type), 'RB', n + ': задачи повтора — только ' + type + ': ' + [...new Set(got)].join(','));
+      const s = await store(page);
+      ok(s && JSON.stringify(s.other) === '{"x":1}', 'RB', n + ': чужая ветка цела');
+      ok(!errs.length, 'RB', n + ': ' + errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+  });
+
+  await run('MB. миграция и сброс с подтверждением на странице (10, 11, 12, 14)', async () => {
+    const CASES = {
+      10: { old: 'oge10_progress_v1', val: { correct: 3, byType: { '10.1': { correct: 3 } } }, open: async (p) => { await p.locator('#tabb-mar').tap(); await p.locator('#mar-reset').tap(); }, confirm: '#mar-confirm', yes: '#mar-yes' },
+      11: { old: 'mathexam_oge11_stats_v1', val: { skills: { oge: { total: 2, first: 1 } }, errors: {} }, open: async (p) => { await p.locator('#tabs button[data-m=m5]').tap(); await p.locator('#m5-reset').tap(); }, confirm: '#m5-confirm', yes: '#m5-yes' },
+      12: { old: 'mx-oge12-v1', val: { byType: { 1: { a: 2, c: 2 } }, bestDiag: 9 }, open: async (p) => { await p.locator('#resetBtn').tap(); }, confirm: '#copyArea', yes: '#resetYes' },
+      14: { old: 'oge14_progress_v1', val: { totalOk: 2, okByCode: { TAXI: 2 } }, open: async (p) => { await p.locator('#tabs .tab[data-page=marathon]').tap(); await p.locator('#m-reset').tap(); }, confirm: '#m-confirm', yes: '#rs-yes' },
+    };
+    for (const n of [10, 11, 12, 14]) {
+      const t = TBn(n), c = CASES[n];
+      const ctx = await fresh();
+      await ctx.addInitScript(([k, v, ok2, ov]) => { try { if (!sessionStorage.getItem('seeded')) { sessionStorage.setItem('seeded', '1'); localStorage.setItem(k, v); localStorage.setItem(ok2, ov); } } catch (e) {} },
+        [KEY, JSON.stringify({ other: { x: 1 }, mistakes: { 'other|x': { w: 1, r: 0 } } }), c.old, JSON.stringify(c.val)]);
+      const { page, errs } = await openPage(ctx, base + t.file);
+      await sleep(300);
+      let s = await store(page);
+      ok(s && s[t.tid] && s[t.tid].migratedFrom === c.old, 'MB', n + ': миграция поставила отметку');
+      await c.open(page);
+      ok(/Записи других тренажёров курса не тронутся/.test(await page.locator(c.confirm).innerText()), 'MB', n + ': подтверждение сброса на странице');
+      await page.locator(c.yes).tap();
+      s = await store(page);
+      ok(s[t.tid].migratedFrom === c.old && !Object.keys(s[t.tid].solvedByType).length && !s[t.tid].runs && JSON.stringify(s.other) === '{"x":1}' && s.mistakes['other|x'], 'MB', n + ': сброс только своей ветки, отметка миграции осталась');
+      await page.reload(); await sleep(300);
+      s = await store(page);
+      ok(!Object.keys(s[t.tid].solvedByType).length, 'MB', n + ': после сброса старый ключ снова не переносится');
+      ok(!errs.length, 'MB', n + ': ' + errs.slice(0, 2).join(' | '));
       await ctx.close();
     }
   });

@@ -159,20 +159,34 @@ details.spoil{border:1.4px dashed var(--line);border-radius:10px;padding:8px 12p
 details.spoil summary{cursor:pointer;color:var(--pen);font-weight:600;font-size:14.5px}
 hr.thin{border:0;border-top:1px solid var(--line);margin:14px 0}
 .footer-note{color:var(--muted);font-size:13px;margin-top:8px}
+/* доступность (курс ОГЭ, задача 03D): кнопки и поля не ниже 44 px, видимый фокус */
+.tab,button.btn,button.choice,.fchip,.togglefrac,.casebtn,.ansfield input,.fracIn input{min-height:44px}
+details.spoil summary{padding:10px 0;line-height:24px}
+:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+.ansfield input:focus-visible,.fracIn input:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+.crumbs{display:inline-flex;align-items:center;min-height:44px;font-size:14.5px;color:var(--pen);text-decoration:none}
+.crumbs:hover{text-decoration:underline}
+@media print{
+  body{background-image:none}
+  .crumbs,.tabs,.btnrow,.fb,.filters,.mstats,.togglefrac,.selfcheck{display:none !important}
+  .card{box-shadow:none}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
+<a class="crumbs" href="../oge/">← Курс ОГЭ</a>
 <header class="top">
   <h1>ОГЭ №14. Прогрессии: формулы и здравый смысл</h1>
   <p class="subtitle">Каждую задачу можно решить двумя путями: таблицей шагов и формулой из справочника. Здесь тренируем оба.</p>
 </header>
-<nav class="tabs" id="tabs">
-  <button class="tab active" data-page="ref">📖 Справочник</button>
-  <button class="tab" data-page="learn">🌱 Учимся</button>
-  <button class="tab" data-page="compare">⚖️ Сравнить</button>
-  <button class="tab" data-page="steps">🪜 Пошагово</button>
-  <button class="tab" data-page="marathon">🏁 Марафон</button>
+<nav class="tabs" id="tabs" role="tablist">
+  <button class="tab active" type="button" role="tab" aria-selected="true" data-page="ref">📖 Справочник</button>
+  <button class="tab" type="button" role="tab" aria-selected="false" data-page="learn">🌱 Учимся</button>
+  <button class="tab" type="button" role="tab" aria-selected="false" data-page="compare">⚖️ Сравнить</button>
+  <button class="tab" type="button" role="tab" aria-selected="false" data-page="steps">🪜 Пошагово</button>
+  <button class="tab" type="button" role="tab" aria-selected="false" data-page="marathon">🏁 Марафон</button>
+  <button class="tab" type="button" role="tab" aria-selected="false" data-page="quiz">🎯 Зачёт</button>
 </nav>
 <main>
   <section class="page active" id="page-ref"></section>
@@ -180,11 +194,116 @@ hr.thin{border:0;border-top:1px solid var(--line);margin:14px 0}
   <section class="page" id="page-compare"></section>
   <section class="page" id="page-steps"></section>
   <section class="page" id="page-marathon"></section>
+  <section class="page" id="page-quiz"></section>
 </main>
-<div class="selfcheck" id="selfcheck">самопроверка генераторов…</div>
 </div>
 
 <script>
+/* ===== контракт прогресса курса ОГЭ ===== */
+const TID="oge-t14-progressii";
+const TYPE_IDS=["AP-VAL","AP-SUM","AP-2PT","AP-SUM2DAY","GP-VAL","GP-COMPL","THRESH","PIC","TAXI"];
+const OLD_KEY="oge14_progress_v1";   // прежний ключ тренажёра: переносится один раз (§6 контракта), не удаляется
+const QUIZ_TOTAL=10;   // размер зачёта
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+/* контракт прогресса курса ОГЭ (docs/OGE_PROGRESS_CONTRACT.md): ядро, журнал, повтор;
+   миграция своего старого ключа (§6), сброс только своей ветки, поле ext для панели тренажёра */
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* §6: старый ключ читается один раз; переносится сопоставимое с ядром; ставится
+     migratedFrom; старый ключ не удаляется и не переписывается */
+  function migrate(fn){
+    if (RO) return;
+    try {
+      var raw = localStorage.getItem(OLD_KEY);
+      if (raw === null) return;
+      var cur = readAll()[TID];
+      if (isObj(cur) && typeof cur.migratedFrom === "string") return;
+      var old = null;
+      try { old = JSON.parse(raw); } catch (e) {}
+      saveRec(function(rec){
+        if (isObj(old)) { try { fn(old, rec); } catch (e) {} }
+        rec.migratedFrom = OLD_KEY;
+      });
+    } catch (e) {}
+  }
+  /* «Сбросить прогресс»: своя ветка и свои записи журнала (по префиксу TID|);
+     отметка миграции остаётся — иначе старый ключ перенёсся бы снова */
+  function resetOwn(){
+    if (RO) return;
+    try {
+      var all = readAll(), rec = all[TID];
+      if (isObj(rec) && typeof rec.migratedFrom === "string") all[TID] = { v:1, solvedByType:{}, migratedFrom:rec.migratedFrom, updatedAt:Date.now() };
+      else delete all[TID];
+      if (isObj(all.mistakes)) for (var k in all.mistakes)
+        if (Object.prototype.hasOwnProperty.call(all.mistakes, k) && k.indexOf(TID + "|") === 0) delete all.mistakes[k];
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  /* своя статистика панели тренажёра — поле ext ветки (адаптер курса его не читает) */
+  function ext(){ var r = readAll()[TID]; return isObj(r) && isObj(r.ext) ? r.ext : {}; }
+  function saveExt(fn){ saveRec(function(rec){ if (!isObj(rec.ext)) rec.ext = {}; fn(rec.ext); }); }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, KEY:KEY, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes,
+    migrate:migrate, resetOwn:resetOwn, ext:ext, saveExt:saveExt };
+})();
+
 /* ===== ОГЭ №14: ядро (точная арифметика, форматирование, SVG) ===== */
 "use strict";
 const T14 = {};
@@ -416,17 +535,20 @@ if(typeof globalThis!=="undefined") globalThis.T14=T14;
 const {F, Fr, rng, ri, pick, fmtN, N, nb} = T;
 const W = T.words;
 
-/* Готовый ответ должен быть целым или конечной десятичной дробью */
+/* Готовый ответ должен быть целым или конечной десятичной дробью.
+   out.lost — сколько ловушек снято из-за совпадения: равна ответу или ловит то же число,
+   что ловушка с другим сообщением; по нему makeTask перевыбирает параметры (решение D46) */
 function mkDistract(list, ans){
-  const out=[]; const seen=new Set([key(ans)]);
+  const out=[]; const seen=new Map([[key(ans),null]]);
+  out.lost=0;
   for(const d of list){
     if(!d || !d.v) continue;
     if(!(d.v.n!==undefined && d.v.d!==undefined)) continue;
     if(!T.decParts(d.v)) continue;      // только целые/конечные десятичные
     if(d.v.n===0n && ans.n!==0n) continue;
     const k=key(d.v);
-    if(seen.has(k)) continue;
-    seen.add(k); out.push(d);
+    if(seen.has(k)){ const h=seen.get(k); if(h===null||h!==d.hint) out.lost++; continue; }
+    seen.set(k,d.hint); out.push(d);
   }
   return out;
 }
@@ -491,8 +613,8 @@ GENS["AP-VAL"] = {
           : "Похоже, получился один лишний переход. Пересчитай, сколько минут прошло от начального момента." },
       { v:Fr.add(facts.a1, Fr.mul(facts.d, F(trans-1))),
         hint: facts.base===1
-          ? "Кажется, ты сделал на один переход меньше. От 1-го до "+facts.n+"-го шага переходов "+trans+"."
-          : "Здесь отсчёт идёт от начального момента (0 минут), поэтому переходов ровно столько, сколько минут прошло: "+trans+"." },
+          ? "Похоже, переходов получилось на один меньше. От 1-го до "+facts.n+"-го шага их "+trans+"."
+          : "Здесь отсчёт идёт от начального момента, поэтому переходов ровно столько, сколько минут прошло: "+trans+"." },
       facts.d.n<0n ? { v:Fr.sub(facts.a1, Fr.mul(facts.d, F(trans))),
         hint:"Температура уменьшалась, значит на каждом шаге число не прибавляется, а вычитается." } : null
     ], ans);
@@ -540,8 +662,9 @@ GENS["AP-SUM"] = {
         hint1:"«Сколько всего» значит сумма. Выпиши штрафы или сложи парами «первый + последний» (метод Гаусса).",
         facts, methods:GENS["AP-SUM"].methods };
     } else if(sub==="rings"){
-      a1=ri(r,20,35); d=ri(r,2,5); n=ri(r,5,8);
-      const R=n+ri(r,1,4);
+      /* ни один из R рядов стеллажа не пустой: a1 > d·(R − 1) (решение D47) */
+      let R;
+      do{ a1=ri(r,20,35); d=ri(r,2,5); n=ri(r,5,8); R=n+ri(r,1,4); }while(a1<=d*(R-1));
       text="В нижнем ряду стеллажа "+N(a1)+" "+W.plur(a1,["книга","книги","книг"])+", а в каждом ряду выше на "+N(d)+
         " "+W.plur(d,["книгу","книги","книг"])+" меньше. Сколько всего книг в первых "+N(n)+" рядах снизу, если всего рядов "+N(R)+"?";
       unit="книг";
@@ -642,7 +765,7 @@ GENS["AP-2PT"] = {
       const ans=F(dts*p);
       const distract=mkDistract([
         { v:F(dts*(p-1)), hint:"Отставание копится с самого момента поломки: за "+p+" "+W.hourWord(p)+" набежит "+p+" одинаковых прибавок." },
-        { v:F(Math.round(am/(t1+1))*p), hint:"Прибавку за час найди делением: "+fmtN(F(am))+" минут раздели на число прошедших часов, то есть на "+t1+"." }
+        { v:F(am*p,t1+1), hint:"Прибавку за час найди делением: "+fmtN(F(am))+" минут раздели на число прошедших часов — с "+H+":00 до "+(H+t1)+":00 их "+t1+", а не "+(t1+1)+"." }
       ], ans);
       return { code:"AP-2PT", seed, chip, gp:false, text, svg:null, unit, ans, distract,
         hint1:"Узнай, на сколько минут часы отстают за один час, а потом умножь на нужное число часов.", facts, methods:["formula"] };
@@ -761,7 +884,7 @@ GENS["GP-VAL"] = {
       const ans=F(v);
       const distract=mkDistract([
         { v:iF(m0/Math.pow(2,k-1)), hint:"Сначала посчитай, сколько полных периодов прошло: "+Tm+" минут раздели на "+P+"." },
-        { v:iF(m0/Math.pow(2,k+1)), hint:"Периодов здесь "+k+": раздели "+Tm+" минут на длину периода "+P+"." },
+        { v:F(m0,Math.pow(2,k+1)), hint:"Периодов здесь "+k+": раздели "+Tm+" минут на длину периода "+P+"." },
         { v:F(m0-2*k), hint:"Масса не убавляется на число, а каждый раз делится на 2." }
       ], ans);
       return { code:"GP-VAL", seed, chip:"ГП: n-й член", gp:true, text, svg:null, unit, ans, distract,
@@ -861,8 +984,9 @@ GENS["GP-COMPL"] = {
       { v:F(v), hint: styleB
           ? "Это то, сколько осталось изотопа А. А спрашивают, сколько образовалось изотопа Б: вычти остаток из начальной массы."
           : "Это сколько реагента осталось. А спрашивают, сколько ушло в осадок: вычти остаток из начального количества." },
-      { v:F(m0-2*v), hint:"Осталось ровно "+fmtN(F(v))+" мг, всё остальное перешло: вычитай один раз." },
-      { v:iF(m0-m0/Math.pow(2,k-1)), hint:"Проверь число периодов: "+Tm+" минут при периоде "+P+" минут это "+k+" делений пополам." }
+      /* m0 − m0/2^(k−1) = m0 − 2v при любых числах: два хода — одно число, одно сообщение «найди свою» */
+      { v:F(m0-2*v), hint:"Это число получается двумя разными ошибками — найди свою. Либо периодов взято на один меньше: "+Tm+" минут при периоде "+P+" минут — это "+k+" делений пополам. Либо остаток вычтен дважды: осталось "+fmtN(F(v))+" мг, а перешло — начальная масса минус этот остаток, один раз." },
+      { v:F(2*m0-v,2), hint:"Периодов взято на один больше: "+Tm+" минут при периоде "+P+" минут — это "+k+" делений пополам, а не "+(k+1)+"." }
     ].filter(x=>x.v.n!==0n), ans);
     return { code:"GP-COMPL", seed, chip:"ГП: осталось и образовалось", gp:true, text, svg:null, unit:"мг", ans, distract,
       hint1:"Сначала узнай, сколько осталось (дели пополам "+k+" раз"+(k>=5?"":"а")+"), потом вычти это из начального количества.",
@@ -1019,8 +1143,7 @@ GENS["TAXI"] = {
     const ans=F(C0+(Tv-K)*p);
     const distract=mkDistract([
       { v:F(C0+Tv*p), hint:"Первые "+K+" "+W.minWord(K)+" уже оплачены стартовой суммой, второй раз их оплачивать не нужно." },
-      { v:F((Tv-K)*p), hint:"Не забудь прибавить стартовую сумму: она тоже часть стоимости." },
-      { v:F(C0+(Tv-K-M)*p+S2), hint:"Верная идея! Проверь арифметику: должно получиться то же самое, что старт плюс "+(Tv-K)+" минут по "+p+" рублей." }
+      { v:F((Tv-K)*p), hint:"Не забудь прибавить стартовую сумму: она тоже часть стоимости." }
     ], ans);
     return { code:"TAXI", seed, chip:"Старт + минуты", gp:false, text, svg:null, unit:"рублей", ans, distract,
       hint1:"Сначала найди цену одной минуты: "+fmtN(F(S2))+" рублей раздели на "+M+" минут.", facts, methods:["formula"] };
@@ -1044,7 +1167,29 @@ T.GEN_ORDER=[
 ];
 T.GEN_WEIGHTS={ "AP-VAL":3,"AP-SUM":2,"AP-2PT":3,"AP-SUM2DAY":2,"GP-VAL":2,"GP-COMPL":1,"THRESH":2,"PIC":2,"TAXI":2 };
 T.GENS=GENS;
-T.makeTask=function(code,seed){ return GENS[code].gen(seed); };
+/* число v стоит в тексте отдельным числом (разрядные пробелы не мешают) */
+function hasNum14(text,v){
+  const plain=h=>String(h).replace(/<[^>]*>/g," ").replace(/(\d)[   ](?=\d{3})/g,"$1").replace(/−/g,"-");
+  const f=plain(fmtN(v)).trim();
+  return new RegExp("(^|[^\\d,])"+f.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?![\\d]|,\\d)").test(plain(text));
+}
+T.hasNum=hasNum14;
+/* ориентир или ловушка называет число, равное ответу, которого нет в условии (решение D20) */
+function answerLeaks14(t){
+  if(hasNum14(t.text,t.ans)) return false;
+  return [t.hint1].concat(t.distract.map(d=>d.hint)).some(h=>hasNum14(h,t.ans));
+}
+/* задача без совпавших ловушек и без «утечки» ответа (D20): перевыбор по производному зерну, не больше 20 попыток;
+   дальше совпавшая ловушка снимается, задача остаётся (решение D46) */
+T.makeTask=function(code,seed){
+  let t=null;
+  for(let i=0;i<20;i++){
+    const sd=i===0?seed:((Math.imul(seed|0,-1640531535)+i*40503)>>>0)%1000000000+1;
+    t=GENS[code].gen(sd);
+    if(!t.distract.lost && !answerLeaks14(t)) return t;
+  }
+  return t;
+};
 T.randomTask=function(codes, seed){
   const r=rng(seed);
   const pool=[];
@@ -1053,7 +1198,7 @@ T.randomTask=function(codes, seed){
     for(let i=0;i<w;i++) pool.push(c);
   });
   const code=pool[Math.floor(r()*pool.length)];
-  return GENS[code].gen(ri(r,1,1e9));
+  return T.makeTask(code, ri(r,1,1e9));
 };
 })(typeof T14!=="undefined"?T14:module.exports);
 
@@ -1093,10 +1238,13 @@ function gaussVisual(vals, opt){
   const n=vals.length;
   const rev=[...vals].reverse();
   const pair=Fr.add(vals[0], vals[n-1]);
-  let h='<div class="gauss" style="grid-template-columns:repeat('+n+',1fr)">';
-  for(let i=0;i<n;i++) h+='<span class="gcell fwd'+(i===hl?' gcol':'')+'">'+fmtN(vals[i])+'</span>';
-  for(let i=0;i<n;i++) h+='<span class="gcell rev'+(i===hl?' gcol':'')+'">'+fmtN(rev[i])+'</span>';
-  if(sumRow) for(let i=0;i<n;i++) h+='<span class="gcell sum'+(i===hl?' gcol':'')+'">'+fmtN(pair)+'</span>';
+  /* длинный ряд — первые три пары, «…», последние две, как в записи 1 + 2 + … + K (решение D48) */
+  const cols = n>16 ? [0,1,2,-1,n-2,n-1] : vals.map((_,i)=>i);
+  const cell=(cls,i,v)=> i<0 ? '<span class="gcell">…</span>' : '<span class="gcell '+cls+(i===hl?' gcol':'')+'">'+fmtN(v)+'</span>';
+  let h='<div class="gauss" style="grid-template-columns:repeat('+cols.length+',1fr)">';
+  cols.forEach(i=>{ h+=cell('fwd',i,vals[i]); });
+  cols.forEach(i=>{ h+=cell('rev',i,rev[i]); });
+  if(sumRow) cols.forEach(i=>{ h+=cell('sum',i,pair); });
   h+='</div>';
   return h;
 }
@@ -1649,7 +1797,7 @@ function renderL1(seed){
     <div class="ansrow"><span class="ansfield"><input id="l1in" inputmode="numeric" placeholder="?"></span>
       <button class="btn mini" id="l1ck">Проверить</button>
       <button class="ghost btn mini peekbtn" id="l1show">Показать шаг</button></div>
-    <div class="fb" id="l1fb"></div>
+    <div class="fb" aria-live="polite" id="l1fb"></div>
     <div id="l1more"></div>
   `;
   const inp=el.querySelector("#l1in"), fb=el.querySelector("#l1fb");
@@ -1685,7 +1833,7 @@ function renderL2(seed){
     <div class="ansrow"><span class="ansfield"><input id="l2in" inputmode="numeric" placeholder="?"></span>
       <button class="btn mini" id="l2ck">Проверить</button>
       <button class="ghost btn mini peekbtn" id="l2show">Показать ответ</button></div>
-    <div class="fb" id="l2fb"></div>
+    <div class="fb" aria-live="polite" id="l2fb"></div>
     <div id="l2more"></div>
   `;
   const inp=el.querySelector("#l2in"), fb=el.querySelector("#l2fb");
@@ -1724,7 +1872,7 @@ function renderL3(seed){
     <div class="ansrow"><span class="ansfield"><input id="l3in" inputmode="numeric" placeholder="сумма"></span>
       <button class="btn mini" id="l3ck">Проверить</button>
       <button class="ghost btn mini peekbtn" id="l3show">Показать ответ</button></div>
-    <div class="fb" id="l3fb"></div>
+    <div class="fb" aria-live="polite" id="l3fb"></div>
     <div id="l3more"></div>
   `;
   const inp=el.querySelector("#l3in"), fb=el.querySelector("#l3fb");
@@ -1772,7 +1920,7 @@ function renderL4(seed){
     <div class="ansrow"><span class="ansfield"><input id="l4in" inputmode="numeric" placeholder="?"></span>
       <button class="btn mini" id="l4ck">Проверить</button>
       <button class="ghost btn mini peekbtn" id="l4show">Показать шаг</button></div>
-    <div class="fb" id="l4fb"></div>
+    <div class="fb" aria-live="polite" id="l4fb"></div>
     <div id="l4more"></div>
   `;
   const inp=el.querySelector("#l4in"), fb=el.querySelector("#l4fb");
@@ -1820,7 +1968,7 @@ function renderL5(idx){
     <div class="grouplbl">Что спрашивают?</div>
     <div id="l5b"></div>
     <div class="btnrow"><button class="btn mini" id="l5ck" disabled>Проверить</button></div>
-    <div class="fb" id="l5fb"></div>
+    <div class="fb" aria-live="polite" id="l5fb"></div>
     <div id="l5more"></div>
   `;
   const correctChange = q.type.startsWith("ap")? "add" : "mul";
@@ -1954,13 +2102,44 @@ function drawCompare(){
 T.renderCompare=renderCompare;
 })(typeof T14!=="undefined"?T14:module.exports);
 
-/* ===== ОГЭ №14: режимы «Пошагово» и «Марафон» ===== */
+/* ===== ОГЭ №14: режимы «Пошагово», «Марафон», «Зачёт» ===== */
 "use strict";
 (function(T){
 const {F, Fr, fmtN, N, nb} = T;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+T.esc=esc;
+let userActed=false;   // фокус в поле — только после действия ученика, не при загрузке
+T.acted=()=>{ userActed=true; };
+function focusEl(e){ if(userActed&&e) try{ e.focus({preventScroll:true}); }catch(x){} }
+/* строка над лестницей до первого нажатия (решения D3, D21) */
+const LADDER_NOTE="Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.";
+function localDate(){ const d=new Date(), p=x=>(x<10?"0":"")+x; return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate()); }
+
+/* ---------- учёт задачи (решения D1, D49, D50): промах — сразу и один раз, решено — без показа ---------- */
+function newRec(task){ return { task, missed:false, shown:false, done:false }; }
+function recMiss(rec){ if(rec.missed||rec.shown||rec.done) return; rec.missed=true; CP.mlog(rec.task.code,false); streakReset(); }
+/* серия верных обнуляется первой ошибкой и уходом с нерешённой задачи — как было до контракта */
+function streakReset(){ CP.saveExt(e=>{ e.streak=0; }); if(document.getElementById("m-stats")) renderStats(); }
+function recDone(rec){
+  if(rec.done) return null;
+  rec.done=true;
+  const ok=!rec.shown, code=rec.task.code;
+  if(ok){ CP.solvedOne(code); if(!rec.missed) CP.mlog(code,true); }
+  CP.saveExt(e=>{
+    e.streak = ok? CP.num(e.streak)+1 : 0;
+    if(ok){
+      if(!CP.isObj(e.byDay)) e.byDay={};
+      const d=localDate(); e.byDay[d]=CP.num(e.byDay[d])+1;
+      const days=Object.keys(e.byDay).filter(k=>/^\d{4}-\d\d-\d\d$/.test(k)).sort();
+      Object.keys(e.byDay).forEach(k=>{ if(days.indexOf(k)<0||days.indexOf(k)<days.length-60) delete e.byDay[k]; });   // не больше 60 дат (D17)
+    }
+  });
+  if(document.getElementById("m-stats")) renderStats();
+  return ok;
+}
 
 /* ---------- Общий ввод ответа (десятичная ⇄ дробь) ---------- */
-function answerInput(hostId, onCheck, onShow){
+function answerInput(hostId){
   return `
   <div class="ansrow" id="${hostId}-row">
     <div id="${hostId}-field"></div>
@@ -1970,17 +2149,18 @@ function answerInput(hostId, onCheck, onShow){
 function mountAnswer(hostId, unit){
   const field=document.getElementById(hostId+"-field");
   const toggle=document.getElementById(hostId+"-toggle");
-  const st={mode:"dec", unit};
+  const st={mode:"dec", unit, locked:false};
   function render(){
     if(st.mode==="dec"){
-      field.innerHTML=`<span class="ansfield"><input id="${hostId}-dec" inputmode="decimal" placeholder="ответ"></span>${unit?`<span class="unit">${unit}</span>`:""}`;
+      field.innerHTML=`<span class="ansfield"><input id="${hostId}-dec" inputmode="decimal" placeholder="ответ" aria-label="ответ"></span>${unit?`<span class="unit">${unit}</span>`:""}`;
       toggle.textContent="дробью";
     } else {
-      field.innerHTML=`<span class="fracIn"><input id="${hostId}-top" inputmode="numeric" placeholder=""><span class="bar"></span><input id="${hostId}-bot" inputmode="numeric" placeholder=""></span>${unit?`<span class="unit">${unit}</span>`:""}`;
+      field.innerHTML=`<span class="fracIn"><input id="${hostId}-top" inputmode="numeric" placeholder="" aria-label="числитель"><span class="bar"></span><input id="${hostId}-bot" inputmode="numeric" placeholder="" aria-label="знаменатель"></span>${unit?`<span class="unit">${unit}</span>`:""}`;
       toggle.textContent="десятичной";
     }
+    if(st.locked) field.querySelectorAll("input").forEach(i=>{ i.disabled=true; });
   }
-  toggle.onclick=()=>{ st.mode = st.mode==="dec"?"frac":"dec"; render(); };
+  toggle.onclick=()=>{ if(st.locked) return; st.mode = st.mode==="dec"?"frac":"dec"; render(); };
   render();
   return {
     read(){
@@ -1988,24 +2168,141 @@ function mountAnswer(hostId, unit){
       return T.parseFracPair(document.getElementById(hostId+"-top").value, document.getElementById(hostId+"-bot").value);
     },
     fill(f){
-      if(Fr.isInt(f) || T.decParts(f)){ st.mode="dec"; render(); document.getElementById(hostId+"-dec").value=fmtN(f).replace(/\u2212/g,"-").replace(/[\u202F\u00A0]/g,""); }
+      if(Fr.isInt(f) || T.decParts(f)){ st.mode="dec"; render(); document.getElementById(hostId+"-dec").value=fmtN(f).replace(/−/g,"-").replace(/[  ]/g,""); }
       else { st.mode="frac"; render(); document.getElementById(hostId+"-top").value=(f.n<0n?"-":"")+(f.n<0n?-f.n:f.n).toString(); document.getElementById(hostId+"-bot").value=f.d.toString(); }
-    }
+    },
+    lock(){ st.locked=true; toggle.disabled=true; field.querySelectorAll("input").forEach(i=>{ i.disabled=true; }); },
+    focus(){ focusEl(field.querySelector("input")); }
   };
 }
 
+/* ---------- лестница (общая для «Пошагово» и «Марафона»): ступени по одной ---------- */
+/* ctx: { host, steps, rec, onFinish(shown), idp } — промах на ступени → промах задачи (D1),
+   «Показать шаг» → задача «показано» */
+function runLadder(ctx){
+  const local={ cur:0, shown:false };
+  const note=document.createElement("p"); note.className="small muted"; note.textContent=LADDER_NOTE;
+  ctx.host.innerHTML=""; ctx.host.appendChild(note);
+  const list=document.createElement("div"); ctx.host.appendChild(list);
+  function draw(){
+    list.innerHTML="";
+    ctx.steps.forEach((s,i)=>{
+      const div=document.createElement("div");
+      div.className="step"+(i<local.cur?(s._peeked?" peeked done":" done"):(i===local.cur?" active":""));
+      if(i>local.cur) div.style.display="none";
+      list.appendChild(div);
+      if(i<local.cur) fillDone(div,s);
+      else if(i===local.cur) fillActive(div,s,i);
+    });
+    if(local.cur>=ctx.steps.length) ctx.onFinish(local.shown);
+  }
+  function advance(i){ if(i!==local.cur) return; local.cur=i+1; draw();
+    const next=list.children[local.cur]; if(next&&userActed) next.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}); }
+  function fillDone(div,s){
+    if(s.choice){ div.innerHTML=`<div class="stq">${s.q}</div><div class="stgot">${s._peeked?"Показано":"Верно"}: ${s.choice.options.find(o=>o.ok).t}</div>`; return; }
+    if(s.build){ div.innerHTML=`<div class="stq">${s.q}</div><div class="stgot">Таблица построена</div>`; return; }
+    div.innerHTML=`<div class="stq">${s.q}</div><div class="stgot">${s._peeked?"Показано":"Ответ"}: ${nb(fmtN(s.a))}</div>${s._peeked?'<div class="peeknote">Показано — в счёт не идёт</div>':''}`;
+  }
+  function fillActive(div,s,i){
+    const id=ctx.idp+i;
+    if(s.choice){
+      div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div class="btnrow" id="${id}-opts"></div><div class="fb" aria-live="polite" id="${id}-fb"></div>`;
+      const opts=div.querySelector("#"+id+"-opts"), fb=div.querySelector("#"+id+"-fb");
+      let handled=false;
+      s.choice.options.forEach(o=>{
+        const b=document.createElement("button"); b.className="choice"; b.type="button"; b.innerHTML=o.t;
+        b.onclick=()=>{
+          if(handled) return;
+          if(o.ok){ handled=true; [...opts.children].forEach(x=>{ x.disabled=true; }); b.classList.add("sel-ok"); fb.className="fb ok"; fb.innerHTML=s.choice.why; setTimeout(()=>advance(i),50); }
+          else { recMiss(ctx.rec); b.classList.add("sel-no"); b.disabled=true; fb.className="fb try"; fb.innerHTML="Не совсем. "+s.choice.why; }
+        };
+        opts.appendChild(b);
+      });
+      return;
+    }
+    if(s.build){
+      const b=s.build;
+      div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div id="${id}-tape"></div>
+        <div class="btnrow"><button class="btn mini" type="button" id="${id}-add">Добавить минуту</button>
+        <button class="ghost btn mini" type="button" id="${id}-done" disabled>Готово</button></div>
+        <div class="fb" aria-live="polite" id="${id}-fb"></div>`;
+      const tape=div.querySelector("#"+id+"-tape"), fb=div.querySelector("#"+id+"-fb");
+      const doneBtn=div.querySelector("#"+id+"-done"), addBtn=div.querySelector("#"+id+"-add");
+      let idx=0;
+      function draw2(){
+        let h='<div class="tape">';
+        for(let j=0;j<idx;j++){
+          h+=`<span class="cell gp${j===idx-1?" hl":""}"><span class="idx">${j+1} мин</span>${fmtN(b.sums[j])}</span>`;
+          if(j<idx-1) h+='<span class="arr gp">→<br>+'+fmtN(b.adds[j+1])+'</span>';
+        }
+        tape.innerHTML=h+'</div>';
+        const reached = idx>0 && Fr.cmp(b.sums[idx-1], b.X)>=0;
+        doneBtn.disabled=!reached;
+        if(reached){ fb.className="fb info"; fb.innerHTML="Сумма "+nb(fmtN(b.sums[idx-1]))+" уже не меньше "+nb(fmtN(b.X))+". Можно нажать «Готово»."; addBtn.disabled=true; }
+      }
+      addBtn.onclick=()=>{ if(idx<b.sums.length){ idx++; draw2(); } };
+      doneBtn.onclick=()=>advance(i);
+      draw2();
+      return;
+    }
+    div.innerHTML=`
+      <span class="yourmove">твой ход</span>
+      <div class="stq">${s.q}</div>
+      ${answerInput(id)}
+      <div class="btnrow">
+        <button class="btn mini" type="button" id="${id}-ck">Проверить</button>
+        <button class="ghost btn mini peekbtn" type="button" id="${id}-sh">Показать шаг</button>
+      </div>
+      <div class="fb" aria-live="polite" id="${id}-fb"></div>`;
+    const ans=mountAnswer(id, "");
+    const fb=div.querySelector("#"+id+"-fb");
+    let moved=false;
+    div.querySelector("#"+id+"-ck").onclick=()=>{
+      if(moved) return;
+      const v=ans.read();
+      if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
+      if(Fr.eq(v,s.a)){ moved=true; advance(i); return; }
+      recMiss(ctx.rec);
+      fb.className="fb try";
+      if(Fr.eq(Fr.abs(v),Fr.abs(s.a))) fb.textContent="Почти! У числа не тот знак — поправь и нажми «Проверить».";
+      else fb.innerHTML=s.hint;
+    };
+    div.querySelector("#"+id+"-sh").onclick=()=>{
+      if(moved) return; moved=true;
+      s._peeked=true; local.shown=true; ctx.rec.shown=true;
+      ans.fill(s.a); ans.lock();
+      fb.className="fb info"; fb.innerHTML=s.reveal;
+      setTimeout(()=>advance(i),50);
+    };
+    ans.focus();
+  }
+  draw();
+}
+
 /* ================= ПОШАГОВО ================= */
-const stepsUI={};
+const stepsUI={ review:false };
+/* тип задачи повтора: случайный из открытых в журнале (решение D22) */
+T.reviewCode=function(){ const open=T.GEN_CODES.filter(c=>CP.openTypes().indexOf(c)>=0); return open.length? open[Math.floor(Math.random()*open.length)] : null; };
 function renderStepsMode(el){
   el.innerHTML=`
   <div class="card">
+    <div class="fb info" id="st-review" aria-live="polite" style="display:none"></div>
     <h2>Пошагово: решаем вместе</h2>
-    <p>Выбери тип задачи. Затем реши её по шагам — на каждом шаге впиши число и нажми «Проверить». Если застрял, рядом всегда есть «Показать шаг». Подсмотренный шаг не считается решённым, но помогает идти дальше.</p>
+    <p>Выбери тип задачи. Затем реши её по шагам — на каждом шаге впиши число и нажми «Проверить». Не сходится — тренажёр подскажет, где ошибка. Если нужно, есть «Показать шаг»: показанный шаг в счёт не идёт, но помогает идти дальше.</p>
     <div id="st-cases"></div>
     <div id="st-method"></div>
   </div>
   <div id="st-task"></div>`;
   renderCases();
+  if(CP.REVIEW){ // ?mode=review — задачи только открытых в журнале типов (решение D22)
+    const open=T.GEN_CODES.filter(c=>CP.openTypes().indexOf(c)>=0);
+    const box=document.getElementById("st-review"); box.style.display="block";
+    if(open.length){
+      stepsUI.review=true;
+      box.innerHTML="<b>Работа над ошибками.</b> Задачи только тех типов, где были ошибки: "+open.map(c=>esc(T.GENS[c].title)).join("; ")+". Тип закрывается после трёх верных решений подряд. Выбор типа ниже — выход из повтора.";
+      newStepTask();
+    } else box.innerHTML="<b>Работа над ошибками.</b> Открытых ошибок нет — выбери любой тип ниже.";
+  }
 }
 function renderCases(){
   const host=document.getElementById("st-cases");
@@ -2014,13 +2311,15 @@ function renderCases(){
     h+=`<div class="grouplbl${g.gp?" gp":""}">${g.group}</div><div class="cases">`;
     g.codes.forEach(code=>{
       const G=T.GENS[code];
-      h+=`<button class="casebtn" data-code="${code}">${G.title}<span class="cc">${G.desc}</span></button>`;
+      h+=`<button class="casebtn" type="button" data-code="${code}">${G.title}<span class="cc">${G.desc}</span></button>`;
     });
     h+=`</div>`;
   });
   host.innerHTML=h;
   host.querySelectorAll(".casebtn").forEach(b=>{
     b.onclick=()=>{
+      userActed=true;
+      if(stepsUI.review){ stepsUI.review=false; const box=document.getElementById("st-review"); box.style.display="none"; }   // выбор типа — выход из повтора
       host.querySelectorAll(".casebtn").forEach(x=>x.classList.remove("sel"));
       b.classList.add("sel");
       stepsUI.code=b.dataset.code;
@@ -2034,21 +2333,32 @@ function chooseMethod(){
   const host=document.getElementById("st-method");
   if(!G.methods.includes(stepsUI.method)) stepsUI.method=G.methods[0];
   if(G.methods.length<2){ stepsUI.method=G.methods[0]; host.innerHTML=""; newStepTask(); return; }
-  const btns=G.methods.map(m=>`<button class="choice ${stepsUI.method===m?"sel-ok":""}" data-m="${m}">${METHOD_LABEL[m]||m}</button>`).join("");
+  const btns=G.methods.map(m=>`<button class="choice ${stepsUI.method===m?"sel-ok":""}" type="button" data-m="${m}">${METHOD_LABEL[m]||m}</button>`).join("");
   host.innerHTML=`<div class="grouplbl">Каким путём решаем?</div>
     <div class="btnrow">${btns}</div>
     <div class="price">${G.price}</div>`;
   host.querySelectorAll("[data-m]").forEach(b=>{
-    b.onclick=()=>{ stepsUI.method=b.dataset.m; host.querySelectorAll("[data-m]").forEach(x=>x.classList.remove("sel-ok")); b.classList.add("sel-ok"); newStepTask(); };
+    b.onclick=()=>{ userActed=true; stepsUI.method=b.dataset.m; host.querySelectorAll("[data-m]").forEach(x=>x.classList.remove("sel-ok")); b.classList.add("sel-ok"); newStepTask(); };
   });
   newStepTask();
 }
 function newStepTask(){
   const seed=Math.floor(Math.random()*1e9);
-  const task=T.makeTask(stepsUI.code, seed);
+  let task;
+  if(stepsUI.review){
+    const code=T.reviewCode();
+    if(!code){
+      stepsUI.review=false;
+      const box=document.getElementById("st-review");
+      box.innerHTML="<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип ниже.";
+      document.getElementById("st-task").innerHTML="";
+      return;
+    }
+    task=T.makeTask(code, seed);
+  } else task=T.makeTask(stepsUI.code, seed);
+  const method=stepsUI.review? task.methods[0] : stepsUI.method;
   stepsUI.task=task;
-  const steps=T.buildSteps(task, stepsUI.method);
-  stepsUI.steps=steps; stepsUI.cur=0; stepsUI.state={vals:{}};
+  const rec=newRec(task);
   const host=document.getElementById("st-task");
   host.innerHTML=`
   <div class="card">
@@ -2056,145 +2366,40 @@ function newStepTask(){
     <p class="task-text">${task.text}</p>
     ${task.svg?`<div class="svgbox">${task.svg}</div>`:""}
     <div id="st-steps"></div>
-    <div class="btnrow"><button class="ghost btn mini" id="st-new">Другая задача этого типа</button></div>
+    <div class="btnrow"><button class="ghost btn mini" type="button" id="st-new">Другая задача этого типа</button></div>
   </div>`;
-  host.querySelector("#st-new").onclick=newStepTask;
-  renderStepList();
-}
-function renderStepList(){
-  const host=document.getElementById("st-steps");
-  host.innerHTML="";
-  stepsUI.steps.forEach((s,i)=>{
-    const div=document.createElement("div");
-    div.className="step"+(i<stepsUI.cur?(s._peeked?" peeked done":" done"):(i===stepsUI.cur?" active":""));
-    div.id="stp-"+i;
-    if(i>stepsUI.cur){ div.style.display="none"; }
-    host.appendChild(div);
-    if(i<stepsUI.cur) fillDone(div,s,i);
-    else if(i===stepsUI.cur) fillActive(div,s,i);
-  });
-  if(stepsUI.cur>=stepsUI.steps.length) showStepDone();
-}
-function fillDone(div,s,i){
-  if(s.choice){ div.innerHTML=`<div class="stq">${s.q}</div><div class="stgot">${s._peeked?"Показано":"Верно"}: ${s.choice.options.find(o=>o.ok).t}</div>`; return; }
-  if(s.build){ div.innerHTML=`<div class="stq">${s.q}</div><div class="stgot">Таблица построена</div>`; return; }
-  div.innerHTML=`<div class="stq">${s.q}</div><div class="stgot">${s._peeked?"Показано":"Ответ"}: ${nb(fmtN(s.a))}</div>${s._peeked?'<div class="peeknote">Подсмотрено — не засчитано</div>':''}`;
-}
-function fillActive(div,s,i){
-  if(s.choice){ renderChoiceStep(div,s,i); return; }
-  if(s.build){ renderBuildStep(div,s,i); return; }
-  div.innerHTML=`
-    <span class="yourmove">твой ход</span>
-    <div class="stq">${s.q}</div>
-    ${answerInput("stp"+i)}
-    <div class="btnrow">
-      <button class="btn mini" id="stp${i}-ck">Проверить</button>
-      <button class="ghost btn mini peekbtn" id="stp${i}-sh">Показать шаг</button>
-    </div>
-    <div class="fb" id="stp${i}-fb"></div>`;
-  const ans=mountAnswer("stp"+i, "");
-  const fb=div.querySelector("#stp"+i+"-fb");
-  div.querySelector("#stp"+i+"-ck").onclick=()=>{
-    const v=ans.read();
-    if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
-    if(Fr.eq(v,s.a)){ advance(i,false); }
-    else {
-      /* мягкая проверка знака */
-      if(Fr.eq(Fr.abs(v),Fr.abs(s.a)) && !Fr.eq(v,s.a)){ fb.className="fb try"; fb.textContent="Почти! У числа не тот знак — поправь и нажми «Проверить»."; }
-      else { fb.className="fb try"; fb.textContent=s.hint; }
-    }
-  };
-  div.querySelector("#stp"+i+"-sh").onclick=()=>{
-    s._peeked=true; ans.fill(s.a);
-    fb.className="fb info"; fb.innerHTML=s.reveal;
-    setTimeout(()=>advance(i,true),50);
-  };
-}
-function renderChoiceStep(div,s,i){
-  div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div class="btnrow" id="stp${i}-opts"></div><div class="fb" id="stp${i}-fb"></div>`;
-  const opts=div.querySelector("#stp"+i+"-opts"), fb=div.querySelector("#stp"+i+"-fb");
-  let handled=false;
-  s.choice.options.forEach(o=>{
-    const b=document.createElement("button"); b.className="choice"; b.innerHTML=o.t;
-    b.onclick=()=>{
-      if(handled) return;
-      if(o.ok){ handled=true; [...opts.children].forEach(x=>{ x.disabled=true; }); b.classList.add("sel-ok"); fb.className="fb ok"; fb.innerHTML=s.choice.why; setTimeout(()=>advance(i,false),50); }
-      else { b.classList.add("sel-no"); b.disabled=true; fb.className="fb try"; fb.innerHTML="Не совсем. "+s.choice.why; }
-    };
-    opts.appendChild(b);
-  });
-}
-function renderBuildStep(div,s,i){
-  const b=s.build;
-  stepsUI.buildIdx=0;
-  div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div>
-    <div id="stp${i}-tape"></div>
-    <div class="btnrow"><button class="btn mini" id="stp${i}-add">Добавить минуту</button>
-    <button class="ghost btn mini" id="stp${i}-done" disabled>Готово</button></div>
-    <div class="fb" id="stp${i}-fb"></div>`;
-  const tape=div.querySelector("#stp"+i+"-tape"), fb=div.querySelector("#stp"+i+"-fb");
-  const doneBtn=div.querySelector("#stp"+i+"-done"), addBtn=div.querySelector("#stp"+i+"-add");
-  function draw(){
-    let h='<div class="tape">';
-    for(let j=0;j<stepsUI.buildIdx;j++){
-      const reached = Fr.cmp(b.sums[j], b.X)>=0;
-      h+=`<span class="cell gp${j===stepsUI.buildIdx-1?" hl":""}"><span class="idx">${j+1} мин</span>${fmtN(b.sums[j])}</span>`;
-      if(j<stepsUI.buildIdx-1) h+='<span class="arr gp">→<br>+'+fmtN(b.adds[j+1])+'</span>';
-    }
-    h+='</div>';
-    tape.innerHTML=h;
-    const reached = stepsUI.buildIdx>0 && Fr.cmp(b.sums[stepsUI.buildIdx-1], b.X)>=0;
-    doneBtn.disabled=!reached;
-    if(reached){ fb.className="fb info"; fb.innerHTML="Сумма "+nb(fmtN(b.sums[stepsUI.buildIdx-1]))+" уже не меньше "+nb(fmtN(b.X))+". Можно нажать «Готово»."; addBtn.disabled=true; }
-  }
-  addBtn.onclick=()=>{ if(stepsUI.buildIdx<b.sums.length){ stepsUI.buildIdx++; draw(); } };
-  doneBtn.onclick=()=>advance(i,false);
-  draw();
-}
-function advance(i, peeked){
-  // защита от повторного/устаревшего вызова: продвигаемся только с текущего активного шага
-  if(i!==stepsUI.cur) return;
-  const s=stepsUI.steps[i];
-  if(!s) return;
-  if(!s.choice && !s.build) stepsUI.state.vals[i]=s.a;
-  stepsUI.cur=i+1;
-  renderStepList();
-  const next=document.getElementById("stp-"+stepsUI.cur);
-  if(next) next.scrollIntoView({behavior:"smooth",block:"center"});
-}
-function showStepDone(){
-  const host=document.getElementById("st-steps");
-  const task=stepsUI.task;
-  const anyPeek=stepsUI.steps.some(s=>s._peeked);
-  const w=T.ways(task);
-  const div=document.createElement("div");
-  div.className="card"; div.style.marginTop="10px";
-  div.innerHTML=`<div class="fb ok" style="display:block">${anyPeek?"Разобрали задачу до конца. Часть шагов была подсмотрена — попробуй следующую без подсказок.":"Отлично, решено полностью и без подсказок!"}</div>
-    <p><b>Ответ:</b> ${nb(fmtN(task.ans))} ${task.unit||""}</p>
-    <details class="spoil"><summary>Тот же ответ двумя способами</summary>
-      <div class="ways">
-        <div class="way wf"><h4>📐 Формула</h4>${w.f}</div>
-        <div class="way wt"><h4>🪜 Здравый смысл</h4>${w.t}</div>
-      </div>
-      <div class="human">Формула — это короткая запись той же таблицы. Оба пути дают одно число.</div>
-    </details>`;
-  host.appendChild(div);
+  host.querySelector("#st-new").onclick=()=>{ userActed=true; newStepTask(); };
+  runLadder({ host:document.getElementById("st-steps"), steps:T.buildSteps(task, method), rec, idp:"stp",
+    onFinish:(shown)=>{
+      recDone(rec);
+      const w=T.ways(task);
+      const div=document.createElement("div");
+      div.className="card"; div.style.marginTop="10px";
+      div.innerHTML=`<div class="fb ok" style="display:block">${shown?"Разобрали задачу до конца. Часть шагов была показана — эта задача в счёт решённых не идёт; попробуй следующую без показа.":"Отлично, решено полностью самостоятельно!"}</div>
+        <p><b>Ответ:</b> ${nb(fmtN(task.ans))} ${task.unit||""}</p>
+        <details class="spoil"><summary>Тот же ответ двумя способами</summary>
+          <div class="ways">
+            <div class="way wf"><h4>📐 Формула</h4>${w.f}</div>
+            <div class="way wt"><h4>🪜 Здравый смысл</h4>${w.t}</div>
+          </div>
+          <div class="human">Формула — это короткая запись той же таблицы. Оба пути дают одно число.</div>
+        </details>`;
+      document.getElementById("st-steps").appendChild(div);
+    }});
 }
 
 /* ================= МАРАФОН ================= */
-const M={ filters:new Set(), streak:0 };
+const M={ filters:new Set() };
 try{ if(typeof window!=="undefined") window.__M=M; }catch(e){}
-const STORE_KEY="oge14_progress_v1";
-function loadStore(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY))||{}; }catch(e){ return {}; } }
-function saveStore(s){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){} }
 
 function renderMarathon(el){
   el.innerHTML=`
   <div class="card">
     <h2>Марафон: как на экзамене</h2>
-    <p>Только условие и поле ответа. После первой ошибки — одна подсказка, после второй — предложение разобрать по шагам. Ответ всегда целое число или конечная десятичная дробь.</p>
+    <p>Только условие и поле ответа. Не сходится — тренажёр подскажет, где ошибка; «Разобрать по шагам» доступен в любой момент. Ответ всегда целое число или конечная десятичная дробь.</p>
     <div class="filters" id="m-filters"></div>
     <div class="mstats" id="m-stats"></div>
+    <div id="m-confirm" aria-live="polite"></div>
   </div>
   <div id="m-task"></div>`;
   buildFilters();
@@ -2203,7 +2408,7 @@ function renderMarathon(el){
 }
 function buildFilters(){
   const host=document.getElementById("m-filters");
-  let h=`<button class="fchip ${M.filters.size===0?"on":""}" data-all="1">Все типы</button>`;
+  let h=`<button class="fchip ${M.filters.size===0?"on":""}" type="button" data-all="1">Все типы</button>`;
   const chips=[
     ["ap","Арифметическая",["AP-VAL","AP-SUM","AP-2PT","AP-SUM2DAY"]],
     ["gp","Геометрическая",["GP-VAL","GP-COMPL"]],
@@ -2213,11 +2418,11 @@ function buildFilters(){
     ["trap","Ловушки",["GP-COMPL","TAXI","THRESH"]],
   ];
   M.chipDefs=chips;
-  chips.forEach(([id,label])=>{ h+=`<button class="fchip ${M.filters.has(id)?"on":""}" data-f="${id}">${label}</button>`; });
+  chips.forEach(([id,label])=>{ h+=`<button class="fchip ${M.filters.has(id)?"on":""}" type="button" data-f="${id}">${label}</button>`; });
   host.innerHTML=h;
-  host.querySelector("[data-all]").onclick=()=>{ M.filters.clear(); buildFilters(); nextMarathon(); };
+  host.querySelector("[data-all]").onclick=()=>{ userActed=true; M.filters.clear(); buildFilters(); nextMarathon(); };
   host.querySelectorAll("[data-f]").forEach(b=>{
-    b.onclick=()=>{ const id=b.dataset.f; if(M.filters.has(id)) M.filters.delete(id); else M.filters.add(id); buildFilters(); nextMarathon(); };
+    b.onclick=()=>{ userActed=true; const id=b.dataset.f; if(M.filters.has(id)) M.filters.delete(id); else M.filters.add(id); buildFilters(); nextMarathon(); };
   });
 }
 function activeCodes(){
@@ -2226,64 +2431,65 @@ function activeCodes(){
   M.chipDefs.forEach(([id,label,codes])=>{ if(M.filters.has(id)) codes.forEach(c=>set.add(c)); });
   return [...set];
 }
+/* статистика панели: ядро курса и поле ext ветки; мусор отбрасывается (решение D17) */
+function stats14(){
+  const all=CP.readAll(), r=CP.isObj(all[TID])?all[TID]:{}, sbt=CP.isObj(r.solvedByType)?r.solvedByType:{}, e=CP.ext();
+  const by={}; let total=0;
+  T.GEN_CODES.forEach(c=>{ const v=CP.num(sbt[c]); if(v){ by[c]=v; total+=v; } });
+  const days={}; if(CP.isObj(e.byDay)) Object.keys(e.byDay).forEach(k=>{ if(/^\d{4}-\d\d-\d\d$/.test(k)&&CP.num(e.byDay[k])) days[k]=CP.num(e.byDay[k]); });
+  const q = CP.num(r.runs)&&CP.num(r.total) ? { best:Math.min(CP.num(r.best),CP.num(r.total)), total:CP.num(r.total), passed:r.passed===true } : null;
+  return { by, total, days, streak:CP.num(e.streak), quiz:q, open:T.GEN_CODES.filter(c=>CP.openTypes().indexOf(c)>=0) };
+}
 function renderStats(){
-  const s=loadStore();
-  const host=document.getElementById("m-stats");
-  const today=new Date().toISOString().slice(0,10);
-  const solvedToday=(s.byDay&&s.byDay[today])||0;
-  const best= s.errByCode? Object.entries(s.errByCode).sort((a,b)=>b[1]-a[1])[0] : null;
-  const strong= s.okByCode? Object.entries(s.okByCode).sort((a,b)=>b[1]-a[1])[0] : null;
-  const hasData = (s.totalOk||0)+(s.totalErr||0) > 0;
+  const host=document.getElementById("m-stats"); if(!host) return;
+  const s=stats14();
+  const strong=Object.keys(s.by).sort((a,b)=>s.by[b]-s.by[a])[0];
   host.innerHTML=`
-    <div class="stat">Серия верных: <b>${M.streak}</b></div>
-    <div class="stat">Сегодня решено: <b>${solvedToday}</b></div>
-    <div class="stat">Всего решено: <b>${s.totalOk||0}</b></div>
-    ${strong?`<div class="stat">Лучше всего: <b>${T.GENS[strong[0]].title}</b></div>`:""}
-    ${best?`<div class="stat">Стоит повторить: <b>${T.GENS[best[0]].title}</b></div>`:""}
-    ${hasData?`<div class="stat" style="cursor:pointer" id="m-export">⬇ Сохранить прогресс</div>
-    <div class="stat" style="cursor:pointer" id="m-reset">↺ Сбросить</div>`:""}`;
+    <div class="stat">Серия верных: <b>${s.streak}</b></div>
+    <div class="stat">Сегодня решено: <b>${s.days[localDate()]||0}</b></div>
+    <div class="stat">Всего решено: <b>${s.total}</b></div>
+    ${s.quiz?`<div class="stat">Зачёт: <b>${s.quiz.best} из ${s.quiz.total}</b>${s.quiz.passed?" — сдан":""}</div>`:""}
+    ${strong?`<div class="stat">Лучше всего: <b>${esc(T.GENS[strong].title)}</b></div>`:""}
+    ${s.open.length?`<div class="stat">Стоит повторить: <b>${s.open.map(c=>esc(T.GENS[c].title)).join("; ")}</b></div>`:""}
+    ${(s.total||s.quiz||s.open.length)?`<button class="ghost btn mini" type="button" id="m-export">⬇ Сохранить прогресс</button>
+    <button class="ghost btn mini" type="button" id="m-reset">↺ Сбросить</button>`:""}`;
   const ex=host.querySelector("#m-export"); if(ex) ex.onclick=exportProgress;
   const rs=host.querySelector("#m-reset"); if(rs) rs.onclick=resetProgress;
 }
+/* выгрузка остаётся (решение D52): файл собирается на устройстве */
 function exportProgress(){
-  const s=loadStore();
+  const s=stats14();
   const report={
+    примечание: "Сформировано на этом устройстве и никуда не отправляется.",
     сохранено: new Date().toLocaleString("ru-RU"),
-    всего_решено: s.totalOk||0,
-    всего_ошибок: s.totalErr||0,
-    по_дням: s.byDay||{},
-    верно_по_типам: {}, ошибки_по_типам: {}
+    всего_решено: s.total,
+    по_дням: s.days,
+    верно_по_типам: {},
+    зачёт: s.quiz? { лучший:s.quiz.best, из:s.quiz.total, сдан:s.quiz.passed } : null,
+    стоит_повторить: s.open.map(c=>T.GENS[c].title)
   };
-  if(s.okByCode) for(const [c,n] of Object.entries(s.okByCode)) report.верно_по_типам[T.GENS[c]?T.GENS[c].title:c]=n;
-  if(s.errByCode) for(const [c,n] of Object.entries(s.errByCode)) report.ошибки_по_типам[T.GENS[c]?T.GENS[c].title:c]=n;
+  Object.keys(s.by).forEach(c=>{ report.верно_по_типам[T.GENS[c].title]=s.by[c]; });
   try{
     const blob=new Blob([JSON.stringify(report,null,2)],{type:"application/json"});
     const url=URL.createObjectURL(blob);
     const a=document.createElement("a");
-    a.href=url; a.download="progress_zadanie14_"+new Date().toISOString().slice(0,10)+".json";
+    a.href=url; a.download="progress_zadanie14_"+localDate()+".json";
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }catch(e){}
 }
+/* сброс — только своя ветка и свои записи журнала, подтверждение на странице (решение D18) */
 function resetProgress(){
-  const host=document.getElementById("m-stats");
-  const old=host.innerHTML;
-  host.innerHTML=`<div class="stat" style="border-color:var(--peekline);background:var(--peekbg)">Сбросить весь прогресс? <button class="btn mini" id="rs-yes" style="margin-left:8px">Да, очистить</button> <button class="ghost btn mini" id="rs-no">Отмена</button></div>`;
-  host.querySelector("#rs-yes").onclick=()=>{ try{ localStorage.removeItem(STORE_KEY); }catch(e){} M.streak=0; renderStats(); };
-  host.querySelector("#rs-no").onclick=()=>renderStats();
-}
-function bump(field, code){
-  const s=loadStore();
-  s[field]=(s[field]||0)+1;
-  const map=field==="totalOk"?"okByCode":(field==="totalErr"?"errByCode":null);
-  if(map){ s[map]=s[map]||{}; s[map][code]=(s[map][code]||0)+1; }
-  if(field==="totalOk"){ const d=new Date().toISOString().slice(0,10); s.byDay=s.byDay||{}; s.byDay[d]=(s.byDay[d]||0)+1; }
-  saveStore(s);
+  const host=document.getElementById("m-confirm");
+  host.innerHTML=`<div class="stat" style="border-color:var(--peekline);background:var(--peekbg)">Сбросить прогресс по заданию 14? Записи других тренажёров курса не тронутся.
+    <div class="btnrow"><button class="btn mini" type="button" id="rs-yes">Да, сбросить</button> <button class="ghost btn mini" type="button" id="rs-no">Отмена</button></div></div>`;
+  host.querySelector("#rs-yes").onclick=()=>{ CP.resetOwn(); host.innerHTML=""; renderStats(); };
+  host.querySelector("#rs-no").onclick=()=>{ host.innerHTML=""; };
 }
 function nextMarathon(){
   const seed=Math.floor(Math.random()*1e9);
   const task=T.randomTask(activeCodes(), seed);
-  M.task=task; M.tries=0; M.done=false;
+  M.task=task; M.rec=newRec(task); M.done=false; M.ladder=false;
   const host=document.getElementById("m-task");
   host.innerHTML=`
   <div class="card">
@@ -2292,17 +2498,20 @@ function nextMarathon(){
     ${task.svg?`<div class="svgbox">${task.svg}</div>`:""}
     ${answerInput("m")}
     <div class="btnrow">
-      <button class="btn" id="m-ck">Проверить</button>
-      <button class="ghost btn" id="m-skip">Пропустить</button>
+      <button class="btn" type="button" id="m-ck">Проверить</button>
+      <button class="ghost btn" type="button" id="m-solve">Разобрать по шагам</button>
+      <button class="ghost btn" type="button" id="m-skip">Другая задача</button>
     </div>
-    <div class="fb" id="m-fb"></div>
+    <div class="fb" aria-live="polite" id="m-fb"></div>
     <div id="m-after"></div>
   </div>`;
   const ans=mountAnswer("m", task.unit);
   M.ans=ans;
   const fb=host.querySelector("#m-fb");
   host.querySelector("#m-ck").onclick=()=>checkMarathon(ans,fb);
-  host.querySelector("#m-skip").onclick=()=>{ M.streak=0; renderStats(); nextMarathon(); };
+  host.querySelector("#m-skip").onclick=()=>{ userActed=true; if(!M.done) streakReset(); nextMarathon(); };
+  host.querySelector("#m-solve").onclick=()=>{ userActed=true; solveInMarathon(); };
+  ans.focus();
 }
 function checkMarathon(ans, fb){
   if(M.done) return;
@@ -2310,134 +2519,252 @@ function checkMarathon(ans, fb){
   const task=M.task;
   if(v===null){ fb.className="fb try"; fb.textContent="Впиши число в поле ответа."; return; }
   if(Fr.eq(v,task.ans)){
-    M.done=true; M.streak++; bump("totalOk", task.code); renderStats();
+    M.done=true; recDone(M.rec);
     fb.className="fb ok"; fb.innerHTML="Верно! Ответ "+nb(fmtN(task.ans))+" "+(task.unit||"")+".";
-    showMarAfter(true);
+    showMarAfter();
     return;
   }
-  M.tries++;
-  if(M.tries===1){ bump("totalErr", task.code); M.streak=0; renderStats(); }
-  /* точечная подсказка на конкретный неверный ответ */
+  recMiss(M.rec);
+  /* адресная диагностика на конкретный неверный ответ (ловушка) или общий ориентир — это не помощь (D50) */
   const d=task.distract.find(x=>Fr.eq(x.v, v));
-  if(M.tries===1){
-    fb.className="fb try";
-    fb.innerHTML= d? d.hint : task.hint1;
-  } else {
-    fb.className="fb try";
-    fb.innerHTML=(d? d.hint : task.hint1)+" <br>Хочешь — разберём по шагам.";
-    showMarAfter(false);
-  }
+  fb.className="fb try";
+  fb.innerHTML= d? d.hint : task.hint1;
 }
-function showMarAfter(correct){
+function showMarAfter(){
   const host=document.getElementById("m-after");
-  const task=M.task;
-  if(correct){
-    const w=T.ways(task);
-    host.innerHTML=`
-      <details class="spoil"><summary>Как это решить двумя способами</summary>
-        <div class="ways">
-          <div class="way wf"><h4>📐 Формула</h4>${w.f}</div>
-          <div class="way wt"><h4>🪜 Здравый смысл</h4>${w.t}</div>
-        </div>
-      </details>
-      <div class="btnrow"><button class="btn" id="m-next">Следующая задача →</button></div>`;
-    host.querySelector("#m-next").onclick=nextMarathon;
-  } else {
-    if(host.querySelector("#m-solve")) return;
-    host.innerHTML=`<div class="btnrow">
-      <button class="btn" id="m-solve">Разобрать по шагам</button>
-      <button class="ghost btn" id="m-reveal">Показать ответ</button></div>
-      <div id="m-solvebox"></div>`;
-    host.querySelector("#m-solve").onclick=()=>solveInMarathon();
-    host.querySelector("#m-reveal").onclick=()=>{
-      M.done=true;
-      M.ans.fill(task.ans);
-      const fb=document.getElementById("m-fb");
-      const w=T.ways(task);
-      fb.className="fb info"; fb.innerHTML="Ответ: "+nb(fmtN(task.ans))+" "+(task.unit||"")+".";
-      host.innerHTML=`<details class="spoil" open><summary>Разбор двумя способами</summary>
-        <div class="ways"><div class="way wf"><h4>📐 Формула</h4>${w.f}</div><div class="way wt"><h4>🪜 Здравый смысл</h4>${w.t}</div></div></details>
-        <div class="btnrow"><button class="btn" id="m-next2">Следующая задача →</button></div>`;
-      host.querySelector("#m-next2").onclick=nextMarathon;
-    };
-  }
+  const task=M.task, w=T.ways(task);
+  document.getElementById("m-ck").disabled=true; document.getElementById("m-solve").disabled=true;
+  host.innerHTML=`
+    <details class="spoil"><summary>Как это решить двумя способами</summary>
+      <div class="ways">
+        <div class="way wf"><h4>📐 Формула</h4>${w.f}</div>
+        <div class="way wt"><h4>🪜 Здравый смысл</h4>${w.t}</div>
+      </div>
+    </details>
+    <div class="btnrow"><button class="btn" type="button" id="m-next">Следующая задача →</button></div>`;
+  const nx=host.querySelector("#m-next"); nx.onclick=()=>{ userActed=true; nextMarathon(); };
+  focusEl(nx);
 }
+/* лестница в Марафоне закрывает главное поле: после показа ответ не перепечатать (решение D49) */
 function solveInMarathon(){
-  const box=document.getElementById("m-solvebox");
+  if(M.done||M.ladder) return;
+  M.ladder=true; M.ans.lock();
+  document.getElementById("m-ck").disabled=true; document.getElementById("m-solve").disabled=true;
   const task=M.task;
   const method = task.methods.includes("table")? "table" : task.methods[0];
-  const steps=T.buildSteps(task, method);
-  box.innerHTML=`<div class="card" style="margin-top:8px"><div class="grouplbl">Пошаговый разбор</div><div id="mstep-list"></div></div>`;
-  const local={ steps, cur:0, host:document.getElementById("mstep-list") };
-  M.local=local;
-  drawMStep(local, task);
+  const host=document.getElementById("m-after");
+  host.innerHTML=`<div class="card" style="margin-top:8px"><div class="grouplbl">Пошаговый разбор</div><div id="mstep-list"></div></div>`;
+  runLadder({ host:document.getElementById("mstep-list"), steps:T.buildSteps(task, method), rec:M.rec, idp:"ms",
+    onFinish:(shown)=>{
+      M.done=true; M.ladder=false;
+      const ok=recDone(M.rec);
+      const div=document.createElement("div"); div.style.marginTop="8px";
+      div.innerHTML=`<div class="fb ${ok?"ok":"info"}" style="display:block">${ok?"Решено по шагам самостоятельно — засчитано! Ответ ":"Разобрали. Были показанные шаги — задача в счёт решённых не идёт (промахом это не считается). Ответ "}${nb(fmtN(task.ans))} ${task.unit||""}.</div>
+        <div class="btnrow"><button class="btn" type="button" id="m-next3">Следующая задача →</button></div>`;
+      document.getElementById("mstep-list").appendChild(div);
+      const nx=div.querySelector("#m-next3"); nx.onclick=()=>{ userActed=true; nextMarathon(); };
+    }});
 }
-function drawMStep(local, task){
-  local.host.innerHTML="";
-  local.steps.forEach((s,i)=>{
-    const div=document.createElement("div");
-    div.className="step"+(i<local.cur?(s._peeked?" peeked done":" done"):(i===local.cur?" active":""));
-    if(i>local.cur) div.style.display="none";
-    local.host.appendChild(div);
-    if(i<local.cur) fillDone(div,s,i);
-    else if(i===local.cur) fillActiveM(div,s,i,local,task);
-  });
-  if(local.cur>=local.steps.length){
-    const w=T.ways(task);
-    const div=document.createElement("div"); div.style.marginTop="8px";
-    div.innerHTML=`<div class="fb ok" style="display:block">Разобрали. Ответ ${nb(fmtN(task.ans))} ${task.unit||""}.</div>
-      <div class="btnrow"><button class="btn" id="m-next3">Следующая задача →</button></div>`;
-    local.host.appendChild(div);
-    div.querySelector("#m-next3").onclick=nextMarathon;
-  }
+
+/* ================= ЗАЧЁТ (решения D15, D51): 10 задач, одна попытка ================= */
+function buildQuiz14(){
+  const codes=T.GEN_CODES.concat(["AP-VAL"]);
+  for(let i=codes.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const x=codes[i]; codes[i]=codes[j]; codes[j]=x; }
+  return codes.map(c=>T.makeTask(c, Math.floor(Math.random()*1e9)+1));
 }
-function fillActiveM(div,s,i,local,task){
-  if(s.choice){
-    div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div class="btnrow" id="mo${i}"></div><div class="fb" id="mf${i}"></div>`;
-    const opts=div.querySelector("#mo"+i), fb=div.querySelector("#mf"+i);
-    s.choice.options.forEach(o=>{ const b=document.createElement("button"); b.className="choice"; b.innerHTML=o.t;
-      b.onclick=()=>{ if(o.ok){ b.classList.add("sel-ok"); [...opts.children].forEach(x=>{if(x!==b)x.disabled=true;}); fb.className="fb ok"; fb.innerHTML=s.choice.why; setTimeout(()=>{local.cur=i+1;drawMStep(local,task);},50); }
-        else { b.classList.add("sel-no"); b.disabled=true; fb.className="fb try"; fb.innerHTML="Не совсем. "+s.choice.why; } };
-      opts.appendChild(b); });
-    return;
+function renderQuiz(el){
+  el.innerHTML=`<div class="card"><h2>Зачёт: ${QUIZ_TOTAL} задач</h2>
+    <p>По одной задаче каждого из девяти типов и ещё одна — «значение на n-м шаге», самая частая форма задания 14. Одна попытка на задачу, без подсказок и разбора — как на экзамене. Зачёт сдан при ${PASS_AT} верных из ${QUIZ_TOTAL}.</p>
+    <div class="btnrow"><button class="btn" type="button" id="q-start">Начать зачёт</button></div></div><div id="q-box"></div>`;
+  el.querySelector("#q-start").onclick=()=>{ userActed=true; runQuiz(el); };
+}
+function runQuiz(el){
+  const quiz=T.buildQuiz(), res=[];
+  let idx=0;
+  el.innerHTML='<div id="q-box"></div>';
+  const box=el.querySelector("#q-box");
+  function show(){
+    if(idx>=quiz.length) return finishQuiz14(el,quiz,res);
+    const t=quiz[idx];
+    box.innerHTML=`<div class="card"><div class="small muted">Задача ${idx+1} из ${quiz.length}</div>
+      <p class="task-text">${t.text}</p>${t.svg?`<div class="svgbox">${t.svg}</div>`:""}
+      ${answerInput("q")}
+      <div class="btnrow"><button class="btn" type="button" id="q-ok">Ответить</button><button class="ghost btn" type="button" id="q-next" style="display:none">${idx+1<quiz.length?"Дальше →":"Итоги →"}</button></div>
+      <div class="fb" aria-live="polite" id="q-fb"></div></div>`;
+    const ans=mountAnswer("q", t.unit), fb=box.querySelector("#q-fb"), bNext=box.querySelector("#q-next");
+    let answered=false, moved=false;
+    function answer(){
+      if(answered) return;   // двойное касание — один ответ
+      const v=ans.read();
+      if(v===null){ fb.className="fb try"; fb.textContent="Впиши ответ — попытка не потрачена."; return; }
+      answered=true;
+      const ok=Fr.eq(v,t.ans), d=ok?null:t.distract.find(x=>Fr.eq(x.v,v));
+      res.push({t,v,ok,diag:d?d.hint:""});
+      CP.mlog(t.code,ok);
+      ans.lock(); box.querySelector("#q-ok").disabled=true;
+      fb.className="fb "+(ok?"ok":"try"); fb.textContent=ok?"Верно.":"Неверно.";
+      bNext.style.display=""; focusEl(bNext);
+    }
+    box.querySelector("#q-ok").onclick=answer;
+    box.querySelectorAll("input").forEach(i=>i.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); if(answered) bNext.click(); else answer(); } }));
+    bNext.onclick=()=>{ if(!answered||moved) return; moved=true; idx++; show(); };
+    ans.focus();
   }
-  if(s.build){
-    stepsUI.buildIdx=0;
-    const b=s.build;
-    div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div id="mt${i}"></div>
-      <div class="btnrow"><button class="btn mini" id="ma${i}">Добавить минуту</button><button class="ghost btn mini" id="md${i}" disabled>Готово</button></div><div class="fb" id="mf${i}"></div>`;
-    const tape=div.querySelector("#mt"+i), fb=div.querySelector("#mf"+i), dn=div.querySelector("#md"+i), ad=div.querySelector("#ma"+i);
-    let idx=0;
-    function draw(){ let h='<div class="tape">';
-      for(let j=0;j<idx;j++){ h+=`<span class="cell gp${j===idx-1?" hl":""}"><span class="idx">${j+1} мин</span>${fmtN(b.sums[j])}</span>`; if(j<idx-1) h+='<span class="arr gp">→<br>+'+fmtN(b.adds[j+1])+'</span>'; }
-      h+='</div>'; tape.innerHTML=h;
-      const reached=idx>0&&Fr.cmp(b.sums[idx-1],b.X)>=0; dn.disabled=!reached;
-      if(reached){ ad.disabled=true; fb.className="fb info"; fb.innerHTML="Сумма "+nb(fmtN(b.sums[idx-1]))+" достигла порога."; } }
-    ad.onclick=()=>{ if(idx<b.sums.length){ idx++; draw(); } };
-    dn.onclick=()=>{ local.cur=i+1; drawMStep(local,task); };
-    draw(); return;
-  }
-  div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div>${answerInput("ms"+i)}
-    <div class="btnrow"><button class="btn mini" id="msck${i}">Проверить</button><button class="ghost btn mini peekbtn" id="mssh${i}">Показать шаг</button></div><div class="fb" id="mf${i}"></div>`;
-  const ans=mountAnswer("ms"+i,""); const fb=div.querySelector("#mf"+i);
-  div.querySelector("#msck"+i).onclick=()=>{ const v=ans.read(); if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
-    if(Fr.eq(v,s.a)){ local.cur=i+1; drawMStep(local,task); }
-    else if(Fr.eq(Fr.abs(v),Fr.abs(s.a))){ fb.className="fb try"; fb.textContent="Почти! Не тот знак — поправь."; }
-    else { fb.className="fb try"; fb.textContent=s.hint; } };
-  div.querySelector("#mssh"+i).onclick=()=>{ s._peeked=true; ans.fill(s.a); fb.className="fb info"; fb.innerHTML=s.reveal; setTimeout(()=>{local.cur=i+1;drawMStep(local,task);},50); };
+  show();
+}
+function finishQuiz14(el,quiz,res){
+  const score=res.filter(r=>r.ok).length;
+  CP.finishQuiz(score,QUIZ_TOTAL);   // passed — только при PASS_AT из QUIZ_TOTAL и не снимается
+  el.innerHTML=`<div class="card" aria-live="polite"><h2>${score} / ${QUIZ_TOTAL}</h2><p>${score>=PASS_AT
+      ?"Зачёт сдан: "+score+" из "+QUIZ_TOTAL+" (нужно "+PASS_AT+")."
+      :"Для зачёта нужно "+PASS_AT+" из "+QUIZ_TOTAL+". Разбери ошибки ниже — и попробуй ещё раз."}</p></div>
+    <div class="card"><h3>Разбор зачёта</h3>${res.map((r,i)=>`<div class="step ${r.ok?"done":"peeked"}"><div class="stq">${i+1}. ${esc(r.t.chip)}</div>
+      <div>${r.ok?"✓ верно: ":"✗ твой ответ "+nb(fmtN(r.v))+"; верный: "}${nb(fmtN(r.t.ans))} ${r.t.unit||""}</div>
+      ${r.ok?"":`<div class="small">${r.diag||("Разбери такую задачу во вкладке «Пошагово» — «"+esc(T.GENS[r.t.code].title)+"».")}</div>`}</div>`).join("")}</div>
+    <div class="btnrow"><button class="btn" type="button" id="q-again">Пройти ещё раз</button></div>`;
+  el.querySelector("#q-again").onclick=()=>{ userActed=true; runQuiz(el); };
+  renderStats();
 }
 
 T.renderStepsMode=renderStepsMode;
 T.renderMarathon=renderMarathon;
-})(typeof T14!=="undefined"?T14:module.exports);
+T.renderQuiz=renderQuiz;
+T.buildQuiz=buildQuiz14;
+})(typeof T14!=="undefined"?T14:window.T14);
+
+/*__ALG_SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 тренажёров алгебры курса ОГЭ (задача
+   OGE_COURSE_03D_ALGEBRA). Блок побайтно одинаков во всех тренажёрах
+   алгебры, где он есть; копии сверяет гейт tools/oge-algebra-contract.test.mjs.
+   Каждая проверка дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const ASTK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи, вариантов и сообщений: нет null, undefined, NaN, Infinity */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|\[object /.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* ловушки {v, m}: ни одна не принимается как ответ, разные сообщения не ловят
+     одно значение; same — равенство значений, show — запись значения в отчёте */
+  traps:function(list,tag,errs,isAns,same,show){
+    same=same||function(a,b){return a===b;};
+    show=show||function(v){return String(v);};
+    (list||[]).forEach(function(t,i){
+      if(!t||!t.m)errs.push(tag+': ловушка без сообщения');
+      if(isAns(t.v))errs.push(tag+': ловушка '+show(t.v)+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&same(t.v,u.v))errs.push(tag+': две ловушки ловят одно значение '+show(t.v));}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__ALG_SELFTEST_KIT_END__*/
+
+/* ?selftest=1: генераторы, ловушки, лестницы, рисунки, зачёт; ничего не пишет (CP.RO) */
+function selftest14(){
+  const T=T14, errs=[];
+  const plain=h=>String(h).replace(/<[^>]*>/g,' ').replace(/(\d)[   ](?=\d{3})/g,'$1').replace(/−/g,'-');
+  const hasNum=(text,v)=>{
+    const f=plain(T.fmtN(v)).trim();
+    return new RegExp('(^|[^\\d,])'+f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![\\d]|,\\d)').test(plain(text));
+  };
+  T.GEN_CODES.forEach(code=>{
+    let full=0;
+    for(let s=1;s<=200;s++){
+      const t=T.makeTask(code, s*7919+13), tag=code+' #'+s;
+      try{ if(!T.Fr.eq(T.GENS[code].sim(t), t.ans)) errs.push(tag+': пересчёт шагами не сходится'); }
+      catch(e){ errs.push(tag+': '+e.message); }
+      if(!T.decParts(t.ans)) errs.push(tag+': ответ не конечная десятичная дробь');
+      ASTK.text(t.text,tag+' условие',errs); ASTK.text(t.hint1,tag+' ориентир',errs);
+      t.distract.forEach(d=>ASTK.text(d.hint,tag+' ловушка',errs));
+      if(t.svg) ASTK.svg(t.svg,tag+' рисунок',errs);
+      /* ловушки: не ответ, разные сообщения не ловят одно значение; снятых после перевыбора нет */
+      ASTK.traps(t.distract.map(d=>({v:d.v,m:d.hint})),tag,errs,v=>T.Fr.eq(v,t.ans),T.Fr.eq,v=>v.n+'/'+v.d);
+      if(!t.distract.lost) full++;
+      /* лестница любого способа кончается ответом */
+      t.methods.forEach(m=>{
+        const st=T.buildSteps(t,m).filter(x=>x.a!==undefined&&!x.choice&&!x.build);
+        if(!st.length||!T.Fr.eq(st[st.length-1].a,t.ans)) errs.push(tag+': лестница «'+m+'» кончается не ответом');
+        T.buildSteps(t,m).forEach(x=>ASTK.text(x.q+' '+(x.hint||''),tag+' ступень',errs));
+      });
+      /* ориентир и ловушки не называют ответ, если это не число из условия (D20) */
+      if(!hasNum(t.text,t.ans)) [t.hint1].concat(t.distract.map(d=>d.hint)).forEach(h=>{ if(hasNum(h,t.ans)) errs.push(tag+': сообщение называет ответ'); });
+      const w=T.ways(t); ASTK.text(w.f,tag+' формула',errs); ASTK.text(w.t,tag+' таблица',errs);
+    }
+    if(full<200*0.95) errs.push(code+': задач без снятых ловушек только '+full+' из 200');
+  });
+  const q=T.buildQuiz().map(t=>t.code).sort().join(',');
+  if(q!==T.GEN_CODES.concat(['AP-VAL']).sort().join(',')) errs.push('зачёт: состав '+q);
+  ASTK.done('OGE14',errs);
+  return errs;
+}
 
 /* ===== ОГЭ №14: запуск ===== */
 "use strict";
 (function(T){
-const pages={};
+T.GEN_CODES=TYPE_IDS.slice();
+/* §6 контракта, решение D16: верные по типам → solvedByType; дни — в ext (не больше 60) */
+function migrate14(){
+  CP.migrate(function(old,rec){
+    const ok=CP.isObj(old.okByCode)?old.okByCode:{}, e={};
+    TYPE_IDS.forEach(c=>{ const v=CP.num(ok[c]); if(v) rec.solvedByType[c]=CP.num(rec.solvedByType[c])+v; });
+    if(CP.isObj(old.byDay)){
+      const days=Object.keys(old.byDay).filter(k=>/^\d{4}-\d\d-\d\d$/.test(k)&&CP.num(old.byDay[k])).sort().slice(-60);
+      if(days.length){ e.byDay={}; days.forEach(k=>{ e.byDay[k]=CP.num(old.byDay[k]); }); }
+    }
+    rec.ext=e;
+  });
+}
 let rendered={};
 function show(id){
-  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active", t.dataset.page===id));
+  document.querySelectorAll(".tab").forEach(t=>{ const on=t.dataset.page===id; t.classList.toggle("active", on); t.setAttribute("aria-selected", on?"true":"false"); });
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   const p=document.getElementById("page-"+id); p.classList.add("active");
   if(!rendered[id]){
@@ -2447,41 +2774,17 @@ function show(id){
     else if(id==="compare") T.renderCompare(p);
     else if(id==="steps") T.renderStepsMode(p);
     else if(id==="marathon") T.renderMarathon(p);
+    else if(id==="quiz") T.renderQuiz(p);
   }
   window.scrollTo({top:0,behavior:"instant"});
 }
 document.getElementById("tabs").addEventListener("click",e=>{
-  const b=e.target.closest(".tab"); if(!b) return; show(b.dataset.page);
+  const b=e.target.closest(".tab"); if(!b) return; T.acted(); show(b.dataset.page);
 });
-/* стартовая страница */
-show("ref");
-
-/* ---- Самопроверка генераторов на странице ---- */
-function selfCheck(){
-  const out=document.getElementById("selfcheck");
-  let checks=0, fails=[];
-  const codes=Object.keys(T.GENS);
-  for(const code of codes){
-    for(let s=1;s<=140;s++){
-      let task;
-      try{
-        task=T.makeTask(code, s*7919+13);
-        const sim=T.GENS[code].sim(task);
-        checks++;
-        if(!T.Fr.eq(sim, task.ans)){ fails.push(code+"#"+s+": sim="+T.fmtN(sim)+" ans="+T.fmtN(task.ans)); }
-        /* ответ должен быть конечной десятичной дробью или целым */
-        if(!T.decParts(task.ans)){ fails.push(code+"#"+s+": ответ не десятичный "+task.ans.n+"/"+task.ans.d); }
-        /* дистракторы не равны ответу */
-        for(const d of task.distract){ if(T.Fr.eq(d.v, task.ans)) fails.push(code+"#"+s+": дистрактор = ответ"); }
-        if(fails.length>8) break;
-      }catch(e){ fails.push(code+"#"+s+": "+e.message); }
-    }
-    if(fails.length>8) break;
-  }
-  if(fails.length===0){ out.innerHTML="✓ самопроверка: <b>"+checks+"</b> задач сгенерировано и решено сходящимся кодом, ошибок нет"; }
-  else { out.innerHTML="⚠ найдены расхождения ("+fails.length+"): "+fails.slice(0,4).join(" | "); out.style.color="#9a5b12"; }
-}
-setTimeout(selfCheck, 30);
+migrate14();
+/* стартовая страница; ?mode=review — сразу «Пошагово» с работой над ошибками (решение D22) */
+show(CP.REVIEW? "steps" : "ref");
+if(CP.RO) selftest14();   // ?selftest=1 — маркер OGE14_SELFTEST_OK в консоли
 })(typeof T14!=="undefined"?T14:window.T14);
 
 </script>

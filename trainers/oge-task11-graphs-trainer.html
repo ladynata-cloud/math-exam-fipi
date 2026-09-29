@@ -140,6 +140,7 @@ section.module.active{display:block}
 .fb.soft{background:var(--soft-bg); color:var(--soft); border:1px solid #f0dcb2}
 .fb.hint{background:var(--hint-bg); color:var(--accent-dark); border:1px solid #cfdcf7}
 .fb .math{color:inherit}
+.fb p.math, .fb .math, .notice-title + p.math{white-space:normal}   /* строки разбора — абзацы, а не одна строка формулы */
 .notice-title{font-weight:700; margin-bottom:4px}
 
 /* ---------- ползунки конструктора ---------- */
@@ -221,12 +222,43 @@ footer.site a:hover{text-decoration:underline}
   .graphwrap svg{max-width:100%}
   table.pts input{width:52px}
 }
+/* графики задачи сопоставления: на узком экране три колонки в одну строку, нажатие на график
+   разворачивает его на всю ширину, повторное — сворачивает (решение D36) */
+.graphrow.match .gitem{font:inherit; color:inherit; text-align:left; cursor:pointer; -webkit-tap-highlight-color:transparent}
+@media (max-width:640px){
+  .graphrow.match{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px}
+  .graphrow.match .gitem{max-width:none; padding:4px; border-radius:10px}
+  .graphrow.match .gitem .graphwrap{padding:2px; max-width:none}
+  .graphrow.match .gitem .gnum{margin:0 0 2px; font-size:.95rem}
+  .graphrow.match .gitem.big{grid-column:1 / -1; order:-1}
+}
+/* 360 px: длинные формулы в строке переносятся, колонки конструктора не шире экрана (канон «мобильный режим»; интерфейс не меняется) */
+@media (max-width:520px){
+  .construct-grid > div, .sliders, .slbox{min-width:0}
+  .con-panel .math, #m1-question .math, .card.intro .math, .verdict, .note .math{white-space:normal}
+  .opts .btn{flex-wrap:wrap}
+  .opts .btn .math{white-space:normal}
+}
+/* доступность (курс ОГЭ, задача 03D): кнопки и поля не ниже 44 px, видимый фокус */
+.chips .btn,input.ans,table.pts input{min-height:44px}
+.slbox input[type=range], .gitem input[type=range]{height:44px}
+footer.site a{display:inline-flex; align-items:center; min-height:44px}
+:focus-visible{outline:3px solid var(--accent-dark); outline-offset:2px}
+input.ans:focus-visible,table.pts input:focus-visible{outline:3px solid var(--accent-dark); outline-offset:2px}
+.crumbs{display:inline-flex; align-items:center; min-height:44px; font-size:.92rem; color:var(--accent-dark); text-decoration:none}
+.crumbs:hover{text-decoration:underline}
+@media print{
+  header.site nav.tabs,.crumbs,.btnrow,.btn,.chips,.fb,footer.site,.dlrow,.answer-line{display:none !important}
+  section.module{display:none !important}
+  section.module.active{display:block !important}
+}
 </style>
 </head>
 <body>
 
 <header class="site">
   <div class="wrap">
+    <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
     <div class="brand">mathexam.space · ОГЭ по математике</div>
     <h1>Задание 11. Графики функций — тренажёр, который учит читать графики</h1>
     <p class="lead">График не нужно угадывать. В задании 11 всего четыре семейства функций —
@@ -238,6 +270,7 @@ footer.site a:hover{text-decoration:underline}
       <button data-m="m3"><span class="n">3</span>Строим сами</button>
       <button data-m="m4"><span class="n">4</span>ОГЭ-режим</button>
       <button data-m="m5"><span class="n">5</span>Мои результаты</button>
+      <button data-m="m6"><span class="n">6</span>Зачёт</button>
     </nav>
   </div>
 </header>
@@ -258,8 +291,8 @@ footer.site a:hover{text-decoration:underline}
     <h2>Разминка: учимся видеть признаки</h2>
     <p>Смотри на график и отвечай на короткий вопрос. Цель — научиться <b>читать</b> график:
       куда идёт линия, где она пересекает ось <span class="math"><i>y</i></span>, какое это семейство функций.</p>
-    <p class="note">Правильные ответы с первой попытки идут в «карту навыков» (модуль 5).
-      Подсказка всегда рядом — пользоваться ей не стыдно, просто такая попытка не засчитывается как самостоятельная.</p>
+    <p class="note">Верные ответы идут в карту навыков (модуль 5). Подсказки ничего не отнимают — пользуйся, когда нужно.
+      В счёт не идёт только задание, где ответ открыт кнопкой «Показать…».</p>
   </div>
   <div class="card">
     <div id="m1-progress" class="note"></div>
@@ -270,9 +303,9 @@ footer.site a:hover{text-decoration:underline}
       <button class="btn btn-ghost" id="m1-hint">Подсказка</button>
       <button class="btn" id="m1-next">Следующее задание</button>
     </div>
-    <div class="fb hint" id="m1-hintbox"></div>
-    <div class="fb soft" id="m1-soft"></div>
-    <div class="fb good" id="m1-good"></div>
+    <div class="fb hint" id="m1-hintbox" aria-live="polite"></div>
+    <div class="fb soft" id="m1-soft" aria-live="polite"></div>
+    <div class="fb good" id="m1-good" aria-live="polite"></div>
   </div>
 </section>
 
@@ -363,9 +396,9 @@ footer.site a:hover{text-decoration:underline}
       <button class="btn btn-ghost" id="m2g-hint">Подсказка</button>
       <button class="btn" id="m2g-next">Следующая формула</button>
     </div>
-    <div class="fb hint" id="m2g-hintbox"></div>
-    <div class="fb soft" id="m2g-soft"></div>
-    <div class="fb good" id="m2g-good"></div>
+    <div class="fb hint" id="m2g-hintbox" aria-live="polite"></div>
+    <div class="fb soft" id="m2g-soft" aria-live="polite"></div>
+    <div class="fb good" id="m2g-good" aria-live="polite"></div>
     <div class="graphwrap" id="m2g-graphwrap" style="display:none"><div id="m2g-graph"></div></div>
     <div class="calc-line math" id="m2g-calc"></div>
   </div>
@@ -479,9 +512,9 @@ footer.site a:hover{text-decoration:underline}
     <h3 id="m3-title"></h3>
     <div class="formula-big math" id="m3-formula"></div>
     <div id="m3-stage"></div>
-    <div class="fb hint" id="m3-hintbox"></div>
-    <div class="fb soft" id="m3-soft"></div>
-    <div class="fb good" id="m3-good"></div>
+    <div class="fb hint" id="m3-hintbox" aria-live="polite"></div>
+    <div class="fb soft" id="m3-soft" aria-live="polite"></div>
+    <div class="fb good" id="m3-good" aria-live="polite"></div>
     <div class="graphwrap" id="m3-graphwrap" style="display:none"><div id="m3-graph"></div></div>
     <div class="btnrow"><button class="btn" id="m3-next">Следующее задание</button></div>
   </div>
@@ -503,27 +536,29 @@ footer.site a:hover{text-decoration:underline}
       <button class="btn" data-t="t45">Смешанные</button>
     </div>
   </div>
+  <div class="fb hint" id="m4-review" aria-live="polite"></div>
   <div class="card">
     <div id="m4-progress" class="note"></div>
     <h3 id="m4-title"></h3>
     <p id="m4-taskline"></p>
-    <div class="graphrow" id="m4-graphs"></div>
-    <div class="match-desc" id="m4-desc"></div>
-    <div class="answer-line">
-      <span>Ответ одной строкой:</span>
-      <input class="ans" id="m4-answer" inputmode="numeric" maxlength="3" placeholder="312">
-    </div>
+    <div id="m4-match"></div>
     <div class="btnrow">
       <button class="btn btn-primary" id="m4-check">Проверить</button>
       <button class="btn btn-ghost" id="m4-hint">Подсказка</button>
       <button class="btn btn-ghost" id="m4-show">Показать разбор</button>
       <button class="btn" id="m4-next">Следующее задание</button>
     </div>
-    <div class="fb hint" id="m4-hintbox"></div>
-    <div class="fb soft" id="m4-soft"></div>
-    <div class="fb good" id="m4-good"></div>
+    <p class="note">Подсказки ничего не отнимают. «Показать разбор» открывает разбор очередного пункта — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ — после третьего пункта.</p>
+    <div class="fb hint" id="m4-hintbox" aria-live="polite"></div>
+    <div class="fb soft" id="m4-soft" aria-live="polite"></div>
+    <div class="fb good" id="m4-good" aria-live="polite"></div>
     <div class="fb hint" id="m4-razbor"></div>
   </div>
+</section>
+
+<!-- ================= МОДУЛЬ 6. ЗАЧЁТ ================= -->
+<section class="module" id="m6">
+  <div id="m6-box"></div>
 </section>
 
 <!-- ================= МОДУЛЬ 5. РЕЗУЛЬТАТЫ ================= -->
@@ -531,7 +566,7 @@ footer.site a:hover{text-decoration:underline}
   <div class="card intro">
     <h2>Мои результаты и карта навыков</h2>
     <p>Тренажёр запоминает прогресс прямо в браузере (ничего никуда не отправляется).
-      «Освоено» — когда навык решается уверенно и без подсказок.</p>
+      «Освоено» — когда задания навыка решаются уверенно, с первого выбора. Подсказки ничего не отнимают; открытый кнопкой ответ решением не считается.</p>
   </div>
   <div class="card">
     <div id="m5-summary"></div>
@@ -540,6 +575,7 @@ footer.site a:hover{text-decoration:underline}
     <h3>На что чаще всего попадаются ошибки</h3>
     <div id="m5-errors"></div>
     <div class="btnrow"><button class="btn" id="m5-reset">Сбросить прогресс</button></div>
+    <div id="m5-confirm" aria-live="polite"></div>
   </div>
 </section>
 
@@ -550,9 +586,6 @@ footer.site a:hover{text-decoration:underline}
     изучить структуру и адаптировать под свою тему.</p>
   <div class="dlrow">
     <button class="btn btn-primary" id="dl-html">Скачать HTML</button>
-    <!-- Кнопки-заглушки: файлы появятся позже -->
-    <button class="btn" disabled title="Файл появится позже">Скачать промпт для DeepSeek</button>
-    <button class="btn" disabled title="Файл появится позже">Скачать архивом</button>
   </div>
 </div>
 
@@ -693,18 +726,26 @@ function svgGraph(plots, marks, opts){
     }
   });
 
-  // кривые: сэмплируем и рвём сегменты на разрывах/уходе за экран
-  const LIM = R + 2.5;
+  // кривые: сэмплируем, рвём на разрывах и обрезаем по рамке чертежа — ни одна точка не выходит за viewBox
   (plots || []).forEach(p => {
     const d0 = p.domain ? Math.max(p.domain[0], -world) : -world;
     const d1 = p.domain ? Math.min(p.domain[1], world) : world;
     const step = (d1 - d0) / 400;
-    let seg = [], paths = [];
-    for (let x = d0; x <= d1 + 1e-9; x += step){
-      const y = p.fn(x);
-      const bad = !isFinite(y) || Math.abs(y) > LIM;
-      if (bad){ if (seg.length > 1) paths.push(seg); seg = []; }
-      else seg.push([px(x), py(y)]);
+    const inside = y => isFinite(y) && Math.abs(y) <= world;
+    /* точка на краю рамки: делением пополам между точкой внутри и точкой снаружи */
+    const edge = (xin, xout) => { let a = xin, b = xout; for (let k = 0; k < 40; k++){ const m = (a + b) / 2; if (inside(p.fn(m))) a = m; else b = m; } return [px(a), py(p.fn(a))]; };
+    let seg = [], paths = [], prev = null;
+    for (let i = 0; i <= 400; i++){
+      const x = i === 400 ? d1 : d0 + i * step, y = p.fn(x), inn = inside(y), fin = isFinite(y);
+      if (inn){
+        if (prev && prev.fin && !prev.inn) seg.push(edge(x, prev.x));   // кривая входит в рамку
+        seg.push([px(x), py(y)]);
+      } else {
+        if (prev && prev.inn && fin) seg.push(edge(prev.x, x));           // кривая выходит из рамки
+        if (seg.length > 1) paths.push(seg);
+        seg = [];
+      }
+      prev = { x, fin, inn };
     }
     if (seg.length > 1) paths.push(seg);
     paths.forEach(pts => {
@@ -727,13 +768,117 @@ function svgGraph(plots, marks, opts){
   return s + "</svg>";
 }
 
-// ---------- статистика в localStorage ----------
+// ---------- прогресс: ядро курса (CP) и карта навыков в поле ext своей ветки ----------
+const TID = "oge-t11-grafiki";
+const TYPE_IDS = ["t41", "t42", "t43", "t44", "t45"];
+const OLD_KEY = "mathexam_oge11_stats_v1";   // прежний ключ тренажёра: переносится один раз (§6 контракта), не удаляется
+const QUIZ_TOTAL=10;   // размер зачёта
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+/* контракт прогресса курса ОГЭ (docs/OGE_PROGRESS_CONTRACT.md): ядро, журнал, повтор;
+   миграция своего старого ключа (§6), сброс только своей ветки, поле ext для панели тренажёра */
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* §6: старый ключ читается один раз; переносится сопоставимое с ядром; ставится
+     migratedFrom; старый ключ не удаляется и не переписывается */
+  function migrate(fn){
+    if (RO) return;
+    try {
+      var raw = localStorage.getItem(OLD_KEY);
+      if (raw === null) return;
+      var cur = readAll()[TID];
+      if (isObj(cur) && typeof cur.migratedFrom === "string") return;
+      var old = null;
+      try { old = JSON.parse(raw); } catch (e) {}
+      saveRec(function(rec){
+        if (isObj(old)) { try { fn(old, rec); } catch (e) {} }
+        rec.migratedFrom = OLD_KEY;
+      });
+    } catch (e) {}
+  }
+  /* «Сбросить прогресс»: своя ветка и свои записи журнала (по префиксу TID|);
+     отметка миграции остаётся — иначе старый ключ перенёсся бы снова */
+  function resetOwn(){
+    if (RO) return;
+    try {
+      var all = readAll(), rec = all[TID];
+      if (isObj(rec) && typeof rec.migratedFrom === "string") all[TID] = { v:1, solvedByType:{}, migratedFrom:rec.migratedFrom, updatedAt:Date.now() };
+      else delete all[TID];
+      if (isObj(all.mistakes)) for (var k in all.mistakes)
+        if (Object.prototype.hasOwnProperty.call(all.mistakes, k) && k.indexOf(TID + "|") === 0) delete all.mistakes[k];
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  /* своя статистика панели тренажёра — поле ext ветки (адаптер курса его не читает) */
+  function ext(){ var r = readAll()[TID]; return isObj(r) && isObj(r.ext) ? r.ext : {}; }
+  function saveExt(fn){ saveRec(function(rec){ if (!isObj(rec.ext)) rec.ext = {}; fn(rec.ext); }); }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, KEY:KEY, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes,
+    migrate:migrate, resetOwn:resetOwn, ext:ext, saveExt:saveExt };
+})();
+
 const SKILLS = {
   lin_k:      "Прямые: знак k (возрастает/убывает)",
   lin_b:      "Прямые: коэффициент b и ось y",
   par_a:      "Параболы: направление ветвей (знак a)",
   par_c:      "Параболы: пересечение с осью y (знак c)",
-  par_vertex: "Параболы: вершина и формула x\u2080 = \u2212b/(2a)",
+  par_vertex: "Параболы: вершина и формула x₀ = −b/(2a)",
   hyp:        "Гиперболы: четверти и коэффициент",
   family:     "Узнавание семейства графика",
   build:      "Построение графика по точкам",
@@ -743,41 +888,54 @@ const ERR_NAMES = {
   a: "Перепутан знак a (направление ветвей)",
   c: "Перепутан знак c (пересечение с осью y)",
   k: "Перепутан знак k у прямой",
-  b: "Не увидел(а) коэффициент b",
-  x0: "Ошибка в формуле вершины x\u2080 = \u2212b/(2a)",
+  b: "Не замечен коэффициент b (точка на оси y)",
+  x0: "Ошибка в формуле вершины x₀ = −b/(2a)",
   side: "Перепутано «левее/правее оси y»",
+  hypq: "Гиперболы: перепутаны четверти (знак коэффициента)",
+  hypm: "Гиперболы: перепутано «дальше/ближе от осей» (модуль коэффициента)",
+  start: "Корень: перепутано начало графика",
   family: "Перепутаны семейства графиков (гипербола/корень/парабола)",
-  match: "Сопоставление «на глаз», без признаков",
   calc: "Вычислительная ошибка в таблице точек"
 };
-const LS_KEY = "mathexam_oge11_stats_v1";
-function loadStats(){
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) { /* localStorage может быть недоступен — работаем без сохранения */ }
-  return { skills: {}, errors: {} };
+/* карта навыков и счётчики ошибок — из ветки; мусор молча отбрасывается */
+function cleanSkills(sk){
+  const out = {};
+  if (!CP.isObj(sk)) return out;
+  Object.keys(SKILLS).forEach(id => {
+    const s = sk[id]; if (!CP.isObj(s)) return;
+    const total = CP.num(s.total), first = Math.min(CP.num(s.first), total);
+    if (total) out[id] = { total, first };
+  });
+  return out;
 }
-let STATS = loadStats();
-function saveStats(){
-  try { localStorage.setItem(LS_KEY, JSON.stringify(STATS)); } catch (e) {}
+function cleanErrors(er){
+  const out = {};
+  if (!CP.isObj(er)) return out;
+  Object.keys(ERR_NAMES).forEach(id => { const n = CP.num(er[id]); if (n) out[id] = n; });
+  return out;
 }
-// result: 'first' (с первой попытки без подсказок) | 'hinted' | 'retry'
-function recordSkill(skill, result){
-  const s = STATS.skills[skill] || (STATS.skills[skill] = { total: 0, first: 0, hinted: 0 });
-  s.total++;
-  if (result === "first") s.first++;
-  if (result === "hinted") s.hinted++;
-  saveStats(); renderProgressNotes();
+function stats11(){ const e = CP.ext(); return { skills: cleanSkills(e.skills), errors: cleanErrors(e.errors) }; }
+/* решённое задание модулей: firstTry — с первого выбора; подсказка ничего не отнимает (решение D35) */
+function recordSkill(skill, firstTry){
+  CP.saveExt(e => {
+    if (!CP.isObj(e.skills)) e.skills = {};
+    const s = CP.isObj(e.skills[skill]) ? e.skills[skill] : {};
+    e.skills[skill] = { total: CP.num(s.total) + 1, first: CP.num(s.first) + (firstTry ? 1 : 0) };
+  });
+  renderProgressNotes();
 }
 function recordError(type){
-  STATS.errors[type] = (STATS.errors[type] || 0) + 1;
-  saveStats();
+  CP.saveExt(e => { if (!CP.isObj(e.errors)) e.errors = {}; e.errors[type] = CP.num(e.errors[type]) + 1; });
+}
+/* §6 контракта, решение D16: в ядро ничего (счётчиков по t41–t45 не было), карта навыков — в ext */
+function migrate11(){
+  CP.migrate((old, rec) => { rec.ext = { skills: cleanSkills(old.skills), errors: cleanErrors(old.errors) }; });
 }
 function renderProgressNotes(){
-  const t = Object.values(STATS.skills).reduce((acc, s) => acc + s.total, 0);
-  const f = Object.values(STATS.skills).reduce((acc, s) => acc + s.first, 0);
-  const txt = t ? ("Решено заданий: " + t + " · самостоятельно с первой попытки: " + f) : "Пока ничего не решено — самое время начать.";
+  const st = stats11();
+  const t = Object.values(st.skills).reduce((acc, s) => acc + s.total, 0);
+  const f = Object.values(st.skills).reduce((acc, s) => acc + s.first, 0);
+  const txt = t ? ("Решено заданий: " + t + " · с первого выбора: " + f) : "Пока ничего не решено — самое время начать.";
   if ($("m1-progress")) $("m1-progress").textContent = txt;
   if ($("m4-progress")) $("m4-progress").textContent = txt;
 }
@@ -790,6 +948,7 @@ document.querySelectorAll("#tabs button").forEach(btn => {
     document.querySelectorAll("section.module").forEach(sec => sec.classList.remove("active"));
     $(btn.dataset.m).classList.add("active");
     if (btn.dataset.m === "m5") renderDiagnostics();
+    if (btn.dataset.m === "m6" && !$("m6-box").innerHTML) renderQuizIntro();
     window.scrollTo({ top: 0 });
   });
 });
@@ -861,12 +1020,12 @@ const COLORS = { lin: "#2563eb", par: "#c2255c", hyp: "#0f766e", root: "#9a3ed0"
 
 /* =================== МОДУЛЬ 1. РАЗМИНКА =================== */
 const M1 = {
-  q: null, hintStep: 0, wrong: false, hinted: false,
+  q: null, hintStep: 0, wrongs: 0,
   types: ["linK", "linB", "parA", "parC", "family"]
 };
 function m1New(){
   fbHide($("m1-hintbox"), $("m1-soft"), $("m1-good"));
-  M1.hintStep = 0; M1.wrong = false; M1.hinted = false;
+  M1.hintStep = 0; M1.wrongs = 0;
   const t = pick(M1.types);
   let q = { type: t };
   if (t === "linK"){
@@ -975,21 +1134,22 @@ function m1Answer(btn, op){
   if (op.ok){
     btn.classList.add("good");
     fbHide($("m1-soft"));
-    fb($("m1-good"), '<div class="notice-title">Верно!</div><span class="math">' + q.explain + "</span>");
+    let extra = "";
     if (!q.done){
       q.done = true;
-      recordSkill(q.skill, M1.hinted ? "hinted" : (M1.wrong ? "retry" : "first"));
+      /* решено — верный выбор не позже второй попытки; подсказка ничего не отнимает (D19, D35) */
+      if (M1.wrongs <= 1) recordSkill(q.skill, M1.wrongs === 0);
+      else extra = "<p>Две ошибки — это задание в счёт не идёт. Разберись по подсказке и бери следующее.</p>";
     }
+    fb($("m1-good"), '<div class="notice-title">Верно!</div><span class="math">' + q.explain + "</span>" + extra);
   } else {
-    if (!M1.wrong && !q.done) recordError(q.err);
-    M1.wrong = true;
-    btn.classList.add("picked");
+    if (!q.done){ if (!M1.wrongs) recordError(q.err); M1.wrongs++; }
+    btn.classList.add("picked"); btn.disabled = true;
     fb($("m1-soft"), "Пока не совпало. " + (q.hints[0] ? '<span class="math">' + q.hints[0] + "</span>" : "Посмотри на график ещё раз."));
   }
 }
 $("m1-hint").addEventListener("click", () => {
   const q = M1.q; if (!q) return;
-  M1.hinted = true;
   const h = q.hints[Math.min(M1.hintStep, q.hints.length - 1)];
   M1.hintStep++;
   fb($("m1-hintbox"), '<span class="math">' + h + "</span>");
@@ -1045,14 +1205,14 @@ function m2Render(){
 ["m2-a", "m2-b", "m2-c"].forEach(id => $(id).addEventListener("input", m2Render));
 
 /* ---- игра «угадай до построения» ---- */
-const M2G = { p: null, picked: null, wrong: false, hinted: false, done: false };
+const M2G = { p: null, picked: null, done: false };
 function m2gNew(){
   fbHide($("m2g-hintbox"), $("m2g-soft"), $("m2g-good"));
   $("m2g-graphwrap").style.display = "none";
   $("m2g-graph").innerHTML = ""; $("m2g-calc").innerHTML = "";
   // иногда даём b = 0, чтобы вариант «на оси» был честным
   const p = Math.random() < 0.22 ? genParabola({ needX0: 0 }) : genParabola({ x0min: -3, x0max: 3, cNonZero: false });
-  Object.assign(M2G, { p, picked: null, wrong: false, hinted: false, done: false });
+  Object.assign(M2G, { p, picked: null, done: false });
   $("m2g-formula").innerHTML = fmtQuad(p.a, p.b, p.c);
   $("m2g-build").disabled = true;
   document.querySelectorAll("#m2g-opts .btn").forEach(bb => bb.classList.remove("picked", "good"));
@@ -1065,8 +1225,7 @@ document.querySelectorAll("#m2g-opts .btn").forEach(bb => {
     $("m2g-build").disabled = false;
   });
 });
-$("m2g-hint").addEventListener("click", () => {
-  M2G.hinted = true;
+$("m2g-hint").addEventListener("click", () => {   // подсказка ничего не отнимает
   const p = M2G.p;
   fb($("m2g-hintbox"), '<span class="math">Не гадай — посчитай: <i>x</i><sub>0</sub> = ' +
     fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + ". Здесь <i>b</i> = " + fnum(p.b) + ", <i>a</i> = " + fnum(p.a) + ".</span>");
@@ -1086,14 +1245,13 @@ $("m2g-build").addEventListener("click", () => {
   if (M2G.picked === truth){
     fbHide($("m2g-soft"));
     fb($("m2g-good"), '<div class="notice-title">Точно!</div><span class="math">' + calc + ", значит " + verdictTxt + ".</span>");
-    if (!M2G.done){ M2G.done = true; recordSkill("par_vertex", M2G.hinted ? "hinted" : (M2G.wrong ? "retry" : "first")); }
+    if (!M2G.done){ M2G.done = true; recordSkill("par_vertex", true); }
   } else {
-    if (!M2G.wrong && !M2G.done) recordError("side");
-    M2G.wrong = true;
+    /* неверный выбор: график сам показал истину — это не «решено» (решение D35) */
+    if (!M2G.done){ M2G.done = true; recordError("side"); }
     fb($("m2g-soft"), '<div class="notice-title">Пока не совпало — но график уже подсказывает</div>' +
       '<span class="math">' + calc + ", значит " + verdictTxt +
       ". Сравни знаки <i>a</i> и <i>b</i>: одинаковые — влево, разные — вправо.</span>");
-    if (!M2G.done){ M2G.done = true; recordSkill("par_vertex", "retry"); }
   }
 });
 $("m2g-next").addEventListener("click", m2gNew);
@@ -1106,7 +1264,7 @@ $("m2g-next").addEventListener("click", m2gNew);
    ============================================================ */
 
 /* =================== МОДУЛЬ 3. СТРОИМ САМИ =================== */
-const M3 = { kind: "par", task: null, hinted: false, wrong: false, hintStep: 0 };
+const M3 = { kind: "par", task: null, shown: false, wrongs: 0, choiceWrongs: 0 };
 
 document.querySelectorAll("#m3-chips .btn").forEach(bb => {
   bb.addEventListener("click", () => {
@@ -1122,7 +1280,7 @@ function m3Reset(){
   fbHide($("m3-hintbox"), $("m3-soft"), $("m3-good"));
   $("m3-graphwrap").style.display = "none";
   $("m3-graph").innerHTML = "";
-  M3.hinted = false; M3.wrong = false; M3.hintStep = 0;
+  M3.shown = false; M3.wrongs = 0; M3.choiceWrongs = 0;
 }
 // подобрать диапазон осей так, чтобы все точки поместились
 function fitRange(points){
@@ -1188,20 +1346,20 @@ function m3New(){
           ". Теперь берём точки вокруг вершины.</span>");
         m3ParStep2();
       } else {
-        if (!M3.wrong) recordError("x0");
-        M3.wrong = true;
+        if (!M3.wrongs) recordError("x0");
+        M3.wrongs++;
         $("m3-x0").classList.add("soft");
         fb($("m3-soft"), '<span class="math">Пока не совпало. Подставь числа: <i>b</i> = ' + fnum(p.b) +
           ", <i>a</i> = " + fnum(p.a) + ", и не потеряй минус перед <i>b</i>.</span>");
       }
     });
     $("m3-show1").addEventListener("click", () => {
-      M3.hinted = true;
+      M3.shown = true;
       $("m3-x0").value = fnum(p.x0);
       $("m3-x0").classList.add("good");
       fb($("m3-hintbox"), '<span class="math"><i>x</i><sub>0</sub> = ' +
         fracHtml(MIN + "(" + fnum(p.b) + ")", "2·(" + fnum(p.a) + ")") + " = " +
-        fracHtml(fnum(-p.b), fnum(2 * p.a)) + " = " + fnum(p.x0) + "</span> (показанный шаг не засчитывается как самостоятельный).");
+        fracHtml(fnum(-p.b), fnum(2 * p.a)) + " = " + fnum(p.x0) + "</span>. Показанное в счёт не идёт — сверь и иди дальше.");
       m3ParStep2();
     });
   } else if (M3.kind === "lin"){
@@ -1236,8 +1394,8 @@ function m3New(){
           m3BindTable("Две точки есть — проводим через них единственную прямую.",
             "Проверь подстановку: сначала умножь <i>k</i> на <i>x</i>, потом прибавь <i>b</i>.");
         } else {
-          if (!M3.wrong) recordError("b");
-          M3.wrong = true;
+          if (!M3.wrongs) recordError("b");
+          M3.wrongs++; M3.choiceWrongs++; bb.disabled = true;
           fb($("m3-soft"), '<span class="math">Подставь <i>x</i> = 0 в формулу: <i>k</i>·0 = 0, значит <i>y</i> = <i>b</i>. Точка стоит на оси <i>y</i> — это (0; <i>b</i>).</span>');
         }
       });
@@ -1272,8 +1430,8 @@ function m3New(){
           m3BindTable("Точки готовы! Смотри, как ветви прижимаются к осям, но не касаются их.",
             "Раздели коэффициент на <i>x</i>. Знак не потеряй!");
         } else {
-          if (!M3.wrong) recordError("family");
-          M3.wrong = true;
+          if (!M3.wrongs) recordError("hypq");
+          M3.wrongs++; M3.choiceWrongs++; bb.disabled = true;
           fb($("m3-soft"), '<span class="math">Проверь на пробной точке: возьми <i>x</i> = 1 и посчитай <i>y</i>. В какой четверти окажется точка?</span>');
         }
       });
@@ -1309,8 +1467,8 @@ function m3New(){
           m3BindTable("График медленно, но упорно растёт вправо и вверх.",
             "Сначала извлеки корень (\u221A1 = 1, \u221A4 = 2), потом прибавь число.");
         } else {
-          if (!M3.wrong) recordError("family");
-          M3.wrong = true;
+          if (!M3.wrongs) recordError("start");
+          M3.wrongs++; M3.choiceWrongs++; bb.disabled = true;
           fb($("m3-soft"), '<span class="math">Подставь <i>x</i> = 0 в формулу: что получится для <i>y</i>?</span>');
         }
       });
@@ -1340,21 +1498,21 @@ function m3BindTable(goodMsg, softMsg){
       fbHide($("m3-soft"));
       fb($("m3-good"), goodMsg);
       m3Draw();
+      /* решено — без показа и не больше одной ошибки в выборе шага 1 (D19, D35) */
       if (!t.recorded){ t.recorded = true;
-        recordSkill("build", M3.hinted ? "hinted" : (M3.wrong ? "retry" : "first")); }
+        if (!M3.shown && M3.choiceWrongs <= 1) recordSkill("build", M3.wrongs === 0); }
     } else {
-      if (!M3.wrong && !r.empty) recordError("calc");
-      M3.wrong = true;
+      if (!r.empty){ if (!M3.wrongs) recordError("calc"); M3.wrongs++; }
       fb($("m3-soft"), r.empty ? "Заполни все клетки таблицы — потом проверим." :
         '<span class="math">Подсвеченные клетки пока не совпали. ' + softMsg + "</span>");
     }
   });
   $("m3-showT").addEventListener("click", () => {
-    M3.hinted = true;
+    M3.shown = true;
     fillTable($("m3-stage"), t.ys);
-    fb($("m3-hintbox"), "Значения показаны — сверь со своими вычислениями. Показанное не засчитывается как самостоятельное.");
+    fb($("m3-hintbox"), "Значения показаны. Показанное в счёт не идёт — сверь и иди дальше.");
     m3Draw();
-    if (!t.recorded){ t.recorded = true; recordSkill("build", "hinted"); }
+    t.recorded = true;   // показанное — не «решено» (решение D35)
   });
 }
 function m3Draw(){
@@ -1368,20 +1526,21 @@ function m3Draw(){
 }
 
 /* =================== МОДУЛЬ 4. ОГЭ-РЕЖИМ =================== */
-const M4 = { type: "rand", task: null, attempts: 0, hinted: false, done: false };
+const M4 = { type: "rand", task: null, review: false };
 const LETTERS = ["А", "Б", "В"];
 
 document.querySelectorAll("#m4-chips .btn").forEach(bb => {
   bb.addEventListener("click", () => {
     document.querySelectorAll("#m4-chips .btn").forEach(x => x.classList.remove("picked"));
     bb.classList.add("picked");
+    if (M4.review){ M4.review = false; m4Banner(""); }   // выбор типа — выход из повтора
     M4.type = bb.dataset.t;
     m4New();
   });
 });
 
 // --- генераторы задач сопоставления ---
-// каждый возвращает: {title, taskline, items:[{desc, plotObj, explain, sig}], hint, notice, err}
+// каждый возвращает: {title, taskline, items:[{desc, plot, explain, sig, …параметры}], hint, notice}
 function gen41(){
   const patterns = shuffle([[1, 1], [1, -1], [-1, 1], [-1, -1]]).slice(0, 3);
   const items = patterns.map(pt => {
@@ -1400,8 +1559,7 @@ function gen41(){
     taskline: 'На рисунках изображены графики функций вида <span class="math"><i>y</i> = <i>a</i><i>x</i><sup>2</sup> + <i>b</i><i>x</i> + <i>c</i></span>. Установи соответствие между знаками коэффициентов и графиками.',
     items,
     hint: "Два признака решают всё: куда смотрят ветви (это знак <i>a</i>) и где парабола протыкает ось <i>y</i> — выше или ниже нуля (это знак <i>c</i>).",
-    notice: "Направление ветвей = знак <i>a</i>. Точка на оси <i>y</i> = знак <i>c</i>. Больше ничего проверять не нужно.",
-    err: "a"
+    notice: "Направление ветвей = знак <i>a</i>. Точка на оси <i>y</i> = знак <i>c</i>. Больше ничего проверять не нужно."
   };
 }
 function gen42(){
@@ -1424,8 +1582,7 @@ function gen42(){
     taskline: "Установи соответствие между формулами и графиками. Не угадывай: сначала знак <span class=\"math\"><i>a</i></span>, потом вершина через <span class=\"math\"><i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + "</span>.",
     items,
     hint: "План из трёх шагов: 1) знак <i>a</i> — ветви; 2) <i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + " — вершина левее или правее; 3) если сомневаешься, сверь <i>c</i> с точкой на оси <i>y</i>.",
-    notice: "Пара «знак <i>a</i> + сторона вершины» различает любые две параболы здесь. Формула вершины надёжнее глазомера.",
-    err: "x0"
+    notice: "Пара «знак <i>a</i> + сторона вершины» различает любые две параболы здесь. Формула вершины надёжнее глазомера."
   };
 }
 function gen43(){
@@ -1446,28 +1603,31 @@ function gen43(){
     taskline: "Установи соответствие между формулами вида <span class=\"math\"><i>y</i> = <i>k</i><i>x</i> + <i>b</i></span> и графиками.",
     items,
     hint: "Сначала знак <i>k</i>: вверх или вниз идёт прямая. Потом <i>b</i>: в какой точке она пересекает ось <i>y</i>.",
-    notice: "Знак <i>k</i> — направление, <i>b</i> — точка на оси <i>y</i>. Этой пары признаков всегда достаточно.",
-    err: "k"
+    notice: "Знак <i>k</i> — направление, <i>b</i> — точка на оси <i>y</i>. Этой пары признаков всегда достаточно."
   };
 }
+/* видимая контрольная точка гиперболы: наименьший делитель |k|, при котором |k/x| ≤ 6 (решение D37) */
+function hypPoint(m){ let d = 1; while (Math.abs(m / d) > 6 || Math.abs(m) % d !== 0) d++; return [d, m / d]; }
 function gen44(){
   const sets = [[1, 6, -3], [2, 9, -4], [-1, -6, 3], [-2, -9, 4], [1, 4, -2], [-1, -4, 2]];
   const ms = shuffle(pick(sets));
-  const items = ms.map(m => ({
-    m,
-    desc: '<span class="math">' + fmtHyp(m) + "</span>",
-    plot: { fn: x => m / x, color: COLORS.ink },
-    explain: "коэффициент " + fnum(m) + (m > 0 ? " &gt; 0 — ветви в I и III четвертях" : " &lt; 0 — ветви во II и IV четвертях") +
-      "; контрольная точка (1; " + fnum(m) + "): чем больше модуль коэффициента, тем дальше ветвь от осей",
-    sig: String(m)
-  }));
+  const items = ms.map(m => {
+    const pt = hypPoint(m);
+    return {
+      m,
+      desc: '<span class="math">' + fmtHyp(m) + "</span>",
+      plot: { fn: x => m / x, color: COLORS.ink },
+      explain: "коэффициент " + fnum(m) + (m > 0 ? " &gt; 0 — ветви в I и III четвертях" : " &lt; 0 — ветви во II и IV четвертях") +
+        "; контрольная точка (" + fnum(pt[0]) + "; " + fnum(pt[1]) + "): чем больше модуль коэффициента, тем дальше ветвь от осей",
+      sig: String(m)
+    };
+  });
   return {
     title: "Тип 4. Гиперболы",
     taskline: "Установи соответствие между формулами и графиками гипербол.",
     items,
-    hint: "Шаг 1: знак коэффициента — четверти (плюс: I и III, минус: II и IV). Шаг 2: подставь <i>x</i> = 1 — получишь высоту ветви.",
-    notice: "Гиперболу выдают четверти и «размах»: при <i>x</i> = 1 значение <i>y</i> равно коэффициенту.",
-    err: "family"
+    hint: "Шаг 1: знак коэффициента — четверти (плюс: I и III, минус: II и IV). Шаг 2: подставь удобный <i>x</i> — получишь точку ветви и увидишь, как далеко она от осей.",
+    notice: "Гиперболу выдают четверти и «размах»: при <i>x</i> = 1 значение <i>y</i> равно коэффициенту."
   };
 }
 function gen45(){
@@ -1507,126 +1667,177 @@ function gen45(){
     taskline: "Здесь функции разных семейств. Сначала определи «семейство» каждого графика, потом сопоставляй.",
     items,
     hint: "Не считай коэффициенты сразу. Сначала назови семейство: прямая, парабола, гипербола, корень или горизонтальная прямая.",
-    notice: "В смешанных задачах первый вопрос всегда один: «к какому семейству относится график?» Дальше всё решается само.",
-    err: "family"
+    notice: "В смешанных задачах первый вопрос всегда один: «к какому семейству относится график?» Дальше всё решается само."
   };
 }
-
-function m4New(){
-  fbHide($("m4-hintbox"), $("m4-soft"), $("m4-good"), $("m4-razbor"));
-  M4.attempts = 0; M4.hinted = false; M4.done = false;
-  const gens = { t41: gen41, t42: gen42, t43: gen43, t44: gen44, t45: gen45 };
-  const g = M4.type === "rand" ? pick(Object.values(gens)) : gens[M4.type];
+const GEN11 = { t41: gen41, t42: gen42, t43: gen43, t44: gen44, t45: gen45 };
+/* задача типа type: у трёх пунктов разные признаки; order[pos] — пункт на графике pos + 1; key[i] — график буквы i */
+function m4Make(type){
+  const g = GEN11[type];
   let T;
-  // страховка: у трёх пунктов должны быть разные «сигнатуры признаков»
   for (let tries = 0; tries < 50; tries++){
     T = g();
-    const sigs = T.items.map(it => it.sig);
-    if (new Set(sigs).size === 3) break;
+    if (new Set(T.items.map(it => it.sig)).size === 3) break;
   }
-  // перемешиваем графики: order[i] — номер графика (1..3) для буквы i
-  const order = shuffle([0, 1, 2]);
-  T.key = LETTERS.map((_, i) => order.indexOf(i) + 1); // буква i -> график key[i]
-  // рисуем графики в порядке order
-  const gr = $("m4-graphs");
-  gr.innerHTML = "";
-  order.forEach((itemIdx, pos) => {
-    const div = document.createElement("div");
-    div.className = "gitem";
-    div.innerHTML = '<div class="gnum">' + (pos + 1) + ")</div>" +
-      '<div class="graphwrap">' + svgGraph([T.items[itemIdx].plot], [], { size: 300 }) + "</div>";
-    gr.appendChild(div);
+  T.type = type;
+  T.order = shuffle([0, 1, 2]);
+  T.key = LETTERS.map((_, i) => T.order.indexOf(i) + 1);
+  return T;
+}
+/* признаки типа — что проверить у каждого пункта (решение D32) */
+const FEAT_TYPE = {
+  t41: "куда смотрят ветви (знак <i>a</i>) и где парабола пересекает ось <i>y</i> (знак <i>c</i>)",
+  t42: "знак <i>a</i> и сторону вершины: <i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>"),
+  t43: "знак <i>k</i> — прямая возрастает или убывает — и точку (0; <i>b</i>)",
+  t44: "четверти (знак коэффициента) и удалённость ветвей от осей (модуль коэффициента)",
+  t45: "семейство графика: прямая, парабола, гипербола, корень или горизонтальная прямая"
+};
+/* признак, которым различаются два пункта (творительный падеж для «различаются …») */
+const FEAT_NAME = {
+  a: "знаком <i>a</i> (куда смотрят ветви)", c: "знаком <i>c</i> (где парабола пересекает ось <i>y</i>)",
+  side: "стороной вершины (<i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + ")",
+  k: "знаком <i>k</i> (прямая возрастает или убывает)", b: "знаком <i>b</i> (точка (0; <i>b</i>) на оси <i>y</i>)",
+  hypq: "четвертями (знаком коэффициента)", hypm: "удалённостью ветвей от осей (модулем коэффициента)",
+  family: "семейством графика"
+};
+function pairFeatures(type, u, v){
+  const s = x => Math.sign(x), out = [];
+  if (type === "t41"){ if (s(u.p.a) !== s(v.p.a)) out.push("a"); if (s(u.p.c) !== s(v.p.c)) out.push("c"); }
+  else if (type === "t42"){ if (s(u.p.a) !== s(v.p.a)) out.push("a"); if (s(u.p.x0) !== s(v.p.x0)) out.push("side"); }
+  else if (type === "t43"){ if (s(u.L.k) !== s(v.L.k)) out.push("k"); if (s(u.L.b) !== s(v.L.b)) out.push("b"); }
+  else if (type === "t44") out.push(s(u.m) !== s(v.m) ? "hypq" : "hypm");
+  else out.push("family");
+  return out;
+}
+/* диагностика ответа: сколько букв верно и какими признаками различаются перепутанные пункты */
+function m4Diag(T, ans){
+  const wrong = [], cats = [];
+  LETTERS.forEach((_, i) => {
+    if (ans[i] === T.key[i]) return;
+    wrong.push(i);
+    const j = T.order[ans[i] - 1];   // пункт, чей график выбран для буквы i
+    pairFeatures(T.type, T.items[i], T.items[j]).forEach(c => { if (cats.indexOf(c) < 0) cats.push(c); });
   });
-  // описания с выпадающими списками
-  const dbox = $("m4-desc");
-  dbox.innerHTML = "";
+  return { right: 3 - wrong.length, wrong, cats, featText: cats.map(c => FEAT_NAME[c]).join(" и ") };
+}
+/* разметка задачи: графики плиткой (на узком экране три колонки, нажатие разворачивает) и списки букв */
+function renderMatch(T, host, idp){
+  let h = '<div class="graphrow match" id="' + idp + '-graphs">';
+  T.order.forEach((itemIdx, pos) => {
+    h += '<button type="button" class="gitem" aria-expanded="false" aria-label="график ' + (pos + 1) + '"><div class="gnum">' + (pos + 1) + ')</div>' +
+      '<div class="graphwrap">' + svgGraph([T.items[itemIdx].plot], [], { size: 300 }) + "</div></button>";
+  });
+  h += '</div><div class="match-desc" id="' + idp + '-desc">';
   T.items.forEach((it, i) => {
-    const row = document.createElement("div");
-    row.className = "row";
-    row.innerHTML = '<span class="letter">' + LETTERS[i] + ")</span> <span>" + it.desc + "</span>" +
+    h += '<div class="row"><span class="letter">' + LETTERS[i] + ')</span> <span>' + it.desc + '</span>' +
       '<select data-i="' + i + '" aria-label="график для пункта ' + LETTERS[i] + '">' +
-      '<option value="">график…</option><option>1</option><option>2</option><option>3</option></select>';
-    dbox.appendChild(row);
+      '<option value="">график…</option><option>1</option><option>2</option><option>3</option></select></div>';
   });
-  dbox.querySelectorAll("select").forEach(sel => sel.addEventListener("change", () => {
-    const vals = [...dbox.querySelectorAll("select")].map(s => s.value);
-    $("m4-answer").value = vals.every(v => v) ? vals.join("") : $("m4-answer").value;
+  h += '</div><div class="answer-line"><label for="' + idp + '-answer">Ответ одной строкой:</label>' +
+    '<input class="ans" id="' + idp + '-answer" inputmode="numeric" maxlength="3" placeholder="312" autocomplete="off"></div>';
+  host.innerHTML = h;
+  const gr = host.querySelector("#" + idp + "-graphs");
+  gr.querySelectorAll(".gitem").forEach(b => b.addEventListener("click", () => {
+    const on = !b.classList.contains("big");
+    gr.querySelectorAll(".gitem").forEach(x => { x.classList.remove("big"); x.setAttribute("aria-expanded", "false"); });
+    if (on){ b.classList.add("big"); b.setAttribute("aria-expanded", "true"); }
   }));
-  $("m4-answer").value = "";
-  M4.task = T;
+  const sels = [...host.querySelectorAll("#" + idp + "-desc select")], txt = host.querySelector("#" + idp + "-answer");
+  /* строка и списки синхронны в обе стороны (решение D33) */
+  sels.forEach(sel => sel.addEventListener("change", () => {
+    const vals = sels.map(s => s.value);
+    txt.value = vals.every(v => v) ? vals.join("") : "";
+  }));
+  txt.addEventListener("input", () => {
+    const v = txt.value.trim();
+    sels.forEach((sel, i) => { sel.value = /^[1-3]{3}$/.test(v) ? v[i] : ""; });
+  });
+  return {
+    read(){ const vals = sels.map(s => s.value); return vals.every(v => v) ? vals.map(Number) : null; },
+    lock(){ sels.forEach(s => { s.disabled = true; }); txt.disabled = true; },
+    focus(){ if (M11.acted) try { sels[0].focus({ preventScroll: true }); } catch (e) {} }
+  };
+}
+const M11 = { acted: false };   // фокус — только после действия ученика, не при загрузке
+document.addEventListener("pointerdown", () => { M11.acted = true; }, { once: true });
+document.addEventListener("keydown", () => { M11.acted = true; }, { once: true });
+
+/* сообщение на неверное сопоставление: сколько верно — без названия букв; признак пары — только после второй ошибки (D32) */
+function m4Msg(T, d, attempts){
+  let msg = (d.right === 1 ? "Верно 1 из 3." : "Пока ни одного верного соответствия.") + ' Проверь у каждого пункта <span class="math">' + FEAT_TYPE[T.type] + "</span>.";
+  if (attempts >= 2) msg += " Две ошибки — задача в счёт не идёт, но разобрать её стоит: «Показать разбор». Перепутанные пункты различаются " + d.featText + ".";
+  return msg;
+}
+function m4Banner(html){ const b = $("m4-review"); if (!b) return; b.classList.toggle("show", !!html); b.innerHTML = html; }
+function m4New(){
+  fbHide($("m4-hintbox"), $("m4-soft"), $("m4-good"), $("m4-razbor"));
+  let type = M4.type === "rand" ? pick(TYPE_IDS) : M4.type;
+  if (M4.review){
+    const open = CP.openTypes();
+    if (open.length) type = pick(open);
+    else { M4.review = false; m4Banner("<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип выше."); }
+  }
+  const T = m4Make(type);
+  Object.assign(M4, { task: T, attempts: 0, lastTry: null, missed: false, shown: false, done: false, razborStep: 0 });
   $("m4-title").innerHTML = T.title;
   $("m4-taskline").innerHTML = T.taskline;
+  M4.form = renderMatch(T, $("m4-match"), "m4");
+  $("m4-show").disabled = false;
   renderProgressNotes();
 }
-// строка ответа синхронизируется со списками
-$("m4-answer").addEventListener("input", () => {
-  const v = $("m4-answer").value.trim();
-  if (/^[1-3]{3}$/.test(v)){
-    document.querySelectorAll("#m4-desc select").forEach((sel, i) => { sel.value = v[i]; });
-  }
-});
-function m4ReadAnswer(){
-  const typed = $("m4-answer").value.trim();
-  if (/^[1-3]{3}$/.test(typed)) return typed.split("").map(Number);
-  const vals = [...document.querySelectorAll("#m4-desc select")].map(s => s.value);
-  if (vals.every(v => v)) return vals.map(Number);
-  return null;
-}
 $("m4-check").addEventListener("click", () => {
-  const T = M4.task; if (!T || M4.done) return;
-  const ans = m4ReadAnswer();
+  const T = M4.task; if (!T) return;
+  if (M4.done){ fb($("m4-soft"), "Это задание уже решено — жми «Следующее задание»."); return; }
+  const ans = M4.form.read();
   if (!ans){ fb($("m4-soft"), "Заполни соответствие для всех трёх букв — списками или строкой из трёх цифр."); return; }
   if (new Set(ans).size !== 3){ fb($("m4-soft"), "Каждый график используется ровно один раз — проверь, нет ли повторов."); return; }
-  M4.attempts++;
-  const wrong = LETTERS.filter((_, i) => ans[i] !== T.key[i]);
-  if (wrong.length === 0){
-    fbHide($("m4-soft"));
-    let ex = '<div class="notice-title">Верно! Короткий разбор:</div>';
-    T.items.forEach((it, i) => { ex += '<p class="math"><b>' + LETTERS[i] + " \u2192 " + T.key[i] + ":</b> " + it.explain + ".</p>"; });
-    fb($("m4-good"), ex);
+  const sig = ans.join("");
+  if (sig === M4.lastTry){ fb($("m4-soft"), "Ответ не изменился — поменяй соответствие и проверь снова."); return; }   // не попытка
+  M4.lastTry = sig; M4.attempts++;
+  const d = m4Diag(T, ans);
+  if (!d.wrong.length){
     M4.done = true;
-    recordSkill("oge", M4.hinted ? "hinted" : (M4.attempts === 1 ? "first" : "retry"));
-  } else {
-    if (M4.attempts === 1){
-      recordError(T.err); recordError("match");
-      fb($("m4-soft"), "Пока не совпало. Стоит пересмотреть соответствия для: <b>" + wrong.join(", ") +
-        "</b>. Вернись к признакам — не сравнивай картинки «на глаз».");
-    } else {
-      fb($("m4-soft"), "Снова не совпало для: <b>" + wrong.join(", ") + "</b>. Открываю полный разбор — сверь каждый шаг.");
-      m4ShowRazbor();
-      M4.done = true;
-      recordSkill("oge", "retry");
-    }
+    fbHide($("m4-soft"));
+    const ok = !M4.shown && M4.attempts <= 2;   // после второй ошибки — «не засчитано» (D19, D33)
+    if (ok){ CP.solvedOne(T.type); if (!M4.missed) CP.mlog(T.type, true); recordSkill("oge", M4.attempts === 1); }
+    let ex = '<div class="notice-title">Верно! Короткий разбор:</div>';
+    T.items.forEach((it, i) => { ex += '<p class="math"><b>' + LETTERS[i] + " → " + T.key[i] + ":</b> " + it.explain + ".</p>"; });
+    if (!ok) ex += "<p>" + (M4.shown ? "Разбор был показан — задание в счёт решённых не идёт." : "Было две ошибки — задание в счёт решённых не идёт.") + "</p>";
+    fb($("m4-good"), ex);
+    return;
   }
+  /* промах: один раз на задачу — в журнал и фактические признаки в статистику ошибок */
+  if (!M4.missed && !M4.shown){ M4.missed = true; CP.mlog(T.type, false); d.cats.forEach(c => recordError(c)); }
+  fb($("m4-soft"), m4Msg(T, d, M4.attempts));
 });
-$("m4-hint").addEventListener("click", () => {
+$("m4-hint").addEventListener("click", () => {   // подсказка ничего не отнимает
   const T = M4.task; if (!T) return;
-  M4.hinted = true;
   fb($("m4-hintbox"), '<span class="math">' + T.hint + "</span>");
 });
+/* разбор — по пунктам: А, потом Б, потом В; строка «Ответ» — после третьего (решение D21) */
 $("m4-show").addEventListener("click", () => {
-  if (!M4.task) return;
-  M4.hinted = true;
-  m4ShowRazbor();
-  if (!M4.done){ M4.done = true; recordSkill("oge", "hinted"); }
-});
-function m4ShowRazbor(){
-  const T = M4.task;
-  let h = '<div class="notice-title">Полный разбор</div>';
-  h += "<p>Ответ: <b>" + T.key.join("") + "</b>.</p>";
-  T.items.forEach((it, i) => { h += '<p class="math"><b>' + LETTERS[i] + " \u2192 " + T.key[i] + ":</b> " + it.explain + ".</p>"; });
-  h += '<div class="notice-title" style="margin-top:8px">Что я должен был заметить</div><p class="math">' + T.notice + "</p>";
+  const T = M4.task; if (!T || M4.razborStep >= 3) return;
+  if (!M4.done) M4.shown = true;
+  M4.razborStep++;
+  let h = '<div class="notice-title">Разбор по пунктам</div>';
+  for (let i = 0; i < M4.razborStep; i++) h += '<p class="math"><b>' + LETTERS[i] + " → " + T.key[i] + ":</b> " + T.items[i].explain + ".</p>";
+  if (M4.razborStep >= 3){
+    h += "<p>Ответ: <b>" + T.key.join("") + "</b>.</p>";
+    h += '<div class="notice-title" style="margin-top:8px">Что стоило заметить</div><p class="math">' + T.notice + "</p>";
+    $("m4-show").disabled = true;
+  }
   fb($("m4-razbor"), h);
-}
-$("m4-next").addEventListener("click", m4New);
+});
+$("m4-next").addEventListener("click", () => { M11.acted = true; m4New(); });
 
 /* =================== МОДУЛЬ 5. ДИАГНОСТИКА =================== */
 function renderDiagnostics(){
+  const st = stats11();
   const sm = $("m5-map");
   sm.innerHTML = "";
   let totalAll = 0, firstAll = 0;
   Object.keys(SKILLS).forEach(id => {
-    const s = STATS.skills[id] || { total: 0, first: 0, hinted: 0 };
+    const s = st.skills[id] || { total: 0, first: 0 };
     totalAll += s.total; firstAll += s.first;
     const rate = s.total ? s.first / s.total : 0;
     let stClass = "todo", stText = "мало данных — реши хотя бы 3 задания";
@@ -1637,24 +1848,84 @@ function renderDiagnostics(){
     div.className = "skill";
     div.innerHTML = '<div class="name">' + SKILLS[id] + "</div>" +
       '<div class="st ' + stClass + '">' + stText + "</div>" +
-      '<div class="note">решено: ' + s.total + " · с первой попытки: " + s.first + "</div>" +
+      '<div class="note">решено: ' + s.total + " · с первого выбора: " + s.first + "</div>" +
       '<div class="bar"><i style="width:' + Math.round(rate * 100) + '%"></i></div>';
     sm.appendChild(div);
   });
   $("m5-summary").innerHTML = totalAll ?
-    "<p>Всего решено: <b>" + totalAll + "</b>, из них самостоятельно с первой попытки: <b>" + firstAll + "</b>.</p>" :
+    "<p>Всего решено: <b>" + totalAll + "</b>, из них с первого выбора: <b>" + firstAll + "</b>.</p>" :
     "<p>Пока пусто. Начни с разминки — это займёт пару минут.</p>";
-  const errs = Object.entries(STATS.errors).sort((x, y) => y[1] - x[1]);
+  const errs = Object.entries(st.errors).sort((x, y) => y[1] - x[1]);
   $("m5-errors").innerHTML = errs.length ?
-    '<ul class="errlist">' + errs.map(e => "<li>" + (ERR_NAMES[e[0]] || e[0]) + " — " + e[1] + " раз(а)</li>").join("") + "</ul>" :
+    '<ul class="errlist">' + errs.map(e => "<li>" + ERR_NAMES[e[0]] + " — " + e[1] + " раз(а)</li>").join("") + "</ul>" :
     '<p class="note">Ошибок пока не зафиксировано — так держать.</p>';
 }
+/* сброс — только своя ветка и свои записи журнала, подтверждение на странице (решение D18) */
 $("m5-reset").addEventListener("click", () => {
-  if (confirm("Точно сбросить весь прогресс?")){
-    STATS = { skills: {}, errors: {} };
-    saveStats(); renderDiagnostics(); renderProgressNotes();
-  }
+  $("m5-confirm").innerHTML = '<div class="fb soft show">Сбросить прогресс по заданию 11? Записи других тренажёров курса не тронутся.' +
+    '<div class="btnrow"><button class="btn btn-primary" type="button" id="m5-yes">Да, сбросить</button><button class="btn" type="button" id="m5-no">Отмена</button></div></div>';
+  $("m5-yes").addEventListener("click", () => { CP.resetOwn(); $("m5-confirm").innerHTML = ""; renderDiagnostics(); renderProgressNotes(); });
+  $("m5-no").addEventListener("click", () => { $("m5-confirm").innerHTML = ""; });
 });
+
+/* =================== МОДУЛЬ 6. ЗАЧЁТ (решения D15, D34) =================== */
+/* формулировка зачёта — как в КИМ: без подсказки метода (D15, D34) */
+function examLine(T){
+  return T.type === "t41"
+    ? 'На рисунках изображены графики функций вида <span class="math"><i>y</i> = <i>a</i><i>x</i><sup>2</sup> + <i>b</i><i>x</i> + <i>c</i></span>. Установи соответствие между знаками коэффициентов и графиками.'
+    : "Установи соответствие между формулами и графиками.";
+}
+function buildQuiz11(){ return shuffle(TYPE_IDS.concat(TYPE_IDS)).map(m4Make); }
+function renderQuizIntro(){
+  $("m6-box").innerHTML = '<div class="card"><h2>Зачёт: ' + QUIZ_TOTAL + ' задач</h2>' +
+    "<p>По две задачи каждого типа вперемешку. Одна попытка на задачу, без подсказок и разбора — как на экзамене. " +
+    "Задача засчитана, только если верны все три буквы. Зачёт сдан при " + PASS_AT + " верных из " + QUIZ_TOTAL + ".</p>" +
+    '<div class="btnrow"><button class="btn btn-primary" type="button" id="m6-start">Начать зачёт</button></div></div>';
+  $("m6-start").addEventListener("click", () => { M11.acted = true; runQuiz11(); });
+}
+function runQuiz11(){
+  const quiz = buildQuiz11(), res = [];
+  let idx = 0;
+  function show(){
+    if (idx >= quiz.length) return finishQuiz11(quiz, res);
+    const T = quiz[idx];
+    $("m6-box").innerHTML = '<div class="card"><div class="note">Задача ' + (idx + 1) + " из " + quiz.length + "</div>" +
+      "<p>" + examLine(T) + '</p><div id="m6-match"></div>' +
+      '<div class="btnrow"><button class="btn btn-primary" type="button" id="m6-ok">Ответить</button>' +
+      '<button class="btn" type="button" id="m6-next" hidden>' + (idx + 1 < quiz.length ? "Дальше →" : "Итоги →") + "</button></div>" +
+      '<div class="fb" id="m6-fb" aria-live="polite"></div></div>';
+    const form = renderMatch(T, $("m6-match"), "m6");
+    let answered = false, moved = false;
+    $("m6-ok").addEventListener("click", () => {
+      if (answered) return;   // двойное касание — один ответ
+      const ans = form.read();
+      if (!ans || new Set(ans).size !== 3){ fb($("m6-fb"), "Заполни соответствие для всех трёх букв, каждый график — один раз. Попытка не потрачена."); $("m6-fb").className = "fb soft show"; return; }
+      answered = true;
+      const d = m4Diag(T, ans), ok = !d.wrong.length;
+      res.push({ T, ans, ok, d });
+      CP.mlog(T.type, ok);
+      form.lock(); $("m6-ok").disabled = true;
+      $("m6-fb").className = "fb show " + (ok ? "good" : "soft"); $("m6-fb").textContent = ok ? "Верно." : "Неверно.";
+      $("m6-next").hidden = false; try { $("m6-next").focus({ preventScroll: true }); } catch (e) {}
+    });
+    $("m6-next").addEventListener("click", () => { if (!answered || moved) return; moved = true; idx++; show(); });
+    form.focus();
+  }
+  show();
+}
+function finishQuiz11(quiz, res){
+  const score = res.filter(r => r.ok).length;
+  CP.finishQuiz(score, QUIZ_TOTAL);   // passed — только при PASS_AT из QUIZ_TOTAL и не снимается
+  $("m6-box").innerHTML = '<div class="card" aria-live="polite"><h2>' + score + " / " + QUIZ_TOTAL + "</h2><p>" + (score >= PASS_AT
+    ? "Зачёт сдан: " + score + " из " + QUIZ_TOTAL + " (нужно " + PASS_AT + ")."
+    : "Для зачёта нужно " + PASS_AT + " из " + QUIZ_TOTAL + ". Разбери ошибки ниже — и попробуй ещё раз.") + "</p></div>" +
+    '<div class="card"><h3>Разбор зачёта</h3>' + res.map((r, i) =>
+      '<div class="row" style="border-top:1px solid var(--line);padding:8px 0"><b>' + (i + 1) + ". " + r.T.title + "</b><br>" +
+      (r.ok ? "✓ верно: " + r.T.key.join("") : "✗ твой ответ " + r.ans.join("") + "; верный: " + r.T.key.join("") +
+        '<div class="note">Верно ' + r.d.right + " из 3. Перепутанные пункты различаются " + r.d.featText + ".</div>") + "</div>").join("") + "</div>" +
+    '<div class="btnrow"><button class="btn btn-primary" type="button" id="m6-again">Пройти ещё раз</button></div>';
+  $("m6-again").addEventListener("click", runQuiz11);
+}
 
 /* =================== КОНСТРУКТОРЫ: ПРЯМАЯ / ГИПЕРБОЛА / КОРЕНЬ =================== */
 const conPrev = {};
@@ -1829,7 +2100,125 @@ function buildFamGallery(){
   });
 }
 
+/*__ALG_SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 тренажёров алгебры курса ОГЭ (задача
+   OGE_COURSE_03D_ALGEBRA). Блок побайтно одинаков во всех тренажёрах
+   алгебры, где он есть; копии сверяет гейт tools/oge-algebra-contract.test.mjs.
+   Каждая проверка дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const ASTK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи, вариантов и сообщений: нет null, undefined, NaN, Infinity */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|\[object /.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* ловушки {v, m}: ни одна не принимается как ответ, разные сообщения не ловят
+     одно значение; same — равенство значений, show — запись значения в отчёте */
+  traps:function(list,tag,errs,isAns,same,show){
+    same=same||function(a,b){return a===b;};
+    show=show||function(v){return String(v);};
+    (list||[]).forEach(function(t,i){
+      if(!t||!t.m)errs.push(tag+': ловушка без сообщения');
+      if(isAns(t.v))errs.push(tag+': ловушка '+show(t.v)+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&same(t.v,u.v))errs.push(tag+': две ловушки ловят одно значение '+show(t.v));}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__ALG_SELFTEST_KIT_END__*/
+
+/* ?selftest=1: задачи сопоставления, чертежи, сообщения без букв, зачёт; ничего не пишет (CP.RO) */
+function selftest11(){
+  const errs = [];
+  const LET_RE = /(^|[^А-Яа-яЁё])[АБВ](\)|\s*→|,|$|\s)/;
+  TYPE_IDS.forEach(type => {
+    for (let n = 0; n < 300; n++){
+      const T = m4Make(type), tag = type + " #" + n;
+      if (new Set(T.items.map(it => it.sig)).size !== 3) errs.push(tag + ": у пунктов совпадают признаки");
+      T.items.forEach((_, i) => { if (T.order[T.key[i] - 1] !== i) errs.push(tag + ": ключ не совпадает с порядком графиков"); });
+      T.order.forEach((ix, pos) => ASTK.svg(svgGraph([T.items[ix].plot], [], { size: 300 }), tag + " график " + (pos + 1), errs));
+      [T.title, T.taskline, T.hint, T.notice].concat(T.items.map(it => it.desc), T.items.map(it => it.explain)).forEach(h => ASTK.text(h, tag, errs));
+      /* каждая пара пунктов различается хотя бы одним признаком; первое сообщение не называет ни букв, ни признака пары */
+      for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) if (i !== j && !pairFeatures(type, T.items[i], T.items[j]).length) errs.push(tag + ": пара пунктов без различающего признака");
+      [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]].forEach(ans => {   // все шесть ответов
+        const d = m4Diag(T, ans);
+        if (!d.wrong.length) return;
+        const m1 = m4Msg(T, d, 1).replace(/<[^>]*>/g, "");
+        if (LET_RE.test(m1)) errs.push(tag + ": первое сообщение называет букву: " + m1);
+        d.cats.forEach(c => { if (m4Msg(T, d, 1).indexOf(FEAT_NAME[c]) >= 0) errs.push(tag + ": первое сообщение называет признак пары"); });
+        if (d.right === 2) errs.push(tag + ": «верно 2 из 3» при взаимно однозначном ответе");
+        if (!d.cats.length) errs.push(tag + ": у ошибки нет признака");
+      });
+      if (/Не угадывай|Сначала|семейств/.test(examLine(T))) errs.push(tag + ": формулировка зачёта подсказывает метод");
+      if (type === "t44") T.items.forEach(it => { const pt = hypPoint(it.m); if (Math.abs(pt[1]) > 6 || pt[0] * pt[1] !== it.m) errs.push(tag + ": контрольная точка вне чертежа"); });
+    }
+  });
+  const q = buildQuiz11().map(T => T.type).sort().join(",");
+  if (q !== TYPE_IDS.concat(TYPE_IDS).sort().join(",")) errs.push("зачёт: состав " + q);
+  ASTK.done("OGE11", errs);
+  return errs;
+}
+
 /* =================== ЗАПУСК =================== */
+migrate11();
+if (CP.REVIEW){ // ?mode=review — сразу ОГЭ-режим с задачами открытых типов (решение D22)
+  const open = TYPE_IDS.filter(t => CP.openTypes().indexOf(t) >= 0);
+  const names = { t41: "Знаки a и c", t42: "Формулы парабол", t43: "Прямые", t44: "Гиперболы", t45: "Смешанные" };
+  if (open.length){
+    M4.review = true;
+    m4Banner("<b>Работа над ошибками.</b> Задачи только тех типов, где были ошибки: " + open.map(t => names[t]).join("; ") + ". Тип закрывается после трёх верных решений подряд. Выбор типа выше — выход из повтора.");
+  } else m4Banner("<b>Работа над ошибками.</b> Открытых ошибок нет — выбери любой тип выше.");
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("active", b.dataset.m === "m4"));
+  document.querySelectorAll("section.module").forEach(sec => sec.classList.toggle("active", sec.id === "m4"));
+}
 buildFamGallery();
 conShow("lin");
 m1New();
@@ -1838,6 +2227,7 @@ m2gNew();
 m3New();
 m4New();
 renderProgressNotes();
+if (CP.RO) selftest11();   // ?selftest=1 — маркер OGE11_SELFTEST_OK в консоли
 </script>
 </body>
 </html>
