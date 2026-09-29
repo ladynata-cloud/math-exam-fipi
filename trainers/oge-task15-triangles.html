@@ -41,7 +41,7 @@ main:focus{outline:none}
 @media(max-width:840px){.grid{grid-template-columns:1fr}}
 .diagram{border:1px solid var(--line);border-radius:14px;background:var(--canvas);padding:6px;display:flex;align-items:center;justify-content:center}
 .diagram svg{max-width:100%;height:auto;display:block}
-@media(max-width:600px){.diagram svg{max-height:27vh;width:auto}.figcap{font-size:12px;line-height:1.3;margin-top:4px}}
+@media(max-width:600px){.diagram svg{max-height:max(27vh,190px);width:auto}.figcap{font-size:12px;line-height:1.3;margin-top:4px}}
 .figcap{font-size:12.5px;color:var(--muted);margin-top:6px}
 .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
 .tag{font-size:12px;border-radius:999px;padding:4px 10px;font-weight:700}
@@ -142,12 +142,11 @@ button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min
   .grid{gap:10px}
   .meta{margin-bottom:6px}
   .controls{margin:10px 0 4px}
-  .tabs{flex-wrap:nowrap;overflow-x:auto}
-  .tab{flex:0 0 auto}
+  .tabs{gap:4px;padding:8px 10px 0}
   .filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
   .filters .chip{flex:0 0 auto;white-space:nowrap}
-  .tabs{padding:10px 12px 0;gap:6px}
-  .tab{padding:8px 11px}
+  .tab .cnt{display:none}
+  .tab{padding:6px 7px;font-size:13px}
   main{padding:10px 12px 22px}
   .task{font-size:17px;line-height:1.45}
 }
@@ -262,8 +261,8 @@ function circleEl(c,R,col=COL.ink,w=2.1,dash){
 function vdot(P,name,col=COL.ink){
   return `<circle cx="${n2(P.x)}" cy="${n2(P.y)}" r="5.6" fill="#fffdf7"/><circle data-v="${name}" cx="${n2(P.x)}" cy="${n2(P.y)}" r="3.6" fill="${col}"/>`;
 }
-function lab(x,y,t,size=16,anchor='middle',col=COL.ink){
-  return `<text x="${n2(x)}" y="${n2(y)}" font-family="Georgia,serif" font-size="${size}" font-weight="700" fill="${col}" text-anchor="${anchor}" paint-order="stroke" stroke="#fffdf7" stroke-width="4.5" stroke-linejoin="round">${t}</text>`;
+function lab(x,y,t,size=16,anchor='middle',col=COL.ink,of){
+  return `<text x="${n2(x)}" y="${n2(y)}"${of?` data-of="${of}"`:''} font-family="Georgia,serif" font-size="${size}" font-weight="700" fill="${col}" text-anchor="${anchor}" paint-order="stroke" stroke="#fffdf7" stroke-width="4.5" stroke-linejoin="round">${t}</text>`;
 }
 function pol(c,r,a){return {x:c.x+r*Math.cos(rad(a)), y:c.y-r*Math.sin(rad(a))};}
 function mathAng(V,P){return degf(Math.atan2(-(P.y-V.y),P.x-V.x));}
@@ -338,29 +337,26 @@ function labBox(L){
   return {x0,x1:x0+w,y0:L.y-0.74*L.size,y1:L.y+0.12*L.size};
 }
 function boxHit(a,b){return a.x0<b.x1-1&&b.x0<a.x1-1&&a.y0<b.y1-1&&b.y0<a.y1-1;}
-/* место подписи: сначала своё направление с шагом 4 px; у буквы точки (px, py — точка,
-   r0 — отступ) — ещё повороты направления вокруг точки; первое свободное место в кадре */
+/* место подписи (находки ревью 8 и А): у каждой подписи — короткий список мест
+   (cands), первое подходящее принимается: подпись в кадре, ни на что не налезает и
+   принадлежит своему (own): подпись угла и буква точки ближе к своей точке, чем к любой
+   другой, подпись отрезка — у самого отрезка. Подходящего нет — подпись остаётся на
+   первом месте, самопроверка покажет наложение. */
 function placeLabels(list,taken,W,H){
   const inFrame=b=>b.x0>=2&&b.x1<=W-2&&b.y0>=2&&b.y1<=H-2;
   for(const L of list){
-    const dirs=[[L.dx,L.dy]];
-    if(L.px!=null)for(const a of [35,-35,70,-70,110,-110,150,-150,180]){const c=Math.cos(rad(a)),s=Math.sin(rad(a));dirs.push([L.dx*c-L.dy*s,L.dx*s+L.dy*c]);}
-    const x0=L.x,y0=L.y;let found=false;
-    for(const [dx,dy] of dirs){
-      for(let j=0;j<=(L.both?20:10)&&!found;j++){
-        const n=L.both?(j%2?(j+1)/2:-j/2):j;   // подпись дуги — и дальше от вершины, и ближе к ней
-        if(L.both&&n<-3)continue;
-        if(L.px!=null){L.x=L.px+dx*(L.r0+4*n);L.y=L.py+dy*(L.r0+4*n)+5;}
-        else{L.x=x0+dx*4*n;L.y=y0+dy*4*n;}
-        const bx=labBox(L);
-        if(inFrame(bx)&&!taken.some(o=>boxHit(o,bx)))found=true;
-      }
-      if(found)break;
+    let ok=false;
+    for(const [x,y] of L.cands){
+      L.x=x;L.y=y;const bx=labBox(L);
+      if(inFrame(bx)&&!taken.some(o=>boxHit(o,bx))&&(!L.own||L.own(L))){ok=true;break;}
     }
-    if(!found){L.x=x0;L.y=y0;const bx=labBox(L);
-      if(bx.x0<2)L.x+=2-bx.x0; if(bx.x1>W-2)L.x-=bx.x1-(W-2); if(bx.y0<2)L.y+=2-bx.y0; if(bx.y1>H-2)L.y-=bx.y1-(H-2);}
+    if(!ok){L.x=L.cands[0][0];L.y=L.cands[0][1];}
     taken.push(labBox(L));
   }
+}
+function distToSeg(P,A,B){
+  const u={x:B.x-A.x,y:B.y-A.y},l2=u.x*u.x+u.y*u.y||1,t=Math.max(0,Math.min(1,((P.x-A.x)*u.x+(P.y-A.y)*u.y)/l2));
+  return Math.hypot(P.x-A.x-u.x*t,P.y-A.y-u.y*t);
 }
 function drawFig(o){
   const W=340, pad=o.pad||38;
@@ -371,7 +367,8 @@ function drawFig(o){
   const upd=(x,y)=>{x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);};
   names.forEach(n=>upd(M[n].x,M[n].y));
   circ.forEach(c=>{upd(c.c.x-c.R,c.c.y-c.R);upd(c.c.x+c.R,c.c.y+c.R);});
-  const H=Math.round(Math.max(200,Math.min(300,(W-2*pad)*(y1-y0)/Math.max(1e-9,x1-x0)+2*pad)));
+  /* высота кадра по пропорции фигуры, не выше 270: на телефоне подписи не мельчают (находка Д) */
+  const H=Math.round(Math.max(200,Math.min(270,(W-2*pad)*(y1-y0)/Math.max(1e-9,x1-x0)+2*pad)));
   const fit=makeFit(names.map(n=>M[n]),circ,W,H,pad), k=fit.k;
   const S={}; names.forEach(n=>{S[n]=fit.T(M[n]);});
   const tri=o.tri||['A','B','C'];
@@ -383,46 +380,63 @@ function drawFig(o){
   (o.segs||[]).forEach(([p,q,st])=>{st=st||{};b+=seg(S[p],S[q],st.col||COL.ink,st.w||1.9,st.dash);});
   (o.rights||[]).forEach(([v,p,q])=>{const s=Math.min(12,0.3*Math.min(dist(S[v],S[p]),dist(S[v],S[q])));b+=rightSq(S[v],S[p],S[q],s);});
   (o.ticks||[]).forEach(([p,q,n,col])=>{b+=ticks(S[p],S[q],n||1,col||COL.ink);});
+  const dots=o.dots||names;
+  /* подпись ближе к своей точке, чем к любой другой отмеченной (с запасом 10 %) */
+  const ownPt=(L,own)=>{const c={x:L.x,y:L.y-0.32*L.size},d0=dist(c,own);return dots.every(n=>S[n]===own||dist(c,S[n])*0.9>d0);};
   const arcLabs=[];
   (o.arcs||[]).forEach(a=>{
-    const V=S[a.v],r=a.r||Math.max(14,Math.min(28,0.34*Math.min(dist(V,S[a.p]),dist(V,S[a.q]))));
-    b+=angArc(V,S[a.p],S[a.q],a.col||COL.amber,r,null,a.n||1,a.tk||0);
-    if(a.label!=null){
-      const a1=mathAng(V,S[a.p]),d=normDelta(mathAng(V,S[a.q])-a1),lp=pol(V,r+(Math.abs(d)<=28?22:15),a1+d/2);
-      const L=Math.hypot(lp.x-V.x,lp.y-V.y)||1;
-      arcLabs.push({x:lp.x,y:lp.y+5,t:a.label,size:15,anchor:'middle',col:a.col||COL.amber,dx:(lp.x-V.x)/L,dy:(lp.y-V.y)/L,both:true});
-    }
+    const V=S[a.v],r=a.r||Math.max(14,Math.min(28,0.34*Math.min(dist(V,S[a.p]),dist(V,S[a.q])))),col=a.col||COL.amber;
+    b+=angArc(V,S[a.p],S[a.q],col,r,null,a.n||1,a.tk||0);
+    if(a.label==null)return;
+    const a1=mathAng(V,S[a.p]),d=normDelta(mathAng(V,S[a.q])-a1),mid=a1+d/2,R0=r+(Math.abs(d)<=28?22:15);
+    const at=(R,ang)=>{const p=pol(V,R,ang);return [p.x,p.y+5];},C=[at(R0,mid),at(R0+5,mid),at(R0+10,mid)];
+    if(R0-5>r+6)C.push(at(R0-5,mid));
+    if(Math.abs(d)>=40)C.push(at(R0,mid+d/4),at(R0,mid-d/4),at(R0+6,mid+d/4),at(R0+6,mid-d/4));
+    for(let j=0;j<3;j++)for(const da of [0,30,-30])C.push(at(17+5*j,mid+180+da));   // снаружи угла, у самой вершины
+    arcLabs.push({t:a.label,size:16,anchor:'middle',col,of:a.v,cands:C,own:L=>ownPt(L,V)});
   });
-  const dots=o.dots||names;
   dots.forEach(n=>{b+=vdot(S[n],n);});
   const taken=dots.map(n=>({x0:S[n].x-6,x1:S[n].x+6,y0:S[n].y-6,y1:S[n].y+6}));
   /* неподвижные надписи: в центре тяжести точек (o.texts) и в углу кадра (o.note) */
   const fixed=[];
   (o.texts||[]).forEach(x=>{fixed.push({x:x.at.reduce((s,n)=>s+S[n].x,0)/x.at.length,y:x.at.reduce((s,n)=>s+S[n].y,0)/x.at.length+5+(x.dy||0),
-    t:x.t,size:15,anchor:'middle',col:x.col||COL.blue,dx:0,dy:0});});
+    t:x.t,size:16,anchor:'middle',col:x.col||COL.blue});});
   if(o.note){   // искомая величина без места на чертеже (площадь): в самый свободный угол кадра
     const pts=names.map(n=>S[n]),cs=[[W-12,24,'end',W-40,18],[12,24,'start',40,18],[W-12,H-12,'end',W-40,H-18],[12,H-12,'start',40,H-18]];
     const best=cs.map(c=>[c,Math.min(...pts.map(P=>Math.hypot(P.x-c[3],P.y-c[4])))]).sort((u,v)=>v[1]-u[1])[0][0];
-    fixed.push({x:best[0],y:best[1],t:o.note,size:15,anchor:best[2],col:COL.pink,dx:0,dy:0});
+    fixed.push({x:best[0],y:best[1],t:o.note,size:16,anchor:best[2],col:COL.pink});
   }
   fixed.forEach(L=>taken.push(labBox(L)));
   const vlabs=dots.map(n=>{
-    const P=S[n], man=o.lab&&o.lab[n];
-    if(man)return {x:P.x+man[0],y:P.y+man[1],t:n.replace(/(\d)$/,'<tspan font-size="11" dy="3">$1</tspan>'),size:16,anchor:'middle',col:COL.ink,dx:Math.sign(man[0])*0.7,dy:Math.sign(man[1])*0.7};
+    const P=S[n], man=o.lab&&o.lab[n], t=n.replace(/(\d)$/,'<tspan font-size="12" dy="3">$1</tspan>');
+    if(man)return {t,size:17,anchor:'middle',col:COL.ink,cands:[[P.x+man[0],P.y+man[1]]]};
     let dx=P.x-G.x,dy=P.y-G.y;const L=Math.hypot(dx,dy);if(L<1e-6){dx=0.7;dy=-0.7;}else{dx/=L;dy/=L;}
     if(o.labIn&&o.labIn.includes(n)){dx=-dx;dy=-dy;}   // подпись внутрь: снаружи у точки подписи отрезков
-    return {x:P.x+dx*17,y:P.y+dy*17+5,t:n.replace(/(\d)$/,'<tspan font-size="11" dy="3">$1</tspan>'),size:16,anchor:'middle',col:COL.ink,dx,dy,px:P.x,py:P.y,r0:17};
+    const C=[],at=(ang,R)=>{const c=Math.cos(rad(ang)),s=Math.sin(rad(ang)),ux=dx*c-dy*s,uy=dx*s+dy*c;return [P.x+ux*R,P.y+uy*R+5];};
+    C.push(at(0,18),at(0,22));
+    for(const R of [18,22,26,30])for(const ang of [35,-35,70,-70,110,-110,150,-150,180])C.push(at(ang,R));
+    return {t,size:17,anchor:'middle',col:COL.ink,cands:C,own:L=>ownPt(L,P)};
   });
+  /* все отрезки чертежа (стороны и дополнительные) — для правила «подпись у своего отрезка» */
+  const allSegs=tri.map((n,i)=>[S[n],S[tri[(i+1)%tri.length]]]).concat((o.segs||[]).map(([p,q])=>[S[p],S[q]]));
   const slabs=(o.sl||[]).map(([p,q,t,col,flip,at,side,off])=>{
-    const A=S[p],B=S[q],w=at==null?0.5:at,mx=A.x+(B.x-A.x)*w,my=A.y+(B.y-A.y)*w,L=dist(A,B)||1;
-    let nx=-(B.y-A.y)/L, ny=(B.x-A.x)/L;
+    const A=S[p],B=S[q],w=at==null?0.5:at,mx=A.x+(B.x-A.x)*w,my=A.y+(B.y-A.y)*w,L=dist(A,B)||1,ux=(B.x-A.x)/L,uy=(B.y-A.y)/L;
+    let nx=-uy, ny=ux;
     if(side){if(nx*side<0){nx=-nx;ny=-ny;}}   // side: +1 — правее отрезка, −1 — левее (отрезок через центр)
     else{if((mx-G.x)*nx+(my-G.y)*ny<0){nx=-nx;ny=-ny;}if(flip){nx=-nx;ny=-ny;}}
-    const d=off||15;   // off — отступ от отрезка (под буквой точки в середине стороны — больше)
-    return {x:mx+nx*d,y:my+ny*d+5,t,size:15,anchor:'middle',col:col||COL.blue,dx:nx,dy:ny};
+    const d0=off||15, C=[];   // off — отступ от отрезка (под буквой точки в середине стороны — больше)
+    const put=(sx,sy,s,d)=>C.push([mx+ux*L*s+sx*d,my+uy*L*s+sy*d+5]);
+    for(const d of [d0,d0+5,d0+10])put(nx,ny,0,d);
+    for(const s of [0.14,-0.14,0.28,-0.28])put(nx,ny,s,d0);   // сдвиг вдоль отрезка
+    if(!side){for(const d of [d0,d0+5])put(-nx,-ny,0,d);for(const s of [0.14,-0.14,0.28,-0.28])put(-nx,-ny,s,d0);}   // другая сторона отрезка
+    /* принадлежность: у своего отрезка и не ближе к любому другому отрезку чертежа (находка ревью 3) */
+    const own=Lb=>{const c={x:Lb.x,y:Lb.y-0.32*Lb.size},d=distToSeg(c,A,B);
+      return d<=d0+18&&allSegs.every(([P,Q])=>(P===A&&Q===B)||(P===B&&Q===A)||distToSeg(c,P,Q)>d-1);};
+    return {t,size:16,anchor:'middle',col:col||COL.blue,of:p+'-'+q,cands:C,own};
   });
-  placeLabels(vlabs,taken,W,H); placeLabels(arcLabs,taken,W,H); placeLabels(slabs,taken,W,H);
-  fixed.concat(vlabs,arcLabs,slabs).forEach(L=>{b+=lab(L.x,L.y,L.t,L.size,L.anchor,L.col);});
+  /* сначала подписи углов: им нужно место у своей вершины; буква точки найдёт место поворотом */
+  placeLabels(arcLabs,taken,W,H); placeLabels(vlabs,taken,W,H); placeLabels(slabs,taken,W,H);
+  fixed.concat(vlabs,arcLabs,slabs).forEach(L=>{b+=lab(L.x,L.y,L.t,L.size,L.anchor,L.col,L.of);});
   const P=n=>S[n];
   const chk=(o.chk||[]).map(c=>{
     if(c.t==='ang')return {t:'ang',V:P(c.v),P:P(c.p),Q:P(c.q),want:c.want};
@@ -440,6 +454,32 @@ function labelClashes(svg){
     .map(m=>({x:+m[1],y:+m[2],size:+m[3],anchor:m[4],t:m[5]}));
   let n=0,first='';
   for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++)if(boxHit(labBox(L[i]),labBox(L[j]))){n++;first=first||(txtPlain(L[i].t)+' / '+txtPlain(L[j].t));}
+  return {n,first};
+}
+/* принадлежность подписей: подпись угла (data-of="A") и буква точки — ближе к своей точке, чем к
+   чужой; подпись отрезка (data-of="B-H") — ближе к своему отрезку, чем к любому другому отрезку
+   чертежа (линии короче 14 px — засечки — не считаются) */
+function labelOwners(svg){
+  const P={};
+  for(const m of svg.matchAll(/<circle data-v="([A-Z]\d?)" cx="(-?[\d.]+)" cy="(-?[\d.]+)"/g))P[m[1]]={x:+m[2],y:+m[3]};
+  const lines=[...svg.matchAll(/<line x1="(-?[\d.]+)" y1="(-?[\d.]+)" x2="(-?[\d.]+)" y2="(-?[\d.]+)"/g)]
+    .map(m=>[{x:+m[1],y:+m[2]},{x:+m[3],y:+m[4]}]).filter(([a,b])=>dist(a,b)>=14);
+  const same=(a,b,c,d)=>(dist(a,c)<1&&dist(b,d)<1)||(dist(a,d)<1&&dist(b,c)<1);
+  let n=0,first='';
+  for(const m of svg.matchAll(/<text x="(-?[\d.]+)" y="(-?[\d.]+)"(?: data-of="([A-Z]\d?(?:-[A-Z]\d?)?)")?[^>]*font-size="([\d.]+)"[^>]*>([\s\S]*?)<\/text>/g)){
+    const t=txtPlain(m[5]),of=m[3]||(P[t]?t:null);
+    if(!of)continue;
+    const c={x:+m[1],y:+m[2]-0.32*+m[4]};
+    if(of.indexOf('-')>0){
+      const [p,q]=of.split('-');if(!P[p]||!P[q])continue;
+      const d0=distToSeg(c,P[p],P[q]);
+      if(lines.some(([a,b])=>!same(a,b,P[p],P[q])&&distToSeg(c,a,b)<d0-1)){n++;first=first||(t+' у отрезка '+of);}
+    } else {
+      if(!P[of])continue;
+      const d0=dist(c,P[of]);
+      if(Object.keys(P).some(q=>q!==of&&dist(c,P[q])<d0)){n++;first=first||(t+' у '+of);}
+    }
+  }
   return {n,first};
 }
 function txtPlain(t){return String(t).replace(/<[^>]*>/g,'');}
@@ -725,7 +765,7 @@ bisAlt:{topic:'iso',name:'Угол между биссектрисой и выс
 altAlt:{topic:'iso',name:'Угол между высотами',ref:'alt',
   refWhy:'Каждая высота даёт прямоугольный треугольник; угол между высотами — из треугольника AHB или четырёхугольника CA₁HB₁.',
   law:'Высота образует со стороной прямой угол; острые углы прямоугольного треугольника дают в сумме 90°.',
-  gen:()=>{const d=pick(['AB','C']);return rp(()=>({d,A:ri(35,85),B:ri(35,85)}),p=>{const C=180-p.A-p.B;return C<40||C>85||p.A===p.B||C===45||1/(Math.tan(rad(p.A))*Math.tan(rad(p.B)))<0.15;});},
+  gen:()=>{const d=pick(['AB','C']);return rp(()=>({d,A:ri(35,85),B:ri(35,85)}),p=>{const C=180-p.A-p.B;return C<40||C>78||p.A===p.B||C===45||1/(Math.tan(rad(p.A))*Math.tan(rad(p.B)))<0.15;});},
   proto:{d:'AB',A:68,B:57},
   calc:p=>p.A+p.B,
   text:p=>p.d==='AB'
@@ -735,7 +775,7 @@ altAlt:{topic:'iso',name:'Угол между высотами',ref:'alt',
     const H=meet(A,sub(A1,A),B,sub(B1,B)),pts={A,B,C,A1,B1,H},ab=p.d==='AB';
     const arcs=ab?[{v:'A',p:'B',q:'C',label:dg(p.A)},{v:'B',p:'C',q:'A',label:dg(p.B)}]:[{v:'C',p:'A',q:'B',label:dg(180-p.A-p.B)}];
     arcs.push({v:'H',p:'A',q:'B',col:COL.pink,r:18,label:'?'});
-    return drawFig({pts,title:'Остроугольный треугольник ABC, высоты AA1 и BB1 пересекаются в точке H',lab:{H:[0,-9]},
+    return drawFig({pts,title:'Остроугольный треугольник ABC, высоты AA1 и BB1 пересекаются в точке H',
       segs:[['A','A1'],['B','B1']],rights:[['A1','A','C'],['B1','B','C']],arcs,
       chk:[{t:'ang',v:'A',p:'B',q:'C',want:p.A},{t:'ang',v:'B',p:'A',q:'C',want:p.B},{t:'ang',v:'A1',p:'A',q:'C',want:90},
         {t:'ang',v:'B1',p:'B',q:'C',want:90},{t:'onseg',p:'A1',a:'B',b:'C'},{t:'onseg',p:'B1',a:'A',b:'C'},{t:'ang',v:'H',p:'A',q:'B',want:p.A+p.B}]});},
@@ -951,7 +991,8 @@ rtAltitude:{topic:'pyth',name:'Высота из прямого угла',ref:'r
   law:'Площадь прямоугольного треугольника можно найти двумя способами: ½·AC·BC и ½·AB·CH. Высота из прямого угла: CH² = AH·BH.',
   gen:()=>{const d=pick(['CH','CH','AH','geo']);
     if(d==='geo')return rp(()=>({d,m:ri(1,6),n:ri(1,6),t:ri(1,3)}),p=>p.m===p.n||Math.max(p.m,p.n)>1.8*Math.min(p.m,p.n));
-    const f=pick([[3,4,5,8],[4,3,5,8],[7,24,25,2],[24,7,25,2]]),k=ri(1,f[3]);return {d,b:k*f[0],a:k*f[1],c:k*f[2]};},
+    /* вариант AH — только 3-4-5: у тонкого треугольника 7-24-25 короткому отрезку AH негде подписаться */
+    const f=pick(d==='AH'?[[3,4,5,8],[4,3,5,8]]:[[3,4,5,8],[4,3,5,8],[7,24,25,2],[24,7,25,2]]),k=ri(1,f[3]);return {d,b:k*f[0],a:k*f[1],c:k*f[2]};},
   proto:{d:'CH',b:6,a:8,c:10},
   calc:p=>p.d==='geo'?p.t*p.m*p.n:p.d==='CH'?p.a*p.b/p.c:p.b*p.b/p.c,
   text:p=>p.d==='geo'
@@ -1024,9 +1065,8 @@ areaBH:{topic:'area',name:'Площадь по основанию и высот�
 areaSin:{topic:'area',name:'Площадь по двум сторонам и углу',ref:'area',
   refWhy:'Даны две стороны и угол между ними: S = ½·AB·AC·sin A.',
   law:'Площадь треугольника равна половине произведения двух сторон на синус угла между ними.',
-  gen:()=>{const g=pick([30,150,45,135,60,120]);
-    if(g===30||g===150)return {g,m:ri(4,20),b:ri(4,20)};
-    return {g,m:ri(2,g===45||g===135?12:10),b:ri(3,16)};},
+  gen:()=>{const g=pick([30,150,45,135,60,120]);   // стороны не больше чем втрое разные: чертёж читается
+    return rp(()=>g===30||g===150?{g,m:ri(4,20),b:ri(4,20)}:{g,m:ri(2,g===45||g===135?12:10),b:ri(3,16)},p=>{const r=areaSinLen(p)/p.b;return r<1/3||r>3;});},
   proto:{g:150,m:12,b:9},
   calc:p=>areaSinS(p),
   text:p=>`В треугольнике ABC сторона AB равна ${areaSinAB(p)}, сторона AC равна ${p.b}, а угол A между ними равен ${p.g}°. Найдите площадь треугольника ABC.`,
@@ -1049,7 +1089,7 @@ midline:{topic:'area',name:'Средняя линия',ref:'mid',
   refWhy:'MN соединяет середины двух сторон: она параллельна третьей стороне и равна её половине.',
   law:'Средняя линия треугольника параллельна третьей стороне и равна её половине.',
   gen:()=>{const d=pick(['MN','MN','P']);return rp(()=>({d,x:ri(6,26),y:ri(6,26),z:ri(6,30)}),p=>{
-      const {x,y,z}=p;if(!(z<x+y-2&&x<y+z-2&&y<x+z-2)||x===y||x===z||y===z)return true;
+      const {x,y,z}=p;if(!(z<x+y-2&&x<y+z-2&&y<x+z-2)||x===y||x===z||y===z||Math.min(x,y,z)<0.45*Math.max(x,y,z))return true;
       const v=p.d==='MN'?[z/2,x/2,y/2,z,2*z]:[(x+y+z)/2,x+y+z,(x+y)/2+z,(x+y)/2];return new Set(v).size<v.length;});},
   proto:{d:'MN',x:13,y:15,z:14},
   calc:p=>p.d==='MN'?p.z/2:(p.x+p.y+p.z)/2,
@@ -1623,6 +1663,8 @@ function updStats(){
 }
 function bindRefcalls(root){(root||document).querySelectorAll('.refcall').forEach(el=>el.addEventListener('click',()=>openRef(el.dataset.ref)));}
 function focusIf(el){if(userActed&&el&&!el.disabled)try{el.focus({preventScroll:true});}catch(e){}}
+/* показать появившийся итог или ступень, если они ниже края экрана (мгновенно — без анимации) */
+function reveal(el){if(el&&el.scrollIntoView)try{el.scrollIntoView({block:'nearest'});}catch(e){}}
 /* экран тренировки и зачёта при уходе на другую вкладку не пересоздаётся: узлы
    уходят в запас и возвращаются как были — лестница, введённые числа, вердикт,
    кнопки (находки ревью 1, 2). SHOWN — какой экран сейчас в #main. */
@@ -1749,9 +1791,9 @@ function renderTrain(){
     <div class="task" id="taskText">${t.text}</div>
     <div class="controls"><input class="ans" id="ans" inputmode="decimal" placeholder="ответ" autocomplete="off" aria-label="Ответ задачи">
       <button type="button" id="check">Проверить</button>
-      <button type="button" class="soft" id="ladBtn">Решить по шагам</button>
-      <button type="button" class="blue" id="next" style="display:none">Следующая →</button></div>
-    <div class="fb" id="fb" role="status" aria-live="polite"></div>
+      <button type="button" class="soft" id="ladBtn">Решить по шагам</button></div>
+    <div class="fb" id="fb" role="status" aria-live="polite" tabindex="-1"></div>
+    <div class="rowbtns" id="nextRow" style="display:none"><button type="button" class="blue" id="next">Следующая →</button></div>
     <div class="ladder" id="lad" style="display:none"></div>
     <div id="after"></div>
   </div></div>${PNOTE15}`;
@@ -1767,11 +1809,11 @@ function renderTrain(){
       $('#after').innerHTML=`<div class="fb ${cls} show" id="fbDone" role="status" tabindex="-1">${msg}</div>${law}<div class="rowbtns"><button type="button" class="blue" id="next2">Следующая →</button></div>`;
       $('#next2').addEventListener('click',nextTask);
     } else {
-      fb.className='fb '+cls+' show';fb.innerHTML=msg;$('#next').style.display='';
+      fb.className='fb '+cls+' show';fb.innerHTML=msg;$('#nextRow').style.display='';   // «Следующая →» — после итога: Tab с итога ведёт на неё
       $('#after').innerHTML=law;
     }
     /* фокус — на итоге, а не на «Следующая →»: второй Enter не перелистывает задачу (находка ревью 3) */
-    bindRefcalls($('#after')); focusIf(tr.ladder?$('#fbDone'):fb);
+    bindRefcalls($('#after')); focusIf(tr.ladder?$('#fbDone'):fb); reveal(tr.ladder?$('#next2'):$('#nextRow'));
   };
   const nextTask=()=>{if(!tr||fresh(tr.doneAt||0))return;tr=null;render();focusIf($('#ans'));};
   $('#check').addEventListener('click',()=>{
@@ -1783,7 +1825,7 @@ function renderTrain(){
       trMiss();
       const d=matchDiag(v,t.diag);
       fb.className=d?'fb diag show':'fb bad show';
-      fb.innerHTML=(d||'Пока неверно. Сверьтесь с чертежом: что дано и что спрашивают.')+' Можно попробовать ещё раз или открыть «Решить по шагам».';
+      fb.innerHTML=(d||'Пока неверно. Сверьтесь с чертежом: что дано и что спрашивают.')+' Можно попробовать ещё раз или открыть «Решить по шагам».'; reveal(fb);
     }
   });
   $('#ladBtn').addEventListener('click',()=>{
@@ -1834,7 +1876,7 @@ function mountLadder(root,t,h){
       if(resolved)return;resolved=true;h.onShow();
       fb.className='fb show';fb.innerHTML=s.show;div.classList.add('shown');lock();i++;next();
     });
-    focusIf(inp);
+    focusIf(inp); reveal(div);
   }
   next();
 }
@@ -1864,9 +1906,9 @@ function renderQuiz(){
   <div class="grid"><div>${figHtml(t)}</div><div>
     <div class="task">${t.text}</div>
     <div class="controls"><input class="ans" id="qAns" inputmode="decimal" placeholder="ответ" autocomplete="off" aria-label="Ответ">
-      <button type="button" id="qCheck">Ответить</button>
-      <button type="button" class="blue" id="qNext" style="display:none">${qz.i===qz.items.length-1?'К результатам':'Дальше →'}</button></div>
+      <button type="button" id="qCheck">Ответить</button></div>
     <div class="fb" id="qFb" role="status" aria-live="polite" tabindex="-1"></div>
+    <div class="rowbtns" id="qNextRow" style="display:none"><button type="button" class="blue" id="qNext">${qz.i===qz.items.length-1?'К результатам':'Дальше →'}</button></div>
   </div></div>`;
   const fb=$('#qFb'), inp=$('#qAns');
   $('#qCheck').addEventListener('click',()=>{
@@ -1880,7 +1922,7 @@ function renderQuiz(){
     fb.className=ok?'fb ok show':'fb bad show'; fb.textContent=ok?'Верно.':'Неверно.';
     qz.ansAt=performance.now();
     /* фокус — на вердикте: Enter после ответа не перелистывает (находка ревью 3) */
-    inp.disabled=true; $('#qCheck').disabled=true; $('#qNext').style.display=''; focusIf(fb);
+    inp.disabled=true; $('#qCheck').disabled=true; $('#qNextRow').style.display=''; focusIf(fb); reveal($('#qNextRow'));
   });
   $('#qNext').addEventListener('click',()=>{if(!qz.answered||fresh(qz.ansAt||0))return;qz.i++;qz.answered=false;render();focusIf($('#qAns')||$('#qFin'));});
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!qz.answered)$('#qCheck').click();}});
@@ -2087,6 +2129,7 @@ function selftest(N){
     if(leak)errs.push(tag+': подсказка или ловушка называет число ответа: «'+plain(leak).slice(0,70)+'»');
     auditFig(t.fig,errs,tag); stkTask(t,tag,errs); figs++;
     const lc=labelClashes(t.fig.svg); if(lc.n)errs.push(tag+': подписи чертежа налезают друг на друга ('+lc.first+')');
+    const lo=labelOwners(t.fig.svg); if(lo.n)errs.push(tag+': подпись стоит у чужой точки ('+lo.first+')');
   };
   for(const k of keys){
     const sub=SUBS[k];
