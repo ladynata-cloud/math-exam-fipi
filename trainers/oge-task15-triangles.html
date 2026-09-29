@@ -41,7 +41,7 @@ main:focus{outline:none}
 @media(max-width:840px){.grid{grid-template-columns:1fr}}
 .diagram{border:1px solid var(--line);border-radius:14px;background:var(--canvas);padding:6px;display:flex;align-items:center;justify-content:center}
 .diagram svg{max-width:100%;height:auto;display:block}
-@media(max-width:600px){.diagram svg{max-height:34vh;width:auto}}
+@media(max-width:600px){.diagram svg{max-height:27vh;width:auto}.figcap{font-size:12px;line-height:1.3;margin-top:4px}}
 .figcap{font-size:12.5px;color:var(--muted);margin-top:6px}
 .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
 .tag{font-size:12px;border-radius:999px;padding:4px 10px;font-weight:700}
@@ -132,16 +132,24 @@ button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min
 .pnote div{padding:2px 0 8px}
 @media(max-width:520px){
   .app{margin:0;border-radius:0}
-  .head{padding:12px 14px}
-  .head h1{font-size:21px}
-  .head .sub{display:none}
+  .head{padding:4px 12px 8px;gap:4px}
+  .head h1{font-size:19px}
+  .head .h1tail,.head .sub{display:none}
+  .stats{gap:6px}
+  .stat{min-width:58px;padding:2px 8px}
+  .stat .n{font-size:15px}
+  .stat .l{font-size:9px}
+  .grid{gap:10px}
+  .meta{margin-bottom:6px}
+  .controls{margin:10px 0 4px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto}
+  .tab{flex:0 0 auto}
   .filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
   .filters .chip{flex:0 0 auto;white-space:nowrap}
   .tabs{padding:10px 12px 0;gap:6px}
-  .tab{padding:9px 11px}
-  main{padding:14px 12px 22px}
-  .task{font-size:17.5px}
-  .stat{min-width:64px;padding:5px 9px}
+  .tab{padding:8px 11px}
+  main{padding:10px 12px 22px}
+  .task{font-size:17px;line-height:1.45}
 }
 @media (prefers-reduced-motion: reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -163,7 +171,7 @@ button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min
   <header class="head">
     <div>
       <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
-      <h1>ОГЭ · Задание <span class="num">15</span> — треугольники</h1>
+      <h1>ОГЭ · Задание <span class="num">15</span><span class="h1tail"> — треугольники</span></h1>
       <div class="sub">углы · прямоугольный треугольник · площадь и средняя линия · правильный треугольник · чертёж строится по числам задачи</div>
     </div>
     <div class="stats">
@@ -320,6 +328,40 @@ function makeFit(pts,circles,W,H,pad){
      {t:'ang',v,p,q,want} | {t:'ratio',a:[P,Q],b:[R,S],want} | {t:'onseg',p,a,b} |
      {t:'mid',p,a,b} | {t:'circ',p,c,R} | {t:'dline',c,a,b,R} (R — в единицах условия).
    Возвращает {svg, chk, cap}: chk — в экранных координатах для auditFig. */
+/* ---------- подписи без наложений (находка ревью 8) ----------
+   Подпись — {x, y, t, size, anchor, col, dx, dy}: (dx, dy) — направление, куда её можно
+   отодвинуть, если она налезает на уже поставленную подпись или на точку чертежа. Рамка
+   текста — оценка по числу знаков (Georgia bold: около 0,6 кегля на знак). */
+function txtLen(t){return String(t).replace(/<[^>]*>/g,'').replace(/&[a-z]+;/g,' ').length;}
+function labBox(L){
+  const w=0.6*L.size*txtLen(L.t)+2, x0=L.anchor==='middle'?L.x-w/2:L.anchor==='end'?L.x-w:L.x;
+  return {x0,x1:x0+w,y0:L.y-0.74*L.size,y1:L.y+0.12*L.size};
+}
+function boxHit(a,b){return a.x0<b.x1-1&&b.x0<a.x1-1&&a.y0<b.y1-1&&b.y0<a.y1-1;}
+/* место подписи: сначала своё направление с шагом 4 px; у буквы точки (px, py — точка,
+   r0 — отступ) — ещё повороты направления вокруг точки; первое свободное место в кадре */
+function placeLabels(list,taken,W,H){
+  const inFrame=b=>b.x0>=2&&b.x1<=W-2&&b.y0>=2&&b.y1<=H-2;
+  for(const L of list){
+    const dirs=[[L.dx,L.dy]];
+    if(L.px!=null)for(const a of [35,-35,70,-70,110,-110,150,-150,180]){const c=Math.cos(rad(a)),s=Math.sin(rad(a));dirs.push([L.dx*c-L.dy*s,L.dx*s+L.dy*c]);}
+    const x0=L.x,y0=L.y;let found=false;
+    for(const [dx,dy] of dirs){
+      for(let j=0;j<=(L.both?20:10)&&!found;j++){
+        const n=L.both?(j%2?(j+1)/2:-j/2):j;   // подпись дуги — и дальше от вершины, и ближе к ней
+        if(L.both&&n<-3)continue;
+        if(L.px!=null){L.x=L.px+dx*(L.r0+4*n);L.y=L.py+dy*(L.r0+4*n)+5;}
+        else{L.x=x0+dx*4*n;L.y=y0+dy*4*n;}
+        const bx=labBox(L);
+        if(inFrame(bx)&&!taken.some(o=>boxHit(o,bx)))found=true;
+      }
+      if(found)break;
+    }
+    if(!found){L.x=x0;L.y=y0;const bx=labBox(L);
+      if(bx.x0<2)L.x+=2-bx.x0; if(bx.x1>W-2)L.x-=bx.x1-(W-2); if(bx.y0<2)L.y+=2-bx.y0; if(bx.y1>H-2)L.y-=bx.y1-(H-2);}
+    taken.push(labBox(L));
+  }
+}
 function drawFig(o){
   const W=340, pad=o.pad||38;
   const names=Object.keys(o.pts);
@@ -341,32 +383,46 @@ function drawFig(o){
   (o.segs||[]).forEach(([p,q,st])=>{st=st||{};b+=seg(S[p],S[q],st.col||COL.ink,st.w||1.9,st.dash);});
   (o.rights||[]).forEach(([v,p,q])=>{const s=Math.min(12,0.3*Math.min(dist(S[v],S[p]),dist(S[v],S[q])));b+=rightSq(S[v],S[p],S[q],s);});
   (o.ticks||[]).forEach(([p,q,n,col])=>{b+=ticks(S[p],S[q],n||1,col||COL.ink);});
+  const arcLabs=[];
   (o.arcs||[]).forEach(a=>{
-    const r=a.r||Math.max(14,Math.min(28,0.34*Math.min(dist(S[a.v],S[a.p]),dist(S[a.v],S[a.q]))));
-    b+=angArc(S[a.v],S[a.p],S[a.q],a.col||COL.amber,r,a.label==null?null:a.label,a.n||1,a.tk||0);
+    const V=S[a.v],r=a.r||Math.max(14,Math.min(28,0.34*Math.min(dist(V,S[a.p]),dist(V,S[a.q]))));
+    b+=angArc(V,S[a.p],S[a.q],a.col||COL.amber,r,null,a.n||1,a.tk||0);
+    if(a.label!=null){
+      const a1=mathAng(V,S[a.p]),d=normDelta(mathAng(V,S[a.q])-a1),lp=pol(V,r+(Math.abs(d)<=28?22:15),a1+d/2);
+      const L=Math.hypot(lp.x-V.x,lp.y-V.y)||1;
+      arcLabs.push({x:lp.x,y:lp.y+5,t:a.label,size:15,anchor:'middle',col:a.col||COL.amber,dx:(lp.x-V.x)/L,dy:(lp.y-V.y)/L,both:true});
+    }
   });
   const dots=o.dots||names;
   dots.forEach(n=>{b+=vdot(S[n],n);});
-  dots.forEach(n=>{
+  const taken=dots.map(n=>({x0:S[n].x-6,x1:S[n].x+6,y0:S[n].y-6,y1:S[n].y+6}));
+  /* неподвижные надписи: в центре тяжести точек (o.texts) и в углу кадра (o.note) */
+  const fixed=[];
+  (o.texts||[]).forEach(x=>{fixed.push({x:x.at.reduce((s,n)=>s+S[n].x,0)/x.at.length,y:x.at.reduce((s,n)=>s+S[n].y,0)/x.at.length+5+(x.dy||0),
+    t:x.t,size:15,anchor:'middle',col:x.col||COL.blue,dx:0,dy:0});});
+  if(o.note){   // искомая величина без места на чертеже (площадь): в самый свободный угол кадра
+    const pts=names.map(n=>S[n]),cs=[[W-12,24,'end',W-40,18],[12,24,'start',40,18],[W-12,H-12,'end',W-40,H-18],[12,H-12,'start',40,H-18]];
+    const best=cs.map(c=>[c,Math.min(...pts.map(P=>Math.hypot(P.x-c[3],P.y-c[4])))]).sort((u,v)=>v[1]-u[1])[0][0];
+    fixed.push({x:best[0],y:best[1],t:o.note,size:15,anchor:best[2],col:COL.pink,dx:0,dy:0});
+  }
+  fixed.forEach(L=>taken.push(labBox(L)));
+  const vlabs=dots.map(n=>{
     const P=S[n], man=o.lab&&o.lab[n];
-    let x,y;
-    if(man){x=P.x+man[0];y=P.y+man[1];}
-    else{let dx=P.x-G.x,dy=P.y-G.y;const L=Math.hypot(dx,dy);if(L<1e-6){dx=0.7;dy=-0.7;}else{dx/=L;dy/=L;}
-      if(o.labIn&&o.labIn.includes(n)){dx=-dx;dy=-dy;}   // подпись внутрь: снаружи у точки подписи отрезков
-      x=P.x+dx*17;y=P.y+dy*17+5;}
-    b+=lab(x,y,n.replace(/(\d)$/,'<tspan font-size="11" dy="3">$1</tspan>'));
+    if(man)return {x:P.x+man[0],y:P.y+man[1],t:n.replace(/(\d)$/,'<tspan font-size="11" dy="3">$1</tspan>'),size:16,anchor:'middle',col:COL.ink,dx:Math.sign(man[0])*0.7,dy:Math.sign(man[1])*0.7};
+    let dx=P.x-G.x,dy=P.y-G.y;const L=Math.hypot(dx,dy);if(L<1e-6){dx=0.7;dy=-0.7;}else{dx/=L;dy/=L;}
+    if(o.labIn&&o.labIn.includes(n)){dx=-dx;dy=-dy;}   // подпись внутрь: снаружи у точки подписи отрезков
+    return {x:P.x+dx*17,y:P.y+dy*17+5,t:n.replace(/(\d)$/,'<tspan font-size="11" dy="3">$1</tspan>'),size:16,anchor:'middle',col:COL.ink,dx,dy,px:P.x,py:P.y,r0:17};
   });
-  (o.sl||[]).forEach(([p,q,t,col,flip,at,side,off])=>{
+  const slabs=(o.sl||[]).map(([p,q,t,col,flip,at,side,off])=>{
     const A=S[p],B=S[q],w=at==null?0.5:at,mx=A.x+(B.x-A.x)*w,my=A.y+(B.y-A.y)*w,L=dist(A,B)||1;
     let nx=-(B.y-A.y)/L, ny=(B.x-A.x)/L;
     if(side){if(nx*side<0){nx=-nx;ny=-ny;}}   // side: +1 — правее отрезка, −1 — левее (отрезок через центр)
     else{if((mx-G.x)*nx+(my-G.y)*ny<0){nx=-nx;ny=-ny;}if(flip){nx=-nx;ny=-ny;}}
     const d=off||15;   // off — отступ от отрезка (под буквой точки в середине стороны — больше)
-    b+=lab(mx+nx*d,my+ny*d+5,t,15,'middle',col||COL.blue);
+    return {x:mx+nx*d,y:my+ny*d+5,t,size:15,anchor:'middle',col:col||COL.blue,dx:nx,dy:ny};
   });
-  /* надписи внутри фигуры: {at:[точки], t, col, dy} — в центре тяжести точек */
-  (o.texts||[]).forEach(x=>{const c={x:x.at.reduce((s,n)=>s+S[n].x,0)/x.at.length,y:x.at.reduce((s,n)=>s+S[n].y,0)/x.at.length};
-    b+=lab(c.x,c.y+5+(x.dy||0),x.t,15,'middle',x.col||COL.blue);});
+  placeLabels(vlabs,taken,W,H); placeLabels(arcLabs,taken,W,H); placeLabels(slabs,taken,W,H);
+  fixed.concat(vlabs,arcLabs,slabs).forEach(L=>{b+=lab(L.x,L.y,L.t,L.size,L.anchor,L.col);});
   const P=n=>S[n];
   const chk=(o.chk||[]).map(c=>{
     if(c.t==='ang')return {t:'ang',V:P(c.v),P:P(c.p),Q:P(c.q),want:c.want};
@@ -376,12 +432,17 @@ function drawFig(o){
     if(c.t==='dline')return {t:'dline',c:P(c.c),A:P(c.a),B:P(c.b),R:c.R*k};
     return {t:'bad'};
   });
-  if(o.note){   // искомая величина без места на чертеже (площадь): в самый свободный угол кадра
-    const pts=names.map(n=>S[n]),cs=[[W-12,24,'end',W-40,18],[12,24,'start',40,18],[W-12,H-12,'end',W-40,H-18],[12,H-12,'start',40,H-18]];
-    const best=cs.map(c=>[c,Math.min(...pts.map(P=>Math.hypot(P.x-c[3],P.y-c[4])))]).sort((u,v)=>v[1]-u[1])[0][0];
-    b+=lab(best[0],best[1],o.note,15,best[2],COL.pink);}
   return {svg:CF(W,H,o.title||'Чертёж к задаче',b), chk, cap:o.cap||''};
 }
+/* наложения подписей в готовом чертеже: пары текстов, рамки которых пересекаются */
+function labelClashes(svg){
+  const L=[...svg.matchAll(/<text x="(-?[\d.]+)" y="(-?[\d.]+)"[^>]*font-size="([\d.]+)"[^>]*text-anchor="(\w+)"[^>]*>([\s\S]*?)<\/text>/g)]
+    .map(m=>({x:+m[1],y:+m[2],size:+m[3],anchor:m[4],t:m[5]}));
+  let n=0,first='';
+  for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++)if(boxHit(labBox(L[i]),labBox(L[j]))){n++;first=first||(txtPlain(L[i].t)+' / '+txtPlain(L[j].t));}
+  return {n,first};
+}
+function txtPlain(t){return String(t).replace(/<[^>]*>/g,'');}
 
 /* ---------- построения в математических координатах ---------- */
 const V2=(x,y)=>({x,y});
@@ -426,7 +487,7 @@ const SUBS={
 angSum:{topic:'ug',name:'Сумма углов треугольника',ref:'angsum',
   refWhy:'Известны два угла — третий дополняет их сумму до 180°.',
   law:'Сумма углов треугольника равна 180°.',
-  gen:()=>rp(()=>{const a=ri(20,110);return {a,b:ri(15,Math.min(120,165-a)),f:ri(0,1)};},p=>180-p.a-p.b<15||p.a+p.b===90||p.a===p.b),
+  gen:()=>rp(()=>{const a=ri(20,110);return {a,b:ri(20,Math.min(120,160-a)),f:ri(0,1)};},p=>180-p.a-p.b<20||p.a+p.b===90||p.a===p.b),
   proto:{a:48,b:67,f:0},
   calc:p=>180-p.a-p.b,
   text:p=>p.f
@@ -695,7 +756,7 @@ altAlt:{topic:'iso',name:'Угол между высотами',ref:'alt',
     ?[{v:C,m:'Это угол C треугольника. Спрашивают угол AHB между высотами.'},
       {v:90-p.A,m:'Это угол ABB<sub>1</sub> — между стороной AB и высотой BB<sub>1</sub>. Спрашивают угол AHB.'},
       {v:90-p.B,m:'Это угол BAA<sub>1</sub> — между стороной AB и высотой AA<sub>1</sub>. Спрашивают угол AHB.'}]
-    :[{v:C,m:'Это угол C. Угол AHB лежит в четырёхугольнике CA<sub>1</sub>HB<sub>1</sub> напротив угла C — они не равны.'},
+    :[{v:C,m:'Это угол C. Угол AHB равен вертикальному с ним углу A<sub>1</sub>HB<sub>1</sub> четырёхугольника CA<sub>1</sub>HB<sub>1</sub>, а этот угол не равен углу C.'},
       {v:90-C,m:'Это острый угол прямоугольного треугольника с углом C (например, угол CAA<sub>1</sub>). Спрашивают угол AHB.'}];}},
 
 rtAcute:{topic:'ug',name:'Прямоугольный: острые углы',ref:'angsum',
@@ -796,9 +857,9 @@ rtLegTan:{topic:'trig',name:'Катет через тангенс',ref:'rt',
       :[r1,{q:'Чему равен катет AC?',a:p.k*p.r,chk:'частное BC : tg A',show:`AC = BC : tg A = ${p.k*p.p} : ${t} = ${p.k*p.r}.`}];},
   diag:p=>p.d==='opp'
     ?[{v:p.k*p.r*p.r/p.p,m:'Так получается, если тангенс принять за отношение AC : BC. Тангенс угла A — противолежащий катет BC к прилежащему AC.'},
-      {v:p.q?p.k*p.q:NaN,m:'Это гипотенуза AB. Спрашивают катет BC.'}]
+      {v:p.k*Math.hypot(p.p,p.r),m:'Это гипотенуза AB. Спрашивают катет BC.'}]
     :[{v:p.k*p.p*p.p/p.r,m:'Так получается, если тангенс принять за отношение AC : BC. Тангенс угла A — противолежащий катет BC к прилежащему AC.'},
-      {v:p.q?p.k*p.q:NaN,m:'Это гипотенуза AB. Спрашивают катет AC.'}]},
+      {v:p.k*Math.hypot(p.p,p.r),m:'Это гипотенуза AB. Спрашивают катет AC.'}]},
 
 rtTrig:{topic:'trig',name:'sin, cos, tg по сторонам',ref:'rt',
   refWhy:'Синус, косинус и тангенс острого угла — отношения сторон прямоугольного треугольника.',
@@ -979,9 +1040,10 @@ areaSin:{topic:'area',name:'Площадь по двум сторонам и у�
      show:`AB · AC · sin A = ${areaSinAB(p)} · ${p.b} · ${SIN_VAL[p.g]} = ${fmtNum(2*S)}.`},
     {q:'Чему равна площадь треугольника ABC?',a:S,hint:'S = ½ · AB · AC · sin A.',chk:'половину произведения',
      show:`S = ½ · ${fmtNum(2*S)} = ${fmtNum(S)}.`}];},
-  diag:p=>{const S=areaSinS(p),tr=[{v:2*S,m:'Это произведение AB · AC · sin A — удвоенная площадь. Спрашивают площадь треугольника.'}];
-    if(p.g===30||p.g===150)tr.push({v:p.m*p.b/2,m:'Так получается без синуса угла A — как будто угол между сторонами прямой.'});
-    return tr;}},
+  diag:p=>{const S=areaSinS(p),L=areaSinLen(p);return [
+    {v:2*S,m:'Это произведение AB · AC · sin A — удвоенная площадь. Спрашивают площадь треугольника.'},
+    {v:L*p.b/2,m:'Так получается без синуса угла A — как будто угол между сторонами прямой.'},
+    {v:L*p.b,m:'Это произведение AB · AC — так получается, если не взять ни половину, ни синус угла A.'}];}},
 
 midline:{topic:'area',name:'Средняя линия',ref:'mid',
   refWhy:'MN соединяет середины двух сторон: она параллельна третьей стороне и равна её половине.',
@@ -1271,12 +1333,12 @@ function eqFig(s,o){
   if(o.rad||o.RLab){segs.push(['O','B',{col:COL.teal,w:2.4}]);sl.push(['O','B',o.rad||o.RLab,o.rad==='?'?COL.pink:COL.teal,0,0.5,1]);}
   if(o.irad||o.rLab){segs.push(['O','H',{col:COL.violet,w:2.4}]);sl.push(['O','H',o.irad||o.rLab,o.irad==='?'?COL.pink:COL.violet,0,0.5,1]);}
   if(o.sideLab)sl.push(pts.H?['A','C','AC = '+o.sideLab,o.sideLab==='?'?COL.pink:COL.blue,0,0.5,0,34]:['A','C',o.sideLab,o.sideLab==='?'?COL.pink:COL.blue]);
-  const f=drawFig({pts,dots,title:'Правильный треугольник ABC'+(o.circum?' и описанная окружность':'')+(o.incircle?' и вписанная окружность':''),
+  const texts=[];   // площадь и «P = ?» — в центре треугольника, как неподвижные надписи
+  if(o.areaLab)texts.push({at:['A','B','C'],t:o.areaLab,col:COL.blue,dy:0});
+  if(o.perLab)texts.push({at:['A','B','C'],t:'P = ?',col:COL.pink,dy:24});
+  return drawFig({pts,dots,title:'Правильный треугольник ABC'+(o.circum?' и описанная окружность':'')+(o.incircle?' и вписанная окружность':''),
     segs,circles,sl:sl.filter(x=>x[2]),ticks:[['A','B',1],['B','C',1],['C','A',1]],lab:{O:[12,-8]},pad:pts.H&&o.sideLab?50:38,
-    rights:(o.height||o.irad||o.rLab)?[['H','B','C']]:[],chk,cap:EQCAP});
-  if(o.areaLab){const i=f.svg.lastIndexOf('</svg>'),m=/viewBox="0 0 (\d+) (\d+)"/.exec(f.svg);
-    f.svg=f.svg.slice(0,i)+lab(+m[1]/2,+m[2]*0.62,o.areaLab,15,'middle',COL.blue)+(o.perLab?lab(+m[1]/2,+m[2]*0.62+24,'P = ?',15,'middle',COL.pink):'')+f.svg.slice(i);}
-  return f;
+    rights:(o.height||o.irad||o.rLab)?[['H','B','C']]:[],chk,cap:EQCAP,texts});
 }
 const TYPE_IDS=["angSum","extAng","isoBase","isoApex","bisIso","bisExt","twoExt","bisAlt","altAlt","rtAcute","rtLegSin","rtLegCos","rtLegTan","rtTrig","pythLeg","pythHyp","rtAltitude","areaBH","areaSin","midline","medianRt","regR","regr","regArea","regH","isoLeg"];
 
@@ -1412,9 +1474,10 @@ const SHEET_MISSING=[
 
 /* ================= Сборка задачи ================= */
 /* ловушки одной задачи (решения F1, Q2 делегата владельца): ловушка, совпавшая
-   с ответом, снимается; ловушка, которую ученик не может ввести точно (не
-   конечная десятичная дробь), не ставится; две разные ошибки на одно число —
-   одно сообщение «найдите свою», три и больше — честный общий текст */
+   с ответом, снимается; ловушка с неконечным числом (например, 800/29) ловит
+   обыкновенную дробь точно и десятичную запись с допуском 0,005 (как ступени
+   лестницы, решение по развилке 2); две разные ошибки на одно число — одно
+   сообщение «найдите свою», три и больше — честный общий текст */
 const trapTol=x=>1e-9*Math.max(1,Math.abs(x));
 function trapPair(m1,m2){return 'Такой ответ получается при одной из двух ошибок — найдите свою:<br>• '+m1+'<br>• '+m2;}
 const TRAP_MANY='Не сходится. Это число получается при нескольких разных ошибках — пройдите решение заново по чертежу: что дано и что спрашивают.';
@@ -1437,8 +1500,9 @@ function mergeTraps(list){
 function build(k,p,meta){
   const sub=SUBS[k], ans=sub.calc(p);
   const raw=(sub.diag(p)||[]).filter(d=>d&&d.m);
-  const kept=raw.filter(d=>isFin(d.v)&&d.v>0&&!eqAns(d.v,ans));
-  const diag=mergeTraps(kept.map(d=>({v:d.v,m:d.m,e:trapTol(d.v)})));
+  const tol=v=>isFin(v)?trapTol(v):0.005;
+  const kept=raw.filter(d=>isFinite(d.v)&&d.v>0&&Math.abs(d.v-ans)>tol(d.v)+trapTol(ans));
+  const diag=mergeTraps(kept.map(d=>({v:d.v,m:d.m,e:tol(d.v)})));
   return Object.assign({k,sub,p,ans,fig:sub.fig(p),text:sub.text(p),steps:sub.steps(p),diag,
     trapsDefined:raw.length,full:kept.length===raw.length&&!diag.clash},meta||{});
 }
@@ -1559,12 +1623,26 @@ function updStats(){
 }
 function bindRefcalls(root){(root||document).querySelectorAll('.refcall').forEach(el=>el.addEventListener('click',()=>openRef(el.dataset.ref)));}
 function focusIf(el){if(userActed&&el&&!el.disabled)try{el.focus({preventScroll:true});}catch(e){}}
+/* экран тренировки и зачёта при уходе на другую вкладку не пересоздаётся: узлы
+   уходят в запас и возвращаются как были — лестница, введённые числа, вердикт,
+   кнопки (находки ревью 1, 2). SHOWN — какой экран сейчас в #main. */
+let SHOWN=null;
+function stashMain(){
+  const o=SHOWN==='train'?tr:(SHOWN==='quiz'&&qz&&qz.i<qz.items.length?qz:null);
+  if(o){const f=document.createDocumentFragment(),m=$('#main');while(m.firstChild)f.appendChild(m.firstChild);o.dom=f;}
+  SHOWN=null;
+}
+function restoreMain(o,name){if(!o||!o.dom)return false;$('#main').replaceChildren(o.dom);o.dom=null;SHOWN=name;return true;}
+function markTab(tb){$$('.tab').forEach(b=>{b.classList.toggle('active',b.dataset.tab===tb);b.setAttribute('aria-pressed',String(b.dataset.tab===tb));});}
 function switchTab(tb){
-  TAB=tb; $$('.tab').forEach(b=>{b.classList.toggle('active',b.dataset.tab===tb);b.setAttribute('aria-pressed',String(b.dataset.tab===tb));});
+  if(tb===TAB&&SHOWN===tb)return;   // нажатие на открытую вкладку тренировки или зачёта ничего не сбрасывает
+  stashMain(); TAB=tb; markTab(tb);
   render();
 }
+/* после перехода на новый экран фокус — на нём, а не на body (находка ревью 11) */
+function focusMain(){focusIf($('#main'));}
 function render(){
-  updStats();
+  updStats(); SHOWN=TAB;
   if(TAB==='razbor')renderRazbor();
   else if(TAB==='train')renderTrain();
   else if(TAB==='quiz')renderQuiz();
@@ -1583,7 +1661,7 @@ function renderRazbor(){
     html+=`</div>`;
   }
   $('#main').innerHTML=html;
-  $$('.rzcard').forEach(c=>c.addEventListener('click',()=>{rzOpen=c.dataset.k;rzStep=0;rzAns=false;render();}));
+  $$('.rzcard').forEach(c=>c.addEventListener('click',()=>{rzOpen=c.dataset.k;rzStep=0;rzAns=false;render();focusMain();}));
 }
 function renderRazborDetail(){
   const k=rzOpen, sub=SUBS[k], t=build(k,sub.proto,{kind:'proto'}), n=t.steps.length;
@@ -1607,7 +1685,7 @@ function renderRazborDetail(){
     <div class="steps">${steps}</div>${btn}
   </div></div>`;
   bindRefcalls();
-  const bk=()=>{rzOpen=null;render();};
+  const bk=()=>{rzOpen=null;render();focusMain();};
   $('#rzBack').addEventListener('click',bk);
   if(finished){
     $('#rzBack2').addEventListener('click',bk);
@@ -1626,6 +1704,8 @@ function renderRazborDetail(){
 const LADDER_NOTE='Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.';
 const PNOTE15='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без «Показать шаг»; ошибка, исправленная самостоятельно, этому не мешает. «Подсказка» и «Решить по шагам» ничего не отнимают. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
 const MSG_NUM='Введите число: целое или десятичную дробь (через запятую или точку).';
+/* ответ задания 15 — целое или конечная десятичная дробь, корни бывают только в условии (поправка 1 делегата) */
+function numMsg(s){return /√|sqrt|корен/i.test(String(s))?'Ответ задания 15 записывается числом без корня — целым или десятичной дробью. Корни бывают только в условии.':MSG_NUM;}
 function pickTrainTask(){
   if(trReview){
     const open=CP.openTypes().filter(k=>SUBS[k]);
@@ -1638,7 +1718,7 @@ function pickTrainTask(){
 function startTrainSub(k){trReview=false;trReviewEmpty=false;trSubOnly=k;trTopic='all';tr=null;switchTab('train');}
 function startRazborSub(k){rzOpen=k;rzStep=0;rzAns=false;switchTab('razbor');}
 /* учёт задачи (решения D1, F8): промах — сразу и один раз; решено — без показанных шагов */
-function trMiss(){if(!tr||tr.missed||tr.done)return;tr.missed=true;CP.mlog(tr.t.k,false);streak=0;updStats();}
+function trMiss(){if(!tr||tr.missed||tr.shown||tr.done)return;tr.missed=true;CP.mlog(tr.t.k,false);streak=0;updStats();}
 function trFinish(){
   if(!tr||tr.done)return;
   tr.done=true;
@@ -1648,8 +1728,12 @@ function trFinish(){
   CP.saveRec(rec=>{const x=CP.isObj(rec.train)?rec.train:{};rec.train={solved:CP.num(x.solved)+(clean?1:0),shown:CP.num(x.shown)+(clean?0:1)};});
   st=loadSt(); updStats();
 }
+/* двойное касание: второе касание в первые 400 мс после смены экрана не срабатывает (находка ревью 4) */
+const fresh=t0=>performance.now()-t0<400;
 function renderTrain(){
+  if(restoreMain(tr,'train'))return;
   if(!tr)tr={t:pickTrainTask(),missed:false,shown:false,done:false,ladder:false};
+  tr.t0=performance.now();
   const t=tr.t;
   const open=trReview?CP.openTypes().filter(k=>SUBS[k]):[];
   const reviewNote=trReview
@@ -1659,7 +1743,7 @@ function renderTrain(){
     `<button type="button" class="chip${!trReview&&!trSubOnly&&trTopic===v?' on':''}" data-topic="${v}">${n}</button>`).join('');
   const subChip=trSubOnly?`<button type="button" class="chip on trsub" id="trSubOff">Тип: ${SUBS[trSubOnly].name} ✕</button>`:'';
   $('#main').innerHTML=`<div class="filters">${chips}${subChip}</div>
-  ${reviewNote}${PNOTE15}
+  ${reviewNote}
   <div class="meta">${tagTopic(t.sub.topic)}<span class="smallnote">${t.sub.name}</span></div>
   <div class="grid"><div>${figHtml(t)}</div><div>
     <div class="task" id="taskText">${t.text}</div>
@@ -1670,27 +1754,30 @@ function renderTrain(){
     <div class="fb" id="fb" role="status" aria-live="polite"></div>
     <div class="ladder" id="lad" style="display:none"></div>
     <div id="after"></div>
-  </div></div>`;
-  $$('.chip[data-topic]').forEach(ch=>ch.addEventListener('click',()=>{trTopic=ch.dataset.topic;trSubOnly=null;trReview=false;trReviewEmpty=false;tr=null;render();}));
-  const off=$('#trSubOff'); if(off)off.addEventListener('click',()=>{trSubOnly=null;tr=null;render();});
+  </div></div>${PNOTE15}`;
+  $$('.chip[data-topic]').forEach(ch=>ch.addEventListener('click',()=>{trTopic=ch.dataset.topic;trSubOnly=null;trReview=false;trReviewEmpty=false;tr=null;render();focusMain();}));
+  const off=$('#trSubOff'); if(off)off.addEventListener('click',()=>{trSubOnly=null;tr=null;render();focusMain();});
   const fb=$('#fb'), inp=$('#ans');
   /* итог задачи: после лестницы — под лестницей, где ученик закончил, иначе у поля ответа */
   const doneUi=(msg,cls)=>{
     inp.disabled=true;$('#check').disabled=true;$('#ladBtn').style.display='none';
     const law=`<div class="law"><b>Правило.</b> ${t.sub.law}</div>${refcallHtml(t.sub)}`;
+    tr.doneAt=performance.now();
     if(tr.ladder){
-      $('#after').innerHTML=`<div class="fb ${cls} show" role="status">${msg}</div>${law}<div class="rowbtns"><button type="button" class="blue" id="next2">Следующая →</button></div>`;
-      $('#next2').addEventListener('click',()=>{tr=null;render();focusIf($('#ans'));});
+      $('#after').innerHTML=`<div class="fb ${cls} show" id="fbDone" role="status" tabindex="-1">${msg}</div>${law}<div class="rowbtns"><button type="button" class="blue" id="next2">Следующая →</button></div>`;
+      $('#next2').addEventListener('click',nextTask);
     } else {
       fb.className='fb '+cls+' show';fb.innerHTML=msg;$('#next').style.display='';
       $('#after').innerHTML=law;
     }
-    bindRefcalls($('#after')); focusIf($('#next2')||$('#next'));
+    /* фокус — на итоге, а не на «Следующая →»: второй Enter не перелистывает задачу (находка ревью 3) */
+    bindRefcalls($('#after')); focusIf(tr.ladder?$('#fbDone'):fb);
   };
+  const nextTask=()=>{if(!tr||fresh(tr.doneAt||0))return;tr=null;render();focusIf($('#ans'));};
   $('#check').addEventListener('click',()=>{
-    if(tr.done||tr.ladder)return;
+    if(tr.done||tr.ladder||fresh(tr.t0))return;
     const v=parseAns(inp.value);
-    if(!isFinite(v)){fb.className='fb show';fb.textContent=MSG_NUM;return;}
+    if(!isFinite(v)){fb.className='fb show';fb.textContent=numMsg(inp.value);return;}
     if(eqAns(v,t.ans)){trFinish();doneUi(`Верно! Ответ ${fmtNum(t.ans)}.${tr.missed?' Ошибку вы исправили сами — задача засчитана.':''}`,'ok');}
     else{
       trMiss();
@@ -1700,7 +1787,7 @@ function renderTrain(){
     }
   });
   $('#ladBtn').addEventListener('click',()=>{
-    if(tr.done||tr.ladder)return;
+    if(tr.done||tr.ladder||fresh(tr.t0))return;
     tr.ladder=true; inp.disabled=true; $('#check').disabled=true; $('#ladBtn').style.display='none';
     const lad=$('#lad'); lad.style.display='';
     mountLadder(lad,t,{onMiss:trMiss,onShow:()=>{tr.shown=true;},onDone:()=>{
@@ -1709,7 +1796,7 @@ function renderTrain(){
         :`Все шаги решены самостоятельно — задача засчитана. Ответ ${fmtNum(t.ans)}.`,tr.shown?'':'ok');
     }});
   });
-  $('#next').addEventListener('click',()=>{tr=null;render();focusIf($('#ans'));});
+  $('#next').addEventListener('click',nextTask);
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#check').click();}});
 }
 /* лестница: ступень — вопрос, поле для числа ступени, «Проверить», «Подсказка»
@@ -1733,7 +1820,7 @@ function mountLadder(root,t,h){
     const check=()=>{
       if(resolved)return;
       const v=parseAns(inp.value);
-      if(!isFinite(v)){fb.className='fb show';fb.textContent=MSG_NUM+(!isDec(s.a)?' Если число не записывается конечной десятичной дробью, введите обыкновенную дробь, например 5/13.':'');return;}
+      if(!isFinite(v)){fb.className='fb show';fb.textContent=numMsg(inp.value)+(!isDec(s.a)?' Если число не записывается конечной десятичной дробью, введите обыкновенную дробь, например 5/13.':'');return;}
       const near=!isDec(s.a)&&Math.abs(v-s.a)<=0.005;   // неконечное значение введено приближённо — верно, с точной записью
       if(eqAns(v,s.a)||near){resolved=true;fb.className='fb ok show';fb.innerHTML=(near?'Верно: точное значение — '+(s.at||fmtNum(s.a))+'. ':'Верно! ')+s.show;div.classList.add('ok');lock();i++;next();}
       else{h.onMiss();const d=last?matchDiag(v,t.diag):null;fb.className=d?'fb diag show':'fb bad show';
@@ -1770,29 +1857,32 @@ function renderQuiz(){
     $('#qStart').addEventListener('click',()=>{startQuiz();render();focusIf($('#qAns'));});
     return;
   }
+  if(restoreMain(qz,'quiz'))return;
   if(qz.i>=qz.items.length)return renderQuizFinal();
-  const t=qz.items[qz.i];
+  const t=qz.items[qz.i]; qz.t0=performance.now();
   main.innerHTML=`<div class="quizq">Задача ${qz.i+1} из ${qz.items.length}</div>
   <div class="grid"><div>${figHtml(t)}</div><div>
     <div class="task">${t.text}</div>
     <div class="controls"><input class="ans" id="qAns" inputmode="decimal" placeholder="ответ" autocomplete="off" aria-label="Ответ">
       <button type="button" id="qCheck">Ответить</button>
       <button type="button" class="blue" id="qNext" style="display:none">${qz.i===qz.items.length-1?'К результатам':'Дальше →'}</button></div>
-    <div class="fb" id="qFb" role="status" aria-live="polite"></div>
+    <div class="fb" id="qFb" role="status" aria-live="polite" tabindex="-1"></div>
   </div></div>`;
   const fb=$('#qFb'), inp=$('#qAns');
   $('#qCheck').addEventListener('click',()=>{
-    if(qz.answered)return;
+    if(qz.answered||fresh(qz.t0))return;
     const v=parseAns(inp.value);
-    if(!isFinite(v)){fb.className='fb show';fb.textContent=MSG_NUM;return;}
+    if(!isFinite(v)){fb.className='fb show';fb.textContent=numMsg(inp.value);return;}
     qz.answered=true;
     const ok=eqAns(v,t.ans);
     qz.res.push({ok,k:t.k,v,ans:t.ans,d:ok?null:matchDiag(v,t.diag)});
     CP.mlog(t.k,ok);   // зачёт тоже пишет журнал: одна попытка — один вердикт
     fb.className=ok?'fb ok show':'fb bad show'; fb.textContent=ok?'Верно.':'Неверно.';
-    inp.disabled=true; $('#qCheck').disabled=true; $('#qNext').style.display=''; focusIf($('#qNext'));
+    qz.ansAt=performance.now();
+    /* фокус — на вердикте: Enter после ответа не перелистывает (находка ревью 3) */
+    inp.disabled=true; $('#qCheck').disabled=true; $('#qNext').style.display=''; focusIf(fb);
   });
-  $('#qNext').addEventListener('click',()=>{if(!qz.answered)return;qz.i++;qz.answered=false;render();focusIf($('#qAns')||$('#qAgain'));});
+  $('#qNext').addEventListener('click',()=>{if(!qz.answered||fresh(qz.ansAt||0))return;qz.i++;qz.answered=false;render();focusIf($('#qAns')||$('#qFin'));});
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!qz.answered)$('#qCheck').click();}});
 }
 function renderQuizFinal(){
@@ -1804,12 +1894,13 @@ function renderQuizFinal(){
   const dots=qz.res.map(r=>`<span class="dot ${r.ok?'g':'r'}" title="${r.ok?'верно':'неверно'}"></span>`).join('');
   const lines=qz.res.map((r,i)=>r.ok?'':`<li>Задача ${i+1} — «${SUBS[r.k].name}»: ваш ответ ${fmtNum(r.v)}${r.d?' — '+r.d:''}; верный ответ ${fmtNum(r.ans)}.
       <button type="button" class="sec minibtn" data-rz="${r.k}">Разбор</button> <button type="button" class="blue minibtn" data-tr="${r.k}">Тренировать</button></li>`).join('');
-  $('#main').innerHTML=`<div class="fin"><div class="score">${score} / ${total}</div>
+  const t0=performance.now();
+  $('#main').innerHTML=`<div class="fin" id="qFin" tabindex="-1"><div class="score">${score} / ${total}</div>
     ${verdict}<div class="dots" style="justify-content:center">${dots}</div>
     ${lines?`<div class="route"><b>Разбор ошибок:</b><ul>${lines}</ul></div>`:`<div class="route"><b>Все задачи решены верно.</b></div>`}
     <div class="rowbtns" style="justify-content:center"><button type="button" id="qAgain">Пройти ещё раз</button></div></div>`;
-  $$('.route button').forEach(b=>b.addEventListener('click',()=>{qz=null;if(b.dataset.rz)startRazborSub(b.dataset.rz);else startTrainSub(b.dataset.tr);}));
-  $('#qAgain').addEventListener('click',()=>{startQuiz();render();focusIf($('#qAns'));});
+  $$('.route button').forEach(b=>b.addEventListener('click',()=>{if(fresh(t0))return;qz=null;if(b.dataset.rz)startRazborSub(b.dataset.rz);else startTrainSub(b.dataset.tr);focusMain();}));
+  $('#qAgain').addEventListener('click',()=>{if(fresh(t0))return;startQuiz();render();focusIf($('#qAns'));});
 }
 
 /* ---------- Справочник: карта листа + карточки ---------- */
@@ -1870,7 +1961,7 @@ function bindPanelHandlers(){
     else if(b.dataset.ref)b.addEventListener('click',()=>openRef(b.dataset.ref));
   });
 }
-function openRef(id){TAB='refs';$$('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab==='refs'));updStats();renderRefs(id);}
+function openRef(id){stashMain();TAB='refs';markTab('refs');updStats();SHOWN='refs';renderRefs(id);focusMain();}
 
 /*__SELFTEST_KIT_START__*/
 /* Общие проверки режима ?selftest=1 (канон CLAUDE.md, решение F4 делегата
@@ -1995,6 +2086,7 @@ function selftest(N){
     const leak=t.steps.map(s=>s.hint||'').concat(t.diag.map(d=>d.m)).find(h=>numsIn(h,noDeg).some(x=>eqAns(x,t.ans)&&!given.some(g=>eqAns(g,t.ans))));
     if(leak)errs.push(tag+': подсказка или ловушка называет число ответа: «'+plain(leak).slice(0,70)+'»');
     auditFig(t.fig,errs,tag); stkTask(t,tag,errs); figs++;
+    const lc=labelClashes(t.fig.svg); if(lc.n)errs.push(tag+': подписи чертежа налезают друг на друга ('+lc.first+')');
   };
   for(const k of keys){
     const sub=SUBS[k];
@@ -2038,7 +2130,7 @@ function selftest(N){
 window.__oge15={SUBS,TYPE_IDS,TOPICS,REFS,PINS,build,buildGen,selftest,parseAns,eqAns,matchDiag,switchTab,mulberry32,
   debug:()=>({tr,qz,st,streak,TAB,rzOpen,rzStep,rzAns,trSubOnly,trTopic,trReview,pinOpen}),
   /* для браузерного гейта: тренировка на задаче типа k с параметрами p (без p — из генератора) */
-  trainWith:(k,p)=>{trReview=false;trReviewEmpty=false;trSubOnly=k;tr={t:p?build(k,p,{kind:'gen'}):buildGen(k),missed:false,shown:false,done:false,ladder:false};switchTab('train');}};
+  trainWith:(k,p)=>{stashMain();trReview=false;trReviewEmpty=false;trSubOnly=k;tr={t:p?build(k,p,{kind:'gen'}):buildGen(k),missed:false,shown:false,done:false,ladder:false};TAB='train';markTab('train');render();}};
 (function init(){
   if(typeof document==='undefined')return;
   let selftestMode=false;
