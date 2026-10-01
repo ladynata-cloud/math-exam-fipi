@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <title>Деление уголком: каждый шаг своими руками · MathExam</title>
+ <meta name="description" content="Вводите цифру частного, произведение, разность и сносимую цифру. Деление с остатком, нулями и десятичными дробями с сохранением работы.">
+ <link rel="stylesheet" href="division-lab.css">
+ <script src="division-lab-core.js" defer></script><script src="division-lab.js" defer></script>
+</head>
+<body>
+ <a class="skip" href="#workspace">К текущему шагу</a>
+ <header><a class="brand" href="index.html">MathExam <span>Математическая база</span></a><a href="../../../index.html">На главную</a></header>
+ <main>
+  <section class="intro"><p class="eyebrow">Учимся письменному делению</p><h1>Уголок, который<br>ты заполняешь сам</h1><p class="lead">Одна цифра, одно действие, одна проверка. Умножение, вычитание и снос выполняешь ты — готовые строки появляются после твоего ответа.</p></section>
+  <div id="notice" role="status" aria-live="polite"></div>
+  <section class="card controls" aria-label="Выбрать занятие">
+   <label for="level">Тема</label><select id="level"></select>
+   <div class="buttons"><button id="learn">Разобрать пример</button><button id="practice" class="secondary">Новый пример</button><button id="check-mode" class="secondary">Проверить по шагам</button></div>
+   <p id="idea"></p><p class="small">Проверка остаётся пошаговой. Самостоятельным считается только новое условие, решённое с первой попытки на каждом шаге без подсказок. Это не отметка за владение всей темой.</p>
+  </section>
+  <section id="workspace" class="workspace" tabindex="-1" aria-label="Решение по шагам">
+   <article class="card paper"><p id="mode" class="eyebrow"></p><h2 id="problem"></h2><div id="board"></div><div id="empty"></div></article>
+   <article class="card stage"><div class="step-line"><span id="stage-count"></span><progress id="progress" max="1" value="0" aria-label="Выполненные действия"></progress></div><h2 id="stage-title"></h2><p id="prompt"></p>
+    <form id="answer-form"><label for="answer">Твой ответ</label><div class="answer-line"><input id="answer" inputmode="decimal" autocomplete="off" maxlength="60" aria-describedby="input-note"><button type="submit">Проверить</button></div><p id="input-note" class="small">Число можно записать с запятой или точкой. Нажми Enter для проверки.</p></form>
+    <div id="feedback" role="status" aria-live="polite"></div><div id="help"></div>
+    <div class="buttons" id="help-buttons"><button id="hint" class="secondary">Подсказка</button><button id="reveal" class="secondary">Показать этот шаг</button></div>
+    <button id="next" hidden>Следующий пример</button>
+   </article>
+  </section>
+  <section class="card"><p class="eyebrow">Учебные результаты</p><h2>Мой прогресс</h2><div id="stats" class="stats"></div><p class="small">Разбор, помощь и исправления учитываются отдельно от самостоятельных проверок. Данные находятся в этом браузере. После перезагрузки можно продолжить с того же шага.</p><div id="history"></div>
+   <div class="buttons"><button id="backup" class="secondary">Скачать копию прогресса</button><button id="import" class="secondary">Восстановить копию</button><button id="raw" class="secondary" hidden>Скачать исходную запись</button></div>
+   <label for="alias">Подпись отчёта преподавателю</label><input id="alias" maxlength="60" placeholder="Имя или условное обозначение"><button id="report" class="secondary">Скачать отчёт</button>
+   <p class="small">Отчёт скачивается файлом и не отправляется автоматически. Подпись и результаты не удостоверены: файл можно отредактировать.</p>
+   <button id="reset" class="text-button">Начать новую запись этого модуля</button><input type="file" id="file" accept="application/json,.json" hidden>
+  </section>
+  <footer><a href="index.html">← Все темы умножения и деления</a> · <a href="long-division-from-simple-to-decimals.html">Предыдущая линия тренажёров</a><p>Модуль развивается. В нём не рассматриваются отрицательные числа, периодические десятичные дроби и округление бесконечных частных.</p></footer>
+ </main>
+</body>
+</html>

@@ -6,14 +6,15 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current integration: basic EGE (#155)
+## Current release: all discussed courses (2026-10-02)
 
-- Verified remote main before integration: `010e89c75c0fe110b57c983c728b8216fb38cd9d`.
-- Public homepage checked 2026-10-02: OGE-focused; HTTP response served by GitHub Pages. `CNAME` remains `mathexam.space`. The root Dockerfile belongs to the board backend and is unchanged.
-- Branch `release/ege-baza-main-155` integrates #153 and its relevant course dependencies onto current main, then adds the main-course learning path and homepage.
-- Owner explicitly authorizes merge/publication and waives independent review/final approval for this release only. No external review is claimed.
-- See [release evidence](EGE_BAZA_RELEASE_155.md), [task](tasks/EGE_BAZA_RELEASE_155.md) and the final PR for exact head, gates and live publication evidence. This pre-merge file does not itself claim a successful deployment.
-- Next: publish after local gates; verify public content against merged blobs; continue finer FIPI subtype coverage and real pupil evaluation.
+- Basic EGE and gardens work-rate trainer published by PR #160, main `a325f74909fd3ba322089702a8954bcfd300e5cb`; Pages workflow and public files were verified.
+- Targeted remediation and bounded virtual-classroom checks merged by PR #161, main `f8122568a2d736d05d3a373b7a2eb60f94e2aff9`; all three cloud test roles passed on the PR head. Publication evidence is recorded in the PR.
+- PR #162 integrates reviewed Atanasyan7–9/10–11, Vilenkin-topic workshop5–6, Merzlyak/Pogorelov geometry, equations, long division and board usability. Main-course priority remains basic EGE.
+- The owner explicitly authorized completion and publication of all discussed created/updated courses and requested the board improvements. No global policy or account/hosting settings are changed.
+- Internal independent agents found and verified fixes for mathematical presentation, storage, constructions and progress defects. These checks are not represented as external Claude review or a real-student pilot.
+- Course maps cover the named textbook points; exercises cover selected families. These are not exhaustive textbook solution banks or complete yearly programs. Additional textbook editions will be supplied later.
+- See [release scope](tasks/ALL_COURSES_RELEASE_20261002.md) and PR #162 for the exact base/head, final gates, rollback and actual publication result.
 
 ## Historical snapshot below (2026-08-15; not current release evidence)
 

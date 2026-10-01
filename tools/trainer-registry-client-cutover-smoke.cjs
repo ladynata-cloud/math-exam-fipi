@@ -979,8 +979,19 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
   assert.equal(registry.trainers.length, 3, 'runtime registry exposes exactly three mirror entries');
   assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid']);
   const catalog = await (await fetch(`${siteOrigin}/trainers/board-compat.json`)).json();
-  assert.equal(catalog.trainers.length, 12, 'catalog exposes exactly twelve trainers');
+  const expectedCatalog = JSON.parse(readFileSync(resolve(REPO_ROOT, 'trainers', 'board-compat.json'), 'utf8'));
+  assert.deepEqual(catalog, expectedCatalog, 'served catalog exactly matches the committed manifest');
+  const catalogIds = new Set(), catalogFiles = new Set();
+  for (const entry of expectedCatalog.trainers) {
+    assert.ok(!catalogIds.has(entry.trainerId), `unique catalog id: ${entry.trainerId}`);
+    assert.ok(!catalogFiles.has(entry.file.toLowerCase()), `unique catalog path: ${entry.file}`);
+    const target = resolve(REPO_ROOT, entry.file);
+    assert.ok(target.startsWith(REPO_ROOT + sep) && existsSync(target), `catalog file exists inside repository: ${entry.file}`);
+    catalogIds.add(entry.trainerId);
+    catalogFiles.add(entry.file.toLowerCase());
+  }
   assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 3, 'catalog exposes exactly three mirrors');
+  assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same three mirror ids');
 
   const teacherContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const teacher = await teacherContext.newPage();
@@ -1002,7 +1013,8 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
   const studentRoads = await trainerFrame(student, 'practice-1-5-roads-grid.html');
   await waitMirror(teacher, 'connected');
   await waitMirror(student, 'connected');
-  await teacher.waitForFunction(() => document.querySelectorAll('#trainerQuick option').length === 13, null, { polling: 100 });
+  await teacher.waitForFunction(expected => document.querySelectorAll('#trainerQuick option').length === expected, expectedCatalog.trainers.length + 1, { polling: 100 });
+  assert.deepEqual(await teacher.locator('#trainerQuick option').evaluateAll(options => options.filter(option => option.value).map(option => new URL(option.value, location.href).pathname.replace(/^\//, '')).sort()), expectedCatalog.trainers.map(entry => entry.file).sort(), 'quick picker contains every manifest path exactly once');
 
   const teacherStorage = JSON.stringify({ unrelated: { owner: 'teacher' }, practiceRoadsGridTrainer: { solved: 2, streak: 1, total: 60 } });
   const studentStorage = JSON.stringify({ unrelated: { owner: 'student' }, practiceRoadsGridTrainer: { solved: 17, streak: 9, total: 60 } });
