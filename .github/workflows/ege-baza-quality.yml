@@ -1,0 +1,63 @@
+name: EGE base — virtual classroom
+
+on:
+  pull_request:
+    paths: ['ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', '.github/workflows/ege-baza-quality.yml']
+  push:
+    branches: [main]
+    paths: ['ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', '.github/workflows/ege-baza-quality.yml']
+  schedule:
+    - cron: '23 20 * * *' # 03:23 Asia/Novosibirsk; scheduled runs may be delayed by GitHub.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ege-classroom-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  classroom:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Install pinned test dependencies
+        run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Teacher — known mathematics checks
+        id: teacher
+        continue-on-error: true
+        run: node tools/ege-quality/run.cjs teacher
+      - name: Student — learning and misconception scenarios
+        id: student
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: node tools/ege-quality/run.cjs student
+      - name: Tester — browser and data checks
+        id: tester
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: node tools/ege-quality/run.cjs tester
+      - name: Keep reports for 14 days
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: virtual-classroom-${{ github.run_id }}
+          path: ege-quality-results/
+          retention-days: 14
+          if-no-files-found: warn
+      - name: Set truthful final result
+        if: ${{ always() }}
+        env:
+          TEACHER: ${{ steps.teacher.outcome }}
+          STUDENT: ${{ steps.student.outcome }}
+          TESTER: ${{ steps.tester.outcome }}
+        run: test "$TEACHER" = success && test "$STUDENT" = success && test "$TESTER" = success
