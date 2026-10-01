@@ -17,7 +17,7 @@ Updated: 2026-10-01
   Merge and deployment are not authorized.
 - Draft PR #147 stores that module; it remains unmerged. Draft #148 stores the
   product blueprint at `c304b6fe4a11d0f1361b148143b8079c8e163cce`.
-- Current follow-up: `EGE_BAZA_COURSE_03_NAVIGATOR`, a dependent draft on
+- Draft #149: `EGE_BAZA_COURSE_03_NAVIGATOR`, a dependent draft on
   `course/ege-baza-navigator`. It adds Today, seven-module / 32-lesson outlines,
   prerequisite links and read-only first-module progress. Six prototype lessons
   open; 26 are clearly planned. [Details](EGE_BAZA_NAVIGATOR.md).
@@ -25,6 +25,16 @@ Updated: 2026-10-01
   81 DOM regression checks pass. The preview ZIP builds with eight files and
   checked internal links. Browser launch failed with a socket restriction;
   real desktop/mobile/keyboard/file-preview checks remain required.
+- Current follow-up: `EGE_BAZA_COURSE_04_BACKUP`, branch
+  `course/ege-baza-backup`, based on #149 head
+  `939dd318bf03cdf44357f14792cfc72cabbde3f4`. Adds first-module JSON backup,
+  previewed confirmed restoration and protection against stale module writes.
+  Key/state/grading remain compatible; no shared course journal is claimed.
+- Backup gate: 69 unit/DOM/conflict checks pass; existing navigator and module
+  regression gates pass. The portable preview now has ten files. Real browser
+  download/upload/concurrency and independent HIGH review remain pending.
+- The owner delegated continued course development toward a complete Codex
+  handoff; [delivery requirements](EGE_BAZA_DELIVERY.md) record the final bundle.
 - Owner decision on 2026-10-01: build in bounded steps and publish the complete
   course together when ready. For the enrolment period, focus specifically the
   home page on base-EGE preparation; preserve the other sections and their URLs.
@@ -48,8 +58,8 @@ recorded in the task PR and handoff.
 
 1. Complete real-browser checks for the navigator and first module in a permitted
    environment; the inherited HIGH review remains pending.
-2. Specify shared progress/repeat rules and a restorable backup, then develop
-   the other modules one bounded task at a time.
+2. Extend assessment forms/history and prerequisite integration, then develop
+   the remaining modules one bounded task at a time. Backup exists for m01 only.
 3. Review the complete course and base-EGE home page together; publish only after
    the release checklist and separate owner authorization, then run production smoke.
 

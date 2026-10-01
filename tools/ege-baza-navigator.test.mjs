@@ -105,7 +105,7 @@ try{
  raw=empty();practice(raw,p[0],{hints:true});stored=JSON.stringify(raw);
  w.dispatchEvent(new w.StorageEvent('storage',{key:api.KEY}));ok(q('[data-stat="solved"]').textContent.includes('1'),'Progress refreshes from another tab');
  ok(q('[data-stat="independent"]').textContent.trim().startsWith('0'),'Assistance displayed honestly');
- await go('#teacher');ok(text().includes('Общий журнал, назначения и резервная копия пока в плане'),'No invented teacher backend');
+ await go('#teacher');ok(text().includes('Общий журнал и назначения пока в плане'),'No invented teacher backend');
  const before=w.location.hash;await go('#map');w.history.back();await tick();await tick();ok(w.location.hash===before&&text().includes('Один учебный цикл'),'Browser history renders previous route');
  boot('{broken','#progress');ok(!q('#storage-notice').hidden,'Malformed notice');
  ok(!q('[data-stat]')&&text().includes('не означает'),'Unreadable progress not represented as zero');
