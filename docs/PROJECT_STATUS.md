@@ -1,5 +1,16 @@
 # MathExam project status
 
+## Workshop task snapshot — 2026-10-02
+
+- Freshly fetched task base: `main` / `010e89c75c0fe110b57c983c728b8216fb38cd9d` (OGE algebra PR #145). This records the repository base, not a fresh production-deployment verification.
+- Branch `course/math-workshop-5-6`: isolated `school/` prototype, 74 introductory skills, grade 5/6 routes, 95 source-labelled Vilenkin references, local teacher assignments/reports. See [scope](tasks/MATH_WORKSHOP_5_6.md), [implementation and limitations](MATH_WORKSHOP_5_6.md), [proposed ADR 0005](adr/0005-math-workshop.md).
+- Prepared for inspection and Draft PR only. No homepage or deployment changes. No independent external review; `NEW_ARCHETYPE` rollout conditions remain outstanding.
+- EGE overnight work is separately tracked in issue #155 and is not modified by this task. Its owner authorization is not transferred to the workshop.
+
+## Historical snapshot — 2026-08-15
+
+The following historical record is retained for provenance. Its main SHA, current-stage wording and open-PR list are not claims about the present production state.
+
 Updated: 2026-08-15
 
 This is the short operational snapshot. Reconcile it against production evidence
