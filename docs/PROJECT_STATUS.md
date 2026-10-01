@@ -15,6 +15,15 @@ Updated: 2026-10-01
   checks pass, as does the existing base-EGE gate. The browser gate is blocked
   by this execution environment; desktop/mobile visual checks remain pending.
   Merge and deployment are not authorized.
+- Draft PR #147 stores that module; it remains unmerged. Current follow-up is
+  the documentation-only `EGE_BAZA_COURSE_02_BLUEPRINT`, dependent on its exact
+  head `a3bffe0d7962d1da9751f37f40c0df2abaf5a45b`.
+- Owner decision on 2026-10-01: build in bounded steps and publish the complete
+  course together when ready. For the enrolment period, focus specifically the
+  home page on base-EGE preparation; preserve the other sections and their URLs.
+- [Product plan](EGE_BAZA_PRODUCT_PLAN.md) defines the proposed course workflow,
+  homepage brief, module allocation, release checklist and next bounded task.
+  Proposed functions are not claimed as implemented or separately approved.
 - Latest open-PR search confirms unrelated #146, #138, #137, #129, #126 and
   #117 remain open. Their branches are not used as a base for this task.
 - The August snapshot below is historical; its claims about current main,
@@ -30,10 +39,11 @@ recorded in the task PR and handoff.
 
 ## Next three actions
 
-1. Complete the pending browser/visual gate for the first module's Draft PR.
-2. Review the working module and resolve HIGH-level review requirements.
-3. After separate merge authorization, run the release workflow and production
-   smoke, then choose the next bounded course module.
+1. Prepare the complete course registry/lesson map and a navigator prototype.
+2. Establish shared progress/repeat rules, finish the first module's browser and
+   HIGH review, then develop the other modules one bounded task at a time.
+3. Review the complete course and base-EGE home page together; publish only after
+   the release checklist and separate owner authorization, then run production smoke.
 
 ---
 
