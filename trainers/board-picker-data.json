@@ -3760,6 +3760,386 @@
       "title": "Уравнения · Дробное уравнение и запретные значения",
       "href": "/equations/#rational",
       "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Дроби → проценты → пропорции: учебный маршрут",
+      "href": "/ege-baza/path/index.html#foundation",
+      "group": "ЕГЭ база · основа"
+    },
+    {
+      "title": "ЕГЭ база 1 · Покупка и сдача",
+      "href": "/ege-baza/path/index.html#lesson=practice-change",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 1 · На сколько покупок хватит денег",
+      "href": "/ege-baza/path/index.html#lesson=practice-afford",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 1 · Места для всех пассажиров",
+      "href": "/ege-baza/path/index.html#lesson=practice-transport",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 2 · Соотнести величину и единицу",
+      "href": "/ege-baza/path/index.html#lesson=practice-units-match",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 2 · Часы, минуты и секунды",
+      "href": "/ege-baza/path/index.html#lesson=practice-time",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 2 · Перевод единиц площади",
+      "href": "/ege-baza/path/index.html#lesson=practice-area-units",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 3 · Максимум и минимум на диаграмме",
+      "href": "/ege-baza/path/index.html#lesson=practice-chart",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 3 · Место команды в таблице",
+      "href": "/ege-baza/path/index.html#lesson=practice-ranking",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 3 · Сумма за нужный промежуток",
+      "href": "/ege-baza/path/index.html#lesson=practice-interval-data",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 4 · Квадрат в физической формуле",
+      "href": "/ege-baza/path/index.html#lesson=practice-electric",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 4 · Линейная формула и отрицательные числа",
+      "href": "/ege-baza/path/index.html#lesson=practice-temperature",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 4 · Найти неизвестное из формулы",
+      "href": "/ege-baza/path/index.html#lesson=practice-inverse-formula",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 5 · Равновозможный выбор",
+      "href": "/ege-baza/path/index.html#lesson=practice-probability-draw",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 5 · Противоположное событие",
+      "href": "/ege-baza/path/index.html#lesson=practice-probability-opposite",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 6 · Бесплатная доставка: строгое условие",
+      "href": "/ege-baza/path/index.html#lesson=practice-delivery",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 6 · Отбор по нескольким ограничениям",
+      "href": "/ege-baza/path/index.html#lesson=practice-luggage",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 6 · Аренда плюс расход топлива",
+      "href": "/ege-baza/path/index.html#lesson=practice-rental",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 7 · Соотнести участки графика и изменение",
+      "href": "/ege-baza/path/index.html#lesson=practice-graph-match",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 7 · Наклон прямой по двум точкам",
+      "href": "/ege-baza/path/index.html#lesson=practice-graph-slope",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 8 · Что обязательно следует из сравнения",
+      "href": "/ege-baza/path/index.html#lesson=practice-logic-order",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 8 · Все, некоторые и обратное утверждение",
+      "href": "/ege-baza/path/index.html#lesson=practice-logic-all",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 9 · Площадь фигуры с вырезом",
+      "href": "/ege-baza/path/index.html#lesson=practice-grid-cut",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 9 · Наклонная сторона и высота",
+      "href": "/ege-baza/path/index.html#lesson=practice-grid-parallelogram",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 10 · Площадь участка без постройки",
+      "href": "/ege-baza/path/index.html#lesson=practice-free-area",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 10 · Забор и проезд",
+      "href": "/ege-baza/path/index.html#lesson=practice-fence",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 10 · Равные углы вокруг точки",
+      "href": "/ege-baza/path/index.html#lesson=practice-spokes",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 11 · Объём погружённой детали",
+      "href": "/ege-baza/path/index.html#lesson=practice-displacement",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 11 · Переливание: радиус и уровень",
+      "href": "/ege-baza/path/index.html#lesson=practice-pour",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 11 · Поверхность склеенных тел",
+      "href": "/ege-baza/path/index.html#lesson=practice-joined-surface",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 11 · Считать внешние грани",
+      "href": "/ege-baza/path/index.html#lesson=practice-faces",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 12 · Синус и косинус в прямоугольном треугольнике",
+      "href": "/ege-baza/path/index.html#lesson=practice-right-ratio",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 12 · Углы треугольника",
+      "href": "/ege-baza/path/index.html#lesson=practice-triangle-angle",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 12 · Площадь через высоту",
+      "href": "/ege-baza/path/index.html#lesson=practice-parallelogram",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 12 · Треугольник на диаметре",
+      "href": "/ege-baza/path/index.html#lesson=practice-diameter-chord",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 13 · Боковая поверхность конуса",
+      "href": "/ege-baza/path/index.html#lesson=practice-cone-area",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 13 · Боковая площадь правильной пирамиды",
+      "href": "/ege-baza/path/index.html#lesson=practice-pyramid-lateral",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 13 · Объём через диагональ грани",
+      "href": "/ege-baza/path/index.html#lesson=practice-box-diagonal",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 13 · Подобие: восстановить объём",
+      "href": "/ege-baza/path/index.html#lesson=practice-similar-volume",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 14 · Дроби: общий размер доли",
+      "href": "/ege-baza/path/index.html#lesson=practice-fraction-add",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 14 · Деление на дробь",
+      "href": "/ege-baza/path/index.html#lesson=practice-fraction-divide",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 14 · Порядок действий с дробями",
+      "href": "/ege-baza/path/index.html#lesson=practice-fraction-expression",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 14 · Десятичные дроби: умножение и сложение",
+      "href": "/ege-baza/path/index.html#lesson=practice-decimals",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 14 · Деление на десятичную дробь",
+      "href": "/ege-baza/path/index.html#lesson=practice-decimal-division",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Доля, десятичная дробь и процент",
+      "href": "/ege-baza/path/index.html#lesson=practice-fraction-percent",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Найти часть от целого",
+      "href": "/ege-baza/path/index.html#lesson=practice-percent-part",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Найти целое по его части",
+      "href": "/ege-baza/path/index.html#lesson=practice-percent-whole",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Сколько процентов одно число от другого",
+      "href": "/ege-baza/path/index.html#lesson=practice-percent-rate",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Разделить в отношении",
+      "href": "/ege-baza/path/index.html#lesson=practice-ratio-parts",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Прямая пропорциональность",
+      "href": "/ege-baza/path/index.html#lesson=practice-direct-proportion",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Обратная пропорциональность",
+      "href": "/ege-baza/path/index.html#lesson=practice-inverse-proportion",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Цена после скидки или роста",
+      "href": "/ege-baza/path/index.html#lesson=practice-percent-change",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Цена до изменения",
+      "href": "/ege-baza/path/index.html#lesson=practice-percent-reverse",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 15 · Два изменения — две базы",
+      "href": "/ege-baza/path/index.html#lesson=practice-percent-chain",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 16 · Корни и произведения",
+      "href": "/ege-baza/path/index.html#lesson=practice-root-product",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 16 · Действия со степенями",
+      "href": "/ege-baza/path/index.html#lesson=practice-power-rules",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 16 · Логарифм как показатель степени",
+      "href": "/ege-baza/path/index.html#lesson=practice-log-value",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 16 · Разность квадратов",
+      "href": "/ege-baza/path/index.html#lesson=practice-identity-product",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 16 · Тригонометрия: полный оборот",
+      "href": "/ege-baza/path/index.html#lesson=practice-trig-angle",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 17 · Квадратное уравнение: выбрать корень",
+      "href": "/ege-baza/path/index.html#lesson=practice-quadratic",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 17 · Уравнение с квадратным корнем",
+      "href": "/ege-baza/path/index.html#lesson=practice-radical-equation",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 17 · Логарифмическое уравнение",
+      "href": "/ege-baza/path/index.html#lesson=practice-log-equation",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 17 · Показательное уравнение",
+      "href": "/ege-baza/path/index.html#lesson=practice-exponential-equation",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 17 · Дробное уравнение и запрет нуля",
+      "href": "/ege-baza/path/index.html#lesson=practice-rational-equation",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 18 · Числа на оси: корни и логарифмы",
+      "href": "/ege-baza/path/index.html#lesson=practice-number-match",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 18 · Сопоставить неравенства и промежутки",
+      "href": "/ege-baza/path/index.html#lesson=practice-inequality-match",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 19 · Число по признакам делимости",
+      "href": "/ege-baza/path/index.html#lesson=practice-digits-multiple",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 19 · Делимость и произведение цифр",
+      "href": "/ege-baza/path/index.html#lesson=practice-digits-product",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 20 · Движение навстречу",
+      "href": "/ege-baza/path/index.html#lesson=practice-meeting",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 20 · Движение по течению и против",
+      "href": "/ege-baza/path/index.html#lesson=practice-river",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 20 · Совместная работа через доли",
+      "href": "/ege-baza/path/index.html#lesson=practice-work",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 20 · Добавить воду до нужной концентрации",
+      "href": "/ege-baza/path/index.html#lesson=practice-mixture-water",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 20 · Средняя скорость: не среднее чисел",
+      "href": "/ege-baza/path/index.html#lesson=practice-average-speed",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 21 · Два множества и пересечение",
+      "href": "/ege-baza/path/index.html#lesson=practice-sets",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 21 · Баллы за верные и неверные ответы",
+      "href": "/ege-baza/path/index.html#lesson=practice-integer-budget",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 21 · Оценка числа участников",
+      "href": "/ege-baza/path/index.html#lesson=practice-whole-count",
+      "group": "ЕГЭ база · тренажёры"
     }
   ]
 }

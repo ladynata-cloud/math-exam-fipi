@@ -6,6 +6,14 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
+## In progress: EGE basic practice expansion
+
+- Branch `course/ege-baza-complete-practice`, based on main `1b110e09b22562b163821e4024e9c4c3c463e530`.
+- Adds 75 parameterized families to the existing 28, spanning all 21 positions; a 13-stage fractions/percent/proportion route; diagrams, matching and targeted remediation.
+- Self-checks cover 6,000 generated conditions, unchanged legacy outputs, storage restoration, Chromium layouts and board compatibility. These are simulations, not a real-student pilot.
+- Publication is not asserted by this source snapshot. See the task PR for the actual release outcome.
+- Details and limits: [practice expansion](EGE_BAZA_PRACTICE.md), [task](tasks/EGE_BAZA_COMPLETE_PRACTICE.md).
+
 ## Current release: all discussed courses (2026-10-02)
 
 - Basic EGE and gardens work-rate trainer published by PR #160, main `a325f74909fd3ba322089702a8954bcfd300e5cb`; Pages workflow and public files were verified.
