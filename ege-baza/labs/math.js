@@ -1,0 +1,23 @@
+(function(root){
+'use strict';
+const eps=1e-9;
+const normalize=a=>((a%360)+360)%360;
+const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
+const radLabel=a=>{if(a===0)return '0';const g=gcd(Math.round(a),180),n=Math.round(a)/g,d=180/g;return (n===1?'':n===-1?'−':String(n).replace('-','−'))+'π'+(d===1?'':'/'+d);};
+const trig=a=>{const r=a*Math.PI/180,s=Math.sin(r),c=Math.cos(r);return {sin:Math.abs(s)<eps?0:s,cos:Math.abs(c)<eps?0:c,tan:Math.abs(c)<eps?null:s/c,principal:normalize(a)};};
+function water(bottom,area=100,volume=400,blockArea=16,blockHeight=4){const initial=volume/area,full=(volume+blockArea*blockHeight)/area;return initial<=bottom?initial:full>=bottom+blockHeight?full:(volume-blockArea*bottom)/(area-blockArea);}
+const cone=k=>({radius:3*k,height:6*k,volumeRatio:k**3});
+const isosceles=(side,base)=>({height:Math.sqrt(side**2-(base/2)**2),area:base*Math.sqrt(side**2-(base/2)**2)/2});
+const chord=(radius,length)=>({x:length**2/(2*radius)-radius,y:Math.sqrt(radius**2-(length**2/(2*radius)-radius)**2),other:Math.sqrt(4*radius**2-length**2)});
+const cases=[
+{id:'linear',title:'Деление на отрицательное число',expr:'−2(x − 1) ≥ 6',roots:[-2],zones:[true,false],closed:[true],domain:x=>true,value:x=>-2*(x-1)-6,accept:v=>v>=-eps,domainOptions:['Все действительные числа','x ≠ −2','x > 1'],domainAnswer:0,boundary:'−2(x − 1) = 6',boundaryAnswer:[-2],why:'Скобки дают −2x + 2 ≥ 6, затем −2x ≥ 4. Делим на −2: знак меняется, x ≤ −2.',hint:'При делении на отрицательное число порядок чисел разворачивается.',answer:'(−∞; −2]'},
+{id:'product',title:'Произведение и метод интервалов',expr:'(x + 2)(x − 3) ≤ 0',roots:[-2,3],zones:[false,true,false],closed:[true,true],domain:x=>true,value:x=>(x+2)*(x-3),accept:v=>v<=eps,domainOptions:['Все действительные числа','x ≠ −2 и x ≠ 3','x ≥ 3'],domainAnswer:0,boundary:'(x + 2)(x − 3) = 0',boundaryAnswer:[-2,3],why:'Между корнями множители разных знаков. В корнях произведение равно нулю, поэтому обе границы входят.',hint:'Неравенство нестрогое. Проверьте отдельно нулевые значения множителей.',answer:'[−2; 3]'},
+{id:'fraction',title:'Дробь: ноль и запрет',expr:'(x + 2) / (x − 3) > 0',roots:[-2,3],zones:[true,false,true],closed:[false,false],domain:x=>Math.abs(x-3)>eps,value:x=>(x+2)/(x-3),accept:v=>v>eps,domainOptions:['Все действительные числа','x ≠ 3','x > −2'],domainAnswer:1,boundary:'Нуль числителя и нуль знаменателя',boundaryAnswer:[-2,3],why:'Снаружи двух границ числитель и знаменатель одного знака. −2 даёт ноль, но нужен плюс. При 3 дробь не определена.',hint:'Нельзя умножать на x − 3, не учитывая его знак. Используйте интервалы.',answer:'(−∞; −2) ∪ (3; +∞)'},
+{id:'reciprocal',title:'Почему знак ≥ не включает все границы',expr:'1 / ((x + 2)(x − 3)) ≥ 0',roots:[-2,3],zones:[true,false,true],closed:[false,false],domain:x=>Math.abs((x+2)*(x-3))>eps,value:x=>1/((x+2)*(x-3)),accept:v=>v>=-eps,domainOptions:['Все действительные числа','x ≠ −2 и x ≠ 3','x ≥ −2'],domainAnswer:1,boundary:'Нули знаменателя',boundaryAnswer:[-2,3],why:'Числитель 1 никогда не равен нулю. Знаменатель должен быть положительным; обе границы запрещены даже при знаке ≥.',hint:'Сначала ОДЗ: равенство нулю в знаменателе запрещено при любом знаке.',answer:'(−∞; −2) ∪ (3; +∞)'},
+{id:'log',title:'Логарифм: сначала область определения',expr:'log₂(x − 1) ≤ 2',roots:[1,5],zones:[false,true,false],closed:[false,true],domain:x=>x>1,value:x=>Math.log2(x-1)-2,accept:v=>v<=eps,domainOptions:['x ≥ 1','x > 1','Все действительные числа'],domainAnswer:1,boundary:'Граница ОДЗ и корень log₂(x − 1) = 2',boundaryAnswer:[1,5],why:'Аргумент x − 1 > 0. При основании 2 логарифм возрастает: x − 1 ≤ 4. Пересечение условий: 1 < x ≤ 5.',hint:'Граница ОДЗ не входит. При основании больше 1 направление неравенства сохраняется.',answer:'(1; 5]'},
+{id:'exponential',title:'Основание между нулём и единицей',expr:'(1/2)^(x − 1) ≥ 4',roots:[-1],zones:[true,false],closed:[true],domain:x=>true,value:x=>Math.pow(.5,x-1)-4,accept:v=>v>=-eps,domainOptions:['x > 1','x ≠ −1','Все действительные числа'],domainAnswer:2,boundary:'x − 1 = −2, поскольку 4 = (1/2)⁻²',boundaryAnswer:[-1],why:'Степенная функция с основанием 1/2 убывает. Поэтому x − 1 ≤ −2, откуда x ≤ −1.',hint:'Сравните (1/2)¹ и (1/2)²: большему показателю соответствует меньшее число.',answer:'(−∞; −1]'}
+];
+function contains(t,x){if(!t.domain(x))return false;return t.accept(t.value(x));}
+function selectedContains(t,x,zones,closed){const i=t.roots.findIndex(r=>Math.abs(x-r)<eps);if(i>=0)return closed[i];return zones[t.roots.filter(r=>x>r).length];}
+const api={normalize,radLabel,trig,water,cone,isosceles,chord,cases,contains,selectedContains};root.LabMath=api;if(typeof module!=='undefined')module.exports=api;
+})(typeof window==='undefined'?globalThis:window);
