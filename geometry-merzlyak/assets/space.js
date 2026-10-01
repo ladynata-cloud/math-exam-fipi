@@ -1,0 +1,28 @@
+/* Analytic spatial geometry; rendering is kept separate from all measurements. */
+(function(root){'use strict';
+const EPS=1e-8,add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),mul=(a,k)=>a.map(v=>v*k),dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],norm=a=>Math.hypot(...a),unit=a=>norm(a)<EPS?null:mul(a,1/norm(a)),dist=(a,b)=>norm(sub(a,b)),lerp=(a,b,t)=>add(a,mul(sub(b,a),t));
+function plane(a,b,c){const n=unit(cross(sub(b,a),sub(c,a)));return n?{n,d:dot(n,a)}:null;}
+function foot(p,pl){return sub(p,mul(pl.n,(dot(pl.n,p)-pl.d)/dot(pl.n,pl.n)));}
+function hitLine(a,b,pl){const u=sub(b,a),d=dot(pl.n,u);if(Math.abs(d)<EPS)return null;return add(a,mul(u,(pl.d-dot(pl.n,a))/d));}
+function angle(u,v,acute=true){if(norm(u)*norm(v)<EPS)return null;const c=dot(u,v)/norm(u)/norm(v);return Math.acos(Math.max(-1,Math.min(1,acute?Math.abs(c):c)))*180/Math.PI;}
+function linePlaneAngle(u,pl){if(norm(u)<EPS)return null;return Math.asin(Math.min(1,Math.abs(dot(u,pl.n))/norm(u)/norm(pl.n)))*180/Math.PI;}
+function basis(n){const a=Math.abs(n[2])<.9?[0,0,1]:[1,0,0],u=unit(cross(n,a));return [u,cross(n,u)];}
+function ordered(points,n){if(points.length<3)return points;const o=mul(points.reduce(add,[0,0,0]),1/points.length),[u,v]=basis(unit(n));return points.sort((a,b)=>Math.atan2(dot(sub(a,o),v),dot(sub(a,o),u))-Math.atan2(dot(sub(b,o),v),dot(sub(b,o),u)));}
+function area(points){if(points.length<3)return 0;let s=[0,0,0];for(let i=0;i<points.length;i++)s=add(s,cross(points[i],points[(i+1)%points.length]));return norm(s)/2;}
+function section(solid,pl){if(!pl||norm(pl.n)<EPS)return [];const out=[],put=p=>{if(!out.some(q=>dist(p,q)<1e-6))out.push(p);};for(const [i,j]of solid.edges){const a=solid.vertices[i],b=solid.vertices[j],da=dot(pl.n,a)-pl.d,db=dot(pl.n,b)-pl.d;if(Math.abs(da)<EPS)put(a.slice());if(Math.abs(db)<EPS)put(b.slice());if(da*db< -EPS*EPS)put(lerp(a,b,da/(da-db)));}return ordered(out,pl.n);}
+function mesh(vertices,faces,names){const edges=[],keys=new Set();for(const f of faces)for(let i=0;i<f.length;i++){const p=[f[i],f[(i+1)%f.length]].sort((a,b)=>a-b),k=p.join(',');if(!keys.has(k)){keys.add(k);edges.push(p);}}return {vertices,faces,edges,names:names||vertices.map((_,i)=>'V'+(i+1))};}
+function solid(kind='box',a=4,b=3,h=4){
+ a=Math.max(.2,a);b=Math.max(.2,b);h=Math.max(.2,h);
+ if(kind==='box'){return mesh([[-a/2,-b/2,0],[a/2,-b/2,0],[a/2,b/2,0],[-a/2,b/2,0],[-a/2,-b/2,h],[a/2,-b/2,h],[a/2,b/2,h],[-a/2,b/2,h]],[[0,3,2,1],[4,5,6,7],[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7]],['A','B','C','D','A₁','B₁','C₁','D₁']);}
+ if(kind==='pyramid'){return mesh([[-a/2,-a/2,0],[a/2,-a/2,0],[a/2,a/2,0],[-a/2,a/2,0],[0,0,h]],[[0,3,2,1],[0,1,4],[1,2,4],[2,3,4],[3,0,4]],['A','B','C','D','S']);}
+ if(kind==='octahedron'){return mesh([[a/2,0,h/2],[0,a/2,h/2],[-a/2,0,h/2],[0,-a/2,h/2],[0,0,h],[0,0,0]],[[0,1,4],[1,2,4],[2,3,4],[3,0,4],[1,0,5],[2,1,5],[3,2,5],[0,3,5]],['A','B','C','D','S','T']);}
+ if(kind==='sphere'){const r=a/2,vs=[[0,0,0]],fs=[],N=36,M=18;for(let j=1;j<M;j++){const t=Math.PI*j/M;for(let i=0;i<N;i++){const p=2*Math.PI*i/N;vs.push([r*Math.sin(t)*Math.cos(p),r*Math.sin(t)*Math.sin(p),r-r*Math.cos(t)]);}}const top=vs.length;vs.push([0,0,2*r]);for(let i=0;i<N;i++)fs.push([0,1+(i+1)%N,1+i]);for(let j=0;j<M-2;j++)for(let i=0;i<N;i++)fs.push([1+j*N+i,1+j*N+(i+1)%N,1+(j+1)*N+(i+1)%N,1+(j+1)*N+i]);for(let i=0;i<N;i++)fs.push([1+(M-2)*N+i,1+(M-2)*N+(i+1)%N,top]);const s=mesh(vs,fs,vs.map(()=>''));s.curved=true;s.sphere={center:[0,0,r],r};return s;}
+ const N=kind==='tetrahedron'||kind==='prism'?3:kind==='frustum'?4:48,base=[],upper=[];
+ for(let i=0;i<N;i++){const t=2*Math.PI*i/N+(N===4?Math.PI/4:Math.PI/6);base.push([a/2*Math.cos(t),a/2*Math.sin(t),0]);upper.push([(kind==='frustum'||kind==='cone-frustum'?b/a:1)*base[i][0],(kind==='frustum'||kind==='cone-frustum'?b/a:1)*base[i][1],h]);}
+ let vs,fs=[Array.from({length:N},(_,i)=>N-1-i)];if(kind==='cone'||kind==='tetrahedron'){vs=[...base,[0,0,h]];for(let i=0;i<N;i++)fs.push([i,(i+1)%N,N]);}else{vs=[...base,...upper];fs.push(Array.from({length:N},(_,i)=>N+i));for(let i=0;i<N;i++)fs.push([i,(i+1)%N,N+(i+1)%N,N+i]);}
+ const names=vs.map((_,i)=>N>4?'':i<N?'ABCD'[i]:(kind==='tetrahedron'?'S':'ABCD'[i-N]+'₁'));const s=mesh(vs,fs,names);s.curved=N>4;return s;
+}
+function sphereSection(s,pl){const d=Math.abs(dot(pl.n,s.center)-pl.d)/norm(pl.n);if(d>s.r+EPS)return [];const c=foot(s.center,pl);if(Math.abs(d-s.r)<EPS)return [c];const r=Math.sqrt(s.r*s.r-d*d),[u,v]=basis(unit(pl.n));return Array.from({length:120},(_,i)=>add(c,mul(add(mul(u,Math.cos(i*Math.PI/60)),mul(v,Math.sin(i*Math.PI/60))),r)));}
+function metrics(kind,a,b,h){const r=a/2;switch(kind){case'box':return {volume:a*b*h,surface:2*(a*b+a*h+b*h)};case'pyramid':return {volume:a*a*h/3,surface:a*a+2*a*Math.hypot(h,a/2)};case'cylinder':return {volume:Math.PI*r*r*h,surface:2*Math.PI*r*(r+h)};case'cone':return {volume:Math.PI*r*r*h/3,surface:Math.PI*r*(r+Math.hypot(r,h))};case'cone-frustum':{const q=b/2,l=Math.hypot(r-q,h);return {volume:Math.PI*h*(r*r+r*q+q*q)/3,surface:Math.PI*(r*r+q*q+(r+q)*l)};}case'sphere':return {volume:4*Math.PI*r**3/3,surface:4*Math.PI*r*r};case'prism':return {volume:3*Math.sqrt(3)*r*r*h/4,surface:3*Math.sqrt(3)*r*r/2+3*Math.sqrt(3)*r*h};case'tetrahedron':return {volume:Math.sqrt(3)*r*r*h/4};case'frustum':return {volume:h*(a*a+a*b+b*b)/6};default:return {};}}
+const api={EPS,add,sub,mul,dot,cross,norm,unit,dist,lerp,plane,foot,hitLine,angle,linePlaneAngle,basis,ordered,area,section,solid,sphereSection,metrics};root.Space=api;if(typeof module!=='undefined')module.exports=api;
+})(typeof window!=='undefined'?window:globalThis);

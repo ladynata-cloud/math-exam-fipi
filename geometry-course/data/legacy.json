@@ -1,0 +1,282 @@
+[
+  {
+    "title": "Перегибание и отпечаток · лаборатория приёма",
+    "href": "trainers/ch1-p3-t2-fold-imprint.html"
+  },
+  {
+    "title": "Смежные и вертикальные углы · лаборатория и доказательство",
+    "href": "trainers/ch1-p6-t1-adjacent-vertical.html"
+  },
+  {
+    "title": "Задачи на смежные и вертикальные углы · генератор",
+    "href": "trainers/ch1-p6-t2-angle-problems.html"
+  },
+  {
+    "title": "Два перпендикуляра к одной прямой · перегибание и доказательство от противного",
+    "href": "trainers/ch1-p6-t3-two-perpendiculars.html"
+  },
+  {
+    "title": "Биссектриса угла — циркуль и линейка",
+    "href": "trainers/ch2-constr-angle-bisector.html"
+  },
+  {
+    "title": "Угол, равный данному — циркуль и линейка",
+    "href": "trainers/ch2-constr-copy-angle.html"
+  },
+  {
+    "title": "Серединный перпендикуляр — циркуль и линейка",
+    "href": "trainers/ch2-constr-perp-bisector.html"
+  },
+  {
+    "title": "Перпендикуляр к прямой через точку — циркуль и линейка",
+    "href": "trainers/ch2-constr-perpendicular-point.html"
+  },
+  {
+    "title": "Что значит — равные фигуры? · Наложение",
+    "href": "trainers/ch2-p1-t1-overlay-equality.html"
+  },
+  {
+    "title": "Наложи треугольник · путь к первому признаку",
+    "href": "trainers/ch2-p1-t2-overlay-sas.html"
+  },
+  {
+    "title": "Почему хватает трёх элементов · доказательство первого признака",
+    "href": "trainers/ch2-p1-t3-proof-sas.html"
+  },
+  {
+    "title": "Найди равные треугольники · задачи по чертежу",
+    "href": "trainers/ch2-p1-t4-find-equal.html"
+  },
+  {
+    "title": "Зачёт по параграфу · первый признак равенства треугольников",
+    "href": "trainers/ch2-p1-t5-quiz.html"
+  },
+  {
+    "title": "Медиана, биссектриса, высота · три разные линии",
+    "href": "trainers/ch2-p2-t0-three-cevians.html"
+  },
+  {
+    "title": "Перпендикуляр складыванием · из точки к прямой",
+    "href": "trainers/ch2-p2-t1-perp-fold.html"
+  },
+  {
+    "title": "Равнобедренный треугольник · устройство фигуры",
+    "href": "trainers/ch2-p2-t2-isosceles-intro.html"
+  },
+  {
+    "title": "Углы при основании равны · доказательство",
+    "href": "trainers/ch2-p2-t3-proof-base-angles.html"
+  },
+  {
+    "title": "Биссектриса = медиана = высота · равнобедренный",
+    "href": "trainers/ch2-p2-t4-three-in-one.html"
+  },
+  {
+    "title": "Равнобедренный в задачах · найди равные",
+    "href": "trainers/ch2-p2-t5-find-equal-iso.html"
+  },
+  {
+    "title": "Мини-зачёт · медианы, биссектрисы, высоты",
+    "href": "trainers/ch2-p2-t6-quiz.html"
+  },
+  {
+    "title": "Прилежащие и противолежащие · опорный словарь",
+    "href": "trainers/ch2-p3-t0-adjacent-opposite.html"
+  },
+  {
+    "title": "Наложи по стороне и двум углам · второй признак",
+    "href": "trainers/ch2-p3-t1-overlay-asa.html"
+  },
+  {
+    "title": "Почему точка C не может быть другой · второй признак",
+    "href": "trainers/ch2-p3-t2-proof-asa.html"
+  },
+  {
+    "title": "Первый или второй? · различение признаков",
+    "href": "trainers/ch2-p3-t3-which-sign.html"
+  },
+  {
+    "title": "Найди равные треугольники · задачи по чертежу",
+    "href": "trainers/ch2-p3-t4-find-equal-asa.html"
+  },
+  {
+    "title": "Мини-зачёт · второй признак",
+    "href": "trainers/ch2-p3-t5-quiz.html"
+  },
+  {
+    "title": "Почему хватает трёх сторон · жёсткость треугольника",
+    "href": "trainers/ch2-p4-t0-rigidity.html"
+  },
+  {
+    "title": "Наложи по трём сторонам · третий признак",
+    "href": "trainers/ch2-p4-t1-overlay-sss.html"
+  },
+  {
+    "title": "Доказательство третьего признака · конструктор",
+    "href": "trainers/ch2-p4-t2-proof-sss.html"
+  },
+  {
+    "title": "Какой признак? · различение трёх признаков",
+    "href": "trainers/ch2-p4-t3-which-sign.html"
+  },
+  {
+    "title": "Найди равные по трём сторонам · задачи по чертежу",
+    "href": "trainers/ch2-p4-t4-find-equal-sss.html"
+  },
+  {
+    "title": "Мини-зачёт · третий признак",
+    "href": "trainers/ch2-p4-t5-quiz.html"
+  },
+  {
+    "title": "Пересекающиеся и параллельные прямые",
+    "href": "trainers/ch3-p1-t1-crossing-parallel.html"
+  },
+  {
+    "title": "Восемь углов при секущей",
+    "href": "trainers/ch3-p1-t2-eight-angles.html"
+  },
+  {
+    "title": "Когда прямые параллельны",
+    "href": "trainers/ch3-p1-t3-sign-lab.html"
+  },
+  {
+    "title": "Почему признак работает",
+    "href": "trainers/ch3-p1-t4-proof-sign.html"
+  },
+  {
+    "title": "Ещё два признака",
+    "href": "trainers/ch3-p1-t5-two-more-signs.html"
+  },
+  {
+    "title": "Угольник и линейка",
+    "href": "trainers/ch3-p1-t6-practical.html"
+  },
+  {
+    "title": "Докажи, что a ∥ b",
+    "href": "trainers/ch3-p1-t7-find-equal.html"
+  },
+  {
+    "title": "Через точку — одна параллель",
+    "href": "trainers/ch3-p2-t1-parallel-axiom.html"
+  },
+  {
+    "title": "Свойство 1: накрест лежащие углы",
+    "href": "trainers/ch3-p2-t4-property-alt-angles.html"
+  },
+  {
+    "title": "Свойства 2 и 3: соответственные и односторонние",
+    "href": "trainers/ch3-p2-t5-properties-2-3.html"
+  },
+  {
+    "title": "Прямая и обратная теорема",
+    "href": "trainers/ch3-p2-t6-direct-converse.html"
+  },
+  {
+    "title": "Сумма углов треугольника",
+    "href": "trainers/ch4-p1-t1-angle-sum-lab.html"
+  },
+  {
+    "title": "Почему сумма углов равна 180°",
+    "href": "trainers/ch4-p1-t2-proof-angle-sum.html"
+  },
+  {
+    "title": "Внешний угол треугольника",
+    "href": "trainers/ch4-p1-t3-exterior-angle.html"
+  },
+  {
+    "title": "Виды треугольников",
+    "href": "trainers/ch4-p1-t4-triangle-types.html"
+  },
+  {
+    "title": "Найди углы",
+    "href": "trainers/ch4-p1-t5-find-angles.html"
+  },
+  {
+    "title": "Зачёт §1",
+    "href": "trainers/ch4-p1-t6-quiz.html"
+  },
+  {
+    "title": "Сторона ↔ угол",
+    "href": "trainers/ch4-p2-t1-side-angle-lab.html"
+  },
+  {
+    "title": "Против большей стороны — больший угол",
+    "href": "trainers/ch4-p2-t2-proof-side-angle.html"
+  },
+  {
+    "title": "Против большего угла — большая сторона",
+    "href": "trainers/ch4-p2-t3-converse-iso.html"
+  },
+  {
+    "title": "Гипотенуза больше катета",
+    "href": "trainers/ch4-p2-t4-hypotenuse-leg.html"
+  },
+  {
+    "title": "Неравенство треугольника",
+    "href": "trainers/ch4-p2-t5-triangle-inequality.html"
+  },
+  {
+    "title": "Неравенство треугольника — доказательство",
+    "href": "trainers/ch4-p2-t6-prove-inequality.html"
+  },
+  {
+    "title": "Неравенство треугольника — генератор",
+    "href": "trainers/ch4-p2-t7-triangle-generator.html"
+  },
+  {
+    "title": "Зачёт §2",
+    "href": "trainers/ch4-p2-t8-quiz.html"
+  },
+  {
+    "title": "Два острых угла прямоугольного треугольника",
+    "href": "trainers/ch4-p3-t1-two-acute-angles.html"
+  },
+  {
+    "title": "Катет против угла в 30°",
+    "href": "trainers/ch4-p3-t2-leg-against-30.html"
+  },
+  {
+    "title": "Половина гипотенузы — значит 30°",
+    "href": "trainers/ch4-p3-t3-half-means-30.html"
+  },
+  {
+    "title": "Медиана к гипотенузе",
+    "href": "trainers/ch4-p3-t4-median-to-hypotenuse.html"
+  },
+  {
+    "title": "Медиана-половина — значит прямоугольный",
+    "href": "trainers/ch4-p3-t5-median-converse.html"
+  },
+  {
+    "title": "Признаки равенства прямоугольных треугольников",
+    "href": "trainers/ch4-p3-t6-which-sign.html"
+  },
+  {
+    "title": "Признак по гипотенузе и катету (HL)",
+    "href": "trainers/ch4-p3-t7-hyp-leg-congruence.html"
+  },
+  {
+    "title": "Расчёты в прямоугольном треугольнике — генератор §3",
+    "href": "trainers/ch4-p3-t8-generator.html"
+  },
+  {
+    "title": "Зачёт по §3 — прямоугольный треугольник",
+    "href": "trainers/ch4-p3-t9-quiz.html"
+  },
+  {
+    "title": "Расстояние от точки до прямой",
+    "href": "trainers/ch4-p4-t1-distance-point-line.html"
+  },
+  {
+    "title": "Расстояние между параллельными",
+    "href": "trainers/ch4-p4-t2-distance-parallels.html"
+  },
+  {
+    "title": "Построение треугольника по трём сторонам",
+    "href": "trainers/ch4-p4-t3-construct-sss.html"
+  },
+  {
+    "title": "Треугольник по двум сторонам и углу",
+    "href": "trainers/ch4-p4-t4-construct-two-sides-angle.html"
+  }
+]
