@@ -72,6 +72,26 @@ Updated: 2026-10-01
 - No course-storage writes, merge or publication. The separately scheduled
   derivative work retains its own branch.
 
+## Algebra, foundations and percentage assembly (2026-10-02)
+
+- Follow-up branch `course/ege-baza-algebra-foundations`, based on Draft #152
+  head `ee4af5359dfc72d995d99e595ab98f0857606ad6`.
+- New isolated algebra/foundation and percentage sections are linked from the
+  navigator. Fourteen foundation skills (84 practice / 28 checks), 8 guided
+  function problems, 17 percentage scenarios (61 steps / 24 checks), six error
+  clinics and three geometry construction tools are implemented. A subsequent
+  owner request adds 12 task-19–21 guided scenarios with 12 distinct checks,
+  including constrained digit construction, movement and constructive bounds.
+- Combined review ZIP includes the old two modules and new laboratories. It is
+  still a prototype: 22 old registry lessons remain planned; new-section state
+  is temporary and independent of the old course grading/storage.
+- Author mathematical and real-browser gates pass, including five explicitly
+  scripted virtual-learner scenarios. Navigator browser gate now passes 30
+  checks in this environment; this does not retroactively claim all old module
+  browser suites passed. [Coverage and limits](EGE_BAZA_ALGEBRA_FOUNDATIONS.md).
+- No independent/human learning review, merge or publication. The separately
+  scheduled derivative work is not part of this branch.
+
 ## Review and readiness
 
 New local progress/assessment behavior is classified HIGH. Author checks and a
