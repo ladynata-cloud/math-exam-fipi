@@ -55,3 +55,13 @@ An iframe-only catalogue would preserve trainers but would not enforce the new
 teaching sequence. A new general geometry engine would increase scope and risk;
 the prototype uses constrained, exact constructions instead. It is not a full
 GeoGebra replacement.
+
+## 2026-10-02 prototype extension (still Proposed)
+
+The follow-up prototype adds prerequisite detours with restoration of the exact
+problem step, graphical algebra and percentage models, and basic-operation
+practice. Existing navigator links are added, but registry completion and module
+state contracts are not changed. Assessment exposure is tracked within each open
+page, including overlapping transfer practice. The geometry prototype now asks
+for a construction idea before selecting points and offers a perpendicular tool.
+This evidence does not itself accept the archetype or authorize rollout.

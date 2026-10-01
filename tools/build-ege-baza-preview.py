@@ -16,6 +16,14 @@ MODULE = 'https://mathexam.space/trainers/ege-baza/course/'
 files = {f'ege-baza/{name}': (ROOT / 'ege-baza' / name).read_text() for name in
          ('index.html', 'course.css', 'registry.js', 'foundation-reference.js', 'data-reference.js', 'course-definitions.js', 'course-state.js', 'backup.js', 'backup-ui.js', 'app.js')}
 
+# Bundle isolated labs and their exact existing renderer with the course.
+for section in ('algebra', 'percent', 'labs', 'reasoning'):
+    for source in (ROOT / 'ege-baza' / section).glob('*'):
+        if source.is_file():
+            files[source.relative_to(ROOT).as_posix()] = source.read_text()
+renderer = 'ege-profil/trainers/stereo/js/three.min.js'
+files[renderer] = (ROOT / renderer).read_text()
+
 # Keep implemented course modules local; existing site resources remain online.
 files['ege-baza/index.html'] = re.sub(r'href="(\.\./[^"]*)"',
     lambda m: m.group(0) if m[1].startswith('../trainers/ege-baza/course/') else
@@ -43,6 +51,8 @@ files['READ-ME.txt'] = '''Базовый ЕГЭ — рабочая версия 
 3. На карте выберите первый или второй модуль. Из урока можно вернуться по ссылке «Карта курса».
 
 Внутри: навигатор, семь модулей в плане, десять уроков и 100 задач двух первых модулей.
+Дополнительно: алгебра, основа 1–6 классов, проценты и пропорции, четыре лаборатории.
+Они доступны через боковое меню. Результаты новых разделов временные, отчёт скачивается отдельно.
 Для каждого готового модуля — практика, отдельные проверки и резервная копия.
 Остальные уроки ещё не готовы. Это не публикация готового курса.
 Дополнительные тренажёры открываются на mathexam.space и требуют интернета.
@@ -53,6 +63,10 @@ files['READ-ME.txt'] = '''Базовый ЕГЭ — рабочая версия 
 Для работы с учениками нужна проверенная сборка на одном адресе сайта.
 Настоящую синхронизацию между браузерами эта версия не выполняет.
 '''
+# file:// does not resolve directory URLs to index.html. Rewrite bundled links.
+for filename in list(files):
+    files[filename] = files[filename].replace('../trainers/ege-baza/course/', '../trainers/ege-baza/course/index.html').replace('../trainers/ege-baza/data-course/', '../trainers/ege-baza/data-course/index.html').replace('../../../ege-baza/#', '../../../ege-baza/index.html#')
+files['REVIEW-RU.txt'] = (ROOT / 'docs/EGE_BAZA_REVIEW_RU.txt').read_text()
 for filename, content in files.items():
     if filename.endswith('.html'):
         for href in re.findall(r'(?:href|src)="([^"]+)"', content):
@@ -66,9 +80,9 @@ for filename, content in files.items():
                 normalized += '/index.html'
             assert normalized in files, (filename, href)
 assert "href:'https://mathexam.space/trainers/oge-basics/'+path" in files['ege-baza/registry.js']
-assert "modulePath='../trainers/ege-baza/course/'" in files['ege-baza/registry.js']
-assert 'href="../../../ege-baza/#map"' in files['trainers/ege-baza/course/index.html']
-assert 'href="../../../ege-baza/#module?module=m02"' in files['trainers/ege-baza/data-course/index.html']
+assert "modulePath='../trainers/ege-baza/course/index.html'" in files['ege-baza/registry.js']
+assert 'href="../../../ege-baza/index.html#map"' in files['trainers/ege-baza/course/index.html']
+assert 'href="../../../ege-baza/index.html#module?module=m02"' in files['trainers/ege-baza/data-course/index.html']
 DEST.parent.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(DEST, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
     for filename, content in files.items():

@@ -19,5 +19,6 @@ const cases=[
 ];
 function contains(t,x){if(!t.domain(x))return false;return t.accept(t.value(x));}
 function selectedContains(t,x,zones,closed){const i=t.roots.findIndex(r=>Math.abs(x-r)<eps);if(i>=0)return closed[i];return zones[t.roots.filter(r=>x>r).length];}
-const api={normalize,radLabel,trig,water,cone,isosceles,chord,cases,contains,selectedContains};root.LabMath=api;if(typeof module!=='undefined')module.exports=api;
+function perpendicularFoot(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],d=dx*dx+dy*dy;if(d===0)return null;const t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/d;return [a[0]+t*dx,a[1]+t*dy];}
+const api={perpendicularFoot,normalize,radLabel,trig,water,cone,isosceles,chord,cases,contains,selectedContains};root.LabMath=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);
