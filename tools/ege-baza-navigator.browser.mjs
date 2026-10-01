@@ -24,7 +24,7 @@ try{
  if(shots)fs.mkdirSync(shots,{recursive:true});
  for(const width of [1280,360]){
   await page.setViewportSize({width,height:850});
-  for(const hash of ['today','map','module?module=m01','module?module=m03','foundation?skill=p-fraction&from=m01','progress','teacher']){
+  for(const hash of ['today','map','module?module=m01','module?module=m02','module?module=m03','today?module=m02','progress?module=m02','backup?module=m02','foundation?skill=p-fraction&from=m01','progress','teacher']){
    await page.goto(url+'#'+hash);await page.locator('h1').waitFor();
    ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'No overflow '+width+' '+hash);
    if(shots&&['today','map','module?module=m01'].includes(hash))await page.screenshot({path:path.join(shots,`${width}-${hash.split('?')[0]}.png`),fullPage:true});
@@ -37,7 +37,7 @@ try{
  await page.click('a[href="../../../ege-baza/#map"]');await page.waitForURL('**/ege-baza/#map');
  ok(await page.locator('[data-module]').count()===7,'Returns to course');
  await page.goBack();ok(await page.locator('#slider').isVisible(),'Browser back returns to lesson');
- await page.goto(url+'#module?module=m02');ok(await page.locator('.lesson a.btn').count()===0,'Planned lessons cannot launch');
+ await page.goto(url+'#module?module=m03');ok(await page.locator('.lesson a.btn').count()===0,'Planned lessons cannot launch');
  const blocked=await browser.newContext();await blocked.addInitScript(()=>{Storage.prototype.getItem=()=>{throw Error('disabled');};});
  const bp=await blocked.newPage();await bp.goto(url);ok(await bp.locator('#storage-notice').isVisible(),'Storage error visible');await blocked.close();
  const file=await context.newPage();await file.goto('file://'+path.join(root,'ege-baza/index.html'));await file.locator('h1').waitFor();

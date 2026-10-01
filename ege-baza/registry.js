@@ -1,7 +1,7 @@
 (function(root){
  'use strict';
  const modulePath='../trainers/ege-baza/course/';
- const lesson=(id,title,goal,prerequisites=[],skill=null)=>({id,title,goal,prerequisites,status:skill?'prototype':'planned',skill,href:skill?modulePath+'#learn-'+skill:null});
+ const lesson=(id,title,goal,prerequisites=[],skill=null)=>({id,title,goal,prerequisites,status:skill?'prototype':'planned',skill,href:skill?(id.startsWith('m02-')?'../trainers/ege-baza/data-course/':modulePath)+'#learn-'+skill:null});
  const modules=[
   {id:'m01',number:'01',title:'Числа, деньги и проценты',description:'От действий с дробями до покупки, в которой нужно всё учесть.',positions:[1,2,6,14,15],status:'prototype',lessons:[
    lesson('m01-decimal','Числа без путаницы','Связать дробь с десятичной записью и выполнить расчёт.',['p-fraction','p-decimal'],'decimal'),
@@ -11,11 +11,11 @@
    lesson('m01-change','Цена меняется','Вычислить новую цену и восстановить прежнюю.',['m01-percent'],'change'),
    lesson('m01-choice','Выбираем с расчётом','Сравнить полные расходы и объяснить выбор.',['m01-rounding','m01-change'],'choice')
   ]},
-  {id:'m02',number:'02',title:'Данные, графики и логика',description:'Читать данные, оценивать случайность и делать обоснованные выводы.',positions:[3,5,7,8],status:'planned',lessons:[
-   lesson('m02-data','Таблицы и диаграммы','Найти нужные данные, сравнить и посчитать.',['m01-decimal']),
-   lesson('m02-probability','Вероятность','Перечислить исходы и найти долю подходящих.',['p-fraction']),
-   lesson('m02-graphs','График рассказывает','Определить значения и описать изменения.',['p-signs','m02-data']),
-   lesson('m02-logic','Что следует из условия','Проверить утверждение и найти контрпример.',[])
+  {id:'m02',number:'02',title:'Данные, графики и логика',description:'Читать данные, оценивать случайность и делать обоснованные выводы.',positions:[3,5,7,8],status:'prototype',lessons:[
+   lesson('m02-data','Таблицы и диаграммы','Найти нужные данные, сравнить и посчитать.',['m01-decimal'],'data'),
+   lesson('m02-probability','Вероятность','Перечислить исходы и найти долю подходящих.',['p-fraction'],'probability'),
+   lesson('m02-graphs','График рассказывает','Определить значения и описать изменения.',['p-signs','m02-data'],'graphs'),
+   lesson('m02-logic','Что следует из условия','Проверить утверждение и найти контрпример.',[],'logic')
   ]},
   {id:'m03',number:'03',title:'Выражения и уравнения',description:'Перевести условие на язык формул и найти неизвестное.',positions:[4,16,17,18],status:'planned',lessons:[
    lesson('m03-formulas','Подстановка в формулу','Подставить величины в согласованных единицах.',['p-order','m01-rounding']),

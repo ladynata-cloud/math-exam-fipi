@@ -25,7 +25,7 @@ Updated: 2026-10-01
   81 DOM regression checks pass. The preview ZIP builds with eight files and
   checked internal links. Browser launch failed with a socket restriction;
   real desktop/mobile/keyboard/file-preview checks remain required.
-- Current follow-up: `EGE_BAZA_COURSE_04_BACKUP`, branch
+- Draft #150: `EGE_BAZA_COURSE_04_BACKUP`, branch
   `course/ege-baza-backup`, based on #149 head
   `939dd318bf03cdf44357f14792cfc72cabbde3f4`. Adds first-module JSON backup,
   previewed confirmed restoration and protection against stale module writes.
@@ -33,6 +33,18 @@ Updated: 2026-10-01
 - Backup gate: 69 unit/DOM/conflict checks pass; existing navigator and module
   regression gates pass. The portable preview now has ten files. Real browser
   download/upload/concurrency and independent HIGH review remain pending.
+- Current follow-up: `EGE_BAZA_COURSE_05_DATA`, branch
+  `course/ege-baza-data-module`, based on #150 head
+  `9607af93e424d08bbd50d4f23bf2e8b1bd6ec24b`. Adds the second module:
+  four skills, 40 author tasks, chart/table stimuli and interactive models.
+  [Details and remaining gates](EGE_BAZA_DATA_MODULE.md).
+- Current navigator: ten prototype lessons / 22 planned; explicit m01/m02
+  selection in Today, progress and backup. State and restoration use separate
+  fixed keys; previous m01 files remain compatible. No shared group journal.
+- New gates pass: 234 math/stimulus/parity/isolation checks, 78 module DOM
+  checks and 26 cross-module DOM/file-input checks. Regression: 242 navigator,
+  69 backup, 81 foundation DOM checks, 60 foundation answers and EGE-2027 gate.
+  Preview ZIP: 15 files with checked links. Real-browser and HIGH review pending.
 - The owner delegated continued course development toward a complete Codex
   handoff; [delivery requirements](EGE_BAZA_DELIVERY.md) record the final bundle.
 - Owner decision on 2026-10-01: build in bounded steps and publish the complete
@@ -59,7 +71,7 @@ recorded in the task PR and handoff.
 1. Complete real-browser checks for the navigator and first module in a permitted
    environment; the inherited HIGH review remains pending.
 2. Extend assessment forms/history and prerequisite integration, then develop
-   the remaining modules one bounded task at a time. Backup exists for m01 only.
+   the remaining modules one bounded task at a time. Backup exists separately for m01 and m02.
 3. Review the complete course and base-EGE home page together; publish only after
    the release checklist and separate owner authorization, then run production smoke.
 
