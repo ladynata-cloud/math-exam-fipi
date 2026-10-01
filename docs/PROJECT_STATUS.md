@@ -1,10 +1,21 @@
 # MathExam project status
 
-Updated: 2026-08-15
+Updated: 2026-10-02
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
+
+## Current integration: basic EGE (#155)
+
+- Verified remote main before integration: `010e89c75c0fe110b57c983c728b8216fb38cd9d`.
+- Public homepage checked 2026-10-02: OGE-focused; HTTP response served by GitHub Pages. `CNAME` remains `mathexam.space`. The root Dockerfile belongs to the board backend and is unchanged.
+- Branch `release/ege-baza-main-155` integrates #153 and its relevant course dependencies onto current main, then adds the main-course learning path and homepage.
+- Owner explicitly authorizes merge/publication and waives independent review/final approval for this release only. No external review is claimed.
+- See [release evidence](EGE_BAZA_RELEASE_155.md), [task](tasks/EGE_BAZA_RELEASE_155.md) and the final PR for exact head, gates and live publication evidence. This pre-merge file does not itself claim a successful deployment.
+- Next: publish after local gates; verify public content against merged blobs; continue finer FIPI subtype coverage and real pupil evaluation.
+
+## Historical snapshot below (2026-08-15; not current release evidence)
 
 ## Production main
 

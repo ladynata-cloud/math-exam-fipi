@@ -1,0 +1,24 @@
+(function(){'use strict';
+class SolidView{
+ constructor(mount){this.mount=mount;this.theta=.7;this.phi=1.05;this.radius=31;this.mode='water';this.parameter=0;this.live=false;this.animation=0;this.drag=null;
+  try{if(!window.THREE)throw Error('Three.js недоступна');this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));this.renderer.domElement.setAttribute('aria-label','Объёмная модель. Для вращения используйте мышь или кнопки под моделью.');mount.append(this.renderer.domElement);this.scene=new THREE.Scene();this.camera=new THREE.PerspectiveCamera(42,1,.1,150);this.scene.add(new THREE.AmbientLight(0xffffff,.8));const light=new THREE.DirectionalLight(0xffffff,.7);light.position.set(7,15,10);this.scene.add(light);this.group=new THREE.Group();this.scene.add(this.group);this.live=true;
+   const el=this.renderer.domElement;el.addEventListener('pointerdown',e=>{if(this.drag)return;this.drag={id:e.pointerId,x:e.clientX,y:e.clientY};el.setPointerCapture(e.pointerId);});el.addEventListener('pointermove',e=>{if(!this.drag||this.drag.id!==e.pointerId)return;this.theta-=(e.clientX-this.drag.x)*.008;this.phi=Math.max(.2,Math.min(1.5,this.phi+(e.clientY-this.drag.y)*.008));this.drag.x=e.clientX;this.drag.y=e.clientY;this.draw();});const end=e=>{if(this.drag?.id===e.pointerId)this.drag=null;};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);el.addEventListener('lostpointercapture',end);this.observer=new ResizeObserver(()=>this.resize());this.observer.observe(mount);this.resize();
+  }catch(e){this.error=e.message;mount.innerHTML='<p style="padding:20px">Объёмная модель недоступна в этом браузере. Расчёт и управление параметрами остаются доступны. Попробуйте браузер с поддержкой WebGL.</p>';}
+ }
+ resize(){if(!this.live)return;const w=this.mount.clientWidth,h=this.mount.clientHeight;if(w<1||h<1)return;this.renderer.setSize(w,h);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();this.draw();}
+ rotate(dx,dy=0){this.theta+=dx;this.phi=Math.max(.2,Math.min(1.5,this.phi+dy));this.draw();}
+ home(){this.theta=.7;this.phi=1.05;this.radius=this.mode==='water'?31:19;this.draw();}
+ zoom(k){this.radius=Math.max(this.mode==='water'?22:12,Math.min(48,this.radius*k));this.draw();}
+ disposeGroup(){while(this.group.children.length){const o=this.group.children[0];this.group.remove(o);o.traverse(c=>{c.geometry?.dispose();if(c.material)(Array.isArray(c.material)?c.material:[c.material]).forEach(m=>m.dispose());});}}
+ mesh(geometry,color,opacity,x=0,y=0,z=0){const m=new THREE.Mesh(geometry,new THREE.MeshPhongMaterial({color,transparent:opacity<1,opacity,side:THREE.DoubleSide,depthWrite:opacity===1}));m.position.set(x,y,z);this.group.add(m);return m;}
+ wire(geometry,color,x=0,y=0,z=0){const line=new THREE.LineSegments(new THREE.EdgesGeometry(geometry),new THREE.LineBasicMaterial({color,transparent:true,opacity:.8}));line.position.set(x,y,z);this.group.add(line);}
+ line(points,color=0x21735f){const g=new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p)));this.group.add(new THREE.Line(g,new THREE.LineBasicMaterial({color})));}
+ set(mode,parameter){this.mode=mode;this.parameter=parameter;if(!this.live)return;this.disposeGroup();
+  if(mode==='water'){const bottom=7*(1-parameter),level=LabMath.water(bottom);const vessel=new THREE.BoxGeometry(10,8,10);this.wire(vessel,0x758c8b,0,4,0);vessel.dispose();this.mesh(new THREE.BoxGeometry(10,.08,10),0xa4b6af,1,0,0,0);this.mesh(new THREE.BoxGeometry(9.98,level,9.98),0x4d9bd7,.25,0,level/2,0);this.mesh(new THREE.PlaneGeometry(10,10),0x2860bd,.4,0,level,0).rotation.x=-Math.PI/2;const block=new THREE.BoxGeometry(4,4,4);this.mesh(block,0xd68d44,1,0,bottom+2,0);this.wire(block,0x87501d,0,bottom+2,0);this.line([[-5.1,4,-5],[-5.1,4,5]],0x173c50);
+  }else{const k=parameter;this.mesh(new THREE.ConeGeometry(3,6,64),0xacc7be,.16,0,3,0);this.mesh(new THREE.ConeGeometry(3*k,6*k,64),0x308675,.38,0,6-3*k,0);for(let i=0;i<8;i++){const a=i*Math.PI/4;this.line([[0,6,0],[3*Math.cos(a),0,3*Math.sin(a)]],0xabc0b4);}const ring=[];for(let i=0;i<=96;i++){const a=i/96*Math.PI*2;ring.push([3*k*Math.cos(a),6-6*k,3*k*Math.sin(a)]);}this.line(ring,0xad511c);this.line([[0,6,0],[0,0,0]],0x70887b);this.mesh(new THREE.CircleGeometry(3*k,64),0xd28946,.36,0,6-6*k,0).rotation.x=-Math.PI/2;}
+ this.draw();}
+ draw(){if(!this.live)return;const center=new THREE.Vector3(0,this.mode==='water'?4:3,0),r=this.radius/Math.min(1,this.camera.aspect);this.camera.position.set(r*Math.sin(this.phi)*Math.sin(this.theta),center.y+r*Math.cos(this.phi),r*Math.sin(this.phi)*Math.cos(this.theta));this.camera.lookAt(center);this.renderer.render(this.scene,this.camera);}
+ destroy(){this.observer?.disconnect();if(this.live){this.disposeGroup();this.renderer.dispose();this.renderer.forceContextLoss();}this.live=false;}
+}
+window.SolidView=SolidView;
+})();
