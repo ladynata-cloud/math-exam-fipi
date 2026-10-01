@@ -1,0 +1,65 @@
+{
+  "retrieved": "2026-10-02 Asia/Novosibirsk",
+  "archives": [
+    {
+      "name": "demo2027",
+      "url": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip",
+      "retrieved": "2026-10-01T20:41:58.947318+00:00",
+      "sha256": "6864e19e4004895b825faff81da3e1a2938b4faf1682ec67cdb9b70b8d4e0832",
+      "contentType": "application/zip",
+      "files": [
+        "МА-11 ЕГЭ 2027_КОДИФ.pdf",
+        "МА-11 ЕГЭ 2027 ДЕМО_базовый.pdf",
+        "МА-11 ЕГЭ 2027 ДЕМО_профильный.pdf",
+        "МА-11 ЕГЭ 2027 СПЕЦ_базовый.pdf",
+        "МА-11 ЕГЭ 2027 СПЕЦ_профильный.pdf"
+      ],
+      "status": "downloaded"
+    },
+    {
+      "name": "open2026",
+      "url": "https://doc.fipi.ru/ege/otkrytyy-bank-zadaniy-ege/otkrytyye-varianty-kim-ege/2026/Mat_1_ege2026.zip",
+      "retrieved": "2026-10-01T20:42:08.179091+00:00",
+      "sha256": "4c7a0742fcc079d41b5c0a65d41758c3977da66cc4c9e2f48a0a58bab44ea798",
+      "contentType": "application/zip",
+      "files": [
+        "МАпроф.pdf",
+        "МАбаз.pdf"
+      ],
+      "status": "downloaded"
+    }
+  ],
+  "documents": [
+    {
+      "file": "demo-2027.pdf",
+      "kind": "demo",
+      "level": "basic",
+      "pages": 17,
+      "sha256": "acee4ee13a64b70e0e505004a9a151a1380470a984b016ed275ff3901e776662"
+    },
+    {
+      "file": "spec-2027.pdf",
+      "kind": "specification",
+      "level": "basic",
+      "pages": 6,
+      "sha256": "206a39e85983ef607f2494afd71b867a8effa8228a02a3d1406ff751168a0c68"
+    },
+    {
+      "file": "open-2026.pdf",
+      "kind": "open-variant",
+      "level": "basic",
+      "pages": 7,
+      "sha256": "1ffa6f2d9052cbd85b6bc630baba9d501f7faade78b07b3954a2a075fd960099"
+    }
+  ],
+  "previous_demo_sha256": "6864e19e4004895b825faff81da3e1a2938b4faf1682ec67cdb9b70b8d4e0832",
+  "demo_matches_previous": true,
+  "document_status": "project as labelled by FIPI on 2026-10-02",
+  "open_bank": {
+    "url": "https://ege.fipi.ru/bank/",
+    "status": "entry_fetch_timed_out",
+    "records_collected": 0,
+    "completeness": "unverified",
+    "observed": "Search service: 400 Timeout fetching. No hidden endpoints queried."
+  }
+}

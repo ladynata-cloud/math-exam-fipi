@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),D=require('../../ege-baza/path/data.js');let n=0;
+for(let seed=0;seed<210;seed++){for(let m of D.meta){let t=D.task(m.id,seed);assert(t.q&&t.steps.length);if(t.rule){let alternatives=[];for(let mask=0;mask<256;mask++){let v=[...t.digits].filter((_,i)=>mask>>i&1).join('');if(v.length===5&&v[0]!=='0'&&Number(v)%22===0)alternatives.push(v);}assert(alternatives.length);for(let v of alternatives)assert(D.correct(t,v));assert(!D.correct(t,t.digits));}else{assert(Number.isFinite(t.answer));assert(D.correct(t,String(t.answer)));assert(!D.correct(t,''));assert(!D.correct(t,' '));assert(!D.correct(t,String(t.answer+1)));}for(let s of t.steps)if(s.a!==undefined)assert(Number.isFinite(s.a));n++;}
+const k=2+seed%7;
+let eq=D.task('equations',seed);if(seed%5===0){let {left,right}=eq.model,x=eq.answer;assert.equal(left.reduce((s,[c,p])=>s+c*(p?x:1),0),right.reduce((s,[c,p])=>s+c*(p?x:1),0));}else if(seed%5===1){let x=eq.answer;assert.equal(x*x-(2*k+1)*x+k*(k+1),0);assert(x<k+1);}else if(seed%5===2)assert.equal(Math.sqrt(eq.answer+k),k);else if(seed%5===3)assert.equal(Math.log2(eq.answer+k),3);else assert.equal(2**(eq.answer+k),32);
+let t=D.task('motion',seed),{dist,speed}=t.model;assert(Math.abs(t.answer*dist.reduce((s,d,i)=>s+d/speed[i],0)-dist.reduce((s,d)=>s+d,0))<1e-8);
+let ring=D.task('reasoning',seed);assert.equal(ring.answer,25*k);const L=220*k,points=[0,110*k,85*k,165*k],distance=(a,b)=>Math.min(Math.abs(a-b),L-Math.abs(a-b));for(let [a,b,d] of [[0,1,110],[0,2,85],[2,3,80],[3,0,55],[1,2,25]])assert.equal(distance(points[a],points[b]),d*k);
+}
+for(let x of ['','1/0','NaN','Infinity','1+2','3garbage'])assert.equal(D.parse(x),null);assert.equal(D.parse('−3/4'),-.75);assert.equal(D.parse('0,125'),.125);
+// Independent exhaustive reconstruction of normalized ring data, including both orientations.
+let solutions=[];for(let L=220;L<=400;L++){const dist=(a,b)=>Math.min(Math.abs(a-b),L-Math.abs(a-b));for(let B of [110,L-110])for(let C of [85,L-85])for(let A of [55,L-55])if(dist(C,A)===80)solutions.push(dist(B,C));}assert(solutions.length>0);assert(solutions.every(x=>x===25));
+console.log('RELEASE_MATH_PASS',n,'generated tasks; all deletion alternatives, equation substitutions, motion conservation and exhaustive ring reconstruction.');
