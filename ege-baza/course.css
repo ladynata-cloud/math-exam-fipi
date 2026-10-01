@@ -6,3 +6,5 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
 .lesson.selected{border:2px solid var(--green)}.big-stat small{font:18px system-ui,sans-serif;color:var(--muted)}
+
+.backup-label{display:block;font-weight:700;margin:18px 0 8px}.backup-root input[type=file]{display:block;width:100%;font:inherit;font-size:14px}.backup-confirm{display:flex;gap:10px;align-items:start;margin-top:22px}.backup-confirm input{margin-top:6px;width:18px;height:18px;flex-shrink:0;accent-color:var(--green)}.backup-preview,.backup-status{margin-top:22px}.backup-preview h2:focus{outline:2px solid var(--green);outline-offset:6px}.backup-root button:disabled{opacity:.55;cursor:default}.backup-status:focus{outline:2px solid var(--green)}

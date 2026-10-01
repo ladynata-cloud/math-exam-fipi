@@ -14,7 +14,7 @@ DEST = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / 'ege-baza-pr
 NAV = 'https://mathexam.space/ege-baza/'
 MODULE = 'https://mathexam.space/trainers/ege-baza/course/'
 files = {f'ege-baza/{name}': (ROOT / 'ege-baza' / name).read_text() for name in
-         ('index.html', 'course.css', 'registry.js', 'foundation-reference.js', 'course-state.js', 'app.js')}
+         ('index.html', 'course.css', 'registry.js', 'foundation-reference.js', 'course-state.js', 'backup.js', 'backup-ui.js', 'app.js')}
 
 # Keep only the course/module pair local; existing site resources remain online.
 files['ege-baza/index.html'] = re.sub(r'href="(\.\./[^"]*)"',
