@@ -1,0 +1,46 @@
+/* The picker opens pages; only the existing registry/bridge can authorize mirror. */
+(function(root){'use strict';
+const RECENT_KEY='mathexam.trainerBoard.recent.v1';
+function normalize(value){
+ let raw=String(value||'').trim();if(!raw)return 'negative-numbers-line.html';
+ if(/[\u0000-\u001f\u007f]/.test(raw))throw Error('В ссылке есть недопустимые символы.');
+ if(/^mathexam\.space\//i.test(raw))raw='https://'+raw;
+ if(raw.startsWith('trainers/'))raw='/'+raw;
+ let u;try{u=new URL(raw,location.href);}catch(_){throw Error('Проверьте адрес тренажёра.');}if(!['http:','https:'].includes(u.protocol)||u.username||u.password)throw Error('Нужна обычная ссылка http или https на тренажёр.');
+ let path=u.pathname;try{for(let i=0;i<3;i++){const next=decodeURIComponent(path);if(next===path)break;path=next;}}catch(_){throw Error('Проверьте адрес тренажёра.');}
+ if(/(?:^|\/)trainer-board\.html(?:\/|$)/i.test(path)||path===location.pathname)throw Error('Доску нельзя открыть внутри самой себя. Выберите тренажёр.');
+ return raw;
+}
+function canonical(value){const u=new URL(normalize(value),location.href);u.searchParams.delete('seed');return u.origin===location.origin?u.pathname+u.search+u.hash:u.href;}
+function error(message){const el=document.getElementById('pickerError');if(el){el.textContent=message;el.hidden=false;}}
+function clearError(){const el=document.getElementById('pickerError');if(el)el.hidden=true;}
+function mount(options){
+ const $=id=>document.getElementById(id),dialog=$('trainerPicker'),search=$('pickerSearch'),group=$('pickerGroup'),results=$('pickerResults'),frame=$('trainerFrame'),panel=frame.closest('.trainer'),status=$('frameStatus'),separate=$('openTrainerSeparate');
+ let entries=[],recent=[],limit=60,expanded=false,generation=0,active='',loaded=false,check=null,timeout=null;
+ const narrow=matchMedia('(max-width:720px)'),manual=$('manualTrainerEntry');manual.open=!narrow.matches;narrow.addEventListener('change',e=>manual.open=!e.matches);
+ const checks=new Map();
+ try{const data=JSON.parse(localStorage.getItem(RECENT_KEY)||'[]');if(Array.isArray(data))recent=data.filter(x=>typeof x==='string').map(canonical).slice(0,12);}catch(_){}
+ const titleFor=url=>entries.find(x=>canonical(x.href)===canonical(url))?.title||'Тренажёр по ссылке';
+ function remember(url){try{const key=canonical(url);recent=[key,...recent.filter(x=>x!==key)].slice(0,12);localStorage.setItem(RECENT_KEY,JSON.stringify(recent));}catch(_){}renderRecent();}
+ function choose(url){if(options.open(url)){remember(url);dialog.close();}}
+ function button(entry){const b=document.createElement('button');b.type='button';b.className='picker-item';const title=document.createElement('strong');title.textContent=entry.title;const detail=document.createElement('span');detail.textContent=entry.group||'Недавно открытые';b.append(title,detail);b.onclick=()=>choose(entry.href);return b;}
+ function renderRecent(){const el=$('recentTrainers');el.replaceChildren();for(const href of recent.slice(0,3)){const b=document.createElement('button');b.type='button';b.className='recent-item';b.textContent=titleFor(href);b.title=b.textContent;b.onclick=()=>choose(href);el.append(b);}el.hidden=!recent.length||options.role()!=='teacher';}
+ function render(){const words=search.value.toLocaleLowerCase('ru').trim().split(/\s+/).filter(Boolean),selected=group.value;let list=selected==='recent'?recent.map(href=>({href,title:titleFor(href),group:'Недавно открытые'})):entries.filter(x=>!selected||x.group===selected);list=list.filter(x=>words.every(w=>(x.title+' '+x.group+' '+x.href).toLocaleLowerCase('ru').includes(w)));results.replaceChildren(...list.slice(0,limit).map(button));$('pickerCount').textContent=list.length?'Найдено: '+list.length:'Ничего не найдено. Попробуйте тему, класс или номер задания.';$('pickerMore').hidden=list.length<=limit;}
+ function openDialog(recentOnly=false){if(options.role()!=='teacher')return;group.value=recentOnly?'recent':'';limit=60;render();dialog.showModal();search.focus();}
+ $('chooseTrainer').onclick=()=>openDialog();$('pickerClose').onclick=()=>dialog.close();$('pickerMore').onclick=()=>{limit+=60;render();};search.oninput=group.onchange=()=>{limit=60;render();};dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
+ function expand(value){expanded=value;panel.classList.toggle('trainer-expanded',value);document.body.classList.toggle('trainer-is-expanded',value);$('expandTrainer').textContent=value?'Вернуться к доске':'Развернуть';$('expandTrainer').setAttribute('aria-pressed',String(value));window.dispatchEvent(new Event('resize'));}
+ $('expandTrainer').onclick=()=>expand(!expanded);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&expanded&&!dialog.open){expand(false);$('expandTrainer').focus();}});
+ function show(kind,text){status.dataset.state=kind;status.textContent=text;frame.setAttribute('aria-busy',String(kind==='loading'));}
+ function update(){if(!active)return;if(check?.kind==='missing'){show('error','Страница не найдена (404). Выберите другой тренажёр или повторите загрузку.');return;}if(check?.kind==='blocked'){show('error','Эту страницу нельзя встроить в доску. Откройте её отдельно.');return;}if(check?.kind==='error'){show('error','Не удалось загрузить страницу. Можно повторить или открыть отдельно.');return;}if(!loaded)return;try{const doc=frame.contentDocument;if(doc?.body){if(frame.contentWindow.location.href==='about:blank')return;show('ready','Тренажёр открыт.');}else show('external','Если страница пуста или запрещает встраивание, откройте её отдельно.');}catch(_){show('external','Внешняя страница может запрещать встраивание. При необходимости откройте отдельно.');}}
+ function headerKey(url){const u=new URL(url,location.href);u.searchParams.delete('seed');u.hash='';return u.href;}
+ function inspect(url){const u=new URL(url,location.href),key=headerKey(url);if(checks.has(key))return checks.get(key);const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);const request=fetch(u.href,{method:'HEAD',signal:controller.signal,credentials:'same-origin'}).then(r=>{if(r.status===404)return {kind:'missing'};if(!r.ok&&r.status!==405)return {kind:'error'};const xfo=(r.headers.get('x-frame-options')||'').toLowerCase(),csp=r.headers.get('content-security-policy')||'';if(xfo.includes('deny')||(/frame-ancestors\s+'none'/i.test(csp))||(u.origin!==location.origin&&xfo.includes('sameorigin')))return {kind:'blocked'};try{normalize(r.url);}catch(_){return {kind:'blocked'};}return {kind:'ok'};}).catch(()=>({kind:'unknown'})).finally(()=>clearTimeout(timer));checks.set(key,request);return request;}
+ function loading(){const source=frame.getAttribute('src');if(!source||source==='about:blank')return;let url;try{url=normalize(source);}catch(e){error(e.message);return;}active=url;if(options.role()==='teacher')remember(url);loaded=false;check=null;const version=++generation;clearTimeout(timeout);show('loading','Загружаем тренажёр…');separate.href=new URL(url,location.href).href;$('openedTrainerTitle').textContent=titleFor(url);timeout=setTimeout(()=>{if(version===generation&&!loaded)show('error','Загрузка затянулась. Повторите попытку или откройте тренажёр отдельно.');},12000);inspect(url).then(result=>{if(version!==generation)return;check=result;update();});}
+ frame.addEventListener('load',()=>{try{if(frame.contentWindow.location.href==='about:blank')return;}catch(_){}loaded=true;clearTimeout(timeout);update();});frame.addEventListener('error',()=>show('error','Не удалось загрузить тренажёр. Повторите попытку или откройте отдельно.'));new MutationObserver(loading).observe(frame,{attributes:true,attributeFilter:['src']});
+ $('retryOpenedTrainer').onclick=()=>{if(!active)return;checks.delete(headerKey(active));options.retry();};loading();
+ function setEntries(list){const seen=new Set();entries=list.filter(x=>{try{const key=canonical(x.href);if(seen.has(key))return false;seen.add(key);return typeof x.title==='string';}catch(_){return false;}});const groups=[...new Set(entries.map(x=>x.group))];group.replaceChildren(new Option('Все разделы',''),new Option('Недавние','recent'),...groups.map(x=>new Option(x,x)));renderRecent();render();if(active)$('openedTrainerTitle').textContent=titleFor(active);}
+ setEntries(options.fallback.map(x=>({href:'/'+x.file,title:x.title,group:x.group})));
+ fetch('board-picker-data.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
+ const query=new URLSearchParams(location.search).get('trainer');if(query&&options.role()==='teacher')choose(query);
+}
+root.BoardPicker={normalize,canonical,mount,error,clearError};
+})(window);

@@ -1,0 +1,3765 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "title": "ЕГЭ база",
+      "href": "/ege-baza/",
+      "group": "ЕГЭ база"
+    },
+    {
+      "title": "Числа без путаницы · Числа, деньги и проценты",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/course/#learn-decimal"
+    },
+    {
+      "title": "Деление с запятой · Числа, деньги и проценты",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/course/#learn-division"
+    },
+    {
+      "title": "Количество и единицы · Числа, деньги и проценты",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/course/#learn-rounding"
+    },
+    {
+      "title": "Часть и целое · Числа, деньги и проценты",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/course/#learn-percent"
+    },
+    {
+      "title": "Цена меняется · Числа, деньги и проценты",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/course/#learn-change"
+    },
+    {
+      "title": "Выбираем с расчётом · Числа, деньги и проценты",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/course/#learn-choice"
+    },
+    {
+      "title": "Таблицы и диаграммы · Данные, графики и логика",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/data-course/#learn-data"
+    },
+    {
+      "title": "Вероятность · Данные, графики и логика",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/data-course/#learn-probability"
+    },
+    {
+      "title": "График рассказывает · Данные, графики и логика",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/data-course/#learn-graphs"
+    },
+    {
+      "title": "Что следует из условия · Данные, графики и логика",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza/data-course/#learn-logic"
+    },
+    {
+      "title": "Подстановка в формулу · Выражения и уравнения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=formulas"
+    },
+    {
+      "title": "Степени и корни · Выражения и уравнения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=powers"
+    },
+    {
+      "title": "Дробные выражения · Выражения и уравнения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=expressions"
+    },
+    {
+      "title": "Логарифмы и тригонометрия · Выражения и уравнения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=functions"
+    },
+    {
+      "title": "Уравнения · Выражения и уравнения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=equations"
+    },
+    {
+      "title": "Сравнение и неравенства · Выражения и уравнения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=numberline"
+    },
+    {
+      "title": "Клетки и площадь · Геометрия на плоскости",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=grid"
+    },
+    {
+      "title": "План и реальные размеры · Геометрия на плоскости",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=practical"
+    },
+    {
+      "title": "Треугольники · Геометрия на плоскости",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=triangle"
+    },
+    {
+      "title": "Четырёхугольники · Геометрия на плоскости",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=quadrilateral"
+    },
+    {
+      "title": "Окружность и круг · Геометрия на плоскости",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=circle"
+    },
+    {
+      "title": "Куб и параллелепипед · Геометрия в пространстве",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=box"
+    },
+    {
+      "title": "Цилиндр, конус и шар · Геометрия в пространстве",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=roundbody"
+    },
+    {
+      "title": "Призма и пирамида · Геометрия в пространстве",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=pyramid"
+    },
+    {
+      "title": "Изменение размеров · Геометрия в пространстве",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=scale"
+    },
+    {
+      "title": "Делимость и подбор · Задачи и рассуждения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=integers"
+    },
+    {
+      "title": "Движение и работа · Задачи и рассуждения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=motion"
+    },
+    {
+      "title": "Доли и смеси · Задачи и рассуждения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=mixtures"
+    },
+    {
+      "title": "Перебор и оценка · Задачи и рассуждения",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#lesson=reasoning"
+    },
+    {
+      "title": "Смешанные задания · Экзаменационная практика",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#map"
+    },
+    {
+      "title": "Пробная работа · Экзаменационная практика",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#exam"
+    },
+    {
+      "title": "После пробника · Экзаменационная практика",
+      "group": "ЕГЭ база",
+      "href": "/ege-baza/path/index.html#report"
+    },
+    {
+      "title": "Математическая мастерская 5–6",
+      "href": "/school/",
+      "group": "Курсы · По темам Виленкина"
+    },
+    {
+      "title": "Уравнения: от первых шагов до ОГЭ",
+      "href": "/equations/",
+      "group": "Курсы · 2–9 классы"
+    },
+    {
+      "title": "Базовые действия",
+      "href": "/trainers/oge-basics/",
+      "group": "Курсы · Восстановить основу"
+    },
+    {
+      "title": "Деление уголком: каждый шаг самостоятельно",
+      "href": "/trainers/oge-basics/multiplication-division/division-lab.html",
+      "group": "Курсы · Письменные вычисления"
+    },
+    {
+      "title": "Атанасян 7–9",
+      "href": "/geometry-course/",
+      "group": "Курсы · Планиметрия"
+    },
+    {
+      "title": "Атанасян 10–11",
+      "href": "/stereo-course/",
+      "group": "Курсы · Стереометрия"
+    },
+    {
+      "title": "Мерзляк 7–9",
+      "href": "/geometry-merzlyak/",
+      "group": "Курсы · Планиметрия и углубление"
+    },
+    {
+      "title": "Погорелов 7–9",
+      "href": "/geometry-pogorelov/",
+      "group": "Курсы · Последовательный маршрут"
+    },
+    {
+      "title": "Проценты, пропорции, части и целое",
+      "href": "/ege-baza/percent/",
+      "group": "Курсы · Понимать отношение"
+    },
+    {
+      "title": "Совместная работа: землекопы",
+      "href": "/ege-baza/work-rate/",
+      "group": "Курсы · Без x"
+    },
+    {
+      "title": "ОГЭ: прежний курс",
+      "href": "/trainers/oge-course/",
+      "group": "Курсы · Подготовка к экзамену"
+    },
+    {
+      "title": "ЕГЭ профиль: прежний курс",
+      "href": "/ege-profil/",
+      "group": "Курсы · Профильный уровень"
+    },
+    {
+      "title": "Атанасян 7–9 · Прямая: что задают две точки",
+      "href": "/geometry-course/atlas/segments.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Читаем угол и выбираем его вершину",
+      "href": "/geometry-course/atlas/angles.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Совместить, сравнить, объяснить",
+      "href": "/geometry-course/atlas/equality.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Части отрезка и единая мера",
+      "href": "/geometry-course/atlas/length.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Измеряем и складываем углы",
+      "href": "/geometry-course/atlas/measure-angle.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Смежные, вертикальные, прямые",
+      "href": "/geometry-course/atlas/perpendicular.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Какие данные удерживают треугольник",
+      "href": "/geometry-course/atlas/triangle-sas.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Три линии из вершины: не путать роли",
+      "href": "/geometry-course/atlas/cevians.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Признаки равенства и соответствие вершин",
+      "href": "/geometry-course/atlas/triangle-signs.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Циркуль и линейка: создаём точные связи",
+      "href": "/geometry-course/atlas/compass.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Параллельность: свойство и признак",
+      "href": "/geometry-course/atlas/parallels.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Углы при секущей и направление лучей",
+      "href": "/geometry-course/atlas/parallel-angles.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Сумма углов, большая сторона, существование",
+      "href": "/geometry-course/atlas/triangle-angles.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Прямоугольный треугольник: особые связи",
+      "href": "/geometry-course/atlas/right-triangle.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Кратчайшее расстояние и три элемента",
+      "href": "/geometry-course/atlas/distance.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Почему биссектриса — место равноудалённых точек",
+      "href": "/geometry-course/atlas/angle-locus.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Серединный перпендикуляр: две стороны утверждения",
+      "href": "/geometry-course/atlas/perp-locus.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Радиус, хорда и касательная",
+      "href": "/geometry-course/atlas/chords-tangent.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Где искать центры двух окружностей",
+      "href": "/geometry-course/atlas/triangle-circles.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Отразить фигуру и сохранить расстояния",
+      "href": "/geometry-course/atlas/axis.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Многоугольник: внутренняя область и диагонали",
+      "href": "/geometry-course/atlas/polygons.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Параллелограмм: что дано и что следует",
+      "href": "/geometry-course/atlas/parallelogram.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Трапеция: основания и средняя линия",
+      "href": "/geometry-course/atlas/trapezoid.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Прямоугольник и равные диагонали",
+      "href": "/geometry-course/atlas/rectangle.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Ромб, квадрат и иерархия фигур",
+      "href": "/geometry-course/atlas/rhombus.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Центральная симметрия и середина",
+      "href": "/geometry-course/atlas/central.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Площадь: единичный квадрат и разрезание",
+      "href": "/geometry-course/atlas/area-basics.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Почему работает основание на высоту",
+      "href": "/geometry-course/atlas/area-parallelogram.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Половина параллелограмма",
+      "href": "/geometry-course/atlas/area-triangle.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Собираем площадь трапеции",
+      "href": "/geometry-course/atlas/area-trapezoid.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Пифагор и обратная проверка",
+      "href": "/geometry-course/atlas/pythagoras.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Три стороны дают площадь",
+      "href": "/geometry-course/atlas/heron.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Подобие: длины и площади меняются по-разному",
+      "href": "/geometry-course/atlas/similarity.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Как доказать подобие",
+      "href": "/geometry-course/atlas/similarity-signs.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Средняя линия и метод параллельной",
+      "href": "/geometry-course/atlas/midline.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Четыре центра: каждому своя роль",
+      "href": "/geometry-course/atlas/centers.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Высота к гипотенузе и три подобных треугольника",
+      "href": "/geometry-course/atlas/projections.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Дотянуться до недоступной высоты",
+      "href": "/geometry-course/atlas/similarity-measure.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Синус и косинус: сначала выбери угол",
+      "href": "/geometry-course/atlas/trig-right.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Две окружности: когда они встретятся",
+      "href": "/geometry-course/atlas/circle-position.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Вписанный угол видит дугу",
+      "href": "/geometry-course/atlas/inscribed.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Углы и произведения отрезков",
+      "href": "/geometry-course/atlas/chord-angles.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Когда у четырёхугольника есть окружность",
+      "href": "/geometry-course/atlas/cyclic-quad.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Вектор: переносим направление и длину",
+      "href": "/geometry-course/atlas/vectors.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Маршрут векторов и его итог",
+      "href": "/geometry-course/atlas/vector-add.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Число меняет длину и направление вектора",
+      "href": "/geometry-course/atlas/vector-scale.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Два направления как система отсчёта",
+      "href": "/geometry-course/atlas/vector-basis.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Координаты помогают доказать геометрию",
+      "href": "/geometry-course/atlas/coordinates.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Уравнение как условие принадлежности",
+      "href": "/geometry-course/atlas/line-circle-equations.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Тригонометрия выходит за пределы острого угла",
+      "href": "/geometry-course/atlas/trig-circle.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Площадь через две стороны и угол",
+      "href": "/geometry-course/atlas/area-sine.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Теорема синусов и описанная окружность",
+      "href": "/geometry-course/atlas/sine-rule.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Пифагор с поправкой на угол",
+      "href": "/geometry-course/atlas/cosine-rule.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Выбираем метод для целого треугольника",
+      "href": "/geometry-course/atlas/solve-triangle.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Скалярное произведение видит угол",
+      "href": "/geometry-course/atlas/dot-product.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Правильный многоугольник из равных секторов",
+      "href": "/geometry-course/atlas/regular-polygons.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Дуга, радиан и сектор",
+      "href": "/geometry-course/atlas/circle-metric.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Что мы раньше называли наложением",
+      "href": "/geometry-course/atlas/movement.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Перенос и поворот: один закон для всех точек",
+      "href": "/geometry-course/atlas/translation-rotation.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Симметрия как способ найти короткий путь",
+      "href": "/geometry-course/atlas/symmetry-method.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · От треугольников к подобным фигурам",
+      "href": "/geometry-course/atlas/polygon-similarity.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Гомотетия: центр и коэффициент",
+      "href": "/geometry-course/atlas/homothety.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Атанасян 7–9 · Одна задача на нескольких языках",
+      "href": "/geometry-course/atlas/similarity-method.html",
+      "group": "Геометрия · Атанасян 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Точки и прямые",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-1.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Отрезок и его длина",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-2.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Луч. Угол. Измерение углов",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-3.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Смежные и вертикальные углы",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-4.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Перпендикулярные прямые",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-5.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Аксиомы",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-6.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Равные треугольники. Высота, медиана, биссектриса треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-7.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Первый и второй признаки равенства треугольников",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-8.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Равнобедренный треугольник и его свойства",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-9.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Признаки равнобедренного треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-10.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Третий признак равенства треугольников",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-11.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Теоремы",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-12.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Параллельные прямые",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-13.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Признаки параллельности двух прямых",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-14.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Свойства параллельных прямых",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-15.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Сумма углов треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-16.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Прямоугольный треугольник",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-17.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Свойства прямоугольного треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-18.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Геометрическое место точек. Окружность и круг",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-19.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Некоторые свойства окружности. Касательная к окружности",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-20.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Описанная и вписанная окружности треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-21.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Задачи на построение",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-22.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Метод геометрических мест точек в задачах на построение",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-7-23.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Четырёхугольник и его элементы",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-1.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Параллелограмм. Свойства параллелограмма",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-2.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Признаки параллелограмма",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-3.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Прямоугольник",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-4.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Ромб",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-5.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Квадрат",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-6.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Средняя линия треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-7.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Трапеция",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-8.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Центральные и вписанные углы",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-9.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Описанная и вписанная окружности четырёхугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-10.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Теорема Фалеса. Теорема о пропорциональных отрезках",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-11.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Подобные треугольники",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-12.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Первый признак подобия треугольников",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-13.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Второй и третий признаки подобия треугольников",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-14.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Метрические соотношения в прямоугольном треугольнике",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-15.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Теорема Пифагора",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-16.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Тригонометрические функции острого угла прямоугольного треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-17.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Решение прямоугольных треугольников",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-18.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Многоугольники",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-19.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Понятие площади многоугольника. Площадь прямоугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-20.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Площадь параллелограмма",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-21.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Площадь треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-22.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Площадь трапеции",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-8-23.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Тригонометрические функции угла от 0° до 180°",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-1.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Теорема косинусов",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-2.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Теорема синусов",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-3.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Решение треугольников",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-4.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Формулы для нахождения площади треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-5.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Правильные многоугольники и их свойства",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-6.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Длина окружности. Площадь круга",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-7.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Расстояние между двумя точками с заданными координатами. Координаты середины отрезка",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-8.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Уравнение фигуры. Уравнение окружности",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-9.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Уравнение прямой",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-10.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Угловой коэффициент прямой",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-11.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Понятие вектора",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-12.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Координаты вектора",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-13.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Сложение и вычитание векторов",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-14.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Умножение вектора на число",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-15.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Скалярное произведение векторов",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-16.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Движение фигуры. Параллельный перенос",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-17.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Осевая симметрия",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-18.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Центральная симметрия. Поворот",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-19.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Гомотетия. Подобие фигур",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-20.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Прямая призма. Пирамида",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-21.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Цилиндр. Конус. Шар",
+      "href": "/geometry-merzlyak/atlas/merzlyak-base-9-22.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Неравенство треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-7-17.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Вневписанная окружность треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-7-23.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Необходимые и достаточные условия",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-8-4.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Применение свойств центральных и вписанных углов",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-8-9.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Описанные четырёхугольники",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-8-11.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Теорема о медианах треугольника. Теорема о биссектрисе треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-8-13.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Теорема Менелая. Теорема Чевы",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-8-16.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Прямая Эйлера. Окружность девяти точек",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-8-17.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Расстояние между двумя точками. Деление отрезка в данном отношении",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-9-8.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Преобразование (отображение) фигур",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-9-18.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Поворот",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-9-22.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Упражнения для повторения курса планиметрии",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-9-26.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Тригонометрическая форма теоремы Чевы",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-9-9-ceva.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Радикальная ось двух окружностей",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-9-9-radical.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Инверсия",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-9-9-inversion.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Мерзляк 7–9 · Менелай: прямая через стороны треугольника",
+      "href": "/geometry-merzlyak/atlas/merzlyak-advanced-8-8-menelaus.html",
+      "group": "Геометрия · Мерзляк 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Прямая: что задают две точки",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-1.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Читаем угол и выбираем его вершину",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-7.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Какие данные удерживают треугольник",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-9.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Параллельные прямые",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-11.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Аксиомы: что принимаем, а что выводим",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-12.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Смежные, вертикальные, прямые",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-14.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Перпендикулярные прямые",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-16.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Доказательство от противного",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-17.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Биссектриса угла",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-18.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Что надо делать, чтобы успевать по геометрии",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-19.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Какие данные удерживают треугольник",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-20.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Равнобедренный треугольник",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-23.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Обратная теорема",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-24.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Три линии из вершины: не путать роли",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-25.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Третий признак равенства треугольников по трём сторонам",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-27.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Как готовиться по учебнику самостоятельно",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-28.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Параллельность: свойство и признак",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-29.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Свойство углов, образованных при пересечении параллельных прямых секущей",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-32.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Сумма углов, большая сторона, существование",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-33.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Прямоугольный треугольник",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-35.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Существование и единственность перпендикуляра к прямой",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-36.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Из истории возникновения геометрии",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-37.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Окружность",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-38.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Окружность, описанная около треугольника",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-39.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Касательная к окружности",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-40.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Окружность, вписанная в треугольник",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-41.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Задача на построение: анализ и проверка",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-42.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Построение биссектрисы угла",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-45.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Серединный перпендикуляр: две стороны утверждения",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-46.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Два условия — пересечение двух множеств",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-7-48.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Определение четырёхугольника",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-50.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Параллелограмм: что дано и что следует",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-51.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Прямоугольник",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-54.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Ромб",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-55.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Квадрат",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-56.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Теорема Фалеса",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-57.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Средняя линия треугольника",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-58.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Трапеция",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-59.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Пропорциональные отрезки",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-60.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Замечательные точки в треугольнике",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-61.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Косинус угла",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-62.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Пифагор через проекции катетов",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-63.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Перпендикуляр и наклонная",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-65.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Неравенство треугольника",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-66.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Синус и косинус: сначала выбери угол",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-67.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Координаты помогают доказать геометрию",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-71.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Уравнение окружности",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-74.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Уравнение прямой и принадлежность точки",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-75.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Наклон прямой: изменение y на единицу x",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-78.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Пересечение прямой с окружностью",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-80.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Определение синуса, косинуса, тангенса и котангенса для любого угла от 0° до 180°",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-81.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Что мы раньше называли наложением",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-82.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Симметрия относительно точки",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-84.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Симметрия относительно прямой",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-85.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Поворот",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-86.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Перенос и поворот: один закон для всех точек",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-87.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Вектор: переносим направление и длину",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-91.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Координаты вектора",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-93.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Маршрут векторов и его итог",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-94.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Умножение вектора на число",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-96.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Разложение вектора по двум неколлинеарным векторам",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-97.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Скалярное произведение видит угол",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-8-98.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Гомотетия: центр и коэффициент",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-100.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Как доказать подобие",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-103.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Подобие прямоугольных треугольников",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-106.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Углы, вписанные в окружность",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-107.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Углы и произведения отрезков",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-108.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Теорема косинусов",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-110.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Теорема синусов",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-111.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Соотношение между углами треугольника и противолежащими сторонами",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-112.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Решение треугольников",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-113.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Многоугольник: внутренняя область и диагонали",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-114.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Правильный многоугольник из равных секторов",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-116.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Вписанные и описанные четырёхугольники",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-119.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Подобие правильных выпуклых многоугольников",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-120.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Дуга, радиан и сектор",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-121.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Площадь: единичный квадрат и разрезание",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-123.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Площадь параллелограмма",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-125.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Площадь треугольника",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-126.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Равновеликие фигуры",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-127.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Площадь трапеции",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-128.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Формулы для радиусов вписанной и описанной окружностей треугольника",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-129.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Площади подобных фигур",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-130.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Площадь круга",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-131.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Прямые и плоскости в пространстве",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-132.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Перпендикулярность прямых и плоскостей в пространстве",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-134.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Многогранники",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-135.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Погорелов 7–9 · Тела вращения",
+      "href": "/geometry-pogorelov/atlas/pogorelov-base-9-136.html",
+      "group": "Геометрия · Погорелов 7–9"
+    },
+    {
+      "title": "Атанасян 10–11 · Как устроено пространство",
+      "href": "/stereo-course/#space",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Прямая и плоскость: параллельно — чему?",
+      "href": "/stereo-course/#parallel",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Скрещивающиеся прямые и настоящий угол",
+      "href": "/stereo-course/#skew",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Две параллельные плоскости",
+      "href": "/stereo-course/#parallel-planes",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Тетраэдр и параллелепипед изнутри",
+      "href": "/stereo-course/#polyhedra",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Построить сечение, а не угадать его",
+      "href": "/stereo-course/#sections",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Почему двух направлений достаточно",
+      "href": "/stereo-course/#perpendicular",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Наклонная, проекция и три перпендикуляра",
+      "href": "/stereo-course/#projection",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Двугранный угол: найти правильный разрез",
+      "href": "/stereo-course/#dihedral",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Диагональ пространства — два Пифагора",
+      "href": "/stereo-course/#box",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Трёхгранный и многогранный углы",
+      "href": "/stereo-course/#solid-angle",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Поверхность, тело и формула Эйлера",
+      "href": "/stereo-course/#euler",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Призма: высота и боковое ребро",
+      "href": "/stereo-course/#prism",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Высота, ребро и апофема пирамиды",
+      "href": "/stereo-course/#pyramid",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Усечённая пирамида и подобие",
+      "href": "/stereo-course/#pyramid-frustum",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Правильные многогранники и симметрия",
+      "href": "/stereo-course/#symmetry",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Цилиндр: развёртка и поверхность",
+      "href": "/stereo-course/#cylinder",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Конус: три длины одного сечения",
+      "href": "/stereo-course/#cone",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Два радиуса усечённого конуса",
+      "href": "/stereo-course/#cone-frustum",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Сфера, шар и сечение плоскостью",
+      "href": "/stereo-course/#sphere",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Вписанная сфера: задача в осевом сечении",
+      "href": "/stereo-course/#inscribed-sphere",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Почему появляются эллипс и гипербола",
+      "href": "/stereo-course/#conic-sections",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Объём как число кубических единиц",
+      "href": "/stereo-course/#box-volume",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Объём призмы и цилиндра",
+      "href": "/stereo-course/#prism-volume",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Слои, интеграл и наклонная призма",
+      "href": "/stereo-course/#slices",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Откуда берётся одна треть",
+      "href": "/stereo-course/#pyramid-volume",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Объём шара, сегмента и слоя",
+      "href": "/stereo-course/#sphere-volume",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Вектор можно перенести",
+      "href": "/stereo-course/#vectors",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Сложение векторов как маршрут",
+      "href": "/stereo-course/#vector-operations",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Три независимых направления",
+      "href": "/stereo-course/#basis",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Координаты превращают пространство в расчёт",
+      "href": "/stereo-course/#coordinates",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Уравнение сферы — условие расстояния",
+      "href": "/stereo-course/#sphere-equation",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Угол через скалярное произведение",
+      "href": "/stereo-course/#dot",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Нормаль и уравнение плоскости",
+      "href": "/stereo-course/#plane-equation",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Движения и подобие пространства",
+      "href": "/stereo-course/#transformations",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Планиметрия для пространственного разреза",
+      "href": "/stereo-course/#circle-bridge",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Медиана, биссектриса, площадь и центры",
+      "href": "/stereo-course/#triangle-bridge",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Конкурентность и коллинеарность",
+      "href": "/stereo-course/#ceva-menelaus",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Атанасян 10–11 · Эллипс, гипербола и парабола",
+      "href": "/stereo-course/#conics-plane",
+      "group": "Геометрия · Атанасян 10–11"
+    },
+    {
+      "title": "Числовая прямая / отрицательные числа",
+      "group": "Отрицательные числа",
+      "href": "/trainers/negative-numbers-line.html"
+    },
+    {
+      "title": "Отрицательные числа",
+      "group": "Отрицательные числа",
+      "href": "/trainers/negative-numbers.html"
+    },
+    {
+      "title": "Отрицательные числа — альтернативный",
+      "group": "Отрицательные числа",
+      "href": "/trainers/negative-numbers-alternative.html"
+    },
+    {
+      "title": "ОГЭ №7 / числовая прямая",
+      "group": "Отрицательные числа",
+      "href": "/trainers/oge-task7-number-line.html"
+    },
+    {
+      "title": "Неравенства на числовой прямой",
+      "group": "Отрицательные числа",
+      "href": "/trainers/inequalities-number-line.html"
+    },
+    {
+      "title": "Линейные неравенства — база",
+      "group": "Отрицательные числа",
+      "href": "/trainers/linear-inequalities-basic.html"
+    },
+    {
+      "title": "Линейные неравенства — пошагово",
+      "group": "Отрицательные числа",
+      "href": "/trainers/linear-inequalities-stepwise.html"
+    },
+    {
+      "title": "Театр формул / приведение подобных слагаемых",
+      "group": "Алгебра",
+      "href": "/trainers/like-terms-trainer.html"
+    },
+    {
+      "title": "Проценты: часть и целое",
+      "group": "Алгебра",
+      "href": "/trainers/percent-part-whole-trainer.html"
+    },
+    {
+      "title": "ОГЭ №1–5: проценты без паники",
+      "group": "ОГЭ / задачи 1–5",
+      "href": "/trainers/oge-1-5-trainers/percent-table-trainer.html"
+    },
+    {
+      "title": "ЕГЭ №1: планиметрия",
+      "group": "Геометрия / ЕГЭ",
+      "href": "/trainers/ege-t1-planimetry-trainer.html"
+    },
+    {
+      "title": "ЕГЭ №2: векторы",
+      "group": "Геометрия / ЕГЭ",
+      "href": "/trainers/ege-t2-vectors-trainer.html"
+    },
+    {
+      "title": "ОГЭ №1–5: дороги по клеткам",
+      "group": "ОГЭ / задачи 1–5",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html"
+    },
+    {
+      "title": "ОГЭ №1–5: карта тренажёров",
+      "group": "ОГЭ / задачи 1–5",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-map.html"
+    },
+    {
+      "title": "ОГЭ-2026 №1–5: входная диагностика",
+      "group": "ОГЭ / задачи 1–5",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html"
+    },
+    {
+      "title": "ОГЭ №1–5: как читать план и условие",
+      "group": "ОГЭ / задачи 1–5",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html"
+    },
+    {
+      "title": "ОГЭ-2026 №1–5: проверочная по планам и маршрутам",
+      "group": "ОГЭ / задачи 1–5",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html"
+    },
+    {
+      "title": "Математическая база для ОГЭ",
+      "group": "ОГЭ / математическая база",
+      "href": "/trainers/oge-basics/index.html"
+    },
+    {
+      "title": "Умножение и деление: линия тренажёров",
+      "group": "ОГЭ / математическая база",
+      "href": "/trainers/oge-basics/multiplication-division/index.html"
+    },
+    {
+      "title": "Деление уголком: от первого шага до десятичных дробей",
+      "group": "ОГЭ / математическая база",
+      "href": "/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html"
+    },
+    {
+      "title": "Смешанная проверка: деление уголком",
+      "group": "ОГЭ / математическая база",
+      "href": "/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html"
+    },
+    {
+      "title": "Математическая база: проценты и пропорции",
+      "group": "Математическая база / проценты",
+      "href": "/trainers/oge-basics/percentages/index.html"
+    },
+    {
+      "title": "Проценты: 100%, 1% и доля",
+      "group": "Математическая база / проценты",
+      "href": "/trainers/oge-basics/percentages/percent-meaning.html"
+    },
+    {
+      "title": "Проценты: три вопроса",
+      "group": "Математическая база / проценты",
+      "href": "/trainers/oge-basics/percentages/percent-of-number-and-whole.html"
+    },
+    {
+      "title": "Проценты: что спрашивают в задаче",
+      "group": "Математическая база / проценты",
+      "href": "/trainers/oge-basics/percentages/percent-choose-question.html"
+    },
+    {
+      "title": "Проценты: увеличение и уменьшение",
+      "group": "Математическая база / проценты",
+      "href": "/trainers/oge-basics/percentages/percent-change.html"
+    },
+    {
+      "title": "Пропорция как общий способ",
+      "group": "Математическая база / проценты",
+      "href": "/trainers/oge-basics/percentages/proportion.html"
+    },
+    {
+      "title": "Проценты: итоговая проверка",
+      "group": "Математическая база / проценты",
+      "href": "/trainers/oge-basics/percentages/percent-final-checkpoint.html"
+    },
+    {
+      "title": "ЕГЭ №1–2: 36 вариантов Ященко",
+      "group": "Геометрия / ЕГЭ",
+      "href": "/trainers/ege-profile/yashchenko-lines-1-2.html"
+    },
+    {
+      "title": "Алгебра, 7 класс: контрольная по выражениям и графику",
+      "group": "Алгебра / 7 класс",
+      "href": "/trainers/algebra-7/control-work.html"
+    },
+    {
+      "title": "ДВИ по математике: задачи 18–20",
+      "group": "ДВИ / математика",
+      "href": "/trainers/dvi/math-18-20.html"
+    },
+    {
+      "title": "ДВИ по математике: видеостудия задач 18–20",
+      "group": "ДВИ / инструменты преподавателя",
+      "href": "/trainers/dvi/math-18-20-video-studio.html"
+    },
+    {
+      "title": "Панель преподавателя · Алгебра, 7 класс",
+      "group": "Школьная математика",
+      "href": "/trainers/algebra-7/control-work-teacher.html"
+    },
+    {
+      "title": "Шины · тренажёр 1–5",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/02-old-claude-tires-trainer-035aa6bb.html"
+    },
+    {
+      "title": "Билеты по геометрии 7 класс",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/1-7-407fb849.html"
+    },
+    {
+      "title": "Билеты по геометрии 7 класс",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/7-db257f21.html"
+    },
+    {
+      "title": "⚔️ Сражение чисел — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/battle-numbers-1-34db4c39.html"
+    },
+    {
+      "title": "Тренажёр: сложение чисел с разными знаками",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/battle-numbers-2-7a0a8446.html"
+    },
+    {
+      "title": "Билеты по геометрии — 7 класс (Атанасян)",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/bilety-geometriya-7klass-1-fac717fb.html"
+    },
+    {
+      "title": "Билеты по геометрии — 7 класс (Атанасян)",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/bilety-geometriya-7klass-2-f571b307.html"
+    },
+    {
+      "title": "Билеты по геометрии — 7 класс (Атанасян)",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/bilety-geometriya-7klass-94e1b324.html"
+    },
+    {
+      "title": "Биссектриса угла — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/bisector-trainer-7828c3c2.html"
+    },
+    {
+      "title": "Тренажёр: скобки и знаки подряд",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/brackets-and-signs-dc000366.html"
+    },
+    {
+      "title": "Дифференцированные платежи — табличный тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/credit-differential-payment-trainer-c584585b.html"
+    },
+    {
+      "title": "Тренажёр: Кредиты и вклады",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/credit-payment-table-trainer-755d104c.html"
+    },
+    {
+      "title": "Тренажёр · ЕГЭ Информатика · Задание 1 (графы)",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/archive-5-weeks/ege-trainer-1-07bef5d3.html"
+    },
+    {
+      "title": "Собери решение уравнения",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/equation-builder-1c7c63f3.html"
+    },
+    {
+      "title": "Финансовая математика: нестандартные схемы",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/finance-nonstandard-trainer-64bebf82.html"
+    },
+    {
+      "title": "Найди ошибку ученика — боковая миссия",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/find-the-error-1-0a615cbc.html"
+    },
+    {
+      "title": "Геометрия на клетчатой бумаге · тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/geometry-grid-trainer-open-0adf52dd.html"
+    },
+    {
+      "title": "Геометрия на клетчатой бумаге · ученическая версия",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/geometry-grid-trainer-student-open-1-9d36f957.html"
+    },
+    {
+      "title": "Тренажёр геометрических высказываний",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/geometry-statements-trainer-improved-370628fb.html"
+    },
+    {
+      "title": "ОГЭ №19: верные и неверные утверждения",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/geometry-statements-trainer-improved-updated-22181e31.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/index-3-603a418c.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/index-4-a7387e34.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/index-5-c2e1e6f8.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/index-6-d363b31c.html"
+    },
+    {
+      "title": "Тренажёр логики",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/index-c56cab9d.html"
+    },
+    {
+      "title": "AC + CB = AB — тренажёр по геометрии",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/jsxgraph-ac-cb-ab-ac096517.html"
+    },
+    {
+      "title": "Смежные углы: сумма = 180° — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/jsxgraph-adjacent-angles-af17f7b1.html"
+    },
+    {
+      "title": "Вертикальные углы равны — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/jsxgraph-vertical-angles-1-cf930d18.html"
+    },
+    {
+      "title": "Перетаскивание слагаемых",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/linear-equation-drag-1-11ebccdf.html"
+    },
+    {
+      "title": "Логарифмический радар",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/log-radar-d2854c23.html"
+    },
+    {
+      "title": "Деление уголком — методически",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/long-division-stepwise-2-2b2187fa.html"
+    },
+    {
+      "title": "Деление уголком — методически",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/long-division-stepwise-3-a18ba04b.html"
+    },
+    {
+      "title": "Деление уголком — методически",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/long-division-stepwise-4-5f2730da.html"
+    },
+    {
+      "title": "Деление уголком — методически",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/long-division-stepwise-5-dab0dd89.html"
+    },
+    {
+      "title": "Деление уголком — методически",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/long-division-stepwise-current-for-claude-dd4db0ae.html"
+    },
+    {
+      "title": "Деление уголком",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/long-division-stepwise-ea96a9c6.html"
+    },
+    {
+      "title": "Тренажёр: смешанные выражения",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/mixed-expressions-58f0b76f.html"
+    },
+    {
+      "title": "Модуль как расстояние от нуля",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/module-distance-1-743ac077.html"
+    },
+    {
+      "title": "Числовая прямая — Тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/negative-numbers-trainer-2-3467e485.html"
+    },
+    {
+      "title": "Тренажёр: сложение отрицательных чисел — модель долга",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/negative-plus-negative-debts-deepseek-a7c7c36a.html"
+    },
+    {
+      "title": "Тренажёр: Неравенства на числовой прямой",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/neravenstva-trainer-1-4ab048e4.html"
+    },
+    {
+      "title": "Тренажёр: Неравенства на числовой прямой",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/neravenstva-trainer-eee783f4.html"
+    },
+    {
+      "title": "Тренажёр 2: Линейные неравенства — пошаговое решение",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/neravenstva2-stepbystep-e270368b.html"
+    },
+    {
+      "title": "Тренажёр 2: Линейные неравенства",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/neravenstva2-trainer-459d2fc9.html"
+    },
+    {
+      "title": "Тренажёр ОГЭ: теорема Пифагора",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge-pythagoras-trainer-52dcc755.html"
+    },
+    {
+      "title": "ОГЭ №15 — тренажёр по треугольникам (улучшенная версия)",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge-task15-trainer-improved-a69ed031.html"
+    },
+    {
+      "title": "Тренажёр ОГЭ №16 — окружность, углы, длины, площади",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge-task16-trainer-1-664537dd.html"
+    },
+    {
+      "title": "Тренажёр №16 ОГЭ — Окружность",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge-task16-trainer-v11-deepseek-patch-7a63cfda.html"
+    },
+    {
+      "title": "ОГЭ №15 — тренажёр по треугольникам · улучшенная версия",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge15-trainer-v10-0009ae02.html"
+    },
+    {
+      "title": "ОГЭ №15 — тренажёр по треугольникам · v13",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge15-trainer-v13-850f039a.html"
+    },
+    {
+      "title": "ОГЭ №17 — тренажёр по геометрии (улучшенная версия)",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge17-trainer-improved-800e82f2.html"
+    },
+    {
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии v10",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge17-trainer-v14-2-3fb84e69.html"
+    },
+    {
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии v15-polished",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge17-trainer-v15-polished-b5606e42.html"
+    },
+    {
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge17-trainer-v8-4b0ff8c5.html"
+    },
+    {
+      "title": "ОГЭ №19 — тренажёр утверждений",
+      "group": "ОГЭ",
+      "href": "/trainers/archive-5-weeks/oge19-source-aware-trainer-a91626ba.html"
+    },
+    {
+      "title": "Противоположные числа",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/opposite-numbers-c45c9e7e.html"
+    },
+    {
+      "title": "Двухкомнатная квартира · план · задания 1–5 · ОГЭ",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/practice-1-5-apartments-2bc2570b.html"
+    },
+    {
+      "title": "Шины · тренажёр 1–5",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/practice-1-5-tires-1-7e5b7482.html"
+    },
+    {
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии v9",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-10-82ef23ef.html"
+    },
+    {
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии v10",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-13-338faa2d.html"
+    },
+    {
+      "title": "Тренажёр №16 ОГЭ — Окружность",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-14-a32d8634.html"
+    },
+    {
+      "title": "ОГЭ №15 — тренажёр по треугольникам · проверенная версия v10",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-15-c29f5683.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-16-a91af41f.html"
+    },
+    {
+      "title": "Деление уголком — методически",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-2-2c48ddc0.html"
+    },
+    {
+      "title": "ОГЭ математика — тренажёр задания 19",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-3-08705e89.html"
+    },
+    {
+      "title": "Тренажёр анализа геометрических высказываний",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-4-8bbb25d6.html"
+    },
+    {
+      "title": "Тренажёр деления уголком — final candidate",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-414dbb07.html"
+    },
+    {
+      "title": "ОГЭ №19: верные и неверные утверждения",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-5-8bb7dd76.html"
+    },
+    {
+      "title": "Шины · табличный метод",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-6-e121380e.html"
+    },
+    {
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-7-a9ef2276.html"
+    },
+    {
+      "title": "Тренажёр №16 ОГЭ — Окружность",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-8-e56a50a3.html"
+    },
+    {
+      "title": "ОГЭ №15 — тренажёр по треугольникам · улучшенная версия",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/preview-9-8f6b8b9f.html"
+    },
+    {
+      "title": "Сергей Леонидович: Python — if и for",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/python-if-for-sergey-5d0bfcc5.html"
+    },
+    {
+      "title": "Сергей Леонидович: Python — if внутри for",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/python-if-inside-for-sergey-f9cceb78.html"
+    },
+    {
+      "title": "Проверка навыка — Станция 6",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/quick-skill-check-7668e263.html"
+    },
+    {
+      "title": "Сначала перепиши, потом считай",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/rewrite-before-calc-1-7e6bf87d.html"
+    },
+    {
+      "title": "Тренажёр: вычитание как сложение противоположного",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/subtraction-as-addition-b5b0d37d.html"
+    },
+    {
+      "title": "Шины · табличный метод",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/tires-table-method-trainer-1-37c9a07f.html"
+    },
+    {
+      "title": "Шины · табличный метод",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/tires-table-method-trainer-216c2624.html"
+    },
+    {
+      "title": "Назови угол правильно — тренажёр по геометрии",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trainer-name-the-angle-a0960ad5.html"
+    },
+    {
+      "title": "Тренажёр деления",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-0542125c.html"
+    },
+    {
+      "title": "Тренажёр деления уголком — final candidate",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-1-16a90b5c.html"
+    },
+    {
+      "title": "Тренажёр деления уголком",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-deepseek-42d14478.html"
+    },
+    {
+      "title": "Тренажёр деления уголком",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-deepseek-v2-shifted-9d2314c9.html"
+    },
+    {
+      "title": "Тренажёр деления уголком",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-deepseek-v3-carry-arrow-1da29354.html"
+    },
+    {
+      "title": "Тренажёр деления уголком",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-deepseek-v4-compact-hint-88ca783a.html"
+    },
+    {
+      "title": "Тренажёр деления уголком — final candidate",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-final-candidate-1-e39dd707.html"
+    },
+    {
+      "title": "Тренажёр деления уголком — final candidate",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-final-candidate-2-39a2c980.html"
+    },
+    {
+      "title": "Тренажёр деления уголком на однозначное число",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-odnaznachnoe-unified-57461105.html"
+    },
+    {
+      "title": "Тренажёр деления уголком",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-v2-1-74812d35.html"
+    },
+    {
+      "title": "Тренажёр деления",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-v2-35f17735.html"
+    },
+    {
+      "title": "Тренажёр деления",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-v3-5a46dba3.html"
+    },
+    {
+      "title": "Тренажёр деления уголком",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-v5-chastnoe-pod-delitelem-a56b7bb1.html"
+    },
+    {
+      "title": "Тренажёр деления уголком",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-v6-ugolok-i-block-guard-a8083f2f.html"
+    },
+    {
+      "title": "Тренажёр деления уголком",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trenazher-deleniya-v7-angry-feedback-b1b12dd0.html"
+    },
+    {
+      "title": "Лаборатория странных треугольников",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/triangle-inequality-lab-33921565.html"
+    },
+    {
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trig-sum-to-product-trainer-3-4bbcb5b1.html"
+    },
+    {
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trig-sum-to-product-trainer-8946b780.html"
+    },
+    {
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trig-sum-to-product-trainer-html-4b64ce8d.html"
+    },
+    {
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/trig-sum-to-product-trainer-updated-e577f007.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/turing-trainer-polish-67299827.html"
+    },
+    {
+      "title": "Кто сильнее по модулю?",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/who-is-stronger-1-3cab7554.html"
+    },
+    {
+      "title": "Кто сильнее по модулю?",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/who-is-stronger-11dc99e8.html"
+    },
+    {
+      "title": "ЕГЭ Информатика. Задание 15 — все задачи Яндекс Учебника",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/archive-5-weeks/yandex-ege-inf-task15-all-9feb2554.html"
+    },
+    {
+      "title": "Тренажер для подготовки к ЕГЭ 2026 с Яндекс Учебником для успешной сдачи экзамена с нуля",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/archive-5-weeks/yandex-ege-inf-tasks-page-45bc8336.html"
+    },
+    {
+      "title": "Яндекс ЕГЭ Информатика — задание 12",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/archive-5-weeks/yandex-ege-inf-tasks-page-link-f7e7a14e.html"
+    },
+    {
+      "title": "Тренажер для подготовки к ЕГЭ 2026 с Яндекс Учебником для успешной сдачи экзамена с нуля",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/archive-5-weeks/yandex-task15-page-f152f3ca.html"
+    },
+    {
+      "title": "Озеро нуля — противоположные числа и их сумма",
+      "group": "Школьная математика",
+      "href": "/trainers/archive-5-weeks/zero-lake-1d5fb3a3.html"
+    },
+    {
+      "title": "Арифметика 1–5 класс — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/arifmetika.html"
+    },
+    {
+      "title": "Аттестация по математике, 1 курс: тренажёр по заданиям 3, 11–15, 17–20",
+      "group": "Школьная математика",
+      "href": "/trainers/attestaciya-1-kurs.html"
+    },
+    {
+      "title": "Биссектриса угла — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/bisector-trainer-v2.html"
+    },
+    {
+      "title": "Тренажёр: торможение и прыжки (лесенка и деление)",
+      "group": "Школьная математика",
+      "href": "/trainers/braking-bounces-step.html"
+    },
+    {
+      "title": "Дифференцированные платежи — табличный тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/credit-differential-payment-trainer.html"
+    },
+    {
+      "title": "Кредиты и платежи — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/credit-payment-table-trainer.html"
+    },
+    {
+      "title": "Касса разрядов",
+      "group": "Школьная математика",
+      "href": "/trainers/decimal-cash-trainer.html"
+    },
+    {
+      "title": "Десятичные дроби - уровень 1",
+      "group": "Школьная математика",
+      "href": "/trainers/desyatichnye-drobi-level-1.html"
+    },
+    {
+      "title": "Дроби · тренажёр ОГЭ · задание 6",
+      "group": "Школьная математика",
+      "href": "/trainers/drobi-oge-trainer.html"
+    },
+    {
+      "title": "Панель преподавателя · задачи 18–20",
+      "group": "Школьная математика",
+      "href": "/trainers/dvi/math-18-20-teacher.html"
+    },
+    {
+      "title": "ЕГЭ информатика 19-20-21",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/ege-informatics-19-21-fipi.html"
+    },
+    {
+      "title": "Яндекс ЕГЭ информатика 19-21",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/ege-informatics-19-21-yandex.html"
+    },
+    {
+      "title": "Тренажёр · ЕГЭ Информатика · Задание 1 (графы)",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/ege-informatics-task1-graphs-trainer.html"
+    },
+    {
+      "title": "Логические операции и законы — мини-тренажёр",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/ege-informatics-task15-logic-operations-mini.html"
+    },
+    {
+      "title": "Логические операции и законы — интерактивный тренажёр",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/ege-informatics-task15-logic-operations.html"
+    },
+    {
+      "title": "Панель преподавателя · Задания 1 и 2 Ященко",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/ege-profile/yashchenko-lines-1-2-teacher.html"
+    },
+    {
+      "title": "Стереометрия · Задание 3 ЕГЭ — тренажёр",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/ege-profile-stereometry-3d/trainer.html"
+    },
+    {
+      "title": "Тренажёр · ЕГЭ профиль, задание 2 — векторы",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/ege-profile-vectors-trainer.html"
+    },
+    {
+      "title": "ЕГЭ · Задание 1 · Планиметрия — генератор",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/ege-t1-planimetry-generator.html"
+    },
+    {
+      "title": "Собери решение уравнения",
+      "group": "Школьная математика",
+      "href": "/trainers/equations-builder.html"
+    },
+    {
+      "title": "Финансовая математика: нестандартные схемы",
+      "group": "Школьная математика",
+      "href": "/trainers/finance-nonstandard-trainer.html"
+    },
+    {
+      "title": "ФИПИ ЕГЭ информатика: задание 1",
+      "group": "ЕГЭ профиль",
+      "href": "/trainers/fipi-ege-informatics-task1-report.html"
+    },
+    {
+      "title": "ФИПИ ОГЭ информатика: сбор заданий",
+      "group": "Школьная математика",
+      "href": "/trainers/fipi-oge-informatics-report.html"
+    },
+    {
+      "title": "Тренажёр: формулы сокращённого умножения",
+      "group": "Школьная математика",
+      "href": "/trainers/formuly-sokrashchennogo-umnozheniya-trainer.html"
+    },
+    {
+      "title": "Линейка тренажёров: формулы сокращённого умножения",
+      "group": "Школьная математика",
+      "href": "/trainers/formuly-sokrashchennogo-umnozheniya.html"
+    },
+    {
+      "title": "Дроби: часть и целое",
+      "group": "Школьная математика",
+      "href": "/trainers/fractions-part-whole-assignment.html"
+    },
+    {
+      "title": "ОГЭ №19: верные и неверные утверждения",
+      "group": "Школьная математика",
+      "href": "/trainers/geometry_statements_trainer_improved.html"
+    },
+    {
+      "title": "Неравенства: читаем числовую прямую",
+      "group": "Школьная математика",
+      "href": "/trainers/inequalities-number-line-reader.html"
+    },
+    {
+      "title": "Середина отрезка — JSXGraph тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/jsxgraph-midpoint.html"
+    },
+    {
+      "title": "Фабрика подобных слагаемых",
+      "group": "Школьная математика",
+      "href": "/trainers/like-terms-factory.html"
+    },
+    {
+      "title": "Лаборатория подобных слагаемых",
+      "group": "Школьная математика",
+      "href": "/trainers/like-terms-lab.html"
+    },
+    {
+      "title": "Линейная функция y = kx + b",
+      "group": "Школьная математика",
+      "href": "/trainers/linear-function-lab.html"
+    },
+    {
+      "title": "Системы линейных уравнений",
+      "group": "Школьная математика",
+      "href": "/trainers/linear-systems-trainer.html"
+    },
+    {
+      "title": "Логарифмический радар",
+      "group": "Школьная математика",
+      "href": "/trainers/logarithm-radar-basic.html"
+    },
+    {
+      "title": "Тренажёр логики",
+      "group": "Школьная математика",
+      "href": "/trainers/logic-trainer/404.html"
+    },
+    {
+      "title": "Деление уголком — пошаговый тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/long-division-stepwise.html"
+    },
+    {
+      "title": "Переход…",
+      "group": "Школьная математика",
+      "href": "/trainers/long-division.html"
+    },
+    {
+      "title": "Тренажёр Маруси",
+      "group": "Школьная математика",
+      "href": "/trainers/marusya-player.html"
+    },
+    {
+      "title": "Линейка Маруси на сегодня",
+      "group": "Школьная математика",
+      "href": "/trainers/marusya-test-map.html"
+    },
+    {
+      "title": "Маршрут Максима — 5 класс",
+      "group": "Школьная математика",
+      "href": "/trainers/maxim-5-rounding-decimals.html"
+    },
+    {
+      "title": "Маршрут Максима — 5 класс",
+      "group": "Школьная математика",
+      "href": "/trainers/maxim-5-rounding-signs.html"
+    },
+    {
+      "title": "Таблица умножения — «Лифт» (спринт)",
+      "group": "Школьная математика",
+      "href": "/trainers/multiplication-table/elevator-sprint.html"
+    },
+    {
+      "title": "Квартира · план · задания 1–5 ОГЭ · тренажёр",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-apartments.html"
+    },
+    {
+      "title": "Участок · тренажёр 1–5 · ОГЭ",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-land-plots.html"
+    },
+    {
+      "title": "Форматы бумаги А0–А6 · задания 1–5 · ОГЭ",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html"
+    },
+    {
+      "title": "Тренажёр ОГЭ · Задания 1–5 «Дороги» (Антоновка → Богданово)",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html"
+    },
+    {
+      "title": "Печки · тренажёр 1–5",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-stoves.html"
+    },
+    {
+      "title": "Тарифы · тренажёр 1–5 · ОГЭ",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-tariffs.html"
+    },
+    {
+      "title": "Шины · тренажёр 1–5 (весь банк ФИПИ)",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-1-5-trainers/practice-1-5-tires.html"
+    },
+    {
+      "title": "Авторский аналог демоверсии ОГЭ-2027 по математике. Вариант 1",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-2027-analogue-1.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/decimal-add-subtract.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/fraction-common-denominator.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/fraction-meaning.html"
+    },
+    {
+      "title": "Умножение столбиком на одну цифру — по разрядам",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html"
+    },
+    {
+      "title": "Умножение столбиком на двузначное число — два произведения",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html"
+    },
+    {
+      "title": "Десятичная дробь ÷ натуральное число",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/decimal-division-natural.html"
+    },
+    {
+      "title": "Десятичная дробь ÷ десятичную",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html"
+    },
+    {
+      "title": "Деление не нацело: дописываем нули",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/division-append-zeros.html"
+    },
+    {
+      "title": "Деление с остатком: частное, остаток и проверка",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/division-with-remainder.html"
+    },
+    {
+      "title": "Деление уголком на одну цифру — пошагово",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/long-division-one-digit.html"
+    },
+    {
+      "title": "Цифра частного и линейка кратных",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html"
+    },
+    {
+      "title": "Деление уголком на двузначный делитель",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/long-division-two-digit.html"
+    },
+    {
+      "title": "Деление уголком с остатком",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/long-division-with-remainder.html"
+    },
+    {
+      "title": "Нули в частном — не теряем разряд",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html"
+    },
+    {
+      "title": "Таблица умножения: лесенка одной таблицы",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/multiplication-ladder.html"
+    },
+    {
+      "title": "Умножение: смысл, группы и прямоугольные ряды",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/multiplication-meaning.html"
+    },
+    {
+      "title": "Таблица умножения вперемешку и неизвестный множитель",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/multiplication-mixed.html"
+    },
+    {
+      "title": "Таблица Пифагора: находим произведение по строке и столбцу",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html"
+    },
+    {
+      "title": "Таблица умножения: понятные приёмы вместо угадывания",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/multiplication-tricks.html"
+    },
+    {
+      "title": "Табличное деление: умножение наоборот",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division/tabular-division.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/multiplication-division.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/negative-add-subtract.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/negative-number-line.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/order-of-operations.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/rounding.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/units-area.html"
+    },
+    {
+      "title": "MathExam",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-basics/units-length-time.html"
+    },
+    {
+      "title": "Тренажёр ОГЭ по информатике: задания 1–10",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-informatics-1-10-tutor.html"
+    },
+    {
+      "title": "ОГЭ. Задание 10: вероятность — тренажёр",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task10-probability.html"
+    },
+    {
+      "title": "ОГЭ, задание 11 — Графики функций. Интерактивный тренажёр",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task11-graphs-trainer.html"
+    },
+    {
+      "title": "ОГЭ, задание 12 — расчёты по формулам. Тренажёр",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task12-formulas-trainer.html"
+    },
+    {
+      "title": "ОГЭ №13: неравенства",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task13-inequalities.html"
+    },
+    {
+      "title": "ОГЭ №14. Прогрессии: формулы и здравый смысл",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task14-progressions.html"
+    },
+    {
+      "title": "ОГЭ · Задание 16 — окружность",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task16-circle.html"
+    },
+    {
+      "title": "ОГЭ №17 — Четырёхугольники · тренажёр",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task17-quadrilaterals.html"
+    },
+    {
+      "title": "ОГЭ №18 — Фигуры на клетчатой бумаге",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task18-grid.html"
+    },
+    {
+      "title": "Задание 20 ОГЭ — тренажёр",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task20-equations.html"
+    },
+    {
+      "title": "ОГЭ · Задание 21 · Текстовые задачи — тренажёр",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task21-word-problems.html"
+    },
+    {
+      "title": "ОГЭ · Задание 22 — Графики функций",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task22-functions-graphs.html"
+    },
+    {
+      "title": "ОГЭ · Задание 23 — Геометрические задачи на вычисление",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task23-geometry-calculations.html"
+    },
+    {
+      "title": "ОГЭ · Задание 24 — задачи на доказательство",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task24-proofs.html"
+    },
+    {
+      "title": "ОГЭ · Задание 25 — геометрия повышенной сложности",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task25-geometry.html"
+    },
+    {
+      "title": "Тренажёр · ОГЭ математика · Задание 6",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task6-fractions.html"
+    },
+    {
+      "title": "Задание 8 ОГЭ — степени и корни",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task8-powers-roots.html"
+    },
+    {
+      "title": "Задание 9 ОГЭ · Уравнения — тренажёр",
+      "group": "ОГЭ",
+      "href": "/trainers/oge-task9-equations.html"
+    },
+    {
+      "title": "ОГЭ №13 — серия тренажёров по неравенствам",
+      "group": "ОГЭ",
+      "href": "/trainers/oge13-inequalities-series.html"
+    },
+    {
+      "title": "Часть, целое и доля",
+      "group": "Школьная математика",
+      "href": "/trainers/part-whole-share-assignment.html"
+    },
+    {
+      "title": "Питоша — тренажёр по Python",
+      "group": "Школьная математика",
+      "href": "/trainers/pitosha-python-trainer.html"
+    },
+    {
+      "title": "Шины · тренажёр 1–5",
+      "group": "Школьная математика",
+      "href": "/trainers/practice-1-5-tires.html"
+    },
+    {
+      "title": "Python: for и вложенный if — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/python-for-nested-if-trainer.html"
+    },
+    {
+      "title": "Сергей Леонидович: Python — if и for",
+      "group": "Школьная математика",
+      "href": "/trainers/python-if-for-sergey.html"
+    },
+    {
+      "title": "Сергей Леонидович: Python — if внутри for",
+      "group": "Школьная математика",
+      "href": "/trainers/python-if-inside-for-sergey.html"
+    },
+    {
+      "title": "Квадратные неравенства — парабола и интервалы",
+      "group": "Школьная математика",
+      "href": "/trainers/quadratic-inequalities-lab.html"
+    },
+    {
+      "title": "Квадратные неравенства: парабола и промежутки",
+      "group": "Школьная математика",
+      "href": "/trainers/quadratic-inequalities-visual.html"
+    },
+    {
+      "title": "Рекурсивная лестница и дерево путей",
+      "group": "Школьная математика",
+      "href": "/trainers/recursion_ladder_paths.html"
+    },
+    {
+      "title": "Округление чисел — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/rounding-stepwise.html"
+    },
+    {
+      "title": "Сергей Леонидович — тренажёры от 05.06",
+      "group": "Школьная математика",
+      "href": "/trainers/sergey-2026-06-05.html"
+    },
+    {
+      "title": "Сергей Леонидович — Python if и for — embed 05.06",
+      "group": "Школьная математика",
+      "href": "/trainers/sergey-python-if-for-2026-06-05-embed.html"
+    },
+    {
+      "title": "Сергей Леонидович — Python if и for — 05.06",
+      "group": "Школьная математика",
+      "href": "/trainers/sergey-python-if-for-2026-06-05.html"
+    },
+    {
+      "title": "Простые уравнения — пошаговый тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/simple-equations-stepwise.html"
+    },
+    {
+      "title": "ОГЭ №14 — прогрессии (пошаговый тренажёр)",
+      "group": "Школьная математика",
+      "href": "/trainers/task14-progressions-trainer.html"
+    },
+    {
+      "title": "ОГЭ №14 — тренажёр прогрессий",
+      "group": "Школьная математика",
+      "href": "/trainers/task14-progressions-trainer_old.html"
+    },
+    {
+      "title": "ОГЭ №14 — тренажёр прогрессий (банк)",
+      "group": "Школьная математика",
+      "href": "/trainers/task14-progressions-trainer_old_steps.html"
+    },
+    {
+      "title": "ОГЭ №19 — тренажёр «умной зубрёжки»",
+      "group": "Школьная математика",
+      "href": "/trainers/task19-trainer.html"
+    },
+    {
+      "title": "Театр формул — квадрат суммы и разности, ежедневная отработка",
+      "group": "Школьная математика",
+      "href": "/trainers/teatr-formul-daily.html"
+    },
+    {
+      "title": "Все тренажёры для тестирования",
+      "group": "Школьная математика",
+      "href": "/trainers/testing-hub.html"
+    },
+    {
+      "title": "Деление уголком — тетрадный вид (CSS)",
+      "group": "Школьная математика",
+      "href": "/trainers/trainers/long-division-notebook-css.html"
+    },
+    {
+      "title": "Деление уголком (тетрадный формат) — тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/trainers/long-division.html"
+    },
+    {
+      "title": "Умножение столбиком — ОГЭ тренажёр",
+      "group": "Школьная математика",
+      "href": "/trainers/trainers/long-multiplication.html"
+    },
+    {
+      "title": "ОГЭ №14 — Прогрессии (тренажёр)",
+      "group": "Школьная математика",
+      "href": "/trainers/trainers/task14-progressions-trainer.html"
+    },
+    {
+      "title": "Линейка МЦКО — ежедневные задания по математике, 6 класс",
+      "group": "Школьная математика",
+      "href": "/trainers/trenazher-mcko-linejka-progress.html"
+    },
+    {
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "group": "Школьная математика",
+      "href": "/trainers/trig-sum-to-product-trainer-updated.html"
+    },
+    {
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "group": "Школьная математика",
+      "href": "/trainers/trig-sum-to-product-trainer.html"
+    },
+    {
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "group": "Школьная математика",
+      "href": "/trainers/trig-sum-to-product-trainer.html.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/turing-trainer-modular-checked.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/turing-trainer-modular-v3.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/turing-trainer-polish.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/turing-trainer-student.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/turing-trainer-universal.html"
+    },
+    {
+      "title": "Задачи на машину Тьюринга",
+      "group": "Школьная математика",
+      "href": "/trainers/turing-trainer-upgrade.html"
+    },
+    {
+      "title": "Вероника: логарифмы и модули",
+      "group": "Школьная математика",
+      "href": "/trainers/veronika-log-line.html"
+    },
+    {
+      "title": "Вероника · логарифмы и модули",
+      "group": "Школьная математика",
+      "href": "/trainers/veronika-logarithms.html"
+    },
+    {
+      "title": "Кто сильнее по модулю?",
+      "group": "Школьная математика",
+      "href": "/trainers/who-is-stronger.html"
+    },
+    {
+      "title": "Перегибание и отпечаток · лаборатория приёма",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch1-p3-t2-fold-imprint.html"
+    },
+    {
+      "title": "Смежные и вертикальные углы · лаборатория и доказательство",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch1-p6-t1-adjacent-vertical.html"
+    },
+    {
+      "title": "Задачи на смежные и вертикальные углы · генератор",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch1-p6-t2-angle-problems.html"
+    },
+    {
+      "title": "Два перпендикуляра к одной прямой · перегибание и доказательство от противного",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch1-p6-t3-two-perpendiculars.html"
+    },
+    {
+      "title": "Биссектриса угла — циркуль и линейка",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-constr-angle-bisector.html"
+    },
+    {
+      "title": "Угол, равный данному — циркуль и линейка",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-constr-copy-angle.html"
+    },
+    {
+      "title": "Серединный перпендикуляр — циркуль и линейка",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-constr-perp-bisector.html"
+    },
+    {
+      "title": "Перпендикуляр к прямой через точку — циркуль и линейка",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-constr-perpendicular-point.html"
+    },
+    {
+      "title": "Что значит — равные фигуры? · Наложение",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p1-t1-overlay-equality.html"
+    },
+    {
+      "title": "Наложи треугольник · путь к первому признаку",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p1-t2-overlay-sas.html"
+    },
+    {
+      "title": "Почему хватает трёх элементов · доказательство первого признака",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p1-t3-proof-sas.html"
+    },
+    {
+      "title": "Найди равные треугольники · задачи по чертежу",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p1-t4-find-equal.html"
+    },
+    {
+      "title": "Зачёт по параграфу · первый признак равенства треугольников",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p1-t5-quiz.html"
+    },
+    {
+      "title": "Медиана, биссектриса, высота · три разные линии",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p2-t0-three-cevians.html"
+    },
+    {
+      "title": "Перпендикуляр складыванием · из точки к прямой",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p2-t1-perp-fold.html"
+    },
+    {
+      "title": "Равнобедренный треугольник · устройство фигуры",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p2-t2-isosceles-intro.html"
+    },
+    {
+      "title": "Углы при основании равны · доказательство",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p2-t3-proof-base-angles.html"
+    },
+    {
+      "title": "Биссектриса = медиана = высота · равнобедренный",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p2-t4-three-in-one.html"
+    },
+    {
+      "title": "Равнобедренный в задачах · найди равные",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p2-t5-find-equal-iso.html"
+    },
+    {
+      "title": "Мини-зачёт · медианы, биссектрисы, высоты",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p2-t6-quiz.html"
+    },
+    {
+      "title": "Прилежащие и противолежащие · опорный словарь",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p3-t0-adjacent-opposite.html"
+    },
+    {
+      "title": "Наложи по стороне и двум углам · второй признак",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p3-t1-overlay-asa.html"
+    },
+    {
+      "title": "Почему точка C не может быть другой · второй признак",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p3-t2-proof-asa.html"
+    },
+    {
+      "title": "Первый или второй? · различение признаков",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p3-t3-which-sign.html"
+    },
+    {
+      "title": "Найди равные треугольники · задачи по чертежу",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p3-t4-find-equal-asa.html"
+    },
+    {
+      "title": "Мини-зачёт · второй признак",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p3-t5-quiz.html"
+    },
+    {
+      "title": "Почему хватает трёх сторон · жёсткость треугольника",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p4-t0-rigidity.html"
+    },
+    {
+      "title": "Наложи по трём сторонам · третий признак",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p4-t1-overlay-sss.html"
+    },
+    {
+      "title": "Доказательство третьего признака · конструктор",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p4-t2-proof-sss.html"
+    },
+    {
+      "title": "Какой признак? · различение трёх признаков",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p4-t3-which-sign.html"
+    },
+    {
+      "title": "Найди равные по трём сторонам · задачи по чертежу",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p4-t4-find-equal-sss.html"
+    },
+    {
+      "title": "Мини-зачёт · третий признак",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch2-p4-t5-quiz.html"
+    },
+    {
+      "title": "Пересекающиеся и параллельные прямые",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p1-t1-crossing-parallel.html"
+    },
+    {
+      "title": "Восемь углов при секущей",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p1-t2-eight-angles.html"
+    },
+    {
+      "title": "Когда прямые параллельны",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p1-t3-sign-lab.html"
+    },
+    {
+      "title": "Почему признак работает",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p1-t4-proof-sign.html"
+    },
+    {
+      "title": "Ещё два признака",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p1-t5-two-more-signs.html"
+    },
+    {
+      "title": "Угольник и линейка",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p1-t6-practical.html"
+    },
+    {
+      "title": "Докажи, что a ∥ b",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p1-t7-find-equal.html"
+    },
+    {
+      "title": "Через точку — одна параллель",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p2-t1-parallel-axiom.html"
+    },
+    {
+      "title": "Свойство 1: накрест лежащие углы",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p2-t4-property-alt-angles.html"
+    },
+    {
+      "title": "Свойства 2 и 3: соответственные и односторонние",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p2-t5-properties-2-3.html"
+    },
+    {
+      "title": "Прямая и обратная теорема",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch3-p2-t6-direct-converse.html"
+    },
+    {
+      "title": "Сумма углов треугольника",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p1-t1-angle-sum-lab.html"
+    },
+    {
+      "title": "Почему сумма углов равна 180°",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html"
+    },
+    {
+      "title": "Внешний угол треугольника",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p1-t3-exterior-angle.html"
+    },
+    {
+      "title": "Виды треугольников",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p1-t4-triangle-types.html"
+    },
+    {
+      "title": "Найди углы",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p1-t5-find-angles.html"
+    },
+    {
+      "title": "Зачёт §1",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p1-t6-quiz.html"
+    },
+    {
+      "title": "Сторона ↔ угол",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p2-t1-side-angle-lab.html"
+    },
+    {
+      "title": "Против большей стороны — больший угол",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p2-t2-proof-side-angle.html"
+    },
+    {
+      "title": "Против большего угла — большая сторона",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p2-t3-converse-iso.html"
+    },
+    {
+      "title": "Гипотенуза больше катета",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p2-t4-hypotenuse-leg.html"
+    },
+    {
+      "title": "Неравенство треугольника",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p2-t5-triangle-inequality.html"
+    },
+    {
+      "title": "Неравенство треугольника — доказательство",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p2-t6-prove-inequality.html"
+    },
+    {
+      "title": "Неравенство треугольника — генератор",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p2-t7-triangle-generator.html"
+    },
+    {
+      "title": "Зачёт §2",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p2-t8-quiz.html"
+    },
+    {
+      "title": "Два острых угла прямоугольного треугольника",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p3-t1-two-acute-angles.html"
+    },
+    {
+      "title": "Катет против угла в 30°",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p3-t2-leg-against-30.html"
+    },
+    {
+      "title": "Половина гипотенузы — значит 30°",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p3-t3-half-means-30.html"
+    },
+    {
+      "title": "Медиана к гипотенузе",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p3-t4-median-to-hypotenuse.html"
+    },
+    {
+      "title": "Медиана-половина — значит прямоугольный",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p3-t5-median-converse.html"
+    },
+    {
+      "title": "Признаки равенства прямоугольных треугольников",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p3-t6-which-sign.html"
+    },
+    {
+      "title": "Признак по гипотенузе и катету (HL)",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p3-t7-hyp-leg-congruence.html"
+    },
+    {
+      "title": "Расчёты в прямоугольном треугольнике — генератор §3",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p3-t8-generator.html"
+    },
+    {
+      "title": "Зачёт по §3 — прямоугольный треугольник",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p3-t9-quiz.html"
+    },
+    {
+      "title": "Расстояние от точки до прямой",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p4-t1-distance-point-line.html"
+    },
+    {
+      "title": "Расстояние между параллельными",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p4-t2-distance-parallels.html"
+    },
+    {
+      "title": "Построение треугольника по трём сторонам",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p4-t3-construct-sss.html"
+    },
+    {
+      "title": "Треугольник по двум сторонам и углу",
+      "group": "Геометрия 7",
+      "href": "/geometry-course/trainers/ch4-p4-t4-construct-two-sides-angle.html"
+    },
+    {
+      "title": "5–6 классы · Цифра, разряд и число",
+      "href": "/school/#lesson/place",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Сравнение натуральных чисел",
+      "href": "/school/#lesson/compare",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Округление и прикидка",
+      "href": "/school/#lesson/round",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Сложение и переход через разряд",
+      "href": "/school/#lesson/add",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Вычитание с разменом",
+      "href": "/school/#lesson/subtract",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Умножение: группы и распределение",
+      "href": "/school/#lesson/multiply",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Деление на равные части",
+      "href": "/school/#lesson/divide",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Деление с остатком",
+      "href": "/school/#lesson/remainder",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Скобки и порядок действий",
+      "href": "/school/#lesson/order",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Степень как повторное умножение",
+      "href": "/school/#lesson/power",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Буква вместо меняющегося числа",
+      "href": "/school/#lesson/expression",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Уравнение и равновесие",
+      "href": "/school/#lesson/equation",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Отрезок, части и целое",
+      "href": "/school/#lesson/segment",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Угол и его части",
+      "href": "/school/#lesson/angle",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Периметр: путь по границе",
+      "href": "/school/#lesson/perimeter",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Площадь: считаем квадраты",
+      "href": "/school/#lesson/area",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Квадратные единицы",
+      "href": "/school/#lesson/areaunits",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Объём и слои кубиков",
+      "href": "/school/#lesson/volume",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Дробь: равные доли",
+      "href": "/school/#lesson/fraction",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Сравнение долей одного размера",
+      "href": "/school/#lesson/fractioncompare",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Складываем одинаковые доли",
+      "href": "/school/#lesson/fractionadd",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Целые и дробная часть",
+      "href": "/school/#lesson/mixed",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Равные дроби и сокращение",
+      "href": "/school/#lesson/reduce",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Делаем доли одинаковыми",
+      "href": "/school/#lesson/common",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Дроби с разными знаменателями",
+      "href": "/school/#lesson/unlike",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Доля от доли",
+      "href": "/school/#lesson/fractionmul",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Сколько долей помещается",
+      "href": "/school/#lesson/fractiondiv",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Находим часть целого",
+      "href": "/school/#lesson/part",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Восстанавливаем целое",
+      "href": "/school/#lesson/whole",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Десятые, сотые и запятая",
+      "href": "/school/#lesson/decimal",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Сравнение десятичных дробей",
+      "href": "/school/#lesson/decimalcompare",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Десятичные дроби: плюс и минус",
+      "href": "/school/#lesson/decimaladd",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Умножение десятичных дробей",
+      "href": "/school/#lesson/decimalmul",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Деление десятичных дробей",
+      "href": "/school/#lesson/decimaldiv",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Путь, скорость и время",
+      "href": "/school/#lesson/motion",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Среднее арифметическое",
+      "href": "/school/#lesson/average",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Таблицы и диаграммы",
+      "href": "/school/#lesson/chart",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Признаки делимости",
+      "href": "/school/#lesson/divisibility",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Простые и составные числа",
+      "href": "/school/#lesson/prime",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Наибольший общий делитель",
+      "href": "/school/#lesson/gcd",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Наименьшее общее кратное",
+      "href": "/school/#lesson/lcm",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Действия со смешанными числами",
+      "href": "/school/#lesson/mixedops",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Отношение: сравнение делением",
+      "href": "/school/#lesson/ratio",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Равенство отношений",
+      "href": "/school/#lesson/proportion",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Прямая пропорциональность",
+      "href": "/school/#lesson/direct",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Обратная пропорциональность",
+      "href": "/school/#lesson/inverse",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Масштаб и реальные размеры",
+      "href": "/school/#lesson/scale",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Процент: одна сотая",
+      "href": "/school/#lesson/percent",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Целое по известным процентам",
+      "href": "/school/#lesson/percentwhole",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Увеличение и уменьшение на процент",
+      "href": "/school/#lesson/percentchange",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Знаки и движение по прямой",
+      "href": "/school/#lesson/signed",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Противоположные числа и модуль",
+      "href": "/school/#lesson/absolute",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Сравнение отрицательных чисел",
+      "href": "/school/#lesson/signedcompare",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Вычитание отрицательного числа",
+      "href": "/school/#lesson/signedsub",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Умножение чисел с разными знаками",
+      "href": "/school/#lesson/signedmul",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Деление рациональных чисел",
+      "href": "/school/#lesson/signeddiv",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Распределение и раскрытие скобок",
+      "href": "/school/#lesson/brackets",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Коэффициент и подобные слагаемые",
+      "href": "/school/#lesson/like",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Координатная плоскость",
+      "href": "/school/#lesson/coordinate",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Симметрия: построить отражение",
+      "href": "/school/#lesson/symmetry",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Окружность, круг и площадь",
+      "href": "/school/#lesson/circle",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Треугольники и углы",
+      "href": "/school/#lesson/triangle",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Множества и двойной подсчёт",
+      "href": "/school/#lesson/sets",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Случайность и доля исходов",
+      "href": "/school/#lesson/probability",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Единицы и перевод величин",
+      "href": "/school/#lesson/units",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Шкалы и координатный луч",
+      "href": "/school/#lesson/numline",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Распределительное свойство",
+      "href": "/school/#lesson/distribute",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Окружность, круг и диаметр",
+      "href": "/school/#lesson/shapes",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Прикидка перед калькулятором",
+      "href": "/school/#lesson/calculator",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Виды треугольников",
+      "href": "/school/#lesson/triangletypes",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Строим перпендикуляр",
+      "href": "/school/#lesson/perpendicular",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Параллельные прямые",
+      "href": "/school/#lesson/parallel",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Разложение на простые множители",
+      "href": "/school/#lesson/factorization",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "5–6 классы · Круговая диаграмма",
+      "href": "/school/#lesson/piechart",
+      "group": "Мастерская 5–6"
+    },
+    {
+      "title": "Уравнения · Неизвестное слагаемое",
+      "href": "/equations/#add",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Неизвестное уменьшаемое",
+      "href": "/equations/#subtract",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Неизвестное вычитаемое",
+      "href": "/equations/#subtrahend",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Неизвестный множитель",
+      "href": "/equations/#multiply",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Неизвестное делимое и делитель",
+      "href": "/equations/#divide",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Уравнения со знаками",
+      "href": "/equations/#signed",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Два действия и обратный порядок",
+      "href": "/equations/#linear",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Неизвестное с двух сторон",
+      "href": "/equations/#both",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Скобки и подобные",
+      "href": "/equations/#brackets",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Дробные коэффициенты",
+      "href": "/equations/#fractions",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Один корень, ни одного или бесконечно много",
+      "href": "/equations/#identity",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Произведение равно нулю",
+      "href": "/equations/#product",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Квадрат числа",
+      "href": "/equations/#square",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Квадратное уравнение",
+      "href": "/equations/#quadratic",
+      "group": "Уравнения 2–9"
+    },
+    {
+      "title": "Уравнения · Дробное уравнение и запретные значения",
+      "href": "/equations/#rational",
+      "group": "Уравнения 2–9"
+    }
+  ]
+}

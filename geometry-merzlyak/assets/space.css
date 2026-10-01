@@ -1,0 +1,23 @@
+
+
+ .space-canvas{border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:16px 0}
+.space-canvas canvas{width:100%;height:auto;aspect-ratio:8/5;display:block;touch-action:none}
+.space-head{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.space-tip{font-size:.78rem;color:var(--muted)}
+.space-metrics{font-size:.86rem;color:var(--teal);font-variant-numeric:tabular-nums;min-height:3em}
+.camera-actions,.space-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:15px 0}
+.space-controls label,.camera-actions label{flex:1;min-width:120px}
+.space-controls input[type=range],.camera-actions input[type=range]{width:100%;accent-color:var(--teal);padding:0;height:35px}
+.space-controls button,.camera-actions button{font-size:.8rem}
+.space-controls select{width:100%}
+.point-picks label{min-width:80px}
+.dimension-note,.space-feedback,.measurement{font-size:.86rem}
+.space-controls label{min-width:110px}
+.space-canvas{margin-left:-10px;margin-right:-10px}
+.camera-actions{gap:7px}
+.camera-actions label{min-width:110px}
+.point-picks label{min-width:60px}
+.space-canvas:fullscreen{background:#f7faf8;border:0;border-radius:0;margin:0;display:flex;align-items:center;justify-content:center}
+.space-canvas:fullscreen canvas{width:min(100vw,160vh);height:auto}
+.space-canvas:fullscreen .exit-model{display:block;position:absolute;top:10px;right:10px;z-index:2}
+.space-canvas canvas{width:100%;height:auto;aspect-ratio:8/5}.space-controls{display:flex;flex-wrap:wrap;gap:12px}.space-controls label{min-width:130px;flex:1}.space-head,.camera-actions{display:flex;gap:10px;flex-wrap:wrap}.space-canvas{position:relative}.exit-model{display:none}.space-canvas:fullscreen{background:#fff}.space-canvas:fullscreen .exit-model{display:block}.space-metrics{overflow-wrap:anywhere}.space-canvas:fullscreen canvas{height:90vh;width:100%}

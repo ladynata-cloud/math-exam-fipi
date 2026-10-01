@@ -1,0 +1,138 @@
+point,chapter,printed_page,source_title,unit,lesson,practice_type,proof_argument
+1,1,5,"Точки, прямые, отрезки",segments,atlas/segments.html,segment,segment
+2,1,7,Провешивание прямой на местности,segments,atlas/segments.html,segment,segment
+3,1,9,Луч,angles,atlas/angles.html,angle,angles
+4,1,10,Угол,angles,atlas/angles.html,angle,angles
+5,1,11,Равенство геометрических фигур,equality,atlas/equality.html,compare,segment
+6,1,12,Сравнение отрезков и углов,equality,atlas/equality.html,compare,segment
+7,1,14,Длина отрезка,length,atlas/length.html,length,segment
+8,1,16,Единицы измерения. Измерительные инструменты,length,atlas/length.html,length,segment
+9,1,19,Градусная мера угла,measure-angle,atlas/measure-angle.html,angle-sum,angles
+10,1,21,Измерение углов на местности,measure-angle,atlas/measure-angle.html,angle-sum,angles
+11,1,22,Смежные и вертикальные углы,perpendicular,atlas/perpendicular.html,adjacent,vertical
+12,1,23,Перпендикулярные прямые,perpendicular,atlas/perpendicular.html,adjacent,vertical
+13,1,24,Построение прямых углов на местности,perpendicular,atlas/perpendicular.html,adjacent,vertical
+14,2,29,Треугольник,triangle-sas,atlas/triangle-sas.html,perimeter,sas
+15,2,30,Первый признак равенства треугольников,triangle-sas,atlas/triangle-sas.html,perimeter,sas
+16,2,33,Перпендикуляр к прямой,cevians,atlas/cevians.html,isosceles,iso
+17,2,34,"Медианы, биссектрисы и высоты треугольника",cevians,atlas/cevians.html,isosceles,iso
+18,2,35,Свойства равнобедренного треугольника,cevians,atlas/cevians.html,isosceles,iso
+19,2,38,Второй признак равенства треугольников,triangle-signs,atlas/triangle-signs.html,congruence,sss
+20,2,39,Третий признак равенства треугольников,triangle-signs,atlas/triangle-signs.html,congruence,sss
+21,2,43,Окружность,compass,atlas/compass.html,radius,bisector-locus
+22,2,44,Построения циркулем и линейкой,compass,atlas/compass.html,radius,bisector-locus
+23,2,45,Примеры задач на построение,compass,atlas/compass.html,radius,bisector-locus
+24,3,53,Определение параллельных прямых,parallels,atlas/parallels.html,parallel,parallel
+25,3,54,Признаки параллельности двух прямых,parallels,atlas/parallels.html,parallel,parallel
+26,3,56,Практические способы построения параллельных прямых,parallels,atlas/parallels.html,parallel,parallel
+27,3,58,Об аксиомах геометрии,parallels,atlas/parallels.html,parallel,parallel
+28,3,59,Аксиома параллельных прямых,parallels,atlas/parallels.html,parallel,parallel
+29,3,61,Углы при параллельных прямых и секущей,parallel-angles,atlas/parallel-angles.html,parallel-angles,parallel
+30,3,64,Углы с соответственно параллельными или перпендикулярными сторонами,parallel-angles,atlas/parallel-angles.html,parallel-angles,parallel
+31,4,69,Сумма углов треугольника,triangle-angles,atlas/triangle-angles.html,triangle-angle,triangle-sum
+32,4,70,"Остроугольный, прямоугольный и тупоугольный треугольники",triangle-angles,atlas/triangle-angles.html,triangle-angle,triangle-sum
+33,4,72,Соотношения между сторонами и углами треугольника,triangle-angles,atlas/triangle-angles.html,triangle-angle,triangle-sum
+34,4,73,Неравенство треугольника,triangle-angles,atlas/triangle-angles.html,triangle-angle,triangle-sum
+35,4,75,Свойства и признаки прямоугольных треугольников,right-triangle,atlas/right-triangle.html,right30,hyp-median
+36,4,77,Признаки равенства прямоугольных треугольников,right-triangle,atlas/right-triangle.html,right30,hyp-median
+37,4,80,Расстояние от точки до прямой и между параллельными прямыми,distance,atlas/distance.html,distance,distance
+38,4,83,Построение треугольника по трём элементам,distance,atlas/distance.html,distance,distance
+39,5,91,Свойства биссектрисы угла,angle-locus,atlas/angle-locus.html,locus,angle-locus
+40,5,93,Свойства серединного перпендикуляра,perp-locus,atlas/perp-locus.html,midpoint,bisector-locus
+41,5,97,Свойства диаметров и хорд,chords-tangent,atlas/chords-tangent.html,tangent,tangent
+42,5,97,Окружность и прямая. Касательная,chords-tangent,atlas/chords-tangent.html,tangent,tangent
+43,5,100,Вписанная и описанная окружности треугольника,triangle-circles,atlas/triangle-circles.html,inradius,centers
+44,5,106,"Фигуры, симметричные относительно прямой",axis,atlas/axis.html,reflection,reflection
+45,5,108,Осевая симметрия и её свойства,axis,atlas/axis.html,reflection,reflection
+46,6,121,Выпуклый многоугольник,polygons,atlas/polygons.html,polygon,polygon
+47,6,122,Четырёхугольник,polygons,atlas/polygons.html,polygon,polygon
+48,6,124,Параллелограмм,parallelogram,atlas/parallelogram.html,parallelogram,parallelogram
+49,6,125,Признаки параллелограмма,parallelogram,atlas/parallelogram.html,parallelogram,parallelogram
+50,6,126,Трапеция,trapezoid,atlas/trapezoid.html,trapezoid,trapezoid
+51,6,131,Прямоугольник,rectangle,atlas/rectangle.html,rectangle,rectangle
+52,6,132,Ромб и квадрат,rhombus,atlas/rhombus.html,rhombus,rhombus
+53,6,133,Центральная симметрия,central,atlas/central.html,central,central
+54,7,139,Понятие площади многоугольника,area-basics,atlas/area-basics.html,area,area
+55,7,142,Площадь квадрата,area-basics,atlas/area-basics.html,area,area
+56,7,144,Площадь прямоугольника,area-basics,atlas/area-basics.html,area,area
+57,7,146,Площадь параллелограмма,area-parallelogram,atlas/area-parallelogram.html,area-parallelogram,area-parallelogram
+58,7,147,Площадь треугольника,area-triangle,atlas/area-triangle.html,area-triangle,area-triangle
+59,7,149,Площадь трапеции,area-trapezoid,atlas/area-trapezoid.html,area-trapezoid,area-trapezoid
+60,7,152,Теорема Пифагора,pythagoras,atlas/pythagoras.html,pythagoras,pythagoras
+61,7,154,"Теорема, обратная теореме Пифагора",pythagoras,atlas/pythagoras.html,pythagoras,pythagoras
+62,7,155,Формула Герона,heron,atlas/heron.html,heron,heron
+63,8,163,Пропорциональные отрезки,similarity,atlas/similarity.html,similarity,similarity
+64,8,164,Определение подобных треугольников,similarity,atlas/similarity.html,similarity,similarity
+65,8,165,Отношение площадей подобных треугольников,similarity,atlas/similarity.html,similarity,similarity
+66,8,167,Первый признак подобия треугольников,similarity-signs,atlas/similarity-signs.html,similarity-signs,similarity-signs
+67,8,168,Второй признак подобия треугольников,similarity-signs,atlas/similarity-signs.html,similarity-signs,similarity-signs
+68,8,169,Третий признак подобия треугольников,similarity-signs,atlas/similarity-signs.html,similarity-signs,similarity-signs
+69,8,171,Средняя линия треугольника,midline,atlas/midline.html,midline,midline
+70,8,173,Четыре замечательные точки треугольника,centers,atlas/centers.html,centroid,centroid
+71,8,174,Пропорциональные отрезки в прямоугольном треугольнике,projections,atlas/projections.html,projection,projection
+72,8,175,Метод подобия в задачах на построение,similarity-measure,atlas/similarity-measure.html,shadow,shadow
+73,8,176,Подобие в измерительных работах на местности,similarity-measure,atlas/similarity-measure.html,shadow,shadow
+74,8,181,"Синус, косинус и тангенс острого угла",trig-right,atlas/trig-right.html,trig,trig
+75,8,182,"Значения синуса, косинуса и тангенса углов 30°, 45°, 60°",trig-right,atlas/trig-right.html,trig,trig
+76,9,189,Взаимное расположение прямой и окружности,circle-position,atlas/circle-position.html,circle-position,tangent
+77,9,191,Взаимное расположение двух окружностей,circle-position,atlas/circle-position.html,circle-position,tangent
+78,9,195,Общие касательные к двум окружностям,circle-position,atlas/circle-position.html,circle-position,tangent
+79,9,199,Градусная мера дуги окружности,inscribed,atlas/inscribed.html,inscribed,inscribed
+80,9,201,Теорема о вписанном угле,inscribed,atlas/inscribed.html,inscribed,inscribed
+81,9,202,"Углы между хордами, касательными и секущими",chord-angles,atlas/chord-angles.html,chord-angle,chords
+82,9,206,Вписанная окружность четырёхугольника,cyclic-quad,atlas/cyclic-quad.html,cyclic,cyclic
+83,9,207,Описанная окружность четырёхугольника,cyclic-quad,atlas/cyclic-quad.html,cyclic,cyclic
+84,10,224,Понятие вектора,vectors,atlas/vectors.html,vector,vectors
+85,10,226,Равенство векторов,vectors,atlas/vectors.html,vector,vectors
+86,10,227,Откладывание вектора от данной точки,vectors,atlas/vectors.html,vector,vectors
+87,10,230,Сумма двух векторов,vector-add,atlas/vector-add.html,vector-add,vector-sum
+88,10,231,Законы сложения. Правило параллелограмма,vector-add,atlas/vector-add.html,vector-add,vector-sum
+89,10,232,Сумма нескольких векторов,vector-add,atlas/vector-add.html,vector-add,vector-sum
+90,10,233,Вычитание векторов,vector-add,atlas/vector-add.html,vector-add,vector-sum
+91,10,237,Умножение вектора на число,vector-scale,atlas/vector-scale.html,vector-scale,vector-midline
+92,10,239,Применение векторов к решению задач,vector-scale,atlas/vector-scale.html,vector-scale,vector-midline
+93,11,246,Разложение вектора по двум неколлинеарным векторам,vector-basis,atlas/vector-basis.html,basis,vectors
+94,11,248,Координаты вектора,vector-basis,atlas/vector-basis.html,basis,vectors
+95,11,252,Вектор и координаты его начала и конца,coordinates,atlas/coordinates.html,coordinates,coordinate-midpoint
+96,11,254,Простейшие задачи в координатах,coordinates,atlas/coordinates.html,coordinates,coordinate-midpoint
+97,11,260,Уравнение линии на плоскости,line-circle-equations,atlas/line-circle-equations.html,circle-equation,equation-locus
+98,11,261,Уравнение окружности,line-circle-equations,atlas/line-circle-equations.html,circle-equation,equation-locus
+99,11,262,Уравнение прямой,line-circle-equations,atlas/line-circle-equations.html,circle-equation,equation-locus
+100,12,271,"Синус, косинус, тангенс, котангенс",trig-circle,atlas/trig-circle.html,trig-circle,trig-identity
+101,12,273,Основное тригонометрическое тождество. Формулы приведения,trig-circle,atlas/trig-circle.html,trig-circle,trig-identity
+102,12,273,Координаты точки через расстояние и угол,trig-circle,atlas/trig-circle.html,trig-circle,trig-identity
+103,12,274,Угловой коэффициент прямой,trig-circle,atlas/trig-circle.html,trig-circle,trig-identity
+104,12,276,Площадь треугольника через синус угла,area-sine,atlas/area-sine.html,area-sine,area-sine
+105,12,277,Теорема синусов,sine-rule,atlas/sine-rule.html,sine-rule,sine-rule
+106,12,278,Теорема косинусов,cosine-rule,atlas/cosine-rule.html,cosine-rule,cosine-rule
+107,12,278,Решение треугольников,solve-triangle,atlas/solve-triangle.html,solve-triangle,shadow
+108,12,280,Измерительные работы на местности,solve-triangle,atlas/solve-triangle.html,solve-triangle,shadow
+109,12,283,Угол между векторами,dot-product,atlas/dot-product.html,dot,dot
+110,12,284,Скалярное произведение векторов,dot-product,atlas/dot-product.html,dot,dot
+111,12,285,Скалярное произведение в координатах,dot-product,atlas/dot-product.html,dot,dot
+112,12,287,Свойства скалярного произведения,dot-product,atlas/dot-product.html,dot,dot
+113,13,294,Правильный многоугольник,regular-polygons,atlas/regular-polygons.html,regular,regular
+114,13,294,"Окружность, описанная около правильного многоугольника",regular-polygons,atlas/regular-polygons.html,regular,regular
+115,13,295,"Окружность, вписанная в правильный многоугольник",regular-polygons,atlas/regular-polygons.html,regular,regular
+116,13,297,"Площадь, сторона и радиусы правильного многоугольника",regular-polygons,atlas/regular-polygons.html,regular,regular
+117,13,298,Построение правильных многоугольников,regular-polygons,atlas/regular-polygons.html,regular,regular
+118,13,302,Длина окружности,circle-metric,atlas/circle-metric.html,arc,sector
+119,13,304,Радианная мера угла,circle-metric,atlas/circle-metric.html,arc,sector
+120,13,305,Площадь круга,circle-metric,atlas/circle-metric.html,arc,sector
+121,13,306,Площадь кругового сектора,circle-metric,atlas/circle-metric.html,arc,sector
+122,14,313,Отображение плоскости на себя,movement,atlas/movement.html,movement,reflection
+123,14,314,Понятие движения плоскости,movement,atlas/movement.html,movement,reflection
+124,14,316,Наложения и движения,movement,atlas/movement.html,movement,reflection
+125,14,320,Параллельный перенос,translation-rotation,atlas/translation-rotation.html,translation,translation
+126,14,321,Поворот,translation-rotation,atlas/translation-rotation.html,translation,translation
+127,14,323,Понятие симметрии фигур,symmetry-method,atlas/symmetry-method.html,reflection-path,reflection-path
+128,14,324,Практические приложения симметрии,symmetry-method,atlas/symmetry-method.html,reflection-path,reflection-path
+129,14,326,Применение движений к решению задач,symmetry-method,atlas/symmetry-method.html,reflection-path,reflection-path
+130,15,332,Представление о подобных фигурах,polygon-similarity,atlas/polygon-similarity.html,scale-area,similarity
+131,15,333,Подобные многоугольники,polygon-similarity,atlas/polygon-similarity.html,scale-area,similarity
+132,15,336,Периметры и площади подобных многоугольников,polygon-similarity,atlas/polygon-similarity.html,scale-area,similarity
+133,15,340,Гомотетия,homothety,atlas/homothety.html,homothety,homothety
+134,15,341,Свойства гомотетии,homothety,atlas/homothety.html,homothety,homothety
+135,15,342,Подобие произвольных фигур,homothety,atlas/homothety.html,homothety,homothety
+136,15,347,Применение подобия к доказательству теорем,similarity-method,atlas/similarity-method.html,similarity-method,vector-midline
+137,15,349,Применение подобия к решению задач,similarity-method,atlas/similarity-method.html,similarity-method,vector-midline

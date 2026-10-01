@@ -1,0 +1,10 @@
+(function(root){'use strict';
+function number(value){let s=String(value).toLowerCase().replace(/\s/g,'').replace(/,/g,'.').replace(/[−–]/g,'-').replace(/π/g,'pi').replace(/√/g,'sqrt');if(s.length>120)throw Error('Слишком длинная запись.');const tok=s.match(/sqrt|pi|\d+(?:\.\d+)?|[()+\-*/^]/g)||[];if(tok.join('')!==s)throw Error('Используй числа, дроби, sqrt(...) или pi.');let i=0,depth=0;
+ function atom(){if(++depth>20)throw Error('Слишком сложная запись.');let v,t=tok[i++];if(t==='-')v=-atom();else if(t==='+')v=atom();else if(t==='pi')v=Math.PI;else if(t==='sqrt'){if(tok[i++]!=='(')throw Error('После sqrt нужны скобки.');v=Math.sqrt(expr());if(tok[i++]!==')')throw Error('Закрой скобку.');}else if(t==='('){v=expr();if(tok[i++]!==')')throw Error('Закрой скобку.');}else if(t&&/^\d/.test(t))v=Number(t);else throw Error('Неполная запись.');depth--;if(tok[i]==='^'){i++;const power=atom();if(Math.abs(power)>12)throw Error('Слишком большая степень.');v=Math.pow(v,power);}return v;}
+ function term(){let v=atom();while(tok[i]==='*'||tok[i]==='/'){const t=tok[i++],w=atom();v=t==='*'?v*w:v/w;}return v;}
+ function expr(){let v=term();while(tok[i]==='+'||tok[i]==='-'){const t=tok[i++],w=term();v=t==='+'?v+w:v-w;}return v;}
+ const out=expr();if(i!==tok.length||!Number.isFinite(out)||Math.abs(out)>1e12)throw Error('Проверь запись числа.');return out;}
+function equal(value,a){if(Array.isArray(a)){const p=String(value).split(';');return p.length===a.length&&p.every((x,i)=>equal(x,a[i]));}if(typeof a==='string')return String(value).trim().toLowerCase().replace(/[′']/g,'').replace(/\s+/g,' ')===a.toLowerCase().replace(/[′']/g,'').replace(/\s+/g,' ');try{const n=number(value);return Math.abs(n-a)<= (Number.isInteger(a)?1e-8:0.00051);}catch(_){return false;}}
+function format(a){return Array.isArray(a)?a.map(format).join('; '):typeof a==='number'?(Number.isInteger(a)?String(a):String(Number(a.toFixed(6)))):a;}
+const api={number,equal,format};root.Answer=api;if(typeof module!=='undefined')module.exports=api;
+})(typeof window!=='undefined'?window:globalThis);
