@@ -15,9 +15,16 @@ Updated: 2026-10-01
   checks pass, as does the existing base-EGE gate. The browser gate is blocked
   by this execution environment; desktop/mobile visual checks remain pending.
   Merge and deployment are not authorized.
-- Draft PR #147 stores that module; it remains unmerged. Current follow-up is
-  the documentation-only `EGE_BAZA_COURSE_02_BLUEPRINT`, dependent on its exact
-  head `a3bffe0d7962d1da9751f37f40c0df2abaf5a45b`.
+- Draft PR #147 stores that module; it remains unmerged. Draft #148 stores the
+  product blueprint at `c304b6fe4a11d0f1361b148143b8079c8e163cce`.
+- Current follow-up: `EGE_BAZA_COURSE_03_NAVIGATOR`, a dependent draft on
+  `course/ege-baza-navigator`. It adds Today, seven-module / 32-lesson outlines,
+  prerequisite links and read-only first-module progress. Six prototype lessons
+  open; 26 are clearly planned. [Details](EGE_BAZA_NAVIGATOR.md).
+- Navigator gate: 238 registry/state/DOM checks pass; foundation math and
+  81 DOM regression checks pass. The preview ZIP builds with eight files and
+  checked internal links. Browser launch failed with a socket restriction;
+  real desktop/mobile/keyboard/file-preview checks remain required.
 - Owner decision on 2026-10-01: build in bounded steps and publish the complete
   course together when ready. For the enrolment period, focus specifically the
   home page on base-EGE preparation; preserve the other sections and their URLs.
@@ -39,9 +46,10 @@ recorded in the task PR and handoff.
 
 ## Next three actions
 
-1. Prepare the complete course registry/lesson map and a navigator prototype.
-2. Establish shared progress/repeat rules, finish the first module's browser and
-   HIGH review, then develop the other modules one bounded task at a time.
+1. Complete real-browser checks for the navigator and first module in a permitted
+   environment; the inherited HIGH review remains pending.
+2. Specify shared progress/repeat rules and a restorable backup, then develop
+   the other modules one bounded task at a time.
 3. Review the complete course and base-EGE home page together; publish only after
    the release checklist and separate owner authorization, then run production smoke.
 
