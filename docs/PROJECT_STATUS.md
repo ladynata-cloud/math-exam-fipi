@@ -58,6 +58,20 @@ Updated: 2026-10-01
 - The August snapshot below is historical; its claims about current main,
   active work and open PRs must not be treated as current deployment evidence.
 
+## Isolated interactive-lab prototype (2026-10-02)
+
+- `course/ege-baza-interactive-labs`, based on #151 head
+  `ef30164ea890ac565e4c116134a74a78a3ef1e59`, adds four labs at
+  `ege-baza/labs/index.html`: dynamic solids, learner-built planar constructions,
+  unit circle, and task-18 interval work. Existing ten-lesson registry unchanged.
+- 381 mathematical assertions and real Chromium/WebGL interaction checks pass,
+  including 18 independent answers, three viewport widths and storage isolation.
+  This pass applies to the new labs only, not to the previous module gates.
+- [Coverage and limits](EGE_BAZA_INTERACTIVE_LABS.md). ADR 0004 is Proposed;
+  independent review and owner acceptance remain required before rollout.
+- No course-storage writes, merge or publication. The separately scheduled
+  derivative work retains its own branch.
+
 ## Review and readiness
 
 New local progress/assessment behavior is classified HIGH. Author checks and a
