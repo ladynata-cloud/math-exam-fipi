@@ -16,6 +16,18 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Course maps cover the named textbook points; exercises cover selected families. These are not exhaustive textbook solution banks or complete yearly programs. Additional textbook editions will be supplied later.
 - See [release scope](tasks/ALL_COURSES_RELEASE_20261002.md) and PR #162 for the exact base/head, final gates, rollback and actual publication result.
 
+## Textbook courses — first draft module (2026-10-02)
+
+PR #162 is confirmed merged; current main is `1b110e09b22562b163821e4024e9c4c3c463e530`.
+The next scoped draft adds six detailed algebra lessons to the existing workshop,
+aligned with selected skills in Makarychev 7 (2024), points 1–6. It changes no
+storage schema or hosting. Full textbook courses remain incomplete.
+
+Next: validate this six-lesson module; decide its release after inspecting the
+working build; continue the equation/function core and verified textbook maps.
+See [textbook course concept](TEXTBOOK_COURSES.md) and
+[task scope](tasks/TEXTBOOK_ALGEBRA_FIRST_MODULE.md).
+
 ## Historical snapshot below (2026-08-15; not current release evidence)
 
 ## Production main
