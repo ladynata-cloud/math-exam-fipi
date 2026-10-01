@@ -10,7 +10,7 @@ let checks=0;
 const ok=(value,message)=>{assert.ok(value,message);checks++;};
 const equal=(a,b,message)=>{assert.equal(JSON.stringify(a),JSON.stringify(b),message);checks++;};
 const ctx=vm.createContext({});
-for(const file of ['registry','foundation-reference','course-state'])vm.runInContext(read('ege-baza/'+file+'.js'),ctx);
+for(const file of ['registry','foundation-reference','data-reference','course-definitions','course-state'])vm.runInContext(read('ege-baza/'+file+'.js'),ctx);
 const registry=ctx.EgeBazaRegistry, api=ctx.EgeBazaCourseState, tasks=ctx.EgeBazaFoundationReference.tasks;
 const original=read('trainers/ege-baza/course/index.html');
 const data=original.split('/*__FOUNDATION_DATA_START__*/')[1].split('/*__FOUNDATION_DATA_END__*/')[0];
@@ -18,7 +18,7 @@ const moduleData=vm.runInNewContext(data+';({skills:SKILLS.map(s=>s.id),tasks:TA
 equal(ctx.EgeBazaFoundationReference,moduleData,'Read-only mirror matches authoritative module');
 const all=registry.modules.flatMap(m=>m.lessons),ids=[...registry.modules,...all,...registry.prerequisites].map(x=>x.id);
 ok(new Set(ids).size===ids.length,'Unique registry IDs');
-ok(all.length===32&&all.filter(l=>l.href).length===6,'32 outlines; exactly six prototype lessons');
+ok(all.length===32&&all.filter(l=>l.href).length===10,'32 outlines; exactly ten prototype lessons');
 equal(registry.modules.slice(0,6).flatMap(m=>m.positions).sort((a,b)=>a-b),Array.from({length:21},(_,i)=>i+1),'Every position exactly once in main modules');
 const lessonMap=new Map(all.map(l=>[l.id,l])), visited=new Set();
 function walk(id,stack=new Set()){
@@ -71,7 +71,7 @@ ok(snap(raw).runs.diagnostic.correct===11,'Skipped answer is wrong');
 raw.runs.diagnostic.finishedAt=-1;ok(!snap(raw).runs.diagnostic.finished,'Invalid finish timestamp rejected');
 
 let dom,w,stored,writes=0;const errors=[];
-const scripts=['registry','foundation-reference','course-state','app'].map(f=>read('ege-baza/'+f+'.js'));
+const scripts=['registry','foundation-reference','data-reference','course-definitions','course-state','app'].map(f=>read('ege-baza/'+f+'.js'));
 const tick=()=>new Promise(r=>setTimeout(r,10));
 const q=s=>w.document.querySelector(s),text=()=>q('#content').textContent;
 function boot(value=null,hash='#today',blocked=false){
@@ -79,7 +79,7 @@ function boot(value=null,hash='#today',blocked=false){
  const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));
  dom=new JSDOM(read('ege-baza/index.html'),{url:'https://example.test/ege-baza/'+hash,runScripts:'outside-only',virtualConsole:vc});w=dom.window;
  w.HTMLElement.prototype.scrollIntoView=()=>{};
- w.Storage.prototype.getItem=key=>{assert.equal(key,api.KEY);if(blocked)throw Error('denied');return stored;};
+ w.Storage.prototype.getItem=key=>{assert.ok(ctx.EgeBazaCourseState.modules.some(id=>ctx.EgeBazaCourseState.forModule(id).KEY===key));if(blocked)throw Error('denied');return key===api.KEY?stored:null;};
  for(const method of ['setItem','removeItem','clear'])w.Storage.prototype[method]=()=>{writes++;throw Error('Navigator may not write storage');};
  for(const s of scripts)w.eval(s);
 }
@@ -90,7 +90,7 @@ try{
  await click('[data-nav="map"]');ok(q('[data-nav="map"]').getAttribute('aria-current')==='page','Active navigation');
  ok(w.document.activeElement===q('#content'),'Route change focuses main');
  ok(w.document.querySelectorAll('[data-module]').length===7,'All modules rendered');
- await click('[data-module="m02"] a');ok(text().includes('Эти уроки ещё готовятся'),'Planned module clearly labelled');
+ await click('[data-module="m03"] a');ok(text().includes('Эти уроки ещё готовятся'),'Planned module clearly labelled');
  ok(w.document.querySelectorAll('.lesson a.btn').length===0,'No fake planned lesson launch');
  await go('#module?module=m01');ok(w.document.querySelectorAll('.lesson a.btn').length===6,'Six real lessons');
  await click('a[href="#foundation?skill=p-fraction&from=m01"]');ok(q('[data-resource]').dataset.resource==='p-fraction','Requested prerequisite first');

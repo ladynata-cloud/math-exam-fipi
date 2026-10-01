@@ -14,28 +14,36 @@ DEST = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / 'ege-baza-pr
 NAV = 'https://mathexam.space/ege-baza/'
 MODULE = 'https://mathexam.space/trainers/ege-baza/course/'
 files = {f'ege-baza/{name}': (ROOT / 'ege-baza' / name).read_text() for name in
-         ('index.html', 'course.css', 'registry.js', 'foundation-reference.js', 'course-state.js', 'backup.js', 'backup-ui.js', 'app.js')}
+         ('index.html', 'course.css', 'registry.js', 'foundation-reference.js', 'data-reference.js', 'course-definitions.js', 'course-state.js', 'backup.js', 'backup-ui.js', 'app.js')}
 
-# Keep only the course/module pair local; existing site resources remain online.
+# Keep implemented course modules local; existing site resources remain online.
 files['ege-baza/index.html'] = re.sub(r'href="(\.\./[^"]*)"',
     lambda m: m.group(0) if m[1].startswith('../trainers/ege-baza/course/') else
     'href="' + urljoin(NAV, m[1]) + '"', files['ege-baza/index.html'])
 files['ege-baza/registry.js'] = files['ege-baza/registry.js'].replace(
     "href:'../trainers/oge-basics/'+path", "href:'https://mathexam.space/trainers/oge-basics/'+path")
-source = (ROOT / 'trainers/ege-baza/course/index.html').read_text()
-source = re.sub(r'href="(\.[^"\n]*)"', lambda m: m.group(0)
-    if m[1].startswith('../../../ege-baza/') else 'href="' + urljoin(MODULE, m[1]) + '"', source)
-source = re.sub(r"link:'(\.[^']*)'", lambda m: "link:'" + urljoin(MODULE, m[1]) + "'", source)
-skill_links = re.findall(r"link:'([^']+)'", source)
-assert len(skill_links) == 6 and all(link.startswith('https://mathexam.space/trainers/') for link in skill_links)
-files['trainers/ege-baza/course/index.html'] = source
+for folder, expected_links in [('course', 6), ('data-course', 4)]:
+    prefix = f'trainers/ege-baza/{folder}/'
+    online = 'https://mathexam.space/' + prefix
+    source = (ROOT / prefix / 'index.html').read_text()
+    source = re.sub(r'href="(\.[^"\n]*)"', lambda m: m.group(0)
+        if m[1].startswith('../../../ege-baza/') else 'href="' + urljoin(online, m[1]) + '"', source)
+    content = source if folder == 'course' else (ROOT / prefix / 'content.js').read_text()
+    content = re.sub(r"link:'(\.[^']*)'", lambda m: "link:'" + urljoin(online, m[1]) + "'", content)
+    skill_links = re.findall(r"link:'([^']+)'", content)
+    assert len(skill_links) == expected_links and all(link.startswith('https://mathexam.space/trainers/') for link in skill_links)
+    files[prefix + 'index.html'] = content if folder == 'course' else source
+    if folder == 'data-course':
+        files[prefix + 'content.js'] = content
+        files[prefix + 'visuals.js'] = (ROOT / prefix / 'visuals.js').read_text()
 files['READ-ME.txt'] = '''Базовый ЕГЭ — рабочая версия для просмотра
 
 1. Распакуйте весь архив в одну папку.
 2. Откройте ege-baza/index.html в браузере.
-3. На карте выберите первый модуль. Из урока можно вернуться по ссылке «Карта курса».
+3. На карте выберите первый или второй модуль. Из урока можно вернуться по ссылке «Карта курса».
 
-Внутри: навигатор, семь модулей в плане и шесть уроков первого модуля.
+Внутри: навигатор, семь модулей в плане, десять уроков и 100 задач двух первых модулей.
+Для каждого готового модуля — практика, отдельные проверки и резервная копия.
 Остальные уроки ещё не готовы. Это не публикация готового курса.
 Дополнительные тренажёры открываются на mathexam.space и требуют интернета.
 Основная страница сайта в этот архив не входит.
@@ -48,8 +56,8 @@ files['READ-ME.txt'] = '''Базовый ЕГЭ — рабочая версия 
 for filename, content in files.items():
     if filename.endswith('.html'):
         for href in re.findall(r'(?:href|src)="([^"]+)"', content):
-            if filename == 'trainers/ege-baza/course/index.html' and href == '${s.link}':
-                continue  # All six possible values were validated above.
+            if filename in ('trainers/ege-baza/course/index.html', 'trainers/ege-baza/data-course/index.html') and href == '${s.link}':
+                continue  # All possible skill links were validated above.
             if href.startswith(('http:', 'https:', '#', 'data:')):
                 continue
             target = (ROOT / filename).parent / href.split('#')[0]
@@ -59,7 +67,8 @@ for filename, content in files.items():
             assert normalized in files, (filename, href)
 assert "href:'https://mathexam.space/trainers/oge-basics/'+path" in files['ege-baza/registry.js']
 assert "modulePath='../trainers/ege-baza/course/'" in files['ege-baza/registry.js']
-assert 'href="../../../ege-baza/#map"' in source
+assert 'href="../../../ege-baza/#map"' in files['trainers/ege-baza/course/index.html']
+assert 'href="../../../ege-baza/#module?module=m02"' in files['trainers/ege-baza/data-course/index.html']
 DEST.parent.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(DEST, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
     for filename, content in files.items():

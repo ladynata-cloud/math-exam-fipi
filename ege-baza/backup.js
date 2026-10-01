@@ -1,9 +1,10 @@
 (function(root){
  'use strict';
  const FORMAT='mathexam-ege-baza-backup',VERSION=1,MAX_BYTES=262144;
- const KEY=root.EgeBazaCourseState.KEY;
+ function create(api){
+ const KEY=api.KEY,MID=api.meta.id;
  const phases=['diagnostic','checkpoint','repeat'];
- const tasks=root.EgeBazaFoundationReference.tasks;
+ const tasks=api.bank.tasks;
  const plain=x=>!!x&&typeof x==='object'&&!Array.isArray(x);
  const fail=message=>{throw new Error(message);};
  const bytes=text=>new TextEncoder().encode(text).length;
@@ -48,22 +49,22 @@
   const raw=parse(text);fields(raw,['format','version','exportedAt','modules']);
   if(raw.format!==FORMAT||raw.version!==VERSION)fail('Это не резервная копия поддерживаемой версии курса «Базовый ЕГЭ».');
   if(typeof raw.exportedAt!=='string'||!/^\d{4}-\d\d-\d\dT/.test(raw.exportedAt)||!Number.isFinite(Date.parse(raw.exportedAt)))fail('В файле повреждена дата создания.');
-  fields(raw.modules,['m01']);fields(raw.modules.m01,['bankVersion','state']);
-  if(raw.modules.m01.bankVersion!==1)fail('Задания в этом файле относятся к другой версии модуля.');
-  return {format:FORMAT,version:VERSION,exportedAt:raw.exportedAt,modules:{m01:{bankVersion:1,state:validateState(raw.modules.m01.state)}}};
+  fields(raw.modules,[MID]);fields(raw.modules[MID],['bankVersion','state']);
+  if(raw.modules[MID].bankVersion!==1)fail('Задания в этом файле относятся к другой версии модуля.');
+  return {format:FORMAT,version:VERSION,exportedAt:raw.exportedAt,modules:{[MID]:{bankVersion:1,state:validateState(raw.modules[MID].state)}}};
  }
  function get(storage){try{return storage.getItem(KEY);}catch(e){fail('Браузер не разрешил прочитать сохранение. Проверьте настройки хранения данных.');}}
  function summary(raw){
-  if(raw===null)return root.EgeBazaCourseState.snapshot(null);
-  try{return root.EgeBazaCourseState.snapshot(JSON.stringify(validateState(parse(raw))));}catch(e){return {status:'unreadable'};}
+  if(raw===null)return api.snapshot(null);
+  try{return api.snapshot(JSON.stringify(validateState(parse(raw))));}catch(e){return {status:'unreadable'};}
  }
  function exportBackup(storage,now=new Date()){
-  const raw=get(storage);if(raw===null)fail('Пока нет сохранённой работы. Сначала выполните задание в первом модуле.');
+  const raw=get(storage);if(raw===null)fail('Пока нет сохранённой работы. Сначала выполните задание в выбранном модуле.');
   const state=validateState(parse(raw));
-  return JSON.stringify({format:FORMAT,version:VERSION,exportedAt:now.toISOString(),modules:{m01:{bankVersion:1,state}}},null,2);
+  return JSON.stringify({format:FORMAT,version:VERSION,exportedAt:now.toISOString(),modules:{[MID]:{bankVersion:1,state}}},null,2);
  }
  function preview(text,storage){
-  const incoming=decode(text),before=get(storage),after=JSON.stringify(incoming.modules.m01.state);
+  const incoming=decode(text),before=get(storage),after=JSON.stringify(incoming.modules[MID].state);
   return Object.freeze({before,after,exportedAt:incoming.exportedAt,current:summary(before),incoming:summary(after)});
  }
  function restore(candidate,storage){
@@ -75,5 +76,9 @@
   if(get(storage)!==serialized)fail('После записи результаты снова изменились. Проверьте другие вкладки и откройте «Мой прогресс».');
   return summary(serialized);
  }
- root.EgeBazaBackup={FORMAT,VERSION,MAX_BYTES,KEY,decode,validateState,exportBackup,preview,restore,get,summary};
+ return {FORMAT,VERSION,MAX_BYTES,KEY,MID,meta:api.meta,decode,validateState,exportBackup,preview,restore,get,summary};
+ }
+ const backups=Object.fromEntries(root.EgeBazaCourseState.modules.map(id=>[id,create(root.EgeBazaCourseState.forModule(id))]));
+ root.EgeBazaBackup=backups.m01;
+ root.EgeBazaBackup.forModule=id=>backups[id]||null;
 })(globalThis);
