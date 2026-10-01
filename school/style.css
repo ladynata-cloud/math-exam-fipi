@@ -5,3 +5,6 @@
 
 /* Route focus announces new content; visible rings stay on actionable controls. */
 main:focus-visible{outline:none}
+
+/* Algebra textbook unit: retain slider DOM/focus while models update. */
+.alg-controls{display:flex;flex-wrap:wrap;gap:1rem}.alg-slider{display:flex;flex-direction:column;gap:.5rem;min-width:160px;flex:1}.alg-slider input{width:100%;min-height:44px}.alg-caption{display:block;padding:1rem;line-height:1.6}.alg-action{display:flex;gap:.6rem;flex-wrap:wrap}.alg-action p{flex-basis:100%}.alg-picture svg{width:100%;height:auto;min-height:160px}.alg-theory{max-width:850px}.alg-theory li{margin:.65rem 0}.alg-theory details{margin:1rem 0}
