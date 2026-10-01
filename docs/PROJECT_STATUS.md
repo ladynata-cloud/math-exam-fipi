@@ -1,5 +1,44 @@
 # MathExam project status
 
+Updated: 2026-10-01
+
+## Current evidence
+
+- Authoritative remote `main` at task start:
+  `010e89c75c0fe110b57c983c728b8216fb38cd9d`.
+- The base-EGE trainer and foundations/percentages materials are present on
+  current main. The base trainer contains 68 fixed tasks covering 21 positions.
+- Current approved work: `EGE_BAZA_FOUNDATION_MODULE_1`, first module of the
+  owner's mini-group base-EGE course, on its own branch
+  `course/ege-baza-foundation-module-1`.
+- The first module is implemented. Mathematical/static and 81 DOM integration
+  checks pass, as does the existing base-EGE gate. The browser gate is blocked
+  by this execution environment; desktop/mobile visual checks remain pending.
+  Merge and deployment are not authorized.
+- Latest open-PR search confirms unrelated #146, #138, #137, #129, #126 and
+  #117 remain open. Their branches are not used as a base for this task.
+- The August snapshot below is historical; its claims about current main,
+  active work and open PRs must not be treated as current deployment evidence.
+
+## Review and readiness
+
+New local progress/assessment behavior is classified HIGH. Author checks and a
+Draft PR do not constitute external approval. Independent/external review or an
+explicit policy-compliant owner waiver is required before merge, followed by
+separate merge authorization and the base-drift check. Exact tests and head are
+recorded in the task PR and handoff.
+
+## Next three actions
+
+1. Complete the pending browser/visual gate for the first module's Draft PR.
+2. Review the working module and resolve HIGH-level review requirements.
+3. After separate merge authorization, run the release workflow and production
+   smoke, then choose the next bounded course module.
+
+---
+
+# Historical snapshot (2026-08-15)
+
 Updated: 2026-08-15
 
 This is the short operational snapshot. Reconcile it against production evidence
@@ -59,7 +98,7 @@ required container/staging gate.
   admin secret, allowlisted origins and `video.mathexam.space` domain.
 - Merge, deployment and production smoke remain separately authorized actions.
 
-## Next three actions
+## Historical next actions (not current authorization)
 
 1. Publish the shutdown/lock/cleanup remediation on Draft PR `#103` and obtain
    independent review of that exact new head.
