@@ -37,3 +37,11 @@ Passed: 5880 new generated tasks; existing 68-task author-bank gate; 60 foundati
 During validation, old foundation/data grids overflowed at 360px. Their min-content sizing and model-table scroll containment were corrected; both full browser gates then passed. New mobile navigation and digit controls were visually inspected and compacted. No active product-test failure remains.
 
 Not run: independent review (owner waiver), real pupil trial, physical-device and screen-reader audit, complete FIPI-bank crawl. This is a release of a working course, not an assertion of exhaustive exam-subtype coverage.
+
+## Added work-rate trainer
+
+At the owner’s further request, `ege-baza/work-rate/` adds nine parameterized work-rate families solved without a letter unknown. The shared-work model supports choice of units, two rates, time slider, play/pause, manual controls and reduced motion. Guided solutions use unit fractions, convenient total work and dimensional tables; independent checks distinguish first attempts from help and repeats. Its own additive draft key preserves legacy state. The exercises are author-created additional families, not official bank records.
+
+The owner clarified the physical model: workers cultivate one garden, divided mentally into equal-work plots. The model and all nine families use that context. Work-rate math passed 4,500 generated tasks with independent conservation/minimum-worker checks; Chromium passed all nine families, both fraction/plot methods, first-attempt/help accounting, keyboard/manual/animation controls, restoration/export/corruption preservation and 1280/768/360 widths.
+
+Additional owner clarification: garden count must not be fixed at one. The model now supports separate workers continuing through unlimited equal-work gardens for a chosen observation duration. It distinguishes total garden-equivalent work from fully finished individual gardens, renders only current plots, and retains numerical completed counters. The added task family tests both meanings.

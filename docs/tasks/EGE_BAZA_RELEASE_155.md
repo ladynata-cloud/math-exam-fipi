@@ -29,3 +29,9 @@ This is not an exhaustive FIPI bank or proof of coverage of every subtype. No re
 ## Rollback
 
 Revert the release commit through a normal reviewed revert. Existing student keys require no migration; new keys can remain dormant. Do not clear browser storage. No backend or board-server change belongs to this release.
+
+## Owner addition, 2026-10-02
+
+The owner requested a trainer for diggers/work-rate problems without an unknown x. Include it in this course release: parts of one whole, convenient work units, productivity tables, staggered starts/departures, inverse rate, proportional teams and minimum whole-worker counts. Keep existing publication authorization and honest local progress.
+
+Additional owner clarification: garden count must not be fixed at one. The model now supports separate workers continuing through unlimited equal-work gardens for a chosen observation duration. It distinguishes total garden-equivalent work from fully finished individual gardens, renders only current plots, and retains numerical completed counters. The added task family tests both meanings.
