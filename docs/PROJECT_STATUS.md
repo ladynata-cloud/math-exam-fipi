@@ -1,6 +1,12 @@
 # MathExam project status
 
-Updated: 2026-08-15
+Updated: 2026-10-02 (scoped course checkpoint)
+
+## Geometry course checkpoint
+
+`course/atanasyan-7-9` contains the source-mapped offline course: 63 units, 52 argument chains, 137 source points and 70 preserved trainers. Current remote main was read as `010e89c75c0fe110b57c983c728b8216fb38cd9d`; this task does not change production. See `docs/reports/ATANASYAN_7_9_CHECKS.md`. Publication is not authorized by the current geometry request.
+
+The historical platform snapshot below is retained and is not re-certified by this course task.
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
