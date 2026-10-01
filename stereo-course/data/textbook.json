@@ -1,0 +1,698 @@
+{
+  "edition": "Атанасян и др., Геометрия 10–11, базовый и углублённый уровни, 12-е издание, 2024",
+  "topics": [
+    {
+      "point": 1,
+      "chapter": 0,
+      "advanced": false,
+      "title": "Предмет стереометрии",
+      "page": 3
+    },
+    {
+      "point": 2,
+      "chapter": 0,
+      "advanced": false,
+      "title": "Аксиомы стереометрии",
+      "page": 4
+    },
+    {
+      "point": 3,
+      "chapter": 0,
+      "advanced": false,
+      "title": "Некоторые следствия из аксиом",
+      "page": 6
+    },
+    {
+      "point": 4,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Параллельные прямые в пространстве",
+      "page": 9
+    },
+    {
+      "point": 5,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Параллельность трёх прямых",
+      "page": 10
+    },
+    {
+      "point": 6,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Параллельность прямой и плоскости",
+      "page": 11
+    },
+    {
+      "point": 7,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Скрещивающиеся прямые",
+      "page": 15
+    },
+    {
+      "point": 8,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Углы с сонаправленными сторонами",
+      "page": 17
+    },
+    {
+      "point": 9,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Угол между прямыми",
+      "page": 18
+    },
+    {
+      "point": 10,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Параллельные плоскости",
+      "page": 21
+    },
+    {
+      "point": 11,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Свойства параллельных плоскостей",
+      "page": 22
+    },
+    {
+      "point": 12,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Тетраэдр",
+      "page": 25
+    },
+    {
+      "point": 13,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Параллелепипед",
+      "page": 26
+    },
+    {
+      "point": 14,
+      "chapter": 1,
+      "advanced": false,
+      "title": "Задачи на построение сечений",
+      "page": 28
+    },
+    {
+      "point": 15,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Перпендикулярные прямые в пространстве",
+      "page": 36
+    },
+    {
+      "point": 16,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Параллельные прямые, перпендикулярные к плоскости",
+      "page": 36
+    },
+    {
+      "point": 17,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Признак перпендикулярности прямой и плоскости",
+      "page": 38
+    },
+    {
+      "point": 18,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Теорема о прямой, перпендикулярной к плоскости",
+      "page": 40
+    },
+    {
+      "point": 19,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Расстояние от точки до плоскости",
+      "page": 43
+    },
+    {
+      "point": 20,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Теорема о трёх перпендикулярах",
+      "page": 44
+    },
+    {
+      "point": 21,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Угол между прямой и плоскостью",
+      "page": 45
+    },
+    {
+      "point": 22,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Двугранный угол",
+      "page": 50
+    },
+    {
+      "point": 23,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Признак перпендикулярности двух плоскостей",
+      "page": 52
+    },
+    {
+      "point": 24,
+      "chapter": 2,
+      "advanced": false,
+      "title": "Прямоугольный параллелепипед",
+      "page": 53
+    },
+    {
+      "point": 25,
+      "chapter": 2,
+      "advanced": true,
+      "title": "Трёхгранный угол",
+      "page": 55
+    },
+    {
+      "point": 26,
+      "chapter": 2,
+      "advanced": true,
+      "title": "Многогранный угол",
+      "page": 56
+    },
+    {
+      "point": 27,
+      "chapter": 3,
+      "advanced": false,
+      "title": "Понятие многогранника",
+      "page": 63
+    },
+    {
+      "point": 28,
+      "chapter": 3,
+      "advanced": true,
+      "title": "Геометрическое тело",
+      "page": 64
+    },
+    {
+      "point": 29,
+      "chapter": 3,
+      "advanced": true,
+      "title": "Теорема Эйлера",
+      "page": 65
+    },
+    {
+      "point": 30,
+      "chapter": 3,
+      "advanced": false,
+      "title": "Призма",
+      "page": 67
+    },
+    {
+      "point": 31,
+      "chapter": 3,
+      "advanced": true,
+      "title": "Пространственная теорема Пифагора",
+      "page": 68
+    },
+    {
+      "point": 32,
+      "chapter": 3,
+      "advanced": false,
+      "title": "Пирамида",
+      "page": 72
+    },
+    {
+      "point": 33,
+      "chapter": 3,
+      "advanced": false,
+      "title": "Правильная пирамида",
+      "page": 73
+    },
+    {
+      "point": 34,
+      "chapter": 3,
+      "advanced": false,
+      "title": "Усечённая пирамида",
+      "page": 74
+    },
+    {
+      "point": 35,
+      "chapter": 3,
+      "advanced": false,
+      "title": "Симметрия в пространстве",
+      "page": 78
+    },
+    {
+      "point": 36,
+      "chapter": 3,
+      "advanced": false,
+      "title": "Понятие правильного многогранника",
+      "page": 80
+    },
+    {
+      "point": 37,
+      "chapter": 3,
+      "advanced": false,
+      "title": "Элементы симметрии правильных многогранников",
+      "page": 83
+    },
+    {
+      "point": 38,
+      "chapter": 4,
+      "advanced": false,
+      "title": "Понятие цилиндра",
+      "page": 89
+    },
+    {
+      "point": 39,
+      "chapter": 4,
+      "advanced": false,
+      "title": "Площадь поверхности цилиндра",
+      "page": 91
+    },
+    {
+      "point": 40,
+      "chapter": 4,
+      "advanced": false,
+      "title": "Понятие конуса",
+      "page": 94
+    },
+    {
+      "point": 41,
+      "chapter": 4,
+      "advanced": false,
+      "title": "Площадь поверхности конуса",
+      "page": 95
+    },
+    {
+      "point": 42,
+      "chapter": 4,
+      "advanced": false,
+      "title": "Усечённый конус",
+      "page": 96
+    },
+    {
+      "point": 43,
+      "chapter": 4,
+      "advanced": false,
+      "title": "Сфера и шар",
+      "page": 98
+    },
+    {
+      "point": 44,
+      "chapter": 4,
+      "advanced": false,
+      "title": "Взаимное расположение сферы и плоскости",
+      "page": 98
+    },
+    {
+      "point": 45,
+      "chapter": 4,
+      "advanced": false,
+      "title": "Касательная плоскость к сфере",
+      "page": 98
+    },
+    {
+      "point": 46,
+      "chapter": 4,
+      "advanced": false,
+      "title": "Площадь сферы",
+      "page": 98
+    },
+    {
+      "point": 47,
+      "chapter": 4,
+      "advanced": true,
+      "title": "Взаимное расположение сферы и прямой",
+      "page": 98
+    },
+    {
+      "point": 48,
+      "chapter": 4,
+      "advanced": true,
+      "title": "Сфера, вписанная в цилиндрическую поверхность",
+      "page": 98
+    },
+    {
+      "point": 49,
+      "chapter": 4,
+      "advanced": true,
+      "title": "Сфера, вписанная в коническую поверхность",
+      "page": 98
+    },
+    {
+      "point": 50,
+      "chapter": 4,
+      "advanced": true,
+      "title": "Сечения цилиндрической поверхности",
+      "page": 98
+    },
+    {
+      "point": 51,
+      "chapter": 4,
+      "advanced": true,
+      "title": "Сечения конической поверхности",
+      "page": 98
+    },
+    {
+      "point": 52,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Понятие объёма",
+      "page": 98
+    },
+    {
+      "point": 53,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Объём прямоугольного параллелепипеда",
+      "page": 98
+    },
+    {
+      "point": 54,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Объём прямой призмы",
+      "page": 98
+    },
+    {
+      "point": 55,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Объём цилиндра",
+      "page": 98
+    },
+    {
+      "point": 56,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Вычисление объёмов тел с помощью определённого интеграла",
+      "page": 98
+    },
+    {
+      "point": 57,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Объём наклонной призмы",
+      "page": 98
+    },
+    {
+      "point": 58,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Объём пирамиды",
+      "page": 285
+    },
+    {
+      "point": 59,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Объём конуса",
+      "page": 285
+    },
+    {
+      "point": 60,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Объём шара",
+      "page": 285
+    },
+    {
+      "point": 61,
+      "chapter": 5,
+      "advanced": false,
+      "title": "Объёмы шарового сегмента, шарового слоя и шарового сектора   134",
+      "page": 285
+    },
+    {
+      "point": 62,
+      "chapter": 5,
+      "advanced": true,
+      "title": "Площадь сферы",
+      "page": 285
+    },
+    {
+      "point": 63,
+      "chapter": 6,
+      "advanced": false,
+      "title": "Понятие вектора",
+      "page": 285
+    },
+    {
+      "point": 64,
+      "chapter": 6,
+      "advanced": false,
+      "title": "Равенство векторов",
+      "page": 285
+    },
+    {
+      "point": 65,
+      "chapter": 6,
+      "advanced": false,
+      "title": "Сложение и вычитание векторов",
+      "page": 285
+    },
+    {
+      "point": 66,
+      "chapter": 6,
+      "advanced": false,
+      "title": "Сумма нескольких векторов",
+      "page": 285
+    },
+    {
+      "point": 67,
+      "chapter": 6,
+      "advanced": false,
+      "title": "Умножение вектора на число",
+      "page": 285
+    },
+    {
+      "point": 68,
+      "chapter": 6,
+      "advanced": false,
+      "title": "Компланарные векторы",
+      "page": 285
+    },
+    {
+      "point": 69,
+      "chapter": 6,
+      "advanced": false,
+      "title": "Правило параллелепипеда",
+      "page": 285
+    },
+    {
+      "point": 70,
+      "chapter": 6,
+      "advanced": false,
+      "title": "Разложение вектора по трём некомпланарным векторам",
+      "page": 285
+    },
+    {
+      "point": 71,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Прямоугольная система координат в пространстве",
+      "page": 285
+    },
+    {
+      "point": 72,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Координаты вектора",
+      "page": 285
+    },
+    {
+      "point": 73,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Связь между координатами векторов и координатами точек",
+      "page": 285
+    },
+    {
+      "point": 74,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Простейшие задачи в координатах",
+      "page": 285
+    },
+    {
+      "point": 75,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Уравнение сферы",
+      "page": 285
+    },
+    {
+      "point": 76,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Угол между векторами",
+      "page": 286
+    },
+    {
+      "point": 77,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Скалярное произведение векторов",
+      "page": 286
+    },
+    {
+      "point": 78,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Вычисление углов между прямыми и плоскостями",
+      "page": 286
+    },
+    {
+      "point": 79,
+      "chapter": 7,
+      "advanced": true,
+      "title": "Уравнение плоскости",
+      "page": 286
+    },
+    {
+      "point": 80,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Центральная симметрия",
+      "page": 286
+    },
+    {
+      "point": 81,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Осевая симметрия",
+      "page": 286
+    },
+    {
+      "point": 82,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Зеркальная симметрия",
+      "page": 286
+    },
+    {
+      "point": 83,
+      "chapter": 7,
+      "advanced": false,
+      "title": "Параллельный перенос",
+      "page": 286
+    },
+    {
+      "point": 84,
+      "chapter": 7,
+      "advanced": true,
+      "title": "Преобразование подобия",
+      "page": 286
+    },
+    {
+      "point": 85,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Угол между касательной и хордой",
+      "page": 286
+    },
+    {
+      "point": 86,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Две теоремы об отрезках, связанных с окружностью",
+      "page": 286
+    },
+    {
+      "point": 87,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Углы с вершинами внутри и вне круга",
+      "page": 286
+    },
+    {
+      "point": 88,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Вписанный четырёхугольник",
+      "page": 286
+    },
+    {
+      "point": 89,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Описанный четырёхугольник",
+      "page": 286
+    },
+    {
+      "point": 90,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Теорема о медиане",
+      "page": 286
+    },
+    {
+      "point": 91,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Теорема о биссектрисе треугольника",
+      "page": 286
+    },
+    {
+      "point": 92,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Формулы площади треугольника",
+      "page": 286
+    },
+    {
+      "point": 93,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Формула Герона",
+      "page": 286
+    },
+    {
+      "point": 94,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Задача Эйлера",
+      "page": 286
+    },
+    {
+      "point": 95,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Теорема Менелая",
+      "page": 286
+    },
+    {
+      "point": 96,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Теорема Чевы",
+      "page": 286
+    },
+    {
+      "point": 97,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Эллипс",
+      "page": 286
+    },
+    {
+      "point": 98,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Гипербола",
+      "page": 286
+    },
+    {
+      "point": 99,
+      "chapter": 8,
+      "advanced": true,
+      "title": "Парабола",
+      "page": 286
+    }
+  ]
+}
