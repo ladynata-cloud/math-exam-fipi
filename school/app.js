@@ -2,6 +2,7 @@
  'use strict';
  var C=window.WorkshopCurriculum,M=window.WorkshopMath,S=window.WorkshopState,ids=C.lessons.map(function(l){return l.id;}),main=document.getElementById('main'),notice=document.getElementById('notice');
  var restored=S.load(localStorage,ids),state=restored.state,blocked=restored.blocked||false,session=null,returns=[],filter='',area='',teacher=S.teacherBlank(),filePurpose='',activeGroup='',assignmentCode='',flash='',teacherBlocked=false,lastDiagnostic=null;
+ var missingCourses=!C.pathById;if(missingCourses){C.paths=[];C.pathById=Object.create(null);notice.textContent='Обновите страницу, чтобы загрузить новые учебные маршруты. Прежние уроки и данные доступны.';}
  var activeCourse=new URLSearchParams(location.search).get('course')||'';if(!C.pathById[activeCourse])activeCourse='';
  if(restored.warning)notice.textContent=restored.warning;
  try{var t=localStorage.getItem(S.TEACHER);if(t)teacher=S.validateTeacher(JSON.parse(t),ids);}catch(e){teacherBlocked=true;notice.textContent='Не удалось прочитать кабинет преподавателя. Исходная запись сохранена; новая работа доступна после импорта корректной копии.';}
