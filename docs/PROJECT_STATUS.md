@@ -6,13 +6,13 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: detailed Vilenkin 5 course
+## In progress: compact board header
 
-- PR #170 is merged as `de9109b1f7ba8cb7b2ed65026a7f6d6b3b0b96e8` and published. Final head `8687f2b6849538dbff5b7563d20459258da76a6a` passed CI run 36979613774; Pages run 36980028894, ten public file hashes and live course/board checks confirmed release.
-- Production contains 421 Workshop lessons and 11 routes, including 194 detailed Vilenkin 6 lessons. All existing IDs and local progress are preserved.
-- Current task: [Vilenkin 5](tasks/VILENKIN5_FULL.md), branch `course/vilenkin5-full`, based on that main. Source: supplied 2023 third revised edition, both parts; 51 points. No claim of solutions to every exercise.
-- PR #171 candidate contains 134 detailed lessons, all 51 textbook points, fraction/decimal laboratories, missions, four independent-mastery achievements and board links. Mathematics and focused browser checks pass; see [report](reports/VILENKIN5_FULL_20261002.md).
-- Next actions: finish the exact-head full CI gate; merge under the owner’s publication authorization; verify Pages and public file/browser identity.
+- Production main: `3aafe4b6c019d52af7fef69ad7f718f7b17b6991` (PR #171, Vilenkin 5). Exact-head CI 36981392385 and Pages 36981885836 succeeded; public hashes and the live course/board were checked.
+- Production contains 555 Workshop lessons and 12 routes, including 134 detailed Vilenkin 5 lessons and 194 Vilenkin 6 lessons. Existing IDs and local progress are preserved.
+- Current task: [compact board header](tasks/BOARD_COMPACT_HEADER.md), branch `ui/board-compact-header`. The owner supplied a screenshot and requested a simpler, more elegant workspace.
+- Candidate groups the course catalog, invitation and settings into dialogs; preserves board storage, server contracts and learner restrictions.
+- Next actions: finish focused browser checks; complete exact-head CI and publish under the owner's existing authorization; verify the live board and public file identity.
 - Classic Atanasyan draft PR #168 remains outside this task.
 
 ## Confirmed preceding EGE release
