@@ -6,14 +6,14 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: Vilenkin 6 / Makarychev 9 and board lessons
+## In progress: detailed Vilenkin 6 course
 
-- Base `20fa4cb5b92e41d4218367ccd39a19310ecebb90`: PR #167 is merged and published. Its 48 added lessons bring the Workshop to 152 lessons and 9 general routes. Final head CI, Pages deployment, public file hashes and browser were verified before this task.
-- Active branch `course/vilenkin6-makarychev9`; [scope](tasks/VILENKIN6_MAKARYCHEV9.md). Exact editions: Vilenkin 2024 parts 1–2, Makarychev basic 2023. Work includes direct lesson opening from the board.
-- PR #169 implements 75 edition lessons (44 + 31), two routes, visual percent/distributive models, internal remediation links and board navigation. The Workshop now has 227 lessons and 11 routes in the release tree. [Local gate and coverage limits](reports/VILENKIN6_MAKARYCHEV9_20261002.md); exact final CI and publication evidence are recorded in the PR only after they occur.
-- Next actions for this release: verify final-head CI; merge and verify the existing deployment; retain the explicit backlog of numbered textbook exercises and advanced subtypes.
-- The separate classic Atanasyan draft PR #168 is not merged or published and is not part of this release.
-- Topic coverage is distinct from exhaustive solutions to every numbered textbook exercise. New publication evidence belongs in this task's final report.
+- PR #169 is merged as `5c49cc5c16ca2385624082128cf6439d1a57c951` and published. Its exact final head `5f0e996878e7604dd02d9ec7db0c1884131225e0` passed CI run 36977093371; Pages run 36977405468 and public file/browser checks confirmed the release.
+- The published Workshop has 227 lessons and 11 routes, including 44 Vilenkin heading-level lessons and 31 Makarychev lessons. Topic coverage is not exhaustive numbered-exercise coverage.
+- Current branch `course/vilenkin6-full` starts from that published main; [scope](tasks/VILENKIN6_FULL.md). The owner requested a genuinely detailed, interactive Vilenkin 6 course.
+- Work in progress: 194 authored micro-lessons cover the 44 points, chapter reviews and three applications. Varied task generators exist; interactive models, navigation and final verification are still being implemented. This checkpoint is not a published completed course.
+- Existing lesson IDs, local progress and other courses are preserved. Board opening remains supported; internal mirroring of Workshop actions is not claimed.
+- Classic Atanasyan draft PR #168 remains outside this release.
 
 ## Confirmed preceding EGE release
 
