@@ -5,12 +5,13 @@ const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));
 const dom=new JSDOM(fs.readFileSync(path.join(root,'school/index.html'),'utf8'),{url:'https://example.test/school/index.html#book/makarychev7-2024',runScripts:'outside-only',virtualConsole:vc});
 const w=dom.window,d=w.document;w.scrollTo=()=>{}; // jsdom has no layout/scrolling; this is not a visual browser check.
 w.localStorage.setItem('legacy-course-sentinel','keep');
-for(const file of ['math.js','curriculum.js','state.js','models.js','algebra7.js','app.js'])w.eval(fs.readFileSync(path.join(root,'school',file),'utf8'));
+// Load the same ordered assets as the real page, including course navigation.
+for(const script of d.querySelectorAll('script[src]')){const file=script.getAttribute('src').split('?')[0];w.eval(fs.readFileSync(path.join(root,'school',file),'utf8'));}
 const tick=()=>new Promise(r=>setTimeout(r,5)),click=s=>{const el=d.querySelector(s);assert(el,s);el.click();},fmt=a=>Array.isArray(a)?a.map(fmt).join('; '):typeof a==='object'?w.WorkshopMath.fmt(a):String(a);
 const go=async hash=>{w.location.hash=hash;await tick();};
 const answer=value=>{d.querySelector('#answer').value=value;d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));};
 (async()=>{
- assert.equal(d.querySelectorAll('[data-cmd=learn]').length,6);
+ const mapped=new Set(Array.from(d.querySelectorAll('[data-cmd=learn]')).map(el=>el.dataset.value).filter(id=>id.startsWith('alg-')));assert.equal(mapped.size,6);
  for(const id of w.WorkshopCurriculum.lessons.filter(x=>x.id.startsWith('alg-')).map(x=>x.id)){
   await go('lesson/'+id);assert.equal(d.querySelectorAll('.alg-theory h2').length,3,id);assert(d.querySelector('#model svg'),id);
   const lesson=w.WorkshopCurriculum.byId[id];click('[data-cmd=claim][data-value="'+lesson.claimTrue+'"]');assert(d.querySelector('#claim-feedback').textContent.startsWith('Да,'));

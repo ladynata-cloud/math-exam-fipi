@@ -6,12 +6,13 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: textbook learning routes
+## In progress: shared school courses and routes
 
-- Branch `course/textbook-learning-routes`, based on main `0784471463a8d710a66575f65b8b9f6dc9d41edd`.
-- Integrates 6 previously unpublished algebra lessons from #163 and adds 24 common algebra/probability blocks to the existing Workshop contract. 104 blocks total; this is not 77 complete textbook courses.
-- Records 77 source files with matching checksums; partial mappings are distinguished from generic skill suggestions. Source PDF scans are not republished.
-- See [scope](tasks/TEXTBOOK_LEARNING_ROUTES.md) and [report](TEXTBOOK_TRAINERS_RELEASE.md). Actual publication must be established by the task PR and public-site checks.
+- Branch `course/school-complete-core`, base `1d1d85fe8240b614d26b70c849b649126f6f3c96`.
+- PR #165 is published (merge `8a60fe36871ad6081d59a1352f7be27705bce553`); PR #166 versions its assets (merge/base above). Their 104 Workshop lessons and 77-source catalog are present in production.
+- Current work adds 48 author-written lessons and 9 explicit learning routes, reusing the existing task/model/progress contract. Existing geometry courses remain linked.
+- See [task](tasks/SCHOOL_COMPLETE_CORE.md) and [report](reports/SCHOOL_COMPLETE_CORE_20261002.md). Publication of this extension must be established by its PR and production checks.
+- This is a shared skill curriculum, not a claim of exhaustive coverage of all exercises in 77 editions. Exact textbook mappings retain their earlier partial status.
 
 ## Confirmed preceding EGE release
 

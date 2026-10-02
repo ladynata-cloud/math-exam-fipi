@@ -17,3 +17,10 @@ main:focus-visible{outline:none}
 #book-search{width:min(100%,680px)}.card h2{overflow-wrap:anywhere}
 @media(max-width:520px){.secondary-predict input,.secondary-predict label{width:100%}.secondary-predict button{width:100%}.secondary-picture text{font-size:17px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Existing model contract: native controls, no automatic animation or WebGL. */
+.core-experiment{padding:clamp(16px,3vw,28px);background:#f7faf5;border:1px solid #cddfd4;border-radius:18px}
+.core-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.core-controls input{flex:1;min-width:110px}.core-controls output{min-width:3ch;font-variant-numeric:tabular-nums;font-weight:700}.core-controls button{min-width:44px;min-height:44px}.core-picture svg{display:block;width:100%;height:auto;overflow:hidden}.core-caption{line-height:1.65}.core-prediction{border-top:1px solid #d0dfd5;padding-top:16px}.core-prediction [role=status]{min-height:1.5em}
+@media(max-width:420px){.core-controls{gap:8px}.core-experiment{padding:12px}.core-prediction .answer-line{flex-wrap:wrap}.core-prediction button{width:100%}}
+
+.card[href]{text-decoration:none}.card[href]:hover h2,.card[href]:focus-visible h2{text-decoration:underline}
