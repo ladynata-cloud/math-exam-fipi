@@ -182,17 +182,33 @@ var PROGRESS = (function(){
       bar(host, closed/7, label, closed >= 7 && d.passed === true);
     },
     righttri: function(host){
+      /* hinted (с #135, в main с 28.09.2026) — сколько задач «Сам» решено
+         после подсказки «С чего начать?»; тренажёр растит его вместе с
+         solved, поэтому hinted ≤ solved. Число печатается только в кабинете
+         учителя — узел помечен data-cabinet (teacher.html, renderCards);
+         карта курса — страница ученика, там счётчик обращений к подсказке
+         читался бы как штрафная отметка (канон: подсказки ничего не
+         отнимают). Ноль и отсутствие поля (записи до #135) не печатаются:
+         0 обращений и «не записывалось» неразличимы. hinted больше solved
+         в теме — порча данных: тема даёт 0, а не обрезается до solved
+         (обрезание утверждало бы «все после подсказки» — ошибка против
+         ученика). Разминка (тема 0) не в счёт, как и в «решено». */
       var d = rec("righttri-t1");
       var tp = d && isObj(d.topics) ? d.topics : null;
       if (!tp){ bar(host, null, "не начат"); return; }
-      var sum = 0, solved = 0, k;
+      var sum = 0, solved = 0, hinted = 0, k, sv, h;
       for (k in tp){
         if (!(+k >= 1 && +k <= 5) || !isObj(tp[k])) continue;
         sum += Math.min(3, cnt(tp[k].correct));
-        solved += cnt(tp[k].solved);
+        sv = cnt(tp[k].solved);
+        solved += sv;
+        h = cnt(tp[k].hinted);
+        if (h <= sv) hinted += h;
       }
       if (!sum && !solved){ bar(host, null, "в работе"); return; }
-      bar(host, sum/15, "чистые серии: " + sum + " из 15 · решено: " + solved, sum >= 15);
+      var label = "чистые серии: " + sum + " из 15 · решено: " + solved;
+      if (hinted && host.hasAttribute("data-cabinet")) label += " · из них после «С чего начать?»: " + hinted;
+      bar(host, sum/15, label, sum >= 15);
     },
     finance: function(host){
       /* Решённая задача — запись в stats.doneTasks (ставится при верном

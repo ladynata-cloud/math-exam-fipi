@@ -65,7 +65,7 @@ const KEY = 'mathExamCourseProgress.v1';
 {
   const seed = win => win.localStorage.setItem(KEY, JSON.stringify({
     'righttri-t1': { topics: {
-      1: { steps: 4, solved: 7, correct: 5, streak: 2, best: 4 },
+      1: { steps: 4, solved: 7, correct: 5, streak: 2, best: 4, hinted: 2 },
       3: { steps: 0, solved: 2, correct: 1, streak: 1, best: 1 },
       0: { steps: 9, solved: 0, correct: 0, streak: 0, best: 0 }        // разминка не в счёт
     }, board: false }
@@ -75,6 +75,20 @@ const KEY = 'mathExamCourseProgress.v1';
   ok(/чистые серии: 4 из 15/.test(host.textContent), 'index: серии min(3,correct) по темам 1–5: ' + host.textContent);
   ok(/решено: 9/.test(host.textContent), 'index: сумма решённых по боевым темам');
   ok(host.querySelectorAll('.cellsbar span.filled').length === 3, 'index: заполнено 3 ячейки из 10 (4/15)');
+  /* Карта курса — страница ученика: счётчик обращений к подсказке (hinted)
+     здесь не печатается (docs/tasks/RIGHTTRI_HINTED_IN_CABINET.md, решение 1).
+     Тот же адаптер дописывает «из них после «С чего начать?»: N» только в
+     узле с data-cabinet — его ставит кабинет учителя, index.html не ставит. */
+  ok(/решено: 9$/.test(host.textContent) && !/С чего начать/.test(host.textContent), 'index: hinted на карте курса не показан: ' + host.textContent);
+  ok(!w.document.querySelector('[data-cabinet]'), 'index: узлов с data-cabinet на карте курса нет');
+  const cab = w.document.createElement('div');
+  cab.innerHTML = '<div data-progress="righttri" data-cabinet=""></div>';
+  w.PROGRESS.apply(cab, w.PROGRESS.liveStore());
+  ok(/^чистые серии: 4 из 15 · решено: 9 · из них после «С чего начать\?»: 2$/.test(cab.textContent),
+     'адаптер righttri в узле data-cabinet дописывает «из них после «С чего начать?»: 2»: ' + cab.textContent);
+  cab.innerHTML = '<div data-progress="righttri"></div>';
+  w.PROGRESS.apply(cab, w.PROGRESS.liveStore());
+  ok(/^чистые серии: 4 из 15 · решено: 9$/.test(cab.textContent), 'тот же адаптер без data-cabinet — подпись прежняя: ' + cab.textContent);
 }
 
 /* 6. Полный прогресс: все 15 — отметка done */
@@ -471,7 +485,7 @@ const KEY = 'mathExamCourseProgress.v1';
   const JUNK = { passed: 'zz', best: 'zz', runs: 'zz', drillBest: 'zz', solved4: 'zz', solved5: 'x', solved9: 'zz', solved10: 'x',
     solved11: 'zz', solved12: 'x', types: { t1: null, t2: 'zz', t3: { best: 'zz', solved: 'zz' } },
     tasks: { 1: null, 2: 'zz', 3: { a: 0, b: 0, proof: 0 } }, keys: 'zz', done: { a: null, b: 'zz' }, attempts: 'zz',
-    topics: { 1: null, 2: { correct: 'zz', solved: 'zz' } }, stats: 'zz', solvedByType: { extrema: 'zz' }, xp: 'zz' };
+    topics: { 1: null, 2: { correct: 'zz', solved: 'zz', hinted: 'zz' } }, stats: 'zz', solvedByType: { extrema: 'zz' }, xp: 'zz' };
   const SIDE = ['stereo3.status', 'ep_progress_v1', 'trig-stp-trainer-v2', 'profile-ege-course-v1'];
   const junkMain = v => { const o = {}; TIDS.forEach(t => { o[t] = v; }); return o; };
   const cases = [

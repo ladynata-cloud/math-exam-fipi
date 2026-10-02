@@ -179,7 +179,8 @@
             '<h3>' + (t.line ? '<span class="pillline">задание ' + t.line + '</span>' : "") + esc(t.title) + '</h3>' +
             '<span class="tid">' + esc(t.tid) + '</span>' +
           '</div>' +
-          '<div class="progress" data-progress="' + esc(t.adapter) + '"></div>' +
+          /* data-cabinet: адаптер righttri дописывает «из них после «С чего начать?»: N» только здесь */
+          '<div class="progress" data-progress="' + esc(t.adapter) + '" data-cabinet=""></div>' +
           '<p class="small muted">последняя ошибка в журнале: ' + (last ? esc(dateOf(last)) : "записей нет") + '</p>' +
           typesHtml(RV.journalOf(mk, t.tid)) +
         '</div>'
