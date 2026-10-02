@@ -7,6 +7,391 @@
       "group": "ЕГЭ база"
     },
     {
+      "title": "Виленкин · 6 класс · весь курс",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#course/vilenkin6"
+    },
+    {
+      "title": "1. Среднее арифметическое",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-01"
+    },
+    {
+      "title": "2. Проценты",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-02"
+    },
+    {
+      "title": "3. Круговые диаграммы",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-03"
+    },
+    {
+      "title": "4. Виды треугольников",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-04"
+    },
+    {
+      "title": "5. Множества",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-05"
+    },
+    {
+      "title": "6. Разложение на простые множители",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-06"
+    },
+    {
+      "title": "7. НОД и взаимно простые числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-07"
+    },
+    {
+      "title": "8. Наименьшее общее кратное",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-08"
+    },
+    {
+      "title": "9. Наименьший общий знаменатель",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-09"
+    },
+    {
+      "title": "10. Сравнение, сложение и вычитание дробей",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-10"
+    },
+    {
+      "title": "11. Сложение и вычитание смешанных чисел",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-11"
+    },
+    {
+      "title": "12. Умножение смешанных чисел",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-12"
+    },
+    {
+      "title": "13. Дробь от числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-13"
+    },
+    {
+      "title": "14. Распределительное свойство",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-14"
+    },
+    {
+      "title": "15. Деление смешанных чисел",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-15"
+    },
+    {
+      "title": "16. Число по его дроби",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-16"
+    },
+    {
+      "title": "17. Дробные выражения",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-17"
+    },
+    {
+      "title": "18. Отношения",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-18"
+    },
+    {
+      "title": "19. Пропорция",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-19"
+    },
+    {
+      "title": "20. Прямая и обратная пропорциональность",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-20"
+    },
+    {
+      "title": "21. Масштаб",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-21"
+    },
+    {
+      "title": "22. Осевая и центральная симметрия",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-22"
+    },
+    {
+      "title": "23. Окружность, круг и шар",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-23"
+    },
+    {
+      "title": "24. Положительные и отрицательные числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-24"
+    },
+    {
+      "title": "25. Противоположные числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-25"
+    },
+    {
+      "title": "26. Модуль числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-26"
+    },
+    {
+      "title": "27. Сравнение чисел со знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-27"
+    },
+    {
+      "title": "28. Изменение величин",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-28"
+    },
+    {
+      "title": "29. Сложение на координатной прямой",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-29"
+    },
+    {
+      "title": "30. Сложение отрицательных чисел",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-30"
+    },
+    {
+      "title": "31. Сложение чисел с разными знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-31"
+    },
+    {
+      "title": "32. Вычитание чисел со знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-32"
+    },
+    {
+      "title": "33. Умножение чисел со знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-33"
+    },
+    {
+      "title": "34. Деление чисел со знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-34"
+    },
+    {
+      "title": "35. Рациональные числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-35"
+    },
+    {
+      "title": "36. Свойства действий с рациональными числами",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-36"
+    },
+    {
+      "title": "37. Раскрытие скобок",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-37"
+    },
+    {
+      "title": "38. Коэффициент",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-38"
+    },
+    {
+      "title": "39. Подобные слагаемые",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-39"
+    },
+    {
+      "title": "40. Решение уравнений",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-40"
+    },
+    {
+      "title": "41. Перпендикулярные прямые",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-41"
+    },
+    {
+      "title": "42. Параллельные прямые",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-42"
+    },
+    {
+      "title": "43. Координатная плоскость",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-43"
+    },
+    {
+      "title": "44. Чтение и построение графиков",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6-44"
+    },
+    {
+      "title": "Макарычев · 9 класс · весь курс",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#course/makarychev9"
+    },
+    {
+      "title": "1. Действия над действительными числами",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-01"
+    },
+    {
+      "title": "2. Сравнение действительных чисел",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-02"
+    },
+    {
+      "title": "3. Погрешность и точность приближения",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-03"
+    },
+    {
+      "title": "4. Размеры и длительности: порядок величины",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-04"
+    },
+    {
+      "title": "5. Практико-ориентированные задачи",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-05"
+    },
+    {
+      "title": "6. Десятичные приближения и число π",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-06"
+    },
+    {
+      "title": "7. Чётные и нечётные функции",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-07"
+    },
+    {
+      "title": "8. Графики и свойства функций",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-08"
+    },
+    {
+      "title": "9. Парабола y=ax²",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-09"
+    },
+    {
+      "title": "10. Сдвиги параболы",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-10"
+    },
+    {
+      "title": "11. Квадратичная функция y=ax²+bx+c",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-11"
+    },
+    {
+      "title": "12. Дробно-линейная функция",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-12"
+    },
+    {
+      "title": "13. Целые уравнения",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-13"
+    },
+    {
+      "title": "14. Дробные рациональные уравнения",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-14"
+    },
+    {
+      "title": "15. Задачи с помощью уравнений",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-15"
+    },
+    {
+      "title": "16. Квадратные неравенства",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-16"
+    },
+    {
+      "title": "17. Метод интервалов",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-17"
+    },
+    {
+      "title": "18. Приёмы решения целых уравнений",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-18"
+    },
+    {
+      "title": "19. Уравнение с двумя переменными: график",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-19"
+    },
+    {
+      "title": "20. Системы уравнений с двумя переменными",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-20"
+    },
+    {
+      "title": "21. Исследование двух линейных уравнений",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-21"
+    },
+    {
+      "title": "22. Задачи через системы второй степени",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-22"
+    },
+    {
+      "title": "23. Неравенства с двумя переменными",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-23"
+    },
+    {
+      "title": "24. Системы неравенств с двумя переменными",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-24"
+    },
+    {
+      "title": "25. Приёмы решения систем второй степени",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-25"
+    },
+    {
+      "title": "26. Последовательности",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-26"
+    },
+    {
+      "title": "27. Арифметическая прогрессия",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-27"
+    },
+    {
+      "title": "28. Сумма арифметической прогрессии",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-28"
+    },
+    {
+      "title": "29. Геометрическая прогрессия",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-29"
+    },
+    {
+      "title": "30. Сумма геометрической прогрессии",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-30"
+    },
+    {
+      "title": "31. Математическая индукция",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9-31"
+    },
+    {
       "title": "Числа без путаницы · Числа, деньги и проценты",
       "group": "ЕГЭ база",
       "href": "/trainers/ege-baza/course/#learn-decimal"

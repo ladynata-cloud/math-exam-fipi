@@ -6,13 +6,12 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: shared school courses and routes
+## In progress: Vilenkin 6 / Makarychev 9 and board lessons
 
-- Branch `course/school-complete-core`, base `1d1d85fe8240b614d26b70c849b649126f6f3c96`.
-- PR #165 is published (merge `8a60fe36871ad6081d59a1352f7be27705bce553`); PR #166 versions its assets (merge/base above). Their 104 Workshop lessons and 77-source catalog are present in production.
-- Current work adds 48 author-written lessons and 9 explicit learning routes, reusing the existing task/model/progress contract. Existing geometry courses remain linked.
-- See [task](tasks/SCHOOL_COMPLETE_CORE.md) and [report](reports/SCHOOL_COMPLETE_CORE_20261002.md). Publication of this extension must be established by its PR and production checks.
-- This is a shared skill curriculum, not a claim of exhaustive coverage of all exercises in 77 editions. Exact textbook mappings retain their earlier partial status.
+- Base `20fa4cb5b92e41d4218367ccd39a19310ecebb90`: PR #167 is merged and published. Its 48 added lessons bring the Workshop to 152 lessons and 9 general routes. Final head CI, Pages deployment, public file hashes and browser were verified before this task.
+- Active branch `course/vilenkin6-makarychev9`; [scope](tasks/VILENKIN6_MAKARYCHEV9.md). Exact editions: Vilenkin 2024 parts 1–2, Makarychev basic 2023. Work includes direct lesson opening from the board.
+- The separate classic Atanasyan draft PR #168 is not merged or published and is not part of this release.
+- Topic coverage is distinct from exhaustive solutions to every numbered textbook exercise. New publication evidence belongs in this task's final report.
 
 ## Confirmed preceding EGE release
 

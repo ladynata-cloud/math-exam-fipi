@@ -2,8 +2,8 @@
 const {spawnSync}=require('node:child_process'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../..'),role=process.argv[2],out=path.join(root,'ege-quality-results');fs.mkdirSync(out,{recursive:true});
 const roles={
- teacher:['textbook-core.test.cjs','textbook-secondary.test.cjs','textbook-algebra.test.cjs','workshop-state.test.cjs','ege-baza-practice.test.cjs','ege-baza-2027-gate.mjs','ege-baza-foundation.test.mjs','ege-baza-data.test.mjs','ege-baza-algebra-percent.test.cjs','ege-baza-reasoning.test.cjs','ege-baza-labs.test.cjs','ege-release/math.cjs','ege-release/work-rate.math.cjs'],
- student:['textbook-core.browser.cjs','textbook-secondary.browser.cjs','textbook-algebra.dom.cjs','ege-baza-practice.dom.cjs','ege-baza-practice.browser.cjs','ege-release/browser.cjs','ege-release/work-rate.browser.cjs','ege-quality/student.browser.cjs'],
+ teacher:['textbook-editions.test.cjs','textbook-core.test.cjs','textbook-secondary.test.cjs','textbook-algebra.test.cjs','workshop-state.test.cjs','ege-baza-practice.test.cjs','ege-baza-2027-gate.mjs','ege-baza-foundation.test.mjs','ege-baza-data.test.mjs','ege-baza-algebra-percent.test.cjs','ege-baza-reasoning.test.cjs','ege-baza-labs.test.cjs','ege-release/math.cjs','ege-release/work-rate.math.cjs'],
+ student:['textbook-editions.browser.cjs','textbook-core.browser.cjs','textbook-secondary.browser.cjs','textbook-algebra.dom.cjs','ege-baza-practice.dom.cjs','ege-baza-practice.browser.cjs','ege-release/browser.cjs','ege-release/work-rate.browser.cjs','ege-quality/student.browser.cjs'],
  tester:['ege-baza-navigator.test.mjs','ege-baza-backup.test.mjs','ege-baza-foundation.browser.mjs','ege-baza-data.browser.mjs','ege-baza-algebra-percent.browser.cjs','ege-baza-reasoning.browser.cjs','ege-baza-labs.browser.cjs','ege-baza-navigator.browser.mjs','ege-baza-backup.browser.mjs']
 };
 if(!roles[role])throw Error('Use teacher, student or tester');
