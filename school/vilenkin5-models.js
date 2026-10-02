@@ -51,7 +51,7 @@ function mount(el,m,M,old){
    if(op==='add'||op==='subtract'){
     let rows=[['Первое число',dec(s.a),Math.floor(p.ac/100),Math.floor(p.ac/10)%10,p.ac%10],['Второе число',dec(s.b),Math.floor(p.bc/100),Math.floor(p.bc/10)%10,p.bc%10]];
     rows.push([p.added?'Сумма после обменов':'Первое после разменов',dec(M.q(p.exchange[0]*100+p.exchange[1]*10+p.exchange[2],100)),...p.exchange]);
-    body='<div class="v5-table-wrap"><table><caption>Одинаковые разряды стоят друг под другом</caption><thead><tr><th>Число</th><th>Запись</th><th>Целые</th><th>Десятые</th><th>Сотые</th></tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+    body='<div class="v5-table-wrap"><table><caption>Одинаковые разряды стоят друг под другом</caption><thead><tr><th>Число</th><th>Целые</th><th>Десятые</th><th>Сотые</th></tr></thead><tbody>'+rows.map(row=>'<tr>'+[row[0]+' ('+row[1]+')',...row.slice(2)].map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
     actions=btn('1 целая → 10 десятых','exchange-whole')+btn('1 десятая → 10 сотых','exchange-tenth')+btn('10 сотых → 1 десятая','collect-tenth')+btn('10 десятых → 1 целая','collect-whole');
     if(op==='add')actions+=btn('Добавить разряды второго числа','add-digits');
     caption=(p.added?'Второе число уже добавлено; размены сохраняют сумму. ':'Размены сохраняют значение первого числа. ')+(op==='add'?'Добавь второе число, затем собери полные десятки.':'Добейся, чтобы в каждом разряде хватало единиц для вычитания.');question='Вычисли '+dec(s.a)+(op==='add'?' + ':' − ')+dec(s.b)+'.';
