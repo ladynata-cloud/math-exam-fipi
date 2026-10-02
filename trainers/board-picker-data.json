@@ -6905,6 +6905,101 @@
       "title": "Макарычев 9 · задача № 53",
       "group": "Макарычев · 9 класс",
       "href": "/school/m9-exercises/index.html#53/0"
+    },
+    {
+      "title": "ЕГЭ профиль 2027 · понятный старт",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#home"
+    },
+    {
+      "title": "Углы: найти связь, затем считать",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/geo-angles"
+    },
+    {
+      "title": "Прямоугольный треугольник: стороны и отношения",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/geo-right"
+    },
+    {
+      "title": "Подобие: сначала соответствие вершин",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/geo-similarity"
+    },
+    {
+      "title": "Площади: выбрать основание и высоту",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/geo-area"
+    },
+    {
+      "title": "Четырёхугольники: полезная дополнительная линия",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/geo-quadrilaterals"
+    },
+    {
+      "title": "Окружность: дуга, угол и касательная",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/geo-circle"
+    },
+    {
+      "title": "Вектор: откуда и куда",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/vec-coordinates"
+    },
+    {
+      "title": "Длина вектора: Пифагор на координатной сетке",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/vec-length"
+    },
+    {
+      "title": "Сложение, разность и умножение на число",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/vec-operations"
+    },
+    {
+      "title": "Скалярное произведение: число и смысл угла",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/vec-dot"
+    },
+    {
+      "title": "Угол: поворот, градусы и радианы",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/trig-angle"
+    },
+    {
+      "title": "Синус и косинус — координаты точки",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/trig-coordinates"
+    },
+    {
+      "title": "Точные значения и симметрия",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/trig-special"
+    },
+    {
+      "title": "Тангенс: отношение и границы определения",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/trig-tangent"
+    },
+    {
+      "title": "Показательное уравнение: одинаковые основания",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/algebra-exponential"
+    },
+    {
+      "title": "Логарифмическое уравнение и ОДЗ",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/algebra-logarithmic"
+    },
+    {
+      "title": "Восстановить косинус по синусу и четверти",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/algebra-cosine"
+    },
+    {
+      "title": "Двойной угол: узнать произведение",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/ege-profil/start/index.html#lesson/algebra-double-angle"
     }
   ]
 }

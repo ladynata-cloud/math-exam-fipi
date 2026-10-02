@@ -6,15 +6,13 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: numbered Makarychev algebra 9, Chapter I completion
+## In progress: profile EGE 2027 learning start
 
-- Confirmed production base: `63fecd3b12ff4a4041e431dafc2ab505ffea1e6a` (PR #175). Exercises 1–78, 246 parts, 595 steps were published; exact merge Pages run `37004607089` and public asset hashes were verified. 93 thematic lessons remain available.
-- Current task: `course/makarychev9-exercises-79-97`; [scope](tasks/MAKARYCHEV9_EXERCISES_79_97.md); [coverage and limitations](reports/MAKARYCHEV9_EXERCISES_79_97_20261002.md).
-- Candidate adds 79–97: 65 parts, 179 steps. Total: 97 numbers, 311 parts, 774 steps — all numbered exercises of Chapter I, not the whole textbook.
-- New activities: student constructions/counterexamples, radical transformations, signed rounding, flight/measurement models, room estimate and territory/parking/loan tasks. Source error in 83a is explicit.
-- Independent external review and separate final acceptance were waived by the owner for course publication. Math/browser/data checks, exact base/head evidence and branch protections remain. Actual release evidence belongs in the PR.
-- Remaining 98–891 and separately numbered control questions are not implemented. Self-reported measurements and research authenticity are not certified automatically.
-- Next: finish exact-head gates and publish this block; continue 98 onward from the scan; add section control questions and classroom feedback.
+- Confirmed production main: `14f364617a83ab545f8e95b002bd74968c5f5980` (PR #176), tree `1a43d6f08429173570b3d849d70e4d929c3b9b37`. The preceding Makarychev Chapter I release added №79–97; total №1–97, 311 parts, 774 steps. It is not the whole textbook; №98–891 and separate control questions remain outside that release.
+- Current approved task: `course/profile-foundations-2027`; [scope](tasks/PROFILE_FOUNDATIONS_2027.md). Planimetry, vectors, introductory trigonometry and four algebra themes. Quadratic-in-sine/second-part trig equation explicitly excluded by owner.
+- New route uses the 2027 draft numbering. Existing 2026 trainers and student results remain intact and are labeled as legacy navigation, not relabeled as a current complete exam.
+- Owner requested implementation and cloud publication. Standing course-release exception removes separate final acceptance; checks and technical protections remain. No external reviewer approval is claimed.
+- Next: complete bounded content and interaction checks; publish one PR; verify live course and board and record actual coverage. Release evidence belongs in that PR.
 - Classic Atanasyan draft PR #168 remains outside this task.
 
 ## Confirmed preceding EGE release
