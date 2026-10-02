@@ -1,0 +1,31 @@
+name: Mordkovich — unit circle
+on:
+  pull_request:
+    paths: ['ege-profil/circle/**', 'tools/mord-*', 'tools/mordkovich-*', '.github/workflows/mord-circle.yml']
+  push:
+    branches: [main]
+    paths: ['ege-profil/circle/**', 'tools/mord-*', 'tools/mordkovich-*', '.github/workflows/mord-circle.yml']
+permissions:
+  contents: read
+concurrency:
+  group: mord-circle-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  math-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Source coverage and independent mathematics
+        run: node tools/mord-circle.test.cjs && node tools/mord-ch4.test.cjs && node tools/mord-ch5.test.cjs && node tools/mord-ch6a.test.cjs && node tools/mord-ch6b.test.cjs && node tools/mordkovich-models.test.cjs
+      - name: All tasks in a real browser
+        run: node tools/mord-circle.browser.cjs
+      - name: Existing board and profile regression
+        run: node tools/board-picker-smoke.cjs && npm --prefix ege-profil test

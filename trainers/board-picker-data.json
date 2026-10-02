@@ -7000,6 +7000,176 @@
       "title": "Двойной угол: узнать произведение",
       "group": "ЕГЭ профиль · понятный старт 2027",
       "href": "/ege-profil/start/index.html#lesson/algebra-double-angle"
+    },
+    {
+      "title": "Мордкович · тригонометрия с начала · §§4–6",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#home"
+    },
+    {
+      "title": "Подготовка · Что делает окружность единичной",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/before-circle"
+    },
+    {
+      "title": "Подготовка · Число превращается в путь",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/before-radians"
+    },
+    {
+      "title": "§4 · Окружность как числовая дорожка",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m4-arc-length"
+    },
+    {
+      "title": "§4 · Делим четверть в отношении",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m4-arc-ratios"
+    },
+    {
+      "title": "§4 · Четыре опорные точки и полные обороты",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m4-axis-turns"
+    },
+    {
+      "title": "§4 · Доли π внутри четвертей",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m4-fractional-turns"
+    },
+    {
+      "title": "§4 · Отрицательные углы и много оборотов",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m4-negative-large"
+    },
+    {
+      "title": "§4 · Одинаковые числа? Одинаковые точки?",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m4-line-circle"
+    },
+    {
+      "title": "§4 · Все числа для одной точки и пары точек",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m4-all-numbers"
+    },
+    {
+      "title": "§4 · Радианы без символа π",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m4-radians-without-pi"
+    },
+    {
+      "title": "§4 · Открытые дуги и интервалы всех чисел",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m4-open-arcs"
+    },
+    {
+      "title": "§5 · Координаты точки единичной окружности",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m5-coordinates"
+    },
+    {
+      "title": "§5 · Координаты после нескольких оборотов",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m5-coordinate-turns"
+    },
+    {
+      "title": "§5 · От координат к положительному и отрицательному повороту",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m5-coordinate-inverse"
+    },
+    {
+      "title": "§5 · Одинаковая ордината: одна или две точки?",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m5-ordinate-slices"
+    },
+    {
+      "title": "§5 · Одинаковая абсцисса: вертикальные сечения",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m5-abscissa-slices"
+    },
+    {
+      "title": "§5 · Знаки координат без вычисления их значений",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m5-coordinate-signs"
+    },
+    {
+      "title": "§5 · Неравенство по абсциссе: выбираем дугу",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m5-abscissa-inequalities"
+    },
+    {
+      "title": "§5 · Неравенство по ординате: выше или ниже?",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m5-ordinate-inequalities"
+    },
+    {
+      "title": "§6 · Синус, косинус и тангенс на осях",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-axis"
+    },
+    {
+      "title": "§6 · Точные значения и несколько оборотов",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-special"
+    },
+    {
+      "title": "§6 · Вычисления: сначала функции, затем действия",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-calculation"
+    },
+    {
+      "title": "§6 · Тождества и область определения",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-identities"
+    },
+    {
+      "title": "§6 · Аргумент функции и квадрат её значения",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-arguments"
+    },
+    {
+      "title": "§6 · Наименьшее и наибольшее значение",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-range"
+    },
+    {
+      "title": "§6 · Простейшие уравнения: все точки и все обороты",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-equations"
+    },
+    {
+      "title": "§6 · Когда дробь не имеет смысла",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-undefined"
+    },
+    {
+      "title": "§6 · Знаки: от координат к выражению",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-signs"
+    },
+    {
+      "title": "§6 · Упростить, прежде чем вычислять",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6b-identities"
+    },
+    {
+      "title": "§6 · Все точки — все решения",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6b-equations"
+    },
+    {
+      "title": "§6 · Когда квадратный корень существует",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-root-domain"
+    },
+    {
+      "title": "§6 · Сравниваем и упорядочиваем",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-comparison"
+    },
+    {
+      "title": "§6 · Неравенство как дуга окружности",
+      "group": "Мордкович · тригонометрия",
+      "href": "/ege-profil/circle/index.html#lesson/m6-inequalities"
     }
   ]
 }
