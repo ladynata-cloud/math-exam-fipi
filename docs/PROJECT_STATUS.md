@@ -6,6 +6,12 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
+## Current: profile answer input and vector point polish
+
+- Remote main verified at `b0cc5306ef0020943d35234cdaa48c1c61602b49` (merged PR #180). The previous snapshot below predates that merge; live deployment is not re-certified by this task.
+- Scope: [input and vector polish](tasks/PROFILE_INPUT_VECTOR_POLISH.md). Accept implicit products with π, distinguish unreadable answers from math errors, and reduce vector endpoint size while preserving drag targets.
+- Next three actions: finish scoped validation; open the single Draft PR with exact base/head; obtain separate publication authorization before merge.
+
 ## Current: paired tutor lesson/homework and unified trigonometry
 
 - Confirmed production main: `4e229981e303c6ddfd252b6c2bc71c4913ff8e30` (PR #179), tree `68ed76c112b286a552cbd995dcb653192d4ebce6`. π input display was published and checked; this follow-up also snaps dragging to exact divisions by default.
