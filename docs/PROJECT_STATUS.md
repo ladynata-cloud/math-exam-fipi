@@ -6,14 +6,15 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: numbered Makarychev algebra 9, continuation
+## In progress: numbered Makarychev algebra 9, Chapter I completion
 
-- Confirmed production base: `2837fa993d0a0e1cc93d3cefc92b2e4a345ec7ab` (PR #174). Exercises 1–53, 177 parts, 423 steps were published and verified; 93 thematic lessons remain available.
-- Current task: `course/makarychev9-exercises-54-78`; [scope](tasks/MAKARYCHEV9_EXERCISES_54_78.md); [coverage and limitations](reports/MAKARYCHEV9_EXERCISES_54_78_20261002.md).
-- Candidate adds 54–78: 69 parts, 172 steps, measured-data forms, all system pairs, alternative units and accessible applied-math models. Total candidate: 78 numbers, 246 parts, 595 steps.
-- Independent external review and separate final acceptance were waived by the owner for course publication. Math/browser/data checks, exact base/head evidence and branch protections remain required. Actual release evidence belongs in the PR.
-- Remaining 79–891 and separately numbered control questions are not implemented. Research/source authenticity is explicitly reserved for human discussion.
-- Next: finish exact-head gates and publish this block; continue 79 onward from the scan; add section control questions and classroom feedback.
+- Confirmed production base: `63fecd3b12ff4a4041e431dafc2ab505ffea1e6a` (PR #175). Exercises 1–78, 246 parts, 595 steps were published; exact merge Pages run `37004607089` and public asset hashes were verified. 93 thematic lessons remain available.
+- Current task: `course/makarychev9-exercises-79-97`; [scope](tasks/MAKARYCHEV9_EXERCISES_79_97.md); [coverage and limitations](reports/MAKARYCHEV9_EXERCISES_79_97_20261002.md).
+- Candidate adds 79–97: 65 parts, 179 steps. Total: 97 numbers, 311 parts, 774 steps — all numbered exercises of Chapter I, not the whole textbook.
+- New activities: student constructions/counterexamples, radical transformations, signed rounding, flight/measurement models, room estimate and territory/parking/loan tasks. Source error in 83a is explicit.
+- Independent external review and separate final acceptance were waived by the owner for course publication. Math/browser/data checks, exact base/head evidence and branch protections remain. Actual release evidence belongs in the PR.
+- Remaining 98–891 and separately numbered control questions are not implemented. Self-reported measurements and research authenticity are not certified automatically.
+- Next: finish exact-head gates and publish this block; continue 98 onward from the scan; add section control questions and classroom feedback.
 - Classic Atanasyan draft PR #168 remains outside this task.
 
 ## Confirmed preceding EGE release
