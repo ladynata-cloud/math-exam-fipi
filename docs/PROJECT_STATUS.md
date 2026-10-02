@@ -11,8 +11,8 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Confirmed production base: `6dae19acf58249a458fcb45981263976c1803d64` (PR #173). That release published 93 detailed authored lessons across 31 textbook points, not every numbered exercise. Existing results are preserved.
 - Owner now requests an interactive trainer for every exercise in the supplied 2023 basic textbook. Full target remains incomplete.
 - Current branch: `course/makarychev9-numbered`; [task](tasks/MAKARYCHEV9_NUMBERED.md); [coverage and limitations](reports/MAKARYCHEV9_NUMBERED_20261002.md).
-- Candidate contains exercises 1–36: 144 parts and 352 checked steps, individual number entry, point/interval construction, open examples, proof ordering, local drafts/export, existing-course remediation and board entry.
-- Exercises 37–891 are not implemented. They are never marked ready. Next content work starts with error/precision exercises 37–53, including the protractor construction in 45.
+- Candidate contains exercises 1–53: 177 parts and 423 checked steps, individual number entry, point/interval construction, open examples, proof ordering, local drafts/export, existing-course remediation and board entry.
+- Exercises 54–891 are not implemented. They are never marked ready. Next content work starts with size/order-of-magnitude and practical exercises 54–78.
 - Independent external review and separate final acceptance were waived by the owner for the course publication work. Normal math/browser/data checks, exact base/head evidence and branch protections remain required. Actual publication evidence belongs in the PR.
 - Classic Atanasyan draft PR #168 remains outside this task.
 

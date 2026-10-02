@@ -2,3 +2,5 @@
 
 /* Narrow viewports and 200% text zoom retain every control. */
 body{overflow-wrap:anywhere}.brand{font-size:clamp(18px,6vw,24px)}button,a.button{min-width:0;max-width:100%;overflow-wrap:anywhere}.mode{min-width:0;max-width:100%}.mode button{font-size:14px;padding:9px 12px}.side{min-width:0}progress{min-width:0;display:block}.work{min-width:0}.work>*,.num-form{min-width:0}@media(max-width:760px){.side ol{display:none}.side{padding:16px}.side h3{font-size:16px}.hero:has(+.work){padding-bottom:10px}}
+
+.angle-model{width:100%;display:block;touch-action:pan-y}.angle-model text{font:18px system-ui;fill:#48635a}.angle-model .point{cursor:grab}
