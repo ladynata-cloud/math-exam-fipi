@@ -1,0 +1,73 @@
+(function(root){
+'use strict';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function value(p,x){if(p.type==='line')return p.a*x+p.k;if(p.type==='inverse')return x===p.h?null:p.a/(x-p.h)+p.k;return p.a*(x-p.h)**2+p.k;}
+function signs(p,x){if(p.type==='quotient')return x===p.right?null:(x-p.left)/(x-p.right);if(p.type==='even')return (x-p.left)**2*(x-p.right);return (x-p.left)*(x-p.right);}
+function sequence(p){const values=[p.first];for(let i=1;i<p.count;i++)values.push(p.type==='geometric'?values[i-1]*p.change:values[i-1]+p.change);return {values,sum:values.reduce((a,b)=>a+b,0)};}
+function mount(el,m,M,old){
+ if(m.kind!=='m9lab')return old(el,m);
+ const family=m.family,d=m.data,p={type:family==='graph'?'parabola':family==='signs'?'product':family==='sequence'?'arithmetic':'region',a:1,h:0,k:0,x:2,y:1,left:-2,right:3,op:'≥',first:2,change:3,count:5,exact:20,approx:19,selected:[false,false,false],ends:[false,false],reveal:false};
+ const target={a:d.sgn*(d.c||2),h:d.h,k:d.b};let status='',success=false;
+ const ctl=(key,label,min,max,step=1)=>`<label>${label}<input data-param="${key}" type="number" min="${min}" max="${max}" step="${step}" value="${p[key]}"></label>`;
+ const opt=(key,label,list)=>`<label>${label}<select data-param="${key}">${list.map(([v,t])=>`<option value="${v}" ${p[key]===v?'selected':''}>${t}</option>`).join('')}</select></label>`;
+ const button=(text,act)=>`<button type="button" class="quiet" data-lab-action="${act}">${text}</button>`;
+ const X=x=>300+20*x,Y=y=>260-20*y;
+ function grid(body,label){let s='';for(let n=-12;n<=12;n++){s+=`<path d="M ${X(n)} 20 V 500 M 60 ${Y(n)} H 540" class="m9-grid"/>`;if(n%4===0&&n!==0)s+=`<text x="${X(n)}" y="278">${n}</text><text x="275" y="${Y(n)}">${n}</text>`;}return `<svg class="m9-coordinate" viewBox="0 0 600 530" role="img" aria-label="${esc(label)}">${s}<path d="M60 260H550 M300 510V10" class="m9-axis"/><text x="553" y="255">x</text><text x="309" y="20">y</text><defs><clipPath id="m9-clip"><rect x="60" y="20" width="480" height="480"/></clipPath></defs><g clip-path="url(#m9-clip)">${body}</g></svg>`;}
+ function curve(){let path='',pen=false,prev=null;for(let i=0;i<=600;i++){const x=-12+i*.04,y=value(p,x);if(y===null||!Number.isFinite(y)||Math.abs(y)>13||prev!==null&&Math.abs(y-prev)>8){pen=false;prev=y;continue;}path+=(pen?'L':'M')+X(x).toFixed(1)+' '+Y(y).toFixed(1);pen=true;prev=y;}return `<path d="${path}" class="m9-curve"/>`;}
+ function point(x,y,label,cls='m9-point'){return `<circle cx="${X(x)}" cy="${Y(y)}" r="7" class="${cls}"/><text x="${X(x)+10}" y="${Y(y)-12}">${esc(label)}</text>`;}
+ function draw(){let title='',description='',controls='',body='',challenge='',actions='';
+ if(family==='graph'){
+  title='График в твоих руках';description='Меняй коэффициенты и сравнивай формулу с движением графика. Для параболы можно указать вершину щелчком на сетке или перетащить её; те же действия доступны числовыми полями и стрелками клавиатуры.';
+  controls=opt('type','Исследуем',[['parabola','Парабола'],['line','Прямая'],['inverse','Гипербола']])+ctl('a','Коэффициент a',-4,4)+ctl('h','Сдвиг h',-6,6)+ctl('k','Сдвиг k',-6,6)+ctl('x','Аргумент для проверки',-8,8);
+  const y=value(p,p.x),formula=p.type==='parabola'?`y=${p.a}(x−(${p.h}))²+(${p.k})`:p.type==='inverse'?`y=${p.a}/(x−(${p.h}))+(${p.k})`:`y=${p.a}x+(${p.k})`;
+  body=`<p class="m9-formula">${esc(formula)}</p>`+grid(curve()+(p.type==='parabola'?point(p.h,p.k,'V'):''),formula)+`<p>При x=${p.x}: y=${y===null?'не определено':Math.round(y*1000)/1000}. ${p.a===0?'При a=0 формула вырождается; для параболы или гиперболы выбери ненулевой коэффициент.':''}</p>`;
+  challenge=`Построй параболу с вершиной (${target.h};${target.k}), которая проходит через (${target.h+1};${target.k+target.a}). Подбери a, h и k.`;actions=button('Проверить построение','graph-check')+button('Вернуться к исходному графику','reset');
+ }else if(family==='signs'){
+  title='Собери решение на числовой прямой';description='Отметь все подходящие промежутки и отдельно реши, включать ли каждую границу. Если нужно, исследуй знаки в пробных точках.';
+  controls=opt('type','Выражение',[['product','(x−l)(x−r)'],['quotient','(x−l)/(x−r)'],['even','(x−l)²(x−r)']])+ctl('left','Граница l',-8,0)+ctl('right','Граница r',1,8)+opt('op','Сравнение с нулём',[['≥','≥ 0'],['>','> 0'],['≤','≤ 0'],['<','< 0']]);
+  const labels=[`(−∞; ${p.left})`,`(${p.left}; ${p.right})`,`(${p.right}; +∞)`],samples=[p.left-1,(p.left+p.right)/2,p.right+1];
+  body=`<svg viewBox="0 0 600 110" role="img" aria-label="Числовая прямая с границами ${p.left} и ${p.right}"><path d="M30 50H575" class="m9-axis"/>${[190,410].map((x,i)=>`<circle cx="${x}" cy="50" r="7" class="${p.ends[i]?'m9-point':'m9-open'}"/><text x="${x}" y="85">${i?p.right:p.left}</text>`).join('')}</svg><div class="m9-intervals">${labels.map((s,i)=>`<button type="button" data-interval="${i}" aria-pressed="${p.selected[i]}">${s}</button>`).join('')}</div><div class="row">${[p.left,p.right].map((n,i)=>`<label><input type="checkbox" data-end="${i}" ${p.ends[i]?'checked':''}>Включить ${n}</label>`).join('')}</div>`;
+  if(p.reveal)body+='<table><caption>Пробные точки — по одной на каждом промежутке</caption><tr><th>x</th>'+samples.map(x=>`<td>${x}</td>`).join('')+'</tr><tr><th>Значение</th>'+samples.map(x=>`<td>${Math.round(signs(p,x)*1000)/1000}</td>`).join('')+'</tr></table>';
+  challenge=`Выбери всё множество решений ${p.type==='product'?`(x−(${p.left}))(x−${p.right})`:p.type==='quotient'?`(x−(${p.left}))/(x−${p.right})`:`(x−(${p.left}))²(x−${p.right})`} ${p.op} 0.`;actions=button('Показать пробные точки','reveal')+button('Проверить выбранное множество','sign-check');
+ }else if(family==='systems'){
+  title='Пара координат должна пройти все условия';description='Перемещай точку по сетке мышью или меняй обе координаты полями. Проверка рассматривает каждое условие отдельно.';
+  controls=opt('type','Исследуем',[['region','Пересечение полуплоскостей'],['circle','Окружность и прямая']])+ctl('x','Координата x',-10,10)+ctl('y','Координата y',-10,10);
+  const shape=p.type==='region'?`<path d="M${X(0)} ${Y(0)}L${X(6)} ${Y(0)}L${X(0)} ${Y(6)}Z" class="m9-area"/>`:`<circle cx="300" cy="260" r="100" class="m9-circle"/><path d="M60 ${Y(3)}H540" class="m9-curve"/>`;
+  body=grid(shape+point(p.x,p.y,`(${p.x};${p.y})`),'Точка и общая область системы');
+  challenge=p.type==='region'?'Поставь точку так, чтобы x≥0, y≥0 и x+y≤6. Потом проверь точку на границе.':'Найди точку, которая одновременно лежит на x²+y²=25 и y=3. Сможешь найти вторую?';actions=button('Проверить точку','system-check');
+ }else if(family==='sequence'){
+  title='Собери последовательность и её сумму';description='Номер — это место в ряду, значение — высота точки. Сравни прибавление одной разности и умножение на один знаменатель.';
+  controls=opt('type','Правило',[['arithmetic','Прибавлять d'],['geometric','Умножать на q']])+ctl('first','Первый член',-5,5)+ctl('change','Разность d / знаменатель q',-3,3)+ctl('count','Число членов',2,8);
+  const s=sequence(p),max=Math.max(1,...s.values.map(Math.abs)),scale=130/max;
+  body=`<svg viewBox="0 0 600 340" role="img" aria-label="Последовательность по номерам"><path d="M35 170H580" class="m9-axis"/>${s.values.map((y,i)=>`<path d="M${65+i*64} 170V${170-y*scale}" class="m9-curve"/><circle cx="${65+i*64}" cy="${170-y*scale}" r="5" class="m9-point"/><text x="${65+i*64}" y="325">${i+1}</text><text x="${65+i*64}" y="${155-y*scale}">${y}</text>`).join('')}</svg><p>Горизонтально — номер; вертикально — значение. Масштаб высоты подстраивается. Между членами нет промежуточных номеров.</p><p>Члены: ${s.values.join('; ')}.</p>`;
+  challenge='Предскажи сумму всех показанных членов. Для арифметической прогрессии попробуй соединять первый и последний.';actions='<label>Твоя сумма<input data-sum type="text" inputmode="decimal"></label>'+button('Проверить сумму','sum-check')+button('Показать объяснение суммы','sum-reveal');if(p.reveal)body+=`<p class="m9-explanation">${p.type==='arithmetic'?`Среднее крайних: (${s.values[0]}+(${s.values.at(-1)}))/2. Умножаем на ${p.count}.`:p.change===1?`Все ${p.count} членов равны ${p.first}.`:`Вычти исходную сумму из суммы, умноженной на ${p.change}: промежуточные члены сократятся.`} Сумма = ${s.sum}.</p>`;
+ }else{
+  title='Насколько близко приближение';description='Измерь расстояние между точным и приближённым значениями. Сравни одну и ту же абсолютную ошибку для малых и больших чисел.';
+  controls=ctl('exact','Точное значение',1,100,.1)+ctl('approx','Приближённое',0,100,.1);
+  const lo=Math.min(p.exact,p.approx)-2,hi=Math.max(p.exact,p.approx)+2,map=x=>50+(x-lo)/(hi-lo)*500;
+  body=`<svg viewBox="0 0 600 180" role="img" aria-label="Расстояние между значениями"><path d="M30 90H575" class="m9-axis"/><path d="M${map(p.exact)} 70H${map(p.approx)}" class="m9-curve"/><circle cx="${map(p.exact)}" cy="90" r="7" class="m9-point"/><text x="${map(p.exact)}" y="135">Точно ${p.exact}</text><circle cx="${map(p.approx)}" cy="90" r="7" class="m9-open"/><text x="${map(p.approx)}" y="40">≈ ${p.approx}</text></svg>`;
+  challenge='Найди абсолютную погрешность. Затем поменяй местами точное и приближённое значения: расстояние сохранится, относительная погрешность может измениться.';actions='<label>Абсолютная погрешность<input data-error type="text" inputmode="decimal"></label>'+button('Проверить расстояние','error-check');
+ }
+ el.innerHTML=`<section class="m9-lab"><p class="eyebrow">Исследуй сам · ${family==='graph'?'строй и проверяй':'сделай выбор'}</p><h2>${title}</h2><p>${description}</p><p class="tiny">Отдельная лаборатория: её настройки не меняют условие тренировочной задачи ниже и не засчитываются как самостоятельное освоение.</p><div class="m9-controls">${controls}</div><div class="m9-canvas">${body}</div><div class="m9-mission"><h3>Твоя миссия</h3><p>${challenge}</p><div class="row">${actions}</div><p class="m9-status ${success?'good':''}" role="status">${esc(status)}</p></div></section>`;
+ el.querySelectorAll('[data-param]').forEach(input=>input.onchange=()=>{let key=input.dataset.param,v=input.tagName==='SELECT'?input.value:Number(input.value);if(input.tagName!=='SELECT'){if(!Number.isFinite(v))v=0;v=Math.min(Number(input.max),Math.max(Number(input.min),v));if(input.step==='1')v=Math.round(v);}p[key]=v;p.selected=[false,false,false];p.ends=[false,false];p.reveal=false;status='';draw();el.querySelector(`[data-param="${key}"]`)?.focus();});
+ el.querySelectorAll('[data-interval]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.interval);p.selected[i]=!p.selected[i];b.setAttribute('aria-pressed',String(p.selected[i]));status='';el.querySelector('.m9-status').textContent='';});
+ el.querySelectorAll('[data-end]').forEach(b=>b.onchange=()=>{p.ends[Number(b.dataset.end)]=b.checked;el.querySelector('.m9-status').textContent='';});
+ const svg=el.querySelector('.m9-coordinate');if(svg){let dragging=false;function move(e){if(family==='graph'&&p.type!=='parabola')return;const r=svg.getBoundingClientRect(),x=Math.max(-6,Math.min(6,Math.round(((e.clientX-r.left)*600/r.width-300)/20))),y=Math.max(-6,Math.min(6,Math.round((260-(e.clientY-r.top)*530/r.height)/20)));if(family==='graph'){p.h=x;p.k=y;}else{p.x=x;p.y=y;}status='';}
+ svg.onpointerdown=e=>{if(e.button!==0)return;dragging=true;svg.setPointerCapture(e.pointerId);move(e);};svg.onpointermove=e=>{if(dragging){move(e);const dot=svg.querySelector('.m9-point');if(dot){dot.setAttribute('cx',X(family==='graph'?p.h:p.x));dot.setAttribute('cy',Y(family==='graph'?p.k:p.y));}}};svg.onpointerup=e=>{if(dragging){move(e);dragging=false;draw();}};svg.onpointercancel=()=>{dragging=false;draw();};}
+ el.querySelectorAll('[data-lab-action]').forEach(b=>b.onclick=()=>{const a=b.dataset.labAction;success=false;
+ if(a==='reset'){Object.assign(p,{type:'parabola',a:1,h:0,k:0});status='';}
+ if(a==='graph-check'){success=p.type==='parabola'&&p.a===target.a&&p.h===target.h&&p.k===target.k;status=success?'Построение верно: вершина совпала, а точка на единицу правее имеет нужную высоту.':p.h!==target.h||p.k!==target.k?'Сначала установи вершину: h — её абсцисса, k — ордината.':'Вершина верна. На единицу правее квадрат скобки равен 1: сравни высоту точки с k, чтобы найти a.';}
+ if(a==='reveal'){p.reveal=true;status='Сравни знаки в таблице с требуемым неравенством; отдельно проверь границы.';}
+ if(a==='sign-check'){const ok=z=>z!==null&&(p.op==='≥'?z>=0:p.op==='>'?z>0:p.op==='≤'?z<=0:z<0),expected=[p.left-1,(p.left+p.right)/2,p.right+1].map(x=>ok(signs(p,x))),ends=[p.left,p.right].map(x=>ok(signs(p,x)));success=expected.every((x,i)=>x===p.selected[i])&&ends.every((x,i)=>x===p.ends[i]);status=success?'Верно: выбраны все подходящие промежутки и ровно допустимые границы.':expected.some((x,i)=>x!==p.selected[i])?'Проверь знаки на каждом промежутке. У чётной степени знак через корень не меняется.':'Промежутки верны. Проверь границы: нуль знаменателя запрещён всегда; нуль числителя зависит от строгости знака.';}
+ if(a==='system-check'){const checks=p.type==='circle'?[p.x*p.x+p.y*p.y===25,p.y===3]:[p.x>=0,p.y>=0,p.x+p.y<=6];success=checks.every(Boolean);status=(success?'Подходит. ':'Пока не подходит. ')+(p.type==='circle'?`x²+y²=${p.x*p.x+p.y*p.y} (нужно 25); y=${p.y} (нужно 3).`:`x≥0: ${checks[0]?'да':'нет'}; y≥0: ${checks[1]?'да':'нет'}; x+y≤6: ${checks[2]?'да':'нет'}.`);}
+ if(a==='sum-check'){success=M.equal(el.querySelector('[data-sum]').value,sequence(p).sum);status=success?'Сумма верна. Теперь измени правило или знак и предскажи, как изменится ряд.':'Проверь количество слагаемых и знаки; последний член — не вся сумма.';}
+ if(a==='sum-reveal'){p.reveal=true;status='Разбор открыт. Для самостоятельной проверки выбери другие параметры.';}
+ if(a==='error-check'){const error=Math.round(Math.abs(p.exact-p.approx)*1e8)/1e8;success=M.equal(el.querySelector('[data-error]').value,error);status=success?`Верно. Относительная погрешность ≈ ${Math.round(error/p.exact*10000)/100}%: делим расстояние на точное значение.`:'Нужен модуль разности: расстояние не может быть отрицательным.';}
+ draw();el.querySelector('.m9-status').scrollIntoView({block:'nearest',behavior:'auto'});
+ });
+ }
+ draw();
+}
+function install(V,M){const old=V.mount;V.mount=(el,m)=>mount(el,m,M,old);}
+const API={value,signs,sequence,mount,install};if(typeof module!=='undefined'&&module.exports)module.exports=API;else{root.WorkshopM9Models=API;install(root.WorkshopModels,root.WorkshopMath);}
+})(typeof window!=='undefined'?window:globalThis);
