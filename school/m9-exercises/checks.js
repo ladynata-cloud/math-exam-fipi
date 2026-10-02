@@ -29,6 +29,16 @@ function check(step,raw){try{
   const remaining=r.values.slice();ok=pairs.length===remaining.length;
   for(const p of pairs){const i=remaining.findIndex(v=>p.length===2&&close(p[0],v[0])&&close(p[1],v[1]));if(i<0){ok=false;break;}remaining.splice(i,1);}
  }
+ else if(r.type==='construction'){
+  if(!raw||typeof raw!=='object')return {ok:false,message:'Выберите a и поставьте свою точку.'};
+  const a=number(raw.a).value,p=number(raw.point).value;
+  if(a<=r.min||a>=r.max)return {ok:false,message:'Для этого рисунка нужно '+r.min+' < a < '+r.max+'.'};
+  ok=Math.abs(p-(r.factor*a+r.shift))<=.020000001;
+ }
+ else if(r.type==='counterexample'){
+  const v=values(raw).map(x=>x.value);
+  ok=v.length===2&&v.every(x=>Number.isSafeInteger(x)&&x>0)&&(r.operation==='subtract'?v[0]<=v[1]:v[0]%v[1]!==0);
+ }
  else if(r.type==='form'){
   if(!raw||typeof raw!=='object'||Array.isArray(raw))return {ok:false,message:'Заполните поля задания.'};
   const v={};for(const f of step.fields){if(f.type==='text'){const s=String(raw[f.id]||'').trim();if(s.length<(f.id.startsWith('unit')?1:2)||s.length>600)return {ok:false,message:'Заполните поле «'+f.label+'» (до 600 знаков).'};v[f.id]=s;}else v[f.id]=number(raw[f.id]??'').value;}
@@ -37,6 +47,11 @@ function check(step,raw){try{
   else if(r.kind==='walk')ok=v.length>0&&v.count>0&&Number.isInteger(v.count)&&v.time>0&&Math.abs(v.distance-v.length*v.count/100)<=.005&&Math.abs(v.speed-v.length*v.count/100/v.time)<=.005;
   else if(r.kind==='circle')ok=v.circumference>0&&v.diameter>0&&Math.abs(v.ratio-v.circumference/v.diameter)<=.00005&&Math.abs(v.error-Math.abs(v.circumference/v.diameter-Math.PI))<=.00005;
   else if(r.kind==='growth')ok=v.before>0&&v.after>0&&Math.abs(v.percent-Math.round((v.after-v.before)/v.before*1000)/10)<.00001;
+  else if(r.kind==='room'){
+   const walls=2*(v.length+v.width)*v.height,floor=v.length*v.width,rolls=Math.ceil((walls-v.openings)/11.13-1e-10),packs=Math.ceil(floor/2.74-1e-10);
+   ok=v.length>0&&v.width>0&&v.height>0&&v.openings>=0&&v.openings<=walls&&Math.abs(v.walls-walls)<=.005&&Math.abs(v.floor-floor)<=.005&&v.rolls===rolls&&v.packs===packs&&v.total===2300*rolls+1100*packs;
+  }
+  else if(r.kind==='parking')ok=v.side===25&&v.rows===2&&v.places===10&&v.total===20;
   else throw Error('Неизвестное вычисление формы.');
  }
  else if(r.type==='choice'||r.type==='order'){const a=Array.isArray(raw)?raw:[];ok=a.length===r.answer.length&&(r.type==='order'?[r.answer,...(r.alternatives||[])].some(order=>a.every((x,i)=>x===order[i])):a.every(x=>r.answer.includes(x))&&new Set(a).size===a.length);}

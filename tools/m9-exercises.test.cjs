@@ -1,8 +1,8 @@
 'use strict';
 const assert=require('node:assert/strict'),D=require('../school/m9-exercises/data'),Check=require('../school/m9-exercises/checks'),State=require('../school/m9-exercises/app');
 const C=require('../school/curriculum'),M=require('../school/math');require('../school/algebra7').install(C,M);require('../school/secondary').install(C,M);require('../school/core-content').install(C);require('../school/core-math').install(M);require('../school/paths').install(C);const E=require('../school/editions-content');E.install(C);require('../school/editions-math').install(M);const V6=require('../school/vilenkin6-lessons');V6.install(C,E);require('../school/vilenkin5-lessons').install(C,V6);require('../school/makarychev9-lessons').install(C,E);
-assert.equal(D.total,891);assert.deepEqual(D.exercises.map(e=>e.number),Array.from({length:78},(_,i)=>i+1));assert.equal(D.exercises.reduce((n,e)=>n+e.parts.length,0),246);
-let steps=0;for(const e of D.exercises)for(const p of e.parts){assert(C.byId[p.skill],p.skill);assert(p.steps.length>=2);assert(p.steps.some(s=>s.final));for(const s of p.steps){steps++;if(s.options&&Array.isArray(s.example))for(const id of s.example)assert(s.options.some(x=>x[0]===id),'answer absent from visible choices '+e.number);assert(s.explain&&s.hints.length===2);const a=['interval','angle','form'].includes(s.rule.type)?JSON.parse(s.example):s.example;assert(Check.check(s,a).ok,`${e.number} ${p.label}: ${s.prompt}`);assert(!Check.check(s,'').ok,'empty accepted');if(s.rule.type==='number'&&s.rule.value!==0)assert(!Check.check(s,'0').ok,'zero accepted for '+s.rule.value);if(s.rule.type==='choice'){assert(!Check.check(s,s.rule.answer.concat('impossible')).ok);assert(!Check.check(s,[...s.rule.answer,...s.rule.answer]).ok);}}}
+assert.equal(D.total,891);assert.deepEqual(D.exercises.map(e=>e.number),Array.from({length:97},(_,i)=>i+1));assert.equal(D.exercises.reduce((n,e)=>n+e.parts.length,0),311);
+let steps=0;for(const e of D.exercises)for(const p of e.parts){assert(C.byId[p.skill],p.skill);assert(p.steps.length>=2);assert(p.steps.some(s=>s.final));for(const s of p.steps){steps++;if(s.options&&Array.isArray(s.example))for(const id of s.example)assert(s.options.some(x=>x[0]===id),'answer absent from visible choices '+e.number);assert(s.explain&&s.hints.length===2);const a=['interval','angle','form','construction'].includes(s.rule.type)?JSON.parse(s.example):s.example;assert(Check.check(s,a).ok,`${e.number} ${p.label}: ${s.prompt}`);assert(!Check.check(s,'').ok,'empty accepted');if(s.rule.type==='number'&&s.rule.value!==0)assert(!Check.check(s,'0').ok,'zero accepted for '+s.rule.value);if(s.rule.type==='choice'){assert(!Check.check(s,s.rule.answer.concat('impossible')).ok);assert(!Check.check(s,[...s.rule.answer,...s.rule.answer]).ok);}}}
 function final(n,p=0){return D.byNumber[n].parts[p].steps.filter(s=>s.final);}
 function numeric(n,values){values.forEach((v,i)=>assert(Math.abs(final(n,i).at(-1).rule.value-v)<1e-12*Math.max(1,Math.abs(v)),`source oracle #${n}/${i}`));}
 // Independent calculations from the visually verified printed source.
@@ -30,7 +30,7 @@ numeric(37,[.04,.034,.046]);numeric(38,[.13,4,.047,.002]);numeric(39,[1/350]);nu
 assert(Check.check(final(45)[0],{angle:23,reading:'23'}).ok);assert(!Check.check(final(45)[0],{angle:90,reading:'90'}).ok);assert(!Check.check(final(45)[0],{angle:35,reading:'145'}).ok);
 for(const p of [-100,-7,-.5,0,1,100]){assert(Math.abs(((3*p+1)*(2*p+1)+p)-6*p*(p+1)-1)<1e-9);assert(Math.abs((2*p-1)*(2*p+1)+3*(p+1)-(4*p+3)*p-2)<1e-9);}
 
-console.log(`PASS M9 numbered: 78 exercises, 246 parts, ${steps} steps; source arithmetic with separate BigInt checks; open alternatives; strict endpoints; parser and progress validation.`);
+console.log(`PASS M9 numbered: 97 exercises, 311 parts, ${steps} steps; source arithmetic with separate BigInt checks; open alternatives; strict endpoints; parser and progress validation.`);
 
 // Source-derived oracle for the continuation. Calculations are independent of
 // the worked-step examples; mixed-coordinate, unit and budget mistakes fail.
@@ -58,3 +58,45 @@ assert.equal(model.calculate('purchase',{budget:500,price:26.5,discount:0}).coun
 assert.equal(model.calculate('discount',{fridge:2,washer:1}).total,53650);assert.equal(model.calculate('rooms',{rooms:16}).missing,1);
 assert.equal(model.calculate('budget',{months:22,reserve:10000}).total,512600);assert.equal(model.calculate('walls',{layers:2,glass:25}).cans,9);assert(Math.abs(model.calculate('circle',{radius:4/3}).difference-1)<1e-12);
 console.log('PASS continuation oracle: source algebra, all system pairs, units, 10 product rows, distinct receipt/consumption models, user measurements, ambiguous source data, interactive model calculations.');
+
+// Chapter I completion: independent source oracles and counterexamples.
+assert.equal(D.exercises.filter(e=>e.number>=79).reduce((n,e)=>n+e.parts.length,0),65);
+assert.equal(steps,774);
+const boundSources=[[-5*Math.sqrt(6),Math.sqrt(83)],[3*Math.sqrt(3),4*Math.sqrt(11)],[-5*Math.sqrt(6),-Math.sqrt(68)/2],[-2*Math.sqrt(54)/3,6*Math.sqrt(147)/7]];
+boundSources.forEach(([lo,hi],p)=>{const integers=Array.from({length:100},(_,i)=>i-50).filter(x=>x>lo&&x<hi);assert(Check.check(end(81,p),String(integers.length)).ok);assert.equal(D.byNumber[81].parts[p].steps[0].rule.value,integers[0]);assert.equal(D.byNumber[81].parts[p].steps[1].rule.value,integers.at(-1));});
+for(let p=0;p<8;p++){const r=end(79,p),[factor,shift]=[[2,0],[-1,0],[1,1],[1,-2]][p%4];for(const a of p<4?[.1,.45,.9]:[-1.5,-.1,.8]){assert(Check.check(r,{a:String(a),point:String(a*factor+shift)}).ok);assert(!Check.check(r,{a:String(a),point:String(a*factor+shift+.04)}).ok);}assert(!Check.check(r,{a:'1',point:'0'}).ok);}
+for(const v of ['1;1','1;100','5;6'])assert(Check.check(end(80,1),v).ok);
+for(const v of ['0;1','5;2','-1;2','2.5;3'])assert(!Check.check(end(80,1),v).ok);
+for(const v of ['1;2','7;3','101;10'])assert(Check.check(end(80,2),v).ok);
+for(const v of ['6;3','0;2','2;0','2;1'])assert(!Check.check(end(80,2),v).ok);
+const radicals82=[Math.sqrt(72)/Math.sqrt(50),(Math.sqrt(24)-Math.sqrt(54))*Math.sqrt(12),(3-Math.sqrt(5))**2+(3+Math.sqrt(5))**2,(Math.sqrt(13)+Math.sqrt(8))**2];
+radicals82.forEach((v,p)=>assert(Check.check(D.byNumber[82].parts[p].steps[1],String(v)).ok));
+const first83=Math.sqrt((7-4*Math.sqrt(3))**2)-Math.sqrt((4-2*Math.sqrt(3))**2);assert(Math.abs(first83-(3-2*Math.sqrt(3)))<1e-12);assert(Check.check(final(83)[0],String(first83)).ok);assert.deepEqual(end(83).rule.answer,['В напечатанном виде утверждение неверно']);
+assert(Check.check(end(83,1),String(Math.sqrt((37+12*Math.sqrt(7))**2)+Math.sqrt((37-12*Math.sqrt(7))**2))).ok);
+assert.deepEqual(D.byNumber[84].parts.map(p=>p.steps.at(-1).rule.answer[0]),['C','D','B','A']);
+const orderValues86=[{'(2/3)⁻⁴':(2/3)**-4,'2/3':2/3,'(3/2)⁻⁴':(3/2)**-4,'(3/2)⁰':1},{'(2,5)⁻³':2.5**-3,'2,5':2.5,'(2,5)⁻⁵':2.5**-5,'(2,5)⁰':1},{'(4/9)⁻⁵':(4/9)**-5,'(4/9)⁻⁶':(4/9)**-6,'4/9':4/9,'(4/9)⁰':1}];
+orderValues86.forEach((v,p)=>assert.deepEqual(end(86,p).rule.answer,Object.keys(v).sort((a,b)=>v[b]-v[a])));
+for(const [p,a,b]of [[0,5,5],[1,-5,7],[2,0,3]])assert(Check.check(end(87,p),String(a/b)).ok);
+numeric(88,[10,2,-29,3]);
+const r2=Math.sqrt(2),r3=Math.sqrt(3),r5=Math.sqrt(5),radicals90=[(r2+r3)*(r2-r3),(r2+2*r3)*(r2-r3),1/(2+r3)+1/(2-r3),1/(r3-r2)-1/(r3+r2),(r2+r3)/(r3-r2),r5/(r5-r2)+r5/(r5+r2)];
+radicals90.forEach((v,p)=>assert(Check.check(D.byNumber[90].parts[p].steps[1],String(v)).ok));
+for(const [p,v]of [13/7,-13/7,5/16,-5/16,Math.sqrt(3),-Math.sqrt(3)].entries())for(let d=1;d<=3;d++){
+ const [lo,hi]=D.byNumber[91].parts[p].steps.slice((d-1)*2,d*2).map(s=>s.rule.value);assert(lo<v&&v<hi);assert(Math.abs(hi-lo-10**-d)<1e-12);assert(Math.abs(lo*10**d-Math.round(lo*10**d))<1e-9);
+}
+const rounded92=[Math.sqrt(5)+Math.sqrt(7),4/11-Math.sqrt(8),11/9*-Math.sqrt(5),Math.sqrt(2)-5/8,3/16/Math.sqrt(3)];
+rounded92.forEach((v,p)=>[1,2].forEach((digits,i)=>assert(Check.check(D.byNumber[92].parts[p].steps[i],v.toFixed(digits)).ok)));
+assert(Check.check(end(93),String(-5*25+45*5+2)).ok);assert(Check.check(final(93,1)[0],String(-5*100+45*10+2)).ok);
+const land=model.calculate('projectile',{time:10});assert(land.landing>9&&land.landing<10);assert.equal(land.height,-48);assert(Math.abs(-5*land.landing**2+45*land.landing+2)<1e-10);
+numeric(94,[7700*3.14*.025**2*.8]);numeric(95,[1e-3*40**2/2]);
+const room=end(96),small={length:'4',width:'3',height:'2.5',openings:'2',walls:'35',floor:'12',rolls:'3',packs:'5',total:'12400'};
+assert(Check.check(room,small).ok);assert(!Check.check(room,{...small,rolls:'2'}).ok);assert(!Check.check(room,{...small,openings:'100'}).ok);assert(!Check.check(room,{...small,length:'-4'}).ok);assert(D.byNumber[96].parts[0].manual);
+assert(Check.check(end(97,1),String((12-1)*(21-12)*5**2)).ok);assert(!Check.check(end(97,1),'99').ok);assert(!Check.check(end(97,1),'495').ok);
+assert.equal(D.byNumber[97].parts[2].steps[2].rule.value,Math.ceil(73/(120/4)));assert.equal(end(97,2).rule.value,Math.ceil((73-60)/(120/4/6)));
+const park=end(97,3);assert(Check.check(park,{side:'25',rows:'2',places:'10',total:'20'}).ok);assert(!Check.check(park,{side:'20',rows:'2',places:'10',total:'20'}).ok);assert(!Check.check(park,{side:'25',rows:'3',places:'10',total:'30'}).ok);
+let debt=200000000n;const debtRows=[];while(debt){const interest=debt/10n,payment=debt+interest<50000000n?debt+interest:50000000n;debt+=interest-payment;debtRows.push([payment,debt]);}
+assert.equal(debtRows.length,6);assert.equal(debtRows[4][1],16847000n);assert.equal(debtRows[5][0],18531700n);
+const loan=model.calculate('loan',{payment:500000});assert.equal(loan.years,debtRows.length);assert.equal(loan.last,Number(debtRows[5][0])/100);assert.equal(loan.rows[4].balance,168470);assert(model.calculate('loan',{payment:400000}).years>loan.years);
+assert.equal(model.calculate('capacitor',{voltage:80}).energy/model.calculate('capacitor',{voltage:40}).energy,4);
+assert.equal(model.calculate('cylinder',{radius:5,length:80}).mass/model.calculate('cylinder',{radius:2.5,length:80}).mass,4);
+assert.equal(model.calculate('cylinder',{radius:2.5,length:160}).mass/model.calculate('cylinder',{radius:2.5,length:80}).mass,2);
+console.log('PASS Chapter I oracle: 79–97, flexible constructions/counterexamples, source typo, rationalization, negative bounds, flight domain, own room, fence area, parking and exact kopeck loan recurrence.');
