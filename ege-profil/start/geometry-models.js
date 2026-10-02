@@ -6,7 +6,7 @@
   const round = n => Number(n.toFixed(2)).toLocaleString('ru-RU');
   const line = (a, b, color = '#176860', extra = '') => `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${color}" stroke-width="3" ${extra}/>`;
   const label = (p, text, dx = 0, dy = -12) => `<text x="${p[0] + dx}" y="${p[1] + dy}" fill="#243b43" font-size="15" text-anchor="middle">${text}</text>`;
-  const dot = (p, name, drag) => `<circle cx="${p[0]}" cy="${p[1]}" r="${drag ? 10 : 4}" fill="${drag ? '#c05c22' : '#176860'}" ${drag ? `data-drag="${drag}" style="cursor:grab"` : ''}><title>${name}${drag ? ': можно перетащить; те же изменения доступны в полях ниже' : ''}</title></circle>`;
+  const dot = (p, name, drag, radius = drag ? 10 : 4) => `<g ${drag ? `data-drag="${drag}" style="cursor:grab"` : ''}><title>${name}${drag ? ': можно перетащить; те же изменения доступны в полях ниже' : ''}</title>${drag ? `<circle cx="${p[0]}" cy="${p[1]}" r="10" fill="transparent" pointer-events="all"/>` : ''}<circle cx="${p[0]}" cy="${p[1]}" r="${radius}" fill="${drag ? '#c05c22' : '#176860'}" pointer-events="none"/></g>`;
   const poly = points => `<polygon points="${points.map(p => p.join(',')).join(' ')}" fill="#e5f4ee" stroke="#176860" stroke-width="3"/>`;
   function lab(container, title, instruction, viewBox = '0 0 540 340') {
     container.innerHTML = `<div class="geometry-lab"><p><b>${title}</b></p><p>${instruction}</p><svg xmlns="${NS}" class="lab-svg" viewBox="${viewBox}" role="img" aria-label="${title}" style="display:block;width:100%;max-width:100%;height:auto;background:#f7faf8;border-radius:12px;touch-action:none;user-select:none"></svg><div class="lab-controls" style="display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:12px 0"></div><p class="lab-feedback" role="status" aria-live="polite" aria-atomic="true"></p><p class="lab-note"><small>Значения лаборатории отдельные от упражнений. Чертёж помогает заметить связь, но не заменяет доказательство; основание вывода указано в пояснении.</small></p></div>`;
@@ -202,7 +202,7 @@
           explanation = `a · b = ${a[0]} · (${b[0]}) + ${a[1]} · (${b[1]}) = ${dotProduct}. ${meaning}${zero ? '' : ` Угол ≈ ${round(angle)}°. Знак объясняется формулой a · b = |a||b| cos φ.`}`;
         }
       }
-      ui.svg.innerHTML = `<title>Координатная сетка и управляемые векторы a и b</title>${grid}${drawing}${dot(A, mode === 'endpoint' ? 'A' : 'Конец a', 'a')}${dot(B, mode === 'endpoint' ? 'B' : 'Конец b', 'b')}<text x="22" y="519" fill="#243b43" font-size="14">a = ${pair(a)}; b = ${pair(b)}. Один шаг сетки — 1.</text>`;
+      ui.svg.innerHTML = `<title>Координатная сетка и управляемые векторы a и b</title>${grid}${drawing}${dot(A, mode === 'endpoint' ? 'A' : 'Конец a', 'a', 4)}${dot(B, mode === 'endpoint' ? 'B' : 'Конец b', 'b', 4)}<text x="22" y="519" fill="#243b43" font-size="14">a = ${pair(a)}; b = ${pair(b)}. Один шаг сетки — 1.</text>`;
       ui.feedback.textContent = explanation;
     }
     ui.drag((name, p) => { const v = [Math.round(clamp((p[0] - center[0]) / step, -5, 5)), Math.round(clamp((center[1] - p[1]) / step, -5, 5))]; if (name === 'a') a = v; else b = v; syncInputs(); render(); });

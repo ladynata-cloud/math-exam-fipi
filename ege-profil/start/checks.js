@@ -9,7 +9,10 @@ function number(input){
  function atom(){if(++depth>30)throw Error();let v,t=tokens[i++];if(t==='('){v=sum();if(tokens[i++]!==')')throw Error();}else if(t==='pi')v=Math.PI;else if(t==='sqrt')v=Math.sqrt(unary());else if(t&&/^(\d|\.)/.test(t))v=Number(t);else throw Error();depth--;return v;}
  function power(){let v=atom();if(tokens[i]==='^'){i++;const p=unary();if(Math.abs(p)>50)throw Error();v=Math.pow(v,p);}return v;}
  function unary(){if(tokens[i]==='+'){i++;return unary();}if(tokens[i]==='-'){i++;return -unary();}return power();}
- function product(){let v=unary();while(tokens[i]==='*'||tokens[i]==='/'){const op=tokens[i++],b=unary();v=op==='*'?v*b:v/b;}return v;}
+ // Juxtaposition has the same precedence as multiplication: 3/4π = (3/4)*π.
+ // A product in a denominator must be bracketed, e.g. 3/(4π).
+ function implicit(){return tokens[i]==='pi'||tokens[i]==='sqrt'||tokens[i]==='('||((tokens[i-1]===')'||tokens[i-1]==='pi')&&/^(\d|\.)/.test(tokens[i]||''));}
+ function product(){let v=unary();while(tokens[i]==='*'||tokens[i]==='/'||implicit()){const op=implicit()?'*':tokens[i++],b=unary();v=op==='*'?v*b:v/b;}return v;}
  function sum(){let v=product();while(tokens[i]==='+'||tokens[i]==='-'){const op=tokens[i++],b=product();v=op==='+'?v+b:v-b;}return v;}
  try{const v=sum();return i===tokens.length&&Number.isFinite(v)?v:NaN;}catch(_){return NaN;}
 }
