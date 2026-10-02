@@ -24,6 +24,15 @@
     }
     return '≈ ' + fmt(n);
   }
+  // Keep editable radians in multiples of π, without snapping the actual point.
+  function radiansInput(t) {
+    if (Math.abs(t) < EPS) return '0';
+    for (let d = 1; d <= 360; d++) {
+      const n = Math.round(t / Math.PI * d);
+      if (Math.abs(t - n * Math.PI / d) < EPS) return (n === 1 ? '' : n === -1 ? '−' : String(n).replace('-', '−')) + 'π' + (d === 1 ? '' : '/' + d);
+    }
+    return (t / Math.PI).toFixed(12).replace(/\.?0+$/, '').replace('.', ',').replace('-', '−') + 'π';
+  }
   function values(t) {
     const x = clean(Math.cos(t)), y = clean(Math.sin(t));
     return {x, y, tan: x === 0 ? null : clean(y / x), cot: y === 0 ? null : clean(x / y), angle: t, normalized: norm(t)};
@@ -50,7 +59,7 @@
     return {roots, intervals, closed: relation.includes('=')};
   }
   const labels = {arc:'Число превращается в путь', angle:'Поворот и положение точки', coordinates:'Координаты точки на окружности', slice:'От координаты к дуге', functions:'Синус, косинус, тангенс и котангенс', compare:'Сравниваем точки, а не рисунки чисел'};
-  const helpers = {norm, radians, exact, values, belongs, intersections, sliceIntervals};
+  const helpers = {norm, radians, radiansInput, exact, values, belongs, intersections, sliceIntervals};
   function mount(container, supplied, hooks) {
     const config = Object.assign({mode:'arc',angle:0}, supplied || {}), options = hooks || {};
     const mode = Object.hasOwn(labels, config.mode) ? config.mode : 'arc';
@@ -114,6 +123,7 @@
       </svg>
       <p class="ml-caption">Начало — A справа. «+» — против часовой стрелки, «−» — по часовой. Стрелки клавиатуры: шаг 1°; Shift + стрелка: 15°.</p>
       <div class="ml-controls"><label for="${id}-angle">Число t в радианах<input id="${id}-angle" data-angle-input type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="Например, -5*pi/3"></label><button type="button" class="ml-primary" data-apply-angle>Поставить точку</button></div>
+      <p class="ml-caption" data-angle-precision hidden>Коэффициент перед π округлён. Положение точки сохраняется без округления.</p>
       <label class="ml-caption" for="${id}-range">Положение Q на одном обороте (0 … 2π)</label><input id="${id}-range" data-angle-range type="range" min="0" max="${TAU}" step="${Math.PI/180}" value="0" aria-label="Положение точки Q на одном обороте">
       <div class="ml-actions" style="margin-top:.7rem"><button type="button" data-delta="${-TAU}">−2π: оборот</button><button type="button" data-delta="${-Math.PI/12}">−π/12</button><button type="button" data-delta="${Math.PI/12}">+π/12</button><button type="button" data-delta="${TAU}">+2π: оборот</button><button type="button" data-zero>В начало A</button></div>
       <p class="ml-error" data-lab-error role="status" aria-live="polite"></p>
@@ -171,7 +181,8 @@
     function render(syncInput=true) {
       if(dead)return;
       const v=values(t),p=point(t),remainder=t%TAU;
-      if(syncInput)input.value=radians(t).replace(/−/g,'-').replace(/π/g,'pi').replace(/(\d)pi/g,'$1*pi');
+      if(syncInput)input.value=radiansInput(t);
+      get('[data-angle-precision]').hidden = !radiansInput(t).includes(',');
       range.value=String(v.normalized); range.setAttribute('aria-valuetext',revealed?radians(v.normalized)+' радиан':'Положение точки на окружности');
       attrs(get('[data-current-point]'),{cx:p.x,cy:p.y});attrs(get('[data-current-label]'),{x:point(t,108).x,y:point(t,108).y+5});
       attrs(get('[data-radius]'),{x2:p.x,y2:p.y});attrs(get('[data-x-segment]'),{x2:p.x,visibility:showProjections?'visible':'hidden'});attrs(get('[data-y-segment]'),{y2:p.y,visibility:showProjections?'visible':'hidden'});
@@ -195,7 +206,7 @@
       return true;
     }
     function parse(text) { return root.ProfileCheck&&typeof root.ProfileCheck.number==='function'?root.ProfileCheck.number(text):Number(String(text).replace(',','.')); }
-    function applyAngle(){const value=input.value.trim();if(!value){get('[data-lab-error]').textContent='Введите число: например, pi/3, -5*pi/2 или 1,5.';return;}update(parse(value),false);}
+    function applyAngle(){const value=input.value.trim();if(!value){get('[data-lab-error]').textContent='Введите число: например, π/3, −5π/2 или 1,5.';return;}if(value===radiansInput(t)){get('[data-lab-error]').textContent='';return;}update(parse(value.replace(/(\d|\))\s*(?=π|pi\b)/g,'$1*')));}
     on(get('[data-apply-angle]'),'click',applyAngle);on(input,'change',applyAngle);on(input,'keydown',event=>{if(event.key==='Enter'){event.preventDefault();applyAngle();}});
     on(range,'input',()=>{const u=norm(t),turns=Math.round((t-u)/TAU);update(turns*TAU+Number(range.value));});
     container.querySelectorAll('[data-delta]').forEach(b=>on(b,'click',()=>update(clamp(t+Number(b.dataset.delta),-LIMIT,LIMIT))));

@@ -14,6 +14,15 @@ for(const t of [Math.PI/2,3*Math.PI/2,-Math.PI/2,21*Math.PI/2])assert.equal(math
 for(const t of [0,Math.PI,2*Math.PI,-Math.PI,15*Math.PI])assert.equal(math.values(t).cot,null);
 assert.equal(math.radians(-5*Math.PI/3),'−5π/3');
 assert.equal(math.radians(12*Math.PI),'12π');
+assert.equal(math.radiansInput(-5*Math.PI/2),'−5π/2');
+assert.equal(math.radiansInput(Math.PI/7),'π/7');
+assert.equal(math.radiansInput(0),'0');
+for (const t of [-2.0777, 1, 0.00001, 999.12345*Math.PI]) {
+ const text=math.radiansInput(t);
+ assert.ok(text.includes('π'));
+ const parsed=require('../ege-profil/start/checks.js').number(text.replace(/(\d)π/g,'$1*π'));
+ assert.ok(Math.abs(parsed-t)<2e-12);
+}
 assert.equal(math.exact(-Math.sqrt(3)/2),'−√3/2');
 assert.equal(math.values(-5*Math.PI/2).angle,-5*Math.PI/2);
 // Every highlighted slice is checked against the coordinate inequality directly.
