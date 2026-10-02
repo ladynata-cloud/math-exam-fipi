@@ -7,6 +7,681 @@
       "group": "ЕГЭ база"
     },
     {
+      "title": "Виленкин · 5 класс · весь курс",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#course/vilenkin5"
+    },
+    {
+      "title": "Пункт 1 · Находим нужную клетку таблицы",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-table-read"
+    },
+    {
+      "title": "Пункт 1 · Итог, разность и пропущенная клетка",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-table-total"
+    },
+    {
+      "title": "Пункт 2 · Что означает цифра на своём месте",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-place-value"
+    },
+    {
+      "title": "Пункт 2 · Собираем число, не теряя нули",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-place-build"
+    },
+    {
+      "title": "Пункт 2 · Соседи числа и переход через разряд",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-place-neighbors"
+    },
+    {
+      "title": "Пункт 3 · Измеряем отрезок от ненулевой отметки",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-segment-length"
+    },
+    {
+      "title": "Пункт 3 · Длина ломаной и периметр",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-broken-length"
+    },
+    {
+      "title": "Пункт 3 · Сантиметры, миллиметры и метры",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-length-units"
+    },
+    {
+      "title": "Пункт 4 · Считаем концы: отрезок, луч, прямая",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-line-ray"
+    },
+    {
+      "title": "Пункт 4 · Вершина и стороны угла",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-angle-parts"
+    },
+    {
+      "title": "Пункт 5 · Находим цену деления",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-scale-step"
+    },
+    {
+      "title": "Пункт 5 · Ставим точку на координатной прямой",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-scale-point"
+    },
+    {
+      "title": "Пункт 6 · Сравниваем по первому отличающемуся разряду",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-natural-compare"
+    },
+    {
+      "title": "Пункт 6 · Сколько натуральных чисел между границами",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-natural-between"
+    },
+    {
+      "title": "Пункт 7 · Читаем высоту столбца по шкале",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-chart-read"
+    },
+    {
+      "title": "Пункт 7 · Сравниваем категории, а не картинки",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-chart-difference"
+    },
+    {
+      "title": "Пункт 8 · Складываем по разрядам с обменом",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-natural-add"
+    },
+    {
+      "title": "Пункт 8 · Собираем удобные пары",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-add-smart"
+    },
+    {
+      "title": "Пункт 8 · Предсказываем изменение суммы",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-sum-change"
+    },
+    {
+      "title": "Пункт 9 · Вычитаем с разменом единицы",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-natural-subtract"
+    },
+    {
+      "title": "Пункт 9 · Вычитаем сумму целиком",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-subtract-sum"
+    },
+    {
+      "title": "Пункт 9 · Сдвигаем оба числа одинаково",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-difference-change"
+    },
+    {
+      "title": "Пункт 10 · Подставляем число вместо буквы",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-expression-value"
+    },
+    {
+      "title": "Пункт 10 · Записываем стоимость покупок",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-expression-story"
+    },
+    {
+      "title": "Пункт 11 · Неизвестное слагаемое",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-equation-add"
+    },
+    {
+      "title": "Пункт 11 · Неизвестное уменьшаемое или вычитаемое",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-equation-sub"
+    },
+    {
+      "title": "Пункт 11 · От текста к равенству",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-equation-story"
+    },
+    {
+      "title": "Пункт 12 · Умножение как одинаковые группы",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-natural-multiply"
+    },
+    {
+      "title": "Пункт 12 · Умножаем многозначное число",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-multiply-column"
+    },
+    {
+      "title": "Пункт 13 · Делим поровну",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-division-share"
+    },
+    {
+      "title": "Пункт 13 · Сколько равных групп поместится",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-division-measure"
+    },
+    {
+      "title": "Пункт 13 · Деление уголком без потери разряда",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-division-column"
+    },
+    {
+      "title": "Пункт 13 · Неизвестный множитель",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-equation-product"
+    },
+    {
+      "title": "Пункт 13 · Неизвестное делимое или делитель",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-equation-quotient"
+    },
+    {
+      "title": "Пункт 14 · Частное и остаток",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-remainder-find"
+    },
+    {
+      "title": "Пункт 14 · Упаковки: округляем по смыслу",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-remainder-pack"
+    },
+    {
+      "title": "Пункт 15 · Раскрываем скобки при сложении",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-distribute-add"
+    },
+    {
+      "title": "Пункт 15 · Раскрываем скобки при вычитании",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-distribute-sub"
+    },
+    {
+      "title": "Пункт 15 · Выносим общий множитель",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-distribute-factor"
+    },
+    {
+      "title": "Пункт 16 · Скобки задают отдельную задачу",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-order-brackets"
+    },
+    {
+      "title": "Пункт 16 · Умножение и деление равноправны",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-order-equal"
+    },
+    {
+      "title": "Пункт 17 · Степень — повторное умножение",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-power-read"
+    },
+    {
+      "title": "Пункт 17 · Степень раньше умножения",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-power-order"
+    },
+    {
+      "title": "Пункт 18 · Ищем все делители парами",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-divisors-all"
+    },
+    {
+      "title": "Пункт 18 · Простое, составное или единица",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-prime-test"
+    },
+    {
+      "title": "Пункт 18 · Разлагаем число на простые множители",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-prime-factor"
+    },
+    {
+      "title": "Пункт 19 · Подбираем пропущенную цифру",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-divisibility-digit"
+    },
+    {
+      "title": "Пункт 19 · Признаки делимости помогают считать",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-divisibility"
+    },
+    {
+      "title": "Пункт 20 · Путь, скорость и время",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-formula-distance"
+    },
+    {
+      "title": "Пункт 20 · Формула периметра прямоугольника",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-formula-perimeter"
+    },
+    {
+      "title": "Пункт 21 · Площадь как число единичных квадратов",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-area-grid"
+    },
+    {
+      "title": "Пункт 21 · Находим сторону по площади",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-area-missing"
+    },
+    {
+      "title": "Пункт 21 · Площадь составной фигуры",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-area-cut"
+    },
+    {
+      "title": "Пункт 22 · Почему в квадратном метре 10 000 см²",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-area-units"
+    },
+    {
+      "title": "Пункт 22 · Ары и гектары на сетке",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-land-units"
+    },
+    {
+      "title": "Пункт 23 · Грани, рёбра, вершины",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-solid-elements"
+    },
+    {
+      "title": "Пункт 23 · Развёртка и площадь поверхности",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-solid-surface"
+    },
+    {
+      "title": "Пункт 24 · Объём по слоям кубиков",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-volume-layers"
+    },
+    {
+      "title": "Пункт 24 · Литры и кубические единицы",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-volume-litres"
+    },
+    {
+      "title": "Пункт 25 · Радиус и диаметр",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-circle-radius"
+    },
+    {
+      "title": "Пункт 25 · Граница, плоская фигура и тело",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-circle-shapes"
+    },
+    {
+      "title": "Пункт 26 · Выбираем равные части одного целого",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-parts"
+    },
+    {
+      "title": "Пункт 26 · Дробь на числовой прямой",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-line"
+    },
+    {
+      "title": "Пункт 27 · Сравниваем доли одинакового размера",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-same-compare"
+    },
+    {
+      "title": "Пункт 27 · Одна доля: больше частей — меньше кусочек",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-unit-compare"
+    },
+    {
+      "title": "Пункт 28 · Сравниваем дробь с единицей",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-kind"
+    },
+    {
+      "title": "Пункт 29 · Соединяем доли одного размера",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-same-add"
+    },
+    {
+      "title": "Пункт 29 · Убираем несколько равных долей",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-same-sub"
+    },
+    {
+      "title": "Пункт 30 · Делим целые, получаем дробь",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-sharing"
+    },
+    {
+      "title": "Пункт 31 · Выделяем целую часть",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-mixed-extract"
+    },
+    {
+      "title": "Пункт 31 · Смешанное число и неправильная дробь",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-mixed-convert"
+    },
+    {
+      "title": "Пункт 32 · Сложение с появлением целой единицы",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-mixed-add"
+    },
+    {
+      "title": "Пункт 32 · Вычитание без занимания",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-mixed-subtract"
+    },
+    {
+      "title": "Пункт 32 · Занимаем целую единицу",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-mixed-borrow"
+    },
+    {
+      "title": "Пункт 32 · Из целого вычитаем дробь",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-whole-minus-fraction"
+    },
+    {
+      "title": "Пункт 33 · Равные дроби: меняем размер долек",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-equivalent"
+    },
+    {
+      "title": "Пункт 33 · Дополнительные множители",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-convert"
+    },
+    {
+      "title": "Пункт 34 · Сокращаем размер записи, а не значение",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-reduce"
+    },
+    {
+      "title": "Пункт 34 · Доводим сокращение до конца",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-reduce-check"
+    },
+    {
+      "title": "Пункт 35 · Выбираем общий знаменатель",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-lcd"
+    },
+    {
+      "title": "Пункт 36 · Сравниваем дроби с разными знаменателями",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-compare"
+    },
+    {
+      "title": "Пункт 36 · Складываем дроби",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-add"
+    },
+    {
+      "title": "Пункт 36 · Вычитаем дроби",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-subtract"
+    },
+    {
+      "title": "Пункт 36 · Несколько действий с дробями",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-brackets"
+    },
+    {
+      "title": "Пункт 37 · Умножаем дробь на натуральное число",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-times-int"
+    },
+    {
+      "title": "Пункт 37 · Доля от доли: умножение дробей",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-multiply"
+    },
+    {
+      "title": "Пункт 37 · Сокращаем до умножения",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-cancel"
+    },
+    {
+      "title": "Пункт 37 · Умножение смешанных чисел",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-mixed-multiply"
+    },
+    {
+      "title": "Пункт 37 · Площадь с дробными длинами",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-area"
+    },
+    {
+      "title": "Пункт 38 · Находим дробь от количества",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-part"
+    },
+    {
+      "title": "Пункт 38 · Находим оставшуюся часть",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-remain"
+    },
+    {
+      "title": "Пункт 38 · Доля от остатка: целое поменялось",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-of-remainder"
+    },
+    {
+      "title": "Пункт 39 · Взаимно обратные числа",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-reciprocal"
+    },
+    {
+      "title": "Пункт 39 · Делим дробь на натуральное число",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-divide-int"
+    },
+    {
+      "title": "Пункт 39 · Сколько раз одна дробь содержится в другой",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-divide"
+    },
+    {
+      "title": "Пункт 39 · Делим смешанные числа",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-mixed-divide"
+    },
+    {
+      "title": "Пункт 39 · Цена, скорость и производительность с дробями",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-unit-rate"
+    },
+    {
+      "title": "Пункт 40 · Находим целое по его дроби",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-whole-from-fraction"
+    },
+    {
+      "title": "Пункт 40 · Восстанавливаем целое по остатку",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-whole-from-remainder"
+    },
+    {
+      "title": "Пункт 40 · Восстанавливаем целое после двух расходов",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-whole-two-parts"
+    },
+    {
+      "title": "Пункт 41 · Десятые, сотые, тысячные",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-place"
+    },
+    {
+      "title": "Пункт 41 · Переходим между двумя записями",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-fraction"
+    },
+    {
+      "title": "Пункт 41 · Какие нули можно дописывать",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-zeros"
+    },
+    {
+      "title": "Пункт 42 · Выравниваем разряды для сравнения",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-compare"
+    },
+    {
+      "title": "Пункт 42 · Дроби между соседними десятыми",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-between"
+    },
+    {
+      "title": "Пункт 43 · Складываем: запятая под запятой",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-add"
+    },
+    {
+      "title": "Пункт 43 · Обмениваем десять сотых на десятую",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-carry"
+    },
+    {
+      "title": "Пункт 43 · Вычитаем десятичные дроби",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-subtract"
+    },
+    {
+      "title": "Пункт 43 · Размен через нулевые разряды",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-borrow"
+    },
+    {
+      "title": "Пункт 43 · Чек и сдача: точность до копейки",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-money"
+    },
+    {
+      "title": "Пункт 44 · Округляем по следующей цифре",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-round-decimal"
+    },
+    {
+      "title": "Пункт 44 · Округление с переходом через девятки",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-round-carry"
+    },
+    {
+      "title": "Пункт 45 · Несколько одинаковых десятичных порций",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-times-int"
+    },
+    {
+      "title": "Пункт 45 · Увеличиваем в 10, 100, 1000 раз",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-times-ten"
+    },
+    {
+      "title": "Пункт 46 · Делим десятичное число поровну",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-divide-int"
+    },
+    {
+      "title": "Пункт 46 · Ноль в частном сохраняет разряд",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-divide-zero"
+    },
+    {
+      "title": "Пункт 46 · Уменьшаем в 10, 100, 1000 раз",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-divide-ten"
+    },
+    {
+      "title": "Пункт 47 · Произведение десятых даёт сотые",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-multiply"
+    },
+    {
+      "title": "Пункт 47 · Умножаем на число меньше единицы",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-small-product"
+    },
+    {
+      "title": "Пункт 47 · Площадь с десятичными длинами",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-area"
+    },
+    {
+      "title": "Пункт 48 · Убираем запятую в делителе законно",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-divide"
+    },
+    {
+      "title": "Пункт 48 · Сколько маленьких порций помещается",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-portion"
+    },
+    {
+      "title": "Пункт 48 · Проверяем деление умножением",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-reverse"
+    },
+    {
+      "title": "Пункт 49 · Калькулятор не заменяет план",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-calculator-order"
+    },
+    {
+      "title": "Пункт 50 · Острый, прямой, тупой, развёрнутый",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-angle-kind"
+    },
+    {
+      "title": "Пункт 51 · Выбираем правильную шкалу транспортира",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-angle-measure"
+    },
+    {
+      "title": "Пункт 51 · Строим заданный угол",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-angle-build"
+    },
+    {
+      "title": "Пункт 51 · Складываем соседние углы",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-angle-sum"
+    },
+    {
+      "title": "Пункт 52 · Проект: порции и покупки",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-project-recipe"
+    },
+    {
+      "title": "Пункт 52 · Проект: пол, вырез и упаковки",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-project-room"
+    },
+    {
+      "title": "Пункт 52 · Проверяем все действия с дробями",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-review-fractions"
+    },
+    {
+      "title": "Пункт 53 · Что принято за 100%",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-percent-meaning"
+    },
+    {
+      "title": "Пункт 53 · Находим процент от числа",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-percent-part"
+    },
+    {
+      "title": "Пункт 53 · Среднее как справедливое распределение",
+      "group": "Виленкин · 5 класс",
+      "href": "/school/index.html?course=vilenkin5#lesson/v5f-mean-share"
+    },
+    {
       "title": "Виленкин · 6 класс · весь курс",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#course/vilenkin6"

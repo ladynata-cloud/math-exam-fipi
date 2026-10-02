@@ -6,14 +6,14 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: detailed Vilenkin 6 course
+## In progress: detailed Vilenkin 5 course
 
-- PR #169 is merged as `5c49cc5c16ca2385624082128cf6439d1a57c951` and published. Its exact final head `5f0e996878e7604dd02d9ec7db0c1884131225e0` passed CI run 36977093371; Pages run 36977405468 and public file/browser checks confirmed the release.
-- The published Workshop has 227 lessons and 11 routes, including 44 Vilenkin heading-level lessons and 31 Makarychev lessons. Topic coverage is not exhaustive numbered-exercise coverage.
-- Current branch `course/vilenkin6-full` starts from that published main; [scope](tasks/VILENKIN6_FULL.md). The owner requested a genuinely detailed, interactive Vilenkin 6 course.
-- PR #170 release candidate: 194 authored micro-lessons, 25 interactive model families, guided hints, varied practice, unit navigation and board links. Local mathematics and browser scenarios are checked; final full CI and publication evidence belong in PR #170. See [coverage](VILENKIN6_FULL_COURSE.md) and [candidate report](reports/VILENKIN6_FULL_20261002.md). This snapshot does not itself claim publication.
-- Existing lesson IDs, local progress and other courses are preserved. Board opening remains supported; internal mirroring of Workshop actions is not claimed.
-- Classic Atanasyan draft PR #168 remains outside this release.
+- PR #170 is merged as `de9109b1f7ba8cb7b2ed65026a7f6d6b3b0b96e8` and published. Final head `8687f2b6849538dbff5b7563d20459258da76a6a` passed CI run 36979613774; Pages run 36980028894, ten public file hashes and live course/board checks confirmed release.
+- Production contains 421 Workshop lessons and 11 routes, including 194 detailed Vilenkin 6 lessons. All existing IDs and local progress are preserved.
+- Current task: [Vilenkin 5](tasks/VILENKIN5_FULL.md), branch `course/vilenkin5-full`, based on that main. Source: supplied 2023 third revised edition, both parts; 51 points. No claim of solutions to every exercise.
+- PR #171 candidate contains 134 detailed lessons, all 51 textbook points, fraction/decimal laboratories, missions, four independent-mastery achievements and board links. Mathematics and focused browser checks pass; see [report](reports/VILENKIN5_FULL_20261002.md).
+- Next actions: finish the exact-head full CI gate; merge under the owner’s publication authorization; verify Pages and public file/browser identity.
+- Classic Atanasyan draft PR #168 remains outside this task.
 
 ## Confirmed preceding EGE release
 
