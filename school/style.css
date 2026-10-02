@@ -24,3 +24,12 @@ main:focus-visible{outline:none}
 @media(max-width:420px){.core-controls{gap:8px}.core-experiment{padding:12px}.core-prediction .answer-line{flex-wrap:wrap}.core-prediction button{width:100%}}
 
 .card[href]{text-decoration:none}.card[href]:hover h2,.card[href]:focus-visible h2{text-decoration:underline}
+
+/* Edition-specific investigations reuse the Workshop layout and controls. */
+.edition-lab{padding:20px;border:1px solid #b5d7d1;border-radius:16px;background:#f5fbf9}.edition-controls{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.edition-controls label{font-weight:700}.edition-controls span{display:flex;gap:10px;align-items:center}.edition-controls input{min-width:0;flex:1}.edition-controls button{min-width:42px;padding:6px}.edition-controls output{float:right;padding:2px 8px;border-radius:6px;background:#d8eee7}.edition-drawing svg{width:100%;max-height:400px;display:block}.edition-drawing text{font:13px system-ui;fill:#193c43}.edition-predict input[hidden]{display:none}.edition-caption,.edition-question{display:block;line-height:1.65}.edition-feedback{min-height:2em}.edition-lab .answer-line{flex-wrap:wrap}.edition-lab input{max-width:100%}@media(max-width:480px){.edition-lab{padding:12px}.edition-controls{grid-template-columns:1fr}.edition-drawing text{font-size:15px}.skill-row>.row{width:100%}}
+
+.lesson-jumps{margin-top:10px}.lesson-jumps button{padding:6px 10px;font-size:13px}#model,#task-panel{scroll-margin-top:12px}
+
+.edition-controls select{display:block;width:100%;min-height:44px;padding:8px;font:inherit;border:1px solid #a7c4bb;border-radius:8px;background:white;color:#173d39}.edition-controls output[hidden]{display:none}
+
+.edition-drawing .edition-focus text{font-size:24px}.edition-readout{font-size:1.1rem;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
