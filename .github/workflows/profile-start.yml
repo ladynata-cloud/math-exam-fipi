@@ -1,10 +1,10 @@
 name: Profile 2027 — learning start
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'tools/profile-*', 'trainers/board-picker-data.json', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'trainers/board-picker-data.json', '.github/workflows/profile-start.yml']
   push:
     branches: [main]
-    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'tools/profile-*', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', '.github/workflows/profile-start.yml']
 permissions:
   contents: read
 concurrency:
@@ -24,8 +24,8 @@ jobs:
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
       - run: npx playwright install --with-deps chromium
       - name: Mathematics and state
-        run: node tools/profile-start.test.cjs && node tools/profile-geometry.test.cjs && node tools/profile-algebra.test.cjs
+        run: node tools/profile-route.test.cjs && node tools/profile-start.test.cjs && node tools/profile-geometry.test.cjs && node tools/profile-algebra.test.cjs
       - name: Real browser and board
-        run: node tools/profile-start.browser.cjs && node tools/board-picker-smoke.cjs
+        run: node tools/profile-route.browser.cjs && node tools/profile-start.browser.cjs && node tools/board-picker-smoke.cjs
       - name: Existing profile regression
         run: npm --prefix ege-profil test
