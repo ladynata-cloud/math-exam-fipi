@@ -1,0 +1,863 @@
+(function(root){
+ "use strict";
+ const sources=[
+ {
+  "number": 3,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс. Углублённый уровень - Мерзляк, Поляков, Номировский (2019)",
+  "year": "2019",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 415,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000008.htm",
+  "sha256": "24ab15a84ebe57334f8bb7a055dc1f930c06511b5ae118003d2a386b0d382bb5"
+ },
+ {
+  "number": 5,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс - Рубин А.Г., Чулков П.В. (2016)",
+  "year": "2016",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 257,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000004.htm",
+  "sha256": "3910a47c203c3f7e1985c799b02589f3d55a22cae8f21d3dfad885e4432f1e41"
+ },
+ {
+  "number": 6,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+  "year": "2014",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 313,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000006.htm",
+  "sha256": "8d2cfbdc62180a6c89ecce5b88c1c0280ee4f1685e188e6f0fcba3f8a35e00eb"
+ },
+ {
+  "number": 7,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2014)",
+  "year": "2014",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 321,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000014.htm",
+  "sha256": "7c80dd3c1ee43c3aeda00f2252cf94bf38b5b88a0b8db08807522fa2f8860dec"
+ },
+ {
+  "number": 8,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс (базовый и углубленный уровень). Часть 1 - Мордкович А.Г., Семенов П.В. (2014)",
+  "year": "2014",
+  "level": "базовый и углублённый / профильный",
+  "part": "1",
+  "pages": 313,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000011.htm",
+  "sha256": "48d5ffbc7cb37c5510136b9874244957e870070a4475b12717e559c2a9bb058c"
+ },
+ {
+  "number": 9,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс - Муравин Г.К., Муравина О.В. (2013)",
+  "year": "2013",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 257,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000015.htm",
+  "sha256": "d5a301cbff6bee72b6abde4e5e0123b37e3584d151fee427e57e326fe6f70810"
+ },
+ {
+  "number": 11,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 1 - Мордкович, Семенов (2012)",
+  "year": "2012",
+  "level": "углублённый / профильный",
+  "part": "1",
+  "pages": 148,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000007.htm",
+  "sha256": "2e13432d6ca8de5f592f071b7321cf87e12f0f4d37c45aa8d20867d35026e01f"
+ },
+ {
+  "number": 12,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 2 - Мордкович А.Г., Семенов П.В. (2012)",
+  "year": "2012",
+  "level": "углублённый / профильный",
+  "part": "2",
+  "pages": 137,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000086.htm",
+  "sha256": "87d69ab241b289519d7b429242f6d92f90dd799dffd2d0f6e05a9f620b3d9ef6"
+ },
+ {
+  "number": 13,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2012)",
+  "year": "2012",
+  "level": "базовый и углублённый / профильный",
+  "part": "",
+  "pages": 435,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000005.htm",
+  "sha256": "cf5671f12f9462ba6070cd4a0874074e6b8b576b50bfd058338f2d4c78347c0d"
+ },
+ {
+  "number": 15,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2010)",
+  "year": "2010",
+  "level": "базовый и углублённый / профильный",
+  "part": "",
+  "pages": 341,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000082.htm",
+  "sha256": "f40632c5b0c582494b1ccce58da4ffd71a4c774611a1018a65c4bf7d40aebc8d"
+ },
+ {
+  "number": 16,
+  "section": "11 класс",
+  "title": "Алгебра и начала математического анализа 11 класс (профильный уровень) - Колягин Ю.М. и др. (2010)",
+  "year": "2010",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 265,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000083.htm",
+  "sha256": "f88291612542bd2f7b94a236e1b6eb1ef3c5b195735cf28c010c15b54faeba64"
+ },
+ {
+  "number": 17,
+  "section": "10-11 классы",
+  "title": "Алгебра и начала математического анализа 10-11 классы - Колмогоров А.Н. и др. (2018)",
+  "year": "2018",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 387,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000009.htm",
+  "sha256": "2d4ba74aa8fe00106001f577a22ce59000f7819974dc875c244bb7419c5bff1c"
+ },
+ {
+  "number": 18,
+  "section": "10-11 классы",
+  "title": "Алгебра и начала математического анализа 10-11 классы (базовый и углубленный уровни) - Алимов А.Ш., Колягин Ю.М. и др. (2016)",
+  "year": "2016",
+  "level": "базовый и углублённый / профильный",
+  "part": "",
+  "pages": 469,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000013.htm",
+  "sha256": "d726f8be9eb435f85805a1500b34bd36853b28cf1791e58a2bc30a6f324eef5c"
+ },
+ {
+  "number": 19,
+  "section": "10-11 классы",
+  "title": "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+  "year": "2012",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 467,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000033.htm",
+  "sha256": "7824a45c3875921394c5bb4ac49d4db9608121b950f1cb072d8c38aa31e8de0c"
+ },
+ {
+  "number": 20,
+  "section": "10-11 классы",
+  "title": "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+  "year": "2013",
+  "level": "базовый",
+  "part": "1",
+  "pages": 405,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000010.htm",
+  "sha256": "ac54155d0a75e395ca24d63b42dfe202dc841f7ae3de8d286efacdfa42f967ee"
+ },
+ {
+  "number": 21,
+  "section": "10-11 классы",
+  "title": "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+  "year": "2013",
+  "level": "базовый",
+  "part": "2",
+  "pages": 279,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000085.htm",
+  "sha256": "e4edd0e1c56a66b296761d5e789c96034bea26ba0b520ef0fab87a2ca860c110"
+ },
+ {
+  "number": 23,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс. Углубленное изучение - Мерзляк, Поляков, Номировский (2021)",
+  "year": "2021",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 478,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000026.htm",
+  "sha256": "ea85475d77dfaa24ad8465c0ba60c91cb7696a7ebd9a68f8bcb798abb0b559c6"
+ },
+ {
+  "number": 24,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 1 - Мордкович А.Г., Семенов П.В. (2020)",
+  "year": "2020",
+  "level": "базовый и углублённый / профильный",
+  "part": "1",
+  "pages": 457,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000024.htm",
+  "sha256": "64ba72c5b78284a44e582bfa3a61e9ac9e8be21a22b96105ad46843487f60934"
+ },
+ {
+  "number": 25,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 2 - Мордкович А.Г., Семенов П.В. (2020)",
+  "year": "2020",
+  "level": "базовый и углублённый / профильный",
+  "part": "2",
+  "pages": 352,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000025.htm",
+  "sha256": "3673e0c373ede390ba966c168beb2ffef1aed709cb3b33268729052adfd884fa"
+ },
+ {
+  "number": 26,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс. Базовый уровень - Мерзляк А.Г., Номировский Д.А. и др. (2019)",
+  "year": "2019",
+  "level": "базовый",
+  "part": "",
+  "pages": 366,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000022.htm",
+  "sha256": "20d9886d2e80c0be623b580d08f87bb739d9631f701d875e693af223239fc089"
+ },
+ {
+  "number": 27,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс. Базовый уровень - Муравин Г.К., Муравина О.В. (2019)",
+  "year": "2019",
+  "level": "базовый",
+  "part": "",
+  "pages": 279,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000020.htm",
+  "sha256": "5129414122d02c6cd9cc3bd3b173635d93b3d9070c3024ce46700d94045f980c"
+ },
+ {
+  "number": 29,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс - Рубин А.Г., Чулков П.В. (2016)",
+  "year": "2016",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 421,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000021.htm",
+  "sha256": "2c22224ad35cb0733ab0e5713adb19455568cf456a0ffb50c503070916170e0d"
+ },
+ {
+  "number": 30,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+  "year": "2014",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 353,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000023.htm",
+  "sha256": "1404107938af90df5b120e6c0d34c6c8ad2c39e7660cad1d4884b83f0176926a"
+ },
+ {
+  "number": 31,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс - Муравин Г.К. (2013)",
+  "year": "2013",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 290,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000028.htm",
+  "sha256": "770e98c47fab0e815758c1c3016c06e2d38ae8424d0f4365028664a862f64373"
+ },
+ {
+  "number": 32,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2013)",
+  "year": "2013",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 321,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000031.htm",
+  "sha256": "6d56f465467780eabf0c8f5f4b3b7afe16147574a7210cec3f79c9cafdb0acf7"
+ },
+ {
+  "number": 34,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2011)",
+  "year": "2011",
+  "level": "базовый и углублённый / профильный",
+  "part": "",
+  "pages": 483,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000087.htm",
+  "sha256": "26ea1c93544e768068a95a9cf5fac6de60860c59f1fa22f493bddc2a064670cc"
+ },
+ {
+  "number": 35,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2011)",
+  "year": "2011",
+  "level": "базовый и углублённый / профильный",
+  "part": "",
+  "pages": 373,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000032.htm",
+  "sha256": "8015ff6dd554fed08195e00d402d41d6bc22eb6e95585b2fcfc26fe366ef0641"
+ },
+ {
+  "number": 36,
+  "section": "10 класс",
+  "title": "Алгебра и начала математического анализа 10 класс (профильный уровень) - Колягин Ю.М. и др. (2009)",
+  "year": "2009",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 372,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000084.htm",
+  "sha256": "95ef4929fc0734e5840af5903e69cf72f5fa457fc648c22c7d1d97ad3d1c8b64"
+ },
+ {
+  "number": 45,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс. Углубленный уровень - Мерзляк А.Г., Поляков В.М. (2022)",
+  "year": "2022",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 401,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000038.htm",
+  "sha256": "27dc834e42d9a0b6456a9779b5fd29ee72f61e78dc76558e39ba229b799bc9a6"
+ },
+ {
+  "number": 46,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П., Семенов П.В. (2019)",
+  "year": "2019",
+  "level": "углублённый / профильный",
+  "part": "1",
+  "pages": 290,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000034.htm",
+  "sha256": "dca95e4319049829516ea0e21243195ff028ecd0d7e1e569dfe8675b39018489"
+ },
+ {
+  "number": 47,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П., Семенов П.В. (2019)",
+  "year": "2019",
+  "level": "углублённый / профильный",
+  "part": "2",
+  "pages": 290,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000035.htm",
+  "sha256": "c2f2e1a40ae0fa40554ffb968ccd521414de9441b34a07d143ff41ffb712242b"
+ },
+ {
+  "number": 49,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+  "year": "2018",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 401,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000042.htm",
+  "sha256": "2c312d483df62f90dddc74d700b6993548304d76784cc4bde0805506b21fd1c8"
+ },
+ {
+  "number": 50,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2017)",
+  "year": "2017",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 293,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000036.htm",
+  "sha256": "44cbbdfcd95dfd7bf0dc53fb269b3c80b718601e1b7f2d829a6710135cab3400"
+ },
+ {
+  "number": 51,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс. Часть 1 - Петерсон Л.Г. и др. (2017)",
+  "year": "2017",
+  "level": "не указан в каталоге",
+  "part": "1",
+  "pages": 179,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000043.htm",
+  "sha256": "5499660d5c43cc1481cb92556fc8a2a5ec86e5c1582a38185a2c90cc7242bd29"
+ },
+ {
+  "number": 52,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+  "year": "2017",
+  "level": "не указан в каталоге",
+  "part": "2",
+  "pages": 202,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000044.htm",
+  "sha256": "3e3ed3f8da8613816646443025ce6a557eea7e5b8c9c5b75e44e2e1d35bf078e"
+ },
+ {
+  "number": 53,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс - Дорофеев Г.В. и др. (2016)",
+  "year": "2016",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 339,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000041.htm",
+  "sha256": "39402e7ad32953594640692ab9c137a11a72013cdec1d14bf0e093b55330e521"
+ },
+ {
+  "number": 54,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс - Рубин А.Г. Чулков П.В. (2015)",
+  "year": "2015",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 208,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000045.htm",
+  "sha256": "3a0da8db40dbc2d2d35ede36a58f8fd89ca36250b35ea0bc1fdbb6b9dc9f5cd1"
+ },
+ {
+  "number": 55,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2014)",
+  "year": "2014",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 307,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000040.htm",
+  "sha256": "a9636aeae273dcae903d8395a3b9ed620a19342b4167964700ba6d3355f2b9dc"
+ },
+ {
+  "number": 56,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс - Колягин Ю.М., Ткачёва М.В. и др. (2014)",
+  "year": "2014",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 339,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000037.htm",
+  "sha256": "b26b0e235c0a245a6b6df8ef8dec0f84c5822a98ee9f7c105bc5358f5cd5e481"
+ },
+ {
+  "number": 57,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс - Никольский С.М., Потапов М.К. и др. (2014)",
+  "year": "2014",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 337,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000046.htm",
+  "sha256": "f99d9260339bccd690207c6f0a6f59c28ff2165a529de4caa1882377b53ee586"
+ },
+ {
+  "number": 58,
+  "section": "9 класс",
+  "title": "Алгебра 9 класс - Алимов Ш.А. (2012)",
+  "year": "2012",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 291,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000049.htm",
+  "sha256": "8d27f5cb34d5661f71e3462b1bb183eb5eccf817dd854835ab756c657a508bcc"
+ },
+ {
+  "number": 64,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)",
+  "year": "2022",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 259,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000048.htm",
+  "sha256": "d9778224a2adf81f8fb5958b2baaf44654ed322cc30181ec5f42c1aae53fa813"
+ },
+ {
+  "number": 65,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+  "year": "2019",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 387,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000052.htm",
+  "sha256": "c5d7693cd064c74091607a464622e58607cb86541b7014029baa61f6f98645e8"
+ },
+ {
+  "number": 66,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+  "year": "2019",
+  "level": "углублённый / профильный",
+  "part": "1",
+  "pages": 290,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000050.htm",
+  "sha256": "d9e7e0a14d4efe8d64cce2e5ca6125343314aa617a4dbe2fccc236e1fd6b64ae"
+ },
+ {
+  "number": 67,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+  "year": "2019",
+  "level": "углублённый / профильный",
+  "part": "2",
+  "pages": 354,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000051.htm",
+  "sha256": "d715052c62337bc94ea359b4851856b7f24d9c08a0ba8edb5005b45a7616bd9e"
+ },
+ {
+  "number": 69,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+  "year": "2018",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 353,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000056.htm",
+  "sha256": "158fc43fc46ba5ff559b57db0feefe71353442a8071b06d1ca5bd18f2cc26992"
+ },
+ {
+  "number": 70,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс. Часть 1 - Петерсон Л.Г. и др. (2017)",
+  "year": "2017",
+  "level": "не указан в каталоге",
+  "part": "1",
+  "pages": 131,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000057.htm",
+  "sha256": "b04c28b720297ac5f7174fe17f64314e73c92036a7ddc1a4d78b0a77b7662e7b"
+ },
+ {
+  "number": 71,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+  "year": "2017",
+  "level": "не указан в каталоге",
+  "part": "2",
+  "pages": 163,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000058.htm",
+  "sha256": "2589dcee6a1fc39290eb51c1f0fb66b8dc094a0322bd593a6d0a595a7704bae9"
+ },
+ {
+  "number": 72,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+  "year": "2016",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 322,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000066.htm",
+  "sha256": "5ca8ad68d3bd585ff67ba6b6f86f4f5a73d29d37018390304a6e81df1d5b8de9"
+ },
+ {
+  "number": 73,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс. Часть 3 - Петерсон Л.Г. и др. (2017)",
+  "year": "2017",
+  "level": "не указан в каталоге",
+  "part": "3",
+  "pages": 147,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000059.htm",
+  "sha256": "b03dcf7bae31a3479d017b776f6aaa661b489ca327624996e242faca5ccd1dcf"
+ },
+ {
+  "number": 74,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+  "year": "2015",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 240,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000061.htm",
+  "sha256": "04591863041b38813582e5a52de4b11f220733b5875ab8827218b5599a29c6e4"
+ },
+ {
+  "number": 75,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс - Никольский С.М., Потапов М.К. (2014)",
+  "year": "2014",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 305,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000055.htm",
+  "sha256": "f1e6b585cc9c6c4a9cbe17e782ae37128ee032744b3f6a5a8ac2301a8a5fa95b"
+ },
+ {
+  "number": 76,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс. Часть 1 - Мордкович А.Г, Николаев Н.П. (2013)",
+  "year": "2013",
+  "level": "не указан в каталоге",
+  "part": "1",
+  "pages": 258,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000053.htm",
+  "sha256": "8626284d5715c245530bbb13123b5a91f0e997c215f8ee7cef4ea73fd46020b3"
+ },
+ {
+  "number": 78,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+  "year": "2013",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 291,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000063.htm",
+  "sha256": "5d227e0d2da96576b400519c6c1499a87a9919c3d0191304a78e8ff5043f4613"
+ },
+ {
+  "number": 79,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+  "year": "2013",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 340,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000065.htm",
+  "sha256": "b8b023573754f2466c453aab6933db107621214305d3c31db9acefeaf553c488"
+ },
+ {
+  "number": 80,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+  "year": "2013",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 257,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000081.htm",
+  "sha256": "a3aceffb0148952934f1dc704263d5810400339401604710853519daa7384708"
+ },
+ {
+  "number": 81,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс - Алимов Ш.А. и др. (2012)",
+  "year": "2012",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 259,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000068.htm",
+  "sha256": "77bc7681b5cba96ce41ff4a0819ee8b31ba9b5e9a7d08357e80add6115043747"
+ },
+ {
+  "number": 82,
+  "section": "8 класс",
+  "title": "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)",
+  "year": "2010",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 305,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000067.htm",
+  "sha256": "527b99906f8be01f71d1a075f9cd1469ba2fb2c4b430ab6ca539e93a975f34e5"
+ },
+ {
+  "number": 88,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс. Углубленный уровень - Мерзляк, Поляков (2019)",
+  "year": "2019",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 289,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000073.htm",
+  "sha256": "08a01dd8751ed0ff67347a4605c88babb9ddd939140036cd035c347746e82318"
+ },
+ {
+  "number": 89,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+  "year": "2019",
+  "level": "углублённый / профильный",
+  "part": "1",
+  "pages": 234,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000069.htm",
+  "sha256": "d4a9d47bd2a22b069ff4368bb96ce1033d642abbd488da7c8df1c11f765a00ae"
+ },
+ {
+  "number": 90,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+  "year": "2019",
+  "level": "углублённый / профильный",
+  "part": "2",
+  "pages": 234,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000070.htm",
+  "sha256": "3bc86fefaa4f53d12e27ce73022b847aa44112affd41278269306d07f18755c7"
+ },
+ {
+  "number": 91,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+  "year": "2018",
+  "level": "углублённый / профильный",
+  "part": "",
+  "pages": 305,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000076.htm",
+  "sha256": "9bf2aa4a117a65f83aee5082fbf3f64fe71d6878435907b09edb04d465698416"
+ },
+ {
+  "number": 92,
+  "section": "7 класс",
+  "title": "Математика. Алгебра и геометрия. 7 класс - Козлов В.В., Никитин А.А., Белоносов В.С. и др. (2017)",
+  "year": "2017",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 385,
+  "source_url": "https://my-uchebnik.ru/book/mathematics/1/mathematics-00000008.htm",
+  "sha256": "51fab022dbc7fd60ae41309f5c64dd9e42b2313c6fc0d16b501e40782de9c93d"
+ },
+ {
+  "number": 93,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2015)",
+  "year": "2015",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 275,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000071.htm",
+  "sha256": "35ff5da97b8b42439b89a235db47ab2c20acf5500f88d04b76b50e6b50c11a87"
+ },
+ {
+  "number": 94,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс - Рубин А.Г., Чулков П.В. (2015)",
+  "year": "2015",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 224,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000075.htm",
+  "sha256": "4c5e6525c4ba0054171e486dace60bbd7ec51cf88fd2edd8044288cb62142bd9"
+ },
+ {
+  "number": 95,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+  "year": "2014",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 257,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000074.htm",
+  "sha256": "98e0d61b43258aa12ce3268408dcda7f939c99b774d34f8deeac57b1e65d1f36"
+ },
+ {
+  "number": 96,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2014)",
+  "year": "2014",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 291,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000072.htm",
+  "sha256": "9747e71a859899d56fe35089df9e9c046ce5631eb65256b2e26a5d213f69c734"
+ },
+ {
+  "number": 97,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+  "year": "2013",
+  "level": "не указан в каталоге",
+  "part": "1",
+  "pages": 177,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000080.htm",
+  "sha256": "8667b61432ec95c9b87987ce4da75be92a6b21c97f9f83af833b23679c707336"
+ },
+ {
+  "number": 98,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+  "year": "2013",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 289,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000060.htm",
+  "sha256": "d8c586efb9c2d9cd3065cb36248d5b176e4e5c760e9b3c34b0648fcd0a77ec58"
+ },
+ {
+  "number": 99,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+  "year": "2013",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 289,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000077.htm",
+  "sha256": "b6055538a9b8ba5ac1abb7019be29efc8dd7b63c493b7b53f140a1fc503aa56b"
+ },
+ {
+  "number": 100,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+  "year": "2012",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 321,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000078.htm",
+  "sha256": "54adef3f9c3caa0cf643a4ac866ce59c736cfce2ca9b512cf079dd6f01c72ed7"
+ },
+ {
+  "number": 101,
+  "section": "7 класс",
+  "title": "Математика. Алгебра. 7 класс. Часть 1 - Петерсон Л.Г. и др. (2011)",
+  "year": "2011",
+  "level": "не указан в каталоге",
+  "part": "1",
+  "pages": 139,
+  "source_url": "https://my-uchebnik.ru/book/mathematics/1/mathematics-00000005.htm",
+  "sha256": "6c5f695ff056b44dc5c9a35778772d2cc9e2af77743715554457ac0d5107fa68"
+ },
+ {
+  "number": 102,
+  "section": "7 класс",
+  "title": "Математика. Алгебра. 7 класс. Часть 2 - Петерсон Л.Г. и др. (2011)",
+  "year": "2011",
+  "level": "не указан в каталоге",
+  "part": "2",
+  "pages": 155,
+  "source_url": "https://my-uchebnik.ru/book/mathematics/1/mathematics-00000006.htm",
+  "sha256": "91997f47edb243ebdad947970dbe26919c45f13e79aacf2713f6eaa27b6c711a"
+ },
+ {
+  "number": 103,
+  "section": "7 класс",
+  "title": "Математика. Алгебра. 7 класс. Часть 3 - Петерсон Л.Г. и др. (2011)",
+  "year": "2011",
+  "level": "не указан в каталоге",
+  "part": "3",
+  "pages": 219,
+  "source_url": "https://my-uchebnik.ru/book/mathematics/1/mathematics-00000007.htm",
+  "sha256": "957031260835d66d763824274bc17ec50d061d15582849caa19f9a91f8c6420f"
+ },
+ {
+  "number": 104,
+  "section": "7 класс",
+  "title": "Алгебра 7 класс - Алимов Ш.А. (2011)",
+  "year": "2011",
+  "level": "не указан в каталоге",
+  "part": "",
+  "pages": 226,
+  "source_url": "https://my-uchebnik.ru/book/algebra/1/algebra-00000079.htm",
+  "sha256": "ac5f4e9af041e6da896b17052200905687d058afd2b028db3a62fc579ee10fe9"
+ },
+ {
+  "number": 113,
+  "section": "Вероятность и статистика — МЦНМО",
+  "title": "Теория вероятностей и статистика. 7–9 классы. — Тюрин, Макаров, Высоцкий, Ященко (2011)",
+  "year": "2011",
+  "level": "уровень не обозначен",
+  "part": "",
+  "pages": 257,
+  "source_url": "https://ptlab.mccme.ru/umk",
+  "sha256": "08b7ccbfa2f7347b204f0e98fd207b55c7dad5e01d379da32a0c1d8a161ca374"
+ },
+ {
+  "number": 114,
+  "section": "Вероятность и статистика — МЦНМО",
+  "title": "Теория вероятностей и статистика. Экспериментальное учебное пособие для 10–11 классов. — Тюрин, Макаров, Высоцкий, Ященко (2014)",
+  "year": "2014",
+  "level": "уровень не обозначен",
+  "part": "",
+  "pages": 244,
+  "source_url": "https://ptlab.mccme.ru/umk",
+  "sha256": "f5db9af412866b4409c422c0d095be054c9ef03685f915120ac4b9a08e97231c"
+ }
+];
+ const C=root.WorkshopCurriculum;
+ C.sources=sources;
+ for(const s of sources)C.books.push({id:"source-"+s.number,title:s.title,edition:s.section+" · "+s.level,status:"Файл получен; маршрут по пунктам не завершён",grade:parseInt(s.section),source:s,common:true,mapping:[],note:"Это имеющееся издание. Ниже доступны общие тренажёры по навыкам; их наличие не означает полного покрытия этого учебника. Авторские задачи не являются копией упражнений книги."});
+ function attach(id,rows,total){const b=C.books.find(x=>x.id===id);b.mapping.push(...rows.map(r=>({section:r[0],page:r[1],skill:'sec-'+r[2],part:1,coverage:'partial'})));b.status='Есть привязка к отдельным пунктам';b.totalPoints=total;b.note='Прочитано оглавление конкретного издания. Связаны отдельные навыки; каждый связанный пункт покрыт частично. Полного разбора упражнений и всей программы книги пока нет.';}
+ // Printed pages checked against uploaded 2024 contents, PDF pages 255–257.
+ attach('makarychev7-2024',[[7,32,'linear'],[8,34,'linear'],[12,54,'line'],[13,58,'line'],[14,61,'line'],[15,69,'line'],[16,74,'line'],[18,95,'powers'],[19,101,'powers'],[20,105,'powers'],[23,114,'parabola'],[25,129,'polynomial'],[26,132,'polynomial'],[27,137,'polynomial'],[28,142,'difference'],[29,147,'polynomial'],[32,165,'square'],[33,171,'square'],[34,174,'difference'],[35,179,'difference'],[37,185,'polynomial'],[38,188,'difference'],[40,201,'system'],[41,206,'system'],[42,209,'system'],[43,213,'system'],[44,217,'system']],46);
+ // Merzlyak et al., grade 8 (2022): PDF contents pages 256–257.
+ attach('source-64',[[1,5,'domain'],[2,10,'domain'],[3,19,'rational'],[4,24,'rational'],[5,35,'rational'],[6,41,'rational'],[8,59,'powers'],[9,67,'powers'],[11,89,'parabola'],[12,94,'root'],[16,126,'root'],[17,133,'root'],[19,157,'quadratic'],[20,164,'quadratic'],[21,172,'quadratic'],[22,182,'quadratic']],24);
+ // Tyurin et al.: exact contents only, not a claim to cover all chapter subtypes.
+ attach('source-113',[[10,44,'statistics'],[11,48,'statistics'],[12,54,'statistics'],[20,75,'outcomes'],[22,79,'outcomes'],[26,90,'outcomes'],[27,94,'outcomes'],[29,98,'outcomes'],[30,103,'outcomes'],[37,133,'conditional'],[38,135,'conditional'],[50,179,'expectation'],[51,182,'expectation'],[53,189,'expectation'],[56,197,'expectation']],67);
+ attach('source-114',[[2,14,'outcomes'],[6,50,'conditional'],[7,71,'expectation'],[8,77,'expectation'],[9,84,'expectation']],null);
+})(window);

@@ -6,13 +6,17 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: EGE basic practice expansion
+## In progress: textbook learning routes
 
-- Branch `course/ege-baza-complete-practice`, based on main `1b110e09b22562b163821e4024e9c4c3c463e530`.
-- Adds 75 parameterized families to the existing 28, spanning all 21 positions; a 13-stage fractions/percent/proportion route; diagrams, matching and targeted remediation.
-- Self-checks cover 6,000 generated conditions, unchanged legacy outputs, storage restoration, Chromium layouts and board compatibility. These are simulations, not a real-student pilot.
-- Publication is not asserted by this source snapshot. See the task PR for the actual release outcome.
-- Details and limits: [practice expansion](EGE_BAZA_PRACTICE.md), [task](tasks/EGE_BAZA_COMPLETE_PRACTICE.md).
+- Branch `course/textbook-learning-routes`, based on main `0784471463a8d710a66575f65b8b9f6dc9d41edd`.
+- Integrates 6 previously unpublished algebra lessons from #163 and adds 24 common algebra/probability blocks to the existing Workshop contract. 104 blocks total; this is not 77 complete textbook courses.
+- Records 77 source files with matching checksums; partial mappings are distinguished from generic skill suggestions. Source PDF scans are not republished.
+- See [scope](tasks/TEXTBOOK_LEARNING_ROUTES.md) and [report](TEXTBOOK_TRAINERS_RELEASE.md). Actual publication must be established by the task PR and public-site checks.
+
+## Confirmed preceding EGE release
+
+- PR #164 merged as `0784471463a8d710a66575f65b8b9f6dc9d41edd`. 103 EGE practice families and the 13-stage foundations route were published; production file hashes and browser were checked.
+- This textbook work starts from that tree and preserves it.
 
 ## Current release: all discussed courses (2026-10-02)
 

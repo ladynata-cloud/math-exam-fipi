@@ -2,10 +2,10 @@ name: EGE base — virtual classroom
 
 on:
   pull_request:
-    paths: ['ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', '.github/workflows/ege-baza-quality.yml']
+    paths: ['school/**', 'tools/textbook-*', 'ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', '.github/workflows/ege-baza-quality.yml']
   push:
     branches: [main]
-    paths: ['ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', '.github/workflows/ege-baza-quality.yml']
+    paths: ['school/**', 'tools/textbook-*', 'ege-baza/**', 'trainers/ege-baza/**', 'trainers/oge-basics/**', 'trainers/simple-equations-stepwise.html', 'trainers/oge-task8-powers-roots.html', 'tools/ege-*/**', 'tools/ege-baza-*', 'index.html', '.github/workflows/ege-baza-quality.yml']
   schedule:
     - cron: '23 20 * * *' # 03:23 Asia/Novosibirsk; scheduled runs may be delayed by GitHub.
   workflow_dispatch:
