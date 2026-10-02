@@ -42,7 +42,7 @@ function mount(options){
  $('retryOpenedTrainer').onclick=()=>{if(!active)return;checks.delete(headerKey(active));options.retry();};loading();
  function setEntries(list){const seen=new Set();entries=list.filter(x=>{try{const key=canonical(x.href);if(seen.has(key))return false;seen.add(key);return typeof x.title==='string';}catch(_){return false;}});const groups=[...new Set(entries.map(x=>x.group))];group.replaceChildren(new Option('Все разделы',''),new Option('Недавние','recent'),...groups.map(x=>new Option(x,x)));renderRecent();render();if(active)$('openedTrainerTitle').textContent=titleFor(active);}
  setEntries(options.fallback.map(x=>({href:'/'+x.file,title:x.title,group:x.group})));
- fetch('board-picker-data.json?v=20261002-editions-1').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
+ fetch('board-picker-data.json?v=20261002-v6-full-1').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
  const query=new URLSearchParams(location.search).get('trainer');if(query&&options.role()==='teacher')choose(query);
 }
 root.BoardPicker={normalize,canonical,mount,error,clearError};
