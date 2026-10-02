@@ -1,8 +1,8 @@
 'use strict';
 const assert=require('node:assert/strict'),D=require('../school/m9-exercises/data'),Check=require('../school/m9-exercises/checks'),State=require('../school/m9-exercises/app');
 const C=require('../school/curriculum'),M=require('../school/math');require('../school/algebra7').install(C,M);require('../school/secondary').install(C,M);require('../school/core-content').install(C);require('../school/core-math').install(M);require('../school/paths').install(C);const E=require('../school/editions-content');E.install(C);require('../school/editions-math').install(M);const V6=require('../school/vilenkin6-lessons');V6.install(C,E);require('../school/vilenkin5-lessons').install(C,V6);require('../school/makarychev9-lessons').install(C,E);
-assert.equal(D.total,891);assert.deepEqual(D.exercises.map(e=>e.number),Array.from({length:53},(_,i)=>i+1));assert.equal(D.exercises.reduce((n,e)=>n+e.parts.length,0),177);
-let steps=0;for(const e of D.exercises)for(const p of e.parts){assert(C.byId[p.skill],p.skill);assert(p.steps.length>=2);assert(p.steps.some(s=>s.final));for(const s of p.steps){steps++;assert(s.explain&&s.hints.length===2);const a=['interval','angle'].includes(s.rule.type)?JSON.parse(s.example):s.example;assert(Check.check(s,a).ok,`${e.number} ${p.label}: ${s.prompt}`);assert(!Check.check(s,'').ok,'empty accepted');if(s.rule.type==='number'&&s.rule.value!==0)assert(!Check.check(s,'0').ok,'zero accepted for '+s.rule.value);if(s.rule.type==='choice'){assert(!Check.check(s,s.rule.answer.concat('impossible')).ok);assert(!Check.check(s,[...s.rule.answer,...s.rule.answer]).ok);}}}
+assert.equal(D.total,891);assert.deepEqual(D.exercises.map(e=>e.number),Array.from({length:78},(_,i)=>i+1));assert.equal(D.exercises.reduce((n,e)=>n+e.parts.length,0),246);
+let steps=0;for(const e of D.exercises)for(const p of e.parts){assert(C.byId[p.skill],p.skill);assert(p.steps.length>=2);assert(p.steps.some(s=>s.final));for(const s of p.steps){steps++;if(s.options&&Array.isArray(s.example))for(const id of s.example)assert(s.options.some(x=>x[0]===id),'answer absent from visible choices '+e.number);assert(s.explain&&s.hints.length===2);const a=['interval','angle','form'].includes(s.rule.type)?JSON.parse(s.example):s.example;assert(Check.check(s,a).ok,`${e.number} ${p.label}: ${s.prompt}`);assert(!Check.check(s,'').ok,'empty accepted');if(s.rule.type==='number'&&s.rule.value!==0)assert(!Check.check(s,'0').ok,'zero accepted for '+s.rule.value);if(s.rule.type==='choice'){assert(!Check.check(s,s.rule.answer.concat('impossible')).ok);assert(!Check.check(s,[...s.rule.answer,...s.rule.answer]).ok);}}}
 function final(n,p=0){return D.byNumber[n].parts[p].steps.filter(s=>s.final);}
 function numeric(n,values){values.forEach((v,i)=>assert(Math.abs(final(n,i).at(-1).rule.value-v)<1e-12*Math.max(1,Math.abs(v)),`source oracle #${n}/${i}`));}
 // Independent calculations from the visually verified printed source.
@@ -30,4 +30,31 @@ numeric(37,[.04,.034,.046]);numeric(38,[.13,4,.047,.002]);numeric(39,[1/350]);nu
 assert(Check.check(final(45)[0],{angle:23,reading:'23'}).ok);assert(!Check.check(final(45)[0],{angle:90,reading:'90'}).ok);assert(!Check.check(final(45)[0],{angle:35,reading:'145'}).ok);
 for(const p of [-100,-7,-.5,0,1,100]){assert(Math.abs(((3*p+1)*(2*p+1)+p)-6*p*(p+1)-1)<1e-9);assert(Math.abs((2*p-1)*(2*p+1)+3*(p+1)-(4*p+3)*p-2)<1e-9);}
 
-console.log(`PASS M9 numbered: 53 exercises, 177 parts, ${steps} steps; source arithmetic with separate BigInt checks; open alternatives; strict endpoints; parser and progress validation.`);
+console.log(`PASS M9 numbered: 78 exercises, 246 parts, ${steps} steps; source arithmetic with separate BigInt checks; open alternatives; strict endpoints; parser and progress validation.`);
+
+// Source-derived oracle for the continuation. Calculations are independent of
+// the worked-step examples; mixed-coordinate, unit and budget mistakes fail.
+const model=require('../school/m9-exercises/models');
+const end=(n,p=0)=>D.byNumber[n].parts[p].steps.at(-1);
+numeric(56,[9460*1e9/1000,120/1e9]);numeric(57,[3e8*1e-9*1000]);numeric(58,[1e9/6e6]);
+numeric(63,[Math.floor(500/26.5)]);numeric(64,[Math.floor(500/(26.5*.8))-Math.floor(500/26.5)]);
+numeric(65,[22000*.7+45000*.85]);numeric(66,[Math.ceil(385/24)]);
+numeric(67,[Math.ceil(500000/(36000+48000-[30000,11600,2000,700,6400,10000].reduce((s,x)=>s+x,0)))]);
+numeric(69,[10/90*100]);numeric(70,[Math.ceil(2*(.8+2.7)*3.2*.75*2*.25)]);numeric(71,[30]);numeric(75,[1/25,15**2+4]);numeric(77,[4/3]);
+for(const [n,pairsByPart,conditions]of [[60,[[[16,15],[-15,-16]],[[4,-7],[8,1]]],[(x,y)=>x-y===1&&x*y===240,(x,y)=>x*x+y*y===65&&2*x-y===15]],[74,[[[1,4]],[[1.5,1]]],[(x,y)=>3*y-2*x===10&&7*x+5*y===27,(x,y)=>Math.abs(.4*x-.2*y-.4)<1e-12&&x+11*y===12.5]]]){
+ pairsByPart.forEach((pairs,p)=>{for(const [x,y]of pairs)assert(conditions[p](x,y));assert(Check.check(end(n,p),pairs.slice().reverse().map(a=>a.join(';')).join('|')).ok);assert(!Check.check(end(n,p),'1;1|1;1').ok);});}
+assert(!Check.check(end(60,0),'16;-16|-15;15').ok);
+for(const a of [-7,-2,.5,2,6])for(const b of [-5,-1,1,4])if(a!==b&&a!==-b){const v=(2*a*b/(a*a-b*b)+(a-b)/(2*a+2*b))*2*a/(a+b)+b/(b-a);assert(Math.abs(v-1)<1e-10);const v2=b/(a-b)-(a**3-a*b*b)/(a*a+b*b)*(a/(a-b)**2-b/(a*a-b*b));assert(Math.abs(v2+1)<1e-10);const v3=(a*b*b-a*a*b)/(a+b)*(a+a*b/(a-b))/(a-a*b/(a+b));assert(Math.abs(v3+a*b)<1e-10);}
+for(const a of [-8,-4,-2,0,1,2,4,9]){const v=((a-3)/(a*a-3*a+9)-(6*a-18)/(a**3+27))/((5*a-15)/(4*a**3+108));assert(Math.abs(v-4*(a-3)/5)<1e-10);}
+const costData=[[275,1000,80],[105,250,156],[45,1000,120],[20,1000,53],[15,500,45],[15,12,17],[350,1000,47],[700,1000,450],[130,1000,30],[10,25,40]];
+const consumed=costData.reduce((sum,[amount,pack,price])=>sum+amount/pack*price,0),receipt=costData.reduce((sum,[amount,pack,price])=>sum+Math.ceil(amount/pack)*price,0);
+assert(Math.abs(consumed-467.93)<1e-10);assert.equal(receipt,1055);[consumed,1500-consumed,receipt,1500-receipt].forEach((x,i)=>assert(Check.check(D.byNumber[72].parts[10].steps[i],String(x)).ok));
+for(const [i,[amount,pack]] of costData.entries())assert(Check.check(end(72,i),String(Math.ceil(amount/pack)*pack-amount)).ok);
+assert(Check.check(end(68),{length:'72',count:'1500',time:'18',distance:'1080',speed:'60'}).ok);assert(!Check.check(end(68),{length:'72',count:'1500',time:'18',distance:'108000',speed:'6000'}).ok);
+assert(!Check.check(end(78),{circumference:'0',diameter:'0',ratio:'3.14',error:'0'}).ok);assert(Check.check(end(78),{circumference:'62.8',diameter:'20',ratio:'3.14',error:'0.0016'}).ok);
+assert(Check.check(end(76,1),{before:'5',after:'20',percent:'300'}).ok);assert(!Check.check(end(76,1),{before:'5',after:'20',percent:'400'}).ok);
+for(let i=0;i<18;i++){const s=D.byNumber[62].parts[i].steps[0];for(const unit of s.rule.answer)assert(Check.check(s,[unit]).ok);assert(!Check.check(s,[s.options.at(-1)[0]]).ok);}
+assert.equal(model.calculate('purchase',{budget:500,price:26.5,discount:0}).count,18);assert.equal(model.calculate('purchase',{budget:500,price:26.5,discount:20}).count,23);
+assert.equal(model.calculate('discount',{fridge:2,washer:1}).total,53650);assert.equal(model.calculate('rooms',{rooms:16}).missing,1);
+assert.equal(model.calculate('budget',{months:22,reserve:10000}).total,512600);assert.equal(model.calculate('walls',{layers:2,glass:25}).cans,9);assert(Math.abs(model.calculate('circle',{radius:4/3}).difference-1)<1e-12);
+console.log('PASS continuation oracle: source algebra, all system pairs, units, 10 product rows, distinct receipt/consumption models, user measurements, ambiguous source data, interactive model calculations.');

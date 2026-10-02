@@ -6,14 +6,14 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: numbered Makarychev algebra 9 exercises
+## In progress: numbered Makarychev algebra 9, continuation
 
-- Confirmed production base: `6dae19acf58249a458fcb45981263976c1803d64` (PR #173). That release published 93 detailed authored lessons across 31 textbook points, not every numbered exercise. Existing results are preserved.
-- Owner now requests an interactive trainer for every exercise in the supplied 2023 basic textbook. Full target remains incomplete.
-- Current branch: `course/makarychev9-numbered`; [task](tasks/MAKARYCHEV9_NUMBERED.md); [coverage and limitations](reports/MAKARYCHEV9_NUMBERED_20261002.md).
-- Candidate contains exercises 1–53: 177 parts and 423 checked steps, individual number entry, point/interval construction, open examples, proof ordering, local drafts/export, existing-course remediation and board entry.
-- Exercises 54–891 are not implemented. They are never marked ready. Next content work starts with size/order-of-magnitude and practical exercises 54–78.
-- Independent external review and separate final acceptance were waived by the owner for the course publication work. Normal math/browser/data checks, exact base/head evidence and branch protections remain required. Actual publication evidence belongs in the PR.
+- Confirmed production base: `2837fa993d0a0e1cc93d3cefc92b2e4a345ec7ab` (PR #174). Exercises 1–53, 177 parts, 423 steps were published and verified; 93 thematic lessons remain available.
+- Current task: `course/makarychev9-exercises-54-78`; [scope](tasks/MAKARYCHEV9_EXERCISES_54_78.md); [coverage and limitations](reports/MAKARYCHEV9_EXERCISES_54_78_20261002.md).
+- Candidate adds 54–78: 69 parts, 172 steps, measured-data forms, all system pairs, alternative units and accessible applied-math models. Total candidate: 78 numbers, 246 parts, 595 steps.
+- Independent external review and separate final acceptance were waived by the owner for course publication. Math/browser/data checks, exact base/head evidence and branch protections remain required. Actual release evidence belongs in the PR.
+- Remaining 79–891 and separately numbered control questions are not implemented. Research/source authenticity is explicitly reserved for human discussion.
+- Next: finish exact-head gates and publish this block; continue 79 onward from the scan; add section control questions and classroom feedback.
 - Classic Atanasyan draft PR #168 remains outside this task.
 
 ## Confirmed preceding EGE release
