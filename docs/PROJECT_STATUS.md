@@ -1,18 +1,19 @@
 # MathExam project status
 
-Updated: 2026-10-02
+Updated: 2026-10-03
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: profile EGE 2027 learning start
+## In progress: detailed Mordkovich circle route
 
-- Confirmed production main: `14f364617a83ab545f8e95b002bd74968c5f5980` (PR #176), tree `1a43d6f08429173570b3d849d70e4d929c3b9b37`. The preceding Makarychev Chapter I release added №79–97; total №1–97, 311 parts, 774 steps. It is not the whole textbook; №98–891 and separate control questions remain outside that release.
-- Current approved task: `course/profile-foundations-2027`; [scope](tasks/PROFILE_FOUNDATIONS_2027.md). Planimetry, vectors, introductory trigonometry and four algebra themes. Quadratic-in-sine/second-part trig equation explicitly excluded by owner.
-- New route uses the 2027 draft numbering. Existing 2026 trainers and student results remain intact and are labeled as legacy navigation, not relabeled as a current complete exam.
-- Owner requested implementation and cloud publication. Standing course-release exception removes separate final acceptance; checks and technical protections remain. No external reviewer approval is claimed.
-- Next: complete bounded content and interaction checks; publish one PR; verify live course and board and record actual coverage. Release evidence belongs in that PR.
+- Confirmed production main: `cd5d5a97f25109b70743f3ea85513ab8950dba36` (PR #177), tree `293f449d9c7f502f76780131e4982a05d5874095`. The 18-theme/108-task profile start was published; exact-head CI, Pages and live course/board were verified in PR #177.
+- Current task: `course/mordkovich-unit-circle`; [scope](tasks/MORDKOVICH_CIRCLE.md). Owner requests a deeper ordered introduction using her uploaded Mordkovich §§4–6 pages. 33 lessons, 75 numbered exercises / 289 subparts plus 6 authored preparation exercises, 743 guided steps and an additional final check for each task.
+- Screenshots themselves are not published. Exact textbook edition/year is unverified. Coverage is the supplied §§4–6, not the entire 10–11 textbook or all profile EGE.
+- Existing course and board data are preserved. New progress key is isolated and local, with export and preservation of damaged/future schemas.
+- Standing owner authorization permits publication of updated courses without a separate external reviewer/final acceptance. No external reviewer approval is claimed and global policy is unchanged.
+- Next: complete real browser gates; publish one exact-head PR; verify Pages, live lesson and board. Actual release evidence belongs in that PR.
 - Classic Atanasyan draft PR #168 remains outside this task.
 
 ## Confirmed preceding EGE release
