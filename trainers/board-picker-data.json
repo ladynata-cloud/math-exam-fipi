@@ -6170,6 +6170,471 @@
       "title": "ЕГЭ база 21 · Оценка числа участников",
       "href": "/ege-baza/path/index.html#lesson=practice-whole-count",
       "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "Пункт 1 · Квадратный корень и модуль",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-root-square"
+    },
+    {
+      "title": "Пункт 1 · Выносим множитель из-под корня",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-root-simplify"
+    },
+    {
+      "title": "Пункт 1 · Степени: отрицательный показатель",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-powers"
+    },
+    {
+      "title": "Пункт 2 · Сравнение корней без приближений",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-root-compare"
+    },
+    {
+      "title": "Пункт 2 · Отрицательные числа и расстояние до нуля",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-negative-compare"
+    },
+    {
+      "title": "Пункт 2 · Между какими целыми лежит корень",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-bounds"
+    },
+    {
+      "title": "Пункт 3 · Абсолютная погрешность",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-absolute-error"
+    },
+    {
+      "title": "Пункт 3 · Округление и граница ошибки",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-rounding"
+    },
+    {
+      "title": "Пункт 3 · Относительная погрешность",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-relative-error"
+    },
+    {
+      "title": "Пункт 4 · Стандартный вид числа",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-standard-form"
+    },
+    {
+      "title": "Пункт 4 · Сравниваем порядки величин",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-scale-ratio"
+    },
+    {
+      "title": "Пункт 4 · Единицы времени в расчётах",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-time-units"
+    },
+    {
+      "title": "Пункт 5 · Последовательные изменения цены",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-price-change"
+    },
+    {
+      "title": "Пункт 5 · Среднее с весами: смесь",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-weighted-mixture"
+    },
+    {
+      "title": "Пункт 5 · Совместная работа без неизвестного",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-joint-work"
+    },
+    {
+      "title": "Пункт 6 · Интервал возможных значений",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-error-bound"
+    },
+    {
+      "title": "Пункт 6 · Приближение π и длина окружности",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-pi-approx"
+    },
+    {
+      "title": "Пункт 6 · Сколько знаков достаточно",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-precision-choice"
+    },
+    {
+      "title": "Пункт 7 · Чётная, нечётная или ни та ни другая",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-even-odd"
+    },
+    {
+      "title": "Пункт 7 · Восстанавливаем значение по симметрии",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-symmetry-value"
+    },
+    {
+      "title": "Пункт 7 · Симметрия области определения",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-symmetric-domain"
+    },
+    {
+      "title": "Пункт 8 · Область определения: корень и знаменатель",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-domain"
+    },
+    {
+      "title": "Пункт 8 · Читаем формулу как график",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-read-graph"
+    },
+    {
+      "title": "Пункт 8 · Обратная пропорциональность",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-inverse"
+    },
+    {
+      "title": "Пункт 9 · Строим y=ax² по точкам",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-parabola-value"
+    },
+    {
+      "title": "Пункт 9 · Восстанавливаем коэффициент параболы",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-parabola-coefficient"
+    },
+    {
+      "title": "Пункт 9 · Вершина, знак и множество значений",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-parabola-range"
+    },
+    {
+      "title": "Пункт 10 · Сдвигаем параболу: вершина",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-shift-vertex"
+    },
+    {
+      "title": "Пункт 10 · Переносим точку вместе с графиком",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-shift-points"
+    },
+    {
+      "title": "Пункт 10 · Нули сдвинутой параболы",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-shift-zero"
+    },
+    {
+      "title": "Пункт 11 · Общая квадратичная функция: вершина",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-quadratic-vertex"
+    },
+    {
+      "title": "Пункт 11 · Выделяем полный квадрат",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-complete-square"
+    },
+    {
+      "title": "Пункт 11 · Нули и пересечения с осями",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-quadratic-intersections"
+    },
+    {
+      "title": "Пункт 12 · Дробно-линейная функция как сдвиг",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-rational-shift"
+    },
+    {
+      "title": "Пункт 12 · Точка на дробно-линейном графике",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-rational-point"
+    },
+    {
+      "title": "Пункт 12 · Сокращение и выколотая точка",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-hole"
+    },
+    {
+      "title": "Пункт 13 · Произведение равно нулю",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-zero-product"
+    },
+    {
+      "title": "Пункт 13 · Квадратное уравнение и дискриминант",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-discriminant"
+    },
+    {
+      "title": "Пункт 13 · Биквадратное уравнение",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-biquadratic"
+    },
+    {
+      "title": "Пункт 14 · ОДЗ до преобразований",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-rational-domain"
+    },
+    {
+      "title": "Пункт 14 · Решаем рациональное уравнение",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-rational-solve"
+    },
+    {
+      "title": "Пункт 14 · Кандидат и посторонний корень",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-extraneous"
+    },
+    {
+      "title": "Пункт 15 · Задача на движение: связываем время",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-motion-equation"
+    },
+    {
+      "title": "Пункт 15 · Геометрическая задача через уравнение",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-rectangle-equation"
+    },
+    {
+      "title": "Пункт 15 · Производительность в уравнении",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-work-equation"
+    },
+    {
+      "title": "Пункт 16 · Знак квадратного трёхчлена",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-quadratic-sign"
+    },
+    {
+      "title": "Пункт 16 · Двойной корень и нестрогое неравенство",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-double-root"
+    },
+    {
+      "title": "Пункт 16 · Когда действительных корней нет",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-no-roots-sign"
+    },
+    {
+      "title": "Пункт 17 · Метод интервалов: несколько множителей",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-interval-product"
+    },
+    {
+      "title": "Пункт 17 · Дробное неравенство: нули и запреты",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-interval-rational"
+    },
+    {
+      "title": "Пункт 17 · Чётная кратность: знак сохраняется",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-interval-even"
+    },
+    {
+      "title": "Пункт 18 · Группировка с общим множителем",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-grouping"
+    },
+    {
+      "title": "Пункт 18 · Замена повторяющегося выражения",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-substitution"
+    },
+    {
+      "title": "Пункт 18 · Возвратное уравнение",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-reciprocal-equation"
+    },
+    {
+      "title": "Пункт 19 · Проверяем пару чисел в уравнении",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-point-check"
+    },
+    {
+      "title": "Пункт 19 · Окружность как уравнение",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-circle-graph"
+    },
+    {
+      "title": "Пункт 19 · Точки пересечения прямой с осями",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-graph-intercept"
+    },
+    {
+      "title": "Пункт 20 · Подстановка в нелинейной системе",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-system-substitute"
+    },
+    {
+      "title": "Пункт 20 · Система через сумму и произведение",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-system-sum-product"
+    },
+    {
+      "title": "Пункт 20 · Прямая пересекает окружность",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-system-circle"
+    },
+    {
+      "title": "Пункт 21 · Сколько решений у линейной системы",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-linear-system-count"
+    },
+    {
+      "title": "Пункт 21 · Метод сложения и проверка пары",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-linear-system-solve"
+    },
+    {
+      "title": "Пункт 21 · Параметр и особый случай",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-linear-parameter"
+    },
+    {
+      "title": "Пункт 22 · Периметр и площадь: система",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-rectangle-system"
+    },
+    {
+      "title": "Пункт 22 · Два числа: переводим отношения",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-two-numbers"
+    },
+    {
+      "title": "Пункт 22 · Движение по реке",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-river-system"
+    },
+    {
+      "title": "Пункт 23 · Какая полуплоскость подходит",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-halfplane"
+    },
+    {
+      "title": "Пункт 23 · Круг или внешность окружности",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-disk"
+    },
+    {
+      "title": "Пункт 23 · Область над и под параболой",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-parabola-region"
+    },
+    {
+      "title": "Пункт 24 · Система неравенств: общая область",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-intersection-regions"
+    },
+    {
+      "title": "Пункт 24 · Целые точки в области",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-integer-region"
+    },
+    {
+      "title": "Пункт 24 · Наибольшее значение в области",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-bounded-maximum"
+    },
+    {
+      "title": "Пункт 25 · Симметричная система и замена",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-symmetric-system"
+    },
+    {
+      "title": "Пункт 25 · Разность квадратов в системе",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-difference-squares-system"
+    },
+    {
+      "title": "Пункт 25 · Разветвление по нулевому произведению",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-system-zero-factor"
+    },
+    {
+      "title": "Пункт 26 · Последовательность по формуле номера",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-sequence-formula"
+    },
+    {
+      "title": "Пункт 26 · Рекуррентное задание",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-sequence-recursion"
+    },
+    {
+      "title": "Пункт 26 · Принадлежит ли число последовательности",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-sequence-membership"
+    },
+    {
+      "title": "Пункт 27 · Арифметическая прогрессия: n−1 шагов",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-arithmetic-term"
+    },
+    {
+      "title": "Пункт 27 · Находим разность по двум членам",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-arithmetic-difference"
+    },
+    {
+      "title": "Пункт 27 · Номер заданного члена",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-arithmetic-index"
+    },
+    {
+      "title": "Пункт 28 · Сумма: пары первого и последнего",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-arithmetic-sum"
+    },
+    {
+      "title": "Пункт 28 · Сумма части прогрессии",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-arithmetic-slice"
+    },
+    {
+      "title": "Пункт 28 · Накопления с постоянной прибавкой",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-arithmetic-story"
+    },
+    {
+      "title": "Пункт 29 · Геометрическая прогрессия: умножение",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-geometric-term"
+    },
+    {
+      "title": "Пункт 29 · Находим знаменатель и следующий член",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-geometric-ratio"
+    },
+    {
+      "title": "Пункт 29 · Уменьшение на процент и прогрессия",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-geometric-decay"
+    },
+    {
+      "title": "Пункт 30 · Сумма геометрической прогрессии",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-geometric-sum"
+    },
+    {
+      "title": "Пункт 30 · Особый случай q=1",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-geometric-one"
+    },
+    {
+      "title": "Пункт 30 · Знакопеременная сумма",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-geometric-alternating"
+    },
+    {
+      "title": "Пункт 31 · Индукция: проверяем начало",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-induction-base"
+    },
+    {
+      "title": "Пункт 31 · Индукционный переход",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-induction-step"
+    },
+    {
+      "title": "Пункт 31 · Применяем доказанную формулу",
+      "group": "Макарычев · 9 класс",
+      "href": "/school/index.html?course=makarychev9#lesson/m9f-induction-apply"
     }
   ]
 }

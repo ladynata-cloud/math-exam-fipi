@@ -6,13 +6,13 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: compact board header
+## In progress: detailed Makarychev algebra 9
 
-- Production main: `3aafe4b6c019d52af7fef69ad7f718f7b17b6991` (PR #171, Vilenkin 5). Exact-head CI 36981392385 and Pages 36981885836 succeeded; public hashes and the live course/board were checked.
-- Production contains 555 Workshop lessons and 12 routes, including 134 detailed Vilenkin 5 lessons and 194 Vilenkin 6 lessons. Existing IDs and local progress are preserved.
-- Current task: [compact board header](tasks/BOARD_COMPACT_HEADER.md), branch `ui/board-compact-header`. The owner supplied a screenshot and requested a simpler, more elegant workspace.
-- Candidate groups the course catalog, invitation and settings into dialogs; preserves board storage, server contracts and learner restrictions.
-- Next actions: finish focused browser checks; complete exact-head CI and publish under the owner's existing authorization; verify the live board and public file identity.
+- Confirmed production main: `2e0f65dad4d25f3b57bbed3696ff5752831a4ba3` (PR #172, compact board). Exact-head CI 36985578189 and Pages 36986085907 succeeded; public hashes and live dialogs / course iframe were checked.
+- Production before this task: 555 Workshop lessons, 12 routes; Vilenkin 5 has 134 detailed lessons, Vilenkin 6 has 194. IDs and progress are preserved.
+- Current task: [Makarychev 9 detailed](tasks/MAKARYCHEV9_DETAILED.md), branch `course/makarychev9-full`. The supplied basic textbook is the 15th revised edition, 2023, confirmed visually from the title page.
+- Candidate adds 93 authored skill lessons over all 31 points, with 78 core and 15 optional lessons, five interactive labs and board catalog links. The original 31 overview lessons remain accessible.
+- Local self-checks passed: 13,020 independently checked new answers, 357 model states, 93 full Chromium lesson flows, responsive/keyboard, old progress and board catalog. [PR #173](https://github.com/ladynata-cloud/math-exam-fipi/pull/173) records final cloud CI and publication evidence. [Detailed report](reports/MAKARYCHEV9_DETAILED_20261002.md). All numbered textbook exercises and a real-student pilot are not claimed.
 - Classic Atanasyan draft PR #168 remains outside this task.
 
 ## Confirmed preceding EGE release
