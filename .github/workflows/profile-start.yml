@@ -1,0 +1,31 @@
+name: Profile 2027 — learning start
+on:
+  pull_request:
+    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'tools/profile-*', 'trainers/board-picker-data.json', '.github/workflows/profile-start.yml']
+  push:
+    branches: [main]
+    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'tools/profile-*', '.github/workflows/profile-start.yml']
+permissions:
+  contents: read
+concurrency:
+  group: profile-start-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  math-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Mathematics and state
+        run: node tools/profile-start.test.cjs && node tools/profile-geometry.test.cjs && node tools/profile-algebra.test.cjs
+      - name: Real browser and board
+        run: node tools/profile-start.browser.cjs && node tools/board-picker-smoke.cjs
+      - name: Existing profile regression
+        run: npm --prefix ege-profil test

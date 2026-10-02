@@ -219,10 +219,13 @@ const KEY = 'mathExamCourseProgress.v1';
   ok(m8.length === 2 && m8.some(a => a.classList.contains('pill')) && m8.some(a => a.classList.contains('btn')),
      'index: рационализация — пилюля и карточка открывают модуль 9 курса неравенств');
   ok(!d.querySelector('a[href*="rationalization"]'), 'index: ссылок на отсутствующую rationalization.html нет');
-  ok(!d.querySelector('a[href^="../trainers/"]'), 'index: ссылок на корневые копии тренажёров нет');
+  ok(!Array.from(d.querySelectorAll('a[href^="../trainers/"]')).some(a => !a.getAttribute('href').startsWith('../trainers/trainer-board.html?trainer=')), 'index: корневые копии тренажёров не используются; общая доска разрешена');
   const tri = cardOf(/Прямоугольный треугольник/);
   ok(!!tri && tri.querySelector('.meta').textContent === '6 тем · 16 типов задач · журнал ошибок', 'index: мета карточки треугольника — как в архиве');
-  const facts = d.querySelector('header .facts').textContent;
+  ok(/проект.*2027/.test(d.querySelector('header .facts').textContent), 'index: новый вход явно обозначает проект 2027');
+  ok(!!d.querySelector('#profile-2027 a[href="start/index.html"]'), 'index: новый маршрут доступен');
+  ok(/2026/.test(d.querySelector('#route-h').textContent), 'index: прежняя нумерация обозначена 2026');
+  const facts = d.querySelector('#legacy-facts').textContent;
   ok(/281 задача стереометрии/.test(facts) && /7 «Развёрток»/.test(facts) && /14 задач, 11 схем/.test(facts),
      'index: строка фактов с числами объединённого курса: ' + facts);
   /* число тренажёров в строке фактов — по факту: разные файлы карточек без тренажёра эксперта */
@@ -230,7 +233,7 @@ const KEY = 'mathExamCourseProgress.v1';
   const n = facts.match(/^(\d+) тренажёров/);
   ok(!!n && +n[1] === files.size, 'index: число тренажёров в строке фактов совпадает с карточками: ' + (n && n[1]) + ' / ' + files.size);
   const desc = d.querySelector('meta[name="description"]');
-  ok(!!desc && /маршрут по всем 19 заданиям/.test(desc.getAttribute('content')), 'index: meta description из первого абзаца');
+  ok(!!desc && /2027/.test(desc.getAttribute('content')) && /2026/.test(desc.getAttribute('content')), 'index: meta description из первого абзаца');
 }
 
 /* 12. Адаптер финансов: решено = записи stats.doneTasks, всего 14 задач */
