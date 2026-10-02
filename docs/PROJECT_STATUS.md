@@ -11,7 +11,8 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - PR #170 is merged as `de9109b1f7ba8cb7b2ed65026a7f6d6b3b0b96e8` and published. Final head `8687f2b6849538dbff5b7563d20459258da76a6a` passed CI run 36979613774; Pages run 36980028894, ten public file hashes and live course/board checks confirmed release.
 - Production contains 421 Workshop lessons and 11 routes, including 194 detailed Vilenkin 6 lessons. All existing IDs and local progress are preserved.
 - Current task: [Vilenkin 5](tasks/VILENKIN5_FULL.md), branch `course/vilenkin5-full`, based on that main. Source: supplied 2023 third revised edition, both parts; 51 points. No claim of solutions to every exercise.
-- Next actions: implement source-aligned lessons and fraction laboratories; verify links, mathematics, browser and progress; publish after passing exact-head checks and verify the public site.
+- PR #171 candidate contains 134 detailed lessons, all 51 textbook points, fraction/decimal laboratories, missions, four independent-mastery achievements and board links. Mathematics and focused browser checks pass; see [report](reports/VILENKIN5_FULL_20261002.md).
+- Next actions: finish the exact-head full CI gate; merge under the owner’s publication authorization; verify Pages and public file/browser identity.
 - Classic Atanasyan draft PR #168 remains outside this task.
 
 ## Confirmed preceding EGE release

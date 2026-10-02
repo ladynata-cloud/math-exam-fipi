@@ -16,12 +16,13 @@ function mount(el,m,M,old){
  if(kind==='fraction'&&op==='multiply'){p.an=3;p.ad=4;p.bn=2;p.bd=3;}
  if(kind==='decimal'&&op==='divide'){p.ac=150;p.bc=25;}if(kind==='decimal'&&op==='multiply'){p.ac=60;p.bc=40;}
  p.radius=d.a||4;p.original=d.n||d.x||300;if(['number','column'].includes(kind))p.exchange=[Math.floor(p.original/100),Math.floor(p.original/10)%10,p.original%10];let notice='';
+ function scheduleDraw(key){const keepFocus=document.activeElement&&document.activeElement.dataset.param===key;setTimeout(()=>{if(!el.isConnected)return;draw();if(keepFocus)el.querySelector('[data-param="'+key+'"]')?.focus();},0);}
  const control=(key,label,min,max,value,step=1)=>'<label>'+label+'<input type="number" data-param="'+key+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+value+'"></label>';
  const btn=(text,action)=>'<button type="button" class="quiet" data-action="'+action+'">'+text+'</button>';
  const svg=(body,label,h=240)=>'<svg viewBox="0 0 600 '+h+'" role="img" aria-label="'+esc(label)+'">'+body+'</svg>';
  const txt=(x,y,text)=>'<text x="'+x+'" y="'+y+'">'+esc(text)+'</text>';
  const rect=(x,y,w,h,cl)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" class="'+cl+'"/>';
- function bar(n,den,y,partition,label){const total=Math.max(1,Math.ceil(n/den)),limit=Math.max(2,Math.ceil(p.an/p.ad),Math.ceil(p.bn/p.bd),Math.ceil(p.an/p.ad+p.bn/p.bd)),unit=480/limit;let s=txt(15,y+23,label);for(let i=0;i<total;i++){s+=rect(60+i*unit,y,unit-2,35,'v5-empty');s+=rect(60+i*unit,y,Math.max(0,Math.min(1,n/den-i))*(unit-2),35,'v5-teal');const divs=partition||den;for(let j=1;j<divs;j++)s+='<path d="M '+(60+i*unit+j*(unit-2)/divs)+' '+y+' v 35" class="v5-line"/>';s+=txt(60+i*unit,y+55,'1 целое');}return s;}
+ function bar(n,den,y,partition,label){const total=Math.max(1,Math.ceil(n/den)),limit=Math.max(2,Math.ceil(p.an/p.ad),Math.ceil(p.bn/p.bd),Math.ceil(p.an/p.ad+p.bn/p.bd)),unit=480/limit;let s=txt(15,y+23,label);for(let i=0;i<total;i++){s+=rect(60+i*unit,y,unit-2,35,'v5-empty');s+=rect(60+i*unit,y,Math.max(0,Math.min(1,n/den-i))*(unit-2),35,'v5-teal');const divs=partition||den;for(let j=1;j<divs;j++)s+='<path d="M '+(60+i*unit+j*(unit-2)/divs)+' '+y+' v 35" class="v5-line"/>';if(unit>85)s+=txt(60+i*unit,y+55,'1 целое');else if(i===0)s+=txt(60,y+55,'Каждый блок — 1 целое');}return s;}
  function draw(){let body='',controls='',title='',question='',target,caption='',actions='';
   if(kind==='fraction'){
    const s=fractionState(p,M);target=s.answer;
@@ -53,7 +54,7 @@ function mount(el,m,M,old){
     body='<div class="v5-table-wrap"><table><caption>Одинаковые разряды стоят друг под другом</caption><thead><tr><th>Число</th><th>Запись</th><th>Целые</th><th>Десятые</th><th>Сотые</th></tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
     actions=btn('1 целая → 10 десятых','exchange-whole')+btn('1 десятая → 10 сотых','exchange-tenth')+btn('10 сотых → 1 десятая','collect-tenth')+btn('10 десятых → 1 целая','collect-whole');
     if(op==='add')actions+=btn('Добавить разряды второго числа','add-digits');
-    caption='Размены сохраняют значение первой строки. '+(op==='add'?'Добавь второе число, затем собери полные десятки.':'Добейся, чтобы в каждом разряде хватало единиц для вычитания.');question='Вычисли '+dec(s.a)+(op==='add'?' + ':' − ')+dec(s.b)+'.';
+    caption=(p.added?'Второе число уже добавлено; размены сохраняют сумму. ':'Размены сохраняют значение первого числа. ')+(op==='add'?'Добавь второе число, затем собери полные десятки.':'Добейся, чтобы в каждом разряде хватало единиц для вычитания.');question='Вычисли '+dec(s.a)+(op==='add'?' + ':' − ')+dec(s.b)+'.';
    }else if(op==='multiply'){
     const w=220,h=130,x=num(s.a),y=num(s.b),scale=Math.min(w/Math.max(1,x),h/Math.max(1,y));body=svg(rect(60,30,Math.max(1,x)*scale,Math.max(1,y)*scale,'v5-empty')+rect(60,30,x*scale,y*scale,'v5-teal')+txt(330,65,dec(s.a)+' = '+p.ac+'/100')+txt(330,105,dec(s.b)+' = '+p.bc+'/100')+txt(60,205,'Единица площади — квадрат 1 × 1'),title);caption='Сотая от сотой — одна десятитысячная. Произведение равно '+p.ac+' · '+p.bc+' / 10 000. Для десятых можно сократить запись. Поменяй числа и сравни площадь.';question='Вычисли '+dec(s.a)+' · '+dec(s.b)+'.';
    }else{
@@ -79,7 +80,7 @@ function mount(el,m,M,old){
    actions+=btn('Миссия: '+goal,'mission-check');
   }
   el.innerHTML='<section class="panel v5-lab"><p class="eyebrow">Исследую сам</p><h2>'+title+'</h2><p class="tiny">Лаборатория — отдельный пример. Её настройки не меняют задачу ниже и не засчитываются как самостоятельная проверка.</p><div class="v5-controls">'+controls+'</div>'+body+'<div class="row">'+actions+'</div><p class="v5-caption">'+caption+'</p><form class="v5-lab-form"><label>'+question+'<input name="prediction" autocomplete="off" aria-label="Ответ в лаборатории"></label><button>Проверить вывод</button></form><p class="v5-feedback" role="status">'+esc(notice)+'</p></section>';
-  el.querySelectorAll('[data-param]').forEach(input=>input.onchange=()=>{const key=input.dataset.param,value=Number(input.value);if(!Number.isFinite(value)||value<Number(input.min)||value>Number(input.max)||!Number.isInteger(value)){notice='Введи целое число в указанном диапазоне.';draw();return;}if(key==='partition')return;p[key]=value;p.common=0;p.reveal=false;p.parts=0;if(['ac','bc'].includes(key)){p.exchange=[Math.floor(p.ac/100),Math.floor(p.ac/10)%10,p.ac%10];p.added=false;}notice='';draw();el.querySelector('[data-param="'+key+'"]')?.focus();});
+  el.querySelectorAll('[data-param]').forEach(input=>input.onchange=()=>{const key=input.dataset.param,value=Number(input.value);if(!Number.isFinite(value)||value<Number(input.min)||value>Number(input.max)||!Number.isInteger(value)){notice='Введи целое число в указанном диапазоне.';scheduleDraw(key);return;}if(key==='partition')return;p[key]=value;p.common=0;p.reveal=false;p.parts=0;if(['ac','bc'].includes(key)){p.exchange=[Math.floor(p.ac/100),Math.floor(p.ac/10)%10,p.ac%10];p.added=false;}notice='';scheduleDraw(key);});
   el.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>{const action=b.dataset.action;notice='';
    if(action==='mission-check'){
     const f=fractionState(p,M),expected=op==='add'?1:op==='divide'?3:op==='parts'?M.q(3,2):M.q(1,2);

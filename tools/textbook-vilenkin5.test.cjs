@@ -12,6 +12,7 @@ function oracle(k,t){const d=t.data,{a,b,c}=d,z=n(t.answer),x=n(d.x),y=n(d.y);
  case 'line-ray':same(z,{отрезок:2,луч:1,прямая:0}[d.kind]);break;case 'angle-parts':same(z,d.names[1]);break;case 'circle-shapes':same(z,['окружность','круг','шар','цилиндр'][d.i]);break;case 'natural-compare':same(z,x>y?'>':x<y?'<':'=');break;
  case 'natural-add':same(z-y,x);break;case 'add-smart':same(z-y,d.first+d.last);break;case 'sum-change':same(z-y,x);break;case 'natural-subtract':same(z+y,x);break;case 'subtract-sum':same(z+y+c,x);break;case 'difference-change':same(z+y,x);break;
  case 'expression-value':same((z-c)/b,a);break;case 'expression-story':same(z-c*10,a*d.price);break;case 'equation-add':same(z+b,x+b);break;case 'equation-sub':same(d.sw?z-b:x+b-z,d.sw?x-b:b);break;case 'equation-story':same(z-a,b*10);break;
+ case 'equation-product':same(z*b,d.total);break;case 'equation-quotient':same(d.swap?z/b:d.total/z,d.swap?x:b);break;
  case 'natural-multiply':same(z,x*y);break;case 'multiply-column':same(z,x*y);break;case 'division-share':case 'division-measure':case 'division-column':same(z*d.divisor,d.total);break;
  case 'remainder-find':same(z[0]*d.divisor+z[1],d.total);assert(z[1]>=0&&z[1]<d.divisor);break;case 'remainder-pack':assert(z*d.divisor>=d.total&&(z-1)*d.divisor<d.total);break;
  case 'order-brackets':same(z+a*(b+c),d.start);break;case 'order-equal':same(z*b,a*b*c);break;case 'power-read':same(z,Array(d.pow).fill(d.base).reduce((s,v)=>s*v,1));break;case 'power-order':same((z-c)/a,b*b);break;case 'calculator-order':same(z-a,b*c);break;
@@ -29,7 +30,7 @@ function oracle(k,t){const d=t.data,{a,b,c}=d,z=n(t.answer),x=n(d.x),y=n(d.y);
  default:throw Error('Missing independent oracle '+k);
  }
 }
-assert.equal(P.units.length,53);assert.equal(P.ids.length,132);assert(P.units.every(x=>x.ids.length));assert.equal(new Set(C.lessons.map(l=>l.id)).size,C.lessons.length);assert(oldIds.every(id=>C.byId[id]));
+assert.equal(P.units.length,53);assert.equal(P.ids.length,134);assert(P.units.every(x=>x.ids.length));assert.equal(new Set(C.lessons.map(l=>l.id)).size,C.lessons.length);assert(oldIds.every(id=>C.byId[id]));
 const visiting=new Set(),done=new Set();function visit(id){assert(C.byId[id],id);assert(!visiting.has(id),'Prerequisite cycle '+id);if(done.has(id))return;visiting.add(id);C.byId[id].requires.forEach(visit);visiting.delete(id);done.add(id);}C.lessons.forEach(l=>visit(l.id));
 let count=0;for(const id of P.ids){const l=C.byId[id];assert.equal(l.worked.length,3,id);assert(l.explanation.length>40&&l.misconception&&l.reflect.length>=2);for(const r of [...l.requires,...l.related])assert(C.byId[r],r);for(let seed=0;seed<120;seed++){
  const t=M.generate(id,seed);t._seed=seed;oracle(l.fullKey,t);assert(t.steps.length>=2,id);for(const s of [...t.steps,t]){const text=s.answerFormat==='prime-factors'?s.answer.join('*'):s.answerFormat==='decimal'?String(n(s.answer)).includes('.')?String(n(s.answer)):n(s.answer)+'.0':fmt(s.answer);assert(M.accepts(text,s),id+' rejects its valid answer '+text);assert(!M.accepts('не знаю',s),id);assert(!/NaN|Infinity|undefined/.test(s.prompt));}count++;
