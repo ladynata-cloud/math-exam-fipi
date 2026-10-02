@@ -10,6 +10,8 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
 - Base `20fa4cb5b92e41d4218367ccd39a19310ecebb90`: PR #167 is merged and published. Its 48 added lessons bring the Workshop to 152 lessons and 9 general routes. Final head CI, Pages deployment, public file hashes and browser were verified before this task.
 - Active branch `course/vilenkin6-makarychev9`; [scope](tasks/VILENKIN6_MAKARYCHEV9.md). Exact editions: Vilenkin 2024 parts 1–2, Makarychev basic 2023. Work includes direct lesson opening from the board.
+- PR #169 implements 75 edition lessons (44 + 31), two routes, visual percent/distributive models, internal remediation links and board navigation. The Workshop now has 227 lessons and 11 routes in the release tree. [Local gate and coverage limits](reports/VILENKIN6_MAKARYCHEV9_20261002.md); exact final CI and publication evidence are recorded in the PR only after they occur.
+- Next actions for this release: verify final-head CI; merge and verify the existing deployment; retain the explicit backlog of numbered textbook exercises and advanced subtypes.
 - The separate classic Atanasyan draft PR #168 is not merged or published and is not part of this release.
 - Topic coverage is distinct from exhaustive solutions to every numbered textbook exercise. New publication evidence belongs in this task's final report.
 

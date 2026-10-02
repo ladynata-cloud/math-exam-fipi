@@ -9,7 +9,7 @@ const close=(x,y)=>assert(Math.abs(x-y)<1e-8,`${x} != ${y}`);
 const ints=(a,b,p)=>Array.from({length:b-a+1},(_,i)=>a+i).filter(p);
 let checks=0,models=0;
 for(const l of C.lessons.filter(l=>l.edition)){
- assert(l.detail.length>=3);l.requires.forEach(id=>assert(C.byId[id]));const fingerprints=new Set();
+ assert(l.detail.length>=3);[...l.requires,...(l.related||[])].forEach(id=>assert(C.byId[id]));const fingerprints=new Set();
  for(let seed=0;seed<180;seed++){
  const t=M.generate(l.id,seed),d=t.data,z=value(t.answer),{a,b,c,x,v,n}=d;
  for(const s of [t,...t.steps])assert(M.accepts(s.answerFormat==='prime-factors'?s.answer.join('*'):fmt(s.answer),s),l.id+' unenterable answer');
@@ -26,7 +26,7 @@ for(const l of C.lessons.filter(l=>l.edition)){
  case 9:assert.equal(z[0]%(a*b),0);assert.equal(z[0]%(b*c),0);close(z[1]/z[0],1/(a*b));close(z[2]/z[0],1/(b*c));break;
  case 10:case 11:case 12:case 15:{const u=value(d.u),w=value(d.w);close(z,d.op==='+'?u+w:d.op==='−'?u-w:d.op==='×'?u*w:u/w);break;}
  case 13:close(z+a*c,a*b*c);break;case 16:close(z/b,a*c);break;
- case 14:case 36:close(z,(v===1?-a:a)*b+(v===1?-a:a)*(100-b));break;
+ case 14:case 36:close(z,d.distributeSubtract?a*100-a*c:(n===36&&v===1?-a:a)*b+(n===36&&v===1?-a:a)*(100-b));break;
  case 17:close(z/c,1/a+1/b);break;
  case 18:close(z[0]+z[1],a*(b+c));close(z[0]/z[1],b/c);break;
  case 19:close(z/(b*c),a/b);break;
@@ -83,5 +83,7 @@ for(const l of C.lessons.filter(l=>l.edition)){
  assert(fingerprints.size>=3,l.id+' insufficient variations');
 }
 assert.equal(E.v6.length,44);assert.equal(E.m9.length,31);assert.equal(C.pathById.vilenkin6.ids.length,44);assert.equal(C.pathById.makarychev9.ids.length,31);
+for(const total of [100,500,1000])for(const percent of [0,20,100])for(const mode of [0,1,2]){const r=D.investigate({family:'percent'},{total,percent,mode});close(r.target,[total*percent/100,total-total*percent/100,total+total*percent/100][mode]);}
+for(const a of [1,3,8])for(const b of [1,4,10])for(const c of [1,2,10])for(const mode of [0,1])for(const cut of [0,1]){const r=D.investigate({family:'distribute'},{a,b,c,mode,cut});close(r.target,mode?a*(b+c)-a*c:a*b+a*c);}
 const old=S.blank();S.result(old,{skill:'fraction',mode:'check',correct:true,assisted:false,exposed:false,attempt:1,time:1,fingerprint:'legacy'});assert.deepEqual(S.validate(old,C.lessons.map(l=>l.id)),old);
 console.log(`PASS ${checks} independently checked generated tasks, ${models} model boundaries, 75 points, legacy state.`);

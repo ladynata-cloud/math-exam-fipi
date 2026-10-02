@@ -73,6 +73,7 @@
    '<div class="row section">'+(!session.correct?button('Подсказка','hint','','quiet'):'')+
    (session.correct?button(isLearn&&session.step<parts.length-1?'Следующий шаг':session.diagnostic?'Следующий вопрос':isLearn?'Перейти к тренировке':'Следующая задача','next'):'')+
    (session.diagnostic&&!session.correct?button('Пока не знаю','skip','','quiet'):'')+'</div><div id="help"></div></section>'+
+   (l.related?'<section class="panel"><h2>Связано с этим уроком</h2><p>Открой объяснение или другой способ решения. Кнопка возврата вернёт тебя к текущему шагу.</p><div class="row">'+l.related.map(function(id){return button(esc(C.byId[id].title),'prerequisite',id,'quiet');}).join('')+'</div></section>':'')+
    '<section class="panel"><h2>Если не хватает основы</h2><p class="tiny">Открой нужную тему и вернись на этот же шаг. Условие и введённый ход работы сохранятся на время перехода.</p><div class="row">'+(l.requires.length?l.requires.map(function(id){return button(esc(C.byId[id].title),'prerequisite',id,'quiet');}).join(''):'<p>Для этого занятия специальных предварительных тем нет.</p>')+'</div></section>';
   if(isLearn)window.WorkshopModels.mount(document.getElementById('model'),t.model);
   if(session.savedInput&&!session.correct)document.getElementById('answer').value=session.savedInput;
