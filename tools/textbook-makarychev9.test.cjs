@@ -45,7 +45,7 @@ function oracle(k,t){const d=t.data,{a,b,c,h,v,sgn}=d,z=num(t.answer),eq=(x,y)=>
  case 'rational-point':eq((z-a)*(d.xx-h),b*c);break;
  case 'hole':eq(z[0],a);eq(z[1],z[0]+a);break;
  case 'zero-product':eq(z.length,2);z.forEach(x=>eq(x*(x-a),0));assert(z.includes(0));break;
- case 'discriminant':eq(z.length,2);z.forEach(x=>eq(x*x+d.bb*x+d.cc,0));break;
+ case 'discriminant':if(v===2){eq(z,'нет');for(let x=-10;x<=10;x+=.5)assert(x*x+d.bb*x+d.cc>0);}else{eq(z.length,v===0?2:1);z.forEach(x=>eq(x*x+d.bb*x+d.cc,0));}break;
  case 'biquadratic':case 'substitution':eq(z.length,4);assert(new Set(z).size===4);z.forEach(x=>{let t=k==='substitution'?x-h:x;eq(t**4-(d.u**2+d.w**2)*t*t+d.u*d.u*d.w*d.w,0);});break;
  case 'rational-domain':eq(z.filter(x=>x===a||x===-b).length,2);break;
  case 'rational-solve':assert(z!==a&&z!==-b);eq((a+1)/(z-a),a/(z+b));break;

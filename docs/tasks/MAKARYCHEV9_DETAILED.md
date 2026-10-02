@@ -22,10 +22,10 @@
 
 ## Acceptance and self-checks
 
-- [ ] Independent mathematical checks for every new task family and all answer components.
-- [ ] All 93 guided lessons complete in a real Chromium browser.
-- [ ] Lab missions, hints, new independent tasks, prerequisite return, legacy progress and backup.
-- [ ] 360 px, tablet, desktop, zoom and keyboard checks; board iframe launch.
+- [x] Independent mathematical checks for every new task family; guided answer acceptance.
+- [x] All 93 guided lessons complete in a real Chromium browser.
+- [x] Lab missions, hints, new independent tasks, prerequisite return, legacy progress and backup.
+- [x] 360 px, tablet, desktop, zoom and keyboard checks; board iframe launch.
 - [ ] Existing regression gates on exact PR head; publication and live file identity check.
 
 ## Boundaries / permissions
@@ -40,4 +40,4 @@ Risks: mathematical edge cases, answer format friction, accessibility, old progr
 
 ## Execution
 
-Implementation and checks in progress. Exact tested head and release evidence will be recorded in the PR and report. No external reviewer verdict is claimed.
+Local implementation and self-checks passed. PR #173 and `docs/reports/MAKARYCHEV9_DETAILED_20261002.md` contain scope, checks and limits. Exact-head cloud CI and live publication evidence will be recorded in PR #173. No external reviewer verdict is claimed.

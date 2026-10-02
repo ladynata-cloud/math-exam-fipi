@@ -6,7 +6,7 @@ const server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decode
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port,base=origin+'/school/index.html';const browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,headless:true,args:['--no-sandbox']});
 try{const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];page.setDefaultTimeout(12000);page.on('pageerror',e=>errors.push(e.message));
 const go=async(h,course='')=>{await page.goto(base+(course?'?course='+course:'')+'#'+h);await page.locator('h1').waitFor();};
-await go('course/vilenkin6');assert.equal(await page.locator('.v6-unit-card').count(),46);await go('course/makarychev9');assert.equal(await page.locator('.skill-row').count(),31);
+await go('course/vilenkin6');assert.equal(await page.locator('.v6-unit-card').count(),46);await go('course/makarychev9');assert.equal(await page.locator('.m9-unit-card').count(),31);
 await page.evaluate(()=>{const state=WorkshopState.blank();WorkshopState.result(state,{skill:'fraction',mode:'check',correct:true,attempt:1,assisted:false,exposed:false,time:1,fingerprint:'legacy'});WorkshopState.save(localStorage,state);localStorage.setItem('legacy-sentinel','preserve');});
 const ids=await page.evaluate(()=>WorkshopCurriculum.lessons.filter(l=>l.edition).map(l=>l.id));
 for(const [idx,id] of ids.entries()){
