@@ -6,11 +6,11 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: profile answer input and vector point polish
+## Current: repeated practice for linear equations
 
-- Remote main verified at `b0cc5306ef0020943d35234cdaa48c1c61602b49` (merged PR #180). The previous snapshot below predates that merge; live deployment is not re-certified by this task.
-- Scope: [input and vector polish](tasks/PROFILE_INPUT_VECTOR_POLISH.md). Accept implicit products with π, distinguish unreadable answers from math errors, and reduce vector endpoint size while preserving drag targets.
-- Next three actions: finish scoped validation; open the single Draft PR with exact base/head; obtain separate publication authorization before merge.
+- Verified remote main: `333417477a1446e39123e1cbf251f5956134fd92` (PR #181). The preceding π-input/vector-point release is published; Pages succeeded and its four runtime files matched the tested bytes.
+- Scope: [same-type equation practice](tasks/EQUATIONS_REPEAT_PRACTICE.md). Four additive sets of 240 linear equations, guided renewal, existing interactive model and unchanged legacy task seeds.
+- Next three actions: finish scoped validation; open one Draft PR with exact base/head and test evidence; obtain publication authorization for this new PR.
 
 ## Current: paired tutor lesson/homework and unified trigonometry
 
