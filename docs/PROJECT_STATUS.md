@@ -6,13 +6,17 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: shared school courses and routes
+## In progress: old-format Atanasyan 7–9
 
-- Branch `course/school-complete-core`, base `1d1d85fe8240b614d26b70c849b649126f6f3c96`.
-- PR #165 is published (merge `8a60fe36871ad6081d59a1352f7be27705bce553`); PR #166 versions its assets (merge/base above). Their 104 Workshop lessons and 77-source catalog are present in production.
-- Current work adds 48 author-written lessons and 9 explicit learning routes, reusing the existing task/model/progress contract. Existing geometry courses remain linked.
-- See [task](tasks/SCHOOL_COMPLETE_CORE.md) and [report](reports/SCHOOL_COMPLETE_CORE_20261002.md). Publication of this extension must be established by its PR and production checks.
-- This is a shared skill curriculum, not a claim of exhaustive coverage of all exercises in 77 editions. Exact textbook mappings retain their earlier partial status.
+- Branch `course/atanasyan-classic`, base `20fa4cb5b92e41d4218367ccd39a19310ecebb90`.
+- Source: uploaded 2014, 2nd edition. A separate course will preserve the existing 2023 route; exact numbered task coverage must be reported independently of the topic map.
+- See [scope](tasks/ATANASYAN_CLASSIC.md).
+
+## Confirmed shared school routes
+
+- PR #167 published as `20fa4cb5b92e41d4218367ccd39a19310ecebb90`, tree `c987d00d3f1632eace3ec81e3c7ad45556d90609`.
+- 48 added lessons, 152 total, 9 routes. Final-head classroom checks and Pages deployment passed; 9 public asset hashes matched and the public learning flow was checked in a real browser.
+- These are shared skill courses, not exhaustive solutions for all 77 source textbooks.
 
 ## Confirmed preceding EGE release
 
