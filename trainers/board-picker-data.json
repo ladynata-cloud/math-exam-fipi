@@ -12,222 +12,1192 @@
       "href": "/school/index.html?course=vilenkin6#course/vilenkin6"
     },
     {
-      "title": "1. Среднее арифметическое",
+      "title": "Пункт 1 · Среднее как справедливое распределение",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mean-share"
+    },
+    {
+      "title": "Пункт 1 · Вычисляем среднее, в том числе дробное",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mean-calculate"
+    },
+    {
+      "title": "Пункт 1 · Восстанавливаем пропущенное значение",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mean-missing"
+    },
+    {
+      "title": "Пункт 1 · Среднее двух разных групп",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mean-weighted"
+    },
+    {
+      "title": "Пункт 2 · Что принято за 100%",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-meaning"
+    },
+    {
+      "title": "Пункт 2 · Дробь, десятичная запись и проценты",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-convert"
+    },
+    {
+      "title": "Пункт 2 · Удобные проценты в уме",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-common"
+    },
+    {
+      "title": "Пункт 2 · Находим процент от числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-part"
+    },
+    {
+      "title": "Пункт 2 · Дробные проценты и проценты больше 100",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-small"
+    },
+    {
+      "title": "Пункт 2 · Находим целое по его процентам",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-whole"
+    },
+    {
+      "title": "Пункт 2 · Сколько процентов одно число составляет от другого",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-ratio"
+    },
+    {
+      "title": "Пункт 2 · Скидка: размер и новая цена",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-discount"
+    },
+    {
+      "title": "Пункт 2 · Рост: прибавка и итог",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-increase"
+    },
+    {
+      "title": "Пункт 2 · Возвращаемся от новой цены к старой",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-reverse"
+    },
+    {
+      "title": "Пункт 2 · Два изменения: следим за новой базой",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-percent-chain"
+    },
+    {
+      "title": "Пункт 3 · Читаем доли на круговой диаграмме",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-pie-read"
+    },
+    {
+      "title": "Пункт 3 · Из процентов в градусы",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-pie-angle"
+    },
+    {
+      "title": "Пункт 3 · Строим диаграмму и находим остаток",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-pie-build"
+    },
+    {
+      "title": "Пункт 4 · Треугольники: смотрим на стороны",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-triangle-sides"
+    },
+    {
+      "title": "Пункт 4 · Треугольники: смотрим на углы",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-triangle-angles"
+    },
+    {
+      "title": "Пункт 4 · Находим неизвестный угол",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-triangle-sum"
+    },
+    {
+      "title": "Пункт 4 · Равнобедренный треугольник: два равных угла",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-triangle-isosceles"
+    },
+    {
+      "title": "Пункт 4 · Можно ли построить такой треугольник",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-triangle-exists"
+    },
+    {
+      "title": "Пункт 5 · Элемент множества и повторения",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-sets-members"
+    },
+    {
+      "title": "Пункт 5 · Пересечение: что есть в обоих множествах",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-sets-intersection"
+    },
+    {
+      "title": "Пункт 5 · Объединение: собираем без повторов",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-sets-union"
+    },
+    {
+      "title": "Пункт 5 · Кружки, опросы и диаграмма Эйлера",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-sets-count"
+    },
+    {
+      "title": "Пункт 5 · Подмножество и контрпример",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-sets-subset"
+    },
+    {
+      "title": "Пункт 6 · Простое, составное или единица",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-prime-test"
+    },
+    {
+      "title": "Пункт 6 · Признаки делимости помогают считать",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-divisibility"
+    },
+    {
+      "title": "Пункт 6 · Разлагаем число на простые множители",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-prime-factor"
+    },
+    {
+      "title": "Пункт 6 · Находим пропущенный множитель",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-prime-repair"
+    },
+    {
+      "title": "Пункт 7 · Общие делители: от списка к НОД",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-gcd-list"
+    },
+    {
+      "title": "Пункт 7 · НОД через общие простые множители",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-gcd-primes"
+    },
+    {
+      "title": "Пункт 7 · Одинаковые наборы без остатка",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-gcd-packs"
+    },
+    {
+      "title": "Пункт 7 · Взаимно простые числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-coprime"
+    },
+    {
+      "title": "Пункт 8 · Общее кратное и НОК",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-lcm-find"
+    },
+    {
+      "title": "Пункт 8 · НОК через простые множители",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-lcm-primes"
+    },
+    {
+      "title": "Пункт 8 · Когда события снова совпадут",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-lcm-events"
+    },
+    {
+      "title": "Пункт 9 · Равные дроби: меняем размер долек",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-equivalent"
+    },
+    {
+      "title": "Пункт 9 · Выбираем общий знаменатель",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-lcd"
+    },
+    {
+      "title": "Пункт 9 · Дополнительные множители",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-convert"
+    },
+    {
+      "title": "Пункт 10 · Сравниваем дроби с разными знаменателями",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-compare"
+    },
+    {
+      "title": "Пункт 10 · Складываем дроби",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-add"
+    },
+    {
+      "title": "Пункт 10 · Вычитаем дроби",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-subtract"
+    },
+    {
+      "title": "Пункт 10 · Обыкновенные и десятичные дроби вместе",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-decimal"
+    },
+    {
+      "title": "Пункт 10 · Несколько действий с дробями",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-brackets"
+    },
+    {
+      "title": "Пункт 11 · Смешанное число и неправильная дробь",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-convert"
+    },
+    {
+      "title": "Пункт 11 · Сложение с появлением целой единицы",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-add"
+    },
+    {
+      "title": "Пункт 11 · Вычитание без занимания",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-subtract"
+    },
+    {
+      "title": "Пункт 11 · Занимаем целую единицу",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-borrow"
+    },
+    {
+      "title": "Пункт 11 · Из целого вычитаем дробь",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-whole-minus-fraction"
+    },
+    {
+      "title": "Пункт 12 · Умножаем дробь на натуральное число",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-times-int"
+    },
+    {
+      "title": "Пункт 12 · Доля от доли: умножение дробей",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-multiply"
+    },
+    {
+      "title": "Пункт 12 · Сокращаем до умножения",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-cancel"
+    },
+    {
+      "title": "Пункт 12 · Умножение смешанных чисел",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-multiply"
+    },
+    {
+      "title": "Пункт 12 · Площадь с дробными длинами",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-area"
+    },
+    {
+      "title": "Пункт 13 · Находим дробь от количества",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-part"
+    },
+    {
+      "title": "Пункт 13 · Находим оставшуюся часть",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-remain"
+    },
+    {
+      "title": "Пункт 13 · Доля от остатка: целое поменялось",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-of-remainder"
+    },
+    {
+      "title": "Пункт 13 · Связанные размеры и объём",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-volume"
+    },
+    {
+      "title": "Пункт 14 · Раскрываем скобки при сложении",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-distribute-add"
+    },
+    {
+      "title": "Пункт 14 · Раскрываем скобки при вычитании",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-distribute-sub"
+    },
+    {
+      "title": "Пункт 14 · Выносим общий множитель",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-distribute-factor"
+    },
+    {
+      "title": "Пункт 14 · Удобный счёт с дробями",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-distribute-fractions"
+    },
+    {
+      "title": "Пункт 15 · Взаимно обратные числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-reciprocal"
+    },
+    {
+      "title": "Пункт 15 · Делим дробь на натуральное число",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-divide-int"
+    },
+    {
+      "title": "Пункт 15 · Сколько раз одна дробь содержится в другой",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-divide"
+    },
+    {
+      "title": "Пункт 15 · Делим смешанные числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-divide"
+    },
+    {
+      "title": "Пункт 15 · Цена, скорость и производительность с дробями",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-unit-rate"
+    },
+    {
+      "title": "Пункт 15 · Неизвестное в дробном умножении и делении",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-unknown"
+    },
+    {
+      "title": "Пункт 16 · Находим целое по его дроби",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-whole-from-fraction"
+    },
+    {
+      "title": "Пункт 16 · Восстанавливаем целое по остатку",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-whole-from-remainder"
+    },
+    {
+      "title": "Пункт 16 · Восстанавливаем целое после двух расходов",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-whole-two-parts"
+    },
+    {
+      "title": "Пункт 17 · Дробная черта заменяет скобки",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-bar"
+    },
+    {
+      "title": "Пункт 17 · Скобки, умножение, деление: сохраняем порядок",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-order"
+    },
+    {
+      "title": "Пункт 17 · Многоэтажная дробь",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-complex"
+    },
+    {
+      "title": "Пункт 18 · Отношение и одинаковые единицы",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-ratio-units"
+    },
+    {
+      "title": "Пункт 18 · Сокращаем отношение",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-ratio-reduce"
+    },
+    {
+      "title": "Пункт 18 · Делим целое в заданном отношении",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-ratio-split"
+    },
+    {
+      "title": "Пункт 18 · Находим количества по отношению и разности",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-ratio-difference"
+    },
+    {
+      "title": "Пункт 19 · Когда два отношения образуют пропорцию",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-proportion-check"
+    },
+    {
+      "title": "Пункт 19 · Находим неизвестный член пропорции",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-proportion-missing"
+    },
+    {
+      "title": "Пункт 19 · Рецепт: сколько нужно на новую порцию",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-proportion-recipe"
+    },
+    {
+      "title": "Пункт 19 · Процент через пропорцию",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-proportion-percent"
+    },
+    {
+      "title": "Пункт 20 · Прямая пропорциональность",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-direct"
+    },
+    {
+      "title": "Пункт 20 · Обратная пропорциональность",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-inverse"
+    },
+    {
+      "title": "Пункт 20 · Выбираем тип зависимости",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-proportion-choice"
+    },
+    {
+      "title": "Пункт 20 · Работа в огородах — без икса",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-work-gardens"
+    },
+    {
+      "title": "Пункт 20 · Работают вместе: складываем производительности",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-joint-work"
+    },
+    {
+      "title": "Пункт 20 · Встреча и догонка",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-motion-meeting"
+    },
+    {
+      "title": "Пункт 21 · От расстояния на карте к действительному",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-scale-real"
+    },
+    {
+      "title": "Пункт 21 · От действительного расстояния к карте",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-scale-map"
+    },
+    {
+      "title": "Пункт 21 · Находим масштаб",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-scale-find"
+    },
+    {
+      "title": "Пункт 22 · Отражаем точку относительно оси",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-symmetry-axis"
+    },
+    {
+      "title": "Пункт 22 · Центральная симметрия",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-symmetry-center"
+    },
+    {
+      "title": "Пункт 22 · Ось симметрии не обязана проходить через начало",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-symmetry-line"
+    },
+    {
+      "title": "Пункт 22 · Строим отражение фигуры по вершинам",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-symmetry-polygon"
+    },
+    {
+      "title": "Пункт 23 · Окружность, круг, радиус и диаметр",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-circle-radius"
+    },
+    {
+      "title": "Пункт 23 · Длина окружности: разворачиваем обод",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-circle-length"
+    },
+    {
+      "title": "Пункт 23 · Площадь круга: квадрат радиуса",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-circle-area"
+    },
+    {
+      "title": "Пункт 23 · Восстанавливаем радиус по окружности",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-circle-inverse"
+    },
+    {
+      "title": "Пункт 23 · Шар, сфера и сечение",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-sphere-solids"
+    },
+    {
+      "title": "Пункт 24 · Плюс и минус описывают направление",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-signed-context"
+    },
+    {
+      "title": "Пункт 24 · Читаем координатную прямую",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-signed-scale"
+    },
+    {
+      "title": "Пункт 24 · Расставляем события относительно нуля",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-signed-order"
+    },
+    {
+      "title": "Пункт 25 · Противоположное число",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-opposite"
+    },
+    {
+      "title": "Пункт 25 · Знак перед отрицательным числом",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-minus-minus"
+    },
+    {
+      "title": "Пункт 25 · Уравнение с противоположным числом",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-opposite-equation"
+    },
+    {
+      "title": "Пункт 26 · Модуль — расстояние до нуля",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-absolute"
+    },
+    {
+      "title": "Пункт 26 · Какие числа имеют данный модуль",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-absolute-roots"
+    },
+    {
+      "title": "Пункт 26 · Расстояние между двумя точками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-distance-points"
+    },
+    {
+      "title": "Пункт 26 · Расстояние до другой отметки",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-absolute-shift"
+    },
+    {
+      "title": "Пункт 27 · Сравниваем отрицательные числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-negative-compare"
+    },
+    {
+      "title": "Пункт 27 · Сравниваем отрицательные дроби",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-negative-fractions"
+    },
+    {
+      "title": "Пункт 27 · Целые числа между границами",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-integers-between"
+    },
+    {
+      "title": "Пункт 28 · Изменение равно новому минус старое",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-change"
+    },
+    {
+      "title": "Пункт 28 · Находим результат по изменению",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-change-final"
+    },
+    {
+      "title": "Пункт 28 · Восстанавливаем исходное значение",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-change-start"
+    },
+    {
+      "title": "Пункт 29 · Прибавление положительного: движение вправо",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-line-positive"
+    },
+    {
+      "title": "Пункт 29 · Прибавление отрицательного: движение влево",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-line-negative"
+    },
+    {
+      "title": "Пункт 29 · Несколько перемещений подряд",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-line-chain"
+    },
+    {
+      "title": "Пункт 30 · Складываем два отрицательных числа",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-negative-add"
+    },
+    {
+      "title": "Пункт 30 · Сумма отрицательных десятичных дробей",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-negative-decimal-add"
+    },
+    {
+      "title": "Пункт 30 · Сумма отрицательных обыкновенных дробей",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-negative-fraction-add"
+    },
+    {
+      "title": "Пункт 31 · Разные знаки: взаимное погашение",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-sign-add"
+    },
+    {
+      "title": "Пункт 31 · Разные знаки и десятичные дроби",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-sign-decimal"
+    },
+    {
+      "title": "Пункт 31 · Разные знаки и дроби",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-sign-fractions"
+    },
+    {
+      "title": "Пункт 31 · Ищем противоположные пары",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-cancel-pairs"
+    },
+    {
+      "title": "Пункт 32 · Вычитание заменяем сложением",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-subtract-rule"
+    },
+    {
+      "title": "Пункт 32 · Вычитаем отрицательное число",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-subtract-negative"
+    },
+    {
+      "title": "Пункт 32 · Вычитание чисел разных записей",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-subtract-fractions"
+    },
+    {
+      "title": "Пункт 32 · Цепочка сложений и вычитаний",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-subtract-chain"
+    },
+    {
+      "title": "Пункт 33 · Знак произведения",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-multiply-sign"
+    },
+    {
+      "title": "Пункт 33 · Произведение десятичных чисел со знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-multiply-decimal"
+    },
+    {
+      "title": "Пункт 33 · Произведение дробей со знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-multiply-fractions"
+    },
+    {
+      "title": "Пункт 33 · Несколько отрицательных множителей и ноль",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-multiply-many"
+    },
+    {
+      "title": "Пункт 34 · Знак частного и проверка умножением",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-divide-sign"
+    },
+    {
+      "title": "Пункт 34 · Делим десятичные числа со знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-divide-decimal"
+    },
+    {
+      "title": "Пункт 34 · Частное дробей со знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-divide-fractions"
+    },
+    {
+      "title": "Пункт 34 · Неизвестное делимое или делитель",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-divide-unknown"
+    },
+    {
+      "title": "Пункт 35 · Десятичная дробь как отношение целых",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-rational-decimal"
+    },
+    {
+      "title": "Пункт 35 · Когда дробь превращается в конечную десятичную",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-rational-finite"
+    },
+    {
+      "title": "Пункт 35 · Периодическая дробь и точность",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-rational-period"
+    },
+    {
+      "title": "Пункт 36 · Группируем сумму со знаками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-properties-group"
+    },
+    {
+      "title": "Пункт 36 · Удобное произведение",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-properties-product"
+    },
+    {
+      "title": "Пункт 36 · Выносим общий множитель со знаком",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-properties-factor"
+    },
+    {
+      "title": "Пункт 36 · Степени, скобки и порядок действий",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-properties-order"
+    },
+    {
+      "title": "Пункт 37 · Плюс перед скобками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-brackets-plus"
+    },
+    {
+      "title": "Пункт 37 · Минус перед скобками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-brackets-minus"
+    },
+    {
+      "title": "Пункт 37 · Множитель перед скобками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-brackets-factor"
+    },
+    {
+      "title": "Пункт 37 · Скобки внутри скобок",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-brackets-nested"
+    },
+    {
+      "title": "Пункт 38 · Числовой коэффициент",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-coefficient-read"
+    },
+    {
+      "title": "Пункт 38 · Находим коэффициент произведения",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-coefficient-product"
+    },
+    {
+      "title": "Пункт 38 · Дробные коэффициенты",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-coefficient-fraction"
+    },
+    {
+      "title": "Пункт 39 · Какие слагаемые подобны",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-like-recognize"
+    },
+    {
+      "title": "Пункт 39 · Складываем коэффициенты",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-like-combine"
+    },
+    {
+      "title": "Пункт 39 · Несколько групп подобных",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-like-two-letters"
+    },
+    {
+      "title": "Пункт 39 · Сначала раскрываем, потом объединяем",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-like-after-brackets"
+    },
+    {
+      "title": "Пункт 40 · Обратные действия и проверка корня",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-inverse"
+    },
+    {
+      "title": "Пункт 40 · Неизвестное с двух сторон",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-both"
+    },
+    {
+      "title": "Пункт 40 · Уравнение со скобками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-brackets"
+    },
+    {
+      "title": "Пункт 40 · Убираем знаменатели уравнения",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-fractions"
+    },
+    {
+      "title": "Пункт 40 · Десятичные коэффициенты",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-decimals"
+    },
+    {
+      "title": "Пункт 40 · Нет решений или подходит любое число",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-special"
+    },
+    {
+      "title": "Пункт 40 · Текстовая задача: выбираем одну часть",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-parts"
+    },
+    {
+      "title": "Пункт 40 · Один путь — разные скорости и времена",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-motion"
+    },
+    {
+      "title": "Пункт 40 · Переложили — количества изменились",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-transfer"
+    },
+    {
+      "title": "Пункт 40 · Добавление вещества в смесь",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-equation-mixture"
+    },
+    {
+      "title": "Пункт 41 · Прямой угол и перпендикулярность",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-perpendicular-angle"
+    },
+    {
+      "title": "Пункт 41 · Проводим перпендикуляр через точку",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-perpendicular-build"
+    },
+    {
+      "title": "Пункт 41 · Расстояние от точки до прямой",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-perpendicular-distance"
+    },
+    {
+      "title": "Пункт 42 · Параллельные прямые и конечные отрезки",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-parallel-definition"
+    },
+    {
+      "title": "Пункт 42 · Строим параллельную через точку",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-parallel-build"
+    },
+    {
+      "title": "Пункт 42 · Параллельность по клеткам",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-parallel-grid"
+    },
+    {
+      "title": "Пункт 43 · Читаем координаты точки",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-coordinates-read"
+    },
+    {
+      "title": "Пункт 43 · Ставим точку своими руками",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-coordinates-place"
+    },
+    {
+      "title": "Пункт 43 · Оси и четверти",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-coordinates-axis"
+    },
+    {
+      "title": "Пункт 43 · Достраиваем прямоугольник на сетке",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-coordinates-rectangle"
+    },
+    {
+      "title": "Пункт 43 · Читаем фигуру по её вершинам",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-coordinates-polygon"
+    },
+    {
+      "title": "Пункт 44 · Читаем шкалы и значения графика",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-graph-read"
+    },
+    {
+      "title": "Пункт 44 · Строим график по таблице",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-graph-build"
+    },
+    {
+      "title": "Пункт 44 · Движение, остановки и возвращение",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-graph-journey"
+    },
+    {
+      "title": "Пункт 44 · Скорость на участке графика",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-graph-speed"
+    },
+    {
+      "title": "Пункт 44 · Максимум, минимум и изменения",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-graph-temperature"
+    },
+    {
+      "title": "Пункт 45 · Проверяем вычисления и проценты",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-review-numbers"
+    },
+    {
+      "title": "Пункт 45 · Проверяем все действия с дробями",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-review-fractions"
+    },
+    {
+      "title": "Пункт 45 · Проверяем пропорции и зависимости",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-review-ratios"
+    },
+    {
+      "title": "Пункт 45 · Проверяем знаки и порядок действий",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-review-signed"
+    },
+    {
+      "title": "Пункт 45 · Проверяем уравнения и подстановку",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-review-equations"
+    },
+    {
+      "title": "Пункт 45 · Проверяем координаты и измерения",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-review-geometry"
+    },
+    {
+      "title": "Пункт 46 · Проект: покупки к школьному празднику",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-project-budget"
+    },
+    {
+      "title": "Пункт 46 · Проект: планируем огород",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-project-garden"
+    },
+    {
+      "title": "Пункт 46 · Проект: поездка с остановкой",
+      "group": "Виленкин · 6 класс",
+      "href": "/school/index.html?course=vilenkin6#lesson/v6f-project-route"
+    },
+    {
+      "title": "Обзор · 1. Среднее арифметическое",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-01"
     },
     {
-      "title": "2. Проценты",
+      "title": "Обзор · 2. Проценты",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-02"
     },
     {
-      "title": "3. Круговые диаграммы",
+      "title": "Обзор · 3. Круговые диаграммы",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-03"
     },
     {
-      "title": "4. Виды треугольников",
+      "title": "Обзор · 4. Виды треугольников",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-04"
     },
     {
-      "title": "5. Множества",
+      "title": "Обзор · 5. Множества",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-05"
     },
     {
-      "title": "6. Разложение на простые множители",
+      "title": "Обзор · 6. Разложение на простые множители",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-06"
     },
     {
-      "title": "7. НОД и взаимно простые числа",
+      "title": "Обзор · 7. НОД и взаимно простые числа",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-07"
     },
     {
-      "title": "8. Наименьшее общее кратное",
+      "title": "Обзор · 8. Наименьшее общее кратное",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-08"
     },
     {
-      "title": "9. Наименьший общий знаменатель",
+      "title": "Обзор · 9. Наименьший общий знаменатель",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-09"
     },
     {
-      "title": "10. Сравнение, сложение и вычитание дробей",
+      "title": "Обзор · 10. Сравнение, сложение и вычитание дробей",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-10"
     },
     {
-      "title": "11. Сложение и вычитание смешанных чисел",
+      "title": "Обзор · 11. Сложение и вычитание смешанных чисел",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-11"
     },
     {
-      "title": "12. Умножение смешанных чисел",
+      "title": "Обзор · 12. Умножение смешанных чисел",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-12"
     },
     {
-      "title": "13. Дробь от числа",
+      "title": "Обзор · 13. Дробь от числа",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-13"
     },
     {
-      "title": "14. Распределительное свойство",
+      "title": "Обзор · 14. Распределительное свойство",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-14"
     },
     {
-      "title": "15. Деление смешанных чисел",
+      "title": "Обзор · 15. Деление смешанных чисел",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-15"
     },
     {
-      "title": "16. Число по его дроби",
+      "title": "Обзор · 16. Число по его дроби",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-16"
     },
     {
-      "title": "17. Дробные выражения",
+      "title": "Обзор · 17. Дробные выражения",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-17"
     },
     {
-      "title": "18. Отношения",
+      "title": "Обзор · 18. Отношения",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-18"
     },
     {
-      "title": "19. Пропорция",
+      "title": "Обзор · 19. Пропорция",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-19"
     },
     {
-      "title": "20. Прямая и обратная пропорциональность",
+      "title": "Обзор · 20. Прямая и обратная пропорциональность",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-20"
     },
     {
-      "title": "21. Масштаб",
+      "title": "Обзор · 21. Масштаб",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-21"
     },
     {
-      "title": "22. Осевая и центральная симметрия",
+      "title": "Обзор · 22. Осевая и центральная симметрия",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-22"
     },
     {
-      "title": "23. Окружность, круг и шар",
+      "title": "Обзор · 23. Окружность, круг и шар",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-23"
     },
     {
-      "title": "24. Положительные и отрицательные числа",
+      "title": "Обзор · 24. Положительные и отрицательные числа",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-24"
     },
     {
-      "title": "25. Противоположные числа",
+      "title": "Обзор · 25. Противоположные числа",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-25"
     },
     {
-      "title": "26. Модуль числа",
+      "title": "Обзор · 26. Модуль числа",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-26"
     },
     {
-      "title": "27. Сравнение чисел со знаками",
+      "title": "Обзор · 27. Сравнение чисел со знаками",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-27"
     },
     {
-      "title": "28. Изменение величин",
+      "title": "Обзор · 28. Изменение величин",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-28"
     },
     {
-      "title": "29. Сложение на координатной прямой",
+      "title": "Обзор · 29. Сложение на координатной прямой",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-29"
     },
     {
-      "title": "30. Сложение отрицательных чисел",
+      "title": "Обзор · 30. Сложение отрицательных чисел",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-30"
     },
     {
-      "title": "31. Сложение чисел с разными знаками",
+      "title": "Обзор · 31. Сложение чисел с разными знаками",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-31"
     },
     {
-      "title": "32. Вычитание чисел со знаками",
+      "title": "Обзор · 32. Вычитание чисел со знаками",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-32"
     },
     {
-      "title": "33. Умножение чисел со знаками",
+      "title": "Обзор · 33. Умножение чисел со знаками",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-33"
     },
     {
-      "title": "34. Деление чисел со знаками",
+      "title": "Обзор · 34. Деление чисел со знаками",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-34"
     },
     {
-      "title": "35. Рациональные числа",
+      "title": "Обзор · 35. Рациональные числа",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-35"
     },
     {
-      "title": "36. Свойства действий с рациональными числами",
+      "title": "Обзор · 36. Свойства действий с рациональными числами",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-36"
     },
     {
-      "title": "37. Раскрытие скобок",
+      "title": "Обзор · 37. Раскрытие скобок",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-37"
     },
     {
-      "title": "38. Коэффициент",
+      "title": "Обзор · 38. Коэффициент",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-38"
     },
     {
-      "title": "39. Подобные слагаемые",
+      "title": "Обзор · 39. Подобные слагаемые",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-39"
     },
     {
-      "title": "40. Решение уравнений",
+      "title": "Обзор · 40. Решение уравнений",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-40"
     },
     {
-      "title": "41. Перпендикулярные прямые",
+      "title": "Обзор · 41. Перпендикулярные прямые",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-41"
     },
     {
-      "title": "42. Параллельные прямые",
+      "title": "Обзор · 42. Параллельные прямые",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-42"
     },
     {
-      "title": "43. Координатная плоскость",
+      "title": "Обзор · 43. Координатная плоскость",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-43"
     },
     {
-      "title": "44. Чтение и построение графиков",
+      "title": "Обзор · 44. Чтение и построение графиков",
       "group": "Виленкин · 6 класс",
       "href": "/school/index.html?course=vilenkin6#lesson/v6-44"
     },

@@ -204,7 +204,7 @@ function install(C,E){
  units.push({point:45,title:'Проверяем большие разделы',part:2,page:124,ids:[]},{point:46,title:'Применяем математику: три проекта',part:2,page:124,ids:[]});
  for(const r of rows){const unit=units[r.point-1],old=r.point<=44?E.v6[r.point-1]:null,id='v6f-'+r.key;
   const prerequisites=r.base?[r.base]:old?[old[1]]:['v6-40'];
-  const lesson={id,title:r.title,grade:6,area:'Виленкин · подробный курс',point:r.point,v6Course:true,minutes:r.point>=45?25:15,order:C.lessons.length,requires:prerequisites,explanation:r.idea,detail:[['Смысл',r.idea],['Разобранный пример',r.example.join(' → ')],['Проверь рассуждение',r.trap]],worked:r.example,reflect:[r.question,'Объясни каждый шаг своего решения. Как проверить результат другим способом?'],claim:r.trap,claimTrue:false,source:{book:'Виленкин · 6 класс · 2024',point:r.point<=44?r.point:'повторение',part:unit.part,page:unit.page},related:[],fullKey:r.key};
+  const lesson={id,title:r.title,grade:6,area:'Виленкин · подробный курс',point:r.point,v6Course:true,minutes:r.point>=45?25:15,order:C.lessons.length,requires:prerequisites,explanation:r.idea,detail:[['Смысл',r.idea],['Разобранный пример',r.example.join(' → ')],['Проверь рассуждение',r.trap]],worked:r.example,reflect:[r.question,'Объясни каждый шаг своего решения. Как проверить результат другим способом?'],misconception:r.trap,claim:r.point%2?r.trap:r.idea.split('. ')[0],claimTrue:r.point%2===0,source:{book:'Виленкин · 6 класс · 2024',point:r.point<=44?r.point:'повторение',part:unit.part,page:unit.page},related:[],fullKey:r.key};
   C.lessons.push(lesson);C.byId[id]=lesson;unit.ids.push(id);
  }
  const links={

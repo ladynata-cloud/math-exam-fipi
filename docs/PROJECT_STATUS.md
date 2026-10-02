@@ -11,7 +11,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - PR #169 is merged as `5c49cc5c16ca2385624082128cf6439d1a57c951` and published. Its exact final head `5f0e996878e7604dd02d9ec7db0c1884131225e0` passed CI run 36977093371; Pages run 36977405468 and public file/browser checks confirmed the release.
 - The published Workshop has 227 lessons and 11 routes, including 44 Vilenkin heading-level lessons and 31 Makarychev lessons. Topic coverage is not exhaustive numbered-exercise coverage.
 - Current branch `course/vilenkin6-full` starts from that published main; [scope](tasks/VILENKIN6_FULL.md). The owner requested a genuinely detailed, interactive Vilenkin 6 course.
-- Work in progress: 194 authored micro-lessons cover the 44 points, chapter reviews and three applications. Varied task generators exist; interactive models, navigation and final verification are still being implemented. This checkpoint is not a published completed course.
+- PR #170 release candidate: 194 authored micro-lessons, 25 interactive model families, guided hints, varied practice, unit navigation and board links. Local mathematics and browser scenarios are checked; final full CI and publication evidence belong in PR #170. See [coverage](VILENKIN6_FULL_COURSE.md) and [candidate report](reports/VILENKIN6_FULL_20261002.md). This snapshot does not itself claim publication.
 - Existing lesson IDs, local progress and other courses are preserved. Board opening remains supported; internal mirroring of Workshop actions is not claimed.
 - Classic Atanasyan draft PR #168 remains outside this release.
 
