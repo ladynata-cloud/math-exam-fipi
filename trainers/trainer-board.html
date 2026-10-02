@@ -12,62 +12,46 @@
     :root{--bg:#f6f7fb;--panel:#fff;--ink:#172033;--muted:#647086;--line:#dfe5ef;--blue:#2563eb;--blue-soft:#eef4ff;--green:#15803d;--red:#be123c;--amber:#b45309;--shadow:0 10px 24px rgba(23,32,51,.08)}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow:auto}.lesson{min-height:calc(100vh - 58px);height:auto;padding:12px;display:grid;grid-template-columns:minmax(360px,.92fr) minmax(480px,1.08fr);gap:12px}.lesson.hide-trainer{grid-template-columns:1fr}.hide-trainer .trainer{display:none}.trainer,.board{min-width:0;min-height:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}.head,.board-head,.share,.toolbar{padding:12px;border-bottom:1px solid var(--line);background:#fff}.url-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}.share-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:end}label{display:block;color:var(--muted);font-size:13px;font-weight:800;margin-bottom:4px}input[type=text],input[type=url],select{min-height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:8px 10px}.btn,.tool,.quick{min-height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-weight:800;padding:8px 11px;cursor:pointer;white-space:nowrap}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.warn{color:var(--red);border-color:#f3cbd4;background:#fff7f9}.btn:disabled,.tool:disabled{opacity:.45;cursor:not-allowed}.btn:hover,.quick:hover,.tool[aria-pressed=true]{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}.btn.primary:hover{background:#1d4ed8;color:#fff}.quick-row,.mirror-row,.sheet,.tools,.actions,.share-meta,.participants-list,.control-panel{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.quick-row,.mirror-row{margin-top:10px}.frame{width:100%;flex:1;min-height:0;border:0;background:#fff}.board-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.title h1{font-size:22px;margin:0 0 4px}.title p{margin:0;color:var(--muted);font-weight:700}.sheet-count{min-width:92px;text-align:center;color:var(--muted);font-weight:800}.share{background:#fbfcff}.share h2{font-size:16px;margin:0 0 10px}.share input{width:100%}.share-link{margin-top:8px}.share-link input{font-size:13px}.participants{margin-top:8px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 10px}.participants b{display:block;margin-bottom:6px;font-size:13px}.participants-list{gap:6px}.participant{display:inline-flex;align-items:center;gap:6px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;padding:5px 8px;color:#334155;font-size:12px;font-weight:800}.participant-dot{width:9px;height:9px;border-radius:999px;display:inline-block;flex:0 0 auto}.participant-role{color:#64748b}.participant-status{color:#166534}.participant.offline{opacity:.72}.participant.offline .participant-status{color:#9f1239}.participant.local .participant-status{color:#64748b}.participants-empty{color:#64748b;font-size:12px;font-weight:800}.board-tip{margin:-2px 0 10px;color:#475569;font-size:13px;font-weight:800;line-height:1.4}.status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:900}.status.ok{background:#dcfce7;color:#166534}.status.bad{background:#ffe4e6;color:#9f1239}.status.wait{background:#fef3c7;color:#92400e}.role{display:inline-flex;border-radius:999px;padding:5px 9px;background:#f1f5f9;color:#334155;font-size:12px;font-weight:900}.viewer-note,.control-banner{display:none;margin-top:8px;border:1px solid #bae6fd;background:#f0f9ff;color:#075985;border-radius:8px;padding:8px 10px;font-weight:800}.control-banner{justify-content:space-between;gap:10px;align-items:center}.student-mode .viewer-note{display:block}.student-mode.control-owner .viewer-note{display:none}.student-mode.control-owner .control-banner{display:flex}.student-mode .teacher-only{display:none!important}.student-mode:not(.control-owner) .toolbar{display:none}.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;background:#f8fafc}.tools>span{height:32px;border-left:1px solid var(--line)}input[type=color]{width:44px;height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:4px}input[type=range]{width:112px}.size{min-width:42px;color:var(--muted);font-weight:800}.canvas-wrap{position:relative;flex:1 1 360px;min-height:360px;padding:12px;background:#eef2f7}canvas{display:block;width:100%;height:100%;min-height:0;border:1px solid var(--line);border-radius:8px;background:#fff;touch-action:none;cursor:crosshair}.viewer canvas{cursor:default}.viewer .frame{pointer-events:none}.editor{position:absolute;z-index:4;min-width:170px;min-height:42px;border:2px solid var(--blue);border-radius:8px;padding:8px 10px;background:#fff;color:var(--ink);box-shadow:0 12px 28px rgba(23,32,51,.18);font:20px Inter,system-ui,sans-serif;resize:both}.hidden{display:none}@media(max-width:1050px){body{overflow:auto}.lesson{height:auto;min-height:calc(100vh - 58px);grid-template-columns:1fr;grid-template-rows:minmax(340px,42vh) minmax(620px,1fr)}.toolbar{grid-template-columns:1fr}.actions{justify-content:flex-start}}@media(max-width:720px){.lesson{padding:8px}.url-row,.share-row{grid-template-columns:1fr}.board-head{display:block}.sheet{margin-top:10px}.canvas-wrap{min-height:460px}}
   </style>
-  <link rel="stylesheet" href="board-picker.css?v=20261002-editions-1">
+  <link rel="stylesheet" href="board-picker.css?v=20261002-compact-1">
 </head>
 <body>
-  <header class="site-header"><div class="container"><a class="logo" href="/"><span class="logo-mark">∑</span><span>MathExam</span></a><nav class="site-nav" aria-label="Основные разделы"><a href="/">Главная</a><a href="/trainers/" aria-current="page">Каталог</a><a href="/oge/">ОГЭ</a><a href="/geometry-course/">Геометрия 7</a><a href="/pedagogam/">Педагогам</a></nav></div></header>
+  <header class="workspace-bar">
+    <a class="workspace-brand" href="/">∑ <span>MathExam</span></a><span class="workspace-caption">Урок</span>
+    <a class="workspace-catalog" href="/courses/">Все курсы</a>
+    <div class="workspace-session"><span class="status" id="shareStatus" role="status">локальный режим</span><button class="btn primary" id="openShare" type="button" data-open-panel="sharePanel">Участники</button></div>
+  </header>
   <main class="lesson" id="lesson">
     <section class="trainer" aria-label="Тренажёр">
       <div class="head">
-        <div class="picker-top"><button class="btn primary teacher-only" id="chooseTrainer" type="button">Выбрать тренажёр</button><button class="btn" id="expandTrainer" type="button" aria-pressed="false">Развернуть</button></div>
-        <div class="board-courses teacher-only" aria-label="Курсы для урока"><button class="btn" data-course-picker="Виленкин · 5 класс">Виленкин 5</button><button class="btn" data-course-picker="Виленкин · 6 класс">Виленкин 6</button><button class="btn" data-course-picker="Макарычев · 9 класс">Макарычев 9</button></div>
-        <div class="board-layout"><label for="boardLayout">Место на экране</label><select id="boardLayout"><option value="balanced">Поровну</option><option value="trainer">Больше тренажёр</option><option value="board">Больше доска</option></select><button class="btn" id="focusBoard" type="button">К записям ↓</button></div>
-        <p class="opened-title" id="openedTrainerTitle">Тренажёр</p>
-        <div class="recent-trainers teacher-only" id="recentTrainers" aria-label="Недавние тренажёры" hidden></div>
-        <details class="manual-entry" id="manualTrainerEntry" open><summary>Открыть по ссылке</summary>
-        <label for="trainerUrl">Или вставьте ссылку</label>
-        <div class="url-row">
-          <input id="trainerUrl" type="text" value="negative-numbers-line.html" autocomplete="off">
-          <button class="btn primary teacher-only" id="openTrainer" type="button">Открыть</button>
-          <button class="btn teacher-only" id="toggleTrainer" type="button">Скрыть тренажёр</button>
-        </div>
-        </details>
-        <details class="legacy-quick teacher-only" open><summary>Быстрый список</summary><div class="quick-row" aria-label="Быстрые тренажёры">
-          <select id="trainerQuick" aria-label="Быстрый выбор тренажёра">
-            <option value="">Быстрый выбор тренажёра</option>
-          </select>
-          <span id="trainerQuickStatus" class="status">Открывается в доске</span>
-        </div>
-        </details>
+        <div class="panel-heading"><div class="panel-label"><span class="eyebrow">ТРЕНАЖЁР</span><p class="opened-title" id="openedTrainerTitle">Выберите занятие</p></div><div class="heading-actions"><button class="btn teacher-only" id="chooseTrainer" type="button">Выбрать</button><button class="btn" id="expandTrainer" type="button" aria-pressed="false">Развернуть</button><button class="btn icon-button" id="trainerOptions" type="button" data-open-panel="trainerPanel" aria-label="Настройки тренажёра" title="Настройки тренажёра">⋯</button></div></div>
         <p id="pickerError" class="picker-error" role="alert" hidden></p>
         <p id="frameStatus" class="frame-status" role="status"></p>
-        <div class="frame-actions"><a class="btn" id="openTrainerSeparate" target="_blank" rel="noopener noreferrer">Открыть отдельно ↗</a><button class="btn" id="retryOpenedTrainer" type="button" title="Повторить загрузку">Перезагрузить</button></div>
-        <div class="mirror-row" aria-label="Состояние синхронизации тренажёра">
-          <span id="mirrorStatus" class="status wait" aria-live="polite">Подключаем синхронизацию…</span>
-          <button class="btn hidden" id="retryTrainerRegistry" type="button">Повторить</button>
-        </div>
       </div>
       <iframe class="frame" id="trainerFrame" title="Открытый тренажёр" src="about:blank"></iframe>
     </section>
-
     <section class="board" aria-label="Цифровая доска">
-      <div class="board-head">
-        <div class="title"><h1>Тренажёр + цифровая доска</h1><p>Локальная доска учителя; при подключении сервера ученик видит её в режиме просмотра.</p></div>
-        <div class="sheet"><button class="btn teacher-only" id="prevSheet" type="button">Назад</button><span class="sheet-count" id="sheetCount">Лист 1 из 1</span><button class="btn teacher-only" id="nextSheet" type="button">Вперёд</button><button class="btn teacher-only" id="addSheet" type="button">Новый лист</button><button class="btn warn teacher-only" id="deleteSheet" type="button">Удалить</button><button class="btn teacher-only" id="toggleTrainerBoard" type="button">Скрыть тренажёр</button></div>
-      </div>
+      <div class="board-head"><h1>Доска</h1><div class="sheet"><button class="btn icon-button teacher-only" id="prevSheet" type="button" aria-label="Предыдущий лист" title="Предыдущий лист">‹</button><span class="sheet-count" id="sheetCount">Лист 1 из 1</span><button class="btn icon-button teacher-only" id="nextSheet" type="button" aria-label="Следующий лист" title="Следующий лист">›</button><button class="btn icon-button teacher-only" id="addSheet" type="button" aria-label="Новый лист" title="Новый лист">+</button></div><button class="btn icon-button" id="boardOptions" type="button" data-open-panel="boardPanel" aria-label="Настройки доски" title="Настройки доски">⋯</button></div>
+      <div class="toolbar" aria-label="Инструменты доски"><div class="tools"><button class="tool" data-tool="pen" aria-pressed="true" type="button" title="Ручка"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 16-1 5 5-1L20 8l-4-4Z"/><path d="m14 6 4 4"/></svg><span>Ручка</span></button><button class="tool" data-tool="marker" aria-pressed="false" type="button" title="Маркер"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 15 7-10 6 4-7 10Z"/><path d="m5 15 6 4-4 2H3Z"/></svg><span>Маркер</span></button><button class="tool" data-tool="eraser" aria-pressed="false" type="button" title="Ластик"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 13 8-9a2 2 0 0 1 3 0l5 5a2 2 0 0 1 0 3l-9 9H8l-4-4a3 3 0 0 1 0-4Z"/><path d="m8 9 8 8M11 21h10"/></svg><span>Ластик</span></button><button class="tool" data-tool="line" aria-pressed="false" type="button" title="Линия"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 19 14-14"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/></svg><span>Линия</span></button><button class="tool" data-tool="rect" aria-pressed="false" type="button" title="Рамка"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"/></svg><span>Рамка</span></button><button class="tool" data-tool="text" aria-pressed="false" type="button" title="Текст"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3M12 4v16M8 20h8"/></svg><span>Текст</span></button></div><div class="actions"><input id="color" type="color" value="#172033" aria-label="Цвет"><button class="btn icon-button" id="undo" type="button" aria-label="Отменить действие" title="Отменить действие">↶</button><button class="btn icon-button" id="redo" type="button" aria-label="Повторить действие" title="Повторить действие">↷</button></div></div>
+        <div class="viewer-note">Режим просмотра: пишет учитель. Ученик видит доску и текущий тренажёр, но не может рисовать, очищать листы и управлять комнатой.</div>
+        <div class="control-banner" id="controlBanner"><span>Вы у доски. Учитель видит ваши действия.</span><button class="btn" id="releaseControl" type="button">Вернуть ход</button></div>
 
+      <div class="canvas-wrap" id="wrap"><canvas id="canvas" tabindex="0" aria-label="Рисунки и записи на доске"></canvas><textarea id="editor" class="editor hidden" aria-label="Текст на доске"></textarea></div>
+    </section>
+  </main>
+  <dialog id="sharePanel" class="workspace-dialog" aria-labelledby="shareTitle"><header><div><span class="eyebrow">СОВМЕСТНЫЙ УРОК</span><h2 id="shareTitle">Участники и приглашение</h2></div><button class="btn icon-button" data-close-panel type="button" aria-label="Закрыть участников">×</button></header>
       <div class="share" aria-label="Общая доска">
-        <h2>Общая доска</h2>
+
         <div class="board-tip teacher-only">При подключении сервера ученик видит доску в режиме просмотра. Тренажёр синхронизируется по ссылке; одинаковые задания работают у тренажёров с поддержкой seed.</div>
         <div class="share-row">
-          <div class="teacher-only"><label for="serverUrl">Адрес сервера</label><input id="serverUrl" type="url" placeholder="https://mathexam-board-ladynata.amvera.io"></div>
-          <button class="btn teacher-only" id="checkServer" type="button">Проверить сервер</button>
           <button class="btn primary teacher-only" id="createRoom" type="button">Создать комнату</button>
           <button class="btn teacher-only" id="connectRoom" type="button">Подключиться</button>
         </div>
+        <details class="connection-settings teacher-only"><summary>Настройки подключения</summary>          <div class="teacher-only"><label for="serverUrl">Адрес сервера</label><input id="serverUrl" type="url" placeholder="https://mathexam-board-ladynata.amvera.io"></div>
+          <button class="btn teacher-only" id="checkServer" type="button">Проверить сервер</button>
+</details>
         <div class="share-meta">
-          <span class="status" id="shareStatus">локальный режим</span>
-          <span class="role" id="roleBadge">teacher</span>
+
+          <span class="role" id="roleBadge">Учитель</span>
           <span class="role" id="roomBadge">комната не создана</span>
           <span class="role" id="controlBadge">У доски: Учитель</span>
           <button class="btn teacher-only" id="controlToggle" type="button">Передать ход</button>
@@ -77,21 +61,45 @@
           <div class="participants-list" id="participantsList"></div>
         </div>
         <div class="share-link teacher-only"><label for="studentLink">Ссылка ученика</label><div class="url-row"><input id="studentLink" type="text" readonly placeholder="Создайте комнату, чтобы получить ссылку"><button class="btn" id="copyStudentLink" type="button">Скопировать ссылку ученика</button></div></div>
-        <div class="viewer-note">Режим просмотра: пишет учитель. Ученик видит доску и текущий тренажёр, но не может рисовать, очищать листы и управлять комнатой.</div>
-        <div class="control-banner" id="controlBanner"><span>Вы у доски. Учитель видит ваши действия.</span><button class="btn" id="releaseControl" type="button">Вернуть ход</button></div>
       </div>
 
-      <div class="toolbar" aria-label="Инструменты доски">
-        <div class="tools"><button class="tool" data-tool="pen" aria-pressed="true" type="button">Ручка</button><button class="tool" data-tool="marker" aria-pressed="false" type="button">Маркер</button><button class="tool" data-tool="eraser" aria-pressed="false" type="button">Ластик</button><button class="tool" data-tool="line" aria-pressed="false" type="button">Линия</button><button class="tool" data-tool="rect" aria-pressed="false" type="button">Рамка</button><button class="tool" data-tool="text" aria-pressed="false" type="button">Текст</button><span></span><input id="color" type="color" value="#172033" aria-label="Цвет"><input id="size" type="range" min="2" max="34" value="5" aria-label="Толщина"><b class="size" id="sizeText">5 px</b><span class="teacher-only"></span><select id="bg" class="teacher-only" aria-label="Фон"><option value="grid">Клетка</option><option value="lined">Линия</option><option value="blank">Чистый</option></select></div>
-        <div class="actions"><button class="btn" id="undo" type="button">Undo</button><button class="btn" id="redo" type="button">Redo</button><button class="btn warn" id="clear" type="button">Очистить лист</button><button class="btn" id="export" type="button">PNG</button></div>
-      </div>
 
-      <div class="canvas-wrap" id="wrap"><canvas id="canvas" tabindex="0" aria-label="Рисунки и записи на доске"></canvas><textarea id="editor" class="editor hidden" aria-label="Текст на доске"></textarea></div>
-    </section>
-  </main>
+  </dialog>
+  <dialog id="trainerPanel" class="workspace-dialog" aria-labelledby="trainerTitle"><header><h2 id="trainerTitle">Тренажёр</h2><button class="btn icon-button" data-close-panel type="button" aria-label="Закрыть настройки тренажёра">×</button></header>
+    <p class="dialog-help">Откройте занятие отдельно или освободите место для записей.</p>
+    <div class="frame-actions"><a class="btn" id="openTrainerSeparate" target="_blank" rel="noopener noreferrer">Открыть отдельно ↗</a><button class="btn" id="retryOpenedTrainer" type="button">Перезагрузить</button><button class="btn teacher-only" id="toggleTrainer" type="button">Скрыть тренажёр</button><button class="btn" id="focusBoard" type="button">К записям ↓</button></div>
+    <div class="mirror-row" aria-label="Состояние синхронизации тренажёра"><span id="mirrorStatus" class="status wait" aria-live="polite">Подключаем синхронизацию…</span><button class="btn hidden" id="retryTrainerRegistry" type="button">Повторить</button></div>
+    <p class="dialog-help">Открытие на доске и синхронизация действий — разные возможности. Состояние синхронизации показано выше.</p>
+  </dialog>
+  <dialog id="boardPanel" class="workspace-dialog" aria-labelledby="boardTitle"><header><h2 id="boardTitle">Настройки доски</h2><button class="btn icon-button" data-close-panel type="button" aria-label="Закрыть настройки доски">×</button></header>
+    <div class="board-setting"><label for="size">Толщина линии</label><input id="size" type="range" min="2" max="34" value="5"><b class="size" id="sizeText">5 px</b></div>
+    <div class="board-setting teacher-only"><label for="bg">Фон листа</label><select id="bg"><option value="grid">Клетка</option><option value="lined">Линия</option><option value="blank">Чистый</option></select></div>
+    <div class="board-layout"><label for="boardLayout">Место на экране</label><select id="boardLayout"><option value="balanced">Поровну</option><option value="trainer">Больше тренажёр</option><option value="board">Больше доска</option></select></div>
+    <div class="panel-buttons"><button class="btn teacher-only" id="toggleTrainerBoard" type="button">Скрыть тренажёр</button><button class="btn" id="export" type="button">Скачать рисунок PNG</button></div>
+    <div class="panel-buttons danger-zone"><button class="btn warn" id="clear" type="button">Очистить лист</button><button class="btn warn teacher-only" id="deleteSheet" type="button">Удалить лист</button></div>
+  </dialog>
+  <dialog id="trainerPicker" class="picker-dialog" aria-labelledby="pickerTitle"><header><h2 id="pickerTitle">Выберите занятие</h2><button class="btn" id="pickerClose" type="button" aria-label="Закрыть каталог">Закрыть</button></header>
+        <div class="board-courses teacher-only" aria-label="Курсы для урока"><button class="btn" data-course-picker="Виленкин · 5 класс">Виленкин 5</button><button class="btn" data-course-picker="Виленкин · 6 класс">Виленкин 6</button><button class="btn" data-course-picker="Макарычев · 9 класс">Макарычев 9</button></div>
+<div class="recent-trainers teacher-only" id="recentTrainers" aria-label="Недавние тренажёры" hidden></div>
+    <div class="picker-filters"><div><label for="pickerSearch">Тема, класс или номер задания</label><input id="pickerSearch" type="text" placeholder="Например, проценты или ЕГЭ база"></div><div><label for="pickerGroup">Раздел</label><select id="pickerGroup"></select></div></div><p class="picker-count" id="pickerCount" role="status"></p><div class="picker-results" id="pickerResults"></div><button class="btn" id="pickerMore" type="button" hidden>Показать ещё</button>
+        <details class="manual-entry" id="manualTrainerEntry"><summary>Открыть по ссылке</summary>
+        <label for="trainerUrl">Или вставьте ссылку</label>
+        <div class="url-row">
+          <input id="trainerUrl" type="text" value="negative-numbers-line.html" autocomplete="off">
+          <button class="btn primary teacher-only" id="openTrainer" type="button">Открыть</button>
 
-  <dialog id="trainerPicker" class="picker-dialog" aria-labelledby="pickerTitle"><header><h2 id="pickerTitle">Выберите тренажёр</h2><button class="btn" id="pickerClose" type="button" aria-label="Закрыть каталог">Закрыть</button></header><div class="picker-filters"><div><label for="pickerSearch">Тема, класс или номер задания</label><input id="pickerSearch" type="text" placeholder="Например, проценты или ЕГЭ база"></div><div><label for="pickerGroup">Раздел</label><select id="pickerGroup"></select></div></div><p class="picker-count" id="pickerCount" role="status"></p><div class="picker-results" id="pickerResults"></div><button class="btn" id="pickerMore" type="button" hidden>Показать ещё</button></dialog>
-  <script src="board-picker.js?v=20261002-v5-full-1"></script>
+        </div>
+        </details>
+        <details class="legacy-quick teacher-only"><summary>Быстрый список</summary><div class="quick-row" aria-label="Быстрые тренажёры">
+          <select id="trainerQuick" aria-label="Быстрый выбор тренажёра">
+            <option value="">Быстрый выбор тренажёра</option>
+          </select>
+          <span id="trainerQuickStatus" class="status">Открывается в доске</span>
+        </div>
+        </details>
+<p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
+  </dialog>
+  <script src="board-picker.js?v=20261002-compact-1"></script>
   <script src="board-bridge.js"></script>
   <script>
     const KEY='mathexam.trainerBoard.v1';
@@ -383,7 +391,7 @@
       }catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}
     }
     function copyLink(){const value=studentLink.value.trim();if(!value)return;navigator.clipboard?.writeText(value).then(()=>setStatus('ссылка скопирована','ok')).catch(()=>{studentLink.select();document.execCommand('copy');setStatus('ссылка скопирована','ok')})}
-    function applyRole(){document.body.classList.toggle('student-mode',shared.role==='student');roleBadge.textContent=shared.role;serverUrl.value=shared.server||DEFAULT_SERVER;trainerUrl.readOnly=shared.role!=='teacher';roomBadge.textContent=shared.roomId?`комната ${shared.roomId}`:'комната не создана';if(shared.role==='student')setStatus(shared.server?'подключение':'режим просмотра','wait');renderParticipants();updateControlUi()}
+    function applyRole(){document.body.classList.toggle('student-mode',shared.role==='student');roleBadge.textContent=shared.role==='teacher'?'Учитель':'Ученик';serverUrl.value=shared.server||DEFAULT_SERVER;trainerUrl.readOnly=shared.role!=='teacher';roomBadge.textContent=shared.roomId?`комната ${shared.roomId}`:'комната не создана';if(shared.role==='student')setStatus(shared.server?'подключение':'режим просмотра','wait');renderParticipants();updateControlUi()}
 
     frame.onload=()=>{const previousLoadAt=lastFrameLoadAt;lastFrameLoadAt=Date.now();if(readyCandidate&&readyCandidate.readyReceivedAt<=previousLoadAt)invalidateTrainerBridge();frameLoaded=true;reconcileTrainerMirror();flushPendingTrainerState();scheduleLegacyTrainerRequest()};
     addEventListener('message',event=>{
@@ -414,5 +422,6 @@
     trainerUrl.value=state.trainerUrl;loadTrainerRegistry();setTrainerFrameSrc(state.trainerUrl);applyRole();setTrainerHidden(state.trainerHidden);setTool(tool);loadTrainerQuickSelect();sync(false);requestAnimationFrame(resize);if(shared.roomId&&shared.token&&shared.server)connectRoom();else if(missingTeacherRoomSession)setStatus('Сессия учителя не восстановлена. Создайте новую комнату.','bad');else setStatus('локальный режим','');
     BoardPicker.mount({open:url=>{if(!openTrainer(url))return false;setTrainerHidden(false);return true},retry:()=>setTrainerFrameSrc(state.trainerUrl,{force:true}),role:()=>shared.role,fallback:lessonTrainers});
   </script>
+  <script src="board-workspace.js?v=20261002-compact-1"></script>
 </body>
 </html>
