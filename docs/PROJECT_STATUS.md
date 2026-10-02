@@ -6,13 +6,14 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: detailed Makarychev algebra 9
+## In progress: numbered Makarychev algebra 9 exercises
 
-- Confirmed production main: `2e0f65dad4d25f3b57bbed3696ff5752831a4ba3` (PR #172, compact board). Exact-head CI 36985578189 and Pages 36986085907 succeeded; public hashes and live dialogs / course iframe were checked.
-- Production before this task: 555 Workshop lessons, 12 routes; Vilenkin 5 has 134 detailed lessons, Vilenkin 6 has 194. IDs and progress are preserved.
-- Current task: [Makarychev 9 detailed](tasks/MAKARYCHEV9_DETAILED.md), branch `course/makarychev9-full`. The supplied basic textbook is the 15th revised edition, 2023, confirmed visually from the title page.
-- Candidate adds 93 authored skill lessons over all 31 points, with 78 core and 15 optional lessons, five interactive labs and board catalog links. The original 31 overview lessons remain accessible.
-- Local self-checks passed: 13,020 independently checked new answers, 357 model states, 93 full Chromium lesson flows, responsive/keyboard, old progress and board catalog. [PR #173](https://github.com/ladynata-cloud/math-exam-fipi/pull/173) records final cloud CI and publication evidence. [Detailed report](reports/MAKARYCHEV9_DETAILED_20261002.md). All numbered textbook exercises and a real-student pilot are not claimed.
+- Confirmed production base: `6dae19acf58249a458fcb45981263976c1803d64` (PR #173). That release published 93 detailed authored lessons across 31 textbook points, not every numbered exercise. Existing results are preserved.
+- Owner now requests an interactive trainer for every exercise in the supplied 2023 basic textbook. Full target remains incomplete.
+- Current branch: `course/makarychev9-numbered`; [task](tasks/MAKARYCHEV9_NUMBERED.md); [coverage and limitations](reports/MAKARYCHEV9_NUMBERED_20261002.md).
+- Candidate contains exercises 1–53: 177 parts and 423 checked steps, individual number entry, point/interval construction, open examples, proof ordering, local drafts/export, existing-course remediation and board entry.
+- Exercises 54–891 are not implemented. They are never marked ready. Next content work starts with size/order-of-magnitude and practical exercises 54–78.
+- Independent external review and separate final acceptance were waived by the owner for the course publication work. Normal math/browser/data checks, exact base/head evidence and branch protections remain required. Actual publication evidence belongs in the PR.
 - Classic Atanasyan draft PR #168 remains outside this task.
 
 ## Confirmed preceding EGE release
