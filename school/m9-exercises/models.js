@@ -1,0 +1,37 @@
+(function(root){
+'use strict';
+const defs={
+ purchase:{title:'Сколько тетрадей помещается в бюджет?',fields:[['budget','Бюджет, руб.',500,1,5000,1],['price','Исходная цена, руб.',26.5,1,1000,.1],['discount','Скидка, %',20,0,90,1]]},
+ discount:{title:'Выбери месяц отдельно для каждой покупки',fields:[['fridge','Холодильник: 0 — февраль, 1 — начало марта, 2 — конец марта',0,0,2,1],['washer','Машина: 0 — февраль, 1 — начало марта, 2 — конец марта',0,0,2,1]]},
+ rooms:{title:'Места в кабинетах',fields:[['rooms','Количество кабинетов',16,1,25,1]]},
+ budget:{title:'Шкала накоплений',fields:[['months','Полные расчётные месяцы',21,0,30,1],['reserve','Непредвиденные расходы в месяц, руб.',10000,0,20000,100]]},
+ restore:{title:'Каждый процент — от своей базы',fields:[['cut','Снижение, %',10,0,90,1],['rise','Следующее повышение, %',10,0,200,.1]]},
+ walls:{title:'Разверни стены и рассчитай краску',fields:[['layers','Слоёв краски',1,1,3,1],['glass','Доля остекления, %',25,0,100,1]]},
+ inches:{title:'Чётные размеры джинсов',fields:[['size','Маркировка, дюймы',28,20,40,2]]},
+ circle:{title:'Радиус и разность площадей',fields:[['radius','Исходный радиус r, см',1,.51,4,.01]]},
+ scale:{title:'Степень десяти меняет масштаб',fields:[['coefficient','Коэффициент',3,1,9.9,.1],['exponent','Показатель степени',-9,-12,12,1]]}
+};
+function calculate(kind,v){switch(kind){
+ case 'purchase':{const price=v.price*(1-v.discount/100),count=Math.floor((v.budget+1e-9)/price);return {price,count,total:count*price,left:v.budget-count*price,next:(count+1)*price,bars:[['Покупка',count*price],['Бюджет',v.budget],['Ещё одна тетрадь',(count+1)*price]]};}
+ case 'discount':{const fridge=45000*[.9,1,.85][v.fridge],washer=22000*[.9,.7,1][v.washer];return {fridge,washer,total:fridge+washer,bars:[['Холодильник',fridge],['Машина',washer]]};}
+ case 'rooms':return {places:v.rooms*24,missing:Math.max(0,385-v.rooms*24),free:Math.max(0,v.rooms*24-385),bars:[['Мест',v.rooms*24],['Учеников',385]]};
+ case 'budget':{const monthly=84000-50700-v.reserve,total=v.months*monthly;return {monthly,total,left:Math.max(0,500000-total),bars:[['Накоплено',total],['Цель',500000]]};}
+ case 'restore':{const after=100*(1-v.cut/100),final=after*(1+v.rise/100);return {after,final,required:v.cut/(100-v.cut)*100,bars:[['Было',100],['После снижения',after],['После повышения',final]]};}
+ case 'walls':{const area=22.4*(1-v.glass/100),litres=area*v.layers*.25;return {area,litres,cans:Math.ceil(litres-1e-10),bars:[]};}
+ case 'inches':return {cm:v.size*2.54,error:Math.abs(v.size*2.54-76),bars:[['Шов джинсов',v.size*2.54],['Нужная длина',76]]};
+ case 'circle':{const r=v.radius,n=2*r-1;return {old:r,new:n,difference:n*n-r*r,bars:[['Была площадь / π',r*r],['Новая площадь / π',n*n]]};}
+ case 'scale':return {value:v.coefficient*10**v.exponent,bars:[]};
+ default:throw Error('Unknown model');
+}}
+const labels={price:'Цена тетради, руб.',count:'Целых тетрадей',total:'Всего, руб.',left:'Осталось до цели / в бюджете, руб.',next:'Сумма с лишней тетрадью, руб.',fridge:'Холодильник, руб.',washer:'Машина, руб.',places:'Всего мест',missing:'Не хватает мест',free:'Свободных мест',monthly:'В месяц остаётся, руб.',after:'Цена после снижения',final:'Цена после повышения',required:'Повышение для восстановления, %',area:'Площадь под покраску, м²',litres:'Краски, л',cans:'Литровых банок',cm:'Длина шва, см',error:'Отклонение от 76 см',old:'Исходный радиус',new:'Новый радиус',difference:'Прирост площади / π',value:'Значение числа'};
+const fmt=n=>Number(n.toPrecision(10)).toLocaleString('ru-RU',{maximumSignificantDigits:10});
+function visual(kind,v,r){
+ if(kind==='walls'){let x=24;const pieces=[.8,2.7,.8,2.7].map(w=>{const width=w*75,out='<rect x="'+x+'" y="35" width="'+width+'" height="185" fill="#b8d8c3" stroke="#fff" stroke-width="3"/><rect x="'+x+'" y="35" width="'+width+'" height="'+185*v.glass/100+'" fill="#cae2f1"/><text x="'+(x+width/2)+'" y="246" text-anchor="middle">'+String(w).replace('.',',')+' м</text>';x+=width;return out;}).join('');return '<svg viewBox="0 0 580 275" role="img" aria-label="Развёртка четырёх стен: зелёным окраска, синим условная суммарная доля остекления"><text x="24" y="24">Высота каждой стены 3,2 м</text>'+pieces+'</svg><p class="tiny">Остекление показано суммарной долей, не его настоящим расположением.</p>';}
+ if(kind==='circle'){const k=108/Math.max(r.old,r.new);return '<svg viewBox="0 0 580 280" role="img" aria-label="Исходный и новый круги в одном масштабе"><circle cx="150" cy="140" r="'+r.old*k+'" fill="#b8d8c3"/><circle cx="420" cy="140" r="'+r.new*k+'" fill="#a9d2ed"/><text x="150" y="265" text-anchor="middle">r = '+fmt(r.old)+'</text><text x="420" y="265" text-anchor="middle">2r−1 = '+fmt(r.new)+'</text></svg>';}
+ if(kind==='scale')return '<p class="scale-number">'+fmt(v.coefficient)+' × 10<sup>'+v.exponent+'</sup></p><p>Шаг показателя вправо умножает число на 10, шаг влево делит на 10.</p>';
+ const max=Math.max(...r.bars.map(a=>a[1]),1);return '<svg viewBox="0 0 580 '+(r.bars.length*66)+'" role="img" aria-label="Сравнение величин, точные числа в таблице ниже">'+r.bars.map(([label,n],i)=>'<text x="8" y="'+(i*66+20)+'">'+label+'</text><rect x="8" y="'+(i*66+29)+'" width="'+Math.max(0,n/max*560)+'" height="23" rx="5" fill="'+['#136d54','#79a99a','#c59035'][i%3]+'"/>').join('')+'</svg>';
+}
+function mount(target,kind,number){const d=defs[kind];if(!d)return;target.innerHTML='<h3>'+d.title+'</h3><p class="tiny">Меняйте параметры и объясняйте, почему меняется результат. Модель — помощь; она не засчитывается как самостоятельный ответ.</p>'+d.fields.map(([id,label,value,min,max,step])=>'<label>'+label+'<input data-model="'+id+'" type="number" min="'+min+'" max="'+max+'" step="'+step+'" value="'+(kind==='purchase'&&id==='discount'&&number===63?0:value)+'"></label>').join('')+'<div class="model-output" aria-live="polite"></div>';function draw(){const v={};for(const [id,,value,min,max,step] of d.fields){const input=target.querySelector('[data-model="'+id+'"]'),n=Number(input.value);if(input.value===''||!Number.isFinite(n)||n<min||n>max||(step>=1&&Math.abs((n-min)/step-Math.round((n-min)/step))>1e-9)){target.querySelector('.model-output').textContent='Введите параметры в указанных пределах.';return;}v[id]=n;}const r=calculate(kind,v);target.querySelector('.model-output').innerHTML=visual(kind,v,r)+'<dl>'+Object.entries(r).filter(([k])=>k!=='bars').map(([k,n])=>'<div><dt>'+labels[k]+'</dt><dd>'+fmt(n)+'</dd></div>').join('')+'</dl>';}
+ target.oninput=draw;draw();}
+const api={defs,calculate,mount};root.M9Models=api;if(typeof module!=='undefined')module.exports=api;
+})(typeof window==='undefined'?globalThis:window);

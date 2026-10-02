@@ -23,6 +23,22 @@ function check(step,raw){try{
  const r=step.rule;let ok=false;
  if(r.type==='number')ok=close(number(raw).value,r.value,r.tolerance||1e-9);
  else if(r.type==='period')ok=/\([^()]+\)/.test(raw)&&close(number(raw).value,r.value,1e-12);
+ else if(r.type==='oneof')ok=Array.isArray(raw)&&raw.length===1&&r.answer.includes(raw[0]);
+ else if(r.type==='pairs'){
+  const pairs=String(raw).split('|').map(x=>values(x.trim().replace(/^\(([^()]*)\)$/, '$1')).map(x=>x.value));
+  const remaining=r.values.slice();ok=pairs.length===remaining.length;
+  for(const p of pairs){const i=remaining.findIndex(v=>p.length===2&&close(p[0],v[0])&&close(p[1],v[1]));if(i<0){ok=false;break;}remaining.splice(i,1);}
+ }
+ else if(r.type==='form'){
+  if(!raw||typeof raw!=='object'||Array.isArray(raw))return {ok:false,message:'Заполните поля задания.'};
+  const v={};for(const f of step.fields){if(f.type==='text'){const s=String(raw[f.id]||'').trim();if(s.length<(f.id.startsWith('unit')?1:2)||s.length>600)return {ok:false,message:'Заполните поле «'+f.label+'» (до 600 знаков).'};v[f.id]=s;}else v[f.id]=number(raw[f.id]??'').value;}
+  if(r.kind==='research')ok=v.value0>0&&v.value1>0;
+  else if(r.kind==='reflection')ok=true;
+  else if(r.kind==='walk')ok=v.length>0&&v.count>0&&Number.isInteger(v.count)&&v.time>0&&Math.abs(v.distance-v.length*v.count/100)<=.005&&Math.abs(v.speed-v.length*v.count/100/v.time)<=.005;
+  else if(r.kind==='circle')ok=v.circumference>0&&v.diameter>0&&Math.abs(v.ratio-v.circumference/v.diameter)<=.00005&&Math.abs(v.error-Math.abs(v.circumference/v.diameter-Math.PI))<=.00005;
+  else if(r.kind==='growth')ok=v.before>0&&v.after>0&&Math.abs(v.percent-Math.round((v.after-v.before)/v.before*1000)/10)<.00001;
+  else throw Error('Неизвестное вычисление формы.');
+ }
  else if(r.type==='choice'||r.type==='order'){const a=Array.isArray(raw)?raw:[];ok=a.length===r.answer.length&&(r.type==='order'?[r.answer,...(r.alternatives||[])].some(order=>a.every((x,i)=>x===order[i])):a.every(x=>r.answer.includes(x))&&new Set(a).size===a.length);}
  else if(r.type==='list'){const v=values(raw).map(x=>x.value),w=r.values.slice();ok=v.length===w.length;for(const n of v){const i=w.findIndex(x=>close(n,x));if(i<0){ok=false;break;}w.splice(i,1);}}
  else if(r.type==='witness'){
