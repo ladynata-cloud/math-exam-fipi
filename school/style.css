@@ -5,3 +5,15 @@
 
 /* Route focus announces new content; visible rings stay on actionable controls. */
 main:focus-visible{outline:none}
+
+/* Additional textbook lessons use the same layout and native keyboard controls. */
+.alg-theory h2{margin-top:1.4rem;font-size:1.35rem}.alg-theory p{max-width:70ch}
+.secondary-controls,.alg-controls{display:flex;flex-wrap:wrap;gap:1rem;margin:1rem 0}
+.secondary-slider,.alg-slider{display:grid;gap:.45rem;flex:1;min-width:160px}
+.secondary-slider output{font-weight:700;color:#116e68}.secondary-picture svg,.alg-picture svg{display:block;width:100%;height:auto;background:#fff;border-radius:16px}
+.secondary-caption,.alg-caption{display:block;padding:1rem 0;line-height:1.6}.secondary-instruction{font-size:1.15rem;font-weight:650}
+.secondary-predict{border-top:1px solid #d7e4df;padding-top:1rem;display:flex;gap:.7rem;flex-wrap:wrap;align-items:end}
+.secondary-predict label{display:grid;gap:.5rem}.secondary-predict p{flex-basis:100%;margin:.5rem 0}
+#book-search{width:min(100%,680px)}.card h2{overflow-wrap:anywhere}
+@media(max-width:520px){.secondary-predict input,.secondary-predict label{width:100%}.secondary-predict button{width:100%}.secondary-picture text{font-size:17px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
