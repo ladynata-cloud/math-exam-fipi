@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OGE Math Methodical Map Entry",
+  "description": "Schema for one methodical subtype entry in the OGE math trainer bank.",
+  "type": "object",
+  "required": [
+    "title",
+    "task_number",
+    "subtype_id",
+    "subtype_name",
+    "skill",
+    "difficulty",
+    "answer_format",
+    "generator_rules",
+    "checker_rules",
+    "common_mistakes",
+    "hint_1",
+    "hint_2",
+    "solution_idea",
+    "mvp_priority",
+    "manual_review",
+    "status"
+  ],
+  "properties": {
+    "title": { "type": "string" },
+    "task_number": { "type": "integer", "minimum": 0, "maximum": 25 },
+    "subtype_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "subtype_name": { "type": "string" },
+    "skill": { "type": "string" },
+    "prerequisites": { "type": "string" },
+    "difficulty": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "answer_format": {
+      "type": "string",
+      "enum": [
+        "integer",
+        "decimal",
+        "fraction",
+        "expression",
+        "choice",
+        "text",
+        "geometry_value",
+        "proof_or_solution"
+      ]
+    },
+    "generator_rules": { "type": "string" },
+    "checker_rules": { "type": "string" },
+    "common_mistakes": { "type": "string" },
+    "hint_1": { "type": "string" },
+    "hint_2": { "type": "string" },
+    "solution_idea": { "type": "string" },
+    "ui_notes": { "type": "string" },
+    "mvp_priority": { "type": "string", "enum": ["now", "soon", "later", "no"] },
+    "manual_review": { "type": "boolean" },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "generated",
+        "needs_check",
+        "checked",
+        "edited",
+        "approved",
+        "published",
+        "needs_fix",
+        "archived"
+      ]
+    },
+    "github_link": { "type": "string" },
+    "paid_ai_value": { "type": "string" }
+  },
+  "additionalProperties": false
+}
