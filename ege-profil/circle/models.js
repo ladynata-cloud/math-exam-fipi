@@ -59,7 +59,8 @@
     return {roots, intervals, closed: relation.includes('=')};
   }
   const labels = {arc:'Число превращается в путь', angle:'Поворот и положение точки', coordinates:'Координаты точки на окружности', slice:'От координаты к дуге', functions:'Синус, косинус, тангенс и котангенс', compare:'Сравниваем точки, а не рисунки чисел'};
-  const helpers = {norm, radians, radiansInput, exact, values, belongs, intersections, sliceIntervals};
+  const snapAngle = (t, denominator) => denominator ? Math.round(t / Math.PI * denominator) * Math.PI / denominator : t;
+  const helpers = {norm, radians, radiansInput, snapAngle, exact, values, belongs, intersections, sliceIntervals};
   function mount(container, supplied, hooks) {
     const config = Object.assign({mode:'arc',angle:0}, supplied || {}), options = hooks || {};
     const mode = Object.hasOwn(labels, config.mode) ? config.mode : 'arc';
@@ -69,6 +70,7 @@
     let threshold = Number.isFinite(config.threshold) ? clamp(config.threshold, -2, 2) : .5;
     let relation = ['>','<','>=','<='].includes(config.relation) ? config.relation : '>=';
     let revealed = !options.practice, dragging = false, pointer = null, dead = false;
+    let snapDenominator = 12;
     const point = (angle, r = 130) => ({x:230+r*Math.cos(angle),y:190-r*Math.sin(angle)});
     const on = (el, name, fn, opts) => {el.addEventListener(name, fn, opts); subscriptions.push(() => el.removeEventListener(name, fn, opts));};
     const attrs = (el, data) => Object.entries(data).forEach(([k,v]) => el.setAttribute(k,String(v)));
@@ -99,7 +101,7 @@
       <h3 id="${id}-heading">${labels[mode]}</h3>
       <p class="ml-caption">${config.goal ? esc(config.goal) : 'Перемещайте точку Q. Один полный оборот имеет длину 2π, а радиус окружности равен 1.'}</p>
       <svg class="ml-canvas" viewBox="0 0 480 385" tabindex="0" role="img" aria-labelledby="${id}-title ${id}-desc" data-circle-svg>
-        <title id="${id}-title">Единичная окружность: точка Q и направленный поворот</title><desc id="${id}-desc">Стрелки двигают точку на один градус; Shift со стрелкой — на 15 градусов. Home возвращает к нулю. Значение можно ввести под рисунком.</desc>
+        <title id="${id}-title">Единичная окружность: точка Q и направленный поворот</title><desc id="${id}-desc">Стрелки двигают точку по выбранным делениям. Home возвращает к нулю. Значение можно ввести под рисунком.</desc>
         <defs><clipPath id="${id}-clip"><rect x="22" y="28" width="432" height="320" rx="4"/></clipPath><marker id="${id}-arrow" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#b87512"/></marker></defs>
         <path d="M100 190A130 130 0 0 1 230 60L230 190Z M230 190L360 190A130 130 0 0 1 230 320Z" fill="#e5f0f5"/>
         <g font-size="18" fill="#b0c0cc"><text x="296" y="121">I</text><text x="154" y="121">II</text><text x="151" y="277">III</text><text x="292" y="277">IV</text></g>
@@ -121,7 +123,8 @@
         <circle data-current-point r="10" fill="#007f77" stroke="white" stroke-width="3" style="cursor:grab"/>
         <text data-current-label text-anchor="middle" fill="#005c56" stroke="#f3f9fc" stroke-width="3" paint-order="stroke" font-size="17" font-weight="700">Q</text>
       </svg>
-      <p class="ml-caption">Начало — A справа. «+» — против часовой стрелки, «−» — по часовой. Стрелки клавиатуры: шаг 1°; Shift + стрелка: 15°.</p>
+      <p class="ml-caption">Начало — A справа. «+» — против часовой стрелки, «−» — по часовой. Перетаскивайте точку или нажимайте стрелки: движение идёт по выбранным делениям. Точный ввод ниже позволяет задать любое число.</p>
+      <div class="ml-controls"><label for="${id}-snap">Движение точки<select id="${id}-snap" data-angle-snap><option value="12">По делениям π/12 · 15°</option><option value="6">По делениям π/6 · 30°</option><option value="4">По делениям π/4 · 45°</option><option value="180">По делениям π/180 · 1°</option><option value="0">Свободно · без привязки</option></select></label></div>
       <div class="ml-controls"><label for="${id}-angle">Число t в радианах<input id="${id}-angle" data-angle-input type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="Например, -5*pi/3"></label><button type="button" class="ml-primary" data-apply-angle>Поставить точку</button></div>
       <p class="ml-caption" data-angle-precision hidden>Коэффициент перед π округлён. Положение точки сохраняется без округления.</p>
       <label class="ml-caption" for="${id}-range">Положение Q на одном обороте (0 … 2π)</label><input id="${id}-range" data-angle-range type="range" min="0" max="${TAU}" step="${Math.PI/180}" value="0" aria-label="Положение точки Q на одном обороте">
@@ -208,14 +211,17 @@
     function parse(text) { return root.ProfileCheck&&typeof root.ProfileCheck.number==='function'?root.ProfileCheck.number(text):Number(String(text).replace(',','.')); }
     function applyAngle(){const value=input.value.trim();if(!value){get('[data-lab-error]').textContent='Введите число: например, π/3, −5π/2 или 1,5.';return;}if(value===radiansInput(t)){get('[data-lab-error]').textContent='';return;}update(parse(value.replace(/(\d|\))\s*(?=π|pi\b)/g,'$1*')));}
     on(get('[data-apply-angle]'),'click',applyAngle);on(input,'change',applyAngle);on(input,'keydown',event=>{if(event.key==='Enter'){event.preventDefault();applyAngle();}});
-    on(range,'input',()=>{const u=norm(t),turns=Math.round((t-u)/TAU);update(turns*TAU+Number(range.value));});
-    container.querySelectorAll('[data-delta]').forEach(b=>on(b,'click',()=>update(clamp(t+Number(b.dataset.delta),-LIMIT,LIMIT))));
+    function motion(value){return update(clamp(snapAngle(value,snapDenominator),-LIMIT,LIMIT));}
+    range.step=String(Math.PI/12);
+    on(get('[data-angle-snap]'),'change',()=>{snapDenominator=Number(get('[data-angle-snap]').value);range.step=String(snapDenominator?Math.PI/snapDenominator:Math.PI/180);container.querySelectorAll('[data-delta]').forEach(b=>{if(Math.abs(Number(b.dataset.delta))<TAU){const delta=Math.sign(Number(b.dataset.delta))*Math.PI/(snapDenominator||12);b.dataset.delta=String(delta);b.textContent=(delta>0?'+':'')+radiansInput(delta);}});if(snapDenominator)motion(t);});
+    on(range,'input',()=>{const u=norm(t),turns=Math.round((t-u)/TAU);motion(turns*TAU+Number(range.value));});
+    container.querySelectorAll('[data-delta]').forEach(b=>on(b,'click',()=>{const delta=Number(b.dataset.delta);if(Math.abs(delta)===TAU)update(clamp(t+delta,-LIMIT,LIMIT));else motion(t+delta);}));
     on(get('[data-zero]'),'click',()=>update(0));
     on(get('[data-reveal-readings]'),'click',()=>{if(revealed)return;revealed=true;if(typeof options.onHelp==='function')options.onHelp();if(dead)return;get('[data-reveal-readings]').hidden=true;get('[data-help-note]').textContent='Значения открыты: эта попытка выполняется с помощью.';render(false);});
     function applySlice(){const n=parse(get('[data-threshold]').value);if(!Number.isFinite(n)||Math.abs(n)>2){get('[data-lab-error]').textContent='Введите границу от −2 до 2. Координаты окружности лежат от −1 до 1.';return;}threshold=n;axis=get('[data-axis]').value;relation=get('[data-relation]').value;get('[data-lab-error]').textContent='';render(false);}
     on(get('[data-apply-slice]'),'click',applySlice);on(get('[data-axis]'),'change',applySlice);on(get('[data-relation]'),'change',applySlice);on(get('[data-threshold]'),'keydown',event=>{if(event.key==='Enter'){event.preventDefault();applySlice();}});
-    on(svg,'keydown',event=>{const key={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1}[event.key];if(key){event.preventDefault();update(clamp(t+key*Math.PI/(event.shiftKey?12:180),-LIMIT,LIMIT));}else if(event.key==='Home'){event.preventDefault();update(0);}});
-    function pointerAngle(event){const matrix=svg.getScreenCTM();if(!matrix)return;const p=svg.createSVGPoint();p.x=event.clientX;p.y=event.clientY;const q=p.matrixTransform(matrix.inverse());if(Math.hypot(q.x-230,q.y-190)<20)return;const a=Math.atan2(190-q.y,q.x-230);let delta=a-norm(t);while(delta>Math.PI)delta-=TAU;while(delta< -Math.PI)delta+=TAU;update(clamp(t+delta,-LIMIT,LIMIT));}
+    on(svg,'keydown',event=>{const key={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1}[event.key];if(key){event.preventDefault();motion(t+key*Math.PI/(snapDenominator||(event.shiftKey?12:180)));}else if(event.key==='Home'){event.preventDefault();update(0);}});
+    function pointerAngle(event){const matrix=svg.getScreenCTM();if(!matrix)return;const p=svg.createSVGPoint();p.x=event.clientX;p.y=event.clientY;const q=p.matrixTransform(matrix.inverse());if(Math.hypot(q.x-230,q.y-190)<20)return;const a=Math.atan2(190-q.y,q.x-230);let delta=a-norm(t);while(delta>Math.PI)delta-=TAU;while(delta< -Math.PI)delta+=TAU;motion(t+delta);}
     on(svg,'pointerdown',event=>{if(event.button!==0)return;dragging=true;pointer=event.pointerId;svg.setPointerCapture(pointer);pointerAngle(event);});
     on(svg,'pointermove',event=>{if(dragging&&event.pointerId===pointer)pointerAngle(event);});
     function release(event){if(event&&event.pointerId!==pointer)return;dragging=false;if(pointer!==null&&svg.hasPointerCapture(pointer))svg.releasePointerCapture(pointer);pointer=null;}

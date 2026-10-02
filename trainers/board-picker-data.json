@@ -2,6 +2,21 @@
   "version": 1,
   "entries": [
     {
+      "title": "ЕГЭ профиль · урок с репетитором · №1, №2 и тригонометрия",
+      "group": "ЕГЭ профиль · урок и домашка",
+      "href": "/ege-profil/lesson/index.html"
+    },
+    {
+      "title": "ЕГЭ профиль · домашка · №1, №2 и тригонометрия",
+      "group": "ЕГЭ профиль · урок и домашка",
+      "href": "/ege-profil/homework/index.html"
+    },
+    {
+      "title": "Тригонометрия · от окружности к ЕГЭ · единый курс",
+      "group": "ЕГЭ профиль · тригонометрия",
+      "href": "/ege-profil/trigonometry/index.html"
+    },
+    {
       "title": "ЕГЭ база",
       "href": "/ege-baza/",
       "group": "ЕГЭ база"
