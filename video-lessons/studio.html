@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Мастерская шагов · помощь с домашним заданием</title>
+<link rel="stylesheet" href="studio.css">
+<script src="studio.js" defer></script>
+<script src="export.js" defer></script>
+</head>
+<body>
+<header class="page-header"><a class="brand" href="../">Математика<span>самостоятельно, шаг за шагом</span></a><span class="silent-label">Текстовый просмотр · шаг за шагом</span></header>
+<main>
+<section class="intro" aria-labelledby="page-title"><p class="eyebrow">Мастерская шагов</p><h1 id="page-title">Сначала попробуй. Потом открой подсказку.</h1><p>Три учебных примера: путь к домашнему заданию, уравнение и углы. Здесь можно спокойно разобрать шаг и вернуться к своей работе.</p></section>
+<form class="picker" id="picker"><label>Учебный пример<select id="task"><option value="homework-help">Как пользоваться помощью</option><option value="linear-equation">Линейное уравнение</option><option value="adjacent-angles">Смежные и вертикальные углы</option></select></label><label>Вариант<select id="preset"><option value="1">№ 1</option><option value="2">№ 2</option><option value="3">№ 3</option></select></label><div class="pilot-note">Авторские пилотные примеры.<br>Это не настоящий личный кабинет.</div></form>
+<section class="canvas" aria-label="Текущий шаг учебного примера">
+<div class="lesson-frame">
+<div class="scene-top"><span id="lesson-label" class="eyebrow"></span><span id="scene-count" class="scene-count"></span></div>
+<div class="progress" aria-hidden="true"><div id="progress-fill"></div></div>
+<h2 id="scene-title"></h2>
+<div class="scene-grid"><aside class="condition" id="condition"></aside><div class="step-panel" id="step-panel"></div></div>
+<p class="frame-footer">Учебный пример · просмотр не означает, что задача решена</p>
+</div>
+</section>
+<div class="controls"><button id="previous" type="button" class="secondary">← Назад</button><button id="play" type="button">▶ Смотреть шаги</button><button id="next" type="button" class="secondary">Следующий шаг →</button><span id="play-status" role="status"></span></div>
+<section class="practice" aria-labelledby="practice-title"><div><p class="eyebrow">Проверь своё понимание</p><h2 id="practice-title">Назови следующий шаг</h2><p id="practice-question"></p></div><form id="practice-form"><label for="answer">Твой ответ</label><div class="answer-row"><input id="answer" autocomplete="off" placeholder="Можно записать словами"><button type="submit">Сверить шаг</button></div><p id="feedback" role="status"></p></form><details id="hint-one"><summary>Подсказка 1 · вспомнить правило</summary><p id="hint-one-text"></p></details><details id="hint-two"><summary>Подсказка 2 · наметить действие</summary><p id="hint-two-text"></p></details><details><summary>Подсказка 3 · посмотреть разобранный пример</summary><p>В шагах выше показан учебный пример. После разбора реши новое задание в конце самостоятельно и проверь результат. Здесь не оценивают твой уровень по просмотрам или числу подсказок.</p></details></section>
+<details id="mp4-tools" class="mp4-tools"><summary>Для преподавателя · создать видео MP4</summary>
+<p>Сборка выполняется в mathexam-video. Автоматический голос использует настроенную там систему озвучивания; субтитры остаются во всех режимах.</p>
+<form id="mp4-form" class="mp4-form">
+<label>Звук<select id="mp4-audio"><option value="voice">Автоматический голос и щелчки</option><option value="clicks">Только щелчки, без речи</option><option value="silent">Полностью без звука</option></select></label>
+<label>Формат<select id="mp4-format"><option value="16:9">Горизонтальный · 1280 × 720</option><option value="9:16">Вертикальный · 720 × 1280</option></select></label>
+<label class="mp4-token-label">Код доступа к видеостудии<input id="mp4-token" type="password" autocomplete="off" spellcheck="false" minlength="32" maxlength="512" required aria-describedby="mp4-privacy"></label>
+<p id="mp4-privacy">Код остаётся в этой вкладке и отправляется только Вашему видеосерверу. В ссылку, сценарий и кабинет ученика он не попадает.</p>
+<div class="mp4-actions"><button id="mp4-submit" type="submit">Создать видео с выбранным примером</button><button id="mp4-clear" class="secondary" type="button">Убрать код из вкладки</button><button id="mp4-download" class="secondary" type="button" hidden>Скачать готовое видео</button></div>
+</form><p id="mp4-status" role="status" aria-live="polite">Перед запуском выберите учебный пример и вариант выше. Нужна обновлённая версия видеосервера с поддержкой школьных сценариев.</p><p id="mp4-job" class="mp4-job"></p>
+<p>Сохраните скачанное видео отдельно: результаты сборки на сервере имеют ограниченный срок хранения. Голос доступен после настройки озвучивания в Amvera; без неё выберите щелчки.</p>
+</details>
+<section class="reader" aria-labelledby="reader-title"><div class="reader-heading"><h2 id="reader-title">Все шаги текстом</h2><button id="download" type="button" class="secondary">Скачать сценарий .txt</button></div><p>Тот же материал доступен без воспроизведения. Выбери шаг, чтобы открыть его на экране.</p><ol id="transcript"></ol></section>
+<p class="notice">Учебный пример не выставляет оценку и не отправляет ответы или фотографии в кабинет. Отдельная панель преподавателя отправляет на видеосервер только выбранный сценарий сборки.</p>
+<div class="sr-only" id="scene-status" role="status" aria-live="polite"></div>
+</main>
+</body></html>

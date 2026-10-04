@@ -1,36 +1,52 @@
 # MathExam project status
 
-Updated: 2026-10-05
+Updated: 2026-10-04
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: authorized unified learning release
+## Current: independent homework method and narrated teaching videos
 
-- Scope: [unified learning workspace](tasks/unified-learning-workspace.md),
-  [teacher and operator guide](unified-learning.md),
-  [contract](learning-contract.md), [ADR 0010](adr/0010-unified-learning.md)
-  (Accepted). Branch: `feature/unified-learning-workspace`; base:
-  `32cc54312ff2a125c117c85aa180e8da3c74128d`.
-- Permanent accounts, durable attempts, eight-seat classroom, homework in both
-  online and photographed form, archived result resets, teacher reports and
-  reviewed AI drafts are implemented. Managed coverage is 107 Path families
-  and 36 foundational trainers, not every trainer on the site.
-- Exact-runtime server, mathematics and multi-browser gates are recorded in the
-  task. New CI also builds the production Alpine image and checks its SQLite
-  and image codec. No new accounts or writes were made in production.
-- PR [#184](https://github.com/ladynata-cloud/math-exam-fipi/pull/184) passed both
-  cloud workflows on reviewed implementation head
-  `628e2dcd92a50efc39a13081acbf696d62e2ebbd`, including 103 server tests, the
-  production Alpine image and 41 existing-course regression scripts.
-- The owner authorized publication and cabinet activation without separate
-  external review on 2026-10-05, and clarified that new permanent accounts must
-  be possible beyond the eight seats of one lesson. An additional 24-account /
-  three-group persistence and recovery regression passes; runtime is unchanged.
-- Next three actions: recheck exact base/head and release gates, then merge;
-  verify Pages and Amvera use the merged version; enable first-teacher access
-  and verify the live cabinet. Actual production outcomes belong in PR #184.
+- Scope: [self-study and video](tasks/SELF_STUDY_VIDEO.md). Branch:
+  `feature/self-study-silent-video`, base
+  `a024f6c0f22bd58077bb3e31c2911ba324abb1a8`.
+- The latest owner clarification requests automatic narration plus click sounds,
+  retaining readable on-screen explanations and a text/step alternative.
+- This task extends only the implemented isolated video worker with three fixed
+  authored school scenarios; no pupil data, account permissions or classroom
+  contracts change. The complete year course and offline cabinet remain outside
+  this task. The old ADR 0002 is Proposed; actual implemented video behavior is
+  established by source and verified results, not assumed ADR acceptance.
+- Owner screenshot shows the Amvera video application running, and a read-only
+  `/healthz` check returned 200 with `ok: true` and an empty queue. Automatic
+  narration/provider credentials and a production render are not verified.
+- [Method](parallel-class-method.md) and [operator guide](self-study-video.md)
+  are implemented with three fixed pilot scenarios and a protected MP4 export
+  form. Worker 36/36, legacy gate, 204 scene checks, mobile keyboard navigation
+  and lost-acknowledgement/reload/retry regression passed. Three small real MP4
+  samples contain local clicks, without narration or external speech calls.
+- Independent agent review found no remaining blocker; it is not an external
+  provider review. No production publication or natural-voice test is claimed.
+- Next: publish the reviewed Draft PR; complete the scoped release decision;
+  verify the configured voice and one production render once operator access
+  is available. First-teacher activation remains separately pending.
+
+## Published: unified learning workspace
+
+- PR [#184](https://github.com/ladynata-cloud/math-exam-fipi/pull/184) merged as
+  `a024f6c0f22bd58077bb3e31c2911ba324abb1a8`, tree
+  `75d01207f0126872aac813860d24a366efff0346`.
+- Both exact release-head workflows passed, including 104 server tests and the
+  actual Alpine image. The postmerge EGE workflow and Pages deployment passed.
+- Production read-only checks matched 75 Pages files and 22 backend public files
+  to the tested tree. Learning status reported available/durable and the exact
+  143-entry catalog; an unauthenticated session request returned the expected401.
+- Permanent accounts are not capped at eight: the 24-learner / three-group
+  persistence and recovery regression passed. Eight is a per-lesson seat limit.
+- First-teacher activation is pending: the cloud-browser credential protection
+  prevented the Amvera operator-panel workflow. No production account or pupil
+  data writes are claimed. See PR #184 for full actual release evidence.
 
 ## Published: group-board pilot
 
