@@ -272,7 +272,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   const runtimeTrainerDir = path.join(directory, 'app', 'trainers');
   fs.mkdirSync(runtimeServerDir, { recursive: true });
   fs.mkdirSync(runtimeTrainerDir, { recursive: true });
-  for (const file of ['index.js', 'trainer-registry.js', 'progress-store.js']) {
+  for (const file of ['index.js', 'trainer-registry.js', 'progress-store.js', 'group-lessons.js']) {
     fs.copyFileSync(path.join(serverDir, file), path.join(runtimeServerDir, file));
   }
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));
