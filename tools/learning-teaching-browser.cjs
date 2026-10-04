@@ -38,7 +38,7 @@ async function run() {
           { id: 'old1', catalogId: 'path:triangle', title: 'Предыдущее решение', outcome: 'independent', archivedAt: now - 1000, updatedAt: now - 1000 }],
         positions: Array.from({ length: 21 }, (_, i) => ({ position: i + 1, started: i === 11 ? 2 : 0, independentlySolved: i === 11 ? 1 : 0, contentCount: i === 11 ? 1 : 0 })), assignments: [] };
       window.plan = { items: [{ catalogId: 'path:triangle', reason: 'Закрепить выбор высоты', priority: 'high' }], note: 'Следующее занятие' };
-      window.assignment = { assignment: { id: 'hw1', title: 'Площади — два формата', status: 'draft', dueAt: '2026-10-10' }, attempt: { id: 'a1', trainerId: 'ege-path', contentId: 'triangle', outcome: 'started' }, photos: [], feedback: [] };
+      window.assignment = { assignment: { id: 'hw1', title: 'Площади — два формата', status: 'draft', dueAt: '2026-10-10' }, attempt: { id: 'a1', trainerId: 'ege-path', contentId: 'triangle', outcome: 'started' }, photos: [], feedback: [], reviewRevision: 'ab'.repeat(32) };
       window.savedDrafts = [{id:'existing-draft',recommendations:[{catalogId:'path:practice-work',reason:'Повторить сложение производительностей',priority:'normal'}],parentNote:'',createdAt:now,status:'requires-teacher-review'}];
       window.apiMock = async (route, options = {}) => {
         const body = options.body && JSON.parse(options.body); calls.push({ route, method: options.method || 'GET', body });
@@ -52,7 +52,7 @@ async function run() {
           return { photo: assignment.photos.at(-1) };
         }
         if (route.endsWith('/publish')) { assignment.assignment.status = 'published'; return { published: true }; }
-        if (route.endsWith('/feedback')) { assignment.feedback.push({ text: body.text, status: body.status, createdAt: now }); return { feedback: assignment.feedback.at(-1) }; }
+        if (route.endsWith('/feedback')) { if (body.reviewRevision !== assignment.reviewRevision) throw Object.assign(Error('stale review'), { status: 409 }); assignment.feedback.push({ text: body.text, status: body.status, createdAt: now }); return { feedback: assignment.feedback.at(-1) }; }
         if (route === '/assignments/hw1') return assignment;
         throw Error('Unexpected API route ' + route);
       };
@@ -126,6 +126,7 @@ async function run() {
     await page.locator('#teaching-feedback [name=status]').selectOption('revise');
     await page.locator('#teaching-feedback [type=submit]').click();
     await page.getByText('Основание выбрано верно. Проверь высоту к нему.', { exact: true }).waitFor();
+    assert.equal(await page.evaluate(() => calls.find(call => call.route.endsWith('/feedback')).body.reviewRevision), 'ab'.repeat(32), 'Teacher feedback carries the viewed revision');
     await page.evaluate(() => openView('assignment', 'student'));
     await page.getByRole('heading', { name: 'Моё письменное решение' }).waitFor();
     assert.equal(await page.locator('#teaching-feedback').count(), 0);

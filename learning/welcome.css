@@ -1,0 +1,48 @@
+/* Isolated styles: cabinet content remains inert behind a native modal. */
+dialog.mw-dialog{box-sizing:border-box;width:min(760px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;border:1px solid #c9d9d0;border-radius:22px;background:#fff;color:#203d33;box-shadow:0 24px 90px #0c241754;overflow:auto}
+.mw-dialog::backdrop{background:#102c25a8}
+.mw-dialog .mw-shell{padding:24px 32px 22px}
+.mw-dialog .mw-top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:20px}
+.mw-dialog .mw-kicker{max-width:460px;font-size:.8rem;line-height:1.45;font-weight:600;color:#526b60}
+.mw-dialog button{min-height:46px}
+.mw-dialog button:focus-visible,.mw-dialog a:focus-visible,.mw-dialog video:focus-visible{outline:3px solid #ba7f12;outline-offset:3px}
+.mw-dialog .mw-top button{flex-shrink:0;font-size:.86rem;padding:8px 12px}
+.mw-dialog .mw-step{font-size:.83rem;font-weight:600;letter-spacing:.02em;margin:0 0 7px;color:#526b60}
+.mw-dialog .mw-progress{display:block;width:100%;height:6px;accent-color:#176c52;margin:0 0 24px;border:0;border-radius:99px;background:#e7efe9}
+.mw-dialog .mw-progress::-webkit-progress-bar{background:#e7efe9;border-radius:99px}
+.mw-dialog .mw-progress::-webkit-progress-value{background:#176c52;border-radius:99px}
+.mw-dialog .mw-title{font-size:clamp(1.75rem,4vw,2.55rem);font-weight:650;line-height:1.15;letter-spacing:-.035em;margin:0 0 18px}
+.mw-dialog .mw-title:focus{outline:none}
+.mw-dialog .mw-instruction{font-size:clamp(1.1rem,2.8vw,1.3rem);line-height:1.5;margin-bottom:22px}
+.mw-dialog .mw-practice{padding:18px 20px;border:1px solid #dce7df;border-radius:14px;background:#f3f7f2;font-size:1rem;line-height:1.5}
+.mw-dialog .mw-practice p:last-child{margin-bottom:0}
+.mw-dialog .mw-route{display:flex;justify-content:center;align-items:center;gap:15px;flex-wrap:wrap;margin:0 0 16px;color:#176c52;font-weight:700;font-size:1.05rem}
+.mw-dialog .mw-equation{font:600 clamp(2.4rem,8vw,3.4rem)/1.3 "Segoe UI",Arial,sans-serif;letter-spacing:.03em;text-align:center;margin:4px 0 18px}
+.mw-dialog .mw-answer-row{display:flex;justify-content:center;gap:12px;margin-bottom:18px}
+.mw-dialog .mw-answer-row button{font-size:1.22rem;min-width:90px;padding:12px}
+.mw-dialog .mw-hint-button{width:100%;font-size:.98rem}
+.mw-dialog .mw-hint{margin-top:14px;padding:12px 14px;background:#fff6da;border-left:3px solid #b18723;border-radius:5px}
+.mw-dialog .mw-feedback{font-size:1rem;line-height:1.45;color:#235840;margin:14px 0;min-height:1.4em}
+.mw-dialog .mw-example-status{display:inline-block;background:#e5efe2;border:1px solid #bccebb;border-radius:9px;padding:9px 12px;font-size:1rem;font-weight:650;margin:0 0 12px}
+.mw-dialog .mw-example-progress p{font-size:.92rem;color:#526b60;margin:0 0 18px!important}
+.mw-dialog .mw-demo-submit{width:100%}
+.mw-dialog .mw-navigation{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:0 0 20px}
+.mw-dialog .mw-navigation button{font-size:1rem;min-height:48px}
+.mw-dialog .mw-navigation .primary{margin-left:auto}
+.mw-dialog .mw-audio{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:16px;border-top:1px solid #dce7df}
+.mw-dialog .mw-audio>span{font-size:.85rem;color:#526b60}
+.mw-dialog .mw-audio button{font-size:.8rem;min-height:42px;padding:8px 10px}
+.mw-dialog .mw-audio button[aria-pressed=true]{background:#e5efe2;border-color:#729784;color:#154b36}
+.mw-dialog .mw-audio-status{margin:9px 0 0;font-size:.8rem;line-height:1.45;color:#526b60}
+.mw-dialog .mw-finish{display:flex;align-items:center;gap:18px}
+.mw-dialog .mw-finish>span{width:54px;height:54px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;font-size:2rem;background:#dcebdd;color:#176c52}
+.mw-dialog .mw-finish p{margin:0}
+dialog.mw-video-dialog{width:min(960px,calc(100vw - 32px))}
+.mw-dialog .mw-video-title{font-size:clamp(1.6rem,3vw,2.15rem)}
+.mw-dialog .mw-video-summary,.mw-dialog .mw-download-note{font-size:.88rem;color:#526b60}
+.mw-dialog .mw-video{display:block;width:100%;aspect-ratio:16/9;background:#162a24;border-radius:10px;margin:0 0 16px}
+.mw-dialog .mw-video-links{display:flex;gap:12px 22px;flex-wrap:wrap;margin:18px 0 12px}
+.mw-dialog .mw-video-links a{font-weight:600;min-height:44px;display:flex;align-items:center}
+.mw-dialog .mw-video-error{padding:12px;background:#fff0e6;color:#713a19;border-radius:9px}
+@media(max-width:540px){dialog.mw-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:16px}.mw-dialog .mw-shell{padding:18px}.mw-dialog .mw-top{gap:8px;margin-bottom:14px}.mw-dialog .mw-kicker{font-size:.72rem}.mw-dialog .mw-title{font-size:1.85rem}.mw-dialog .mw-practice{padding:15px}.mw-dialog .mw-answer-row{gap:8px}.mw-dialog .mw-answer-row button{min-width:0;flex:1;font-size:1.1rem;padding:10px 6px}.mw-dialog .mw-navigation button{font-size:.92rem;padding:10px 12px}.mw-dialog .mw-navigation .primary{max-width:75%}.mw-dialog .mw-instruction{font-size:1.12rem}.mw-dialog .mw-audio>span{width:100%}.mw-dialog .mw-video-links{gap:5px}}
+@media(prefers-reduced-motion:reduce){.mw-dialog *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}

@@ -2,6 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright');
 const C=require('../board-server/learning-remediation-contracts');
+const serverContracts=require('../board-server/learning-contracts');
 const root=path.resolve(__dirname,'..');
 const harness=`<!doctype html><meta charset="utf-8"><title>Semantic remediation test</title><style>body{margin:0}iframe{width:49vw;height:95vh;border:0}</style><script>
 window.framesById={};window.events=[];
@@ -18,7 +19,7 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
  const context=await browser.newContext({viewport:{width:1440,height:950}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  let completed=0,actions=0;
  for(const item of process.argv.includes('--visual-only')?[]:C.list()){
-  await page.goto(origin+'/harness');const {taskSpec,state}=C.create(item.contentId,12345);
+  await page.goto(origin+'/harness');const {taskSpec,state}=serverContracts.create('oge-basics',item.contentId,12345);
   for(const id of ['student','teacher'])await page.evaluate(({id,url})=>openTrainer(id,url),{id,url:item.url});
   await page.waitForFunction(()=>framesById.student?.ready&&framesById.teacher?.ready);
   await page.evaluate(({taskSpec,state})=>{hydrate('student',taskSpec,state,false);hydrate('teacher',taskSpec,state,true);},{taskSpec,state});
@@ -77,7 +78,7 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
  }
  for(const width of [360,1280])for(const id of ['multiplication-division/multiplication-pythagoras-table','multiplication-division/long-division-zero-in-quotient']){
   await page.setViewportSize({width,height:900});await page.goto(origin+'/harness');await page.addStyleTag({content:'iframe{width:100vw}'});
-  const {taskSpec,state}=C.create(id,12345);if(taskSpec.lessons.length&&id.includes('pythagoras'))state.view='learn';else {state.answers=taskSpec.steps.slice(0,6).map(q=>String(q.answer));state.step=state.answers.length;}
+  const {taskSpec,state}=serverContracts.create('oge-basics',id,12345);if(taskSpec.lessons.length&&id.includes('pythagoras'))state.view='learn';else {state.answers=taskSpec.steps.slice(0,6).map(q=>String(q.answer));state.step=state.answers.length;}
   await page.evaluate(url=>openTrainer('student',url),'/trainers/oge-basics/'+id+'.html');await page.waitForFunction(()=>framesById.student?.ready);
   await page.evaluate(({taskSpec,state})=>hydrate('student',taskSpec,state,false),{taskSpec,state});await page.waitForFunction(()=>framesById.student.applied);
   const frame=page.frames().find(f=>f.url().includes('channel=student'));assert.equal(await frame.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'Mobile overflow '+id+' at '+width);

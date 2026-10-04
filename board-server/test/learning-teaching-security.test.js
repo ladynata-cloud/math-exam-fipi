@@ -128,10 +128,12 @@ test('manual photo acceptance never awards automatic independent trainer complet
   const f = await fixture(t), a = await f.draft();
   assert.equal((await f.upload(f.teacher, a.id)).status, 201);
   assert.equal((await f.request(f.teacher, '/assignments/' + a.id + '/publish', { opId: op() })).status, 200);
-  let r = await f.request(f.teacher, '/assignments/' + a.id + '/feedback', { opId: op(), text: 'Проверено', status: 'accepted' }); assert.equal(r.status, 409);
+  let reviewRevision = (await f.request(f.teacher, '/assignments/' + a.id)).body.reviewRevision;
+  let r = await f.request(f.teacher, '/assignments/' + a.id + '/feedback', { opId: op(), text: 'Проверено', status: 'accepted', reviewRevision }); assert.equal(r.status, 409);
   assert.equal((await f.upload(f.students[0], a.id, { kind: 'solution' })).status, 201);
-  r = await f.request(f.students[0], '/assignments/' + a.id + '/feedback', { opId: op(), text: 'Сам проверил', status: 'accepted' }); assert.equal(r.status, 403);
-  r = await f.request(f.teacher, '/assignments/' + a.id + '/feedback', { opId: op(), text: 'Ход решения проверен по фото.', status: 'accepted' }); assert.equal(r.status, 200);
+  reviewRevision = (await f.request(f.teacher, '/assignments/' + a.id)).body.reviewRevision;
+  r = await f.request(f.students[0], '/assignments/' + a.id + '/feedback', { opId: op(), text: 'Сам проверил', status: 'accepted', reviewRevision }); assert.equal(r.status, 403);
+  r = await f.request(f.teacher, '/assignments/' + a.id + '/feedback', { opId: op(), text: 'Ход решения проверен по фото.', status: 'accepted', reviewRevision }); assert.equal(r.status, 200);
   r = await f.request(f.students[0], '/assignments/' + a.id); assert.equal(r.body.attempt.outcome, 'started');
   assert.equal(r.body.feedback[0].status, 'accepted');
   r = await f.request(f.teacher, '/teacher/students/' + f.students[0].account.id + '/report');

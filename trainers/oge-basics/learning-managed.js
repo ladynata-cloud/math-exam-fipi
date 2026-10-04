@@ -82,6 +82,9 @@ function render(focus){
 }
 window.MathExamLearning.register({trainerId:'oge-basics',contentVersion:1,getState:()=>state?clone(state):null,subscribe:callback=>{notify=callback;return()=>{notify=()=>{};};},applyState:payload=>{
  const canonical=api.create(payload.taskSpec.contentId,payload.taskSpec.seed).taskSpec;
+ // The account server adds this fixed identity envelope to every saved task.
+ // Reconstruct it before the exact comparison; all authored content still matches.
+ canonical.trainerId='oge-basics';canonical.id=canonical.contentId;
  if(JSON.stringify(canonical)!==JSON.stringify(payload.taskSpec))throw Error('Условие отличается от сохранённой версии тренажёра.');
  spec=canonical;state=api.normalize(spec,payload.state);readOnly=payload.readOnly===true;render();
 }});

@@ -93,7 +93,7 @@ const learningHeaders = (_req, res, next) => {
   res.set({
     'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff',
     'Cross-Origin-Resource-Policy': 'same-origin',
-    'Content-Security-Policy': `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; frame-src ${learningTrainerOrigin}; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'`
+    'Content-Security-Policy': `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' ${learningTrainerOrigin}; connect-src 'self'; frame-src ${learningTrainerOrigin}; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'`
   }); next();
 };
 app.use('/learning', learningHeaders, express.static(path.join(__dirname, '../learning'), { dotfiles: 'deny', index: 'index.html', fallthrough: false }));

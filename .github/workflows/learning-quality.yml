@@ -60,6 +60,7 @@ jobs:
           node tools/learning-catalog-reference-test.cjs --browser
           node tools/learning-teaching-browser.cjs
           node tools/learning-teaching-live-browser.cjs
+          node tools/learning-free-route.browser.cjs
       - name: Final whitespace and patch check
         run: git diff --check
 

@@ -2,7 +2,7 @@
 
 const express = require('express');
 const { LearningStore } = require('./learning-store');
-const { LearningError, requireValue, exactKeys, normalizeLogin, tokenHash, hashPassword, verifyPassword, RateLimiter } = require('./learning-auth');
+const { LearningError, requireValue, exactKeys, safeName, normalizeLogin, tokenHash, hashPassword, verifyPassword, RateLimiter } = require('./learning-auth');
 
 function createLearningApi(options = {}) {
   const store = options.store || new LearningStore(options);
@@ -89,7 +89,17 @@ function createLearningApi(options = {}) {
     res.json({ ok: true });
   }));
   router.get('/teacher/students', authMiddleware, handler((req, res) => res.json({ students: store.students(req.learningAuth) })));
-  router.post('/teacher/students', authMiddleware, mutationMiddleware, handler((req, res) => res.status(201).json(store.createStudent(req.learningAuth, req.body))));
+  router.post('/teacher/students', authMiddleware, mutationMiddleware, handler(async (req, res) => {
+    // Check the role and request shape before scheduling expensive password work.
+    store.teacher(req.learningAuth);
+    exactKeys(req.body, ['name', 'login', 'password'], ['name', 'login']);
+    const student = { name: safeName(req.body.name), login: normalizeLogin(req.body.login) };
+    requireValue(!store.accountByLogin(student.login), 'LEARNING_LOGIN_EXISTS', 409);
+    const passwordHash = Object.hasOwn(req.body, 'password') ? await hashPassword(req.body.password) : null;
+    // Hashing is asynchronous: a logout or recovery in the meantime revokes permission.
+    const auth = store.session(req.learningSessionToken);
+    res.status(201).json(store.createStudent(auth, student, passwordHash));
+  }));
   router.post('/teacher/students/:id/recovery', authMiddleware, mutationMiddleware, handler((req, res) => {
     exactKeys(req.body, []); res.json(store.recoverStudent(req.learningAuth, req.params.id));
   }));

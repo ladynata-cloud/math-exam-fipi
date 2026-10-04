@@ -1,0 +1,33 @@
+.teaching-paper-sheet { max-width: 920px; }
+.teaching-paper-tasks { padding-left: 1.8rem; margin: 1.4rem 0; }
+.teaching-paper-tasks li { padding-left: .4rem; margin: 0 0 1.3rem; line-height: 1.75; font-size: 1.05rem; overflow-wrap: anywhere; }
+.teaching-paper-tasks li::marker { color: var(--green, #386a52); font-weight: 700; }
+.teaching-paper-answers { margin-top: 1.4rem; border-top: 1px solid var(--line, #dce3d9); padding-top: 1rem; }
+.teaching-paper-answers summary { font-weight: 600; cursor: pointer; }
+.teaching-paper-answers li { margin-bottom: 1rem; }
+.teaching-work-status { padding: .8rem 1rem; border-radius: 10px; background: #eef4ed; color: #244f3b; }
+.teaching-submit { border: 2px solid var(--green, #386a52); }
+#teaching-paper { max-width: 600px; }
+#teaching-paper select { width: 100%; margin-top: .4rem; }
+@media (max-width: 600px) {
+  .teaching-paper-tasks { padding-left: 1.3rem; }
+  .teaching-paper-tasks li { font-size: 1rem; }
+  .teaching-submit button { width: 100%; }
+}
+@media print {
+  body.printing-paper-homework { background: #fff !important; color: #111 !important; }
+  body.printing-paper-homework .app-header,
+  body.printing-paper-homework .sidebar,
+  body.printing-paper-homework #notice,
+  body.printing-paper-homework #toast,
+  body.printing-paper-homework .skip-link,
+  body.printing-paper-homework .teaching-screen > :not(.teaching-paper-sheet),
+  body.printing-paper-homework .no-print { display: none !important; }
+  body.printing-paper-homework .app-shell,
+  body.printing-paper-homework .content-column,
+  body.printing-paper-homework #main,
+  body.printing-paper-homework .teaching-screen { display: block !important; margin: 0 !important; padding: 0 !important; }
+  body.printing-paper-homework .teaching-paper-sheet { display: block !important; border: 0 !important; box-shadow: none !important; max-width: none; padding: 0; margin: 0; }
+  body.printing-paper-homework .teaching-paper-tasks li { break-inside: avoid; margin-bottom: 1.7rem; font-size: 12pt; }
+  body.printing-paper-homework .teaching-paper-sheet h2 { font-size: 19pt; }
+}
