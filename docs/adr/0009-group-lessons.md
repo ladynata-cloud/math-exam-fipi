@@ -1,10 +1,16 @@
 # Group lessons with independent learner workspaces
 
-Status: Proposed
+Status: Accepted
 
 Date: 2026-10-05
 
 Related task: [group-board-eight](../tasks/group-board-eight.md).
+
+Owner decision for this scoped pilot and PR #183: «внешней проверки не нужно,
+публикацию разрешаю». This accepts the described pilot for publication and
+explicitly waives external review. No additional rationale or external reviewer
+verdict was supplied or is inferred. Merge and live rollout evidence remain to
+be recorded in PR #183; acceptance is not proof of production availability.
 
 ## Context
 
@@ -14,7 +20,7 @@ does not itself define private group seats, a lesson-wide event journal or the
 new authorization boundary. Treating a shared browser or a copied room token as
 independent student work would mix authorship and access.
 
-## Proposed decision
+## Decision
 
 Introduce an additive group-board route and an isolated group lesson API. A
 lesson contains 1–8 private workspaces and one common workspace. The teacher can
@@ -113,9 +119,13 @@ but contains names and student work.
 
 Synchronous durable appends and in-memory replay are a bounded pilot choice.
 Larger scale, multiple server replicas, retention/deletion policy and database
-migration need a separate design. A persistent volume and verified private
-backup/restore are prerequisites for an authorized rollout. This change does
-not configure the production volume or hosting environment.
+migration need a separate design. The authorized release adds Docker's
+`GROUP_LESSON_STORE_DIR=/data/group-lessons` default and the Amvera
+`run.persistenceMount: /data` declaration. The actual production mount and
+private backup/restore have not been verified. Repository configuration alone
+does not establish either; verify both before classroom use. To disable the capability in this image, explicitly
+override `GROUP_LESSON_STORE_DIR` with an empty string and restart; merely
+removing an environment override restores the Docker default. Preserve journals.
 
 ## Alternatives and deferred work
 
@@ -139,8 +149,10 @@ record their actual final-head results rather than carry an earlier pilot pass
 onto the extended boundary. Internal
 independent review is not evidence of external review.
 
-This ADR remains **Proposed**. Implementation and a Draft PR do not accept the
-archetype. `NEW_ARCHETYPE` owner acceptance, the applicable `HIGH` reviews
-(external review or an explicit owner waiver with rationale), and separate
-merge/deployment authorization are required before rollout. No production
-success is asserted here.
+The owner's quoted decision accepts this archetype and authorizes publication
+with external review waived. Internal checks and the known baseline browser
+failure remain recorded in the task; no external review is claimed. Before
+publication the existing Amvera backend returned HTTP 503 at `/health` and
+`/api/group-lessons/status`. Hosting controls were unavailable to the executing
+agent. PR #183 must record the actual merge and subsequent live evidence;
+production success and backup verification are not asserted here.

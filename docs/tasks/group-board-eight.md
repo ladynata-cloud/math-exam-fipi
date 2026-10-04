@@ -11,7 +11,7 @@
 - Review level: `NEW_ARCHETYPE`, with all applicable `HIGH` requirements for
   access control, server contracts and persistence.
 - Related ADR: [0009-group-lessons](../adr/0009-group-lessons.md).
-- ADR status: **Proposed**, not accepted by this implementation record.
+- ADR status: **Accepted** by the owner's publication decision below.
 
 ## Goal
 
@@ -37,7 +37,10 @@ The existing individual board and Trainer Bridge remain separate. Two existing
 bridged trainers provide the pilot evidence: negative numbers on a line and
 stepwise linear inequalities. Support for these two trainers does not establish
 support for the full trainer catalogue. Current behavior is established by
-code and gates; ADR 0009 remains advisory pending acceptance.
+code and gates; acceptance of ADR 0009 is recorded by the later owner decision:
+«внешней проверки не нужно, публикацию разрешаю». This accepts the scoped pilot,
+waives external review and authorizes its publication through PR #183. No
+additional rationale or external-review verdict is invented.
 
 ## Approved scope
 
@@ -69,6 +72,9 @@ code and gates; ADR 0009 remains advisory pending acceptance.
   idempotent actions, version checks, `events-v1` history, replay and JSON export.
 - Add targeted backend tests and a real-browser gate for eight isolated learner
   contexts and relevant legacy regressions.
+- Under the later publication authorization, add Docker's
+  `GROUP_LESSON_STORE_DIR=/data/group-lessons` default and Amvera's
+  `run.persistenceMount: /data`, then publish through PR #183 with live checks.
 
 ### Out of scope
 
@@ -78,15 +84,15 @@ code and gates; ADR 0009 remains advisory pending acceptance.
   or an observation-only fallback for unsupported trainers. These are deferred
   directions, not implemented capabilities.
 - Accounts, enrollment/billing, token rotation, export import, multi-process
-  storage, production configuration changes, deployment, or merging.
+  storage, and hosting changes beyond the scoped release wiring above.
 - Forced replacement of learners' own tasks, sharing a peer's private history,
   or opening all peer workspaces to learners outside the explicit explanation.
 
 ### Files or areas that must not change
 
 Preserve existing room/token/storage formats, course data and unrelated trainer
-behavior. Do not modify global repository policy, hosting configuration,
-secrets, or unrelated courses. Pilot trainer changes must preserve standalone
+behavior. Do not modify global repository policy, secrets, unrelated courses,
+or hosting configuration beyond the authorized persistence wiring. Pilot trainer changes must preserve standalone
 use and isolate group-session state from standalone browser statistics.
 
 ## Acceptance criteria
@@ -94,7 +100,7 @@ use and isolate group-session state from standalone browser statistics.
 The initial pilot passed the checks marked below. The later two-view explanation
 extension passed the backend and extended browser gates, including delayed-acknowledgement tab switching.
 Execution evidence below distinguishes the initial results from that rerun;
-release prerequisites remain open.
+publication is authorized and live release verification remains open.
 
 - [x] Eight isolated learners retain independent assignments and state; each
   learner is denied other private workspaces and their histories. The explicit
@@ -117,8 +123,10 @@ release prerequisites remain open.
 - [x] Extended browser gate verifies two learner views, start/retarget/stop of
   presentation, own-task preservation, read-only peer viewing, shared authored
   strokes and mobile/expanded navigation. Record review of the new boundary.
-- [ ] External review or explicit owner waiver with rationale, ADR acceptance
-  and separate release authorization remain required before rollout.
+- [x] Owner accepts the scoped pilot, waives external review and authorizes
+  publication: «внешней проверки не нужно, публикацию разрешаю».
+- [ ] Record the exact release head, unchanged-base check, merge and live
+  frontend/backend evidence in PR #183. Verify operational storage separately.
 
 ## Checks and gates
 
@@ -132,8 +140,8 @@ release prerequisites remain open.
 - Browser success marker: `GROUP_BOARD_BROWSER_OK`. It is evidence only when
   produced by the completed command on the reviewed code.
 - Group pilot and two-view presentation gate: **PASS**. This is not a claim
-  that every legacy browser gate passes or that production rollout is approved.
-- Production checks: intentionally not run; rollout is not authorized here.
+  that every legacy browser gate passes or that production is available.
+- Release checks: authorized; merge/live evidence is pending in PR #183.
 
 ## Review plan
 
@@ -144,9 +152,10 @@ that were corrected and re-reviewed; the browser gate verifies the resulting
 retry, history and trainer behavior. The later presentation boundary requires
 review of its own final changes. This internal review is not external-review provenance.
 
-External review has **not been performed or claimed**. Under
-[REVIEW_POLICY.md](../REVIEW_POLICY.md), obtain external review or an explicit
-owner waiver with rationale before rollout. Any external handoff must omit
+External review has **not been performed or claimed**. The owner explicitly
+waived it: «внешней проверки не нужно, публикацию разрешаю». No further rationale
+was supplied; this record does not invent one or claim a review verdict. The
+global [review policy](../REVIEW_POLICY.md) is unchanged. Any external handoff must omit
 secrets, actual access links, private learner data and machine-specific paths.
 Valid provenance must identify provider, PR, base SHA, reviewed head SHA,
 verdict, and a verifiable source or timestamp. No approval marker in this task
@@ -161,8 +170,9 @@ substitutes for that evidence.
 - The store requires an explicitly configured persistent directory, one owning
   process and private backups. It contains student access tokens; do not copy
   its raw files into logs, issues, test artifacts or review bundles.
-- Rollback: disable group capability by unsetting `GROUP_LESSON_STORE_DIR` and
-  restarting the service; hide any group entry point if added at rollout. Keep
+- Rollback: explicitly override `GROUP_LESSON_STORE_DIR` with an empty string
+  and restart the service; removing an override alone restores Docker's
+  `/data/group-lessons` default. Hide any group entry point if added at rollout. Keep
   the journal directory and backups intact. The existing board remains a
   separate route. If a code rollback is needed, revert the scoped change without
   deleting or downgrading stored journals.
@@ -173,9 +183,11 @@ substitutes for that evidence.
 
 - `START`: yes, by the owner's later implementation instruction in this task.
 - Branch creation, local implementation/commits, push and one Draft PR: allowed.
-- Merge, auto-merge and deployment: **not authorized by this task**.
-- Explicit archetype acceptance is still required before rollout; do not change
-  ADR status to Accepted without that decision.
+- Scoped merge and deployment: authorized by the later instruction
+  «внешней проверки не нужно, публикацию разрешаю» for PR #183; retain the
+  unchanged-base guard and exact-head release checks.
+- Auto-merge: no separate authorization recorded.
+- ADR 0009: accepted for this scoped pilot by that publication decision.
 
 ## Execution record
 
@@ -184,6 +196,11 @@ substitutes for that evidence.
 - Initial local pilot commit: `537246c`. The final head and Draft PR for the
   tested tree, including the presentation extension, are recorded in the PR
   body. Connector publication must preserve the complete tested Git tree.
+- Release PR: [#183](https://github.com/ladynata-cloud/math-exam-fipi/pull/183),
+  remote head at release preparation `887e7671252d8e85d3936b693e175fd5b7601466`.
+  Authorized and authoritative base at preparation:
+  `63c81e1425304b4ced24a2308385344d523409b1`, unchanged. Recheck immediately before
+  merge and record the final release head and live results in PR #183.
 - Current backend tests: **58/58** (17 group tests and 41 legacy tests), as
   reported by the coordinating executor after the presentation extension.
 - Initial pilot checks passed: `GROUP_BOARD_BROWSER_OK` with eight isolated
@@ -205,7 +222,10 @@ substitutes for that evidence.
   checkout of exact base `63c81e1425304b4ced24a2308385344d523409b1`; its tracked
   files were unchanged. No test was changed or weakened. The all-sections run
   does not establish later legacy sections as passed.
-- Not run: external review; production deployment/live smoke; a real-student
+- Before publication: Amvera `/health` and `/api/group-lessons/status` returned
+  HTTP 503. No hosting-control tool was available. The production volume and
+  private backup/restore have not been verified; rollout success is not claimed.
+- Not run: external review (owner waiver); post-publication live smoke; a real-student
   pilot; non-Chromium device/browser coverage.
 - Scope deviations: none; the two-trainer pilot does not implement universal
   observation or bidirectional mirroring.

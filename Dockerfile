@@ -14,6 +14,7 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOST=0.0.0.0
 ENV PROGRESS_STORE_PATH=/data/progress.json
+ENV GROUP_LESSON_STORE_DIR=/data/group-lessons
 
 VOLUME ["/data"]
 

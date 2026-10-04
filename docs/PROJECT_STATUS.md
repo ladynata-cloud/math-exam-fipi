@@ -1,10 +1,40 @@
 # MathExam project status
 
-Updated: 2026-10-03
+Updated: 2026-10-05
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
+
+## Current: authorized group-board release
+
+- PR [#183](https://github.com/ladynata-cloud/math-exam-fipi/pull/183),
+  [scope](tasks/group-board-eight.md), [guide](group-board.md). Authoritative
+  base at release preparation is unchanged:
+  `63c81e1425304b4ced24a2308385344d523409b1`; remote PR head is
+  `887e7671252d8e85d3936b693e175fd5b7601466` before the release-wiring update.
+- The owner states: «внешней проверки не нужно, публикацию разрешаю».
+  [ADR 0009](adr/0009-group-lessons.md) is Accepted for this scoped pilot;
+  publication is authorized and external review waived. No additional rationale
+  or external reviewer verdict is claimed. Actual merge/live evidence belongs
+  in PR #183; publication success is not asserted by this preparation record.
+- Scope remains 1–8 independent learners, four teacher previews, two learner
+  views, explicit shared explanations and event replay, with exactly two pilot
+  trainers. Backend **58/58**, the extended `GROUP_BOARD_BROWSER_OK` gate and
+  independent re-review passed. The unrelated legacy browser failure also
+  occurs on the untouched base; full evidence remains in the task.
+- Release wiring adds Docker `GROUP_LESSON_STORE_DIR=/data/group-lessons` and
+  Amvera `run.persistenceMount: /data`. Before publication, the existing backend
+  returns HTTP 503 for `/health` and `/api/group-lessons/status`; hosting controls
+  are unavailable to the executing agent. Production storage and backup/restore
+  have not been verified. Rollback must override the store variable with an
+  empty string, restart, and preserve journals.
+- Next three actions: validate and push the scoped release wiring; recheck
+  authoritative `main` and merge the authorized exact head if unchanged;
+  verify Pages and backend availability/persistence, recording actual outcomes
+  and any hosting blocker in PR #183.
+
+## Earlier work records (not current group-board release evidence)
 
 ## Current: repeated practice for linear equations
 
