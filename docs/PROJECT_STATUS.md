@@ -6,12 +6,12 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: unified learning workspace (implementation, not deployed)
+## Current: authorized unified learning release
 
 - Scope: [unified learning workspace](tasks/unified-learning-workspace.md),
   [teacher and operator guide](unified-learning.md),
   [contract](learning-contract.md), [ADR 0010](adr/0010-unified-learning.md)
-  (Proposed). Branch: `feature/unified-learning-workspace`; base:
+  (Accepted). Branch: `feature/unified-learning-workspace`; base:
   `32cc54312ff2a125c117c85aa180e8da3c74128d`.
 - Permanent accounts, durable attempts, eight-seat classroom, homework in both
   online and photographed form, archived result resets, teacher reports and
@@ -20,9 +20,17 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Exact-runtime server, mathematics and multi-browser gates are recorded in the
   task. New CI also builds the production Alpine image and checks its SQLite
   and image codec. No new accounts or writes were made in production.
-- Next three actions: publish one Draft PR with final gate evidence; inspect CI
-  including the production image; obtain scoped archetype/review acceptance and
-  separate release authorization before merge and first activation.
+- PR [#184](https://github.com/ladynata-cloud/math-exam-fipi/pull/184) passed both
+  cloud workflows on reviewed implementation head
+  `628e2dcd92a50efc39a13081acbf696d62e2ebbd`, including 103 server tests, the
+  production Alpine image and 41 existing-course regression scripts.
+- The owner authorized publication and cabinet activation without separate
+  external review on 2026-10-05, and clarified that new permanent accounts must
+  be possible beyond the eight seats of one lesson. An additional 24-account /
+  three-group persistence and recovery regression passes; runtime is unchanged.
+- Next three actions: recheck exact base/head and release gates, then merge;
+  verify Pages and Amvera use the merged version; enable first-teacher access
+  and verify the live cabinet. Actual production outcomes belong in PR #184.
 
 ## Published: group-board pilot
 

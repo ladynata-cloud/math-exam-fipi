@@ -9,7 +9,7 @@
 - Base SHA: `32cc54312ff2a125c117c85aa180e8da3c74128d`.
 - Planned/actual branch: `feature/unified-learning-workspace`.
 - Review level: `NEW_ARCHETYPE` (also includes HIGH authentication and persistence risks).
-- Related ADR: [0010](../adr/0010-unified-learning.md), Proposed.
+- Related ADR: [0010](../adr/0010-unified-learning.md), Accepted.
 
 ## Goal and authorization
 
@@ -100,10 +100,25 @@ all existing group/progress data. Do not migrate or delete legacy data implicitl
 ## Permissions
 
 - Current START, branch, local commits, push and Draft PR: yes.
-- Merge, auto-merge and deployment: no new authorization in this task.
+- Owner release authorization, 2026-10-05 Asia/Novosibirsk: publication and
+  cabinet activation are allowed without a separate external review. This
+  accepts the scoped ADR 0010 implementation. No external verdict is claimed.
+- Authorized base: `32cc54312ff2a125c117c85aa180e8da3c74128d`.
+- Approved implementation head: `628e2dcd92a50efc39a13081acbf696d62e2ebbd`.
+- Release follow-up changes only acceptance/usage documentation and an additional
+  24-account regression. Application/runtime code remains the reviewed version.
+- Eight limits one lesson; the permanent roster allows new accounts beyond eight.
 - No force operations, protection changes or external messages.
 
 ## Execution record
+
+Release clarification: a focused test creates and activates 24 permanent
+students, builds three separate eight-seat lessons, rejects a ninth lesson seat
+without changing the roster, and verifies independent recovery for the ninth
+account plus persistence of all 24 accounts, three lessons and its work after
+reopening the database. The implementation already supports this; no runtime
+change was needed.
+
 
 Local final backend run on pinned Node 24.21.0: **103/103 passed**. This includes
 legacy board contracts plus accounts, CSRF, ownership, recovery, idempotency,

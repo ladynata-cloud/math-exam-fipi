@@ -51,6 +51,58 @@ function action(f, auth, current, type, payload, extra = {}) {
   return f.store.action(auth, current.id, { opId: op(), expectedVersion: current.version, type, payload, ...extra });
 }
 
+test('24 permanent learners remain independent while each separate lesson is limited to eight seats', t => {
+  const f = fixture(t);
+  for (let i = 3; i <= 24; i++) {
+    const invitation = f.store.createStudent(f.teacher, { name: `Ученик ${i}`, login: `student${i}` });
+    f.students.push({ ...f.store.activate(invitation.invitationToken, HASH), invitation });
+  }
+  const accountIds = f.students.map(student => student.account.id);
+  assert.equal(new Set(accountIds).size, 24);
+  const roster = f.store.students(f.teacher);
+  assert.equal(roster.length, 24);
+  assert.deepEqual(new Set(roster.map(student => student.id)), new Set(accountIds));
+  assert.ok(roster.every(student => student.active));
+
+  const lessons = [0, 8, 16].map((start, index) => f.store.createLesson(f.teacher, {
+    opId: op(), title: `Группа ${index + 1}`, learnerIds: accountIds.slice(start, start + 8)
+  }).lesson);
+  assert.ok(lessons.every(lesson => lesson.seats.length === 8));
+  assert.equal(f.store.listLessons(f.teacher).length, 3);
+  for (let i = 0; i < 24; i++) {
+    const personalLessons = f.store.listLessons(f.students[i].account);
+    assert.equal(personalLessons.length, 1);
+    assert.equal(personalLessons[0].id, lessons[Math.floor(i / 8)].id);
+    assert.deepEqual(personalLessons[0].seats.map(seat => seat.learnerId), [accountIds[i]]);
+  }
+  denied(() => f.store.createLesson(f.teacher, {
+    opId: op(), title: 'Девять мест недопустимы', learnerIds: accountIds.slice(0, 9)
+  }), 'LEARNING_INVALID');
+  assert.equal(f.store.listLessons(f.teacher).length, 3);
+  assert.equal(f.store.students(f.teacher).length, 24);
+
+  const ninth = f.students[8], original = attempt(f, 8);
+  const saved = action(f, ninth.account, original, 'state', { state: { work: { draft: 'личная работа девятого ученика', help: false, done: false } } }).attempt;
+  const recovery = f.store.recoverStudent(f.teacher, ninth.account.id);
+  const recovered = f.store.activate(recovery.invitationToken, HASH);
+  assert.equal(recovered.account.id, ninth.account.id);
+  denied(() => f.store.session(ninth.sessionToken), 'LEARNING_UNAUTHORIZED');
+  assert.equal(f.store.session(f.students[0].sessionToken).id, accountIds[0]);
+  assert.equal(f.store.session(f.students[23].sessionToken).id, accountIds[23]);
+  assert.equal(f.store.getAttempt(recovered.account, original.id).state.work.draft, saved.state.work.draft);
+  denied(() => f.store.getAttempt(f.students[23].account, original.id), 'LEARNING_NOT_FOUND');
+
+  f.store.close();
+  const reopened = f.makeStore();
+  try {
+    assert.equal(reopened.students(f.teacher).length, 24);
+    assert.equal(reopened.listLessons(f.teacher).length, 3);
+    assert.equal(reopened.session(recovered.sessionToken).id, accountIds[8]);
+    assert.equal(reopened.session(f.students[23].sessionToken).id, accountIds[23]);
+    assert.equal(reopened.getAttempt(recovered.account, original.id).state.work.draft, saved.state.work.draft);
+  } finally { reopened.close(); }
+});
+
 test('activation and recovery are one-use; reset revokes every previous session', t => {
   const f = fixture(t), s = f.students[0];
   denied(() => f.store.activate(s.invitation.invitationToken, HASH), 'LEARNING_ACCESS_INVALID');

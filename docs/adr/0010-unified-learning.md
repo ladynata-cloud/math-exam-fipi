@@ -1,11 +1,17 @@
 # Permanent learning accounts and one continuous attempt
 
-Status: Proposed
+Status: Accepted
 
 Date: 2026-10-05
 
 Related task: [unified learning workspace](../tasks/unified-learning-workspace.md).
-The owner authorized implementation, not yet rollout of this archetype.
+The owner accepted publication and activation of this implementation on
+2026-10-05 (Asia/Novosibirsk): «разрешаю публиковать и включить кабинеты без
+отдельной внешней проверки». This is acceptance of the scoped account/classroom
+archetype and an explicit external-review waiver, not an external review verdict.
+The owner clarified that eight is a per-lesson limit, not the size of the
+permanent student roster. The implementation supports new permanent accounts
+and multiple separately composed lessons.
 
 ## Design
 
