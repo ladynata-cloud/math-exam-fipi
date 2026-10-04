@@ -1,0 +1,9 @@
+.git
+**/node_modules
+**/*.sqlite
+**/*.sqlite-*
+**/*.sqlite.lock
+**/.env
+**/.env.*
+**/test-results
+**/playwright-report

@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте математической базы</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"title": "Отрицательные числа на прямой", "shortTitle": "числовая прямая", "lead": "Ноль, направление, сравнение, противоположные числа и модуль — без действий со знаками.", "symbol": "−3 0 3", "symbolCaption": "левее · правее", "eyebrow": "Отрицательные числа · один навык", "topicId": "ogeBasicsNegativeLine", "storageKey": "mathExamBasics.negative-number-line.v1", "rule": "На числовой прямой правее — больше. Модуль — расстояние до нуля.", "lessons": [{"title": "Ноль делит прямую на две стороны", "short": "Ноль и стороны", "lead": "Положительные числа справа, отрицательные — слева.", "html": "<div class=\"visual-box\"><div class=\"number-line\"><span class=\"tick \">-5</span><span class=\"tick \">-4</span><span class=\"tick \">-3</span><span class=\"tick \">-2</span><span class=\"tick \">-1</span><span class=\"tick zero\">0</span><span class=\"tick \">1</span><span class=\"tick \">2</span><span class=\"tick \">3</span><span class=\"tick \">4</span><span class=\"tick \">5</span></div></div>", "question": {"kind": "choice", "prompt": "Где находится число −3 относительно нуля?", "options": [{"id": "0", "html": "Справа"}, {"id": "1", "html": "Слева"}], "answer": "1", "good": "Верно: отрицательные числа находятся слева от нуля.", "bad": "Посмотрите на правило и попробуйте ещё раз."}}, {"title": "Правее — значит больше", "short": "Сравнение", "lead": "На числовой прямой больше то число, которое расположено правее.", "html": "<div class=\"formula\">−2 &gt; −6</div><p>Хотя 6 больше 2 по модулю, число −6 находится левее.</p>", "question": {"kind": "choice", "prompt": "Какое число больше?", "options": [{"id": "0", "html": "−7"}, {"id": "1", "html": "−3"}], "answer": "1", "good": "Верно: −3 находится правее.", "bad": "Посмотрите на правило и попробуйте ещё раз."}}, {"title": "Противоположные числа", "short": "Противоположные", "lead": "Они находятся на одинаковом расстоянии от нуля, но по разные стороны.", "html": "<div class=\"formula\">−5 ↔ 5</div>", "question": {"kind": "input", "prompt": "Назовите число, противоположное <strong>−8</strong>.", "answer": 8, "unit": "", "good": "Верно: противоположное число — 8.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Модуль — расстояние до нуля", "short": "Модуль", "lead": "Расстояние не бывает отрицательным.", "html": "<div class=\"formula\">|−4| = 4</div>", "question": {"kind": "input", "prompt": "Найдите: <strong>|−9|</strong>", "answer": 9, "unit": "", "good": "Верно: число −9 находится на расстоянии 9 от нуля.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Движение вправо и влево", "short": "Движение", "lead": "Прибавляем положительное — идём вправо. Прибавляем отрицательное — влево.", "html": "<div class=\"example\">Старт −2, три шага вправо → 1.</div>", "question": {"kind": "input", "prompt": "Стартуйте в точке −4 и сделайте 6 шагов вправо. Где окажетесь?", "answer": 2, "unit": "", "good": "Верно: −4 + 6 = 2.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}], "learnTime": "6–8 минут"};
 
 (function(){
@@ -86,7 +87,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -186,5 +187,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 <script src="../../ege-baza/return-to-course.js"></script></body></html>

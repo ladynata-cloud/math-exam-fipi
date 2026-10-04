@@ -107,7 +107,7 @@ font-size:14px;color:#7d521e;margin-top:11px}
 .qitem.no-ok{border-color:var(--red);background:var(--red-soft)}
 .big{font-size:36px;font-weight:900;letter-spacing:-.03em}
 @media(max-width:560px){.card{padding:16px}.prompt{font-size:16px}.skill-row{grid-template-columns:1fr 62px 38px}}
-</style></head>
+</style><script src="../learning-loader.js"></script></head>
 <body><div class="wrap">
 
 <header class="card">
@@ -206,6 +206,7 @@ font-size:14px;color:#7d521e;margin-top:11px}
 
 </div>
 <script>
+if (!window.MathExamRemediationManaged) {
 const $=id=>document.getElementById(id);
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 const pick=a=>a[rnd(0,a.length-1)];
@@ -254,7 +255,7 @@ function taskSolve(){
  traps.push({v:r2(val+k),msg:'Пропорция решается умножением и делением, а не прибавлением.'});
  return {type:'input',prompt:prompt,answer:val,traps:traps,
   hint1:'Крайние члены — первый и последний, средние — два в середине. Их произведения равны.',
-  hint2:'Запишите равенство '+a+' · '+d+' = '+b+' · '+c+' и выразите из него <b>x</b>.',
+  hint2:'Запишите равенство '+(pos===0?'x':a)+' · '+(pos===3?'x':d)+' = '+(pos===1?'x':b)+' · '+(pos===2?'x':c)+' и выразите из него <b>x</b>.',
   solution:'Произведение крайних равно произведению средних: '+a+' · '+d+' = '+b+' · '+c+' ('+(a*d)+' = '+(b*c)+').<br>'
    +'Отсюда <b>x = '+val+'</b>. Проверка: обе части дают '+(a*d)+'.'};
 }
@@ -593,4 +594,6 @@ function boot(){document.title=TITLE+' · Математический ликб�
   setView('home')}
 document.addEventListener('DOMContentLoaded',boot);
 
+
+}
 </script><script src="../../../ege-baza/return-to-course.js"></script></body></html>

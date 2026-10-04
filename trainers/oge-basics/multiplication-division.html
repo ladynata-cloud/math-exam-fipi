@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте математической базы</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"title": "Умножение и деление: одна семья действий", "shortTitle": "умножение и деление", "lead": "Равные группы, переместительное свойство, обратное действие и поиск неизвестного множителя.", "symbol": "× ÷", "symbolCaption": "обратные действия", "eyebrow": "Арифметика · один навык", "topicId": "ogeBasicsMulDiv", "storageKey": "mathExamBasics.multiplication-division.v1", "rule": "Произведение показывает общее количество. Ситуацию «3 группы по 4» можно записать как 3 · 4; в школьной записи повторяемого слагаемого встречается и 4 · 3. Результат одинаков.", "lessons": [{"title": "Умножение — равные группы", "short": "Смысл умножения", "lead": "Три группы по четыре предмета дают 12. Запись можно прочитать двумя согласованными способами.", "html": "<div class=\"pill-row\"><span class=\"pill\">● ● ● ●</span><span class=\"pill\">● ● ● ●</span><span class=\"pill\">● ● ● ●</span></div><div class=\"formula\">3 · 4 = 4 · 3 = 12</div><div class=\"callout\">В этом курсе число групп обычно ставим первым. В учебнике может встретиться чтение «4 взять 3 раза» — это запись 4 · 3. Из-за переместительного свойства ответ тот же.</div>", "question": {"kind": "input", "prompt": "Четыре группы по 5 предметов — это сколько предметов?", "answer": 20, "unit": "", "good": "Верно: 4 · 5 = 20.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Деление — обратное действие", "short": "Смысл деления", "lead": "Если 3 · 4 = 12, то 12 : 3 = 4 и 12 : 4 = 3.", "html": "<div class=\"callout\">Одна «семья фактов»: 3 · 4 = 12, 4 · 3 = 12, 12 : 3 = 4, 12 : 4 = 3.</div>", "question": {"kind": "input", "prompt": "Если 6 · 7 = 42, то 42 : 6 = ?", "answer": 7, "unit": "", "good": "Верно: деление возвращает второй множитель.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Перестановка множителей", "short": "Перестановка", "lead": "От перестановки множителей произведение не меняется.", "html": "<div class=\"formula\">7 · 3 = 3 · 7 = 21</div>", "question": {"kind": "choice", "prompt": "Какое выражение равно 8 · 6?", "options": [{"id": "0", "html": "6 · 8"}, {"id": "1", "html": "8 + 6"}, {"id": "2", "html": "48 : 8"}], "answer": "0", "good": "Верно: множители можно поменять местами.", "bad": "Посмотрите на правило и попробуйте ещё раз."}}, {"title": "Находим неизвестный множитель", "short": "Неизвестный множитель", "lead": "Чтобы найти неизвестный множитель, произведение делим на известный.", "html": "<div class=\"example\"><strong>? · 7 = 56</strong><br>56 : 7 = 8, значит неизвестный множитель равен 8.</div>", "question": {"kind": "input", "prompt": "Найдите число: <strong>? · 9 = 63</strong>", "answer": 7, "unit": "", "good": "Верно: 63 : 9 = 7.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Проверяем деление умножением", "short": "Проверка", "lead": "Результат деления можно быстро проверить обратным действием.", "html": "<div class=\"example\">72 : 8 = 9. Проверка: 9 · 8 = 72.</div>", "question": {"kind": "choice", "prompt": "Как проверить, что 54 : 6 = 9?", "options": [{"id": "0", "html": "9 + 6 = 15"}, {"id": "1", "html": "9 · 6 = 54"}, {"id": "2", "html": "54 − 6 = 48"}], "answer": "1", "good": "Верно: проверяем деление умножением.", "bad": "Посмотрите на правило и попробуйте ещё раз."}}], "learnTime": "6–8 минут"};
 
 (function(){
@@ -84,7 +85,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -184,5 +185,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

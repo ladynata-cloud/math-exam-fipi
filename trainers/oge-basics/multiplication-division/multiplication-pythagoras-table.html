@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="../learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте «Умножение и деление»</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"eyebrow": "Математическая база · один навык", "learnTime": "6–9 минут", "title": "Таблица Пифагора: находим произведение по строке и столбцу", "shortTitle": "таблица Пифагора", "lead": "Не зубрим всю сетку сразу: учимся читать пересечение строки и столбца и замечать симметрию.", "symbol": "▦", "symbolCaption": "строка × столбец", "topicId": "ogeBasicsMultiplicationPythagoras", "storageKey": "mathExamBasics.multiplication-pythagoras.v1", "rule": "Найдите один множитель слева, второй сверху. В клетке их пересечения находится произведение.", "lessons": [{"title": "Строка и столбец", "short": "Как читать", "lead": "Один множитель выбираем в заголовке строки, второй — в заголовке столбца.", "html": "<div class=\"example\"><strong>Строка 6</strong> и <strong>столбец 7</strong> встречаются в клетке 42.</div><div class=\"formula\">6 · 7 = 42</div>", "question": {"kind": "input", "prompt": "Какое число стоит на пересечении строки 4 и столбца 8?", "answer": 32, "unit": "", "good": "Верно: 4 · 8 = 32.", "bad": "Найдите произведение 4 и 8."}}, {"title": "Симметрия таблицы", "short": "Симметрия", "lead": "Клетки 6 · 7 и 7 · 6 симметричны относительно диагонали.", "html": "<div class=\"formula\">6 · 7 = 7 · 6 = 42</div>", "question": {"kind": "choice", "prompt": "Если в клетке 3 · 8 стоит 24, что стоит в клетке 8 · 3?", "options": [{"id": "0", "html": "11"}, {"id": "1", "html": "24"}, {"id": "2", "html": "83"}], "answer": "1", "good": "Верно: таблица симметрична.", "bad": "Множители можно переставить."}}, {"title": "Диагональ квадратов", "short": "Квадраты", "lead": "На главной диагонали число умножается само на себя.", "html": "<div class=\"formula\">5 · 5 = 25 &nbsp; 7 · 7 = 49</div>", "question": {"kind": "input", "prompt": "Найдите клетку 9 · 9.", "answer": 81, "unit": "", "good": "Верно: 9² = 81.", "bad": "На диагонали 9 умножается на 9."}}, {"title": "Заполняем знакомые клетки", "short": "Опорные строки", "lead": "Начинайте со строк ×2, ×5 и ×10 — они дают опору остальным.", "html": "<div class=\"example\">×5: 5, 10, 15, 20, 25, …<br>×10: 10, 20, 30, 40, …</div>", "question": {"kind": "input", "prompt": "Какое число в строке 5 и столбце 8?", "answer": 40, "unit": "", "good": "Верно: 5 · 8 = 40.", "bad": "В строке ×5 результаты оканчиваются на 0 или 5."}}, {"title": "Обратный поиск", "short": "Ищем множитель", "lead": "По произведению и одному заголовку можно найти второй множитель.", "html": "<div class=\"example\">В строке 7 найдите 56: это столбец 8, потому что 7 · 8 = 56.</div>", "question": {"kind": "input", "prompt": "В строке 6 число 54 находится в каком столбце?", "answer": 9, "unit": "", "good": "Верно: 6 · 9 = 54.", "bad": "Какое число нужно умножить на 6, чтобы получить 54?"}}]};
 
 (function(){
@@ -79,7 +80,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -179,5 +180,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

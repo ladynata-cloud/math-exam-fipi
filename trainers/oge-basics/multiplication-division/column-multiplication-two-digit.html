@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="../learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте «Умножение и деление»</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"eyebrow": "Математическая база · один навык", "learnTime": "6–9 минут", "title": "Умножение столбиком на двузначное число — два произведения", "shortTitle": "умножение на двузначное", "lead": "Сначала умножаем на единицы, затем на десятки со сдвигом, после этого складываем.", "symbol": "× 24", "symbolCaption": "два неполных произведения", "topicId": "ogeBasicsColumnMulTwoDigit", "storageKey": "mathExamBasics.column-multiplication-two-digit.v1", "rule": "Второе неполное произведение начинается на один разряд левее, потому что умножаем на десятки.", "lessons": [{"title": "Разбираем множитель", "short": "Единицы и десятки", "lead": "24 — это 4 единицы и 2 десятка.", "html": "<div class=\"formula\">316 · 24 = 316 · 4 + 316 · 20</div>", "question": {"kind": "choice", "prompt": "Число 37 состоит из…", "options": [{"id": "0", "html": "3 единиц и 7 десятков"}, {"id": "1", "html": "7 единиц и 3 десятков"}, {"id": "2", "html": "37 сотен"}], "answer": "1", "good": "Верно: 3 десятка и 7 единиц.", "bad": "Посмотрите на разряды числа 37."}}, {"title": "Первое неполное произведение", "short": "На единицы", "lead": "Умножаем многозначное число на цифру единиц.", "html": "<div class=\"example\">316 · 4 = 1264.</div>", "question": {"kind": "input", "prompt": "Вычислите первое неполное произведение: 125 · 3.", "answer": 375, "unit": "", "good": "Верно: 125 · 3 = 375.", "bad": "Умножьте 125 на цифру единиц 3."}}, {"title": "Второе произведение со сдвигом", "short": "На десятки", "lead": "Умножаем на цифру десятков и приписываем разрядный ноль.", "html": "<div class=\"example\">316 · 2 = 632, но 2 означает 20, поэтому получаем <strong>6320</strong>.</div>", "question": {"kind": "input", "prompt": "Вычислите 125 · 20.", "answer": 2500, "unit": "", "good": "Верно: 125 · 2 = 250, затем один ноль → 2500.", "bad": "Сначала умножьте на 2, потом учтите десяток."}}, {"title": "Складываем произведения", "short": "Сумма", "lead": "Частичные результаты складываем по разрядам.", "html": "<div class=\"formula\">1264 + 6320 = 7584</div>", "question": {"kind": "input", "prompt": "Сложите неполные произведения: 375 + 2500.", "answer": 2875, "unit": "", "good": "Верно: 2875.", "bad": "Сложите столбиком по разрядам."}}, {"title": "Проверяем порядок", "short": "Оценка", "lead": "Оценка защищает от пропущенного нуля.", "html": "<div class=\"example\">316 · 24 примерно 300 · 20 = 6000, ответ 7584 разумен.</div>", "question": {"kind": "choice", "prompt": "Какой ответ реалистичен для 198 · 31?", "options": [{"id": "0", "html": "6138"}, {"id": "1", "html": "613,8"}, {"id": "2", "html": "229"}], "answer": "0", "good": "Верно: примерно 200 · 30 = 6000.", "bad": "Сделайте грубую оценку."}}]};
 
 (function(){
@@ -78,7 +79,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -178,5 +179,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

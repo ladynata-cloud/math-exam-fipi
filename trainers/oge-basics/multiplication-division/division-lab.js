@@ -1,5 +1,6 @@
 (function(){
  'use strict';
+ if(window.MathExamRemediationManaged)return;
  const D=window.DivisionLab,$=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let state=D.blank(),lastRaw=null,blocked=false,currentPlan=null,feedback='',feedbackKind='',help='';
  function warn(message){$('notice').textContent=message;$('raw').hidden=!blocked;}

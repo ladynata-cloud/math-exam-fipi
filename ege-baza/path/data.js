@@ -41,7 +41,7 @@ case 'choice':{let n=k*2;set(`Нужно ${n} наборов. В магазин�
 case 'graphs':{let x=j-1;set(`На графике y=x² касательная проведена в точке с x=${x}. Найдите её угловой коэффициент. В этой точке производная равна 2x.`,2*x,[S('Какова ордината точки?',x*x,'Высота точки — значение функции, не наклон.'),S('Каков наклон касательной 2x?',2*x,'Ниже можно приблизить вторую точку и сравнить секущую с касательной.')],{kind:'derivative',x});break;}
 case 'logic':set('В группе все 12 участников изучают алгебру. 5 из них изучают ещё геометрию. Сколько участников изучают алгебру, но не изучают геометрию?',7,[S('Всего изучают алгебру?',12,'Слово «все» относится к участникам этой группы.'),S('Сколько остаётся без геометрии?',7,'12−5. Из условия не следует, что геометрию изучают все.')]);break;
 case 'grid':set(`Катеты прямоугольного треугольника по линиям сетки равны ${k} и ${k+2} клеткам. Сторона клетки 1. Найдите площадь.`,k*(k+2)/2,[S('Площадь достроенного прямоугольника?',k*(k+2),'Произведение двух перпендикулярных сторон.'),S('Площадь треугольника?',k*(k+2)/2,'Диагональ делит прямоугольник на две равные части.')],{kind:'triangle',a:k,b:k+2});break;
-case 'practical':set(`Прямоугольный участок на плане ${k} см на 3 см. Масштаб 1:1000. Найдите площадь участка в м².`,k*300,[S('Сколько метров в 1 см плана?',10,'1000 см = 10 м.'),S('Длинная сторона в метрах?',k*10,'Умножь длину на плане на 10.'),S('Площадь в м²?',k*300,'Вторая сторона 30 м. Коэффициент к площади — 100.')],{kind:'rectangle',a:k,b:3});break;
+case 'practical':set(`Прямоугольный участок на плане ${k} см на 3 см. Масштаб 1:1000. Найдите площадь участка в м².`,k*300,[S('Сколько метров в 1 см плана?',10,'1000 см = 10 м.'),S(`Сторона длиной ${k} см на плане в метрах?`,k*10,'Умножь длину на плане на 10.'),S('Площадь в м²?',k*300,'Вторая сторона 30 м. Коэффициент к площади — 100.')],{kind:'rectangle',a:k,b:3});break;
 case 'box':{let a=k,b=k+1,c=3,area=j===1;set(`Размеры закрытой коробки ${a}×${b}×${c} см. Найдите ${area?'площадь всей поверхности в см²':'объём в см³'}.`,area?2*(a*b+a*c+b*c):a*b*c,[S('Площадь основания ab?',a*b,'Умножь две стороны основания.'),S(area?'Сумма площадей трёх разных граней?':'Объём?',area?a*b+a*c+b*c:a*b*c,area?'ab+ac+bc. Каждой грани соответствует равная противоположная.':'В каждом слое ab единичных кубиков, слоёв c.'),...(area?[S('Площадь всех шести граней?',2*(a*b+a*c+b*c),'Удваиваем сумму трёх площадей.')]:[])],{kind:'solid',body:'box',a,b,h:c});break;}
 case 'triangle':{let a=3*k,h=4*k,b=5*k;set(`Равнобедренный треугольник имеет боковую сторону ${b}, основание ${2*a}. Найдите площадь.`,a*h,[S('Половина основания?',a,'Высота к основанию равнобедренного треугольника является медианой.'),S('Квадрат высоты?',h*h,'Из квадрата боковой стороны вычти квадрат половины основания.'),S('Высота?',h,'Положительный квадратный корень.'),S('Площадь?',a*h,'Основание·высота/2.')],{kind:'iso',a,b,h});break;}
 case 'quadrilateral':set(`Основания трапеции ${k} и ${k+4}, высота 3. Найдите площадь.`,3*(k+2),[S('Средняя линия?',k+2,'Полусумма оснований.'),S('Площадь?',3*(k+2),'Умножь среднюю линию на высоту.')],{kind:'trapezoid',a:k,b:k+4,h:3});break;
@@ -65,5 +65,23 @@ default:throw new Error('Unknown '+id);
 function parse(s){s=String(s??'').trim().replaceAll('−','-').replace(',','.');if(!s||s.length>80)return null;let m=s.match(/^([+-]?(?:\d+(?:\.\d*)?|\.\d+))(?:\s*\/\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)))?$/);if(!m||m[2]!==undefined&&+m[2]===0)return null;const n=+m[1]/(m[2]===undefined?1:+m[2]);return Number.isFinite(n)?n:null;}
 function digits22(s,d){if(!/^[1-9]\d{4}$/.test(s)||+s%22!==0)return false;let p=0;for(let c of d)if(c===s[p])p++;return p===s.length;}
 function correct(t,s){if(t.rule)return digits22(String(s).trim(),t.digits);const x=parse(s);return x!==null&&Math.abs(x-(t.a??t.answer))<1e-6*Math.max(1,Math.abs(t.a??t.answer));}
-const api={meta,task,parse,correct,digits22,F};root.PathData=api;if(typeof module!=='undefined')module.exports=api;
+// Display a value pupils can enter again without rounding away a valid answer.
+function answerText(item){
+ const value=item&&typeof item==='object'?(item.a??item.answer):item;
+ if(typeof value==='string')return value;
+ if(typeof value!=='number'||!Number.isFinite(value))return '';
+ if(Number.isInteger(value))return String(value);
+ const sign=value<0?-1:1,x=Math.abs(value);let y=x,p0=0,p1=1,q0=1,q1=0;
+ for(let i=0;i<24;i++){
+  const a=Math.floor(y),p=a*p1+p0,q=a*q1+q0;
+  if(!Number.isSafeInteger(p)||q>1000000)break;
+  if(Math.abs(p/q-x)<=1e-12*Math.max(1,x)){
+   let rest=q;while(rest%2===0)rest/=2;while(rest%5===0)rest/=5;
+   return rest===1?String(sign*p/q).replace('.',','):String(sign*p)+'/'+q;
+  }
+  [p0,p1,q0,q1]=[p1,p,q1,q];const tail=y-a;if(!tail)break;y=1/tail;
+ }
+ return String(value).replace('.',',');
+}
+const api={meta,task,parse,correct,digits22,F,answerText};root.PathData=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);

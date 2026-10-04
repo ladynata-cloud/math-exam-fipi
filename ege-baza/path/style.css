@@ -6,3 +6,6 @@
 @media(max-width:600px){.cards{grid-template-columns:1fr}.task-table{font-size:.85rem}.task-table th,.task-table td{padding:.4rem}.task-figure{font-size:18px}.actions{flex-wrap:wrap}.foundation-route{padding-left:1rem}h1{overflow-wrap:anywhere}.stage-nav button{flex:1 1 130px}.task-choices{padding-left:1.4rem}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{header,footer,.actions,nav,button,#search{display:none!important}body{background:white;color:black}.panel,.card{break-inside:avoid}.scroll{overflow:visible}details{display:block}.task-table{font-size:11pt}}
+
+/* Managed attempts use the parent cabinet for course navigation. */
+body.learning-managed>header,body.learning-managed>footer{display:none}body.learning-managed #main{padding:16px;max-width:1100px;margin:auto}.learning-managed h1{font-size:clamp(1.35rem,3vw,2.1rem);margin:.2em 0 .7em}.learning-managed .stage-nav{gap:6px}.learning-managed .stage-nav button{padding:9px 12px}.learning-managed .managed-note{font-size:.9rem}.learning-managed #main[data-read-only="true"]{cursor:default}

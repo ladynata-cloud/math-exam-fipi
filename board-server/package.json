@@ -4,6 +4,7 @@
   "private": true,
   "description": "Socket.IO server for Mathexam Board v2-lite teacher-to-student viewing mode.",
   "main": "index.js",
+  "engines": { "node": ">=24.15.0 <25" },
   "scripts": {
     "start": "node index.js",
     "test": "node --test test/*.test.js"
@@ -11,6 +12,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "sharp": "0.35.5",
     "socket.io": "^4.7.5"
   },
   "devDependencies": {

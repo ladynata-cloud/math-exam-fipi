@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="../learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте «Умножение и деление»</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"eyebrow": "Математическая база · один навык", "learnTime": "6–9 минут", "title": "Таблица умножения: понятные приёмы вместо угадывания", "shortTitle": "приёмы таблицы умножения", "lead": "×2 — удвоить, ×4 — удвоить дважды, ×5 — половина от ×10, ×9 — на десять и вычесть.", "symbol": "⚙", "symbolCaption": "приёмы ×2…×9", "topicId": "ogeBasicsMultiplicationTricks", "storageKey": "mathExamBasics.multiplication-tricks.v1", "rule": "Трудный пример можно свести к знакомому: ×4 = удвоить дважды; ×8 = удвоить трижды; ×9 = ×10 − число.", "lessons": [{"title": "Умножение на 2, 4 и 8", "short": "Удваиваем", "lead": "×2 — один раз удвоить, ×4 — дважды, ×8 — трижды.", "html": "<div class=\"example\">7 → 14 → 28 → 56<br><strong>7 · 8 = 56</strong></div>", "question": {"kind": "input", "prompt": "Найдите 6 · 8, удваивая трижды.", "answer": 48, "unit": "", "good": "Верно: 6 → 12 → 24 → 48.", "bad": "Удвойте 6 три раза."}}, {"title": "Умножение на 5", "short": "Половина ×10", "lead": "Сначала умножьте на 10, затем разделите пополам.", "html": "<div class=\"formula\">8 · 5 = 80 : 2 = 40</div>", "question": {"kind": "input", "prompt": "Вычислите 14 · 5.", "answer": 70, "unit": "", "good": "Верно: 140 : 2 = 70.", "bad": "Умножьте 14 на 10 и возьмите половину."}}, {"title": "Умножение на 9", "short": "×10 минус число", "lead": "Девять — это десять без одного.", "html": "<div class=\"formula\">7 · 9 = 7 · 10 − 7 = 70 − 7 = 63</div>", "question": {"kind": "input", "prompt": "Вычислите 8 · 9.", "answer": 72, "unit": "", "good": "Верно: 80 − 8 = 72.", "bad": "Умножьте на 10 и вычтите само число."}}, {"title": "Умножение на 6 и 7", "short": "×5 плюс остаток", "lead": "×6 = ×5 + число; ×7 = ×5 + ×2.", "html": "<div class=\"example\">8 · 7 = 8 · 5 + 8 · 2 = 40 + 16 = 56.</div>", "question": {"kind": "input", "prompt": "Вычислите 9 · 7 через ×5 и ×2.", "answer": 63, "unit": "", "good": "Верно: 45 + 18 = 63.", "bad": "Найдите 9 · 5 и 9 · 2, затем сложите."}}, {"title": "Выбираем удобный приём", "short": "Какой приём", "lead": "Один пример можно решить несколькими способами — выбирайте понятный.", "html": "<div class=\"callout\">Главная цель — не показать фокус, а получить верный результат и понимать каждый шаг.</div>", "question": {"kind": "choice", "prompt": "Как удобно вычислить 13 · 9?", "options": [{"id": "0", "html": "13 · 10 − 13"}, {"id": "1", "html": "13 + 9"}, {"id": "2", "html": "13 · 5"}], "answer": "0", "good": "Верно: 130 − 13 = 117.", "bad": "Используйте приём ×9 = ×10 − число."}}]};
 
 (function(){
@@ -79,7 +80,7 @@ function makeCheckSet(){return [4,5,6,7,9].map(m=>{const n=3+Math.floor(Math.ran
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -179,5 +180,7 @@ function makeCheckSet(){return [4,5,6,7,9].map(m=>{const n=3+Math.floor(Math.ran
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

@@ -1,0 +1,98 @@
+name: Unified learning — accounts, classroom and trainers
+
+on:
+  pull_request:
+    paths:
+      - 'board-server/**'
+      - 'learning/**'
+      - 'ege-baza/path/**'
+      - 'trainers/learning-bridge.js'
+      - 'trainers/oge-basics/**'
+      - 'tools/learning-*'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'render.yaml'
+      - '.github/workflows/learning-quality.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: learning-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked backend dependencies
+        run: npm --prefix board-server ci --include=optional
+      - name: Server contracts, privacy, recovery and durable restoration
+        run: npm --prefix board-server test
+      - name: Mathematical and curriculum checks
+        run: |
+          node tools/learning-quality-path.cjs
+          node tools/learning-remediation-quality.cjs
+          node tools/learning-remediation-checkpoint.cjs
+          node tools/learning-remediation-bank.cjs --check
+          node tools/learning-catalog-reference-test.cjs
+      - name: Install pinned browser test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/learning-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/learning-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Real classroom, trainer, homework and exam scenarios
+        run: |
+          node tools/learning-path.browser.cjs
+          node tools/learning-remediation-smoke.cjs
+          node tools/learning-cabinet.browser.cjs
+          node tools/learning-exam.browser.cjs
+          node tools/learning-catalog-reference-test.cjs --browser
+          node tools/learning-teaching-browser.cjs
+          node tools/learning-teaching-live-browser.cjs
+      - name: Final whitespace and patch check
+        run: git diff --check
+
+  container:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Build the production Alpine image
+        run: docker build --tag mathexam-learning-qa:ci .
+      - name: Verify actual SQLite and image codec in the production image
+        run: |
+          docker run --rm --entrypoint node mathexam-learning-qa:ci -e '
+          const assert = require("node:assert/strict");
+          const { LearningStore } = require("./learning-store");
+          const contracts = require("./learning-contracts");
+          const { initializeTeaching, inspectPhoto } = require("./learning-teaching");
+          const { initializeRuns } = require("./learning-runs");
+          const sharp = require("sharp");
+          (async () => {
+            const store = new LearningStore({ filePath: "/tmp/learning-container.sqlite", contracts });
+            assert.equal(store.available, true);
+            initializeTeaching(store); initializeRuns(store);
+            for (const item of contracts.list()) {
+              const attempt = contracts.create(item.trainerId, item.contentId, 123);
+              contracts.normalize(item.trainerId, attempt.taskSpec, attempt.state);
+            }
+            const png = await sharp({ create: { width: 32, height: 32, channels: 3, background: "white" } }).png().toBuffer();
+            const verified = await inspectPhoto(png, "image/png");
+            assert.equal(verified.mime, "image/jpeg");
+            assert.equal((await sharp(verified.data).metadata()).width, 32);
+            store.close();
+            console.log("LEARNING_CONTAINER_OK");
+          })().catch(error => { console.error(error); process.exitCode = 1; });'

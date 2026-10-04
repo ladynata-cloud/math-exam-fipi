@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="../learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте «Умножение и деление»</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"eyebrow": "Математическая база · один навык", "learnTime": "6–9 минут", "title": "Таблица умножения: лесенка одной таблицы", "shortTitle": "таблица умножения лесенкой", "lead": "Учить не россыпью: каждая следующая ступень на одно и то же число больше предыдущей.", "symbol": "× 7", "symbolCaption": "ступень за ступенью", "topicId": "ogeBasicsMultiplicationLadder", "storageKey": "mathExamBasics.multiplication-ladder.v1", "rule": "Чтобы перейти от n · k к n · (k + 1), прибавьте ещё одно n.", "lessons": [{"title": "Начинаем с ×1", "short": "Первая ступень", "lead": "Любое число, умноженное на 1, остаётся самим собой.", "html": "<div class=\"formula\">7 · 1 = 7</div>", "question": {"kind": "input", "prompt": "Вычислите: <strong>8 · 1</strong>", "answer": 8, "unit": "", "good": "Верно: число остаётся самим собой.", "bad": "Любое число умножить на 1 — получится это же число."}}, {"title": "Прибавляем одно и то же число", "short": "Следующая ступень", "lead": "Если 7 · 3 = 21, то 7 · 4 — ещё одна семёрка.", "html": "<div class=\"example\">7 · 3 = 21<br><strong>7 · 4 = 21 + 7 = 28</strong></div>", "question": {"kind": "input", "prompt": "Известно: 6 · 4 = 24. Найдите 6 · 5.", "answer": 30, "unit": "", "good": "Верно: 24 + 6 = 30.", "bad": "Прибавьте ещё одну шестёрку."}}, {"title": "Строим цепочку", "short": "Цепочка", "lead": "Результаты одной таблицы образуют последовательность.", "html": "<div class=\"formula\">8, 16, 24, 32, 40, …</div><p>Это таблица на 8: каждый раз прибавляем 8.</p>", "question": {"kind": "input", "prompt": "Продолжите цепочку: 9, 18, 27, 36, …", "answer": 45, "unit": "", "good": "Верно: 36 + 9 = 45.", "bad": "Это таблица на 9 — прибавьте 9."}}, {"title": "Можно идти назад", "short": "Шаг назад", "lead": "Предыдущая ступень получается вычитанием одного множителя.", "html": "<div class=\"example\">8 · 7 = 56, значит 8 · 6 = 56 − 8 = 48.</div>", "question": {"kind": "input", "prompt": "Известно: 7 · 8 = 56. Найдите 7 · 7.", "answer": 49, "unit": "", "good": "Верно: 56 − 7 = 49.", "bad": "Сделайте один шаг назад: вычтите 7."}}, {"title": "Закрываем одну таблицу", "short": "Одна таблица", "lead": "Лучше уверенно пройти одну таблицу, чем угадывать всё вперемешку.", "html": "<div class=\"callout\">Выберите число, проговорите ступени от ×1 до ×10 и обратно.</div>", "question": {"kind": "input", "prompt": "В таблице на 6 какая ступень идёт после 48?", "answer": 54, "unit": "", "good": "Верно: 48 + 6 = 54.", "bad": "Прибавьте 6."}}]};
 
 (function(){
@@ -82,7 +83,7 @@ function makeCheckSet(){const n=2+Math.floor(Math.random()*8);return [2,4,6,8,10
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -182,5 +183,7 @@ function makeCheckSet(){const n=2+Math.floor(Math.random()*8);return [2,4,6,8,10
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

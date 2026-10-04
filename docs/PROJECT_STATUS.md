@@ -6,33 +6,44 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: authorized group-board release
+## Current: unified learning workspace (implementation, not deployed)
+
+- Scope: [unified learning workspace](tasks/unified-learning-workspace.md),
+  [teacher and operator guide](unified-learning.md),
+  [contract](learning-contract.md), [ADR 0010](adr/0010-unified-learning.md)
+  (Proposed). Branch: `feature/unified-learning-workspace`; base:
+  `32cc54312ff2a125c117c85aa180e8da3c74128d`.
+- Permanent accounts, durable attempts, eight-seat classroom, homework in both
+  online and photographed form, archived result resets, teacher reports and
+  reviewed AI drafts are implemented. Managed coverage is 107 Path families
+  and 36 foundational trainers, not every trainer on the site.
+- Exact-runtime server, mathematics and multi-browser gates are recorded in the
+  task. New CI also builds the production Alpine image and checks its SQLite
+  and image codec. No new accounts or writes were made in production.
+- Next three actions: publish one Draft PR with final gate evidence; inspect CI
+  including the production image; obtain scoped archetype/review acceptance and
+  separate release authorization before merge and first activation.
+
+## Published: group-board pilot
 
 - PR [#183](https://github.com/ladynata-cloud/math-exam-fipi/pull/183),
-  [scope](tasks/group-board-eight.md), [guide](group-board.md). Authoritative
-  base at release preparation is unchanged:
-  `63c81e1425304b4ced24a2308385344d523409b1`; remote PR head is
-  `887e7671252d8e85d3936b693e175fd5b7601466` before the release-wiring update.
-- The owner states: «внешней проверки не нужно, публикацию разрешаю».
-  [ADR 0009](adr/0009-group-lessons.md) is Accepted for this scoped pilot;
-  publication is authorized and external review waived. No additional rationale
-  or external reviewer verdict is claimed. Actual merge/live evidence belongs
-  in PR #183; publication success is not asserted by this preparation record.
-- Scope remains 1–8 independent learners, four teacher previews, two learner
-  views, explicit shared explanations and event replay, with exactly two pilot
-  trainers. Backend **58/58**, the extended `GROUP_BOARD_BROWSER_OK` gate and
-  independent re-review passed. The unrelated legacy browser failure also
-  occurs on the untouched base; full evidence remains in the task.
-- Release wiring adds Docker `GROUP_LESSON_STORE_DIR=/data/group-lessons` and
-  Amvera `run.persistenceMount: /data`. Before publication, the existing backend
-  returns HTTP 503 for `/health` and `/api/group-lessons/status`; hosting controls
-  are unavailable to the executing agent. Production storage and backup/restore
-  have not been verified. Rollback must override the store variable with an
-  empty string, restart, and preserve journals.
-- Next three actions: validate and push the scoped release wiring; recheck
-  authoritative `main` and merge the authorized exact head if unchanged;
-  verify Pages and backend availability/persistence, recording actual outcomes
-  and any hosting blocker in PR #183.
+  [scope](tasks/group-board-eight.md), [guide](group-board.md), merged as
+  `32cc54312ff2a125c117c85aa180e8da3c74128d`. Pages run `37227174533`
+  succeeded; seven changed public runtime files matched the published bytes.
+- The owner authorized publication and waived external review for PR #183.
+  [ADR 0009](adr/0009-group-lessons.md) is Accepted for that scoped pilot.
+  No external reviewer verdict or waiver for the subsequent account system
+  is claimed.
+- Published coverage: 1–8 independent learners, four teacher previews, two
+  learner views, explicit shared explanations and event replay, with two pilot
+  trainers. Backend 58/58 and the extended group-browser gate passed. The known
+  unrelated legacy-browser failure also occurs on its untouched base.
+- Docker uses `/data/group-lessons`; Amvera mounts persistent `/data`.
+  The earlier HTTP 503 incident is resolved: subsequent read-only checks
+  returned HTTP 200 and durable group capability, and the mount was confirmed.
+  This establishes availability and configuration, not a production crash or
+  restoration test. No hosting mutation was made during that diagnosis.
+  Rollback must preserve journals and the persistent volume.
 
 ## Earlier work records (not current group-board release evidence)
 

@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="../learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте «Умножение и деление»</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"eyebrow": "Математическая база · один навык", "learnTime": "6–9 минут", "title": "Умножение: смысл, группы и прямоугольные ряды", "shortTitle": "смысл умножения", "lead": "Сначала увидим одинаковые группы, затем свяжем рисунок с двумя равными записями произведения.", "symbol": "3 × 4", "symbolCaption": "3 группы по 4 = 12", "topicId": "ogeBasicsMultiplicationMeaning", "storageKey": "mathExamBasics.multiplication-meaning.v1", "rule": "Произведение показывает общее количество. «3 группы по 4» можно записать 3 · 4; в школьной записи «4 взять 3 раза» — 4 · 3. Оба произведения равны 12.", "lessons": [{"title": "Одинаковые группы", "short": "Группы", "lead": "Умножение появляется, когда одно и то же количество повторяется несколько раз.", "html": "<div class=\"pill-row\"><span class=\"pill\">● ● ● ●</span><span class=\"pill\">● ● ● ●</span><span class=\"pill\">● ● ● ●</span></div><div class=\"formula\">4 + 4 + 4 = 3 · 4 = 4 · 3 = 12</div><div class=\"callout\">Мы можем считать «3 группы по 4» или «4 взять 3 раза». Множители меняются местами, а количество предметов не меняется.</div>", "question": {"kind": "input", "prompt": "Четыре группы по 3 предмета. Сколько предметов всего?", "answer": 12, "unit": "", "good": "Верно: 3 + 3 + 3 + 3 = 4 · 3 = 12.", "bad": "Сложите четыре одинаковые группы по 3."}}, {"title": "Два способа прочитать произведение", "short": "Две записи", "lead": "Смысл задаёт ситуация, а не жёсткое правило «первый множитель всегда…».", "html": "<div class=\"example\"><strong>4 группы по 6 предметов</strong><br>4 · 6 = 24.<br>В школьной записи повторяемого слагаемого: 6 · 4 = 24.</div>", "question": {"kind": "choice", "prompt": "Какие записи дают число предметов в четырёх группах по 6?", "options": [{"id": "0", "html": "<strong>4 · 6 и 6 · 4</strong>"}, {"id": "1", "html": "4 + 6"}, {"id": "2", "html": "24 : 4"}], "answer": "0", "good": "Верно: оба произведения равны 24.", "bad": "Нужна запись умножения; множители можно переставить."}}, {"title": "Сначала понимаем ситуацию", "short": "Смысл задачи", "lead": "В текстовой задаче найдите число групп и количество предметов в одной группе.", "html": "<div class=\"example\"><strong>2 коробки по 7 карандашей</strong><br>2 · 7 = 14 карандашей.</div>", "question": {"kind": "choice", "prompt": "Как правильно решить задачу «2 коробки по 7 карандашей»?", "options": [{"id": "0", "html": "2 · 7 = 14"}, {"id": "1", "html": "2 + 7 = 9"}, {"id": "2", "html": "7 − 2 = 5"}], "answer": "0", "good": "Верно: две равные группы по 7 дают 14.", "bad": "Нужно умножить число групп на размер одной группы."}}, {"title": "Прямоугольные ряды", "short": "Ряды и столбцы", "lead": "Точки можно считать рядами: число рядов умножаем на число точек в ряду.", "html": "<div class=\"example\" style=\"font-size:22px;letter-spacing:7px;line-height:1.65\">● ● ● ● ●<br>● ● ● ● ●<br>● ● ● ● ●</div><div class=\"formula\">3 ряда · 5 точек = 15</div>", "question": {"kind": "input", "prompt": "В прямоугольнике 4 ряда по 6 клеток. Сколько клеток?", "answer": 24, "unit": "", "good": "Верно: 4 · 6 = 24.", "bad": "Умножьте число рядов на число клеток в одном ряду."}}, {"title": "Множители можно переставить", "short": "Перестановка", "lead": "Повернём прямоугольник: количество точек не изменится.", "html": "<div class=\"formula\">3 · 5 = 5 · 3 = 15</div><div class=\"callout\">Это помогает заменить трудный пример знакомым.</div>", "question": {"kind": "choice", "prompt": "Какое выражение равно <strong>8 · 4</strong>?", "options": [{"id": "0", "html": "4 · 8"}, {"id": "1", "html": "8 + 4"}, {"id": "2", "html": "32 : 8"}], "answer": "0", "good": "Верно: от перестановки множителей произведение не меняется.", "bad": "Нужно только поменять множители местами."}}]};
 
 (function(){
@@ -85,7 +86,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -185,5 +186,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

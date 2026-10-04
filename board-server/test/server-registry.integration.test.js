@@ -258,12 +258,16 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   assert.match(dockerfile, /WORKDIR \/app\/board-server/);
   assert.match(dockerfile, /COPY board-server\/ \.\//);
   assert.match(dockerfile, /COPY trainers\/board-compat\.json \/app\/trainers\/board-compat\.json/);
+  assert.match(dockerfile, /FROM node:24\.21\.0-alpine/);
+  assert.match(dockerfile, /RUN npm ci --omit=dev --include=optional/);
+  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics']) assert.ok(dockerfile.includes(`COPY ${folder}/ /app/${folder}/`));
   assert.match(dockerfile, /ENV PROGRESS_STORE_PATH=\/data\/progress\.json/);
   assert.match(dockerfile, /VOLUME \["\/data"\]/);
 
   const renderConfig = fs.readFileSync(path.join(rootDir, 'render.yaml'), 'utf8');
   assert.doesNotMatch(renderConfig, /^\s*rootDir:/m);
-  assert.match(renderConfig, /npm --prefix board-server install/);
+  assert.match(renderConfig, /npm --prefix board-server ci --include=optional/);
+  assert.match(renderConfig, /key: NODE_VERSION\s+value: 24\.21\.0/);
   assert.match(renderConfig, /npm --prefix board-server start/);
   assert.match(renderConfig, /trainers\/board-compat\.json/);
 
@@ -272,10 +276,11 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   const runtimeTrainerDir = path.join(directory, 'app', 'trainers');
   fs.mkdirSync(runtimeServerDir, { recursive: true });
   fs.mkdirSync(runtimeTrainerDir, { recursive: true });
-  for (const file of ['index.js', 'trainer-registry.js', 'progress-store.js', 'group-lessons.js']) {
+  for (const file of fs.readdirSync(serverDir).filter(name => name.endsWith('.js'))) {
     fs.copyFileSync(path.join(serverDir, file), path.join(runtimeServerDir, file));
   }
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));
+  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });
 
   const server = await startServer(undefined, runtimeServerDir);
   try {
@@ -283,6 +288,14 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     assert.equal(health.registryLoaded, true);
     assert.equal(health.registrySource, 'bundled-default');
     assert.equal(health.registryEntryCount, 3);
+    const cabinet = await fetch(`${server.baseUrl}/learning/`, { cache: 'no-store' });
+    assert.equal(cabinet.status, 200);
+    assert.match(cabinet.headers.get('content-security-policy'), /frame-ancestors 'none'/);
+    assert.match(await cabinet.text(), /Мой кабинет/);
+    for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js']) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
+    const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
+    assert.equal(learningStatus.trainers.length, 143);
+    assert.equal(learningStatus.available, false);
   } finally {
     await server.stop();
     fs.rmSync(directory, { recursive: true, force: true });
