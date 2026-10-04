@@ -8,7 +8,15 @@ function create(saved,hash='map'){
  const dom=new JSDOM(fs.readFileSync(path.join(base,'ege-baza/path/index.html'),'utf8'),{url:'https://course.test/ege-baza/path/index.html#'+hash,runScripts:'outside-only',virtualConsole:vc});
  const w=dom.window;w.structuredClone=structuredClone;w.matchMedia=()=>({matches:true});w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};
  w.localStorage.setItem('legacy-course-sentinel','keep');if(saved!==undefined)w.localStorage.setItem('mathexam.ege-baza.path.v1',saved);
- for(const f of ['path/data.js','path/practice.js','path/models.js','path/practice-view.js','remediation.js','path/app.js'])w.eval(fs.readFileSync(path.join(base,'ege-baza',f),'utf8'));
+ // Keep the fixture's dependencies and execution order identical to the page.
+ for(const script of w.document.querySelectorAll('script')){
+  assert(!script.type||script.type==='text/javascript','unsupported script type '+script.type);
+  if(!script.hasAttribute('src')){w.eval(script.textContent);continue;}
+  const url=new URL(script.src);assert.equal(url.origin,w.location.origin,'external fixture script');
+  const file=path.resolve(base,'.'+decodeURIComponent(url.pathname));
+  assert(file.startsWith(base+path.sep),'script must stay inside the repository');
+  w.eval(fs.readFileSync(file,'utf8'));
+ }
  return {dom,w,d:w.document};
 }
 const click=(d,s)=>{const e=d.querySelector(s);assert(e,'missing '+s);e.click();};

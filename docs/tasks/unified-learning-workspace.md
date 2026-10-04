@@ -155,6 +155,15 @@ above establish the changed behavior. Exact historical commands:
 is not counted as verification of this new bank. Actual Alpine container execution is
 assigned to the added CI job because Docker is unavailable locally.
 
+The first cloud run of the new learning workflow passed, including the actual
+Alpine image, SQLite/image codec and all browser gates. The existing EGE workflow
+then exposed two stale integration fixtures: its manual Path script loader
+omitted the extracted exam pool, and its navigator assertion still required
+the pre-cabinet "planned" wording. The fixtures now load the page's declared
+scripts and assert the real separate cabinet boundary, while retaining exam
+grading assertions and strengthening the navigator's no-cloud-write checks.
+The exact final-head CI result is recorded in the PR.
+
 No production activation, write/load test, hosting restart, merge or deployment
 has been performed for this task. Cloud CI results and exact remote head belong
 in the Draft PR; this record does not predict them.
