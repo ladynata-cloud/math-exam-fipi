@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Групповой урок MathExam: личные доски учеников, тренажёры, помощь преподавателя и история решения.">
+  <title>Групповая доска | MathExam</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="group-board.css">
+  <script src="group-trainer-frame.js" defer></script>
+  <script src="group-board.js" defer></script>
+</head>
+<body>
+  <header class="global-header">
+    <a class="brand" href="/" aria-label="MathExam — главная"><span class="brand-mark" aria-hidden="true">∑</span><span>MathExam</span></a>
+    <div class="lesson-heading"><span class="eyebrow">ГРУППОВАЯ ДОСКА</span><h1 id="lessonName">Новый урок</h1></div>
+    <div class="session-info"><span class="role-badge" id="sessionRole">Учитель</span><span class="connection-status" id="connectionStatus" role="status">Подключение не настроено</span></div>
+  </header>
+
+  <div class="global-messages"><p id="notice" class="notice" role="status" aria-live="polite"></p><p id="errorNotice" class="error-notice" role="alert" hidden></p></div>
+
+  <main id="setup" class="setup">
+    <section class="setup-intro" aria-labelledby="setupHeading">
+      <span class="section-kicker">ОДИН УРОК · ДО ВОСЬМИ УЧЕНИКОВ</span>
+      <h2 id="setupHeading">Каждому — своё место.<br>Вся группа — перед Вами.</h2>
+      <p class="intro-copy">Создайте урок, пригласите учеников и выдайте задания. У каждого будет собственный тренажёр и лист для решения.</p>
+      <ol class="setup-steps">
+        <li><span class="step-number" aria-hidden="true">1</span><div><strong>Четыре работы на экране</strong><p>Переключайтесь между листами «1–4» и «5–8». Откройте любую работу крупно.</p></div></li>
+        <li><span class="step-number" aria-hidden="true">2</span><div><strong>Общее или отдельное задание</strong><p>Назначьте тренажёр всей группе или одному ученику. Решения остаются независимыми.</p></div></li>
+        <li><span class="step-number" aria-hidden="true">3</span><div><strong>Помощь рядом с решением</strong><p>Подключайтесь к работе ученика, оставляйте пометки и просматривайте историю.</p></div></li>
+      </ol>
+      <a class="quiet-link" href="trainer-board.html">Открыть обычную доску <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <section class="setup-card" aria-labelledby="createHeading">
+      <div class="card-heading"><span class="eyebrow">ПОДГОТОВКА ЗАНЯТИЯ</span><h2 id="createHeading">Создать урок</h2><p>Ссылки для учеников появятся после создания.</p></div>
+      <form id="createForm">
+        <div class="field"><label for="lessonTitle">Название урока</label><input id="lessonTitle" name="lessonTitle" type="text" maxlength="100" autocomplete="off" placeholder="Например, ЕГЭ база · числа и неравенства" required></div>
+        <div class="field"><label for="studentNames">Ученики <span class="field-optional">от 1 до 8</span></label><textarea id="studentNames" name="studentNames" rows="5" maxlength="520" autocomplete="off" placeholder="По одному имени в строке" aria-describedby="namesHint" required></textarea><p class="field-hint" id="namesHint">Достаточно имён. Каждый ученик получит отдельную ссылку на своё рабочее место.</p></div>
+        <details class="connection-settings"><summary>Настройки подключения</summary><div class="field"><label for="serverUrl">Адрес сервера доски</label><input id="serverUrl" name="serverUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://…" aria-describedby="setupCapability"></div><p id="setupCapability" class="field-hint">Для совместного занятия нужен сервер с поддержкой групповой доски.</p></details>
+        <p id="setupStatus" class="setup-status" role="status" aria-live="polite"></p>
+        <button class="button primary create-button" id="createButton" type="submit">Создать урок <span aria-hidden="true">→</span></button>
+      </form>
+    </section>
+  </main>
+
+  <main id="app" class="lesson-app" hidden>
+    <div class="lesson-toolbar teacher-only" aria-label="Управление уроком"><div class="toolbar-start"><button class="button" id="overviewButton" type="button">Все работы</button><button class="button primary" id="assignButton" type="button">Выдать задание</button><span id="presentationStatus" class="presentation-status teacher-only" role="status" hidden></span></div><div class="toolbar-end"><button class="button" id="inviteButton" type="button">Пригласить учеников</button><button class="button subtle" id="exportButton" type="button">Скачать запись</button></div></div>
+    <nav class="roster teacher-only" id="roster" aria-label="Ученики и их состояние"></nav>
+
+    <section class="overview" id="overview" aria-label="Обзор работ учеников">
+      <div class="overview-heading"><p>Работы учеников</p><span>Нажмите на окно, чтобы открыть работу крупно</span></div>
+      <div class="student-grid" id="studentGrid"></div>
+    </section>
+
+    <div class="workspace-layout" id="workspaceLayout">
+    <section class="focus" id="focus" aria-labelledby="workspaceName" hidden>
+      <header class="focus-heading"><div class="focus-heading-main"><button class="button back-button teacher-only" id="backButton" type="button" aria-label="Вернуться к обзору работ">← <span>К обзору</span></button><div><h2 id="workspaceName">Рабочее место</h2><p id="workspaceMeta" class="workspace-meta"></p></div></div><div class="focus-actions"><button class="button teacher-only" id="presentButton" type="button" aria-pressed="false">Объяснять группе</button><button class="button teacher-only" id="trainerControlButton" type="button">Подключиться к тренажёру</button><button class="button help-button student-only" id="helpButton" type="button" aria-pressed="false">Нужна помощь</button><button class="button" id="historyButton" type="button" aria-pressed="false">История решения</button></div></header>
+      <p id="helpNotice" class="help-notice" role="status" hidden></p>
+      <div class="workspace-panels">
+        <section class="trainer-panel" aria-labelledby="trainerPanelHeading"><header class="panel-heading"><h3 id="trainerPanelHeading">Тренажёр</h3><span class="panel-status" id="trainerStatus" role="status"></span></header><div class="trainer-host" id="trainerHost"></div></section>
+        <section class="board-panel" aria-labelledby="boardPanelHeading"><header class="panel-heading"><h3 id="boardPanelHeading">Лист для решения</h3><span class="panel-caption">Записи от руки</span></header><div class="board-tools" role="group" aria-label="Инструменты для записей"><button class="button tool-button" id="penButton" type="button" aria-pressed="true">Перо</button><button class="button tool-button" id="eraserButton" type="button" aria-pressed="false">Ластик</button><span class="tool-divider" aria-hidden="true"></span><label class="color-tool" for="strokeColor"><span class="sr-only">Цвет пера</span><input id="strokeColor" type="color" value="#15803d" title="Цвет пера"></label><label class="width-tool" for="strokeWidth"><span>Толщина</span><input id="strokeWidth" type="range" min="1" max="12" step="1" value="3"></label><button class="button tool-button undo-button" id="undoButton" type="button" title="Отменить свой последний штрих">Отменить</button></div><div class="canvas-wrap"><canvas id="boardCanvas" tabindex="0" aria-label="Лист для рукописного решения. Рисуйте мышью или пером планшета.">Для записей на доске необходим браузер с поддержкой canvas.</canvas></div></section>
+      </div>
+      <section id="historyPanel" class="history-panel" aria-labelledby="historyHeading" hidden><div class="history-heading"><div><h3 id="historyHeading">История решения</h3><p>Просмотр записи не меняет текущую работу.</p></div><button class="button" id="historyExit" type="button">К текущей работе</button></div><div class="history-timeline"><label class="sr-only" for="historyRange">Момент записи</label><input id="historyRange" type="range" min="0" max="0" value="0" step="1"><output id="historyTime" for="historyRange"></output></div></section>
+    </section>
+    <section class="teacher-watch student-only" id="teacherWatch" aria-labelledby="teacherWatchHeading" hidden>
+      <header class="teacher-watch-heading"><span class="eyebrow">ОБЩИЙ РАЗБОР</span><h2 id="teacherWatchHeading">Наталья Михайловна объясняет</h2><p>Для всей группы · только просмотр</p></header>
+      <div class="teacher-watch-status" id="teacherWatchStatus" role="status"></div>
+      <div class="teacher-watch-content"><div id="teacherWatchTrainer" class="teacher-watch-trainer"></div><canvas id="teacherWatchCanvas" class="teacher-watch-canvas" aria-label="Записи на доске, которую объясняет Наталья Михайловна" hidden></canvas></div>
+      <div class="teacher-watch-actions"><button class="button" id="teacherWatchToggle" type="button">Показать доску</button><button class="button" id="teacherWatchOpen" type="button">Развернуть объяснение <span aria-hidden="true">↗</span></button></div>
+    </section>
+    </div>
+    <nav id="sheetTabs" class="sheet-tabs" aria-label="Листы занятия"></nav>
+  </main>
+
+  <dialog id="assignDialog" class="workspace-dialog" aria-labelledby="assignHeading"><header class="dialog-heading"><div><span class="eyebrow">ЗАДАНИЕ НА УРОК</span><h2 id="assignHeading">Выдать тренажёр</h2></div><button class="button close-button" type="button" data-close-dialog="assignDialog" aria-label="Закрыть выдачу задания">×</button></header><form id="assignForm"><div class="field"><label for="assignTarget">Кому выдать</label><select id="assignTarget" name="assignTarget"><option value="all">Всем ученикам</option><option value="selected">Выбранному ученику</option><option value="common">На общую доску</option></select></div><div class="field"><label for="assignTrainer">Тренажёр</label><select id="assignTrainer" name="assignTrainer"><option value="negative-numbers-line">Отрицательные числа на прямой</option><option value="linear-inequalities-stepwise">Линейные неравенства — пошагово</option></select></div><p class="dialog-help">При выдаче всей группе каждый ученик решает задание в своём темпе на отдельном рабочем месте.</p><div class="dialog-actions"><button class="button" type="button" data-close-dialog="assignDialog">Отмена</button><button id="assignSubmit" class="button primary" type="submit">Выдать задание</button></div></form></dialog>
+
+  <dialog id="inviteDialog" class="workspace-dialog invite-dialog" aria-labelledby="inviteHeading"><header class="dialog-heading"><div><span class="eyebrow">ВХОД НА ЗАНЯТИЕ</span><h2 id="inviteHeading">Ссылки для участников</h2></div><button class="button close-button" type="button" data-close-dialog="inviteDialog" aria-label="Закрыть ссылки участников">×</button></header><p class="dialog-help">Отправьте каждому ученику его личную ссылку. По ней открывается именно его рабочее место.</p><div id="inviteList" class="invite-list"></div><div class="teacher-link-section"><strong>Ваш вход в этот урок</strong><p class="dialog-help">Сохраните свою ссылку отдельно, чтобы вернуться к занятию. Она даёт доступ ко всем работам и предназначена для Вас.</p><button id="saveTeacherLinkButton" class="button" type="button">Сохранить ссылку учителя</button></div><div class="dialog-actions"><button class="button primary" type="button" data-close-dialog="inviteDialog">Готово</button></div></dialog>
+  <noscript><p class="noscript-notice">Для совместной работы включите JavaScript в настройках браузера.</p></noscript>
+</body>
+</html>

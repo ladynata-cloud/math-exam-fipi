@@ -4,6 +4,7 @@ const cors = require('cors');
 const { Server } = require('socket.io');
 const { loadTrainerRegistry, TRAINER_PATH_LIMITS } = require('./trainer-registry');
 const { ProgressStoreError, loadProgressStore } = require('./progress-store');
+const { createGroupLessonsRouter } = require('./group-lessons');
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -66,6 +67,9 @@ const app = express();
 app.disable('x-powered-by');
 app.use(express.json({ limit: '2mb' }));
 app.use(cors({ origin: corsOrigin }));
+const groupLessons = createGroupLessonsRouter();
+app.use('/api/group-lessons', groupLessons.router);
+process.once('exit', () => groupLessons.store.close());
 
 const rooms = new Map();
 const progressCreateAttempts = new Map();
