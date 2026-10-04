@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { safeError } from './security.js';
+import { resolveAudioMode } from './validation.js';
 
 const ACTIVE = new Set(['synthesizing', 'rendering']);
 const PENDING = new Set(['queued', ...ACTIVE]);
@@ -141,7 +142,8 @@ export class JobStore {
       const reservedToday = [...this.jobs.values()]
         .filter((job) => String(job.createdAt).slice(0, 10) === today)
         .reduce((total, job) => total + Number(job.reservedTtsCharacters || 0), 0);
-      const ttsReservation = ['openai', 'yandex'].includes(this.config.ttsProvider)
+      const ttsReservation = resolveAudioMode(request, this.config.ttsProvider) === 'voice'
+        && ['openai', 'yandex'].includes(this.config.ttsProvider)
         ? this.config.maxTtsCharactersPerJob
         : 0;
       if (ttsReservation > 0 && reservedToday + ttsReservation > this.config.dailyTtsCharacterBudget) {

@@ -1,0 +1,60 @@
+name: Self-study video — local contracts and browser
+
+on:
+  pull_request:
+    paths:
+      - 'video-worker/**'
+      - 'video-lessons/**'
+      - 'trainers/dvi/math-18-20*.html'
+      - 'tools/video-factory-v1-gate.mjs'
+      - 'tools/self-study-export.browser.cjs'
+      - 'tools/self-study-video-check.mjs'
+      - '.github/workflows/self-study-video.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: self-study-video-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NODE_PATH: ${{ github.workspace }}/video-worker/node_modules
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: video-worker/package-lock.json
+      - name: Install locked worker and Chromium dependencies
+        run: |
+          npm --prefix video-worker ci
+          video-worker/node_modules/.bin/playwright install --with-deps chromium
+          node -e 'require("node:fs").appendFileSync(process.env.GITHUB_ENV, "CHROMIUM_EXECUTABLE_PATH=" + require("playwright").chromium.executablePath() + "\n")'
+      - name: Prepare local media verification tools
+        run: |
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+          python3 -m venv "$RUNNER_TEMP/self-study-python"
+          "$RUNNER_TEMP/self-study-python/bin/python" -m pip install --disable-pip-version-check Pillow==11.3.0
+          echo "$RUNNER_TEMP/self-study-python/bin" >> "$GITHUB_PATH"
+      - name: Worker contracts and real local FFmpeg audio checks
+        run: npm --prefix video-worker test
+      - name: Preserve legacy studio authoring contracts
+        run: node tools/video-factory-v1-gate.mjs
+      - name: Export recovery and authenticated-download client scenarios
+        run: node tools/self-study-export.browser.cjs
+      - name: Local scene layout and keyboard checks without speech providers
+        run: node tools/self-study-video-check.mjs --output "$RUNNER_TEMP/self-study-video-check"
+      - name: Final whitespace check
+        run: git diff --check

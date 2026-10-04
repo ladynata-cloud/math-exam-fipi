@@ -130,6 +130,21 @@ test('silent mode does not reserve an external TTS budget', async (t) => {
   assert.equal(admitted.job.ttsProvider, 'silent');
 });
 
+test('per-request clicks and silent modes do not spend a configured voice budget', async (t) => {
+  const config = await fixture(t);
+  config.ttsProvider = 'openai';
+  config.dailyTtsCharacterBudget = config.maxTtsCharactersPerJob;
+  const store = await new JobStore(config).init();
+  const voiced = await store.admit({ ...request, audioMode: 'voice' }, 'audio-mode-budget-voice-0001');
+  assert.equal(voiced.job.reservedTtsCharacters, config.maxTtsCharactersPerJob);
+  for (const audioMode of ['clicks', 'silent']) {
+    const admitted = await store.admit({ ...request, audioMode }, `audio-mode-budget-${audioMode}-0001`);
+    assert.equal(admitted.job.reservedTtsCharacters, 0);
+  }
+  await assert.rejects(store.admit({ ...request, audioMode: 'voice' }, 'audio-mode-budget-voice-0002'),
+    (error) => error.code === 'DAILY_TTS_BUDGET');
+});
+
 test('silent admission ignores paid TTS reservations and provider mode survives restart', async (t) => {
   const config = await fixture(t);
   config.ttsProvider = 'openai';

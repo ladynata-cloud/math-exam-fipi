@@ -2,11 +2,12 @@ import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { runCommand } from './command.js';
-import { viewportFor } from './validation.js';
+import { isSchoolTask, resolveAudioMode, studioUrlFor, validateJobRequest, viewportFor } from './validation.js';
+import { silentDuration } from './tts.js';
 
 const SCENE_ACTIONS = new Set(['observe', 'wrong', 'hint', 'correct', 'next', 'final']);
 
-function validateManifest(manifest, task, videoType) {
+export function validateManifest(manifest, task, videoType) {
   if (!manifest || manifest.format !== 'mathexam-video-manifest' || !Array.isArray(manifest.scenes)) {
     throw new Error('Studio returned an invalid scene manifest');
   }
@@ -85,11 +86,16 @@ export function clickDelayMs(duration, enabled) {
   return Math.round(Math.max(650, Math.min((seconds - 0.45) * 1000, seconds * 720)));
 }
 
-async function renderSegment(config, framePath, audioPath, targetPath, duration, signal, clickSound = false) {
+export async function renderSegment(config, framePath, audioPath, targetPath, duration, signal, clickSound = false, audioMode = resolveAudioMode({}, config.ttsProvider)) {
+  const silent = audioMode === 'silent';
+  const voice = audioMode === 'voice';
+  clickSound = !silent && clickSound;
   const args = [
     '-hide_banner', '-loglevel', 'error', '-y',
-    '-loop', '1', '-framerate', '30', '-i', framePath, '-i', audioPath,
+    '-loop', '1', '-framerate', '30', '-i', framePath,
   ];
+  if (voice) args.push('-i', audioPath);
+  else if (!silent) args.push('-f', 'lavfi', '-i', 'anullsrc=r=24000:cl=mono');
   if (clickSound) {
     args.push('-f', 'lavfi', '-i', 'sine=frequency=1450:sample_rate=24000:duration=0.075');
   }
@@ -98,16 +104,21 @@ async function renderSegment(config, framePath, audioPath, targetPath, duration,
     const delay = clickDelayMs(duration, true);
     args.push(
       '-filter_complex',
-      `[2:a]adelay=${delay},volume=0.72[click];[1:a][click]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[mixed]`,
+      `[1:a]apad[voice];[2:a]adelay=${delay},volume=0.72[click];[voice][click]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[mixed]`,
       '-map', '0:v:0', '-map', '[mixed]',
     );
   }
   args.push(
     '-c:v', 'libx264', '-preset', 'medium', '-tune', 'stillimage',
-    '-c:a', 'aac', '-b:a', '160k', '-pix_fmt', 'yuv420p',
+    '-pix_fmt', 'yuv420p',
     '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2',
-    '-movflags', '+faststart', '-shortest', '-fs', String(config.maxOutputBytes), targetPath,
   );
+  if (silent) args.push('-map', '0:v:0', '-an');
+  else {
+    if (!clickSound) args.push('-af', 'apad');
+    args.push('-c:a', 'aac', '-b:a', '160k');
+  }
+  args.push('-movflags', '+faststart', '-fs', String(config.maxOutputBytes), targetPath);
   await runCommand(config.ffmpegPath, args, {
     timeoutMs: config.commandTimeoutMs,
     monitorFile: targetPath,
@@ -135,8 +146,8 @@ async function enforceWorkBudget(config, directory) {
   }
 }
 
-async function addCaption(page, caption, enabled, portrait, targetY, viewportHeight) {
-  await page.evaluate(({ text, visible, isPortrait, targetCenterY, screenHeight }) => {
+async function addCaption(page, caption, enabled, portrait, targetY, viewportHeight, schoolTask) {
+  await page.evaluate(({ text, visible, isPortrait, targetCenterY, screenHeight, school }) => {
     let box = document.getElementById('mathexam-video-caption');
     if (!box) {
       box = document.createElement('div');
@@ -159,8 +170,20 @@ async function addCaption(page, caption, enabled, portrait, targetY, viewportHei
       font: `${isPortrait ? 36 : 30}px/1.35 system-ui, sans-serif`,
       textAlign: 'center',
       boxShadow: '0 10px 35px rgba(0,0,0,.25)',
+      boxSizing: 'border-box',
+      whiteSpace: 'normal',
+      overflowWrap: 'anywhere',
     });
-    const targetIsLow = Number.isFinite(targetCenterY) && targetCenterY > screenHeight * 0.42;
+    if (school) {
+      Object.assign(box.style, {
+        left: isPortrait ? '28px' : '40px',
+        right: isPortrait ? '28px' : '40px',
+        bottom: '20px',
+        padding: '16px 22px',
+        font: `${isPortrait ? 24 : 22}px/1.4 system-ui, sans-serif`,
+      });
+    }
+    const targetIsLow = !school && Number.isFinite(targetCenterY) && targetCenterY > screenHeight * 0.42;
     if (targetIsLow) {
       box.style.top = isPortrait ? '90px' : '38px';
       box.style.bottom = 'auto';
@@ -171,14 +194,16 @@ async function addCaption(page, caption, enabled, portrait, targetY, viewportHei
     isPortrait: portrait,
     targetCenterY: targetY,
     screenHeight: viewportHeight,
+    school: schoolTask,
   });
 }
 
-export function createRenderer(config, tts) {
+export function createRenderer(config, tts, dependencies = {}) {
   return async function processJob(job, store, options = {}) {
     const { signal } = options;
-    const request = job.request;
-    if (job.ttsProvider !== config.ttsProvider) {
+    const request = validateJobRequest(job.request, { ttsProvider: config.ttsProvider });
+    const audioMode = resolveAudioMode(request, config.ttsProvider);
+    if (job.ttsProvider !== config.ttsProvider && (audioMode === 'voice' || !request.audioMode)) {
       const error = new Error('Queued job TTS provider does not match the active worker');
       error.code = 'TTS_PROVIDER_MISMATCH';
       throw error;
@@ -186,7 +211,10 @@ export function createRenderer(config, tts) {
     const attemptId = crypto.randomBytes(12).toString('base64url');
     const working = path.join(config.workDir, `${job.id}-${attemptId}`);
     const output = path.join(config.mediaDir, `${job.id}.mp4`);
-    const viewport = viewportFor(request.format);
+    const silent = audioMode === 'silent';
+    const voice = audioMode === 'voice';
+    const schoolTask = isSchoolTask(request.task);
+    const viewport = viewportFor(request.format, request.task);
     let browser;
     let temporaryOutput;
     const closeBrowser = () => { if (browser) browser.close().catch(() => {}); };
@@ -197,7 +225,9 @@ export function createRenderer(config, tts) {
     try {
       throwIfAborted(signal);
       await store.assertOwnership();
-      const { chromium } = await import('playwright');
+      // Internal dependency injection supports controlled local integration tests.
+      // The public job contract and production Chromium launch options stay fixed.
+      const chromium = dependencies.chromium || (await import('playwright')).chromium;
       browser = await launchBrowser(chromium, {
         headless: true,
         chromiumSandbox: true,
@@ -215,7 +245,7 @@ export function createRenderer(config, tts) {
           await route.abort();
         }
       });
-      const studio = new URL(config.studioUrl);
+      const studio = new URL(studioUrlFor(request.task, config.studioUrl));
       studio.searchParams.set('studio', '1');
       await page.goto(studio.toString(), { waitUntil: 'domcontentloaded', timeout: 45_000 });
       await page.waitForFunction(() => window.__MATH_EXAM_VIDEO_READY__ === true, null, { timeout: 20_000 });
@@ -232,11 +262,11 @@ export function createRenderer(config, tts) {
         progress: { stage: 'synthesizing', current: 0, total: manifest.scenes.length },
         errorCode: null,
         attemptId,
-        ttsCharacters: ['openai', 'yandex'].includes(config.ttsProvider)
+        ttsCharacters: voice && ['openai', 'yandex'].includes(config.ttsProvider)
           ? manifest.scenes.reduce((total, scene) => total + scene.narration.length, 0)
           : 0,
       });
-      for (let index = 0; index < manifest.scenes.length; index++) {
+      for (let index = 0; voice && index < manifest.scenes.length; index++) {
         throwIfAborted(signal);
         await store.assertOwnership();
         const scene = manifest.scenes[index];
@@ -267,17 +297,29 @@ export function createRenderer(config, tts) {
         await addCaption(
           page,
           scene.narration,
-          config.ttsProvider === 'silent' ? true : request.captions,
+          !voice ? true : request.captions,
           request.format === '9:16',
           presentation?.targetY,
           viewport.height,
+          schoolTask,
         );
         await page.evaluate(() => document.fonts && document.fonts.ready);
+        await page.evaluate(({ school, portrait }) => {
+          const caption = document.getElementById('mathexam-video-caption');
+          if (!caption || caption.style.display === 'none') return;
+          const rect = caption.getBoundingClientRect();
+          if (rect.top < 0 || rect.bottom > innerHeight || caption.scrollHeight > caption.clientHeight
+            || (school && rect.height > (portrait ? 320 : 220))) {
+            throw new Error('Caption does not fit the frame; shorten the authored scene text');
+          }
+        }, { school: schoolTask, portrait: request.format === '9:16' });
         await page.waitForTimeout(120);
         const frame = path.join(working, `frame-${String(index).padStart(3, '0')}.png`);
         const segment = path.join(working, `segment-${String(index).padStart(3, '0')}.mp4`);
         await page.screenshot({ path: frame, fullPage: false });
-        const duration = await audioDuration(config, audioFiles[index], signal);
+        const duration = voice
+          ? Math.max(await audioDuration(config, audioFiles[index], signal), scene.duration_hint_ms / 1000)
+          : silentDuration(scene.narration, scene.duration_hint_ms);
         await renderSegment(
           config,
           frame,
@@ -285,7 +327,8 @@ export function createRenderer(config, tts) {
           segment,
           duration,
           signal,
-          videoType === 'student-path' && scene.click === true,
+          !silent && (videoType === 'student-path' || schoolTask) && scene.click === true,
+          audioMode,
         );
         await enforceWorkBudget(config, working);
         segments.push(path.basename(segment));
@@ -299,7 +342,8 @@ export function createRenderer(config, tts) {
       await runCommand(config.ffmpegPath, [
         '-hide_banner', '-loglevel', 'error', '-y',
         '-f', 'concat', '-safe', '0', '-i', path.basename(concatFile),
-        '-c', 'copy', '-movflags', '+faststart', '-fs', String(config.maxOutputBytes), temporaryOutput,
+        '-c', 'copy', ...(silent ? ['-an'] : []),
+        '-movflags', '+faststart', '-fs', String(config.maxOutputBytes), temporaryOutput,
       ], {
         cwd: working,
         timeoutMs: config.commandTimeoutMs,

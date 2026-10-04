@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { validateManifest } from '../video-worker/src/renderer.js';
+import { isSchoolTask, resolveAudioMode, validateJobRequest } from '../video-worker/src/validation.js';
 
 function read(file) { return fs.readFileSync(file, 'utf8'); }
 function count(source, pattern) { return (source.match(pattern) || []).length; }
@@ -151,6 +153,26 @@ assert.deepEqual(
   'learner journey must demonstrate error, hint, recovery and completion',
 );
 assert.ok(journey.scenes.filter((scene) => ['wrong', 'hint', 'correct', 'next'].includes(scene.action)).every((scene) => scene.click));
+// Preserve all legacy modes while explicitly adding fixed school scenarios.
+// The old source regex prohibited clicks on any ideal scene, including the
+// newly approved school demonstrations; keep that boundary for legacy tasks.
+for (const task of ['18', '19', '20']) {
+  assert.equal(isSchoolTask(task), false);
+  for (const videoType of ['ideal-solution', 'student-path']) {
+    const generated = videoManifest(sampleModel, `t${task}`, videoType);
+    assert.equal(validateManifest(generated, task, videoType), generated);
+    assert.equal(validateJobRequest({ task, preset: 1, videoType }, { ttsProvider: 'openai' }).videoType, videoType);
+    if (videoType === 'student-path') assert.ok(generated.scenes.some(scene => scene.click === true));
+  }
+}
+for (const task of ['homework-help', 'linear-equation', 'adjacent-angles']) {
+  assert.equal(isSchoolTask(task), true);
+  for (const audioMode of ['voice', 'clicks', 'silent']) {
+    const request = validateJobRequest({ task, preset: 1, audioMode, captions: false }, { ttsProvider: 'openai' });
+    assert.equal(request.captions, true);
+    assert.equal(resolveAudioMode(request, 'openai'), audioMode);
+  }
+}
 for (const preset of methodFixtures) {
   const generatedJourney = videoManifest(generators.gen19(preset), 't19', 'student-path');
   const generatedIdeal = videoManifest(generators.gen19(preset), 't19', 'ideal-solution');
@@ -165,7 +187,8 @@ assert.match(config, /VIDEO_STUDIO_URL must use HTTPS in production/);
 assert.match(renderer, /window\.MathExamVideoStudio\.prepare/);
 assert.match(renderer, /clickDelayMs/);
 assert.match(renderer, /amix=inputs=2/);
-assert.match(renderer, /videoType === 'student-path' && scene\.click === true/);
+assert.match(renderer, /!silent && \(videoType === 'student-path' \|\| schoolTask\) && scene\.click === true/,
+  'clicks remain in legacy learner journeys and approved school scenes, never fully silent output');
 assert.match(renderer, /scene\.videoType !== 'student-path'/);
 assert.match(renderer, /presentation\?\.targetY/);
 assert.match(renderer, /durationHintMs: scene\.duration_hint_ms/);
