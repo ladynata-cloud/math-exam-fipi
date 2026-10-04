@@ -1,16 +1,35 @@
 # MathExam project status
 
-Updated: 2026-10-04
+Updated: 2026-10-05 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: independent homework method and narrated teaching videos
+## Current: learner free route and original paper homework
 
-- Scope: [self-study and video](tasks/SELF_STUDY_VIDEO.md). Branch:
-  `feature/self-study-silent-video`, base
-  `a024f6c0f22bd58077bb3e31c2911ba324abb1a8`.
+- Scope: [free route](tasks/LEARNER_FREE_ROUTE.md), branch
+  `feature/learner-free-route`, verified base
+  `4df45e5d3b5825a21451f5cc90838260fb9f6f39`.
+- Current owner instructions authorize publication without separate external
+  review. Free order/pace, prerequisite detours, visible progress, explicit
+  submission, teacher-assigned credentials, first-entry guide and additional
+  authored paper homework are one connected pupil workflow.
+- Local gate passed: 118 server tests, 8,400 checked paper tasks, the full new
+  browser flow and legacy cabinet/homework/exam/remediation gates. Independent
+  audit findings about stale review and premature submission were corrected.
+  Production pupil creation
+  and teacher activation remain pending because browser observation of the
+  hosting panel is blocked by native-credential protection.
+- Next: publish one scoped PR and run exact-head CI,
+  verify production and provision the pupil only with authenticated access.
+
+## Published code: independent homework method and teaching videos
+
+- PR [#185](https://github.com/ladynata-cloud/math-exam-fipi/pull/185) merged as
+  `4df45e5d3b5825a21451f5cc90838260fb9f6f39`, tree
+  `759b8de0ce2dc588a76982e9941969374698bebb`. Authorized base remained
+  `a024f6c0f22bd58077bb3e31c2911ba324abb1a8`; no drift. Exact-head CI passed.
 - The latest owner clarification requests automatic narration plus click sounds,
   retaining readable on-screen explanations and a text/step alternative.
 - This task extends only the implemented isolated video worker with three fixed
@@ -26,11 +45,10 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   form. Worker 36/36, legacy gate, 204 scene checks, mobile keyboard navigation
   and lost-acknowledgement/reload/retry regression passed. Three small real MP4
   samples contain local clicks, without narration or external speech calls.
-- Independent agent review found no remaining blocker; it is not an external
-  provider review. No production publication or natural-voice test is claimed.
-- Next: publish the reviewed Draft PR; complete the scoped release decision;
-  verify the configured voice and one production render once operator access
-  is available. First-teacher activation remains separately pending.
+- Independent agent review found no remaining blocker. Owner waived separate
+  external review and authorized publication. The public studio entry page
+  matches the released source. A live natural-voice render and the deployed
+  worker revision are not verified; `/healthz` alone cannot establish them.
 
 ## Published: unified learning workspace
 

@@ -103,14 +103,16 @@ class LearningStore {
       return { account: accountDTO(account), ...this.newInvitation(account.id, 'activate', 3 * DAY) };
     });
   }
-  createStudent(auth, body) {
+  createStudent(auth, body, passwordHash = null) {
     this.teacher(auth); exactKeys(body, ['name','login'], ['name','login']);
     const name = safeName(body.name), login = normalizeLogin(body.login);
+    // Only a hash produced at the authenticated API boundary may reach storage.
+    requireValue(passwordHash === null || (typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash)), 'LEARNING_PASSWORD_INVALID');
     return this.transaction(() => {
       this.limit('accounts', 2000); requireValue(!this.accountByLogin(login), 'LEARNING_LOGIN_EXISTS', 409);
       const id = token(18);
-      this.run("INSERT INTO accounts(id,role,teacher_id,login,name,created_at) VALUES(?,'student',?,?,?,?)", id, auth.id, login, name, this.clock());
-      return { student: accountDTO(this.account(id)), ...this.newInvitation(id, 'activate', 3 * DAY) };
+      this.run("INSERT INTO accounts(id,role,teacher_id,login,name,password_hash,created_at) VALUES(?,'student',?,?,?,?,?)", id, auth.id, login, name, passwordHash, this.clock());
+      return { student: accountDTO(this.account(id)), ...(passwordHash === null ? this.newInvitation(id, 'activate', 3 * DAY) : {}) };
     });
   }
   students(auth) { this.teacher(auth); return this.rows("SELECT * FROM accounts WHERE teacher_id=? AND role='student' ORDER BY created_at,id", auth.id).map(accountDTO); }
@@ -190,12 +192,14 @@ class LearningStore {
     return { id: row.id, learnerId: row.learner_id, teacherId: row.teacher_id, trainerId: row.trainer_id,
       contentId: taskSpec?.contentId || null, taskSpec, state: parse(row.state_json), strokes: parse(row.strokes_json), version: row.version, trainerVersion: row.trainer_version,
       controller: row.controller, assistance: parse(row.assistance_json), outcome: row.outcome, sourceAttemptId: row.source_attempt_id,
+      submission: this.submissionForAttempt?.(row) || null,
       archivedAt: row.archived_at, createdAt: row.created_at, updatedAt: row.updated_at };
   }
   attemptSummary(row) {
     return { id: row.id, learnerId: row.learner_id, teacherId: row.teacher_id, trainerId: row.trainer_id,
       contentId: parse(row.task_json)?.contentId || null, version: row.version, trainerVersion: row.trainer_version,
       controller: row.controller, assistance: parse(row.assistance_json), outcome: row.outcome, sourceAttemptId: row.source_attempt_id,
+      submission: this.submissionForAttempt?.(row) || null,
       archivedAt: row.archived_at, createdAt: row.created_at, updatedAt: row.updated_at };
   }
   attemptRow(auth, id) {
@@ -263,6 +267,7 @@ class LearningStore {
     const column = auth.role === 'teacher' ? 'teacher_id' : 'learner_id';
     return this.rows(`SELECT * FROM assignments WHERE ${column}=? ${auth.role === 'student' ? "AND status='published'" : ''} ORDER BY created_at DESC,id LIMIT 500`, auth.id).map(row => ({ id: row.id, title: row.title,
       learnerId: row.learner_id, attemptId: row.attempt_id, dueAt: row.due_at, status: row.status, batchId: row.batch_id, createdAt: row.created_at,
+      paperReady: this.paperReadyForAssignment?.(row.id) || false,
       attempt: this.attemptSummary(this.attemptRow(auth, row.attempt_id)) }));
   }
   createAssignments(auth, body) {
@@ -370,6 +375,7 @@ class LearningStore {
       this.run('INSERT INTO events(attempt_id,actor_id,actor_role,op_id,fingerprint,revision,type,payload_json,at) VALUES(?,?,?,?,?,?,?,?,?)',
         id, auth.id, auth.role, body.opId, fingerprint, attempt.version, type, json({ ...payload, ...(['state','check'].includes(type) || payload.state !== undefined ? { state: attempt.state } : {}),
           ...(evaluation ? { evaluation } : {}), after: { outcome: attempt.outcome, assistance: attempt.assistance, controller: attempt.controller, trainerVersion: attempt.trainerVersion } }), attempt.updatedAt);
+      attempt.submission = this.submissionForAttempt?.({ ...row, version: attempt.version }) || null;
       return { attempt, duplicate: false, ...(evaluation ? { evaluation } : {}) };
     });
   }
@@ -380,7 +386,7 @@ class LearningStore {
     const events = rows.slice(0, limit).map(row => ({ revision: row.revision, at: row.at, actor: { id: row.actor_id, role: row.actor_role }, type: row.type, payload: parse(row.payload_json) }));
     const original = this.attemptRow(auth, id);
     const initialAttempt = { ...attempt, state: parse(original.initial_state_json), strokes: [], version: 0, trainerVersion: 0,
-      assistance: { teacher: false, hints: false }, outcome: 'started', controller: original.learner_id === original.teacher_id ? 'teacher' : 'student' };
+      assistance: { teacher: false, hints: false }, outcome: 'started', submission: null, controller: original.learner_id === original.teacher_id ? 'teacher' : 'student' };
     return { initialAttempt, events, nextAfter: events.at(-1)?.revision || after, hasMore: rows.length > limit, version: through };
   }
   lessonRow(auth, id) {

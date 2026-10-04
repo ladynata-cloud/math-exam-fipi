@@ -2,7 +2,8 @@
 
 const express = require('express');
 const crypto = require('node:crypto');
-const { requireValue, exactKeys, safeName, token } = require('./learning-auth');
+const { requireValue, exactKeys, safeName, token, tokenHash } = require('./learning-auth');
+const { getPaper, hasPaper, mountPaperRoutes } = require('./learning-paper');
 const MAX_PHOTO = 3 * 1024 * 1024;
 const PHOTO_TOTAL = 512 * 1024 * 1024;
 const outcomes = require('../learning/outcomes').labels;
@@ -66,6 +67,9 @@ function initializeTeaching(store) {
       recommendations_json TEXT NOT NULL, parent_note TEXT NOT NULL, created_at INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS learning_resets(id TEXT PRIMARY KEY, learner_id TEXT NOT NULL REFERENCES accounts(id), teacher_id TEXT NOT NULL REFERENCES accounts(id),
       scope TEXT NOT NULL, value TEXT, reason TEXT NOT NULL, attempt_ids_json TEXT NOT NULL, created_at INTEGER NOT NULL);
+    CREATE TABLE IF NOT EXISTS learning_submissions(attempt_id TEXT PRIMARY KEY REFERENCES attempts(id), learner_id TEXT NOT NULL REFERENCES accounts(id),
+      attempt_version INTEGER NOT NULL, submitted_at INTEGER NOT NULL, assignment_id TEXT REFERENCES assignments(id), photo_ids_json TEXT NOT NULL, feedback_count INTEGER NOT NULL,
+      revision INTEGER NOT NULL);
   `);
 }
 
@@ -74,7 +78,33 @@ function createTeachingRouter(learning) {
   initializeTeaching(store);
   const router = express.Router();
   router.use(authMiddleware);
+  mountPaperRoutes(router, learning);
+  store.paperReadyForAssignment = id => hasPaper(store, id);
   const catalog = () => store.contracts.list();
+  function submissionContext(attemptId) {
+    const assigned = store.row('SELECT id,status FROM assignments WHERE attempt_id=?', attemptId);
+    return { assignment: assigned || null,
+      photoIds: assigned ? store.rows("SELECT id FROM learning_photos WHERE assignment_id=? AND kind='solution' ORDER BY id", assigned.id).map(row => row.id) : [],
+      feedbackCount: assigned ? store.row('SELECT COUNT(*) AS n FROM learning_feedback WHERE assignment_id=?', assigned.id).n : 0 };
+  }
+  store.submissionForAttempt = attempt => {
+    const row = store.row('SELECT * FROM learning_submissions WHERE attempt_id=?', attempt.id);
+    if (!row) return null;
+    const context = submissionContext(attempt.id), photoIds = parse(row.photo_ids_json);
+    const feedback = context.assignment && context.feedbackCount > row.feedback_count
+      ? store.row('SELECT status FROM learning_feedback WHERE assignment_id=? ORDER BY rowid DESC LIMIT 1', context.assignment.id) : null;
+    return { submittedAt: row.submitted_at, attemptVersion: row.attempt_version, revision: row.revision, photoIds,
+      stale: attempt.archived_at != null || attempt.version !== row.attempt_version || JSON.stringify(context.photoIds) !== row.photo_ids_json,
+      status: feedback?.status || 'submitted' };
+  };
+  function reviewRevision(row) {
+    const attempt = store.row('SELECT version,archived_at FROM attempts WHERE id=?', row.attempt_id);
+    const submission = store.row('SELECT revision FROM learning_submissions WHERE attempt_id=?', row.attempt_id);
+    const context = submissionContext(row.attempt_id);
+    return tokenHash(JSON.stringify({ assignmentId: row.id, status: row.status, attemptVersion: attempt.version,
+      archivedAt: attempt.archived_at, submissionRevision: submission?.revision || 0,
+      photoIds: context.photoIds, feedbackCount: context.feedbackCount }));
+  }
   function assignment(auth, id) {
     const row = store.row('SELECT * FROM assignments WHERE id=?', id);
     requireValue(row && (auth.role === 'teacher' ? row.teacher_id === auth.id : row.learner_id === auth.id && row.status === 'published'), 'LEARNING_NOT_FOUND', 404);
@@ -82,11 +112,13 @@ function createTeachingRouter(learning) {
   }
   const photoDTO = row => ({ id: row.id, kind: row.kind, filename: row.filename, mime: row.mime, bytes: row.bytes, width: row.width, height: row.height, createdAt: row.created_at, url: '/api/learning/photos/' + row.id });
   function assignmentDTO(auth, row) {
-    return { assignment: { id: row.id, title: row.title, learnerId: row.learner_id, attemptId: row.attempt_id, batchId: row.batch_id || null, dueAt: row.due_at, status: row.status, createdAt: row.created_at },
+    return { assignment: { id: row.id, title: row.title, learnerId: row.learner_id, attemptId: row.attempt_id, batchId: row.batch_id || null, dueAt: row.due_at, status: row.status, createdAt: row.created_at, paperReady: hasPaper(store, row.id) },
       attempt: store.getAttempt(auth, row.attempt_id),
-      batchAssignments: auth.role === 'teacher' && row.batch_id ? store.rows("SELECT a.id,a.learner_id AS learnerId,a.status,(SELECT COUNT(*) FROM learning_photos p WHERE p.assignment_id=a.id AND p.kind='task') AS taskPhotos FROM assignments a WHERE a.batch_id=? AND a.teacher_id=? ORDER BY a.created_at,a.id", row.batch_id, auth.id) : [],
+      reviewRevision: reviewRevision(row),
+      paper: getPaper(store, auth, row.id),
+      batchAssignments: auth.role === 'teacher' && row.batch_id ? store.rows("SELECT a.id,a.learner_id AS learnerId,a.status,(SELECT COUNT(*) FROM learning_photos p WHERE p.assignment_id=a.id AND p.kind='task') AS taskPhotos FROM assignments a WHERE a.batch_id=? AND a.teacher_id=? ORDER BY a.created_at,a.id", row.batch_id, auth.id).map(item => ({ ...item, paperReady: hasPaper(store, item.id) })) : [],
       photos: store.rows('SELECT id,kind,filename,mime,bytes,width,height,created_at FROM learning_photos WHERE assignment_id=? ORDER BY created_at,id', row.id).map(photoDTO),
-      feedback: store.rows('SELECT id,text,status,created_at AS createdAt FROM learning_feedback WHERE assignment_id=? ORDER BY created_at DESC,id LIMIT 100', row.id) };
+      feedback: store.rows('SELECT id,text,status,created_at AS createdAt FROM learning_feedback WHERE assignment_id=? ORDER BY rowid DESC LIMIT 100', row.id) };
   }
   function report(auth, learnerId) {
     const learner = store.ownsStudent(auth, learnerId), items = catalog();
@@ -96,6 +128,7 @@ function createTeachingRouter(learning) {
       const checks = store.row("SELECT COUNT(*) AS n,SUM(CASE WHEN json_extract(payload_json,'$.evaluation.correct')=0 AND trim(COALESCE(json_extract(payload_json,'$.details.answer'),''))!='' THEN 1 ELSE 0 END) AS wrong,SUM(CASE WHEN trim(COALESCE(json_extract(payload_json,'$.details.answer'),''))='' THEN 1 ELSE 0 END) AS skipped FROM events WHERE attempt_id=? AND type='check'", row.id);
       return { id: row.id, catalogId: item?.id || null, title: item?.title || '', topicId: item?.topicId || '', position: item?.position || null,
         outcome: row.outcome, status: outcomes[row.outcome], assistance: parse(row.assistance_json), checks: checks.n, wrongChecks: checks.wrong || 0, skippedChecks: checks.skipped || 0,
+        submission: store.submissionForAttempt(row),
         archivedAt: row.archived_at, createdAt: row.created_at, updatedAt: row.updated_at };
     });
     const current = rows.filter(row => !row.archivedAt), counts = Object.fromEntries(Object.keys(outcomes).map(key => [key, current.filter(row => row.outcome === key).length]));
@@ -105,9 +138,11 @@ function createTeachingRouter(learning) {
         contentCount: new Set(matching.filter(row => ['independent', 'repeated'].includes(row.outcome)).map(row => row.catalogId)).size };
     });
     const assignments = store.rows('SELECT id,title,status,due_at AS dueAt,attempt_id AS attemptId FROM assignments WHERE learner_id=? ORDER BY created_at DESC LIMIT 500', learnerId).map(row => ({ ...row,
+      paperReady: hasPaper(store, row.id),
+      submission: store.submissionForAttempt(store.row('SELECT * FROM attempts WHERE id=?', row.attemptId)),
       taskPhotos: store.row("SELECT COUNT(*) AS n FROM learning_photos WHERE assignment_id=? AND kind='task'", row.id).n,
       solutionPhotos: store.row("SELECT COUNT(*) AS n FROM learning_photos WHERE assignment_id=? AND kind='solution'", row.id).n,
-      photoReview: store.row('SELECT status,text,created_at AS createdAt FROM learning_feedback WHERE assignment_id=? ORDER BY created_at DESC,id LIMIT 1', row.id) || null }));
+      photoReview: store.row('SELECT status,text,created_at AS createdAt FROM learning_feedback WHERE assignment_id=? ORDER BY rowid DESC LIMIT 1', row.id) || null }));
     return { student: { id: learner.id, name: learner.name }, generatedAt: store.clock(), counts, positions, attempts: rows,
       assignments, resets: store.rows('SELECT id,scope,value,reason,created_at AS createdAt FROM learning_resets WHERE learner_id=? ORDER BY created_at DESC LIMIT 100', learnerId),
       interpretation: 'Количество решённых задач отражает выполненные попытки. Оно не означает освоение всего номера ЕГЭ. Проверка фотографий преподавателем учитывается отдельно.' };
@@ -122,6 +157,29 @@ function createTeachingRouter(learning) {
     });
   }
 
+  router.post('/attempts/:id/submit', mutationMiddleware, handler((req, res) => {
+    exactKeys(req.body, ['opId', 'expectedVersion'], ['opId', 'expectedVersion']);
+    const auth = req.learningAuth;
+    requireValue(auth.role === 'student', 'LEARNING_FORBIDDEN', 403);
+    requireValue(Number.isSafeInteger(req.body.expectedVersion) && req.body.expectedVersion >= 0);
+    const current = store.attemptRow(auth, req.params.id);
+    requireValue(current.archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
+    const result = store.operation(auth, { ...req.body, operation: 'submit-work', attemptId: current.id }, () => {
+      const attempt = store.attemptRow(auth, current.id);
+      requireValue(attempt.version === req.body.expectedVersion, 'LEARNING_STATE_CONFLICT', 409);
+      requireValue(attempt.controller === 'student', 'LEARNING_CONTROL_REQUIRED', 409);
+      const context = submissionContext(attempt.id);
+      requireValue(!context.assignment || context.photoIds.length > 0, 'LEARNING_SOLUTION_PHOTO_REQUIRED', 409);
+      const at = store.clock();
+      store.run(`INSERT INTO learning_submissions VALUES(?,?,?,?,?,?,?,1) ON CONFLICT(attempt_id) DO UPDATE SET
+        attempt_version=excluded.attempt_version,submitted_at=excluded.submitted_at,assignment_id=excluded.assignment_id,
+        photo_ids_json=excluded.photo_ids_json,feedback_count=excluded.feedback_count,revision=learning_submissions.revision+1`,
+      attempt.id, auth.id, attempt.version, at, context.assignment?.id || null, JSON.stringify(context.photoIds), context.feedbackCount);
+      store.run('UPDATE attempts SET updated_at=? WHERE id=?', at, attempt.id);
+      return { submission: store.submissionForAttempt(attempt) };
+    });
+    res.json({ ...result, attempt: store.getAttempt(auth, current.id) });
+  }));
   router.get('/assignments/:id', handler((req, res) => res.json(assignmentDTO(req.learningAuth, assignment(req.learningAuth, req.params.id)))));
   router.post('/assignments/:id/photos', mutationMiddleware, handler(async (req, res) => {
     exactKeys(req.body, ['opId', 'kind', 'filename', 'mime', 'data'], ['opId', 'kind', 'filename', 'mime', 'data']);
@@ -162,17 +220,24 @@ function createTeachingRouter(learning) {
     res.json(store.operation(auth, { ...req.body, operation: 'publish-homework', assignmentId: row.id }, () => {
       requireValue(row.status === 'draft', 'LEARNING_HOMEWORK_ALREADY_PUBLISHED', 409);
       const attempt = store.attemptRow(auth, row.attempt_id); requireValue(attempt.archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
-      requireValue(store.row("SELECT COUNT(*) AS n FROM learning_photos WHERE assignment_id=? AND kind='task'", row.id).n > 0, 'LEARNING_HOMEWORK_NEEDS_PHOTO', 409);
+      requireValue(hasPaper(store, row.id) || store.row("SELECT COUNT(*) AS n FROM learning_photos WHERE assignment_id=? AND kind='task'", row.id).n > 0, 'LEARNING_HOMEWORK_NEEDS_PHOTO', 409);
       store.run("UPDATE assignments SET status='published' WHERE id=?", row.id);
       return { assignment: { id: row.id, status: 'published' } };
     }));
   }));
   router.post('/assignments/:id/feedback', mutationMiddleware, handler((req, res) => {
-    exactKeys(req.body, ['opId', 'text', 'status'], ['opId', 'text', 'status']); const auth = req.learningAuth; store.teacher(auth);
+    exactKeys(req.body, ['opId', 'text', 'status', 'reviewRevision'], ['opId', 'text', 'status', 'reviewRevision']); const auth = req.learningAuth; store.teacher(auth);
     const row = assignment(auth, req.params.id), message = text(req.body.text);
     requireValue(row.status === 'published' && ['reviewed', 'revise', 'accepted'].includes(req.body.status), 'LEARNING_FEEDBACK_INVALID');
+    requireValue(typeof req.body.reviewRevision === 'string' && /^[a-f0-9]{64}$/.test(req.body.reviewRevision), 'LEARNING_REVIEW_REVISION_INVALID');
+    requireValue(store.attemptRow(auth, row.attempt_id).archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
     requireValue(store.row("SELECT COUNT(*) AS n FROM learning_photos WHERE assignment_id=? AND kind='solution'", row.id).n > 0, 'LEARNING_SOLUTION_PHOTO_REQUIRED', 409);
     res.json(store.operation(auth, { ...req.body, text: message, operation: 'photo-feedback', assignmentId: row.id }, () => {
+      // Compare the exact work the teacher opened, inside the same transaction
+      // as the verdict. A same-version, same-time resubmit is a new generation.
+      const current = assignment(auth, row.id), attempt = store.attemptRow(auth, current.attempt_id);
+      requireValue(reviewRevision(current) === req.body.reviewRevision && !store.submissionForAttempt(attempt)?.stale,
+        'LEARNING_REVIEW_CONFLICT', 409);
       requireValue(store.row('SELECT COUNT(*) AS n FROM learning_feedback WHERE assignment_id=?', row.id).n < 100, 'LEARNING_LIMIT_EXCEEDED', 507);
       const id = token(18), at = store.clock(); store.run('INSERT INTO learning_feedback VALUES(?,?,?,?,?,?)', id, row.id, auth.id, message, req.body.status, at);
       return { feedback: { id, text: message, status: req.body.status, createdAt: at, checkedBy: 'teacher' } };
@@ -212,9 +277,18 @@ function createTeachingRouter(learning) {
       return { archived: selected.length, resetId, preservedHistory: true };
     }));
   }));
+  function studentPlan(learnerId) {
+    const row = store.row('SELECT * FROM learning_plans WHERE learner_id=?', learnerId);
+    return { items: row ? parse(row.items_json) : [], note: row?.note || '', updatedAt: row?.updated_at || null };
+  }
+  router.get('/plan', handler((req, res) => {
+    requireValue(req.learningAuth.role === 'student', 'LEARNING_FORBIDDEN', 403);
+    exactKeys(req.query, []);
+    res.json(studentPlan(req.learningAuth.id));
+  }));
   router.get('/teacher/students/:id/plan', handler((req, res) => {
-    store.ownsStudent(req.learningAuth, req.params.id); const row = store.row('SELECT * FROM learning_plans WHERE learner_id=?', req.params.id);
-    res.json({ items: row ? parse(row.items_json) : [], note: row?.note || '', updatedAt: row?.updated_at || null });
+    store.ownsStudent(req.learningAuth, req.params.id);
+    res.json(studentPlan(req.params.id));
   }));
   router.post('/teacher/students/:id/plan', mutationMiddleware, handler((req, res) => {
     exactKeys(req.body, ['opId', 'items', 'note'], ['opId', 'items']); const auth = req.learningAuth; store.ownsStudent(auth, req.params.id);
