@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="../learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте «Умножение и деление»</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"eyebrow": "Математическая база · один навык", "learnTime": "6–9 минут", "title": "Табличное деление: умножение наоборот", "shortTitle": "табличное деление", "lead": "Не вспоминаем отдельную новую таблицу: ищем множитель в знакомом произведении.", "symbol": "42 ÷ 7", "symbolCaption": "какое число ×7?", "topicId": "ogeBasicsTabularDivision", "storageKey": "mathExamBasics.tabular-division.v1", "rule": "Чтобы вычислить c : a, найдите число b, для которого a · b = c.", "lessons": [{"title": "Переводим деление в умножение", "short": "Обратная запись", "lead": "42 : 7 — это вопрос: «7 умножить на сколько, чтобы получить 42?»", "html": "<div class=\"formula\">42 : 7 = ? ↔ 7 · ? = 42</div>", "question": {"kind": "input", "prompt": "Вычислите 35 : 5.", "answer": 7, "unit": "", "good": "Верно: 5 · 7 = 35.", "bad": "Какое число при умножении на 5 даёт 35?"}}, {"title": "Делим на первый множитель", "short": "Первый делитель", "lead": "Из 6 · 8 = 48 следует 48 : 6 = 8.", "html": "<div class=\"formula\">6 · 8 = 48 → 48 : 6 = 8</div>", "question": {"kind": "input", "prompt": "Если 7 · 9 = 63, найдите 63 : 7.", "answer": 9, "unit": "", "good": "Верно: второй множитель равен 9.", "bad": "Используйте данное произведение."}}, {"title": "Делим на второй множитель", "short": "Второй делитель", "lead": "Из той же записи следует 48 : 8 = 6.", "html": "<div class=\"formula\">6 · 8 = 48 → 48 : 8 = 6</div>", "question": {"kind": "input", "prompt": "Если 7 · 9 = 63, найдите 63 : 9.", "answer": 7, "unit": "", "good": "Верно: первый множитель равен 7.", "bad": "Используйте ту же семью фактов."}}, {"title": "Проверяем остаток", "short": "Без остатка", "lead": "В табличном делении произведение должно точно совпасть с делимым.", "html": "<div class=\"example\">56 : 8 = 7, потому что 8 · 7 = 56. Остаток 0.</div>", "question": {"kind": "choice", "prompt": "Какой пример является табличным делением без остатка?", "options": [{"id": "0", "html": "50 : 6"}, {"id": "1", "html": "54 : 6"}, {"id": "2", "html": "44 : 5"}], "answer": "1", "good": "Верно: 6 · 9 = 54.", "bad": "Нужно, чтобы делимое было точным произведением."}}, {"title": "Неизвестный делитель", "short": "Ищем делитель", "lead": "В записи 72 : ? = 8 неизвестный делитель тоже находится по таблице.", "html": "<div class=\"formula\">? · 8 = 72 → ? = 9</div>", "question": {"kind": "input", "prompt": "Найдите число: 48 : ? = 6.", "answer": 8, "unit": "", "good": "Верно: 8 · 6 = 48.", "bad": "Какое число умножить на 6, чтобы получить 48?"}}]};
 
 (function(){
@@ -78,7 +79,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -178,5 +179,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

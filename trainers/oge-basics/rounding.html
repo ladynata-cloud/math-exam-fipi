@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте математической базы</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"title": "Округление: четыре шага и упаковки", "shortTitle": "округление", "lead": "Разряд, сосед справа, правило 0–4 / 5–9 и отдельная ситуация с целыми упаковками.", "symbol": "≈", "symbolCaption": "точно до разряда", "eyebrow": "Округление · один навык", "topicId": "ogeBasicsRounding", "storageKey": "mathExamBasics.rounding.v1", "rule": "Выберите разряд → посмотрите справа → решите «оставить или увеличить» → правильно запишите ответ.", "lessons": [{"title": "Сначала выбираем разряд", "short": "Нужный разряд", "lead": "Нужно точно знать, какую цифру мы оставляем последней.", "html": "<table class=\"place-table\"><tr><th>сотни</th><th>десятки</th><th>единицы</th></tr><tr><td>3</td><td>7</td><td>4</td></tr></table><p>Округлить до десятков — значит последней оставить цифру 7.</p>", "question": {"kind": "choice", "prompt": "Какую цифру оставляем последней при округлении 582 до десятков?", "options": [{"id": "0", "html": "5"}, {"id": "1", "html": "8"}, {"id": "2", "html": "2"}], "answer": "1", "good": "Верно: 8 стоит в разряде десятков.", "bad": "Посмотрите на правило и попробуйте ещё раз."}}, {"title": "Смотрим только на цифру справа", "short": "Сосед справа", "lead": "Именно она решает, увеличивать выбранную цифру или нет.", "html": "<div class=\"example\">374 до десятков: оставляем 7, смотрим на 4.</div>", "question": {"kind": "choice", "prompt": "При округлении 6,47 до десятых на какую цифру смотрим?", "options": [{"id": "0", "html": "6"}, {"id": "1", "html": "4"}, {"id": "2", "html": "7"}], "answer": "2", "good": "Верно: справа от десятых стоит цифра 7.", "bad": "Посмотрите на правило и попробуйте ещё раз."}}, {"title": "0–4 оставляем, 5–9 увеличиваем", "short": "Правило 0–4 / 5–9", "lead": "Это главный выбор округления.", "html": "<div class=\"formula\">374 → 370 &nbsp;&nbsp; 378 → 380</div>", "question": {"kind": "input", "prompt": "Округлите <strong>346</strong> до десятков.", "answer": 350, "unit": "", "good": "Верно: справа стоит 6, поэтому десятки увеличиваем.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Справа ставим нули или убираем лишние цифры", "short": "Запись ответа", "lead": "В целой части заменяем отброшенные цифры нулями. В дробной — просто убираем.", "html": "<div class=\"example\">2 746 до сотен → 2 700.<br>8,736 до сотых → 8,74.</div>", "question": {"kind": "input", "prompt": "Округлите <strong>12,46</strong> до десятых.", "answer": 12.5, "unit": "", "good": "Верно: справа от 4 стоит 6, поэтому получаем 12,5.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Покупки — отдельное правило: округляем вверх", "short": "Упаковки вверх", "lead": "Если нужно 7,2 упаковки, купить придётся 8. Это не обычное округление.", "html": "<div class=\"callout\">Материал продаётся целыми упаковками. Любая дробная часть означает ещё одну упаковку.</div>", "question": {"kind": "input", "prompt": "По расчёту нужно 5,01 банки краски. Сколько банок купить?", "answer": 6, "unit": "", "good": "Верно: покупаем только целое количество, поэтому округляем вверх.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}], "learnTime": "6–8 минут"};
 
 (function(){
@@ -85,7 +86,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -185,5 +186,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

@@ -107,7 +107,7 @@ font-size:14px;color:#7d521e;margin-top:11px}
 .qitem.no-ok{border-color:var(--red);background:var(--red-soft)}
 .big{font-size:36px;font-weight:900;letter-spacing:-.03em}
 @media(max-width:560px){.card{padding:16px}.prompt{font-size:16px}.skill-row{grid-template-columns:1fr 62px 38px}}
-</style></head>
+</style><script src="../learning-loader.js"></script></head>
 <body><div class="wrap">
 
 <header class="card">
@@ -206,6 +206,7 @@ font-size:14px;color:#7d521e;margin-top:11px}
 
 </div>
 <script>
+if (!window.MathExamRemediationManaged) {
 const $=id=>document.getElementById(id);
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 const pick=a=>a[rnd(0,a.length-1)];
@@ -250,7 +251,7 @@ function taskApply(){
  return {type:'input',prompt:prompt,answer:a,
   traps:[{v:r2(n*p/100),msg:'Это сам процент — то, <b>на сколько</b> изменилось число. Его нужно ещё '+(up?'прибавить к':'вычесть из')+' '+n+'.'},
          {v:r2(n*(100-(up?p:-p))/100),msg:'Направление перепутано: в условии величину '+word+', а вы сделали наоборот.'},
-         {v:r2(up?n+p:n-p),msg:'Проценты нельзя прибавлять как рубли. Сначала найдите '+p+'% от '+n+', и уже это число прибавляйте.'},
+         {v:r2(up?n+p:n-p),msg:'Проценты нельзя прибавлять как рубли. Сначала найдите '+p+'% от '+n+', и уже это число '+(up?'прибавляйте.':'вычитайте.')},
          {v:n,msg:'Число не изменилось. Но '+p+'% от '+n+' — это '+fmt(n*p/100)+', и на столько оно должно сдвинуться.'}],
   hint1:''+p+'% от '+n+' — это '+n+' · '+p+' : 100 = '+fmt(n*p/100)+'.',
   hint2:'Теперь '+(up?'прибавьте':'вычтите')+': '+n+' '+(up?'+':'−')+' '+fmt(n*p/100)+'.',
@@ -580,4 +581,6 @@ function boot(){document.title=TITLE+' · Математический ликб�
   setView('home')}
 document.addEventListener('DOMContentLoaded',boot);
 
+
+}
 </script><script src="../../../ege-baza/return-to-course.js"></script></body></html>

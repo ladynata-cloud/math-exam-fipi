@@ -1,10 +1,16 @@
 const crypto = require('node:crypto');
+const path = require('node:path');
 const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const { loadTrainerRegistry, TRAINER_PATH_LIMITS } = require('./trainer-registry');
 const { ProgressStoreError, loadProgressStore } = require('./progress-store');
 const { createGroupLessonsRouter } = require('./group-lessons');
+const { createLearningApi } = require('./learning-api');
+const learningContracts = require('./learning-contracts');
+const { createTeachingRouter } = require('./learning-teaching');
+const { createLearningRunsRouter } = require('./learning-runs');
+const { applyBootstrapEnvironment } = require('./learning-admin');
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -65,6 +71,36 @@ function corsOrigin(origin, callback) {
 
 const app = express();
 app.disable('x-powered-by');
+const learningPublicOrigin = process.env.LEARNING_PUBLIC_ORIGIN || 'https://mathexam-board-ladynata.amvera.io';
+const learningTrainerOrigin = process.env.LEARNING_TRAINER_ORIGIN || 'https://mathexam.space';
+const localLearning = process.env.NODE_ENV !== 'production' && process.env.LEARNING_LOCAL_DEV === '1';
+for (const origin of [learningPublicOrigin, learningTrainerOrigin]) {
+  const url = new URL(origin);
+  if (url.origin !== origin || (url.protocol !== 'https:' && !(localLearning && url.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(url.hostname)))) throw new Error('Invalid learning origin');
+}
+if (learningPublicOrigin === learningTrainerOrigin) throw new Error('The account cabinet and trainers require separate origins');
+const learning = createLearningApi({ contracts: learningContracts, publicOrigin: learningPublicOrigin, secureCookies: !localLearning });
+applyBootstrapEnvironment(learning.store);
+const learningRuns = createLearningRunsRouter(learning);
+const teaching = createTeachingRouter(learning);
+// Account routes precede legacy CORS. Cabinet cookies never participate in the
+// public site's anonymous board API; all account mutations verify exact Origin.
+app.use('/api/learning', express.json({ limit: '5mb' }));
+app.get('/api/learning/status', (_req, res) => res.set('Cache-Control', 'no-store').json({ ...learning.store.status(), trainerOrigin: learningTrainerOrigin }));
+app.use('/api/learning', learning.router, learningRuns.router, teaching);
+app.use('/api/learning', (_req, res) => res.status(404).json({ ok: false, error: 'LEARNING_NOT_FOUND' }));
+const learningHeaders = (_req, res, next) => {
+  res.set({
+    'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff',
+    'Cross-Origin-Resource-Policy': 'same-origin',
+    'Content-Security-Policy': `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; frame-src ${learningTrainerOrigin}; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'`
+  }); next();
+};
+app.use('/learning', learningHeaders, express.static(path.join(__dirname, '../learning'), { dotfiles: 'deny', index: 'index.html', fallthrough: false }));
+for (const file of ['data.js', 'practice.js', 'equation-practice.js', 'practice-view.js']) {
+  app.get('/ege-baza/path/' + file, learningHeaders, (_req, res) => res.sendFile(path.join(__dirname, '../ege-baza/path', file)));
+}
+process.once('exit', () => learning.close());
 app.use(express.json({ limit: '2mb' }));
 app.use(cors({ origin: corsOrigin }));
 const groupLessons = createGroupLessonsRouter();

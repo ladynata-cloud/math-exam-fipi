@@ -70,7 +70,7 @@ raw=empty();raw.runs.diagnostic=fullRun('diagnostic');raw.runs.diagnostic.answer
 ok(snap(raw).runs.diagnostic.correct===11,'Skipped answer is wrong');
 raw.runs.diagnostic.finishedAt=-1;ok(!snap(raw).runs.diagnostic.finished,'Invalid finish timestamp rejected');
 
-let dom,w,stored,writes=0;const errors=[];
+let dom,w,stored,writes=0,requests=0;const errors=[];
 const scripts=['registry','foundation-reference','data-reference','course-definitions','course-state','app'].map(f=>read('ege-baza/'+f+'.js'));
 const tick=()=>new Promise(r=>setTimeout(r,10));
 const q=s=>w.document.querySelector(s),text=()=>q('#content').textContent;
@@ -79,6 +79,9 @@ function boot(value=null,hash='#today',blocked=false){
  const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));
  dom=new JSDOM(read('ege-baza/index.html'),{url:'https://example.test/ege-baza/'+hash,runScripts:'outside-only',virtualConsole:vc});w=dom.window;
  w.HTMLElement.prototype.scrollIntoView=()=>{};
+ // The standalone navigator reads browser progress; the separate cabinet owns server sessions.
+ w.fetch=()=>{requests++;throw Error('Navigator may not send or fetch cloud progress');};
+ w.XMLHttpRequest.prototype.open=()=>{requests++;throw Error('Navigator may not send or fetch cloud progress');};
  w.Storage.prototype.getItem=key=>{assert.ok(ctx.EgeBazaCourseState.modules.some(id=>ctx.EgeBazaCourseState.forModule(id).KEY===key));if(blocked)throw Error('denied');return key===api.KEY?stored:null;};
  for(const method of ['setItem','removeItem','clear'])w.Storage.prototype[method]=()=>{writes++;throw Error('Navigator may not write storage');};
  for(const s of scripts)w.eval(s);
@@ -105,7 +108,14 @@ try{
  raw=empty();practice(raw,p[0],{hints:true});stored=JSON.stringify(raw);
  w.dispatchEvent(new w.StorageEvent('storage',{key:api.KEY}));ok(q('[data-stat="solved"]').textContent.includes('1'),'Progress refreshes from another tab');
  ok(q('[data-stat="independent"]').textContent.trim().startsWith('0'),'Assistance displayed honestly');
- await go('#teacher');ok(text().includes('Общий журнал и назначения пока в плане'),'No invented teacher backend');
+ ok(text().includes('Результаты этого браузера')&&text().includes('Автоматической отправки нет.'),'Standalone progress remains browser-local with manual report sharing');
+ await go('#teacher');
+ const cabinetHref='https://mathexam-board-ladynata.amvera.io/learning/';
+ const cabinetLink=q('#content a[href="'+cabinetHref+'"]');
+ ok(cabinetLink&&q('.top-links a[href="'+cabinetHref+'"]'),'Teacher page and header open the actual separate cabinet');
+ ok(cabinetLink.parentElement.textContent.includes('постоянная история ученика, задания и групповая доска'),'Shared history and group board are explicitly scoped to the cabinet');
+ ok(cabinetLink.parentElement.textContent.includes('самостоятельные модули в этом навигаторе продолжают хранить результаты в этом браузере'),'Standalone module results are not presented as synchronized cabinet results');
+ ok(!q('#content [data-stat]'),'Teacher route does not fabricate a shared pupil journal');
  const before=w.location.hash;await go('#map');w.history.back();await tick();await tick();ok(w.location.hash===before&&text().includes('Один учебный цикл'),'Browser history renders previous route');
  boot('{broken','#progress');ok(!q('#storage-notice').hidden,'Malformed notice');
  ok(!q('[data-stat]')&&text().includes('не означает'),'Unreadable progress not represented as zero');
@@ -115,6 +125,6 @@ try{
  ok(q('[data-recommendation="resume"]'),'Unfinished test takes priority over lesson');
  await go('#progress');ok(q('[data-phase="checkpoint"]').textContent.includes('Не завершена'),'Unfinished score not shown');
  raw.practice[p[0].id].answer='<img src=x onerror=alert(1)>';boot(JSON.stringify(raw),'#progress');ok(!q('#content img'),'Stored answer cannot inject HTML');
- ok(writes===0,'All routes are read-only');ok(errors.length===0,'No DOM errors: '+errors.join('; '));
- console.log(`EGE_BAZA_NAVIGATOR_OK: ${checks} registry/state/DOM checks; no storage writes. Browser gate separate.`);
+ ok(writes===0,'All routes are read-only');ok(requests===0,'Standalone routes neither load nor upload cloud progress');ok(errors.length===0,'No DOM errors: '+errors.join('; '));
+ console.log(`EGE_BAZA_NAVIGATOR_OK: ${checks} registry/state/DOM checks; no storage writes or cloud requests. Browser gate separate.`);
 }finally{dom?.window.close();}

@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте математической базы</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"title": "Порядок действий без путаницы", "shortTitle": "порядок действий", "lead": "Скобки, умножение, деление, сложение и вычитание — в понятной очереди, а не наугад.", "symbol": "( )", "symbolCaption": "что сначала?", "eyebrow": "Арифметика · один навык", "topicId": "ogeBasicsOrder", "storageKey": "mathExamBasics.order-of-operations.v1", "rule": "Скобки → умножение и деление → сложение и вычитание. При равном приоритете идём слева направо.", "lessons": [{"title": "Сначала найдём действия", "short": "Видим действия", "lead": "Перед вычислениями отметьте, какие знаки есть в выражении.", "html": "<div class=\"example\">В выражении <strong>8 + 3 · 4</strong> есть сложение и умножение. Они выполняются не в том порядке, в котором записаны.</div><div class=\"callout\">Сначала не считайте — сначала назовите действия.</div>", "question": {"kind": "choice", "prompt": "Какое действие имеет более высокий приоритет в выражении <strong>8 + 3 · 4</strong>?", "options": [{"id": "0", "html": "Сложение"}, {"id": "1", "html": "Умножение"}], "answer": "1", "good": "Верно: умножение выполняется раньше сложения.", "bad": "Посмотрите на правило и попробуйте ещё раз."}}, {"title": "Скобки — первая остановка", "short": "Скобки", "lead": "Всё внутри скобок выполняется раньше остальных действий.", "html": "<div class=\"formula\">(6 + 2) · 3</div><p>Сначала получаем 8, затем умножаем: <strong>8 · 3 = 24</strong>.</p>", "question": {"kind": "input", "prompt": "Вычислите: <strong>(5 + 4) · 2</strong>", "answer": 18, "unit": "", "good": "Верно: 5 + 4 = 9, затем 9 · 2 = 18.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Умножение и деление раньше", "short": "× и ÷ раньше", "lead": "После скобок выполняем умножение и деление.", "html": "<div class=\"example\"><strong>7 + 5 · 2</strong><br>Сначала 5 · 2 = 10.<br>Потом 7 + 10 = 17.</div>", "question": {"kind": "input", "prompt": "Вычислите: <strong>20 − 12 : 3</strong>", "answer": 16, "unit": "", "good": "Верно: 12 : 3 = 4, затем 20 − 4 = 16.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Одинаковый приоритет — слева направо", "short": "Слева направо", "lead": "Умножение и деление равноправны. Сложение и вычитание — тоже.", "html": "<div class=\"example\"><strong>24 : 6 · 2</strong><br>Слева направо: 24 : 6 = 4, затем 4 · 2 = 8.</div><div class=\"callout\">Не ищите «любимое» действие. При одинаковом приоритете идём слева направо.</div>", "question": {"kind": "input", "prompt": "Вычислите: <strong>18 − 5 + 2</strong>", "answer": 15, "unit": "", "good": "Верно: 18 − 5 = 13, затем 13 + 2 = 15.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Собираем алгоритм", "short": "Полный алгоритм", "lead": "Один и тот же порядок работает во всех примерах.", "html": "<ol><li>Скобки.</li><li>Умножение и деление слева направо.</li><li>Сложение и вычитание слева направо.</li></ol><div class=\"example\"><strong>30 − (4 + 2) · 3</strong><br>4 + 2 = 6 → 6 · 3 = 18 → 30 − 18 = 12.</div>", "question": {"kind": "input", "prompt": "Вычислите: <strong>40 − (3 + 5) · 4</strong>", "answer": 8, "unit": "", "good": "Верно: 3 + 5 = 8, 8 · 4 = 32, 40 − 32 = 8.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}], "learnTime": "6–8 минут"};
 
 (function(){
@@ -86,7 +87,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -186,5 +187,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

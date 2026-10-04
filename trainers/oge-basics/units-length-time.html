@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте математической базы</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"title": "Единицы длины и времени", "shortTitle": "длина и время", "lead": "Метры, сантиметры, километры, часы и минуты — с выбором правильного действия.", "symbol": "m ↔ cm", "symbolCaption": "× или ÷?", "eyebrow": "Единицы · один навык", "topicId": "ogeBasicsUnitsLength", "storageKey": "mathExamBasics.units-length-time.v1", "rule": "Из больших единиц в маленькие умножаем. Из маленьких в большие делим. Для времени используем 60.", "lessons": [{"title": "Большая единица состоит из маленьких", "short": "Связи единиц", "lead": "Сначала вспоминаем связь, затем выбираем умножение или деление.", "html": "<div class=\"pill-row\"><span class=\"pill\">1 м = 100 см</span><span class=\"pill\">1 км = 1000 м</span><span class=\"pill\">1 ч = 60 мин</span></div>", "question": {"kind": "input", "prompt": "Сколько сантиметров в <strong>3 м</strong>?", "answer": 300, "unit": "см", "good": "Верно: 3 · 100 = 300 см.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Из больших единиц в маленькие — умножаем", "short": "Большие → маленькие", "lead": "Один метр превращается в сто сантиметров, поэтому число растёт.", "html": "<div class=\"formula\">2,5 м = 2,5 · 100 = 250 см</div>", "question": {"kind": "input", "prompt": "Переведите <strong>1,8 км</strong> в метры.", "answer": 1800, "unit": "м", "good": "Верно: 1,8 · 1000 = 1800 м.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Из маленьких единиц в большие — делим", "short": "Маленькие → большие", "lead": "Сантиметров много, а метров получается меньше.", "html": "<div class=\"formula\">350 см = 350 : 100 = 3,5 м</div>", "question": {"kind": "input", "prompt": "Переведите <strong>7500 м</strong> в километры.", "answer": 7.5, "unit": "км", "good": "Верно: 7500 : 1000 = 7,5 км.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Часы и минуты живут по основанию 60", "short": "Время", "lead": "Здесь нельзя умножать или делить на 100.", "html": "<div class=\"example\">1,5 часа = 1,5 · 60 = 90 минут.</div>", "question": {"kind": "input", "prompt": "Сколько минут в <strong>2,25 часа</strong>?", "answer": 135, "unit": "мин", "good": "Верно: 2,25 · 60 = 135 минут.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Сначала приводим к одной единице", "short": "Перед сравнением", "lead": "Нельзя честно сравнить 2 м и 180 см, пока единицы разные.", "html": "<div class=\"example\">2 м = 200 см, поэтому 2 м больше 180 см.</div>", "question": {"kind": "choice", "prompt": "Что больше?", "options": [{"id": "0", "html": "1,2 км"}, {"id": "1", "html": "1150 м"}], "answer": "0", "good": "Верно: 1,2 км = 1200 м, а 1200 > 1150.", "bad": "Посмотрите на правило и попробуйте ещё раз."}}], "learnTime": "6–8 минут"};
 
 (function(){
@@ -84,7 +85,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -184,5 +185,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 </body></html>

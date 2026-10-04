@@ -3,7 +3,7 @@ services:
     name: mathexam-board-server
     runtime: node
     plan: free
-    buildCommand: npm --prefix board-server install
+    buildCommand: npm --prefix board-server ci --include=optional
     startCommand: npm --prefix board-server start
     healthCheckPath: /health
     autoDeploy: true
@@ -11,8 +11,13 @@ services:
       paths:
         - board-server/**
         - trainers/board-compat.json
+        - learning/**
+        - ege-baza/path/**
+        - trainers/oge-basics/**
         - render.yaml
     envVars:
+      - key: NODE_VERSION
+        value: 24.21.0
       - key: NODE_ENV
         value: production
       - key: CORS_ALLOWED_ORIGINS

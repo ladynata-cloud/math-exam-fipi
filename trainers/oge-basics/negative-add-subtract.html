@@ -37,7 +37,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
-</head>
+<script src="learning-loader.js"></script></head>
 <body>
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
@@ -52,6 +52,7 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 <div class="footer-note"><a href="index.html">← К карте математической базы</a> · прогресс сохраняется только в этом браузере · <button class="link" id="resetAll" style="border:0;background:none;cursor:pointer;padding:10px 12px;min-height:40px">сбросить тему</button></div>
 </main>
 <script>
+if (!window.MathExamRemediationManaged) {
 const SPEC = {"title": "Отрицательные числа: сложение и вычитание", "shortTitle": "сложение со знаками", "lead": "Один навык: понять направление движения и перестать угадывать знак результата.", "symbol": "−2+5", "symbolCaption": "вправо или влево?", "eyebrow": "Отрицательные числа · один навык", "topicId": "ogeBasicsNegativeOps", "storageKey": "mathExamBasics.negative-add-subtract.v1", "rule": "Представьте числовую прямую: вправо число растёт, влево — уменьшается.", "lessons": [{"title": "Прибавить положительное — вправо", "short": "Плюс положительное", "lead": "На прямой движение вправо увеличивает число.", "html": "<div class=\"example\"><strong>−3 + 5</strong>: от −3 делаем 5 шагов вправо и попадаем в 2.</div>", "question": {"kind": "input", "prompt": "Вычислите: <strong>−4 + 7</strong>", "answer": 3, "unit": "", "good": "Верно: от −4 семь шагов вправо дают 3.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Прибавить отрицательное — влево", "short": "Плюс отрицательное", "lead": "Знак минус внутри скобок задаёт движение влево.", "html": "<div class=\"formula\">2 + (−5) = −3</div>", "question": {"kind": "input", "prompt": "Вычислите: <strong>3 + (−8)</strong>", "answer": -5, "unit": "", "good": "Верно: от 3 восемь шагов влево дают −5.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Вычесть положительное — влево", "short": "Минус положительное", "lead": "Обычное вычитание уменьшает число.", "html": "<div class=\"formula\">1 − 6 = −5</div>", "question": {"kind": "input", "prompt": "Вычислите: <strong>−2 − 4</strong>", "answer": -6, "unit": "", "good": "Верно: от −2 четыре шага влево дают −6.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Минус на минус превращает движение вправо", "short": "Минус отрицательное", "lead": "Вычесть отрицательное — значит прибавить противоположное.", "html": "<div class=\"formula\">4 − (−3) = 4 + 3 = 7</div>", "question": {"kind": "input", "prompt": "Вычислите: <strong>−1 − (−6)</strong>", "answer": 5, "unit": "", "good": "Верно: −1 + 6 = 5.", "bad": "Проверьте вычисление и попробуйте ещё раз."}}, {"title": "Проверяем смыслом движения", "short": "Общий смысл", "lead": "Не заучивайте четыре разрозненных правила — представляйте направление.", "html": "<ul><li>+ положительное → вправо;</li><li>+ отрицательное → влево;</li><li>− положительное → влево;</li><li>− отрицательное → вправо.</li></ul>", "question": {"kind": "choice", "prompt": "В какую сторону двигаемся в выражении 2 − (−5)?", "options": [{"id": "0", "html": "Влево"}, {"id": "1", "html": "Вправо"}], "answer": "1", "good": "Верно: вычитание отрицательного ведёт вправо.", "bad": "Посмотрите на правило и попробуйте ещё раз."}}], "learnTime": "6–8 минут"};
 
 (function(){
@@ -86,7 +87,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
     if(/^[-+]?\d+\/[-+]?\d+$/.test(s)){
       let [n,d]=s.split('/').map(Number);if(!d)return null;return {type:'rat',...simplify(n,d)};
     }
-    const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
+    if(!/^[-+]?\d+(?:\.\d+)?$/.test(s))return null;const v=Number(s);return Number.isFinite(v)?{type:'num',v}:null;
   }
   function answerEqual(raw,answer){
     if(answer && typeof answer==='object' && 'n' in answer){
@@ -186,5 +187,7 @@ function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length
   bindChoiceSelection(qs('#practiceAnswer'));showRoute('home');
   window.__trainerDebug={SPEC,makePracticeTask,makeCheckSet,answerEqual,fmtAnswer,state:()=>state};
 })();
+
+}
 </script>
 <script src="../../ege-baza/return-to-course.js"></script></body></html>

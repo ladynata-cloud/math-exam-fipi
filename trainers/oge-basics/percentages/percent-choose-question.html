@@ -107,7 +107,7 @@ font-size:14px;color:#7d521e;margin-top:11px}
 .qitem.no-ok{border-color:var(--red);background:var(--red-soft)}
 .big{font-size:36px;font-weight:900;letter-spacing:-.03em}
 @media(max-width:560px){.card{padding:16px}.prompt{font-size:16px}.skill-row{grid-template-columns:1fr 62px 38px}}
-</style></head>
+</style><script src="../learning-loader.js"></script></head>
 <body><div class="wrap">
 
 <header class="card">
@@ -206,6 +206,7 @@ font-size:14px;color:#7d521e;margin-top:11px}
 
 </div>
 <script>
+if (!window.MathExamRemediationManaged) {
 const $=id=>document.getElementById(id);
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 const pick=a=>a[rnd(0,a.length-1)];
@@ -611,4 +612,6 @@ function boot(){document.title=TITLE+' · Математический ликб�
   setView('home')}
 document.addEventListener('DOMContentLoaded',boot);
 
+
+}
 </script></body></html>

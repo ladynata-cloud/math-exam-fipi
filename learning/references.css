@@ -1,0 +1,25 @@
+.learning-references{padding:1rem;border:1px solid #d7e4e2;border-radius:16px;background:#f8fbfa;color:#203b3e;font-size:.94rem}
+.learning-references h3{margin:0 0 .8rem;font-size:1.03rem}
+.learning-references .reference-button{display:block;width:100%;margin:.5rem 0;padding:.72rem .85rem;border:1px solid #aabfbb;border-radius:10px;background:#fff;color:#214b47;font:inherit;text-align:left;cursor:pointer}
+.learning-references .reference-button:hover{background:#ecf6f1;border-color:#527e70}
+.learning-references .reference-button:focus-visible{outline:3px solid #dfb349;outline-offset:3px}
+.learning-references .reference-button:disabled{opacity:.6;cursor:wait}
+.reference-note{font-size:.82rem;line-height:1.5;color:#4d6265}
+.reference-dialog{width:min(900px,94vw);max-width:none;max-height:92vh;padding:1.2rem;border:1px solid #b9cfca;border-radius:18px;background:#fff;color:#203b3e;box-sizing:border-box;overflow:auto}
+.reference-dialog::backdrop{background:#172f35a8}
+.reference-dialog-bar{position:sticky;top:-1.2rem;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem 0;background:#fff;border-bottom:1px solid #dce7e5}
+.reference-dialog-bar h2{margin:0;font-size:1.2rem}
+.reference-dialog-bar .reference-button{width:auto;margin:0;text-align:center;flex-shrink:0}
+.reference-dialog a{color:#1c615a;text-underline-offset:3px}
+.reference-dialog .reference-note a{display:inline-block;margin-right:1rem}
+.reference-dialog figure{margin:1.5rem 0}
+.reference-dialog figcaption{font-weight:700;padding:.5rem 0}
+.reference-dialog img{display:block;width:100%;height:auto;border:1px solid #dce7e5;background:#fff;box-sizing:border-box}
+.reference-help-output:not(:empty){margin-top:1rem;padding-top:.8rem;border-top:1px solid #d7e4e2}
+.reference-help-output h4{margin:.25rem 0 .65rem}
+.reference-help-output p,.reference-help-output li{line-height:1.6;overflow-wrap:anywhere}
+.reference-help-output ul{padding-left:1.3rem}
+.reference-help-output .reference-formula{padding:.7rem;background:#fff;border-left:3px solid #588b79;font-size:1.07rem;font-weight:600;white-space:pre-wrap}
+.reference-task{font-size:.9rem;color:#476265}
+.reference-error{color:#a13a22}
+@media(max-width:560px){.reference-dialog{padding:.75rem;width:96vw;max-height:95vh}.reference-dialog-bar{top:-.75rem}.reference-dialog-bar h2{font-size:1rem}.reference-dialog-bar .reference-button{padding:.5rem}.learning-references{padding:.8rem}}
