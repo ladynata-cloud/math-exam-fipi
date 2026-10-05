@@ -115,6 +115,14 @@ function createLearningApi(options = {}) {
   router.post('/teacher/students/:id/recovery', authMiddleware, mutationMiddleware, handler((req, res) => {
     exactKeys(req.body, []); res.json(store.recoverStudent(req.learningAuth, req.params.id));
   }));
+  router.post('/teacher/students/:id/password', authMiddleware, mutationMiddleware, handler(async (req, res) => {
+    exactKeys(req.body, ['password'], ['password']);
+    const student = store.ownsStudent(req.learningAuth, req.params.id);
+    // Bound expensive password work across all of this teacher's sessions.
+    limiter.take(`student-password:${req.learningAuth.id}:${student.id}`, 8, 15 * 60000);
+    const passwordHash = await hashPassword(req.body.password, 'student');
+    res.json(store.replaceStudentPassword(req.learningSessionToken, student.id, passwordHash, student.password_hash, student.auth_epoch));
+  }));
   router.get('/attempts', authMiddleware, handler((req, res) => res.json({ attempts: store.listAttempts(req.learningAuth) })));
   router.post('/attempts', authMiddleware, mutationMiddleware, handler((req, res) => res.status(201).json(store.createAttempt(req.learningAuth, req.body))));
   router.get('/attempts/:id', authMiddleware, handler((req, res) => res.json(store.getAttempt(req.learningAuth, req.params.id))));

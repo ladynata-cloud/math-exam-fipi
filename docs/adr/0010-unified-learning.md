@@ -67,6 +67,15 @@ shorter ones. A rollback after shorter passwords have been issued must retain
 that verifier compatibility; reverting to a twelve-character login check would
 lock those pupils out.
 
+A teacher can also issue a replacement password directly for an owned pupil.
+This has the same account-recovery authority as the existing private invitation
+flow. Origin, CSRF, role and ownership checks precede hashing; an atomic current
+teacher-session and pupil credential-snapshot check fences concurrent logout,
+recovery or replacement. Only that pupil's sessions and pending invitations
+are revoked. Its identity and learning history are preserved. The server stores
+only the hash; the issuing browser displays the plaintext in a guarded private
+card with visible copy status and explicit save/discard acknowledgement.
+
 ## Educational identity
 
 An immutable task specification plus mutable work forms one attempt. An assignment

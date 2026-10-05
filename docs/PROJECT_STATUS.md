@@ -6,17 +6,37 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: easier pupil sign-in
+## Current: reliable pupil access card
+
+- Scope: [pupil access card](tasks/STUDENT_ACCESS_CARD.md); branch
+  `fix/student-access-card`, base `f2397dfca606a72ff46fe1fa3461196974736a9a`.
+- First pupil creation is now confirmed in the authenticated roster. The owner
+  could not retain the access-card data; no production password was inspected.
+- Synthetic tests identified clipboard-error feedback hidden behind the modal.
+  Implemented in-card feedback, selectable text, explicit save/discard protection
+  and teacher-issued replacement passwords for the existing pupil identity.
+- Backend 151/151 and independent HIGH review passed. Auth, cabinet and
+  free-route browser coverage includes guarded copying and password replacement.
+- Next: exact-head CI and authorized publication,
+  then private pupil-password confirmation by the owner and initial study plan.
+
+## Published: easier pupil sign-in
+
+- PR #192 merged as `f2397dfca606a72ff46fe1fa3461196974736a9a`, parent
+  `c8773ed06358121756e4d10658453105cf057639`, reviewed tree
+  `988744810aec3da8b46f1c2f55b9eaf0b6d1468d`.
+- Backend 140/140, auth/cabinet browser, independent review and exact-head
+  workflow 37381326070 passed. Pages deployment 37381681991 succeeded;
+  Amvera app bytes matched, status was available and durable, and the live
+  teacher pupil form showed the eight-character minimum.
 
 - Scope: [short pupil passwords](tasks/SHORT_STUDENT_PASSWORDS.md); branch
   `fix/short-student-passwords`, base `c8773ed06358121756e4d10658453105cf057639`.
 - The owner requested a shorter password for the first pupil. Support an
   eight-character minimum for pupils and an eight-digit random suggestion;
   preserve the teacher's twelve-character setting/recovery minimum.
-- Next: backend/browser gates and independent review, authorized publication,
-  then restore the pupil-creation form for private credential confirmation.
-- The teacher reports saving recovery codes. First pupil provisioning is still
-  pending; no production password or code was inspected.
+- Teacher reports saving recovery codes. The first pupil was subsequently
+  created; access-card retention is the remaining operational issue above.
 
 ## Published: lost teacher recovery codes
 
@@ -35,7 +55,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Add password-confirmed authenticated reissue and explicit save/discard
   acknowledgement. Preserve the active password, sessions and teaching data.
 - The owner subsequently reported completing the private saving step.
-- The first real pupil account has not yet been provisioned.
+- First pupil provisioning occurred after the next release, as recorded above.
 
 ## Published: pending teacher activation repair
 

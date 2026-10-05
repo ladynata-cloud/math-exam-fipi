@@ -73,6 +73,77 @@ async function rotateCodes(page, password) {
   return response;
 }
 
+
+async function acknowledgeAccess(page) {
+  assert.equal(await page.locator('#close-access').isDisabled(), true, 'Closing pupil credentials requires an explicit saved confirmation');
+  const passwordInput = await page.locator('#access-password').elementHandle();
+  const fallback = await page.locator('#access-copy-text').elementHandle();
+  await page.locator('#access-saved').check();
+  await page.locator('#close-access').click();
+  await page.locator('#access-password').waitFor({ state: 'detached' });
+  assert.equal(await passwordInput.evaluate(node => node.value), '', 'The detached password field is explicitly cleared');
+  assert.equal(await fallback.evaluate(node => node.value), '', 'The detached manual-copy field is explicitly cleared');
+  await passwordInput.dispose(); await fallback.dispose();
+  assert.equal(await page.locator('#access-copy-text').count(), 0, 'Closing removes the combined plaintext copy fallback');
+}
+async function assertAccessRemains(page, login, password) {
+  assert.equal(await page.locator('#modal').evaluate(dialog => dialog.open), true);
+  assert.equal(await page.locator('#access-login').inputValue(), login);
+  assert.equal(await page.locator('#access-password').inputValue(), password);
+}
+async function accessCardGuards(page, login, password) {
+  assert.equal(await page.locator('#dialog-close').count(), 0, 'The one-time pupil card has no accidental close icon');
+  await page.keyboard.press('Escape');
+  await assertAccessRemains(page, login, password);
+  await page.mouse.click(1, 1);
+  await assertAccessRemains(page, login, password);
+  await page.evaluate(() => LearningApp.navigate('security'));
+  await page.waitForFunction(() => location.hash === '#security');
+  await page.evaluate(() => LearningApp.refresh());
+  await assertAccessRemains(page, login, password);
+  assert.equal(await page.locator('#recovery-rotate-form').count(), 0, 'Route/refresh cannot replace pupil credentials with another credential form');
+  await page.evaluate(() => document.querySelector('#logout').click());
+  await assertAccessRemains(page, login, password);
+  assert.equal(await page.evaluate(() => LearningApp.account().role), 'teacher');
+  assert.equal(await page.evaluate(() => {
+    const event = new Event('beforeunload', { cancelable: true }); window.dispatchEvent(event); return event.defaultPrevented;
+  }), true, 'Reload/navigation warns while pupil credentials have not been saved');
+  await page.evaluate(() => LearningApp.navigate('students'));
+  await codeStorageIsPrivate(page, [password]);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'The access card fits a 390px phone');
+}
+async function pupilCopyChecks(page, context, origin, login, password) {
+  const expected = 'Кабинет MathExam: ' + origin + '/learning/#route\nЛогин: ' + login + '\nПароль: ' + password;
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin });
+  await page.locator('#copy-access').click();
+  assert.equal(await page.evaluate(() => navigator.clipboard.readText()), expected, 'The green button copies the exact URL, login and password');
+  await page.waitForFunction(() => document.querySelector('#access-copy-status')?.textContent.includes('скопирован'));
+  assert.equal(await page.locator('#access-copy-status').evaluate(node => !!node.closest('dialog[open]')), true,
+    'Success feedback is inside the modal top layer');
+  await assertAccessRemains(page, login, password);
+  await context.clearPermissions();
+  const client = await context.newCDPSession(page);
+  await client.send('Browser.setPermission', { permission: { name: 'clipboard-write' }, setting: 'denied', origin });
+  await page.locator('#copy-access').click();
+  await page.locator('#access-copy-text').waitFor({ state: 'visible' });
+  assert.equal(await page.locator('#access-copy-text').inputValue(), expected);
+  assert.equal(await page.locator('#access-copy-text').evaluate(node => node.selectionStart === 0 && node.selectionEnd === node.value.length), true,
+    'Denied clipboard access selects the complete manual fallback');
+  await page.locator('#access-copy-status').scrollIntoViewIfNeeded();
+  const status = await page.locator('#access-copy-status').innerText();
+  assert.match(status, /копир|буфер/i);
+  assert.equal(await page.locator('#access-copy-status').evaluate(node => {
+    const r = node.getBoundingClientRect(), top = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+    return top === node || node.contains(top);
+  }), true, 'Clipboard error is visibly above the backdrop, not hidden under the card');
+  await page.locator('#select-access').click();
+  assert.equal(await page.locator('#access-copy-text').evaluate(node => node === document.activeElement && node.selectionStart === 0 && node.selectionEnd === node.value.length), true,
+    'Manual selection remains available without clipboard permission');
+  await assertAccessRemains(page, login, password);
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin });
+  await client.detach();
+}
+
 (async () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'learning-auth-'));
   const store = new LearningStore({ filePath: path.join(directory, 'learning.sqlite'), contracts });
@@ -87,7 +158,7 @@ async function rotateCodes(page, password) {
   app.use('/api/learning', learning.router);
   app.use(express.static(ROOT));
   const invitation = store.bootstrap({ login: LOGIN, name: 'Учитель проверки входа' });
-  const pageErrors = [], mutations = [], requestBodies = [], nonlocalRequests = [];
+  const pageErrors = [], mutations = [], requestBodies = [], credentialRequests = [], nonlocalRequests = [];
   let browser;
   try {
     browser = await chromium.launch({ headless: true,
@@ -106,7 +177,7 @@ async function rotateCodes(page, password) {
     page.on('pageerror', error => pageErrors.push(error.message));
     page.on('request', request => {
       if (request.method() === 'POST') mutations.push(new URL(request.url()).pathname);
-      if (request.postData()) requestBodies.push(request.postData());
+      if (request.postData()) { requestBodies.push(request.postData()); credentialRequests.push({ path: new URL(request.url()).pathname, body: request.postData() }); }
     });
     page.setDefaultTimeout(10000);
     await page.goto(origin + '/learning/');
@@ -405,7 +476,7 @@ async function rotateCodes(page, password) {
       assert.equal(requestBodies.some(body => body.includes(code)), false, 'Backup codes never leak into trainer or other outgoing request bodies');
     }
     // A teacher can issue a pupil an eight-digit password; the exact string survives creation and login.
-    const pupilPasswords = [];
+    const pupilPasswords = [], pupilCredentialRequestStart = credentialRequests.length;
     for (const [index, chosenPassword] of [null, '03648275'].entries()) {
       await page.locator('[data-nav=students]').click();
       await page.locator('#add-student').click();
@@ -445,9 +516,141 @@ async function rotateCodes(page, password) {
       assert.equal(await page.locator('#access-login').inputValue(), login);
       assert.equal(new URL(await page.locator('#access-link').inputValue()).hash, '#route');
       await codeStorageIsPrivate(page, [password]);
-      await page.locator('#close-access').click();
+      if (index === 0) {
+        await pupilCopyChecks(page, context, origin, login, password);
+        await accessCardGuards(page, login, password);
+      }
+      await acknowledgeAccess(page);
       await privateState(page, [password]);
       pupilPasswords.push({ login, password });
+    }
+
+    // Reissuing a lost pupil password changes access, not the pupil or their educational history.
+    const issued = pupilPasswords[0], originalPupilPasswords = pupilPasswords.map(item => item.password), studentRecord = store.accountByLogin(issued.login);
+    const studentAuth = { id: studentRecord.id, role: 'student', teacherId: invitation.account.id };
+    const seeded = store.createAttempt(studentAuth, { opId: require('node:crypto').randomUUID(), trainerId: 'ege-path', contentId: 'equations-linear' }).attempt;
+    store.action(studentAuth, seeded.id, { opId: require('node:crypto').randomUUID(), expectedVersion: seeded.version,
+      type: 'hint', payload: { step: 0 } });
+    const educationalBefore = { attempt: store.row('SELECT * FROM attempts WHERE id=?', seeded.id), history: store.history(invitation.account, seeded.id) };
+    const teacherBeforeReset = store.account(invitation.account.id);
+    const teacherSessionsBeforeReset = store.rows('SELECT * FROM sessions WHERE account_id=? ORDER BY hash', invitation.account.id);
+    const pupilCountBeforeReset = store.rows("SELECT id FROM accounts WHERE role='student' ORDER BY id");
+    const pupilContext = await browser.newContext({ locale: 'ru-RU' });
+    const pupilPage = await pupilContext.newPage();
+    await pupilPage.goto(origin + '/learning/#route');
+    await pupilPage.locator('#auth-form [name=login]').fill(issued.login);
+    await pupilPage.locator('#auth-form [name=password]').fill(issued.password);
+    assert.equal((await submit(pupilPage, 'login')).status(), 200);
+    await pupilPage.locator('#logout').waitFor();
+    await page.locator('[data-nav=students]').click();
+    await page.locator('[data-reset-login="' + studentRecord.id + '"]').click();
+    await page.locator('#student-password-form').waitFor();
+    assert.match(await page.locator('#student-password-form [name=password]').inputValue(), /^\d{8}$/);
+    const resetPassword = '01739264', lostPassword = '02846395', finalPassword = '03957416';
+    const resetURL = '**/api/learning/teacher/students/' + studentRecord.id + '/password';
+    let releasePupilReset, markPupilResetCommitted;
+    const pupilResetCommitted = new Promise(resolve => { markPupilResetCommitted = resolve; });
+    const pupilResetGate = new Promise(resolve => { releasePupilReset = resolve; });
+    await page.route(resetURL, async route => {
+      const response = await route.fetch();
+      assert.equal(response.status(), 200);
+      markPupilResetCommitted();
+      await pupilResetGate;
+      await route.fulfill({ response });
+    }, { times: 1 });
+    await page.locator('#student-password-form [name=password]').fill(resetPassword);
+    const resetResponsePromise = page.waitForResponse(response => response.url().endsWith('/teacher/students/' + studentRecord.id + '/password')
+      && response.request().method() === 'POST');
+    await page.locator('#student-password-form [type=submit]').click();
+    await pupilResetCommitted;
+    try {
+      assert.equal(await page.locator('#student-password-form [name=password]').inputValue(), '', 'The password input clears immediately after submission');
+      assert.equal(await page.locator('#student-password-form [type=submit]').isDisabled(), true);
+      if (await page.locator('#dialog-close').count()) assert.equal(await page.locator('#dialog-close').isDisabled(), true);
+      await page.keyboard.press('Escape');
+      await page.mouse.click(1, 1);
+      await page.evaluate(() => LearningApp.navigate('security'));
+      await page.waitForFunction(() => location.hash === '#security');
+      await page.evaluate(() => LearningApp.refresh());
+      await page.evaluate(() => document.querySelector('#logout').click());
+      assert.equal(await page.locator('#modal').evaluate(node => node.open), true, 'Pending password replacement cannot be accidentally dismissed');
+      assert.equal(await page.locator('#student-password-form').count(), 1);
+      assert.equal(await page.locator('#recovery-rotate-form,#student-form,#access-password').count(), 0,
+        'Navigation cannot open another credential form before the password response');
+      assert.equal(await page.evaluate(() => LearningApp.account().id), invitation.account.id);
+      assert.equal(await page.evaluate(() => {
+        const event = new Event('beforeunload', { cancelable: true }); window.dispatchEvent(event); return event.defaultPrevented;
+      }), true, 'Reload warns while a pupil password is being issued');
+    } finally { releasePupilReset(); }
+    const resetResponse = await resetResponsePromise;
+    assert.equal(resetResponse.status(), 200);
+    assert.deepEqual(resetResponse.request().postDataJSON(), { password: resetPassword });
+    const resetBody = await resetResponse.json();
+    assert.deepEqual(Object.keys(resetBody), ['student']);
+    assert.equal(resetBody.student.id, studentRecord.id);
+    assert.equal(JSON.stringify(resetBody).includes(resetPassword), false);
+    await page.locator('#access-password').waitFor();
+    await assertAccessRemains(page, issued.login, resetPassword);
+    assert.equal((await pupilContext.request.get(origin + '/api/learning/session')).status(), 401, 'The old pupil session is revoked');
+    assert.deepEqual(store.account(invitation.account.id), teacherBeforeReset, 'Pupil reset does not modify the teacher account');
+    assert.deepEqual(store.rows('SELECT * FROM sessions WHERE account_id=? ORDER BY hash', invitation.account.id), teacherSessionsBeforeReset,
+      'Pupil reset preserves the teacher session');
+    await accessCardGuards(page, issued.login, resetPassword);
+    await acknowledgeAccess(page);
+    await privateState(page, [resetPassword]);
+    await pupilPage.goto(origin + '/learning/');
+    await pupilPage.locator('#auth-form [name=login]').fill(issued.login);
+    await pupilPage.locator('#auth-form [name=password]').fill(issued.password);
+    assert.equal((await submit(pupilPage, 'login')).status(), 401, 'The replaced password no longer logs in');
+    await pupilPage.locator('#auth-form [name=password]').fill(resetPassword);
+    assert.equal((await submit(pupilPage, 'login')).status(), 200, 'The newly issued password logs into the same account');
+    await pupilPage.locator('#logout').waitFor();
+    assert.equal(await pupilPage.evaluate(() => LearningApp.account().id), studentRecord.id);
+    await pupilContext.close();
+
+    // A committed reset whose HTTP response is lost can be repeated on that same pupil without duplication.
+    await page.locator('[data-reset-login="' + studentRecord.id + '"]').click();
+    let markLostPupilCommitted;
+    const lostPupilCommitted = new Promise(resolve => { markLostPupilCommitted = resolve; });
+    await page.route(resetURL, async route => {
+      const response = await route.fetch();
+      assert.equal(response.status(), 200);
+      markLostPupilCommitted();
+      await route.abort('failed');
+    }, { times: 1 });
+    await page.locator('#student-password-form [name=password]').fill(lostPassword);
+    await page.locator('#student-password-form [type=submit]').click();
+    await lostPupilCommitted;
+    await page.waitForFunction(() => !document.querySelector('#student-password-form [type=submit]')?.disabled);
+    assert.equal(await page.locator('#access-password').count(), 0, 'A lost response does not fabricate an access card');
+    assert.equal(await page.locator('#student-password-form [name=password]').inputValue(), '');
+    assert.match(await page.locator('#student-password-form .form-error').innerText(), /связ|ответ|повтор/i);
+    assert.deepEqual(store.rows("SELECT id FROM accounts WHERE role='student' ORDER BY id"), pupilCountBeforeReset);
+    await page.locator('#dialog-close').click();
+    await page.reload();
+    await page.locator('[data-reset-login="' + studentRecord.id + '"]').click();
+    await page.locator('#student-password-form [name=password]').fill(finalPassword);
+    const retryPupilResponse = page.waitForResponse(response => response.url().endsWith('/teacher/students/' + studentRecord.id + '/password')
+      && response.request().method() === 'POST');
+    await page.locator('#student-password-form [type=submit]').click();
+    assert.equal((await retryPupilResponse).status(), 200);
+    await page.locator('#access-password').waitFor();
+    await assertAccessRemains(page, issued.login, finalPassword);
+    assert.deepEqual(store.rows("SELECT id FROM accounts WHERE role='student' ORDER BY id"), pupilCountBeforeReset, 'Retry keeps one cabinet per pupil');
+    assert.deepEqual({ attempt: store.row('SELECT * FROM attempts WHERE id=?', seeded.id), history: store.history(invitation.account, seeded.id) }, educationalBefore,
+      'All password reissues preserve the exact attempt and event history');
+    await page.locator('#access-discard-confirm').evaluate(node => node.closest('details').open = true);
+    assert.equal(await page.locator('#discard-access').isDisabled(), true);
+    await page.locator('#access-discard-confirm').check();
+    await page.locator('#discard-access').click();
+    await page.locator('#access-password').waitFor({ state: 'detached' });
+    await privateState(page, [resetPassword, lostPassword, finalPassword]);
+    issued.password = finalPassword;
+    for (const secret of [resetPassword, lostPassword, finalPassword, ...originalPupilPasswords]) {
+      for (const request of credentialRequests.slice(pupilCredentialRequestStart).filter(request => request.body.includes(secret))) {
+        assert.match(request.path, /^\/api\/learning\/(teacher\/students(?:\/[A-Za-z0-9_-]+\/password)?|login)$/,
+          'Raw pupil passwords appear only in their designated credential mutation, never trainer/history requests');
+      }
     }
     await page.locator('#logout').click();
     for (const pupilCredentials of pupilPasswords) {
@@ -512,10 +715,50 @@ async function rotateCodes(page, password) {
     assert.equal((await submit(page, 'login')).status(), 200, 'Existing long teacher passwords still work unchanged');
     await page.locator('#logout').waitFor();
     assert.equal(await page.evaluate(() => LearningApp.account().id), invitation.account.id);
+
+    // A persisted page lifecycle during a real pending request must restore usable controls and ignore its stale response.
+    await page.locator('[data-nav=security]').click();
+    const frozenRecoveryForm = await page.locator('#recovery-rotate-form').elementHandle();
+    let releaseLifecycleResponse, markLifecycleCommitted;
+    const lifecycleCommitted = new Promise(resolve => { markLifecycleCommitted = resolve; });
+    const lifecycleResponseGate = new Promise(resolve => { releaseLifecycleResponse = resolve; });
+    await page.route('**/api/learning/teacher/recovery-codes', async route => {
+      const response = await route.fetch();
+      assert.equal(response.status(), 200);
+      markLifecycleCommitted();
+      await lifecycleResponseGate;
+      await route.fulfill({ response });
+    }, { times: 1 });
+    const lifecycleResponse = rotateCodes(page, PASSWORD);
+    await lifecycleCommitted;
+    try {
+      await page.evaluate(() => {
+        window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true }));
+        window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+      });
+      await page.waitForFunction(() => {
+        const form = document.querySelector('#recovery-rotate-form');
+        return form && !form.querySelector('[type=submit]').disabled && form.elements.password.value === '';
+      });
+      assert.equal(await page.locator('#recovery-rotate-form').evaluate((node, old) => node !== old, frozenRecoveryForm), true,
+        'A persisted return replaces the stale disabled credential form');
+      assert.equal(await page.locator('#modal').evaluate(node => node.open), false);
+    } finally { releaseLifecycleResponse(); await frozenRecoveryForm.dispose(); }
+    const staleLifecycleResponse = await lifecycleResponse;
+    await staleLifecycleResponse.finished();
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    assert.equal(await page.locator('#recovery-codes').count(), 0, 'A response from before pagehide cannot resurrect private codes');
+    const lifecycleRetry = await rotateCodes(page, PASSWORD);
+    assert.equal(lifecycleRetry.status(), 200, 'Restored recovery controls permit a new issuance');
+    const lifecycleCodes = (await lifecycleRetry.json()).recoveryCodes;
+    await page.locator('#recovery-codes').waitFor();
+    await assertCodesRemain(page, lifecycleCodes);
+    await acknowledgeCodes(page);
+    await privateState(page, lifecycleCodes);
     await context.close();
     assert.deepEqual(nonlocalRequests, []);
     assert.deepEqual(pageErrors, []);
-    console.log('LEARNING_AUTH_BROWSER_OK: real HTTP/SQLite activation, login, session guards, safe recovery-code reissue, guarded one-time card, private download/copy, lost-response retry, eight-digit pupil creation/login/invitation with leading zeros, teacher twelve-character guards and 390px layout');
+    console.log('LEARNING_AUTH_BROWSER_OK: real HTTP/SQLite activation, login, session guards, safe recovery-code reissue, guarded one-time card, private download/copy, lost-response retry, guarded pupil copy with denied-clipboard selection fallback, password reissue with preserved history, eight-digit pupil creation/login/invitation with leading zeros, teacher twelve-character guards and 390px layout');
   } finally {
     if (browser) await browser.close();
     server.closeAllConnections();
