@@ -9,3 +9,5 @@
 
 /* Managed attempts use the parent cabinet for course navigation. */
 body.learning-managed>header,body.learning-managed>footer{display:none}body.learning-managed #main{padding:16px;max-width:1100px;margin:auto}.learning-managed h1{font-size:clamp(1.35rem,3vw,2.1rem);margin:.2em 0 .7em}.learning-managed .stage-nav{gap:6px}.learning-managed .stage-nav button{padding:9px 12px}.learning-managed .managed-note{font-size:.9rem}.learning-managed #main[data-read-only="true"]{cursor:default}
+/* Explicit labelled answers and diagram selections remain clear on touch screens. */
+#answerForm fieldset{min-width:0;border:0;padding:0;margin:0 0 12px}#answerForm legend{font-weight:650;padding:0;margin-bottom:10px}.answer-choices button{max-width:100%;white-space:normal;text-align:left}.answer-choices [aria-pressed=true],[data-geometry-select][aria-pressed=true]{background:#17674e;color:#fff;border-color:#124c3b}.answer-choices button:focus-visible,[data-geometry-select]:focus-visible{outline:3px solid #c37435;outline-offset:3px}

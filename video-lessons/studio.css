@@ -98,3 +98,17 @@
   .studio-mode .condition .geometry-question{font-size:21px}
   .studio-mode .lesson-frame[data-task="homework-help"] .history-math{font-size:25px}
 }
+
+/* Keep the original geometry beside every accumulated justified line. */
+.grade7-geometry-history{display:grid;grid-template-columns:minmax(0,.68fr) minmax(0,1.3fr);gap:12px;align-items:start}
+#retained-diagram .motion-caption{display:none}
+#retained-diagram .motion-diagram{margin:8px 0}
+#retained-diagram .motion-diagram text{font-size:30px}
+.lesson-frame[data-task^="grade7-g-"] .history-math{font-size:22px}
+.studio-mode .lesson-frame[data-task^="grade7-g-"] .condition-formula{font-size:25px}
+.studio-mode .lesson-frame[data-task^="grade7-g-"] .history-line{padding:2px 3px;gap:4px}
+.studio-mode .lesson-frame[data-task^="grade7-g-"] .history-number{flex-basis:14px}
+@media(min-width:761px){.lesson-frame[data-task^="grade7-g-"] .scene-grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}}
+@media(max-width:600px){.grade7-geometry-history{grid-template-columns:1fr}#retained-diagram .motion-diagram{max-height:160px}}
+
+#retained-diagram .motion-diagram .construction-note{font-size:20px}

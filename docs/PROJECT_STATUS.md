@@ -6,7 +6,35 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: reliable pupil access card
+## Current: next grade-7 course block
+
+- Scope: [24 trainers and 30 silent videos](tasks/GRADE7_NEXT_COURSE_BLOCK.md).
+- Base `a69da715e1f319cf13fd05d769a42878f3922a64`, branch
+  `content/grade7-next-course-block`. Eight focused trainers per strand:
+  algebra, introductory geometry and earlier arithmetic foundations.
+- All new trainers use managed cabinet attempts. Existing public school
+  records remain browser-local; no migration is claimed.
+- Local gates passed: 165 backend tests; 24 new managed trainers with draft,
+  hints, semantic diagrams, teacher control and restoration; existing account,
+  eight-seat board, exam and free-route scenarios. Independent mathematical
+  and code reviews found no remaining blockers.
+- Thirty new silent MP4 clips are rendered and hashed. Browser gates checked
+  all sixty active clips, thirty complete A4 guides, 180 animated scenarios,
+  mobile layouts and cumulative written steps/geometry drawings.
+- Familiar grade-7 conditions retain their history across retries and reset;
+  their results do not inflate independent mastery. Legacy grading is unchanged.
+- Next: publish the exact reviewed tree, pass remote gates and verify Pages
+  and Amvera. The task PR records final release identities and evidence.
+
+## Published: reliable pupil access card
+
+- PR #193 merged as `a69da715e1f319cf13fd05d769a42878f3922a64`, parent
+  `f2397dfca606a72ff46fe1fa3461196974736a9a`, reviewed tree
+  `dd5d901c54c4ad23360157a6b928071f03da1ddc`.
+- Exact-head CI 37385144900 and Pages 37385499804 passed. Amvera application
+  and stylesheet matched reviewed bytes, durable health was available and the
+  anonymous replacement-password endpoint returned 401. The authenticated
+  teacher roster survived reload. Owner subsequently reported saving access.
 
 - Scope: [pupil access card](tasks/STUDENT_ACCESS_CARD.md); branch
   `fix/student-access-card`, base `f2397dfca606a72ff46fe1fa3461196974736a9a`.
@@ -17,8 +45,8 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   and teacher-issued replacement passwords for the existing pupil identity.
 - Backend 151/151 and independent HIGH review passed. Auth, cabinet and
   free-route browser coverage includes guarded copying and password replacement.
-- Next: exact-head CI and authorized publication,
-  then private pupil-password confirmation by the owner and initial study plan.
+- Initial optional study recommendations were saved and reread after reload.
+  No actual credential was inspected or submitted by the executing agent.
 
 ## Published: easier pupil sign-in
 

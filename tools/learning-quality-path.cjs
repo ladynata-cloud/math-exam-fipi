@@ -6,6 +6,9 @@ const assert = require('node:assert/strict');
 const D = require('../ege-baza/path/data.js');
 require('../ege-baza/path/practice.js');
 require('../ege-baza/path/equation-practice.js');
+require('../ege-baza/path/grade7-algebra.js');
+require('../ege-baza/path/grade7-geometry.js');
+require('../ege-baza/path/grade7-foundations.js');
 
 assert.equal(typeof D.answerText, 'function', 'Exact answer presentation is required');
 

@@ -117,6 +117,19 @@
     makarychevGuide('equation-word-problems', 'Задача с помощью уравнения', 'm7f-word-parts', 'Решать текстовую задачу уравнением',
       'Открой «Разбор». Прочитай условие задачи и вопрос текущего шага. Вводи ответ только на этот вопрос; окончательный ответ потребуется в конце.')
   ];
+  // Additional cabinet-backed practice: mathematical clips and real public UI.
+  const nextTopics = [['grade7-a-opposite-expression', 'Минус перед выражением'], ['grade7-a-two-variable-collect', 'Подобные слагаемые с двумя буквами'], ['grade7-a-equation-two-brackets', 'Уравнение со скобками в обеих частях'], ['grade7-a-equation-denominators', 'Уравнение: убираем знаменатели'], ['grade7-a-equation-decimals', 'Уравнение с десятичными числами'], ['grade7-g-segment-order', 'Отрезки: порядок точек'], ['grade7-g-midpoint-chain', 'Середина отрезка'], ['grade7-g-angle-addition', 'Сложение углов'], ['grade7-g-angle-bisector', 'Биссектриса угла'], ['grade7-g-adjacent-equation', 'Смежные углы и уравнение'], ['grade7-b-mixed-borrow', 'Смешанные числа: занимаем единицу'], ['grade7-b-fraction-product-cancel', 'Умножение дробей: сокращаем множители'], ['grade7-b-decimal-divisor-scale', 'Деление на десятичную дробь'], ['grade7-b-signed-fraction-sum', 'Дроби с разными знаками'], ['grade7-b-percent-proportion', 'Проценты через пропорцию']];
+  for (const [id, title] of nextTopics) items.push({
+    id, title, catalogId: 'path:' + id,
+    publicUrl: 'https://mathexam.space/ege-baza/path/index.html?practice=1#lesson=' + id,
+    practiceLabel: 'Решать по шагам',
+    steps: [
+      'Выбери «Решить по шагам». Прочитай условие и текущий вопрос: сейчас нужен ответ только на него.',
+      'Введи ответ в поле «Твой ответ» или выбери предложенный вариант. Нажми «Проверить» и прочитай сообщение. Дробь можно записать через /; десятичное число — с запятой.',
+      'Если трудно, открой «Подсказать смысл шага». Верные строки остаются в записи. После разбора выбери самостоятельный режим и новое условие.'
+    ],
+    progressNote: 'Вход через кабинет сохраняет попытку на сервере. Кнопка «Сдать Наталье Михайловне» отправляет её преподавателю. Открытая отдельно практика хранит результат только в этом браузере; фото тетради отправляешь в MAX сама.'
+  });
   const byId = Object.create(null), byCatalogId = Object.create(null);
   for (const item of items) {
     Object.freeze(item.steps); Object.freeze(item);

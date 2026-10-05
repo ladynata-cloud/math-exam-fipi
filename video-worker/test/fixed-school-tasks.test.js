@@ -5,7 +5,8 @@ import { isSchoolTask, resolveAudioMode, studioUrlFor, validateJobRequest, viewp
 const schoolTasks = ['homework-help', 'linear-equation', 'adjacent-angles',
   'negative-numbers', 'fractions', 'brackets', 'proportions', 'percentages',
   'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties',
-  'identities', 'equation-roots', 'linear-cases', 'equation-word-problems'];
+  'identities', 'equation-roots', 'linear-cases', 'equation-word-problems',
+  'grade7-a-opposite-expression', 'grade7-a-two-variable-collect', 'grade7-a-equation-two-brackets', 'grade7-a-equation-denominators', 'grade7-a-equation-decimals', 'grade7-g-segment-order', 'grade7-g-midpoint-chain', 'grade7-g-angle-addition', 'grade7-g-angle-bisector', 'grade7-g-adjacent-equation', 'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale', 'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion'];
 
 test('all fixed school topics retain the three presets, portrait/landscape and compulsory captions', () => {
   for (const task of schoolTasks) {

@@ -14,7 +14,8 @@ import { createRenderer } from '../video-worker/src/renderer.js';
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const fixedTasks = ['linear-equation', 'adjacent-angles', 'negative-numbers', 'fractions', 'brackets', 'proportions', 'percentages',
   'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties',
-  'identities', 'equation-roots', 'linear-cases', 'equation-word-problems', 'homework-help'];
+  'identities', 'equation-roots', 'linear-cases', 'equation-word-problems', 'homework-help',
+  'grade7-a-opposite-expression', 'grade7-a-two-variable-collect', 'grade7-a-equation-two-brackets', 'grade7-a-equation-denominators', 'grade7-a-equation-decimals', 'grade7-g-segment-order', 'grade7-g-midpoint-chain', 'grade7-g-angle-addition', 'grade7-g-angle-bisector', 'grade7-g-adjacent-equation', 'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale', 'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion'];
 const value = name => process.argv.find(argument => argument.startsWith(`--${name}=`))?.slice(name.length + 3);
 const output = value('output');
 assert.ok(output, 'Pass --output=directory for rendered clips and their manifest');
@@ -39,6 +40,7 @@ const files = new Map([
   ['cheatsheet-topics.js', 'text/javascript; charset=utf-8'],
   ['motion.js', 'text/javascript; charset=utf-8'], ['motion-topics.js', 'text/javascript; charset=utf-8'],
   ['makarychev7-videos.js', 'text/javascript; charset=utf-8'],
+  ['grade7-next-videos.js', 'text/javascript; charset=utf-8'],
 ].map(([name, type]) => [`/video-lessons/${name}`, { name, type }]));
 const server = http.createServer(async (request, response) => {
   try {

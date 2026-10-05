@@ -95,6 +95,14 @@ They exclude the entire course portfolio. Restore is silent and never chooses a
 new random condition. Unsupported trainers remain explicitly outside the managed
 catalog until their state and mathematics pass the same checks.
 
+Grade-7 tasks can use this same managed Path family with a null exam position
+and an explicit training-only marker. Their deterministic definitions, numeric
+or labelled-choice answers and bounded diagram selections follow the same
+snapshot validation and server grading as existing tasks. A public practice
+view and a cabinet view share task definitions, but browser-local public work
+does not silently become a server attempt. Existing school-workshop records
+remain separate. Adding a task is not evidence of completing a textbook.
+
 ## Synchronization
 
 Every command has an actor-scoped operation ID bound to its canonical contents.

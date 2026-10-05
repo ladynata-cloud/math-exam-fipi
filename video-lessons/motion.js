@@ -104,6 +104,37 @@
       path.style.strokeDasharray = String(length); path.style.strokeDashoffset = String(length * (1 - p));
       dot.setAttribute('cx', point.x); dot.setAttribute('cy', point.y); svg.dataset.progress = String(clamp(value)); };
   }
+  function construction(host, spec) {
+    const svg = node('svg', {viewBox:'0 0 640 230', class:'motion-diagram',role:'img','aria-label':spec.caption});
+    const strokes=[], labels=[];
+    const line=(x1,y1,x2,y2,color='#234b67',width=3)=>{const el=node('line',{x1,y1,x2,y2,stroke:color,'stroke-width':width,'stroke-linecap':'round'});strokes.push(el);svg.append(el);};
+    const label=(x,y,text,color='#19313d')=>{const el=node('text',{x,y,'text-anchor':'middle','font-size':24,'font-weight':700,fill:color,class:text.length>12?'construction-note':'construction-label'},text);labels.push(el);svg.append(el);};
+    const dot=(x,y)=>{const el=node('circle',{cx:x,cy:y,r:3.5,fill:'#234b67'});labels.push(el);svg.append(el);};
+    if(spec.kind==='segment'){
+      if(!Array.isArray(spec.parts)||spec.parts.length!==2||!spec.parts.every(x=>Number.isFinite(x)&&x>0))throw new Error('Invalid segment construction');
+      const total=spec.parts[0]+spec.parts[1], points=[64,64+512*spec.parts[0]/total,576], y=107;
+      line(points[0],y,points[1],y,'#2159c9',5);line(points[1],y,points[2],y,'#b05e23',5);
+      points.forEach((x,i)=>{dot(x,y);label(x,y+38,spec.labels[i]);});
+      if(spec.ticks){for(let i=0;i<2;i++){const x=(points[i]+points[i+1])/2;line(x-5,y-9,x+5,y+9,'#237d68');}}
+      label(320,194,spec.ticks?'Одинаковые штрихи — равные части':'Внутренняя точка делит отрезок на части');
+    }else if(spec.kind==='angles'){
+      if(!Array.isArray(spec.angles)||spec.angles.length!==2||!spec.angles.every(x=>Number.isFinite(x)&&x>0)||spec.angles[0]+spec.angles[1]>180)throw new Error('Invalid angle construction');
+      const ox=305,oy=195,r=165, rad=d=>d*Math.PI/180, at=(d,length)=>({x:ox+Math.cos(rad(d))*length,y:oy-Math.sin(rad(d))*length});
+      const ends=[0,spec.angles[0],spec.angles[0]+spec.angles[1]];
+      // Draw the boundary rays first, then the ray inside. A ray is shown as
+      // a finite part without arrowheads, consistently with course diagrams.
+      for(const i of [0,2,1]){const p=at(ends[i],r);line(ox,oy,p.x,p.y,i===1?'#237d68':'#234b67');}
+      dot(ox,oy);label(ox-12,oy+28,'O');
+      ends.forEach((d,i)=>{const p=at(d,r+20);label(p.x,Math.max(28,p.y)+(d===0||d===180?8:0),spec.labels[i]);});
+      for(let i=0;i<2;i++){
+        const radius=spec.equal?52:42+i*15,start=ends[i],end=ends[i+1],a=at(start,radius),b=at(end,radius);
+        const arc=node('path',{d:`M ${a.x} ${a.y} A ${radius} ${radius} 0 0 0 ${b.x} ${b.y}`,fill:'none',stroke:i===0?'#2159c9':'#b05e23','stroke-width':3});strokes.push(arc);svg.append(arc);
+        if(spec.equal){const mid=(start+end)/2,a=at(mid,radius-5),b=at(mid,radius+5);line(a.x,a.y,b.x,b.y,'#237d68',2);}
+      }
+    }else throw new Error('Unknown authored construction');
+    host.append(svg);const caption=document.createElement('p');caption.className='motion-caption';caption.textContent=spec.caption;host.append(caption);
+    return value=>{const p=clamp(value);strokes.forEach((stroke,i)=>{const length=stroke.getTotalLength(),q=smooth((p-i*.065)/.43);stroke.style.strokeDasharray=String(length);stroke.style.strokeDashoffset=String(length*(1-q));});labels.forEach(label=>{label.style.opacity=String(smooth((p-.55)/.35));});svg.dataset.progress=String(p);};
+  }
   function geometry(condition) {
     const svg = condition.querySelector('svg.diagram');
     if (!svg) throw new Error('Geometry animation needs its authored drawing');
@@ -116,7 +147,7 @@
   }
   window.MathExamMotion = Object.freeze({ mount(host, spec, condition) {
     host.replaceChildren();
-    const seek = !spec ? () => {} : spec.type === 'geometry' ? geometry(condition) : spec.type === 'numberline' ? numberline(host, spec) : arrows(host, spec);
+    const seek = !spec ? () => {} : spec.type === 'geometry' ? geometry(condition) : spec.type === 'numberline' ? numberline(host, spec) : spec.type === 'construction' ? construction(host, spec) : arrows(host, spec);
     seek(1); return seek;
   } });
 })();

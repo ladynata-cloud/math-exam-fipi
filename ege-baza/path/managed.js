@@ -29,6 +29,7 @@
     readonly = value === true;
     main.inert = readonly || !state;
     main.dataset.readOnly = String(readonly);
+    model?.setReadOnly?.(readonly);
   }
   function applyState(envelope) {
     if (!envelope || !envelope.taskSpec) throw new TypeError('Не передано условие задачи.');
@@ -61,15 +62,18 @@
   }
   function newTask(stage = 3) { emit('new-task', { contentId: taskSpec.id, stage }); }
   function form() {
-    const placeholder = task.answerKind === 'match' ? 'Четыре цифры, например 2413' : task.answerKind === 'multi' ? 'Номера, например 134' : task.answerKind === 'solutions' ? 'Любое подходящее число' : 'Число или дробь, например 2/3';
-    return '<form id="answerForm"><label for="answer">Твой ответ</label><div class="actions"><input id="answer" maxlength="4000" autocomplete="off" placeholder="' + placeholder + '"><button class="primary" type="submit">Проверить</button></div></form>';
+    return root.PathPracticeView.answerForm(state.work.stage===2?task.steps[state.work.step]:task);
   }
   function bindAnswer(scope) {
     const input = document.getElementById('answer'), work = state.work;
     if (!input) return;
     input.value = work.draft;
+    root.PathPracticeView.bindChoices(main, value => { if (readonly) return; work.draft=value; emit('input', { field:'answer' }); });
     input.oninput = () => { work.draft = input.value.slice(0, 4000); emit('input', { field: 'answer' }); };
-    document.getElementById('answerForm').onsubmit = event => {
+    // Managed frames deliberately have no allow-forms sandbox capability.
+    // Check via a local command, so native form navigation cannot swallow it.
+    const formElement=document.getElementById('answerForm');
+    const checkAnswer = event => {
       event.preventDefault(); if (readonly) return;
       const answer = input.value;
       if (!answer.trim()) { showFeedback('Сначала введи ответ.', 'bad'); emit('input', { field: 'answer' }); return; }
@@ -86,6 +90,10 @@
       }
       emit('check', scope === 'step' ? { scope, step, answer, answers } : { scope, answer });
     };
+    formElement.onsubmit=checkAnswer;
+    const checkButton=formElement.querySelector('button[type=submit]');
+    checkButton.type='button';checkButton.onclick=checkAnswer;
+    input.onkeydown=event=>{if(event.key==='Enter'&&!event.isComposing&&event.keyCode!==229){event.preventDefault();if(!event.repeat)checkAnswer(event);}};
   }
   function supportDetails() {
     // Only semantic open/closed panel state is recorded, never page markup.
@@ -104,7 +112,7 @@
   function render() {
     const work = state.work, meta = D.meta.find(m => m.id === taskSpec.id);
     model = null; document.title = meta.title + ' · Моя работа';
-    main.innerHTML = `<p class="eyebrow">ЕГЭ база · Задание ${meta.pos}</p><h1>${E(meta.title)}</h1><nav class="stage-nav" aria-label="Шаги урока">${stageLabels.map((label, i) => `<button data-stage="${i}" ${i === work.stage ? 'aria-current="step"' : ''}>${i + 1}. ${label}</button>`).join('')}</nav><div id="lesson"></div><p id="feedback" class="feedback" role="status"></p><p class="muted managed-note">Это одна сохранённая попытка. Разбор и подсказки остаются в её истории. Для самостоятельного закрепления открой новый вариант.</p>`;
+    main.innerHTML = `<p class="eyebrow">${meta.grade7?'7 класс · '+E(({algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'})[meta.subject]||'Математика'):'ЕГЭ база · Задание '+meta.pos}</p><h1>${E(meta.title)}</h1><nav class="stage-nav" aria-label="Шаги урока">${stageLabels.map((label, i) => `<button data-stage="${i}" ${i === work.stage ? 'aria-current="step"' : ''}>${i + 1}. ${label}</button>`).join('')}</nav><div id="lesson"></div><p id="feedback" class="feedback" role="status"></p><p class="muted managed-note">Это одна сохранённая попытка. Разбор и подсказки остаются в её истории. Для самостоятельного закрепления открой новый вариант.</p>`;
     main.querySelectorAll('[data-stage]').forEach(button => button.onclick = () => changeStage(+button.dataset.stage));
     const box = document.getElementById('lesson');
     const condition = `<p class="task">${E(task.q)}</p>`;
@@ -119,7 +127,7 @@
       document.getElementById('next').onclick = () => changeStage(2);
     } else if (work.stage === 2) {
       const finished = work.step >= task.steps.length;
-      box.innerHTML = `<section class="panel">${condition}${support}<ol class="steps">${task.steps.slice(0, work.step).map(step => `<li>${E(step.q)} <b>${E(step.a === undefined ? 'Условия выполнены' : D.answerText(step))}</b><br>${E(step.why)}</li>`).join('')}</ol>${finished ? '<h2>Разбор завершён</h2><p>Проверь себя на новом условии.</p><button id="new" class="primary">Новый самостоятельный вариант</button>' : `<div class="callout"><b>Шаг ${work.step + 1}/${task.steps.length}</b><p>${E(task.steps[work.step].q)}</p></div>${form()}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`}<details id="gap"><summary>Мешает пробел в основе?</summary><p>Обсуди с Натальей Михайловной, какое действие затрудняет решение: знак, дробь, единицы или выбор формулы. Эта попытка сохранит текущий шаг.</p></details></section>`;
+      box.innerHTML = `<section class="panel">${condition}${support}<ol class="steps">${task.steps.slice(0, work.step).map(step => `<li>${E(step.q)} <b>${E(step.a === undefined ? 'Условия выполнены' : root.PathPracticeView.answerText(step))}</b><br>${E(step.why)}</li>`).join('')}</ol>${finished ? '<h2>Разбор завершён</h2><p>Проверь себя на новом условии.</p><button id="new" class="primary">Новый самостоятельный вариант</button>' : `<div class="callout"><b>Шаг ${work.step + 1}/${task.steps.length}</b><p>${E(task.steps[work.step].q)}</p></div>${form()}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`}<details id="gap"><summary>Мешает пробел в основе?</summary><p>Обсуди с Натальей Михайловной, какое действие затрудняет решение: знак, дробь, единицы или выбор формулы. Эта попытка сохранит текущий шаг.</p></details></section>`;
       if (finished) document.getElementById('new').onclick = () => newTask();
       else {
         bindAnswer('step'); document.getElementById('hintText').textContent = state.view.hintText;

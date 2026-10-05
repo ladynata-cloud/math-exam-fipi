@@ -9,6 +9,7 @@ on:
       - 'trainers/learning-bridge.js'
       - 'trainers/oge-basics/**'
       - 'tools/learning-*'
+      - 'tools/grade7-*.test.cjs'
       - 'Dockerfile'
       - '.dockerignore'
       - 'render.yaml'
@@ -46,6 +47,9 @@ jobs:
           node tools/learning-remediation-checkpoint.cjs
           node tools/learning-remediation-bank.cjs --check
           node tools/learning-catalog-reference-test.cjs
+          node tools/grade7-algebra.test.cjs
+          node tools/grade7-geometry.test.cjs
+          node tools/grade7-foundations.test.cjs
       - name: Install pinned browser test tools
         run: |
           npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
@@ -62,6 +66,7 @@ jobs:
           node tools/learning-teaching-browser.cjs
           node tools/learning-teaching-live-browser.cjs
           node tools/learning-free-route.browser.cjs
+          node tools/learning-grade7.browser.cjs
       - name: Final whitespace and patch check
         run: git diff --check
 
