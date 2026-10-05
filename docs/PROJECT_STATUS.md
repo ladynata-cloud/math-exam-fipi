@@ -6,7 +6,27 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: lost teacher recovery codes
+## Current: easier pupil sign-in
+
+- Scope: [short pupil passwords](tasks/SHORT_STUDENT_PASSWORDS.md); branch
+  `fix/short-student-passwords`, base `c8773ed06358121756e4d10658453105cf057639`.
+- The owner requested a shorter password for the first pupil. Support an
+  eight-character minimum for pupils and an eight-digit random suggestion;
+  preserve the teacher's twelve-character setting/recovery minimum.
+- Next: backend/browser gates and independent review, authorized publication,
+  then restore the pupil-creation form for private credential confirmation.
+- The teacher reports saving recovery codes. First pupil provisioning is still
+  pending; no production password or code was inspected.
+
+## Published: lost teacher recovery codes
+
+- PR #191 merged as `c8773ed06358121756e4d10658453105cf057639`, parent
+  `8836bb24c04091ab503bf7c0d74eca1318b5732d`, full reviewed tree
+  `c9696f066026116650eba98f366ce91feebf8f09`.
+- Exact-head workflow 37379028688 and Pages deployment 37379441729 passed.
+  Changed cabinet assets matched tested bytes on Amvera; status was available
+  and durable, anonymous recovery-code issuance was denied with 401. Existing
+  teacher session survived, and the authenticated Security form was verified.
 
 - Scope: [recovery codes](tasks/TEACHER_RECOVERY_CODES.md); branch
   `fix/teacher-recovery-codes`, base `8836bb24c04091ab503bf7c0d74eca1318b5732d`.
@@ -14,8 +34,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   was confirmed. The owner did not retain the one-time recovery-code display.
 - Add password-confirmed authenticated reissue and explicit save/discard
   acknowledgement. Preserve the active password, sessions and teaching data.
-- Next: browser regression and independent review, authorized publication,
-  then private current-password entry and code saving by the owner.
+- The owner subsequently reported completing the private saving step.
 - The first real pupil account has not yet been provisioned.
 
 ## Published: pending teacher activation repair

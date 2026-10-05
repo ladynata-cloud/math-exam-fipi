@@ -70,8 +70,9 @@ function createLearningApi(options = {}) {
   router.post('/activate', originMiddleware, handler(async (req, res) => {
     exactKeys(req.body, ['token','password'], ['token','password']);
     anonymousLimit(req, typeof req.body.token === 'string' ? req.body.token : 'invalid');
-    store.invitation(req.body.token);
-    const passwordHash = await hashPassword(req.body.password);
+    const invitation = store.invitation(req.body.token);
+    const account = store.account(invitation.account_id);
+    const passwordHash = await hashPassword(req.body.password, account.role);
     res.json(sessionResponse(res, store.activate(req.body.token, passwordHash)));
   }));
   router.post('/recover', originMiddleware, handler(async (req, res) => {
@@ -106,7 +107,7 @@ function createLearningApi(options = {}) {
     exactKeys(req.body, ['name', 'login', 'password'], ['name', 'login']);
     const student = { name: safeName(req.body.name), login: normalizeLogin(req.body.login) };
     requireValue(!store.accountByLogin(student.login), 'LEARNING_LOGIN_EXISTS', 409);
-    const passwordHash = Object.hasOwn(req.body, 'password') ? await hashPassword(req.body.password) : null;
+    const passwordHash = Object.hasOwn(req.body, 'password') ? await hashPassword(req.body.password, 'student') : null;
     // Hashing is asynchronous: a logout or recovery in the meantime revokes permission.
     const auth = store.session(req.learningSessionToken);
     res.status(201).json(store.createStudent(auth, student, passwordHash));

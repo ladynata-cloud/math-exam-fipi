@@ -57,6 +57,16 @@ N=32768, r=8, p=3 setting follows OWASP's 32 MiB CPU/memory trade-off. Token has
 not raw session or recovery tokens, are stored. Database/backup permissions are
 private. Logs and exported teaching history exclude authentication material.
 
+Pupil passwords may contain 8–128 characters; teacher password creation and
+recovery retain 12–128. The server selects this policy from the established
+account role, not a client field. The teacher's pupil-creation form suggests
+eight cryptographically random digits for easier typing, without forcing a
+numeric-only password. Existing login/source attempt limits remain enforced.
+Login verification supports both existing long passwords and newly allowed
+shorter ones. A rollback after shorter passwords have been issued must retain
+that verifier compatibility; reverting to a twelve-character login check would
+lock those pupils out.
+
 ## Educational identity
 
 An immutable task specification plus mutable work forms one attempt. An assignment
