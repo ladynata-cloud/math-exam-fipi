@@ -6,7 +6,48 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: visible videos and direct practice entry
+## Current implementation: grade 7 course and thirty silent videos
+
+- Owner changed the main product direction to Makarychev + Atanasyan grade 7,
+  supporting school-year work and summer consolidation; EGE remains available.
+- Scope: [silent motion and opening algebra](tasks/GRADE7_SILENT_MOTION.md),
+  branch `feat/grade7-silent-motion`, base
+  `6d21ca0866733a85d69c9f6d7a82375c8f46b964`.
+- Implemented opening algebra route: twenty-four lessons (six preserved and
+  eighteen new), from numbers and expressions through linear equations and
+  word problems. This is the opening block, not either complete textbook.
+- The video library pairs fifteen animated mathematical explanations with
+  fifteen walkthroughs of the actual linked trainers: thirty active silent
+  videos. All thirty plus the archived help clip are rendered and included in
+  the media directory. The archived clip is separate from the active count;
+  all thirty-one files have H.264 video and no audio stream.
+- Existing cabinet contracts and school progress keys remain unchanged.
+  School workshop results stay in the current browser and are not synchronized
+  into cabinet attempts. Written work is sent manually through MAX.
+- Independent code review found no remaining blocker; replay can be paused,
+  old video-size metadata was removed, and compact export histories fit.
+  Completed local checks include 44 worker tests, 2,208 course cases with 7,022
+  step checks, 24 browser lesson flows at two widths, 90 motion journeys with
+  30 pixel comparisons, decoded-media inspection and the legacy factory gate.
+  All 30 active videos play; 15 A4 sheets, seven original practice entries and
+  the real HTTP/SQLite cabinet regression passed, including no attempts or
+  media fetch before explicit action. Independent mathematical review passed
+  all 24 worked presets across the eight new video topics.
+- Local combined gate: `GRADE7_SILENT_MOTION_OK`. Exact-head CI and publication
+  verification remain pending; no production deployment is claimed.
+- No production pupil account was created in this task;
+  no account, authentication or hosting settings were changed.
+- Not yet published. Next: complete exact-head CI, then
+  publish under standing owner permission with exact-head and production-byte
+  verification.
+
+## Published: visible videos and direct practice entry
+
+- PR #188 merged as `6d21ca0866733a85d69c9f6d7a82375c8f46b964`, full tree
+  `50c461f576c20d01730d39a857238d1927efc8ab`; merge parent matched the task base.
+- All three exact-head CI workflows passed. Pages deployment 37249756756
+  succeeded; twelve changed public assets matched exact tested bytes.
+  Learning status was available/durable; anonymous private plan returned 401.
 
 - Scope: [video entry](tasks/COURSE_VIDEO_ENTRY.md), branch
   `fix/course-video-entry`; base `7e007ff73a25a16faa1e6913b9c9af819c2ec435`.

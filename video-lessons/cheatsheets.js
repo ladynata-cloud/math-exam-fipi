@@ -1,10 +1,17 @@
 (function () {
   'use strict';
   const topics = window.MathExamCheatsheets;
-  const ids = ['negative-numbers', 'fractions', 'brackets', 'linear-equation', 'proportions', 'percentages', 'adjacent-angles'];
+  const guides = window.LearningTopicGuides;
+  const groups = [
+    { title: 'Алгебра · начало 7 класса', ids: ['numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties', 'identities', 'brackets', 'equation-roots', 'linear-equation', 'linear-cases', 'equation-word-problems'] },
+    { title: 'Вспомнить основы', ids: ['negative-numbers', 'fractions', 'proportions', 'percentages'] },
+    { title: 'Геометрия · углы', ids: ['adjacent-angles'] }
+  ];
+  const ids = groups.flatMap(group => group.ids).filter(id => guides.get(id));
   const $ = id => document.getElementById(id);
-  const revision = 'history-tap-20261005';
-  let activeTopic = null;
+  const revision = 'grade7-silent-motion-20261005';
+  let activeVideo = null;
+  let videoKind = new URLSearchParams(location.search).get('type') === 'trainer' ? 'trainer' : 'math';
   const player = $('video-player');
   const text = (id, value) => { $(id).textContent = value; };
   function list(id, lines) {
@@ -23,14 +30,16 @@
     $('angle-figure').hidden = id !== 'adjacent-angles';
     text('check', topic.check); text('warning', topic.warning);
     text('practice', topic.practice.prompt); text('practice-note', topic.practice.instruction);
-    const mediaUrl = 'media/' + id + '.mp4?v=' + revision;
+    const mediaUrl = 'media/' + (videoKind === 'trainer' ? 'using-' : '') + id + '.mp4?v=' + revision;
     $('video').href = mediaUrl;
-    text('video-title', topic.title + ' — видео');
+    text('video-title', videoKind === 'trainer' ? 'Как работать в тренажёре' : 'Разбор задачи по шагам');
+    player.setAttribute('aria-label', topic.title + (videoKind === 'trainer' ? ' — как работать в тренажёре' : ' — разбор задачи'));
+    for (const kind of ['math', 'trainer']) $('video-kind-' + kind).setAttribute('aria-pressed', String(videoKind === kind));
     $('topic-select').value = id;
-    if (activeTopic !== id) {
+    if (activeVideo !== mediaUrl) {
       player.pause(); player.src = mediaUrl; player.load();
-      activeTopic = id;
-      text('video-status', 'Нажми «Смотреть видео». Ролик без голоса; шаги сопровождают мягкие щелчки.');
+      activeVideo = mediaUrl;
+      text('video-status', videoKind === 'trainer' ? 'Нажми «Смотреть видео». Увидишь, куда нажать и как ответить в этом тренажёре. Без звука.' : 'Нажми «Смотреть видео». Пошаговый разбор без звука; предыдущие строки остаются на экране.');
       text('play-video', '▶ Смотреть видео');
     }
     $('interactive').href = 'studio.html?task=' + id + '&preset=1';
@@ -49,14 +58,28 @@
       else link.removeAttribute('aria-current');
     }
   }
-  for (const [index, id] of ids.entries()) {
-    const link = document.createElement('a'); link.href = '#' + id;
-    const number = document.createElement('span'); number.textContent = String(index + 1).padStart(2, '0');
-    const label = document.createElement('strong'); label.textContent = topics[id].title;
-    link.append(number, label); $('topics').append(link);
-    const option = document.createElement('option'); option.value = id;
-    option.textContent = topics[id].title; $('topic-select').append(option);
+  for (const group of groups) {
+    const section = document.createElement('div'); section.className = 'topic-group';
+    const heading = document.createElement('h3'); heading.textContent = group.title;
+    section.append(heading);
+    const options = document.createElement('optgroup'); options.label = group.title;
+    for (const id of group.ids.filter(value => ids.includes(value))) {
+      const link = document.createElement('a'); link.href = '#' + id;
+      const number = document.createElement('span'); number.textContent = String(ids.indexOf(id) + 1).padStart(2, '0');
+      const label = document.createElement('strong'); label.textContent = topics[id].title;
+      link.append(number, label); section.append(link);
+      const option = document.createElement('option'); option.value = id;
+      option.textContent = topics[id].title; options.append(option);
+    }
+    $('topics').append(section); $('topic-select').append(options);
   }
+  for (const kind of ['math', 'trainer']) $('video-kind-' + kind).addEventListener('click', () => {
+    videoKind = kind;
+    const url = new URL(location.href);
+    if (kind === 'trainer') url.searchParams.set('type', 'trainer'); else url.searchParams.delete('type');
+    history.replaceState(null, '', url);
+    show();
+  });
   $('topic-select').addEventListener('change', event => { location.hash = event.target.value; });
   $('play-video').addEventListener('click', async () => {
     if (!player.paused) { player.pause(); return; }

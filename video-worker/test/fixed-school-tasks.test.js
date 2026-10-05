@@ -1,18 +1,24 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { isSchoolTask, studioUrlFor, validateJobRequest, viewportFor } from '../src/validation.js';
+import { isSchoolTask, resolveAudioMode, studioUrlFor, validateJobRequest, viewportFor } from '../src/validation.js';
 
 const schoolTasks = ['homework-help', 'linear-equation', 'adjacent-angles',
-  'negative-numbers', 'fractions', 'brackets', 'proportions', 'percentages'];
+  'negative-numbers', 'fractions', 'brackets', 'proportions', 'percentages',
+  'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties',
+  'identities', 'equation-roots', 'linear-cases', 'equation-word-problems'];
 
 test('all fixed school topics retain the three presets, portrait/landscape and compulsory captions', () => {
   for (const task of schoolTasks) {
     assert.equal(isSchoolTask(task), true);
     for (const preset of [1, 2, 3]) {
       for (const format of ['16:9', '9:16']) {
-        for (const audioMode of ['silent', 'clicks', 'voice']) {
-          assert.deepEqual(validateJobRequest({ task, preset, format, audioMode, captions: false }, { ttsProvider: 'yandex' }),
-            { task, preset, format, audioMode, captions: true, videoType: 'ideal-solution' });
+        for (const audioMode of [undefined, 'silent', 'clicks', 'voice']) {
+          for (const ttsProvider of ['silent', 'mock', 'openai', 'yandex']) {
+            const input = { task, preset, format, ...(audioMode ? { audioMode } : {}), captions: false };
+            assert.deepEqual(validateJobRequest(input, { ttsProvider }),
+              { task, preset, format, audioMode: 'silent', captions: true, videoType: 'ideal-solution' });
+            assert.equal(resolveAudioMode(input, ttsProvider), 'silent', 'legacy unnormalized school jobs cannot request speech');
+          }
         }
       }
     }
@@ -20,6 +26,14 @@ test('all fixed school topics retain the three presets, portrait/landscape and c
     assert.throws(() => validateJobRequest({ task, preset: 4 }), /1, 2 и 3/);
     assert.throws(() => validateJobRequest({ task, preset: 1, format: '1:1' }), /16:9 или 9:16/);
     assert.throws(() => validateJobRequest({ task, preset: 1, videoType: 'student-path' }), /ideal-solution/);
+  }
+});
+
+test('DVI keeps its configured speech and explicit audio modes', () => {
+  for (const task of ['18', '19', '20']) {
+    assert.equal(resolveAudioMode({ task }, 'openai'), 'voice');
+    assert.equal(resolveAudioMode({ task }, 'silent'), 'clicks');
+    assert.equal(validateJobRequest({ task, preset: 1, audioMode: 'voice' }, { ttsProvider: 'yandex' }).audioMode, 'voice');
     assert.throws(() => validateJobRequest({ task, preset: 1, audioMode: 'voice' }, { ttsProvider: 'silent' }), /OpenAI или Yandex/);
   }
 });

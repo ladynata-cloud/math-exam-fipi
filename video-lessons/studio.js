@@ -2,7 +2,7 @@
 (() => {
   const $ = id => document.getElementById(id);
   const cheatsheets = window.MathExamCheatsheets || {};
-  const tasks = ['homework-help', 'linear-equation', 'adjacent-angles', ...Object.keys(cheatsheets).filter(key=>typeof cheatsheets[key].scenes==='function')];
+  const tasks = [...new Set(['homework-help', 'linear-equation', 'adjacent-angles', ...Object.keys(cheatsheets).filter(key=>typeof cheatsheets[key].scenes==='function')])];
   const labels = {...Object.fromEntries(Object.entries(cheatsheets).map(([key,value])=>[key,value.title])), 'homework-help':'Как пользоваться помощью','linear-equation':'Линейное уравнение','adjacent-angles':'Смежные и вертикальные углы'};
   const actions = {observe:'Посмотри и подумай',wrong:'Разбираем ошибку',hint:'Подсказка',correct:'Обоснованный шаг',next:'Следующий шаг',final:'Теперь самостоятельно'};
   const esc = text => String(text).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -44,7 +44,7 @@
     const betaText=['answer','check','vertical'].includes(stage)?`${180-alpha}°`:'?';
     const vertical=stage==='vertical';
     const extra=vertical?`<path d="${arc(base+180,base+alpha+180,45)}" fill="none" stroke="#8857a6" stroke-width="4"/><text x="${point(base+180+alpha/2,76)[0]}" y="${point(base+180+alpha/2,76)[1]+7}" text-anchor="middle" style="fill:#784797">${alpha}°</text>`:'';
-    return `<svg class="diagram" viewBox="0 0 480 310" role="img" aria-label="Прямые AB и CD пересекаются в точке O. Угол AOC равен ${alpha} градусам. Угол COB ${betaText==='?'?'неизвестен':`равен ${180-alpha} градусам`}.${vertical?' Угол BOD вертикален углу AOC.':''}"><line x1="${coords[0][0]}" y1="${coords[0][1]}" x2="${coords[1][0]}" y2="${coords[1][1]}" stroke="#334e5a" stroke-width="4"/><line x1="${coords[2][0]}" y1="${coords[2][1]}" x2="${coords[3][0]}" y2="${coords[3][1]}" stroke="#334e5a" stroke-width="4"/><path d="${arc(base,base+alpha,39)}" fill="none" stroke="#076e64" stroke-width="4"/><path d="${arc(base+alpha,base+180,54)}" fill="none" stroke="#d58a23" stroke-width="4"/>${extra}${labels.map((xy,i)=>`<text x="${xy[0]}" y="${xy[1]+7}" text-anchor="middle">${names[i]}</text>`).join('')}<circle cx="240" cy="155" r="5" fill="#172d38"/><text x="228" y="180">O</text><text class="angle-label" x="${angle1[0]}" y="${angle1[1]+7}" text-anchor="middle">${giv}</text><text x="${angle2[0]}" y="${angle2[1]+7}" text-anchor="middle" style="fill:#99560e">${betaText}</text></svg>`;
+    return `<svg class="diagram" viewBox="-20 -30 520 370" role="img" aria-label="Прямые AB и CD пересекаются в точке O. Угол AOC равен ${alpha} градусам. Угол COB ${betaText==='?'?'неизвестен':`равен ${180-alpha} градусам`}.${vertical?' Угол BOD вертикален углу AOC.':''}"><line x1="${coords[0][0]}" y1="${coords[0][1]}" x2="${coords[1][0]}" y2="${coords[1][1]}" stroke="#334e5a" stroke-width="4"/><line x1="${coords[2][0]}" y1="${coords[2][1]}" x2="${coords[3][0]}" y2="${coords[3][1]}" stroke="#334e5a" stroke-width="4"/><path d="${arc(base,base+alpha,39)}" fill="none" stroke="#076e64" stroke-width="4"/><path d="${arc(base+alpha,base+180,54)}" fill="none" stroke="#d58a23" stroke-width="4"/>${extra}${labels.map((xy,i)=>`<text x="${xy[0]}" y="${xy[1]+7}" text-anchor="middle">${names[i]}</text>`).join('')}<circle cx="240" cy="155" r="5" fill="#172d38"/><text x="228" y="180">O</text><text class="angle-label" x="${angle1[0]}" y="${angle1[1]+7}" text-anchor="middle">${giv}</text><text x="${angle2[0]}" y="${angle2[1]+7}" text-anchor="middle" style="fill:#99560e">${betaText}</text></svg>`;
   }
   function angleScenes(p) {
     const b=180-p.alpha;
@@ -83,6 +83,8 @@
     ];
   }
   let currentTask='linear-equation', currentPreset=1, currentIndex=0, scenes=[], timer=null;
+  let motionFrame=null, motionSeek=()=>{}, motionProgress=1;
+  for(const task of tasks){if(!Array.from($('task').options).some(o=>o.value===task)){const option=document.createElement('option');option.value=task;option.textContent=labels[task];$('task').append(option);}}
   function normalize(tab) { const raw=String(tab),task=tasks.includes(raw)?raw:raw.startsWith('t')?raw.slice(1):raw; if(!tasks.includes(task)) throw new Error('Unknown pilot task'); return task; }
   function validateType(type) { if(type && type!=='ideal-solution') throw new Error('Pilot supports ideal-solution only'); }
   // Build the visible prefix from the requested scene, never from visited scenes.
@@ -92,14 +94,9 @@
     return `<section class="solution-record" aria-label="${esc(heading)}"><p class="history-heading">${esc(heading)}</p><ol id="solution-history" class="solution-history">${visible.map((entry,i)=>`<li class="history-line${i===visible.length-1?' is-current':''}" data-scene-id="${esc(scenes[entry.at].id)}"${i===visible.length-1?' aria-current="step"':''}><span class="history-number" aria-hidden="true">${i+1}</span><div><span class="history-math">${esc(entry.math)}</span>${entry.label?`<span class="history-label">${esc(entry.label)}</span>`:''}</div></li>`).join('')}</ol>${visible.length?'':`<p class="history-empty">${esc(empty)}</p>`}</section>`;
   }
   function conditionHTML(s) {
-    if(typeof cheatsheets[currentTask]?.scenes==='function') {
+    if(currentTask!=='adjacent-angles' && scenes.some(entry=>entry.record)) {
       const entries=scenes.map((entry,at)=>({at,math:entry.record,label:entry.recordLabel})).filter(entry=>typeof entry.math==='string'&&entry.math);
       return `<p class="small-label">${s.action==='final'?'Разобранный пример':'Условие'} · вариант ${currentPreset}</p><div class="formula condition-formula">${esc(scenes[0].math)}</div>${historyHTML(entries)}${s.action==='wrong'?'<p class="history-warning">Ошибка показана отдельно. В ход решения записываем только верные строки.</p>':''}`;
-    }
-    if(currentTask==='linear-equation') {
-      const p=equations[currentPreset-1];
-      const entries=[{at:4,math:p.expanded},{at:5,math:p.simplified},{at:6,math:p.operation},{at:7,math:p.product},{at:9,math:`x = ${p.result}`},{at:10,math:p.check,label:'Проверка в исходном уравнении'}];
-      return `<p class="small-label">${s.action==='final'?'Разобранный пример':'Условие'} · вариант ${currentPreset}</p><div class="formula condition-formula">${esc(p.problem)}</div>${historyHTML(entries)}${s.action==='wrong'?'<p class="history-warning">Ошибочный шаг разбираем отдельно — в верную запись он не входит.</p>':''}`;
     }
     if(currentTask==='adjacent-angles') {
       const p=anglePresets[currentPreset-1], stage=s.diagram||'question', fresh=stage==='independent';
@@ -118,19 +115,20 @@
     const entries=[{at:6,math:'Решить без открытого примера'},{at:7,math:'Проверить свою запись'},{at:8,math:'Подготовить фото всей работы'},{at:9,math:'Передать работу учителю'},{at:10,math:'Обсудить обратную связь'}];
     return `<p class="small-label">Новое самостоятельное задание</p><div class="formula condition-formula">${esc(p.fresh)}</div>${historyHTML(entries,'Путь самостоятельной работы')}<p class="history-notice">Это инструкция, а не отметки о выполнении.</p>`;
   }
-  function stop() { clearTimeout(timer);timer=null;$('play').textContent='▶ Смотреть шаги';$('play-status').textContent=''; }
+  function stop() { clearTimeout(timer);timer=null;cancelAnimationFrame(motionFrame);motionFrame=null;$('play').textContent='▶ Смотреть шаги';$('play-status').textContent=''; }
   function render(announce=true) {
     const s=scenes[currentIndex];$('scene-title').textContent=s.title;$('lesson-label').textContent=`${labels[currentTask]} · учебный пример`;$('scene-count').textContent=`${currentIndex+1} / ${scenes.length}`;$('progress-fill').style.width=`${(currentIndex+1)/scenes.length*100}%`;
     document.querySelector('.lesson-frame').dataset.task=currentTask;
     $('condition').innerHTML=conditionHTML(s);$('step-panel').className=`step-panel ${s.action==='wrong'?'wrong':''}`;
-    $('step-panel').innerHTML=`<span class="action-tag">${actions[s.action]}</span>${formula(s.math)}<p>${esc(s.narration)}</p><p class="subtle">${esc(s.note)}</p>${s.button?`<span class="demo-button" id="scene-target">→ ${esc(s.button)}</span><p class="demo-label">Иллюстрация действия</p>`:''}`;
+    $('step-panel').innerHTML=`<span class="action-tag">${actions[s.action]}</span>${s.motion&&s.motion.type!=='geometry'?'<div id="motion-stage" class="motion-stage"></div>':formula(s.math)}<p>${esc(s.narration)}</p><p class="subtle">${esc(s.note)}</p>${s.button?`<span class="demo-button" id="scene-target">→ ${esc(s.button)}</span><p class="demo-label">Иллюстрация действия</p>`:''}`;
+    if(s.motion){let stage=$('motion-stage');if(!stage){stage=document.createElement('div');stage.id='motion-stage';stage.className='motion-stage';$('step-panel').append(stage);}motionSeek=window.MathExamMotion.mount(stage,s.motion,$('condition'));}else{motionSeek=()=>{};}motionProgress=1;$('replay-motion').hidden=!s.motion;
     $('previous').disabled=currentIndex===0;$('next').disabled=currentIndex===scenes.length-1;
     if(announce)$('scene-status').textContent=`Шаг ${currentIndex+1}. ${s.title}. ${s.narration}`;
     document.querySelectorAll('#transcript button').forEach((el,i)=>{if(i===currentIndex)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');});
   }
   function configurePractice() {
     $('answer').value='';$('feedback').textContent='';$('hint-one').open=false;$('hint-two').open=false;
-    if(currentTask==='linear-equation') {const p=equations[currentPreset-1];$('practice-question').textContent=`Как правильно раскрыть скобки в ${p.problem}? Запиши левую часть после раскрытия.`;$('hint-one-text').textContent='Распределительное свойство: множитель применяется к каждому слагаемому в скобках.';$('hint-two-text').textContent=`Умножь ${p.a} на x и на ${p.b}. Оставь последнее числовое слагаемое без изменения.`;}
+    if(currentTask==='linear-equation') {$('practice-question').textContent='Объясни, как перенести буквенное слагаемое влево, а число — вправо: '+scenes[0].math;$('hint-one-text').textContent='Перенос через знак равенства меняет знак слагаемого. Это короткая запись одинакового действия над обеими частями.';$('hint-two-text').textContent='Переноси всё слагаемое вместе с его знаком. После переноса отдельно приведи подобные слева и вычисли числа справа.';}
     else if(currentTask==='adjacent-angles') {$('practice-question').textContent='Чему равна сумма углов AOC и COB? Запиши число.';$('hint-one-text').textContent='У углов общая сторона OC, а лучи OA и OB образуют прямую.';$('hint-two-text').textContent='Это смежные углы. Вместе они образуют развёрнутый угол.';}
     else if(cheatsheets[currentTask]) {const card=cheatsheets[currentTask];$('practice-question').textContent=`Объясни следующий шаг: ${scenes.at(-1).math}`;$('hint-one-text').textContent=(card.rule||[]).join(' ');$('hint-two-text').textContent=card.practice?.instruction||'Вернись к правилу, затем выполни одно действие самостоятельно.';}
     else {$('practice-question').textContent='Что сделать до открытия первой подсказки? Запиши словами.';$('hint-one-text').textContent='Помощь начинается после собственной попытки, а не вместо неё.';$('hint-two-text').textContent='Запиши условие, сделай первый шаг и отметь своё затруднение.';}
@@ -138,23 +136,27 @@
   function prepare(tab,preset,type='ideal-solution') {
     validateType(type);const task=normalize(tab), n=Number(preset==null?1:preset);if(!Number.isInteger(n)||n<1||n>3)throw new Error('Pilot preset must be 1, 2 or 3');stop();currentTask=task;currentPreset=n;currentIndex=0;
     scenes=task==='linear-equation'?equationScenes(equations[n-1]):task==='adjacent-angles'?angleScenes(anglePresets[n-1]):typeof cheatsheets[task]?.scenes==='function'?cheatsheets[task].scenes(n):helpScenes(helpPresets[n-1]);
+    scenes=window.MathExamMotionTopics.decorate(task,n,scenes);
     $('task').value=task;$('preset').value=String(n);
     $('transcript').innerHTML=scenes.map((s,i)=>`<li><button type="button" data-index="${i}">${esc(s.title)}</button><p>${esc(s.math)}</p><p>${esc(s.narration)} ${esc(s.note)}</p></li>`).join('');configurePractice();render(false);
-    return {format:'mathexam-video-manifest',tab:`t${task}`,videoType:'ideal-solution',scenes:scenes.map(({id,narration,duration_hint_ms,action,click})=>({id,narration,duration_hint_ms,action,click}))};
+    return {format:'mathexam-video-manifest',tab:`t${task}`,videoType:'ideal-solution',scenes:scenes.map(({id,narration,duration_hint_ms,action,click,motion_ms})=>({id,narration,duration_hint_ms,action,click,...(motion_ms?{motion_ms}:{})}))};
   }
   function show(tab,id,type='ideal-solution') {
     validateType(type);if(normalize(tab)!==currentTask)throw new Error('Call prepare for this task first');const i=scenes.findIndex(s=>s.id===id);if(i<0)throw new Error('Unknown scene');stop();currentIndex=i;render(false);
     const target=$('scene-target');const rect=target?.getBoundingClientRect();return {sceneId:id,action:scenes[i].action,click:scenes[i].click,targetY:0,...(rect?{clickTargetX:rect.x+rect.width/2,clickTargetY:rect.y+rect.height/2}:{})};
   }
-  function advance(){if(currentIndex<scenes.length-1){currentIndex++;render();timer=setTimeout(advance,scenes[currentIndex].duration_hint_ms);}else{stop();$('play-status').textContent='Пример завершён. Теперь реши новое задание самостоятельно.';}}
-  $('play').addEventListener('click',()=>{if(timer){stop();$('play-status').textContent='Пауза';return;}if(currentIndex===scenes.length-1)currentIndex=0;render();$('play').textContent='Ⅱ Пауза';$('play-status').textContent='Текстовый просмотр. Поставь на паузу, чтобы подумать.';timer=setTimeout(advance,scenes[currentIndex].duration_hint_ms);});
+  function seekMotion(progress){cancelAnimationFrame(motionFrame);motionFrame=null;motionProgress=Math.max(0,Math.min(1,Number(progress)||0));motionSeek(motionProgress);return{sceneId:scenes[currentIndex].id,progress:motionProgress};}
+  function animateMotion(){cancelAnimationFrame(motionFrame);const duration=scenes[currentIndex].motion_ms;if(!duration||matchMedia('(prefers-reduced-motion: reduce)').matches){seekMotion(1);return;}const begin=performance.now();motionProgress=0;motionSeek(0);function frame(now){motionProgress=Math.min(1,(now-begin)/duration);motionSeek(motionProgress);if(motionProgress<1)motionFrame=requestAnimationFrame(frame);else{motionFrame=null;if(!timer){$('play').textContent='▶ Смотреть шаги';$('play-status').textContent='Движение завершено.';}}}motionFrame=requestAnimationFrame(frame);}
+  $('replay-motion').addEventListener('click',()=>{stop();animateMotion();if(motionFrame){$('play').textContent='Ⅱ Пауза';$('play-status').textContent='Повтор движения без звука.';}});
+  function advance(){if(currentIndex<scenes.length-1){currentIndex++;render();animateMotion();timer=setTimeout(advance,scenes[currentIndex].duration_hint_ms);}else{stop();$('play-status').textContent='Пример завершён. Теперь реши новое задание самостоятельно.';}}
+  $('play').addEventListener('click',()=>{if(timer||motionFrame){stop();$('play-status').textContent='Пауза';return;}if(currentIndex===scenes.length-1)currentIndex=0;render();animateMotion();$('play').textContent='Ⅱ Пауза';$('play-status').textContent='Без звука. Движение показывает преобразование; можно поставить на паузу.';timer=setTimeout(advance,scenes[currentIndex].duration_hint_ms);});
   $('previous').addEventListener('click',()=>{stop();if(currentIndex>0)currentIndex--;render();});$('next').addEventListener('click',()=>{stop();if(currentIndex<scenes.length-1)currentIndex++;render();});
   $('task').addEventListener('change',()=>prepare($('task').value,$('preset').value));$('preset').addEventListener('change',()=>prepare($('task').value,$('preset').value));$('picker').addEventListener('submit',e=>e.preventDefault());
   $('transcript').addEventListener('click',e=>{const button=e.target.closest('button[data-index]');if(button){stop();currentIndex=Number(button.dataset.index);render();}});
   const normalized = text => text.toLowerCase().replace(/х/g,'x').replace(/[\s°·*]/g,'').replace(/[−–]/g,'-');
-  $('practice-form').addEventListener('submit',e=>{e.preventDefault();const answer=$('answer').value.trim();if(!answer){$('feedback').textContent='Сначала запиши свою попытку. Можно открыть минимальную подсказку.';return;}if(currentTask==='linear-equation'){const p=equations[currentPreset-1],value=normalized(answer);const expected=normalized(p.expanded.split('=')[0]);$('feedback').textContent=value===expected||value===normalized(p.expanded)?'Этот шаг совпадает с разбором. Объясни, почему множитель относится к обоим слагаемым. Это не оценка усвоения.':'Сравни запись с распределительным свойством. Важно умножить каждое слагаемое в скобках. Открой подсказку 1.';}else if(currentTask==='adjacent-angles'){$('feedback').textContent=normalized(answer)==='180'?'Да, сумма смежных углов равна 180°. Объясни по рисунку, почему эти углы смежные.':'Проверь, какой угол образуют лучи OA и OB. Начни с первой подсказки.';}else if(cheatsheets[currentTask]){$('feedback').textContent='Сверь свой шаг с правилом в первой подсказке. Объясни, почему действие допустимо, и проверь результат. Этот ответ не оценивается автоматически.';}else{$('feedback').textContent='Сверь свою формулировку: сначала прочитать условие и сделать собственную попытку. Этот ответ не оценивается автоматически.';}});
+  $('practice-form').addEventListener('submit',e=>{e.preventDefault();const answer=$('answer').value.trim();if(!answer){$('feedback').textContent='Сначала запиши свою попытку. Можно открыть минимальную подсказку.';return;}if(currentTask==='linear-equation'){$('feedback').textContent='Сверь объяснение с правилом: через знак равенства переносим с противоположным знаком. Внутри одной части при перестановке знак сохраняем. Это вопрос на объяснение, ответ автоматически не оценивается.';}else if(currentTask==='adjacent-angles'){$('feedback').textContent=normalized(answer)==='180'?'Да, сумма смежных углов равна 180°. Объясни по рисунку, почему эти углы смежные.':'Проверь, какой угол образуют лучи OA и OB. Начни с первой подсказки.';}else if(cheatsheets[currentTask]){$('feedback').textContent='Сверь свой шаг с правилом в первой подсказке. Объясни, почему действие допустимо, и проверь результат. Этот ответ не оценивается автоматически.';}else{$('feedback').textContent='Сверь свою формулировку: сначала прочитать условие и сделать собственную попытку. Этот ответ не оценивается автоматически.';}});
   $('download').addEventListener('click',()=>{const text=`${labels[currentTask]} · вариант ${currentPreset}\nАвторский учебный пример. Просмотр не означает усвоение.\n\n`+scenes.map((s,i)=>`${i+1}. ${s.title}\n${s.math}\n${s.narration}\n${s.note}\n`).join('\n');const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download=`${currentTask}-preset-${currentPreset}.txt`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
   const query=new URLSearchParams(location.search);if(query.get('studio')==='1')document.body.classList.add('studio-mode');
   prepare(tasks.includes(query.get('task'))?query.get('task'):'linear-equation',/^[123]$/.test(query.get('preset')||'')?Number(query.get('preset')):1);
-  window.MathExamVideoStudio=Object.freeze({prepare,show});window.__MATH_EXAM_VIDEO_READY__=true;
+  window.MathExamVideoStudio=Object.freeze({prepare,show,seekMotion});window.__MATH_EXAM_VIDEO_READY__=true;
 })();

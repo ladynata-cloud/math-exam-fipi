@@ -170,8 +170,10 @@ for (const task of ['homework-help', 'linear-equation', 'adjacent-angles']) {
   for (const audioMode of ['voice', 'clicks', 'silent']) {
     const request = validateJobRequest({ task, preset: 1, audioMode, captions: false }, { ttsProvider: 'openai' });
     assert.equal(request.captions, true);
-    assert.equal(resolveAudioMode(request, 'openai'), audioMode);
+    assert.equal(request.audioMode, 'silent', 'school requests are normalized to the silent course contract');
+    assert.equal(resolveAudioMode(request, 'openai'), 'silent');
   }
+  assert.throws(() => validateJobRequest({ task, preset: 1, audioMode: 'music' }), /Режим звука/);
 }
 for (const preset of methodFixtures) {
   const generatedJourney = videoManifest(generators.gen19(preset), 't19', 'student-path');

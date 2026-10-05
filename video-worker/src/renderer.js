@@ -6,6 +6,7 @@ import { isSchoolTask, resolveAudioMode, studioUrlFor, validateJobRequest, viewp
 import { silentDuration } from './tts.js';
 
 const SCENE_ACTIONS = new Set(['observe', 'wrong', 'hint', 'correct', 'next', 'final']);
+const MOTION_FPS = 12;
 
 export function validateManifest(manifest, task, videoType) {
   if (!manifest || manifest.format !== 'mathexam-video-manifest' || !Array.isArray(manifest.scenes)) {
@@ -27,6 +28,10 @@ export function validateManifest(manifest, task, videoType) {
     }
     if (!Number.isFinite(scene.duration_hint_ms) || scene.duration_hint_ms < 1000 || scene.duration_hint_ms > 30_000) {
       throw new Error('Studio returned an invalid scene duration');
+    }
+    if (scene.motion_ms !== undefined && (!Number.isFinite(scene.motion_ms)
+      || scene.motion_ms < 0 || scene.motion_ms > 4000 || scene.motion_ms > scene.duration_hint_ms)) {
+      throw new Error('Studio returned an invalid scene motion duration');
     }
     if (!SCENE_ACTIONS.has(scene.action || 'observe') || (scene.click !== undefined && typeof scene.click !== 'boolean')) {
       throw new Error('Studio returned an invalid learner action');
@@ -122,6 +127,27 @@ export async function renderSegment(config, framePath, audioPath, targetPath, du
   }
   args.push('-movflags', '+faststart', '-fs', String(config.maxOutputBytes), targetPath);
   await runCommand(config.ffmpegPath, args, {
+    timeoutMs: config.commandTimeoutMs,
+    monitorFile: targetPath,
+    maxFileBytes: config.maxOutputBytes,
+    signal,
+  });
+}
+
+// A bounded, deterministic authored motion is sampled only during the first
+// seconds. FFmpeg holds its last frame for the rest of the reading pause; the
+// browser never needs to capture hundreds of identical screenshots.
+export async function renderMotionSegment(config, framesDirectory, targetPath, duration, signal) {
+  await runCommand(config.ffmpegPath, [
+    '-hide_banner', '-loglevel', 'error', '-y',
+    '-framerate', String(MOTION_FPS), '-start_number', '0',
+    '-i', path.join(framesDirectory, '%04d.png'),
+    '-t', duration.toFixed(3), '-r', '30',
+    '-vf', `tpad=stop_mode=clone:stop_duration=${duration.toFixed(3)},scale=trunc(iw/2)*2:trunc(ih/2)*2`,
+    '-map', '0:v:0', '-an', '-c:v', 'libx264', '-preset', 'medium',
+    '-pix_fmt', 'yuv420p', '-movflags', '+faststart',
+    '-fs', String(config.maxOutputBytes), targetPath,
+  ], {
     timeoutMs: config.commandTimeoutMs,
     monitorFile: targetPath,
     maxFileBytes: config.maxOutputBytes,
@@ -318,20 +344,40 @@ export function createRenderer(config, tts, dependencies = {}) {
         await page.waitForTimeout(120);
         const frame = path.join(working, `frame-${String(index).padStart(3, '0')}.png`);
         const segment = path.join(working, `segment-${String(index).padStart(3, '0')}.mp4`);
-        await page.screenshot({ path: frame, fullPage: false });
         const duration = voice
           ? Math.max(await audioDuration(config, audioFiles[index], signal), scene.duration_hint_ms / 1000)
           : silentDuration(scene.narration, scene.duration_hint_ms);
-        await renderSegment(
-          config,
-          frame,
-          audioFiles[index],
-          segment,
-          duration,
-          signal,
-          !silent && (videoType === 'student-path' || schoolTask) && scene.click === true,
-          audioMode,
-        );
+        if (schoolTask && scene.motion_ms > 0) {
+          const framesDirectory = path.join(working, `motion-${String(index).padStart(3, '0')}`);
+          await fs.mkdir(framesDirectory);
+          const intervals = Math.ceil(scene.motion_ms * MOTION_FPS / 1000);
+          for (let sample = 0; sample <= intervals; sample++) {
+            throwIfAborted(signal);
+            await store.assertOwnership();
+            await page.evaluate((progress) => {
+              if (typeof window.MathExamVideoStudio.seekMotion !== 'function') {
+                throw new Error('Animated school scene requires the authored motion API');
+              }
+              window.MathExamVideoStudio.seekMotion(progress);
+            }, sample / intervals);
+            await page.screenshot({ path: path.join(framesDirectory, `${String(sample).padStart(4, '0')}.png`), fullPage: false });
+            await enforceWorkBudget(config, working);
+          }
+          await renderMotionSegment(config, framesDirectory, segment, duration, signal);
+          await fs.rm(framesDirectory, { recursive: true, force: true });
+        } else {
+          await page.screenshot({ path: frame, fullPage: false });
+          await renderSegment(
+            config,
+            frame,
+            audioFiles[index],
+            segment,
+            duration,
+            signal,
+            !silent && (videoType === 'student-path' || schoolTask) && scene.click === true,
+            audioMode,
+          );
+        }
         await enforceWorkBudget(config, working);
         segments.push(path.basename(segment));
         await store.update(job.id, {
