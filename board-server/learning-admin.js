@@ -7,22 +7,32 @@ const { LearningStore } = require('./learning-store');
 const { backupLearning, restoreLearning } = require('./learning-backup');
 
 function applyBootstrapEnvironment(store, environment = process.env) {
-  if (!store.available) return { applied: false, reason: store.reason };
-  // A leftover deployment secret can never reset or recreate an account.
-  if (store.row("SELECT id FROM accounts WHERE role='teacher'")) return { applied: false, reason: null };
+  if (!store.available) return { applied: false, reason: store.reason, status: 'unavailable' };
+  const teacher = store.row("SELECT id,password_hash FROM accounts WHERE role='teacher'");
+  // A leftover deployment secret can never reset an activated account.
+  if (teacher?.password_hash) return { applied: false, reason: null, status: 'active' };
   const secret = environment.LEARNING_BOOTSTRAP_TOKEN;
   const login = environment.LEARNING_TEACHER_LOGIN;
   const name = environment.LEARNING_TEACHER_NAME;
-  if (![secret, login, name].some(value => value !== undefined && value !== '')) return { applied: false, reason: null };
+  if (![secret, login, name].some(value => value !== undefined && value !== '')) return { applied: false, reason: null, status: 'not-configured' };
   try {
     if (typeof secret !== 'string' || !/^[A-Za-z0-9_-]{43,100}$/.test(secret) || new Set(secret).size < 16
       || typeof login !== 'string' || !login || typeof name !== 'string' || !name) throw new Error('Invalid bootstrap configuration');
+    if (teacher) {
+      const status = store.syncPendingBootstrap(login, secret);
+      return { applied: status === 'pending-refreshed', reason: null, status };
+    }
     store.bootstrap({ login, name, invitationToken: secret });
-    return { applied: true, reason: null };
-  } catch (_error) {
+    return { applied: true, reason: null, status: 'created' };
+  } catch (error) {
+    // A failed repair leaves the existing invitation/account available.
+    // The status is operator-only and never includes supplied values.
+    if (teacher) return { applied: false, reason: null, status:
+      error.code === 'LEARNING_BOOTSTRAP_LOGIN_MISMATCH' ? 'pending-login-mismatch' :
+      error.code === 'LEARNING_BOOTSTRAP_TOKEN_REVOKED' ? 'pending-token-revoked' : 'pending-configuration-invalid' };
     // Disable this new capability only. Never print or echo a supplied value.
     store.available = false; store.reason = 'LEARNING_BOOTSTRAP_CONFIG_INVALID';
-    return { applied: false, reason: store.reason };
+    return { applied: false, reason: store.reason, status: 'invalid-configuration' };
   }
 }
 

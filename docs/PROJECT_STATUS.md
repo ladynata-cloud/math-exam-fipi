@@ -6,7 +6,26 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current implementation: grade 7 course and thirty silent videos
+## Current: pending teacher activation repair
+
+- Scope: [pending activation](tasks/PENDING_TEACHER_ACTIVATION.md); branch
+  `fix/pending-teacher-activation`, base `c86a98842f0158ecd4096ee8f58667463d20dd23`.
+- Activation and ordinary login were rejected. The exact production account
+  state is unknown; no private database or credential values were read.
+- Repair only pending invitations through the existing private hosting
+  configuration; active accounts remain untouched. Clarify authentication
+  messages and accept invitation fragments added to an already-open page.
+- Next: regression and independent review, authorized publication, operator
+  status verification and private first-activation handoff if still pending.
+- The first real pupil account has not yet been provisioned.
+
+## Published: grade 7 course and thirty silent videos
+
+- PR #189 merged as `c86a98842f0158ecd4096ee8f58667463d20dd23`, parent
+  `6d21ca0866733a85d69c9f6d7a82375c8f46b964`, tree
+  `3985c874a7bbbcca76af695cb0a36d45ba122798`.
+- Exact-head CI and Pages deployment 37341178554 passed. Production verification
+  passed 57 checks for public assets/videos, server status and auth boundaries.
 
 - Owner changed the main product direction to Makarychev + Atanasyan grade 7,
   supporting school-year work and summer consolidation; EGE remains available.
@@ -33,13 +52,10 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   the real HTTP/SQLite cabinet regression passed, including no attempts or
   media fetch before explicit action. Independent mathematical review passed
   all 24 worked presets across the eight new video topics.
-- Local combined gate: `GRADE7_SILENT_MOTION_OK`. Exact-head CI and publication
-  verification remain pending; no production deployment is claimed.
+- Local combined gate: `GRADE7_SILENT_MOTION_OK`; publication verified above.
 - No production pupil account was created in this task;
   no account, authentication or hosting settings were changed.
-- Not yet published. Next: complete exact-head CI, then
-  publish under standing owner permission with exact-head and production-byte
-  verification.
+- First-teacher activation is the remaining operational blocker to pupil setup.
 
 ## Published: visible videos and direct practice entry
 
