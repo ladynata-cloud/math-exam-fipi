@@ -123,6 +123,7 @@ async function main() {
     await teacher.page.locator('#auth-form [name=password]').fill(PASSWORD);
     await teacher.page.locator('#auth-form [name=confirm]').fill(PASSWORD);
     await teacher.page.locator('#auth-form [type=submit]').click();
+    await teacher.page.locator('#recovery-saved').check();
     await teacher.page.locator('#done-codes').click();
     await teacher.page.locator('#navigation').waitFor();
     const teacherSession = await api(teacher.page, '/session');

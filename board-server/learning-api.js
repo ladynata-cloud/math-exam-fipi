@@ -88,6 +88,17 @@ function createLearningApi(options = {}) {
     res.set('Set-Cookie', `${cookieName}=; Path=/; HttpOnly; SameSite=Strict${secureCookies ? '; Secure' : ''}; Max-Age=0`);
     res.json({ ok: true });
   }));
+  router.post('/teacher/recovery-codes', authMiddleware, mutationMiddleware, handler(async (req, res) => {
+    store.teacher(req.learningAuth);
+    exactKeys(req.body, ['password'], ['password']);
+    // Bound password guesses across every session of the same teacher before
+    // scheduling the expensive asynchronous password verification.
+    limiter.take(`recovery-codes:${req.learningAuth.id}`, 8, 15 * 60000);
+    const account = store.account(req.learningAuth.id);
+    const valid = await verifyPassword(req.body.password, account?.password_hash);
+    requireValue(valid, 'LEARNING_ACCESS_INVALID', 401);
+    res.json(store.rotateTeacherRecoveryCodes(req.learningSessionToken, account.password_hash, account.auth_epoch));
+  }));
   router.get('/teacher/students', authMiddleware, handler((req, res) => res.json({ students: store.students(req.learningAuth) })));
   router.post('/teacher/students', authMiddleware, mutationMiddleware, handler(async (req, res) => {
     // Check the role and request shape before scheduling expensive password work.

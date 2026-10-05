@@ -27,6 +27,15 @@ revoked token hashes, never extends an unchanged token's lifetime, and cannot
 reset or reactivate an activated account. Recovery consumes one-use credentials and
 revokes existing sessions. Account credentials never enter trainer frames.
 
+An authenticated teacher can replace lost recovery codes by confirming the
+current password through the same-origin, CSRF-protected cabinet. Verification
+is rate-limited per account before password work; an atomic post-verification
+session/password/epoch check fences concurrent logout or password recovery.
+Issuance replaces all previous code hashes while preserving passwords and
+sessions. Codes are displayed once, with an explicit save/discard acknowledgement;
+they are never cached in browser storage. Actual account recovery retains its
+session-revocation behavior.
+
 Trainers remain on the separate public site origin. Each allowlisted frame uses
 an instance/channel-bound postMessage protocol and receives only a task and its
 work state. Same-origin frames are forbidden in the account cabinet. An existing
