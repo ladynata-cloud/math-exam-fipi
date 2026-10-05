@@ -48,3 +48,12 @@ Path state at stages 2/3/4 are preserved. No JavaScript errors, external request
 or server writes occurred. Focused independent code review found no blockers.
 Syntax and whitespace checks pass. Exact-head CI and production byte verification
 will be recorded in the scoped release PR; no real pupil-account flow is claimed.
+
+The first remote video job passed worker/export/layout checks but timed out on
+the new actual MP4 playback assertion in bundled Chromium. The playback step now
+uses the runner's stock Chrome, which supports the published H.264/AAC media;
+other browser steps retain bundled Chromium. The gate reports codec support and
+decoder errors immediately and still requires real decoded frames and advancing
+playback. This is a test-environment correction, with no product/media changes.
+References: [Playwright browser support](https://playwright.dev/docs/api/class-browsertype)
+and [runner browser inventory](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md).

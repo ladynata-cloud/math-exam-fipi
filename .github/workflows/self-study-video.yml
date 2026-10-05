@@ -60,6 +60,11 @@ jobs:
       - name: Local scene layout and keyboard checks without speech providers
         run: node tools/self-study-video-check.mjs --output "$RUNNER_TEMP/self-study-video-check"
       - name: Visible video playback and direct practice entry
-        run: node tools/course-video-entry.browser.cjs
+        # Stock Chrome includes the H.264/AAC codecs needed by the published MP4s.
+        # Keep the bundled Chromium for the other authoring/layout gates above.
+        run: |
+          course_chrome="$(command -v google-chrome)"
+          "$course_chrome" --version
+          CHROMIUM_EXECUTABLE_PATH="$course_chrome" node tools/course-video-entry.browser.cjs
       - name: Final whitespace check
         run: git diff --check

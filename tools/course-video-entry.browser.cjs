@@ -31,6 +31,15 @@ const practicePath = id => { const url = new URL(routes[id], 'https://mathexam.s
   return url.pathname + url.search + url.hash; };
 const report = { layouts: [], videos: [], practice: [], prints: [], errors: [], external: [], writes: [] };
 const normalize = text => String(text).replace(/\s+/g, '').replace(/[−–]/g, '-');
+async function mediaDiagnostics(page) {
+  return page.locator('#video-player').evaluate(video => ({
+    src: video.currentSrc || video.src, readyState: video.readyState, networkState: video.networkState,
+    paused: video.paused, duration: video.duration, currentTime: video.currentTime,
+    width: video.videoWidth, height: video.videoHeight,
+    error: video.error ? { code: video.error.code, message: video.error.message } : null,
+    status: document.querySelector('#video-status')?.textContent
+  }));
+}
 
 async function main() {
   const output = process.env.COURSE_VIDEO_ENTRY_ARTIFACT_DIR || await fs.mkdtemp(path.join(os.tmpdir(), 'course-video-entry-'));
@@ -104,9 +113,28 @@ async function main() {
         assert.deepEqual(await page.locator('#trainer-steps li').allTextContents(), guides.get(id).steps);
         report.layouts.push({ id, width: viewport.width, ...dimensions });
         if (viewport.width === 1440) {
+          if (!report.codecSupport) {
+            report.codecSupport = await page.locator('#video-player').evaluate(video => ({
+              userAgent: navigator.userAgent,
+              h264High31: video.canPlayType('video/mp4; codecs="avc1.64001F"'),
+              aacLC: document.createElement('audio').canPlayType('audio/mp4; codecs="mp4a.40.2"'),
+              combined: video.canPlayType('video/mp4; codecs="avc1.64001F, mp4a.40.2"')
+            }));
+            report.codecSupport.browser = browser.version();
+            assert.ok(report.codecSupport.h264High31 && report.codecSupport.aacLC && report.codecSupport.combined,
+              'The playback gate requires H.264 High 3.1 and AAC-LC support. Use a codec-capable Chrome executable; real playback remains required. ' + JSON.stringify(report.codecSupport));
+          }
           await page.locator('#play-video').click();
-          await page.waitForFunction(() => { const v = document.querySelector('#video-player'); return Number.isFinite(v.duration) && v.duration > 1 && v.currentTime > .15 && !v.paused; });
-          const playback = await page.locator('#video-player').evaluate(v => ({ duration: v.duration, currentTime: v.currentTime, width: v.videoWidth, height: v.videoHeight }));
+          try {
+            await page.waitForFunction(() => { const v = document.querySelector('#video-player');
+              return v.error || (Number.isFinite(v.duration) && v.duration > 1 && v.currentTime > .15 && !v.paused); });
+          } catch (error) {
+            throw new Error(id + ': actual playback did not start. ' + JSON.stringify(await mediaDiagnostics(page)), { cause: error });
+          }
+          const playback = await mediaDiagnostics(page);
+          assert.equal(playback.error, null, id + ': media decoder failure. ' + JSON.stringify(playback));
+          assert.ok(Number.isFinite(playback.duration) && playback.duration > 1 && playback.currentTime > .15 && !playback.paused,
+            id + ': actual playback must advance. ' + JSON.stringify(playback));
           assert.ok(playback.width > 0 && playback.height > 0, 'The MP4 decodes real video frames');
           report.videos.push({ id, ...playback });
           // Leave playback running so the next topic must stop it itself.
