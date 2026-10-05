@@ -287,6 +287,19 @@ class LearningStore {
     if (task && typeof task === 'object') { delete task.seed; delete task.id; }
     return tokenHash(canonical(task));
   }
+  grade7Exposure(learnerId, trainerId, taskSpec, excludeAttemptId = '') {
+    // Pinned, server-generated grade-7 tasks only: leave legacy assessment alone.
+    if (trainerId !== 'ege-path' || taskSpec?.task?.grade7 !== true) return null;
+    // Reset clears current progress, not knowledge of an already shown question.
+    // Archived homework has lost its former publication status, so conservatively
+    // retain it; an unpublished current draft is not learner exposure.
+    const previous = this.rows(`SELECT task_json FROM attempts
+      WHERE learner_id=? AND trainer_id=? AND json_extract(task_json,'$.contentId')=? AND id!=?
+        AND NOT EXISTS(SELECT 1 FROM assignments a WHERE a.attempt_id=attempts.id AND a.status='draft')
+      ORDER BY created_at,id LIMIT 501`, learnerId, trainerId, taskSpec.contentId, excludeAttemptId);
+    return { fingerprints: new Set(previous.slice(0, 500).map(row => this.taskFingerprint(parse(row.task_json)))),
+      truncated: previous.length > 500 };
+  }
   createAttempt(auth, body) {
     requireValue(auth.role === 'student', 'LEARNING_FORBIDDEN', 403);
     exactKeys(body, ['opId','trainerId','contentId','fresh','sourceAttemptId','lessonId'], ['opId','trainerId','contentId']);
@@ -307,7 +320,12 @@ class LearningStore {
         if (existing) return { attempt: this.attemptDTO(existing) };
       }
       let generated = this.contracts.create(body.trainerId, body.contentId);
-      if (source && body.fresh) {
+      const exposure = this.grade7Exposure(auth.id, body.trainerId, generated.taskSpec);
+      if (exposure) {
+        for (let tries = 0; tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
+          generated = this.contracts.create(body.trainerId, body.contentId);
+        }
+      } else if (source && body.fresh) {
         const sourceFingerprint = this.taskFingerprint(parse(source.task_json));
         for (let tries = 0; tries < 15 && this.taskFingerprint(generated.taskSpec) === sourceFingerprint; tries++) generated = this.contracts.create(body.trainerId, body.contentId);
       }
@@ -416,6 +434,12 @@ class LearningStore {
       requireValue(Buffer.byteLength(json(attempt.strokes)) <= 1024 * 1024, 'LEARNING_DRAWING_LIMIT_EXCEEDED', 507);
       if (row.outcome === 'started' && attempt.outcome !== 'started') {
         attempt.outcome = attempt.assistance.teacher ? 'together' : attempt.assistance.hints ? 'hinted' : 'independent';
+        if (attempt.outcome === 'independent') {
+          // Recheck inside the grading transaction: another attempt may have
+          // exposed this same question after the current attempt was created.
+          const exposure = this.grade7Exposure(attempt.learnerId, attempt.trainerId, attempt.taskSpec, attempt.id);
+          if (exposure && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(attempt.taskSpec)))) attempt.outcome = 'practiced';
+        }
         if (attempt.outcome === 'independent' && attempt.sourceAttemptId) {
           const prior = this.row('SELECT outcome,task_json FROM attempts WHERE id=? AND learner_id=?', attempt.sourceAttemptId, attempt.learnerId);
           if (prior) {

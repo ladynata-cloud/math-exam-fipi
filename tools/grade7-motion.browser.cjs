@@ -12,7 +12,8 @@ const { promisify } = require('node:util');
 const { chromium } = require('playwright');
 const run = promisify(execFile), ROOT = path.resolve(__dirname, '..');
 const allTopics = ['negative-numbers', 'fractions', 'brackets', 'linear-equation', 'proportions', 'percentages', 'adjacent-angles',
-  'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties', 'identities', 'equation-roots', 'linear-cases', 'equation-word-problems'];
+  'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties', 'identities', 'equation-roots', 'linear-cases', 'equation-word-problems',
+  'grade7-a-opposite-expression', 'grade7-a-two-variable-collect', 'grade7-a-equation-two-brackets', 'grade7-a-equation-denominators', 'grade7-a-equation-decimals', 'grade7-g-segment-order', 'grade7-g-midpoint-chain', 'grade7-g-angle-addition', 'grade7-g-angle-bisector', 'grade7-g-adjacent-equation', 'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale', 'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion'];
 const chosen = process.argv.find(value => value.startsWith('--topics='));
 const topics = chosen ? chosen.slice(9).split(',') : allTopics;
 assert.ok(topics.length && topics.every(topic => allTopics.includes(topic)), 'Only fixed authored topic IDs are supported');
@@ -152,7 +153,7 @@ async function main() {
             assert.deepEqual(await page.locator('#solution-history .history-math').allTextContents(), retained,
               'Animation never removes or rewrites a previous justified step');
             if (scene === motions[0] && preset === 1) {
-              const area = page.locator(task === 'adjacent-angles' ? '.condition .diagram' : '.motion-diagram');
+              const area = page.locator(task === 'adjacent-angles' ? '.condition .diagram' : '.step-panel .motion-diagram');
               const frame = await area.screenshot({ animations: 'disabled' });
               digests.push(hash(frame));
               if (keep) await fs.writeFile(path.join(output, `${task}-${format.replace(':', '-')}-${progress}.png`), frame);
@@ -190,9 +191,19 @@ async function main() {
     await page.waitForTimeout(180);
     assert.equal(await page.locator('.motion-diagram').getAttribute('data-progress'), paused, 'Pause freezes an individually replayed animation');
     assert.equal(await page.locator('#play-status').innerText(), 'Пауза');
+    await page.emulateMedia({reducedMotion:'reduce'});
+    await page.evaluate(()=>{MathExamVideoStudio.prepare('tgrade7-g-angle-bisector',1);});
+    await page.locator('#replay-motion').click();
+    assert.equal(await page.locator('.step-panel .motion-diagram').getAttribute('data-progress'),'1','Reduced motion presents a complete readable construction');
+    assert.equal(await page.locator('#retained-diagram svg').count(),1,'Original drawing stays alongside the worked record');
+    await page.emulateMedia({reducedMotion:'no-preference'});
     report.reader = { topics: topics.length, width: 390, keyboardNavigation: true, midMotionFit: true, singleReplayPauses: true };
     await context.close();
     if (!process.argv.includes('--skip-media')) {
+      const ledger=JSON.parse(await fs.readFile(path.join(ROOT,'video-lessons/grade7-next-media.json'),'utf8'));
+      assert.equal(ledger.clips.length,30,'Fifteen explanation/tutorial pairs are shipped');
+      assert.equal(new Set(ledger.clips.map(clip=>clip.file)).size,30,'Published files have unique identities');
+
       for (const task of [...topics, ...topics.map(id => 'using-' + id), 'homework-help']) {
         const file = path.join(ROOT, 'video-lessons/media', task + '.mp4');
         const meta = JSON.parse((await run('ffprobe', ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', file])).stdout);
@@ -200,6 +211,7 @@ async function main() {
         const streams = meta.streams.filter(s => s.codec_type === 'video');
         assert.equal(streams.length, 1); assert.equal(streams[0].codec_name, 'h264');
         assert.equal(streams[0].width, 1280); assert.equal(streams[0].height, 720);
+        if(task.includes('grade7-')){const record=ledger.clips.find(clip=>clip.file===task+'.mp4');assert.ok(record,'New MP4 is listed in the checked media ledger');const bytes=await fs.readFile(file);assert.equal(bytes.length,record.bytes);assert.equal(hash(bytes),record.sha256);assert.equal(record.audioStreams,0);assert.equal(Number(meta.format.duration),record.durationSeconds);}
         const motion = firstMotions.get(task), frames = [];
         if (motion) for (const progress of [.15, .5, .85]) {
           const frame = (await run('ffmpeg', ['-v', 'error', '-ss', String(motion.elapsed + motion.duration * progress), '-i', file,

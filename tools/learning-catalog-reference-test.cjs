@@ -9,6 +9,9 @@ const root = path.resolve(__dirname, '..');
 const D = require('../ege-baza/path/data.js');
 require('../ege-baza/path/practice.js');
 require('../ege-baza/path/equation-practice.js');
+require('../ege-baza/path/grade7-algebra.js');
+require('../ege-baza/path/grade7-geometry.js');
+require('../ege-baza/path/grade7-foundations.js');
 const C = require('../learning/catalog.js');
 const R = require('../learning/references.js');
 const remediation = require('../board-server/learning-remediation-contracts.js');
@@ -16,7 +19,8 @@ const remediation = require('../board-server/learning-remediation-contracts.js')
 function contentGate() {
   const pathItems = C.items.filter(item => item.trainerId === 'ege-path');
   assert.equal(pathItems.length, D.meta.length);
-  assert.equal(pathItems.length, 107);
+  assert.equal(pathItems.length, 131);
+  assert.equal(pathItems.filter(item => item.grade7).length, 24);
   for (const meta of D.meta) {
     const item = C.get('path:' + meta.id);
     assert.ok(item, 'Missing course content ' + meta.id);
@@ -93,7 +97,7 @@ function contentGate() {
   const nav = fs.readFileSync(path.join(root, 'ege-baza/index.html'), 'utf8');
   assert.ok(nav.includes('107 тренажёров'));
   assert.ok(nav.includes('https://mathexam-board-ladynata.amvera.io/learning/'));
-  console.log('LEARNING_CATALOG_REFERENCE_CONTENT_OK (143 identities, 21 positions, 749 help variants, 4 original reference pages)');
+  console.log('LEARNING_CATALOG_REFERENCE_CONTENT_OK (167 identities, 24 grade7 families, 21 exam positions, 917 help variants, 4 original reference pages)');
 }
 
 async function browserGate() {
@@ -103,7 +107,7 @@ async function browserGate() {
     if (!runtimeModules) throw Error('Playwright is required. Install playwright, set NODE_PATH, or set CODEX_PRIMARY_RUNTIME_NODE_MODULES to its node_modules directory.');
     ({ chromium } = require(path.join(runtimeModules, 'playwright')));
   }
-  const fixture = '<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/learning/references.css"><body><main id="host" style="max-width:340px;margin:20px auto"></main><script src="/ege-baza/path/data.js"></script><script src="/ege-baza/path/practice.js"></script><script src="/ege-baza/path/equation-practice.js"></script><script src="/learning/references.js"></script></body></html>';
+  const fixture = '<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/learning/references.css"><body><main id="host" style="max-width:340px;margin:20px auto"></main><script src="/ege-baza/path/data.js"></script><script src="/ege-baza/path/practice.js"></script><script src="/ege-baza/path/equation-practice.js"></script><script src="/ege-baza/path/grade7-algebra.js"></script><script src="/ege-baza/path/grade7-geometry.js"></script><script src="/ege-baza/path/grade7-foundations.js"></script><script src="/learning/references.js"></script></body></html>';
   const server = http.createServer((request, response) => {
     const pathname = new URL(request.url, 'http://localhost').pathname;
     if (pathname === '/fixture') { response.setHeader('Content-Type', 'text/html; charset=utf-8'); response.end(fixture); return; }

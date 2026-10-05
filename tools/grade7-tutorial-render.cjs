@@ -104,6 +104,29 @@ async function recordFoundation(args) {
   await focus(page,page.locator(next),true);await focus(page,page.locator(condition));await screenshot(page,folder,'05-new');await sleep(3800);
   return finishClip({...args,start});
 }
+async function recordManagedPath(args) {
+  const {id,guide,folder,page,began}=args;
+  await page.locator('[data-stage="2"]').click();
+  const info=await page.evaluate(()=>{const id=location.hash.split('=')[1],l=PathCourse.state().lessons[id],t=PathData.task(id,l.seed),s=t.steps[l.step];return {first:PathPracticeView.answerText(s),choices:s.choices||[],answer:s.a};});
+  await overlay(page);const start=(Date.now()-began)/1000;
+  await caption(page,1,'Прочитай условие и вопрос шага','Тренажёр спрашивает один шаг решения. Ответ на всю задачу понадобится позднее.',guide.title);
+  await focus(page,page.locator('#main .task').first());await screenshot(page,folder,'01-condition');await sleep(4000);
+  await caption(page,2,info.choices.length?'Выбери ответ на этот вопрос':'Введи ответ на этот вопрос','Сначала покажем ошибку: её можно исправить в той же попытке.',guide.title);
+  const choices=page.locator('[data-answer-choice]');
+  if(info.choices.length){const options=await choices.all();let wrong;for(const option of options){if(await option.getAttribute('data-answer-choice')!==String(info.answer)){wrong=option;break;}}assert.ok(wrong);await focus(page,wrong,true);}
+  else{await focus(page,page.locator('#answer'));await page.locator('#answer').pressSequentially('987654',{delay:140});}
+  await focus(page,page.locator('#answerForm button.primary'),true);await focus(page,page.locator('#feedback'));assert.match(await page.locator('#feedback').innerText(),/Проверь/);await screenshot(page,folder,'02-answer');await sleep(3900);
+  await caption(page,3,'Открой подсказку и исправь шаг','Прочитай причину, затем выбери или введи свой исправленный ответ.',guide.title);
+  await focus(page,page.locator('#hint'),true);await focus(page,page.locator('#hintText'));await screenshot(page,folder,'03-feedback');await sleep(4300);
+  if(info.choices.length)await focus(page,page.locator('[data-answer-choice="'+info.answer+'"]'),true);
+  else{await focus(page,page.locator('#answer'));await page.locator('#answer').fill('');await page.locator('#answer').pressSequentially(info.first,{delay:180});}
+  await focus(page,page.locator('#answerForm button.primary'),true);
+  await caption(page,4,'Верная строка остаётся в решении','Теперь прочитай следующий вопрос. Если нужно, можно снова открыть подсказку.',guide.title);
+  await focus(page,page.locator('#main .steps'));assert.ok((await page.locator('#main .steps').innerText()).trim());await screenshot(page,folder,'04-hint');await sleep(4500);
+  await caption(page,5,'Попробуй самостоятельно на новых числах','Выбери «Самостоятельно», затем «Другие числа». В кабинете результат можно сдать учителю.',guide.title);
+  await focus(page,page.locator('[data-stage="3"]'),true);await focus(page,page.locator('#new'),true);await focus(page,page.locator('#main .task'));await screenshot(page,folder,'05-new');await sleep(4400);
+  return finishClip({...args,start});
+}
 async function record(id, browser, origin) {
   const guide=guides.get(id),folder=path.join(output,id);await fs.mkdir(folder,{recursive:true});
   const context=await browser.newContext({viewport:{width:1280,height:720},recordVideo:{dir:folder,size:{width:1280,height:720}},serviceWorkers:'block',locale:'ru-RU'});
@@ -112,6 +135,7 @@ async function record(id, browser, origin) {
   const target=new URL(guide.publicUrl);await page.goto(origin+target.pathname+target.search+target.hash);
   const school=target.pathname.startsWith('/school/'),pathCourse=target.pathname.startsWith('/ege-baza/path/');
   if(!school&&!pathCourse)return recordFoundation({id,guide,folder,context,page,began,origin,target});
+  if(id.startsWith('grade7-'))return recordManagedPath({id,guide,folder,context,page,began,origin,target});
   await page.locator('#answer').waitFor();
   const task=await page.evaluate(({school})=>{if(school){const state=JSON.parse(localStorage.getItem(WorkshopState.KEY));return WorkshopMath.generate(state.last.skill,state.last.seed);}const lesson=location.hash.split('=')[1],state=PathCourse.state().lessons[lesson];return PathData.task(lesson,state.seed);},{school});
   const first=school?answerText(task.steps[0].answer):await page.evaluate(()=>{const id=location.hash.split('=')[1],l=PathCourse.state().lessons[id],t=PathData.task(id,l.seed);return PathData.answerText(t.steps[l.step]);});

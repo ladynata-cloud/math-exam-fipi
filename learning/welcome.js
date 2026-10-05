@@ -3,7 +3,7 @@
   'use strict';
   const SEEN_KEY = 'mathexam-welcome-v1';
   const VIDEO_ORIGIN = 'https://mathexam.space';
-  const VIDEO_REVISION = 'grade7-silent-motion-20261005';
+  const VIDEO_REVISION = 'grade7-next-20261006';
   const VIDEOS = Object.freeze({
     'negative-numbers': { title: 'Отрицательные числа' },
     'fractions': { title: 'Действия с дробями' },
@@ -19,7 +19,22 @@
     'identities': { title: 'Тождества и преобразования' },
     'equation-roots': { title: 'Корень уравнения' },
     'linear-cases': { title: 'Линейное уравнение: три случая' },
-    'equation-word-problems': { title: 'Задача с помощью уравнения' }
+    'equation-word-problems': { title: 'Задача с помощью уравнения' },
+    'grade7-a-opposite-expression': { title: 'Минус перед выражением' },
+    'grade7-a-two-variable-collect': { title: 'Подобные слагаемые с двумя буквами' },
+    'grade7-a-equation-two-brackets': { title: 'Уравнение со скобками в обеих частях' },
+    'grade7-a-equation-denominators': { title: 'Уравнение: убираем знаменатели' },
+    'grade7-a-equation-decimals': { title: 'Уравнение с десятичными числами' },
+    'grade7-g-segment-order': { title: 'Отрезки: порядок точек' },
+    'grade7-g-midpoint-chain': { title: 'Середина отрезка' },
+    'grade7-g-angle-addition': { title: 'Сложение углов' },
+    'grade7-g-angle-bisector': { title: 'Биссектриса угла' },
+    'grade7-g-adjacent-equation': { title: 'Смежные углы и уравнение' },
+    'grade7-b-mixed-borrow': { title: 'Смешанные числа: занимаем единицу' },
+    'grade7-b-fraction-product-cancel': { title: 'Умножение дробей: сокращаем множители' },
+    'grade7-b-decimal-divisor-scale': { title: 'Деление на десятичную дробь' },
+    'grade7-b-signed-fraction-sum': { title: 'Дроби с разными знаками' },
+    'grade7-b-percent-proportion': { title: 'Проценты через пропорцию' }
   });
   const steps = [
     {

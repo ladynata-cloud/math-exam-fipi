@@ -27,8 +27,17 @@ const routes = {
   'adjacent-angles': '/geometry-course/trainers/ch1-p6-t2-angle-problems.html'
 };
 const originalIds = Object.keys(routes), ids = [...originalIds, 'numeric-expressions', 'variable-expressions',
-  'compare-expressions', 'arithmetic-properties', 'identities', 'equation-roots', 'linear-cases', 'equation-word-problems'];
+  'compare-expressions', 'arithmetic-properties', 'identities', 'equation-roots', 'linear-cases', 'equation-word-problems',
+  'grade7-a-opposite-expression', 'grade7-a-two-variable-collect', 'grade7-a-equation-two-brackets',
+  'grade7-a-equation-denominators', 'grade7-a-equation-decimals', 'grade7-g-segment-order',
+  'grade7-g-midpoint-chain', 'grade7-g-angle-addition', 'grade7-g-angle-bisector', 'grade7-g-adjacent-equation',
+  'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale',
+  'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion'];
 const guides = require('../learning/topic-guides');
+const newItems = require('../learning/catalog').items.filter(item => item.grade7);
+assert.equal(newItems.length, 24);
+assert.equal(ids.length, 30);
+assert.deepEqual(guides.items.map(guide => guide.id).sort(), [...ids].sort());
 const practicePath = id => { const url = new URL(routes[id] || guides.get(id).publicUrl, 'https://mathexam.space');
   if (originalIds.includes(id) && id !== 'adjacent-angles') url.searchParams.set('practice', '1');
   return url.pathname + url.search + url.hash; };
@@ -55,7 +64,7 @@ async function main() {
       if (!['GET', 'HEAD'].includes(req.method)) { report.writes.push(req.method + ' ' + pathname); res.writeHead(405); return res.end(); }
       if (pathname === '/favicon.ico') { res.writeHead(204); return res.end(); }
       const allowed = ['/grade7/', '/assets/', '/video-lessons/', '/ege-baza/', '/trainers/oge-basics/', '/geometry-course/trainers/'].some(prefix => pathname.startsWith(prefix)) ||
-        ['/learning/topic-guides.js', '/learning/practice-entry.js', '/trainers/learning-bridge.js'].includes(pathname);
+        ['/learning/catalog.js', '/learning/topic-guides.js', '/learning/practice-entry.js', '/trainers/learning-bridge.js'].includes(pathname);
       const filename = path.resolve(ROOT, '.' + pathname), type = types[path.extname(pathname)];
       if (!allowed || !type || !filename.startsWith(ROOT + path.sep)) { res.writeHead(404); return res.end(); }
       const content = await fs.readFile(filename), range = /^bytes=(\d+)-(\d*)$/.exec(req.headers.range || '');
@@ -100,6 +109,24 @@ async function main() {
       assert.equal(links.length, ids.length);
       assert.match(await hub.page.locator('.algebra').innerText(), /24/);
       assert.match(await hub.page.locator('.progress-note').innerText(), /браузере/);
+      assert.equal(await hub.page.locator('.practice-card').count(), 24);
+      const cabinetLinks = await hub.page.locator('.practice-primary').evaluateAll(nodes => nodes.map(a => a.href));
+      assert.deepEqual(cabinetLinks.sort(), newItems.map(item => 'https://mathexam-board-ladynata.amvera.io/learning/#practice=' + encodeURIComponent(item.id)).sort());
+      const publicLinks = await hub.page.locator('.practice-preview').evaluateAll(nodes => nodes.map(a => new URL(a.href).pathname + new URL(a.href).search + new URL(a.href).hash));
+      assert.deepEqual(publicLinks.sort(), newItems.map(item => { const u = new URL(item.url, 'https://mathexam.space'); u.searchParams.set('practice', '1'); return u.pathname + u.search + u.hash; }).sort());
+      for (const subject of ['algebra', 'geometry', 'foundation']) {
+        await hub.page.locator('[data-subject="' + subject + '"]').click();
+        assert.equal(await hub.page.locator('.practice-strand:not([hidden])').count(), 1);
+        assert.equal(await hub.page.locator('.practice-strand:not([hidden]) .practice-card').count(), 8);
+        assert.equal(await hub.page.locator('[data-subject="' + subject + '"]').getAttribute('aria-pressed'), 'true');
+      }
+      await hub.page.locator('[data-subject="all"]').click();
+      await hub.page.evaluate(() => { location.hash = 'new-geometry'; });
+      await hub.page.waitForFunction(() => document.querySelector('[data-subject="geometry"]').getAttribute('aria-pressed') === 'true');
+      assert.equal(await hub.page.locator('#new-geometry .practice-card').count(), 8);
+      await hub.page.evaluate(() => { location.hash = 'practice'; });
+      await hub.page.waitForFunction(() => document.querySelector('[data-subject="all"]').getAttribute('aria-pressed') === 'true');
+
       if (process.env.COURSE_VIDEO_ENTRY_ARTIFACT_DIR) await hub.page.screenshot({ path: path.join(output, 'grade7-hub-' + viewport.width + '.png'), fullPage: true });
     }
     for (const href of await hub.page.locator('a[href]').evaluateAll(nodes => nodes.map(a => a.href))) {
@@ -113,7 +140,7 @@ async function main() {
     await page.goto(origin + '/video-lessons/cheatsheets.html');
     await page.locator('#video-player').waitFor();
     assert.equal(await page.locator('#topic-select').inputValue(), 'linear-equation');
-    assert.equal(await page.locator('#topic-select option').count(), 15);
+    assert.equal(await page.locator('#topic-select option').count(), 30);
     for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844 }]) {
       await page.setViewportSize(viewport);
       for (const id of ids) {
@@ -131,7 +158,7 @@ async function main() {
           id + ': the video is visible on the first screen: ' + JSON.stringify({ viewport, dimensions }));
         const player = await page.locator('#video-player').evaluate(video => ({ controls: video.controls, autoplay: video.autoplay, paused: video.paused, src: video.src }));
         assert.equal(player.controls, true); assert.equal(player.autoplay, false); assert.equal(player.paused, true, 'Changing topic stops the previous video');
-        assert.equal(await page.locator('#video').getAttribute('href'), 'media/' + id + '.mp4?v=grade7-silent-motion-20261005');
+        assert.equal(await page.locator('#video').getAttribute('href'), 'media/' + id + '.mp4?v=grade7-next-20261006');
         assert.equal(await page.locator('#quick-trainer').getAttribute('href'), 'https://mathexam.space' + practicePath(id));
         assert.equal(await page.locator('#trainer').getAttribute('href'), 'https://mathexam.space' + practicePath(id));
         assert.equal(await page.locator('#quick-cabinet').isVisible(), Boolean(guides.get(id).catalogId));
@@ -149,7 +176,7 @@ async function main() {
           }
           for (const kind of ['trainer', 'math']) {
             await page.locator('#video-kind-' + kind).click();
-            const suffix = (kind === 'trainer' ? 'using-' : '') + id + '.mp4?v=grade7-silent-motion-20261005';
+            const suffix = (kind === 'trainer' ? 'using-' : '') + id + '.mp4?v=grade7-next-20261006';
             assert.equal(await page.locator('#video').getAttribute('href'), 'media/' + suffix);
             assert.equal(await page.locator('#video-kind-' + kind).getAttribute('aria-pressed'), 'true');
             const changed = await page.locator('#video-player').evaluate(v => ({ paused: v.paused, time: v.currentTime, src: v.src }));
@@ -262,7 +289,7 @@ async function main() {
     });
     assert.deepEqual(report.errors, []); assert.deepEqual(report.external, []); assert.deepEqual(report.writes, []);
     report.passed = true;
-    console.log((layoutOnly ? 'COURSE_VIDEO_ENTRY_LAYOUT_OK: ' : 'COURSE_VIDEO_ENTRY_BROWSER_OK: thirty real MP4s play and paired sources reset, ') + ' topic changes stop old playback, visible mobile/desktop player, fallback, fifteen A4 pages, seven original direct interactive links, original entry and saved work preserved');
+    console.log((layoutOnly ? 'COURSE_VIDEO_ENTRY_LAYOUT_OK: ' : 'COURSE_VIDEO_ENTRY_BROWSER_OK: sixty real MP4s play and paired sources reset, ') + ' topic changes stop old playback, visible mobile/desktop player, fallback, thirty A4 pages, seven original direct interactive links, original entry and saved work preserved');
   } finally {
     await fs.writeFile(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
     await browser?.close(); server.closeAllConnections(); await new Promise(resolve => server.close(resolve));

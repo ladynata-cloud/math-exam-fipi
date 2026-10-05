@@ -169,7 +169,7 @@
       practice: { prompt: 'O лежит между A и B, а также между C и D. ∠AOC = 68°. Найди ∠COB и ∠BOD.', instruction: 'Сделай рисунок и для каждого равенства назови свойство углов.' }
     }
   };
-  Object.assign(topics, root.MathExamMakarychevVideos?.items || {});
+  Object.assign(topics, root.MathExamMakarychevVideos?.items || {}, root.MathExamGrade7NextVideos?.items || {});
   for (const topic of Object.values(topics)) {
     Object.freeze(topic.rule); Object.freeze(topic.example); Object.freeze(topic.practice); Object.freeze(topic);
   }

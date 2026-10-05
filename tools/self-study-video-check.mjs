@@ -75,6 +75,7 @@ const allowed = new Map([
   ['/video-lessons/export.js', ['export.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/cheatsheet-topics.js', ['cheatsheet-topics.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/motion-topics.js', ['motion-topics.js', 'text/javascript; charset=utf-8']],
+  ['/video-lessons/grade7-next-videos.js', ['grade7-next-videos.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/motion.js', ['motion.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/makarychev7-videos.js', ['makarychev7-videos.js', 'text/javascript; charset=utf-8']],
 ]);

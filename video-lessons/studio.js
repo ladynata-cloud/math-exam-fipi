@@ -94,6 +94,10 @@
     return `<section class="solution-record" aria-label="${esc(heading)}"><p class="history-heading">${esc(heading)}</p><ol id="solution-history" class="solution-history">${visible.map((entry,i)=>`<li class="history-line${i===visible.length-1?' is-current':''}" data-scene-id="${esc(scenes[entry.at].id)}"${i===visible.length-1?' aria-current="step"':''}><span class="history-number" aria-hidden="true">${i+1}</span><div><span class="history-math">${esc(entry.math)}</span>${entry.label?`<span class="history-label">${esc(entry.label)}</span>`:''}</div></li>`).join('')}</ol>${visible.length?'':`<p class="history-empty">${esc(empty)}</p>`}</section>`;
   }
   function conditionHTML(s) {
+    if(currentTask.startsWith('grade7-g-')) {
+      const entries=scenes.map((entry,at)=>({at,math:entry.record,label:entry.recordLabel})).filter(entry=>typeof entry.math==='string'&&entry.math);
+      return `<p class="small-label">${s.action==='final'?'Разобранный пример':'Условие'} · вариант ${currentPreset}</p><div class="formula condition-formula">${esc(scenes[0].math)}</div><div class="grade7-geometry-history"><div id="retained-diagram" aria-label="Рисунок разобранного примера"></div>${historyHTML(entries)}</div>`;
+    }
     if(currentTask!=='adjacent-angles' && scenes.some(entry=>entry.record)) {
       const entries=scenes.map((entry,at)=>({at,math:entry.record,label:entry.recordLabel})).filter(entry=>typeof entry.math==='string'&&entry.math);
       return `<p class="small-label">${s.action==='final'?'Разобранный пример':'Условие'} · вариант ${currentPreset}</p><div class="formula condition-formula">${esc(scenes[0].math)}</div>${historyHTML(entries)}${s.action==='wrong'?'<p class="history-warning">Ошибка показана отдельно. В ход решения записываем только верные строки.</p>':''}`;
@@ -119,7 +123,7 @@
   function render(announce=true) {
     const s=scenes[currentIndex];$('scene-title').textContent=s.title;$('lesson-label').textContent=`${labels[currentTask]} · учебный пример`;$('scene-count').textContent=`${currentIndex+1} / ${scenes.length}`;$('progress-fill').style.width=`${(currentIndex+1)/scenes.length*100}%`;
     document.querySelector('.lesson-frame').dataset.task=currentTask;
-    $('condition').innerHTML=conditionHTML(s);$('step-panel').className=`step-panel ${s.action==='wrong'?'wrong':''}`;
+    $('condition').innerHTML=conditionHTML(s);if($('retained-diagram'))window.MathExamMotion.mount($('retained-diagram'),scenes[0].motion,$('condition'));$('step-panel').className=`step-panel ${s.action==='wrong'?'wrong':''}`;
     $('step-panel').innerHTML=`<span class="action-tag">${actions[s.action]}</span>${s.motion&&s.motion.type!=='geometry'?'<div id="motion-stage" class="motion-stage"></div>':formula(s.math)}<p>${esc(s.narration)}</p><p class="subtle">${esc(s.note)}</p>${s.button?`<span class="demo-button" id="scene-target">→ ${esc(s.button)}</span><p class="demo-label">Иллюстрация действия</p>`:''}`;
     if(s.motion){let stage=$('motion-stage');if(!stage){stage=document.createElement('div');stage.id='motion-stage';stage.className='motion-stage';$('step-panel').append(stage);}motionSeek=window.MathExamMotion.mount(stage,s.motion,$('condition'));}else{motionSeek=()=>{};}motionProgress=1;$('replay-motion').hidden=!s.motion;
     $('previous').disabled=currentIndex===0;$('next').disabled=currentIndex===scenes.length-1;

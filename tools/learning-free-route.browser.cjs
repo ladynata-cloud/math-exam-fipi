@@ -220,7 +220,7 @@ async function main() {
     assert.equal((await api(student.page, '/attempts/' + attemptId)).submission.stale, false);
     await navigate(student.page, 'route');
     await student.page.locator('.route-progress').waitFor();
-    assert.match(await student.page.locator('.route-progress').innerText(), /2\s*\/\s*25/);
+    assert.match(await student.page.locator('.route-progress').innerText(), /2\s*\/\s*49/);
     assert.match(await student.page.locator('#route-equations .route-count').innerText(), /самостоятельно решено попыток: 0/);
     await verifyPaperHomework({ teacher, student, pupil, peer, store, origin });
     await verifyTopicGuideEntry({ teacher, open, store, origin });
@@ -439,7 +439,7 @@ async function verifyWelcome(page, store, learnerId) {
       const player = page.locator('.mw-video');
       const attributes = await player.evaluate(node => ({ src: node.src, controls: node.controls,
         autoplay: node.autoplay, paused: node.paused, preload: node.preload }));
-      assert.equal(attributes.src, 'https://mathexam.space/video-lessons/media/' + fileName + '.mp4?v=grade7-silent-motion-20261005');
+      assert.equal(attributes.src, 'https://mathexam.space/video-lessons/media/' + fileName + '.mp4?v=grade7-next-20261006');
       assert.equal(attributes.controls, true); assert.equal(attributes.autoplay, false);
       assert.equal(attributes.paused, true); assert.equal(attributes.preload, 'none');
       const localFile = path.join(ROOT, 'video-lessons/media', fileName + '.mp4');

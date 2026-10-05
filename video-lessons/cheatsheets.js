@@ -5,11 +5,14 @@
   const groups = [
     { title: 'Алгебра · начало 7 класса', ids: ['numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties', 'identities', 'brackets', 'equation-roots', 'linear-equation', 'linear-cases', 'equation-word-problems'] },
     { title: 'Вспомнить основы', ids: ['negative-numbers', 'fractions', 'proportions', 'percentages'] },
-    { title: 'Геометрия · углы', ids: ['adjacent-angles'] }
+    { title: 'Геометрия · углы', ids: ['adjacent-angles'] },
+    { title: 'Алгебра · ещё шаг вперёд', ids: ['grade7-a-opposite-expression','grade7-a-two-variable-collect','grade7-a-equation-two-brackets','grade7-a-equation-denominators','grade7-a-equation-decimals'] },
+    { title: 'Геометрия · отрезки и углы', ids: ['grade7-g-segment-order','grade7-g-midpoint-chain','grade7-g-angle-addition','grade7-g-angle-bisector','grade7-g-adjacent-equation'] },
+    { title: 'Основы · дроби и проценты', ids: ['grade7-b-mixed-borrow','grade7-b-fraction-product-cancel','grade7-b-decimal-divisor-scale','grade7-b-signed-fraction-sum','grade7-b-percent-proportion'] }
   ];
   const ids = groups.flatMap(group => group.ids).filter(id => guides.get(id));
   const $ = id => document.getElementById(id);
-  const revision = 'grade7-silent-motion-20261005';
+  const revision = 'grade7-next-20261006';
   let activeVideo = null;
   let videoKind = new URLSearchParams(location.search).get('type') === 'trainer' ? 'trainer' : 'math';
   const player = $('video-player');

@@ -198,6 +198,159 @@
     contentVersion: 1, position: null, topicId: 'foundation', family: 'remediation',
     url: '/trainers/oge-basics/' + contentId + '.html'
   })));
+  // Grade 7 is its own curriculum, never an exam position.
+  const grade7Rows = [
+  [
+    "grade7-a-expression-structure",
+    "Как устроено выражение",
+    "algebra",
+    "order"
+  ],
+  [
+    "grade7-a-opposite-expression",
+    "Минус перед выражением",
+    "algebra",
+    "signs"
+  ],
+  [
+    "grade7-a-two-variable-collect",
+    "Подобные слагаемые с двумя буквами",
+    "algebra",
+    "identities"
+  ],
+  [
+    "grade7-a-substitution-negative-fraction",
+    "Подстановка отрицательной дроби",
+    "algebra",
+    "fractions"
+  ],
+  [
+    "grade7-a-equation-two-brackets",
+    "Уравнение с двумя скобками",
+    "algebra",
+    "equations"
+  ],
+  [
+    "grade7-a-equation-denominators",
+    "Уравнение: убираем знаменатели",
+    "algebra",
+    "equations"
+  ],
+  [
+    "grade7-a-equation-decimals",
+    "Уравнение с десятичными дробями",
+    "algebra",
+    "decimals"
+  ],
+  [
+    "grade7-a-equation-word-perimeter",
+    "Периметр: составляем уравнение",
+    "algebra",
+    "equations"
+  ],
+  [
+    "grade7-g-segment-order",
+    "Отрезки: целое и части",
+    "geometry",
+    "units"
+  ],
+  [
+    "grade7-g-midpoint-chain",
+    "Середина отрезка и половины",
+    "geometry",
+    "division"
+  ],
+  [
+    "grade7-g-angle-naming",
+    "Название угла и его вершина",
+    "geometry",
+    "geometry"
+  ],
+  [
+    "grade7-g-angle-addition",
+    "Сложение и вычитание углов",
+    "geometry",
+    "add"
+  ],
+  [
+    "grade7-g-angle-bisector",
+    "Биссектриса: две равные части",
+    "geometry",
+    "division"
+  ],
+  [
+    "grade7-g-adjacent-equation",
+    "Смежные углы и уравнение",
+    "geometry",
+    "equations"
+  ],
+  [
+    "grade7-g-vertical-chain",
+    "Вертикальные и смежные углы",
+    "geometry",
+    "add"
+  ],
+  [
+    "grade7-g-triangle-correspondence",
+    "Равные треугольники: соответствие",
+    "geometry",
+    "geometry"
+  ],
+  [
+    "grade7-b-mixed-borrow",
+    "Смешанные числа: занимаем единицу",
+    "foundation",
+    "fractions"
+  ],
+  [
+    "grade7-b-fraction-product-cancel",
+    "Умножение дробей: сокращаем множители",
+    "foundation",
+    "fractions"
+  ],
+  [
+    "grade7-b-fraction-division-meaning",
+    "Деление дробей: что показывает частное",
+    "foundation",
+    "fractions"
+  ],
+  [
+    "grade7-b-decimal-place-align",
+    "Десятичные дроби: разряд под разрядом",
+    "foundation",
+    "decimals"
+  ],
+  [
+    "grade7-b-decimal-divisor-scale",
+    "Деление десятичных: делитель без запятой",
+    "foundation",
+    "division"
+  ],
+  [
+    "grade7-b-signed-fraction-sum",
+    "Дроби со знаками: общие доли",
+    "foundation",
+    "signs"
+  ],
+  [
+    "grade7-b-ratio-units",
+    "Отношения: сначала одинаковые единицы",
+    "foundation",
+    "proportion"
+  ],
+  [
+    "grade7-b-percent-proportion",
+    "Проценты через пропорцию",
+    "foundation",
+    "percent"
+  ]
+];
+  items.push(...grade7Rows.map(([contentId,title,subject,gap]) => Object.freeze({
+    id: 'path:'+contentId, trainerId: 'ege-path', contentId, title, position: null,
+    topicId: ({algebra:'algebra',geometry:'plane',foundation:'foundation'})[subject],
+    gap, subject, grade7: true, trainingOnly: true, contentVersion: 1, family: 'path',
+    url: '/ege-baza/path/index.html#lesson='+contentId
+  })));
   const byId = Object.create(null);
   for (const item of items) {
     if (byId[item.id]) throw new Error('Duplicate learning item: ' + item.id);
@@ -212,7 +365,7 @@
     version: 1, items: Object.freeze(items), topics: Object.freeze(topics),
     positions: Object.freeze(positions), byId: Object.freeze(byId),
     get: id => byId[id] || null,
-    byPosition: position => items.filter(item => item.position === Number(position)),
+    byPosition: position => items.filter(item => item.position === (position === null ? null : Number(position))),
     byTopic: id => items.filter(item => item.topicId === id)
   });
 });

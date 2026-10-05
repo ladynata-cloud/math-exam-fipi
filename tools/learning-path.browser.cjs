@@ -28,8 +28,30 @@ const server = http.createServer((req,res)=>{try{
   async function spec(id,seed=10){return frame('a').evaluate(({id,seed})=>({trainerId:'ege-path',contentId:id,id,seed,contentVersion:1,task:PathData.task(id,seed)}),{id,seed});}
   async function hydrate(id,taskSpec,state=null,readOnly=false){const before=await page.evaluate(id=>messages.filter(m=>m.id===id&&m.data.type==='applied').length,id);await page.evaluate(({id,payload})=>window.hydrate(id,payload),{id,payload:{taskSpec,state,readOnly}});await page.waitForFunction(({id,before})=>messages.filter(m=>m.id===id&&m.data.type==='applied').length>before,{id,before});const last=await page.evaluate(id=>messages.filter(m=>m.id===id&&m.data.type==='applied').at(-1).data.payload,id);assert(!last.error,`${id}: ${JSON.stringify(last)} ${taskSpec.id}`);}
   async function change(id,action){const before=await page.evaluate(id=>messages.filter(m=>m.id===id&&m.data.type==='change').length,id);await action(frame(id));const barrier=Date.now()+'-'+Math.random();await frame(id).evaluate(barrier=>parent.postMessage({type:'fixture-barrier',barrier},location.origin),barrier);await page.waitForFunction(({id,barrier})=>messages.some(m=>m.id===id&&m.data.barrier===barrier),{id,barrier});await page.waitForFunction(({id,before})=>messages.filter(m=>m.id===id&&m.data.type==='change').length>before,{id,before});return page.evaluate(id=>latest(id),id);}
-  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.length,107);
-  for(const id of ids){const taskSpec=await spec(id);await hydrate('a',taskSpec);let event=await change('a',f=>f.locator('#answer').fill('−3/7'));assert.equal(event.state.work.draft,'−3/7');assert.equal(event.kind,'input');event=await change('a',f=>f.locator('[data-stage="1"]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);kinds.add(taskSpec.task.model.kind);assert((await frame('a').locator('#model').innerText()).length>0);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id);assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id);}
+  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.length,131);
+  for(const id of ids){const taskSpec=await spec(id);await hydrate('a',taskSpec);const raw=await frame('a').locator('#answer').getAttribute('type')==='hidden'?await frame('a').locator('[data-answer-choice]').first().getAttribute('data-answer-choice'):'−3/7';let event=await change('a',f=>raw==='−3/7'?f.locator('#answer').fill(raw):f.locator('[data-answer-choice]').first().click());assert.equal(event.state.work.draft,raw);assert.equal(event.kind,'input');event=await change('a',f=>f.locator('[data-stage="1"]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);kinds.add(taskSpec.task.model.kind);assert((await frame('a').locator('#model').innerText()).length>0);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id);assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id);}
+  // Each new curriculum item preserves exact drafts, help and a checked prefix.
+  for(const id of ids.filter(id=>id.startsWith('grade7-'))){
+    const taskSpec=await spec(id,23);await hydrate('a',taskSpec);
+    await change('a',f=>f.locator('[data-stage="2"]').click());
+    let event=await change('a',f=>f.locator('#hint').click());
+    assert.equal(event.state.view.hintText,taskSpec.task.steps[0].why,id);
+    await hydrate('b',taskSpec,event.state,true);
+    assert.equal(await frame('b').locator('#hintText').innerText(),taskSpec.task.steps[0].why,id);
+    const answer=await frame('a').evaluate(task=>PathData.answerText(task.steps[0]),taskSpec.task);
+    const choice=taskSpec.task.steps[0].choices?.find(c=>c.value===answer);
+    await change('a',f=>choice?f.locator('[data-answer-choice="'+answer+'"]').click():f.locator('#answer').fill(answer));
+    event=await change('a',f=>f.locator('#answerForm').evaluate(el=>el.requestSubmit()));
+    assert.equal(event.details.step,0,id);assert.equal(event.state.work.step,1,id);assert.deepEqual(event.state.work.answers,[answer],id);
+    await hydrate('b',taskSpec,event.state,true);
+    assert.equal(await frame('b').locator('.steps').innerText(),await frame('a').locator('.steps').innerText(),id);
+    assert.equal(await frame('b').locator('.steps li').count(),1,id);
+    if(choice)assert.ok((await frame('b').locator('.steps').innerText()).includes(choice.label),id+' retains the meaningful choice label');
+    assert(!/ЕГЭ база|Задание null/.test(await frame('b').locator('#main > .eyebrow').innerText()),id+' uses grade7 heading');
+    const count=await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length);
+    await hydrate('b',taskSpec,event.state,true);
+    assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,id+' silent restore');
+  }
   // Stateful models: changes survive a fresh renderer and match in the observer.
   const cases=[
    ['equations-linear',async f=>{await f.locator('.term[data-s="1"]').first().click();await f.locator('[data-sign="-1"]').click();await f.locator('#moveTerm').click();await f.locator('#collect').click();await f.locator('#divisor').fill('7/3');}],
@@ -51,6 +73,33 @@ const server = http.createServer((req,res)=>{try{
    ['round',async f=>f.locator('#revealPlan').click()]
   ];
   for(const[id,action]of cases){const taskSpec=await spec(id);await hydrate('a',taskSpec);await change('a',f=>f.locator('[data-stage="1"]').click());await change('a',action);const payload=await page.evaluate(()=>latest('a'));assert.equal(payload.kind,'model',id);await hydrate('b',taskSpec,payload.state,true);assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id+' text');assert.equal(await frame('a').locator('#model').evaluate(el=>[...el.querySelectorAll('svg')].map(x=>x.outerHTML).join('')),await frame('b').locator('#model').evaluate(el=>[...el.querySelectorAll('svg')].map(x=>x.outerHTML).join('')),id+' drawing');assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id+' inputs');assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model [aria-pressed]')].map(x=>x.getAttribute('aria-pressed'))),await frame('b').evaluate(()=>[...document.querySelectorAll('#model [aria-pressed]')].map(x=>x.getAttribute('aria-pressed'))),id+' selection');}
+  // New geometry keeps keyboard selection and cumulative construction across
+  // observer rendering and control handoff, including unchanged state envelopes.
+  for(const id of ids.filter(id=>id.startsWith('grade7-g-'))){
+    const taskSpec=await spec(id,23);await hydrate('a',taskSpec);await change('a',f=>f.locator('[data-stage="1"]').click());
+    await change('a',f=>f.locator('[data-geometry-select]').first().press('Space'));
+    await change('a',f=>f.locator('[data-geometry-next]').click());
+    const event=await change('a',f=>f.locator('[data-geometry-next]').click());assert.equal(event.state.work.model.revealed,2,id);
+    await hydrate('b',taskSpec,event.state,true);
+    assert.equal(await frame('a').locator('[data-geometry-drawing]').innerHTML(),await frame('b').locator('[data-geometry-drawing]').innerHTML(),id);
+    assert.equal(await frame('b').locator('[data-geometry-steps] li').count(),2,id);
+    assert.equal(await frame('b').locator('[data-geometry-next]').isDisabled(),true,id);
+    const count=await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length);
+    await frame('b').locator('[data-geometry-next]').evaluate(el=>el.onclick());
+    assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,id+' read-only model emits nothing');
+    await hydrate('b',taskSpec,event.state,false);
+    assert.equal(await frame('b').locator('[data-geometry-clear]').isDisabled(),false,id+' controls re-enable on handoff');
+    const changed=await change('b',f=>f.locator('[data-geometry-clear]').click());assert.equal(changed.state.work.model.selected,null,id);
+  }
+  // A constant/empty right side must not masquerade as a coefficient of x.
+  for(const [left,right,expected] of [[[[3,1],[2,0]],[[11,0]],'3'],[[[4,1]],[],'4'],[[[2,1]],[[2,1],[7,0]],'']]){
+    const taskSpec=await spec('equations-linear');taskSpec.task.model={kind:'equation',left,right,root:3};
+    await hydrate('a',taskSpec);await change('a',f=>f.locator('[data-stage="1"]').click());
+    assert.equal(await frame('a').locator('#divisor').inputValue(),expected);
+    assert(!/NaN|undefined|Infinity/.test(await frame('a').locator('#model').innerText()));
+    await change('a',f=>f.locator('#divisor').fill('0'));const event=await change('a',f=>f.locator('#divide').click());
+    assert.deepEqual(event.state.work.model.left,left);assert.deepEqual(event.state.work.model.right,right);assert.match(event.state.work.model.message,/На ноль делить нельзя/);
+  }
   // Exact raw draft, rejected answer, hint, step progression and silent restore.
   let taskSpec=await spec('equations-fractions',80);await hydrate('a',taskSpec);await change('a',f=>f.locator('#answer').fill('0,333333'));let event=await change('a',f=>f.locator('#answerForm').evaluate(el=>el.requestSubmit()));assert.equal(event.kind,'check');assert.equal(event.details.answer,'0,333333');assert.equal(event.state.work.done,false);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('b').locator('#answer').inputValue(),'0,333333');assert.match(await frame('b').locator('#feedback').innerText(),/неверно/);
   await change('a',f=>f.locator('[data-stage="2"]').click());event=await change('a',f=>f.locator('#hint').click());assert.equal(event.details.level,1);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('b').locator('#hintText').innerText(),taskSpec.task.steps[0].why);
@@ -74,6 +123,6 @@ const server = http.createServer((req,res)=>{try{
   // Hydration renders the pinned task, not an updated client generator.
   await frame('a').evaluate(()=>PathData.task=()=>{throw Error('must not regenerate pinned task');});await hydrate('a',taskSpec,saved,false);
   await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{framesById.a.style.width='100%';framesById.b.hidden=true;});assert(await frame('a').evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-  assert.deepEqual(errors,[]);console.log('LEARNING_PATH_BROWSER_OK: 107 routes; '+kinds.size+' model kinds; semantic controls/figures, teacher read-only, exact drafts/feedback/hints/steps, silent hydrate, reload, parent new-task, pinned task and standalone isolation.');
+  assert.deepEqual(errors,[]);console.log('LEARNING_PATH_BROWSER_OK: 131 routes; '+kinds.size+' model kinds; semantic controls/figures, teacher read-only, exact drafts/feedback/hints/steps, silent hydrate, reload, parent new-task, pinned task and standalone isolation.');
  }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});

@@ -19,9 +19,28 @@ function polygon(d,construction=false){
  return `<svg class="task-figure" viewBox="0 0 600 330" role="img" aria-label="Фигура на единичной сетке; координаты вершин приведены под рисунком"><g stroke="#c9d9ce" stroke-width="1">${grid}</g><polygon points="${d.points.map(([x,y])=>X(x)+','+Y(y)).join(' ')}" fill="#6caa8870" stroke="#185940" stroke-width="3"/>${construction?`<path d="M${X(0)} ${Y(0)}H${X(w)}V${Y(h)}H${X(0)}Z" fill="none" stroke="#a44629" stroke-width="3" stroke-dasharray="6"/>`:''}${d.points.map(([x,y],i)=>`<circle cx="${X(x)}" cy="${Y(y)}" r="4" fill="#185940"/><text x="${X(x)+8}" y="${Y(y)-9}">${'ABCDEF'[i]}</text>`).join('')}<text x="60" y="318">Сторона клетки = 1</text></svg><details><summary>Координаты вершин по порядку</summary><p>${d.points.map(([x,y],i)=>`${'ABCDEF'[i]}(${x}; ${y})`).join(', ')}</p></details>`;
 }
 function numberline(d){const lo=Math.floor(Math.min(...d.values))-1,hi=Math.ceil(Math.max(...d.values))+1,X=v=>45+(v-lo)/(hi-lo)*510;let s='';for(let n=lo;n<=hi;n++)s+=`<path d="M${X(n)} 110v12" stroke="#617a6b"/><text x="${X(n)}" y="150" text-anchor="middle">${n}</text>`;return `<svg class="task-figure" viewBox="0 0 600 180" role="img" aria-label="Точки расположены слева направо; интервалы приведены ниже"><path d="M30 116H565" stroke="#617a6b"/>${s}${d.values.map((v,i)=>`<circle cx="${X(v)}" cy="116" r="5" fill="#a44629"/><text x="${X(v)}" y="88" text-anchor="middle">${E(d.names[i])}</text>`).join('')}</svg><p class="muted">${d.values.map((v,i)=>`${d.names[i]}: ${Number.isInteger(v)?'ровно '+v:'между '+Math.floor(v)+' и '+Math.ceil(v)}`).join('; ')}.</p>`;}
-function visual(t){const d=t.display;if(!d)return '';if(d.kind==='table')return table(d.headers,d.rows);if(['bars','graph'].includes(d.kind))return chart(d);if(d.kind==='polygon')return polygon(d);if(d.kind==='numberline')return numberline(d);if(d.kind==='triangle-label')return `<svg class="task-figure" viewBox="0 0 600 320" role="img" aria-label="Прямоугольный треугольник ABC, прямой угол при C"><path d="M70 255H510L70 45Z" fill="#d5e9da" stroke="#216e56" stroke-width="3"/><path d="M70 235H90V255" fill="none" stroke="#216e56"/><text x="46" y="270">C</text><text x="517" y="265">A</text><text x="51" y="36">B</text><text x="270" y="285">${d.a}</text><text x="28" y="160">${d.b}</text><text x="300" y="140">${d.c}</text></svg><p class="muted">Чертёж схематический; размеры берём из условия.</p>`;return '';}
-function markup(t,omitVisual=false){return `<div class="task-support">${omitVisual?'':visual(t)}${t.labels?`<ol class="match-labels" type="A">${t.labels.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}${t.choices?`<ol class="task-choices">${t.choices.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}</div>`;}
-root.PathPracticeView={markup,visual,polygon};
+function visual(t){if(t.model?.kind==='grade7-geometry'&&root.PathGrade7Geometry)return root.PathGrade7Geometry.visual(t);const d=t.display;if(!d)return '';if(d.kind==='table')return table(d.headers,d.rows);if(['bars','graph'].includes(d.kind))return chart(d);if(d.kind==='polygon')return polygon(d);if(d.kind==='numberline')return numberline(d);if(d.kind==='triangle-label')return `<svg class="task-figure" viewBox="0 0 600 320" role="img" aria-label="Прямоугольный треугольник ABC, прямой угол при C"><path d="M70 255H510L70 45Z" fill="#d5e9da" stroke="#216e56" stroke-width="3"/><path d="M70 235H90V255" fill="none" stroke="#216e56"/><text x="46" y="270">C</text><text x="517" y="265">A</text><text x="51" y="36">B</text><text x="270" y="285">${d.a}</text><text x="28" y="160">${d.b}</text><text x="300" y="140">${d.c}</text></svg><p class="muted">Чертёж схематический; размеры берём из условия.</p>`;return '';}
+function answerChoices(item) {
+ return Array.isArray(item?.choices) && item.choices.length && item.choices.every(choice => choice && typeof choice === 'object' && typeof choice.label === 'string' && typeof choice.value === 'string') ? item.choices : null;
+}
+function answerText(item) {
+ const choices=answerChoices(item), value=String(item?.a ?? item?.answer);
+ return choices?.find(choice=>choice.value===value)?.label ?? PathData.answerText(item);
+}
+function answerForm(item,limit=4000) {
+ const choices=answerChoices(item);
+ if(choices)return `<form id="answerForm"><fieldset><legend>Твой ответ: выбери вариант</legend><input id="answer" type="hidden" value=""><div class="actions answer-choices">${choices.map((choice,index)=>`<button type="button" id="answer-choice-${index}" data-answer-choice="${E(choice.value)}" aria-pressed="false">${E(choice.label)}</button>`).join('')}</div></fieldset><button class="primary" type="submit">Проверить</button></form>`;
+ const placeholder=item?.answerKind==='match'?'Четыре цифры, например 2413':item?.answerKind==='multi'?'Номера, например 134':item?.answerKind==='solutions'?'Любое подходящее число':'Число или дробь, например 2/3';
+ return `<form id="answerForm"><label for="answer">Твой ответ</label><div class="actions"><input id="answer" maxlength="${limit}" autocomplete="off" placeholder="${placeholder}"><button class="primary" type="submit">Проверить</button></div></form>`;
+}
+function bindChoices(host,onChange) {
+ const input=host.querySelector('#answer');if(!input)return;
+ const buttons=[...host.querySelectorAll('[data-answer-choice]')];
+ const draw=()=>buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.answerChoice===input.value)));
+ buttons.forEach(button=>button.onclick=()=>{if(host.inert)return;input.value=button.dataset.answerChoice;draw();onChange(input.value);});draw();
+}
+function markup(t,omitVisual=false){return `<div class="task-support">${omitVisual?'':visual(t)}${t.labels?`<ol class="match-labels" type="A">${t.labels.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}${t.choices&&!answerChoices(t)?`<ol class="task-choices">${t.choices.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}</div>`;}
+root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices};
 if(!root.PathModels)return;
 const previous=PathModels.mount;
 PathModels.mount=function(el,t,options={}){
@@ -44,8 +63,8 @@ PathModels.mount=function(el,t,options={}){
  }
  if(m.kind==='ratio-parts'){
   const n=m.a+m.b;v.chosen=v.chosen||[];v.checked=!!v.checked;
-  el.innerHTML=`<p>Собери отношение ${m.a}:${m.b}. Первой группе нужны ${m.a} равных долей, второй — ${m.b}. Все ${n} долей составляют ${m.total}.</p><div class="fraction-builder">${Array.from({length:n},(_,i)=>`<button data-ratio="${i}" aria-pressed="false">${i+1}</button>`).join('')}</div><button id="checkRatio">Проверить первую группу</button><p id="ratioRead" role="status"></p>`;
-  const draw=()=>{el.querySelectorAll('[data-ratio]').forEach(b=>b.setAttribute('aria-pressed',String(v.chosen.includes(+b.dataset.ratio))));el.querySelector('#ratioRead').textContent=!v.checked?'':v.checkedCount===m.a?`Первая группа ${m.a}/${n} целого. Одна доля — ${F(m.total/n)}. Теперь вычисли вторую группу.`:`Выбрано ${v.checkedCount}. Первой группе нужны ${m.a} долей из ${n}, а не из ${m.b}.`;};
+  el.innerHTML=`<p>Собери отношение ${m.a}:${m.b}. Первой группе нужны ${m.a} равных долей, второй — ${m.b}. Все ${n} долей составляют ${m.total}${m.unit?' '+E(m.unit):''}.</p><div class="fraction-builder">${Array.from({length:n},(_,i)=>`<button data-ratio="${i}" aria-pressed="false">${i+1}</button>`).join('')}</div><button id="checkRatio">Проверить первую группу</button><p id="ratioRead" role="status"></p>`;
+  const draw=()=>{el.querySelectorAll('[data-ratio]').forEach(b=>b.setAttribute('aria-pressed',String(v.chosen.includes(+b.dataset.ratio))));el.querySelector('#ratioRead').textContent=!v.checked?'':v.checkedCount===m.a?`Первая группа ${m.a}/${n} целого. Одна доля — ${F(m.total/n)}${m.unit?' '+m.unit:''}. Теперь вычисли вторую группу.`:`Выбрано ${v.checkedCount}. Первой группе нужны ${m.a} долей из ${n}, а не из ${m.b}.`;};
   el.querySelectorAll('[data-ratio]').forEach(b=>b.onclick=()=>{const n=+b.dataset.ratio;v.chosen=v.chosen.includes(n)?v.chosen.filter(x=>x!==n):[...v.chosen,n];draw();changed();});el.querySelector('#checkRatio').onclick=()=>{v.checked=true;v.checkedCount=v.chosen.length;draw();changed();};draw();return session;
  }
  if(m.kind==='polygon-build'){
@@ -77,5 +96,5 @@ PathModels.mount=function(el,t,options={}){
  }
  return previous(el,t,options);
 };
-root.PathPracticeView={markup,visual,polygon};
+root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices};
 })(window);

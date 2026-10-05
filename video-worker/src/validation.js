@@ -1,7 +1,8 @@
 const SCHOOL_TASKS = new Set(['homework-help', 'linear-equation', 'adjacent-angles',
   'negative-numbers', 'fractions', 'brackets', 'proportions', 'percentages',
   'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties',
-  'identities', 'equation-roots', 'linear-cases', 'equation-word-problems']);
+  'identities', 'equation-roots', 'linear-cases', 'equation-word-problems',
+  'grade7-a-opposite-expression', 'grade7-a-two-variable-collect', 'grade7-a-equation-two-brackets', 'grade7-a-equation-denominators', 'grade7-a-equation-decimals', 'grade7-g-segment-order', 'grade7-g-midpoint-chain', 'grade7-g-angle-addition', 'grade7-g-angle-bisector', 'grade7-g-adjacent-equation', 'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale', 'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion']);
 const TASKS = new Set(['18', '19', '20', ...SCHOOL_TASKS]);
 const FORMATS = new Set(['16:9', '9:16']);
 const VIDEO_TYPES = new Set(['ideal-solution', 'student-path']);

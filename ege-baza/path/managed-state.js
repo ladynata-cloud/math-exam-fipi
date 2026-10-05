@@ -14,6 +14,7 @@
     const v = copy(value), m = task.model;
     const fields = {
       equation: ['left', 'right', 'pending', 'sign', 'divisor', 'message'],
+      'grade7-geometry': ['selected', 'revealed'],
       derivative: ['x', 'h'], solid: ['angle', 'tilt', 'cut'],
       iso: ['constructed', 'choicesOpen', 'wrong'], triangle: ['constructed', 'choicesOpen', 'wrong'],
       trapezoid: ['constructed', 'choicesOpen', 'wrong'], chord: ['constructed', 'choicesOpen', 'wrong'], rectangle: ['constructed', 'choicesOpen', 'wrong'],
@@ -24,7 +25,10 @@
     };
     keys(v, ['kind', ...(fields[v.kind] || ['revealed'])]);
     for (const k of ['constructed', 'choicesOpen', 'wrong', 'checked', 'experiment']) if (k in v) requireValue(typeof v[k] === 'boolean');
-    if (v.kind === 'equation') {
+    if (v.kind === 'grade7-geometry') {
+      requireValue(Array.isArray(m.elements) && (v.selected === null || typeof v.selected === 'string' && m.elements.some(element => element.id === v.selected)));
+      requireValue(integer(v.revealed, 0, task.steps.length));
+    } else if (v.kind === 'equation') {
       for (const k of ['left', 'right']) requireValue(Array.isArray(v[k]) && v[k].length <= 20 && v[k].every(t => Array.isArray(t) && t.length === 2 && number(t[0], -1e9, 1e9) && integer(t[1], 0, 1)));
       requireValue(v.pending === null || plain(v.pending) && Object.keys(v.pending).length === 2 && integer(v.pending.side, 0, 1) && integer(v.pending.index, 0, (v.pending.side ? v.right : v.left).length - 1));
       requireValue(integer(v.sign, 0, 2)); string(v.divisor, 80); string(v.message, 1200);

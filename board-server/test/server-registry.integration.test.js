@@ -294,7 +294,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     assert.match(await cabinet.text(), /Мой кабинет/);
     for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js']) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
     const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
-    assert.equal(learningStatus.trainers.length, 143);
+    assert.equal(learningStatus.trainers.length, 167);
+    assert.equal(learningStatus.trainers.filter(item => item.grade7).length, 24);
     assert.equal(learningStatus.available, false);
   } finally {
     await server.stop();

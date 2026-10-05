@@ -5,7 +5,8 @@ const bind=(id,fn)=>{el.querySelector('#'+id).oninput=e=>{el.querySelector('#'+i
 const frame='<svg viewBox="0 0 600 350" role="img" aria-label="Математическая модель"></svg><p id="modelread" aria-live="polite"></p>';
 if(kind==='equation'){
  let a=structuredClone(v.left||m.left),b=structuredClone(v.right||m.right),pending=v.pending||null,sign=v.sign||0,busy=false;
- let divisor=typeof v.divisor==='string'?v.divisor:String(m.left[0][0]-m.right[0][0]),message=v.message||'';
+ const coefficient=terms=>terms.reduce((sum,[value,power])=>sum+(power===1?value:0),0),suggestedDivisor=coefficient(m.left)-coefficient(m.right);
+ let divisor=typeof v.divisor==='string'?v.divisor:(suggestedDivisor===0?'':String(suggestedDivisor)),message=v.message||'';
  const term=([n,p])=>(n<0?'−':'+')+(Math.abs(n)===1&&p?'':F(Math.abs(n)))+(p?'x':'');
  const text=xs=>xs.map(term).join(' ').replace(/^\+/,'')||'0';
  const sync=()=>Object.assign(v,{left:structuredClone(a),right:structuredClone(b),pending,sign,divisor,message});

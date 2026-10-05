@@ -10,7 +10,7 @@ const remediation = require('./learning-remediation-contracts');
 const catalog = require('../learning/catalog');
 const pathExamPool = require('../ege-baza/path/exam-pool');
 const context = vm.createContext({}, { codeGeneration: { strings: false, wasm: false } });
-for (const name of ['data.js', 'practice.js', 'equation-practice.js']) {
+for (const name of ['data.js', 'practice.js', 'equation-practice.js', 'grade7-algebra.js', 'grade7-geometry.js', 'grade7-foundations.js']) {
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../ege-baza/path', name), 'utf8'), context,
     { filename: name, timeout: 1000 });
 }
