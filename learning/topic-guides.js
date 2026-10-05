@@ -11,7 +11,7 @@
     {
       id: 'negative-numbers', title: 'Отрицательные числа',
       catalogId: 'oge-basics:negative-add-subtract',
-      publicUrl: 'https://mathexam.space/trainers/oge-basics/negative-add-subtract.html',
+      publicUrl: 'https://mathexam.space/trainers/oge-basics/negative-add-subtract.html?practice=1',
       practiceLabel: 'Решать примеры со знаками',
       steps: [
         'Прочитай текущий пример. Если открылась стартовая страница отдельного тренажёра, выбери «Потренироваться».',
@@ -22,7 +22,7 @@
     {
       id: 'fractions', title: 'Дроби: общий знаменатель',
       catalogId: 'oge-basics:fraction-common-denominator',
-      publicUrl: 'https://mathexam.space/trainers/oge-basics/fraction-common-denominator.html',
+      publicUrl: 'https://mathexam.space/trainers/oge-basics/fraction-common-denominator.html?practice=1',
       practiceLabel: 'Тренировать общий знаменатель',
       steps: [
         'Прочитай, что нужно найти: общий знаменатель, новый числитель или сумму дробей. Если открылась стартовая страница, выбери «Потренироваться».',
@@ -33,7 +33,7 @@
     {
       id: 'brackets', title: 'Раскрытие скобок в уравнении',
       catalogId: 'path:equations-brackets',
-      publicUrl: 'https://mathexam.space/ege-baza/path/index.html#lesson=equations-brackets',
+      publicUrl: 'https://mathexam.space/ege-baza/path/index.html?practice=1#lesson=equations-brackets',
       practiceLabel: 'Начать уравнение со скобками',
       steps: [
         'Открой «Решить по шагам». В этом тренажёре раскрытие скобок — первый шаг уравнения; затем нужно найти x.',
@@ -44,7 +44,7 @@
     {
       id: 'linear-equation', title: 'Линейные уравнения',
       catalogId: 'path:equations-linear',
-      publicUrl: 'https://mathexam.space/ege-baza/path/index.html#lesson=equations-linear',
+      publicUrl: 'https://mathexam.space/ege-baza/path/index.html?practice=1#lesson=equations-linear',
       practiceLabel: 'Решать линейное уравнение',
       steps: [
         'Выбери «Решить по шагам», если нужна опора, или «Самостоятельно», если готова решить всё уравнение.',
@@ -55,7 +55,7 @@
     {
       id: 'proportions', title: 'Пропорции',
       catalogId: 'oge-basics:percentages/proportion',
-      publicUrl: 'https://mathexam.space/trainers/oge-basics/percentages/proportion.html',
+      publicUrl: 'https://mathexam.space/trainers/oge-basics/percentages/proportion.html?practice=1',
       practiceLabel: 'Найти неизвестный член пропорции',
       steps: [
         'В кабинете решай открытое задание. Если открылась отдельная страница тренажёра, выбери «Тренироваться», затем «Найти неизвестный член».',
@@ -66,7 +66,7 @@
     {
       id: 'percentages', title: 'Проценты: часть, целое или процент',
       catalogId: 'oge-basics:percentages/percent-of-number-and-whole',
-      publicUrl: 'https://mathexam.space/trainers/oge-basics/percentages/percent-of-number-and-whole.html',
+      publicUrl: 'https://mathexam.space/trainers/oge-basics/percentages/percent-of-number-and-whole.html?practice=1',
       practiceLabel: 'Решать задачи на проценты',
       steps: [
         'Прочитай вопрос: тренажёр может спрашивать часть, целое или число процентов. На отдельной стартовой странице выбери «Тренироваться».',
@@ -102,7 +102,7 @@
     const catalogId = 'path:' + contentId;
     byCatalogId[catalogId] = Object.freeze({
       ...byId[topicId], catalogId, title, practiceLabel,
-      publicUrl: 'https://mathexam.space/ege-baza/path/index.html#lesson=' + encodeURIComponent(contentId),
+      publicUrl: 'https://mathexam.space/ege-baza/path/index.html?practice=1#lesson=' + encodeURIComponent(contentId),
       steps: Object.freeze(steps)
     });
   }

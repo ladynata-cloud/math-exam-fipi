@@ -3,26 +3,34 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Математика под рукой · шпаргалки</title>
-  <link rel="stylesheet" href="cheatsheets.css">
+  <link rel="stylesheet" href="cheatsheets.css?v=visible-video-20261005">
   <script src="cheatsheet-topics.js" defer></script>
-  <script src="../learning/topic-guides.js" defer></script>
-  <script src="cheatsheets.js" defer></script>
+  <script src="../learning/topic-guides.js?v=visible-video-20261005" defer></script>
+  <script src="cheatsheets.js?v=visible-video-20261005" defer></script>
 </head>
 <body>
   <header class="site-header"><a href="../">MathExam<span>математика под рукой</span></a><a class="cabinet" href="https://mathexam-board-ladynata.amvera.io/learning/#route">Мой маршрут ↗</a></header>
   <main>
-    <section class="intro"><p class="eyebrow">Семь опорных тем</p><h1>Вспомнить. Разобраться. Решить.</h1><p>Короткое правило и пример остаются перед глазами. В видео строки появляются постепенно — можно остановиться на любом шаге.</p></section>
+    <section class="intro"><p class="eyebrow">Семь опорных тем</p><h1>Посмотри пример. Попробуй сама.</h1><p>Выбери тему: здесь видео без озвучки, задание в тренажёре и шпаргалка, к которой можно вернуться.</p></section>
+    <label class="topic-picker" for="topic-select">Тема<select id="topic-select"></select></label>
     <div class="workspace"><nav aria-label="Темы шпаргалок" id="topics"></nav>
       <article class="sheet" aria-labelledby="sheet-title">
         <header class="sheet-header"><p class="eyebrow" id="sheet-number"></p><h2 id="sheet-title" tabindex="-1"></h2><p class="sheet-tag">Шпаргалка · можно распечатать</p></header>
+        <section class="video-panel" aria-labelledby="video-title">
+          <div class="video-heading"><div><p class="eyebrow">1 · Посмотри пример</p><h3 id="video-title">Видео-разбор</h3></div><span class="video-mode">Без голоса · мягкие щелчки</span></div>
+          <video id="video-player" controls playsinline preload="metadata" aria-label="Видео-разбор выбранной темы"><p>Браузер не показывает видео. Открой MP4 по ссылке ниже.</p></video>
+          <div class="actions video-actions"><button id="play-video" type="button" class="primary">▶ Смотреть видео</button><a id="video" class="button">Открыть MP4 отдельно ↗</a><a id="interactive" class="button">Разобрать по шагам</a></div>
+          <p id="video-status" role="status">Нажми «Смотреть видео». Можно остановиться на любом шаге.</p>
+          <div class="practice-entry"><p class="eyebrow">2 · Попробуй сама</p><a id="quick-trainer" class="button primary" target="_blank" rel="noopener">Тренироваться без входа ↗</a><a id="quick-cabinet" class="button">Моя работа с сохранением →</a><p id="quick-progress"></p><button id="show-instructions" type="button" class="quiet">Что вводить и куда нажать?</button></div>
+        </section>
+        <div class="sheet-label"><h3>3 · Шпаргалка перед глазами</h3><button id="print" type="button">Распечатать</button></div>
         <div class="sheet-grid"><section class="rule-block"><h3>Вспомни правило</h3><ul id="rules"></ul><aside class="warning"><h3>Не перепутай</h3><p id="warning"></p></aside></section>
           <section class="worked-block"><h3>Посмотри на пример</h3><figure id="angle-figure" hidden><svg viewBox="0 0 360 255" role="img" aria-label="Прямые AB и CD пересекаются в точке O. Угол AOC равен 56 градусам, смежный COB — 124 градусам, вертикальный BOD — 56 градусам."><g fill="none" stroke="#19363c" stroke-width="2.5"><path d="M40 130H320M115.7 225.3L244.3 34.7"/><path d="M223 130A43 43 0 0 0 204 94.4M143 130A37 37 0 0 0 159.3 160.7" stroke="#146a5c"/><path d="M197.3 104.3A31 31 0 0 0 149 130" stroke="#ad6737"/></g><circle cx="180" cy="130" r="3" fill="#19363c"/><g font-family="system-ui,sans-serif" font-size="18" fill="#19363c"><text x="325" y="135">A</text><text x="21" y="135">B</text><text x="246" y="27">C</text><text x="101" y="245">D</text><text x="181" y="153">O</text><text x="225" y="111" fill="#146a5c">56°</text><text x="141" y="84" fill="#ad6737">124°</text><text x="109" y="160" fill="#146a5c">56°</text></g></svg></figure><ol id="example"></ol><div class="check"><h3>Проверка</h3><p id="check"></p></div></section></div>
         <section class="practice"><span aria-hidden="true">✎</span><div><h3>Теперь самостоятельно</h3><p id="practice"></p><p id="practice-note"></p></div></section>
         <footer class="sheet-footer">MathExam · опора помогает начать; умение проверяется своей задачей</footer>
       </article>
     </div>
-    <section class="watch" aria-label="Разбор выбранной темы"><div><h2>Та же тема — шаг за шагом</h2><p>Готовый ролик с крупным текстом и мягкими щелчками. Можно сохранить заранее, если связь нестабильна.</p></div><div class="actions"><a id="video" class="button primary">▶ Анимированная шпаргалка</a><a id="interactive" class="button">Разобрать в своём темпе</a><button id="print" type="button">Распечатать шпаргалку</button></div></section>
-    <section class="watch practice-guide" aria-labelledby="trainer-title"><h2 id="trainer-title">Теперь попробуй в тренажёре</h2><ol id="trainer-steps"></ol><div class="actions"><a id="trainer" class="button primary" target="_blank" rel="noopener">Открыть тренажёр ↗</a><a id="cabinet-practice" class="button">Моя работа в кабинете →</a></div><p id="trainer-progress"></p></section>
+    <section class="watch practice-guide" id="practice-instructions" tabindex="-1" aria-labelledby="trainer-title"><h2 id="trainer-title">Теперь попробуй в тренажёре</h2><ol id="trainer-steps"></ol><div class="actions"><a id="trainer" class="button primary" target="_blank" rel="noopener">Открыть тренажёр ↗</a><a id="cabinet-practice" class="button">Моя работа в кабинете →</a></div><p id="trainer-progress"></p></section>
     <p class="delivery">Домашнюю работу реши в тетради и пришли фотографии Наталье Михайловне в вашем обычном чате в MAX. На фото должны быть видны условие и весь ход решения.</p>
     <noscript><p>Для выбора шпаргалки включите JavaScript. Готовые видео доступны по ссылкам из курса.</p></noscript>
   </main>

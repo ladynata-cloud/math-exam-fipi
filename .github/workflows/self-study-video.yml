@@ -9,6 +9,9 @@ on:
       - 'tools/video-factory-v1-gate.mjs'
       - 'tools/self-study-export.browser.cjs'
       - 'tools/self-study-video-check.mjs'
+      - 'tools/course-video-entry.browser.cjs'
+      - 'learning/practice-entry.js'
+      - 'learning/topic-guides.js'
       - '.github/workflows/self-study-video.yml'
   workflow_dispatch:
 
@@ -41,9 +44,9 @@ jobs:
           node -e 'require("node:fs").appendFileSync(process.env.GITHUB_ENV, "CHROMIUM_EXECUTABLE_PATH=" + require("playwright").chromium.executablePath() + "\n")'
       - name: Prepare local media verification tools
         run: |
-          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null || ! command -v pdfinfo >/dev/null; then
             sudo apt-get update
-            sudo apt-get install -y ffmpeg
+            sudo apt-get install -y ffmpeg poppler-utils
           fi
           python3 -m venv "$RUNNER_TEMP/self-study-python"
           "$RUNNER_TEMP/self-study-python/bin/python" -m pip install --disable-pip-version-check Pillow==11.3.0
@@ -56,5 +59,12 @@ jobs:
         run: node tools/self-study-export.browser.cjs
       - name: Local scene layout and keyboard checks without speech providers
         run: node tools/self-study-video-check.mjs --output "$RUNNER_TEMP/self-study-video-check"
+      - name: Visible video playback and direct practice entry
+        # Stock Chrome includes the H.264/AAC codecs needed by the published MP4s.
+        # Keep the bundled Chromium for the other authoring/layout gates above.
+        run: |
+          course_chrome="$(command -v google-chrome)"
+          "$course_chrome" --version
+          CHROMIUM_EXECUTABLE_PATH="$course_chrome" node tools/course-video-entry.browser.cjs
       - name: Final whitespace check
         run: git diff --check
