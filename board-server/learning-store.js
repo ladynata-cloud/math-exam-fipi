@@ -100,7 +100,33 @@ class LearningStore {
     return this.transaction(() => {
       const account = this.accountByLogin(login);
       requireValue(account?.role === 'teacher' && !account.password_hash, 'LEARNING_BOOTSTRAP_NOT_PENDING', 409);
-      return { account: accountDTO(account), ...this.newInvitation(account.id, 'activate', 3 * DAY) };
+      return { account: accountDTO(account), ...this.newBootstrapInvitation(account.id, token()) };
+    });
+  }
+  // Operator-only pending invitation repair. Keep revoked hashes so an old
+  // deployment configuration cannot bring a replaced invitation back to life.
+  newBootstrapInvitation(accountId, secret) {
+    requireValue(typeof secret === 'string' && /^[A-Za-z0-9_-]{43,100}$/.test(secret) && new Set(secret).size >= 16, 'LEARNING_BOOTSTRAP_CONFIG_INVALID');
+    requireValue(!this.row('SELECT hash FROM invitations WHERE hash=?', tokenHash(secret)), 'LEARNING_BOOTSTRAP_TOKEN_REVOKED', 409);
+    const at = this.clock(), expiresAt = at + 3 * DAY;
+    this.run('UPDATE invitations SET used_at=? WHERE account_id=? AND used_at IS NULL', at, accountId);
+    this.run("INSERT INTO invitations(hash,account_id,purpose,expires_at) VALUES(?,?,'activate',?)", tokenHash(secret), accountId, expiresAt);
+    return { invitationToken: secret, expiresAt };
+  }
+  syncPendingBootstrap(login, secret) {
+    login = normalizeLogin(login);
+    return this.transaction(() => {
+      const account = this.row("SELECT * FROM accounts WHERE role='teacher'");
+      if (account?.password_hash) return 'active';
+      requireValue(account && account.login === login, 'LEARNING_BOOTSTRAP_LOGIN_MISMATCH', 409);
+      requireValue(typeof secret === 'string' && /^[A-Za-z0-9_-]{43,100}$/.test(secret) && new Set(secret).size >= 16, 'LEARNING_BOOTSTRAP_CONFIG_INVALID');
+      const existing = this.row('SELECT * FROM invitations WHERE hash=?', tokenHash(secret));
+      if (existing?.account_id === account.id && existing.purpose === 'activate' && existing.used_at == null) {
+        // Restarting is not permission to extend the life of the same token.
+        return existing.expires_at > this.clock() ? 'pending-unchanged' : 'pending-expired';
+      }
+      this.newBootstrapInvitation(account.id, secret);
+      return 'pending-refreshed';
     });
   }
   createStudent(auth, body, passwordHash = null) {

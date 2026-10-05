@@ -20,8 +20,11 @@ as `/api/learning`. Sessions use private HttpOnly, Secure, SameSite=Strict cooki
 and exact Origin plus per-session CSRF validation. There is no public teacher
 registration. A local operator command issues a one-use first-teacher invitation;
 teachers invite their own learners. An optional hosting bootstrap secret creates
-the first unactivated teacher only when no teacher exists; it cannot reset or
-reactivate an existing account. Recovery consumes one-use credentials and
+the first unactivated teacher only when no teacher exists. Before first activation,
+changing that private hosting secret can replace the pending invitation for the
+same normalized login. This operator repair preserves the account identity and
+revoked token hashes, never extends an unchanged token's lifetime, and cannot
+reset or reactivate an activated account. Recovery consumes one-use credentials and
 revokes existing sessions. Account credentials never enter trainer frames.
 
 Trainers remain on the separate public site origin. Each allowlisted frame uses

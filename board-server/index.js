@@ -80,7 +80,9 @@ for (const origin of [learningPublicOrigin, learningTrainerOrigin]) {
 }
 if (learningPublicOrigin === learningTrainerOrigin) throw new Error('The account cabinet and trainers require separate origins');
 const learning = createLearningApi({ contracts: learningContracts, publicOrigin: learningPublicOrigin, secureCookies: !localLearning });
-applyBootstrapEnvironment(learning.store);
+const bootstrapResult = applyBootstrapEnvironment(learning.store);
+// Closed operator log: fixed diagnostic enum only, never login/token/hash.
+console.info('[learning-bootstrap]', bootstrapResult.status);
 const learningRuns = createLearningRunsRouter(learning);
 const teaching = createTeachingRouter(learning);
 // Account routes precede legacy CORS. Cabinet cookies never participate in the
