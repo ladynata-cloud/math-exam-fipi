@@ -6,26 +6,34 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: persistent video solution steps and soft taps
+## Current: visible videos and direct practice entry
 
-- Scope: [video history](tasks/VIDEO_SOLUTION_HISTORY.md), branch
-  `fix/video-solution-history`, verified main base
-  `ab9d7d5812ed32d15fe63497cfc34288a216b753`.
-- Owner asks to retain previous solution steps and replace the piercing action
-  tone with a softer tap. Publish seven printable cheat sheets and seven stored math MP4s; preserve interactive,
-  mobile and horizontal/vertical exports. No learner-time video synthesis.
-- Owner cancelled external narration setup. Keep clicks-only videos and the
-  existing `silent` provider setting; no hosting settings or keys are changed.
-- Photo homework is manually sent in MAX; the old how-to clip is deferred.
-  Personal narration may be added later; current release uses only soft taps.
-- Local evidence: 39 worker tests, 444 scene checks, export recovery and three
-  cabinet browser flows pass. Seven MP4s rendered and inspected; seven printed
-  sheets fit one A4 page each, with mobile/desktop navigation checked.
-- Each sheet now names an exact trainer and explains its controls. Six topics
-  use cabinet attempts through a fixed, read-only topic entry; the separate
-  angles trainer is explicitly marked for written work sent in MAX.
-- Next: one scoped PR, exact-head CI and public byte verification under standing
-  publication permission. Production evidence will be recorded in the release PR.
+- Scope: [video entry](tasks/COURSE_VIDEO_ENTRY.md), branch
+  `fix/course-video-entry`; base `7e007ff73a25a16faa1e6913b9c9af819c2ec435`.
+- Owner cannot easily find the videos and some trainer entries appear static.
+  Put existing voice-free videos at the start of topics; audit and improve
+  entry into actual exercise controls. Keep print, saved work and normal entry.
+- Local browser gate passes: seven real videos, fourteen layouts, seven A4
+  prints and seven answer/feedback flows; saved and managed entry preserved.
+  Focused code review found no blockers. Next: scoped PR, exact-head CI and
+  production byte verification under the standing publication permission.
+
+## Published: seven animated sheets and exact trainer guidance
+
+- PR [#187](https://github.com/ladynata-cloud/math-exam-fipi/pull/187) merged as
+  `7e007ff73a25a16faa1e6913b9c9af819c2ec435`, tree
+  `fede6bc9b14d9a5f1aff1562be02ddcf991d778a`; authorized base did not drift.
+- Both exact-head CI workflows passed, including the production Alpine image.
+  Worker 39/39, 444 scene checks, export recovery, cabinet flows, seven real
+  trainer entries and one-page print layouts passed.
+- All 22 public Pages/Amvera assets matched tested bytes, including all seven
+  stored MP4s. Learning status was available/durable; anonymous private access
+  was denied. Pages deployment 37247546946 succeeded.
+- Six topic guides lead to saved cabinet work; the separate angles trainer is
+  explicitly marked for written work sent manually in MAX. No real account
+  was provisioned; first teacher activation remains pending operator access.
+- No voice provider calls. Correct solution history and a soft non-tonal tap
+  are published. The old how-to clip is deferred until owner-supplied slides.
 
 ## Published: learner free route and original paper homework
 
