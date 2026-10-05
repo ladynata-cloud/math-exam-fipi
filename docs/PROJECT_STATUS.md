@@ -6,7 +6,17 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: next grade-7 course block
+## Published: next grade-7 course block; library label correction
+
+- PR #194 merged as `8125c176b6b0168c9c93e88a766ce6b144149762`, parent
+  `a69da715e1f319cf13fd05d769a42878f3922a64`, reviewed tree
+  `1f5dd604e9f70702114a5783b7df89ca2efa00d4`.
+- Exact-head workflows 37389677215, 37389678296 and 37389678498 passed;
+  Pages 37390305523 deployed the merge. Live UI exposes 24 new cabinet entries
+  and 30 video topics. Post-deployment byte checks are recorded in PR #194.
+- Live inspection found an old static library introduction saying 30 clips and
+  15 topics. The scoped SMALL follow-up corrects it to 60/30 and links the
+  full grade-7 hub. It changes no scripts, media or pupil state.
 
 - Scope: [24 trainers and 30 silent videos](tasks/GRADE7_NEXT_COURSE_BLOCK.md).
 - Base `a69da715e1f319cf13fd05d769a42878f3922a64`, branch
@@ -23,8 +33,8 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   mobile layouts and cumulative written steps/geometry drawings.
 - Familiar grade-7 conditions retain their history across retries and reset;
   their results do not inflate independent mastery. Legacy grading is unchanged.
-- Next: publish the exact reviewed tree, pass remote gates and verify Pages
-  and Amvera. The task PR records final release identities and evidence.
+- Next: publish the small library-label correction, verify its live heading,
+  then return the course link. Release PRs retain exact gate/deployment evidence.
 
 ## Published: reliable pupil access card
 
