@@ -189,6 +189,23 @@ class LearningStore {
       return this.createSession(account.id);
     });
   }
+  rotateTeacherRecoveryCodes(sessionToken, expectedHash, expectedEpoch) {
+    return this.transaction(() => {
+      // Password verification happened asynchronously at the API boundary.
+      // Recheck both the session and the verified credential snapshot before
+      // replacing codes, including logout/recovery while verification awaited.
+      const auth = this.session(sessionToken);
+      this.teacher(auth);
+      const account = this.account(auth.id);
+      requireValue(account && account.password_hash === expectedHash && account.auth_epoch === expectedEpoch, 'LEARNING_ACCESS_INVALID', 401);
+      const recoveryCodes = Array.from({ length: 8 }, () => token(18));
+      this.run('DELETE FROM recovery_codes WHERE account_id=?', account.id);
+      for (const code of recoveryCodes) this.run('INSERT INTO recovery_codes(hash,account_id) VALUES(?,?)', tokenHash(code), account.id);
+      // Issuing backup codes is not a password reset: keep the password and
+      // existing sessions. Using a code via recoverTeacher still revokes them.
+      return { recoveryCodes };
+    });
+  }
   session(secret) {
     requireValue(TOKEN_RE.test(secret || ''), 'LEARNING_UNAUTHORIZED', 401);
     const row = this.row('SELECT a.*,s.expires_at AS session_expires,s.epoch AS session_epoch FROM sessions s JOIN accounts a ON a.id=s.account_id WHERE s.hash=?', tokenHash(secret));

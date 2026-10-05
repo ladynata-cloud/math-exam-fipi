@@ -1,23 +1,40 @@
 # MathExam project status
 
-Updated: 2026-10-05 (Asia/Novosibirsk)
+Updated: 2026-10-06 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: pending teacher activation repair
+## Current: lost teacher recovery codes
+
+- Scope: [recovery codes](tasks/TEACHER_RECOVERY_CODES.md); branch
+  `fix/teacher-recovery-codes`, base `8836bb24c04091ab503bf7c0d74eca1318b5732d`.
+- First-teacher activation succeeded and the authenticated teacher interface
+  was confirmed. The owner did not retain the one-time recovery-code display.
+- Add password-confirmed authenticated reissue and explicit save/discard
+  acknowledgement. Preserve the active password, sessions and teaching data.
+- Next: browser regression and independent review, authorized publication,
+  then private current-password entry and code saving by the owner.
+- The first real pupil account has not yet been provisioned.
+
+## Published: pending teacher activation repair
+
+- PR #190 merged as `8836bb24c04091ab503bf7c0d74eca1318b5732d`, parent
+  `c86a98842f0158ecd4096ee8f58667463d20dd23`, reviewed tree
+  `112aaa8be701fce7a60cdc3dcb49c0024f76b3d2`.
+- Exact-head CI passed (run 37365672149, attempt 2). Deployment assets were
+  verified; operator diagnostics and subsequent authenticated UI confirmed
+  successful first activation. No real credentials were captured.
 
 - Scope: [pending activation](tasks/PENDING_TEACHER_ACTIVATION.md); branch
   `fix/pending-teacher-activation`, base `c86a98842f0158ecd4096ee8f58667463d20dd23`.
-- Activation and ordinary login were rejected. The exact production account
-  state is unknown; no private database or credential values were read.
+- Activation and ordinary login had been rejected. The repair was based on
+  code evidence; no private database or credential values were read.
 - Repair only pending invitations through the existing private hosting
   configuration; active accounts remain untouched. Clarify authentication
   messages and accept invitation fragments added to an already-open page.
-- Next: regression and independent review, authorized publication, operator
-  status verification and private first-activation handoff if still pending.
-- The first real pupil account has not yet been provisioned.
+- Activation no longer blocks pupil setup; retain recovery codes first.
 
 ## Published: grade 7 course and thirty silent videos
 
@@ -55,7 +72,8 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Local combined gate: `GRADE7_SILENT_MOTION_OK`; publication verified above.
 - No production pupil account was created in this task;
   no account, authentication or hosting settings were changed.
-- First-teacher activation is the remaining operational blocker to pupil setup.
+- First-teacher activation was the operational blocker at that release and has
+  since succeeded, as recorded above.
 
 ## Published: visible videos and direct practice entry
 
