@@ -16,7 +16,9 @@ class LearningError extends Error {
 function requireValue(condition, code = 'LEARNING_INVALID', status = 400) {
   if (!condition) throw new LearningError(code, status);
 }
-function passwordValid(value) { return typeof value === 'string' && value.length >= 12 && value.length <= 128; }
+function passwordValid(value, role = 'teacher') {
+  return typeof value === 'string' && value.length >= (role === 'student' ? 8 : 12) && value.length <= 128;
+}
 async function serializedHash(operation) {
   requireValue(hashQueueSize < 8, 'LEARNING_BUSY', 429);
   hashQueueSize++;
@@ -24,8 +26,8 @@ async function serializedHash(operation) {
   hashTail = result.catch(() => {});
   try { return await result; } finally { hashQueueSize--; }
 }
-async function hashPassword(password) {
-  requireValue(passwordValid(password), 'LEARNING_PASSWORD_INVALID');
+async function hashPassword(password, role = 'teacher') {
+  requireValue(passwordValid(password, role), role === 'student' ? 'LEARNING_STUDENT_PASSWORD_INVALID' : 'LEARNING_PASSWORD_INVALID');
   return serializedHash(async () => {
     const salt = crypto.randomBytes(16);
     const hash = await scrypt(password, salt, 32, HASH_OPTIONS);
@@ -33,7 +35,9 @@ async function hashPassword(password) {
   });
 }
 async function verifyPassword(password, encoded) {
-  if (!passwordValid(password)) return false;
+  // Verification accepts the supported credential range. Creation policy is
+  // selected only by trusted server-side account roles, never by login input.
+  if (!passwordValid(password, 'student')) return false;
   const valid = /^scrypt1:([a-f0-9]{32}):([a-f0-9]{64})$/.exec(encoded || '');
   // Unknown accounts take the same expensive path as a wrong password.
   const salt = valid ? Buffer.from(valid[1], 'hex') : Buffer.alloc(16);
