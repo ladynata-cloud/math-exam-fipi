@@ -3,21 +3,23 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Математика под рукой · шпаргалки</title>
-  <link rel="stylesheet" href="cheatsheets.css?v=visible-video-20261005">
-  <script src="cheatsheet-topics.js" defer></script>
-  <script src="../learning/topic-guides.js?v=visible-video-20261005" defer></script>
-  <script src="cheatsheets.js?v=visible-video-20261005" defer></script>
+  <link rel="stylesheet" href="cheatsheets.css?v=grade7-silent-motion-20261005">
+  <script src="makarychev7-videos.js?v=grade7-silent-motion-20261005" defer></script>
+  <script src="cheatsheet-topics.js?v=grade7-silent-motion-20261005" defer></script>
+  <script src="../learning/topic-guides.js?v=grade7-silent-motion-20261005" defer></script>
+  <script src="cheatsheets.js?v=grade7-silent-motion-20261005" defer></script>
 </head>
 <body>
   <header class="site-header"><a href="../">MathExam<span>математика под рукой</span></a><a class="cabinet" href="https://mathexam-board-ladynata.amvera.io/learning/#route">Мой маршрут ↗</a></header>
   <main>
-    <section class="intro"><p class="eyebrow">Семь опорных тем</p><h1>Посмотри пример. Попробуй сама.</h1><p>Выбери тему: здесь видео без озвучки, задание в тренажёре и шпаргалка, к которой можно вернуться.</p></section>
+    <section class="intro"><p class="eyebrow">30 коротких видео · без звука</p><h1>Посмотри пример. Попробуй сама.</h1><p>Выражения и уравнения по Макарычеву, повторение основ и первые задачи на углы. В каждой из 15 тем — разбор задачи, видео о работе в тренажёре и шпаргалка.</p><p class="course-entry"><a href="../school/index.html#course/makarychev7-start">Курс 7 класса: от выражений до уравнений →</a></p></section>
     <label class="topic-picker" for="topic-select">Тема<select id="topic-select"></select></label>
     <div class="workspace"><nav aria-label="Темы шпаргалок" id="topics"></nav>
       <article class="sheet" aria-labelledby="sheet-title">
         <header class="sheet-header"><p class="eyebrow" id="sheet-number"></p><h2 id="sheet-title" tabindex="-1"></h2><p class="sheet-tag">Шпаргалка · можно распечатать</p></header>
         <section class="video-panel" aria-labelledby="video-title">
-          <div class="video-heading"><div><p class="eyebrow">1 · Посмотри пример</p><h3 id="video-title">Видео-разбор</h3></div><span class="video-mode">Без голоса · мягкие щелчки</span></div>
+          <div class="video-heading"><div><p class="eyebrow">1 · Посмотри пример</p><h3 id="video-title">Видео-разбор</h3></div><span class="video-mode">Без звука</span></div>
+          <div class="video-kinds" role="group" aria-label="Что посмотреть"><button id="video-kind-math" type="button" aria-pressed="true">Разбор задачи</button><button id="video-kind-trainer" type="button" aria-pressed="false">Как работать в тренажёре</button></div>
           <video id="video-player" controls playsinline preload="metadata" aria-label="Видео-разбор выбранной темы"><p>Браузер не показывает видео. Открой MP4 по ссылке ниже.</p></video>
           <div class="actions video-actions"><button id="play-video" type="button" class="primary">▶ Смотреть видео</button><a id="video" class="button">Открыть MP4 отдельно ↗</a><a id="interactive" class="button">Разобрать по шагам</a></div>
           <p id="video-status" role="status">Нажми «Смотреть видео». Можно остановиться на любом шаге.</p>

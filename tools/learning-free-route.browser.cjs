@@ -262,6 +262,10 @@ async function verifyTopicGuideEntry({ teacher, open, store, origin }) {
     const before = count(), requests = creations.length;
     await navigate(page, 'learn=' + topic);
     await page.locator('[data-lesson-video]').waitFor();
+    await page.locator('[data-lesson-trainer-video]').click();
+    await page.locator('.mw-video').waitFor();
+    assert.match(await page.locator('.mw-video').getAttribute('src'), new RegExp('/using-' + topic + '\\.mp4'));
+    await page.keyboard.press('Escape');
     assert.equal(count(), before, 'Reading a topic guide creates no real work');
     assert.equal(creations.length, requests, 'Topic preflight does not POST an attempt');
     assert.equal(await page.locator('.lesson-steps li').count(), 3);
@@ -326,6 +330,7 @@ async function verifyTopicGuideEntry({ teacher, open, store, origin }) {
       if (await page.locator('.mw-dialog[open]').count()) await page.keyboard.press('Escape');
       await page.locator('[data-route-item="path:' + contentId + '"]').click(); await readyFrame(page);
       await checkSupport('percentages');
+      assert.equal(await page.locator('[data-support-trainer-video]').count(), 0, 'A different Path interface does not receive an unrelated basic-HTML instruction video');
       const instructions = await page.locator('.lesson-instructions').innerText();
       assert.match(instructions, /Решить по шагам|Самостоятельно/,
         'Path percentage work has its own actual-mode instructions, not standalone remediation controls');
@@ -351,6 +356,23 @@ async function verifyTopicGuideEntry({ teacher, open, store, origin }) {
     if (process.env.LEARNING_ARTIFACT_DIR) await page.screenshot({
       path: path.join(process.env.LEARNING_ARTIFACT_DIR, 'topic-guide-angles-mobile.png'), fullPage: true
     });
+    const publicOnly = [
+      ['numeric-expressions', 'calculation-plan'], ['variable-expressions', 'expression-language'],
+      ['compare-expressions', 'compare-difference'], ['arithmetic-properties', 'convenient-calculation'],
+      ['identities', 'identity-check'], ['equation-roots', 'equation-root'],
+      ['linear-cases', 'equation-cases'], ['equation-word-problems', 'word-parts']
+    ];
+    for (const [topic, unit] of publicOnly) {
+      const before = count(), requests = creations.length;
+      await preflight(topic);
+      assert.equal(await page.locator('[data-lesson-start]').count(), 0, 'Public-only course guides never create an unrelated managed attempt');
+      const href = await page.locator('[data-lesson-practice]').getAttribute('href');
+      assert.ok(href.startsWith('https://mathexam.space/school/'), topic + ': fixed public school workshop');
+      assert.ok(href.includes('m7f-' + unit), topic + ': exact matching authored exercise');
+      assert.match(await page.locator('#main').innerText(), /браузер/i, 'The public course progress limitation is visible');
+      await page.reload(); await page.locator('[data-lesson-practice]').waitFor();
+      assert.equal(count(), before); assert.equal(creations.length, requests);
+    }
     for (const route of ['learn=unknown-topic', 'learn=%3Cimg%20src=x%20onerror=alert(1)%3E', 'learn=brackets&learn=fractions']) {
       const before = count(), requests = creations.length;
       await navigate(page, route); await page.getByRole('heading', { name: 'Эта тема пока недоступна' }).waitFor();
@@ -373,8 +395,8 @@ async function verifyWelcome(page, store, learnerId) {
   await page.locator('.mw-dialog[open]').waitFor();
   assert.ok(await page.locator('#mw-title').evaluate(node => parseFloat(getComputedStyle(node).fontSize)) >= 28,
     'The first instruction uses large, readable text');
-  assert.equal(await page.locator('[data-mw-voice]').getAttribute('aria-pressed'), 'false', 'Narration requires an explicit gesture');
-  assert.equal(await page.locator('[data-mw-clicks]').getAttribute('aria-pressed'), 'false');
+  assert.equal(await page.locator('[data-mw-voice], [data-mw-clicks]').count(), 0, 'The silent welcome offers no narration or click playback');
+  assert.match(await page.locator('.mw-silent-note').innerText(), /без звука/i);
   assert.equal(await page.locator('.mw-dialog').evaluate(node => node.scrollWidth <= node.clientWidth), true);
   if (process.env.LEARNING_ARTIFACT_DIR) {
     fs.mkdirSync(process.env.LEARNING_ARTIFACT_DIR, { recursive: true });
@@ -402,21 +424,31 @@ async function verifyWelcome(page, store, learnerId) {
   assert.equal(await page.locator('[data-route-welcome]').evaluate(node => node === document.activeElement), true,
     'Closing restores keyboard focus');
   assert.equal(await page.evaluate(() => MathExamWelcome.openVideo('homework-help')), false, 'Deferred how-to video is not offered to learners');
-  for (const key of ['negative-numbers', 'fractions', 'brackets', 'linear-equation', 'proportions', 'percentages', 'adjacent-angles']) {
-    await page.evaluate(key => MathExamWelcome.openVideo(key), key);
-    const player = page.locator('.mw-video');
-    const attributes = await player.evaluate(node => ({ src: node.src, controls: node.controls,
-      autoplay: node.autoplay, paused: node.paused, preload: node.preload }));
-    assert.equal(attributes.src, 'https://mathexam.space/video-lessons/media/' + key + '.mp4?v=history-tap-20261005');
-    assert.equal(attributes.controls, true); assert.equal(attributes.autoplay, false);
-    assert.equal(attributes.paused, true); assert.equal(attributes.preload, 'none');
-    const localFile = path.join(ROOT, 'video-lessons/media', key + '.mp4');
-    const bytes = fs.readFileSync(localFile);
-    assert.ok(bytes.length > 100000 && bytes.length < 1500000, 'Download is a compact real media file');
-    assert.equal(bytes.toString('ascii', 4, 8), 'ftyp', 'The video source is an MP4');
-    assert.equal(await page.locator('[data-mw-download]').getAttribute('href'), attributes.src);
-    assert.match(await page.locator('[data-mw-text]').getAttribute('href'), new RegExp('task=' + key));
-    assert.equal(await page.locator('.mw-dialog').evaluate(node => node.scrollWidth <= node.clientWidth), true);
+  for (const key of ['negative-numbers', 'fractions', 'brackets', 'linear-equation', 'proportions', 'percentages', 'adjacent-angles',
+    'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties', 'identities', 'equation-roots', 'linear-cases', 'equation-word-problems']) {
+    await page.evaluate(key => MathExamWelcome.openVideo(key, 'trainer'), key);
+    assert.match(await page.locator('.mw-video').getAttribute('src'), /\/using-/);
+    const identity = await page.locator('.mw-video').elementHandle();
+    for (const kind of ['math', 'trainer']) {
+      await page.locator('[data-mw-video-kind="' + kind + '"]').click();
+      assert.equal(await page.locator('.mw-video').evaluate((node, original) => node === original, identity), true, 'The paired switch reuses one player');
+      assert.equal(await page.locator('[data-mw-video-kind="' + kind + '"]').getAttribute('aria-pressed'), 'true');
+      const fileName = (kind === 'trainer' ? 'using-' : '') + key;
+      const player = page.locator('.mw-video');
+      const attributes = await player.evaluate(node => ({ src: node.src, controls: node.controls,
+        autoplay: node.autoplay, paused: node.paused, preload: node.preload }));
+      assert.equal(attributes.src, 'https://mathexam.space/video-lessons/media/' + fileName + '.mp4?v=grade7-silent-motion-20261005');
+      assert.equal(attributes.controls, true); assert.equal(attributes.autoplay, false);
+      assert.equal(attributes.paused, true); assert.equal(attributes.preload, 'none');
+      const localFile = path.join(ROOT, 'video-lessons/media', fileName + '.mp4');
+      const bytes = fs.readFileSync(localFile);
+      assert.ok(bytes.length > 100000 && bytes.length < 1500000, 'Download is a compact real media file');
+      assert.equal(bytes.toString('ascii', 4, 8), 'ftyp', 'The video source is an MP4');
+      assert.equal(await page.locator('[data-mw-download]').getAttribute('href'), attributes.src);
+      assert.match(await page.locator('[data-mw-text]').getAttribute('href'), kind === 'trainer' ? new RegExp('type=trainer#' + key) : new RegExp('task=' + key));
+      assert.equal(await page.locator('.mw-dialog').evaluate(node => node.scrollWidth <= node.clientWidth), true);
+    }
+    await identity.dispose();
     await page.keyboard.press('Escape');
   }
   assert.equal(store.row('SELECT COUNT(*) AS n FROM attempts WHERE learner_id=?', learnerId).n, before,

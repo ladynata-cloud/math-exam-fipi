@@ -24,9 +24,19 @@ const allTasks = ['homework-help', 'linear-equation', 'adjacent-angles', 'negati
 // Independent mathematical expectations for the published examples. The checks
 // use visible lines, not the studio's history-building data or implementation.
 const equationExamples = [
-  { condition: '3(x − 2) + 4 = 13', wrong: '3x − 2 + 4 = 13', lines: [[5, '3x − 6 + 4 = 13'], [6, '3x − 2 = 13'], [7, '3x − 2 + 2 = 13 + 2'], [8, '3x = 15'], [10, 'x = 5'], [11, '3 · (5 − 2) + 4 = 13']] },
-  { condition: '2(x + 3) − 5 = 9', wrong: '2x + 3 − 5 = 9', lines: [[5, '2x + 6 − 5 = 9'], [6, '2x + 1 = 9'], [7, '2x + 1 − 1 = 9 − 1'], [8, '2x = 8'], [10, 'x = 4'], [11, '2 · (4 + 3) − 5 = 9']] },
-  { condition: '4(x − 1) + 3 = 15', wrong: '4x − 1 + 3 = 15', lines: [[5, '4x − 4 + 3 = 15'], [6, '4x − 1 = 15'], [7, '4x − 1 + 1 = 15 + 1'], [8, '4x = 16'], [10, 'x = 4'], [11, '4 · (4 − 1) + 3 = 15']] },
+  { condition: '6x − 4 = 4x − 11', lines: [[4, '6x − 4x − 4 = −11'], [5, '6x − 4x = −11 + 4'], [6, '2x = −7'], [10, 'x = −7 : (2) = −3,5'], [11, '−25 = −25']] },
+  { condition: '7x + 5 = 3x + 17', lines: [[4, '7x − 3x + 5 = 17'], [5, '7x − 3x = 17 − 5'], [6, '4x = 12'], [10, 'x = 12 : (4) = 3'], [11, '26 = 26']] },
+  { condition: '2x − 9 = 5x + 6', lines: [[4, '2x − 5x − 9 = 6'], [5, '2x − 5x = 6 + 9'], [6, '−3x = 15'], [10, 'x = 15 : (−3) = −5'], [11, '−19 = −19']] },
+];
+const bracketExamples = [
+  { condition: '3(2x − 1) − 4(x + 3) = 5', lines: [[4, '6x − 3 − 4(x + 3) = 5'], [5, '6x − 3 − 4x − 12 = 5'], [6, '6x − 4x = 5 + 3 + 12'], [7, '2x = 20'], [10, 'x = 20 : (2) = 10'], [11, '5 = 5']] },
+  { condition: '2(3x + 4) − 3(x − 2) = 20', lines: [[4, '6x + 8 − 3(x − 2) = 20'], [5, '6x + 8 − 3x + 6 = 20'], [6, '6x − 3x = 20 − 8 − 6'], [7, '3x = 6'], [10, 'x = 6 : (3) = 2'], [11, '20 = 20']] },
+  { condition: '−2(4x − 3) + 5(x + 1) = 2', lines: [[4, '−8x + 6 + 5(x + 1) = 2'], [5, '−8x + 6 + 5x + 5 = 2'], [6, '−8x + 5x = 2 − 6 − 5'], [7, '−3x = −9'], [10, 'x = −9 : (−3) = 3'], [11, '2 = 2']] },
+];
+const percentExamples = [
+  { condition: 'Найди 20% от 150.', lines: [[3, 'x/150 = 20/100'], [5, '100x = 150 · 20'], [6, '100x = 3000'], [7, 'x = 3000 : 100 = 30'], [8, '30/150 = 20/100 = 0,2']] },
+  { condition: '30 — это 20% числа. Найди число.', lines: [[3, 'x/30 = 100/20'], [5, '20x = 30 · 100'], [6, '20x = 3000'], [7, 'x = 3000 : 20 = 150'], [8, '30/150 = 20/100 = 0,2']] },
+  { condition: 'Сколько процентов составляет 30 от 150?', lines: [[3, '30/150 = p/100'], [5, '150p = 30 · 100'], [6, '150p = 3000'], [7, 'p = 3000 : 150 = 20'], [8, '20% от 150: 150 · 20/100 = 30']] },
 ];
 const angleExamples = [{ given: 56, result: 124, fresh: 68 }, { given: 73, result: 107, fresh: 109 }, { given: 118, result: 62, fresh: 47 }];
 const helpExamples = [
@@ -64,6 +74,9 @@ const allowed = new Map([
   ['/video-lessons/studio.js', ['studio.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/export.js', ['export.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/cheatsheet-topics.js', ['cheatsheet-topics.js', 'text/javascript; charset=utf-8']],
+  ['/video-lessons/motion-topics.js', ['motion-topics.js', 'text/javascript; charset=utf-8']],
+  ['/video-lessons/motion.js', ['motion.js', 'text/javascript; charset=utf-8']],
+  ['/video-lessons/makarychev7-videos.js', ['makarychev7-videos.js', 'text/javascript; charset=utf-8']],
 ]);
 const server = http.createServer(async (request, response) => {
   try {
@@ -150,12 +163,11 @@ async function inspectHistory(page, task, preset, sceneId) {
   assert.equal(await page.locator('#solution-history').count(), 1, `${label}: persistent history exists`);
   assert.ok(await page.locator('#solution-history .history-line.is-current').count() <= 1, `${label}: at most one current history line`);
   assert.equal(await page.locator('#solution-history .history-line[data-scene-id*="wrong"]').count(), 0, `${label}: wrong example is separate from valid solution`);
-  if (task === 'linear-equation') {
-    const example = equationExamples[preset - 1];
+  if (['linear-equation', 'brackets', 'percentages'].includes(task)) {
+    const example = ({ 'linear-equation': equationExamples, brackets: bracketExamples, percentages: percentExamples })[task][preset - 1];
     assert.ok(condition.includes(normalizedMath(example.condition)), `${label}: original condition remains visible`);
     assert.deepEqual(lines, example.lines.filter(([step]) => step <= number).map(([, line]) => normalizedMath(line)),
       `${label}: exactly the already justified transformations remain visible`);
-    assert.equal(history.includes(normalizedMath(example.wrong)), false, `${label}: erroneous expansion never enters valid history`);
   } else if (task === 'adjacent-angles') {
     const p = angleExamples[preset - 1];
     const expected = [[3, '∠AOC + ∠COB = 180°'], [5, `${p.given}° + ∠COB = 180°`],
@@ -202,12 +214,12 @@ async function inspectHistoryNavigation(page, view) {
   await inspectHistory(page, 'linear-equation', 1, 'check-substitution-11');
   // Jump backwards and forwards through the real public renderer API. A visited
   // scene cache must not reveal the later answer after returning to an earlier step.
-  await show('linear-equation', 'correct-expansion-5');
-  await inspectHistory(page, 'linear-equation', 1, 'correct-expansion-5');
-  await show('linear-equation', 'wrong-expansion-4');
-  await inspectHistory(page, 'linear-equation', 1, 'wrong-expansion-4');
-  await show('linear-equation', 'pause-before-answer-9');
-  await inspectHistory(page, 'linear-equation', 1, 'pause-before-answer-9');
+  await show('linear-equation', 'move-numbers-5');
+  await inspectHistory(page, 'linear-equation', 1, 'move-numbers-5');
+  await show('linear-equation', 'recall-rule-3');
+  await inspectHistory(page, 'linear-equation', 1, 'recall-rule-3');
+  await show('linear-equation', 'combine-like-6');
+  await inspectHistory(page, 'linear-equation', 1, 'combine-like-6');
   await prepare('linear-equation', 2);
   await inspectHistory(page, 'linear-equation', 2, 'read-condition-1');
   await show('linear-equation', 'check-substitution-11');
@@ -225,7 +237,7 @@ async function inspectHistoryNavigation(page, view) {
   await inspectHistory(page, 'homework-help', 1, 'fresh-independent-7');
   await show('homework-help', 'analogue-solution-6');
   await inspectHistory(page, 'homework-help', 1, 'analogue-solution-6');
-  for (const task of ['negative-numbers', 'fractions', 'brackets', 'proportions', 'percentages']) {
+  for (const task of ['negative-numbers', 'fractions', 'proportions']) {
     await prepare(task, 1);
     await show(task, 'check-result-7'); await inspectHistory(page, task, 1, 'check-result-7');
     await show(task, 'correct-step-5'); await inspectHistory(page, task, 1, 'correct-step-5');
@@ -233,6 +245,15 @@ async function inspectHistoryNavigation(page, view) {
     await show(task, 'independent-task-8'); await inspectHistory(page, task, 1, 'independent-task-8');
     await prepare(task, 2); await inspectHistory(page, task, 2, 'read-condition-1');
     await show(task, 'check-result-7'); await inspectHistory(page, task, 2, 'check-result-7');
+    await prepare(task, 3); await inspectHistory(page, task, 3, 'read-condition-1');
+  }
+  for (const [task, final, early] of [['brackets', 'check-substitution-11', 'correct-expansion-5'], ['percentages', 'check-result-8', 'correct-step-5']]) {
+    await prepare(task, 1);
+    for (const scene of [final, early, 'recall-rule-3', 'independent-task-12']) {
+      await show(task, scene); await inspectHistory(page, task, 1, scene);
+    }
+    await prepare(task, 2); await inspectHistory(page, task, 2, 'read-condition-1');
+    await show(task, final); await inspectHistory(page, task, 2, final);
     await prepare(task, 3); await inspectHistory(page, task, 3, 'read-condition-1');
   }
   report.history.push({ view, arbitraryNavigation: true, futureAnswersHidden: true, presetAndTopicReset: true });
@@ -267,7 +288,7 @@ try {
           if (preset === 1 && scene === manifest.scenes[2]) {
             await page.screenshot({ path: path.join(outputDir, 'screenshots', `${task}-${portrait ? 'portrait' : 'landscape'}.png`) });
           }
-          const historyExample = { 'homework-help': 'analogue-solution-6', 'linear-equation': 'check-substitution-11', 'adjacent-angles': 'distinguish-vertical-9' };
+          const historyExample = { 'homework-help': 'analogue-solution-6', 'linear-equation': 'check-substitution-11', 'adjacent-angles': 'distinguish-vertical-9', brackets: 'check-substitution-11', percentages: 'check-result-8' };
           if (preset === 1 && scene.id === (historyExample[task] || 'check-result-7')) {
             await page.screenshot({ path: path.join(outputDir, 'screenshots', `history-${task}-${portrait ? 'portrait' : 'landscape'}.png`) });
           }
@@ -283,9 +304,9 @@ try {
   await mobile.waitForFunction(() => window.__MATH_EXAM_VIDEO_READY__);
   const firstStep = mobile.locator('#transcript button').first();
   await firstStep.focus(); await mobile.keyboard.press('Enter');
-  assert.equal(await mobile.locator('#scene-count').textContent(), '1 / 12');
+  assert.equal(await mobile.locator('#scene-count').textContent(), '1 / 9');
   await mobile.locator('#next').focus(); await mobile.keyboard.press('Enter');
-  assert.equal(await mobile.locator('#scene-count').textContent(), '2 / 12');
+  assert.equal(await mobile.locator('#scene-count').textContent(), '2 / 9');
   await mobile.locator('#hint-one summary').focus(); await mobile.keyboard.press('Space');
   assert.equal(await mobile.locator('#hint-one').getAttribute('open'), '');
   await mobile.locator('#answer').fill('Сначала своя попытка'); await mobile.keyboard.press('Enter');
@@ -302,7 +323,7 @@ try {
   await mobile.locator('#previous').focus(); await mobile.keyboard.press('Enter');
   await inspectHistory(mobile, 'linear-equation', 1, 'divide-both-sides-10');
   await mobile.locator('#previous').focus(); await mobile.keyboard.press('Enter');
-  await inspectHistory(mobile, 'linear-equation', 1, 'pause-before-answer-9');
+  await inspectHistory(mobile, 'linear-equation', 1, 'combine-like-6');
   await mobile.locator('#transcript button').first().focus(); await mobile.keyboard.press('Enter');
   await inspectHistory(mobile, 'linear-equation', 1, 'read-condition-1');
   for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 1000 }]) {
@@ -341,22 +362,21 @@ try {
     let externalTtsCalls = 0;
     const renderer = createRenderer(config, { synthesize: () => { externalTtsCalls++; throw new Error('external speech must not be called'); } }, { chromium: localChromium });
     for (const task of renderTasks) {
-      console.log(`Rendering ${task}: original reading pauses, local clicks only.`);
+      console.log(`Rendering ${task}: original reading pauses, silent animation.`);
       const updates = [];
-      const job = { id: `local-${task}`, ttsProvider: 'silent', request: { task, preset: 1, format: '16:9', captions: true, videoType: 'ideal-solution', audioMode: 'clicks' } };
+      const job = { id: `local-${task}`, ttsProvider: 'silent', request: { task, preset: 1, format: '16:9', captions: true, videoType: 'ideal-solution', audioMode: 'silent' } };
       await renderer(job, { assertOwnership: async () => {}, update: async (_id, update) => updates.push(update) });
       assert.equal(updates.at(-1).status, 'ready');
       const destination = path.join(outputDir, `${task}.mp4`);
       await fs.copyFile(updates.at(-1).output, destination);
       const metadata = JSON.parse((await run('ffprobe', ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', destination])).stdout);
-      assert.equal(metadata.streams.filter(stream => stream.codec_type === 'audio').length, 1);
-      assert.equal(metadata.streams.find(stream => stream.codec_type === 'audio').codec_name, 'aac');
+      assert.equal(metadata.streams.filter(stream => stream.codec_type === 'audio').length, 0, 'Silent school videos contain no audio stream');
       const video = metadata.streams.find(stream => stream.codec_type === 'video');
       assert.equal(video.width, 1280); assert.equal(video.height, 720);
       const expectedDuration = report.views.find(view => view.task === task && view.preset === 1 && view.format === '16:9').scenes.reduce((total, scene) => total + scene.readingSeconds, 0);
       assert.ok(Math.abs(Number(metadata.format.duration) - expectedDuration) < 2, 'reading pauses preserved in completed clip');
       const bytes = await fs.readFile(destination);
-      report.samples.push({ task, file: path.basename(destination), durationSeconds: Number(metadata.format.duration), expectedReadingSeconds: expectedDuration, bytes: bytes.length, sha256: crypto.createHash('sha256').update(bytes).digest('hex'), audio: 'AAC local clicks and silence; no narration', states: [...new Set(updates.map(update => update.status).filter(Boolean))], temporaryWorkClean: (await fs.readdir(workDir)).length === 0 });
+      report.samples.push({ task, file: path.basename(destination), durationSeconds: Number(metadata.format.duration), expectedReadingSeconds: expectedDuration, bytes: bytes.length, sha256: crypto.createHash('sha256').update(bytes).digest('hex'), audio: 'No audio stream', states: [...new Set(updates.map(update => update.status).filter(Boolean))], temporaryWorkClean: (await fs.readdir(workDir)).length === 0 });
       assert.equal(externalTtsCalls, 0);
       console.log(`Ready ${task}: ${metadata.format.duration}s, ${bytes.length} bytes.`);
     }

@@ -11,11 +11,12 @@
   const jobLabel = document.getElementById('mp4-job');
   const pendingStorageKey = 'mathexam-school-video-pending-v1';
   let pending = null;
+  let legacyPending = false;
   let active = null;
   let polling = false;
   let timer = null;
   let stopped = false;
-  const labels = { queued: 'В очереди', synthesizing: 'Подготовка озвучки', rendering: 'Сборка видео', ready: 'Видео готово', failed: 'Сборка остановилась с ошибкой' };
+  const labels = { queued: 'В очереди', synthesizing: 'Подготовка кадров', rendering: 'Сборка видео', ready: 'Видео готово', failed: 'Сборка остановилась с ошибкой' };
 
   function say(message) { status.textContent = message; }
   function savePending() {
@@ -30,16 +31,19 @@
       const value = JSON.parse(sessionStorage.getItem(pendingStorageKey));
       if (!value || typeof value.body !== 'string' || value.body.length > 1000 || !/^[A-Za-z0-9-]{20,80}$/.test(value.key)) return null;
       const data = JSON.parse(value.body);
-      if (!['homework-help', 'linear-equation', 'adjacent-angles'].includes(data.task)
+      if (!Array.from(document.getElementById('task').options).some(option => option.value === data.task)
         || ![1, 2, 3].includes(data.preset) || !['16:9', '9:16'].includes(data.format)
         || !['voice', 'clicks', 'silent'].includes(data.audioMode)
         || data.captions !== true || data.videoType !== 'ideal-solution'
         || Object.keys(data).some(k => !['task', 'preset', 'format', 'audioMode', 'captions', 'videoType'].includes(k))) return null;
+      // An old audible request may have been accepted before its reply was lost.
+      // Never replay it or change its body under the same idempotency key.
+      if (data.audioMode !== 'silent') { legacyPending = true; return null; }
       return { body: value.body, key: value.key, uncertain: true };
     } catch (_) { return null; }
   }
   function lockRequest(locked) {
-    for (const id of ['task', 'preset', 'mp4-format', 'mp4-audio']) document.getElementById(id).disabled = locked;
+    for (const id of ['task', 'preset', 'mp4-format']) document.getElementById(id).disabled = locked;
   }
   function rejected(message, code) {
     const error = new Error(message);
@@ -69,7 +73,7 @@
         let message = '';
         try { const data = await response.json(); message = typeof data.error === 'string' ? data.error : ''; } catch (_) {}
         if (response.status === 401) throw rejected('Код доступа не подошёл. Проверьте его в настройках видеосервера.', response.status);
-        if (response.status === 400) throw rejected(message || 'Сервер пока не поддерживает выбранный сценарий или режим озвучки.', response.status);
+        if (response.status === 400) throw rejected(message || 'Сервер пока не поддерживает выбранный сценарий.', response.status);
         throw rejected(message || 'Видеосервер сейчас недоступен. Повторите проверку позже.', response.status);
       }
       return response;
@@ -103,6 +107,7 @@
   }
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
+    if (legacyPending) return;
     clearTimeout(timer);
     if (active && ['queued', 'synthesizing', 'rendering'].includes(active.status)) { await poll(); return; }
     try { token(); } catch (error) { say(error.message); return; }
@@ -110,7 +115,7 @@
       task: document.getElementById('task').value,
       preset: Number(document.getElementById('preset').value),
       format: document.getElementById('mp4-format').value,
-      audioMode: document.getElementById('mp4-audio').value,
+      audioMode: 'silent',
       captions: true, videoType: 'ideal-solution',
     };
     const encoded = JSON.stringify(request);
@@ -166,12 +171,26 @@
   });
   window.addEventListener('pageshow', function () { stopped = false; });
   pending = readPending();
+  if (legacyPending) {
+    lockRequest(true);
+    submit.disabled = true;
+    say('В этой вкладке остался прежний запрос видео со звуком. Он мог продолжиться на сервере. Повторная отправка отключена. Можно отдельно начать новую сборку без звука.');
+    const restart = document.createElement('button');
+    restart.type = 'button'; restart.className = 'secondary'; restart.id = 'mp4-restart-silent';
+    restart.textContent = 'Начать новую сборку без звука';
+    restart.addEventListener('click', () => {
+      legacyPending = false; pending = null; savePending();
+      lockRequest(false); submit.disabled = false; restart.remove();
+      submit.textContent = 'Создать видео с выбранным примером';
+      say('Выберите пример и запустите новую сборку без звука. Прежняя сборка на сервере не отменена.');
+    });
+    submit.parentElement.appendChild(restart);
+  }
   if (pending) {
     const request = JSON.parse(pending.body);
     document.getElementById('task').value = request.task;
     document.getElementById('preset').value = String(request.preset);
     document.getElementById('mp4-format').value = request.format;
-    document.getElementById('mp4-audio').value = request.audioMode;
     document.getElementById('task').dispatchEvent(new Event('change'));
     lockRequest(true);
     submit.textContent = 'Повторить этот запрос';

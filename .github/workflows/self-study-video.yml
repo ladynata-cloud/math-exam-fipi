@@ -10,6 +10,10 @@ on:
       - 'tools/self-study-export.browser.cjs'
       - 'tools/self-study-video-check.mjs'
       - 'tools/course-video-entry.browser.cjs'
+      - 'tools/grade7-*'
+      - 'tools/makarychev7-start.test.cjs'
+      - 'school/**'
+      - 'grade7/**'
       - 'learning/practice-entry.js'
       - 'learning/topic-guides.js'
       - '.github/workflows/self-study-video.yml'
@@ -59,6 +63,10 @@ jobs:
         run: node tools/self-study-export.browser.cjs
       - name: Local scene layout and keyboard checks without speech providers
         run: node tools/self-study-video-check.mjs --output "$RUNNER_TEMP/self-study-video-check"
+      - name: Grade 7 mathematical practice and preserved progress
+        run: node tools/makarychev7-start.test.cjs
+      - name: Grade 7 animated steps and silent stored media
+        run: node tools/grade7-motion.browser.cjs
       - name: Visible video playback and direct practice entry
         # Stock Chrome includes the H.264/AAC codecs needed by the published MP4s.
         # Keep the bundled Chromium for the other authoring/layout gates above.

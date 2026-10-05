@@ -3,15 +3,23 @@
   'use strict';
   const SEEN_KEY = 'mathexam-welcome-v1';
   const VIDEO_ORIGIN = 'https://mathexam.space';
-  const VIDEO_REVISION = 'history-tap-20261005';
+  const VIDEO_REVISION = 'grade7-silent-motion-20261005';
   const VIDEOS = Object.freeze({
-    'negative-numbers': { title: 'Отрицательные числа', length: '52 с', size: '431 КБ' },
-    'fractions': { title: 'Действия с дробями', length: '52 с', size: '430 КБ' },
-    'brackets': { title: 'Раскрытие скобок', length: '52 с', size: '464 КБ' },
-    'proportions': { title: 'Пропорции', length: '52 с', size: '409 КБ' },
-    'percentages': { title: 'Проценты', length: '52 с', size: '467 КБ' },
-    'linear-equation': { title: 'Линейное уравнение: шаг за шагом', length: '1 мин 19 с', size: '638 КБ' },
-    'adjacent-angles': { title: 'Смежные углы: читаем рисунок', length: '1 мин 6 с', size: '612 КБ' }
+    'negative-numbers': { title: 'Отрицательные числа' },
+    'fractions': { title: 'Действия с дробями' },
+    'brackets': { title: 'Раскрытие скобок' },
+    'proportions': { title: 'Пропорции' },
+    'percentages': { title: 'Проценты' },
+    'linear-equation': { title: 'Линейное уравнение: шаг за шагом' },
+    'adjacent-angles': { title: 'Смежные углы: читаем рисунок' },
+    'numeric-expressions': { title: 'Числовые выражения' },
+    'variable-expressions': { title: 'Выражения с переменными' },
+    'compare-expressions': { title: 'Сравнение значений выражений' },
+    'arithmetic-properties': { title: 'Свойства действий' },
+    'identities': { title: 'Тождества и преобразования' },
+    'equation-roots': { title: 'Корень уравнения' },
+    'linear-cases': { title: 'Линейное уравнение: три случая' },
+    'equation-word-problems': { title: 'Задача с помощью уравнения' }
   });
   const steps = [
     {
@@ -52,62 +60,19 @@
     }
   ];
   let modal = null, opener = null, mode = null, step = 0, seenThisVisit = false;
-  let clicks = false, voice = false, audioContext = null, hintUsed = false, answered = false, submitted = false;
-  let speechGeneration = 0;
+  let hintUsed = false, answered = false, submitted = false;
   const $ = selector => modal?.querySelector(selector);
-  const speechAvailable = () => 'speechSynthesis' in window && typeof window.SpeechSynthesisUtterance === 'function';
   function readSeen() { try { return localStorage.getItem(SEEN_KEY) === 'seen'; } catch (_) { return false; } }
   function markSeen() { seenThisVisit = true; try { localStorage.setItem(SEEN_KEY, 'seen'); } catch (_) {} }
-  function stopSpeech() { speechGeneration += 1; if (speechAvailable()) window.speechSynthesis.cancel(); }
-  function audioMessage(message) { const note = $('[data-mw-audio-status]'); if (note) note.textContent = message; }
-  function clickSound() {
-    if (!clicks) return;
-    try {
-      const Audio = window.AudioContext || window.webkitAudioContext;
-      if (!Audio) { clicks = false; refreshAudio(); audioMessage('Щелчки недоступны в этом браузере. Текст работает без звука.'); return; }
-      if (!audioContext) audioContext = new Audio();
-      if (audioContext.state === 'suspended') audioContext.resume().catch(() => {});
-      const oscillator = audioContext.createOscillator(), gain = audioContext.createGain();
-      oscillator.type = 'sine'; oscillator.frequency.value = 720;
-      gain.gain.setValueAtTime(0.025, audioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.04);
-      oscillator.connect(gain); gain.connect(audioContext.destination);
-      oscillator.start(); oscillator.stop(audioContext.currentTime + 0.05);
-      oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
-    } catch (_) { clicks = false; refreshAudio(); audioMessage('Звук не удалось включить. Все инструкции остаются на экране.'); }
-  }
-  function refreshAudio() {
-    const clickButton = $('[data-mw-clicks]'), voiceButton = $('[data-mw-voice]');
-    if (clickButton) { clickButton.setAttribute('aria-pressed', String(clicks)); clickButton.textContent = clicks ? 'Щелчки включены' : 'Включить щелчки'; }
-    if (voiceButton) { voiceButton.setAttribute('aria-pressed', String(voice)); voiceButton.textContent = voice ? 'Выключить голос' : 'Включить голос'; voiceButton.disabled = !speechAvailable(); }
-  }
-  function speakStep() {
-    stopSpeech();
-    if (!voice || mode !== 'intro' || !speechAvailable()) return;
-    const voices = window.speechSynthesis.getVoices();
-    const russian = voices.find(item => /^ru(?:-|_|$)/i.test(item.lang));
-    if (!russian) { voice = false; refreshAudio(); audioMessage('Русский голос пока не доступен в браузере. Можно попробовать снова или читать текст.'); return; }
-    const current = speechGeneration;
-    const utterance = new window.SpeechSynthesisUtterance(`${steps[step].title}. ${steps[step].text}`);
-    utterance.voice = russian; utterance.lang = 'ru-RU'; utterance.rate = 0.93;
-    utterance.onerror = () => {
-      if (speechGeneration !== current) return;
-      voice = false; refreshAudio(); audioMessage('Голос не удалось воспроизвести. Продолжай по тексту; он содержит всю инструкцию.');
-    };
-    audioMessage('Читает голос браузера. Для некоторых голосов нужен интернет.');
-    try { window.speechSynthesis.speak(utterance); } catch (_) { voice = false; refreshAudio(); audioMessage('Озвучка недоступна. Продолжай по тексту.'); }
-  }
   function disposeMedia() {
-    stopSpeech();
     const video = $('video');
     if (video) { video.pause(); video.removeAttribute('src'); video.load(); }
-    if (audioContext) { const context = audioContext; audioContext = null; context.close().catch(() => {}); }
   }
   function cleanup() {
     if (!modal) return;
     disposeMedia();
     const old = modal, focusTarget = opener;
-    modal = null; mode = null; opener = null; clicks = false; voice = false;
+    modal = null; mode = null; opener = null;
     if (old.open) old.close();
     old.remove();
     if (focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
@@ -133,7 +98,7 @@
   }
   function showStep(focusHeading = true) {
     const current = steps[step];
-    $('[data-mw-content]').innerHTML = `<p class="mw-step">Знакомство с кабинетом · шаг ${step + 1} из ${steps.length}</p><progress class="mw-progress" value="${step + 1}" max="${steps.length}" aria-label="Шаг знакомства"></progress><h2 id="mw-title" class="mw-title" tabindex="-1"></h2><p class="mw-instruction"></p><div class="mw-practice" data-mw-practice></div><p class="mw-feedback" data-mw-feedback role="status" aria-live="polite"></p><div class="mw-navigation"><button type="button" data-mw-back ${step === 0 ? 'disabled' : ''}>Назад</button><button type="button" class="primary" data-mw-next></button></div><div class="mw-audio"><span>Звук — по желанию:</span><button type="button" data-mw-clicks aria-pressed="false">Включить щелчки</button><button type="button" data-mw-voice aria-pressed="false">Включить голос</button></div><p class="mw-audio-status" data-mw-audio-status role="status">${speechAvailable() ? 'Текст работает без звука. Голос включается только по твоему нажатию.' : 'Голос в этом браузере недоступен. Вся инструкция есть в тексте.'}</p>`;
+    $('[data-mw-content]').innerHTML = `<p class="mw-step">Знакомство с кабинетом · шаг ${step + 1} из ${steps.length}</p><progress class="mw-progress" value="${step + 1}" max="${steps.length}" aria-label="Шаг знакомства"></progress><h2 id="mw-title" class="mw-title" tabindex="-1"></h2><p class="mw-instruction"></p><div class="mw-practice" data-mw-practice></div><p class="mw-feedback" data-mw-feedback role="status" aria-live="polite"></p><div class="mw-navigation"><button type="button" data-mw-back ${step === 0 ? 'disabled' : ''}>Назад</button><button type="button" class="primary" data-mw-next></button></div><p class="mw-silent-note">Без звука. Все инструкции остаются на экране.</p>`;
     $('#mw-title').textContent = current.title;
     $('.mw-instruction').textContent = current.text;
     $('[data-mw-practice]').innerHTML = current.body;
@@ -144,27 +109,22 @@
     if (status) status.textContent = answered ? (hintUsed ? 'Учебный пример · решено с подсказкой' : 'Учебный пример · решено самостоятельно') : 'Учебный пример · начато';
     if (step === 1 && answered) $('[data-mw-feedback]').textContent = 'Верно: 5 + 3 = 8. Можно идти дальше.';
     if (step === 3 && submitted) $('[data-mw-feedback]').textContent = 'Ты попробовала сдачу. Это учебный пример; работа учителю не отправлялась.';
-    $('[data-mw-back]').addEventListener('click', () => { clickSound(); if (step > 0) { step -= 1; showStep(); } });
-    $('[data-mw-next]').addEventListener('click', () => { clickSound(); if (step === steps.length - 1) close(); else { step += 1; showStep(); } });
+    $('[data-mw-back]').addEventListener('click', () => { if (step > 0) { step -= 1; showStep(); } });
+    $('[data-mw-next]').addEventListener('click', () => { if (step === steps.length - 1) close(); else { step += 1; showStep(); } });
     $('[data-mw-hint]')?.addEventListener('click', event => {
-      clickSound(); hintUsed = true; hintText.hidden = false;
+      hintUsed = true; hintText.hidden = false;
       event.currentTarget.setAttribute('aria-expanded', 'true');
       $('[data-mw-feedback]').textContent = 'Подсказка открыта. Теперь выбери свой ответ.';
     });
     const hintButton = $('[data-mw-hint]');
     if (hintButton) { hintText.id = 'mw-hint'; hintButton.setAttribute('aria-controls', 'mw-hint'); hintButton.setAttribute('aria-expanded', String(hintUsed)); }
     modal.querySelectorAll('[data-mw-answer]').forEach(button => button.addEventListener('click', () => {
-      clickSound();
       if (button.dataset.mwAnswer === '5') { answered = true; $('[data-mw-feedback]').textContent = 'Верно: 5 + 3 = 8. Можно идти дальше.'; }
       else { answered = false; $('[data-mw-feedback]').textContent = button.dataset.mwAnswer === '4' ? 'Проверь: 4 + 3 = 7, а нужно 8. Попробуй ещё раз или открой подсказку.' : 'Проверь: 11 + 3 = 14, а нужно 8. Попробуй ещё раз или открой подсказку.'; }
     }));
-    $('[data-mw-submit]')?.addEventListener('click', () => { clickSound(); submitted = true; $('[data-mw-feedback]').textContent = 'Ты попробовала сдачу. Это учебный пример; работа учителю не отправлялась.'; });
-    $('[data-mw-clicks]').addEventListener('click', () => { clicks = !clicks; refreshAudio(); clickSound(); });
-    $('[data-mw-voice]').addEventListener('click', () => { voice = !voice; refreshAudio(); if (voice) speakStep(); else { stopSpeech(); audioMessage('Голос выключен. Продолжай по тексту.'); } });
-    refreshAudio();
+    $('[data-mw-submit]')?.addEventListener('click', () => { submitted = true; $('[data-mw-feedback]').textContent = 'Ты попробовала сдачу. Это учебный пример; работа учителю не отправлялась.'; });
     if (focusHeading) $('#mw-title').focus({ preventScroll: true });
     modal.scrollTop = 0;
-    if (voice) speakStep();
   }
   function open() {
     if (!createDialog('Учебный пример · ничего не отправляется')) return false;
@@ -181,21 +141,34 @@
     if (route && route !== 'home' && route !== 'route') return false;
     return open();
   }
-  function openVideo(key) {
+  function openVideo(key, requestedKind = 'math') {
     if (!Object.prototype.hasOwnProperty.call(VIDEOS, key)) return false;
     const video = VIDEOS[key];
-    if (!createDialog('Короткий разбор · текст и щелчки')) return false;
+    if (!createDialog('Два коротких видео · без звука')) return false;
     mode = 'video'; modal.classList.add('mw-video-dialog');
     $('[data-mw-close]').setAttribute('aria-label', 'Закрыть видео');
-    $('[data-mw-content]').innerHTML = '<h2 id="mw-title" class="mw-title mw-video-title" tabindex="-1"></h2><p class="mw-video-summary"></p><video class="mw-video" controls playsinline preload="none"></video><p class="mw-video-error" role="status" hidden>Видео не загрузилось. Попробуй позже или открой текстовый разбор.</p><p>В этих анимированных шпаргалках — текст и мягкие щелчки, без озвучки. Пройденные строки остаются на экране. Можно выключить звук: все шаги написаны на экране. Просмотр не меняет твой учебный прогресс.</p><div class="mw-video-links"><a target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-mw-text>Открыть текст и шаги ↗</a><a target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-mw-download>Открыть MP4 для сохранения ↗</a></div><p class="mw-download-note">На странице видео выбери «Скачать» в меню проигрывателя или браузера. Сохрани заранее, если связь нестабильна.</p>';
-    $('#mw-title').textContent = video.title;
-    $('.mw-video-summary').textContent = `${video.length} · ${video.size} · загрузка начнётся после нажатия ▶`;
+    $('[data-mw-content]').innerHTML = '<h2 id="mw-title" class="mw-title mw-video-title" tabindex="-1"></h2><p class="mw-video-summary"></p><div class="mw-video-modes" role="group" aria-label="Что посмотреть"><button type="button" data-mw-video-kind="math" aria-pressed="true">Разбор задачи</button><button type="button" data-mw-video-kind="trainer" aria-pressed="false">Как работать в тренажёре</button></div><video class="mw-video" controls playsinline preload="none"></video><p class="mw-video-error" role="status" hidden>Видео не загрузилось. Попробуй позже или открой текстовый разбор.</p><p>Выбери разбор задачи или показ действий в тренажёре. Оба видео без звука: все объяснения написаны на экране. Можно поставить на паузу или повторить. Просмотр не меняет твой учебный прогресс.</p><div class="mw-video-links"><a target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-mw-text>Открыть текст и шаги ↗</a><a target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-mw-download>Открыть MP4 для сохранения ↗</a></div><p class="mw-download-note">На странице видео выбери «Скачать» в меню проигрывателя или браузера. Сохрани заранее, если связь нестабильна.</p>';
     const player = $('.mw-video');
-    player.setAttribute('aria-label', video.title);
-    player.src = `${VIDEO_ORIGIN}/video-lessons/media/${key}.mp4?v=${VIDEO_REVISION}`;
+    function selectKind(kind) {
+      const usage = kind === 'trainer';
+      player.pause();
+      // Setting src resets the previous media without forcing a download.
+      // Keep preload=none: a learner with weak connectivity presses play first.
+      player.src = `${VIDEO_ORIGIN}/video-lessons/media/${usage ? 'using-' : ''}${key}.mp4?v=${VIDEO_REVISION}`;
+      $('#mw-title').textContent = video.title + (usage ? ' · как работать' : ' · разбор задачи');
+      $('.mw-video-summary').textContent = 'Без звука · загрузка начнётся после нажатия ▶';
+      player.setAttribute('aria-label', video.title + (usage ? ' — как работать в тренажёре' : ' — разбор задачи'));
+      $('.mw-video-error').hidden = true;
+      modal.querySelectorAll('[data-mw-video-kind]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mwVideoKind === (usage ? 'trainer' : 'math'))));
+      $('[data-mw-text]').href = usage
+        ? `${VIDEO_ORIGIN}/video-lessons/cheatsheets.html?type=trainer#${key}`
+        : `${VIDEO_ORIGIN}/video-lessons/studio.html?task=${key}&preset=1`;
+      $('[data-mw-text]').textContent = usage ? 'Инструкция к тренажёру ↗' : 'Открыть текст и шаги ↗';
+      $('[data-mw-download]').href = player.src;
+    }
     player.addEventListener('error', () => { const error = $('.mw-video-error'); if (error && player === $('.mw-video')) error.hidden = false; });
-    $('[data-mw-text]').href = `${VIDEO_ORIGIN}/video-lessons/studio.html?task=${key}&preset=1`;
-    $('[data-mw-download]').href = player.src;
+    modal.querySelectorAll('[data-mw-video-kind]').forEach(button => button.addEventListener('click', () => selectKind(button.dataset.mwVideoKind)));
+    selectKind(requestedKind);
     $('#mw-title').focus({ preventScroll: true });
     return true;
   }

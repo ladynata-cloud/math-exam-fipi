@@ -10,7 +10,12 @@ const server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decode
  const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],bad=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)bad.push(r.url());});
  const go=async hash=>{await page.goto(base+'#'+hash);await page.locator('h1').waitFor();};
  const answer=()=>page.evaluate(()=>{const s=JSON.parse(localStorage.getItem(WorkshopState.KEY)),t=WorkshopMath.generate(s.last.skill,s.last.seed),fmt=a=>Array.isArray(a)?a.map(fmt).join(';'):typeof a==='object'?WorkshopMath.fmt(a):String(a);return fmt(t.answer);});
- await go('courses');assert.equal(await page.locator('a[href^="#course/"]').count(),12);
+ await go('courses');
+ const originalCourseIds=['foundation','5','6','7','8','9','10','11','probability','vilenkin5','vilenkin6','makarychev9'];
+ const courseIds=await page.locator('a[href^="#course/"]').evaluateAll(links=>links.map(link=>link.getAttribute('href').slice('#course/'.length)));
+ assert.deepEqual(courseIds.slice().sort(),[...originalCourseIds,'makarychev7-start'].sort(),'All twelve established courses remain alongside exactly one new Grade 7 route');
+ assert.equal(await page.locator('a[href="#course/makarychev7-start"]').isVisible(),true);
+
  await page.evaluate(()=>{localStorage.setItem('legacy-sentinel','untouched');const s=WorkshopState.blank();WorkshopState.result(s,{skill:'fraction',mode:'check',correct:true,assisted:false,exposed:false,attempt:1,time:100,fingerprint:'old'});WorkshopState.save(localStorage,s);});
  await page.reload();
  const ids=await page.evaluate(()=>WorkshopCoreContent.rows.map(r=>'core-'+r[0]));assert.equal(ids.length,48);
@@ -40,6 +45,6 @@ const server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decode
  assert.equal(await page.evaluate(()=>localStorage.getItem('legacy-sentinel')),'untouched');assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem(WorkshopState.KEY)).skills.fraction.checks.length),1);
  fs.mkdirSync('/tmp/school-core-checks',{recursive:true});await page.setViewportSize({width:1280,height:900});await go('courses');await page.screenshot({path:'/tmp/school-core-checks/courses.png',fullPage:true});await page.setViewportSize({width:360,height:900});await go('lesson/core-work');await page.screenshot({path:'/tmp/school-core-checks/mobile-work.png',fullPage:true});await go('lesson/core-trig-identity');await page.screenshot({path:'/tmp/school-core-checks/mobile-circle.png',fullPage:true});
  await page.evaluate(()=>localStorage.setItem(WorkshopState.KEY,'{"broken":'));await page.reload();assert((await page.locator('#notice').innerText()).length>0);await page.locator('[data-cmd=mode][data-value=check]').click();await page.locator('#answer').fill('0');await page.locator('#answer-form button').click();assert.equal(await page.evaluate(()=>localStorage.getItem(WorkshopState.KEY)),'{"broken":');
- assert.deepEqual(errors,[]);assert.deepEqual(bad,[]);console.log('PASS Chromium: 48 lesson/model/step flows; 12 routes; diagnosis; course resume; prerequisite return; independent/help evidence; teacher assignment; 360/768/1280px, 200% zoom, keyboard, reduced motion, legacy/corrupt storage.');
+ assert.deepEqual(errors,[]);assert.deepEqual(bad,[]);console.log('PASS Chromium: 48 lesson/model/step flows; 12 retained routes plus the new Grade 7 route; diagnosis; course resume; prerequisite return; independent/help evidence; teacher assignment; 360/768/1280px, 200% zoom, keyboard, reduced motion, legacy/corrupt storage.');
  }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1;});

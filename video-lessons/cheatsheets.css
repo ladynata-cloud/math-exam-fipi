@@ -13,3 +13,12 @@
 @media print{.topic-picker,.video-panel,.sheet-label{display:none}.sheet-header{padding-bottom:4mm;margin-bottom:6mm}.sheet-header h2{font-size:24pt}.sheet{padding:0}.sheet-grid{gap:7mm}}
 
 .practice-entry #quick-cabinet{display:inline-block;margin-top:8px}.practice-entry #quick-cabinet[hidden]{display:none}#quick-progress{font-size:12px;line-height:1.5;color:var(--muted);margin:10px 0 0}@media(max-width:800px){.practice-entry #quick-cabinet{display:block;text-align:center}}
+
+#topics .topic-group{display:grid;gap:4px}#topics .topic-group h3{font-size:10px;letter-spacing:.06em;margin:12px 10px 3px}#topics .topic-group a{padding:10px 12px}.intro .course-entry{margin:9px 0 0;font-size:14px}.course-entry a{font-weight:650}
+
+.video-kinds{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.video-kinds button{flex:1;min-width:130px;min-height:42px}.video-kinds button[aria-pressed="true"]{background:var(--green);color:white;border-color:var(--green)}
+/* Keep both video choices and the full frame visible before scrolling. */
+@media(min-width:801px){.site-header{padding-top:14px;padding-bottom:14px}.intro{margin-top:8px;margin-bottom:14px}.intro h1{font-size:34px}.sheet{padding:24px 30px}.sheet-header{padding-bottom:10px;margin-bottom:12px}.sheet-tag{display:none}.video-heading{margin-bottom:8px}.video-heading .eyebrow{display:none}.video-heading h3{font-size:16px}.video-kinds{margin-bottom:10px}}
+.intro>p:not(.eyebrow):not(.course-entry){font-size:15px;color:var(--muted);margin:0}@media(max-width:800px){.intro>p:not(.eyebrow):not(.course-entry){font-size:14px}}
+
+@media(max-width:800px){.intro{margin-top:5px;margin-bottom:10px}.intro h1{font-size:25px;line-height:1.1;margin:6px 0 8px}.topic-picker{margin-bottom:10px}.sheet-header{margin-bottom:10px}.video-heading{margin-bottom:7px}.video-heading .eyebrow{display:none}.video-kinds{gap:6px;margin-bottom:9px}.video-kinds button{padding:8px;min-height:40px;font-size:12px}}

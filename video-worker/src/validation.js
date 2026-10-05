@@ -1,5 +1,7 @@
 const SCHOOL_TASKS = new Set(['homework-help', 'linear-equation', 'adjacent-angles',
-  'negative-numbers', 'fractions', 'brackets', 'proportions', 'percentages']);
+  'negative-numbers', 'fractions', 'brackets', 'proportions', 'percentages',
+  'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties',
+  'identities', 'equation-roots', 'linear-cases', 'equation-word-problems']);
 const TASKS = new Set(['18', '19', '20', ...SCHOOL_TASKS]);
 const FORMATS = new Set(['16:9', '9:16']);
 const VIDEO_TYPES = new Set(['ideal-solution', 'student-path']);
@@ -34,17 +36,21 @@ export function validateJobRequest(input, options = {}) {
   if (input.audioMode !== undefined && !AUDIO_MODES.has(input.audioMode)) {
     throw new Error('Режим звука должен быть silent, clicks или voice');
   }
-  if (input.audioMode === 'voice' && !['openai', 'yandex'].includes(options.ttsProvider)) {
+  if (!isSchoolTask(task) && input.audioMode === 'voice' && !['openai', 'yandex'].includes(options.ttsProvider)) {
     throw new Error('Автоматическая озвучка требует настроенного провайдера OpenAI или Yandex');
   }
   const audioMode = resolveAudioMode(input, options.ttsProvider);
   const captions = isSchoolTask(task) || audioMode !== 'voice' ? true : input.captions !== false;
   return Object.freeze({ task, preset, format, captions, videoType,
-    ...(input.audioMode !== undefined ? { audioMode: input.audioMode } : {}),
+    ...(isSchoolTask(task) ? { audioMode: 'silent' }
+      : input.audioMode !== undefined ? { audioMode: input.audioMode } : {}),
   });
 }
 
 export function resolveAudioMode(request, provider) {
+  // Authored school lessons remain silent even when an older queued request
+  // asks for clicks/voice or the worker has a paid speech provider configured.
+  if (isSchoolTask(String(request.task || ''))) return 'silent';
   return request.audioMode || (['silent', 'mock'].includes(provider) ? 'clicks' : 'voice');
 }
 

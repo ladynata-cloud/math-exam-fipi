@@ -29,11 +29,7 @@ dialog.mw-dialog{box-sizing:border-box;width:min(760px,calc(100vw - 32px));max-w
 .mw-dialog .mw-navigation{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:0 0 20px}
 .mw-dialog .mw-navigation button{font-size:1rem;min-height:48px}
 .mw-dialog .mw-navigation .primary{margin-left:auto}
-.mw-dialog .mw-audio{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:16px;border-top:1px solid #dce7df}
-.mw-dialog .mw-audio>span{font-size:.85rem;color:#526b60}
-.mw-dialog .mw-audio button{font-size:.8rem;min-height:42px;padding:8px 10px}
-.mw-dialog .mw-audio button[aria-pressed=true]{background:#e5efe2;border-color:#729784;color:#154b36}
-.mw-dialog .mw-audio-status{margin:9px 0 0;font-size:.8rem;line-height:1.45;color:#526b60}
+.mw-dialog .mw-silent-note{margin:16px 0 0;font-size:.8rem;line-height:1.45;color:#526b60}
 .mw-dialog .mw-finish{display:flex;align-items:center;gap:18px}
 .mw-dialog .mw-finish>span{width:54px;height:54px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;font-size:2rem;background:#dcebdd;color:#176c52}
 .mw-dialog .mw-finish p{margin:0}
@@ -44,5 +40,7 @@ dialog.mw-video-dialog{width:min(960px,calc(100vw - 32px))}
 .mw-dialog .mw-video-links{display:flex;gap:12px 22px;flex-wrap:wrap;margin:18px 0 12px}
 .mw-dialog .mw-video-links a{font-weight:600;min-height:44px;display:flex;align-items:center}
 .mw-dialog .mw-video-error{padding:12px;background:#fff0e6;color:#713a19;border-radius:9px}
-@media(max-width:540px){dialog.mw-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:16px}.mw-dialog .mw-shell{padding:18px}.mw-dialog .mw-top{gap:8px;margin-bottom:14px}.mw-dialog .mw-kicker{font-size:.72rem}.mw-dialog .mw-title{font-size:1.85rem}.mw-dialog .mw-practice{padding:15px}.mw-dialog .mw-answer-row{gap:8px}.mw-dialog .mw-answer-row button{min-width:0;flex:1;font-size:1.1rem;padding:10px 6px}.mw-dialog .mw-navigation button{font-size:.92rem;padding:10px 12px}.mw-dialog .mw-navigation .primary{max-width:75%}.mw-dialog .mw-instruction{font-size:1.12rem}.mw-dialog .mw-audio>span{width:100%}.mw-dialog .mw-video-links{gap:5px}}
+@media(max-width:540px){dialog.mw-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:16px}.mw-dialog .mw-shell{padding:18px}.mw-dialog .mw-top{gap:8px;margin-bottom:14px}.mw-dialog .mw-kicker{font-size:.72rem}.mw-dialog .mw-title{font-size:1.85rem}.mw-dialog .mw-practice{padding:15px}.mw-dialog .mw-answer-row{gap:8px}.mw-dialog .mw-answer-row button{min-width:0;flex:1;font-size:1.1rem;padding:10px 6px}.mw-dialog .mw-navigation button{font-size:.92rem;padding:10px 12px}.mw-dialog .mw-navigation .primary{max-width:75%}.mw-dialog .mw-instruction{font-size:1.12rem}.mw-dialog .mw-video-links{gap:5px}}
 @media(prefers-reduced-motion:reduce){.mw-dialog *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.mw-dialog .mw-video-modes{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 12px}.mw-dialog .mw-video-modes button{flex:1;min-width:140px;font-size:.9rem}.mw-dialog .mw-video-modes button[aria-pressed=true]{background:#19685b;border-color:#19685b;color:white}
