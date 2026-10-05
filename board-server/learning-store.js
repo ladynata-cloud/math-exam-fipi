@@ -143,6 +143,19 @@ class LearningStore {
   }
   students(auth) { this.teacher(auth); return this.rows("SELECT * FROM accounts WHERE teacher_id=? AND role='student' ORDER BY created_at,id", auth.id).map(accountDTO); }
   recoverStudent(auth, id) { return this.transaction(() => { this.ownsStudent(auth, id); return this.newInvitation(id, 'recovery', 30 * 60 * 1000); }); }
+  replaceStudentPassword(sessionToken, id, passwordHash, expectedHash, expectedEpoch) {
+    requireValue(typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash), 'LEARNING_PASSWORD_INVALID');
+    return this.transaction(() => {
+      // Hashing awaited outside the transaction. Recheck the teacher's session,
+      // ownership and pupil credentials before changing this existing account.
+      const auth = this.session(sessionToken), student = this.ownsStudent(auth, id);
+      requireValue(student.password_hash === expectedHash && student.auth_epoch === expectedEpoch, 'LEARNING_CREDENTIALS_CHANGED', 409);
+      this.run('UPDATE accounts SET password_hash=?,auth_epoch=auth_epoch+1 WHERE id=?', passwordHash, id);
+      this.run('DELETE FROM sessions WHERE account_id=?', id);
+      this.run('DELETE FROM invitations WHERE account_id=?', id);
+      return { student: accountDTO(this.account(id)) };
+    });
+  }
   invitation(secret) {
     requireValue(TOKEN_RE.test(secret || ''), 'LEARNING_ACCESS_INVALID', 401);
     const invitation = this.row('SELECT * FROM invitations WHERE hash=?', tokenHash(secret));
