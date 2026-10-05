@@ -97,7 +97,9 @@ export async function renderSegment(config, framePath, audioPath, targetPath, du
   if (voice) args.push('-i', audioPath);
   else if (!silent) args.push('-f', 'lavfi', '-i', 'anullsrc=r=24000:cl=mono');
   if (clickSound) {
-    args.push('-f', 'lavfi', '-i', 'sine=frequency=1450:sample_rate=24000:duration=0.075');
+    // A short, rounded knock: filtered noise has no sustained note or whistle.
+    // Fixed seed makes authored clips reproducible; fades avoid hard sample edges.
+    args.push('-f', 'lavfi', '-i', 'anoisesrc=color=pink:seed=271828:sample_rate=24000:duration=0.085:amplitude=0.35,highpass=f=100,lowpass=f=1400,afade=t=in:st=0:d=0.003,afade=t=out:st=0.008:d=0.077');
   }
   args.push('-t', duration.toFixed(3), '-r', '30');
   if (clickSound) {

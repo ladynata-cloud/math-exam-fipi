@@ -100,7 +100,7 @@ async function main() {
     assert.equal(store.row("SELECT COUNT(*) AS n FROM assignments WHERE status='published'").n, 8);
     const studentSession = students.find(student => student.account.id === created.assignments[0].learnerId);
     const { page: studentPage, context: studentContext } = await open(studentSession, { width: 375, height: 812 });
-    await studentPage.getByRole('heading', { name: 'Моё письменное решение' }).waitFor();
+    await studentPage.getByRole('heading', { name: 'Копии решений в кабинете' }).waitFor();
     assert.equal(await studentPage.locator('[data-batch-target]').count(), 0, 'Pupil sees no peer roster');
     await studentPage.locator('.teaching-photo-grid img').first().evaluate(image => image.decode());
     assert.ok(await studentPage.locator('.teaching-photo-grid img').first().evaluate(image => image.naturalWidth > 800));

@@ -1,4 +1,5 @@
-const SCHOOL_TASKS = new Set(['homework-help', 'linear-equation', 'adjacent-angles']);
+const SCHOOL_TASKS = new Set(['homework-help', 'linear-equation', 'adjacent-angles',
+  'negative-numbers', 'fractions', 'brackets', 'proportions', 'percentages']);
 const TASKS = new Set(['18', '19', '20', ...SCHOOL_TASKS]);
 const FORMATS = new Set(['16:9', '9:16']);
 const VIDEO_TYPES = new Set(['ideal-solution', 'student-path']);

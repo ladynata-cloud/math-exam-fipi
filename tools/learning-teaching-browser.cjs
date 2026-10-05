@@ -128,7 +128,7 @@ async function run() {
     await page.getByText('Основание выбрано верно. Проверь высоту к нему.', { exact: true }).waitFor();
     assert.equal(await page.evaluate(() => calls.find(call => call.route.endsWith('/feedback')).body.reviewRevision), 'ab'.repeat(32), 'Teacher feedback carries the viewed revision');
     await page.evaluate(() => openView('assignment', 'student'));
-    await page.getByRole('heading', { name: 'Моё письменное решение' }).waitFor();
+    await page.getByRole('heading', { name: 'Копии решений в кабинете' }).waitFor();
     assert.equal(await page.locator('#teaching-feedback').count(), 0);
     assert.equal(await page.locator('[data-publish]').count(), 0);
     await page.locator('#teaching-photo [type=file]').setInputFiles(photoFile);

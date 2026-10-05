@@ -221,6 +221,7 @@ async function main() {
     assert.match(await student.page.locator('.route-progress').innerText(), /2\s*\/\s*25/);
     assert.match(await student.page.locator('#route-equations .route-count').innerText(), /самостоятельно решено попыток: 0/);
     await verifyPaperHomework({ teacher, student, pupil, peer, store, origin });
+    await verifyTopicGuideEntry({ teacher, open, store, origin });
     const pupilCookie = (await student.context.cookies(origin)).find(cookie => cookie.name === 'mathexam_learning_local');
     assert.equal(pupilCookie.httpOnly, true);
     const secrets = [PASSWORD, PUPIL_PASSWORD, teacherCookie.value, pupilCookie.value,
@@ -237,12 +238,134 @@ async function main() {
     }
     assert.deepEqual(pageErrors, [], 'Browser has no uncaught script errors');
     assert.deepEqual(nonlocalRequests, [], 'The test uses local assets and performs no external requests');
-    console.log('LEARNING_FREE_ROUTE_BROWSER_OK: teacher-created credentials, isolated own plan, unordered route, nested prerequisite return after reload, unchanged task and draft, submission without false success, welcome and paper homework');
+    console.log('LEARNING_FREE_ROUTE_BROWSER_OK: teacher-created credentials, isolated own plan, unordered route, nested prerequisite return after reload, unchanged task and draft, submission without false success, welcome, paper homework and exact topic-guide entry without accidental attempts');
   } finally {
     if (browser) await browser.close();
     await stop(server); await stop(trainerServer); learning.close();
     fs.rmSync(directory, { recursive: true, force: true });
   }
+}
+
+async function verifyTopicGuideEntry({ teacher, open, store, origin }) {
+  const loginName = 'fixture_topic_guide';
+  const learner = (await api(teacher.page, '/teacher/students', {
+    name: 'Проверка перехода из шпаргалки', login: loginName, password: PUPIL_PASSWORD
+  })).student;
+  const student = await open({ width: 390, height: 844 }), page = student.page;
+  const creations = [];
+  page.on('request', request => {
+    if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/learning/attempts') creations.push(request.postDataJSON());
+  });
+  const count = () => store.row('SELECT COUNT(*) AS n FROM attempts WHERE learner_id=?', learner.id).n;
+  const currentId = () => new URLSearchParams(new URL(page.url()).hash.slice(1)).get('attempt');
+  async function preflight(topic) {
+    const before = count(), requests = creations.length;
+    await navigate(page, 'learn=' + topic);
+    await page.locator('[data-lesson-video]').waitFor();
+    assert.equal(count(), before, 'Reading a topic guide creates no real work');
+    assert.equal(creations.length, requests, 'Topic preflight does not POST an attempt');
+    assert.equal(await page.locator('.lesson-steps li').count(), 3);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true,
+      'Topic instructions fit a 390px screen');
+  }
+  async function checkSupport(topic) {
+    await page.locator('#route-support .lesson-instructions').waitFor();
+    assert.equal(await page.locator('[data-support-video]').getAttribute('data-support-video'), topic);
+    assert.equal(await page.locator('#route-support a[href$="cheatsheets.html#' + topic + '"]').count(), 1,
+      'The reminder link identifies this exact skill');
+  }
+  try {
+    await page.goto(origin + '/learning/#learn=brackets');
+    await page.locator('#auth-form [name=login]').fill(loginName);
+    await page.locator('#auth-form [name=password]').fill(PUPIL_PASSWORD);
+    await page.locator('#auth-form [type=submit]').click();
+    await page.locator('[data-lesson-start]').waitFor();
+    assert.equal(new URL(page.url()).hash, '#learn=brackets', 'Valid deep entry survives login');
+    assert.equal(count(), 0); assert.equal(creations.length, 0);
+    assert.equal(await page.locator('#trainer-host iframe').count(), 0, 'Instructions are shown before the first trainer starts');
+    await page.reload(); await page.locator('[data-lesson-start]').waitFor();
+    assert.equal(count(), 0, 'Reloading preflight remains read-only');
+    await page.locator('[data-lesson-start]').click(); await readyFrame(page);
+    const bracketsId = currentId(), brackets = await api(page, '/attempts/' + bracketsId);
+    assert.equal(brackets.trainerId, 'ege-path'); assert.equal(brackets.contentId, 'equations-brackets');
+    assert.equal(count(), 1); await checkSupport('brackets');
+    assert.match(await page.locator('.lesson-instructions').innerText(), /свободное слагаемое/,
+      'Bracket instructions explain the actual first question, not a generic equation');
+    await frame(page).locator('#answer').fill('731'); await saved(page);
+    const written = await api(page, '/attempts/' + bracketsId);
+    await preflight('brackets');
+    await page.evaluate(() => window.scrollTo(0, 0));
+    if (process.env.LEARNING_ARTIFACT_DIR) await page.screenshot({
+      path: path.join(process.env.LEARNING_ARTIFACT_DIR, 'topic-guide-brackets-mobile.png'), fullPage: true
+    });
+    await page.locator('[data-lesson-start]').click(); await readyFrame(page);
+    assert.equal(currentId(), bracketsId, 'Returning from the reminder resumes the same attempt');
+    assert.equal(count(), 1, 'Returning does not create an extra attempt');
+    const resumed = await api(page, '/attempts/' + bracketsId);
+    assert.deepEqual(resumed.taskSpec, written.taskSpec); assert.deepEqual(resumed.state, written.state);
+    assert.equal(resumed.version, written.version); assert.equal(await frame(page).locator('#answer').inputValue(), '731');
+
+    // These expectations are intentionally independent of the guide registry:
+    // adjacent catalogue rows must not silently become the advertised practice.
+    const targets = [
+      ['negative-numbers', 'oge-basics', 'negative-add-subtract'],
+      ['fractions', 'oge-basics', 'fraction-common-denominator'],
+      ['linear-equation', 'ege-path', 'equations-linear'],
+      ['proportions', 'oge-basics', 'percentages/proportion'],
+      ['percentages', 'oge-basics', 'percentages/percent-of-number-and-whole']
+    ];
+    for (const [topic, trainerId, contentId] of targets) {
+      const before = count(); await preflight(topic);
+      await page.locator('[data-lesson-start]').click(); await readyFrame(page);
+      const attempt = await api(page, '/attempts/' + currentId());
+      assert.equal(attempt.trainerId, trainerId); assert.equal(attempt.contentId, contentId);
+      assert.equal(count(), before + 1); await checkSupport(topic);
+    }
+    for (const contentId of ['practice-percent-part', 'practice-percent-whole', 'practice-percent-rate']) {
+      await navigate(page, 'route'); await page.locator('[data-route-item="path:' + contentId + '"]').waitFor();
+      if (await page.locator('.mw-dialog[open]').count()) await page.keyboard.press('Escape');
+      await page.locator('[data-route-item="path:' + contentId + '"]').click(); await readyFrame(page);
+      await checkSupport('percentages');
+      const instructions = await page.locator('.lesson-instructions').innerText();
+      assert.match(instructions, /Решить по шагам|Самостоятельно/,
+        'Path percentage work has its own actual-mode instructions, not standalone remediation controls');
+      assert.match(instructions, /Твой ответ/, 'Instructions identify the actual answer field');
+      assert.equal((await api(page, '/attempts/' + currentId())).contentId, contentId);
+      await frame(page).locator('[data-stage="2"]').click(); await saved(page);
+      const firstQuestion = await frame(page).locator('#lesson .callout p').innerText();
+      assert.ok(instructions.includes(firstQuestion.replace(/[.!?]+$/, '')),
+        contentId + ': the guide quotes the real first question of this specific percentage activity');
+    }
+    const beforeAngles = count(), requestsBeforeAngles = creations.length;
+    await preflight('adjacent-angles');
+    assert.equal(await page.locator('[data-lesson-start]').count(), 0, 'Unmanaged angles never creates a different managed geometry attempt');
+    assert.equal(await page.locator('[data-lesson-practice]').getAttribute('href'),
+      'https://mathexam.space/geometry-course/trainers/ch1-p6-t2-angle-problems.html');
+    assert.match(await page.locator('#main').innerText(), /не (?:добавляют|попадает|сохраняется)/,
+      'Unmanaged geometry clearly explains its progress limit');
+    assert.match(await page.locator('#main').innerText(), /MAX/);
+    assert.equal(await page.locator('[data-route-item="path:practice-spokes"]').count(), 0);
+    await page.reload(); await page.locator('[data-lesson-practice]').waitFor();
+    assert.equal(count(), beforeAngles); assert.equal(creations.length, requestsBeforeAngles);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    if (process.env.LEARNING_ARTIFACT_DIR) await page.screenshot({
+      path: path.join(process.env.LEARNING_ARTIFACT_DIR, 'topic-guide-angles-mobile.png'), fullPage: true
+    });
+    for (const route of ['learn=unknown-topic', 'learn=%3Cimg%20src=x%20onerror=alert(1)%3E', 'learn=brackets&learn=fractions']) {
+      const before = count(), requests = creations.length;
+      await navigate(page, route); await page.getByRole('heading', { name: 'Эта тема пока недоступна' }).waitFor();
+      assert.equal(await page.locator('[data-lesson-start]').count(), 0);
+      assert.equal(count(), before); assert.equal(creations.length, requests);
+      assert.equal(await page.locator('#main img').count(), 0, 'Invalid hash content is not inserted as markup');
+    }
+    // Merely sharing a catalogue category cannot attach the angles tutorial to
+    // an unrelated question about equally spaced spokes.
+    await navigate(page, 'route'); await page.locator('[data-route-item="path:practice-spokes"]').click();
+    await readyFrame(page);
+    assert.equal(await page.locator('[data-support-video]').count(), 0);
+    assert.equal(await page.locator('.lesson-instructions').count(), 0);
+    await assertPrivate(page, [PUPIL_PASSWORD]);
+  } finally { await student.context.close(); }
 }
 
 async function verifyWelcome(page, store, learnerId) {
@@ -278,12 +401,13 @@ async function verifyWelcome(page, store, learnerId) {
   await page.locator('.mw-dialog').waitFor({ state: 'detached' });
   assert.equal(await page.locator('[data-route-welcome]').evaluate(node => node === document.activeElement), true,
     'Closing restores keyboard focus');
-  for (const key of ['homework-help', 'linear-equation', 'adjacent-angles']) {
+  assert.equal(await page.evaluate(() => MathExamWelcome.openVideo('homework-help')), false, 'Deferred how-to video is not offered to learners');
+  for (const key of ['negative-numbers', 'fractions', 'brackets', 'linear-equation', 'proportions', 'percentages', 'adjacent-angles']) {
     await page.evaluate(key => MathExamWelcome.openVideo(key), key);
     const player = page.locator('.mw-video');
     const attributes = await player.evaluate(node => ({ src: node.src, controls: node.controls,
       autoplay: node.autoplay, paused: node.paused, preload: node.preload }));
-    assert.equal(attributes.src, 'https://mathexam.space/video-lessons/media/' + key + '.mp4');
+    assert.equal(attributes.src, 'https://mathexam.space/video-lessons/media/' + key + '.mp4?v=history-tap-20261005');
     assert.equal(attributes.controls, true); assert.equal(attributes.autoplay, false);
     assert.equal(attributes.paused, true); assert.equal(attributes.preload, 'none');
     const localFile = path.join(ROOT, 'video-lessons/media', key + '.mp4');
