@@ -12,3 +12,78 @@
 
 .diagram text{font-size:26px}.diagram .angle-label{font-size:28px}
 @media(max-width:760px){.studio-mode .diagram{max-height:220px}}
+
+/* The written solution stays beside the current explanation. Entries are a
+   deterministic prefix of the scene; the orange error card is never copied. */
+.condition .condition-formula{margin:0 0 18px;padding:0 0 16px;border-bottom:1px solid #cadbd3;font-size:29px;line-height:1.25}
+.condition .history-heading{font-size:12px;line-height:1.3;font-weight:750;letter-spacing:.075em;text-transform:uppercase;margin:0 0 10px;color:#4a6470}
+.solution-history{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.history-line{display:flex;align-items:flex-start;gap:10px;padding:7px 10px;border:1px solid transparent;border-radius:10px;color:#405b61}
+.history-line.is-current{border-color:#9bbfb0;background:#e0f0e7;color:#123f35;box-shadow:inset 3px 0 #076e64}
+.history-line>div{min-width:0}
+.history-number{flex:0 0 19px;display:grid;place-items:center;width:19px;height:23px;margin-top:2px;font-size:12px;font-weight:700;color:#577068}
+.history-math{display:block;font-size:25px;line-height:1.28;font-weight:650;letter-spacing:-.025em;overflow-wrap:anywhere}
+.history-line.is-current .history-math{font-weight:800}
+.history-label{display:block;margin-top:3px;font-size:12px;line-height:1.3;color:#4a6470}
+.condition .history-empty,.condition .history-notice,.condition .history-warning{font-size:14px;line-height:1.45;margin:12px 0 0}
+.condition .history-warning{padding:10px 12px;border-radius:8px;background:#fff1e9;color:#88351d}
+.lesson-frame[data-task="adjacent-angles"] .scene-grid{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
+.geometry-history{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:12px;align-items:start}
+.geometry-history .diagram{max-height:none}
+.geometry-history .diagram text{font-size:36px}
+.geometry-history .diagram .angle-label{font-size:38px}
+.condition .geometry-given{font-size:23px;text-align:center;margin:5px 0 0;padding:0;border:0;font-weight:750;color:var(--teal)}
+.condition .geometry-question{font-size:17px;text-align:center;margin:5px 0 0}
+.geometry-history .history-math{font-size:22px}
+.geometry-history .history-line{padding:7px 6px;gap:5px}
+.geometry-history .history-number{flex-basis:14px}
+.lesson-frame[data-task="homework-help"] .history-math{font-size:21px;line-height:1.35}
+.studio-mode .canvas{height:calc(100vh - 160px)}
+.studio-mode .scene-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch}
+.studio-mode .condition .condition-formula{font-size:30px;margin:0 0 13px;padding-bottom:12px}
+.studio-mode .condition .history-heading{font-size:12px;margin:0 0 8px}
+.studio-mode .history-math{font-size:25px}
+.studio-mode .history-line{padding:5px 9px}
+.studio-mode .solution-history{gap:5px}
+.studio-mode .condition .history-empty,.studio-mode .condition .history-notice,.studio-mode .condition .history-warning{font-size:14px;line-height:1.4;margin:10px 0 0}
+.studio-mode .condition .geometry-given{font-size:24px;margin:5px 0;padding:0}
+.studio-mode .condition .geometry-question{font-size:18px;margin:0}
+.studio-mode .geometry-history .history-math{font-size:23px}
+.studio-mode .geometry-history .history-line{padding:7px 5px}
+.studio-mode .lesson-frame[data-task="homework-help"] .history-math{font-size:21px}
+@media(min-width:761px){
+  .studio-mode .condition>.small-label{margin-bottom:6px}
+  .studio-mode .condition .condition-formula{padding-bottom:6px;margin-bottom:10px}
+  .studio-mode .condition .history-heading{margin-bottom:4px}
+  .studio-mode .solution-history{gap:2px}
+  .studio-mode .history-line{padding:2px 9px}
+  .studio-mode .geometry-history .history-line{padding:5px}
+}
+@media(max-width:760px){
+  .lesson-frame[data-task="adjacent-angles"] .scene-grid{grid-template-columns:1fr}
+  .geometry-history{grid-template-columns:1fr}
+  .geometry-history .diagram{max-height:245px}
+  .geometry-history .diagram text{font-size:29px}
+  .geometry-history .diagram .angle-label{font-size:31px}
+  .condition .condition-formula{font-size:27px}
+  .history-math,.geometry-history .history-math{font-size:23px}
+  .history-line{gap:7px;padding:7px 8px}
+  .studio-mode .canvas{height:calc(100vh - 200px)}
+  .studio-mode .scene-grid{grid-template-columns:1fr;gap:16px;flex:1;grid-template-rows:auto 1fr}
+  .studio-mode .condition,.studio-mode .step-panel{height:auto}
+  .studio-mode .condition .condition-formula{font-size:31px;margin-bottom:14px}
+  .studio-mode .condition .history-heading{font-size:14px;margin-bottom:10px}
+  .studio-mode .history-math{font-size:28px}
+  .studio-mode .history-number{font-size:14px;height:26px}
+  .studio-mode .history-label{font-size:15px}
+  .studio-mode .history-line{padding:6px 10px}
+  .studio-mode .condition .history-notice,.studio-mode .condition .history-empty,.studio-mode .condition .history-warning{font-size:17px}
+  .studio-mode .geometry-history{grid-template-columns:minmax(0,.9fr) minmax(0,1fr);gap:15px}
+  .studio-mode .geometry-history .diagram{max-height:none}
+  .studio-mode .geometry-history .diagram text{font-size:38px}
+  .studio-mode .geometry-history .diagram .angle-label{font-size:40px}
+  .studio-mode .geometry-history .history-math{font-size:25px}
+  .studio-mode .condition .geometry-given{font-size:27px;margin:10px 0 4px;padding:0}
+  .studio-mode .condition .geometry-question{font-size:21px}
+  .studio-mode .lesson-frame[data-task="homework-help"] .history-math{font-size:25px}
+}

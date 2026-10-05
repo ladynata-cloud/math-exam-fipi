@@ -6,23 +6,42 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current: learner free route and original paper homework
+## Current: persistent video solution steps and soft taps
 
-- Scope: [free route](tasks/LEARNER_FREE_ROUTE.md), branch
-  `feature/learner-free-route`, verified base
-  `4df45e5d3b5825a21451f5cc90838260fb9f6f39`.
-- Current owner instructions authorize publication without separate external
-  review. Free order/pace, prerequisite detours, visible progress, explicit
-  submission, teacher-assigned credentials, first-entry guide and additional
-  authored paper homework are one connected pupil workflow.
-- Local gate passed: 118 server tests, 8,400 checked paper tasks, the full new
-  browser flow and legacy cabinet/homework/exam/remediation gates. Independent
-  audit findings about stale review and premature submission were corrected.
-  Production pupil creation
-  and teacher activation remain pending because browser observation of the
-  hosting panel is blocked by native-credential protection.
-- Next: publish one scoped PR and run exact-head CI,
-  verify production and provision the pupil only with authenticated access.
+- Scope: [video history](tasks/VIDEO_SOLUTION_HISTORY.md), branch
+  `fix/video-solution-history`, verified main base
+  `ab9d7d5812ed32d15fe63497cfc34288a216b753`.
+- Owner asks to retain previous solution steps and replace the piercing action
+  tone with a softer tap. Publish seven printable cheat sheets and seven stored math MP4s; preserve interactive,
+  mobile and horizontal/vertical exports. No learner-time video synthesis.
+- Owner cancelled external narration setup. Keep clicks-only videos and the
+  existing `silent` provider setting; no hosting settings or keys are changed.
+- Photo homework is manually sent in MAX; the old how-to clip is deferred.
+  Personal narration may be added later; current release uses only soft taps.
+- Local evidence: 39 worker tests, 444 scene checks, export recovery and three
+  cabinet browser flows pass. Seven MP4s rendered and inspected; seven printed
+  sheets fit one A4 page each, with mobile/desktop navigation checked.
+- Each sheet now names an exact trainer and explains its controls. Six topics
+  use cabinet attempts through a fixed, read-only topic entry; the separate
+  angles trainer is explicitly marked for written work sent in MAX.
+- Next: one scoped PR, exact-head CI and public byte verification under standing
+  publication permission. Production evidence will be recorded in the release PR.
+
+## Published: learner free route and original paper homework
+
+- PR [#186](https://github.com/ladynata-cloud/math-exam-fipi/pull/186) merged as
+  `ab9d7d5812ed32d15fe63497cfc34288a216b753`, tree
+  `60dce209626c24342ab9c3a2f416a1cae1ee3394`.
+- All three exact-head CI workflows passed, including the actual Alpine image;
+  118 server tests, 8,400 checked paper tasks, the new browser flow and legacy
+  cabinet/homework/exam/remediation checks passed. Independent findings closed.
+- Public checks matched eight Amvera cabinet assets, the Pages remediation
+  adapter and all three MP4 files to tested bytes. Learning service was
+  available/durable with143 catalog entries; anonymous plan access returned401.
+- Free order/pace, prerequisite detours, visible progress, explicit submission,
+  teacher-assigned credentials, first-entry guide and original paper homework
+  are published. No real pupil account or assignment was created: private
+  first-teacher activation remains pending hosting operator access.
 
 ## Published code: independent homework method and teaching videos
 
@@ -30,8 +49,8 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   `4df45e5d3b5825a21451f5cc90838260fb9f6f39`, tree
   `759b8de0ce2dc588a76982e9941969374698bebb`. Authorized base remained
   `a024f6c0f22bd58077bb3e31c2911ba324abb1a8`; no drift. Exact-head CI passed.
-- The latest owner clarification requests automatic narration plus click sounds,
-  retaining readable on-screen explanations and a text/step alternative.
+- The latest owner clarification cancels narration setup and keeps local click
+  sounds, readable on-screen explanations and a text/step alternative.
 - This task extends only the implemented isolated video worker with three fixed
   authored school scenarios; no pupil data, account permissions or classroom
   contracts change. The complete year course and offline cabinet remain outside

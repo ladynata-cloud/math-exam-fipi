@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { runCommand } from '../src/command.js';
-import { createRenderer, renderSegment, validateManifest } from '../src/renderer.js';
+import { clickDelayMs, createRenderer, renderSegment, validateManifest } from '../src/renderer.js';
 import { resolveAudioMode, studioUrlFor, validateJobRequest, viewportFor } from '../src/validation.js';
 
 test('school render requests have fixed routes, presets, audio options and captions', () => {
@@ -91,7 +91,24 @@ test('real FFmpeg outputs distinguish no audio, local clicks and supplied voice'
         if (offset < 24000 * 2 * 0.5) earlyPeak = Math.max(earlyPeak, value);
       }
       assert.ok(peak > 1000, 'click must be audible');
+      assert.ok(peak < 6000, 'action sound must remain a quiet tap');
       assert.ok(earlyPeak < 20, 'local click track must have no speech or music before the click');
+      // Check the encoded sound, not its filter string: the former 1450 Hz beep
+      // concentrates its energy above 1 kHz; a soft tap must not do that.
+      const start = Math.round(clickDelayMs(duration, true) * 24);
+      const count = 2400;
+      let lowEnergy = 0, highEnergy = 0;
+      for (let hz = 100; hz <= 6000; hz += 50) {
+        let real = 0, imaginary = 0;
+        for (let i = 0; i < count; i++) {
+          const sample = samples.readInt16LE((start + i) * 2);
+          const angle = 2 * Math.PI * hz * i / 24000;
+          real += sample * Math.cos(angle); imaginary += sample * Math.sin(angle);
+        }
+        const energy = real * real + imaginary * imaginary;
+        if (hz <= 1000) lowEnergy += energy; else highEnergy += energy;
+      }
+      assert.ok(lowEnergy > highEnergy * 2, 'soft tap energy must be concentrated below 1 kHz');
     }
   }
 });

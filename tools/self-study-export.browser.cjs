@@ -10,7 +10,7 @@ const { chromium } = require('playwright');
   const root = path.resolve(__dirname, '..', 'video-lessons');
   const server = http.createServer(async (req, res) => {
     const file = new URL(req.url, 'http://localhost').pathname;
-    if (!/^\/(studio\.(?:html|js|css)|export\.js)$/.test(file)) { res.writeHead(404); res.end(); return; }
+    if (!/^\/(studio\.(?:html|js|css)|export\.js|cheatsheet-topics\.js)$/.test(file)) { res.writeHead(404); res.end(); return; }
     const data = await fs.readFile(path.join(root, file));
     res.setHeader('Content-Type', file.endsWith('.html') ? 'text/html' : file.endsWith('.js') ? 'text/javascript' : 'text/css');
     res.end(data);
@@ -41,7 +41,7 @@ const { chromium } = require('playwright');
         const payload = request.postDataJSON();
         assert.equal(payload.audioMode, 'voice');
         assert.equal(payload.captions, true);
-        assert.equal(payload.task, 'homework-help');
+        assert.equal(payload.task, 'linear-equation');
         const reused = jobs.has(key);
         if (posts === 2) return route.fulfill({ status: 401, contentType: 'application/json', body: JSON.stringify({ error: 'Authorization required' }) });
         if (!reused) jobs.set(key, { id: 'vid_012345678901234567890123', task: payload.task, preset: payload.preset, status: 'ready', videoReady: true });
@@ -59,6 +59,9 @@ const { chromium } = require('playwright');
     await page.waitForFunction(() => window.__MATH_EXAM_VIDEO_READY__ === true);
     assert.equal(sent, 0, 'preview must make no video-server or credential request');
     await page.locator('#mp4-tools summary').click();
+    assert.equal(await page.locator('#mp4-audio').inputValue(), 'clicks', 'school videos default to the selected clicks-only mode');
+    // Keep exercising recovery of an explicitly chosen potentially paid request.
+    await page.locator('#mp4-audio').selectOption('voice');
     await page.locator('#mp4-token').fill(token);
     await page.locator('#mp4-submit').click();
     await page.waitForFunction(() => document.getElementById('mp4-status').textContent.includes('тот же запрос'));
@@ -84,7 +87,7 @@ const { chromium } = require('playwright');
     assert.equal(requestKeys[0], requestKeys[2]);
     const downloadEvent = page.waitForEvent('download');
     await page.locator('#mp4-download').click();
-    assert.equal((await downloadEvent).suggestedFilename(), 'homework-help.mp4');
+    assert.equal((await downloadEvent).suggestedFilename(), 'linear-equation.mp4');
     assert.equal(downloads, 1);
     assert.deepEqual(await page.evaluate(() => ({ local: Object.keys(localStorage), session: Object.keys(sessionStorage) })), { local: [], session: [] });
     assert.equal((await page.url()).includes(token), false);

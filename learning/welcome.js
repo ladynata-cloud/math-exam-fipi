@@ -3,10 +3,15 @@
   'use strict';
   const SEEN_KEY = 'mathexam-welcome-v1';
   const VIDEO_ORIGIN = 'https://mathexam.space';
+  const VIDEO_REVISION = 'history-tap-20261005';
   const VIDEOS = Object.freeze({
-    'homework-help': { title: 'Как пользоваться подсказками', length: '1 мин 24 с', size: '844 КБ' },
-    'linear-equation': { title: 'Линейное уравнение: шаг за шагом', length: '1 мин 19 с', size: '598 КБ' },
-    'adjacent-angles': { title: 'Смежные углы: читаем рисунок', length: '1 мин 7 с', size: '525 КБ' }
+    'negative-numbers': { title: 'Отрицательные числа', length: '52 с', size: '431 КБ' },
+    'fractions': { title: 'Действия с дробями', length: '52 с', size: '430 КБ' },
+    'brackets': { title: 'Раскрытие скобок', length: '52 с', size: '464 КБ' },
+    'proportions': { title: 'Пропорции', length: '52 с', size: '409 КБ' },
+    'percentages': { title: 'Проценты', length: '52 с', size: '467 КБ' },
+    'linear-equation': { title: 'Линейное уравнение: шаг за шагом', length: '1 мин 19 с', size: '638 КБ' },
+    'adjacent-angles': { title: 'Смежные углы: читаем рисунок', length: '1 мин 6 с', size: '612 КБ' }
   });
   const steps = [
     {
@@ -28,15 +33,15 @@
       next: 'Как сдать работу'
     },
     {
-      title: 'Готовую работу можно сдать одной кнопкой',
-      text: 'В настоящем задании проверь решение, добавь фото тетради, если оно нужно, и нажми «Сдать Наталье Михайловне».',
-      body: '<p>Попробуй кнопку ниже. Сейчас это учебный пример: учителю ничего не отправляется.</p><button type="button" class="primary mw-demo-submit" data-mw-submit>Попробовать сдачу · учебный пример</button>',
+      title: 'Онлайн — на сайте, тетрадь — в MAX',
+      text: 'Бумажную домашнюю работу сфотографируй и пришли Наталье Михайловне в вашем чате в MAX. Работа в тренажёре сохраняется на сайте.',
+      body: '<p>Кнопка ниже показывает отдельную сдачу через кабинет. В MAX фотографии отправляешь сама; эта кнопка не отправляет сообщения.</p><button type="button" class="primary mw-demo-submit" data-mw-submit>Попробовать сдачу · учебный пример</button>',
       next: 'Дальше'
     },
     {
       title: 'Если связь пропала — сохрани свою работу',
       text: 'Смотри на подтверждение сохранения и сдачи. Если связи нет, не закрывай вкладку с несохранённым ответом.',
-      body: '<p>Задание на бумаге можно решить в тетради и сфотографировать. Когда связь появится, загрузи фото и дождись подтверждения отправки.</p><p>Короткие видео можно скачать заранее. Текстовый разбор доступен отдельно от видео.</p>',
+      body: '<p>Задание на бумаге можно решить в тетради и сфотографировать. Когда связь появится, отправь фото Наталье Михайловне в MAX.</p><p>Короткие видео можно скачать заранее. Текстовый разбор доступен отдельно от видео.</p>',
       next: 'Всё понятно'
     },
     {
@@ -182,12 +187,12 @@
     if (!createDialog('Короткий разбор · текст и щелчки')) return false;
     mode = 'video'; modal.classList.add('mw-video-dialog');
     $('[data-mw-close]').setAttribute('aria-label', 'Закрыть видео');
-    $('[data-mw-content]').innerHTML = '<h2 id="mw-title" class="mw-title mw-video-title" tabindex="-1"></h2><p class="mw-video-summary"></p><video class="mw-video" controls playsinline preload="none"></video><p class="mw-video-error" role="status" hidden>Видео не загрузилось. Попробуй позже или открой текстовый разбор.</p><p>В этих коротких примерах — текст и щелчки, без озвучки. Можно выключить звук: все шаги написаны на экране. Просмотр не меняет твой учебный прогресс.</p><div class="mw-video-links"><a target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-mw-text>Открыть текст и шаги ↗</a><a target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-mw-download>Открыть MP4 для сохранения ↗</a></div><p class="mw-download-note">На странице видео выбери «Скачать» в меню проигрывателя или браузера. Сохрани заранее, если связь нестабильна.</p>';
+    $('[data-mw-content]').innerHTML = '<h2 id="mw-title" class="mw-title mw-video-title" tabindex="-1"></h2><p class="mw-video-summary"></p><video class="mw-video" controls playsinline preload="none"></video><p class="mw-video-error" role="status" hidden>Видео не загрузилось. Попробуй позже или открой текстовый разбор.</p><p>В этих анимированных шпаргалках — текст и мягкие щелчки, без озвучки. Пройденные строки остаются на экране. Можно выключить звук: все шаги написаны на экране. Просмотр не меняет твой учебный прогресс.</p><div class="mw-video-links"><a target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-mw-text>Открыть текст и шаги ↗</a><a target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-mw-download>Открыть MP4 для сохранения ↗</a></div><p class="mw-download-note">На странице видео выбери «Скачать» в меню проигрывателя или браузера. Сохрани заранее, если связь нестабильна.</p>';
     $('#mw-title').textContent = video.title;
     $('.mw-video-summary').textContent = `${video.length} · ${video.size} · загрузка начнётся после нажатия ▶`;
     const player = $('.mw-video');
     player.setAttribute('aria-label', video.title);
-    player.src = `${VIDEO_ORIGIN}/video-lessons/media/${key}.mp4`;
+    player.src = `${VIDEO_ORIGIN}/video-lessons/media/${key}.mp4?v=${VIDEO_REVISION}`;
     player.addEventListener('error', () => { const error = $('.mw-video-error'); if (error && player === $('.mw-video')) error.hidden = false; });
     $('[data-mw-text]').href = `${VIDEO_ORIGIN}/video-lessons/studio.html?task=${key}&preset=1`;
     $('[data-mw-download]').href = player.src;
