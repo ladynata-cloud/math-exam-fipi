@@ -47,7 +47,13 @@
       render();
       if (!readonly && focusId) {
         const field = document.getElementById(focusId);
-        if (field && !field.disabled) { field.focus({ preventScroll: true }); if (selection && typeof field.setSelectionRange === 'function') field.setSelectionRange(...selection); }
+        if (field && !field.disabled) {
+          // A new task may replace a text answer with a hidden choice value.
+          // Only text controls support restoring a caret/selection range.
+          const target = field.type === 'hidden' ? main.querySelector('[data-answer-choice]') : field;
+          target?.focus({ preventScroll: true });
+          if (selection && typeof field.selectionStart === 'number' && typeof field.setSelectionRange === 'function') field.setSelectionRange(...selection);
+        }
       }
     } finally { applying = false; }
   }
@@ -112,11 +118,11 @@
   function render() {
     const work = state.work, meta = D.meta.find(m => m.id === taskSpec.id);
     model = null; document.title = meta.title + ' · Моя работа';
-    main.innerHTML = `<p class="eyebrow">${meta.grade7?'7 класс · '+E(({algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'})[meta.subject]||'Математика'):'ЕГЭ база · Задание '+meta.pos}</p><h1>${E(meta.title)}</h1><nav class="stage-nav" aria-label="Шаги урока">${stageLabels.map((label, i) => `<button data-stage="${i}" ${i === work.stage ? 'aria-current="step"' : ''}>${i + 1}. ${label}</button>`).join('')}</nav><div id="lesson"></div><p id="feedback" class="feedback" role="status"></p><p class="muted managed-note">Это одна сохранённая попытка. Разбор и подсказки остаются в её истории. Для самостоятельного закрепления открой новый вариант.</p>`;
+    main.innerHTML = `<p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+E(({algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'})[meta.subject]||'Математика'):'ЕГЭ база · Задание '+meta.pos}</p><h1>${E(meta.title)}</h1><nav class="stage-nav" aria-label="Шаги урока">${stageLabels.map((label, i) => `<button data-stage="${i}" ${i === work.stage ? 'aria-current="step"' : ''}>${i + 1}. ${label}</button>`).join('')}</nav><div id="lesson"></div><p id="feedback" class="feedback" role="status"></p><p class="muted managed-note">Это одна сохранённая попытка. Разбор и подсказки остаются в её истории. Для самостоятельного закрепления открой новый вариант.</p>`;
     main.querySelectorAll('[data-stage]').forEach(button => button.onclick = () => changeStage(+button.dataset.stage));
     const box = document.getElementById('lesson');
     const condition = `<p class="task">${E(task.q)}</p>`;
-    const support = root.PathPracticeView.markup(task, work.stage === 1 && task.model.kind === 'polygon-build');
+    const support = root.PathPracticeView.markup(task, work.stage === 1 && ['polygon-build','pre7-lab','grade7-construction'].includes(task.model.kind));
     if (work.stage === 0) {
       box.innerHTML = `<section class="panel"><h2>Главная идея</h2><p class="lead">${E(meta.idea)}</p><div class="callout"><b>Перед вычислением спроси себя</b><p>Что дано, что неизвестно и какая связь между ними? Какие единицы нужны в ответе?</p></div>${condition}${support}<button id="next" class="primary">Исследовать модель →</button></section>`;
       document.getElementById('next').onclick = () => changeStage(1);

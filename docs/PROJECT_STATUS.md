@@ -6,6 +6,27 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
+## In progress: foundations before grade 7
+
+- Scope: [38 interactive trainers and 76 silent videos](tasks/PRE7_FOUNDATIONS.md):
+  18 foundations and 20 introductory geometry families, with separate algebra
+  and geometry routes and optional returns to prerequisite topics.
+- Base `ec6afeb7fbae5c567ebd69b1be91f36093237fa2`, branch
+  `feat/pre7-foundations-20261006`. Existing school/Vilenkin materials are
+  mathematical and visual references; their independent exploration values
+  are adapted to the actual managed task.
+- No account reset, credential change, database migration or production pupil
+  write is part of this content expansion. Existing cabinet and teacher-control
+  contracts are reused.
+- Mathematical, managed-browser and independent runtime reviews passed;
+  all 38 new trainers retain task-bound diagrams, hints, previous solution
+  steps and teacher-control state. The cabinet exposes 62 school families.
+- All 76 new silent clips are rendered. Final media gates passed 136 active
+  browser playbacks, 68 A4 guides and 408 animation journeys; independent
+  review covers the final 37 changed runtime files.
+- Next: publish the exact reviewed tree, verify CI and the production image,
+  then check deployment without writing to production pupil records.
+
 ## Published: next grade-7 course block; library label correction
 
 - PR #194 merged as `8125c176b6b0168c9c93e88a766ce6b144149762`, parent
@@ -33,8 +54,11 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   mobile layouts and cumulative written steps/geometry drawings.
 - Familiar grade-7 conditions retain their history across retries and reset;
   their results do not inflate independent mastery. Legacy grading is unchanged.
-- Next: publish the small library-label correction, verify its live heading,
-  then return the course link. Release PRs retain exact gate/deployment evidence.
+- PR #195 merged as `ec6afeb7fbae5c567ebd69b1be91f36093237fa2`, parent
+  `8125c176b6b0168c9c93e88a766ce6b144149762`, reviewed tree
+  `42deb98a49bfaa5a149819ae2aaed0bf1e8bf61f`. Exact-head video workflow
+  37391123526 and Pages 37391436094 passed. Published library HTML matched the
+  reviewed bytes and reports 60 clips/30 topics. Release PRs retain evidence.
 
 ## Published: reliable pupil access card
 

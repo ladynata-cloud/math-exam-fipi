@@ -8,7 +8,11 @@ require('../ege-baza/path/practice.js');
 require('../ege-baza/path/equation-practice.js');
 require('../ege-baza/path/grade7-algebra.js');
 require('../ege-baza/path/grade7-geometry.js');
+require('../ege-baza/path/grade7-geometry-core.js');
+require('../ege-baza/path/grade7-geometry-practice.js');
 require('../ege-baza/path/grade7-foundations.js');
+require('../ege-baza/path/pre7-arithmetic.js');
+require('../ege-baza/path/pre7-applications.js');
 
 assert.equal(typeof D.answerText, 'function', 'Exact answer presentation is required');
 

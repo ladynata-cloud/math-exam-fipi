@@ -345,10 +345,233 @@
     "percent"
   ]
 ];
+  grade7Rows.push(...[
+  [
+    "grade7-g-core-point-line-ray",
+    "Точка, прямая, луч и отрезок",
+    "geometry",
+    "logic"
+  ],
+  [
+    "grade7-g-core-perpendicular",
+    "Перпендикулярные прямые",
+    "geometry",
+    "angle"
+  ],
+  [
+    "grade7-g-core-angle-measure",
+    "Измеряем угол транспортиром",
+    "geometry",
+    "angle"
+  ],
+  [
+    "grade7-g-core-triangle-elements",
+    "Стороны, вершины и углы треугольника",
+    "geometry",
+    "logic"
+  ],
+  [
+    "grade7-g-core-triangle-perimeter",
+    "Периметр треугольника",
+    "geometry",
+    "add"
+  ],
+  [
+    "grade7-g-core-sas",
+    "Первый признак равенства: две стороны и угол",
+    "geometry",
+    "logic"
+  ],
+  [
+    "grade7-g-core-median",
+    "Медиана треугольника",
+    "geometry",
+    "fraction"
+  ],
+  [
+    "grade7-g-core-bisector",
+    "Биссектриса треугольника",
+    "geometry",
+    "fraction"
+  ],
+  [
+    "grade7-g-core-altitude",
+    "Высота внутри и вне треугольника",
+    "geometry",
+    "angle"
+  ],
+  [
+    "grade7-g-core-isosceles-elements",
+    "Равнобедренный треугольник: стороны и основание",
+    "geometry",
+    "logic"
+  ],
+  [
+    "grade7-g-core-isosceles-base-angles",
+    "Равные углы при основании",
+    "geometry",
+    "angle"
+  ],
+  [
+    "grade7-g-core-isosceles-vertex-line",
+    "Три свойства линии из вершины",
+    "geometry",
+    "fraction"
+  ]
+]);
+  grade7Rows.push(...[
+  [
+    "grade7-g-practice-segment-equation",
+    "Отрезки: составь равенство из частей",
+    "geometry",
+    "add"
+  ],
+  [
+    "grade7-g-practice-angle-parts",
+    "Лучи и биссектрисы: найди нужную часть угла",
+    "geometry",
+    "angle"
+  ],
+  [
+    "grade7-g-practice-vertical-proof",
+    "Почему вертикальные углы равны",
+    "geometry",
+    "angle"
+  ],
+  [
+    "grade7-g-practice-sas-common-side",
+    "Первый признак: найди общую сторону",
+    "geometry",
+    "logic"
+  ],
+  [
+    "grade7-g-practice-sas-vertical",
+    "Первый признак в пересекающихся отрезках",
+    "geometry",
+    "logic"
+  ],
+  [
+    "grade7-g-practice-cevian-reason",
+    "Медиана, биссектриса или высота: что доказано?",
+    "geometry",
+    "logic"
+  ],
+  [
+    "grade7-g-practice-isosceles-perimeter",
+    "Равнобедренный треугольник: периметр и неизвестная сторона",
+    "geometry",
+    "add"
+  ],
+  [
+    "grade7-g-practice-isosceles-proof",
+    "Собери доказательство свойства равнобедренного треугольника",
+    "geometry",
+    "logic"
+  ]
+]);
   items.push(...grade7Rows.map(([contentId,title,subject,gap]) => Object.freeze({
     id: 'path:'+contentId, trainerId: 'ege-path', contentId, title, position: null,
     topicId: ({algebra:'algebra',geometry:'plane',foundation:'foundation'})[subject],
     gap, subject, grade7: true, trainingOnly: true, contentVersion: 1, family: 'path',
+    url: '/ege-baza/path/index.html#lesson='+contentId
+  })));
+  // Earlier skills share the same saved attempts, with a separate course entry.
+  const pre7Rows = [
+  [
+    "pre7-place-value",
+    "Разряды числа и важные нули",
+    "order"
+  ],
+  [
+    "pre7-natural-compare",
+    "Сравниваем натуральные числа",
+    "order"
+  ],
+  [
+    "pre7-add-carry",
+    "Сложение с переносом разряда",
+    "order"
+  ],
+  [
+    "pre7-subtract-borrow",
+    "Вычитание с разменом через нули",
+    "order"
+  ],
+  [
+    "pre7-smart-calculation",
+    "Считаем удобным способом",
+    "order"
+  ],
+  [
+    "pre7-inverse-components",
+    "Находим неизвестный компонент",
+    "equations"
+  ],
+  [
+    "pre7-divisibility",
+    "Признаки делимости: замечаем закономерность",
+    "division"
+  ],
+  [
+    "pre7-scale-reading",
+    "Шкала: деления и отметки",
+    "reading"
+  ],
+  [
+    "pre7-comparison-stories",
+    "Задачи: на сколько и во сколько",
+    "reading"
+  ],
+  [
+    "pre7-fraction-line",
+    "Дроби на числовом луче",
+    "fractions"
+  ],
+  [
+    "pre7-equivalent-fractions",
+    "Равные дроби и сокращение",
+    "fractions"
+  ],
+  [
+    "pre7-fraction-compare",
+    "Сравниваем обыкновенные дроби",
+    "fractions"
+  ],
+  [
+    "pre7-fraction-part-whole",
+    "Доля, часть и целое",
+    "fractions"
+  ],
+  [
+    "pre7-decimal-compare",
+    "Сравниваем десятичные дроби",
+    "decimals"
+  ],
+  [
+    "pre7-mass-capacity",
+    "Масса и вместимость",
+    "units"
+  ],
+  [
+    "pre7-ruler-length",
+    "Измеряем длину по линейке",
+    "units"
+  ],
+  [
+    "pre7-perimeter",
+    "Периметр: обходим границу",
+    "units"
+  ],
+  [
+    "pre7-grid-area",
+    "Площадь по клеткам",
+    "units"
+  ]
+];
+  items.push(...pre7Rows.map(([contentId,title,gap]) => Object.freeze({
+    id: 'path:'+contentId, trainerId: 'ege-path', contentId, title, position: null,
+    topicId: 'foundation', subject: 'foundation', gap, grade7: true, pre7: true,
+    trainingOnly: true, contentVersion: 1, family: 'path',
     url: '/ege-baza/path/index.html#lesson='+contentId
   })));
   const byId = Object.create(null);

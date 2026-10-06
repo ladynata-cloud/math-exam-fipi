@@ -112,3 +112,27 @@
 @media(max-width:600px){.grade7-geometry-history{grid-template-columns:1fr}#retained-diagram .motion-diagram{max-height:160px}}
 
 #retained-diagram .motion-diagram .construction-note{font-size:20px}
+
+/* Geometry explanations reserve space for the drawing, the reason and every
+   earlier proof line. Scope these compact export rules to the new workshops. */
+@media(min-width:761px){
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) h2{font-size:28px;line-height:1.12;margin-bottom:12px}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .step-panel .motion-diagram{max-height:180px}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .step-panel p{font-size:16px;line-height:1.3;margin:6px 0}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .step-panel .subtle{font-size:13px}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .step-panel .motion-caption{font-size:13px}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .history-math{font-size:19px;line-height:1.23}
+}
+
+@media(max-width:760px){
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) h2{font-size:30px;line-height:1.12;margin:8px 0 14px}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .scene-top .eyebrow{font-size:13px}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .scene-count{white-space:nowrap}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .step-panel .motion-diagram{max-height:185px;min-height:0}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .step-panel p{font-size:20px;line-height:1.28;margin:6px 0}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .step-panel .subtle{font-size:16px}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .step-panel .motion-caption{font-size:16px}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .condition-formula{font-size:26px;line-height:1.22;margin-bottom:10px}
+ .studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .history-math{font-size:22px;line-height:1.24}
+}
+.studio-mode .lesson-frame:is([data-task^="grade7-g-core-"],[data-task^="grade7-g-practice-"]) .step-panel>.formula{font-size:28px;line-height:1.25}

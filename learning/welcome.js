@@ -3,7 +3,7 @@
   'use strict';
   const SEEN_KEY = 'mathexam-welcome-v1';
   const VIDEO_ORIGIN = 'https://mathexam.space';
-  const VIDEO_REVISION = 'grade7-next-20261006';
+  const VIDEO_REVISION = 'pre7-20261006';
   const VIDEOS = Object.freeze({
     'negative-numbers': { title: 'Отрицательные числа' },
     'fractions': { title: 'Действия с дробями' },
@@ -34,7 +34,45 @@
     'grade7-b-fraction-product-cancel': { title: 'Умножение дробей: сокращаем множители' },
     'grade7-b-decimal-divisor-scale': { title: 'Деление на десятичную дробь' },
     'grade7-b-signed-fraction-sum': { title: 'Дроби с разными знаками' },
-    'grade7-b-percent-proportion': { title: 'Проценты через пропорцию' }
+    'grade7-b-percent-proportion': { title: 'Проценты через пропорцию' },
+    'pre7-place-value': { title: 'Разряды числа и важные нули' },
+    'pre7-natural-compare': { title: 'Сравниваем натуральные числа' },
+    'pre7-add-carry': { title: 'Сложение с переносом разряда' },
+    'pre7-subtract-borrow': { title: 'Вычитание с разменом через нули' },
+    'pre7-smart-calculation': { title: 'Считаем удобным способом' },
+    'pre7-inverse-components': { title: 'Находим неизвестный компонент' },
+    'pre7-divisibility': { title: 'Признаки делимости' },
+    'pre7-scale-reading': { title: 'Шкала: деления и отметки' },
+    'pre7-comparison-stories': { title: 'Задачи: на сколько и во сколько' },
+    'pre7-fraction-line': { title: 'Дроби на числовом луче' },
+    'pre7-equivalent-fractions': { title: 'Равные дроби и сокращение' },
+    'pre7-fraction-compare': { title: 'Сравниваем обыкновенные дроби' },
+    'pre7-fraction-part-whole': { title: 'Доля, часть и целое' },
+    'pre7-decimal-compare': { title: 'Сравниваем десятичные дроби' },
+    'pre7-mass-capacity': { title: 'Масса и вместимость' },
+    'pre7-ruler-length': { title: 'Измеряем длину по линейке' },
+    'pre7-perimeter': { title: 'Периметр: обходим границу' },
+    'pre7-grid-area': { title: 'Площадь по клеткам' },
+    'grade7-g-core-point-line-ray': { title: 'Точка, прямая, луч и отрезок' },
+    'grade7-g-core-perpendicular': { title: 'Перпендикулярные прямые' },
+    'grade7-g-core-angle-measure': { title: 'Измеряем угол' },
+    'grade7-g-core-triangle-elements': { title: 'Элементы треугольника' },
+    'grade7-g-core-triangle-perimeter': { title: 'Периметр треугольника' },
+    'grade7-g-core-sas': { title: 'Первый признак равенства треугольников' },
+    'grade7-g-core-median': { title: 'Медиана треугольника' },
+    'grade7-g-core-bisector': { title: 'Биссектриса треугольника' },
+    'grade7-g-core-altitude': { title: 'Высота треугольника' },
+    'grade7-g-core-isosceles-elements': { title: 'Равнобедренный треугольник' },
+    'grade7-g-core-isosceles-base-angles': { title: 'Углы при основании' },
+    'grade7-g-core-isosceles-vertex-line': { title: 'Линия к основанию' },
+    'grade7-g-practice-segment-equation': { title: 'Отрезки: равенство из частей' },
+    'grade7-g-practice-angle-parts': { title: 'Лучи и биссектрисы: части угла' },
+    'grade7-g-practice-vertical-proof': { title: 'Почему вертикальные углы равны' },
+    'grade7-g-practice-sas-common-side': { title: 'Первый признак: общая сторона' },
+    'grade7-g-practice-sas-vertical': { title: 'Первый признак и вертикальные углы' },
+    'grade7-g-practice-cevian-reason': { title: 'Медиана, биссектриса или высота' },
+    'grade7-g-practice-isosceles-perimeter': { title: 'Равнобедренный треугольник: периметр' },
+    'grade7-g-practice-isosceles-proof': { title: 'Доказательство свойства равнобедренного треугольника' }
   });
   const steps = [
     {

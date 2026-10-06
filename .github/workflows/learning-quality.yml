@@ -9,7 +9,8 @@ on:
       - 'trainers/learning-bridge.js'
       - 'trainers/oge-basics/**'
       - 'tools/learning-*'
-      - 'tools/grade7-*.test.cjs'
+      - 'tools/grade7-*'
+      - 'tools/pre7-*'
       - 'Dockerfile'
       - '.dockerignore'
       - 'render.yaml'
@@ -26,7 +27,8 @@ concurrency:
 jobs:
   contracts-and-browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Expanded to 169 Path families and 38 new classroom/model scenarios.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -50,6 +52,13 @@ jobs:
           node tools/grade7-algebra.test.cjs
           node tools/grade7-geometry.test.cjs
           node tools/grade7-foundations.test.cjs
+          node tools/pre7-arithmetic.test.cjs
+          node tools/pre7-applications.test.cjs
+          node tools/pre7-models.test.cjs
+          node tools/grade7-geometry-core.test.cjs
+          node tools/grade7-construction.test.cjs
+          node tools/grade7-geometry-practice.test.cjs
+          node tools/grade7-route-map.test.cjs
       - name: Install pinned browser test tools
         run: |
           npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
@@ -67,6 +76,9 @@ jobs:
           node tools/learning-teaching-live-browser.cjs
           node tools/learning-free-route.browser.cjs
           node tools/learning-grade7.browser.cjs
+          node tools/pre7-foundations.browser.cjs
+          node tools/grade7-geometry-core.browser.cjs
+          node tools/grade7-construction-visual.browser.cjs
       - name: Final whitespace and patch check
         run: git diff --check
 

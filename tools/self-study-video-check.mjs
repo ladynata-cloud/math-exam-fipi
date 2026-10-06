@@ -76,6 +76,11 @@ const allowed = new Map([
   ['/video-lessons/cheatsheet-topics.js', ['cheatsheet-topics.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/motion-topics.js', ['motion-topics.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/grade7-next-videos.js', ['grade7-next-videos.js', 'text/javascript; charset=utf-8']],
+  ['/video-lessons/pre7-videos.js', ['pre7-videos.js', 'text/javascript; charset=utf-8']],
+  ['/video-lessons/pre7-motion.js', ['pre7-motion.js', 'text/javascript; charset=utf-8']],
+  ['/video-lessons/grade7-geometry-core-videos.js', ['grade7-geometry-core-videos.js', 'text/javascript; charset=utf-8']],
+  ['/video-lessons/grade7-geometry-practice-videos.js', ['grade7-geometry-practice-videos.js', 'text/javascript; charset=utf-8']],
+  ['/video-lessons/geometry-core-motion.js', ['geometry-core-motion.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/motion.js', ['motion.js', 'text/javascript; charset=utf-8']],
   ['/video-lessons/makarychev7-videos.js', ['makarychev7-videos.js', 'text/javascript; charset=utf-8']],
 ]);
