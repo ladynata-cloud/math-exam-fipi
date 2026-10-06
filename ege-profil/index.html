@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="ЕГЭ профиль 2027: понятный старт по планиметрии, векторам, тригонометрии, степеням и логарифмам. Сохранённые тренажёры и экзаменационные подборки 2026.">
+<meta name="description" content="ЕГЭ профиль 2027: задания 1, 2 и 3 по шагам — планиметрия, векторы и стереометрия. Чертежи, понятные подсказки и самостоятельная практика. Сохранённые материалы 2026.">
 <title>Профильный ЕГЭ · математика — курс-навигатор</title>
 <style>
   :root{
@@ -194,6 +194,14 @@
     .exam{ grid-template-columns:1fr; }
     .exam-actions{ flex-direction:row; flex-wrap:wrap; }
   }
+  .first-three-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+  .first-three-link{display:flex;flex-direction:column;gap:7px;min-height:132px;padding:17px;border:1.5px solid var(--ink);border-radius:12px;text-decoration:none;background:var(--paper)}
+  .first-three-link:hover{background:#edf2ff}
+  .first-three-link strong{font-size:19px;line-height:1.3}
+  .first-three-link span{font-size:14px;line-height:1.5;color:var(--graphite)}
+  .first-three-other{margin-top:20px;border-top:1px solid var(--line);padding-top:14px}
+  .first-three-other summary{cursor:pointer;min-height:44px;font-weight:700;color:var(--ink)}
+  @media(max-width:680px){.first-three-links{grid-template-columns:1fr}.first-three-link{min-height:96px}}
   .route-steps{list-style:none;counter-reset:rs;margin:14px 0 6px;padding:0;display:grid;gap:10px}
   .route-steps li{counter-increment:rs;border:1.5px solid var(--ink,#1E3A9F);border-radius:10px;background:rgba(255,255,255,.7);padding:12px 14px 12px 52px;position:relative}
   .route-steps li::before{content:counter(rs);position:absolute;left:14px;top:12px;width:26px;height:26px;border-radius:50%;background:var(--ink,#1E3A9F);color:#fff;font:800 14px/26px ui-monospace,SFMono-Regular,Menlo,monospace;text-align:center}
@@ -207,21 +215,30 @@
   <header>
     <p class="eyebrow">курс-навигатор · новый учебный маршрут 2027</p>
     <h1>Профильный <span class="mark">ЕГЭ<svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 Q 12 2, 24 8 T 46 8 T 68 8 T 90 8 T 114 7" fill="none" stroke="#C22F2A" stroke-width="3.4" stroke-linecap="round"/></svg></span> · математика</h1>
-    <p class="lede">Начните с понятного маршрута 2027: исследование → решение по шагам → самостоятельная проверка. Ниже сохранены прежние материалы с нумерацией 2026 года.</p>
-    <p class="facts">Новый старт: №1, №2, основы тригонометрии и выбранные темы №7–8 проекта ФИПИ 2027. Это первый выпуск, а не полный курс нового экзамена.</p>
+    <p class="lede">Начните с первых трёх заданий. Одно условие, понятный чертёж и один вопрос за раз. Решение остаётся перед глазами.</p>
+    <p class="facts">№1 — планиметрия · №2 — векторы · №3 — стереометрия. Нумерация соответствует проекту ФИПИ 2027. Это учебный маршрут, а не полный пробный экзамен.</p>
   </header>
 
   <section id="profile-2027" aria-labelledby="profile-2027-h" style="padding:26px;border:2px solid #1e3a9f;border-radius:16px;background:#fff;margin-top:32px">
     <p class="eyebrow">Понятный старт · ЕГЭ 2027</p>
-    <h2 id="profile-2027-h">Построй. Объясни. Реши сам.</h2>
-    <p>Планиметрия, векторы, тригонометрический круг, показательные и логарифмические уравнения. Подвижные модели, подсказки по шагам и новые задачи для самостоятельной проверки.</p>
-    <p><a class="btn" href="start/index.html">Открыть новый маршрут →</a></p>
+    <h2 id="profile-2027-h">Задания 1, 2 и 3 — по шагам</h2>
+    <p>Выберите задание. Разберите пример с подсказками, затем решите новую задачу самостоятельно.</p>
+    <p><a class="btn" href="start/index.html#first-three">Начать с заданий 1–3 →</a></p>
+    <nav class="first-three-links" aria-label="Первые три задания профильного ЕГЭ">
+      <a class="first-three-link" href="start/index.html#exam/1"><strong>1. Планиметрия</strong><span>Углы, стороны и площади. Нужные линии видны на чертеже.</span></a>
+      <a class="first-three-link" href="start/index.html#exam/2"><strong>2. Векторы</strong><span>Откуда и куда направлена стрелка. Координаты, длина, скалярное произведение.</span></a>
+      <a class="first-three-link" href="start/index.html#exam/3"><strong>3. Стереометрия</strong><span>Поверните тело. Найдите нужную грань, высоту или радиус.</span></a>
+    </nav>
+    <p class="facts">Можно остановиться и продолжить с того же шага в этом браузере.</p>
+    <details class="first-three-other"><summary>Другие разделы курса</summary>
+    <p><a class="btn" href="start/index.html">Весь учебный маршрут →</a></p>
     <p><a class="btn" href="lesson/index.html">Урок с репетитором: №1, №2 и тригонометрия →</a> <a class="btn" href="homework/index.html">Домашняя работа →</a></p>
     <p><a class="btn" href="trigonometry/index.html">Единый курс тригонометрии: Мордкович → применение на ЕГЭ</a></p>
     <p><a class="btn" href="../trainers/ege-profile/log-inequalities/index.html">Логарифмические неравенства: ОДЗ, метод интервалов и ответ →</a></p>
     <p>Подробное знакомство с единичной окружностью: 75 номеров по присланным страницам, построения, каждый подпункт по шагам.</p>
     <p><a href="../trainers/trainer-board.html?trainer=%2Fege-profil%2Fstart%2Findex.html%23home">Открыть маршрут на доске</a></p>
     <p class="facts">Авторские аналоги. Прогресс в браузере и скачиваемый отчёт. Стартовый маршрут посвящён первой части; неравенства доступны в отдельном тренажёре выше.</p>
+    </details>
   </section>
 
   <section id="start" aria-labelledby="start-h">
@@ -244,15 +261,15 @@
     <ol class="route">
       <li class="line"><span class="num">1</span>
         <div><div class="line-name">Планиметрия</div><div class="line-proto">треугольники, четырёхугольники, окружность, площади, углы</div></div>
-        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/planimetry-t1.html">Планиметрия без промахов</a><a class="pill" target="_blank" rel="noopener" href="trainers/pryamougolny-treugolnik-trenazher.html">Прямоугольный треугольник</a><a class="pill" target="_blank" rel="noopener" href="trainers/planimetry-yashchenko-t1.html">Задание 1 по Ященко</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=1">вариант</a></div>
+        <div class="line-links"><a class="pill" href="start/index.html#exam/1">По шагам с чертежом</a><a class="pill" target="_blank" rel="noopener" href="trainers/planimetry-t1.html">Планиметрия без промахов</a><a class="pill" target="_blank" rel="noopener" href="trainers/pryamougolny-treugolnik-trenazher.html">Прямоугольный треугольник</a><a class="pill" target="_blank" rel="noopener" href="trainers/planimetry-yashchenko-t1.html">Задание 1 по Ященко</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=1">вариант</a></div>
       </li>
       <li class="line"><span class="num">2</span>
         <div><div class="line-name">Векторы и координаты</div><div class="line-proto">координаты, длина, сумма, скалярное произведение</div></div>
-        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-t2.html">Векторы</a><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-yashchenko-t2.html">Задание 2 по Ященко</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=2">вариант</a></div>
+        <div class="line-links"><a class="pill" href="start/index.html#exam/2">По шагам с чертежом</a><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-t2.html">Векторы</a><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-yashchenko-t2.html">Задание 2 по Ященко</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=2">вариант</a></div>
       </li>
       <li class="line"><span class="num">3</span>
         <div><div class="line-name">Стереометрия</div><div class="line-proto">куб, призма, пирамида, цилиндр, конус, шар, комбинации тел</div></div>
-        <div class="line-links"><a class="pill" target="_blank" rel="noopener" href="trainers/stereo/index.html">Стереометрия в 3D</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=3">вариант</a></div>
+        <div class="line-links"><a class="pill" href="start/index.html#exam/3">По шагам с чертежом</a><a class="pill" target="_blank" rel="noopener" href="trainers/stereo/index.html">Стереометрия в 3D</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=3">вариант</a></div>
       </li>
       <li class="line"><span class="num">4</span>
         <div><div class="line-name">Вероятность: классика</div><div class="line-proto">равновозможные исходы, кубик, монета, лотерея</div></div>

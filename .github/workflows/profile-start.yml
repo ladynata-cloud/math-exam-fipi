@@ -13,7 +13,7 @@ concurrency:
 jobs:
   math-and-browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -24,8 +24,8 @@ jobs:
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
       - run: npx playwright install --with-deps chromium
       - name: Mathematics and state
-        run: node tools/profile-route.test.cjs && node tools/profile-start.test.cjs && node tools/profile-geometry.test.cjs && node tools/profile-algebra.test.cjs
+        run: node tools/profile-route.test.cjs && node tools/profile-start.test.cjs && node tools/profile-geometry.test.cjs && node tools/profile-algebra.test.cjs && node tools/profile-stereo.test.cjs && node tools/profile-planimetry-models.test.cjs && node tools/profile-vector-models.test.cjs && node tools/profile-number-input.test.cjs && node tools/profile-input-ui.test.cjs
       - name: Real browser and board
-        run: node tools/profile-route.browser.cjs && node tools/profile-start.browser.cjs && node tools/board-picker-smoke.cjs
+        run: node tools/profile-route.browser.cjs && node tools/profile-start.browser.cjs && node tools/profile-first-three.browser.cjs && node tools/board-picker-smoke.cjs
       - name: Existing profile regression
         run: npm --prefix ege-profil test

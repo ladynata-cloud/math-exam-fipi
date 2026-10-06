@@ -6,18 +6,29 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: OGE and PreOGE entry; tutor laboratory
+## In progress: clear EGE profile positions 1–3
 
-- Scope: [two public learning routes and a discreet tutor hub](tasks/OGE_FOCUS_LAB.md).
-  The homepage foregrounds OGE and PreOGE; school/EGE courses, separate tools
-  and teaching articles move to `laboratory/index.html`. Existing direct URLs,
-  accounts and content remain available.
-- Base: `74776f448a82aa220d08c1312e20ea314d571dac`; branch
-  `feature/oge-focus-lab`. Align the two shared OGE entry-page menus, feature
-  canonical division in the complete foundations route, and retarget existing
-  discovery assertions and the article-generator destination.
-- User implementation/publication permission and external-review waiver apply.
-  Focused links, navigation, desktop/mobile and saved-progress checks are required.
+- Scope: [task-bound models and short guided steps](tasks/PROFILE_FIRST_THREE.md).
+  Reuse the profile start course for planimetry/vectors; add guided stereometry.
+  Preserve OGE/PreOGE site priority, prior direct URLs and pupil accounts.
+- Base: `55ea5af0018bc2bb3bad06a384df98ea4cb1211d`; branch
+  `feature/profile-first-three`. Current user request authorizes implementation;
+  standing publication permission and external-review waiver apply.
+- Mathematics, no-answer-leak diagrams, retained work, mobile/desktop and existing
+  profile progress/regression checks are required before publication.
+
+## Published: OGE/PreOGE entry and visual long division
+
+- PR #204 merged as `9ad311dbb6d969f174876ab290938b94847f2442`: homepage
+  prioritizes OGE/PreOGE; other courses and tools remain in `/laboratory/`.
+- PR #205 merged as `55ea5af0018bc2bb3bad06a384df98ea4cb1211d`: first partial
+  dividend selection, visible notebook steps, bring-down arrow and clear decimal
+  normalization at the unchanged public division URL.
+- Pages run 37531861906 succeeded. Nine public assets matched the combined tree;
+  desktop/mobile, saved-attempt and live navigation/decimal checks passed.
+- No account, backend protocol or trainer-registry change. Detailed gate and
+  release evidence is retained in PRs #204 and #205. This task fetched and
+  independently confirmed that exact production main before branching.
 
 ## Published: a nested logarithm, one visible step at a time
 
