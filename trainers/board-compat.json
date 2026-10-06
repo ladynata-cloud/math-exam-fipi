@@ -376,6 +376,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Зеркалируется текущее задание, шаги решения, введённый ответ и подсказки. Прогресс кабинета не подключён."
+    },
+    {
+      "trainerId": "profile-log-one-example",
+      "file": "trainers/ege-profile/log-inequalities/lesson.html",
+      "title": "Одно логарифмическое неравенство — подробный разбор",
+      "group": "ЕГЭ профиль / алгебра",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Зеркалируются текущий шаг одного примера, ввод, подсказки и записи решения. Используется обычная доска; прогресс кабинета не подключён."
     }
   ]
 }

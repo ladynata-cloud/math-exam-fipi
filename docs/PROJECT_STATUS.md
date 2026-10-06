@@ -1,17 +1,34 @@
 # MathExam project status
 
-Updated: 2026-10-06 (Asia/Novosibirsk)
+Updated: 2026-10-07 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: variable-base logarithmic inequalities
+## In progress: one logarithmic inequality, one visible step at a time
+
+- Scope: [a detailed interactive worked example](tasks/LOGARITHM_ONE_EXAMPLE.md)
+  at `trainers/ege-profile/log-inequalities/lesson.html`: collect the full domain
+  system, solve each restriction, intersect aligned number lines, rationalize,
+  and intersect the final solution with the domain. Accepted work stays visible.
+- Base: `5092ccd5750db9e260a743d96b1e706449721824`; branch
+  `feature/logarithm-one-example`. Adds an entry link and ordinary mirrored-board
+  registration. No account, group-cabinet or server protocol changes.
+- The owner requested implementation and publication without a separate external
+  review. Mathematical, browser, registry and current-release checks remain part
+  of this task.
+
+## Published: variable-base logarithmic inequalities
 
 - Scope: [twelve author-written methods and 48 numerical variants](tasks/PROFILE_LOG_INEQUALITIES.md)
   with worked examples, guided steps, independent work and ordinary board mirroring.
-- Base: `433af336add696b5a00f53da8b6514d8be8c68f1`. Account and group-cabinet
-  contracts are outside this bounded addition.
+- PR #200 merged as `5092ccd5750db9e260a743d96b1e706449721824` and was published.
+  The merge is the verified starting commit of the current task; previous release
+  evidence is retained in PR #200. The existing trainer remains at
+  `trainers/ege-profile/log-inequalities/index.html`.
+- Account and group-cabinet contracts remain outside that bounded addition and
+  outside the current one-example lesson.
 
 ## Published: guided public division and school cabinet navigation
 
