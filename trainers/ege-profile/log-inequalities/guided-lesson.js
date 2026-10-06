@@ -85,7 +85,14 @@ function renderNotebook(){const host=$('notebook');host.replaceChildren();$('not
  for(const i of state.solved){const li=el('li');li.dataset.notebookStep=String(i);li.append(el('h3',(i+1)+'. '+steps[i].title));const body=el('div');body.innerHTML=steps[i].record;li.append(body);host.append(li);}
  $('saved-domain').innerHTML=state.solved.includes(config.domainStepIndex)?'<p class="eyebrow">Сохраняем ОДЗ</p>'+config.solvedDomainHtml:config.initialDomainHtml&&state.solved.includes(config.initialDomainStepIndex)?'<p class="eyebrow">Наша система ОДЗ</p>'+config.initialDomainHtml:'';
 }
-function report(){return config.title+'\n'+config.reportProblem+'\nПройдено шагов: '+state.solved.length+' из '+steps.length+'\nПодсказки на шагах: '+(state.helps.length?state.helps.map(i=>i+1).join(', '):'не использованы')+'\nПроверок с ошибкой: '+state.errors+'\n'+(state.solved.length===steps.length&&reportAnswer?'Ответ: '+reportAnswer+'\n':'')+'Страница: '+location.href.split('?')[0].split('#')[0];}
+function reportPage(){
+ const fallback=location.href.split('?')[0].split('#')[0];
+ // Only authored lesson configuration may provide a report target. Never copy
+ // ambient room, invitation or authentication query parameters into a report.
+ if(typeof config.reportPath!=='string')return fallback;
+ try{const url=new URL(config.reportPath,location.href);return url.origin===location.origin&&!url.username&&!url.password?url.origin+url.pathname+url.search:fallback;}catch(_){return fallback;}
+}
+function report(){return config.title+'\n'+config.reportProblem+'\nПройдено шагов: '+state.solved.length+' из '+steps.length+'\nПодсказки на шагах: '+(state.helps.length?state.helps.map(i=>i+1).join(', '):'не использованы')+'\nПроверок с ошибкой: '+state.errors+'\n'+(state.solved.length===steps.length&&reportAnswer?'Ответ: '+reportAnswer+'\n':'')+'Страница: '+reportPage();}
 function markOverflow(){let wide=false;document.querySelectorAll('#exercise .formula,#exercise .option-content').forEach(e=>{const overflow=e.scrollWidth>e.clientWidth+2;e.classList.toggle('scrollable-formula',overflow);if(overflow){wide=true;e.tabIndex=0;e.setAttribute('aria-describedby','formula-scroll-note');}else{e.removeAttribute('tabindex');e.removeAttribute('aria-describedby');}});$('formula-scroll-note').hidden=!wide;}
 window.addEventListener('resize',markOverflow);
 function render(focus){const done=state.step===steps.length;$('exercise').hidden=done;$('completion').hidden=!done;$('progress').value=state.solved.length;$('step-count').textContent=done?'Готово':('Шаг '+(state.step+1)+' из '+steps.length);$('phase').textContent=done?'Решение завершено':steps[state.step].phase;$('previous').disabled=state.step===0||stale;
