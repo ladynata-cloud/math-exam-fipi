@@ -6,7 +6,7 @@ function open(area,hash){
  const file=path.join(root,'ege-profil',area,'index.html');
  const dom=new JSDOM(fs.readFileSync(file,'utf8'),{url:'https://mathexam.space/ege-profil/'+area+'/index.html#'+hash,runScripts:'outside-only',pretendToBeVisual:true});
  dom.window.scrollTo=()=>{};
- for(const script of dom.window.document.querySelectorAll('script[src]'))dom.window.eval(fs.readFileSync(path.resolve(path.dirname(file),script.getAttribute('src')),'utf8'));
+ for(const script of dom.window.document.querySelectorAll('script[src]'))dom.window.eval(fs.readFileSync(path.resolve(path.dirname(file),script.getAttribute('src').split(/[?#]/)[0]),'utf8'));
  return dom;
 }
 function submit(dom,value){const w=dom.window,d=w.document;d.querySelector('#answer-form input[type=text]').value=value;d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));return d.querySelector('#feedback').textContent;}
