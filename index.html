@@ -3,13 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MathExam — математика 7 класса: алгебра и геометрия шаг за шагом</title>
-<meta name="description" content="Алгебра 7 класса по темам Макарычева и геометрия по Атанасяну: пошаговые видео без звука, интерактивные модели, тренировка и возвращение к основам.">
+<title>MathExam — подготовка к ОГЭ по математике шаг за шагом</title>
+<meta name="description" content="Подготовка к ОГЭ по математике: курс по заданиям, пошаговые тренажёры, повторение основ и практические задачи. Учитесь понимать решение и работать самостоятельно.">
 <link rel="canonical" href="https://mathexam.space/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
+<style>
+  .actions { display:flex; flex-wrap:wrap; gap:12px; margin:24px 0; }
+  #where-to-start { margin-top:36px; }
+  #where-to-start, #other-courses { scroll-margin-top:140px; }
+  .entry-grid { grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr)); }
+  @media (max-width:520px) {
+    .site-header { position:static; }
+    .hero { padding-top:28px; }
+    .hero-inner { padding-left:16px; }
+    .author { flex-wrap:wrap; padding:18px; }
+    .actions .btn { width:100%; text-align:center; }
+  }
+</style>
 </head>
 <body>
 
@@ -22,161 +35,139 @@
     </a>
     <nav class="site-nav" aria-label="Основные разделы">
       <a href="/" aria-current="page">Главная</a>
-      <a href="/grade7/">7 класс</a>
-      <a href="/ege-baza/">ЕГЭ база</a>
-      <a href="/courses/">Все курсы</a>
-      <a href="/trainers/">Каталог</a>
-      <a href="/oge/">ОГЭ</a>
-      <a href="/geometry-course/">Геометрия 7–9</a>
-      <a href="/ege-profil/">ЕГЭ профиль</a>
+      <a href="/trainers/oge-course/">Курс ОГЭ</a>
+      <a href="/trainers/oge-basics/">Повторить основы</a>
+      <a href="#other-courses">Другие курсы</a>
+      <a href="/trainers/">Все тренажёры</a>
       <a href="/pedagogam/">Педагогам</a>
     </nav>
   </div>
 </header>
 
-<!-- ==================== ГЕРОЙ ==================== -->
+<main id="main-content">
 <section class="hero">
   <div class="container">
     <div class="hero-inner">
-      <h1>Математика 7 класса.<br>Понять каждый шаг.<br>Решать самостоятельно.</h1>
-      <p class="lead">
-        Алгебра по темам Макарычева и геометрия по Атанасяну.
-        Посмотрите короткий анимированный разбор, попробуйте в тренажёре
-        и закрепите решение в тетради. Если трудно — вернитесь к нужной основе.
-      </p>
+      <p class="kicker">Подготовка к ОГЭ по математике</p>
+      <h1>ОГЭ по математике.<br>Понять каждый шаг.<br>Решать самостоятельно.</h1>
+      <p class="lead">Разбирайте задания, повторяйте то, что забыли, и тренируйтесь.
+        Начните с нужной темы — постепенно переходите от решения с подсказками
+        к самостоятельной работе.</p>
       <div class="actions">
-        <a class="btn" href="/grade7/">Открыть курс 7 класса</a>
-        <a class="btn secondary" href="/video-lessons/cheatsheets.html?v=grade7-next-20261006">Посмотреть видео и шпаргалки</a>
+        <a class="btn" href="/trainers/oge-course/">Открыть курс ОГЭ</a>
+        <a class="btn secondary" href="#where-to-start">С чего начать?</a>
       </div>
-      <p class="lead">
-        Занимайтесь вместе со школьной программой или повторяйте летом.
-        Темы можно выбирать свободно. Курсы ОГЭ, базового и профильного ЕГЭ
-        остаются доступны в разделах сайта.
-      </p>
-      <p class="byline">
-        Автор — Наталья Михайловна: много лет работала учителем математики в&nbsp;школе,
-        сейчас репетитор. Тренажёры выросли из&nbsp;живых занятий с&nbsp;учениками.
-      </p>
+      <p class="byline">Автор — Наталья Михайловна, учитель математики и репетитор.
+        Тренажёры выросли из живых занятий с учениками.</p>
     </div>
-
-    <!-- Главные входы -->
+    <h2 id="where-to-start">Выберите, что нужно сейчас</h2>
     <div class="entry-grid">
-      <article class="entry"><span class="kicker">7 класс · Макарычев</span><h3><a href="/school/index.html#course/makarychev7-start">Алгебра: от выражений до уравнений</a></h3><p>24 занятия начального раздела: понятные шаги, модели и самостоятельные попытки.</p><a class="go" href="/school/index.html#course/makarychev7-start">Открыть алгебру</a></article>
-      <article class="entry"><span class="kicker">7 класс · Атанасян</span><h3><a href="/grade7/#geometry">Геометрия: увидеть и объяснить</a></h3><p>Прямые и углы, равные треугольники, параллельность. Стройте рисунок и обосновывайте решение.</p><a class="go" href="/grade7/#geometry">Выбрать тему геометрии</a></article>
-      <article class="entry"><span class="kicker">60 коротких видео · без звука</span><h3><a href="/video-lessons/cheatsheets.html?v=grade7-next-20261006">Анимированные шпаргалки</a></h3><p>Следите за стрелками и преобразованиями. Предыдущие строки решения остаются перед глазами.</p><a class="go" href="/video-lessons/cheatsheets.html?v=grade7-next-20261006">Смотреть и пробовать</a></article>
-      <article class="entry"><span class="kicker">школьные маршруты и основы</span><h3><a href="/courses/">Все курсы математики</a></h3><p>Мастерская 5–11, уравнения, Атанасян, Мерзляк и Погорелов. Выберите курс или конкретный пробел.</p><a class="go" href="/courses/">Выбрать курс</a></article>
-<article class="entry"><span class="kicker">отдельный курс · ЕГЭ база</span><h3><a href="/ege-baza/">От основ до экзамена</a></h3><p>Уроки, построения, модели и самостоятельные варианты. Отдельные отчёты сохраняют результаты работы.</p><a class="go" href="/ege-baza/path/index.html#map">Выбрать тему</a></article>
-      <article class="entry"><span class="kicker">попробуйте своими руками</span><h3><a href="/ege-baza/path/index.html#lesson=equations">Почему меняется знак?</a></h3><p>Переносите слагаемые через знак равенства и наблюдайте, какое действие стоит за каждым шагом.</p><a class="go" href="/ege-baza/path/index.html#lesson=equations">Разобраться в уравнениях</a></article>
       <article class="entry">
-        <span class="kicker">ОГЭ · отдельный курс</span>
-        <h3><a href="/trainers/oge-course/">Курс ОГЭ по&nbsp;математике</a></h3>
-        <p>Карта тренажёров по заданиям 1–25 и отдельные входы для закрытия пробелов.</p>
-        <a class="go" href="/trainers/oge-course/">Открыть курс</a>
+        <span class="kicker">подготовка по заданиям</span>
+        <h3><a href="/trainers/oge-course/">Заниматься по курсу</a></h3>
+        <p>Выберите номер или тему. В курсе собраны задания первой и второй части.</p>
+        <a class="go" href="/trainers/oge-course/">Перейти к заданиям</a>
       </article>
       <article class="entry">
-        <span class="kicker">ОГЭ 1–5</span>
-        <h3><a href="/trainers/oge-1-5-trainers/practice-1-5-map.html">Карта практических задач</a></h3>
-        <p>Восемь экзаменационных сюжетов, проценты и переходы к тематическим тренажёрам.</p>
-        <a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-map.html">Открыть карту</a>
+        <span class="kicker">если мешают пробелы</span>
+        <h3><a href="/trainers/oge-basics/">Повторить основы</a></h3>
+        <p>Дроби, отрицательные числа, проценты, умножение и деление. Повторяйте то, что нужно для текущей задачи.</p>
+        <a class="go" href="/trainers/oge-basics/">Выбрать тему</a>
       </article>
       <article class="entry">
-        <span class="kicker">ОГЭ-2026</span>
-        <h3><a href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Входная диагностика 1–5</a></h3>
-        <p>Десять заданий определяют сильные темы и подсказывают, с чего начать подготовку.</p>
+        <span class="kicker">практические задачи</span>
+        <h3><a href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Проверить навыки для заданий 1–5</a></h3>
+        <p>Короткая диагностика практических задач. Она поможет выбрать тему для повторения; это не пробник всего ОГЭ.</p>
         <a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Пройти диагностику</a>
       </article>
-      <article class="entry">
-        <span class="kicker">экзамен</span>
-        <h3><a href="/oge/">Раздел ОГЭ</a></h3>
-        <p>Быстрые ссылки на математические и информатические тренажёры ОГЭ.</p>
-        <a class="go" href="/oge/">Открыть</a>
-      </article>
-      <article class="entry">
-        <span class="kicker">курс</span>
-        <h3><a href="/geometry-course/">Геометрия 7–9&nbsp;классы</a></h3>
-        <p>63 учебных узла, 70 прежних тренажёров, построения и просмотр работ учителем.</p>
-        <a class="go" href="/geometry-course/">Открыть</a>
-      </article>
-      <article class="entry">
-        <span class="kicker">фундамент</span>
-        <h3><a href="/trainers/#baza-5-6">База 5–6&nbsp;классов</a></h3>
-        <p>Дроби, округление, отрицательные числа, деление уголком, уравнения.</p>
-        <a class="go" href="/trainers/#baza-5-6">Открыть</a>
-      </article>
-      <article class="entry">
-        <span class="kicker">все темы</span>
-        <h3><a href="/trainers/">Каталог тренажёров</a></h3>
-        <p>Все рабочие тренажёры, собранные по темам — от 5&nbsp;класса до&nbsp;ЕГЭ.</p>
-        <a class="go" href="/trainers/">Открыть</a>
-      </article>
-      <article class="entry">
-        <span class="kicker">для урока</span>
-        <h3><a href="/pedagogam/">Педагогам</a></h3>
-        <p>Как использовать тренажёры на уроке и для домашних заданий.</p>
-        <a class="go" href="/pedagogam/">Открыть</a>
-      </article>
     </div>
   </div>
 </section>
 
-<!-- ==================== КАК УСТРОЕНО ==================== -->
 <section class="section alt">
   <div class="container">
-    <h2>Как устроены тренажёры</h2>
-    <div class="cols-3">
-      <div>
-        <h3>Открыл — и&nbsp;решаешь</h3>
-        <p>Бесплатно, без регистрации и установки. Работают прямо в браузере,
-           на компьютере и телефоне.</p>
-      </div>
-      <div>
-        <h3>Проверка и&nbsp;подсказки</h3>
-        <p>Тренажёр проверяет ответ сразу и во многих темах ведёт по шагам —
-           как терпеливый взрослый рядом.</p>
-      </div>
-      <div>
-        <h3>Прогресс и&nbsp;отчёт</h3>
-        <p>Там, где это важно, ученик видит свой прогресс и может отправить
-           отчёт учителю или родителю.</p>
-      </div>
+    <h2>Что будем разбирать</h2>
+    <div class="entry-grid">
+      <article class="entry">
+        <span class="kicker">планы, таблицы и расчёты</span>
+        <h3><a href="/trainers/oge-1-5-trainers/practice-1-5-map.html">Практические задачи</a></h3>
+        <p>Учимся читать условие, находить данные и проверять единицы измерения.</p>
+        <a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-map.html">Выбрать сюжет</a>
+      </article>
+      <article class="entry">
+        <span class="kicker">числа и выражения</span>
+        <h3><a href="/trainers/oge-course/#part1">Алгебра</a></h3>
+        <p>Вычисления, уравнения, неравенства, графики и другие темы первой части.</p>
+        <a class="go" href="/trainers/oge-course/#part1">Открыть темы</a>
+      </article>
+      <article class="entry">
+        <span class="kicker">рисунки и свойства фигур</span>
+        <h3><a href="/trainers/oge-course/#geometry">Геометрия</a></h3>
+        <p>Углы, треугольники, окружности и площади. Связываем условие с чертежом.</p>
+        <a class="go" href="/trainers/oge-course/#geometry">Перейти к геометрии</a>
+      </article>
+      <article class="entry">
+        <span class="kicker">самостоятельная работа</span>
+        <h3><a href="/trainers/oge-2027-analogue-1.html">Тренировочный вариант</a></h3>
+        <p>Попробуйте авторский вариант, затем вернитесь к темам, которые вызвали затруднения.</p>
+        <a class="go" href="/trainers/oge-2027-analogue-1.html">Открыть вариант</a>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- ==================== КОМУ ПРИГОДИТСЯ ==================== -->
 <section class="section">
   <div class="container">
-    <h2>Кому пригодится</h2>
+    <h2>Как заниматься</h2>
+    <div class="cols-3">
+      <div><h3>1. Разберите пример</h3><p>Прочитайте условие. Проследите, откуда берётся каждый шаг решения.</p></div>
+      <div><h3>2. Попробуйте сами</h3><p>Решите похожее задание. Если застряли, воспользуйтесь доступной подсказкой или повторите основу.</p></div>
+      <div><h3>3. Проверьте понимание</h3><p>Решите новое задание без подсказок. При ошибке найдите трудный шаг и потренируйтесь ещё.</p></div>
+    </div>
+    <p class="byline">На занятиях с преподавателем начинайте с выданной ссылки.
+      Для самостоятельной работы выбирайте одну тему за раз.</p>
+  </div>
+</section>
+
+<section class="section alt" id="other-courses">
+  <div class="container">
+    <h2>Другие курсы математики</h2>
+    <p>Школьные темы и подготовка к ЕГЭ доступны отдельно.</p>
     <div class="entry-grid">
       <article class="entry">
-        <h3>Ученику</h3>
-        <p>Отработать тему до уверенности: тренажёр не ругается за ошибки
-           и даёт столько попыток, сколько нужно.</p>
+        <span class="kicker">школьная программа</span>
+        <h3><a href="/grade7/">7 класс: алгебра и геометрия</a></h3>
+        <p>Темы по Макарычеву и Атанасяну, наглядные модели и тренировка.</p>
+        <a class="go" href="/grade7/">Открыть курс</a>
       </article>
       <article class="entry">
-        <h3>Родителю</h3>
-        <p>Дать ребёнку понятную ссылку вместо «посиди с учебником» —
-           и увидеть по прогрессу, что задание сделано.</p>
+        <span class="kicker">школьная геометрия</span>
+        <h3><a href="/geometry-course/">Геометрия 7–9 классов</a></h3>
+        <p>Повторение свойств фигур, построения и доказательства.</p>
+        <a class="go" href="/geometry-course/">Выбрать тему</a>
       </article>
       <article class="entry">
-        <h3>Школьному учителю</h3>
-        <p>Пятиминутка на уроке, домашнее задание по ссылке, печатные варианты
-           в PDF. Подробнее — на странице <a href="/pedagogam/">«Педагогам»</a>.</p>
+        <span class="kicker">11 класс</span>
+        <h3><a href="/ege-baza/">ЕГЭ базового уровня</a></h3>
+        <p>Повторение основ и подготовка к базовому экзамену.</p>
+        <a class="go" href="/ege-baza/">Открыть курс</a>
       </article>
       <article class="entry">
-        <h3>Репетитору</h3>
-        <p>Готовая отработка между занятиями: ученик тренируется дома,
-           а на встрече вы разбираете сложное.</p>
+        <span class="kicker">11 класс</span>
+        <h3><a href="/ege-profil/">ЕГЭ профильного уровня</a></h3>
+        <p>Алгебра, геометрия и другие темы профильного экзамена.</p>
+        <a class="go" href="/ege-profil/">Открыть курс</a>
       </article>
     </div>
+    <p><a href="/courses/">Все курсы</a> · <a href="/video-lessons/cheatsheets.html">Видео и шпаргалки</a> · <a href="/oge/">Все разделы ОГЭ, включая информатику</a></p>
   </div>
 </section>
 
 <!-- ==================== ИЗБРАННЫЕ ТРЕНАЖЁРЫ ==================== -->
 <section class="section alt">
   <div class="container">
-    <h2>С чего начать</h2>
-    <p class="byline">Несколько проверенных тренажёров, которые чаще всего открывают ученики.</p>
+    <h2>Дополнительная практика</h2>
+    <p class="byline">Тренажёры по школьным темам и экзаменам — для дополнительной работы.</p>
     <div class="entry-grid">
       <article class="entry">
         <span class="kicker">6 класс</span>
@@ -308,6 +299,8 @@
   </div>
 </section>
 
+</main>
+
 <!-- ==================== ФУТЕР (единый для всего сайта) ==================== -->
 <footer class="site-footer">
   <div class="container">
@@ -320,8 +313,9 @@
       <h4>Разделы</h4>
       <ul>
         <li><a href="/">Главная</a></li>
+        <li><a href="/trainers/oge-course/">Курс ОГЭ по математике</a></li>
+        <li><a href="/trainers/oge-basics/">Повторить основы</a></li>
         <li><a href="/trainers/">Каталог тренажёров</a></li>
-        <li><a href="/oge/">Подготовка к ОГЭ</a></li>
         <li><a href="/geometry-course/">Геометрия 7–9</a></li>
         <li><a href="/pedagogam/">Педагогам</a></li>
       </ul>
