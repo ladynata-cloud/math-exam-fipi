@@ -6,16 +6,31 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: clear EGE profile positions 1–3
+## In progress: all first-part positions and detailed inequalities
+
+- Scope: [first part and inequalities](tasks/PROFILE_PART_ONE_INEQUALITIES.md).
+  Extend the existing short guided route to positions 1–13 of the 2027 draft;
+  add detailed second-part inequalities (16 in 2027, 15 in 2026).
+- Base: `a34ef76adc4165adf489f6025de8f3281cc4b592`; branch
+  `feature/profile-part-one-inequalities`. Owner requested cloud implementation;
+  standing publication permission and explicit external-review waiver apply.
+- Independent mathematics, retained-work, no-answer-leak models, desktop/mobile,
+  old-route regression and exact-head release checks are required. No backend,
+  account or production learner-data changes are in scope.
+
+## Published: clear EGE profile positions 1–3
 
 - Scope: [task-bound models and short guided steps](tasks/PROFILE_FIRST_THREE.md).
   Reuse the profile start course for planimetry/vectors; add guided stereometry.
   Preserve OGE/PreOGE site priority, prior direct URLs and pupil accounts.
-- Base: `55ea5af0018bc2bb3bad06a384df98ea4cb1211d`; branch
-  `feature/profile-first-three`. Current user request authorizes implementation;
-  standing publication permission and external-review waiver apply.
-- Mathematics, no-answer-leak diagrams, retained work, mobile/desktop and existing
-  profile progress/regression checks are required before publication.
+- PR #206 merged as `a34ef76adc4165adf489f6025de8f3281cc4b592`, parent
+  `55ea5af0018bc2bb3bad06a384df98ea4cb1211d`; reviewed and actual tree
+  `c097ae749b1e09d9eb45b6fd2d24ecb9eb25427f` matched exactly.
+- Exact-head CI 37540919253, Pages 37541278349 and main quality 37541278702
+  succeeded. Eight public assets matched reviewed bytes. Live model controls,
+  accepted steps and navigation passed, with desktop/mobile regressions.
+- 36 planimetry tasks, 24 vector tasks and 48 stereometry tasks have task-bound
+  figures in the focused route. Earlier content and local progress keys remain.
 
 ## Published: OGE/PreOGE entry and visual long division
 

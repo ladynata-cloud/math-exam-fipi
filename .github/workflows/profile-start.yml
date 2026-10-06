@@ -1,10 +1,10 @@
 name: Profile 2027 — learning start
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'trainers/board-picker-data.json', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/guided-lesson.js', 'trainers/board-picker-data.json', '.github/workflows/profile-start.yml']
   push:
     branches: [main]
-    paths: ['ege-profil/start/**', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/guided-lesson.js', '.github/workflows/profile-start.yml']
 permissions:
   contents: read
 concurrency:
@@ -27,5 +27,9 @@ jobs:
         run: node tools/profile-route.test.cjs && node tools/profile-start.test.cjs && node tools/profile-geometry.test.cjs && node tools/profile-algebra.test.cjs && node tools/profile-stereo.test.cjs && node tools/profile-planimetry-models.test.cjs && node tools/profile-vector-models.test.cjs && node tools/profile-number-input.test.cjs && node tools/profile-input-ui.test.cjs
       - name: Real browser and board
         run: node tools/profile-route.browser.cjs && node tools/profile-start.browser.cjs && node tools/profile-first-three.browser.cjs && node tools/board-picker-smoke.cjs
+      - name: Full first part and inequality mathematics
+        run: node tools/profile-full-course.test.cjs && node --test tools/profile-probability.test.cjs tools/profile-equations.test.cjs tools/profile-functions.test.cjs tools/profile-applied.test.cjs && node tools/profile-part2-inequalities.test.cjs
+      - name: Full first part and inequality learner journeys
+        run: node tools/profile-full-course.browser.cjs && node tools/profile-part2-inequalities.browser.cjs
       - name: Existing profile regression
         run: npm --prefix ege-profil test
