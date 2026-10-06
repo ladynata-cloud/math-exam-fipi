@@ -6,7 +6,7 @@
   const KEY = 'mathExamBasics.guidedDivision.v1';
   const esc = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const topicIds = new Set(G.topics.map(t => t.id));
-  const names = { start:'Выбираем первый блок', count:'Намечаем места для ответа', digit:'Находим цифру ответа', product:'Умножаем', subtract:'Вычитаем', 'remainder-check':'Проверяем остаток', bring:'Сносим одну цифру', partial:'Читаем новый блок', comma:'Ставим запятую', answer:'Читаем ответ', 'final-remainder':'Записываем остаток', verify:'Проверяем решение', 'shift-count':'Готовим делитель', 'shift-factor':'Меняем оба числа одинаково', 'shift-divisor':'Меняем делитель', 'shift-dividend':'Меняем делимое' };
+  const names = { start:'Первое неполное делимое', count:'Намечаем места для ответа', digit:'Находим цифру ответа', product:'Умножаем', subtract:'Вычитаем', 'remainder-check':'Проверяем остаток', bring:'Сносим одну цифру', partial:'Читаем новое неполное делимое', comma:'Ставим запятую', answer:'Читаем ответ', 'final-remainder':'Записываем остаток', verify:'Проверяем решение', 'shift-count':'Готовим делитель', 'shift-factor':'Меняем оба числа одинаково', 'shift-divisor':'Меняем делитель', 'shift-dividend':'Меняем делимое' };
   let state = {version:1, active:'start', serial:0, next:{}, sessions:{}, records:[]};
   let lastRaw = null, blocked = false, storageAvailable = true, helpOpen = false, revealOpen = false;
   let feedback = '', feedbackKind = '';
@@ -77,8 +77,44 @@
   }
   function independent(record) { return !record.errors && !record.hints && !record.reveals && !record.repeated; }
 
-  // Like arifmetika.html's renderCorner: each digit has a fixed place, a comma
-  // has a narrow column, and products are aligned by their last source digit.
+  // Like arifmetika.html's renderCorner: every digit keeps its own column.
+  // Visual choices only fill the existing draft; checking remains deliberate.
+  function selectedPrefix(p, s) {
+    const a = p.actions[s.step];
+    if (a.kind === 'start' && s.accepted) return a.sourceIndex;
+    if (a.kind !== 'start') return p.actions.slice(0, s.step).some(b => b.kind === 'start') ? p.cycles[0].sourceIndex : -1;
+    const draft = s.draft.trim();
+    for (let i = 0; i < p.intLen; i++) if (p.digits.slice(0, i + 1).join('') === draft) return i;
+    return -1;
+  }
+  function drawNotebookMarks() {
+    const notebook = $('notebook'), svg = notebook.querySelector('.notebook-marks');
+    if (!svg || notebook.parentElement.hidden) return;
+    const box = notebook.getBoundingClientRect();
+    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    const archEnd = Number(notebook.dataset.selectedEnd);
+    let marks = '';
+    if (Number.isInteger(archEnd) && archEnd >= 0) {
+      const first = notebook.querySelector('[data-source-digit="0"]')?.getBoundingClientRect();
+      const last = notebook.querySelector('[data-source-digit="' + archEnd + '"]')?.getBoundingClientRect();
+      if (first && last) {
+        const x1 = first.left - box.left + 3, x2 = last.right - box.left - 3, y = first.top - box.top - 4;
+        marks += '<path class="first-arch" data-first-arch data-selected-end="' + archEnd + '" d="M ' + x1 + ' ' + y + ' Q ' + ((x1 + x2) / 2) + ' ' + (y - 22) + ' ' + x2 + ' ' + y + '"/>';
+      }
+    }
+    const target = notebook.querySelector('[data-bring-target]');
+    if (target) {
+      const index = target.dataset.bringTarget;
+      const source = notebook.querySelector('[data-source-digit="' + index + '"]');
+      if (source) {
+        const from = source.getBoundingClientRect(), to = target.getBoundingClientRect();
+        const x1 = from.left + from.width / 2 - box.left, y1 = from.bottom - box.top + 2;
+        const x2 = to.left + to.width / 2 - box.left, y2 = to.top - box.top - 3;
+        marks += '<defs><marker id="bring-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs><path data-bring-arrow data-source-index="' + index + '" class="bring-arrow" pathLength="1" marker-end="url(#bring-arrowhead)" d="M ' + x1 + ' ' + y1 + ' L ' + x2 + ' ' + y2 + '"/>';
+      }
+    }
+    svg.innerHTML = marks;
+  }
   function renderNotebook(p, s) {
     const completed = s.step + (s.accepted ? 1 : 0);
     const a = p.actions[s.step];
@@ -87,24 +123,31 @@
       $('notebook').innerHTML = '<div class="microproblem">' + esc(p.task.dividend) + ' : ' + esc(p.task.divisor) + (s.done ? ' → ' + esc(p.actions[0].answer) : '') + '</div>';
       $('notebook-note').textContent = 'Подбираем одну цифру. Полный уголок здесь не нужен.';
       $('normalization').hidden = true;
+      $('decimal-note').hidden = true;
       return;
     }
     const preparing = visible < p.normalizationEnd;
     $('normalization').hidden = !p.normalizationEnd;
     if (p.normalizationEnd) {
       const shift = p.baseActions.findIndex(x => x.kind === 'shift-factor');
-      const factor = visible > shift ? p.baseActions[shift].answer : '?';
+      const factorDone = visible > shift;
+      const factor = factorDone ? p.baseActions[shift].answer : '?';
       const divisorDone = visible > p.baseActions.findIndex(x => x.kind === 'shift-divisor');
       const dividendDone = visible > p.baseActions.findIndex(x => x.kind === 'shift-dividend');
-      $('normalization').innerHTML = '<p>Меняем оба числа одинаково: × ' + esc(factor) + '</p><p>Делимое: ' + esc(p.task.dividend) + ' → <b>' + (dividendDone ? esc(p.normalizedDividend) : '?') + '</b></p><p>Делитель: ' + esc(p.task.divisor) + ' → <b>' + (divisorDone ? p.normalizedDivisor : '?') + '</b></p>';
+      const pair = (id, label, original, result, earned) => '<div class="normalization-row" data-normalization="' + id + '" data-earned="' + earned + '"><span class="normalization-label">' + label + '</span><div class="normalization-equation"><span class="original-number" data-original>' + esc(original) + '</span><span class="transform-arrow"><small data-factor data-earned="' + factorDone + '">× ' + esc(factor) + '</small><svg viewBox="0 0 100 14" aria-hidden="true"><path d="M2 7H94M87 1L95 7L87 13"/></svg></span><strong class="changed-number ' + (earned ? 'earned' : 'pending') + '" data-normalized aria-label="' + (earned ? 'Получилось ' + esc(result) : 'Пока не вычислено') + '">' + (earned ? esc(result) : '?') + '</strong></div></div>';
+      $('normalization').innerHTML = '<p class="normalization-title">Умножаем оба числа на одно и то же число.</p><div class="normalization-pair">' + pair('dividend', 'Делимое', p.task.dividend, p.normalizedDividend, dividendDone) + pair('divisor', 'Делитель', p.task.divisor, p.normalizedDivisor, divisorDone) + '</div>';
     }
     $('notebook').parentElement.hidden = preparing;
     if (preparing) {
       $('notebook-note').textContent = 'Начнём уголок, когда одинаково изменим оба числа.';
+      $('decimal-note').hidden = true;
       return;
     }
     let length = p.originalLength;
     for (const b of p.baseActions.slice(0, visible)) if (b.kind === 'bring') length = Math.max(length, b.sourceIndex + 1);
+    const earnedLength = length;
+    const bringing = !s.done && ['bring', 'partial'].includes(a.kind);
+    if (bringing) length = Math.max(length, a.sourceIndex + 1);
     const hasComma = length > p.intLen;
     const columns = ['var(--cell)'];
     const digitColumn = [];
@@ -114,37 +157,42 @@
       columns.push('var(--cell)');
     }
     const template = columns.join(' ');
-    function row(text, end, cls, minus) {
+    function row(text, end, cls, minus, targetIndex = -1, pendingIndex = -1) {
       const start = end - String(text).length + 1;
       let cells = '';
       const minusColumn = hasComma && start === p.intLen ? digitColumn[start] - 2 : digitColumn[start] - 1;
       if (minus) cells += '<span class="minus" style="grid-column:' + minusColumn + '">−</span>';
-      for (let j = 0; j < String(text).length; j++) cells += '<span class="' + cls + '" style="grid-column:' + digitColumn[start + j] + '">' + esc(String(text)[j]) + '</span>';
+      for (let j = 0; j < String(text).length; j++) cells += '<span class="' + cls + '" ' + (start + j === targetIndex ? 'data-bring-target="' + targetIndex + '" ' : '') + 'style="grid-column:' + digitColumn[start + j] + '">' + esc(String(text)[j]) + '</span>';
+      if (pendingIndex >= 0) cells += '<span class="pending-digit" data-bring-target="' + pendingIndex + '" aria-label="Место для снесённой цифры" style="grid-column:' + digitColumn[pendingIndex] + '"></span>';
       if (cls.includes('subtraction') && hasComma && start < p.intLen && end >= p.intLen) cells += '<span class="subtraction" style="grid-column:' + (digitColumn[p.intLen] - 1) + '"></span>';
       return '<div class="number-row" style="--columns:' + template + '">' + cells + '</div>';
     }
     const activeCycle = Number.isInteger(a.cycle) ? a.cycle : p.cycles.findIndex(c => c.sourceIndex === a.sourceIndex);
     const activeIndex = a.sourceIndex ?? p.cycles[activeCycle]?.sourceIndex;
     const firstEnd = p.cycles[0].sourceIndex;
+    const chosenEnd = selectedPrefix(p, s);
+    const choosing = !s.accepted && a.kind === 'start';
     let top = '';
     for (let i = 0; i < length; i++) {
-      const inFirst = ['start','count'].includes(a.kind) && i <= firstEnd;
-      const bringing = a.kind === 'bring' && i === a.sourceIndex;
-      const firstActive = activeCycle === 0 && i <= firstEnd;
-      const cls = !s.done && (inFirst || bringing || firstActive) ? 'current' : '';
-      if (hasComma && i === p.intLen) top += '<span style="grid-column:' + (digitColumn[i] - 1) + '">,</span>';
-      top += '<span class="' + cls + '" style="grid-column:' + digitColumn[i] + '">' + p.digits[i] + '</span>';
+      const inFirst = ['start','count'].includes(a.kind) && i <= chosenEnd;
+      const bringSource = bringing && i === a.sourceIndex;
+      const firstActive = activeCycle === 0 && a.kind !== 'start' && i <= firstEnd;
+      const cls = !s.done && (inFirst || bringSource || firstActive) ? 'current' : '';
+      if (hasComma && i === p.intLen) top += '<span class="dividend-comma" data-dividend-comma style="grid-column:' + (digitColumn[i] - 1) + '">,</span>';
+      const attrs = ' data-source-digit="' + i + '"' + (i >= p.originalLength ? ' data-append-zero data-earned="' + (i < earnedLength) + '"' : '') + ' style="grid-column:' + digitColumn[i] + '"';
+      if (choosing && i < p.intLen) top += '<button type="button" class="prefix-digit ' + cls + '" data-prefix-end="' + i + '" aria-label="Начать с числа ' + p.digits.slice(0, i + 1).join('') + '" aria-pressed="' + (i <= chosenEnd) + '"' + attrs + '>' + p.digits[i] + '</button>';
+      else top += '<span class="' + cls + (i >= earnedLength ? ' pending-digit' : '') + '"' + attrs + '>' + (i < earnedLength ? p.digits[i] : '') + '</span>';
     }
     let rows = '<div class="number-row" style="--columns:' + template + '">' + top + '</div>';
     for (let i = 0; i < p.cycles.length; i++) {
       const c = p.cycles[i];
       if (visible <= c.productAction) break;
-      if (c.qd > 0) rows += row(c.product, c.sourceIndex, 'subtraction', true);
+      rows += row(c.product, c.sourceIndex, 'subtraction', true);
       if (visible <= c.subtractAction) break;
       const next = p.cycles[i + 1];
       const bringIndex = next ? p.baseActions.findIndex(b => b.kind === 'bring' && b.sourceIndex === next.sourceIndex) : -1;
       const brought = next && visible > bringIndex;
-      if (c.qd === 0 && i && !brought) continue;
+      const pending = next && bringing && a.kind === 'bring' && !s.accepted && a.sourceIndex === next.sourceIndex;
       let value = String(c.remainder), end = c.sourceIndex;
       if (brought) {
         // Like the arithmetic suite, extend the remainder to the next partial
@@ -152,7 +200,7 @@
         value = String(next.partial); end = next.sourceIndex;
       }
       const isActive = !s.done && (brought ? activeIndex === next.sourceIndex || activeCycle === i + 1 : activeCycle === i);
-      rows += row(value, end, isActive ? 'current' : '', false);
+      rows += row(value, end, isActive ? 'current' : '', false, bringing && brought && a.sourceIndex === next?.sourceIndex ? next.sourceIndex : -1, pending ? next.sourceIndex : -1);
     }
     let quotient = '';
     for (const b of p.baseActions.slice(0, visible)) {
@@ -161,9 +209,26 @@
     }
     const countDone = p.actions.slice(0, completed).some(b => b.kind === 'count');
     const digitsDone = quotient.split(',')[0].length;
-    const slots = countDone && digitsDone < p.integerDigitCount ? '·'.repeat(p.integerDigitCount - digitsDone) : '';
-    $('notebook').innerHTML = '<div class="working">' + rows + '</div><div class="right-side"><div class="divisor">' + p.normalizedDivisor + '</div><div class="quotient">' + esc(quotient) + '<span class="slot">' + (slots || (!quotient ? '…' : '')) + '</span></div></div>';
-    $('notebook-note').textContent = s.done ? 'Все строки решения остаются перед тобой.' : a.kind === 'bring' ? 'Сносим только одну следующую цифру — она выделена в верхней строке.' : countDone && !quotient ? 'Точки справа — места для цифр ответа.' : 'Выделен блок, с которым сейчас работаем.';
+    const slotCount = countDone ? Math.max(0, p.integerDigitCount - digitsDone) : 0;
+    let slots = Array.from({length:slotCount}, (_, i) => '<span class="slot' + (i === 0 && a.kind === 'digit' && !s.accepted ? ' next-slot' : '') + '" data-quotient-slot aria-label="Место для цифры ответа">·</span>').join('');
+    if (!slotCount && a.kind === 'digit' && !s.accepted && quotient.includes(',')) slots = '<span class="slot next-slot" data-quotient-slot aria-label="Место для следующей цифры ответа">·</span>';
+    if (!quotient && !slots) slots = '<span class="slot uncounted" aria-label="Здесь будет ответ">?</span>';
+    const writtenQuotient = esc(quotient).replace(',', '<span data-quotient-comma class="quotient-comma">,</span>');
+    $('notebook').dataset.selectedEnd = String(chosenEnd);
+    $('notebook').innerHTML = '<div class="working">' + rows + '</div><div class="right-side"><div class="divisor">' + p.normalizedDivisor + '</div><div class="quotient">' + writtenQuotient + slots + '</div></div><svg class="notebook-marks" aria-hidden="true"></svg>';
+    $('notebook-note').textContent = s.done ? 'Все строки решения остаются перед тобой.' : a.kind === 'start' ? s.accepted ? 'Первое неполное делимое выбрано. Можно продолжать.' : chosenEnd < 0 ? 'Нажми на последнюю цифру числа, с которого начнёшь делить.' : 'Дуга показывает твой выбор. Теперь проверь его.' : a.kind === 'shift-dividend' && s.accepted ? 'Числа подготовлены. Теперь начнём деление уголком.' : a.kind === 'bring' ? 'По стрелке сносим одну цифру к остатку.' : a.kind === 'digit' && !s.accepted ? 'Новую цифру ответа запишем справа, на отмеченном месте.' : countDone && !quotient ? 'Точки справа — места для цифр ответа.' : 'Выделено число, с которым сейчас работаем.';
+    const appended = earnedLength - p.originalLength;
+    const commaAction = a.kind === 'comma';
+    const appendAction = bringing && p.baseActions.some(b => b.kind === 'bring' && b.sourceIndex === a.sourceIndex && b.appended);
+    $('decimal-note').hidden = !(commaAction || appendAction || appended > 0);
+    let cue = commaAction ? '<p>Цифры целой части делимого закончились. Перед делением десятых поставим запятую в ответе.</p>' + (quotient.startsWith('0') ? '<p>Ноль перед запятой сохраняем.</p>' : '') : appendAction ? '<p>Справа после запятой можно дописать ноль. Число останется тем же.</p>' : '';
+    if (appended > 0) {
+      const original = p.normalizedDividend;
+      const extended = original + (original.includes(',') ? '' : ',');
+      cue += '<p class="decimal-equality" data-zero-equality>' + esc(original) + ' = ' + Array.from({length:appended}, (_, i) => esc(extended + '0'.repeat(i + 1))).join(' = ') + '</p>';
+    }
+    $('decimal-note').innerHTML = cue;
+    requestAnimationFrame(drawNotebookMarks);
   }
 
   function renderResults() {
@@ -177,13 +242,19 @@
     $('topic-label').textContent = topic.title;
     $('problem').textContent = s.task.dividend + ' : ' + s.task.divisor;
     $('step-counter').textContent = s.done ? 'Готово' : 'Шаг ' + (s.step + 1) + ' из ' + p.actions.length;
+    const percent = Math.round(100 * (s.step + Number(s.accepted)) / p.actions.length);
+    $('step-progress').style.width = percent + '%';
+    $('step-progress').parentElement.setAttribute('aria-valuenow', String(percent));
+    const topicFinished = state.records.filter(r => r.topic === state.active).length;
+    $('topic-progress').textContent = topicFinished ? 'В этой теме закончено примеров: ' + topicFinished : 'Первый пример в этой теме';
+    $('question').parentElement.classList.toggle('lesson-complete', s.done);
     $('notebook').parentElement.hidden = false;
     renderNotebook(p, s);
     $('question').hidden = s.done;
     $('completion').hidden = !s.done;
     $('step-name').textContent = names[a.kind];
     $('prompt').textContent = a.prompt;
-    $('answer-note').textContent = a.kind === 'comma' ? 'Впиши число с запятой на конце, например 2,.' : a.kind === 'remainder-check' ? 'Выбери ответ, затем нажми «Проверить».' : a.kind === 'start' ? 'Впиши число из выделенных цифр слева.' : a.kind === 'count' ? 'На каждую цифру ответа наметим одно место.' : ['digit','bring'].includes(a.kind) ? 'Впиши одну цифру.' : 'Впиши число и нажми «Проверить».';
+    $('answer-note').textContent = a.kind === 'comma' ? 'Перепиши целую часть ответа. Сразу после неё поставь запятую.' : a.kind === 'remainder-check' ? 'Выбери ответ, затем нажми «Проверить».' : a.kind === 'start' ? 'Выбери цифры слева в уголке или впиши число здесь.' : a.kind === 'count' ? 'На каждую цифру ответа наметим одно место.' : ['digit','bring'].includes(a.kind) ? 'Впиши одну цифру.' : 'Впиши число и нажми «Проверить».';
     $('answer').value = s.draft;
     $('answer').readOnly = s.accepted;
     $('answer').hidden = !!a.options;
@@ -198,12 +269,15 @@
     $('help-content').hidden = !helpOpen;
     $('hint-text').textContent = a.hint;
     $('multiples').hidden = a.kind !== 'digit' && a.kind !== 'product';
-    if (!$('multiples').hidden) $('multiples').innerHTML = Array.from({length:10}, (_, q) => '<span>' + p.normalizedDivisor + ' × ' + q + ' = ' + p.normalizedDivisor * q + '</span>').join('');
+    if (!$('multiples').hidden) $('multiples').innerHTML = '<p class="table-note">Нажми на строку, чтобы подставить ' + (a.kind === 'digit' ? 'цифру' : 'произведение') + '. Затем проверь ответ.</p>' + Array.from({length:10}, (_, q) => '<button type="button" data-multiple="' + (a.kind === 'digit' ? q : p.normalizedDivisor * q) + '">' + p.normalizedDivisor + ' × <b>' + q + '</b> = ' + p.normalizedDivisor * q + '</button>').join('');
     $('revealed').textContent = revealOpen ? 'В этом шаге ответ: ' + a.answer + '. Впиши его и нажми «Проверить».' : '';
     if (s.done) {
       const answer = p.micropractice ? p.actions[0].answer : p.quotient + (s.task.level === 'remainder' ? ' (остаток ' + p.remainder + ')' : '');
       $('completion-text').textContent = (p.micropractice ? 'Подходящая цифра: ' : 'Ответ: ') + answer + '. ' + (independent(s) ? 'Получилось без ошибок и подсказок.' : s.repeated && !s.hints && !s.reveals && !s.errors ? 'Знакомый пример повторён.' : 'Пример пройден с помощью или исправлениями.');
     }
+    const nextTopic = followingTopic();
+    $('next-topic').hidden = !s.done || !nextTopic;
+    if (nextTopic) $('next-topic').textContent = (state.sessions[nextTopic.id] && !state.sessions[nextTopic.id].done ? 'Продолжить тему: ' : 'Следующая тема: ') + nextTopic.title;
     $('save-note').textContent = blocked || !storageAvailable ? 'Можно закончить на сегодня. Отправь учителю результат или снимок экрана: сохранение сейчас недоступно.' : 'Можно закончить на сегодня. Результат сохранится в этом браузере.';
     renderResults();
   }
@@ -215,11 +289,41 @@
     if (!s.done && (box.top < 0 || box.top > innerHeight - 220)) $('question').scrollIntoView({block:'start'});
   }
   function errorText(raw, p, a) {
-    if (!raw.trim()) return 'Сначала впиши ответ.';
+    if (!raw.trim()) return a.options ? 'Сначала выбери «Да» или «Нет».' : 'Сначала впиши ответ.';
+    if (a.kind === 'start') {
+      const end = selectedPrefix(p, {...current(), draft:raw});
+      if (end < 0) return 'Начинаем с первой цифры слева. Можно взять несколько цифр подряд: нажми на последнюю из них в уголке.';
+      if (end < a.sourceIndex) return raw + ' меньше делителя ' + p.normalizedDivisor + '. Возьми ещё одну цифру справа.';
+      return 'Здесь взято слишком много цифр. Попробуй взять меньше: нам нужно самое короткое число слева, с которого можно начать деление.';
+    }
     if (a.kind === 'digit' && /^\d$/.test(raw)) {
       const c = p.cycles[a.cycle], q = Number(raw), value = q * p.normalizedDivisor;
       return value > c.partial ? q + ' — много: ' + p.normalizedDivisor + ' × ' + q + ' = ' + value + ', а у нас ' + c.partial + '. Попробуй меньшую цифру.' : q + ' — мало: после вычитания можно взять делитель ещё раз. Попробуй большую цифру.';
     }
+    if (a.kind === 'remainder-check') return 'Осталось ' + a.remainder + ', а делитель — ' + a.divisor + '. ' + a.remainder + ' меньше ' + a.divisor + (a.remainder === 0 ? ': ноль тоже подходит.' : '. Значит, ещё целый делитель взять нельзя.');
+    if (a.kind === 'shift-dividend') {
+      const factor = p.baseActions.find(b => b.kind === 'shift-factor').answer;
+      return G.equal(raw, p.task.dividend) ? 'Делимое осталось прежним. Делитель уже умножили на ' + factor + '. Теперь умножь на ' + factor + ' и делимое ' + p.task.dividend + '.' : 'Оба числа меняем одинаково. Умножь ' + p.task.dividend + ' на ' + factor + ': перенеси запятую вправо на столько же мест, как у делителя.';
+    }
+    if (a.kind === 'shift-divisor') return 'Меняем именно делитель ' + p.task.divisor + '. Перенеси его запятую вправо на выбранное число мест: в новом делителе запятой не останется.';
+    if (a.kind === 'shift-count') return 'Считай только цифры справа от запятой в делителе ' + p.task.divisor + '. Цифры до запятой не считаем.';
+    if (a.kind === 'shift-factor') return 'Вспомни перенос запятой: одно место вправо — умножить на 10, два — на 100, три — на 1000.';
+    if (a.kind === 'comma') {
+      const clean = raw.trim().replace('.', ',');
+      if (a.answer === '0,' && (clean === ',' || !clean.startsWith('0'))) return 'Ответ меньше единицы. Перед запятой нужен ноль. Запиши «0,» — без цифр после запятой.';
+      if (!clean.includes(',') && clean === a.answer.slice(0, -1)) return 'Целая часть записана. Добавь запятую сразу после её последней цифры: дальше будем делить десятые.';
+      return 'Сначала перепиши целую часть ' + a.answer.slice(0, -1) + '. Запятая должна стоять сразу после неё, в самом конце записи.';
+    }
+    if (a.kind === 'subtract') {
+      const c = p.cycles[a.cycle];
+      return 'Вычитаем ' + c.product + ' из ' + c.partial + '. Проверь свой результат: если прибавить к нему ' + c.product + ', должно получиться ' + c.partial + '.';
+    }
+    if (a.kind === 'final-remainder') return 'Остаток — самое нижнее число после вычитания. Посмотри на него в уголке. Число справа под чертой — это частное.';
+    if (a.kind === 'bring') return a.appended ? 'Дописываем именно ноль после запятой. Затем сносим эту одну цифру к остатку.' : 'Сносим только одну выделенную цифру из верхней строки. Остаток к ней пока не приписывай: это следующий шаг.';
+    if (a.kind === 'partial') return 'Прочитай нижнее выделенное число целиком: остаток и снесённую цифру справа. Если в начале получился ноль, его не пишем.';
+    if (a.kind === 'product') return 'Сейчас нужно произведение: ' + p.normalizedDivisor + ' × ' + p.cycles[a.cycle].qd + '. Найденная цифра ответа уже записана справа под чертой.';
+    if (a.kind === 'count') return 'Считай места от последней цифры выбранного числа до конца целой части делимого. Каждое место даст одну цифру ответа.';
+    if (a.kind === 'digit') return 'Для одного места в ответе нужна одна цифра: от 0 до 9.';
     return 'Пока не совпало. Попробуй ещё раз или нажми «Помочь с этим шагом».';
   }
   $('answer-form').addEventListener('submit', event => {
@@ -242,7 +346,30 @@
     save(); render();
     if (s.done) moveFocus(); else $('primary').focus({preventScroll:true});
   });
-  $('answer').addEventListener('input', () => { current().draft = $('answer').value; save(); });
+  $('answer').addEventListener('input', () => {
+    const s = current(); s.draft = $('answer').value; save();
+    const p = G.plan(s.task);
+    if (p.actions[s.step].kind === 'start') renderNotebook(p, s);
+  });
+  function fillDraft(value) {
+    const s = current(); if (s.accepted || s.done) return;
+    s.draft = String(value); feedback = ''; feedbackKind = ''; save(); render();
+  }
+  $('notebook').addEventListener('click', event => {
+    const digit = event.target.closest('[data-prefix-end]');
+    if (!digit) return;
+    const s = current(), p = G.plan(s.task);
+    if (p.actions[s.step].kind !== 'start' || s.accepted) return;
+    const index = Number(digit.dataset.prefixEnd);
+    fillDraft(p.digits.slice(0, index + 1).join(''));
+    $('notebook').querySelector('[data-prefix-end="' + index + '"]')?.focus({preventScroll:true});
+  });
+  $('multiples').addEventListener('click', event => {
+    const option = event.target.closest('[data-multiple]');
+    if (!option) return;
+    fillDraft(option.dataset.multiple);
+    $('answer').focus({preventScroll:true});
+  });
   $('answer-options').addEventListener('click', event => {
     const button = event.target.closest('button[data-option]');
     if (!button || current().accepted) return;
@@ -257,21 +384,35 @@
     if (!revealOpen) current().reveals = Math.min(1000000, current().reveals + 1);
     revealOpen = true; save(); render();
   };
+  function followingTopic() {
+    const route = G.topics.filter(t => !t.optional), index = route.findIndex(t => t.id === state.active);
+    return index >= 0 ? route[index + 1] : null;
+  }
   function showTopics() {
-    $('topics-list').innerHTML = G.topics.map(t => '<button type="button" data-topic="' + t.id + '" aria-current="' + (state.active === t.id) + '">' + esc(t.title) + '<small>' + esc(t.description) + (state.sessions[t.id] && !state.sessions[t.id].done ? ' · Пример начат' : '') + '</small></button>').join('');
+    const groups = [{title:'Целые числа', ids:['start','oneDigit','zero','remainder','twoDigit']}, {title:'Десятичные дроби', ids:['decimalNatural','appendZeros','decimalDivisor']}, {title:'Короткая тренировка', ids:['quotientDigit']}];
+    $('topics-list').innerHTML = groups.map(group => '<section class="topic-group"><h3>' + group.title + '</h3>' + group.ids.map(id => {
+      const t = G.topics.find(item => item.id === id), session = state.sessions[id];
+      const finished = state.records.filter(r => r.topic === id).length;
+      const progress = (finished ? 'Закончено примеров: ' + finished + '.' : 'Ещё нет законченных примеров.') + (session && !session.done ? ' Начат пример — шаг ' + (session.step + 1) + ' из ' + G.plan(session.task).actions.length + '.' : '');
+      return '<button type="button" data-topic="' + t.id + '" aria-current="' + (state.active === t.id) + '">' + esc(t.title) + '<small>' + esc(t.description) + '</small><small class="topic-progress" data-topic-progress="' + t.id + '">' + progress + '</small></button>';
+    }).join('') + '</section>').join('');
     $('topics-dialog').showModal();
     $('topics-close').focus();
   }
   $('topics-open').onclick = showTopics;
   $('topics-close').onclick = () => $('topics-dialog').close();
-  $('topics-list').onclick = event => {
-    const button = event.target.closest('button[data-topic]'); if (!button) return;
-    state.active = button.dataset.topic;
+  function activateTopic(id) {
+    state.active = id;
     history.replaceState(null, '', location.pathname + location.search + '#' + state.active);
     if (!current()) newSession(state.active, false);
     helpOpen = false; revealOpen = false; feedback = ''; feedbackKind = '';
     save(); render(); $('topics-dialog').close(); $('problem').scrollIntoView({block:'start'});
+  }
+  $('topics-list').onclick = event => {
+    const button = event.target.closest('button[data-topic]'); if (!button) return;
+    activateTopic(button.dataset.topic);
   };
+  $('next-topic').onclick = () => { const next = followingTopic(); if (next) activateTopic(next.id); };
   $('next-example').onclick = () => { newSession(state.active, false); render(); $('problem').scrollIntoView({block:'start'}); };
   $('repeat-example').onclick = () => { newSession(state.active, true); render(); $('problem').scrollIntoView({block:'start'}); };
   function report() {
@@ -297,6 +438,7 @@
   window.addEventListener('storage', event => {
     if (event.key === KEY || event.key === null) { blocked = true; notice('Работа изменилась в другой вкладке. Обнови страницу, прежде чем продолжить.'); }
   });
+  window.addEventListener('resize', () => requestAnimationFrame(drawNotebookMarks));
   window.addEventListener('hashchange', () => {
     const id = location.hash.slice(1);
     if (!topicIds.has(id) || id === state.active) return;

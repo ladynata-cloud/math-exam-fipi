@@ -6,6 +6,7 @@ on:
       - 'trainers/oge-basics/multiplication-division/division-lab-core.js'
       - 'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html'
       - 'tools/division-guided*'
+      - 'tools/division-notebook*'
       - '.github/workflows/division-guided-quality.yml'
   workflow_dispatch:
 permissions:
@@ -34,7 +35,9 @@ jobs:
       - name: Real pupil interactions and mobile notebook
         env:
           DIVISION_SCREENSHOTS: division-browser-results
-        run: node tools/division-guided.browser.cjs
+        run: |
+          node tools/division-guided.browser.cjs
+          node tools/division-notebook.browser.cjs
       - name: Notebook screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
