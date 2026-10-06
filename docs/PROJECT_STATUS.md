@@ -6,29 +6,48 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: one logarithmic inequality, one visible step at a time
+## In progress: a nested logarithm, one visible step at a time
+
+- Scope: [a second detailed interactive example](tasks/LOGARITHM_NESTED_EXAMPLE.md)
+  at `trainers/ege-profile/log-inequalities/nested.html`, solving
+  `log_(x²-x)(log_(x²+x)x) >= 0`: six domain conditions, separate interval
+  solutions, aligned number-line intersections and two sign-equivalent
+  replacements. Accepted work stays visible throughout.
+- Base: `fa86d5812ce175ddbf124661b7c258642dd319ab`; branch
+  `feature/logarithm-nested-example`. Reuse the guided-lesson runtime while
+  preserving the first lesson's identity, saved work and behavior. Add a separate
+  mirror registration and picker entry; no account or server-protocol changes.
+- The owner requested the other example following publication of the first;
+  standing publication permission and the external-review waiver apply.
+  Internal mathematics, both-lesson browser regression and release checks remain.
+
+## Published: one logarithmic inequality, one visible step at a time
 
 - Scope: [a detailed interactive worked example](tasks/LOGARITHM_ONE_EXAMPLE.md)
   at `trainers/ege-profile/log-inequalities/lesson.html`: collect the full domain
   system, solve each restriction, intersect aligned number lines, rationalize,
   and intersect the final solution with the domain. Accepted work stays visible.
-- Base: `5092ccd5750db9e260a743d96b1e706449721824`; branch
-  `feature/logarithm-one-example`. Adds an entry link and ordinary mirrored-board
-  registration. No account, group-cabinet or server protocol changes.
-- The owner requested implementation and publication without a separate external
-  review. Mathematical, browser, registry and current-release checks remain part
-  of this task.
+- PR #202 merged as `fa86d5812ce175ddbf124661b7c258642dd319ab`, parent
+  `70c4d1985353c92be0c299b9673e5fe380ceb256`. Exact-head workflows
+  37523744592 (logarithms), 37523744486 (profile course) and 37523744408
+  (learning/container) passed; the full 18-step browser journey also passed on
+  the composed release tree after the concurrent homepage PR #201.
+- Published with an entry link and ordinary mirrored-board registration.
+  Amvera deployment was verified at 20:15 UTC on 2026-10-06: both public
+  endpoints returned 200, the registry contained five mirror entries including
+  `profile-log-one-example`, and its digest matched the tested manifest.
+- No account, group-cabinet or server-protocol changes were part of the release.
 
 ## Published: variable-base logarithmic inequalities
 
 - Scope: [twelve author-written methods and 48 numerical variants](tasks/PROFILE_LOG_INEQUALITIES.md)
   with worked examples, guided steps, independent work and ordinary board mirroring.
 - PR #200 merged as `5092ccd5750db9e260a743d96b1e706449721824` and was published.
-  The merge is the verified starting commit of the current task; previous release
-  evidence is retained in PR #200. The existing trainer remains at
+  That release is included in the current base; its release evidence is retained
+  in PR #200. The existing trainer remains at
   `trainers/ege-profile/log-inequalities/index.html`.
 - Account and group-cabinet contracts remain outside that bounded addition and
-  outside the current one-example lesson.
+  outside the detailed public lessons.
 
 ## Published: guided public division and school cabinet navigation
 

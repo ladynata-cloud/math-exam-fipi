@@ -176,10 +176,10 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   const registry = await endpoint.json();
   assert.equal(registry.schemaVersion, 1);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
-  assert.equal(registry.trainers.length, 5);
+  assert.equal(registry.trainers.length, 6);
   assert.deepEqual(
     registry.trainers.map(entry => entry.trainerId),
-    ['linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-one-example']
+    ['linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example']
   );
 
   const localhostCors = await fetch(`${server.baseUrl}/api/trainer-registry`, {
@@ -202,7 +202,7 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   assert.equal(health.registrySchemaVersion, 1);
   assert.equal(health.registryDigest, registry.digest);
   assert.equal(health.registrySource, 'bundled-default');
-  assert.equal(health.registryEntryCount, 5);
+  assert.equal(health.registryEntryCount, 6);
   assert.equal(health.registryError, null);
 
   const roomResponse = await fetch(`${server.baseUrl}/api/rooms`, { method: 'POST' });
@@ -287,7 +287,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     const health = await (await fetch(`${server.baseUrl}/health`, { cache: 'no-store' })).json();
     assert.equal(health.registryLoaded, true);
     assert.equal(health.registrySource, 'bundled-default');
-    assert.equal(health.registryEntryCount, 5);
+    assert.equal(health.registryEntryCount, 6);
     const cabinet = await fetch(`${server.baseUrl}/learning/`, { cache: 'no-store' });
     assert.equal(cabinet.status, 200);
     assert.match(cabinet.headers.get('content-security-policy'), /frame-ancestors 'none'/);
