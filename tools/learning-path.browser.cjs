@@ -28,10 +28,23 @@ const server = http.createServer((req,res)=>{try{
   async function spec(id,seed=10){return frame('a').evaluate(({id,seed})=>({trainerId:'ege-path',contentId:id,id,seed,contentVersion:1,task:PathData.task(id,seed)}),{id,seed});}
   async function hydrate(id,taskSpec,state=null,readOnly=false){const before=await page.evaluate(id=>messages.filter(m=>m.id===id&&m.data.type==='applied').length,id);await page.evaluate(({id,payload})=>window.hydrate(id,payload),{id,payload:{taskSpec,state,readOnly}});await page.waitForFunction(({id,before})=>messages.filter(m=>m.id===id&&m.data.type==='applied').length>before,{id,before});const last=await page.evaluate(id=>messages.filter(m=>m.id===id&&m.data.type==='applied').at(-1).data.payload,id);assert(!last.error,`${id}: ${JSON.stringify(last)} ${taskSpec.id}`);}
   async function change(id,action){const before=await page.evaluate(id=>messages.filter(m=>m.id===id&&m.data.type==='change').length,id);await action(frame(id));const barrier=Date.now()+'-'+Math.random();await frame(id).evaluate(barrier=>parent.postMessage({type:'fixture-barrier',barrier},location.origin),barrier);await page.waitForFunction(({id,barrier})=>messages.some(m=>m.id===id&&m.data.barrier===barrier),{id,barrier});await page.waitForFunction(({id,before})=>messages.filter(m=>m.id===id&&m.data.type==='change').length>before,{id,before});return page.evaluate(id=>latest(id),id);}
-  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.length,131);
+  // Switching a focused numeric answer to a labelled choice must not try to
+  // restore the old text selection on the new hidden canonical-value input.
+  const numericFocusSpec=await spec('grade7-g-core-angle-measure',23);
+  await hydrate('a',numericFocusSpec);
+  await change('a',f=>f.locator('#answer').fill('123'));
+  await frame('a').locator('#answer').evaluate(el=>{el.focus();el.setSelectionRange(1,2);});
+  const choiceFocusSpec=await spec('grade7-g-core-triangle-elements',23);
+  await hydrate('a',choiceFocusSpec);
+  assert.equal(await frame('a').locator('#answer').getAttribute('type'),'hidden');
+  assert.equal(await frame('a').evaluate(()=>document.activeElement.matches('[data-answer-choice]')),true,'keyboard focus moves to a visible choice');
+  const choiceFocusEvent=await change('a',f=>f.locator('[data-answer-choice]').first().press('Space'));
+  await hydrate('b',choiceFocusSpec,choiceFocusEvent.state,true);
+  assert.equal(await frame('b').locator('#answer').inputValue(),choiceFocusEvent.state.work.draft,'choice draft restores after input type transition');
+  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.length,169);
   for(const id of ids){const taskSpec=await spec(id);await hydrate('a',taskSpec);const raw=await frame('a').locator('#answer').getAttribute('type')==='hidden'?await frame('a').locator('[data-answer-choice]').first().getAttribute('data-answer-choice'):'−3/7';let event=await change('a',f=>raw==='−3/7'?f.locator('#answer').fill(raw):f.locator('[data-answer-choice]').first().click());assert.equal(event.state.work.draft,raw);assert.equal(event.kind,'input');event=await change('a',f=>f.locator('[data-stage="1"]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);kinds.add(taskSpec.task.model.kind);assert((await frame('a').locator('#model').innerText()).length>0);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id);assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id);}
   // Each new curriculum item preserves exact drafts, help and a checked prefix.
-  for(const id of ids.filter(id=>id.startsWith('grade7-'))){
+  for(const id of ids.filter(id=>id.startsWith('grade7-')||id.startsWith('pre7-'))){
     const taskSpec=await spec(id,23);await hydrate('a',taskSpec);
     await change('a',f=>f.locator('[data-stage="2"]').click());
     let event=await change('a',f=>f.locator('#hint').click());
@@ -75,7 +88,7 @@ const server = http.createServer((req,res)=>{try{
   for(const[id,action]of cases){const taskSpec=await spec(id);await hydrate('a',taskSpec);await change('a',f=>f.locator('[data-stage="1"]').click());await change('a',action);const payload=await page.evaluate(()=>latest('a'));assert.equal(payload.kind,'model',id);await hydrate('b',taskSpec,payload.state,true);assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id+' text');assert.equal(await frame('a').locator('#model').evaluate(el=>[...el.querySelectorAll('svg')].map(x=>x.outerHTML).join('')),await frame('b').locator('#model').evaluate(el=>[...el.querySelectorAll('svg')].map(x=>x.outerHTML).join('')),id+' drawing');assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id+' inputs');assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model [aria-pressed]')].map(x=>x.getAttribute('aria-pressed'))),await frame('b').evaluate(()=>[...document.querySelectorAll('#model [aria-pressed]')].map(x=>x.getAttribute('aria-pressed'))),id+' selection');}
   // New geometry keeps keyboard selection and cumulative construction across
   // observer rendering and control handoff, including unchanged state envelopes.
-  for(const id of ids.filter(id=>id.startsWith('grade7-g-'))){
+  for(const id of ids.filter(id=>id.startsWith('grade7-g-')&&!/^grade7-g-(core|practice)-/.test(id))){
     const taskSpec=await spec(id,23);await hydrate('a',taskSpec);await change('a',f=>f.locator('[data-stage="1"]').click());
     await change('a',f=>f.locator('[data-geometry-select]').first().press('Space'));
     await change('a',f=>f.locator('[data-geometry-next]').click());
@@ -123,6 +136,6 @@ const server = http.createServer((req,res)=>{try{
   // Hydration renders the pinned task, not an updated client generator.
   await frame('a').evaluate(()=>PathData.task=()=>{throw Error('must not regenerate pinned task');});await hydrate('a',taskSpec,saved,false);
   await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{framesById.a.style.width='100%';framesById.b.hidden=true;});assert(await frame('a').evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-  assert.deepEqual(errors,[]);console.log('LEARNING_PATH_BROWSER_OK: 131 routes; '+kinds.size+' model kinds; semantic controls/figures, teacher read-only, exact drafts/feedback/hints/steps, silent hydrate, reload, parent new-task, pinned task and standalone isolation.');
+  assert.deepEqual(errors,[]);console.log('LEARNING_PATH_BROWSER_OK: 169 routes; '+kinds.size+' model kinds; semantic controls/figures, teacher read-only, exact drafts/feedback/hints/steps, silent hydrate, reload, parent new-task, pinned task and standalone isolation.');
  }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});

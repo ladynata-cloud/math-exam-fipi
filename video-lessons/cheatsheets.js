@@ -10,9 +10,15 @@
     { title: 'Геометрия · отрезки и углы', ids: ['grade7-g-segment-order','grade7-g-midpoint-chain','grade7-g-angle-addition','grade7-g-angle-bisector','grade7-g-adjacent-equation'] },
     { title: 'Основы · дроби и проценты', ids: ['grade7-b-mixed-borrow','grade7-b-fraction-product-cancel','grade7-b-decimal-divisor-scale','grade7-b-signed-fraction-sum','grade7-b-percent-proportion'] }
   ];
+  groups.push(
+    { title: 'Основы до 7 класса · числа и вычисления', ids: Object.keys(topics).filter(id => id.startsWith('pre7-')).slice(0, 9) },
+    { title: 'Основы до 7 класса · дроби, величины и фигуры', ids: Object.keys(topics).filter(id => id.startsWith('pre7-')).slice(9) },
+    { title: 'Геометрия · от первых понятий до равнобедренного треугольника', ids: Object.keys(topics).filter(id => id.startsWith('grade7-g-core-')) },
+    { title: 'Геометрия · задачи и доказательства', ids: Object.keys(topics).filter(id => id.startsWith('grade7-g-practice-')) }
+  );
   const ids = groups.flatMap(group => group.ids).filter(id => guides.get(id));
   const $ = id => document.getElementById(id);
-  const revision = 'grade7-next-20261006';
+  const revision = 'pre7-20261006';
   let activeVideo = null;
   let videoKind = new URLSearchParams(location.search).get('type') === 'trainer' ? 'trainer' : 'math';
   const player = $('video-player');
@@ -31,6 +37,11 @@
     text('sheet-title', topic.title);
     list('rules', topic.rule); list('example', topic.example);
     $('angle-figure').hidden = id !== 'adjacent-angles';
+    const geometry = /^grade7-g-(core|practice)-/.test(id);
+    $('topic-figure').hidden = !geometry;
+    $('topic-figure').replaceChildren();
+    document.querySelector('.sheet').classList.toggle('has-topic-figure', geometry);
+    if (geometry) window.MathExamGeometryCoreMotion.mount($('topic-figure'), topic.scenes(1)[0].motion)(1);
     text('check', topic.check); text('warning', topic.warning);
     text('practice', topic.practice.prompt); text('practice-note', topic.practice.instruction);
     const mediaUrl = 'media/' + (videoKind === 'trainer' ? 'using-' : '') + id + '.mp4?v=' + revision;

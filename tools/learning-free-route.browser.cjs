@@ -64,6 +64,11 @@ async function saved(page) {
 }
 async function navigate(page, route) {
   await page.evaluate(route => LearningApp.navigate(route), route);
+  if (route === 'route') {
+    await page.locator('[data-route-library]').waitFor();
+    if (await page.locator('.mw-dialog[open]').count()) await page.locator('[data-mw-close]').click();
+    await page.locator('[data-route-library] > summary').click();
+  }
 }
 async function storage(page) {
   return page.evaluate(() => JSON.stringify({ local: { ...localStorage }, session: { ...sessionStorage } }));
@@ -220,7 +225,7 @@ async function main() {
     assert.equal((await api(student.page, '/attempts/' + attemptId)).submission.stale, false);
     await navigate(student.page, 'route');
     await student.page.locator('.route-progress').waitFor();
-    assert.match(await student.page.locator('.route-progress').innerText(), /2\s*\/\s*49/);
+    assert.match(await student.page.locator('.route-progress').innerText(), /0\s*\/\s*62/);
     assert.match(await student.page.locator('#route-equations .route-count').innerText(), /самостоятельно решено попыток: 0/);
     await verifyPaperHomework({ teacher, student, pupil, peer, store, origin });
     await verifyTopicGuideEntry({ teacher, open, store, origin });
@@ -439,7 +444,7 @@ async function verifyWelcome(page, store, learnerId) {
       const player = page.locator('.mw-video');
       const attributes = await player.evaluate(node => ({ src: node.src, controls: node.controls,
         autoplay: node.autoplay, paused: node.paused, preload: node.preload }));
-      assert.equal(attributes.src, 'https://mathexam.space/video-lessons/media/' + fileName + '.mp4?v=grade7-next-20261006');
+      assert.equal(attributes.src, 'https://mathexam.space/video-lessons/media/' + fileName + '.mp4?v=pre7-20261006');
       assert.equal(attributes.controls, true); assert.equal(attributes.autoplay, false);
       assert.equal(attributes.paused, true); assert.equal(attributes.preload, 'none');
       const localFile = path.join(ROOT, 'video-lessons/media', fileName + '.mp4');

@@ -147,7 +147,7 @@
   }
   window.MathExamMotion = Object.freeze({ mount(host, spec, condition) {
     host.replaceChildren();
-    const seek = !spec ? () => {} : spec.type === 'geometry' ? geometry(condition) : spec.type === 'numberline' ? numberline(host, spec) : spec.type === 'construction' ? construction(host, spec) : arrows(host, spec);
+    const seek = !spec ? () => {} : spec.type === 'geometry-core' ? window.MathExamGeometryCoreMotion.mount(host, spec) : spec.type === 'foundation' ? window.MathExamPre7Motion.mount(host, spec) : spec.type === 'geometry' ? geometry(condition) : spec.type === 'numberline' ? numberline(host, spec) : spec.type === 'construction' ? construction(host, spec) : arrows(host, spec);
     seek(1); return seek;
   } });
 })();

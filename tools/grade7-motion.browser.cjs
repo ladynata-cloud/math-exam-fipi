@@ -13,7 +13,7 @@ const { chromium } = require('playwright');
 const run = promisify(execFile), ROOT = path.resolve(__dirname, '..');
 const allTopics = ['negative-numbers', 'fractions', 'brackets', 'linear-equation', 'proportions', 'percentages', 'adjacent-angles',
   'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties', 'identities', 'equation-roots', 'linear-cases', 'equation-word-problems',
-  'grade7-a-opposite-expression', 'grade7-a-two-variable-collect', 'grade7-a-equation-two-brackets', 'grade7-a-equation-denominators', 'grade7-a-equation-decimals', 'grade7-g-segment-order', 'grade7-g-midpoint-chain', 'grade7-g-angle-addition', 'grade7-g-angle-bisector', 'grade7-g-adjacent-equation', 'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale', 'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion'];
+  'grade7-a-opposite-expression', 'grade7-a-two-variable-collect', 'grade7-a-equation-two-brackets', 'grade7-a-equation-denominators', 'grade7-a-equation-decimals', 'grade7-g-segment-order', 'grade7-g-midpoint-chain', 'grade7-g-angle-addition', 'grade7-g-angle-bisector', 'grade7-g-adjacent-equation', 'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale', 'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion', 'pre7-place-value', 'pre7-natural-compare', 'pre7-add-carry', 'pre7-subtract-borrow', 'pre7-smart-calculation', 'pre7-inverse-components', 'pre7-divisibility', 'pre7-scale-reading', 'pre7-comparison-stories', 'pre7-fraction-line', 'pre7-equivalent-fractions', 'pre7-fraction-compare', 'pre7-fraction-part-whole', 'pre7-decimal-compare', 'pre7-mass-capacity', 'pre7-ruler-length', 'pre7-perimeter', 'pre7-grid-area', 'grade7-g-core-point-line-ray', 'grade7-g-core-perpendicular', 'grade7-g-core-angle-measure', 'grade7-g-core-triangle-elements', 'grade7-g-core-triangle-perimeter', 'grade7-g-core-sas', 'grade7-g-core-median', 'grade7-g-core-bisector', 'grade7-g-core-altitude', 'grade7-g-core-isosceles-elements', 'grade7-g-core-isosceles-base-angles', 'grade7-g-core-isosceles-vertex-line', 'grade7-g-practice-segment-equation', 'grade7-g-practice-angle-parts', 'grade7-g-practice-vertical-proof', 'grade7-g-practice-sas-common-side', 'grade7-g-practice-sas-vertical', 'grade7-g-practice-cevian-reason', 'grade7-g-practice-isosceles-perimeter', 'grade7-g-practice-isosceles-proof'];
 const chosen = process.argv.find(value => value.startsWith('--topics='));
 const topics = chosen ? chosen.slice(9).split(',') : allTopics;
 assert.ok(topics.length && topics.every(topic => allTopics.includes(topic)), 'Only fixed authored topic IDs are supported');
@@ -203,6 +203,13 @@ async function main() {
       const ledger=JSON.parse(await fs.readFile(path.join(ROOT,'video-lessons/grade7-next-media.json'),'utf8'));
       assert.equal(ledger.clips.length,30,'Fifteen explanation/tutorial pairs are shipped');
       assert.equal(new Set(ledger.clips.map(clip=>clip.file)).size,30,'Published files have unique identities');
+      const pre7Ledger=JSON.parse(await fs.readFile(path.join(ROOT,'video-lessons/pre7-media.json'),'utf8'));
+      assert.equal(pre7Ledger.clips.length,36,'Eighteen foundation explanation/tutorial pairs are shipped');
+      assert.equal(new Set(pre7Ledger.clips.map(clip=>clip.file)).size,36);
+      const geometryLedger=JSON.parse(await fs.readFile(path.join(ROOT,'video-lessons/geometry-core-media.json'),'utf8'));
+      assert.equal(geometryLedger.clips.length,40,'Twenty elementary geometry explanation/tutorial pairs are shipped');
+      assert.equal(new Set(geometryLedger.clips.map(clip=>clip.file)).size,40);
+      const allClips=[...ledger.clips,...pre7Ledger.clips,...geometryLedger.clips];
 
       for (const task of [...topics, ...topics.map(id => 'using-' + id), 'homework-help']) {
         const file = path.join(ROOT, 'video-lessons/media', task + '.mp4');
@@ -211,7 +218,7 @@ async function main() {
         const streams = meta.streams.filter(s => s.codec_type === 'video');
         assert.equal(streams.length, 1); assert.equal(streams[0].codec_name, 'h264');
         assert.equal(streams[0].width, 1280); assert.equal(streams[0].height, 720);
-        if(task.includes('grade7-')){const record=ledger.clips.find(clip=>clip.file===task+'.mp4');assert.ok(record,'New MP4 is listed in the checked media ledger');const bytes=await fs.readFile(file);assert.equal(bytes.length,record.bytes);assert.equal(hash(bytes),record.sha256);assert.equal(record.audioStreams,0);assert.equal(Number(meta.format.duration),record.durationSeconds);}
+        if(task.includes('grade7-')||task.includes('pre7-')){const record=allClips.find(clip=>clip.file===task+'.mp4');assert.ok(record,'New MP4 is listed in the checked media ledger');const bytes=await fs.readFile(file);assert.equal(bytes.length,record.bytes);assert.equal(hash(bytes),record.sha256);assert.equal(record.audioStreams,0);assert.equal(Number(meta.format.duration),record.durationSeconds);}
         const motion = firstMotions.get(task), frames = [];
         if (motion) for (const progress of [.15, .5, .85]) {
           const frame = (await run('ffmpeg', ['-v', 'error', '-ss', String(motion.elapsed + motion.duration * progress), '-i', file,

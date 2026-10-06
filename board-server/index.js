@@ -99,7 +99,7 @@ const learningHeaders = (_req, res, next) => {
   }); next();
 };
 app.use('/learning', learningHeaders, express.static(path.join(__dirname, '../learning'), { dotfiles: 'deny', index: 'index.html', fallthrough: false }));
-for (const file of ['data.js', 'practice.js', 'equation-practice.js', 'grade7-algebra.js', 'grade7-geometry.js', 'grade7-foundations.js', 'practice-view.js']) {
+for (const file of ['data.js', 'practice.js', 'equation-practice.js', 'grade7-algebra.js', 'grade7-geometry.js', 'grade7-geometry-core.js', 'grade7-geometry-practice.js', 'grade7-foundations.js', 'pre7-arithmetic.js', 'pre7-applications.js', 'practice-view.js']) {
   app.get('/ege-baza/path/' + file, learningHeaders, (_req, res) => res.sendFile(path.join(__dirname, '../ege-baza/path', file)));
 }
 process.once('exit', () => learning.close());

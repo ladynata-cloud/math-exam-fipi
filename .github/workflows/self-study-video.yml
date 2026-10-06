@@ -29,7 +29,8 @@ concurrency:
 jobs:
   contracts-and-browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Verify all 136 active clips, 68 guides and three presets per topic.
+    timeout-minutes: 30
     env:
       NODE_PATH: ${{ github.workspace }}/video-worker/node_modules
     steps:
@@ -67,6 +68,8 @@ jobs:
         run: node tools/makarychev7-start.test.cjs
       - name: Grade 7 animated steps and silent stored media
         run: node tools/grade7-motion.browser.cjs
+      - name: Geometry video measurements and congruence
+        run: node tools/grade7-geometry-video-math.test.cjs
       - name: Visible video playback and direct practice entry
         # Stock Chrome includes the H.264/AAC codecs needed by the published MP4s.
         # Keep the bundled Chromium for the other authoring/layout gates above.

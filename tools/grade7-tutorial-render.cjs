@@ -22,6 +22,8 @@ assert.notEqual(output, path.join(root, 'video-lessons/media'), 'Render to a rev
 const mods = process.env.NODE_PATH?.split(path.delimiter)[0] || process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES || path.join(root, 'video-worker/node_modules');
 const { chromium } = createRequire(path.join(mods, 'package.json'))('playwright');
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const concurrency=Number(process.env.TUTORIAL_RENDER_CONCURRENCY||2);
+assert.ok(Number.isInteger(concurrency)&&concurrency>=1&&concurrency<=3,'Tutorial concurrency must be 1–3');
 const formats = { '.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.svg':'image/svg+xml', '.png':'image/png', '.mp4':'video/mp4' };
 let report = { scope:'Actual local public trainer UI, fresh demonstration work, no accounts or remote writes.', tutorials: [], external: [], errors: [] };
 let reportWrite = Promise.resolve();
@@ -45,15 +47,15 @@ async function overlay(page) {
     for(const id of ['tutorial-focus','tutorial-pointer']){const el=document.createElement('div');el.id=id;document.body.append(el);}
   });
 }
-async function caption(page, chapter, title, note, topic) {
-  await page.evaluate(({chapter,title,note,topic}) => {
-    document.getElementById('tutorial-kicker').textContent=`КАК ЗАНИМАТЬСЯ · ${topic} · ${chapter}/5`;
+async function caption(page, chapter, title, note, topic, chapters = 5) {
+  await page.evaluate(({chapter,title,note,topic,chapters}) => {
+    document.getElementById('tutorial-kicker').textContent=`КАК ЗАНИМАТЬСЯ · ${topic} · ${chapter}/${chapters}`;
     document.getElementById('tutorial-title').textContent=title;document.getElementById('tutorial-note').textContent=note;
-  },{chapter,title,note,topic});
+  },{chapter,title,note,topic,chapters});
 }
-async function focus(page, locator, click = false) {
+async function focus(page, locator, click = false, top = 340) {
   await locator.waitFor({state:'visible'});
-  await locator.evaluate(el=>{const rect=el.getBoundingClientRect();window.scrollBy(0,rect.top-340);});
+  await locator.evaluate((el,top)=>{const rect=el.getBoundingClientRect();window.scrollBy(0,rect.top-top);},top);
   await sleep(180);
   const box=await locator.boundingBox();assert.ok(box && box.y>160 && box.y<650,'Highlighted real control must be visible below the caption');
   await page.evaluate(box=>{const focus=document.getElementById('tutorial-focus'),pointer=document.getElementById('tutorial-pointer');Object.assign(focus.style,{left:(box.x-8)+'px',top:(box.y-8)+'px',width:(box.width+16)+'px',height:(box.height+16)+'px'});Object.assign(pointer.style,{left:(box.x+box.width/2-12)+'px',top:(box.y-32)+'px'});focus.classList.remove('tutorial-click');},box);
@@ -65,7 +67,7 @@ async function finishClip({id,folder,context,page,began,start,target}) {
   const duration=(Date.now()-began)/1000-start,video=page.video();await context.close();const raw=await video.path(),file=path.join(output,`using-${id}.mp4`);
   await run('ffmpeg',['-hide_banner','-loglevel','error','-y','-ss',String(start),'-i',raw,'-t',String(duration),'-vf','fps=30,scale=1280:720','-c:v','libx264','-preset','fast','-crf','23','-pix_fmt','yuv420p','-an','-movflags','+faststart',file],{timeout:180000});
   const metadata=JSON.parse((await run('ffprobe',['-v','error','-show_streams','-show_format','-of','json',file])).stdout);assert.equal(metadata.streams.filter(s=>s.codec_type==='audio').length,0);
-  const result={id,file:`using-${id}.mp4`,duration:Number(metadata.format.duration),bytes:(await fs.stat(file)).size,width:1280,height:720,audioStreams:0,route:target.pathname+target.search+target.hash,chapters:5};report.tutorials.push(result);await checkpoint();console.log(JSON.stringify(result));
+  const result={id,file:`using-${id}.mp4`,duration:Number(metadata.format.duration),bytes:(await fs.stat(file)).size,width:1280,height:720,audioStreams:0,route:target.pathname+target.search+target.hash,chapters:id.startsWith('pre7-')||id.startsWith('grade7-g-core-')||id.startsWith('grade7-g-practice-')?6:5};report.tutorials.push(result);await checkpoint();console.log(JSON.stringify(result));
 }
 async function recordFoundation(args) {
   const {id,guide,folder,page,began}=args, basic=['negative-numbers','fractions'].includes(id), geometry=id==='adjacent-angles';
@@ -105,25 +107,55 @@ async function recordFoundation(args) {
   return finishClip({...args,start});
 }
 async function recordManagedPath(args) {
-  const {id,guide,folder,page,began}=args;
-  await page.locator('[data-stage="2"]').click();
+  const {id,guide,folder,page,began}=args, pre7=id.startsWith('pre7-'), core=id.startsWith('grade7-g-core-')||id.startsWith('grade7-g-practice-'), interactive=pre7||core, chapters=interactive?6:5;
+  await page.locator(interactive?'[data-stage="1"]':'[data-stage="2"]').click();
   const info=await page.evaluate(()=>{const id=location.hash.split('=')[1],l=PathCourse.state().lessons[id],t=PathData.task(id,l.seed),s=t.steps[l.step];return {first:PathPracticeView.answerText(s),choices:s.choices||[],answer:s.a};});
   await overlay(page);const start=(Date.now()-began)/1000;
-  await caption(page,1,'Прочитай условие и вопрос шага','Тренажёр спрашивает один шаг решения. Ответ на всю задачу понадобится позднее.',guide.title);
+  await caption(page,1,'Прочитай условие и вопрос шага','Тренажёр спрашивает один шаг решения. Ответ на всю задачу понадобится позднее.',guide.title,chapters);
   await focus(page,page.locator('#main .task').first());await screenshot(page,folder,'01-condition');await sleep(4000);
-  await caption(page,2,info.choices.length?'Выбери ответ на этот вопрос':'Введи ответ на этот вопрос','Сначала покажем ошибку: её можно исправить в той же попытке.',guide.title);
+  if(interactive){
+    await caption(page,2,'Исследуй модель: выдели часть','Нажми на элемент, прочитай его смысл. Кнопка шага раскрывает объяснение по частям.',guide.title,chapters);
+    const preferred={
+      'grade7-g-core-perpendicular':['CD','perpendicular'],
+      'grade7-g-core-angle-measure':['OB','second-ray'],
+      'grade7-g-practice-sas-common-side':['common','common'],
+      'grade7-g-practice-sas-vertical':['AOB','triangles'],
+      'grade7-g-practice-cevian-reason':['AK','cevian'],
+      'grade7-g-practice-isosceles-proof':['AD','bisector'],
+      'grade7-g-core-altitude':['altitude-line','altitude'],
+      'grade7-g-core-median':['median-line','median'],
+      'grade7-g-core-bisector':['bisector-line','bisector'],
+      'grade7-g-core-isosceles-vertex-line':['vertex-line','vertex-line']
+    }[id];
+    const preferredSelect=preferred?page.locator('[data-core-select="'+preferred[0]+'"]'):null;
+    const select=preferredSelect&&await preferredSelect.count()?preferredSelect:page.locator(core?'[data-core-select]':'[data-pre7-select]').first();
+    await focus(page,select,true);assert.equal(await select.getAttribute('aria-pressed'),'true');
+    await focus(page,page.locator(core?'[data-core-drawing]':'[data-pre7-drawing]'),false,190);
+    await screenshot(page,folder,'02-model-drawing');await sleep(2600);
+    if(core&&await page.locator('[data-core-build]').count()){
+      await caption(page,2,'Добавь построение на рисунок','Нажми кнопку линии. Сравни новый чертёж с условием, затем открой объяснение.',guide.title,chapters);
+      const preferredBuild=preferred?page.locator('[data-core-build="'+preferred[1]+'"]'):null;
+      const build=preferredBuild&&await preferredBuild.count()?preferredBuild:page.locator('[data-core-build]').first();
+      await focus(page,build,true);assert.equal(await build.getAttribute('aria-pressed'),'true');
+      await focus(page,page.locator('[data-core-drawing]'),false,190);await screenshot(page,folder,'02-model-drawing');await sleep(2600);
+    }
+    await focus(page,page.locator(core?'[data-core-next]':'[data-pre7-next]'),true);
+    await screenshot(page,folder,'02-model');await sleep(3600);
+    await focus(page,page.locator('#next'),true);
+  }
+  await caption(page,2+(interactive?1:0),info.choices.length?'Выбери ответ на этот вопрос':'Введи ответ на этот вопрос','Сначала покажем ошибку: её можно исправить в той же попытке.',guide.title,chapters);
   const choices=page.locator('[data-answer-choice]');
   if(info.choices.length){const options=await choices.all();let wrong;for(const option of options){if(await option.getAttribute('data-answer-choice')!==String(info.answer)){wrong=option;break;}}assert.ok(wrong);await focus(page,wrong,true);}
   else{await focus(page,page.locator('#answer'));await page.locator('#answer').pressSequentially('987654',{delay:140});}
   await focus(page,page.locator('#answerForm button.primary'),true);await focus(page,page.locator('#feedback'));assert.match(await page.locator('#feedback').innerText(),/Проверь/);await screenshot(page,folder,'02-answer');await sleep(3900);
-  await caption(page,3,'Открой подсказку и исправь шаг','Прочитай причину, затем выбери или введи свой исправленный ответ.',guide.title);
+  await caption(page,3+(interactive?1:0),'Открой подсказку и исправь шаг','Прочитай причину, затем выбери или введи свой исправленный ответ.',guide.title,chapters);
   await focus(page,page.locator('#hint'),true);await focus(page,page.locator('#hintText'));await screenshot(page,folder,'03-feedback');await sleep(4300);
   if(info.choices.length)await focus(page,page.locator('[data-answer-choice="'+info.answer+'"]'),true);
   else{await focus(page,page.locator('#answer'));await page.locator('#answer').fill('');await page.locator('#answer').pressSequentially(info.first,{delay:180});}
   await focus(page,page.locator('#answerForm button.primary'),true);
-  await caption(page,4,'Верная строка остаётся в решении','Теперь прочитай следующий вопрос. Если нужно, можно снова открыть подсказку.',guide.title);
+  await caption(page,4+(interactive?1:0),'Верная строка остаётся в решении','Теперь прочитай следующий вопрос. Если нужно, можно снова открыть подсказку.',guide.title,chapters);
   await focus(page,page.locator('#main .steps'));assert.ok((await page.locator('#main .steps').innerText()).trim());await screenshot(page,folder,'04-hint');await sleep(4500);
-  await caption(page,5,'Попробуй самостоятельно на новых числах','Выбери «Самостоятельно», затем «Другие числа». В кабинете результат можно сдать учителю.',guide.title);
+  await caption(page,5+(interactive?1:0),'Попробуй самостоятельно на новых числах','Выбери «Самостоятельно», затем «Другие числа». В кабинете результат можно сдать учителю.',guide.title,chapters);
   await focus(page,page.locator('[data-stage="3"]'),true);await focus(page,page.locator('#new'),true);await focus(page,page.locator('#main .task'));await screenshot(page,folder,'05-new');await sleep(4400);
   return finishClip({...args,start});
 }
@@ -135,7 +167,7 @@ async function record(id, browser, origin) {
   const target=new URL(guide.publicUrl);await page.goto(origin+target.pathname+target.search+target.hash);
   const school=target.pathname.startsWith('/school/'),pathCourse=target.pathname.startsWith('/ege-baza/path/');
   if(!school&&!pathCourse)return recordFoundation({id,guide,folder,context,page,began,origin,target});
-  if(id.startsWith('grade7-'))return recordManagedPath({id,guide,folder,context,page,began,origin,target});
+  if(id.startsWith('grade7-')||id.startsWith('pre7-'))return recordManagedPath({id,guide,folder,context,page,began,origin,target});
   await page.locator('#answer').waitFor();
   const task=await page.evaluate(({school})=>{if(school){const state=JSON.parse(localStorage.getItem(WorkshopState.KEY));return WorkshopMath.generate(state.last.skill,state.last.seed);}const lesson=location.hash.split('=')[1],state=PathCourse.state().lessons[lesson];return PathData.task(lesson,state.seed);},{school});
   const first=school?answerText(task.steps[0].answer):await page.evaluate(()=>{const id=location.hash.split('=')[1],l=PathCourse.state().lessons[id],t=PathData.task(id,l.seed);return PathData.answerText(t.steps[l.step]);});
@@ -158,8 +190,8 @@ async function record(id, browser, origin) {
 (async()=>{await fs.mkdir(output,{recursive:true});
 if(process.argv.includes('--resume')){
  try{const previous=JSON.parse(await fs.readFile(path.join(output,'tutorial-report.json'),'utf8'));report.errors=previous.errors||[];report.external=previous.external||[];}catch(error){if(error.code!=='ENOENT')throw error;}
- for(const id of ids){const file=path.join(output,`using-${id}.mp4`);try{const stat=await fs.stat(file);for(const name of ['01-condition','02-answer','03-feedback','04-hint','05-new'])await fs.access(path.join(output,id,name+'.png'));const metadata=JSON.parse((await run('ffprobe',['-v','error','-show_streams','-show_format','-of','json',file])).stdout),v=metadata.streams.find(s=>s.codec_type==='video');assert.equal(v.codec_name,'h264');assert.equal(v.width,1280);assert.equal(v.height,720);assert.equal(metadata.streams.filter(s=>s.codec_type==='audio').length,0);assert.ok(Number(metadata.format.duration)>20);const target=new URL(guides.get(id).publicUrl);report.tutorials.push({id,file:`using-${id}.mp4`,duration:Number(metadata.format.duration),bytes:stat.size,width:1280,height:720,audioStreams:0,route:target.pathname+target.search+target.hash,chapters:5,resumed:true});}catch(error){if(error.code!=='ENOENT')throw error;}}
+ for(const id of ids){const file=path.join(output,`using-${id}.mp4`);try{const stat=await fs.stat(file);for(const name of ['01-condition','02-answer','03-feedback','04-hint','05-new'])await fs.access(path.join(output,id,name+'.png'));const metadata=JSON.parse((await run('ffprobe',['-v','error','-show_streams','-show_format','-of','json',file])).stdout),v=metadata.streams.find(s=>s.codec_type==='video');assert.equal(v.codec_name,'h264');assert.equal(v.width,1280);assert.equal(v.height,720);assert.equal(metadata.streams.filter(s=>s.codec_type==='audio').length,0);assert.ok(Number(metadata.format.duration)>20);const target=new URL(guides.get(id).publicUrl);report.tutorials.push({id,file:`using-${id}.mp4`,duration:Number(metadata.format.duration),bytes:stat.size,width:1280,height:720,audioStreams:0,route:target.pathname+target.search+target.hash,chapters:id.startsWith('pre7-')||id.startsWith('grade7-g-core-')||id.startsWith('grade7-g-practice-')?6:5,resumed:true});}catch(error){if(error.code!=='ENOENT')throw error;}}
  await checkpoint();
 }
 const remaining=tasks.filter(id=>!report.tutorials.some(t=>t.id===id));
-await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const origin='http://127.0.0.1:'+server.address().port;let browser;try{browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,chromiumSandbox:false});for(let i=0;i<remaining.length;i+=2)await Promise.all(remaining.slice(i,i+2).map(id=>record(id,browser,origin)));assert.deepEqual(report.errors,[]);console.log('GRADE7_TUTORIAL_RENDER_OK');}finally{await checkpoint();await browser?.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}})().catch(error=>{console.error(error.stack||error);process.exitCode=1;});
+await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const origin='http://127.0.0.1:'+server.address().port;let browser;try{browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,chromiumSandbox:false});for(let i=0;i<remaining.length;i+=concurrency)await Promise.all(remaining.slice(i,i+concurrency).map(id=>record(id,browser,origin)));assert.deepEqual(report.errors,[]);assert.deepEqual(report.external,[]);console.log('GRADE7_TUTORIAL_RENDER_OK');}finally{await checkpoint();await browser?.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}})().catch(error=>{console.error(error.stack||error);process.exitCode=1;});
