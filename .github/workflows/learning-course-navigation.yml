@@ -1,0 +1,56 @@
+name: Cabinet school course navigation
+
+on:
+  pull_request:
+    paths:
+      - 'learning/app.js'
+      - 'learning/index.html'
+      - 'learning/route.js'
+      - 'learning/catalog.js'
+      - 'tools/learning-course-navigation.browser.cjs'
+      - '.github/workflows/learning-course-navigation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: learning-course-navigation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  school-course-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and browser tools
+        run: |
+          npm --prefix board-server ci --include=optional
+          npm install --prefix "$RUNNER_TEMP/course-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/course-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/course-browser/node_modules" >> "$GITHUB_ENV"
+      - name: School navigation and saved-work regression
+        env:
+          LEARNING_BROWSER_ARTIFACTS: artifacts/course-navigation
+        run: |
+          node --check learning/app.js
+          node tools/learning-catalog-reference-test.cjs
+          node tools/learning-course-navigation.browser.cjs
+          node tools/learning-grade7.browser.cjs
+          git diff --check
+      - name: Keep desktop and mobile course views
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: school-course-navigation
+          path: artifacts/course-navigation
+          if-no-files-found: ignore
+          retention-days: 7
