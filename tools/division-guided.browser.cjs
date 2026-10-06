@@ -44,6 +44,7 @@ async function topic(page, id) {
     const page = await context.newPage(); page.on('pageerror', error => errors.push(error.message));
     await ready(page, url);
     assert.equal(await page.locator('#problem').innerText(), '48 : 2');
+    if (process.env.DIVISION_SCREENSHOTS) { fs.mkdirSync(process.env.DIVISION_SCREENSHOTS,{recursive:true}); await page.screenshot({path:path.join(process.env.DIVISION_SCREENSHOTS,'first-desktop.png'),fullPage:true}); }
     assert.equal(await page.locator('dialog').isVisible(), false);
     assert.equal(await page.locator('#answer').isVisible(), true);
     await page.locator('#primary').click();
@@ -78,11 +79,12 @@ async function topic(page, id) {
       if (process.env.DIVISION_SCREENSHOTS) await page.screenshot({path:path.join(process.env.DIVISION_SCREENSHOTS,t.id+'-desktop.png'),fullPage:true});
       if (!p.micropractice) {
         assert.equal((await page.locator('.quotient').innerText()).replaceAll('·',''), p.quotient, t.id + ' written answer');
+        assert.equal(await page.locator('.number-row').evaluateAll(rows => rows.every(row => {const tops=[...row.children].map(cell=>cell.getBoundingClientRect().top);return Math.max(...tops)-Math.min(...tops)<1;})),true,t.id+' all cells of a notebook row share one baseline');
         assert.equal(await page.locator('.subtraction').count() > 0, true, t.id + ' written products');
       }
     }
     await topic(page, 'start'); assert.equal(await page.locator('#answer').inputValue(), '6');
-    await ready(page, url + '#zero'); assert.equal((await snapshot(page)).active, 'zero');
+    await ready(page, url + '#zero'); await page.waitForFunction(()=>window.__divisionGuidedDebug.state().active==='zero'); assert.equal((await snapshot(page)).active, 'zero');
     await topic(page, 'oneDigit'); await page.reload(); await page.waitForFunction(() => window.__divisionGuidedDebug);
     assert.equal((await snapshot(page)).active, 'oneDigit', 'chosen topic survives hash reload');
     // Clipboard denial always offers selectable report text.
@@ -101,7 +103,9 @@ async function topic(page, id) {
     for (const width of [320,390]) {
       const mobile = await browser.newContext({viewport:{width,height:844}});
       const p = await mobile.newPage(); p.on('pageerror', error => errors.push(error.message));
-      await ready(p, url); await finish(p);
+      await ready(p, url);
+      if (process.env.DIVISION_SCREENSHOTS) await p.screenshot({path:path.join(process.env.DIVISION_SCREENSHOTS,'first-'+width+'.png'),fullPage:true});
+      await finish(p);
       assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, width + ' no horizontal document overflow');
       await topic(p, 'appendZeros'); await finish(p);
       assert.equal(await p.locator('.quotient').innerText(), '0,125');

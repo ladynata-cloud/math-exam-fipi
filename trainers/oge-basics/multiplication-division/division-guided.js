@@ -132,8 +132,8 @@
       const bringing = a.kind === 'bring' && i === a.sourceIndex;
       const firstActive = activeCycle === 0 && i <= firstEnd;
       const cls = !s.done && (inFirst || bringing || firstActive) ? 'current' : '';
-      top += '<span class="' + cls + '" style="grid-column:' + digitColumn[i] + '">' + p.digits[i] + '</span>';
       if (hasComma && i === p.intLen) top += '<span style="grid-column:' + (digitColumn[i] - 1) + '">,</span>';
+      top += '<span class="' + cls + '" style="grid-column:' + digitColumn[i] + '">' + p.digits[i] + '</span>';
     }
     let rows = '<div class="number-row" style="--columns:' + template + '">' + top + '</div>';
     for (let i = 0; i < p.cycles.length; i++) {
@@ -297,9 +297,18 @@
   window.addEventListener('storage', event => {
     if (event.key === KEY || event.key === null) { blocked = true; notice('Работа изменилась в другой вкладке. Обнови страницу, прежде чем продолжить.'); }
   });
+  window.addEventListener('hashchange', () => {
+    const id = location.hash.slice(1);
+    if (!topicIds.has(id) || id === state.active) return;
+    state.active = id;
+    if (!current()) newSession(id, false);
+    helpOpen = false; revealOpen = false; feedback = ''; feedbackKind = '';
+    save(); render();
+  });
   const requested = location.hash.slice(1);
   if (topicIds.has(requested)) state.active = requested;
   if (!current()) newSession(state.active, false);
+  else save();
   render();
   window.__divisionGuidedDebug = {KEY, state:() => structuredClone(state), plan:() => G.plan(current().task)};
 })();
