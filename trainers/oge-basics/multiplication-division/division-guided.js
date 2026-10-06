@@ -147,9 +147,9 @@
       if (c.qd === 0 && i && !brought) continue;
       let value = String(c.remainder), end = c.sourceIndex;
       if (brought) {
-        // Append exactly one digit to the visible remainder; retain even a zero
-        // remainder so an earlier written step does not vanish.
-        value += p.digits[next.sourceIndex]; end = next.sourceIndex;
+        // Like the arithmetic suite, extend the remainder to the next partial
+        // dividend without padding it with unfamiliar leading zeros (05, 00).
+        value = String(next.partial); end = next.sourceIndex;
       }
       const isActive = !s.done && (brought ? activeIndex === next.sourceIndex || activeCycle === i + 1 : activeCycle === i);
       rows += row(value, end, isActive ? 'current' : '', false);

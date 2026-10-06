@@ -81,6 +81,7 @@ async function topic(page, id) {
         assert.equal((await page.locator('.quotient').innerText()).replaceAll('·',''), p.quotient, t.id + ' written answer');
         assert.equal(await page.locator('.number-row').evaluateAll(rows => rows.every(row => {const tops=[...row.children].map(cell=>cell.getBoundingClientRect().top);return Math.max(...tops)-Math.min(...tops)<1;})),true,t.id+' all cells of a notebook row share one baseline');
         assert.equal(await page.locator('.subtraction').count() > 0, true, t.id + ' written products');
+        for (const text of (await page.locator('.working .number-row').allTextContents()).slice(1)) assert.doesNotMatch(text.replace(/[\s−]/g,''), /^0\d/, t.id + ' no padded partial dividends');
       }
     }
     await topic(page, 'start'); assert.equal(await page.locator('#answer').inputValue(), '6');
