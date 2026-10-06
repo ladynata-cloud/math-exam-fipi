@@ -1,0 +1,262 @@
+[
+  {
+    "id": "1987-overlay",
+    "file": "1987-overlay.webp",
+    "edition": "1987",
+    "printedPage": 12,
+    "figure": 26,
+    "caption": "Наложение с помощью кальки. 1987, с. 12, рис. 26.",
+    "sourcePageIndex": 12,
+    "crop": [
+      38,
+      480,
+      311,
+      757
+    ],
+    "cropUnits": "rendered pixels at 100 dpi",
+    "width": 273,
+    "height": 277,
+    "bytes": 7148,
+    "sha256": "4278d3d1f6be388f0337db77e51f0a3306acce25aa53d7d513e76b6e32cbe276"
+  },
+  {
+    "id": "1987-sas",
+    "file": "1987-sas.webp",
+    "edition": "1987",
+    "printedPage": 33,
+    "figure": 70,
+    "caption": "Рисунок к первому признаку равенства треугольников. 1987, с. 33, рис. 70.",
+    "sourcePageIndex": 33,
+    "crop": [
+      324,
+      535,
+      508,
+      742
+    ],
+    "cropUnits": "rendered pixels at 100 dpi",
+    "width": 184,
+    "height": 207,
+    "bytes": 3540,
+    "sha256": "7778d6ca09f54564b772b42893835faabd96cc243bad6af50f06335b684617e1"
+  },
+  {
+    "id": "1987-isosceles-median",
+    "file": "1987-isosceles-median.webp",
+    "edition": "1987",
+    "printedPage": 66,
+    "figure": 132,
+    "caption": "Рисунок к доказательству свойства медианы равнобедренного треугольника. 1987, с. 66, рис. 132.",
+    "sourcePageIndex": 66,
+    "crop": [
+      29,
+      160,
+      163,
+      313
+    ],
+    "cropUnits": "rendered pixels at 100 dpi",
+    "width": 134,
+    "height": 153,
+    "bytes": 2774,
+    "sha256": "dba576c1654a0e3aa79e71b5a847c3b2a93771f57e13569b3ae2e6c288f5894d"
+  },
+  {
+    "id": "2010-overlay",
+    "file": "2010-overlay.webp",
+    "edition": "2010",
+    "printedPage": 11,
+    "figure": 19,
+    "caption": "Наложение с помощью кальки. 2010, с. 11, рис. 19.",
+    "sourcePageIndex": 12,
+    "crop": [
+      220,
+      10,
+      360,
+      145
+    ],
+    "cropUnits": "PDF points",
+    "width": 350,
+    "height": 338,
+    "bytes": 14242,
+    "sha256": "0ba458270ed2f58264292988b7544d9fca8ec0ddee6fb03f14c396bdeaf73abd"
+  },
+  {
+    "id": "2010-sas",
+    "file": "2010-sas.webp",
+    "edition": "2010",
+    "printedPage": 30,
+    "figure": 51,
+    "caption": "Рисунок к первому признаку равенства треугольников. 2010, с. 30, рис. 51.",
+    "sourcePageIndex": 31,
+    "crop": [
+      264,
+      145,
+      360,
+      328
+    ],
+    "cropUnits": "PDF points",
+    "width": 240,
+    "height": 458,
+    "bytes": 8452,
+    "sha256": "9a5709015e95a0de1c07b9f920a59d06ff658fab56c9f3923cc4598e0e6767c8"
+  },
+  {
+    "id": "2010-median",
+    "file": "2010-median.webp",
+    "edition": "2010",
+    "printedPage": 33,
+    "figure": 59,
+    "caption": "Медиана соединяет вершину с серединой противоположной стороны. Фрагмент рис. 59а, 2010, с. 33.",
+    "sourcePageIndex": 34,
+    "crop": [
+      260,
+      235,
+      366,
+      378
+    ],
+    "cropUnits": "PDF points",
+    "width": 265,
+    "height": 358,
+    "bytes": 9640,
+    "sha256": "72403b0e1b60515d27ecda60cd376c8be7a62a91e1963e2dcc6d8fc9e269a2fe"
+  },
+  {
+    "id": "2010-heights",
+    "file": "2010-heights.webp",
+    "edition": "2010",
+    "printedPage": 34,
+    "figure": 62,
+    "caption": "Высоты в остроугольном, тупоугольном и прямоугольном треугольниках. 2010, с. 34, рис. 62.",
+    "sourcePageIndex": 35,
+    "crop": [
+      264,
+      159,
+      368,
+      505
+    ],
+    "cropUnits": "PDF points",
+    "width": 260,
+    "height": 866,
+    "bytes": 27104,
+    "sha256": "1527839f2f18910e38e1f87a5f6876da0fb0f5963490b1ab2355b3173ce0d35f"
+  },
+  {
+    "id": "2010-isosceles",
+    "file": "2010-isosceles.webp",
+    "edition": "2010",
+    "printedPage": 35,
+    "figure": 64,
+    "caption": "Рисунок к свойствам равнобедренного треугольника. 2010, с. 35, рис. 64.",
+    "sourcePageIndex": 36,
+    "crop": [
+      260,
+      258,
+      366,
+      399
+    ],
+    "cropUnits": "PDF points",
+    "width": 265,
+    "height": 353,
+    "bytes": 8990,
+    "sha256": "1a8901f87f571c02f76e5edbe8a530c5986687d1aaaee6dc49a0d5270f801a3b"
+  },
+  {
+    "id": "2023-overlay",
+    "file": "2023-overlay.webp",
+    "edition": "2023",
+    "printedPage": 11,
+    "figure": 24,
+    "caption": "Наложение с помощью кальки. 2023, с. 11, рис. 24.",
+    "sourcePageIndex": 11,
+    "crop": [
+      389,
+      530,
+      566,
+      709
+    ],
+    "cropUnits": "PDF points",
+    "width": 443,
+    "height": 448,
+    "bytes": 14574,
+    "sha256": "8db8a86bb88e420ec8b15dd464933f4ce425455f058cdba5ad9c29d942a23d5b"
+  },
+  {
+    "id": "2023-sas",
+    "file": "2023-sas.webp",
+    "edition": "2023",
+    "printedPage": 31,
+    "figure": 57,
+    "caption": "Рисунок к первому признаку равенства треугольников. 2023, с. 31, рис. 57.",
+    "sourcePageIndex": 31,
+    "crop": [
+      407,
+      238,
+      593,
+      476
+    ],
+    "cropUnits": "PDF points",
+    "width": 466,
+    "height": 595,
+    "bytes": 12814,
+    "sha256": "c5f477f5600bcf16df383d1d1ee66150353858de26d00a829fd8323f3bcfa6cc"
+  },
+  {
+    "id": "2023-median",
+    "file": "2023-median.webp",
+    "edition": "2023",
+    "printedPage": 34,
+    "figure": 65,
+    "caption": "Медиана на рисунке учебника. Фрагмент рис. 65а, 2023, с. 34.",
+    "sourcePageIndex": 34,
+    "crop": [
+      309,
+      52,
+      418,
+      176
+    ],
+    "cropUnits": "PDF points",
+    "width": 273,
+    "height": 310,
+    "bytes": 5622,
+    "sha256": "d5d47a884cf0cc5e41f450181e665527d8e9a1ca6553ceaa174686cb34f75c1f"
+  },
+  {
+    "id": "2023-heights",
+    "file": "2023-heights.webp",
+    "edition": "2023",
+    "printedPage": 35,
+    "figure": 68,
+    "caption": "Высоты в трёх видах треугольников. 2023, с. 35, рис. 68.",
+    "sourcePageIndex": 35,
+    "crop": [
+      402,
+      50,
+      594,
+      456
+    ],
+    "cropUnits": "PDF points",
+    "width": 480,
+    "height": 1015,
+    "bytes": 31250,
+    "sha256": "f632aea839a611ec8239b5febc6c792dafe436ca77613e47bb57fbdabf02cf81"
+  },
+  {
+    "id": "2023-isosceles",
+    "file": "2023-isosceles.webp",
+    "edition": "2023",
+    "printedPage": 36,
+    "figure": 71,
+    "caption": "Рисунок к свойству биссектрисы равнобедренного треугольника. 2023, с. 36, рис. 71.",
+    "sourcePageIndex": 36,
+    "crop": [
+      425,
+      312,
+      594,
+      497
+    ],
+    "cropUnits": "PDF points",
+    "width": 423,
+    "height": 463,
+    "bytes": 13100,
+    "sha256": "f85c161a0f8233d07f004276d202bf53bc554d51cb33598809eefc63a3ca931b"
+  }
+]

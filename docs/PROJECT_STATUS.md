@@ -6,7 +6,18 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: foundations before grade 7
+## In progress: author articles on Atanasyan
+
+- Scope: [eight revised articles](tasks/2026-10-06-atanasyan-author-view.md),
+  titled «Об учебнике Л. С. Атанасяна» with subtitle «Почти с любовью».
+- Eight original SVG diagrams and thirteen small verified textbook fragments
+  from 1987, 2010 and 2023 accompany the articles. The 1987 book is explicitly
+  identified as a trial grade-6 textbook. The prior twelve-article series stays.
+- Independent mathematics/source review, all local links and 30 desktop/mobile
+  page views passed. The new series links to the published grade-7 trainers.
+- Next: publish the exact reviewed editorial scope and verify the live pages.
+
+## Published: foundations before grade 7 and introductory geometry
 
 - Scope: [38 interactive trainers and 76 silent videos](tasks/PRE7_FOUNDATIONS.md):
   18 foundations and 20 introductory geometry families, with separate algebra
@@ -24,8 +35,14 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - All 76 new silent clips are rendered. Final media gates passed 136 active
   browser playbacks, 68 A4 guides and 408 animation journeys; independent
   review covers the final 37 changed runtime files.
-- Next: publish the exact reviewed tree, verify CI and the production image,
-  then check deployment without writing to production pupil records.
+- PR #196 merged as `be02423823526bdabb23665bc8dcf8eb54678195`, parent
+  `ec6afeb7fbae5c567ebd69b1be91f36093237fa2`, reviewed tree
+  `ea0b500f1863a34d6e8d3ee092f945171c962707`. Exact-head workflows
+  37402430227 (learning/container), 37402430199 (EGE classroom) and
+  37402430246 (video) passed. Pages 37403159463 deployed this exact merge.
+  Production verification matched 45 public/backend assets, confirmed all 76
+  new videos and 62 school entries, and checked durable status and anonymous
+  private-plan denial (401). No production learner data was written.
 
 ## Published: next grade-7 course block; library label correction
 
