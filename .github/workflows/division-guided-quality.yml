@@ -1,0 +1,45 @@
+name: Guided division — arithmetic and browser
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-basics/multiplication-division/division-guided*'
+      - 'trainers/oge-basics/multiplication-division/division-lab-core.js'
+      - 'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html'
+      - 'tools/division-guided*'
+      - '.github/workflows/division-guided-quality.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  guided-division:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Exact arithmetic and unchanged classroom bank
+        run: |
+          node tools/division-guided.test.cjs
+          node tools/learning-remediation-bank.cjs --check
+          git diff --check
+      - name: Install browser test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/division-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/division-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/division-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Real pupil interactions and mobile notebook
+        env:
+          DIVISION_SCREENSHOTS: division-browser-results
+        run: node tools/division-guided.browser.cjs
+      - name: Notebook screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: division-notebook-${{ github.run_id }}
+          path: division-browser-results/
+          retention-days: 7
+          if-no-files-found: ignore

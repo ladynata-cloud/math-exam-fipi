@@ -6,7 +6,14 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: author articles on Atanasyan
+## In progress: guided public division
+
+- Scope: [one current action and Russian notebook notation](tasks/DIVISION_GUIDED_NAVIGATION.md), with the same public URL and all division topics.
+- Reference: division inside `trainers/arifmetika.html`. The managed teaching
+  bank and pupil accounts remain unchanged. Arithmetic and source-bank gates
+  pass; browser scenarios are being run in cloud CI.
+
+## Published: author articles on Atanasyan
 
 - Scope: [eight revised articles](tasks/2026-10-06-atanasyan-author-view.md),
   titled «Об учебнике Л. С. Атанасяна» with subtitle «Почти с любовью».
@@ -15,7 +22,10 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   identified as a trial grade-6 textbook. The prior twelve-article series stays.
 - Independent mathematics/source review, all local links and 30 desktop/mobile
   page views passed. The new series links to the published grade-7 trainers.
-- Next: publish the exact reviewed editorial scope and verify the live pages.
+- PR #197 merged as `9ed82e42e2e0c4daebd3e0897674dc53e6d510d7`, parent
+  `be02423823526bdabb23665bc8dcf8eb54678195`; Pages 37403919183 deployed it.
+  Prior release evidence verified 36 public files against reviewed bytes.
+  This task independently rechecked that exact remote main before starting.
 
 ## Published: foundations before grade 7 and introductory geometry
 

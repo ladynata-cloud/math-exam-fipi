@@ -71,6 +71,34 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
  for(const item of process.argv.includes('--visual-only')?[]:C.list()){
   await page.goto(origin+item.url);await page.locator('h1').first().waitFor();
   assert.equal(await page.evaluate(()=>window.MathExamRemediationManaged),false);
+  // The guided division page starts directly at the first action. Its
+  // managed iframe contract above is unchanged; only standalone navigation differs.
+  if(item.contentId==='multiplication-division/long-division-from-simple-to-decimals'){
+   const key='mathExamBasics.guidedDivision.v1';
+   assert.equal(await page.locator('#guided-division').isVisible(),true);
+   assert.equal(await page.locator('#learning-remediation-root').count(),0);
+   assert.equal(await page.locator('#problem').textContent(),'48 : 2');
+   assert.equal(await page.locator('#answer').isVisible(),true);
+   await page.locator('#answer').fill('4');await page.locator('#primary').click();
+   assert.equal(await page.locator('#primary').textContent(),'Дальше');
+   assert.equal(await page.locator('#answer').getAttribute('readonly'),'');
+   const accepted=await page.evaluate(key=>localStorage.getItem(key),key);
+   assert(accepted,'Standalone guided work is stored in this browser');
+   await page.reload();await page.locator('#answer').waitFor();
+   assert.equal(await page.evaluate(()=>window.MathExamRemediationManaged),false);
+   assert.deepEqual(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key),JSON.parse(accepted));
+   assert.equal(await page.locator('#primary').textContent(),'Дальше');
+   assert.equal(await page.locator('#answer').inputValue(),'4');
+   await page.locator('#primary').click();
+   assert.equal(await page.locator('#prompt').textContent(),'Сколько цифр будет в ответе?');
+   await page.locator('#answer').fill('2');
+   const drafted=await page.evaluate(key=>localStorage.getItem(key),key);
+   await page.reload();await page.locator('#answer').waitFor();
+   assert.deepEqual(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key),JSON.parse(drafted));
+   assert.equal(await page.locator('#answer').inputValue(),'2');
+   assert.equal(await page.locator('#primary').textContent(),'Проверить');
+   continue;
+  }
   const button=page.locator('[data-route="practice"],[data-nav="practice"],#practice').first();await button.click();
   if(item.contentId.endsWith('/division-lab'))assert.equal(await page.locator('#answer').isVisible(),true);
   else if(item.contentId.startsWith('percentages/'))assert.equal(await page.locator('#p-q').isVisible(),true);
