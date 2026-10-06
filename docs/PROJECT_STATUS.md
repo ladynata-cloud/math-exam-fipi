@@ -6,20 +6,35 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: a nested logarithm, one visible step at a time
+## In progress: OGE and PreOGE entry; tutor laboratory
+
+- Scope: [two public learning routes and a discreet tutor hub](tasks/OGE_FOCUS_LAB.md).
+  The homepage foregrounds OGE and PreOGE; school/EGE courses, separate tools
+  and teaching articles move to `laboratory/index.html`. Existing direct URLs,
+  accounts and content remain available.
+- Base: `74776f448a82aa220d08c1312e20ea314d571dac`; branch
+  `feature/oge-focus-lab`. Align the two shared OGE entry-page menus, feature
+  canonical division in the complete foundations route, and retarget existing
+  discovery assertions and the article-generator destination.
+- User implementation/publication permission and external-review waiver apply.
+  Focused links, navigation, desktop/mobile and saved-progress checks are required.
+
+## Published: a nested logarithm, one visible step at a time
 
 - Scope: [a second detailed interactive example](tasks/LOGARITHM_NESTED_EXAMPLE.md)
   at `trainers/ege-profile/log-inequalities/nested.html`, solving
   `log_(x²-x)(log_(x²+x)x) >= 0`: six domain conditions, separate interval
   solutions, aligned number-line intersections and two sign-equivalent
   replacements. Accepted work stays visible throughout.
-- Base: `fa86d5812ce175ddbf124661b7c258642dd319ab`; branch
-  `feature/logarithm-nested-example`. Reuse the guided-lesson runtime while
-  preserving the first lesson's identity, saved work and behavior. Add a separate
-  mirror registration and picker entry; no account or server-protocol changes.
-- The owner requested the other example following publication of the first;
-  standing publication permission and the external-review waiver apply.
-  Internal mathematics, both-lesson browser regression and release checks remain.
+- PR #203 merged as `74776f448a82aa220d08c1312e20ea314d571dac`, parent
+  `fa86d5812ce175ddbf124661b7c258642dd319ab`. Exact-head workflows
+  37525990223 (profile course), 37525990009 (logarithms) and 37525990000
+  (learning/container) passed. Both guided lessons passed full desktop/mobile
+  browser journeys, and 40,038 independent mathematical checks passed.
+- The guided runtime preserves the first lesson's identity and saved work.
+  Public Amvera checks at 20:33 UTC on 2026-10-06 confirmed HTTP 200, six mirror
+  entries including `profile-log-nested-example`, no registry error, and the
+  expected digest. No account or server-protocol changes were introduced.
 
 ## Published: one logarithmic inequality, one visible step at a time
 

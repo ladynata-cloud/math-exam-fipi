@@ -308,7 +308,8 @@ function updateSitePages() {
         <p>HTML-файлы, промпты для DeepSeek и архивы для педагогов, которые хотят использовать тренажёры как основу для своих заданий.</p>
         <a class="go" href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/">Читать</a>
       </article>`;
-  const homeFile = path.join(root, "index.html");
+  // This public article now lives in the tutor laboratory; keep its stable block markers.
+  const homeFile = path.join(root, "laboratory", "index.html");
   let home = fs.readFileSync(homeFile, "utf8");
   const homeStart = "<!-- home-download-article:start -->";
   const homeEnd = "<!-- home-download-article:end -->";

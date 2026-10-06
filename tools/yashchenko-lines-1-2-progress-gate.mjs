@@ -10,7 +10,7 @@ const root = path.resolve(here, '..');
 const trainerPath = path.join(root, 'trainers/ege-profile/yashchenko-lines-1-2.html');
 const teacherPath = path.join(root, 'trainers/ege-profile/yashchenko-lines-1-2-teacher.html');
 const registryPath = path.join(root, 'trainers/board-compat.json');
-const homepagePath = path.join(root, 'index.html');
+const laboratoryPath = path.join(root, 'laboratory/index.html');
 const sitemapPath = path.join(root, 'sitemap.xml');
 const require = createRequire(import.meta.url);
 const { loadTrainerRegistry } = require('../board-server/trainer-registry.js');
@@ -40,7 +40,7 @@ function assertNoUnsafeText(file, text) {
 
 const trainer = read(trainerPath);
 const teacher = read(teacherPath);
-const homepage = read(homepagePath);
+const laboratory = read(laboratoryPath);
 const sitemap = read(sitemapPath);
 const manifest = JSON.parse(read(registryPath));
 
@@ -125,9 +125,9 @@ assert.equal(runtimeRegistry.getById('yashchenko-t12'), null, 'progress opt-in m
 
 const canonicalPath = '/trainers/ege-profile/yashchenko-lines-1-2.html';
 const canonicalUrl = `https://mathexam.space${canonicalPath}`;
-assert.equal(count(homepage, '<!-- yashchenko-lines-1-2:start -->'), 1);
-assert.equal(count(homepage, '<!-- yashchenko-lines-1-2:end -->'), 1);
-assert.equal(count(homepage, `href="${canonicalPath}"`), 2);
+assert.equal(count(laboratory, '<!-- yashchenko-lines-1-2:start -->'), 1);
+assert.equal(count(laboratory, '<!-- yashchenko-lines-1-2:end -->'), 1);
+assert.equal(count(laboratory, `href="${canonicalPath}"`), 2);
 assert.equal(count(sitemap, `<loc>${canonicalUrl}</loc>`), 1);
 assert.equal(count(sitemap, 'yashchenko-lines-1-2-teacher.html'), 0, 'teacher panel must stay out of sitemap');
 
