@@ -333,7 +333,7 @@ test('board discovery is exactly seven catalog-only entries and baseline records
     }
   }
   assert.equal(manifest.trainers.length, baseline.trainers.length + 7);
-  assert.equal(manifest.trainers.filter(entry => entry.supportsBoardMirror).length, 3);
+  assert.equal(manifest.trainers.filter(entry => entry.supportsBoardMirror).length, 4);
   uniqueCaseFold(manifest.trainers.map(entry => entry.trainerId), 'trainerId collision');
   uniqueCaseFold(manifest.trainers.map(entry => entry.file), 'manifest path collision');
 });

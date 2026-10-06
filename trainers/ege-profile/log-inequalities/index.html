@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#176f58">
+  <title>Логарифмические неравенства — решаем по шагам · MathExam</title>
+  <meta name="description" content="Профильный ЕГЭ: логарифмические неравенства с переменным основанием. Разбор примера, пошаговая практика и самостоятельное решение. Новые авторские условия.">
+  <link rel="stylesheet" href="style.css?v=1">
+  <script defer src="engine.js?v=1"></script>
+  <script defer src="../../board-bridge.js"></script>
+  <script defer src="app.js?v=1"></script>
+</head>
+<body>
+  <a class="skip-link" href="#exercise">Перейти к задаче</a>
+  <header class="site-header"><a href="../../../ege-profil/" class="brand">MathExam<span>профильный ЕГЭ</span></a><button id="topics-toggle" type="button" aria-haspopup="dialog">Выбрать тему</button></header>
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">Неравенства · логарифмы</p>
+      <h1 id="page-title">Сначала область определения.<br>Потом — знаки и ответ.</h1>
+      <p>Один пример, пять понятных шагов. Можно сначала посмотреть разбор, а затем решить похожую задачу.</p>
+    </section>
+    <div id="storage-notice" class="notice" role="status" hidden></div>
+    <button id="load-newer" type="button" hidden>Открыть более новую работу</button>
+    <section class="workspace" id="exercise" aria-labelledby="task-title">
+      <div class="task-top"><div><p id="task-position" class="eyebrow"></p><h2 id="task-title" tabindex="-1"></h2></div><span id="progress-chip" class="chip"></span></div>
+      <p id="task-goal" class="muted"></p>
+      <div id="current-formula" class="formula" aria-label="Условие задачи"></div>
+      <div class="mode-bar" role="group" aria-label="Как работать с задачей">
+        <button type="button" data-mode="example">Разбор примера</button>
+        <button type="button" data-mode="guided">Решаю по шагам</button>
+        <button type="button" data-mode="independent">Самостоятельно</button>
+      </div>
+      <p id="mode-description" class="small muted"></p>
+      <div id="mode-confirm" class="notice" hidden><p>Начать эту задачу в другом режиме? Ввод этой попытки заменится. Завершённые результаты останутся в отчёте.</p><button id="confirm-mode" type="button">Начать в другом режиме</button> <button id="cancel-mode" type="button">Остаться здесь</button></div>
+      <details id="preparation"><summary>Что нужно вспомнить</summary><div id="preparation-content"></div></details>
+      <ol id="step-track" class="step-track" aria-label="План решения"></ol>
+      <section id="notebook-section" class="notebook-section" hidden aria-labelledby="notebook-title"><h3 id="notebook-title">Уже записано</h3><ol id="notebook" class="notebook"></ol></section>
+      <section class="current-step" aria-labelledby="stage-title">
+        <p id="stage-counter" class="eyebrow"></p><h2 id="stage-title" tabindex="-1"></h2>
+        <div id="stage-description"></div>
+        <form id="stage-form" novalidate><div id="stage-fields"></div><div id="feedback" role="status" aria-live="polite"></div><div id="hint" class="hint" hidden></div><div class="actions"><button id="check-step" type="submit" class="primary">Проверить шаг</button><button id="continue-step" type="button" class="primary" hidden>Продолжить</button><button id="hint-button" type="button">Подсказка</button></div></form>
+      </section>
+      <section id="completion" class="completion" hidden aria-labelledby="completion-title"><p class="eyebrow">Задача завершена</p><h2 id="completion-title" tabindex="-1">Решение собрано</h2><div id="completion-answer" class="final-answer"></div><p id="completion-status"></p><p class="small">Одного решения недостаточно, чтобы считать тему освоенной. Попробуйте другую задачу с новыми числами.</p><div class="actions"><button id="next-task" type="button" class="primary">Похожая задача</button><button id="retry-task" type="button">Решить эту ещё раз</button><button id="completion-topics" type="button">Другая тема</button></div></section>
+    </section>
+    <section class="report-section"><div><h2>Моя работа</h2><p id="progress-summary"></p><p id="save-status" class="small muted">Прогресс хранится только в этом браузере.</p></div><details id="report-details"><summary>Результаты для учителя</summary><p>Скопируйте или скачайте отчёт и отправьте его учителю, например в MAX. Сам тренажёр ничего не отправляет.</p><div class="actions"><button id="copy-report" type="button">Скопировать отчёт</button><button id="download-report" type="button">Скачать отчёт</button></div><p id="report-notice" role="status"></p><label for="report-text">Текст отчёта — можно выделить и скопировать вручную</label><textarea id="report-text" readonly rows="9"></textarea></details></section>
+  </main>
+  <footer><p><a href="../../../ege-profil/">К профильной математике</a> · <a href="../../arifmetika.html">Повторить вычисления</a></p><p>Задачи с новыми числовыми данными. Тематика — <a href="https://math-ege.sdamgia.ru/test?theme=313&amp;print=true" target="_blank" rel="noopener noreferrer">подборка логарифмических неравенств «Решу ЕГЭ»</a>. Условия и разборы этого тренажёра подготовлены отдельно.</p></footer>
+  <dialog id="topics" aria-labelledby="topics-title"><div class="dialog-head"><h2 id="topics-title">Выберите тему</h2><button id="topics-close" type="button" aria-label="Закрыть выбор темы">Закрыть</button></div><p>В каждой теме четыре задачи с разными числами. Можно вернуться к начатому решению.</p><div id="topic-list"></div></dialog>
+  <noscript><p>Для интерактивного решения включите JavaScript в браузере.</p></noscript>
+</body>
+</html>

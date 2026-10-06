@@ -6,12 +6,25 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: guided public division
+## In progress: variable-base logarithmic inequalities
+
+- Scope: [twelve author-written methods and 48 numerical variants](tasks/PROFILE_LOG_INEQUALITIES.md)
+  with worked examples, guided steps, independent work and ordinary board mirroring.
+- Base: `433af336add696b5a00f53da8b6514d8be8c68f1`. Account and group-cabinet
+  contracts are outside this bounded addition.
+
+## Published: guided public division and school cabinet navigation
 
 - Scope: [one current action and Russian notebook notation](tasks/DIVISION_GUIDED_NAVIGATION.md), with the same public URL and all division topics.
 - Reference: division inside `trainers/arifmetika.html`. The managed teaching
-  bank and pupil accounts remain unchanged. Arithmetic and source-bank gates
-  pass; browser scenarios are being run in cloud CI.
+  bank and pupil accounts remain unchanged. Arithmetic, source-bank, final cloud
+  browser, registry/classroom and learning gates passed. PR #198 merged as
+  `433af336add696b5a00f53da8b6514d8be8c68f1`; Pages 37466740133 passed and all
+  four public trainer assets matched reviewed bytes.
+- PR #199 changed the pupil cabinet default to school algebra, geometry and
+  foundational revision. Merge `88ae1f71360f36d76f539341f1c3375c51eca442`, focused
+  and full learning gates passed; Pages 37465090121 and all three production
+  Amvera cabinet assets were verified. Exam materials remain explicitly available.
 
 ## Published: author articles on Atanasyan
 
