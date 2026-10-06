@@ -362,6 +362,20 @@
       "supportsBoardMirror": false,
       "supportsSemanticEvents": false,
       "notes": "Открывается в iframe доски; автопоказ, сценарий и экспорт сцен не изменяют прогресс ученика."
+    },
+    {
+      "trainerId": "profile-log-inequalities",
+      "file": "trainers/ege-profile/log-inequalities/index.html",
+      "title": "Логарифмические неравенства — по шагам",
+      "group": "ЕГЭ профиль / алгебра",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Зеркалируется текущее задание, шаги решения, введённый ответ и подсказки. Прогресс кабинета не подключён."
     }
   ]
 }

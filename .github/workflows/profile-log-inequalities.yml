@@ -1,0 +1,50 @@
+name: Profile logarithmic inequalities
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/ege-profile/log-inequalities/**'
+      - 'trainers/board-compat.json'
+      - 'tools/profile-log-inequalities*'
+      - '.github/workflows/profile-log-inequalities.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: profile-log-inequalities-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mathematics-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Independent mathematics
+        run: node tools/profile-log-inequalities.test.cjs
+      - name: Install pinned browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/log-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/log-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/log-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Learner work and mirror restoration
+        env:
+          LOG_TRAINER_SCREENSHOTS: artifacts/log-inequalities
+        run: |
+          node tools/profile-log-inequalities.browser.cjs
+          git diff --check
+      - name: Retain visual verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: logarithmic-inequalities
+          path: artifacts/log-inequalities
+          if-no-files-found: ignore
+          retention-days: 7

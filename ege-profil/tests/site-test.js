@@ -219,7 +219,9 @@ const KEY = 'mathExamCourseProgress.v1';
   ok(m8.length === 2 && m8.some(a => a.classList.contains('pill')) && m8.some(a => a.classList.contains('btn')),
      'index: рационализация — пилюля и карточка открывают модуль 9 курса неравенств');
   ok(!d.querySelector('a[href*="rationalization"]'), 'index: ссылок на отсутствующую rationalization.html нет');
-  ok(!Array.from(d.querySelectorAll('a[href^="../trainers/"]')).some(a => !a.getAttribute('href').startsWith('../trainers/trainer-board.html?trainer=')), 'index: корневые копии тренажёров не используются; общая доска разрешена');
+  const sharedLogTrainer = '../trainers/ege-profile/log-inequalities/index.html';
+  ok(!Array.from(d.querySelectorAll('a[href^="../trainers/"]')).some(a => a.getAttribute('href') !== sharedLogTrainer && !a.getAttribute('href').startsWith('../trainers/trainer-board.html?trainer=')), 'index: корневые копии тренажёров не используются; общая доска и единый тренажёр логарифмических неравенств разрешены');
+  ok(!!d.querySelector(`a[href="${sharedLogTrainer}"]`), 'index: новый пошаговый тренажёр логарифмических неравенств доступен по единому адресу');
   const tri = cardOf(/Прямоугольный треугольник/);
   ok(!!tri && tri.querySelector('.meta').textContent === '6 тем · 16 типов задач · журнал ошибок', 'index: мета карточки треугольника — как в архиве');
   ok(/проект.*2027/.test(d.querySelector('header .facts').textContent), 'index: новый вход явно обозначает проект 2027');

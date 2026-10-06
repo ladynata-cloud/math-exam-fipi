@@ -285,7 +285,7 @@ test('board quick-select has exactly four iframe-only entries and preserves the 
     assert.equal(Object.hasOwn(entry, 'stateSchemaVersion'), false);
     assert.equal(Object.hasOwn(entry, 'bridgeProtocolVersion'), false);
   }
-  assert.equal(manifest.trainers.filter(entry => entry.supportsBoardMirror).length, 3);
+  assert.equal(manifest.trainers.filter(entry => entry.supportsBoardMirror).length, 4);
   assert.equal(manifest.trainers.length, 28);
 });
 
