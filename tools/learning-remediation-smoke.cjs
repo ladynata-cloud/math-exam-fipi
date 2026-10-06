@@ -86,7 +86,7 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
    assert(accepted,'Standalone guided work is stored in this browser');
    await page.reload();await page.locator('#answer').waitFor();
    assert.equal(await page.evaluate(()=>window.MathExamRemediationManaged),false);
-   assert.equal(await page.evaluate(key=>localStorage.getItem(key),key),accepted);
+   assert.deepEqual(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key),JSON.parse(accepted));
    assert.equal(await page.locator('#primary').textContent(),'Дальше');
    assert.equal(await page.locator('#answer').inputValue(),'4');
    await page.locator('#primary').click();
@@ -94,7 +94,7 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
    await page.locator('#answer').fill('2');
    const drafted=await page.evaluate(key=>localStorage.getItem(key),key);
    await page.reload();await page.locator('#answer').waitFor();
-   assert.equal(await page.evaluate(key=>localStorage.getItem(key),key),drafted);
+   assert.deepEqual(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key),JSON.parse(drafted));
    assert.equal(await page.locator('#answer').inputValue(),'2');
    assert.equal(await page.locator('#primary').textContent(),'Проверить');
    continue;
