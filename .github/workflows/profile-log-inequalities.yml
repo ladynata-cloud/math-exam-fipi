@@ -6,6 +6,7 @@ on:
       - 'trainers/ege-profile/log-inequalities/**'
       - 'trainers/board-compat.json'
       - 'tools/profile-log-inequalities*'
+      - 'tools/profile-log-one-example*'
       - '.github/workflows/profile-log-inequalities.yml'
   workflow_dispatch:
 
@@ -39,6 +40,7 @@ jobs:
           LOG_TRAINER_SCREENSHOTS: artifacts/log-inequalities
         run: |
           node tools/profile-log-inequalities.browser.cjs
+          node tools/profile-log-one-example.browser.cjs
           git diff --check
       - name: Retain visual verification
         if: always()

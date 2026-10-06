@@ -976,8 +976,8 @@ async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
 }
 
 async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
-  assert.equal(registry.trainers.length, 4, 'runtime registry exposes exactly four mirror entries');
-  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid', 'profile-log-inequalities']);
+  assert.equal(registry.trainers.length, 5, 'runtime registry exposes exactly five mirror entries');
+  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-one-example']);
   const catalog = await (await fetch(`${siteOrigin}/trainers/board-compat.json`)).json();
   const expectedCatalog = JSON.parse(readFileSync(resolve(REPO_ROOT, 'trainers', 'board-compat.json'), 'utf8'));
   assert.deepEqual(catalog, expectedCatalog, 'served catalog exactly matches the committed manifest');
@@ -990,8 +990,8 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
     catalogIds.add(entry.trainerId);
     catalogFiles.add(entry.file.toLowerCase());
   }
-  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 4, 'catalog exposes exactly four mirrors');
-  assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same four mirror ids');
+  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 5, 'catalog exposes exactly five mirrors');
+  assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same five mirror ids');
 
   const teacherContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const teacher = await teacherContext.newPage();
