@@ -6,17 +6,32 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: all first-part positions and detailed inequalities
+## In progress: Atanasyan 10–11 route to profile task 15
 
-- Scope: [first part and inequalities](tasks/PROFILE_PART_ONE_INEQUALITIES.md).
-  Extend the existing short guided route to positions 1–13 of the 2027 draft;
-  add detailed second-part inequalities (16 in 2027, 15 in 2026).
-- Base: `a34ef76adc4165adf489f6025de8f3281cc4b592`; branch
-  `feature/profile-part-one-inequalities`. Owner requested cloud implementation;
-  standing publication permission and explicit external-review waiver apply.
-- Independent mathematics, retained-work, no-answer-leak models, desktop/mobile,
-  old-route regression and exact-head release checks are required. No backend,
-  account or production learner-data changes are in scope.
+- Scope: [Atanasyan stereometry](tasks/ATANASYAN_PROFILE_15.md), a separate
+  route inside profile EGE: eight stages using 22 existing workshop units,
+  followed by 12 original proof-and-calculation problems with exact models.
+- Base: `f829dfed60a0e4821c514e1e2d1c5d11ab9f7220`; branch
+  `course/atanasyan-profile15`. Standing owner publication permission and
+  separate external-review waiver apply. Independent internal review required.
+- Current account request remains separate: two profile learner cabinets,
+  names pending. Existing school cabinets do not yet synchronize profile-start
+  progress. This static course release does not change authentication or
+  production learner records.
+
+## Published: all first-part positions and detailed inequalities
+
+- [First part and inequalities](tasks/PROFILE_PART_ONE_INEQUALITIES.md): 36 new
+  themes / 216 exercises, combined 62 themes / 372 exercises, and 18 detailed
+  inequalities. First-part positions 1–13 follow the 2027 draft; inequalities
+  are 16 in 2027, 15 in 2026.
+- PR #207 merged as `f829dfed60a0e4821c514e1e2d1c5d11ab9f7220`, parent
+  `a34ef76adc4165adf489f6025de8f3281cc4b592`; reviewed/actual tree
+  `d2fda09d6807907ffeaf49fd2c22790a1421e003` matched.
+- Exact-head profile/logarithm CI 37544981471 and 37544981466, Pages
+  37545396893 and postmerge quality 37545397514 succeeded. All 19 changed
+  public assets matched reviewed bytes; live answer/history/model and
+  inequality navigation checks passed. No backend/account changes.
 
 ## Published: clear EGE profile positions 1–3
 

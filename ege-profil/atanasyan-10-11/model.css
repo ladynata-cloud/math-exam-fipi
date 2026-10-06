@@ -1,0 +1,87 @@
+.atanasyan-model {
+  min-width: 0;
+  color: #243b3a;
+  font: inherit;
+}
+.atanasyan-model .am-svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  background: #f7faf7;
+  border: 1px solid #d5e2d9;
+  border-radius: 16px;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+.atanasyan-model .am-svg.am-dragging { cursor: grabbing; }
+.atanasyan-model .am-svg:focus-visible,
+.atanasyan-model .am-button:focus-visible {
+  outline: 3px solid #1a7467;
+  outline-offset: 3px;
+}
+.atanasyan-model .am-face { fill: #b7d0c1; fill-opacity: .06; stroke: none; }
+.atanasyan-model .am-face-front { fill-opacity: .16; }
+.atanasyan-model .am-edge {
+  fill: none;
+  stroke: #58706b;
+  stroke-width: 1.45;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.atanasyan-model .am-edge-hidden { stroke: #718780; stroke-dasharray: 5 5; stroke-width: 1.25; }
+.atanasyan-model .am-plane { fill: #5592ca; fill-opacity: .24; stroke: none; }
+.atanasyan-model .am-plane-border { fill: none; stroke: #286694; stroke-width: 2; stroke-linejoin: round; }
+.atanasyan-model .am-segment { fill: none; stroke: #bd5724; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.atanasyan-model .am-point { fill: #334f49; }
+.atanasyan-model .am-point-focus { fill: #93411e; }
+.atanasyan-model .am-label {
+  fill: #233e37;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  font-weight: 600;
+  paint-order: stroke fill;
+  stroke: #f7faf7;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.atanasyan-model .am-help,
+.atanasyan-model .am-note {
+  margin: 10px 0;
+  color: #52665e;
+  font-size: .83rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.atanasyan-model .am-controls { display: flex; flex-wrap: wrap; gap: 7px; }
+.atanasyan-model .am-button {
+  flex: 1 1 42px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid #adbbb1;
+  border-radius: 8px;
+  background: #fff;
+  color: #284c40;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.atanasyan-model .am-button:last-child { flex-basis: 76px; }
+.atanasyan-model .am-button:hover { background: #edf4ef; border-color: #688c7c; }
+.atanasyan-model .am-button:active { background: #e0ede5; }
+.atanasyan-model .am-focus { margin: 14px 0 7px; font-size: .94rem; line-height: 1.5; overflow-wrap: anywhere; }
+.atanasyan-model .am-legend { display: flex; gap: 8px 18px; flex-wrap: wrap; margin: 8px 0; font-size: .8rem; line-height: 1.5; }
+.atanasyan-model .am-legend[hidden],
+.atanasyan-model .am-legend [hidden] { display: none; }
+.atanasyan-model .am-line-key,
+.atanasyan-model .am-plane-key { display: inline-flex; align-items: center; gap: 7px; }
+.atanasyan-model .am-line-key::before { content: ''; width: 19px; height: 3px; background: #bd5724; }
+.atanasyan-model .am-plane-key::before { content: ''; width: 16px; height: 12px; border: 1px solid #286694; background: #d0e1ef; }
+.atanasyan-model .am-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .atanasyan-model *, .atanasyan-model *::before, .atanasyan-model *::after { animation: none !important; transition: none !important; }
+}
