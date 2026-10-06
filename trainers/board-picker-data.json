@@ -7195,6 +7195,11 @@
       "title": "Одно логарифмическое неравенство — подробный разбор",
       "group": "ЕГЭ профиль · алгебра",
       "href": "/trainers/ege-profile/log-inequalities/lesson.html"
+    },
+    {
+      "title": "Логарифм внутри логарифма — подробный разбор",
+      "group": "ЕГЭ профиль · алгебра",
+      "href": "/trainers/ege-profile/log-inequalities/nested.html"
     }
   ]
 }

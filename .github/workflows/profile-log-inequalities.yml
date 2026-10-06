@@ -7,6 +7,7 @@ on:
       - 'trainers/board-compat.json'
       - 'tools/profile-log-inequalities*'
       - 'tools/profile-log-one-example*'
+      - 'tools/profile-log-nested-example*'
       - '.github/workflows/profile-log-inequalities.yml'
   workflow_dispatch:
 
@@ -29,7 +30,9 @@ jobs:
         with:
           node-version: '24.21.0'
       - name: Independent mathematics
-        run: node tools/profile-log-inequalities.test.cjs
+        run: |
+          node tools/profile-log-inequalities.test.cjs
+          node tools/profile-log-nested-example.test.cjs
       - name: Install pinned browser
         run: |
           npm install --prefix "$RUNNER_TEMP/log-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
@@ -41,6 +44,7 @@ jobs:
         run: |
           node tools/profile-log-inequalities.browser.cjs
           node tools/profile-log-one-example.browser.cjs
+          node tools/profile-log-nested-example.browser.cjs
           git diff --check
       - name: Retain visual verification
         if: always()
