@@ -64,6 +64,11 @@ const server = http.createServer((req,res)=>{
  }
  async function solve(p,t){let limit=8;while(!(await work(p)).complete&&limit-->0)await passStage(p,t);assert.equal((await work(p)).complete,true,t.id);}
  async function screenshot(p,name){if(!shots)return;fs.mkdirSync(shots,{recursive:true});await p.screenshot({path:path.join(shots,name+'.png'),fullPage:true});}
+ async function checkReflow(p,label){
+  const data=await p.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,wide:[...document.querySelectorAll('body *')].filter(e=>e.getBoundingClientRect().right>innerWidth+1&&e.getBoundingClientRect().width>0).slice(0,12).map(e=>({tag:e.tagName,id:e.id,cls:e.className?.baseVal??e.className,right:e.getBoundingClientRect().right,text:e.textContent.slice(0,65)}))}));
+  if(data.scroll>data.width+1){await screenshot(p,'overflow-'+label.replace(/[^a-z0-9-]/gi,'-'));console.log('REFLOW_DIAGNOSTIC',JSON.stringify(data));}
+  assert(data.scroll<=data.width+1,'overflow '+label);
+ }
  try{
   const context=await browser.newContext({viewport:{width:1280,height:950}});
   const page=await learner(context);
@@ -119,11 +124,11 @@ const server = http.createServer((req,res)=>{
   assert.equal(await independent.locator('#critical-input').inputValue(),'-7/3; 2,5');
 
   // Every family reflows; controls remain available at mobile width and 200% zoom.
-  for(const f of E.families){const t=E.tasks.find(t=>t.familyId===f.id);await chooseTask(page,t);for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'overflow '+f.id+' '+width);}}
+  for(const f of E.families){const t=E.tasks.find(t=>t.familyId===f.id);await chooseTask(page,t);for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});await checkReflow(page,f.id+'-'+width);}}
   await page.setViewportSize({width:390,height:900});await screenshot(page,'completed-mobile');
   const mobile=await learner(await browser.newContext({viewport:{width:320,height:900}}));await screenshot(mobile,'first-320');
   const check=mobile.locator('input[name="domain"]').first();await check.focus();await mobile.keyboard.press('Space');assert(await check.isChecked(),'Keyboard domain checkbox');
-  await mobile.emulateMedia({reducedMotion:'reduce'});await mobile.evaluate(()=>document.body.style.zoom='2');assert(await mobile.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'200% reflow');await mobile.evaluate(()=>document.body.style.zoom='');
+  await mobile.emulateMedia({reducedMotion:'reduce'});await mobile.evaluate(()=>document.body.style.zoom='2');await checkReflow(mobile,'200-percent');await mobile.evaluate(()=>document.body.style.zoom='');
 
   // Denied clipboard still leaves a selectable report for manual sending.
   await page.evaluate(()=>{Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:()=>Promise.reject(new Error('denied'))}});});
