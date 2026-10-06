@@ -8,7 +8,7 @@ const teacherPath = 'trainers/dvi/math-18-20-teacher.html';
 const student = fs.readFileSync(studentPath, 'utf8');
 const studio = fs.readFileSync(studioPath, 'utf8');
 const teacher = fs.readFileSync(teacherPath, 'utf8');
-const homepage = fs.readFileSync('index.html', 'utf8');
+const laboratory = fs.readFileSync('laboratory/index.html', 'utf8');
 const catalog = fs.readFileSync('trainers/index.html', 'utf8');
 const sitemap = fs.readFileSync('sitemap.xml', 'utf8');
 const manifest = JSON.parse(fs.readFileSync('trainers/board-compat.json', 'utf8'));
@@ -111,7 +111,7 @@ assert.deepEqual(studioEntry && {
   mirror: false
 });
 
-assert.match(homepage, /href="\/trainers\/dvi\/math-18-20\.html"/);
+assert.match(laboratory, /href="\/trainers\/dvi\/math-18-20\.html"/);
 assert.match(catalog, /\.\/dvi\/math-18-20\.html/);
 assert.match(catalog, /\.\/dvi\/math-18-20-video-studio\.html/);
 assert.match(sitemap, /https:\/\/mathexam\.space\/trainers\/dvi\/math-18-20\.html/);
