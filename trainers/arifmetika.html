@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Арифметика 1–5 класс — тренажёр</title>
+<link rel="stylesheet" href="oge-basics/multiplication-division/decimal-shift.css">
+<link rel="stylesheet" href="oge-basics/multiplication-division/multiplication-refresh.css">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:#172033;font-family:Verdana,Arial,sans-serif}.page{max-width:1060px;margin:0 auto;padding:22px}.hero,.card{background:#fff;border-radius:24px;padding:22px;box-shadow:0 14px 34px #1420331f;margin-bottom:18px}.back{color:#2563eb;font-weight:800;text-decoration:none}h1{margin:6px 0 8px;font-size:38px}.sub{color:#667085;line-height:1.45}.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}@media(max-width:860px){.grid{grid-template-columns:1fr}.cell,.vcell{width:34px!important;height:44px!important;font-size:24px!important}.cell.ncell{width:14px!important}.vcarry{width:34px!important}}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
@@ -190,6 +192,7 @@ input{width:150px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-
 </select><button id="hint" class="warn">Подсказка</button></div>
 <div class="row" id="tblpick" hidden><b>Какую таблицу учим:</b></div>
 <div class="prompt" id="prompt"></div>
+<div id="decimal-shift-wrap" hidden></div>
 <div class="dots" id="viswrap" hidden></div>
 <div class="lad" id="ladwrap" hidden></div>
 <div class="pyth" id="pythwrap" hidden></div>
@@ -214,6 +217,7 @@ input{width:150px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-
 <div class="answer" id="answrap"><label id="qlabel" for="ans"></label><input id="ans" type="text" inputmode="decimal"><button id="check" class="primary">Проверить</button></div>
 <div class="answer"><button id="solution">Решение</button><button id="next" class="good">Следующий пример</button></div>
 <div id="fb" class="fb" aria-live="polite"></div>
+<div id="division-refresh" class="multiplication-refresh-link" hidden><button id="multiplication-refresh-button" type="button">Повторить таблицу умножения</button></div>
 <a id="course-next" class="course-next" hidden>Вернуться к маршруту →</a>
 </div>
 <aside id="arithmetic-aside" class="card">
@@ -231,6 +235,8 @@ input{width:150px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-
 <script src="oge-basics/multiplication-division/division-lab-core.js"></script>
 <script src="oge-basics/multiplication-division/division-guided-core.js"></script>
 <script src="oge-basics/arithmetic-route.js"></script>
+<script src="oge-basics/multiplication-division/decimal-shift.js"></script>
+<script src="oge-basics/multiplication-division/multiplication-refresh.js"></script>
 <script>
 var KEY='mathExamCourseProgress.v1',TOPIC='arithmeticCourse';
 var LEVELS={
@@ -281,6 +287,7 @@ var LEVELS={
 var levelId='n1a',cfg=LEVELS.n1a;
 var task=null,phase='simple',stepIdx=0,prodShown=false,trialDigit=null,errors=0,selLen=1,qDone=0,finished=false,cIdx=0,seqIdx=0,pickN=0,pickC=0;
 var hints=0,revealed=false,attemptRecorded=false,attemptFingerprint='',courseMode=false;
+var decimalShift=null,decimalShiftTask=null,multiplicationRefresh=null;
 var stats={total:0,right:0,streak:0,best:0,date:null,history:[]};
 function el(id){return document.getElementById(id)}
 function courseAPI(){return window.PreOgeArithmetic||null}
@@ -939,6 +946,22 @@ function cmpAnswer(t){if(phase!=='cmp')return;
   else msg('Знаменатели теперь одинаковые ('+task.N+') — сравни числители: '+task.A1+' и '+task.A2+'.','err')}}
 /* ================= ИНТЕРФЕЙС ================= */
 function partialStr(){return String(curStep().partial)}
+function renderDivisionTools(){
+ var isDivision=task&&['table','rem','corner','dec','decdec'].indexOf(task.mode)!==-1;
+ el('division-refresh').hidden=!isDivision||!window.MultiplicationRefresh;
+ var wrap=el('decimal-shift-wrap');
+ if(!task||task.mode!=='decdec'||!window.DecimalShift){
+  if(decimalShift){decimalShift.destroy();decimalShift=null;decimalShiftTask=null}
+  wrap.hidden=true;return;
+ }
+ if(decimalShiftTask!==task){
+  if(decimalShift)decimalShift.destroy();
+  decimalShift=null;decimalShiftTask=task;
+  try{decimalShift=window.DecimalShift.create(wrap,{dividend:task.origA,divisor:task.origB,value:0,locked:false,onChange:function(k){if(phase==='shiftM')el('ans').value=String(k)}})}catch(e){wrap.textContent=''}
+ }
+ wrap.hidden=!decimalShift;
+ if(decimalShift&&phase!=='shiftM'){decimalShift.setValue(task.m);decimalShift.setLocked(true)}
+}
 function setInstr(){var t='';
  if(phase==='simple')t=cfg.kind==='multable'?'Вспомни таблицу умножения.':cfg.kind==='mulinv'?'Умножение наоборот: какой множитель пропущен? Это подготовка к делению.':'Посчитай устно и введи ответ.';
  if(phase==='vis')t='Умножение — это сложение одинаковых чисел: несколько рядов по несколько точек.';
@@ -966,9 +989,9 @@ function setInstr(){var t='';
  if(phase==='comma')t='Цифры готовы. Теперь отсчитай знаки после запятой.';
  if(phase==='remq')t='1) Подбери неполное частное: сколько целых раз делитель помещается в число.';
  if(phase==='remr')t='2) Найди остаток.';
- if(phase==='shiftM')t='Удобнее делить на натуральное число. Увеличим оба числа в одинаковое число раз: частное не изменится. Сколько знаков после запятой в делителе?';
- if(phase==='shiftA')t='2) Сдвинь запятую в делимом на столько же знаков вправо. Не хватает цифр — допиши нули.';
- if(phase==='shiftB')t='3) Сдвинь запятую в делителе — он станет натуральным числом.';
+ if(phase==='shiftM')t=decimalShift?'Перетащи любую запятую вправо. Обе движутся вместе. Остановись сразу после последней исходной цифры делителя. Затем нажми «Проверить».':'Увеличим оба числа в одинаковое число раз: частное не изменится. Сколько знаков после запятой в делителе?';
+ if(phase==='shiftA')t=decimalShift?'Запятые сдвинулись на одинаковое число знаков. Прочитай новое делимое и запиши его.':'Сдвинь запятую в делимом на '+task.m+' знаков вправо. Если цифр не хватает, допиши нули.';
+ if(phase==='shiftB')t=decimalShift?'Теперь прочитай новый делитель и запиши его. На это число будем делить уголком.':'Сдвинь запятую в делителе на '+task.m+' знаков вправо. Он станет натуральным числом.';
  if(phase==='select')t='1) Выдели первое неполное делимое кнопками ◄ ► и нажми «Выбрать».';
  if(phase==='digit')t='2) '+(cfg.trial?'Прикинь и введи пробную цифру частного — проверим её умножением.':'Подбери цифру частного.');
  if(phase==='mult')t='3) Умножь цифру на делитель.';
@@ -1004,9 +1027,9 @@ function setQuestion(){var w=el('answrap');w.hidden=false;
  else if(phase==='table')el('qlabel').textContent=task.N+' ÷ '+task.d+' = ?';
  else if(phase==='remq')el('qlabel').textContent=task.N+' ÷ '+task.d+' — неполное частное?';
  else if(phase==='remr')el('qlabel').textContent=task.N+' − '+task.qv+' × '+task.d+' = ? (остаток)';
- else if(phase==='shiftM')el('qlabel').textContent='Сколько знаков после запятой в делителе '+task.origB+'?';
- else if(phase==='shiftA')el('qlabel').textContent=task.origA+' → сдвинь запятую на '+task.m+' вправо:';
- else if(phase==='shiftB')el('qlabel').textContent=task.origB+' → сдвинь запятую на '+task.m+' вправо:';
+ else if(phase==='shiftM')el('qlabel').textContent=decimalShift?'На сколько знаков сдвигаем обе запятые?':'Сколько знаков после запятой в делителе '+task.origB+'?';
+ else if(phase==='shiftA')el('qlabel').textContent=decimalShift?'Прочитай новое делимое:':task.origA+' → сдвинь запятую на '+task.m+' вправо:';
+ else if(phase==='shiftB')el('qlabel').textContent=decimalShift?'Прочитай новый делитель:':task.origB+' → сдвинь запятую на '+task.m+' вправо:';
  else if(phase==='digit')el('qlabel').textContent=partialStr()+' ÷ '+task.d+' = ? (одна цифра)';
  else if(phase==='mult'){var t=trialDigit!==null?trialDigit:curStep().qd;el('qlabel').textContent=(trialDigit!==null?'Проверим: ':'')+t+' × '+task.d+' = ?'}
  else if(phase==='sub')el('qlabel').textContent=partialStr()+' − '+curStep().prod+' = ?';
@@ -1020,7 +1043,7 @@ function setQuestion(){var w=el('answrap');w.hidden=false;
  if(phase==='select')el('selval').textContent=task.digits.slice(0,selLen);
  el('ans').value='';if(!w.hidden)el('ans').focus()}
 function msg(t,c){el('fb').textContent=t;el('fb').className='fb '+(c||'')}
-function refresh(){renderCorner();renderVert();if(task.mode==='mulvis'||task.mode==='mulseq'||task.mode==='pyth'){renderExtras()}else{el('viswrap').hidden=true;el('ladwrap').hidden=true;el('pythwrap').hidden=true;el('tblpick').hidden=cfg.mode==='mulseq'?false:true}renderFrac();if(task.mode==='lcm5'||task.mode==='prime'||task.mode==='factor'||task.mode==='lcm6'){renderNok()}else{el('primegrid').hidden=true;el('primerow').hidden=true;el('factwrap').hidden=true;el('assemble').hidden=true}if(task.mode==='compose'||task.mode==='cross'){renderGrade1()}else{el('housewrap').hidden=true;el('crosswrap').hidden=true;el('comppick').hidden=cfg.mode==='compose'?false:true}setInstr();setQuestion()}
+function refresh(){renderCorner();renderVert();if(task.mode==='mulvis'||task.mode==='mulseq'||task.mode==='pyth'){renderExtras()}else{el('viswrap').hidden=true;el('ladwrap').hidden=true;el('pythwrap').hidden=true;el('tblpick').hidden=cfg.mode==='mulseq'?false:true}renderFrac();if(task.mode==='lcm5'||task.mode==='prime'||task.mode==='factor'||task.mode==='lcm6'){renderNok()}else{el('primegrid').hidden=true;el('primerow').hidden=true;el('factwrap').hidden=true;el('assemble').hidden=true}if(task.mode==='compose'||task.mode==='cross'){renderGrade1()}else{el('housewrap').hidden=true;el('crosswrap').hidden=true;el('comppick').hidden=cfg.mode==='compose'?false:true}renderDivisionTools();setInstr();setQuestion()}
 /* ================= ЛОГИКА: столбик ================= */
 function applyWrites(st){for(var i=0;i<st.writes.length;i++){var w=st.writes[i];task.writes[w.row]=task.writes[w.row]||{};task.writes[w.row][w.col]=w.ch}}
 function colAdvance(firstNote){var notes=firstNote?[firstNote]:[];
@@ -1343,6 +1366,8 @@ function reset(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};va
 el('level').onchange=function(){if(!Object.prototype.hasOwnProperty.call(LEVELS,this.value))return;levelId=this.value;cfg=LEVELS[levelId];if(courseMode){el('arithmetic-choices').open=false;var url=new URL(window.location.href);url.searchParams.set('level',levelId);window.history.replaceState(null,'',url.pathname+url.search+url.hash)}next()};
 el('less').onclick=selLess;el('more').onclick=selMore;el('selok').onclick=selOk;
 el('check').onclick=check;el('next').onclick=next;el('hint').onclick=hint;el('solution').onclick=solution;el('reset').onclick=reset;
+el('ans').addEventListener('input',function(){if(phase!=='shiftM'||!decimalShift)return;var raw=this.value.trim();if(!/^\d+$/.test(raw))return;var k=Number(raw);var model=window.DecimalShift.model(task.origA,task.origB);if(k>=0&&k<=model.maxShift)decimalShift.setValue(k)});
+el('multiplication-refresh-button').onclick=function(){if(!window.MultiplicationRefresh)return;if(!multiplicationRefresh)multiplicationRefresh=window.MultiplicationRefresh.create({onHelp:function(){if(!finished)hints++}});multiplicationRefresh.open(task.d)};
 el('ans').onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(!e.repeat)check()}};
 document.addEventListener('keydown',function(e){if(phase!=='select'||e.defaultPrevented||e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;var target=e.target;if(target&&(/^(INPUT|SELECT|TEXTAREA)$/.test(target.tagName)||target.isContentEditable))return;if(e.key==='Enter'&&target&&target.closest&&target.closest('button,a,summary'))return;if(e.key==='ArrowRight'){e.preventDefault();selMore()}if(e.key==='ArrowLeft'){e.preventDefault();selLess()}if(e.key==='Enter'){e.preventDefault();selOk()}});
 initCourse();load();next();renderStats();

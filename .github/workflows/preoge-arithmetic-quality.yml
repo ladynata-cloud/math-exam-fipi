@@ -6,15 +6,21 @@ on:
       - 'trainers/oge-basics/arithmetic-route*'
       - 'trainers/oge-basics/index.html'
       - 'trainers/oge-basics/multiplication-division/division-guided*'
+      - 'trainers/oge-basics/multiplication-division/decimal-shift*'
+      - 'trainers/oge-basics/multiplication-division/multiplication-refresh*'
       - 'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html'
       - 'tools/preoge-arithmetic*'
       - 'tools/arithmetic-course.test.cjs'
+      - 'tools/decimal-shift*'
       - '.github/workflows/preoge-arithmetic-quality.yml'
   push:
     branches: [main]
     paths:
       - 'trainers/arifmetika.html'
       - 'trainers/oge-basics/arithmetic-route*'
+      - 'trainers/oge-basics/multiplication-division/decimal-shift*'
+      - 'trainers/oge-basics/multiplication-division/multiplication-refresh*'
+      - 'tools/decimal-shift*'
       - '.github/workflows/preoge-arithmetic-quality.yml'
 permissions:
   contents: read
@@ -39,6 +45,7 @@ jobs:
           node tools/preoge-arithmetic.test.cjs
           node tools/arithmetic-course.test.cjs
           node tools/division-guided.test.cjs
+          node tools/decimal-shift.test.cjs
           node tools/learning-remediation-bank.cjs --check
           git diff --check
       - name: Fictional learner scenarios
@@ -48,3 +55,4 @@ jobs:
           node tools/preoge-arithmetic.browser.cjs
           node tools/division-guided.browser.cjs
           node tools/division-notebook.browser.cjs
+          node tools/decimal-shift.browser.cjs
