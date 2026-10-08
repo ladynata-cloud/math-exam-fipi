@@ -1,12 +1,22 @@
 # MathExam project status
 
-Updated: 2026-10-07 (Asia/Novosibirsk)
+Updated: 2026-10-08 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: Atanasyan 10–11 route to profile task 15
+## In progress: PreOGE arithmetic route
+
+- Scope: [existing arithmetic integrated with PreOGE](tasks/PREOGE_ARITHMETIC_ROUTE.md),
+  skill links, contextual guided division, honest local progress and fictional
+  learner software scenarios. No accounts or backend changes.
+- Base: `c8241e8c08cfb3916cb9875a9896d8a2024042d0`; branch
+  `course/preoge-arithmetic-route`. Prior unpublished curriculum work is excluded.
+- Standing owner publication permission and external-review waiver apply.
+  Independent internal review and regression gates are required.
+
+## Published: Atanasyan 10–11 route to profile task 15
 
 - Scope: [Atanasyan stereometry](tasks/ATANASYAN_PROFILE_15.md), a separate
   route inside profile EGE: eight stages using 22 existing workshop units,
@@ -14,6 +24,8 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Base: `f829dfed60a0e4821c514e1e2d1c5d11ab9f7220`; branch
   `course/atanasyan-profile15`. Standing owner publication permission and
   separate external-review waiver apply. Independent internal review required.
+- PR #208 is included in the verified current main,
+  `c8241e8c08cfb3916cb9875a9896d8a2024042d0`.
 - Current account request remains separate: two profile learner cabinets,
   names pending. Existing school cabinets do not yet synchronize profile-start
   progress. This static course release does not change authentication or
