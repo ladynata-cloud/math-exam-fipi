@@ -1,20 +1,35 @@
 # MathExam project status
 
-Updated: 2026-10-08 (Asia/Novosibirsk)
+Updated: 2026-10-09 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: PreOGE arithmetic route
+## Ready for publication: linked decimal commas and multiplication refresher
+
+- Scope: [decimal preparation interaction](tasks/DECIMAL_COMMA_DRAG.md): grab
+  either comma to move both, with exact decimal values, retained working and
+  nearby multiplication practice that returns to the same division.
+- Base: `1aace4083532f27cdc36f54b70ce20be67f5d25c`; branch
+  `course/decimal-comma-drag`. Existing saved-step contracts remain unchanged.
+- Standing publication permission and external-review waiver apply; independent
+  internal HIGH review approved. Local `DECIMAL_COMMA_DRAG_OK` passed on
+  2026-10-08 18:19 UTC: exact arithmetic, both gesture adapters, multiplication
+  return, old saved work, 320/390px and canonical bank equality. Exact-head CI,
+  fresh main guard and live publication verification remain.
+
+## Published: PreOGE arithmetic route
 
 - Scope: [existing arithmetic integrated with PreOGE](tasks/PREOGE_ARITHMETIC_ROUTE.md),
   skill links, contextual guided division, honest local progress and fictional
   learner software scenarios. No accounts or backend changes.
 - Base: `c8241e8c08cfb3916cb9875a9896d8a2024042d0`; branch
   `course/preoge-arithmetic-route`. Prior unpublished curriculum work is excluded.
-- Standing owner publication permission and external-review waiver apply.
-  Independent internal review and regression gates are required.
+- PR #209 merged as `1aace4083532f27cdc36f54b70ce20be67f5d25c`;
+  reviewed and merged tree `8ebab6ac81741cc6d033ca89b8997edc2a7d51db` matched.
+  All four exact-head workflows and Pages 37819428294 passed; nine changed
+  public assets matched reviewed bytes and live navigation was verified.
 
 ## Published: Atanasyan 10–11 route to profile task 15
 

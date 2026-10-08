@@ -76,6 +76,12 @@ input[readonly] { border-color: #7da589; background: #f0f6ef; color: var(--succe
 #answer-options button { min-width: 80px; border: 2px solid var(--line); background: white; color: var(--ink); }
 #answer-options button[aria-pressed="true"] { border-color: var(--accent); background: var(--soft); }
 #answer-options button:hover:not(:disabled) { background: var(--soft); }
+.help-actions { display: grid; gap: 2px; justify-items: start; }
+.help-actions > #help-area { width: 100%; }
+#decimal-shift { margin-bottom: 14px; }
+#normalization-record { margin-bottom: 12px; color: var(--muted); font-size: 15px; }
+#normalization-record > summary { padding: 8px 0; }
+#normalization-record[open] > summary { margin-bottom: 5px; }
 .help-toggle { padding-left: 0; border-color: transparent; background: transparent; color: var(--accent); font-size: 16px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; }
 .help-toggle:hover:not(:disabled) { background: transparent; color: var(--accent-dark); }
 #help-content { margin-top: 4px; padding: 16px; border: 1px solid #d6e5da; border-radius: 12px; background: var(--soft); font-size: 16px; }

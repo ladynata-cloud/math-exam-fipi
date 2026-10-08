@@ -12,6 +12,8 @@
   let state = {version:1, active:'start', serial:0, next:{}, sessions:{}, records:[]};
   let lastRaw = null, blocked = false, storageAvailable = true, helpOpen = false, revealOpen = false;
   let feedback = '', feedbackKind = '';
+  let decimalShift = null, decimalShiftKey = '', normalizationKey = '';
+  let multiplicationRefresh = null;
 
   function notice(text) { $('storage-notice').hidden = false; $('storage-notice').textContent = text; }
   function whole(value, max = 1000000) { return Number.isSafeInteger(value) && value >= 0 && value <= max; }
@@ -250,6 +252,49 @@
       $('arithmetic-link').textContent = 'Потренироваться в арифметике: ' + G.topics.find(t => t.id === state.active).title.toLowerCase();
     }
   }
+  // The comma position is another way to enter the existing shift-count draft.
+  // Moving it never accepts an answer or skips one of the four preparation steps.
+  function renderDecimalShift(p, s) {
+    const a = p.actions[s.step];
+    const completed = s.step + Number(s.accepted);
+    const preparing = (p.actions[completed]?.visibleBaseStep ?? p.baseActions.length) < p.normalizationEnd;
+    const show = preparing && !!window.DecimalShift;
+    $('decimal-shift').hidden = !show;
+    $('normalization-record').hidden = !p.normalizationEnd;
+    const recordKey = s.id + ':' + String(show);
+    if (normalizationKey !== recordKey) {
+      $('normalization-record').open = !show;
+      normalizationKey = recordKey;
+    }
+    if (!show) {
+      decimalShift?.destroy(); decimalShift = null; decimalShiftKey = '';
+      return;
+    }
+    const countIndex = p.actions.findIndex(action => action.kind === 'shift-count');
+    const raw = a.kind === 'shift-count' ? s.draft.trim() : s.answers[countIndex];
+    const value = /^\d+$/.test(raw) && Number.isSafeInteger(Number(raw)) ? Number(raw) : 0;
+    const locked = a.kind !== 'shift-count' || s.accepted;
+    const key = s.id + ':' + fingerprint(s.task);
+    if (key !== decimalShiftKey) {
+      decimalShift?.destroy();
+      decimalShift = window.DecimalShift.create($('decimal-shift'), {
+        dividend:s.task.dividend, divisor:s.task.divisor, value, locked,
+        onChange(k) {
+          const active = current();
+          if (active.id !== s.id || active.accepted || active.done || G.plan(active.task).actions[active.step].kind !== 'shift-count') return;
+          active.draft = String(k);
+          $('answer').value = active.draft;
+          feedback = ''; feedbackKind = '';
+          $('feedback').textContent = ''; $('feedback').className = '';
+          save();
+        }
+      });
+      decimalShiftKey = key;
+    } else {
+      decimalShift.setValue(value);
+      decimalShift.setLocked(locked);
+    }
+  }
   function render() {
     const s = current(), p = G.plan(s.task), a = p.actions[s.step];
     const topic = G.topics.find(t => t.id === state.active);
@@ -263,12 +308,14 @@
     $('topic-progress').textContent = topicFinished ? 'В этой теме закончено примеров: ' + topicFinished : 'Первый пример в этой теме';
     $('question').parentElement.classList.toggle('lesson-complete', s.done);
     $('notebook').parentElement.hidden = false;
+    renderDecimalShift(p, s);
     renderNotebook(p, s);
     $('question').hidden = s.done;
     $('completion').hidden = !s.done;
     $('step-name').textContent = names[a.kind];
-    $('prompt').textContent = a.prompt;
-    $('answer-note').textContent = a.kind === 'comma' ? 'Перепиши целую часть ответа. Сразу после неё поставь запятую.' : a.kind === 'remainder-check' ? 'Выбери ответ, затем нажми «Проверить».' : a.kind === 'start' ? 'Выбери цифры слева в уголке или впиши число здесь.' : a.kind === 'count' ? 'На каждую цифру ответа наметим одно место.' : ['digit','bring'].includes(a.kind) ? 'Впиши одну цифру.' : 'Впиши число и нажми «Проверить».';
+    $('prompt').textContent = a.kind === 'shift-count' && decimalShift ? 'Передвинь обе запятые вправо, чтобы делитель стал целым.' : a.kind === 'shift-factor' && decimalShift ? 'Во сколько раз увеличились оба числа?' : a.kind === 'shift-divisor' && decimalShift ? 'Запиши новый делитель.' : a.kind === 'shift-dividend' && decimalShift ? 'Запиши новое делимое.' : a.prompt;
+    $('answer-note').textContent = a.kind === 'shift-count' && decimalShift ? 'Возьми любую запятую и потяни вправо. Обе переместятся вместе. Потом нажми «Проверить».' : a.kind === 'shift-divisor' && decimalShift ? 'Найди строку «Делитель» и перепиши новое число.' : a.kind === 'shift-dividend' && decimalShift ? 'Найди строку «Делимое» и перепиши новое число.' : a.kind === 'comma' ? 'Перепиши целую часть ответа. Сразу после неё поставь запятую.' : a.kind === 'remainder-check' ? 'Выбери ответ, затем нажми «Проверить».' : a.kind === 'start' ? 'Выбери цифры слева в уголке или впиши число здесь.' : a.kind === 'count' ? 'На каждую цифру ответа наметим одно место.' : ['digit','bring'].includes(a.kind) ? 'Впиши одну цифру.' : 'Впиши число и нажми «Проверить».';
+    $('answer-label').textContent = a.kind === 'shift-count' ? 'На сколько мест сдвинули запятые?' : 'Твой ответ';
     $('answer').value = s.draft;
     $('answer').readOnly = s.accepted;
     $('answer').hidden = !!a.options;
@@ -276,9 +323,10 @@
     $('answer-options').hidden = !a.options;
     $('answer-options').innerHTML = a.options ? a.options.map(o => '<button type="button" data-option="' + esc(o.value) + '" aria-pressed="' + (s.draft === o.value) + '" ' + (s.accepted ? 'disabled' : '') + '>' + esc(o.label) + '</button>').join('') : '';
     $('primary').textContent = s.accepted ? 'Дальше' : 'Проверить';
-    $('feedback').textContent = feedback || (s.accepted ? 'Верно. Посмотри, что записалось в уголке.' : '');
+    $('feedback').textContent = feedback || (s.accepted ? a.kind.startsWith('shift-') ? 'Верно. Оба числа изменяются одинаково.' : 'Верно. Посмотри, что записалось в уголке.' : '');
     $('feedback').className = feedbackKind || (s.accepted ? 'good' : '');
     $('help-area').hidden = s.accepted;
+    $('multiplication-refresh').hidden = !window.MultiplicationRefresh;
     $('help-toggle').setAttribute('aria-expanded', String(helpOpen));
     $('help-content').hidden = !helpOpen;
     $('hint-text').textContent = a.hint;
@@ -318,10 +366,15 @@
     if (a.kind === 'remainder-check') return 'Осталось ' + a.remainder + ', а делитель — ' + a.divisor + '. ' + a.remainder + ' меньше ' + a.divisor + (a.remainder === 0 ? ': ноль тоже подходит.' : '. Значит, ещё целый делитель взять нельзя.');
     if (a.kind === 'shift-dividend') {
       const factor = p.baseActions.find(b => b.kind === 'shift-factor').answer;
-      return G.equal(raw, p.task.dividend) ? 'Делимое осталось прежним. Делитель уже умножили на ' + factor + '. Теперь умножь на ' + factor + ' и делимое ' + p.task.dividend + '.' : 'Оба числа меняем одинаково. Умножь ' + p.task.dividend + ' на ' + factor + ': перенеси запятую вправо на столько же мест, как у делителя.';
+      return G.equal(raw, p.task.dividend) ? 'Это прежнее делимое. Оба числа умножаем на ' + factor + '. Прочитай новое делимое после переноса запятой.' : 'Оба числа меняем одинаково. Умножь ' + p.task.dividend + ' на ' + factor + ': перенеси запятую вправо на столько же мест, как у делителя.';
     }
     if (a.kind === 'shift-divisor') return 'Меняем именно делитель ' + p.task.divisor + '. Перенеси его запятую вправо на выбранное число мест: в новом делителе запятой не останется.';
-    if (a.kind === 'shift-count') return 'Считай только цифры справа от запятой в делителе ' + p.task.divisor + '. Цифры до запятой не считаем.';
+    if (a.kind === 'shift-count') {
+      const chosen = Number(raw);
+      if (!Number.isSafeInteger(chosen) || chosen < 0) return 'Укажи целое число мест. Можно передвинуть запятые мышью или кнопками.';
+      if (Number.isSafeInteger(chosen) && chosen > Number(a.answer)) return 'Так частное тоже не меняется, но достаточно меньшего сдвига: только до конца дробной части делителя. Верни обе запятые немного влево.';
+      return 'В делителе ' + p.task.divisor + ' ещё остаются цифры после запятой. Сдвинь обе запятые ещё вправо. Остановись сразу после последней цифры делителя.';
+    }
     if (a.kind === 'shift-factor') return 'Вспомни перенос запятой: одно место вправо — умножить на 10, два — на 100, три — на 1000.';
     if (a.kind === 'comma') {
       const clean = raw.trim().replace('.', ',');
@@ -365,6 +418,7 @@
     const s = current(); s.draft = $('answer').value; save();
     const p = G.plan(s.task);
     if (p.actions[s.step].kind === 'start') renderNotebook(p, s);
+    if (p.actions[s.step].kind === 'shift-count') renderDecimalShift(p, s);
   });
   function fillDraft(value) {
     const s = current(); if (s.accepted || s.done) return;
@@ -391,6 +445,17 @@
     current().draft = button.dataset.option; feedback = ''; feedbackKind = ''; save(); render();
     $('primary').focus({preventScroll:true});
   });
+  $('multiplication-refresh').onclick = () => {
+    if (!window.MultiplicationRefresh) return;
+    if (!multiplicationRefresh) multiplicationRefresh = window.MultiplicationRefresh.create({onHelp() {
+      const s = current();
+      if (!s || s.done) return;
+      s.hints = Math.min(1000000, s.hints + 1);
+      save();
+    }});
+    const p = G.plan(current().task);
+    multiplicationRefresh?.open(p.normalizedDivisor >= 2 && p.normalizedDivisor <= 9 ? p.normalizedDivisor : undefined);
+  };
   $('help-toggle').onclick = () => {
     if (!helpOpen) current().hints = Math.min(1000000, current().hints + 1);
     helpOpen = !helpOpen; save(); render();
