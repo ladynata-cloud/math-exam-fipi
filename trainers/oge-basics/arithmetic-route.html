@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Арифметика перед ОГЭ — мой маршрут · MathExam</title>
+  <link rel="stylesheet" href="arithmetic-route.css">
+  <script src="multiplication-division/division-lab-core.js" defer></script>
+  <script src="multiplication-division/division-guided-core.js" defer></script>
+  <script src="arithmetic-route.js" defer></script>
+  <script src="arithmetic-route-page.js" defer></script>
+</head>
+<body>
+<header><a href="index.html">← Все темы ПредОГЭ</a><a href="../oge-course/">Курс ОГЭ</a></header>
+<main>
+  <div class="eyebrow">ПредОГЭ · арифметика</div>
+  <h1 id="route-title">Что сейчас трудно?</h1>
+  <p id="route-lead" class="lead">Выбери один навык. Можно начать с простого или сразу открыть нужное упражнение.</p>
+  <p id="route-notice" class="notice" role="status" hidden></p>
+  <section id="route-overview" aria-label="Выбрать навык"></section>
+  <section id="route-detail" hidden aria-label="Упражнения по выбранному навыку">
+    <a href="arithmetic-route.html" class="back">← Выбрать другой навык</a>
+    <div class="start-card">
+      <p class="eyebrow">Ближайший шаг</p><h2 id="start-title"></h2>
+      <p id="start-note">Реши несколько примеров. Если трудно — открой подсказку. Спешить не нужно.</p>
+      <div class="actions"><a id="start-practice" class="button">Начать упражнение</a><a id="start-guided" class="button secondary" hidden>Разобрать по одному действию</a></div>
+    </div>
+    <p class="route-rule">Ориентир — 3 разных примера без ошибок и подсказок. Это повод попробовать следующий шаг. Вернуться назад можно в любой момент.</p>
+    <ol id="route-levels"></ol>
+    <div class="end-actions"><a id="route-easier" hidden></a><a id="route-checkpoint" class="button secondary">Проверить навык в заданиях курса</a></div>
+  </section>
+  <details class="report"><summary>Мои результаты для учителя</summary>
+    <p>Здесь — результаты арифметики и подробного разбора деления в этом браузере. Старые общие баллы не превращаются в освоенные темы.</p>
+    <div id="route-summary"></div>
+    <button id="route-report-copy" class="button" type="button">Скопировать результат</button>
+    <p id="route-report-status" role="status"></p>
+    <textarea id="route-report-text" rows="12" readonly aria-label="Результат для учителя" hidden></textarea>
+    <p class="small">Отправь текст учителю в MAX. Кнопка копирует текст; отправка остаётся за тобой.</p>
+  </details>
+  <p class="small">Прогресс хранится в этом браузере. Подробный разбор деления сохраняет начатый пример; в обычной арифметике сохраняются итоги, а после обновления открывается новый пример.</p>
+  <noscript><p>Для упражнений нужен JavaScript. <a href="../arifmetika.html">Открыть арифметику</a>.</p></noscript>
+</main>
+</body>
+</html>

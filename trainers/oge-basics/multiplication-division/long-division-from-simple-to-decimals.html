@@ -9,7 +9,8 @@
 <script src="../learning-loader.js"></script>
 <script src="division-lab-core.js" defer></script>
 <script src="division-guided-core.js?v=20261007-notebook" defer></script>
-<script src="division-guided.js?v=20261007-notebook" defer></script>
+<script src="../arithmetic-route.js?v=20261008" defer></script>
+<script src="division-guided.js?v=20261008-preoge-route" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#question">К текущему шагу</a>
@@ -17,6 +18,7 @@
 <header class="page-header"><a class="brand" href="index.html" aria-label="MathExam — умножение и деление">MathExam</a><button id="topics-open" class="quiet" type="button" aria-haspopup="dialog">Выбрать тему</button></header>
 <main class="page" id="main">
 <div id="storage-notice" role="status" hidden></div>
+<nav id="course-navigation" aria-label="Маршрут ПредОГЭ" hidden><p class="small"><a id="course-return" href="../arithmetic-route.html">← К моему маршруту ПредОГЭ</a></p></nav>
 <div class="intro"><p id="topic-label" class="eyebrow"></p><h1>Деление уголком</h1><p id="intro-text">Решаем по одному действию. Спешить не нужно.</p></div>
 <section class="workspace" aria-label="Текущий пример">
 <div class="exercise-header"><h2 id="problem"></h2><span id="step-counter"></span></div>
@@ -40,7 +42,7 @@
 <div id="help-area"><button id="help-toggle" class="help-toggle" type="button" aria-expanded="false" aria-controls="help-content">Помочь с этим шагом</button><div id="help-content" hidden><p id="hint-text"></p><div id="multiples" hidden></div><button id="reveal" class="quiet" type="button">Показать ответ к этому шагу</button><p id="revealed" role="status"></p></div></div>
 </div>
 </div>
-<div id="completion" hidden><h2>Пример закончен</h2><p id="completion-text"></p><button id="next-example" class="primary" type="button">Ещё один похожий пример</button><button id="next-topic" class="quiet" type="button" hidden></button><button id="repeat-example" class="quiet" type="button">Повторить этот пример</button><p class="small" id="save-note">Можно закончить на сегодня. Результат сохранится в этом браузере.</p></div>
+<div id="completion" hidden><h2>Пример закончен</h2><p id="completion-text"></p><button id="next-example" class="primary" type="button">Ещё один похожий пример</button><button id="next-topic" class="quiet" type="button" hidden></button><button id="repeat-example" class="quiet" type="button">Повторить этот пример</button><p class="small" id="save-note">Можно закончить на сегодня. Результат сохранится в этом браузере.</p><p><a id="course-return-completion" href="../arithmetic-route.html" hidden>Вернуться к маршруту ПредОГЭ</a></p></div>
 </section>
 <details id="results"><summary>Мои результаты</summary><p id="results-text"></p><button id="report-copy" class="quiet" type="button">Скопировать результат для учителя</button><p id="report-status" role="status"></p><textarea id="report-text" readonly rows="7" aria-label="Результат для учителя" hidden></textarea><p class="small">Отправь текст или снимок экрана учителю в MAX. Автоматической отправки здесь нет.</p></details>
 <footer><p>Уголок остаётся на экране. Подсказками пользоваться можно.</p><a href="../../arifmetika.html" id="arithmetic-link">Другие арифметические действия</a></footer>

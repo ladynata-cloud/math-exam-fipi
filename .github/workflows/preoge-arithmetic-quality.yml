@@ -1,0 +1,50 @@
+name: PreOGE arithmetic route quality
+on:
+  pull_request:
+    paths:
+      - 'trainers/arifmetika.html'
+      - 'trainers/oge-basics/arithmetic-route*'
+      - 'trainers/oge-basics/index.html'
+      - 'trainers/oge-basics/multiplication-division/division-guided*'
+      - 'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html'
+      - 'tools/preoge-arithmetic*'
+      - 'tools/arithmetic-course.test.cjs'
+      - '.github/workflows/preoge-arithmetic-quality.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/arifmetika.html'
+      - 'trainers/oge-basics/arithmetic-route*'
+      - '.github/workflows/preoge-arithmetic-quality.yml'
+permissions:
+  contents: read
+jobs:
+  arithmetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated test dependencies
+        run: |
+          mkdir -p /tmp/preoge-quality
+          npm install --prefix /tmp/preoge-quality --no-audit --no-fund playwright@1.62.1 jsdom@26.1.0
+          node /tmp/preoge-quality/node_modules/playwright/cli.js install --with-deps chromium
+      - name: Contracts and arithmetic
+        env:
+          NODE_PATH: /tmp/preoge-quality/node_modules
+        run: |
+          node tools/preoge-arithmetic.test.cjs
+          node tools/arithmetic-course.test.cjs
+          node tools/division-guided.test.cjs
+          node tools/learning-remediation-bank.cjs --check
+          git diff --check
+      - name: Fictional learner scenarios
+        env:
+          NODE_PATH: /tmp/preoge-quality/node_modules
+        run: |
+          node tools/preoge-arithmetic.browser.cjs
+          node tools/division-guided.browser.cjs
+          node tools/division-notebook.browser.cjs

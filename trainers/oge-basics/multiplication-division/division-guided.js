@@ -2,6 +2,8 @@
   'use strict';
   if (window.MathExamRemediationManaged) return;
   const G = window.DivisionGuided;
+  const route = window.PreOgeArithmetic;
+  const inCourse = new URLSearchParams(location.search).get('course') === 'preoge';
   const $ = id => document.getElementById(id);
   const KEY = 'mathExamBasics.guidedDivision.v1';
   const esc = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -236,6 +238,18 @@
     const alone = state.records.filter(independent).length;
     $('results-text').textContent = total ? 'Закончено примеров по шагам: ' + total + '. Новых, без ошибок и дополнительных подсказок: ' + alone + '. С помощью, исправлениями или повторно: ' + (total - alone) + '.' : 'Здесь появятся законченные примеры.';
   }
+  function renderRouteLinks() {
+    const level = route?.levelForGuided(state.active);
+    const returnURL = level ? route.routeURL(level) : '../arithmetic-route.html';
+    $('course-navigation').hidden = !inCourse;
+    $('course-return').href = returnURL;
+    $('course-return-completion').href = returnURL;
+    $('course-return-completion').hidden = !inCourse;
+    if (level) {
+      $('arithmetic-link').href = route.practiceURL(level);
+      $('arithmetic-link').textContent = 'Потренироваться в арифметике: ' + G.topics.find(t => t.id === state.active).title.toLowerCase();
+    }
+  }
   function render() {
     const s = current(), p = G.plan(s.task), a = p.actions[s.step];
     const topic = G.topics.find(t => t.id === state.active);
@@ -280,6 +294,7 @@
     if (nextTopic) $('next-topic').textContent = (state.sessions[nextTopic.id] && !state.sessions[nextTopic.id].done ? 'Продолжить тему: ' : 'Следующая тема: ') + nextTopic.title;
     $('save-note').textContent = blocked || !storageAvailable ? 'Можно закончить на сегодня. Отправь учителю результат или снимок экрана: сохранение сейчас недоступно.' : 'Можно закончить на сегодня. Результат сохранится в этом браузере.';
     renderResults();
+    renderRouteLinks();
   }
   function moveFocus() {
     const s = current(), a = G.plan(s.task).actions[s.step];
