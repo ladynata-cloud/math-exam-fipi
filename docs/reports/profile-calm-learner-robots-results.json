@@ -1,0 +1,1267 @@
+{
+  "gate": "PROFILE_CALM_LEARNERS_BROWSER",
+  "version": 1,
+  "startedAt": "2026-10-09T15:35:11.003Z",
+  "scope": "Scripted interface support for four learner difficulties; not a diagnosis, clinical model, or evidence of real learning.",
+  "answerPolicy": "Visible-statement fixtures and explicit calculation rules only. Never use production answer keys to drive learner responses. Strict checkpoint results are separate from lesson independent practice.",
+  "cpuThrottlingRate": 4,
+  "sourceHashes": {
+    "algebra-data.js": "6f1526827b5efdb6259cae74af93e4849161de9368efef48d5a14fa2de73f70a",
+    "algebra-models.js": "564fa73b95886725f19362122b204aa6e8a27caced6f8e4f6bfaf2a2b6d3aab5",
+    "app.js": "dfced95f8dc226381dc1a59a9e836808ebb75ca27b368b70a0027fa62b127681",
+    "applied-data.js": "686274fea177536bb13909c726636a7fbc269a0d87d8676168e838f488c70c86",
+    "applied-tasks.js": "3ff5f9cfd253f610ed946dcd5bd4012204e8fb6c3ab226c2db66323339201975",
+    "calm-data.js": "6a226d153361678dda853008127c9aa4e5a7384af31d9931897772ff944b1711",
+    "calm-micro.js": "f58760cba1eabcf0c16863ad512599c9b95acd6ca674eff6ee5ff9d6d9b832e8",
+    "calm-ui.js": "cd7607e265417eb946b125ad78e1a396d3bc74f3b7b4a3a5a2dce5127300962d",
+    "checkpoint.js": "75489c2eecc0cee07f12c140c3d44e0007018e61142cc8393bdd05d79fea4ef3",
+    "checks.js": "4ac38143ed4e7730a99857935989b1f583d14893be4cb582e39729fde92b3012",
+    "equations-data.js": "45c8090c44e6c163e1ae7cb00e2a6540179f490096e4f0d28111016b1c2de423",
+    "equations-tasks.js": "1572409a2f705e5e8d3fc612e534b43f9ff006ad077ac0b698e7aac3be59171f",
+    "functions-data.js": "3118570eb23578c2dedca8dfd67cc0a696619eeceddea2c63f3c6740d3dbf180",
+    "functions-tasks.js": "6101dd6e93db69eb3a9acface6f36ef8c9f4bfce5ef22fe606b35f35dd1783ec",
+    "geometry-data.js": "c1639261f279bcdde103bd0a67d24d0f96b01c3df5955b57213b92484bc4dd33",
+    "geometry-models.js": "89b9a557db53ed8937adbc5dfcc68eb7a83ebc50e315fe4a9a9a6fe0a1473768",
+    "index.html": "750b41ac860c7ade84f50a21a8aacc4b7c9bcc0bbe016a64dcd84198f367f397",
+    "planimetry-tasks.js": "23edaaa60f60b048d39c24d77b1e869e8d97ed581bff26bddbf65ebfb504dba4",
+    "probability-data.js": "ee344efd308b715d4027a6e870d2f57e35785352df12752205b448007337b03a",
+    "probability-tasks.js": "6ef6b22a29b0b83ab1faabbe3cfb8e8f0fcb8781c5930a3d594dbccb2bbe1c3b",
+    "readiness-data.js": "e178ff8aa0116b0d9a31d3640d5578cb0d085594cac9fe08db55b2206b48e158",
+    "readiness.js": "631309834340fd5ab3015a7272845985e0103a93f7ec65d65721c4305521badf",
+    "state.js": "91b6a0be499874f89e2e2a53102653e4b5dca309f7bf817bc037bed4b5c6ce36",
+    "stereo-data.js": "8aad61a5db607982675b1e7e5a0d583bc66d116ec352fd3f3e07e5f7ef95d690",
+    "stereo-tasks.js": "947b53a67026c02d0f740c621e3385e3af0c56ea4d014e0bbb4a278dadbfe464",
+    "style.css": "05de990dfe2d5857e65d6b0d8f013ce85bcaa9c5ce95a19517aa31efadde6406",
+    "vector-tasks.js": "b141fbd1a5133ea366f241ff13b910684855e0c90e71e1f88a035a4d9ecf8560"
+  },
+  "personas": [
+    {
+      "id": "loses_place_after_pause",
+      "name": "Теряет место после паузы",
+      "viewport": 360,
+      "checks": [
+        {
+          "id": "answer-accepted:first-step",
+          "passed": true
+        },
+        {
+          "id": "calm-toggle-announces-state:paused",
+          "passed": true,
+          "observed": {
+            "before": "false",
+            "after": "true"
+          }
+        },
+        {
+          "id": "visual-mode-does-not-change-work",
+          "passed": true
+        },
+        {
+          "id": "reload-preserves-session",
+          "passed": true
+        },
+        {
+          "id": "reload-restores-unfinished-draft",
+          "passed": true
+        },
+        {
+          "id": "reload-restores-calm-setting",
+          "passed": true
+        },
+        {
+          "id": "accepted-history-visible",
+          "passed": true
+        },
+        {
+          "id": "unfinished-step-cannot-advance",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:step-1",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:step-1",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "answer-accepted:step-2",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:step-2",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "guided-is-not-independent",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:final",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        }
+      ],
+      "events": [
+        {
+          "action": "answer",
+          "label": "first-step",
+          "value": "2/3"
+        },
+        {
+          "action": "answer",
+          "label": "step-1",
+          "value": "60"
+        },
+        {
+          "action": "answer",
+          "label": "step-2",
+          "value": "1/3"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "loses_intermediate_goal",
+      "name": "Путает промежуточный результат и окончательный ответ",
+      "viewport": 360,
+      "checks": [
+        {
+          "id": "calm-toggle-announces-state:micro-support",
+          "passed": true,
+          "observed": {
+            "before": "false",
+            "after": "true"
+          }
+        },
+        {
+          "id": "one-current-question:0",
+          "passed": true
+        },
+        {
+          "id": "final-value-rejected-for-intermediate-goal",
+          "passed": true
+        },
+        {
+          "id": "current-question-hint-visible",
+          "passed": true
+        },
+        {
+          "id": "wrong-meaning-of-x-rejected",
+          "passed": true
+        },
+        {
+          "id": "one-visible-form-during-micro:0",
+          "passed": true
+        },
+        {
+          "id": "micro-does-not-earn-main-step:0",
+          "passed": true
+        },
+        {
+          "id": "micro-retains-earlier-actions:0",
+          "passed": true
+        },
+        {
+          "id": "one-visible-form-during-micro:1",
+          "passed": true
+        },
+        {
+          "id": "micro-does-not-earn-main-step:1",
+          "passed": true
+        },
+        {
+          "id": "micro-retains-earlier-actions:1",
+          "passed": true
+        },
+        {
+          "id": "one-visible-form-during-micro:2",
+          "passed": true
+        },
+        {
+          "id": "micro-does-not-earn-main-step:2",
+          "passed": true
+        },
+        {
+          "id": "micro-retains-earlier-actions:2",
+          "passed": true
+        },
+        {
+          "id": "one-visible-form-during-micro:3",
+          "passed": true
+        },
+        {
+          "id": "micro-draft-restored-after-reload",
+          "passed": true
+        },
+        {
+          "id": "accepted-micro-history-restored",
+          "passed": true
+        },
+        {
+          "id": "micro-does-not-earn-main-step:3",
+          "passed": true
+        },
+        {
+          "id": "micro-retains-earlier-actions:3",
+          "passed": true
+        },
+        {
+          "id": "main-answer-required-after-micro",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:step-0",
+          "passed": true
+        },
+        {
+          "id": "checking-does-not-skip-step:0",
+          "passed": true
+        },
+        {
+          "id": "all-earned-history-remains:0",
+          "passed": true
+        },
+        {
+          "id": "one-current-question:1",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:step-1",
+          "passed": true
+        },
+        {
+          "id": "checking-does-not-skip-step:1",
+          "passed": true
+        },
+        {
+          "id": "all-earned-history-remains:1",
+          "passed": true
+        },
+        {
+          "id": "one-current-question:2",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:step-2",
+          "passed": true
+        },
+        {
+          "id": "checking-does-not-skip-step:2",
+          "passed": true
+        },
+        {
+          "id": "all-earned-history-remains:2",
+          "passed": true
+        },
+        {
+          "id": "one-current-question:3",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:step-3",
+          "passed": true
+        },
+        {
+          "id": "checking-does-not-skip-step:3",
+          "passed": true
+        },
+        {
+          "id": "all-earned-history-remains:3",
+          "passed": true
+        },
+        {
+          "id": "one-current-question:4",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:step-4",
+          "passed": true
+        },
+        {
+          "id": "checking-does-not-skip-step:4",
+          "passed": true
+        },
+        {
+          "id": "all-earned-history-remains:4",
+          "passed": true
+        },
+        {
+          "id": "final-requested-answer-recorded",
+          "passed": true
+        },
+        {
+          "id": "wrong-and-help-not-independent",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:final",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        }
+      ],
+      "events": [
+        {
+          "action": "micro-answer",
+          "micro": 1,
+          "value": "Меньшая скорость, км/ч"
+        },
+        {
+          "action": "micro-answer",
+          "micro": 2,
+          "value": "72/x"
+        },
+        {
+          "action": "micro-answer",
+          "micro": 3,
+          "value": "x(x + 6)"
+        },
+        {
+          "action": "micro-answer",
+          "micro": 4,
+          "value": "432"
+        },
+        {
+          "action": "answer",
+          "label": "step-0",
+          "value": "216"
+        },
+        {
+          "action": "answer",
+          "label": "step-1",
+          "value": "900"
+        },
+        {
+          "action": "answer",
+          "label": "step-2",
+          "value": "30"
+        },
+        {
+          "action": "answer",
+          "label": "step-3",
+          "value": "12"
+        },
+        {
+          "action": "answer",
+          "label": "step-4",
+          "value": "18"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "needs_worked_example",
+      "name": "Решает после образца и разбора своего условия",
+      "viewport": 1280,
+      "checks": [
+        {
+          "id": "calm-toggle-announces-state:independent",
+          "passed": true,
+          "observed": {
+            "before": "false",
+            "after": "true"
+          }
+        },
+        {
+          "id": "calm-setting-alone-is-not-help",
+          "passed": true
+        },
+        {
+          "id": "worked-example-unfolds-one-step-at-a-time",
+          "passed": true
+        },
+        {
+          "id": "example-marks-independent-assisted",
+          "passed": true
+        },
+        {
+          "id": "example-does-not-replace-independent-condition",
+          "passed": true
+        },
+        {
+          "id": "example-does-not-add-independent-credit",
+          "passed": true
+        },
+        {
+          "id": "viewing-example-does-not-count-as-solved",
+          "passed": true
+        },
+        {
+          "id": "example-keeps-reserved-conditions-unseen",
+          "passed": true,
+          "observed": [
+            "trig-angle-1"
+          ]
+        },
+        {
+          "id": "sample-to-different-guided-condition",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:stage-guided-0",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:stage-guided-1",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:stage-guided-2",
+          "passed": true
+        },
+        {
+          "id": "guided-to-short-plan",
+          "passed": true
+        },
+        {
+          "id": "short-plan-uses-another-condition",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:stage-plan",
+          "passed": true
+        },
+        {
+          "id": "short-plan-does-not-earn-independent",
+          "passed": true
+        },
+        {
+          "id": "plan-to-independent",
+          "passed": true
+        },
+        {
+          "id": "example-return-restores-draft",
+          "passed": true
+        },
+        {
+          "id": "repair-keeps-same-condition",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:same-condition-0",
+          "passed": true
+        },
+        {
+          "id": "repair-draft-survives-reload",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:same-condition-1",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:same-condition-2",
+          "passed": true
+        },
+        {
+          "id": "repair-return-restores-original-draft",
+          "passed": true
+        },
+        {
+          "id": "repair-preserves-help-mark",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:assisted-independent",
+          "passed": true
+        },
+        {
+          "id": "assisted-completion-is-not-independent",
+          "passed": true
+        },
+        {
+          "id": "next-condition-is-new",
+          "passed": true
+        },
+        {
+          "id": "answer-accepted:later-new-condition",
+          "passed": true
+        },
+        {
+          "id": "later-new-condition-can-earn-practice-credit",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:final",
+          "passed": true,
+          "observed": {
+            "viewport": 1280,
+            "content": 1280
+          }
+        }
+      ],
+      "events": [
+        {
+          "action": "worked-example",
+          "text": "← Вернуться на сохранённый шаг исходной задачи\n\n← К теме\n\nОбразец · чтение решения с помощью\n\nУгол: поворот, градусы и радианы\n\nЭто показ решения. Самостоятельный результат проверим на другом условии.\n\nУсловие\nЗапишите угол 60° в виде kπ рад. В ответ введите только число k (можно дробью).\nРазобранные шаги\n\nСкольким четвертям оборота равен этот направленный угол? Разделите градусы на 90; знак сохраните.\n\n0,66666667\n\nТак мы читаем величину и направление поворота, не стирая полный оборот.\n\nКакой угол от 0° включительно до 360° не включительно задаёт тот же конечный луч? Введите градусы.\n\n60\n\nЭто положение луча. Для перевода исходного угла в радианы нужно вернуться к исходному числу градусов.\n\nВернитесь к исходному углу 60°. В записи 60° = kπ рад чему равно k?\n\n0,33333333\n\n180° соответствуют π радиан. Число перед π сохраняет знак и все полные обороты исходного угла.\n\nОбразец разобран. Теперь попробуйте решить задачу с опорой. Знакомое условие будет отмечено как повтор.\n\nРешать по шагам"
+        },
+        {
+          "action": "answer",
+          "label": "stage-guided-0",
+          "value": "-4/3"
+        },
+        {
+          "action": "answer",
+          "label": "stage-guided-1",
+          "value": "240"
+        },
+        {
+          "action": "answer",
+          "label": "stage-guided-2",
+          "value": "-2/3"
+        },
+        {
+          "action": "answer",
+          "label": "stage-plan",
+          "value": "5/2"
+        },
+        {
+          "action": "answer",
+          "label": "same-condition-0",
+          "value": "7/3"
+        },
+        {
+          "action": "answer",
+          "label": "same-condition-1",
+          "value": "210"
+        },
+        {
+          "action": "answer",
+          "label": "same-condition-2",
+          "value": "7/6"
+        },
+        {
+          "action": "answer",
+          "label": "assisted-independent",
+          "value": "7/6"
+        },
+        {
+          "action": "answer",
+          "label": "later-new-condition",
+          "value": "-3/2"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "transfers_without_topic_label",
+      "name": "Выбирает способ без подсказки названием темы",
+      "viewport": 360,
+      "checks": [
+        {
+          "id": "thirteen-calm-cards",
+          "passed": true
+        },
+        {
+          "id": "mixed-position-and-fixture:0",
+          "passed": true,
+          "observed": {
+            "slot": 0,
+            "number": 4,
+            "task": "prob-count-4"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:0",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:0",
+          "passed": true,
+          "observed": "Смешанная проверка · 1 из 13 Задание №4 Условие"
+        },
+        {
+          "id": "invalid-input-does-not-use-attempt:blank",
+          "passed": true
+        },
+        {
+          "id": "invalid-input-does-not-use-attempt:abc",
+          "passed": true
+        },
+        {
+          "id": "invalid-input-does-not-use-attempt:1/0",
+          "passed": true
+        },
+        {
+          "id": "one-valid-answer-locked:0",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:0",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-0",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:1",
+          "passed": true,
+          "observed": {
+            "slot": 1,
+            "number": 7,
+            "task": "eq-linear-4"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:1",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:1",
+          "passed": true,
+          "observed": "Смешанная проверка · 2 из 13 Задание №7 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:1",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:1",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-1",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:2",
+          "passed": true,
+          "observed": {
+            "slot": 2,
+            "number": 1,
+            "task": "geo-right-cosine"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:2",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:2",
+          "passed": true,
+          "observed": "Смешанная проверка · 3 из 13 Задание №1 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:2",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:2",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-2",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:3",
+          "passed": true,
+          "observed": {
+            "slot": 3,
+            "number": 2,
+            "task": "vec-coordinates-start"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:3",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:3",
+          "passed": true,
+          "observed": "Смешанная проверка · 4 из 13 Задание №2 Условие"
+        },
+        {
+          "id": "checkpoint-pause-restores-exact-state",
+          "passed": true
+        },
+        {
+          "id": "checkpoint-pause-restores-draft",
+          "passed": true
+        },
+        {
+          "id": "one-valid-answer-locked:3",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:3",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-3",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:4",
+          "passed": true,
+          "observed": {
+            "slot": 4,
+            "number": 8,
+            "task": "expr-powers-4"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:4",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:4",
+          "passed": true,
+          "observed": "Смешанная проверка · 5 из 13 Задание №8 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:4",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:4",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-4",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:5",
+          "passed": true,
+          "observed": {
+            "slot": 5,
+            "number": 3,
+            "task": "stereo-box-height"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:5",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:5",
+          "passed": true,
+          "observed": "Смешанная проверка · 6 из 13 Задание №3 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:5",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:5",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-5",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:6",
+          "passed": true,
+          "observed": {
+            "slot": 6,
+            "number": 10,
+            "task": "applied-formula-heat-new"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:6",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:6",
+          "passed": true,
+          "observed": "Смешанная проверка · 7 из 13 Задание №10 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:6",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:6",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-6",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:7",
+          "passed": true,
+          "observed": {
+            "slot": 7,
+            "number": 5,
+            "task": "prob-both-4"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:7",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:7",
+          "passed": true,
+          "observed": "Смешанная проверка · 8 из 13 Задание №5 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:7",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:7",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-7",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:8",
+          "passed": true,
+          "observed": {
+            "slot": 8,
+            "number": 12,
+            "task": "fn-line-4"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:8",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:8",
+          "passed": true,
+          "observed": "Смешанная проверка · 9 из 13 Задание №12 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:8",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:8",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-8",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:9",
+          "passed": true,
+          "observed": {
+            "slot": 9,
+            "number": 9,
+            "task": "calc-tangent-4"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:9",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:9",
+          "passed": true,
+          "observed": "Смешанная проверка · 10 из 13 Задание №9 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:9",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:9",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-9",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:10",
+          "passed": true,
+          "observed": {
+            "slot": 10,
+            "number": 6,
+            "task": "prob-missing-4"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:10",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:10",
+          "passed": true,
+          "observed": "Смешанная проверка · 11 из 13 Задание №6 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:10",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:10",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-10",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:11",
+          "passed": true,
+          "observed": {
+            "slot": 11,
+            "number": 11,
+            "task": "applied-work-joint-new"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:11",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:11",
+          "passed": true,
+          "observed": "Смешанная проверка · 12 из 13 Задание №11 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:11",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:11",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-11",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "mixed-position-and-fixture:12",
+          "passed": true,
+          "observed": {
+            "slot": 12,
+            "number": 13,
+            "task": "applied-percent-deposit-new"
+          }
+        },
+        {
+          "id": "no-practice-hint-or-repair:12",
+          "passed": true
+        },
+        {
+          "id": "neutral-heading:12",
+          "passed": true,
+          "observed": "Смешанная проверка · 13 из 13 Задание №13 Условие"
+        },
+        {
+          "id": "one-valid-answer-locked:12",
+          "passed": true
+        },
+        {
+          "id": "repeat-submit-cannot-change-response:12",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:checkpoint-12",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        },
+        {
+          "id": "strict-score-is-twelve-of-thirteen",
+          "passed": true,
+          "observed": {
+            "attempted": 13,
+            "independent": 12,
+            "assisted": 0,
+            "unavailable": 0,
+            "total": 13
+          },
+          "expected": {
+            "attempted": 13,
+            "independent": 12,
+            "assisted": 0,
+            "unavailable": 0,
+            "total": 13
+          }
+        },
+        {
+          "id": "strict-result-does-not-inflate-lesson-records",
+          "passed": true,
+          "observed": [],
+          "expected": []
+        },
+        {
+          "id": "completed-checkpoint-reload-idempotent",
+          "passed": true
+        },
+        {
+          "id": "no-horizontal-overflow:final",
+          "passed": true,
+          "observed": {
+            "viewport": 360,
+            "content": 360
+          }
+        }
+      ],
+      "events": [
+        {
+          "action": "strict-response",
+          "slot": 1,
+          "task": "prob-count-4",
+          "submitted": "2/5",
+          "derivation": "8/(8+12)=2/5"
+        },
+        {
+          "action": "strict-response",
+          "slot": 2,
+          "task": "eq-linear-4",
+          "submitted": "2",
+          "derivation": "9x+4=5x+12; 4x=8; x=2"
+        },
+        {
+          "action": "strict-response",
+          "slot": 3,
+          "task": "geo-right-cosine",
+          "submitted": "15",
+          "derivation": "cos α=12/c=0,8; c=12/0,8=15"
+        },
+        {
+          "action": "strict-response",
+          "slot": 4,
+          "task": "vec-coordinates-start",
+          "submitted": "-8",
+          "derivation": "6=−2−y_A; y_A=−8"
+        },
+        {
+          "action": "strict-response",
+          "slot": 5,
+          "task": "expr-powers-4",
+          "submitted": "4",
+          "derivation": "4^(3+2−3)=4²=16. Преднамеренно вводит основание4 вместо16; первая попытка не исправляется."
+        },
+        {
+          "action": "strict-response",
+          "slot": 6,
+          "task": "stereo-box-height",
+          "submitted": "6",
+          "derivation": "168/(7·4)=6"
+        },
+        {
+          "action": "strict-response",
+          "slot": 7,
+          "task": "applied-formula-heat-new",
+          "submitted": "252000",
+          "derivation": "4200·3·20=252000"
+        },
+        {
+          "action": "strict-response",
+          "slot": 8,
+          "task": "prob-both-4",
+          "submitted": "0,665",
+          "derivation": "0,7·0,95=0,665"
+        },
+        {
+          "action": "strict-response",
+          "slot": 9,
+          "task": "fn-line-4",
+          "submitted": "7",
+          "derivation": "k=(4+5)/(1+2)=3; b=1; y(2)=7"
+        },
+        {
+          "action": "strict-response",
+          "slot": 10,
+          "task": "calc-tangent-4",
+          "submitted": "3",
+          "derivation": "(6−(−3))/(1−(−2))=9/3=3"
+        },
+        {
+          "action": "strict-response",
+          "slot": 11,
+          "task": "prob-missing-4",
+          "submitted": "0,4",
+          "derivation": "1−0,45−0,15=0,4"
+        },
+        {
+          "action": "strict-response",
+          "slot": 12,
+          "task": "applied-work-joint-new",
+          "submitted": "3",
+          "derivation": "1/12+1/4=1/3 бассейна в час; весь бассейн за3 часа"
+        },
+        {
+          "action": "strict-response",
+          "slot": 13,
+          "task": "applied-percent-deposit-new",
+          "submitted": "88200",
+          "derivation": "80000·1,05²=88200"
+        }
+      ],
+      "strictSummary": {
+        "attempted": 13,
+        "independent": 12,
+        "assisted": 0,
+        "unavailable": 0,
+        "total": 13
+      },
+      "passed": true
+    }
+  ],
+  "protocol": [
+    {
+      "id": "checkpoint-help-marks-current-condition-assisted",
+      "passed": true
+    },
+    {
+      "id": "checkpoint-repair-retains-exact-task",
+      "passed": true
+    },
+    {
+      "id": "correct-answer-after-checkpoint-help-is-assisted",
+      "passed": true
+    },
+    {
+      "id": "checkpoint-help-cannot-create-lesson-independent-credit",
+      "passed": true
+    },
+    {
+      "id": "stale-tab-input-does-not-write-to-new-item",
+      "passed": true,
+      "observed": {
+        "number": 7,
+        "lessonId": "eq-linear",
+        "taskId": "eq-linear-4",
+        "draft": "",
+        "submitted": false,
+        "correct": false,
+        "assisted": false,
+        "unavailable": false
+      }
+    },
+    {
+      "id": "stale-tab-input-refreshes-visible-condition",
+      "passed": true
+    },
+    {
+      "id": "stale-tab-submit-does-not-submit-new-item",
+      "passed": true,
+      "observed": {
+        "number": 1,
+        "lessonId": "geo-right",
+        "taskId": "geo-right-cosine",
+        "draft": "",
+        "submitted": false,
+        "correct": false,
+        "assisted": false,
+        "unavailable": false
+      }
+    },
+    {
+      "id": "stale-tab-submit-refreshes-visible-condition",
+      "passed": true,
+      "observed": "В прямоугольном треугольнике прилежащий к острому углу α катет равен 12, cos α = 0,8. Найди гипотенузу."
+    },
+    {
+      "id": "other-tab-accepted-answers-are-preserved",
+      "passed": true
+    },
+    {
+      "id": "guided-stale-answer-cannot-become-next-step-answer",
+      "passed": true,
+      "observed": {
+        "taskId": "trig-angle-1",
+        "step": 1,
+        "wrong": false,
+        "assisted": true,
+        "familiar": false,
+        "done": false,
+        "draft": "",
+        "answers": [
+          "2/3"
+        ],
+        "started": "2026-10-09T00:00:00.000Z",
+        "registered": false
+      }
+    },
+    {
+      "id": "guided-other-tab-step-restores-correctly",
+      "passed": true
+    }
+  ],
+  "runtimeErrors": [],
+  "failedRequests": [],
+  "sourceChangedDuringRun": [],
+  "summary": {
+    "personas": 4,
+    "passedPersonas": 4,
+    "checks": 186,
+    "passedChecks": 186,
+    "failures": [],
+    "runtimeErrors": 0,
+    "failedRequests": 0,
+    "sourceDrift": 0
+  },
+  "passed": true,
+  "finishedAt": "2026-10-09T15:35:30.180Z"
+}

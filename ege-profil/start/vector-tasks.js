@@ -115,6 +115,7 @@
           s.caption = 'Положительная первая координата направлена вправо.';
         } else {
           s.coordinates = false; s.schematic = 'unknown-length';
+          s.construction = independent ? 'Показать связь координат и длины' : null;
           s.caption = 'Схема без масштаба: горизонтальная сторона x пока неизвестна.';
         }
         break;
@@ -203,10 +204,15 @@
       default: throw new Error('Unknown vector task: ' + task.id);
     }
     if (s.schematic) s.projection = false;
+    if (independent && !complete && !options.projection && !options.construction) {
+      s.caption = s.schematic ? 'Схема к условию задачи. Она показана без масштаба.' : 'На рисунке показаны точки и векторы из условия задачи.';
+    }
     return s;
   }
 
   function render(container, task, context) {
+    context = context || {};
+    const independent = context.mode === 'independent' && !context.solved;
     const document = container.ownerDocument;
     const NS = 'http://www.w3.org/2000/svg', uid = 'vt-' + (++instance);
     const options = { projection: false, construction: false };
@@ -250,11 +256,17 @@
       }, attrs));
 
       if (s.schematic === 'unknown-length') {
-        const a = [80, 250], b = [345, 250], c = [345, 65];
-        line(a, b, ORANGE, 3); line(b, c, ORANGE, 3); arrow(a, c);
-        svg.append(el('path', { d: 'M330 250V235H345', fill: 'none', stroke: '#667586', 'stroke-width': 2 }));
-        text([200, 278], 'x > 0', ORANGE); text([362, 160], fmt(task.meta.other), ORANGE);
-        text([185, 140], '|a| = ' + fmt(task.meta.length), BLUE); text([168, 310], 'Без масштаба', '#667586', { 'font-size': 14 });
+        if (independent && !options.construction) {
+          text([220, 105], 'a = (x; ' + fmt(task.meta.other) + ')', BLUE, { 'text-anchor': 'middle' });
+          text([220, 160], '|a| = ' + fmt(task.meta.length), BLUE, { 'text-anchor': 'middle' });
+          text([220, 215], 'x > 0', ORANGE, { 'text-anchor': 'middle' });
+        } else {
+          const a = [80, 250], b = [345, 250], c = [345, 65];
+          line(a, b, ORANGE, 3); line(b, c, ORANGE, 3); arrow(a, c);
+          svg.append(el('path', { d: 'M330 250V235H345', fill: 'none', stroke: '#667586', 'stroke-width': 2, 'data-length-triangle': '' }));
+          text([200, 278], 'x > 0', ORANGE); text([362, 160], fmt(task.meta.other), ORANGE);
+          text([185, 140], '|a| = ' + fmt(task.meta.length), BLUE); text([168, 310], 'Без масштаба', '#667586', { 'font-size': 14 });
+        }
       } else if (s.schematic === 'perpendicular') {
         const o = [185, 125], ua = [140, -56], ub = [-46, -115];
         // y is inverted on screen: (5,2) and a perpendicular down-right vector.
@@ -334,9 +346,17 @@
       if (!buttonsReady) {
         function toggle(label, key) {
           const button = document.createElement('button'); button.type = 'button';
-          button.className = 'model-toggle button quiet'; button.textContent = label;
+          const closedLabel = independent ? 'Показать подсказку к рисунку' : label;
+          button.className = 'model-toggle button quiet'; button.textContent = closedLabel;
           button.setAttribute('aria-pressed', 'false'); button.setAttribute('data-model-action', key);
-          button.onclick = () => { options[key] = !options[key]; button.setAttribute('aria-pressed', String(options[key])); paint(); };
+          button.onclick = () => {
+            const on = !options[key];
+            if (on && independent && typeof context.onHelp === 'function') context.onHelp();
+            options[key] = on;
+            button.setAttribute('aria-pressed', String(on));
+            if (independent) button.textContent = on ? 'Скрыть подсказку' : closedLabel;
+            paint();
+          };
           controls.append(button);
         }
         if (!s.schematic && (s.coordinates || task.id === 'vec-dot-angle')) toggle(s.projectionLabel, 'projection');

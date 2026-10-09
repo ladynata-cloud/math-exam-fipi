@@ -23,11 +23,11 @@
     svg.style.cssText = 'display:block;width:100%;max-width:100%;height:auto;background:#f6faf8;border:1px solid #d3dfdc;border-radius:12px';
     shell.prepend(title);
     const button = document.createElement('button'); button.type = 'button';
-    const buttonText = d.type === 'bernoulli' ? 'Показать подходящие порядки' : 'Подсветить нужное';
+    const buttonText = independent && !context.solved ? 'Показать подсказку к рисунку' : (d.type === 'bernoulli' ? 'Показать подходящие порядки' : 'Подсветить нужное');
     button.textContent = buttonText; button.setAttribute('aria-pressed', 'false');
     button.style.cssText = 'font:inherit;min-height:44px;padding:9px 12px;margin-top:12px;max-width:100%;white-space:normal;border:1px solid #98b4a8;border-radius:8px;background:white;color:#155748;cursor:pointer';
     const status = document.createElement('p'); status.setAttribute('aria-live', 'polite'); status.style.cssText = 'margin:8px 0;line-height:1.5;overflow-wrap:anywhere';
-    const neutral = d.type === 'bernoulli' ? 'П — попадание. М — промах. Можно рассмотреть разные порядки бросков.' : 'На схеме — данные текущей задачи.';
+    const neutral = independent && !context.solved ? 'На схеме — данные текущей задачи.' : (d.type === 'bernoulli' ? 'П — попадание. М — промах. Можно рассмотреть разные порядки бросков.' : 'На схеме — данные текущей задачи.');
     const notice = independent && !context.solved ? ' Кнопка открывает подсказку.' : '';
     status.textContent = neutral + notice;
     shell.append(button, status); container.append(shell);
@@ -131,7 +131,7 @@
       if (active('event')) rect(x(d.left), 64, x(d.right) - x(d.left), 50, { fill: '#bde0ce', stroke: C.green, 'data-target': 'interval' });
       line(x(d.a), 132, x(d.b), 132);
       [d.a, d.left, d.right, d.b].forEach(v => { line(x(v), 126, x(v), 140); text(x(v), 166, String(v), { 'text-anchor': 'middle' }); });
-      text(210, 32, 'Все равные промежутки равновероятны.', { 'text-anchor': 'middle', 'font-size': 16 });
+      text(210, 32, independent && !opened && !context.solved ? 'Данные о времени из условия задачи.' : 'Все равные промежутки равновероятны.', { 'text-anchor': 'middle', 'font-size': 16 });
       text(210, 194, 'Время, мин', { 'text-anchor': 'middle', 'font-size': 17, fill: C.muted });
     }
     function normal() {
@@ -164,10 +164,10 @@
     }
     function toggle() {
       if (disposed) return;
+      if (!opened && independent && !context.solved && typeof context.onHelp === 'function') context.onHelp();
       opened = !opened; button.setAttribute('aria-pressed', String(opened));
       button.textContent = opened ? 'Скрыть подсказку' : buttonText;
       status.textContent = opened ? (d.type === 'bernoulli' ? 'Посчитай строки. В каждом порядке ровно нужное число попаданий.' : step.hint) : neutral + notice;
-      if (opened && independent && !context.solved && typeof context.onHelp === 'function') context.onHelp();
       draw();
     }
     button.addEventListener('click', toggle); draw();

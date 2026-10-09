@@ -38,7 +38,7 @@
     context = context || {}; options = options || {};
     const m = task.meta, fn = functionFor(m), independent = context.mode === 'independent';
     const completedCount = Number(context.completed) || 0;
-    const complete = independent ? !!context.solved || completedCount > 0 : completedCount >= task.steps.length || ((Number(context.step) || 0) + (context.solved ? 1 : 0) >= task.steps.length);
+    const complete = independent ? !!context.solved : completedCount >= task.steps.length || ((Number(context.step) || 0) + (context.solved ? 1 : 0) >= task.steps.length);
     const help = !!options.help || complete;
     const derivativeGraph = ['derivative-sign', 'derivative-touch'].includes(m.kind);
     const s = { fn, label: derivativeGraph ? 'y = f′(x) — производная' : 'y = f(x) — функция', derivativeGraph, curves: [{ fn, color: C.graph, name: derivativeGraph ? 'derivative' : 'function' }], points: [], guides: [], breaks: [], signs: [], help, complete, target: null, interval: null, minX: -4, maxX: 6, minY: null, maxY: null, caption: '', cursorDomain: null };
@@ -158,6 +158,12 @@
         }
       }
     }
+    if (independent && !help) {
+      // The graph and its givens remain available. Reading the task must not
+      // silently disclose which theorem, sign change or construction to use.
+      s.caption = derivativeGraph ? 'На рисунке дан график производной f′(x).' : 'На рисунке дан график из условия задачи.';
+      s.helperLabel = 'Показать подсказку к рисунку';
+    }
     if (help && ['exponential-value', 'logarithm-value'].includes(m.kind)) s.projections = [[m.px, m.py]];
     if (help && s.target !== null) s.guides.push(s.target);
     // A graph may legitimately contain the answer geometrically. Numeric answer
@@ -276,18 +282,19 @@
     caption.className = 'small'; legend.className = 'small'; controls.className = 'model-controls'; helperText.className = 'small'; helperText.hidden = true; helperText.setAttribute('aria-live', 'polite');
     const button = doc.createElement('button'); button.type = 'button'; button.className = 'button quiet'; button.dataset.modelAction = 'function-help'; button.setAttribute('aria-pressed', 'false'); controls.append(button);
     const details = doc.createElement('details'), summary = doc.createElement('summary'), label = doc.createElement('label'), slider = doc.createElement('input'), output = doc.createElement('p');
-    details.className = 'extra-help'; summary.textContent = 'Исследовать график'; details.append(summary);
+    const independent = context.mode === 'independent' && !context.solved;
+    details.className = 'extra-help'; summary.textContent = independent ? 'Показать значения на графике (подсказка)' : 'Исследовать график'; details.append(summary);
     label.textContent = 'Переместить точку по оси x'; label.style.display = 'block'; slider.type = 'range'; slider.setAttribute('aria-label', 'Координата x подвижной точки'); slider.style.width = '100%'; output.className = 'small'; output.setAttribute('aria-live', 'polite'); label.append(slider); details.append(label, output);
     wrap.append(plot, legend, caption, controls, helperText, details); container.replaceChildren(wrap);
     const initial = sceneFor(task, context, options);
     options.cursor = task.meta.x ?? task.meta.x0 ?? task.meta.a?.[0] ?? task.meta.px ?? (initial.cursorDomain[0] + initial.cursorDomain[1]) / 2;
     slider.min = String(initial.cursorDomain[0]); slider.max = String(initial.cursorDomain[1]); slider.step = String(niceStep(initial.cursorDomain[1] - initial.cursorDomain[0], 50) / 2); slider.value = String(options.cursor);
-    function assist() { if (context.mode === 'independent' && !context.solved && !(Number(context.completed) > 0) && typeof context.onHelp === 'function') context.onHelp(); }
+    function assist() { if (independent && typeof context.onHelp === 'function') context.onHelp(); }
     function paint() {
       const result = svgFor(task, context, options, id), s = result.scene;
       plot.innerHTML = result.svg; caption.textContent = s.caption;
       legend.textContent = s.points.filter(p => p.coordinates).map(p => p.name + '(' + fmt(p.x) + '; ' + fmt(p.y) + ')').join(' · '); legend.hidden = !legend.textContent;
-      button.textContent = s.helperLabel || 'Показать вспомогательные линии'; button.setAttribute('aria-pressed', String(options.help));
+      button.textContent = independent ? (options.help ? 'Скрыть подсказку' : 'Показать подсказку к рисунку') : (s.helperLabel || 'Показать вспомогательные линии'); button.setAttribute('aria-pressed', String(options.help));
       helperText.textContent = s.helperText; helperText.hidden = !options.help;
       if (options.explore) {
         const x = options.cursor, y = s.fn(x);
@@ -295,8 +302,8 @@
         output.dataset.revealedValue = 'true';
       } else { output.textContent = ''; delete output.dataset.revealedValue; }
     }
-    button.onclick = () => { options.help = !options.help; if (options.help) assist(); paint(); };
-    details.ontoggle = () => { options.explore = details.open; if (details.open) assist(); paint(); };
+    button.onclick = () => { if (!options.help) assist(); options.help = !options.help; paint(); };
+    details.ontoggle = () => { if (details.open && !options.explore) assist(); options.explore = details.open; paint(); };
     slider.oninput = () => { options.cursor = Number(slider.value); options.explore = details.open; paint(); };
     paint();
     return () => { button.onclick = null; details.ontoggle = null; slider.oninput = null; };

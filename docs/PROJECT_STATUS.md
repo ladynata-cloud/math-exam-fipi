@@ -6,7 +6,24 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Ready for release: independent pupil entry and parent progress
+## In review: accessible profile preparation and calm learning
+
+- Scope: [calm learning](tasks/PROFILE_CALM_LEARNING.md), including the prepared
+  grade-nine prerequisite and trigonometry repairs. The owner requested cloud
+  publication on 2026-10-09.
+- Production base: `aabdb8d9396bef502ced049e7867774c1885ddef`; branch
+  `feat/profile-calm-learning`. HIGH review for local progress persistence.
+- Optional calm layout, worked examples, short plans, exact-task remediation,
+  small prerequisite actions and an honest mixed thirteen-position checkpoint.
+  Existing learning targets and all topics remain available.
+- [Implementation and limits](reports/PROFILE_CALM_LEARNING.md). Robot fixtures
+  are simulations, not evidence of actual pupil learning. This section retains
+  browser-local progress; no pupil accounts or server contracts are changed.
+- Current release checks, exact head and publication evidence are recorded in
+  the task PR. Next: close independent findings, confirm cloud CI, verify live
+  assets after the authorized publication.
+
+## Published: independent pupil entry and parent progress
 
 - Scope: [family progress entry](tasks/FAMILY_PROGRESS_ENTRY.md), an existing
   pupil's self-chosen entry code plus a separate read-only parent account.
@@ -20,6 +37,9 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   against the actual production router. Independent HIGH review includes the
   documented parent-only rollback and private-data projection. Publication,
   exact-tree review/CI and live verification are tracked in this task's PR.
+
+- Production main verified at `aabdb8d9396bef502ced049e7867774c1885ddef` (PR #216).
+  This reconciliation does not alter the family-progress implementation.
 
 ## Published: personal pupil QR entry
 

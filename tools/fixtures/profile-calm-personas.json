@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "scope": "Scripted interface support for four learner difficulties; not a diagnosis, clinical model, or evidence of real learning.",
+  "answerPolicy": "Visible-statement fixtures and explicit calculation rules only. Never use production answer keys to drive learner responses. Strict checkpoint results are separate from lesson independent practice.",
+  "personas": [
+    {
+      "id": "loses_place_after_pause",
+      "name": "Теряет место после паузы",
+      "width": 360,
+      "lesson": "trig-angle",
+      "task": "trig-angle-1",
+      "statement": "60° = kπ рад",
+      "steps": [
+        "2/3",
+        "60",
+        "1/3"
+      ],
+      "pauseBeforeStep": 1,
+      "unfinishedDraft": "6",
+      "rule": "60/90 = 2/3 четверти; конечный луч 60°; k = 60/180 = 1/3.",
+      "expectedSupport": [
+        "saved-current-step",
+        "saved-unfinished-draft",
+        "accepted-history-visible",
+        "calm-toggle-preserves-work",
+        "reload-does-not-complete-step"
+      ]
+    },
+    {
+      "id": "loses_intermediate_goal",
+      "name": "Путает промежуточный результат и окончательный ответ",
+      "width": 360,
+      "lesson": "applied-motion",
+      "task": "applied-motion-fast",
+      "statement": "72 км, разница скоростей6 км/ч, разница времени2 ч; найти большую скорость",
+      "steps": [
+        "216",
+        "900",
+        "30",
+        "12",
+        "18"
+      ],
+      "errorStep": 0,
+      "wrong": "18",
+      "rule": "72·6/2=216; D=6²+4·216=900; sqrt(D)=30; меньшая скорость12; большая18.",
+      "expectedSupport": [
+        "micro-one-visible-question",
+        "micro-draft-reload",
+        "micro-does-not-solve-main-step",
+        "history-retained",
+        "final-answer-required"
+      ],
+      "microSteps": [
+        "Меньшая скорость, км/ч",
+        "72/x",
+        "x(x + 6)",
+        "432"
+      ],
+      "microWrong": "Время в пути, ч"
+    },
+    {
+      "id": "needs_worked_example",
+      "name": "Решает после образца и разбора своего условия",
+      "width": 1280,
+      "lesson": "trig-angle",
+      "task": "trig-angle-4",
+      "statement": "210° = kπ рад",
+      "unfinishedDraft": "7/",
+      "answer": "7/6",
+      "sameTaskSteps": [
+        "7/3",
+        "210",
+        "7/6"
+      ],
+      "workedExampleMustUsePool": "guided",
+      "rule": "210/90 = 7/3 четверти; конечный луч 210°; k = 210/180 = 7/6.",
+      "newTask": "trig-angle-5",
+      "newStatement": "−270° = kπ рад",
+      "newAnswer": "-3/2",
+      "expectedSupport": [
+        "example-marks-help",
+        "example-does-not-use-checkpoint-reserve",
+        "same-condition-remediation",
+        "draft-restored",
+        "help-is-not-independent",
+        "later-new-answer-can-earn-practice-credit"
+      ],
+      "stagePath": {
+        "guidedTask": "trig-angle-2",
+        "guidedSteps": [
+          "-4/3",
+          "240",
+          "-2/3"
+        ],
+        "planTask": "trig-angle-3",
+        "planAnswer": "5/2"
+      }
+    },
+    {
+      "id": "transfers_without_topic_label",
+      "name": "Выбирает способ без подсказки названием темы",
+      "width": 360,
+      "checkpoint": true,
+      "answerPolicy": "Thirteen responses calculated from visible statements; no hidden bank-answer traversal.",
+      "expectedSupport": [
+        "thirteen-mixed-positions",
+        "neutral-ui-number",
+        "no-topic-title-or-hint",
+        "one-valid-answer-only",
+        "draft-and-position-restore",
+        "no-lesson-practice-credit",
+        "honest-finite-bank-exhaustion"
+      ],
+      "items": [
+        {
+          "number": 4,
+          "lesson": "prob-count",
+          "task": "prob-count-4",
+          "answer": "2/5",
+          "rule": "8/(8+12)=2/5"
+        },
+        {
+          "number": 7,
+          "lesson": "eq-linear",
+          "task": "eq-linear-4",
+          "answer": "2",
+          "rule": "9x+4=5x+12; 4x=8; x=2"
+        },
+        {
+          "number": 1,
+          "lesson": "geo-right",
+          "task": "geo-right-cosine",
+          "answer": "15",
+          "rule": "cos α=12/c=0,8; c=12/0,8=15"
+        },
+        {
+          "number": 2,
+          "lesson": "vec-coordinates",
+          "task": "vec-coordinates-start",
+          "answer": "-8",
+          "rule": "6=−2−y_A; y_A=−8"
+        },
+        {
+          "number": 8,
+          "lesson": "expr-powers",
+          "task": "expr-powers-4",
+          "answer": "16",
+          "firstAnswer": "4",
+          "rule": "4^(3+2−3)=4²=16. Преднамеренно вводит основание4 вместо16; первая попытка не исправляется."
+        },
+        {
+          "number": 3,
+          "lesson": "stereo-box",
+          "task": "stereo-box-height",
+          "answer": "6",
+          "rule": "168/(7·4)=6"
+        },
+        {
+          "number": 10,
+          "lesson": "applied-formula",
+          "task": "applied-formula-heat-new",
+          "answer": "252000",
+          "rule": "4200·3·20=252000"
+        },
+        {
+          "number": 5,
+          "lesson": "prob-independent",
+          "task": "prob-both-4",
+          "answer": "0,665",
+          "rule": "0,7·0,95=0,665"
+        },
+        {
+          "number": 12,
+          "lesson": "fn-line",
+          "task": "fn-line-4",
+          "answer": "7",
+          "rule": "k=(4+5)/(1+2)=3; b=1; y(2)=7"
+        },
+        {
+          "number": 9,
+          "lesson": "calc-tangent",
+          "task": "calc-tangent-4",
+          "answer": "3",
+          "rule": "(6−(−3))/(1−(−2))=9/3=3"
+        },
+        {
+          "number": 6,
+          "lesson": "prob-distribution",
+          "task": "prob-missing-4",
+          "answer": "0,4",
+          "rule": "1−0,45−0,15=0,4"
+        },
+        {
+          "number": 11,
+          "lesson": "applied-work",
+          "task": "applied-work-joint-new",
+          "answer": "3",
+          "rule": "1/12+1/4=1/3 бассейна в час; весь бассейн за3 часа"
+        },
+        {
+          "number": 13,
+          "lesson": "applied-percent",
+          "task": "applied-percent-deposit-new",
+          "answer": "88200",
+          "rule": "80000·1,05²=88200"
+        }
+      ],
+      "expectedResult": {
+        "attempted": 13,
+        "independent": 12,
+        "assisted": 0,
+        "unavailable": 0,
+        "total": 13
+      }
+    }
+  ]
+}
