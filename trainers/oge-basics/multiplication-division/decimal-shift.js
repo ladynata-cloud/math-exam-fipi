@@ -34,7 +34,7 @@
     const listeners = [];
     function listen(node, type, callback) { node.addEventListener(type, callback); listeners.push(() => node.removeEventListener(type, callback)); }
     const box = doc.createElement('section'); box.className = 'decimal-shift'; box.setAttribute('aria-label','Переносим обе запятые вместе');
-    const introduction = doc.createElement('p'); introduction.className = 'ds-instruction'; introduction.textContent = 'Возьми любую запятую и потяни вправо. Обе запятые двигаются вместе.'; box.append(introduction);
+    const introduction = doc.createElement('p'); introduction.className = 'ds-instruction'; box.append(introduction);
     const rows = [], handles = [];
     const columns = Math.max(...[m.dividend,m.divisor].map(n => Math.max(n.digits.length, n.point + m.maxShift)));
     for (const [name,label,n] of [['dividend','Делимое',m.dividend],['divisor','Делитель',m.divisor]]) {
@@ -73,10 +73,18 @@
         [...r.cells.children].forEach(cell => cell.classList.toggle('ds-used-zero',cell.dataset.added === 'true' && Number(cell.dataset.index) < r.n.point + value));
       });
       back.disabled=locked||value===0; forward.disabled=locked||value===m.maxShift;
-      status.textContent = value ? 'Сдвиг на ' + value + ' ' + word(value) + '. Оба числа умножили на ' + values.factor + '.' : 'Запятые пока на исходных местах.';
+      const divisorReady = !values.divisor.includes(',');
+      const goal = divisorReady
+        ? 'В делителе ' + values.divisor + ' запятой больше нет.'
+        : 'В делителе ' + values.divisor + ' ещё есть запятая.';
+      status.textContent = goal + (value ? ' Обе запятые сдвинули на ' + value + ' ' + word(value) + ' вправо: оба числа умножили на ' + values.factor + ', поэтому ответ не изменился.' : ' Переносим обе запятые вправо на одинаковое число разрядов.');
       equation.textContent=m.dividend.text + ' : ' + m.divisor.text + (value ? ' = ' + values.dividend + ' : ' + values.divisor : '');
       box.classList.toggle('ds-locked',locked);
-      introduction.textContent=locked?'Обе запятые перенесены одинаково. Значение частного не изменилось.':'Возьми любую запятую и потяни вправо. Обе запятые двигаются вместе.';
+      introduction.textContent = value > m.target
+        ? 'Запятой в делителе уже нет. Для этого примера достаточно сдвига на ' + m.target + ' ' + word(m.target) + ': верни обе запятые на один разряд влево.'
+        : divisorReady
+          ? 'Цель достигнута: делитель без запятой. ' + (locked ? 'Запишем новые числа и будем делить уголком, как обычно.' : 'Проверь перенос. Затем запишем новые числа и будем делить уголком, как обычно.') + (values.dividend.includes(',') ? ' В делимом запятая может остаться.' : '')
+          : 'Наша цель — убрать запятую в делителе. Возьми любую запятую и потяни вправо: обе переместятся на одинаковое число разрядов.';
     }
     function commit(k) { value=clamp(k); render(); if(options.onChange) options.onChange(value); }
     function cancel() {

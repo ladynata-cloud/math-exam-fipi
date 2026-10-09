@@ -6,7 +6,23 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In validation: personal OGE preparation and foundations
+## Ready for publication: clear decimal-division goal and comma handles
+
+- Scope: [decimal preparation clarity](tasks/DECIMAL_DIVISOR_GOAL.md): reuse the
+  completed explanation of removing the comma from the divisor, and display
+  both linked comma handles without their frames. A decimal dividend remains
+  valid. The 44 by 44 touch targets and keyboard interaction are retained.
+- Base: `c22bf2aedc7cb8d6f52dd4963673a241e47052d1`; branch
+  `fix/decimal-goal-and-comma`. SMALL copy/style scope; arithmetic, saved work,
+  gesture handlers and server contracts are unchanged.
+- Reuses source runtime edits from
+  `fe8513df92869071814cec4b6dec658d291d5e8d` verbatim. Decimal model, guided
+  plans, both-trainer gesture/resume browser checks and desktop/mobile visual
+  checks passed. Focused independent internal SMALL review approved with no
+  blockers; `DECIMAL_DIVISOR_GOAL_OK` passed. Standing publication permission
+  applies.
+
+## Published: personal OGE preparation and foundations
 
 - Scope: [personal preparation](tasks/OGE_PERSONAL_PREPARATION.md), additive
   learner course/goal profiles, private homework deep links, task/laboratory
@@ -18,10 +34,18 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Separate `/foundations/` route collects 158 destinations in 12 groups:
   95 managed exercises and 63 public laboratory entries. See the
   [coverage audit](tasks/FOUNDATIONS_COVERAGE.md) for real gaps and limitations.
+- PR #211 merged as `c22bf2aedc7cb8d6f52dd4963673a241e47052d1`, parent
+  `b5d26ce9695deab2eea5f7eac2e13277da092450`; reviewed and merged tree
+  `76abc7436e792d3400a73891c9c5509a199beb30` matched. Three exact-head CI
+  workflows passed. Pages run `37885544613` succeeded, 12 changed public
+  assets matched reviewed bytes, and the live `/foundations/` route was
+  verified. Amvera returned HTTP 200 and both changed cabinet entry scripts
+  matched reviewed bytes. Live teacher profile controls and saving an OGE
+  preparation goal were verified.
 - Public trainers without a server contract do not earn account points.
-  Publication must verify both Pages and the Amvera cabinet deployment.
   Private learner creation remains a production-interface action, never a
-  source-code fixture. Borderless decimal commas are a separate follow-up.
+  source-code fixture. Borderless decimal commas are the bounded follow-up
+  above.
 
 ## Published: linked decimal commas and multiplication refresher
 
