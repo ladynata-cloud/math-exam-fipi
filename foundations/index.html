@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Базовая математика — понятный маршрут | MathExam</title>
+  <meta name="description" content="От счёта и деления уголком до дробей, уравнений и геометрии. Единый маршрут по существующим тренажёрам MathExam: задания в кабинете и свободная лаборатория.">
+  <link rel="stylesheet" href="style.css?v=20261009-foundations-1">
+  <script defer src="../learning/preparation-map.js?v=20261009-foundations-1"></script>
+  <script defer src="course.js?v=20261009-foundations-1"></script>
+</head>
+<body>
+  <a class="skip" href="#course">К курсу</a>
+  <header class="site-head"><a class="brand" href="/">MathExam<span>Математика с Натальей Михайловной</span></a><nav aria-label="Навигация сайта"><a href="/trainers/oge-course/">Подготовка к ОГЭ</a><a class="button compact" href="https://mathexam-board-ladynata.amvera.io/learning/">Мой кабинет →</a></nav></header>
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div><p class="eyebrow">ОТ ЧИСЛА К САМОСТОЯТЕЛЬНОМУ РЕШЕНИЮ</p><h1 id="page-title">Базовая <br>математика</h1><p class="lead">Спокойно разобраться в том, что мешает двигаться дальше. Один навык за раз: посмотреть, попробовать и решить самому.</p><div class="actions"><a class="button primary" id="start-link" href="https://mathexam-board-ladynata.amvera.io/learning/#practice=path%3Apre7-place-value" data-visit="path:pre7-place-value" data-mode="tasks">Начать с чисел →</a><a class="button" href="#course">Выбрать нужную тему</a></div></div>
+      <aside class="route-note"><span class="route-number">12</span><p><strong>связанных разделов</strong><br>Все темы открыты. Можно вернуться к более ранней теме или пропустить знакомую.</p><p class="small">Это отдельный курс основ. Экзаменационная подготовка открывается после него или идёт параллельно.</p></aside>
+    </section>
+    <section id="resume" class="resume" hidden aria-label="Последняя открытая тема"></section>
+    <section id="course" class="course" aria-labelledby="course-title">
+      <h2 id="course-title">Как будем заниматься?</h2>
+      <div class="tabs" role="tablist" aria-label="Режим курса"><button id="tab-tasks" role="tab" type="button" aria-controls="panel-tasks" aria-selected="true" tabindex="0" data-view="tasks">Задания</button><button id="tab-laboratory" role="tab" type="button" aria-controls="panel-laboratory" aria-selected="false" tabindex="-1" data-view="laboratory">Лаборатория</button></div>
+      <div id="panel-tasks" role="tabpanel" aria-labelledby="tab-tasks">
+        <p class="mode-lead">Понятная последовательность от простого к сложному. <strong>«Работа в кабинете»</strong> открывает задание с сохранением ответов и результата для учителя. Свободные тренажёры помечены отдельно.</p>
+        <nav id="topic-nav" class="topic-nav" aria-label="Разделы базового курса"></nav>
+        <div id="route"></div>
+      </div>
+      <div id="panel-laboratory" role="tabpanel" aria-labelledby="tab-laboratory" hidden>
+        <p class="mode-lead">Пробуйте модели, передвигайте точки, возвращайтесь к знакомым упражнениям. Здесь открываются свободные версии тренажёров. <strong>Их результаты не отправляются в кабинет автоматически.</strong></p>
+        <label class="search-label" for="lab-search">Какую тему хотите повторить?<input id="lab-search" type="search" placeholder="Например: деление, дроби, скобки" autocomplete="off"></label>
+        <p id="lab-count" class="small" aria-live="polite"></p><div id="laboratory-list"></div>
+      </div>
+    </section>
+    <section class="how" aria-labelledby="how-title"><h2 id="how-title">Если стало трудно</h2><ol><li><strong>Вернитесь на один шаг.</strong> Перед делением — таблица умножения. Перед уравнениями — знаки и скобки.</li><li><strong>Посмотрите разбор.</strong> Затем попробуйте похожую задачу самостоятельно.</li><li><strong>Покажите работу учителю.</strong> Задания из кабинета сохраняют ответы. Для свободного тренажёра можно отправить ссылку и фотографию решения.</li></ol><p class="small" id="visits-note">На этой странице запоминаются только открытые темы в текущем браузере. Открытие темы не означает, что она освоена.</p><p><a href="https://mathexam-board-ladynata.amvera.io/learning/">К заданиям и результатам в кабинете →</a></p></section>
+    <section class="next-step"><div><p class="eyebrow">КОГДА ОСНОВЫ СТАЛИ ПОНЯТНЕЕ</p><h2>Применяем знания в ОГЭ</h2><p>Маршрут зависит от вашей цели и текущих решений. Выбирайте задания вместе с учителем; геометрия нужна в любом маршруте.</p></div><a class="button primary" href="/trainers/oge-course/">Перейти к ОГЭ →</a></section>
+    <noscript><p class="notice">Для карты курса нужен JavaScript. Можно открыть <a href="/trainers/oge-basics/arithmetic-route.html">арифметику</a>, <a href="/trainers/oge-basics/">основные тренажёры</a> или <a href="/school/index.html#course/vilenkin5">темы пятого класса</a>.</p></noscript>
+  </main>
+  <footer><a href="/">Главная</a><a href="https://mathexam-board-ladynata.amvera.io/learning/">Кабинет</a><a href="/laboratory/">Лаборатория репетитора</a><span>MathExam · без ограничения по возрасту</span></footer>
+</body>
+</html>

@@ -33,6 +33,9 @@ class LearningStore {
         CREATE TABLE IF NOT EXISTS accounts(id TEXT PRIMARY KEY, role TEXT NOT NULL CHECK(role IN ('teacher','student')), teacher_id TEXT NOT NULL,
           login TEXT NOT NULL UNIQUE, name TEXT NOT NULL, password_hash TEXT, auth_epoch INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL);
         CREATE UNIQUE INDEX IF NOT EXISTS one_teacher ON accounts(role) WHERE role='teacher';
+        CREATE TABLE IF NOT EXISTS learning_profiles(learner_id TEXT PRIMARY KEY REFERENCES accounts(id), teacher_id TEXT NOT NULL REFERENCES accounts(id),
+          course TEXT NOT NULL CHECK(course IN ('school','foundations','oge','ege')), goal TEXT CHECK(goal IN ('pass','grade5')),
+          focus TEXT NOT NULL, version INTEGER NOT NULL, updated_at INTEGER NOT NULL, CHECK(course='oge' OR goal IS NULL));
         CREATE TABLE IF NOT EXISTS invitations(hash TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), purpose TEXT NOT NULL,
           expires_at INTEGER NOT NULL, used_at INTEGER);
         CREATE TABLE IF NOT EXISTS recovery_codes(hash TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), used_at INTEGER);
@@ -141,7 +144,39 @@ class LearningStore {
       return { student: accountDTO(this.account(id)), ...(passwordHash === null ? this.newInvitation(id, 'activate', 3 * DAY) : {}) };
     });
   }
-  students(auth) { this.teacher(auth); return this.rows("SELECT * FROM accounts WHERE teacher_id=? AND role='student' ORDER BY created_at,id", auth.id).map(accountDTO); }
+  students(auth) { this.teacher(auth); return this.rows("SELECT * FROM accounts WHERE teacher_id=? AND role='student' ORDER BY created_at,id", auth.id)
+    .map(row => ({ ...accountDTO(row), profile: this.studentProfile(auth, row.id) })); }
+  studentProfile(auth, learnerId) {
+    if (auth?.role === 'teacher') this.ownsStudent(auth, learnerId);
+    else {
+      requireValue(auth?.role === 'student', 'LEARNING_FORBIDDEN', 403);
+      requireValue(learnerId === auth.id && this.account(learnerId)?.role === 'student', 'LEARNING_NOT_FOUND', 404);
+    }
+    const row = this.row('SELECT course,goal,focus,version,updated_at FROM learning_profiles WHERE learner_id=?', learnerId);
+    // Existing pupils retain their school route until the teacher explicitly
+    // selects another course. Reading a default must not write a profile.
+    return row ? { course: row.course, goal: row.goal, focus: row.focus, version: row.version, updatedAt: row.updated_at }
+      : { course: 'school', goal: null, focus: '', version: 0, updatedAt: null };
+  }
+  saveStudentProfile(auth, learnerId, body) {
+    this.ownsStudent(auth, learnerId);
+    exactKeys(body, ['opId','expectedVersion','course','goal','focus'], ['opId','expectedVersion','course','goal','focus']);
+    requireValue(Number.isSafeInteger(body.expectedVersion) && body.expectedVersion >= 0, 'LEARNING_PROFILE_INVALID');
+    requireValue(['school','foundations','oge','ege'].includes(body.course), 'LEARNING_PROFILE_INVALID');
+    requireValue((body.goal === null || ['pass','grade5'].includes(body.goal)) && (body.course === 'oge' || body.goal === null), 'LEARNING_PROFILE_INVALID');
+    requireValue(typeof body.focus === 'string' && body.focus.length <= 1200
+      && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(body.focus), 'LEARNING_PROFILE_INVALID');
+    const focus = body.focus.trim();
+    return this.operation(auth, { ...body, focus, operation: 'save-profile', learnerId }, () => {
+      const current = this.studentProfile(auth, learnerId);
+      requireValue(current.version === body.expectedVersion, 'LEARNING_PROFILE_CONFLICT', 409);
+      const version = current.version + 1, at = this.clock();
+      this.run(`INSERT INTO learning_profiles(learner_id,teacher_id,course,goal,focus,version,updated_at) VALUES(?,?,?,?,?,?,?)
+        ON CONFLICT(learner_id) DO UPDATE SET course=excluded.course,goal=excluded.goal,focus=excluded.focus,version=excluded.version,updated_at=excluded.updated_at`,
+      learnerId, auth.id, body.course, body.goal, focus, version, at);
+      return { profile: { course: body.course, goal: body.goal, focus, version, updatedAt: at } };
+    });
+  }
   recoverStudent(auth, id) { return this.transaction(() => { this.ownsStudent(auth, id); return this.newInvitation(id, 'recovery', 30 * 60 * 1000); }); }
   replaceStudentPassword(sessionToken, id, passwordHash, expectedHash, expectedEpoch) {
     requireValue(typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash), 'LEARNING_PASSWORD_INVALID');
@@ -267,6 +302,31 @@ class LearningStore {
     return row;
   }
   getAttempt(auth, id) { return this.attemptDTO(this.attemptRow(auth, id)); }
+  progress(auth) {
+    requireValue(auth?.role === 'student', 'LEARNING_FORBIDDEN', 403);
+    this.ready();
+    // The recent-work list is deliberately limited to 200 attempts. A course
+    // map must retain older achievements, so aggregate every visible current
+    // attempt while returning only one small, answer-free row per content ID.
+    // The run guard is installed only after both exam tables exist. Keep an
+    // active exam's attempts behind its own interface until it is finished.
+    const runFilter = this.runGuard ? `AND id NOT IN (SELECT a.attempt_id FROM learning_run_attempts a
+      JOIN learning_runs r ON r.id=a.run_id WHERE r.finished_at IS NULL)` : '';
+    const rows = this.db.prepare(`SELECT id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,outcome,updated_at,created_at
+      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics')
+        AND id NOT IN (SELECT attempt_id FROM assignments WHERE status!='published')
+        ${runFilter}
+      ORDER BY updated_at DESC,id DESC`).iterate(auth.id);
+    const completed = new Set(['independent','repeated','hinted','together','practiced']), grouped = new Map();
+    for (const row of rows) {
+      if (typeof row.content_id !== 'string' || !row.content_id) continue;
+      const key = json([row.trainer_id, row.content_id]);
+      if (!grouped.has(key)) grouped.set(key, { trainerId: row.trainer_id, contentId: row.content_id, completed: false,
+        latest: { id: row.id, trainerId: row.trainer_id, contentId: row.content_id, outcome: row.outcome, updatedAt: row.updated_at, createdAt: row.created_at } });
+      if (completed.has(row.outcome)) grouped.get(key).completed = true;
+    }
+    return [...grouped.values()];
+  }
   listAttempts(auth) {
     const column = auth.role === 'teacher' ? 'teacher_id' : 'learner_id';
     return this.rows(`SELECT id,learner_id,teacher_id,trainer_id,task_json,version,trainer_version,controller,assistance_json,outcome,source_attempt_id,archived_at,created_at,updated_at FROM attempts WHERE ${column}=? AND archived_at IS NULL ${auth.role === 'student' ? "AND NOT EXISTS(SELECT 1 FROM assignments a WHERE a.attempt_id=attempts.id AND a.status!='published')" : ''} ORDER BY updated_at DESC,id LIMIT 200`, auth.id)
