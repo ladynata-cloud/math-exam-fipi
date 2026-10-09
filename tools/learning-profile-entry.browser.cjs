@@ -38,10 +38,12 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
     const created = store.createStudent(teacher, { login, name: 'Проверочный ученик' });
     return store.activate(created.invitationToken, await hashPassword(PASSWORD, 'student')).account;
   }
-  const learner = await pupil('fixture_profile_pupil'), peer = await pupil('fixture_unchanged_pupil');
+  const learner = await pupil('fixture_profile_pupil'), peer = await pupil('fixture_unchanged_pupil'), returning = await pupil('fixture_returning_pupil');
+  const trainer = express(); trainer.use(express.static(ROOT));
+  const trainerServer = await listen(trainer), trainerOrigin = 'http://127.0.0.1:' + trainerServer.address().port;
   const app = express(); app.use(express.json({ limit: '200kb' }));
   const server = await listen(app), origin = 'http://127.0.0.1:' + server.address().port;
-  app.get('/api/learning/status', (_req, res) => res.json({ ...store.status(), trainerOrigin: origin }));
+  app.get('/api/learning/status', (_req, res) => res.json({ ...store.status(), trainerOrigin }));
   const learning = createLearningApi({ store, publicOrigin: origin, secureCookies: false });
   app.use('/api/learning', createFamilyRouter({ ...learning, publicOrigin: origin, secureCookies: false }), learning.router, createTeachingRouter(learning));
   app.use(express.static(ROOT));
@@ -134,6 +136,35 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
     assert.match(await pp.locator('[data-profile-storage]').innerText(), /не входят в итоги ниже/);
     assert.equal(await pp.locator('[data-parent-count=total]').innerText(), '0');
 
+    // A free started task stays reachable after the teacher changes direction.
+    // It has neither a homework assignment nor a lesson link to fall back to.
+    const rp = await login(returning);
+    await navigate(rp, 'course'); await rp.locator('#catalog-grid[data-course-scope=school]').waitFor();
+    await rp.locator('#course-search').fill('Минус перед выражением');
+    await rp.locator('[data-content="path:grade7-a-opposite-expression"]').click();
+    await rp.waitForFunction(() => document.querySelector('#trainer-host .frame-status')?.hidden);
+    const oldAttemptId = new URLSearchParams(new URL(rp.url()).hash.slice(1)).get('attempt');
+    const frame = rp.frameLocator('#trainer-host iframe');
+    await frame.locator('#answer').fill('12');
+    await rp.waitForFunction(async id => (await LearningApp.api('/attempts/' + id)).state.work.draft === '12', oldAttemptId);
+    const oldWork = await api(rp, '/attempts/' + oldAttemptId);
+    assert.equal(oldWork.outcome, 'started');
+    assert.equal((await api(rp, '/assignments')).assignments.length, 0);
+    assert.equal((await api(rp, '/lessons')).lessons.length, 0);
+    await api(tp, '/teacher/students/' + returning.id + '/profile', { opId: crypto.randomUUID(), expectedVersion: 0,
+      course: 'ege-profile', goal: null, focus: '' });
+    await navigate(rp, 'home'); await rp.reload(); await entry(rp, false);
+    const oldLink = rp.locator('[data-profile-prior-work] a[href="#attempt=' + oldAttemptId + '"]');
+    assert.equal(await oldLink.isVisible(), true, 'The old free task remains discoverable on the profile home');
+    assert.match(await oldLink.innerText(), /Продолжить/);
+    await oldLink.click();
+    await rp.waitForFunction(() => document.querySelector('#trainer-host .frame-status')?.hidden);
+    assert.equal(await frame.locator('#answer').inputValue(), '12', 'The previous draft is restored');
+    assert.deepEqual((await api(rp, '/attempts/' + oldAttemptId)).state, oldWork.state);
+    await frame.locator('#answer').fill('13');
+    await rp.waitForFunction(async id => (await LearningApp.api('/attempts/' + id)).state.work.draft === '13', oldAttemptId);
+    assert.equal((await api(rp, '/attempts')).attempts.length, 1, 'Continuing edits the same work, not a fresh task');
+
     // The existing four directions keep their own views when selected explicitly.
     const unchanged = await login(peer);
     const cases = [
@@ -151,8 +182,8 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
       assert.equal(await unchanged.locator('[data-profile-course]').count(), 0);
     }
     assert.deepEqual(errors, []); assert.deepEqual(external, []);
-    console.log('LEARNING_PROFILE_ENTRY_OK: real profile save, separate pupils, 13-task home/course/route, focus escaping, phone/reload/second device, honest local progress, teacher assignment fallback, parent view, four existing directions');
+    console.log('LEARNING_PROFILE_ENTRY_OK: real profile save, separate pupils, 13-task home/course/route, focus escaping, phone/reload/second device, honest local progress, teacher assignment fallback, parent view, free started work survives course change, four existing directions');
   } finally {
-    await browser?.close(); await close(server); store.close(); fs.rmSync(directory, { recursive: true, force: true });
+    await browser?.close(); await close(server); await close(trainerServer); store.close(); fs.rmSync(directory, { recursive: true, force: true });
   }
 })().catch(error => { console.error(error.stack || error); process.exitCode = 1; });

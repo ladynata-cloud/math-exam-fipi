@@ -93,3 +93,18 @@ PR and exact-head execution evidence are recorded in the final PR handoff.
   executable. Both reran successfully using the installed Chromium binary;
   no test assertions or product code were weakened.
 - External exact-head source review and cloud gates are pending at commit time.
+
+## Follow-up from initial remote review
+
+The initial source-only OpenAI review of PR #220, head
+`511638c0e8480c3240da3aa18d388017a02ab5bb`, requested changes at
+2026-10-09T16:17:34.659Z: switching direction hid the pupil's route to a
+previous free started attempt. Data remained stored but the continuation link
+was absent. The profile home now lists its existing non-archived cabinet work
+using the established attempt cards, with older work in a disclosure.
+
+The actual-router browser gate now reproduces a free task, saves a draft,
+changes the teaching direction, reloads, opens the same attempt and edits the
+preserved draft. It passed with one unchanged attempt identity and no invented
+assignment or lesson. The script URL is refreshed. Exact-head re-review and
+cloud rerun are required; the initial verdict is not an approval.
