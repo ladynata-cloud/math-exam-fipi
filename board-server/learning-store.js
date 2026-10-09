@@ -147,7 +147,7 @@ class LearningStore {
       this.limit('accounts', 2000); requireValue(!this.accountByLogin(login), 'LEARNING_LOGIN_EXISTS', 409);
       const id = token(18);
       this.run("INSERT INTO accounts(id,role,teacher_id,login,name,password_hash,created_at) VALUES(?,'student',?,?,?,?,?)", id, auth.id, login, name, passwordHash, this.clock());
-      return { student: accountDTO(this.account(id)), ...(passwordHash === null ? this.newInvitation(id, 'activate', 3 * DAY) : {}) };
+      return { student: accountDTO(this.account(id)), ...(passwordHash === null ? this.newInvitation(id, 'activate', 7 * DAY) : {}) };
     });
   }
   students(auth) { this.teacher(auth); return this.rows("SELECT * FROM accounts WHERE teacher_id=? AND role='student' ORDER BY created_at,id", auth.id)
@@ -228,7 +228,7 @@ class LearningStore {
       return { profile: { course: body.course, goal: body.goal, focus, version, updatedAt: at } };
     });
   }
-  recoverStudent(auth, id) { return this.transaction(() => { this.ownsStudent(auth, id); return this.newInvitation(id, 'recovery', 3 * DAY); }); }
+  recoverStudent(auth, id) { return this.transaction(() => { this.ownsStudent(auth, id); return this.newInvitation(id, 'recovery', 7 * DAY); }); }
   replaceStudentPassword(sessionToken, id, passwordHash, expectedHash, expectedEpoch) {
     requireValue(typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash), 'LEARNING_PASSWORD_INVALID');
     return this.transaction(() => {

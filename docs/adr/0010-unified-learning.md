@@ -109,7 +109,10 @@ table shape and normal login remain compatible; learning data is preserved.
 The owner subsequently requested independent pupil activation and a separate
 parent entry for following the same pupil's progress. Pupil self-activation
 continues to use the existing invitation protocol and password policy;
-replacement invitations now allow three days for asynchronous delivery.
+initial and replacement pupil invitations, as well as parent invitations, allow
+seven days for asynchronous delivery. This later owner-requested lifetime change
+applies only at issuance; existing expiry timestamps are preserved. Teacher
+bootstrap invitations and authenticated session/QR lifetimes are unchanged.
 
 Parent identity is isolated in additive tables and a separate private session
 cookie on a dedicated parent page/API. No parent is inserted into the existing

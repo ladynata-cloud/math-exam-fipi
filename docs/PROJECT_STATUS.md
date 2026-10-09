@@ -6,7 +6,19 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Ready for release: independent pupil entry and parent progress
+## In preparation: seven-day family invitations
+
+- Scope: [seven-day family invitations](tasks/WEEK_LONG_FAMILY_INVITATIONS.md).
+  Extend only newly issued pupil and parent invitations from three to seven
+  days. Existing links keep their stored expiry until explicitly replaced.
+- Base: `aabdb8d9396bef502ced049e7867774c1885ddef`; branch
+  `codex/week-long-family-invitations`. Backend 210/210 and auth, parent,
+  quick-access and cabinet browser gates passed; base-runtime rollback
+  compatibility and independent internal HIGH review passed. Remote CI is
+  tracked in the PR. Merge/deployment and external review or an
+  explicit owner waiver remain pending. No new live seven-day link is claimed.
+
+## Published: independent pupil entry and parent progress
 
 - Scope: [family progress entry](tasks/FAMILY_PROGRESS_ENTRY.md), an existing
   pupil's self-chosen entry code plus a separate read-only parent account.
@@ -20,6 +32,11 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   against the actual production router. Independent HIGH review includes the
   documented parent-only rollback and private-data projection. Publication,
   exact-tree review/CI and live verification are tracked in this task's PR.
+- Reconciled on 2026-10-09: PR #216 is merged as
+  `aabdb8d9396bef502ced049e7867774c1885ddef`; Pages run `37926035310`
+  succeeded. The live teacher cabinet exposes separate pupil and parent
+  invitation issuance; observed invitations still use the three-day lifetime.
+  Private access details remain outside the repository.
 
 ## Published: personal pupil QR entry
 
