@@ -63,7 +63,7 @@ jobs:
           node tools/learning-preparation.test.cjs
       - name: Install pinned browser test tools
         run: |
-          npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsqr@1.4.0 pngjs@7.0.0
           "$RUNNER_TEMP/learning-browser/node_modules/.bin/playwright" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/learning-browser/node_modules" >> "$GITHUB_ENV"
       - name: Real classroom, trainer, homework and exam scenarios
@@ -71,6 +71,7 @@ jobs:
           node tools/learning-path.browser.cjs
           node tools/learning-remediation-smoke.cjs
           node tools/learning-auth.browser.cjs
+          node tools/learning-quick-access.browser.cjs
           node tools/learning-cabinet.browser.cjs
           node tools/learning-exam.browser.cjs
           node tools/learning-catalog-reference-test.cjs --browser

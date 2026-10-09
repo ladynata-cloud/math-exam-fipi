@@ -57,6 +57,21 @@ function createLearningApi(options = {}) {
   router.use((_req, res, next) => { res.set({ 'Cache-Control': 'no-store', Pragma: 'no-cache', 'X-Content-Type-Options': 'nosniff' }); next(); });
   router.get('/status', (_req, res) => res.json(store.status()));
   router.get('/catalog', (_req, res) => res.json({ trainers: store.status().trainers }));
+  router.post('/quick-login', originMiddleware, handler((req, res) => {
+    exactKeys(req.query, []);
+    exactKeys(req.body, ['token'], ['token']);
+    anonymousLimit(req, 'quick:' + (typeof req.body.token === 'string' ? req.body.token.slice(0, 100) : 'invalid'));
+    // Never replace a teacher's or another pupil's valid browser session. An
+    // expired/revoked cookie may be replaced; storage failures must not pass.
+    const candidates = (req.get('cookie') || '').split(';').map(part => part.trim()).filter(part => part.startsWith(`${cookieName}=`));
+    requireValue(candidates.length <= 1, 'LEARNING_ALREADY_SIGNED_IN', 409);
+    if (candidates.length) {
+      let current = null;
+      try { current = store.session(cookie(req)); } catch (error) { if (!(error instanceof LearningError) || error.status !== 401) throw error; }
+      requireValue(!current, 'LEARNING_ALREADY_SIGNED_IN', 409);
+    }
+    res.json(sessionResponse(res, store.quickLogin(req.body.token)));
+  }));
   router.post('/login', originMiddleware, handler(async (req, res) => {
     exactKeys(req.body, ['login','password'], ['login','password']);
     const rawLogin = typeof req.body.login === 'string' ? req.body.login.trim().toLowerCase().slice(0, 100) : '';
@@ -116,6 +131,16 @@ function createLearningApi(options = {}) {
     res.json(store.rotateTeacherRecoveryCodes(req.learningSessionToken, account.password_hash, account.auth_epoch));
   }));
   router.get('/teacher/students', authMiddleware, handler((req, res) => res.json({ students: store.students(req.learningAuth) })));
+  router.get('/teacher/students/:id/quick-access', authMiddleware, handler((req, res) => {
+    store.ownsStudent(req.learningAuth, req.params.id); exactKeys(req.query, []);
+    res.json({ quickAccess: store.studentQuickAccess(req.learningAuth, req.params.id) });
+  }));
+  for (const revoke of [false, true]) router.post('/teacher/students/:id/quick-access' + (revoke ? '/revoke' : ''), authMiddleware, mutationMiddleware, handler((req, res) => {
+    store.ownsStudent(req.learningAuth, req.params.id);
+    exactKeys(req.query, []);
+    limiter.take(`quick-access:${req.learningAuth.id}:${req.params.id}`, 12, 15 * 60000);
+    res.json(store.writeStudentQuickAccess(req.learningSessionToken, req.params.id, req.body, revoke));
+  }));
   router.get('/teacher/students/:id/profile', authMiddleware, handler((req, res) => {
     store.ownsStudent(req.learningAuth, req.params.id);
     exactKeys(req.query, []);
