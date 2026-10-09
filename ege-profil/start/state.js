@@ -46,7 +46,7 @@ function create(lessons,storage){
   storage.setItem(KEY,JSON.stringify({...data,sessions:merged}));latestSessions=merged;for(const [key,s]of Object.entries(data.sessions))syncedSessions[key]=copy(s);return true;
  }catch(_){blocked=true;warning='Браузер не разрешил сохранить результаты. Скачайте отчёт перед закрытием страницы.';return false;}}
  function record(id){return data.records[id]||(data.records[id]={guided:[],independent:[],attempts:0});}
- function start(id,mode,fresh=false){const l=known.get(id);if(!l||!['guided','plan','independent'].includes(mode))throw Error('Unknown lesson or mode');const key=id+':'+mode,hadSession=!!data.sessions[key];persist();const old=refreshSession(key);if(old&&!fresh&&(hadSession||!old.done))return old;
+ function start(id,mode,fresh=false){const l=known.get(id);if(!l||!['guided','plan','independent'].includes(mode))throw Error('Unknown lesson or mode');const key=id+':'+mode,hadSession=!!data.sessions[key];const saved=persist();const old=saved?refreshSession(key):data.sessions[key];if(old&&!fresh&&(hadSession||!old.done))return old;
  const pool=mode!=='independent'?l.tasks.slice(0,-3):l.tasks.slice(-3);let t=pool.find(t=>!data.seen[t.id]);if(!t)t=pool.reduce((a,b)=>(data.seen[a.id]||0)<=(data.seen[b.id]||0)?a:b);
  const s={taskId:t.id,step:0,wrong:false,assisted:mode!=='independent',familiar:!!data.seen[t.id],done:false,draft:'',answers:[],started:startedAt(),registered:false};
  data.seen[t.id]=(data.seen[t.id]||0)+1;data.sessions[key]=s;persist();return s;}
@@ -55,8 +55,8 @@ function create(lessons,storage){
   persist();const current=data.sessions[id+':'+mode];if(!sameAttempt(s,current)||current.registered)return false;
   if(current!==s){for(const flag of ['wrong','assisted','familiar'])current[flag]=current[flag]||s[flag];s=current;}
   const r=record(id);r.attempts++;if(mode!=='independent'&&!r.guided.includes(s.taskId))r.guided.push(s.taskId);if(mode==='independent'&&!s.wrong&&!s.assisted&&!s.familiar&&!r.independent.includes(s.taskId))r.independent.push(s.taskId);s.done=true;s.registered=true;persist();return true;}
- function remediate(id,taskId){const l=known.get(id),t=l?.tasks.find(t=>t.id===taskId);if(!t)throw Error('Unknown remediation task');persist();const source=refreshSession(id+':independent');if(source?.taskId===taskId&&!source.answers.length&&!source.done&&!source.registered){source.assisted=true;}
- const key=id+':guided',old=refreshSession(key);if(old?.taskId===taskId&&!old.done){persist();return old;}
+ function remediate(id,taskId){const l=known.get(id),t=l?.tasks.find(t=>t.id===taskId);if(!t)throw Error('Unknown remediation task');const saved=persist();const source=saved?refreshSession(id+':independent'):data.sessions[id+':independent'];if(source?.taskId===taskId&&!source.answers.length&&!source.done&&!source.registered){source.assisted=true;}
+ const key=id+':guided',old=saved?refreshSession(key):data.sessions[key];if(old?.taskId===taskId&&!old.done){persist();return old;}
  const s={taskId,step:0,wrong:false,assisted:true,familiar:!!data.seen[taskId],done:false,draft:'',answers:[],started:startedAt(),registered:false};data.seen[taskId]=Math.max(1,data.seen[taskId]||0);data.sessions[key]=s;persist();return s;}
  return {KEY,data,record,start,finish,remediate,persist,get warning(){return warning;},get original(){return raw;},export(){return {kind:'mathexam-profile-start',exportedAt:new Date().toISOString(),storage:'local-browser',...data,sessions:mergeSessions(latestSessions)};}};
 }

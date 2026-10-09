@@ -133,7 +133,21 @@ function create(lessons,storage,learningState){
   if(!prepare(expectedToken))return current();
   const shown=current();
   if(expectedToken!==undefined&&shown.token!==expectedToken)return shown;
-  if(!shown.complete&&!shown.unavailable&&!shown.submitted){data.round.items[data.round.index].assisted=true;write();}
+  if(shown.complete||shown.unavailable||shown.submitted)return shown;
+  // Assistance is monotonic for this exact shown condition. A simultaneous
+  // draft write may replace our first write, but must not erase help immediately
+  // before the UI exposes it. Reapply only to the same unsubmitted condition.
+  for(let attempt=0;attempt<3;attempt++){
+   if(context()!==shown.token||data.round.items[data.round.index].submitted)return view();
+   data.round.items[data.round.index].assisted=true;
+   if(write()||blocked)return view();
+  }
+  // Persistently competing tabs are treated like unavailable storage. Retain
+  // the help marker in this page and its export; do not overwrite another task.
+  if(context()===shown.token&&!data.round.items[data.round.index].submitted){
+   data.round.items[data.round.index].assisted=true;blocked=true;
+   warning='Проверка одновременно изменяется в другом окне. Текущая работа и отметка о помощи остались на этой странице; скачайте отчёт перед закрытием.';
+  }
   return view();
  }
  function persistDraft(input,expectedToken){

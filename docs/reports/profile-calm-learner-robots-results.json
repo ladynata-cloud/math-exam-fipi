@@ -1,9 +1,10 @@
 {
   "gate": "PROFILE_CALM_LEARNERS_BROWSER",
   "version": 1,
-  "startedAt": "2026-10-09T15:23:20.510Z",
+  "startedAt": "2026-10-09T15:35:11.003Z",
   "scope": "Scripted interface support for four learner difficulties; not a diagnosis, clinical model, or evidence of real learning.",
   "answerPolicy": "Visible-statement fixtures and explicit calculation rules only. Never use production answer keys to drive learner responses. Strict checkpoint results are separate from lesson independent practice.",
+  "cpuThrottlingRate": 4,
   "sourceHashes": {
     "algebra-data.js": "6f1526827b5efdb6259cae74af93e4849161de9368efef48d5a14fa2de73f70a",
     "algebra-models.js": "564fa73b95886725f19362122b204aa6e8a27caced6f8e4f6bfaf2a2b6d3aab5",
@@ -13,7 +14,7 @@
     "calm-data.js": "6a226d153361678dda853008127c9aa4e5a7384af31d9931897772ff944b1711",
     "calm-micro.js": "f58760cba1eabcf0c16863ad512599c9b95acd6ca674eff6ee5ff9d6d9b832e8",
     "calm-ui.js": "cd7607e265417eb946b125ad78e1a396d3bc74f3b7b4a3a5a2dce5127300962d",
-    "checkpoint.js": "461b255d86b985bafcec400442320ffda45526f328d6026025398c9b65c508ba",
+    "checkpoint.js": "75489c2eecc0cee07f12c140c3d44e0007018e61142cc8393bdd05d79fea4ef3",
     "checks.js": "4ac38143ed4e7730a99857935989b1f583d14893be4cb582e39729fde92b3012",
     "equations-data.js": "45c8090c44e6c163e1ae7cb00e2a6540179f490096e4f0d28111016b1c2de423",
     "equations-tasks.js": "1572409a2f705e5e8d3fc612e534b43f9ff006ad077ac0b698e7aac3be59171f",
@@ -27,10 +28,10 @@
     "probability-tasks.js": "6ef6b22a29b0b83ab1faabbe3cfb8e8f0fcb8781c5930a3d594dbccb2bbe1c3b",
     "readiness-data.js": "e178ff8aa0116b0d9a31d3640d5578cb0d085594cac9fe08db55b2206b48e158",
     "readiness.js": "631309834340fd5ab3015a7272845985e0103a93f7ec65d65721c4305521badf",
-    "state.js": "b67ed5b22f205fc0c70350d97c2a75bd420ec1adb4ce8c4ca63ce080a7726454",
+    "state.js": "91b6a0be499874f89e2e2a53102653e4b5dca309f7bf817bc037bed4b5c6ce36",
     "stereo-data.js": "8aad61a5db607982675b1e7e5a0d583bc66d116ec352fd3f3e07e5f7ef95d690",
     "stereo-tasks.js": "947b53a67026c02d0f740c621e3385e3af0c56ea4d014e0bbb4a278dadbfe464",
-    "style.css": "d2b4cade92981b15ca80b500d7881f404b02175785faa30868da27969e809eef",
+    "style.css": "05de990dfe2d5857e65d6b0d8f013ce85bcaa9c5ce95a19517aa31efadde6406",
     "vector-tasks.js": "b141fbd1a5133ea366f241ff13b910684855e0c90e71e1f88a035a4d9ecf8560"
   },
   "personas": [
@@ -1262,5 +1263,5 @@
     "sourceDrift": 0
   },
   "passed": true,
-  "finishedAt": "2026-10-09T15:23:31.321Z"
+  "finishedAt": "2026-10-09T15:35:30.180Z"
 }

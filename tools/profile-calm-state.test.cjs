@@ -234,15 +234,41 @@ test('a failed write retains the unsaved attempt for export even if another tab 
   storage.setItem = (key, value) => { if (fail) throw Error('quota exceeded'); originalSet(key, value); };
   const tabA = State.create(lessons, storage), active = tabA.start(lesson.id, 'independent');
   const tabB = State.create(lessons, storage);
-  active.answers = ['2']; active.draft = 'my accepted work';
+  active.answers = ['2']; active.draft = 'my accepted work'; active.assisted = true;
   fail = true; assert.equal(tabA.persist(), false); assert.ok(tabA.warning);
+  const reopened = tabA.start(lesson.id, 'independent');
+  assert.equal(reopened, active); assert.deepEqual(reopened.answers, ['2']);
+  assert.equal(reopened.draft, 'my accepted work'); assert.equal(reopened.assisted, true);
   fail = false;
   const newer = tabB.start(lesson.id, 'independent', true); newer.draft = 'other tab'; tabB.persist();
   const diskBefore = storage.getItem(State.KEY);
   assert.equal(tabA.persist(), false, 'failed-write state remains local until its work is backed up');
+  assert.equal(tabA.start(lesson.id, 'independent'), active);
   assert.equal(storage.getItem(State.KEY), diskBefore, 'the blocked tab does not replace newer saved work');
   const exported = tabA.export().sessions[lesson.id + ':independent'];
   assert.equal(exported.taskId, active.taskId); assert.equal(exported.started, active.started);
-  assert.deepEqual(exported.answers, ['2']); assert.equal(exported.draft, 'my accepted work');
+  assert.deepEqual(exported.answers, ['2']); assert.equal(exported.draft, 'my accepted work'); assert.equal(exported.assisted, true);
   assert.notEqual(exported.started, newer.started);
+});
+
+test('remediation does not restore stale snapshots of accepted answers or guided steps after a write failure', () => {
+  for (const route of ['accepted-source', 'partial-guided']) {
+    const storage = memory(), originalSet = storage.setItem.bind(storage); let fail = false;
+    storage.setItem = (key, value) => { if (fail) throw Error('write unavailable'); originalSet(key, value); };
+    const state = State.create(lessons, storage), source = state.start(lesson.id, 'independent');
+    if (route === 'accepted-source') {
+      source.answers = ['2']; source.draft = 'accepted locally';
+      fail = true; assert.equal(state.persist(), false);
+      state.remediate(lesson.id, source.taskId);
+      assert.deepEqual(source.answers, ['2']); assert.equal(source.draft, 'accepted locally');
+      assert.equal(source.assisted, false, 'accepted work stays accepted when later opening a worked explanation');
+    } else {
+      const guided = state.remediate(lesson.id, source.taskId);
+      Object.assign(guided, { step: 1, answers: ['8'], draft: 'next local step' });
+      fail = true; assert.equal(state.persist(), false);
+      const resumed = state.remediate(lesson.id, source.taskId);
+      assert.equal(resumed, guided); assert.equal(resumed.step, 1);
+      assert.deepEqual(resumed.answers, ['8']); assert.equal(resumed.draft, 'next local step');
+    }
+  }
 });

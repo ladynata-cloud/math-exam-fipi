@@ -202,6 +202,56 @@ test('render token is rechecked if another tab advances between the two storage 
  assert.equal(storage.getItem(Checkpoint.KEY),nextRaw);
 });
 
+test('help survives a concurrent draft write for the same condition and cannot inflate its score',()=>{
+ const {checkpoint:c,storage}=setup();const screen=c.startRound();
+ const remote=JSON.parse(storage.getItem(Checkpoint.KEY));remote.round.items[0].draft='8';
+ const remoteRaw=JSON.stringify(remote),originalGet=storage.getItem;let reads=0;
+ storage.getItem=key=>{
+  // prepare(), current(), then write() immediately before persistence.
+  if(key===Checkpoint.KEY&&++reads===3)storage.setItem(Checkpoint.KEY,remoteRaw);
+  return originalGet(key);
+ };
+ const helped=c.help(screen.token);
+ assert.equal(helped.token,screen.token);assert.equal(helped.assisted,true);
+ assert.equal(helped.draft,'8','concurrent draft is retained while merging help');
+ assert.equal(JSON.parse(storage.getItem(Checkpoint.KEY)).round.items[0].assisted,true);
+ const reloaded=setup(storage).checkpoint;
+ assert.equal(reloaded.current().assisted,true,'help survives reload before submission');
+ reloaded.submit('8',Check.check,screen.token);
+ assert.equal(reloaded.current().correct,true);assert.equal(reloaded.snapshot().summary.independent,0);
+});
+
+test('help write collision never transfers assistance to a newer task',()=>{
+ const {checkpoint:a,storage}=setup();const screen=a.startRound();
+ const previousRaw=storage.getItem(Checkpoint.KEY),b=setup(storage).checkpoint;
+ b.current();b.submit('8',Check.check);b.next();
+ const nextRaw=storage.getItem(Checkpoint.KEY);storage.setItem(Checkpoint.KEY,previousRaw);
+ const originalGet=storage.getItem;let reads=0;
+ storage.getItem=key=>{
+  if(key===Checkpoint.KEY&&++reads===3)storage.setItem(Checkpoint.KEY,nextRaw);
+  return originalGet(key);
+ };
+ const shown=a.help(screen.token);
+ assert.equal(shown.number,7);assert.equal(shown.assisted,false);
+ assert.equal(storage.getItem(Checkpoint.KEY),nextRaw);
+});
+
+test('persistent help write collisions preserve assisted work in a warned recovery export',()=>{
+ const {checkpoint:c,storage}=setup();const screen=c.startRound();
+ const remote=JSON.parse(storage.getItem(Checkpoint.KEY)),originalGet=storage.getItem;let reads=0;
+ storage.getItem=key=>{
+  if(key===Checkpoint.KEY&&++reads>=3){
+   remote.round.items[0].draft=String(reads);storage.setItem(Checkpoint.KEY,JSON.stringify(remote));
+  }
+  return originalGet(key);
+ };
+ const helped=c.help(screen.token);
+ assert.equal(helped.assisted,true);assert(c.warning);
+ c.submit('8',Check.check,screen.token);
+ assert.equal(c.export().round.items[0].assisted,true);
+ assert.equal(c.export().summary.independent,0);
+});
+
 test('unknown versions and malformed task references are retained without overwrite',()=>{
  const good=setup();good.checkpoint.startRound();
  const variants=[{version:99,round:null,history:[]},JSON.parse(good.storage.getItem(Checkpoint.KEY)),JSON.parse(good.storage.getItem(Checkpoint.KEY)),JSON.parse(good.storage.getItem(Checkpoint.KEY))];

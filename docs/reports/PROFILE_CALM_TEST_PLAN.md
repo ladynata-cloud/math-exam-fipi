@@ -1,6 +1,6 @@
 # Calm course — learner simulations and strict checkpoint protocol
 
-Status: final browser verification passed on 2026-10-09T15:23:31.321Z: **4/4 learner profiles, 186/186 checks**. No runtime errors, missing local resources, or source drift. The detailed, path-free result is `docs/reports/profile-calm-learner-robots-results.json`.
+Status: final browser verification passed on 2026-10-09T15:35:30.180Z with Chromium CPU throttled 4×: **4/4 learner profiles, 186/186 checks**. No runtime errors, missing local resources, or source drift. The detailed, path-free result is `docs/reports/profile-calm-learner-robots-results.json`.
 
 The four learner models are scripted interaction patterns. They do not model a diagnosis and cannot establish human learning. `tools/fixtures/profile-calm-personas.json` records their misconceptions and responses. Test answers must come from visible statements and explicit rules, not production answer keys.
 
@@ -62,3 +62,11 @@ PROFILE_CALM_OUTPUT=profile-calm-results.json node tools/profile-calm-learners.b
 ```
 
 No deployment or commit was performed by the test subtask.
+
+## Cloud scheduling regression
+
+Cloud run 37951799923 exposed a synchronization error in the test: guided and independent modes share `#answer-form`, so waiting for that selector after clicking “Разобрать эту задачу” could match the old independent screen. The fixture could then type into a form that the pending hash-route render was about to replace.
+
+The runner now waits for the expected hash, mode heading, and guided step together before entering an answer. It also checks the visible input value before submitting. The same wait is used at other mode transitions. No production code was changed for this test fix.
+
+The complete 186-check runner passed with `PROFILE_CALM_CPU_RATE=4`, deliberately slowing the browser's main page to exercise asynchronous route rendering. All final source hashes matched the working tree again after execution.

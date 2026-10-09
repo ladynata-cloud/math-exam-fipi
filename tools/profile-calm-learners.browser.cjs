@@ -11,11 +11,12 @@ const fixture = require('./fixtures/profile-calm-personas.json');
 const root = path.resolve(__dirname, '..');
 const KEY = 'mathexam.profileStart2027.v1';
 const CHECKPOINT_KEY = 'mathexam.profileCheckpoint.v1';
+const cpuThrottlingRate = Math.max(1, Number(process.env.PROFILE_CALM_CPU_RATE) || 1);
 const files = fs.readdirSync(path.join(root, 'ege-profil/start')).filter(file => /\.(?:js|css|html)$/.test(file)).sort();
 const hashes = () => Object.fromEntries(files.map(file => [file, fs.existsSync(path.join(root, 'ege-profil/start', file))
   ? crypto.createHash('sha256').update(fs.readFileSync(path.join(root, 'ege-profil/start', file))).digest('hex') : 'missing']));
 const report = { gate: 'PROFILE_CALM_LEARNERS_BROWSER', version: 1, startedAt: new Date().toISOString(),
-  scope: fixture.scope, answerPolicy: fixture.answerPolicy, sourceHashes: hashes(), personas: [], protocol: [], runtimeErrors: [], failedRequests: [] };
+  scope: fixture.scope, answerPolicy: fixture.answerPolicy, cpuThrottlingRate, sourceHashes: hashes(), personas: [], protocol: [], runtimeErrors: [], failedRequests: [] };
 const server = http.createServer((req, res) => {
   try {
     let file = path.resolve(root, '.' + decodeURIComponent(new URL(req.url, 'http://fixture').pathname));
@@ -53,8 +54,23 @@ async function input(page, value, ui = UI.practice) {
     await radios.nth(index).check();
   } else await page.locator(ui.input).fill(value);
 }
+async function waitForPractice(page, lesson, mode, step) {
+  // A hash change is asynchronous, and guided/independent reuse the same form
+  // IDs. Seeing #answer-form alone can still mean the old screen is mounted.
+  await page.waitForFunction(({ lesson, mode, step }) => {
+    const heading = document.querySelector('.practice-head .eyebrow')?.textContent || '';
+    const current = document.getElementById('current-step')?.textContent || '';
+    const expectedHeading = { guided: 'Решаем по шагам', plan: 'Решаем с коротким планом', independent: 'Решаем самостоятельно' }[mode];
+    return location.hash === '#practice/' + lesson + '/' + mode && document.getElementById('answer-form') &&
+      heading.includes(expectedHeading) && (mode === 'guided' ? current.startsWith('Шаг ' + (step === undefined ? '' : (step + 1) + ' ')) : current === 'Ваше решение');
+  }, { lesson, mode, step });
+}
 async function accept(page, scenario, value, label, ui = UI.practice) {
-  await input(page, value, ui); await page.locator(ui.submit).click();
+  await input(page, value, ui);
+  const radios = page.locator(ui.form + ' input[name="answer"][type="radio"]');
+  const echoed = await radios.count() ? await page.locator(ui.form + ' input[name="answer"]:checked').inputValue() : await page.locator(ui.input).inputValue();
+  if (echoed !== value) throw Error('Input changed before submit at ' + label + ': expected ' + value + ', visible ' + echoed);
+  await page.locator(ui.submit).click();
   await page.locator(ui.feedback + '.good').waitFor();
   check(scenario, 'answer-accepted:' + label, await page.locator(ui.next).isEnabled());
   scenario.events.push({ action: 'answer', label, value });
@@ -62,6 +78,10 @@ async function accept(page, scenario, value, label, ui = UI.practice) {
 async function startPage(browser, base, persona, mode = 'guided') {
   const context = await browser.newContext({ viewport: { width: persona.width, height: 900 } });
   const page = await context.newPage(); page.setDefaultTimeout(6000);
+  if (cpuThrottlingRate > 1) {
+    const client = await context.newCDPSession(page);
+    await client.send('Emulation.setCPUThrottlingRate', { rate: cpuThrottlingRate });
+  }
   page.on('pageerror', error => report.runtimeErrors.push({ persona: persona.id, message: error.message }));
   page.on('response', response => { if (response.status() >= 400 && response.url().startsWith(new URL(base).origin)) report.failedRequests.push({ persona: persona.id, status: response.status(), path: new URL(response.url()).pathname }); });
   if (persona.task) await context.addInitScript(({ key, lesson, task, mode }) => {
@@ -71,6 +91,7 @@ async function startPage(browser, base, persona, mode = 'guided') {
   }, { key: KEY, lesson: persona.lesson, task: persona.task, mode });
   await page.goto(base + (persona.task ? '#practice/' + persona.lesson + '/' + mode : '#calm'));
   await page.locator('main h1').waitFor();
+  if (persona.task) await waitForPractice(page, persona.lesson, mode, mode === 'guided' ? 0 : undefined);
   return { context, page };
 }
 async function scenario(browser, base, persona, mode, run) {
@@ -101,7 +122,7 @@ async function pauseLearner(page, out, p) {
   const calm = await toggleCalm(page, out, 'paused');
   check(out, 'visual-mode-does-not-change-work', same(before, await session(page, p.lesson)));
   await page.locator('#pause-practice').click(); await page.locator('main a[href="#practice/' + p.lesson + '/guided"]').waitFor();
-  await page.reload(); await page.locator('main a[href="#practice/' + p.lesson + '/guided"]').click(); await page.locator('#answer-form').waitFor();
+  await page.reload(); await page.locator('main a[href="#practice/' + p.lesson + '/guided"]').click(); await waitForPractice(page, p.lesson, 'guided', before.step);
   check(out, 'reload-preserves-session', same(before, await session(page, p.lesson)));
   check(out, 'reload-restores-unfinished-draft', await page.locator('#answer').inputValue() === p.unfinishedDraft);
   check(out, 'reload-restores-calm-setting', await page.locator('#calm-toggle').getAttribute('aria-pressed') === calm);
@@ -166,28 +187,28 @@ async function exampleLearner(page, out, p) {
   const exposedByExample = Object.keys(afterExampleSeen).filter(id => !beforeExampleSeen[id]);
   check(out, 'example-keeps-reserved-conditions-unseen', exposedByExample.every(id => ['trig-angle-1', 'trig-angle-2', 'trig-angle-3'].includes(id)), exposedByExample);
   out.events.push({ action: 'worked-example', text: await page.locator('main').innerText() });
-  await page.locator('#example-practice').click(); await page.locator('#answer-form').waitFor();
+  await page.locator('#example-practice').click(); await waitForPractice(page, p.lesson, 'guided', 0);
   check(out, 'sample-to-different-guided-condition', (await session(page, p.lesson)).taskId === p.stagePath.guidedTask);
   for (const [i, value] of p.stagePath.guidedSteps.entries()) { await accept(page, out, value, 'stage-guided-' + i); await page.locator('#next').click(); }
-  await page.locator('.result-panel').waitFor(); await page.locator('#switch').click(); await page.locator('#answer-form').waitFor();
+  await page.locator('.result-panel').waitFor(); await page.locator('#switch').click(); await waitForPractice(page, p.lesson, 'plan');
   check(out, 'guided-to-short-plan', new URL(page.url()).hash.endsWith('/plan') && await page.locator('.plan-support').isVisible());
   check(out, 'short-plan-uses-another-condition', (await session(page, p.lesson, 'plan')).taskId === p.stagePath.planTask);
   await accept(page, out, p.stagePath.planAnswer, 'stage-plan'); await page.locator('#next').click(); await page.locator('.result-panel').waitFor();
   check(out, 'short-plan-does-not-earn-independent', (await record(page, p.lesson)).independent.length === 0);
-  await page.locator('#switch').click(); await page.locator('#answer-form').waitFor();
+  await page.locator('#switch').click(); await waitForPractice(page, p.lesson, 'independent');
   check(out, 'plan-to-independent', new URL(page.url()).hash.endsWith('/independent'));
   check(out, 'example-return-restores-draft', await page.locator('#answer').inputValue() === original.draft);
-  await page.locator('.support-details summary').click(); await page.locator('#repair-current').click(); await page.locator(UI.repair.form).waitFor();
+  await page.locator('.support-details summary').click(); await page.locator('#repair-current').click(); await waitForPractice(page, p.lesson, 'guided', 0);
   const condition = await page.locator('main').innerText();
   check(out, 'repair-keeps-same-condition', condition.includes('210') && (await session(page, p.lesson, 'independent')).taskId === p.task);
   for (let i = 0; i < p.sameTaskSteps.length; i++) {
     if (i === 1) {
-      await input(page, p.sameTaskSteps[i], UI.repair); await page.reload(); await page.locator(UI.repair.form).waitFor();
+      await input(page, p.sameTaskSteps[i], UI.repair); await page.reload(); await waitForPractice(page, p.lesson, 'guided', i);
       check(out, 'repair-draft-survives-reload', await page.locator(UI.repair.input).inputValue() === p.sameTaskSteps[i]);
     }
     await accept(page, out, p.sameTaskSteps[i], 'same-condition-' + i, UI.repair); await page.locator(UI.repair.next).click();
   }
-  await page.locator('main a[href="#practice/' + p.lesson + '/independent"]').first().click(); await page.locator('#answer-form').waitFor();
+  await page.locator('main a[href="#practice/' + p.lesson + '/independent"]').first().click(); await waitForPractice(page, p.lesson, 'independent');
   check(out, 'repair-return-restores-original-draft', await page.locator('#answer').inputValue() === original.draft);
   check(out, 'repair-preserves-help-mark', (await session(page, p.lesson, 'independent')).assisted);
   await accept(page, out, p.answer, 'assisted-independent'); await page.locator('#next').click(); await page.locator('.result-panel').waitFor();
@@ -250,7 +271,7 @@ async function checkpointHelpProtocol(browser, base) {
   try {
     const created = await startPage(browser, base, { id: 'checkpoint-help-protocol', width: 360 }, null);
     context = created.context; const page = created.page; await enterCheckpoint(page);
-    await page.locator('#checkpoint-help').click(); await page.locator('#answer-form').waitFor();
+    await page.locator('#checkpoint-help').click(); await waitForPractice(page, 'prob-count', 'guided', 0);
     let current = (await saved(page, CHECKPOINT_KEY)).round.items[0];
     check(out, 'checkpoint-help-marks-current-condition-assisted', current.assisted && !current.submitted);
     check(out, 'checkpoint-repair-retains-exact-task', (await session(page, 'prob-count')).taskId === 'prob-count-4');

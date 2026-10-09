@@ -19,6 +19,7 @@ body{overflow-wrap:anywhere}.model-panel input[type=range]{margin-inline:0}.circ
 .calm-view .hero-art,.calm-view .how{display:none}.calm-view .hero{display:block}
 .calm-view .eyebrow{letter-spacing:.04em;text-transform:none;font-size:14px}
 .calm-view .focused-practice.with-model{grid-template-columns:minmax(0,1fr)}
+.calm-view .focused-practice .condition-panel{position:static}
 .calm-view .task-condition,.calm-view .question{font-size:22px;line-height:1.65}
 .calm-view .current-question{border-left:4px solid var(--blue);padding-left:18px}
 .calm-view .button{min-height:48px}.calm-view .small{font-size:15px}
