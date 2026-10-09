@@ -23,8 +23,9 @@
     return { A: [ab * Math.cos(rad(b)), ab * Math.sin(rad(b))], B: [0, 0], C: [base, 0] };
   }
   function figure(container, task, points, context, draw, note) {
-    const helpNotice = context.mode === 'independent' && !context.solved ? ' Открытие построения — подсказка.' : '';
-    const defaultNote = (note || 'Это чертёж к текущей задаче. Кнопка поможет выделить нужные элементы.') + helpNotice;
+    const independent = context.mode === 'independent' && !context.solved;
+    const helpNotice = independent ? ' Открытие построения — подсказка.' : '';
+    const defaultNote = (independent ? 'Это чертёж к текущей задаче.' : (note || 'Это чертёж к текущей задаче. Кнопка поможет выделить нужные элементы.')) + helpNotice;
     const wrapper = document.createElement('div'); wrapper.className = 'profile-task-model'; wrapper.dataset.taskId = task.id;
     const svg = el('svg', { viewBox: '0 0 480 340', role: 'img', 'aria-label': task.prompt, class: 'profile-task-svg' }, wrapper);
     svg.style.cssText = 'display:block;width:100%;max-width:100%;height:auto;overflow:visible';
@@ -81,9 +82,17 @@
         el('path', { d: `M ${p[0]} ${p[1]} A ${r} ${r} 0 ${to - from > 180 ? 1 : 0} 0 ${q[0]} ${q[1]}`, fill: 'none', stroke: color, 'stroke-width': 5, 'stroke-linecap': 'round' }, parent);
       },
       toggle(label, render, explanation, initial = false) {
+        if (independent) initial = false;
         const layer = el('g', { 'data-model-layer': label, visibility: initial ? 'visible' : 'hidden' }, svg), old = parent; parent = layer; render(api); parent = old;
-        const button = document.createElement('button'); button.type = 'button'; button.textContent = label; button.setAttribute('aria-pressed', String(initial)); button.style.cssText = 'min-height:44px;max-width:100%;white-space:normal'; controls.append(button);
-        const onClick = () => { const active = button.getAttribute('aria-pressed') !== 'true'; button.setAttribute('aria-pressed', String(active)); layer.setAttribute('visibility', active ? 'visible' : 'hidden'); feedback.textContent = active ? explanation : defaultNote; if (active && context.mode === 'independent' && !context.solved && typeof context.onHelp === 'function') context.onHelp(); };
+        const button = document.createElement('button'); button.type = 'button'; button.textContent = independent ? 'Показать подсказку к рисунку' : label; button.setAttribute('aria-pressed', String(initial)); button.style.cssText = 'min-height:44px;max-width:100%;white-space:normal'; controls.append(button);
+        const onClick = () => {
+          const active = button.getAttribute('aria-pressed') !== 'true';
+          if (active && independent && typeof context.onHelp === 'function') context.onHelp();
+          button.setAttribute('aria-pressed', String(active));
+          if (independent) button.textContent = active ? 'Скрыть подсказку' : 'Показать подсказку к рисунку';
+          layer.setAttribute('visibility', active ? 'visible' : 'hidden');
+          feedback.textContent = active ? explanation : defaultNote;
+        };
         button.addEventListener('click', onClick); disposers.push(() => button.removeEventListener('click', onClick));
       }
     };

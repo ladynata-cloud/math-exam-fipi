@@ -1,0 +1,1115 @@
+{
+  "gate": "PROFILE_LEARNER_ROBOTS",
+  "version": 1,
+  "startedAt": "2026-10-09T14:43:34.695Z",
+  "finishedAt": "2026-10-09T14:43:48.874Z",
+  "mode": "verification",
+  "scope": "Deterministic interface and teaching-support simulations, not evidence of real pupil learning.",
+  "answerPolicy": "Fixtures were calculated from the visible task statements; learner runners never read task.answer or steps[].answer. Session seeding selects one known exercise only.",
+  "caveats": [
+    "Scripted mistakes and later corrections test interface support and credit rules; they do not establish human learning.",
+    "Independent answers are predetermined transfer examples, not claims that a model or pupil inferred a new rule.",
+    "Fresh browser contexts isolate personas; persisted sessions are inspected to verify restoration and avoid false credit."
+  ],
+  "sourceHashes": {
+    "app.js": "22aadbb6fe7a0855f263eafcb747c8c78df3a3c299da71160a13bd5cb187e36b",
+    "state.js": "a492c3491fac4c1b257aeafc004b205f2eaa1a9b712e243dfefd18125910cf92",
+    "algebra-data.js": "6f1526827b5efdb6259cae74af93e4849161de9368efef48d5a14fa2de73f70a",
+    "equations-data.js": "45c8090c44e6c163e1ae7cb00e2a6540179f490096e4f0d28111016b1c2de423"
+  },
+  "sourceChangedDuringRun": [],
+  "summary": {
+    "personas": 6,
+    "passedPersonas": 6,
+    "checks": 341,
+    "passedChecks": 341,
+    "failures": [],
+    "runtimeErrors": 0,
+    "failedRequests": 0,
+    "sourceDrift": 0
+  },
+  "passed": true,
+  "baseline": {
+    "base": "aabdb8d9396bef502ced049e7867774c1885ddef",
+    "startedAt": "2026-10-09T14:39:57.759Z",
+    "summary": {
+      "personas": 6,
+      "passedPersonas": 1,
+      "checks": 304,
+      "passedChecks": 299,
+      "failures": [
+        {
+          "persona": "oge4_axes_confusion",
+          "id": "guided-requires-final-answer",
+          "passed": false,
+          "observed": "Task already completed after preparatory steps",
+          "expected": "A final answer must be entered and checked before completion"
+        },
+        {
+          "persona": "positive_root_in_left_half",
+          "id": "guided-requires-final-answer",
+          "passed": false,
+          "observed": "Task already completed after preparatory steps",
+          "expected": "A final answer must be entered and checked before completion"
+        },
+        {
+          "persona": "radians_loses_turn",
+          "id": "guided-requires-final-answer",
+          "passed": false,
+          "observed": "Task already completed after preparatory steps",
+          "expected": "A final answer must be entered and checked before completion"
+        },
+        {
+          "persona": "hasty_keyboard",
+          "id": "guided-requires-final-answer",
+          "passed": false,
+          "observed": "Task already completed after preparatory steps",
+          "expected": "A final answer must be entered and checked before completion"
+        },
+        {
+          "persona": "needs_return_and_hint",
+          "id": "guided-requires-final-answer",
+          "passed": false,
+          "observed": "Task already completed after preparatory steps",
+          "expected": "A final answer must be entered and checked before completion"
+        }
+      ],
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    "sourceHashes": {
+      "app.js": "feeb077b602d7ad20a1ec79fcd4a4d314156a46c190acfec7aa45947ac2fc898",
+      "state.js": "a492c3491fac4c1b257aeafc004b205f2eaa1a9b712e243dfefd18125910cf92",
+      "algebra-data.js": "1c80de33566856076b46924347be2d45a3cfa4232848a4348b7c86cf392bd279",
+      "equations-data.js": "45c8090c44e6c163e1ae7cb00e2a6540179f490096e4f0d28111016b1c2de423"
+    }
+  },
+  "personas": [
+    {
+      "id": "oge4_axes_confusion",
+      "name": "ОГЭ на 4, слабая тригонометрия: путает оси",
+      "viewport": 1280,
+      "misconception": "Считает, что sin — первая координата.",
+      "repairRule": "P = (cos α; sin α), значит sin — вертикальная координата y.",
+      "fixture": {
+        "task": "trig-coordinates-1",
+        "statement": "P = (3/5; 4/5), найти sin α"
+      },
+      "passed": true,
+      "checks": 55,
+      "passedChecks": 55,
+      "failures": [],
+      "checkIds": [
+        "fixture-is-selected",
+        "accepted:guided-0",
+        "single-acceptance:guided-0",
+        "no-horizontal-overflow:guided-0",
+        "wrong-answer-blocks-advance:guided-1",
+        "wrong-answer-does-not-earn-step:guided-1",
+        "visible-hint:guided-1",
+        "return-preserves-step-and-draft:guided-1",
+        "help-marked:guided-1",
+        "reload-preserves-full-session:guided-1",
+        "reload-restores-draft:guided-1",
+        "reload-retains-accepted-history:guided-1",
+        "accepted:guided-1",
+        "single-acceptance:guided-1",
+        "no-horizontal-overflow:guided-1",
+        "guided-requires-final-answer",
+        "not-done-before-final",
+        "accepted:guided-final",
+        "single-acceptance:guided-final",
+        "no-horizontal-overflow:guided-final",
+        "guided-is-not-independent-credit",
+        "preparatory-history-remains",
+        "new-condition:0",
+        "wrong-answer-blocks-advance:independent-assisted",
+        "wrong-answer-does-not-earn-step:independent-assisted",
+        "visible-hint:independent-assisted",
+        "return-preserves-step-and-draft:independent-assisted",
+        "help-marked:independent-assisted",
+        "accepted:independent-0",
+        "single-acceptance:independent-0",
+        "no-horizontal-overflow:independent-0",
+        "credit-count:0",
+        "help-or-error-never-claims-independent",
+        "completion-reload-idempotent:0",
+        "new-condition:1",
+        "accepted:independent-1",
+        "single-acceptance:independent-1",
+        "no-horizontal-overflow:independent-1",
+        "credit-count:1",
+        "one-new-answer-does-not-claim-two",
+        "completion-reload-idempotent:1",
+        "new-condition:2",
+        "accepted:independent-2",
+        "single-acceptance:independent-2",
+        "no-horizontal-overflow:independent-2",
+        "credit-count:2",
+        "completion-reload-idempotent:2",
+        "repeat-is-labelled-familiar",
+        "accepted:known-repeat",
+        "single-acceptance:known-repeat",
+        "no-horizontal-overflow:known-repeat",
+        "repeat-does-not-increase-independent-credit",
+        "repeat-is-labelled-training",
+        "clean-repeat-has-honest-status",
+        "no-horizontal-overflow:result"
+      ],
+      "events": [
+        {
+          "action": "visible-condition",
+          "text": "Конечная точка угла α на единичной окружности: P = (3/5; 4/5). Найдите sin α."
+        },
+        {
+          "action": "answer",
+          "label": "guided-0",
+          "value": "1",
+          "question": "В какой четверти лежит точка P? Введите номер от 1 до 4."
+        },
+        {
+          "action": "misconception",
+          "label": "guided-1",
+          "value": "Абсцисса x",
+          "feedback": "Пока не сходится. Первая координата — x = cos α. Вторая — y = sin α."
+        },
+        {
+          "action": "repair",
+          "label": "guided-1",
+          "explanation": "Абсцисса x отвечает за движение вправо и влево. Ордината y — вверх и вниз. На единичной окружности x = cos α, y = sin α."
+        },
+        {
+          "action": "answer",
+          "label": "guided-1",
+          "value": "Ордината y",
+          "question": "Какая координата точки равна sin α?"
+        },
+        {
+          "action": "answer",
+          "label": "guided-final",
+          "value": "4/5",
+          "question": "Введите числовое значение sin α для точки P из условия."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-coordinates-4",
+          "text": "Конечная точка угла α на единичной окружности: P = (7/25; -24/25). Найдите cos α."
+        },
+        {
+          "action": "misconception",
+          "label": "independent-assisted",
+          "value": "-24/25",
+          "feedback": "Пока не сходится. Попробуйте ещё раз. Если трудно — откройте подсказку к этому шагу."
+        },
+        {
+          "action": "repair",
+          "label": "independent-assisted",
+          "explanation": "Абсцисса x отвечает за движение вправо и влево. Ордината y — вверх и вниз. На единичной окружности x = cos α, y = sin α."
+        },
+        {
+          "action": "answer",
+          "label": "independent-0",
+          "value": "7/25",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-coordinates-5",
+          "text": "Конечная точка угла α на единичной окружности: P = (-20/29; 21/29). Найдите sin α."
+        },
+        {
+          "action": "answer",
+          "label": "independent-1",
+          "value": "21/29",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-coordinates-6",
+          "text": "Конечная точка угла α на единичной окружности: P = (12/37; -35/37). Найдите cos α."
+        },
+        {
+          "action": "answer",
+          "label": "independent-2",
+          "value": "12/37",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "answer",
+          "label": "known-repeat",
+          "value": "7/25",
+          "question": "Найдите ответ."
+        }
+      ],
+      "finalRecord": {
+        "guided": [
+          "trig-coordinates-1"
+        ],
+        "independent": [
+          "trig-coordinates-5",
+          "trig-coordinates-6"
+        ],
+        "attempts": 5
+      }
+    },
+    {
+      "id": "positive_root_in_left_half",
+      "name": "Берёт положительный корень в левой полуокружности",
+      "viewport": 360,
+      "misconception": "Из cos² = 144/169 выбирает плюс независимо от четверти.",
+      "repairRule": "Корень даёт модуль 12/13; во II четверти x и cos отрицательны.",
+      "fixture": {
+        "task": "algebra-cosine-2",
+        "statement": "sin α = 5/13, II четверть; найти cos α"
+      },
+      "passed": true,
+      "checks": 61,
+      "passedChecks": 61,
+      "failures": [],
+      "checkIds": [
+        "fixture-is-selected",
+        "accepted:guided-0",
+        "single-acceptance:guided-0",
+        "no-horizontal-overflow:guided-0",
+        "reload-preserves-full-session:guided-1",
+        "reload-restores-draft:guided-1",
+        "reload-retains-accepted-history:guided-1",
+        "accepted:guided-1",
+        "single-acceptance:guided-1",
+        "no-horizontal-overflow:guided-1",
+        "wrong-answer-blocks-advance:guided-2",
+        "wrong-answer-does-not-earn-step:guided-2",
+        "visible-hint:guided-2",
+        "return-preserves-step-and-draft:guided-2",
+        "help-marked:guided-2",
+        "accepted:guided-2",
+        "single-acceptance:guided-2",
+        "no-horizontal-overflow:guided-2",
+        "accepted:guided-3",
+        "single-acceptance:guided-3",
+        "no-horizontal-overflow:guided-3",
+        "guided-requires-final-answer",
+        "not-done-before-final",
+        "accepted:guided-final",
+        "single-acceptance:guided-final",
+        "no-horizontal-overflow:guided-final",
+        "guided-is-not-independent-credit",
+        "preparatory-history-remains",
+        "new-condition:0",
+        "wrong-answer-blocks-advance:independent-assisted",
+        "wrong-answer-does-not-earn-step:independent-assisted",
+        "visible-hint:independent-assisted",
+        "return-preserves-step-and-draft:independent-assisted",
+        "help-marked:independent-assisted",
+        "accepted:independent-0",
+        "single-acceptance:independent-0",
+        "no-horizontal-overflow:independent-0",
+        "credit-count:0",
+        "help-or-error-never-claims-independent",
+        "completion-reload-idempotent:0",
+        "new-condition:1",
+        "accepted:independent-1",
+        "single-acceptance:independent-1",
+        "no-horizontal-overflow:independent-1",
+        "credit-count:1",
+        "one-new-answer-does-not-claim-two",
+        "completion-reload-idempotent:1",
+        "new-condition:2",
+        "accepted:independent-2",
+        "single-acceptance:independent-2",
+        "no-horizontal-overflow:independent-2",
+        "credit-count:2",
+        "completion-reload-idempotent:2",
+        "repeat-is-labelled-familiar",
+        "accepted:known-repeat",
+        "single-acceptance:known-repeat",
+        "no-horizontal-overflow:known-repeat",
+        "repeat-does-not-increase-independent-credit",
+        "repeat-is-labelled-training",
+        "clean-repeat-has-honest-status",
+        "no-horizontal-overflow:result"
+      ],
+      "events": [
+        {
+          "action": "visible-condition",
+          "text": "Известно, что sin α = 5/13, а угол α лежит в 2-й четверти. Найдите cos α."
+        },
+        {
+          "action": "answer",
+          "label": "guided-0",
+          "value": "25/169",
+          "question": "Найдите sin² α."
+        },
+        {
+          "action": "answer",
+          "label": "guided-1",
+          "value": "144/169",
+          "question": "Найдите cos² α."
+        },
+        {
+          "action": "misconception",
+          "label": "guided-2",
+          "value": "1",
+          "feedback": "Пока не сходится. Знак данного синуса не подсказывает знак косинуса. В I и IV четвертях cos положителен, во II и III — отрицателен."
+        },
+        {
+          "action": "repair",
+          "label": "guided-2",
+          "explanation": "Абсцисса x отвечает за движение вправо и влево. Ордината y — вверх и вниз. На единичной окружности x = cos α, y = sin α."
+        },
+        {
+          "action": "answer",
+          "label": "guided-2",
+          "value": "-1",
+          "question": "Какой знак должен быть у cos α? Введите 1 или −1."
+        },
+        {
+          "action": "answer",
+          "label": "guided-3",
+          "value": "12/13",
+          "question": "Извлеките положительный квадратный корень из cos² α = 144/169. Чему равен |cos α|?"
+        },
+        {
+          "action": "answer",
+          "label": "guided-final",
+          "value": "-12/13",
+          "question": "Соедините найденный модуль и знак. Чему равен cos α?"
+        },
+        {
+          "action": "independent-condition",
+          "task": "algebra-cosine-4",
+          "text": "Известно, что sin α = -7/25, а угол α лежит в 4-й четверти. Найдите cos α."
+        },
+        {
+          "action": "misconception",
+          "label": "independent-assisted",
+          "value": "-24/25",
+          "feedback": "Пока не сходится. Попробуйте ещё раз. Если трудно — откройте подсказку к этому шагу."
+        },
+        {
+          "action": "repair",
+          "label": "independent-assisted",
+          "explanation": "Абсцисса x отвечает за движение вправо и влево. Ордината y — вверх и вниз. На единичной окружности x = cos α, y = sin α."
+        },
+        {
+          "action": "answer",
+          "label": "independent-0",
+          "value": "24/25",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "algebra-cosine-5",
+          "text": "Известно, что sin α = 20/29, а угол α лежит в 2-й четверти. Найдите cos α."
+        },
+        {
+          "action": "answer",
+          "label": "independent-1",
+          "value": "-21/29",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "algebra-cosine-6",
+          "text": "Известно, что sin α = -12/37, а угол α лежит в 3-й четверти. Найдите cos α."
+        },
+        {
+          "action": "answer",
+          "label": "independent-2",
+          "value": "-35/37",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "answer",
+          "label": "known-repeat",
+          "value": "24/25",
+          "question": "Найдите ответ."
+        }
+      ],
+      "finalRecord": {
+        "guided": [
+          "algebra-cosine-2"
+        ],
+        "independent": [
+          "algebra-cosine-5",
+          "algebra-cosine-6"
+        ],
+        "attempts": 5
+      }
+    },
+    {
+      "id": "radians_loses_turn",
+      "name": "Теряет полный оборот при переводе в радианы",
+      "viewport": 360,
+      "misconception": "Заменяет исходный угол 450° сонаправленным 90°.",
+      "repairRule": "Положение луча 90°, но исходный поворот 450°. k = 450/180 = 5/2.",
+      "fixture": {
+        "task": "trig-angle-3",
+        "statement": "450° = kπ рад, найти k"
+      },
+      "passed": true,
+      "checks": 55,
+      "passedChecks": 55,
+      "failures": [],
+      "checkIds": [
+        "fixture-is-selected",
+        "accepted:guided-0",
+        "single-acceptance:guided-0",
+        "no-horizontal-overflow:guided-0",
+        "reload-preserves-full-session:guided-1",
+        "reload-restores-draft:guided-1",
+        "reload-retains-accepted-history:guided-1",
+        "accepted:guided-1",
+        "single-acceptance:guided-1",
+        "no-horizontal-overflow:guided-1",
+        "guided-requires-final-answer",
+        "not-done-before-final",
+        "wrong-answer-blocks-advance:final",
+        "wrong-answer-does-not-earn-step:final",
+        "visible-hint:final",
+        "return-preserves-step-and-draft:final",
+        "help-marked:final",
+        "accepted:guided-final",
+        "single-acceptance:guided-final",
+        "no-horizontal-overflow:guided-final",
+        "guided-is-not-independent-credit",
+        "preparatory-history-remains",
+        "new-condition:0",
+        "wrong-answer-blocks-advance:independent-assisted",
+        "wrong-answer-does-not-earn-step:independent-assisted",
+        "visible-hint:independent-assisted",
+        "return-preserves-step-and-draft:independent-assisted",
+        "help-marked:independent-assisted",
+        "accepted:independent-0",
+        "single-acceptance:independent-0",
+        "no-horizontal-overflow:independent-0",
+        "credit-count:0",
+        "help-or-error-never-claims-independent",
+        "completion-reload-idempotent:0",
+        "new-condition:1",
+        "accepted:independent-1",
+        "single-acceptance:independent-1",
+        "no-horizontal-overflow:independent-1",
+        "credit-count:1",
+        "one-new-answer-does-not-claim-two",
+        "completion-reload-idempotent:1",
+        "new-condition:2",
+        "accepted:independent-2",
+        "single-acceptance:independent-2",
+        "no-horizontal-overflow:independent-2",
+        "credit-count:2",
+        "completion-reload-idempotent:2",
+        "repeat-is-labelled-familiar",
+        "accepted:known-repeat",
+        "single-acceptance:known-repeat",
+        "no-horizontal-overflow:known-repeat",
+        "repeat-does-not-increase-independent-credit",
+        "repeat-is-labelled-training",
+        "clean-repeat-has-honest-status",
+        "no-horizontal-overflow:result"
+      ],
+      "events": [
+        {
+          "action": "visible-condition",
+          "text": "Запишите угол 450° в виде kπ рад. В ответ введите только число k (можно дробью)."
+        },
+        {
+          "action": "answer",
+          "label": "guided-0",
+          "value": "5",
+          "question": "Скольким четвертям оборота равен этот направленный угол? Разделите градусы на 90; знак сохраните."
+        },
+        {
+          "action": "answer",
+          "label": "guided-1",
+          "value": "90",
+          "question": "Какой угол от 0° включительно до 360° не включительно задаёт тот же конечный луч? Введите градусы."
+        },
+        {
+          "action": "misconception",
+          "label": "final",
+          "value": "1/2",
+          "feedback": "Пока не сходится. Не берите угол из предыдущего шага: там мы нашли только луч. Для ответа нужно 450/180, без символа π."
+        },
+        {
+          "action": "repair",
+          "label": "final",
+          "explanation": "Четверть оборота — 90°, половина — 180°. Знак минус меняет направление поворота. Сокращай числитель и знаменатель дроби на один общий делитель."
+        },
+        {
+          "action": "answer",
+          "label": "guided-final",
+          "value": "5/2",
+          "question": "Вернитесь к исходному углу 450°. В записи 450° = kπ рад чему равно k?"
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-angle-4",
+          "text": "Запишите угол 210° в виде kπ рад. В ответ введите только число k (можно дробью)."
+        },
+        {
+          "action": "misconception",
+          "label": "independent-assisted",
+          "value": "1/6",
+          "feedback": "Пока не сходится. Попробуйте ещё раз. Если трудно — откройте подсказку к этому шагу."
+        },
+        {
+          "action": "repair",
+          "label": "independent-assisted",
+          "explanation": "Четверть оборота — 90°, половина — 180°. Знак минус меняет направление поворота. Сокращай числитель и знаменатель дроби на один общий делитель."
+        },
+        {
+          "action": "answer",
+          "label": "independent-0",
+          "value": "7/6",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-angle-5",
+          "text": "Запишите угол -270° в виде kπ рад. В ответ введите только число k (можно дробью)."
+        },
+        {
+          "action": "answer",
+          "label": "independent-1",
+          "value": "-3/2",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-angle-6",
+          "text": "Запишите угол 540° в виде kπ рад. В ответ введите только число k (можно дробью)."
+        },
+        {
+          "action": "answer",
+          "label": "independent-2",
+          "value": "3",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "answer",
+          "label": "known-repeat",
+          "value": "7/6",
+          "question": "Найдите ответ."
+        }
+      ],
+      "finalRecord": {
+        "guided": [
+          "trig-angle-3"
+        ],
+        "independent": [
+          "trig-angle-5",
+          "trig-angle-6"
+        ],
+        "attempts": 5
+      }
+    },
+    {
+      "id": "negative_exponent_gap",
+      "name": "Пробел в отрицательных показателях степени",
+      "viewport": 1280,
+      "misconception": "Считает отрицательную степень отрицательным числом: 5⁻¹ = −5.",
+      "repairRule": "5⁻¹ = 1/5: минус в показателе означает обратное число, а не минус перед числом.",
+      "fixture": {
+        "task": "expr-powers-3",
+        "statement": "(5² · 5³)/5⁶"
+      },
+      "passed": true,
+      "checks": 54,
+      "passedChecks": 54,
+      "failures": [],
+      "checkIds": [
+        "fixture-is-selected",
+        "accepted:guided-0",
+        "single-acceptance:guided-0",
+        "no-horizontal-overflow:guided-0",
+        "reload-preserves-full-session:guided-1",
+        "reload-restores-draft:guided-1",
+        "reload-retains-accepted-history:guided-1",
+        "accepted:guided-1",
+        "single-acceptance:guided-1",
+        "no-horizontal-overflow:guided-1",
+        "wrong-answer-blocks-advance:guided-2",
+        "wrong-answer-does-not-earn-step:guided-2",
+        "visible-hint:guided-2",
+        "return-preserves-step-and-draft:guided-2",
+        "help-marked:guided-2",
+        "accepted:guided-2",
+        "single-acceptance:guided-2",
+        "no-horizontal-overflow:guided-2",
+        "guided-requires-final-answer",
+        "guided-is-not-independent-credit",
+        "preparatory-history-remains",
+        "new-condition:0",
+        "wrong-answer-blocks-advance:independent-assisted",
+        "wrong-answer-does-not-earn-step:independent-assisted",
+        "visible-hint:independent-assisted",
+        "return-preserves-step-and-draft:independent-assisted",
+        "help-marked:independent-assisted",
+        "accepted:independent-0",
+        "single-acceptance:independent-0",
+        "no-horizontal-overflow:independent-0",
+        "credit-count:0",
+        "help-or-error-never-claims-independent",
+        "completion-reload-idempotent:0",
+        "new-condition:1",
+        "accepted:independent-1",
+        "single-acceptance:independent-1",
+        "no-horizontal-overflow:independent-1",
+        "credit-count:1",
+        "one-new-answer-does-not-claim-two",
+        "completion-reload-idempotent:1",
+        "new-condition:2",
+        "accepted:independent-2",
+        "single-acceptance:independent-2",
+        "no-horizontal-overflow:independent-2",
+        "credit-count:2",
+        "completion-reload-idempotent:2",
+        "repeat-is-labelled-familiar",
+        "accepted:known-repeat",
+        "single-acceptance:known-repeat",
+        "no-horizontal-overflow:known-repeat",
+        "repeat-does-not-increase-independent-credit",
+        "repeat-is-labelled-training",
+        "clean-repeat-has-honest-status",
+        "no-horizontal-overflow:result"
+      ],
+      "events": [
+        {
+          "action": "visible-condition",
+          "text": "Найдите значение (52 · 53)/56."
+        },
+        {
+          "action": "answer",
+          "label": "guided-0",
+          "value": "5",
+          "question": "В числителе степени перемножаются. Сложите показатели: 2 + (3)."
+        },
+        {
+          "action": "answer",
+          "label": "guided-1",
+          "value": "-1",
+          "question": "Теперь делим на 56. Найдите показатель: 5 − (6)."
+        },
+        {
+          "action": "misconception",
+          "label": "guided-2",
+          "value": "-5",
+          "feedback": "Пока не сходится. Попробуйте ещё раз. Если трудно — откройте подсказку к этому шагу."
+        },
+        {
+          "action": "repair",
+          "label": "guided-2",
+          "explanation": "В 2³ основание — 2, показатель — 3. Это 2 · 2 · 2."
+        },
+        {
+          "action": "answer",
+          "label": "guided-2",
+          "value": "1/5",
+          "question": "Вычислите 5−1."
+        },
+        {
+          "action": "independent-condition",
+          "task": "expr-powers-4",
+          "text": "Найдите значение (43 · 42)/43."
+        },
+        {
+          "action": "misconception",
+          "label": "independent-assisted",
+          "value": "8",
+          "feedback": "Пока не сходится. Попробуйте ещё раз. Если трудно — откройте подсказку к этому шагу."
+        },
+        {
+          "action": "repair",
+          "label": "independent-assisted",
+          "explanation": "В 2³ основание — 2, показатель — 3. Это 2 · 2 · 2."
+        },
+        {
+          "action": "answer",
+          "label": "independent-0",
+          "value": "16",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "expr-powers-5",
+          "text": "Найдите значение (26 · 2−2)/25."
+        },
+        {
+          "action": "answer",
+          "label": "independent-1",
+          "value": "1/2",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "expr-powers-6",
+          "text": "Найдите значение (3−1 · 34)/32."
+        },
+        {
+          "action": "answer",
+          "label": "independent-2",
+          "value": "3",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "answer",
+          "label": "known-repeat",
+          "value": "16",
+          "question": "Найдите ответ."
+        }
+      ],
+      "finalRecord": {
+        "guided": [
+          "expr-powers-3"
+        ],
+        "independent": [
+          "expr-powers-5",
+          "expr-powers-6"
+        ],
+        "attempts": 5
+      }
+    },
+    {
+      "id": "hasty_keyboard",
+      "name": "Торопится: пустой ввод, буквы, повтор Enter",
+      "viewport": 360,
+      "misconception": "Ошибки ввода отделяются от математической ошибки.",
+      "repairRule": "Введите дробь 2/3; одно принятие ответа не должно удваивать прогресс.",
+      "fixture": {
+        "task": "trig-angle-1",
+        "statement": "60° = kπ рад, найти k"
+      },
+      "passed": true,
+      "checks": 55,
+      "passedChecks": 55,
+      "failures": [],
+      "checkIds": [
+        "fixture-is-selected",
+        "input-not-math-error:blank",
+        "input-not-math-error:abc",
+        "input-not-math-error:1/0",
+        "accepted:guided-0",
+        "single-acceptance:guided-0",
+        "no-horizontal-overflow:guided-0",
+        "rapid-repeat-submit-is-idempotent:0",
+        "reload-preserves-full-session:guided-1",
+        "reload-restores-draft:guided-1",
+        "reload-retains-accepted-history:guided-1",
+        "accepted:guided-1",
+        "single-acceptance:guided-1",
+        "no-horizontal-overflow:guided-1",
+        "rapid-repeat-submit-is-idempotent:1",
+        "guided-requires-final-answer",
+        "not-done-before-final",
+        "accepted:guided-final",
+        "single-acceptance:guided-final",
+        "no-horizontal-overflow:guided-final",
+        "guided-is-not-independent-credit",
+        "preparatory-history-remains",
+        "new-condition:0",
+        "wrong-answer-blocks-advance:independent-assisted",
+        "wrong-answer-does-not-earn-step:independent-assisted",
+        "visible-hint:independent-assisted",
+        "return-preserves-step-and-draft:independent-assisted",
+        "help-marked:independent-assisted",
+        "accepted:independent-0",
+        "single-acceptance:independent-0",
+        "no-horizontal-overflow:independent-0",
+        "credit-count:0",
+        "help-or-error-never-claims-independent",
+        "completion-reload-idempotent:0",
+        "new-condition:1",
+        "accepted:independent-1",
+        "single-acceptance:independent-1",
+        "no-horizontal-overflow:independent-1",
+        "credit-count:1",
+        "one-new-answer-does-not-claim-two",
+        "completion-reload-idempotent:1",
+        "new-condition:2",
+        "accepted:independent-2",
+        "single-acceptance:independent-2",
+        "no-horizontal-overflow:independent-2",
+        "credit-count:2",
+        "completion-reload-idempotent:2",
+        "repeat-is-labelled-familiar",
+        "accepted:known-repeat",
+        "single-acceptance:known-repeat",
+        "no-horizontal-overflow:known-repeat",
+        "repeat-does-not-increase-independent-credit",
+        "repeat-is-labelled-training",
+        "clean-repeat-has-honest-status",
+        "no-horizontal-overflow:result"
+      ],
+      "events": [
+        {
+          "action": "visible-condition",
+          "text": "Запишите угол 60° в виде kπ рад. В ответ введите только число k (можно дробью)."
+        },
+        {
+          "action": "answer",
+          "label": "guided-0",
+          "value": "2/3",
+          "question": "Скольким четвертям оборота равен этот направленный угол? Разделите градусы на 90; знак сохраните."
+        },
+        {
+          "action": "answer",
+          "label": "guided-1",
+          "value": "60",
+          "question": "Какой угол от 0° включительно до 360° не включительно задаёт тот же конечный луч? Введите градусы."
+        },
+        {
+          "action": "answer",
+          "label": "guided-final",
+          "value": "1/3",
+          "question": "Вернитесь к исходному углу 60°. В записи 60° = kπ рад чему равно k?"
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-angle-4",
+          "text": "Запишите угол 210° в виде kπ рад. В ответ введите только число k (можно дробью)."
+        },
+        {
+          "action": "misconception",
+          "label": "independent-assisted",
+          "value": "7",
+          "feedback": "Пока не сходится. Попробуйте ещё раз. Если трудно — откройте подсказку к этому шагу."
+        },
+        {
+          "action": "repair",
+          "label": "independent-assisted",
+          "explanation": "Четверть оборота — 90°, половина — 180°. Знак минус меняет направление поворота. Сокращай числитель и знаменатель дроби на один общий делитель."
+        },
+        {
+          "action": "answer",
+          "label": "independent-0",
+          "value": "7/6",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-angle-5",
+          "text": "Запишите угол -270° в виде kπ рад. В ответ введите только число k (можно дробью)."
+        },
+        {
+          "action": "answer",
+          "label": "independent-1",
+          "value": "-3/2",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-angle-6",
+          "text": "Запишите угол 540° в виде kπ рад. В ответ введите только число k (можно дробью)."
+        },
+        {
+          "action": "answer",
+          "label": "independent-2",
+          "value": "3",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "answer",
+          "label": "known-repeat",
+          "value": "7/6",
+          "question": "Найдите ответ."
+        }
+      ],
+      "finalRecord": {
+        "guided": [
+          "trig-angle-1"
+        ],
+        "independent": [
+          "trig-angle-5",
+          "trig-angle-6"
+        ],
+        "attempts": 5
+      }
+    },
+    {
+      "id": "needs_return_and_hint",
+      "name": "Нуждается в подсказке и возвращении на свой шаг",
+      "viewport": 360,
+      "misconception": "Путает опорный острый угол с расстоянием до вертикальной оси.",
+      "repairRule": "В III четверти острый угол с горизонтальной осью равен 240°−180°=60°; cos отрицателен.",
+      "fixture": {
+        "task": "trig-special-2",
+        "statement": "Найти 2 cos 240°"
+      },
+      "passed": true,
+      "checks": 61,
+      "passedChecks": 61,
+      "failures": [],
+      "checkIds": [
+        "fixture-is-selected",
+        "accepted:guided-0",
+        "single-acceptance:guided-0",
+        "no-horizontal-overflow:guided-0",
+        "wrong-answer-blocks-advance:guided-1",
+        "wrong-answer-does-not-earn-step:guided-1",
+        "visible-hint:guided-1",
+        "return-preserves-step-and-draft:guided-1",
+        "help-marked:guided-1",
+        "reload-preserves-full-session:guided-1",
+        "reload-restores-draft:guided-1",
+        "reload-retains-accepted-history:guided-1",
+        "accepted:guided-1",
+        "single-acceptance:guided-1",
+        "no-horizontal-overflow:guided-1",
+        "accepted:guided-2",
+        "single-acceptance:guided-2",
+        "no-horizontal-overflow:guided-2",
+        "accepted:guided-3",
+        "single-acceptance:guided-3",
+        "no-horizontal-overflow:guided-3",
+        "guided-requires-final-answer",
+        "not-done-before-final",
+        "accepted:guided-final",
+        "single-acceptance:guided-final",
+        "no-horizontal-overflow:guided-final",
+        "guided-is-not-independent-credit",
+        "preparatory-history-remains",
+        "new-condition:0",
+        "wrong-answer-blocks-advance:independent-assisted",
+        "wrong-answer-does-not-earn-step:independent-assisted",
+        "visible-hint:independent-assisted",
+        "return-preserves-step-and-draft:independent-assisted",
+        "help-marked:independent-assisted",
+        "accepted:independent-0",
+        "single-acceptance:independent-0",
+        "no-horizontal-overflow:independent-0",
+        "credit-count:0",
+        "help-or-error-never-claims-independent",
+        "completion-reload-idempotent:0",
+        "new-condition:1",
+        "accepted:independent-1",
+        "single-acceptance:independent-1",
+        "no-horizontal-overflow:independent-1",
+        "credit-count:1",
+        "one-new-answer-does-not-claim-two",
+        "completion-reload-idempotent:1",
+        "new-condition:2",
+        "accepted:independent-2",
+        "single-acceptance:independent-2",
+        "no-horizontal-overflow:independent-2",
+        "credit-count:2",
+        "completion-reload-idempotent:2",
+        "repeat-is-labelled-familiar",
+        "accepted:known-repeat",
+        "single-acceptance:known-repeat",
+        "no-horizontal-overflow:known-repeat",
+        "repeat-does-not-increase-independent-credit",
+        "repeat-is-labelled-training",
+        "clean-repeat-has-honest-status",
+        "no-horizontal-overflow:result"
+      ],
+      "events": [
+        {
+          "action": "visible-condition",
+          "text": "Найдите 2 · cos(240°). Введите числовой ответ."
+        },
+        {
+          "action": "answer",
+          "label": "guided-0",
+          "value": "240",
+          "question": "Приведите угол к промежутку от 0° включительно до 360° не включительно. Введите градусы."
+        },
+        {
+          "action": "misconception",
+          "label": "guided-1",
+          "value": "120",
+          "feedback": "Пока не сходится. Попробуйте ещё раз. Если трудно — откройте подсказку к этому шагу."
+        },
+        {
+          "action": "repair",
+          "label": "guided-1",
+          "explanation": "Абсцисса x отвечает за движение вправо и влево. Ордината y — вверх и вниз. На единичной окружности x = cos α, y = sin α."
+        },
+        {
+          "action": "answer",
+          "label": "guided-1",
+          "value": "60",
+          "question": "Каков острый угол между конечным лучом и ближайшим направлением горизонтальной оси? Введите градусы."
+        },
+        {
+          "action": "answer",
+          "label": "guided-2",
+          "value": "-1",
+          "question": "Какой знак имеет cos этого угла? Введите 1 или −1."
+        },
+        {
+          "action": "answer",
+          "label": "guided-3",
+          "value": "1/2",
+          "question": "Найдите по таблице cos 60°. Пока нужен положительный модуль, без выбранного знака."
+        },
+        {
+          "action": "answer",
+          "label": "guided-final",
+          "value": "-1",
+          "question": "Вычислите всё выражение: 2 · (−1/2)."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-special-4",
+          "text": "Найдите √3 · sin(300°). Введите числовой ответ."
+        },
+        {
+          "action": "misconception",
+          "label": "independent-assisted",
+          "value": "1,5",
+          "feedback": "Пока не сходится. Попробуйте ещё раз. Если трудно — откройте подсказку к этому шагу."
+        },
+        {
+          "action": "repair",
+          "label": "independent-assisted",
+          "explanation": "Абсцисса x отвечает за движение вправо и влево. Ордината y — вверх и вниз. На единичной окружности x = cos α, y = sin α."
+        },
+        {
+          "action": "answer",
+          "label": "independent-0",
+          "value": "-1,5",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-special-5",
+          "text": "Найдите 2 · cos(420°). Введите числовой ответ."
+        },
+        {
+          "action": "answer",
+          "label": "independent-1",
+          "value": "1",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "independent-condition",
+          "task": "trig-special-6",
+          "text": "Найдите √2 · cos(225°). Введите числовой ответ."
+        },
+        {
+          "action": "answer",
+          "label": "independent-2",
+          "value": "-1",
+          "question": "Найдите ответ."
+        },
+        {
+          "action": "answer",
+          "label": "known-repeat",
+          "value": "-1,5",
+          "question": "Найдите ответ."
+        }
+      ],
+      "finalRecord": {
+        "guided": [
+          "trig-special-2"
+        ],
+        "independent": [
+          "trig-special-5",
+          "trig-special-6"
+        ],
+        "attempts": 5
+      }
+    }
+  ]
+}

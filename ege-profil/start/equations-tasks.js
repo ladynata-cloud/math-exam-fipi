@@ -41,10 +41,16 @@
       add('text',{x:418,y:197,fill:'#65798b','font-size':14},'x');
     }
     box.append(svg);
-    const button=doc.createElement('button');button.type='button';button.className='button quiet model-toggle';button.textContent='Показать части записи';button.setAttribute('aria-pressed','false');
+    const independent=context.mode==='independent'&&!context.solved;
+    const closedLabel=independent?'Показать подсказку к записи':'Показать части записи';
+    const button=doc.createElement('button');button.type='button';button.className='button quiet model-toggle';button.textContent=closedLabel;button.setAttribute('aria-pressed','false');
     const parts=doc.createElement('div');parts.hidden=true;parts.style.marginTop='12px';parts.style.lineHeight='1.6';parts.setAttribute('data-expression-parts','');
     task.diagram.parts.forEach(text=>{const p=doc.createElement('p');p.style.margin='4px 0';p.textContent=text;parts.append(p);});
-    button.onclick=()=>{const on=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(on));button.textContent=on?'Скрыть части записи':'Показать части записи';parts.hidden=!on;};
+    button.onclick=()=>{
+      const on=button.getAttribute('aria-pressed')!=='true';
+      if(on&&independent&&typeof context.onHelp==='function')context.onHelp();
+      button.setAttribute('aria-pressed',String(on));button.textContent=on?'Скрыть подсказку':closedLabel;parts.hidden=!on;
+    };
     box.append(button,parts);container.replaceChildren(box);
     return()=>{button.onclick=null;};
   }

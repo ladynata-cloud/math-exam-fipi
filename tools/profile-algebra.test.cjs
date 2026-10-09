@@ -83,7 +83,7 @@ function oracle(meta, label) {
   switch (meta.kind) {
     case 'angle': {
       assert(Number.isFinite(meta.degrees), `${label}: finite angle`);
-      return { steps: [meta.degrees / 90, normalize(meta.degrees)], final: meta.degrees / 180 };
+      return { steps: [meta.degrees / 90, normalize(meta.degrees), meta.degrees / 180], final: meta.degrees / 180 };
     }
     case 'coordinates': {
       const {xNum, yNum, den, fn} = meta;
@@ -91,7 +91,7 @@ function oracle(meta, label) {
       same(xNum * xNum + yNum * yNum, den * den, `${label}: point on unit circle`);
       assert(['sin', 'cos'].includes(fn), `${label}: valid function`);
       return {
-        steps: [quadrantOf(xNum, yNum), fn === 'cos' ? 'Абсцисса x' : 'Ордината y'],
+        steps: [quadrantOf(xNum, yNum), fn === 'cos' ? 'Абсцисса x' : 'Ордината y', (fn === 'cos' ? xNum : yNum) / den],
         final: (fn === 'cos' ? xNum : yNum) / den,
       };
     }
@@ -101,13 +101,13 @@ function oracle(meta, label) {
       const value = exactTrig(meta.fn, meta.degrees, label);
       assert(Number.isFinite(meta.scale), `${label}: finite scale`);
       same(value, Math[meta.fn](radians(meta.degrees)), `${label}: exact special-angle identity`);
-      return {steps: [angle, reference, Math.sign(value)], final: meta.scale * value};
+      return {steps: [angle, reference, Math.sign(value), Math.abs(value), meta.scale * value], final: meta.scale * value};
     }
     case 'tangent': {
       const {xNum, yNum, den} = meta;
       assert(den > 0 && xNum !== 0, `${label}: tangent domain cos ≠ 0`);
       same(xNum * xNum + yNum * yNum, den * den, `${label}: point on unit circle`);
-      return {steps: [xNum / den, yNum / den, Math.sign(xNum * yNum)], final: yNum / xNum};
+      return {steps: [xNum / den, yNum / den, Math.sign(xNum * yNum), yNum / xNum], final: yNum / xNum};
     }
     case 'exponential': {
       const {base, a, b, power} = meta;
@@ -115,7 +115,7 @@ function oracle(meta, label) {
       assert(Number.isFinite(a) && a !== 0, `${label}: unique linear exponent solution`);
       const result = (power - b) / a;
       same(base ** (a * result + b), base ** power, `${label}: exponential equation residual`);
-      return {steps: [power, power - b], final: result};
+      return {steps: [power, power - b, result], final: result};
     }
     case 'logarithmic': {
       const {base, a, b, power} = meta;
@@ -130,7 +130,7 @@ function oracle(meta, label) {
         assert.equal(a * x + b > 1e-12, a > 0 ? offset > 0 : offset < 0, `${label}: domain near boundary ${offset}`);
       }
       same(Math.log(a * result + b) / Math.log(base), power, `${label}: logarithmic equation residual`);
-      return {steps: [boundary, a > 0 ? '>' : '<', rhs], final: result};
+      return {steps: [boundary, a > 0 ? '>' : '<', rhs, rhs - b, result, a * result + b, result], final: result};
     }
     case 'recover-cosine': {
       const {sinNum, den, quadrant} = meta;
@@ -141,7 +141,7 @@ function oracle(meta, label) {
       const cos = cosSign * Math.sqrt(1 - sin * sin);
       same(sin * sin + cos * cos, 1, `${label}: Pythagorean identity`);
       assert.equal(quadrantOf(cos, sin), quadrant, `${label}: recovered point quadrant`);
-      return {steps: [sin * sin, 1 - sin * sin, cosSign], final: cos};
+      return {steps: [sin * sin, 1 - sin * sin, cosSign, Math.abs(cos), cos], final: cos};
     }
     case 'double-angle': {
       const {angle, coefficient} = meta;
@@ -150,7 +150,7 @@ function oracle(meta, label) {
       const sin = Math.sin(radians(angle)), complementarySin = Math.sin(radians(90 - angle));
       const value = coefficient * Math.sin(radians(2 * angle)) / (sin * complementarySin);
       same(value, 2 * coefficient, `${label}: independently evaluated double-angle expression`);
-      return {steps: [90 - angle, 2], final: value};
+      return {steps: [90 - angle, 2, 1, value], final: value};
     }
     default: assert.fail(`${label}: unrecognized oracle kind ${meta.kind}`);
   }

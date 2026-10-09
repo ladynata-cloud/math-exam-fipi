@@ -1,0 +1,238 @@
+{
+  "version": 1,
+  "scope": "Deterministic interface and teaching-support simulations, not evidence of real pupil learning.",
+  "answerPolicy": "Fixtures were calculated from the visible task statements; learner runners never read task.answer or steps[].answer. Session seeding selects one known exercise only.",
+  "personas": [
+    {
+      "id": "oge4_axes_confusion",
+      "name": "ОГЭ на 4, слабая тригонометрия: путает оси",
+      "width": 1280,
+      "lesson": "trig-coordinates",
+      "task": "trig-coordinates-1",
+      "statement": "P = (3/5; 4/5), найти sin α",
+      "steps": [
+        "1",
+        "Ордината y"
+      ],
+      "final": "4/5",
+      "errorStep": 1,
+      "wrong": "Абсцисса x",
+      "misconception": "Считает, что sin — первая координата.",
+      "repairRule": "P = (cos α; sin α), значит sin — вертикальная координата y.",
+      "independent": [
+        {
+          "task": "trig-coordinates-4",
+          "statement": "P = (7/25; -24/25), найти cos α",
+          "answer": "7/25",
+          "wrong": "-24/25"
+        },
+        {
+          "task": "trig-coordinates-5",
+          "statement": "P = (-20/29; 21/29), найти sin α",
+          "answer": "21/29"
+        },
+        {
+          "task": "trig-coordinates-6",
+          "statement": "P = (12/37; -35/37), найти cos α",
+          "answer": "12/37"
+        }
+      ],
+      "finalIsLastListedStep": false
+    },
+    {
+      "id": "positive_root_in_left_half",
+      "name": "Берёт положительный корень в левой полуокружности",
+      "width": 360,
+      "lesson": "algebra-cosine",
+      "task": "algebra-cosine-2",
+      "statement": "sin α = 5/13, II четверть; найти cos α",
+      "steps": [
+        "25/169",
+        "144/169",
+        "-1",
+        "12/13"
+      ],
+      "final": "-12/13",
+      "errorStep": 2,
+      "wrong": "1",
+      "misconception": "Из cos² = 144/169 выбирает плюс независимо от четверти.",
+      "repairRule": "Корень даёт модуль 12/13; во II четверти x и cos отрицательны.",
+      "independent": [
+        {
+          "task": "algebra-cosine-4",
+          "statement": "sin α = -7/25, IV четверть",
+          "answer": "24/25",
+          "wrong": "-24/25"
+        },
+        {
+          "task": "algebra-cosine-5",
+          "statement": "sin α = 20/29, II четверть",
+          "answer": "-21/29"
+        },
+        {
+          "task": "algebra-cosine-6",
+          "statement": "sin α = -12/37, III четверть",
+          "answer": "-35/37"
+        }
+      ],
+      "finalIsLastListedStep": false,
+      "baselineSteps": [
+        "25/169",
+        "144/169",
+        "-1"
+      ]
+    },
+    {
+      "id": "radians_loses_turn",
+      "name": "Теряет полный оборот при переводе в радианы",
+      "width": 360,
+      "lesson": "trig-angle",
+      "task": "trig-angle-3",
+      "statement": "450° = kπ рад, найти k",
+      "steps": [
+        "5",
+        "90"
+      ],
+      "final": "5/2",
+      "errorStep": "final",
+      "wrong": "1/2",
+      "misconception": "Заменяет исходный угол 450° сонаправленным 90°.",
+      "repairRule": "Положение луча 90°, но исходный поворот 450°. k = 450/180 = 5/2.",
+      "independent": [
+        {
+          "task": "trig-angle-4",
+          "statement": "210° = kπ рад",
+          "answer": "7/6",
+          "wrong": "1/6"
+        },
+        {
+          "task": "trig-angle-5",
+          "statement": "-270° = kπ рад",
+          "answer": "-3/2"
+        },
+        {
+          "task": "trig-angle-6",
+          "statement": "540° = kπ рад",
+          "answer": "3"
+        }
+      ],
+      "finalIsLastListedStep": false
+    },
+    {
+      "id": "negative_exponent_gap",
+      "name": "Пробел в отрицательных показателях степени",
+      "width": 1280,
+      "lesson": "expr-powers",
+      "task": "expr-powers-3",
+      "statement": "(5² · 5³)/5⁶",
+      "steps": [
+        "5",
+        "-1",
+        "1/5"
+      ],
+      "final": "1/5",
+      "errorStep": 2,
+      "wrong": "-5",
+      "misconception": "Считает отрицательную степень отрицательным числом: 5⁻¹ = −5.",
+      "repairRule": "5⁻¹ = 1/5: минус в показателе означает обратное число, а не минус перед числом.",
+      "independent": [
+        {
+          "task": "expr-powers-4",
+          "statement": "(4³ · 4²)/4³",
+          "answer": "16",
+          "wrong": "8"
+        },
+        {
+          "task": "expr-powers-5",
+          "statement": "(2⁶ · 2⁻²)/2⁵",
+          "answer": "1/2"
+        },
+        {
+          "task": "expr-powers-6",
+          "statement": "(3⁻¹ · 3⁴)/3²",
+          "answer": "3"
+        }
+      ],
+      "finalIsLastListedStep": true
+    },
+    {
+      "id": "hasty_keyboard",
+      "name": "Торопится: пустой ввод, буквы, повтор Enter",
+      "width": 360,
+      "lesson": "trig-angle",
+      "task": "trig-angle-1",
+      "statement": "60° = kπ рад, найти k",
+      "steps": [
+        "2/3",
+        "60"
+      ],
+      "final": "1/3",
+      "hasty": true,
+      "misconception": "Ошибки ввода отделяются от математической ошибки.",
+      "repairRule": "Введите дробь 2/3; одно принятие ответа не должно удваивать прогресс.",
+      "independent": [
+        {
+          "task": "trig-angle-4",
+          "statement": "210° = kπ рад",
+          "answer": "7/6",
+          "wrong": "7"
+        },
+        {
+          "task": "trig-angle-5",
+          "statement": "-270° = kπ рад",
+          "answer": "-3/2"
+        },
+        {
+          "task": "trig-angle-6",
+          "statement": "540° = kπ рад",
+          "answer": "3"
+        }
+      ],
+      "finalIsLastListedStep": false
+    },
+    {
+      "id": "needs_return_and_hint",
+      "name": "Нуждается в подсказке и возвращении на свой шаг",
+      "width": 360,
+      "lesson": "trig-special",
+      "task": "trig-special-2",
+      "statement": "Найти 2 cos 240°",
+      "steps": [
+        "240",
+        "60",
+        "-1",
+        "1/2"
+      ],
+      "final": "-1",
+      "errorStep": 1,
+      "wrong": "120",
+      "resumeStep": 1,
+      "misconception": "Путает опорный острый угол с расстоянием до вертикальной оси.",
+      "repairRule": "В III четверти острый угол с горизонтальной осью равен 240°−180°=60°; cos отрицателен.",
+      "independent": [
+        {
+          "task": "trig-special-4",
+          "statement": "√3 sin 300°",
+          "answer": "-1,5",
+          "wrong": "1,5"
+        },
+        {
+          "task": "trig-special-5",
+          "statement": "2 cos 420°",
+          "answer": "1"
+        },
+        {
+          "task": "trig-special-6",
+          "statement": "√2 cos 225°",
+          "answer": "-1"
+        }
+      ],
+      "finalIsLastListedStep": false,
+      "baselineSteps": [
+        "240",
+        "60",
+        "-1"
+      ]
+    }
+  ]
+}

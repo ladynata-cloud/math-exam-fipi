@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
 const root = path.resolve(__dirname, '..');
-const modules = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied'];
+const modules = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'readiness'];
 const D = modules.flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
 const C = require('../ege-profil/start/checks.js');
 const S = require('../ege-profil/start/state.js');

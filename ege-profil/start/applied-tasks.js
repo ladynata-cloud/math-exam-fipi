@@ -38,7 +38,8 @@
     const controls = e('div'); controls.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;';
     const highlight = e('button', 'Выделить данные', 'model-toggle button quiet');
     highlight.type = 'button'; highlight.dataset.modelAction = 'highlight'; highlight.setAttribute('aria-pressed', 'false');
-    const explain = e('button', 'Как связать данные', 'model-toggle button quiet');
+    const explainLabel = context.mode === 'independent' && !context.solved ? 'Показать подсказку к рисунку' : 'Как связать данные';
+    const explain = e('button', explainLabel, 'model-toggle button quiet');
     explain.type = 'button'; explain.dataset.modelAction = 'explain'; explain.setAttribute('aria-expanded', 'false');
     for (const b of [highlight, explain]) b.style.cssText = 'white-space:normal;max-width:100%;min-height:44px;';
     const explanation = e('div'); explanation.hidden = true;
@@ -116,7 +117,7 @@
         box(30, 50, 360, 90); text(210, 104, pair[0], BLUE, 27);
         // Keep the caption short enough for a phone: the full verbal rule is
         // available in the data table and the optional explanation below.
-        const words = pair[1].split(' '); let lineText = '', lines = [];
+        const words = (context.mode === 'independent' && !context.solved && !options.help ? 'Формула из условия задачи.' : pair[1]).split(' '); let lineText = '', lines = [];
         words.forEach(word => { if ((lineText + word).length > 33) { lines.push(lineText.trim()); lineText = ''; } lineText += word + ' '; });
         if (lineText) lines.push(lineText.trim()); lines.forEach((part, i) => text(210, 178 + 23 * i, part, MUTED, 16));
       }
@@ -168,7 +169,7 @@
         const p = e('p', s.help); p.style.cssText = 'margin:0 0 10px;'; explanation.append(p);
         const table = helpTable(); if (table) explanation.append(table);
       }
-      explain.setAttribute('aria-expanded', String(options.help)); explain.textContent = options.help ? 'Скрыть объяснение' : 'Как связать данные';
+      explain.setAttribute('aria-expanded', String(options.help)); explain.textContent = options.help ? 'Скрыть объяснение' : explainLabel;
       highlight.setAttribute('aria-pressed', String(options.highlight)); highlight.textContent = options.highlight ? 'Снять выделение' : 'Выделить данные';
     }
     highlight.onclick = () => { options.highlight = !options.highlight; paint(); };

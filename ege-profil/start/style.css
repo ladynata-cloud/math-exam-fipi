@@ -13,6 +13,42 @@ body{overflow-wrap:anywhere}.model-panel input[type=range]{margin-inline:0}.circ
 
 .actions .text-link{white-space:normal;min-width:0;max-width:100%}.exam-card,.exam-topic,.topic-actions{min-width:0}
 
+/* Optional calm view: ordinary notation and task difficulty stay unchanged. */
+.topbar{flex-wrap:wrap}.topbar .brand{min-width:0;max-width:100%;overflow-wrap:anywhere}.topbar .brand>span{min-width:0}.topbar .brand-mark{flex-shrink:0}#calm-toggle{font-size:14px}
+.calm-view{line-height:1.75}.calm-view main{max-width:960px}
+.calm-view .hero-art,.calm-view .how{display:none}.calm-view .hero{display:block}
+.calm-view .eyebrow{letter-spacing:.04em;text-transform:none;font-size:14px}
+.calm-view .focused-practice.with-model{grid-template-columns:minmax(0,1fr)}
+.calm-view .task-condition,.calm-view .question{font-size:22px;line-height:1.65}
+.calm-view .current-question{border-left:4px solid var(--blue);padding-left:18px}
+.calm-view .button{min-height:48px}.calm-view .small{font-size:15px}
+.calm-view .exam-grid,.calm-view .lesson-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.calm-view .solution-history{background:#f5f8fc;padding:18px;border-radius:12px}
+.earned-explanation summary{font-size:15px;cursor:pointer;min-height:44px;padding:8px 0}
+.plan-support{padding:20px;background:#f4f7fc;border-radius:12px;margin-bottom:24px}
+.plan-support h2,.micro-support h2{font-size:21px}.plan-support li{margin:10px 0}
+.micro-support{margin-bottom:24px}.micro-support input,.micro-support select{max-width:100%;padding:10px;border:1px solid #8395af;border-radius:8px}
+.micro-support form{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.micro-support li{margin:12px 0}#micro-feedback{margin-top:16px}
+#checkpoint-model svg,#example-model svg{display:block;max-width:100%;height:auto}
+#checkpoint-model table,#example-model table{width:100%;border-collapse:collapse;table-layout:fixed}
+#checkpoint-model th,#checkpoint-model td,#example-model th,#example-model td{border:1px solid var(--line);padding:8px;overflow-wrap:anywhere}
+.practice-head{flex-wrap:wrap}.practice-head>div{flex:1 1 230px}
+[hidden]{display:none!important}
+@media(max-width:760px){.calm-view .exam-grid,.calm-view .lesson-grid{grid-template-columns:minmax(0,1fr)}.topbar{gap:16px;padding:20px}.calm-view .current-question{padding-left:12px}.calm-view .task-condition,.calm-view .question{font-size:20px}.calm-view .exam-card .small{grid-column:2}.calm-view .exam-card .exam-number{grid-row:1/5}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* Optional short entry for pupils who already have an OGE foundation. */
+.readiness-entry{border-left:5px solid #285bc9;margin-bottom:26px;background:#eef4ff}
+.readiness-entry h2{font-size:26px;max-width:700px}.readiness-entry p{max-width:750px}
+.readiness-card{display:flex;gap:20px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:16px 0}
+.readiness-card:last-of-type{border-bottom:0}.readiness-card h3{font-size:19px;margin:0 0 8px}.readiness-card p{font-size:14px;margin:0;color:var(--muted)}
+.readiness-card>div{min-width:0}.readiness-card .button{flex-shrink:0}
+.diagnostic-panel{max-width:760px;margin:auto}.diagnostic-panel .question{font-size:22px;margin-bottom:24px}
+.task-condition svg{display:block;max-width:100%;height:auto;margin:16px auto}
+.return-to-task{padding:14px 18px;background:#eaf4ee;border-radius:10px;margin-bottom:20px}
+@media(max-width:480px){.readiness-card{align-items:flex-start;flex-direction:column;gap:10px}.readiness-entry h2{font-size:23px}.diagnostic-panel{padding:20px 16px}.diagnostic-panel h1{font-size:28px}}
+
 /* The same focused workspace, now across the full first part. */
 .full-course-head{margin-bottom:28px}.full-course-head .button{white-space:normal}
 .full-course-grid{gap:16px}.full-course-grid .exam-card{min-height:225px;padding:22px;position:relative}
