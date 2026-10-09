@@ -104,6 +104,33 @@ Before rollback to a version without this feature, revoke QR grants and their
 bound sessions as described in `docs/learning-quick-access.md`. Existing session
 table shape and normal login remain compatible; learning data is preserved.
 
+## Scoped parent progress access (2026-10-09)
+
+The owner subsequently requested independent pupil activation and a separate
+parent entry for following the same pupil's progress. Pupil self-activation
+continues to use the existing invitation protocol and password policy;
+replacement invitations now allow three days for asynchronous delivery.
+
+Parent identity is isolated in additive tables and a separate private session
+cookie on a dedicated parent page/API. No parent is inserted into the existing
+teacher/student role model, and no core accounts table is rebuilt. One parent
+account per pupil is supported in this bounded version. Only the owning teacher
+can invite, replace entry or revoke access; the parent chooses their own
+password. Existing teacher/student sessions are unaffected.
+
+Every parent read validates the enabled account, auth epoch and current binding
+to a teacher-owned pupil. A newly constructed allowlisted DTO exposes current
+progress and published homework, excluding teacher-private and raw learner
+content, other pupils, archived work and unfinished exams. The parent has no
+learning or classroom mutation capability. Parent routes cannot fall through
+into generic learner authentication, and parent cookies never satisfy it.
+
+Hash-only invitations, bounded expiry, atomic version checks and guarded
+credential display follow the existing account boundaries. Parent revocation
+invalidates only parent sessions; child password/QR changes are independent.
+Rollback disables parent credentials while preserving all learner accounts and
+history. See [the scoped task](../tasks/FAMILY_PROGRESS_ENTRY.md).
+
 ## Educational identity
 
 An immutable task specification plus mutable work forms one attempt. An assignment

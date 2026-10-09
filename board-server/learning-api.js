@@ -3,6 +3,7 @@
 const express = require('express');
 const { LearningStore } = require('./learning-store');
 const { getRewards } = require('./learning-rewards');
+const { createFamilyRouter } = require('./learning-family');
 const { LearningError, requireValue, exactKeys, safeName, normalizeLogin, tokenHash, hashPassword, verifyPassword, RateLimiter } = require('./learning-auth');
 
 function createLearningApi(options = {}) {
@@ -55,6 +56,7 @@ function createLearningApi(options = {}) {
     limiter.take(`login:${tokenHash(login || 'invalid')}`, 8, 15 * 60000);
   }
   router.use((_req, res, next) => { res.set({ 'Cache-Control': 'no-store', Pragma: 'no-cache', 'X-Content-Type-Options': 'nosniff' }); next(); });
+  router.use(createFamilyRouter({ store, handler, authMiddleware, mutationMiddleware, publicOrigin, secureCookies, clock }));
   router.get('/status', (_req, res) => res.json(store.status()));
   router.get('/catalog', (_req, res) => res.json({ trainers: store.status().trainers }));
   router.post('/quick-login', originMiddleware, handler((req, res) => {
