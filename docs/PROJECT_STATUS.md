@@ -6,7 +6,7 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In review: accessible profile preparation and calm learning
+## Published: accessible profile preparation and calm learning
 
 - Scope: [calm learning](tasks/PROFILE_CALM_LEARNING.md), including the prepared
   grade-nine prerequisite and trigonometry repairs. The owner requested cloud
@@ -19,9 +19,18 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - [Implementation and limits](reports/PROFILE_CALM_LEARNING.md). Robot fixtures
   are simulations, not evidence of actual pupil learning. This section retains
   browser-local progress; no pupil accounts or server contracts are changed.
-- Current release checks, exact head and publication evidence are recorded in
-  the task PR. Next: close independent findings, confirm cloud CI, verify live
-  assets after the authorized publication.
+- PR [#218](https://github.com/ladynata-cloud/math-exam-fipi/pull/218) merged as
+  `e710a5dfd663e41bf4bfccf6c194deaf7c33a8bf`, with parent equal to the production
+  base above. The reviewed and published tree was
+  `97c9733be9edc4b7f61db0037edb89386759d4a8`.
+- Exact-head profile CI `37952985847` and Pages deployment `37953765812`
+  passed. All 30 live page assets matched the reviewed bytes. The cloud browser
+  confirmed example-to-practice entry, an accepted fractional answer,
+  pause/reload/resume with the draft intact, and a valid independent answer.
+- SMALL follow-up: [encouraging course heading](tasks/PROFILE_CALM_HEADING.md).
+  Replace the opening heading with the owner's wording and refresh that asset
+  URL. Next: validate the scoped wording; open its Draft PR; verify publication
+  after the release decision. Actual release evidence belongs in that PR.
 
 ## Published: independent pupil entry and parent progress
 
