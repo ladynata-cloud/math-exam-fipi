@@ -6,7 +6,20 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Ready for publication: clear decimal-division goal and comma handles
+## Ready for publication: decimal asset cache refresh
+
+- Scope: [decimal asset versions](tasks/DECIMAL_ASSET_VERSION.md), five URL
+  version updates in the two existing trainer pages. All JS/CSS content,
+  arithmetic and saved-work behavior remain unchanged.
+- Base: `0950fe33f6f4616dbe61fd11c133b0e334ed5834`; branch
+  `fix/decimal-asset-version`. SMALL corrective follow-up because production
+  reloads continued to use cached assets at the former URLs.
+- Existing two-trainer browser checks, five-reference path/version validation,
+  exact unchanged-asset checks and `git diff --check` passed. Independent
+  internal SMALL review approved; `DECIMAL_ASSET_VERSION_OK` passed. Standing
+  publication authorization applies.
+
+## Published; consumer cache refresh pending: clear decimal-division goal and comma handles
 
 - Scope: [decimal preparation clarity](tasks/DECIMAL_DIVISOR_GOAL.md): reuse the
   completed explanation of removing the comma from the divisor, and display
@@ -21,6 +34,12 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   checks passed. Focused independent internal SMALL review approved with no
   blockers; `DECIMAL_DIVISOR_GOAL_OK` passed. Standing publication permission
   applies.
+- PR #212 merged as `0950fe33f6f4616dbe61fd11c133b0e334ed5834`, parent
+  `c22bf2aedc7cb8d6f52dd4963673a241e47052d1`; reviewed tree
+  `9a475f74f6137727b84f1cca94616a62426192ad` matched the merge. Exact-head
+  checks and Pages run `37886573202` passed. Cache-busted public assets
+  matched reviewed bytes, but ordinary reloads still used the former asset
+  URLs. The bounded version-reference follow-up above addresses that finding.
 
 ## Published: personal OGE preparation and foundations
 
