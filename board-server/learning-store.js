@@ -12,6 +12,7 @@ const canonical = value => Array.isArray(value) ? `[${value.map(canonical).join(
 const json = value => JSON.stringify(value);
 const parse = value => JSON.parse(value);
 function accountDTO(row) { return { id: row.id, role: row.role, name: row.name, login: row.login, teacherId: row.teacher_id, active: !!row.password_hash }; }
+const QUICK_TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
 
 class LearningStore {
   constructor({ filePath = process.env.LEARNING_DB_PATH, contracts = {}, clock = Date.now } = {}) {
@@ -41,6 +42,11 @@ class LearningStore {
         CREATE TABLE IF NOT EXISTS recovery_codes(hash TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), used_at INTEGER);
         CREATE TABLE IF NOT EXISTS sessions(hash TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), epoch INTEGER NOT NULL, expires_at INTEGER NOT NULL);
         CREATE INDEX IF NOT EXISTS session_account ON sessions(account_id);
+        CREATE TABLE IF NOT EXISTS learning_quick_access(account_id TEXT PRIMARY KEY REFERENCES accounts(id), hash TEXT UNIQUE,
+          epoch INTEGER NOT NULL, expires_at INTEGER, version INTEGER NOT NULL, updated_at INTEGER NOT NULL);
+        CREATE TABLE IF NOT EXISTS learning_quick_sessions(session_hash TEXT PRIMARY KEY REFERENCES sessions(hash) ON DELETE CASCADE,
+          quick_hash TEXT NOT NULL);
+        CREATE INDEX IF NOT EXISTS quick_session_grant ON learning_quick_sessions(quick_hash);
         CREATE TABLE IF NOT EXISTS attempts(id TEXT PRIMARY KEY, learner_id TEXT NOT NULL REFERENCES accounts(id), teacher_id TEXT NOT NULL REFERENCES accounts(id),
           trainer_id TEXT NOT NULL, task_json TEXT NOT NULL, initial_state_json TEXT NOT NULL, state_json TEXT NOT NULL, strokes_json TEXT NOT NULL, version INTEGER NOT NULL DEFAULT 0, trainer_version INTEGER NOT NULL DEFAULT 0,
           controller TEXT NOT NULL DEFAULT 'student', assistance_json TEXT NOT NULL, outcome TEXT NOT NULL DEFAULT 'started', source_attempt_id TEXT, archived_at INTEGER, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL);
@@ -145,7 +151,52 @@ class LearningStore {
     });
   }
   students(auth) { this.teacher(auth); return this.rows("SELECT * FROM accounts WHERE teacher_id=? AND role='student' ORDER BY created_at,id", auth.id)
-    .map(row => ({ ...accountDTO(row), profile: this.studentProfile(auth, row.id) })); }
+    .map(row => { const quickAccess = this.quickAccessStatus(row); return { ...accountDTO(row),
+      active: !!row.password_hash || quickAccess.active, passwordReady: !!row.password_hash,
+      quickAccess, profile: this.studentProfile(auth, row.id) }; }); }
+  quickAccessStatus(account) {
+    const grant = this.row('SELECT * FROM learning_quick_access WHERE account_id=?', account.id);
+    return { active: account.role === 'student' && !!grant?.hash && grant.epoch === account.auth_epoch && grant.expires_at > this.clock(),
+      expiresAt: grant?.expires_at ?? null, version: grant?.version ?? 0 };
+  }
+  studentQuickAccess(auth, id) { return this.quickAccessStatus(this.ownsStudent(auth, id)); }
+  writeStudentQuickAccess(sessionToken, id, body, revoke = false) {
+    exactKeys(body, ['expectedVersion'], ['expectedVersion']);
+    requireValue(Number.isSafeInteger(body.expectedVersion) && body.expectedVersion >= 0 && body.expectedVersion < Number.MAX_SAFE_INTEGER, 'LEARNING_QUICK_INVALID');
+    return this.transaction(() => {
+      // No asynchronous gap: revalidate the teacher and pupil ownership inside
+      // the same transaction that fences this key's version and account epoch.
+      const auth = this.session(sessionToken), account = this.ownsStudent(auth, id), current = this.quickAccessStatus(account);
+      requireValue(current.version === body.expectedVersion, 'LEARNING_QUICK_CONFLICT', 409);
+      const secret = revoke ? null : token(32), at = this.clock(), expiresAt = revoke ? null : at + 30 * DAY;
+      this.run('DELETE FROM sessions WHERE account_id=? AND hash IN (SELECT session_hash FROM learning_quick_sessions)', id);
+      this.run(`INSERT INTO learning_quick_access(account_id,hash,epoch,expires_at,version,updated_at) VALUES(?,?,?,?,?,?)
+        ON CONFLICT(account_id) DO UPDATE SET hash=excluded.hash,epoch=excluded.epoch,expires_at=excluded.expires_at,
+          version=excluded.version,updated_at=excluded.updated_at`, id, secret ? tokenHash(secret) : null, account.auth_epoch, expiresAt, current.version + 1, at);
+      // Never use operation(): its receipts would persist the raw bearer token.
+      return { quickAccess: { active: !revoke, expiresAt, version: current.version + 1 }, ...(secret ? { quickToken: secret } : {}) };
+    });
+  }
+  invalidateStudentQuickAccess(accountId) {
+    const account = this.account(accountId);
+    if (account?.role !== 'student') return;
+    const current = this.quickAccessStatus(account);
+    requireValue(current.version < Number.MAX_SAFE_INTEGER, 'LEARNING_QUICK_INVALID');
+    // Keep a tombstone even when no QR has been issued. A password change must
+    // fence an earlier teacher screen that still expects the previous version.
+    this.run(`INSERT INTO learning_quick_access(account_id,hash,epoch,expires_at,version,updated_at) VALUES(?,NULL,?,NULL,?,?)
+      ON CONFLICT(account_id) DO UPDATE SET hash=NULL,epoch=excluded.epoch,expires_at=NULL,
+        version=excluded.version,updated_at=excluded.updated_at`, account.id, account.auth_epoch, current.version + 1, this.clock());
+  }
+  quickLogin(secret) {
+    requireValue(typeof secret === 'string' && QUICK_TOKEN_RE.test(secret), 'LEARNING_ACCESS_INVALID', 401);
+    return this.transaction(() => {
+      const hash = tokenHash(secret), grant = this.row('SELECT * FROM learning_quick_access WHERE hash=?', hash);
+      const account = grant && this.account(grant.account_id);
+      requireValue(account?.role === 'student' && grant.epoch === account.auth_epoch && grant.expires_at > this.clock(), 'LEARNING_ACCESS_INVALID', 401);
+      return this.createSession(account.id, grant);
+    });
+  }
   studentProfile(auth, learnerId) {
     if (auth?.role === 'teacher') this.ownsStudent(auth, learnerId);
     else {
@@ -186,6 +237,7 @@ class LearningStore {
       const auth = this.session(sessionToken), student = this.ownsStudent(auth, id);
       requireValue(student.password_hash === expectedHash && student.auth_epoch === expectedEpoch, 'LEARNING_CREDENTIALS_CHANGED', 409);
       this.run('UPDATE accounts SET password_hash=?,auth_epoch=auth_epoch+1 WHERE id=?', passwordHash, id);
+      this.invalidateStudentQuickAccess(id);
       this.run('DELETE FROM sessions WHERE account_id=?', id);
       this.run('DELETE FROM invitations WHERE account_id=?', id);
       return { student: accountDTO(this.account(id)) };
@@ -197,13 +249,21 @@ class LearningStore {
     requireValue(invitation && invitation.used_at == null && invitation.expires_at > this.clock(), 'LEARNING_ACCESS_INVALID', 401);
     return invitation;
   }
-  createSession(accountId) {
-    const account = this.account(accountId), secret = token(), expiresAt = this.clock() + 30 * DAY;
+  createSession(accountId, quickGrant = null) {
+    const account = this.account(accountId), secret = token();
+    let expiresAt = this.clock() + 30 * DAY;
+    if (quickGrant !== null) {
+      const current = this.row('SELECT * FROM learning_quick_access WHERE account_id=?', accountId);
+      requireValue(account?.role === 'student' && current?.hash && current.hash === quickGrant.hash
+        && current.epoch === account.auth_epoch && current.expires_at > this.clock(), 'LEARNING_ACCESS_INVALID', 401);
+      expiresAt = Math.min(expiresAt, current.expires_at);
+    }
     this.run('DELETE FROM sessions WHERE expires_at<=?', this.clock());
     const sessions = this.rows('SELECT hash FROM sessions WHERE account_id=? ORDER BY expires_at DESC', accountId);
     for (const old of sessions.slice(9)) this.run('DELETE FROM sessions WHERE hash=?', old.hash);
-    this.run('INSERT INTO sessions VALUES(?,?,?,?)', tokenHash(secret), accountId, account.auth_epoch, expiresAt);
-    return { account: accountDTO(account), sessionToken: secret, expiresAt };
+    this.run('INSERT INTO sessions(hash,account_id,epoch,expires_at) VALUES(?,?,?,?)', tokenHash(secret), accountId, account.auth_epoch, expiresAt);
+    if (quickGrant !== null) this.run('INSERT INTO learning_quick_sessions(session_hash,quick_hash) VALUES(?,?)', tokenHash(secret), quickGrant.hash);
+    return { account: { ...accountDTO(account), ...(quickGrant !== null ? { active: true, passwordReady: !!account.password_hash } : {}) }, sessionToken: secret, expiresAt };
   }
   activate(secret, passwordHash) {
     requireValue(/^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash), 'LEARNING_PASSWORD_INVALID');
@@ -212,6 +272,7 @@ class LearningStore {
       requireValue(invitation.purpose === 'recovery' || !account.password_hash, 'LEARNING_ACCESS_INVALID', 401);
       this.run('UPDATE invitations SET used_at=? WHERE hash=?', this.clock(), invitation.hash);
       this.run('UPDATE accounts SET password_hash=?,auth_epoch=auth_epoch+1 WHERE id=?', passwordHash, account.id);
+      this.invalidateStudentQuickAccess(account.id);
       this.run('DELETE FROM sessions WHERE account_id=?', account.id);
       let recoveryCodes;
       if (account.role === 'teacher' && invitation.purpose === 'activate') {
@@ -256,8 +317,15 @@ class LearningStore {
   }
   session(secret) {
     requireValue(TOKEN_RE.test(secret || ''), 'LEARNING_UNAUTHORIZED', 401);
-    const row = this.row('SELECT a.*,s.expires_at AS session_expires,s.epoch AS session_epoch FROM sessions s JOIN accounts a ON a.id=s.account_id WHERE s.hash=?', tokenHash(secret));
-    requireValue(row && row.password_hash && row.session_expires > this.clock() && row.session_epoch === row.auth_epoch, 'LEARNING_UNAUTHORIZED', 401);
+    const row = this.row(`SELECT a.*,s.expires_at AS session_expires,s.epoch AS session_epoch,q.quick_hash
+      FROM sessions s JOIN accounts a ON a.id=s.account_id LEFT JOIN learning_quick_sessions q ON q.session_hash=s.hash WHERE s.hash=?`, tokenHash(secret));
+    requireValue(row && row.session_expires > this.clock() && row.session_epoch === row.auth_epoch, 'LEARNING_UNAUTHORIZED', 401);
+    if (row.quick_hash !== null) {
+      const grant = this.row('SELECT * FROM learning_quick_access WHERE account_id=? AND hash=?', row.id, row.quick_hash);
+      requireValue(row.role === 'student' && grant && grant.epoch === row.auth_epoch && grant.expires_at > this.clock(), 'LEARNING_UNAUTHORIZED', 401);
+      return { ...accountDTO(row), active: true, passwordReady: !!row.password_hash };
+    }
+    requireValue(row.password_hash, 'LEARNING_UNAUTHORIZED', 401);
     return accountDTO(row);
   }
   logout(secret) { if (TOKEN_RE.test(secret || '')) this.run('DELETE FROM sessions WHERE hash=?', tokenHash(secret)); }

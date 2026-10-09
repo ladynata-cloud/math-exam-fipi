@@ -76,6 +76,34 @@ are revoked. Its identity and learning history are preserved. The server stores
 only the hash; the issuing browser displays the plaintext in a guarded private
 card with visible copy status and explicit save/discard acknowledgement.
 
+## Optional pupil QR entry (2026-10-09)
+
+The owner explicitly requested a pupil QR/link that opens the same cabinet on
+phone or laptop without typing a login or password. This is an optional
+teacher-issued credential for one owned pupil, including an unactivated pupil;
+it does not add a teacher sign-in method or bypass account ownership.
+
+The reusable grant has a 30-day expiry, a cryptographically random secret stored
+only as a hash, an auth epoch and a monotonically increasing version. QR and
+clickable link share the same credential. The cabinet removes the URL fragment
+immediately and exchanges the value by exact-Origin POST for its usual private
+cookie. Existing authenticated accounts cannot be silently replaced. QR pixels
+are generated locally; no external service receives the secret.
+
+An additive session-binding table records which sessions depend on which grant.
+Grant deletion, expiry or revocation never turns those sessions into password
+sessions. Rotation/revocation deletes the old QR sessions and preserves ordinary
+password sessions. Password/recovery changes invalidate grants through the auth
+epoch and version fence. Issuance and revocation require the current teacher
+session, ownership, CSRF and expected version. Raw tokens are displayed once and
+never stored in operation receipts or browser storage. A lost issuance response
+requires explicit replacement after refreshed metadata; no hidden retry mints a
+second credential.
+
+Before rollback to a version without this feature, revoke QR grants and their
+bound sessions as described in `docs/learning-quick-access.md`. Existing session
+table shape and normal login remain compatible; learning data is preserved.
+
 ## Educational identity
 
 An immutable task specification plus mutable work forms one attempt. An assignment

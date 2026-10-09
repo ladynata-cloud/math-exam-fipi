@@ -6,7 +6,21 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Ready for publication: decimal asset cache refresh
+## Ready for release: personal pupil QR entry
+
+- Scope: [personal QR/link entry](tasks/STUDENT_QR_ENTRY.md), an optional
+  teacher-issued pupil credential usable on phone and laptop without typing
+  login/password. Includes pending pupils, bounded expiry and revocation.
+- Base: `64c1079e0f2e73ad77d9fbd1d58526be5517246d`; branch
+  `feature/student-qr-entry`. Independent HIGH review, 199/199 backend tests,
+  existing auth/cabinet and new QR browser gates passed. Actual SVG/PNG decoding
+  and shared history in separate phone/desktop sessions are covered.
+  `LEARNING_QUICK_ACCESS_OK` passed locally. Exact-head CI and live deployment
+  checks remain pending. Standing publication authorization applies.
+- Actual learner identities, private access cards and credentials remain
+  outside source control. No new real credential has been issued yet.
+
+## Published: decimal asset cache refresh
 
 - Scope: [decimal asset versions](tasks/DECIMAL_ASSET_VERSION.md), five URL
   version updates in the two existing trainer pages. All JS/CSS content,
@@ -18,8 +32,14 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   exact unchanged-asset checks and `git diff --check` passed. Independent
   internal SMALL review approved; `DECIMAL_ASSET_VERSION_OK` passed. Standing
   publication authorization applies.
+- PR #213 merged as `64c1079e0f2e73ad77d9fbd1d58526be5517246d`, parent
+  `0950fe33f6f4616dbe61fd11c133b0e334ed5834`; reviewed/merged tree
+  `d3df3e0ddad86b3530cc3c35cdaad5ea7f990736` matched. Four exact-head
+  workflows and Pages `37887767769` passed. Both ordinary HTML URLs and three
+  versioned assets matched reviewed bytes; both live consumers used the new
+  references. A returning browser loaded the new wording after normal reload.
 
-## Published; consumer cache refresh pending: clear decimal-division goal and comma handles
+## Published: clear decimal-division goal and comma handles
 
 - Scope: [decimal preparation clarity](tasks/DECIMAL_DIVISOR_GOAL.md): reuse the
   completed explanation of removing the comma from the divisor, and display
