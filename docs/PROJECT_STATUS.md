@@ -29,8 +29,21 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   pause/reload/resume with the draft intact, and a valid independent answer.
 - SMALL follow-up: [encouraging course heading](tasks/PROFILE_CALM_HEADING.md).
   Replace the opening heading with the owner's wording and refresh that asset
-  URL. Next: validate the scoped wording; open its Draft PR; verify publication
-  after the release decision. Actual release evidence belongs in that PR.
+  URL. PR #219 published as `6e3cc69a791379b516397cf79b46e73922fe4c79`;
+  exact-head CI `37955834953` and Pages `37956570274` passed. The public
+  index and versioned script matched the reviewed bytes.
+
+## In review: profile course entry in learner cabinets
+
+- [Scope](tasks/PROFILE_CABINET_ENTRY.md): add the missing `ege-profile` teaching
+  direction and public-course entrance, preserving the four existing routes.
+- HIGH review for the teaching-profile schema extension; authentication and
+  account ownership remain unchanged. Public profile-course solutions still
+  remain browser-local. This is not an answer-sync implementation.
+- Base `6e3cc69a791379b516397cf79b46e73922fe4c79`; branch
+  `feat/profile-cabinet-entry`. Next: migration/browser gates, exact-head remote
+  review and cloud CI, then deployment and private-UI verification.
+- Actual release evidence belongs in the task PR. No real pupil data in Git.
 
 ## Published: independent pupil entry and parent progress
 
