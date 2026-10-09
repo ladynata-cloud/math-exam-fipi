@@ -7,12 +7,14 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const { DatabaseSync } = require('node:sqlite');
 const { once } = require('node:events');
 const express = require('express');
 const { LearningStore } = require('../learning-store');
 const { createLearningApi } = require('../learning-api');
 const { initializeRuns } = require('../learning-runs');
 const { tokenHash } = require('../learning-auth');
+const { backupLearning, restoreLearning } = require('../learning-backup');
 const ORIGIN = 'https://cabinet.example.test';
 const HASH = 'scrypt1:' + '01'.repeat(16) + ':' + '02'.repeat(32);
 const DEFAULT = { course: 'school', goal: null, focus: '', version: 0, updatedAt: null };
@@ -50,6 +52,23 @@ async function fixture(t) {
     return { status: response.status, body: await response.json(), cache: response.headers.get('cache-control') };
   }
   return { store, filePath, teacher, students, request, route: '/teacher/students/' + students[0].account.id + '/profile' };
+}
+
+function legacyProfileTable(store) {
+  store.db.exec(`BEGIN IMMEDIATE;
+    CREATE TEMP TABLE previous_profiles AS SELECT * FROM learning_profiles;
+    DROP TABLE learning_profiles;
+    CREATE TABLE learning_profiles(learner_id TEXT PRIMARY KEY REFERENCES accounts(id), teacher_id TEXT NOT NULL REFERENCES accounts(id),
+      course TEXT NOT NULL CHECK(course IN ('school','foundations','oge','ege')), goal TEXT CHECK(goal IN ('pass','grade5')),
+      focus TEXT NOT NULL, version INTEGER NOT NULL, updated_at INTEGER NOT NULL, CHECK(course='oge' OR goal IS NULL));
+    INSERT INTO learning_profiles SELECT * FROM previous_profiles;
+    DROP TABLE previous_profiles;
+    COMMIT;`);
+}
+
+function databaseRows(db) {
+  return Object.fromEntries(db.prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").all()
+    .map(({ name }) => [name, db.prepare('SELECT * FROM "' + name.replaceAll('"', '""') + '" ORDER BY rowid').all()]));
 }
 
 test('existing pupils default to school without database writes; profile reads never expose credentials', async t => {
@@ -97,6 +116,89 @@ test('additive initialization opens a pre-profile database without changing exis
   } finally { restored.close(); }
 });
 
+test('profile EGE is an explicit teacher-selected direction with no OGE goal, account changes or fabricated progress', async t => {
+  const f = await fixture(t), pupil = f.students[0], before = f.store.account(pupil.account.id);
+  const body = input({ course: 'ege-profile', goal: null, focus: '  Independent solutions for tasks 1–13  ' });
+  assert.equal((await f.request(pupil, f.route, body)).status, 403);
+  assert.equal((await f.request(f.teacher, f.route, { ...body, goal: 'pass' })).status, 400);
+  const saved = await f.request(f.teacher, f.route, body);
+  assert.equal(saved.status, 200);
+  assert.deepEqual(saved.body.profile, { course: 'ege-profile', goal: null, focus: body.focus.trim(), version: 1, updatedAt: 1800000000000 });
+  assert.deepEqual((await f.request(pupil, '/profile')).body.profile, saved.body.profile);
+  assert.deepEqual((await f.request(f.students[1], '/profile')).body.profile, DEFAULT);
+  assert.equal((await f.request(f.teacher, '/teacher/students')).body.students.find(s => s.id === pupil.account.id).profile.course, 'ege-profile');
+  assert.deepEqual((await f.request(pupil, '/progress')).body, { progress: [] });
+  assert.deepEqual(f.store.account(pupil.account.id), before);
+  assert.equal((await f.request(f.teacher, f.route, body)).body.duplicate, true);
+  assert.equal((await f.request(f.teacher, f.route, input({ course: 'ege-profile', goal: null }))).status, 409);
+});
+
+test('legacy profile migration preserves every table, session, attempt, index and trigger; restart and backup retain the new direction', async t => {
+  const f = await fixture(t), pupil = f.students[0], peer = f.students[1];
+  f.store.saveStudentProfile(f.teacher.account, pupil.account.id, input({ focus: 'Saved fractions route' }));
+  f.store.saveStudentProfile(f.teacher.account, peer.account.id, input({ course: 'ege', goal: null, focus: 'Saved base route' }));
+  const attempt = f.store.newAttempt(pupil.account.id, f.teacher.account.id, 'ege-path', {
+    taskSpec: { contentId: 'fractions', task: { q: 'Synthetic question', answer: '3/4' } }, state: { draft: '3/', done: false }
+  });
+  legacyProfileTable(f.store);
+  f.store.db.exec(`CREATE INDEX retained_profile_course ON learning_profiles(course);
+    CREATE TABLE retained_profile_audit(learner_id TEXT NOT NULL);
+    CREATE TRIGGER retained_profile_update AFTER UPDATE ON learning_profiles BEGIN
+      INSERT INTO retained_profile_audit VALUES(NEW.learner_id); END;`);
+  const before = databaseRows(f.store.db);
+  f.store.close();
+  const migrated = new LearningStore({ filePath: f.filePath, clock: () => 1800000000000 });
+  let selected;
+  try {
+    assert(migrated.available);
+    assert.deepEqual(databaseRows(migrated.db), before);
+    assert.deepEqual(migrated.rows('PRAGMA foreign_key_check'), []);
+    assert.equal(migrated.session(pupil.sessionToken).id, pupil.account.id);
+    assert.equal(migrated.session(f.teacher.sessionToken).id, f.teacher.account.id);
+    assert.equal(migrated.getAttempt(pupil.account, attempt.id).state.draft, '3/');
+    assert(migrated.row("SELECT name FROM sqlite_master WHERE type='index' AND name='retained_profile_course'"));
+    assert(migrated.row("SELECT name FROM sqlite_master WHERE type='trigger' AND name='retained_profile_update'"));
+    selected = migrated.saveStudentProfile(f.teacher.account, pupil.account.id, input({ expectedVersion: 1, course: 'ege-profile', goal: null })).profile;
+    assert.deepEqual(migrated.rows('SELECT learner_id FROM retained_profile_audit').map(row => row.learner_id), [pupil.account.id]);
+    const backup = path.join(path.dirname(f.filePath), 'profile-backup.sqlite');
+    const copy = path.join(path.dirname(f.filePath), 'profile-restored.sqlite');
+    backupLearning(migrated, backup); restoreLearning(backup, copy);
+    const restored = new LearningStore({ filePath: copy, clock: () => 1800000000000 });
+    try {
+      assert(restored.available);
+      assert.deepEqual(restored.studentProfile(pupil.account, pupil.account.id), selected);
+      assert.equal(restored.session(pupil.sessionToken).id, pupil.account.id);
+    } finally { restored.close(); }
+  } finally { migrated.close(); }
+  const restarted = new LearningStore({ filePath: f.filePath, clock: () => 1800000000000 });
+  try {
+    assert(restarted.available);
+    assert.deepEqual(restarted.studentProfile(pupil.account, pupil.account.id), selected);
+    assert.equal(restarted.row('SELECT COUNT(*) AS n FROM retained_profile_audit').n, 1, 'Restart does not replay migration or writes');
+    assert.equal(restarted.row('PRAGMA user_version').user_version, 1, 'Existing backup format remains supported');
+  } finally { restarted.close(); }
+});
+
+test('migration failure after the table swap rolls back the legacy schema and all data without disabling foreign keys', async t => {
+  const f = await fixture(t);
+  f.store.saveStudentProfile(f.teacher.account, f.students[0].account.id, input());
+  legacyProfileTable(f.store);
+  // Deliberately corrupt an unrelated row in a synthetic database. The final
+  // foreign-key gate runs after the swap and must roll the entire migration back.
+  f.store.db.exec("PRAGMA foreign_keys=OFF; INSERT INTO sessions VALUES('orphan_fixture','missing_account',0,1800000000001); PRAGMA foreign_keys=ON;");
+  const before = databaseRows(f.store.db);
+  const schema = f.store.row("SELECT sql FROM sqlite_master WHERE name='learning_profiles'").sql;
+  f.store.close();
+  const failed = new LearningStore({ filePath: f.filePath });
+  assert.equal(failed.available, false); failed.close();
+  const db = new DatabaseSync(f.filePath, { readOnly: true });
+  try {
+    assert.deepEqual(databaseRows(db), before);
+    assert.equal(db.prepare("SELECT sql FROM sqlite_master WHERE name='learning_profiles'").get().sql, schema);
+    assert.equal(db.prepare("SELECT name FROM sqlite_master WHERE name='learning_profiles_course_migration'").get(), undefined);
+  } finally { db.close(); }
+});
+
 test('profile access enforces session, ownership, exact query shape, Origin and CSRF', async t => {
   const f = await fixture(t), pupil = f.students[0], body = input();
   assert.equal((await f.request(null, '/profile')).status, 401);
@@ -142,7 +244,7 @@ test('version fencing and operation receipts prevent stale writes and duplicate 
 test('profile shape and values are bounded; OGE may have no goal and other courses cannot retain an OGE goal', async t => {
   const f = await fixture(t);
   const bad = [
-    { course: 'unknown' }, { course: 'school', goal: 'pass' }, { course: 'foundations', goal: 'grade5' },
+    { course: 'unknown' }, { course: 'school', goal: 'pass' }, { course: 'foundations', goal: 'grade5' }, { course: 'ege-profile', goal: 'grade5' },
     { goal: '5' }, { goal: 5 }, { focus: null }, { focus: 'x'.repeat(1201) }, { focus: 'bad\u0000text' },
     { focus: 'bad\u202etext' }, { expectedVersion: -1 }, { expectedVersion: 0.5 }, { expectedVersion: '0' },
     { expectedVersion: Number.MAX_SAFE_INTEGER + 1 }, { teacherId: f.teacher.account.id }, { version: 5 }
@@ -154,7 +256,7 @@ test('profile shape and values are bounded; OGE may have no goal and other cours
   assert.equal(f.store.row('SELECT COUNT(*) AS n FROM operations').n, 0);
   let result = await f.request(f.teacher, f.route, input({ goal: null, focus: 'x'.repeat(1200) }));
   assert.equal(result.status, 200); assert.equal(result.body.profile.focus.length, 1200);
-  for (const [index, course] of ['school', 'foundations', 'ege'].entries()) {
+  for (const [index, course] of ['school', 'foundations', 'ege', 'ege-profile'].entries()) {
     result = await f.request(f.teacher, f.route, input({ expectedVersion: index + 1, course, goal: null, focus: '  ' }));
     assert.equal(result.status, 200); assert.equal(result.body.profile.course, course);
     assert.equal(result.body.profile.focus, ''); assert.equal(result.body.profile.goal, null);

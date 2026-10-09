@@ -14,6 +14,37 @@ const parse = value => JSON.parse(value);
 function accountDTO(row) { return { id: row.id, role: row.role, name: row.name, login: row.login, teacherId: row.teacher_id, active: !!row.password_hash }; }
 const QUICK_TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
 
+function migrateProfileCourse(db) {
+  const schema = db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='learning_profiles'").get()?.sql;
+  const previousCheck = "CHECK(course IN ('school','foundations','oge','ege'))";
+  const currentCheck = "CHECK(course IN ('school','foundations','oge','ege','ege-profile'))";
+  if (schema?.includes(currentCheck)) return;
+  // Keep the existing backup format (user_version=1). Only this additive
+  // feature's enum changes; identities, attempts and their contracts do not.
+  requireValue(schema?.includes(previousCheck), 'LEARNING_SCHEMA_UNSUPPORTED');
+  const quote = name => '"' + name.replaceAll('"', '""') + '"';
+  const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
+  requireValue(tables.every(({ name }) => !db.prepare('PRAGMA foreign_key_list(' + quote(name) + ')').all()
+    .some(key => key.table === 'learning_profiles')), 'LEARNING_SCHEMA_UNSUPPORTED');
+  const related = db.prepare("SELECT sql FROM sqlite_master WHERE tbl_name='learning_profiles' AND type IN ('index','trigger') AND sql IS NOT NULL").all();
+  const replacement = schema.replace(/^CREATE TABLE(?: IF NOT EXISTS)? (?:"learning_profiles"|learning_profiles)(?=\s*\()/i, 'CREATE TABLE learning_profiles_course_migration')
+    .replace(previousCheck, currentCheck);
+  requireValue(replacement.startsWith('CREATE TABLE learning_profiles_course_migration'), 'LEARNING_SCHEMA_UNSUPPORTED');
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    db.exec(replacement);
+    db.exec(`INSERT INTO learning_profiles_course_migration SELECT * FROM learning_profiles;
+      DROP TABLE learning_profiles;
+      ALTER TABLE learning_profiles_course_migration RENAME TO learning_profiles;`);
+    for (const row of related) db.exec(row.sql);
+    requireValue(db.prepare('PRAGMA foreign_key_check').all().length === 0, 'LEARNING_SCHEMA_UNSUPPORTED');
+    db.exec('COMMIT');
+  } catch (error) {
+    try { db.exec('ROLLBACK'); } catch (_rollback) {}
+    throw error;
+  }
+}
+
 class LearningStore {
   constructor({ filePath = process.env.LEARNING_DB_PATH, contracts = {}, clock = Date.now } = {}) {
     this.clock = clock; this.contracts = contracts; this.available = false;
@@ -35,7 +66,7 @@ class LearningStore {
           login TEXT NOT NULL UNIQUE, name TEXT NOT NULL, password_hash TEXT, auth_epoch INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL);
         CREATE UNIQUE INDEX IF NOT EXISTS one_teacher ON accounts(role) WHERE role='teacher';
         CREATE TABLE IF NOT EXISTS learning_profiles(learner_id TEXT PRIMARY KEY REFERENCES accounts(id), teacher_id TEXT NOT NULL REFERENCES accounts(id),
-          course TEXT NOT NULL CHECK(course IN ('school','foundations','oge','ege')), goal TEXT CHECK(goal IN ('pass','grade5')),
+          course TEXT NOT NULL CHECK(course IN ('school','foundations','oge','ege','ege-profile')), goal TEXT CHECK(goal IN ('pass','grade5')),
           focus TEXT NOT NULL, version INTEGER NOT NULL, updated_at INTEGER NOT NULL, CHECK(course='oge' OR goal IS NULL));
         CREATE TABLE IF NOT EXISTS invitations(hash TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), purpose TEXT NOT NULL,
           expires_at INTEGER NOT NULL, used_at INTEGER);
@@ -64,6 +95,7 @@ class LearningStore {
         CREATE TABLE IF NOT EXISTS operations(actor_id TEXT NOT NULL,op_id TEXT NOT NULL,fingerprint TEXT NOT NULL,result_json TEXT NOT NULL,PRIMARY KEY(actor_id,op_id));
         PRAGMA user_version=1;
       `);
+      migrateProfileCourse(this.db);
       this.available = true; this.reason = null;
       if (this.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='learning_run_attempts'").get()
         && this.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='learning_runs'").get()) {
@@ -213,7 +245,7 @@ class LearningStore {
     this.ownsStudent(auth, learnerId);
     exactKeys(body, ['opId','expectedVersion','course','goal','focus'], ['opId','expectedVersion','course','goal','focus']);
     requireValue(Number.isSafeInteger(body.expectedVersion) && body.expectedVersion >= 0, 'LEARNING_PROFILE_INVALID');
-    requireValue(['school','foundations','oge','ege'].includes(body.course), 'LEARNING_PROFILE_INVALID');
+    requireValue(['school','foundations','oge','ege','ege-profile'].includes(body.course), 'LEARNING_PROFILE_INVALID');
     requireValue((body.goal === null || ['pass','grade5'].includes(body.goal)) && (body.course === 'oge' || body.goal === null), 'LEARNING_PROFILE_INVALID');
     requireValue(typeof body.focus === 'string' && body.focus.length <= 1200
       && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(body.focus), 'LEARNING_PROFILE_INVALID');
