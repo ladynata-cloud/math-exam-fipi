@@ -116,7 +116,9 @@ test('activation and recovery are one-use; reset revokes every previous session'
   denied(() => f.store.session(replacement.sessionToken), 'LEARNING_UNAUTHORIZED');
   denied(() => f.store.recoverStudent(f.students[1].account, s.account.id), 'LEARNING_FORBIDDEN');
   const expired = f.store.recoverStudent(f.teacher, s.account.id);
-  f.advance(30 * 60000 + 1);
+  f.advance(3 * 86400000 - 1);
+  assert.equal(f.store.invitation(expired.invitationToken).account_id, s.account.id);
+  f.advance(1);
   denied(() => f.store.activate(expired.invitationToken, HASH), 'LEARNING_ACCESS_INVALID');
 });
 

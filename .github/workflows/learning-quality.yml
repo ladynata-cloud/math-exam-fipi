@@ -72,6 +72,7 @@ jobs:
           node tools/learning-remediation-smoke.cjs
           node tools/learning-auth.browser.cjs
           node tools/learning-quick-access.browser.cjs
+          node tools/learning-parent.browser.cjs
           node tools/learning-cabinet.browser.cjs
           node tools/learning-exam.browser.cjs
           node tools/learning-catalog-reference-test.cjs --browser

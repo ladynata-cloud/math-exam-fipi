@@ -228,7 +228,7 @@ class LearningStore {
       return { profile: { course: body.course, goal: body.goal, focus, version, updatedAt: at } };
     });
   }
-  recoverStudent(auth, id) { return this.transaction(() => { this.ownsStudent(auth, id); return this.newInvitation(id, 'recovery', 30 * 60 * 1000); }); }
+  recoverStudent(auth, id) { return this.transaction(() => { this.ownsStudent(auth, id); return this.newInvitation(id, 'recovery', 3 * DAY); }); }
   replaceStudentPassword(sessionToken, id, passwordHash, expectedHash, expectedEpoch) {
     requireValue(typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash), 'LEARNING_PASSWORD_INVALID');
     return this.transaction(() => {

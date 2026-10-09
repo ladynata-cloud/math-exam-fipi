@@ -6,7 +6,22 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Ready for release: personal pupil QR entry
+## Ready for release: independent pupil entry and parent progress
+
+- Scope: [family progress entry](tasks/FAMILY_PROGRESS_ENTRY.md), an existing
+  pupil's self-chosen entry code plus a separate read-only parent account.
+- Base: `df325b0a73efa1b516e5b81aef9125f1b952e6ff`; branch
+  `feature/family-progress-entry`. HIGH independent review and full security,
+  privacy and browser gates required. Standing publication permission applies.
+- Parent sessions/tables are isolated from core learner/teacher accounts; only
+  a narrow published-work projection is allowed. No real credentials in Git.
+- Local backend passed 209/209; family security passed 10/10. Existing auth,
+  QR and eight-seat cabinet browser gates passed, alongside the new parent gate
+  against the actual production router. Independent HIGH review includes the
+  documented parent-only rollback and private-data projection. Publication,
+  exact-tree review/CI and live verification are tracked in this task's PR.
+
+## Published: personal pupil QR entry
 
 - Scope: [personal QR/link entry](tasks/STUDENT_QR_ENTRY.md), an optional
   teacher-issued pupil credential usable on phone and laptop without typing
@@ -15,8 +30,14 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   `feature/student-qr-entry`. Independent HIGH review, 199/199 backend tests,
   existing auth/cabinet and new QR browser gates passed. Actual SVG/PNG decoding
   and shared history in separate phone/desktop sessions are covered.
-  `LEARNING_QUICK_ACCESS_OK` passed locally. Exact-head CI and live deployment
-  checks remain pending. Standing publication authorization applies.
+  `LEARNING_QUICK_ACCESS_OK` passed. Standing publication authorization applies.
+- PR #215 merged as `df325b0a73efa1b516e5b81aef9125f1b952e6ff`, parent
+  `64c1079e0f2e73ad77d9fbd1d58526be5517246d`; reviewed/merged tree
+  `0d610444e60cf84c9dd1288c038fa406f0eb8afb` matched. Exact-head CI runs
+  `37919635040` and `37919634992`, and Pages `37920488893` passed. Both
+  origins served the reviewed index and versioned app/CSS/QR assets. Amvera
+  started its integration revision `22355d2f2c345e04db7837b55fae8441688a4ef3`;
+  the existing teacher session, roster and owned-pupil QR metadata dialog worked.
 - Actual learner identities, private access cards and credentials remain
   outside source control. No new real credential has been issued yet.
 
