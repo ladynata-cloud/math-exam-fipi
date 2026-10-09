@@ -237,8 +237,8 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   const issuedAt = Date.now(); await tp.locator('[data-parent-issue]').click();
   const issued = await (await issuance).json(); tokens.push(issued.invitationToken);
   assert.match(issued.invitationToken, /^[A-Za-z0-9_-]{43}$/);
-  assert(issued.parentAccess.invitationExpiresAt >= issuedAt + 3 * 86400000);
-  assert(issued.parentAccess.invitationExpiresAt < Date.now() + 3 * 86400000 + 1000);
+  assert(issued.parentAccess.invitationExpiresAt >= issuedAt + 7 * 86400000);
+  assert(issued.parentAccess.invitationExpiresAt < Date.now() + 7 * 86400000 + 1000);
   assert.equal(issued.parentAccess.version, 1); assert.equal(issued.parentAccess.active, false);
   const loginName = issued.parentAccess.login;
   await tp.locator('#invite-link').waitFor(); const link = await tp.locator('#invite-link').inputValue();

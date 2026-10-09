@@ -65,7 +65,7 @@ test('parent invitation uses a separate 12-character credential, one-use activat
   const issued = await f.issue(id); assert.match(issued.invitationToken, /^[A-Za-z0-9_-]{43}$/);
   assert.match(issued.parentAccess.login, /^parent-[a-z0-9_-]{16}$/);
   assert.deepEqual(issued.parentAccess, { exists: true, name: 'Fixture parent', login: issued.parentAccess.login,
-    enabled: true, active: false, version: 1, invitationExpiresAt: f.now() + 3 * DAY });
+    enabled: true, active: false, version: 1, invitationExpiresAt: f.now() + 7 * DAY });
   assert.equal((await f.request('/parent/activate', { token: issued.invitationToken, password: '12345678' }, null)).status, 400);
   const parent = await f.activate(issued.invitationToken); assert.equal(parent.status, 200);
   assert.deepEqual(parent.body.parent, { name: 'Fixture parent', login: issued.parentAccess.login });
@@ -214,16 +214,52 @@ test('safe overview counts all eligible attempts and published homework, exclude
   assert.equal((await f.request('/parent/overview', undefined, parent)).body.homework.recent[0].submittedAt, null);
 });
 
-test('expired invites and sessions fail closed at their exact boundary; student recovery is three days', async t => {
-  const f = await fixture(t), issued = await f.issue(), recovery = f.store.recoverStudent(f.teacher.account, f.pending.student.id);
-  assert.equal(recovery.expiresAt, f.now() + 3 * DAY);
-  f.advance(3 * DAY);
+test('pupil initial/replacement and parent invitations last seven days and expire at the exact boundary', async t => {
+  const f = await fixture(t), issued = await f.issue(), recovery = f.store.recoverStudent(f.teacher.account, f.student.account.id), pupilHash = await hashed;
+  const expiresAt = f.now() + 7 * DAY;
+  assert.equal(f.pending.expiresAt, expiresAt);
+  assert.equal(recovery.expiresAt, expiresAt);
+  assert.equal(issued.parentAccess.invitationExpiresAt, expiresAt);
+  f.advance(7 * DAY - 1);
+  assert.equal(f.store.invitation(f.pending.invitationToken).account_id, f.pending.student.id);
+  assert.equal(f.store.invitation(recovery.invitationToken).account_id, f.student.account.id);
+  assert.equal(f.family.invitation(issued.invitationToken).invitation.expires_at, expiresAt);
+  assert.equal((await f.request(f.route(f.student.account.id))).body.parentAccess.invitationExpiresAt, expiresAt);
+  f.advance(1);
   assert.equal((await f.activate(issued.invitationToken)).status, 401);
   assert.equal((await f.request(f.route(f.student.account.id))).body.parentAccess.invitationExpiresAt, null);
+  assert.throws(() => f.store.activate(f.pending.invitationToken, pupilHash), /LEARNING_ACCESS_INVALID/);
   assert.throws(() => f.store.invitation(recovery.invitationToken), /LEARNING_ACCESS_INVALID/);
   const { parent } = await f.activated();
   f.advance(30 * DAY - 1); assert.equal((await f.request('/parent/session', undefined, parent)).status, 200);
   f.advance(1); assert.equal((await f.request('/parent/session', undefined, parent)).status, 401);
+});
+
+test('persisted three-day invitations retain their original expiry after reopen; replacements receive a new week', async t => {
+  const f = await fixture(t), issued = await f.issue(), originalExpiry = f.now() + 3 * DAY;
+  // Model invitations saved by the prior release; a new binary must not extend them.
+  f.store.run('UPDATE invitations SET expires_at=? WHERE hash=?', originalExpiry, tokenHash(f.pending.invitationToken));
+  f.store.run('UPDATE learning_parent_invitations SET expires_at=? WHERE hash=?', originalExpiry, tokenHash(issued.invitationToken));
+  f.store.close();
+  const reopened = new LearningStore({ filePath: f.filePath, contracts, clock: f.now });
+  try {
+    const family = new FamilyAccess(reopened);
+    assert.equal(reopened.invitation(f.pending.invitationToken).expires_at, originalExpiry);
+    assert.equal(family.invitation(issued.invitationToken).invitation.expires_at, originalExpiry);
+    f.advance(3 * DAY - 1);
+    assert.equal(reopened.invitation(f.pending.invitationToken).account_id, f.pending.student.id);
+    assert.equal(family.metadata(f.student.account.id).invitationExpiresAt, originalExpiry);
+    f.advance(1);
+    assert.throws(() => reopened.invitation(f.pending.invitationToken), /LEARNING_ACCESS_INVALID/);
+    assert.throws(() => family.invitation(issued.invitationToken), /LEARNING_PARENT_INVITATION_INVALID/);
+    const pupilReplacement = reopened.recoverStudent(f.teacher.account, f.pending.student.id);
+    const parentReplacement = family.write(f.teacher.sessionToken, f.student.account.id,
+      { name: 'Fixture parent', expectedVersion: issued.parentAccess.version });
+    assert.equal(pupilReplacement.expiresAt, f.now() + 7 * DAY);
+    assert.equal(parentReplacement.parentAccess.invitationExpiresAt, f.now() + 7 * DAY);
+    assert.throws(() => reopened.invitation(f.pending.invitationToken), /LEARNING_ACCESS_INVALID/);
+    assert.throws(() => family.invitation(issued.invitationToken), /LEARNING_PARENT_INVITATION_INVALID/);
+  } finally { reopened.close(); }
 });
 
 test('persistence keeps parent sessions and version tombstones without altering ordinary account/session schema', async t => {

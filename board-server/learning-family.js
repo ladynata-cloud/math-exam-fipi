@@ -66,7 +66,7 @@ class FamilyAccess {
       if (!revoke) {
         invitationToken = token(32);
         this.store.run('INSERT INTO learning_parent_invitations(hash,parent_id,epoch,expires_at) VALUES(?,?,?,?)',
-          tokenHash(invitationToken), row.id, row.epoch + 1, now + 3 * DAY);
+          tokenHash(invitationToken), row.id, row.epoch + 1, now + 7 * DAY);
       }
       // Never use operation(): its result receipt would persist the raw token.
       return { parentAccess: this.metadata(learnerId), ...(invitationToken ? { invitationToken } : {}) };

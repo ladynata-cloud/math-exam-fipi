@@ -5,7 +5,7 @@
 An existing pupil can choose their own password through a private invitation.
 The password may contain 8–128 characters; digits alone are allowed. Teacher
 password requirements remain unchanged. Both a first invitation and a newly
-issued replacement pupil invitation last three days. Opening the page does not
+issued replacement pupil invitation last seven days. Opening the page does not
 consume the invitation; successful activation does.
 
 The teacher sends only that pupil's invitation. After activation, a separate
@@ -20,7 +20,7 @@ In **Мои ученики**, choose **Доступ родителю** beside th
 the parent's display name and issue a private invitation. One parent account
 per pupil is supported in this version. The parent receives a separate login,
 opens the invitation and sets their own password of 12–128 characters. The
-invitation lasts three days; an authenticated session lasts thirty days.
+invitation lasts seven days; an authenticated session lasts thirty days.
 
 Copy and save the invitation before closing its guarded card. A non-secret
 return link and login remain available from the teacher's parent-access dialog;
@@ -80,6 +80,14 @@ ignores the additive parent tables and separate parent cookie. Re-enabling
 parent access requires a fresh explicit invitation; old passwords or invitations
 must not come back to life.
 
-Previously issued three-day pupil invitations retain the expiry saved in their
-row after rollback. An older server may issue shorter future replacement links,
-but it must not reinterpret the expiry of an existing invitation.
+The seven-day lifetime applies only to newly issued pupil and parent invitations
+after the updated backend is deployed. Existing invitations retain the expiry
+saved in their row; explicitly replace a pending three-day invitation to obtain
+a new seven-day link. Replacement invalidates the old invitation.
+
+For a rollback of only the seven-day lifetime change, deploy the preceding
+compatible application without modifying SQLite. Both versions check the stored
+expiry, so already issued seven-day invitations remain valid until their saved
+expiry; only newly issued invitations return to three days. No database migration
+or whole-database restore is needed. Teacher bootstrap invitations remain three
+days and session/QR lifetimes remain thirty days throughout.
