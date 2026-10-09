@@ -6,7 +6,24 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Ready for publication: linked decimal commas and multiplication refresher
+## In validation: personal OGE preparation and foundations
+
+- Scope: [personal preparation](tasks/OGE_PERSONAL_PREPARATION.md), additive
+  learner course/goal profiles, private homework deep links, task/laboratory
+  modes and server-derived lifetime experience. Existing accounts retain their
+  school default; paper/photo homework checks remain in force.
+- Base: `b5d26ce9695deab2eea5f7eac2e13277da092450`; branch
+  `learning/oge-personal-homework`. Standing publication authorization and
+  external-review waiver apply; independent internal HIGH review required.
+- Separate `/foundations/` route collects 158 destinations in 12 groups:
+  95 managed exercises and 63 public laboratory entries. See the
+  [coverage audit](tasks/FOUNDATIONS_COVERAGE.md) for real gaps and limitations.
+- Public trainers without a server contract do not earn account points.
+  Publication must verify both Pages and the Amvera cabinet deployment.
+  Private learner creation remains a production-interface action, never a
+  source-code fixture. Borderless decimal commas are a separate follow-up.
+
+## Published: linked decimal commas and multiplication refresher
 
 - Scope: [decimal preparation interaction](tasks/DECIMAL_COMMA_DRAG.md): grab
   either comma to move both, with exact decimal values, retained working and
@@ -16,8 +33,12 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Standing publication permission and external-review waiver apply; independent
   internal HIGH review approved. Local `DECIMAL_COMMA_DRAG_OK` passed on
   2026-10-08 18:19 UTC: exact arithmetic, both gesture adapters, multiplication
-  return, old saved work, 320/390px and canonical bank equality. Exact-head CI,
-  fresh main guard and live publication verification remain.
+  return, old saved work, 320/390px and canonical bank equality.
+- PR #210 merged as `b5d26ce9695deab2eea5f7eac2e13277da092450`, parent
+  `1aace4083532f27cdc36f54b70ce20be67f5d25c`; reviewed and merged tree
+  `85a89deb0ae60bcf2ddc83fba027d172bc54e0e3` matched. Four exact-head workflows
+  and Pages 37824750184 passed; eight public assets matched reviewed bytes,
+  and live linked-comma and multiplication-return interactions were verified.
 
 ## Published: PreOGE arithmetic route
 

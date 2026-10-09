@@ -43,6 +43,7 @@ async function run() {
       window.apiMock = async (route, options = {}) => {
         const body = options.body && JSON.parse(options.body); calls.push({ route, method: options.method || 'GET', body });
         if (route.endsWith('/report')) return report;
+        if (route.endsWith('/profile') && !body) return {profile:{course:'school',goal:null,focus:'',version:0,updatedAt:null}};
         if (route.endsWith('/plan')) { if (body) plan = { items: body.items, note: body.note }; return plan; }
         if (route.endsWith('/ai-drafts')) { if (!body) return {drafts:savedDrafts}; const draft={...body,id:'draft1',status:'requires-teacher-review',createdAt:now}; savedDrafts.unshift(draft); return {draft}; }
         if (route.endsWith('/reset')) return { archived: 2, preservedHistory: true };

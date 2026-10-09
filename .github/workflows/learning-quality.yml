@@ -5,6 +5,7 @@ on:
     paths:
       - 'board-server/**'
       - 'learning/**'
+      - 'foundations/**'
       - 'ege-baza/path/**'
       - 'trainers/learning-bridge.js'
       - 'trainers/oge-basics/**'
@@ -59,6 +60,7 @@ jobs:
           node tools/grade7-construction.test.cjs
           node tools/grade7-geometry-practice.test.cjs
           node tools/grade7-route-map.test.cjs
+          node tools/learning-preparation.test.cjs
       - name: Install pinned browser test tools
         run: |
           npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
@@ -76,6 +78,8 @@ jobs:
           node tools/learning-teaching-live-browser.cjs
           node tools/learning-free-route.browser.cjs
           node tools/learning-grade7.browser.cjs
+          node tools/learning-oge.browser.cjs
+          node tools/learning-foundations.browser.cjs
           node tools/pre7-foundations.browser.cjs
           node tools/grade7-geometry-core.browser.cjs
           node tools/grade7-construction-visual.browser.cjs

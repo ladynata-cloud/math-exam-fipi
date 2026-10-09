@@ -2,6 +2,7 @@
 
 const express = require('express');
 const { LearningStore } = require('./learning-store');
+const { getRewards } = require('./learning-rewards');
 const { LearningError, requireValue, exactKeys, safeName, normalizeLogin, tokenHash, hashPassword, verifyPassword, RateLimiter } = require('./learning-auth');
 
 function createLearningApi(options = {}) {
@@ -84,6 +85,20 @@ function createLearningApi(options = {}) {
     res.json(sessionResponse(res, store.recoverTeacher(login, req.body.code, passwordHash)));
   }));
   router.get('/session', authMiddleware, handler((req, res) => res.json({ account: req.learningAuth, csrfToken: csrf(req.learningSessionToken) })));
+  router.get('/profile', authMiddleware, handler((req, res) => {
+    exactKeys(req.query, []);
+    res.json({ profile: req.learningAuth.role === 'teacher' ? null : store.studentProfile(req.learningAuth, req.learningAuth.id) });
+  }));
+  router.get('/progress', authMiddleware, handler((req, res) => {
+    requireValue(req.learningAuth.role === 'student', 'LEARNING_FORBIDDEN', 403);
+    exactKeys(req.query, []);
+    res.json({ progress: store.progress(req.learningAuth) });
+  }));
+  router.get('/rewards', authMiddleware, handler((req, res) => {
+    requireValue(req.learningAuth.role === 'student', 'LEARNING_FORBIDDEN', 403);
+    exactKeys(req.query, []);
+    res.json(getRewards(store, req.learningAuth));
+  }));
   router.post('/logout', authMiddleware, mutationMiddleware, handler((req, res) => {
     exactKeys(req.body, []); store.logout(req.learningSessionToken);
     res.set('Set-Cookie', `${cookieName}=; Path=/; HttpOnly; SameSite=Strict${secureCookies ? '; Secure' : ''}; Max-Age=0`);
@@ -101,6 +116,19 @@ function createLearningApi(options = {}) {
     res.json(store.rotateTeacherRecoveryCodes(req.learningSessionToken, account.password_hash, account.auth_epoch));
   }));
   router.get('/teacher/students', authMiddleware, handler((req, res) => res.json({ students: store.students(req.learningAuth) })));
+  router.get('/teacher/students/:id/profile', authMiddleware, handler((req, res) => {
+    store.ownsStudent(req.learningAuth, req.params.id);
+    exactKeys(req.query, []);
+    res.json({ profile: store.studentProfile(req.learningAuth, req.params.id) });
+  }));
+  router.post('/teacher/students/:id/profile', authMiddleware, mutationMiddleware, handler((req, res) => {
+    res.json(store.saveStudentProfile(req.learningAuth, req.params.id, req.body));
+  }));
+  router.get('/teacher/students/:id/rewards', authMiddleware, handler((req, res) => {
+    store.ownsStudent(req.learningAuth, req.params.id);
+    exactKeys(req.query, []);
+    res.json(getRewards(store, req.learningAuth, req.params.id));
+  }));
   router.post('/teacher/students', authMiddleware, mutationMiddleware, handler(async (req, res) => {
     // Check the role and request shape before scheduling expensive password work.
     store.teacher(req.learningAuth);

@@ -145,7 +145,7 @@ function createTeachingRouter(learning) {
       photoReview: store.row('SELECT status,text,created_at AS createdAt FROM learning_feedback WHERE assignment_id=? ORDER BY rowid DESC LIMIT 1', row.id) || null }));
     return { student: { id: learner.id, name: learner.name }, generatedAt: store.clock(), counts, positions, attempts: rows,
       assignments, resets: store.rows('SELECT id,scope,value,reason,created_at AS createdAt FROM learning_resets WHERE learner_id=? ORDER BY created_at DESC LIMIT 100', learnerId),
-      interpretation: 'Количество решённых задач отражает выполненные попытки. Оно не означает освоение всего номера ЕГЭ. Проверка фотографий преподавателем учитывается отдельно.' };
+      interpretation: 'Количество решённых задач отражает выполненные попытки. Оно не означает освоение всей темы. Проверка фотографий преподавателем учитывается отдельно.' };
   }
   function planItems(value) {
     requireValue(Array.isArray(value) && value.length <= 40, 'LEARNING_PLAN_INVALID');
