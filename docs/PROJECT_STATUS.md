@@ -6,6 +6,20 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
+## In progress: readable profile captions and help links
+
+- [Scope](tasks/PROFILE_READABLE_HELP.md); base
+  `92bd34a6163b2115c940a76ba08160cd270dcceb`; branch
+  `fix/profile-readable-help`; MEDIUM focused UI review.
+- Enlarge small course captions and make both help-status messages navigate to
+  the actual current explanation without losing the task, draft or open steps.
+- Unified course PR #233 is published at
+  `92bd34a6163b2115c940a76ba08160cd270dcceb`. Exact-head Profile CI
+  38044542147 and logarithmic inequalities CI 38044542160 passed; Pages run
+  38044855461 succeeded. Live menu 1–13/16 and school-help return were verified.
+- Existing cabinet/authentication work remains outside this task. Release
+  evidence and any verification limits are recorded in the PR.
+
 ## In progress: one permanent parent link and one code field
 
 - [Scope](tasks/PARENT_LINK_CODE_ONLY.md); base

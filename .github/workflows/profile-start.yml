@@ -33,6 +33,8 @@ jobs:
         run: node tools/profile-full-course.browser.cjs && node tools/profile-part2-inequalities.browser.cjs
       - name: Worked solutions for every task and assisted learner journeys
         run: node --test tools/profile-step-solutions.test.cjs && node tools/profile-step-solutions.browser.cjs
+      - name: Readable course labels and direct help links
+        run: node tools/profile-readable-help.browser.cjs
       - name: Prerequisite mathematics and simulated learners
         run: node tools/profile-readiness-math.test.cjs && node tools/profile-readiness-plan.test.cjs && node tools/profile-algebra-final-step.test.cjs && node tools/profile-readiness.browser.cjs && node tools/profile-learner-robots.browser.cjs
       - name: Calm learning, honest support and mixed thirteen

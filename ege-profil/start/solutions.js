@@ -187,6 +187,8 @@
         authored = steps(task);
         panel = document.createElement('section'); panel.className = 'profile-solution-panel'; panel.dataset.solutionPanel = ''; panel.id = 'profile-solution-' + (++sequence);
         panel.setAttribute('aria-label', 'Решение этой задачи по шагам'); open.setAttribute('aria-controls', panel.id);
+        const title = document.createElement('h2'); title.className = 'profile-solution-title'; title.tabIndex = -1; title.textContent = 'Решение с помощью — по шагам'; title.id = panel.id + '-title';
+        panel.setAttribute('aria-labelledby', title.id); panel.append(title);
         list = document.createElement('ol'); list.setAttribute('aria-live', 'polite'); list.setAttribute('aria-relevant', 'additions'); panel.append(list);
         next = document.createElement('button'); next.type = 'button'; next.className = 'button quiet'; next.dataset.solutionNext = '';
         if (options.nextId) next.id = options.nextId;
