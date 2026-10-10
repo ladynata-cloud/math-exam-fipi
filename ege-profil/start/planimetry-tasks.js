@@ -89,8 +89,9 @@
         const button = document.createElement('button'); button.type = 'button'; button.dataset.trigOpen = '';
         button.textContent = 'Разобрать решение по шагам'; button.setAttribute('aria-expanded', 'false'); controls.append(button);
         let panel, list, next, layer, steps, shown = 0;
+        const permitted = () => typeof context.isCurrent !== 'function' || context.isCurrent() !== false;
         const revealStep = () => {
-          if (shown === steps.length) return;
+          if (shown === steps.length || !permitted()) return;
           const step = steps[shown], item = document.createElement('li'); item.className = 'profile-trig-step'; item.dataset.trigStep = String(shown + 1);
           const heading = document.createElement('h3'); heading.textContent = `Шаг ${shown + 1} из ${steps.length}. ${step.title}`; item.append(heading);
           step.lines.forEach(line => {
@@ -137,14 +138,17 @@
         };
         const onClick = () => {
           const opening = button.getAttribute('aria-expanded') !== 'true';
+          // Guard a stale attempt before opening or reopening its explanation.
+          if (opening && !permitted()) return;
           if (!panel) {
-            // Mark assistance before adding any explanation, including hidden DOM.
-            if (independent && typeof context.onHelp === 'function') context.onHelp();
+            // Record help once, before any worked answer enters the DOM.
+            if (typeof context.onHelp === 'function' && context.onHelp() === false) return;
             steps = makeSteps();
             layer = el('g', { 'data-model-layer': 'Стороны для разбора' }, svg);
             const old = parent; parent = layer; highlight(api); parent = old;
             panel = document.createElement('section'); panel.dataset.trigExplanation = ''; panel.className = 'profile-trig-walkthrough';
             panel.setAttribute('aria-label', 'Разбор решения по шагам');
+            const title = document.createElement('h2'); title.className = 'profile-solution-title'; title.tabIndex = -1; title.textContent = 'Решение с помощью — по шагам'; panel.append(title);
             list = document.createElement('ol'); list.dataset.trigSteps = ''; list.setAttribute('aria-live', 'polite'); list.setAttribute('aria-relevant', 'additions'); panel.append(list);
             next = document.createElement('button'); next.type = 'button'; next.dataset.trigNext = ''; next.addEventListener('click', revealStep); panel.append(next);
             wrapper.append(panel); disposers.push(() => next.removeEventListener('click', revealStep));
@@ -161,7 +165,7 @@
         const button = document.createElement('button'); button.type = 'button'; button.textContent = independent ? 'Показать подсказку к рисунку' : label; button.setAttribute('aria-pressed', String(initial)); button.style.cssText = 'min-height:44px;max-width:100%;white-space:normal'; controls.append(button);
         const onClick = () => {
           const active = button.getAttribute('aria-pressed') !== 'true';
-          if (active && independent && typeof context.onHelp === 'function') context.onHelp();
+          if (active && typeof context.onHelp === 'function' && context.onHelp() === false) return;
           button.setAttribute('aria-pressed', String(active));
           if (independent) button.textContent = active ? 'Скрыть подсказку' : 'Показать подсказку к рисунку';
           layer.setAttribute('visibility', active ? 'visible' : 'hidden');

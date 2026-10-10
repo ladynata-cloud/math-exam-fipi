@@ -6,20 +6,19 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: unified profile course menu
+## In progress: readable profile captions and help links
 
-- [Scope](tasks/PROFILE_UNIFIED_COURSE.md); base
-  `f2a8ba0c6b721446209b4e1c3b83134733f3036d`; branch
-  `feat/profile-unified-course`; MEDIUM public-navigation review.
-- One exam-first menu for positions 1–13 and 16. Existing topic trainers are
-  grouped inside numbered topics, with optional targeted school help and return
-  to the still-mounted task. Separate trainer score stores are not merged.
-- Existing cabinet/authentication work is outside scope. Source/runtime evidence
-  for this release is recorded in its PR, including exact-head CI and Pages.
-- Previous profile step-by-step task PR #229 is published as
-  `bdf2519d10b03e1c2d77a379a78a21ce2e196f99`; profile CI 38024794757 and
-  Pages 38025132684 passed, with seven public asset comparisons and the live
-  nine-step similarity example verified on 2026-10-10.
+- [Scope](tasks/PROFILE_READABLE_HELP.md); base
+  `92bd34a6163b2115c940a76ba08160cd270dcceb`; branch
+  `fix/profile-readable-help`; MEDIUM focused UI review.
+- Enlarge small course captions and make both help-status messages navigate to
+  the actual current explanation without losing the task, draft or open steps.
+- Unified course PR #233 is published at
+  `92bd34a6163b2115c940a76ba08160cd270dcceb`. Exact-head Profile CI
+  38044542147 and logarithmic inequalities CI 38044542160 passed; Pages run
+  38044855461 succeeded. Live menu 1–13/16 and school-help return were verified.
+- Existing cabinet/authentication work remains outside this task. Release
+  evidence and any verification limits are recorded in the PR.
 
 ## In progress: ready parent entry and visible login feedback
 

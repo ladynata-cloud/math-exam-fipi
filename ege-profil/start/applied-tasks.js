@@ -146,7 +146,7 @@
       }
       if (!rows.length) return null;
       const table = e('table'); table.setAttribute('aria-label', 'Связь величин');
-      table.style.cssText = 'width:100%;border-collapse:collapse;table-layout:fixed;font-size:15px;line-height:1.5;';
+      table.style.cssText = 'width:100%;border-collapse:collapse;table-layout:fixed;font-size:18px;line-height:1.5;';
       const head = e('thead'), tr = e('tr');
       headings.forEach(h => { const th = e('th', h); th.scope = 'col'; th.style.cssText = 'text-align:left;vertical-align:top;padding:6px 4px;overflow-wrap:anywhere;'; tr.append(th); }); head.append(tr); table.append(head);
       const tbody = e('tbody');

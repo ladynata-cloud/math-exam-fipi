@@ -14,3 +14,42 @@ body.profile-course-page{flex-direction:column;justify-content:flex-start;align-
 #profile-course-support iframe{width:100%;height:58dvh;min-height:260px;border:1px solid #b9cdc1;border-radius:10px;background:white;box-sizing:border-box}
 #profile-course-support iframe[hidden]{display:none}
 @media(max-width:500px){#profile-course-nav{padding:10px 12px}#profile-course-support{padding:12px}#profile-course-support .profile-support-head{top:-12px;align-items:flex-start;flex-direction:column}#profile-course-support iframe{height:50dvh}}
+
+/* Shared caption sizes for these course trainers, standalone or embedded. SVG and canvas
+   labels keep their drawing coordinates; these rules cover HTML text only. */
+body :is(small,footer,.foot,.small,.crumbs,.back,.home-link,.eyebrow,.brand-sub,.tagline,.tag,.pill,.bdg,.qno,.qkind,.types-label,.task-subtitle,.chart-caption,.final-eq-label,.teacher-banner,.empty-state,.stat,.stats,.score,.score-chip,.nav-group-label,.nav-num,.nav-progress-text,.example-tag,.quiz-label,.figure-cap,.fig-cap,.figcap,.legend,.ctl-label,.fieldnote,.modehelp,.clickcue,.colorkey,.constructor-status,.onb-eyebrow,.kbd,.sec-num,.ex-badge,.sol-label,.ans-word,.tr-tag,.lvl,.tr-notes,.bp-no,.bp-note,.measure-note,.pending,.card-progress,.hub-back,.progress-mail-text,.progress-head,.scroll-note,.axis-help,.sl,.input-help,.cell-note,.point-notes,.empty-answer,.step-ex-label,.hard-group-note,.task-status,.cap,.fcCap,.sphead,.peer,.termCard,.unit,.step-number,.hint-icon,.topic-card .tc-num,.topic-card .tc-desc,.lesson-pill,.step-label,.hint-empty,.teacher-card .lbl,.score .lab,.tl .when,.chip .cnt,.tab .n,.opt .lt,.rules-title,.notebook h4,.notebook-head p,.axis-block h3,.step-track li,.report-section label,.topic-card p,.top>a:last-child):not(svg *){font-size:16px;line-height:1.6;overflow-wrap:anywhere}
+body :is(.btn,.btn.sm,.hero-cta .btn,.tcard .acts button,.route-page .course-tabs a,.tab,.chip,.achip,.lgbtn,.linkbtn,.hintBtn,.type-btn,.discover-btn,.pick-btn,.bp-toggle,.mode-bar button,.modes button,.seg button,.chips button,.pool button,.subtabs button,.bottom-actions button,.topic-actions button,.site-header button,.dialog-head button,.notice button,.figChips button,.refacts button,.choices button,.course-tabs a,.variant-links a,.navchips a,.cinput,.answer-row input):not(svg *){font-size:18px;line-height:1.4;min-height:44px;white-space:normal;max-width:100%;overflow-wrap:anywhere}
+body :is(.note,.warn,.tip,.hint,.hint-box,.feedback,.fb,.success,.verdict,.liveinfo,.sub,.hub-sub,.hub-note,.tr-hint,.rtxt,.starthint,.memo-row,.trapbox,.step .explain,.data-list,.task-statement,.solution p,.sol-line,.sol-ans,.writeup .wline,.notebook li,.teaching-prompts,.memo p,.trainer-head p,.onb-left p,.sec-head p,.fcard p):not(svg *){font-size:18px;line-height:1.65;overflow-wrap:anywhere}
+body :is(.card h3,.route h3,.law h3,.mcard .mtitle,.plan-tables h4,.stepbox .q,.stepRow .ans,.row,.step,.cheat,.choice .body,.tl-row .step-n,.keyfact-t,.warn-t,.rulebox-t,.memo-t,.slider-wrap,.teach-body h4,.lesson-nav .btn span):not(svg *){font-size:18px;line-height:1.6}
+body :is(.tbl,table.ref,table.brd,table.tbl,.notebook textarea):not(svg *){font-size:16px;line-height:1.6}
+body :is(.tbl th,table.ref th,table.tbl th):not(svg *){font-size:16px;line-height:1.5}
+body :is(details.reveal>summary,.teach>summary,.hw-rev>summary){font-size:18px;line-height:1.5;min-height:44px}
+body #types .chip,body #modeHelp{font-size:18px;line-height:1.5}
+body #notebook h3{font-size:18px;line-height:1.5}
+body #notebook p,body #stage-description{font-size:18px;line-height:1.65}
+body #ege :is(.ep-chip,.ep-badge,.ep-key,.ep-stats,.ep-ctrl-lbl,.ep-bytrack,.ep-sum-cond,.ep-sum-ans,.ep-copyarea){font-size:16px;line-height:1.6}
+body #ege :is(.ep-intro,.ep-theory .body,.ep-step .q,.ep-opt,.ep-hint,.ep-reveal,.ep-feedback,.ep-sol){font-size:18px;line-height:1.65}
+body #ege :is(.ep-btn,.ep-goto,.ep-seg button){font-size:18px;line-height:1.4;min-height:44px;white-space:normal}
+body #ege .ep-theory table{font-size:16px;line-height:1.6}
+body .course-back{font-size:16px!important;line-height:1.4!important;max-width:calc(100% - 28px)}
+body .site-header .brand span{font-size:16px;line-height:1.5}
+body :is(.dot,.earned-number,.nav-dot,.wno,.wt-n,.pick-n,.atom .an):not(svg *){font-size:16px;line-height:1.4;min-width:28px;min-height:28px}
+#profile-course-nav{font-size:18px;line-height:1.6}
+#profile-course-nav a{display:inline-flex;align-items:center;min-height:44px;max-width:100%;overflow-wrap:anywhere}
+#profile-course-nav button,#profile-course-support button{font-size:18px}
+#profile-course-support p{font-size:18px;line-height:1.65}
+/* Older banks use the same kinds of captions under their original names. */
+body :is(.badge,.intro,.mdesc,.mbest,.desc,.tk,.rgTag,.hub-total,.card-count,.brand-title,.hero-kicker,.hero-stat,.stars,.subtitle,.prob-meta,.nav-topic,.sol-title,.measures-title,.refpin,.refgroup h3,.sec-title,.srv-label,.collab-hint,.pad-hint,.stepDone .rnote,.stat .l,.stat span,.stat-cell .lbl,.opt .letter,.brand p,.tcard h4,.nav-item,.ctl label,.ctrl label,.sl label):not(svg *){font-size:16px;line-height:1.6;overflow-wrap:anywhere}
+body :is(.clink,.btn-ghost,.acts button,.rchips button,.modeSwitch button,.mode-switch button,.segb,.writeup summary):not(svg *){font-size:18px;line-height:1.4;min-height:44px;white-space:normal;max-width:100%}
+body :is(.prompt .lead,.prompt .ask,.sq,.hintBox,.stepDone,.card .task,.msg,.wu-t,.wu-b,.subttl,.law p,.termcard,.notsheet,.reflaw,.step-prompt,.teacher-commentary,.measure-row):not(svg *){font-size:18px;line-height:1.65;overflow-wrap:anywhere}
+body .kim-ref p{font-size:18px!important;line-height:1.65!important}
+body :is(table.tbl,table.fin-table){font-size:16px;line-height:1.6;width:100%;table-layout:fixed}
+body :is(table.tbl,table.fin-table) :is(th,td){font-size:16px;min-width:0;overflow-wrap:anywhere}
+
+body .brand[href="https://mathexam.space"]{font-size:16px;line-height:1.5}
+body :is(.final-eq.empty,.final-answer-row label,.opt):not(svg *){font-size:18px;line-height:1.6}
+body .fr :is(.num,.den){font-size:max(1em,16px)}
+body a[href="../index.html"][style]{font-size:16px!important;line-height:1.5!important}
+body #app>div:has(>button[onclick="resetProgress()"]){font-size:16px!important;line-height:1.6}
+body table.tbl th{-webkit-hyphens:manual;hyphens:manual}
+body #teachToggle{font-size:16px;line-height:1.4;min-height:44px}

@@ -95,8 +95,39 @@ function practice(l,mode){
  function ensureCurrent(){const live=state.start(l.id,mode);if(live!==s||stamp(live)!==rendered){practice(l,mode);return false;}return true;}
  shell(breadcrumb(l)+'<section class="practice-head"><div><p class="eyebrow">'+(mode==='guided'?'Решаем по шагам':mode==='plan'?'Решаем с коротким планом':'Решаем самостоятельно')+' · '+position(l)+'</p><h1>'+esc(l.title.split(':')[0])+'</h1></div><a class="text-link" href="#lesson/'+l.id+'">Вспомнить правило</a></section><div class="focused-practice '+(hasModel?'with-model':'')+'"><section class="panel condition-panel"><h2>Задача</h2><div class="task-condition">'+t.prompt+'</div>'+(!hasDrawingWalkthrough?'<div id="task-solution"></div>':'')+(hasModel?'<div id="task-model" aria-label="Рисунок к задаче"></div>':'')+'<p class="small task-kind">'+(s.familiar?'Повтор знакомой задачи':'Новое условие')+'</p></section><section class="panel task-panel">'+(mode==='plan'?calm.plan(l):'')+history(t,s,mode)+'<div class="current-question"><p id="current-step" class="current-step">'+(mode==='guided'?'Шаг '+(s.step+1)+' из '+t.steps.length:'Ваше решение')+'</p><div class="question">'+q.prompt+'</div><form id="answer-form">'+questionInput(q,s.draft)+'<div class="actions answer-actions"><button class="button" type="submit" id="submit-answer" '+(solved?'disabled hidden':'')+'>Проверить</button>'+button('Подсказка','hint','button quiet')+'</div></form><div id="feedback" role="status" aria-live="polite" class="feedback '+(solved?'good':'')+'">'+(solved?'Верно. '+(mode==='guided'?q.why:'Можно завершить задачу.'):'')+'</div>'+difficultyHelp(l,mode,s,solved)+'<div id="hint-box" class="hint-box" hidden></div><div class="actions next-actions">'+button(mode==='guided'&&s.step<t.steps.length-1?'Следующий шаг →':'Завершить задачу','next')+'</div></div><details class="support-details"><summary>Нужна дополнительная помощь?</summary><p>Можно вспомнить основное правило и вернуться к этому шагу.</p>'+button('Разобраться с основой','repair','button quiet')+(mode!=='guided'?button('Разобрать эту задачу по шагам','repair-current','button quiet'):'')+'</details></section></div>');
  let modelCleanup=()=>{},solutionCleanup=()=>{};
- function solutionHelp(){if(!ensureCurrent())return false;markHelp(s,mode);if(mode==='independent'&&!s.answers.length){const note=document.querySelector('.task-kind');if(note)note.textContent='Открыт разбор задачи · решение с помощью';}return true;}
- function mountModel(){modelCleanup();if(hasModel)modelCleanup=globalThis.ProfileTaskModels[t.id](document.getElementById('task-model'),t,{step:s.step,solved:mode==='guided'?s.answers.length>s.step:s.answers.length>0,mode:mode==='plan'?'independent':mode,completed:s.answers.length,onHelp(){if(!ensureCurrent())return;if(mode==='independent'&&!s.answers.length&&!s.assisted){s.assisted=true;save();const n=document.querySelector('.task-kind');if(n)n.textContent='Открыто объяснение на рисунке · решение с помощью';}}})||(()=>{});}
+ function helpLink(kind,controlIndex=-1){
+  const note=main.querySelector('.task-kind');if(!note)return;
+  const link=document.createElement('a');link.className='task-help-link';
+  link.href=kind==='solution'?'#task-solution':'#task-model';
+  link.textContent=kind==='solution'?'Открыт разбор задачи · решение с помощью':'Открыто объяснение на рисунке · решение с помощью';
+  link.onclick=e=>{
+   // These are in-page destinations, not new routes in the hash router.
+   e.preventDefault();if(!ensureCurrent())return;
+   const container=document.getElementById(kind==='solution'?'task-solution':'task-model');if(!container)return;
+   const control=kind==='solution'?container.querySelector('[data-solution-open]'):
+    container.querySelector('[data-trig-open]')||container.querySelectorAll('button,summary')[controlIndex];
+   if(control?.getAttribute('aria-expanded')==='false'||control?.getAttribute('aria-pressed')==='false')control.click();
+   else if(control?.tagName==='SUMMARY'&&!control.parentElement.open)control.parentElement.open=true;
+   if(!container.isConnected)return;
+   const target=container.querySelector('.profile-solution-title')||
+    (control?.tagName==='SUMMARY'?control.parentElement:null)||
+    container.querySelector('[data-expression-parts]:not([hidden])')||container.querySelector('.profile-model-note')||
+    [...container.querySelectorAll('[aria-live]')].find(node=>!node.hidden&&!node.closest('details:not([open])'))||container;
+   target.tabIndex=-1;target.focus({preventScroll:true});target.scrollIntoView({block:'start',behavior:'instant'});
+  };
+  note.replaceChildren(link);
+ }
+ function solutionHelp(){if(!ensureCurrent())return false;markHelp(s,mode);helpLink('solution');return true;}
+ function mountModel(){
+  modelCleanup();if(!hasModel)return;
+  const container=document.getElementById('task-model');let controlIndex=-1;
+  const rememberControl=e=>{const control=e.target.closest('button,summary');if(control&&container.contains(control))controlIndex=[...container.querySelectorAll('button,summary')].indexOf(control);};
+  container.addEventListener('click',rememberControl,true);
+  const dispose=globalThis.ProfileTaskModels[t.id](container,t,{step:s.step,solved:mode==='guided'?s.answers.length>s.step:s.answers.length>0,mode:mode==='plan'?'independent':mode,completed:s.answers.length,isCurrent:ensureCurrent,onHelp(){
+   if(!ensureCurrent())return false;markHelp(s,mode);helpLink('model',controlIndex);return true;
+  }})||(()=>{});
+  modelCleanup=()=>{container.removeEventListener('click',rememberControl,true);dispose();};
+ }
  mountModel();if(!hasDrawingWalkthrough&&globalThis.ProfileSolutions)solutionCleanup=ProfileSolutions.mount(document.getElementById('task-solution'),t,{onHelp:solutionHelp});cleanup=()=>{modelCleanup();solutionCleanup();};calm.micro(l,t,s,mode);const pause=document.createElement('button');pause.type='button';pause.id='pause-practice';pause.className='button quiet';pause.textContent='Сделать паузу';main.querySelector('.practice-head').append(pause);pause.onclick=()=>{save();location.hash='pause/'+l.id+'/'+mode;};const repairCurrent=document.getElementById('repair-current');if(repairCurrent)repairCurrent.onclick=()=>{if(!ensureCurrent())return;markHelp(s,mode);setReturn('#practice/'+l.id+'/'+mode);state.remediate(l.id,t.id);location.hash='practice/'+l.id+'/guided';};
  const form=document.getElementById('answer-form'),feed=document.getElementById('feedback'),next=document.getElementById('next'),submit=document.getElementById('submit-answer');next.disabled=!solved;next.hidden=!solved;
  if(solved)for(const input of form.querySelectorAll('input'))input.disabled=true;
