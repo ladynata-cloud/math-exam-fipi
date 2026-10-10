@@ -201,7 +201,7 @@ function createFamilyRouter({ store, handler, authMiddleware, mutationMiddleware
     exactKeys(req.query, []); exactKeys(req.body, ['token', 'password'], ['token', 'password']);
     anonymous(req, typeof req.body.token === 'string' ? req.body.token.slice(0, 100) : 'invalid'); signedOut(req);
     const { row } = family.invitation(req.body.token);
-    const hash = await hashPassword(req.body.password);
+    const hash = await hashPassword(req.body.password, 'parent');
     res.json(response(res, family.activate(req.body.token, hash, row, () => signedOut(req))));
   }));
   parent.post('/login', origin, handler(async (req, res) => {

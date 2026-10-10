@@ -52,13 +52,13 @@ async function fixture(t) {
     const result = await request(route(id), { name: 'Fixture parent', expectedVersion: before.body.parentAccess.version });
     assert.equal(result.status, 200); return result.body;
   }
-  const activate = invitationToken => request('/parent/activate', { token: invitationToken, password: PASSWORD }, null);
+  const activate = (invitationToken, password = PASSWORD) => request('/parent/activate', { token: invitationToken, password }, null);
   const login = (login, password = PASSWORD, session = null) => request('/parent/login', { login, password }, session);
   async function activated(id = student.account.id) { const issued = await issue(id), parent = await activate(issued.invitationToken); assert.equal(parent.status, 200); return { issued, parent }; }
   return { store, family, runs, filePath, api, teacher, student, peer, pending, request, route, issue, activate, activated, login, now: () => now, advance: ms => { now += ms; } };
 }
 
-test('parent invitation uses a separate 12-character credential, one-use activation and separate 30-day sessions', async t => {
+test('parent invitation keeps legacy long credentials, one-use activation and separate 30-day sessions', async t => {
   const f = await fixture(t), id = f.pending.student.id;
   assert.deepEqual((await f.request(f.route(id))).body.parentAccess,
     { exists: false, name: '', login: '', enabled: false, active: false, version: 0, invitationExpiresAt: null });
@@ -362,4 +362,55 @@ test('parent identity fence rejects stale-tab projection and logout without affe
   assert.equal((await f.request('/parent/overview', undefined, second.parent,
     { 'X-Learning-Parent': second.issued.parentAccess.login })).body.student.name, 'Fixture peer');
   assert.equal((await f.request('/session')).status, 200);
+});
+
+
+test('parent chooses a four-digit code once, including leading zero, then logs in directly on another device', async t => {
+  const f = await fixture(t), issued = await f.issue(), code = '0427';
+  const activated = await f.activate(issued.invitationToken, code);
+  assert.equal(activated.status, 200); assert.match(activated.cookie, /^__Host-mathexam_parent=/);
+  assert.equal(activated.body.parent.login, issued.parentAccess.login);
+  assert.equal(activated.body.requirePasswordChange, undefined);
+  const metadata = (await f.request(f.route(f.student.account.id))).body.parentAccess;
+  assert.equal(metadata.active, true); assert.equal(metadata.invitationExpiresAt, null);
+  const row = f.store.row('SELECT * FROM learning_parents WHERE login=?', issued.parentAccess.login);
+  assert.match(row.password_hash, /^scrypt1:/); assert.notEqual(row.password_hash, code);
+  assert.equal((await f.request('/parent/overview', undefined, activated)).status, 200);
+  const secondDevice = await f.login(issued.parentAccess.login, code);
+  assert.equal(secondDevice.status, 200);
+  assert.equal((await f.request('/parent/overview', undefined, secondDevice)).status, 200);
+  assert.equal((await f.login(issued.parentAccess.login, '427')).status, 401, 'Leading zero is part of the credential');
+  assert.equal((await f.activate(issued.invitationToken, code)).status, 401, 'PIN does not change one-use invitation semantics');
+  assert.equal((await f.request('/session')).status, 200, 'Parent PIN flow never replaces the teacher cookie');
+});
+
+test('parent activation rejects malformed short codes without consuming the invitation', async t => {
+  const f = await fixture(t), issued = await f.issue();
+  for (const password of ['123', '12345', '12a4', '１２３４', 1234, '1234 ', '1234\n']) {
+    const response = await f.activate(issued.invitationToken, password);
+    assert.equal(response.status, 400); assert.equal(response.body.error, 'LEARNING_PASSWORD_INVALID');
+    assert.equal(response.cookie, undefined);
+  }
+  assert.equal((await f.activate(issued.invitationToken, '0042')).status, 200);
+});
+
+test('parent replacement invitation can change a legacy password to a PIN without changing the child', async t => {
+  const f = await fixture(t), original = await f.activated(), childBefore = f.store.account(f.student.account.id);
+  assert.equal((await f.login(original.issued.parentAccess.login)).status, 200, 'Legacy long parent password remains valid');
+  const replacement = await f.issue();
+  assert.equal((await f.request('/parent/session', undefined, original.parent)).status, 401);
+  const changed = await f.activate(replacement.invitationToken, '0731'); assert.equal(changed.status, 200);
+  assert.equal((await f.login(original.issued.parentAccess.login, PASSWORD)).status, 401);
+  const signedIn = await f.login(original.issued.parentAccess.login, '0731'); assert.equal(signedIn.status, 200);
+  assert.equal((await f.request('/parent/overview', undefined, signedIn)).status, 200);
+  assert.deepEqual(f.store.account(f.student.account.id), childBefore);
+  assert.equal(f.store.session(f.student.sessionToken).id, f.student.account.id);
+});
+
+test('four-digit parent code guesses keep the same per-credential attempt limiter', async t => {
+  const f = await fixture(t), issued = await f.issue();
+  assert.equal((await f.activate(issued.invitationToken, '0492')).status, 200);
+  for (let index = 0; index < 8; index++) assert.equal((await f.login(issued.parentAccess.login, '9900')).status, 401);
+  const blocked = await f.login(issued.parentAccess.login, '0492');
+  assert.equal(blocked.status, 429); assert.equal(blocked.cookie, undefined);
 });

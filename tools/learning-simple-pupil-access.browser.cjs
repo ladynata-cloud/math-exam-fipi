@@ -14,7 +14,7 @@ const { createLearningApi } = require('../board-server/learning-api');
 const { hashPassword } = require('../board-server/learning-auth');
 const contracts = require('../board-server/learning-contracts');
 const { chromium } = require('playwright');
-const PASSWORD = '04172638', REPLACEMENT = '02578364';
+const PASSWORD = '0417', REPLACEMENT = '0257';
 const api = (page, route) => page.evaluate(route => LearningApp.api(route), route);
 
 (async () => {
@@ -51,7 +51,7 @@ const api = (page, route) => page.evaluate(route => LearningApp.api(route), rout
     await page.goto(origin + '/learning/?role=teacher'); await page.locator('#add-student').waitFor();
     await page.locator('#add-student').click();
     assert.equal(await page.locator('#student-form select,#student-form [name=confirm]').count(), 0);
-    assert.match(await page.locator('#student-form [name=password]').inputValue(), /^\d{8}$/);
+    assert.match(await page.locator('#student-form [name=password]').inputValue(), /^\d{4}$/);
     await page.locator('#student-form [name=name]').fill('Готовый вход');
     await page.locator('#student-form [name=login]').fill('fixture_simple_ready');
     await page.locator('#student-form [name=password]').fill(PASSWORD);
@@ -67,7 +67,7 @@ const api = (page, route) => page.evaluate(route => LearningApp.api(route), rout
     await page.locator('#copy-access').click();
     const message = await page.evaluate(() => { const value = window.syntheticCopiedMessage; window.syntheticCopiedMessage = ''; return value; });
     assert(message.includes(link)); assert(message.includes('Логин: fixture_simple_ready'));
-    assert(message.includes('Пароль: ' + PASSWORD)); assert(message.includes('нажми «Войти»'));
+    assert(message.includes('Код входа: ' + PASSWORD)); assert(message.includes('нажми «Войти»'));
     await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true,
       value: { writeText: async () => { throw Error('Synthetic clipboard denial'); } } }));
     await page.locator('#copy-access').click(); await page.locator('#access-copy-text').waitFor({ state: 'visible' });

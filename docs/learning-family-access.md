@@ -3,8 +3,8 @@
 ## Pupil entry
 
 An existing pupil can choose their own password through a private invitation.
-The password may contain 8–128 characters; digits alone are allowed. Teacher
-password requirements remain unchanged. Both a first invitation and a newly
+New entry codes contain exactly four decimal digits, including any leading
+zeroes. Existing longer passwords remain valid on login. Both a first invitation and a newly
 issued replacement pupil invitation last seven days. Opening the page does not
 consume the invitation; successful activation does. Teacher-facing metadata
 retains an unused invitation's exact expiry even after that time has passed, so
@@ -22,7 +22,9 @@ their previous sessions and QR grant.
 In **Мои ученики**, choose **Доступ родителю** beside the intended pupil. Enter
 the parent's display name and issue a private invitation. One parent account
 per pupil is supported in this version. The parent receives a separate login,
-opens the invitation and sets their own password of 12–128 characters. The
+opens the invitation and sets their own four-digit code once, then enters the
+parent cabinet without another change-password step. Existing longer passwords
+continue working. The
 invitation lasts seven days; an authenticated session lasts thirty days.
 
 Copy and save the invitation before closing its guarded card. A non-secret
@@ -68,6 +70,10 @@ This view is not a screen recording. Public laboratory work that was never
 saved to the pupil's managed account does not become tracked progress here.
 
 ## Deployment and rollback
+
+When rolling back a code-entry UI change, retain server verification for both
+four-digit codes and older long passwords. A pre-PIN input validator would
+reject already-issued valid codes. Do not reset accounts or restore the database.
 
 The parent module is part of the existing application image and uses the same
 SQLite store through additive `learning_parents`,

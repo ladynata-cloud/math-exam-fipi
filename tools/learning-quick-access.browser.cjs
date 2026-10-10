@@ -22,7 +22,7 @@ let chromium;
 try { ({ chromium } = require('playwright')); } catch (_) {
   ({ chromium } = require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright')));
 }
-const PASSWORD = 'Synthetic-quick-access-2026';
+const PASSWORD = '0269';
 const DAY = 24 * 60 * 60 * 1000;
 const serve = async app => { const server = app.listen(0, '127.0.0.1'); await once(server, 'listening'); return server; };
 const stop = async server => { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); };

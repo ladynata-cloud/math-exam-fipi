@@ -57,8 +57,8 @@ N=32768, r=8, p=3 setting follows OWASP's 32 MiB CPU/memory trade-off. Token has
 not raw session or recovery tokens, are stored. Database/backup permissions are
 private. Logs and exported teaching history exclude authentication material.
 
-Pupil passwords may contain 8–128 characters; teacher password creation and
-recovery retain 12–128. The server selects this policy from the established
+The original password policy allowed pupils 8–128 characters and teachers
+12–128. The four-digit policy below supersedes these minimum lengths. The server selects this policy from the established
 account role, not a client field. The teacher's pupil-creation form suggests
 eight cryptographically random digits for easier typing, without forcing a
 numeric-only password. Existing login/source attempt limits remain enforced.
@@ -183,6 +183,35 @@ acknowledgement for ready pupil passwords only. Plaintext is cleared on closing
 or leaving and never persisted in browser storage or receipts. Opening existing
 pupil access remains read-only until the teacher explicitly requests replacement.
 Existing invitations, QR entry and parent behavior remain compatible.
+
+## Four-digit codes and completed setup (2026-10-10)
+
+The owner explicitly requested that teachers, pupils and parents need enter
+no more than four characters. New setup/replacement forms use exactly four
+ASCII decimal digits, preserving leading zeroes as part of the string. The
+ready-pupil form suggests four cryptographically random digits. A ready code
+does not require another change at first login; self-activation and parent
+activation likewise proceed directly into the appropriate cabinet.
+
+All server creation/recovery and verification paths accept these PINs as well
+as the former role-specific password ranges for existing clients. Existing
+long credentials remain valid and are not automatically replaced. Login and
+current-password forms must continue accepting them. This supersedes the
+12-character teacher and parent minimum and eight-character pupil minimum
+above; opaque invitation and recovery tokens retain their existing entropy.
+Hashing, role/ownership checks, Origin/CSRF, session lifetimes, atomic credential
+fences and per-account/source attempt limits remain unchanged.
+
+A confirmed teacher code update replaces the edit form with a completion
+message and a My pupils action. A rerender must not redisplay the empty form
+as an unfinished operation. Completion state is non-secret, account-scoped
+and memory-only, cleared on account change and deliberate later settings entry.
+Uncertain responses remain visibly uncertain, with no automatic resubmission.
+
+After four-digit codes are issued, rollback must retain four-digit and legacy
+login verification. Reverting to the old minimum-length validator would lock
+out valid accounts. No schema migration or database rollback is required.
+See [scope and gates](../tasks/FOUR_DIGIT_CABINET_CODES.md).
 
 ## Educational identity
 

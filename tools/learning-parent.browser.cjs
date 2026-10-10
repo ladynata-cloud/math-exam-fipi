@@ -20,9 +20,9 @@ let chromium;
 try { ({ chromium } = require('playwright')); } catch (_) {
   ({ chromium } = require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright')));
 }
-const TEACHER_PASSWORD = 'Synthetic-family-teacher-2026';
-const CHILD_PASSWORD = 'Kid2026x';
-const PARENT_PASSWORD = 'Synthetic-family-parent-2026';
+const TEACHER_PASSWORD = '0371';
+const CHILD_PASSWORD = '0493';
+const PARENT_PASSWORD = '0629';
 const uuid = () => crypto.randomUUID();
 const api = (page, route, body) => page.evaluate(async ({ route, body }) => LearningApp.api(route,
   body === undefined ? {} : { method: 'POST', body: JSON.stringify(body) }), { route, body });
@@ -118,7 +118,7 @@ async function main() {
     await sp.locator('#auth-form [name=password]').fill(CHILD_PASSWORD);
     await sp.locator('#auth-form [name=confirm]').fill(CHILD_PASSWORD);
     await sp.locator('#auth-form [type=submit]').click(); await sp.locator('#navigation').waitFor();
-    assert.equal((await api(sp, '/session')).account.id, pupil.id, 'The pupil chooses their own eight-character password');
+    assert.equal((await api(sp, '/session')).account.id, pupil.id, 'The pupil chooses their own four-digit code with the leading zero preserved');
     const fixture = await seedWork({ tp, sp, pupil, peer });
     await verifyParent({ teacher, teacherId, student, pupil, peer, origin, open, tokens, fixture });
     for (const request of requests) for (const token of tokens) {
@@ -268,7 +268,12 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   // distinct parent cookie. No child login or impersonation is involved.
   const pp = await student.context.newPage(); await pp.goto(link);
   await pp.locator('#parent-auth-form[data-mode=activate]').waitFor();
-  assert(!pp.url().includes('invite=')); assert.equal(await pp.locator('[name=password]').getAttribute('minlength'), '12');
+  assert(!pp.url().includes('invite=')); assert.equal(await pp.locator('[name=password]').getAttribute('minlength'), '4');
+  for (const input of await pp.locator('[name=password],[name=confirm]').all()) {
+    assert.equal(await input.getAttribute('maxlength'), '4');
+    assert.equal(await input.getAttribute('pattern'), '[0-9]{4}');
+    assert.equal(await input.getAttribute('inputmode'), 'numeric');
+  }
   await privateState(pp, tokens);
   // A new invitation while activation is pending cannot replace the original
   // child binding or start another authentication request.
@@ -284,6 +289,8 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   await pp.waitForFunction(() => !location.hash.includes('invite='));
   await heldActivation.continue(); await pp.locator('#parent-overview').waitFor();
   assert.equal(activationPosts, 1); await pp.unroute('**/api/learning/parent/activate');
+  assert.equal(await pp.locator('#parent-auth-form').count(), 0,
+    'Parent activation opens the overview without asking to create another code');
   assert.equal(await pp.locator('#parent-return-card').getAttribute('open'), '');
   assert.equal(await pp.locator('#parent-saved-login').inputValue(), loginName);
   assert.equal(await pp.locator('#parent-return-link').inputValue(), origin + '/learning/parent.html#login=' + loginName);
@@ -359,7 +366,7 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   assert.equal((await api(tp, peerPath)).parentAccess.active, false, 'The second invitation remains unconsumed');
 
   // Password recovery belongs to the child, not to the independent parent.
-  const replacement = 'NewKid2026'; await api(tp, '/teacher/students/' + pupil.id + '/password', { password: replacement });
+  const replacement = '0273'; await api(tp, '/teacher/students/' + pupil.id + '/password', { password: replacement });
   assert.equal((await raw(sp, '/session')).status, 401);
   assert.equal((await raw(pp, '/parent/session')).status, 200); assert.equal((await raw(laptop.page, '/parent/session')).status, 200);
   await sp.goto(origin + '/learning/#login=' + pupil.login);

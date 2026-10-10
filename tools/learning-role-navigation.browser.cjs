@@ -60,7 +60,7 @@ const PASSWORD = 'SyntheticRoleFixture2026';
       const text = await page.locator('body').innerText();
       assert(!text.includes(pupil.name) && !text.includes(pupil.login), 'Teacher entry never displays pupil identity');
       assert.match(await page.title(), /Вход учителя/);
-      assert(text.includes('Используйте логин и пароль вашего учительского аккаунта.'));
+      assert(text.includes('Используйте логин и код входа своего учительского аккаунта. Прежний пароль тоже работает.'));
     };
     await page.goto(origin + '/learning/#students');
     await cleanTeacherForm();
@@ -232,8 +232,8 @@ const PASSWORD = 'SyntheticRoleFixture2026';
       });
       if (operation === 'activate') {
         await page.goto(origin + '/learning/#invite=' + pending.invitationToken);
-        await page.locator('#auth-form [name=password]').fill(PASSWORD);
-        await page.locator('#auth-form [name=confirm]').fill(PASSWORD);
+        await page.locator('#auth-form [name=password]').fill('0379');
+        await page.locator('#auth-form [name=confirm]').fill('0379');
         await page.locator('#auth-form [type=submit]').click();
       } else {
         const ownerSession = store.createSession(teacher.account.id);

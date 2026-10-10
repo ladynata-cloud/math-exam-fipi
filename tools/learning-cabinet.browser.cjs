@@ -10,7 +10,7 @@ const {createTeachingRouter}=require(path.join(ROOT,'board-server/learning-teach
 const contracts=require(path.join(ROOT,'board-server/learning-contracts'));
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'learning-cabinet-'));
 const store=new LearningStore({filePath:path.join(tmp,'learning.sqlite'),contracts});
-const password='local-test-learning-password';
+const password='0823';
 const listen=app=>new Promise(resolve=>{const server=app.listen(0,'127.0.0.1',()=>resolve(server));});
 const close=server=>new Promise(resolve=>server.close(resolve));
 (async()=>{

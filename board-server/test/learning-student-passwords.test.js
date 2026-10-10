@@ -47,7 +47,7 @@ async function fixture(t, { pendingTeacher = false } = {}) {
   return { api, store, invitation, teacher, request, filePath };
 }
 
-test('creation policy accepts 8–128 characters only for the trusted student role; teachers still need 12', async () => {
+test('legacy creation policy keeps 8–128 characters for pupils and 12–128 for other roles', async () => {
   for (const length of [7, 8, 11, 12, 128, 129]) {
     const value = 'x'.repeat(length);
     assert.equal(passwordValid(value, 'student'), length >= 8 && length <= 128);
@@ -139,7 +139,7 @@ test('student invitation activation and teacher-assisted recovery accept 8 chara
   assert.equal((await f.request('/login', { login: 'invited', password: 'changed8' }, null)).status, 200);
 });
 
-test('teacher activation and recovery retain 12-character minimum; callers cannot inject a weaker role', async t => {
+test('legacy teacher activation and recovery retain 12-character minimum; callers cannot inject a weaker role', async t => {
   const f = await fixture(t, { pendingTeacher: true });
   const activation = { token: f.invitation.invitationToken, password: STUDENT_PASSWORD };
   for (const password of [STUDENT_PASSWORD, 'x'.repeat(11)]) {

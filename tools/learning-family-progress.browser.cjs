@@ -16,7 +16,7 @@ const express = serverRequire('express');
 const { LearningStore } = require('../board-server/learning-store');
 const contracts = require('../board-server/learning-contracts');
 const { chromium } = require(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES ? path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright') : 'playwright');
-const PASSWORD = 'Synthetic-family-progress-2026';
+const PASSWORD = '0481';
 const CONTENT = 'multiplication-division/long-division-from-simple-to-decimals';
 const uuid = () => crypto.randomUUID();
 async function artifact(page, name) {
