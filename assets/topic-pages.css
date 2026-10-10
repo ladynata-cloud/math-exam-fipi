@@ -1,0 +1,30 @@
+/* Shared, static lesson pages. Interactive trainers keep their own layout. */
+.topic-page .site-header{position:static}
+.topic-page .site-nav{flex-wrap:wrap}
+.topic-page .site-nav a{white-space:normal}
+.topic-page .skip-link{position:absolute;left:16px;top:-80px;z-index:100;background:#fff;padding:12px}
+.topic-page .skip-link:focus{top:12px}
+.topic-main{max-width:1120px;margin:0 auto;padding:24px 24px 56px}
+.breadcrumbs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;color:var(--ink-soft);font-size:16px}
+.breadcrumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0}
+.breadcrumbs li+li:before{content:"/";margin-right:8px;color:var(--ink-soft)}
+.topic-hero{padding:28px;border-left:4px solid var(--pen);background:var(--card);margin-bottom:28px}
+.topic-hero h1{max-width:880px}.topic-hero .lead{font-size:20px;max-width:850px}
+.topic-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}.topic-actions .btn{text-align:center}
+.topic-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:26px;align-items:start}
+.lesson-copy{min-width:0;background:var(--card);padding:28px;border:1px solid var(--line);border-radius:10px;font-size:19px;line-height:1.65}
+.lesson-copy section+section{margin-top:36px}.lesson-copy h2{font-size:clamp(23px,3vw,29px)}
+.lesson-copy ul{padding-left:24px}.lesson-copy li+li{margin-top:8px}
+.solution-steps{padding-left:26px}.solution-steps>li{padding:0 0 12px 7px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.solution-steps>li::marker{font-weight:700;color:var(--pen)}
+.formula{font-family:"Segoe UI",Arial,sans-serif;font-size:clamp(19px,2.3vw,24px);font-weight:650;color:var(--pen-dark);overflow-wrap:anywhere;font-variant-numeric:tabular-nums;line-height:1.5}
+.math-inline{font-variant-numeric:tabular-nums;font-weight:600;white-space:normal}
+.worked-example{padding:18px 20px;border-left:3px solid var(--pen);background:#f3f6fd;margin:18px 0}
+.practice-panel{padding:22px;background:var(--card);border:1px solid var(--line);border-radius:10px;position:sticky;top:18px;font-size:17px}
+.practice-panel h2{font-size:23px}.practice-panel ul{padding-left:21px}.practice-panel li+li{margin-top:14px}.practice-panel .btn{display:block;text-align:center;margin-top:18px}
+.table-scroll{overflow:auto;max-width:100%;margin:18px 0}.lesson-copy table{width:100%;border-collapse:collapse;background:#fff;font-size:18px}.lesson-copy td,.lesson-copy th{border:1px solid var(--line);padding:10px 14px;text-align:left}.lesson-copy th{background:#f3f6fd}
+.geometry-figure{max-width:440px;margin:20px auto}.geometry-figure svg{display:block;width:100%;height:auto}.geometry-figure figcaption{font-size:16px;color:var(--ink-soft);text-align:center}
+.topic-related{margin-top:34px}.topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.topic-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px}.topic-card h2,.topic-card h3{font-size:23px}.topic-card p{font-size:18px}.topic-card .go{font-size:18px}
+.topic-footer{border-top:1px solid var(--line);background:#fff;padding:26px 24px}.topic-footer .container{max-width:1072px;padding:0}.topic-footer p{font-size:17px}.topic-byline{font-size:16px;color:var(--ink-soft);margin-top:20px}
+@media(max-width:820px){.topic-layout{grid-template-columns:1fr}.practice-panel{position:static}.topic-page .site-header .container{flex-wrap:wrap;gap:12px}}
+@media(max-width:560px){.topic-main{padding:20px 14px 40px}.topic-hero{padding:22px 18px}.lesson-copy{padding:22px 17px;font-size:18px}.topic-grid{grid-template-columns:1fr}.topic-actions .btn{width:100%}.topic-hero .lead{font-size:19px}.worked-example{padding:14px}.breadcrumbs{font-size:15px}.lesson-copy td,.lesson-copy th{padding:9px}.solution-steps{padding-left:22px}}
