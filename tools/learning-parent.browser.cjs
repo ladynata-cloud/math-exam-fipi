@@ -193,6 +193,8 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   async function login(page, loginName, password = PARENT_PASSWORD) {
     await page.goto(origin + '/learning/parent.html#login=' + encodeURIComponent(loginName));
     await page.locator('#parent-auth-form[data-mode=login]').waitFor();
+    // A same-page #login navigation dispatches hashchange after goto resolves.
+    await page.waitForFunction(login => document.querySelector('#parent-login')?.value === login, loginName);
     assert.equal(await page.locator('[name=login]').inputValue(), loginName, 'Return links prefill only the non-secret login');
     await page.locator('[name=password]').fill(password); await page.locator('#parent-auth-submit').click();
     await page.locator('#parent-overview').waitFor();
@@ -200,7 +202,12 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   async function projection(page) {
     const response = await raw(page, '/parent/overview'); assert.equal(response.status, 200, 'The production router accepts a separate parent session');
     const data = response.body;
-    assert.deepEqual(Object.keys(data).sort(), ['homework', 'profile', 'progress', 'student']);
+    assert.deepEqual(Object.keys(data).sort(), ['fetchedAt', 'homework', 'profile', 'progress', 'student']);
+    assert(Number.isSafeInteger(data.fetchedAt) && data.fetchedAt > 0 && data.fetchedAt <= Date.now());
+    assert.match(await page.locator('.family-identity').textContent(), /Родитель/);
+    assert((await page.locator('.family-identity').textContent()).includes(pupil.name));
+    assert.match(await page.locator('#parent-updated').textContent(), /Обновлено:/);
+    assert.equal(await page.locator('#parent-logout').textContent(), 'Сменить пользователя');
     assert.deepEqual(data.student, { name: pupil.name }); assert.deepEqual(data.profile, { course: 'oge', goal: 'pass' });
     assert.equal(data.progress.totalAttempts, 2); assert.equal(data.progress.startedAttempts, 1);
     assert.equal(data.progress.completedAttempts, 1); assert.equal(data.progress.independentAttempts, 1);
@@ -237,8 +244,8 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   const issuedAt = Date.now(); await tp.locator('[data-parent-issue]').click();
   const issued = await (await issuance).json(); tokens.push(issued.invitationToken);
   assert.match(issued.invitationToken, /^[A-Za-z0-9_-]{43}$/);
-  assert(issued.parentAccess.invitationExpiresAt >= issuedAt + 3 * 86400000);
-  assert(issued.parentAccess.invitationExpiresAt < Date.now() + 3 * 86400000 + 1000);
+  assert(issued.parentAccess.invitationExpiresAt >= issuedAt + 7 * 86400000);
+  assert(issued.parentAccess.invitationExpiresAt < Date.now() + 7 * 86400000 + 1000);
   assert.equal(issued.parentAccess.version, 1); assert.equal(issued.parentAccess.active, false);
   const loginName = issued.parentAccess.login;
   await tp.locator('#invite-link').waitFor(); const link = await tp.locator('#invite-link').inputValue();
@@ -362,7 +369,9 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   await sp.locator('#auth-form [name=password]').fill(replacement); await sp.locator('#auth-form [type=submit]').click();
   await sp.locator('#navigation').waitFor(); assert.equal((await api(sp, '/session')).account.id, pupil.id);
   assert.equal((await api(tp, metadataPath)).parentAccess.version, active.version);
-  await laptop.page.locator('#parent-logout').click(); await login(laptop.page, loginName); await projection(laptop.page);
+  await laptop.page.locator('#parent-logout').click();
+  await laptop.page.locator('#parent-auth-form[data-mode=login]').waitFor();
+  await login(laptop.page, loginName); await projection(laptop.page);
   await pp.reload(); await pp.locator('#parent-overview').waitFor(); await projection(pp);
 
   await settings(); assert.equal(await tp.locator('[data-parent-revoke]').isDisabled(), true);

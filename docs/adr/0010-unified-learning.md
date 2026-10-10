@@ -131,6 +131,27 @@ invalidates only parent sessions; child password/QR changes are independent.
 Rollback disables parent credentials while preserving all learner accounts and
 history. See [the scoped task](../tasks/FAMILY_PROGRESS_ENTRY.md).
 
+## Clear family cabinet entrances (2026-10-10)
+
+The owner requested a clearer version of the existing account system. Role
+choices and teacher-only route hints express the intended destination; they
+never grant a role. Login validates an optional expected role only after valid
+credentials. Optional identity headers fence authenticated requests against
+cookie changes in other tabs, and the client clears cached account data before
+adopting another identity. Existing clients remain compatible.
+
+Teacher preview reads only owned-pupil reports, profiles and plans, retaining
+the teacher session and creating no pupil attempts. Permanent login links are
+separate from credential replacement. Newly issued pupil activation/recovery
+and parent invitations now last seven days, superseding the three-day policy
+above without changing existing rows. Used, revoked and expired invitations
+retain their original enforcement; owned metadata can display expiry.
+
+The pupil's next action prioritizes published homework and unfinished work,
+then the teacher's plan. Only server-committed managed work is shared with the
+teacher and parent. Public browser-local exercises remain identified as such.
+See [the scope and rollback](../tasks/CLEAR_FAMILY_CABINETS.md).
+
 ## Educational identity
 
 An immutable task specification plus mutable work forms one attempt. An assignment
