@@ -83,6 +83,7 @@
         el('path', { d: `M ${p[0]} ${p[1]} A ${r} ${r} 0 ${to - from > 180 ? 1 : 0} 0 ${q[0]} ${q[1]}`, fill: 'none', stroke: color, 'stroke-width': 5, 'stroke-linecap': 'round' }, parent);
       },
       walkthrough(makeSteps, highlight) {
+        if (context.hideWalkthrough) return;
         wrapper.classList.add('profile-trig-explanation');
         feedback.textContent = independent ? 'Это чертёж к текущей задаче. Открытие разбора — подсказка.' : 'Если нужна помощь, открой разбор. Каждый шаг останется перед глазами.';
         const button = document.createElement('button'); button.type = 'button'; button.dataset.trigOpen = '';
@@ -241,6 +242,8 @@
       ] }
     ];
   }
+  // Reuse the same authored derivation in examples and completed solutions.
+  root.ProfileRightTrigSteps = task => ['geo-right-sine', 'geo-right-cosine', 'geo-right-tangent'].includes(task.id) ? rightTrigSteps(task) : null;
   function register(ids, fn) { ids.forEach(id => { registry[id] = (container, task, context) => fn(container, task, context || {}); }); }
   register(['geo-angles-sum', 'geo-angles-isosceles', 'geo-angles-exterior', 'geo-angles-ratio', 'geo-angles-bisector', 'geo-angles-parallel'], (container, task, context) => {
     const id = task.id, m = task.meta;

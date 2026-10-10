@@ -177,8 +177,15 @@ async function exampleLearner(page, out, p) {
   check(out, 'calm-setting-alone-is-not-help', !(await session(page, p.lesson, 'independent')).assisted);
   await page.locator('main a[href="#lesson/' + p.lesson + '"]').first().click();
   await page.locator('main a[href="#example/' + p.lesson + '"]').first().click(); await page.locator('#worked-example').waitFor();
-  while (await page.locator('#example-next').count()) await page.locator('#example-next').click();
-  check(out, 'worked-example-unfolds-one-step-at-a-time', await page.locator('#worked-example [data-example-step]').count() === 3);
+  check(out, 'worked-example-opens-one-step', await page.locator('#worked-example [data-example-step]').count() === 1);
+  const exampleHistory = await page.locator('#worked-example [data-example-step]').allInnerTexts();
+  while (await page.locator('#example-next').count()) {
+    await page.locator('#example-next').click();
+    const texts = await page.locator('#worked-example [data-example-step]').allInnerTexts();
+    check(out, 'worked-example-adds-one-step:' + texts.length, texts.length === exampleHistory.length + 1 && same(texts.slice(0, -1), exampleHistory));
+    exampleHistory.push(texts.at(-1));
+  }
+  check(out, 'worked-example-retains-three-derivations-and-answer', exampleHistory.length === 4 && /Ответ:/u.test(exampleHistory.at(-1)));
   check(out, 'example-marks-independent-assisted', (await session(page, p.lesson, 'independent')).assisted);
   check(out, 'example-does-not-replace-independent-condition', (await session(page, p.lesson, 'independent')).taskId === p.task);
   check(out, 'example-does-not-add-independent-credit', (await record(page, p.lesson)).independent.length === 0);
