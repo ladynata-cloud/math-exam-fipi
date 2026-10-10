@@ -67,3 +67,7 @@ body{overflow-wrap:anywhere}.model-panel input[type=range]{margin-inline:0}.circ
 #task-model details{margin:14px 0}#task-model summary{cursor:pointer;min-height:44px;padding:10px 0}
 #task-model .earned-line{color:#176860;background:#eff7f2;padding:10px;border-radius:8px}
 @media(max-width:760px){.full-course-grid .exam-card{min-height:0}.full-course-grid .exam-card h2{margin:0 0 8px;font-size:22px}.full-course-grid .course-card-status{grid-column:2}.full-course-grid .exam-number{grid-row:1/5}.full-course-grid .exam-open{grid-column:2}.full-course-grid .exam-card p{margin-bottom:8px}.course-numbering{font-size:13px}.inequalities-entry{padding:20px}}
+
+/* Exam tasks come first; prerequisite help appears when it is needed. */
+.exam-card-actions{display:grid;gap:12px;margin-top:18px;align-content:start}.exam-card-actions .button{color:#fff;text-align:center;white-space:normal}.exam-card-actions>a:not(.button){font-size:14px}.difficulty-help{border:1px solid var(--line);border-radius:12px;background:#f7fafc;padding:20px;margin:20px 0}.difficulty-help h2{font-size:20px}.difficulty-help p{font-size:15px}.difficulty-help p:last-child{margin-top:14px;margin-bottom:0}
+@media(max-width:760px){.exam-card-actions{grid-column:2}.exam-card-actions .button{font-size:15px}.difficulty-help{padding:16px}}
