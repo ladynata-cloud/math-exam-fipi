@@ -154,6 +154,118 @@ async function pupilCopyChecks(page, context, origin, login, password) {
   await client.detach();
 }
 
+async function holdNextResponse(page, pattern) {
+  let arrive, release;
+  const arrived = new Promise(resolve => { arrive = resolve; });
+  const released = new Promise(resolve => { release = resolve; });
+  await page.route(pattern, async route => {
+    const response = await route.fetch();
+    arrive(response.status());
+    await released;
+    await route.fulfill({ response });
+  }, { times: 1 });
+  return { arrived, release };
+}
+async function assertLoginBusy(page, beforeAcknowledgement) {
+  const progress = page.locator('#auth-progress');
+  await progress.waitFor({ state: 'visible' });
+  assert.equal(await progress.getAttribute('role'), 'status');
+  assert.match(await progress.innerText(), /Входим…/);
+  assert.equal(await progress.locator('.login-dot').count(), 3, 'Login has exactly three visible animated dots');
+  for (const dot of await progress.locator('.login-dot').all()) {
+    assert.equal(await dot.isVisible(), true);
+    assert.equal(await dot.evaluate(node => node.getAnimations().some(animation => animation.playState === 'running')), true,
+      'Each dot has a running animation under the default motion preference');
+  }
+  assert.equal(await page.locator('#main').getAttribute('aria-busy'), 'true');
+  if (beforeAcknowledgement) {
+    assert.equal(await page.locator('#auth-form').getAttribute('aria-busy'), 'true');
+    assert.equal(await page.locator('#auth-form [type=submit]').isDisabled(), true);
+  }
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true,
+    'The pending login fits a 390px phone');
+}
+async function loginBusyChecks(browser, origin, { role, login, password }) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'ru-RU', reducedMotion: 'no-preference' });
+  const errors = [], nonlocal = [], loginBodies = [], held = [];
+  try {
+    await context.route('**/*', route => {
+      const url = new URL(route.request().url());
+      if (/^https?:/.test(url.protocol) && url.origin !== origin) {
+        nonlocal.push(url.origin + url.pathname); return route.abort('blockedbyclient');
+      }
+      return route.continue();
+    });
+    const page = await context.newPage();
+    page.setDefaultTimeout(10000);
+    page.on('pageerror', error => errors.push(error.message));
+    page.on('request', request => {
+      if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/learning/login') {
+        loginBodies.push(request.postDataJSON());
+      }
+    });
+    await page.goto(origin + '/learning/?role=' + role + (role === 'student' ? '#route' : ''));
+    await page.locator('#auth-form').waitFor();
+    await page.locator('#auth-form [name=login]').fill(login);
+    await page.locator('#auth-form [name=password]').fill(password + 'Wrong');
+    assert.equal(await page.locator('#auth-progress').isVisible(), false, 'Typing alone does not announce a pending login');
+
+    const failed = await holdNextResponse(page, '**/api/learning/login'); held.push(failed);
+    await page.locator('#auth-form [type=submit]').click();
+    assert.equal(await failed.arrived, 401, 'Wrong credentials fail through the real login API');
+    await assertLoginBusy(page, true);
+    await page.locator('#auth-form').evaluate(form => {
+      form.requestSubmit();
+      form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    });
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    assert.equal(loginBodies.length, 1, 'Repeated submit while pending cannot send duplicate login POSTs');
+    await assertLoginBusy(page, true);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.waitForFunction(() => [...document.querySelectorAll('#auth-progress .login-dot')]
+      .every(dot => getComputedStyle(dot).animationName === 'none'));
+    assert.equal(await page.locator('#auth-progress').isVisible(), true, 'Reduced motion retains visible login feedback');
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    failed.release();
+    await waitForError(page, 'Проверьте логин и пароль');
+    assert.equal(await page.locator('#auth-progress').isVisible(), false, 'A failed login stops the pending indicator');
+    assert.notEqual(await page.locator('#auth-form').getAttribute('aria-busy'), 'true');
+    assert.notEqual(await page.locator('#main').getAttribute('aria-busy'), 'true');
+    assert.equal(await page.locator('#auth-form [type=submit]').isEnabled(), true, 'A failed login allows an explicit retry');
+
+    await page.locator('#auth-form [name=password]').fill(password);
+    const accepted = await holdNextResponse(page, '**/api/learning/login'); held.push(accepted);
+    const cabinet = await holdNextResponse(page, '**/api/learning/attempts'); held.push(cabinet);
+    await page.locator('#auth-form [type=submit]').click();
+    assert.equal(await accepted.arrived, 200);
+    await assertLoginBusy(page, true);
+    assert.equal(await page.locator('#auth-form .form-error').innerText(), '', 'Retry clears the old error');
+    accepted.release();
+    assert.equal(await cabinet.arrived, 200, 'Cabinet data starts only after the accepted login reaches the browser');
+    await assertLoginBusy(page, false);
+    assert.equal(await page.evaluate(() => LearningApp.account().role), role);
+    assert.equal(loginBodies.length, 2, 'The successful retry sends one additional login request');
+    assert.deepEqual(loginBodies.map(body => body.expectedRole), [role, role]);
+    if (process.env.LEARNING_QA_DIR) {
+      fs.mkdirSync(process.env.LEARNING_QA_DIR, { recursive: true });
+      await page.screenshot({ path: path.join(process.env.LEARNING_QA_DIR, role + '-login-busy.png'), fullPage: true });
+    }
+    cabinet.release();
+    if (role === 'teacher') await page.locator('#add-student').waitFor();
+    else await page.getByRole('heading', { name: 'Мой маршрут', exact: true }).waitFor();
+    await page.locator('#auth-progress').waitFor({ state: 'hidden' });
+    assert.notEqual(await page.locator('#main').getAttribute('aria-busy'), 'true', 'Busy ends once the cabinet is ready');
+    assert.equal(await page.locator('#auth-form').count(), 0);
+    assert.equal(await page.evaluate(() => LearningApp.account().login), login);
+    await privateState(page, [password]);
+    assert.deepEqual(errors, []);
+    assert.deepEqual(nonlocal, []);
+  } finally {
+    for (const response of held) response.release();
+    await context.close();
+  }
+}
+
 (async () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'learning-auth-'));
   const store = new LearningStore({ filePath: path.join(directory, 'learning.sqlite'), contracts });
@@ -779,9 +891,11 @@ async function pupilCopyChecks(page, context, origin, login, password) {
     await acknowledgeCodes(page);
     await privateState(page, lifecycleCodes);
     await context.close();
+    await loginBusyChecks(browser, origin, { role: 'teacher', login: LOGIN, password: PASSWORD });
+    await loginBusyChecks(browser, origin, { role: 'student', login: pupil.student.login, password: invitedPassword });
     assert.deepEqual(nonlocalRequests, []);
     assert.deepEqual(pageErrors, []);
-    console.log('LEARNING_AUTH_BROWSER_OK: real HTTP/SQLite activation, login, session guards, safe recovery-code reissue, guarded one-time card, private download/copy, lost-response retry, guarded pupil copy with denied-clipboard selection fallback, password reissue with preserved history, four-digit pupil creation/login/invitation with leading zeros, teacher four-digit activation/recovery guards and 390px layout');
+    console.log('LEARNING_AUTH_BROWSER_OK: real HTTP/SQLite activation, login, session guards, safe recovery-code reissue, guarded one-time card, private download/copy, lost-response retry, guarded pupil copy with denied-clipboard selection fallback, password reissue with preserved history, four-digit pupil creation/login/invitation with leading zeros, teacher four-digit activation/recovery guards; teacher and pupil delayed login with three animated dots, reduced-motion feedback, aria-busy, duplicate-submit guard, 401 retry, busy through cabinet-data readiness, and 390px layout');
   } finally {
     if (browser) await browser.close();
     server.closeAllConnections();

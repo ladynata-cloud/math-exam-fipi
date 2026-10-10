@@ -74,6 +74,38 @@ class FamilyAccess {
       return { parentAccess: this.metadata(learnerId), ...(invitationToken ? { invitationToken } : {}) };
     });
   }
+  writePassword(teacherSession, learnerId, body, passwordHash, teacherSnapshot) {
+    exactKeys(body, ['name', 'expectedVersion'], ['name', 'expectedVersion']);
+    requireValue(Number.isSafeInteger(body.expectedVersion) && body.expectedVersion >= 0 && body.expectedVersion < Number.MAX_SAFE_INTEGER, 'LEARNING_PARENT_INVALID');
+    const name = safeName(body.name);
+    requireValue(typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash), 'LEARNING_PASSWORD_INVALID');
+    return this.store.transaction(() => {
+      // Hashing runs outside the transaction. Logout, recovery, ownership and
+      // concurrent invitation/PIN changes must be checked again before writing.
+      const auth = this.store.session(teacherSession);
+      this.store.ownsStudent(auth, learnerId);
+      const teacher = this.store.account(auth.id);
+      requireValue(teacherSnapshot && teacher.id === teacherSnapshot.id
+        && teacher.password_hash === teacherSnapshot.password_hash && teacher.auth_epoch === teacherSnapshot.auth_epoch,
+      'LEARNING_CREDENTIALS_CHANGED', 409);
+      const current = this.metadata(learnerId);
+      requireValue(current.version === body.expectedVersion, 'LEARNING_PARENT_CONFLICT', 409);
+      const now = this.store.clock();
+      if (!current.exists) {
+        this.store.run(`INSERT INTO learning_parents(id,learner_id,teacher_id,name,login,created_at,updated_at)
+          VALUES(?,?,?,?,?,?,?)`, token(18), learnerId, auth.id, name, 'parent-' + token(12).toLowerCase(), now, now);
+      }
+      const row = this.store.row('SELECT * FROM learning_parents WHERE learner_id=?', learnerId);
+      requireValue(row.teacher_id === auth.id, 'LEARNING_NOT_FOUND', 404);
+      this.store.run('DELETE FROM learning_parent_sessions WHERE parent_id=?', row.id);
+      this.store.run('DELETE FROM learning_parent_invitations WHERE parent_id=?', row.id);
+      this.store.run(`UPDATE learning_parents SET name=?,password_hash=?,enabled=1,epoch=epoch+1,
+        version=version+1,updated_at=? WHERE id=?`, name, passwordHash, now, row.id);
+      // The client already has the code it submitted. Never echo it or store
+      // a response receipt; metadata is enough to confirm committed readiness.
+      return { parentAccess: this.metadata(learnerId) };
+    });
+  }
   invitation(secret) {
     requireValue(typeof secret === 'string' && SECRET.test(secret), 'LEARNING_PARENT_INVITATION_INVALID', 401);
     const invitation = this.store.row('SELECT * FROM learning_parent_invitations WHERE hash=?', tokenHash(secret));
@@ -229,6 +261,20 @@ function createFamilyRouter({ store, handler, authMiddleware, mutationMiddleware
   router.get('/teacher/students/:id/parent-access', authMiddleware, handler((req, res) => {
     store.ownsStudent(req.learningAuth, req.params.id); exactKeys(req.query, []);
     res.json({ parentAccess: family.metadata(req.params.id) });
+  }));
+  router.post('/teacher/students/:id/parent-access/password', authMiddleware, mutationMiddleware, handler(async (req, res) => {
+    store.ownsStudent(req.learningAuth, req.params.id);
+    exactKeys(req.query, []);
+    exactKeys(req.body, ['name', 'password', 'expectedVersion'], ['name', 'password', 'expectedVersion']);
+    const name = safeName(req.body.name), expectedVersion = req.body.expectedVersion;
+    requireValue(Number.isSafeInteger(expectedVersion) && expectedVersion >= 0 && expectedVersion < Number.MAX_SAFE_INTEGER, 'LEARNING_PARENT_INVALID');
+    requireValue(typeof req.body.password === 'string' && req.body.password.length === 4 && /^[0-9]{4}$/.test(req.body.password), 'LEARNING_PASSWORD_INVALID');
+    // Bound expensive hashing across all pupils owned by this teacher.
+    limiter.take('parent-password:' + req.learningAuth.id, 8, 15 * 60000);
+    requireValue(family.metadata(req.params.id).version === expectedVersion, 'LEARNING_PARENT_CONFLICT', 409);
+    const teacherSnapshot = store.account(req.learningAuth.id);
+    const passwordHash = await hashPassword(req.body.password, 'parent');
+    res.json(family.writePassword(req.learningSessionToken, req.params.id, { name, expectedVersion }, passwordHash, teacherSnapshot));
   }));
   for (const revoke of [false, true]) router.post('/teacher/students/:id/parent-access' + (revoke ? '/revoke' : ''), authMiddleware, mutationMiddleware, handler((req, res) => {
     store.ownsStudent(req.learningAuth, req.params.id); exactKeys(req.query, []);

@@ -30,6 +30,7 @@
     }
     return '';
   }
+  let loginProgressRevision = 0;
   const initialFragment = readFragment();
   function errorText(error, operation = '') {
     if (error?.status === 429) return 'Слишком много попыток. Подождите немного и попробуйте снова.';
@@ -55,10 +56,19 @@
     $('parent-account').innerHTML = parent ? `<span><strong>${E(parent.name)}</strong><small>Родитель${childName ? ' · '+E(childName) : ''}</small></span><button type="button" id="parent-logout">Сменить пользователя</button>` : '';
     $('parent-logout')?.addEventListener('click', logout);
   }
-  function loading() { main.innerHTML = '<section class="panel loading" aria-live="polite"><h1>Открываем кабинет</h1><p>Проверяем Ваш вход…</p></section>'; }
+  function setLoginProgress(show, captured = 0) {
+    if (!show && captured && captured !== loginProgressRevision) return;
+    loginProgressRevision = show ? captured : 0; $('parent-auth-progress').hidden = !show; main.setAttribute('aria-busy', String(show));
+    const form = $('parent-auth-form');
+    if (form) { form.setAttribute('aria-busy', String(show)); const button = form.querySelector('[type=submit]');
+      if (show) { button.dataset.idleLabel = button.textContent; button.textContent = 'Входим…'; button.disabled = true; }
+      else if (button.dataset.idleLabel) { button.textContent = button.dataset.idleLabel; delete button.dataset.idleLabel; }
+    }
+  }
+  function loading() { main.innerHTML = '<section class="panel loading" role="status" aria-live="polite"><span class="login-dots" aria-hidden="true"><span class="login-dot"></span><span class="login-dot"></span><span class="login-dot"></span></span><h1>Открываем кабинет</h1><p>Проверяем Ваш вход…</p></section>'; }
   function authPage() {
     header(); const activate = !!invitation;
-    main.innerHTML = `<nav class="role-choices" aria-label="Выбор кабинета"><a href="./?role=teacher#students">Преподаватель</a><a href="./?role=student">Ученик</a><a href="parent.html" aria-current="page">Родитель</a></nav><div class="auth-layout"><section class="auth-intro"><p class="eyebrow">МАТЕМАТИКА С НАТАЛЬЕЙ МИХАЙЛОВНОЙ</p><h1>Как движется<br>подготовка.</h1><p>Отдельная страница для родителя: домашняя работа, самостоятельные решения и темы, где пока нужна помощь.</p><ul><li>Здесь показана работа, сохранённая в кабинете ученика.</li><li>Ученик продолжает решать в своём кабинете.</li><li>Здесь можно только смотреть результаты.</li></ul></section><section class="panel auth-card"><h2>${activate?'Создайте код входа':'Войти в кабинет родителя'}</h2><form id="parent-auth-form" data-mode="${activate?'activate':'login'}">${activate?'':`<label>Логин родителя<input name="login" id="parent-login" autocomplete="username" autocapitalize="none" spellcheck="false" minlength="3" maxlength="48" required value="${E(loginHint)}"></label>`}<label>${activate?'Код входа':'Код входа или прежний пароль'}<input name="password" id="parent-password" data-parent-password type="password" autocomplete="${activate?'new-password':'current-password'}" minlength="${activate?4:1}" maxlength="${activate?4:128}" ${activate?'inputmode="numeric" pattern="[0-9]{4}"':''} required></label>${activate?'<p>Ровно 4 цифры. Сохраните этот код: он подойдёт и для следующих входов.</p><label>Повторите код<input name="confirm" data-parent-password type="password" autocomplete="new-password" inputmode="numeric" pattern="[0-9]{4}" minlength="4" maxlength="4" required></label>':''}<label class="checkbox"><input id="parent-show-password" type="checkbox">Показать код или пароль</label><p class="form-error" id="parent-auth-error" role="alert"></p><button type="submit" class="primary" id="parent-auth-submit">${activate?'Сохранить код и войти':'Войти'}</button></form>${activate?'<button type="button" class="subtle" id="parent-use-login">У меня уже есть код входа или пароль</button>':'<p class="hint" style="margin-top:18px">Если забыли код входа или прежний пароль, попросите Наталью Михайловну выдать новое приглашение для родителя.</p>'}</section></div>`;
+    main.innerHTML = `<nav class="role-choices" aria-label="Выбор кабинета"><a href="./?role=teacher#students">Преподаватель</a><a href="./?role=student">Ученик</a><a href="parent.html" aria-current="page">Родитель</a></nav><div class="auth-layout"><section class="auth-intro"><p class="eyebrow">МАТЕМАТИКА С НАТАЛЬЕЙ МИХАЙЛОВНОЙ</p><h1>Как движется<br>подготовка.</h1><p>Отдельная страница для родителя: домашняя работа, самостоятельные решения и темы, где пока нужна помощь.</p><ul><li>Здесь показана работа, сохранённая в кабинете ученика.</li><li>Ученик продолжает решать в своём кабинете.</li><li>Здесь можно только смотреть результаты.</li></ul></section><section class="panel auth-card"><h2>${activate?'Создайте код входа':'Войти в кабинет родителя'}</h2><form id="parent-auth-form" data-mode="${activate?'activate':'login'}">${activate?'':`<label>Логин родителя<input name="login" id="parent-login" autocomplete="username" autocapitalize="none" spellcheck="false" minlength="3" maxlength="48" required value="${E(loginHint)}"></label>`}<label>${activate?'Код входа':'Код входа или прежний пароль'}<input name="password" id="parent-password" data-parent-password type="password" autocomplete="${activate?'new-password':'current-password'}" minlength="${activate?4:1}" maxlength="${activate?4:128}" ${activate?'inputmode="numeric" pattern="[0-9]{4}"':''} required></label>${activate?'<p>Ровно 4 цифры. Сохраните этот код: он подойдёт и для следующих входов.</p><label>Повторите код<input name="confirm" data-parent-password type="password" autocomplete="new-password" inputmode="numeric" pattern="[0-9]{4}" minlength="4" maxlength="4" required></label>':''}<label class="checkbox"><input id="parent-show-password" type="checkbox">Показать код или пароль</label><p class="form-error" id="parent-auth-error" role="alert"></p><button type="submit" class="primary" id="parent-auth-submit">${activate?'Сохранить код и войти':'Войти'}</button></form>${activate?'<button type="button" class="subtle" id="parent-use-login">У меня уже есть код входа или пароль</button>':'<p class="hint" style="margin-top:18px">Логин в личной ссылке уже заполнен. Введите готовый код от Натальи Михайловны и нажмите «Войти». Если код забыли, попросите выдать новый — приглашение для этого не нужно.</p>'}</section></div>`;
     $('parent-show-password').onchange = event => { main.querySelectorAll('[data-parent-password]').forEach(input => { input.type = event.target.checked ? 'text' : 'password'; }); };
     $('parent-use-login')?.addEventListener('click', () => { if (busy) return; invitation = null; clearPasswords(); notice(''); authPage(); });
     $('parent-auth-form').onsubmit = submitAuth;
@@ -107,7 +117,7 @@
     if (activating && (password.length !== 4 || !/^[0-9]{4}$/.test(password))) { $('parent-auth-error').textContent = 'Введите код из 4 цифр, например 0427.'; password = ''; return; }
     if (activating && password !== data.get('confirm')) { $('parent-auth-error').textContent = 'Коды не совпадают. Введите один и тот же код в оба поля.'; password = ''; return; }
     const login = String(data.get('login') || loginHint).trim(); if (!activating) loginHint = login;
-    const captured = ++revision; busy = true; form.querySelectorAll('input,button').forEach(el => { el.disabled = true; }); $('parent-auth-error').textContent = '';
+    const captured = ++revision; busy = true; setLoginProgress(true, captured); form.querySelectorAll('input,button').forEach(el => { el.disabled = true; }); $('parent-auth-error').textContent = '';
     try {
       // A parent may have signed in in another tab. Never replace that account.
       try { const existing = await api('/session'); if (captured !== revision) return; parent = existing.parent; invitation = null; clearPasswords(); header(); await loadOverview(); notice(signedInMessage, true); return; }
@@ -132,7 +142,7 @@
       }
       if (error.code === 'LEARNING_PARENT_INVITATION_INVALID') invitation = null;
       authPage(); $('parent-auth-error').textContent = errorText(error, activating ? 'activate' : 'login');
-    } finally { password = ''; if (captured === revision) { busy = false; if (form.isConnected) form.querySelectorAll('input,button').forEach(el => { el.disabled = false; }); } }
+    } finally { password = ''; if (captured === revision) { busy = false; if (form.isConnected) form.querySelectorAll('input,button').forEach(el => { el.disabled = false; }); } setLoginProgress(false, captured); }
   }
   async function logout() {
     if (busy || !parent) return;
@@ -144,7 +154,7 @@
   window.addEventListener('focus', () => { if (parent && !busy) checkSession(); });
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && parent && !busy) checkSession(); });
   window.addEventListener('hashchange', () => { const result = readFragment(); if (result === 'busy') return; if (result === 'invite' || result === 'invalid') checkSession(result === 'invalid' ? 'Приглашение недействительно. Попросите новую личную ссылку.' : ''); else if (result === 'login' && !busy && !parent) { notice(''); authPage(); } });
-  window.addEventListener('pagehide', () => { hiddenDuringInvite = !!invitation; invitation = null; ++revision; busy = false; for (const controller of controllers) controller.abort(); clearPasswords(); main.replaceChildren(); $('parent-account').replaceChildren(); });
+  window.addEventListener('pagehide', () => { setLoginProgress(false); hiddenDuringInvite = !!invitation; invitation = null; ++revision; busy = false; for (const controller of controllers) controller.abort(); clearPasswords(); main.replaceChildren(); $('parent-account').replaceChildren(); });
   window.addEventListener('pageshow', event => { if (event.persisted) { const message = hiddenDuringInvite ? 'Если Вы ещё не создали код входа, откройте личное приглашение заново.' : ''; hiddenDuringInvite = false; checkSession(message); } });
   window.addEventListener('beforeunload', event => { if (busy) { event.preventDefault(); event.returnValue = ''; } });
   checkSession(initialFragment === 'invalid' ? 'Приглашение недействительно. Попросите новую личную ссылку.' : '');
