@@ -11,16 +11,19 @@ const lesson = require('../ege-profil/start/geometry-data.js').find(item => item
 const cases = [
   { id: 'geo-right-cosine', mode: 'independent', result: 15, ratio: '0,8', draft: '14,5',
     fractions: [['прилежащий катет', 'гипотенуза'], ['12', 'гипотенуза']],
-    meaning: [/прилежащ/iu, /гипотенуз/iu], relation: [/12/u, /0[,.]8/u, /дел|раздел|дол|част/iu],
-    arithmetic: /12\s*[:/÷]\s*0[,.]8\s*=|120\s*[:/÷]\s*8\s*=/u, check: /15\s*[·×*]\s*0[,.]8|0[,.]8\s*[·×*]\s*15|12\s*[:/÷]\s*15/u },
+    meaning: [/прилежащ/iu, /гипотенуз/iu], conversion: ['8', '10'], proportion: [['8', '10'], ['12', 'гипотенуза']],
+    crossProduct: 'Гипотенуза · 8 = 12 · 10', knownProduct: 'Гипотенуза · 8 = 120', unknownDivision: 'Гипотенуза = 120 : 8 = 15',
+    arithmetic: /120\s*[:/÷]\s*8\s*=\s*15/u, check: /15\s*[·×*]\s*0[,.]8|0[,.]8\s*[·×*]\s*15|12\s*[:/÷]\s*15/u },
   { id: 'geo-right-tangent', mode: 'independent', result: 15, ratio: '2,5', draft: '14,5',
     fractions: [['противолежащий катет', 'прилежащий катет'], ['неизвестный катет', '6']], checkFraction: ['15', '6'],
-    meaning: [/противолежащ/iu, /прилежащ/iu], relation: [/6/u, /2[,.]5/u, /умнож|раза|раз/iu],
-    arithmetic: /6\s*[·×*]\s*2[,.]5\s*=|2[,.]5\s*[·×*]\s*6\s*=/u },
+    meaning: [/противолежащ/iu, /прилежащ/iu], conversion: ['25', '10'], proportion: [['25', '10'], ['катет', '6']],
+    crossProduct: 'Катет · 10 = 6 · 25', knownProduct: 'Катет · 10 = 150', unknownDivision: 'Катет = 150 : 10 = 15',
+    arithmetic: /150\s*[:/÷]\s*10\s*=\s*15/u },
   { id: 'geo-right-sine', mode: 'guided', result: 7, ratio: '0,28', draft: 'a = 25 / 0,28',
     fractions: [['противолежащий катет', 'гипотенуза'], ['неизвестный катет', '25']], checkFraction: ['7', '25'],
-    meaning: [/противолежащ/iu, /гипотенуз/iu], relation: [/25/u, /0[,.]28/u, /умнож|дол|част/iu],
-    arithmetic: /25\s*[·×*]\s*0[,.]28\s*=|0[,.]28\s*[·×*]\s*25\s*=/u }
+    meaning: [/противолежащ/iu, /гипотенуз/iu], conversion: ['28', '100'], proportion: [['28', '100'], ['катет', '25']],
+    crossProduct: 'Катет · 100 = 25 · 28', knownProduct: 'Катет · 100 = 700', unknownDivision: 'Катет = 700 : 100 = 7',
+    arithmetic: /700\s*[:/÷]\s*100\s*=\s*7/u }
 ];
 const server = http.createServer((req, res) => {
   try {
@@ -42,6 +45,9 @@ async function verifyFraction(row, expected, label) {
   for (const part of expected) assert(accessible.includes(part), label + ' announces ' + part);
   const fraction = row.locator('.profile-trig-fraction');
   assert.equal(await fraction.count(), 1, label + ' contains one stacked fraction');
+  await verifyFractionBox(fraction, expected, label);
+}
+async function verifyFractionBox(fraction, expected, label) {
   assert.equal(await fraction.getAttribute('aria-hidden'), 'true', label + ' avoids duplicate screen-reader output');
   assert.equal(await fraction.locator('.profile-trig-numerator').innerText(), expected[0]);
   assert.equal(await fraction.locator('.profile-trig-denominator').innerText(), expected[1]);
@@ -57,6 +63,39 @@ async function verifyFraction(row, expected, label) {
   assert(geometry.denominatorBottom > geometry.denominatorTop && geometry.numeratorWidth > 0 && geometry.denominatorWidth > 0, label + ' has visible content');
   assert(geometry.borderWidth >= 1 && !['none', 'hidden'].includes(geometry.borderStyle), label + ' has a visible fraction bar');
   assert(!/transparent|rgba\([^)]*,\s*0\)/u.test(geometry.borderColor), label + ' fraction bar is not transparent');
+}
+async function verifyProportion(row, expected, label) {
+  assert.equal(await row.getAttribute('role'), 'math');
+  const accessible = await row.getAttribute('aria-label');
+  assert.match(accessible, /рав[её]н|равно/iu);
+  for (const part of expected.flat()) assert(accessible.toLowerCase().includes(part.toLowerCase()), label + ' announces ' + part);
+  const fractions = row.locator('.profile-trig-fraction');
+  assert.equal(await fractions.count(), 2, label + ' has both sides of the proportion');
+  for (const [index, pair] of expected.entries()) await verifyFractionBox(fractions.nth(index), pair, label + ' side ' + index);
+  const cross = row.locator('svg.profile-trig-cross');
+  assert.equal(await cross.count(), 1); assert.equal(await cross.getAttribute('aria-hidden'), 'true');
+  assert.equal(await cross.isVisible(), true);
+  assert.equal(await cross.locator('line').count(), 2);
+  const geometry = await row.evaluate(node => {
+    const fractions = [...node.querySelectorAll('.profile-trig-fraction')];
+    const parts = fractions.flatMap(f => ['.profile-trig-numerator', '.profile-trig-denominator'].map(selector => getComputedStyle(f.querySelector(selector)).color));
+    const svg = node.querySelector('svg.profile-trig-cross'), bounds = svg.getBoundingClientRect();
+    const lines = [...svg.querySelectorAll('line')].map(line => {
+      const style = getComputedStyle(line), box = line.getBoundingClientRect();
+      return { slope: (Number(line.getAttribute('x2')) - Number(line.getAttribute('x1'))) * (Number(line.getAttribute('y2')) - Number(line.getAttribute('y1'))),
+        stroke: style.stroke, width: parseFloat(style.strokeWidth), dashed: style.strokeDasharray !== 'none' && style.strokeDasharray !== '0px',
+        widthBox: box.width, heightBox: box.height };
+    });
+    return { parts, width: bounds.width, height: bounds.height, lines };
+  });
+  assert.equal(geometry.parts[0], geometry.parts[3], label + ' pairs left numerator with right denominator');
+  assert.equal(geometry.parts[1], geometry.parts[2], label + ' pairs left denominator with right numerator');
+  assert.deepEqual(geometry.parts, ['rgb(180, 35, 24)', 'rgb(95, 99, 104)', 'rgb(95, 99, 104)', 'rgb(180, 35, 24)'], label + ' marks extreme terms red and mean terms gray');
+  assert(geometry.width > 10 && geometry.height > 10);
+  assert(geometry.lines[0].slope * geometry.lines[1].slope < 0, label + ' draws two opposite diagonals');
+  assert.deepEqual(geometry.lines.map(line => line.dashed).sort(), [false, true], label + ' distinguishes diagonals without color');
+  assert.deepEqual(geometry.lines.map(line => line.stroke).sort(), ['rgb(180, 35, 24)', 'rgb(95, 99, 104)'].sort(), label + ' uses the same red and gray on the crossed diagonals');
+  for (const line of geometry.lines) assert(line.width >= 1 && line.widthBox > 5 && line.heightBox > 5 && line.stroke !== 'none', label + ' shows a real diagonal');
 }
 async function fill(page, value) {
   if (await page.locator('#answer').count()) await page.locator('#answer').fill(String(value));
@@ -134,8 +173,18 @@ async function accept(page, value) {
         }
         const text = seen.join(' ');
         for (const meaning of item.meaning) assert.match(text, meaning, item.id + ' names the relevant sides');
-        for (const relationship of item.relation) assert.match(text, relationship, item.id + ' explains what operation means');
+        const step3 = panel.locator('[data-trig-step="3"]'), step4 = panel.locator('[data-trig-step="4"]');
+        assert((await step3.innerText()).includes('Произведение крайних членов пропорции равно произведению средних'), item.id + ' states the extreme/mean terms mnemonic');
+        assert((await step3.innerText()).includes(item.crossProduct), item.id + ' writes the unknown factor on the left after crossing');
+        assert((await step4.innerText()).includes(item.knownProduct), item.id + ' computes the known product');
+        assert((await step4.innerText()).includes('Чтобы найти неизвестный множитель, нужно произведение разделить на известный множитель.'), item.id + ' explains the elementary unknown-factor rule');
+        assert((await step4.innerText()).includes(item.unknownDivision), item.id + ' solves for the unknown factor');
         assert.match(text, item.arithmetic, item.id + ' performs the actual arithmetic');
+        const conversion = step3.locator('.profile-trig-ratio'); assert.equal(await conversion.count(), 1);
+        await verifyFraction(conversion, item.conversion, item.id + ' decimal conversion at ' + width);
+        assert((await conversion.getAttribute('aria-label')).includes(item.ratio));
+        const proportion = step3.locator('.profile-trig-proportion'); assert.equal(await proportion.count(), 1);
+        await verifyProportion(proportion, item.proportion, item.id + ' cross multiplication at ' + width);
         const definitions = panel.locator('[data-trig-step="2"] .profile-trig-ratio');
         assert.equal(await definitions.count(), 2, item.id + ' has the definition and its substitution as fractions');
         for (const [index, expected] of item.fractions.entries()) await verifyFraction(definitions.nth(index), expected, item.id + ' definition ' + index + ' at ' + width);
@@ -164,6 +213,6 @@ async function accept(page, value) {
       await context.close();
     }
     assert.deepEqual(errors, []); assert.deepEqual(failedRequests, []);
-    console.log('PROFILE_TRIANGLE_EXPLANATION_BROWSER_OK ' + JSON.stringify({ journeys, types: 3, steps: 5, widths: [360, 1280], stackedDefinitions: 6, stackedChecks: 2, fractionGeometry: true, keyboard: true, retainedHistory: true, draftReload: true, helpCredit: true, errors, failedRequests }));
+    console.log('PROFILE_TRIANGLE_EXPLANATION_BROWSER_OK ' + JSON.stringify({ journeys, types: 3, steps: 5, widths: [360, 1280], stackedDefinitions: 6, stackedChecks: 2, fractionGeometry: true, crossMultiplication: true, unknownFactorRule: true, keyboard: true, retainedHistory: true, draftReload: true, helpCredit: true, errors, failedRequests }));
   } finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); }
 })().catch(error => { console.error(error.stack || error); process.exitCode = 1; });

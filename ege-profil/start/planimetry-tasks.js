@@ -97,6 +97,16 @@
             if (typeof line === 'string') paragraph.textContent = line;
             else {
               paragraph.className = 'profile-trig-formula';
+              const appendFraction = (top, bottom, side) => {
+                const fraction = document.createElement('span'); fraction.className = 'profile-trig-fraction'; fraction.setAttribute('aria-hidden', 'true');
+                const numerator = document.createElement('span'); numerator.className = 'profile-trig-numerator'; numerator.textContent = top;
+                const denominator = document.createElement('span'); denominator.className = 'profile-trig-denominator'; denominator.textContent = bottom;
+                if (side) {
+                  numerator.classList.add(side === 'left' ? 'profile-trig-diagonal-a' : 'profile-trig-diagonal-b');
+                  denominator.classList.add(side === 'left' ? 'profile-trig-diagonal-b' : 'profile-trig-diagonal-a');
+                }
+                fraction.append(numerator, denominator); paragraph.append(fraction);
+              };
               if (line.fraction) {
                 const f = line.fraction;
                 paragraph.classList.add('profile-trig-ratio'); paragraph.setAttribute('role', 'math');
@@ -104,10 +114,18 @@
                   .replace('cos α', 'Косинус альфа').replace('sin α', 'Синус альфа').replace('tg α', 'Тангенс альфа').replace(/=/g, 'равно'));
                 const appendText = text => { if (text) { const span = document.createElement('span'); span.className = 'profile-trig-equality'; span.textContent = text; span.setAttribute('aria-hidden', 'true'); paragraph.append(span); } };
                 appendText(f.before);
-                const fraction = document.createElement('span'); fraction.className = 'profile-trig-fraction'; fraction.setAttribute('aria-hidden', 'true');
-                const numerator = document.createElement('span'); numerator.className = 'profile-trig-numerator'; numerator.textContent = f.numerator;
-                const denominator = document.createElement('span'); denominator.className = 'profile-trig-denominator'; denominator.textContent = f.denominator;
-                fraction.append(numerator, denominator); paragraph.append(fraction); appendText(f.after);
+                appendFraction(f.numerator, f.denominator); appendText(f.after);
+              } else if (line.proportion) {
+                const p = line.proportion;
+                paragraph.classList.add('profile-trig-proportion'); paragraph.setAttribute('role', 'math');
+                paragraph.setAttribute('aria-label', `Дробь: числитель ${p.left[0]}, знаменатель ${p.left[1]}, равно дробь: числитель ${p.right[0]}, знаменатель ${p.right[1]}`);
+                appendFraction(p.left[0], p.left[1], 'left');
+                const cross = document.createElement('span'); cross.className = 'profile-trig-crossbox'; cross.setAttribute('aria-hidden', 'true');
+                const drawing = el('svg', { viewBox: '0 0 56 64', class: 'profile-trig-cross', 'aria-hidden': 'true', focusable: 'false' }, cross);
+                el('line', { x1: 2, y1: 15, x2: 54, y2: 49, stroke: '#b42318', 'stroke-width': 2.5 }, drawing);
+                el('line', { x1: 2, y1: 49, x2: 54, y2: 15, stroke: '#5f6368', 'stroke-width': 2.5, 'stroke-dasharray': '5 3' }, drawing);
+                const equality = document.createElement('span'); equality.textContent = '='; cross.append(equality); paragraph.append(cross);
+                appendFraction(p.right[0], p.right[1], 'right');
               } else paragraph.textContent = line.formula;
             }
             item.append(paragraph);
@@ -162,6 +180,24 @@
     const multiplier = 10 ** ((String(m.ratio).split('.')[1] || '').length), numerator = Math.round(m.ratio * multiplier);
     const formula = text => ({ formula: text });
     const fraction = (before, numerator, denominator, after = '') => ({ fraction: { before, numerator, denominator, after } });
+    const unknown = cosine ? 'Гипотенуза' : 'Катет', factor = cosine ? numerator : multiplier;
+    const product = clean((cosine ? m.part : m.whole) * (cosine ? multiplier : numerator));
+    const crossStep = { title: 'Умножим крест-накрест', lines: [
+      'Запишем десятичное число обыкновенной дробью.',
+      fraction(`${ratio} = `, String(numerator), String(multiplier)),
+      { proportion: { left: [String(numerator), String(multiplier)], right: cosine ? [known, 'гипотенуза'] : ['катет', known] } },
+      'Крайние члены — красные, средние — серые.',
+      'Произведение крайних членов пропорции равно произведению средних.',
+      'Умножим крест-накрест. Произведение с неизвестным запишем слева.',
+      formula(`${unknown} · ${factor} = ${known} · ${cosine ? multiplier : numerator}`)
+    ] };
+    const factorStep = { title: 'Найдём неизвестный множитель', lines: [
+      'Вычислим произведение справа.',
+      formula(`${unknown} · ${factor} = ${product}`),
+      'Чтобы найти неизвестный множитель, нужно произведение разделить на известный множитель.',
+      formula(`${unknown} = ${product} : ${factor} = ${answer}`),
+      `${cosine ? 'Гипотенуза равна' : 'Искомый катет равен'} ${answer}.`
+    ] };
     if (cosine) return [
       { title: 'Найдём нужные стороны', lines: [
         'Квадратик отмечает прямой угол. Напротив него — гипотенуза: наклонная сторона со знаком «?».',
@@ -172,17 +208,8 @@
         fraction('cos α = ', 'прилежащий катет', 'гипотенуза'),
         fraction(`${ratio} = `, known, 'гипотенуза')
       ] },
-      { title: 'Почему делим?', lines: [
-        `Катет ${known} составляет ${ratio} длины гипотенузы.`,
-        formula(`${ratio} · гипотенуза = ${known}`),
-        `Чтобы найти всю длину по известной части, делим ${known} на ${ratio}.`,
-        formula(`Гипотенуза = ${known} : ${ratio}`)
-      ] },
-      { title: 'Вычислим', lines: multiplier > 1 ? [
-        `Умножим делимое и делитель на ${multiplier}. Частное не изменится, а в делителе не будет запятой.`,
-        formula(`${known} : ${ratio} = ${clean(m.part * multiplier)} : ${numerator} = ${answer}`),
-        `Гипотенуза равна ${answer}.`
-      ] : [formula(`${known} : ${ratio} = ${answer}`), `Гипотенуза равна ${answer}.`] },
+      crossStep,
+      factorStep,
       { title: 'Проверим', lines: [
         formula(`${answer} · ${ratio} = ${known}`),
         'Получили длину катета из условия.',
@@ -204,20 +231,8 @@
         fraction(sine ? 'sin α = ' : 'tg α = ', 'противолежащий катет', sine ? 'гипотенуза' : 'прилежащий катет'),
         fraction(`${ratio} = `, 'неизвестный катет', known)
       ] },
-      { title: 'Почему умножаем?', lines: sine ? [
-        `Катет составляет ${ratio} длины гипотенузы. Чтобы найти такую часть от ${known}, умножаем.`,
-        formula(`Катет = ${known} · ${ratio}`)
-      ] : [
-        `При делении неизвестного катета на ${known} получается ${ratio}.`,
-        `Чтобы найти делимое, умножаем частное ${ratio} на делитель ${known}.`,
-        formula(`Катет = ${known} · ${ratio}`)
-      ] },
-      { title: 'Вычислим', lines: multiplier > 1 ? [
-        formula(`${ratio} = ${numerator} : ${multiplier}`),
-        `Сначала умножим ${known} на ${numerator}, затем разделим на ${multiplier}.`,
-        formula(`${known} · ${ratio} = ${clean(m.whole * numerator)} : ${multiplier} = ${answer}`),
-        `Искомый катет равен ${answer}.`
-      ] : [formula(`${known} · ${ratio} = ${answer}`), `Искомый катет равен ${answer}.`] },
+      crossStep,
+      factorStep,
       { title: 'Проверим', lines: [
         fraction('', answer, known, ` = ${ratio}`),
         sine ? 'Получили синус из условия.' : 'Получили тангенс из условия.',

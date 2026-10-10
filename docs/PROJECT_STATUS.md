@@ -137,7 +137,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Live verification confirmed five gradual steps, no explanation before opening,
   correct arithmetic and preserved original condition/draft after reload.
 
-## In progress: familiar fraction notation in trigonometry
+## Published: familiar fraction notation in trigonometry
 
 - [Scope](tasks/PROFILE_TRIG_FRACTIONS.md): stacked fractions for definitions,
   substitutions and ratio checks in the three existing trigonometry explanations.
@@ -151,7 +151,25 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   advanced main to `f228a08ab440dc79e098b39053921501087ea8fb`; only this status
   document overlaps. Both records are retained; all runtime and test files
   remain byte-identical to their respective reviewed versions.
-- Next: bind the composed tree review, renew exact-head CI, verify publication.
+- PR #225 published as `f9a9a3607312dab4bbfd6e85d2e28d93822d3e9c`, parent
+  `f228a08ab440dc79e098b39053921501087ea8fb`; reviewed tree
+  `c01161f06ed52f1f15d19d65de9ec307f9dada2b`. Renewed exact-head profile CI
+  38019751638 and Pages 38020048618 passed; all three live assets matched.
+  Live browser confirmed stacked fractions, 2 px bars and preserved draft.
+
+## In progress: cross multiplication before the unknown-factor rule
+
+- [Scope](tasks/PROFILE_TRIG_PROPORTIONS.md); base
+  `f9a9a3607312dab4bbfd6e85d2e28d93822d3e9c`; branch
+  `fix/profile-trig-proportions`. MEDIUM, existing three trig explanations.
+- Show decimal-to-fraction conversion, diagonal multiplication with the unknown
+  on the left, then find the unknown factor by division. Preserve all five
+  steps, task data, help accounting and saved work.
+- Owner follow-up: extreme terms/red diagonal, mean terms/grey diagonal and
+  the familiar equality-of-products mnemonic. Geometry 36/36, independent
+  models 8/8 and six browser journeys passed; all six screenshots inspected.
+  Independent focused MEDIUM review found no blockers.
+- Next: committed-tree review binding, exact-head CI, live publication check.
 
 ## Published: independent pupil entry and parent progress
 
