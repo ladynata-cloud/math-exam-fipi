@@ -6,29 +6,40 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: owner-provided search verification
+## In progress: owner-provided Google verification
 
-- [Scope](tasks/SEO_SEARCH_VERIFICATION_20261011.md); base
-  `a51f188b74ccd781622e3e94b3a419f895ca9c73`; branch
-  `feat/seo-search-verification-20261011`; SMALL focused independent review.
-- The owner supplied the Yandex verification meta tag for mathexam.space.
-  Publish it in the homepage head and verify its live presence.
-- Google verification remains pending its owner-provided tag. Publishing a tag
-  does not itself prove service-side verification or sitemap submission.
-- Preserve the complete visible homepage and all learner/account behavior.
-  Release evidence records the final service and publication state.
+- [Scope](tasks/SEO_GOOGLE_VERIFICATION_20261011.md); base
+  `388accb4dd067a621f90fd1066823412a28bfd88`; branch
+  `feat/seo-google-verification-20261011`; SMALL focused independent review.
+- The owner supplied the complete Google Search Console meta tag for the
+  `https://mathexam.space/` URL-prefix property. Publish it in the homepage
+  head, preserve the verified Yandex tag, and check its live presence.
+- Google service-side confirmation and sitemap submission remain pending.
+  Preserve the complete homepage, learner/account behavior and existing SEO.
+
+## Confirmed: Yandex ownership and sitemap submission
+
+- [Scope](tasks/SEO_SEARCH_VERIFICATION_20261011.md); PR #239 merged as
+  `388accb4dd067a621f90fd1066823412a28bfd88` after SEO and EGE base CI passed.
+- Pages run 38082856663 succeeded. The live homepage matched the release byte
+  for byte and contained exactly one owner-supplied Yandex tag inside `head`.
+- The owner's screenshot shows role `Owner`, verification date 2026-10-11.
+  A subsequent screenshot shows `https://mathexam.space/sitemap.xml` added to
+  the processing queue. Processing results and search indexing are not yet
+  verified; no private search-performance data has been read.
 
 ## Integrated: public SEO and topic discovery
 
 - [Scope](tasks/SEO_DISCOVERY_20261011.md); base
   `b0b2fe8e4d2cbf15426a9a314674bf7a2edce4f9`; branch
   `feat/seo-discovery-20261011`; MEDIUM focused independent internal review.
-- Public source/live reconciliation: robots and sitemap return HTTP 200;
-  the old sitemap has 244 URLs and misses current public entrances.
+- Initial source/live reconciliation found robots and sitemap returning HTTP
+  200; the former 244-URL sitemap missed current public entrances. The published
+  generated sitemap now contains 513 public canonical URLs.
 - Metadata for 24 entrances, five static worked explanations plus their
   directory, and repeatable public sitemap/exclusion checks.
 - Preserve learner runtimes, accounts, stable book URLs and existing noindex.
-  Search-account ownership and private statistics have not been verified.
+  Search-account verification progress is recorded in the sections above.
 - Checked publication follows the standing owner instruction. PR/release
   evidence records completion; no unrelated active branch is updated.
 - PR #238 merged as `a51f188b74ccd781622e3e94b3a419f895ca9c73` after all eight
