@@ -90,8 +90,8 @@ test('right-triangle walkthroughs derive ratios and arithmetic from the current 
   try {
     const variants = [
       ['geo-right-cosine', { part: 18, ratio: 0.6 }, 30, '18 : 0,6 = 180 : 6 = 30', '30 · 0,6 = 18'],
-      ['geo-right-sine', { whole: 20, ratio: 0.6 }, 12, '20 · 0,6 = 120 : 10 = 12', '12 : 20 = 0,6'],
-      ['geo-right-tangent', { whole: 8, ratio: 1.5 }, 12, '8 · 1,5 = 120 : 10 = 12', '12 : 8 = 1,5']
+      ['geo-right-sine', { whole: 20, ratio: 0.6 }, 12, '20 · 0,6 = 120 : 10 = 12', ['12', '20', '0,6']],
+      ['geo-right-tangent', { whole: 8, ratio: 1.5 }, 12, '8 · 1,5 = 120 : 10 = 12', ['12', '8', '1,5']]
     ];
     for (const [id, meta, answer, arithmetic, check] of variants) {
       const original = selectTasks(f, lesson => lesson.group === 'geometry').find(task => task.id === id);
@@ -100,7 +100,16 @@ test('right-triangle walkthroughs derive ratios and arithmetic from the current 
       const next = f.container.querySelector('[data-trig-next]'); for (let i = 1; i < 5; i++) next.click();
       const panel = f.container.querySelector('[data-trig-explanation]');
       assert.ok(panel.textContent.includes(arithmetic), id + ': current arithmetic');
-      assert.ok(panel.querySelector('[data-trig-step="5"]').textContent.includes(check), id + ': current ratio check');
+      const finalStep = panel.querySelector('[data-trig-step="5"]');
+      if (Array.isArray(check)) {
+        const relation = finalStep.querySelector('.profile-trig-ratio');
+        assert.ok(relation, id + ': current ratio is a stacked fraction');
+        assert.equal(relation.getAttribute('role'), 'math');
+        assert.equal(relation.querySelector('.profile-trig-numerator').textContent, check[0]);
+        assert.equal(relation.querySelector('.profile-trig-denominator').textContent, check[1]);
+        assert.equal(relation.querySelector('.profile-trig-fraction').getAttribute('aria-hidden'), 'true');
+        for (const value of check) assert.ok(relation.getAttribute('aria-label').includes(value), id + ': accessible relation includes ' + value);
+      } else assert.ok(finalStep.textContent.includes(check), id + ': current ratio check');
     }
   } finally { f.close(); }
 });

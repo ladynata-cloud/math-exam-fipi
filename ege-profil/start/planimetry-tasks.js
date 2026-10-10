@@ -93,8 +93,23 @@
           const step = steps[shown], item = document.createElement('li'); item.className = 'profile-trig-step'; item.dataset.trigStep = String(shown + 1);
           const heading = document.createElement('h3'); heading.textContent = `Шаг ${shown + 1} из ${steps.length}. ${step.title}`; item.append(heading);
           step.lines.forEach(line => {
-            const paragraph = document.createElement('p'); paragraph.textContent = typeof line === 'string' ? line : line.formula;
-            if (typeof line !== 'string') paragraph.className = 'profile-trig-formula';
+            const paragraph = document.createElement('p');
+            if (typeof line === 'string') paragraph.textContent = line;
+            else {
+              paragraph.className = 'profile-trig-formula';
+              if (line.fraction) {
+                const f = line.fraction;
+                paragraph.classList.add('profile-trig-ratio'); paragraph.setAttribute('role', 'math');
+                paragraph.setAttribute('aria-label', `${f.before}дробь: числитель ${f.numerator}, знаменатель ${f.denominator}${f.after}`
+                  .replace('cos α', 'Косинус альфа').replace('sin α', 'Синус альфа').replace('tg α', 'Тангенс альфа').replace(/=/g, 'равно'));
+                const appendText = text => { if (text) { const span = document.createElement('span'); span.className = 'profile-trig-equality'; span.textContent = text; span.setAttribute('aria-hidden', 'true'); paragraph.append(span); } };
+                appendText(f.before);
+                const fraction = document.createElement('span'); fraction.className = 'profile-trig-fraction'; fraction.setAttribute('aria-hidden', 'true');
+                const numerator = document.createElement('span'); numerator.className = 'profile-trig-numerator'; numerator.textContent = f.numerator;
+                const denominator = document.createElement('span'); denominator.className = 'profile-trig-denominator'; denominator.textContent = f.denominator;
+                fraction.append(numerator, denominator); paragraph.append(fraction); appendText(f.after);
+              } else paragraph.textContent = line.formula;
+            }
             item.append(paragraph);
           });
           list.append(item); shown += 1;
@@ -146,6 +161,7 @@
     const answer = clean(cosine ? m.part / m.ratio : m.whole * m.ratio);
     const multiplier = 10 ** ((String(m.ratio).split('.')[1] || '').length), numerator = Math.round(m.ratio * multiplier);
     const formula = text => ({ formula: text });
+    const fraction = (before, numerator, denominator, after = '') => ({ fraction: { before, numerator, denominator, after } });
     if (cosine) return [
       { title: 'Найдём нужные стороны', lines: [
         'Квадратик отмечает прямой угол. Напротив него — гипотенуза: наклонная сторона со знаком «?».',
@@ -153,8 +169,8 @@
       ] },
       { title: 'Что означает косинус?', lines: [
         'Косинус показывает, какую часть гипотенузы составляет прилежащий катет.',
-        formula('cos α = прилежащий катет : гипотенуза'),
-        formula(`${ratio} = ${known} : гипотенуза`)
+        fraction('cos α = ', 'прилежащий катет', 'гипотенуза'),
+        fraction(`${ratio} = `, known, 'гипотенуза')
       ] },
       { title: 'Почему делим?', lines: [
         `Катет ${known} составляет ${ratio} длины гипотенузы.`,
@@ -185,8 +201,8 @@
       ] },
       { title: sine ? 'Что означает синус?' : 'Что означает тангенс?', lines: [
         sine ? 'Синус показывает, какую часть гипотенузы составляет противолежащий катет.' : 'Тангенс сравнивает два катета: противолежащий делим на прилежащий.',
-        formula(sine ? 'sin α = противолежащий катет : гипотенуза' : 'tg α = противолежащий катет : прилежащий катет'),
-        formula(`${ratio} = неизвестный катет : ${known}`)
+        fraction(sine ? 'sin α = ' : 'tg α = ', 'противолежащий катет', sine ? 'гипотенуза' : 'прилежащий катет'),
+        fraction(`${ratio} = `, 'неизвестный катет', known)
       ] },
       { title: 'Почему умножаем?', lines: sine ? [
         `Катет составляет ${ratio} длины гипотенузы. Чтобы найти такую часть от ${known}, умножаем.`,
@@ -203,7 +219,7 @@
         `Искомый катет равен ${answer}.`
       ] : [formula(`${known} · ${ratio} = ${answer}`), `Искомый катет равен ${answer}.`] },
       { title: 'Проверим', lines: [
-        formula(`${answer} : ${known} = ${ratio}`),
+        fraction('', answer, known, ` = ${ratio}`),
         sine ? 'Получили синус из условия.' : 'Получили тангенс из условия.',
         sine ? `Катет ${answer} короче гипотенузы ${known} — так и должно быть.` : 'Тангенс может быть больше 1: один катет может быть длиннее другого.',
         `Ответ: ${answer}. Теперь можно ввести его в поле ответа.`
