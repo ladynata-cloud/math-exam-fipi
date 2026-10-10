@@ -125,6 +125,8 @@ function practice(l,mode){
   container.addEventListener('click',rememberControl,true);
   const dispose=globalThis.ProfileTaskModels[t.id](container,t,{step:s.step,solved:mode==='guided'?s.answers.length>s.step:s.answers.length>0,mode:mode==='plan'?'independent':mode,completed:s.answers.length,isCurrent:ensureCurrent,onHelp(){
    if(!ensureCurrent())return false;markHelp(s,mode);helpLink('model',controlIndex);return true;
+  },onExplain(){
+   if(!ensureCurrent())return false;helpLink('model',controlIndex);return true;
   }})||(()=>{});
   modelCleanup=()=>{container.removeEventListener('click',rememberControl,true);dispose();};
  }

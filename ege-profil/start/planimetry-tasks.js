@@ -25,6 +25,10 @@
   }
   function figure(container, task, points, context, draw, note) {
     const independent = context.mode === 'independent' && !context.solved;
+    const notifyExplanation = () => {
+      const handler = independent ? context.onHelp : context.onExplain;
+      return typeof handler !== 'function' || handler() !== false;
+    };
     const helpNotice = independent ? ' Открытие построения — подсказка.' : '';
     const defaultNote = (independent ? 'Это чертёж к текущей задаче.' : (note || 'Это чертёж к текущей задаче. Кнопка поможет выделить нужные элементы.')) + helpNotice;
     const wrapper = document.createElement('div'); wrapper.className = 'profile-task-model'; wrapper.dataset.taskId = task.id;
@@ -142,7 +146,7 @@
           if (opening && !permitted()) return;
           if (!panel) {
             // Record help once, before any worked answer enters the DOM.
-            if (typeof context.onHelp === 'function' && context.onHelp() === false) return;
+            if (!notifyExplanation()) return;
             steps = makeSteps();
             layer = el('g', { 'data-model-layer': 'Стороны для разбора' }, svg);
             const old = parent; parent = layer; highlight(api); parent = old;
@@ -165,7 +169,7 @@
         const button = document.createElement('button'); button.type = 'button'; button.textContent = independent ? 'Показать подсказку к рисунку' : label; button.setAttribute('aria-pressed', String(initial)); button.style.cssText = 'min-height:44px;max-width:100%;white-space:normal'; controls.append(button);
         const onClick = () => {
           const active = button.getAttribute('aria-pressed') !== 'true';
-          if (active && typeof context.onHelp === 'function' && context.onHelp() === false) return;
+          if (active && !notifyExplanation()) return;
           button.setAttribute('aria-pressed', String(active));
           if (independent) button.textContent = active ? 'Скрыть подсказку' : 'Показать подсказку к рисунку';
           layer.setAttribute('visibility', active ? 'visible' : 'hidden');
