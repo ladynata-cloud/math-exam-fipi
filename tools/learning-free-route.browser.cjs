@@ -144,11 +144,12 @@ async function main() {
     assert.equal(await teacher.page.locator('#access-login').inputValue(), PUPIL_LOGIN);
     assert.equal(await teacher.page.locator('#access-password').inputValue(), PUPIL_PASSWORD);
     const accessURL = new URL(await teacher.page.locator('#access-link').inputValue());
-    assert.equal(accessURL.hash, '#route'); assert.equal(accessURL.search, '');
+    assert.equal(accessURL.hash, '#login=' + PUPIL_LOGIN); assert.equal(accessURL.searchParams.get('role'), 'student');
     assert.equal((await api(teacher.page, '/session')).account.id, teacherSession.account.id);
     assert.equal((await teacher.context.cookies(origin)).find(cookie => cookie.name === teacherCookie.name).value, teacherCookie.value,
       'Creating a pupil does not replace the teacher session');
-    await teacher.page.locator('#access-saved').check();
+    assert.equal(await teacher.page.locator('#access-saved').count(), 0);
+    assert.equal(await teacher.page.locator('#close-access').isDisabled(), false);
     await teacher.page.locator('#close-access').click();
     assert.equal(await teacher.page.locator('#access-password').count(), 0, 'Closing removes plaintext credential card');
     const roster = await api(teacher.page, '/teacher/students'), pupil = roster.students.find(student => student.login === PUPIL_LOGIN);

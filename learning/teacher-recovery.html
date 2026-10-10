@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Восстановить пароль учителя · MathExam</title>
+  <link rel="stylesheet" href="style.css?v=family-cabinets-20261010">
+  <link rel="stylesheet" href="teacher-recovery.css?v=simple-cabinet-access-20261010">
+  <script defer src="teacher-recovery.js?v=simple-cabinet-access-20261010"></script>
+</head>
+<body>
+  <header class="app-header"><a class="brand" href="./?role=teacher" aria-label="MathExam — кабинет учителя"><span class="brand-mark" aria-hidden="true">m<span>·</span></span><span>MathExam<small>математика шаг за шагом</small></span></a></header>
+  <main class="teacher-recovery-shell">
+    <section class="auth-intro"><p class="eyebrow">КАБИНЕТ УЧИТЕЛЯ</p><h1>Новый пароль.<br>Тот же кабинет.</h1><p class="lead">Все ученики, задания и результаты останутся на месте.</p></section>
+    <section class="auth-card" id="recovery-card" aria-labelledby="recovery-title">
+      <div id="recovery-help">
+        <h2 id="recovery-title">Не помню пароль</h2>
+        <p><b>Кабинет ещё открыт на одном из устройств?</b> Откройте в нём раздел «Мой пароль» и задайте новый. Старый пароль и коды не понадобятся.</p>
+        <a class="button primary" href="./?role=teacher#security">Открыть «Мой пароль»</a>
+        <p><b>Все входы закрыты?</b> Владелец сайта может выпустить одноразовую ссылку восстановления через управление сайтом. По ней Вы зададите новый пароль.</p>
+        <p class="form-hint">Автоматическая отправка ссылки на почту пока не подключена.</p>
+        <details><summary>У меня есть резервный код</summary><p>Сохранённые ранее коды продолжают работать, пока Вы не сменили пароль.</p><a class="button" href="./?role=teacher#recovery-code">Восстановить по коду</a></details>
+      </div>
+      <div id="recovery-entry" hidden>
+        <h2>Задать новый пароль</h2>
+        <p>Введите новый пароль два раза. Старый пароль и резервный код не нужны.</p>
+        <form id="teacher-recovery-form" class="form-stack">
+          <label>Новый пароль<input name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" required></label>
+          <p class="form-hint">Не менее 12 символов. Можно использовать несколько слов.</p>
+          <label>Повторите новый пароль<input name="confirm" type="password" autocomplete="new-password" minlength="12" maxlength="128" required></label>
+          <p class="form-error" id="recovery-error" role="alert"></p>
+          <button class="primary" type="submit">Сохранить пароль и войти</button>
+          <p id="recovery-status" role="status"></p>
+        </form>
+      </div>
+      <p id="recovery-link-error" class="form-error" role="alert" hidden></p>
+      <a class="button subtle recovery-return" href="./?role=teacher#students">Вернуться в кабинет</a>
+    </section>
+  </main>
+  <noscript><p class="notice">Для восстановления пароля включите JavaScript в браузере.</p></noscript>
+</body>
+</html>

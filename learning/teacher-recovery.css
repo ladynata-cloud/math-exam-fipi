@@ -1,0 +1,8 @@
+.teacher-recovery-shell{max-width:1120px;margin:0 auto;padding:52px 24px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;min-height:calc(100vh - 100px)}
+.teacher-recovery-shell .auth-card{min-width:0;max-width:100%}
+.teacher-recovery-shell p{line-height:1.65}
+.teacher-recovery-shell details{margin-top:24px}
+.teacher-recovery-shell summary{cursor:pointer;font-weight:650}
+.teacher-recovery-shell .button{text-align:center}
+.recovery-return{margin-top:20px}
+@media(max-width:720px){.teacher-recovery-shell{padding:28px 14px;display:block;min-height:0}.teacher-recovery-shell .auth-intro{margin-bottom:24px}.teacher-recovery-shell h1{font-size:34px}.teacher-recovery-shell .auth-card{padding:24px}}

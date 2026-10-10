@@ -107,6 +107,15 @@ function createLearningApi(options = {}) {
     const passwordHash = await hashPassword(req.body.password);
     res.json(sessionResponse(res, store.recoverTeacher(login, req.body.code, passwordHash)));
   }));
+  router.post('/teacher/password-recovery', originMiddleware, handler(async (req, res) => {
+    exactKeys(req.query, []);
+    exactKeys(req.body, ['token', 'password'], ['token', 'password']);
+    anonymousLimit(req, 'teacher-recovery:' + (typeof req.body.token === 'string' ? req.body.token.slice(0, 100) : 'invalid'));
+    const { account } = store.teacherRecovery(req.body.token);
+    const passwordHash = await hashPassword(req.body.password);
+    // No cookie is replaced until a valid owner-issued proof is consumed.
+    res.json(sessionResponse(res, store.recoverTeacherPassword(req.body.token, passwordHash, account.password_hash, account.auth_epoch)));
+  }));
   router.get('/session', authMiddleware, handler((req, res) => res.json({ account: req.learningAuth, csrfToken: csrf(req.learningSessionToken) })));
   router.get('/profile', authMiddleware, handler((req, res) => {
     exactKeys(req.query, []);
@@ -137,6 +146,15 @@ function createLearningApi(options = {}) {
     const valid = await verifyPassword(req.body.password, account?.password_hash);
     requireValue(valid, 'LEARNING_ACCESS_INVALID', 401);
     res.json(store.rotateTeacherRecoveryCodes(req.learningSessionToken, account.password_hash, account.auth_epoch));
+  }));
+  router.post('/teacher/password', authMiddleware, mutationMiddleware, handler(async (req, res) => {
+    store.teacher(req.learningAuth);
+    exactKeys(req.query, []);
+    exactKeys(req.body, ['password'], ['password']);
+    limiter.take(`teacher-password:${req.learningAuth.id}`, 8, 15 * 60000);
+    const account = store.account(req.learningAuth.id);
+    const passwordHash = await hashPassword(req.body.password);
+    res.json(store.replaceTeacherPassword(req.learningSessionToken, passwordHash, account.password_hash, account.auth_epoch));
   }));
   router.get('/teacher/students', authMiddleware, handler((req, res) => res.json({ students: store.students(req.learningAuth) })));
   router.get('/teacher/students/:id/quick-access', authMiddleware, handler((req, res) => {
