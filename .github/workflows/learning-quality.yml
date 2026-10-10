@@ -83,6 +83,7 @@ jobs:
           node tools/learning-oge.browser.cjs
           node tools/learning-foundations.browser.cjs
           node tools/learning-profile-entry.browser.cjs
+          node tools/profile-exam-first.browser.cjs
           node tools/pre7-foundations.browser.cjs
           node tools/grade7-geometry-core.browser.cjs
           node tools/grade7-construction-visual.browser.cjs

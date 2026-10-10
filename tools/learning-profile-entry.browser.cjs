@@ -21,7 +21,13 @@ try { ({ chromium } = require('playwright')); }
 catch (_) { ({ chromium } = require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright'))); }
 const PASSWORD = 'Synthetic-profile-entry-2026';
 const COURSE = 'https://mathexam.space/ege-profil/start/index.html';
-const FOCUS = 'Начни с дробей. Затем повтори тригонометрический круг. <b>Это текст</b>';
+const FOCUS = 'Если встретится затруднение, повтори нужную тему. <b>Это текст</b>';
+const EXAMS = require('../ege-profil/start/calm-data.js').exams;
+assert.deepEqual(require('../learning/profile-exam-catalog.js').exams, EXAMS.map(({ number, title, entry }) => ({ number, title, entry })), 'The served cabinet catalogue matches the canonical course');
+const LESSONS = ['geometry', 'algebra', 'stereo', 'probability', 'equations', 'functions', 'applied', 'readiness']
+  .flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
+const EXPECTED_ENTRIES = ['geo-right', 'vec-coordinates', 'stereo-box', 'prob-count', 'prob-independent',
+  'prob-distribution', 'eq-linear', 'expr-powers', 'calc-tangent', 'applied-formula', 'applied-work', 'fn-line', 'applied-percent'];
 const listen = app => new Promise(resolve => { const server = app.listen(0, '127.0.0.1', () => resolve(server)); });
 const close = server => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); });
 const api = (page, route, body) => page.evaluate(({ route, body }) => LearningApp.api(route,
@@ -92,10 +98,25 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
     async function entry(page, personal = true) {
       await page.locator('[data-profile-course]').waitFor();
       assert.equal(await page.locator('#main h1').innerText(), 'ЕГЭ · профильная математика');
-      assert.equal(await page.getByRole('link', { name: 'Начать подготовку →', exact: true }).getAttribute('href'), COURSE + '#calm');
-      assert.equal(await page.getByRole('link', { name: 'Проверить, что повторить', exact: true }).getAttribute('href'), COURSE + '#readiness');
+      const catalogue = page.locator('[data-profile-exam-catalog]');
+      assert.equal(await catalogue.isVisible(), true, 'The route opens with the exam catalogue');
+      assert.deepEqual(EXAMS.map(exam => exam.entry), EXPECTED_ENTRIES, 'Intentional entry types for all 13 exam positions');
+      const cards = catalogue.locator('[data-profile-exam]');
+      assert.deepEqual(await cards.evaluateAll(nodes => nodes.map(node => Number(node.dataset.profileExam))), Array.from({ length: 13 }, (_, i) => i + 1));
+      assert.deepEqual(await catalogue.locator('a[data-profile-exam-start]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))),
+        EXPECTED_ENTRIES.map(id => COURSE + '#practice/' + id + '/independent'), 'Every card starts with a real independent exam task');
+      for (const [index, id] of EXPECTED_ENTRIES.entries()) {
+        const lesson = LESSONS.find(item => item.id === id);
+        assert.equal(lesson?.position, index + 1, 'The entry belongs to its advertised exam position');
+        assert(lesson.tasks.slice(3).length > 0, 'There are independent tasks for ' + id);
+      }
+      assert.equal(await catalogue.locator('a[href*="bridge-"], a[href*="grade7"], a[href$="#readiness"]').count(), 0, 'No compulsory school or prerequisite detour at entry');
+      assert(await page.evaluate(() => {
+        const catalogue = document.querySelector('[data-profile-exam-catalog]');
+        return [...document.querySelectorAll('.profile-focus, [data-profile-prior-work]')].every(node => Boolean(catalogue.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_FOLLOWING));
+      }), 'The exam catalogue precedes focus notes and old school work');
       const text = await page.locator('#main').innerText();
-      assert.match(text, /самостоятельно решать все 13 заданий/);
+      assert.match(text, /13/);
       assert.match(text, /Просто бери и решай! Всё получится\)/);
       assert.match(text, /Решения в этом курсе пока сохраняются в браузере\./);
       assert(!/№1–21|Задания 1–21|Вариант из 21|Мой курс · 7 класс|на другом устройстве/.test(text));
@@ -182,7 +203,7 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
       assert.equal(await unchanged.locator('[data-profile-course]').count(), 0);
     }
     assert.deepEqual(errors, []); assert.deepEqual(external, []);
-    console.log('LEARNING_PROFILE_ENTRY_OK: real profile save, separate pupils, 13-task home/course/route, focus escaping, phone/reload/second device, honest local progress, teacher assignment fallback, parent view, free started work survives course change, four existing directions');
+    console.log('LEARNING_PROFILE_ENTRY_OK: real profile save, separate pupils, exam-first 13-task catalogue on home/course/route, focus escaping, phone/reload/second device, honest local progress, teacher assignment fallback, parent view, free started work survives course change, four existing directions');
   } finally {
     await browser?.close(); await close(server); await close(trainerServer); store.close(); fs.rmSync(directory, { recursive: true, force: true });
   }

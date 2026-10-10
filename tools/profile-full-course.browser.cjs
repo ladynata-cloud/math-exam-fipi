@@ -102,21 +102,28 @@ const server = http.createServer((req, res) => {
       assert(await target.locator('#task-model').innerText(), 'Model has readable explanation: '+task.id);
     }
 
-    // All thirteen cards lead to their own real topics and a working first step.
+    // All thirteen cards lead to their own real topics and a fresh independent task.
     await go('#part-one');
     assert.equal(await page.locator('.exam-card[href^="#exam/"]').count(), 13);
     const actualIds = await page.evaluate(() => globalThis.ProfileLessons.map(l => l.id).sort());
     assert.deepEqual(actualIds, lessons.map(l => l.id).sort(), 'No script overwrite or missing bank');
+    // Keep navigation-only attempts separate from the pupil who later learns a
+    // topic and earns fresh independent credit. Reading a rule must continue to
+    // mark any already-open independent attempt as assisted.
+    const catalogue = await learner();
     for (let number=1; number<=13; number++) {
-      await go('#part-one');
-      await page.locator('.exam-card[href="#exam/'+number+'"]').click();
-      await page.locator('.exam-topic').first().waitFor();
-      assert.equal(await page.locator('.exam-topic').count(), lessons.filter(l => l.position===number).length, 'All topics discoverable for position '+number);
-      await page.locator('#exam-start').click();
-      await page.locator('#answer-form').waitFor();
-      const practiceHash = new URL(page.url()).hash;
-      assert.match(practiceHash, /^#practice\/.+\/guided$/);
-      await noOverflow(page, 'position '+number);
+      await go('#part-one', catalogue);
+      await catalogue.locator('.exam-card[href="#exam/'+number+'"]').click();
+      await catalogue.locator('.exam-topic').first().waitFor();
+      assert.equal(await catalogue.locator('.exam-topic').count(), lessons.filter(l => l.position===number).length, 'All topics discoverable for position '+number);
+      await catalogue.locator('#exam-start').click();
+      await catalogue.locator('#answer-form').waitFor();
+      const practiceHash = new URL(catalogue.url()).hash;
+      assert.match(practiceHash, /^#practice\/.+\/independent$/);
+      const entryId = practiceHash.split('/')[1];
+      assert.equal(lessons.find(lesson => lesson.id === entryId).position, number, 'The task belongs to the selected exam number');
+      assert.equal((await session(entryId, 'independent', catalogue)).assisted, false, 'Starting an exam task does not supply help');
+      await noOverflow(catalogue, 'position '+number);
     }
     await go('#first-three');
     assert.equal(await page.locator('.exam-card').count(), 3, 'Previous first-three link still opens the short route');

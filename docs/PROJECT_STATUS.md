@@ -1,6 +1,6 @@
 # MathExam project status
 
-Updated: 2026-10-09 (Asia/Novosibirsk)
+Updated: 2026-10-10 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
@@ -33,17 +33,36 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   exact-head CI `37955834953` and Pages `37956570274` passed. The public
   index and versioned script matched the reviewed bytes.
 
-## In review: profile course entry in learner cabinets
+## Published: profile course entry in learner cabinets
 
 - [Scope](tasks/PROFILE_CABINET_ENTRY.md): add the missing `ege-profile` teaching
   direction and public-course entrance, preserving the four existing routes.
 - HIGH review for the teaching-profile schema extension; authentication and
   account ownership remain unchanged. Public profile-course solutions still
   remain browser-local. This is not an answer-sync implementation.
-- Base `6e3cc69a791379b516397cf79b46e73922fe4c79`; branch
-  `feat/profile-cabinet-entry`. Next: migration/browser gates, exact-head remote
-  review and cloud CI, then deployment and private-UI verification.
-- Actual release evidence belongs in the task PR. No real pupil data in Git.
+- PR #220 merged as `517f254338013911cfabcd1a72adbc1e00cba801`; reviewed
+  tree `16da582a30ccc383ba4fc262e585e01c9e9aa9a1`. Exact-head CI and
+  independent reviews passed; Pages run 37960073577 succeeded.
+- On 2026-10-10, all five Amvera entry assets matched the reviewed files and
+  health reported ready. The previous hosting 409 blocker was resolved.
+  Intended profile choices were saved through the private teacher UI and
+  remained correct after a full reload. No real pupil data in Git.
+- Public profile solutions still remain local to the browser. Release evidence
+  is recorded in PR #220.
+
+## In progress: exam tasks first, targeted school help when needed
+
+- [Scope](tasks/PROFILE_EXAM_FIRST_ROUTE.md): display the thirteen-position
+  catalogue first in profile cabinets; open actual exam practice before optional
+  prerequisite work and return from a targeted detour to the original task.
+- Base `517f254338013911cfabcd1a72adbc1e00cba801`; branch
+  `feat/profile-exam-first`. MEDIUM front-end behavior review; no server,
+  authentication, storage schema or cloud answer-sync changes.
+- Targeted learner robots passed catalogue, independent entry, wrong-input
+  handling, school/trigonometry repair and preserved return on desktop/mobile.
+  Focused independent MEDIUM source review approved without P1/P2 findings.
+- Next: final regression and exact-head CI, controlled merge, then verify live
+  cabinet/course assets under the standing cloud-publication instruction.
 
 ## Published: independent pupil entry and parent progress
 

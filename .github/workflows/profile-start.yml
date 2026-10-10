@@ -34,7 +34,7 @@ jobs:
       - name: Prerequisite mathematics and simulated learners
         run: node tools/profile-readiness-math.test.cjs && node tools/profile-readiness-plan.test.cjs && node tools/profile-algebra-final-step.test.cjs && node tools/profile-readiness.browser.cjs && node tools/profile-learner-robots.browser.cjs
       - name: Calm learning, honest support and mixed thirteen
-        run: node --test tools/profile-calm-map.test.cjs tools/profile-calm-micro.test.cjs tools/profile-calm-state.test.cjs tools/profile-checkpoint.test.cjs tools/profile-independent-models.test.cjs && node tools/profile-calm-learners.browser.cjs
+        run: node --test tools/profile-calm-map.test.cjs tools/profile-calm-micro.test.cjs tools/profile-calm-state.test.cjs tools/profile-checkpoint.test.cjs tools/profile-independent-models.test.cjs && node tools/profile-calm-learners.browser.cjs && node tools/profile-exam-first.browser.cjs
       - name: Atanasyan stereometry course
         run: node --test tools/atanasyan-profile15-a.test.cjs tools/atanasyan-profile15-b.test.cjs && node tools/atanasyan-profile15.test.cjs && node tools/atanasyan-profile15-model.test.cjs && node tools/atanasyan-profile15.browser.cjs
       - name: Existing profile regression
