@@ -184,8 +184,8 @@ const server = http.createServer((req, res) => {
     assert(!/(^|[^\d])15([^\d]|$)/.test(planText), 'Unknown hypotenuse 15 must not be printed before solving');
     assert.equal(await fixture.locator('#solution-history [data-step]').count(), 0);
     assert(await fixture.locator('#hint-box').isHidden());
-    await fixture.getByRole('button', {name:'Показать подсказку к рисунку',exact:true}).click();
-    assert.equal((await session('geo-right','independent',fixture)).assisted, true, 'A construction hint requested before answering is recorded as help');
+    await fixture.locator('[data-trig-open]').click();
+    assert.equal((await session('geo-right','independent',fixture)).assisted, true, 'The requested triangle explanation is recorded as help before answering');
     const vecDot = geometry.find(l => l.id === 'vec-dot');
     const vecCosine = vecDot.tasks.find(t => t.id === 'vec-dot-cosine');
     await seedTask(fixture, vecDot, vecCosine, 'independent');

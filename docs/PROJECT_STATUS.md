@@ -50,7 +50,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Public profile solutions still remain local to the browser. Release evidence
   is recorded in PR #220.
 
-## Merged: exam tasks first, targeted school help when needed
+## Published: exam tasks first, targeted school help when needed
 
 - [Scope](tasks/PROFILE_EXAM_FIRST_ROUTE.md): display the thirteen-position
   catalogue first in profile cabinets; open actual exam practice before optional
@@ -61,12 +61,18 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Targeted learner robots passed catalogue, independent entry, wrong-input
   handling, school/trigonometry repair and preserved return on desktop/mobile.
   Focused independent MEDIUM source review approved without P1/P2 findings.
-- PR #221 merged as `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`, confirmed
-  against authoritative remote main when starting the family-cabinet task.
-  This reconciliation establishes the code base; it makes no additional claim
-  about hosting verification for that earlier task.
+- PR #221 merged as `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`, parent equal
+  to the base above, reviewed tree `634bf3446b3c0c614bea377e62854a3259056712`.
+  Exact-head course, cabinet and navigation CI passed. Initial legacy test
+  assumptions were corrected without removing mathematical/assistance checks.
+- Pages run 38015110612 and post-merge profile run 38015110834 passed.
+  Eight Pages assets and four actual Amvera assets matched the reviewed bytes;
+  health and persistent storage were ready. The brief hosting restart 503
+  resolved without intervention. Live UI confirmed thirteen entries, a real
+  independent task, relevant trigonometry help and return after reload with
+  the same condition and draft. No real pupil results were changed.
 
-## Prepared: clear teacher, pupil and parent cabinets
+## Published: clear teacher, pupil and parent cabinets
 
 - [Scope](tasks/CLEAR_FAMILY_CABINETS.md); base
   `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`; branch
@@ -82,9 +88,29 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   was exercised through offline drafts, reload, lost acknowledgement and the
   same committed result in pupil, teacher and parent views. Public/local-only
   exercises remain explicitly outside this shared history.
-- Next: complete exact-head CI and review, controlled publication, then verify
-  both the public assets and Amvera cabinet. Detailed evidence belongs to the
-  task PR; real family credentials and learning records remain untouched.
+- PR #222 merged as `a971a49f8a98a281df7c078b8409996909fc6880`, parent
+  `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`. Its recorded release evidence
+  confirms exact-head learning/navigation CI, Pages run 38016919909, 22/22
+  matching public/cabinet assets and a ready Amvera persistent store.
+  Existing teacher identity survived the release; no real family learning
+  records or credentials were changed by verification.
+
+## In progress: a real explanation for right-triangle trigonometry
+
+- [Scope](tasks/PROFILE_TRIANGLE_EXPLANATION.md): replace the inadequate
+  side-highlighting hint in the three sine/cosine/tangent tasks with gradual
+  explanations of the ratio, operation, arithmetic and answer check.
+- Base `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`; branch
+  `fix/profile-triangle-explanation`. MEDIUM, existing assisted-practice model;
+  no account, server or persistence changes.
+- Local learner robot passed six journeys at widths 360/1280, model geometry
+  36/36, independent models 8/8 and existing first-three browser 108 models /
+  56 journeys. Focused independent MEDIUM review approved with no P1/P2 findings.
+- Initial exact-head profile CI passed on PR #223. Concurrent PR #222 advanced
+  main to `a971a49f8a98a281df7c078b8409996909fc6880`; composition overlaps
+  only this status document. Both release records are retained and all course
+  runtime/test/workflow files remain byte-identical to their reviewed version.
+- Next: review the reconciled tree, rerun exact-head CI, verify publication.
 
 ## Published: independent pupil entry and parent progress
 
