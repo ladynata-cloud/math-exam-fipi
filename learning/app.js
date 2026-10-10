@@ -311,8 +311,9 @@ function showStudentAccess(student,password,reset=false){
 }
 function securityPage(){
  if(!teacher())return;
- const actor=account.id,generation=credentialGeneration,revision=authRevision;
- const active=()=>teacher()&&account.id===actor&&generation===credentialGeneration&&revision===authRevision;
+ const actor=account.id,generation=credentialGeneration;
+ // A failed logout can advance authRevision without replacing this account's UI.
+ const active=()=>teacher()&&account.id===actor&&generation===credentialGeneration;
  const feedback=teacherPasswordFeedback?.accountId===actor?teacherPasswordFeedback.status:'';
  const startEdit=mode=>{if(!active()||credentialRequestBusy||credentialDisplay||authMutationBusy||quickLoginBusy)return;teacherPasswordEditMode=mode;notice('');securityPage();$('teacher-password-form')?.elements.password.focus();};
  if(!teacherPasswordEditMode){
@@ -332,16 +333,17 @@ function securityPage(){
   const target=$('teacher-password-form'),status=$('teacher-password-status');
   if(!/^[0-9]{4}$/.test(form.get('password')||'')){target.querySelector('.form-error').textContent='Код входа — ровно 4 цифры.';return;}
   if(form.get('password')!==form.get('confirm')){target.querySelector('.form-error').textContent='Коды не совпадают.';return;}
-  const previousFeedback=teacherPasswordFeedback;
+  const previousFeedback=teacherPasswordFeedback,requestRevision=authRevision;
+  const requestActive=()=>active()&&requestRevision===authRevision;
   // The result is unknown until a valid acknowledgement arrives. This also
   // describes an interrupted request if the document enters the back/forward cache.
   teacherPasswordFeedback={accountId:actor,status:'uncertain'};credentialRequestBusy=true;
   status.textContent='Сохраняем код…';
   const request=post('/teacher/password',{password:form.get('password')});
   form.delete('password');form.delete('confirm');target.reset();
-  try{const result=await request;if(!active())return;if(result?.ok!==true||result.account?.id!==actor||result.account?.role!=='teacher')throw Error('INVALID_RESPONSE');account=result.account;teacherPasswordFeedback={accountId:actor,status:'saved'};teacherPasswordEditMode='';notice('');if(activeRoute()==='security')securityPage();}
+  try{const result=await request;if(!requestActive())return;if(result?.ok!==true||result.account?.id!==actor||result.account?.role!=='teacher')throw Error('INVALID_RESPONSE');account=result.account;teacherPasswordFeedback={accountId:actor,status:'saved'};teacherPasswordEditMode='';notice('');if(activeRoute()==='security')securityPage();}
   catch(error){
-   if(!active())return;
+   if(!requestActive())return;
    const uncertain=error.name==='AbortError'||error instanceof TypeError||error.message==='INVALID_RESPONSE'||error.status>=500;
    if(uncertain){teacherPasswordEditMode='';notice('');if(activeRoute()==='security')securityPage();return;}
    teacherPasswordFeedback=previousFeedback;status.textContent='';if(credentialRenderPending)notice(errorText(error),true);throw error;

@@ -120,6 +120,18 @@ const COOKIE = 'mathexam_learning_local';
         assert.equal(await input.inputValue(), '', 'A retry requires re-entering the code; no PIN is retained');
       }
     }
+    async function failedLogout() {
+      const before = passwordPosts();
+      await page.route('**/api/learning/logout', route => route.fulfill({ status: 503,
+        contentType: 'application/json', body: JSON.stringify({ error: 'LEARNING_STORAGE_UNAVAILABLE' }) }), { times: 1 });
+      const response = page.waitForResponse(response => response.url().endsWith('/api/learning/logout'));
+      await page.locator('#logout').click();
+      assert.equal((await response).status(), 503);
+      await page.waitForFunction(() => document.querySelector('#logout')?.disabled === false);
+      assert.equal((await sessionResult(context)).data.account.id, teacher.account.id,
+        'A failed logout keeps the same authenticated teacher');
+      assert.equal(passwordPosts(), before, 'A failed logout never changes the code');
+    }
     async function stableOutcome(kind) {
       const before = passwordPosts(), text = await outcome(kind);
       await page.evaluate(() => LearningApp.refresh());
@@ -145,6 +157,13 @@ const COOKIE = 'mathexam_learning_local';
     const beforeNeutralReload = passwordPosts();
     await page.reload(); await outcome('summary');
     assert.equal(passwordPosts(), beforeNeutralReload, 'Reload is neutral and never changes a code');
+    await failedLogout();
+    await outcome('summary');
+    await editor();
+    await fillPassword(page, '#teacher-password-form', '0381');
+    await failedLogout();
+    await page.locator('#teacher-password-cancel').click();
+    await outcome('summary');
     await editor();
     assert.equal(await page.locator('#teacher-password-form input').count(), 2);
     assert.equal(await page.locator('#teacher-password-form [autocomplete=current-password]').count(), 0);
@@ -203,6 +222,22 @@ const COOKIE = 'mathexam_learning_local';
     assert.equal(await outcome('uncertain'), uncommittedText, 'Cancelling retry returns to the honest previous outcome');
     await editor('retry');
 
+    // Rejecting this retry does not establish whether the earlier request
+    // committed. Cancelling must preserve that original unknown outcome.
+    const beforeRejectedRetry = passwordPosts();
+    await page.route('**/api/learning/teacher/password', route => route.fulfill({ status: 400,
+      contentType: 'application/json', body: JSON.stringify({ error: 'LEARNING_PASSWORD_INVALID' }) }));
+    await fillPassword(page, '#teacher-password-form', NEW_PASSWORD);
+    await page.locator('#teacher-password-form [type=submit]').click();
+    await page.locator('#teacher-password-form .form-error').filter({ hasText: 'ровно 4 цифры' }).waitFor();
+    assert.equal(passwordPosts(), beforeRejectedRetry + 1);
+    assert.deepEqual(store.account(teacher.account.id), originalAccount);
+    await page.locator('#teacher-password-cancel').click();
+    assert.equal(await outcome('uncertain'), uncommittedText, 'A rejected retry cannot resolve the earlier unknown result');
+    assert.equal(passwordPosts(), beforeRejectedRetry + 1, 'Cancel never retries the rejected request');
+    await page.unroute('**/api/learning/teacher/password');
+    await editor('retry');
+
     let committed = false;
     await page.route('**/api/learning/teacher/password', async route => {
       assert.deepEqual(route.request().postDataJSON(), { password: NEW_PASSWORD });
@@ -248,6 +283,9 @@ const COOKIE = 'mathexam_learning_local';
     }
 
     // An explicit retry with a valid acknowledgement completes exactly once.
+    // A failed logout may advance auth bookkeeping without replacing the
+    // editor; its current teacher must still be able to submit that editor.
+    await failedLogout();
     const beforeSuccess = passwordPosts();
     await fillPassword(page, '#teacher-password-form', NEW_PASSWORD);
     await page.locator('#teacher-password-form [type=submit]').click();
