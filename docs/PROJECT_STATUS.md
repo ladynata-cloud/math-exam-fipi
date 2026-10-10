@@ -23,6 +23,9 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   and free-route browser gates passed. Teacher-password and role-navigation
   gates also passed, including lost acknowledgement and cached-page account
   changes. Independent review and CI bind to the publication head in the PR.
+- Concurrent PR #226 advanced main to
+  `90ca4df40051551c553a70dff5807392f18be343`. Composition changes only this
+  shared status document; both runtime/test sets retain their reviewed bytes.
 - QA uses synthetic accounts only. The owner enters her real new password
   privately after publication; no password is embedded in source or chat.
 
@@ -178,6 +181,23 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   `f228a08ab440dc79e098b39053921501087ea8fb`. Renewed exact-head profile CI
   38019751638 and Pages 38020048618 passed. Three public assets matched;
   live UI confirmed stacked fractions, visible bars and preserved draft.
+
+## Merged: cross multiplication before the unknown-factor rule
+
+- [Scope](tasks/PROFILE_TRIG_PROPORTIONS.md); base
+  `f9a9a3607312dab4bbfd6e85d2e28d93822d3e9c`; branch
+  `fix/profile-trig-proportions`. MEDIUM, existing three trig explanations.
+- Show decimal-to-fraction conversion, diagonal multiplication with the unknown
+  on the left, then find the unknown factor by division. Preserve all five
+  steps, task data, help accounting and saved work.
+- Owner follow-up: extreme terms/red diagonal, mean terms/grey diagonal and
+  the familiar equality-of-products mnemonic. Geometry 36/36, independent
+  models 8/8 and six browser journeys passed; all six screenshots inspected.
+  Independent focused MEDIUM review found no blockers.
+- PR #226 merged as `90ca4df40051551c553a70dff5807392f18be343`. Exact-head
+  profile CI 38021117301 passed; publication and live verification are tracked
+  in PR #226.
+
 
 ## Published: independent pupil entry and parent progress
 
