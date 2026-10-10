@@ -95,7 +95,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Existing teacher identity survived the release; no real family learning
   records or credentials were changed by verification.
 
-## In progress: direct teacher sign-in
+## Merged: direct teacher sign-in
 
 - [Scope](tasks/DIRECT_TEACHER_ENTRY.md); base
   `528727fa6e7fa29c578bf540d014e3ad398206e1`; branch
@@ -111,16 +111,15 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   preserved queues and delayed authentication/data responses. Independent
   internal review found no remaining blocking code issue.
 - Role-navigation, syntax and whitespace checks passed on the final source.
-- Next: committed-head review, exact-head CI,
-  publication and live verification under the standing owner instruction.
+- PR #224 merged as `f228a08ab440dc79e098b39053921501087ea8fb`; exact-head learning
+  CI 38018835138 and navigation CI 38018835075 passed. Publication and live
+  verification evidence remain tracked in PR #224.
 
-## Merged: a real explanation for right-triangle trigonometry
+## Published: a real explanation for right-triangle trigonometry
 
 - [Scope](tasks/PROFILE_TRIANGLE_EXPLANATION.md): replace the inadequate
   side-highlighting hint in the three sine/cosine/tangent tasks with gradual
   explanations of the ratio, operation, arithmetic and answer check.
-- PR #223 merged as `528727fa6e7fa29c578bf540d014e3ad398206e1`, verified
-  against authoritative main when starting the teacher-entry correction.
 - Base `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`; branch
   `fix/profile-triangle-explanation`. MEDIUM, existing assisted-practice model;
   no account, server or persistence changes.
@@ -131,7 +130,28 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   main to `a971a49f8a98a281df7c078b8409996909fc6880`; composition overlaps
   only this status document. Both release records are retained and all course
   runtime/test/workflow files remain byte-identical to their reviewed version.
-- Next: review the reconciled tree, rerun exact-head CI, verify publication.
+- PR #223 published as `528727fa6e7fa29c578bf540d014e3ad398206e1`, parent
+  `a971a49f8a98a281df7c078b8409996909fc6880`; full reviewed tree
+  `e6774947acb4da4c8a82a80a02463647c90cc484`. Renewed exact-head profile CI
+  38017270811 and Pages 38017638552 passed; all three published assets matched.
+  Live verification confirmed five gradual steps, no explanation before opening,
+  correct arithmetic and preserved original condition/draft after reload.
+
+## In progress: familiar fraction notation in trigonometry
+
+- [Scope](tasks/PROFILE_TRIG_FRACTIONS.md): stacked fractions for definitions,
+  substitutions and ratio checks in the three existing trigonometry explanations.
+- Base `528727fa6e7fa29c578bf540d014e3ad398206e1`; branch
+  `fix/profile-trig-fractions`. SMALL presentation-only correction; no new data,
+  method, task, assistance or persistence behavior.
+- Local checks passed: 36 geometry models, 8 independent-model tests and six
+  browser journeys at 360/1280. All six definitions and two ratio checks have
+  correct numerator/denominator and visible bars. Mobile/desktop images inspected.
+- Original exact-head profile CI 38019120274 passed. Concurrent PR #224
+  advanced main to `f228a08ab440dc79e098b39053921501087ea8fb`; only this status
+  document overlaps. Both records are retained; all runtime and test files
+  remain byte-identical to their respective reviewed versions.
+- Next: bind the composed tree review, renew exact-head CI, verify publication.
 
 ## Published: independent pupil entry and parent progress
 

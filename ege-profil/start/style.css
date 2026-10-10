@@ -82,6 +82,11 @@ body{overflow-wrap:anywhere}.model-panel input[type=range]{margin-inline:0}.circ
 .profile-trig-step h3{font-size:20px;line-height:1.4;margin:0 0 14px;color:#164d44}
 #task-model .profile-trig-step p{font-size:18px;line-height:1.6;margin:12px 0 0;overflow-wrap:anywhere}
 #task-model .profile-trig-step .profile-trig-formula{font-weight:650;color:#164d44}
+#task-model .profile-trig-step .profile-trig-ratio{display:flex;align-items:center;gap:.4em}
+.profile-trig-equality{flex:none;white-space:nowrap}
+.profile-trig-fraction{display:inline-grid;grid-template-columns:minmax(0,1fr);flex:0 1 auto;min-width:0;text-align:center;line-height:1.4}
+.profile-trig-numerator,.profile-trig-denominator{padding:.2em .3em;overflow-wrap:normal}
+.profile-trig-denominator{border-top:2px solid currentColor}
 #task-model .profile-trig-explanation button{font-size:17px;white-space:normal;min-height:48px}
 #task-model .profile-trig-explanation button:focus-visible{outline:3px solid #176860;outline-offset:3px}
 #task-model [data-trig-next]{margin-top:18px}
