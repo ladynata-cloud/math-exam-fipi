@@ -209,6 +209,7 @@ async function verifyReadyParent({ teacher, teacherId, origin, open }) {
     if (close === 'escape') await tp.keyboard.press('Escape');
     else await tp.locator('#dialog-close').click();
     await tp.waitForFunction(() => !document.querySelector('#modal').open);
+    await tp.locator('#parent-password-form').waitFor({ state: 'detached' });
     assert.equal(await detachedPin.evaluate(node => node.value), '',
       'Both native Escape and the explicit close button clear detached parent-code inputs');
     await detachedPin.dispose(); await settings();
