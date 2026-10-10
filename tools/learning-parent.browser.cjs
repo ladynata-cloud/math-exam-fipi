@@ -120,19 +120,176 @@ async function main() {
     await sp.locator('#auth-form [type=submit]').click(); await sp.locator('#navigation').waitFor();
     assert.equal((await api(sp, '/session')).account.id, pupil.id, 'The pupil chooses their own four-digit code with the leading zero preserved');
     const fixture = await seedWork({ tp, sp, pupil, peer });
+    await verifyReadyParent({ teacher, teacherId, origin, open });
     await verifyParent({ teacher, teacherId, student, pupil, peer, origin, open, tokens, fixture });
     for (const request of requests) for (const token of tokens) {
       assert(!request.url.includes(token), 'Parent invitation does not enter request URLs');
       assert(!request.referrer.includes(token), 'Parent invitation does not enter Referrer headers');
     }
     assert.deepEqual(pageErrors, []); assert.deepEqual(externalRequests, []);
-    console.log('LEARNING_PARENT_BROWSER_OK: production routing; parent self-activation and read-only overview; published work and accurate progress; private data excluded; separate simultaneous cookies; two devices, password reset, logout and revocation; guarded access and lost ACK; 390px.');
+    console.log('LEARNING_PARENT_BROWSER_OK: teacher-issued ready four-digit code and reset; login-prefilled entry without activation; plain Done and private clipboard fallback; lost ACK metadata-only without automatic POST; animated parent login pending through overview with duplicate guard and error retry; optional self-activation retained; production routing and read-only overview; published work and accurate progress; private data excluded; separate simultaneous cookies; two devices, password reset, logout and revocation; guarded invitations and lost ACK; 390px.');
   } finally {
     if (browser) await browser.close();
     if (child.exitCode === null && child.signalCode === null) { child.kill('SIGTERM'); await once(child, 'exit'); }
     trainerServer.closeAllConnections(); await new Promise(resolve => trainerServer.close(resolve));
     fs.rmSync(directory, { recursive: true, force: true });
   }
+}
+
+async function verifyReadyParent({ teacher, teacherId, origin, open }) {
+  const tp = teacher.page;
+  const pupil = (await api(tp, '/teacher/students', { name: 'Готовый семейный вход', login: 'fixture_ready_family' })).student;
+  const metadataPath = '/teacher/students/' + pupil.id + '/parent-access';
+  const passwordPath = '/api/learning' + metadataPath + '/password';
+  const pin = '0752', replacement = '0836', uncertainPin = '0947';
+  let passwordPosts = 0;
+  tp.on('request', request => { if (request.url().endsWith(passwordPath) && request.method() === 'POST') passwordPosts++; });
+  async function settings() {
+    await tp.evaluate(() => LearningApp.navigate('students')); await tp.evaluate(() => LearningApp.refresh());
+    await tp.locator('[data-parent-access="' + pupil.id + '"]').click();
+    await tp.locator('#parent-settings').waitFor();
+    assert.equal(await tp.locator('#parent-invitation-options').getAttribute('open'), null,
+      'Legacy invitations are an optional closed section');
+  }
+  async function issue(code, expectedVersion) {
+    await tp.locator('#parent-password-form [name=password]').fill(code);
+    const response = tp.waitForResponse(response => response.url().endsWith(passwordPath));
+    await tp.locator('#parent-password-form [type=submit]').click();
+    const result = await response;
+    assert.equal(result.status(), 200);
+    assert.deepEqual(result.request().postDataJSON(), { name: 'Готовый родитель', password: code, expectedVersion });
+    const body = await result.json(); assert.deepEqual(Object.keys(body), ['parentAccess']);
+    assert.equal(body.parentAccess.active, true); assert.equal(body.parentAccess.enabled, true);
+    assert.equal(body.parentAccess.invitationExpiresAt, null); assert.equal(body.parentAccess.version, expectedVersion + 1);
+    assert(!JSON.stringify(body).includes(code), 'The server never echoes the chosen code');
+    await tp.locator('#parent-ready-password').waitFor();
+    return body.parentAccess;
+  }
+  async function closeReady(code, loginName) {
+    const link = origin + '/learning/parent.html#login=' + loginName;
+    assert.equal(await tp.locator('#parent-ready-link').inputValue(), link);
+    assert.equal(await tp.locator('#parent-ready-login').inputValue(), loginName);
+    assert.equal(await tp.locator('#parent-ready-password').inputValue(), code);
+    assert.equal(await tp.locator('#parent-ready-done').isDisabled(), false, 'The ready card closes with plain Done');
+    assert.equal(await tp.locator('#modal input[type=checkbox]').count(), 0, 'Ready access has no save-confirmation checkboxes');
+    await tp.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true,
+      value: { writeText: async () => { throw Error('Synthetic clipboard denied'); } } }));
+    await tp.locator('#copy-parent-ready').click(); await tp.locator('#parent-ready-copy-text').waitFor({ state: 'visible' });
+    const fallback = await tp.locator('#parent-ready-copy-text').inputValue();
+    assert(fallback.includes(link) && fallback.includes(loginName) && fallback.includes(code));
+    await tp.locator('#select-parent-ready').click();
+    assert.equal(await tp.locator('#parent-ready-copy-text').evaluate(node => node === document.activeElement
+      && node.selectionStart === 0 && node.selectionEnd === node.value.length), true);
+    await privateState(tp, [code], { markup: false });
+    const secret = await tp.locator('#parent-ready-password').elementHandle();
+    const copy = await tp.locator('#parent-ready-copy-text').elementHandle();
+    await tp.locator('#parent-ready-done').click();
+    await tp.locator('#parent-ready-password').waitFor({ state: 'detached' });
+    assert.equal(await secret.evaluate(node => node.value), ''); assert.equal(await copy.evaluate(node => node.value), '');
+    await secret.dispose(); await copy.dispose(); await privateState(tp, [code]);
+    return link;
+  }
+  await settings();
+  for (const close of ['escape', 'button']) {
+    await tp.locator('#parent-password-form [name=password]').fill(pin);
+    const detachedPin = await tp.locator('#parent-password-form [name=password]').elementHandle();
+    if (close === 'escape') await tp.keyboard.press('Escape');
+    else await tp.locator('#dialog-close').click();
+    await tp.waitForFunction(() => !document.querySelector('#modal').open);
+    assert.equal(await detachedPin.evaluate(node => node.value), '',
+      'Both native Escape and the explicit close button clear detached parent-code inputs');
+    await detachedPin.dispose(); await settings();
+  }
+  await tp.locator('#parent-password-form').waitFor();
+  assert.match(await tp.locator('#parent-password-form [name=password]').inputValue(), /^[0-9]{4}$/);
+  for (const [attribute, value] of Object.entries({ minlength: '4', maxlength: '4', pattern: '[0-9]{4}', inputmode: 'numeric' })) {
+    assert.equal(await tp.locator('#parent-password-form [name=password]').getAttribute(attribute), value);
+  }
+  await tp.locator('#parent-password-form [name=name]').fill('Готовый родитель');
+  await tp.locator('#parent-password-form [name=password]').fill('075');
+  await tp.locator('#parent-password-form [type=submit]').click();
+  assert.equal(passwordPosts, 0, 'A short parent code is rejected before POST');
+  const access = await issue(pin, 0), link = await closeReady(pin, access.login);
+  assert.equal(passwordPosts, 1);
+  const pp = (await open({ width: 390, height: 844 })).page;
+  await pp.goto(link); await pp.locator('#parent-auth-form[data-mode=login]').waitFor();
+  assert.equal(await pp.locator('#parent-login').inputValue(), access.login);
+  assert.equal(await pp.locator('[name=confirm]').count(), 0, 'Ready parent entry asks only for the existing code');
+  assert.equal(await pp.locator('#parent-password').inputValue(), '');
+
+  let loginPosts = 0, heldLogin, markLogin;
+  const loginHeld = new Promise(resolve => { markLogin = resolve; });
+  pp.on('request', request => { if (request.url().endsWith('/api/learning/parent/login') && request.method() === 'POST') loginPosts++; });
+  await pp.route('**/api/learning/parent/login', route => { heldLogin = route; markLogin(); }, { times: 1 });
+  async function busy() {
+    await pp.locator('#parent-auth-progress').waitFor({ state: 'visible' });
+    assert.match(await pp.locator('#parent-auth-progress').innerText(), /Входим/);
+    assert.equal(await pp.locator('#parent-auth-progress').getAttribute('role'), 'status');
+    assert.equal(await pp.locator('#parent-auth-progress .login-dot').count(), 3);
+    assert.equal(await pp.locator('#parent-auth-progress .login-dot').evaluateAll(nodes => nodes.every(node => getComputedStyle(node).animationName !== 'none')), true);
+    assert.equal(await pp.locator('#parent-auth-form').getAttribute('aria-busy'), 'true');
+    assert.equal(await pp.locator('#main').getAttribute('aria-busy'), 'true');
+    assert.equal(await pp.locator('#parent-auth-submit').isDisabled(), true);
+  }
+  await pp.locator('#parent-password').fill('9999'); await pp.locator('#parent-auth-submit').click(); await loginHeld;
+  await busy();
+  if (process.env.LEARNING_QA_DIR) {
+    fs.mkdirSync(process.env.LEARNING_QA_DIR, { recursive: true });
+    await pp.screenshot({ path: path.join(process.env.LEARNING_QA_DIR, 'parent-login-busy.png'), fullPage: true });
+  }
+  await pp.evaluate(() => document.querySelector('#parent-auth-form').requestSubmit());
+  await pp.keyboard.press('Enter'); assert.equal(loginPosts, 1, 'Repeated submits cannot duplicate a pending parent login');
+  await heldLogin.continue(); await pp.locator('#parent-auth-error').filter({ hasText: /.+/ }).waitFor();
+  assert.equal(await pp.locator('#parent-auth-submit').isEnabled(), true);
+  assert.notEqual(await pp.locator('#parent-auth-form').getAttribute('aria-busy'), 'true');
+  assert.notEqual(await pp.locator('#main').getAttribute('aria-busy'), 'true');
+  assert.equal(await pp.locator('#parent-auth-progress').isVisible(), false);
+  let heldOverview, markOverview;
+  const overviewHeld = new Promise(resolve => { markOverview = resolve; });
+  await pp.route('**/api/learning/parent/overview', route => { heldOverview = route; markOverview(); }, { times: 1 });
+  await pp.locator('#parent-password').fill(pin); await pp.locator('#parent-auth-submit').click(); await overviewHeld;
+  await busy(); assert.equal(loginPosts, 2, 'Error recovery permits exactly one explicit login retry');
+  await heldOverview.continue(); await pp.locator('#parent-overview').waitFor();
+  assert.equal(await pp.locator('#parent-auth-form').count(), 0);
+  assert.equal(await pp.locator('#parent-auth-progress').isVisible(), false);
+  assert.notEqual(await pp.locator('#main').getAttribute('aria-busy'), 'true');
+  assert.equal((await raw(pp, '/parent/session')).body.parent.login, access.login);
+  await privateState(pp, [pin]);
+  await settings();
+  assert.equal(await tp.locator('#parent-password-form').count(), 0, 'Opening active parent access is read-only');
+  assert.equal(await tp.locator('#parent-access-login').inputValue(), access.login);
+  assert.equal(passwordPosts, 1);
+  await tp.locator('#change-parent-password').click(); await tp.locator('#parent-password-form').waitFor();
+  const reset = await issue(replacement, access.version); await closeReady(replacement, access.login);
+  assert.equal(reset.login, access.login); assert.equal((await raw(pp, '/parent/session')).status, 401,
+    'Reset revokes the old independent parent session');
+  await pp.reload(); await pp.locator('#parent-auth-form[data-mode=login]').waitFor();
+  await pp.locator('#parent-password').fill(pin); await pp.locator('#parent-auth-submit').click();
+  await pp.locator('#parent-auth-error').filter({ hasText: /.+/ }).waitFor();
+  await pp.locator('#parent-password').fill(replacement); await pp.locator('#parent-auth-submit').click();
+  await pp.locator('#parent-overview').waitFor();
+  assert.equal((await api(tp, '/session')).account.id, teacherId);
+
+  // The server may commit while the response is lost. Only metadata may be
+  // refreshed: no guessed ready card, automatic resubmission or PIN retention.
+  await settings(); await tp.locator('#change-parent-password').click();
+  await tp.locator('#parent-password-form [name=password]').fill(uncertainPin);
+  await tp.route('**' + passwordPath, async route => {
+    const response = await route.fetch(); assert.equal(response.status(), 200); await route.abort('failed');
+  }, { times: 1 });
+  const beforeLost = passwordPosts;
+  await tp.locator('#parent-password-form [type=submit]').click();
+  await tp.locator('[data-parent-message]').filter({ hasText: 'Ответ о сохранении не получен' }).waitFor();
+  assert.equal(passwordPosts, beforeLost + 1);
+  assert.equal(await tp.locator('#parent-ready-password').count(), 0);
+  const afterLost = (await api(tp, metadataPath)).parentAccess;
+  assert.equal(afterLost.active, true); assert.equal(afterLost.version, reset.version + 1); assert.equal(afterLost.login, access.login);
+  await privateState(tp, [pin, replacement, uncertainPin]);
+  await tp.locator('#dialog-close').click(); await settings();
+  assert.equal(passwordPosts, beforeLost + 1, 'Reopening metadata never resubmits a lost response');
+  assert.equal(await tp.locator('#parent-password-form,#parent-ready-password').count(), 0);
+  await tp.locator('#dialog-close').click();
+  await pp.context().close();
 }
 
 async function seedWork({ tp, sp, pupil, peer }) {
@@ -180,6 +337,9 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   async function settings() {
     await tp.evaluate(() => LearningApp.navigate('students')); await tp.evaluate(() => LearningApp.refresh());
     await tp.locator('[data-parent-access="' + pupil.id + '"]').click();
+    await tp.locator('#parent-settings').waitFor();
+    assert.equal(await tp.locator('#parent-invitation-options').getAttribute('open'), null);
+    await tp.locator('#parent-invitation-options > summary').click();
     await tp.locator('#parent-access-form').waitFor();
   }
   async function acknowledge() {
@@ -238,7 +398,8 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   }
 
   await settings();
-  assert.equal(await tp.locator('#parent-settings input[type=password]').count(), 0, 'The teacher never chooses the parent password');
+  assert.equal(await tp.locator('#parent-access-form input[type=password]').count(), 0,
+    'The optional invitation still lets the parent choose their own code');
   await tp.locator('#parent-access-form [name=name]').fill('Проверочный родитель');
   const issuance = tp.waitForResponse(response => response.url().endsWith('/api/learning' + metadataPath) && response.request().method() === 'POST');
   const issuedAt = Date.now(); await tp.locator('[data-parent-issue]').click();
@@ -340,6 +501,7 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   for (const [route, body] of [
     ['/attempts', { opId: uuid(), trainerId: 'ege-path', contentId: 'pre7-place-value' }],
     ['/teacher/students/' + pupil.id + '/password', { password: 'MustNotReplace2026' }],
+    [metadataPath + '/password', { name: 'Forbidden parent reset', password: '0998', expectedVersion: active.version }],
     [metadataPath + '/revoke', { expectedVersion: active.version }]
   ]) assert([401, 403].includes((await raw(laptop.page, route, body, parentCsrf)).status));
   assert.deepEqual(await api(tp, '/attempts/' + fixture.loose.id), childBefore, 'Viewing and denied mutations leave child work intact');
@@ -382,7 +544,8 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   await pp.reload(); await pp.locator('#parent-overview').waitFor(); await projection(pp);
 
   await settings(); assert.equal(await tp.locator('[data-parent-revoke]').isDisabled(), true);
-  await tp.locator('#parent-settings details > summary').click(); await tp.locator('#parent-revoke-confirm').check();
+  await tp.locator('#parent-settings details').filter({ has: tp.locator('#parent-revoke-confirm') }).locator('summary').click();
+  await tp.locator('#parent-revoke-confirm').check();
   await tp.locator('[data-parent-revoke]').click(); await tp.locator('[data-parent-revoke]').waitFor({ state: 'detached' });
   assert.equal((await api(tp, metadataPath)).parentAccess.enabled, false);
   assert.equal((await raw(pp, '/parent/session')).status, 401); assert.equal((await raw(laptop.page, '/parent/session')).status, 401);
@@ -403,7 +566,7 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
     } else await route.continue();
   });
   await tp.locator('[data-parent-issue]').click();
-  await tp.waitForFunction(() => document.querySelector('#parent-settings')?.textContent.includes('Ответ о сохранении не получен'));
+  await tp.locator('[data-parent-message]').filter({ hasText: 'Ответ о сохранении не получен' }).waitFor();
   assert.equal(lostIssues, 1); assert.equal(await tp.locator('#invite-link').count(), 0);
   assert.equal(await tp.locator('[data-parent-issue]').isDisabled(), true);
   const afterLost = (await api(tp, metadataPath)).parentAccess;

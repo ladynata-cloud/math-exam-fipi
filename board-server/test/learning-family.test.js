@@ -414,3 +414,156 @@ test('four-digit parent code guesses keep the same per-credential attempt limite
   const blocked = await f.login(issued.parentAccess.login, '0492');
   assert.equal(blocked.status, 429); assert.equal(blocked.cookie, undefined);
 });
+
+test('teacher prepares a ready parent PIN without an invitation or changing the child', async t => {
+  const f = await fixture(t), childBefore = f.store.account(f.pending.student.id);
+  const receiptsBefore = f.store.rows('SELECT * FROM operations');
+  const result = await f.request(f.route(f.pending.student.id) + '/password', { name: 'Ready parent', password: '0427', expectedVersion: 0 });
+  assert.equal(result.status, 200); assert.equal(result.cookie, undefined);
+  assert.deepEqual(Object.keys(result.body), ['parentAccess']);
+  const access = result.body.parentAccess;
+  assert.deepEqual(access, { exists: true, name: 'Ready parent', login: access.login,
+    enabled: true, active: true, version: 1, invitationExpiresAt: null });
+  assert.match(access.login, /^parent-[a-z0-9_-]{16}$/);
+  const row = f.store.row('SELECT * FROM learning_parents WHERE learner_id=?', f.pending.student.id);
+  assert.match(row.password_hash, /^scrypt1:/); assert.notEqual(row.password_hash, '0427');
+  assert.equal(f.store.rows('SELECT * FROM learning_parent_invitations').length, 0);
+  assert.deepEqual(f.store.rows('SELECT * FROM operations'), receiptsBefore, 'No plaintext credential can enter an operation receipt');
+  assert.deepEqual(f.store.account(f.pending.student.id), childBefore);
+  assert.equal(f.store.invitation(f.pending.invitationToken).account_id, f.pending.student.id);
+  const parent = await f.login(access.login, '0427'); assert.equal(parent.status, 200);
+  assert.equal((await f.request('/parent/overview', undefined, parent)).body.student.name, f.pending.student.name);
+  assert.equal((await f.login(access.login, '427')).status, 401);
+  assert.equal((await f.request('/session')).status, 200);
+});
+
+test('ready parent PIN replacement preserves identity and learner history while revoking only target parent credentials', async t => {
+  const f = await fixture(t), original = await f.activated(), other = await f.activated(f.peer.account.id);
+  const originalRow = f.store.row('SELECT * FROM learning_parents WHERE learner_id=?', f.student.account.id);
+  const attempt = f.store.newAttempt(f.student.account.id, f.teacher.account.id, 'ege-path', contracts.create('ege-path', 'equations-linear', 42));
+  f.store.run('INSERT INTO assignments(id,title,learner_id,teacher_id,attempt_id,status,created_at) VALUES(?,?,?,?,?,?,?)',
+    'fixture_ready_parent_homework', 'Preserved homework', f.student.account.id, f.teacher.account.id, attempt.id, 'published', f.now());
+  const before = { accounts: f.store.rows('SELECT * FROM accounts'), attempts: f.store.rows('SELECT * FROM attempts'), assignments: f.store.rows('SELECT * FROM assignments') };
+  const result = await f.request(f.route(f.student.account.id) + '/password', { name: 'Updated parent name', password: '0681', expectedVersion: originalRow.version });
+  assert.equal(result.status, 200); assert.equal(result.body.parentAccess.login, original.issued.parentAccess.login);
+  const afterRow = f.store.row('SELECT * FROM learning_parents WHERE learner_id=?', f.student.account.id);
+  assert.equal(afterRow.id, originalRow.id); assert.equal(afterRow.login, originalRow.login);
+  assert.equal(afterRow.epoch, originalRow.epoch + 1); assert.equal(afterRow.version, originalRow.version + 1);
+  assert.equal((await f.request('/parent/session', undefined, original.parent)).status, 401);
+  assert.equal((await f.login(originalRow.login, PASSWORD)).status, 401);
+  assert.equal((await f.login(originalRow.login, '0681')).status, 200);
+  assert.equal((await f.request('/parent/session', undefined, other.parent)).status, 200);
+  assert.equal(f.store.session(f.student.sessionToken).id, f.student.account.id);
+  assert.equal(f.store.session(f.teacher.sessionToken).id, f.teacher.account.id);
+  assert.deepEqual({ accounts: f.store.rows('SELECT * FROM accounts'), attempts: f.store.rows('SELECT * FROM attempts'), assignments: f.store.rows('SELECT * FROM assignments') }, before);
+  const invited = await f.issue();
+  const ready = await f.request(f.route(f.student.account.id) + '/password', { name: 'Ready again', password: '0941', expectedVersion: invited.parentAccess.version });
+  assert.equal(ready.status, 200); assert.equal(ready.body.parentAccess.login, originalRow.login);
+  assert.equal(ready.body.parentAccess.invitationExpiresAt, null);
+  assert.equal((await f.activate(invited.invitationToken)).status, 401, 'Ready PIN invalidates the older pending invitation');
+});
+
+test('ready parent issuance checks exact PIN/body/query, role, ownership, origin, CSRF and current account', async t => {
+  const f = await fixture(t), route = f.route(f.student.account.id) + '/password';
+  const body = { name: 'Ready parent', password: '0731', expectedVersion: 0 };
+  assert.equal((await f.request(route, body, null)).status, 401);
+  assert.equal((await f.request(route, body, f.student)).status, 403);
+  for (const headers of [{ Origin: 'https://outside.example.test' }, { 'X-CSRF-Token': 'wrong' }])
+    assert.equal((await f.request(route, body, f.teacher, headers)).status, 403);
+  assert.equal((await f.request(route, body, f.teacher, { 'Content-Type': 'text/plain' })).status, 415);
+  assert.equal((await f.request(route, body, f.teacher, { 'X-Learning-Account': f.student.account.id })).status, 409);
+  assert.equal((await f.request(f.route(f.teacher.account.id) + '/password', body)).status, 404);
+  const foreign = f.store.createStudent(f.teacher.account, { login: 'ready_foreign', name: 'Foreign pupil' }).student;
+  f.store.run('UPDATE accounts SET teacher_id=? WHERE id=?', f.peer.account.id, foreign.id);
+  assert.equal((await f.request(f.route(foreign.id) + '/password', body)).status, 404);
+  for (const password of ['731', '07311', '07x1', '０７３１', 731, '0731\n', PASSWORD])
+    assert.equal((await f.request(route, { ...body, password })).status, 400);
+  for (const invalid of [{}, { ...body, role: 'parent' }, { ...body, login: 'client_chosen' }, { ...body, opId: secret() },
+    { ...body, expectedVersion: -1 }, { ...body, expectedVersion: '0' }, { ...body, expectedVersion: Number.MAX_SAFE_INTEGER }, { ...body, name: '<script>' }])
+    assert.equal((await f.request(route, invalid)).status, 400);
+  assert.equal((await f.request(route + '?password=forbidden', body)).status, 400);
+  assert.equal(f.family.metadata(f.student.account.id).exists, false);
+  const created = await f.request(route, body); assert.equal(created.status, 200);
+  const stale = await f.request(route, body); assert.equal(stale.status, 409); assert.equal(stale.body.error, 'LEARNING_PARENT_CONFLICT');
+  assert.equal(f.family.metadata(f.student.account.id).version, 1);
+});
+
+test('parent ready PIN hashing cannot race past teacher logout or teacher credential replacement retaining the session', async t => {
+  for (const kind of ['logout', 'teacher-code-change']) await t.test(kind, async sub => {
+    const f = await fixture(sub), nextHash = await hashPassword('0481'), originalAccount = f.store.account.bind(f.store);
+    let intercepted = false;
+    f.store.account = function(id) {
+      const value = originalAccount(id);
+      if (!intercepted && id === f.teacher.account.id) {
+        intercepted = true;
+        queueMicrotask(() => {
+          if (kind === 'logout') f.store.logout(f.teacher.sessionToken);
+          else f.store.replaceTeacherPassword(f.teacher.sessionToken, nextHash, value.password_hash, value.auth_epoch);
+        });
+      }
+      return value;
+    };
+    const result = await f.request(f.route(f.student.account.id) + '/password', { name: 'Do not create', password: '0319', expectedVersion: 0 });
+    f.store.account = originalAccount; assert(intercepted);
+    assert.equal(result.status, kind === 'logout' ? 401 : 409);
+    assert.equal(result.body.error, kind === 'logout' ? 'LEARNING_UNAUTHORIZED' : 'LEARNING_CREDENTIALS_CHANGED');
+    assert.equal(f.family.metadata(f.student.account.id).exists, false);
+    if (kind === 'teacher-code-change') assert.equal(f.store.session(f.teacher.sessionToken).id, f.teacher.account.id, 'Surviving session alone does not bypass the credential snapshot fence');
+  });
+});
+
+test('parent ready PIN hashing cannot overwrite a concurrent invitation, revocation or PIN change', async t => {
+  for (const kind of ['invitation', 'revocation', 'password']) await t.test(kind, async sub => {
+    const f = await fixture(sub), original = await f.activated(), snapshot = f.store.account(f.teacher.account.id);
+    const current = f.family.metadata(f.student.account.id), originalAccount = f.store.account.bind(f.store), winningHash = await hashPassword('0629', 'parent');
+    let intercepted = false, winner;
+    f.store.account = function(id) {
+      const value = originalAccount(id);
+      if (!intercepted && id === f.teacher.account.id) {
+        intercepted = true;
+        queueMicrotask(() => {
+          winner = kind === 'password'
+            ? f.family.writePassword(f.teacher.sessionToken, f.student.account.id, { name: 'Winning parent', expectedVersion: current.version }, winningHash, snapshot)
+            : f.family.write(f.teacher.sessionToken, f.student.account.id,
+              kind === 'revocation' ? { expectedVersion: current.version } : { name: 'Winning parent', expectedVersion: current.version }, kind === 'revocation');
+        });
+      }
+      return value;
+    };
+    const result = await f.request(f.route(f.student.account.id) + '/password', { name: 'Losing parent', password: '0537', expectedVersion: current.version });
+    f.store.account = originalAccount; assert(intercepted); assert(winner);
+    assert.equal(result.status, 409); assert.equal(result.body.error, 'LEARNING_PARENT_CONFLICT');
+    assert.deepEqual(f.family.metadata(f.student.account.id), winner.parentAccess);
+    assert.equal((await f.login(original.issued.parentAccess.login, '0537')).status, 401);
+    if (kind === 'invitation') assert.equal(f.family.invitation(winner.invitationToken).row.login, original.issued.parentAccess.login);
+    if (kind === 'password') assert.equal((await f.login(original.issued.parentAccess.login, '0629')).status, 200);
+  });
+});
+
+test('ready parent PIN write is atomic on a storage failure and response contains no credential', async t => {
+  const f = await fixture(t), original = await f.activated(), version = f.family.metadata(f.student.account.id).version;
+  const before = { parents: f.store.rows('SELECT * FROM learning_parents'), sessions: f.store.rows('SELECT * FROM learning_parent_sessions'), invitations: f.store.rows('SELECT * FROM learning_parent_invitations') };
+  const run = f.store.run.bind(f.store);
+  f.store.run = (sql, ...args) => {
+    if (sql.startsWith('UPDATE learning_parents SET name=?,password_hash=?')) throw Error('simulated private failure');
+    return run(sql, ...args);
+  };
+  const result = await f.request(f.route(f.student.account.id) + '/password', { name: 'Must roll back', password: '0347', expectedVersion: version });
+  f.store.run = run;
+  assert.equal(result.status, 500); assert.deepEqual(result.body, { ok: false, error: 'LEARNING_INTERNAL_ERROR' });
+  assert.deepEqual({ parents: f.store.rows('SELECT * FROM learning_parents'), sessions: f.store.rows('SELECT * FROM learning_parent_sessions'), invitations: f.store.rows('SELECT * FROM learning_parent_invitations') }, before);
+  assert.equal((await f.request('/parent/session', undefined, original.parent)).status, 200);
+  assert.equal((await f.login(original.issued.parentAccess.login)).status, 200);
+});
+
+test('ready parent PIN expensive work is limited per teacher across different children', async t => {
+  const f = await fixture(t);
+  for (let index = 0; index < 8; index++) {
+    const id = index % 2 ? f.student.account.id : f.peer.account.id, version = f.family.metadata(id).version;
+    const response = await f.request(f.route(id) + '/password', { name: 'Rate fixture parent', password: '0481', expectedVersion: version });
+    assert.equal(response.status, 200);
+  }
+  const denied = await f.request(f.route(f.pending.student.id) + '/password', { name: 'Do not create', password: '0427', expectedVersion: 0 });
+  assert.equal(denied.status, 429); assert.equal(denied.headers.get('retry-after'), '60');
+  assert.equal(f.family.metadata(f.pending.student.id).exists, false);
+});

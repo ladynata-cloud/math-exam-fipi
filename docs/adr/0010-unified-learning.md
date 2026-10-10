@@ -213,6 +213,27 @@ login verification. Reverting to the old minimum-length validator would lock
 out valid accounts. No schema migration or database rollback is required.
 See [scope and gates](../tasks/FOUR_DIGIT_CABINET_CODES.md).
 
+## Ready parent codes and visible entry progress (2026-10-10)
+
+The owner requested parent entry as simple as pupil entry. An owning teacher
+may issue a ready four-digit parent code through the existing private cabinet.
+This extends the same scoped parent-recovery authority; it does not add parent
+access to pupil solutions or teacher-private data. Existing parent identity and
+login are preserved. Only that parent's sessions and invitations are revoked.
+
+Exact Origin, CSRF, role, ownership, rate and expected-version checks precede
+hashing. A transaction rechecks current teacher session, credential epoch and
+ownership, and compares the parent version again after hashing. No schema
+change is needed. The completion card has a plain Done action and keeps the
+code only in page memory. Unknown acknowledgement never claims success or
+triggers an automatic retry. The old invitation path remains optional.
+
+All three role entrances give visible progress through initial cabinet loading,
+with duplicate-submit prevention and reduced-motion support. Login remains
+compatible with old passwords. Rollback retains the existing PIN verifier,
+parent rows and hashes; only the new provisioning endpoint/UI are removed.
+See [scope and gates](../tasks/SIMPLE_PARENT_ENTRY.md).
+
 ## Educational identity
 
 An immutable task specification plus mutable work forms one attempt. An assignment
