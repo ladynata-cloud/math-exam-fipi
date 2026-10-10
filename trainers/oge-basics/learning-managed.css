@@ -42,3 +42,19 @@
 #learning-remediation-root .lm-worklog{font:14px/1.7 ui-monospace,SFMono-Regular,monospace;max-height:220px;overflow:auto}
 #learning-remediation-root .lm-readonly-note{font-size:14px;color:#526675;margin:8px 0}
 @media(max-width:650px){#learning-remediation-root .lm-layout{grid-template-columns:1fr}#learning-remediation-root .lm-header{display:block}#learning-remediation-root .lm-status{display:inline-block;margin:0 0 12px}#learning-remediation-root .lm-rail{display:flex;overflow:auto;padding-bottom:8px}#learning-remediation-root .lm-rail button{min-width:130px}#learning-remediation-root .lm-division{font-size:21px}}
+#learning-remediation-root .lm-scaffold{margin:16px 0 8px;padding:14px;border:1px solid #dfd3ac;border-radius:10px;background:#fffdf7;color:var(--lm-ink);overflow-wrap:anywhere}
+#learning-remediation-root .lm-scaffold h3{margin:0 0 10px;font-size:18px;line-height:1.35}
+#learning-remediation-root .lm-scaffold p{margin:8px 0}
+#learning-remediation-root .lm-scaffold-table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse;font-variant-numeric:tabular-nums;margin:12px 0}
+#learning-remediation-root .lm-scaffold-table th,#learning-remediation-root .lm-scaffold-table td{border:1px solid #dce5e9;padding:6px 9px;text-align:center;vertical-align:top}
+#learning-remediation-root .lm-scaffold-table th{background:#edf5f3;font-weight:600}
+#learning-remediation-root .lm-scaffold-table caption{text-align:left;font-weight:600;margin-bottom:6px}
+#learning-remediation-root .lm-scaffold-steps{margin:10px 0;padding-left:22px}
+#learning-remediation-root .lm-scaffold-steps li{margin:8px 0}
+#learning-remediation-root .lm-scaffold-selected th,#learning-remediation-root .lm-scaffold-selected td{background:#dcf0e8;font-weight:700}
+#learning-remediation-root .lm-scaffold-result{font-weight:700}
+@media(max-width:400px){#learning-remediation-root .lm-scaffold{padding:9px}#learning-remediation-root .lm-scaffold-table th,#learning-remediation-root .lm-scaffold-table td{padding:5px}}
+
+#learning-remediation-root .lm-scaffold-table:focus-visible{outline:3px solid #53bcb6;outline-offset:2px}
+#learning-remediation-root .lm-scaffold-table table{table-layout:auto;width:max-content;max-width:none;margin:0}
+#learning-remediation-root .lm-scaffold-table th,#learning-remediation-root .lm-scaffold-table td{overflow-wrap:normal;word-break:normal;white-space:nowrap}

@@ -6,7 +6,18 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: readable profile captions and help links
+## In progress: OGE arithmetic support after a struggling-learner simulation
+
+- [Scope](tasks/OGE_ARITHMETIC_SCAFFOLDING.md); base
+  `3759b4646ea19d2790d3b5f84eaadb2c01f762a1`; branch
+  `feat/oge-arithmetic-scaffolding`; HIGH independent internal review.
+- Exercise the OGE/pass route with a local synthetic learner who makes
+  multiplication, decimal and long-division mistakes; improve concrete help
+  in the managed trainer. Simulation findings are not real learner outcomes.
+- Preserve saved task generation/state, actual pupil data, all account entry
+  assets and credentials. Use existing help accounting and mirror controls.
+
+## Published: readable profile captions and help links
 
 - [Scope](tasks/PROFILE_READABLE_HELP.md); base
   `92bd34a6163b2115c940a76ba08160cd270dcceb`; branch
@@ -20,7 +31,13 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Existing cabinet/authentication work remains outside this task. Release
   evidence and any verification limits are recorded in the PR.
 
-## In progress: one permanent parent link and one code field
+- PR #235 merged as `3759b4646ea19d2790d3b5f84eaadb2c01f762a1` on composed
+  base `731a6b747728a8507e3b66aa498336f4f677b8f2`. Exact-head Profile
+  38046985762 and logarithmic 38046985770 checks passed; Pages 38047377965
+  succeeded. Its PR records tree identity and live draft/help/focus retention.
+  Public asset byte comparison was not run in that release.
+
+## Published: one permanent parent link and one code field
 
 - [Scope](tasks/PARENT_LINK_CODE_ONLY.md); base
   `92bd34a6163b2115c940a76ba08160cd270dcceb`; branch
@@ -32,6 +49,13 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   account/session boundaries and legacy login compatibility remain supported.
 - No backend, schema or real credential changes. Checked publication remains
   authorized under the standing owner instruction and external-review waiver.
+
+- PR #234 merged as `731a6b747728a8507e3b66aa498336f4f677b8f2`;
+  independent HIGH review and exact-head Learning 38045917072 / Navigation
+  38045917101 checks passed. Pages 38046506148 succeeded; all ten changed
+  assets matched on both hosts at 10:55:50 UTC. Amvera health/storage and the
+  retained teacher session were checked after its ordinary rollout. No actual
+  parent credential was issued or changed during verification.
 
 ## Published: unified profile course menu
 

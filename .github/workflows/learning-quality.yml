@@ -48,6 +48,7 @@ jobs:
           node tools/learning-quality-path.cjs
           node tools/learning-remediation-quality.cjs
           node tools/learning-remediation-checkpoint.cjs
+          node tools/learning-scaffolds.test.cjs
           node tools/learning-remediation-bank.cjs --check
           node tools/learning-catalog-reference-test.cjs
           node tools/grade7-algebra.test.cjs
@@ -70,6 +71,8 @@ jobs:
         run: |
           node tools/learning-path.browser.cjs
           node tools/learning-remediation-smoke.cjs
+          node tools/learning-oge-struggling-pupil.browser.cjs
+          node tools/learning-oge-standard-route-robot.browser.cjs
           node tools/learning-auth.browser.cjs
           node tools/learning-simple-pupil-access.browser.cjs
           node tools/learning-teacher-password.browser.cjs
