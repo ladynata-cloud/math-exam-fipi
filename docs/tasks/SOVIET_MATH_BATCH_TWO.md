@@ -108,3 +108,11 @@ Local content, extension, division, 60-topic browser, migration/rollback and
 media gates passed. The composed SEO suite passed six sitemap tests, checked
 513 public canonical URLs and 30 distinct entrance metadata records. Actual
 Chrome decode/seek/play verification remains an exact-head CI release gate.
+
+All five exact-head CI workflows passed on 0e1c0b03b5e21e9557301567d48f7114a91f57df,
+including actual Chrome playback. Before merge, authoritative main advanced
+again through owner-provided Yandex verification PR #239, commit
+388accb4dd067a621f90fd1066823412a28bfd88. A read-only merge-tree found only a
+project-status conflict. The composition retains the verification tag, its
+focused SEO check and task record, and both status sections. All course runtime
+and media bytes are unchanged; final-head CI is rerun after this integration.

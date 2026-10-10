@@ -18,8 +18,22 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   exact answers, cumulative board, downloadable narration scripts.
 - All 60 lessons and silent MP4s are recorded: 54 minutes 30 seconds in total.
   Local arithmetic, content, narration, renderer and browser checks passed.
-- Next: finish integration with PR #238, run exact-head CI including actual
+- Next: preserve PR #239 verification, run exact-head CI including actual
   Chrome playback of all 60 videos, then verify publication. Publication pending.
+
+## Merged: owner-provided search verification
+
+- [Scope](tasks/SEO_SEARCH_VERIFICATION_20261011.md); base
+  `a51f188b74ccd781622e3e94b3a419f895ca9c73`; branch
+  `feat/seo-search-verification-20261011`; SMALL focused independent review.
+- The owner supplied the Yandex verification meta tag for mathexam.space.
+  Publish it in the homepage head and verify its live presence.
+- Google verification remains pending its owner-provided tag. Publishing a tag
+  does not itself prove service-side verification or sitemap submission.
+- Preserve the complete visible homepage and all learner/account behavior.
+  Release evidence records the final service and publication state.
+
+- PR #239 merged as `388accb4dd067a621f90fd1066823412a28bfd88`; the owner-provided homepage tag is preserved. Service-side verification is a separate user action.
 
 ## Merged: public SEO and topic discovery
 

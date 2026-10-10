@@ -168,7 +168,9 @@ def run(base=None):
                 require(before.meta.get(key) == page.meta.get(key), label + "existing directive changed: " + key)
             old_body = re.split(r"</head\s*>", old, maxsplit=1, flags=re.I)[1]
             new_body = re.split(r"</head\s*>", text, maxsplit=1, flags=re.I)[1]
-            if relative == "index.html":
+            # The initial SEO change adds this block. Later bases already
+            # contain it and must retain the complete body byte for byte.
+            if relative == "index.html" and "<!-- seo-topic-links:start -->" not in old_body:
                 new_body, count = re.subn(r"<!-- seo-topic-links:start -->.*?<!-- seo-topic-links:end -->\n\n", "", new_body, flags=re.S)
                 require(count == 1, label + "one bounded topic-links addition")
             if relative != "courses/index.html":
