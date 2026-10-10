@@ -242,7 +242,11 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   triangle 6/6, independent models 8/8, checkpoint/map 38/38, calm learners
   190/190 and exam-first entry/repair passed. Independent mathematics/source
   review and mobile/desktop visual checks found no remaining blockers.
-- Next: exact committed review, full profile CI and published asset/live checks.
+- PR #229 first full CI run 38024444579 passed the new solution gates but found
+  an old prerequisite-browser assertion that expected the entire result at once.
+  Its correction now checks every retained result step before the original
+  answer assertion; later first-run stages were skipped. Repeat full exact-head
+  CI after focused review, then verify published assets and the live course.
 
 ## Published: independent pupil entry and parent progress
 

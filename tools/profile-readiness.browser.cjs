@@ -36,6 +36,20 @@ const server = http.createServer((req,res) => {
       await page.locator('#answer').fill(String(value));await page.locator('#submit-answer').click();
       assert.equal(await page.locator('#feedback.good').count(),1,await page.locator('#feedback').innerText());
     }
+    async function revealResult(task) {
+      const solution=page.locator('#result-solution'),items=solution.locator('[data-solution-step]');
+      const expected=await page.evaluate(id=>ProfileSolutions.steps(ProfileLessons.flatMap(lesson=>lesson.tasks).find(task=>task.id===id)).length,task.id);
+      assert.equal(await items.count(),1,task.id+': result begins with one explanation step');
+      const history=await items.allInnerTexts(),next=solution.locator('[data-solution-next]');
+      for(let count=2;count<=expected;count++) {
+        await next.click();const text=await items.allInnerTexts();
+        assert.equal(text.length,count,task.id+': exactly one new result step');
+        assert.deepEqual(text.slice(0,-1),history,task.id+': previous result steps remain');
+        history.push(text.at(-1));
+      }
+      assert.equal(await next.getAttribute('aria-disabled'),'true');
+      assert.match(history.at(-1),/Ответ:/,task.id+': final result contains the requested answer');
+    }
 
     await page.goto(base+'#readiness');await page.locator('#diagnostic-start').waitFor();
     assert.match(await page.locator('h1').innerText(),/Закроем пробелы/);
@@ -105,6 +119,7 @@ const server = http.createServer((req,res) => {
             await page.locator('#next').click();
           }
           await page.locator('.result-panel').waitFor();taskCount++;
+          await revealResult(task);
           assert.match(await page.locator('.solution').innerText(),/Ответ:/);
           data=await snapshot();assert.equal(data.sessions[lesson.id+':'+mode].done,true);
           if(index===0) {await page.reload();await page.locator('.result-panel').waitFor();}

@@ -123,3 +123,23 @@ approval or external review from a copied task-file marker.
 - Automated learner fixtures establish interface behavior, not actual learner
   outcomes. The existing 408 solutions were made accessible; this is not a claim
   that every authored explanation was rewritten from scratch.
+
+## First CI and compatibility correction
+
+- PR #229 first cloud head `cc5c0529c40ca9a634d2a21757ee12409c19c9e5`
+  retained the reviewed tree exactly. Full profile run 38024444579 passed
+  mathematics/state, existing browser/board gates, first-part/inequality gates
+  and both new worked-solution gates, then failed in the prerequisite browser.
+- `profile-readiness.browser.cjs` expected the complete answer immediately on
+  the result page. The changed result page correctly begins with only its first
+  explanation step. Reproduced the failure locally; the runtime did not throw.
+- Update that existing robot to open each subsequent result step, require one
+  addition with the entire prior history retained, require the final disabled
+  next control, and then run the original final-answer assertion. Mathematical
+  answers, assistance and progress assertions remain intact.
+- Later CI stages were skipped in the first run and are not claimed as passing.
+  Repeat the full profile workflow on the reviewed corrected head before merge.
+- Corrected prerequisite browser: 36 tasks, 86 accepted answers and three
+  diagnostic profiles passed at 360/1280, with no runtime errors. Adjacent
+  learner robot: six personas, 341/341 checks passed, no failed requests or
+  source drift. Focused independent review, syntax and diff checks passed.
