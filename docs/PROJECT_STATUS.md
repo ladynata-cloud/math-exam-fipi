@@ -6,7 +6,19 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: four-digit codes and completed setup
+## In progress: clear code-save feedback
+
+- [Scope](tasks/CODE_SAVE_FEEDBACK.md); base
+  `0081ce7b52db04be20a70ab6653b4f00d4679025`; branch
+  `fix/code-save-feedback`. HIGH independent internal review.
+- The owner reports the new-code form remains after entering four digits.
+  The screenshot shows a transport error and an unconfirmed save, not a
+  confirmed success. Separate this outcome from another code-creation prompt.
+- Code settings become an overview with explicit editing. An uncertain save
+  hides inputs and offers the cabinet or an explicit same-code retry. No real
+  credentials, backend contracts or learning data change.
+
+## Published: four-digit codes and completed setup
 
 - [Scope](tasks/FOUR_DIGIT_CABINET_CODES.md); base
   `bdf2519d10b03e1c2d77a379a78a21ce2e196f99`; branch
@@ -18,6 +30,12 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   checks pass 269/269, including leading-zero PINs, older passwords and all
   existing account/recovery boundaries. Browser/release checks are recorded
   in the task PR; no real password is changed by QA.
+- PR #230 merged as `0081ce7b52db04be20a70ab6653b4f00d4679025` with reviewed
+  tree `7745c0474dd0c533dcdbdba82bf7bf158a2da14b`. All 11 affected local browser
+  gates, independent HIGH review, learning CI 38026195645 and navigation CI
+  38026195629 passed. Pages 38026771835 passed; all 12 public/cabinet asset
+  comparisons matched at 05:23:29 UTC. Amvera health and the live teacher form
+  were verified after the ordinary rollout, without manually restarting it.
 
 ## Published: simple password recovery and ready pupil access
 

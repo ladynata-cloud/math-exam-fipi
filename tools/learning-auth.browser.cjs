@@ -66,6 +66,9 @@ async function assertCodesRemain(page, expected) {
   assert.deepEqual((await page.locator('#recovery-codes').innerText()).split('\n'), expected);
 }
 async function openRecoveryOptions(page) {
+  if (!await page.locator('#recovery-options').count()) {
+    await page.locator('#teacher-password-change').click();
+  }
   const options = page.locator('#recovery-options');
   await options.waitFor({ state: 'attached' });
   if (await options.getAttribute('open') === null) await options.locator('summary').click();
