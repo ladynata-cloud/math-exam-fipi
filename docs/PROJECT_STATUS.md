@@ -204,7 +204,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Live UI verified the red/grey cross, mnemonic, unknown-left equation,
   elementary factor rule and preserved draft.
 
-## In progress: precise adjacent and opposite side terminology
+## Published: precise adjacent and opposite side terminology
 
 - [Scope](tasks/PROFILE_TRIG_TERMS.md); base
   `90ca4df40051551c553a70dff5807392f18be343`; branch
@@ -217,7 +217,36 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Concurrent PR #227 advanced main to `355035cf04205e8d1c181bca0180e5630e080720`.
   Only this status document overlaps; all runtime files from both tasks retain
   their reviewed bytes.
-- Next: composed-tree review, exact-head CI and live text verification.
+- PR #228 published as `54556ab694b147207445face010c98595ec77b9d`, parent
+  `355035cf04205e8d1c181bca0180e5630e080720`; reviewed tree
+  `d95b327db0c33d3416e29abbe64ca3b30b578d8b`. Exact-head profile CI
+  38022500798 and Pages 38022841893 passed; three public assets matched.
+  Live verification confirmed precise side names and the preserved draft.
+
+## In progress: step-by-step explanations throughout the profile course
+
+- [Scope](tasks/PROFILE_ALL_STEP_SOLUTIONS.md); base
+  `54556ab694b147207445face010c98595ec77b9d`; branch
+  `feat/profile-all-step-solutions`. MEDIUM presentation change using the
+  existing authored teaching steps and assistance contracts.
+- The owner found only a highlighted diagram for the similar-triangle area
+  task, then requested step-by-step explanations throughout the course.
+- The bank contains 348 tasks across all thirteen exam positions, plus 60
+  foundation/trigonometry tasks. A visible current-task explanation will reveal
+  one action at a time, retaining earlier steps and the learner's draft.
+- Add detailed similarity derivations and expand the seventeen shortest
+  one-step exercises; retain the existing three full right-triangle walkthroughs.
+- Check examples, practice, results and the mixed checkpoint with synthetic
+  learner robots. No real pupil accounts or saved answers are changed by QA.
+- Local gates: all-bank content/DOM 7/7, new learner journeys 42/42, existing
+  triangle 6/6, independent models 8/8, checkpoint/map 38/38, calm learners
+  190/190 and exam-first entry/repair passed. Independent mathematics/source
+  review and mobile/desktop visual checks found no remaining blockers.
+- PR #229 first full CI run 38024444579 passed the new solution gates but found
+  an old prerequisite-browser assertion that expected the entire result at once.
+  Its correction now checks every retained result step before the original
+  answer assertion; later first-run stages were skipped. Repeat full exact-head
+  CI after focused review, then verify published assets and the live course.
 
 ## Published: independent pupil entry and parent progress
 
