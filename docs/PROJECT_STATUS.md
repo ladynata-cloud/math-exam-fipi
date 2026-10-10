@@ -50,7 +50,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Public profile solutions still remain local to the browser. Release evidence
   is recorded in PR #220.
 
-## In progress: exam tasks first, targeted school help when needed
+## Merged: exam tasks first, targeted school help when needed
 
 - [Scope](tasks/PROFILE_EXAM_FIRST_ROUTE.md): display the thirteen-position
   catalogue first in profile cabinets; open actual exam practice before optional
@@ -61,8 +61,30 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Targeted learner robots passed catalogue, independent entry, wrong-input
   handling, school/trigonometry repair and preserved return on desktop/mobile.
   Focused independent MEDIUM source review approved without P1/P2 findings.
-- Next: final regression and exact-head CI, controlled merge, then verify live
-  cabinet/course assets under the standing cloud-publication instruction.
+- PR #221 merged as `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`, confirmed
+  against authoritative remote main when starting the family-cabinet task.
+  This reconciliation establishes the code base; it makes no additional claim
+  about hosting verification for that earlier task.
+
+## Prepared: clear teacher, pupil and parent cabinets
+
+- [Scope](tasks/CLEAR_FAMILY_CABINETS.md); base
+  `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`; branch
+  `feat/clear-family-cabinets`. HIGH internal independent review under the
+  owner's standing cloud-publication instruction and external-review waiver.
+- Explicit role entrances and session identity checks prevent misleading
+  teacher links and stale records after another account signs in. Teacher
+  preview retains teacher identity and performs no pupil learning mutation.
+- One pupil card includes profile, plan, work, results and family access.
+  Ordinary entry copying is separate from password replacement. New family
+  invitations last seven days; existing stored expiries remain unchanged.
+- Pupil preparation highlights one next action. Managed long-division work
+  was exercised through offline drafts, reload, lost acknowledgement and the
+  same committed result in pupil, teacher and parent views. Public/local-only
+  exercises remain explicitly outside this shared history.
+- Next: complete exact-head CI and review, controlled publication, then verify
+  both the public assets and Amvera cabinet. Detailed evidence belongs to the
+  task PR; real family credentials and learning records remain untouched.
 
 ## Published: independent pupil entry and parent progress
 
