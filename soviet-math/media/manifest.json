@@ -1,0 +1,2026 @@
+{
+  "version": 1,
+  "renderer": "tools/soviet-math-render.cjs",
+  "description": "Авторские упражнения по темам учебников; непрерывная запись решения, без звука.",
+  "width": 1280,
+  "height": 800,
+  "fps": 30,
+  "lessons": [
+    {
+      "id": "bonds",
+      "file": "bonds.mp4",
+      "seconds": 36.8,
+      "bytes": 553071,
+      "sha256": "9c1815dd17a92552886dc39a8a8d0421cb486587e7d8bd9a7c4ddb6f820c7738",
+      "sourceHash": "22fdc18ad38daed775a6c7d3518f23695eb24163e90bc8f8e20207963d7fc7f1",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для первого класса начальной школы",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "1 класс",
+        "year": 1959,
+        "section": "Первый десяток. Сложение и вычитание",
+        "pages": "30",
+        "url": "https://sheba.spb.ru/shkola/arifmetika1959.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 1 класс · 1959 · с. 30",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "compare",
+      "file": "compare.mp4",
+      "seconds": 36.8,
+      "bytes": 616676,
+      "sha256": "b4a5c9e7aa1c9050b3810054b72f9f37e6abb0eae62cf4eb7049a58e638a1585",
+      "sourceHash": "d1c9679f9b770f9a317781710317d06a29232dc35d090b54fc0f0140428fb0ef",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для первого класса начальной школы",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "1 класс",
+        "year": 1959,
+        "section": "Первый десяток",
+        "pages": null,
+        "url": "https://sheba.spb.ru/shkola/arifmetika1959.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 1 класс · 1959",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "add-ten",
+      "file": "add-ten.mp4",
+      "seconds": 36.8,
+      "bytes": 558283,
+      "sha256": "0631dffd6c10cfb1fe0d4c3c815b25f54849d8633a05fbbc2c3abb343cbe0aff",
+      "sourceHash": "daf62d35eeb1bd56ac7511399ff2873e48034301099bd70a8634fd4b82be6f74",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для первого класса начальной школы",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "1 класс",
+        "year": 1959,
+        "section": "Первый десяток. Сложение и вычитание",
+        "pages": "30",
+        "url": "https://sheba.spb.ru/shkola/arifmetika1959.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 1 класс · 1959 · с. 30",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "subtract-ten",
+      "file": "subtract-ten.mp4",
+      "seconds": 36.8,
+      "bytes": 522331,
+      "sha256": "4e9b0d7195c39a1d75e3836e7b7c40a2b1980b9aa3f9b59c63d3f6c28f1c7fe0",
+      "sourceHash": "54b4db32b90f52fef59c6e94cf4d3b9e203548a30a9d1c74830ad515017df9a2",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для первого класса начальной школы",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "1 класс",
+        "year": 1959,
+        "section": "Первый десяток. Сложение и вычитание",
+        "pages": "30",
+        "url": "https://sheba.spb.ru/shkola/arifmetika1959.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 1 класс · 1959 · с. 30",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "add-twenty",
+      "file": "add-twenty.mp4",
+      "seconds": 36.8,
+      "bytes": 536698,
+      "sha256": "1e78c008214880b02663db9fc814a1832f40107fccddde7fb55f83e1cd5eb8e0",
+      "sourceHash": "0c84c6b53d74012b04688f78fb4682f1a0250c6f1064ba5990b4bb93667c8734",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для первого класса начальной школы",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "1 класс",
+        "year": 1959,
+        "section": "Сложение с переходом через десяток",
+        "pages": "79",
+        "url": "https://sheba.spb.ru/shkola/arifmetika1959.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 1 класс · 1959 · с. 79",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "subtract-twenty",
+      "file": "subtract-twenty.mp4",
+      "seconds": 36.8,
+      "bytes": 543010,
+      "sha256": "ff8288bc313fe5e639da6ad8f1b024aa537f97e07223def567320ad99715cfbd",
+      "sourceHash": "0e7df6a9a7920e1b7a5b2b30d05fa74ba13e608892ebe5bdd95cc1e14838f53d",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для первого класса начальной школы",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "1 класс",
+        "year": 1959,
+        "section": "Вычитание с переходом через десяток",
+        "pages": "84",
+        "url": "https://sheba.spb.ru/shkola/arifmetika1959.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 1 класс · 1959 · с. 84",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "place-value",
+      "file": "place-value.mp4",
+      "seconds": 46.4,
+      "bytes": 692063,
+      "sha256": "58a91e18a1371bd7c1b96eee50324d923d25eaae7e0873a46a73b942949515a0",
+      "sourceHash": "85d50bc08b235312beceddfe381515cee45bd1a54e3d059c7fdaf17dc36d108c",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 2-го класса",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "2 класс",
+        "year": 1961,
+        "section": "Тысяча. Устная нумерация; письменная нумерация",
+        "pages": "130, 132",
+        "url": "https://sheba.spb.ru/shkola/arifmetika2-1961.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 2 класс · 1961 · с. 130, 132",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 4,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        }
+      ],
+      "finalAt": 38.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "stories",
+      "file": "stories.mp4",
+      "seconds": 36.8,
+      "bytes": 587176,
+      "sha256": "af01465526fb17d058bbc7a7436f4b6da570f143213ec2e717607d69612deea4",
+      "sourceHash": "93137dd03934e5566ea45472e8915422a0de0f47072a38a8b5fd3b87bcd5d84e",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для первого класса начальной школы",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "1 класс",
+        "year": 1959,
+        "section": "Задачи в 2 действия; в тренажёре — продолжение до 3 действий",
+        "pages": "77",
+        "url": "https://sheba.spb.ru/shkola/arifmetika1959.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 1 класс · 1959 · с. 77",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "groups",
+      "file": "groups.mp4",
+      "seconds": 36.8,
+      "bytes": 565136,
+      "sha256": "19d7b2fe7a8a86053b5cdea04ccf5f0c8904093ee0e5100123865813f4acff9f",
+      "sourceHash": "c2a45693cecc990c8e27f2fb227388d8d196ff72491a42e0be08e97944de8d0d",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для первого класса начальной школы",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "1 класс",
+        "year": 1959,
+        "section": "Умножение",
+        "pages": "97",
+        "url": "https://sheba.spb.ru/shkola/arifmetika1959.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 1 класс · 1959 · с. 97",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "sharing",
+      "file": "sharing.mp4",
+      "seconds": 46.4,
+      "bytes": 855892,
+      "sha256": "01ea5dd42002734fdfe3238162e813a60a8bc49ad5e02d0eb856e873c952d030",
+      "sourceHash": "334f1d127c7e805e40cbb6f5a4893b470625747d5ce065cab9c2bdc4234a703e",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для первого класса начальной школы",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "1 класс",
+        "year": 1959,
+        "section": "Деление",
+        "pages": "113",
+        "url": "https://sheba.spb.ru/shkola/arifmetika1959.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 1 класс · 1959 · с. 113",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 4,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        }
+      ],
+      "finalAt": 38.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "times-table",
+      "file": "times-table.mp4",
+      "seconds": 36.8,
+      "bytes": 582514,
+      "sha256": "40bcae6aab6eaf0b552e499c871558a8bd0c8c285d98822ba75203157037cc2d",
+      "sourceHash": "b29cb1e3f1f31b40d12b9df6c2904debf01de32eb62be73a72da7131cf2bbb9a",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 2-го класса",
+        "authors": "А. С. Пчёлко, Г. Б. Поляк",
+        "grade": "2 класс",
+        "year": 1961,
+        "section": "Таблица умножения и деления",
+        "pages": "56",
+        "url": "https://sheba.spb.ru/shkola/arifmetika2-1961.htm",
+        "label": "Авторский пример · Арифметика · Пчёлко, Поляк · 2 класс · 1961 · с. 56",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "column-add",
+      "file": "column-add.mp4",
+      "seconds": 46.4,
+      "bytes": 998805,
+      "sha256": "1c35e43d4494ce91277dbafdcb1102474be3b2deb4ac801730f9c1601e3afe2a",
+      "sourceHash": "789a7f0cbf02085d2fa7e54380d56ff872607a546fda37b4d5557d5f2baf06a4",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 7. Сложение многозначных чисел. Проверка сложения",
+        "pages": "24",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 24",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 4,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        }
+      ],
+      "finalAt": 38.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "column-subtract",
+      "file": "column-subtract.mp4",
+      "seconds": 46.4,
+      "bytes": 793958,
+      "sha256": "25243ea57e94c0d65edd3dd8433d4d511d498fd83bf777eeab555b3f9c35c14b",
+      "sourceHash": "aafa9ffe5c50e604338199cf0b44b64c099925a5129d7687d9d12a524b016efe",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 11. Вычитание многозначных чисел",
+        "pages": "29",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 29",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 4,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        }
+      ],
+      "finalAt": 38.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "column-multiply",
+      "file": "column-multiply.mp4",
+      "seconds": 46.4,
+      "bytes": 1041648,
+      "sha256": "57a391aab8ed4d5281888517a91669d4e2306feab22893e2fa987f4e1642d839",
+      "sourceHash": "69420ed0a5511bf3cd3c1e0e95a5b5f08798b21bc9399ea1176daf44111ac05b",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 17. Умножение многозначных чисел",
+        "pages": "40",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 40",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 4,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        }
+      ],
+      "finalAt": 38.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "order",
+      "file": "order.mp4",
+      "seconds": 36.8,
+      "bytes": 506398,
+      "sha256": "0bfe7527d8ae713bb327a6f1ea8d9fdcdb01078df3ef563608d547a149ebab86",
+      "sourceHash": "6756852fd5ad26c4f136888368e2cbce09af395baca971d1e8622963033a06bf",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 32. Порядок выполнения арифметических действий",
+        "pages": "70",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 70",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "divide-simple",
+      "file": "divide-simple.mp4",
+      "seconds": 142.4,
+      "bytes": 2501226,
+      "sha256": "26ebb4a91ba4148d1dc5f08a3eb2952ddbb9128826e4c2dd193c1c61aea0c1cd",
+      "sourceHash": "ecd44dcd61d208213538d157a1656671e72a4bcd20c586cc4563158b9b907ed1",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 22. Деление многозначных чисел",
+        "pages": "47",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 47",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 14,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        },
+        {
+          "step": 6,
+          "questionAt": 48,
+          "explanationAt": 50.4
+        },
+        {
+          "step": 7,
+          "questionAt": 57.6,
+          "explanationAt": 60
+        },
+        {
+          "step": 8,
+          "questionAt": 67.2,
+          "explanationAt": 69.6
+        },
+        {
+          "step": 9,
+          "questionAt": 76.8,
+          "explanationAt": 79.2
+        },
+        {
+          "step": 10,
+          "questionAt": 86.4,
+          "explanationAt": 88.8
+        },
+        {
+          "step": 11,
+          "questionAt": 96,
+          "explanationAt": 98.4
+        },
+        {
+          "step": 12,
+          "questionAt": 105.6,
+          "explanationAt": 108
+        },
+        {
+          "step": 13,
+          "questionAt": 115.2,
+          "explanationAt": 117.6
+        },
+        {
+          "step": 14,
+          "questionAt": 124.8,
+          "explanationAt": 127.2
+        }
+      ],
+      "finalAt": 134.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "divide-zero",
+      "file": "divide-zero.mp4",
+      "seconds": 200,
+      "bytes": 3457261,
+      "sha256": "dbef8ecfe84e70b3f1931996b210c1bd4bb6f356cae05786de135a9aa7e8238e",
+      "sourceHash": "b00d15bc410ceb8dd9933285722e65fd45f5a468dc9a8bb8d2a1a9b2bc84d13e",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 22. Деление многозначных чисел",
+        "pages": "48",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 48",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 20,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        },
+        {
+          "step": 6,
+          "questionAt": 48,
+          "explanationAt": 50.4
+        },
+        {
+          "step": 7,
+          "questionAt": 57.6,
+          "explanationAt": 60
+        },
+        {
+          "step": 8,
+          "questionAt": 67.2,
+          "explanationAt": 69.6
+        },
+        {
+          "step": 9,
+          "questionAt": 76.8,
+          "explanationAt": 79.2
+        },
+        {
+          "step": 10,
+          "questionAt": 86.4,
+          "explanationAt": 88.8
+        },
+        {
+          "step": 11,
+          "questionAt": 96,
+          "explanationAt": 98.4
+        },
+        {
+          "step": 12,
+          "questionAt": 105.6,
+          "explanationAt": 108
+        },
+        {
+          "step": 13,
+          "questionAt": 115.2,
+          "explanationAt": 117.6
+        },
+        {
+          "step": 14,
+          "questionAt": 124.8,
+          "explanationAt": 127.2
+        },
+        {
+          "step": 15,
+          "questionAt": 134.4,
+          "explanationAt": 136.8
+        },
+        {
+          "step": 16,
+          "questionAt": 144,
+          "explanationAt": 146.4
+        },
+        {
+          "step": 17,
+          "questionAt": 153.6,
+          "explanationAt": 156
+        },
+        {
+          "step": 18,
+          "questionAt": 163.2,
+          "explanationAt": 165.6
+        },
+        {
+          "step": 19,
+          "questionAt": 172.8,
+          "explanationAt": 175.2
+        },
+        {
+          "step": 20,
+          "questionAt": 182.4,
+          "explanationAt": 184.8
+        }
+      ],
+      "finalAt": 192,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "divide-remainder",
+      "file": "divide-remainder.mp4",
+      "seconds": 94.4,
+      "bytes": 1631338,
+      "sha256": "e65aea77e725fd425d63424f34158ad308a250bddb332020ae6125dbd43fe796",
+      "sourceHash": "34fb29d1af2f9b1299561470a945c06c772425eb89f2fc678f9813d972c034a8",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 20. Деление; § 23. Проверка умножения и деления",
+        "pages": "46, 50",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 46, 50",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 9,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        },
+        {
+          "step": 6,
+          "questionAt": 48,
+          "explanationAt": 50.4
+        },
+        {
+          "step": 7,
+          "questionAt": 57.6,
+          "explanationAt": 60
+        },
+        {
+          "step": 8,
+          "questionAt": 67.2,
+          "explanationAt": 69.6
+        },
+        {
+          "step": 9,
+          "questionAt": 76.8,
+          "explanationAt": 79.2
+        }
+      ],
+      "finalAt": 86.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "divide-two",
+      "file": "divide-two.mp4",
+      "seconds": 142.4,
+      "bytes": 2597633,
+      "sha256": "2c052b61d777431e02b8abd36dbabca8596ff5e305fa98d775cae98d1633825d",
+      "sourceHash": "c6f1e330c1068e599e2c6b53c7af4bf09e1d86e2eef2fdc6f6a316ccd1e425e9",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 22. Деление многозначных чисел",
+        "pages": "47",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 47",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 14,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        },
+        {
+          "step": 6,
+          "questionAt": 48,
+          "explanationAt": 50.4
+        },
+        {
+          "step": 7,
+          "questionAt": 57.6,
+          "explanationAt": 60
+        },
+        {
+          "step": 8,
+          "questionAt": 67.2,
+          "explanationAt": 69.6
+        },
+        {
+          "step": 9,
+          "questionAt": 76.8,
+          "explanationAt": 79.2
+        },
+        {
+          "step": 10,
+          "questionAt": 86.4,
+          "explanationAt": 88.8
+        },
+        {
+          "step": 11,
+          "questionAt": 96,
+          "explanationAt": 98.4
+        },
+        {
+          "step": 12,
+          "questionAt": 105.6,
+          "explanationAt": 108
+        },
+        {
+          "step": 13,
+          "questionAt": 115.2,
+          "explanationAt": 117.6
+        },
+        {
+          "step": 14,
+          "questionAt": 124.8,
+          "explanationAt": 127.2
+        }
+      ],
+      "finalAt": 134.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "divide-decimal-natural",
+      "file": "divide-decimal-natural.mp4",
+      "seconds": 152,
+      "bytes": 2821473,
+      "sha256": "cc4f45005eeba02d156cc4c122bc2c3d4be064e70d65b2d6295f301334c37883",
+      "sourceHash": "640a3fdfedfcddd8d2b2eaac16ceefc0422d094a42cb2e309f73d8975c60c37c",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 102. Деление натурального числа и десятичной дроби на натуральное число",
+        "pages": "238",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 238",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 15,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        },
+        {
+          "step": 6,
+          "questionAt": 48,
+          "explanationAt": 50.4
+        },
+        {
+          "step": 7,
+          "questionAt": 57.6,
+          "explanationAt": 60
+        },
+        {
+          "step": 8,
+          "questionAt": 67.2,
+          "explanationAt": 69.6
+        },
+        {
+          "step": 9,
+          "questionAt": 76.8,
+          "explanationAt": 79.2
+        },
+        {
+          "step": 10,
+          "questionAt": 86.4,
+          "explanationAt": 88.8
+        },
+        {
+          "step": 11,
+          "questionAt": 96,
+          "explanationAt": 98.4
+        },
+        {
+          "step": 12,
+          "questionAt": 105.6,
+          "explanationAt": 108
+        },
+        {
+          "step": 13,
+          "questionAt": 115.2,
+          "explanationAt": 117.6
+        },
+        {
+          "step": 14,
+          "questionAt": 124.8,
+          "explanationAt": 127.2
+        },
+        {
+          "step": 15,
+          "questionAt": 134.4,
+          "explanationAt": 136.8
+        }
+      ],
+      "finalAt": 144,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "fraction-meaning",
+      "file": "fraction-meaning.mp4",
+      "seconds": 36.8,
+      "bytes": 669007,
+      "sha256": "2507abd01dcfff9bb8ad1d62138c835813d97a9c33918e8e6edf65270fadeb09",
+      "sourceHash": "58fcfc055479e0c023d4525781cc7f658cfc95c1814002aeb3ffb99a2aad6758",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 50. Введение дробных чисел при измерении; § 51. Запись дроби",
+        "pages": "108, 109",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 108, 109",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 3,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        }
+      ],
+      "finalAt": 28.8,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "fraction-reduce",
+      "file": "fraction-reduce.mp4",
+      "seconds": 46.4,
+      "bytes": 705259,
+      "sha256": "6a368923fbe61bd9c48b32c2f58a4a817b74a5a79449bbb69ad10bcad0645f5b",
+      "sourceHash": "fb82b056ff6928beeeb690a3151532fe9d30b2adf42b08fab1ce06d4ab303ee7",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 61. Сокращение дроби",
+        "pages": "121",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 121",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 4,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        }
+      ],
+      "finalAt": 38.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "fraction-add",
+      "file": "fraction-add.mp4",
+      "seconds": 56,
+      "bytes": 943820,
+      "sha256": "ee30e8e6c00c52b61209b824d78c8bd12104732daaed5dd3506e53a56b6bc33c",
+      "sourceHash": "ca4c17294dda1216425ea13b8b531a3ea29c0f362ea37667ad338a01fd6e0f27",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 62. Общий знаменатель; § 63. Сложение дробей",
+        "pages": "123, 127",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 123, 127",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 5,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        }
+      ],
+      "finalAt": 48,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "fraction-multiply",
+      "file": "fraction-multiply.mp4",
+      "seconds": 46.4,
+      "bytes": 729694,
+      "sha256": "97e29f408cdd0e09491d490d1c8437ace3a49e62ec0396b57e2c036959e16d8a",
+      "sourceHash": "af410b42f13e39d845e187de435eded610636b686644243ad5b75a5e6bd6919d",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 70. Умножение дроби на дробь",
+        "pages": "150",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 150",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 4,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        }
+      ],
+      "finalAt": 38.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "fraction-divide",
+      "file": "fraction-divide.mp4",
+      "seconds": 56,
+      "bytes": 940644,
+      "sha256": "ab9e389e5661d3a9f1325bcd3cb85bb76d44f801c34967dca4cc40d063203ba8",
+      "sourceHash": "c99e2f922f752ab70a092060e4ddddfe1e1122ceb846926a8700b8de9abf1e29",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 75. Взаимно обратные числа; § 77. Деление на дробь",
+        "pages": "165, 169",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 165, 169",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 5,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        }
+      ],
+      "finalAt": 48,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "decimal-add",
+      "file": "decimal-add.mp4",
+      "seconds": 46.4,
+      "bytes": 812709,
+      "sha256": "61e923141b59385db620e23c969a995b7270419cfa918049457813d00fe03a1b",
+      "sourceHash": "d018b5d22882979aab11ffc5a3c8b97f8076a1392fce89fdb17f7da5c8d9a3a3",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 99. Сложение десятичных дробей",
+        "pages": "228",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 228",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 4,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        }
+      ],
+      "finalAt": 38.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "divide-decimal",
+      "file": "divide-decimal.mp4",
+      "seconds": 190.4,
+      "bytes": 3768560,
+      "sha256": "a4b37864b45ad9b31105bd26ee7a16635a7d0ac6d6bf9c239a9e413d755cf2b9",
+      "sourceHash": "61e97d28e99c76b06299334b1f61ee5ab312a9469bdbb6a251d8160e7d4ca4d7",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 103. Деление на десятичную дробь",
+        "pages": "240",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 240",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 19,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        },
+        {
+          "step": 6,
+          "questionAt": 48,
+          "explanationAt": 50.4
+        },
+        {
+          "step": 7,
+          "questionAt": 57.6,
+          "explanationAt": 60
+        },
+        {
+          "step": 8,
+          "questionAt": 67.2,
+          "explanationAt": 69.6
+        },
+        {
+          "step": 9,
+          "questionAt": 76.8,
+          "explanationAt": 79.2
+        },
+        {
+          "step": 10,
+          "questionAt": 86.4,
+          "explanationAt": 88.8
+        },
+        {
+          "step": 11,
+          "questionAt": 96,
+          "explanationAt": 98.4
+        },
+        {
+          "step": 12,
+          "questionAt": 105.6,
+          "explanationAt": 108
+        },
+        {
+          "step": 13,
+          "questionAt": 115.2,
+          "explanationAt": 117.6
+        },
+        {
+          "step": 14,
+          "questionAt": 124.8,
+          "explanationAt": 127.2
+        },
+        {
+          "step": 15,
+          "questionAt": 134.4,
+          "explanationAt": 136.8
+        },
+        {
+          "step": 16,
+          "questionAt": 144,
+          "explanationAt": 146.4
+        },
+        {
+          "step": 17,
+          "questionAt": 153.6,
+          "explanationAt": 156
+        },
+        {
+          "step": 18,
+          "questionAt": 163.2,
+          "explanationAt": 165.6
+        },
+        {
+          "step": 19,
+          "questionAt": 172.8,
+          "explanationAt": 175.2
+        }
+      ],
+      "finalAt": 182.4,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "percent-part",
+      "file": "percent-part.mp4",
+      "seconds": 56,
+      "bytes": 1076465,
+      "sha256": "de9faabaadd1b6f8a08306e7351a0b64636d54cfc6b1d4df13c93a4e22a9fb05",
+      "sourceHash": "7e3c66491a2c5754d03947f087b856b1197769e12111b38ee4c16e548c254950",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 145. Нахождение процентов числа; §§ 152–154. Пропорции",
+        "pages": "352, 376, 378, 381",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 352, 376, 378, 381",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 5,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        }
+      ],
+      "finalAt": 48,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "percent-whole",
+      "file": "percent-whole.mp4",
+      "seconds": 56,
+      "bytes": 1021644,
+      "sha256": "4b8c32f62c53152d603b62fa12ee510e0793def8772d4c7e0e9c9dce91ceac8a",
+      "sourceHash": "6f3c11d2356a4f992be290861b9ab8928adc9a7a71b35c1758e47e35a1e35277",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 146. Нахождение числа по его процентам; §§ 152–154. Пропорции",
+        "pages": "355, 376, 378, 381",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 355, 376, 378, 381",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 5,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        }
+      ],
+      "finalAt": 48,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    },
+    {
+      "id": "percent-ratio",
+      "file": "percent-ratio.mp4",
+      "seconds": 56,
+      "bytes": 1089516,
+      "sha256": "13d050e42eb12b45a8d11b866998d60e416d20e0c0eafed4f7cf59533587b053",
+      "sourceHash": "9f20d87a77b937ce61f5713337518c8388ed65b0858a22914efe20f3dfa717f4",
+      "rendererHash": "eb1688f72bd7e35aa4dc05dce155cb26690e7f9afc5de19d0bac9fd77a960920",
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 147. Процентное отношение двух чисел; §§ 152–154. Пропорции",
+        "pages": "359, 376, 378, 381",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторский пример · Арифметика · Принцев, Ягодовский · 5–6 классы · 1966 · с. 359, 376, 378, 381",
+        "exerciseNote": "Авторские упражнения по теме. Указаны страницы раздела учебника.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 5,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 0,
+          "explanationAt": 2.4
+        },
+        {
+          "step": 2,
+          "questionAt": 9.6,
+          "explanationAt": 12
+        },
+        {
+          "step": 3,
+          "questionAt": 19.2,
+          "explanationAt": 21.6
+        },
+        {
+          "step": 4,
+          "questionAt": 28.8,
+          "explanationAt": 31.2
+        },
+        {
+          "step": 5,
+          "questionAt": 38.4,
+          "explanationAt": 40.8
+        }
+      ],
+      "finalAt": 48,
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "questionSeconds": 2.4,
+        "explanationSeconds": 7.2,
+        "endSeconds": 8,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      }
+    }
+  ],
+  "sourceHashVersion": 1
+}

@@ -1,12 +1,26 @@
 # MathExam project status
 
-Updated: 2026-10-10 (Asia/Novosibirsk)
+Updated: 2026-10-11 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: OGE arithmetic support after a struggling-learner simulation
+## In progress: Mathematics from Soviet textbooks
+
+- [Scope](tasks/SOVIET_MATH_COURSE.md); base
+  `28ca6887702748243cc99f50edeb470a987f802d`; branch
+  `feat/soviet-math-course`; MEDIUM focused independent review.
+- 30 topic trainers and 30 silent MP4s on a continuous solution board.
+  Textbook authors, editions and checked section pages are explicit;
+  original exercises are not attributed to invented textbook task numbers.
+- Stable topic IDs and append-only recordings allow later batches without
+  replacing existing URLs. Practice results remain explicitly browser-local.
+- Owner instructed cloud execution while offline. Standing scoped publication
+  authorization remains in effect; no account or hosting configuration changes.
+- Next: finish media checks, pass the exact-head CI, then verify the live route.
+
+## Published: OGE arithmetic support after a struggling-learner simulation
 
 - [Scope](tasks/OGE_ARITHMETIC_SCAFFOLDING.md); base
   `3759b4646ea19d2790d3b5f84eaadb2c01f762a1`; branch
@@ -16,6 +30,9 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   in the managed trainer. Simulation findings are not real learner outcomes.
 - Preserve saved task generation/state, actual pupil data, all account entry
   assets and credentials. Use existing help accounting and mirror controls.
+- PR #236 is merged as `28ca6887702748243cc99f50edeb470a987f802d`.
+  Its release checks are recorded in that PR; this task does not infer new
+  verification of the existing account flows.
 
 ## Published: readable profile captions and help links
 
