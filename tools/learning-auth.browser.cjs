@@ -66,6 +66,9 @@ async function assertCodesRemain(page, expected) {
   assert.deepEqual((await page.locator('#recovery-codes').innerText()).split('\n'), expected);
 }
 async function openRecoveryOptions(page) {
+  if (!await page.locator('#recovery-options').count()) {
+    await page.locator('#teacher-password-change').click();
+  }
   const options = page.locator('#recovery-options');
   await options.waitFor({ state: 'attached' });
   if (await options.getAttribute('open') === null) await options.locator('summary').click();
@@ -731,7 +734,8 @@ async function pupilCopyChecks(page, context, origin, login, password) {
       'Successful recovery immediately enters the cabinet, without mandatory reset');
     assert.equal(mutations.length, beforeRecoveryMinimum + 1, 'Recovery sends exactly one credential request');
 
-    // A persisted page lifecycle during a real pending request must restore usable controls and ignore its stale response.
+    // A persisted return closes the editor, offers an explicit reopening, and
+    // ignores the stale response from the earlier credential request.
     await page.locator('[data-nav=security]').click();
     await openRecoveryOptions(page);
     const frozenRecoveryForm = await page.locator('#recovery-rotate-form').elementHandle();
@@ -752,10 +756,13 @@ async function pupilCopyChecks(page, context, origin, login, password) {
         window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true }));
         window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
       });
-      await page.waitForFunction(() => {
-        const form = document.querySelector('#recovery-rotate-form');
-        return form && !form.querySelector('[type=submit]').disabled && form.elements.password.value === '';
-      });
+      await page.locator('#teacher-password-summary').waitFor();
+      assert.equal(await page.locator('#main input,#main textarea,#recovery-codes').count(), 0,
+        'A persisted return does not automatically reopen private credential inputs');
+      assert.equal(await frozenRecoveryForm.evaluate(form => form.elements.password.value), '');
+      await openRecoveryOptions(page);
+      assert.equal(await page.locator('#recovery-rotate-form [type=submit]').isEnabled(), true);
+      assert.equal(await page.locator('#recovery-rotate-form [name=password]').inputValue(), '');
       assert.equal(await page.locator('#recovery-rotate-form').evaluate((node, old) => node !== old, frozenRecoveryForm), true,
         'A persisted return replaces the stale disabled credential form');
       assert.equal(await page.locator('#modal').evaluate(node => node.open), false);
