@@ -1,0 +1,31 @@
+name: Public SEO and sitemap
+
+on:
+  pull_request:
+    paths:
+      - '**/*.html'
+      - 'sitemap.xml'
+      - 'robots.txt'
+      - 'assets/topic-pages.css'
+      - 'tools/build-sitemap.py'
+      - 'tools/seo-*'
+      - '.github/workflows/seo-quality.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-seo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Sitemap exclusions, canonical routes and public entrances
+        run: |
+          python3 tools/seo-sitemap.test.py
+          python3 tools/build-sitemap.py --check
+          python3 tools/seo-check.py
+          git diff --check

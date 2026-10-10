@@ -6,7 +6,21 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: Mathematics from Soviet textbooks
+## In progress: public SEO and topic discovery
+
+- [Scope](tasks/SEO_DISCOVERY_20261011.md); base
+  `b0b2fe8e4d2cbf15426a9a314674bf7a2edce4f9`; branch
+  `feat/seo-discovery-20261011`; MEDIUM focused independent internal review.
+- Public source/live reconciliation: robots and sitemap return HTTP 200;
+  the old sitemap has 244 URLs and misses current public entrances.
+- Metadata for 24 entrances, five static worked explanations plus their
+  directory, and repeatable public sitemap/exclusion checks.
+- Preserve learner runtimes, accounts, stable book URLs and existing noindex.
+  Search-account ownership and private statistics have not been verified.
+- Checked publication follows the standing owner instruction. PR/release
+  evidence records completion; no unrelated active branch is updated.
+
+## Previous task: Mathematics from Soviet textbooks
 
 - [Scope](tasks/SOVIET_MATH_COURSE.md); base
   `28ca6887702748243cc99f50edeb470a987f802d`; branch
