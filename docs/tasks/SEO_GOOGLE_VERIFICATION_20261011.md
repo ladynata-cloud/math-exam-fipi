@@ -4,7 +4,7 @@
 
 - Task: `SEO_GOOGLE_VERIFICATION_20261011`
 - Date: 2026-10-11 (Asia/Novosibirsk)
-- Base: `main` at `388accb4dd067a621f90fd1066823412a28bfd88`
+- Base: `main` at `89e61f80b56f9c3344ee96fbaff7946c90b251bd`
 - Branch: `feat/seo-google-verification-20261011`
 - Review: `SMALL`, focused independent internal review.
 - Related work: SEO PR #238 and Yandex verification PR #239; no ADR or
@@ -27,6 +27,22 @@ standing owner instruction already verified in this session.
 - Google is a URL-prefix property for `https://mathexam.space/`; its HTML-tag
   verification step is still pending publication and the owner's confirmation.
 
+## Concurrent main update
+
+The original Google head was reviewed and passed both CI workflows on base
+`388accb4dd067a621f90fd1066823412a28bfd88`. Main then advanced through the
+owner-requested Soviet-course PR #240, merged as
+`89e61f80b56f9c3344ee96fbaff7946c90b251bd`. Its only overlap with this task
+was the operational status document. A read-only virtual merge identified
+that conflict; the composed status preserves both task histories.
+
+All 86 non-overlapping files from PR #240 retain their new-main blobs. The
+new-main-to-Google delta is still exactly the homepage meta tag, this task
+specification, and the operational status document. Ordinary branch updating
+and conflict resolution are covered by the owner's standing instruction;
+no force, reset, rebase or gate weakening is used. Review and relevant CI are
+repeated for the new composition before controlled publication.
+
 ## Scope and acceptance
 
 - Add exactly one `google-site-verification` tag with the owner-supplied value
@@ -44,7 +60,7 @@ standing owner instruction already verified in this session.
 - Exact tag value and cardinality checked against the owner's original text;
   both verification tags must occur once inside `head`.
 - Whole-homepage byte preservation after removing the single inserted line.
-- `python3 tools/seo-check.py --base 388accb4dd067a621f90fd1066823412a28bfd88`
+- `python3 tools/seo-check.py --base 89e61f80b56f9c3344ee96fbaff7946c90b251bd`
 - `python3 tools/build-sitemap.py --check`
 - `git diff --check`, scoped changed-file inspection, and focused independent
   internal review of the final head/tree. No external reviewer is required.

@@ -4,3 +4,6 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
 .lesson-source{display:grid;gap:.35rem;background:#fffdf7;border-left:3px solid #b8cbbb;padding:1rem 1.2rem;margin:1rem 0 1.4rem;color:#526775;font-size:.92rem;line-height:1.5}.lesson-source a{font-weight:650}.lesson-source small{font-size:.84rem;color:#697983}
+
+#step-explanation{font-size:21px;line-height:1.55;background:#eef4ed;border-left:4px solid var(--green);padding:16px 20px;margin:16px 0;max-width:800px}
+#lesson-idea{font-size:21px;line-height:1.5;max-width:980px;margin:12px 0 20px}

@@ -1,7 +1,7 @@
 'use strict';
 
-/* Record the SAME continuous canvas used by the trainer. Each question holds
- * for 2.4 s, its explained action for 7.2 s, and the complete result for 8 s.
+/* Record the SAME continuous canvas used by the trainer. The narration text sets
+ * the reading time (120 words/minute plus pauses) for every continuous action.
  * Only the helper gently zooms; the accumulated solution never disappears.
  *
  * NODE_PATH=/path/to/node_modules node tools/soviet-math-render.cjs
@@ -29,9 +29,11 @@ const manifestPath = path.join(media, 'manifest.json');
 const course = require('../soviet-math/course.js');
 const board = require('../soviet-math/board.js');
 const sources = require('../soviet-math/sources.js');
+const narration = require('../soviet-math/narration.json');
 const settings = Object.freeze({ width: 1280, height: 800, fps: 30,
-  questionSeconds: 2.4, explanationSeconds: 7.2, endSeconds: 8,
+  timing: 'narration-120wpm-with-pauses', wordsPerMinute: 120,
   cameraSeconds: 2.4, cameraFrames: 72, crf: 24 });
+const secondsFor = (text, minimum) => Math.max(minimum, Math.ceil(((String(text).match(/[А-Яа-яЁёA-Za-z0-9]+(?:-[А-Яа-яЁёA-Za-z0-9]+)*/g)||[]).length / 2 + 1.5) * 10) / 10);
 const hash = value => crypto.createHash('sha256').update(value).digest('hex');
 const exists = filename => fs.stat(filename).then(() => true, error => {
   if (error.code === 'ENOENT') return false; throw error;
@@ -73,15 +75,19 @@ async function main() {
   const rendererHash = hash(await fs.readFile(path.join(root, 'soviet-math/board.js')));
   const inputFiles = ['soviet-math/board.js', 'soviet-math/course.js',
     'soviet-math/primary.js', 'soviet-math/advanced.js', 'soviet-math/sources.js',
+    'soviet-math/revised-primary.js', 'soviet-math/revised-advanced.js', 'soviet-math/revised-division.js', 'soviet-math/narration.json',
+    'soviet-math/extension-primary.js', 'soviet-math/extension-fractions.js', 'soviet-math/extension-applications.js',
     'trainers/oge-basics/multiplication-division/division-guided-core.js',
     'trainers/oge-basics/multiplication-division/division-lab-core.js'];
   const inputSnapshot = await Promise.all(inputFiles.map(async file => hash(await fs.readFile(path.join(root, file)))));
   const signature = topic => {
-    const plan = course.make(topic.id, 0), source = sources.forTopic(topic.id);
+    const plan = course.make(topic.id, 0), source = sources.forTopic(topic.id), speech = narration.find(item=>item.id===topic.id);
+    assert.ok(speech && speech.intro && speech.final && speech.steps.length===plan.steps.length, 'Narration does not match lesson: '+topic.id);
+    assert.ok(speech.steps.every(item=>item.question&&item.explanation),'Empty narration segment: '+topic.id);
     assert.ok(source && typeof source.label === 'string' && source.label.length, 'Missing textbook citation: ' + topic.id);
     // A renderer improvement may be used for new lessons without invalidating
     // older videos. Only their mathematical content and citation must agree.
-    return { topic, plan, source,
+    return { topic, plan, source, speech, narrationHash: hash(JSON.stringify(speech)),
       sourceHash: hash(JSON.stringify({ topic, plan, source })) };
   };
   await fs.mkdir(media, { recursive: true });
@@ -112,6 +118,7 @@ async function main() {
         assert.ok(await exists(filename), 'Manifest refers to missing file: ' + id + '; use --replace to repair explicitly');
         assert.equal(hash(await fs.readFile(filename)), old.sha256, 'Video hash changed: ' + id);
         assert.equal(item.sourceHash, old.sourceHash, 'Source changed: ' + id + '; use --replace only after review');
+        assert.equal(item.narrationHash, old.narrationHash, 'Narration changed: '+id+'; use --replace only after review');
         const meta = await probe(filename, old.renderSettings || manifest);
         assert.ok(Math.abs(meta.seconds - old.seconds) < .05, 'Video duration changed: ' + id);
         console.log('VERIFIED ' + id + ' ' + meta.seconds.toFixed(1) + ' s');
@@ -145,7 +152,7 @@ async function main() {
     return checkpoint;
   }
   async function render(item) {
-    const { topic, plan, source, sourceHash } = item;
+    const { topic, plan, source, sourceHash, speech, narrationHash } = item;
     const scratch = await fs.mkdtemp(path.join(os.tmpdir(), 'soviet-video-' + topic.id + '-'));
     const canvas = canvasLibrary.createCanvas(settings.width, settings.height);
     const sequence = [], clips = [];
@@ -160,20 +167,23 @@ async function main() {
     };
     console.log('RENDERING ' + topic.id + ' (' + plan.steps.length + ' actions)');
     try {
+      const introSeconds=secondsFor(speech.intro,8), endSeconds=secondsFor(speech.final,8);
+      await still(0,{activeStep:0,reveal:false,camera:'overview'},introSeconds);
       for (let step = 0; step < plan.steps.length; step++) {
+        const questionSeconds=secondsFor(speech.steps[step].question,3.5), explanationSeconds=secondsFor(speech.steps[step].explanation,8);
         clips.push({ step: step + 1, questionAt: Number(elapsed.toFixed(3)),
-          explanationAt: Number((elapsed + settings.questionSeconds).toFixed(3)) });
-        await still(step, { activeStep: step, reveal: false, camera: 'overview' }, settings.questionSeconds);
+          explanationAt: Number((elapsed + questionSeconds).toFixed(3)) });
+        await still(step, { activeStep: step, reveal: false, camera: 'overview' }, questionSeconds);
         // A continuous 2.4-second focus movement followed by a long still hold.
         // The question, all prior lines and the main angle retain their places.
         for (let k = 0; k < settings.cameraFrames; k++) {
           const last = k === settings.cameraFrames - 1;
           await still(step, { activeStep: step, reveal: true, camera: 'detail',
-            progress: k / (settings.cameraFrames - 1) }, settings.cameraSeconds / settings.cameraFrames +
-              (last ? settings.explanationSeconds - settings.cameraSeconds : 0));
+            progress: k / (settings.cameraFrames - 1), transition: k / (settings.cameraFrames - 1) }, settings.cameraSeconds / settings.cameraFrames +
+              (last ? explanationSeconds - settings.cameraSeconds : 0));
         }
       }
-      const final = await still(plan.steps.length, { camera: 'overview' }, settings.endSeconds);
+      const final = await still(plan.steps.length, { camera: 'overview' }, endSeconds);
       // concat needs its final file repeated to honor the final duration.
       sequence.push("file '" + final + "'");
       await fs.writeFile(path.join(scratch, 'frames.txt'), sequence.join('\n') + '\n');
@@ -193,10 +203,10 @@ async function main() {
       }
       const bytes = await fs.readFile(result);
       const entry = { id: topic.id, file: topic.id + '.mp4', seconds: meta.seconds,
-        bytes: meta.bytes, sha256: hash(bytes), sourceHash, rendererHash,
+        bytes: meta.bytes, sha256: hash(bytes), sourceHash, rendererHash, narrationHash,
         renderSettings: settings,
         source, exampleIndex: 0, steps: plan.steps.length, timeline: clips,
-        finalAt: Number((elapsed - settings.endSeconds).toFixed(3)) };
+        introSeconds, finalAt: Number((elapsed - endSeconds).toFixed(3)) };
       const destination = path.join(media, entry.file);
       // Copy exclusive before any manifest write. Replacement is always opt-in.
       await fs.copyFile(result, destination, options.replace ? 0 : require('node:fs').constants.COPYFILE_EXCL);
