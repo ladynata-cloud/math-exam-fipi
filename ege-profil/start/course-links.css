@@ -53,3 +53,8 @@ body a[href="../index.html"][style]{font-size:16px!important;line-height:1.5!imp
 body #app>div:has(>button[onclick="resetProgress()"]){font-size:16px!important;line-height:1.6}
 body table.tbl th{-webkit-hyphens:manual;hyphens:manual}
 body #teachToggle{font-size:16px;line-height:1.4;min-height:44px}
+/* In embedded inequalities, the fixed teaching switch needs its own row. */
+@media(max-width:520px){
+  body:not(.profile-course-page):has(#teachToggle) .topbar{padding-bottom:64px}
+  body:not(.profile-course-page) #teachToggle{top:66px}
+}

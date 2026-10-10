@@ -64,3 +64,15 @@ permission policy is edited; no force operation or gate bypass is authorized.
   gaps. Corrected and covered by focused browser regression.
 - Test and release evidence, exact head and PR recorded in the pull request.
 - Any failed intermediate checks and corrections will be included there.
+
+## Composed-base verification
+
+While this task was checked, parent-entry PR #234 advanced main to
+`731a6b747728a8507e3b66aa498336f4f677b8f2`. Read-only merge-tree found one
+documentation conflict in PROJECT_STATUS. Its authoritative merged PR records
+independent HIGH review, exact-head Learning CI 38045917072 and Navigation CI
+38045917101 passing. All neighboring runtime/test/document files are preserved
+from that main commit. The status resolution inserts this task's section above
+main's existing sections without deleting their evidence. Standing checked
+publication authorization persists; exact-head Profile/logarithmic CI is rerun
+on the composed result. No auth code is edited by this task.

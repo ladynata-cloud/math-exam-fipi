@@ -22,10 +22,10 @@ their previous sessions and QR grant.
 In **Мои ученики**, choose **Доступ родителю** beside the intended pupil.
 The default form suggests a ready four-digit code; the teacher may keep it or
 choose another, then issue the parent access. One parent account per pupil is
-supported. The private completion card contains the separate parent login,
-login-prefilled return link, ready code and copyable message. The parent opens
-that link, enters the code and immediately sees the parent cabinet, without
-activation or a second code-creation prompt. Existing longer passwords still
+supported. The private completion card contains the permanent personal link, ready code
+and a short copyable message. The parent opens that link and sees only **Код**
+and **Войти**, without an editable login, role choices or setup instructions.
+Submitting the code opens the parent cabinet immediately. Existing longer passwords still
 work on ordinary login. The session lasts thirty days.
 
 The ready card has an ordinary **Готово** button. Its code exists only in the
@@ -44,10 +44,10 @@ hashing, its transaction rechecks the current teacher session/credential epoch,
 child ownership and parent version. It stores only the password hash and does
 not change the pupil's credentials or work.
 
-The former invitation flow remains an explicit optional path. Its seven-day
-link lets the parent choose their own code once. Issuing a replacement
-invitation disables the old parent code and sessions until activation. Its
-private token cannot be retrieved after closing the guarded invitation card.
+The teacher's standard parent-access dialog issues ready codes only. Previously
+issued invitation links and their API remain compatible, but invitation issuance
+is no longer offered in this ordinary flow. Existing seven-day invitations still
+let their recipient choose a code once; tokens are scrubbed from the URL.
 Disabling parent access ends all of its sessions without affecting the pupil.
 Changes to the pupil's password or QR do not change parent access.
 
@@ -59,9 +59,16 @@ static dots; failures restore the usable form and explain the error.
 The parent page is `/learning/parent.html`. It uses its own session cookie, so
 visiting it does not turn a pupil's or teacher's browser session into a parent
 session. The heading always identifies the parent role and the child whose progress is
-shown. **Сменить пользователя** signs out only this parent session and opens the
-role choice; it never signs out a teacher or pupil cookie. The role choice links
-to the teacher, pupil and parent entry pages but does not grant any role.
+shown. **Выйти** signs out only the parent session and returns to the code field
+on the same permanent personal link; it never signs out a teacher or pupil.
+
+A personal link contains the non-secret parent identifier in `#login=…`, never
+the code. It remains usable after reload, logout, expiry or an explicit code
+replacement. Only the code changes on replacement. Generic entry without a
+personal link retains the old login fallback. Existing long passwords remain
+accepted without adding extra instructions to the ordinary code-only screen.
+Invalid or changed fragments cannot reuse a stale link identity or replace an
+already signed-in parent; submitted requests use the captured intended login.
 
 The parent page rechecks the session when it returns to the foreground. Its
 reads and logout carry the expected parent login; if another tab changed the
