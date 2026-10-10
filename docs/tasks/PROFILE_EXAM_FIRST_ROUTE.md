@@ -95,5 +95,14 @@ protection override, weakened tests or unrelated roadmap work.
   jsdom 26.1.0 and Node 24.19.0. The first newer-browser download returned
   invalid archives; local verification used the successfully installed
   compatible browser. CI retains its existing pinned browser versions.
+- First cloud profile run failed because the legacy browser test expected the
+  old topic catalogue at an empty hash. That check now opens explicit `#home`
+  and retains all topic assertions. The full-course gate's former guided-entry
+  expectation was also updated to independent entry, with additional exam
+  position and unassisted-attempt assertions. Product code was unchanged.
+  Navigation-only attempts use a separate synthetic learner so subsequent
+  rule reading does not invalidate the existing fresh-credit fixture; assisted
+  work and mastery assertions remain intact.
+  The new exam-first robot runs in both affected course and cabinet workflows.
 - Final regression totals, exact-head CI, merge and live-asset evidence are
   recorded in the PR. Unchecked acceptance items are not claims of completion.
