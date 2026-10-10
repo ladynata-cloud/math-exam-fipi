@@ -67,3 +67,18 @@ Record exact tests, failures and release identities here and in the PR.
   blocking issue; final tree binding and exact-head CI remain release conditions.
 - No new test file or workflow was needed. Unrelated cabinet/server checks were
   not rerun locally. No real pupil records or credentials were used or changed.
+## Concurrent-main reconciliation
+
+- Original remote head `4a297e980238d0feec0974731768745dc0ae7047` passed full
+  profile CI 38019120274. The fresh pre-merge guard then detected PR #224 at
+  `f228a08ab440dc79e098b39053921501087ea8fb`; release was paused for inspection.
+- PR #224 is the owner's separate teacher-entry correction, with its own
+  independent review and successful learning/navigation CI. Its only overlap
+  with this task is PROJECT_STATUS.md. Preserve its four other files exactly
+  and retain both status records, including verified PR #223 publication.
+- Resolve this routine documentation conflict under the standing cloud-work
+  instruction and active developer autonomy requirement. This records no new
+  owner approval and does not waive review, CI or publication verification.
+- Use an ordinary merge with both parents, no force/reset/rebase. The five
+  course runtime/test files remain identical to the originally reviewed tree.
+  Renew review binding and full profile CI for the composed remote head.

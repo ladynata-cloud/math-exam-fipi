@@ -95,6 +95,26 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Existing teacher identity survived the release; no real family learning
   records or credentials were changed by verification.
 
+## Merged: direct teacher sign-in
+
+- [Scope](tasks/DIRECT_TEACHER_ENTRY.md); base
+  `528727fa6e7fa29c578bf540d014e3ad398206e1`; branch
+  `fix/direct-teacher-entry`. HIGH internal review for authentication UI.
+- The owner requested removing the named pupil mismatch screen. Explicit
+  teacher entry will show the teacher form directly if the current cookie
+  belongs to a pupil. Existing teacher sessions still open My pupils directly.
+- Pupil UI data is cleared while unsent work remains account-scoped. Opening
+  the form does not change the cookie; only valid teacher authentication does.
+  No teacher credential or real identity is embedded in public assets.
+- Local auth, family-progress, cabinet and OGE browser gates passed. The
+  role-navigation regression also covers identity flashes, untouched cookies,
+  preserved queues and delayed authentication/data responses. Independent
+  internal review found no remaining blocking code issue.
+- Role-navigation, syntax and whitespace checks passed on the final source.
+- PR #224 merged as `f228a08ab440dc79e098b39053921501087ea8fb`; exact-head learning
+  CI 38018835138 and navigation CI 38018835075 passed. Publication and live
+  verification evidence remain tracked in PR #224.
+
 ## Published: a real explanation for right-triangle trigonometry
 
 - [Scope](tasks/PROFILE_TRIANGLE_EXPLANATION.md): replace the inadequate
@@ -127,7 +147,11 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Local checks passed: 36 geometry models, 8 independent-model tests and six
   browser journeys at 360/1280. All six definitions and two ratio checks have
   correct numerator/denominator and visible bars. Mobile/desktop images inspected.
-- Next: bind final review, pass exact-head CI, verify the published fractions.
+- Original exact-head profile CI 38019120274 passed. Concurrent PR #224
+  advanced main to `f228a08ab440dc79e098b39053921501087ea8fb`; only this status
+  document overlaps. Both records are retained; all runtime and test files
+  remain byte-identical to their respective reviewed versions.
+- Next: bind the composed tree review, renew exact-head CI, verify publication.
 
 ## Published: independent pupil entry and parent progress
 
