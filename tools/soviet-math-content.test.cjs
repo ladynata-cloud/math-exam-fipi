@@ -8,7 +8,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const C = require('../soviet-math/course.js');
-const primaryIds = new Set(require('../soviet-math/primary.js').topics.map(topic => topic.id));
+const legacyModules = [require('../soviet-math/primary.js'), require('../soviet-math/advanced.js')];
+const primaryIds = new Set(legacyModules[0].topics.map(topic => topic.id));
+const legacyTopics = legacyModules.flatMap(part => part.topics);
+const legacyMake = (id, index = 0) => legacyModules.find(part => part.topics.some(topic => topic.id === id)).make(id, index);
+const revisedModules = ['revised-primary', 'revised-division', 'revised-advanced'];
+const extensionModules = ['extension-primary', 'extension-fractions', 'extension-applications'];
+const extensionTopics = extensionModules.flatMap(name => require('../soviet-math/' + name + '.js').topics);
 const sources = require('../soviet-math/sources.js');
 const root = path.resolve(__dirname, '..');
 
@@ -91,20 +97,28 @@ function advancedAnswers(example) {
   }
 }
 
-assert.equal(C.topics.length, 30);
-assert.equal(new Set(C.topics.map(topic => topic.id)).size, 30);
-let ordinaryExamples = 0, divisionExamples = 0, divisionCycles = 0, checkedSteps = 0;
+assert.equal(legacyTopics.length, 30, 'Keep every first-batch topic in the original mathematical regression');
+assert.equal(C.revision, 2, 'Revised lessons have an explicit persistence revision');
+assert.equal(typeof C.legacyMake, 'function', 'Original attempts retain their original task generator');
+assert.equal(C.topics.length, legacyTopics.length + extensionTopics.length);
+assert.equal(new Set(C.topics.map(topic => topic.id)).size, C.topics.length);
 for (const topic of C.topics) {
   const source = sources.forTopic(topic.id);
   assert.ok(source && source.authors && source.bookTitle && source.section);
   assert.ok(Number.isInteger(source.year) && source.year < 1992);
   assert.equal(source.task, null, 'Original exercises must not invent textbook task numbers');
-  assert.ok(source.label.includes('Авторский пример'));
+  assert.match(source.label, /^Авторск(?:ий пример|ое упражнение) ·/, 'Authored exercise must be distinguished from its textbook reference');
+}
+// Keep the original oracle and its sample sizes intact. New topics have their
+// own independent exact-arithmetic oracle in soviet-math-extension.test.cjs.
+let ordinaryExamples = 0, divisionExamples = 0, divisionCycles = 0, checkedSteps = 0;
+for (const topic of legacyTopics) {
   const divisionTopic = topic.id.startsWith('divide-');
   const sampleCount = divisionTopic ? 1000 : 12;
   const prompts = new Set();
   for (let index = 0; index < sampleCount; index++) {
-    const example = C.make(topic.id, index);
+    const example = legacyMake(topic.id, index);
+    assert.deepEqual(C.legacyMake(topic.id, index), example, 'Legacy API preserves the original plan: ' + topic.id + '/' + index);
     prompts.add(JSON.stringify([example.prompt, example.visual || null]));
     assert.ok(example.steps.length >= 3);
     for (const item of example.steps) {
@@ -172,7 +186,7 @@ for (const topic of C.topics) {
 // approximate decimal, even though it represents the same/nearby numeric value.
 for (const id of ['fraction-reduce', 'fraction-add', 'fraction-multiply', 'fraction-divide']) {
   for (let index = 0; index < 12; index++) {
-    const final = C.make(id, index).steps.at(-1);
+    const final = legacyMake(id, index).steps.at(-1);
     assert.equal(final.checkKind, 'reduced-fraction');
     const [n, d = '1'] = final.answer.split('/');
     assert.equal(C.check((BigInt(n) * 2n) + '/' + (BigInt(d) * 2n), final), false, id + ': reject reducible answer');
@@ -181,20 +195,20 @@ for (const id of ['fraction-reduce', 'fraction-add', 'fraction-multiply', 'fract
     assert.equal(C.check(n + '/0', final), false);
   }
 }
-const reducedHalf = C.make('fraction-reduce', 0).steps.at(-1);
+const reducedHalf = legacyMake('fraction-reduce', 0).steps.at(-1);
 for (const wrong of ['2/4', '0,5', '0.5', '0,5000000001', '1/2/3', '1,0/2', '1/2.0', '']) {
   assert.equal(C.check(wrong, reducedHalf), false, 'Reject non-reduced/non-fraction response: ' + wrong);
 }
 const exactThird = { answer: '1/3', checkKind: 'reduced-fraction' };
 assert.equal(C.check('0.333333333', exactThird), false);
 assert.equal(C.check('1/3', exactThird), true);
-const integerResult = C.make('fraction-divide', 0).steps.at(-1);
+const integerResult = legacyMake('fraction-divide', 0).steps.at(-1);
 assert.equal(C.check('2', integerResult), true);
 assert.equal(C.check('2/1', integerResult), true);
 assert.equal(C.check('4/2', integerResult), false);
-assert.equal(C.check('1,550', C.make('decimal-add', 0).steps.at(-1)), true);
-assert.equal(C.check('1.55', C.make('decimal-add', 0).steps.at(-1)), true);
-assert.equal(C.check('1,56', C.make('decimal-add', 0).steps.at(-1)), false);
+assert.equal(C.check('1,550', legacyMake('decimal-add', 0).steps.at(-1)), true);
+assert.equal(C.check('1.55', legacyMake('decimal-add', 0).steps.at(-1)), true);
+assert.equal(C.check('1,56', legacyMake('decimal-add', 0).steps.at(-1)), false);
 
 // Check both browser and Node loading paths, including delegated division checks.
 const browser = {};
@@ -202,11 +216,14 @@ browser.window = browser;
 for (const relative of [
   'trainers/oge-basics/multiplication-division/division-lab-core.js',
   'trainers/oge-basics/multiplication-division/division-guided-core.js',
-  'soviet-math/primary.js', 'soviet-math/advanced.js', 'soviet-math/course.js'
+  'soviet-math/primary.js', 'soviet-math/advanced.js',
+  ...revisedModules.map(name => 'soviet-math/' + name + '.js'),
+  ...extensionModules.map(name => 'soviet-math/' + name + '.js'), 'soviet-math/course.js', 'soviet-math/progress.js'
 ]) vm.runInNewContext(fs.readFileSync(path.join(root, relative), 'utf8'), browser, { filename: relative });
 assert.equal(browser.SovietMath.topics.length, C.topics.length);
-assert.equal(browser.SovietMath.check('2/4', browser.SovietMath.make('fraction-reduce', 0).steps.at(-1)), false);
-const divisionStep = browser.SovietMath.make('divide-decimal', 0).steps.find(item => item.raw.kind === 'shift-factor');
+assert.equal(browser.SovietProgress.defaults(false).version, 2);
+assert.equal(browser.SovietMath.check('2/4', browser.SovietMath.legacyMake('fraction-reduce', 0).steps.at(-1)), false);
+const divisionStep = browser.SovietMath.legacyMake('divide-decimal', 0).steps.find(item => item.raw.kind === 'shift-factor');
 assert.equal(browser.SovietMath.check('10', divisionStep), true);
 assert.equal(browser.SovietMath.check('100', divisionStep), false);
 

@@ -6,7 +6,22 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: owner-provided search verification
+## In progress: Soviet mathematics pedagogical revision and second batch
+
+- [Scope](tasks/SOVIET_MATH_BATCH_TWO.md); base
+  `b0b2fe8e4d2cbf15426a9a314674bf7a2edce4f9`; branch
+  `feat/soviet-math-batch-two`; HIGH independent review of local progress migration.
+- Add 30 trainers and 30 silent videos, taking the course to 60 topics.
+  Redo the first thirty lessons and recordings after the owner rejected their
+  pedagogy; preserve topic IDs and URLs, prior results and legacy attempts.
+- New mental arithmetic, further fractions, decimals and quantities; sources,
+  exact answers, cumulative board, downloadable narration scripts.
+- All 60 lessons and silent MP4s are recorded: 54 minutes 30 seconds in total.
+  Local arithmetic, content, narration, renderer and browser checks passed.
+- Next: preserve PR #239 verification, run exact-head CI including actual
+  Chrome playback of all 60 videos, then verify publication. Publication pending.
+
+## Merged: owner-provided search verification
 
 - [Scope](tasks/SEO_SEARCH_VERIFICATION_20261011.md); base
   `a51f188b74ccd781622e3e94b3a419f895ca9c73`; branch
@@ -18,8 +33,11 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Preserve the complete visible homepage and all learner/account behavior.
   Release evidence records the final service and publication state.
 
-## Integrated: public SEO and topic discovery
+- PR #239 merged as `388accb4dd067a621f90fd1066823412a28bfd88`; the owner-provided homepage tag is preserved. Service-side verification is a separate user action.
 
+## Merged: public SEO and topic discovery
+
+- PR #238 merged as `a51f188b74ccd781622e3e94b3a419f895ca9c73`; retain its public metadata, topic guides and sitemap gates.
 - [Scope](tasks/SEO_DISCOVERY_20261011.md); base
   `b0b2fe8e4d2cbf15426a9a314674bf7a2edce4f9`; branch
   `feat/seo-discovery-20261011`; MEDIUM focused independent internal review.
@@ -31,22 +49,15 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Search-account ownership and private statistics have not been verified.
 - Checked publication follows the standing owner instruction. PR/release
   evidence records completion; no unrelated active branch is updated.
-- PR #238 merged as `a51f188b74ccd781622e3e94b3a419f895ca9c73` after all eight
-  relevant workflows passed. Its PR records Pages and live-asset verification.
 
-## Previous task: Mathematics from Soviet textbooks
+## Published: Mathematics from Soviet textbooks first batch
 
-- [Scope](tasks/SOVIET_MATH_COURSE.md); base
-  `28ca6887702748243cc99f50edeb470a987f802d`; branch
-  `feat/soviet-math-course`; MEDIUM focused independent review.
-- 30 topic trainers and 30 silent MP4s on a continuous solution board.
-  Textbook authors, editions and checked section pages are explicit;
-  original exercises are not attributed to invented textbook task numbers.
-- Stable topic IDs and append-only recordings allow later batches without
-  replacing existing URLs. Practice results remain explicitly browser-local.
-- Owner instructed cloud execution while offline. Standing scoped publication
-  authorization remains in effect; no account or hosting configuration changes.
-- Next: finish media checks, pass the exact-head CI, then verify the live route.
+- PR #237 merged as `b0b2fe8e4d2cbf15426a9a314674bf7a2edce4f9`.
+- 30 trainers and 30 silent MP4s; all four exact-head CI workflows passed.
+- Pages run 38078578356 passed; live verification matched 42 files including
+  all 30 MP4s, and checked practice, source attribution and actual playback.
+- Stable IDs and append-only media preserve earlier material. Browser progress
+  remains local and is not represented as cloud account synchronization.
 
 ## Published: OGE arithmetic support after a struggling-learner simulation
 

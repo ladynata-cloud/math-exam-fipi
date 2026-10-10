@@ -34,6 +34,7 @@ jobs:
       - name: Exact arithmetic and unchanged division core
         run: |
           node tools/soviet-math-content.test.cjs
+          node tools/soviet-math-extension.test.cjs
           node tools/division-guided.test.cjs
           node tools/soviet-math-render.cjs --check
           git diff --check

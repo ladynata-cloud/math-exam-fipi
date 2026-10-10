@@ -1,6 +1,6 @@
 /* Topic-level references, not attributions of the course's original exercises.
  * Page numbers refer to the printed edition (not the PDF page index).
- * Verified 2026-10-11 against the 1959 scan, and the 1961/1966 contents
+ * Verified against the 1959 scan, and the 1961/1966 contents
  * and digitized text at the URLs below. A page marks a section start unless
  * several pages are explicitly listed. No textbook exercise numbers are used.
  */
@@ -11,7 +11,7 @@
 }(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  var exerciseNote = 'Авторские упражнения по теме. Указаны страницы раздела учебника.';
+  var exerciseNote = 'Авторское упражнение по теме указанного раздела. Формулировка и числа подготовлены для тренажёра.';
   var books = {
     'pchelko-1-1959': {
       title: 'Арифметика. Учебник для первого класса начальной школы',
@@ -58,7 +58,7 @@
     'subtract-ten': reference(p1, 'Первый десяток. Сложение и вычитание', '30'),
     'add-twenty': reference(p1, 'Сложение с переходом через десяток', '79'),
     'subtract-twenty': reference(p1, 'Вычитание с переходом через десяток', '84'),
-    'place-value': reference(p2, 'Тысяча. Устная нумерация; письменная нумерация', '130, 132'),
+    'place-value': reference(p2, 'Первая сотня. Нумерация в пределах 100; Тысяча. Устная и письменная нумерация', '10, 130, 132'),
     'stories': reference(p1, 'Задачи в 2 действия; в тренажёре — продолжение до 3 действий', '77'),
     'groups': reference(p1, 'Умножение', '97'),
     'sharing': reference(p1, 'Деление', '113'),
@@ -84,6 +84,41 @@
     'percent-ratio': reference(a, '§ 147. Процентное отношение двух чисел; §§ 152–154. Пропорции', '359, 376, 378, 381')
   };
 
+  // Batch two: references for the thirty additional topics.
+  // These remain topic references for original exercises, never book task IDs.
+  Object.assign(topics, {
+    'number-neighbors': reference(a, '§ 1. Счёт как основа арифметики. Натуральный ряд чисел', '5'),
+    'zero-actions': reference(a, '§ 6. Сложение и его законы; § 10. Вычитание; § 15. Умножение; § 21. Деление нуля и деление на нуль', '20, 28, 35, 47'),
+    'compare-three-digit': reference(a, '§ 1. Натуральный ряд чисел; § 2. Нумерация многозначных чисел', '5, 6'),
+    'add-round-tens': reference(p1, 'Сложение круглых десятков', '130'),
+    'subtract-round-tens': reference(p1, 'Вычитание круглых десятков', '131'),
+    'add-two-digit-mental': reference(p2, 'Сложение и вычитание в пределах 100 без перехода и с переходом через десяток', '20, 35'),
+    'subtract-two-digit-mental': reference(p2, 'Сложение и вычитание в пределах 100 без перехода и с переходом через десяток', '20, 35'),
+    'multiply-by-ten-hundred': reference(a, '§ 17. Умножение многозначных чисел', '40'),
+    'divide-by-ten-hundred': reference(a, '§ 96. Уменьшение натурального числа в 10, 100, 1000 и т. д. раз', '223'),
+    'unknown-addend': reference(p2, 'Задачи на нахождение неизвестного слагаемого', null),
+    'fraction-compare-same-den': reference(a, '§ 57. Сравнение дробей по величине', '116'),
+    'fraction-compare-same-num': reference(a, '§ 57. Сравнение дробей по величине', '116, 117'),
+    'fraction-equivalent': reference(a, '§ 60. Основное свойство дроби', '120'),
+    'fraction-to-mixed': reference(a, '§ 56. Выражение неправильной дроби натуральным или смешанным числом', '114'),
+    'mixed-to-fraction': reference(a, '§ 55. Выражение натурального или смешанного числа неправильной дробью', '113'),
+    'fraction-subtract': reference(a, '§ 65. Вычитание дробей', '132'),
+    'mixed-add-same-den': reference(a, '§ 63. Сложение дробей', '128'),
+    'mixed-subtract-borrow': reference(a, '§ 65. Вычитание дробей', '133'),
+    'fraction-of-number': reference(a, '§ 68. Нахождение дроби числа', '142'),
+    'number-from-fraction': reference(a, '§ 74. Нахождение числа по его дроби', '163'),
+    'decimal-place-value': reference(a, '§ 92. Значение цифр после запятой в десятичной дроби', '218'),
+    'decimal-compare': reference(a, '§ 94. Сравнение десятичных дробей по величине', '221'),
+    'decimal-subtract': reference(a, '§ 100. Вычитание десятичных дробей', '231'),
+    'decimal-multiply': reference(a, '§ 101. Умножение десятичных дробей', '234'),
+    'decimal-multiply-ten': reference(a, '§ 95. Изменение десятичной дроби при переносе запятой', '222, 223'),
+    'decimal-divide-ten': reference(a, '§ 95. Изменение десятичной дроби при переносе запятой', '222, 223'),
+    'measure-length': reference(a, '§ 3. Метрическая система мер. Меры длины', '10'),
+    'measure-time': reference(a, 'Таблицы наиболее употребительных единиц измерения. Меры времени', '421'),
+    'motion-distance': reference(a, '§ 69. Умножение натурального числа на дробь: пример нахождения пути по скорости и времени', '147'),
+    'motion-speed': reference(a, '§ 119. Отношение двух величин: средняя скорость', '284')
+  });
+
   function forTopic(id) {
     if (!Object.prototype.hasOwnProperty.call(topics, id)) return null;
     var topic = topics[id], book = books[topic.bookId];
@@ -95,7 +130,7 @@
       section: topic.section,
       pages: topic.pages,
       url: book.url,
-      label: 'Авторский пример · Арифметика · ' + book.shortTitle + (topic.pages ? ' · с. ' + topic.pages : ''),
+      label: 'Авторское упражнение · тема по учебнику · ' + book.shortTitle + (topic.pages ? ' · с. ' + topic.pages : ''),
       exerciseNote: exerciseNote,
       task: null
     };
