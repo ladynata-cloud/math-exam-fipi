@@ -6,7 +6,7 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: simple password recovery and ready pupil access
+## Merged: simple password recovery and ready pupil access
 
 - [Scope](tasks/SIMPLE_CABINET_ACCESS.md); base
   `f9a9a3607312dab4bbfd6e85d2e28d93822d3e9c`; branch
@@ -26,6 +26,9 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Concurrent PR #226 advanced main to
   `90ca4df40051551c553a70dff5807392f18be343`. Composition changes only this
   shared status document; both runtime/test sets retain their reviewed bytes.
+- PR #227 merged as `355035cf04205e8d1c181bca0180e5630e080720`; exact-head
+  learning CI 38021639765 and navigation CI 38021639773 passed. Publication
+  and live form verification remain tracked in PR #227.
 - QA uses synthetic accounts only. The owner enters her real new password
   privately after publication; no password is embedded in source or chat.
 
@@ -182,7 +185,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   38019751638 and Pages 38020048618 passed. Three public assets matched;
   live UI confirmed stacked fractions, visible bars and preserved draft.
 
-## Merged: cross multiplication before the unknown-factor rule
+## Published: cross multiplication before the unknown-factor rule
 
 - [Scope](tasks/PROFILE_TRIG_PROPORTIONS.md); base
   `f9a9a3607312dab4bbfd6e85d2e28d93822d3e9c`; branch
@@ -194,10 +197,27 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   the familiar equality-of-products mnemonic. Geometry 36/36, independent
   models 8/8 and six browser journeys passed; all six screenshots inspected.
   Independent focused MEDIUM review found no blockers.
-- PR #226 merged as `90ca4df40051551c553a70dff5807392f18be343`. Exact-head
-  profile CI 38021117301 passed; publication and live verification are tracked
-  in PR #226.
+- PR #226 published as `90ca4df40051551c553a70dff5807392f18be343`, parent
+  `f9a9a3607312dab4bbfd6e85d2e28d93822d3e9c`; reviewed tree
+  `df1d31b1b9e2a56d31f0a7a1ebbabffb735c586e`. Exact-head profile CI
+  38021117301 and Pages 38021464243 passed; three live assets matched.
+  Live UI verified the red/grey cross, mnemonic, unknown-left equation,
+  elementary factor rule and preserved draft.
 
+## In progress: precise adjacent and opposite side terminology
+
+- [Scope](tasks/PROFILE_TRIG_TERMS.md); base
+  `90ca4df40051551c553a70dff5807392f18be343`; branch
+  `fix/profile-trig-terms`. SMALL copy correction in the existing walkthroughs
+  and adjacent prerequisite triangle lesson.
+- Use the standard side names relative to angle α. Arithmetic, task data,
+  drawings, cross multiplication and saved work are unchanged.
+- Existing readiness mathematics 37/37 and six triangle browser journeys at
+  360/1280 passed. Syntax and whitespace checks passed; no test files changed.
+- Concurrent PR #227 advanced main to `355035cf04205e8d1c181bca0180e5630e080720`.
+  Only this status document overlaps; all runtime files from both tasks retain
+  their reviewed bytes.
+- Next: composed-tree review, exact-head CI and live text verification.
 
 ## Published: independent pupil entry and parent progress
 
