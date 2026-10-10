@@ -9,9 +9,9 @@ function consume(){
  const params=new URLSearchParams(location.hash.slice(1)),raw=params.get('token');
  const supplied=location.hash.length>1;
  history.replaceState(null,'',location.pathname+location.search);
- clear();
+ clear();form.hidden=false;
  if(supplied&&params.size===1&&typeof raw==='string'&&/^[A-Za-z0-9_-]{43}$/.test(raw)){
-  recoveryToken=raw;$('recovery-help').hidden=true;$('recovery-entry').hidden=false;$('recovery-card').removeAttribute('aria-labelledby');$('recovery-link-error').hidden=true;
+  recoveryToken=raw;$('recovery-entry').querySelector('h2').textContent='Задать код из 4 цифр';$('recovery-entry').querySelector('p').textContent='Введите новый код два раза. После сохранения сразу откроются Ваши ученики. Повторно задавать код не нужно.';$('recovery-help').hidden=true;$('recovery-entry').hidden=false;$('recovery-card').removeAttribute('aria-labelledby');$('recovery-link-error').hidden=true;
  }else showHelp(supplied?'Ссылка восстановления неполная. Откройте выданную ссылку ещё раз.':'');
 }
 consume();
@@ -20,26 +20,26 @@ form.addEventListener('submit',async event=>{
  const password=form.elements.password.value,confirmation=form.elements.confirm.value;
  $('recovery-error').textContent='';$('recovery-status').textContent='';
  if(!recoveryToken){showHelp('Откройте ссылку восстановления ещё раз.');return;}
- if(password!==confirmation){$('recovery-error').textContent='Пароли не совпадают.';return;}
- if(password.length<12||password.length>128){$('recovery-error').textContent='Пароль должен содержать от 12 до 128 символов.';return;}
+ if(password!==confirmation){$('recovery-error').textContent='Коды не совпадают.';return;}
+ if(!/^[0-9]{4}$/.test(password)){$('recovery-error').textContent='Код входа — ровно 4 цифры.';return;}
  const run=++revision,token=recoveryToken,button=form.querySelector('[type=submit]');
- busy=true;button.disabled=true;form.reset();$('recovery-status').textContent='Сохраняем пароль…';
+ busy=true;button.disabled=true;form.reset();$('recovery-status').textContent='Сохраняем код…';
  controller=new AbortController();const timer=setTimeout(()=>controller?.abort(),15000);
  try{
   const response=await fetch('/api/learning/teacher/password-recovery',{method:'POST',credentials:'same-origin',cache:'no-store',referrerPolicy:'no-referrer',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,password}),signal:controller.signal});
   let data;try{data=await response.json();}catch(_){throw Error('RESPONSE_UNKNOWN');}
   if(run!==revision)return;
   if(!response.ok){
-   if(response.status===401){$('recovery-error').textContent='Ссылка истекла, уже использована или заменена. Если Вы уже отправляли новый пароль, попробуйте войти с ним. Иначе нужна новая ссылка.';}
+   if(response.status===401){$('recovery-error').textContent='Ссылка истекла, уже использована или заменена. Если Вы уже сохраняли код, попробуйте войти с ним. Заново задавать код не нужно. Иначе нужна новая ссылка.';}
    else if(response.status===429)$('recovery-error').textContent='Слишком много попыток. Подождите немного и попробуйте снова.';
-   else if(data.error==='LEARNING_PASSWORD_INVALID')$('recovery-error').textContent='Пароль должен содержать от 12 до 128 символов.';
+   else if(data.error==='LEARNING_PASSWORD_INVALID')$('recovery-error').textContent='Код входа — ровно 4 цифры.';
    else throw Error('RESPONSE_UNKNOWN');
    return;
   }
   if(data.account?.role!=='teacher')throw Error('RESPONSE_UNKNOWN');
-  clear();$('recovery-status').textContent='Пароль сохранён. Открываем Ваш кабинет…';
+  clear();form.hidden=true;$('recovery-entry').querySelector('h2').textContent='Код входа сохранён';$('recovery-entry').querySelector('p').textContent='Открываем Ваш кабинет. Повторно вводить или менять код не нужно.';
   location.replace(new URL('./?role=teacher#students',location.href).href);
- }catch(_){if(run===revision)$('recovery-error').textContent='Не удалось получить подтверждение. Попробуйте войти с новым паролем или повторите отправку, когда появится связь.';}
+ }catch(_){if(run===revision)$('recovery-error').textContent='Не удалось получить подтверждение. Попробуйте войти с сохранённым кодом или повторите отправку того же кода, когда появится связь.';}
  finally{clearTimeout(timer);if(run===revision){busy=false;controller=null;button.disabled=false;if($('recovery-error').textContent)$('recovery-status').textContent='';}}
 });
 window.addEventListener('hashchange',()=>{if(busy){history.replaceState(null,'',location.pathname+location.search);return;}consume();});

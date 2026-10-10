@@ -17,7 +17,10 @@ function requireValue(condition, code = 'LEARNING_INVALID', status = 400) {
   if (!condition) throw new LearningError(code, status);
 }
 function passwordValid(value, role = 'teacher') {
-  return typeof value === 'string' && value.length >= (role === 'student' ? 8 : 12) && value.length <= 128;
+  // Keep codes as exact strings, including leading zeroes. Older clients may
+  // still issue their existing role-specific passwords during the transition.
+  return typeof value === 'string' && value.length <= 128
+    && ((value.length === 4 && /^[0-9]{4}$/.test(value)) || value.length >= (role === 'student' ? 8 : 12));
 }
 async function serializedHash(operation) {
   requireValue(hashQueueSize < 8, 'LEARNING_BUSY', 429);
@@ -35,8 +38,8 @@ async function hashPassword(password, role = 'teacher') {
   });
 }
 async function verifyPassword(password, encoded) {
-  // Verification accepts the supported credential range. Creation policy is
-  // selected only by trusted server-side account roles, never by login input.
+  // Accept four-digit codes and all previously supported passwords. Creation
+  // policy is selected by trusted server-side account roles, never login input.
   if (!passwordValid(password, 'student')) return false;
   const valid = /^scrypt1:([a-f0-9]{32}):([a-f0-9]{64})$/.exec(encoded || '');
   // Unknown accounts take the same expensive path as a wrong password.

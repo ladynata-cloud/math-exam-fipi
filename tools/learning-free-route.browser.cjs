@@ -19,9 +19,9 @@ let chromium;
 try { ({ chromium } = require('playwright')); } catch (_) {
   ({ chromium } = require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright')));
 }
-const PASSWORD = 'Synthetic-only-free-route-2026';
+const PASSWORD = '0753';
 const PUPIL_LOGIN = 'fixture_free_pupil';
-const PUPIL_PASSWORD = 'Synthetic-only-pupil-2026';
+const PUPIL_PASSWORD = '0381';
 const uuid = () => crypto.randomUUID();
 const serve = async app => { const server = app.listen(0, '127.0.0.1'); await once(server, 'listening'); return server; };
 const originOf = server => 'http://127.0.0.1:' + server.address().port;

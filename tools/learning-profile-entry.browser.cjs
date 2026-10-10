@@ -19,7 +19,7 @@ const contracts = require('../board-server/learning-contracts');
 let chromium;
 try { ({ chromium } = require('playwright')); }
 catch (_) { ({ chromium } = require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright'))); }
-const PASSWORD = 'Synthetic-profile-entry-2026';
+const PASSWORD = '0567';
 const COURSE = 'https://mathexam.space/ege-profil/start/index.html';
 const FOCUS = 'Если встретится затруднение, повтори нужную тему. <b>Это текст</b>';
 const EXAMS = require('../ege-profil/start/calm-data.js').exams;

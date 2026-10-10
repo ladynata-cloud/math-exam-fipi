@@ -6,7 +6,20 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Merged: simple password recovery and ready pupil access
+## In progress: four-digit codes and completed setup
+
+- [Scope](tasks/FOUR_DIGIT_CABINET_CODES.md); base
+  `bdf2519d10b03e1c2d77a379a78a21ce2e196f99`; branch
+  `fix/four-digit-cabinet-codes`. HIGH independent internal review.
+- Owner requests four digits for teacher, pupil and parent, and no repeated
+  change-password prompt after a successful save. This explicitly supersedes
+  previous minimum lengths while keeping existing long login credentials valid.
+- Preserve role/account/session boundaries and attempt limits. Full backend
+  checks pass 269/269, including leading-zero PINs, older passwords and all
+  existing account/recovery boundaries. Browser/release checks are recorded
+  in the task PR; no real password is changed by QA.
+
+## Published: simple password recovery and ready pupil access
 
 - [Scope](tasks/SIMPLE_CABINET_ACCESS.md); base
   `f9a9a3607312dab4bbfd6e85d2e28d93822d3e9c`; branch
@@ -27,8 +40,10 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   `90ca4df40051551c553a70dff5807392f18be343`. Composition changes only this
   shared status document; both runtime/test sets retain their reviewed bytes.
 - PR #227 merged as `355035cf04205e8d1c181bca0180e5630e080720`; exact-head
-  learning CI 38021639765 and navigation CI 38021639773 passed. Publication
-  and live form verification remain tracked in PR #227.
+  learning CI 38021639765 and navigation CI 38021639773 passed. Pages deployment
+  38022261394 passed; all ten affected public/cabinet assets matched the reviewed
+  bytes at 04:30:58 UTC. Amvera health and storage were ready, and the existing
+  teacher session opened the published form. Evidence is tracked in PR #227.
 - QA uses synthetic accounts only. The owner enters her real new password
   privately after publication; no password is embedded in source or chat.
 

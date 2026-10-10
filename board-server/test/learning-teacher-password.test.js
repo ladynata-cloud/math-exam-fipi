@@ -106,7 +106,7 @@ test('teacher password change requires teacher, same origin, CSRF, JSON and an e
   assert.deepEqual(f.teacherRows(), before);
 });
 
-test('teacher password change retains the 12–128 character policy', async t => {
+test('teacher password change retains the legacy 12–128 character policy', async t => {
   const f = await fixture(t), before = f.teacherRows();
   for (const password of ['student8', 'x'.repeat(11), 'x'.repeat(129), null, 123456789012]) {
     const denied = await f.request(PASSWORD_ROUTE, f.teacher, { password });

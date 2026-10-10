@@ -17,7 +17,7 @@ try { ({ chromium } = require('playwright')); } catch (_) {
   ({ chromium } = require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright')));
 }
 const LOGIN = 'fixture_auth_teacher';
-const PASSWORD = 'SyntheticAuthPassword2026';
+const PASSWORD = '0481';
 const WRONG_TOKEN = 'SyntheticInvalidInvitation2026abcdefgh';
 
 async function privateState(page, tokens) {
@@ -120,7 +120,7 @@ async function accessCardGuards(page, login, password) {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'The access card fits a 390px phone');
 }
 async function pupilCopyChecks(page, context, origin, login, password) {
-  const expected = 'Твой кабинет MathExam:\n' + origin + '/learning/?role=student#login=' + login + '\nЛогин: ' + login + '\nПароль: ' + password + '\n\nОткрой ссылку, введи пароль и нажми «Войти». Затем открой задание или свой маршрут.';
+  const expected = 'Твой кабинет MathExam:\n' + origin + '/learning/?role=student#login=' + login + '\nЛогин: ' + login + '\nКод входа: ' + password + '\n\nОткрой ссылку, введи код и нажми «Войти». Затем открой задание или свой маршрут. Заново задавать код не нужно.';
   await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin });
   await page.locator('#copy-access').click();
   assert.equal(await page.evaluate(() => navigator.clipboard.readText()), expected, 'The green button copies the exact URL, login and password');
@@ -194,7 +194,7 @@ async function pupilCopyChecks(page, context, origin, login, password) {
     assert.equal(await page.evaluate(() => window.authFixtureDocument), documentId, 'Opening the invite keeps the same document');
     await setPassword(page, PASSWORD);
     assert.equal((await submit(page, 'activate')).status(), 401);
-    const activationError = await waitForError(page, 'Менять пароль из-за этой ошибки не нужно');
+    const activationError = await waitForError(page, 'Менять код из-за этой ошибки не нужно');
     assert.match(activationError, /Приглашение недействительно/);
     assert.match(activationError, /перейдите ко входу/);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Long invitation advice fits a phone');
@@ -203,20 +203,29 @@ async function pupilCopyChecks(page, context, origin, login, password) {
     // Matching and password format are independent of invitation validity.
     await enterInvite(page, invitation.invitationToken);
     const beforeValidation = mutations.length;
-    await setPassword(page, PASSWORD, PASSWORD + 'Different');
+    await setPassword(page, PASSWORD, '0392');
     await page.locator('#auth-form [type=submit]').click();
-    assert.equal(await waitForError(page, 'Пароли не совпадают'), 'Пароли не совпадают.');
+    assert.equal(await waitForError(page, 'Коды не совпадают'), 'Коды не совпадают.');
     assert.equal(mutations.length, beforeValidation, 'Mismatched passwords never reach the server');
-    await setPassword(page, 'short12');
+    for (const invalid of ['048', '04a1']) {
+      await setPassword(page, invalid);
+      await page.locator('#auth-form [type=submit]').click();
+      assert.equal(await page.locator('#auth-form [name=password]').evaluate(input => input.validity.valid), false);
+      assert.equal(mutations.length, beforeValidation, 'Only four ASCII digits can be submitted as a new code');
+    }
+    for (const input of await page.locator('#auth-form [name=password],#auth-form [name=confirm]').all()) {
+      assert.equal(await input.getAttribute('minlength'), '4');
+      assert.equal(await input.getAttribute('maxlength'), '4');
+      assert.equal(await input.getAttribute('pattern'), '[0-9]{4}');
+      assert.equal(await input.getAttribute('inputmode'), 'numeric');
+    }
+    await page.locator('#auth-form').evaluate(form => { form.noValidate = true; });
     await page.locator('#auth-form [type=submit]').click();
-    assert.equal(await page.locator('#auth-form [name=password]').evaluate(input => input.validity.tooShort), true);
-    assert.equal(mutations.length, beforeValidation, 'The native length constraint blocks fewer than eight characters');
-    assert.match(await page.locator('#auth-form').innerText(), /Для ученика — от 8 символов, для преподавателя — от 12/);
-    await setPassword(page, '03648275');
-    assert.equal((await submit(page, 'activate')).status(), 400, 'The server keeps the teacher minimum at twelve characters');
-    assert.match(await waitForError(page, 'от 12 до 128'), /Пароль преподавателя/);
+    assert.match(await waitForError(page, 'ровно 4 цифры'), /Код входа/);
+    assert.equal(mutations.length, beforeValidation, 'The local guard also rejects invalid codes when native validation is bypassed');
+    await page.locator('#auth-form').evaluate(form => { form.noValidate = false; });
     assert.equal(store.invitation(invitation.invitationToken).account_id, invitation.account.id,
-      'A short teacher password does not consume the invitation');
+      'Invalid codes leave the invitation unused');
 
     // Leaving activation discards the in-memory invitation, including on a later hashchange.
     await page.getByRole('button', { name: 'Перейти ко входу', exact: true }).click();
@@ -229,7 +238,7 @@ async function pupilCopyChecks(page, context, origin, login, password) {
     const loginError = await waitForError(page, 'Проверьте логин и пароль');
     assert.doesNotMatch(loginError, /приглашен|ссылк|уже использован/i);
     assert.equal(mutations.at(-1), '/api/learning/login', 'Ordinary login cannot accidentally reuse the invite');
-    await page.getByRole('button', { name: 'Не помню пароль', exact: true }).click();
+    await page.getByRole('button', { name: 'Не помню код входа', exact: true }).click();
     await page.locator('#auth-form [name=login]').fill(LOGIN);
     await page.locator('#auth-form [name=code]').fill(WRONG_TOKEN);
     await setPassword(page, PASSWORD);
@@ -485,37 +494,33 @@ async function pupilCopyChecks(page, context, origin, login, password) {
     for (const code of [...initialCodes, ...newCodes, ...lostCodes, ...retryCodes]) {
       assert.equal(requestBodies.some(body => body.includes(code)), false, 'Backup codes never leak into trainer or other outgoing request bodies');
     }
-    // A teacher can issue a pupil an eight-digit password; the exact string survives creation and login.
+    // A teacher can issue a pupil an four-digit password; the exact string survives creation and login.
     const pupilPasswords = [], pupilCredentialRequestStart = credentialRequests.length;
-    for (const [index, chosenPassword] of [null, '03648275'].entries()) {
+    for (const [index, chosenPassword] of [null, '0364'].entries()) {
       await page.locator('[data-nav=students]').click();
       await page.locator('#add-student').click();
       assert.equal(await page.locator('#student-form [name=access],#student-form [name=confirm]').count(), 0, 'Creation directly issues a ready password without a mode or activation step');
       const input = page.locator('#student-form [name=password]');
-      assert.equal(await input.getAttribute('minlength'), '8');
-      assert.match(await input.inputValue(), /^\d{8}$/, 'The suggested pupil password is exactly eight digits');
+      assert.equal(await input.getAttribute('minlength'), '4');
+      assert.match(await input.inputValue(), /^\d{4}$/, 'The suggested pupil password is exactly four digits');
       await page.locator('#generate-password').click();
       const generatedPassword = await input.inputValue();
-      assert.match(generatedPassword, /^\d{8}$/, 'Regeneration also returns eight digits');
+      assert.match(generatedPassword, /^\d{4}$/, 'Regeneration also returns four digits');
       const password = chosenPassword || generatedPassword, login = 'fixture_short_pupil_' + index;
       await page.locator('#student-form [name=name]').fill('Ученик короткого пароля ' + index);
       await page.locator('#student-form [name=login]').fill(login);
       if (index === 0) {
         const beforeShortStudent = mutations.length;
-        await input.fill('0427583');
+        await input.fill('042');
         await page.locator('#student-form [type=submit]').click();
-        assert.equal(await input.evaluate(node => node.validity.tooShort), true);
-        assert.equal(mutations.length, beforeShortStudent, 'The student form blocks a seven-character password');
-        // Bypass only the local browser constraint to verify the real server error and UI message agree.
-        await input.evaluate(node => { node.minLength = 1; });
-        const rejected = page.waitForResponse(response => response.url().endsWith('/api/learning/teacher/students')
-          && response.request().method() === 'POST');
+        assert.equal(await input.evaluate(node => node.validity.valid), false);
+        assert.equal(mutations.length, beforeShortStudent, 'The student form blocks a three-digit code');
+        await page.locator('#student-form').evaluate(form => { form.noValidate = true; });
         await page.locator('#student-form [type=submit]').click();
-        assert.equal((await rejected).status(), 400);
-        await page.waitForFunction(() => document.querySelector('#student-form .form-error')?.textContent.includes('от 8 до 128'));
-        assert.match(await page.locator('#student-form .form-error').innerText(), /Пароль ученика/);
-        assert.equal(!!store.accountByLogin(login), false, 'A rejected password does not leave a partial pupil account');
-        await input.evaluate(node => { node.minLength = 8; });
+        await page.waitForFunction(() => document.querySelector('#student-form .form-error')?.textContent.includes('ровно 4 цифры'));
+        assert.equal(mutations.length, beforeShortStudent, 'The local code guard also works without native validation');
+        assert.equal(!!store.accountByLogin(login), false, 'Invalid input leaves no partial pupil account');
+        await page.locator('#student-form').evaluate(form => { form.noValidate = false; });
       }
       await input.fill(password);
       const created = page.waitForResponse(response => response.url().endsWith('/api/learning/teacher/students')
@@ -557,8 +562,8 @@ async function pupilCopyChecks(page, context, origin, login, password) {
     await page.locator('[data-nav=students]').click();
     await page.locator('[data-reset-login="' + studentRecord.id + '"]').click();
     await page.locator('#student-password-form').waitFor();
-    assert.match(await page.locator('#student-password-form [name=password]').inputValue(), /^\d{8}$/);
-    const resetPassword = '01739264', lostPassword = '02846395', finalPassword = '03957416';
+    assert.match(await page.locator('#student-password-form [name=password]').inputValue(), /^\d{4}$/);
+    const resetPassword = '0173', lostPassword = '0284', finalPassword = '0395';
     const resetURL = '**/api/learning/teacher/students/' + studentRecord.id + '/password';
     let releasePupilReset, markPupilResetCommitted;
     const pupilResetCommitted = new Promise(resolve => { markPupilResetCommitted = resolve; });
@@ -669,7 +674,7 @@ async function pupilCopyChecks(page, context, origin, login, password) {
       await page.getByRole('heading', { name: 'Войти в кабинет', exact: true }).waitFor();
       await page.locator('#auth-form [name=login]').fill(pupilCredentials.login);
       await page.locator('#auth-form [name=password]').fill(pupilCredentials.password);
-      assert.equal((await submit(page, 'login')).status(), 200, 'The issued eight-digit password can log in');
+      assert.equal((await submit(page, 'login')).status(), 200, 'The issued four-digit password can log in');
       await page.getByRole('heading', { name: 'Мой маршрут', exact: true }).waitFor();
       assert.equal(await page.evaluate(() => LearningApp.account().login), pupilCredentials.login);
       assert.equal(await page.evaluate(() => LearningApp.account().role), 'student');
@@ -682,10 +687,10 @@ async function pupilCopyChecks(page, context, origin, login, password) {
     }
 
     // Student invitation activation preserves a leading zero and the confirmation follows the same minimum.
-    const invitedPassword = '02573846';
+    const invitedPassword = '0257';
     await enterInvite(page, pupil.invitationToken);
-    assert.equal(await page.locator('#auth-form [name=password]').getAttribute('minlength'), '8');
-    assert.equal(await page.locator('#auth-form [name=confirm]').getAttribute('minlength'), '8');
+    assert.equal(await page.locator('#auth-form [name=password]').getAttribute('minlength'), '4');
+    assert.equal(await page.locator('#auth-form [name=confirm]').getAttribute('minlength'), '4');
     await setPassword(page, invitedPassword);
     assert.equal((await submit(page, 'activate')).status(), 200);
     await page.locator('#logout').waitFor();
@@ -704,28 +709,27 @@ async function pupilCopyChecks(page, context, origin, login, password) {
     await page.locator('#logout').click();
     await page.getByRole('heading', { name: 'Войти в кабинет', exact: true }).waitFor();
 
-    // Teacher recovery remains twelve characters in both the browser and the trusted server policy.
-    await page.getByRole('button', { name: 'Не помню пароль', exact: true }).click();
-    assert.equal(await page.locator('#auth-form [name=password]').getAttribute('minlength'), '12');
-    assert.equal(await page.locator('#auth-form [name=confirm]').getAttribute('minlength'), '12');
+    // Teacher recovery accepts a four-digit string, preserves its leading zero,
+    // and finishes in the cabinet without opening another code-setting form.
+    await page.getByRole('button', { name: 'Не помню код входа', exact: true }).click();
+    assert.equal(await page.locator('#auth-form [name=password]').getAttribute('minlength'), '4');
+    assert.equal(await page.locator('#auth-form [name=confirm]').getAttribute('maxlength'), '4');
     await page.locator('#auth-form [name=login]').fill(LOGIN);
     await page.locator('#auth-form [name=code]').fill(retryCodes[0]);
-    await setPassword(page, '04627538');
+    await setPassword(page, '048');
     const beforeRecoveryMinimum = mutations.length;
     await page.locator('#auth-form [type=submit]').click();
-    assert.equal(await page.locator('#auth-form [name=password]').evaluate(node => node.validity.tooShort), true);
+    assert.equal(await page.locator('#auth-form [name=password]').evaluate(node => node.validity.valid), false);
     assert.equal(mutations.length, beforeRecoveryMinimum);
-    await page.locator('#auth-form [name=password],#auth-form [name=confirm]').evaluateAll(inputs => inputs.forEach(input => { input.minLength = 8; }));
-    assert.equal((await submit(page, 'recover')).status(), 400);
-    assert.match(await waitForError(page, 'от 12 до 128'), /Пароль преподавателя/);
     assert.equal(store.recovery(LOGIN, retryCodes[0]).account.id, invitation.account.id,
-      'A rejected short recovery password leaves the recovery code unused');
-    await page.getByRole('button', { name: 'Вернуться ко входу', exact: true }).click();
-    await page.locator('#auth-form [name=login]').fill(LOGIN);
-    await page.locator('#auth-form [name=password]').fill(PASSWORD);
-    assert.equal((await submit(page, 'login')).status(), 200, 'Existing long teacher passwords still work unchanged');
+      'A rejected code leaves the recovery proof unused');
+    await setPassword(page, PASSWORD);
+    assert.equal((await submit(page, 'recover')).status(), 200);
     await page.locator('#logout').waitFor();
     assert.equal(await page.evaluate(() => LearningApp.account().id), invitation.account.id);
+    assert.equal(await page.locator('#auth-form,#teacher-password-form').count(), 0,
+      'Successful recovery immediately enters the cabinet, without mandatory reset');
+    assert.equal(mutations.length, beforeRecoveryMinimum + 1, 'Recovery sends exactly one credential request');
 
     // A persisted page lifecycle during a real pending request must restore usable controls and ignore its stale response.
     await page.locator('[data-nav=security]').click();
@@ -770,7 +774,7 @@ async function pupilCopyChecks(page, context, origin, login, password) {
     await context.close();
     assert.deepEqual(nonlocalRequests, []);
     assert.deepEqual(pageErrors, []);
-    console.log('LEARNING_AUTH_BROWSER_OK: real HTTP/SQLite activation, login, session guards, safe recovery-code reissue, guarded one-time card, private download/copy, lost-response retry, guarded pupil copy with denied-clipboard selection fallback, password reissue with preserved history, eight-digit pupil creation/login/invitation with leading zeros, teacher twelve-character guards and 390px layout');
+    console.log('LEARNING_AUTH_BROWSER_OK: real HTTP/SQLite activation, login, session guards, safe recovery-code reissue, guarded one-time card, private download/copy, lost-response retry, guarded pupil copy with denied-clipboard selection fallback, password reissue with preserved history, four-digit pupil creation/login/invitation with leading zeros, teacher four-digit activation/recovery guards and 390px layout');
   } finally {
     if (browser) await browser.close();
     server.closeAllConnections();

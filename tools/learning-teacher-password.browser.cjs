@@ -14,8 +14,8 @@ const { hashPassword, tokenHash } = require('../board-server/learning-auth');
 const contracts = require('../board-server/learning-contracts');
 const { chromium } = require('playwright');
 const OLD_PASSWORD = 'Synthetic original teacher password';
-const NEW_PASSWORD = 'Synthetic replacement teacher password';
-const RECOVERED_PASSWORD = 'Synthetic recovered teacher password';
+const NEW_PASSWORD = '0173';
+const RECOVERED_PASSWORD = '0269';
 const COOKIE = 'mathexam_learning_local';
 
 (async () => {
@@ -85,12 +85,28 @@ const COOKIE = 'mathexam_learning_local';
     }
 
     const current = await open(teacher), other = await open(otherTeacher), child = await open(pupilSession);
+    // Existing accounts keep their previous long passwords until explicitly changed.
+    const legacyLogin = await open();
+    await legacyLogin.page.goto(origin + '/learning/?role=teacher');
+    await legacyLogin.page.locator('#auth-form [name=login]').fill(teacher.account.login);
+    await legacyLogin.page.locator('#auth-form [name=password]').fill(OLD_PASSWORD);
+    await legacyLogin.page.locator('#auth-form [type=submit]').click();
+    await legacyLogin.page.locator('#add-student').waitFor();
+    assert.equal((await sessionResult(legacyLogin.context)).data.account.id, teacher.account.id);
+    assert.equal(await legacyLogin.page.locator('#teacher-password-form').count(), 0,
+      'Legacy login opens the cabinet without forcing a code change');
+    await legacyLogin.context.close();
     const { page, context } = current;
     await page.goto(origin + '/learning/?role=teacher#security'); await page.locator('#teacher-password-form').waitFor();
     assert.equal(await page.locator('#teacher-password-form input').count(), 2);
     assert.equal(await page.locator('#teacher-password-form [autocomplete=current-password]').count(), 0);
     assert.equal(await page.locator('#recovery-options').getAttribute('open'), null);
-    assert.equal(await page.locator('#teacher-password-form [name=password]').getAttribute('minlength'), '12');
+    for (const input of await page.locator('#teacher-password-form input').all()) {
+      assert.equal(await input.getAttribute('minlength'), '4');
+      assert.equal(await input.getAttribute('maxlength'), '4');
+      assert.equal(await input.getAttribute('pattern'), '[0-9]{4}');
+      assert.equal(await input.getAttribute('inputmode'), 'numeric');
+    }
     await privatePage(page, [OLD_PASSWORD]);
     if (process.env.LEARNING_QA_DIR) {
       fs.mkdirSync(process.env.LEARNING_QA_DIR, { recursive: true });
@@ -98,10 +114,24 @@ const COOKIE = 'mathexam_learning_local';
       await page.screenshot({ path: path.join(process.env.LEARNING_QA_DIR, 'simple-teacher-password.png'), fullPage: true });
     }
     const originalAccount = store.account(teacher.account.id), countBeforeMismatch = postCount();
-    await fillPassword(page, '#teacher-password-form', NEW_PASSWORD, NEW_PASSWORD + ' mismatch');
+    await fillPassword(page, '#teacher-password-form', NEW_PASSWORD, '0284');
     await page.locator('#teacher-password-form [type=submit]').click();
-    await page.locator('#teacher-password-form .form-error').filter({ hasText: 'Пароли не совпадают' }).waitFor();
+    await page.locator('#teacher-password-form .form-error').filter({ hasText: 'Коды не совпадают' }).waitFor();
     assert.equal(postCount(), countBeforeMismatch); assert.deepEqual(store.account(teacher.account.id), originalAccount);
+    await fillPassword(page, '#teacher-password-form', '017');
+    await page.locator('#teacher-password-form [type=submit]').click();
+    assert.equal(await page.locator('#teacher-password-form [name=password]').evaluate(input => input.validity.valid), false);
+    assert.equal(postCount(), countBeforeMismatch, 'A three-digit code is rejected before any request');
+    await page.route('**/api/learning/teacher/password', route => route.fulfill({ status: 503,
+      contentType: 'application/json', body: JSON.stringify({ error: 'LEARNING_STORAGE_UNAVAILABLE' }) }));
+    await fillPassword(page, '#teacher-password-form', NEW_PASSWORD);
+    await page.locator('#teacher-password-form [type=submit]').click();
+    await page.locator('#teacher-password-status').filter({ hasText: 'Не удалось получить подтверждение' }).waitFor();
+    await page.waitForFunction(() => document.querySelector('#teacher-password-form [type=submit]')?.disabled === false);
+    assert.equal(await page.locator('#teacher-password-form [type=submit]').isDisabled(), false);
+    assert.equal(await page.locator('#teacher-password-success').count(), 0, 'A rejected request cannot show saved success');
+    assert.deepEqual(store.account(teacher.account.id), originalAccount);
+    await page.unroute('**/api/learning/teacher/password');
 
     // Commit the actual HTTP request, then lose its response. A teacher must
     // remain signed in with exactly the original cookie and expiry after reload.
@@ -116,6 +146,8 @@ const COOKIE = 'mathexam_learning_local';
     await fillPassword(page, '#teacher-password-form', NEW_PASSWORD);
     await page.locator('#teacher-password-form [type=submit]').click();
     await page.locator('#teacher-password-status').filter({ hasText: 'Не удалось получить подтверждение' }).waitFor();
+    assert.equal(await page.locator('#teacher-password-success').count(), 0, 'A lost acknowledgement remains retryable, not successful');
+    assert.equal(await page.locator('#teacher-password-form [type=submit]').isDisabled(), false);
     assert(committed); assert.equal(await page.locator('#teacher-password-form [name=password]').inputValue(), '');
     assert.equal(await page.locator('#teacher-password-form [name=confirm]').inputValue(), '');
     assert.deepEqual(await cookie(context), originalCookie);
@@ -132,25 +164,50 @@ const COOKIE = 'mathexam_learning_local';
 
     // A malformed successful response is also uncertain: the database commit
     // happened, although the browser cannot interpret its acknowledgement.
-    await page.route('**/api/learning/teacher/password', async route => {
-      const response = await route.fetch(); assert.equal(response.status(), 200);
-      await route.fulfill({ status: 200, contentType: 'application/json', body: 'unreadable acknowledgement' });
-    });
-    await fillPassword(page, '#teacher-password-form', NEW_PASSWORD);
-    await page.locator('#teacher-password-form [type=submit]').click();
-    await page.locator('#teacher-password-status').filter({ hasText: 'Не удалось получить подтверждение' }).waitFor();
-    assert.equal(await page.locator('#teacher-password-form [name=password]').inputValue(), '');
-    assert.deepEqual(await cookie(context), originalCookie);
-    assert.equal(store.row('SELECT * FROM sessions WHERE hash=?', tokenHash(teacher.sessionToken)).expires_at, originalSession.expires_at);
-    await page.unroute('**/api/learning/teacher/password');
+    for (const responseBody of ['unreadable acknowledgement', '{}']) {
+      await page.route('**/api/learning/teacher/password', async route => {
+        const response = await route.fetch(); assert.equal(response.status(), 200);
+        await route.fulfill({ status: 200, contentType: 'application/json', body: responseBody });
+      });
+      await fillPassword(page, '#teacher-password-form', NEW_PASSWORD);
+      await page.locator('#teacher-password-form [type=submit]').click();
+      await page.locator('#teacher-password-status').filter({ hasText: 'Не удалось получить подтверждение' }).waitFor();
+      assert.equal(await page.locator('#teacher-password-success').count(), 0, 'Malformed acknowledgement cannot dismiss the form');
+      assert.equal(await page.locator('#teacher-password-form [name=password]').inputValue(), '');
+      assert.equal(await page.locator('#teacher-password-form [type=submit]').isDisabled(), false);
+      assert.deepEqual(await cookie(context), originalCookie);
+      assert.equal(store.row('SELECT * FROM sessions WHERE hash=?', tokenHash(teacher.sessionToken)).expires_at, originalSession.expires_at);
+      await page.unroute('**/api/learning/teacher/password');
+    }
 
     // The same cabinet can deliberately retry after an uncertain response.
+    const beforeSuccess = postCount();
     await fillPassword(page, '#teacher-password-form', NEW_PASSWORD);
     await page.locator('#teacher-password-form [type=submit]').click();
-    await page.locator('#teacher-password-status').filter({ hasText: 'Новый пароль сохранён' }).waitFor();
+    await page.locator('#teacher-password-success').filter({ hasText: 'Код входа сохранён' }).waitFor();
+    assert.equal(await page.locator('#teacher-password-form').count(), 0, 'Saving removes the completed form');
+    assert.equal(await page.getByRole('heading', { name: /Задать новый/ }).count(), 0,
+      'Saving never leaves an instruction to set the code again');
+    assert.equal(await page.locator('#teacher-password-success').getAttribute('role'), 'status');
+    assert.equal(await page.locator('#teacher-password-students').getAttribute('href'), '#students');
+    assert.match(await page.locator('#teacher-password-students').innerText(), /^Мои ученики/);
+    assert.equal(postCount(), beforeSuccess + 1, 'A successful save sends one POST');
+    await page.evaluate(() => LearningApp.refresh());
+    await page.locator('#teacher-password-success').waitFor();
+    assert.equal(await page.locator('#teacher-password-form').count(), 0, 'Rerender preserves completion');
+    await page.keyboard.press('Enter');
+    assert.equal(postCount(), beforeSuccess + 1, 'Rerender and Enter do not resubmit the saved code');
     assert.deepEqual(await cookie(context), originalCookie);
+    await privatePage(page, [OLD_PASSWORD, NEW_PASSWORD]);
+    await page.locator('#teacher-password-students').click();
+    await page.getByRole('heading', { name: 'Мои ученики', exact: true }).waitFor();
+    assert.equal(await page.locator('#teacher-password-form').count(), 0);
+    await page.locator('[data-nav=security]').click();
+    await page.locator('#teacher-password-form').waitFor();
+    assert.equal(await page.locator('#teacher-password-success').count(), 0,
+      'Only an explicit return to code settings offers another change');
     const countBeforeHide = postCount();
-    await fillPassword(page, '#teacher-password-form', 'Synthetic unsaved private password');
+    await fillPassword(page, '#teacher-password-form', '0381');
     await page.evaluate(() => dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true })));
     assert.equal(await page.locator('#teacher-password-form [name=password]').inputValue(), '');
     assert.equal(await page.locator('#teacher-password-form [name=confirm]').inputValue(), '');
@@ -182,7 +239,7 @@ const COOKIE = 'mathexam_learning_local';
 
     const login = await open();
     await login.page.goto(origin + '/learning/?role=teacher'); await login.page.locator('#auth-form').waitFor();
-    await login.page.getByRole('button', { name: 'Не помню пароль', exact: true }).click();
+    await login.page.getByRole('button', { name: 'Не помню код входа', exact: true }).click();
     await login.page.waitForURL(origin + '/learning/teacher-recovery.html');
     await login.page.locator('#recovery-help').waitFor({ state: 'visible' });
     await login.page.goto(origin + '/learning/?role=teacher'); await login.page.locator('#auth-form').waitFor();
@@ -223,14 +280,16 @@ const COOKIE = 'mathexam_learning_local';
     assert.deepEqual(await cookie(child.context), pupilCookie);
     const proof = store.issueTeacherRecovery(teacher.account.login).invitationToken;
     await recoveryEntry(proof);
-    await fillPassword(child.page, '#teacher-recovery-form', RECOVERED_PASSWORD, RECOVERED_PASSWORD + ' mismatch');
+    await fillPassword(child.page, '#teacher-recovery-form', RECOVERED_PASSWORD, '0395');
     const beforeRecoveryMismatch = postCount();
     await child.page.locator('#teacher-recovery-form [type=submit]').click();
-    await child.page.locator('#recovery-error').filter({ hasText: 'Пароли не совпадают' }).waitFor();
+    await child.page.locator('#recovery-error').filter({ hasText: 'Коды не совпадают' }).waitFor();
     assert.equal(postCount(), beforeRecoveryMismatch);
     assert.equal((await submitRecovery(child.page)).status(), 200);
     await child.page.waitForURL(origin + '/learning/?role=teacher#students');
     await child.page.locator('#add-student').waitFor();
+    assert.equal(await child.page.locator('#teacher-password-form,#teacher-recovery-form').count(), 0,
+      'Completed recovery enters the cabinet without asking for another code');
     const recoveredSession = await sessionResult(child.context);
     assert.equal(recoveredSession.data.account.id, teacher.account.id); assert(recoveredSession.data.csrfToken);
     assert.notEqual((await cookie(child.context)).value, pupilCookie.value);
@@ -257,7 +316,7 @@ const COOKIE = 'mathexam_learning_local';
       }
     }
     assert.deepEqual(errors, []);
-    console.log('LEARNING_TEACHER_PASSWORD_BROWSER_OK: simple teacher form; mismatch; real committed response loss retains cookie and expiry after reload; old password rejected/new works; other teacher sessions revoked; pupil session and work preserved; pagehide clears inputs; recovery proof scrubbed and inert on GET; invalid/expired/reused proofs rejected; submitted recovery enters teacher; no URL/storage leaks; 390px.');
+    console.log('LEARNING_TEACHER_PASSWORD_BROWSER_OK: four-digit leading-zero setup; legacy long login; mismatch/short/rejected/lost/malformed retries; saved success removes form, survives rerender and sends one POST; My pupils next step; committed response loss retains cookie and expiry after reload; old password rejected/new works; other teacher sessions revoked; pupil session and work preserved; pagehide clears inputs; recovery proof scrubbed and inert on GET; invalid/expired/reused proofs rejected; recovery enters cabinet without reset; no URL/storage leaks; 390px.');
   } finally {
     if (browser) await browser.close(); server.closeAllConnections();
     await new Promise(resolve => server.close(resolve)); store.close(); fs.rmSync(directory, { recursive: true, force: true });

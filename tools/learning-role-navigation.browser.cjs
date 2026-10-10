@@ -60,7 +60,7 @@ const PASSWORD = 'SyntheticRoleFixture2026';
       const text = await page.locator('body').innerText();
       assert(!text.includes(pupil.name) && !text.includes(pupil.login), 'Teacher entry never displays pupil identity');
       assert.match(await page.title(), /Вход учителя/);
-      assert(text.includes('Используйте логин и пароль вашего учительского аккаунта.'));
+      assert(text.includes('Используйте логин и код входа своего учительского аккаунта. Прежний пароль тоже работает.'));
     };
     await page.goto(origin + '/learning/#students');
     await cleanTeacherForm();
