@@ -6,6 +6,26 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
+## In progress: simple password recovery and ready pupil access
+
+- [Scope](tasks/SIMPLE_CABINET_ACCESS.md); base
+  `f9a9a3607312dab4bbfd6e85d2e28d93822d3e9c`; branch
+  `feat/simple-cabinet-access`. HIGH independent review under the owner's
+  standing publication instruction and external-review waiver.
+- An open teacher session can set a new password without the old password or
+  codes and retains its original expiry. A private hosting operator can issue
+  a one-use, one-hour recovery link when no teacher session remains.
+- Ready pupil login/password is the default creation flow, with a complete
+  copyable message and an ordinary Done button. Existing pupil access stays
+  read-only until explicit replacement. Learning history and family data remain.
+- Backend checks: 246/246 pass, including 23 focused password/recovery API
+  cases and six private-file CLI cases. Ready-pupil, authentication, cabinet
+  and free-route browser gates passed. Teacher-password and role-navigation
+  gates also passed, including lost acknowledgement and cached-page account
+  changes. Independent review and CI bind to the publication head in the PR.
+- QA uses synthetic accounts only. The owner enters her real new password
+  privately after publication; no password is embedded in source or chat.
+
 ## Published: accessible profile preparation and calm learning
 
 - Scope: [calm learning](tasks/PROFILE_CALM_LEARNING.md), including the prepared
@@ -95,7 +115,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Existing teacher identity survived the release; no real family learning
   records or credentials were changed by verification.
 
-## Merged: direct teacher sign-in
+## Published: direct teacher sign-in
 
 - [Scope](tasks/DIRECT_TEACHER_ENTRY.md); base
   `528727fa6e7fa29c578bf540d014e3ad398206e1`; branch
@@ -112,8 +132,10 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   internal review found no remaining blocking code issue.
 - Role-navigation, syntax and whitespace checks passed on the final source.
 - PR #224 merged as `f228a08ab440dc79e098b39053921501087ea8fb`; exact-head learning
-  CI 38018835138 and navigation CI 38018835075 passed. Publication and live
-  verification evidence remain tracked in PR #224.
+  CI 38018835138 and navigation CI 38018835075 passed. Pages run 38019423073
+  succeeded; all four affected assets matched on both public and cabinet
+  origins. Amvera health/storage were ready and the live teacher identity
+  remained correct. No real credentials or pupil work changed during QA.
 
 ## Published: a real explanation for right-triangle trigonometry
 
@@ -137,7 +159,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Live verification confirmed five gradual steps, no explanation before opening,
   correct arithmetic and preserved original condition/draft after reload.
 
-## In progress: familiar fraction notation in trigonometry
+## Published: familiar fraction notation in trigonometry
 
 - [Scope](tasks/PROFILE_TRIG_FRACTIONS.md): stacked fractions for definitions,
   substitutions and ratio checks in the three existing trigonometry explanations.
@@ -151,7 +173,11 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   advanced main to `f228a08ab440dc79e098b39053921501087ea8fb`; only this status
   document overlaps. Both records are retained; all runtime and test files
   remain byte-identical to their respective reviewed versions.
-- Next: bind the composed tree review, renew exact-head CI, verify publication.
+- PR #225 published as `f9a9a3607312dab4bbfd6e85d2e28d93822d3e9c`, with
+  reviewed composed tree `c01161f06ed52f1f15d19d65de9ec307f9dada2b` and parent
+  `f228a08ab440dc79e098b39053921501087ea8fb`. Renewed exact-head profile CI
+  38019751638 and Pages 38020048618 passed. Three public assets matched;
+  live UI confirmed stacked fractions, visible bars and preserved draft.
 
 ## Published: independent pupil entry and parent progress
 

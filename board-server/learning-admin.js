@@ -1,10 +1,39 @@
 #!/usr/bin/env node
 'use strict';
 
-// Operator-only bootstrap. Run against the private persistent database while
+// Operator-only account maintenance. Run against the private database while
 // its single server process is stopped. Nothing is sent to an external service.
+const fs = require('node:fs');
+const path = require('node:path');
 const { LearningStore } = require('./learning-store');
 const { backupLearning, restoreLearning } = require('./learning-backup');
+const { requireValue } = require('./learning-auth');
+
+function writeTeacherRecovery(store, login, destination, publicOrigin) {
+  let origin;
+  try { origin = new URL(publicOrigin); } catch (_) {}
+  requireValue(origin?.protocol === 'https:' && origin.origin === publicOrigin, 'LEARNING_ORIGIN_INVALID');
+  requireValue(typeof destination === 'string' && path.isAbsolute(destination), 'LEARNING_RECOVERY_TARGET_INVALID');
+  const directory = path.dirname(destination);
+  requireValue(fs.lstatSync(directory).isDirectory() && !fs.lstatSync(directory).isSymbolicLink(), 'LEARNING_RECOVERY_TARGET_INVALID');
+  // Exclusive creation never overwrites an existing file or follows a symlink.
+  const fd = fs.openSync(destination, 'wx', 0o600);
+  let committed = false;
+  try {
+    const result = store.issueTeacherRecovery(login, issued => {
+      const link = new URL('/learning/teacher-recovery.html', origin);
+      link.hash = 'token=' + issued.invitationToken;
+      fs.writeFileSync(fd, link.href + '\n', 'utf8'); fs.fsyncSync(fd);
+      const directoryFd = fs.openSync(directory, 'r');
+      try { fs.fsyncSync(directoryFd); } finally { fs.closeSync(directoryFd); }
+    });
+    committed = true;
+    return { created: true, expiresAt: result.expiresAt };
+  } finally {
+    fs.closeSync(fd);
+    if (!committed) fs.unlinkSync(destination);
+  }
+}
 
 function applyBootstrapEnvironment(store, environment = process.env) {
   if (!store.available) return { applied: false, reason: store.reason, status: 'unavailable' };
@@ -37,8 +66,8 @@ function applyBootstrapEnvironment(store, environment = process.env) {
 }
 
 function main(args = process.argv.slice(2)) {
-  if (!((args[0] === 'bootstrap' && args.length === 3) || (['renew-bootstrap', 'backup', 'restore'].includes(args[0]) && args.length === 2)) || !process.env.LEARNING_DB_PATH) {
-    process.stderr.write('Usage: LEARNING_DB_PATH=/private/learning.sqlite node learning-admin.js bootstrap LOGIN "Teacher name"\nOr: node learning-admin.js renew-bootstrap LOGIN (only an unactivated teacher)\nOr: node learning-admin.js backup /private/new-backup.sqlite\nOr: LEARNING_DB_PATH=/private/new-database.sqlite node learning-admin.js restore /private/backup.sqlite\n');
+  if (!((['bootstrap', 'teacher-recovery'].includes(args[0]) && args.length === 3) || (['renew-bootstrap', 'backup', 'restore'].includes(args[0]) && args.length === 2)) || !process.env.LEARNING_DB_PATH) {
+    process.stderr.write('Usage: LEARNING_DB_PATH=/private/learning.sqlite node learning-admin.js bootstrap LOGIN "Teacher name"\nOr: node learning-admin.js renew-bootstrap LOGIN (only an unactivated teacher)\nOr: LEARNING_PUBLIC_ORIGIN=https://your-cabinet.example node learning-admin.js teacher-recovery LOGIN /private/new-recovery-link.txt\nOr: node learning-admin.js backup /private/new-backup.sqlite\nOr: LEARNING_DB_PATH=/private/new-database.sqlite node learning-admin.js restore /private/backup.sqlite\n');
     return 2;
   }
   let store;
@@ -48,6 +77,10 @@ function main(args = process.argv.slice(2)) {
       process.stdout.write(JSON.stringify({ restoredBytes: result.bytes }) + '\n'); return 0;
     }
     store = new LearningStore();
+    if (args[0] === 'teacher-recovery') {
+      const result = writeTeacherRecovery(store, args[1], args[2], process.env.LEARNING_PUBLIC_ORIGIN);
+      process.stdout.write(JSON.stringify(result) + '\n'); return 0;
+    }
     if (args[0] === 'backup') {
       const result = backupLearning(store, args[1]);
       process.stdout.write(JSON.stringify({ backupBytes: result.bytes }) + '\n'); return 0;
@@ -61,4 +94,4 @@ function main(args = process.argv.slice(2)) {
   } finally { store?.close(); }
 }
 if (require.main === module) process.exitCode = main();
-module.exports = { main, applyBootstrapEnvironment };
+module.exports = { main, applyBootstrapEnvironment, writeTeacherRecovery };

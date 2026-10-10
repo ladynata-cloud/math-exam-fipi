@@ -71,6 +71,8 @@ jobs:
           node tools/learning-path.browser.cjs
           node tools/learning-remediation-smoke.cjs
           node tools/learning-auth.browser.cjs
+          node tools/learning-simple-pupil-access.browser.cjs
+          node tools/learning-teacher-password.browser.cjs
           node tools/learning-quick-access.browser.cjs
           node tools/learning-parent.browser.cjs
           node tools/learning-role-navigation.browser.cjs

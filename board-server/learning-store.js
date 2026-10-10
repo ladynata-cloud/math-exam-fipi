@@ -276,11 +276,59 @@ class LearningStore {
       return { student: accountDTO(this.account(id)) };
     });
   }
-  invitation(secret) {
+  invitation(secret, purposes = ['activate', 'recovery']) {
     requireValue(TOKEN_RE.test(secret || ''), 'LEARNING_ACCESS_INVALID', 401);
     const invitation = this.row('SELECT * FROM invitations WHERE hash=?', tokenHash(secret));
-    requireValue(invitation && invitation.used_at == null && invitation.expires_at > this.clock(), 'LEARNING_ACCESS_INVALID', 401);
+    requireValue(invitation && purposes.includes(invitation.purpose) && invitation.used_at == null && invitation.expires_at > this.clock(), 'LEARNING_ACCESS_INVALID', 401);
     return invitation;
+  }
+  // Called only by the private operator command. The synchronous publisher lets
+  // a failed private-file write roll back issuance without revoking an old link.
+  issueTeacherRecovery(login, publish = null) {
+    login = normalizeLogin(login);
+    return this.transaction(() => {
+      const account = this.accountByLogin(login);
+      requireValue(account?.role === 'teacher' && account.password_hash, 'LEARNING_TEACHER_RECOVERY_UNAVAILABLE', 409);
+      const result = { account: accountDTO(account), ...this.newInvitation(account.id, 'teacher-recovery', 60 * 60 * 1000) };
+      if (publish) publish(result);
+      return result;
+    });
+  }
+  teacherRecovery(secret) {
+    const invitation = this.invitation(secret, ['teacher-recovery']), account = this.account(invitation.account_id);
+    requireValue(account?.role === 'teacher' && account.password_hash, 'LEARNING_ACCESS_INVALID', 401);
+    return { invitation, account };
+  }
+  replaceTeacherPassword(sessionToken, passwordHash, expectedHash, expectedEpoch) {
+    requireValue(typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash), 'LEARNING_PASSWORD_INVALID');
+    return this.transaction(() => {
+      // Hashing happens outside this transaction. The original session and
+      // credential snapshot must both still be current when the change commits.
+      const auth = this.session(sessionToken); this.teacher(auth);
+      const account = this.account(auth.id);
+      requireValue(account.password_hash === expectedHash && account.auth_epoch === expectedEpoch, 'LEARNING_ACCESS_INVALID', 401);
+      const current = tokenHash(sessionToken), epoch = account.auth_epoch + 1;
+      this.run('UPDATE accounts SET password_hash=?,auth_epoch=? WHERE id=?', passwordHash, epoch, account.id);
+      this.run('DELETE FROM sessions WHERE account_id=? AND hash<>?', account.id, current);
+      this.run('UPDATE sessions SET epoch=? WHERE account_id=? AND hash=?', epoch, account.id, current);
+      this.run('DELETE FROM recovery_codes WHERE account_id=?', account.id);
+      this.run('DELETE FROM invitations WHERE account_id=?', account.id);
+      // Do not renew the surviving session or rotate its token. A lost response
+      // therefore leaves the teacher signed in and able to retry deliberately.
+      return { ok: true, account: accountDTO(this.account(account.id)) };
+    });
+  }
+  recoverTeacherPassword(secret, passwordHash, expectedHash, expectedEpoch) {
+    requireValue(typeof passwordHash === 'string' && /^scrypt1:[a-f0-9]{32}:[a-f0-9]{64}$/.test(passwordHash), 'LEARNING_PASSWORD_INVALID');
+    return this.transaction(() => {
+      const { account } = this.teacherRecovery(secret);
+      requireValue(account.password_hash === expectedHash && account.auth_epoch === expectedEpoch, 'LEARNING_ACCESS_INVALID', 401);
+      this.run('UPDATE accounts SET password_hash=?,auth_epoch=auth_epoch+1 WHERE id=?', passwordHash, account.id);
+      this.run('DELETE FROM sessions WHERE account_id=?', account.id);
+      this.run('DELETE FROM recovery_codes WHERE account_id=?', account.id);
+      this.run('DELETE FROM invitations WHERE account_id=?', account.id);
+      return this.createSession(account.id);
+    });
   }
   createSession(accountId, quickGrant = null) {
     const account = this.account(accountId), secret = token();

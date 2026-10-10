@@ -152,6 +152,38 @@ then the teacher's plan. Only server-committed managed work is shared with the
 teacher and parent. Public browser-local exercises remain identified as such.
 See [the scope and rollback](../tasks/CLEAR_FAMILY_CABINETS.md).
 
+## Simple teacher recovery and ready pupil passwords (2026-10-10)
+
+The owner requested password recovery without requiring saved recovery codes,
+and ready passwords that the teacher can hand to pupils. This scoped update
+uses the existing session and private hosting-operator authority.
+
+A currently authenticated teacher can set a new 12–128-character password
+without the old password. Exact Origin, CSRF, account identity and rate limits
+remain enforced. The transaction rechecks the original session and credential
+epoch after asynchronous hashing. It preserves that session token and original
+expiry, so a lost acknowledgement does not lock out the open cabinet; other
+teacher sessions and old recovery proofs are revoked. Learning data and family
+sessions are unaffected. Recovery-code rotation remains optional.
+
+Without a current session or saved code, a verified hosting operator can issue
+a one-hour, single-use link for the existing active teacher. Its distinct
+`teacher-recovery` purpose is accepted only by the recovery endpoint, never by
+ordinary activation. A new private 0600 file receives the raw URL; stdout and
+the database do not retain the token. Issuance alone does not change credentials.
+Only explicit submission of a new password consumes the proof, replaces the
+same account's password, revokes old teacher sessions and starts a normal one.
+GET navigation never changes a pupil's cookie. Automatic email is not configured.
+See [operator and rollback instructions](../unified-learning.md).
+
+New pupils receive a teacher-chosen or suggested ready password as the primary
+flow. The one-time private card includes the entry link, login and password.
+Its enabled **Done** button replaces the earlier mandatory save/discard
+acknowledgement for ready pupil passwords only. Plaintext is cleared on closing
+or leaving and never persisted in browser storage or receipts. Opening existing
+pupil access remains read-only until the teacher explicitly requests replacement.
+Existing invitations, QR entry and parent behavior remain compatible.
+
 ## Educational identity
 
 An immutable task specification plus mutable work forms one attempt. An assignment
