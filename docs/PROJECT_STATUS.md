@@ -95,11 +95,32 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Existing teacher identity survived the release; no real family learning
   records or credentials were changed by verification.
 
-## In progress: a real explanation for right-triangle trigonometry
+## In progress: direct teacher sign-in
+
+- [Scope](tasks/DIRECT_TEACHER_ENTRY.md); base
+  `528727fa6e7fa29c578bf540d014e3ad398206e1`; branch
+  `fix/direct-teacher-entry`. HIGH internal review for authentication UI.
+- The owner requested removing the named pupil mismatch screen. Explicit
+  teacher entry will show the teacher form directly if the current cookie
+  belongs to a pupil. Existing teacher sessions still open My pupils directly.
+- Pupil UI data is cleared while unsent work remains account-scoped. Opening
+  the form does not change the cookie; only valid teacher authentication does.
+  No teacher credential or real identity is embedded in public assets.
+- Local auth, family-progress, cabinet and OGE browser gates passed. The
+  role-navigation regression also covers identity flashes, untouched cookies,
+  preserved queues and delayed authentication/data responses. Independent
+  internal review found no remaining blocking code issue.
+- Role-navigation, syntax and whitespace checks passed on the final source.
+- Next: committed-head review, exact-head CI,
+  publication and live verification under the standing owner instruction.
+
+## Merged: a real explanation for right-triangle trigonometry
 
 - [Scope](tasks/PROFILE_TRIANGLE_EXPLANATION.md): replace the inadequate
   side-highlighting hint in the three sine/cosine/tangent tasks with gradual
   explanations of the ratio, operation, arithmetic and answer check.
+- PR #223 merged as `528727fa6e7fa29c578bf540d014e3ad398206e1`, verified
+  against authoritative main when starting the teacher-entry correction.
 - Base `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`; branch
   `fix/profile-triangle-explanation`. MEDIUM, existing assisted-practice model;
   no account, server or persistence changes.
