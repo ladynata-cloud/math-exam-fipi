@@ -1,0 +1,48 @@
+name: Soviet math — content, practice and video
+on:
+  pull_request:
+    paths:
+      - 'soviet-math/**'
+      - 'tools/soviet-math*'
+      - '.github/workflows/soviet-math.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  soviet-math:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NODE_PATH: ${{ github.workspace }}/video-worker/node_modules
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: video-worker/package-lock.json
+      - name: Install locked browser and media checks
+        run: |
+          npm --prefix video-worker ci
+          video-worker/node_modules/.bin/playwright install --with-deps chromium
+          if ! command -v ffprobe >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Exact arithmetic and unchanged division core
+        run: |
+          node tools/soviet-math-content.test.cjs
+          node tools/division-guided.test.cjs
+          node tools/soviet-math-render.cjs --check
+          git diff --check
+      - name: Practice, persistence, mobile and reduced motion
+        run: node tools/soviet-math.browser.cjs
+      - name: All stored MP4s decode, seek and play
+        env:
+          SOVIET_VIDEO_REQUIRE_CODEC: '1'
+        run: |
+          export PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH="$(command -v google-chrome)"
+          node tools/soviet-math-video.browser.cjs
+          echo SOVIET_MATH_OK
