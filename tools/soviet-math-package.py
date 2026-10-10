@@ -216,8 +216,8 @@ def write_doc(path, prepared):
     doc.add_paragraph('Список роликов', 'Heading 1')
     add_listing_table(doc, prepared)
     for lesson, stem, cues in prepared:
-        doc.add_page_break()
-        doc.add_paragraph(f"{lesson['number']:02} {clean_title(lesson['topic']['title'])}", 'Heading 1')
+        heading = doc.add_paragraph(f"{lesson['number']:02} {clean_title(lesson['topic']['title'])}", 'Heading 1')
+        heading.paragraph_format.page_break_before = True
         add_meta(doc, f"Файл {stem}.mp4  ·  Длительность {clock(lesson['video']['seconds'])}", 6)
         for line in source_lines(lesson):
             add_meta(doc, line)
