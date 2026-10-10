@@ -89,17 +89,29 @@ test('right-triangle walkthroughs derive ratios and arithmetic from the current 
   const f = fixture();
   try {
     const variants = [
-      ['geo-right-cosine', { part: 18, ratio: 0.6 }, 30, '18 : 0,6 = 180 : 6 = 30', '30 · 0,6 = 18'],
-      ['geo-right-sine', { whole: 20, ratio: 0.6 }, 12, '20 · 0,6 = 120 : 10 = 12', ['12', '20', '0,6']],
-      ['geo-right-tangent', { whole: 8, ratio: 1.5 }, 12, '8 · 1,5 = 120 : 10 = 12', ['12', '8', '1,5']]
+      ['geo-right-cosine', { part: 18, ratio: 0.6 }, 30, 'Гипотенуза = 180 : 6 = 30', '30 · 0,6 = 18', [['6', '10'], ['18', 'гипотенуза']], 'Гипотенуза · 6 = 18 · 10', 'Гипотенуза · 6 = 180'],
+      ['geo-right-sine', { whole: 20, ratio: 0.6 }, 12, 'Катет = 120 : 10 = 12', ['12', '20', '0,6'], [['6', '10'], ['катет', '20']], 'Катет · 10 = 20 · 6', 'Катет · 10 = 120'],
+      ['geo-right-tangent', { whole: 8, ratio: 1.5 }, 12, 'Катет = 120 : 10 = 12', ['12', '8', '1,5'], [['15', '10'], ['катет', '8']], 'Катет · 10 = 8 · 15', 'Катет · 10 = 120']
     ];
-    for (const [id, meta, answer, arithmetic, check] of variants) {
+    for (const [id, meta, answer, arithmetic, check, expectedFractions, crossProduct, knownProduct] of variants) {
       const original = selectTasks(f, lesson => lesson.group === 'geometry').find(task => task.id === id);
       f.mount({ ...original, meta, answer, prompt: 'Проверочное условие с изменёнными известными величинами.' }, true);
       f.container.querySelector('[data-trig-open]').click();
       const next = f.container.querySelector('[data-trig-next]'); for (let i = 1; i < 5; i++) next.click();
       const panel = f.container.querySelector('[data-trig-explanation]');
       assert.ok(panel.textContent.includes(arithmetic), id + ': current arithmetic');
+      const crossStep = panel.querySelector('[data-trig-step="3"]'), solveStep = panel.querySelector('[data-trig-step="4"]');
+      assert.ok(crossStep.textContent.includes('Произведение крайних членов пропорции равно произведению средних'), id + ': extreme/mean terms mnemonic');
+      assert.ok(crossStep.textContent.includes(crossProduct), id + ': current diagonal products with unknown on the left');
+      assert.ok(solveStep.textContent.includes(knownProduct), id + ': current known product');
+      assert.ok(solveStep.textContent.includes('Чтобы найти неизвестный множитель, нужно произведение разделить на известный множитель.'), id + ': unknown-factor rule');
+      const conversion = crossStep.querySelector('.profile-trig-ratio');
+      assert.equal(conversion.querySelector('.profile-trig-numerator').textContent, expectedFractions[0][0]);
+      assert.equal(conversion.querySelector('.profile-trig-denominator').textContent, expectedFractions[0][1]);
+      const proportion = crossStep.querySelector('.profile-trig-proportion');
+      assert.equal(proportion.getAttribute('role'), 'math');
+      assert.deepEqual([...proportion.querySelectorAll('.profile-trig-fraction')].map(fraction => [fraction.querySelector('.profile-trig-numerator').textContent, fraction.querySelector('.profile-trig-denominator').textContent]), expectedFractions);
+      assert.equal(proportion.querySelectorAll('svg.profile-trig-cross line').length, 2);
       const finalStep = panel.querySelector('[data-trig-step="5"]');
       if (Array.isArray(check)) {
         const relation = finalStep.querySelector('.profile-trig-ratio');
