@@ -128,3 +128,8 @@ body{overflow-wrap:anywhere}.model-panel input[type=range]{margin-inline:0}.circ
 #result-model svg{display:block;max-width:100%;height:auto}
 #result-model button{min-height:44px;max-width:100%;white-space:normal}
 @media(max-width:420px){.profile-solution-step{padding:14px}.profile-solution-step h3{font-size:19px}.profile-solution-step p,.profile-solution-step>div{font-size:18px}.result-panel .solution{padding:14px}}
+
+/* Focused school-topic panel inside an existing public trainer. */
+.course-help .topbar,.course-help footer,.course-help .breadcrumb{display:none}
+.course-help main{max-width:none;margin:0;padding:20px}
+.course-help h1{font-size:clamp(24px,4vw,34px)}

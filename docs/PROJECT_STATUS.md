@@ -6,6 +6,21 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
+## In progress: unified profile course menu
+
+- [Scope](tasks/PROFILE_UNIFIED_COURSE.md); base
+  `f2a8ba0c6b721446209b4e1c3b83134733f3036d`; branch
+  `feat/profile-unified-course`; MEDIUM public-navigation review.
+- One exam-first menu for positions 1–13 and 16. Existing topic trainers are
+  grouped inside numbered topics, with optional targeted school help and return
+  to the still-mounted task. Separate trainer score stores are not merged.
+- Existing cabinet/authentication work is outside scope. Source/runtime evidence
+  for this release is recorded in its PR, including exact-head CI and Pages.
+- Previous profile step-by-step task PR #229 is published as
+  `bdf2519d10b03e1c2d77a379a78a21ce2e196f99`; profile CI 38024794757 and
+  Pages 38025132684 passed, with seven public asset comparisons and the live
+  nine-step similarity example verified on 2026-10-10.
+
 ## In progress: ready parent entry and visible login feedback
 
 - [Scope](tasks/SIMPLE_PARENT_ENTRY.md); base

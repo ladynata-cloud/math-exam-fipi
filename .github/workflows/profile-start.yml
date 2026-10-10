@@ -1,10 +1,10 @@
 name: Profile 2027 — learning start
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/guided-lesson.js', 'trainers/board-picker-data.json', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', 'trainers/board-picker-data.json', '.github/workflows/profile-start.yml']
   push:
     branches: [main]
-    paths: ['ege-profil/start/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/guided-lesson.js', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', '.github/workflows/profile-start.yml']
 permissions:
   contents: read
 concurrency:
@@ -37,6 +37,8 @@ jobs:
         run: node tools/profile-readiness-math.test.cjs && node tools/profile-readiness-plan.test.cjs && node tools/profile-algebra-final-step.test.cjs && node tools/profile-readiness.browser.cjs && node tools/profile-learner-robots.browser.cjs
       - name: Calm learning, honest support and mixed thirteen
         run: node --test tools/profile-calm-map.test.cjs tools/profile-calm-micro.test.cjs tools/profile-calm-state.test.cjs tools/profile-checkpoint.test.cjs tools/profile-independent-models.test.cjs && node tools/profile-calm-learners.browser.cjs && node tools/profile-exam-first.browser.cjs
+      - name: Unified course and school-topic return
+        run: node tools/profile-unified-course.browser.cjs
       - name: Atanasyan stereometry course
         run: node --test tools/atanasyan-profile15-a.test.cjs tools/atanasyan-profile15-b.test.cjs && node tools/atanasyan-profile15.test.cjs && node tools/atanasyan-profile15-model.test.cjs && node tools/atanasyan-profile15.browser.cjs
       - name: Existing profile regression
