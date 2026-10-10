@@ -45,6 +45,29 @@ test('planimetry: every auxiliary construction has a neutral label and records h
       const buttons = [...f.container.querySelectorAll('button')];
       const layers = [...f.container.querySelectorAll('[data-model-layer]')];
       assert.ok(buttons.length > 0, task.id);
+      if (['geo-right-cosine', 'geo-right-sine', 'geo-right-tangent'].includes(task.id)) {
+        assert.equal(buttons.length, 1); assert.equal(layers.length, 0, 'A requested walkthrough is not pre-rendered');
+        const button = buttons[0];
+        assert.equal(button.textContent, 'Разобрать решение по шагам');
+        assert.equal(button.getAttribute('aria-expanded'), 'false');
+        assert.equal(f.container.querySelector('.profile-model-note').textContent, 'Это чертёж к текущей задаче. Открытие разбора — подсказка.');
+        assert.equal(f.container.querySelector('[data-trig-explanation]'), null);
+        assert.doesNotMatch(f.container.textContent, new RegExp('(^|[^\\d])' + task.answer + '([^\\d]|$)', 'u'), task.id + ': no final number before help');
+        f.watch(() => {
+          assert.equal(f.container.querySelector('[data-trig-explanation]'), null, task.id + ': help precedes explanation DOM');
+          assert.equal(f.container.querySelector('[data-model-layer]'), null, task.id + ': help precedes construction DOM');
+        });
+        button.click(); assert.equal(f.helps, 1);
+        const panel = f.container.querySelector('[data-trig-explanation]'), layer = f.container.querySelector('[data-model-layer]');
+        assert.equal(layer.getAttribute('visibility'), 'visible'); assert.equal(panel.hidden, false);
+        assert.equal(panel.querySelectorAll('[data-trig-step]').length, 1);
+        const next = panel.querySelector('[data-trig-next]');
+        for (let count = 2; count <= 5; count++) { next.click(); assert.equal(panel.querySelectorAll('[data-trig-step]').length, count); }
+        assert.equal(f.helps, 1, 'Next steps are part of the already-recorded help');
+        button.click(); assert.equal(f.helps, 1); assert.equal(panel.hidden, true); assert.equal(layer.getAttribute('visibility'), 'hidden');
+        button.click(); assert.equal(f.helps, 1); assert.equal(panel.hidden, false); assert.equal(panel.querySelectorAll('[data-trig-step]').length, 5);
+        continue;
+      }
       assert.equal(buttons.length, layers.length);
       assert.equal(f.container.querySelector('.profile-model-note').textContent, 'Это чертёж к текущей задаче. Открытие построения — подсказка.');
       buttons.forEach((button, i) => {
@@ -57,6 +80,27 @@ test('planimetry: every auxiliary construction has a neutral label and records h
         assert.notEqual(f.container.querySelector('.profile-model-note').textContent, 'Это чертёж к текущей задаче. Открытие построения — подсказка.');
         button.click(); assert.equal(f.helps, before + 1); assert.equal(layers[i].getAttribute('visibility'), 'hidden');
       });
+    }
+  } finally { f.close(); }
+});
+
+
+test('right-triangle walkthroughs derive ratios and arithmetic from the current condition', () => {
+  const f = fixture();
+  try {
+    const variants = [
+      ['geo-right-cosine', { part: 18, ratio: 0.6 }, 30, '18 : 0,6 = 180 : 6 = 30', '30 · 0,6 = 18'],
+      ['geo-right-sine', { whole: 20, ratio: 0.6 }, 12, '20 · 0,6 = 120 : 10 = 12', '12 : 20 = 0,6'],
+      ['geo-right-tangent', { whole: 8, ratio: 1.5 }, 12, '8 · 1,5 = 120 : 10 = 12', '12 : 8 = 1,5']
+    ];
+    for (const [id, meta, answer, arithmetic, check] of variants) {
+      const original = selectTasks(f, lesson => lesson.group === 'geometry').find(task => task.id === id);
+      f.mount({ ...original, meta, answer, prompt: 'Проверочное условие с изменёнными известными величинами.' }, true);
+      f.container.querySelector('[data-trig-open]').click();
+      const next = f.container.querySelector('[data-trig-next]'); for (let i = 1; i < 5; i++) next.click();
+      const panel = f.container.querySelector('[data-trig-explanation]');
+      assert.ok(panel.textContent.includes(arithmetic), id + ': current arithmetic');
+      assert.ok(panel.querySelector('[data-trig-step="5"]').textContent.includes(check), id + ': current ratio check');
     }
   } finally { f.close(); }
 });

@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 class Node {
-  constructor(tag) { this.tagName = tag; this.attrs = {}; this.children = []; this.style = {}; this.dataset = {}; this.handlers = {}; this.textContent = ''; }
+  constructor(tag) { this.tagName = tag; this.attrs = {}; this.children = []; this.style = {}; this.dataset = {}; this.handlers = {}; this.textContent = ''; this.classList = { add: (...tokens) => { this.className = [this.className || '', ...tokens].filter(Boolean).join(' '); } }; }
   setAttribute(k, v) { this.attrs[k] = String(v); }
   getAttribute(k) { return this.attrs[k] ?? null; }
   append(...nodes) { nodes.forEach(n => { n.parentNode = this; this.children.push(n); }); }
@@ -38,13 +38,27 @@ for (const task of tasks) {
   for (const text of all(host, 'text')) for (const n of text.textContent.match(/\d+(?:[,.]\d+)?/g) || []) assert.ok(givenNumbers.has(n), task.id + ' must not print a calculated number: ' + n);
   const buttons = all(host, 'button'); assert.ok(buttons.length >= 1 && buttons.length <= 2, task.id);
   for (const button of buttons) {
-    assert.equal(button.type, 'button'); assert.equal(button.getAttribute('aria-pressed'), 'false');
-    const count = helped; button.click(); assert.equal(helped, count + 1, task.id + ' help must be recorded'); assert.equal(button.getAttribute('aria-pressed'), 'true');
-    button.click(); assert.equal(helped, count + 1, task.id + ' closing is not another hint'); assert.equal(button.getAttribute('aria-pressed'), 'false');
+    assert.equal(button.type, 'button');
+    if (['geo-right-cosine', 'geo-right-sine', 'geo-right-tangent'].includes(task.id)) {
+      assert.equal(button.dataset.trigOpen, ''); assert.equal(button.getAttribute('aria-expanded'), 'false');
+      assert.equal(all(host).filter(node => node.dataset.trigExplanation !== undefined).length, 0, 'No hidden explanation before help');
+      const count = helped; button.click(); assert.equal(helped, count + 1, task.id + ' help must be recorded');
+      assert.equal(button.getAttribute('aria-expanded'), 'true');
+      const panel = all(host).find(node => node.dataset.trigExplanation !== undefined), next = all(host).find(node => node.dataset.trigNext !== undefined);
+      for (let shown = 1; shown <= 5; shown++) { assert.equal(all(panel, 'li').length, shown); if (shown < 5) next.click(); }
+      next.click(); assert.equal(all(panel, 'li').length, 5, 'A completed explanation cannot append another step');
+      button.click(); assert.equal(helped, count + 1, task.id + ' closing is not another hint'); assert.equal(panel.hidden, true);
+      button.click(); assert.equal(helped, count + 1, task.id + ' reopening does not repeat the help callback'); assert.equal(all(panel, 'li').length, 5);
+    } else {
+      assert.equal(button.getAttribute('aria-pressed'), 'false');
+      const count = helped; button.click(); assert.equal(helped, count + 1, task.id + ' help must be recorded'); assert.equal(button.getAttribute('aria-pressed'), 'true');
+      button.click(); assert.equal(helped, count + 1, task.id + ' closing is not another hint'); assert.equal(button.getAttribute('aria-pressed'), 'false');
+    }
   }
   assert.ok(all(host, 'p').some(n => n.textContent.includes('подсказка')), task.id);
+  const allButtons = all(host, 'button');
   cleanup(); assert.equal(host.children.length, 0, task.id + ' cleanup');
-  buttons.forEach(b => assert.equal(b.handlers.click, undefined));
+  allButtons.forEach(b => assert.equal(b.handlers.click, undefined));
   for (const context of [{ mode: 'guided' }, { mode: 'independent', solved: true }]) { let count = 0; const r = render(task.id, { ...context, onHelp: () => count++ }); all(r.host, 'button').forEach(b => b.click()); assert.equal(count, 0); r.cleanup(); }
 }
 // All six angle conditions, including the important distinct interior/exterior arcs.

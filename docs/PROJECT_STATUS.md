@@ -50,7 +50,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Public profile solutions still remain local to the browser. Release evidence
   is recorded in PR #220.
 
-## In progress: exam tasks first, targeted school help when needed
+## Published: exam tasks first, targeted school help when needed
 
 - [Scope](tasks/PROFILE_EXAM_FIRST_ROUTE.md): display the thirteen-position
   catalogue first in profile cabinets; open actual exam practice before optional
@@ -61,8 +61,29 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Targeted learner robots passed catalogue, independent entry, wrong-input
   handling, school/trigonometry repair and preserved return on desktop/mobile.
   Focused independent MEDIUM source review approved without P1/P2 findings.
-- Next: final regression and exact-head CI, controlled merge, then verify live
-  cabinet/course assets under the standing cloud-publication instruction.
+- PR #221 merged as `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`, parent equal
+  to the base above, reviewed tree `634bf3446b3c0c614bea377e62854a3259056712`.
+  Exact-head course, cabinet and navigation CI passed. Initial legacy test
+  assumptions were corrected without removing mathematical/assistance checks.
+- Pages run 38015110612 and post-merge profile run 38015110834 passed.
+  Eight Pages assets and four actual Amvera assets matched the reviewed bytes;
+  health and persistent storage were ready. The brief hosting restart 503
+  resolved without intervention. Live UI confirmed thirteen entries, a real
+  independent task, relevant trigonometry help and return after reload with
+  the same condition and draft. No real pupil results were changed.
+
+## In progress: a real explanation for right-triangle trigonometry
+
+- [Scope](tasks/PROFILE_TRIANGLE_EXPLANATION.md): replace the inadequate
+  side-highlighting hint in the three sine/cosine/tangent tasks with gradual
+  explanations of the ratio, operation, arithmetic and answer check.
+- Base `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`; branch
+  `fix/profile-triangle-explanation`. MEDIUM, existing assisted-practice model;
+  no account, server or persistence changes.
+- Local learner robot passed six journeys at widths 360/1280, model geometry
+  36/36, independent models 8/8 and existing first-three browser 108 models /
+  56 journeys. Focused independent MEDIUM review approved with no P1/P2 findings.
+- Next: bind review to the final tree, pass exact-head CI, verify publication.
 
 ## Published: independent pupil entry and parent progress
 

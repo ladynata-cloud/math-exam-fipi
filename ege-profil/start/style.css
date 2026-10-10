@@ -71,3 +71,19 @@ body{overflow-wrap:anywhere}.model-panel input[type=range]{margin-inline:0}.circ
 /* Exam tasks come first; prerequisite help appears when it is needed. */
 .exam-card-actions{display:grid;gap:12px;margin-top:18px;align-content:start}.exam-card-actions .button{color:#fff;text-align:center;white-space:normal}.exam-card-actions>a:not(.button){font-size:14px}.difficulty-help{border:1px solid var(--line);border-radius:12px;background:#f7fafc;padding:20px;margin:20px 0}.difficulty-help h2{font-size:20px}.difficulty-help p{font-size:15px}.difficulty-help p:last-child{margin-top:14px;margin-bottom:0}
 @media(max-width:760px){.exam-card-actions{grid-column:2}.exam-card-actions .button{font-size:15px}.difficulty-help{padding:16px}}
+
+/* These three ratio tasks reveal an explanation only when help is requested. */
+#task-model .profile-trig-explanation .profile-task-svg{max-height:320px}
+#task-model .profile-trig-explanation .profile-model-note{font-size:16px}
+.profile-trig-walkthrough{margin-top:20px;border-top:1px solid var(--line);padding-top:20px}
+.profile-trig-walkthrough[hidden]{display:none}
+.profile-trig-walkthrough ol{list-style:none;padding:0;margin:0;display:grid;gap:18px}
+.profile-trig-step{min-width:0;background:#f3f8f5;border:1px solid #ceded5;border-radius:12px;padding:18px}
+.profile-trig-step h3{font-size:20px;line-height:1.4;margin:0 0 14px;color:#164d44}
+#task-model .profile-trig-step p{font-size:18px;line-height:1.6;margin:12px 0 0;overflow-wrap:anywhere}
+#task-model .profile-trig-step .profile-trig-formula{font-weight:650;color:#164d44}
+#task-model .profile-trig-explanation button{font-size:17px;white-space:normal;min-height:48px}
+#task-model .profile-trig-explanation button:focus-visible{outline:3px solid #176860;outline-offset:3px}
+#task-model [data-trig-next]{margin-top:18px}
+#task-model [data-trig-next][aria-disabled=true]{background:#f2f4f3;color:#53635c;border-color:#ced5d1;cursor:default}
+@media(max-width:420px){.profile-trig-step{padding:14px}.profile-trig-step h3{font-size:19px}}

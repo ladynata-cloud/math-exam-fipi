@@ -26,7 +26,7 @@ jobs:
       - name: Mathematics and state
         run: node tools/profile-route.test.cjs && node tools/profile-start.test.cjs && node tools/profile-geometry.test.cjs && node tools/profile-algebra.test.cjs && node tools/profile-stereo.test.cjs && node tools/profile-planimetry-models.test.cjs && node tools/profile-vector-models.test.cjs && node tools/profile-number-input.test.cjs && node tools/profile-input-ui.test.cjs
       - name: Real browser and board
-        run: node tools/profile-route.browser.cjs && node tools/profile-start.browser.cjs && node tools/profile-first-three.browser.cjs && node tools/board-picker-smoke.cjs
+        run: node tools/profile-route.browser.cjs && node tools/profile-start.browser.cjs && node tools/profile-first-three.browser.cjs && node tools/profile-triangle-explanation.browser.cjs && node tools/board-picker-smoke.cjs
       - name: Full first part and inequality mathematics
         run: node tools/profile-full-course.test.cjs && node --test tools/profile-probability.test.cjs tools/profile-equations.test.cjs tools/profile-functions.test.cjs tools/profile-applied.test.cjs && node tools/profile-part2-inequalities.test.cjs
       - name: Full first part and inequality learner journeys

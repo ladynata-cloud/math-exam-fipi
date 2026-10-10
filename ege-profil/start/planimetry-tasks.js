@@ -1,7 +1,8 @@
 (function (root) {
   'use strict';
   // Task-bound drawings. Coordinates use the actual condition; unknown lengths
-  // may determine a shape, but their values are never printed by this renderer.
+  // may determine a shape. Worked answers appear only in explicitly opened,
+  // progressively revealed explanations.
   const registry = root.ProfileTaskModels = root.ProfileTaskModels || {};
   const NS = 'http://www.w3.org/2000/svg';
   const ink = '#243b43', green = '#176860', amber = '#9a4614', pale = '#e9f4f0';
@@ -81,6 +82,45 @@
         const p = xy(a), q = xy(b), r = radius * scale;
         el('path', { d: `M ${p[0]} ${p[1]} A ${r} ${r} 0 ${to - from > 180 ? 1 : 0} 0 ${q[0]} ${q[1]}`, fill: 'none', stroke: color, 'stroke-width': 5, 'stroke-linecap': 'round' }, parent);
       },
+      walkthrough(makeSteps, highlight) {
+        wrapper.classList.add('profile-trig-explanation');
+        feedback.textContent = independent ? 'Это чертёж к текущей задаче. Открытие разбора — подсказка.' : 'Если нужна помощь, открой разбор. Каждый шаг останется перед глазами.';
+        const button = document.createElement('button'); button.type = 'button'; button.dataset.trigOpen = '';
+        button.textContent = 'Разобрать решение по шагам'; button.setAttribute('aria-expanded', 'false'); controls.append(button);
+        let panel, list, next, layer, steps, shown = 0;
+        const revealStep = () => {
+          if (shown === steps.length) return;
+          const step = steps[shown], item = document.createElement('li'); item.className = 'profile-trig-step'; item.dataset.trigStep = String(shown + 1);
+          const heading = document.createElement('h3'); heading.textContent = `Шаг ${shown + 1} из ${steps.length}. ${step.title}`; item.append(heading);
+          step.lines.forEach(line => {
+            const paragraph = document.createElement('p'); paragraph.textContent = typeof line === 'string' ? line : line.formula;
+            if (typeof line !== 'string') paragraph.className = 'profile-trig-formula';
+            item.append(paragraph);
+          });
+          list.append(item); shown += 1;
+          next.setAttribute('aria-disabled', String(shown === steps.length));
+          next.textContent = shown < steps.length ? `Следующий шаг: ${shown + 1} из ${steps.length}` : `Все ${steps.length} шагов открыты`;
+        };
+        const onClick = () => {
+          const opening = button.getAttribute('aria-expanded') !== 'true';
+          if (!panel) {
+            // Mark assistance before adding any explanation, including hidden DOM.
+            if (independent && typeof context.onHelp === 'function') context.onHelp();
+            steps = makeSteps();
+            layer = el('g', { 'data-model-layer': 'Стороны для разбора' }, svg);
+            const old = parent; parent = layer; highlight(api); parent = old;
+            panel = document.createElement('section'); panel.dataset.trigExplanation = ''; panel.className = 'profile-trig-walkthrough';
+            panel.setAttribute('aria-label', 'Разбор решения по шагам');
+            list = document.createElement('ol'); list.dataset.trigSteps = ''; list.setAttribute('aria-live', 'polite'); list.setAttribute('aria-relevant', 'additions'); panel.append(list);
+            next = document.createElement('button'); next.type = 'button'; next.dataset.trigNext = ''; next.addEventListener('click', revealStep); panel.append(next);
+            wrapper.append(panel); disposers.push(() => next.removeEventListener('click', revealStep));
+            revealStep();
+          }
+          panel.hidden = !opening; layer.setAttribute('visibility', opening ? 'visible' : 'hidden');
+          button.setAttribute('aria-expanded', String(opening)); button.textContent = opening ? 'Свернуть разбор' : 'Разобрать решение по шагам';
+        };
+        button.addEventListener('click', onClick); disposers.push(() => button.removeEventListener('click', onClick));
+      },
       toggle(label, render, explanation, initial = false) {
         if (independent) initial = false;
         const layer = el('g', { 'data-model-layer': label, visibility: initial ? 'visible' : 'hidden' }, svg), old = parent; parent = layer; render(api); parent = old;
@@ -100,6 +140,76 @@
     return () => { disposers.forEach(f => f()); wrapper.remove(); };
   }
   function triangleLabels(d, p) { d.polygon([p.A, p.B, p.C]); d.point(p.A, 'A', 0, -20); d.point(p.B, 'B', -14, 20); d.point(p.C, 'C', 14, 20); }
+  function rightTrigSteps(task) {
+    const m = task.meta, cosine = task.id === 'geo-right-cosine', sine = task.id === 'geo-right-sine';
+    const clean = n => fmt(Number(n.toFixed(10))), ratio = clean(m.ratio), known = clean(cosine ? m.part : m.whole);
+    const answer = clean(cosine ? m.part / m.ratio : m.whole * m.ratio);
+    const multiplier = 10 ** ((String(m.ratio).split('.')[1] || '').length), numerator = Math.round(m.ratio * multiplier);
+    const formula = text => ({ formula: text });
+    if (cosine) return [
+      { title: 'Найдём нужные стороны', lines: [
+        'Квадратик отмечает прямой угол. Напротив него — гипотенуза: наклонная сторона со знаком «?».',
+        `Катет ${known} касается угла α. Это прилежащий катет — нижняя сторона.`
+      ] },
+      { title: 'Что означает косинус?', lines: [
+        'Косинус показывает, какую часть гипотенузы составляет прилежащий катет.',
+        formula('cos α = прилежащий катет : гипотенуза'),
+        formula(`${ratio} = ${known} : гипотенуза`)
+      ] },
+      { title: 'Почему делим?', lines: [
+        `Катет ${known} составляет ${ratio} длины гипотенузы.`,
+        formula(`${ratio} · гипотенуза = ${known}`),
+        `Чтобы найти всю длину по известной части, делим ${known} на ${ratio}.`,
+        formula(`Гипотенуза = ${known} : ${ratio}`)
+      ] },
+      { title: 'Вычислим', lines: multiplier > 1 ? [
+        `Умножим делимое и делитель на ${multiplier}. Частное не изменится, а в делителе не будет запятой.`,
+        formula(`${known} : ${ratio} = ${clean(m.part * multiplier)} : ${numerator} = ${answer}`),
+        `Гипотенуза равна ${answer}.`
+      ] : [formula(`${known} : ${ratio} = ${answer}`), `Гипотенуза равна ${answer}.`] },
+      { title: 'Проверим', lines: [
+        formula(`${answer} · ${ratio} = ${known}`),
+        'Получили длину катета из условия.',
+        formula(`${answer} > ${known}`),
+        'Гипотенуза длиннее катета — так и должно быть.',
+        `Ответ: ${answer}. Теперь можно ввести его в поле ответа.`
+      ] }
+    ];
+    return [
+      { title: 'Найдём нужные стороны', lines: sine ? [
+        `Квадратик отмечает прямой угол. Напротив него — гипотенуза ${known}: наклонная сторона.`,
+        'Катет напротив α не касается этого угла. Это вертикальная сторона со знаком «?». Её нужно найти.'
+      ] : [
+        `Катет ${known} касается угла α. Это прилежащий катет — нижняя сторона.`,
+        'Искомый катет расположен напротив α. Это вертикальная сторона со знаком «?». Для тангенса нужны эти два катета.'
+      ] },
+      { title: sine ? 'Что означает синус?' : 'Что означает тангенс?', lines: [
+        sine ? 'Синус показывает, какую часть гипотенузы составляет противолежащий катет.' : 'Тангенс сравнивает два катета: противолежащий делим на прилежащий.',
+        formula(sine ? 'sin α = противолежащий катет : гипотенуза' : 'tg α = противолежащий катет : прилежащий катет'),
+        formula(`${ratio} = неизвестный катет : ${known}`)
+      ] },
+      { title: 'Почему умножаем?', lines: sine ? [
+        `Катет составляет ${ratio} длины гипотенузы. Чтобы найти такую часть от ${known}, умножаем.`,
+        formula(`Катет = ${known} · ${ratio}`)
+      ] : [
+        `При делении неизвестного катета на ${known} получается ${ratio}.`,
+        `Чтобы найти делимое, умножаем частное ${ratio} на делитель ${known}.`,
+        formula(`Катет = ${known} · ${ratio}`)
+      ] },
+      { title: 'Вычислим', lines: multiplier > 1 ? [
+        formula(`${ratio} = ${numerator} : ${multiplier}`),
+        `Сначала умножим ${known} на ${numerator}, затем разделим на ${multiplier}.`,
+        formula(`${known} · ${ratio} = ${clean(m.whole * numerator)} : ${multiplier} = ${answer}`),
+        `Искомый катет равен ${answer}.`
+      ] : [formula(`${known} · ${ratio} = ${answer}`), `Искомый катет равен ${answer}.`] },
+      { title: 'Проверим', lines: [
+        formula(`${answer} : ${known} = ${ratio}`),
+        sine ? 'Получили синус из условия.' : 'Получили тангенс из условия.',
+        sine ? `Катет ${answer} короче гипотенузы ${known} — так и должно быть.` : 'Тангенс может быть больше 1: один катет может быть длиннее другого.',
+        `Ответ: ${answer}. Теперь можно ввести его в поле ответа.`
+      ] }
+    ];
+  }
   function register(ids, fn) { ids.forEach(id => { registry[id] = (container, task, context) => fn(container, task, context || {}); }); }
   register(['geo-angles-sum', 'geo-angles-isosceles', 'geo-angles-exterior', 'geo-angles-ratio', 'geo-angles-bisector', 'geo-angles-parallel'], (container, task, context) => {
     const id = task.id, m = task.meta;
@@ -137,7 +247,16 @@
       if (bottom) d.label(p.O, p.R, bottom, 24, bottom === '?' ? amber : ink);
       if (upright) d.label(p.O, p.T, upright, -24, upright === '?' ? amber : ink);
       if (hyp) d.label(p.T, p.R, hyp, -23, hyp === '?' ? amber : ink);
-      if (id === 'geo-right-sine' || id === 'geo-right-cosine' || id === 'geo-right-tangent') { d.angle(p.R, p.O, p.T, 'α', 30); const expression = id === 'geo-right-sine' ? 'sin α = 0,28' : id === 'geo-right-cosine' ? 'cos α = 0,8' : 'tg α = 2,5'; d.text(p.T, expression, 45, -32, green); d.toggle('Выделить стороны для угла α', () => { if (id !== 'geo-right-cosine') d.line(p.O, p.T, amber, false, 5); if (id !== 'geo-right-sine') d.line(p.O, p.R, green, false, 5); if (id !== 'geo-right-tangent') d.line(p.T, p.R, amber, true, 4); }, id === 'geo-right-sine' ? 'Противолежащий катет расположен напротив α. Гипотенуза — напротив прямого угла.' : id === 'geo-right-cosine' ? 'Прилежащий катет образует угол α вместе с гипотенузой.' : 'Противолежащий катет — напротив α. Прилежащий катет — нижняя сторона.'); }
+      if (id === 'geo-right-sine' || id === 'geo-right-cosine' || id === 'geo-right-tangent') {
+        d.angle(p.R, p.O, p.T, '', 30); d.text(p.R, 'α', -43, -22, green, 22);
+        const symbol = id === 'geo-right-sine' ? 'sin' : id === 'geo-right-cosine' ? 'cos' : 'tg';
+        d.text(p.T, `${symbol} α = ${fmt(m.ratio)}`, 45, -32, green);
+        d.walkthrough(() => rightTrigSteps(task), () => {
+          if (id !== 'geo-right-cosine') d.line(p.O, p.T, amber, false, 5);
+          if (id !== 'geo-right-sine') d.line(p.O, p.R, green, false, 5);
+          if (id !== 'geo-right-tangent') d.line(p.T, p.R, amber, true, 4);
+        });
+      }
       else d.toggle('Выделить гипотенузу', () => d.line(p.T, p.R, amber, false, 5), 'Гипотенуза расположена напротив прямого угла. Это самая длинная сторона.');
     });
   });
