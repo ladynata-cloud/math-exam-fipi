@@ -73,3 +73,13 @@ permission prompts. No force, reset, rebase, admin override or disabled gate.
 
 Local results and exact publication head, CI and production evidence are recorded
 in the task PR. Failed or incomplete gates must be stated separately.
+
+## Concurrent release composition
+
+PR #232 advanced main to `cee6bd214de94852676ea90283e190316700b237`
+with ready-parent access and login feedback from the neighboring cabinet task.
+Its reviewed provenance is recorded in that PR. A read-only merge found only a
+status-document conflict. An ordinary merge preserves both status sections and
+all concurrent runtime blobs; no account source is edited by this task. The
+new-base delta remains the same 34 scoped files. Exact-head profile CI is renewed
+on the composed tree before publication.

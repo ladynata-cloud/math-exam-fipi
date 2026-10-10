@@ -19,24 +19,42 @@ their previous sessions and QR grant.
 
 ## Parent entry
 
-In **Мои ученики**, choose **Доступ родителю** beside the intended pupil. Enter
-the parent's display name and issue a private invitation. One parent account
-per pupil is supported in this version. The parent receives a separate login,
-opens the invitation and sets their own four-digit code once, then enters the
-parent cabinet without another change-password step. Existing longer passwords
-continue working. The
-invitation lasts seven days; an authenticated session lasts thirty days.
+In **Мои ученики**, choose **Доступ родителю** beside the intended pupil.
+The default form suggests a ready four-digit code; the teacher may keep it or
+choose another, then issue the parent access. One parent account per pupil is
+supported. The private completion card contains the separate parent login,
+login-prefilled return link, ready code and copyable message. The parent opens
+that link, enters the code and immediately sees the parent cabinet, without
+activation or a second code-creation prompt. Existing longer passwords still
+work on ordinary login. The session lasts thirty days.
 
-Copy and save the invitation before closing its guarded card. A non-secret
-return link and login remain available from the teacher's parent-access dialog;
-the invitation secret cannot be retrieved again. If the issuing response is
-lost, refresh the metadata and explicitly issue a replacement. Do not create a
-second pupil account or reuse the pupil's password for the parent.
+The ready card has an ordinary **Готово** button. Its code exists only in the
+issuing page's memory and is cleared when the card closes or the page leaves;
+it is not stored in browser storage or retrievable later. Opening existing
+access shows metadata and the return link, and never changes a code. Replacing
+it requires an explicit action. If acknowledgement is lost, show uncertainty
+and refreshed metadata without claiming that the code is confirmed; do not
+retry a credential mutation automatically.
 
-Issuing a replacement immediately disables the old parent's password and
-sessions, then lets the parent choose a new password through the new invitation.
+Ready-code creation/replacement preserves the parent identity and login, and
+revokes only that parent's old sessions and invitations. The server validates
+Origin, CSRF, teacher role, ownership, exact four ASCII digits and expected
+parent version, with a teacher rate limit before hashing. After asynchronous
+hashing, its transaction rechecks the current teacher session/credential epoch,
+child ownership and parent version. It stores only the password hash and does
+not change the pupil's credentials or work.
+
+The former invitation flow remains an explicit optional path. Its seven-day
+link lets the parent choose their own code once. Issuing a replacement
+invitation disables the old parent code and sessions until activation. Its
+private token cannot be retrieved after closing the guarded invitation card.
 Disabling parent access ends all of its sessions without affecting the pupil.
 Changes to the pupil's password or QR do not change parent access.
+
+Teacher, pupil and parent login display **Входим…** and three animated dots
+immediately after submission, remaining busy through the first cabinet-data
+request. Duplicate submissions are disabled. Reduced-motion preferences show
+static dots; failures restore the usable form and explain the error.
 
 The parent page is `/learning/parent.html`. It uses its own session cookie, so
 visiting it does not turn a pupil's or teacher's browser session into a parent

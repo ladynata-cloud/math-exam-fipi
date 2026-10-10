@@ -21,11 +21,21 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Pages 38025132684 passed, with seven public asset comparisons and the live
   nine-step similarity example verified on 2026-10-10.
 
-## Merged: clear code-save feedback
+## In progress: ready parent entry and visible login feedback
 
-- PR #231 is present on the verified base as
-  `f2a8ba0c6b721446209b4e1c3b83134733f3036d`. Its deployment is not re-certified
-  by this unrelated public-navigation task.
+- [Scope](tasks/SIMPLE_PARENT_ENTRY.md); base
+  `f2a8ba0c6b721446209b4e1c3b83134733f3036d`; branch
+  `feat/simple-parent-entry`. HIGH independent internal review under the
+  existing checked-publication instruction and external-review waiver.
+- Ready four-digit parent codes are the primary teacher provisioning flow.
+  Parents use their own login-prefilled link and code with no activation step.
+- Teacher, pupil and parent login show three animated dots and “Входим…”
+  through the initial cabinet load. Keep role, session and learning boundaries.
+- The owner also requested a separate practice pupil with the same course,
+  goal and start as an existing pupil. Configure through the private teacher
+  interface; no real pupil identifiers or credentials are included in Git.
+
+## Published: clear code-save feedback
 
 - [Scope](tasks/CODE_SAVE_FEEDBACK.md); base
   `0081ce7b52db04be20a70ab6653b4f00d4679025`; branch
@@ -36,6 +46,13 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Code settings become an overview with explicit editing. An uncertain save
   hides inputs and offers the cabinet or an explicit same-code retry. No real
   credentials, backend contracts or learning data change.
+- PR #231 merged as `f2a8ba0c6b721446209b4e1c3b83134733f3036d`, reviewed
+  tree `42c81f4e686fb23268ab1d66547c884cea8fcb17`. Focused browser gates,
+  independent HIGH review, learning CI 38032040830 and navigation CI
+  38032040839 passed; full backend checks passed 269/269. Pages run
+  38032570811 passed. All four changed public/cabinet asset checks matched
+  at 06:57:56 UTC. Amvera health/storage and the existing teacher session
+  were verified without a manual restart or any credential change.
 
 ## Published: four-digit codes and completed setup
 

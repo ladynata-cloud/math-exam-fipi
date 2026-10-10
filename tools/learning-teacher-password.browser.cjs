@@ -133,7 +133,7 @@ const COOKIE = 'mathexam_learning_local';
       assert.equal(passwordPosts(), before, 'A failed logout never changes the code');
     }
     async function stableOutcome(kind) {
-      const before = passwordPosts(), text = await outcome(kind);
+      const text = await outcome(kind), before = passwordPosts();
       await page.evaluate(() => LearningApp.refresh());
       assert.equal(await outcome(kind), text, 'Rerender preserves the known outcome');
       await page.keyboard.press('Enter');
