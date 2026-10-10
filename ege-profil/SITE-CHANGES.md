@@ -204,6 +204,12 @@ trig-sum-to-product, vectors-t2; плюс `exam/bank.js`.
   с новыми условиями; `verify-{cil,kon,par,shar,komb}.js` берут числа
   по имени величины; шапка `data.js` и `README.txt` говорят о переписке,
   а не о повторе шаблона.
+- `js/data.js`, 28.09.2026 — только шапка (из `engine.js`), `README.txt` —
+  та же фраза: ссылка на `docs/tasks/STEREO_OWN_WORDING_17.md` названа
+  «обоснование и сходство с шаблоном до и после». Тексты «было/стало»
+  17 задач перенесены из опубликованной спецификации в
+  `_istochniki/stereo-bank/audit/svoimi-slovami.md` (не публикуется);
+  в спецификации остались новые тексты и сходство.
 - `js/trainer.js` — запись прогресса как в опубликованной линейке
   (`attempts`, `wrong`, `topic`, `updatedAt`, перечитывание перед
   записью); мусор в `stereo3.status` и `stereo3.last.<тема>` отбрасывается;
