@@ -100,13 +100,25 @@ async function main() {
     assert.equal(await tp.locator('#student-entry-link').evaluate(node => node.selectionEnd - node.selectionStart), (await tp.locator('#student-entry-link').inputValue()).length);
     assert.equal(await tp.locator('#modal input[type=password]').count(), 0);
     await tp.locator('#dialog-close').click();
-    await tp.locator('[data-family-parent]').click(); await tp.locator('#parent-access-login').waitFor();
-    assert.equal(await tp.locator('#parent-access-login').inputValue(), familyBefore.parentAccess.login);
-    assert.equal(await tp.locator('[data-parent-issue]').isDisabled(), true, 'Existing family access cannot be replaced by opening its settings');
-    assert.equal(await tp.locator('#parent-reissue-confirm').isChecked(), false);
+    await tp.locator('[data-family-parent]').click(); await tp.locator('#parent-return-link').waitFor();
+    const parentLink = await tp.locator('#parent-return-link').inputValue(), parentURL = new URL(parentLink);
+    assert.equal(parentURL.origin, origin);
+    assert.equal(parentURL.pathname, '/learning/parent.html');
+    assert.equal(parentURL.hash, '#login=' + familyBefore.parentAccess.login,
+      'The permanent parent link identifies the existing account without a separate login field');
+    assert.equal(parentURL.search, '');
+    assert.equal(await tp.locator('#parent-return-link').getAttribute('readonly'), '');
+    assert.equal(await tp.locator('#parent-settings input[readonly]').count(), 1, 'Only the permanent link is displayed as access metadata');
+    assert.equal(await tp.locator('#parent-access-login,#parent-settings [name=login]').count(), 0);
+    assert.equal(await tp.locator('#parent-invitation-options,#parent-access-form,#parent-reissue-confirm,[data-parent-issue]').count(), 0,
+      'Ordinary parent settings do not expose invitation issuance or reissue');
     assert.equal(await tp.locator('#modal input[type=password]').count(), 0);
+    await tp.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async value => { window.copiedFamilyEntry = value; } } }));
     await tp.locator('[data-parent-copy-login]').click();
-    assert.equal(await tp.locator('#parent-return-link').evaluate(node => node.selectionEnd - node.selectionStart), (await tp.locator('#parent-return-link').inputValue()).length);
+    assert.equal(await tp.evaluate(() => window.copiedFamilyEntry), parentLink, 'Copying existing parent access returns only the permanent link');
+    await tp.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async () => { throw Error('Synthetic clipboard denial'); } } }));
+    await tp.locator('[data-parent-copy-login]').click();
+    assert.equal(await tp.locator('#parent-return-link').evaluate(node => node.selectionEnd - node.selectionStart), parentLink.length);
     await tp.locator('#dialog-close').click();
     assert.deepEqual(await api(tp, '/teacher/students/' + pupil.id + '/parent-access'), familyBefore);
     assert.equal((await api(tp, '/session')).account.id, teacherBefore);

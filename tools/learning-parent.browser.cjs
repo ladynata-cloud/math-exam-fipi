@@ -59,6 +59,17 @@ async function ready(page) {
   await page.waitForFunction(() => document.querySelector('#trainer-host .frame-status')?.hidden);
 }
 const saved = page => page.waitForFunction(() => document.querySelector('#save-state')?.textContent === 'Все изменения сохранены');
+async function codeOnly(page) {
+  await page.locator('#parent-auth-form[data-mode=login]').waitFor();
+  await page.locator('#parent-code-entry').waitFor();
+  await page.waitForFunction(() => !document.querySelector('#parent-login'));
+  assert.equal(await page.locator('#main input:visible').count(), 1, 'A personal link needs just one visible code input');
+  assert.equal(await page.locator('#parent-password').isVisible(), true);
+  assert.equal(await page.locator('#main [name=login],#parent-login,#parent-show-password,#main .role-choices,#main .auth-intro').count(), 0,
+    'The personal link does not expose login, role choices, checkboxes or a long introduction');
+  assert.equal(await page.locator('#parent-auth-submit').textContent(), 'Войти');
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
+}
 
 async function main() {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'learning-parent-'));
@@ -148,8 +159,9 @@ async function verifyReadyParent({ teacher, teacherId, origin, open }) {
     await tp.evaluate(() => LearningApp.navigate('students')); await tp.evaluate(() => LearningApp.refresh());
     await tp.locator('[data-parent-access="' + pupil.id + '"]').click();
     await tp.locator('#parent-settings').waitFor();
-    assert.equal(await tp.locator('#parent-invitation-options').getAttribute('open'), null,
-      'Legacy invitations are an optional closed section');
+    await tp.locator('[data-parent-state]').waitFor();
+    assert.equal(await tp.locator('#parent-invitation-options,#parent-access-form,[data-parent-issue]').count(), 0,
+      'Regular parent settings offer a permanent link and code, not invitation issuance');
   }
   async function issue(code, expectedVersion) {
     await tp.locator('#parent-password-form [name=password]').fill(code);
@@ -168,7 +180,7 @@ async function verifyReadyParent({ teacher, teacherId, origin, open }) {
   async function closeReady(code, loginName) {
     const link = origin + '/learning/parent.html#login=' + loginName;
     assert.equal(await tp.locator('#parent-ready-link').inputValue(), link);
-    assert.equal(await tp.locator('#parent-ready-login').inputValue(), loginName);
+    assert.equal(await tp.locator('#parent-ready-login').count(), 0, 'The ready card has no standalone login field');
     assert.equal(await tp.locator('#parent-ready-password').inputValue(), code);
     assert.equal(await tp.locator('#parent-ready-done').isDisabled(), false, 'The ready card closes with plain Done');
     assert.equal(await tp.locator('#modal input[type=checkbox]').count(), 0, 'Ready access has no save-confirmation checkboxes');
@@ -176,7 +188,8 @@ async function verifyReadyParent({ teacher, teacherId, origin, open }) {
       value: { writeText: async () => { throw Error('Synthetic clipboard denied'); } } }));
     await tp.locator('#copy-parent-ready').click(); await tp.locator('#parent-ready-copy-text').waitFor({ state: 'visible' });
     const fallback = await tp.locator('#parent-ready-copy-text').inputValue();
-    assert(fallback.includes(link) && fallback.includes(loginName) && fallback.includes(code));
+    assert(fallback.includes(link) && fallback.includes(code));
+    assert(!/Логин\s*:/.test(fallback), 'The parent receives only the permanent link and code');
     await tp.locator('#select-parent-ready').click();
     assert.equal(await tp.locator('#parent-ready-copy-text').evaluate(node => node === document.activeElement
       && node.selectionStart === 0 && node.selectionEnd === node.value.length), true);
@@ -196,6 +209,7 @@ async function verifyReadyParent({ teacher, teacherId, origin, open }) {
     if (close === 'escape') await tp.keyboard.press('Escape');
     else await tp.locator('#dialog-close').click();
     await tp.waitForFunction(() => !document.querySelector('#modal').open);
+    await tp.locator('#parent-password-form').waitFor({ state: 'detached' });
     assert.equal(await detachedPin.evaluate(node => node.value), '',
       'Both native Escape and the explicit close button clear detached parent-code inputs');
     await detachedPin.dispose(); await settings();
@@ -213,14 +227,40 @@ async function verifyReadyParent({ teacher, teacherId, origin, open }) {
   assert.equal(passwordPosts, 1);
   const pp = (await open({ width: 390, height: 844 })).page;
   await pp.goto(link); await pp.locator('#parent-auth-form[data-mode=login]').waitFor();
-  assert.equal(await pp.locator('#parent-login').inputValue(), access.login);
+  await codeOnly(pp);
   assert.equal(await pp.locator('[name=confirm]').count(), 0, 'Ready parent entry asks only for the existing code');
   assert.equal(await pp.locator('#parent-password').inputValue(), '');
+  await pp.reload(); await codeOnly(pp); assert.equal(pp.url(), link);
+  await pp.locator('.skip-link').focus(); await pp.keyboard.press('Enter');
+  await codeOnly(pp); assert.equal(pp.url(), link, 'Skip navigation preserves the personal identity hint');
+  await pp.locator('.parent-header .brand').click(); await codeOnly(pp);
+  assert.equal(pp.url(), link, 'The parent brand returns to the same permanent personal link');
+  if (process.env.LEARNING_QA_DIR) {
+    fs.mkdirSync(process.env.LEARNING_QA_DIR, { recursive: true });
+    await pp.screenshot({ path: path.join(process.env.LEARNING_QA_DIR, 'parent-code-only.png'), fullPage: true });
+  }
+  for (const invalid of ['login=invalid!', 'login=' + access.login + '&extra=1', 'login=' + access.login + '&login=other', '']) {
+    await pp.locator('#parent-password').fill(pin);
+    const previousInput = await pp.locator('#parent-password').elementHandle();
+    await pp.evaluate(hash => { location.hash = hash; }, invalid);
+    await pp.locator('#parent-login').waitFor();
+    assert.equal(await previousInput.evaluate(node => node.value), '', 'Replacing an invalid personal hint clears the detached code input');
+    await previousInput.dispose();
+    assert.equal(await pp.locator('#parent-login').inputValue(), '', 'An invalid or removed hint cannot retain a prior parent identity');
+    await pp.evaluate(hash => { location.hash = hash; }, 'login=' + access.login);
+    await codeOnly(pp);
+  }
 
   let loginPosts = 0, heldLogin, markLogin;
+  const submittedLogins = [];
   const loginHeld = new Promise(resolve => { markLogin = resolve; });
-  pp.on('request', request => { if (request.url().endsWith('/api/learning/parent/login') && request.method() === 'POST') loginPosts++; });
+  let heldPreflight, markPreflight;
+  const preflightHeld = new Promise(resolve => { markPreflight = resolve; });
+  pp.on('request', request => { if (request.url().endsWith('/api/learning/parent/login') && request.method() === 'POST') {
+    loginPosts++; submittedLogins.push(request.postDataJSON().login);
+  } });
   await pp.route('**/api/learning/parent/login', route => { heldLogin = route; markLogin(); }, { times: 1 });
+  await pp.route('**/api/learning/parent/session', route => { heldPreflight = route; markPreflight(); }, { times: 1 });
   async function busy() {
     await pp.locator('#parent-auth-progress').waitFor({ state: 'visible' });
     assert.match(await pp.locator('#parent-auth-progress').innerText(), /Входим/);
@@ -231,8 +271,13 @@ async function verifyReadyParent({ teacher, teacherId, origin, open }) {
     assert.equal(await pp.locator('#main').getAttribute('aria-busy'), 'true');
     assert.equal(await pp.locator('#parent-auth-submit').isDisabled(), true);
   }
-  await pp.locator('#parent-password').fill('9999'); await pp.locator('#parent-auth-submit').click(); await loginHeld;
+  await pp.locator('#parent-password').fill('9999'); await pp.locator('#parent-auth-submit').click(); await preflightHeld;
   await busy();
+  await pp.evaluate(() => { location.hash = 'login=parent-aaaaaaaaaaaaaaaa'; });
+  assert.equal(loginPosts, 0, 'The competing hint arrives before the authentication POST has been built');
+  await heldPreflight.continue(); await loginHeld;
+  assert.equal(heldLogin.request().postDataJSON().login, access.login,
+    'A different link arriving during session preflight cannot switch the submitted identity');
   if (process.env.LEARNING_QA_DIR) {
     fs.mkdirSync(process.env.LEARNING_QA_DIR, { recursive: true });
     await pp.screenshot({ path: path.join(process.env.LEARNING_QA_DIR, 'parent-login-busy.png'), fullPage: true });
@@ -249,15 +294,28 @@ async function verifyReadyParent({ teacher, teacherId, origin, open }) {
   await pp.route('**/api/learning/parent/overview', route => { heldOverview = route; markOverview(); }, { times: 1 });
   await pp.locator('#parent-password').fill(pin); await pp.locator('#parent-auth-submit').click(); await overviewHeld;
   await busy(); assert.equal(loginPosts, 2, 'Error recovery permits exactly one explicit login retry');
+  assert.deepEqual(submittedLogins, [access.login, access.login], 'A busy link hint is not silently applied to the next retry');
   await heldOverview.continue(); await pp.locator('#parent-overview').waitFor();
   assert.equal(await pp.locator('#parent-auth-form').count(), 0);
   assert.equal(await pp.locator('#parent-auth-progress').isVisible(), false);
   assert.notEqual(await pp.locator('#main').getAttribute('aria-busy'), 'true');
   assert.equal((await raw(pp, '/parent/session')).body.parent.login, access.login);
   await privateState(pp, [pin]);
+  assert.equal(await pp.locator('#parent-saved-login').count(), 0);
+  assert.equal(await pp.locator('#parent-return-link').inputValue(), link);
+  await pp.locator('#parent-return-card > summary').click();
+  await pp.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true,
+    value: { writeText: async value => { window.parentReturnCopy = value; } } }));
+  await pp.locator('#parent-copy-return').click();
+  assert.equal(await pp.evaluate(() => window.parentReturnCopy), link, 'The return button copies only the permanent link');
+  await pp.locator('#parent-logout').click(); await codeOnly(pp);
+  assert.equal(pp.url(), link, 'Logout preserves the personal link for next time');
+  await pp.reload(); await codeOnly(pp); assert.equal(await pp.locator('#parent-password').inputValue(), '');
+  await pp.locator('#parent-password').fill(pin); await pp.locator('#parent-auth-submit').click(); await pp.locator('#parent-overview').waitFor();
   await settings();
   assert.equal(await tp.locator('#parent-password-form').count(), 0, 'Opening active parent access is read-only');
-  assert.equal(await tp.locator('#parent-access-login').inputValue(), access.login);
+  assert.equal(await tp.locator('#parent-access-login').count(), 0);
+  assert.equal(await tp.locator('#parent-return-link').inputValue(), link);
   assert.equal(passwordPosts, 1);
   await tp.locator('#change-parent-password').click(); await tp.locator('#parent-password-form').waitFor();
   const reset = await issue(replacement, access.version); await closeReady(replacement, access.login);
@@ -338,24 +396,13 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
     await tp.evaluate(() => LearningApp.navigate('students')); await tp.evaluate(() => LearningApp.refresh());
     await tp.locator('[data-parent-access="' + pupil.id + '"]').click();
     await tp.locator('#parent-settings').waitFor();
-    assert.equal(await tp.locator('#parent-invitation-options').getAttribute('open'), null);
-    await tp.locator('#parent-invitation-options > summary').click();
-    await tp.locator('#parent-access-form').waitFor();
-  }
-  async function acknowledge() {
-    const input = await tp.locator('#invite-link').elementHandle();
-    assert.equal(await tp.locator('#invite-done').isDisabled(), true);
-    await tp.locator('#invite-saved').check(); await tp.locator('#invite-done').click();
-    await tp.locator('#invite-link').waitFor({ state: 'detached' });
-    assert.equal(await input.evaluate(node => node.value), '', 'Closing the card clears even its detached credential input');
-    await input.dispose(); await privateState(tp, tokens);
+    await tp.locator('[data-parent-state]').waitFor();
+    assert.equal(await tp.locator('#parent-invitation-options,#parent-access-form,[data-parent-issue]').count(), 0);
   }
   async function login(page, loginName, password = PARENT_PASSWORD) {
     await page.goto(origin + '/learning/parent.html#login=' + encodeURIComponent(loginName));
     await page.locator('#parent-auth-form[data-mode=login]').waitFor();
-    // A same-page #login navigation dispatches hashchange after goto resolves.
-    await page.waitForFunction(login => document.querySelector('#parent-login')?.value === login, loginName);
-    assert.equal(await page.locator('[name=login]').inputValue(), loginName, 'Return links prefill only the non-secret login');
+    await codeOnly(page);
     await page.locator('[name=password]').fill(password); await page.locator('#parent-auth-submit').click();
     await page.locator('#parent-overview').waitFor();
   }
@@ -367,7 +414,7 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
     assert.match(await page.locator('.family-identity').textContent(), /Родитель/);
     assert((await page.locator('.family-identity').textContent()).includes(pupil.name));
     assert.match(await page.locator('#parent-updated').textContent(), /Обновлено:/);
-    assert.equal(await page.locator('#parent-logout').textContent(), 'Сменить пользователя');
+    assert.equal(await page.locator('#parent-logout').textContent(), 'Выйти');
     assert.deepEqual(data.student, { name: pupil.name }); assert.deepEqual(data.profile, { course: 'oge', goal: 'pass' });
     assert.equal(data.progress.totalAttempts, 2); assert.equal(data.progress.startedAttempts, 1);
     assert.equal(data.progress.completedAttempts, 1); assert.equal(data.progress.independentAttempts, 1);
@@ -397,33 +444,18 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
     return data;
   }
 
-  await settings();
-  assert.equal(await tp.locator('#parent-access-form input[type=password]').count(), 0,
-    'The optional invitation still lets the parent choose their own code');
-  await tp.locator('#parent-access-form [name=name]').fill('Проверочный родитель');
-  const issuance = tp.waitForResponse(response => response.url().endsWith('/api/learning' + metadataPath) && response.request().method() === 'POST');
-  const issuedAt = Date.now(); await tp.locator('[data-parent-issue]').click();
-  const issued = await (await issuance).json(); tokens.push(issued.invitationToken);
+  // Old invitation links remain supported, but ordinary teacher settings no
+  // longer issue them. Provision this compatibility fixture through the API.
+  const issuedAt = Date.now();
+  const issued = await api(tp, metadataPath, { name: 'Проверочный родитель', expectedVersion: 0 });
+  tokens.push(issued.invitationToken);
   assert.match(issued.invitationToken, /^[A-Za-z0-9_-]{43}$/);
   assert(issued.parentAccess.invitationExpiresAt >= issuedAt + 7 * 86400000);
   assert(issued.parentAccess.invitationExpiresAt < Date.now() + 7 * 86400000 + 1000);
   assert.equal(issued.parentAccess.version, 1); assert.equal(issued.parentAccess.active, false);
   const loginName = issued.parentAccess.login;
-  await tp.locator('#invite-link').waitFor(); const link = await tp.locator('#invite-link').inputValue();
-  assert.equal(link, origin + '/learning/parent.html#invite=' + issued.invitationToken);
-  assert.equal(await tp.locator('#invite-login').inputValue(), loginName);
-  await tp.keyboard.press('Escape'); assert.equal(await tp.locator('#invite-link').isVisible(), true);
-  await tp.evaluate(() => LearningApp.refresh()); assert.equal(await tp.locator('#invite-link').isVisible(), true);
-  assert.equal(await tp.locator('#dialog-close').count(), 0, 'An unsaved invitation has no accidental close control');
-  await tp.mouse.click(1, 1); assert.equal(await tp.locator('#invite-link').isVisible(), true);
-  await tp.evaluate(() => document.querySelector('#logout').click());
-  assert.equal((await api(tp, '/session')).account.id, teacherId, 'An unsaved invitation guards logout');
-  await tp.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async () => { throw Error('Synthetic clipboard denied'); } } }));
-  await tp.locator('#copy-invite').click(); await tp.locator('#invite-copy-text').waitFor();
-  assert((await tp.locator('#invite-copy-text').inputValue()).includes(link));
-  assert.equal(await tp.locator('#invite-copy-text').evaluate(node => node.selectionEnd - node.selectionStart), (await tp.locator('#invite-copy-text').inputValue()).length,
-    'Unavailable clipboard has a selected, readable manual fallback');
-  await privateState(tp, tokens, { markup: false }); await acknowledge();
+  const link = origin + '/learning/parent.html#invite=' + issued.invitationToken;
+  await privateState(tp, tokens);
 
   // A shared family device keeps the child's existing cookie while adding a
   // distinct parent cookie. No child login or impersonation is involved.
@@ -453,7 +485,7 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   assert.equal(await pp.locator('#parent-auth-form').count(), 0,
     'Parent activation opens the overview without asking to create another code');
   assert.equal(await pp.locator('#parent-return-card').getAttribute('open'), '');
-  assert.equal(await pp.locator('#parent-saved-login').inputValue(), loginName);
+  assert.equal(await pp.locator('#parent-saved-login').count(), 0, 'The return card does not expose a standalone login');
   assert.equal(await pp.locator('#parent-return-link').inputValue(), origin + '/learning/parent.html#login=' + loginName);
   assert.equal((await learningCookie(student.context)).value, pupilCookie.value);
   assert.equal((await api(sp, '/session')).account.id, pupil.id);
@@ -526,6 +558,11 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   assert.equal((await raw(laptop.page, '/parent/session')).body.parent.login, loginName);
   assert.match(await laptop.page.locator('#parent-notice').textContent(), /уже вошли/); await projection(laptop.page);
   assert.equal((await api(tp, peerPath)).parentAccess.active, false, 'The second invitation remains unconsumed');
+  await laptop.page.goto(origin + '/learning/parent.html#login=' + peerIssued.parentAccess.login);
+  await laptop.page.locator('#parent-overview').waitFor();
+  assert.equal((await raw(laptop.page, '/parent/session')).body.parent.login, loginName,
+    'A personal link is a login hint, never authority to replace an already authenticated parent');
+  assert.equal(await laptop.page.locator('#parent-return-link').inputValue(), origin + '/learning/parent.html#login=' + loginName);
 
   // Password recovery belongs to the child, not to the independent parent.
   const replacement = '0273'; await api(tp, '/teacher/students/' + pupil.id + '/password', { password: replacement });
@@ -554,26 +591,47 @@ async function verifyParent({ teacher, teacherId, student, pupil, peer, origin, 
   assert.equal(await pp.locator('#parent-overview').count(), 0, 'Revocation removes previously displayed private progress');
   await privateState(pp, tokens); await tp.locator('#dialog-close').click();
 
-  // A committed issue whose response is lost must not issue twice or pretend
-  // the one-time secret can be fetched from metadata. Explicit reissue is needed.
-  const beforeLost = (await api(tp, metadataPath)).parentAccess; await settings();
-  assert.equal(await tp.locator('[data-parent-issue]').isDisabled(), true);
-  await tp.locator('#parent-reissue-confirm').check(); let lostIssues = 0;
+  // Old invitation APIs remain compatible. A committed response loss still
+  // cannot reveal its one-time secret through teacher metadata.
+  const beforeLost = (await api(tp, metadataPath)).parentAccess;
+  let lostIssues = 0, lostToken;
   await tp.route('**/api/learning' + metadataPath, async route => {
     if (route.request().method() === 'POST') {
       lostIssues++; const committed = await route.fetch(); assert.equal(committed.status(), 200);
-      tokens.push((await committed.json()).invitationToken); await route.abort('failed');
+      lostToken = (await committed.json()).invitationToken; tokens.push(lostToken); await route.abort('failed');
     } else await route.continue();
   });
-  await tp.locator('[data-parent-issue]').click();
-  await tp.locator('[data-parent-message]').filter({ hasText: 'Ответ о сохранении не получен' }).waitFor();
+  const lost = await tp.evaluate(async ({ route, version }) => {
+    try { await LearningApp.api(route, { method: 'POST', body: JSON.stringify({ name: 'Проверочный родитель', expectedVersion: version }) }); return false; }
+    catch (_) { return true; }
+  }, { route: metadataPath, version: beforeLost.version });
+  assert.equal(lost, true);
   assert.equal(lostIssues, 1); assert.equal(await tp.locator('#invite-link').count(), 0);
-  assert.equal(await tp.locator('[data-parent-issue]').isDisabled(), true);
   const afterLost = (await api(tp, metadataPath)).parentAccess;
   assert.equal(afterLost.login, loginName); assert.equal(afterLost.version, beforeLost.version + 1);
   assert.equal(afterLost.active, false); assert.equal(afterLost.enabled, true);
   await privateState(tp, tokens); await tp.unroute('**/api/learning' + metadataPath);
+  await settings(); assert.equal(await tp.locator('#invite-link,[data-parent-issue]').count(), 0);
   await tp.locator('#dialog-close').click();
+  const oldPassword = 'Synthetic previous parent password', legacy = await open();
+  await legacy.page.goto(origin + '/learning/parent.html');
+  await legacy.page.locator('#parent-login').waitFor();
+  assert.equal((await raw(legacy.page, '/parent/activate', { token: lostToken, password: oldPassword })).status, 200);
+  await legacy.page.reload(); await legacy.page.locator('#parent-overview').waitFor();
+  await legacy.page.locator('#parent-logout').click(); await codeOnly(legacy.page);
+  await legacy.page.locator('#parent-password').fill(oldPassword); await legacy.page.locator('#parent-auth-submit').click();
+  await legacy.page.locator('#parent-overview').waitFor();
+  assert.equal((await raw(legacy.page, '/parent/session')).body.parent.login, loginName,
+    'A personal link still accepts the account’s previous long password');
+  await privateState(legacy.page, [...tokens, oldPassword]);
+  await legacy.page.locator('#parent-logout').click(); await codeOnly(legacy.page);
+  await legacy.page.evaluate(() => { location.hash = ''; }); await legacy.page.locator('#parent-login').waitFor();
+  assert.equal(await legacy.page.locator('#parent-login').inputValue(), '');
+  await legacy.page.locator('#parent-login').fill(loginName); await legacy.page.locator('#parent-password').fill(oldPassword);
+  await legacy.page.locator('#parent-auth-submit').click(); await legacy.page.locator('#parent-overview').waitFor();
+  assert.equal((await raw(legacy.page, '/parent/session')).body.parent.login, loginName,
+    'The generic page remains a working login-and-password fallback without a personal link');
+  await privateState(legacy.page, [...tokens, oldPassword]); await legacy.context.close();
   assert.deepEqual(await api(tp, '/attempts/' + fixture.loose.id), childBefore);
   await tp.goto(origin + '/learning/#login=' + pupil.login); await tp.locator('#navigation').waitFor();
   assert.equal((await api(tp, '/session')).account.id, teacherId, 'A pupil login hint cannot switch an authenticated teacher');

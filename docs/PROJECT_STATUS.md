@@ -6,7 +6,20 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: unified profile course menu
+## In progress: one permanent parent link and one code field
+
+- [Scope](tasks/PARENT_LINK_CODE_ONLY.md); base
+  `92bd34a6163b2115c940a76ba08160cd270dcceb`; branch
+  `fix/parent-link-code-only`; HIGH independent internal review.
+- The owner requests a parent-facing flow with only a permanent personal link
+  and a manually entered code. Hide the account identifier and remove unrelated
+  choices from this route; preserve return after reload/logout.
+- Ready teacher messages contain the personal link and code. Existing links,
+  account/session boundaries and legacy login compatibility remain supported.
+- No backend, schema or real credential changes. Checked publication remains
+  authorized under the standing owner instruction and external-review waiver.
+
+## Published: unified profile course menu
 
 - [Scope](tasks/PROFILE_UNIFIED_COURSE.md); base
   `f2a8ba0c6b721446209b4e1c3b83134733f3036d`; branch
@@ -21,7 +34,14 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Pages 38025132684 passed, with seven public asset comparisons and the live
   nine-step similarity example verified on 2026-10-10.
 
-## In progress: ready parent entry and visible login feedback
+- PR #233 merged as `92bd34a6163b2115c940a76ba08160cd270dcceb`, parent
+  `cee6bd214de94852676ea90283e190316700b237`; reviewed composed tree
+  `15736a13ae36e910d64c5084c5d13142ed204f3e`. Its PR records exact-head
+  profile CI 38044542147, logarithmic CI 38044542160 and Pages 38044855461
+  passing, plus the live menu/help/return checks. Direct public byte comparison
+  was not completed in that task; no such verification is inferred here.
+
+## Published: ready parent entry and visible login feedback
 
 - [Scope](tasks/SIMPLE_PARENT_ENTRY.md); base
   `f2a8ba0c6b721446209b4e1c3b83134733f3036d`; branch
@@ -34,6 +54,14 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - The owner also requested a separate practice pupil with the same course,
   goal and start as an existing pupil. Configure through the private teacher
   interface; no real pupil identifiers or credentials are included in Git.
+- PR #232 merged as `cee6bd214de94852676ea90283e190316700b237`; parent
+  `f2a8ba0c6b721446209b4e1c3b83134733f3036d` and reviewed tree
+  `c76453e4c68c87c0d5cd5ea704510a866e95a4a2` verified. Backend 281/281,
+  eight browser gates, independent HIGH review and exact-head learning CI
+  38043639279/navigation CI 38043639289 passed. Pages 38044221483 passed;
+  all 12 changed live asset comparisons matched at 10:19:32 UTC. Amvera
+  health/storage and the retained teacher session were verified after its
+  ordinary rollout. Requested practice-pupil settings survived full reload.
 
 ## Published: clear code-save feedback
 
