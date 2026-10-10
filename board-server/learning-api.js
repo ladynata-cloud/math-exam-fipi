@@ -41,6 +41,9 @@ function createLearningApi(options = {}) {
   const authMiddleware = handler((req, _res, next) => {
     req.learningSessionToken = cookie(req);
     req.learningAuth = store.session(req.learningSessionToken);
+    // Optional client identity fence prevents another tab's cookie change from
+    // returning a different person's data beneath the old account heading.
+    requireValue(!req.get('x-learning-account') || req.get('x-learning-account') === req.learningAuth.id, 'LEARNING_ACCOUNT_CHANGED', 409);
     limiter.take(`authenticated:${req.learningAuth.id}`, 900, 60000);
     next();
   });
@@ -75,7 +78,8 @@ function createLearningApi(options = {}) {
     res.json(sessionResponse(res, store.quickLogin(req.body.token)));
   }));
   router.post('/login', originMiddleware, handler(async (req, res) => {
-    exactKeys(req.body, ['login','password'], ['login','password']);
+    exactKeys(req.body, ['login','password','expectedRole'], ['login','password']);
+    requireValue(!Object.hasOwn(req.body, 'expectedRole') || ['teacher', 'student'].includes(req.body.expectedRole), 'LEARNING_ROLE_INVALID');
     const rawLogin = typeof req.body.login === 'string' ? req.body.login.trim().toLowerCase().slice(0, 100) : '';
     anonymousLimit(req, rawLogin);
     let login;
@@ -83,6 +87,8 @@ function createLearningApi(options = {}) {
     const account = login ? store.accountByLogin(login) : null;
     const valid = await verifyPassword(req.body.password, account?.password_hash);
     requireValue(valid, 'LEARNING_ACCESS_INVALID', 401);
+    // Role selection is a destination check, never a grant of authority.
+    requireValue(!req.body.expectedRole || account.role === req.body.expectedRole, 'LEARNING_ROLE_MISMATCH', 409);
     res.json(sessionResponse(res, store.loginSession(account.id, account.password_hash, account.auth_epoch)));
   }));
   router.post('/activate', originMiddleware, handler(async (req, res) => {

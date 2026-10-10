@@ -34,7 +34,9 @@ class FamilyAccess {
   metadata(learnerId) {
     const row = this.store.row('SELECT * FROM learning_parents WHERE learner_id=?', learnerId);
     if (!row) return { exists: false, name: '', login: '', enabled: false, active: false, version: 0, invitationExpiresAt: null };
-    const invitation = this.store.row('SELECT expires_at FROM learning_parent_invitations WHERE parent_id=? AND epoch=? AND expires_at>?', row.id, row.epoch, this.store.clock());
+    // Keep an expired invitation's timestamp visible so the teacher can
+    // distinguish expiration from activation or a revoked invitation.
+    const invitation = this.store.row('SELECT expires_at FROM learning_parent_invitations WHERE parent_id=? AND epoch=?', row.id, row.epoch);
     return { exists: true, name: row.name, login: row.login, enabled: !!row.enabled,
       active: !!row.enabled && !!row.password_hash, version: row.version, invitationExpiresAt: invitation?.expires_at ?? null };
   }
@@ -66,7 +68,7 @@ class FamilyAccess {
       if (!revoke) {
         invitationToken = token(32);
         this.store.run('INSERT INTO learning_parent_invitations(hash,parent_id,epoch,expires_at) VALUES(?,?,?,?)',
-          tokenHash(invitationToken), row.id, row.epoch + 1, now + 3 * DAY);
+          tokenHash(invitationToken), row.id, row.epoch + 1, now + 7 * DAY);
       }
       // Never use operation(): its result receipt would persist the raw token.
       return { parentAccess: this.metadata(learnerId), ...(invitationToken ? { invitationToken } : {}) };
@@ -159,7 +161,7 @@ class FamilyAccess {
             updatedAt: row.updated_at });
         }
       }
-      return { student: { name: child.name }, profile: { course: profile?.course || 'school', goal: profile?.goal || null }, progress, homework };
+      return { fetchedAt: store.clock(), student: { name: child.name }, profile: { course: profile?.course || 'school', goal: profile?.goal || null }, progress, homework };
     });
   }
 }
@@ -180,6 +182,8 @@ function createFamilyRouter({ store, handler, authMiddleware, mutationMiddleware
   });
   const auth = handler((req, _res, next) => {
     req.parentSessionToken = cookie(req); req.parentAccount = family.session(req.parentSessionToken);
+    // Bind an already rendered page to its parent identity across tab changes.
+    requireValue(!req.get('x-learning-parent') || req.get('x-learning-parent') === req.parentAccount.login, 'LEARNING_PARENT_ACCOUNT_CHANGED', 409);
     limiter.take('auth:' + req.parentAccount.id, 300, 60000); next();
   });
   function signedOut(req) {

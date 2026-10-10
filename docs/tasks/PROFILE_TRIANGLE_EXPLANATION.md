@@ -98,3 +98,24 @@ Actual execution and release evidence are recorded in this task and the PR.
   were not run locally because their files and contracts are unchanged.
 - Cloud CI, fresh-main guard and live publication evidence remain pending and
   will be recorded in the PR; this document does not predict their success.
+
+## Concurrent-base reconciliation
+
+- Initial remote head `0a512eef339507854d053704c91c5dba065225b9` has the
+  reviewed tree `6d95e14bf0175c9a14dd94cef07c4b14d4a745ac`. Complete profile
+  CI run 38016718495 passed, including the new six-journey browser robot.
+- Before release, authoritative main advanced to
+  `a971a49f8a98a281df7c078b8409996909fc6880`: the owner's merged PR #222
+  for clear family cabinets, with its own independent review, CI and release
+  evidence. This is the only concurrent commit; its parent is the original base.
+- The read-only virtual merge found one documentation conflict in
+  `docs/PROJECT_STATUS.md`. There is no runtime, test or workflow overlap.
+  Release stopped while this was inspected; no production merge was attempted.
+- The active task instructions authorize routine conflict resolution under the
+  existing cloud-publication scope. The resolution preserves both release
+  records and introduces no runtime change. It uses an ordinary merge commit,
+  with no force, reset, rebase or history replacement.
+- Publication base is now `a971a49f8a98a281df7c078b8409996909fc6880`.
+  Independent composition review and exact-head CI must be renewed; the
+  original review/CI are not claimed as validation of a different composition.
+  Current remote main must again match this base immediately before release.

@@ -72,6 +72,29 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   independent task, relevant trigonometry help and return after reload with
   the same condition and draft. No real pupil results were changed.
 
+## Published: clear teacher, pupil and parent cabinets
+
+- [Scope](tasks/CLEAR_FAMILY_CABINETS.md); base
+  `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`; branch
+  `feat/clear-family-cabinets`. HIGH internal independent review under the
+  owner's standing cloud-publication instruction and external-review waiver.
+- Explicit role entrances and session identity checks prevent misleading
+  teacher links and stale records after another account signs in. Teacher
+  preview retains teacher identity and performs no pupil learning mutation.
+- One pupil card includes profile, plan, work, results and family access.
+  Ordinary entry copying is separate from password replacement. New family
+  invitations last seven days; existing stored expiries remain unchanged.
+- Pupil preparation highlights one next action. Managed long-division work
+  was exercised through offline drafts, reload, lost acknowledgement and the
+  same committed result in pupil, teacher and parent views. Public/local-only
+  exercises remain explicitly outside this shared history.
+- PR #222 merged as `a971a49f8a98a281df7c078b8409996909fc6880`, parent
+  `be7ca1882228fc3b161ab4472f3bc86dfdd8df48`. Its recorded release evidence
+  confirms exact-head learning/navigation CI, Pages run 38016919909, 22/22
+  matching public/cabinet assets and a ready Amvera persistent store.
+  Existing teacher identity survived the release; no real family learning
+  records or credentials were changed by verification.
+
 ## In progress: a real explanation for right-triangle trigonometry
 
 - [Scope](tasks/PROFILE_TRIANGLE_EXPLANATION.md): replace the inadequate
@@ -83,7 +106,11 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Local learner robot passed six journeys at widths 360/1280, model geometry
   36/36, independent models 8/8 and existing first-three browser 108 models /
   56 journeys. Focused independent MEDIUM review approved with no P1/P2 findings.
-- Next: bind review to the final tree, pass exact-head CI, verify publication.
+- Initial exact-head profile CI passed on PR #223. Concurrent PR #222 advanced
+  main to `a971a49f8a98a281df7c078b8409996909fc6880`; composition overlaps
+  only this status document. Both release records are retained and all course
+  runtime/test/workflow files remain byte-identical to their reviewed version.
+- Next: review the reconciled tree, rerun exact-head CI, verify publication.
 
 ## Published: independent pupil entry and parent progress
 

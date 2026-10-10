@@ -25,9 +25,9 @@ async function fixture(t) {
   const server = app.listen(0, '127.0.0.1'); await once(server, 'listening');
   const address = `http://127.0.0.1:${server.address().port}/api/learning`;
   t.after(async () => { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); api.close(); fs.rmSync(directory, { recursive: true, force: true }); });
-  async function request(route, { method = 'GET', body, cookie, csrf, origin = ORIGIN } = {}) {
+  async function request(route, { method = 'GET', body, cookie, csrf, origin = ORIGIN, accountId } = {}) {
     const response = await fetch(address + route, { method, headers: { ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
-      ...(origin ? { Origin: origin } : {}), ...(cookie ? { Cookie: cookie } : {}), ...(csrf ? { 'X-CSRF-Token': csrf } : {}) },
+      ...(origin ? { Origin: origin } : {}), ...(cookie ? { Cookie: cookie } : {}), ...(csrf ? { 'X-CSRF-Token': csrf } : {}), ...(accountId ? { 'X-Learning-Account': accountId } : {}) },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
     const text = await response.text();
     let data; try { data = JSON.parse(text); } catch (_error) { data = text; }
@@ -155,4 +155,44 @@ test('fresh group task cannot replace a changed seat or bypass active teacher co
   api.store.action(activated.account, source.id, { opId: 'return_source_control', expectedVersion: 1, expectedTrainerVersion: 1, type: 'control', payload: { controller: 'student' } });
   api.store.lessonAction(activated.account, lesson.id, { opId: 'change_source_task', expectedVersion: 0, type: 'assign', payload: { learnerIds: [learner.id], trainerId: item.trainerId, contentId: item.contentId } });
   assert.throws(() => api.store.createAttempt(learner, body), { code: 'LEARNING_LESSON_CONTEXT_INVALID' });
+});
+
+
+test('selected login role is only a destination check; wrong-role credentials create no session', async t => {
+  const { api, request, activated } = await fixture(t);
+  const student = api.store.createStudent(activated.account, { name: 'Role fixture', login: 'role_fixture' }, await passwordHash).student;
+  const before = api.store.row('SELECT COUNT(*) AS count FROM sessions').count;
+  for (const body of [
+    { login: 'teacher', password: PASSWORD, expectedRole: 'student' },
+    { login: student.login, password: PASSWORD, expectedRole: 'teacher' }
+  ]) {
+    const response = await request('/login', { method: 'POST', body });
+    assert.equal(response.status, 409); assert.equal(response.data.error, 'LEARNING_ROLE_MISMATCH');
+    assert.equal(response.cookie, undefined);
+  }
+  assert.equal(api.store.row('SELECT COUNT(*) AS count FROM sessions').count, before);
+  const invalidRole = await request('/login', { method: 'POST', body: { login: 'teacher', password: PASSWORD, expectedRole: 'parent' } });
+  assert.equal(invalidRole.status, 400); assert.equal(invalidRole.cookie, undefined);
+  const wrongPassword = await request('/login', { method: 'POST', body: { login: student.login, password: 'not the password', expectedRole: 'teacher' } });
+  assert.equal(wrongPassword.status, 401); assert.equal(wrongPassword.data.error, 'LEARNING_ACCESS_INVALID');
+  const selected = await request('/login', { method: 'POST', body: { login: student.login, password: PASSWORD, expectedRole: 'student' } });
+  assert.equal(selected.status, 200); assert.equal(selected.data.account.role, 'student');
+  const legacy = await request('/login', { method: 'POST', body: { login: 'teacher', password: PASSWORD } });
+  assert.equal(legacy.status, 200); assert.equal(legacy.data.account.role, 'teacher');
+});
+
+test('optional account identity fence rejects stale-tab reads and mutations without changing current session', async t => {
+  const { api, request, activated } = await fixture(t);
+  const current = await request('/login', { method: 'POST', body: { login: 'teacher', password: PASSWORD } });
+  const staleId = 'different-account-from-another-tab';
+  for (const route of ['/session', '/teacher/students', '/assignments']) {
+    const response = await request(route, { cookie: current.cookie, accountId: staleId });
+    assert.equal(response.status, 409); assert.deepEqual(response.data, { ok: false, error: 'LEARNING_ACCOUNT_CHANGED' });
+  }
+  const denied = await request('/teacher/students', { method: 'POST', cookie: current.cookie, csrf: current.data.csrfToken,
+    accountId: staleId, body: { name: 'Do not create', login: 'not_created' } });
+  assert.equal(denied.status, 409); assert.equal(api.store.students(activated.account).length, 0);
+  const valid = await request('/teacher/students', { cookie: current.cookie, accountId: current.data.account.id });
+  assert.equal(valid.status, 200);
+  assert.equal((await request('/session', { cookie: current.cookie })).status, 200, 'Old callers and explicit session resync remain compatible');
 });
