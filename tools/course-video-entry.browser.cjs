@@ -112,7 +112,7 @@ async function main() {
       assert.match(await hub.page.locator('.progress-note').innerText(), /браузере/);
       assert.equal(await hub.page.locator('.practice-card').count(), 62);
       const cabinetLinks = await hub.page.locator('.practice-primary').evaluateAll(nodes => nodes.map(a => a.href));
-      assert.deepEqual(cabinetLinks.sort(), newItems.map(item => 'https://mathexam-board-ladynata.amvera.io/learning/#practice=' + encodeURIComponent(item.id)).sort());
+      assert.deepEqual(cabinetLinks.sort(), newItems.map(item => 'https://cabinet.mathexam.space/learning/#practice=' + encodeURIComponent(item.id)).sort());
       const publicLinks = await hub.page.locator('.practice-preview').evaluateAll(nodes => nodes.map(a => new URL(a.href).pathname + new URL(a.href).search + new URL(a.href).hash));
       assert.deepEqual(publicLinks.sort(), newItems.map(item => { const u = new URL(item.url, 'https://mathexam.space'); u.searchParams.set('practice', '1'); return u.pathname + u.search + u.hash; }).sort());
       for (const subject of ['algebra', 'geometry', 'foundation', 'pre7']) {

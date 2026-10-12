@@ -13,7 +13,7 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const doc = file => new JSDOM(read(file), { url: 'https://mathexam.space/' + file }).window.document;
 const home = doc('index.html'), lab = doc('laboratory/index.html');
 const division = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
-const cabinet = 'https://mathexam-board-ladynata.amvera.io/learning/#route';
+const cabinet = 'https://cabinet.mathexam.space/learning/#route';
 const allowedNav = new Set(['/', '/trainers/oge-course/', '/trainers/oge-basics/', '/laboratory/', cabinet]);
 
 assert.match(home.title, /ОГЭ/);
@@ -26,7 +26,7 @@ assert(home.querySelector('main a[href="' + division + '"]'), 'Division is direc
 assert.equal(home.querySelectorAll('a[href="/laboratory/"]').length, 1);
 assert(home.querySelector('footer a[href="/laboratory/"]'), 'Lab remains a discreet footer entry');
 assert(!home.querySelector('main a[href="/laboratory/"]'));
-assert(home.querySelector('a[href="' + cabinet + '"]'), 'The existing cabinet URL remains available');
+assert(home.querySelector('a[href="' + cabinet + '"]'), 'The cabinet entry uses its dedicated account origin');
 
 const retained = ['/grade7/', '/geometry-course/', '/ege-baza/', '/ege-profil/', '/courses/',
   '/video-lessons/cheatsheets.html', '/oge/', '/trainers/', '/pedagogam/',

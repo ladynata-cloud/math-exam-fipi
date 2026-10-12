@@ -3,7 +3,7 @@
 'use strict';
 const map=window.LearningPreparation;if(!map)return;
 const $=id=>document.getElementById(id),E=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const cabinetOrigin='https://mathexam-board-ladynata.amvera.io';
+const cabinetOrigin='https://cabinet.mathexam.space';
 const key='mathExamFoundations.visits.v1';let visits={},last=null,storageOK=true;
 function read(){try{const data=JSON.parse(localStorage.getItem(key)||'null');visits={};last=null;if(!data||data.version!==1)return;for(const item of map.allItems){const time=data.visits?.[item.id];if(Number.isFinite(time)&&time>0)visits[item.id]=time;}if(map.get(data.last?.id)&&['tasks','laboratory'].includes(data.last?.mode))last={id:data.last.id,mode:data.last.mode};}catch(_){storageOK=false;}}
 function url(item,mode){return mode==='laboratory'?(item.publicUrl||item.url):item.managedId?cabinetOrigin+item.url:item.url;}
