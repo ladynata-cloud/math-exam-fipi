@@ -7,7 +7,7 @@
   const managed = params.get('learning') === '1';
   const channel = params.get('channel') || '';
   const parentOrigin = params.get('parentOrigin') || '';
-  const allowedParents = new Set(['https://mathexam-board-ladynata.amvera.io']);
+  const allowedParents = new Set(['https://mathexam-board-ladynata.amvera.io', 'https://cabinet.mathexam.space']);
   let parentAllowed = false;
   try {
     const url = new URL(parentOrigin);

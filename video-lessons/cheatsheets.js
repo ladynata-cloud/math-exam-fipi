@@ -61,7 +61,7 @@
     $('trainer').href = guide.publicUrl;
     $('quick-trainer').href = guide.publicUrl;
     $('trainer').textContent = 'Попробовать: ' + guide.practiceLabel + ' ↗';
-    $('cabinet-practice').href = 'https://mathexam-board-ladynata.amvera.io/learning/#learn=' + id;
+    $('cabinet-practice').href = 'https://cabinet.mathexam.space/learning/#learn=' + id;
     $('cabinet-practice').hidden = !guide.catalogId;
     $('quick-cabinet').href = $('cabinet-practice').href;
     $('quick-cabinet').hidden = !guide.catalogId;

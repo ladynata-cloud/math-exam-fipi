@@ -99,7 +99,7 @@
       card.append(node('p', descriptions[suffix] || item.title));
       const actions = node('div', '', 'practice-actions');
       const cabinet = node('a', 'Открыть в кабинете →', 'practice-primary');
-      cabinet.href = 'https://mathexam-board-ladynata.amvera.io/learning/#practice=' + encodeURIComponent(item.id);
+      cabinet.href = 'https://cabinet.mathexam.space/learning/#practice=' + encodeURIComponent(item.id);
       const preview = node('a', 'Попробовать без входа', 'practice-preview');
       const url = new URL(item.url, 'https://mathexam.space');
       url.searchParams.set('practice', '1');

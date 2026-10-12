@@ -9,7 +9,7 @@ const {chromium} = require('playwright');
 const preparation = require('../learning/preparation-map.js');
 
 const root = path.resolve(__dirname, '..');
-const CABINET = 'https://mathexam-board-ladynata.amvera.io';
+const CABINET = 'https://cabinet.mathexam.space';
 const VISITS_KEY = 'mathExamFoundations.visits.v1';
 const screenshots = process.env.FOUNDATIONS_SCREENSHOTS;
 const errors = [];
@@ -42,7 +42,7 @@ async function reflow(page, label) {
 async function cabinetDestinations(page) {
   const links = await page.locator('a[href]').evaluateAll(nodes => nodes.map(node => node.href).filter(href => new URL(href).pathname === '/learning/'));
   assert(links.length > 4, 'Cabinet actions exist in the header, route and footer');
-  for (const href of links) assert.equal(new URL(href).origin, CABINET, 'Public links must use the working account origin, not GitHub Pages');
+  for (const href of links) assert.equal(new URL(href).origin, CABINET, 'Public links must use the configured account origin, not GitHub Pages');
 }
 async function shot(page, name) {
   if (!screenshots) return;

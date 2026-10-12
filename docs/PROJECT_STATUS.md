@@ -1,10 +1,31 @@
 # MathExam project status
 
-Updated: 2026-10-11 (Asia/Novosibirsk)
+Updated: 2026-10-12 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
+
+## Prepared only: cabinet recovery and permanent hostname
+
+- [Scope](tasks/CABINET_OWN_DOMAIN_20261012.md); base
+  `6d3eb6391ece697d5b5217817dbdbc2653090da4`; branch
+  `fix/cabinet-domain-20261012`; HIGH review of frame trust and account routing.
+- The public site remains available. Current cloud-browser checks of the
+  Amvera cabinet and control panel returned HTTP 502. Prior successful account
+  releases below are historical evidence, not proof of current availability.
+- `https://cabinet.mathexam.space` is a candidate permanent address only. Its
+  server, DNS and TLS are not ready; do not publish the prepared links until
+  live role, durable-save, restart and independent-backup checks pass.
+- This combined draft is not ready for direct merge: first separately publish
+  the compatible old-plus-new bridge without switching public links, then
+  verify the new server with the real public trainers, and only then switch
+  public links. Neither release step has been performed or authorized here.
+- Existing portable-server preparation is tracked separately in Draft PR #242.
+  No new production accounts, server purchases or DNS changes are claimed here.
+- The separate Amvera video application, media and anonymous board/progress
+  endpoints are retained unchanged. Restoring cabinets does not require
+  abandoning the existing video workflow.
 
 ## Merged: Soviet mathematics pedagogical revision and second batch
 

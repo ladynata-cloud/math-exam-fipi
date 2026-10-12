@@ -43,6 +43,8 @@ jobs:
         run: npm --prefix board-server ci --include=optional
       - name: Server contracts, privacy, recovery and durable restoration
         run: npm --prefix board-server test
+      - name: Cabinet production origins and public entry destinations
+        run: node tools/learning-cabinet-origin.test.cjs
       - name: Mathematical and curriculum checks
         run: |
           node tools/learning-quality-path.cjs

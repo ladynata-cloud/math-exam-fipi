@@ -14,7 +14,7 @@ function script(url){return new Promise((resolve,reject)=>{const s=document.crea
  for(const element of document.body.children)if(!['SCRIPT','STYLE','LINK'].includes(element.tagName))element.setAttribute('data-remediation-standalone','');
  const main=document.createElement('main');main.id='learning-remediation-root';main.textContent='Подключаем сохранённое задание…';document.body.append(main);
  try{
-  for(const file of ['../learning-bridge.js','multiplication-division/division-lab-core.js','learning-bank.js','learning-contracts.js'])await script(file);
+  for(const file of ['../learning-bridge.js?v=cabinet-origin-20261012','multiplication-division/division-lab-core.js','learning-bank.js','learning-contracts.js'])await script(file);
   // Extra explanations must not prevent an existing saved task from opening.
   try{await script('learning-scaffolds.js?v=arithmetic-help-20261010');}catch(_){}
   await script('learning-managed.js?v=arithmetic-help-20261010');
