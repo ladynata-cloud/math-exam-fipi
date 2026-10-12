@@ -1,0 +1,97 @@
+name: mathexam-cabinet
+
+services:
+  app:
+    image: ${CABINET_IMAGE:-mathexam-cabinet:local}
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    # One process owns the SQLite database. Do not scale this service.
+    deploy:
+      replicas: 1
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 30s
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3000"
+      CABINET_DATA_DIR: ${DATA_DIR:?Set an absolute existing DATA_DIR}
+      LEARNING_DB_PATH: /data/learning.sqlite
+      LEARNING_PUBLIC_ORIGIN: https://${CABINET_DOMAIN:?Set the cabinet hostname}
+      LEARNING_TRAINER_ORIGIN: https://mathexam.space
+      PROGRESS_STORE_PATH: /data/progress.json
+      PROGRESS_PERSISTENCE_CONFIRMED: "1"
+      GROUP_LESSON_STORE_DIR: /data/group-lessons
+      CORS_ALLOWED_ORIGINS: https://mathexam.space,https://${CABINET_DOMAIN:?Set the cabinet hostname}
+    volumes:
+      - type: bind
+        source: ${DATA_DIR:?Set an absolute existing DATA_DIR}
+        target: /data
+        bind:
+          create_host_path: false
+    # A normal start must never silently initialize a missing/empty database.
+    # Only an explicit operator command override may initialize a fresh one.
+    command:
+      - sh
+      - -ec
+      - |
+        node -e '
+          const fs = require("node:fs"), path = require("node:path");
+          if (!path.isAbsolute(process.env.CABINET_DATA_DIR)) throw Error("DATA_DIR must be absolute");
+          const file = process.env.LEARNING_DB_PATH, stat = fs.lstatSync(file);
+          if (!stat.isFile() || stat.isSymbolicLink() || stat.size === 0) throw Error("Cabinet database must already exist and be nonempty");
+          // Writable open allows SQLite to recover an interrupted rollback journal.
+          // The file/type/size checks above must precede this open.
+          const { DatabaseSync } = require("node:sqlite"), db = new DatabaseSync(file);
+          try {
+            if (db.prepare("SELECT count(*) AS n FROM accounts WHERE role = ?").get("teacher").n !== 1) throw Error("Cabinet teacher must be initialized explicitly");
+          } finally { db.close(); }
+          require("./learning-backup").verifyDatabase(file);
+        '
+        exec npm start
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - 'fetch("http://127.0.0.1:3000/api/learning/status", { signal: AbortSignal.timeout(4000) }).then(async r => { const s = await r.json(); if (!r.ok || s.available !== true || s.durable !== true) process.exit(1); }).catch(() => process.exit(1));'
+      interval: 15s
+      timeout: 5s
+      start_period: 15s
+      retries: 4
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  caddy:
+    image: caddy:2.11.7-alpine
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      CABINET_DOMAIN: ${CABINET_DOMAIN:?Set the cabinet hostname}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - type: bind
+        source: ./Caddyfile
+        target: /etc/caddy/Caddyfile
+        read_only: true
+        bind:
+          create_host_path: false
+      - caddy_data:/data
+      - caddy_config:/config
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  caddy_data:
+  caddy_config:
