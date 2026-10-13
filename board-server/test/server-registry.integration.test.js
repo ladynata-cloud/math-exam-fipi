@@ -260,7 +260,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   assert.match(dockerfile, /COPY trainers\/board-compat\.json \/app\/trainers\/board-compat\.json/);
   assert.match(dockerfile, /FROM node:24\.21\.0-alpine/);
   assert.match(dockerfile, /RUN npm ci --omit=dev --include=optional/);
-  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics']) assert.ok(dockerfile.includes(`COPY ${folder}/ /app/${folder}/`));
+  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) assert.ok(dockerfile.includes(`COPY ${folder}/ /app/${folder}/`));
   assert.match(dockerfile, /ENV PROGRESS_STORE_PATH=\/data\/progress\.json/);
   assert.match(dockerfile, /VOLUME \["\/data"\]/);
 
@@ -280,7 +280,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     fs.copyFileSync(path.join(serverDir, file), path.join(runtimeServerDir, file));
   }
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));
-  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });
+  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });
 
   const server = await startServer(undefined, runtimeServerDir);
   try {
@@ -294,7 +294,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     assert.match(await cabinet.text(), /Мой кабинет/);
     for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js']) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
     const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
-    assert.equal(learningStatus.trainers.length, 205);
+    assert.equal(learningStatus.trainers.length, 217);
+    assert.equal(learningStatus.trainers.filter(item => item.grade6).length, 12);
     assert.equal(learningStatus.trainers.filter(item => item.grade7).length, 62);
     assert.equal(learningStatus.available, false);
   } finally {

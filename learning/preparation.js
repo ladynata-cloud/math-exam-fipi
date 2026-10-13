@@ -17,7 +17,7 @@ function mountRoute(host,context){
  function hasCompleted(entry){return progress?!!progressFor(entry)?.completed:attemptsFor(entry).some(a=>complete.has(a.outcome));}
  function latest(entry){if(progress)return progressFor(entry)?.latest||null;return attemptsFor(entry).sort((a,b)=>String(b.updatedAt||b.createdAt).localeCompare(String(a.updatedAt||a.createdAt)))[0];}
  function state(entry){const a=latest(entry);return a?(context.labels[a.outcome]||'Начато'):progress?'Ещё не начинали':'История темы пока не загружена';}
- function openButton(entry){const a=latest(entry),done=a&&complete.has(a.outcome);return `<button type="button" data-prep-start="${E(entry.managedId)}" ${done?'data-prep-fresh="true"':''}>${teacher()?'Назначить ученику':done?'Новый пример':a?'Продолжить':'Начать задание'} →</button>${a?`<a class="button small" href="#attempt=${encodeURIComponent(a.id)}">Моё решение</a>`:''}`;}
+ function openButton(entry){const a=latest(entry),done=a&&complete.has(a.outcome);return `<button type="button" data-prep-start="${E(entry.managedId)}" ${done?'data-prep-fresh="true"':''}>${teacher()?'Назначить ученику':done?(context.catalog.get(entry.managedId)?.trainerId==='motion-grade6'?'Повторить занятие':'Новый пример'):a?'Продолжить':'Начать задание'} →</button>${a?`<a class="button small" href="#attempt=${encodeURIComponent(a.id)}">Моё решение</a>`:''}`;}
  function publishedHomework(){return (context.assignments||[]).filter(a=>a.learnerId===context.account.id&&a.status==='published').sort((a,b)=>String(a.dueAt||'9999').localeCompare(String(b.dueAt||'9999')));}
  function nextMarkup(){
   if(teacher())return '';

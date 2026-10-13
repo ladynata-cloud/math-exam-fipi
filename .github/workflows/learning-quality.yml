@@ -9,6 +9,8 @@ on:
       - 'ege-baza/path/**'
       - 'trainers/learning-bridge.js'
       - 'trainers/oge-basics/**'
+      - 'trainers/motion-grade6/**'
+      - 'tools/motion-grade6-*'
       - 'tools/learning-*'
       - 'tools/grade7-*'
       - 'tools/pre7-*'
@@ -62,6 +64,7 @@ jobs:
           node tools/grade7-geometry-practice.test.cjs
           node tools/grade7-route-map.test.cjs
           node tools/learning-preparation.test.cjs
+          node --test tools/motion-grade6-ui-test.cjs
       - name: Install pinned browser test tools
         run: |
           npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsqr@1.4.0 pngjs@7.0.0
@@ -70,6 +73,7 @@ jobs:
       - name: Real classroom, trainer, homework and exam scenarios
         run: |
           node tools/learning-path.browser.cjs
+          node tools/motion-grade6.browser.cjs
           node tools/learning-remediation-smoke.cjs
           node tools/learning-oge-struggling-pupil.browser.cjs
           node tools/learning-oge-standard-route-robot.browser.cjs

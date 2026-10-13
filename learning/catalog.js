@@ -574,6 +574,27 @@
     trainingOnly: true, contentVersion: 1, family: 'path',
     url: '/ege-baza/path/index.html#lesson='+contentId
   })));
+  // The original 12 lessons / 144 exercises; each saved attempt is one full lesson.
+  const motionRows = [
+    ['distance', 'Находим путь'],
+    ['speed', 'Находим скорость'],
+    ['time', 'Находим время'],
+    ['time-units', 'Часы и минуты'],
+    ['meeting', 'Движение навстречу'],
+    ['opposite-directions', 'В разные стороны'],
+    ['catch-up', 'Вдогонку'],
+    ['falling-behind', 'С отставанием'],
+    ['downstream', 'По течению'],
+    ['upstream', 'Против течения'],
+    ['river-speeds', 'Узнаём скорости на реке'],
+    ['round-trip', 'Туда и обратно']
+  ];
+  items.push(...motionRows.map(([contentId, title], lessonIndex) => Object.freeze({
+    id: 'motion-grade6:' + contentId, trainerId: 'motion-grade6', contentId, title,
+    contentVersion: 1, position: null, topicId: 'foundation', family: 'motion-grade6',
+    grade6: true, trainingOnly: true, lessonIndex, taskCount: 12,
+    url: '/trainers/motion-grade6/index.html#lesson=' + encodeURIComponent(contentId)
+  })));
   const byId = Object.create(null);
   for (const item of items) {
     if (byId[item.id]) throw new Error('Duplicate learning item: ' + item.id);

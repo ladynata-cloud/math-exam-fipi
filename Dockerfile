@@ -10,6 +10,7 @@ COPY trainers/board-compat.json /app/trainers/board-compat.json
 COPY learning/ /app/learning/
 COPY ege-baza/path/ /app/ege-baza/path/
 COPY trainers/oge-basics/ /app/trainers/oge-basics/
+COPY trainers/motion-grade6/ /app/trainers/motion-grade6/
 
 RUN mkdir -p /data
 

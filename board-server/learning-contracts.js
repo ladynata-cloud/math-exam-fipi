@@ -7,6 +7,7 @@ const crypto = require('node:crypto');
 const { LearningError, requireValue } = require('./learning-auth');
 const pathState = require('../ege-baza/path/managed-state');
 const remediation = require('./learning-remediation-contracts');
+const motion = require('../trainers/motion-grade6/learning-contracts');
 const catalog = require('../learning/catalog');
 const pathExamPool = require('../ege-baza/path/exam-pool');
 const context = vm.createContext({}, { codeGeneration: { strings: false, wasm: false } });
@@ -43,6 +44,10 @@ function list() {
 
 function create(trainerId, contentId, seed = crypto.randomInt(1, 1000000)) {
   requireValue(Number.isSafeInteger(seed) && seed >= 0 && seed <= 1000000000, 'LEARNING_TASK_INVALID');
+  if (trainerId === 'motion-grade6') {
+    requireValue(catalog.get('motion-grade6:' + contentId), 'LEARNING_TRAINER_UNKNOWN');
+    return motion.create(contentId, seed);
+  }
   if (trainerId === 'oge-basics') {
     const created = remediation.create(contentId, seed);
     created.taskSpec.trainerId = trainerId;
@@ -57,6 +62,7 @@ function create(trainerId, contentId, seed = crypto.randomInt(1, 1000000)) {
 function normalize(trainerId, taskSpec, state) {
   bounded(state);
   try {
+    if (trainerId === 'motion-grade6') return motion.normalize(taskSpec, state);
     if (trainerId === 'oge-basics') return remediation.normalize(taskSpec, state);
     requireValue(trainerId === 'ege-path' && meta.has(taskSpec.contentId) && taskSpec.contentVersion === 1, 'LEARNING_TRAINER_UNKNOWN');
     return pathState.validate(state, taskSpec, D.correct);
@@ -66,9 +72,10 @@ function normalize(trainerId, taskSpec, state) {
   }
 }
 
-function evaluate(trainerId, taskSpec, details) {
+function evaluate(trainerId, taskSpec, details, normalizedState) {
   bounded(details);
   try {
+    if (trainerId === 'motion-grade6') return motion.evaluate(taskSpec, details, normalizedState);
     if (trainerId === 'oge-basics') return remediation.evaluate(taskSpec, details);
     requireValue(trainerId === 'ege-path' && meta.has(taskSpec.contentId) && taskSpec.contentVersion === 1, 'LEARNING_TRAINER_UNKNOWN');
     requireValue(typeof details.answer === 'string' && details.answer.length <= 4000, 'LEARNING_ANSWER_INVALID');
@@ -90,6 +97,7 @@ function evaluate(trainerId, taskSpec, details) {
 }
 
 function describe(taskSpec) {
+  if (taskSpec.trainerId === 'motion-grade6') return motion.describe(taskSpec);
   if (taskSpec.trainerId === 'oge-basics') return remediation.describe(taskSpec);
   const item = meta.get(taskSpec.contentId);
   return { title: item?.title || '', prompt: taskSpec.task?.q || '', contentId: taskSpec.contentId,
@@ -98,13 +106,15 @@ function describe(taskSpec) {
 
 // Identity ignores seeds and answer keys. Repetition must use a different question.
 function questionIdentity(taskSpec) {
+  if (taskSpec.trainerId === 'motion-grade6') return crypto.createHash('sha256').update(motion.questionIdentity(taskSpec)).digest('hex');
   const task = taskSpec.task || {};
   return crypto.createHash('sha256').update(JSON.stringify({ trainerId: taskSpec.trainerId,
     contentId: taskSpec.contentId, prompt: task.q || task.prompt, choices: task.choices,
     labels: task.labels, display: task.display, model: task.model, divisionTask: taskSpec.divisionTask })).digest('hex');
 }
 
-function assistance(trainerId, _taskSpec, state) {
+function assistance(trainerId, taskSpec, state) {
+  if (trainerId === 'motion-grade6') return motion.assistance(taskSpec, state);
   if (trainerId === 'ege-path') return state.work.help || state.work.stage < 3 || !!state.view.hintText;
   if (trainerId === 'oge-basics') return state.view === 'learn' || state.hint > 0 || ['hint', 'solution'].includes(state.feedback.kind);
   return false;
