@@ -10,7 +10,19 @@ function rotate(world,n){const t=rad([-12,0,14,27][n%4]),c=Math.cos(t),s=Math.si
 function fig(world,segments,angles,description,n=0){return H.diagram(description,H.project(rotate(world,n)),segments,angles);}
 const S=H.seg,A=H.angle;
 function register(key,title,section,pages,idea,prerequisites,build){H.register({key,title,section,sourcePages:pages,idea,prerequisites,build});}
-function finish(q,steps,d,params){return H.make({q,steps,diagram:d,params});}
+// Keep each annotation attached to its own vertex/side while reserving space
+// for the other text. This layout is local to these new course diagrams.
+function placeLabels(d){
+ const p=d.points,items=[],width=text=>[...String(text)].reduce((sum,c)=>sum+(c===' '?7:/[0-9]/.test(c)?14:c==='°'?10:c==='+'||c==='='?18:/[MW]/.test(c)?22:/[A-ZА-Я]/.test(c)?18:14),6);
+ const add=(text,candidates,apply)=>items.push({text,w:width(text),candidates,apply});
+ for(const s of d.segments||[])if(s.label){const a=p[s.from],b=p[s.to],dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy),candidates=[];if(s.labelX!==undefined&&s.labelY!==undefined)candidates.push([s.labelX,s.labelY]);for(const offset of [22,34,46,-22,-34,-46])for(const f of [.5,.4,.6])candidates.push([a.x+dx*f-dy/len*offset,a.y+dy*f+dx/len*offset]);add(s.label,candidates,([x,y])=>{s.labelX=x;s.labelY=y;});}
+ for(const a of d.angles||[])if(a.label){const v=p[a.vertex],f=p[a.from],t=p[a.to],start=Math.atan2(f.y-v.y,f.x-v.x),end=Math.atan2(t.y-v.y,t.x-v.x),delta=((end-start+Math.PI*3)%(2*Math.PI))-Math.PI,r=Math.min(a.radius||32,Math.hypot(f.x-v.x,f.y-v.y)*.45,Math.hypot(t.x-v.x,t.y-v.y)*.45),distance=r+Math.max(1,a.marks||1)*5+20,candidates=[];for(const length of [distance,distance-12,distance-24,distance+12,distance+24,26,34,42,58,70,82])if(length>=22&&length<=88)for(const shift of [0,-.12,.12]){const angle=start+delta/2+shift*Math.min(1,Math.abs(delta));candidates.push([v.x+length*Math.cos(angle),v.y+length*Math.sin(angle)+6]);}add(a.label,candidates,([x,y])=>{a.labelX=x;a.labelY=y;});}
+ for(const [id,v]of Object.entries(p))if(v.label!==false){const candidates=[[v.x+(v.dx||0),v.y+(v.dy??-18)]];for(const distance of [26,36,46])for(let k=0;k<12;k++){const angle=-Math.PI/2+k*Math.PI/6;candidates.push([v.x+Math.cos(angle)*distance,v.y+Math.sin(angle)*distance+6]);}add(v.label||id,candidates,([x,y])=>{v.dx=x-v.x;v.dy=y-v.y;});}
+ const box=(item,c)=>({x:c[0]-item.w/2,y:c[1]-26,w:item.w,h:35}),overlap=(a,b)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));
+ const placed=[];for(const item of items){let best=null,score=Infinity;for(let i=0;i<item.candidates.length;i++){const c=item.candidates[i],b=box(item,c),value=placed.reduce((sum,other)=>sum+overlap(b,other),0)*100+i;if(value<score){score=value;best=c;}}item.apply(best);placed.push(box(item,best));}
+ return d;
+}
+function finish(q,steps,d,params){return H.make({q,steps,diagram:placeLabels(d),params});}
 function parallel(alpha,type,n,target='x',given=null,givenKind='usual'){
  const t=rad(alpha),u={x:Math.cos(t),y:Math.sin(t)},P={x:0,y:1.15},Q={x:-2.3/Math.tan(t),y:-1.15};
  const w={P,Q,A:{x:P.x-2.5,y:P.y},B:{x:P.x+2.5,y:P.y},C:{x:Q.x-2.5,y:Q.y},D:{x:Q.x+2.5,y:Q.y},E:{x:P.x+2*u.x,y:P.y+2*u.y},F:{x:Q.x-2*u.x,y:Q.y-2*u.y}};

@@ -138,6 +138,8 @@ reg('triangle-isosceles-base','Основание равнобедренного
 reg('triangle-isosceles-angle','Равные углы при основании',8,'У равнобедренного треугольника равны именно углы при основании.',['triangle-isosceles-base'],n=>{
  const beta=28+n%48,g=iso(n,beta),external=n%2===1;
  let given=beta;if(external){given=180-beta;g.world.E={x:-g.b*2,y:0};g.d.points=project(g.world,n);delete g.d.points.M;g.d.segments.push(S('BE','B','E',{dashed:true}));g.d.angles.push(A('external','B','E','A',{label:given+'°'}));}else g.d.angles.push(A('given','B','A','C',{label:beta+'°'}));
+ // Keep B below the baseline, clear of the exterior-angle value above it.
+ if(external)g.d.points.B.dy=30;
  const q=external?`AB = AC; BE — продолжение CB за B, ∠EBA = ${given}°. Найди ∠BCA.`:`AB = AC; ∠ABC = ${beta}°. Найди ∠BCA.`;
  return finish(q,[external?N('Найди внутренний угол ABC в градусах.',beta,`Смежные углы дают 180°: ∠ABC = 180° − ${given}° = ${beta}°.`):C('Какие углы равны по свойству равнобедренного треугольника?',['∠ABC и ∠BCA.','∠BAC и ∠ABC.','Все три угла обязательно равны.'],n,'Равны углы при основании BC, то есть углы B и C.'),N('Найди ∠BCA в градусах.',beta,`AB = AC, поэтому углы при основании BC равны: ∠BCA = ∠ABC = ${beta}°.`)],g.d,{kind:'iso-angle',baseAngle:beta,given,external});
 });

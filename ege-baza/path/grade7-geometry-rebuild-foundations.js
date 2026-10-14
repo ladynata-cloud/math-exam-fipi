@@ -18,9 +18,32 @@ function D(text,world,segments=[],angles=[],n=0){
  }
  return H.diagram(text,points,segments,angles);
 }
-function lesson(q,steps,diagram,params={}){return H.make({q,steps,diagram,params});}
+function clearPointLabels(d){
+ // Leave the geometry and given values fixed. Move only a point's letter when
+ // a short side or a narrow angle brings it too close to a numerical label.
+ const box=(x,y,text)=>({x:x-Math.max(22,String(text).length*13)/2,y:y-23,w:Math.max(22,String(text).length*13),h:30});
+ const touches=(a,b)=>Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x)>-3&&Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y)>-3;
+ const occupied=[];
+ for(const s of d.segments){if(!s.label)continue;const a=d.points[s.from],b=d.points[s.to],length=Math.hypot(b.x-a.x,b.y-a.y);occupied.push(box(s.labelX??((a.x+b.x)/2-(b.y-a.y)/length*22),s.labelY??((a.y+b.y)/2+(b.x-a.x)/length*22),s.label));}
+ for(const a of d.angles){if(!a.label)continue;const v=d.points[a.vertex],p=d.points[a.from],q=d.points[a.to],start=Math.atan2(p.y-v.y,p.x-v.x),end=Math.atan2(q.y-v.y,q.x-v.x),delta=((end-start+Math.PI*3)%(2*Math.PI))-Math.PI,r=Math.min(a.radius||32,Math.hypot(p.x-v.x,p.y-v.y)*.45,Math.hypot(q.x-v.x,q.y-v.y)*.45)+Math.max(1,a.marks||1)*5+20;occupied.push(box(a.labelX??(v.x+r*Math.cos(start+delta/2)),a.labelY??(v.y+r*Math.sin(start+delta/2)+6),a.label));}
+ const letters=Object.entries(d.points).filter(([,p])=>p.label!==false);
+ for(const [name,p] of letters){
+  const current=box(p.x+(p.dx||0),p.y+(p.dy??-15),p.label??name);
+  if(!occupied.some(b=>touches(current,b)))continue;
+  const others=letters.filter(([,q])=>q!==p).map(([id,q])=>box(q.x+(q.dx||0),q.y+(q.dy??-15),q.label??id));
+  const candidates=[[0,-28],[0,34],[-32,0],[32,0],[-32,-28],[32,-28],[-32,34],[32,34],[0,-48],[0,50],[-50,0],[50,0]];
+  const best=candidates.find(([dx,dy])=>{const candidate=box(p.x+dx,p.y+dy,p.label??name);return [...occupied,...others].every(b=>!touches(candidate,b));});
+  if(best){p.dx=best[0];p.dy=best[1];}
+ }
+ return d;
+}
+function lesson(q,steps,diagram,params={}){return H.make({q,steps,diagram:clearPointLabels(diagram),params});}
 function reg(key,title,section,pages,idea,prerequisites,build){H.register({key,title,section,sourcePages:pages,idea,prerequisites,build});}
-function lineD(n,points,segs,text){return D(text,points,segs,[],n);}
+function lineD(n,points,segs,text){
+ const d=D(text,points,segs,[],n);
+ for(const s of d.segments){if(!s.label)continue;const a=d.points[s.from],b=d.points[s.to],length=Math.hypot(b.x-a.x,b.y-a.y);s.labelX=(a.x+b.x)/2-(b.y-a.y)/length*50;s.labelY=(a.y+b.y)/2+(b.x-a.x)/length*50+5;}
+ return d;
+}
 function rays(n,angles,extra={}){const world={O:{x:0,y:0}},segs=[];for(const [name,deg] of Object.entries(angles)){world[name]=at(deg);world['_'+name]=at(deg,6);segs.push(S('O'+name,'O','_'+name,{elementLabel:'Луч O'+name,description:'Луч O'+name+' начинается в O и продолжается за '+name+'.'}));}return D(extra.description||'Лучи имеют общее начало O. Они продолжаются за подписанные точки; длина рисунка не ограничивает луч.',world,segs,extra.arcs||[],n);}
 function crossing(n,theta=55,arcs=[]){return rays(n,{A:0,B:180,C:theta,D:theta+180},{description:'Прямые AB и CD пересекаются в O. OA и OB — противоположные лучи; OC и OD — противоположные лучи.',arcs});}
 function triangle(n,lengths,labels={}){const [ab,bc,ca]=lengths,x=(ab*ab+ca*ca-bc*bc)/(2*ab),height=Math.sqrt(ca*ca-x*x),world={A:{x:0,y:0},B:{x:ab,y:0},C:{x,y:height}},d=D('Треугольник ABC. Числа берём из условия и подписей, а не измеряем на экране.',world,[S('AB','A','B',{label:labels.AB||''}),S('BC','B','C',{label:labels.BC||''}),S('CA','C','A',{label:labels.CA||''})],[],n);
@@ -97,7 +120,7 @@ reg('adjacent-identify','Когда углы смежные',4,[21,25],'Обща
 });
 reg('adjacent-calc','Сумма смежных углов',4,[21,23],'Сумма смежных углов равна 180°.',['adjacent-identify'],n=>{
  const given=[1,89,90,91,179][n%12]||20+n%141,reverse=n%2,known=reverse?'BOC':'AOB',unknown=reverse?'AOB':'BOC',a=reverse?180-given:given;
- return lesson(`A, O, C лежат на одной прямой, O между A и C. ∠${known} = ${given}°. Найди смежный с ним ∠${unknown}.`,[N('Чему равна сумма этих смежных углов?',180,'Их внешние стороны — противоположные лучи, образующие развёрнутый угол.'),N(`Найди ∠${unknown}.`,180-given,`180° − ${given}° = ${180-given}°.`)],rays(n,{A:0,B:a,C:180},{arcs:[A('given','O',reverse?'B':'A',reverse?'C':'B',{label:given+'°',radius:42})]}),{given,reverse});
+ return lesson(`A, O, C лежат на одной прямой, O между A и C. ∠${known} = ${given}°. Найди смежный с ним ∠${unknown}.`,[N('Чему равна сумма этих смежных углов?',180,'Их внешние стороны — противоположные лучи, образующие развёрнутый угол.'),N(`Найди ∠${unknown}.`,180-given,`180° − ${given}° = ${180-given}°.`)],rays(n,{A:0,B:a,C:180},{arcs:[A('given','O',reverse?'B':'A',reverse?'C':'B',{label:given+'°',radius:32})]}),{given,reverse});
 });
 reg('vertical-identify','Когда углы вертикальные',4,[21,25],'Для вертикальных углов стороны одного попарно противоположны сторонам другого.',['adjacent-identify'],n=>{
  const yes=n%2===0,second=yes?'BOD':'COB',theta=35+n%90;
