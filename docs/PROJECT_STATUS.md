@@ -1,10 +1,25 @@
 # MathExam project status
 
-Updated: 2026-10-11 (Asia/Novosibirsk)
+Updated: 2026-10-14 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
+
+## Current: movement course and river explanation
+
+- PR #244 merged as `7397baf0ebe2b36c8263229117ae5fe44ddf2d45`.
+  Pages deployment succeeded; all ten changed frontend files matched reviewed
+  bytes. The original twelve lessons and 144 exercises are public.
+- Last verified restored Amvera Moscow-1 application was healthy but still used
+  an older uploaded snapshot (205 catalog items, no motion-grade6). Agent file
+  chooser attempts failed without uploading code. Manual update and twelve-item
+  managed assignment remain pending; a public course URL is in the plan note.
+- Current task: [river speed explanation](tasks/RIVER_SPEED_EXPLAINER.md),
+  a supplemental concrete model and river-first public route. No server,
+  authentication or canonical task changes are planned.
+- Next: finish focused review/CI; obtain release authorization for the new exact
+  head; finish the existing Amvera update before claiming managed integration.
 
 ## Merged: Soviet mathematics pedagogical revision and second batch
 
