@@ -64,7 +64,7 @@ jobs:
           node tools/grade7-geometry-practice.test.cjs
           node tools/grade7-route-map.test.cjs
           node tools/learning-preparation.test.cjs
-          node --test tools/motion-grade6-ui-test.cjs
+          node --test tools/motion-grade6-ui-test.cjs tools/motion-grade6-river-test.cjs
       - name: Install pinned browser test tools
         run: |
           npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsqr@1.4.0 pngjs@7.0.0
@@ -98,6 +98,14 @@ jobs:
           node tools/pre7-foundations.browser.cjs
           node tools/grade7-geometry-core.browser.cjs
           node tools/grade7-construction-visual.browser.cjs
+      - name: Keep river trainer desktop and mobile views
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: motion-river-views
+          path: test-results/motion-river-*.png
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Final whitespace and patch check
         run: git diff --check
 

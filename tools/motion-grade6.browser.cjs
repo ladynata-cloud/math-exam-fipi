@@ -206,6 +206,82 @@ async function main() {
     assert.equal(await count('b', 'change'), before, 'Historical read-only controls cannot mutate state');
     await hydrate('b', historicalState, true);
     for (const id of ['a', 'b']) assert.equal(await frame(id).evaluate(() => localStorage.getItem('maxim-motion-v1')), 'standalone-sentinel');
+    // Presentation order changes while original local result identities stay intact.
+    const publicContext = await browser.newContext({ locale: 'ru-RU', reducedMotion: 'reduce', viewport: { width: 1280, height: 1000 } });
+    const legacyProgress = { '0-0': { mode: 'самостоятельно', date: '14.10.2026' }, '8-1': { mode: 'с помощью', date: '14.10.2026' } };
+    await publicContext.addInitScript(value => localStorage.setItem('maxim-motion-v1', JSON.stringify(value)), legacyProgress);
+    const publicPage = await publicContext.newPage(); publicPage.on('pageerror', error => errors.push(error.message));
+    await publicPage.goto(origin + '/trainers/motion-grade6/index.html');
+    assert.equal(await publicPage.locator('h1').innerText(), 'По течению');
+    assert.deepEqual(await publicPage.locator('#menu [data-lesson]').evaluateAll(es => es.map(e => +e.dataset.lesson)), [8,9,10,11,0,1,2,3,4,5,6,7]);
+    assert.match(await publicPage.locator('#menu [data-lesson="0"]').innerText(), /1 \/ 12/);
+    assert.match(await publicPage.locator('#menu [data-lesson="8"]').innerText(), /1 \/ 12/);
+    for (const [canonical, next] of [[11,0],[7,null]]) {
+      await publicPage.locator('#menu [data-lesson="'+canonical+'"]').click();
+      await publicPage.locator('[data-tab="train"]').click();
+      await publicPage.locator('[data-task="11"]').click();
+      await publicPage.locator('#next').click();
+      const link=publicPage.locator('#work [data-lesson]');
+      if(next===null) assert.equal(await link.count(),0);
+      else assert.equal(await link.getAttribute('data-lesson'),String(next));
+    }
+    assert.deepEqual(await publicPage.evaluate(() => JSON.parse(localStorage.getItem('maxim-motion-v1'))),legacyProgress);
+    await publicPage.goto(origin + '/trainers/motion-grade6/index.html#lesson=distance');
+    await publicPage.reload();
+    assert.equal(await publicPage.locator('h1').innerText(),'Находим путь');
+    assert.match(await publicPage.locator('.eyebrow').innerText(),/05 \/ 12/);
+    await publicPage.setViewportSize({width:390,height:844});
+    await publicPage.goto(origin + '/trainers/motion-grade6/index.html');
+    assert(await publicPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth+1),'Course has no horizontal viewport overflow');
+    fs.mkdirSync(path.join(ROOT,'test-results'),{recursive:true});
+    await publicPage.screenshot({path:path.join(ROOT,'test-results','motion-river-route-mobile.png'),fullPage:true});
+    await publicPage.goto(origin + '/trainers/motion-grade6/river-lab.html');
+    assert.equal(await publicPage.locator('[data-step]:visible').count(),1);
+    for(let step=2;step<=6;step++) {
+      await publicPage.locator('#next-step').click();
+      assert.equal(await publicPage.locator('[data-step]:visible').count(),step);
+    }
+    assert.match(await publicPage.locator('#speed-line').getAttribute('aria-label'), /От 9 до 12.*От 12 до 15.*равна 6/);
+    await publicPage.locator('#own-speed').fill('14');
+    assert.match(await publicPage.locator('#speed-line').getAttribute('aria-label'), /От 11 до 14.*От 14 до 17.*равна 6/);
+    await publicPage.locator('#current-speed').fill('2.5');
+    assert.match(await publicPage.locator('#speed-line').getAttribute('aria-label'), /прибавка 2,5.*равна 5/);
+    await publicPage.locator('#reset-model').click();
+    await publicPage.locator('#play-model').click();
+    await publicPage.waitForFunction(()=>document.querySelector('#down-distance').textContent!=='0');
+    await publicPage.locator('#play-model').click();
+    assert.equal(await publicPage.locator('#play-model').innerText(),'Запустить');
+    await publicPage.locator('#trip-time').fill('60');
+    assert.equal(await publicPage.locator('#down-distance').innerText(),'15');
+    assert.equal(await publicPage.locator('#up-distance').innerText(),'9');
+    assert(await publicPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth+1),'Lab has no mobile horizontal overflow');
+    await publicPage.locator('[data-step="4"]').screenshot({path:path.join(ROOT,'test-results','motion-river-number-line-mobile.png')});
+    await publicPage.setViewportSize({width:1280,height:1000});
+    await publicPage.locator('[data-step="4"]').scrollIntoViewIfNeeded();
+    await publicPage.screenshot({path:path.join(ROOT,'test-results','motion-river-explanation-desktop.png')});
+    await publicPage.locator('#gap-answer').fill('6');
+    await publicPage.locator('button[value="gap"]').click();
+    await publicPage.locator('#flow-answer').fill('6');
+    await publicPage.locator('button[value="flow"]').click();
+    assert.match(await publicPage.locator('#flow-feedback').innerText(),/две одинаковые части.*Раздели 6 на 2/);
+    const taskPairs=[[15,9],[18,10],[14,10],[24,16],[13.5,8.5],[16,13],[8,5],[10.5,7.5],[19.5,14.5],[12,11]];
+    for(let i=0;i<taskPairs.length;i++) {
+      const [down,up]=taskPairs[i];
+      if(i) await publicPage.locator('#task-nav button').nth(i).click();
+      await publicPage.locator('#gap-answer').fill(String(down-up).replace('.',','));
+      await publicPage.locator('button[value="gap"]').click();
+      await publicPage.locator('#flow-answer').fill(i===9?'1/2':String((down-up)/2).replace('.',','));
+      await publicPage.locator('button[value="flow"]').click();
+    }
+    await publicPage.locator('#next-task').click();
+    assert.equal(await publicPage.locator('#practice-summary').isVisible(),true);
+    assert.match(await publicPage.locator('#summary-text').innerText(),/Все 10 задач проверены/);
+    await publicPage.reload();
+    assert.equal(await publicPage.locator('[data-step]:visible').count(),6);
+    assert.equal(await publicPage.locator('#task-nav .solved').count(),10);
+    assert.equal(await publicPage.locator('#flow-answer').inputValue(),'1/2');
+    assert.deepEqual(await publicPage.evaluate(() => JSON.parse(localStorage.getItem('maxim-motion-v1'))),legacyProgress);
+    await publicContext.close();
     assert.deepEqual(errors, []);
     console.log('MOTION_GRADE6_BROWSER_OK: teacher plan12; real API + iframe hydrate/save; partial draft/prefix/model resume; all12 completion; read-only history; standalone isolation.');
   } finally {
