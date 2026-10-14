@@ -85,6 +85,14 @@ jobs:
         env:
           GEOMETRY_REBUILD_OUTPUT_DIR: ${{ runner.temp }}/geometry-rebuild-evidence
         run: node tools/grade7-construction-visual.browser.cjs
+      - name: Geometry rebuild visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: grade7-geometry-rebuild-evidence
+          path: ${{ runner.temp }}/geometry-rebuild-evidence/
+          if-no-files-found: warn
+          retention-days: 7
       - name: Real classroom, trainer, homework and exam scenarios
         run: |
           node tools/learning-path.browser.cjs
@@ -112,14 +120,6 @@ jobs:
           node tools/profile-exam-first.browser.cjs
           node tools/pre7-foundations.browser.cjs
           node tools/grade7-geometry-core.browser.cjs
-      - name: Geometry rebuild visual evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: grade7-geometry-rebuild-evidence
-          path: ${{ runner.temp }}/geometry-rebuild-evidence/
-          if-no-files-found: warn
-          retention-days: 7
       - name: Final whitespace and patch check
         run: git diff --check
 

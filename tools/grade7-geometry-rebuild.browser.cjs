@@ -96,15 +96,87 @@ async function main() {
   fs.mkdirSync(output, { recursive: true });
   // Only public content identifiers, viewport dimensions and gate results go
   // into uploaded evidence. The synthetic account/SQLite fixtures stay separate.
-  const report = { status: 'running', hub: {}, samples: [] };
+  const report = { status: 'running', hub: {}, samples: [], captures: [] };
   const writeReport = () => fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2) + '\n');
   writeReport();
   async function screenshot(target, filename, fullPage = false) {
     await target.screenshot({ path: path.join(output, filename), animations: 'disabled', ...(fullPage ? { fullPage: true } : {}) });
   }
+  async function stableTrainer(page, filename) {
+    const measured = await frame(page).locator('#main').evaluate(() => new Promise(resolve => {
+      const samples = [];
+      let previous, stableSince, finished = false;
+      const finish = stable => {
+        if (finished) return;
+        finished = true; clearTimeout(timer);
+        resolve({ stable, samples: stable ? samples.slice(-1) : samples.slice(-24) });
+      };
+      const timer = setTimeout(() => finish(false), 3000);
+      const tick = now => {
+        if (finished) return;
+        // Re-query after managed updates: replacing a child is harmless, but
+        // changing its rendered position or dimensions must still settle.
+        const boxes = [...document.querySelectorAll('#main, [data-core-drawing], #answerForm, #feedback, .steps')]
+          .flatMap(node => {
+            const r = node.getBoundingClientRect();
+            return [r.x + scrollX, r.y + scrollY, r.width, r.height];
+          });
+        const values = [innerWidth, innerHeight, document.documentElement.scrollWidth,
+          document.documentElement.scrollHeight, scrollX, scrollY, ...boxes];
+        samples.push(values);
+        if (!previous || values.length !== previous.length || values.some((value, i) => Math.abs(value - previous[i]) > 0.25)) stableSince = now;
+        previous = values;
+        if (now - stableSince >= 300) return finish(true);
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }));
+    if (!measured.stable) {
+      report.captures.push({ filename, status: 'unstable', dimensions: measured.samples }); writeReport();
+    }
+    assert(measured.stable, 'Trainer layout did not settle for ' + filename + ': ' + JSON.stringify(measured.samples));
+    return measured.samples[0];
+  }
+  async function trainerEvidence(page, stem) {
+    // #main is taller than the fixed-height iframe. A locator screenshot of
+    // that whole element produces blank clipped rows and may never stabilize.
+    // Scroll the real iframe viewport instead; retain every visible tile with
+    // overlap, including the condition, controls, feedback and accumulated steps.
+    await page.locator('#toast').waitFor({ state: 'hidden' });
+    const iframe = page.locator('#trainer-host iframe');
+    await iframe.evaluate(node => node.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' }));
+    await frame(page).locator('#main').evaluate(() => scrollTo({ top: 0, left: 0, behavior: 'instant' }));
+    let previousTop = -1, previousBottom = 0;
+    for (let tile = 0; ; tile++) {
+      assert(tile < 20, 'Unexpectedly tall trainer while capturing ' + stem);
+      const filename = stem + (tile ? '-part-' + (tile + 1) : '') + '.png';
+      const before = await stableTrainer(page, filename);
+      const [width, height, , totalHeight, , top] = before;
+      assert(top > previousTop, 'Trainer did not scroll to the next screenshot tile: ' + filename);
+      assert(top <= previousBottom, 'Screenshot tiles leave a vertical gap: ' + filename);
+      await fits(page, true);
+      const box = await iframe.boundingBox(), viewport = page.viewportSize();
+      assert(box && box.x >= -1 && box.y >= -1 && box.x + box.width <= viewport.width + 1 &&
+        box.y + box.height <= viewport.height + 1, 'The whole iframe viewport must be visible: ' + JSON.stringify(box));
+      const capture = { filename, status: 'capturing', viewport: { width, height }, scrollTop: top, scrollHeight: totalHeight };
+      report.captures.push(capture); writeReport();
+      await page.screenshot({ path: path.join(output, filename), animations: 'disabled', clip: box });
+      const after = await stableTrainer(page, filename), afterBox = await iframe.boundingBox();
+      const unchanged = before.length === after.length && before.every((value, i) => Math.abs(value - after[i]) <= 0.25) &&
+        afterBox && ['x', 'y', 'width', 'height'].every(key => Math.abs(box[key] - afterBox[key]) <= 0.25);
+      Object.assign(capture, { status: unchanged ? 'passed' : 'changed-during-capture',
+        ...(unchanged ? {} : { before, after, box, afterBox }) }); writeReport();
+      assert(unchanged, 'Trainer moved during screenshot: ' + filename);
+      previousTop = top;
+      previousBottom = top + height;
+      if (previousBottom >= totalHeight - 1) break;
+      await frame(page).locator('#main').evaluate((_node, next) => scrollTo({ top: next, left: 0, behavior: 'instant' }), top + height - 80);
+    }
+    await frame(page).locator('#main').evaluate(() => scrollTo({ top: 0, left: 0, behavior: 'instant' }));
+  }
   async function mobileEvidence(page, contentId, stage) {
     await page.setViewportSize({ width: 320, height: 844 });
-    await screenshot(frame(page).locator('#main'), contentId + '-' + stage + '-320.png');
+    await trainerEvidence(page, contentId + '-' + stage + '-320');
     await fits(page, true);
     await page.setViewportSize({ width: 1360, height: 1000 });
   }
@@ -236,10 +308,10 @@ async function main() {
       assert.equal((await api(pupil, '/attempts/' + id)).contentId, item.contentId);
       await frame(pupil).locator('[data-stage="1"]').click(); await saved(pupil);
       const drawing = frame(pupil).locator('[data-core-drawing] svg'); await drawing.waitFor();
-      await screenshot(frame(pupil).locator('#main'), item.contentId + '-model-desktop-1360.png');
+      await trainerEvidence(pupil, item.contentId + '-model-desktop-1360');
       await diagramFits(drawing, item.id + ' desktop labels');
       await pupil.setViewportSize({ width: 320, height: 844 });
-      await screenshot(frame(pupil).locator('#main'), item.contentId + '-model-320.png');
+      await trainerEvidence(pupil, item.contentId + '-model-320');
       await fits(pupil, true);
       await diagramFits(drawing, item.id + ' mobile labels');
       evidence.diagram = 'passed'; writeReport();
