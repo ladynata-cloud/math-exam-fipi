@@ -242,16 +242,16 @@ async function main() {
       assert.equal(await publicPage.locator('[data-step]:visible').count(),step);
     }
     assert.match(await publicPage.locator('#speed-line').getAttribute('aria-label'), /От 9 до 12.*От 12 до 15.*равна 6/);
-    await publicPage.locator('#own-speed').fill('14');
+    await publicPage.locator('#own-speed').evaluate(el => { el.value='14'; el.dispatchEvent(new Event('input',{bubbles:true})); });
     assert.match(await publicPage.locator('#speed-line').getAttribute('aria-label'), /От 11 до 14.*От 14 до 17.*равна 6/);
-    await publicPage.locator('#current-speed').fill('2.5');
+    await publicPage.locator('#current-speed').evaluate(el => { el.value='2.5'; el.dispatchEvent(new Event('input',{bubbles:true})); });
     assert.match(await publicPage.locator('#speed-line').getAttribute('aria-label'), /прибавка 2,5.*равна 5/);
     await publicPage.locator('#reset-model').click();
     await publicPage.locator('#play-model').click();
     await publicPage.waitForFunction(()=>document.querySelector('#down-distance').textContent!=='0');
     await publicPage.locator('#play-model').click();
     assert.equal(await publicPage.locator('#play-model').innerText(),'Запустить');
-    await publicPage.locator('#trip-time').fill('60');
+    await publicPage.locator('#trip-time').evaluate(el => { el.value='60'; el.dispatchEvent(new Event('input',{bubbles:true})); });
     assert.equal(await publicPage.locator('#down-distance').innerText(),'15');
     assert.equal(await publicPage.locator('#up-distance').innerText(),'9');
     assert(await publicPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth+1),'Lab has no mobile horizontal overflow');
