@@ -13,7 +13,7 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const doc = file => new JSDOM(read(file), { url: 'https://mathexam.space/' + file }).window.document;
 const home = doc('index.html'), lab = doc('laboratory/index.html');
 const division = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
-const cabinet = 'https://mathexam-board-ladynata.amvera.io/learning/#route';
+const cabinet = 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route';
 const allowedNav = new Set(['/', '/trainers/oge-course/', '/trainers/oge-basics/', '/laboratory/', cabinet]);
 
 assert.match(home.title, /ОГЭ/);

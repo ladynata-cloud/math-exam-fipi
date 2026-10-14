@@ -540,7 +540,7 @@ var levelMode=3;
 try{levelMode=parseInt(localStorage.getItem(TID+".level")||"3",10)||3;}catch(e){}
 var COURSE_STORAGE_KEY = "mathExamCourseProgress.v1";
 var STUDENT_CODE_PREFIX = "mathExamStudentAccess.v1.";
-var PRODUCTION_PROGRESS_API = "https://mathexam-board-ladynata.amvera.io";
+var PRODUCTION_PROGRESS_API = "https://mathexam-board-ladynata.msk1.amvera.tech";
 var PROGRESS_API_BASE = /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)
   ? "http://127.0.0.1:3000" : PRODUCTION_PROGRESS_API;
 var PROGRESS_STATE_RANK = {clean:3, helped:2, seen:1};

@@ -1,10 +1,24 @@
 # MathExam project status
 
-Updated: 2026-10-11 (Asia/Novosibirsk)
+Updated: 2026-10-15 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
+
+## In progress: Amvera endpoint recovery after hosting outage
+
+- [Scope](tasks/AMVERA_ENDPOINT_RECOVERY_20261015.md); base
+  `7397baf0ebe2b36c8263229117ae5fe44ddf2d45`; MEDIUM frontend recovery.
+- The restored cabinet operates at `mathexam-board-ladynata.msk1.amvera.tech`.
+  Published links and board/progress/video clients still use retired application
+  endpoints. The managed-trainer bridge already accepts the restored origin.
+- Replace only frontend endpoints and migrate exact old board origins in saved
+  sessions; preserve course contents, credentials, strict origins and storage.
+  This record does not claim merge, deployment or completed production testing.
+- Next three actions: complete focused checks and independent review; open one
+  Draft PR with exact base/head; after separate release authorization verify
+  public entry, board collaboration and video export against restored services.
 
 ## Merged: Soviet mathematics pedagogical revision and second batch
 

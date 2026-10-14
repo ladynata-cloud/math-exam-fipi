@@ -47,7 +47,7 @@
           <button class="btn primary teacher-only" id="createRoom" type="button">Создать комнату</button>
           <button class="btn teacher-only" id="connectRoom" type="button">Подключиться</button>
         </div>
-        <details class="connection-settings teacher-only"><summary>Настройки подключения</summary>          <div class="teacher-only"><label for="serverUrl">Адрес сервера</label><input id="serverUrl" type="url" placeholder="https://mathexam-board-ladynata.amvera.io"></div>
+        <details class="connection-settings teacher-only"><summary>Настройки подключения</summary>          <div class="teacher-only"><label for="serverUrl">Адрес сервера</label><input id="serverUrl" type="url" placeholder="https://mathexam-board-ladynata.msk1.amvera.tech"></div>
           <button class="btn teacher-only" id="checkServer" type="button">Проверить сервер</button>
 </details>
         <div class="share-meta">
@@ -106,7 +106,7 @@
     const KEY='mathexam.trainerBoard.v1';
     const SERVER_KEY='mathexam.trainerBoard.serverUrl';
     const TEACHER_SESSION_KEY='mathexam.trainerBoard.teacherRoomSession.v1';
-    const DEFAULT_SERVER='https://mathexam-board-ladynata.amvera.io';
+    const DEFAULT_SERVER='https://mathexam-board-ladynata.msk1.amvera.tech';
     const params=new URLSearchParams(location.search);
     const initialRole=params.get('role')==='student'?'student':'teacher';
     const teacherRoomMarkerId=params.get('role')==='teacher'?params.get('room')||'':'';
@@ -142,7 +142,7 @@
     function canWrite(){return shared.connected?!!(shared.me&&shared.control===shared.me.participantId):shared.role==='teacher'}
     function readonly(){return !canWrite()}
     function normalizeTrainer(v){return BoardPicker.normalize(v)}
-    function normalizeServer(v){return String(v||'').trim().replace(/\/+$/,'')}
+    function normalizeServer(v){const server=String(v||'').trim().replace(/\/+$/,'');return server==='https://mathexam-board-ladynata.amvera.io'?DEFAULT_SERVER:server}
     function readTeacherRoomSession(roomId){try{const data=JSON.parse(sessionStorage.getItem(TEACHER_SESSION_KEY));const server=normalizeServer(data?.server);if(!data||data.role!=='teacher'||data.roomId!==roomId||typeof data.teacherToken!=='string'||!data.teacherToken||data.teacherToken.length>1024||typeof data.studentToken!=='string'||!data.studentToken||data.studentToken.length>1024||!server)return null;const parsed=new URL(server);if(parsed.protocol!=='http:'&&parsed.protocol!=='https:')return null;return{roomId:data.roomId,teacherToken:data.teacherToken,studentToken:data.studentToken,server,role:'teacher',savedAt:data.savedAt||''}}catch(_e){return null}}
     function addBoardSeedToTrainerUrl(url,roomId){const raw=normalizeTrainer(url);if(!roomId)return raw;const isAbsolute=/^[a-z][a-z\d+.-]*:\/\//i.test(raw);try{const base=location.protocol==='file:'?'https://mathexam.space/trainers/trainer-board.html':location.href;const parsed=new URL(raw,base);const safeOrigin=parsed.origin===location.origin||parsed.origin==='https://mathexam.space'||(location.protocol==='file:'&&parsed.origin==='https://mathexam.space');if(isAbsolute&&!safeOrigin)return raw;if(!parsed.searchParams.has('seed'))parsed.searchParams.set('seed',roomId);if(!isAbsolute){const path=raw.startsWith('/')||raw.startsWith('trainers/')?parsed.pathname:parsed.pathname.replace(/^\/trainers\//,'');return `${path}${parsed.search}${parsed.hash}`}return parsed.href}catch(_e){return raw}}
     function compatLabel(value){return value==='board-mirror'?'Полное зеркало действий':value==='seed-ready'?'Seed-ready':'Открывается в доске'}
