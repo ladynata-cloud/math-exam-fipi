@@ -55,6 +55,16 @@ jobs:
         env:
           CHROME_DEVEL_SANDBOX: /opt/google/chrome/chrome-sandbox
         run: |
+          if test -e "$CHROME_DEVEL_SANDBOX" || test -L "$CHROME_DEVEL_SANDBOX"; then
+            stat -c 'Chrome sandbox helper: uid=%u gid=%g mode=%a type=%F' -- "$CHROME_DEVEL_SANDBOX"
+            if test -x "$CHROME_DEVEL_SANDBOX"; then
+              echo 'Chrome sandbox helper is executable.'
+            else
+              echo '::error::Chrome sandbox helper exists but is not executable.'
+            fi
+          else
+            echo "::error::Chrome sandbox helper is missing at $CHROME_DEVEL_SANDBOX"
+          fi
           test -f "$CHROME_DEVEL_SANDBOX"
           test -x "$CHROME_DEVEL_SANDBOX"
           test "$(stat -c '%u:%g:%a' -- "$CHROME_DEVEL_SANDBOX")" = '0:0:4755'
