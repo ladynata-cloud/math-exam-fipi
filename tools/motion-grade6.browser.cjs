@@ -232,9 +232,10 @@ async function main() {
     assert.match(await publicPage.locator('.eyebrow').innerText(),/05 \/ 12/);
     await publicPage.setViewportSize({width:390,height:844});
     await publicPage.goto(origin + '/trainers/motion-grade6/index.html');
-    assert(await publicPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth+1),'Course has no horizontal viewport overflow');
     fs.mkdirSync(path.join(ROOT,'test-results'),{recursive:true});
     await publicPage.screenshot({path:path.join(ROOT,'test-results','motion-river-route-mobile.png'),fullPage:true});
+    const routeOverflow=await publicPage.evaluate(() => ({width:innerWidth,scroll:document.documentElement.scrollWidth,elements:[...document.querySelectorAll('body *')].filter(el=>{const r=el.getBoundingClientRect();return r.right>innerWidth+1&&!el.closest('.nav-lessons');}).slice(0,10).map(el=>el.tagName+'.'+el.className)}));
+    assert(routeOverflow.scroll <= routeOverflow.width+1,'Course has no horizontal viewport overflow: '+JSON.stringify(routeOverflow));
     await publicPage.goto(origin + '/trainers/motion-grade6/river-lab.html');
     assert.equal(await publicPage.locator('[data-step]:visible').count(),1);
     for(let step=2;step<=6;step++) {

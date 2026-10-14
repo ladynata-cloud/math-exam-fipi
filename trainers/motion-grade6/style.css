@@ -5,3 +5,5 @@ body.managed .layout{display:block;max-width:1050px}body.managed aside,body.mana
 
 /* River-first groups remain readable on narrow screens. */
 #menu{display:block}.nav-group{margin:0 0 22px}.nav-group h3{font-size:16px;line-height:1.4;margin:0 0 8px}.nav-lessons{display:grid;gap:5px}.river-start{display:block;padding:13px;border-radius:12px;background:#d7eae5;color:#174f40;font-size:16px;line-height:1.45;margin-bottom:8px;font-weight:650}.river-callout{padding:16px 20px;background:#e0eeeb;border:1px solid #c5ddd5;border-radius:14px;font-size:18px}.river-callout a{color:#174f40}a:focus-visible{outline:3px solid #e49a3c;outline-offset:3px}@media(max-width:900px){#menu{overflow:visible}.nav-group{margin-bottom:16px}.nav-lessons{display:flex;overflow-x:auto;gap:6px;padding:3px 2px 8px}.nav-lessons button{flex:0 0 185px}.river-start{font-size:17px}.river-callout{padding:14px 16px}}
+
+.layout>aside,.layout>main{min-width:0}@media(max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}header{flex-wrap:wrap}}
