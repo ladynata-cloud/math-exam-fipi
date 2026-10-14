@@ -29,7 +29,7 @@ const { chromium } = require('playwright');
     let posts = 0;
     let downloads = 0;
     let sent = 0;
-    await page.route('https://mathexam-video-ladynata.amvera.io/api/**', async route => {
+    await page.route('https://mathexam-video-ladynata.msk1.amvera.tech/api/**', async route => {
       const request = route.request();
       sent++;
       assert.ok(['Bearer ' + token, 'Bearer ' + token + '-wrong'].includes(request.headers().authorization));

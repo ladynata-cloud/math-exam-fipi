@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   const $ = id => document.getElementById(id);
-  const DEFAULT_SERVER = 'https://mathexam-board-ladynata.amvera.io';
+  const DEFAULT_SERVER = 'https://mathexam-board-ladynata.msk1.amvera.tech';
   const TRAINERS = {
     'negative-numbers-line': 'Отрицательные числа на прямой',
     'linear-inequalities-stepwise': 'Линейные неравенства — пошагово'
@@ -29,7 +29,7 @@
     const url = new URL(raw);
     if (url.username || url.password || url.search || url.hash || !['', '/'].includes(url.pathname)) throw Error('Укажите только адрес сервера.');
     if (url.protocol !== 'https:' && !(url.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(url.hostname))) throw Error('Нужен защищённый адрес сервера.');
-    return url.origin;
+    return url.origin === 'https://mathexam-board-ladynata.amvera.io' ? DEFAULT_SERVER : url.origin;
   }
   function errorText(error) {
     if (error?.name === 'AbortError' || error instanceof TypeError) return 'Нет связи. Несохранённые действия остаются в этой вкладке; отправка продолжится после подключения.';
@@ -503,6 +503,7 @@
       if(id&&fragment.get('token'))credentials={id,token:fragment.get('token'),server:serverUrl(fragment.get('server')||DEFAULT_SERVER)};
       else {const marker=new URLSearchParams(location.search).get('lesson');if(marker)credentials=JSON.parse(sessionStorage.getItem(sessionKey(marker))||'null');}
       if(credentials?.id) {
+        credentials.server=serverUrl(credentials.server);
         rememberSession();const data=await request('/api/group-lessons/'+encodeURIComponent(credentials.id));await startSession(data);
       }else await checkCapability();
     }catch(error){$('setupStatus').textContent='Не удалось открыть занятие. Обновите страницу или используйте полную личную ссылку.';notice(errorText(error),true);}

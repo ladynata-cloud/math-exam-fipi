@@ -50,7 +50,7 @@ assert.match(trainer, /id="progressCard"/);
 assert.match(trainer, /startProgressClient\(\);/);
 assert.match(trainer, /history\.replaceState\(null, "", url\.pathname \+ url\.search\)/);
 assert.match(trainer, /headers = \{Authorization:"Bearer " \+ assignmentContext\.studentCode\}/);
-assert.match(trainer, /PRODUCTION_PROGRESS_API = "https:\/\/mathexam-board-ladynata\.amvera\.io"/);
+assert.match(trainer, /PRODUCTION_PROGRESS_API = "https:\/\/mathexam-board-ladynata\.msk1\.amvera\.tech"/);
 assert.match(trainer, /storageTopicId\(\)[\s\S]*TID \+ "@" \+ assignmentContext\.assignmentId/);
 assert.match(trainer, /saveTaskActivity\(key, \{attempts:1, errors:correct \? 0 : 1\}\)/);
 assert.match(trainer, /saveTaskActivity\(key, \{hints:1\}\)/);
@@ -70,7 +70,7 @@ assert.equal(tasks.every(task => typeof task.ans === 'string' && task.ans.length
 assert.equal(tasks.every(task => Array.isArray(task.steps) && task.steps.length > 0), true);
 
 assert.match(teacher, /<meta name="robots" content="noindex,nofollow">/);
-assert.match(teacher, /var PRODUCTION_API = "https:\/\/mathexam-board-ladynata\.amvera\.io"/);
+assert.match(teacher, /var PRODUCTION_API = "https:\/\/mathexam-board-ladynata\.msk1\.amvera\.tech"/);
 assert.match(teacher, /headers\.Authorization="Bearer "\+options\.teacherCode/);
 assert.match(teacher, /searchParams\.set\("workspace",workspaceId\)/);
 assert.match(teacher, /url\.hash="student="\+encodeURIComponent\(studentCode\)/);
@@ -93,7 +93,7 @@ for (const [file, html] of [[trainerPath, trainer], [teacherPath, teacher]]) {
   assert.doesNotThrow(() => new Function(scripts[0]), `${file} inline script must parse`);
   assert.doesNotMatch(html, /<script[^>]+src=|<link[^>]+rel=["']stylesheet/i, `${file} must remain self-contained`);
   const origins = [...html.matchAll(/https?:\/\/[^\s"'<>\\]+/g)].map(match => match[0]);
-  assert.equal(origins.every(value => value.startsWith('http://www.w3.org/') || value.startsWith('http://127.0.0.1:3000') || value.startsWith('https://mathexam-board-ladynata.amvera.io')), true, `${file} has an undeclared external origin`);
+  assert.equal(origins.every(value => value.startsWith('http://www.w3.org/') || value.startsWith('http://127.0.0.1:3000') || value.startsWith('https://mathexam-board-ladynata.msk1.amvera.tech')), true, `${file} has an undeclared external origin`);
 }
 
 const entry = manifest.trainers.find(item => item.trainerId === 'yashchenko-t12');
