@@ -727,6 +727,17 @@
       const time = Number(v.time), width = w / time, yy = y + 105;
       const speedKnown = v.unknown !== 'speed' || shown > 0, distanceKnown = v.unknown !== 'distance' || shown > 0;
       text(c, 'Весь путь: ' + (distanceKnown ? v.distance : '?') + ' км', x + 5, y + 22, 35, C.ink, 600);
+      if (v.unknown === 'time' && !shown) {
+        // An unpartitioned road must not reveal the answer by its segment count
+        // or by a final tick label before the learner solves the first step.
+        rect(c, x + 2, yy - 9, w - 4, 58, C.blueTint, 6);
+        arrow(c, x, yy + 86, x + w, yy + 86, C.ink, 3);
+        text(c, 'Начало', x, yy + 132, 26, C.muted);
+        text(c, 'Финиш', x + w - 110, yy + 132, 26, C.muted);
+        fit(c, 'За 1 ч — ' + v.speed + ' км. Время всего пути: ? ч', x + 4, yy + 28, w - 8, 30, C.blue, 600);
+        fit(c, 'Сколько часовых отрезков во всём пути?', x, yy + 198, w, 28, C.muted);
+        return;
+      }
       for (let i = 0; i < time; i++) {
         const xx = x + i * width;
         rect(c, xx + 2, yy - 9, width - 4, 58, i % 2 ? C.greenTint : C.blueTint, 6);

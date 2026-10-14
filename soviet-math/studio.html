@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><meta name="referrer" content="no-referrer">
+<title>Найти время движения · видеостудия MathExam</title>
+<link rel="stylesheet" href="studio.css">
+<script src="../trainers/oge-basics/multiplication-division/division-lab-core.js" defer></script>
+<script src="../trainers/oge-basics/multiplication-division/division-guided-core.js" defer></script>
+<script src="primary.js" defer></script><script src="advanced.js" defer></script>
+<script src="extension-primary.js" defer></script><script src="extension-fractions.js" defer></script>
+<script src="extension-applications.js" defer></script><script src="extension-motion.js" defer></script>
+<script src="revised-primary.js" defer></script><script src="revised-advanced.js" defer></script>
+<script src="revised-division.js" defer></script><script src="course.js" defer></script>
+<script src="sources.js" defer></script><script src="board.js" defer></script><script src="studio.js" defer></script>
+</head>
+<body>
+<header class="operator"><a href="./#motion-time">← К тренажёру</a><img class="series-logo" src="assets/made-in-ussr.png" width="90" height="90" alt="Сделано в СССР — знак серии"><h1>Найти время движения</h1>
+<p>Тот же пример и та же доска, что в тренажёре. Решение остаётся перед глазами.</p></header>
+<main>
+<form id="picker" class="operator picker">
+<label>Тема<select id="task"><option value="soviet-motion-time">Время по расстоянию и скорости</option></select></label>
+<label>Вариант<select id="preset"><option value="1">№ 1</option><option value="2">№ 2</option><option value="3">№ 3</option></select></label>
+</form>
+<section id="stage" aria-label="Разбор на общей доске"><canvas id="board" width="1280" height="800" role="img" aria-label="Условие задачи и накопленные шаги решения"></canvas></section>
+<section class="operator reader" aria-label="Просмотр сценария">
+<p id="scene-label"></p><p id="narration" aria-live="polite"></p>
+<div class="buttons"><button id="previous" type="button">← Предыдущий шаг</button><button id="next" type="button">Следующий шаг →</button><button id="motion" type="button">Повторить движение</button></div>
+<details><summary>Все шаги текстом</summary><ol id="transcript"></ol></details>
+</section>
+<details class="operator export"><summary>Для преподавателя · создать видео MP4</summary>
+<p>Создание выполняется на видеосервере Amvera. Ролик без звука; общая доска целиком помещается в горизонтальный кадр.</p>
+<form id="mp4-form">
+<label>Формат<select id="mp4-format"><option value="16:9">Горизонтальный · 1600 × 900</option></select></label>
+<label>Код доступа к видеостудии<input id="mp4-token" type="password" autocomplete="off" spellcheck="false" minlength="32" maxlength="512" required aria-describedby="mp4-privacy"></label>
+<p id="mp4-privacy">Код отправляется только Вашему видеосерверу. Он не сохраняется в ссылке, сценарии или кабинете ученика.</p>
+<div class="buttons"><button id="mp4-submit" type="submit">Создать видео с выбранным примером</button><button id="mp4-clear" type="button">Убрать код из вкладки</button><button id="mp4-download" type="button" hidden>Скачать готовое видео</button></div>
+</form>
+<p id="mp4-status" role="status" aria-live="polite">Выберите пример и просмотрите шаги перед созданием видео.</p><p id="mp4-job"></p>
+<p>Скачайте готовый файл: видеосервер хранит результаты сборки ограниченное время.</p>
+</details>
+</main>
+</body></html>

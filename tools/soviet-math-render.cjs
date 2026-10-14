@@ -76,7 +76,7 @@ async function main() {
   const inputFiles = ['soviet-math/board.js', 'soviet-math/course.js',
     'soviet-math/primary.js', 'soviet-math/advanced.js', 'soviet-math/sources.js',
     'soviet-math/revised-primary.js', 'soviet-math/revised-advanced.js', 'soviet-math/revised-division.js', 'soviet-math/narration.json',
-    'soviet-math/extension-primary.js', 'soviet-math/extension-fractions.js', 'soviet-math/extension-applications.js',
+    'soviet-math/extension-primary.js', 'soviet-math/extension-fractions.js', 'soviet-math/extension-applications.js', 'soviet-math/extension-motion.js',
     'trainers/oge-basics/multiplication-division/division-guided-core.js',
     'trainers/oge-basics/multiplication-division/division-lab-core.js'];
   const inputSnapshot = await Promise.all(inputFiles.map(async file => hash(await fs.readFile(path.join(root, file)))));

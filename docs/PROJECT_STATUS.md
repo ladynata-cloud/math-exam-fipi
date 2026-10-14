@@ -6,19 +6,33 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: Amvera endpoint recovery after hosting outage
+## In progress: Soviet arithmetic topic 61 and video-factory verification
+
+- [Scope](tasks/SOVIET_MOTION_TIME_FACTORY_CHECK.md); base
+  `e01b2780f16f9771defee5d862eec6de581a554f`; HIGH review for a bounded worker task.
+- Add finding time from distance and speed, twelve original conditions and a
+  studio that uses the shared course model/board. Preserve the previous sixty
+  topics, videos and progress.
+- The existing Soviet-course renderer is local. A new local MP4 is not a
+  successful Amvera production job. Production render/download remains pending.
+- Next three actions: complete content and adapter checks; independent review
+  and Draft PR; obtain release approval and run the real production render.
+
+## Published: Amvera endpoint recovery after hosting outage
 
 - [Scope](tasks/AMVERA_ENDPOINT_RECOVERY_20261015.md); base
   `7397baf0ebe2b36c8263229117ae5fe44ddf2d45`; MEDIUM frontend recovery.
-- The restored cabinet operates at `mathexam-board-ladynata.msk1.amvera.tech`.
-  Published links and board/progress/video clients still use retired application
-  endpoints. The managed-trainer bridge already accepts the restored origin.
-- Replace only frontend endpoints and migrate exact old board origins in saved
-  sessions; preserve course contents, credentials, strict origins and storage.
-  This record does not claim merge, deployment or completed production testing.
-- Next three actions: complete focused checks and independent review; open one
-  Draft PR with exact base/head; after separate release authorization verify
-  public entry, board collaboration and video export against restored services.
+- PR 246 was merged by the owner as
+  `e01b2780f16f9771defee5d862eec6de581a554f`; its parent and full tree match the
+  reviewed base/head. All four PR CI workflows passed. Pages 38628033755
+  succeeded on the exact merge commit.
+- The live homepage cabinet link points to the restored HTTPS host, and a
+  transition opened the retained teacher session with three students.
+- Both Amvera applications were observed running 1/1. Board availability and
+  playback of three existing videos were checked. Original video directories
+  were preserved; the worker uses a separate recovery data directory.
+- Authenticated new production rendering and actual family login remain
+  unverified. No success is inferred from the running-container status.
 
 ## Merged: Soviet mathematics pedagogical revision and second batch
 

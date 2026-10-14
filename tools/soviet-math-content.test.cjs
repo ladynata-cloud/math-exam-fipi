@@ -13,7 +13,7 @@ const primaryIds = new Set(legacyModules[0].topics.map(topic => topic.id));
 const legacyTopics = legacyModules.flatMap(part => part.topics);
 const legacyMake = (id, index = 0) => legacyModules.find(part => part.topics.some(topic => topic.id === id)).make(id, index);
 const revisedModules = ['revised-primary', 'revised-division', 'revised-advanced'];
-const extensionModules = ['extension-primary', 'extension-fractions', 'extension-applications'];
+const extensionModules = ['extension-primary', 'extension-fractions', 'extension-applications', 'extension-motion'];
 const extensionTopics = extensionModules.flatMap(name => require('../soviet-math/' + name + '.js').topics);
 const sources = require('../soviet-math/sources.js');
 const root = path.resolve(__dirname, '..');
