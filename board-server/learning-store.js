@@ -462,7 +462,7 @@ class LearningStore {
     const runFilter = this.runGuard ? `AND id NOT IN (SELECT a.attempt_id FROM learning_run_attempts a
       JOIN learning_runs r ON r.id=a.run_id WHERE r.finished_at IS NULL)` : '';
     const rows = this.db.prepare(`SELECT id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,outcome,updated_at,created_at
-      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics')
+      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6')
         AND id NOT IN (SELECT attempt_id FROM assignments WHERE status!='published')
         ${runFilter}
       ORDER BY updated_at DESC,id DESC`).iterate(auth.id);
@@ -497,8 +497,8 @@ class LearningStore {
     return tokenHash(canonical(task));
   }
   grade7Exposure(learnerId, trainerId, taskSpec, excludeAttemptId = '') {
-    // Pinned, server-generated grade-7 tasks only: leave legacy assessment alone.
-    if (trainerId !== 'ege-path' || taskSpec?.task?.grade7 !== true) return null;
+    // Pinned finite banks retain exposure; leave other legacy assessment alone.
+    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && trainerId !== 'motion-grade6') return null;
     // Reset clears current progress, not knowledge of an already shown question.
     // Archived homework has lost its former publication status, so conservatively
     // retain it; an unpublished current draft is not learner exposure.
@@ -531,7 +531,8 @@ class LearningStore {
       let generated = this.contracts.create(body.trainerId, body.contentId);
       const exposure = this.grade7Exposure(auth.id, body.trainerId, generated.taskSpec);
       if (exposure) {
-        for (let tries = 0; tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
+        // Motion has exactly 12 authored exercises per lesson, independent of seed.
+        for (let tries = 0; body.trainerId !== 'motion-grade6' && tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
           generated = this.contracts.create(body.trainerId, body.contentId);
         }
       } else if (source && body.fresh) {
@@ -606,7 +607,7 @@ class LearningStore {
         attempt.state = this.contracts.normalize(attempt.trainerId, attempt.taskSpec, payload.state);
         if (attempt.state?.work?.help === true || (typeof this.contracts.assistance === 'function'
           && this.contracts.assistance(attempt.trainerId, attempt.taskSpec, attempt.state))) attempt.assistance.hints = true;
-        evaluation = this.contracts.evaluate(attempt.trainerId, attempt.taskSpec, payload.details);
+        evaluation = this.contracts.evaluate(attempt.trainerId, attempt.taskSpec, payload.details, attempt.state);
         requireValue(typeof evaluation?.correct === 'boolean' && typeof evaluation?.complete === 'boolean', 'LEARNING_EVALUATION_INVALID');
         if (evaluation.assisted === true) attempt.assistance.hints = true;
         if (evaluation.correct && evaluation.complete && row.outcome === 'started') attempt.outcome = 'independent';

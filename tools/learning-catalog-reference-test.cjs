@@ -103,7 +103,7 @@ function contentGate() {
   const nav = fs.readFileSync(path.join(root, 'ege-baza/index.html'), 'utf8');
   assert.ok(nav.includes('107 тренажёров'));
   assert.ok(nav.includes('https://mathexam-board-ladynata.amvera.io/learning/'));
-  console.log('LEARNING_CATALOG_REFERENCE_CONTENT_OK (205 identities, 62 school families including 18 pre7, 21 exam positions, 1183 help variants, 4 original reference pages)');
+  console.log('LEARNING_CATALOG_REFERENCE_CONTENT_OK (217 identities including 12 grade6 movement lessons, 62 grade7 school families including 18 pre7, 21 exam positions, 1183 help variants, 4 original reference pages)');
 }
 
 async function browserGate() {

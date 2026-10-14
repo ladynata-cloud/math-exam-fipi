@@ -21,7 +21,7 @@ const password = 'Synthetic-course-navigation-2026';
 const listen = app => new Promise(resolve => { const server = app.listen(0, '127.0.0.1', () => resolve(server)); });
 const close = server => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); });
 const api = (page, route) => page.evaluate(route => LearningApp.api(route), route);
-const courseItems = catalog.items.filter(item => item.grade7 || item.family === 'remediation');
+const courseItems = catalog.items.filter(item => item.grade6 || item.grade7 || item.family === 'remediation');
 async function navigate(page, route) {
   await page.evaluate(route => LearningApp.navigate(route), route);
   if (route.startsWith('course')) await page.locator('#catalog-grid').waitFor();
@@ -75,6 +75,7 @@ async function navigate(page, route) {
         ['Алгебра · Макарычев', 'Геометрия · Атанасян', 'Повторить основы']);
       assert.deepEqual(await page.locator('[data-content]').evaluateAll(nodes => nodes.map(n => n.dataset.content).sort()),
         courseItems.map(item => item.id).sort());
+      assert.equal(await page.locator('[data-content^="motion-grade6:"]').count(), 12);
       assert.equal(await page.locator('[data-course-mode=exam]').count(), 0);
       assert.equal(await page.locator('#main a[href="#exam"]').count(), 0);
       assert.equal(await page.locator('[data-content="path:functions"]').count(), 0);
@@ -96,6 +97,7 @@ async function navigate(page, route) {
     assert.equal(await page.locator('#main h1').innerText(), 'ЕГЭ · базовая математика');
     assert.equal(await page.locator('[data-content="path:functions"]').count(), 1);
     assert.equal(await page.locator('[data-content^="path:grade7-"]').count(), 0);
+    assert.equal(await page.locator('[data-content^="motion-grade6:"]').count(), 0);
     await page.locator('[data-course-mode=exam]').click();
     assert.equal(await page.locator('.catalog-group').count(), 21);
     assert.equal(await page.locator('a[href="#exam"]').count(), 1);
@@ -136,7 +138,7 @@ async function navigate(page, route) {
     await teacherPage.locator('#dialog-close').click();
     assert.equal((await api(page, '/attempts')).attempts.length, 1, 'Teacher browsing does not change pupil work');
     assert.deepEqual(errors, []);
-    console.log('LEARNING_COURSE_NAVIGATION_OK: generic pupil school default, 98 school/foundation entries, explicit EGE switch, search, saved work, reload, mobile, teacher full catalogue and assignment selection');
+    console.log('LEARNING_COURSE_NAVIGATION_OK: generic pupil school default, 110 school/foundation entries including 12 movement lessons, explicit EGE switch, search, saved work, reload, mobile, teacher full catalogue and assignment selection');
   } finally {
     await browser?.close(); await close(server); await close(trainerServer); store.close(); fs.rmSync(tmp, { recursive: true, force: true });
   }
