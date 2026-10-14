@@ -2950,6 +2950,54 @@
       ],
       "introSeconds": 9,
       "finalAt": 41.5
+    },
+    {
+      "id": "motion-time",
+      "file": "motion-time.mp4",
+      "seconds": 111.5,
+      "bytes": 1613645,
+      "sha256": "b9ba973ea2470747b3437fd7572243b6b606d28df0b076ffb00322076ec265d7",
+      "sourceHash": "7ab89c15120b129114756d7535339119caa6a96dddcf93514d2e2eb8762d08b1",
+      "rendererHash": "2c01fbd3c939e4e71eeb0c51da0cf23231ebdbfec96b63400ff16c5be6191560",
+      "narrationHash": "e1c39f3739ebd5d095ccac668ebe131b22d0cc64c9316418aa823a39b8c0ea56",
+      "renderSettings": {
+        "width": 1280,
+        "height": 800,
+        "fps": 30,
+        "timing": "narration-120wpm-with-pauses",
+        "wordsPerMinute": 120,
+        "cameraSeconds": 2.4,
+        "cameraFrames": 72,
+        "crf": 24
+      },
+      "source": {
+        "bookTitle": "Арифметика. Учебник для 5–6 классов средней школы",
+        "authors": "Н. А. Принцев, М. И. Ягодовский",
+        "grade": "5–6 классы",
+        "year": 1966,
+        "section": "§ 24. Основные задачи, решаемые делением; § 119. Отношение двух величин",
+        "pages": "51, 284",
+        "url": "https://sheba.spb.ru/shkola/arifmetika-56-1966.htm",
+        "label": "Авторское упражнение · тема по учебнику · Принцев, Ягодовский · 5–6 классы · 1966 · с. 51, 284",
+        "exerciseNote": "Авторское упражнение по теме указанного раздела. Формулировка и числа подготовлены для тренажёра.",
+        "task": null
+      },
+      "exampleIndex": 0,
+      "steps": 2,
+      "timeline": [
+        {
+          "step": 1,
+          "questionAt": 25.5,
+          "explanationAt": 42
+        },
+        {
+          "step": 2,
+          "questionAt": 63.5,
+          "explanationAt": 77.5
+        }
+      ],
+      "introSeconds": 25.5,
+      "finalAt": 96
     }
   ],
   "sourceHashVersion": 1

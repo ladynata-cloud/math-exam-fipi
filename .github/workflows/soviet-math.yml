@@ -11,7 +11,8 @@ permissions:
 jobs:
   soviet-math:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Includes one complete 90–150 second worker render in addition to the catalog.
+    timeout-minutes: 20
     env:
       NODE_PATH: ${{ github.workspace }}/video-worker/node_modules
     steps:
@@ -35,11 +36,39 @@ jobs:
         run: |
           node tools/soviet-math-content.test.cjs
           node tools/soviet-math-extension.test.cjs
+          node tools/soviet-math-motion.test.cjs
           node tools/division-guided.test.cjs
           node tools/soviet-math-render.cjs --check
           git diff --check
       - name: Practice, persistence, mobile and reduced motion
+        env:
+          SOVIET_SCREENSHOTS: ${{ runner.temp }}/soviet-math-evidence/course
         run: node tools/soviet-math.browser.cjs
+      - name: Shared studio and authenticated export recovery
+        env:
+          SOVIET_STUDIO_SCREENSHOTS: ${{ runner.temp }}/soviet-math-evidence/studio
+        run: node tools/soviet-math-studio.browser.cjs
+      - name: Real local worker queue and MP4 render
+        # Chromium's documented SUID helper keeps sandboxing enabled on Ubuntu
+        # runners that restrict unprivileged user namespaces with AppArmor.
+        # https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md
+        env:
+          CHROME_DEVEL_SANDBOX: /opt/google/chrome/chrome-sandbox
+        run: |
+          if test -e "$CHROME_DEVEL_SANDBOX" || test -L "$CHROME_DEVEL_SANDBOX"; then
+            stat -c 'Chrome sandbox helper: uid=%u gid=%g mode=%a type=%F' -- "$CHROME_DEVEL_SANDBOX"
+            if test -x "$CHROME_DEVEL_SANDBOX"; then
+              echo 'Chrome sandbox helper is executable.'
+            else
+              echo '::error::Chrome sandbox helper exists but is not executable.'
+            fi
+          else
+            echo "::error::Chrome sandbox helper is missing at $CHROME_DEVEL_SANDBOX"
+          fi
+          test -f "$CHROME_DEVEL_SANDBOX"
+          test -x "$CHROME_DEVEL_SANDBOX"
+          test "$(stat -c '%u:%g:%a' -- "$CHROME_DEVEL_SANDBOX")" = '0:0:4755'
+          node tools/soviet-math-worker-check.mjs --output "${{ runner.temp }}/soviet-math-evidence/worker"
       - name: All stored MP4s decode, seek and play
         env:
           SOVIET_VIDEO_REQUIRE_CODEC: '1'
@@ -47,3 +76,11 @@ jobs:
           export PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH="$(command -v google-chrome)"
           node tools/soviet-math-video.browser.cjs
           echo SOVIET_MATH_OK
+      - name: Save visual and local-render evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: soviet-math-evidence
+          path: ${{ runner.temp }}/soviet-math-evidence
+          if-no-files-found: warn
+          retention-days: 7

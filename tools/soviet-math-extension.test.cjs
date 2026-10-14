@@ -200,10 +200,12 @@ const NEW_IDS = [
   'decimal-multiply-ten', 'decimal-divide-ten', 'measure-length', 'measure-time',
   'motion-distance', 'motion-speed'
 ];
-const newTopics = C.topics.filter(topic => !oldIds.has(topic.id));
+const newTopics = C.topics.filter(topic => NEW_IDS.includes(topic.id));
 assert.equal(newTopics.length, 30);
 assert.deepEqual(new Set(newTopics.map(topic => topic.id)), new Set(NEW_IDS));
-assert.equal(C.topics.length, FIRST_BATCH.length + NEW_IDS.length);
+const laterIds = ['motion-time'];
+assert.deepEqual(C.topics.filter(topic => !oldIds.has(topic.id) && !NEW_IDS.includes(topic.id)).map(topic => topic.id), laterIds);
+assert.equal(C.topics.length, FIRST_BATCH.length + NEW_IDS.length + laterIds.length);
 
 function gcdBig(a, b) { a = a < 0n ? -a : a; b = b < 0n ? -b : b; while (b) [a, b] = [b, a % b]; return a; }
 function rational(value) {
