@@ -49,7 +49,16 @@ jobs:
           SOVIET_STUDIO_SCREENSHOTS: ${{ runner.temp }}/soviet-math-evidence/studio
         run: node tools/soviet-math-studio.browser.cjs
       - name: Real local worker queue and MP4 render
-        run: node tools/soviet-math-worker-check.mjs --output "${{ runner.temp }}/soviet-math-evidence/worker"
+        # Chromium's documented SUID helper keeps sandboxing enabled on Ubuntu
+        # runners that restrict unprivileged user namespaces with AppArmor.
+        # https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md
+        env:
+          CHROME_DEVEL_SANDBOX: /opt/google/chrome/chrome-sandbox
+        run: |
+          test -f "$CHROME_DEVEL_SANDBOX"
+          test -x "$CHROME_DEVEL_SANDBOX"
+          test "$(stat -c '%u:%g:%a' -- "$CHROME_DEVEL_SANDBOX")" = '0:0:4755'
+          node tools/soviet-math-worker-check.mjs --output "${{ runner.temp }}/soviet-math-evidence/worker"
       - name: All stored MP4s decode, seek and play
         env:
           SOVIET_VIDEO_REQUIRE_CODEC: '1'
