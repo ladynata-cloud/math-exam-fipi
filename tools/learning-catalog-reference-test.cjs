@@ -13,6 +13,10 @@ require('../ege-baza/path/grade7-algebra.js');
 require('../ege-baza/path/grade7-geometry.js');
 require('../ege-baza/path/grade7-geometry-core.js');
 require('../ege-baza/path/grade7-geometry-practice.js');
+require('../ege-baza/path/grade7-geometry-rebuild-base.js');
+require('../ege-baza/path/grade7-geometry-rebuild-foundations.js');
+require('../ege-baza/path/grade7-geometry-rebuild-triangles.js');
+require('../ege-baza/path/grade7-geometry-rebuild-relations.js');
 require('../ege-baza/path/grade7-foundations.js');
 require('../ege-baza/path/pre7-arithmetic.js');
 require('../ege-baza/path/pre7-applications.js');
@@ -23,10 +27,11 @@ const remediation = require('../board-server/learning-remediation-contracts.js')
 function contentGate() {
   const pathItems = C.items.filter(item => item.trainerId === 'ege-path');
   assert.equal(pathItems.length, D.meta.length);
-  assert.equal(pathItems.length, 169);
-  assert.equal(pathItems.filter(item => item.grade7).length, 62);
+  assert.equal(pathItems.filter(item => !item.geometryRebuild).length, 169);
+  assert.equal(pathItems.filter(item => item.geometryRebuild).length, D.geometryRebuild.families.length);
+  assert.equal(pathItems.filter(item => item.grade7 && !item.geometryRebuild).length, 62);
   assert.equal(pathItems.filter(item => item.pre7).length, 18);
-  assert.equal(pathItems.filter(item => item.grade7 && !item.pre7 && !/^grade7-g-(core|practice)-/.test(item.contentId)).length, 24);
+  assert.equal(pathItems.filter(item => item.grade7 && !item.geometryRebuild && !item.pre7 && !/^grade7-g-(core|practice)-/.test(item.contentId)).length, 24);
   for (const meta of D.meta) {
     const item = C.get('path:' + meta.id);
     assert.ok(item, 'Missing course content ' + meta.id);
@@ -103,7 +108,7 @@ function contentGate() {
   const nav = fs.readFileSync(path.join(root, 'ege-baza/index.html'), 'utf8');
   assert.ok(nav.includes('107 тренажёров'));
   assert.ok(nav.includes('https://mathexam-board-ladynata.msk1.amvera.tech/learning/'));
-  console.log('LEARNING_CATALOG_REFERENCE_CONTENT_OK (217 identities including 12 grade6 movement lessons, 62 grade7 school families including 18 pre7, 21 exam positions, 1183 help variants, 4 original reference pages)');
+  console.log(`LEARNING_CATALOG_REFERENCE_CONTENT_OK (${C.items.length} identities, ${D.geometryRebuild.families.length} new geometry families, 217 preserved identities, 21 exam positions, ${D.meta.length * 7} help variants, 4 original reference pages)`);
 }
 
 async function browserGate() {
@@ -113,7 +118,7 @@ async function browserGate() {
     if (!runtimeModules) throw Error('Playwright is required. Install playwright, set NODE_PATH, or set CODEX_PRIMARY_RUNTIME_NODE_MODULES to its node_modules directory.');
     ({ chromium } = require(path.join(runtimeModules, 'playwright')));
   }
-  const fixture = '<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/learning/references.css"><body><main id="host" style="max-width:340px;margin:20px auto"></main><script src="/ege-baza/path/data.js"></script><script src="/ege-baza/path/practice.js"></script><script src="/ege-baza/path/equation-practice.js"></script><script src="/ege-baza/path/grade7-algebra.js"></script><script src="/ege-baza/path/grade7-geometry.js"></script><script src="/ege-baza/path/grade7-geometry-core.js"></script><script src="/ege-baza/path/grade7-geometry-practice.js"></script><script src="/ege-baza/path/grade7-foundations.js"></script><script src="/ege-baza/path/pre7-arithmetic.js"></script><script src="/ege-baza/path/pre7-applications.js"></script><script src="/learning/references.js"></script></body></html>';
+  const fixture = '<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/learning/references.css"><body><main id="host" style="max-width:340px;margin:20px auto"></main><script src="/ege-baza/path/data.js"></script><script src="/ege-baza/path/practice.js"></script><script src="/ege-baza/path/equation-practice.js"></script><script src="/ege-baza/path/grade7-algebra.js"></script><script src="/ege-baza/path/grade7-geometry.js"></script><script src="/ege-baza/path/grade7-geometry-core.js"></script><script src="/ege-baza/path/grade7-geometry-practice.js"></script><script src="/ege-baza/path/grade7-geometry-rebuild-base.js"></script><script src="/ege-baza/path/grade7-geometry-rebuild-foundations.js"></script><script src="/ege-baza/path/grade7-geometry-rebuild-triangles.js"></script><script src="/ege-baza/path/grade7-geometry-rebuild-relations.js"></script><script src="/ege-baza/path/grade7-foundations.js"></script><script src="/ege-baza/path/pre7-arithmetic.js"></script><script src="/ege-baza/path/pre7-applications.js"></script><script src="/learning/references.js"></script></body></html>';
   const server = http.createServer((request, response) => {
     const pathname = new URL(request.url, 'http://localhost').pathname;
     if (pathname === '/fixture') { response.setHeader('Content-Type', 'text/html; charset=utf-8'); response.end(fixture); return; }

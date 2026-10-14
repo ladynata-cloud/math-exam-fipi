@@ -7,9 +7,15 @@ const label=(x,y,s,extra='')=>`<text x="${num(x)}" y="${num(y)}" text-anchor="mi
 const visible=(item,built)=>!item.construction||built.includes(item.construction);
 function svg(task,selected=null,built=[]){
  const d=task.model.diagram,points=d.points,all=Object.values(points),xs=all.map(p=>p.x),ys=all.map(p=>p.y);
+ for(const circle of d.circles||[]){const c=points[circle.center],r=circle.radius;xs.push(c.x-r,c.x+r);ys.push(c.y-r,c.y+r);}
  if(d.protractor){const c=points[d.protractor.center],r=d.protractor.radius;xs.push(c.x-r,c.x+r);ys.push(c.y-r,c.y);}
  const lowX=Math.min(...xs)-85,lowY=Math.min(...ys)-75,width=Math.max(350,Math.max(...xs)-lowX+85),height=Math.max(250,Math.max(...ys)-lowY+80);
  let body='';
+ for(const circle of d.circles||[]){
+  if(!visible(circle,built))continue;
+  const c=points[circle.center],active=selected===circle.id;
+  body+=`<circle data-core-part="${E(circle.id)}" cx="${num(c.x)}" cy="${num(c.y)}" r="${num(circle.radius)}" fill="none" stroke="${active?accent:green}" stroke-width="${active?6:3}"/>`;
+ }
  if(d.protractor){
   const p=d.protractor,c=points[p.center],r=p.radius,at=(degree,radius)=>[num(c.x+radius*Math.cos(degree*Math.PI/180)),num(c.y-radius*Math.sin(degree*Math.PI/180))];
   body+=`<path d="M${num(c.x-r)} ${num(c.y)}A${r} ${r} 0 0 1 ${num(c.x+r)} ${num(c.y)}" fill="none" stroke="#94aea0" stroke-width="2"/>`;

@@ -6,19 +6,40 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: Amvera endpoint recovery after hosting outage
+## In progress: grade-seven geometry from the beginning
+
+- [Scope](tasks/GRADE7_GEOMETRY_REBUILD.md); base
+  `e01b2780f16f9771defee5d862eec6de581a554f`; HIGH additive managed-course integration.
+- Original small lessons follow all seventeen subsections of Sirotina's 2024
+  workbook. A page-specific review separates source errors from deliberate
+  teaching changes; source answer keys are not used as verification oracles.
+- Existing PathData, construction diagrams and managed task contracts are
+  reused. No credentials, learner records or old task IDs are changed.
+- Next: complete content/math/browser gates; independent review and Draft PR;
+  obtain the repository-required release decision. This section records work
+  in progress, not a published course.
+
+## Prepared separately: Soviet topic 61, logo and video-factory check
+
+- Draft PR 247 remains separate at head
+  `8c1693f860bd97106b26cc97d9bcd065cb9b0b5a`.
+- Content/UI checks passed. The final worker integration check stopped before
+  rendering because the CI sandbox helper did not have its required mode.
+  No passing production render or successful factory restoration is inferred.
+- No merge or deployment of that PR has occurred; this task leaves it intact.
+
+## Published: Amvera endpoint recovery after hosting outage
 
 - [Scope](tasks/AMVERA_ENDPOINT_RECOVERY_20261015.md); base
   `7397baf0ebe2b36c8263229117ae5fe44ddf2d45`; MEDIUM frontend recovery.
-- The restored cabinet operates at `mathexam-board-ladynata.msk1.amvera.tech`.
-  Published links and board/progress/video clients still use retired application
-  endpoints. The managed-trainer bridge already accepts the restored origin.
-- Replace only frontend endpoints and migrate exact old board origins in saved
-  sessions; preserve course contents, credentials, strict origins and storage.
-  This record does not claim merge, deployment or completed production testing.
-- Next three actions: complete focused checks and independent review; open one
-  Draft PR with exact base/head; after separate release authorization verify
-  public entry, board collaboration and video export against restored services.
+- PR 246 was merged by the owner as
+  `e01b2780f16f9771defee5d862eec6de581a554f`. Its parent and full tree matched
+  the reviewed release; Pages run 38628033755 succeeded on the merge commit.
+- The public cabinet link opened the restored teacher service at
+  `mathexam-board-ladynata.msk1.amvera.tech`. Both Amvera applications were
+  observed running 1/1; three existing videos played successfully.
+- New authenticated production rendering remains unverified. Running
+  containers and existing media playback do not prove the video factory works.
 
 ## Merged: Soviet mathematics pedagogical revision and second batch
 

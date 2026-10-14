@@ -11,7 +11,7 @@ const motion = require('../trainers/motion-grade6/learning-contracts');
 const catalog = require('../learning/catalog');
 const pathExamPool = require('../ege-baza/path/exam-pool');
 const context = vm.createContext({}, { codeGeneration: { strings: false, wasm: false } });
-for (const name of ['data.js', 'practice.js', 'equation-practice.js', 'grade7-algebra.js', 'grade7-geometry.js', 'grade7-geometry-core.js', 'grade7-geometry-practice.js', 'grade7-foundations.js', 'pre7-arithmetic.js', 'pre7-applications.js']) {
+for (const name of ['data.js', 'practice.js', 'equation-practice.js', 'grade7-algebra.js', 'grade7-geometry.js', 'grade7-geometry-core.js', 'grade7-geometry-practice.js', 'grade7-geometry-rebuild-base.js', 'grade7-geometry-rebuild-foundations.js', 'grade7-geometry-rebuild-triangles.js', 'grade7-geometry-rebuild-relations.js', 'grade7-foundations.js', 'pre7-arithmetic.js', 'pre7-applications.js']) {
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../ege-baza/path', name), 'utf8'), context,
     { filename: name, timeout: 1000 });
 }
@@ -108,8 +108,10 @@ function describe(taskSpec) {
 function questionIdentity(taskSpec) {
   if (taskSpec.trainerId === 'motion-grade6') return crypto.createHash('sha256').update(motion.questionIdentity(taskSpec)).digest('hex');
   const task = taskSpec.task || {};
+  const choices = taskSpec.trainerId === 'ege-path' && meta.get(taskSpec.contentId)?.geometryRebuild
+    ? task.choices?.map(choice => choice.label).sort() : task.choices;
   return crypto.createHash('sha256').update(JSON.stringify({ trainerId: taskSpec.trainerId,
-    contentId: taskSpec.contentId, prompt: task.q || task.prompt, choices: task.choices,
+    contentId: taskSpec.contentId, prompt: task.q || task.prompt, choices,
     labels: task.labels, display: task.display, model: task.model, divisionTask: taskSpec.divisionTask })).digest('hex');
 }
 

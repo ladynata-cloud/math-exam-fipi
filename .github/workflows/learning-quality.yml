@@ -6,6 +6,7 @@ on:
       - 'board-server/**'
       - 'learning/**'
       - 'foundations/**'
+      - 'grade7/geometry-rebuild/**'
       - 'ege-baza/path/**'
       - 'trainers/learning-bridge.js'
       - 'trainers/oge-basics/**'
@@ -62,6 +63,10 @@ jobs:
           node tools/grade7-geometry-core.test.cjs
           node tools/grade7-construction.test.cjs
           node tools/grade7-geometry-practice.test.cjs
+          node tools/grade7-rebuild-foundations.test.cjs
+          node tools/grade7-rebuild-triangles.test.cjs
+          node tools/grade7-rebuild-relations.test.cjs
+          node tools/grade7-geometry-rebuild.integration.cjs
           node tools/grade7-route-map.test.cjs
           node tools/learning-preparation.test.cjs
           node --test tools/motion-grade6-ui-test.cjs
@@ -71,6 +76,8 @@ jobs:
           "$RUNNER_TEMP/learning-browser/node_modules/.bin/playwright" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/learning-browser/node_modules" >> "$GITHUB_ENV"
       - name: Real classroom, trainer, homework and exam scenarios
+        env:
+          GEOMETRY_REBUILD_OUTPUT_DIR: ${{ runner.temp }}/geometry-rebuild-evidence
         run: |
           node tools/learning-path.browser.cjs
           node tools/motion-grade6.browser.cjs
@@ -98,6 +105,15 @@ jobs:
           node tools/pre7-foundations.browser.cjs
           node tools/grade7-geometry-core.browser.cjs
           node tools/grade7-construction-visual.browser.cjs
+          node tools/grade7-geometry-rebuild.browser.cjs
+      - name: Geometry rebuild visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: grade7-geometry-rebuild-evidence
+          path: ${{ runner.temp }}/geometry-rebuild-evidence/
+          if-no-files-found: warn
+          retention-days: 7
       - name: Final whitespace and patch check
         run: git diff --check
 
