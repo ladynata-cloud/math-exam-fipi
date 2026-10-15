@@ -57,9 +57,10 @@ function mount(host,task,options={}){
  state.selected=model.elements.some(e=>e.id===state.selected)?state.selected:null;
  state.built=Array.isArray(state.built)?[...new Set(state.built.filter(id=>constructions.some(c=>c.id===id)))]:[];
  state.revealed=Number.isInteger(state.revealed)?Math.max(0,Math.min(task.steps.length,state.revealed)):0;
- let readOnly=!!options.readOnly,active=null;const locked=()=>readOnly||host.inert||!!host.closest('[inert]');
+ let readOnly=!!options.readOnly,active=null,renderedLocked;const locked=()=>readOnly||host.inert||!!host.closest('[inert]');
  host.innerHTML=`<p>Выдели элемент чертежа и прочитай его свойство.${constructions.length?' Затем выбери нужное построение.':''} Все изменения можно отменить.</p><div data-core-drawing></div><div class="actions" role="group" aria-label="Элементы чертежа">${model.elements.map(e=>`<button type="button" data-core-select="${E(e.id)}" aria-pressed="false">${E(e.label)}</button>`).join('')}</div>${constructions.length?`<div class="actions" role="group" aria-label="Построить линию">${constructions.map(c=>`<button type="button" data-core-build="${E(c.id)}" aria-pressed="false">${E(c.label)}</button>`).join('')}<button type="button" data-core-reset>Убрать построения</button></div>`:''}<p data-core-read role="status"></p><div class="actions"><button type="button" data-core-next>Объяснить следующий шаг</button><button type="button" data-core-clear>Начать исследование заново</button></div><ol data-core-steps aria-label="Шаги объяснения" aria-live="polite"></ol><p class="muted">После разбора реши новый вариант самостоятельно. Просмотр модели остаётся в истории этой попытки.</p>`;
  function draw(){
+  renderedLocked=locked();
   host.querySelector('[data-core-drawing]').innerHTML=svg(task,state.selected,state.built);
   host.querySelectorAll('[data-core-select]').forEach(b=>{b.disabled=locked();b.setAttribute('aria-pressed',String(b.dataset.coreSelect===state.selected));});
   host.querySelectorAll('[data-core-build]').forEach(b=>{b.disabled=locked();b.setAttribute('aria-pressed',String(state.built.includes(b.dataset.coreBuild)));});
@@ -77,7 +78,7 @@ function mount(host,task,options={}){
  host.querySelector('[data-core-next]').onclick=()=>mutate(()=>{state.revealed=Math.min(task.steps.length,state.revealed+1);});
  host.querySelector('[data-core-clear]').onclick=()=>mutate(()=>{state.selected=null;state.built=[];state.revealed=0;});
  if(task.geometryRebuild)active=activePractice(host,task,state,locked,mutate);
- session.setReadOnly=value=>{readOnly=!!value;draw();};draw();return session;
+ session.setReadOnly=value=>{readOnly=!!value;if(renderedLocked!==locked())draw();};draw();return session;
 }
 function activePractice(host,task,state,locked,mutate){
  const panel=document.createElement('section');panel.className='geometry-active';host.classList.add('geometry-active-host');panel.setAttribute('aria-label','Геометрическая мастерская');host.append(panel);

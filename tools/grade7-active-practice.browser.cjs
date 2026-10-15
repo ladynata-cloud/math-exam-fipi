@@ -39,7 +39,7 @@ const ROOT=path.resolve(__dirname,'..'),out=process.env.GEOMETRY_REBUILD_OUTPUT_
    for(const [index,step]of steps.entries()){
     if(step.choices){
      await page.locator('[data-active-choice="'+step.choices.find(c=>c.value!==step.a).value+'"]').click();
-    }else await page.locator('[data-active-answer]').fill('999999999');
+    }else {await page.locator('[data-active-answer]').fill('999999999');await page.evaluate(()=>session.setReadOnly(false));assert(await page.locator('[data-active-answer]').evaluate(node=>document.activeElement===node),'unchanged save acknowledgements preserve numeric input focus');}
     await page.locator('[data-active-check]').click();assert.equal((await getState()).revealed,index,'wrong answer cannot advance');
     assert((await page.locator('[data-active-feedback]').textContent()).length>20);
     if(step.choices)await page.locator('[data-active-choice="'+step.a+'"]').click();else await page.locator('[data-active-answer]').fill(step.a);
@@ -52,7 +52,7 @@ const ROOT=path.resolve(__dirname,'..'),out=process.env.GEOMETRY_REBUILD_OUTPUT_
    assert.equal(await page.locator('#host button:not([disabled])').count(),0);
    await page.locator('[data-core-clear]').evaluate(b=>b.click());assert.deepEqual(await getState(),saved,'read-only rejects programmatic events');
    await page.evaluate(()=>session.setReadOnly(false));await page.locator('[data-core-clear]').click();assert.equal((await getState()).revealed,0);
-   await page.evaluate(()=>document.getElementById('host').inert=true);await page.locator('[data-core-next]').evaluate(b=>b.click());assert.equal((await getState()).revealed,0);await page.evaluate(()=>document.getElementById('host').inert=false);
+   await page.evaluate(()=>document.getElementById('host').inert=true);await page.locator('[data-core-next]').evaluate(b=>b.click());assert.equal((await getState()).revealed,0);await page.evaluate(()=>session.setReadOnly(false));assert.equal(await page.locator('#host button:not([disabled])').count(),0,'ancestor inert state still updates controls');await page.evaluate(()=>{document.getElementById('host').inert=false;session.setReadOnly(false);});assert.equal(await page.locator('[data-active-check]').isDisabled(),false,'unlocking the ancestor re-enables controls');
    for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+' fits '+width);}
    await page.setViewportSize({width:390,height:844});
    if(id==='photo-proof-1'||id==='construct-triangle-lines')await page.screenshot({path:path.join(out,'active-'+id+'-390.png'),fullPage:true});
