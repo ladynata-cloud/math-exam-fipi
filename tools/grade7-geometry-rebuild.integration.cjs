@@ -4,14 +4,14 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto');
 const ROOT=path.resolve(__dirname,'..'),read=file=>fs.readFileSync(path.join(ROOT,file),'utf8'),plain=value=>JSON.parse(JSON.stringify(value));
 const legacyFiles=['data','practice','equation-practice','grade7-algebra','grade7-geometry','grade7-geometry-core','grade7-geometry-practice','grade7-foundations','pre7-arithmetic','pre7-applications'];
-const addedFiles=['base','foundations','triangles','relations'].map(name=>'grade7-geometry-rebuild-'+name);
+const addedFiles=['base','foundations','triangles','relations','workbook'].map(name=>'grade7-geometry-rebuild-'+name);
 const context=vm.createContext({}),load=name=>vm.runInContext(read('ege-baza/path/'+name+'.js'),context,{filename:name+'.js',timeout:1000});
 legacyFiles.forEach(load);
 const D=context.PathData,legacy=D.meta.map(meta=>({id:meta.id,tasks:[0,1,23,71].map(seed=>JSON.stringify(D.task(meta.id,seed)))}));
 assert.equal(legacy.length,169);
 addedFiles.forEach(load);
 const families=D.geometryRebuild.families;
-assert.equal(families.length,73,'Complete authored course: 27 foundations, 25 triangle, 21 relation skills');
+assert.equal(families.length,106,'103 workbook families and 3 source photo proofs');
 assert.deepEqual([...new Set(families.map(item=>item.section))].sort((a,b)=>a-b),Array.from({length:17},(_,index)=>index+1));
 for(const before of legacy)assert.deepEqual([0,1,23,71].map(seed=>JSON.stringify(D.task(before.id,seed))),before.tasks,before.id+' output remains byte-identical');
 
@@ -56,9 +56,9 @@ const nextLessonSource=read('ege-baza/path/app.js').match(/^function nextLesson\
 const nextLesson=vm.runInNewContext('('+nextLessonSource+')',{D:browserData.PathData});
 const oldIds=legacy.map(item=>item.id),foundation=plain(browserData.PathData.practice.foundation),newIds=plain(families.map(item=>item.id));
 for(const id of oldIds){const position=foundation.indexOf(id),expected=position>=0&&position<foundation.length-1?foundation[position+1]:oldIds[(oldIds.indexOf(id)+1)%oldIds.length];assert.equal(nextLesson(id),expected,id+' preserves the original next lesson');}
-for(const [index,id] of newIds.entries())assert.equal(nextLesson(id),newIds[(index+1)%newIds.length],id+' stays in the new course');
+for(const list of [newIds.filter(id=>!id.includes('photo-proof-')),newIds.filter(id=>id.includes('photo-proof-'))])for(const [index,id] of list.entries())assert.equal(nextLesson(id),list[(index+1)%list.length],id+' stays in its own course');
 assert.equal(nextLesson('grade7-g-practice-isosceles-proof'),'grade7-b-mixed-borrow','Existing geometry still continues to its original foundation lesson');
-assert.equal(nextLesson(newIds.at(-1)),newIds[0],'The end of the new course stays in its own route');
+assert.equal(nextLesson('grade7-r-review-17'),newIds[0],'The workbook route returns to its own beginning');
 const hub=read('grade7/geometry-rebuild/course.js');assert(hub.includes('item.geometryRebuild'));assert(hub.includes('item.section===number'));
 assert(!/fetch\(|localStorage|\/attempts|\/assignments/.test(hub),'The public hub never reads or writes learner data');
 

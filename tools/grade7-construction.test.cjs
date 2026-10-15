@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict');
 const D=require('../ege-baza/path/data');
-for(const file of ['practice','equation-practice','grade7-algebra','grade7-geometry','grade7-foundations','pre7-arithmetic','pre7-applications','grade7-geometry-core','grade7-geometry-practice','grade7-geometry-rebuild-base','grade7-geometry-rebuild-foundations','grade7-geometry-rebuild-triangles','grade7-geometry-rebuild-relations'])require('../ege-baza/path/'+file);
+for(const file of ['practice','equation-practice','grade7-algebra','grade7-geometry','grade7-foundations','pre7-arithmetic','pre7-applications','grade7-geometry-core','grade7-geometry-practice','grade7-geometry-rebuild-base','grade7-geometry-rebuild-foundations','grade7-geometry-rebuild-triangles','grade7-geometry-rebuild-relations','grade7-geometry-rebuild-workbook'])require('../ege-baza/path/'+file);
 const renderer=require('../ege-baza/path/grade7-geometry-core-models'),state=require('../ege-baza/path/managed-state');
 let cases=0,constructions=0,angles=0;
 for(const meta of D.meta.filter(x=>/^grade7-g-(?:core|practice)-/.test(x.id)||x.geometryRebuild))for(let seed=0;seed<(meta.geometryRebuild?D.geometryRebuild.count:216);seed++){

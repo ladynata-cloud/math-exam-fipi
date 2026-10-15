@@ -1,0 +1,1229 @@
+{
+  "source": {
+    "title": "Т. В. Сиротина. Геометрия. 7 класс. Тетрадь-тренажёр",
+    "edition": "Интеллект-Центр, 2024",
+    "pdfPages": 88,
+    "printedToPdfOffset": 1
+  },
+  "scope": "Все 17 разделов и 73 группы заданий сопоставлены авторским упражнениям по навыкам. Это не оцифровка каждого подпункта и не сплошная экспертиза ключей.",
+  "sections": [
+    {
+      "section": 1,
+      "pages": [
+        5,
+        10
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-1"
+    },
+    {
+      "section": 2,
+      "pages": [
+        11,
+        14
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-2"
+    },
+    {
+      "section": 3,
+      "pages": [
+        15,
+        20
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-3"
+    },
+    {
+      "section": 4,
+      "pages": [
+        21,
+        26
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-4"
+    },
+    {
+      "section": 5,
+      "pages": [
+        27,
+        32
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-5"
+    },
+    {
+      "section": 6,
+      "pages": [
+        33,
+        36
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-6"
+    },
+    {
+      "section": 7,
+      "pages": [
+        37,
+        39
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-7"
+    },
+    {
+      "section": 8,
+      "pages": [
+        40,
+        42
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-8"
+    },
+    {
+      "section": 9,
+      "pages": [
+        43,
+        46
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-9"
+    },
+    {
+      "section": 10,
+      "pages": [
+        47,
+        50
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-10"
+    },
+    {
+      "section": 11,
+      "pages": [
+        51,
+        53
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-11"
+    },
+    {
+      "section": 12,
+      "pages": [
+        54,
+        59
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-12"
+    },
+    {
+      "section": 13,
+      "pages": [
+        60,
+        63
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-13"
+    },
+    {
+      "section": 14,
+      "pages": [
+        64,
+        68
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-14"
+    },
+    {
+      "section": 15,
+      "pages": [
+        69,
+        72
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-15"
+    },
+    {
+      "section": 16,
+      "pages": [
+        73,
+        76
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-16"
+    },
+    {
+      "section": 17,
+      "pages": [
+        77,
+        80
+      ],
+      "theory": "definitions-and-step-reasons",
+      "selfCheck": "grade7-r-review-17"
+    }
+  ],
+  "exercises": [
+    {
+      "exercise": 1,
+      "pages": [
+        5
+      ],
+      "section": 1,
+      "skill": "Обозначения точек, прямых и отрезков",
+      "lessons": [
+        "grade7-r-point-membership",
+        "grade7-r-segment-names"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 2,
+      "pages": [
+        6
+      ],
+      "section": 1,
+      "skill": "Построение по словесному условию",
+      "lessons": [
+        "grade7-r-construct-incidence"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 3,
+      "pages": [
+        7
+      ],
+      "section": 1,
+      "skill": "Полный список отрезков",
+      "lessons": [
+        "grade7-r-segment-network",
+        "grade7-r-segment-count"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 4,
+      "pages": [
+        8
+      ],
+      "section": 1,
+      "skill": "Запись условий символами",
+      "lessons": [
+        "grade7-r-symbol-language"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 5,
+      "pages": [
+        9
+      ],
+      "section": 1,
+      "skill": "Построение по символическому условию",
+      "lessons": [
+        "grade7-r-symbol-language",
+        "grade7-r-construct-incidence"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 6,
+      "pages": [
+        10
+      ],
+      "section": 1,
+      "skill": "Самопроверка первых понятий",
+      "lessons": [
+        "grade7-r-review-1"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 7,
+      "pages": [
+        11
+      ],
+      "section": 2,
+      "skill": "Обозначения лучей и углов",
+      "lessons": [
+        "grade7-r-ray-start",
+        "grade7-r-ray-same",
+        "grade7-r-angle-vertex"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 8,
+      "pages": [
+        12
+      ],
+      "section": 2,
+      "skill": "Построение углов и выбор точек",
+      "lessons": [
+        "grade7-r-angle-region",
+        "grade7-r-angle-vertex"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 9,
+      "pages": [
+        13
+      ],
+      "section": 2,
+      "skill": "Подсчёт лучей и углов без повторов",
+      "lessons": [
+        "grade7-r-ray-count",
+        "grade7-r-angle-count"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 10,
+      "pages": [
+        13
+      ],
+      "section": 2,
+      "skill": "Внутренняя и внешняя области угла",
+      "lessons": [
+        "grade7-r-angle-region"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 11,
+      "pages": [
+        14
+      ],
+      "section": 2,
+      "skill": "Самопроверка лучей и углов",
+      "lessons": [
+        "grade7-r-review-2"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 12,
+      "pages": [
+        15
+      ],
+      "section": 3,
+      "skill": "Середина и равные отрезки",
+      "lessons": [
+        "grade7-r-construct-midpoint-bisector",
+        "grade7-r-midpoint",
+        "grade7-r-equal-parts"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 13,
+      "pages": [
+        16,
+        17
+      ],
+      "section": 3,
+      "skill": "Вычисления частей отрезка",
+      "lessons": [
+        "grade7-r-segment-part",
+        "grade7-r-midpoint",
+        "grade7-r-equal-parts"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 14,
+      "pages": [
+        18
+      ],
+      "section": 3,
+      "skill": "Построение и деление углов",
+      "lessons": [
+        "grade7-r-construct-midpoint-bisector",
+        "grade7-r-angle-bisector",
+        "grade7-r-angle-protractor"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 15,
+      "pages": [
+        19
+      ],
+      "section": 3,
+      "skill": "Вычисление углов",
+      "lessons": [
+        "grade7-r-angle-parts",
+        "grade7-r-angle-bisector"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 16,
+      "pages": [
+        20
+      ],
+      "section": 3,
+      "skill": "Самопроверка измерения и единиц",
+      "lessons": [
+        "grade7-r-review-3",
+        "grade7-r-angle-minutes"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 17,
+      "pages": [
+        21
+      ],
+      "section": 4,
+      "skill": "Распознавание смежных и вертикальных углов",
+      "lessons": [
+        "grade7-r-adjacent-identify",
+        "grade7-r-vertical-identify"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 18,
+      "pages": [
+        22
+      ],
+      "section": 4,
+      "skill": "Углы при пересечении прямых",
+      "lessons": [
+        "grade7-r-adjacent-calc",
+        "grade7-r-vertical-calc"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 19,
+      "pages": [
+        23
+      ],
+      "section": 4,
+      "skill": "Составные задачи на углы",
+      "lessons": [
+        "grade7-r-angle-parts",
+        "grade7-r-adjacent-calc",
+        "grade7-r-vertical-calc"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 20,
+      "pages": [
+        24
+      ],
+      "section": 4,
+      "skill": "Смежные углы по отношению или разности",
+      "lessons": [
+        "grade7-r-adjacent-equation"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 21,
+      "pages": [
+        25
+      ],
+      "section": 4,
+      "skill": "Пары смежных углов",
+      "lessons": [
+        "grade7-r-adjacent-identify",
+        "grade7-r-angle-count"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 22,
+      "pages": [
+        25
+      ],
+      "section": 4,
+      "skill": "Пары вертикальных углов",
+      "lessons": [
+        "grade7-r-vertical-identify",
+        "grade7-r-angle-count"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 23,
+      "pages": [
+        26
+      ],
+      "section": 4,
+      "skill": "Самопроверка углов и перпендикулярности",
+      "lessons": [
+        "grade7-r-review-4",
+        "grade7-r-perpendicular"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 24,
+      "pages": [
+        27,
+        28
+      ],
+      "section": 5,
+      "skill": "Элементы, периметр и зависимости сторон",
+      "lessons": [
+        "grade7-r-triangle-elements",
+        "grade7-r-perimeter-sum",
+        "grade7-r-perimeter-chain-more-half",
+        "grade7-r-perimeter-chain-less-double",
+        "grade7-r-perimeter-equation-fourfold",
+        "grade7-r-perimeter-equation-threefold"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 25,
+      "pages": [
+        29,
+        30
+      ],
+      "section": 5,
+      "skill": "Соответствующие элементы равных треугольников",
+      "lessons": [
+        "grade7-r-triangle-correspondence"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 26,
+      "pages": [
+        31
+      ],
+      "section": 5,
+      "skill": "Числовые следствия равенства",
+      "lessons": [
+        "grade7-r-triangle-correspondence",
+        "grade7-r-triangle-congruence-consequence"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 27,
+      "pages": [
+        32
+      ],
+      "section": 5,
+      "skill": "Самопроверка треугольника",
+      "lessons": [
+        "grade7-r-review-5",
+        "grade7-r-perimeter-sum"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 28,
+      "pages": [
+        33
+      ],
+      "section": 6,
+      "skill": "Равенство по первому признаку",
+      "lessons": [
+        "grade7-r-triangle-included-angle",
+        "grade7-r-triangle-sas-common",
+        "grade7-r-proof-builder-sas"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 29,
+      "pages": [
+        34
+      ],
+      "section": 6,
+      "skill": "Общая сторона и пересекающиеся треугольники",
+      "lessons": [
+        "grade7-r-triangle-common-side",
+        "grade7-r-triangle-vertical-angle",
+        "grade7-r-triangle-sas-cross",
+        "grade7-r-proof-builder-sas"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 30,
+      "pages": [
+        35
+      ],
+      "section": 6,
+      "skill": "Следствия первого признака",
+      "lessons": [
+        "grade7-r-triangle-sas-common",
+        "grade7-r-triangle-sas-cross",
+        "grade7-r-triangle-congruence-consequence"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 31,
+      "pages": [
+        36
+      ],
+      "section": 6,
+      "skill": "Самопроверка первого признака",
+      "lessons": [
+        "grade7-r-review-6",
+        "grade7-r-triangle-sas-insufficient"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 32,
+      "pages": [
+        37
+      ],
+      "section": 7,
+      "skill": "Распознавание трёх замечательных отрезков",
+      "lessons": [
+        "grade7-r-triangle-cevian-choice",
+        "grade7-r-triangle-altitude"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 33,
+      "pages": [
+        38
+      ],
+      "section": 7,
+      "skill": "Построение медианы, высоты и биссектрисы",
+      "lessons": [
+        "grade7-r-construct-triangle-lines"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 34,
+      "pages": [
+        38
+      ],
+      "section": 7,
+      "skill": "Числовые свойства замечательных отрезков",
+      "lessons": [
+        "grade7-r-triangle-median",
+        "grade7-r-triangle-bisector",
+        "grade7-r-triangle-altitude"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 35,
+      "pages": [
+        39
+      ],
+      "section": 7,
+      "skill": "Самопроверка определений",
+      "lessons": [
+        "grade7-r-review-7"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 36,
+      "pages": [
+        40
+      ],
+      "section": 8,
+      "skill": "Основание, боковые стороны, углы",
+      "lessons": [
+        "grade7-r-triangle-isosceles-base",
+        "grade7-r-triangle-isosceles-angle"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 37,
+      "pages": [
+        41
+      ],
+      "section": 8,
+      "skill": "Вычисления в равнобедренном треугольнике",
+      "lessons": [
+        "grade7-r-triangle-isosceles-angle",
+        "grade7-r-triangle-isosceles-cevian",
+        "grade7-r-triangle-isosceles-angles"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 38,
+      "pages": [
+        42
+      ],
+      "section": 8,
+      "skill": "Самопроверка равнобедренного треугольника",
+      "lessons": [
+        "grade7-r-review-8"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 39,
+      "pages": [
+        43
+      ],
+      "section": 9,
+      "skill": "Второй признак",
+      "lessons": [
+        "grade7-r-triangle-asa-adjacent",
+        "grade7-r-triangle-asa-proof",
+        "grade7-r-proof-builder-asa"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 40,
+      "pages": [
+        44
+      ],
+      "section": 9,
+      "skill": "Второй признак в составной конфигурации",
+      "lessons": [
+        "grade7-r-triangle-asa-proof",
+        "grade7-r-triangle-common-side",
+        "grade7-r-triangle-vertical-angle",
+        "grade7-r-proof-builder-asa"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 41,
+      "pages": [
+        45
+      ],
+      "section": 9,
+      "skill": "Следствия второго признака",
+      "lessons": [
+        "grade7-r-triangle-asa-consequence"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 42,
+      "pages": [
+        46
+      ],
+      "section": 9,
+      "skill": "Самопроверка второго признака",
+      "lessons": [
+        "grade7-r-review-9"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 43,
+      "pages": [
+        47
+      ],
+      "section": 10,
+      "skill": "Третий признак",
+      "lessons": [
+        "grade7-r-triangle-sss-proof",
+        "grade7-r-proof-builder-sss"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 44,
+      "pages": [
+        48
+      ],
+      "section": 10,
+      "skill": "Три стороны и общие элементы",
+      "lessons": [
+        "grade7-r-triangle-sss-proof",
+        "grade7-r-triangle-common-side",
+        "grade7-r-proof-builder-sss"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 45,
+      "pages": [
+        49
+      ],
+      "section": 10,
+      "skill": "Доказательство по текстовому условию",
+      "lessons": [
+        "grade7-r-triangle-proof-reasons",
+        "grade7-r-triangle-proof-correspondence",
+        "grade7-r-triangle-congruence-choice",
+        "grade7-r-proof-builder-sss"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 46,
+      "pages": [
+        50
+      ],
+      "section": 10,
+      "skill": "Самопроверка третьего признака",
+      "lessons": [
+        "grade7-r-review-10"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 47,
+      "pages": [
+        51
+      ],
+      "section": 11,
+      "skill": "Элементы окружности",
+      "lessons": [
+        "grade7-r-circle-elements"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 48,
+      "pages": [
+        52
+      ],
+      "section": 11,
+      "skill": "Радиусы, диаметр, хорды и треугольники",
+      "lessons": [
+        "grade7-r-circle-radius-diameter",
+        "grade7-r-circle-isosceles",
+        "grade7-r-circle-congruent-chords"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 49,
+      "pages": [
+        53
+      ],
+      "section": 11,
+      "skill": "Самопроверка окружности",
+      "lessons": [
+        "grade7-r-review-11"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 50,
+      "pages": [
+        54
+      ],
+      "section": 12,
+      "skill": "Построение секущей",
+      "lessons": [
+        "grade7-r-construct-secant"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 51,
+      "pages": [
+        55,
+        56
+      ],
+      "section": 12,
+      "skill": "Классификация пар углов",
+      "lessons": [
+        "grade7-r-parallel-pairs"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 52,
+      "pages": [
+        57,
+        58
+      ],
+      "section": 12,
+      "skill": "Признаки параллельности по углам",
+      "lessons": [
+        "grade7-r-parallel-alternate",
+        "grade7-r-parallel-corresponding",
+        "grade7-r-parallel-sameside"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 53,
+      "pages": [
+        59
+      ],
+      "section": 12,
+      "skill": "Самопроверка признаков",
+      "lessons": [
+        "grade7-r-review-12"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 54,
+      "pages": [
+        60,
+        61
+      ],
+      "section": 13,
+      "skill": "Расчёт углов при параллельности",
+      "lessons": [
+        "grade7-r-parallel-equal-angles",
+        "grade7-r-parallel-supplement"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 55,
+      "pages": [
+        62
+      ],
+      "section": 13,
+      "skill": "Углы с параллельными сторонами",
+      "lessons": [
+        "grade7-r-angle-parallel-sides"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 56,
+      "pages": [
+        62
+      ],
+      "section": 13,
+      "skill": "Углы с перпендикулярными сторонами",
+      "lessons": [
+        "grade7-r-angle-parallel-sides"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 57,
+      "pages": [
+        63
+      ],
+      "section": 13,
+      "skill": "Самопроверка свойств",
+      "lessons": [
+        "grade7-r-review-13"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 58,
+      "pages": [
+        64,
+        65
+      ],
+      "section": 14,
+      "skill": "Сумма углов и вид треугольника",
+      "lessons": [
+        "grade7-r-triangle-angle-sum",
+        "grade7-r-triangle-angle-type"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 59,
+      "pages": [
+        66
+      ],
+      "section": 14,
+      "skill": "Равнобедренность, высоты и биссектрисы",
+      "lessons": [
+        "grade7-r-triangle-isosceles-angles",
+        "grade7-r-triangle-isosceles-cevian",
+        "grade7-r-triangle-bisector"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 60,
+      "pages": [
+        67
+      ],
+      "section": 14,
+      "skill": "Построение внешнего угла",
+      "lessons": [
+        "grade7-r-construct-exterior"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 61,
+      "pages": [
+        67
+      ],
+      "section": 14,
+      "skill": "Расчёт внешнего угла",
+      "lessons": [
+        "grade7-r-triangle-exterior-angle"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 62,
+      "pages": [
+        68
+      ],
+      "section": 14,
+      "skill": "Самопроверка суммы углов",
+      "lessons": [
+        "grade7-r-review-14"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 63,
+      "pages": [
+        69
+      ],
+      "section": 15,
+      "skill": "Наибольшие углы по сторонам",
+      "lessons": [
+        "grade7-r-triangle-side-angle-order"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 64,
+      "pages": [
+        70
+      ],
+      "section": 15,
+      "skill": "Наибольшие стороны по углам",
+      "lessons": [
+        "grade7-r-triangle-side-angle-order"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 65,
+      "pages": [
+        71
+      ],
+      "section": 15,
+      "skill": "Существование треугольника",
+      "lessons": [
+        "grade7-r-triangle-inequality",
+        "grade7-r-triangle-third-side"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 66,
+      "pages": [
+        72
+      ],
+      "section": 15,
+      "skill": "Самопроверка сторон и углов",
+      "lessons": [
+        "grade7-r-review-15"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 67,
+      "pages": [
+        73,
+        74
+      ],
+      "section": 16,
+      "skill": "Острые углы прямоугольного треугольника",
+      "lessons": [
+        "grade7-r-right-acute-angles",
+        "grade7-r-triangle-isosceles-angles"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 68,
+      "pages": [
+        75
+      ],
+      "section": 16,
+      "skill": "Катет напротив 30° и медиана к гипотенузе",
+      "lessons": [
+        "grade7-r-right-thirty",
+        "grade7-r-right-median"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 69,
+      "pages": [
+        76
+      ],
+      "section": 16,
+      "skill": "Самопроверка прямоугольного треугольника",
+      "lessons": [
+        "grade7-r-review-16"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    },
+    {
+      "exercise": 70,
+      "pages": [
+        77
+      ],
+      "section": 17,
+      "skill": "Признаки равенства прямоугольных треугольников",
+      "lessons": [
+        "grade7-r-right-equal-legs",
+        "grade7-r-right-leg-angle",
+        "grade7-r-right-hypotenuse-angle",
+        "grade7-r-right-hypotenuse-leg"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 71,
+      "pages": [
+        78
+      ],
+      "section": 17,
+      "skill": "Признаки равенства в составной фигуре",
+      "lessons": [
+        "grade7-r-right-equal-legs",
+        "grade7-r-right-hypotenuse-leg",
+        "grade7-r-triangle-common-side",
+        "grade7-r-triangle-vertical-angle"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 72,
+      "pages": [
+        79
+      ],
+      "section": 17,
+      "skill": "Числовые следствия равенства прямоугольных треугольников",
+      "lessons": [
+        "grade7-r-right-equal-legs",
+        "grade7-r-right-leg-angle",
+        "grade7-r-right-hypotenuse-angle",
+        "grade7-r-right-hypotenuse-leg"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": true
+    },
+    {
+      "exercise": 73,
+      "pages": [
+        80
+      ],
+      "section": 17,
+      "skill": "Итоговая самопроверка признаков",
+      "lessons": [
+        "grade7-r-review-17"
+      ],
+      "coverage": "authored-skill-analogue",
+      "teacherFollowup": false
+    }
+  ],
+  "otherParts": [
+    {
+      "part": "front-matter",
+      "pdfPages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "action": "Обложка, выходные сведения, оглавление и введение обработаны как источник и структура маршрута."
+    },
+    {
+      "part": "answers",
+      "printedPages": [
+        81,
+        82,
+        83,
+        84,
+        85
+      ],
+      "action": "Ключи просмотрены отдельно. В курс не импортированы; подтверждённые ошибки отражены в отчёте, ответы авторских заданий проверяются независимо. Полная экспертиза каждого ключа не заявляется."
+    },
+    {
+      "part": "back-matter",
+      "pdfPages": [
+        87,
+        88
+      ],
+      "action": "Выходные и оформительские страницы не являются учебными упражнениями."
+    }
+  ]
+}

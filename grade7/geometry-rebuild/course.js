@@ -12,7 +12,7 @@
  ];
  const catalog=root.LearningCatalog,host=document.getElementById('geometry-sections'),links=document.getElementById('section-links');
  if(!catalog||!host||!links)return;
- const items=catalog.items.filter(item=>item.geometryRebuild);
+ const items=catalog.items.filter(item=>item.geometryRebuild&&!item.contentId.startsWith('grade7-r-photo-proof-'));
  const el=(tag,text,className)=>{const node=document.createElement(tag);if(text)node.textContent=text;if(className)node.className=className;return node;};
  const link=(text,href,className)=>{const node=el('a',text,className);node.href=href;return node;};
  document.getElementById('course-count').textContent=`17 тем · ${items.length} небольших уроков. Выбирай нужный шаг или двигайся по порядку.`;

@@ -227,7 +227,8 @@ async function main() {
       return page;
     }
 
-    const items = catalog.items.filter(item => item.geometryRebuild);
+    const items = catalog.items.filter(item => item.geometryRebuild && !item.contentId.startsWith('grade7-r-photo-proof-'));
+    assert.equal(items.length, 103, 'The workbook route excludes the three separate source-photo proofs');
     assert(items.length >= 60, 'The complete micro-course must be in the managed catalog');
     const sections = [...new Set(items.map(item => item.section))].sort((a, b) => a - b);
     assert.deepEqual(sections, Array.from({ length: 17 }, (_, index) => index + 1));

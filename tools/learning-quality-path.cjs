@@ -14,6 +14,7 @@ require('../ege-baza/path/grade7-geometry-rebuild-base.js');
 require('../ege-baza/path/grade7-geometry-rebuild-foundations.js');
 require('../ege-baza/path/grade7-geometry-rebuild-triangles.js');
 require('../ege-baza/path/grade7-geometry-rebuild-relations.js');
+require('../ege-baza/path/grade7-geometry-rebuild-workbook.js');
 require('../ege-baza/path/grade7-foundations.js');
 require('../ege-baza/path/pre7-arithmetic.js');
 require('../ege-baza/path/pre7-applications.js');
