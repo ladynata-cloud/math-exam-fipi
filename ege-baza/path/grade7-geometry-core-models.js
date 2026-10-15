@@ -7,9 +7,15 @@ const label=(x,y,s,extra='')=>`<text x="${num(x)}" y="${num(y)}" text-anchor="mi
 const visible=(item,built)=>!item.construction||built.includes(item.construction);
 function svg(task,selected=null,built=[]){
  const d=task.model.diagram,points=d.points,all=Object.values(points),xs=all.map(p=>p.x),ys=all.map(p=>p.y);
+ for(const circle of d.circles||[]){const c=points[circle.center],r=circle.radius;xs.push(c.x-r,c.x+r);ys.push(c.y-r,c.y+r);}
  if(d.protractor){const c=points[d.protractor.center],r=d.protractor.radius;xs.push(c.x-r,c.x+r);ys.push(c.y-r,c.y);}
  const lowX=Math.min(...xs)-85,lowY=Math.min(...ys)-75,width=Math.max(350,Math.max(...xs)-lowX+85),height=Math.max(250,Math.max(...ys)-lowY+80);
  let body='';
+ for(const circle of d.circles||[]){
+  if(!visible(circle,built))continue;
+  const c=points[circle.center],active=selected===circle.id;
+  body+=`<circle data-core-part="${E(circle.id)}" cx="${num(c.x)}" cy="${num(c.y)}" r="${num(circle.radius)}" fill="none" stroke="${active?accent:green}" stroke-width="${active?6:3}"/>`;
+ }
  if(d.protractor){
   const p=d.protractor,c=points[p.center],r=p.radius,at=(degree,radius)=>[num(c.x+radius*Math.cos(degree*Math.PI/180)),num(c.y-radius*Math.sin(degree*Math.PI/180))];
   body+=`<path d="M${num(c.x-r)} ${num(c.y)}A${r} ${r} 0 0 1 ${num(c.x+r)} ${num(c.y)}" fill="none" stroke="#94aea0" stroke-width="2"/>`;
@@ -51,9 +57,10 @@ function mount(host,task,options={}){
  state.selected=model.elements.some(e=>e.id===state.selected)?state.selected:null;
  state.built=Array.isArray(state.built)?[...new Set(state.built.filter(id=>constructions.some(c=>c.id===id)))]:[];
  state.revealed=Number.isInteger(state.revealed)?Math.max(0,Math.min(task.steps.length,state.revealed)):0;
- let readOnly=!!options.readOnly;const locked=()=>readOnly||host.inert||!!host.closest('[inert]');
+ let readOnly=!!options.readOnly,active=null,renderedLocked;const locked=()=>readOnly||host.inert||!!host.closest('[inert]');
  host.innerHTML=`<p>Выдели элемент чертежа и прочитай его свойство.${constructions.length?' Затем выбери нужное построение.':''} Все изменения можно отменить.</p><div data-core-drawing></div><div class="actions" role="group" aria-label="Элементы чертежа">${model.elements.map(e=>`<button type="button" data-core-select="${E(e.id)}" aria-pressed="false">${E(e.label)}</button>`).join('')}</div>${constructions.length?`<div class="actions" role="group" aria-label="Построить линию">${constructions.map(c=>`<button type="button" data-core-build="${E(c.id)}" aria-pressed="false">${E(c.label)}</button>`).join('')}<button type="button" data-core-reset>Убрать построения</button></div>`:''}<p data-core-read role="status"></p><div class="actions"><button type="button" data-core-next>Объяснить следующий шаг</button><button type="button" data-core-clear>Начать исследование заново</button></div><ol data-core-steps aria-label="Шаги объяснения" aria-live="polite"></ol><p class="muted">После разбора реши новый вариант самостоятельно. Просмотр модели остаётся в истории этой попытки.</p>`;
  function draw(){
+  renderedLocked=locked();
   host.querySelector('[data-core-drawing]').innerHTML=svg(task,state.selected,state.built);
   host.querySelectorAll('[data-core-select]').forEach(b=>{b.disabled=locked();b.setAttribute('aria-pressed',String(b.dataset.coreSelect===state.selected));});
   host.querySelectorAll('[data-core-build]').forEach(b=>{b.disabled=locked();b.setAttribute('aria-pressed',String(state.built.includes(b.dataset.coreBuild)));});
@@ -62,6 +69,7 @@ function mount(host,task,options={}){
   host.querySelector('[data-core-next]').disabled=locked()||state.revealed>=task.steps.length;
   host.querySelector('[data-core-clear]').disabled=locked()||!state.selected&&!state.built.length&&!state.revealed;
   const reset=host.querySelector('[data-core-reset]');if(reset)reset.disabled=locked()||!state.built.length;
+  active?.render();
  }
  const mutate=fn=>{if(locked())return;fn();draw();session.changed();};
  host.querySelectorAll('[data-core-select]').forEach(b=>b.onclick=()=>mutate(()=>{state.selected=b.dataset.coreSelect;}));
@@ -69,7 +77,56 @@ function mount(host,task,options={}){
  const reset=host.querySelector('[data-core-reset]');if(reset)reset.onclick=()=>mutate(()=>{state.built=[];});
  host.querySelector('[data-core-next]').onclick=()=>mutate(()=>{state.revealed=Math.min(task.steps.length,state.revealed+1);});
  host.querySelector('[data-core-clear]').onclick=()=>mutate(()=>{state.selected=null;state.built=[];state.revealed=0;});
- session.setReadOnly=value=>{readOnly=!!value;draw();};draw();return session;
+ if(task.geometryRebuild)active=activePractice(host,task,state,locked,mutate);
+ session.setReadOnly=value=>{readOnly=!!value;if(renderedLocked!==locked())draw();};draw();return session;
+}
+function activePractice(host,task,state,locked,mutate){
+ const panel=document.createElement('section');panel.className='geometry-active';host.classList.add('geometry-active-host');panel.setAttribute('aria-label','Геометрическая мастерская');host.append(panel);
+ const all=task.model.elements||[],d=task.model.diagram;
+ const points=all.filter(e=>Object.hasOwn(d.points,e.id)),lines=all.filter(e=>(d.segments||[]).some(s=>s.id===e.id)),angles=all.filter(e=>(d.angles||[]).some(a=>a.id===e.id));
+ const pick=(items,offset)=>items[(Math.abs(task.seed||0)+offset)%items.length];
+ const targets=[points.length&&pick(points,0),lines.length&&pick(lines,1),angles.length&&pick(angles,2)].filter(Boolean);
+ let found=0,huntMessage='',huntBad=false,answer='',draftStep=state.revealed,stepMessage='',stepBad=false,buildMessage='',buildBad=false;
+ const q=selector=>panel.querySelector(selector);
+ const selectedIsTarget=()=>targets[found]?.id===state.selected;
+ function render(){
+  if(draftStep!==state.revealed){answer='';draftStep=state.revealed;stepMessage='';stepBad=false;}
+  const step=task.steps[state.revealed],total=task.steps.length,percent=Math.round(state.revealed/total*100),built=task.params?.requiredBuild;
+  panel.innerHTML=`<div class="geometry-active-heading"><span class="badge">Мастерская геометра</span><span>${state.revealed} из ${total} шагов разобрано</span></div><progress value="${state.revealed}" max="${total}" aria-label="Шаги исследования">${percent}%</progress><p>Собирай понятные шаги. Ошибка — повод проверить условие. Можно пробовать ещё раз.</p>
+  ${targets.length?`<section class="geometry-mission"><h3>1. Найди на чертеже</h3><p>${found<targets.length?'Найди: <strong>'+E(targets[found].label)+'</strong>. Нажми на рисунок или на кнопку с названием элемента выше.':'Все элементы этой серии найдены.'}</p><div class="actions"><button type="button" data-hunt-check ${found===targets.length?'disabled':''}>Проверить находку</button><span class="geometry-token ${found===targets.length?'earned':''}">${found===targets.length?'✓ Чертёж прочитан':`${found} / ${targets.length} находок`}</span></div><p data-hunt-feedback role="status" class="feedback ${huntBad?'bad':'good'}">${E(huntMessage)}</p></section>`:''}
+  ${Array.isArray(built)&&built.length?`<section class="geometry-mission"><h3>2. Проверь построение</h3><p>Кнопками «Провести» выше оставь только построение, которое требуется в условии.</p><button type="button" data-build-check>Проверить построение</button><p data-build-feedback role="status" class="feedback ${buildBad?'bad':'good'}">${E(buildMessage)}</p></section>`:''}
+  <section class="geometry-mission"><h3>${built?.length?'3':'2'}. Собери рассуждение</h3>${step?`<p><strong>Шаг ${state.revealed+1}.</strong> ${E(step.q)}</p>${step.choices?`<div class="geometry-choice-grid" role="group" aria-label="Ответ на шаг">${step.choices.map(c=>`<button type="button" data-active-choice="${E(c.value)}" aria-pressed="${answer===c.value}">${E(c.label)}</button>`).join('')}</div>`:`<label>Ответ на шаг <input data-active-answer inputmode="decimal" autocomplete="off" maxlength="80" value="${E(answer)}"></label>`}<div class="actions"><button type="button" data-active-check class="primary">Проверить шаг</button><button type="button" data-active-hint>Нужна подсказка</button></div><p data-active-feedback role="status" class="feedback ${stepBad?'bad':'good'}">${E(stepMessage)}</p>`:`<div class="geometry-finish"><strong>✓ Рассуждение собрано</strong><p>Теперь проверь себя на новом варианте. Разбор остаётся тренировкой с помощью.</p></div>`}</section>
+  <section class="geometry-proof-board"><h3>Моя доска рассуждений</h3>${state.revealed?`<ol>${task.steps.slice(0,state.revealed).map(s=>`<li><strong>${E(root.PathPracticeView.answerText(s))}</strong><br>${E(s.why)}</li>`).join('')}</ol>`:'<p>Здесь останутся все разобранные шаги — они не исчезнут после следующего ответа.</p>'}</section><p class="muted">Значки отмечают эту тренировку, а не оценку. Найденные элементы считаются в текущем открытии; разобранные шаги и построения сохраняются вместе с моделью в кабинете.</p>`;
+  panel.querySelectorAll('button,input').forEach(b=>{if(locked())b.disabled=true;});
+  q('[data-hunt-check]')?.addEventListener('click',()=>{
+   if(locked()||found>=targets.length)return;
+   if(selectedIsTarget()){found++;huntBad=false;huntMessage=found===targets.length?'Все находки верны. Можно перейти к рассуждению.':'Верно. Теперь найди следующий элемент.';}
+   else{huntBad=true;huntMessage=state.selected?'Сверь название: для угла средняя буква — вершина, для отрезка нужны оба конца.':'Сначала выдели элемент на рисунке или кнопкой.';}render();
+  });
+  q('[data-build-check]')?.addEventListener('click',()=>{
+   if(locked())return;const ok=built.length===state.built.length&&built.every(id=>state.built.includes(id));buildBad=!ok;
+   buildMessage=ok?'✓ Построение соответствует условию. Объясни, какое свойство это подтверждает.':'Проверь все требования условия. Убери лишние построения и выбери нужное.';render();
+  });
+  panel.querySelectorAll('[data-active-choice]').forEach(button=>button.onclick=()=>{if(locked())return;answer=button.dataset.activeChoice;render();q('[data-active-choice="'+answer+'"]')?.focus({preventScroll:true});});
+  const input=q('[data-active-answer]');if(input){input.oninput=()=>{answer=input.value;};input.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing&&!e.repeat){e.preventDefault();check();}};}
+  q('[data-active-check]')?.addEventListener('click',check);
+  q('[data-active-hint]')?.addEventListener('click',()=>{if(locked())return;stepMessage=step.why;stepBad=false;render();});
+ }
+ function check(){
+  if(locked())return;const step=task.steps[state.revealed];if(!step)return;
+  if(!answer.trim()){stepMessage='Сначала выбери или введи ответ.';stepBad=true;render();return;}
+  if(root.PathData.correct(step,answer)){mutate(()=>{state.revealed++;});q('[data-active-choice], [data-active-answer]')?.focus({preventScroll:true});}
+  else{stepMessage=root.PathPracticeView.wrongFeedback(step,answer,'Пока не сходится. '+step.why);stepBad=true;render();}
+ }
+ // The original large labelled controls remain the keyboard/touch alternative.
+ // Direct drawing clicks use exactly the same persisted selected-element ID.
+ host.querySelector('[data-core-drawing]').addEventListener('click',event=>{
+  if(locked())return;const part=event.target.closest?.('[data-core-part]');if(!part||!host.querySelector('[data-core-drawing]')?.contains(part))return;
+  const id=part.getAttribute('data-core-part'),button=[...host.querySelectorAll('[data-core-select]')].find(b=>b.dataset.coreSelect===id);button?.click();
+ });
+ host.querySelector('[data-core-next]').textContent='Открыть следующий шаг с объяснением';
+ host.querySelector('[data-core-clear]').addEventListener('click',()=>{if(locked())return;found=0;huntMessage='';stepMessage='';buildMessage='';answer='';render();});
+ return {render};
 }
 root.PathGrade7Construction={svg,visual,mount};
 if(root.PathModels){const previous=root.PathModels.mount;root.PathModels.mount=(host,task,options={})=>task.model?.kind==='grade7-construction'?mount(host,task,options):previous(host,task,options);}

@@ -1,24 +1,56 @@
 # MathExam project status
 
-Updated: 2026-10-15 (Asia/Novosibirsk)
+Updated: 2026-10-16 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## In progress: Amvera endpoint recovery after hosting outage
+## Release preparation: two geometry routes and active practice
+
+- Full-course Draft PR [248](https://github.com/ladynata-cloud/math-exam-fipi/pull/248)
+  has head `6a7021bbd5971ce909769b2b819d5f2d1b1f2da0`; it remains unpublished.
+  Its five final workflows passed. The owner subsequently authorized the combined release and cabinet placement on 2026-10-16 (Asia/Novosibirsk).
+- [Active-practice scope](tasks/GRADE7_GEOMETRY_ACTIVE_PRACTICE.md) is stacked on
+  that exact head. The workbook route grows from 73 to 103 families in 17 sections.
+  A separate proof route keeps the three visible source-photo problems, with
+  problems 1 and 3 classified as SAS and problem 2 as SSS.
+- [Coverage map](reports/GRADE7_GEOMETRY_ACTIVE_PRACTICE.md) accounts for all 73
+  numbered exercise groups and the other workbook parts. It states the difference
+  between authored skill analogues and an exhaustive audit of every subitem/key.
+- The existing managed model stores selections, constructions and revealed steps;
+  no state schema, account, credential or personal plan migration is introduced.
+  Diagram hunts and badges refer to the current practice, not independent mastery.
+- PR [249](https://github.com/ladynata-cloud/math-exam-fipi/pull/249) is now the
+  combined release against unchanged production base
+  `e01b2780f16f9771defee5d862eec6de581a554f`. Follow it for current exact-head
+  review, final gates, publication and cabinet-placement evidence. This committed
+  pre-release snapshot does not itself claim deployment has completed.
+- Release review clarified that a full revert would preserve stored rows but
+  remove new task IDs from the allowlist. Corrections must retain catalog,
+  generator and loader compatibility for new attempts; see the scoped rollback.
+
+## Prepared separately: Soviet topic 61, logo and video-factory check
+
+- Draft PR 247 remains separate at head
+  `8c1693f860bd97106b26cc97d9bcd065cb9b0b5a`.
+- Content/UI checks passed. The final worker integration check stopped before
+  rendering because the CI sandbox helper did not have its required mode.
+  No passing production render or successful factory restoration is inferred.
+- No merge or deployment of that PR has occurred; this task leaves it intact.
+
+## Published: Amvera endpoint recovery after hosting outage
 
 - [Scope](tasks/AMVERA_ENDPOINT_RECOVERY_20261015.md); base
   `7397baf0ebe2b36c8263229117ae5fe44ddf2d45`; MEDIUM frontend recovery.
-- The restored cabinet operates at `mathexam-board-ladynata.msk1.amvera.tech`.
-  Published links and board/progress/video clients still use retired application
-  endpoints. The managed-trainer bridge already accepts the restored origin.
-- Replace only frontend endpoints and migrate exact old board origins in saved
-  sessions; preserve course contents, credentials, strict origins and storage.
-  This record does not claim merge, deployment or completed production testing.
-- Next three actions: complete focused checks and independent review; open one
-  Draft PR with exact base/head; after separate release authorization verify
-  public entry, board collaboration and video export against restored services.
+- PR 246 was merged by the owner as
+  `e01b2780f16f9771defee5d862eec6de581a554f`. Its parent and full tree matched
+  the reviewed release; Pages run 38628033755 succeeded on the merge commit.
+- The public cabinet link opened the restored teacher service at
+  `mathexam-board-ladynata.msk1.amvera.tech`. Both Amvera applications were
+  observed running 1/1; three existing videos played successfully.
+- New authenticated production rendering remains unverified. Running
+  containers and existing media playback do not prove the video factory works.
 
 ## Merged: Soviet mathematics pedagogical revision and second batch
 

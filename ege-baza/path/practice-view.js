@@ -27,6 +27,16 @@ function answerText(item) {
  const choices=answerChoices(item), value=String(item?.a ?? item?.answer);
  return choices?.find(choice=>choice.value===value)?.label ?? PathData.answerText(item);
 }
+// Authored plain text for a known choice or canonical finite number; checking stays in PathData.
+function wrongFeedback(item,answer,fallback) {
+ const input=String(answer).trim(),choices=answerChoices(item),map=item?.feedback;
+ let value=input;
+ if(choices){if(!choices.some(choice=>choice.value===value))return fallback;}
+ else{const number=PathData.parse(input);if(!input||!Number.isFinite(number))return fallback;value=String(number);}
+ if(!map||typeof map!=='object'||Array.isArray(map)||!Object.prototype.hasOwnProperty.call(map,value))return fallback;
+ const text=map[value];
+ return typeof text==='string'&&text.trim()&&text.length<=4000?text:fallback;
+}
 function answerForm(item,limit=4000) {
  const choices=answerChoices(item);
  if(choices)return `<form id="answerForm"><fieldset><legend>Твой ответ: выбери вариант</legend><input id="answer" type="hidden" value=""><div class="actions answer-choices">${choices.map((choice,index)=>`<button type="button" id="answer-choice-${index}" data-answer-choice="${E(choice.value)}" aria-pressed="false">${E(choice.label)}</button>`).join('')}</div></fieldset><button class="primary" type="submit">Проверить</button></form>`;
@@ -40,7 +50,7 @@ function bindChoices(host,onChange) {
  buttons.forEach(button=>button.onclick=()=>{if(host.inert)return;input.value=button.dataset.answerChoice;draw();onChange(input.value);});draw();
 }
 function markup(t,omitVisual=false){return `<div class="task-support">${omitVisual?'':visual(t)}${t.labels?`<ol class="match-labels" type="A">${t.labels.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}${t.choices&&!answerChoices(t)?`<ol class="task-choices">${t.choices.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}</div>`;}
-root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices};
+root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices,wrongFeedback};
 if(!root.PathModels)return;
 const previous=PathModels.mount;
 PathModels.mount=function(el,t,options={}){
@@ -96,5 +106,5 @@ PathModels.mount=function(el,t,options={}){
  }
  return previous(el,t,options);
 };
-root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices};
+root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices,wrongFeedback};
 })(window);

@@ -52,7 +52,7 @@ test('catalog exposes exactly the original twelve lessons and 144 authored exerc
   const items = catalog.items.filter(item => item.trainerId === 'motion-grade6');
   assert.equal(items.length, 12);
   assert.deepEqual(items.map(item => item.contentId), core.ids);
-  assert.equal(catalog.items.filter(item => item.trainerId === 'ege-path').length, 169);
+  assert.equal(catalog.items.filter(item => item.trainerId === 'ege-path' && !item.geometryRebuild).length, 169);
   for (const [lessonIndex, item] of items.entries()) {
     const generated = contracts.create(item.trainerId, item.contentId, 17), spec = generated.taskSpec;
     assert.equal(spec.lessonIndex, lessonIndex); assert.equal(spec.items.length, 12);

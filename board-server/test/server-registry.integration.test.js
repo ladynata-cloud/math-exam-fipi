@@ -292,11 +292,12 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     assert.equal(cabinet.status, 200);
     assert.match(cabinet.headers.get('content-security-policy'), /frame-ancestors 'none'/);
     assert.match(await cabinet.text(), /Мой кабинет/);
-    for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js']) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
+    for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js', ...['base', 'foundations', 'triangles', 'relations'].map(name => '/ege-baza/path/grade7-geometry-rebuild-' + name + '.js')]) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
     const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
-    assert.equal(learningStatus.trainers.length, 217);
+    assert.equal(learningStatus.trainers.filter(item => !item.geometryRebuild).length, 217);
+    assert.equal(learningStatus.trainers.filter(item => item.geometryRebuild).length, require('../../learning/catalog').items.filter(item => item.geometryRebuild).length);
     assert.equal(learningStatus.trainers.filter(item => item.grade6).length, 12);
-    assert.equal(learningStatus.trainers.filter(item => item.grade7).length, 62);
+    assert.equal(learningStatus.trainers.filter(item => item.grade7 && !item.geometryRebuild).length, 62);
     assert.equal(learningStatus.available, false);
   } finally {
     await server.stop();

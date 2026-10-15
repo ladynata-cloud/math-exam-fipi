@@ -89,10 +89,10 @@
       if (scope === 'step') {
         work.help = true;
         if (correct) { work.answers.push(answer); work.step++; work.done = work.step === task.steps.length; work.draft = ''; state.view.hintText = ''; state.view.feedback = ''; state.view.feedbackKind = ''; render(); showFeedback(work.step === task.steps.length ? 'Разбор завершён. Для самостоятельной проверки возьми новый вариант.' : 'Верно. Продолжай со следующего шага.', 'good'); document.getElementById('answer')?.focus(); }
-        else showFeedback('Проверь именно этот шаг. ' + task.steps[step].why, 'bad');
+        else showFeedback(root.PathPracticeView.wrongFeedback(task.steps[step], answer, 'Проверь именно этот шаг. ' + task.steps[step].why), 'bad');
       } else {
         if (correct) { work.done = true; showFeedback(work.help ? 'Верно. Этот вариант решён после разбора или помощи.' : 'Верно! Результат будет сохранён в истории работы.', 'good'); }
-        else showFeedback('Пока неверно. Проверь знак, единицы и то, что спрашивается. Можно разобрать этот вариант по шагам.', 'bad');
+        else showFeedback(root.PathPracticeView.wrongFeedback(task, answer, 'Пока неверно. Проверь знак, единицы и то, что спрашивается. Можно разобрать этот вариант по шагам.'), 'bad');
       }
       emit('check', scope === 'step' ? { scope, step, answer, answers } : { scope, answer });
     };

@@ -41,7 +41,7 @@ const server = http.createServer((req,res)=>{try{
   const choiceFocusEvent=await change('a',f=>f.locator('[data-answer-choice]').first().press('Space'));
   await hydrate('b',choiceFocusSpec,choiceFocusEvent.state,true);
   assert.equal(await frame('b').locator('#answer').inputValue(),choiceFocusEvent.state.work.draft,'choice draft restores after input type transition');
-  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.length,169);
+  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.filter(id=>!id.startsWith('grade7-r-')).length,169);assert.equal(ids.length,169+await frame('a').evaluate(()=>PathData.geometryRebuild.families.length));
   for(const id of ids){const taskSpec=await spec(id);await hydrate('a',taskSpec);const raw=await frame('a').locator('#answer').getAttribute('type')==='hidden'?await frame('a').locator('[data-answer-choice]').first().getAttribute('data-answer-choice'):'−3/7';let event=await change('a',f=>raw==='−3/7'?f.locator('#answer').fill(raw):f.locator('[data-answer-choice]').first().click());assert.equal(event.state.work.draft,raw);assert.equal(event.kind,'input');event=await change('a',f=>f.locator('[data-stage="1"]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);kinds.add(taskSpec.task.model.kind);assert((await frame('a').locator('#model').innerText()).length>0);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id);assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id);}
   // Each new curriculum item preserves exact drafts, help and a checked prefix.
   for(const id of ids.filter(id=>id.startsWith('grade7-')||id.startsWith('pre7-'))){
@@ -136,6 +136,6 @@ const server = http.createServer((req,res)=>{try{
   // Hydration renders the pinned task, not an updated client generator.
   await frame('a').evaluate(()=>PathData.task=()=>{throw Error('must not regenerate pinned task');});await hydrate('a',taskSpec,saved,false);
   await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{framesById.a.style.width='100%';framesById.b.hidden=true;});assert(await frame('a').evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-  assert.deepEqual(errors,[]);console.log('LEARNING_PATH_BROWSER_OK: 169 routes; '+kinds.size+' model kinds; semantic controls/figures, teacher read-only, exact drafts/feedback/hints/steps, silent hydrate, reload, parent new-task, pinned task and standalone isolation.');
+  assert.deepEqual(errors,[]);console.log('LEARNING_PATH_BROWSER_OK: '+ids.length+' routes; '+kinds.size+' model kinds; semantic controls/figures, teacher read-only, exact drafts/feedback/hints/steps, silent hydrate, reload, parent new-task, pinned task and standalone isolation.');
  }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});

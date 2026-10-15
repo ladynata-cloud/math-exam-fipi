@@ -87,7 +87,7 @@
   };
   const groups = [];
   for (const [subject, title, subtitle] of subjects) {
-    const entries = catalog.items.filter(item => item.grade7 && (subject === 'pre7' ? item.pre7 : !item.pre7 && item.subject === subject));
+    const entries = catalog.items.filter(item => item.grade7 && !item.geometryRebuild && (subject === 'pre7' ? item.pre7 : !item.pre7 && item.subject === subject));
     const section = node('section', '', 'practice-strand');
     section.id = 'new-' + subject;
     section.append(node('h3', title), node('p', subtitle, 'small'));
