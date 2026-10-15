@@ -17,8 +17,10 @@ Run independent mathematical oracles for new generators; all original content an
 
 ## Authorization and release
 
-The user's direct request authorizes implementation, tests, commits, pushing and a reviewable Draft PR. It does not separately authorize merge/deployment. PR 248's publication/external-review prerequisites remain unresolved. No learner-plan writes, credentials or uploaded source pages are included. External HIGH review remains pending; do not claim an external verdict.
+The initial request authorized implementation, tests, commits, pushing and a reviewable Draft PR. On 2026-10-16 (Asia/Novosibirsk), the owner additionally authorized publication and placement of both routes in the existing pupil cabinet. PR 249 is the composed release, including PR 248, against production base `e01b2780f16f9771defee5d862eec6de581a554f`. Record exact-head review, gates and deployment evidence in that PR. Cabinet placement preserves the existing recommendations and attempt history; private learner records and uploaded source pages stay outside Git.
 
 ## Rollback
 
-Revert the scoped additional commit after normal review. Preserve all learner records. Version-1 model state remains selected/built/revealed; old records and old task outputs must remain valid. No destructive data rollback is needed.
+After a production failure, pause further rollout and prepare a reviewed corrective release. For a workshop/navigation regression, restore the prior UI behavior while retaining all new task metadata, generators, catalog entries, server/client loaders and circle rendering. Version-1 model state remains selected/built/revealed. Verify that both old and newly created attempts can reopen, save and be checked before releasing the correction.
+
+A full revert to the pre-course base preserves database rows but removes the new IDs from the allowlist: new attempts then fail with `LEARNING_TRAINER_UNKNOWN` and cannot be continued until compatibility is restored. It is therefore not the normal rollback once pupils have started new tasks. Never delete learner records or claim that row preservation alone keeps those tasks usable. A data-compatible fix forward is required for generator/contract defects.

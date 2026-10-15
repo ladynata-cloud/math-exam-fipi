@@ -1,6 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),coverage=require('../docs/reports/GRADE7_GEOMETRY_WORKBOOK_COVERAGE.json');
 const D=require('../ege-baza/path/data');
+require('../ege-baza/path/grade7-geometry-practice');
 for(const name of ['base','foundations','triangles','relations'])require('../ege-baza/path/grade7-geometry-rebuild-'+name);
 const old=D.geometryRebuild.families.map(m=>({id:m.id,tasks:Array.from({length:72},(_,n)=>JSON.stringify(D.task(m.id,n)))}));
 require('../ege-baza/path/grade7-geometry-rebuild-workbook');
@@ -50,6 +51,8 @@ for(const m of old)for(let seed=0;seed<72;seed++)assert.equal(JSON.stringify(D.t
 assert.deepEqual(coverage.exercises.map(row=>row.exercise),Array.from({length:73},(_,n)=>n+1));
 assert.deepEqual([...new Set(coverage.exercises.flatMap(row=>row.pages))].sort((a,b)=>a-b),Array.from({length:76},(_,n)=>n+5));
 assert.equal(coverage.sections.length,17);
+assert(coverage.exercises.find(row=>row.exercise===30).lessons.includes('grade7-g-practice-sas-common-side'),'Exercise 30 maps to a numeric consequence of SAS');
+assert(!coverage.exercises.find(row=>row.exercise===30).lessons.includes('grade7-r-triangle-congruence-consequence'),'Exercise 30 must not be mapped to an SSS-only task');
 for(const row of coverage.exercises){assert(row.lessons.length);const section=coverage.sections.find(s=>s.section===row.section);assert(row.pages.every(p=>p>=section.pages[0]&&p<=section.pages[1]));for(const id of row.lessons)assert(D.meta.some(m=>m.id===id),'Coverage reference '+id);}
 for(const s of coverage.sections)assert(D.meta.some(m=>m.id===s.selfCheck&&m.section===s.section));
 assert.deepEqual(coverage.otherParts.find(x=>x.part==='answers').printedPages,[81,82,83,84,85]);

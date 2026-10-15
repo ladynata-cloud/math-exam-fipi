@@ -32,11 +32,11 @@ Turn the complete topic sequence of T. V. Sirotina, *Geometry. Grade 7. Exercise
 
 ## Risk and rollback
 
-Main risks are diagram/condition disagreement, accidentally treating a theorem's converse as automatic, premature help disclosure and catalog/load-order mismatch. Additive IDs and existing version-1 task contracts avoid migrating old work. Roll back the scoped release commit through an ordinarily reviewed revert; retain learner records and previously generated task envelopes. No destructive data rollback.
+Main risks are diagram/condition disagreement, accidentally treating a theorem's converse as automatic, premature help disclosure and catalog/load-order mismatch. Additive IDs and existing version-1 task contracts avoid migrating old work. Once pupils have created new attempts, preserve their metadata, generators, catalog and loaders during any corrective release. A full revert retains database rows but makes new IDs unavailable; it is not a compatibility-preserving rollback. Follow the concrete rollback boundaries in [the active-practice scope](GRADE7_GEOMETRY_ACTIVE_PRACTICE.md). No destructive data rollback.
 
 ## Release boundary
 
-External HIGH review or an explicit owner waiver is pending. No merge, auto-merge or deployment is included in this implementation authorization. Final handoff must identify exact base/head, checks, failures, omissions and required owner decision.
+The initial implementation authorization excluded deployment. The owner subsequently authorized publication of the complete course and active practice together on 2026-10-16 (Asia/Novosibirsk). PR 249 now contains this PR's work and is the release evidence record for the exact production base/head, independent and remote review, checks, deployment and remaining limitations.
 
 ## Implementation record
 
