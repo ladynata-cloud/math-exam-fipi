@@ -18,7 +18,9 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   numbered exercise groups, not an exhaustive audit of every subitem/key.
 - [Student-journey scope](tasks/GRADE7_GEOMETRY_STUDENT_JOURNEYS.md) prepares clearer
   starts, named milestones, honest progress and a less crowded workshop. These
-  follow-up changes are not yet claimed as published.
+  follow-up changes are published by PR [250](https://github.com/ladynata-cloud/math-exam-fipi/pull/250)
+  at `f123b4cb60894ba2efaed396b61e38b30a0e1f73`; the recovery session
+  verified the corresponding live Amvera learning assets.
 - Cabinet assets come from the Amvera container; updating public assets alone
   does not update the cabinet. Final deployment needs separate verification.
 - Retain existing task IDs, catalog and loaders when correcting or rolling back
