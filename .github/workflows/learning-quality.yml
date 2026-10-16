@@ -61,6 +61,7 @@ jobs:
           node tools/pre7-applications.test.cjs
           node tools/pre7-models.test.cjs
           node tools/grade7-geometry-core.test.cjs
+          node tools/learning-assignment-geometry.test.cjs
           node tools/grade7-construction.test.cjs
           node tools/grade7-geometry-practice.test.cjs
           node tools/grade7-rebuild-foundations.test.cjs
@@ -75,9 +76,11 @@ jobs:
       - name: Install pinned browser test tools
         id: browser_tools
         run: |
-          npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsqr@1.4.0 pngjs@7.0.0
+          npm install --prefix "$RUNNER_TEMP/learning-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsqr@1.4.0 pngjs@7.0.0 jsdom@26.1.0
           "$RUNNER_TEMP/learning-browser/node_modules/.bin/playwright" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/learning-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Assignment geometry DOM and saved-state regression
+        run: node tools/learning-assignment-geometry.dom.cjs
       - name: Geometry rebuild classroom and narrow-screen scenarios
         env:
           GEOMETRY_REBUILD_OUTPUT_DIR: ${{ runner.temp }}/geometry-rebuild-evidence
