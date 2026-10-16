@@ -291,7 +291,29 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     const cabinet = await fetch(`${server.baseUrl}/learning/`, { cache: 'no-store' });
     assert.equal(cabinet.status, 200);
     assert.match(cabinet.headers.get('content-security-policy'), /frame-ancestors 'none'/);
-    assert.match(await cabinet.text(), /Мой кабинет/);
+    const cabinetHtml = await cabinet.text();
+    assert.match(cabinetHtml, /Мой кабинет/);
+    // Fetch the actual entry page dependencies, including versioned URLs, from
+    // the container-equivalent server. A disk copy alone does not expose a URL.
+    const assets = [...cabinetHtml.matchAll(/<(?:script\b[^>]*\bsrc|link\b[^>]*\bhref)="([^"]+)"/g)]
+      .map(match => new URL(match[1], server.baseUrl + '/learning/'));
+    assert.ok(assets.some(url => url.pathname.endsWith('/grade7-geometry-core-models.js')));
+    for (const url of assets) {
+      assert.equal(url.origin, server.baseUrl);
+      const response = await fetch(url);
+      assert.equal(response.status, 200, url.pathname);
+      assert.match(response.headers.get('cache-control') || '', /no-store/, url.pathname);
+      assert.equal(response.headers.get('x-content-type-options'), 'nosniff', url.pathname);
+      assert.equal(response.headers.get('cross-origin-resource-policy'), 'same-origin', url.pathname);
+      assert.match(response.headers.get('content-security-policy') || '', /script-src 'self'/, url.pathname);
+      assert.match(response.headers.get('content-type') || '', url.pathname.endsWith('.js') ? /javascript/ : /text\/css/, url.pathname);
+      const expected = fs.readFileSync(path.join(directory, 'app', url.pathname));
+      assert.deepEqual(Buffer.from(await response.arrayBuffer()), expected, url.pathname);
+    }
+    // Keep the path allowlist: unrelated files and server sources stay private.
+    for (const blocked of ['/ege-baza/path/managed-state.js', '/board-server/index.js']) {
+      assert.equal((await fetch(server.baseUrl + blocked)).status, 404, blocked);
+    }
     for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js', ...['base', 'foundations', 'triangles', 'relations'].map(name => '/ege-baza/path/grade7-geometry-rebuild-' + name + '.js')]) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
     const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
     assert.equal(learningStatus.trainers.filter(item => !item.geometryRebuild).length, 217);

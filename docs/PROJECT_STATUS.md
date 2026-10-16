@@ -1,10 +1,29 @@
 # MathExam project status
 
-Updated: 2026-10-16 (Asia/Novosibirsk)
+Updated: 2026-10-17 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
+
+## Current correction: inline assignment drawing resource
+
+- PR 251 merged with owner authorization as
+  `c102cee9b7c98c74c30384bfce0ccdd1568b25c2`; parent, full tree and stable
+  patch identity matched the reviewed release. All three exact-head CI workflows
+  and Pages deployment 38975860479 passed.
+- All four changed learning assets matched the release on both Pages and Amvera.
+  Amvera restarted at 2026-10-16 22:29:14 UTC and its health and durable learning
+  storage endpoints were healthy. This release reached Amvera automatically;
+  manual upload of those four files is not needed.
+- Production verification found the renderer URL returning HTTP 404. Its file
+  is bundled but missing from the server's static allowlist, so the inline
+  drawing falls back and is not yet usable in the cabinet.
+- [Correction](tasks/ASSIGNMENT_GEOMETRY_ASSET.md): add the one existing renderer
+  path and verify every script/style actually requested by the cabinet.
+- Next three actions: finish the corrective runtime gate; obtain exact-head
+  release authorization for the corrective PR; deploy and verify the live
+  renderer and inline assignment UI. No pupil/account changes are required.
 
 ## Published baseline: two geometry routes and active practice
 
