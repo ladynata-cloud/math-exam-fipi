@@ -7,7 +7,7 @@ const ROOT=path.resolve(__dirname,'..'),out=process.env.GEOMETRY_REBUILD_OUTPUT_
  try{
   const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/*',route=>route.abort());await page.setContent('<!doctype html><html lang="ru"><meta charset="utf-8"><body><main id="main"><div id="host"></div></main></body></html>');
-  await page.addStyleTag({path:path.join(ROOT,'ege-baza/path/style.css')});
+  await page.addStyleTag({path:path.join(ROOT,'ege-baza/path/style.css')});await page.addStyleTag({path:path.join(ROOT,'ege-baza/path/geometry-journey.css')});
   for(const file of ['data','practice','practice-view','models','grade7-geometry-rebuild-base','grade7-geometry-rebuild-foundations','grade7-geometry-rebuild-triangles','grade7-geometry-rebuild-relations','grade7-geometry-rebuild-workbook','grade7-geometry-core-models'])await page.addScriptTag({path:path.join(ROOT,'ege-baza/path/'+file+'.js')});
   await page.addScriptTag({path:path.join(ROOT,'learning/catalog.js')});await page.addScriptTag({path:path.join(ROOT,'learning/grade7-route-map.js')});await page.addScriptTag({path:path.join(ROOT,'learning/route.js')});
   const samples=['photo-proof-1','photo-proof-2','photo-proof-3','construct-triangle-lines','construct-midpoint-bisector','angle-minutes','review-17'];let checkedSteps=0;
@@ -45,13 +45,15 @@ const ROOT=path.resolve(__dirname,'..'),out=process.env.GEOMETRY_REBUILD_OUTPUT_
     if(step.choices)await page.locator('[data-active-choice="'+step.a+'"]').click();else await page.locator('[data-active-answer]').fill(step.a);
     await page.locator('[data-active-check]').click();assert.equal((await getState()).revealed,index+1);checkedSteps++;
    }
-   assert.equal(await page.locator('.geometry-proof-board li').count(),steps.length);assert.match(await page.locator('.geometry-finish').textContent(),/Рассуждение собрано/);
+   assert.equal(await page.locator('.geometry-proof-board li').count(),steps.length);assert.match(await page.locator('.geometry-finish').textContent(),/Разбор завершён/);
+   if(id.startsWith('photo-proof-')){const followup=await page.locator('[data-geometry-followup-content]').getAttribute('data-geometry-followup-content');assert(await page.evaluate(id=>LearningRoute.geometryTrackGroups(LearningCatalog).proofs.includes('path:'+id),followup),'photo follow-up is reachable in the proof route');}
+   assert.equal(await page.locator('[data-core-steps] li').count(),0,'only one reasoning board');
    const saved=await getState();
    await page.evaluate(()=>{window.session=PathModels.mount(document.getElementById('host'),task,{state:session.getState(),readOnly:true,onChange:s=>changes.push(s)});});
    assert.deepEqual(await getState(),saved,'all accumulated reasoning and constructions restore');
    assert.equal(await page.locator('#host button:not([disabled])').count(),0);
    await page.locator('[data-core-clear]').evaluate(b=>b.click());assert.deepEqual(await getState(),saved,'read-only rejects programmatic events');
-   await page.evaluate(()=>session.setReadOnly(false));await page.locator('[data-core-clear]').click();assert.equal((await getState()).revealed,0);
+   await page.evaluate(()=>session.setReadOnly(false));await page.locator('.geometry-passive-help > summary').click();await page.locator('[data-core-clear]').click();assert.equal((await getState()).revealed,0);
    await page.evaluate(()=>document.getElementById('host').inert=true);await page.locator('[data-core-next]').evaluate(b=>b.click());assert.equal((await getState()).revealed,0);await page.evaluate(()=>session.setReadOnly(false));assert.equal(await page.locator('#host button:not([disabled])').count(),0,'ancestor inert state still updates controls');await page.evaluate(()=>{document.getElementById('host').inert=false;session.setReadOnly(false);});assert.equal(await page.locator('[data-active-check]').isDisabled(),false,'unlocking the ancestor re-enables controls');
    for(const width of [320,390,1280]){await page.setViewportSize({width,height:900});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+' fits '+width);}
    await page.setViewportSize({width:390,height:844});
@@ -59,8 +61,9 @@ const ROOT=path.resolve(__dirname,'..'),out=process.env.GEOMETRY_REBUILD_OUTPUT_
   }
   // Both routes use the real cabinet mount and the existing openContent handler.
   await page.addStyleTag({path:path.join(ROOT,'learning/style.css')});await page.addStyleTag({path:path.join(ROOT,'learning/route.css')});
-  await page.evaluate(()=>{document.getElementById('host').innerHTML='';window.opened=[];window.routeContext={catalog:LearningCatalog,account:{id:'synthetic-pupil'},attempts:[],labels:{},openContent:async id=>opened.push(id),api:async()=>({plan:{items:[]}})};window.disposeRoute=LearningRoute.mount(document.getElementById('host'),routeContext);});
+  await page.evaluate(()=>{document.getElementById('host').innerHTML='';window.opened=[];window.routeContext={catalog:LearningCatalog,account:{id:'synthetic-pupil'},attempts:[],labels:{},openContent:async id=>opened.push(id),api:async url=>url==='/progress'?{progress:[]}:{plan:{items:[]}}};window.disposeRoute=LearningRoute.mount(document.getElementById('host'),routeContext);});
   assert.equal(await page.locator('[data-geometry-track]').count(),2);
+  await page.locator('[data-geometry-next=proofs] [data-geometry-start]').click();await page.locator('[data-geometry-next=workbook] [data-geometry-start]').click();assert.deepEqual(await page.evaluate(()=>opened),['path:grade7-r-triangle-elements','path:grade7-r-point-membership']);await page.evaluate(()=>opened=[]);
   const proof=page.locator('[data-geometry-track="proofs"]'),book=page.locator('[data-geometry-track="workbook"]');
   assert.equal(await book.locator('[data-route-item]').count(),103);assert.equal(await book.locator('[data-route-item*="photo-proof-"]').count(),0);
   assert.equal(await proof.locator('[data-route-item*="photo-proof-"]').count(),3);

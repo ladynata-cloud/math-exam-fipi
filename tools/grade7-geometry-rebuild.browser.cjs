@@ -260,6 +260,13 @@ async function main() {
       assert.equal(preview.searchParams.get('practice'), '1');
       assert.equal(new URLSearchParams(preview.hash.slice(1)).get('lesson'), item.contentId);
     }
+    assert.equal(await publicPage.locator('[data-geometry-section][open]').count(),0,'The full workbook starts folded');
+    await publicPage.goto(trainerOrigin+'/grade7/geometry-rebuild/#lesson-grade7-r-triangle-sas-common');
+    await publicPage.locator('#lesson-grade7-r-triangle-sas-common').waitFor({state:'visible'});
+    assert.equal(await publicPage.locator('[data-geometry-section="6"]').getAttribute('open'),'');
+    await publicPage.locator('#lesson-grade7-r-triangle-sas-common details summary').click();
+    const prerequisite=publicPage.locator('#lesson-grade7-r-triangle-sas-common details a[href^="#lesson-"]').first();
+    const target=await prerequisite.getAttribute('href');await prerequisite.click();await publicPage.locator(target).waitFor({state:'visible'});
     await screenshot(publicPage, 'hub-desktop-1360.png', true);
     await fits(publicPage);
     await publicPage.setViewportSize({ width: 320, height: 844 });
@@ -307,7 +314,7 @@ async function main() {
       await navigate(pupil, 'assignment=' + assignment.id);
       await pupil.locator('a[href="#attempt=' + id + '"]').click(); await ready(pupil);
       assert.equal((await api(pupil, '/attempts/' + id)).contentId, item.contentId);
-      await frame(pupil).locator('[data-stage="1"]').click(); await saved(pupil);
+      await frame(pupil).locator('[data-geometry-explore]').click(); await saved(pupil);
       const drawing = frame(pupil).locator('[data-core-drawing] svg'); await drawing.waitFor();
       await trainerEvidence(pupil, item.contentId + '-model-desktop-1360');
       await diagramFits(drawing, item.id + ' desktop labels');
@@ -319,17 +326,21 @@ async function main() {
       await pupil.setViewportSize({ width: 1360, height: 1000 });
       const selected = await frame(pupil).locator('[data-core-select]').first().getAttribute('data-core-select');
       await frame(pupil).locator('[data-core-select]').first().press('Space');
+      if(!await frame(pupil).locator('[data-core-next]').isVisible())await frame(pupil).locator('.geometry-passive-help > summary').click();
       await frame(pupil).locator('[data-core-next]').click(); await saved(pupil);
+      if(!await frame(pupil).locator('[data-core-next]').isVisible())await frame(pupil).locator('.geometry-passive-help > summary').click();
       await frame(pupil).locator('[data-core-next]').click(); await saved(pupil);
       await until(pupil, id, attempt => attempt.state.work.model?.revealed === 2 && attempt.state.work.model.selected === selected);
       await pupil.reload(); await ready(pupil);
-      assert.equal(await frame(pupil).locator('[data-core-steps] li').count(), 2);
+      assert.equal(await frame(pupil).locator('.geometry-proof-board li').count(), 2);
+      assert.equal(await frame(pupil).locator('[data-core-steps] li').count(),0,'No duplicated explanations');
       assert.equal(await frame(pupil).locator('[data-core-select][aria-pressed=true]').getAttribute('data-core-select'), selected);
 
       await navigate(tutor, 'attempt=' + id); await ready(tutor); await waitWritable(tutor, false);
       assert.equal(await frame(tutor).locator('[data-core-drawing]').innerHTML(), await frame(pupil).locator('[data-core-drawing]').innerHTML());
       await tutor.locator('#trainer-control').click(); await waitWritable(tutor, true); await waitWritable(pupil, false);
       assert(await frame(pupil).locator('[data-core-next]').isDisabled(), 'Student cannot change the shared model during teacher control');
+      await frame(tutor).locator('.geometry-passive-help > summary').click();
       await frame(tutor).locator('[data-core-clear]').click(); await saved(tutor);
       await until(tutor, id, attempt => attempt.state.work.model?.selected === null);
       await tutor.locator('#trainer-control').click(); await waitWritable(pupil, true); await waitWritable(tutor, false);

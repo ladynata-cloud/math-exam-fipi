@@ -1,0 +1,44 @@
+/* Scoped presentation for the existing grade-7 geometry model. */
+.geometry-active-host{--journey-green:#246954;--journey-border:#d3dfd2;--journey-soft:#f4f8ee}
+.geometry-active-host .geometry-workshop-intro{font-size:1.05rem;line-height:1.65;padding:16px 18px;background:var(--journey-soft);border-radius:14px}
+.geometry-active-host .geometry-workshop-intro strong{display:block;margin-bottom:5px}
+.geometry-active-host .geometry-workbench{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.geometry-active-host .geometry-drawing-panel,.geometry-active-host .geometry-active{min-width:0;border:1px solid var(--journey-border);border-radius:16px;padding:18px;margin:0;background:#fff}
+.geometry-active-host .geometry-drawing-panel{position:sticky;top:12px}
+.geometry-active-host .geometry-drawing-panel h3{margin:0 0 10px;font-size:1.15rem}
+.geometry-active-host [data-core-read]{padding:10px 12px;background:var(--journey-soft);border-radius:10px;font-size:1rem;line-height:1.55}
+.geometry-active-host .geometry-element-buttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px}
+.geometry-active-host button{min-height:46px;max-width:100%;white-space:normal;overflow-wrap:anywhere;font-size:1rem;line-height:1.45}
+.geometry-active-host [data-core-select][aria-pressed=true],.geometry-active-host [data-core-build][aria-pressed=true]{background:#e4f0df;outline:2px solid var(--journey-green);outline-offset:1px}
+.geometry-active-host button:focus-visible,.geometry-active-host summary:focus-visible,.geometry-active-host input:focus-visible{outline:3px solid #9b5e15;outline-offset:3px}
+.geometry-active-host summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:650;line-height:1.5}
+.geometry-active-host .geometry-drawing-help,.geometry-active-host .geometry-build-tools{margin-top:12px;border-top:1px solid var(--journey-border);padding-top:6px}
+.geometry-active-host .geometry-active-heading .badge{background:#e4f0df;color:#174c36;font-size:1rem}
+.geometry-active-host .geometry-active-heading>span:last-child{font-size:.98rem;color:#365541}
+.geometry-active-host .geometry-one-step{line-height:1.5;margin-bottom:12px}
+.geometry-active-host .geometry-mission{margin-top:12px;padding:14px;background:var(--journey-soft)}
+.geometry-active-host .geometry-mission h3{margin-top:0;font-size:1.12rem}
+.geometry-active-host .geometry-hunt{background:#fff;border-style:dashed}
+.geometry-active-host .geometry-hunt summary{padding-top:0;padding-bottom:0;font-size:1rem}
+.geometry-active-host .geometry-mini-count{display:inline-block;color:#365541;padding:2px 8px;background:#edf4e8;border-radius:20px;white-space:nowrap}
+.geometry-active-host .geometry-small-note{font-size:.96rem;color:#3d5748;line-height:1.5}
+.geometry-active-host .geometry-step-question{line-height:1.6;margin:8px 0 16px}
+.geometry-active-host .geometry-step-question strong{display:block;font-size:1.1rem}
+.geometry-active-host .geometry-step-number{display:inline-block;background:#dfeeda;color:#164c34;border-radius:8px;padding:4px 9px;margin-bottom:10px;font-weight:650}
+.geometry-active-host .geometry-current-step .actions{gap:8px;margin-top:16px}
+.geometry-active-host .geometry-current-step .primary{background:var(--journey-green);color:white;border-color:var(--journey-green)}
+.geometry-active-host .geometry-proof-board{margin-top:22px;padding-right:0}
+.geometry-active-host .geometry-proof-board li{line-height:1.6;padding-bottom:12px;border-bottom:1px solid var(--journey-border)}
+.geometry-active-host .geometry-proof-board li:last-child{border-bottom:0}
+.geometry-active-host .geometry-board-question{display:block;color:#365541;font-size:.98rem;margin-bottom:5px}
+.geometry-active-host .geometry-proof-board li p{margin-top:5px;margin-bottom:0}
+.geometry-active-host .geometry-passive-help{margin-top:18px;padding:8px 18px;border:1px solid var(--journey-border);border-radius:12px;background:#f8faf5}
+.geometry-active-host .geometry-progress-note{margin-top:12px}
+.geometry-active-host .geometry-progress-note p,.geometry-active-host .geometry-passive-help p{line-height:1.6}
+.geometry-active-host .geometry-finish{background:#eaf3e5;padding:16px;line-height:1.6}
+.geometry-active-host .geometry-next-lesson{border-top:1px solid #bfd3b5;padding-top:12px}
+@media(max-width:850px){.geometry-active-host .geometry-workbench{grid-template-columns:minmax(0,1fr)}.geometry-active-host .geometry-drawing-panel{position:static}}
+@media(max-width:480px){.geometry-active-host .geometry-drawing-panel,.geometry-active-host .geometry-active{padding:12px}.geometry-active-host .geometry-workshop-intro{padding:12px}.geometry-active-host .geometry-element-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.geometry-active-host .geometry-element-buttons button{padding:9px 6px}.geometry-active-host .geometry-mission{padding:12px}.geometry-active-host .geometry-passive-help{padding:6px 12px}.geometry-active-host .geometry-current-step .actions{display:grid;grid-template-columns:minmax(0,1fr)}}
+
+.geometry-entry{padding:16px 20px;margin:16px 0;background:#eff6e9;border:1px solid #c6d8bb;border-radius:16px;line-height:1.6}
+.geometry-entry p{margin:8px 0}.geometry-entry button{min-height:44px;white-space:normal}.geometry-entry .primary{background:#246954;color:#fff}
