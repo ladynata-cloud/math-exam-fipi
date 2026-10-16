@@ -6,7 +6,22 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current correction: inline assignment drawing resource
+## Current refinement: readable drawing controls
+
+- PR 252 merged with owner authorization as
+  `6f3b971003ad7ab42027dbac8b5326a3c4434c23`. Reviewed tree, parent and patch
+  identity matched; exact-head cloud CI and Pages 38978036100 passed.
+- Amvera's renderer now returns HTTP 200. All 45 cabinet entry resources match
+  the release; health and durable storage are available. Desktop browser
+  checks verified the inline drawing in both route starts and photo-proof
+  zoom, highlight, button movement, mouse drag and reset.
+- New owner screenshot identifies small labels and helper text below the
+  drawing. [Scoped readability fix](tasks/ASSIGNMENT_GEOMETRY_READABILITY.md)
+  enlarges these controls and improves text contrast.
+- Next three actions: validate the scoped CSS; publish the reviewed corrective
+  PR for release authorization; verify live readability after deployment.
+
+## Completed correction: inline assignment drawing resource
 
 - PR 251 merged with owner authorization as
   `c102cee9b7c98c74c30384bfce0ccdd1568b25c2`; parent, full tree and stable
@@ -16,14 +31,13 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   Amvera restarted at 2026-10-16 22:29:14 UTC and its health and durable learning
   storage endpoints were healthy. This release reached Amvera automatically;
   manual upload of those four files is not needed.
-- Production verification found the renderer URL returning HTTP 404. Its file
+- Initial production verification found the renderer URL returning HTTP 404. Its file
   is bundled but missing from the server's static allowlist, so the inline
-  drawing falls back and is not yet usable in the cabinet.
+  drawing fell back. This was resolved by PR 252 as recorded above.
 - [Correction](tasks/ASSIGNMENT_GEOMETRY_ASSET.md): add the one existing renderer
   path and verify every script/style actually requested by the cabinet.
-- Next three actions: finish the corrective runtime gate; obtain exact-head
-  release authorization for the corrective PR; deploy and verify the live
-  renderer and inline assignment UI. No pupil/account changes are required.
+- The corrective release and live desktop acceptance are complete. Physical
+  touch on a phone remains untested. No pupil/account changes were required.
 
 ## Published baseline: two geometry routes and active practice
 
