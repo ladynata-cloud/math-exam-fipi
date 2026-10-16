@@ -55,8 +55,8 @@ const DAY = 86400000;
 const T0 = Date.UTC(2026, 1, 17, 9, 0, 0);
 const SEED = {
   'righttri-t1': { topics: {
-    1: { steps: 4, solved: 7, correct: 5, streak: 2, best: 4 },
-    3: { steps: 0, solved: 2, correct: 1, streak: 1, best: 1 }
+    1: { steps: 4, solved: 7, correct: 5, streak: 2, best: 4, hinted: 2 },
+    3: { steps: 0, solved: 2, correct: 1, streak: 1, best: 1, hinted: 0 }
   }, board: false },
   'ege-t1-yashchenko': { types: {
     t8:  { best: 3, solved: 4, correct: 3, streak: 3 },
@@ -100,6 +100,11 @@ async function run(){
   ok(!!rt && /Прямоугольный треугольник/.test(rt.textContent), 'карточка прямоугольного треугольника');
   ok(/чистые серии: 4 из 15/.test(rt.querySelector('.progress').textContent),
      'righttri: главная метрика из адаптера: ' + rt.querySelector('.progress').textContent);
+  /* поле hinted записи темы — только в кабинете, после «решено», формулировка
+     та же, что в сводке «Сдать учителю» тренажёра */
+  ok(/решено: 9 · из них после «С чего начать\?»: 2/.test(rt.querySelector('.progress').textContent),
+     'righttri: кабинет печатает «из них после «С чего начать?»: 2»: ' + rt.querySelector('.progress').textContent);
+  ok(rt.querySelector('.progress').hasAttribute('data-cabinet'), 'righttri: узел прогресса помечен data-cabinet');
   ok(/17\.02\.2026/.test(rt.textContent), 'righttri: дата последней ошибки из журнала');
   ok(/отрезки гипотенузы при угле 30°/.test(rt.textContent), 'righttri: имя открытого типа из NAMES');
   ok(/высота по отрезкам гипотенузы/.test(rt.textContent), 'righttri: имя закрытого типа');
@@ -217,6 +222,8 @@ for (const [label, seedStreams] of [['без сжатия', false], ['через
   const rows = Array.from(d.querySelectorAll('#cards .trow'));
   const rt = rows.find(r => r.querySelector('.tid').textContent === 'righttri-t1');
   ok(/чистые серии: 4 из 15/.test(rt.querySelector('.progress').textContent), 'в просмотре видна метрика ученика');
+  ok(/решено: 9 · из них после «С чего начать\?»: 2/.test(rt.querySelector('.progress').textContent),
+     'в просмотре кода видно «из них после «С чего начать?»: 2»: ' + rt.querySelector('.progress').textContent);
   ok(/отрезки гипотенузы при угле 30°/.test(rt.textContent), 'в просмотре виден журнал ученика');
   ok(w.localStorage.getItem(KEY) === null, 'просмотр не пишет в localStorage');
   ok(w.localStorage.getItem(BACKUP) === null, 'просмотр не делает резервную копию');
@@ -259,6 +266,8 @@ for (const [label, seedStreams] of [['без сжатия', false], ['через
   ok(!d.getElementById('restoreBtn').hidden, 'кнопка возврата появилась');
   const rt = Array.from(d.querySelectorAll('#cards .trow')).find(r => r.querySelector('.tid').textContent === 'righttri-t1');
   ok(/чистые серии: 4 из 15/.test(rt.querySelector('.progress').textContent), 'сводка перечиталась из localStorage');
+  ok(/решено: 9 · из них после «С чего начать\?»: 2/.test(rt.querySelector('.progress').textContent),
+     'после загрузки видно «из них после «С чего начать?»: 2»: ' + rt.querySelector('.progress').textContent);
 
   click(w, d.getElementById('restoreBtn'));
   await flush(4);
@@ -374,7 +383,7 @@ for (const [label, seedStreams] of [['без сжатия', false], ['через
      кабинета не пропадает и не показывает сырые значения. */
   const JUNK = { passed: 'zz', best: 'zz', runs: 'zz', drillBest: 'zz', solved4: 'zz', solved5: 'x', solved9: 'zz',
     solved11: 'zz', types: { t1: null, t2: 'zz', t3: { best: 'zz', solved: 'zz' } }, tasks: { 1: null, 2: 'zz' },
-    keys: 'zz', done: { a: null, b: 'zz' }, attempts: 'zz', topics: { 1: null, 2: { correct: 'zz', solved: 'zz' } },
+    keys: 'zz', done: { a: null, b: 'zz' }, attempts: 'zz', topics: { 1: null, 2: { correct: 'zz', solved: 'zz', hinted: 'zz' } },
     stats: 'zz', solvedByType: { extrema: 'zz', foo: 7 }, xp: 'zz' };
   const w0 = boot('teacher.html');
   await flush();
@@ -454,6 +463,98 @@ for (const [label, seedStreams] of [['без сжатия', false], ['через
      'кабинет: старая запись passed:true при best:3 (поставлена до порога) — без ✓, «лучший зачёт: 3 из 8»: ' + (p && p.textContent));
   p = await card({ runs: 2, best: 0, events: [] });
   ok(!!p && /^запусков: 2$/.test(p.textContent), 'кабинет: планиметрия без зачёта — «запусков: 2»: ' + (p && p.textContent));
+}
+
+/* ================= 11. Треугольник: «из них после «С чего начать?»» в кабинете ================= */
+/* Поле hinted записи темы righttri-t1 (тренажёр пишет его с #135 вместе с
+   solved, поэтому hinted ≤ solved) кабинет печатает после «решено: N» — в своём
+   браузере, в просмотре кода и после загрузки (все три пути — renderCards →
+   PROGRESS.apply, узел помечен data-cabinet). На карте курса его нет — это
+   держит site-test. Правила (docs/tasks/RIGHTTRI_HINTED_IN_CABINET.md):
+   ноль и отсутствие поля не печатаются (0 обращений и «не записывалось»
+   неразличимы); мусор — 'abc', −1, null, строка «3», 1e400 (Infinity из
+   сырого JSON) — 0; дробь — вниз; hinted больше solved — порча, тема даёт 0
+   и не обрезается до solved; разминка (тема 0) не в счёт, как и «решено». */
+{
+  const HINT = /из них после «С чего начать\?»: (\d+)/;
+  const BAD = /NaN|undefined|null|Infinity|\[object|zz|abc/;
+  const rtOf = d => Array.from(d.querySelectorAll('#cards .trow')).find(r => r.querySelector('.tid').textContent === 'righttri-t1');
+  /* строка righttri в своём браузере; raw — сырой JSON в хранилище (для 1e400) */
+  const own = async (store, raw) => {
+    const w = boot('teacher.html', win => win.localStorage.setItem(KEY, raw ? store : JSON.stringify(store)));
+    await flush();
+    const rows = Array.from(w.document.querySelectorAll('#cards .trow'));
+    const bad = rows.map(r => (r.querySelector('.progress') || {}).textContent || '').filter(t => BAD.test(t));
+    ok(rows.length === w.RV.CABINET.length && !bad.length, 'hinted: строк кабинета ' + rows.length + ', без мусора: ' + bad.join(' | '));
+    return rtOf(w.document).querySelector('.progress').textContent;
+  };
+  /* та же запись — просмотром кода ученика */
+  const viaCode = async store => {
+    const donor = boot('teacher.html');
+    await flush();
+    const code = await donor.PROGRESS_CODE.encode(store);
+    const t = boot('teacher.html');
+    await flush();
+    t.document.getElementById('inBox').value = code;
+    click(t, t.document.getElementById('showBtn'));
+    await flush(8);
+    ok(/Показан прогресс из вставленного кода/.test(t.document.getElementById('sourceLine').textContent), 'hinted, код: режим просмотра включён');
+    return rtOf(t.document).querySelector('.progress').textContent;
+  };
+  const rec = topics => ({ 'righttri-t1': { topics, board: false } });
+  const tp = (solved, correct, hinted) => {
+    const o = { steps: 1, solved, correct, streak: 0, best: 0 };
+    if (hinted !== undefined) o.hinted = hinted;
+    return o;
+  };
+
+  /* поле есть — печатается сумма по темам 1–5 */
+  let txt = await own(rec({ 1: tp(7, 5, 2), 3: tp(2, 1, 1) }));
+  ok(/^чистые серии: 4 из 15 · решено: 9 · из них после «С чего начать\?»: 3$/.test(txt), 'hinted 2 + 1 — «: 3» после «решено: 9»: ' + txt);
+  txt = await viaCode(rec({ 1: tp(7, 5, 2), 3: tp(2, 1, 1) }));
+  ok(/^чистые серии: 4 из 15 · решено: 9 · из них после «С чего начать\?»: 3$/.test(txt), 'hinted 2 + 1 в просмотре кода — «: 3»: ' + txt);
+  txt = await own(rec({ 0: tp(5, 5, 5), 1: tp(7, 5, 2) }));
+  ok(/^чистые серии: 3 из 15 · решено: 7 · из них после «С чего начать\?»: 2$/.test(txt), 'hinted разминки (тема 0) не в счёт, как и её «решено»: ' + txt);
+  txt = await own(rec({ 1: tp(7, 5, 7) }));
+  ok(/^чистые серии: 3 из 15 · решено: 7 · из них после «С чего начать\?»: 7$/.test(txt), 'hinted = solved — печатается (все после подсказки): ' + txt);
+
+  /* ноль и отсутствие поля — фрагмента нет вовсе */
+  txt = await own(rec({ 1: tp(7, 5), 3: tp(2, 1) }));
+  ok(/^чистые серии: 4 из 15 · решено: 9$/.test(txt) && !HINT.test(txt), 'запись до #135 (без hinted) — фрагмента нет: ' + txt);
+  txt = await own(rec({ 1: tp(7, 5, 0), 3: tp(2, 1, 0) }));
+  ok(/^чистые серии: 4 из 15 · решено: 9$/.test(txt) && !HINT.test(txt), 'hinted: 0 — фрагмента нет (ни «: 0», ни прочерка): ' + txt);
+  txt = await viaCode(rec({ 1: tp(7, 5, 0), 3: tp(2, 1) }));
+  ok(/^чистые серии: 4 из 15 · решено: 9$/.test(txt) && !HINT.test(txt), 'hinted: 0 и без поля в просмотре кода — фрагмента нет: ' + txt);
+  txt = await own(rec({ 1: tp(0, 0, 0), 3: tp(0, 0) }));
+  ok(/^в работе$/.test(txt), 'нет решённых — «в работе», без фрагмента: ' + txt);
+
+  /* мусор в hinted — 0 по теме; hinted > solved — порча, тема даёт 0 */
+  for (const [label, v] of [['строка abc', 'abc'], ['−1', -1], ['null', null], ['строка «3»', '3'], ['массив', [2]], ['объект', { n: 2 }], ['true', true]]){
+    txt = await own(rec({ 1: tp(7, 5, v), 3: tp(2, 1, 0) }));
+    ok(/^чистые серии: 4 из 15 · решено: 9$/.test(txt) && !HINT.test(txt), 'hinted-мусор (' + label + ') — 0, фрагмента нет: ' + txt);
+  }
+  txt = await own(rec({ 1: tp(7, 5, 2.7) }));
+  ok(/из них после «С чего начать\?»: 2$/.test(txt), 'hinted 2.7 — дробь вниз, «: 2»: ' + txt);
+  txt = await own(rec({ 1: tp(3, 1, 7) }));
+  ok(/^чистые серии: 1 из 15 · решено: 3$/.test(txt) && !HINT.test(txt), 'hinted 7 при solved 3 — порча, фрагмента нет (не обрезано до 3): ' + txt);
+  txt = await own(rec({ 1: tp(3, 1, 7), 3: tp(2, 1, 1) }));
+  ok(/^чистые серии: 2 из 15 · решено: 5 · из них после «С чего начать\?»: 1$/.test(txt), 'порча в одной теме не гасит другую: «: 1»: ' + txt);
+  txt = await own(rec({ 1: tp(0, 0, 3) }));
+  ok(/^в работе$/.test(txt) && !HINT.test(txt), 'hinted без решённых — порча, «в работе»: ' + txt);
+  txt = await own('{"righttri-t1":{"topics":{"1":{"solved":3,"correct":1,"hinted":1e400},"3":{"solved":2,"correct":1,"hinted":1}}}}', true);
+  ok(/^чистые серии: 2 из 15 · решено: 5 · из них после «С чего начать\?»: 1$/.test(txt), 'hinted 1e400 (Infinity из сырого JSON) — 0 по теме, без Infinity: ' + txt);
+  const rawCode = json => 'MEP1.' + Buffer.concat([Buffer.from([0]), Buffer.from(json, 'utf8')]).toString('base64url');
+  {
+    const t = boot('teacher.html');
+    await flush();
+    t.document.getElementById('inBox').value = rawCode('{"righttri-t1":{"topics":{"1":{"solved":3,"correct":1,"hinted":1e400}}}}');
+    click(t, t.document.getElementById('showBtn'));
+    await flush(8);
+    txt = rtOf(t.document).querySelector('.progress').textContent;
+    ok(/^чистые серии: 1 из 15 · решено: 3$/.test(txt) && !/Infinity/.test(t.document.getElementById('cards').textContent),
+       'код с hinted 1e400 в просмотре — фрагмента нет, без Infinity: ' + txt);
+  }
+  ok(errors.length === 0, 'hinted в кабинете: без JS-ошибок: ' + errors.join(' | '));
 }
 
 ok(errors.length === 0, 'нет JS-ошибок: ' + errors.join(' | '));
