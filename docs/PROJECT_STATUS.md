@@ -6,29 +6,23 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Release preparation: two geometry routes and active practice
+## Published baseline: two geometry routes and active practice
 
-- Full-course Draft PR [248](https://github.com/ladynata-cloud/math-exam-fipi/pull/248)
-  has head `6a7021bbd5971ce909769b2b819d5f2d1b1f2da0`; it remains unpublished.
-  Its five final workflows passed. The owner subsequently authorized the combined release and cabinet placement on 2026-10-16 (Asia/Novosibirsk).
-- [Active-practice scope](tasks/GRADE7_GEOMETRY_ACTIVE_PRACTICE.md) is stacked on
-  that exact head. The workbook route grows from 73 to 103 families in 17 sections.
-  A separate proof route keeps the three visible source-photo problems, with
-  problems 1 and 3 classified as SAS and problem 2 as SSS.
-- [Coverage map](reports/GRADE7_GEOMETRY_ACTIVE_PRACTICE.md) accounts for all 73
-  numbered exercise groups and the other workbook parts. It states the difference
-  between authored skill analogues and an exhaustive audit of every subitem/key.
-- The existing managed model stores selections, constructions and revealed steps;
-  no state schema, account, credential or personal plan migration is introduced.
-  Diagram hunts and badges refer to the current practice, not independent mastery.
-- PR [249](https://github.com/ladynata-cloud/math-exam-fipi/pull/249) is now the
-  combined release against unchanged production base
-  `e01b2780f16f9771defee5d862eec6de581a554f`. Follow it for current exact-head
-  review, final gates, publication and cabinet-placement evidence. This committed
-  pre-release snapshot does not itself claim deployment has completed.
-- Release review clarified that a full revert would preserve stored rows but
-  remove new task IDs from the allowlist. Corrections must retain catalog,
-  generator and loader compatibility for new attempts; see the scoped rollback.
+- PR [249](https://github.com/ladynata-cloud/math-exam-fipi/pull/249), including
+  the full-course work from PR 248, is merged on production `main` at
+  `bde7cd1279baf292a206e5ef70abfd98a3e2b825`.
+- On 2026-10-16 the public workbook page and interactive lesson were opened:
+  103 workbook lessons in 17 sections are reachable. The separate proof route
+  in the cabinet source keeps photo problems 1/3 (SAS) and 2 (SSS).
+- [Coverage map](reports/GRADE7_GEOMETRY_ACTIVE_PRACTICE.md) accounts for 73
+  numbered exercise groups, not an exhaustive audit of every subitem/key.
+- [Student-journey scope](tasks/GRADE7_GEOMETRY_STUDENT_JOURNEYS.md) prepares clearer
+  starts, named milestones, honest progress and a less crowded workshop. These
+  follow-up changes are not yet claimed as published.
+- Cabinet assets come from the Amvera container; updating public assets alone
+  does not update the cabinet. Final deployment needs separate verification.
+- Retain existing task IDs, catalog and loaders when correcting or rolling back
+  UI: removing them would make previously saved attempts unavailable.
 
 ## Prepared separately: Soviet topic 61, logo and video-factory check
 

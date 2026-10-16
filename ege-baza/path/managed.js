@@ -66,6 +66,11 @@
     render();
     emit(stage < 3 ? 'hint' : 'navigate', stage < 3 ? { level: 1, stage } : { stage });
   }
+  function photoTask() { return taskSpec.id.startsWith('grade7-r-photo-proof-'); }
+  function geometryEntry(work) {
+    if (!task.geometryRebuild || ![2, 3].includes(work.stage) || work.done) return '';
+    return `<aside class="geometry-entry" aria-label="Как пройти задание"><strong>Одна задача — маленькая миссия</strong><p>Впервые здесь? Найди элементы на рисунке и собери рассуждение в мастерской. Затем ответь на вопрос и объясни свой выбор.</p><div class="actions"><button type="button" class="primary" data-geometry-explore>Сначала в мастерскую</button>${work.stage === 2 ? '<button type="button" data-geometry-check>Перейти к ответу</button>' : ''}</div><p class="muted">Подсказки можно брать без штрафа. Работа с помощью отмечается отдельно.</p></aside>`;
+  }
   function newTask(stage = 3) { emit('new-task', { contentId: taskSpec.id, stage }); }
   function form() {
     return root.PathPracticeView.answerForm(state.work.stage===2?task.steps[state.work.step]:task);
@@ -83,12 +88,12 @@
       event.preventDefault(); if (readonly) return;
       const answer = input.value;
       if (!answer.trim()) { showFeedback('Сначала введи ответ.', 'bad'); emit('input', { field: 'answer' }); return; }
-      if (scope === 'final' && work.done) { showFeedback('Этот вариант уже решён. Возьми новую похожую задачу.'); emit('input', { field: 'answer' }); return; }
+      if (scope === 'final' && work.done) { showFeedback(photoTask() ? 'Этот рисунок уже решён. Объясни доказательство своими словами или выбери похожий урок в маршруте.' : 'Этот вариант уже решён. Возьми новую похожую задачу.'); emit('input', { field: 'answer' }); return; }
       const step = work.step, answers = [...work.answers], correct = D.correct(scope === 'step' ? task.steps[step] : task, answer);
       work.draft = answer; work.attempted = true;
       if (scope === 'step') {
         work.help = true;
-        if (correct) { work.answers.push(answer); work.step++; work.done = work.step === task.steps.length; work.draft = ''; state.view.hintText = ''; state.view.feedback = ''; state.view.feedbackKind = ''; render(); showFeedback(work.step === task.steps.length ? 'Разбор завершён. Для самостоятельной проверки возьми новый вариант.' : 'Верно. Продолжай со следующего шага.', 'good'); document.getElementById('answer')?.focus(); }
+        if (correct) { work.answers.push(answer); work.step++; work.done = work.step === task.steps.length; work.draft = ''; state.view.hintText = ''; state.view.feedback = ''; state.view.feedbackKind = ''; render(); showFeedback(work.step === task.steps.length ? (photoTask() ? 'Разбор завершён. Объясни доказательство своими словами; для нового условия выбери похожий урок в маршруте.' : 'Разбор завершён. Для самостоятельной проверки возьми новый вариант.') : 'Верно. Продолжай со следующего шага.', 'good'); document.getElementById('answer')?.focus(); }
         else showFeedback(root.PathPracticeView.wrongFeedback(task.steps[step], answer, 'Проверь именно этот шаг. ' + task.steps[step].why), 'bad');
       } else {
         if (correct) { work.done = true; showFeedback(work.help ? 'Верно. Этот вариант решён после разбора или помощи.' : 'Верно! Результат будет сохранён в истории работы.', 'good'); }
@@ -118,8 +123,10 @@
   function render() {
     const work = state.work, meta = D.meta.find(m => m.id === taskSpec.id);
     model = null; document.title = meta.title + ' · Моя работа';
-    main.innerHTML = `<p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+E(({algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'})[meta.subject]||'Математика'):'Математика · личная практика'}</p><h1>${E(meta.title)}</h1><nav class="stage-nav" aria-label="Шаги урока">${stageLabels.map((label, i) => `<button data-stage="${i}" ${i === work.stage ? 'aria-current="step"' : ''}>${i + 1}. ${label}</button>`).join('')}</nav><div id="lesson"></div><p id="feedback" class="feedback" role="status"></p><p class="muted managed-note">Это одна сохранённая попытка. Разбор и подсказки остаются в её истории. Для самостоятельного закрепления открой новый вариант.</p>`;
+    main.innerHTML = `<p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+E(({algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'})[meta.subject]||'Математика'):'Математика · личная практика'}</p><h1>${E(meta.title)}</h1><nav class="stage-nav" aria-label="Шаги урока">${(task.geometryRebuild ? ['Главная идея', 'Мастерская', 'По шагам', 'Мой ответ', 'Объясняю'] : stageLabels).map((label, i) => `<button data-stage="${i}" ${i === work.stage ? 'aria-current="step"' : ''}>${i + 1}. ${label}</button>`).join('')}</nav>${geometryEntry(work)}<div id="lesson"></div><p id="feedback" class="feedback" role="status"></p><p class="muted managed-note">Это одна сохранённая попытка. Разбор и подсказки остаются в её истории. ${photoTask() ? 'Этот рисунок повторяется. Для нового условия выбери похожий урок в своём маршруте.' : 'Для самостоятельного закрепления открой новый вариант.'}</p>`;
     main.querySelectorAll('[data-stage]').forEach(button => button.onclick = () => changeStage(+button.dataset.stage));
+    main.querySelector('[data-geometry-explore]')?.addEventListener('click', () => changeStage(1));
+    main.querySelector('[data-geometry-check]')?.addEventListener('click', () => changeStage(3));
     const box = document.getElementById('lesson');
     const condition = `<p class="task">${E(task.q)}</p>`;
     const support = root.PathPracticeView.markup(task, work.stage === 1 && ['polygon-build','pre7-lab','grade7-construction'].includes(task.model.kind));
@@ -134,6 +141,7 @@
     } else if (work.stage === 2) {
       const finished = work.step >= task.steps.length;
       box.innerHTML = `<section class="panel">${condition}${support}<ol class="steps">${task.steps.slice(0, work.step).map(step => `<li>${E(step.q)} <b>${E(step.a === undefined ? 'Условия выполнены' : root.PathPracticeView.answerText(step))}</b><br>${E(step.why)}</li>`).join('')}</ol>${finished ? '<h2>Разбор завершён</h2><p>Проверь себя на новом условии.</p><button id="new" class="primary">Новый самостоятельный вариант</button>' : `<div class="callout"><b>Шаг ${work.step + 1}/${task.steps.length}</b><p>${E(task.steps[work.step].q)}</p></div>${form()}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`}<details id="gap"><summary>Мешает пробел в основе?</summary><p>Обсуди с Натальей Михайловной, какое действие затрудняет решение: знак, дробь, единицы или выбор формулы. Эта попытка сохранит текущий шаг.</p></details></section>`;
+      if (finished && photoTask()) { box.querySelector('h2 + p').textContent = 'Теперь объясни доказательство своими словами. Для нового условия выбери похожий урок в маршруте.'; document.getElementById('new').textContent = 'Повторить этот рисунок'; }
       if (finished) document.getElementById('new').onclick = () => newTask();
       else {
         bindAnswer('step'); document.getElementById('hintText').textContent = state.view.hintText;
@@ -148,6 +156,11 @@
       box.innerHTML = `<section class="panel">${condition}<h2>Объясни ход мысли</h2><p>Какую связь ты использовал? Почему действие допустимо? Как проверить ответ другим способом?</p><label for="note">Моё объяснение</label><textarea id="note" maxlength="4000" placeholder="Я выбрал(а)… потому что… Проверил(а)…"></textarea><p class="muted">Объяснение сохраняется для обсуждения с преподавателем. Автоматическая проверка не оценивает его качество.</p><button id="new" class="primary">Новая похожая задача</button></section>`;
       const note = document.getElementById('note'); note.value = work.note; note.oninput = () => { work.note = note.value.slice(0, 4000); emit('input', { field: 'note' }); }; document.getElementById('new').onclick = () => newTask();
     }
+    if (task.geometryRebuild && work.stage === 4) {
+      box.querySelector('h2 + p').textContent = 'Что дано? Что нужно доказать или найти? Запиши каждый вывод и его причину. Если сравниваешь треугольники, назови признак и сохрани порядок соответствующих вершин.';
+      document.getElementById('note').placeholder = 'Дано… Нужно… Рассмотрим… Так как… Следовательно…';
+    }
+    if (photoTask() && document.getElementById('new')) document.getElementById('new').textContent = 'Повторить этот рисунок';
     showFeedback(state.view.feedback, state.view.feedbackKind); supportDetails(); setReadOnly(readonly);
   }
   if (!root.MathExamLearning || typeof root.MathExamLearning.register !== 'function') {

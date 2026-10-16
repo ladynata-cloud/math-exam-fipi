@@ -56,9 +56,12 @@ const nextLessonSource=read('ege-baza/path/app.js').match(/^function nextLesson\
 const nextLesson=vm.runInNewContext('('+nextLessonSource+')',{D:browserData.PathData});
 const oldIds=legacy.map(item=>item.id),foundation=plain(browserData.PathData.practice.foundation),newIds=plain(families.map(item=>item.id));
 for(const id of oldIds){const position=foundation.indexOf(id),expected=position>=0&&position<foundation.length-1?foundation[position+1]:oldIds[(oldIds.indexOf(id)+1)%oldIds.length];assert.equal(nextLesson(id),expected,id+' preserves the original next lesson');}
-for(const list of [newIds.filter(id=>!id.includes('photo-proof-')),newIds.filter(id=>id.includes('photo-proof-'))])for(const [index,id] of list.entries())assert.equal(nextLesson(id),list[(index+1)%list.length],id+' stays in its own course');
+const workbook=plain(families.filter(item=>!item.id.includes('photo-proof-')).sort((a,b)=>a.section-b.section).map(item=>item.id));
+const photos=['grade7-r-photo-proof-1','grade7-r-photo-proof-3','grade7-r-photo-proof-2'];
+for(const list of [workbook,photos])for(const [index,id] of list.entries())assert.equal(nextLesson(id),list[index+1]||null,id+' follows its teaching route and stops at its end');
 assert.equal(nextLesson('grade7-g-practice-isosceles-proof'),'grade7-b-mixed-borrow','Existing geometry still continues to its original foundation lesson');
-assert.equal(nextLesson('grade7-r-review-17'),newIds[0],'The workbook route returns to its own beginning');
+assert.equal(nextLesson('grade7-r-review-17'),null,'The workbook explicitly ends instead of silently restarting');
+const boundary=workbook.findIndex(id=>id==='grade7-r-review-1');assert(boundary>=0);assert.equal(nextLesson(workbook[boundary]),workbook[boundary+1]);
 const hub=read('grade7/geometry-rebuild/course.js');assert(hub.includes('item.geometryRebuild'));assert(hub.includes('item.section===number'));
 assert(!/fetch\(|localStorage|\/attempts|\/assignments/.test(hub),'The public hub never reads or writes learner data');
 

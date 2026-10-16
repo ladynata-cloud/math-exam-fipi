@@ -69,6 +69,7 @@ jobs:
           node tools/grade7-rebuild-workbook.test.cjs
           node tools/grade7-geometry-rebuild.integration.cjs
           node tools/grade7-route-map.test.cjs
+          node --test tools/grade7-geometry-journey.test.cjs
           node tools/learning-preparation.test.cjs
           node --test tools/motion-grade6-ui-test.cjs
       - name: Install pinned browser test tools
@@ -83,6 +84,7 @@ jobs:
         run: |
           node tools/grade7-geometry-rebuild.browser.cjs
           node tools/grade7-active-practice.browser.cjs
+          node tools/grade7-geometry-journey.browser.cjs
       - name: All geometry construction font layouts
         if: ${{ !cancelled() && steps.browser_tools.outcome == 'success' }}
         env:
