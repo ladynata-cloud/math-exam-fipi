@@ -47,12 +47,32 @@ for(const problem of [1,2,3])for(const seed of [0,1,23,71]){
  }
  assert(bridge.getState().work.done);assert.match(host.textContent,problem===2?/третий признак/:/первый признак/);
  assert.equal(host.querySelectorAll('.photo-proof-record li').length,5,'Final proof is a short complete argument');
- click('[data-proof-write]');const note=host.querySelector('#note');note.value='Моё доказательство сохранено.';note.dispatchEvent(new w.Event('input'));
+ assert.equal(host.querySelector('#photo-question').textContent,'Доказательство собрано');
+ assert(!host.querySelector('textarea, [data-proof-write]'),'Completion has no writing task');
  const saved=plain(bridge.getState()),count=events.length;
  bridge.applyState(realm({taskSpec:spec,state:saved,readOnly:true}));
- assert.equal(host.querySelector('#note').value,saved.work.note);click('[data-proof-start]');
+ assert(!host.querySelector('textarea, [data-proof-write]'));
  assert.equal(events.length,count,'Readonly viewing cannot emit commands');assert.deepEqual(plain(bridge.getState()),saved);
  assert.equal(JSON.stringify(task),original,'Saved task stays immutable');f.dom.window.close();
+}
+for(const problem of [1,2,3])for(const step of [2,6])for(const readOnly of [false,true]){
+ const f=fixture(),{w,bridge,host,realm,click,events}=f,task=D.task('grade7-r-photo-proof-'+problem,23),spec={trainerId:'ege-path',id:task.id,contentVersion:1,seed:23,task};
+ const state=plain(w.PathManagedState.fresh(realm(spec)));state.work.stage=4;state.work.step=step;
+ state.work.answers=task.steps.slice(0,step).map(s=>String(s.a));state.work.done=step===6;state.work.help=true;state.work.note='Ранее сохранённая запись';
+ bridge.applyState(realm({taskSpec:spec,state,readOnly}));
+ assert.deepEqual(plain(bridge.getState()),state,'Opening the former writing screen preserves all saved data');assert.equal(events.length,0);
+ assert(!host.querySelector('textarea, [data-proof-write]'));
+ if(step===6)assert.equal(host.querySelector('#photo-question').textContent,'Доказательство собрано');
+ else{
+  click('[data-proof-start]');
+  if(readOnly){assert.equal(events.length,0);assert.deepEqual(plain(bridge.getState()),state);}
+  else{
+   assert.equal(bridge.getState().work.stage,2);assert.equal(bridge.getState().work.step,step);
+   click('[data-answer-choice="'+task.steps[step].a+'"]');click('#answerForm button.primary');
+   assert.equal(bridge.getState().work.step,step+1);assert.equal(bridge.getState().work.note,state.work.note);
+  }
+ }
+ f.dom.window.close();
 }
 {
  const f=fixture(),{w,bridge,host,realm,click,events}=f,task=D.task('grade7-r-photo-proof-1',23),spec={trainerId:'ege-path',id:task.id,contentVersion:1,seed:23,task};
@@ -74,7 +94,16 @@ for(const problem of [1,2,3]){
  click('[data-proof-start]');const lesson=w.PathCourse.state().lessons[id],task=D.task(id,lesson.seed);
  for(const item of task.steps){click('[data-answer-choice="'+item.a+'"]');click('#answerForm button.primary');}
  assert.equal(lesson.guided,1);assert.equal(lesson.independent,0);assert.equal(lesson.step,6);
- click('[data-proof-write]');const note=host.querySelector('#note');assert(note);note.value='а'.repeat(5000);note.dispatchEvent(new w.Event('input'));assert.equal(lesson.note.length,5000,'Public notes keep their existing 10000-character limit');
+ assert(!host.querySelector('textarea, [data-proof-write]'));
+ lesson.stage=4;lesson.note='а'.repeat(5000);
+ w.dispatchEvent(new w.HashChangeEvent('hashchange'));
+ assert.equal(host.querySelector('#photo-question').textContent,'Доказательство собрано');
+ assert(!host.querySelector('textarea, [data-proof-write]'));
+ assert.equal(lesson.note.length,5000,'Previously saved public notes are retained');
+ assert.equal(JSON.parse(w.localStorage.getItem(w.PathCourse.KEY)).lessons[id].note,lesson.note);
+ lesson.step=2;lesson.done=false;w.dispatchEvent(new w.HashChangeEvent('hashchange'));click('[data-proof-start]');
+ click('[data-answer-choice="'+task.steps[2].a+'"]');click('#answerForm button.primary');
+ assert.equal(lesson.step,3);assert.equal(lesson.note.length,5000);
  assert(w.PathCourse.valid(w.PathCourse.state()),'The public saved-state contract remains valid');f.dom.window.close();
 }
 console.log('CLEAR_PHOTO_PROOF_DOM_OK: '+checked+' guided steps; 3 problems; rotated choices; old saved tasks/drafts/models/notes; diagram selection; readonly isolation; public and managed flows.');

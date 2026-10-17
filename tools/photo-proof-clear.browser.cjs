@@ -35,6 +35,15 @@ for(const f of ['practice','equation-practice','grade7-algebra','grade7-geometry
     fs.mkdirSync(process.env.GEOMETRY_REBUILD_OUTPUT_DIR,{recursive:true});
     await page.screenshot({path:path.join(process.env.GEOMETRY_REBUILD_OUTPUT_DIR,'photo-proof-'+problem+'-'+width+'.png'),fullPage:true});
    }
+   await page.evaluate(task=>{
+    const host=document.getElementById('main'),P=PathPracticeView.photoProof,work={stage:4,step:6,draft:'',note:'Старая запись'};
+    host.innerHTML=P.markup(task,work);P.bind(host,task,work,{});
+   },task);
+   assert.equal(await page.locator('#photo-question').innerText(),'Доказательство собрано');
+   assert.equal(await page.locator('textarea, [data-proof-write]').count(),0);
+   assert.equal(await page.locator('.photo-proof-record li').count(),5);
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Completed proof fits at '+width);
+   if(process.env.GEOMETRY_REBUILD_OUTPUT_DIR)await page.screenshot({path:path.join(process.env.GEOMETRY_REBUILD_OUTPUT_DIR,'photo-proof-done-'+problem+'-'+width+'.png'),fullPage:true});
   }
   assert.deepEqual(errors,[]);console.log('CLEAR_PHOTO_PROOF_BROWSER_OK: 3 figures × 320/390/1280px, readable controls, no overflow, linked selection, screenshots.');
  }finally{await browser.close();}

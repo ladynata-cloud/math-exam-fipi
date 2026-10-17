@@ -181,9 +181,8 @@ function proof(task,count){
  return lines.length?`<section class="photo-proof-record" aria-label="Наше доказательство"><h2>${count>=6?'Доказательство собрано':'Наше доказательство'}</h2><ol>${lines.map(line=>`<li>${E(line)}</li>`).join('')}</ol></section>`:'';
 }
 function markup(task,work){
- const data=lesson(task),finished=work.step>=6,writing=work.stage===4,solving=work.stage===2&&!finished;
- const pane=writing?`<h2 id="photo-question" tabindex="-1">Запиши доказательство своими словами</h2><label for="note">Моё доказательство</label><textarea id="note" maxlength="4000" rows="7" placeholder="Рассмотрим треугольники…"></textarea><p class="photo-proof-note">Запись сохранится для обсуждения с преподавателем.</p><button type="button" data-proof-start>Вернуться к шагам</button>`:
- finished?`<p class="photo-proof-progress">6 из 6 шагов</p><h2 id="photo-question" tabindex="-1">Треугольники равны</h2><p class="photo-proof-conclusion">${E(data.equal)}</p><p>${E(data.law)}</p><button type="button" class="primary" data-proof-write>Записать доказательство</button>`:
+ const data=lesson(task),finished=work.step>=6,solving=work.stage===2&&!finished;
+ const pane=finished?`<p class="photo-proof-progress">6 из 6 шагов</p><h2 id="photo-question" tabindex="-1">Доказательство собрано</h2><p class="photo-proof-conclusion">${E(data.equal)}</p><p>${E(data.law)}</p>`:
  solving?`<p class="photo-proof-progress">Шаг ${work.step+1} из 6</p><h2 id="photo-question" tabindex="-1">${E(data.questions[work.step])}</h2><form id="answerForm"><input id="answer" type="hidden"><div class="photo-proof-choices" role="group" aria-labelledby="photo-question">${choices(task,work.step).map((choice,i)=>`<button type="button" id="answer-choice-${i}" data-answer-choice="${E(choice.value)}" aria-pressed="false">${E(choice.label)}</button>`).join('')}</div><button class="primary" type="submit">Проверить</button></form><button type="button" id="hint" class="photo-proof-hint">Подсказка</button><p id="hintText" class="photo-proof-hint-text"></p>`:
  `<h2 id="photo-question" tabindex="-1">Докажи, что треугольники равны</h2><p class="photo-proof-conclusion">${E(data.pair)}</p><p>Рассмотри рисунок. Будем собирать доказательство по одному шагу.</p><button type="button" class="primary" data-proof-start>${work.step?'Продолжить доказательство':'Начать доказательство'}</button>`;
  return `<article class="photo-proof"><header class="photo-proof-heading"><p>Геометрия · рисунок ${task.params.problem}</p><h1>${E(data.title)}</h1></header><div class="photo-proof-layout"><div class="photo-proof-left"><div class="photo-proof-given"><strong>Дано:</strong> ${E(data.given)}</div><div class="photo-proof-drawing" data-proof-drawing></div>${proof(task,work.step)}</div><section class="photo-proof-step" aria-label="Текущий шаг">${pane}<p id="feedback" class="feedback" role="status"></p></section></div></article>`;
@@ -228,9 +227,7 @@ function bind(host,task,work,callbacks){
  const form=host.querySelector('#answerForm');
  if(form){const check=event=>{event.preventDefault();if(!locked())callbacks.check?.(input.value);};form.onsubmit=check;const b=form.querySelector('[type=submit]');b.type='button';b.onclick=check;}
  host.querySelector('[data-proof-start]')?.addEventListener('click',()=>{if(!locked())callbacks.start?.();});
- host.querySelector('[data-proof-write]')?.addEventListener('click',()=>{if(!locked())callbacks.write?.();});
  host.querySelector('#hint')?.addEventListener('click',()=>{if(!locked())callbacks.hint?.();});
- const note=host.querySelector('#note');if(note){const limit=callbacks.noteLimit||4000;note.maxLength=limit;note.value=work.note||'';note.oninput=()=>{if(!locked())callbacks.note?.(note.value.slice(0,limit));};}
  diagram(host,task,work.step,work.draft);
 }
 root.PathPracticeView.photoProof=Object.freeze({supports,lesson,choices,markup,bind});
