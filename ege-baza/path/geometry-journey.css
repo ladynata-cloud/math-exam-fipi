@@ -42,3 +42,35 @@
 
 .geometry-entry{padding:16px 20px;margin:16px 0;background:#eff6e9;border:1px solid #c6d8bb;border-radius:16px;line-height:1.6}
 .geometry-entry p{margin:8px 0}.geometry-entry button{min-height:44px;white-space:normal}.geometry-entry .primary{background:#246954;color:#fff}
+
+/* The photo exercises use one drawing and one question, with no mode menu. */
+.photo-proof{font-size:1.25rem;line-height:1.55;color:#24382f;max-width:1200px;margin:auto}
+.photo-proof-heading{display:block;padding:0;margin:0 0 24px;background:none;border:0;position:static}
+.photo-proof-heading p,.photo-proof-progress{font-size:1.125rem;color:#486052;margin:0 0 8px}
+.photo-proof-heading h1{font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.2;margin:0}
+.photo-proof-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.9fr);gap:24px;align-items:start}
+.photo-proof-left,.photo-proof-step{min-width:0}
+.photo-proof-given{padding:16px 20px;background:#f1f5ef;border-radius:12px;margin-bottom:12px}
+.photo-proof-drawing{border:1px solid #c8d5ca;border-radius:16px;overflow:hidden;background:#fbfdf9}
+.photo-proof-drawing svg{width:100%;height:auto;display:block}
+.photo-proof-drawing [data-core-part]{cursor:pointer}
+.photo-proof-drawing .photo-proof-focus path:not([stroke="transparent"]){stroke:#a34d15;stroke-width:5}
+.photo-proof-step{background:white;border:1px solid #c8d5ca;border-radius:16px;padding:24px}
+.photo-proof-step h2{font-size:1.5rem;line-height:1.4;margin:0 0 20px}
+.photo-proof-step button,.photo-proof-step textarea{font-size:1.25rem;line-height:1.45}
+.photo-proof-step button{min-height:52px;white-space:normal;overflow-wrap:anywhere}
+.photo-proof-choices{display:grid;gap:12px;margin-bottom:20px}
+.photo-proof-choices button{text-align:left;width:100%;padding:14px 16px;background:#fff;border:2px solid #c2d0c7}
+.photo-proof-choices button[aria-pressed="true"]{border-color:#286851;background:#eaf4ed;box-shadow:inset 4px 0 #286851}
+.photo-proof-choices button:focus-visible{outline:3px solid #b66a24;outline-offset:3px}
+.photo-proof-hint{margin-top:16px;background:transparent}
+.photo-proof-hint-text:empty,.photo-proof .feedback:empty{display:none}
+.photo-proof .feedback,.photo-proof-hint-text{font-size:1.125rem;line-height:1.55;margin:16px 0 0}
+.photo-proof-record{margin-top:20px;padding:18px 20px;border-left:4px solid #397859;background:#f0f7f0;border-radius:0 12px 12px 0}
+.photo-proof-record h2{font-size:1.25rem;margin:0 0 12px}
+.photo-proof-record ol{margin:0;padding-left:24px;font-size:1.125rem}
+.photo-proof-record li{padding:4px 0}
+.photo-proof-conclusion{font-size:1.5rem;font-weight:650}
+.photo-proof-note{font-size:1.125rem;color:#486052}
+.photo-proof-step textarea{width:100%;margin:12px 0;resize:vertical}
+@media(max-width:760px){.photo-proof-layout{grid-template-columns:minmax(0,1fr);gap:16px}.photo-proof-left{display:contents}.photo-proof-given{order:0;padding:12px 14px;margin:0}.photo-proof-drawing{order:1}.photo-proof-step{order:2;padding:18px}.photo-proof-record{order:3;padding:14px;margin:0}.photo-proof-heading{margin-bottom:16px}}

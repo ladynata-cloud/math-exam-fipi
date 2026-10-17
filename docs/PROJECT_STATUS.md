@@ -6,6 +6,21 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
+## Current refinement: a clear guided photo proof
+
+- PR 253 merged as `fadaa6b000afa525af64b1c04318a69f720f9f7d` with owner
+  authorization. All exact-head checks and Pages deployment passed. Both changed
+  assets matched on Pages and Amvera; live desktop labels/buttons were 20px,
+  helper text 18px and arrows 26px, with healthy durable learning service.
+- The owner then identified confusing proof wording and excessive interface
+  choices. [The focused redesign](tasks/CLEAR_PHOTO_PROOF.md) replaces the three
+  photo exercises' five-mode interface with one drawing, one question and an
+  accumulating argument. AC is explicitly called the common side.
+- Existing tasks and answer values are retained; the new presentation also
+  applies to saved attempts. No pupil work is reset.
+- Next three actions: verify the redesigned flow; publish its Draft PR and
+  reviewable preview; obtain separate release authorization and verify rollout.
+
 ## Current refinement: readable drawing controls
 
 - PR 252 merged with owner authorization as
