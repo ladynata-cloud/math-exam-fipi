@@ -6,7 +6,22 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current refinement: a clear guided photo proof
+## Current refinement: assemble photo proofs without writing
+
+- PR 254 merged with owner authorization as
+  `dd386d069d6911be6e6d23948149fd78d245f2e3`. Parent, full tree and stable patch
+  identity matched; all four exact-head checks and Pages deployment passed.
+- All seven changed runtime files matched on Pages; the three exposed on
+  Amvera also matched. Live teacher-observer acceptance showed the new flow at
+  saved step 5/6, with 20px controls, 24px questions and no horizontal overflow.
+  Health and durable learning storage were available; no pupil work was changed.
+- The owner asks to remove the final writing screen: only assemble the six
+  steps. [This correction](tasks/PHOTO_PROOF_STEPS_ONLY.md) ends at the complete
+  argument and handles attempts saved on the former screen without data loss.
+- Next three actions: check old-state restoration and completion; prepare the
+  focused Draft PR; obtain separate release authorization and verify rollout.
+
+## Completed refinement: a clear guided photo proof
 
 - PR 253 merged as `fadaa6b000afa525af64b1c04318a69f720f9f7d` with owner
   authorization. All exact-head checks and Pages deployment passed. Both changed
@@ -18,8 +33,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
   accumulating argument. AC is explicitly called the common side.
 - Existing tasks and answer values are retained; the new presentation also
   applies to saved attempts. No pupil work is reset.
-- Next three actions: verify the redesigned flow; publish its Draft PR and
-  reviewable preview; obtain separate release authorization and verify rollout.
+- Released through PR 254 as recorded above.
 
 ## Current refinement: readable drawing controls
 
