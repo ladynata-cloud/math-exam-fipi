@@ -42,25 +42,49 @@ const server = http.createServer((req,res)=>{try{
   await hydrate('b',choiceFocusSpec,choiceFocusEvent.state,true);
   assert.equal(await frame('b').locator('#answer').inputValue(),choiceFocusEvent.state.work.draft,'choice draft restores after input type transition');
   const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.filter(id=>!id.startsWith('grade7-r-')).length,169);assert.equal(ids.length,169+await frame('a').evaluate(()=>PathData.geometryRebuild.families.length));
-  for(const id of ids){const taskSpec=await spec(id);await hydrate('a',taskSpec);const raw=await frame('a').locator('#answer').getAttribute('type')==='hidden'?await frame('a').locator('[data-answer-choice]').first().getAttribute('data-answer-choice'):'−3/7';let event=await change('a',f=>raw==='−3/7'?f.locator('#answer').fill(raw):f.locator('[data-answer-choice]').first().click());assert.equal(event.state.work.draft,raw);assert.equal(event.kind,'input');event=await change('a',f=>f.locator('[data-stage="1"]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);kinds.add(taskSpec.task.model.kind);assert((await frame('a').locator('#model').innerText()).length>0);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id);assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id);}
+  for(const id of ids){
+    const taskSpec=await spec(id);await hydrate('a',taskSpec);
+    if(id.startsWith('grade7-r-photo-proof-')){
+      assert.equal(await frame('a').locator('.stage-nav').count(),0,'photo proof has one flow');
+      let event=await change('a',f=>f.locator('[data-proof-start]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);
+      const raw=await frame('a').locator('[data-answer-choice]').first().getAttribute('data-answer-choice');
+      event=await change('a',f=>f.locator('[data-answer-choice]').first().click());assert.equal(event.state.work.draft,raw);assert.equal(event.kind,'input');
+      kinds.add(taskSpec.task.model.kind);await hydrate('b',taskSpec,event.state,true);
+      assert.equal(await frame('b').locator('#answer').inputValue(),raw,id+' photo draft restores');
+      assert.equal(await frame('a').locator('[data-proof-drawing]').innerHTML(),await frame('b').locator('[data-proof-drawing]').innerHTML(),id+' selected figure restores');
+      assert.equal(await frame('b').locator('[data-answer-choice][aria-pressed="true"]').getAttribute('data-answer-choice'),raw);
+      const count=await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length);
+      await frame('b').locator('[data-answer-choice]').first().evaluate(el=>el.click());
+      assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,id+' observer emits no input');
+    }else{
+      const raw=await frame('a').locator('#answer').getAttribute('type')==='hidden'?await frame('a').locator('[data-answer-choice]').first().getAttribute('data-answer-choice'):'−3/7';
+      let event=await change('a',f=>raw==='−3/7'?f.locator('#answer').fill(raw):f.locator('[data-answer-choice]').first().click());assert.equal(event.state.work.draft,raw);assert.equal(event.kind,'input');
+      event=await change('a',f=>f.locator('[data-stage="1"]').click());assert.equal(event.kind,'hint');assert.equal(event.state.work.help,true);kinds.add(taskSpec.task.model.kind);
+      assert((await frame('a').locator('#model').innerText()).length>0);await hydrate('b',taskSpec,event.state,true);
+      assert.equal(await frame('a').locator('#model').innerText(),await frame('b').locator('#model').innerText(),id);
+      assert.deepEqual(await frame('a').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),await frame('b').evaluate(()=>[...document.querySelectorAll('#model input,#model select')].map(x=>x.value)),id);
+    }
+  }
   // Each new curriculum item preserves exact drafts, help and a checked prefix.
   for(const id of ids.filter(id=>id.startsWith('grade7-')||id.startsWith('pre7-'))){
-    const taskSpec=await spec(id,23);await hydrate('a',taskSpec);
-    await change('a',f=>f.locator('[data-stage="2"]').click());
+    const taskSpec=await spec(id,23),photo=id.startsWith('grade7-r-photo-proof-');await hydrate('a',taskSpec);
+    await change('a',f=>f.locator(photo?'[data-proof-start]':'[data-stage="2"]').click());
     let event=await change('a',f=>f.locator('#hint').click());
-    assert.equal(event.state.view.hintText,taskSpec.task.steps[0].why,id);
+    const hint=photo?await frame('a').evaluate(task=>PathPracticeView.photoProof.lesson(task).hints[0],taskSpec.task):taskSpec.task.steps[0].why;
+    assert.equal(event.state.view.hintText,hint,id);
     await hydrate('b',taskSpec,event.state,true);
-    assert.equal(await frame('b').locator('#hintText').innerText(),taskSpec.task.steps[0].why,id);
+    assert.equal(await frame('b').locator('#hintText').innerText(),hint,id);
     const answer=await frame('a').evaluate(task=>PathData.answerText(task.steps[0]),taskSpec.task);
     const choice=taskSpec.task.steps[0].choices?.find(c=>c.value===answer);
     await change('a',f=>choice?f.locator('[data-answer-choice="'+answer+'"]').click():f.locator('#answer').fill(answer));
     event=await change('a',f=>f.locator('#answerForm').evaluate(el=>el.requestSubmit()));
     assert.equal(event.details.step,0,id);assert.equal(event.state.work.step,1,id);assert.deepEqual(event.state.work.answers,[answer],id);
     await hydrate('b',taskSpec,event.state,true);
-    assert.equal(await frame('b').locator('.steps').innerText(),await frame('a').locator('.steps').innerText(),id);
-    assert.equal(await frame('b').locator('.steps li').count(),1,id);
-    if(choice)assert.ok((await frame('b').locator('.steps').innerText()).includes(choice.label),id+' retains the meaningful choice label');
-    assert(!/ЕГЭ база|Задание null/.test(await frame('b').locator('#main > .eyebrow').innerText()),id+' uses grade7 heading');
+    const record=photo?'.photo-proof-record':'.steps';
+    assert.equal(await frame('b').locator(record).innerText(),await frame('a').locator(record).innerText(),id);
+    assert.equal(await frame('b').locator(record+' li').count(),1,id);
+    if(choice)assert.ok((await frame('b').locator(record).innerText()).includes(photo?choice.label.replace(/Δ/g,'△'):choice.label),id+' retains the meaningful choice label');
+    assert(!/ЕГЭ база|Задание null/.test(await frame('b').locator(photo?'.photo-proof-heading':'#main > .eyebrow').innerText()),id+' uses grade7 heading');
     const count=await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length);
     await hydrate('b',taskSpec,event.state,true);
     assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,id+' silent restore');
