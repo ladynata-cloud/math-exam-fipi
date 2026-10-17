@@ -120,9 +120,44 @@
       };
     });
   }
+  function renderPhotoProof() {
+    const P = root.PathPracticeView.photoProof, work = state.work, data = P.lesson(task);
+    main.innerHTML = P.markup(task, work);
+    P.bind(main, task, work, {
+      start: () => changeStage(2), write: () => changeStage(4),
+      select(value) { work.draft = value; emit('input', { field: 'answer' }); },
+      check(answer) {
+        if (readonly || work.stage !== 2 || work.step >= task.steps.length) return;
+        if (!answer.trim()) { showFeedback('Сначала выбери ответ.', 'bad'); emit('input', { field: 'answer' }); return; }
+        const step = work.step, answers = [...work.answers], correct = D.correct(task.steps[step], answer);
+        work.draft = answer; work.attempted = true; work.help = true;
+        if (correct) {
+          work.answers.push(answer); work.step++; work.done = work.step === task.steps.length; work.draft = '';
+          state.view.hintText = ''; state.view.feedback = data.reasons[step]; state.view.feedbackKind = 'good';
+          render(); document.getElementById('photo-question')?.focus({ preventScroll: true });
+        } else showFeedback(data.wrong[step], 'bad');
+        emit('check', { scope: 'step', step, answer, answers });
+      },
+      hint() {
+        work.help = true; state.view.hintText = data.hints[work.step];
+        document.getElementById('hintText').textContent = state.view.hintText;
+        emit('hint', { level: 1, step: work.step });
+      },
+      note(value) { work.note = value; emit('input', { field: 'note' }); }
+    });
+    const hint = document.getElementById('hintText');
+    if (hint && state.view.hintText) hint.textContent = data.hints[work.step];
+    const feedback = document.getElementById('feedback');
+    if (state.view.feedback && work.stage === 2) {
+      feedback.textContent = state.view.feedbackKind === 'good' && work.step ? data.reasons[work.step - 1] : state.view.feedbackKind === 'bad' && work.step < 6 ? data.wrong[work.step] : state.view.feedback;
+      feedback.className = 'feedback ' + state.view.feedbackKind;
+    }
+    setReadOnly(readonly);
+  }
   function render() {
     const work = state.work, meta = D.meta.find(m => m.id === taskSpec.id);
     model = null; document.title = meta.title + ' · Моя работа';
+    if (root.PathPracticeView.photoProof?.supports(task)) { renderPhotoProof(); return; }
     main.innerHTML = `<p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+E(({algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'})[meta.subject]||'Математика'):'Математика · личная практика'}</p><h1>${E(meta.title)}</h1><nav class="stage-nav" aria-label="Шаги урока">${(task.geometryRebuild ? ['Главная идея', 'Мастерская', 'По шагам', 'Мой ответ', 'Объясняю'] : stageLabels).map((label, i) => `<button data-stage="${i}" ${i === work.stage ? 'aria-current="step"' : ''}>${i + 1}. ${label}</button>`).join('')}</nav>${geometryEntry(work)}<div id="lesson"></div><p id="feedback" class="feedback" role="status"></p><p class="muted managed-note">Это одна сохранённая попытка. Разбор и подсказки остаются в её истории. ${photoTask() ? 'Этот рисунок повторяется. Для нового условия выбери похожий урок в своём маршруте.' : 'Для самостоятельного закрепления открой новый вариант.'}</p>`;
     main.querySelectorAll('[data-stage]').forEach(button => button.onclick = () => changeStage(+button.dataset.stage));
     main.querySelector('[data-geometry-explore]')?.addEventListener('click', () => changeStage(1));

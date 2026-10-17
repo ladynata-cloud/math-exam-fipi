@@ -108,3 +108,130 @@ PathModels.mount=function(el,t,options={}){
 };
 root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices,wrongFeedback};
 })(window);
+
+/* Presentation only: the saved photo task and its answer values stay intact. */
+(function(root){'use strict';
+const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function supports(task){return /^grade7-r-photo-proof-[123]$/.test(task?.id||'')&&task.params?.kind==='photo-proof'&&task.steps?.length===6&&task.steps.every(s=>Array.isArray(s.choices))&&!!root.PathGrade7Construction;}
+function lesson(task){
+ const cross=task.params.problem===3,sss=task.params.problem===2;
+ const pair=cross?'△DFE и △HFG':'△ABC и △ADC',equal=cross?'△DFE = △HFG':'△ABC = △ADC';
+ const first=cross?'DF = FH':sss?'AB = AD':'BC = CD';
+ const second=cross?'EF = FG':sss?'BC = CD':'AC — общая сторона';
+ const angles=cross?'∠DFE = ∠HFG':'∠BCA = ∠ACD';
+ const law=sss?'По трём сторонам — третий признак.':'По двум сторонам и углу между ними — первый признак.';
+ const reasons=[
+  cross?'Рассмотрим верхний △DFE и нижний △HFG.':'Рассмотрим △ABC и △ADC. У них есть общая сторона.',
+  first+' — по условию.',
+  cross?'EF = FG — по условию.':sss?'BC = CD — по условию.':'AC входит и в △ABC, и в △ADC. Это одна и та же сторона.',
+  sss?'AC входит в оба треугольника. Теперь есть три пары равных сторон.':cross?'Эти углы вертикальные, поэтому они равны. Каждый лежит между выбранными сторонами.':'Равенство углов дано. Они лежат между BC и AC, CD и AC.',
+  law,
+  equal+'. '+law
+ ];
+ return {
+  title:sss?'Третий признак равенства треугольников':'Первый признак равенства треугольников',pair,equal,law,
+  given:cross?'DF = FH, EF = FG. Точки D, F, H лежат на одной прямой; E, F, G — на другой.':sss?'AB = AD, BC = CD.':'BC = CD, ∠BCA = ∠ACD.',
+  questions:[
+   'Какие треугольники будем сравнивать?',
+   sss?'Какие стороны отмечены двумя штрихами?':'Какие стороны отмечены одним штрихом?',
+   cross?'Какие стороны отмечены двумя штрихами?':sss?'Какие стороны отмечены одним штрихом?':'Назови общую сторону треугольников ABC и ADC.',
+   sss?'Назови общую сторону треугольников ABC и ADC.':'Почему '+angles+'?',
+   'Какой признак равенства можно применить?',
+   'Выбери запись равенства треугольников.'
+  ],
+  reasons,
+  hints:[
+   cross?'Нужны треугольники по разные стороны от точки F.':'Найди верхний и нижний треугольники с вершинами A и C.',
+   'Посмотри на одинаковые штрихи на сторонах.',
+   cross||sss?'Найди стороны с одинаковым числом штрихов.':'Какая сторона принадлежит обоим треугольникам?',
+   sss?'Какая сторона принадлежит обоим треугольникам?':cross?'Углы образованы двумя пересекающимися прямыми.':'Посмотри, какие равенства записаны в условии.',
+   sss?'Мы нашли три пары равных сторон.':'Мы нашли две стороны и угол между ними.',
+   cross?'D соответствует H, F — F, E — G.':'A соответствует A, B — D, C — C.'
+  ],
+  wrong:[
+   cross?'Точки D, F, H лежат на одной прямой. Они не образуют треугольник.':'Нужны верхний △ABC и нижний △ADC.',
+   'Равенство этих сторон не дано. Найди одинаковые штрихи.',
+   cross||sss?'У этих сторон разные отметки. Найди одинаковые штрихи.':'AB есть только у △ABC. Найди сторону, которая есть и у △ADC.',
+   sss?'Равенство углов не дано. Здесь нам нужна общая сторона.':'Равенство треугольников мы ещё доказываем. Его пока нельзя использовать.',
+   sss?'Здесь известны три пары равных сторон. Углы в условии не даны.':'Для первого признака нужны две стороны и угол между ними. Три равных угла не гарантируют равенства треугольников.',
+   cross?'Проверь порядок: D ↔ H, F ↔ F, E ↔ G.':'Проверь порядок: A ↔ A, B ↔ D, C ↔ C.'
+  ],
+  lines:['Рассмотрим '+pair+'.',first+' (по условию).',second+(cross||sss?' (по условию).':'.'),sss?'AC — общая сторона.':angles+(cross?' (вертикальные).':' (по условию).')],
+  triangles:cross?['DFE','HFG']:['ABC','ADC']
+ };
+}
+function choices(task,index){
+ return task.steps[index].choices.map(choice=>{
+  let label=choice.label.replace(/Δ/g,'△').replace(/\.$/,'');
+  const common=task.params.problem===1&&index===2||task.params.problem===2&&index===3;
+  if(common){label=label.startsWith('AC = AC')?'AC':label.startsWith('AB = AC')?'AB':label;}
+  else if(index===1||index===2)label=label.split(' — ')[0];
+  else if(index===3&&task.params.problem!==2){
+   if(label.includes('вертикальные'))label='Это вертикальные углы';
+   else if(label.includes('дано'))label='Их равенство дано в условии';
+   else label='Потому что треугольники равны';
+  }
+  return {...choice,label};
+ });
+}
+function proof(task,count){
+ const data=lesson(task),lines=data.lines.slice(0,Math.min(count,4));
+ if(count===5)lines.push(data.law);
+ if(count>=6)lines.push(data.equal+'. '+data.law);
+ return lines.length?`<section class="photo-proof-record" aria-label="Наше доказательство"><h2>${count>=6?'Доказательство собрано':'Наше доказательство'}</h2><ol>${lines.map(line=>`<li>${E(line)}</li>`).join('')}</ol></section>`:'';
+}
+function markup(task,work){
+ const data=lesson(task),finished=work.step>=6,writing=work.stage===4,solving=work.stage===2&&!finished;
+ const pane=writing?`<h2 id="photo-question" tabindex="-1">Запиши доказательство своими словами</h2><label for="note">Моё доказательство</label><textarea id="note" maxlength="4000" rows="7" placeholder="Рассмотрим треугольники…"></textarea><p class="photo-proof-note">Запись сохранится для обсуждения с преподавателем.</p><button type="button" data-proof-start>Вернуться к шагам</button>`:
+ finished?`<p class="photo-proof-progress">6 из 6 шагов</p><h2 id="photo-question" tabindex="-1">Треугольники равны</h2><p class="photo-proof-conclusion">${E(data.equal)}</p><p>${E(data.law)}</p><button type="button" class="primary" data-proof-write>Записать доказательство</button>`:
+ solving?`<p class="photo-proof-progress">Шаг ${work.step+1} из 6</p><h2 id="photo-question" tabindex="-1">${E(data.questions[work.step])}</h2><form id="answerForm"><input id="answer" type="hidden"><div class="photo-proof-choices" role="group" aria-labelledby="photo-question">${choices(task,work.step).map((choice,i)=>`<button type="button" id="answer-choice-${i}" data-answer-choice="${E(choice.value)}" aria-pressed="false">${E(choice.label)}</button>`).join('')}</div><button class="primary" type="submit">Проверить</button></form><button type="button" id="hint" class="photo-proof-hint">Подсказка</button><p id="hintText" class="photo-proof-hint-text"></p>`:
+ `<h2 id="photo-question" tabindex="-1">Докажи, что треугольники равны</h2><p class="photo-proof-conclusion">${E(data.pair)}</p><p>Рассмотри рисунок. Будем собирать доказательство по одному шагу.</p><button type="button" class="primary" data-proof-start>${work.step?'Продолжить доказательство':'Начать доказательство'}</button>`;
+ return `<article class="photo-proof"><header class="photo-proof-heading"><p>Геометрия · рисунок ${task.params.problem}</p><h1>${E(data.title)}</h1></header><div class="photo-proof-layout"><div class="photo-proof-left"><div class="photo-proof-given"><strong>Дано:</strong> ${E(data.given)}</div><div class="photo-proof-drawing" data-proof-drawing></div>${proof(task,work.step)}</div><section class="photo-proof-step" aria-label="Текущий шаг">${pane}<p id="feedback" class="feedback" role="status"></p></section></div></article>`;
+}
+function diagram(host,task,step,draft){
+ const box=host.querySelector('[data-proof-drawing]');if(!box)return;
+ box.innerHTML=root.PathGrade7Construction.svg(task);
+ const svg=box.querySelector('svg'),points=task.model.diagram.points,values=Object.values(points),xs=values.map(p=>p.x),ys=values.map(p=>p.y);
+ svg.setAttribute('viewBox',[Math.min(...xs)-50,Math.min(...ys)-64,Math.max(...xs)-Math.min(...xs)+100,Math.max(...ys)-Math.min(...ys)+120].join(' '));
+ svg.style.maxWidth='none';svg.querySelectorAll('text').forEach(label=>label.setAttribute('font-size','36'));
+ const ns='http://www.w3.org/2000/svg',data=lesson(task),fills=document.createElementNS(ns,'g');fills.setAttribute('aria-hidden','true');fills.setAttribute('pointer-events','none');
+ for(const [i,names]of data.triangles.entries()){
+  const p=document.createElementNS(ns,'polygon');p.setAttribute('points',names.split('').map(name=>points[name].x+','+points[name].y).join(' '));p.setAttribute('fill',i?'#f1e6cc':'#deedf5');fills.append(p);
+ }
+ svg.prepend(fills);
+ const active=step<6?task.steps[step].choices.find(choice=>choice.value===draft)?.label||'':'';
+ const ids=new Set((active.match(/[A-Z]{2,3}/g)||[]));
+ if(step===3&&task.params.problem!==2&&draft){(task.params.problem===3?['DFE','HFG']:['BCA','ACD']).forEach(id=>ids.add(id));}
+ for(const group of svg.querySelectorAll('[data-core-part]'))group.classList.toggle('photo-proof-focus',ids.has(group.getAttribute('data-core-part')));
+ const triangles=[...active.matchAll(/[Δ△]([A-Z]{3})/g)].map(m=>m[1]);
+ for(const names of triangles){
+  if(!names.split('').every(name=>points[name]))continue;
+  const p=document.createElementNS(ns,'polygon');p.setAttribute('points',names.split('').map(name=>points[name].x+','+points[name].y).join(' '));p.setAttribute('fill','#d9892722');p.setAttribute('stroke','#a34d15');p.setAttribute('stroke-width','5');p.setAttribute('pointer-events','none');fills.append(p);
+ }
+}
+function bind(host,task,work,callbacks){
+ const locked=()=>host.inert||!!host.closest('[inert]');
+ const input=host.querySelector('#answer');if(input)input.value=work.draft||'';
+ function select(value){
+  if(locked())return;
+  input.value=value;
+  host.querySelectorAll('[data-answer-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.answerChoice===value)));
+  diagram(host,task,work.step,value);callbacks.select?.(value);
+ }
+ host.querySelectorAll('[data-answer-choice]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.answerChoice===work.draft));b.onclick=()=>select(b.dataset.answerChoice);});
+ host.querySelector('[data-proof-drawing]').onclick=event=>{
+  if(!input||locked())return;
+  const id=event.target.closest('[data-core-part]')?.getAttribute('data-core-part');if(!id||id.length===1)return;
+  const options=choices(task,work.step).filter(c=>(c.label.match(/[A-Z]{2,3}/g)||[]).includes(id));
+  if(options.length===1)select(options[0].value);
+ };
+ const form=host.querySelector('#answerForm');
+ if(form){const check=event=>{event.preventDefault();if(!locked())callbacks.check?.(input.value);};form.onsubmit=check;const b=form.querySelector('[type=submit]');b.type='button';b.onclick=check;}
+ host.querySelector('[data-proof-start]')?.addEventListener('click',()=>{if(!locked())callbacks.start?.();});
+ host.querySelector('[data-proof-write]')?.addEventListener('click',()=>{if(!locked())callbacks.write?.();});
+ host.querySelector('#hint')?.addEventListener('click',()=>{if(!locked())callbacks.hint?.();});
+ const note=host.querySelector('#note');if(note){const limit=callbacks.noteLimit||4000;note.maxLength=limit;note.value=work.note||'';note.oninput=()=>{if(!locked())callbacks.note?.(note.value.slice(0,limit));};}
+ diagram(host,task,work.step,work.draft);
+}
+root.PathPracticeView.photoProof=Object.freeze({supports,lesson,choices,markup,bind});
+})(window);
