@@ -44,7 +44,7 @@ function contentGate() {
     assert.equal(C.byTopic(item.topicId).find(value => value.id === item.id), item);
   }
   const foundation = C.items.filter(item => item.trainerId === 'oge-basics');
-  assert.equal(foundation.length, 36);
+  assert.equal(foundation.length, 54);
   for (const source of remediation.list()) {
     const item = C.get(source.id);
     for (const key of ['trainerId', 'contentId', 'title', 'position', 'url']) assert.equal(item[key], source[key]);

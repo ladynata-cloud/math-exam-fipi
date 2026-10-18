@@ -1,6 +1,6 @@
 /* Shared foundations route. Entries point to existing content; this map neither
  * creates attempts nor infers mastery. Public practice has no server result. */
-(function(root,factory){'use strict';const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.LearningPreparation=api;})(typeof globalThis==='undefined'?this:globalThis,function(){
+(function(root,factory){'use strict';const api=factory(typeof module==='object'&&module.exports?require('../trainers/oge-basics/multiplication-division/division-course-core.js'):root.DivisionCourse);if(typeof module==='object'&&module.exports)module.exports=api;else root.LearningPreparation=api;})(typeof globalThis==='undefined'?this:globalThis,function(divisionCourse){
 'use strict';
 const groups=[
   {
@@ -243,8 +243,17 @@ const groups=[
   {
     "id": "division",
     "title": "Деление уголком",
-    "lead": "Выберите неполное делимое, подберите цифру частного и сохраните все строки решения.",
+    "lead": "Идём сверху вниз: выбираем цифру, умножаем, вычитаем и переносим следующую цифру. Затем решаем весь пример.",
     "items": [
+      {
+        "id": "oge-basics:multiplication-division/quotient-estimate",
+        "managedId": "oge-basics:multiplication-division/quotient-estimate",
+        "title": "Деление: округляем и прикидываем",
+        "kind": "managed",
+        "tier": "extra",
+        "url": "/learning/#practice=oge-basics%3Amultiplication-division%2Fquotient-estimate",
+        "publicUrl": "/trainers/oge-basics/multiplication-division/quotient-estimate.html"
+      },
       {
         "id": "oge-basics:multiplication-division/long-division-quotient-digit",
         "managedId": "oge-basics:multiplication-division/long-division-quotient-digit",
@@ -1615,6 +1624,17 @@ const goals={
     ]
   }
 };
+// New lessons form the teaching sequence. Earlier IDs remain available so
+// existing plans and saved attempts keep their original destinations.
+if(divisionCourse?.stages){
+ const division=groups.find(group=>group.id==='division');
+ division.items.forEach(item=>{if(item.tier==='core')item.tier='extra';});
+ division.items.unshift(...divisionCourse.stages.map(stage=>({
+  id:'oge-basics:'+stage.id,managedId:'oge-basics:'+stage.id,title:stage.title,
+  kind:'managed',tier:'core',url:'/learning/#practice='+encodeURIComponent('oge-basics:'+stage.id),
+  publicUrl:'/trainers/oge-basics/multiplication-division/course-'+stage.slug+'.html',note:stage.goal
+ })));
+}
 const allItems=groups.flatMap(group=>group.items),byId=Object.create(null),managed=Object.create(null);
 for(const group of groups){for(const item of group.items){if(byId[item.id])throw Error('Duplicate preparation item: '+item.id);byId[item.id]=item;if(item.managedId)managed[item.managedId]=item;Object.freeze(item);}Object.freeze(group.items);Object.freeze(group);}
 for(const goal of Object.values(goals)){Object.freeze(goal.managedIds);goal.publicItems.forEach(Object.freeze);Object.freeze(goal.publicItems);Object.freeze(goal);}

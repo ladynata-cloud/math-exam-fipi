@@ -4,6 +4,10 @@ const node=typeof module==='object'&&module.exports;
 const bank=node?require('./learning-bank.js'):root.MathExamRemediationBank;
 const division=node?require('./multiplication-division/division-lab-core.js'):root.DivisionLab;
 const LAB='multiplication-division/division-lab';
+const ESTIMATE='multiplication-division/quotient-estimate';
+const estimation=node?require('./multiplication-division/quotient-estimate-core.js'):root.QuotientEstimate;
+const course=node?require('./multiplication-division/division-course-core.js'):root.DivisionCourse;
+const courseStage=id=>course?.stages.find(stage=>stage.id===id);
 const clone=x=>JSON.parse(JSON.stringify(x));
 const own=(x,k)=>Object.prototype.hasOwnProperty.call(x,k);
 const text=(x,max=4000)=>{if(typeof x!=='string'||x.length>max)throw Error('Некорректный текст решения.');return x;};
@@ -22,10 +26,12 @@ function question(q){if(!q)return null;const choice=q.kind==='choice'||q.type===
 function checked(raw,q){return !!q&&(q.kind==='choice'?String(raw)===String(q.answer):equal(raw,q.answer,q.strict));}
 function fresh(){return {view:'practice',lessonIndex:0,step:0,answer:'',answers:[],lessonAnswers:[],lessonChecked:[],hint:0,feedback:{kind:'none',scope:'practice',step:0,answer:''},referenceOpen:false,note:'',completed:false};}
 function create(contentId,seed){
- if(contentId!==LAB&&!own(bank,contentId))throw Error('Неизвестный тренажёр.');
+ if(contentId!==LAB&&contentId!==ESTIMATE&&!courseStage(contentId)&&!own(bank,contentId))throw Error('Неизвестный тренажёр.');
  if(!Number.isInteger(seed)||seed<0||seed>4294967295)throw Error('Некорректный вариант задания.');
  let source,task,lessons=[],steps=[],items=[],divisionTask=null,divisionTasks=[],rule='';
- if(contentId===LAB){const keys=Object.keys(division.levels),level=keys[seed%keys.length];divisionTask=division.make(level,seed||1);source={family:'division',title:'Лаборатория деления уголком'};rule=division.levels[level].idea;task={kind:'input',prompt:divisionTask.dividend+' : '+divisionTask.divisor};steps=division.plan(divisionTask).actions;
+ if(courseStage(contentId)){source=course.make(contentId,seed);rule=source.rule;task=clone(source.task);steps=clone(source.steps);divisionTask=clone(source.divisionTask||null);divisionTasks=clone(source.divisionTasks||[]);lessons=source.lessons.map(l=>({...clone(l),question:question(l.question)}));
+ }else if(contentId===ESTIMATE){source=estimation.make(seed);rule=source.rule;task=clone(source.task);steps=clone(source.steps);lessons=source.lessons.map(l=>({...clone(l),question:question(l.question)}));
+ }else if(contentId===LAB){const keys=Object.keys(division.levels),level=keys[seed%keys.length];divisionTask=division.make(level,seed||1);source={family:'division',title:'Лаборатория деления уголком'};rule=division.levels[level].idea;task={kind:'input',prompt:divisionTask.dividend+' : '+divisionTask.divisor};steps=division.plan(divisionTask).actions;
  }else{
   source=bank[contentId](seed);rule=source.rule||'';
   if(source.family==='division'){
@@ -55,7 +61,7 @@ function create(contentId,seed){
  if(JSON.stringify(taskSpec).length>60000)throw Error('Задание превысило допустимый размер.');
  return {taskSpec,state:fresh()};
 }
-function guard(spec){if(!spec||spec.schema!=='mathexam-remediation-task'||spec.contentVersion!==1||(spec.contentId!==LAB&&!own(bank,spec.contentId))||!Array.isArray(spec.steps)||!Array.isArray(spec.lessons)||!Array.isArray(spec.items))throw Error('Неизвестный формат задания.');}
+function guard(spec){if(!spec||spec.schema!=='mathexam-remediation-task'||spec.contentVersion!==1||(spec.contentId!==LAB&&spec.contentId!==ESTIMATE&&!courseStage(spec.contentId)&&!own(bank,spec.contentId))||!Array.isArray(spec.steps)||!Array.isArray(spec.lessons)||!Array.isArray(spec.items))throw Error('Неизвестный формат задания.');}
 function length(spec){return spec.steps.length||spec.items.length||1;}
 function prefix(spec,answers){
  if(!Array.isArray(answers)||answers.length>length(spec))throw Error('Некорректная последовательность решения.');
@@ -77,12 +83,12 @@ function normalize(spec,value){
 function evaluate(spec,details){
  guard(spec);if(!details||typeof details!=='object')throw Error('Не указан ответ.');const raw=text(details.answer,4000);
  if(details.scope==='lesson'){const i=integer(details.step,spec.lessons.length-1);return {correct:checked(raw,spec.lessons[i].question),complete:false};}
- if(spec.steps.length){if(details.scope!=='step')throw Error('Нужно проверить действие уголка.');const i=integer(details.step,spec.steps.length-1),answers=prefix(spec,details.answers||[]);if(answers.length!==i)throw Error('Сначала завершите предыдущие действия.');const correct=division.check(raw,spec.steps[i]);return {correct,complete:correct&&i===spec.steps.length-1};}
+ if(spec.steps.length){if(details.scope!=='step')throw Error('Нужно проверить действие уголка.');const i=integer(details.step,spec.steps.length-1),answers=prefix(spec,details.answers||[]);if(answers.length!==i)throw Error('Сначала завершите предыдущие действия.');const correct=division.check(raw,spec.steps[i]);return {correct,complete:correct&&i===spec.steps.length-1,...(courseStage(spec.contentId)?.guidance&&courseStage(spec.contentId).guidance!=='check'?{assisted:true}:{})};}
  if(details.scope!=='practice')throw Error('Неизвестный вид проверки.');
  if(spec.items.length){const i=integer(details.step,spec.items.length-1),answers=prefix(spec,details.answers||[]);if(answers.length!==i)throw Error('Сначала ответьте на предыдущие вопросы.');const correct=checked(raw,spec.items[i]);return {correct,complete:correct&&i===spec.items.length-1};}
  const correct=checked(raw,spec.task);return {correct,complete:correct};
 }
-function list(){return [...Object.keys(bank),LAB].sort().map(contentId=>{const title=contentId==='multiplication-division/long-division-quotient-digit'?'Деление: подбираем одну цифру':contentId===LAB?'Лаборатория деления уголком':bank[contentId](1).title;return {id:'oge-basics:'+contentId,trainerId:'oge-basics',contentId,contentVersion:1,title,position:null,topicId:'foundation',url:'/trainers/oge-basics/'+contentId+'.html'};});}
+function list(){return [...Object.keys(bank),LAB,ESTIMATE,...(course?.stages||[]).map(stage=>stage.id)].sort().map(contentId=>{const title=courseStage(contentId)?.title||(contentId===ESTIMATE?'Деление: округляем и прикидываем':contentId==='multiplication-division/long-division-quotient-digit'?'Деление: подбираем одну цифру':contentId===LAB?'Лаборатория деления уголком':bank[contentId](1).title);return {id:'oge-basics:'+contentId,trainerId:'oge-basics',contentId,contentVersion:1,title,position:null,topicId:'foundation',url:'/trainers/oge-basics/'+contentId+'.html'};});}
 function describe(spec){guard(spec);return {title:spec.title,prompt:spec.items.length?'Итоговая проверка: '+spec.items.length+' заданий по всем навыкам темы.':spec.task.prompt,contentId:spec.contentId,steps:length(spec)};}
 const api={list,create,normalize,validate:normalize,evaluate,describe,equal,checked};if(node)module.exports=api;else root.MathExamRemediation=api;
 })(typeof window==='undefined'?globalThis:window);

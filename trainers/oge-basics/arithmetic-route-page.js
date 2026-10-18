@@ -4,6 +4,7 @@
   const $ = id => document.getElementById(id);
   const skill = new URLSearchParams(location.search).get('skill');
   const group = A.groups.find(g => g.id === skill);
+  if (group && group.id !== 'division') $('division-course-entry').hidden = true;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function progress(s) {
     let text = 'Практика: самостоятельно ' + s.independent + ' (ориентир — 3)';

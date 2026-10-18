@@ -2,6 +2,8 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright');
 const C=require('../board-server/learning-remediation-contracts');
+const divisionCourse=require('../trainers/oge-basics/multiplication-division/division-course-core');
+const trainerItems=C.list();
 const serverContracts=require('../board-server/learning-contracts');
 const root=path.resolve(__dirname,'..');
 const harness=`<!doctype html><meta charset="utf-8"><title>Semantic remediation test</title><style>body{margin:0}iframe{width:49vw;height:95vh;border:0}</style><script>
@@ -18,7 +20,7 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
  const browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
  const context=await browser.newContext({viewport:{width:1440,height:950}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  let completed=0,actions=0;
- for(const item of process.argv.includes('--visual-only')?[]:C.list()){
+ for(const item of process.argv.includes('--visual-only')?[]:trainerItems){
   await page.goto(origin+'/harness');const {taskSpec,state}=serverContracts.create('oge-basics',item.contentId,12345);
   for(const id of ['student','teacher'])await page.evaluate(({id,url})=>openTrainer(id,url),{id,url:item.url});
   await page.waitForFunction(()=>framesById.student?.ready&&framesById.teacher?.ready);
@@ -50,27 +52,32 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
    const n=await page.evaluate(()=>events.length);await frame.locator('#lm-check').click();
    try{await page.waitForFunction(n=>events.length>n&&events.at(-1).kind==='check',n,{timeout:5000});}catch(error){console.error(item.contentId,current.step,JSON.stringify(await page.evaluate(()=>({events:events.slice(-3),applied:framesById.student.applied}))),errors,await frame.locator('#learning-remediation-root').innerText());throw error;}
    const event=await page.evaluate(()=>events.at(-1));const verified=C.evaluate(taskSpec,event.details);assert(verified.correct,item.id+' step '+current.step);current=C.normalize(taskSpec,event.state);actions++;
-   const restoreAt=taskSpec.items.length?5:taskSpec.divisionTasks.length?taskSpec.divisionTasks[1].startIndex+2:-1;
+   const secondGroup=taskSpec.divisionTasks[1];
+   const restoreAt=taskSpec.items.length?5:secondGroup?Math.min(secondGroup.startIndex+2,secondGroup.endIndex-1):-1;
    if(current.step===restoreAt){
     await frame.locator('#lm-answer').fill('99999999');await frame.locator('#lm-check').click();await page.waitForFunction(()=>events.at(-1)?.kind==='check'&&events.at(-1).details.answer==='99999999');
-    const wrong=await page.evaluate(()=>events.at(-1));assert.deepEqual(C.evaluate(taskSpec,wrong.details),{correct:false,complete:false});current=C.normalize(taskSpec,wrong.state);assert.equal(current.step,restoreAt);
+    const wrong=await page.evaluate(()=>events.at(-1));
+    const guided=divisionCourse.has(item.contentId)&&divisionCourse.stageFor(item.contentId).guidance!=='check';
+    assert.deepEqual(C.evaluate(taskSpec,wrong.details),{correct:false,complete:false,...(guided?{assisted:true}:{})});current=C.normalize(taskSpec,wrong.state);assert.equal(current.step,restoreAt);
     await page.evaluate(({taskSpec,current})=>hydrate('teacher',taskSpec,current,true),{taskSpec,current});await page.waitForFunction(()=>framesById.teacher.applied);
     assert.equal(await teacher.locator('#lm-answer').inputValue(),'99999999');assert.equal(await teacher.locator('.lm-feedback.incorrect').count(),1);
     await page.evaluate(url=>{framesById.student.frame.remove();delete framesById.student;openTrainer('student',url);},item.url);await page.waitForFunction(()=>framesById.student?.ready);
     await page.evaluate(({taskSpec,current})=>hydrate('student',taskSpec,current,false),{taskSpec,current});await page.waitForFunction(()=>framesById.student.applied);
-    frame=page.frames().find(f=>f.url().includes('channel=student'));assert.equal(await frame.locator('#lm-answer').inputValue(),'99999999');assert.equal(await frame.locator('.lm-feedback.incorrect').count(),1);assert.match(await frame.locator('.lm-card .lm-label').first().textContent(),taskSpec.items.length?/6 из 12/:/Пример 2 из 3/);
+    frame=page.frames().find(f=>f.url().includes('channel=student'));assert.equal(await frame.locator('#lm-answer').inputValue(),'99999999');assert.equal(await frame.locator('.lm-feedback.incorrect').count(),1);assert.match(await frame.locator('.lm-card .lm-label').first().textContent(),taskSpec.items.length?/6 из 12/:new RegExp('Пример 2 из '+taskSpec.divisionTasks.length));
    }
   }
   assert.equal(await frame.locator('#lm-new').textContent(),'Новое условие →');
   await frame.locator('#lm-new').click();await page.waitForFunction(()=>events.at(-1).kind==='new-task');
   assert.equal((await page.evaluate(()=>events.at(-1))).details.contentId,item.contentId);
   completed++;
-  console.log('Managed '+completed+'/36 '+item.contentId);
+  console.log('Managed '+completed+'/'+trainerItems.length+' '+item.contentId);
  }
  // Standalone mode still initializes all original family interfaces and storage.
- for(const item of process.argv.includes('--visual-only')?[]:C.list()){
+ for(const item of process.argv.includes('--visual-only')?[]:trainerItems){
   await page.goto(origin+item.url);await page.locator('h1').first().waitFor();
-  assert.equal(await page.evaluate(()=>window.MathExamRemediationManaged),false);
+  const localCourse=divisionCourse.has(item.contentId);
+  assert.equal(await page.evaluate(()=>window.MathExamRemediationManaged),localCourse);
+  if(localCourse)assert.equal(await page.evaluate(()=>window.MathExamDivisionCourseLocal),true);
   // The guided division page starts directly at the first action. Its
   // managed iframe contract above is unchanged; only standalone navigation differs.
   if(item.contentId==='multiplication-division/long-division-from-simple-to-decimals'){
@@ -112,5 +119,5 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
   const frame=page.frames().find(f=>f.url().includes('channel=student'));assert.equal(await frame.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'Mobile overflow '+id+' at '+width);
   if(process.env.LEARNING_REMEDIATION_SHOTS){fs.mkdirSync(process.env.LEARNING_REMEDIATION_SHOTS,{recursive:true});await page.screenshot({path:path.join(process.env.LEARNING_REMEDIATION_SHOTS,width+'-'+id.split('/').at(-1)+'.png'),fullPage:true});}
  }
- assert.deepEqual(errors,[]);await browser.close();await new Promise(r=>server.close(r));console.log(JSON.stringify({result:'LEARNING_REMEDIATION_BROWSER_OK',managedTrainers:completed,verifiedActions:actions,standaloneTrainers:completed?36:0,checks:completed?['opaque sandbox','read-only mirror','raw input and hints','restored exact task','all division actions','new task request','no managed localStorage','360/1280 layouts']:['360/1280 layouts']}));
+ assert.deepEqual(errors,[]);await browser.close();await new Promise(r=>server.close(r));console.log(JSON.stringify({result:'LEARNING_REMEDIATION_BROWSER_OK',managedTrainers:completed,verifiedActions:actions,standaloneTrainers:completed?trainerItems.length:0,checks:completed?['opaque sandbox','read-only mirror','raw input and hints','restored exact task','all division actions','new task request','no managed localStorage','360/1280 layouts']:['360/1280 layouts']}));
 })().catch(e=>{console.error(e);server.close();process.exit(1);});
