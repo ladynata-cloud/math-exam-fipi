@@ -131,7 +131,7 @@ for (let step = 0; step < spec.steps.length; step++) {
     assert.equal(t.state().completed, false, 'Accepting an estimate must not accept it as the final digit');
   }
 }
-assert.equal(t.host.querySelector('#lm-new').textContent, 'Новое условие →');
+assert.equal(t.host.querySelector('#lm-new').textContent, 'Следующий пример →');
 assert.equal(t.state().answers.at(-1), '8');
 const finished = { taskSpec: spec, state: t.state() };
 t.dom.window.close();

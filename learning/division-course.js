@@ -4,7 +4,7 @@
 const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const completed=new Set(['independent','repeated','hinted','together','practiced']);
 const independent=new Set(['independent','repeated']);
-function entry(){return '<section class="division-course-entry"><div><p class="eyebrow">ДЕЛЕНИЕ УГОЛКОМ · ПО ОДНОМУ ДЕЙСТВИЮ</p><h2>От первого шага до самостоятельного решения</h2><p>Начни сверху. На каждом шаге — короткое объяснение и новые примеры.</p></div><a class="button" href="#division-course">Открыть курс деления →</a></section>';}
+function entry(){return '<section class="division-course-entry"><div><p class="eyebrow">ДЕЛЕНИЕ УГОЛКОМ · ПО ОДНОМУ ДЕЙСТВИЮ</p><h2>От первого шага до самостоятельного решения</h2><p>Начни сверху. На каждом шаге — объяснение и тренировка. Решай столько примеров, сколько нужно.</p></div><a class="button" href="#division-course">Открыть курс деления →</a></section>';}
 function mount(host,context){
  const core=root.DivisionCourse,stages=core?.stages||[],teacher=context.account.role==='teacher';
  let alive=true,progress=null,loadError=false;
@@ -16,13 +16,13 @@ function mount(host,context){
   if(!row)return 'Ещё не начинали';
   if(row.latest?.outcome==='started')return 'Начато. Можно продолжить с того же места.';
   if(stage.guidance==='check'&&independent.has(row.latest?.outcome))return 'Три примера решены без подсказок.';
-  if(stage.guidance==='check')return 'Проверка закончена. Попробуй новые примеры без подсказок.';
+  if(stage.guidance==='check')return 'Попробуй новые примеры без подсказок.';
   return row.completed?'Есть решение по шагам. Можно повторить с новыми числами.':'Работа сохранена.';
  }
  function render(){
   if(!alive)return;
   const summary=rows(),current=progress?stages.findIndex(stage=>{const row=summary.get(stage.id);return !row?.completed||row.latest?.outcome==='started'||stage.guidance==='check'&&!independent.has(row.latest?.outcome);}):-1;
-  section.innerHTML=`<header class="division-course-heading"><p class="eyebrow">ТВОЙ ПУТЬ · СВЕРХУ ВНИЗ</p><h1>Учимся делить уголком</h1><p class="lead">Один вопрос — одно действие. Сделанные строки остаются перед глазами.</p><p>Сначала разбираем маленькие шаги. Затем соединяем их в целое решение. В конце — новые примеры для самостоятельной проверки.</p><p>${teacher?'Выберите шаг и назначьте его ученику. Он откроется в кабинете и на общей доске.':'Все шаги открыты. Если трудно, вернись на шаг выше или открой подсказку.'}</p>${current>0?'<button type="button" data-division-current>К ближайшему шагу ↓</button>':''}${loadError?'<p role="status">Не удалось загрузить историю. Сохранённые решения остаются в кабинете.</p><button type="button" data-division-retry>Обновить историю</button>':''}</header><ol class="division-course-list">${stages.map((stage,index)=>{
+  section.innerHTML=`<header class="division-course-heading"><p class="eyebrow">ТВОЙ ПУТЬ · СВЕРХУ ВНИЗ</p><h1>Учимся делить уголком</h1><p class="lead">Один вопрос — одно действие. Сделанные строки остаются перед глазами.</p><p>Сначала разбираем маленькие шаги. Затем соединяем их в целое решение. В конце — новые примеры для самостоятельной проверки.</p><p>${teacher?'Выберите шаг и назначьте его ученику. Он откроется в кабинете и на общей доске.':'На каждом шаге можно решать столько примеров, сколько нужно. После решения нажми «Следующий пример» или «Ещё 3 примера».'}</p>${current>0?'<button type="button" data-division-current>К ближайшему шагу ↓</button>':''}${loadError?'<p role="status">Не удалось загрузить историю. Сохранённые решения остаются в кабинете.</p><button type="button" data-division-retry>Обновить историю</button>':''}</header><ol class="division-course-list">${stages.map((stage,index)=>{
    const row=summary.get(stage.id),latest=row?.latest,done=completed.has(latest?.outcome),isCurrent=index===current;
    const label=teacher?'Назначить ученику':!progress?'Открыть шаг':latest?.outcome==='started'?'Продолжить':done?'Новые примеры':'Начать';
    return `<li class="division-course-step${isCurrent?' is-current':''}"${isCurrent?' aria-current="step" tabindex="-1"':''}><span class="division-course-number" aria-hidden="true">${index+1}</span><article><p class="division-course-meta">Шаг ${index+1} из ${stages.length}${isCurrent?' · Можно продолжить здесь':''}</p><h2>${E(stage.title)}</h2><p>${E(stage.goal)}</p><p class="division-course-support">${E(stage.support)}</p><p class="division-course-status">${E(status(stage,row))}</p><div class="actions"><button type="button" class="${isCurrent?'primary':''}" data-division-stage="${E(stage.id)}">${label} →</button>${latest?`<a class="button small" href="#attempt=${encodeURIComponent(latest.id)}">Моя сохранённая работа</a>`:''}</div></article></li>`;

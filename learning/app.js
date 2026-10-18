@@ -6,6 +6,7 @@ const clone=x=>JSON.parse(JSON.stringify(x));
 const labels=window.LearningOutcomes?.labels||{started:'Начато',together:'Разобрали вместе',hinted:'Решено с подсказкой',independent:'Решено самостоятельно',repeated:'Самостоятельно повторено',practiced:'Верно на знакомом задании'};
 let account=null,csrf='',students=[],assignments=[],attempts=[],lessons=[],activeLesson=null,activeAttempt=null,routeNumber=0,dispose=()=>{},workspace=null,overview=null;
 const actionWaiters=new Map(),submissionRequests=new Map(),submissionBusy=new Set();
+const divisionNextRequests=new Map();
 const commutative=new Set(['stroke','erase','undo','reference']);
 let listingPollAt=0;
 // Credentials exist only in this private document, never in persistent storage or trainer data.
@@ -39,7 +40,7 @@ function entryChoices(){const role=requestedRole();return `<nav class="entry-cho
 async function switchRole(role){if(authMutationBusy||quickLoginBusy||credentialDisplay||credentialRequestBusy){toast('Сначала завершите действие с данными входа.');return;}pendingSwitchRole=role;closeModal();await logout();}
 function chooseCabinet(){if(!modal('Сменить пользователя',`<p>Сейчас открыт кабинет: <b>${E(account.name)} · ${teacher()?'Преподаватель':'Ученик'}</b>.</p><p>Выберите, под чьей учётной записью хотите войти. Для смены учителя или ученика понадобится его код входа или прежний пароль.</p><div class="entry-choices"><button type="button" data-switch-role="teacher">Учитель</button><button type="button" data-switch-role="student">Ученик</button><a class="button" href="${E(entryLink('parent'))}">Родитель</a></div>`))return;$('modal-content').querySelectorAll('[data-switch-role]').forEach(b=>b.onclick=()=>switchRole(b.dataset.switchRole));}
 function roleMismatch(role){$('sidebar').hidden=true;document.title='Нужен вход '+roleTitle(role)+' · MathExam';main.innerHTML=`<section class="panel role-mismatch"><p class="eyebrow">ВЫ ОТКРЫЛИ КАБИНЕТ ${role==='teacher'?'УЧИТЕЛЯ':'УЧЕНИКА'}</p><h1>Сейчас выполнен вход: ${E(account.name)}</h1><p>Это учётная запись ${roleTitle(account.role)}. Для этого раздела войдите под учётной записью ${roleTitle(role)}.</p><div class="actions"><button type="button" id="role-switch" class="primary">Войти как ${role==='teacher'?'учитель':'ученик'}</button><button type="button" id="role-return">Вернуться в свой кабинет</button></div><p class="form-hint">Ссылка на раздел не меняет пользователя. Учебные результаты остаются в его кабинете.</p></section>`;$('role-switch').onclick=()=>switchRole(role);$('role-return').onclick=()=>{setRoleIntent(account.role);renderShell();render();};}
-function clearAccountView({preserveAuthFlow=false}={}){teacherPasswordFeedback=null;teacherPasswordEditMode='';saveQueue();if(!preserveAuthFlow){++authRevision;clearQuickEntry();setAuthProgress(false);}++routeNumber;++credentialGeneration;if(credentialDisplay)clearCredentialDisplay();credentialRequestBusy=false;credentialRenderPending=false;delete $('modal').dataset.credentialBusy;$('modal').close();$('modal-content').querySelectorAll('[name=password]').forEach(input=>{input.value='';});$('modal-content').replaceChildren();window.MathExamWelcome?.cleanup();dispose();dispose=()=>{};workspace=null;overview=null;activeAttempt=null;activeLesson=null;students=[];assignments=[];attempts=[];lessons=[];outbox=[];rejected=[];submissionRequests.clear();submissionBusy.clear();actionWaiters.forEach(waiting=>waiting.forEach(resolve=>resolve(false)));actionWaiters.clear();account=null;csrf='';clearTimeout(retryTimer);$('sidebar').hidden=true;$('navigation').replaceChildren();$('account').replaceChildren();main.replaceChildren();}
+function clearAccountView({preserveAuthFlow=false}={}){teacherPasswordFeedback=null;teacherPasswordEditMode='';saveQueue();if(!preserveAuthFlow){++authRevision;clearQuickEntry();setAuthProgress(false);}++routeNumber;++credentialGeneration;if(credentialDisplay)clearCredentialDisplay();credentialRequestBusy=false;credentialRenderPending=false;delete $('modal').dataset.credentialBusy;$('modal').close();$('modal-content').querySelectorAll('[name=password]').forEach(input=>{input.value='';});$('modal-content').replaceChildren();window.MathExamWelcome?.cleanup();dispose();dispose=()=>{};workspace=null;overview=null;activeAttempt=null;activeLesson=null;students=[];assignments=[];attempts=[];lessons=[];outbox=[];rejected=[];submissionRequests.clear();submissionBusy.clear();divisionNextRequests.clear();actionWaiters.forEach(waiting=>waiting.forEach(resolve=>resolve(false)));actionWaiters.clear();account=null;csrf='';clearTimeout(retryTimer);$('sidebar').hidden=true;$('navigation').replaceChildren();$('account').replaceChildren();main.replaceChildren();}
 function adoptAccount(next){if(!account||account.id!==next.id)clearAccountView({preserveAuthFlow:true});account=next;if(next.role==='teacher')teacherEntryParked=false;}
 // A teacher entry is a password form, never a pupil cabinet in disguise. Keep
 // the HttpOnly pupil cookie until verified teacher credentials replace it.
@@ -438,27 +439,31 @@ function updateConnection(){const target=$('save-state'),attention=rejected.some
 function validReturn(id,currentId){return !teacher()&&window.LearningRoute?.returnAttempt(attempts,account,id,currentId)||null;}
 function canSubmitAttempt(id,{quiet=false}={}){const explain=message=>{if(!quiet)toast(message);return false;};if(!connected)return explain('Нет связи с сервером. Подключитесь к интернету и дождитесь сохранения перед сдачей.');if(queuedFor(id).length)return explain('Дождитесь сохранения всех действий этой работы перед сдачей.');if(rejected.some(q=>q.attemptId===id))return explain('В этой работе есть неподтверждённые действия. Откройте тренажёр и сохраните их копию перед сдачей.');return true;}
 function canLeaveAttempt(){if(!workspace)return true;if(queuedFor(workspace.id).length||rejected.some(q=>q.attemptId===workspace.id)){toast('Сначала дождитесь сохранения работы. Неподтверждённые действия можно скачать.');return false;}return true;}
-async function openContent(id,{fresh=false,sourceAttemptId,returnTo,topicId}={}){
+async function openContent(id,{fresh=false,sourceAttemptId,returnTo,topicId,continuation}={}){
  const item=window.LearningCatalog.get(id);if(!item)return;
  if(teacher()){assignmentDialog({contentId:id});return;}
  const actor=account?.id;if(!actor)return;
+ const current=()=>account?.id===actor&&(!continuation||continuation.current());
  try{
+  if(!current())return false;
   const lessonId=fresh&&workspace?.lesson&&activeLesson?activeLesson.id:null;
-  const body={opId:crypto.randomUUID(),trainerId:item.trainerId,contentId:item.contentId,fresh};
+  const body={opId:continuation?.opId||crypto.randomUUID(),trainerId:item.trainerId,contentId:item.contentId,fresh};
   if(sourceAttemptId){
    if(typeof sourceAttemptId!=='string'||!/^[a-zA-Z0-9_-]{1,160}$/.test(sourceAttemptId))throw Error('INVALID_SOURCE');
    let source=attempts.find(a=>a.id===sourceAttemptId);
    // The course summary spans the full history; the recent list is bounded.
    // Load this exact attempt through the same ownership-checked API before reuse.
-   if(!source){source=await api('/attempts/'+encodeURIComponent(sourceAttemptId));if(account?.id!==actor)return;}
+   if(!source){source=await api('/attempts/'+encodeURIComponent(sourceAttemptId));if(!current())return false;}
    if(!source||source.id!==sourceAttemptId||source.learnerId!==actor||source.trainerId!==item.trainerId||source.contentId!==item.contentId||source.archivedAt)throw Error('INVALID_SOURCE');
    remember(source);body.sourceAttemptId=source.id;
   }
   if(lessonId)body.lessonId=lessonId;
-  const r=await post('/attempts',body);if(account?.id!==actor)return;remember(r.attempt);
+  if(!current())return false;
+  const r=await post('/attempts',body);if(!current())return false;remember(r.attempt);
   if(lessonId)navigate('lesson='+lessonId);
   else{const route=new URLSearchParams({attempt:r.attempt.id}),back=validReturn(returnTo,r.attempt.id),group=window.LearningRoute?.groups.find(g=>g.id===topicId);if(back)route.set('returnTo',back.id);if(group)route.set('topic',group.id);navigate(route.toString());}
- }catch(e){if(account?.id===actor)notice(errorText(e),true);}
+  return true;
+ }catch(e){if(current())notice(errorText(e),true);return false;}
 }
 function submissionLabel(a){const sent=a?.submission;if(!sent)return '';return sent.stale?'После сдачи есть изменения':({submitted:'Сдано на проверку',reviewed:'Проверено',revise:'Нужно исправить',accepted:'Принято'}[sent.status]||'Сдано на проверку');}
 async function submitAttempt(){const a=activeAttempt,button=main.querySelector('[data-submit-attempt]');if(!a||teacher()||!button||button.disabled)return;if(!canSubmitAttempt(a.id))return;button.disabled=true;submissionBusy.add(a.id);let request=submissionRequests.get(a.id);if(!request){request={opId:crypto.randomUUID(),expectedVersion:a.version};submissionRequests.set(a.id,request);}try{const result=await post('/attempts/'+encodeURIComponent(a.id)+'/submit',request);submissionRequests.delete(a.id);remember(result.attempt);toast('Работа сдана Наталье Михайловне. Решение осталось в Вашей истории.');updateWorkspace();}catch(error){if(error.status&&error.status<500&&error.status!==429)submissionRequests.delete(a.id);if(error.code==='LEARNING_SOLUTION_PHOTO_REQUIRED'){const assignment=assignments.find(x=>x.attemptId===a.id);toast('Добавьте фотографию решения на странице домашнего задания, затем сдайте работу.');if(assignment)navigate('assignment='+assignment.id);}else{notice(errorText(error),true);if(error.status===409){try{remember(await api('/attempts/'+encodeURIComponent(a.id)));}catch(_){}}}}finally{submissionBusy.delete(a.id);updateWorkspace();}}
@@ -603,7 +608,43 @@ function mountWorkspace(a,{lesson=false,learnerId=null}={}){main.innerHTML=works
  updateWorkspace();dispose=()=>{workspace?.frame?.destroy();workspace?.draw?.destroy();workspace?.watchFrame?.destroy();workspace?.watchDraw?.destroy();workspace?.reference?.destroy();workspace=null;};}
 function owns(a){return !!a&&!a.archivedAt&&connected&&!workspace?.history&&!queuedFor(a.id).some(q=>q.body.type==='control')&&(teacher()?a.controller==='teacher':a.learnerId===account.id&&a.controller==='student');}
 function setPen(tool){workspace.draw.tool=tool;$('pen').setAttribute('aria-pressed',String(tool==='pen'));$('eraser').setAttribute('aria-pressed',String(tool==='eraser'));}
-function trainerChange(change){if(!workspace||workspace.history)return;const a=activeAttempt;if(!owns(a))return;const {kind,details,state}=change;if(kind==='newtask'||kind==='new-task'){if(teacher()){toast('Чтобы выдать новый вариант, выберите задание на урок.');return;}if(queuedFor(a.id).length){toast('Сначала дождитесь сохранения текущей работы.');return;}const context=new URLSearchParams(activeRoute());openContent(itemFor(a).id,{fresh:true,sourceAttemptId:a.id,returnTo:context.get('returnTo'),topicId:context.get('topic')});return;}const type=kind==='check'?'check':kind==='hint'?'hint':kind==='reference'?'reference':'state';const payload=type==='state'?{state}:type==='check'?{state,details}:type==='hint'?{state,...(Number.isInteger(details.step)?{step:details.step}:{})}:{id:String(details.id||'reference')};action(a.id,type,payload);}
+async function waitForDivisionSave(id,current){
+ const deadline=Date.now()+15000;
+ while(current()&&queuedFor(id).length){
+  const pending=queuedFor(id),remaining=deadline-Date.now();if(remaining<=0)return false;
+  const saved=await new Promise(resolve=>{
+   let finished=false,left=pending.length;const listeners=[];
+   const finish=value=>{if(finished)return;finished=true;clearTimeout(timer);for(const [opId,listener]of listeners){const keep=(actionWaiters.get(opId)||[]).filter(callback=>callback!==listener);if(keep.length)actionWaiters.set(opId,keep);else actionWaiters.delete(opId);}resolve(value);};
+   const timer=setTimeout(()=>finish(false),remaining);
+   for(const queued of pending){const opId=queued.body.opId,listener=ok=>{if(!ok)finish(false);else if(!--left)finish(true);};listeners.push([opId,listener]);const waiting=actionWaiters.get(opId)||[];waiting.push(listener);actionWaiters.set(opId,waiting);}
+   pump();
+  });
+  if(!saved)return false;
+ }
+ return current()&&!queuedFor(id).length;
+}
+async function nextDivisionTask(){
+ const source=activeAttempt,view=workspace,actor=account?.id,revision=authRevision,serial=routeNumber,route=activeRoute(),lessonId=view?.lesson?activeLesson?.id:null,learnerId=view?.learnerId,item=source&&itemFor(source);
+ if(!source||!view||!item)return;
+ const sameView=()=>account?.id===actor&&authRevision===revision&&workspace===view&&routeNumber===serial&&activeRoute()===route&&activeAttempt?.id===source.id&&(workspace?.lesson?activeLesson?.id:null)===lessonId&&workspace?.learnerId===learnerId;
+ const current=()=>sameView()&&account.role==='student'&&!authMutationBusy&&!quickLoginBusy&&!identityLocked&&owns(activeAttempt);
+ const recover=()=>{if(sameView())workspace.frame?.update(workspace.history?.current||effective(activeAttempt),{readOnly:!!workspace.history||!owns(activeAttempt),force:true});};
+ if(!current()){if(teacher())toast('Чтобы выдать новый вариант, выберите задание на урок.');queueMicrotask(recover);return;}
+ const key=JSON.stringify([actor,source.id,lessonId]);let request=divisionNextRequests.get(key);
+ if(request?.pending)return;
+ // An explicit retry reuses the operation ID if the server created the next
+ // attempt but its acknowledgement was lost. Never retry creation on a timer.
+ if(!request){request={opId:crypto.randomUUID(),pending:false};divisionNextRequests.set(key,request);}
+ request.pending=true;
+ try{
+  if(queuedFor(source.id).length)toast('Сохраняем ответ. Затем откроется следующий пример.');
+  if(!await waitForDivisionSave(source.id,current)){if(sameView())toast('Сохранение пока не подтверждено. Дождись связи и нажми «Следующий пример» ещё раз.');return;}
+  const context=new URLSearchParams(route);
+  const opened=await openContent(item.id,{fresh:true,sourceAttemptId:source.id,returnTo:context.get('returnTo'),topicId:context.get('topic'),continuation:{current,opId:request.opId}});
+  if(opened)divisionNextRequests.delete(key);
+ }finally{request.pending=false;recover();}
+}
+function trainerChange(change){const a=activeAttempt,{kind,details,state}=change;if(workspace&&a&&(kind==='newtask'||kind==='new-task')&&a.trainerId==='oge-basics'&&a.taskSpec?.family==='division'){nextDivisionTask();return;}if(!workspace||workspace.history||!owns(a))return;if(kind==='newtask'||kind==='new-task'){if(teacher()){toast('Чтобы выдать новый вариант, выберите задание на урок.');return;}if(queuedFor(a.id).length){toast('Сначала дождитесь сохранения текущей работы.');return;}const context=new URLSearchParams(activeRoute());openContent(itemFor(a).id,{fresh:true,sourceAttemptId:a.id,returnTo:context.get('returnTo'),topicId:context.get('topic')});return;}const type=kind==='check'?'check':kind==='hint'?'hint':kind==='reference'?'reference':'state';const payload=type==='state'?{state}:type==='check'?{state,details}:type==='hint'?{state,...(Number.isInteger(details.step)?{step:details.step}:{})}:{id:String(details.id||'reference')};action(a.id,type,payload);}
 function updateWorkspace(){if(!workspace||!activeAttempt||workspace.id!==activeAttempt.id)return;const a=workspace.history?.current||effective(activeAttempt),viewing=!!workspace.history,archived=!!activeAttempt.archivedAt,editable=!viewing&&owns(activeAttempt);workspace.frame?.update(a,{readOnly:!editable});workspace.draw?.update(a.strokes,{readOnly:viewing||archived||!connected});if($('attempt-outcome'))$('attempt-outcome').textContent=labels[a.outcome]||'Начато';if($('trainer-control')){$('trainer-control').textContent=activeAttempt.controller==='teacher'?'Вернуть управление ученику':'Подключиться к тренажёру';$('trainer-control').disabled=viewing||archived||queuedFor(a.id).length>0;}
  const controlled=teacher()?activeAttempt.controller!=='teacher':activeAttempt.controller==='teacher';$('archived-notice').hidden=!archived;$('control-notice').hidden=!controlled||viewing||archived;$('control-notice').textContent=teacher()?'Вы наблюдаете за работой. Для изменения тренажёра нажмите «Подключиться». На листе можно писать вместе.':'Наталья Михайловна объясняет в Вашем тренажёре. Вы можете делать записи на листе.';
  for(const id of ['pen','eraser','pen-color','pen-width','undo-stroke'])$(id).disabled=viewing||archived||!connected;if($('workspace-assign'))$('workspace-assign').disabled=viewing;

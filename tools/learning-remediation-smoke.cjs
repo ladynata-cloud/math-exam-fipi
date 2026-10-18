@@ -66,7 +66,8 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
     frame=page.frames().find(f=>f.url().includes('channel=student'));assert.equal(await frame.locator('#lm-answer').inputValue(),'99999999');assert.equal(await frame.locator('.lm-feedback.incorrect').count(),1);assert.match(await frame.locator('.lm-card .lm-label').first().textContent(),taskSpec.items.length?/6 из 12/:new RegExp('Пример 2 из '+taskSpec.divisionTasks.length));
    }
   }
-  assert.equal(await frame.locator('#lm-new').textContent(),'Новое условие →');
+  const exampleCount=taskSpec.divisionTasks.length||taskSpec.items.length||1;
+  assert.equal(await frame.locator('#lm-new').textContent(),taskSpec.family==='division'?(exampleCount>1?'Ещё '+exampleCount+' примера →':'Следующий пример →'):'Новое условие →');
   await frame.locator('#lm-new').click();await page.waitForFunction(()=>events.at(-1).kind==='new-task');
   assert.equal((await page.evaluate(()=>events.at(-1))).details.contentId,item.contentId);
   completed++;
