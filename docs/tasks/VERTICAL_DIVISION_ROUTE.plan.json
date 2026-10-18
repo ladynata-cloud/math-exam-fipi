@@ -1,0 +1,135 @@
+{
+  "items": [
+    {
+      "catalogId": "oge-basics:multiplication-division/long-division-quotient-digit",
+      "reason": "Подбери цифру частного: найди наибольшее подходящее кратное и проверь себя.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/long-division-one-digit",
+      "reason": "Записывай деление уголком по шагам: разделить, умножить, вычесть, снести следующую цифру.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/long-division-zero-in-quotient",
+      "reason": "Отработай нули в середине и в конце частного. Не пропускай разряды.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/division-with-remainder",
+      "reason": "Пойми остаток и проверку: делитель × частное + остаток = делимое.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/long-division-with-remainder",
+      "reason": "Раздели уголком с остатком. Убедись, что остаток меньше делителя.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/long-division-two-digit",
+      "reason": "Подбирай цифры частного при двузначном делителе и проверяй каждое вычитание.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/division-append-zeros",
+      "reason": "Продолжай деление после запятой: дописывай нули до точного результата.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/decimal-division-natural",
+      "reason": "Дели десятичную дробь на натуральное число и ставь запятую в частном вовремя.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/decimal-divisor-shift",
+      "reason": "Переноси запятую в делимом и делителе одинаково, затем дели уголком.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/long-division-from-simple-to-decimals",
+      "reason": "Пройди связное занятие от простого деления до десятичных дробей. Сохраняй все строки решения.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/division-lab",
+      "reason": "Закрепи алгоритм на новых числах. После разбора повтори самостоятельно.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:multiplication-division/long-division-mixed-checkpoint",
+      "reason": "Итог деления уголком: реши смешанную проверку самостоятельно. Если трудно, вернись к нужному шагу.",
+      "priority": "high"
+    },
+    {
+      "catalogId": "oge-basics:decimal-add-subtract",
+      "reason": "Складывай и вычитай десятичные дроби: запятая под запятой, разряд под разрядом.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:grade7-b-decimal-place-align",
+      "reason": "Закрепи запись десятичных дробей по разрядам и переходы через разряд.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:practice-decimals",
+      "reason": "Умножай десятичные дроби, затем выполняй сложение. Сначала оцени порядок ответа.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "oge-basics:fraction-meaning",
+      "reason": "Вспомни числитель, знаменатель, часть и целое. Объясняй смысл каждой дроби.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:pre7-equivalent-fractions",
+      "reason": "Сокращай дроби и получай равные записи без изменения значения.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:pre7-fraction-compare",
+      "reason": "Сравнивай дроби и оценивай будущий ответ до вычислений.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "oge-basics:fraction-common-denominator",
+      "reason": "Приводи дроби к общему знаменателю и складывай доли одного размера.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:practice-fraction-add",
+      "reason": "Закрепи сложение и вычитание дробей с разными знаменателями.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:grade7-b-mixed-borrow",
+      "reason": "Вычитай смешанные числа: при необходимости занимай единицу у целой части.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:grade7-b-fraction-product-cancel",
+      "reason": "Умножай дроби и сокращай множители до вычисления больших произведений.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:grade7-b-fraction-division-meaning",
+      "reason": "Пойми, что означает деление на дробь и почему появляется обратная дробь.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:practice-fraction-divide",
+      "reason": "Отработай деление обыкновенных дробей и сокращение результата самостоятельно.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "oge-basics:order-of-operations",
+      "reason": "Сначала скобки, затем умножение и деление, затем сложение и вычитание.",
+      "priority": "normal"
+    },
+    {
+      "catalogId": "path:practice-fraction-expression",
+      "reason": "Собери навыки в выражении с несколькими действиями. Прописывай промежуточные результаты.",
+      "priority": "normal"
+    }
+  ],
+  "note": "Иди сверху вниз: деление уголком → десятичные дроби → обыкновенные дроби → выражения. На каждом шаге разбери способ и реши новые примеры самостоятельно. Таблицу умножения повторяй при необходимости. Один завершённый пример ещё не означает полного освоения темы."
+}

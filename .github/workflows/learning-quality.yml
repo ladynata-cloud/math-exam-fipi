@@ -82,6 +82,7 @@ jobs:
           echo "NODE_PATH=$RUNNER_TEMP/learning-browser/node_modules" >> "$GITHUB_ENV"
       - name: Assignment geometry DOM and saved-state regression
         run: |
+          node tools/learning-vertical-route.dom.cjs
           node tools/learning-assignment-geometry.dom.cjs
           node tools/photo-proof-clear.dom.cjs
       - name: Geometry rebuild classroom and narrow-screen scenarios
