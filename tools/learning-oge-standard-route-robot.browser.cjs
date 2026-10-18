@@ -122,7 +122,7 @@ async function answer(page, decision) {
   await f.locator('#lm-check:visible,#answerForm button.primary:visible').click();
   assert.equal((await response).status(), 200); await saved(page); return true;
 }
-function completed(view) { return view.headings.some(text => /(?:Задание завершено|Все \d+ .*проверены|Разбор завершён)/.test(text)) || view.feedback.some(text => /^Верно[!.].*(?:вариант решён|Результат будет сохранён)/.test(text)); }
+function completed(view) { return view.headings.some(text => /(?:Задание завершено|Пример решён|Все \d+ примера решены|Все \d+ .*проверены|Разбор завершён)/.test(text)) || view.feedback.some(text => /^Верно[!.].*(?:вариант решён|Результат будет сохранён)/.test(text)); }
 function signature(view) { return JSON.stringify([view.labels, view.prompts, view.headings]); }
 async function attemptTopic(page, entry) {
   const f = frame(page); entry.before = await visible(page); entry.steps = [];

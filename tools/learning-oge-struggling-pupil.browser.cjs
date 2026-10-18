@@ -112,7 +112,7 @@ async function continueDivision(page, entry) {
     record.afterRecovery = await visible(page); entry.continuation.push(record);
     assert.equal(await f.locator('.lm-feedback.incorrect').count(), 0, 'Answer from the visible worked help must advance the current step');
   }
-  entry.completedInVisibleUI = await f.getByRole('heading', { name: /Задание завершено|Все \d+ примера завершены/ }).count() === 1;
+  entry.completedInVisibleUI = await f.getByRole('heading', { name: /^(?:Пример решён|Все \d+ примера решены)$/ }).count() === 1;
   assert(entry.completedInVisibleUI, 'Every action of the displayed division condition was actually completed with visible help');
 }
 async function main() {
