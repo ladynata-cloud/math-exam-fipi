@@ -183,7 +183,11 @@ test('all five introductory explanations keep their answer identities and remove
   spec.lessons.forEach((original,i) => {
     const shown = ui.lesson(spec,i);
     assert.equal(shown.question.answer,original.question.answer);
-    assert.deepEqual(shown.question.options,original.question.options);
+    assert.deepEqual(shown.question.options.map(option=>option.id),original.question.options.map(option=>option.id));
+    if (original.question.kind === 'choice') {
+      assert.deepEqual(shown.question.options.map(option=>option.html),['подходит','слишком мало','слишком много']);
+      assert.deepEqual(original.question.options.map(option=>option.html),['подходит','слишком мала','слишком велика']);
+    } else assert.deepEqual(shown.question.options,original.question.options);
     assert.doesNotMatch(JSON.stringify(shown),/частно|кратн|делител|произведени|неполное|≤|\bd · q/);
   });
   assert.equal(ui.lesson(make('decimal-add-subtract'),0),null);

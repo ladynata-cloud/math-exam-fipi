@@ -6,24 +6,19 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current refinement: continuous division practice
+## Current refinement: parallel arithmetic routes
 
-- PR 258 is published at `cb6588932c65a632e0797a5cb1165ddbe1fdf8ee`.
-  Its parent and full reviewed tree matched. All six exact-head workflows,
-  Pages 39165193078 and both post-release bridge checks passed. All 52 checked
-  runtime assets matched the reviewed files across Pages and Amvera.
-- Amvera restarted automatically at 2026-10-18T20:52:38.532Z; health and durable
-  learning storage were available. Live teacher observation verified the
-  17-stage route and stage assignment selection without changing pupil work.
-- The owner then asked for practice that continues beyond a completed example.
-  [This correction](tasks/CONTINUOUS_DIVISION_PRACTICE.md) makes repeat practice
-  the primary completion action and fixes the next-button save race.
-- Scope includes the existing one-digit selection trainer and all course stages;
-  generators, saved canonical task content and server contracts stay unchanged.
-- Focused validation passed: 18 continuation integration scenarios, repeated
-  managed/public practice, all course stages and saved-task compatibility.
-- Next actions: open the reviewed Draft PR and check CI; obtain a separate
-  release decision for its exact head.
+- PR259 is published at `27369c058e9626f97a2041327bddf066e815d24d`.
+  Its parent and reviewed composed tree matched after the separately authorized
+  Yandex additions. Six exact-head CI workflows and Pages39172332301 passed.
+- All40 changed production asset responses matched the reviewed files across
+  Pages and Amvera; health and durable learning storage were available.
+  Live teacher observation confirmed saved work and «Следующий пример».
+- The owner requests larger text and two independent tracks, multiplication
+  (including column multiplication) and long division. Scope and validation:
+  [Parallel arithmetic routes](tasks/PARALLEL_ARITHMETIC_ROUTES.md).
+- Next actions: implement and check both tracks and column actions; review the
+  Draft PR and CI; obtain the separate publication decision.
 - Earlier snapshots below are historical, not current open work.
 
 ## Earlier refinement: assemble photo proofs without writing

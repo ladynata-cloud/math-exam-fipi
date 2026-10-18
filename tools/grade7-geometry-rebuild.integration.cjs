@@ -22,7 +22,11 @@ const divisionCourse=require('../trainers/oge-basics/multiplication-division/div
 const addedDivisionIds=new Set([...divisionCourse.stages.map(stage=>'oge-basics:'+stage.id),'oge-basics:multiplication-division/quotient-estimate']);
 assert.equal(addedDivisionIds.size,18);
 assert.equal(catalog.items.filter(item=>addedDivisionIds.has(item.id)).length,18,'Every new division topic is available');
-assert.equal(catalog.items.filter(item=>!item.geometryRebuild&&!addedDivisionIds.has(item.id)).length,217,'Existing identities remain available');
+const multiplicationColumn=require('../trainers/oge-basics/multiplication-division/multiplication-column-core');
+const addedMultiplicationIds=new Set(multiplicationColumn.stages.map(stage=>'oge-basics:'+stage.id));
+assert.equal(addedMultiplicationIds.size,2);
+assert.equal(catalog.items.filter(item=>addedMultiplicationIds.has(item.id)).length,2,'Both new column multiplication topics are available');
+assert.equal(catalog.items.filter(item=>!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)).length,217,'Existing identities remain available');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

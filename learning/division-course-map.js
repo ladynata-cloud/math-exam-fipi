@@ -1,5 +1,5 @@
-/* Navigation-only snapshot of the course metadata. No tasks or answers.
- * Keep in sync with division-course-core.js; the route gate verifies parity. */
+/* Navigation-only metadata. No tasks or answers.
+ * Legacy stages stay in sync with division-course-core.js; tracks only arrange navigation. */
 (function(root){
 'use strict';
 const rows=[
@@ -195,5 +195,28 @@ const stages=Object.freeze(rows.map(stage=>Object.freeze(stage)));
 const byId=new Map(stages.map(stage=>[stage.id,stage]));
 const has=id=>byId.has(id);
 function stageFor(id){if(!has(id))throw Error('Неизвестная ступень курса деления.');return byId.get(id);}
-root.DivisionCourse=Object.freeze({stages,has,stageFor});
+function navigationStage(slug,title,goal,action){
+ return Object.freeze({id:'multiplication-division/'+slug,slug,title,goal,action,guidance:'supported',support:'Объяснение и упражнения'});
+}
+const multiplication=Object.freeze([
+ navigationStage('multiplication-meaning','Что значит умножить','Увидеть, как складывают одинаковые числа.','Посмотри на рисунок и посчитай.'),
+ navigationStage('multiplication-pythagoras-table','Находим ответ в таблице','Найти ответ там, где встречаются строка и столбец.','Выбери два числа и найди ответ.'),
+ navigationStage('multiplication-tricks','Как вспомнить ответ','Восстановить ответ, если забыл таблицу.','Начни со знакомого примера.'),
+ navigationStage('multiplication-ladder','Учим одну таблицу за раз','Потренироваться умножать на одно число.','Решай по одному примеру.'),
+ navigationStage('multiplication-mixed','Таблица вперемешку','Умножать числа от 1 до 9 в разном порядке.','Реши новые примеры.'),
+ stageFor('multiplication-division/course-multiply-two-digit'),
+ navigationStage('course-column-one-digit','Умножаем столбиком на одну цифру','Например, 24 × 3.','Начни справа. Записывай ответ по одной цифре.'),
+ navigationStage('course-column-two-digit','Умножаем столбиком на число из двух цифр','Например, 24 × 13.','Запиши две строки и сложи их.'),
+ stageFor('multiplication-division/course-multiply-bridge')
+]);
+const division=Object.freeze(stages.filter(stage=>!['multiply-bridge','multiply-two-digit'].includes(stage.slug)));
+const tracks=Object.freeze([
+ Object.freeze({id:'multiplication',title:'Умножение',lead:'От таблицы умножения к умножению столбиком.',stages:multiplication}),
+ Object.freeze({id:'division',title:'Деление уголком',lead:'От подбора одной цифры к целому решению.',stages:division})
+]);
+const byTrackContent=new Map(tracks.flatMap(track=>track.stages.map(stage=>[stage.id,track])));
+function trackFor(id){return byTrackContent.get(String(id||'').replace(/^oge-basics:/,''))||null;}
+const api=Object.freeze({stages,has,stageFor,tracks,trackFor});
+if(typeof module==='object'&&module.exports)module.exports=api;
+else {root.ArithmeticCourse=api;if(!root.DivisionCourse?.make)root.DivisionCourse=api;}
 })(typeof globalThis==='undefined'?this:globalThis);

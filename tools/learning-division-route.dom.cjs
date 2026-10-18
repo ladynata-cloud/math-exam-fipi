@@ -7,6 +7,9 @@ const {JSDOM}=require('jsdom');
 const repo=path.resolve(__dirname,'..');
 const C=require('../trainers/oge-basics/multiplication-division/division-course-core.js');
 const P=require('../learning/preparation-map.js');
+const N=require('../learning/division-course-map.js');
+const allStages=N.tracks.flatMap(track=>track.stages);
+const findButton=(f,id)=>[...f.host.querySelectorAll('[data-division-stage]')].find(button=>button.dataset.divisionStage===id);
 const read=file=>fs.readFileSync(path.join(repo,file),'utf8');
 const flush=()=>new Promise(resolve=>setImmediate(resolve));
 function fixture(role='student',api=async()=>({progress:[]})){
@@ -21,16 +24,28 @@ function fixture(role='student',api=async()=>({progress:[]})){
 }
 const progress=(stage,outcome,completed=true,id='saved')=>({trainerId:'oge-basics',contentId:stage.id,completed,latest:{id,contentId:stage.id,trainerId:'oge-basics',outcome}});
 
-test('course metadata loads in cabinet without arithmetic dependencies and retains all 17 ordered steps',async()=>{
+test('two independent navigation tracks retain all 17 canonical steps and include column multiplication',async()=>{
  const f=fixture();await flush();
  assert.equal(f.w.DivisionLab,undefined);
  assert.equal(f.w.DivisionCourse.stages.length,17);
  assert.equal(f.w.DivisionCourse.make,undefined,'Cabinet metadata cannot expose tasks or answers');
  assert.deepEqual(JSON.parse(JSON.stringify(f.w.DivisionCourse.stages)),JSON.parse(JSON.stringify(C.stages)),'Navigation metadata must match the trainer core');
- assert.deepEqual([...f.host.querySelectorAll('[data-division-stage]')].map(button=>button.dataset.divisionStage),C.stages.map(stage=>stage.id));
- assert.equal(f.host.querySelectorAll('ol.division-course-list > li').length,17);
+ assert.equal(f.w.ArithmeticCourse,f.w.DivisionCourse);
+ assert.deepEqual([...f.host.querySelectorAll('[data-division-stage]')].map(button=>button.dataset.divisionStage),allStages.map(stage=>stage.id));
+ assert.equal(f.host.querySelectorAll('ol.division-course-list > li').length,24);
+ assert.equal(f.host.querySelectorAll('[data-arithmetic-track]').length,2);
+ assert.equal(new Set(allStages.map(stage=>stage.id)).size,allStages.length,'A step belongs to exactly one track');
+ for(const stage of C.stages)assert(allStages.some(item=>item.id===stage.id),'Existing course work stays reachable');
+ assert.equal(N.trackFor('oge-basics:multiplication-division/course-column-one-digit').id,'multiplication');
+ assert.equal(N.trackFor('multiplication-division/course-column-two-digit').id,'multiplication');
+ assert.equal(N.trackFor('multiplication-division/course-digit-choice').id,'division');
+ assert.equal(N.trackFor('multiplication-division/course-multiply-bridge').id,'multiplication');
+ assert.equal(N.trackFor('multiplication-division/course-multiply-two-digit').id,'multiplication');
+ assert.equal(N.trackFor('unknown'),null);
+ assert.equal(N.has('multiplication-division/course-column-one-digit'),false,'Canonical course API remains the old 17');
+ assert.deepEqual([...f.host.querySelectorAll('progress')].map(node=>[node.value,node.max]),[[0,9],[0,15]]);
  assert.deepEqual(f.reads,['/progress']);assert.equal(f.calls.length,0,'Viewing the course must not create attempts');
- assert.equal(f.host.querySelectorAll('[aria-current="step"]').length,1);
+ assert.equal(f.host.querySelectorAll('[aria-current="step"]').length,2);
  assert(!f.host.textContent.includes('Тема освоена'));
  f.dispose();f.dom.window.close();
 });
@@ -38,7 +53,7 @@ test('course metadata loads in cabinet without arithmetic dependencies and retai
 test('complete history controls continuation; finished attempts create fresh examples and unfinished ones resume',async()=>{
  const rows=[progress(C.stages[0],'hinted',true,'older-saved'),progress(C.stages[1],'started',false,'in-progress')];
  const f=fixture('student',async()=>({progress:rows}));await flush();
- const buttons=f.host.querySelectorAll('[data-division-stage]');
+ const buttons=[findButton(f,C.stages[0].id),findButton(f,C.stages[1].id)];
  assert.equal(buttons[0].textContent,'Новые примеры →');
  assert.match(buttons[0].closest('article').textContent,/Есть решение по шагам/);
  assert.equal(buttons[1].textContent,'Продолжить →');
@@ -64,7 +79,7 @@ test('a helped check is not labelled independent, and course completion is not m
  row=[...independent.host.querySelectorAll('[data-division-stage]')].find(button=>button.dataset.divisionStage===check.id).closest('article');
  assert.match(row.textContent,/Три примера решены без подсказок/);
  independent.dispose();independent.dom.window.close();
- const repeated=fixture('student',async()=>({progress:C.stages.map(stage=>progress(stage,'repeated'))}));await flush();
+ const repeated=fixture('student',async()=>({progress:allStages.map(stage=>progress(stage,'repeated'))}));await flush();
  assert.match(repeated.host.textContent,/Три примера решены без подсказок/);
  assert.equal(repeated.host.querySelectorAll('[aria-current="step"]').length,0,'Successful independent retakes do not request the same check again');
  repeated.dispose();repeated.dom.window.close();
@@ -74,7 +89,7 @@ test('teacher uses existing assignment entry without reading student progress',a
  const f=fixture('teacher',async()=>{throw Error('Teacher must not call /progress');});await flush();
  const button=f.host.querySelector('[data-division-stage]');assert.match(button.textContent,/Назначить ученику/);button.click();await flush();
  assert.equal(f.reads.length,0);
- assert.deepEqual(f.calls.map(args=>JSON.parse(JSON.stringify(args))),[['oge-basics:'+C.stages[0].id,{}]]);
+ assert.deepEqual(f.calls.map(args=>JSON.parse(JSON.stringify(args))),[['oge-basics:'+allStages[0].id,{}]]);
  f.dispose();f.dom.window.close();
 });
 
@@ -84,7 +99,7 @@ test('unavailable history leaves every step open without inventing a next step; 
  assert.equal(f.host.querySelectorAll('[data-division-stage]:disabled').length,0);
  assert.match(f.host.textContent,/Не удалось загрузить историю/);
  failure=false;f.host.querySelector('[data-division-retry]').click();await flush();
- assert.equal(f.host.querySelectorAll('[aria-current="step"]').length,1);
+ assert.equal(f.host.querySelectorAll('[aria-current="step"]').length,2);
  assert.equal(f.calls.length,0);assert.deepEqual(f.reads,['/progress','/progress']);
  f.dispose();f.dom.window.close();
 });
@@ -96,8 +111,10 @@ test('leaving while progress loads cannot redraw a discarded course',async()=>{
 });
 
 test('preparation map preserves old IDs while new course and wrappers share the ordered metadata',()=>{
- const group=P.groups.find(group=>group.id==='division');
- assert.deepEqual(group.items.filter(item=>item.tier==='core').map(item=>item.managedId),C.stages.map(stage=>'oge-basics:'+stage.id));
+ for(const track of N.tracks){
+  const group=P.groups.find(group=>group.id===track.id);
+  assert.deepEqual(group.items.filter(item=>item.tier==='core').map(item=>item.managedId),track.stages.map(stage=>'oge-basics:'+stage.id));
+ }
  assert(P.get('oge-basics:multiplication-division/long-division-one-digit'));
  assert(P.get('oge-basics:multiplication-division/long-division-from-simple-to-decimals'));
  for(const stage of C.stages){
@@ -121,4 +138,70 @@ test('preparation map preserves old IDs while new course and wrappers share the 
  w.eval(read('learning/division-course-map.js'));w.eval(read('learning/route.js'));
  assert.doesNotThrow(()=>w.LearningRoute.prerequisites({id:'oge-basics:fraction-meaning',contentId:'fraction-meaning',family:'remediation'},{get:()=>null}));
  dom.window.close();
+});
+
+
+test('finishing one track cannot advance or block the other track',async()=>{
+ for(const finishedTrack of N.tracks){
+  const remainingTrack=N.tracks.find(track=>track.id!==finishedTrack.id);
+  const f=fixture('student',async()=>({progress:finishedTrack.stages.map(stage=>progress(stage,'repeated'))}));await flush();
+  const full=f.host.querySelector('[data-arithmetic-track="'+finishedTrack.id+'"]');
+  const empty=f.host.querySelector('[data-arithmetic-track="'+remainingTrack.id+'"]');
+  assert.equal(full.querySelector('[aria-current="step"]'),null);
+  assert.equal(full.querySelector('progress').value,finishedTrack.stages.length);
+  assert.equal(empty.querySelector('progress').value,0);
+  assert.equal(empty.querySelector('[aria-current="step"] [data-division-stage]').dataset.divisionStage,remainingTrack.stages[0].id);
+  const start=empty.querySelector('[data-division-stage]');assert.equal(start.disabled,false);
+  start.click();await flush();assert.deepEqual(f.calls.map(args=>JSON.parse(JSON.stringify(args))),[['oge-basics:'+remainingTrack.stages[0].id,{}]]);
+  f.dispose();f.dom.window.close();
+ }
+});
+
+test('saved column multiplication resumes and repeats through the existing attempt API',async()=>{
+ const columns=N.tracks[0].stages.filter(stage=>stage.id.includes('/course-column-'));
+ const f=fixture('student',async()=>({progress:[progress(columns[0],'started',false,'column-open'),progress(columns[1],'hinted',true,'column-done')]}));await flush();
+ const first=findButton(f,columns[0].id),second=findButton(f,columns[1].id);
+ assert.equal(first.textContent,'Продолжить →');assert.equal(second.textContent,'Новые примеры →');
+ first.click();await flush();second.click();await flush();
+ assert.deepEqual(f.calls.map(args=>JSON.parse(JSON.stringify(args))),[['oge-basics:'+columns[0].id,{}],['oge-basics:'+columns[1].id,{fresh:true,sourceAttemptId:'column-done'}]]);
+ f.dispose();f.dom.window.close();
+});
+
+test('each continue control focuses only its own current step without creating an attempt',async()=>{
+ const f=fixture();await flush();const scrolled=[];
+ f.w.HTMLElement.prototype.scrollIntoView=function(){scrolled.push(this);};
+ for(const track of N.tracks){
+  const section=f.host.querySelector('[data-arithmetic-track="'+track.id+'"]');
+  section.querySelector('[data-division-current]').click();
+  assert.equal(f.w.document.activeElement,section.querySelector('[aria-current="step"]'));
+  f.host.querySelector('[data-division-track-jump="'+track.id+'"]').click();
+  assert.equal(f.w.document.activeElement,section);
+ }
+ assert.equal(scrolled.length,4);assert.equal(f.calls.length,0);
+ f.dispose();f.dom.window.close();
+});
+
+test('navigation loaded after the arithmetic core does not replace its task API',()=>{
+ const dom=new JSDOM('',{runScripts:'outside-only'}),w=dom.window;
+ const arithmetic={make(){},stages:C.stages};w.DivisionCourse=arithmetic;
+ w.eval(read('learning/division-course-map.js'));
+ assert.equal(w.DivisionCourse,arithmetic);assert.equal(w.ArithmeticCourse.tracks.length,2);
+ dom.window.close();
+});
+
+
+test('a repeat in progress preserves solved-history count while offering its saved continuation',async()=>{
+ for(const track of N.tracks){
+  const stage=track.stages[0],f=fixture('student',async()=>({progress:[progress(stage,'started',true,'saved-repeat')]}));await flush();
+  const section=f.host.querySelector('[data-arithmetic-track="'+track.id+'"]'),button=findButton(f,stage.id);
+  assert.equal(section.querySelector('progress').value,1,'An unfinished repeat cannot erase an earlier solved example');
+  assert.match(section.querySelector('.division-course-progress-text').textContent,new RegExp('Есть решённые примеры: 1 из '+track.stages.length+' шагов'));
+  assert.equal(button.closest('li').getAttribute('aria-current'),'step');
+  assert(button.closest('li').classList.contains('is-complete'));
+  assert.equal(button.textContent,'Продолжить →');
+  button.click();await flush();assert.deepEqual(f.calls.map(args=>JSON.parse(JSON.stringify(args))),[['oge-basics:'+stage.id,{}]]);
+  const other=f.host.querySelector('[data-arithmetic-track="'+N.tracks.find(item=>item.id!==track.id).id+'"]');
+  assert.equal(other.querySelector('progress').value,0);
+  f.dispose();f.dom.window.close();
+ }
 });

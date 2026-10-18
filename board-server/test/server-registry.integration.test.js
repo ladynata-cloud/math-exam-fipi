@@ -316,7 +316,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     }
     for (const asset of ['/learning/catalog.js', '/learning/references.js', '/ege-baza/path/practice-view.js', ...['base', 'foundations', 'triangles', 'relations'].map(name => '/ege-baza/path/grade7-geometry-rebuild-' + name + '.js')]) assert.equal((await fetch(server.baseUrl + asset)).status, 200);
     const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
-    assert.equal(learningStatus.trainers.filter(item => !item.geometryRebuild).length, 235); // 217 existing + 17 course stages + estimation.
+    assert.equal(learningStatus.trainers.filter(item => !item.geometryRebuild).length, 237); // 217 existing + 17 division stages + estimation + two column multiplication stages.
+    for(const id of ['course-column-one-digit','course-column-two-digit']) assert(learningStatus.trainers.some(item=>item.contentId==='multiplication-division/'+id));
     assert.equal(learningStatus.trainers.filter(item => item.geometryRebuild).length, require('../../learning/catalog').items.filter(item => item.geometryRebuild).length);
     assert.equal(learningStatus.trainers.filter(item => item.grade6).length, 12);
     assert.equal(learningStatus.trainers.filter(item => item.grade7 && !item.geometryRebuild).length, 62);

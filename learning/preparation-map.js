@@ -1,6 +1,6 @@
 /* Shared foundations route. Entries point to existing content; this map neither
  * creates attempts nor infers mastery. Public practice has no server result. */
-(function(root,factory){'use strict';const api=factory(typeof module==='object'&&module.exports?require('../trainers/oge-basics/multiplication-division/division-course-core.js'):root.DivisionCourse);if(typeof module==='object'&&module.exports)module.exports=api;else root.LearningPreparation=api;})(typeof globalThis==='undefined'?this:globalThis,function(divisionCourse){
+(function(root,factory){'use strict';const api=factory(typeof module==='object'&&module.exports?require('./division-course-map.js'):root.DivisionCourse);if(typeof module==='object'&&module.exports)module.exports=api;else root.LearningPreparation=api;})(typeof globalThis==='undefined'?this:globalThis,function(divisionCourse){
 'use strict';
 const groups=[
   {
@@ -1626,14 +1626,18 @@ const goals={
 };
 // New lessons form the teaching sequence. Earlier IDs remain available so
 // existing plans and saved attempts keep their original destinations.
-if(divisionCourse?.stages){
- const division=groups.find(group=>group.id==='division');
- division.items.forEach(item=>{if(item.tier==='core')item.tier='extra';});
- division.items.unshift(...divisionCourse.stages.map(stage=>({
-  id:'oge-basics:'+stage.id,managedId:'oge-basics:'+stage.id,title:stage.title,
-  kind:'managed',tier:'core',url:'/learning/#practice='+encodeURIComponent('oge-basics:'+stage.id),
-  publicUrl:'/trainers/oge-basics/multiplication-division/course-'+stage.slug+'.html',note:stage.goal
- })));
+if(divisionCourse?.tracks){
+ for(const track of divisionCourse.tracks){
+  const group=groups.find(group=>group.id===track.id);
+  group.title=track.title;group.lead=track.lead;
+  const ordered=track.stages.map(stage=>({
+   id:'oge-basics:'+stage.id,managedId:'oge-basics:'+stage.id,title:stage.title,
+   kind:'managed',tier:'core',url:'/learning/#practice='+encodeURIComponent('oge-basics:'+stage.id),
+   publicUrl:'/trainers/oge-basics/'+stage.id+'.html',note:stage.goal
+  }));
+  const ids=new Set(ordered.map(item=>item.id));
+  group.items=[...ordered,...group.items.filter(item=>!ids.has(item.id)).map(item=>({...item,tier:'extra'}))];
+ }
 }
 const allItems=groups.flatMap(group=>group.items),byId=Object.create(null),managed=Object.create(null);
 for(const group of groups){for(const item of group.items){if(byId[item.id])throw Error('Duplicate preparation item: '+item.id);byId[item.id]=item;if(item.managedId)managed[item.managedId]=item;Object.freeze(item);}Object.freeze(group.items);Object.freeze(group);}
