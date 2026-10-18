@@ -58,3 +58,10 @@
 #learning-remediation-root .lm-scaffold-table:focus-visible{outline:3px solid #53bcb6;outline-offset:2px}
 #learning-remediation-root .lm-scaffold-table table{table-layout:auto;width:max-content;max-width:none;margin:0}
 #learning-remediation-root .lm-scaffold-table th,#learning-remediation-root .lm-scaffold-table td{overflow-wrap:normal;word-break:normal;white-space:nowrap}
+
+/* Plain-language division keeps the instruction and help in the main column. */
+#learning-remediation-root.lm-simple-division .lm-layout{grid-template-columns:minmax(0,1fr)}
+#learning-remediation-root.lm-simple-division .lm-feedback{font-size:18px;line-height:1.65}
+#learning-remediation-root.lm-simple-division .lm-scaffold h3{font-size:20px}
+#learning-remediation-root.lm-simple-division .lm-scaffold-table{font-size:18px}
+#learning-remediation-root.lm-simple-division .lm-scaffold{padding:clamp(8px,2vw,16px)}

@@ -94,7 +94,7 @@ function fromVisibleHelp(view) {
     if (/вырезан/.test(question)) return { value: String(cut), reason: 'Use the visible cut-out rectangle dimensions' };
     if (/оставш/.test(question)) return { value: String(outer - cut), reason: 'Subtract the two rectangle areas shown in the task' };
   }
-  const literal = help.match(/(?:Ответ к действию|Ответ|Искомое число|Получаем)\s*[:=]\s*([−-]?\d+(?:[,.]\d+)?(?:\s*\/\s*\d+)?)/i);
+  const literal = help.match(/(?:На этом шаге запиши|Ответ к действию|Ответ|Искомое число|Получаем)\s*[:=]\s*([−-]?\d+(?:[,.]\d+)?(?:\s*\/\s*\d+)?)/i);
   if (literal) return { value: literal[1].replace(/\s/g, ''), reason: 'Read explicitly displayed worked answer' };
   const equalities = [...help.matchAll(/=\s*([−-]?\d+(?:[,.]\d+)?(?:\s*\/\s*\d+)?)/g)];
   if (equalities.length) return { value: equalities.at(-1)[1].replace(/\s/g, ''), reason: 'Read the final equality in visible worked help' };

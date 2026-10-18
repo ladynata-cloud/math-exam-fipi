@@ -82,7 +82,7 @@ function evaluate(spec,details){
  if(spec.items.length){const i=integer(details.step,spec.items.length-1),answers=prefix(spec,details.answers||[]);if(answers.length!==i)throw Error('Сначала ответьте на предыдущие вопросы.');const correct=checked(raw,spec.items[i]);return {correct,complete:correct&&i===spec.items.length-1};}
  const correct=checked(raw,spec.task);return {correct,complete:correct};
 }
-function list(){return [...Object.keys(bank),LAB].sort().map(contentId=>{const title=contentId===LAB?'Лаборатория деления уголком':bank[contentId](1).title;return {id:'oge-basics:'+contentId,trainerId:'oge-basics',contentId,contentVersion:1,title,position:null,topicId:'foundation',url:'/trainers/oge-basics/'+contentId+'.html'};});}
+function list(){return [...Object.keys(bank),LAB].sort().map(contentId=>{const title=contentId==='multiplication-division/long-division-quotient-digit'?'Деление: сколько раз взять число':contentId===LAB?'Лаборатория деления уголком':bank[contentId](1).title;return {id:'oge-basics:'+contentId,trainerId:'oge-basics',contentId,contentVersion:1,title,position:null,topicId:'foundation',url:'/trainers/oge-basics/'+contentId+'.html'};});}
 function describe(spec){guard(spec);return {title:spec.title,prompt:spec.items.length?'Итоговая проверка: '+spec.items.length+' заданий по всем навыкам темы.':spec.task.prompt,contentId:spec.contentId,steps:length(spec)};}
 const api={list,create,normalize,validate:normalize,evaluate,describe,equal,checked};if(node)module.exports=api;else root.MathExamRemediation=api;
 })(typeof window==='undefined'?globalThis:window);

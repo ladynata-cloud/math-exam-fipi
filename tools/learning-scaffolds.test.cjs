@@ -89,7 +89,7 @@ test('quotient-digit 91:16 shows all exact multiples and explains the upper boun
   const spec = freeze(make('multiplication-division/long-division-quotient-digit')), hint = render(spec), solution = render(spec, 3);
   for (let n = 1; n <= 9; n++) assert(hint.includes('<td>' + (n - 1) * 16 + ' + 16</td><td>' + n * 16 + '</td>'));
   assert.doesNotMatch(hint, /Цифра частного:|lm-scaffold-selected|data-scaffold-result/);
-  assert.match(solution, /16 · 5 = 80 ≤ 91, а 16 · 6 = 96 &gt; 91\. Цифра частного: 5/);
+  assert.match(solution, /16 × 5 = 80\. Это не больше 91\. Ещё раз: 16 × 6 = 96\. Это уже больше 91\. Можно взять 5 раз\. Впиши 5/);
 });
 
 test('the first incomplete dividend is explained without exposing the entire quotient', () => {
@@ -97,7 +97,7 @@ test('the first incomplete dividend is explained without exposing the entire quo
   assert.match(hint, /2 меньше 4/);
   assert.match(hint, /следующую цифру справа: 0/);
   assert.doesNotMatch(hint, /510|data-scaffold-result/);
-  assert.match(solution, /Первое неполное делимое: 20/);
+  assert.match(solution, /На этом шаге запиши: 20/);
   assert.doesNotMatch(solution, /Частное: 510/);
 });
 
@@ -133,4 +133,55 @@ test('browser and CommonJS modules render the same canonical task without a DOM'
   const spec = freeze(make('multiplication-division/long-division-one-digit'));
   assert.equal(context.LearningScaffolds.render(spec, spec.steps[1], {scope:'step',step:1,level:3}), render(spec, 3, 1));
   assert.equal(Object.isFrozen(context.LearningScaffolds), true);
+});
+
+
+test('plain division copy covers every canonical step without changing saved tasks or answers', () => {
+  const ids = contracts.list().filter(x => make(x.contentId).family === 'division');
+  let checked = 0;
+  for (const item of ids) for (const seed of [0, 1, 73, 99999]) {
+    const spec = freeze(make(item.contentId, seed)), before = JSON.stringify(spec);
+    spec.steps.forEach((q, step) => {
+      const copy = ui.present(spec, q, {scope:'step', step});
+      assert(copy, item.contentId + ':' + q.kind);
+      assert.doesNotMatch(copy.prompt + copy.hint, /частно|делител|делим[оы]|кратн|произведени|разряд|неполн|снос|разност/i);
+      assert(copy.prompt.length < 150);
+      assert(contracts.evaluate(spec, {scope:'step', step, answer:q.answer, answers:spec.steps.slice(0,step).map(a=>a.answer)}).correct);
+      checked++;
+    });
+    assert.equal(JSON.stringify(spec), before);
+  }
+  assert(checked > 500);
+});
+
+test('zero, nine and too-large/too-small answers get literal support', () => {
+  const spec = {contentId:'multiplication-division/long-division-quotient-digit'};
+  for (const [total, base, answer] of [[266,33,'8'],[4,7,'0'],[89,9,'9']]) {
+    const q = {kind:'digit',prompt:`Какая цифра частного подходит к ${total} : ${base}?`,answer};
+    const hint = ui.render(spec,q,{scope:'step'});
+    assert(hint.includes('<th scope="row">10</th>'), 'The first value exceeding the target is visible even for 9');
+    assert.doesNotMatch(hint,/lm-scaffold-selected|data-scaffold-result|кратн|частно|делител|произведени/);
+  }
+  const q = {kind:'digit',prompt:'Какая цифра частного подходит к 266 : 33?',answer:'8'};
+  assert.match(ui.present(spec,q,{scope:'step',answer:'9'}).error,/33 × 9 = 297.*меньше раз/);
+  assert.match(ui.present(spec,q,{scope:'step',answer:'7'}).error,/33 × 7 = 231.*больше раз/);
+  assert.match(ui.present(spec,q,{scope:'step',answer:'297'}).error,/одну цифру/);
+  assert.equal(ui.present(spec,{...q,answer:'9'},{scope:'step'}),null);
+});
+
+test('all five introductory explanations keep their answer identities and remove unexplained terms', () => {
+  const spec = freeze(make('multiplication-division/long-division-quotient-digit'));
+  spec.lessons.forEach((original,i) => {
+    const shown = ui.lesson(spec,i);
+    assert.equal(shown.question.answer,original.question.answer);
+    assert.deepEqual(shown.question.options,original.question.options);
+    assert.doesNotMatch(JSON.stringify(shown),/частно|кратн|делител|произведени|неполное|≤|\bd · q/);
+  });
+  assert.equal(ui.lesson(make('decimal-add-subtract'),0),null);
+});
+
+test('the readable catalog title leaves the saved task title canonical', () => {
+  const id='multiplication-division/long-division-quotient-digit';
+  assert.equal(contracts.list().find(x=>x.contentId===id).title,'Деление: сколько раз взять число');
+  assert.equal(make(id).title,'Цифра частного и линейка кратных');
 });
