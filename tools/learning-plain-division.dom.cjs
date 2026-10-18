@@ -27,13 +27,14 @@ function mount(id, {step=0, readOnly=false, noHelp=false}={}) {
 }
 const first='multiplication-division/long-division-quotient-digit';
 const t=mount(first);
-assert.match(t.host.textContent,/Подбери одну цифру: 16/);
+assert.match(t.host.textContent,/Подбери одну цифру: □ × 16/);
 assert.doesNotMatch(t.host.textContent,/Цифра частного|линейка кратных/);
 t.host.querySelector('#lm-hint').click();
 assert.doesNotMatch(t.host.querySelector('.lm-feedback').textContent,/частно|кратн|делител|произведени/);
 assert.equal(t.host.querySelectorAll('.lm-scaffold').length,1);
 assert.equal(t.host.querySelectorAll('.lm-scaffold-selected').length,1);
-assert.match(t.host.querySelector('.lm-scaffold-selected').textContent,/16 × 5 = 80.*Берём 5/);
+assert.deepEqual([...t.host.querySelector('.lm-scaffold-selected').children].map(x=>x.textContent),['5','5 × 16','80✓ Берём 5']);
+assert.deepEqual([...t.host.querySelectorAll('.lm-digit-table thead th')].map(x=>x.textContent),['Цифра','Умножаем на 16','Получилось']);
 assert.equal(t.host.querySelector('#lm-answer').value,'');
 assert.equal(t.bridge.getState().hint,2);
 assert.equal(t.bridge.getState().completed,false);

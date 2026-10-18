@@ -87,11 +87,13 @@ test('decimal subtraction explains borrowing, including a chain through zeroes',
 
 test('digit help highlights the best multiplication and the first larger result', () => {
   const spec = freeze(make('multiplication-division/long-division-quotient-digit')), hint = render(spec), solution = render(spec, 3);
-  for (let n = 0; n <= 9; n++) assert(hint.includes('16 × ' + n + ' = ' + n * 16));
+  for (let n = 0; n <= 9; n++) assert(hint.includes('<td>' + n + ' × 16</td><td>' + n * 16));
   assert.match(hint, /class="lm-scaffold-selected"><th scope="row">5/);
+  assert(hint.includes('<th scope="col">Цифра</th><th scope="col">Умножаем на 16</th><th scope="col">Получилось</th>'));
+  assert.doesNotMatch(hint, /Группы|Всего|Прибавляем|кратн|делител/);
   assert.match(hint, /class="lm-digit-too-much"><th scope="row">6/);
-  assert.match(hint, /16 × 5 = 80 — меньше 91. Подходит/);
-  assert.match(hint, /16 × 6 = 96 — уже больше 91/);
+  assert.match(hint, /5 × 16 = 80 — меньше 91. Подходит/);
+  assert.match(hint, /6 × 16 = 96 — уже больше 91/);
   assert.doesNotMatch(hint, /Цифра частного:|data-scaffold-result/);
   assert.match(solution, /На этом шаге запиши: 5/);
 });
@@ -170,8 +172,8 @@ test('zero, nine and too-large/too-small answers get literal support', () => {
     assert.doesNotMatch(hint,/data-scaffold-result|кратн|частно|делител|произведени/);
   }
   const q = {kind:'digit',prompt:'Какая цифра частного подходит к 266 : 33?',answer:'8'};
-  assert.match(ui.present(spec,q,{scope:'step',answer:'9'}).error,/33 × 9 = 297.*цифру поменьше/);
-  assert.match(ui.present(spec,q,{scope:'step',answer:'7'}).error,/33 × 7 = 231.*цифру побольше/);
+  assert.match(ui.present(spec,q,{scope:'step',answer:'9'}).error,/9 × 33 = 297.*цифру поменьше/);
+  assert.match(ui.present(spec,q,{scope:'step',answer:'7'}).error,/7 × 33 = 231.*цифру побольше/);
   assert.match(ui.present(spec,q,{scope:'step',answer:'297'}).error,/одну цифру/);
   assert.equal(ui.present(spec,{...q,answer:'9'},{scope:'step'}),null);
 });

@@ -99,3 +99,15 @@ The first cloud run failed in the lightweight server-envelope DOM fixture becaus
 its host stub lacked classList.toggle. The fixture now models class toggling and
 asserts that the division class matches the task family; envelope checks remain.
 The old-head cloud run is not a passing gate for the updated code.
+
+Owner's column clarification: label the three columns «Цифра», «Умножаем на N»,
+«Получилось». Write digit × N, and highlight the entire chosen row in help.
+The prior public screenshot still shows the pre-PR version; this patch remains
+unreleased pending the separate release decision.
+
+The second cloud run passed server/envelope, DOM and earlier browser checks,
+then stopped because the browser smoke still expected the old canonical title
+in the UI. That assertion now checks the public catalog title for every family;
+saved metadata/tampering checks remain unchanged. New-head CI must be rerun.
+A focused read-only peer review caught missing maximum wording in the main
+question and inconsistent multiplication order; both were corrected.

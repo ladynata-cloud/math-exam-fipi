@@ -43,14 +43,14 @@
       const rows = Array.from({length:10}, (_, digit) => {
         const chosen = digit === n, tooMuch = digit === n + 1;
         const note = chosen ? '✓ Берём ' + digit : tooMuch ? 'Уже больше ' + total : '';
-        return '<tr' + (chosen ? ' class="lm-scaffold-selected"' : tooMuch ? ' class="lm-digit-too-much"' : '') + '><th scope="row">' + digit + '</th><td>' + base + ' × ' + digit + ' = ' + base * digit + (note ? '<span class="lm-digit-note">' + E(note) + '</span>' : '') + '</td></tr>';
+        return '<tr' + (chosen ? ' class="lm-scaffold-selected"' : tooMuch ? ' class="lm-digit-too-much"' : '') + '><th scope="row">' + digit + '</th><td>' + digit + ' × ' + base + '</td><td>' + base * digit + (note ? '<span class="lm-digit-note">' + E(note) + '</span>' : '') + '</td></tr>';
       }).join('');
-      const explanation = base + ' × ' + n + ' = ' + product + (product === total ? ' — ровно ' + total + '. Подходит.' : ' — меньше ' + total + '. Подходит.')
-        + (n < 9 ? ' ' + base + ' × ' + (n + 1) + ' = ' + base * (n + 1) + ' — уже больше ' + total + '.' : ' 9 — самая большая цифра.')
+      const explanation = n + ' × ' + base + ' = ' + product + (product === total ? ' — ровно ' + total + '. Подходит.' : ' — меньше ' + total + '. Подходит.')
+        + (n < 9 ? ' ' + (n + 1) + ' × ' + base + ' = ' + base * (n + 1) + ' — уже больше ' + total + '.' : ' 9 — самая большая цифра.')
         + ' Значит, берём ' + n + '.';
-      return p('Умножаем ' + base + ' на одну цифру. Ищем самое большое число, которое не больше ' + total + '.')
+      return p('Умножаем цифру на ' + base + '. Ищем самый большой результат, который не больше ' + total + '.')
         + p(explanation)
-        + '<div class="lm-scaffold-table lm-digit-table" tabindex="0" role="region" aria-label="Подбор одной цифры; подходящая строка выделена"><table><caption>Подбираем одну цифру</caption><thead><tr><th scope="col">Цифра</th><th scope="col">Проверяем</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+        + '<div class="lm-scaffold-table lm-digit-table" tabindex="0" role="region" aria-label="Подбор одной цифры; подходящая строка выделена"><table><caption>Подбираем одну цифру</caption><thead><tr><th scope="col">Цифра</th><th scope="col">Умножаем на ' + base + '</th><th scope="col">Получилось</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
         + (level === 3 ? result('На этом шаге запиши: ' + n + '.') : '');
     }
     let body = p('Найди ' + total + ' в столбце «Всего». Посмотри слева, сколько раз взяли ' + base + '.') + multiples(base, level === 3 ? n : null, 10);
@@ -170,13 +170,13 @@
       const {plan, action:a, base, cycle} = c;
       let prompt = '', hint = '', error = '';
       if (a.kind === 'digit') {
-        prompt = 'Подбери одну цифру: ' + base + ' × □. Нужно получить ' + cycle.partial + ' или меньше.';
-        hint = 'Умножай ' + base + ' на цифры от 0 до 9. Из результатов, которые не больше ' + cycle.partial + ', выбери самый большой. Впиши одну цифру.';
+        prompt = 'Подбери одну цифру: □ × ' + base + '. Нужно самое большое число, которое не больше ' + cycle.partial + '.';
+        hint = 'Умножай цифры от 0 до 9 на ' + base + '. Из результатов, которые не больше ' + cycle.partial + ', выбери самый большой. Впиши одну цифру.';
         const raw = String(options.answer ?? '').trim();
         if (/^\d$/.test(raw)) {
           const n = Number(raw), total = n * base;
-          error = total > cycle.partial ? base + ' × ' + n + ' = ' + total + '. Это больше ' + cycle.partial + '. Попробуй цифру поменьше.'
-            : n < cycle.qd ? base + ' × ' + n + ' = ' + total + '. Можно умножить на цифру побольше.' : '';
+          error = total > cycle.partial ? n + ' × ' + base + ' = ' + total + '. Это больше ' + cycle.partial + '. Попробуй цифру поменьше.'
+            : n < cycle.qd ? n + ' × ' + base + ' = ' + total + '. Можно умножить на цифру побольше.' : '';
         } else if (raw) error = 'Впиши только одну цифру — от 0 до 9.';
       } else if (a.kind === 'start') {
         prompt = 'С какого числа слева начнём делить на ' + base + '?';
