@@ -4,7 +4,7 @@
 const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const completed=new Set(['independent','repeated','hinted','together','practiced']);
 const independent=new Set(['independent','repeated']);
-function entry(){return '<section class="division-course-entry"><div><p class="eyebrow">ДЕЛЕНИЕ УГОЛКОМ · ПО ОДНОМУ ДЕЙСТВИЮ</p><h2>От первого шага до самостоятельного решения</h2><p>Начни сверху. На каждом шаге — короткое объяснение и новые примеры.</p></div><a class="button primary" href="#division-course">Открыть курс деления →</a></section>';}
+function entry(){return '<section class="division-course-entry"><div><p class="eyebrow">ДЕЛЕНИЕ УГОЛКОМ · ПО ОДНОМУ ДЕЙСТВИЮ</p><h2>От первого шага до самостоятельного решения</h2><p>Начни сверху. На каждом шаге — короткое объяснение и новые примеры.</p></div><a class="button" href="#division-course">Открыть курс деления →</a></section>';}
 function mount(host,context){
  const core=root.DivisionCourse,stages=core?.stages||[],teacher=context.account.role==='teacher';
  let alive=true,progress=null,loadError=false;
