@@ -160,8 +160,8 @@ async function main() {
     for (let i = 0; i < TOPICS.length; i++) {
       await sp.goto(origin + '/learning/#route');
       await sp.getByText('Роботная проверка, не данные реального ученика', { exact: true }).waitFor();
-      const routeButton = sp.locator('[data-prep-start="oge-basics:' + TOPICS[i] + '"],[data-route-item="oge-basics:' + TOPICS[i] + '"]').first();
-      if (!(await routeButton.isVisible())) await routeButton.locator('xpath=ancestor::details[1]').locator('summary').first().click();
+      // Every assigned topic is visible on the personal route. Let click wait
+      // through progress/poll rerenders; transient absence is not a closed group.
       await sp.locator('[data-prep-start="oge-basics:' + TOPICS[i] + '"]:visible,[data-route-item="oge-basics:' + TOPICS[i] + '"]:visible').first().click();
       try { await ready(sp); } catch (error) { console.error('FRAME DIAGNOSTIC', await sp.locator('#trainer-host').innerText(), pageErrors, await sp.locator('#trainer-host iframe').getAttribute('src')); throw error; } const f = frame(sp);
       const entry = { contentId: TOPICS[i], path: '/learning/#route → managed ' + TOPICS[i], seed: SEED, before: await visible(sp), observations: [] };
