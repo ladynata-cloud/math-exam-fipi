@@ -26,7 +26,7 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
   await page.waitForFunction(()=>framesById.student.applied&&framesById.teacher.applied);
   assert.equal(await page.evaluate(()=>framesById.student.applied.error),undefined,item.id);
   let frame=page.frames().find(f=>f.url().includes('channel=student'));const teacher=page.frames().find(f=>f.url().includes('channel=teacher'));
-  assert.equal(await frame.locator('#learning-remediation-root h1').textContent(),taskSpec.title);
+  assert.equal(await frame.locator('#learning-remediation-root h1').textContent(),item.title); // UI uses the readable catalog title; saved metadata remains canonical.
   assert.equal(await teacher.locator('#lm-note').getAttribute('readonly'),'');
   assert.equal(await frame.evaluate(()=>{try{localStorage.setItem('unexpected-write','1');return 'accessible';}catch{return 'isolated';}}),'isolated');
   const first=taskSpec.steps[0]||taskSpec.items[0]||taskSpec.task;

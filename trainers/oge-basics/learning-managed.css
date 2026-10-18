@@ -58,3 +58,23 @@
 #learning-remediation-root .lm-scaffold-table:focus-visible{outline:3px solid #53bcb6;outline-offset:2px}
 #learning-remediation-root .lm-scaffold-table table{table-layout:auto;width:max-content;max-width:none;margin:0}
 #learning-remediation-root .lm-scaffold-table th,#learning-remediation-root .lm-scaffold-table td{overflow-wrap:normal;word-break:normal;white-space:nowrap}
+
+/* Plain-language division keeps the instruction and help in the main column. */
+#learning-remediation-root.lm-simple-division .lm-layout{grid-template-columns:minmax(0,1fr)}
+#learning-remediation-root.lm-simple-division .lm-feedback{font-size:18px;line-height:1.65}
+#learning-remediation-root.lm-simple-division .lm-scaffold h3{font-size:20px}
+#learning-remediation-root.lm-simple-division .lm-scaffold-table{font-size:18px}
+#learning-remediation-root.lm-simple-division .lm-scaffold{padding:clamp(8px,2vw,16px)}
+
+#learning-remediation-root .lm-digit-table table{width:100%;max-width:100%}
+#learning-remediation-root .lm-digit-table th,#learning-remediation-root .lm-digit-table td{text-align:left}
+#learning-remediation-root .lm-digit-note{display:block;font-weight:700}
+#learning-remediation-root .lm-digit-table .lm-scaffold-selected th,#learning-remediation-root .lm-digit-table .lm-scaffold-selected td{background:#d9f1df;color:#164b2b;border-top:2px solid #287a46;border-bottom:2px solid #287a46}
+#learning-remediation-root .lm-digit-too-much th,#learning-remediation-root .lm-digit-too-much td{background:#fff0eb;color:#793728}
+
+#learning-remediation-root .lm-digit-table table{table-layout:fixed}
+#learning-remediation-root .lm-digit-table th,#learning-remediation-root .lm-digit-table td{padding:6px 4px}
+#learning-remediation-root .lm-digit-table th[scope="col"]{white-space:normal;overflow-wrap:anywhere}
+#learning-remediation-root .lm-digit-table th:first-child{width:24%}
+#learning-remediation-root .lm-digit-table th:nth-child(2){width:36%}
+#learning-remediation-root .lm-digit-table .lm-digit-note{white-space:normal}

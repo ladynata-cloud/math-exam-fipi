@@ -78,6 +78,7 @@ async function visibleWorkedAnswer(f) {
   // In particular, this is never spec.answer or a hidden answer attribute.
   const result = (await f.locator('[data-scaffold-result]').allTextContents()).at(-1) || '';
   let match;
+  if ((match = result.match(/(?:На этом шаге запиши:|Впиши)\s*(\d+(?:[,.]\d+)?[,]?)/))) return { value: match[1], method: 'visible-plain-division-step' };
   if ((match = result.match(/Цифра частного:\s*(\d+)/))) return { value: match[1], method: 'visible-multiples-comparison' };
   if ((match = result.match(/Запись сейчас:\s*(\d+,?)/))) return { value: match[1], method: 'visible-decimal-boundary' };
   if ((match = result.match(/(?:Первое неполное делимое|Сносим цифру)[: ]+\s*(\d+)/))) return { value: match[1], method: 'visible-current-division-step' };
@@ -109,7 +110,7 @@ async function continueDivision(page, entry) {
     if (!answer) { record.blocked = 'No interpretable answer in visible worked help'; entry.continuation.push(record); break; }
     await f.locator('#lm-answer').fill(answer.value); await saved(page); await f.locator('#lm-check').click(); await saved(page);
     record.afterRecovery = await visible(page); entry.continuation.push(record);
-    assert(!record.afterRecovery.feedback.join(' ').includes('Пока не совпало'), 'Answer from the visible worked help must advance the current step');
+    assert.equal(await f.locator('.lm-feedback.incorrect').count(), 0, 'Answer from the visible worked help must advance the current step');
   }
   entry.completedInVisibleUI = await f.getByRole('heading', { name: /Задание завершено|Все \d+ примера завершены/ }).count() === 1;
   assert(entry.completedInVisibleUI, 'Every action of the displayed division condition was actually completed with visible help');
@@ -225,7 +226,7 @@ async function main() {
         entry.recoveryFromVisibleHelp = answer;
         await f.locator('#lm-answer').fill(answer.value); await saved(sp); await f.locator('#lm-check').click(); await saved(sp);
         entry.afterRecovery = await visible(sp);
-        assert(!entry.afterRecovery.feedback.join(' ').includes('Пока не совпало'), 'Using visible help advances this arithmetic topic');
+        assert.equal(await f.locator('.lm-feedback.incorrect').count(), 0, 'Using visible help advances this arithmetic topic');
       }
       const attemptId = new URLSearchParams(new URL(sp.url()).hash.slice(1)).get('attempt');
       const assessment = await api(sp, '/attempts/' + attemptId);

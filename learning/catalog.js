@@ -170,7 +170,7 @@
     ["multiplication-division/long-division-from-simple-to-decimals","Деление уголком: от первого шага до десятичных дробей"],
     ["multiplication-division/long-division-mixed-checkpoint","Смешанная проверка: деление уголком"],
     ["multiplication-division/long-division-one-digit","Деление уголком на одну цифру — пошагово"],
-    ["multiplication-division/long-division-quotient-digit","Цифра частного и линейка кратных"],
+    ["multiplication-division/long-division-quotient-digit","Деление: подбираем одну цифру"],
     ["multiplication-division/long-division-two-digit","Деление уголком на двузначный делитель"],
     ["multiplication-division/long-division-with-remainder","Деление уголком с остатком"],
     ["multiplication-division/long-division-zero-in-quotient","Нули в частном — не теряем разряд"],
