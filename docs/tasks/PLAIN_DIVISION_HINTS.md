@@ -38,11 +38,12 @@ this record reconciles it without a separate status-only PR.
 
 ## Acceptance criteria
 
-- [x] First task asks how many times to take the concrete number.
+- [x] First task explicitly asks for one digit from 0 to 9.
 - [x] Mandatory practice questions/hints do not require unexplained division terms.
 - [x] Too-large/too-small digit errors give the concrete multiplication and direction.
 - [x] No hint auto-advances or marks an answer correct; full solution stays distinct.
-- [x] Zero and nine are supported; table includes the next (tenth) multiple.
+- [x] Help highlights the chosen row and marks the next digit as too large.
+- [x] The table offers only digits 0–9; equality, zero and nine are supported.
 - [x] Existing tasks/state remain canonical, including resumed checkpoint segments.
 - [x] Missing optional help still leaves the original task usable.
 
@@ -64,7 +65,7 @@ while canonical saved titles stayed unchanged. Missing sparse-checkout reference
 fixtures were restored from exact base blobs. Browser robots now read the new
 visible answer labels and check the error class instead of one error sentence.
 Initial wording assertions were updated to the new copy without removing the
-arithmetic/no-reveal assertions. A cross-realm DOM assertion was fixed by cloning
+arithmetic and no-auto-advance assertions. A cross-realm DOM assertion was fixed by cloning
 its returned array; runtime behavior was not weakened.
 
 ## Review, risk and rollback
@@ -85,3 +86,16 @@ Current owner request is the execution instruction for audit and scoped correcti
 Branch, local commit, push and Draft PR are part of the project workflow.
 Merge, auto-merge and deployment: no separate authorization for this task yet.
 The previous publication authorization applied to PR 256 only.
+
+## Owner clarification, 2026-10-19
+
+The skill being practised is choosing ONE digit. Do not turn this into repeated
+addition or replace 266 : 33 with easier division. Show the best multiplication
+row directly in the hint, with text as well as colour, and explain why the next
+digit is too large. Equality is allowed. The revealed digit is still learner-entered
+and checked; opening this help remains a recorded level-2 hint, not independent work.
+
+The first cloud run failed in the lightweight server-envelope DOM fixture because
+its host stub lacked classList.toggle. The fixture now models class toggling and
+asserts that the division class matches the task family; envelope checks remain.
+The old-head cloud run is not a passing gate for the updated code.

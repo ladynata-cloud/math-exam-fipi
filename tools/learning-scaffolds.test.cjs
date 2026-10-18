@@ -85,11 +85,15 @@ test('decimal subtraction explains borrowing, including a chain through zeroes',
   assert.match(zeros, /10,00 − 0,05 = 9,95/);
 });
 
-test('quotient-digit 91:16 shows all exact multiples and explains the upper boundary', () => {
+test('digit help highlights the best multiplication and the first larger result', () => {
   const spec = freeze(make('multiplication-division/long-division-quotient-digit')), hint = render(spec), solution = render(spec, 3);
-  for (let n = 1; n <= 9; n++) assert(hint.includes('<td>' + (n - 1) * 16 + ' + 16</td><td>' + n * 16 + '</td>'));
-  assert.doesNotMatch(hint, /Цифра частного:|lm-scaffold-selected|data-scaffold-result/);
-  assert.match(solution, /16 × 5 = 80\. Это не больше 91\. Ещё раз: 16 × 6 = 96\. Это уже больше 91\. Можно взять 5 раз\. Впиши 5/);
+  for (let n = 0; n <= 9; n++) assert(hint.includes('16 × ' + n + ' = ' + n * 16));
+  assert.match(hint, /class="lm-scaffold-selected"><th scope="row">5/);
+  assert.match(hint, /class="lm-digit-too-much"><th scope="row">6/);
+  assert.match(hint, /16 × 5 = 80 — меньше 91. Подходит/);
+  assert.match(hint, /16 × 6 = 96 — уже больше 91/);
+  assert.doesNotMatch(hint, /Цифра частного:|data-scaffold-result/);
+  assert.match(solution, /На этом шаге запиши: 5/);
 });
 
 test('the first incomplete dividend is explained without exposing the entire quotient', () => {
@@ -156,15 +160,18 @@ test('plain division copy covers every canonical step without changing saved tas
 
 test('zero, nine and too-large/too-small answers get literal support', () => {
   const spec = {contentId:'multiplication-division/long-division-quotient-digit'};
-  for (const [total, base, answer] of [[266,33,'8'],[4,7,'0'],[89,9,'9']]) {
+  for (const [total, base, answer] of [[266,33,'8'],[264,33,'8'],[4,7,'0'],[89,9,'9'],[0,7,'0']]) {
     const q = {kind:'digit',prompt:`Какая цифра частного подходит к ${total} : ${base}?`,answer};
     const hint = ui.render(spec,q,{scope:'step'});
-    assert(hint.includes('<th scope="row">10</th>'), 'The first value exceeding the target is visible even for 9');
-    assert.doesNotMatch(hint,/lm-scaffold-selected|data-scaffold-result|кратн|частно|делител|произведени/);
+    assert(!hint.includes('<th scope="row">10</th>'), 'Only the ten single digits are offered');
+    assert(hint.includes('class="lm-scaffold-selected"><th scope="row">'+answer+'</th>'));
+    assert(hint.includes('✓ Берём '+answer));
+    if(total===base*Number(answer)) assert(hint.includes('ровно '+total+'. Подходит.'));
+    assert.doesNotMatch(hint,/data-scaffold-result|кратн|частно|делител|произведени/);
   }
   const q = {kind:'digit',prompt:'Какая цифра частного подходит к 266 : 33?',answer:'8'};
-  assert.match(ui.present(spec,q,{scope:'step',answer:'9'}).error,/33 × 9 = 297.*меньше раз/);
-  assert.match(ui.present(spec,q,{scope:'step',answer:'7'}).error,/33 × 7 = 231.*больше раз/);
+  assert.match(ui.present(spec,q,{scope:'step',answer:'9'}).error,/33 × 9 = 297.*цифру поменьше/);
+  assert.match(ui.present(spec,q,{scope:'step',answer:'7'}).error,/33 × 7 = 231.*цифру побольше/);
   assert.match(ui.present(spec,q,{scope:'step',answer:'297'}).error,/одну цифру/);
   assert.equal(ui.present(spec,{...q,answer:'9'},{scope:'step'}),null);
 });
@@ -182,6 +189,6 @@ test('all five introductory explanations keep their answer identities and remove
 
 test('the readable catalog title leaves the saved task title canonical', () => {
   const id='multiplication-division/long-division-quotient-digit';
-  assert.equal(contracts.list().find(x=>x.contentId===id).title,'Деление: сколько раз взять число');
+  assert.equal(contracts.list().find(x=>x.contentId===id).title,'Деление: подбираем одну цифру');
   assert.equal(make(id).title,'Цифра частного и линейка кратных');
 });

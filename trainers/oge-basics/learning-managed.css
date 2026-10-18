@@ -65,3 +65,9 @@
 #learning-remediation-root.lm-simple-division .lm-scaffold h3{font-size:20px}
 #learning-remediation-root.lm-simple-division .lm-scaffold-table{font-size:18px}
 #learning-remediation-root.lm-simple-division .lm-scaffold{padding:clamp(8px,2vw,16px)}
+
+#learning-remediation-root .lm-digit-table table{width:100%;max-width:100%}
+#learning-remediation-root .lm-digit-table th,#learning-remediation-root .lm-digit-table td{text-align:left}
+#learning-remediation-root .lm-digit-note{display:block;font-weight:700}
+#learning-remediation-root .lm-digit-table .lm-scaffold-selected th,#learning-remediation-root .lm-digit-table .lm-scaffold-selected td{background:#d9f1df;color:#164b2b;border-top:2px solid #287a46;border-bottom:2px solid #287a46}
+#learning-remediation-root .lm-digit-too-much th,#learning-remediation-root .lm-digit-too-much td{background:#fff0eb;color:#793728}

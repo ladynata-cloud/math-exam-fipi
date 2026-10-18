@@ -38,9 +38,23 @@
   function divide(total, base, level, exact = true) {
     if (!natural(total) || !natural(base) || !base || (exact ? total / base > 10 || total % base : total / base >= 10)) return '';
     const n = Math.floor(total / base);
-    let body = p(exact ? 'Найди ' + total + ' в столбце «Всего». Посмотри слева, сколько раз взяли ' + base + '.' : 'Прибавляй по ' + base + '. Больше ' + total + ' получать нельзя.') + multiples(base, level === 3 ? n : null, 10);
-    if (!exact) body = steps(['Смотри на столбец «Всего».', 'Найди первое число больше ' + total + '.', 'Вернись на одну строку вверх.', 'Посмотри слева, сколько раз взяли ' + base + '. Впиши это число.']) + body;
-    if (level === 3) body += result(exact ? total + ' : ' + base + ' = ' + n + ', потому что ' + base + ' · ' + n + ' = ' + total + '.' : base + ' × ' + n + ' = ' + base * n + '. Это не больше ' + total + '. Ещё раз: ' + base + ' × ' + (n + 1) + ' = ' + base * (n + 1) + '. Это уже больше ' + total + '. Можно взять ' + n + ' раз. Впиши ' + n + '.');
+    if (!exact) {
+      const product = base * n;
+      const rows = Array.from({length:10}, (_, digit) => {
+        const chosen = digit === n, tooMuch = digit === n + 1;
+        const note = chosen ? '✓ Берём ' + digit : tooMuch ? 'Уже больше ' + total : '';
+        return '<tr' + (chosen ? ' class="lm-scaffold-selected"' : tooMuch ? ' class="lm-digit-too-much"' : '') + '><th scope="row">' + digit + '</th><td>' + base + ' × ' + digit + ' = ' + base * digit + (note ? '<span class="lm-digit-note">' + E(note) + '</span>' : '') + '</td></tr>';
+      }).join('');
+      const explanation = base + ' × ' + n + ' = ' + product + (product === total ? ' — ровно ' + total + '. Подходит.' : ' — меньше ' + total + '. Подходит.')
+        + (n < 9 ? ' ' + base + ' × ' + (n + 1) + ' = ' + base * (n + 1) + ' — уже больше ' + total + '.' : ' 9 — самая большая цифра.')
+        + ' Значит, берём ' + n + '.';
+      return p('Умножаем ' + base + ' на одну цифру. Ищем самое большое число, которое не больше ' + total + '.')
+        + p(explanation)
+        + '<div class="lm-scaffold-table lm-digit-table" tabindex="0" role="region" aria-label="Подбор одной цифры; подходящая строка выделена"><table><caption>Подбираем одну цифру</caption><thead><tr><th scope="col">Цифра</th><th scope="col">Проверяем</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+        + (level === 3 ? result('На этом шаге запиши: ' + n + '.') : '');
+    }
+    let body = p('Найди ' + total + ' в столбце «Всего». Посмотри слева, сколько раз взяли ' + base + '.') + multiples(base, level === 3 ? n : null, 10);
+    if (level === 3) body += result(total + ' : ' + base + ' = ' + n + ', потому что ' + base + ' · ' + n + ' = ' + total + '.');
     return body;
   }
   const wholePlaces = [['единицы','единицу','единиц'],['десятки','десяток','десятков'],['сотни','сотню','сотен'],['тысячи','тысячу','тысяч'],['десятки тысяч','десяток тысяч','десятков тысяч'],['сотни тысяч','сотню тысяч','сотен тысяч'],['миллионы','миллион','миллионов']];
@@ -156,14 +170,14 @@
       const {plan, action:a, base, cycle} = c;
       let prompt = '', hint = '', error = '';
       if (a.kind === 'digit') {
-        prompt = 'Сколько раз можно взять ' + base + ', чтобы не получилось больше ' + cycle.partial + '?';
-        hint = 'Прибавляй по ' + base + '. Если получилось больше ' + cycle.partial + ', вернись на одну строку вверх. Впиши, сколько раз ты взял число.';
+        prompt = 'Подбери одну цифру: ' + base + ' × □. Нужно получить ' + cycle.partial + ' или меньше.';
+        hint = 'Умножай ' + base + ' на цифры от 0 до 9. Из результатов, которые не больше ' + cycle.partial + ', выбери самый большой. Впиши одну цифру.';
         const raw = String(options.answer ?? '').trim();
         if (/^\d$/.test(raw)) {
           const n = Number(raw), total = n * base;
-          error = total > cycle.partial ? base + ' × ' + n + ' = ' + total + '. Это больше ' + cycle.partial + '. Попробуй взять ' + base + ' меньше раз.'
-            : n < cycle.qd ? base + ' × ' + n + ' = ' + total + '. Ещё ' + base + ' можно прибавить. Попробуй взять больше раз.' : '';
-        } else if (raw) error = 'Впиши одну цифру: сколько раз можно взять ' + base + '.';
+          error = total > cycle.partial ? base + ' × ' + n + ' = ' + total + '. Это больше ' + cycle.partial + '. Попробуй цифру поменьше.'
+            : n < cycle.qd ? base + ' × ' + n + ' = ' + total + '. Можно умножить на цифру побольше.' : '';
+        } else if (raw) error = 'Впиши только одну цифру — от 0 до 9.';
       } else if (a.kind === 'start') {
         prompt = 'С какого числа слева начнём делить на ' + base + '?';
         hint = 'Начни с первой цифры слева. Если число меньше ' + base + ', возьми ещё одну цифру справа. Остановись, когда число станет ' + base + ' или больше. За запятую пока не переходи.';
@@ -226,7 +240,7 @@
       if (level === 3) body += result('На этом шаге запиши: ' + action.answer + '.');
       if (level === 3 && action.kind.startsWith('shift-')) body += p(c.plan.task.dividend + ' : ' + c.plan.task.divisor + ' = ' + c.plan.normalizedDividend + ' : ' + base + '.');
     }
-    return section('division', action.kind === 'digit' ? 'Прибавляем и считаем' : 'Что сделать сейчас', body);
+    return section('division', action.kind === 'digit' ? 'Подбираем одну цифру' : 'Что сделать сейчас', body);
   }
   function lesson(spec, index) {
     if (spec?.contentId !== 'multiplication-division/long-division-quotient-digit' || !spec.lessons?.[index]) return null;

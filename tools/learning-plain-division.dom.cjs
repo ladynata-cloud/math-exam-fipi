@@ -27,14 +27,19 @@ function mount(id, {step=0, readOnly=false, noHelp=false}={}) {
 }
 const first='multiplication-division/long-division-quotient-digit';
 const t=mount(first);
-assert.match(t.host.textContent,/Сколько раз можно взять 16/);
+assert.match(t.host.textContent,/Подбери одну цифру: 16/);
 assert.doesNotMatch(t.host.textContent,/Цифра частного|линейка кратных/);
 t.host.querySelector('#lm-hint').click();
 assert.doesNotMatch(t.host.querySelector('.lm-feedback').textContent,/частно|кратн|делител|произведени/);
 assert.equal(t.host.querySelectorAll('.lm-scaffold').length,1);
-assert.equal(t.host.querySelectorAll('.lm-scaffold-selected').length,0);
+assert.equal(t.host.querySelectorAll('.lm-scaffold-selected').length,1);
+assert.match(t.host.querySelector('.lm-scaffold-selected').textContent,/16 × 5 = 80.*Берём 5/);
+assert.equal(t.host.querySelector('#lm-answer').value,'');
+assert.equal(t.bridge.getState().hint,2);
+assert.equal(t.bridge.getState().completed,false);
+assert.equal(t.host.querySelector('#lm-answer').getAttribute('aria-label'),'Одна цифра от 0 до 9');
 assert.equal(t.bridge.getState().step,0);
-for(const [value,direction] of [['9','меньше раз'],['2','больше раз']]) {
+for(const [value,direction] of [['9','цифру поменьше'],['2','цифру побольше'],['80','одну цифру']]) {
   const input=t.host.querySelector('#lm-answer');input.value=value;input.dispatchEvent(new t.window.Event('input'));
   t.host.querySelector('#lm-check').click();assert(t.host.querySelector('.lm-feedback').textContent.includes(direction));
   assert.equal(t.bridge.getState().step,0);
@@ -64,4 +69,4 @@ for(const name of ['long-division-one-digit','decimal-divisor-shift','division-l
 }
 const observer=mount(first,{readOnly:true});assert.equal(observer.calls.length,0);assert(observer.host.querySelector('#lm-check').disabled);observer.dom.window.close();
 const fallback=mount(first,{noHelp:true});assert(fallback.host.querySelector('#lm-check'));fallback.host.querySelector('#lm-hint').click();assert(fallback.host.querySelector('.lm-feedback'));fallback.dom.window.close();
-console.log('LEARNING_PLAIN_DIVISION_DOM_OK (saved tasks; hints; diagnostic errors; no auto-advance/reveal; five lessons; resume; decimal/checkpoint; read-only; optional-help failure)');
+console.log('LEARNING_PLAIN_DIVISION_DOM_OK (saved tasks; hints; diagnostic errors; visible highlight without auto-answer/advance; five lessons; resume; decimal/checkpoint; read-only; optional-help failure)');
