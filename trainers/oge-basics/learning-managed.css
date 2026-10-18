@@ -97,3 +97,6 @@
 #learning-remediation-root .lm-course-digits span{padding:3px 6px}
 #learning-remediation-root .lm-course-digits .active{background:#d9f1df;outline:2px solid #287a46;border-radius:4px;color:#164b2b}
 #learning-remediation-root .lm-course-divisor{margin-left:10px}
+
+/* Continuing the same skill is the main action after a completed example. */
+#learning-remediation-root .lm-next-example{width:100%;min-height:56px;font-size:21px;font-weight:700;margin:4px 0 12px}

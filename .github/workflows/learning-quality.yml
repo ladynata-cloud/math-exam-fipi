@@ -86,6 +86,8 @@ jobs:
         run: |
           node tools/learning-vertical-route.dom.cjs
           node tools/learning-plain-division.dom.cjs
+          node tools/learning-continuous-division.dom.cjs
+          node tools/learning-division-next.dom.cjs
           node tools/learning-quotient-estimate.dom.cjs
           node tools/learning-division-course.dom.cjs
           node tools/learning-division-route.dom.cjs
