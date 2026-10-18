@@ -2,10 +2,6 @@
 
 Updated: 2026-10-19 (Asia/Novosibirsk)
 
-This is the short operational snapshot. Reconcile it against production evidence
-at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
-and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
-
 ## Current refinement: complete multiplication practice
 
 - PR261 is published at `5c61b0bc12ad9aaebfdb8484cc9987bccb59474a`.
@@ -20,18 +16,28 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - Next: validate old saved work and expanded arithmetic; review the Draft PR
   and exact-head CI; obtain the separate publication decision.
 
-## Completed refinement: parallel arithmetic routes
+- Concurrent PR262 was merged as `e936db700cd2f435347acbb4e1dd57fb89b7eb82` while this task was being reviewed. Its changes are the static division
+  guide, sitemap and documentation; trainer runtime is unchanged. The search
+  discovery snapshot below is retained from that concurrent change.
 
-- PR259 is published at `27369c058e9626f97a2041327bddf066e815d24d`.
-  Its parent and reviewed composed tree matched after the separately authorized
-  Yandex additions. Six exact-head CI workflows and Pages39172332301 passed.
-- All40 changed production asset responses matched the reviewed files across
-  Pages and Amvera; health and durable learning storage were available.
-  Live teacher observation confirmed saved work and «Следующий пример».
-- The owner requests larger text and two independent tracks, multiplication
-  (including column multiplication) and long division. Scope and validation:
-  [Parallel arithmetic routes](tasks/PARALLEL_ARITHMETIC_ROUTES.md).
-- Released through PR261 as recorded above.
+This is the short operational snapshot. Reconcile it against production evidence
+at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
+and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
+
+## Current task: search discovery for division
+
+- PR261 is merged at `5c61b0bc12ad9aaebfdb8484cc9987bccb59474a`.
+  Its release record confirms the reviewed tree, seven exact-head CI workflows,
+  Pages39176065477 and 83/83 production asset comparisons. This reconciliation
+  uses that recorded evidence; it does not claim new learner-flow verification.
+- The owner approved the first topic-discovery improvement: the existing
+  division explanation, the common «деление столбиком» name and quotient
+  estimation. [Scope](tasks/SEO_DIVISION_ESTIMATION_20261019.md), SMALL.
+- Wordstat returned relevant explanation and trainer phrases; displayed data
+  have a service warning and do not predict this site's traffic.
+- Next three actions: complete the focused page and checks; review its Draft
+  PR and obtain the separate publication decision; after publication request
+  a recrawl and measure query impressions and clicks for this exact URL.
 - Earlier snapshots below are historical, not current open work.
 
 ## Earlier refinement: assemble photo proofs without writing
