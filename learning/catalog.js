@@ -156,6 +156,8 @@
     family: 'path'
   }));
   const remediationRows = [
+    ["multiplication-division/course-column-one-digit","Умножаем столбиком на одну цифру"],
+    ["multiplication-division/course-column-two-digit","Умножаем столбиком на число из двух цифр"],
     ["decimal-add-subtract","Десятичные дроби: сложение и вычитание"],
     ["fraction-common-denominator","Дроби: общий знаменатель и сложение"],
     ["fraction-meaning","Дробь: часть, целое и равные записи"],

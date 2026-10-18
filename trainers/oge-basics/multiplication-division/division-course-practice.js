@@ -2,8 +2,8 @@
 (function(){
  'use strict';
  if(window.MathExamRemediationManaged)return;
- const C=window.DivisionCourse,A=window.MathExamRemediation,id=document.body.dataset.courseId;
- if(!C?.has(id)||!A)return;
+ const C=window.DivisionCourse,M=window.MultiplicationColumn,A=window.MathExamRemediation,id=document.body.dataset.courseId;
+ if((!C?.has(id)&&!M?.has(id))||!A)return;
  window.MathExamRemediationManaged=true;
  window.MathExamDivisionCourseLocal=true;
  const key='mathExamBasics.divisionCourse.v1.'+id;
@@ -22,7 +22,7 @@
   }
  }catch(_){blocked=true;warning='Не удалось восстановить запись. Она оставлена без изменений. Можно решать, но новая работа здесь не сохранится.';}
  function updateNotice(){
-  const stage=C.stages.find(s=>s.id===id);
+  const stage=C.stages.find(s=>s.id===id)||M?.stages.find(s=>s.id===id);
   const result=created.state.completed?(stage.guidance==='check'&&!assisted&&!errors?'Три примера решены без подсказок и ошибок. Можно решать ещё.':stage.guidance==='check'?'Три примера решены. Попробуй ещё без помощи.':'Примеры решены по шагам. Продолжай тренировку с новыми числами.'):'Здесь работа сохраняется только в этом браузере. Для занятия с преподавателем открой эту ступень из своего кабинета.';
   notice.textContent=warning||result;
  }

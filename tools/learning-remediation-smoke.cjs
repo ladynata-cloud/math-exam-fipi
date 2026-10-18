@@ -67,7 +67,7 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
    }
   }
   const exampleCount=taskSpec.divisionTasks.length||taskSpec.items.length||1;
-  assert.equal(await frame.locator('#lm-new').textContent(),taskSpec.family==='division'?(exampleCount>1?'Ещё '+exampleCount+' примера →':'Следующий пример →'):'Новое условие →');
+  assert.equal(await frame.locator('#lm-new').textContent(),(taskSpec.family==='division'||taskSpec.family==='multiplication'||require('../learning/division-course-map.js').trackFor(taskSpec.contentId))?(exampleCount>1?'Ещё '+exampleCount+' примера →':'Следующий пример →'):'Новое условие →');
   await frame.locator('#lm-new').click();await page.waitForFunction(()=>events.at(-1).kind==='new-task');
   assert.equal((await page.evaluate(()=>events.at(-1))).details.contentId,item.contentId);
   completed++;
@@ -76,7 +76,7 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
  // Standalone mode still initializes all original family interfaces and storage.
  for(const item of process.argv.includes('--visual-only')?[]:trainerItems){
   await page.goto(origin+item.url);await page.locator('h1').first().waitFor();
-  const localCourse=divisionCourse.has(item.contentId);
+  const localCourse=divisionCourse.has(item.contentId)||require('../trainers/oge-basics/multiplication-division/multiplication-column-core.js').has(item.contentId);
   assert.equal(await page.evaluate(()=>window.MathExamRemediationManaged),localCourse);
   if(localCourse)assert.equal(await page.evaluate(()=>window.MathExamDivisionCourseLocal),true);
   // The guided division page starts directly at the first action. Its
@@ -112,13 +112,26 @@ function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+
   else if(item.contentId.startsWith('percentages/'))assert.equal(await page.locator('#p-q').isVisible(),true);
   else assert.equal(await page.locator('#view-practice').isVisible(),true);
  }
- for(const width of [360,1280])for(const id of ['multiplication-division/multiplication-pythagoras-table','multiplication-division/long-division-zero-in-quotient']){
+ for(const width of [320,390,1280])for(const id of ['multiplication-division/multiplication-pythagoras-table','multiplication-division/long-division-zero-in-quotient','multiplication-division/long-division-quotient-digit','multiplication-division/course-column-one-digit','multiplication-division/course-column-two-digit']){
   await page.setViewportSize({width,height:900});await page.goto(origin+'/harness');await page.addStyleTag({content:'iframe{width:100vw}'});
-  const {taskSpec,state}=serverContracts.create('oge-basics',id,12345);if(taskSpec.lessons.length&&id.includes('pythagoras'))state.view='learn';else {state.answers=taskSpec.steps.slice(0,6).map(q=>String(q.answer));state.step=state.answers.length;}
+  const {taskSpec,state}=serverContracts.create('oge-basics',id,12345);if(taskSpec.lessons.length&&(id.includes('pythagoras')||id.endsWith('quotient-digit'))){state.view='learn';state.lessonIndex=id.endsWith('quotient-digit')?2:0;}else {state.answers=taskSpec.steps.slice(0,6).map(q=>String(q.answer));state.step=state.answers.length;}
   await page.evaluate(url=>openTrainer('student',url),'/trainers/oge-basics/'+id+'.html');await page.waitForFunction(()=>framesById.student?.ready);
   await page.evaluate(({taskSpec,state})=>hydrate('student',taskSpec,state,false),{taskSpec,state});await page.waitForFunction(()=>framesById.student.applied);
   const frame=page.frames().find(f=>f.url().includes('channel=student'));assert.equal(await frame.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'Mobile overflow '+id+' at '+width);
+  assert(await frame.locator('#lm-check').evaluate(el=>parseFloat(getComputedStyle(el).fontSize)>=20),'Readable answer control '+id);
+  if(id.includes('course-column'))assert.equal(await frame.locator('.lm-multiplication-board').isVisible(),true,'Actual column remains visible');
   if(process.env.LEARNING_REMEDIATION_SHOTS){fs.mkdirSync(process.env.LEARNING_REMEDIATION_SHOTS,{recursive:true});await page.screenshot({path:path.join(process.env.LEARNING_REMEDIATION_SHOTS,width+'-'+id.split('/').at(-1)+'.png'),fullPage:true});}
+ }
+ for(const width of [320,390,1280]){
+  await page.setViewportSize({width,height:950});
+  await page.goto(origin+'/trainers/oge-basics/multiplication-division/division-course.html');
+  await page.locator('[data-arithmetic-track="division"]').waitFor();
+  assert.equal(await page.locator('[data-arithmetic-track]').count(),2);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'Parallel route overflow '+width);
+  const boxes=await page.locator('[data-arithmetic-track]').evaluateAll(nodes=>nodes.map(n=>{const b=n.getBoundingClientRect();return {x:b.x,y:b.y,width:b.width};}));
+  if(width===1280)assert(Math.abs(boxes[0].y-boxes[1].y)<2&&boxes[1].x>boxes[0].x,'Desktop routes side by side');
+  else assert(boxes[1].y>boxes[0].y,'Narrow routes retain two labeled sections');
+  if(process.env.LEARNING_REMEDIATION_SHOTS)await page.screenshot({path:path.join(process.env.LEARNING_REMEDIATION_SHOTS,width+'-parallel-routes.png'),fullPage:true});
  }
  assert.deepEqual(errors,[]);await browser.close();await new Promise(r=>server.close(r));console.log(JSON.stringify({result:'LEARNING_REMEDIATION_BROWSER_OK',managedTrainers:completed,verifiedActions:actions,standaloneTrainers:completed?trainerItems.length:0,checks:completed?['opaque sandbox','read-only mirror','raw input and hints','restored exact task','all division actions','new task request','no managed localStorage','360/1280 layouts']:['360/1280 layouts']}));
 })().catch(e=>{console.error(e);server.close();process.exit(1);});

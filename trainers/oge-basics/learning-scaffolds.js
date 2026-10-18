@@ -259,7 +259,11 @@
     ];
     const row = rows[index]; if (!row) return null;
     const original = spec.lessons[index];
-    return {...original, title:row[0], short:row[1], lead:row[2], html:steps(row[3]), question:{...original.question, prompt:row[4], hint:row[5], bad:row[5], good:'Верно. Можно перейти дальше.'}};
+    // The displayed prompt asks how many times to take a number. Keep the saved
+    // choice IDs and answer unchanged; only match the visible wording to it.
+    const question = {...original.question, prompt:row[4], hint:row[5], bad:row[5], good:'Верно. Можно перейти дальше.'};
+    if (question.kind === 'choice') question.options = question.options.map(option => ({...option, html:option.html === 'слишком мала' ? 'слишком мало' : option.html === 'слишком велика' ? 'слишком много' : option.html}));
+    return {...original, title:row[0], short:row[1], lead:row[2], html:steps(row[3]), question};
   }
   function render(spec, q, options = {}) {
     const {scope = 'practice', step = 0, level = 2} = options;

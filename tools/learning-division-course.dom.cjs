@@ -16,7 +16,8 @@ const clone = value => JSON.parse(JSON.stringify(value));
 
 // Captured from the 36 pre-existing topics at base 7b80a1be82888fe46ebd6f3ded78453bb52a44cb.
 // Existing saved tasks include exact authored fields, their order and the fresh state.
-const oldItems = remediation.list().filter(item => !course.has(item.contentId) && item.contentId !== 'multiplication-division/quotient-estimate');
+const column = require('../trainers/oge-basics/multiplication-division/multiplication-column-core.js');
+const oldItems = remediation.list().filter(item => !column.has(item.contentId) && !course.has(item.contentId) && item.contentId !== 'multiplication-division/quotient-estimate');
 assert.equal(oldItems.length, 36);
 const oldTasks = oldItems.flatMap(({ contentId }) => [0, 1, 17, 12345, 4294967295].map(seed => [contentId, seed, remediation.create(contentId, seed)]));
 assert.equal(crypto.createHash('sha256').update(JSON.stringify(oldTasks)).digest('hex'), '04ea262f68c4ebcf8d7d55e168871283885c3ca5f21af3601f26f5505a21c5df', 'The 180 old saved-task identities must remain byte-for-byte unchanged');

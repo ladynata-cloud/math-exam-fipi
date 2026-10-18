@@ -27,7 +27,7 @@ function deferred() {
   return { promise, resolve, reject };
 }
 
-function fixture(t, { lesson = false, role = 'student' } = {}) {
+function fixture(t, { lesson = false, role = 'student', contentId: selectedContentId = contentId } = {}) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'division-next-'));
   let seed = 1;
   const controlledContracts = { ...contracts, create(trainer, id, suppliedSeed) {
@@ -36,7 +36,7 @@ function fixture(t, { lesson = false, role = 'student' } = {}) {
   const store = new LearningStore({ filePath: path.join(directory, 'learning.sqlite'), contracts: controlledContracts });
   const teacher = store.activate(store.bootstrap({ login: 'fixture-teacher', name: 'Fixture teacher' }).invitationToken, passwordHash).account;
   const student = store.activate(store.createStudent(teacher, { login: 'fixture-pupil', name: 'Fixture pupil' }).invitationToken, passwordHash).account;
-  const source = store.newAttempt(student.id, teacher.id, 'oge-basics', contracts.create('oge-basics', contentId, 1));
+  const source = store.newAttempt(student.id, teacher.id, 'oge-basics', contracts.create('oge-basics', selectedContentId, 1));
   let liveLesson = lesson ? store.createLesson(teacher, { opId: crypto.randomUUID(), title: 'Fixture lesson', learnerIds: [student.id] }).lesson : null;
   if (liveLesson) liveLesson = store.lessonAction(teacher, liveLesson.id, { opId: crypto.randomUUID(), expectedVersion: liveLesson.version, type: 'present', payload: { target: student.id } }).lesson;
   const dom = new JSDOM(html, { url: 'https://cabinet.example.test/learning/#' + (lesson ? 'lesson=' + liveLesson.id : 'attempt=' + source.id), runScripts: 'outside-only' });
@@ -50,8 +50,8 @@ function fixture(t, { lesson = false, role = 'student' } = {}) {
     return nativeTimeout(callback, delay, ...args);
   };
   window.clearTimeout = id => { if (!deadlines.delete(id) && !apiDeadlines.delete(id)) nativeClear(id); };
-  const item = { id: 'oge-basics/' + contentId, trainerId: 'oge-basics', contentId, title: 'Fixture division' };
-  window.LearningCatalog = { items: [item], get: id => id === item.id || id === contentId ? item : null };
+  const item = { id: 'oge-basics/' + selectedContentId, trainerId: 'oge-basics', contentId: selectedContentId, title: 'Fixture division' };
+  window.LearningCatalog = { items: [item], get: id => id === item.id || id === selectedContentId ? item : null };
   const controls = ['archived-notice', 'control-notice', 'pen', 'eraser', 'pen-color', 'pen-width', 'undo-stroke', 'reference-host', 'watch-placeholder', 'watch-trainer', 'watch-drawing', 'watch-panel'];
   for (const id of controls) { const node = window.document.createElement('div'); node.id = id; window.document.getElementById('main').append(node); }
   const button = window.document.createElement('button'); button.id = 'fixture-next'; button.textContent = 'Следующий пример'; window.document.getElementById('main').append(button);
@@ -99,14 +99,16 @@ function fixture(t, { lesson = false, role = 'student' } = {}) {
     if (route === '/attempts/' + source.id) return response(store.getAttempt(student, source.id));
     throw Error('Unexpected fixture request: ' + route);
   };
-  const next = () => { window.fixtureApp.change({ kind: 'new-task', details: { contentId }, state: clone(source.state) }); button.disabled = true; };
-  const finalCheck = () => {
-    const answer = String(source.taskSpec.steps[0].answer), state = clone(source.state);
-    Object.assign(state, { answer: '', answers: [answer], step: 1, completed: true, feedback: { kind: 'correct', scope: 'step', step: 0, answer } });
-    return window.fixtureApp.check(state, { scope: 'step', step: 0, answer, answers: [] });
+  const next = () => { window.fixtureApp.change({ kind: 'new-task', details: { contentId: selectedContentId }, state: clone(source.state) }); button.disabled = true; };
+  const checkStep = step => {
+    const answer = String(source.taskSpec.steps[step].answer), state = clone(window.fixtureApp.inspect().active.state);
+    const answers = source.taskSpec.steps.slice(0, step).map(question => String(question.answer));
+    Object.assign(state, { answer: '', answers: [...answers, answer], step: step + 1, completed: step === source.taskSpec.steps.length - 1, feedback: { kind: 'correct', scope: 'step', step, answer } });
+    return window.fixtureApp.check(state, { scope: 'step', step, answer, answers });
   };
+  const finalCheck = () => checkStep(source.taskSpec.steps.length - 1);
   t.after(() => { dom.window.close(); store.close(); fs.rmSync(directory, { recursive: true, force: true }); });
-  return { dom, window, app: window.fixtureApp, store, source, student, teacher, liveLesson, updates, calls, transport, response, button, next, finalCheck, deadlines, apiDeadlines, view,
+  return { dom, window, app: window.fixtureApp, store, source, student, teacher, liveLesson, updates, calls, transport, response, button, next, checkStep, finalCheck, deadlines, apiDeadlines, view,
     creations: () => calls.filter(call => call.route === '/attempts'),
     old: () => store.getAttempt(student, source.id),
     attempts: () => store.listAttempts(student) };
@@ -250,3 +252,40 @@ test('teacher control and history viewing cannot request fresh pupil attempts', 
   assert.equal(observer.creations().length, 0);
   assert.equal(observer.updates.at(-1).options.readOnly, true);
 });
+
+
+for (const columnId of ['multiplication-division/course-column-one-digit', 'multiplication-division/course-column-two-digit']) {
+  test('column multiplication waits for final ACK then creates one same-kind attempt: ' + columnId, async t => {
+    const f = fixture(t, { contentId: columnId, lesson: true });
+    for (let step = 0; step < f.source.taskSpec.steps.length - 1; step++) assert.equal(await f.checkStep(step), true);
+    const ack = deferred();
+    f.transport.action = save => { const result = save(); return ack.promise.then(() => f.response(result)); };
+    const saved = f.finalCheck();
+    assert.equal(f.old().state.completed, true);
+    const oldRecord = clone(f.old()), oldHistory = clone(f.store.history(f.student, f.source.id));
+    f.next(); f.next(); await tick();
+    assert.equal(f.creations().length, 0, 'A completed column cannot skip the save acknowledgement');
+    ack.resolve(); assert.equal(await saved, true);
+    await until(() => f.creations().length === 1 && !f.app.inspect().pending);
+    const request = f.creations()[0].body;
+    assert.equal(request.contentId, columnId); assert.equal(request.fresh, true);
+    assert.equal(request.sourceAttemptId, f.source.id); assert.equal(request.lessonId, f.liveLesson.id);
+    assert.equal(f.attempts().length, 2);
+    const fresh = f.store.getAttempt(f.student, f.attempts().find(attempt => attempt.id !== f.source.id).id);
+    assert.equal(fresh.taskSpec.contentId, columnId); assert.equal(fresh.state.completed, false);
+    assert.equal(fresh.state.step, 0); assert.notEqual(fresh.taskSpec.seed, oldRecord.taskSpec.seed);
+    assert.deepEqual(f.old(), oldRecord); assert.deepEqual(f.store.history(f.student, f.source.id), oldHistory);
+    const mirrored = f.store.getLesson(f.teacher, f.liveLesson.id);
+    assert.equal(mirrored.seats[0].attempt.id, fresh.id); assert.equal(mirrored.presentation.attempt.id, fresh.id);
+  });
+
+  test('column multiplication teacher and read-only observer cannot request pupil attempts: ' + columnId, async t => {
+    const teacher = fixture(t, { contentId: columnId, role: 'teacher' });
+    teacher.next(); await tick();
+    assert.equal(teacher.creations().length, 0); assert.equal(teacher.attempts().length, 1);
+    const observer = fixture(t, { contentId: columnId });
+    observer.app.switch('control'); observer.next(); await tick();
+    assert.equal(observer.creations().length, 0); assert.equal(observer.attempts().length, 1);
+    assert.equal(observer.updates.at(-1).options.readOnly, true);
+  });
+}

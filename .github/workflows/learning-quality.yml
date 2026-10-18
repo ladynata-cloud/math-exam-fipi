@@ -55,6 +55,7 @@ jobs:
           node tools/learning-scaffolds.test.cjs
           node --test tools/quotient-estimate.test.cjs
           node --test tools/division-course.test.cjs
+          node tools/multiplication-column.test.cjs
           node tools/learning-remediation-bank.cjs --check
           node tools/learning-catalog-reference-test.cjs
           node tools/grade7-algebra.test.cjs
@@ -91,6 +92,8 @@ jobs:
           node tools/learning-quotient-estimate.dom.cjs
           node tools/learning-division-course.dom.cjs
           node tools/learning-division-route.dom.cjs
+          node tools/learning-column-multiplication.dom.cjs
+          node tools/learning-parallel-public.dom.cjs
           node tools/learning-assignment-geometry.dom.cjs
           node tools/photo-proof-clear.dom.cjs
       - name: Geometry rebuild classroom and narrow-screen scenarios
