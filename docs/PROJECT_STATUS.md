@@ -6,7 +6,21 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current refinement: parallel arithmetic routes
+## Current refinement: complete multiplication practice
+
+- PR261 is published at `5c61b0bc12ad9aaebfdb8484cc9987bccb59474a`.
+  Its parent and full reviewed tree matched the authorized release. Seven
+  exact-head CI workflows and Pages39176065477 passed.
+- All83 changed runtime asset responses matched the reviewed files on Pages
+  and Amvera. Durable learning storage was healthy. Public and teacher routes
+  showed two independent tracks; public column input survived reload.
+- The owner requests «в уме», more column sizes and examples, the full existing
+  multiplication collection in its route, and contextual links from division.
+  Scope: [Complete multiplication practice](tasks/MULTIPLICATION_COMPLETE_ROUTE.md).
+- Next: validate old saved work and expanded arithmetic; review the Draft PR
+  and exact-head CI; obtain the separate publication decision.
+
+## Completed refinement: parallel arithmetic routes
 
 - PR259 is published at `27369c058e9626f97a2041327bddf066e815d24d`.
   Its parent and reviewed composed tree matched after the separately authorized
@@ -17,8 +31,7 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 - The owner requests larger text and two independent tracks, multiplication
   (including column multiplication) and long division. Scope and validation:
   [Parallel arithmetic routes](tasks/PARALLEL_ARITHMETIC_ROUTES.md).
-- Next actions: implement and check both tracks and column actions; review the
-  Draft PR and CI; obtain the separate publication decision.
+- Released through PR261 as recorded above.
 - Earlier snapshots below are historical, not current open work.
 
 ## Earlier refinement: assemble photo proofs without writing

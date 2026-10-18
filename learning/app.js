@@ -645,7 +645,29 @@ async function nextDivisionTask(){
  }finally{request.pending=false;recover();}
 }
 function trainerChange(change){const a=activeAttempt,{kind,details,state}=change;if(workspace&&a&&(kind==='newtask'||kind==='new-task')&&a.trainerId==='oge-basics'&&(a.taskSpec?.family==='division'||a.taskSpec?.family==='multiplication'||!!window.ArithmeticCourse?.trackFor(a.contentId))){nextDivisionTask();return;}if(!workspace||workspace.history||!owns(a))return;if(kind==='newtask'||kind==='new-task'){if(teacher()){toast('Чтобы выдать новый вариант, выберите задание на урок.');return;}if(queuedFor(a.id).length){toast('Сначала дождитесь сохранения текущей работы.');return;}const context=new URLSearchParams(activeRoute());openContent(itemFor(a).id,{fresh:true,sourceAttemptId:a.id,returnTo:context.get('returnTo'),topicId:context.get('topic')});return;}const type=kind==='check'?'check':kind==='hint'?'hint':kind==='reference'?'reference':'state';const payload=type==='state'?{state}:type==='check'?{state,details}:type==='hint'?{state,...(Number.isInteger(details.step)?{step:details.step}:{})}:{id:String(details.id||'reference')};action(a.id,type,payload);}
-function updateWorkspace(){if(!workspace||!activeAttempt||workspace.id!==activeAttempt.id)return;const a=workspace.history?.current||effective(activeAttempt),viewing=!!workspace.history,archived=!!activeAttempt.archivedAt,editable=!viewing&&owns(activeAttempt);workspace.frame?.update(a,{readOnly:!editable});workspace.draw?.update(a.strokes,{readOnly:viewing||archived||!connected});if($('attempt-outcome'))$('attempt-outcome').textContent=labels[a.outcome]||'Начато';if($('trainer-control')){$('trainer-control').textContent=activeAttempt.controller==='teacher'?'Вернуть управление ученику':'Подключиться к тренажёру';$('trainer-control').disabled=viewing||archived||queuedFor(a.id).length>0;}
+function updateMultiplicationSupport(attempt,editable){
+ const host=$('route-support');if(!host)return;
+ let panel=$('multiplication-step-support');
+ const suggestions=!teacher()&&editable?window.MultiplicationSupport?.forStep(attempt.taskSpec,attempt.state)||[]:[];
+ const available=suggestions.filter(item=>window.LearningCatalog?.get(item.id));
+ if(!available.length){panel?.remove();if(workspace)workspace.multiplicationSupportKey='';return;}
+ const key=JSON.stringify([attempt.id,available.map(item=>item.id),account.id,authRevision,routeNumber,activeRoute()]);
+ if(panel&&workspace.multiplicationSupportKey===key){panel.querySelectorAll('button').forEach(button=>button.disabled=!!workspace.multiplicationSupportOpening);return;}
+ if(!panel){panel=document.createElement('section');panel.id='multiplication-step-support';panel.className='multiplication-step-support';panel.setAttribute('aria-label','Помощь с умножением');host.prepend(panel);}
+ workspace.multiplicationSupportKey=key;
+ panel.innerHTML='<h2>Трудно умножить?</h2><p>Потренируйся отдельно, затем вернись к этому примеру.</p><div class="actions">'+available.map(item=>'<button type="button" data-multiplication-support="'+E(item.id)+'">'+E(item.title)+' →</button>').join('')+'</div>';
+ const view=workspace,sourceId=attempt.id,actor=account.id,revision=authRevision,serial=routeNumber,route=activeRoute();
+ panel.querySelectorAll('[data-multiplication-support]').forEach(button=>button.onclick=async()=>{
+  const current=()=>workspace===view&&activeAttempt?.id===sourceId&&account?.id===actor&&authRevision===revision&&routeNumber===serial&&activeRoute()===route&&account.role==='student'&&!authMutationBusy&&!quickLoginBusy&&!identityLocked&&!workspace.history&&owns(activeAttempt);
+  if(!current()||view.multiplicationSupportOpening)return;
+  const now=effective(activeAttempt),id=button.dataset.multiplicationSupport;
+  if(!window.MultiplicationSupport?.forStep(now.taskSpec,now.state).some(item=>item.id===id)||!canLeaveAttempt())return;
+  view.multiplicationSupportOpening=true;panel.querySelectorAll('button').forEach(control=>control.disabled=true);
+  try{await openContent(id,{returnTo:sourceId,continuation:{current}});}
+  finally{view.multiplicationSupportOpening=false;if(workspace===view)updateWorkspace();}
+ });
+}
+function updateWorkspace(){if(!workspace||!activeAttempt||workspace.id!==activeAttempt.id)return;const a=workspace.history?.current||effective(activeAttempt),viewing=!!workspace.history,archived=!!activeAttempt.archivedAt,editable=!viewing&&owns(activeAttempt);updateMultiplicationSupport(a,editable);workspace.frame?.update(a,{readOnly:!editable});workspace.draw?.update(a.strokes,{readOnly:viewing||archived||!connected});if($('attempt-outcome'))$('attempt-outcome').textContent=labels[a.outcome]||'Начато';if($('trainer-control')){$('trainer-control').textContent=activeAttempt.controller==='teacher'?'Вернуть управление ученику':'Подключиться к тренажёру';$('trainer-control').disabled=viewing||archived||queuedFor(a.id).length>0;}
  const controlled=teacher()?activeAttempt.controller!=='teacher':activeAttempt.controller==='teacher';$('archived-notice').hidden=!archived;$('control-notice').hidden=!controlled||viewing||archived;$('control-notice').textContent=teacher()?'Вы наблюдаете за работой. Для изменения тренажёра нажмите «Подключиться». На листе можно писать вместе.':'Наталья Михайловна объясняет в Вашем тренажёре. Вы можете делать записи на листе.';
  for(const id of ['pen','eraser','pen-color','pen-width','undo-stroke'])$(id).disabled=viewing||archived||!connected;if($('workspace-assign'))$('workspace-assign').disabled=viewing;
  if($('present-work')){$('present-work').textContent=activeLesson?.presentation?.target===workspace.learnerId?'Завершить объяснение':'Объяснять группе';$('present-work').disabled=viewing||archived;}

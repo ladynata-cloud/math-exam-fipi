@@ -130,3 +130,8 @@
 #learning-remediation-root .lm-mul-carry-label{font:600 18px/1.5 system-ui,sans-serif;max-width:20ch;margin:12px 0 3px}
 #learning-remediation-root .lm-mul-sign{text-align:center}
 @media(max-width:420px){#learning-remediation-root .lm-multiplication-board{padding:16px 4px}#learning-remediation-root .lm-mul-paper{font-size:24px}}
+
+/* A public help detour leaves this example open in its original tab. */
+#learning-remediation-root .lm-multiplication-support{margin:20px 0;padding:16px;border:1px solid #bfd3c7;border-radius:12px;background:#f3f8f5;font-size:20px;line-height:1.5}
+#learning-remediation-root .lm-multiplication-support p{margin:8px 0}
+#learning-remediation-root .lm-multiplication-support a{display:inline-block;padding:10px 12px;min-height:48px;color:#145d57;text-underline-offset:3px;overflow-wrap:anywhere}
