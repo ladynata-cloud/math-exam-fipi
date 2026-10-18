@@ -1,12 +1,31 @@
 # MathExam project status
 
-Updated: 2026-10-17 (Asia/Novosibirsk)
+Updated: 2026-10-19 (Asia/Novosibirsk)
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
-## Current refinement: assemble photo proofs without writing
+## Current refinement: an accessible long-division course
+
+- PR 257 is published at `7b80a1be82888fe46ebd6f3ded78453bb52a44cb`.
+  All four exact-head workflows and Pages deployment passed; Amvera restarted
+  at 2026-10-18T19:40:47.863Z. Public and cabinet assets matched the reviewed
+  tree, and live teacher observation verified the highlighted digit row.
+- PR 256's vertical division-first route is also published at
+  `fdde4e9cbdeaec1f8f0f65d677566482d09b6be7`; saved routes and attempts remain.
+- [The expanded task](tasks/ACCESSIBLE_LONG_DIVISION_COURSE.md) rebuilds the
+  sequence as 17 small stages, with estimation and independent checks, using
+  the existing saved numeric-step flow and a vertical cabinet route.
+- The 17-stage course, cabinet route and estimation trainer are implemented;
+  arithmetic, restoration, independent retest and route checks pass. Internal
+  focused review has no remaining blocker. Previous saved task content matches.
+- Full server regression passes 288/288, including runtime asset delivery.
+- Next three actions: open the reviewed Draft PR; check cloud CI; request a
+  separate release decision for its exact head.
+- The snapshots below describe earlier task stages, not current open work.
+
+## Earlier refinement: assemble photo proofs without writing
 
 - PR 254 merged with owner authorization as
   `dd386d069d6911be6e6d23948149fd78d245f2e3`. Parent, full tree and stable patch

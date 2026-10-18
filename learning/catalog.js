@@ -171,6 +171,7 @@
     ["multiplication-division/long-division-mixed-checkpoint","Смешанная проверка: деление уголком"],
     ["multiplication-division/long-division-one-digit","Деление уголком на одну цифру — пошагово"],
     ["multiplication-division/long-division-quotient-digit","Деление: подбираем одну цифру"],
+    ["multiplication-division/quotient-estimate","Деление: округляем и прикидываем"],
     ["multiplication-division/long-division-two-digit","Деление уголком на двузначный делитель"],
     ["multiplication-division/long-division-with-remainder","Деление уголком с остатком"],
     ["multiplication-division/long-division-zero-in-quotient","Нули в частном — не теряем разряд"],
@@ -191,7 +192,24 @@
     ["percentages/proportion","Пропорция"],
     ["rounding","Округление: четыре шага и упаковки"],
     ["units-area","Квадратные единицы без ловушек"],
-    ["units-length-time","Единицы длины и времени"]
+    ["units-length-time","Единицы длины и времени"],
+    ["multiplication-division/course-multiply-bridge","Умножение помогает делить"],
+    ["multiplication-division/course-digit-choice","Подбираем одну цифру"],
+    ["multiplication-division/course-multiply-two-digit","Умножаем на число из двух цифр"],
+    ["multiplication-division/course-subtract","Вычитаем по порядку"],
+    ["multiplication-division/course-first-part","С каких цифр начать"],
+    ["multiplication-division/course-bring-digit","Переносим следующую цифру"],
+    ["multiplication-division/course-whole-simple","Собираем всё деление"],
+    ["multiplication-division/course-simple-check","Проверяем себя: простое деление"],
+    ["multiplication-division/course-estimate","Округляем и прикидываем"],
+    ["multiplication-division/course-whole-two-digit","Делим на число из двух цифр"],
+    ["multiplication-division/course-zeros","Не пропускаем ноль"],
+    ["multiplication-division/course-remainder","Что осталось после деления"],
+    ["multiplication-division/course-decimal-natural","Запятая в ответе"],
+    ["multiplication-division/course-append-zeros","Продолжаем после запятой"],
+    ["multiplication-division/course-decimal-divisor","Убираем запятую справа"],
+    ["multiplication-division/course-mixed-guided","Три вида деления по шагам"],
+    ["multiplication-division/course-independent-check","Делим самостоятельно"]
   ];
   items.push(...remediationRows.map(([contentId, title]) => Object.freeze({
     id: 'oge-basics:' + contentId, trainerId: 'oge-basics', contentId, title,

@@ -18,7 +18,11 @@ for(const before of legacy)assert.deepEqual([0,1,23,71].map(seed=>JSON.stringify
 const catalog=require('../learning/catalog'),contracts=require('../board-server/learning-contracts'),route=require('../learning/route');
 const items=catalog.items.filter(item=>item.geometryRebuild);
 assert.deepEqual(items.map(item=>item.contentId),plain(families.map(item=>item.id)),'The authored order and catalog order agree');
-assert.equal(catalog.items.filter(item=>!item.geometryRebuild).length,217,'Existing identities remain available');
+const divisionCourse=require('../trainers/oge-basics/multiplication-division/division-course-core');
+const addedDivisionIds=new Set([...divisionCourse.stages.map(stage=>'oge-basics:'+stage.id),'oge-basics:multiplication-division/quotient-estimate']);
+assert.equal(addedDivisionIds.size,18);
+assert.equal(catalog.items.filter(item=>addedDivisionIds.has(item.id)).length,18,'Every new division topic is available');
+assert.equal(catalog.items.filter(item=>!item.geometryRebuild&&!addedDivisionIds.has(item.id)).length,217,'Existing identities remain available');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

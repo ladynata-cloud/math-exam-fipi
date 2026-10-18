@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Подбор одной цифры при делении уголком: округление, прикидка, проверка умножением и исправление цифры. По одному действию за раз.">
+  <title>Деление: округляем и прикидываем · MathExam</title>
+  <link rel="stylesheet" href="quotient-estimate.css?v=digit-estimate-20261019">
+  <script src="../learning-loader.js?v=digit-estimate-20261019"></script>
+  <script defer src="division-lab-core.js"></script>
+  <script defer src="quotient-estimate-core.js?v=digit-estimate-20261019"></script>
+  <script defer src="quotient-estimate.js?v=digit-estimate-20261019"></script>
+</head>
+<body>
+<main class="estimate-page">
+  <header>
+    <a href="../../../learning/">Мой кабинет</a>
+    <h1>Деление: округляем и прикидываем</h1>
+    <p>Округли → прикинь → проверь → поправь цифру.</p>
+    <p>Прикидка помогает начать. Точную цифру проверяем умножением.</p>
+    <button id="practice" type="button">Начать тренировку</button>
+  </header>
+  <section id="view-practice" class="estimate-card" hidden aria-label="Тренировка прикидки">
+    <p id="estimate-count" class="estimate-muted"></p>
+    <h2 id="estimate-task"></h2>
+    <div id="estimate-trail" aria-label="Уже сделали"></div>
+    <form id="estimate-form">
+      <label id="estimate-prompt" for="estimate-answer"></label>
+      <div class="estimate-answer-row">
+        <input id="estimate-answer" type="text" inputmode="numeric" autocomplete="off" maxlength="30">
+        <button id="estimate-check" type="submit">Проверить</button>
+      </div>
+    </form>
+    <div id="estimate-feedback" role="status" hidden></div>
+    <div class="estimate-actions">
+      <button id="estimate-hint" type="button">Подсказка</button>
+      <button id="estimate-new" type="button">Другой пример</button>
+    </div>
+    <p class="estimate-muted">Эта тренировка сохраняется в этом браузере. Для работы с преподавателем открой её из своего кабинета.</p>
+  </section>
+  <noscript>Для тренировки нужно включить JavaScript.</noscript>
+</main>
+</body>
+</html>

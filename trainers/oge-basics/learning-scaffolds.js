@@ -1,9 +1,9 @@
 /* Optional arithmetic explanations for an existing managed task. No task or state writes. */
 (function(root, factory) {
   'use strict';
-  if (typeof module === 'object' && module.exports) module.exports = factory(require('./multiplication-division/division-lab-core.js'));
-  else root.LearningScaffolds = factory(root.DivisionLab);
-})(typeof globalThis === 'undefined' ? this : globalThis, function(D) {
+  if (typeof module === 'object' && module.exports) module.exports = factory(require('./multiplication-division/division-lab-core.js'),require('./multiplication-division/division-course-core.js'));
+  else root.LearningScaffolds = factory(root.DivisionLab,root.DivisionCourse);
+})(typeof globalThis === 'undefined' ? this : globalThis, function(D,C) {
   'use strict';
   const E = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const p = text => '<p>' + E(text) + '</p>';
@@ -156,17 +156,23 @@
       if (!m || step !== 0 || !sameAnswer(q, Math.floor(+m[1] / +m[2])) || +m[2] <= 0 || +m[1] / +m[2] >= 10) return null;
       return {action:q, base:+m[2], cycle:{partial:+m[1], qd:Math.floor(+m[1] / +m[2])}};
     }
+    if(spec.contentId==='multiplication-division/course-digit-choice'&&q.kind==='digit'&&q===spec.steps?.[step]){
+      const m=text(q.prompt).match(/для (\d+) : (\d+)/);
+      if(m&&+m[2]>0&&+m[1]<10*+m[2]&&sameAnswer(q,Math.floor(+m[1]/+m[2])))return {action:q,base:+m[2],cycle:{partial:+m[1],qd:Math.floor(+m[1]/+m[2])}};
+    }
     if (!D || !spec.divisionTask || !spec.steps?.[step]) return null;
     const segment = (spec.divisionTasks || []).find(t => step >= t.startIndex && step < t.endIndex);
     const plan = D.plan(segment ? segment.task : spec.divisionTask), index = step - (segment ? segment.startIndex : 0), action = plan.actions[index];
-    if (!action || action.kind !== q.kind || action.prompt !== q.prompt || action.answer !== q.answer) return null;
+    if (!action || action.kind !== q.kind || (!C?.has(spec.contentId)&&action.prompt !== q.prompt) || action.answer !== q.answer) return null;
     return {plan, action, base:plan.normalizedDivisor, cycle:plan.cycles[action.cycle]};
   }
   function present(spec, q, options = {}) {
     if (options.scope !== 'step') return null;
+    if((C?.has(spec?.contentId)||spec?.contentId==='multiplication-division/quotient-estimate')&&q&&q===spec.steps?.[options.step??0])return {prompt:q.prompt,hint:q.hint,error:q.error||'Проверь вычисление. Если трудно, открой подсказку.'};
     try {
       const c = divisionContext(spec, q, options.step ?? 0);
       if (!c) return null;
+      if(C?.has(spec.contentId))return {prompt:q.prompt,hint:q.hint,error:q.error||'Проверь вычисление. Если трудно, открой подсказку.'};
       const {plan, action:a, base, cycle} = c;
       let prompt = '', hint = '', error = '';
       if (a.kind === 'digit') {

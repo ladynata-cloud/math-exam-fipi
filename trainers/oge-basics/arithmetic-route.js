@@ -1,7 +1,7 @@
 (function (root) {
   'use strict';
   const groups = [
-    {id:'division', title:'Деление уголком', example:'3848 : 37', lead:'Выбираем первое неполное делимое, делим и записываем каждый шаг.', easier:'multiply', checkpoint:'multiplication-division/long-division-mixed-checkpoint.html', levels:[
+    {id:'division', title:'Деление уголком', example:'3848 : 37', lead:'Начинаем с маленьких действий и постепенно учимся решать весь пример.', easier:'multiply', checkpoint:'multiplication-division/long-division-mixed-checkpoint.html', levels:[
       ['n3e','Уголком — по шагам'], ['n3d','Понимаем остаток'], ['n3f','Делим с остатком'], ['n4c','Не теряем ноль в ответе'], ['n4d','Делим на двузначное — с опорой'], ['n4e','Делим на двузначное — самостоятельно']]},
     {id:'multiply', title:'Умножение и таблица', example:'6 × 7', lead:'Сначала видим равные группы, затем вспоминаем таблицу и считаем столбиком.', easier:'count', checkpoint:'multiplication-division.html', levels:[
       ['t2a','Умножение на рисунке'], ['t2b','Одна таблица за раз'], ['t2c','Заполняем таблицу'], ['n2d','Вспоминаем без рисунка'], ['t2e','Находим неизвестный множитель'], ['n2e','Делим по таблице'], ['n3c','Умножаем столбиком на одну цифру'], ['n4b','Умножаем столбиком на две цифры']]},
