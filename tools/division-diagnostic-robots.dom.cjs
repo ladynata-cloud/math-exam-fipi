@@ -15,8 +15,8 @@ const flush = () => new Promise(resolve => setImmediate(resolve));
 // Expectations are deliberately independent of the diagnostic's report function.
 const destinations = {
   facts: directory + 'multiplication-ladder.html',
-  addition: 'soviet-math/index.html#column-add',
-  subtract: directory + 'course-subtract.html',
+  addition: directory + 'arithmetic-foundations.html#add-carry',
+  subtract: directory + 'arithmetic-foundations.html#sub-borrow',
   first: directory + 'course-first-part.html',
   choice: directory + 'course-digit-choice.html',
   multiplyTwo: directory + 'course-multiply-two-digit.html',
@@ -126,7 +126,14 @@ async function recommendationSmoke(relativeURL) {
   f.w.Math.random = () => 0.25;
   evaluatePage(f); await flush();
   let kind, action;
-  if (f.document.body.dataset.courseId) {
+  if (relativeURL.includes('arithmetic-foundations.html')) {
+    kind='foundations-runtime';const id=new URL(f.w.location.href).hash.slice(1),task=f.w.ArithmeticFoundations.make(id,1);
+    input(f,'#answer','999999');submit(f,'#answer-form');assert(f.document.querySelector('.feedback.error'));
+    click(f,'#hint');input(f,'#answer',task.steps[0].answer);submit(f,'#answer-form');
+    const saved=JSON.parse(f.w.sessionStorage.getItem('mathExam.foundations.tab.v1.'+id));
+    assert.equal(saved.answers.length,1);assert.equal(saved.errors,1);assert.equal(saved.help,true);
+    action='wrong answer → hint → correct step';
+  } else if (f.document.body.dataset.courseId) {
     kind = 'existing-course-runtime';
     const id = f.document.body.dataset.courseId;
     const task = f.w.MathExamRemediation.create(id, 1).taskSpec;

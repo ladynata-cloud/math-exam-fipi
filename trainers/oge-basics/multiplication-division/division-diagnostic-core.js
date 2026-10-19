@@ -12,7 +12,7 @@
     ['facts', 'Таблица умножения', 'multiplication', 'multiplication-ladder', 1],
     ['choice', 'Подбор цифры частного', 'division', 'course-digit-choice', 6],
     ['multiplyTwo', 'Умножение на двузначное число', 'multiplication', 'course-multiply-two-digit', 5],
-    ['subtract', 'Вычитание с переходом через разряд', 'addition', 'course-subtract', 3],
+    ['subtract', 'Вычитание с переходом через разряд', 'subtraction', 'course-subtract', 3],
     ['bring', 'Число после сноса цифры', 'division', 'course-bring-digit', 7],
     ['zero', 'Ноль внутри частного', 'division', 'course-zeros', 8],
     ['addition', 'Сложение частей и перенос десятка', 'addition', null, 2]
@@ -20,7 +20,7 @@
   const skills = Object.freeze(Object.fromEntries(rows.map(([id, title, branch, slug, priority]) => [id, Object.freeze({
     id, title, branch, priority,
     recommendation: Object.freeze({title: id === 'addition' ? 'Сложение столбиком' : title,
-      url: slug ? trainer + slug + '.html' : '/soviet-math/index.html#column-add'})
+      url: id === 'addition' ? trainer + 'arithmetic-foundations.html#add-carry' : id === 'subtract' ? trainer + 'arithmetic-foundations.html#sub-borrow' : trainer + slug + '.html'})
   })])));
   function variantNumber(value) { return Number.isInteger(value) && value >= 0 ? value % 2 : 0; }
   function standalone(id, skill, prompt, answer, phase) {

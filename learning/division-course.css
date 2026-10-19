@@ -15,3 +15,5 @@
 .division-course-diagnostic-entry .button{text-align:center}
 .division-course-diagnostic-entry .division-course-diagnostic-note{grid-column:1/-1;font-size:18px;line-height:1.55;color:#405548}
 @media(max-width:620px){.division-course-diagnostic-entry{grid-template-columns:1fr;padding:18px;gap:18px}.division-course-diagnostic-entry .button{width:100%}}
+
+.division-course-track[data-foundation-track="addition"]{--track-color:#805a1b;--track-soft:#fff8e8;--track-line:#dfcda9}.division-course-track[data-foundation-track="subtraction"]{--track-color:#67528c;--track-soft:#f7f3fc;--track-line:#d4c6e4}

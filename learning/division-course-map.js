@@ -321,7 +321,107 @@ const tracks=Object.freeze([
 ]);
 const byTrackContent=new Map(tracks.flatMap(track=>track.stages.map(stage=>[stage.id,track])));
 function trackFor(id){return byTrackContent.get(String(id||'').replace(/^oge-basics:/,''))||null;}
-const api=Object.freeze({stages,has,stageFor,tracks,trackFor,roundingPreparation});
+const foundationTracks=Object.freeze([
+  {
+    "id": "addition",
+    "title": "Сложение",
+    "lead": "От состава десятка до сложения с несколькими переносами.",
+    "stages": [
+      {
+        "id": "add-basic",
+        "branch": "addition",
+        "title": "Складываем в пределах десяти",
+        "goal": "Сначала уверенно складываем единицы.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#add-basic"
+      },
+      {
+        "id": "add-ten",
+        "branch": "addition",
+        "title": "Дополняем до десяти",
+        "goal": "Разбиваем второе число и переходим через десяток.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#add-ten"
+      },
+      {
+        "id": "add-columns",
+        "branch": "addition",
+        "title": "Складываем по разрядам",
+        "goal": "Единицы под единицами, десятки под десятками.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#add-columns"
+      },
+      {
+        "id": "add-carry",
+        "branch": "addition",
+        "title": "Переносим десяток",
+        "goal": "Из суммы единиц выделяем новый десяток.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#add-carry"
+      },
+      {
+        "id": "add-chain",
+        "branch": "addition",
+        "title": "Несколько переносов",
+        "goal": "Не теряем перенос в десятки, сотни и тысячи.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#add-chain"
+      },
+      {
+        "id": "add-check",
+        "branch": "addition",
+        "title": "Проверяем сложение",
+        "goal": "Три новых примера без помощи — затем можно вернуться к делению.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#add-check"
+      }
+    ]
+  },
+  {
+    "id": "subtraction",
+    "title": "Вычитание",
+    "lead": "От простых разностей до заимствования через нули.",
+    "stages": [
+      {
+        "id": "sub-basic",
+        "branch": "subtraction",
+        "title": "Вычитаем в пределах десяти",
+        "goal": "Находим разность и проверяем сложением.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#sub-basic"
+      },
+      {
+        "id": "sub-ten",
+        "branch": "subtraction",
+        "title": "Вычитаем через десяток",
+        "goal": "Разбиваем вычитание на два удобных шага.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#sub-ten"
+      },
+      {
+        "id": "sub-columns",
+        "branch": "subtraction",
+        "title": "Вычитаем по разрядам",
+        "goal": "Начинаем с единиц справа.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#sub-columns"
+      },
+      {
+        "id": "sub-borrow",
+        "branch": "subtraction",
+        "title": "Занимаем один десяток",
+        "goal": "Меняем один десяток на десять единиц.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#sub-borrow"
+      },
+      {
+        "id": "sub-zeros",
+        "branch": "subtraction",
+        "title": "Занимаем через нули",
+        "goal": "Передаём разряд через ноль и отмечаем все изменения.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#sub-zeros"
+      },
+      {
+        "id": "sub-check",
+        "branch": "subtraction",
+        "title": "Проверяем вычитание",
+        "goal": "Три новых примера без помощи — затем можно вернуться к делению.",
+        "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#sub-check"
+      }
+    ]
+  }
+]);
+const api=Object.freeze({stages,has,stageFor,tracks,trackFor,roundingPreparation,foundationTracks});
 if(typeof module==='object'&&module.exports)module.exports=api;
 else {root.ArithmeticCourse=api;if(!root.DivisionCourse?.make)root.DivisionCourse=api;}
 })(typeof globalThis==='undefined'?this:globalThis);

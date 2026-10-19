@@ -58,7 +58,7 @@ test('public diagnostic entry uses a local destination before both unchanged cou
  assert.match(entry.textContent,/только в этом браузере/);
  assert.equal(w.localStorage.length,0,'Opening the route page must not create a diagnostic result or course progress');
  assert.deepEqual([...w.document.querySelectorAll('.division-course-track-heading progress')].map(node=>[node.value,node.max]),[[0,16],[0,15]]);
- assert.equal(w.document.querySelectorAll('.division-course-step').length,allStages.length);
+ assert.equal(w.document.querySelectorAll('[data-arithmetic-track] .division-course-step').length,allStages.length);
  dom.window.close();
 });
 
@@ -70,8 +70,8 @@ test('two independent navigation tracks retain all 17 canonical steps and includ
  assert.deepEqual(JSON.parse(JSON.stringify(f.w.DivisionCourse.stages)),JSON.parse(JSON.stringify(C.stages)),'Navigation metadata must match the trainer core');
  assert.equal(f.w.ArithmeticCourse,f.w.DivisionCourse);
  assert.deepEqual([...f.host.querySelectorAll('[data-division-stage]')].map(button=>button.dataset.divisionStage),allStages.map(stage=>stage.id));
- assert.equal(f.host.querySelectorAll('ol.division-course-list > li').length,32,'31 managed steps and one separate rounding preparation');
- assert.equal(f.host.querySelectorAll('ol.division-course-list > li.division-course-step').length,31);
+ assert.equal(f.host.querySelectorAll('[data-arithmetic-track] ol.division-course-list > li').length,32,'31 managed steps and one separate rounding preparation');
+ assert.equal(f.host.querySelectorAll('[data-arithmetic-track] ol.division-course-list > li.division-course-step').length,31);
  assert.equal(f.host.querySelectorAll('[data-arithmetic-track]').length,2);
  assert.equal(new Set(allStages.map(stage=>stage.id)).size,allStages.length,'A step belongs to exactly one track');
  for(const stage of C.stages)assert(allStages.some(item=>item.id===stage.id),'Existing course work stays reachable');
@@ -304,3 +304,13 @@ test('supplement jump controls focus a group without creating attempts',async()=
  }
  assert.equal(f.calls.length,0);f.dispose();f.dom.window.close();
 });
+
+ test('addition and subtraction provide twelve separate prerequisites and cabinet jump preserves the route',async()=>{
+ const f=fixture();await flush();
+ assert.deepEqual([...f.host.querySelectorAll('[data-foundation-track]')].map(n=>n.dataset.foundationTrack),['addition','subtraction']);
+ const links=[...f.host.querySelectorAll('[data-foundation-track] .division-course-step a')];assert.equal(links.length,12);
+ for(const link of links){assert.equal(link.target,'_blank');assert.equal(link.rel,'noopener');assert.match(link.href,/arithmetic-foundations\.html#(add|sub)-/);}
+ f.w.HTMLElement.prototype.scrollIntoView=function(){};
+ f.host.querySelector('[data-foundation-jump="subtraction"]').click();assert.equal(f.w.document.activeElement.dataset.foundationTrack,'subtraction');
+ assert.equal(f.host.querySelectorAll('[data-division-stage]').length,31);f.dom.window.close();
+ });

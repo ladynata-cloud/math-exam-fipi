@@ -68,6 +68,7 @@ jobs:
           node --test tools/quotient-estimate.test.cjs
           node --test tools/division-course.test.cjs
           node tools/division-diagnostic.test.cjs
+          node tools/arithmetic-foundations.test.cjs
           node --test tools/arithmetic-division-generators.test.cjs tools/learning-arithmetic-generation-compat.test.cjs
           node tools/multiplication-column.test.cjs
           node --test tools/learning-multiplication-support.test.cjs
@@ -108,6 +109,7 @@ jobs:
           node tools/learning-division-course.dom.cjs
           node tools/division-diagnostic.dom.cjs
           node tools/division-diagnostic-robots.dom.cjs
+          node tools/arithmetic-foundations.dom.cjs
           node tools/learning-division-route.dom.cjs
           node tools/learning-rounding-preparation.dom.cjs
           node tools/rounding-stepwise.dom.cjs
@@ -123,7 +125,9 @@ jobs:
       - name: Division diagnostic mobile and saved-state regression
         env:
           DIVISION_DIAGNOSTIC_OUTPUT_DIR: ${{ runner.temp }}/division-diagnostic-evidence
-        run: node tools/division-diagnostic.browser.cjs
+        run: |
+          node tools/division-diagnostic.browser.cjs
+          node tools/arithmetic-foundations.browser.cjs
       - name: Division diagnostic visual evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

@@ -38,6 +38,9 @@ function savedProgress(stage){
   return {started:true,solved:historical||state.completed,completed:state.completed};
  }catch(_){return {unavailable:true,started:false,solved:false};}
 }
+function foundationsView(course){
+ return (course.foundationTracks||[]).map(track=>`<section id="arithmetic-track-${E(track.id)}" data-foundation-track="${E(track.id)}" class="division-course-track"><header class="division-course-track-heading"><h2>${E(track.title)}</h2><p>${E(track.lead)}</p><p>Шесть шагов от простого к сложному. Упражнения откроются отдельно; работа сохраняется в той вкладке и не входит в прогресс кабинета.</p></header><ol class="division-course-list">${track.stages.map((stage,i)=>`<li class="division-course-step"><span class="division-course-number" aria-hidden="true">${i+1}</span><article><h3>${E(stage.title)}</h3><p>${E(stage.goal)}</p><a class="button" href="https://mathexam.space${E(stage.url)}" target="_blank" rel="noopener">Начать шаг ${i+1} ↗</a></article></li>`).join('')}</ol></section>`).join('');
+}
 function stageLink(stage){return encodeURIComponent(stage.id.split('/').at(-1))+'.html';}
 function supplements(track){
  if(!track.supplementGroups?.length)return '';
@@ -55,7 +58,7 @@ function preparationView(stage){
  return `<li class="division-course-preparation" data-division-preparation="${E(item.id)}"><span class="division-course-number" aria-hidden="true">↳</span><article><p class="division-course-meta">Перед прикидкой</p><h3>${E(item.title)}</h3><p>${E(item.goal)}</p><div class="actions"><a class="button" href="${E(item.publicUrl)}" target="_blank" rel="noopener">${E(item.action)} ↗</a></div><p>${E(item.returnNote)}</p><p class="division-course-status">Отдельная практика. Результат не входит в счётчик шагов.</p></article></li>`;
 }
 function render(){
- host.innerHTML=course.tracks.map(track=>{
+ host.innerHTML=foundationsView(course)+course.tracks.map(track=>{
   const rows=track.stages.map(savedProgress),solved=rows.filter(row=>row.solved).length,unavailable=rows.some(row=>row.unavailable);
   const current=rows.findIndex(row=>!row.completed&&!row.unavailable);
   const summary=unavailable?'Не все записи удалось прочитать. Они оставлены без изменений.':'Есть решённые примеры: '+solved+' из '+track.stages.length+' шагов';

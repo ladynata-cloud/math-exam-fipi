@@ -69,7 +69,7 @@ test('isolated subtraction trouble yields one targeted confirmation and a specif
   assert.match(f.host.textContent,/Уточним трудный шаг/);
   f.answer(C.confirmation('subtract'),'99');f.click('next');
   assert.equal(f.snapshot().records.length,19);
-  assert.match(f.host.querySelector('.start-here a').href,/course-subtract\.html$/);
+  assert.match(f.host.querySelector('.start-here a').href,/arithmetic-foundations\.html#sub-borrow$/);
   assert.equal(f.host.querySelectorAll('.status.focus').length,1);
   assert.equal(f.host.querySelectorAll('.status.observed').length,7);
   assert.match(f.host.textContent,/Десятичные дроби.*ещё не проверялись/);f.dom.window.close();

@@ -113,9 +113,9 @@ assert.deepEqual(D.build(-1), D.build(0));
 for (const [skill, meta] of Object.entries(D.skills)) {
   const [urlPath, hash] = meta.recommendation.url.split('#');
   assert(fs.existsSync(path.join(root, urlPath)), skill + ' recommendation file exists');
-  if (skill === 'addition') {
-    assert.equal(hash, 'column-add');
-    assert(fs.readFileSync(path.join(root, 'soviet-math/revised-primary.js'), 'utf8').includes("['column-add'"));
+  if (skill === 'addition' || skill === 'subtract') {
+    assert.equal(hash, skill==='addition'?'add-carry':'sub-borrow');
+    assert(map.foundationTracks.some(t=>t.stages.some(s=>s.url===meta.recommendation.url)));
   } else {
     const id = urlPath.replace('/trainers/oge-basics/', '').replace(/\.html$/, '');
     assert(map.tracks.some(t => t.stages.some(s => s.id === id)), skill + ' recommendation appears in the actual course map');

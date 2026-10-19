@@ -110,7 +110,12 @@ async function answer(page, question, value, options = {}) {
 }
 async function exerciseFirstStep(page, expectedURL) {
   assert.equal(new URL(page.url()).pathname + new URL(page.url()).hash, expectedURL);
-  if (expectedURL.startsWith('/soviet-math/')) {
+  if (expectedURL.includes('arithmetic-foundations.html')) {
+    await page.locator('#answer').waitFor();
+    const value=await page.evaluate(()=>ArithmeticFoundations.make(location.hash.slice(1),1).steps[0].answer);
+    await page.locator('#answer').fill(value);await page.locator('#check').click();
+    assert.equal(await page.evaluate(()=>JSON.parse(sessionStorage.getItem('mathExam.foundations.tab.v1.'+location.hash.slice(1))).answers.length),1);
+  } else if (expectedURL.startsWith('/soviet-math/')) {
     await page.locator('#lesson').waitFor({state:'visible'});
     assert.equal(await page.locator('#lesson-title').innerText(), 'Сложение столбиком');
     await page.locator('#mode-practice').click();

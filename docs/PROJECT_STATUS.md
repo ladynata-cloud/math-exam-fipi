@@ -1295,3 +1295,10 @@ At the start of each approved task, compare this snapshot with actual remote
 `main`, open PRs, gates and production evidence. Update it within that task when
 stale and keep exactly the next three concrete actions. Never predict a
 successful merge or deployment before it happens.
+
+
+The in-flight PR266 scope now includes the owner-requested six-step addition
+and six-step subtraction prerequisite ladders. They appear alongside the two
+existing cabinet tracks and use separate tab-local practice. Diagnostic links
+point to the relevant carry/borrow stage. Production publication remains pending
+final exact-head CI and deployment verification; see PR266 for current evidence.

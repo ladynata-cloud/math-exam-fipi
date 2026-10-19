@@ -97,3 +97,26 @@ follow-up, lost keyboard focus at the arrow limits and incomplete wording when
 tab storage is unavailable. New tests retain those regressions. The existing
 22-scenario arithmetic robot suite also passes: correct arithmetic, targeted
 feedback, non-answer first hints, saved work, read-only mirror and next example.
+
+### Addition and subtraction prerequisites requested during verification
+
+The owner explicitly requested addition and subtraction learning ladders as
+necessary prerequisites. The same cabinet and public course now show six steps
+for each, before the unchanged managed multiplication/division tracks. The
+standalone numeric step/hint pattern is reused with deterministic integer
+examples, right-to-left place value explanations, carrying, borrowing through
+zeros, inverse addition checks, new examples and per-tab replay-validated work.
+No managed contract, assignment or database persistence is added. This limited
+storage is stated at entry and in the trainer. Diagnostic recommendations now
+link directly to `add-carry` and `sub-borrow`.
+
+Additional gates: 3600 generated examples checked with an independent arithmetic
+oracle, twelve complete mistake/help/reload DOM journeys, twelve Chromium
+journeys at 320/390/1060px, and four-ladder navigation regression. Existing
+16-step multiplication and 15-step division progress remain separate.
+
+On head1990ba2 the new diagnostic/browser/robot checks passed, but the existing
+free-route browser test timed out at a percent-rate route button after an
+asynchronous DOM replacement. The failed job was rerun without changing or
+weakening the test. The final expanded head must pass the full gate regardless
+of that earlier retry result.
