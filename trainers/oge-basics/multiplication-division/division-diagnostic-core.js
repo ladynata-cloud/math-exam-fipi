@@ -12,10 +12,10 @@
     ['facts', 'Таблица умножения', 'multiplication', 'multiplication-ladder', 1],
     ['choice', 'Подбор цифры частного', 'division', 'course-digit-choice', 6],
     ['multiplyTwo', 'Умножение на двузначное число', 'multiplication', 'course-multiply-two-digit', 5],
-    ['subtract', 'Вычитание с переходом через разряд', 'subtraction', 'course-subtract', 3],
+    ['subtract', 'Вычитание, когда нужно занять слева', 'subtraction', 'course-subtract', 3],
     ['bring', 'Число после сноса цифры', 'division', 'course-bring-digit', 7],
     ['zero', 'Ноль внутри частного', 'division', 'course-zeros', 8],
-    ['addition', 'Сложение частей и перенос десятка', 'addition', null, 2]
+    ['addition', 'Сложение: пишем цифру, остальное в уме', 'addition', null, 2]
   ];
   const skills = Object.freeze(Object.fromEntries(rows.map(([id, title, branch, slug, priority]) => [id, Object.freeze({
     id, title, branch, priority,

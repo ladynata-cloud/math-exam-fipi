@@ -110,6 +110,7 @@ jobs:
           node tools/division-diagnostic.dom.cjs
           node tools/division-diagnostic-robots.dom.cjs
           node tools/arithmetic-foundations.dom.cjs
+          node tools/fraction-notation.dom.cjs
           node tools/learning-division-route.dom.cjs
           node tools/learning-route-library.dom.cjs
           node tools/learning-rounding-preparation.dom.cjs
@@ -129,6 +130,7 @@ jobs:
         run: |
           node tools/division-diagnostic.browser.cjs
           node tools/arithmetic-foundations.browser.cjs
+          node tools/fraction-notation.browser.cjs
       - name: Division diagnostic visual evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

@@ -83,8 +83,12 @@ const numeric={feedback:{'90':'Прямой угол равен 90°, здесь
 for(const answer of ['90','90.0','180/2'])assert.equal(feedback(numeric,answer,fallback),numeric.feedback['90']);
 for(const answer of ['__proto__','',' ','NaN','Infinity','1/0','constructor'])assert.equal(feedback(numeric,answer,fallback),fallback);
 for(const map of [Object.create({'90':'inherited'}),{'90':{html:'unsafe'}},{'90':'x'.repeat(4001)},{'90.0':'Noncanonical key'}])assert.equal(feedback({feedback:map},'90',fallback),fallback);
-assert.equal(feedback({...example,feedback:{'2':'<img src=x onerror=unsafe()>'}},'2',fallback),'<img src=x onerror=unsafe()>','The helper returns text; renderers use textContent');
-assert.match(read('ege-baza/path/managed.js'),/box\.textContent = text/);assert.match(read('ege-baza/path/app.js'),/f\.textContent=s/);
+assert.equal(feedback({...example,feedback:{'2':'<img src=x onerror=unsafe()>'}},'2',fallback),'<img src=x onerror=unsafe()>','The helper returns text; renderers escape it before adding fraction markup');
+assert.match(read('ege-baza/path/managed.js'),/box\.innerHTML = M\(text\)/);assert.match(read('ege-baza/path/app.js'),/f\.innerHTML=M\(s\)/);
+const escaped=context.PathPracticeView.math('<img src=x onerror=unsafe()> 2/3');
+assert(escaped.startsWith('&lt;img src=x onerror=unsafe()&gt; '));assert(!escaped.includes('<img'));assert(escaped.includes('class="math-fraction"'));
+for(const source of ['ege-baza/path/app.js','ege-baza/path/managed.js'])assert.match(read(source),/const M=text=>(?:root\.)?PathPracticeView\.math\(text\)/);
+
 
 // A reshuffle is the same question, on both the standalone and managed paths.
 // Exercise the actual private standalone helper without launching a browser.

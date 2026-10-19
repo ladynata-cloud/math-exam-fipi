@@ -325,7 +325,7 @@ const foundationTracks=Object.freeze([
   {
     "id": "addition",
     "title": "Сложение",
-    "lead": "От состава десятка до сложения с несколькими переносами.",
+    "lead": "Складываем, сразу пишем цифру и помним, что в уме.",
     "stages": [
       {
         "id": "add-basic",
@@ -344,22 +344,22 @@ const foundationTracks=Object.freeze([
       {
         "id": "add-columns",
         "branch": "addition",
-        "title": "Складываем по разрядам",
-        "goal": "Единицы под единицами, десятки под десятками.",
+        "title": "Складываем столбиком",
+        "goal": "Пишем числа друг под другом и начинаем справа.",
         "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#add-columns"
       },
       {
         "id": "add-carry",
         "branch": "addition",
-        "title": "Переносим десяток",
-        "goal": "Из суммы единиц выделяем новый десяток.",
+        "title": "Пишем цифру, остальное в уме",
+        "goal": "Например: 6 пишем, 1 в уме.",
         "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#add-carry"
       },
       {
         "id": "add-chain",
         "branch": "addition",
-        "title": "Несколько переносов",
-        "goal": "Не теряем перенос в десятки, сотни и тысячи.",
+        "title": "Держим в уме на каждом шаге",
+        "goal": "Прибавляем число в уме, пишем цифру и идём дальше.",
         "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#add-chain"
       },
       {
@@ -393,22 +393,22 @@ const foundationTracks=Object.freeze([
       {
         "id": "sub-columns",
         "branch": "subtraction",
-        "title": "Вычитаем по разрядам",
-        "goal": "Начинаем с единиц справа.",
+        "title": "Вычитаем столбиком",
+        "goal": "Пишем числа друг под другом и начинаем справа.",
         "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#sub-columns"
       },
       {
         "id": "sub-borrow",
         "branch": "subtraction",
-        "title": "Занимаем один десяток",
-        "goal": "Меняем один десяток на десять единиц.",
+        "title": "Занимаем у цифры слева",
+        "goal": "Слева уменьшаем цифру на 1, справа прибавляем 10.",
         "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#sub-borrow"
       },
       {
         "id": "sub-zeros",
         "branch": "subtraction",
         "title": "Занимаем через нули",
-        "goal": "Передаём разряд через ноль и отмечаем все изменения.",
+        "goal": "Занимаем через ноль и сразу записываем изменённые цифры.",
         "url": "/trainers/oge-basics/multiplication-division/arithmetic-foundations.html#sub-zeros"
       },
       {

@@ -69,7 +69,7 @@ test('isolated subtraction trouble yields one targeted confirmation and a specif
   assert.match(f.host.textContent,/Уточним трудный шаг/);
   f.answer(C.confirmation('subtract'),'99');f.click('next');
   assert.equal(f.snapshot().records.length,19);
-  assert.match(f.host.querySelector('.start-here a').href,/arithmetic-foundations\.html#sub-borrow$/);
+  assert.match(f.host.querySelector('.start-here a').href,/arithmetic-foundations\.html\?diagnosticVariant=0#sub-borrow$/);
   assert.equal(f.host.querySelectorAll('.status.focus').length,1);
   assert.equal(f.host.querySelectorAll('.status.observed').length,7);
   assert.match(f.host.textContent,/Десятичные дроби.*ещё не проверялись/);f.dom.window.close();
@@ -114,4 +114,11 @@ test('cabinet return is fixed, links are safe, and new tests are wired into CI',
   const workflow=fs.readFileSync(path.join(root,'.github/workflows/learning-quality.yml'),'utf8');
   assert(workflow.includes('node tools/division-diagnostic.test.cjs'));assert(workflow.includes('node tools/division-diagnostic.dom.cjs'));
   f.dom.window.close();
+});
+test('return after practice selects another variant without erasing existing work',()=>{
+ const f=mount(undefined,'?afterPractice=1&variant=1&from=cabinet');
+ assert.match(f.host.textContent,/ПОСЛЕ ПРАКТИКИ/);f.click('start');assert.equal(f.snapshot().variant,1);
+ f.answer(C.build(1).questions[0]);const saved=JSON.stringify(f.snapshot());f.dom.window.close();
+ const restored=mount(saved,'?afterPractice=1&variant=0');assert.equal(restored.snapshot().variant,1);assert.equal(restored.snapshot().records.length,1);restored.dom.window.close();
+ const invalid=mount(undefined,'?afterPractice=1&variant=999');invalid.click('start');assert.equal(invalid.snapshot().variant,0);invalid.dom.window.close();
 });

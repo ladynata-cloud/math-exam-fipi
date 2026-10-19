@@ -26,8 +26,8 @@ const destinations = {
 };
 const titles = {
   first: 'С каких цифр начать', facts: 'Таблица умножения', choice: 'Подбор цифры частного',
-  multiplyTwo: 'Умножение на двузначное число', subtract: 'Вычитание с переходом через разряд',
-  bring: 'Число после сноса цифры', zero: 'Ноль внутри частного', addition: 'Сложение частей и перенос десятка'
+  multiplyTwo: 'Умножение на двузначное число', subtract: 'Вычитание, когда нужно занять слева',
+  bring: 'Число после сноса цифры', zero: 'Ноль внутри частного', addition: 'Сложение: пишем цифру, остальное в уме'
 };
 const profiles = [
   {name: 'all-correct', label: 'Все проверенные действия получаются', errors: [], first: 'ready', focus: []},
@@ -41,7 +41,7 @@ const profiles = [
 function openLocalPage(file, url = 'https://mathexam.space/' + file) {
   const errors = [], virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', error => errors.push(error.message));
-  const dom = new JSDOM(read(file.split('#')[0]), {url, runScripts: 'outside-only', pretendToBeVisual: true, virtualConsole});
+  const dom = new JSDOM(read(file.split(/[?#]/)[0]), {url, runScripts: 'outside-only', pretendToBeVisual: true, virtualConsole});
   const w = dom.window;
   w.fetch = async () => {throw Error('Network requests are disabled in synthetic DOM scenarios');};
   w.XMLHttpRequest = class {constructor() {throw Error('Network requests are disabled in synthetic DOM scenarios');}};
@@ -206,6 +206,7 @@ async function run(profile, variant) {
     else if (profile.uncertain?.includes(skill)) assert(statusFor(skill).contains('uncertain'), profile.name + ': isolated error must remain uncertain');
     else if (!profile.stopAfter) assert(statusFor(skill).contains('observed'), profile.name + ': no invented deficit in ' + skill);
   }
+  const expectedDestination = skill => {const u=new URL(destinations[skill],'https://mathexam.space/');if(u.pathname.endsWith('/arithmetic-foundations.html')){u.searchParams.set('diagnosticVariant',variant);u.searchParams.set('from','cabinet');}return u.href;};
   let recommendation = null;
   if (profile.stopAfter) {
     assert.equal(f.document.querySelectorAll('.status.untested').length, profile.untested);
@@ -214,8 +215,8 @@ async function run(profile, variant) {
     click(f, '[data-do="resume"]'); assert.equal(f.document.querySelector('#question-title').textContent, model.questions[profile.stopAfter].prompt);
   } else {
     const link = f.document.querySelector('.start-here a'); assert(link);
-    assert.equal(link.href, 'https://mathexam.space/' + destinations[profile.first]);
-    if (profile.next) assert.deepEqual([...f.document.querySelectorAll('.recommendation a')].map(a => a.href), profile.next.map(skill => 'https://mathexam.space/' + destinations[skill]));
+    assert.equal(link.href, expectedDestination(profile.first));
+    if (profile.next) assert.deepEqual([...f.document.querySelectorAll('.recommendation a')].map(a => a.href), profile.next.map(skill => expectedDestination(skill)));
     let opened; link.addEventListener('click', event => {event.preventDefault(); opened = link.href;}); link.click();
     recommendation = await recommendationSmoke(opened.replace('https://mathexam.space/', ''));
   }

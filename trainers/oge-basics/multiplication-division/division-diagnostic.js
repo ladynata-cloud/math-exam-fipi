@@ -5,12 +5,15 @@ const C = window.DivisionDiagnostic, host = document.getElementById('diagnostic'
 if (!C || !host) return;
 const KEY = 'mathExam.divisionDiagnostic.tab.v1';
 const E = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const cabinet = new URLSearchParams(location.search).get('from') === 'cabinet';
+const params = new URLSearchParams(location.search);
+const afterPractice = params.get('afterPractice') === '1';
+const initialVariant = afterPractice && params.get('variant') === '1' ? 1 : 0;
+const cabinet = params.get('from') === 'cabinet';
 const courseURL = cabinet ? 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#division-course' : 'division-course.html';
-const backLabel = cabinet ? 'Вернуться в кабинет' : 'К двум маршрутам';
+const backLabel = cabinet ? 'Вернуться в кабинет' : 'К четырём линейкам';
 document.getElementById('course-return').href = courseURL;
 document.getElementById('course-return').textContent = '← ' + backLabel;
-let state = fresh(), model, queue, storageOK = true;
+let state = fresh(initialVariant), model, queue, storageOK = true;
 function fresh(variant = 0) { return {version:1, variant, screen:'intro', records:[], accepted:false, draft:'', selection:0}; }
 function rebuild() {
   model = C.build(state.variant); queue = [...model.questions];
@@ -40,7 +43,7 @@ function restore() {
     state.screen = saved.screen; state.accepted = saved.accepted; state.draft = saved.draft; state.selection = saved.selection;
     if (state.screen === 'test' && state.records.length === queue.length && !state.accepted) state.screen = 'report';
   } catch (_) {
-    state = fresh(); storageOK = false;
+    state = fresh(initialVariant); storageOK = false;
     document.getElementById('save-note').textContent = 'Запись этой проверки прочитать не удалось или сохранение недоступно. Новая проверка будет без сохранения: не обновляй вкладку. Прогресс курса хранится отдельно.';
   }
 }
@@ -86,8 +89,16 @@ function history(q) {
     return '<details><summary>Решение ' + p.task.dividend + ' : ' + p.task.divisor + '</summary>' + notebook(p,p.actions.length) + '</details>';
   }).join('');
 }
+function practiceURL(meta) {
+  const url = new URL(meta.url, 'https://mathexam.space');
+  if (url.pathname.endsWith('/arithmetic-foundations.html')) {
+    url.searchParams.set('diagnosticVariant', state.variant);
+    if (cabinet) url.searchParams.set('from', 'cabinet');
+  }
+  return url.href;
+}
 function renderIntro() {
-  host.innerHTML = '<section class="card intro"><p class="eyebrow">ПЕРЕД ТРЕНИРОВКОЙ</p><h1>С чего мне начать?</h1><p>Попробуй деление уголком. Посмотрим, какие шаги получаются, а что стоит повторить.</p><ul><li>Два деления и три коротких примера.</li><li>Один вопрос за раз. Без отметок и таймера.</li><li>Если трудно — нажми «Пока не знаю».</li></ul><p>После ошибки продолжим с правильного числа. В конце уточним трудные шаги на других числах.</p><div class="actions"><button class="primary" data-do="start">Начать проверку →</button><a class="button quiet" href="' + E(courseURL) + '">Сразу к тренировке</a></div></section>';
+  host.innerHTML = '<section class="card intro"><p class="eyebrow">' + (afterPractice?'ПОСЛЕ ПРАКТИКИ':'ПЕРЕД ТРЕНИРОВКОЙ') + '</p><h1>' + (afterPractice?'Что теперь получается лучше?':'С чего мне начать?') + '</h1><p>Попробуй деление уголком. Посмотрим, какие шаги получаются, а что стоит повторить.</p><ul><li>Два деления и три коротких примера.</li><li>Один вопрос за раз. Без отметок и таймера.</li><li>Если трудно — нажми «Пока не знаю».</li></ul><p>После ошибки продолжим с правильного числа. В конце уточним трудные шаги на других числах.</p><div class="actions"><button class="primary" data-do="start">Начать проверку →</button><a class="button quiet" href="' + E(courseURL) + '">Сразу к тренировке</a></div></section>';
 }
 function renderTest(focus = false) {
   const q = current(); if (!q) { state.screen='report'; save(); renderReport(); return; }
@@ -108,21 +119,21 @@ function suggested(report) {
   return report.filter(r=>['focus','uncertain'].includes(r.status)).sort((a,b)=>(a.status==='focus'?0:1)-(b.status==='focus'?0:1)||a.priority-b.priority);
 }
 function reportPlain(report) {
-  return ['Проверка деления уголком', state.records.length<queue.length?'Проверка пройдена частично.':'Проверка завершена.', ...report.map(r=>r.title+': '+r.statusTitle+'. Самостоятельно '+r.counts.correct+' из '+r.counts.total+'.'), '', 'Первые шаги:', ...suggested(report).slice(0,3).map((r,i)=>(i+1)+'. '+r.recommendation.title+' — https://mathexam.space'+r.recommendation.url),'','Результат относится только к проверенным примерам. Десятичные дроби и все случаи деления ещё не проверялись.'].join('\n');
+  return ['Проверка деления уголком', state.records.length<queue.length?'Проверка пройдена частично.':'Проверка завершена.', ...report.map(r=>r.title+': '+r.statusTitle+'. Самостоятельно '+r.counts.correct+' из '+r.counts.total+'.'), '', 'Первые шаги:', ...suggested(report).slice(0,3).map((r,i)=>(i+1)+'. '+r.recommendation.title+' — '+practiceURL(r.recommendation)),'','Результат относится только к проверенным примерам. Десятичные дроби и все случаи деления ещё не проверялись.'].join('\n');
 }
 function renderReport() {
   const report = C.report(state.records), recommendations = suggested(report), partial = state.records.length < queue.length;
   let start;
   if (recommendations.length) {
     const first = recommendations[0];
-    start = '<p class="eyebrow">ПЕРВЫЙ ШАГ</p><h2>' + E(first.recommendation.title) + '</h2><p>' + E(first.status==='focus'?'Трудность повторилась в разных заданиях. Начни с этого упражнения.':'Здесь была ошибка или пропуск. Пока это ориентир: начни с короткого повторения.') + '</p><a class="button primary" href="https://mathexam.space' + E(first.recommendation.url) + '" target="_blank" rel="noopener">Начать отсюда →</a>';
+    start = '<p class="eyebrow">ПЕРВЫЙ ШАГ</p><h2>' + E(first.recommendation.title) + '</h2><p>' + E(first.status==='focus'?'Трудность повторилась в разных заданиях. Начни с этого упражнения.':'Здесь была ошибка или пропуск. Пока это ориентир: начни с короткого повторения.') + '</p><a class="button primary" href="' + E(practiceURL(first.recommendation)) + '" target="_blank" rel="noopener">Начать отсюда →</a>';
   } else if (partial) {
     start = '<h2>Нужно проверить остальные шаги</h2><p>В выполненных заданиях ошибок нет. Этого пока недостаточно, чтобы выбрать весь маршрут.</p><button class="primary" data-do="resume">Продолжить проверку →</button>';
   } else {
     start = '<h2>Можно начать с самостоятельного деления</h2><p>Проверенные задания получились. Попробуй новые примеры без подсказок.</p><a class="button primary" href="https://mathexam.space/trainers/oge-basics/multiplication-division/course-simple-check.html" target="_blank" rel="noopener">Решить новые примеры →</a>';
   }
-  const next = recommendations.slice(1,3).map(r=>'<article class="recommendation"><h3>' + E(r.recommendation.title) + '</h3><p>' + E(r.statusTitle) + '</p><a href="https://mathexam.space' + E(r.recommendation.url) + '" target="_blank" rel="noopener">Открыть упражнение →</a></article>').join('');
-  host.innerHTML = '<section class="card"><p class="eyebrow">ТВОЙ МАРШРУТ</p><h1 tabindex="-1">Вот с чего можно начать</h1><p>' + (partial?'Это промежуточный результат. Проверены не все шаги.':'Проверка завершена. Рекомендации относятся только к этим заданиям.') + '</p><p class="small">Десятичные дроби, округление и другие случаи деления здесь ещё не проверялись.</p></section><section class="card start-here">' + start + '</section>' + (next?'<section class="card"><h2>Затем можно повторить</h2>'+next+'</section>':'') + '<section class="card"><h2>Что показали ответы</h2><ul class="result-list">' + report.map(r=>'<li><span class="status ' + E(r.status) + '">' + E(r.statusTitle) + '</span><h3>' + E(r.title) + '</h3><p>' + (r.counts.total?'Самостоятельно: '+r.counts.correct+' из '+r.counts.total+'.'+(r.counts.skipped?' Пропущено: '+r.counts.skipped+'.':''):'Заданий по этому навыку ещё нет.') + '</p>' + r.observations.map(t=>'<p class="small">'+E(t)+'</p>').join('') + '</li>').join('') + '</ul><details><summary>Текст результата для преподавателя</summary><textarea class="report-text" aria-label="Текст результата" readonly>' + E(reportPlain(report)) + '</textarea></details><div class="actions"><a class="button primary" href="' + E(courseURL) + '">' + backLabel + ' →</a>' + (partial&&recommendations.length?'<button data-do="resume">Закончить проверку</button>':'') + '<button class="quiet" data-do="restart">Начать новую проверку</button></div><p class="small" style="margin-top:20px">Новая проверка использует другой набор чисел. Прогресс учебных ветвей не меняется.</p></section>' + history(null);
+  const next = recommendations.slice(1,3).map(r=>'<article class="recommendation"><h3>' + E(r.recommendation.title) + '</h3><p>' + E(r.statusTitle) + '</p><a href="' + E(practiceURL(r.recommendation)) + '" target="_blank" rel="noopener">Открыть упражнение →</a></article>').join('');
+  host.innerHTML = '<section class="card"><p class="eyebrow">ТВОЙ МАРШРУТ</p><h1 tabindex="-1">Вот с чего можно начать</h1><p>' + (partial?'Это промежуточный результат. Проверены не все шаги.':'Проверка завершена. Рекомендации относятся только к этим заданиям.') + '</p><p class="small">Десятичные дроби, округление и другие случаи деления здесь ещё не проверялись.</p></section><section class="card start-here">' + start + '</section>' + (next?'<section class="card"><h2>Затем можно повторить</h2>'+next+'</section>':'') + '<section class="card"><h2>Что показали ответы</h2><ul class="result-list">' + report.map(r=>'<li><span class="status ' + E(r.status) + '">' + E(r.statusTitle) + '</span><h3>' + E(r.title) + '</h3><p>' + (r.counts.total?'Самостоятельно: '+r.counts.correct+' из '+r.counts.total+'.'+(r.counts.skipped?' Пропущено: '+r.counts.skipped+'.':''):'Заданий по этому навыку ещё нет.') + '</p>' + r.observations.map(t=>'<p class="small">'+E(t)+'</p>').join('') + '</li>').join('') + '</ul><details><summary>Текст результата для преподавателя</summary><textarea class="report-text" aria-label="Текст результата" readonly>' + E(reportPlain(report)) + '</textarea></details><div class="actions"><a class="button primary" href="' + E(courseURL) + '">' + backLabel + ' →</a>' + (partial&&recommendations.length?'<button data-do="resume">Закончить проверку</button>':'') + '<button class="quiet" data-do="restart">Я потренировался — проверить ещё раз</button></div><p class="small" style="margin-top:20px">Сначала потренируй трудные шаги: реши несколько новых примеров самостоятельно. Затем вернись сюда и пройди проверку ещё раз на другом наборе чисел. До нажатия кнопки этот результат остаётся на месте. Прогресс учебных ветвей не меняется.</p></section>' + history(null);
 }
 function render(focus = false) {
   rebuild();

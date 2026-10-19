@@ -3,6 +3,7 @@
   if (new URLSearchParams(location.search).get('learning') !== '1') return;
   const D = root.PathData, S = root.PathManagedState, main = document.getElementById('main');
   const E = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const M=text=>root.PathPracticeView.math(text);
   const clone = value => JSON.parse(JSON.stringify(value));
   const stageLabels = ['Понять', 'Исследовать', 'Решить по шагам', 'Самостоятельно', 'Объяснить'];
   let taskSpec = null, state = null, task = null, model = null, readonly = true, applying = false, notify = () => {};
@@ -23,7 +24,7 @@
     state.view.feedback = text;
     state.view.feedbackKind = kind;
     const box = document.getElementById('feedback');
-    if (box) { box.textContent = text; box.className = 'feedback ' + kind; }
+    if (box) { box.innerHTML = M(text); box.className = 'feedback ' + kind; }
   }
   function setReadOnly(value) {
     readonly = value === true;
@@ -140,7 +141,7 @@
       },
       hint() {
         work.help = true; state.view.hintText = data.hints[work.step];
-        document.getElementById('hintText').textContent = state.view.hintText;
+        document.getElementById('hintText').innerHTML = M(state.view.hintText);
         emit('hint', { level: 1, step: work.step });
       },
       note(value) { work.note = value; emit('input', { field: 'note' }); }
@@ -163,24 +164,24 @@
     main.querySelector('[data-geometry-explore]')?.addEventListener('click', () => changeStage(1));
     main.querySelector('[data-geometry-check]')?.addEventListener('click', () => changeStage(3));
     const box = document.getElementById('lesson');
-    const condition = `<p class="task">${E(task.q)}</p>`;
+    const condition = `<p class="task">${M(task.q)}</p>`;
     const support = root.PathPracticeView.markup(task, work.stage === 1 && ['polygon-build','pre7-lab','grade7-construction'].includes(task.model.kind));
     if (work.stage === 0) {
-      box.innerHTML = `<section class="panel"><h2>Главная идея</h2><p class="lead">${E(meta.idea)}</p><div class="callout"><b>Перед вычислением спроси себя</b><p>Что дано, что неизвестно и какая связь между ними? Какие единицы нужны в ответе?</p></div>${condition}${support}<button id="next" class="primary">Исследовать модель →</button></section>`;
+      box.innerHTML = `<section class="panel"><h2>Главная идея</h2><p class="lead">${M(meta.idea)}</p><div class="callout"><b>Перед вычислением спроси себя</b><p>Что дано, что неизвестно и какая связь между ними? Какие единицы нужны в ответе?</p></div>${condition}${support}<button id="next" class="primary">Исследовать модель →</button></section>`;
       document.getElementById('next').onclick = () => changeStage(1);
     } else if (work.stage === 1) {
-      box.innerHTML = `<section class="panel">${condition}${support}${task.model.expansion ? `<p class="callout">${E(task.model.expansion)}</p>` : ''}<div id="model"></div><button id="next" class="primary">Перейти к решению →</button></section>`;
+      box.innerHTML = `<section class="panel">${condition}${support}${task.model.expansion ? `<p class="callout">${M(task.model.expansion)}</p>` : ''}<div id="model"></div><button id="next" class="primary">Перейти к решению →</button></section>`;
       model = root.PathModels.mount(document.getElementById('model'), task, { state: work.model, onChange(value) { if (!document.getElementById('model') || applying) return; work.model = value; supportDetails(); emit('model', { modelKind: task.model.kind }); } });
       work.model = model.getState();
       document.getElementById('next').onclick = () => changeStage(2);
     } else if (work.stage === 2) {
       const finished = work.step >= task.steps.length;
-      box.innerHTML = `<section class="panel">${condition}${support}<ol class="steps">${task.steps.slice(0, work.step).map(step => `<li>${E(step.q)} <b>${E(step.a === undefined ? 'Условия выполнены' : root.PathPracticeView.answerText(step))}</b><br>${E(step.why)}</li>`).join('')}</ol>${finished ? '<h2>Разбор завершён</h2><p>Проверь себя на новом условии.</p><button id="new" class="primary">Новый самостоятельный вариант</button>' : `<div class="callout"><b>Шаг ${work.step + 1}/${task.steps.length}</b><p>${E(task.steps[work.step].q)}</p></div>${form()}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`}<details id="gap"><summary>Мешает пробел в основе?</summary><p>Обсуди с Натальей Михайловной, какое действие затрудняет решение: знак, дробь, единицы или выбор формулы. Эта попытка сохранит текущий шаг.</p></details></section>`;
+      box.innerHTML = `<section class="panel">${condition}${support}<ol class="steps">${task.steps.slice(0, work.step).map(step => `<li>${M(step.q)} <b>${M(step.a === undefined ? 'Условия выполнены' : root.PathPracticeView.answerText(step))}</b><br>${M(step.why)}</li>`).join('')}</ol>${finished ? '<h2>Разбор завершён</h2><p>Проверь себя на новом условии.</p><button id="new" class="primary">Новый самостоятельный вариант</button>' : `<div class="callout"><b>Шаг ${work.step + 1}/${task.steps.length}</b><p>${M(task.steps[work.step].q)}</p></div>${form()}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`}<details id="gap"><summary>Мешает пробел в основе?</summary><p>Обсуди с Натальей Михайловной, какое действие затрудняет решение: знак, дробь, единицы или выбор формулы. Эта попытка сохранит текущий шаг.</p></details></section>`;
       if (finished && photoTask()) { box.querySelector('h2 + p').textContent = 'Теперь объясни доказательство своими словами. Для нового условия выбери похожий урок в маршруте.'; document.getElementById('new').textContent = 'Повторить этот рисунок'; }
       if (finished) document.getElementById('new').onclick = () => newTask();
       else {
-        bindAnswer('step'); document.getElementById('hintText').textContent = state.view.hintText;
-        document.getElementById('hint').onclick = () => { work.help = true; state.view.hintText = task.steps[work.step].why; document.getElementById('hintText').textContent = state.view.hintText; emit('hint', { level: 1, step: work.step }); };
+        bindAnswer('step'); document.getElementById('hintText').innerHTML = M(state.view.hintText);
+        document.getElementById('hint').onclick = () => { work.help = true; state.view.hintText = task.steps[work.step].why; document.getElementById('hintText').innerHTML = M(state.view.hintText); emit('hint', { level: 1, step: work.step }); };
       }
       const gap = document.getElementById('gap'); gap.open = state.view.gapOpen;
       gap.ontoggle = () => { if (applying || !gap.isConnected || gap.open === state.view.gapOpen) return; state.view.gapOpen = gap.open; emit('navigate', { panel: 'gap', open: gap.open }); };
