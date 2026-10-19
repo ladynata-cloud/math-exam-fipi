@@ -826,7 +826,7 @@ function genDec(op){
 }
 
 function newGuided(){
-  const t=G.type==='addsub'?pick(['+','-']):G.type==='muldiv'?pick(['*',':']):G.type;
+  const t=G.type==='all'?pick(['+','-','*',':']):G.type==='addsub'?pick(['+','-']):G.type==='muldiv'?pick(['*',':']):G.type;
   G.task=(R.mod==='frac'?genFrac:genDec)(t==='÷'?':':t);
   G.step=0;G.hints=0;
   drawGuided();
@@ -838,6 +838,7 @@ function renderGuided(){
       <h2 style="margin:0">Пошаговый решатель</h2>
       <span>
         <select id="gType">
+          <option value="all">все четыре действия</option>
           <optgroup label="Сложение и вычитание">
             <option value="addsub">сложение и вычитание</option>
             <option value="+">только сложение</option>
@@ -1138,11 +1139,19 @@ function drillSummary(){
   $('#dCard').innerHTML='<div class="summary"><h2>Раздел пройден!</h2>'+
     '<div class="bigscore">'+(g+y)+' / '+total+'</div>'+
     '<p class="sub">С первой попытки — '+g+', после ошибок — '+y+', с подсказкой — '+r+'. Решаемость: '+pct+'%.</p>'+
-    '<p style="margin-top:14px"><button class="b-primary" onclick="startDrill()">Пройти ещё раз</button></p></div>';
+    '<p style="margin-top:14px"><button class="b-primary" onclick="startDrill()">Повторить этот набор</button></p>'+generatedPracticeLinks()+'</div>';
   drillStats();drillDots();
 }
 
-render();
+// Explicit allowlist: links open the matching live generator, never an arbitrary module.
+const PRACTICE_ROUTES={
+  'fraction-multiply':{mod:'frac',type:'*'},'decimal-multiply':{mod:'dec',type:'*'},
+  'fraction-mixed':{mod:'frac',type:'all'},'decimal-mixed':{mod:'dec',type:'all'}
+};
+function generatedPracticeLinks(){return '<p>Новые числа, по одному действию:</p><p><a href="#practice=fraction-mixed">Ещё примеры с обычными дробями →</a></p><p><a href="#practice=decimal-mixed">Ещё примеры с десятичными дробями →</a></p>';}
+function openPracticeRoute(){const key=location.hash.replace(/^#practice=/,'');if(!location.hash.startsWith('#practice=')||!Object.prototype.hasOwnProperty.call(PRACTICE_ROUTES,key))return false;const route=PRACTICE_ROUTES[key];G.type=route.type;R={view:'module',mod:route.mod,tab:'guided'};render();return true;}
+window.addEventListener('hashchange',openPracticeRoute);
+if(!openPracticeRoute())render();
 </script>
 </body>
 </html>

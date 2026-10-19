@@ -53,6 +53,7 @@
 #learning-remediation-root .lm-scaffold-steps li{margin:8px 0}
 #learning-remediation-root .lm-scaffold-selected th,#learning-remediation-root .lm-scaffold-selected td{background:#dcf0e8;font-weight:700}
 #learning-remediation-root .lm-scaffold-result{font-weight:700}
+#learning-remediation-root .lm-help-number{display:inline;padding:.08em .2em;border-radius:.2em;background:#ffe9a6;color:#392d0a;font-weight:700;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 @media(max-width:400px){#learning-remediation-root .lm-scaffold{padding:9px}#learning-remediation-root .lm-scaffold-table th,#learning-remediation-root .lm-scaffold-table td{padding:5px}}
 
 #learning-remediation-root .lm-scaffold-table:focus-visible{outline:3px solid #53bcb6;outline-offset:2px}

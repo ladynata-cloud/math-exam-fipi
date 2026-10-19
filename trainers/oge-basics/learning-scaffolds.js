@@ -9,6 +9,7 @@
   const p = text => '<p>' + E(text) + '</p>';
   const steps = rows => '<ol class="lm-scaffold-steps">' + rows.map(row => '<li>' + E(row) + '</li>').join('') + '</ol>';
   const section = (kind, title, body) => body ? '<section class="lm-scaffold" data-scaffold="' + kind + '"><h3>' + E(title) + '</h3>' + body + '</section>' : '';
+  const highlight = value => '<p>' + E(value).replace(/\d+(?:[,.]\d+)?/g, number => '<mark class="lm-help-number" data-help-number>' + number + '</mark>') + '</p>';
   const result = text => '<p class="lm-scaffold-result" data-scaffold-result>' + E(text) + '</p>';
   const natural = value => Number.isSafeInteger(value) && value >= 0 && value <= 100000000;
   function text(prompt) {
@@ -28,17 +29,18 @@
   }
   function multiply(a, b, level) {
     if (!natural(a) || !natural(b) || a > 20 || b > 1000000) return '';
-    if (!a || !b) return p('Если групп нет или в каждой группе 0 предметов, считать нечего.') + (level === 3 ? result(a + ' · ' + b + ' = 0') : '');
+    if (!a || !b) return p('При умножении на 0 ничего не прибавляем.') + (level === 3 ? result(a + ' · ' + b + ' = 0') : '');
     const sum = Array(a).fill(b).join(' + ');
-    let body = p(a + ' · ' + b + ' можно посчитать как ' + a + ' одинаковых групп по ' + b + '.') + p(sum + (level === 3 ? ' = ' + a * b : ' = ?'));
+    let body = p('Число ' + b + ' нужно взять ' + a + ' раз.') + p(sum + (level === 3 ? ' = ' + a * b : ' = ?'));
     if (level === 3) body += steps(Array.from({length:a}, (_, n) => n * b + ' + ' + b + ' = ' + (n + 1) * b)) + result(a + ' · ' + b + ' = ' + a * b);
-    else body += p('Начни с ' + b + '. За каждую следующую группу прибавляй ещё ' + b + '. Считай группы, чтобы не пропустить ни одну.');
+    else body += p('Начни с ' + b + '. Каждый раз прибавляй ещё ' + b + '. Всего нужно взять это число ' + a + ' раз.');
     return body;
   }
   function divide(total, base, level, exact = true) {
     if (!natural(total) || !natural(base) || !base || (exact ? total / base > 10 || total % base : total / base >= 10)) return '';
     const n = Math.floor(total / base);
     if (!exact) {
+      if (level === 2) return highlight('Пробуй: □ × ' + base + ' = ?. Получилось больше ' + total + ' — возьми цифру поменьше. Иначе проверь следующую цифру. После 9 не увеличивай. Впиши одну цифру.');
       const product = base * n;
       const rows = Array.from({length:10}, (_, digit) => {
         const chosen = digit === n, tooMuch = digit === n + 1;
@@ -156,9 +158,15 @@
       if (!m || step !== 0 || !sameAnswer(q, Math.floor(+m[1] / +m[2])) || +m[2] <= 0 || +m[1] / +m[2] >= 10) return null;
       return {action:q, base:+m[2], cycle:{partial:+m[1], qd:Math.floor(+m[1] / +m[2])}};
     }
-    if(spec.contentId==='multiplication-division/course-digit-choice'&&q.kind==='digit'&&q===spec.steps?.[step]){
-      const m=text(q.prompt).match(/для (\d+) : (\d+)/);
+    if(q.kind==='digit'&&q===spec.steps?.[step]&&(C?.has(spec.contentId)||spec.contentId==='multiplication-division/quotient-estimate')){
+      const value=text(q.prompt), direct=value.match(/для (\d+) : (\d+)/), inverse=value.match(/Какую цифру умножили на (\d+), чтобы получить (\d+)/);
+      const m=direct || (inverse ? [inverse[0],inverse[2],inverse[1]] : null);
       if(m&&+m[2]>0&&+m[1]<10*+m[2]&&sameAnswer(q,Math.floor(+m[1]/+m[2])))return {action:q,base:+m[2],cycle:{partial:+m[1],qd:Math.floor(+m[1]/+m[2])}};
+    }
+    if (D && C?.has(spec.contentId) && q===spec.steps?.[step] && q.visual && ['first','bring'].includes(q.visual.kind)) {
+      const v=q.visual, plan=D.plan({level:Number(v.divisor)<10?'oneDigit':'twoDigit',dividend:String(v.digits),divisor:String(v.divisor)});
+      const action=plan.actions.find(a=>a.kind===q.kind&&a.sourceIndex===v.sourceIndex);
+      if(action&&sameAnswer(q,Number(action.answer)))return {plan,action,base:plan.normalizedDivisor,cycle:plan.cycles[action.cycle]};
     }
     if (!D || !spec.divisionTask || !spec.steps?.[step]) return null;
     const segment = (spec.divisionTasks || []).find(t => step >= t.startIndex && step < t.endIndex);
@@ -166,42 +174,141 @@
     if (!action || action.kind !== q.kind || (!C?.has(spec.contentId)&&action.prompt !== q.prompt) || action.answer !== q.answer) return null;
     return {plan, action, base:plan.normalizedDivisor, cycle:plan.cycles[action.cycle]};
   }
+  function numericError(answer, fallback, oneDigit = false) {
+    const raw=String(answer??'').trim();
+    if(raw && (oneDigit ? !/^\d$/.test(raw) : !/^\d+(?:[,.]\d+)?$/.test(raw))) return oneDigit?'Впиши только одну цифру — от 0 до 9.':'Впиши только число, без знака действия.';
+    return fallback;
+  }
+  function multiplicationHint(a,b) {
+    if(a===0||b===0)return 'Здесь умножаем на 0: не берём ни одного раза. Подумай, сколько тогда получится.';
+    const count=Math.min(a,b),value=Math.max(a,b);
+    if(count===1)return 'При умножении на 1 число не меняется. Посмотри на другое число в '+a+' × '+b+'.';
+    if(count<=9)return 'Вместо '+a+' × '+b+' можно сложить: '+Array(count).fill(value).join(' + ')+' = ?.';
+    return 'Умножь только эти числа: '+a+' × '+b+' = ?.';
+  }
+  function arithmeticPresentation(q, answer) {
+    const value=text(q.prompt), m=value.match(/(\d+)\s*([×·+−-]|:)\s*(\d+)\s*=\s*\?/);
+    if(!m)return null;
+    const x=+m[1],y=+m[3],op=m[2],expected=op==='+'?x+y:op==='−'||op==='-'?x-y:op===':'?x/y:x*y;
+    if(!sameAnswer(q,expected))return null;
+    let hint,error;
+    if(op==='×'||op==='·'){
+      hint=multiplicationHint(x,y);
+      error=Number(answer)===x+y && x+y!==expected?'Ты сложил '+x+' и '+y+'. Здесь знак ×: нужно умножить. '+hint:hint;
+    }else if(op==='+'||op==='−'||op==='-'){
+      hint=(op==='+'?'Сложи: ':'Вычти: ')+x+' '+op+' '+y+' = ?.';
+      error=op==='+'?hint:'Вычитай из '+x+' число '+y+'. '+hint;
+    }else{
+      hint=x%10===0&&y%10===0?'Убери по одному нулю: '+x/10+' : '+y/10+' = ?.':'Подбери число: □ × '+y+' = '+x+'.';
+      error=hint;
+    }
+    return {prompt:value,hint,error:numericError(answer,error,q.kind==='digit')};
+  }
+  // Presentation only: use the saved numbers and metadata, without altering a step.
+  function columnPresentation(spec,q,step,answer) {
+    const task=spec?.task?.multiplication,m=q?.multiplication;
+    if(!spec?.contentId?.startsWith('multiplication-division/course-column-')||q!==spec.steps?.[step]||!task||!m)return null;
+    const ad=String(task.a).split('').reverse().map(Number),bd=String(task.b).split('').reverse().map(Number);
+    const x=ad[m.operandColumn],y=bd[m.multiplierColumn],raw=String(answer??'').trim(),n=Number(raw);
+    const carryAt=spec.steps.slice(0,step).flatMap(s=>s.multiplication?.effects||[]).filter(e=>e.carry&&e.row===m.row&&e.col===m.col).at(-1)?.digit||0;
+    let hint='',error='',prompt=text(q.prompt),match;
+    if(m.phase==='multiply'&&m.event==='calculate'&&sameAnswer(q,x*y)){
+      const shift=m.operandColumn===0&&m.multiplierColumn>0?(m.multiplierColumn===1?'Вторую строку начинаем на одну клетку левее. ':'Третью строку начинаем на две клетки левее первой. '):'';
+      hint=shift+multiplicationHint(x,y);
+      error=n===x+y&&x+y!==x*y?'Ты сложил цифры. Здесь нужно умножить: '+x+' × '+y+' = ?.':hint;
+      if(raw&&x*y>0&&m.multiplierColumn>0&&(n===x*y*10||n===x*y*10**m.multiplierColumn))error='Строка уже сдвинута в клетках. Сейчас умножь только '+x+' × '+y+'. Нули к этому ответу не дописывай.';
+    }else if(m.phase==='multiply'&&m.event==='add-carry'&&sameAnswer(q,x*y+carryAt)&&carryAt){
+      hint='В уме '+carryAt+'. Прибавь его: '+x*y+' + '+carryAt+' = ?.';
+      error=n===x*y?'Умножение ты посчитал. Но в уме осталось '+carryAt+'. Теперь прибавь: '+x*y+' + '+carryAt+' = ?.':hint;
+    }else if(m.event==='write'&&(match=prompt.match(/^Получилось (\d+)\./))&&sameAnswer(q,+match[1]%10)){
+      const total=+match[1];
+      hint='Посмотри на число '+total+'. В выделенную клетку запиши только последнюю цифру справа.';
+      error=raw.length>1?'Ты записал целое число. Здесь нужна только последняя цифра числа '+total+'.':n===Math.floor(total/10)&&total>9?'Левая часть числа остаётся в уме. В клетку нужна последняя цифра справа в числе '+total+'.':hint;
+    }else if(m.event==='carry'){
+      const previous=spec.steps.slice(0,step).reverse().find(s=>s.multiplication?.row===m.row&&s.multiplication?.event==='write'&&/^Получилось \d+\./.test(s.prompt));
+      const value=previous?.prompt.match(/^Получилось (\d+)\./)?.[1];
+      if(value===undefined||!sameAnswer(q,Math.floor(+value/10)))return null;
+      hint='В числе '+value+' закрой последнюю цифру справа. То, что осталось слева, оставь в уме.';
+      error=n===+value%10?'Последнюю цифру уже записали в клетку. Теперь закрой её в числе '+value+' и запиши то, что слева.':hint;
+    }else if(m.event==='write'&&(match=prompt.match(/^Осталось (\d+)\./))&&sameAnswer(q,+match[1])){
+      hint='Посмотри на число, которое осталось в уме. Запиши его в пустую клетку слева от уже записанных цифр.';error=hint;
+    }else if(m.phase==='add'&&m.event==='calculate'){
+      const sum=prompt.match(/Сложи: (\d+(?: \+ \d+)+) = \?/),values=sum?.[1].split(' + ').map(Number);
+      if(!values||!sameAnswer(q,values.reduce((a,b)=>a+b,0)))return null;
+      hint='Сложи числа в выделенных клетках: '+sum[1]+' = ?.'+(carryAt?' Последнее число '+carryAt+' — это то, что в уме.':'');
+      error=carryAt&&n===Number(q.answer)-carryAt?'Ты сложил цифры строк, но забыл '+carryAt+' в уме. '+hint:hint;
+    }else if(m.event==='answer'&&sameAnswer(q,task.a*task.b)){
+      hint='Прочитай самую нижнюю строку слева направо. Перепиши все цифры, сохрани нули.';error=hint;
+      const unshifted=bd.reduce((sum,digit)=>sum+task.a*digit,0);
+      if(task.b>=10&&n===unshifted&&unshifted!==task.a*task.b)error='Вторая строка начинается левее первой'+(task.b>=100?'; третья — ещё левее': '')+'. Складывай цифры, которые стоят друг под другом. Затем прочитай нижнюю строку.';
+    }
+    if(!hint)return null;
+    if(q.kind==='digit'&&!/^\d$/.test(raw)&&raw&&!(m.event==='write'&&/^\d{2,}$/.test(raw)))error='В эту клетку нужна одна цифра — от 0 до 9. '+hint;
+    return {prompt,hint,error:error||hint};
+  }
+  function coursePresentation(spec,q,step,answer) {
+    if(q!==spec.steps?.[step]||!(C?.has(spec.contentId)||spec.contentId==='multiplication-division/quotient-estimate'))return null;
+    const value=text(q.prompt),arith=arithmeticPresentation(q,answer);if(arith)return arith;
+    let hint='',m;
+    if(q.kind==='round'&&(m=value.match(/округли (\d+)/i))&&sameAnswer(q,Math.floor((+m[1]+5)/10)*10))hint=+m[1]%10===0?'Число '+m[1]+' уже оканчивается на 0. Ничего не меняй.':'Посмотри на последнюю цифру числа '+m[1]+'. Если это 1–4, иди к круглому числу вниз. Если 5–9 — вверх.';
+    else if(q.kind==='digit'&&/Уменьши проверенную цифру на 1|Увеличь проверенную цифру на 1/.test(value)){
+      const previous=spec.steps[step-1],trial=text(previous?.prompt).match(/(\d+) × \d+ = \?/),direction=/Уменьши/.test(value)?-1:1;
+      if(trial&&sameAnswer(q,+trial[1]+direction))hint=(direction<0?'Уменьши':'Увеличь')+' последнюю проверенную цифру на 1: '+trial[1]+(direction<0?' − ':' + ')+'1 = ?.';
+    }else if(q.kind==='digit'&&/Какую цифру попробуем первой/.test(value))hint='Посмотри на результат предыдущей прикидки. Возьми эту цифру для проверки.';
+    else if(q.kind==='digit'&&/самую большую цифру/.test(value))hint='Нужна одна цифра. Посмотри на ряд: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. Возьми последнюю.';
+    else if(q.kind==='digit'&&/Даже 1 ×/.test(value))hint='Даже один раз взять число справа — слишком много. Подумай, какая цифра означает «ни одного раза».';
+    else if(q.kind==='answer'&&/Собери/.test(value)){
+      const group=(spec.divisionTasks||[]).find(t=>step>=t.startIndex&&step<t.endIndex);
+      const count=spec.steps.slice(group?.startIndex||0,step).filter(s=>s.kind==='digit'&&/Вычти:/.test(s.prompt)).length;
+      hint='Вычитали справа налево. Собери '+(count===3?'три':'две')+' полученные цифры в обратном порядке: последнюю — слева. Начальные нули не пиши.';
+    }
+    else if(q.kind==='product'&&/Сколько в ней десятков/.test(value))hint='Считай по 10, пока не получится 100. Посчитай, сколько раз взяли 10.';
+    else if(q.kind==='digit'&&/Сколько десятков останется из 10/.test(value))hint='Из 10 отдай 1: 10 − 1 = ?.';
+    else if(q.kind==='answer'){
+      const group=(spec.divisionTasks||[]).find(t=>step>=t.startIndex&&step<t.endIndex);
+      if(group?.task)hint='Реши '+group.task.dividend+' : '+group.task.divisor+' уголком. Начни с цифр слева: возьми самое короткое число, которое не меньше '+group.task.divisor+'.';
+    }
+    return hint?{prompt:value,hint,error:numericError(answer,hint,q.kind==='digit')}:null;
+  }
   function present(spec, q, options = {}) {
     if (options.scope !== 'step') return null;
-    if((C?.has(spec?.contentId)||spec?.contentId==='multiplication-division/quotient-estimate')&&q&&q===spec.steps?.[options.step??0])return {prompt:q.prompt,hint:q.hint,error:q.error||'Проверь вычисление. Если трудно, открой подсказку.'};
     try {
-      const c = divisionContext(spec, q, options.step ?? 0);
-      if (!c) return null;
-      if(C?.has(spec.contentId))return {prompt:q.prompt,hint:q.hint,error:q.error||'Проверь вычисление. Если трудно, открой подсказку.'};
+      const step=options.step??0,column=columnPresentation(spec,q,step,options.answer);if(column)return column;
+      const c = divisionContext(spec, q, step);
+      if (!c) return coursePresentation(spec,q,step,options.answer);
       const {plan, action:a, base, cycle} = c;
       let prompt = '', hint = '', error = '';
+      const raw = String(options.answer ?? '').trim(), n=Number(raw);
       if (a.kind === 'digit') {
         prompt = 'Подбери одну цифру: □ × ' + base + '. Нужно самое большое число, которое не больше ' + cycle.partial + '.';
-        hint = 'Умножай цифры от 0 до 9 на ' + base + '. Из результатов, которые не больше ' + cycle.partial + ', выбери самый большой. Впиши одну цифру.';
-        const raw = String(options.answer ?? '').trim();
+        hint = 'Пробуй: □ × ' + base + ' = ?. Получилось больше ' + cycle.partial + ' — возьми цифру поменьше. Иначе проверь следующую цифру. После 9 не увеличивай. Впиши одну цифру.';
         if (/^\d$/.test(raw)) {
-          const n = Number(raw), total = n * base;
-          error = total > cycle.partial ? n + ' × ' + base + ' = ' + total + '. Это больше ' + cycle.partial + '. Попробуй цифру поменьше.'
-            : n < cycle.qd ? n + ' × ' + base + ' = ' + total + '. Можно умножить на цифру побольше.' : '';
+          const total = n * base;
+          error = total > cycle.partial ? n + ' × ' + base + ' = ' + total + '. Это больше ' + cycle.partial + ': слишком много. Попробуй цифру поменьше.'
+            : n < cycle.qd ? n + ' × ' + base + ' = ' + total + '. Это слишком мало: можно взять цифру побольше. Проверь следующую.' : '';
         } else if (raw) error = 'Впиши только одну цифру — от 0 до 9.';
       } else if (a.kind === 'start') {
         prompt = 'С какого числа слева начнём делить на ' + base + '?';
-        hint = 'Начни с первой цифры слева. Если число меньше ' + base + ', возьми ещё одну цифру справа. Остановись, когда число станет ' + base + ' или больше. За запятую пока не переходи.';
-        if (Number(a.answer) < base) hint = 'Возьми все цифры сверху до запятой. Запиши это число. Оно меньше ' + base + ', поэтому следующей цифрой ответа будет 0.';
+        hint = 'Сравни первую цифру слева, ' + plan.digits[0] + ', с ' + base + '. Если её мало, возьми ещё одну цифру справа. Остановись, как только числа хватит. За запятую пока не переходи.';
+        if (Number(a.answer) < base) hint = 'Возьми все цифры сверху до запятой. Запиши это число: его пока не хватает, чтобы взять ' + base + ' хотя бы один раз.';
       } else if (a.kind === 'product') {
         prompt = 'Умножь: ' + base + ' × ' + cycle.qd + ' = ?';
-        hint = 'Возьми ' + base + ' по ' + cycle.qd + ' раз. Запиши, сколько получилось.';
+        hint = multiplicationHint(cycle.qd,base);
+        error=n===cycle.qd+base&&n!==cycle.product?'Ты сложил числа. Здесь нужно умножить: '+cycle.qd+' × '+base+' = ?.':hint;
       } else if (a.kind === 'subtract') {
         prompt = 'Сколько осталось: ' + cycle.partial + ' − ' + cycle.product + ' = ?';
-        hint = 'Из ' + cycle.partial + ' вычти ' + cycle.product + '. Запиши, сколько осталось.';
+        hint = 'Из ' + cycle.partial + ' вычти ' + cycle.product + ': ' + cycle.partial + ' − ' + cycle.product + ' = ?.';
+        error=n===cycle.partial+cycle.product&&n!==Number(a.answer)?'Ты прибавил. Сейчас нужно вычесть: '+cycle.partial+' − '+cycle.product+' = ?.':hint;
       } else if (a.kind === 'bring') {
         prompt = a.appended ? 'Какую цифру допишем справа после запятой?' : 'Какую следующую цифру сверху перенесём вниз?';
-        hint = a.appended ? 'После запятой справа можно дописать 0. Число от этого не изменится. Впиши 0.' : 'Посмотри на выделенную цифру в верхней строке. Впиши только её. Ноль тоже нужно переносить.';
+        hint = a.appended ? 'Допиши справа после запятой цифру, которая не меняет число. Вспомни: 1,0 и 1 — одно число.' : 'Посмотри на выделенную цифру в верхней строке. Впиши только её. Ноль тоже нужно переносить.';
+        error=raw&&/^\d{2,}$/.test(raw)?'Сейчас перенеси только одну следующую цифру сверху. Читать всё новое число будем после этого.':hint;
       } else if (a.kind === 'partial') {
         const before = plan.cycles.find(x => x.sourceIndex === a.sourceIndex - 1);
         if (!before) return null;
         prompt = 'Какое число теперь будем делить на ' + base + '?';
         hint = 'Осталось ' + before.remainder + '. Справа припиши цифру ' + plan.digits[a.sourceIndex] + '. Прочитай полученное число.' + (before.remainder === 0 ? ' Ноль в начале не пиши.' : '');
+        error=before.remainder&&n===before.remainder+Number(plan.digits[a.sourceIndex])?'Не складывай эти числа. К '+before.remainder+' справа припиши цифру '+plan.digits[a.sourceIndex]+'.':hint;
       } else if (a.kind === 'comma') {
         prompt = 'Перепиши ' + a.answer.slice(0, -1) + ' и поставь справа запятую.';
         hint = 'Продолжим деление после запятой. Сначала поставь запятую в ответе. Впиши число вместе с запятой.';
@@ -213,10 +320,10 @@
         hint = 'Перепиши самое нижнее число слева. Это и есть остаток — то, что осталось.';
       } else if (a.kind === 'verify') {
         prompt = a.prompt;
-        hint = 'Посчитай выражение в вопросе. Должно получиться ' + plan.task.dividend + ' — число, с которого начали.';
+        hint = 'Посчитай выражение в вопросе. Потом сравни с числом слева, с которого начали делить.';
       } else if (a.kind === 'shift-count') {
         prompt = 'Сколько цифр после запятой в числе ' + plan.task.divisor + '?';
-        hint = 'Считай только цифры справа от запятой. Столько шагов вправо потом сделает запятая в каждом из двух чисел.';
+        hint = 'Посмотри на число '+plan.task.divisor+'. Считай только цифры справа от запятой.';
       } else if (a.kind === 'shift-factor') {
         prompt = 'На сколько умножим оба числа?';
         hint = 'Запятая на один шаг вправо — умножаем на 10. На два шага — на 100. На три — на 1000. На четыре — на 10000.';
@@ -231,14 +338,15 @@
   }
   function divisionScaffold(spec, q, step, level) {
     const c = divisionContext(spec, q, step), simple = present(spec, q, {scope:'step', step});
-    if (!c || !simple) return '';
+    if (!simple) return '';
+    if (!c) return section(q.multiplication?'column-multiplication':'arithmetic','Что сделать сейчас',highlight(simple.hint)+(level===3?result('На этом шаге запиши: '+q.answer+'.'):''));
     const {action, base, cycle} = c;
     let body;
     if (action.kind === 'digit') body = divide(cycle.partial, base, level, false);
-    else if (action.kind === 'product') body = p(simple.hint) + multiply(cycle.qd, base, level);
+    else if (action.kind === 'product') body = highlight(simple.hint) + (level===3?multiply(cycle.qd, base, level):'');
     else {
-      body = p(simple.hint);
-      if (action.kind === 'start') {
+      body = highlight(simple.hint);
+      if (level === 3 && action.kind === 'start') {
         const prefix = c.plan.digits.slice(0, action.sourceIndex + 1), smaller = prefix.slice(0, -1).join('');
         if (smaller) body += p(Number(smaller) + ' меньше ' + base + '. Возьми следующую цифру справа: ' + prefix.at(-1) + '.');
         if (Number(action.answer) < base) body += p('До запятой цифры закончились. Начни с этого числа; первой цифрой ответа будет 0.');

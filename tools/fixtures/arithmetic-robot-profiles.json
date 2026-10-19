@@ -1,0 +1,18 @@
+{
+  "schema": "mathexam-synthetic-arithmetic-profiles-v1",
+  "synthetic": true,
+  "claim": "Scripted interface stress tests; these are not real pupils and do not measure human learning.",
+  "profiles": [
+    {"id":"table-fact","difficulty":"Ошибается в таблице умножения","strategy":"table-fact","feedbackPattern":"умнож|слож|раз|таблиц","cases":[["course-column-three-by-one",2],["course-multiply-bridge",11]]},
+    {"id":"forgot-in-mind","difficulty":"Забывает прибавить число, которое в уме","strategy":"forgot-in-mind","feedbackPattern":"в уме|прибав","cases":[["course-column-one-digit",1],["course-column-mixed",103]]},
+    {"id":"whole-number-in-cell","difficulty":"Вписывает весь результат вместо одной цифры","strategy":"whole-number-in-cell","feedbackPattern":"одн. цифр|последн|клетк","cases":[["course-column-four-by-one",1],["course-column-three-by-three",5]]},
+    {"id":"zero-product","difficulty":"При умножении на ноль переписывает другое число","strategy":"zero-product","feedbackPattern":"нул|нол|на 0|× 0","cases":[["course-column-zeros",3],["course-column-zeros",5]]},
+    {"id":"shifted-row","difficulty":"Вычисляет сразу сдвинутую строку вместо произведения двух цифр","strategy":"shifted-row","feedbackPattern":"цифр|строк|умнож|клетк","cases":[["course-column-two-by-three",134],["course-column-mixed",103]]},
+    {"id":"quotient-too-high","difficulty":"Выбирает слишком большую цифру","strategy":"quotient-too-high","feedbackPattern":"больше|меньше|много|уменьш","cases":[["course-digit-choice",1],["course-whole-two-digit",5]]},
+    {"id":"quotient-too-low","difficulty":"Останавливается на слишком маленькой цифре","strategy":"quotient-too-low","feedbackPattern":"больше|мало|увелич|следующ","cases":[["long-division-quotient-digit",1],["course-digit-choice",17]]},
+    {"id":"estimate-is-final","difficulty":"Принимает прикидку за окончательную цифру","strategy":"estimate-is-final","feedbackPattern":"прикид|проверь|исход|больше|меньше|одн. цифр","cases":[["quotient-estimate",1],["course-estimate",16]]},
+    {"id":"subtraction","difficulty":"Ошибается при вычитании, особенно через десяток","strategy":"subtraction","feedbackPattern":"выч|остал|справа|слева|минус|−","cases":[["course-subtract",1],["course-whole-simple",1]]},
+    {"id":"zero-in-division","difficulty":"Пропускает ноль внутри ответа","strategy":"zero-in-division","feedbackPattern":"нул|нол|0|меньше","cases":[["course-zeros",1],["course-zeros",12]]},
+    {"id":"help-and-return","difficulty":"Просит помощь, оставляет черновик и возвращается","strategy":"help-and-return","feedbackPattern":"цифр|умнож|подсказ|проверь|попроб","cases":[["course-bring-digit",1],["course-column-three-by-two",2]]}
+  ]
+}

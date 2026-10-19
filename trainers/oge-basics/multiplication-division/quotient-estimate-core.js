@@ -102,5 +102,33 @@
       ? 'Внутри деления 10032 : 33 после 100 − 99 перенесли цифру 3. Получилось 13. Подбери одну цифру для этого места уголка.'
       : 'Подбери одну цифру для ' + n + ' : ' + d + '. Сначала прикинь, затем проверь.'},lessons:lessons(),steps:p.steps};
   }
-  return Object.freeze({id,title,make,plan,examples});
+  // Version 1 is replayed from saved seeds. New attempts opt in explicitly;
+  // never change make() or the examples it uses when expanding this pool.
+  let generatedPairs;
+  function pairsV2() {
+    if (generatedPairs) return generatedPairs;
+    const pairs=[],seen=new Set();
+    const add=(n,d)=>{const key=n+':'+d;if(!seen.has(key)){seen.add(key);pairs.push(Object.freeze([n,d]));}};
+    examples.forEach(([n,d])=>add(n,d));
+    for(let d=10;d<=99;d++) {
+      // Keep internal zero in the rotation without letting it occupy more
+      // than a third of a rounding course merely because it has many pairs.
+      for(let part=0;part<9;part++)add(Math.floor((d-1)*part/8),d);
+      for(let n=d;n<10*d;n++)if(round(n)%round(d)===0)add(n,d);
+    }
+    generatedPairs=Object.freeze(pairs);
+    return generatedPairs;
+  }
+  function makeV2(seed) {
+    if (!Number.isInteger(seed) || seed < 0 || seed > 4294967295) throw Error('Некорректный вариант задания.');
+    const pairs=pairsV2();
+    // 104729 is prime and larger than this pool. This visits every pair
+    // before repeating, mixes nearby seeds, and still starts seed 1 at 266:33.
+    const [n,d]=pairs[((seed+pairs.length-1)%pairs.length*104729)%pairs.length];
+    const p=plan(n,d);
+    return {family:'division',title,rule,task:{kind:'input',prompt:n<d
+      ? 'Мы уже начали делить. После переноса следующей цифры получилось '+n+'. Подбери одну цифру для '+n+' : '+d+' на этом месте уголка.'
+      : 'Подбери одну цифру для '+n+' : '+d+'. Сначала прикинь, затем проверь.'},lessons:lessons(),steps:p.steps};
+  }
+  return Object.freeze({id,title,make,makeV2,plan,examples});
 });

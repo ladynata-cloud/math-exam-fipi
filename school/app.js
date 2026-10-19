@@ -2,6 +2,9 @@
  'use strict';
  var C=window.WorkshopCurriculum,M=window.WorkshopMath,S=window.WorkshopState,ids=C.lessons.map(function(l){return l.id;}),main=document.getElementById('main'),notice=document.getElementById('notice');
  var restored=S.load(localStorage,ids),state=restored.state,blocked=restored.blocked||false,session=null,returns=[],filter='',area='',teacher=S.teacherBlank(),filePurpose='',activeGroup='',assignmentCode='',flash='',teacherBlocked=false,lastDiagnostic=null;
+ // A bounded history must not freeze practice at one seed after 3000 answers.
+ // Remember the last practice seed before opening the lesson's explanation.
+ var practiceSeeds=Object.create(null);if(state.last&&state.last.mode==='practice')practiceSeeds[state.last.skill]=state.last.seed;
  var missingCourses=!C.pathById;if(missingCourses){C.paths=[];C.pathById=Object.create(null);notice.textContent='Обновите страницу, чтобы загрузить новые учебные маршруты. Прежние уроки и данные доступны.';}
  var activeCourse=new URLSearchParams(location.search).get('course')||'';if(!C.pathById[activeCourse])activeCourse='';
  if(restored.warning)notice.textContent=restored.warning;
@@ -75,7 +78,8 @@
  }
  function begin(id,mode,opts){
   if(!C.byId[id])return;
-  opts=opts||{};var count=state.events.filter(function(e){return e.skill===id;}).length,seed=opts.seed===undefined?(mode==='learn'?0:mode==='practice'?17+count:1001+count*37):opts.seed;
+  opts=opts||{};var count=state.events.filter(function(e){return e.skill===id;}).length,seed=opts.seed===undefined?(mode==='learn'?0:mode==='practice'?(practiceSeeds[id]===undefined?17+count:(practiceSeeds[id]+1)%1000001):1001+count*37):opts.seed;
+  if(mode==='practice')practiceSeeds[id]=seed;
   var chosen=['check','review','diagnostic'].includes(mode)?S.selectTask(state,id,seed,M.generate):{seed:seed,task:M.generate(id,seed)};seed=chosen.seed;
   var t=chosen.task,f=S.fingerprint(id,t),seen=S.expose(state,f);
   session={id:id,mode:mode,seed:seed,task:t,step:0,attempt:0,assisted:false,exposed:seen,correct:false,message:'',claimAnswered:false,diagnostic:opts.diagnostic||null,checkIndex:opts.checkIndex||0};

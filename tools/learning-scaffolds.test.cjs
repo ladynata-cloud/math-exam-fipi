@@ -85,23 +85,29 @@ test('decimal subtraction explains borrowing, including a chain through zeroes',
   assert.match(zeros, /10,00 − 0,05 = 9,95/);
 });
 
-test('digit help highlights the best multiplication and the first larger result', () => {
+test('first digit hint leaves the choice open; explicit solution highlights the best row', () => {
   const spec = freeze(make('multiplication-division/long-division-quotient-digit')), hint = render(spec), solution = render(spec, 3);
-  for (let n = 0; n <= 9; n++) assert(hint.includes('<td>' + n + ' × 16</td><td>' + n * 16));
-  assert.match(hint, /class="lm-scaffold-selected"><th scope="row">5/);
-  assert(hint.includes('<th scope="col">Цифра</th><th scope="col">Умножаем на 16</th><th scope="col">Получилось</th>'));
+  for (let n = 0; n <= 9; n++) assert(solution.includes('<td>' + n + ' × 16</td><td>' + n * 16));
+  assert.match(solution, /class="lm-scaffold-selected"><th scope="row">5/);
+  assert(solution.includes('<th scope="col">Цифра</th><th scope="col">Умножаем на 16</th><th scope="col">Получилось</th>'));
   assert.doesNotMatch(hint, /Группы|Всего|Прибавляем|кратн|делител/);
-  assert.match(hint, /class="lm-digit-too-much"><th scope="row">6/);
-  assert.match(hint, /5 × 16 = 80 — меньше 91. Подходит/);
-  assert.match(hint, /6 × 16 = 96 — уже больше 91/);
-  assert.doesNotMatch(hint, /Цифра частного:|data-scaffold-result/);
+  assert.match(solution, /class="lm-digit-too-much"><th scope="row">6/);
+  assert.match(solution, /5 × 16 = 80 — меньше 91. Подходит/);
+  assert.match(solution, /6 × 16 = 96 — уже больше 91/);
+  assert.doesNotMatch(hint, /Цифра частного:|data-scaffold-result|lm-scaffold-selected|✓ Берём|5 × 16 = 80/);
+  assert.match(hint, /data-help-number>16<\/mark>/);
+  assert.match(hint, /data-help-number>91<\/mark>/);
+  assert.match(hint, /□ ×/);
   assert.match(solution, /На этом шаге запиши: 5/);
 });
 
 test('the first incomplete dividend is explained without exposing the entire quotient', () => {
   const spec = freeze(make('multiplication-division/long-division-one-digit')), hint = render(spec), solution = render(spec, 3);
-  assert.match(hint, /2 меньше 4/);
-  assert.match(hint, /следующую цифру справа: 0/);
+  assert.match(hint.replace(/<[^>]+>/g,''), /первую цифру слева, 2, с 4/);
+  assert.match(hint, /возьми ещё одну цифру справа/);
+  assert.doesNotMatch(hint, /На этом шаге запиши: 20|следующую цифру справа: 0/);
+  assert.match(solution, /2 меньше 4/);
+  assert.match(solution, /следующую цифру справа: 0/);
   assert.doesNotMatch(hint, /510|data-scaffold-result/);
   assert.match(solution, /На этом шаге запиши: 20/);
   assert.doesNotMatch(solution, /Частное: 510/);
@@ -164,11 +170,13 @@ test('zero, nine and too-large/too-small answers get literal support', () => {
   const spec = {contentId:'multiplication-division/long-division-quotient-digit'};
   for (const [total, base, answer] of [[266,33,'8'],[264,33,'8'],[4,7,'0'],[89,9,'9'],[0,7,'0']]) {
     const q = {kind:'digit',prompt:`Какая цифра частного подходит к ${total} : ${base}?`,answer};
-    const hint = ui.render(spec,q,{scope:'step'});
-    assert(!hint.includes('<th scope="row">10</th>'), 'Only the ten single digits are offered');
-    assert(hint.includes('class="lm-scaffold-selected"><th scope="row">'+answer+'</th>'));
-    assert(hint.includes('✓ Берём '+answer));
-    if(total===base*Number(answer)) assert(hint.includes('ровно '+total+'. Подходит.'));
+    const hint = ui.render(spec,q,{scope:'step'}), solution = ui.render(spec,q,{scope:'step',level:3});
+    assert.doesNotMatch(hint,/lm-scaffold-selected|✓ Берём|data-scaffold-result/);
+    assert.match(hint,/data-help-number/);
+    assert(!solution.includes('<th scope="row">10</th>'), 'Only the ten single digits are offered');
+    assert(solution.includes('class="lm-scaffold-selected"><th scope="row">'+answer+'</th>'));
+    assert(solution.includes('✓ Берём '+answer));
+    if(total===base*Number(answer)) assert(solution.includes('ровно '+total+'. Подходит.'));
     assert.doesNotMatch(hint,/data-scaffold-result|кратн|частно|делител|произведени/);
   }
   const q = {kind:'digit',prompt:'Какая цифра частного подходит к 266 : 33?',answer:'8'};
