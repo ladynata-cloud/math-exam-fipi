@@ -19,3 +19,29 @@ for(const stage of C.stages){let f=open(stage.id),t=C.make(stage.id,1);
 for(const invalid of ['{bad',JSON.stringify({id:'add-carry',seed:1,answers:['forged'],errors:0,help:false,draft:'',streak:0})]){const f=open('add-carry',invalid);assert.match(f.$('#storage-note').textContent,/не сохраняется/);submit(f,C.make('add-carry',1).steps[0].answer);assert.equal(f.saved(),invalid);f.dom.window.close();}
 const blocked=open('sub-zeros',null,true);assert(blocked.$('#answer'));blocked.dom.window.close();
 console.log('ARITHMETIC_FOUNDATIONS_DOM_OK: 12 learner journeys, wrong/help/correct, reload each step, fresh example, independent streak, invalid/blocked storage');
+// Accepted digits appear immediately, independently of later actions and reload.
+{
+ let f=open('add-carry'),t=C.make('add-carry',1);assert.equal(t.a,67);assert.equal(t.b,19);
+ const digits=()=>[...f.w.document.querySelectorAll('[data-written-digit]')].map(n=>n.textContent).join('');
+ assert.equal(digits(),'');submit(f,'16');assert.equal(digits(),'');
+ assert.match(f.$('#question').textContent,/крайней справа/);
+ submit(f,'5');assert.equal(digits(),'');submit(f,'6');assert.equal(digits(),'6');
+ let saved=f.saved();f.dom.window.close();f=open('add-carry',saved);assert.equal(digits(),'6');
+ submit(f,'1');assert.equal(digits(),'6');assert.match(f.$('.in-mind').textContent,/В уме 1/);
+ submit(f,'8');assert.equal(digits(),'86');assert.equal(f.$('.in-mind').textContent,'');
+ submit(f,'86');assert(!f.$('#retest'));f.dom.window.close();
+}
+for(const stage of ['add-carry','sub-zeros']){
+ let f=open(stage);
+ for(let seed=1;seed<=3;seed++){
+  for(const q of C.make(stage,seed).steps)submit(f,q.answer);
+  assert.equal(!!f.$('#retest'),seed===3);
+  if(seed<3)f.$('#new').click();
+ }
+ let saved=f.saved();f.dom.window.close();f=open(stage,saved);
+ assert.match(f.$('#retest').href,/afterPractice=1&variant=1$/);
+ f.$('#new').click();assert(!f.$('#retest'));assert.equal(f.$('.result').textContent,'');
+ f.$('#hint').click();for(const q of C.make(stage,4).steps)submit(f,q.answer);
+ assert(!f.$('#retest'),'Assisted completion must not count as independent experience');f.dom.window.close();
+}
+console.log('IMMEDIATE_DIGITS_AND_PRACTICE_RETEST_OK');

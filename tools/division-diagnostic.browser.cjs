@@ -234,7 +234,8 @@ const wrongValue = q => q.kind === 'selection' ? q.answer === '1' ? '2' : '1' : 
         assert.deepEqual(skillsWith('uncertain'), profile.occasional ? [profile.occasional] : [], 'One occasional error remains uncertain');
         assert.match(await page.locator('#diagnostic').innerText(), /Рекомендации относятся только к этим заданиям/);
         const expectedURL = profile.first ? C.skills[profile.first].recommendation.url : '/trainers/oge-basics/multiplication-division/course-simple-check.html';
-        assert.equal(await page.locator('.start-here a').getAttribute('href'), 'https://mathexam.space' + expectedURL, 'First recommendation matches the scripted prerequisite difficulty');
+        const expectedLink=new URL(expectedURL,"https://mathexam.space");if(expectedLink.pathname.endsWith('/arithmetic-foundations.html')){expectedLink.searchParams.set('diagnosticVariant',0);expectedLink.searchParams.set('from','cabinet');}
+        assert.equal(await page.locator('.start-here a').getAttribute('href'), expectedLink.href, 'First recommendation matches the scripted prerequisite difficulty');
         await reloadExact(page);
         await layout(page, profile.id + '-report');
         await screenshot(page, profile.id + '-report-' + profile.width);

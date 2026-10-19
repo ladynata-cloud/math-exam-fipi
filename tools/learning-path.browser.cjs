@@ -73,7 +73,7 @@ const server = http.createServer((req,res)=>{try{
     const hint=photo?await frame('a').evaluate(task=>PathPracticeView.photoProof.lesson(task).hints[0],taskSpec.task):taskSpec.task.steps[0].why;
     assert.equal(event.state.view.hintText,hint,id);
     await hydrate('b',taskSpec,event.state,true);
-    assert.equal(await frame('b').locator('#hintText').innerText(),hint,id);
+    assert.equal(await frame('b').locator('#hintText').textContent(),hint,id);
     const answer=await frame('a').evaluate(task=>PathData.answerText(task.steps[0]),taskSpec.task);
     const choice=taskSpec.task.steps[0].choices?.find(c=>c.value===answer);
     await change('a',f=>choice?f.locator('[data-answer-choice="'+answer+'"]').click():f.locator('#answer').fill(answer));
@@ -139,7 +139,7 @@ const server = http.createServer((req,res)=>{try{
   }
   // Exact raw draft, rejected answer, hint, step progression and silent restore.
   let taskSpec=await spec('equations-fractions',80);await hydrate('a',taskSpec);await change('a',f=>f.locator('#answer').fill('0,333333'));let event=await change('a',f=>f.locator('#answerForm').evaluate(el=>el.requestSubmit()));assert.equal(event.kind,'check');assert.equal(event.details.answer,'0,333333');assert.equal(event.state.work.done,false);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('b').locator('#answer').inputValue(),'0,333333');assert.match(await frame('b').locator('#feedback').innerText(),/неверно/);
-  await change('a',f=>f.locator('[data-stage="2"]').click());event=await change('a',f=>f.locator('#hint').click());assert.equal(event.details.level,1);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('b').locator('#hintText').innerText(),taskSpec.task.steps[0].why);
+  await change('a',f=>f.locator('[data-stage="2"]').click());event=await change('a',f=>f.locator('#hint').click());assert.equal(event.details.level,1);await hydrate('b',taskSpec,event.state,true);assert.equal(await frame('b').locator('#hintText').textContent(),taskSpec.task.steps[0].why);
   await change('a',f=>f.locator('#answer').fill(String(taskSpec.task.steps[0].a)));event=await change('a',f=>f.locator('#answerForm').evaluate(el=>el.requestSubmit()));assert.equal(event.details.scope,'step');assert.equal(event.details.step,0);assert.equal(event.state.work.step,1);assert.deepEqual(event.details.answers,[]);assert.deepEqual(event.state.work.answers,[String(taskSpec.task.steps[0].a)]);await hydrate('b',taskSpec,event.state,true);
   let count=await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length);await frame('b').locator('#answer').evaluate(el=>{el.value='99';el.dispatchEvent(new Event('input',{bubbles:true}));el.closest('form').requestSubmit();});assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,'read-only cannot emit changes');
   await hydrate('b',taskSpec,event.state,true);assert.equal(await page.evaluate(()=>messages.filter(m=>m.id==='b'&&m.data.type==='change').length),count,'hydrate must not fabricate events');

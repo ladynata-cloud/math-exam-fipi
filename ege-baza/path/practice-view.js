@@ -1,8 +1,20 @@
 (function(root){'use strict';
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Format authored mathematical text only; never alter answers or saved work.
+function math(text) {
+ const source=String(text), pattern=/(?<![\p{L}\p{N}_/.:])(?:(\d+)[ \u00a0]+)?(\d+)\/(\d+)(?![\p{L}\p{N}_/])/gu;
+ let html='',end=0;
+ for(const match of source.matchAll(pattern)) {
+  const [raw,whole,num,den]=match;
+  html+=E(source.slice(end,match.index));
+  html+='<span class="math-number" role="math" aria-label="'+E((whole?whole+' целых, ':'')+num+' / '+den)+'">'+(whole?E(whole)+' ':'')+'<span class="math-fraction" aria-hidden="true"><span class="numerator">'+num+'</span><span class="fraction-slash">/</span><span class="denominator">'+den+'</span></span></span>';
+  end=match.index+raw.length;
+ }
+ return html+E(source.slice(end));
+}
 const F=PathData.F;
 function table(headers,rows,caption='Данные задачи'){
- return `<div class="scroll"><table class="task-table"><caption>${E(caption)}</caption><thead><tr>${headers.map(h=>`<th scope="col">${E(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((v,i)=>i?`<td>${E(v)}</td>`:`<th scope="row">${E(v)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+ return `<div class="scroll"><table class="task-table"><caption>${E(caption)}</caption><thead><tr>${headers.map(h=>`<th scope="col">${E(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((v,i)=>i?`<td>${math(v)}</td>`:`<th scope="row">${math(v)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 function chart(d){
  const lo=Math.min(0,...d.values),hi=Math.max(1,...d.values),span=hi-lo||1,n=d.values.length;
@@ -39,9 +51,9 @@ function wrongFeedback(item,answer,fallback) {
 }
 function answerForm(item,limit=4000) {
  const choices=answerChoices(item);
- if(choices)return `<form id="answerForm"><fieldset><legend>Твой ответ: выбери вариант</legend><input id="answer" type="hidden" value=""><div class="actions answer-choices">${choices.map((choice,index)=>`<button type="button" id="answer-choice-${index}" data-answer-choice="${E(choice.value)}" aria-pressed="false">${E(choice.label)}</button>`).join('')}</div></fieldset><button class="primary" type="submit">Проверить</button></form>`;
- const placeholder=item?.answerKind==='match'?'Четыре цифры, например 2413':item?.answerKind==='multi'?'Номера, например 134':item?.answerKind==='solutions'?'Любое подходящее число':'Число или дробь, например 2/3';
- return `<form id="answerForm"><label for="answer">Твой ответ</label><div class="actions"><input id="answer" maxlength="${limit}" autocomplete="off" placeholder="${placeholder}"><button class="primary" type="submit">Проверить</button></div></form>`;
+ if(choices)return `<form id="answerForm"><fieldset><legend>Твой ответ: выбери вариант</legend><input id="answer" type="hidden" value=""><div class="actions answer-choices">${choices.map((choice,index)=>`<button type="button" id="answer-choice-${index}" data-answer-choice="${E(choice.value)}" aria-pressed="false">${math(choice.label)}</button>`).join('')}</div></fieldset><button class="primary" type="submit">Проверить</button></form>`;
+ const placeholder=item?.answerKind==='match'?'Четыре цифры, например 2413':item?.answerKind==='multi'?'Номера, например 134':item?.answerKind==='solutions'?'Любое подходящее число':'Введи число или дробь';
+ return `<form id="answerForm"><label for="answer">Твой ответ</label><div class="actions"><input id="answer" maxlength="${limit}" autocomplete="off" placeholder="${placeholder}" aria-describedby="fraction-input-help"><button class="primary" type="submit">Проверить</button></div><p id="fraction-input-help" class="muted">Дробь ${math("2/3")} вводи с клавиатуры как <code>2/3</code>.</p></form>`;
 }
 function bindChoices(host,onChange) {
  const input=host.querySelector('#answer');if(!input)return;
@@ -49,16 +61,16 @@ function bindChoices(host,onChange) {
  const draw=()=>buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.answerChoice===input.value)));
  buttons.forEach(button=>button.onclick=()=>{if(host.inert)return;input.value=button.dataset.answerChoice;draw();onChange(input.value);});draw();
 }
-function markup(t,omitVisual=false){return `<div class="task-support">${omitVisual?'':visual(t)}${t.labels?`<ol class="match-labels" type="A">${t.labels.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}${t.choices&&!answerChoices(t)?`<ol class="task-choices">${t.choices.map(x=>`<li>${E(x)}</li>`).join('')}</ol>`:''}</div>`;}
-root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices,wrongFeedback};
+function markup(t,omitVisual=false){return `<div class="task-support">${omitVisual?'':visual(t)}${t.labels?`<ol class="match-labels" type="A">${t.labels.map(x=>`<li>${math(x)}</li>`).join('')}</ol>`:''}${t.choices&&!answerChoices(t)?`<ol class="task-choices">${t.choices.map(x=>`<li>${math(x)}</li>`).join('')}</ol>`:''}</div>`;}
+root.PathPracticeView={math,markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices,wrongFeedback};
 if(!root.PathModels)return;
 const previous=PathModels.mount;
 PathModels.mount=function(el,t,options={}){
  const m=t.model,session=PathModels.session(el,m.kind,options),v=session.value,changed=session.changed;
  if(m.kind==='fraction-bars'){
   const [num,den]=m.fractions[0];v.selected=v.selected||[];v.checked=!!v.checked;
-  el.innerHTML=`<p>Построй ${num}/${den} одного целого. Выбирай доли кнопками — мышью, касанием или клавишей пробела.</p><div class="fraction-builder">${Array.from({length:den},(_,i)=>`<button aria-label="Доля ${i+1} из ${den}" aria-pressed="false" data-share="${i}">${i+1}</button>`).join('')}</div><button id="checkShares">Проверить модель</button><p id="modelFeedback" role="status"></p><p>Знаменатель сообщает, на сколько равных частей разделено целое. Числитель — сколько таких частей взято.</p>`;
-  const draw=()=>{el.querySelectorAll('[data-share]').forEach(b=>b.setAttribute('aria-pressed',String(v.selected.includes(+b.dataset.share))));el.querySelector('#modelFeedback').textContent=!v.checked?'':v.checkedCount===num?`Построено верно: ${num} из ${den} равных долей.`:`Выбрано ${v.checkedCount} долей. Нужно ${num}; размер одной доли остаётся 1/${den}.`;};
+  el.innerHTML=`<p>Построй ${math(num+"/"+den)} одного целого. Выбирай доли кнопками — мышью, касанием или клавишей пробела.</p><div class="fraction-builder">${Array.from({length:den},(_,i)=>`<button aria-label="Доля ${i+1} из ${den}" aria-pressed="false" data-share="${i}">${i+1}</button>`).join('')}</div><button id="checkShares">Проверить модель</button><p id="modelFeedback" role="status"></p><p>Знаменатель сообщает, на сколько равных частей разделено целое. Числитель — сколько таких частей взято.</p>`;
+  const draw=()=>{el.querySelectorAll('[data-share]').forEach(b=>b.setAttribute('aria-pressed',String(v.selected.includes(+b.dataset.share))));el.querySelector('#modelFeedback').innerHTML=math(!v.checked?'':v.checkedCount===num?`Построено верно: ${num} из ${den} равных долей.`:`Выбрано ${v.checkedCount} долей. Нужно ${num}; размер одной доли остаётся 1/${den}.`);};
   el.querySelectorAll('[data-share]').forEach(b=>b.onclick=()=>{const n=+b.dataset.share;v.selected=v.selected.includes(n)?v.selected.filter(x=>x!==n):[...v.selected,n];draw();changed();});
   el.querySelector('#checkShares').onclick=()=>{v.checked=true;v.checkedCount=v.selected.length;draw();changed();};draw();return session;
  }
@@ -74,7 +86,7 @@ PathModels.mount=function(el,t,options={}){
  if(m.kind==='ratio-parts'){
   const n=m.a+m.b;v.chosen=v.chosen||[];v.checked=!!v.checked;
   el.innerHTML=`<p>Собери отношение ${m.a}:${m.b}. Первой группе нужны ${m.a} равных долей, второй — ${m.b}. Все ${n} долей составляют ${m.total}${m.unit?' '+E(m.unit):''}.</p><div class="fraction-builder">${Array.from({length:n},(_,i)=>`<button data-ratio="${i}" aria-pressed="false">${i+1}</button>`).join('')}</div><button id="checkRatio">Проверить первую группу</button><p id="ratioRead" role="status"></p>`;
-  const draw=()=>{el.querySelectorAll('[data-ratio]').forEach(b=>b.setAttribute('aria-pressed',String(v.chosen.includes(+b.dataset.ratio))));el.querySelector('#ratioRead').textContent=!v.checked?'':v.checkedCount===m.a?`Первая группа ${m.a}/${n} целого. Одна доля — ${F(m.total/n)}${m.unit?' '+m.unit:''}. Теперь вычисли вторую группу.`:`Выбрано ${v.checkedCount}. Первой группе нужны ${m.a} долей из ${n}, а не из ${m.b}.`;};
+  const draw=()=>{el.querySelectorAll('[data-ratio]').forEach(b=>b.setAttribute('aria-pressed',String(v.chosen.includes(+b.dataset.ratio))));el.querySelector('#ratioRead').innerHTML=math(!v.checked?'':v.checkedCount===m.a?`Первая группа ${m.a}/${n} целого. Одна доля — ${F(m.total/n)}${m.unit?' '+m.unit:''}. Теперь вычисли вторую группу.`:`Выбрано ${v.checkedCount}. Первой группе нужны ${m.a} долей из ${n}, а не из ${m.b}.`);};
   el.querySelectorAll('[data-ratio]').forEach(b=>b.onclick=()=>{const n=+b.dataset.ratio;v.chosen=v.chosen.includes(n)?v.chosen.filter(x=>x!==n):[...v.chosen,n];draw();changed();});el.querySelector('#checkRatio').onclick=()=>{v.checked=true;v.checkedCount=v.chosen.length;draw();changed();};draw();return session;
  }
  if(m.kind==='polygon-build'){
@@ -106,7 +118,7 @@ PathModels.mount=function(el,t,options={}){
  }
  return previous(el,t,options);
 };
-root.PathPracticeView={markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices,wrongFeedback};
+root.PathPracticeView={math,markup,visual,polygon,answerChoices,answerText,answerForm,bindChoices,wrongFeedback};
 })(window);
 
 /* Presentation only: the saved photo task and its answer values stay intact. */

@@ -13,10 +13,20 @@ const root=path.resolve(__dirname,'..'),origin='https://mathexam.space',url=orig
   const task=C.make(stage.id,1);
   for(const [j,q] of task.steps.entries()){
    assert.equal(await page.locator('#question').innerText(),q.prompt);await page.locator('#answer').fill(q.answer);await page.locator('#check').click();
+   const marks=C.written(task,j+1);for(const [col,value] of Object.entries(marks.result))assert.equal(await page.locator('[data-written-digit][data-column="'+col+'"]').textContent(),value);
+   if(stage.id==='add-carry'&&j===1){assert.equal(await page.locator('.result').textContent(),'6');assert.match(await page.locator('#question').textContent(),/Сколько в уме/);if(output)await page.screenshot({path:path.join(output,'immediate-six-before-carry-320.png'),fullPage:true});}
    const key='mathExam.foundations.tab.v1.'+stage.id,before=await page.evaluate(key=>sessionStorage.getItem(key),key);await page.reload();await page.locator('#exercise').waitFor();assert.equal(await page.evaluate(key=>sessionStorage.getItem(key),key),before);assert.equal(JSON.parse(before).answers.length,j+1);
   }
   assert(await page.locator('#new').isVisible());assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   await page.locator('#new').click();assert.equal(await page.evaluate(id=>JSON.parse(sessionStorage.getItem('mathExam.foundations.tab.v1.'+id)).seed,stage.id),2);
+  if(stage.id==='add-carry'){
+   for(let seed=2;seed<=4;seed++){
+    for(const q of C.make(stage.id,seed).steps){await page.locator('#answer').fill(q.answer);await page.locator('#check').click();}
+    assert.equal(await page.locator('#retest').count(),seed===4?1:0);if(seed<4)await page.locator('#new').click();
+   }
+   if(output)await page.screenshot({path:path.join(output,'practice-retest-ready-320.png'),fullPage:true});
+   const [retest]=await Promise.all([page.waitForEvent('popup'),page.locator('#retest').click()]);await retest.locator('[data-do="start"]').waitFor();assert.match(await retest.locator('#diagnostic').textContent(),/ПОСЛЕ ПРАКТИКИ/);await retest.locator('[data-do="start"]').click();assert.equal(await retest.evaluate(()=>JSON.parse(sessionStorage.getItem('mathExam.divisionDiagnostic.tab.v1')).variant),1);await retest.close();
+  }
   assert.deepEqual(errors,[]);await context.close();console.log('PASS foundations '+stage.id+' '+width+'px wrong/help/correct, complete and reload');
  }
 }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
