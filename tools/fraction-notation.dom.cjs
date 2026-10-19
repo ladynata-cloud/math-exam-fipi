@@ -21,6 +21,7 @@ f.dom.window.close();console.log('FRACTION_NOTATION_DOM_OK: mixed/signed fractio
  assert(f.$('.callout .math-fraction'));f.$('#hint').click();
  f.$('#answer').value=w.PathData.answerText(task.steps[0]);f.$('#answer').dispatchEvent(new w.Event('input',{bubbles:true}));f.$('#answerForm').dispatchEvent(new w.Event('submit',{cancelable:true}));
  assert.equal(bridge.getState().work.step,1);assert(f.$('.steps .math-fraction'));
- const saved=w.JSON.parse(JSON.stringify(bridge.getState()));bridge.applyState({taskSpec:spec,state:saved,readOnly:true});assert.equal(JSON.stringify(bridge.getState()),JSON.stringify(saved));assert(f.$('.steps .math-fraction'));assert(!initial.includes('math-fraction'));f.dom.window.close();
+ const saved=w.JSON.parse(JSON.stringify(bridge.getState()));bridge.applyState({taskSpec:spec,state:saved,readOnly:true});assert.equal(JSON.stringify(bridge.getState()),JSON.stringify(saved));assert(f.$('.steps .math-fraction'));assert(!initial.includes('math-fraction'));
+ saved.view.feedback='<img src=x onerror=unsafe()> 2/3';saved.view.feedbackKind='bad';bridge.applyState({taskSpec:spec,state:saved,readOnly:true});assert(!f.$('#feedback img'));assert.equal(f.$('#feedback').textContent,saved.view.feedback);assert(f.$('#feedback .math-fraction'));f.dom.window.close();
 }
 console.log('FRACTION_NOTATION_MANAGED_OK');
