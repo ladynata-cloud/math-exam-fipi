@@ -13,6 +13,7 @@ on:
       - 'trainers/motion-grade6/**'
       - 'tools/motion-grade6-*'
       - 'tools/learning-*'
+      - 'tools/division-diagnostic*'
       - 'tools/arithmetic-*'
       - 'tools/fixtures/arithmetic-*'
       - 'soviet-math/**'
@@ -66,6 +67,8 @@ jobs:
           node tools/learning-arithmetic-robots-compare.cjs
           node --test tools/quotient-estimate.test.cjs
           node --test tools/division-course.test.cjs
+          node tools/division-diagnostic.test.cjs
+          node tools/arithmetic-foundations.test.cjs
           node --test tools/arithmetic-division-generators.test.cjs tools/learning-arithmetic-generation-compat.test.cjs
           node tools/multiplication-column.test.cjs
           node --test tools/learning-multiplication-support.test.cjs
@@ -104,7 +107,11 @@ jobs:
           node tools/learning-division-next.dom.cjs
           node tools/learning-quotient-estimate.dom.cjs
           node tools/learning-division-course.dom.cjs
+          node tools/division-diagnostic.dom.cjs
+          node tools/division-diagnostic-robots.dom.cjs
+          node tools/arithmetic-foundations.dom.cjs
           node tools/learning-division-route.dom.cjs
+          node tools/learning-route-library.dom.cjs
           node tools/learning-rounding-preparation.dom.cjs
           node tools/rounding-stepwise.dom.cjs
           node tools/rounding-stepwise.browser.cjs
@@ -116,6 +123,20 @@ jobs:
           node tools/learning-multiplication-support.dom.cjs
           node tools/learning-assignment-geometry.dom.cjs
           node tools/photo-proof-clear.dom.cjs
+      - name: Division diagnostic mobile and saved-state regression
+        env:
+          DIVISION_DIAGNOSTIC_OUTPUT_DIR: ${{ runner.temp }}/division-diagnostic-evidence
+        run: |
+          node tools/division-diagnostic.browser.cjs
+          node tools/arithmetic-foundations.browser.cjs
+      - name: Division diagnostic visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: division-diagnostic-evidence
+          path: ${{ runner.temp }}/division-diagnostic-evidence/
+          if-no-files-found: warn
+          retention-days: 7
       - name: Arithmetic learner robots with mistakes, help and saved work
         run: |
           mkdir -p "$RUNNER_TEMP/arithmetic-robots"

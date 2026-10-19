@@ -78,7 +78,8 @@ test('public route preserves saved work and both progress counters when opening 
  const host=w.document.getElementById('division-course-stages'),preparation=assertPrep(host);
  assert.match(preparation.textContent,/не входит в счётчик шагов/);
  assert.deepEqual([...host.querySelectorAll('progress')].map(p=>[p.value,p.max]),[[0,16],[0,15]]);
- assert.equal(host.querySelectorAll('.division-course-step').length,31);
+ assert.equal(host.querySelectorAll('[data-arithmetic-track] .division-course-step').length,31);
+ assert.equal(host.querySelectorAll('[data-foundation-track] .division-course-step').length,12);
  preparation.querySelector('a').dispatchEvent(new w.MouseEvent('click',{bubbles:true,cancelable:true}));
  w.dispatchEvent(new w.Event('pageshow'));assertPrep(host);
  assert.deepEqual(writes,[]);assert.deepEqual([...records],[['unrelated','keep verbatim']]);w.close();

@@ -2,6 +2,17 @@
 
 Updated: 2026-10-19 (Asia/Novosibirsk)
 
+## Current task: entry diagnostic for division
+
+- PR265 is merged as `b8444fd106478c8cbb0a21d89f0f0958fd9fa124`;
+  Pages39187074868 and EGE base39187075320 succeeded on that exact commit.
+- The owner requests an initial diagnostic with arrow-based first-digit
+  selection, concrete skill recommendations and an entry before the existing
+  two routes in the pupil cabinet. [Scope](tasks/DIVISION_ENTRY_DIAGNOSTIC.md),
+  MEDIUM. No pupil records, assignments or managed progress are changed.
+- Next: complete independent review and exact-head CI; publish the requested
+  cabinet entry; verify both public and cabinet delivery.
+
 ## Current task: rounding before estimation
 
 - PR264 is published as `cf3b55bdbb338ac27f7dfb4b14bf4fb824a3aecb`.
@@ -1284,3 +1295,10 @@ At the start of each approved task, compare this snapshot with actual remote
 `main`, open PRs, gates and production evidence. Update it within that task when
 stale and keep exactly the next three concrete actions. Never predict a
 successful merge or deployment before it happens.
+
+
+The in-flight PR266 scope now includes the owner-requested six-step addition
+and six-step subtraction prerequisite ladders. They appear alongside the two
+existing cabinet tracks and use separate tab-local practice. Diagnostic links
+point to the relevant carry/borrow stage. Production publication remains pending
+final exact-head CI and deployment verification; see PR266 for current evidence.

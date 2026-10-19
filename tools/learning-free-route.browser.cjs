@@ -67,7 +67,8 @@ async function navigate(page, route) {
   if (route === 'route') {
     await page.locator('[data-route-library]').waitFor();
     if (await page.locator('.mw-dialog[open]').count()) await page.locator('[data-mw-close]').click();
-    await page.locator('[data-route-library] > summary').click();
+    if (!await page.locator('[data-route-library]').evaluate(node => node.open)) await page.locator('[data-route-library] > summary').click();
+    await page.locator('[data-route-library][open]').waitFor();
   }
 }
 async function storage(page) {
