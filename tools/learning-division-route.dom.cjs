@@ -27,6 +27,41 @@ function fixture(role='student',api=async()=>({progress:[]})){
 }
 const progress=(stage,outcome,completed=true,id='saved')=>({trainerId:'oge-basics',contentId:stage.id,completed,latest:{id,contentId:stage.id,trainerId:'oge-basics',outcome}});
 
+test('entry diagnostic opens before both routes without creating attempts or changing their progress',async()=>{
+ for(const role of ['student','teacher']){
+  const f=fixture(role);await flush();
+  const entry=f.host.querySelector('[data-division-diagnostic]'),link=entry.querySelector('a');
+  assert.equal(entry.querySelector('h2').textContent,'С чего мне начать?');
+  assert.equal(link.textContent,'Проверить себя');
+  assert.equal(link.href,'https://mathexam.space/trainers/oge-basics/multiplication-division/division-diagnostic.html?from=cabinet');
+  assert.equal(link.target,'_blank');assert(link.rel.includes('noopener'));
+  assert(entry.compareDocumentPosition(f.host.querySelector('.division-course-track-links'))&f.w.Node.DOCUMENT_POSITION_FOLLOWING);
+  assert.match(entry.textContent,/только в браузере/);
+  assert.match(entry.textContent,/не входит в прогресс кабинета/);
+  assert.match(entry.textContent,/вернись в кабинет/);
+  assert.equal(entry.querySelector('button'),null,'An external check is not a managed attempt');
+  assert.equal(f.calls.length,0);assert.deepEqual(f.reads,role==='student'?['/progress']:[]);
+  assert.equal(f.host.querySelectorAll('[data-division-stage]').length,allStages.length);
+  f.dispose();f.dom.window.close();
+ }
+});
+
+test('public diagnostic entry uses a local destination before both unchanged course routes',()=>{
+ const dom=new JSDOM(read('trainers/oge-basics/multiplication-division/division-course.html'),{url:'https://mathexam.space/trainers/oge-basics/multiplication-division/division-course.html',runScripts:'outside-only'}),w=dom.window;
+ w.eval(read('learning/division-course-map.js'));
+ w.eval(read('trainers/oge-basics/multiplication-division/division-course.js'));
+ const entry=w.document.querySelector('[data-division-diagnostic]'),link=entry.querySelector('a');
+ assert.equal(entry.querySelector('h2').textContent,'С чего мне начать?');
+ assert.equal(link.getAttribute('href'),'division-diagnostic.html');
+ assert.equal(link.textContent,'Проверить себя');
+ assert(entry.compareDocumentPosition(w.document.querySelector('.division-course-track-links'))&w.Node.DOCUMENT_POSITION_FOLLOWING);
+ assert.match(entry.textContent,/только в этом браузере/);
+ assert.equal(w.localStorage.length,0,'Opening the route page must not create a diagnostic result or course progress');
+ assert.deepEqual([...w.document.querySelectorAll('.division-course-track-heading progress')].map(node=>[node.value,node.max]),[[0,16],[0,15]]);
+ assert.equal(w.document.querySelectorAll('.division-course-step').length,allStages.length);
+ dom.window.close();
+});
+
 test('two independent navigation tracks retain all 17 canonical steps and include column multiplication',async()=>{
  const f=fixture();await flush();
  assert.equal(f.w.DivisionLab,undefined);
