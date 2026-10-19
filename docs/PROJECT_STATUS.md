@@ -2,7 +2,21 @@
 
 Updated: 2026-10-19 (Asia/Novosibirsk)
 
-## Current task: arithmetic learner robots and continuous practice
+## Current task: rounding before estimation
+
+- PR264 is published as `cf3b55bdbb338ac27f7dfb4b14bf4fb824a3aecb`.
+  The reviewed tree and merge parent matched; all eight exact-head workflows
+  and Pages39183528548 passed. 89 public/cabinet asset responses matched, durable
+  storage was healthy and the live routes and public trainer were verified.
+- The owner requests Claude's existing stepwise rounding trainer immediately
+  before estimation, with explicit tens, hundreds and larger-place practice.
+  Cloud completion and publication are explicitly authorized in this task.
+- [Approved scope](tasks/ROUNDING_BEFORE_ESTIMATION.md), MEDIUM. Existing cabinet
+  attempts/progress remain intact; separate rounding practice is clearly labelled.
+- Next three actions: verify the trainer and both routes; review exact-head
+  checks and publish the authorized PR; verify deployment and live navigation.
+
+## Completed task: arithmetic learner robots and continuous practice
 
 - PR263 is published as `7183175263bfc11ff475220776d08243bb82abbd`.
   Its parent and composed tree matched the reviewed release. Seven exact-head

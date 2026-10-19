@@ -1,20 +1,22 @@
 {
   "schemaVersion": 1,
   "auditDate": "2026-10-19",
-  "baseline": "7183175",
+  "baseline": "cf3b55b",
   "source": "learning/division-course-map.js",
-  "sourceSHA256": "13bbde8caae417cdf1bf9b1771d0e8f86185e51dd05d90354872c8f4053f1512",
+  "sourceSHA256": "4ff6c330e52910e31368a0f8e11082477aebca6e34e4419a816ff360a841888d",
   "counts": {
     "primary": 31,
+    "preparation": 1,
     "supplement": 77,
     "aliases": 10,
-    "linkedURLs": 118,
-    "withHub": 119,
-    "sharedImplementationFamilies": 16
+    "linkedURLs": 119,
+    "withHub": 120,
+    "sharedImplementationFamilies": 17
   },
-  "method": "Source inspection and deterministic 200-seed samples where a pure API exists. Condition fingerprints exclude seed/identity. DOM continuation coverage is tools/arithmetic-supplements.dom.cjs; primary-route robots are separate. A finite set of mathematical facts is distinct from a UI that stops accepting attempts. This is not a claim that 118 URLs are 118 distinct engines or that every exam prototype has infinite new variants.",
+  "method": "Source inspection and deterministic 200-seed samples where a pure API exists. Condition fingerprints exclude seed/identity. DOM continuation coverage is tools/arithmetic-supplements.dom.cjs; rounding preparation is covered by tools/rounding-stepwise.dom.cjs and tools/learning-rounding-preparation.dom.cjs; primary-route robots are separate. A finite set of mathematical facts is distinct from a UI that stops accepting attempts. This is not a claim that 119 URLs are 119 distinct engines or that every exam prototype has infinite new variants.",
   "categories": {
     "seeded-generated-practice": 89,
+    "generated-place-practice": 1,
     "generated-arithmetic-practice": 9,
     "generated-table-practice": 1,
     "authored-cycle-with-generated-continuation": 10,
@@ -1029,6 +1031,40 @@
           "trainers/oge-basics/learning-managed.js:lm-new",
           "trainers/oge-basics/learning-contracts.js:create",
           "trainers/oge-basics/multiplication-division/course-independent-check.html"
+        ]
+      }
+    },
+    {
+      "id": "rounding-stepwise",
+      "title": "Сначала потренируем округление",
+      "scope": "preparation",
+      "track": "division",
+      "beforeStage": "multiplication-division/course-estimate",
+      "url": "/trainers/rounding-stepwise.html?place=1&from=division",
+      "sourceFile": "trainers/rounding-stepwise.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "claude-rounding",
+      "practice": {
+        "category": "generated-place-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "notes": "Claude stepwise rounding trainer. Nine selectable places from hundredths to millions, plus mixed practice; generated attempts continue without a session cap. The division preparation opens at tens. This separate exercise does not enter either managed route counter.",
+        "evidence": [
+          "trainers/rounding-stepwise.html",
+          "tools/rounding-stepwise.dom.cjs",
+          "tools/rounding-stepwise.browser.cjs",
+          "tools/learning-rounding-preparation.dom.cjs"
+        ],
+        "places": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          0,
+          -1,
+          -2
         ]
       }
     },

@@ -4,7 +4,7 @@ Date: 2026-10-19. Baseline: `7183175`. Scope: links authored in `learning/divisi
 
 ## Coverage
 
-The map contains **16 multiplication steps, 15 division steps, 77 supplementary cards, and 10 alternative lesson links**. These are **118 distinct linked URLs**, or **119 URLs including the hub**. They use **16 shared implementation families**; this is not a claim of 118 separate mathematical engines. For example, 48 school URLs share the workshop, nine arithmetic URLs share one level-based trainer, and ten Soviet topics share one authored-example application.
+The original audit at `7183175` covered **16 multiplication steps, 15 division steps, 77 supplementary cards, and 10 alternative lesson links**: **118 distinct linked URLs**, or **119 URLs including the hub**, across **16 shared implementation families**. The rounding preparation update, based on `cf3b55b`, adds one separate Claude rounding exercise immediately before estimation. The current manifest therefore contains **31 primary steps, 1 preparation, 77 supplementary cards, and 10 aliases**: **119 distinct linked URLs**, **120 including the hub**, and **17 shared implementation families**. Managed progress still counts only 16 multiplication and 15 division steps; the preparation is not an assigned cabinet task. These URL counts do not represent separate mathematical engines. For example, 48 school URLs share the workshop, nine arithmetic URLs share one level-based trainer, and ten Soviet topics share one authored-example application.
 
 The complete per-URL manifest, including title, category, repeat control, source evidence, aliases, sample diversity, and continuation targets, is `tools/fixtures/arithmetic-practice-inventory.json`. Rebuild with:
 
@@ -13,7 +13,7 @@ node tools/arithmetic-practice-inventory.cjs --write
 node tools/arithmetic-practice-inventory.cjs --check
 ```
 
-The tool checks local paths and supported school, Soviet, arithmetic-level, and generated-fraction identifiers. It samples seeds 0–199 through pure generator APIs where available. Fingerprints use conditions and questions, **excluding seed and identity fields**. Current default contract generation is sampled; preserved version-1 tasks are not mistaken for new generation. Sampling measures observed diversity, not an infinite number of distinct possible mathematical facts. Standalone generators without a pure exported API are identified by source inspection and exercised by the focused DOM tests.
+The tool checks local paths and supported school, Soviet, arithmetic-level, and generated-fraction identifiers. It also requires the exact rounding-preparation query `?place=1&from=division`, which starts at tens and provides the division return route. It samples seeds 0–199 through pure generator APIs where available. Fingerprints use conditions and questions, **excluding seed and identity fields**. Current default contract generation is sampled; preserved version-1 tasks are not mistaken for new generation. Sampling measures observed diversity, not an infinite number of distinct possible mathematical facts. Standalone generators without a pure exported API are identified by source inspection and exercised by the focused DOM tests.
 
 | Practice category | Linked URLs |
 | --- | ---: |
@@ -28,7 +28,8 @@ The tool checks local paths and supported school, Soviet, arithmetic-level, and 
 | Small fraction-expression families with a generated continuation | 2 |
 | Fixed OGE fraction bank with generated arithmetic continuation | 1 |
 | Generated formula practice | 2 |
-| **Total linked URLs** | **118** |
+| Claude stepwise rounding with nine selectable places | 1 |
+| **Total linked URLs** | **119** |
 
 The hub is navigation, not a task. No linked lesson is classified as an explanation-only dead end: each has practice, or now exposes a direct, skill-matched practice continuation.
 
@@ -39,6 +40,8 @@ The hub is navigation, not a task. No linked lesson is classified as an explanat
 3. **Two EGE-path fraction-expression lessons repeat small families:** `fractions` has seven distinct sampled conditions; `practice-fraction-expression` has 15. Their original conditions remain stable. The public display and the parent cabinet support panel (outside the sandboxed trainer frame) now link to the school generator for brackets and order of operations with fractions, rather than substituting a different one-operation skill.
 4. **School practice used a capped log length as its next seed.** Once 3000 events for one topic filled the log, repeated “Следующая задача” requests selected the same condition. Practice now advances its previous seed, retaining the existing state schema. The previous saved practice seed is captured before the introductory explanation opens, so reload followed by practice also advances. Review and diagnostic selection are unchanged.
 5. **No simple matching live generator existed for natural-number ×10/100 or zero actions.** The small additional `soviet-math/arithmetic-practice.html` covers just these two skills. Operands stay small. Zero actions alternate addition, subtraction, multiplication by zero, and a short expression broken into three separate actions. Wrong answers remain on the same step. Help first describes the method; “Разбор по шагам” explicitly reveals the current action. Completion distinguishes help, and “Ещё пример” has no attempt limit. Its own browser-storage key cannot overwrite Soviet-course history. Corrupt stored work remains byte-for-byte intact, with writes blocked and a visible message.
+
+The later rounding preparation uses the existing Claude page `trainers/rounding-stepwise.html`, not the older OGE rounding trainer. It offers tens, hundreds, thousands, tens of thousands, hundreds of thousands, millions, units, tenths, and hundredths, plus mixed practice. “Следующий пример” continues with generated conditions. Its card and estimation support links open a separate tab and preserve the original task. Focused coverage is `tools/rounding-stepwise.dom.cjs`, `tools/rounding-stepwise.browser.cjs`, and `tools/learning-rounding-preparation.dom.cjs`.
 
 ## Exact Soviet topic continuations
 

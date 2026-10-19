@@ -50,6 +50,10 @@ function supplements(track){
   return `<section class="division-course-resource-group" id="arithmetic-group-${E(group.id)}" data-arithmetic-group="${E(group.id)}" tabindex="-1"><h3>${E(group.title)}</h3><p>${E(group.lead)}</p><ul class="division-course-resource-list">${managed.map(itemView).join('')}</ul>${separate.length?`<details class="division-course-resource-more"><summary>Развернуть отдельные упражнения · ${separate.length}</summary><p>Откроются в новой вкладке. Их результаты не входят в прогресс кабинета.</p><ul class="division-course-resource-list">${separate.map(itemView).join('')}</ul></details>`:''}</section>`;
  }).join('')+'</div>';
 }
+function preparationView(stage){
+ const item=stage.preparation;if(!item)return '';
+ return `<li class="division-course-preparation" data-division-preparation="${E(item.id)}"><span class="division-course-number" aria-hidden="true">↳</span><article><p class="division-course-meta">Перед прикидкой</p><h3>${E(item.title)}</h3><p>${E(item.goal)}</p><div class="actions"><a class="button" href="${E(item.publicUrl)}" target="_blank" rel="noopener">${E(item.action)} ↗</a></div><p>${E(item.returnNote)}</p><p class="division-course-status">Отдельная практика. Результат не входит в счётчик шагов.</p></article></li>`;
+}
 function render(){
  host.innerHTML=course.tracks.map(track=>{
   const rows=track.stages.map(savedProgress),solved=rows.filter(row=>row.solved).length,unavailable=rows.some(row=>row.unavailable);
@@ -59,7 +63,7 @@ function render(){
    const row=rows[index],isCurrent=index===current;
    const status=row.unavailable?'Не удалось прочитать запись этого шага.':row.solved?(row.started&&!row.completed?'Есть решённый пример. Новую работу можно продолжить.':'Есть решённый пример. Можно потренироваться ещё.'):row.started?'Есть сохранённая работа. Можно продолжить.':'Ещё не начинали';
    const label=row.unavailable?'Открыть шаг':row.started?'Продолжить тренировку':'Начать';
-   return `<li id="arithmetic-step-${E(track.id)}-${index+1}" class="division-course-step${isCurrent?' is-current':''}${row.solved?' is-complete':''}"${isCurrent?' aria-current="step"':''}><span class="division-course-number" aria-hidden="true">${index+1}</span><article><p class="division-course-meta">Шаг ${index+1} из ${track.stages.length}</p><h3>${E(stage.title)}</h3><p>${E(stage.goal)}</p><p class="division-course-support">${E(stage.support)}</p><p class="division-course-status">${E(status)}</p><div class="actions"><a class="button${isCurrent?' primary':''}" href="${stageLink(stage)}">${E(label)} →</a></div></article></li>`;
+   return `${preparationView(stage)}<li id="arithmetic-step-${E(track.id)}-${index+1}" class="division-course-step${isCurrent?' is-current':''}${row.solved?' is-complete':''}"${isCurrent?' aria-current="step"':''}><span class="division-course-number" aria-hidden="true">${index+1}</span><article><p class="division-course-meta">Шаг ${index+1} из ${track.stages.length}</p><h3>${E(stage.title)}</h3><p>${E(stage.goal)}</p><p class="division-course-support">${E(stage.support)}</p><p class="division-course-status">${E(status)}</p><div class="actions"><a class="button${isCurrent?' primary':''}" href="${stageLink(stage)}">${E(label)} →</a></div></article></li>`;
   }).join('')}</ol>${!unavailable&&current===-1?'<p class="division-course-track-finish">На каждом шаге есть решённые примеры. Можно повторить любой.</p>':''}${supplements(track)}</section>`;
  }).join('');
 }

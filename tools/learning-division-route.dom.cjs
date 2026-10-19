@@ -35,7 +35,8 @@ test('two independent navigation tracks retain all 17 canonical steps and includ
  assert.deepEqual(JSON.parse(JSON.stringify(f.w.DivisionCourse.stages)),JSON.parse(JSON.stringify(C.stages)),'Navigation metadata must match the trainer core');
  assert.equal(f.w.ArithmeticCourse,f.w.DivisionCourse);
  assert.deepEqual([...f.host.querySelectorAll('[data-division-stage]')].map(button=>button.dataset.divisionStage),allStages.map(stage=>stage.id));
- assert.equal(f.host.querySelectorAll('ol.division-course-list > li').length,31);
+ assert.equal(f.host.querySelectorAll('ol.division-course-list > li').length,32,'31 managed steps and one separate rounding preparation');
+ assert.equal(f.host.querySelectorAll('ol.division-course-list > li.division-course-step').length,31);
  assert.equal(f.host.querySelectorAll('[data-arithmetic-track]').length,2);
  assert.equal(new Set(allStages.map(stage=>stage.id)).size,allStages.length,'A step belongs to exactly one track');
  for(const stage of C.stages)assert(allStages.some(item=>item.id===stage.id),'Existing course work stays reachable');
