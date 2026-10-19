@@ -120,3 +120,16 @@ free-route browser test timed out at a percent-rate route button after an
 asynchronous DOM replacement. The failed job was rerun without changing or
 weakening the test. The final expanded head must pass the full gate regardless
 of that earlier retry result.
+
+### Cabinet defect found by the requested robot audit
+
+The earlier percent-rate browser timeout exposed a real navigation omission:
+route remounts remembered geometry/study disclosures but not the surrounding
+legacy topic library. A background refresh could therefore hide the topic
+button while the pupil selected it. Preserve that disclosure in the existing
+host/account-scoped ephemeral view record. A focused DOM regression checks open
+and closed restoration, account isolation, and no new attempts; the browser
+navigation helper opens the disclosure only when needed. No server data or
+navigation authorization changes. This is a necessary cabinet fix within the
+owner's requested robot audit and fixes the observed failure without weakening
+its topic, content, or persistence assertions.

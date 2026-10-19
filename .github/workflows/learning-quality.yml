@@ -111,6 +111,7 @@ jobs:
           node tools/division-diagnostic-robots.dom.cjs
           node tools/arithmetic-foundations.dom.cjs
           node tools/learning-division-route.dom.cjs
+          node tools/learning-route-library.dom.cjs
           node tools/learning-rounding-preparation.dom.cjs
           node tools/rounding-stepwise.dom.cjs
           node tools/rounding-stepwise.browser.cjs
