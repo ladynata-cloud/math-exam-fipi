@@ -7,23 +7,28 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:#172033;font-family:Verdana,Arial,sans-serif}.page{max-width:1060px;margin:0 auto;padding:22px}.hero,.card{background:#fff;border-radius:24px;padding:22px;box-shadow:0 14px 34px #1420331f;margin-bottom:18px}.back{color:#2563eb;font-weight:800;text-decoration:none}h1{margin:6px 0 8px;font-size:38px}.sub{color:#667085;line-height:1.45}.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}@media(max-width:860px){.grid{grid-template-columns:1fr}.digit{width:54px!important;height:68px!important;font-size:32px!important}}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}button{border:0;border-radius:14px;padding:11px 15px;font-weight:900;cursor:pointer;background:#e7ebf3}button.active,button.primary{background:#2563eb;color:#fff}.good{background:#15803d;color:#fff}.warn{background:#f59e0b}.danger{background:#fee4e2;color:#7a271a}.prompt{text-align:center;font-size:34px;font-weight:950;margin:14px 0}.digits{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0}.digit{width:66px;height:80px;border:2px solid #cbd5e1;border-radius:18px;background:#fff;font-size:40px;font-weight:950;cursor:pointer;position:relative}.digit small{position:absolute;bottom:4px;left:0;right:0;font-size:10px;color:#64748b}.comma{width:26px!important;border:0!important;background:transparent!important;cursor:default!important;color:#334155}.target{background:#dbeafe!important;border-color:#2563eb!important}.look{background:#ffedd5!important;border-color:#f59e0b!important}.instruction{background:#eef4ff;border-left:6px solid #2563eb;border-radius:16px;padding:14px;font-size:18px}.decision{text-align:center;margin:16px 0}.answer{display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px;font-weight:900}input{width:170px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-size:22px;text-align:center}.fb{margin-top:14px;border-radius:16px;padding:14px;background:#f8fafc;border:1px solid #e5e7eb;font-size:18px}.ok{background:#dcfce7;color:#14532d}.err{background:#fee4e2;color:#7a271a}.tip{background:#fffbeb;color:#713f12}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:12px;text-align:center}.stat b{display:block;font-size:28px}.stat span{font-size:12px;color:#667085;font-weight:900}.box{border-radius:20px;padding:16px;margin-bottom:14px}.course{background:#eef4ff;border:1px solid #bfdbfe}.rules{background:#fff7ed;border:1px solid #fed7aa}.badge{display:inline-block;background:#fff;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900}.hist{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:9px;margin-bottom:8px;font-size:14px}.mini{font-size:13px;color:#667085;line-height:1.45}
 </style>
+<style>
+body{font-size:18px}button,select{font:inherit;font-weight:800}select{max-width:100%;padding:10px;border:2px solid #cbd5e1;border-radius:12px;background:#fff}.grid>*{min-width:0}.digits{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding:4px 2px 12px;max-width:100%}.digit{flex:0 0 76px;width:76px;height:100px;padding:0 0 28px}.digit small{font-size:13px;line-height:1.15;bottom:5px;white-space:normal}.comma{flex-basis:22px}.stat span,.mini,.hist{font-size:16px}.instruction,.fb{font-size:20px;line-height:1.5}.prompt{font-size:clamp(24px,5vw,34px);overflow-wrap:anywhere}h1{font-size:clamp(28px,6vw,38px)}.save-warning{padding:14px;background:#fffbeb;border:1px solid #f59e0b;border-radius:14px;line-height:1.45}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #172033;outline-offset:3px}@media(max-width:600px){.page{padding:10px}.hero,.card{padding:14px;border-radius:18px}.digit{width:64px!important;height:92px!important;flex-basis:64px;font-size:34px!important}.comma{flex-basis:20px}.stats{gap:5px}.stat{padding:8px 3px}.stat span{font-size:14px}.answer input{max-width:100%}}
+</style>
 <link rel="stylesheet" href="/assets/download-panel.css">
 </head>
 <body>
 <main class="page">
-<section class="hero"><a class="back" href="../index.html">← На главную</a><h1>Округление чисел</h1><p class="sub">Пошагово: разряд → цифра справа → увеличить или оставить → ответ. В тренажёре есть округление и в целой, и в дробной части: до десятков, единиц, десятых, сотых.</p></section>
+<section class="hero"><a class="back" href="../index.html">← На главную</a><h1>Округление чисел</h1><p class="sub">Выбери, до чего округляем. Нажимай на цифры и выполняй по одному шагу. Новых примеров хватит для любой тренировки.</p></section>
 <section class="grid">
 <div class="card">
-<div class="row"><b>Уровень:</b><button id="easy" class="active">Лёгкий</button><button id="med">Средний</button><button id="hint" class="warn">Подсказка</button></div>
+<div class="row"><label for="place"><b>Округляем до:</b></label><select id="place"><option value="1">десятков</option><option value="2">сотен</option><option value="3">тысяч</option><option value="4">десятков тысяч</option><option value="5">сотен тысяч</option><option value="6">миллионов</option><option value="0">единиц</option><option value="-1">десятых</option><option value="-2">сотых</option><option value="mixed">Вперемешку</option></select></div>
+<div class="row"><b>Числа:</b><button id="easy" class="active" aria-pressed="true">Попроще</button><button id="med" aria-pressed="false">Побольше</button><button id="hint" class="warn">Подсказка</button></div>
 <div class="prompt" id="prompt"></div>
 <div class="digits" id="digits"></div>
 <div class="instruction" id="instruction"></div>
 <div id="decision" class="decision" hidden><button id="keep">Оставить цифру</button> <button id="up">Увеличить на 1</button></div>
-<div class="answer"><label for="ans">Ответ:</label><input id="ans" type="text"><button id="check" class="primary">Проверить</button><button id="solution">Решение</button><button id="next" class="good">Следующий пример</button></div>
-<div id="fb" class="fb">Выбери разряд, до которого округляем.</div>
+<div class="answer"><label for="ans">Ответ:</label><input id="ans" type="text" inputmode="decimal" autocomplete="off"><button id="check" class="primary">Проверить</button><button id="solution">Решение</button><button id="next" class="good">Следующий пример</button></div>
+<div id="fb" class="fb" role="status" aria-live="polite">Выбери нужную цифру.</div>
+<p id="save-warning" class="save-warning" role="status" hidden></p>
 </div>
 <aside class="card">
-<div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
+<div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>сразу верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
 <div class="stats"><div class="stat"><b id="acc">0%</b><span>точность</span></div><div class="stat"><b id="best">0</b><span>лучшая</span></div><div class="stat"><b id="date">—</b><span>дата</span></div></div>
 <div class="box course"><h2>Прогресс темы</h2><p><span id="status" class="badge">тема начата</span></p><p id="advice">Реши первые 10 примеров.</p><button id="reset" class="danger">Сбросить статистику</button></div>
 <div class="box rules"><h2>Алгоритм</h2><p>1. Найди нужный разряд.</p><p>2. Посмотри на цифру справа.</p><p>3. 0–4 — оставляем, 5–9 — увеличиваем.</p><p>4. В целой части справа ставим нули, в дробной части лишние цифры справа убираем.</p><p class="mini">Примеры: 374 до десятков → 370; 12,46 до десятых → 12,5; 8,736 до сотых → 8,74.</p></div>
@@ -33,43 +38,96 @@
 </main>
 <script>
 var KEY='mathExamCourseProgress.v1',TOPIC='roundingStepwise';
-var level='easy',task=null,step='target',solved=false;
+var level='easy',task=null,step='target',solved=false,hadMistake=false,usedSolution=false,storageBlocked=false;
 var stats={total:0,right:0,streak:0,best:0,date:null,history:[]};
-var names={2:'сотен',1:'десятков',0:'единиц','-1':'десятых','-2':'сотых'};
-var labels={2:'сотни',1:'десятки',0:'единицы','-1':'десятые','-2':'сотые'};
+var names={6:'миллионов',5:'сотен тысяч',4:'десятков тысяч',3:'тысяч',2:'сотен',1:'десятков',0:'единиц','-1':'десятых','-2':'сотых'};
+var labels={6:'миллионы',5:'сотни тысяч',4:'десятки тысяч',3:'тысячи',2:'сотни',1:'десятки',0:'единицы','-1':'десятые','-2':'сотые'};
 function el(id){return document.getElementById(id)}
 function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
 function p10(p){return Math.pow(10,p)}
-function load(){try{var d=JSON.parse(localStorage.getItem(KEY));var s=d&&d.topics&&d.topics[TOPIC];if(s){stats=s;if(!stats.history)stats.history=[]}}catch(e){}}
-function save(){var d;try{d=JSON.parse(localStorage.getItem(KEY))||{topics:{}}}catch(e){d={topics:{}}}d.topics=d.topics||{};d.topics[TOPIC]=stats;localStorage.setItem(KEY,JSON.stringify(d))}
-function roundTo(value,p){var f=p10(p);return Math.round(value/f)*f}
-function ansText(value,p){if(p>=0)return String(Math.round(value));return value.toFixed(-p).replace('.',',')}
+function plain(v){return !!v&&typeof v==='object'&&!Array.isArray(v)}
+function supportedVersion(s){return ['version','schemaVersion'].every(function(k){return s[k]===undefined||s[k]===1})}
+function validStats(s){return plain(s)&&supportedVersion(s)&&['total','right','streak'].every(function(k){return Number.isSafeInteger(s[k])&&s[k]>=0})&&s.right<=s.total&&(s.best===undefined||Number.isSafeInteger(s.best)&&s.best>=0)&&(s.date===null||s.date===undefined||typeof s.date==='string')&&(s.history===undefined||Array.isArray(s.history)&&s.history.every(function(x){return plain(x)&&typeof x.text==='string'}))}
+function readStore(){var raw=localStorage.getItem(KEY);if(raw===null)return {topics:{}};var d=JSON.parse(raw);if(!plain(d)||!supportedVersion(d)||d.topics!==undefined&&!plain(d.topics)||d.topics&&d.topics[TOPIC]!==undefined&&!validStats(d.topics[TOPIC]))throw new Error('invalid');return d}
+function warnSave(){el('save-warning').hidden=false;el('save-warning').textContent='Не удалось сохранить результат в этом браузере. Прежняя запись оставлена без изменений. Можно продолжать тренировку.'}
+function load(){try{var d=readStore(),s=d.topics&&d.topics[TOPIC];if(s){stats=s;if(!stats.history)stats.history=[]}}catch(e){storageBlocked=true;warnSave()}}
+function save(){if(storageBlocked){warnSave();return false}try{var d=readStore();d.topics=d.topics||{};d.topics[TOPIC]=stats;localStorage.setItem(KEY,JSON.stringify(d));return true}catch(e){storageBlocked=true;warnSave();return false}}
+// The displayed decimal is converted to an integer before rounding. This keeps
+// halfway cases such as 1,005 exact instead of depending on binary fractions.
+function roundText(display,p){
+ var source=String(display).replace(',','.');if(!/^\d+(?:\.\d+)?$/.test(source)||!Number.isInteger(p)||p<-2||p>6)throw new Error('Unsupported rounding value');
+ var parts=source.split('.'),fraction=parts[1]||'',integer=Number(parts[0]+fraction),cut=fraction.length+p;
+ if(!Number.isSafeInteger(integer))throw new Error('Rounding value is too large');
+ var rounded=cut>0?Math.floor((integer+p10(cut)/2)/p10(cut)):integer*p10(-cut);
+ if(p>=0)return String(rounded*p10(p));
+ var digits=String(rounded).padStart(-p+1,'0');return digits.slice(0,p)+','+digits.slice(p);
+}
+function roundTo(value,p){return Number(roundText(value,p).replace(',','.'))}
 function makeDec(intPart,decLen){var max=p10(decLen)-1;var fr=String(rnd(1,max)).padStart(decLen,'0');return intPart+','+fr}
 function buildMap(s){var comma=s.indexOf(',');if(comma<0)comma=s.length;var a=[];for(var i=0;i<s.length;i++){var ch=s.charAt(i);if(ch===','){a.push({ch:ch,place:null});continue}var place=i<comma?comma-i-1:-(i-comma);a.push({ch:ch,place:place})}return a}
-function makeTask(){var places=level==='easy'?[1,0,-1]:[2,1,0,-1,-2];var p=pick(places),display,value;
- if(p>=1){var len=level==='easy'?rnd(2,4):rnd(Math.max(3,p+1),5);value=rnd(p10(len-1),p10(len)-1);display=String(value)}
- else{var decLen=p===-2?3:pick([2,3]);display=makeDec(rnd(1,level==='easy'?99:999),decLen);value=Number(display.replace(',','.'))}
- var ans=roundTo(value,p),txt=ansText(ans,p),map=buildMap(display),ti=-1,li=-1;
+function taskFrom(display,p){
+ var txt=roundText(display,p),map=buildMap(display),ti=-1,li=-1;
  for(var i=0;i<map.length;i++){if(map[i].place===p)ti=i;if(map[i].place===p-1)li=i}
- var ld=Number(map[li].ch);return{display:display,value:value,p:p,map:map,ti:ti,li:li,ld:ld,ans:ans,ansText:txt,decision:ld>=5?'up':'keep'} }
-function placeLabel(p){if(p===2)return'сот.';if(p===1)return'дес.';if(p===0)return'ед.';if(p===-1)return'десятые';if(p===-2)return'сотые';if(p===-3)return'тыс.';return''}
-function render(){el('prompt').textContent='Округли число '+task.display+' до '+names[task.p];el('digits').innerHTML='';for(var i=0;i<task.map.length;i++){var it=task.map[i];if(it.ch===','){var c=document.createElement('div');c.className='digit comma';c.textContent=',';el('digits').appendChild(c);continue}var b=document.createElement('button');b.className='digit';b.dataset.i=i;b.innerHTML=it.ch+'<small>'+placeLabel(it.place)+'</small>';b.onclick=function(){clickDigit(Number(this.dataset.i))};el('digits').appendChild(b)}el('decision').hidden=true;el('ans').value='';setInstr();msg('Выбери разряд, до которого округляем.','')}
-function setInstr(){if(step==='target')el('instruction').textContent='1) Нажми на разряд '+labels[task.p]+'.';if(step==='look')el('instruction').textContent='2) Нажми на соседнюю цифру справа.';if(step==='decision')el('instruction').textContent='3) Реши: оставляем или увеличиваем?';if(step==='answer')el('instruction').textContent='4) Введи округлённое число.'}
+ if(ti<0||li<0)throw new Error('Both rounding digits must be present');
+ var ld=Number(map[li].ch);return{display:display,value:Number(display.replace(',','.')),p:p,map:map,ti:ti,li:li,ld:ld,ans:Number(txt.replace(',','.')),ansText:txt,decision:ld>=5?'up':'keep'};
+}
+function makeTask(){
+ var chosen=el('place').value,places=level==='easy'?[1,0,-1]:[2,1,0,-1,-2],p=chosen==='mixed'?pick(places):Number(chosen),display;
+ if(p>=1){var len=level==='easy'?p+1:rnd(p+1,Math.min(p+2,8));display=String(rnd(p10(len-1),p10(len)-1))}
+ else{var decLen=p===-2?3:pick([2,3]);display=makeDec(rnd(1,level==='easy'?19:999),decLen)}
+ return taskFrom(display,p);
+}
+function placeLabel(p){var all={7:'дес. млн',6:'млн',5:'сот. тыс.',4:'дес. тыс.',3:'тыс.',2:'сотни',1:'десятки',0:'единицы','-1':'десятые','-2':'сотые','-3':'тысячные'};return all[p]||''}
+function render(){
+ el('prompt').textContent='Округли число '+task.display+' до '+names[task.p];el('digits').innerHTML='';
+ for(var i=0;i<task.map.length;i++){var it=task.map[i];if(it.ch===','){var c=document.createElement('div');c.className='digit comma';c.textContent=',';el('digits').appendChild(c);continue}
+ var b=document.createElement('button');b.className='digit';b.dataset.i=i;b.setAttribute('aria-label',it.ch+', '+placeLabel(it.place));b.appendChild(document.createTextNode(it.ch));var small=document.createElement('small');small.textContent=placeLabel(it.place);b.appendChild(small);b.onclick=function(){clickDigit(Number(this.dataset.i))};el('digits').appendChild(b)}
+ el('decision').hidden=true;el('ans').value='';setInstr();msg('Нажми на нужную цифру в числе.','');el('digits').scrollLeft=0;
+}
+function setInstr(){if(step==='target')el('instruction').textContent='1) Нажми на цифру: '+labels[task.p]+'.';if(step==='look')el('instruction').textContent='2) Нажми на соседнюю цифру справа.';if(step==='decision')el('instruction').textContent='3) Оставляем синюю цифру или увеличиваем на 1?';if(step==='answer')el('instruction').textContent='4) Введи округлённое число.'}
 function msg(t,c){el('fb').textContent=t;el('fb').className='fb '+c}
-function mark(){document.querySelectorAll('.digit[data-i]').forEach(function(d){d.className='digit'});var t=document.querySelector('.digit[data-i="'+task.ti+'"]'),l=document.querySelector('.digit[data-i="'+task.li+'"]');if(t)t.classList.add('target');if(step!=='target'&&step!=='look'&&l)l.classList.add('look')}
-function clickDigit(i){if(solved)return;if(step==='target'){if(i===task.ti){step='look';mark();setInstr();msg('Верно. Теперь выбери цифру справа.','ok')}else msg('Это не тот разряд. Нужны '+labels[task.p]+'.','err');return}if(step==='look'){if(i===task.li){step='decision';mark();setInstr();el('decision').hidden=false;msg('Цифра справа — '+task.ld+'. Теперь выбери действие.','ok')}else msg('Нужна соседняя цифра справа от выбранного разряда.','err')}}
-function decide(d){if(step!=='decision'){msg('Сначала выбери разряд и цифру справа.','tip');return}if(d===task.decision){step='answer';el('decision').hidden=true;setInstr();msg(d==='up'?'Верно: 5–9, увеличиваем.':'Верно: 0–4, оставляем.','ok');el('ans').focus()}else msg(task.decision==='up'?'Справа 5 или больше: нужно увеличить.':'Справа меньше 5: нужно оставить.','err')}
-function norm(v){return Number(String(v).replace(/\s/g,'').replace(',','.'))}
-function explain(){var a=task.ld>=5?'увеличиваем выбранный разряд':'оставляем выбранный разряд';var tail=task.p>=1?'Справа в целой части ставим нули.':task.p===0?'Дробную часть убираем.':'Лишние цифры дробной части справа убираем.';return 'Смотрим на '+task.ld+' — '+a+'. '+tail}
-function check(){if(solved){msg('Этот пример уже учтён. Нажми следующий.','tip');return}if(el('ans').value.trim()===''){msg('Введите ответ.','err');return}var ok=Math.abs(norm(el('ans').value)-task.ans)<1e-9;solved=true;stats.total++;stats.date=new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'});if(ok){stats.right++;stats.streak++;stats.best=Math.max(stats.best||0,stats.streak);msg('Верно! Статистика сохранена.','ok')}else{stats.streak=0;msg('Пока ошибка. Правильный ответ: '+task.ansText+'. '+explain(),'err')}stats.history=stats.history||[];stats.history.unshift({text:task.display+' до '+names[task.p]+' → '+task.ansText+'. Ваш ответ: '+el('ans').value+'. '+(ok?'Верно.':'Ошибка.')});stats.history=stats.history.slice(0,12);save();renderStats()}
-function renderStats(){var a=stats.total?Math.round(stats.right*100/stats.total):0;el('total').textContent=stats.total;el('right').textContent=stats.right;el('streak').textContent=stats.streak;el('acc').textContent=a+'%';el('best').textContent=stats.best||0;el('date').textContent=stats.date||'—';var st=stats.total<10?'тема начата':a>=80?'почти освоено':a<70?'нужно тренироваться':'тренируется';el('status').textContent=st;el('advice').textContent=stats.total<10?'Реши первые 10 примеров.':'Следи за разрядом и цифрой справа.';el('history').innerHTML='';if(!stats.history||!stats.history.length){el('history').innerHTML='<div class="hist">Пока история пуста.</div>';return}stats.history.forEach(function(x){var d=document.createElement('div');d.className='hist';d.textContent=x.text;el('history').appendChild(d)})}
-function hint(){if(step==='target')msg('Найди разряд '+labels[task.p]+' в числе '+task.display+'.','tip');else if(step==='look')msg('Нужна цифра сразу справа от синей.','tip');else if(step==='decision')msg('Цифра справа '+task.ld+': '+(task.ld>=5?'увеличиваем.':'оставляем.'),'tip');else msg('Ответ: '+task.ansText+'. '+explain(),'tip')}
-function solution(){step='answer';el('decision').hidden=true;mark();setInstr();el('ans').value=task.ansText;msg(task.display+' ≈ '+task.ansText+'. '+explain(),'tip')}
-function next(){task=makeTask();step='target';solved=false;render();renderStats()}
-function reset(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};save();renderStats();msg('Статистика сброшена.','tip')}
-function setLevel(l){level=l;el('easy').classList.toggle('active',l==='easy');el('med').classList.toggle('active',l==='med');next()}
-el('easy').onclick=function(){setLevel('easy')};el('med').onclick=function(){setLevel('med')};el('keep').onclick=function(){decide('keep')};el('up').onclick=function(){decide('up')};el('check').onclick=check;el('next').onclick=next;el('hint').onclick=hint;el('solution').onclick=solution;el('reset').onclick=reset;el('ans').onkeydown=function(e){if(e.key==='Enter')check()};load();next();renderStats();
+function mark(){document.querySelectorAll('.digit[data-i]').forEach(function(d){d.className='digit'});var t=document.querySelector('.digit[data-i="'+task.ti+'"]'),l=document.querySelector('.digit[data-i="'+task.li+'"]');if(t)t.classList.add('target');if(step!=='target'&&step!=='look'&&l)l.classList.add('look');var focus=step==='look'||step==='decision'?l:t;if(focus&&typeof focus.scrollIntoView==='function')focus.scrollIntoView({block:'nearest',inline:'center'})}
+function clickDigit(i){if(solved)return;if(step==='target'){if(i===task.ti){step='look';mark();setInstr();msg('Верно. Теперь выбери цифру справа.','ok')}else{hadMistake=true;msg('Нужна цифра над подписью «'+placeLabel(task.p)+'».','err')}return}if(step==='look'){if(i===task.li){step='decision';mark();setInstr();el('decision').hidden=false;msg('Цифра справа — '+task.ld+'. Теперь выбери действие.','ok')}else{hadMistake=true;msg('Нажми на цифру сразу справа от синей.','err')}}}
+function decide(d){if(step!=='decision'){msg('Сначала нажми на нужную цифру и на её соседку справа.','tip');return}if(d===task.decision){step='answer';el('decision').hidden=true;setInstr();msg(d==='up'?'Верно: справа 5–9. Увеличиваем синюю цифру на 1.':'Верно: справа 0–4. Синюю цифру оставляем.','ok');el('ans').focus()}else{hadMistake=true;msg(task.decision==='up'?'Справа 5 или больше. Увеличь синюю цифру на 1.':'Справа меньше 5. Синюю цифру оставь.','err')}}
+function norm(v){var s=String(v).replace(/\s/g,'').replace(',','.');return /^\d+(?:\.\d+)?$/.test(s)?Number(s):NaN}
+function explain(){var a=task.ld>=5?'увеличиваем синюю цифру на 1':'оставляем синюю цифру';var tail=task.p>=1?'Все цифры справа заменяем нулями.':task.p===0?'Запятую и цифры после неё убираем.':'Цифры справа от синей убираем.';return 'Смотрим на '+task.ld+' — '+a+'. '+tail+(task.ld>=5&&task.map[task.ti].ch==='9'?' Если получилось 10, пишем 0 и добавляем 1 слева.':'')}
+function check(){
+ if(solved){msg('Этот пример уже учтён. Нажми «Следующий пример».','tip');return}
+ if(el('ans').value.trim()===''){msg('Введи ответ.','err');return}
+ if(!Number.isFinite(norm(el('ans').value))){msg('Введи только число. Для дробной части можно поставить запятую.','err');return}
+ if(step!=='answer'){msg('Сначала выполни шаг над числом. Подсказка покажет, куда нажать.','tip');return}
+ if(norm(el('ans').value)!==task.ans){hadMistake=true;msg('Пока не получилось. '+explain()+' Попробуй ещё раз.','err');return}
+ solved=true;stats.total++;stats.date=new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'});
+ var first=!hadMistake&&!usedSolution;
+ if(first){stats.right++;stats.streak++;stats.best=Math.max(stats.best||0,stats.streak)}else stats.streak=0;
+ var result=usedSolution?'Решено с помощью разбора.':hadMistake?'Верно! Ты исправил ошибку.':'Верно!';
+ stats.history=stats.history||[];stats.history.unshift({text:task.display+' до '+names[task.p]+' → '+task.ansText+'. '+result});stats.history=stats.history.slice(0,12);
+ var saved=save();renderStats();msg(result+(saved?' Результат сохранён.':' Можно решать следующий пример.'),'ok');
+}
+function renderStats(){var a=stats.total?Math.round(stats.right*100/stats.total):0;el('total').textContent=stats.total;el('right').textContent=stats.right;el('streak').textContent=stats.streak;el('acc').textContent=a+'%';el('best').textContent=stats.best||0;el('date').textContent=stats.date||'—';var st=stats.total<10?'тема начата':'10 и больше примеров решено';el('status').textContent=st;el('advice').textContent=stats.total<10?'Реши первые 10 примеров. Потом можно продолжать сколько угодно.':'Выбирай нужное округление и продолжай тренировку.';el('history').innerHTML='';if(!stats.history||!stats.history.length){el('history').innerHTML='<div class="hist">Пока история пуста.</div>';return}stats.history.forEach(function(x){var d=document.createElement('div');d.className='hist';d.textContent=x.text;el('history').appendChild(d)})}
+function hint(){
+ mark();
+ if(step==='target')msg('Нажми на синюю цифру. Под ней написано «'+placeLabel(task.p)+'».','tip');
+ else if(step==='look')msg('Нажми на цифру сразу справа от синей.','tip');
+ else if(step==='decision')msg('Посмотри на оранжевую цифру. 0–4 — синюю оставляем. 5–9 — увеличиваем на 1.','tip');
+ else msg(explain()+' Запиши всё число.','tip');
+}
+function solution(){if(solved){msg('Пример уже решён. '+task.display+' ≈ '+task.ansText+'.','ok');return}usedSolution=true;step='answer';el('decision').hidden=true;mark();setInstr();el('ans').value=task.ansText;msg(task.display+' ≈ '+task.ansText+'. '+explain(),'tip')}
+function next(){
+ var previous=task,candidate;
+ for(var tries=0;tries<32;tries++){candidate=makeTask();if(!previous||candidate.p!==previous.p||candidate.display!==previous.display)break}
+ // Even a constant random source cannot trap practice on the same example.
+ if(previous&&candidate.p===previous.p&&candidate.display===previous.display){
+  var comma=candidate.display.indexOf(','),decimalPlaces=comma<0?0:candidate.display.length-comma-1,raw=Number(candidate.display.replace(',','')),last=raw%10;
+  raw+=last===9?-1:1;var text=String(raw).padStart(decimalPlaces+1,'0');if(decimalPlaces)text=text.slice(0,-decimalPlaces)+','+text.slice(-decimalPlaces);candidate=taskFrom(text,candidate.p);
+ }
+ task=candidate;step='target';solved=false;hadMistake=false;usedSolution=false;render();renderStats();
+}
+function reset(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};save();renderStats();msg('Статистика этой тренировки сброшена.','tip')}
+function setLevel(l){level=l;el('easy').classList.toggle('active',l==='easy');el('med').classList.toggle('active',l==='med');el('easy').setAttribute('aria-pressed',String(l==='easy'));el('med').setAttribute('aria-pressed',String(l==='med'));next()}
+var requestedPlace=new URLSearchParams(location.search).get('place');if(requestedPlace==='mixed'||Object.prototype.hasOwnProperty.call(names,requestedPlace))el('place').value=requestedPlace;
+el('place').onchange=next;el('easy').onclick=function(){setLevel('easy')};el('med').onclick=function(){setLevel('med')};el('keep').onclick=function(){decide('keep')};el('up').onclick=function(){decide('up')};el('check').onclick=check;el('next').onclick=next;el('hint').onclick=hint;el('solution').onclick=solution;el('reset').onclick=reset;el('ans').onkeydown=function(e){if(e.key==='Enter')check()};load();next();renderStats();
 </script>
 <!-- download-panel:start:rounding-stepwise -->
 <section class="download-panel" id="download">

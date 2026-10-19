@@ -19,6 +19,9 @@ on:
       - 'school/**'
       - 'trainers/drobi-oge-trainer.html'
       - 'trainers/oge-task6-fractions.html'
+      - 'trainers/rounding-stepwise.html'
+      - 'tools/rounding-stepwise.dom.cjs'
+      - 'tools/rounding-stepwise.browser.cjs'
       - 'tools/grade7-*'
       - 'tools/photo-proof-*'
       - 'tools/pre7-*'
@@ -102,6 +105,9 @@ jobs:
           node tools/learning-quotient-estimate.dom.cjs
           node tools/learning-division-course.dom.cjs
           node tools/learning-division-route.dom.cjs
+          node tools/learning-rounding-preparation.dom.cjs
+          node tools/rounding-stepwise.dom.cjs
+          node tools/rounding-stepwise.browser.cjs
           node tools/learning-column-multiplication.dom.cjs
           node tools/learning-parallel-public.dom.cjs
           node tools/learning-public-continuation.dom.cjs

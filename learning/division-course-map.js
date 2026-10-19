@@ -216,7 +216,16 @@ const multiplication=Object.freeze([
  navigationStage('course-column-mixed','Разные столбики вперемешку','Числа разной длины, с нулями и без нулей.','Считай по одной цифре.'),
  stageFor('multiplication-division/course-multiply-bridge')
 ]);
-const division=Object.freeze(stages.filter(stage=>!['multiply-bridge','multiply-two-digit'].includes(stage.slug)));
+const roundingPreparation=Object.freeze({
+ id:'rounding-stepwise',
+ title:'Сначала потренируем округление',
+ goal:'До десятков, сотен, тысяч и дальше. Новые примеры без ограничения попыток.',
+ publicUrl:'/trainers/rounding-stepwise.html?place=1&from=division',
+ action:'Потренировать округление',
+ returnNote:'Откроется в новой вкладке. После тренировки вернись сюда к прикидке.'
+});
+// Preparation is a separate public exercise, never a cabinet stage or progress item.
+const division=Object.freeze(stages.filter(stage=>!['multiply-bridge','multiply-two-digit'].includes(stage.slug)).map(stage=>stage.slug==='estimate'?Object.freeze({...stage,preparation:roundingPreparation}):stage));
 const supplementGroups=Object.freeze([
  {id:"table-mental",title:"Таблица умножения и устный счёт",lead:"Повторить таблицу, найти неизвестное число и посчитать удобным способом.",items:[
   {"id":"oge-basics:multiplication-division","title":"Умножение и деление: одна семья действий","managedId":"oge-basics:multiplication-division","trainerId":"oge-basics","contentId":"multiplication-division","publicUrl":"/trainers/oge-basics/multiplication-division.html","goal":"","aliases":[]},
@@ -312,7 +321,7 @@ const tracks=Object.freeze([
 ]);
 const byTrackContent=new Map(tracks.flatMap(track=>track.stages.map(stage=>[stage.id,track])));
 function trackFor(id){return byTrackContent.get(String(id||'').replace(/^oge-basics:/,''))||null;}
-const api=Object.freeze({stages,has,stageFor,tracks,trackFor});
+const api=Object.freeze({stages,has,stageFor,tracks,trackFor,roundingPreparation});
 if(typeof module==='object'&&module.exports)module.exports=api;
 else {root.ArithmeticCourse=api;if(!root.DivisionCourse?.make)root.DivisionCourse=api;}
 })(typeof globalThis==='undefined'?this:globalThis);
