@@ -75,3 +75,25 @@ and EGE base39187075320 succeeded on the exact base SHA. This is deployment
 evidence, not a new end-to-end pupil assessment.
 
 Final test, independent-review and release evidence will be recorded in the PR.
+
+### Owner-requested scripted pupil verification
+
+The follow-up asks to create several pupil robots, test the cabinet and apply
+necessary fixes before publication. Twelve scripted DOM profiles now exercise
+all eight skill difficulties, a fully correct run, an isolated slip, mixed
+basics difficulties and an early stop. They start from the actual shared course
+renderer with synthetic saved progress, follow the diagnostic entry and open
+the recommended real trainer. The trainer checks an incorrect first answer,
+offers help and accepts a correct answer. Existing progress remains unchanged.
+
+Eleven Chromium pupil profiles additionally exercise actual popup navigation,
+the real recommended practice page and the return to the cabinet, using
+checkout resources and fictional fixture state. All outbound requests are
+intercepted; no live pupil records are created. These are software integration
+checks, not a claim about human learning gains.
+
+Initial internal review found and fixed a malformed notebook in the first-digit
+follow-up, lost keyboard focus at the arrow limits and incomplete wording when
+tab storage is unavailable. New tests retain those regressions. The existing
+22-scenario arithmetic robot suite also passes: correct arithmetic, targeted
+feedback, non-answer first hints, saved work, read-only mirror and next example.
