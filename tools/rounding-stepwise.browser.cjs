@@ -110,7 +110,8 @@ async function solve(page, place, injectMistakes) {
         await page.goto(origin + route);
         const preparation = page.locator('[data-division-preparation="rounding-stepwise"]');
         await preparation.waitFor({state:'visible'});
-        assert.equal(await page.locator('.division-course-step').count(),31);
+        assert.equal(await page.locator('[data-arithmetic-track] .division-course-step').count(),31);
+        assert.equal(await page.locator('[data-foundation-track] .division-course-step').count(),12);
         assert.deepEqual(await page.locator('[data-arithmetic-track] > header progress').evaluateAll(nodes => nodes.map(node => node.max)),[16,15]);
         assert(await preparation.evaluate(node => node.nextElementSibling.querySelector('a').getAttribute('href').startsWith('course-estimate.html')), 'Rounding immediately precedes estimation');
         const [practice] = await Promise.all([page.waitForEvent('popup'),preparation.locator('a').click()]);
