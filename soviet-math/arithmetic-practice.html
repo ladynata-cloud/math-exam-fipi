@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <title>Новые примеры: ноль, умножение на 10 и 100 · MathExam</title>
+  <meta name="description" content="Спокойная тренировка действий с нулём и умножения целых чисел на 10 и 100. Новые примеры по одному шагу.">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f4f3ed;color:#20352f;font:20px/1.55 system-ui,sans-serif}main{max-width:760px;margin:auto;padding:24px 18px 64px}h1{font-size:clamp(28px,5vw,38px);line-height:1.2}h2{font-size:25px;line-height:1.4}a{color:#155e52;text-underline-offset:4px}.card{padding:24px;border:1px solid #bdccc5;border-radius:16px;background:#fff;margin:24px 0}.condition{font-size:clamp(30px,6vw,44px);font-weight:750;overflow-wrap:anywhere}.row{display:flex;gap:12px;flex-wrap:wrap}input,button{font:inherit;border:2px solid #43786a;border-radius:10px;padding:12px;min-height:50px}input{width:min(220px,100%)}button{cursor:pointer;background:#176552;color:white;font-weight:700}button.light{background:white;color:#176552}#hint-text{padding:16px;background:#eef6f0;border-radius:10px}#feedback{min-height:32px}li{margin:8px 0}[hidden]{display:none!important}:focus-visible{outline:3px solid #c27615;outline-offset:3px}
+  </style>
+  <script defer src="arithmetic-practice.js?v=arithmetic-robots-20261019"></script>
+</head>
+<body><main id="arithmetic-practice-root">
+  <a id="return" href="index.html">← Вернуться к разбору</a>
+  <h1 id="title">Новые примеры</h1><p>Считай по одному шагу. Можно решать столько примеров, сколько нужно.</p>
+  <p id="progress" aria-live="polite"></p><p id="save-warning" role="status" hidden>Не удалось сохранить в браузере. Можно продолжать решать.</p>
+  <section class="card"><div id="condition" class="condition"></div><ol id="written" aria-label="Выполненные действия"></ol>
+    <h2 id="question"></h2><form id="answer-form"><label for="answer">Твой ответ</label><div class="row"><input id="answer" inputmode="numeric" autocomplete="off" maxlength="20"><button type="submit">Проверить</button></div></form>
+    <p id="feedback" role="status"></p><div class="row"><button id="hint" class="light" type="button">Подсказка</button><button id="solution" class="light" type="button">Разбор по шагам</button></div><p id="hint-text" hidden></p><button id="next" type="button" hidden>Ещё пример →</button>
+  </section>
+  <p>Текущий пример сохраняется в этом браузере.</p><noscript>Включи JavaScript, чтобы тренироваться.</noscript>
+</main></body></html>

@@ -26,13 +26,16 @@ function equal(raw,answer,strict){
 function question(q){if(!q)return null;const choice=q.kind==='choice'||q.type==='choice';return {...clone(q),kind:choice?'choice':'input',options:choice?q.options.map((o,i)=>typeof o==='object'?{id:String(o.id),html:String(o.html)}:{id:String(i),html:String(o)}):[],answer:choice?String(q.answer):clone(q.answer)};}
 function checked(raw,q){return !!q&&(q.kind==='choice'?String(raw)===String(q.answer):equal(raw,q.answer,q.strict));}
 function fresh(){return {view:'practice',lessonIndex:0,step:0,answer:'',answers:[],lessonAnswers:[],lessonChecked:[],hint:0,feedback:{kind:'none',scope:'practice',step:0,answer:''},referenceOpen:false,note:'',completed:false};}
-function create(contentId,seed){
+function create(contentId,seed,options={}){
  if(contentId!==LAB&&contentId!==ESTIMATE&&!courseStage(contentId)&&!multiplication?.has(contentId)&&!own(bank,contentId))throw Error('Неизвестный тренажёр.');
  if(!Number.isInteger(seed)||seed<0||seed>4294967295)throw Error('Некорректный вариант задания.');
+ const varied=contentId===ESTIMATE||!!courseStage(contentId);
+ const generatorVersion=options.generatorVersion===undefined?(varied?2:1):options.generatorVersion;
+ if(![1,2].includes(generatorVersion)||(!varied&&generatorVersion!==1))throw Error('Неизвестная версия примера.');
  let source,task,lessons=[],steps=[],items=[],divisionTask=null,divisionTasks=[],rule='';
  if(multiplication?.has(contentId)){source=multiplication.make(contentId,seed);rule=source.rule;task=clone(source.task);steps=clone(source.steps);lessons=source.lessons.map(l=>({...clone(l),question:question(l.question)}));
- }else if(courseStage(contentId)){source=course.make(contentId,seed);rule=source.rule;task=clone(source.task);steps=clone(source.steps);divisionTask=clone(source.divisionTask||null);divisionTasks=clone(source.divisionTasks||[]);lessons=source.lessons.map(l=>({...clone(l),question:question(l.question)}));
- }else if(contentId===ESTIMATE){source=estimation.make(seed);rule=source.rule;task=clone(source.task);steps=clone(source.steps);lessons=source.lessons.map(l=>({...clone(l),question:question(l.question)}));
+ }else if(courseStage(contentId)){source=generatorVersion===2?course.makeV2(contentId,seed):course.make(contentId,seed);rule=source.rule;task=clone(source.task);steps=clone(source.steps);divisionTask=clone(source.divisionTask||null);divisionTasks=clone(source.divisionTasks||[]);lessons=source.lessons.map(l=>({...clone(l),question:question(l.question)}));
+ }else if(contentId===ESTIMATE){source=generatorVersion===2?estimation.makeV2(seed):estimation.make(seed);rule=source.rule;task=clone(source.task);steps=clone(source.steps);lessons=source.lessons.map(l=>({...clone(l),question:question(l.question)}));
  }else if(contentId===LAB){const keys=Object.keys(division.levels),level=keys[seed%keys.length];divisionTask=division.make(level,seed||1);source={family:'division',title:'Лаборатория деления уголком'};rule=division.levels[level].idea;task={kind:'input',prompt:divisionTask.dividend+' : '+divisionTask.divisor};steps=division.plan(divisionTask).actions;
  }else{
   source=bank[contentId](seed);rule=source.rule||'';
@@ -60,6 +63,9 @@ function create(contentId,seed){
   }
  }
  const taskSpec={schema:'mathexam-remediation-task',contentVersion:1,contentId,seed,family:source.family,title:source.title,rule,task,lessons,steps,items,divisionTask,divisionTasks};
+ // Missing marker is the original generator forever; do not reinterpret saved
+ // conditions when new practice expands the pool of numbers.
+ if(generatorVersion===2)taskSpec.generatorVersion=2;
  if(JSON.stringify(taskSpec).length>60000)throw Error('Задание превысило допустимый размер.');
  return {taskSpec,state:fresh()};
 }

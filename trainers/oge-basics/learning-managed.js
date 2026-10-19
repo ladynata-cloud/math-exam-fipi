@@ -15,7 +15,7 @@ function track(){return N?.trackFor(spec?.contentId);}
 function courseLabel(){const t=track(),i=t?.stages.findIndex(s=>s.id===spec.contentId);return t?t.title+' · шаг '+(i+1)+' из '+t.stages.length:courseStage()?'Деление уголком · ступень '+courseStage().order+' из '+C.stages.length:'Ликбез · сохранённая попытка';}
 function courseStage(){return C?.stages.find(stage=>stage.id===spec?.contentId);}
 function displayText(value){return M?.has(spec?.contentId)?M.displayText(value):String(value??'');}
-function simpleQuestion(q, scope, step, answer) { if((courseStage()||M?.has(spec?.contentId))&&scope==='step'&&q)return {prompt:displayText(q.prompt),hint:displayText(q.hint),error:displayText(q.error||'Проверь вычисление. Если трудно, открой подсказку.')}; return window.LearningScaffolds?.present?.(spec,q,{scope,step,answer}); }
+function simpleQuestion(q, scope, step, answer) { const simple=window.LearningScaffolds?.present?.(spec,q,{scope,step,answer}); if(simple)return {...simple,prompt:displayText(simple.prompt),hint:displayText(simple.hint),error:displayText(simple.error)}; if((courseStage()||M?.has(spec?.contentId))&&scope==='step'&&q)return {prompt:displayText(q.prompt),hint:displayText(q.hint),error:displayText(q.error||'Проверь вычисление. Если трудно, открой подсказку.')}; return null; }
 function shownLesson(index) { const lesson=window.LearningScaffolds?.lesson?.(spec,index)||spec.lessons[index];if(!lesson||!M?.has(spec?.contentId))return lesson;return {...lesson,title:displayText(lesson.title),lead:displayText(lesson.lead),html:displayText(lesson.html),short:displayText(lesson.short),question:lesson.question?{...lesson.question,prompt:displayText(lesson.question.prompt),hint:displayText(lesson.question.hint)}:null}; }
 function shownTitle() { return spec.contentId==='multiplication-division/long-division-quotient-digit'?'Деление: подбираем одну цифру':spec.title; }
 function estimationTrail(){
@@ -130,7 +130,7 @@ function render(focus){
  const target=focus?($('lm-answer')||(done&&training?$('lm-new'):null)):previous&&$(previous.id);if(target){target.focus({preventScroll:true});if(previous&&target.id===previous.id&&typeof target.setSelectionRange==='function')target.setSelectionRange(previous.start,previous.end);}
 }
 window.MathExamLearning.register({trainerId:'oge-basics',contentVersion:1,getState:()=>state?clone(state):null,subscribe:callback=>{notify=callback;return()=>{notify=()=>{};};},applyState:payload=>{
- const canonical=api.create(payload.taskSpec.contentId,payload.taskSpec.seed).taskSpec;
+ const canonical=api.create(payload.taskSpec.contentId,payload.taskSpec.seed,{generatorVersion:payload.taskSpec.generatorVersion||1}).taskSpec;
  // The account server adds this fixed identity envelope to every saved task.
  // Reconstruct it before the exact comparison; all authored content still matches.
  canonical.trainerId='oge-basics';canonical.id=canonical.contentId;

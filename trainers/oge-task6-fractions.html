@@ -163,6 +163,9 @@ footer{margin-top:26px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
 </header>
 
 <div class="chips" id="chips" role="group" aria-label="Разделы"></div>
+<aside class="help" aria-label="Новые примеры с дробями"><p>Для проверки — задания банка. Для долгой тренировки — новые числа:</p>
+<a href="./drobi-oge-trainer.html#practice=fraction-mixed" target="_blank" rel="noopener">Ещё примеры с обычными дробями →</a>
+<a href="./drobi-oge-trainer.html#practice=decimal-mixed" target="_blank" rel="noopener">Ещё примеры с десятичными дробями →</a></aside>
 <div class="rowopts">
   <label class="toggle"><input type="checkbox" id="shuffle"> вперемешку</label>
   <span id="counter"></span>
@@ -384,7 +387,7 @@ function renderSummary(){
   $('card').innerHTML='<div class="summary"><h2 id="taskHeading" tabindex="-1">Раздел завершён</h2>'+
     '<div class="bigscore">'+count.independent+' / '+count.total+'</div><p>Самостоятельно '+count.independent+' из '+count.total+'.</p>'+
     '<p>✓ с первой: '+count.first+' · ↻ после ошибок: '+count.retry+' · 👁 ответ показан: '+count.revealed+' · — пропущено: '+count.skipped+' · ○ ещё не пройдено: '+count.unseen+'.</p>'+
-    '<button type="button" class="b-primary" id="again">Пройти ещё раз</button></div>';
+    '<button type="button" class="b-primary" id="again">Повторить задания банка</button><p>Хочешь другие числа? Продолжай по одному действию:</p><p><a href="./drobi-oge-trainer.html#practice=fraction-mixed" target="_blank" rel="noopener">Ещё примеры с обычными дробями →</a></p><p><a href="./drobi-oge-trainer.html#practice=decimal-mixed" target="_blank" rel="noopener">Ещё примеры с десятичными дробями →</a></p></div>';
   $('again').onclick=startSet;renderStats();renderNavigation();$('taskHeading').focus();
 }
 // Initialize trainer

@@ -89,7 +89,7 @@
     'mixed-guided':()=>lesson('Сначала посмотри на оба числа','Если справа есть запятая, сначала убери её.','<p>6 : 1,5 → 60 : 15. Если справа целое число, сразу начинай уголок. Нули в середине ответа сохраняй.</p>','Сколько цифр после запятой в числе 1,5?',1,'После запятой стоит одна цифра — 5.'),
     'independent-check':()=>lesson('Реши и проверь самостоятельно','Здесь три новых примера разных видов.','<p>Реши каждый уголок в тетради. Введи полный ответ, сохрани нули и запятую. Подсказка доступна, если застрянешь.</p>','В ответе получилось: 2, потом 0, потом 3. Запиши это число.',203,'Ноль занимает своё место: 203.')
   };
-  function micro(slug,seed) {
+  function micro(slug,seed,variants) {
     const groups=[],steps=[];
     const group=(prompt,makeSteps)=>{
       const taskIndex=groups.length,startIndex=steps.length;
@@ -97,31 +97,31 @@
       groups.push({task:null,prompt,startIndex,endIndex:steps.length});
     };
     for(let i=0;i<3;i++) {
-      const k=(seed+i)%100000;
+      const k=(seed+i)%100000,v=variants&&variants[i];
       if(slug==='multiply-bridge') {
-        const a=2+k%8,b=2+(Math.floor(k/8)+i)%8,n=a*b;
+        const a=v?v[0]:2+k%8,b=v?v[1]:2+(Math.floor(k/8)+i)%8,n=a*b;
         group(a+' × '+b+' и '+n+' : '+b,[numericStep('product','Умножь: '+a+' × '+b+' = ?',n,a+' × '+b+' = '+n+'.',a+' × '+b+' = '+n+'.'),numericStep('digit','Какую цифру умножили на '+b+', чтобы получить '+n+'?',a,'В предыдущем действии на '+b+' умножили цифру '+a+'.',n+' : '+b+' — берём '+a+'.')]);
       } else if(slug==='digit-choice') {
-        const d=3+k%7,q=2+(Math.floor(k/7)+i)%7,n=q*d+(k+i)%d;
-        const help=q+' × '+d+' = '+q*d+', а '+(q+1)+' × '+d+' = '+(q+1)*d+' — уже больше '+n+'.';
+        const d=v?v[1]:3+k%7,n=v?v[0]:(2+(Math.floor(k/7)+i)%7)*d+(k+i)%d,q=Math.floor(n/d);
+        const help=q===9?'9 × '+d+' = '+q*d+' — не больше '+n+'. 9 — самая большая цифра.':q+' × '+d+' = '+q*d+', а '+(q+1)+' × '+d+' = '+(q+1)*d+' — уже больше '+n+'.';
         const ss=[numericStep('digit','Подбери одну цифру для '+n+' : '+d+'.',q,help,'Для '+n+' : '+d+' пробуем '+q+'.'),numericStep('product','Проверь: '+q+' × '+d+' = ?',q*d,q+' × '+d+' = '+q*d+'.',q+' × '+d+' = '+q*d+'.')];
-        if(n!==q*d)ss.push(numericStep('product','Проверь следующую цифру: '+(q+1)+' × '+d+' = ?',(q+1)*d,help,(q+1)+' × '+d+' = '+(q+1)*d+' — больше '+n+'.'));
+        if(n!==q*d&&q<9)ss.push(numericStep('product','Проверь следующую цифру: '+(q+1)+' × '+d+' = ?',(q+1)*d,help,(q+1)+' × '+d+' = '+(q+1)*d+' — больше '+n+'.'));
         ss.push(numericStep('digit','Какую одну цифру оставим для '+n+' : '+d+'?',q,help,'Берём '+q+'.'));
         group(n+' : '+d,ss);
       } else if(slug==='multiply-two-digit') {
-        const a=2+k%8,d=10*(1+(Math.floor(k/8)+i)%4)+1+(k+i)%8,t=d-d%10,u=d%10;
+        const a=v?v[0]:2+k%8,d=v?v[1]:10*(1+(Math.floor(k/8)+i)%4)+1+(k+i)%8,t=d-d%10,u=d%10;
         group(a+' × '+d,[numericStep('product','Сначала умножь: '+a+' × '+t+' = ?',a*t,a+' × '+t+' = '+a*t+'.',a+' × '+t+' = '+a*t+'.'),numericStep('product','Теперь умножь: '+a+' × '+u+' = ?',a*u,a+' × '+u+' = '+a*u+'.',a+' × '+u+' = '+a*u+'.'),numericStep('answer','Сложи два результата: '+a*t+' + '+a*u+' = ?',a*d,a*t+' + '+a*u+' = '+a*d+'.',a+' × '+d+' = '+a*d+'.')]);
       } else if(slug==='subtract') {
         if(i<2) {
           const pairs=i===0?[[86,24],[97,35],[75,43],[68,26]]:[[83,56],[72,48],[64,37],[91,56],[85,58],[73,46],[62,29],[94,67]];
-          const [a,b]=pairs[k%pairs.length],borrow=a%10<b%10,left=Math.floor(a/10)-(borrow?1:0),right=a%10+(borrow?10:0),ones=right-b%10,tens=left-Math.floor(b/10);
+          const [a,b]=v||pairs[k%pairs.length],borrow=a%10<b%10,left=Math.floor(a/10)-(borrow?1:0),right=a%10+(borrow?10:0),ones=right-b%10,tens=left-Math.floor(b/10);
           group(a+' − '+b,[numericStep('digit',(borrow?'Справа '+a%10+' − '+b%10+' не получается. Возьмём 1 десяток слева. ':'Начни справа. ')+'Вычти: '+right+' − '+b%10+' = ?',ones,right+' − '+b%10+' = '+ones+'.','Справа: '+right+' − '+b%10+' = '+ones+'.'),numericStep('digit','Слева '+(borrow?'осталось ':'')+left+' десятков. Вычти: '+left+' − '+Math.floor(b/10)+' = ?',tens,left+' − '+Math.floor(b/10)+' = '+tens+'.','Слева: '+left+' − '+Math.floor(b/10)+' = '+tens+'.'),numericStep('answer','Собери две полученные цифры. Сколько будет '+a+' − '+b+'?',a-b,'Слева '+tens+', справа '+ones+'. Получилось '+(a-b)+'.',a+' − '+b+' = '+(a-b)+'.')]);
         } else {
-          const a=100*(1+seed%8),answer=1+seed%9,b=a-answer,hundreds=a/100-1;
+          const a=v?v[0]:100*(1+seed%8),answer=v?v[0]-v[1]:1+seed%9,b=a-answer,hundreds=a/100-1;
           group(a+' − '+b,[numericStep('product','Справа два нуля. Возьмём 1 сотню слева. Сколько в ней десятков?',10,'В 1 сотне 10 десятков.','Взяли 1 сотню: получили 10 десятков.'),numericStep('digit','Один десяток отдаём вправо. Сколько десятков останется из 10?',9,'10 − 1 = 9.','Посередине осталось 9 десятков, справа стало 10.'),numericStep('digit','Справа теперь 10. Вычти: 10 − '+b%10+' = ?',answer,'10 − '+b%10+' = '+answer+'.','Справа: 10 − '+b%10+' = '+answer+'.'),numericStep('digit','Посередине осталось 9. Вычти: 9 − 9 = ?',0,'9 − 9 = 0.','Посередине получилось 0.'),numericStep('digit','Слева осталось '+hundreds+'. Вычти: '+hundreds+' − '+Math.floor(b/100)+' = ?',0,hundreds+' − '+Math.floor(b/100)+' = 0.','Слева получилось 0.'),numericStep('answer','Собери ответ для '+a+' − '+b+'. Начальные нули не пиши.',answer,'После начальных нулей остаётся цифра '+answer+'. Ответ '+answer+'.',a+' − '+b+' = '+answer+'.')]);
         }
       } else {
-        const tasks=[['735','5'],['864','36'],['948','24'],['476','7'],['936','39'],['672','8'],['963','3']], pair=tasks[k%tasks.length],task={level:Number(pair[1])<10?'oneDigit':'twoDigit',dividend:pair[0],divisor:pair[1]},p=D.plan(task);
+        const tasks=[['735','5'],['864','36'],['948','24'],['476','7'],['936','39'],['672','8'],['963','3']], pair=v?v.map(String):tasks[k%tasks.length],task={level:Number(pair[1])<10?'oneDigit':'twoDigit',dividend:pair[0],divisor:pair[1]},p=D.plan(task);
         if(slug==='first-part') {
           const start=p.actions.find(a=>a.kind==='start');
           group(pair.join(' : '),[{...numericStep('start','Нужно '+pair[1]+' или больше. Бери цифры слева. С какого числа начнём?',start.answer,'Начинаем с '+start.answer+'.','Для '+pair.join(' : ')+' начинаем с '+start.answer+'.'),visual:{kind:'first',digits:task.dividend,divisor:task.divisor,sourceIndex:start.sourceIndex}}]);
@@ -197,5 +197,59 @@
     source.task.prompt=source.divisionTasks.map(g=>g.prompt).join(' · ');
     return source;
   }
-  return Object.freeze({stages,has,stageFor,make,plainPlan});
+  // Saved version-1 attempts regenerate make() exactly. Expanded generation is
+  // an explicit opt-in, with the same questions, actions and board protocol.
+  const microPools=new Map();
+  function poolsV2(slug) {
+    if(microPools.has(slug))return microPools.get(slug);
+    const pools=slug==='subtract'?[[],[],[]]:[[]];
+    if(slug==='multiply-bridge') {
+      for(let a=2;a<=9;a++)for(let b=2;b<=9;b++)pools[0].push([a,b]);
+    } else if(slug==='multiply-two-digit') {
+      for(let a=2;a<=9;a++)for(let d=11;d<=49;d++)if(d%10)pools[0].push([a,d]);
+    } else if(slug==='digit-choice') {
+      for(let d=2;d<=9;d++)for(let n=d;n<10*d;n++)pools[0].push([n,d]);
+    } else if(slug==='subtract') {
+      for(let a=20;a<=99;a++)for(let b=10;b<a;b++) {
+        if(Math.floor(b/10)>=Math.floor(a/10))continue;
+        pools[a%10>=b%10?0:1].push([a,b]);
+      }
+      for(let a=100;a<=900;a+=100)for(let answer=1;answer<=9;answer++)pools[2].push([a,a-answer]);
+    } else if(slug==='first-part'||slug==='bring-digit') {
+      // Three-digit examples and a two-digit answer: always another digit to
+      // bring down, and no new internal-zero skill before its own stage.
+      for(let d=2;d<=49;d++)for(let q=12;q<=99;q++) {
+        const n=d*q;
+        if(q%10&&n>=100&&n<=999)pools[0].push([n,d]);
+      }
+    } else throw Error('Неизвестное маленькое действие.');
+    pools.forEach(pool=>{pool.forEach(Object.freeze);Object.freeze(pool);});
+    Object.freeze(pools);microPools.set(slug,pools);return pools;
+  }
+  function variantsV2(slug,seed) {
+    const pools=poolsV2(slug),salt=rows.findIndex(r=>r[0]===slug)*1009;
+    // Mixed-radix ranks vary whole exercise sets rather than cycling through
+    // a handful of fixed triples. Products stay below Number.MAX_SAFE_INTEGER.
+    let rank=seed*104729+salt;
+    if(pools.length===3)return pools.map(pool=>{const pair=pool[rank%pool.length];rank=Math.floor(rank/pool.length);return pair;});
+    const available=pools[0].slice(),chosen=[];
+    for(let i=0;i<3;i++) {
+      const index=rank%available.length;rank=Math.floor(rank/available.length);
+      chosen.push(available.splice(index,1)[0]);
+    }
+    return chosen;
+  }
+  function makeV2(contentId,seed) {
+    const source=make(contentId,seed),stage=stageFor(contentId);
+    if(stage.slug==='estimate') {
+      const estimate=Q.makeV2(seed);
+      return {...source,...estimate,title:stage.title,steps:estimate.steps.map(s=>({...s,error:'Проверь это действие ещё раз. Прикидка и окончательная цифра могут отличаться.'}))};
+    }
+    if(stage.order<=6) {
+      const exercises=micro(stage.slug,seed,variantsV2(stage.slug,seed));
+      return {...source,...exercises,task:{kind:'input',prompt:exercises.divisionTasks.map(g=>g.prompt).join(' · ')}};
+    }
+    return source;
+  }
+  return Object.freeze({stages,has,stageFor,make,makeV2,plainPlan});
 });

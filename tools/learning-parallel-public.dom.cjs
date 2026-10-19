@@ -23,6 +23,7 @@ function mount(initial={},blocked=false){
  return {dom,records,writes,track,progress,refresh:()=>dom.window.dispatchEvent(new dom.window.Event('pageshow'))};
 }
 const key=id=>'mathExamBasics.divisionCourse.v1.'+id;
+const historyKey=id=>'mathExamBasics.divisionCourse.history.v1.'+id;
 function savedCourse(id,complete){
  const {taskSpec,state}=contracts.create(id,1);
  if(complete){
@@ -79,6 +80,22 @@ assert.equal(t.progress('multiplication'),null,'Do not present an exact count wh
 assert.match(t.track('multiplication').textContent,/Они оставлены без изменений/);
 assert.equal(t.progress('division').value,2,'One unavailable record must not hide the other track');
 assert.equal(t.records.get(legacyKey('multiplication-tricks')),'{broken');assert.deepEqual(t.writes,[]);t.dom.window.close();
+
+const repeatRecords={
+ [key(firstDivision)]:savedCourse(firstDivision,false),
+ [historyKey(firstDivision)]:JSON.stringify({schemaVersion:1,hasCompleted:true})
+};
+const repeat=mount(repeatRecords);
+assert.equal(repeat.progress('division').value,1,'A fresh repeat cannot erase the history of a solved example');
+const repeatingStep=repeat.track('division').querySelector('[aria-current="step"]');
+assert.equal(repeatingStep.querySelector('.division-course-number').textContent,'1','The unfinished repeat remains the current step');
+assert(repeatingStep.classList.contains('is-complete'));
+assert.match(repeatingStep.textContent,/Новую работу можно продолжить/);
+assert.match(repeatingStep.querySelector('.actions a').textContent,/Продолжить/);
+assert.deepEqual(Object.fromEntries(repeat.records),repeatRecords);assert.deepEqual(repeat.writes,[]);
+repeat.records.set(historyKey(firstDivision),'{broken history');repeat.refresh();
+assert.equal(repeat.progress('division'),null,'A corrupt history cannot produce a fabricated exact progress count');
+assert.equal(repeat.records.get(historyKey(firstDivision)),'{broken history');assert.deepEqual(repeat.writes,[]);repeat.dom.window.close();
 
 const blocked=mount({},true);
 assert.equal(blocked.dom.window.document.querySelectorAll('progress').length,0);

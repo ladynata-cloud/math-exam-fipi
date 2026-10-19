@@ -1,0 +1,3770 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-10-19",
+  "baseline": "7183175",
+  "source": "learning/division-course-map.js",
+  "sourceSHA256": "13bbde8caae417cdf1bf9b1771d0e8f86185e51dd05d90354872c8f4053f1512",
+  "counts": {
+    "primary": 31,
+    "supplement": 77,
+    "aliases": 10,
+    "linkedURLs": 118,
+    "withHub": 119,
+    "sharedImplementationFamilies": 16
+  },
+  "method": "Source inspection and deterministic 200-seed samples where a pure API exists. Condition fingerprints exclude seed/identity. DOM continuation coverage is tools/arithmetic-supplements.dom.cjs; primary-route robots are separate. A finite set of mathematical facts is distinct from a UI that stops accepting attempts. This is not a claim that 118 URLs are 118 distinct engines or that every exam prototype has infinite new variants.",
+  "categories": {
+    "seeded-generated-practice": 89,
+    "generated-arithmetic-practice": 9,
+    "generated-table-practice": 1,
+    "authored-cycle-with-generated-continuation": 10,
+    "generated-column-practice": 1,
+    "fixed-introduction-then-generated-sets": 1,
+    "generated-practice-and-fixed-bank": 1,
+    "generated-word-problems": 1,
+    "small-seeded-family-with-generated-continuation": 2,
+    "fixed-bank-with-generated-continuation": 1,
+    "generated-formula-practice": 2
+  },
+  "entries": [
+    {
+      "id": "arithmetic-route-hub",
+      "title": "Умножение и деление",
+      "scope": "hub",
+      "url": "/trainers/oge-basics/multiplication-division/division-course.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/division-course.html",
+      "engine": "navigation",
+      "practice": {
+        "category": "navigation-no-task",
+        "repeatAvailable": null,
+        "control": "Open the selected stage or extra practice"
+      }
+    },
+    {
+      "id": "multiplication-division/multiplication-meaning",
+      "title": "Что значит умножить",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/multiplication-meaning",
+      "url": "/trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 59,
+          "examples": [
+            "В таблице 3 ряда, в каждом по 4 клетки. Сколько клеток всего?",
+            "3 одинаковые группы по 5 предметов. Сколько предметов всего?",
+            "Вычислите <strong>6 · 3</strong>, если известно, что 3 · 6 = 18."
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/multiplication-meaning.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/multiplication-pythagoras-table",
+      "title": "Находим ответ в таблице",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/multiplication-pythagoras-table",
+      "url": "/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 16,
+          "examples": [
+            "<div style=\"overflow:auto;max-width:100%;width:100%\"><table style=\"border-collapse:collapse;margin:auto;font-weight:850;text-align:center;font-size:12px;table-layout:fixed\"><tr><th style=\"padding:4px;border:1px solid #dfe4ef\">×</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">2</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">3</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#eceefe\">4</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">5</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">6</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">7</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">8</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">9</th></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">2</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">4</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">6</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">8</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">10</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">14</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">16</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#eceefe\">3</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">6</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">9</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff2dd;color:#a86a20\">?</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">15</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">21</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">27</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">4</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">8</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">16</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">20</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">28</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">32</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">36</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">5</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">10</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">15</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">20</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">25</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">30</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">35</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">40</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">45</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">6</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">30</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">36</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">42</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">48</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">54</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">7</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">14</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">21</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">28</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">35</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">42</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">49</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">56</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">63</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">8</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">16</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">32</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">40</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">48</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">56</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">64</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">72</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">9</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">27</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">36</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">45</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">54</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">63</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">72</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">81</td></tr></table></div><p style=\"margin-top:12px\">Какое число должно быть в выделенной клетке?</p>",
+            "<div style=\"overflow:auto;max-width:100%;width:100%\"><table style=\"border-collapse:collapse;margin:auto;font-weight:850;text-align:center;font-size:12px;table-layout:fixed\"><tr><th style=\"padding:4px;border:1px solid #dfe4ef\">×</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">2</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">3</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">4</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#eceefe\">5</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">6</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">7</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">8</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">9</th></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">2</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">4</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">6</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">8</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">10</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">14</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">16</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#eceefe\">3</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">6</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">9</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff2dd;color:#a86a20\">?</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">21</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">27</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">4</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">8</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">16</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">20</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">28</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">32</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">36</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">5</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">10</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">15</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">20</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">25</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">30</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">35</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">40</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">45</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">6</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">30</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">36</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">42</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">48</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">54</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">7</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">14</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">21</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">28</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">35</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">42</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">49</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">56</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">63</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">8</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">16</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">32</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">40</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">48</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">56</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">64</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">72</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">9</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">27</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">36</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">45</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">54</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">63</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">72</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">81</td></tr></table></div><p style=\"margin-top:12px\">Какое число должно быть в выделенной клетке?</p>",
+            "<div style=\"overflow:auto;max-width:100%;width:100%\"><table style=\"border-collapse:collapse;margin:auto;font-weight:850;text-align:center;font-size:12px;table-layout:fixed\"><tr><th style=\"padding:4px;border:1px solid #dfe4ef\">×</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">2</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">3</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">4</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">5</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#eceefe\">6</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">7</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">8</th><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">9</th></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">2</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">4</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">6</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">8</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">10</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">14</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">16</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#eceefe\">3</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">6</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">9</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">15</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff2dd;color:#a86a20\">?</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">21</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">27</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">4</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">8</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">16</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">20</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">28</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">32</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">36</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">5</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">10</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">15</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">20</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">25</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">30</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">35</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">40</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">45</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">6</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">12</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">30</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">36</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">42</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">48</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">54</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">7</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">14</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">21</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">28</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">35</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">42</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">49</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">56</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">63</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">8</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">16</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">24</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">32</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">40</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">48</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">56</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">64</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">72</td></tr><tr><th style=\"padding:4px 5px;border:1px solid #dfe4ef;background:#f7f8fc\">9</th><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">18</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">27</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">36</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">45</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">54</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">63</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">72</td><td style=\"padding:5px 6px;border:1px solid #dfe4ef;background:#fff;color:#8e97aa\">81</td></tr></table></div><p style=\"margin-top:12px\">Какое число должно быть в выделенной клетке?</p>"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/multiplication-tricks",
+      "title": "Как вспомнить ответ",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/multiplication-tricks",
+      "url": "/trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Вычислите: <strong>5 · 6</strong>",
+            "Вычислите: <strong>5 · 7</strong>",
+            "Вычислите: <strong>5 · 8</strong>"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/multiplication-tricks.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/multiplication-ladder",
+      "title": "Учим одну таблицу за раз",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/multiplication-ladder",
+      "url": "/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 31,
+          "examples": [
+            "Известно: <strong>3 · 4 = 12</strong>. Найдите 3 · 5.",
+            "Известно: <strong>3 · 5 = 15</strong>. Найдите 3 · 6.",
+            "Известно: <strong>3 · 5 = 15</strong>. Найдите 3 · 4."
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/multiplication-ladder.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/multiplication-mixed",
+      "title": "Таблица вперемешку",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/multiplication-mixed",
+      "url": "/trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 64,
+          "examples": [
+            "<strong>? · 3 = 12</strong>",
+            "<strong>3 · 5 = ?</strong>",
+            "Как проверить равенство <strong>18 : 3 = 6</strong>?"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/multiplication-mixed.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-multiply-two-digit",
+      "title": "Умножаем на число из двух цифр",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-multiply-two-digit",
+      "url": "/trainers/oge-basics/multiplication-division/course-multiply-two-digit.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-multiply-two-digit.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "2 × 13 · 2 × 19 · 2 × 11",
+            "7 × 18 · 4 × 23 · 2 × 12",
+            "4 × 24 · 6 × 29 · 2 × 13"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-multiply-two-digit.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-column-one-digit",
+      "title": "Умножаем столбиком на одну цифру",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-column-one-digit",
+      "url": "/trainers/oge-basics/multiplication-division/course-column-one-digit.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-column-one-digit.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-column",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 88,
+          "examples": [
+            "91 × 4",
+            "96 × 5",
+            "13 × 6"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-column-one-digit.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-column-three-by-one",
+      "title": "Три цифры умножаем на одну",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-column-three-by-one",
+      "url": "/trainers/oge-basics/multiplication-division/course-column-three-by-one.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-column-three-by-one.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-column",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 165,
+          "examples": [
+            "312 × 4",
+            "313 × 5",
+            "313 × 6"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-column-three-by-one.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-column-four-by-one",
+      "title": "Четыре цифры умножаем на одну",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-column-four-by-one",
+      "url": "/trainers/oge-basics/multiplication-division/course-column-four-by-one.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-column-four-by-one.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-column",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "3124 × 4",
+            "3128 × 4",
+            "3131 × 5"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-column-four-by-one.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-column-two-digit",
+      "title": "Умножаем столбиком на число из двух цифр",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-column-two-digit",
+      "url": "/trainers/oge-basics/multiplication-division/course-column-two-digit.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-column-two-digit.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-column",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 198,
+          "examples": [
+            "91 × 13",
+            "96 × 44",
+            "13 × 36"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-column-two-digit.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-column-three-by-two",
+      "title": "Три цифры умножаем на две",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-column-three-by-two",
+      "url": "/trainers/oge-basics/multiplication-division/course-column-three-by-two.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-column-three-by-two.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-column",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "312 × 35",
+            "312 × 43",
+            "313 × 51"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-column-three-by-two.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-column-two-by-three",
+      "title": "Две цифры умножаем на три",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-column-two-by-three",
+      "url": "/trainers/oge-basics/multiplication-division/course-column-two-by-three.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-column-two-by-three.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-column",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "32 × 350",
+            "32 × 432",
+            "32 × 513"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-column-two-by-three.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-column-three-by-three",
+      "title": "Три цифры умножаем на три",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-column-three-by-three",
+      "url": "/trainers/oge-basics/multiplication-division/course-column-three-by-three.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-column-three-by-three.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-column",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "312 × 350",
+            "312 × 432",
+            "313 × 513"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-column-three-by-three.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-column-zeros",
+      "title": "Нули внутри и в конце чисел",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-column-zeros",
+      "url": "/trainers/oge-basics/multiplication-division/course-column-zeros.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-column-zeros.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-column",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 198,
+          "examples": [
+            "303 × 8",
+            "310 × 43",
+            "3005 × 27"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-column-zeros.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-column-mixed",
+      "title": "Разные столбики вперемешку",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-column-mixed",
+      "url": "/trainers/oge-basics/multiplication-division/course-column-mixed.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-column-mixed.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-column",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "32 × 4",
+            "312 × 4",
+            "3131 × 5"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-column-mixed.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-multiply-bridge",
+      "title": "Умножение помогает делить",
+      "scope": "primary",
+      "track": "multiplication",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-multiply-bridge",
+      "url": "/trainers/oge-basics/multiplication-division/course-multiply-bridge.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-multiply-bridge.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "2 × 2 и 4 : 2 · 2 × 3 и 6 : 3 · 2 × 4 и 8 : 4",
+            "5 × 3 и 15 : 3 · 9 × 8 и 72 : 8 · 5 × 4 и 20 : 4",
+            "8 × 4 и 32 : 4 · 9 × 6 и 54 : 6 · 8 × 6 и 48 : 6"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-multiply-bridge.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-digit-choice",
+      "title": "Подбираем одну цифру",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-digit-choice",
+      "url": "/trainers/oge-basics/multiplication-division/course-digit-choice.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-digit-choice.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "44 : 7 · 4 : 2 · 2 : 2",
+            "8 : 2 · 33 : 8 · 2 : 2",
+            "18 : 7 · 16 : 6 · 3 : 2"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-digit-choice.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-subtract",
+      "title": "Вычитаем по порядку",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-subtract",
+      "url": "/trainers/oge-basics/multiplication-division/course-subtract.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-subtract.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "78 − 16 · 20 − 12 · 100 − 99",
+            "71 − 31 · 30 − 21 · 100 − 99",
+            "65 − 10 · 34 − 17 · 100 − 99"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-subtract.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-first-part",
+      "title": "С каких цифр начать",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-first-part",
+      "url": "/trainers/oge-basics/multiplication-division/course-first-part.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-first-part.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "852 : 12 · 106 : 2 · 102 : 2",
+            "385 : 11 · 171 : 3 · 102 : 2",
+            "882 : 9 · 212 : 4 · 102 : 2"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-first-part.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-bring-digit",
+      "title": "Переносим следующую цифру",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-bring-digit",
+      "url": "/trainers/oge-basics/multiplication-division/course-bring-digit.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-bring-digit.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "216 : 4. Уже вычли 21 − 20 = 1. · 108 : 2. Уже вычли 10 − 10 = 0. · 102 : 2. Уже вычли 10 − 10 = 0.",
+            "164 : 2. Уже вычли 16 − 16 = 0. · 177 : 3. Уже вычли 17 − 15 = 2. · 102 : 2. Уже вычли 10 − 10 = 0.",
+            "546 : 42. Уже вычли 54 − 42 = 12. · 212 : 4. Уже вычли 21 − 20 = 1. · 102 : 2. Уже вычли 10 − 10 = 0."
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-bring-digit.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-whole-simple",
+      "title": "Собираем всё деление",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-whole-simple",
+      "url": "/trainers/oge-basics/multiplication-division/course-whole-simple.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-whole-simple.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "249 : 3 · 63 : 3",
+            "168 : 8 · 456 : 8",
+            "335 : 5 · 470 : 5"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-whole-simple.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-simple-check",
+      "title": "Проверяем себя: простое деление",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-simple-check",
+      "url": "/trainers/oge-basics/multiplication-division/course-simple-check.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-simple-check.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "235 : 5 · 146 : 2 · 686 : 7",
+            "168 : 2 · 184 : 4 · 558 : 9",
+            "154 : 7 · 228 : 4 · 657 : 9"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-simple-check.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-estimate",
+      "title": "Округляем и прикидываем",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-estimate",
+      "url": "/trainers/oge-basics/multiplication-division/course-estimate.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-estimate.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "Подбери одну цифру для 283 : 35. Сначала прикинь, затем проверь.",
+            "Подбери одну цифру для 266 : 33. Сначала прикинь, затем проверь.",
+            "Подбери одну цифру для 347 : 73. Сначала прикинь, затем проверь."
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-estimate.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-whole-two-digit",
+      "title": "Делим на число из двух цифр",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-whole-two-digit",
+      "url": "/trainers/oge-basics/multiplication-division/course-whole-two-digit.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-whole-two-digit.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "4067 : 49",
+            "462 : 22",
+            "2211 : 33"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-whole-two-digit.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-zeros",
+      "title": "Не пропускаем ноль",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-zeros",
+      "url": "/trainers/oge-basics/multiplication-division/course-zeros.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-zeros.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 174,
+          "examples": [
+            "924 : 3",
+            "324 : 3",
+            "2436 : 4"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-zeros.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-remainder",
+      "title": "Что осталось после деления",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-remainder",
+      "url": "/trainers/oge-basics/multiplication-division/course-remainder.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-remainder.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "218 : 3",
+            "55 : 4",
+            "714 : 5"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-remainder.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-decimal-natural",
+      "title": "Запятая в ответе",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-decimal-natural",
+      "url": "/trainers/oge-basics/multiplication-division/course-decimal-natural.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-decimal-natural.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 178,
+          "examples": [
+            "49,8 : 3",
+            "51,9 : 3",
+            "7,2 : 4"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-decimal-natural.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-append-zeros",
+      "title": "Продолжаем после запятой",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-append-zeros",
+      "url": "/trainers/oge-basics/multiplication-division/course-append-zeros.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-append-zeros.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 155,
+          "examples": [
+            "33 : 4",
+            "1 : 8",
+            "69 : 8"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-append-zeros.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-decimal-divisor",
+      "title": "Убираем запятую справа",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-decimal-divisor",
+      "url": "/trainers/oge-basics/multiplication-division/course-decimal-divisor.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-decimal-divisor.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 166,
+          "examples": [
+            "1,808 : 1,6",
+            "0,792 : 1,2",
+            "0,64 : 3,2"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-decimal-divisor.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-mixed-guided",
+      "title": "Три вида деления по шагам",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-mixed-guided",
+      "url": "/trainers/oge-basics/multiplication-division/course-mixed-guided.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-mixed-guided.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "1360 : 34 · 20 : 4 · 720 : 7,5",
+            "444 : 37 · 2,85 : 5 · 16 : 3,2",
+            "2993 : 41 · 3,84 : 6 · 22,88 : 1,6"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-mixed-guided.html"
+        ]
+      }
+    },
+    {
+      "id": "multiplication-division/course-independent-check",
+      "title": "Делим самостоятельно",
+      "scope": "primary",
+      "track": "division",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/course-independent-check",
+      "url": "/trainers/oge-basics/multiplication-division/course-independent-check.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/course-independent-check.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "guided-division-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "2412 : 12 · 7,36 : 0,16 · 79 : 4",
+            "4816 : 16 · 16,56 : 0,12 · 49 : 4",
+            "9624 : 24 · 41,4 : 0,45 · 17 : 4"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/course-independent-check.html"
+        ]
+      }
+    },
+    {
+      "id": "oge-basics:multiplication-division",
+      "title": "Умножение и деление: одна семья действий",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division",
+      "url": "/trainers/oge-basics/multiplication-division.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 45,
+          "examples": [
+            "Вычислите: <strong>12 : 3</strong>",
+            "Вычислите: <strong>3 · 5</strong>",
+            "Найдите число: <strong>? · 3 = 18</strong>"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division.html"
+        ]
+      }
+    },
+    {
+      "id": "oge-basics:multiplication-division/tabular-division",
+      "title": "Табличное деление: умножение наоборот",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/tabular-division",
+      "url": "/trainers/oge-basics/multiplication-division/tabular-division.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/tabular-division.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 45,
+          "examples": [
+            "<strong>12 : ? = 4</strong>",
+            "<strong>15 : 3 = ?</strong>",
+            "<strong>3 · ? = 18</strong>"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/tabular-division.html"
+        ]
+      }
+    },
+    {
+      "id": "path:pre7-smart-calculation",
+      "title": "Считаем удобным способом",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": "ege-path",
+      "contentId": "pre7-smart-calculation",
+      "url": "/ege-baza/path/index.html#lesson=pre7-smart-calculation",
+      "sourceFile": "ege-baza/path/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "ege-path",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Другие числа / Новый самостоятельный вариант",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "Вычисли удобным способом: 11 + 13 + 89.",
+            "Вычисли удобным способом: 12 + 14 + 88.",
+            "Вычисли удобным способом: 13 + 15 + 87."
+          ]
+        },
+        "evidence": [
+          "ege-baza/path/app.js:fresh,showLesson",
+          "board-server/learning-contracts.js"
+        ]
+      }
+    },
+    {
+      "id": "path:pre7-inverse-components",
+      "title": "Находим неизвестный компонент",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": "ege-path",
+      "contentId": "pre7-inverse-components",
+      "url": "/ege-baza/path/index.html#lesson=pre7-inverse-components",
+      "sourceFile": "ege-baza/path/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "ege-path",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Другие числа / Новый самостоятельный вариант",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "Найди x: x + 2 = 13.",
+            "Найди x: 3 · x = 36.",
+            "Найди x: x + 4 = 17."
+          ]
+        },
+        "evidence": [
+          "ege-baza/path/app.js:fresh,showLesson",
+          "board-server/learning-contracts.js"
+        ]
+      }
+    },
+    {
+      "id": "arithmetic:t2a",
+      "title": "Наглядно: ряды точек",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/arifmetika.html?course=preoge&level=t2a",
+      "sourceFile": "trainers/arifmetika.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "arithmetic-levels",
+      "practice": {
+        "category": "generated-arithmetic-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "evidence": [
+          "trainers/arifmetika.html:LEVELS,makeTask,next"
+        ],
+        "notes": "The URL course=preoge and level parameter are supported. Table facts are naturally finite; the Pythagoras completion map resets after all cells have been practised."
+      }
+    },
+    {
+      "id": "arithmetic:t2b",
+      "title": "Лесенкой: таблица на одно число",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/arifmetika.html?course=preoge&level=t2b",
+      "sourceFile": "trainers/arifmetika.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "arithmetic-levels",
+      "practice": {
+        "category": "generated-arithmetic-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "evidence": [
+          "trainers/arifmetika.html:LEVELS,makeTask,next"
+        ],
+        "notes": "The URL course=preoge and level parameter are supported. Table facts are naturally finite; the Pythagoras completion map resets after all cells have been practised."
+      }
+    },
+    {
+      "id": "arithmetic:t2c",
+      "title": "Заполняем таблицу Пифагора",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/arifmetika.html?course=preoge&level=t2c",
+      "sourceFile": "trainers/arifmetika.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "arithmetic-levels",
+      "practice": {
+        "category": "generated-arithmetic-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "evidence": [
+          "trainers/arifmetika.html:LEVELS,makeTask,next"
+        ],
+        "notes": "The URL course=preoge and level parameter are supported. Table facts are naturally finite; the Pythagoras completion map resets after all cells have been practised."
+      }
+    },
+    {
+      "id": "arithmetic:n2d",
+      "title": "Вперемешку: проверь себя",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/arifmetika.html?course=preoge&level=n2d",
+      "sourceFile": "trainers/arifmetika.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "arithmetic-levels",
+      "practice": {
+        "category": "generated-arithmetic-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "evidence": [
+          "trainers/arifmetika.html:LEVELS,makeTask,next"
+        ],
+        "notes": "The URL course=preoge and level parameter are supported. Table facts are naturally finite; the Pythagoras completion map resets after all cells have been practised."
+      }
+    },
+    {
+      "id": "arithmetic:t2e",
+      "title": "Найди множитель",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/arifmetika.html?course=preoge&level=t2e",
+      "sourceFile": "trainers/arifmetika.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "arithmetic-levels",
+      "practice": {
+        "category": "generated-arithmetic-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "evidence": [
+          "trainers/arifmetika.html:LEVELS,makeTask,next"
+        ],
+        "notes": "The URL course=preoge and level parameter are supported. Table facts are naturally finite; the Pythagoras completion map resets after all cells have been practised."
+      }
+    },
+    {
+      "id": "arithmetic:n2e",
+      "title": "Табличное деление",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/arifmetika.html?course=preoge&level=n2e",
+      "sourceFile": "trainers/arifmetika.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "arithmetic-levels",
+      "practice": {
+        "category": "generated-arithmetic-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "evidence": [
+          "trainers/arifmetika.html:LEVELS,makeTask,next"
+        ],
+        "notes": "The URL course=preoge and level parameter are supported. Table facts are naturally finite; the Pythagoras completion map resets after all cells have been practised."
+      }
+    },
+    {
+      "id": "public:lift",
+      "title": "Таблица умножения — «Лифт»",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/multiplication-table/elevator-sprint.html",
+      "sourceFile": "trainers/multiplication-table/elevator-sprint.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "table-elevator",
+      "practice": {
+        "category": "generated-table-practice",
+        "repeatAvailable": true,
+        "control": "Старт / продолжение после правильного ответа",
+        "notes": "Finite multiplication-table facts; unlimited repetitions. Optional timer remains an explicit supplementary format.",
+        "evidence": [
+          "trainers/multiplication-table/elevator-sprint.html"
+        ]
+      }
+    },
+    {
+      "id": "public:equations-multiply",
+      "title": "Неизвестный множитель",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/equations/index.html#multiply",
+      "sourceFile": "equations/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "equation-course",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Новая самостоятельная задача / Новое условие без подсказки",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 91,
+          "examples": [
+            "2 · □ = 4",
+            "2 · □ = 6",
+            "2 · □ = 8"
+          ]
+        },
+        "evidence": [
+          "equations/app.js:newTask",
+          "equations/data.js:generate"
+        ],
+        "notes": "Previously seen conditions are marked as repeats. The 4000-history limit affects independent credit, not further practice."
+      }
+    },
+    {
+      "id": "soviet:groups",
+      "title": "Одинаковые группы",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#groups",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "На каждой из 3 тарелок по 2 яблока. Сколько всего яблок?",
+            "На каждой из 2 тарелок по 3 яблока. Сколько всего яблок?",
+            "На каждой из 4 тарелок по 2 яблока. Сколько всего яблок?"
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/trainers/arifmetika.html?course=preoge&level=t2a"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "soviet:times-table",
+      "title": "Таблица умножения",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#times-table",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Вычисли: 3 × 4.",
+            "Вычисли: 4 × 3.",
+            "Вычисли: 5 × 4."
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/trainers/arifmetika.html?course=preoge&level=n2d"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "soviet:multiply-by-ten-hundred",
+      "title": "Умножение на 10 и 100",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#multiply-by-ten-hundred",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Вычисли: 23 × 10.",
+            "Вычисли: 14 × 100.",
+            "Вычисли: 37 × 10."
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/soviet-math/arithmetic-practice.html?topic=multiply-by-ten-hundred"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "soviet:zero-actions",
+      "title": "Действия с нулём",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#zero-actions",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Вычисли: (7 + 0) − 3 × 0.",
+            "Вычисли: (12 + 0) − 5 × 0.",
+            "Вычисли: (24 + 0) − 8 × 0."
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/soviet-math/arithmetic-practice.html?topic=zero-actions"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "school:multiply",
+      "title": "Умножение: группы и распределение",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html#lesson/multiply",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 77,
+          "examples": [
+            "Вычисли 63 · 6.",
+            "Вычисли 52 · 7.",
+            "Вычисли 45 · 4."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-natural-multiply",
+      "title": "Умножение как одинаковые группы",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-natural-multiply",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 56,
+          "examples": [
+            "В 6 рядах по 7 мест. Сколько мест?",
+            "В 3 рядах по 2 мест. Сколько мест?",
+            "В 8 рядах по 4 мест. Сколько мест?"
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:distribute",
+      "title": "Распределительное свойство",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html#lesson/distribute",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 76,
+          "examples": [
+            "Вычисли удобным способом 3 · 3 + 3 · 2.",
+            "Вычисли удобным способом 9 · 6 + 9 · 5.",
+            "Вычисли удобным способом 8 · 7 + 8 · 4."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-distribute-add",
+      "title": "Раскрываем скобки при сложении",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-distribute-add",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 187,
+          "examples": [
+            "Вычисли с помощью распределительного свойства: 9·(23 + 5).",
+            "Вычисли с помощью распределительного свойства: 4·(28 + 6).",
+            "Вычисли с помощью распределительного свойства: 7·(26 + 2)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-distribute-add",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "table-mental",
+      "aliasOf": "school:v6f-distribute-add",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-distribute-add",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 187,
+          "examples": [
+            "Вычисли с помощью распределительного свойства: 9·(23 + 5).",
+            "Вычисли с помощью распределительного свойства: 4·(28 + 6).",
+            "Вычисли с помощью распределительного свойства: 7·(26 + 2)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-distribute-sub",
+      "title": "Раскрываем скобки при вычитании",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-distribute-sub",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 187,
+          "examples": [
+            "Вычисли с помощью распределительного свойства: 2·(24 − 6).",
+            "Вычисли с помощью распределительного свойства: 5·(25 − 2).",
+            "Вычисли с помощью распределительного свойства: 8·(23 − 3)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-distribute-sub",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "table-mental",
+      "aliasOf": "school:v6f-distribute-sub",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-distribute-sub",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 187,
+          "examples": [
+            "Вычисли с помощью распределительного свойства: 2·(24 − 6).",
+            "Вычисли с помощью распределительного свойства: 5·(25 − 2).",
+            "Вычисли с помощью распределительного свойства: 8·(23 − 3)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-distribute-factor",
+      "title": "Выносим общий множитель",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-distribute-factor",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 186,
+          "examples": [
+            "Вычисли удобно: 7·27 + 7·4.",
+            "Вычисли удобно: 2·28 + 2·5.",
+            "Вычисли удобно: 5·26 + 5·5."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-distribute-factor",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "table-mental",
+      "aliasOf": "school:v6f-distribute-factor",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-distribute-factor",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 186,
+          "examples": [
+            "Вычисли удобно: 7·27 + 7·4.",
+            "Вычисли удобно: 2·28 + 2·5.",
+            "Вычисли удобно: 5·26 + 5·5."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-distribute-fractions",
+      "title": "Удобный счёт с дробями",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-distribute-fractions",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 148,
+          "examples": [
+            "Вычисли удобно: 3/5·63 + 2/5·63.",
+            "Вычисли удобно: 1/2·28 + 1/2·28.",
+            "Вычисли удобно: 2/7·49 + 5/7·49."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-properties-product",
+      "title": "Удобное произведение",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-properties-product",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 8,
+          "examples": [
+            "Вычисли удобно: −0,25 · 7 · 4.",
+            "Вычисли удобно: −0,25 · 2 · 4.",
+            "Вычисли удобно: −0,25 · 5 · 4."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-fraction-unknown",
+      "title": "Неизвестное в дробном умножении и делении",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "table-mental",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-unknown",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 186,
+          "examples": [
+            "Реши уравнение x · 6/7 = 7/13.",
+            "Реши уравнение x · 2/5 = 2/11.",
+            "Реши уравнение x · 1/2 = 5/12."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "oge-basics:multiplication-division/column-multiplication-one-digit",
+      "title": "Умножение столбиком на одну цифру — по разрядам",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "column",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/column-multiplication-one-digit",
+      "url": "/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 167,
+          "examples": [
+            "Вычислите: <strong>243 · 4</strong>",
+            "Вычислите: <strong>244 · 5</strong>",
+            "Вычислите: <strong>244 · 6</strong>"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html"
+        ]
+      }
+    },
+    {
+      "id": "oge-basics:multiplication-division/column-multiplication-two-digit",
+      "title": "Умножение столбиком на двузначное число — два произведения",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "column",
+      "trainerId": "oge-basics",
+      "contentId": "multiplication-division/column-multiplication-two-digit",
+      "url": "/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "sourceFile": "trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 199,
+          "examples": [
+            "Вычислите: <strong>133 · 43</strong>",
+            "Вычислите: <strong>133 · 51</strong>",
+            "Вычислите: <strong>133 · 59</strong>"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html"
+        ]
+      }
+    },
+    {
+      "id": "arithmetic:n3c",
+      "title": "Умножение столбиком на одну цифру",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "column",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/arifmetika.html?course=preoge&level=n3c",
+      "sourceFile": "trainers/arifmetika.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "arithmetic-levels",
+      "practice": {
+        "category": "generated-arithmetic-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "evidence": [
+          "trainers/arifmetika.html:LEVELS,makeTask,next"
+        ],
+        "notes": "The URL course=preoge and level parameter are supported. Table facts are naturally finite; the Pythagoras completion map resets after all cells have been practised."
+      }
+    },
+    {
+      "id": "arithmetic:n4b",
+      "title": "Умножение на двузначное число",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "column",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/arifmetika.html?course=preoge&level=n4b",
+      "sourceFile": "trainers/arifmetika.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "arithmetic-levels",
+      "practice": {
+        "category": "generated-arithmetic-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "evidence": [
+          "trainers/arifmetika.html:LEVELS,makeTask,next"
+        ],
+        "notes": "The URL course=preoge and level parameter are supported. Table facts are naturally finite; the Pythagoras completion map resets after all cells have been practised."
+      }
+    },
+    {
+      "id": "public:long-multiplication-legacy",
+      "title": "Умножение столбиком — ОГЭ-режим",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "column",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/trainers/long-multiplication.html",
+      "sourceFile": "trainers/trainers/long-multiplication.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "legacy-column",
+      "practice": {
+        "category": "generated-column-practice",
+        "repeatAvailable": true,
+        "control": "Случайный пример",
+        "notes": "Random upper 100..9099 and lower 10..909. User can also enter their own operands; advanced supplemental format.",
+        "evidence": [
+          "trainers/trainers/long-multiplication.html"
+        ]
+      }
+    },
+    {
+      "id": "soviet:column-multiply",
+      "title": "Умножение столбиком",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "column",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#column-multiply",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Умножь столбиком: 23 × 3.",
+            "Умножь столбиком: 27 × 3.",
+            "Умножь столбиком: 34 × 2."
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/trainers/oge-basics/multiplication-division/course-column-mixed.html"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "school:v5f-multiply-column",
+      "title": "Умножаем многозначное число",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "column",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-multiply-column",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 193,
+          "examples": [
+            "Вычисли 76·36.",
+            "Вычисли 42·52.",
+            "Вычисли 93·73."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "path:practice-decimals",
+      "title": "Десятичные дроби: умножение и сложение",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": "ege-path",
+      "contentId": "practice-decimals",
+      "url": "/ege-baza/path/index.html#lesson=practice-decimals",
+      "sourceFile": "ege-baza/path/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "ege-path",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Другие числа / Новый самостоятельный вариант",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "Вычисли 1,1 · 1,5 + 1,2.",
+            "Вычисли 1,2 · 1,6 + 1,3.",
+            "Вычисли 1,3 · 1,7 + 1,4."
+          ]
+        },
+        "evidence": [
+          "ege-baza/path/app.js:fresh,showLesson",
+          "board-server/learning-contracts.js"
+        ]
+      }
+    },
+    {
+      "id": "arithmetic:n5c",
+      "title": "Умножение десятичных: счёт знаков",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/arifmetika.html?course=preoge&level=n5c",
+      "sourceFile": "trainers/arifmetika.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "arithmetic-levels",
+      "practice": {
+        "category": "generated-arithmetic-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример",
+        "evidence": [
+          "trainers/arifmetika.html:LEVELS,makeTask,next"
+        ],
+        "notes": "The URL course=preoge and level parameter are supported. Table facts are naturally finite; the Pythagoras completion map resets after all cells have been practised."
+      }
+    },
+    {
+      "id": "public:decimal-level1",
+      "title": "Десятичные дроби — уровень 1",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/desyatichnye-drobi-level-1.html",
+      "sourceFile": "trainers/desyatichnye-drobi-level-1.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "decimal-level-one",
+      "practice": {
+        "category": "fixed-introduction-then-generated-sets",
+        "repeatAvailable": true,
+        "control": "Пройти ещё раз — новые примеры",
+        "notes": "Initial 12 examples are fixed; later sets generate the same 12-slot mix with bounded decimal operands.",
+        "evidence": [
+          "trainers/desyatichnye-drobi-level-1.html"
+        ]
+      }
+    },
+    {
+      "id": "soviet:decimal-multiply",
+      "title": "Умножение десятичных дробей",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#decimal-multiply",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Вычисли: 1,2 × 3,5.",
+            "Вычисли: 2,4 × 1,5.",
+            "Вычисли: 1,25 × 2,4."
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/trainers/drobi-oge-trainer.html#practice=decimal-multiply"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "soviet:decimal-multiply-ten",
+      "title": "Умножение на 10, 100 и 1000",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#decimal-multiply-ten",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Вычисли: 2,34 × 10.",
+            "Вычисли: 5,07 × 100.",
+            "Вычисли: 0,36 × 1000."
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/school/index.html?course=vilenkin5#lesson/v5f-decimal-times-ten"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "school:decimalmul",
+      "title": "Умножение десятичных дробей",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html#lesson/decimalmul",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 169,
+          "examples": [
+            "Вычисли 2,3 · 5.",
+            "Вычисли 1,6 · 3,9.",
+            "Вычисли 4,7 · 8."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-decimal-times-int",
+      "title": "Несколько одинаковых десятичных порций",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-times-int",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 193,
+          "examples": [
+            "Вычисли 4,26 · 2.",
+            "Вычисли 9,46 · 4.",
+            "Вычисли 6,62 · 6."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-decimal-times-ten",
+      "title": "Увеличиваем в 10, 100, 1000 раз",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-times-ten",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 150,
+          "examples": [
+            "Вычисли 8,5 · 10.",
+            "Вычисли 5,7 · 1000.",
+            "Вычисли 2,2 · 1000."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-decimal-multiply",
+      "title": "Произведение десятых даёт сотые",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-multiply",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 195,
+          "examples": [
+            "Вычисли 6,6 · 0,3.",
+            "Вычисли 3,6 · 0,5.",
+            "Вычисли 8,2 · 0,7."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-decimal-small-product",
+      "title": "Умножаем на число меньше единицы",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "decimals",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-decimal-small-product",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 40,
+          "examples": [
+            "Вычисли 0,07 · 0,2.",
+            "Вычисли 0,04 · 0,2.",
+            "Вычисли 0,09 · 0,3."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "path:grade7-b-fraction-product-cancel",
+      "title": "Умножение дробей: сокращаем множители",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": "ege-path",
+      "contentId": "grade7-b-fraction-product-cancel",
+      "url": "/ege-baza/path/index.html#lesson=grade7-b-fraction-product-cancel",
+      "sourceFile": "ege-baza/path/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "ege-path",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Другие числа / Новый самостоятельный вариант",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 200,
+          "examples": [
+            "Вычисли 1/2 · 2/3. Сокращай множители до умножения.",
+            "Вычисли 1/3 · 3/3. Сокращай множители до умножения.",
+            "Вычисли 1/4 · 4/3. Сокращай множители до умножения."
+          ]
+        },
+        "evidence": [
+          "ege-baza/path/app.js:fresh,showLesson",
+          "board-server/learning-contracts.js"
+        ]
+      }
+    },
+    {
+      "id": "public:fractions-oge-practice",
+      "title": "Дроби: учимся и тренируемся",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/drobi-oge-trainer.html",
+      "sourceFile": "trainers/drobi-oge-trainer.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "fraction-guided-and-bank",
+      "practice": {
+        "category": "generated-practice-and-fixed-bank",
+        "repeatAvailable": true,
+        "control": "Пошагово → Новая задача / Ещё задачу",
+        "notes": "Fraction and decimal generators coexist with a finite examination bank. Completed bank rounds now link directly to matching generators.",
+        "evidence": [
+          "trainers/drobi-oge-trainer.html"
+        ]
+      }
+    },
+    {
+      "id": "public:fraction-part-whole",
+      "title": "Дроби: часть и целое",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/fractions-part-whole-assignment.html",
+      "sourceFile": "trainers/fractions-part-whole-assignment.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "fraction-part-whole",
+      "practice": {
+        "category": "generated-word-problems",
+        "repeatAvailable": true,
+        "control": "Следующая задача",
+        "notes": "Default mode is part of a whole; target counter does not end the generator.",
+        "evidence": [
+          "trainers/fractions-part-whole-assignment.html"
+        ]
+      }
+    },
+    {
+      "id": "soviet:fraction-multiply",
+      "title": "Умножение дробей",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#fraction-multiply",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Найди 1/2 от 1/3 прямоугольника: 1/2 × 1/3.",
+            "Найди 2/3 от 3/4 прямоугольника: 2/3 × 3/4.",
+            "Найди 3/5 от 5/6 прямоугольника: 3/5 × 5/6."
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/trainers/drobi-oge-trainer.html#practice=fraction-multiply"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "soviet:fraction-of-number",
+      "title": "Найти дробь от числа",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#fraction-of-number",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "В книге 48 страниц. Саша прочитал 3/4 книги. Сколько страниц он прочитал?",
+            "В питомнике было 60 саженцев. В саду посадили 2/5 всех саженцев. Сколько саженцев посадили?",
+            "В корзине было 84 яблока. На компот взяли 5/7 всех яблок. Сколько яблок взяли на компот?"
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/trainers/fractions-part-whole-assignment.html"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "school:fractionmul",
+      "title": "Доля от доли",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html#lesson/fractionmul",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 155,
+          "examples": [
+            "Найди 2/3 от 9/4.",
+            "Найди 6/8 от 8/5.",
+            "Найди 2/6 от 7/6."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6-12",
+      "title": "12. Умножение смешанных чисел",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6-12",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 60,
+          "examples": [
+            "Вычисли 4 1/3 × 3 1/2. Запиши точную дробь или смешанное число.",
+            "Вычисли 3 1/4 × 4 3/5. Запиши точную дробь или смешанное число.",
+            "Вычисли 2 1/5 × 1 1/2. Запиши точную дробь или смешанное число."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-fraction-times-int",
+      "title": "Умножаем дробь на натуральное число",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-times-int",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 181,
+          "examples": [
+            "Вычисли 9/16 · 2.",
+            "Вычисли 2/7 · 3.",
+            "Вычисли 7/15 · 4."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-fraction-times-int",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "fractions",
+      "aliasOf": "school:v6f-fraction-times-int",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-times-int",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 181,
+          "examples": [
+            "Вычисли 9/16 · 2.",
+            "Вычисли 2/7 · 3.",
+            "Вычисли 7/15 · 4."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-fraction-multiply",
+      "title": "Доля от доли: умножение дробей",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-multiply",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 182,
+          "examples": [
+            "Вычисли 1/2 · 1/4.",
+            "Вычисли 1/6 · 1/2.",
+            "Вычисли 5/17 · 3/11."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-fraction-multiply",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "fractions",
+      "aliasOf": "school:v6f-fraction-multiply",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-multiply",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 182,
+          "examples": [
+            "Вычисли 1/2 · 1/4.",
+            "Вычисли 1/6 · 1/2.",
+            "Вычисли 5/17 · 3/11."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-fraction-cancel",
+      "title": "Сокращаем до умножения",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-cancel",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 148,
+          "examples": [
+            "Вычисли 5/7 · 14/25.",
+            "Вычисли 4/3 · 2/5.",
+            "Вычисли 5/6 · 4/5."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-fraction-cancel",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "fractions",
+      "aliasOf": "school:v6f-fraction-cancel",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-cancel",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 148,
+          "examples": [
+            "Вычисли 5/7 · 14/25.",
+            "Вычисли 4/3 · 2/5.",
+            "Вычисли 5/6 · 4/5."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-mixed-multiply",
+      "title": "Умножение смешанных чисел",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-mixed-multiply",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 56,
+          "examples": [
+            "Вычисли 17/2 · 16/3.",
+            "Вычисли 7/2 · 19/3.",
+            "Вычисли 13/2 · 13/3."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-mixed-multiply",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "fractions",
+      "aliasOf": "school:v6f-mixed-multiply",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-mixed-multiply",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 56,
+          "examples": [
+            "Вычисли 17/2 · 16/3.",
+            "Вычисли 7/2 · 19/3.",
+            "Вычисли 13/2 · 13/3."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-fraction-area",
+      "title": "Площадь с дробными длинами",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-area",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 56,
+          "examples": [
+            "Прямоугольник имеет длину 17/2 м и ширину 22/3 м. Найди площадь в м².",
+            "Прямоугольник имеет длину 7/2 м и ширину 25/3 м. Найди площадь в м².",
+            "Прямоугольник имеет длину 13/2 м и ширину 19/3 м. Найди площадь в м²."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-fraction-area",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "fractions",
+      "aliasOf": "school:v6f-fraction-area",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-area",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 56,
+          "examples": [
+            "Прямоугольник имеет длину 17/2 м и ширину 22/3 м. Найди площадь в м².",
+            "Прямоугольник имеет длину 7/2 м и ширину 25/3 м. Найди площадь в м².",
+            "Прямоугольник имеет длину 13/2 м и ширину 19/3 м. Найди площадь в м²."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-fraction-part",
+      "title": "Находим дробь от количества",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-part",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 56,
+          "examples": [
+            "Найди 6/11 от 264.",
+            "Найди 9/16 от 576.",
+            "Найди 4/17 от 272."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-fraction-part",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "fractions",
+      "aliasOf": "school:v6f-fraction-part",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-part",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 56,
+          "examples": [
+            "Найди 6/11 от 264.",
+            "Найди 9/16 от 576.",
+            "Найди 4/17 от 272."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-fraction-of-remainder",
+      "title": "Доля от остатка: целое поменялось",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "fractions",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-of-remainder",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 187,
+          "examples": [
+            "Из 160 страниц прочитали 1/4 всей книги, затем 1/5 оставшихся страниц. Сколько страниц осталось после двух дней?",
+            "Из 90 страниц прочитали 1/5 всей книги, затем 1/6 оставшихся страниц. Сколько страниц осталось после двух дней?",
+            "Из 144 страниц прочитали 1/6 всей книги, затем 1/4 оставшихся страниц. Сколько страниц осталось после двух дней?"
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-fraction-of-remainder",
+      "title": "Другой разбор: 5 класс",
+      "scope": "alias",
+      "track": "multiplication",
+      "group": "fractions",
+      "aliasOf": "school:v6f-fraction-of-remainder",
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-fraction-of-remainder",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 187,
+          "examples": [
+            "Из 160 страниц прочитали 1/4 всей книги, затем 1/5 оставшихся страниц. Сколько страниц осталось после двух дней?",
+            "Из 90 страниц прочитали 1/5 всей книги, затем 1/6 оставшихся страниц. Сколько страниц осталось после двух дней?",
+            "Из 144 страниц прочитали 1/6 всей книги, затем 1/4 оставшихся страниц. Сколько страниц осталось после двух дней?"
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "oge-basics:order-of-operations",
+      "title": "Порядок действий без путаницы",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": "oge-basics",
+      "contentId": "order-of-operations",
+      "url": "/trainers/oge-basics/order-of-operations.html",
+      "sourceFile": "trainers/oge-basics/order-of-operations.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "oge-basics-bank",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Следующий пример / Новое условие",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 149,
+          "examples": [
+            "Вычислите: <strong>(4 + 5) · 6</strong>",
+            "Вычислите: <strong>(5 + 3) · 6</strong>",
+            "Вычислите: <strong>(6 + 8) · 6</strong>"
+          ]
+        },
+        "evidence": [
+          "trainers/oge-basics/learning-managed.js:lm-new",
+          "trainers/oge-basics/learning-contracts.js:create",
+          "trainers/oge-basics/order-of-operations.html"
+        ]
+      }
+    },
+    {
+      "id": "path:practice-fraction-expression",
+      "title": "Порядок действий с дробями",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": "ege-path",
+      "contentId": "practice-fraction-expression",
+      "url": "/ege-baza/path/index.html#lesson=practice-fraction-expression",
+      "sourceFile": "ege-baza/path/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "ege-path",
+      "practice": {
+        "category": "small-seeded-family-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другие числа / Новый самостоятельный вариант",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 15,
+          "examples": [
+            "Вычисли 1/4 + (2/6) : (2/3).",
+            "Вычисли 2/4 + (3/6) : (2/3).",
+            "Вычисли 3/4 + (4/6) : (2/3)."
+          ]
+        },
+        "evidence": [
+          "ege-baza/path/app.js:fresh,showLesson",
+          "board-server/learning-contracts.js",
+          "ege-baza/path/app.js:fractionPracticeLink",
+          "learning/route.js:mountSupport"
+        ],
+        "continuations": [
+          "https://mathexam.space/school/index.html?course=vilenkin6#lesson/v6f-fraction-order"
+        ],
+        "notes": "The original expression families repeat after 7 or 15 conditions. A visible same-skill continuation is available both publicly and in managed work; old task generation is preserved."
+      }
+    },
+    {
+      "id": "path:fractions",
+      "title": "Дроби в одном выражении",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": "ege-path",
+      "contentId": "fractions",
+      "url": "/ege-baza/path/index.html#lesson=fractions",
+      "sourceFile": "ege-baza/path/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "ege-path",
+      "practice": {
+        "category": "small-seeded-family-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другие числа / Новый самостоятельный вариант",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 7,
+          "examples": [
+            "Вычислите 2/4 + (2/6) : (2/3).",
+            "Вычислите 3/4 + (3/6) : (2/3).",
+            "Вычислите 4/4 + (4/6) : (2/3)."
+          ]
+        },
+        "evidence": [
+          "ege-baza/path/app.js:fresh,showLesson",
+          "board-server/learning-contracts.js",
+          "ege-baza/path/app.js:fractionPracticeLink",
+          "learning/route.js:mountSupport"
+        ],
+        "continuations": [
+          "https://mathexam.space/school/index.html?course=vilenkin6#lesson/v6f-fraction-order"
+        ],
+        "notes": "The original expression families repeat after 7 or 15 conditions. A visible same-skill continuation is available both publicly and in managed work; old task generation is preserved."
+      }
+    },
+    {
+      "id": "public:fractions-task6-bank",
+      "title": "ОГЭ №6: действия с дробями",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/oge-task6-fractions.html",
+      "sourceFile": "trainers/oge-task6-fractions.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "fraction-exam-bank",
+      "practice": {
+        "category": "fixed-bank-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Повторить задания банка; Ещё примеры с обычными/десятичными дробями",
+        "notes": "174 authored/exam cards stay unchanged. New links train the arithmetic operations, not fresh copies of every composite exam prototype.",
+        "evidence": [
+          "trainers/oge-task6-fractions.html"
+        ],
+        "continuations": [
+          "/trainers/drobi-oge-trainer.html#practice=fraction-mixed",
+          "/trainers/drobi-oge-trainer.html#practice=decimal-mixed"
+        ]
+      }
+    },
+    {
+      "id": "public:formulas-long",
+      "title": "Формулы сокращённого умножения — линейка",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/formuly-sokrashchennogo-umnozheniya.html",
+      "sourceFile": "trainers/formuly-sokrashchennogo-umnozheniya.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "formula-practice-long",
+      "practice": {
+        "category": "generated-formula-practice",
+        "repeatAvailable": true,
+        "control": "Дальше →",
+        "notes": "Selected formulas and difficulty remain fixed; new coefficients/forms are generated.",
+        "evidence": [
+          "trainers/formuly-sokrashchennogo-umnozheniya.html"
+        ]
+      }
+    },
+    {
+      "id": "public:formulas-short",
+      "title": "Формулы сокращённого умножения — короткий тренажёр",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/trainers/formuly-sokrashchennogo-umnozheniya-trainer.html",
+      "sourceFile": "trainers/formuly-sokrashchennogo-umnozheniya-trainer.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "formula-practice-short",
+      "practice": {
+        "category": "generated-formula-practice",
+        "repeatAvailable": true,
+        "control": "Дальше →",
+        "notes": "Shares the formula generator design with the longer page; not a separate mathematical skill for each URL.",
+        "evidence": [
+          "trainers/formuly-sokrashchennogo-umnozheniya-trainer.html"
+        ]
+      }
+    },
+    {
+      "id": "soviet:order",
+      "title": "Порядок действий",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/soviet-math/index.html#order",
+      "sourceFile": "soviet-math/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "soviet-authored-examples",
+      "practice": {
+        "category": "authored-cycle-with-generated-continuation",
+        "repeatAvailable": true,
+        "control": "Другой пример (12-example cycle); Ещё примеры этого навыка → Открыть тренировку",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Вычисли: 3 + 2 × 4.",
+            "Вычисли: (3 + 2) × 4.",
+            "Вычисли: (5 + 3) × 4 − 7."
+          ]
+        },
+        "authoredPool": 12,
+        "continuations": [
+          "/trainers/oge-basics/order-of-operations.html"
+        ],
+        "evidence": [
+          "soviet-math/course.js:make",
+          "soviet-math/app.js:another,showExtraPractice",
+          "soviet-math/arithmetic-practice.js:continuations"
+        ],
+        "notes": "Authored examples, revisions, and saved history are preserved. The visible separate-tab link opens the matching live generator."
+      }
+    },
+    {
+      "id": "school:signedmul",
+      "title": "Умножение чисел с разными знаками",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html#lesson/signedmul",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 42,
+          "examples": [
+            "Вычисли (-3) · (2).",
+            "Вычисли (-9) · (-3).",
+            "Вычисли (-8) · (4)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6-33",
+      "title": "33. Умножение чисел со знаками",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6-33",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 12,
+          "examples": [
+            "Вычисли (-3) · (2).",
+            "Вычисли (-2) · (-3).",
+            "Вычисли (-7) · (4)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-multiply-sign",
+      "title": "Знак произведения",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-multiply-sign",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 93,
+          "examples": [
+            "Вычисли (-2) · (-9).",
+            "Вычисли (-5) · (7).",
+            "Вычисли (-8) · (8)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-multiply-decimal",
+      "title": "Произведение десятичных чисел со знаками",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-multiply-decimal",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 192,
+          "examples": [
+            "Вычисли (-41/5) · (-17/4).",
+            "Вычисли (-33/10) · (9/4).",
+            "Вычисли (-63/10) · (29/4)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-multiply-fractions",
+      "title": "Произведение дробей со знаками",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-multiply-fractions",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 186,
+          "examples": [
+            "Вычисли (-1/5) · (-8/11).",
+            "Вычисли (-5/11) · (3/5).",
+            "Вычисли (-2/3) · (4/9)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-multiply-many",
+      "title": "Несколько отрицательных множителей и ноль",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-multiply-many",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 195,
+          "examples": [
+            "Вычисли (-6) · (-5) · (3) · (-1).",
+            "Вычисли (-9) · (-6) · (-4) · (-1).",
+            "Вычисли (-4) · (4) · (0) · (-5)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:m7f-signed-products",
+      "title": "Умножение и деление чисел со знаками",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=makarychev7-start#lesson/m7f-signed-products",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 92,
+          "examples": [
+            "Вычисли (-4) · (8).",
+            "Вычисли (-5) · (-6).",
+            "Вычисли (-42) : (-7)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-brackets-factor",
+      "title": "Множитель перед скобками",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-brackets-factor",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 112,
+          "examples": [
+            "Упрости −7(x − 7), затем найди значение при x = 4.",
+            "Упрости −2(x − 5), затем найди значение при x = 3.",
+            "Упрости −5(x − 3), затем найди значение при x = 2."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-coefficient-product",
+      "title": "Находим коэффициент произведения",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-coefficient-product",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 40,
+          "examples": [
+            "Найди коэффициент выражения (-9) · x · (5).",
+            "Найди коэффициент выражения (-4) · x · (6).",
+            "Найди коэффициент выражения (-7) · x · (2)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:m7f-common-factor",
+      "title": "Общий множитель: собери сумму в произведение",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=makarychev7-start#lesson/m7f-common-factor",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 92,
+          "examples": [
+            "Вынеси 4 за скобки в 4x + 32. Внутри скобки запиши коэффициент при x и число через ; (например, x + 3: 1; 3).",
+            "Вынеси -5 за скобки в -5x − 30. Внутри скобки запиши коэффициент при x и число через ; (например, x + 3: 1; 3).",
+            "Вынеси 6 за скобки в 6x − 42. Внутри скобки запиши коэффициент при x и число через ; (например, x + 3: 1; 3)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:order",
+      "title": "Скобки и порядок действий",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html#lesson/order",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 78,
+          "examples": [
+            "Вычисли 8 + 6 · (5 − 2).",
+            "Вычисли 7 + 7 · (4 − 2).",
+            "Вычисли 6 + 2 · (7 − 2)."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:power",
+      "title": "Степень как повторное умножение",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html#lesson/power",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 21,
+          "examples": [
+            "Найди 7 в степени 2.",
+            "Найди 6 в степени 4.",
+            "Найди 5 в степени 3."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v5f-order-equal",
+      "title": "Умножение и деление равноправны",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin5#lesson/v5f-order-equal",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 195,
+          "examples": [
+            "Вычисли 18:2·6.",
+            "Вычисли 24:4·6.",
+            "Вычисли 18:6·2."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    },
+    {
+      "id": "school:v6f-fraction-order",
+      "title": "Скобки, умножение, деление: сохраняем порядок",
+      "scope": "supplement",
+      "track": "multiplication",
+      "group": "further",
+      "trainerId": null,
+      "contentId": null,
+      "url": "/school/index.html?course=vilenkin6#lesson/v6f-fraction-order",
+      "sourceFile": "school/index.html",
+      "explanation": "Fixed teaching examples may repeat; practice is classified separately.",
+      "engine": "school-workshop",
+      "practice": {
+        "category": "seeded-generated-practice",
+        "repeatAvailable": true,
+        "control": "Тренировка → Следующая задача",
+        "sample": {
+          "seeds": "0..199",
+          "count": 200,
+          "uniqueConditions": 185,
+          "examples": [
+            "Вычисли слева направо: 3/13 : 2/7 · 2.",
+            "Вычисли слева направо: 6/11 : 3/5 · 3.",
+            "Вычисли слева направо: 3/4 : 1/2 · 3."
+          ]
+        },
+        "evidence": [
+          "school/app.js:begin,next,practiceSeeds",
+          "school/state.js:result"
+        ],
+        "notes": "Independent checks contain three tasks; practice mode continues. The 3000-event cap no longer freezes practice seeds; existing state schema is unchanged."
+      }
+    }
+  ]
+}

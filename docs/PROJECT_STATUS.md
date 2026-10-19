@@ -2,6 +2,26 @@
 
 Updated: 2026-10-19 (Asia/Novosibirsk)
 
+## Current task: arithmetic learner robots and continuous practice
+
+- PR263 is published as `7183175263bfc11ff475220776d08243bb82abbd`.
+  Its parent and composed tree matched the reviewed release. Seven exact-head
+  workflows and Pages39179333287 passed;77 public and7 cabinet runtime files
+  matched production. Durable learning storage and live UI were verified.
+- The owner requests synthetic pupils with different multiplication/division
+  difficulties, trials on both routes, evidence-driven fixes and publication
+  while she is away. Every trainer must offer ongoing varied practice.
+  [Approved scope](tasks/ARITHMETIC_LEARNER_ROBOTS.md), MEDIUM.
+- Eleven synthetic pupil profiles passed22 comparable scenarios after fixes:
+  specific feedback and non-answer first hints improved from2/22 and1/22
+  respectively to22/22. Current generated conditions also pass22/22; this is
+  interface regression evidence, not a measurement of human learning.
+- Bounded generation, legacy replay, public continuation and help fixes are
+  implemented. The118 linked URLs have an explicit practice inventory.
+- Next: finish the independent review and exact-head cloud browser checks;
+  publish the authorized release; verify deployment and live public/cabinet UI.
+- Earlier snapshots below describe preceding work, not outstanding permission.
+
 ## Current refinement: complete multiplication practice
 
 - PR261 is published at `5c61b0bc12ad9aaebfdb8484cc9987bccb59474a`.

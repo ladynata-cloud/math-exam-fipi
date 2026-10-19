@@ -33,9 +33,9 @@ assert.doesNotMatch(t.host.textContent,/Цифра частного|линейк
 t.host.querySelector('#lm-hint').click();
 assert.doesNotMatch(t.host.querySelector('.lm-feedback').textContent,/частно|кратн|делител|произведени/);
 assert.equal(t.host.querySelectorAll('.lm-scaffold').length,1);
-assert.equal(t.host.querySelectorAll('.lm-scaffold-selected').length,1);
-assert.deepEqual([...t.host.querySelector('.lm-scaffold-selected').children].map(x=>x.textContent),['5','5 × 16','80✓ Берём 5']);
-assert.deepEqual([...t.host.querySelectorAll('.lm-digit-table thead th')].map(x=>x.textContent),['Цифра','Умножаем на 16','Получилось']);
+assert.equal(t.host.querySelectorAll('.lm-scaffold-selected').length,0);
+assert.deepEqual([...t.host.querySelectorAll('[data-help-number]')].map(x=>x.textContent),['16','91','9']);
+assert.doesNotMatch(t.host.querySelector('.lm-feedback').textContent,/✓ Берём|5 × 16 = 80/);
 assert.equal(t.host.querySelector('#lm-answer').value,'');
 assert.equal(t.bridge.getState().hint,2);
 assert.equal(t.bridge.getState().completed,false);
@@ -48,6 +48,8 @@ for(const [value,direction] of [['9','цифру поменьше'],['2','циф
 }
 t.host.querySelector('#lm-solution').click();assert.equal(t.bridge.getState().step,0);
 assert.equal(t.host.querySelectorAll('.lm-scaffold-selected').length,1);
+assert.deepEqual([...t.host.querySelector('.lm-scaffold-selected').children].map(x=>x.textContent),['5','5 × 16','80✓ Берём 5']);
+assert.deepEqual([...t.host.querySelectorAll('.lm-digit-table thead th')].map(x=>x.textContent),['Цифра','Умножаем на 16','Получилось']);
 t.host.querySelector('#lm-learn').click();
 for(let i=0;i<t.taskSpec.lessons.length;i++) {
   t.host.querySelector('[data-lesson="'+i+'"]').click();

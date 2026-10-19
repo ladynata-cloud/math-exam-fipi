@@ -13,6 +13,12 @@ on:
       - 'trainers/motion-grade6/**'
       - 'tools/motion-grade6-*'
       - 'tools/learning-*'
+      - 'tools/arithmetic-*'
+      - 'tools/fixtures/arithmetic-*'
+      - 'soviet-math/**'
+      - 'school/**'
+      - 'trainers/drobi-oge-trainer.html'
+      - 'trainers/oge-task6-fractions.html'
       - 'tools/grade7-*'
       - 'tools/photo-proof-*'
       - 'tools/pre7-*'
@@ -53,8 +59,11 @@ jobs:
           node tools/learning-remediation-quality.cjs
           node tools/learning-remediation-checkpoint.cjs
           node tools/learning-scaffolds.test.cjs
+          node --test tools/learning-arithmetic-feedback.test.cjs
+          node tools/learning-arithmetic-robots-compare.cjs
           node --test tools/quotient-estimate.test.cjs
           node --test tools/division-course.test.cjs
+          node --test tools/arithmetic-division-generators.test.cjs tools/learning-arithmetic-generation-compat.test.cjs
           node tools/multiplication-column.test.cjs
           node --test tools/learning-multiplication-support.test.cjs
           node tools/learning-remediation-bank.cjs --check
@@ -95,9 +104,26 @@ jobs:
           node tools/learning-division-route.dom.cjs
           node tools/learning-column-multiplication.dom.cjs
           node tools/learning-parallel-public.dom.cjs
+          node tools/learning-public-continuation.dom.cjs
+          node --test tools/arithmetic-supplements.dom.cjs
+          node tools/arithmetic-practice-inventory.cjs --check
           node tools/learning-multiplication-support.dom.cjs
           node tools/learning-assignment-geometry.dom.cjs
           node tools/photo-proof-clear.dom.cjs
+      - name: Arithmetic learner robots with mistakes, help and saved work
+        run: |
+          mkdir -p "$RUNNER_TEMP/arithmetic-robots"
+          node tools/learning-arithmetic-robots.cjs --generator-version=1 --output="$RUNNER_TEMP/arithmetic-robots/legacy-after.json"
+          node tools/learning-arithmetic-robots.cjs --output="$RUNNER_TEMP/arithmetic-robots/current.json"
+          node tools/learning-arithmetic-robots.browser.cjs --output="$RUNNER_TEMP/arithmetic-robots/chromium.json"
+      - name: Arithmetic robot evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arithmetic-learner-robots
+          path: ${{ runner.temp }}/arithmetic-robots/
+          if-no-files-found: warn
+          retention-days: 14
       - name: Geometry rebuild classroom and narrow-screen scenarios
         env:
           GEOMETRY_REBUILD_OUTPUT_DIR: ${{ runner.temp }}/geometry-rebuild-evidence

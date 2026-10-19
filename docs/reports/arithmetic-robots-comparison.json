@@ -1,0 +1,1087 @@
+{
+  "schema": "mathexam-synthetic-arithmetic-comparison-v1",
+  "synthetic": true,
+  "humanLearningEvidence": false,
+  "claim": "Scripted interface stress tests; these are not real pupils and do not measure human learning.",
+  "profiles": 11,
+  "scenarios": 22,
+  "interpretation": {
+    "completion": "Completion includes deliberately requested worked solutions. Completion alone is not evidence that the first hint or error feedback was useful.",
+    "findings": "Findings are scripted presentation checks, not distinct pupils or diagnoses. A scenario can have both generic feedback and a first hint that gives the answer.",
+    "legacyComparison": "The baseline and after runs use identical fixed seeds, arithmetic conditions, action counts, and generator version 1.",
+    "currentCoverage": "The current run uses the same difficulty profiles and seeds with current generators; changed conditions are checked independently and are not treated as identical baseline exercises.",
+    "scope": "Actual managed DOM and SQLite persistence are exercised. Chromium iframe, real layout and postMessage checks run separately in CI; this file does not claim a local browser run."
+  },
+  "reproducibility": {
+    "baselineCommit": "837d1918da88cd21f803e33436a2a1c17d3a184e",
+    "baselineSource": {
+      "commit": "837d1918da88cd21f803e33436a2a1c17d3a184e",
+      "trainers/oge-basics/learning-managed.js": "73d783072620230011537cda80ee4cd5f12558066825d6e6f4ef18ddffd4117d",
+      "trainers/oge-basics/learning-scaffolds.js": "67481cc8993d71fe08d6eb4edd8377d37809b9825b8287331df7b2864d52c023",
+      "trainers/oge-basics/multiplication-division/multiplication-column-core.js": "e0279cf2b8a0b8ce05d8396fe52e9e91e14fb8d9b56dbce70874325539869f9b",
+      "trainers/oge-basics/multiplication-division/division-course-core.js": "44381d442a2c3f256d669e26b21c9c014ae4eb58db2fb0b18023451b10947c19",
+      "trainers/oge-basics/multiplication-division/quotient-estimate-core.js": "d8e5677115999d8497ae921fe0b2c443dd59759a51b33c63d7bbc77edcfcc52a"
+    },
+    "testFiles": {
+      "tools/fixtures/arithmetic-robot-profiles.json": "107336ad275afb75dcd74d0e1b2f2f83c9096259e734f7f0a921c7f6942adb7a",
+      "tools/learning-arithmetic-robots-policy.cjs": "c5dc31bd36855c50ec2baf11b71270f9006f3ced20d9b918df6f2348ecc9836c",
+      "tools/learning-arithmetic-robots-oracle.cjs": "41ee59c206de03fb4dc50a8696f67be25588b1b79ab0acdb37b22eed491f9d2a",
+      "tools/learning-arithmetic-robots.cjs": "243c762d3c6e6038b26d116a7b44976c430667c8f54b9758bea81b6c323bea95",
+      "tools/learning-arithmetic-robots.browser.cjs": "748fe3ab464fe1ca52e53a451aab38092f0f6dcd510d6490f34d8a4feee774bc"
+    },
+    "dependencies": [
+      "Node.js with node:sqlite",
+      "jsdom for local DOM runs",
+      "playwright and Chromium for CI browser run"
+    ],
+    "commands": [
+      "node tools/learning-arithmetic-robots.cjs --root=<baseline-checkout> --mode=baseline --generator-version=1 --output=docs/reports/arithmetic-robots-baseline.json",
+      "node tools/learning-arithmetic-robots.cjs --generator-version=1 --output=docs/reports/arithmetic-robots-after.json",
+      "node tools/learning-arithmetic-robots.cjs --output=docs/reports/arithmetic-robots-current.json",
+      "node tools/learning-arithmetic-robots-compare.cjs",
+      "node tools/learning-arithmetic-robots.browser.cjs --output=<artifact-directory>/arithmetic-robots-chromium.json"
+    ]
+  },
+  "runs": {
+    "baseline": {
+      "report": "docs/reports/arithmetic-robots-baseline.json",
+      "reportSha256": "2b03bf848066b6b2842cc45ad6d64b8fc165715ab1161a72cc0f8afa63d1aa21",
+      "summary": {
+        "scenarios": 22,
+        "completed": 22,
+        "targetedFeedback": 2,
+        "firstHintWithoutAnswer": 1,
+        "resumeAndMirror": 22,
+        "nextPractice": 22,
+        "verifiedArithmeticSteps": 475,
+        "explicitSolutions": 48,
+        "issues": 41
+      },
+      "findings": {
+        "generic-feedback": 20,
+        "first-hint-gives-answer": 21
+      }
+    },
+    "after": {
+      "report": "docs/reports/arithmetic-robots-after.json",
+      "reportSha256": "6511e8260b1505b9794f0c3992a2b4ff38e6b756ddcdb44930f8b37bb509e39a",
+      "summary": {
+        "scenarios": 22,
+        "completed": 22,
+        "targetedFeedback": 22,
+        "firstHintWithoutAnswer": 22,
+        "resumeAndMirror": 22,
+        "nextPractice": 22,
+        "verifiedArithmeticSteps": 475,
+        "explicitSolutions": 28,
+        "issues": 0
+      },
+      "findings": {}
+    },
+    "current": {
+      "report": "docs/reports/arithmetic-robots-current.json",
+      "reportSha256": "00e95836ba2e8ba8e9157d15d6a3b0eb23bb26de856d3e9af4eff791c162f3ea",
+      "summary": {
+        "scenarios": 22,
+        "completed": 22,
+        "targetedFeedback": 22,
+        "firstHintWithoutAnswer": 22,
+        "resumeAndMirror": 22,
+        "nextPractice": 22,
+        "verifiedArithmeticSteps": 470,
+        "explicitSolutions": 28,
+        "issues": 0
+      },
+      "findings": {}
+    }
+  },
+  "scenariosDetail": [
+    {
+      "id": "table-fact/course-column-three-by-one/2",
+      "profile": "table-fact",
+      "difficulty": "Ошибается в таблице умножения",
+      "contentId": "multiplication-division/course-column-three-by-one",
+      "seed": 2,
+      "runs": {
+        "baseline": {
+          "condition": "313 × 5",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 10,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "313 × 5",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 10,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "313 × 5",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 10,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "table-fact/course-multiply-bridge/11",
+      "profile": "table-fact",
+      "difficulty": "Ошибается в таблице умножения",
+      "contentId": "multiplication-division/course-multiply-bridge",
+      "seed": 11,
+      "runs": {
+        "baseline": {
+          "condition": "5 × 3 и 15 : 3 · 6 × 4 и 24 : 4 · 7 × 5 и 35 : 5",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 6,
+          "explicitSolutions": 4,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "5 × 3 и 15 : 3 · 6 × 4 и 24 : 4 · 7 × 5 и 35 : 5",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 6,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "4 × 5 и 20 : 5 · 7 × 8 и 56 : 8 · 6 × 8 и 48 : 8",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 6,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "forgot-in-mind/course-column-one-digit/1",
+      "profile": "forgot-in-mind",
+      "difficulty": "Забывает прибавить число, которое в уме",
+      "contentId": "multiplication-division/course-column-one-digit",
+      "seed": 1,
+      "runs": {
+        "baseline": {
+          "condition": "96 × 5",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 8,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "96 × 5",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 8,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "96 × 5",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 8,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "forgot-in-mind/course-column-mixed/103",
+      "profile": "forgot-in-mind",
+      "difficulty": "Забывает прибавить число, которое в уме",
+      "contentId": "multiplication-division/course-column-mixed",
+      "seed": 103,
+      "runs": {
+        "baseline": {
+          "condition": "3483 × 658",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 64,
+          "explicitSolutions": 8,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "3483 × 658",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 64,
+          "explicitSolutions": 7,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "3483 × 658",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 64,
+          "explicitSolutions": 7,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "whole-number-in-cell/course-column-four-by-one/1",
+      "profile": "whole-number-in-cell",
+      "difficulty": "Вписывает весь результат вместо одной цифры",
+      "contentId": "multiplication-division/course-column-four-by-one",
+      "seed": 1,
+      "runs": {
+        "baseline": {
+          "condition": "3128 × 4",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 14,
+          "explicitSolutions": 2,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "3128 × 4",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 14,
+          "explicitSolutions": 1,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "3128 × 4",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 14,
+          "explicitSolutions": 1,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "whole-number-in-cell/course-column-three-by-three/5",
+      "profile": "whole-number-in-cell",
+      "difficulty": "Вписывает весь результат вместо одной цифры",
+      "contentId": "multiplication-division/course-column-three-by-three",
+      "seed": 5,
+      "runs": {
+        "baseline": {
+          "condition": "314 × 758",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 44,
+          "explicitSolutions": 5,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "314 × 758",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 44,
+          "explicitSolutions": 4,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "314 × 758",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 44,
+          "explicitSolutions": 4,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "zero-product/course-column-zeros/3",
+      "profile": "zero-product",
+      "difficulty": "При умножении на ноль переписывает другое число",
+      "contentId": "multiplication-division/course-column-zeros",
+      "seed": 3,
+      "runs": {
+        "baseline": {
+          "condition": "313 × 508",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 40,
+          "explicitSolutions": 4,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "313 × 508",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 40,
+          "explicitSolutions": 3,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "313 × 508",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 40,
+          "explicitSolutions": 3,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "zero-product/course-column-zeros/5",
+      "profile": "zero-product",
+      "difficulty": "При умножении на ноль переписывает другое число",
+      "contentId": "multiplication-division/course-column-zeros",
+      "seed": 5,
+      "runs": {
+        "baseline": {
+          "condition": "3140 × 700",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 42,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "3140 × 700",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 42,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "3140 × 700",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 42,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "shifted-row/course-column-two-by-three/134",
+      "profile": "shifted-row",
+      "difficulty": "Вычисляет сразу сдвинутую строку вместо произведения двух цифр",
+      "contentId": "multiplication-division/course-column-two-by-three",
+      "seed": 134,
+      "runs": {
+        "baseline": {
+          "condition": "37 × 489",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 33,
+          "explicitSolutions": 2,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "37 × 489",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 33,
+          "explicitSolutions": 1,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "37 × 489",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 33,
+          "explicitSolutions": 1,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "shifted-row/course-column-mixed/103",
+      "profile": "shifted-row",
+      "difficulty": "Вычисляет сразу сдвинутую строку вместо произведения двух цифр",
+      "contentId": "multiplication-division/course-column-mixed",
+      "seed": 103,
+      "runs": {
+        "baseline": {
+          "condition": "3483 × 658",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 64,
+          "explicitSolutions": 8,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "3483 × 658",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 64,
+          "explicitSolutions": 7,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "3483 × 658",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 64,
+          "explicitSolutions": 7,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "quotient-too-high/course-digit-choice/1",
+      "profile": "quotient-too-high",
+      "difficulty": "Выбирает слишком большую цифру",
+      "contentId": "multiplication-division/course-digit-choice",
+      "seed": 1,
+      "runs": {
+        "baseline": {
+          "condition": "9 : 4 · 18 : 5 · 29 : 6",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 12,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "9 : 4 · 18 : 5 · 29 : 6",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 12,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "8 : 2 · 33 : 8 · 2 : 2",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 10,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "quotient-too-high/course-whole-two-digit/5",
+      "profile": "quotient-too-high",
+      "difficulty": "Выбирает слишком большую цифру",
+      "contentId": "multiplication-division/course-whole-two-digit",
+      "seed": 5,
+      "runs": {
+        "baseline": {
+          "condition": "2464 : 28",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 11,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "2464 : 28",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 11,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "2464 : 28",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 11,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "quotient-too-low/long-division-quotient-digit/1",
+      "profile": "quotient-too-low",
+      "difficulty": "Останавливается на слишком маленькой цифре",
+      "contentId": "multiplication-division/long-division-quotient-digit",
+      "seed": 1,
+      "runs": {
+        "baseline": {
+          "condition": "91 : 16",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 1,
+          "explicitSolutions": 1,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "91 : 16",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 1,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "91 : 16",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 1,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "quotient-too-low/course-digit-choice/17",
+      "profile": "quotient-too-low",
+      "difficulty": "Останавливается на слишком маленькой цифре",
+      "contentId": "multiplication-division/course-digit-choice",
+      "seed": 17,
+      "runs": {
+        "baseline": {
+          "condition": "29 : 6 · 40 : 7 · 53 : 8",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 12,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "29 : 6 · 40 : 7 · 53 : 8",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 12,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "21 : 7 · 33 : 6 · 13 : 2",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 11,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "estimate-is-final/quotient-estimate/1",
+      "profile": "estimate-is-final",
+      "difficulty": "Принимает прикидку за окончательную цифру",
+      "contentId": "multiplication-division/quotient-estimate",
+      "seed": 1,
+      "runs": {
+        "baseline": {
+          "condition": "Подбери одну цифру для 266 : 33. Сначала прикинь, затем проверь.",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 8,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "Подбери одну цифру для 266 : 33. Сначала прикинь, затем проверь.",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 8,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "Подбери одну цифру для 266 : 33. Сначала прикинь, затем проверь.",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 8,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "estimate-is-final/course-estimate/16",
+      "profile": "estimate-is-final",
+      "difficulty": "Принимает прикидку за окончательную цифру",
+      "contentId": "multiplication-division/course-estimate",
+      "seed": 16,
+      "runs": {
+        "baseline": {
+          "condition": "Подбери одну цифру для 241 : 34. Сначала прикинь, затем проверь.",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 8,
+          "explicitSolutions": 1,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "Подбери одну цифру для 241 : 34. Сначала прикинь, затем проверь.",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 8,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "Подбери одну цифру для 599 : 63. Сначала прикинь, затем проверь.",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 6,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "subtraction/course-subtract/1",
+      "profile": "subtraction",
+      "difficulty": "Ошибается при вычитании, особенно через десяток",
+      "contentId": "multiplication-division/course-subtract",
+      "seed": 1,
+      "runs": {
+        "baseline": {
+          "condition": "97 − 35 · 64 − 37 · 200 − 198",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 12,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "97 − 35 · 64 − 37 · 200 − 198",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 12,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "71 − 31 · 30 − 21 · 100 − 99",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 12,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "subtraction/course-whole-simple/1",
+      "profile": "subtraction",
+      "difficulty": "Ошибается при вычитании, особенно через десяток",
+      "contentId": "multiplication-division/course-whole-simple",
+      "seed": 1,
+      "runs": {
+        "baseline": {
+          "condition": "168 : 8 · 456 : 8",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 22,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "168 : 8 · 456 : 8",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 22,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "168 : 8 · 456 : 8",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 22,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "zero-in-division/course-zeros/1",
+      "profile": "zero-in-division",
+      "difficulty": "Пропускает ноль внутри ответа",
+      "contentId": "multiplication-division/course-zeros",
+      "seed": 1,
+      "runs": {
+        "baseline": {
+          "condition": "324 : 3",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 16,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "324 : 3",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 16,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "324 : 3",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 16,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "zero-in-division/course-zeros/12",
+      "profile": "zero-in-division",
+      "difficulty": "Пропускает ноль внутри ответа",
+      "contentId": "multiplication-division/course-zeros",
+      "seed": 12,
+      "runs": {
+        "baseline": {
+          "condition": "1509 : 3",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 16,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "1509 : 3",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 16,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "1509 : 3",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 16,
+          "explicitSolutions": 0,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "help-and-return/course-bring-digit/1",
+      "profile": "help-and-return",
+      "difficulty": "Просит помощь, оставляет черновик и возвращается",
+      "contentId": "multiplication-division/course-bring-digit",
+      "seed": 1,
+      "runs": {
+        "baseline": {
+          "condition": "864 : 36. Уже вычли 86 − 72 = 14. · 948 : 24. Уже вычли 94 − 72 = 22. · 476 : 7. Уже вычли 47 − 42 = 5.",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 6,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback"
+          ]
+        },
+        "after": {
+          "condition": "864 : 36. Уже вычли 86 − 72 = 14. · 948 : 24. Уже вычли 94 − 72 = 22. · 476 : 7. Уже вычли 47 − 42 = 5.",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 6,
+          "explicitSolutions": 4,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "164 : 2. Уже вычли 16 − 16 = 0. · 177 : 3. Уже вычли 17 − 15 = 2. · 102 : 2. Уже вычли 10 − 10 = 0.",
+          "generatorVersion": 2,
+          "completed": true,
+          "verifiedArithmeticSteps": 6,
+          "explicitSolutions": 4,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    },
+    {
+      "id": "help-and-return/course-column-three-by-two/2",
+      "profile": "help-and-return",
+      "difficulty": "Просит помощь, оставляет черновик и возвращается",
+      "contentId": "multiplication-division/course-column-three-by-two",
+      "seed": 2,
+      "runs": {
+        "baseline": {
+          "condition": "313 × 51",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 26,
+          "explicitSolutions": 1,
+          "targetedFeedback": false,
+          "firstHintWithoutAnswer": false,
+          "nextPractice": true,
+          "issues": [
+            "generic-feedback",
+            "first-hint-gives-answer"
+          ]
+        },
+        "after": {
+          "condition": "313 × 51",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 26,
+          "explicitSolutions": 1,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        },
+        "current": {
+          "condition": "313 × 51",
+          "generatorVersion": 1,
+          "completed": true,
+          "verifiedArithmeticSteps": 26,
+          "explicitSolutions": 1,
+          "targetedFeedback": true,
+          "firstHintWithoutAnswer": true,
+          "nextPractice": true,
+          "issues": []
+        }
+      }
+    }
+  ]
+}

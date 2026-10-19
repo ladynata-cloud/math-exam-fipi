@@ -185,7 +185,7 @@ for (const stage of course.stages) {
       t.host.querySelector('#lm-hint').click();
       assert.equal(t.calls.at(-1).kind, 'hint');
       assert.equal(t.calls.at(-1).details.level, 2);
-      assert.equal(t.state().hint, 2);
+      assert.equal(t.state().hint, Math.max(beforeHint.hint, 2), 'A first hint must not erase previously recorded full help');
       assert.equal(t.state().step, step);
       assert.equal(t.state().answer, '99999999');
       assert.deepEqual(t.state().answers, beforeHint.answers);
@@ -193,8 +193,19 @@ for (const stage of course.stages) {
       assert.equal(contracts.assistance('oge-basics', spec, t.state()), true);
       microVisual(t, spec, true);
       if (stage.slug === 'digit-choice' && spec.steps[step].kind === 'digit') {
+        assert.equal(t.host.querySelectorAll('.lm-digit-table .lm-scaffold-selected').length, 0, 'The first hint leaves the digit choice to the learner');
+        assert.equal(t.host.querySelectorAll('[data-scaffold-result]').length, 0, 'The first hint must not expose the final answer');
+        assert(t.host.querySelectorAll('[data-help-number]').length > 0, 'The first hint highlights the numbers used now');
+        assert.doesNotMatch(t.host.querySelector('.lm-feedback').textContent, /✓ Берём|На этом шаге запиши/);
+        t.host.querySelector('#lm-solution').click();
+        assert.equal(t.calls.at(-1).kind, 'hint');
+        assert.equal(t.calls.at(-1).details.level, 3);
+        assert.equal(t.state().hint, 3);
+        assert.equal(t.state().step, step);
+        assert.deepEqual(t.state().answers, beforeHint.answers);
+        assert.equal(t.state().completed, false);
         const selected = t.host.querySelectorAll('.lm-digit-table .lm-scaffold-selected');
-        assert.equal(selected.length, 1, 'The help table highlights one complete correct row');
+        assert.equal(selected.length, 1, 'The explicitly requested solution highlights one complete correct row');
         const digit = Number(spec.steps[step].answer);
         const group = spec.divisionTasks[spec.steps[step].taskIndex];
         const base = Number(group.prompt.split(':')[1].trim());
