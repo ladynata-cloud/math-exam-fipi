@@ -85,12 +85,13 @@ test('single-digit multiplication and choosing one digit offer the table', () =>
   }
 });
 
-test('the visible multiplication wins over the wider example and cannot link to itself', () => {
-  const created = fixture('course-multiply-two-digit', 1);
-  assert.match(created.taskSpec.divisionTasks[0].prompt, /3 × 12/);
-  assert.match(created.taskSpec.steps[0].prompt, /3 × 10/);
+for (const [generatorVersion, whole, tens, ones] of [[1, '3 × 12', '3 × 10', '3 × 2'], [2, '7 × 18', '7 × 10', '7 × 8']])
+test('the visible multiplication wins over the wider example without linking to itself, generator v' + generatorVersion, () => {
+  const created = C.create(prefix + 'course-multiply-two-digit', 1, {generatorVersion});
+  assert.equal(created.taskSpec.divisionTasks[0].prompt, whole);
+  assert(created.taskSpec.steps[0].prompt.includes(tens));
   assert.deepEqual(ids(recommend(created, 0)), [table, columnTwo]);
-  assert.match(created.taskSpec.steps[1].prompt, /3 × 2/);
+  assert(created.taskSpec.steps[1].prompt.includes(ones));
   assert.deepEqual(ids(recommend(created, 1)), [table]);
   assert.deepEqual(recommend(created, 2), [], 'adding the partial results is not a multiplication step');
 });
