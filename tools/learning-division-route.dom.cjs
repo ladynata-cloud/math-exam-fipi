@@ -8,6 +8,9 @@ const repo=path.resolve(__dirname,'..');
 const C=require('../trainers/oge-basics/multiplication-division/division-course-core.js');
 const P=require('../learning/preparation-map.js');
 const N=require('../learning/division-course-map.js');
+const catalog=require('../learning/catalog.js');
+const server=require('../board-server/learning-contracts.js');
+const resources=N.tracks.flatMap(track=>(track.supplementGroups||[]).flatMap(group=>group.items));
 const allStages=N.tracks.flatMap(track=>track.stages);
 const findButton=(f,id)=>[...f.host.querySelectorAll('[data-division-stage]')].find(button=>button.dataset.divisionStage===id);
 const read=file=>fs.readFileSync(path.join(repo,file),'utf8');
@@ -32,7 +35,7 @@ test('two independent navigation tracks retain all 17 canonical steps and includ
  assert.deepEqual(JSON.parse(JSON.stringify(f.w.DivisionCourse.stages)),JSON.parse(JSON.stringify(C.stages)),'Navigation metadata must match the trainer core');
  assert.equal(f.w.ArithmeticCourse,f.w.DivisionCourse);
  assert.deepEqual([...f.host.querySelectorAll('[data-division-stage]')].map(button=>button.dataset.divisionStage),allStages.map(stage=>stage.id));
- assert.equal(f.host.querySelectorAll('ol.division-course-list > li').length,24);
+ assert.equal(f.host.querySelectorAll('ol.division-course-list > li').length,31);
  assert.equal(f.host.querySelectorAll('[data-arithmetic-track]').length,2);
  assert.equal(new Set(allStages.map(stage=>stage.id)).size,allStages.length,'A step belongs to exactly one track');
  for(const stage of C.stages)assert(allStages.some(item=>item.id===stage.id),'Existing course work stays reachable');
@@ -43,7 +46,7 @@ test('two independent navigation tracks retain all 17 canonical steps and includ
  assert.equal(N.trackFor('multiplication-division/course-multiply-two-digit').id,'multiplication');
  assert.equal(N.trackFor('unknown'),null);
  assert.equal(N.has('multiplication-division/course-column-one-digit'),false,'Canonical course API remains the old 17');
- assert.deepEqual([...f.host.querySelectorAll('progress')].map(node=>[node.value,node.max]),[[0,9],[0,15]]);
+ assert.deepEqual([...f.host.querySelectorAll('.division-course-track-heading progress')].map(node=>[node.value,node.max]),[[0,16],[0,15]]);
  assert.deepEqual(f.reads,['/progress']);assert.equal(f.calls.length,0,'Viewing the course must not create attempts');
  assert.equal(f.host.querySelectorAll('[aria-current="step"]').length,2);
  assert(!f.host.textContent.includes('Тема освоена'));
@@ -204,4 +207,64 @@ test('a repeat in progress preserves solved-history count while offering its sav
   assert.equal(other.querySelector('progress').value,0);
   f.dispose();f.dom.window.close();
  }
+});
+
+
+test('all additional multiplication resources stay in its rail with correct cabinet or public destinations',async()=>{
+ const f=fixture();await flush();const multiplication=f.host.querySelector('[data-arithmetic-track="multiplication"]');
+ assert.equal(resources.length,77);assert.equal(resources.filter(item=>item.managedId).length,11);
+ assert.equal(resources.flatMap(item=>item.aliases).length,10);
+ assert.equal(multiplication.querySelectorAll('[data-arithmetic-group]').length,5);
+ assert.equal(multiplication.querySelectorAll('[data-arithmetic-resource-id]').length,77);
+ assert.equal(f.host.querySelector('[data-arithmetic-track="division"] [data-arithmetic-resource-id]'),null);
+ for(const item of resources){
+  const card=[...multiplication.querySelectorAll('[data-arithmetic-resource-id]')].find(node=>node.dataset.arithmeticResourceId===item.id);
+  assert(card);const url=new URL(item.publicUrl,'https://mathexam.space');
+  assert(fs.statSync(path.join(repo,decodeURIComponent(url.pathname))).size>100,'A resource must not be a blank placeholder: '+item.publicUrl);
+  if(item.managedId){
+   const canonical=catalog.get(item.managedId);assert(canonical,'Catalog entry exists: '+item.managedId);
+   assert.equal(canonical.trainerId,item.trainerId);assert.equal(canonical.contentId,item.contentId);
+   assert.doesNotThrow(()=>server.create(item.trainerId,item.contentId,1),'Managed destination has a real contract');
+   card.querySelector('[data-arithmetic-resource]').click();await flush();
+   assert.deepEqual(JSON.parse(JSON.stringify(f.calls.at(-1))),[item.managedId,{}]);
+  }else{
+   assert.equal(card.querySelector('button'),null);assert.match(card.textContent,/не входит в прогресс кабинета/);
+   const link=card.querySelector('.actions a');assert.equal(link.href,'https://mathexam.space'+item.publicUrl);
+   assert.equal(link.target,'_blank');assert(link.rel.includes('noopener'));
+   assert(card.closest('details'),'Large separate collections are expandable');
+  }
+  for(const alias of item.aliases){
+   const link=[...card.querySelectorAll('[data-arithmetic-alias]')].find(node=>node.dataset.arithmeticAlias===alias.id);
+   assert.equal(link.href,'https://mathexam.space'+alias.publicUrl);assert.equal(link.target,'_blank');
+  }
+ }
+ assert.equal(f.calls.length,11);assert.deepEqual(f.reads,['/progress']);
+ f.dispose();f.dom.window.close();
+});
+
+test('additional managed progress resumes real path work and excludes public-only exercises from every count',async()=>{
+ const item=resources.find(item=>item.managedId==='path:practice-decimals'),publicItem=resources.find(item=>item.id==='public:decimal-level1');
+ const record={trainerId:item.trainerId,contentId:item.contentId,completed:true,latest:{id:'saved-decimals',outcome:'started'}};
+ const fakePublic={trainerId:'oge-basics',contentId:publicItem.id,completed:true,latest:{id:'unrelated',outcome:'independent'}};
+ const f=fixture('student',async()=>({progress:[record,fakePublic]}));await flush();
+ const group=f.host.querySelector('[data-arithmetic-group="decimals"]');
+ assert.equal(group.querySelector('progress').value,1);assert.equal(group.querySelector('progress').max,1);
+ assert.equal(f.host.querySelector('[data-arithmetic-track="multiplication"] > header progress').value,0);
+ const button=group.querySelector('[data-arithmetic-resource]');assert.equal(button.textContent,'Продолжить →');
+ button.click();await flush();assert.deepEqual(JSON.parse(JSON.stringify(f.calls.at(-1))),[item.managedId,{}]);
+ assert.equal(button.closest('li').querySelector('a').getAttribute('href'),'#attempt=saved-decimals');
+ f.dispose();f.dom.window.close();
+ const finished=fixture('student',async()=>({progress:[{...record,latest:{id:'saved-decimals',outcome:'independent'}}]}));await flush();
+ finished.host.querySelector('[data-arithmetic-resource="path:practice-decimals"]').click();await flush();
+ assert.deepEqual(JSON.parse(JSON.stringify(finished.calls.at(-1))),[item.managedId,{fresh:true,sourceAttemptId:'saved-decimals'}]);
+ finished.dispose();finished.dom.window.close();
+});
+
+test('supplement jump controls focus a group without creating attempts',async()=>{
+ const f=fixture();await flush();f.w.HTMLElement.prototype.scrollIntoView=function(){};
+ for(const group of N.tracks[0].supplementGroups){
+  f.host.querySelector('[data-arithmetic-group-jump="'+group.id+'"]').click();
+  assert.equal(f.w.document.activeElement,f.host.querySelector('[data-arithmetic-group="'+group.id+'"]'));
+ }
+ assert.equal(f.calls.length,0);f.dispose();f.dom.window.close();
 });

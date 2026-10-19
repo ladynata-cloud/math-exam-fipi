@@ -38,7 +38,7 @@ const empty=mount();
 assert.deepEqual([...empty.dom.window.document.querySelectorAll('[data-arithmetic-track]')].map(node=>node.dataset.arithmeticTrack),['multiplication','division']);
 for(const track of course.tracks){
  const node=empty.track(track.id),steps=[...node.querySelectorAll('.division-course-step')];
- assert.equal(steps.length,track.id==='multiplication'?9:15);
+ assert.equal(steps.length,track.id==='multiplication'?16:15);
  assert.deepEqual(steps.map(step=>step.querySelector('h3').textContent),track.stages.map(stage=>stage.title));
  assert.equal(empty.progress(track.id).value,0);assert.equal(empty.progress(track.id).max,track.stages.length);
  assert.equal(node.querySelectorAll('[aria-current="step"]').length,1);
@@ -82,7 +82,32 @@ assert.equal(t.records.get(legacyKey('multiplication-tricks')),'{broken');assert
 
 const blocked=mount({},true);
 assert.equal(blocked.dom.window.document.querySelectorAll('progress').length,0);
-assert.equal(blocked.dom.window.document.querySelectorAll('.division-course-step .actions a').length,24);
+assert.equal(blocked.dom.window.document.querySelectorAll('.division-course-step .actions a').length,31);
 assert.match(blocked.track('division').textContent,/Не все записи удалось прочитать/);
 assert.deepEqual(blocked.writes,[]);blocked.dom.window.close();
-console.log('LEARNING_PARALLEL_PUBLIC_DOM_OK (9 + 15 independent routes; real legacy/course browser records; both column trainers; exact links; separate counters/current steps; no writes; restore/pageshow/storage; corrupt and blocked storage; navigation-only scripts)');
+
+const expanded=mount(),resources=course.tracks[0].supplementGroups.flatMap(group=>group.items);
+assert.equal(resources.length,77);assert.equal(expanded.track('multiplication').querySelectorAll('[data-arithmetic-group]').length,5);
+assert.equal(expanded.track('division').querySelector('[data-arithmetic-group]'),null);
+assert.equal(expanded.dom.window.document.querySelectorAll('progress').length,2,'Separate public practice never inflates either local progress bar');
+for(const item of resources){
+ const card=[...expanded.track('multiplication').querySelectorAll('[data-arithmetic-resource-id]')].find(node=>node.dataset.arithmeticResourceId===item.id);
+ assert(card,'Every inventoried non-core material is reachable');
+ const link=card.querySelector('[data-arithmetic-public]');assert.equal(link.getAttribute('href'),item.publicUrl);
+ assert.equal(link.target,'_blank');assert(link.rel.includes('noopener'));
+ const physical=path.join(__dirname,'..',new URL(item.publicUrl,'https://example.test').pathname);
+ assert(fs.statSync(physical).size>100,'No one-byte placeholders');
+ const cabinet=card.querySelector('[data-arithmetic-managed]');
+ if(item.managedId){assert.equal(cabinet.getAttribute('href'),'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#practice='+encodeURIComponent(item.managedId));assert.equal(new URL(cabinet.href).origin,'https://mathexam-board-ladynata.msk1.amvera.tech');}
+ else{assert.equal(cabinet,null);assert.match(card.textContent,/не входит в прогресс кабинета/);assert(card.closest('details'));}
+ for(const alias of item.aliases){assert.equal([...card.querySelectorAll('[data-arithmetic-alias]')].find(node=>node.dataset.arithmeticAlias===alias.id).getAttribute('href'),alias.publicUrl);}
+}
+for(const group of course.tracks[0].supplementGroups){
+ assert(expanded.dom.window.document.querySelector('a[href="#arithmetic-group-'+group.id+'"]'));
+ assert(expanded.dom.window.document.getElementById('arithmetic-group-'+group.id));
+}
+for(const link of expanded.dom.window.document.querySelectorAll('a[href*="learning/"]'))assert.equal(new URL(link.href).origin,'https://mathexam-board-ladynata.msk1.amvera.tech','Every public-to-cabinet link uses the service with the account API');
+assert.equal([...expanded.dom.window.document.querySelectorAll('a')].filter(link=>link.hash==='#division-course').length,2);
+assert.deepEqual(expanded.writes,[]);expanded.dom.window.close();
+
+console.log('LEARNING_PARALLEL_PUBLIC_DOM_OK (16 + 15 independent routes; real legacy/course browser records; both column trainers; exact links; separate counters/current steps; no writes; restore/pageshow/storage; corrupt and blocked storage; navigation-only scripts)');

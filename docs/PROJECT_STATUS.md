@@ -2,6 +2,24 @@
 
 Updated: 2026-10-19 (Asia/Novosibirsk)
 
+## Current refinement: complete multiplication practice
+
+- PR261 is published at `5c61b0bc12ad9aaebfdb8484cc9987bccb59474a`.
+  Its parent and full reviewed tree matched the authorized release. Seven
+  exact-head CI workflows and Pages39176065477 passed.
+- All83 changed runtime asset responses matched the reviewed files on Pages
+  and Amvera. Durable learning storage was healthy. Public and teacher routes
+  showed two independent tracks; public column input survived reload.
+- The owner requests «в уме», more column sizes and examples, the full existing
+  multiplication collection in its route, and contextual links from division.
+  Scope: [Complete multiplication practice](tasks/MULTIPLICATION_COMPLETE_ROUTE.md).
+- Next: validate old saved work and expanded arithmetic; review the Draft PR
+  and exact-head CI; obtain the separate publication decision.
+
+- Concurrent PR262 was merged as `e936db700cd2f435347acbb4e1dd57fb89b7eb82` while this task was being reviewed. Its changes are the static division
+  guide, sitemap and documentation; trainer runtime is unchanged. The search
+  discovery snapshot below is retained from that concurrent change.
+
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.

@@ -13,7 +13,7 @@ const repo = path.resolve(__dirname, '..');
 const clone = value => JSON.parse(JSON.stringify(value));
 const tick = () => new Promise(resolve => setImmediate(resolve));
 
-function mount(t, contentId, { saved, readOnly = false, publicPage = false, localSaved } = {}) {
+function mount(t, contentId, { saved, seed = 1, readOnly = false, publicPage = false, localSaved } = {}) {
   const relative = 'trainers/oge-basics/' + contentId + '.html';
   const html = fs.readFileSync(path.join(repo, relative), 'utf8');
   const errors = [], events = [], virtualConsole = new VirtualConsole();
@@ -21,7 +21,7 @@ function mount(t, contentId, { saved, readOnly = false, publicPage = false, loca
   const dom = new JSDOM(html, { url: 'https://example.test/' + relative + (publicPage ? '' : '?learning=1'), runScripts: 'outside-only', virtualConsole });
   const { window } = dom, key = 'mathExamBasics.divisionCourse.v1.' + contentId;
   if (localSaved) window.localStorage.setItem(key, localSaved);
-  let bridge, current = clone(saved || server.create('oge-basics', contentId, 1));
+  let bridge, current = clone(saved || server.create('oge-basics', contentId, seed));
   if (!publicPage) {
     window.MathExamRemediationManaged = true;
     const main = window.document.createElement('main'); main.id = 'learning-remediation-root'; window.document.body.append(main);
@@ -87,6 +87,30 @@ function mount(t, contentId, { saved, readOnly = false, publicPage = false, loca
 
 const board = f => f.host.querySelector('.lm-multiplication-board');
 const rowDigits = (f, name) => [...f.host.querySelectorAll('.lm-mul-row:not(.lm-mul-carry)[data-mul-row="' + name + '"] .lm-mul-filled')].map(cell => cell.textContent).join('');
+const rowCells = (f, name) => [...f.host.querySelectorAll('.lm-mul-row:not(.lm-mul-carry)[data-mul-row="' + name + '"] .lm-mul-filled')];
+const rowValue = (f, name) => rowCells(f, name).reduce((sum, cell) => sum + BigInt(cell.textContent) * 10n ** BigInt(cell.dataset.column), 0n);
+const fixtureSeeds = { 'column-one-digit': 1, 'column-two-digit': 1, 'column-three-by-one': 2, 'column-four-by-one': 1, 'column-three-by-two': 2, 'column-two-by-three': 134, 'column-three-by-three': 5, 'column-zeros': 3, 'column-mixed': 103 };
+function simpleLanguage(f) {
+  assert.doesNotMatch(f.host.textContent, /перенос|перенес/i, 'Visible multiplication instructions use «в уме»');
+}
+function verifyCompletedRows(f) {
+  const { a, b } = f.spec().task.multiplication;
+  assert.equal(rowDigits(f, 'RES'), String(a * b));
+  assert.equal(rowValue(f, 'RES'), BigInt(a) * BigInt(b));
+  if (b < 10) return;
+  for (let pass = 0; pass < String(b).length; pass++) {
+    const name = 'P' + (pass + 1), digit = Math.floor(b / 10 ** pass) % 10;
+    const cells = rowCells(f, name);
+    assert(cells.length >= String(a).length, 'Each partial row keeps every upper digit, including zeros');
+    assert.equal(BigInt(rowDigits(f, name)), BigInt(a) * BigInt(digit), 'The partial product uses one bottom digit');
+    assert.equal(rowValue(f, name), BigInt(a) * BigInt(digit) * 10n ** BigInt(pass), 'The partial row has its correct place value');
+    for (let col = 0; col < pass; col++) {
+      const cell = f.host.querySelector('.lm-mul-row:not(.lm-mul-carry)[data-mul-row="' + name + '"] [data-column="' + col + '"]');
+      assert.equal(cell.classList.contains('lm-mul-filled'), false, 'Each following product starts one cell left');
+    }
+    if (!digit) assert(cells.every(cell => cell.textContent === '0'), 'Multiplication by zero preserves an explicit zero row');
+  }
+}
 function observeSnapshot(t, f) {
   const saved = { taskSpec: clone(f.spec()), state: f.state() }, serialized = JSON.stringify(saved);
   const mirror = mount(t, f.spec().contentId, { saved, readOnly: true });
@@ -104,21 +128,24 @@ function observeSnapshot(t, f) {
 
 for (const stage of columns.stages) {
   test('real column actions, incorrect answers, saved carries and read-only mirrors: ' + stage.slug, t => {
-    const f = mount(t, stage.id), initial = clone(f.spec()), snapshots = new Set();
+    const f = mount(t, stage.id, { seed: fixtureSeeds[stage.slug] }), initial = clone(f.spec()), snapshots = new Set();
     assert.equal(f.host.querySelector('#lm-practice').textContent, 'Тренировка');
     assert.match(f.host.querySelector('.lm-header').textContent, /Умножение · шаг/);
     assert.equal(rowDigits(f, 'RES'), '', 'The final answer is not shown before solving');
     let verified = 0;
     while (!f.state().completed) {
       const state = f.state(), question = f.spec().steps[state.step], visual = question.multiplication;
+      simpleLanguage(f);
+      if (visual.event === 'carry' || visual.event === 'add-carry') assert.match(f.host.textContent, /в уме/i);
       const before = board(f).outerHTML;
       f.answer(Number(question.answer) + 1);
       assert.equal(f.state().step, state.step, 'Wrong answers do not advance');
       assert.deepEqual(f.state().answers, state.answers);
       assert.equal(f.state().feedback.kind, 'incorrect');
       assert.equal(board(f).outerHTML, before, 'Wrong answers cannot fill a future cell');
-      if ((visual.event === 'add-carry' || visual.phase === 'add' || visual.row === 'P2') && !snapshots.has(visual.event === 'add-carry' ? 'carry' : visual.phase === 'add' ? 'sum' : 'second-row')) {
-        snapshots.add(visual.event === 'add-carry' ? 'carry' : visual.phase === 'add' ? 'sum' : 'second-row');
+      const snapshot = visual.event === 'add-carry' ? 'carry' : visual.phase === 'add' && visual.event === 'carry' && question.answer === '2' ? 'sum-carry-two' : visual.phase === 'add' ? 'sum' : visual.row === 'P2' ? 'second-row' : visual.row === 'P3' ? 'third-row' : null;
+      if (snapshot && !snapshots.has(snapshot)) {
+        snapshots.add(snapshot);
         observeSnapshot(t, f);
       }
       const previousCells = [...f.host.querySelectorAll('.lm-mul-row:not(.lm-mul-carry) .lm-mul-filled')].map(cell => [cell.parentElement.dataset.mulRow, cell.dataset.column, cell.textContent]);
@@ -129,15 +156,13 @@ for (const stage of columns.stages) {
     }
     assert.equal(verified, initial.steps.length);
     assert(snapshots.has('carry'), 'The selected condition exercises restoring a written carry');
-    const { a, b } = initial.task.multiplication;
-    assert.equal(rowDigits(f, 'RES'), String(a * b));
+    const { b } = initial.task.multiplication;
+    verifyCompletedRows(f); simpleLanguage(f);
     if (b >= 10) {
       assert(snapshots.has('sum')); assert(snapshots.has('second-row'));
-      assert.equal(rowDigits(f, 'P1'), String(a * (b % 10)));
-      assert.equal(rowDigits(f, 'P2'), String(a * Math.floor(b / 10)));
-      const units = f.host.querySelector('.lm-mul-row:not(.lm-mul-carry)[data-mul-row="P2"] [data-column="0"]');
-      assert.equal(units.classList.contains('lm-mul-filled'), false, 'The second product starts one cell left');
+      if (b >= 100) assert(snapshots.has('third-row'));
     }
+    if (['column-two-by-three', 'column-three-by-three', 'column-mixed'].includes(stage.slug)) assert(snapshots.has('sum-carry-two'), 'The selected three-row condition exercises 2 in mind');
     assert.equal(f.events.filter(event => event.kind === 'new-task').length, 0, 'Finishing keeps the solved example until a deliberate next click');
     const finished = f.state(), observer = mount(t, stage.id, { saved: { taskSpec: initial, state: finished }, readOnly: true });
     assert.equal(observer.host.querySelector('#lm-new').textContent, 'Следующий пример →');
@@ -164,7 +189,7 @@ for (const stage of columns.stages) {
     }
     for (const saved of completed) {
       const observer = mount(t, stage.id, { saved, readOnly: true });
-      assert.equal(rowDigits(observer, 'RES'), String(saved.taskSpec.task.multiplication.a * saved.taskSpec.task.multiplication.b));
+      verifyCompletedRows(observer);
       assert.deepEqual(observer.state(), saved.state);
     }
   });
@@ -172,12 +197,14 @@ for (const stage of columns.stages) {
   test('actual public wrapper loads, restores and repeats column practice: ' + stage.slug, async t => {
     let f = mount(t, stage.id, { publicPage: true });
     for (let cycle = 0; cycle < 2; cycle++) {
-      f.finish(); const saved = f.saved(), done = f.state(), seed = JSON.parse(saved).seed;
+      f.finish(); verifyCompletedRows(f); simpleLanguage(f);
+      const saved = f.saved(), done = f.state(), seed = JSON.parse(saved).seed;
       assert.deepEqual(JSON.parse(saved).state, done);
       assert.equal(done.completed, true);
       const condition = f.spec().task.multiplication;
       f = mount(t, stage.id, { publicPage: true, localSaved: saved });
       assert.deepEqual(f.state(), done); assert.equal(rowDigits(f, 'RES'), String(condition.a * condition.b));
+      verifyCompletedRows(f);
       const next = f.host.querySelector('#lm-new'); next.click(); next.click();
       assert.deepEqual(f.state(), done, 'Public continuation retains old work while its microtask is pending');
       await tick();
@@ -186,5 +213,46 @@ for (const stage of columns.stages) {
       assert.equal(f.host.querySelector('#lm-new').disabled, false); assert(f.host.querySelector('#lm-answer'));
       assert.deepEqual(f.errors, []);
     }
+  });
+}
+
+test('zero partial rows remain aligned through restore and addition', t => {
+  const id = 'multiplication-division/course-column-zeros';
+  for (const seed of [3, 4, 5]) {
+    const f = mount(t, id, { seed });
+    const { b } = f.spec().task.multiplication;
+    assert(b >= 100 && String(b).includes('0'));
+    while (f.spec().steps[f.state().step].multiplication.phase !== 'add') f.answer(f.spec().steps[f.state().step].answer);
+    observeSnapshot(t, f);
+    for (let pass = 0; pass < 3; pass++) if (Math.floor(b / 10 ** pass) % 10 === 0) {
+      const cells = rowCells(f, 'P' + (pass + 1));
+      assert(cells.length > 0); assert(cells.every(cell => cell.textContent === '0'));
+    }
+    f.finish(); verifyCompletedRows(f);
+  }
+});
+
+for (const id of ['multiplication-division/course-column-one-digit', 'multiplication-division/course-column-two-digit']) {
+  test('published saved task keeps canonical wording while all visible help uses «в уме»: ' + id, t => {
+    const saved = clone(server.create('oge-basics', id, 1));
+    const at = saved.taskSpec.steps.findIndex(q => q.multiplication.event === 'add-carry');
+    assert(at > 0); assert.match(saved.taskSpec.steps[at].prompt, /которые перенесли/);
+    saved.state.step = at; saved.state.answers = saved.taskSpec.steps.slice(0, at).map(q => q.answer);
+    saved.state.answer = 'черновик'; saved.state.note = 'Продолжу здесь';
+    const serialized = JSON.stringify(saved), f = mount(t, id, { saved });
+    assert.deepEqual(f.state(), saved.state); assert.equal(JSON.stringify(f.spec()), JSON.stringify(saved.taskSpec));
+    assert.match(f.host.textContent, /В уме \d+\. Прибавь:/); simpleLanguage(f);
+    assert.equal(f.host.querySelector('#lm-answer').value, 'черновик');
+    for (const help of ['#lm-hint', '#lm-solution']) {
+      f.host.querySelector(help).click(); assert(f.host.querySelector('.lm-feedback')); simpleLanguage(f);
+    }
+    f.host.querySelector('#lm-rule').click(); assert(f.host.querySelector('.lm-reference')); simpleLanguage(f);
+    f.host.querySelector('#lm-learn').click(); assert(f.host.querySelector('.lm-lesson')); simpleLanguage(f);
+    if (id.endsWith('one-digit')) assert.match(f.host.querySelector('.lm-lesson').textContent, /1 в уме/);
+    f.host.querySelector('#lm-practice').click();
+    f.answer(saved.taskSpec.steps[at].answer);
+    assert.match(f.host.querySelector('.lm-worklog').textContent, /В уме \d+\. Прибавь:/); simpleLanguage(f);
+    observeSnapshot(t, f);
+    assert.equal(JSON.stringify(saved), serialized, 'Presentation changes never rewrite a published saved task or draft');
   });
 }

@@ -158,6 +158,13 @@
   const remediationRows = [
     ["multiplication-division/course-column-one-digit","Умножаем столбиком на одну цифру"],
     ["multiplication-division/course-column-two-digit","Умножаем столбиком на число из двух цифр"],
+    ["multiplication-division/course-column-three-by-one","Три цифры умножаем на одну"],
+    ["multiplication-division/course-column-four-by-one","Четыре цифры умножаем на одну"],
+    ["multiplication-division/course-column-three-by-two","Три цифры умножаем на две"],
+    ["multiplication-division/course-column-two-by-three","Две цифры умножаем на три"],
+    ["multiplication-division/course-column-three-by-three","Три цифры умножаем на три"],
+    ["multiplication-division/course-column-zeros","Нули внутри и в конце чисел"],
+    ["multiplication-division/course-column-mixed","Разные столбики вперемешку"],
     ["decimal-add-subtract","Десятичные дроби: сложение и вычитание"],
     ["fraction-common-denominator","Дроби: общий знаменатель и сложение"],
     ["fraction-meaning","Дробь: часть, целое и равные записи"],
