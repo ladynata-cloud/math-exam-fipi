@@ -204,8 +204,10 @@ details.sq summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--acc
 
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body>
+<body data-practical-page="paper-sheets">
 <div class="wrap">
 
 <div class="crumbs">
@@ -737,7 +739,7 @@ const PROGRESS_KEY='mathExamCourseProgress.v1';
 const TOPIC='practicePaperSheetsTrainer';
 const MASTERY_N=3;
 
-let state={ typeIdx:0, mode:'learn', inst:null, instSolved:false, attempts:0, perType:{} };
+let state={ typeIdx:0, mode:'practice', inst:null, instSolved:false, attempts:0, perType:{} };
 function initState(){ TYPES.forEach(function(t){ state.perType[t.id]={solvedCount:0,freshStreak:0,mastered:false}; }); }
 function loadProgress(){
   try{
@@ -797,7 +799,7 @@ function renderTask(){
     +'<div class="teacher" id="teacher"><h5>Заметка для учителя</h5>'+inst.teacherHTML+'</div>'
     +'<div class="btn-row">'
       +'<button class="btn btn-primary" id="checkBtn">Проверить</button>'
-      +'<button class="btn" id="hintBtn">Подсказка</button>'
+      +'<button class="btn" id="hintBtn">Хочешь подсказку?</button>'
       +'<button class="btn" id="solveBtn">Показать решение</button>'
       +'<button class="btn btn-new" id="newBtn">Новый вариант ↻</button>'
     +'</div>';

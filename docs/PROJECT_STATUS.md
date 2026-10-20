@@ -2,25 +2,25 @@
 
 Updated: 2026-10-20 (Asia/Novosibirsk)
 
-## Current task: minimal OGE course, starting with task6
+## Current task: whole existing OGE course, minimal interface
 
-- PR273 is published as `4b56350c35a67e41add8f2b25cf2bf7d73d1f71f`.
-  Task11 has three graphs/functions and optional interactive help. Its exact-head
-  Node/browser/SEO checks and Pages39429318212 passed; the live HTML matched,
-  keyboard matching and laboratory were exercised. Cabinet storage remained durable.
-- PR272 archive-link follow-up is live; all five checked assets and actual archive
-  navigation passed. Task19 corpus coverage remains explicitly bounded by recovered
-  sources, not a claim of exhaustive official FIPI coverage.
-- The owner requests the whole existing OGE course in the same minimal style,
-  with cloud execution and publication authorized. Inventory identifies39 core
-  routes; task15 is currently one static lesson, not a complete trainer.
-- First release: [task6 minimal screen and guided hints](tasks/TASK6_MINIMAL_HINTS.md),
-  MEDIUM. All174 frozen expressions receive exact optional step plans. Session
-  history, parser, banks and cabinet contracts remain unchanged.
-- Remaining existing trainer families and course navigation are being prepared
-  independently; each release requires relevant math/state/browser checks.
-- Next: exact-head task6 CI, publish and verify; complete algebra/geometry/practical
-  groups; verify the full course route and honest labels for incomplete content.
+- Task6 PR274 is published as `1bee66162fe76c5cd11b2860cd73c7a9706fb889`.
+  Exact-head task6/SEO/learning checks and Pages39440749856 passed. Live HTML
+  matches117138 bytes; optional help and retained accepted steps were exercised.
+- Task11 PR273 and task19 PR271/272 remain the published style references.
+- The owner authorizes rebuilding and publishing the existing whole OGE route
+  in the cloud. [Current scope](tasks/OGE_COURSE_MINIMAL.md) is HIGH:
+  main lines1–25, practical1–5 family, the existing full author variant, two hubs
+  and four directly linked foundation trainers. Task6/11/19 retain their releases.
+- All seven integrated groups pass110 DOM scenarios; existing algebra668 and
+  geometry1873 checks pass. Independent cross-review fixed concrete provenance,
+  input, contextual-help and essential-condition defects. Rounding download and
+  archive match the updated canonical implementation.
+- Task15 remains honestly labelled as one external-angle lesson. The separate
+  PredOGE course stays linked; it is not claimed as rebuilt in this release.
+- Next: exact-head cloud browser gates, actual read-only external review using
+  the repository's configured provider, fresh-main guard, publication and live
+  route/asset verification. Approval markers alone cannot authorize publication.
 
 ## Current task: task11 matching and optional laboratory
 

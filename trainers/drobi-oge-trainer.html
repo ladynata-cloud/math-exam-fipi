@@ -167,20 +167,31 @@ footer{margin-top:24px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
   input.ans{width:140px;font-size:20px}
 }
 </style>
-</head>
+<style id="oge-foundations-minimal">
+/* Calm training surface; working diagrams keep their semantic colours. */
+:root{--accent:#15803d;--accent-soft:#f0fdf4;--pen-green:#15803d}
+body{background:#fff!important;color:#172033;font-family:Arial,system-ui,sans-serif;font-size:18px;line-height:1.65}
+.page,.wrap{max-width:860px;margin:auto;padding:24px 20px 70px}.hero,header{background:none;box-shadow:none;border-radius:0;padding:0;margin-bottom:24px}.hero h1,h1{font-family:inherit;font-size:clamp(27px,5vw,35px);line-height:1.3;margin:16px 0}
+.grid{display:block}.card,.notebook{background:#fff;box-shadow:none;border:1px solid #e1e8e2;border-radius:16px;padding:24px;margin-bottom:24px}.notebook:before,.notebook:after{display:none}.back,a,.crumb{color:#166534}
+button:not(.digit),.b-primary,.b-next,.tab.on,.chip.on{font:inherit;font-weight:700;min-height:46px;border:1px solid #bbdfc5;border-radius:10px;background:#edf8ef;color:#166534;padding:10px 16px;cursor:pointer}button.primary,button.good,.b-primary,.b-next,.btn.check,.btn.next{background:#15803d!important;border-color:#15803d;color:white!important}button:disabled{opacity:.55;cursor:default}button.active:not(.digit){background:#15803d;color:#fff}
+button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #15803d;outline-offset:4px}input,select{font:inherit;max-width:100%;min-height:46px}input:not([type=checkbox]){border:1px solid #9caf9f;border-radius:9px}select{padding:10px;border:1px solid #bbc9be;border-radius:9px;background:white}.row,.learnrow,.answer,.answer-row{gap:12px;row-gap:16px;margin-top:18px;margin-bottom:18px}.instruction,.instr,.fb,.mark{line-height:1.75;font-size:18px}.instruction{background:#f4faf5;border:1px solid #d5e8da;border-left:3px solid #83b894}.prompt,.mexp{margin-top:28px;margin-bottom:28px;line-height:1.8}.fb:empty,.mark:empty{display:none}
+details.foundation-options,details.foundation-results,details.foundation-reference{border:1px solid #e0e7e2;border-radius:12px;padding:12px 16px;margin:20px 0;background:#fff}details>summary{cursor:pointer;color:#47624e;font-weight:600;min-height:32px}details[open]>summary{margin-bottom:20px}.foundation-results .card{border:0;padding:0;margin:0}.foundation-results h2{font-size:20px}.foundation-actions{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.foundation-help{border-top:1px solid #dce8df;margin-top:26px;padding-top:24px}.foundation-help-step{padding:18px 0;border-bottom:1px solid #e5ece7}.foundation-help-step p{margin:0 0 16px}.foundation-help-step.done{color:#506c58}.foundation-help-step .mexp{font-size:24px;margin:12px 0}.foundation-help-note{font-size:16px;color:#58705f}.foundation-answer-preview{font-size:24px;margin:12px 0;min-height:1.6em}.hint-focus{background:#f1f9f3;padding:8px;border-radius:8px}.f{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.2}.fn{border-bottom:1.7px solid currentColor;padding:2px 6px 4px}.fd{padding:4px 6px 2px}.mo{padding:0 5px}.gsteps{gap:22px}.gstep{padding:20px;line-height:1.8}.gstep.done{margin-bottom:18px}.hintbox{line-height:1.8}.stats,.stat span,.mini,.sub{line-height:1.7}.danger,button.danger{background:#fff;color:#79534a;border-color:#d9ccc8}[hidden]{display:none!important}
+@media(max-width:600px){.page,.wrap{padding:16px 12px 50px}.card,.notebook{padding:18px 14px}.answer,.answer-row{justify-content:flex-start}.prompt,.mexp{font-size:clamp(23px,5.8vw,30px)}.foundation-actions>button{max-width:100%}details.foundation-options,details.foundation-results,details.foundation-reference{padding:12px}.corner,.vert,.pyth,.fracview{overflow-x:auto;max-width:100%}.corner,.vert{justify-content:flex-start}.cleft,.cright,.vgrid{flex-shrink:0}}
+</style>
+<style>.card.notebook{padding:24px}.mexp{max-width:100%;overflow-x:auto}.foundation-help .mexp{padding-bottom:8px}@media(max-width:600px){.card.notebook{padding:18px 14px}}</style></head>
 <body>
 <div class="wrap">
 <header>
   <div class="kicker">ОГЭ · математика · задание 6</div>
   <h1 id="pageTitle">Дроби: учимся и тренируемся</h1>
-  <p class="sub" id="pageSub">Выбери модуль — в каждом есть теория с интерактивом, пошаговый решатель и марафон задач.</p>
-  <p style="margin:8px 0 0"><a class="crumb" id="crumb" style="display:none">← ко всем модулям</a></p>
+  <details class="foundation-reference"><summary>О тренажёре</summary><p class="sub" id="pageSub">Выбери модуль — в каждом есть теория с интерактивом, пошаговый решатель и марафон задач.</p>
+  <p style="margin:8px 0 0"><a class="crumb" id="crumb" style="display:none">← ко всем модулям</a></p></details>
 </header>
 <div id="app"></div>
-<footer>
+<details class="foundation-reference"><summary>Как вводить ответ</summary><footer>
   Ответы вводите десятичной дробью через запятую или точку (например <b>−0,3</b>) либо обыкновенной дробью — набирайте её через косую черту, например <b>23/36</b> (на экране все дроби показываются «этажными»).
   Задачи марафона: открытый банк заданий, «Полный прогон по заданию №6», прототипы «МояМатематика.рф». Пошаговый решатель генерирует новые задачи бесконечно.
-</footer>
+</footer></details>
 </div>
 
 <script>
@@ -245,13 +256,13 @@ function dAdd(a,b,sign){const s=Math.max(a.s,b.s);
 function dFrac(x){return fr(x.v,Math.pow(10,x.s));}
 
 /* ============ router ============ */
-let R={view:'home',mod:null,tab:null};
+let R={view:'module',mod:'frac',tab:'drill'};
 const MODS={
   frac:{title:'Обыкновенные дроби',icon:fhtml('a','b'),desc:'Что такое дробь, сокращение, общий знаменатель, все четыре действия.',tabs:['learn','guided','drill']},
   dec:{title:'Десятичные дроби',icon:'<span style="font-family:Georgia,serif">0,25</span>',desc:'Разряды, столбик, правило запятой при умножении и делении.',tabs:['learn','guided','drill']},
   exam:{title:'Экзаменационный микс',icon:'<span style="font-family:Georgia,serif">№6</span>',desc:'Многоэтажные дроби, «полный прогон» и задачи для продвинутых — как на реальном ОГЭ.',tabs:['drill']},
 };
-const TABNAMES={learn:'📖 Учимся',guided:'🪜 Пошагово',drill:'⏱ Марафон'};
+const TABNAMES={learn:'Лаборатория',guided:'По шагам',drill:'Практика'};
 
 function go(view,mod,tab){R={view,mod:mod||null,tab:tab||null};render();window.scrollTo({top:0});}
 function render(){
@@ -274,8 +285,9 @@ function render(){
   $('#pageTitle').textContent=m.title;
   $('#pageSub').textContent=m.desc;
   crumb.style.display='inline';crumb.onclick=()=>go('home');
-  let h='<div class="tabs">'+m.tabs.map(t=>'<button class="tab'+(t===R.tab?' on':'')+'" data-t="'+t+'">'+TABNAMES[t]+'</button>').join('')+'</div><div id="tabbody"></div>';
+  let h='<details class="foundation-options" id="fraction-options"><summary>Тема и режим</summary><div class="foundation-actions">'+Object.entries(MODS).map(([k,x])=>'<button type="button" data-module="'+k+'"'+(k===R.mod?' aria-pressed="true"':' aria-pressed="false"')+'>'+x.title+'</button>').join('')+'</div><div class="tabs">'+m.tabs.map(t=>'<button class="tab'+(t===R.tab?' on':'')+'" data-t="'+t+'">'+TABNAMES[t]+'</button>').join('')+'</div></details><div id="tabbody"></div>';
   app.innerHTML=h;
+  app.querySelectorAll('[data-module]').forEach(b=>b.onclick=()=>go('module',b.dataset.module,'drill'));
   app.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{R.tab=b.dataset.t;render();});
   if(R.tab==='learn') renderLearn();
   if(R.tab==='guided') renderGuided();
@@ -765,7 +777,7 @@ function buildDecTask(op,A,B){
     const steps=[];
     if(s>0)steps.push(
       {q:'Сначала посчитай так, будто запятых нет'+(A.s!==B.s?' (уравняй знаки после запятой нулями: '+dstr({v:intA,s})+' и '+dstr({v:intB,s})+')':'')+': '+intA+' '+(op==='+'?'+':'−')+' '+intB+' = ?',ans:[intRes,1],
-       hint:op==='-'&&intRes<0?'Из меньшего вычитаем большее: посчитай '+intB+' − '+intA+' и поставь минус':'Посчитай в столбик, поразрядно. Запятая под запятой!',
+       hint:op==='-'&&intRes<0?'Из меньшего вычитаем большее: посчитай '+intB+' − '+intA+' и поставь минус':'Считай в столбик справа налево. Запятая под запятой!',
        done:v=>'без запятой: <b>'+String(v).replace('-','−')+'</b>'},
       (()=>{const trim=dTrim(res);const hasZeros=trim.s!==s;
        return {q:'Как в столбике — запятая под запятой: сколько знаков после запятой отделить в числе '+String(intRes).replace('-','−')+'?',
@@ -834,8 +846,7 @@ function newGuided(){
 function renderGuided(){
   $('#tabbody').innerHTML=`
   <div class="card notebook">
-    <div class="learnrow" style="justify-content:space-between">
-      <h2 style="margin:0">Пошаговый решатель</h2>
+    <details class="foundation-options"><summary>Настроить упражнение</summary><div class="learnrow" style="justify-content:space-between">
       <span>
         <select id="gType">
           <option value="all">все четыре действия</option>
@@ -857,10 +868,10 @@ function renderGuided(){
         <button class="b-ghost b-mini" id="gNew">Новая задача</button>
       </span>
     </div>
-    <p class="sub">Решай по шагам — я проверяю каждый шаг. Застрял — жми «подсказку».</p>
+    </details>
     <div class="mexp" id="gExpr" style="margin-top:10px"></div>
     <div class="gsteps" id="gSteps"></div>
-    <div class="gscore" id="gScore"></div>
+    <details class="foundation-results"><summary>Мои результаты</summary><div class="gscore" id="gScore"></div></details>
   </div>`;
   $('#gType').value=G.type;
   $('#gType').onchange=e=>{G.type=e.target.value;renderGuided();};
@@ -873,6 +884,7 @@ function drawGuided(){
   $('#gExpr').innerHTML=G.task.expr;
   const box=$('#gSteps');box.innerHTML='';
   G.task.steps.forEach((st,i)=>{
+    if(i>G.step)return;
     const div=document.createElement('div');
     if(i<G.step){
       div.className='gstep done';
@@ -882,8 +894,8 @@ function drawGuided(){
       div.innerHTML='<span class="lead">шаг '+(i+1)+'.</span> <span class="q">'+st.q+'</span>'+
         '<div class="row"><input class="mini" style="width:120px;font-size:19px" id="gIn" autocomplete="off">'+
         '<button class="b-primary b-mini" id="gCheck">Проверить</button>'+
-        '<button class="b-ghost b-mini" id="gHint">Подсказка</button>'+
-        '<button class="b-ghost b-mini" id="gShow">Показать шаг</button></div>'+
+        '<button class="b-ghost b-mini" id="gHint">Хочешь подсказку?</button>'+
+        '</div><details class="foundation-reference"><summary>Показать шаг</summary><button class="b-ghost b-mini" id="gShow">Открыть ответ этого шага</button></details>'+
         '<div class="hintbox" id="gHintBox">'+st.hint+'</div>'+
         '<div class="mark" id="gMark"></div>';
     }else{
@@ -907,7 +919,7 @@ function drawGuided(){
       const mark=$('#gMark');
       if(!u){mark.className='mark bad';mark.innerHTML='<span class="anim">введи число</span>';return;}
       if(eqFrac(u,st.ans[0],st.ans[1])||(st.alt&&eqFrac(u,st.alt[0],st.alt[1]))){
-        st.doneHTML=st.done(inp.value.trim().replace('-','−'));
+        st.doneHTML=st.done(foundationAnswerHtml(inp.value));
         G.step++;if(G.step>=G.task.steps.length)G.solved++;
         drawGuided();
       }else{
@@ -923,7 +935,8 @@ function drawGuided(){
       drawGuided();
     };
     inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('#gCheck').click();});
-    inp.focus();
+    addFoundationPreview(inp);
+  inp.focus();
   }
   drawScore();
 }
@@ -955,11 +968,12 @@ const NUMER_PROMPT='Найдите значение выражения. Пред
 function renderDrill(){
   DR.cat=DRILL_CATS[R.mod][0][0];
   $('#tabbody').innerHTML=`
-  <div class="chips" id="dChips"></div>
+  <div id="fraction-task-options"><p class="sub">Набор задач</p><div class="chips" id="dChips"></div>
   <div class="learnrow" style="margin:0 0 6px"><label class="sub" style="display:inline-flex;gap:7px;align-items:center;cursor:pointer"><input type="checkbox" id="dShuffle" style="accent-color:var(--accent)"> вперемешку</label><span class="sub" id="dCounter"></span></div>
-  <div class="card notebook" id="dCard"></div>
-  <div class="stats" id="dStats"></div>
-  <div class="dotline" id="dDots"></div>`;
+  </div><div class="card notebook" id="dCard"></div>
+  <details class="foundation-results"><summary>Мои результаты</summary><div class="stats" id="dStats"></div>
+  <div class="dotline" id="dDots"></div></details>`;
+  $('#fraction-options').appendChild($('#fraction-task-options'));
   $('#dShuffle').onchange=e=>{DR.shuffle=e.target.checked;startDrill();};
   startDrill();
 }
@@ -977,14 +991,14 @@ function drillChips(){
 function startDrill(){
   DR.order=drillPool(DR.cat).map(([t,i])=>i);
   if(DR.shuffle)for(let i=DR.order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[DR.order[i],DR.order[j]]=[DR.order[j],DR.order[i]];}
-  DR.pos=0;DR.status={};DR.streak=0;
+  DR.pos=0;DR.status={};DR.helped={};DR.streak=0;
   drillChips();drillTask();
 }
 function drillTask(){
   const card=$('#dCard');
   if(DR.pos>=DR.order.length){drillSummary();return;}
   const gi=DR.order[DR.pos],t=TASKS[gi];
-  DR.attempts=0;DR.answered=false;
+  DR.attempts=0;DR.answered=false;DR.helpUsed=Boolean(DR.helped&&DR.helped[gi]);
   const special=t.mode==='numerator';
   card.innerHTML=
     '<div class="meta"><span class="tno">№ '+(DR.pos+1)+' из '+DR.order.length+'</span>'+
@@ -994,13 +1008,15 @@ function drillTask(){
     '<div class="answer-row">'+
     '<input class="ans" id="dAns" autocomplete="off" aria-label="Ответ" placeholder="ответ">'+
     '<button class="b-primary" id="dCheck">Проверить</button>'+
-    (t.shape?'<button class="b-ghost" id="dStepBtn">Решить по шагам</button>':'')+
-    '<button class="b-ghost" id="dReveal">Показать ответ</button>'+
-    '<button class="b-ghost" id="dSkip">Пропустить</button></div>'+
+    '<button class="b-ghost" id="dSkip">Следующий пример</button></div>'+
+    '<div class="foundation-actions"><button class="b-ghost" id="dStepBtn" aria-expanded="false" aria-controls="dStepsArea">Хочешь подсказку?</button></div>'+
+    '<details class="foundation-reference"><summary>Показать ответ</summary><button class="b-ghost" id="dReveal">Открыть ответ</button></details>'+
     '<div class="mark" id="dMark" aria-live="polite"></div>'+
-    '<div id="dStepsArea"></div>';
+    '<div id="dStepsArea" class="foundation-help" hidden></div>';
+  foundationHelp=null;
   $('#dCheck').onclick=drillCheck;
-  if(t.shape)$('#dStepBtn').onclick=()=>startDrillSteps(gi);
+  $('#dStepBtn').onclick=()=>toggleFoundationHelp(gi);
+  addFoundationPreview($('#dAns'));
   $('#dReveal').onclick=drillReveal;
   $('#dSkip').onclick=()=>{DR.pos++;drillTask();};
   const inp=$('#dAns');
@@ -1015,7 +1031,7 @@ function drillCheck(){
   if(!u){mark.className='mark bad';mark.innerHTML='<span class="anim">введи число, например −0,3 или 23/36</span>';return;}
   let ok=t.mode==='numerator'?(u[1]===1n&&u[0]===BigInt(t.n)):eqFrac(u,t.n,t.d);
   if(ok){
-    DR.status[gi]=DR.attempts===0?'g':'y';DR.streak++;DR.answered=true;
+    DR.status[gi]=DR.attempts===0&&!DR.helpUsed?'g':'y';DR.streak++;DR.answered=true;
     mark.className='mark ok';mark.innerHTML='<span class="anim">✓ верно!</span>';
     $('#dAns').disabled=true;drillSwap();
   }else{
@@ -1058,6 +1074,7 @@ function drawDrillSteps(){
   const box=$('#dStepsArea');box.innerHTML='';
   const wrap=document.createElement('div');wrap.className='gsteps';
   DSS.task.steps.forEach((st,i)=>{
+    if(i>DSS.step)return;
     const div=document.createElement('div');
     if(i<DSS.step){
       div.className='gstep done';
@@ -1067,8 +1084,8 @@ function drawDrillSteps(){
       div.innerHTML='<span class="lead">шаг '+(i+1)+'.</span> <span class="q">'+st.q+'</span>'+
         '<div class="row"><input class="mini" style="width:120px;font-size:19px" id="dsIn" autocomplete="off">'+
         '<button class="b-primary b-mini" id="dsCheck">Проверить</button>'+
-        '<button class="b-ghost b-mini" id="dsHint">Подсказка</button>'+
-        '<button class="b-ghost b-mini" id="dsShow">Показать шаг</button></div>'+
+        '<button class="b-ghost b-mini" id="dsHint">Хочешь подсказку?</button>'+
+        '</div><details class="foundation-reference"><summary>Показать шаг</summary><button class="b-ghost b-mini" id="dsShow">Открыть ответ этого шага</button></details>'+
         '<div class="hintbox" id="dsHintBox">'+st.hint+'</div>'+
         '<div class="mark" id="dsMark"></div>';
     }else{
@@ -1094,7 +1111,7 @@ function drawDrillSteps(){
     const u=parseInput(inp.value),mark=$('#dsMark');
     if(!u){mark.className='mark bad';mark.innerHTML='<span class="anim">введи число</span>';return;}
     if(eqFrac(u,st.ans[0],st.ans[1])||(st.alt&&eqFrac(u,st.alt[0],st.alt[1]))){
-      st.doneHTML=st.done(inp.value.trim().replace('-','−'));
+      st.doneHTML=st.done(foundationAnswerHtml(inp.value));
       DSS.step++;drawDrillSteps();
     }else{
       mark.className='mark bad';mark.innerHTML='<span class="anim">не то, попробуй ещё</span>';
@@ -1116,7 +1133,7 @@ function drillStats(){
   const g=vals.filter(v=>v==='g').length,y=vals.filter(v=>v==='y').length,r=vals.filter(v=>v==='r').length;
   $('#dStats').innerHTML=
     '<span>с первой попытки: <b style="color:var(--pen-green)">'+g+'</b></span>'+
-    '<span>после ошибок: <b style="color:var(--amber)">'+y+'</b></span>'+
+    '<span>с подсказкой или после ошибки: <b style="color:var(--amber)">'+y+'</b></span>'+
     '<span>подсмотрено: <b style="color:var(--pen-red)">'+r+'</b></span>'+
     '<span>серия: <b>'+DR.streak+'</b></span>'+
     '<button class="b-ghost b-mini" onclick="startDrill()">заново</button>';
@@ -1138,10 +1155,330 @@ function drillSummary(){
   const total=DR.order.length,pct=total?Math.round(100*(g+y)/total):0;
   $('#dCard').innerHTML='<div class="summary"><h2>Раздел пройден!</h2>'+
     '<div class="bigscore">'+(g+y)+' / '+total+'</div>'+
-    '<p class="sub">С первой попытки — '+g+', после ошибок — '+y+', с подсказкой — '+r+'. Решаемость: '+pct+'%.</p>'+
+    '<p class="sub">С первой попытки — '+g+', с подсказкой или после ошибки — '+y+', с подсказкой — '+r+'. Решаемость: '+pct+'%.</p>'+
     '<p style="margin-top:14px"><button class="b-primary" onclick="startDrill()">Повторить этот набор</button></p>'+generatedPracticeLinks()+'</div>';
   drillStats();drillDots();
 }
+
+const Task6Hints = (() => {
+  'use strict';
+  // This closed expression grammar deliberately needs neither DOM nor a stored answer.
+  const abs = n => n < 0n ? -n : n;
+  function gcd(a, b) {
+    a = abs(a); b = abs(b);
+    while (b) { const r = a % b; a = b; b = r; }
+    return a;
+  }
+  function rational(n, d = 1n) {
+    n = BigInt(n); d = BigInt(d);
+    if (!d) throw new Error('Нулевой знаменатель');
+    if (d < 0n) { n = -n; d = -d; }
+    const g = gcd(n, d);
+    return [n / g, d / g];
+  }
+  const add = (a, b) => rational(a[0] * b[1] + b[0] * a[1], a[1] * b[1]);
+  const sub = (a, b) => rational(a[0] * b[1] - b[0] * a[1], a[1] * b[1]);
+  const mul = (a, b) => rational(a[0] * b[0], a[1] * b[1]);
+  const div = (a, b) => rational(a[0] * b[1], a[1] * b[0]);
+  function pow(a, b) {
+    if (b[1] !== 1n || abs(b[0]) > 100n) throw new Error('Неподдерживаемая степень');
+    if (a[0] === 0n && b[0] === 0n) throw new Error('Нуль в нулевой степени не определён');
+    return b[0] < 0n
+      ? rational(a[1] ** -b[0], a[0] ** -b[0])
+      : rational(a[0] ** b[0], a[1] ** b[0]);
+  }
+  const operations = { '+': add, '-': sub, '*': mul, '/': div, '^': pow };
+  const names = { '+': 'add', '-': 'sub', '*': 'mul', '/': 'div', '^': 'pow' };
+  function decimal(text) {
+    const raw = text.trim().replaceAll('−', '-');
+    if (!/^-?\d+(?:[.,]\d+)?$/.test(raw)) throw new Error('Неизвестное число: ' + text);
+    const parts = raw.replace(',', '.').split('.');
+    return rational(BigInt(parts.join('')), 10n ** BigInt((parts[1] || '').length));
+  }
+  const atom = text => ({ kind: 'number', text: text.trim(), value: decimal(text) });
+  function htmlTree(source) {
+    const root = { tag: 'root', classes: [], children: [] }, stack = [root];
+    for (const token of source.match(/<[^>]+>|[^<]+/g) || []) {
+      if (token.startsWith('</')) {
+        if (stack.length < 2 || stack.at(-1).tag !== token.slice(2, -1)) throw new Error('Несогласованные теги выражения');
+        stack.pop();
+      } else if (token.startsWith('<')) {
+        const match = token.match(/^<(span|sup)(?: class="([^"]+)")?>$/);
+        if (!match) throw new Error('Неизвестная разметка выражения');
+        const node = { tag: match[1], classes: (match[2] || '').split(' '), children: [] };
+        stack.at(-1).children.push(node); stack.push(node);
+      } else if (token.trim()) stack.at(-1).children.push(token.trim());
+    }
+    if (stack.length !== 1) throw new Error('Незакрытые теги выражения');
+    return root;
+  }
+  function expression(tokens) {
+    let cursor = 0;
+    function prefix() {
+      const token = tokens[cursor++];
+      if (!token) throw new Error('Не хватает числа');
+      if (typeof token === 'object') return token;
+      if (token === '+' || token === '-') return { kind: 'unary', op: token, arg: read(25) };
+      if (token !== '(') throw new Error('Неизвестная операция');
+      const node = read(0);
+      if (tokens[cursor++] !== ')') throw new Error('Не закрыта скобка');
+      return { kind: 'group', arg: node };
+    }
+    function read(minimum) {
+      let left = prefix();
+      while (cursor < tokens.length) {
+        const op = tokens[cursor], precedence = { '+': 10, '-': 10, '*': 20, '/': 20, '^': 30 }[op];
+        if (precedence === undefined || precedence < minimum) break;
+        cursor++;
+        left = { kind: 'binary', op, left, right: read(precedence + (op === '^' ? 0 : 1)) };
+      }
+      return left;
+    }
+    const result = read(0);
+    if (cursor !== tokens.length) throw new Error('Лишний фрагмент выражения');
+    return result;
+  }
+  function tokens(node) {
+    if (typeof node === 'string') return [atom(node)];
+    const has = name => node.classes.includes(name), children = () => node.children.flatMap(tokens);
+    if (node.tag === 'root' || has('fn') || has('fd')) return children();
+    if (node.tag === 'sup') return ['^', ...children()];
+    if (has('f')) {
+      if (node.children.length !== 2 || !node.children[0].classes?.includes('fn') || !node.children[1].classes?.includes('fd')) throw new Error('Неизвестная дробь');
+      return [{ kind: 'binary', op: '/', style: 'fraction', left: expression(tokens(node.children[0])), right: expression(tokens(node.children[1])) }];
+    }
+    if (has('mx')) {
+      if (node.children.length !== 2) throw new Error('Неизвестное смешанное число');
+      return [{ kind: 'mixed', whole: expression(tokens(node.children[0])), part: expression(tokens(node.children[1])) }];
+    }
+    if (!node.children.every(child => typeof child === 'string')) throw new Error('Неизвестная вложенная разметка');
+    const text = node.children.join('').trim();
+    if (has('mn')) return [atom(text)];
+    if (!has('mo') && !has('br')) throw new Error('Неизвестный элемент выражения');
+    const op = text.replaceAll('−', '-').replaceAll('·', '*').replaceAll(':', '/');
+    if (!['+', '-', '*', '/', '(', ')'].includes(op)) throw new Error('Неизвестный знак');
+    return [op];
+  }
+  const parse = html => expression(tokens(htmlTree(html)));
+  function evaluate(node) {
+    if (node.kind === 'number') return node.value;
+    if (node.kind === 'group') return evaluate(node.arg);
+    if (node.kind === 'unary') {
+      const a = evaluate(node.arg);
+      return node.op === '-' ? rational(-a[0], a[1]) : a;
+    }
+    if (node.kind === 'mixed') {
+      const a = evaluate(node.whole), b = evaluate(node.part);
+      if (a[1] !== 1n || a[0] < 0n || b[0] <= 0n || b[0] >= b[1]) throw new Error('Неверное смешанное число');
+      return add(a, b);
+    }
+    if (node.kind !== 'binary' || !operations[node.op]) throw new Error('Неизвестный узел выражения');
+    return operations[node.op](evaluate(node.left), evaluate(node.right));
+  }
+  const num = n => '<span class="mn">' + String(n).replaceAll('-', '−') + '</span>';
+  const opHtml = op => '<span class="mo"> ' + ({ '+': '+', '-': '−', '*': '·', '/': ':' }[op] || op) + ' </span>';
+  const fraction = (n, d) => '<span class="f"><span class="fn">' + n + '</span><span class="fd">' + d + '</span></span>';
+  const brackets = html => '<span class="br">(</span>' + html + '<span class="br">)</span>';
+  const focus = html => '<span class="hint-focus">' + html + '</span>';
+  function format(value) {
+    const [n, d] = rational(value[0], value[1]);
+    if (d === 1n) return num(n);
+    return (n < 0n ? opHtml('-') : '') + fraction(num(abs(n)), num(d));
+  }
+  const signed = value => value[0] < 0n ? brackets(format(value)) : format(value);
+  const binaryHtml = (a, op, b) => signed(a) + opHtml(op) + signed(b);
+  function render(node) {
+    if (node.kind === 'number') return num(node.text.replace('.', ','));
+    if (node.kind === 'group') return brackets(render(node.arg));
+    if (node.kind === 'unary') return opHtml(node.op) + brackets(render(node.arg));
+    if (node.kind === 'mixed') return '<span class="mx">' + render(node.whole) + render(node.part) + '</span>';
+    if (node.style === 'fraction') return fraction(render(node.left), render(node.right));
+    if (node.op === '^') return brackets(render(node.left)) + '<sup>' + String(evaluate(node.right)[0]).replace('-', '−') + '</sup>';
+    return brackets(render(node.left) + opHtml(node.op) + render(node.right));
+  }
+  function literal(node) {
+    if (node.kind === 'group') return literal(node.arg);
+    return node.kind === 'binary' && node.style === 'fraction' && node.left.kind === 'number' && node.right.kind === 'number' && node.left.value[1] === 1n && node.right.value[1] === 1n;
+  }
+  function decimalInfo(node) {
+    if (node.kind === 'group') return decimalInfo(node.arg);
+    if (node.kind === 'unary') {
+      const info = decimalInfo(node.arg);
+      return info && { ...info, value: evaluate(node), integer: node.op === '-' ? -info.integer : info.integer };
+    }
+    if (node.kind !== 'number') return null;
+    const text = node.text.replace('−', '-').replace(',', '.'), scale = (text.split('.')[1] || '').length;
+    return { value: node.value, integer: BigInt(text.replace('.', '')), scale };
+  }
+  function plan(task) {
+    if (!task || typeof task.html !== 'string') throw new Error('Нет выражения для подсказки');
+    const tree = parse(task.html), steps = [];
+    function step(prompt, html, expected, kind, args, extra = {}) {
+      steps.push({ prompt, expressionHtml: focus(html), expected: rational(expected[0], expected[1]), kind, audit: { op: kind, args: args.map(a => rational(a[0], a[1])) }, ...extra });
+    }
+    function calculate(a, op, b, prompt, html, extra) {
+      const result = operations[op](a, b);
+      step(prompt, html || binaryHtml(a, op, b), result, names[op], [a, b], extra);
+      return result;
+    }
+    function convertDecimal(node) {
+      const info = decimalInfo(node);
+      if (!info || !info.scale) return;
+      const denominator = 10n ** BigInt(info.scale);
+      step('Какой числитель получится без запятой?', render(node) + opHtml('*') + num(denominator), [info.integer, 1n], 'mul', [info.value, [denominator, 1n]], {
+        answerLabel: 'Числитель', note: 'Знаменатель дроби — ' + denominator + '.'
+      });
+    }
+    function reduce(n, d) {
+      if (d < 0n) { n = -n; d = -d; }
+      const factor = gcd(n, d);
+      if (factor > 1n && n !== 0n) {
+        step('На какое наибольшее число сократим дробь?', fraction(num(n), num(d)), [factor, 1n], 'gcd', [[abs(n), 1n], [abs(d), 1n]], { answerLabel: 'Общий делитель' });
+        calculate([n, 1n], '/', [d, 1n], 'Раздели числитель и знаменатель на ' + factor + '.', fraction(binaryHtml([n, 1n], '/', [factor, 1n]), binaryHtml([d, 1n], '/', [factor, 1n])), { answerLabel: 'Сокращённая дробь' });
+      }
+      return rational(n, d);
+    }
+    function sum(a, op, b) {
+      if (a[1] === 1n && b[1] === 1n) return calculate(a, op, b, op === '+' ? 'Сложи числа.' : 'Вычти второе число из первого.');
+      const denominator = a[1] / gcd(a[1], b[1]) * b[1];
+      if (a[1] !== b[1]) {
+        step('Какой наименьший общий знаменатель возьмём?', binaryHtml(a, op, b), [denominator, 1n], 'lcm', [[a[1], 1n], [b[1], 1n]], { answerLabel: 'Общий знаменатель' });
+      }
+      const an = a[0] * (denominator / a[1]), bn = b[0] * (denominator / b[1]);
+      if (a[1] !== denominator) calculate([a[0], 1n], '*', [denominator / a[1], 1n], 'Найди новый числитель первой дроби.', undefined, { answerLabel: 'Числитель', note: 'Знаменатель — ' + denominator + '.' });
+      if (b[1] !== denominator) calculate([b[0], 1n], '*', [denominator / b[1], 1n], 'Найди новый числитель второй дроби.', undefined, { answerLabel: 'Числитель', note: 'Знаменатель — ' + denominator + '.' });
+      const numerator = calculate([an, 1n], op, [bn, 1n], op === '+' ? 'Сложи числители.' : 'Вычти числители.', fraction(binaryHtml([an, 1n], op, [bn, 1n]), num(denominator)), {
+        answerLabel: 'Новый числитель', note: 'Знаменатель оставляем: ' + denominator + '.'
+      });
+      return reduce(numerator[0], denominator);
+    }
+    function product(a, b) {
+      if (a[1] === 1n && b[1] === 1n) return calculate(a, '*', b, 'Умножь числа.');
+      let an = a[0], ad = a[1], bn = b[0], bd = b[1];
+      const first = gcd(an, bd), second = gcd(bn, ad);
+      if (first > 1n && an !== 0n) {
+        step('На какое наибольшее число сократим эту пару?', num(abs(an)) + '<span class="mo"> и </span>' + num(bd), [first, 1n], 'gcd', [[abs(an), 1n], [bd, 1n]], {
+          answerLabel: 'Общий делитель', note: 'Числитель первой дроби и знаменатель второй можно разделить на одно число.'
+        });
+        an /= first; bd /= first;
+      }
+      if (second > 1n && bn !== 0n) {
+        step('На какое наибольшее число сократим другую пару?', num(abs(bn)) + '<span class="mo"> и </span>' + num(ad), [second, 1n], 'gcd', [[abs(bn), 1n], [ad, 1n]], {
+          answerLabel: 'Общий делитель', note: 'Числитель второй дроби и знаменатель первой можно разделить на одно число.'
+        });
+        bn /= second; ad /= second;
+      }
+      const numerator = calculate([an, 1n], '*', [bn, 1n], 'Умножь числители.', fraction(binaryHtml([an, 1n], '*', [bn, 1n]), binaryHtml([ad, 1n], '*', [bd, 1n])), { answerLabel: 'Числитель' });
+      const denominator = ad * bd;
+      if (ad !== 1n && bd !== 1n) calculate([ad, 1n], '*', [bd, 1n], 'Умножь знаменатели.', undefined, { answerLabel: 'Знаменатель' });
+      return rational(numerator[0], denominator);
+    }
+    function quotient(a, b) {
+      if (b[0] === 0n) throw new Error('Деление на ноль');
+      if (a[1] === 1n && b[1] === 1n) {
+        if (a[0] % b[0] === 0n) return calculate(a, '/', b, 'Раздели числа.');
+        // A fraction bar already expresses integer division; reducing is its useful action.
+        const value = rational(a[0], b[0]), factor = gcd(a[0], b[0]);
+        if (factor > 1n) return reduce(a[0], b[0]);
+        step('Запиши частное обыкновенной дробью.', binaryHtml(a, '/', b), value, 'div', [a, b]);
+        return value;
+      }
+      const inverse = div([1n, 1n], b);
+      step('Переверни вторую дробь.', format(b), inverse, 'div', [[1n, 1n], b], {
+        answerLabel: 'Обратная дробь', note: 'После этого деление заменим умножением.'
+      });
+      return product(a, inverse);
+    }
+    function decimalOperation(left, op, right) {
+      const a = decimalInfo(left), b = decimalInfo(right);
+      if (!a || !b || (!a.scale && !b.scale) || op === '^') return null;
+      if (op === '+' || op === '-') {
+        const scale = Math.max(a.scale, b.scale), factor = 10n ** BigInt(scale);
+        const an = calculate(a.value, '*', [factor, 1n], 'Убери запятую: умножь первое число на ' + factor + '.', render(left) + opHtml('*') + num(factor));
+        const bn = calculate(b.value, '*', [factor, 1n], 'Так же умножь второе число на ' + factor + '.', render(right) + opHtml('*') + num(factor));
+        const result = calculate(an, op, bn, op === '+' ? 'Сложи получившиеся целые числа.' : 'Вычти получившиеся целые числа.');
+        return calculate(result, '/', [factor, 1n], 'Верни запятую: раздели результат на ' + factor + '.', fraction(format(result), num(factor)));
+      }
+      if (op === '*') {
+        if (a.scale) calculate(a.value, '*', [10n ** BigInt(a.scale), 1n], 'Убери запятую в первом числе.', render(left) + opHtml('*') + num(10n ** BigInt(a.scale)));
+        if (b.scale) calculate(b.value, '*', [10n ** BigInt(b.scale), 1n], 'Убери запятую во втором числе.', render(right) + opHtml('*') + num(10n ** BigInt(b.scale)));
+        const result = calculate([a.integer, 1n], '*', [b.integer, 1n], 'Умножь получившиеся целые числа.');
+        const factor = 10n ** BigInt(a.scale + b.scale);
+        return calculate(result, '/', [factor, 1n], 'Верни запятую: раздели результат на ' + factor + '.', fraction(format(result), num(factor)));
+      }
+      if (op === '/') {
+        if (b.value[0] === 0n) throw new Error('Деление на ноль');
+        const factor = 10n ** BigInt(Math.max(a.scale, b.scale));
+        const an = calculate(a.value, '*', [factor, 1n], 'Умножь делимое на ' + factor + '.', render(left) + opHtml('*') + num(factor), { note: 'Оба числа умножаем на одно число, чтобы убрать запятые.' });
+        const bn = calculate(b.value, '*', [factor, 1n], 'Умножь делитель на то же число.', render(right) + opHtml('*') + num(factor));
+        return quotient(an, bn);
+      }
+      throw new Error('Неизвестное действие с десятичными числами');
+    }
+    function build(node) {
+      if (node.kind === 'number' || literal(node)) return evaluate(node);
+      if (node.kind === 'group') return build(node.arg);
+      if (node.kind === 'unary') {
+        const value = build(node.arg);
+        if (node.op === '+') return value;
+        // The sign of a literal is part of the given number, not an extra exercise.
+        if (node.arg.kind === 'number' || literal(node.arg)) return rational(-value[0], value[1]);
+        return calculate([-1n, 1n], '*', value, 'Учти минус перед числом.', opHtml('-') + brackets(format(value)));
+      }
+      if (node.kind === 'mixed') {
+        const whole = evaluate(node.whole), part = evaluate(node.part);
+        if (whole[1] !== 1n || whole[0] < 0n || part[0] <= 0n || part[0] >= part[1]) throw new Error('Неверное смешанное число');
+        const numerator = whole[0] * part[1] + part[0];
+        step('Найди числитель неправильной дроби.', num(whole[0]) + opHtml('*') + num(part[1]) + opHtml('+') + num(part[0]), [numerator, 1n], 'add', [[whole[0] * part[1], 1n], [part[0], 1n]], {
+          answerLabel: 'Числитель', note: 'Знаменатель остаётся: ' + part[1] + '.'
+        });
+        return rational(numerator, part[1]);
+      }
+      if (node.kind !== 'binary') throw new Error('Нет способа разобрать этот шаг');
+      const decimals = decimalOperation(node.left, node.op, node.right);
+      if (decimals) return decimals;
+      const left = build(node.left), right = build(node.right);
+      if (node.op === '^') {
+        if (right[1] !== 1n || abs(right[0]) > 100n) throw new Error('Неподдерживаемая степень');
+        if (right[0] < 0n) {
+          const positive = pow(left, [-right[0], 1n]);
+          step('Сначала вычисли степень без минуса.', brackets(format(left)) + '<sup>' + (-right[0]) + '</sup>', positive, 'pow', [left, [-right[0], 1n]]);
+          return calculate([1n, 1n], '/', positive, 'Теперь возьми обратное число.', fraction(num(1n), format(positive)), { note: 'Так работает отрицательная степень.' });
+        }
+        let html = brackets(format(left)) + '<sup>' + right[0] + '</sup>';
+        if (right[0] >= 2n && right[0] <= 4n) html = Array(Number(right[0])).fill(signed(left)).join(opHtml('*'));
+        const value = pow(left, right);
+        step('Вычисли степень.', html, value, 'pow', [left, right], right[0] === 0n ? { note: 'Вспомни правило для нулевой степени.' } : {});
+        return value;
+      }
+      // For mixed representations, make the decimal-to-fraction conversion explicit.
+      convertDecimal(node.left); convertDecimal(node.right);
+      if (node.op === '+' || node.op === '-') return sum(left, node.op, right);
+      if (node.op === '*') return product(left, right);
+      if (node.op === '/') return quotient(left, right);
+      throw new Error('Нет подсказки для операции');
+    }
+    const final = build(tree);
+    if (!steps.length) {
+      if (literal(tree)) {
+        const a = evaluate(tree.left), b = evaluate(tree.right), factor = gcd(a[0], b[0]);
+        if (factor > 1n) reduce(a[0], b[0]);
+        else step('Запиши значение этой дроби.', render(tree), final, 'identity', [final]);
+      } else throw new Error('В выражении нет действия для подсказки');
+    }
+    const mode = task.mode === 'numerator' ? 'numerator' : 'value';
+    if (mode === 'numerator') step('Теперь запиши только числитель несократимой дроби.', format(final), [final[0], 1n], 'numerator', [final], { answerLabel: 'Числитель' });
+    return { steps, final, answer: mode === 'numerator' ? [final[0], 1n] : final.slice(), mode };
+  }
+  return { plan, format, parse, evaluate };
+})();
+
+
+let foundationHelp=null;
+function foundationAnswerHtml(raw){const value=parseInput(raw);return value?Task6Hints.format(value):'';}
+function addFoundationPreview(input){if(!input)return;const preview=document.createElement('div');preview.className='foundation-answer-preview';preview.setAttribute('aria-live','polite');input.closest('.row,.answer-row')?.after(preview);input.addEventListener('input',()=>{preview.innerHTML=/[\/]/.test(input.value)?foundationAnswerHtml(input.value):'';});}
+function toggleFoundationHelp(gi){const panel=$('#dStepsArea'),button=$('#dStepBtn');if(!foundationHelp||foundationHelp.gi!==gi)foundationHelp={gi,plan:Task6Hints.plan(TASKS[gi]),index:0};panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));button.textContent=panel.hidden?'Хочешь подсказку?':'Скрыть подсказку';if(!panel.hidden){DR.helpUsed=true;DR.helped=DR.helped||{};DR.helped[gi]=true;drawFoundationHelp();}}
+function drawFoundationHelp(){const panel=$('#dStepsArea'),state=foundationHelp;panel.innerHTML='';state.plan.steps.forEach((step,i)=>{if(i>state.index)return;const row=document.createElement('section');row.className='foundation-help-step'+(i<state.index?' done':'');const prompt=document.createElement('p');prompt.textContent=step.prompt;row.appendChild(prompt);const expression=document.createElement('div');expression.className='mexp';expression.innerHTML=step.expressionHtml;row.appendChild(expression);if(i<state.index){const answer=document.createElement('div');answer.innerHTML=Task6Hints.format(step.expected);row.appendChild(answer);}else{if(step.note){const note=document.createElement('p');note.className='foundation-help-note';note.textContent=step.note;row.appendChild(note);}const controls=document.createElement('div');controls.className='answer-row';const input=document.createElement('input');input.className='ans';input.id='foundationHintAnswer';input.setAttribute('aria-label',step.answerLabel||'Ответ на шаг');input.setAttribute('inputmode','text');const button=document.createElement('button');button.className='b-primary';button.textContent='Проверить шаг';button.id='foundationHintCheck';const feedback=document.createElement('p');feedback.setAttribute('aria-live','polite');button.onclick=()=>{const value=parseInput(input.value);if(!value){feedback.textContent='Введи число или дробь.';return;}if(value[0]*step.expected[1]!==step.expected[0]*value[1]){feedback.textContent='Пока не получилось. Попробуй ещё раз.';return;}state.index++;drawFoundationHelp();};input.onkeydown=e=>{if(e.key==='Enter')button.click();};controls.append(input,button);row.append(controls,feedback);panel.appendChild(row);addFoundationPreview(input);return;}panel.appendChild(row);});if(state.index===state.plan.steps.length){const done=document.createElement('p');done.textContent='Все шаги выполнены. Запиши ответ в поле над подсказкой.';panel.appendChild(done);}}
 
 // Explicit allowlist: links open the matching live generator, never an arbitrary module.
 const PRACTICE_ROUTES={

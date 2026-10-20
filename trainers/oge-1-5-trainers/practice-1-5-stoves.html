@@ -247,8 +247,10 @@
   .banya .ember-glow { animation: bhEmberPulse 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
   @media (prefers-reduced-motion: reduce) { .banya .steam{animation:none; opacity:.1;} .banya .ember-glow{animation:none; opacity:.75;} }
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body data-mode="learn">
+<body data-mode="practice" data-practical-page="stoves">
 
 <nav class="topnav">
   <div class="topnav-inner">
@@ -1006,7 +1008,7 @@ const TOTAL = GROUPS.reduce((s, gr) => s + gr.tasks.length, 0);
 /* ===== state ===== */
 const STORAGE_KEY = 'mathExamCourseProgress.v1';
 const TOPIC = 'practiceStovesTrainer';
-let state = { g: 0, t: 0, mode: 'learn', solved: new Set(), streak: 0, current: null };
+let state = { g: 0, t: 0, mode: 'practice', solved: new Set(), streak: 0, current: null };
 
 function loadProgress() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { return {}; } }
 function saveProgress() {
@@ -1033,8 +1035,9 @@ function loadTask(fresh) {
 
 function renderCard(t) {
   const card = document.getElementById('task-card');
+  card.classList.remove('hint-open','revealed');
   const buttons = `<div class="button-row">
-      <button class="btn btn-gold" id="hint-btn">Подсказка</button>
+      <button class="btn btn-gold" id="hint-btn">Хочешь подсказку?</button>
       <button class="btn btn-secondary" id="show-btn">Показать решение</button>
       ${t.regen ? '<button class="btn btn-ghost" id="regen-btn">Другие числа ↻</button>' : ''}
       <button class="btn btn-secondary" id="next-btn">Следующая →</button>

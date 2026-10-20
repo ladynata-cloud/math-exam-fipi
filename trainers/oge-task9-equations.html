@@ -292,6 +292,10 @@ kbd{font-family:var(--math); background:#eef2f7; border:1px solid var(--line);
   .task-q{margin-right:0; margin-top:22px;}
   .src-badge{position:static; display:inline-block; margin-bottom:6px;}
 }
+
+/* Minimal task-first course presentation. Math and progress stay in their existing engines. */
+:root{--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--accent:#216342;--green:#216342;--blue:#216342;--line:#dbe1da;--ui:system-ui,-apple-system,"Segoe UI",sans-serif;--hand:var(--ui)}
+body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:18px;line-height:1.75}.margin-line{display:none}.wrap,body>main,body>header{max-width:860px;margin-left:auto;margin-right:auto;padding-left:20px;padding-right:20px}body>header{background:transparent;border:0;box-shadow:none;padding-top:24px}header,h1,h2,h3,.hand{font-family:var(--ui)!important}header{margin-bottom:24px}h1{font-size:25px!important;line-height:1.4;margin:10px 0 22px!important}.crumbs{font:15px/1.6 var(--ui);color:#216342}.card,.task-card,.mtask,.panel{background:#fff!important;border:1px solid #dbe1da!important;border-radius:14px;box-shadow:none!important;padding:28px!important;margin-bottom:22px}.card:before,.card:after{display:none!important}.card p,.task-card p,.mtask p{line-height:1.8}.taskline,.task-text,.task-q,.story{font-size:19px!important;line-height:1.8!important}.taskline{margin:16px 0}.svgbox,svg{max-width:100%}.expr,.formula-box{margin:24px 0;font-size:27px;overflow-x:auto}.btn,.act,.btn-check,button.primary{background:#216342!important;color:white!important;border-color:#216342!important;font-family:var(--ui)!important;font-size:16px;min-height:46px}.ghost,.btn.ghost,.btn-ghost,.act.sec,.act.ghost,.btn.show,.btn-hint{background:#fff!important;color:#216342!important;border-color:#b9cbbb!important}button,input,select,summary{font-family:var(--ui);min-height:44px}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}input.ans,.ansfield input,.field input{font-size:21px!important;max-width:100%;border-radius:7px}.btnrow,.btn-row,.mrow,.steprow,.answer-row{gap:12px;margin-top:18px!important}.tabs{display:flex;flex-wrap:wrap;gap:9px;border:0}.tabs button,.chip,.pill,.fchip,#modes button,#types button{background:white;color:#216342;border:1px solid #dbe1da;min-height:44px;padding:9px 13px;font-size:15px}.tabs .active,.tabs .on,.chip.active,.chip.on,.pill.on,.fchip.on,#modes .active,#types .active{background:#216342!important;color:#fff!important}.minimal-settings,.minimal-options{margin:24px 0;border-top:1px solid #dbe1da;padding:18px 2px}.minimal-settings>summary,.minimal-options>summary{color:#216342;cursor:pointer;font-size:16px;padding:5px 0}.minimal-settings>summary+*,.minimal-options>summary+*{margin-top:18px}.minimal-settings .card{padding:18px!important}.minimal-settings .sub,.minimal-settings .subtitle{font-size:15px;line-height:1.75}.minimal-hint{margin:24px 0!important}.minimal-hint-panel{margin:20px 0;padding:20px;background:#f0f5ee;border-radius:12px}.minimal-task-nav{margin:20px 0}.minimal-task-nav label{display:block;font-size:15px}.minimal-task-nav select{max-width:100%;padding:8px;border:1px solid #b9cbbb;border-radius:8px;background:white;font-size:17px}.minimal-task-nav .minimal-next{display:block;margin-top:18px}.mgrid{display:block!important}.score{position:static!important;background:transparent!important;box-shadow:none!important;padding:12px!important}.minimal-meta{font-size:14px;color:#626b63}.minimal-task-title{font-size:20px;margin:0 0 24px}.minimal-task-nav [hidden],[hidden]{display:none!important}@media(max-width:560px){.wrap,body>main,body>header{padding-left:12px;padding-right:12px}.card,.task-card,.mtask,.panel{padding:22px 16px!important}h1{font-size:22px!important}.taskline,.task-text,.task-q,.story{font-size:18px!important}.minimal-hint-panel{padding:16px 12px}.expr,.formula-box{font-size:24px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -392,6 +396,38 @@ kbd{font-family:var(--math); background:#eef2f7; border:1px solid var(--line);
 
 </div><!-- /.wrap -->
 <script>
+"use strict";
+
+/* Presentation helpers only: nodes are moved, never cloned, so their handlers and progress survive. */
+const OGEMinimal={
+  group(root,nodes,label,cls){
+    if(!root||typeof root.appendChild!=="function")return null;
+    nodes=nodes.filter(Boolean);if(!nodes.length)return null;
+    const details=document.createElement('details');details.className=cls||'minimal-options';
+    const summary=document.createElement('summary');summary.textContent=label;details.appendChild(summary);
+    nodes.forEach(node=>details.appendChild(node));root.appendChild(details);return details;
+  },
+  shell(root,selectors,title){
+    if(!root||!document.body||!document.body.querySelector)return;
+    const heading=document.querySelector('h1');if(heading)heading.textContent=title;
+    const nodes=selectors.map(s=>document.querySelector(s)).filter(Boolean);
+    this.group(root,nodes,'Темы, режимы и результаты','minimal-settings');
+  },
+  paginate(grid,selector){
+    if(!grid||!grid.querySelectorAll)return;
+    const cards=Array.from(grid.querySelectorAll(selector));if(!cards.length)return;
+    const old=grid.nextElementSibling;if(old&&old.classList.contains('minimal-task-nav'))old.remove();
+    const nav=document.createElement('div');nav.className='minimal-task-nav';
+    const next=document.createElement('button');next.type='button';next.className='btn minimal-next';next.textContent='Другое задание →';nav.appendChild(next);
+    const options=document.createElement('details');options.className='minimal-options';
+    const summary=document.createElement('summary');summary.textContent='Выбрать задание';options.appendChild(summary);
+    const label=document.createElement('label');label.textContent='Задание ';const select=document.createElement('select');select.setAttribute('aria-label','Выбрать задание');label.appendChild(select);options.appendChild(label);nav.appendChild(options);
+    cards.forEach((card,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=String(i+1)+' из '+cards.length;select.appendChild(option);});
+    let current=0;const activate=i=>{current=i;cards.forEach((card,j)=>{card.hidden=j!==i;});select.value=String(i);};
+    select.onchange=()=>activate(Number(select.value));next.onclick=()=>activate((current+1)%cards.length);activate(0);grid.after(nav);
+  }
+};
+
 /* ================= ЯДРО: точная рациональная арифметика ================= */
 'use strict';
 
@@ -3014,6 +3050,7 @@ function renderGenTask(item, card){
     sel.appendChild(note);
     card.appendChild(sel);
     card.appendChild(stepHost);
+  OGEMinimal.group(card,[badge,no],"Об этом задании");
     // смена способа начинает лестницу заново, но запись задачи одна (hooks): показ не «отмывается»
     function choose(m,btn){ method=m; bD.classList.remove('on'); bV.classList.remove('on'); btn.classList.add('on');
       bD.style.background=bV.style.background=''; solveInline(stepHost, task, m, hooks); }
@@ -3023,6 +3060,7 @@ function renderGenTask(item, card){
     choose(undefined,bD);
   } else {
     card.appendChild(stepHost);
+  OGEMinimal.group(card,[badge,no],"Об этом задании");
     solveInline(stepHost, task, undefined, hooks);
   }
 
@@ -3104,6 +3142,7 @@ function buildMaraTab(root){
     }
     filteredTasks().forEach(t=>list.appendChild(makeMaraCard(t, paintProgress)));
     paintProgress();
+    OGEMinimal.paginate(list,":scope > .task-card");
   }
   window._maraRepaint=paintProgress;
   window.maraApplyCase=function(cases,label){
@@ -3115,6 +3154,7 @@ function buildMaraTab(root){
   };
   window.maraClearCase=function(){ maraState.caseFilter=null; renderList(); };
   renderList();
+  OGEMinimal.group(root,[intro,filt,prog],"Выбрать тему · мои результаты");
 }
 
 function makeMaraCard(t, onProgress){
@@ -3135,10 +3175,12 @@ function makeMaraCard(t, onProgress){
 
   const row=document.createElement('div'); row.className='btn-row';
   const bCheck=document.createElement('button'); bCheck.className='btn small'; bCheck.textContent='Проверить';
-  const bStep=document.createElement('button'); bStep.className='btn ghost small'; bStep.textContent='Решить по шагам';
-  row.appendChild(bCheck); row.appendChild(bStep);
+  const bStep=document.createElement('button'); bStep.className='btn ghost small'; bStep.textContent='Хочешь подсказку?';bStep.setAttribute('aria-expanded','false');
+  row.appendChild(bCheck);
+  bStep.classList.add("minimal-hint");card.insertBefore(bStep,ansField);
   card.appendChild(row);
   card.appendChild(stepHost);
+  OGEMinimal.group(card,[badge,no],"Об этом задании");
 
   /* запись прогресса (решения F8, D1, D4): «Решить по шагам» — не помощь;
      «Подсказка» и «Показать шаг» снимают «без подсказок»; после показа
@@ -3172,8 +3214,8 @@ function makeMaraCard(t, onProgress){
     onShow(){ st.shown=true; helped(); },
     onComplete(){ markSolved(); }};   // лестница, где всё ввёл ученик, — решено; с показом — «показан разбор»
   bStep.addEventListener('click',()=>{
-    if(stepHost.dataset.open){ stepHost.innerHTML=''; delete stepHost.dataset.open; bStep.textContent='Решить по шагам'; return; }
-    stepHost.dataset.open='1'; bStep.textContent='Свернуть шаги';
+    if(stepHost.dataset.open){stepHost.hidden=!stepHost.hidden;bStep.setAttribute('aria-expanded',String(!stepHost.hidden));return;}
+    stepHost.dataset.open='1';stepHost.className='minimal-hint-panel';bStep.setAttribute('aria-expanded','true');
     solveInline(stepHost, t, undefined, hooks);
   });
   return card;
@@ -3451,7 +3493,8 @@ function selftest(){
     });
   })();
 
-  if(CP.REVIEW)activate('step', true);   // ?mode=review — сразу работа над ошибками
+  activate(CP.REVIEW?'step':'mara',true);
+  OGEMinimal.shell(document.querySelector('.wrap'),['nav.tabs','header .sub','header .sub:last-child'],'ОГЭ №9 · Уравнения');   // ?mode=review — сразу работа над ошибками
   if(CP.RO)selftest();                   // ?selftest=1 — маркер OGE9_SELFTEST_OK в консоли
 })();
 </script>

@@ -1,0 +1,3433 @@
+{
+  "inventory_base": "4b56350c35a67e41add8f2b25cf2bf7d73d1f71f",
+  "course_routes": [
+    {
+      "line": 1,
+      "registered_trainer_ids": [
+        "practiceEntryDiagnostic2026",
+        "percentTableTrainer",
+        "practiceRoadsGridTrainer",
+        "practiceRoadsSchemaTrainer",
+        "practiceTiresTrainer",
+        "practiceStovesTrainer",
+        "practiceLandPlotsTrainer",
+        "practiceApartmentsTrainer",
+        "practiceTariffsTrainer",
+        "practicePaperSheetsTrainer",
+        "practicePlanReadingTrainer",
+        "practiceRoutesCheckpoint2026"
+      ],
+      "registered_routes": [
+        "/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+        "/trainers/oge-1-5-trainers/percent-table-trainer.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html"
+      ],
+      "visible_course_route": "/trainers/oge-1-5-trainers/",
+      "status": "existing_restyled",
+      "group": "practical_1_5",
+      "note": "Lines 1–5 belong to one common scenario block, not five separate trainers. These same twelve registered tools serve all five positions."
+    },
+    {
+      "line": 2,
+      "registered_trainer_ids": [
+        "practiceEntryDiagnostic2026",
+        "percentTableTrainer",
+        "practiceRoadsGridTrainer",
+        "practiceRoadsSchemaTrainer",
+        "practiceTiresTrainer",
+        "practiceStovesTrainer",
+        "practiceLandPlotsTrainer",
+        "practiceApartmentsTrainer",
+        "practiceTariffsTrainer",
+        "practicePaperSheetsTrainer",
+        "practicePlanReadingTrainer",
+        "practiceRoutesCheckpoint2026"
+      ],
+      "registered_routes": [
+        "/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+        "/trainers/oge-1-5-trainers/percent-table-trainer.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html"
+      ],
+      "visible_course_route": "/trainers/oge-1-5-trainers/",
+      "status": "existing_restyled",
+      "group": "practical_1_5",
+      "note": "Lines 1–5 belong to one common scenario block, not five separate trainers. These same twelve registered tools serve all five positions."
+    },
+    {
+      "line": 3,
+      "registered_trainer_ids": [
+        "practiceEntryDiagnostic2026",
+        "percentTableTrainer",
+        "practiceRoadsGridTrainer",
+        "practiceRoadsSchemaTrainer",
+        "practiceTiresTrainer",
+        "practiceStovesTrainer",
+        "practiceLandPlotsTrainer",
+        "practiceApartmentsTrainer",
+        "practiceTariffsTrainer",
+        "practicePaperSheetsTrainer",
+        "practicePlanReadingTrainer",
+        "practiceRoutesCheckpoint2026"
+      ],
+      "registered_routes": [
+        "/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+        "/trainers/oge-1-5-trainers/percent-table-trainer.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html"
+      ],
+      "visible_course_route": "/trainers/oge-1-5-trainers/",
+      "status": "existing_restyled",
+      "group": "practical_1_5",
+      "note": "Lines 1–5 belong to one common scenario block, not five separate trainers. These same twelve registered tools serve all five positions."
+    },
+    {
+      "line": 4,
+      "registered_trainer_ids": [
+        "practiceEntryDiagnostic2026",
+        "percentTableTrainer",
+        "practiceRoadsGridTrainer",
+        "practiceRoadsSchemaTrainer",
+        "practiceTiresTrainer",
+        "practiceStovesTrainer",
+        "practiceLandPlotsTrainer",
+        "practiceApartmentsTrainer",
+        "practiceTariffsTrainer",
+        "practicePaperSheetsTrainer",
+        "practicePlanReadingTrainer",
+        "practiceRoutesCheckpoint2026"
+      ],
+      "registered_routes": [
+        "/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+        "/trainers/oge-1-5-trainers/percent-table-trainer.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html"
+      ],
+      "visible_course_route": "/trainers/oge-1-5-trainers/",
+      "status": "existing_restyled",
+      "group": "practical_1_5",
+      "note": "Lines 1–5 belong to one common scenario block, not five separate trainers. These same twelve registered tools serve all five positions."
+    },
+    {
+      "line": 5,
+      "registered_trainer_ids": [
+        "practiceEntryDiagnostic2026",
+        "percentTableTrainer",
+        "practiceRoadsGridTrainer",
+        "practiceRoadsSchemaTrainer",
+        "practiceTiresTrainer",
+        "practiceStovesTrainer",
+        "practiceLandPlotsTrainer",
+        "practiceApartmentsTrainer",
+        "practiceTariffsTrainer",
+        "practicePaperSheetsTrainer",
+        "practicePlanReadingTrainer",
+        "practiceRoutesCheckpoint2026"
+      ],
+      "registered_routes": [
+        "/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+        "/trainers/oge-1-5-trainers/percent-table-trainer.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+        "/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html"
+      ],
+      "visible_course_route": "/trainers/oge-1-5-trainers/",
+      "status": "existing_restyled",
+      "group": "practical_1_5",
+      "note": "Lines 1–5 belong to one common scenario block, not five separate trainers. These same twelve registered tools serve all five positions."
+    },
+    {
+      "line": 6,
+      "registered_trainer_ids": [
+        "oge-t6-vychisleniya"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task6-fractions.html"
+      ],
+      "visible_course_route": "/trainers/oge-task6-fractions.html",
+      "status": "already_published_minimal",
+      "group": "task6"
+    },
+    {
+      "line": 7,
+      "registered_trainer_ids": [
+        "oge-t7-pryamaya"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task7-number-line.html"
+      ],
+      "visible_course_route": "/trainers/oge-task7-number-line.html",
+      "status": "existing_restyled",
+      "group": "algebra_part1"
+    },
+    {
+      "line": 8,
+      "registered_trainer_ids": [
+        "oge-t8-stepeni"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task8-powers-roots.html"
+      ],
+      "visible_course_route": "/trainers/oge-task8-powers-roots.html",
+      "status": "existing_restyled",
+      "group": "algebra_part1"
+    },
+    {
+      "line": 9,
+      "registered_trainer_ids": [
+        "oge-t9-uravneniya"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task9-equations.html"
+      ],
+      "visible_course_route": "/trainers/oge-task9-equations.html",
+      "status": "existing_restyled",
+      "group": "algebra_part1"
+    },
+    {
+      "line": 10,
+      "registered_trainer_ids": [
+        "oge-t10-veroyatnost"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task10-probability.html"
+      ],
+      "visible_course_route": "/trainers/oge-task10-probability.html",
+      "status": "existing_restyled",
+      "group": "algebra_part1"
+    },
+    {
+      "line": 11,
+      "registered_trainer_ids": [
+        "oge-t11-grafiki"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task11-graphs-trainer.html"
+      ],
+      "visible_course_route": "/trainers/oge-task11-graphs-trainer.html",
+      "status": "already_published_minimal",
+      "group": "completed_reference"
+    },
+    {
+      "line": 12,
+      "registered_trainer_ids": [
+        "oge-t12-formuly"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task12-formulas-trainer.html"
+      ],
+      "visible_course_route": "/trainers/oge-task12-formulas-trainer.html",
+      "status": "existing_restyled",
+      "group": "algebra_part1"
+    },
+    {
+      "line": 13,
+      "registered_trainer_ids": [
+        "oge-t13-neravenstva"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task13-inequalities.html"
+      ],
+      "visible_course_route": "/trainers/oge-task13-inequalities.html",
+      "status": "existing_restyled",
+      "group": "legacy_inequalities",
+      "actual_content_route": "/trainers/oge13-inequalities-series.html",
+      "note": "Canonical file is a redirect. Registry prospective 12 types do not describe the actual old 5-module/26-task series. Keep redirect and old progress contract stable."
+    },
+    {
+      "line": 14,
+      "registered_trainer_ids": [
+        "oge-t14-progressii"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task14-progressions.html"
+      ],
+      "visible_course_route": "/trainers/oge-task14-progressions.html",
+      "status": "existing_restyled",
+      "group": "algebra_part1"
+    },
+    {
+      "line": 15,
+      "registered_trainer_ids": [
+        "oge-t15-treugolniki"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task15-triangles.html"
+      ],
+      "visible_course_route": "/oge/geometry/task-15-external-angle.html",
+      "status": "existing_single_lesson_restyled",
+      "group": "legacy_triangle_lesson",
+      "note": "Registered new trainer absent/planned. Actual course links a single static external-angle lesson; do not report full task15 coverage."
+    },
+    {
+      "line": 16,
+      "registered_trainer_ids": [
+        "oge-task16-circle"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task16-circle.html"
+      ],
+      "visible_course_route": "/trainers/oge-task16-circle.html",
+      "status": "existing_restyled",
+      "group": "geometry"
+    },
+    {
+      "line": 17,
+      "registered_trainer_ids": [
+        "oge17-chetyrehugolniki"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task17-quadrilaterals.html"
+      ],
+      "visible_course_route": "/trainers/oge-task17-quadrilaterals.html",
+      "status": "existing_restyled",
+      "group": "geometry"
+    },
+    {
+      "line": 18,
+      "registered_trainer_ids": [
+        "oge18-kletki"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task18-grid.html"
+      ],
+      "visible_course_route": "/trainers/oge-task18-grid.html",
+      "status": "existing_restyled",
+      "group": "geometry"
+    },
+    {
+      "line": 19,
+      "registered_trainer_ids": [
+        "oge-t19-utverzhdeniya"
+      ],
+      "registered_routes": [
+        "/trainers/task19-trainer.html"
+      ],
+      "visible_course_route": "/trainers/task19-trainer.html",
+      "status": "already_published_minimal",
+      "group": "completed_reference"
+    },
+    {
+      "line": 20,
+      "registered_trainer_ids": [
+        "oge-t20-algebra"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task20-equations.html"
+      ],
+      "visible_course_route": "/trainers/oge-task20-equations.html",
+      "status": "existing_restyled",
+      "group": "algebra_part2"
+    },
+    {
+      "line": 21,
+      "registered_trainer_ids": [
+        "oge-t21-tekst"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task21-word-problems.html"
+      ],
+      "visible_course_route": "/trainers/oge-task21-word-problems.html",
+      "status": "existing_restyled",
+      "group": "algebra_part2"
+    },
+    {
+      "line": 22,
+      "registered_trainer_ids": [
+        "oge-t22-grafiki"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task22-functions-graphs.html"
+      ],
+      "visible_course_route": "/trainers/oge-task22-functions-graphs.html",
+      "status": "existing_restyled",
+      "group": "algebra_part2"
+    },
+    {
+      "line": 23,
+      "registered_trainer_ids": [
+        "oge23-vychisleniya"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task23-geometry-calculations.html"
+      ],
+      "visible_course_route": "/trainers/oge-task23-geometry-calculations.html",
+      "status": "existing_restyled",
+      "group": "geometry"
+    },
+    {
+      "line": 24,
+      "registered_trainer_ids": [
+        "oge24-dokazatelstva"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task24-proofs.html"
+      ],
+      "visible_course_route": "/trainers/oge-task24-proofs.html",
+      "status": "existing_restyled",
+      "group": "geometry"
+    },
+    {
+      "line": 25,
+      "registered_trainer_ids": [
+        "oge25-geometriya"
+      ],
+      "registered_routes": [
+        "/trainers/oge-task25-geometry.html"
+      ],
+      "visible_course_route": "/trainers/oge-task25-geometry.html",
+      "status": "existing_restyled",
+      "group": "geometry"
+    }
+  ],
+  "core_files": [
+    {
+      "file": "oge/geometry/task-15-external-angle.html",
+      "route": "/oge/geometry/task-15-external-angle.html",
+      "exists_at_base": true,
+      "bytes": 13381,
+      "line_count": 206,
+      "title": "ОГЭ, задание 15: внешний угол треугольника | MathExam",
+      "scripts": [
+        "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+      ],
+      "styles": [
+        "/style.css"
+      ],
+      "local_links": [
+        ".",
+        "oge/index.html",
+        "ege-profil/index.html",
+        "trainers/oge-task14-progressions.html",
+        "trainers/oge-task16-circle.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ, задание 15: внешний угол треугольника | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "Math Exam FIPI"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 15: Внешний угол треугольника"
+        },
+        {
+          "tag": "h2",
+          "text": "Условие задачи"
+        },
+        {
+          "tag": "h3",
+          "text": "Наглядный чертёж"
+        },
+        {
+          "tag": "title",
+          "text": "Треугольник ABC, угол C равен 142°, внешний угол при вершине C равен 38°"
+        },
+        {
+          "tag": "h2",
+          "text": "Решение"
+        },
+        {
+          "tag": "h3",
+          "text": "Типичная ошибка"
+        },
+        {
+          "tag": "h3",
+          "text": "Совет для решения"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "oge/index.html",
+      "route": "/oge/",
+      "exists_at_base": true,
+      "bytes": 16046,
+      "line_count": 79,
+      "title": "Тренажёры для подготовки к ОГЭ по математике и информатике | MathExam",
+      "scripts": [],
+      "styles": [
+        "/assets/site.css"
+      ],
+      "local_links": [
+        ".",
+        "trainers/oge-course/index.html",
+        "trainers/oge-basics/index.html",
+        "trainers/oge-1-5-trainers/index.html",
+        "trainers/oge-informatics-1-10-tutor.html",
+        "trainers/task19-trainer.html",
+        "trainers/oge-basics/percentages/index.html",
+        "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+        "trainers/oge-task14-progressions.html",
+        "trainers/oge-task10-probability.html",
+        "trainers/oge-task9-equations.html",
+        "oge/geometry/task-15-external-angle.html",
+        "laboratory/index.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Тренажёры для подготовки к ОГЭ по математике и информатике | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ"
+        },
+        {
+          "tag": "h2",
+          "text": "Быстро"
+        },
+        {
+          "tag": "h2",
+          "text": "ОГЭ по математике"
+        },
+        {
+          "tag": "h3",
+          "text": "Курс подготовки к ОГЭ"
+        },
+        {
+          "tag": "h3",
+          "text": "Математическая база для ОГЭ"
+        },
+        {
+          "tag": "h3",
+          "text": "Проценты и пропорции"
+        },
+        {
+          "tag": "h3",
+          "text": "Задания 1–5: практические задачи"
+        },
+        {
+          "tag": "h3",
+          "text": "Входная диагностика 1–5"
+        },
+        {
+          "tag": "h3",
+          "text": "№14: прогрессии"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/geometry_statements_trainer_improved.html",
+      "route": "/trainers/geometry_statements_trainer_improved.html",
+      "exists_at_base": true,
+      "bytes": 4593,
+      "line_count": 60,
+      "title": "ОГЭ №19 — утверждения с наглядными подсказками · MathExam",
+      "scripts": [
+        "task19-visual-data.js?v=corpus-20261020",
+        "task19-visual-models.js?v=corpus-20261020",
+        "task19-visual-app.js?v=corpus-20261020"
+      ],
+      "styles": [
+        "task19-visual.css?v=corpus-20261020",
+        "/assets/download-panel.css"
+      ],
+      "local_links": [
+        "trainers/archive-5-weeks/task19-before-visual-hints-20261020.html",
+        "downloads/trainers/task19-trainer/task19-trainer.html",
+        "downloads/trainers/task19-trainer/task19-trainer-deepseek-prompt.md",
+        "downloads/trainers/task19-trainer/task19-trainer-package.zip",
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "hintToggle",
+          "text": "Хочешь подсказку?"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №19 — утверждения с наглядными подсказками · MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №19"
+        },
+        {
+          "tag": "h2",
+          "text": "Загружаем утверждение…"
+        },
+        {
+          "tag": "h3",
+          "text": ""
+        },
+        {
+          "tag": "h2",
+          "text": "Скачать и адаптировать"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": false
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/index.html",
+      "route": "/trainers/oge-1-5-trainers/",
+      "exists_at_base": true,
+      "bytes": 788,
+      "line_count": 9,
+      "title": "ОГЭ задания 1–5 — практические задачи, тренажёры | MathExam",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-map.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ задания 1–5 — практические задачи, тренажёры | MathExam"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "route": "/trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "exists_at_base": true,
+      "bytes": 117234,
+      "line_count": 1534,
+      "title": "Проценты без паники · обучающий тренажёр ОГЭ",
+      "scripts": [
+        "progress.js"
+      ],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-map.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": null,
+          "text": "Разбор"
+        },
+        {
+          "tag": "button",
+          "id": null,
+          "text": "🧭 Разобраться с нуля Наглядно разберём 100%, способ через 1%, таблицу 2×2 и пропорцию. Вы будете собирать решение сами. 9 коротких шагов→"
+        },
+        {
+          "tag": "button",
+          "id": null,
+          "text": "✍️ Потренироваться Отдельные типы задач, смешанный режим и усложнённый уровень. Подсказки открываются постепенно. в своём темпе→"
+        },
+        {
+          "tag": "button",
+          "id": null,
+          "text": "🎯 Проверить себя Пять задач без подсказок и без названия типа. В конце — честный результат и маршрут повторения. около 7 минут→"
+        },
+        {
+          "tag": "button",
+          "id": "hint-btn",
+          "text": "Подсказка 1: найти 100%"
+        },
+        {
+          "tag": "button",
+          "id": "solution-btn",
+          "text": "Показать решение"
+        },
+        {
+          "tag": "button",
+          "id": "new-review-task",
+          "text": "Другая задача для разбора"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Проценты без паники · обучающий тренажёр ОГЭ"
+        },
+        {
+          "tag": "h1",
+          "text": "Процентыбез паники"
+        },
+        {
+          "tag": "h3",
+          "text": "Ваш прогресс начнётся здесь"
+        },
+        {
+          "tag": "h2",
+          "text": "Сначала смысл, потом формула"
+        },
+        {
+          "tag": "h3",
+          "text": "Главная мысль"
+        },
+        {
+          "tag": "h3",
+          "text": "Маршрут обучения"
+        },
+        {
+          "tag": "h2",
+          "text": "От отдельного навыка — к смешанным задачам"
+        },
+        {
+          "tag": "h2",
+          "text": "Задача"
+        },
+        {
+          "tag": "h3",
+          "text": "Решение по шагам"
+        },
+        {
+          "tag": "h3",
+          "text": "Надёжная схема"
+        }
+      ],
+      "renderer_functions": [
+        "initialState",
+        "topicSolved",
+        "renderHome",
+        "renderLearnRail",
+        "learnMarkup",
+        "renderLearn",
+        "mountLearnStep",
+        "renderWholeQuiz",
+        "mountTableBuilder",
+        "renderTypeQuiz",
+        "tableHtml",
+        "standardTask",
+        "advancedTask",
+        "newPracticeTask",
+        "renderSkillChips",
+        "renderPracticeStats",
+        "renderPractice",
+        "revealPracticeHint",
+        "renderCheckLanding",
+        "startCheckpoint",
+        "startCheckTimer",
+        "renderCheckpointQuestion",
+        "renderCheckpointResult",
+        "makeReviewTask",
+        "newReviewTask",
+        "renderReviewChips",
+        "renderReview"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "exists_at_base": true,
+      "bytes": 66256,
+      "line_count": 795,
+      "title": "Квартира · план · задания 1–5 ОГЭ · тренажёр",
+      "scripts": [],
+      "styles": [],
+      "local_links": [],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Квартира · план · задания 1–5 ОГЭ · тренажёр"
+        }
+      ],
+      "renderer_functions": [
+        "drawPlan",
+        "solveT1",
+        "solveT2a",
+        "solveT2b",
+        "areaSolve",
+        "pctSolve",
+        "washTable",
+        "solveT51",
+        "netTable",
+        "solveT52",
+        "stoveTable",
+        "solveT53",
+        "renderView",
+        "onHint",
+        "onSolve",
+        "updateTabs"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "exists_at_base": true,
+      "bytes": 65076,
+      "line_count": 1258,
+      "title": "Входная диагностика ОГЭ-2026 · задания 1–5",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-map.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "review-mode-btn",
+          "text": "Разбор"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Входная диагностика ОГЭ-2026 · задания 1–5"
+        },
+        {
+          "tag": "h1",
+          "text": "Входная диагностика ОГЭ-2026"
+        },
+        {
+          "tag": "h2",
+          "text": "Как проходит диагностика"
+        },
+        {
+          "tag": "h2",
+          "text": ""
+        },
+        {
+          "tag": "h3",
+          "text": "Текущая попытка"
+        },
+        {
+          "tag": "h3",
+          "text": "Как отмечаются задания"
+        },
+        {
+          "tag": "h3",
+          "text": "Важно"
+        },
+        {
+          "tag": "h2",
+          "text": "Ваш стартовый маршрут готов"
+        },
+        {
+          "tag": "h3",
+          "text": ""
+        }
+      ],
+      "renderer_functions": [
+        "buildStepper",
+        "renderQuestion",
+        "renderReviewBox",
+        "startDiagnostic",
+        "startTimer",
+        "renderResult",
+        "setMode"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "exists_at_base": true,
+      "bytes": 32585,
+      "line_count": 425,
+      "title": "Участок · тренажёр 1–5 · ОГЭ",
+      "scripts": [
+        "progress.js"
+      ],
+      "styles": [
+        "https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap"
+      ],
+      "local_links": [],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Участок · тренажёр 1–5 · ОГЭ"
+        },
+        {
+          "tag": "h1",
+          "text": "Участок"
+        },
+        {
+          "tag": "h2",
+          "text": "Дачный участок"
+        }
+      ],
+      "renderer_functions": [
+        "drawPlan",
+        "drawLegend",
+        "renderProgress",
+        "renderTabs",
+        "gotoTask",
+        "showTask",
+        "nextStep"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "exists_at_base": true,
+      "bytes": 29575,
+      "line_count": 638,
+      "title": "ОГЭ, задания 1–5: практические задачи и диагностика | MathExam",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+        "trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+        "trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html",
+        "trainers/oge-1-5-trainers/percent-table-trainer.html",
+        "trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+        "trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+        "trainers/oge-1-5-trainers/practice-1-5-tires.html",
+        "trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+        "trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+        "trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+        "trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+        "trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ, задания 1–5: практические задачи и диагностика | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "Практические задачи 1–5 ·планы, сюжеты и проценты"
+        },
+        {
+          "tag": "h2",
+          "text": "Начните здесь"
+        },
+        {
+          "tag": "h3",
+          "text": "Входная диагностика по заданиям 1–5"
+        },
+        {
+          "tag": "h2",
+          "text": "Планы и маршруты"
+        },
+        {
+          "tag": "h3",
+          "text": "Как читать план и условие"
+        },
+        {
+          "tag": "h3",
+          "text": "Проверочная работа: планы и маршруты"
+        },
+        {
+          "tag": "h2",
+          "text": "Методическая база"
+        },
+        {
+          "tag": "h3",
+          "text": "Проценты — таблица 2×2 и пропорция"
+        },
+        {
+          "tag": "h2",
+          "text": "Восемь сюжетов задач 1–5"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "ogeRoadsTrainer.v2"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "exists_at_base": true,
+      "bytes": 64585,
+      "line_count": 904,
+      "title": "Форматы бумаги А0–А6 · задания 1–5 · ОГЭ",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-map.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Форматы бумаги А0–А6 · задания 1–5 · ОГЭ"
+        },
+        {
+          "tag": "h1",
+          "text": "Форматы А0–А6"
+        },
+        {
+          "tag": "h3",
+          "text": "◆Ключевые соотношения"
+        },
+        {
+          "tag": "h3",
+          "text": "◆Прогресс"
+        },
+        {
+          "tag": "h3",
+          "text": "◆Как разрезается"
+        },
+        {
+          "tag": "h3",
+          "text": "◆Таблица квадратов"
+        }
+      ],
+      "renderer_functions": [
+        "steps",
+        "showTaskContext",
+        "buildSizeTable",
+        "initState",
+        "renderTask",
+        "onHint",
+        "onSolve"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+      "exists_at_base": true,
+      "bytes": 34222,
+      "line_count": 330,
+      "title": "Как читать план и условие · ОГЭ 1–5",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-map.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "hint",
+          "text": "Подсказка"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Как читать план и условие · ОГЭ 1–5"
+        },
+        {
+          "tag": "h1",
+          "text": "Как читать план и условие"
+        },
+        {
+          "tag": "h2",
+          "text": "Сначала понять — потом считать"
+        },
+        {
+          "tag": "h3",
+          "text": "Текущий результат"
+        },
+        {
+          "tag": "h3",
+          "text": "Памятка"
+        },
+        {
+          "tag": "h3",
+          "text": "Режим учителя"
+        },
+        {
+          "tag": "h2",
+          "text": "Готово"
+        }
+      ],
+      "renderer_functions": [
+        "setMode",
+        "start",
+        "render",
+        "renderAnswer"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "exists_at_base": true,
+      "bytes": 107110,
+      "line_count": 2073,
+      "title": "Дороги по клеткам · тренажёр 1–5 (ОГЭ 2026)",
+      "scripts": [
+        "../board-bridge.js"
+      ],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-map.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Дороги по клеткам · тренажёр 1–5 (ОГЭ 2026)"
+        },
+        {
+          "tag": "h1",
+          "text": "Дороги по клеткам"
+        },
+        {
+          "tag": "h3",
+          "text": "Скорости"
+        },
+        {
+          "tag": "h3",
+          "text": "Формула времени"
+        },
+        {
+          "tag": "h3",
+          "text": "Теорема Пифагора"
+        },
+        {
+          "tag": "h3",
+          "text": "Прогресс"
+        }
+      ],
+      "renderer_functions": [
+        "freshTasks",
+        "renderScenarioFromSemantic",
+        "validateTaskSchema",
+        "planForTask",
+        "renderMap",
+        "drawLabel",
+        "drawCounting",
+        "renderCountFrameMarker",
+        "renderNarrative",
+        "restoreTaskUI",
+        "renderTask",
+        "renderFromState",
+        "renderTask1",
+        "renderTask2",
+        "renderTask3",
+        "renderTask4",
+        "renderTask5",
+        "applyMode",
+        "updateSetHint",
+        "init"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "mathExamRoadsGridSession.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "exists_at_base": true,
+      "bytes": 61248,
+      "line_count": 973,
+      "title": "Тренажёр ОГЭ · Задания 1–5 «Дороги» (Антоновка → Богданово)",
+      "scripts": [],
+      "styles": [],
+      "local_links": [],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Тренажёр ОГЭ · Задания 1–5 «Дороги» (Антоновка → Богданово)"
+        },
+        {
+          "tag": "h1",
+          "text": "План сельской местности: Антоновка → Богданово"
+        }
+      ],
+      "renderer_functions": [
+        "renderMap",
+        "renderLabelBoard",
+        "solveHTML",
+        "solveT1",
+        "solveT2",
+        "solveT3",
+        "solveT4",
+        "solveT5",
+        "taskTabsHTML",
+        "render",
+        "renderTeacher",
+        "renderLabel"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "ogeRoadsTrainer.v2"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html",
+      "exists_at_base": true,
+      "bytes": 36280,
+      "line_count": 122,
+      "title": "Проверочная работа: планы и маршруты · ОГЭ-2026",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-map.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Проверочная работа: планы и маршруты · ОГЭ-2026"
+        },
+        {
+          "tag": "h1",
+          "text": "Проверочная работа: планы и маршруты"
+        },
+        {
+          "tag": "h2",
+          "text": "Проверьте оба типа планов"
+        },
+        {
+          "tag": "h2",
+          "text": ""
+        },
+        {
+          "tag": "h3",
+          "text": "Задания"
+        },
+        {
+          "tag": "h3",
+          "text": "Перед ответом"
+        },
+        {
+          "tag": "h2",
+          "text": ""
+        }
+      ],
+      "renderer_functions": [
+        "setMode",
+        "start",
+        "renderTimer",
+        "buildSteps",
+        "render",
+        "renderAnswer",
+        "updateSteps",
+        "renderReview"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "exists_at_base": true,
+      "bytes": 82440,
+      "line_count": 1193,
+      "title": "Печки · тренажёр 1–5",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-map.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Печки · тренажёр 1–5"
+        },
+        {
+          "tag": "h1",
+          "text": "Печь для бани"
+        },
+        {
+          "tag": "h3",
+          "text": "Объём и площади"
+        },
+        {
+          "tag": "h3",
+          "text": "Проценты"
+        },
+        {
+          "tag": "h3",
+          "text": "Радиус арки — два случая"
+        },
+        {
+          "tag": "h3",
+          "text": "Прогресс"
+        }
+      ],
+      "renderer_functions": [
+        "taskKey",
+        "renderGroups",
+        "renderChips",
+        "loadTask",
+        "renderCard",
+        "markSolved",
+        "missSolved",
+        "applyMode",
+        "init"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "exists_at_base": true,
+      "bytes": 31299,
+      "line_count": 447,
+      "title": "Тарифы · тренажёр 1–5 · ОГЭ",
+      "scripts": [
+        "progress.js"
+      ],
+      "styles": [
+        "https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap"
+      ],
+      "local_links": [],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Тарифы · тренажёр 1–5 · ОГЭ"
+        },
+        {
+          "tag": "h1",
+          "text": "Тарифы"
+        },
+        {
+          "tag": "h2",
+          "text": "Расход абонента за 2019 год"
+        }
+      ],
+      "renderer_functions": [
+        "drawGraph",
+        "renderProgress",
+        "renderTabs",
+        "gotoTask",
+        "showTask",
+        "nextStep"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "route": "/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "exists_at_base": true,
+      "bytes": 162690,
+      "line_count": 1357,
+      "title": "Шины · тренажёр 1–5 (весь банк ФИПИ)",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-1-5-trainers/practice-1-5-map.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Шины · тренажёр 1–5 (весь банк ФИПИ)"
+        },
+        {
+          "tag": "h1",
+          "text": "Шины · одна таблица на весь вариант"
+        },
+        {
+          "tag": "h3",
+          "text": "Твоя таблица"
+        },
+        {
+          "tag": "h3",
+          "text": "Формулы"
+        },
+        {
+          "tag": "h3",
+          "text": "Прогресс"
+        },
+        {
+          "tag": "h3",
+          "text": "Режимы"
+        }
+      ],
+      "renderer_functions": [
+        "cellHint",
+        "refreshStepperDone",
+        "markStepDone",
+        "markSubstepDone",
+        "unlockNextSubstep",
+        "handleSubstepCheck",
+        "fillSidebarTable",
+        "renderCrossSection",
+        "renderMarking",
+        "renderTable",
+        "tableDone",
+        "updateTaskGates",
+        "renderTask1",
+        "renderTask2",
+        "renderTask3",
+        "renderTask4",
+        "renderTask4Radius",
+        "renderTask5",
+        "drawAnimScene",
+        "render",
+        "fillMasterTableTeacher",
+        "revertMasterTableTeacher",
+        "applyMode",
+        "goToStep",
+        "initialVariantIndex",
+        "init"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge-2027-analogue-1",
+        "oge2027-analogue-1-task-01",
+        "oge2027-analogue-1-task-02",
+        "oge2027-analogue-1-task-03",
+        "oge2027-analogue-1-task-04",
+        "oge2027-analogue-1-task-05"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-2027-analogue-1.html",
+      "route": "/trainers/oge-2027-analogue-1.html",
+      "exists_at_base": true,
+      "bytes": 69217,
+      "line_count": 199,
+      "title": "Авторский аналог демоверсии ОГЭ-2027 по математике. Вариант 1",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/oge-course/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "mode-review",
+          "text": "Режим разбора"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Авторский аналог демоверсии ОГЭ-2027 по математике. Вариант 1"
+        },
+        {
+          "tag": "h1",
+          "text": "Авторский аналог демоверсии ОГЭ-2027 по математике. Вариант 1"
+        },
+        {
+          "tag": "h2",
+          "text": "Ваш вариант, ваш темп"
+        },
+        {
+          "tag": "h2",
+          "text": "Часть 1 · Короткий ответ"
+        },
+        {
+          "tag": "h2",
+          "text": "Часть 2 · Решение с обоснованием"
+        }
+      ],
+      "renderer_functions": [
+        "hint",
+        "renderDiagram",
+        "renderTask"
+      ],
+      "progress_identifiers_detected": [
+        "OGE_2027_AUTHOR_ANALOGUE_1_SELFTEST_OK",
+        "mathExamOge2027Analogue1.v2",
+        "oge-2027-analogue-1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-course/index.html",
+      "route": "/trainers/oge-course/",
+      "exists_at_base": true,
+      "bytes": 20277,
+      "line_count": 258,
+      "title": "Курс подготовки к ОГЭ по математике: тренажёры 1-25 | MathExam",
+      "scripts": [],
+      "styles": [
+        "https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap",
+        "/assets/site.css"
+      ],
+      "local_links": [
+        ".",
+        "trainers/oge-course/index.html",
+        "trainers/oge-basics/index.html",
+        "trainers/arifmetika.html",
+        "trainers/drobi-oge-trainer.html",
+        "trainers/negative-numbers.html",
+        "trainers/rounding-stepwise.html",
+        "trainers/oge-2027-analogue-1.html",
+        "trainers/oge-1-5-trainers/index.html",
+        "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+        "trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+        "trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html",
+        "trainers/oge-task6-fractions.html",
+        "trainers/oge-task7-number-line.html",
+        "trainers/oge-task8-powers-roots.html",
+        "trainers/oge-task9-equations.html",
+        "trainers/oge-task10-probability.html",
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task12-formulas-trainer.html",
+        "trainers/oge-task13-inequalities.html",
+        "trainers/oge-task14-progressions.html",
+        "oge/geometry/task-15-external-angle.html",
+        "trainers/oge-task16-circle.html",
+        "trainers/oge-task17-quadrilaterals.html",
+        "trainers/oge-task18-grid.html",
+        "trainers/task19-trainer.html",
+        "trainers/oge-task20-equations.html",
+        "trainers/oge-task21-word-problems.html",
+        "trainers/oge-task22-functions-graphs.html",
+        "trainers/oge-task23-geometry-calculations.html",
+        "trainers/oge-task24-proofs.html",
+        "trainers/oge-task25-geometry.html",
+        "laboratory/index.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Курс подготовки к ОГЭ по математике: тренажёры 1-25 | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "Курс подготовки к ОГЭ: тренажёры 1-25"
+        },
+        {
+          "tag": "h2",
+          "text": "Сначала закрыть пробелы"
+        },
+        {
+          "tag": "h3",
+          "text": "Математическая база для ОГЭ: ликбез без пробелов"
+        },
+        {
+          "tag": "h3",
+          "text": "Арифметика"
+        },
+        {
+          "tag": "h3",
+          "text": "Дроби"
+        },
+        {
+          "tag": "h3",
+          "text": "Отрицательные числа"
+        },
+        {
+          "tag": "h3",
+          "text": "Округление"
+        },
+        {
+          "tag": "h2",
+          "text": "Полные тренировочные варианты"
+        },
+        {
+          "tag": "h3",
+          "text": "Авторский аналог демоверсии ОГЭ-2027 по математике. Вариант 1"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [
+        "oge-download-actions",
+        "oge-download-panel"
+      ],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task10-probability.html",
+      "route": "/trainers/oge-task10-probability.html",
+      "exists_at_base": true,
+      "bytes": 110113,
+      "line_count": 1666,
+      "title": "ОГЭ. Задание 10: вероятность — тренажёр",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "tabb-uch",
+          "text": "Учимся"
+        },
+        {
+          "tag": "button",
+          "id": "tabb-step",
+          "text": "Пошагово"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ. Задание 10: вероятность — тренажёр"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ по математике. Задание 10: вероятность"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "pStep",
+        "probStepText",
+        "treeSolveSVG",
+        "genTask",
+        "awMode",
+        "stepOK",
+        "taskMiss",
+        "taskShown",
+        "taskDone",
+        "mountSteps",
+        "renderStep",
+        "treeStepHooks",
+        "taskHead",
+        "stepChips",
+        "reviewTask",
+        "stepNew",
+        "renderStats",
+        "buildQuizTab",
+        "diceTable",
+        "showTab"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge-t10-veroyatnost",
+        "oge10_progress_v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task11-graphs-trainer.html",
+      "route": "/trainers/oge-task11-graphs-trainer.html",
+      "exists_at_base": true,
+      "bytes": 149096,
+      "line_count": 2395,
+      "title": "ОГЭ №11 — графики функций с наглядной подсказкой · MathExam",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        ".",
+        "trainers/index.html",
+        "oge/index.html",
+        "pedagogam/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "m1-hint",
+          "text": "Подсказка"
+        },
+        {
+          "tag": "button",
+          "id": "m2g-hint",
+          "text": "Подсказка"
+        },
+        {
+          "tag": "button",
+          "id": "m4-hint",
+          "text": "Хочешь подсказку?"
+        },
+        {
+          "tag": "button",
+          "id": "m4-show",
+          "text": "Показать разбор"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №11 — графики функций с наглядной подсказкой · MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №11"
+        },
+        {
+          "tag": "h2",
+          "text": "Четыре семейства функций"
+        },
+        {
+          "tag": "h2",
+          "text": "Разминка: учимся видеть признаки"
+        },
+        {
+          "tag": "h3",
+          "text": "…"
+        },
+        {
+          "tag": "h2",
+          "text": "Конструктор функций"
+        },
+        {
+          "tag": "h3",
+          "text": "Считаем вершину"
+        },
+        {
+          "tag": "h2",
+          "text": "Почему вершина бывает левее или правее оси y?"
+        },
+        {
+          "tag": "h2",
+          "text": "Угадай до построения игра"
+        },
+        {
+          "tag": "h3",
+          "text": "Что видно по формуле"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "renderProgressNotes",
+        "m2Render",
+        "tableHtml",
+        "checkTable",
+        "fillTable",
+        "m3TableButtons",
+        "m3ParStep2",
+        "m3BindTable",
+        "m3Draw",
+        "renderMatch",
+        "model",
+        "draw",
+        "renderDiagnostics",
+        "renderQuizIntro",
+        "clRender",
+        "chRender",
+        "crRender",
+        "famRender"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge-t11-grafiki",
+        "oge-task11-graphs-trainer.html"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task12-formulas-trainer.html",
+      "route": "/trainers/oge-task12-formulas-trainer.html",
+      "exists_at_base": true,
+      "bytes": 146402,
+      "line_count": 1994,
+      "title": "ОГЭ, задание 12 — расчёты по формулам. Тренажёр",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ, задание 12 — расчёты по формулам. Тренажёр"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ, задание 12: расчёты по формулам"
+        },
+        {
+          "tag": "h2",
+          "text": "Мой прогресс"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "finishTask",
+        "missTask",
+        "reviewTask",
+        "newTask",
+        "renderTask",
+        "bindHint",
+        "renderPlain",
+        "nextTask",
+        "renderFind",
+        "renderSubst",
+        "buildSteps",
+        "renderSteps",
+        "drawSteps",
+        "renderErrors",
+        "startQuiz",
+        "renderQuizTask",
+        "renderQuizReport",
+        "renderModes",
+        "renderTypes",
+        "setMode",
+        "renderProgress",
+        "start12"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge-t12-formuly"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task13-inequalities.html",
+      "route": "/trainers/oge-task13-inequalities.html",
+      "exists_at_base": true,
+      "bytes": 1093,
+      "line_count": 22,
+      "title": "ОГЭ №13: неравенства | MathExam",
+      "scripts": [],
+      "styles": [
+        "/assets/site.css"
+      ],
+      "local_links": [
+        "trainers/oge13-inequalities-series.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №13: неравенства | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №13: неравенства"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task14-progressions.html",
+      "route": "/trainers/oge-task14-progressions.html",
+      "exists_at_base": true,
+      "bytes": 189874,
+      "line_count": 2792,
+      "title": "ОГЭ №14. Прогрессии: формулы и здравый смысл",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": null,
+          "text": "🌱 Учимся"
+        },
+        {
+          "tag": "button",
+          "id": null,
+          "text": "🪜 Пошагово"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №14. Прогрессии: формулы и здравый смысл"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №14. Прогрессии: формулы и здравый смысл"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "svgTables",
+        "buildSteps",
+        "renderRef",
+        "renderLearn",
+        "renderL1",
+        "renderL2",
+        "renderL3",
+        "renderL4",
+        "renderL5",
+        "renderCompare",
+        "stepCompare",
+        "stepLine",
+        "drawCompare",
+        "render",
+        "draw",
+        "draw2",
+        "renderStepsMode",
+        "renderCases",
+        "newStepTask",
+        "renderMarathon",
+        "renderStats",
+        "solveInMarathon",
+        "renderQuiz"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge-t14-progressii",
+        "oge14_progress_v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task16-circle.html",
+      "route": "/trainers/oge-task16-circle.html",
+      "exists_at_base": true,
+      "bytes": 160425,
+      "line_count": 2097,
+      "title": "ОГЭ, задание 16: окружность — тренажёр | MathExam",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": null,
+          "text": "Разбор"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ, задание 16: окружность — тренажёр | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ · Задание 16 — окружность"
+        }
+      ],
+      "renderer_functions": [
+        "tanTrapDraw",
+        "solvedOne",
+        "switchTab",
+        "render",
+        "renderRazbor",
+        "renderRazborDetail",
+        "pickTrainTask",
+        "startTrainSub",
+        "startRazborSub",
+        "renderTrain",
+        "startQuiz",
+        "renderQuiz",
+        "renderQuizFinal",
+        "renderRefs",
+        "stkTask",
+        "init"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge-task16-circle"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task17-quadrilaterals.html",
+      "route": "/trainers/oge-task17-quadrilaterals.html",
+      "exists_at_base": true,
+      "bytes": 150025,
+      "line_count": 1690,
+      "title": "ОГЭ №17 — Четырёхугольники · тренажёр",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "tabR",
+          "text": "📖 Разбор"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №17 — Четырёхугольники · тренажёр"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №17 · Четырёхугольники"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "setTab",
+        "taskHTML",
+        "renderRazbor",
+        "renderRazborDetail",
+        "pickTrainTask",
+        "renderTrain",
+        "renderQuizStart",
+        "renderQuizTask",
+        "renderQuizFin",
+        "renderRef",
+        "renderSheet",
+        "renderPinPanel",
+        "stkTask"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge17-chetyrehugolniki"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task18-grid.html",
+      "route": "/trainers/oge-task18-grid.html",
+      "exists_at_base": true,
+      "bytes": 107753,
+      "line_count": 1482,
+      "title": "ОГЭ, задание 18: фигуры на клетчатой бумаге | MathExam",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "tabRazbor",
+          "text": "Разбор"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ, задание 18: фигуры на клетчатой бумаге | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ, задание 18 · Фигуры на клетчатой бумаге"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "archTask",
+        "genTask",
+        "setMode",
+        "renderRazbor",
+        "renderRazborCard",
+        "drawRazbor",
+        "nextTrainTask",
+        "renderTrain",
+        "drawTrain",
+        "renderQuizStart",
+        "startQuiz",
+        "drawQuiz",
+        "renderRef",
+        "stkTask"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge18-kletki"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task20-equations.html",
+      "route": "/trainers/oge-task20-equations.html",
+      "exists_at_base": true,
+      "bytes": 163028,
+      "line_count": 2293,
+      "title": "Задание 20 ОГЭ — тренажёр",
+      "scripts": [],
+      "styles": [],
+      "local_links": [],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Задание 20 ОГЭ — тренажёр"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 20 — тренажёр"
+        }
+      ],
+      "renderer_functions": [
+        "mountStepper",
+        "renderStep",
+        "quadSteps",
+        "sqrtPmSteps",
+        "renderB3",
+        "renderB4",
+        "makeRazlStepper",
+        "renderC2",
+        "renderC1",
+        "renderPROP",
+        "makeSysStepper",
+        "renderD1",
+        "renderD2",
+        "makeIneqStepper",
+        "renderPicker",
+        "renderTabs",
+        "renderBody",
+        "render"
+      ],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task21-word-problems.html",
+      "route": "/trainers/oge-task21-word-problems.html",
+      "exists_at_base": true,
+      "bytes": 170385,
+      "line_count": 2182,
+      "title": "ОГЭ · Задание 21 · Текстовые задачи — тренажёр",
+      "scripts": [],
+      "styles": [],
+      "local_links": [],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ · Задание 21 · Текстовые задачи — тренажёр"
+        },
+        {
+          "tag": "h2",
+          "text": "Выбери тип задачи"
+        }
+      ],
+      "renderer_functions": [
+        "runSteps",
+        "render",
+        "quadSteps",
+        "step",
+        "draw",
+        "renderScore",
+        "renderMini",
+        "bindModes",
+        "syncModes",
+        "subTabs",
+        "renderLearn",
+        "renderStepsMode",
+        "renderDrill",
+        "init"
+      ],
+      "progress_identifiers_detected": [
+        "oge21_prog"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task22-functions-graphs.html",
+      "route": "/trainers/oge-task22-functions-graphs.html",
+      "exists_at_base": true,
+      "bytes": 94727,
+      "line_count": 1506,
+      "title": "ОГЭ · Задание 22 — Графики функций",
+      "scripts": [],
+      "styles": [],
+      "local_links": [],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ · Задание 22 — Графики функций"
+        },
+        {
+          "tag": "h1",
+          "text": "Графики функций"
+        }
+      ],
+      "renderer_functions": [
+        "solveTarget",
+        "drawStatic",
+        "drawWithMeasure",
+        "redraw",
+        "stepPlan",
+        "renderStep",
+        "renderNext",
+        "renderMarathon",
+        "renderTheory",
+        "draw",
+        "stepHostFor"
+      ],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task23-geometry-calculations.html",
+      "route": "/trainers/oge-task23-geometry-calculations.html",
+      "exists_at_base": true,
+      "bytes": 185550,
+      "line_count": 2209,
+      "title": "ОГЭ · Задание 23 — Геометрические задачи на вычисление",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": null,
+          "text": "Разбор"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ · Задание 23 — Геометрические задачи на вычисление"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 23 · Геометрические задачи на вычисление"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "stepEq",
+        "render",
+        "nextTask",
+        "buildTask",
+        "renderRazbor",
+        "addStep",
+        "renderTrain",
+        "renderRecog",
+        "startSolve",
+        "renderConstruct",
+        "renderStep",
+        "renderQuiz",
+        "drawDots",
+        "step",
+        "renderSheetMap",
+        "renderRef",
+        "renderRefTypes",
+        "setTab",
+        "initApp",
+        "stkTask"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge23-vychisleniya"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task24-proofs.html",
+      "route": "/trainers/oge-task24-proofs.html",
+      "exists_at_base": true,
+      "bytes": 153519,
+      "line_count": 1035,
+      "title": "ОГЭ · Задание 24 — задачи на доказательство",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ · Задание 24 — задачи на доказательство"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ · Задание 24 — задачи на доказательство"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "markSolved",
+        "renderFig",
+        "loadTask",
+        "curTask",
+        "phaseOfStep",
+        "resolveJust",
+        "onSolved",
+        "useHint",
+        "hintPlace",
+        "surrender",
+        "nextTask",
+        "renderTabs",
+        "switchMode",
+        "startStudy",
+        "menuTrain",
+        "startTrain",
+        "startMode",
+        "startExam",
+        "renderTask",
+        "restartTask",
+        "trainThis",
+        "renderArsenal",
+        "renderSheet",
+        "selfSolved"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge24-dokazatelstva"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task25-geometry.html",
+      "route": "/trainers/oge-task25-geometry.html",
+      "exists_at_base": true,
+      "bytes": 177211,
+      "line_count": 1950,
+      "title": "ОГЭ · Задание 25 — геометрия повышенной сложности",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": null,
+          "text": "Разбор"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ · Задание 25 — геометрия повышенной сложности"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 25 · геометрия повышенной сложности"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "trSolved",
+        "stepsHTML",
+        "switchTab",
+        "renderLearn",
+        "renderLearnGrid",
+        "renderLearnDetail",
+        "nextReviewTask",
+        "renderTrain",
+        "isFinalAskStep",
+        "renderTrainPicker",
+        "startTrain",
+        "newTrainTask",
+        "trHint",
+        "renderExamIntro",
+        "startExam",
+        "renderExam",
+        "renderExamFin",
+        "renderRef",
+        "init"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge25-geometriya"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task6-fractions.html",
+      "route": "/trainers/oge-task6-fractions.html",
+      "exists_at_base": true,
+      "bytes": 93275,
+      "line_count": 399,
+      "title": "ОГЭ, задание 6: действия с дробями — тренажёр | MathExam",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "trainers/drobi-oge-trainer.html",
+        "trainers/oge-basics/fraction-meaning.html",
+        "trainers/oge-basics/fraction-common-denominator.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ, задание 6: действия с дробями — тренажёр | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "Тренажёр: действия с дробями"
+        }
+      ],
+      "renderer_functions": [
+        "applyTaskEvent",
+        "startSet",
+        "renderTask",
+        "renderStats",
+        "renderNavigation",
+        "renderSummary"
+      ],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task7-number-line.html",
+      "route": "/trainers/oge-task7-number-line.html",
+      "exists_at_base": true,
+      "bytes": 210111,
+      "line_count": 3188,
+      "title": "Задание 7 ОГЭ. Координатная прямая — тренажёр",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": null,
+          "text": "📖 Учимся"
+        },
+        {
+          "tag": "button",
+          "id": null,
+          "text": "🪜 Пошагово"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Задание 7 ОГЭ. Координатная прямая — тренажёр"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 7 ОГЭ. Координатная прямая"
+        },
+        {
+          "tag": "h2",
+          "text": "1Главное правило прямой"
+        },
+        {
+          "tag": "h3",
+          "text": "Попробуй сам"
+        },
+        {
+          "tag": "h2",
+          "text": "2Читаем рисунок"
+        },
+        {
+          "tag": "h3",
+          "text": "Попробуй сам"
+        },
+        {
+          "tag": "h2",
+          "text": "3Оцениваем обыкновенную дробь"
+        },
+        {
+          "tag": "h3",
+          "text": "Попробуй сам"
+        },
+        {
+          "tag": "h2",
+          "text": "4Оцениваем корень"
+        },
+        {
+          "tag": "h3",
+          "text": "Квадраты до 15 — проверь себя (жми на карточку)"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "stepInt",
+        "stepInt2",
+        "stepChoice",
+        "buildStepsA",
+        "buildStepsB",
+        "buildStepsC",
+        "buildSteps",
+        "buildStepsGenC",
+        "buildStepsAny",
+        "verifyGenTask",
+        "verifySteps",
+        "stAbsCombo",
+        "pushTask",
+        "stepTraps7",
+        "stepsFor",
+        "mountSteps",
+        "renderStep",
+        "taskConditionHtml",
+        "switchTab",
+        "buildSquaresTable",
+        "renderStepChips",
+        "newStepTask",
+        "updStepCnt",
+        "renderMarChips",
+        "renderMarGrid",
+        "renderMarTask"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge-t7-pryamaya"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task8-powers-roots.html",
+      "route": "/trainers/oge-task8-powers-roots.html",
+      "exists_at_base": true,
+      "bytes": 131394,
+      "line_count": 1611,
+      "title": "Задание 8 ОГЭ — степени и корни",
+      "scripts": [
+        "../ege-baza/return-to-course.js"
+      ],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": null,
+          "text": "📖 Учимся"
+        },
+        {
+          "tag": "button",
+          "id": null,
+          "text": "🪜 Пошагово"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Задание 8 ОГЭ — степени и корни"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 8 ОГЭ · степени и корни"
+        }
+      ],
+      "renderer_functions": [
+        "renderTask",
+        "buildSteps",
+        "solvedOne",
+        "gotoLearn",
+        "gotoStep",
+        "mountSteps",
+        "renderStep",
+        "buildLearn",
+        "ladderDraw",
+        "ruleBtnsInit",
+        "buildStep",
+        "reviewTask"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge-t8-stepeni"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge-task9-equations.html",
+      "route": "/trainers/oge-task9-equations.html",
+      "exists_at_base": true,
+      "bytes": 214213,
+      "line_count": 3459,
+      "title": "ОГЭ, задание 9: уравнения по шагам — тренажёр | MathExam",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "oge/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": null,
+          "text": "Учимся"
+        },
+        {
+          "tag": "button",
+          "id": null,
+          "text": "Пошагово"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ, задание 9: уравнения по шагам — тренажёр | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 9. Уравнения"
+        },
+        {
+          "tag": "h2",
+          "text": "Что нужно, чтобы решить задание 9"
+        },
+        {
+          "tag": "h2",
+          "text": "Линейные уравнения"
+        },
+        {
+          "tag": "h3",
+          "text": "План на 4 шага"
+        },
+        {
+          "tag": "h2",
+          "text": "Квадратные уравнения"
+        },
+        {
+          "tag": "h3",
+          "text": "Теорема Виета — «для быстрых»"
+        },
+        {
+          "tag": "h2",
+          "text": "Дробно-рациональные уравнения"
+        },
+        {
+          "tag": "h2",
+          "text": "Как заполнять бланк"
+        }
+      ],
+      "renderer_functions": [
+        "solvedOne",
+        "finiteDec",
+        "startsFactor",
+        "solveABC",
+        "renderTerms",
+        "taskEqnHTML",
+        "taskNorm",
+        "taskSolve",
+        "taskKey",
+        "taskInstrHTML",
+        "stABC",
+        "taskSteps",
+        "taskCaseId",
+        "genTask",
+        "renderUI",
+        "renderTally",
+        "makeStep",
+        "runSteps",
+        "loadTask",
+        "render",
+        "buildLearnTab",
+        "solveInline",
+        "reviewTask",
+        "stepHooks",
+        "buildStepTab",
+        "startGen",
+        "renderGenTask",
+        "taskChapter",
+        "buildMaraTab",
+        "filteredTasks",
+        "renderList",
+        "markSolved",
+        "buildQuizTab"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge-t9-uravneniya"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/oge13-inequalities-series.html",
+      "route": "/trainers/oge13-inequalities-series.html",
+      "exists_at_base": true,
+      "bytes": 23948,
+      "line_count": 83,
+      "title": "ОГЭ №13 — серия тренажёров по неравенствам",
+      "scripts": [],
+      "styles": [],
+      "local_links": [
+        "index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": null,
+          "text": "Подсказка"
+        },
+        {
+          "tag": "button",
+          "id": null,
+          "text": "Показать решение"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №13 — серия тренажёров по неравенствам"
+        },
+        {
+          "tag": "h2",
+          "text": "Выбор тренажёра"
+        },
+        {
+          "tag": "h2",
+          "text": "Задание"
+        },
+        {
+          "tag": "h2",
+          "text": "Статистика"
+        }
+      ],
+      "renderer_functions": [
+        "renderStats",
+        "drawAxis",
+        "drawLineSolution",
+        "drawQuad",
+        "drawGraphTask",
+        "drawTextBoard",
+        "drawSystem",
+        "renderTabs",
+        "renderPanel",
+        "renderChips",
+        "renderAll",
+        "toggleHint",
+        "nextTask"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1",
+        "oge13InequalitiesSeries"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/task19-trainer.html",
+      "route": "/trainers/task19-trainer.html",
+      "exists_at_base": true,
+      "bytes": 4593,
+      "line_count": 60,
+      "title": "ОГЭ №19 — утверждения с наглядными подсказками · MathExam",
+      "scripts": [
+        "task19-visual-data.js?v=corpus-20261020",
+        "task19-visual-models.js?v=corpus-20261020",
+        "task19-visual-app.js?v=corpus-20261020"
+      ],
+      "styles": [
+        "task19-visual.css?v=corpus-20261020",
+        "/assets/download-panel.css"
+      ],
+      "local_links": [
+        "trainers/archive-5-weeks/task19-before-visual-hints-20261020.html",
+        "downloads/trainers/task19-trainer/task19-trainer.html",
+        "downloads/trainers/task19-trainer/task19-trainer-deepseek-prompt.md",
+        "downloads/trainers/task19-trainer/task19-trainer-package.zip",
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "hintToggle",
+          "text": "Хочешь подсказку?"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №19 — утверждения с наглядными подсказками · MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №19"
+        },
+        {
+          "tag": "h2",
+          "text": "Загружаем утверждение…"
+        },
+        {
+          "tag": "h3",
+          "text": ""
+        },
+        {
+          "tag": "h2",
+          "text": "Скачать и адаптировать"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    }
+  ],
+  "linked_standalone_prerequisites": [
+    {
+      "file": "trainers/arifmetika.html",
+      "route": "/trainers/arifmetika.html",
+      "exists_at_base": true,
+      "bytes": 121569,
+      "line_count": 1376,
+      "title": "Арифметика 1–5 класс — тренажёр",
+      "scripts": [
+        "oge-basics/multiplication-division/division-lab-core.js",
+        "oge-basics/multiplication-division/division-guided-core.js",
+        "oge-basics/arithmetic-route.js",
+        "oge-basics/multiplication-division/decimal-shift.js?v=20261009-decimal-goal",
+        "oge-basics/multiplication-division/multiplication-refresh.js"
+      ],
+      "styles": [
+        "oge-basics/multiplication-division/decimal-shift.css?v=20261009-decimal-goal",
+        "oge-basics/multiplication-division/multiplication-refresh.css"
+      ],
+      "local_links": [
+        "index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "hint",
+          "text": "Подсказка"
+        },
+        {
+          "tag": "button",
+          "id": "solution",
+          "text": "Решение"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Арифметика 1–5 класс — тренажёр"
+        },
+        {
+          "tag": "h1",
+          "text": "Арифметика: 1–5 класс"
+        },
+        {
+          "tag": "h2",
+          "text": ""
+        },
+        {
+          "tag": "h2",
+          "text": "Прогресс темы"
+        },
+        {
+          "tag": "h2",
+          "text": "История"
+        }
+      ],
+      "renderer_functions": [
+        "initCourse",
+        "computeSteps",
+        "buildAddSteps",
+        "buildSubSteps",
+        "buildMul1Steps",
+        "buildMul2Steps",
+        "makeColTask",
+        "makeCornerTask",
+        "makeDecDivTask",
+        "makeExtTask",
+        "makeDecDecTask",
+        "makeFracTask",
+        "makeTask",
+        "curStep",
+        "renderCorner",
+        "renderVert",
+        "renderExtras",
+        "renderFrac",
+        "renderNok",
+        "renderGrade1",
+        "renderDivisionTools",
+        "advanceStep",
+        "hint",
+        "renderStats"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/drobi-oge-trainer.html",
+      "route": "/trainers/drobi-oge-trainer.html",
+      "exists_at_base": true,
+      "bytes": 156808,
+      "line_count": 1157,
+      "title": "Дроби · тренажёр ОГЭ · задание 6",
+      "scripts": [],
+      "styles": [],
+      "local_links": [],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Дроби · тренажёр ОГЭ · задание 6"
+        },
+        {
+          "tag": "h1",
+          "text": "Дроби: учимся и тренируемся"
+        }
+      ],
+      "renderer_functions": [
+        "render",
+        "renderLearn",
+        "renderLearnFrac",
+        "renderLearnDec",
+        "buildFracTask",
+        "buildDecTask",
+        "renderGuided",
+        "drawGuided",
+        "drawScore",
+        "renderDrill",
+        "startDrill",
+        "drillTask",
+        "startDrillSteps",
+        "drawDrillSteps"
+      ],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/negative-numbers.html",
+      "route": "/trainers/negative-numbers.html",
+      "exists_at_base": true,
+      "bytes": 7571,
+      "line_count": 130,
+      "title": "Отрицательные числа: числовая прямая и сравнение | MathExam",
+      "scripts": [],
+      "styles": [
+        "/assets/site.css"
+      ],
+      "local_links": [
+        ".",
+        "trainers/index.html",
+        "oge/index.html",
+        "geometry-course/index.html",
+        "ege-profil/index.html",
+        "pedagogam/index.html",
+        "trainers/negative-numbers-line.html",
+        "trainers/oge-course/index.html",
+        "trainers/who-is-stronger.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Отрицательные числа: числовая прямая и сравнение | MathExam"
+        },
+        {
+          "tag": "h1",
+          "text": "Отрицательные числа"
+        },
+        {
+          "tag": "h2",
+          "text": "Тренажёры темы"
+        },
+        {
+          "tag": "h3",
+          "text": "Маркерная числовая прямая"
+        },
+        {
+          "tag": "h3",
+          "text": "Кто сильнее?"
+        },
+        {
+          "tag": "h2",
+          "text": "Как давать ученику"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": true
+    },
+    {
+      "file": "trainers/rounding-stepwise.html",
+      "route": "/trainers/rounding-stepwise.html",
+      "exists_at_base": true,
+      "bytes": 22704,
+      "line_count": 145,
+      "title": "Округление чисел — тренажёр",
+      "scripts": [],
+      "styles": [
+        "/assets/download-panel.css"
+      ],
+      "local_links": [
+        "index.html",
+        "downloads/trainers/rounding-stepwise/rounding-stepwise.html",
+        "downloads/trainers/rounding-stepwise/rounding-stepwise-deepseek-prompt.md",
+        "downloads/trainers/rounding-stepwise/rounding-stepwise-package.zip",
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "hint",
+          "text": "Подсказка"
+        },
+        {
+          "tag": "button",
+          "id": "solution",
+          "text": "Решение"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "Округление чисел — тренажёр"
+        },
+        {
+          "tag": "h1",
+          "text": "Округление чисел"
+        },
+        {
+          "tag": "h2",
+          "text": "Прогресс темы"
+        },
+        {
+          "tag": "h2",
+          "text": "Алгоритм"
+        },
+        {
+          "tag": "h2",
+          "text": "История"
+        },
+        {
+          "tag": "h2",
+          "text": "Скачать и адаптировать"
+        }
+      ],
+      "renderer_functions": [
+        "taskFrom",
+        "makeTask",
+        "render",
+        "renderStats",
+        "hint"
+      ],
+      "progress_identifiers_detected": [
+        "mathExamCourseProgress.v1"
+      ],
+      "uses_storage": true,
+      "reachable_by_static_course_anchors": true
+    }
+  ],
+  "legacy_files": [
+    {
+      "file": "oge/algebra/task-09-linear-equations.html",
+      "route": "/oge/algebra/task-09-linear-equations.html",
+      "exists_at_base": true,
+      "bytes": 5081,
+      "line_count": 128,
+      "title": "ОГЭ. Задание 9 — Линейные уравнения | Math Exam FIPI",
+      "scripts": [],
+      "styles": [
+        "/style.css"
+      ],
+      "local_links": [
+        ".",
+        "oge/index.html",
+        "ege-profil/index.html",
+        "trainers/oge-task8-powers-roots.html",
+        "oge/probability/task-10-probability.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ. Задание 9 — Линейные уравнения | Math Exam FIPI"
+        },
+        {
+          "tag": "h1",
+          "text": "Math Exam FIPI"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 9: Уравнения и их системы"
+        },
+        {
+          "tag": "h2",
+          "text": "Условие задачи (из ФИПИ)"
+        },
+        {
+          "tag": "h2",
+          "text": "Решение"
+        },
+        {
+          "tag": "h3",
+          "text": "⚠️ Типичные ошибки"
+        },
+        {
+          "tag": "h2",
+          "text": "Проверка решения"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": false
+    },
+    {
+      "file": "oge/algebra/task-14-sequences.html",
+      "route": "/oge/algebra/task-14-sequences.html",
+      "exists_at_base": true,
+      "bytes": 6599,
+      "line_count": 159,
+      "title": "ОГЭ. Задание 14 — Последовательности | Math Exam FIPI",
+      "scripts": [],
+      "styles": [
+        "/style.css"
+      ],
+      "local_links": [
+        ".",
+        "oge/index.html",
+        "ege-profil/index.html",
+        "oge/probability/task-10-probability.html",
+        "oge/geometry/task-15-external-angle.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ. Задание 14 — Последовательности | Math Exam FIPI"
+        },
+        {
+          "tag": "h1",
+          "text": "Math Exam FIPI"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 14: Арифметическая прогрессия"
+        },
+        {
+          "tag": "h2",
+          "text": "Условие задачи (из ФИПИ)"
+        },
+        {
+          "tag": "h3",
+          "text": "📐 Формулы арифметической прогрессии"
+        },
+        {
+          "tag": "h2",
+          "text": "Решение"
+        },
+        {
+          "tag": "h2",
+          "text": "Проверка и понимание"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": false
+    },
+    {
+      "file": "oge/probability/task-10-probability.html",
+      "route": "/oge/probability/task-10-probability.html",
+      "exists_at_base": true,
+      "bytes": 6174,
+      "line_count": 142,
+      "title": "ОГЭ. Задание 10 — Теория вероятностей | Math Exam FIPI",
+      "scripts": [],
+      "styles": [
+        "/style.css"
+      ],
+      "local_links": [
+        ".",
+        "oge/index.html",
+        "ege-profil/index.html",
+        "oge/algebra/task-09-linear-equations.html",
+        "oge/algebra/task-14-sequences.html"
+      ],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ. Задание 10 — Теория вероятностей | Math Exam FIPI"
+        },
+        {
+          "tag": "h1",
+          "text": "Math Exam FIPI"
+        },
+        {
+          "tag": "h1",
+          "text": "Задание 10: Теория вероятностей"
+        },
+        {
+          "tag": "h2",
+          "text": "Условие задачи (из ФИПИ)"
+        },
+        {
+          "tag": "h3",
+          "text": "📚 Основная формула"
+        },
+        {
+          "tag": "h2",
+          "text": "Решение"
+        },
+        {
+          "tag": "h2",
+          "text": "Дополнительные пояснения"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": false
+    },
+    {
+      "file": "trainers/task14-progressions-trainer.html",
+      "route": "/trainers/task14-progressions-trainer.html",
+      "exists_at_base": true,
+      "bytes": 59700,
+      "line_count": 1738,
+      "title": "ОГЭ №14 — прогрессии (пошаговый тренажёр)",
+      "scripts": [],
+      "styles": [
+        "/assets/download-panel.css"
+      ],
+      "local_links": [
+        "downloads/trainers/task14-progressions-trainer/task14-progressions-trainer.html",
+        "downloads/trainers/task14-progressions-trainer/task14-progressions-trainer-deepseek-prompt.md",
+        "downloads/trainers/task14-progressions-trainer/task14-progressions-trainer-package.zip",
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
+      ],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "modeStepsBtn",
+          "text": "Пошагово"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №14 — прогрессии (пошаговый тренажёр)"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №14 — прогрессии"
+        },
+        {
+          "tag": "h2",
+          "text": "Скачать и адаптировать"
+        }
+      ],
+      "renderer_functions": [
+        "updateHelpVisibility",
+        "setUIMode",
+        "renderChips",
+        "renderProblem",
+        "filteredTasks",
+        "newTask",
+        "showStep",
+        "renderStep1",
+        "renderStep2",
+        "renderStep3",
+        "computeStepSign",
+        "renderSeqTable",
+        "renderStep4",
+        "renderStep4_Value",
+        "renderStep4_Sum",
+        "renderStep4_Steps",
+        "renderStep5",
+        "fetchTasksWithTimeout",
+        "renderHub",
+        "renderGroupNav"
+      ],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": false
+    },
+    {
+      "file": "trainers/task14-progressions-trainer_old.html",
+      "route": "/trainers/task14-progressions-trainer_old.html",
+      "exists_at_base": true,
+      "bytes": 3923,
+      "line_count": 105,
+      "title": "ОГЭ №14 — тренажёр прогрессий",
+      "scripts": [
+        "./task14-progressions-trainer.js"
+      ],
+      "styles": [
+        "./task14-progressions.css"
+      ],
+      "local_links": [],
+      "help_controls": [
+        {
+          "tag": "button",
+          "id": "hintBtn",
+          "text": "Подсказка"
+        },
+        {
+          "tag": "button",
+          "id": "solutionBtn",
+          "text": "Показать решение"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №14 — тренажёр прогрессий"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №14 — тренажёр прогрессий"
+        },
+        {
+          "tag": "h2",
+          "text": "Статистика"
+        },
+        {
+          "tag": "h3",
+          "text": "По типам задач"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": false
+    },
+    {
+      "file": "trainers/task14-progressions-trainer_old_steps.html",
+      "route": "/trainers/task14-progressions-trainer_old_steps.html",
+      "exists_at_base": true,
+      "bytes": 2270,
+      "line_count": 59,
+      "title": "ОГЭ №14 — тренажёр прогрессий (банк)",
+      "scripts": [
+        "./task14-progressions-trainer.js"
+      ],
+      "styles": [
+        "./task14-progressions.css"
+      ],
+      "local_links": [],
+      "help_controls": [],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №14 — тренажёр прогрессий (банк)"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №14 — прогрессии"
+        }
+      ],
+      "renderer_functions": [],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": false
+    },
+    {
+      "file": "trainers/trainers/task14-progressions-trainer.html",
+      "route": "/trainers/trainers/task14-progressions-trainer.html",
+      "exists_at_base": true,
+      "bytes": 17304,
+      "line_count": 553,
+      "title": "ОГЭ №14 — Прогрессии (тренажёр)",
+      "scripts": [
+        "../data/task14-progressions-2022-2025.js"
+      ],
+      "styles": [],
+      "local_links": [],
+      "help_controls": [
+        {
+          "tag": "summary",
+          "id": null,
+          "text": "Подсказки (по шагам, без формул)"
+        }
+      ],
+      "entry_headings": [
+        {
+          "tag": "title",
+          "text": "ОГЭ №14 — Прогрессии (тренажёр)"
+        },
+        {
+          "tag": "h1",
+          "text": "ОГЭ №14 — Прогрессии (тренажёр по вашему банку)"
+        },
+        {
+          "tag": "h3",
+          "text": "Черновик (впишите ряд/шаги сами)"
+        }
+      ],
+      "renderer_functions": [
+        "buildHints",
+        "filteredTasks",
+        "renderTask",
+        "nextTask"
+      ],
+      "progress_identifiers_detected": [],
+      "uses_storage": false,
+      "reachable_by_static_course_anchors": false
+    }
+  ],
+  "scope_note": "Existing main OGE course and four directly linked foundation trainers. The separate PredOGE route is retained, not reauthored."
+}

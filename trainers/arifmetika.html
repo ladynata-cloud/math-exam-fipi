@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -122,14 +122,25 @@ input{width:150px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-
 @media(max-width:480px){.course-mode .page{padding:10px}.course-mode .hero,.course-mode .card{padding:14px;border-radius:18px}.course-mode .prompt{font-size:25px}.course-mode .course-context h2{font-size:22px}.course-mode .cright{min-width:100px}.course-mode .dbox{padding:6px}.course-mode .qrow{padding:6px;gap:3px;flex-wrap:nowrap}.course-mode .cell,.course-mode .vcell{width:28px!important;font-size:24px!important}.course-mode .cell.ncell{width:14px!important}.course-mode .vcarry{width:28px!important}.course-mode .qcell{width:24px;font-size:22px}.course-mode .pcell{width:27px;min-width:27px}.course-mode .row{min-width:0}.course-mode button,.course-mode summary{min-height:44px}}
 @media(max-width:360px){.course-mode .cell,.course-mode .vcell{width:24px!important;font-size:22px!important}.course-mode .cell.ncell{width:10px!important}.course-mode .vcarry{width:24px!important}.course-mode .qcell{width:20px;font-size:20px}.course-mode .qcomma{width:10px;font-size:20px}.course-mode .qrow{flex-wrap:nowrap}.course-mode .fseg{width:24px}}
 </style>
-</head>
+<style id="oge-foundations-minimal">
+/* Calm training surface; working diagrams keep their semantic colours. */
+:root{--accent:#15803d;--accent-soft:#f0fdf4;--pen-green:#15803d}
+body{background:#fff!important;color:#172033;font-family:Arial,system-ui,sans-serif;font-size:18px;line-height:1.65}
+.page,.wrap{max-width:860px;margin:auto;padding:24px 20px 70px}.hero,header{background:none;box-shadow:none;border-radius:0;padding:0;margin-bottom:24px}.hero h1,h1{font-family:inherit;font-size:clamp(27px,5vw,35px);line-height:1.3;margin:16px 0}
+.grid{display:block}.card,.notebook{background:#fff;box-shadow:none;border:1px solid #e1e8e2;border-radius:16px;padding:24px;margin-bottom:24px}.notebook:before,.notebook:after{display:none}.back,a,.crumb{color:#166534}
+button:not(.digit),.b-primary,.b-next,.tab.on,.chip.on{font:inherit;font-weight:700;min-height:46px;border:1px solid #bbdfc5;border-radius:10px;background:#edf8ef;color:#166534;padding:10px 16px;cursor:pointer}button.primary,button.good,.b-primary,.b-next,.btn.check,.btn.next{background:#15803d!important;border-color:#15803d;color:white!important}button:disabled{opacity:.55;cursor:default}button.active:not(.digit){background:#15803d;color:#fff}
+button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #15803d;outline-offset:4px}input,select{font:inherit;max-width:100%;min-height:46px}input:not([type=checkbox]){border:1px solid #9caf9f;border-radius:9px}select{padding:10px;border:1px solid #bbc9be;border-radius:9px;background:white}.row,.learnrow,.answer,.answer-row{gap:12px;row-gap:16px;margin-top:18px;margin-bottom:18px}.instruction,.instr,.fb,.mark{line-height:1.75;font-size:18px}.instruction{background:#f4faf5;border:1px solid #d5e8da;border-left:3px solid #83b894}.prompt,.mexp{margin-top:28px;margin-bottom:28px;line-height:1.8}.fb:empty,.mark:empty{display:none}
+details.foundation-options,details.foundation-results,details.foundation-reference{border:1px solid #e0e7e2;border-radius:12px;padding:12px 16px;margin:20px 0;background:#fff}details>summary{cursor:pointer;color:#47624e;font-weight:600;min-height:32px}details[open]>summary{margin-bottom:20px}.foundation-results .card{border:0;padding:0;margin:0}.foundation-results h2{font-size:20px}.foundation-actions{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.foundation-help{border-top:1px solid #dce8df;margin-top:26px;padding-top:24px}.foundation-help-step{padding:18px 0;border-bottom:1px solid #e5ece7}.foundation-help-step p{margin:0 0 16px}.foundation-help-step.done{color:#506c58}.foundation-help-step .mexp{font-size:24px;margin:12px 0}.foundation-help-note{font-size:16px;color:#58705f}.foundation-answer-preview{font-size:24px;margin:12px 0;min-height:1.6em}.hint-focus{background:#f1f9f3;padding:8px;border-radius:8px}.f{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.2}.fn{border-bottom:1.7px solid currentColor;padding:2px 6px 4px}.fd{padding:4px 6px 2px}.mo{padding:0 5px}.gsteps{gap:22px}.gstep{padding:20px;line-height:1.8}.gstep.done{margin-bottom:18px}.hintbox{line-height:1.8}.stats,.stat span,.mini,.sub{line-height:1.7}.danger,button.danger{background:#fff;color:#79534a;border-color:#d9ccc8}[hidden]{display:none!important}
+@media(max-width:600px){.page,.wrap{padding:16px 12px 50px}.card,.notebook{padding:18px 14px}.answer,.answer-row{justify-content:flex-start}.prompt,.mexp{font-size:clamp(23px,5.8vw,30px)}.foundation-actions>button{max-width:100%}details.foundation-options,details.foundation-results,details.foundation-reference{padding:12px}.corner,.vert,.pyth,.fracview{overflow-x:auto;max-width:100%}.corner,.vert{justify-content:flex-start}.cleft,.cright,.vgrid{flex-shrink:0}}
+</style>
+<style>.card.notebook{padding:24px}.mexp{max-width:100%;overflow-x:auto}.foundation-help .mexp{padding-bottom:8px}@media(max-width:600px){.card.notebook{padding:18px 14px}}</style></head>
 <body>
 <main class="page">
-<section class="hero"><a id="preoge-return" class="back" href="../index.html">← На главную</a><h1 id="arithmetic-title">Арифметика: 1–5 класс</h1><p id="arithmetic-intro" class="sub">Полный курс: сложение, вычитание, умножение и деление натуральных чисел и десятичных дробей. Устный счёт, столбики с переносами и займами, деление уголком, запятые в десятичных. Генератор любит примеры с нулями в середине — там, где чаще всего ошибаются.</p></section>
+<section class="hero"><a id="preoge-return" class="back" href="../index.html">← На главную</a><h1 id="arithmetic-title">Арифметика: 1–5 класс</h1><details class="foundation-reference"><summary>О тренажёре</summary><p id="arithmetic-intro" class="sub">Полный курс: сложение, вычитание, умножение и деление натуральных чисел и десятичных дробей. Устный счёт, столбики с переносами и займами, деление уголком, запятые в десятичных. Генератор любит примеры с нулями в середине — там, где чаще всего ошибаются.</p></details></section>
 <section class="grid">
 <div class="card">
 <section id="course-context" class="course-context" hidden><h2 id="course-skill"></h2><p id="course-progress" aria-live="polite"></p><p id="course-save-warning" role="status" hidden>Результат не сохранился в браузере. Можно продолжать решать, но после закрытия страницы он может потеряться.</p><div id="course-tools" class="course-tools"><a id="course-guided" hidden>Разобрать деление ещё подробнее</a></div></section>
-<div id="level-row" class="row"><b>Уровень:</b><select id="level">
+<details id="arithmetic-choices" class="foundation-options"><summary>Тема и режим</summary><div id="level-row" class="row"><b>Уровень:</b><select id="level">
 <optgroup label="1 класс">
 <option value="n1a">Сложение до 10</option>
 <option value="n1b">Вычитание до 10</option>
@@ -189,7 +200,7 @@ input{width:150px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-
 <option value="k6b">6 кл · Разложение на простые множители</option>
 <option value="k6c">6 кл · НОК через простые множители</option>
 </optgroup>
-</select><button id="hint" class="warn">Подсказка</button></div>
+</select></div></details>
 <div class="row" id="tblpick" hidden><b>Какую таблицу учим:</b></div>
 <div class="prompt" id="prompt"></div>
 <div id="decimal-shift-wrap" hidden></div>
@@ -215,21 +226,21 @@ input{width:150px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-
 <div class="instruction" id="instruction"></div>
 <div id="selctl" class="selctl" hidden><button id="less">◄ меньше</button><b id="selval"></b><button id="more">больше ►</button><button id="selok" class="primary">Выбрать</button></div>
 <div class="answer" id="answrap"><label id="qlabel" for="ans"></label><input id="ans" type="text" inputmode="decimal"><button id="check" class="primary">Проверить</button></div>
-<div class="answer"><button id="solution">Решение</button><button id="next" class="good">Следующий пример</button></div>
-<div id="fb" class="fb" aria-live="polite"></div>
+<div class="foundation-actions"><button id="hint" type="button">Хочешь подсказку?</button><button id="next" class="good">Следующий пример</button></div><details class="foundation-reference"><summary>Показать решение</summary><button id="solution">Открыть все шаги</button></details>
+<div id="fb" class="fb" aria-live="polite"></div><p id="legacy-save-warning" class="mini" role="status" hidden>Прежнюю статистику не удалось прочитать или сохранить. Сохранённые данные не изменены.</p>
 <div id="division-refresh" class="multiplication-refresh-link" hidden><button id="multiplication-refresh-button" type="button">Повторить таблицу умножения</button></div>
 <a id="course-next" class="course-next" hidden>Вернуться к маршруту →</a>
 </div>
-<aside id="arithmetic-aside" class="card">
+<details class="foundation-results" id="arithmetic-results"><summary>Мои результаты и памятка</summary><aside id="arithmetic-aside" class="card">
 <div class="legacy-progress">
-<p id="legacy-save-warning" class="mini" role="status" hidden>Прежнюю статистику не удалось прочитать или сохранить. Сохранённые данные не изменены.</p>
+
 <div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>без ошибок</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
 <div class="stats"><div class="stat"><b id="acc">0%</b><span>точность</span></div><div class="stat"><b id="best">0</b><span>лучшая</span></div><div class="stat"><b id="date">—</b><span>дата</span></div></div>
 <div class="box course"><h2>Прогресс темы</h2><p><span id="status" class="badge">тема начата</span></p><p id="advice">Реши первые 10 примеров.</p><button id="reset" class="danger">Сбросить статистику</button></div>
 </div>
-<details id="arithmetic-rules" class="box rules" open><summary>Памятка</summary><p><b>Через десяток:</b> дополни до 10, разложи второе число, досчитай. Состав числа (домики) — ключ к этому приёму.</p><p><b>Таблица умножения:</b> ×5 — половина от ×10; ×9 — на 10 и отними; ×4 и ×8 — удваивай; перестановка множителей ответ не меняет.</p><p><b>Столбик:</b> считай по разрядам справа налево; десять — перенос, не хватает — займи.</p><p><b>Уголок:</b> неполное делимое → цифра → умножь → вычти → снеси.</p><p><b>± десятичных:</b> запятая под запятой, недостающие знаки — нули.</p><p><b>× десятичных:</b> умножай, не глядя на запятые, потом отсчитай столько знаков, сколько их в обоих множителях вместе.</p><p><b>Общий знаменатель:</b> перебирай кратные большего знаменателя, пока не разделится на меньший. Дополнительный множитель = НОЗ ÷ знаменатель.</p><p><b>НОК двумя способами:</b> 5 класс — перебирай кратные большего числа; 6 класс — разложи оба на простые множители и возьми каждый столько раз, сколько его в числе, где его больше.</p><p><b>÷ на десятичную дробь:</b> сдвинь запятую в обоих числах на одинаковое число знаков, чтобы делитель стал натуральным.</p></details>
+<details id="arithmetic-rules" class="box rules"><summary>Памятка</summary><p><b>Через десяток:</b> дополни до 10, разложи второе число, досчитай. Состав числа (домики) — ключ к этому приёму.</p><p><b>Таблица умножения:</b> ×5 — половина от ×10; ×9 — на 10 и отними; ×4 и ×8 — удваивай; перестановка множителей ответ не меняет.</p><p><b>Столбик:</b> считай справа налево; лишнее держим в уме, не хватает — занимаем слева.</p><p><b>Уголок:</b> неполное делимое → цифра → умножь → вычти → снеси.</p><p><b>± десятичных:</b> запятая под запятой, недостающие знаки — нули.</p><p><b>× десятичных:</b> умножай, не глядя на запятые, потом отсчитай столько знаков, сколько их в обоих множителях вместе.</p><p><b>Общий знаменатель:</b> перебирай кратные большего знаменателя, пока не разделится на меньший. Дополнительный множитель = НОЗ ÷ знаменатель.</p><p><b>НОК двумя способами:</b> 5 класс — перебирай кратные большего числа; 6 класс — разложи оба на простые множители и возьми каждый столько раз, сколько его в числе, где его больше.</p><p><b>÷ на десятичную дробь:</b> сдвинь запятую в обоих числах на одинаковое число знаков, чтобы делитель стал натуральным.</p></details>
 <div class="legacy-progress"><h2>История</h2><div id="history"></div></div>
-</aside>
+</aside></details>
 </section>
 </main>
 <script src="oge-basics/multiplication-division/division-lab-core.js"></script>
@@ -316,10 +327,7 @@ function initCourse(){var params;
  el('arithmetic-intro').textContent='Один навык за раз. Решай в своём темпе. Если трудно — открой подсказку или подробный разбор.';
  el('preoge-return').textContent='← Мой маршрут по арифметике';
  el('arithmetic-rules').open=false;
- var choices=document.createElement('details');choices.id='arithmetic-choices';choices.className='choices';
- var summary=document.createElement('summary');summary.textContent='Другие упражнения';choices.appendChild(summary);
- var row=el('level-row');row.parentNode.insertBefore(choices,row);choices.appendChild(row);
- el('course-tools').insertBefore(el('hint'),el('course-guided'));
+ el('arithmetic-choices').open=false;
  updateCourse();
 }
 function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
@@ -374,13 +382,13 @@ function buildAddSteps(sa,sb,resKey,dec){var steps=[],c=0,L=Math.max(sa.length,s
   if(db===null&&da!==null&&c===0){steps.push({auto:true,col:k,writes:[{row:resKey,col:k,ch:String(da)}],note:''});continue}
   if(da===null&&db!==null&&c===0){steps.push({auto:true,col:k,writes:[{row:resKey,col:k,ch:String(db)}],note:''});continue}
   var A0=da||0,B0=db||0,s=A0+B0+c,dg=s%10,nc=s>=10?1:0,terms=[];
-  if(da!==null)terms.push(A0);if(db!==null)terms.push(B0);if(c)terms.push(c+' (перенос)');
+  if(da!==null)terms.push(A0);if(db!==null)terms.push(B0);if(c)terms.push(c+' (в уме)');
   var w=[{row:resKey,col:k,ch:String(dg)}];if(nc)w.push({row:'CAR',col:k+1,ch:'1'});
-  var note='Пишем '+dg+(nc?', 1 переносим.':'.');
+  var note='Пишем '+dg+(nc?', 1 в уме.':'.');
   if(dec&&k===dec-1)note+=' Ставим запятую — под запятыми!';
   steps.push({col:k,q:terms.join(' + ')+' = ?',a:s,writes:w,note:note});
   c=nc}
- if(c)steps.push({auto:true,col:L,writes:[{row:resKey,col:L,ch:'1'}],note:'Перенос 1 записываем впереди.'});
+ if(c)steps.push({auto:true,col:L,writes:[{row:resKey,col:L,ch:'1'}],note:'Оставшуюся в уме 1 записываем слева.'});
  return steps}
 function buildSubSteps(sa,sb,dec){var steps=[],bin=0;
  for(var k=0;k<sa.length;k++){var da=digitAt(sa,k),db=digitAt(sb,k);
@@ -390,7 +398,7 @@ function buildSubSteps(sa,sb,dec){var steps=[],bin=0;
   else{a=base+10-B0;nb=1;
    q=base<0?('Сверху 0, и 1 уже заняли — занимаем дальше: 9 − '+B0+' = ?')
            :((bin?da+' − 1 (заняли) = '+base+'; ':'')+base+' меньше '+B0+' — занимаем: '+(base+10)+' − '+B0+' = ?');
-   note='Пишем '+a+'. Заняли десяток у соседнего разряда.'}
+   note='Пишем '+a+'. Заняли 1 у соседней цифры слева.'}
   if(dec&&k===dec-1)note+=' Ставим запятую — под запятыми!';
   var w=[{row:'RES',col:k,ch:String(a)}];if(nb)w.push({row:'CAR',col:k+1,ch:'•'});
   steps.push({col:k,q:q,a:a,writes:w,note:note});
@@ -401,7 +409,7 @@ function buildMul1Steps(sa,m,rowKey,shift){var steps=[],c=0;
   steps.push({col:shift+j,q:m+' × '+da+(c?' + '+c+' (в уме)':'')+' = ?',a:p,
    writes:[{row:rowKey,col:shift+j,ch:String(dg)}],note:'Пишем '+dg+(nc?', '+nc+' в уме.':'.')});
   c=nc}
- if(c)steps.push({auto:true,col:shift+sa.length,writes:[{row:rowKey,col:shift+sa.length,ch:String(c)}],note:'Последний перенос '+c+' записываем впереди.'});
+ if(c)steps.push({auto:true,col:shift+sa.length,writes:[{row:rowKey,col:shift+sa.length,ch:String(c)}],note:'Оставшееся в уме число '+c+' записываем впереди.'});
  return steps}
 function buildMul2Steps(sa,b1,b0){var s1=String(Number(sa)*b0),s2=String(Number(sa)*b1);
  var steps=buildMul1Steps(sa,b0,'P1',0);
@@ -413,10 +421,10 @@ function buildMul2Steps(sa,b1,b0){var s1=String(Number(sa)*b0),s2=String(Number(
   if(db===null&&da!==null&&c===0){steps.push({auto:true,col:k,writes:[{row:'RES',col:k,ch:String(da)}],note:''});continue}
   if(da===null&&db!==null&&c===0){steps.push({auto:true,col:k,writes:[{row:'RES',col:k,ch:String(db)}],note:''});continue}
   var A0=da||0,B0=db||0,s=A0+B0+c,dg=s%10,nc=s>=10?1:0,terms=[];
-  if(da!==null)terms.push(A0);if(db!==null)terms.push(B0);if(c)terms.push(c+' (перенос)');
+  if(da!==null)terms.push(A0);if(db!==null)terms.push(B0);if(c)terms.push(c+' (в уме)');
   steps.push({col:k,q:terms.join(' + ')+' = ?',a:s,writes:[{row:'RES',col:k,ch:String(dg)}],note:'Пишем '+dg+(nc?', 1 в уме.':'.')});
   c=nc}
- if(c)steps.push({auto:true,col:L,writes:[{row:'RES',col:L,ch:'1'}],note:'Перенос 1 — впереди.'});
+ if(c)steps.push({auto:true,col:L,writes:[{row:'RES',col:L,ch:'1'}],note:'Оставшаяся в уме 1 — слева.'});
  return steps}
 function makeColTask(){var op=cfg.mode;
  if(op==='caddsub')op=Math.random()<.5?'cadd':'csub';
@@ -985,7 +993,7 @@ function setInstr(){var t='';
  if(phase==='prod')t='Осталось перемножить выбранные множители.';
  if(phase==='seq')t='Таблица — это лесенка: каждая ступенька на одно и то же число больше предыдущей.';
  if(phase==='pyth')t='Ответ живёт в клетке на пересечении строки и столбца. Отвечай верно — таблица заполняется и сохраняется!';
- if(phase==='col')t=task.op==='×'?'Умножаем по разрядам справа налево. Переносы держим в уме.':'Считаем по разрядам справа налево.'+(task.dec?' Запятые стоят друг под другом.':'');
+ if(phase==='col')t=task.op==='×'?'Умножаем справа налево. Добавляем то, что в уме.':'Считаем справа налево.'+(task.dec?' Запятые стоят друг под другом.':'');
  if(phase==='comma')t='Цифры готовы. Теперь отсчитай знаки после запятой.';
  if(phase==='remq')t='1) Подбери неполное частное: сколько целых раз делитель помещается в число.';
  if(phase==='remr')t='2) Найди остаток.';
@@ -1042,8 +1050,9 @@ function setQuestion(){var w=el('answrap');w.hidden=false;
  el('selctl').hidden=phase!=='select';
  if(phase==='select')el('selval').textContent=task.digits.slice(0,selLen);
  el('ans').value='';if(!w.hidden)el('ans').focus()}
-function msg(t,c){el('fb').textContent=t;el('fb').className='fb '+(c||'')}
-function refresh(){renderCorner();renderVert();if(task.mode==='mulvis'||task.mode==='mulseq'||task.mode==='pyth'){renderExtras()}else{el('viswrap').hidden=true;el('ladwrap').hidden=true;el('pythwrap').hidden=true;el('tblpick').hidden=cfg.mode==='mulseq'?false:true}renderFrac();if(task.mode==='lcm5'||task.mode==='prime'||task.mode==='factor'||task.mode==='lcm6'){renderNok()}else{el('primegrid').hidden=true;el('primerow').hidden=true;el('factwrap').hidden=true;el('assemble').hidden=true}if(task.mode==='compose'||task.mode==='cross'){renderGrade1()}else{el('housewrap').hidden=true;el('crosswrap').hidden=true;el('comppick').hidden=cfg.mode==='compose'?false:true}renderDivisionTools();setInstr();setQuestion()}
+function foundationMathText(node,text){node.textContent='';var re=/(-?\d+)\/(\d+)/g,last=0,m;while((m=re.exec(String(text)))){node.appendChild(document.createTextNode(String(text).slice(last,m.index)));var f=document.createElement('span');f.className='frac';var n=document.createElement('span'),d=document.createElement('span');n.className='fnum';d.className='fden';n.textContent=m[1];d.textContent=m[2];f.appendChild(n);f.appendChild(d);f.setAttribute('aria-label',m[1]+' делить на '+m[2]);node.appendChild(f);last=re.lastIndex;}node.appendChild(document.createTextNode(String(text).slice(last)));}
+function msg(t,c){foundationMathText(el('fb'),t);el('fb').className='fb '+(c||'')}
+function refresh(){renderCorner();renderVert();if(task.mode==='mulvis'||task.mode==='mulseq'||task.mode==='pyth'){renderExtras()}else{el('viswrap').hidden=true;el('ladwrap').hidden=true;el('pythwrap').hidden=true;el('tblpick').hidden=cfg.mode==='mulseq'?false:true}renderFrac();if(task.mode==='lcm5'||task.mode==='prime'||task.mode==='factor'||task.mode==='lcm6'){renderNok()}else{el('primegrid').hidden=true;el('primerow').hidden=true;el('factwrap').hidden=true;el('assemble').hidden=true}if(task.mode==='compose'||task.mode==='cross'){renderGrade1()}else{el('housewrap').hidden=true;el('crosswrap').hidden=true;el('comppick').hidden=cfg.mode==='compose'?false:true}renderDivisionTools();setInstr();setQuestion();foundationMathText(el('qlabel'),el('qlabel').textContent);el('arithmetic-answer-preview').textContent=''}
 /* ================= ЛОГИКА: столбик ================= */
 function applyWrites(st){for(var i=0;i<st.writes.length;i++){var w=st.writes[i];task.writes[w.row]=task.writes[w.row]||{};task.writes[w.row][w.col]=w.ch}}
 function colAdvance(firstNote){var notes=firstNote?[firstNote]:[];
@@ -1100,7 +1109,7 @@ function check(){if(phase==='select'){selOk();return}
   if(vd===0){errors++;msg('Знаменатель не может быть нулём.','err');return}
   var en=phase==='fshadeq'?task.k:task.r, ed=phase==='fshadeq'?task.n:task.d;
   if(vn===en&&vd===ed){finish();return}
-  if(vn*ed===en*vd){finish();el('fb').textContent+=' (По значению верно; здесь принято записывать '+en+'/'+ed+'.)';return}
+  if(vn*ed===en*vd){finish();var extra=document.createElement('span');foundationMathText(extra,' (По значению верно; здесь принято записывать '+en+'/'+ed+'.)');el('fb').appendChild(extra);return}
   errors++;
   msg(phase==='fshadeq'?('Знаменатель — сколько всего частей ('+task.n+'), числитель — сколько закрашено.')
      :('Знаменатель остаётся '+task.d+', а с числителями: '+task.a1+' '+task.op+' '+task.a2+' = ?'),'err');
@@ -1247,7 +1256,7 @@ function hint(){if(!finished)hints++;
   if(k==='cross20'&&task.op==='+')msg('Дополни до 10: '+task.a+' + '+(10-task.a)+' = 10, потом прибавь остальное.','tip');
   else if(k==='cross20')msg('Вычитай по частям: сначала до 10, потом остальное.','tip');
   else if(k==='multable'||k==='mulinv')msg(trickFor(task.a,task.b),'tip');
-  else msg('Считай по разрядам: сначала десятки, потом единицы.','tip');return}
+  else msg('Сначала посчитай круглые десятки, затем добавь оставшееся.','tip');return}
  if(phase==='vis'){var sq='';for(var hz=1;hz<=task.a;hz++)sq+=(hz>1?', ':'')+(task.b*hz);msg('Считай рядами: '+sq+'.','tip');return}
  if(phase==='seq'){var hk=seqIdx+1;msg(hk===1?'Любое число × 1 — само число.':('Предыдущая ступенька: '+task.N+' × '+(hk-1)+' = '+(task.N*(hk-1))+'. Прибавь '+task.N+'. '+trickFor(task.N,hk)),'tip');return}
  if(phase==='pyth'){msg(trickFor(task.a,task.b),'tip');return}
@@ -1334,7 +1343,7 @@ function next(){task=makeTask();errors=0;hints=0;revealed=false;attemptRecorded=
  if(task.mode==='prime'){phase='pr';refresh();msg('Реши и заполни клетку в таблице до 50.','');return}
  if(task.mode==='factor'){phase='fp';refresh();msg('Раскладываем столбиком. Начинай с самого маленького простого.','');return}
  if(task.mode==='lcm6'){phase='fp';refresh();msg('Шаг 1: разложим '+task.A+' на простые множители.','');return}
- if(task.mode==='col'){phase='col';refresh();msg(task.op==='×'?'Умножаем справа налево.':'Считаем справа налево, разряд за разрядом.','');return}
+ if(task.mode==='col'){phase='col';refresh();msg(task.op==='×'?'Умножаем справа налево.':'Считаем справа налево, по одной цифре.','');return}
  if(task.mode==='table'){phase='table';refresh();msg('Введи ответ.','');return}
  if(task.mode==='rem'){phase='remq';refresh();msg('Сначала неполное частное, потом остаток.','');return}
  if(task.mode==='decdec'){phase='shiftM';refresh();msg('Сначала избавимся от запятой в делителе.','');return}
@@ -1345,7 +1354,7 @@ function renderStats(){var a=stats.total?Math.round(stats.right*100/stats.total)
  var st=stats.total<10?'тема начата':a>=80?'почти освоено':a<70?'нужно тренироваться':'тренируется';
  el('status').textContent=st;el('advice').textContent=stats.total<10?'Реши первые 10 примеров.':'Проходи уровни по порядку — от класса к классу.';
  el('history').innerHTML='';if(!stats.history||!stats.history.length){el('history').innerHTML='<div class="hist">Пока история пуста.</div>';return}
- stats.history.forEach(function(x){var d=document.createElement('div');d.className='hist';d.textContent=x.text;el('history').appendChild(d)})}
+ stats.history.forEach(function(x){var d=document.createElement('div');d.className='hist';foundationMathText(d,x.text);el('history').appendChild(d)})}
 function reset(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};var saved=save();renderStats();msg(saved?'Статистика сброшена.':'Сбросить сохранённую статистику не удалось. Прежние данные оставлены без изменений.','tip')}
 (function(){var cp=el('comppick');var nums=['случайное',3,4,5,6,7,8,9,10];
  for(var i=0;i<nums.length;i++)(function(idx){
@@ -1370,6 +1379,8 @@ el('ans').addEventListener('input',function(){if(phase!=='shiftM'||!decimalShift
 el('multiplication-refresh-button').onclick=function(){if(!window.MultiplicationRefresh)return;if(!multiplicationRefresh)multiplicationRefresh=window.MultiplicationRefresh.create({onHelp:function(){if(!finished)hints++}});multiplicationRefresh.open(task.d)};
 el('ans').onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(!e.repeat)check()}};
 document.addEventListener('keydown',function(e){if(phase!=='select'||e.defaultPrevented||e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;var target=e.target;if(target&&(/^(INPUT|SELECT|TEXTAREA)$/.test(target.tagName)||target.isContentEditable))return;if(e.key==='Enter'&&target&&target.closest&&target.closest('button,a,summary'))return;if(e.key==='ArrowRight'){e.preventDefault();selMore()}if(e.key==='ArrowLeft'){e.preventDefault();selLess()}if(e.key==='Enter'){e.preventDefault();selOk()}});
+var foundationPreview=document.createElement('div');foundationPreview.id='arithmetic-answer-preview';foundationPreview.className='foundation-answer-preview';foundationPreview.setAttribute('aria-live','polite');el('answrap').after(foundationPreview);el('ans').addEventListener('input',function(){foundationMathText(foundationPreview,/^-?\d+\/\d+$/.test(this.value.trim())?this.value.trim():'')});
+el('arithmetic-choices').appendChild(el('tblpick'));el('arithmetic-choices').appendChild(el('comppick'));
 initCourse();load();next();renderStats();
 </script>
 </body>

@@ -258,8 +258,10 @@
     .side-card { padding: 14px; }
   }
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body data-mode="learn">
+<body data-mode="learn" data-practical-page="roads-grid">
 
 <nav class="topnav">
   <div class="topnav-inner">
@@ -1654,7 +1656,7 @@ function pathWordOf(s){ return s.pathWord; }
 
 function commonButtonsHTML(lastLabel){
   return '<div class="button-row">'+
-    '<button class="btn btn-gold" id="hint-btn">Подсказка</button>'+
+    '<button class="btn btn-gold" id="hint-btn">Хочешь подсказку?</button>'+
     '<button class="btn btn-secondary" id="show-btn">Показать решение</button>'+
     '<button class="btn btn-secondary" id="next-btn">'+lastLabel+'</button></div>';
 }
@@ -2001,7 +2003,7 @@ function syncSelectorUI(){
     progressState.solved=Number.isFinite(Number(progress[TOPIC].solved))?Math.max(0,Math.trunc(Number(progress[TOPIC].solved))):0;
     progressState.streak=Number.isFinite(Number(progress[TOPIC].streak))?Math.max(0,Math.trunc(Number(progress[TOPIC].streak))):0;
   }
-  sessionState=loadStoredSession()||catalogSession(0,0,'learn','off');
+  sessionState=loadStoredSession()||catalogSession(0,0,'practice','off');
   const chips=document.getElementById('scenario-chips');
   SCENARIOS.forEach((s,i)=>{
     const b=document.createElement('button');

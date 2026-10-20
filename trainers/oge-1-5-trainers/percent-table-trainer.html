@@ -443,8 +443,10 @@
   }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body>
+<body data-practical-page="percent-table">
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand-link" href="practice-1-5-map.html" aria-label="Вернуться к карте тренажёров">
@@ -611,7 +613,7 @@
               <div class="outcome-line" id="outcome-line"><span class="outcome-dot"></span><span>Самостоятельно: верно с первой попытки и без подсказок.</span></div>
             </div>
             <div class="task-actions">
-              <button type="button" class="btn soft" id="hint-btn">Подсказка 1: найти 100%</button>
+              <button type="button" class="btn soft" id="hint-btn">Хочешь подсказку?</button>
               <button type="button" class="btn secondary" id="solution-btn">Показать решение</button>
               <button type="button" class="btn secondary" id="next-task" disabled>Следующая задача →</button>
             </div>
@@ -1344,7 +1346,7 @@ function renderPractice(){
   document.getElementById('hint-stack').innerHTML=t.hints.slice(0,ts.hintLevel).map((h,i)=>`<div class="hint-card">${h}</div>`).join('');
   const sol=document.getElementById('practice-solution');sol.classList.toggle('show',ts.answered||ts.solutionShown);
   document.getElementById('practice-solution-steps').innerHTML=t.steps.map((s,i)=>`<div class="solution-step"><strong>${i+1}.</strong> ${s}</div>`).join('');
-  const hintLabels=['Подсказка 1: найти 100%','Подсказка 2: заполнить схему','Подсказка 3: выбрать действие','Все подсказки открыты'];
+  const hintLabels=['Хочешь подсказку?','Подсказка 2: заполнить схему','Подсказка 3: выбрать действие','Все подсказки открыты'];
   document.getElementById('hint-btn').textContent=hintLabels[Math.min(ts.hintLevel,3)];
   document.getElementById('hint-btn').disabled=ts.hintLevel>=3||ts.answered||ts.solutionShown;
   document.getElementById('solution-btn').disabled=ts.answered||ts.solutionShown;
@@ -1527,7 +1529,7 @@ window.__PERCENT_TRAINER_TEST__={
 
 load();
 renderHome();
-setView('home');
+setView('practice');
 })();
 </script>
 </body>

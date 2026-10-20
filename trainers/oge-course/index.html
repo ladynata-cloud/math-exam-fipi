@@ -1,258 +1,36 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!doctype html><html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Курс подготовки к ОГЭ по математике: тренажёры 1-25 | MathExam</title>
-<meta name="description" content="Подготовка к ОГЭ по математике: тренажёры заданий 1–25, базовые навыки и авторский неофициальный вариант по структуре проекта демоверсии 2027 года.">
-<link rel="canonical" href="https://mathexam.space/trainers/oge-course/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Курс подготовки к ОГЭ по математике: тренажёры 1-25 | MathExam">
-<meta property="og:description" content="Подготовка к ОГЭ по математике: тренажёры заданий 1–25, базовые навыки и авторский неофициальный вариант по структуре проекта демоверсии 2027 года.">
-<meta property="og:url" content="https://mathexam.space/trainers/oge-course/">
-<meta property="og:site_name" content="MathExam">
-<meta property="og:locale" content="ru_RU">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Курс подготовки к ОГЭ по математике: тренажёры 1-25 | MathExam">
-<meta name="twitter:description" content="Подготовка к ОГЭ по математике: тренажёры заданий 1–25, базовые навыки и авторский неофициальный вариант по структуре проекта демоверсии 2027 года.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css">
+<meta content="Подготовка к ОГЭ по математике: тренажёры заданий 1–25, базовые навыки и авторский неофициальный вариант по структуре проекта демоверсии 2027 года." name="description"/>
+<link href="https://mathexam.space/trainers/oge-course/" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Курс подготовки к ОГЭ по математике: тренажёры 1-25 | MathExam" property="og:title"/>
+<meta content="Подготовка к ОГЭ по математике: тренажёры заданий 1–25, базовые навыки и авторский неофициальный вариант по структуре проекта демоверсии 2027 года." property="og:description"/>
+<meta content="https://mathexam.space/trainers/oge-course/" property="og:url"/>
+<meta content="MathExam" property="og:site_name"/>
+<meta content="ru_RU" property="og:locale"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="Курс подготовки к ОГЭ по математике: тренажёры 1-25 | MathExam" name="twitter:title"/>
+<meta content="Подготовка к ОГЭ по математике: тренажёры заданий 1–25, базовые навыки и авторский неофициальный вариант по структуре проекта демоверсии 2027 года." name="twitter:description"/>
+
+
+
+
+
 <style>
-  .course-note{max-width:48em;color:var(--ink-soft)}
-  .course-row{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0}
-  .pill{display:inline-flex;align-items:center;min-height:34px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-weight:700;text-decoration:none}
-  .pill:hover{border-color:var(--pen);background:#f4f7ff}
-  .entry.soon{background:rgba(255,255,255,.68);border-style:dashed}
-  .entry.soon .go{color:var(--ink-soft)}
-  .entry.featured{grid-column:1/-1;border-color:#f59e0b;background:linear-gradient(135deg,#fff7ed,#fff)}
-  .variant-entry a{display:inline-flex;align-items:center;min-height:44px}
-  .oge-download-panel{margin-top:16px;padding:14px;border:1px solid #c9d6ea;border-radius:8px;background:#fff;box-shadow:0 8px 18px rgba(17,24,39,.04)}
-  .oge-download-panel h4{margin:0 0 6px;font-family:var(--font-serif, Georgia, serif);font-size:20px;color:var(--ink)}
-  .oge-download-panel p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.45}
-  .oge-download-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-  .oge-download-actions a,.oge-download-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 14px;border-radius:8px;border:1px solid var(--line);font:700 14px var(--font-sans, system-ui, sans-serif);text-decoration:none;background:#fff;color:var(--pen);cursor:pointer}
-  .oge-download-actions a{background:var(--pen);border-color:var(--pen);color:#fff}
-  .oge-download-actions button:disabled{color:#8b95a5;background:#f8fafc;cursor:not-allowed;opacity:.9}
-  @media(max-width:680px){.oge-download-actions a,.oge-download-actions button{width:100%}}
-</style>
-</head>
-<body>
-
-<header class="site-header">
-  <div class="container">
-    <a class="logo" href="/">
-      <span class="logo-mark">∑</span>
-      <span>MathExam</span>
-    </a>
-    <nav class="site-nav" aria-label="Основные разделы">
-      <a href="/">Главная</a>
-      <a href="/trainers/oge-course/" aria-current="page">ОГЭ</a>
-      <a href="/trainers/oge-basics/">ПредОГЭ</a>
-      <a href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Мой кабинет</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <section class="hero">
-    <div class="container">
-      <div class="hero-inner">
-        <p class="kicker">ОГЭ по математике</p>
-        <h1>Курс подготовки к ОГЭ: тренажёры 1-25</h1>
-        <p class="lead">
-          Здесь собраны рабочие тренажёры по номерам ОГЭ и отдельные базовые
-          тренажёры для пробелов: арифметика, дроби, отрицательные числа и округление.
-        </p>
-        <p class="byline">Задание 13 добавлено: тренажёр по неравенствам уже доступен в первой части курса.</p>
-      </div>
-      <div class="course-row" aria-label="Быстрые переходы">
-        <a class="pill" href="#gaps">Закрыть пробелы</a>
-        <a class="pill" href="#part1">Первая часть</a>
-        <a class="pill" href="#geometry">Геометрия</a>
-        <a class="pill" href="#part2">Вторая часть</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section alt" id="gaps">
-    <div class="container">
-      <h2>Сначала закрыть пробелы</h2>
-      <p class="course-note">
-        Эти тренажёры удобно давать рядом с ОГЭ, когда ошибка в экзаменационном номере
-        упирается не в идею задачи, а в базовый навык.
-      </p>
-      <div class="entry-grid">
-        <article class="entry featured">
-          <h3><a href="/trainers/oge-basics/">Математическая база для ОГЭ: ликбез без пробелов</a></h3>
-          <p>Короткие маршруты по арифметике, дробям, отрицательным числам, округлению, единицам, умножению и делению.</p>
-          <a class="go" href="/trainers/oge-basics/">Открыть ликбез</a>
-        </article>
-        <article class="entry">
-          <h3><a href="/trainers/arifmetika.html">Арифметика</a></h3>
-          <p>Устный счёт, порядок действий, базовые вычисления 1-5 класса.</p>
-          <a class="go" href="/trainers/arifmetika.html">Открыть</a>
-        </article>
-        <article class="entry">
-          <h3><a href="/trainers/drobi-oge-trainer.html">Дроби</a></h3>
-          <p>Обыкновенные дроби и вычисления, которые часто мешают заданию 6.</p>
-          <a class="go" href="/trainers/drobi-oge-trainer.html">Открыть</a>
-        </article>
-        <article class="entry">
-          <h3><a href="/trainers/negative-numbers.html">Отрицательные числа</a></h3>
-          <p>Маркерная числовая прямая и игра «Кто сильнее?» внутри одного входа темы.</p>
-          <a class="go" href="/trainers/negative-numbers.html">Открыть</a>
-        </article>
-        <article class="entry">
-          <h3><a href="/trainers/rounding-stepwise.html">Округление</a></h3>
-          <p>Пошаговое округление чисел без угадывания и с понятной проверкой.</p>
-          <a class="go" href="/trainers/rounding-stepwise.html">Открыть</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="full-variants" aria-labelledby="fullVariantsHeading">
-    <div class="container">
-      <h2 id="fullVariantsHeading">Полные тренировочные варианты</h2>
-      <div class="entry-grid">
-        <article class="entry variant-entry">
-          <h3><a href="/trainers/oge-2027-analogue-1.html">Авторский аналог демоверсии ОГЭ-2027 по математике. Вариант 1</a></h3>
-          <p>25 авторских заданий MathExam по структуре проекта демоверсии 2027 года: 19 кратких ответов и 6 развёрнутых решений. Режим экзамена и разбор. Не является официальным материалом ФИПИ.</p>
-          <a class="go" href="/trainers/oge-2027-analogue-1.html">Открыть авторский вариант</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="part1">
-    <div class="container">
-      <h2>Первая часть: алгебра, графики, вероятность</h2>
-      <div class="entry-grid">
-        <article class="entry"><h3><a href="/trainers/oge-1-5-trainers/">Задания 1-5</a></h3><p>Практические задачи: шины, печи, дороги, квартиры, тарифы, планы.</p><a class="go" href="/trainers/oge-1-5-trainers/">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Входная диагностика 1-5</a></h3><p>Десять заданий ОГЭ-2026 показывают сильные темы и следующий шаг подготовки.</p><a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Пройти</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html">Как читать план и условие</a></h3><p>Два учебных комплекта по чтению вопроса, масштаба, данных и единиц ответа.</p><a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html">Тренироваться</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html">Проверочная: планы и маршруты</a></h3><p>Два варианта по картам на клетках и схемам дорог с итоговым результатом.</p><a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html">Пройти</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task6-fractions.html">Задание 6</a></h3><p>Дроби, проценты и вычисления в экзаменационном формате.</p><a class="go" href="/trainers/oge-task6-fractions.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task7-number-line.html">Задание 7</a></h3><p>Координатная прямая, сравнение чисел, расположение точек.</p><a class="go" href="/trainers/oge-task7-number-line.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task8-powers-roots.html">Задание 8</a></h3><p>Степени, корни, преобразование выражений.</p><a class="go" href="/trainers/oge-task8-powers-roots.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task9-equations.html">Задание 9</a></h3><p>Уравнения: линейные, квадратные и дробно-рациональные случаи.</p><a class="go" href="/trainers/oge-task9-equations.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task10-probability.html">Задание 10</a></h3><p>Вероятность с мгновенной проверкой ответа.</p><a class="go" href="/trainers/oge-task10-probability.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task11-graphs-trainer.html">Задание 11</a></h3><p>Чтение графиков функций и выбор верного графика.</p><a class="go" href="/trainers/oge-task11-graphs-trainer.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task12-formulas-trainer.html">Задание 12</a></h3><p>Расчёты по формулам, подстановка и аккуратные вычисления.</p><a class="go" href="/trainers/oge-task12-formulas-trainer.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task13-inequalities.html">Задание 13</a></h3><p>Неравенства: линейные, квадратные, по рисунку и системы.</p><a class="go" href="/trainers/oge-task13-inequalities.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task14-progressions.html">Задание 14</a></h3><p>Арифметическая и геометрическая прогрессии: формулы и здравый смысл.</p><a class="go" href="/trainers/oge-task14-progressions.html">Открыть</a></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section alt" id="geometry">
-    <div class="container">
-      <h2>Геометрия первой части</h2>
-      <div class="entry-grid">
-        <article class="entry"><h3><a href="/oge/geometry/task-15-external-angle.html">Задание 15</a></h3><p>Геометрический тренажёр по внешнему углу треугольника.</p><a class="go" href="/oge/geometry/task-15-external-angle.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task16-circle.html">Задание 16</a></h3><p>Окружность, углы, хорды, касательные и типовые ловушки.</p><a class="go" href="/trainers/oge-task16-circle.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task17-quadrilaterals.html">Задание 17</a></h3><p>Четырёхугольники: квадрат, прямоугольник, ромб, параллелограмм, трапеция.</p><a class="go" href="/trainers/oge-task17-quadrilaterals.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task18-grid.html">Задание 18</a></h3><p>Фигуры на клетчатой бумаге: площади, периметры, расстояния.</p><a class="go" href="/trainers/oge-task18-grid.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/task19-trainer.html">Задание 19</a></h3><p>Верные и неверные утверждения по геометрии.</p><a class="go" href="/trainers/task19-trainer.html">Открыть</a></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="part2">
-    <div class="container">
-      <h2>Вторая часть</h2>
-      <div class="entry-grid">
-        <article class="entry"><h3><a href="/trainers/oge-task20-equations.html">Задание 20</a></h3><p>Алгебраические задачи второй части: уравнения и преобразования.</p><a class="go" href="/trainers/oge-task20-equations.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task21-word-problems.html">Задание 21</a></h3><p>Текстовые задачи: движение, работа, смеси, проценты.</p><a class="go" href="/trainers/oge-task21-word-problems.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task22-functions-graphs.html">Задание 22</a></h3><p>Графики функций и параметры: чтение, построение, анализ.</p><a class="go" href="/trainers/oge-task22-functions-graphs.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task23-geometry-calculations.html">Задание 23</a></h3><p>Геометрические задачи на вычисление.</p><a class="go" href="/trainers/oge-task23-geometry-calculations.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task24-proofs.html">Задание 24</a></h3><p>Доказательства: собрать цепочку рассуждений и обойти ловушки.</p><a class="go" href="/trainers/oge-task24-proofs.html">Открыть</a></article>
-        <article class="entry"><h3><a href="/trainers/oge-task25-geometry.html">Задание 25</a></h3><p>Геометрия повышенной сложности с разбором и проверкой.</p><a class="go" href="/trainers/oge-task25-geometry.html">Открыть</a></article>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <div>
-      <h4>MathExam</h4>
-      <p>Интерактивные тренажёры по математике.<br>
-      Помогают учителю и ученику — не заменяют их.</p>
-    </div>
-    <div>
-      <h4>Разделы</h4>
-      <ul>
-        <li><a href="/">Главная</a></li>
-        <li><a href="/trainers/oge-course/">ОГЭ по математике</a></li>
-        <li><a href="/trainers/oge-basics/">ПредОГЭ — восстановить основы</a></li>
-        <li><a href="/laboratory/">Лаборатория репетитора</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Автор на связи</h4>
-      <ul>
-        <li><a href="https://vk.com/mathexamspace" rel="noopener">ВКонтакте</a></li>
-        <li><a href="https://dzen.ru/mathexamspace" rel="noopener">Дзен</a></li>
-        <li><a href="mailto:nata4os@bk.ru">Написать письмо</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    MathExam · mathexam.space · Наталья Михайловна
-  </div>
-</footer>
-<script>
-(function(){
-  const downloadMap = {
-    '/trainers/oge-1-5-trainers/': '/trainers/oge-1-5-trainers/practice-1-5-map.html',
-    '/trainers/oge-task13-inequalities.html': '/trainers/oge13-inequalities-series.html'
-  };
-
-  function downloadHref(href){
-    if (downloadMap[href]) return downloadMap[href];
-    return href.endsWith('/') ? href + 'index.html' : href;
-  }
-
-  document.querySelectorAll('#part1 .entry, #geometry .entry, #part2 .entry').forEach((card) => {
-    if (card.querySelector('.oge-download-panel')) return;
-    const openLink = card.querySelector('a.go[href]');
-    if (!openLink) return;
-
-    const panel = document.createElement('div');
-    panel.className = 'oge-download-panel';
-
-    const title = document.createElement('h4');
-    title.textContent = 'Скачать и адаптировать';
-
-    const text = document.createElement('p');
-    text.textContent = 'Этот тренажёр можно использовать как пример педагогического веб-кодинга: скачать HTML, изучить структуру и адаптировать под свою тему.';
-
-    const actions = document.createElement('div');
-    actions.className = 'oge-download-actions';
-
-    const html = document.createElement('a');
-    html.href = downloadHref(openLink.getAttribute('href'));
-    html.setAttribute('download', '');
-    html.textContent = 'Скачать HTML';
-
-    const prompt = document.createElement('button');
-    prompt.type = 'button';
-    prompt.disabled = true;
-    prompt.textContent = 'Скачать промпт для DeepSeek';
-
-    const archive = document.createElement('button');
-    archive.type = 'button';
-    archive.disabled = true;
-    archive.textContent = 'Скачать архивом';
-
-    actions.append(html, prompt, archive);
-    panel.append(title, text, actions);
-    card.appendChild(panel);
-  });
-})();
-</script>
-</body>
-</html>
+:root{--bg:#f6f7f5;--ink:#202820;--muted:#626b63;--line:#dbe1da;--green:#216342}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:var(--green);text-underline-offset:4px}.container,main{max-width:960px;margin:auto;padding:0 22px}.site-header{padding:22px 0}.site-header .container{display:flex;justify-content:space-between;gap:20px;align-items:center}.logo{font-weight:700;text-decoration:none;color:var(--ink)}.logo-mark{margin-right:6px}.site-nav{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:15px}.site-nav a{text-decoration:none;min-height:44px;display:flex;align-items:center}h1{font-size:clamp(28px,4vw,40px);line-height:1.3;margin:28px 0 12px}h2{font-size:22px;line-height:1.5;margin:0 0 18px}h3{font-size:18px;margin:0;line-height:1.5}.intro{color:var(--muted);margin:0 0 28px}.section{margin:32px 0}.entry-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.entry{position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px}.entry h3 a{color:var(--ink);text-decoration:none}.entry p{margin:0;color:var(--muted);font-size:16px;line-height:1.65}.entry .go{margin-top:auto;align-self:flex-start;min-height:44px;display:inline-flex;align-items:center;font-weight:600;text-decoration:none}.entry:hover{border-color:#7da88b}.number{display:inline-block;color:var(--green);font-size:25px;font-weight:650}.number small{font-size:15px;color:var(--muted);font-weight:400}.quick-links{display:flex;flex-wrap:wrap;gap:10px 20px;margin-bottom:28px}.quick-links a{min-height:44px;display:inline-flex;align-items:center}details{border-top:1px solid var(--line);padding:18px 0;margin:20px 0}summary{min-height:44px;cursor:pointer;color:var(--green);font-weight:600}details .entry-grid{margin-top:22px}.topic-links{display:grid;gap:12px;margin:18px 0}.topic-links a{min-height:44px;display:flex;align-items:center}.footer{font-size:14px;color:var(--muted);margin:32px 0;padding-bottom:30px}.footer p{margin:12px 0}.footer nav{display:flex;flex-wrap:wrap;gap:12px 22px}.downloads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px}.downloads a{font-size:16px;min-height:44px;display:flex;align-items:center}a:focus-visible,summary:focus-visible{outline:3px solid #78a98c;outline-offset:4px}.primary-link{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#fff;border-radius:9px;padding:12px 20px;text-decoration:none;min-height:48px}.hub-card{padding:28px;background:#fff;border:1px solid var(--line);border-radius:14px}.hub-card p{color:var(--muted);margin:10px 0 22px}@media(max-width:720px){.entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.site-header .container{align-items:flex-start;flex-direction:column;gap:10px}.site-nav{gap:8px 16px}.entry{padding:18px}}@media(max-width:400px){.container,main{padding:0 16px}.entry-grid{grid-template-columns:1fr}.downloads{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head><body><header class="site-header">
+<div class="container">
+<a class="logo" href="/">
+<span class="logo-mark">∑</span>
+<span>MathExam</span>
+</a>
+<nav aria-label="Основные разделы" class="site-nav">
+<a href="/">Главная</a>
+<a aria-current="page" href="/trainers/oge-course/">ОГЭ</a>
+<a href="/trainers/oge-basics/">ПредОГЭ</a>
+<a href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Мой кабинет</a>
+</nav>
+</div>
+</header><main><h1>Подготовка к ОГЭ</h1><p class="intro">Выбери номер. Начни решать. Подсказка — когда понадобится.</p><nav class="quick-links" aria-label="Разделы курса"><a href="#part1">1–14</a><a href="#geometry">15–19</a><a href="#part2">20–25</a><a href="#gaps">Повторить основы</a></nav><section class="section" id="part1"><h2>Числа, алгебра и практические задачи</h2><div class="entry-grid"><article class="entry"><h3><a href="/trainers/oge-1-5-trainers/">Задания 1-5</a></h3><p>Практические задачи: шины, печи, дороги, квартиры, тарифы, планы.</p><a class="go" href="/trainers/oge-1-5-trainers/">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task6-fractions.html">Задание 6</a></h3><p>Обыкновенные и десятичные дроби. Вычисления по шагам.</p><a class="go" href="/trainers/oge-task6-fractions.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task7-number-line.html">Задание 7</a></h3><p>Координатная прямая, сравнение чисел, расположение точек.</p><a class="go" href="/trainers/oge-task7-number-line.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task8-powers-roots.html">Задание 8</a></h3><p>Степени, корни, преобразование выражений.</p><a class="go" href="/trainers/oge-task8-powers-roots.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task9-equations.html">Задание 9</a></h3><p>Уравнения: линейные, квадратные и дробно-рациональные случаи.</p><a class="go" href="/trainers/oge-task9-equations.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task10-probability.html">Задание 10</a></h3><p>Вероятность с мгновенной проверкой ответа.</p><a class="go" href="/trainers/oge-task10-probability.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task11-graphs-trainer.html">Задание 11</a></h3><p>Три графика и три функции. Найди соответствие.</p><a class="go" href="/trainers/oge-task11-graphs-trainer.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task12-formulas-trainer.html">Задание 12</a></h3><p>Расчёты по формулам, подстановка и аккуратные вычисления.</p><a class="go" href="/trainers/oge-task12-formulas-trainer.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task13-inequalities.html">Задание 13</a></h3><p>Неравенства: линейные, квадратные, по рисунку и системы.</p><a class="go" href="/trainers/oge-task13-inequalities.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task14-progressions.html">Задание 14</a></h3><p>Арифметическая и геометрическая прогрессии: формулы и здравый смысл.</p><a class="go" href="/trainers/oge-task14-progressions.html">Открыть →</a></article></div></section><section class="section" id="geometry"><h2>Геометрия</h2><div class="entry-grid"><article class="entry"><h3><a href="/oge/geometry/task-15-external-angle.html">Задание 15</a></h3><p>Внешний угол треугольника · урок с разбором.</p><a class="go" href="/oge/geometry/task-15-external-angle.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task16-circle.html">Задание 16</a></h3><p>Окружность, углы, хорды, касательные и типовые ловушки.</p><a class="go" href="/trainers/oge-task16-circle.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task17-quadrilaterals.html">Задание 17</a></h3><p>Четырёхугольники: квадрат, прямоугольник, ромб, параллелограмм, трапеция.</p><a class="go" href="/trainers/oge-task17-quadrilaterals.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task18-grid.html">Задание 18</a></h3><p>Фигуры на клетчатой бумаге: площади, периметры, расстояния.</p><a class="go" href="/trainers/oge-task18-grid.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/task19-trainer.html">Задание 19</a></h3><p>Геометрические утверждения: рисунки и контрпримеры.</p><a class="go" href="/trainers/task19-trainer.html">Открыть →</a></article></div></section><section class="section" id="part2"><h2>Задачи с развёрнутым решением</h2><div class="entry-grid"><article class="entry"><h3><a href="/trainers/oge-task20-equations.html">Задание 20</a></h3><p>Алгебраические задачи второй части: уравнения и преобразования.</p><a class="go" href="/trainers/oge-task20-equations.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task21-word-problems.html">Задание 21</a></h3><p>Текстовые задачи: движение, работа, смеси, проценты.</p><a class="go" href="/trainers/oge-task21-word-problems.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task22-functions-graphs.html">Задание 22</a></h3><p>Графики функций и параметры: чтение, построение, анализ.</p><a class="go" href="/trainers/oge-task22-functions-graphs.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task23-geometry-calculations.html">Задание 23</a></h3><p>Геометрические задачи на вычисление.</p><a class="go" href="/trainers/oge-task23-geometry-calculations.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task24-proofs.html">Задание 24</a></h3><p>Доказательства: собрать цепочку рассуждений и обойти ловушки.</p><a class="go" href="/trainers/oge-task24-proofs.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-task25-geometry.html">Задание 25</a></h3><p>Геометрия повышенной сложности с разбором и проверкой.</p><a class="go" href="/trainers/oge-task25-geometry.html">Открыть →</a></article></div></section><details id="practical-extra"><summary>Диагностика и подготовка к заданиям 1–5</summary><div class="entry-grid"><article class="entry"><h3><a href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Входная диагностика 1-5</a></h3><p>Десять заданий ОГЭ-2026 показывают сильные темы и следующий шаг подготовки.</p><a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html">Как читать план и условие</a></h3><p>Два учебных комплекта по чтению вопроса, масштаба, данных и единиц ответа.</p><a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html">Проверочная: планы и маршруты</a></h3><p>Два варианта по картам на клетках и схемам дорог с итоговым результатом.</p><a class="go" href="/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html">Открыть →</a></article></div></details><details id="gaps"><summary>Повторить основы</summary><div class="entry-grid"><article class="entry"><h3><a href="/trainers/oge-basics/">Математическая база для ОГЭ: ликбез без пробелов</a></h3><p>Короткие маршруты по арифметике, дробям, отрицательным числам, округлению, единицам, умножению и делению.</p><a class="go" href="/trainers/oge-basics/">Открыть →</a></article><article class="entry"><h3><a href="/trainers/arifmetika.html">Арифметика</a></h3><p>Устный счёт, порядок действий, базовые вычисления 1-5 класса.</p><a class="go" href="/trainers/arifmetika.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/drobi-oge-trainer.html">Дроби</a></h3><p>Обыкновенные дроби и вычисления, которые часто мешают заданию 6.</p><a class="go" href="/trainers/drobi-oge-trainer.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/negative-numbers.html">Отрицательные числа</a></h3><p>Маркерная числовая прямая и игра «Кто сильнее?» внутри одного входа темы.</p><a class="go" href="/trainers/negative-numbers.html">Открыть →</a></article><article class="entry"><h3><a href="/trainers/rounding-stepwise.html">Округление</a></h3><p>Пошаговое округление чисел без угадывания и с понятной проверкой.</p><a class="go" href="/trainers/rounding-stepwise.html">Открыть →</a></article></div></details><details id="full-variants"><summary>Полные тренировочные варианты</summary><div class="entry-grid"><article class="entry"><h3><a href="/trainers/oge-2027-analogue-1.html">Авторский аналог демоверсии ОГЭ-2027 по математике. Вариант 1</a></h3><p>25 авторских заданий MathExam по структуре проекта демоверсии 2027 года: 19 кратких ответов и 6 развёрнутых решений. Режим экзамена и разбор. Не является официальным материалом ФИПИ.</p><a class="go" href="/trainers/oge-2027-analogue-1.html">Открыть →</a></article></div></details><details id="downloads"><summary>Скачать тренажёры</summary><div class="downloads"><a href="/trainers/oge-1-5-trainers/practice-1-5-map.html" download>Задания 1-5 · HTML</a><a href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html" download>Входная диагностика 1-5 · HTML</a><a href="/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html" download>Как читать план и условие · HTML</a><a href="/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html" download>Проверочная: планы и маршруты · HTML</a><a href="/trainers/oge-task6-fractions.html" download>Задание 6 · HTML</a><a href="/trainers/oge-task7-number-line.html" download>Задание 7 · HTML</a><a href="/trainers/oge-task8-powers-roots.html" download>Задание 8 · HTML</a><a href="/trainers/oge-task9-equations.html" download>Задание 9 · HTML</a><a href="/trainers/oge-task10-probability.html" download>Задание 10 · HTML</a><a href="/trainers/oge-task11-graphs-trainer.html" download>Задание 11 · HTML</a><a href="/trainers/oge-task12-formulas-trainer.html" download>Задание 12 · HTML</a><a href="/trainers/oge13-inequalities-series.html" download>Задание 13 · HTML</a><a href="/trainers/oge-task14-progressions.html" download>Задание 14 · HTML</a><a href="/oge/geometry/task-15-external-angle.html" download>Задание 15 · HTML</a><a href="/trainers/oge-task16-circle.html" download>Задание 16 · HTML</a><a href="/trainers/oge-task17-quadrilaterals.html" download>Задание 17 · HTML</a><a href="/trainers/oge-task18-grid.html" download>Задание 18 · HTML</a><a href="/trainers/task19-trainer.html" download>Задание 19 · HTML</a><a href="/trainers/oge-task20-equations.html" download>Задание 20 · HTML</a><a href="/trainers/oge-task21-word-problems.html" download>Задание 21 · HTML</a><a href="/trainers/oge-task22-functions-graphs.html" download>Задание 22 · HTML</a><a href="/trainers/oge-task23-geometry-calculations.html" download>Задание 23 · HTML</a><a href="/trainers/oge-task24-proofs.html" download>Задание 24 · HTML</a><a href="/trainers/oge-task25-geometry.html" download>Задание 25 · HTML</a></div></details><footer class="footer"><nav><a href="/">Главная</a><a href="/laboratory/">Лаборатория репетитора</a><a href="https://vk.com/mathexamspace" rel="noopener">ВКонтакте</a><a href="https://dzen.ru/mathexamspace" rel="noopener">Дзен</a><a href="mailto:nata4os@bk.ru">Написать письмо</a></nav><p>MathExam · Наталья Михайловна</p></footer></main><script>(function(){function openTarget(){var id=decodeURIComponent(location.hash.slice(1)),node=document.getElementById(id);if(node&&node.tagName==='DETAILS')node.open=true;}window.addEventListener('hashchange',openTarget);openTarget();})();</script></body></html>

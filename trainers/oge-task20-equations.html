@@ -174,29 +174,21 @@ sup{font-size:.72em}
   .numin{width:82px;font-size:17px}
   .tab{padding:8px 11px;font-size:12.5px}
 }
+
+/* Minimal course: task first; optional help and secondary controls stay reachable. */
+:root{--bg:#f6f7f5;--paper:#fff;--surface:#fff;--surface-2:#f3f6f1;--surface-3:#e8eee6;--ink:#202820;--ink2:#626b63;--ink-soft:#626b63;--muted:#626b63;--line:#dbe1da;--line2:#aeb9ac;--line-strong:#aeb9ac;--primary:#216342;--primary-d:#174d31;--primary-l:#eef5eb;--active:#216342;--active-bg:#eef5eb;--blue:#216342;--blue-d:#174d31;--blue-l:#eef5eb;--blue-r:#b9d0b7;--indigo:#216342;--indigo-deep:#174d31;--indigo-soft:#eef5eb;--indigo-ring:#b9d0b7;--shadow:none}
+body{background:var(--bg);background-image:none;font-size:18px;line-height:1.75}.wrap{max-width:850px;padding:24px 18px 60px}.minimal-header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 26px}.minimal-header .eyebrow{font-size:15px;color:var(--muted,var(--ink2));white-space:nowrap}.minimal-header h1{font:700 24px/1.4 system-ui,sans-serif;margin:0}.minimal-settings{margin-top:26px;border-top:1px solid var(--line);padding-top:18px}.minimal-settings>summary{min-height:44px;cursor:pointer;color:var(--primary,var(--blue));font-size:17px}.minimal-settings[open]>summary{margin-bottom:20px}.minimal-hint{margin:22px 0}.minimal-help{margin-top:18px;background:#f1f6ee;padding:22px;border-radius:12px}.minimal-help[hidden],[hidden]{display:none!important}.minimal-help>details{margin-top:24px}.minimal-help summary{cursor:pointer;min-height:44px;color:#566153}.minimal-proof-note{font-size:14px;color:#626b63;margin:22px 0 0;line-height:1.7}.minimal-title{font-size:21px;line-height:1.5;margin:0 0 22px}.minimal-new{display:block;margin-top:24px}.minimal-results{margin-top:22px}.minimal-results summary{color:#626b63;cursor:pointer;min-height:44px}.minimal-results[open]>summary{margin-bottom:14px}
+button,.btn,.chip,.mode,.mod-btn,.tab,.addbtn,.rmini,.rm-btn{min-height:44px}.btn.primary,.btn-check,.btn.next{background:#216342;color:white}.btn.ghost,.btn-new{background:white;border:1px solid var(--line);color:#216342}.btn,.btnrow,.btn-row{font-size:17px}.btns,.btnrow,.btn-row{gap:12px;margin-top:20px}input,select{max-width:100%}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[role=button]:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}.mathline{font-size:23px;line-height:2;max-width:100%;overflow-x:auto}.prompt,.problem,.st-task{font-size:18px;line-height:1.85}.qbox,.stage,.statement,.card{box-shadow:none}.qbox{border:0;padding:8px 0}.stagehead{padding:24px 28px 0;border:0}.stagehead .st-t{font:700 21px/1.5 system-ui,sans-serif}.body{padding:24px 28px}.sstep,.step-card,.scard{margin-top:18px}.sstep .sq,.step-prompt{font-size:17px;line-height:1.8}.sstep{opacity:1}.numin,.num{font-size:21px;min-height:46px}.stepfinal,.solution,.solbox{margin-top:24px}.solution .step,.solbox .prose{font-size:17px;line-height:1.85}.picker,.module-nav{margin-top:18px}.mcard:before{display:none}.mcard,.mod-btn{box-shadow:none}.mcard .mttl{font-size:16px}.mcard.on{box-shadow:none}.tabs,.modes{flex-wrap:wrap}.tab{border:1px solid var(--line);border-radius:8px;top:auto}.tab.on:after{display:none}.answer-label{display:block;font-size:16px;margin:22px 0 8px}.statement{padding:24px}.st-expr{font-size:24px;line-height:2}.panel-body{padding:0}.sub-chips{margin-top:20px}.gview{box-shadow:none}.mtbl{display:block;max-width:100%;overflow-x:auto}.step-input,.ans-host{overflow-x:auto}.minimal-help .mathline,.minimal-help .problem{overflow-x:auto}.minimal-help .givenbar{position:static}.minimal-help .statement{border:0;background:transparent;padding:0}.minimal-help .step-graph{margin:20px 0}
+@media(max-width:560px){.wrap{padding:18px 12px 44px}.minimal-header h1{font-size:21px}.minimal-header{gap:12px;margin-bottom:20px}.stagehead{padding:22px 18px 0}.body{padding:20px 18px}.minimal-help{padding:18px 12px}.mathline{font-size:21px}.statement{padding:22px 18px}.st-expr{font-size:22px}.btn{font-size:16px;padding:10px 13px}.minimal-settings .picker{grid-template-columns:1fr}.modes{display:flex}.numin{width:85px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="kick">ОГЭ · математика</div>
-      <h1>Задание <b>20</b> — тренажёр</h1>
-      <div class="site">Алгебраические выражения, уравнения и неравенства · mathexam.space</div>
-    </div>
-    <div class="hbadge">Часть 2 · развёрнутое решение</div>
-  </header>
-
-  <div class="picker" id="picker"></div>
-
-  <section class="stage">
-    <div class="stagehead">
-      <div class="st-t" id="stageTitle"></div>
-      <div class="st-s" id="stageSub"></div>
-      <div class="tabs" id="tabs"></div>
-    </div>
-    <div class="body" id="body"></div>
-  </section>
+  <header class="minimal-header"><div class="eyebrow">ОГЭ №20</div><h1>Алгебра</h1></header>
+  <section class="stage"><div class="stagehead"><div class="st-t" id="stageTitle"></div></div><div class="body" id="body"></div></section>
+  <p class="minimal-proof-note">Проверяется ответ. Развёрнутое решение запиши в тетради.</p>
+  <details class="minimal-settings" id="courseSettings"><summary>Выбрать тему · другие режимы</summary><div class="picker" id="picker"></div><p id="stageSub"></p><div class="tabs" id="tabs"></div></details>
 </div>
 
 <script id="core-math">/* ============================================================================
@@ -659,9 +651,9 @@ function fracField(host, opts){
   opts=opts||{};
   var mode='dec';
   var wrap=el('<span class="field"></span>');
-  var dec=el('<input class="numin" inputmode="text" autocomplete="off" placeholder="'+(opts.ph||'')+'">');
+  var dec=el('<input aria-label="Ответ" class="numin" inputmode="text" autocomplete="off" placeholder="'+(opts.ph||'')+'">');
   if(opts.width) dec.style.width=opts.width;
-  var fr=el('<span class="fracin" style="display:none"><input class="fnumIn" inputmode="numeric" autocomplete="off"><span class="fbar"></span><input class="fdenIn" inputmode="numeric" autocomplete="off"></span>');
+  var fr=el('<span class="fracin" style="display:none"><input aria-label="Числитель" class="fnumIn" inputmode="numeric" autocomplete="off"><span class="fbar"></span><input aria-label="Знаменатель" class="fdenIn" inputmode="numeric" autocomplete="off"></span>');
   var tg=el('<button type="button" class="fftoggle" title="переключить дробь / десятичную">a\u2044b</button>');
   wrap.appendChild(dec); wrap.appendChild(fr); if(!opts.noToggle) wrap.appendChild(tg);
   host.appendChild(wrap);
@@ -928,6 +920,7 @@ function mountStepper(host, cfg){
         else { fb.className='fb no show'; fb.innerHTML=st.reasonText?st.reasonText(r):'Не сходится — попробуй ещё раз.'; }
       });
       sh.addEventListener('click',function(){
+        if(cfg.onReveal)cfg.onReveal();
         node.classList.add('peeked'); node.classList.remove('active');
         fb.className='fb peek show'; fb.innerHTML='Правильно: '+st.reveal; advance(i,true);
       });
@@ -938,7 +931,7 @@ function mountStepper(host, cfg){
       var rev=el('<div class="fb peek" style="margin-top:8px"></div>');
       if(st.reveal){ node.appendChild(rev); }
       sh2.addEventListener('click',function(){
-        if(st.reveal){ rev.className='fb peek show'; rev.innerHTML=st.reveal; }
+        if(st.reveal){if(cfg.onReveal)cfg.onReveal();rev.className='fb peek show';rev.innerHTML=st.reveal;}
         node.classList.add('done'); advance(i);
       });
     }
@@ -979,8 +972,8 @@ function mountMarathon(host, engine){
   clear(host);
   var state={streak:0, solved:0, n:0, lastSig:null};
   var top=el('<div class="mtop"><span class="stat solved">решено <b>0</b></span><span class="stat streak">серия <b>0</b></span><span class="spacer"></span><span class="probno"></span></div>');
-  host.appendChild(top);
   var arena=el('<div></div>'); host.appendChild(arena);
+  var results=el('<details class="minimal-results"><summary>Мои результаты</summary></details>');results.appendChild(top);host.appendChild(results);
   function refreshTop(){ top.querySelector('.solved b').textContent=state.solved; top.querySelector('.streak b').textContent=state.streak; top.querySelector('.probno').textContent='задача №'+state.n; }
   function fresh(){
     var data, sig, guard=0;
@@ -994,16 +987,18 @@ function mountMarathon(host, engine){
     var box=el('<div class="qbox"></div>');
     box.appendChild(el('<div class="qhead">Реши уравнение</div>'.replace('Реши уравнение', R.head||'Задача')));
     box.appendChild(el('<div class="mathline prompt" style="margin-bottom:14px">'+R.problemHTML+'</div>'));
-    var wslot=el('<div></div>'); box.appendChild(wslot);
-    var w=R.mount(wslot);
-    var btns=el('<div class="btns"></div>');
-    var ck=el('<button class="btn primary">Проверить</button>');
-    var steps=el('<button class="btn ghost">Решить по шагам</button>');
-    var sh=el('<button class="btn amberbtn">Показать ответ</button>');
-    btns.appendChild(ck);btns.appendChild(steps);btns.appendChild(sh);box.appendChild(btns);
-    var fb=el('<div class="fb"></div>'); box.appendChild(fb);
-    arena.appendChild(box);
-    var done=false;
+    var hintRow=el('<div class="minimal-hint"></div>');box.appendChild(hintRow);
+    var steps=el('<button class="btn ghost" type="button" aria-expanded="false" aria-controls="task20Help">Хочешь подсказку?</button>');hintRow.appendChild(steps);
+    var hintPanel=el('<section class="minimal-help" id="task20Help" aria-label="Помощь к этой задаче" hidden></section>');hintRow.appendChild(hintPanel);
+    var stepHost=el('<div></div>');hintPanel.appendChild(stepHost);
+    var solutionDetails=el('<details><summary>Готовое решение</summary></details>');hintPanel.appendChild(solutionDetails);
+    var sh=el('<button class="btn amberbtn" type="button">Показать ответ и решение</button>');solutionDetails.appendChild(sh);
+    var wslot=el('<div></div>'); box.appendChild(wslot);var w=R.mount(wslot);
+    var btns=el('<div class="btns"></div>');var ck=el('<button class="btn primary" type="button">Проверить</button>');btns.appendChild(ck);box.appendChild(btns);
+    var fb=el('<div class="fb" role="status" aria-live="polite"></div>');box.appendChild(fb);arena.appendChild(box);
+    var skip=el('<button class="btn ghost minimal-new" type="button">Другая задача →</button>');box.appendChild(skip);skip.onclick=function(){round(fresh());};
+    var done=false,peeked=false;
+    function markRevealed(){if(done)return;peeked=true;state.streak=0;refreshTop();}
     function nextBtn(cls){
       if($('.nextbtn',box))return;
       var nx=el('<button class="btn next nextbtn morebtn">Дальше \u2192</button>');
@@ -1013,21 +1008,20 @@ function mountMarathon(host, engine){
     ck.addEventListener('click',function(){
       if(done)return;
       var r=R.check(w.read, data);
-      if(r.ok){ fb.className='fb ok show'; fb.innerHTML='<b>Верно!</b> '+(R.okNote||''); done=true; state.solved++; state.streak++; refreshTop(); ck.disabled=true; sh.disabled=true; nextBtn(); }
+      if(r.ok){fb.className='fb ok show';fb.innerHTML=peeked?'Верно. Один из шагов был показан — самостоятельный зачёт не начисляется.':'<b>Верно!</b> '+(R.okNote||'');done=true;if(!peeked){state.solved++;state.streak++;}refreshTop();ck.disabled=true;sh.disabled=true;nextBtn();}
       else{ fb.className='fb no show'; fb.innerHTML=(R.reasonText?R.reasonText(r):'Пока неверно — посмотри решение по шагам, если застрял.'); if(state.streak){state.streak=0;refreshTop();} }
     });
     sh.addEventListener('click',function(){
-      if(done)return; done=true; ck.disabled=true; sh.disabled=true;
+      if(done)return;markRevealed();done=true;ck.disabled=true;sh.disabled=true;
       var sol=el('<div class="solution"><div class="sol-h">Разбор</div>'+R.solutionHTML+'</div>');
-      arena.appendChild(sol); nextBtn();
+      solutionDetails.appendChild(sol); nextBtn();
     });
+    var hintBuilt=false;
     steps.addEventListener('click',function(){
-      steps.disabled=true;
-      var sc=el('<div style="margin-top:14px;border-top:1px dashed var(--line);padding-top:12px"></div>');
-      arena.appendChild(sc);
-      var cfg=R.stepper(data);
-      cfg.onNew=function(){ /* внутри марафона «ещё пример» = новая задача */ round(fresh()); };
-      mountStepper(sc, cfg);
+      var opening=hintPanel.hidden;hintPanel.hidden=!opening;steps.setAttribute('aria-expanded',String(opening));
+      if(opening&&!hintBuilt){
+        var cfg=R.stepper(data);cfg.onNew=function(){round(fresh());};cfg.onReveal=markRevealed;mountStepper(stepHost,cfg);hintBuilt=true;
+      }
     });
   }
   round(fresh());
@@ -2073,7 +2067,7 @@ function miniSYM(){ var d=M.gen.SYM(); var pp=symParts(d);
     reveal:''+pp.u2, regen:miniSYM}; }
 
 /* ============================ МОДУЛИ ============================ */
-function goTo(mid){ STATE.module=mid; STATE.mode='learn'; render(); }
+function goTo(mid){ STATE.module=mid; STATE.mode='drill'; render(); }
 function xrefHTML(mid,text){ return '<span class="xref" data-go="'+mid+'">'+text+'</span>'; }
 
 var MODULES={
@@ -2224,7 +2218,7 @@ var MODULES={
 var ORDER=['A','B1','B2','RAZL','B5','BIQ','SQ','POW','SYS','INEQ','DR','QIDS','SYM'];
 
 /* ============================ РЕНДЕР ОБОЛОЧКИ ============================ */
-var STATE={module:'A', mode:'learn'};
+var STATE={module:'A', mode:'drill'};
 var MODES=[['learn','Учимся','1'],['step','Пошагово','2'],['drill','Марафон','3']];
 
 function renderPicker(){
@@ -2236,7 +2230,7 @@ function renderPicker(){
       '<div class="mttl">'+m.title+'</div>'+
       '<div class="msub">'+m.sub+'</div>'+
       '<div class="mform">'+m.form+'</div></button>');
-    c.addEventListener('click',function(){ STATE.module=mid; STATE.mode='learn'; render(); });
+    c.addEventListener('click',function(){ STATE.module=mid; STATE.mode='drill'; render(); });
     p.appendChild(c);
   });
 }
@@ -2272,7 +2266,7 @@ function renderBody(){
     mountStepper(sh, m.stepFactory());
   }
   else{
-    b.appendChild(el('<p class="muted" style="margin:0 0 12px">Решай задачи одну за другой. Неправильный ответ не блокирует поле — пробуй снова. Застрял — жми «Решить по шагам» или «Показать ответ».</p>'));
+
     var mh=el('<div></div>'); b.appendChild(mh);
     mountMarathon(mh, m.engine());
   }

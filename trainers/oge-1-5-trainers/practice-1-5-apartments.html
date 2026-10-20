@@ -149,8 +149,10 @@ svg.plan{display:block;width:100%;height:auto}
 footer{margin-top:26px;font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;letter-spacing:.04em}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body>
+<body data-practical-page="apartments">
 <div class="wrap">
   <div class="titleblock">
     <div class="tb-main"><div class="tb-k">Объект · план этажа</div>
@@ -654,7 +656,7 @@ const teacherNotes={
  4:"«На сколько процентов A больше B»: (A−B)/B·100%. Половина класса делит на A — это уже «на сколько B меньше A». Знаменатель — меньшая величина.",
  5:"Многошаговая: 1) отсечь по условиям (тип/высота/ширина/объём), 2) для оставшихся посчитать цена+подключение+доставка (доставка — процент ОТ ЦЕНЫ), 3) выбрать минимум. Часто теряют подключение или считают доставку абсолютной суммой."};
 
-let state={planIdx:0,group:1,viewKey:'1',mode:'learn',solved:new Set(),streak:0,tries:0,
+let state={planIdx:0,group:1,viewKey:'1',mode:'practice',solved:new Set(),streak:0,tries:0,
            t3room:1,t4A:1,t4B:1};
 const sk=v=>state.planIdx+':'+v;
 
@@ -726,7 +728,7 @@ function renderView(){
     <div class="box hint" id="hint"></div><div class="fb" id="fb"></div><div class="box sol" id="sol"></div>
     <div class="brow">
       <button class="btn pri" id="bCheck">Проверить</button>
-      <button class="btn" id="bHint">Подсказка</button>
+      <button class="btn" id="bHint">Хочешь подсказку?</button>
       <button class="btn" id="bSol">Показать решение</button>
       <button class="btn" id="bNext">Следующее задание →</button>
       <button class="btn ghost" id="bClear">Очистить</button></div>`;

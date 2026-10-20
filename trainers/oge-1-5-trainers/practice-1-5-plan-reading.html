@@ -55,8 +55,10 @@
   @media(max-width:900px){.workspace{grid-template-columns:1fr}.side{position:static}.intro{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr}.skill-row{grid-template-columns:minmax(120px,1fr) 100px 40px}}
   @media(max-width:560px){.topnav-inner{align-items:flex-start}.nav-left,.nav-right{width:100%}.topic{display:none}.modes{width:100%}.modes button{flex:1}.wrap{padding-left:14px;padding-right:14px}.task-meta{align-items:flex-start;flex-direction:column}.actions .btn{flex:1}.mini-grid{transform:scale(.85);transform-origin:top left;margin-right:-46px;margin-bottom:-30px}}
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body>
+<body data-practical-page="plan-reading">
 <nav class="topnav">
   <div class="topnav-inner">
     <div class="nav-left">
@@ -119,7 +121,7 @@
         <div id="answer-area"></div>
         <div class="actions">
           <button id="check" class="btn primary" type="button">Проверить</button>
-          <button id="hint" class="btn gold" type="button">Подсказка</button>
+          <button id="hint" class="btn gold" type="button">Хочешь подсказку?</button>
           <button id="reset-answer" class="btn secondary" type="button">Очистить ответ</button>
           <button id="next" class="btn primary" type="button" hidden>Следующее задание</button>
         </div>
@@ -323,6 +325,7 @@
     return `Тренажёр «Как читать план и условие» (ОГЭ-2026): ${state.score} из 10. Комплект: ${state.variant}. ${weak.length?'Повторить: '+weak.join(', ')+'.':'Все базовые навыки выполнены без ошибок.'}`;
   }
   $('copy').addEventListener('click',async()=>{const text=resultText();try{await navigator.clipboard.writeText(text);$('copy-note').textContent='Результат скопирован. Вернитесь в Stepik и вставьте его в поле ответа.';}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();$('copy-note').textContent='Результат скопирован.';}});
+  start();
   $('again').addEventListener('click',()=>{$('result').hidden=true;$('intro').hidden=false;window.scrollTo({top:0,behavior:'smooth'});});
 })();
 </script>

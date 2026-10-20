@@ -203,8 +203,10 @@
 
   @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body>
+<body data-practical-page="roads-schema">
 <div class="wrap">
   <header class="top">
     <p class="kicker">ОГЭ · математика · задания 1–5</p>
@@ -664,7 +666,7 @@ const solvedCount = () => Object.keys(prog.solved).length;
 // ============================================================
 //  STATE + RENDER
 // ============================================================
-let mode='learn';
+let mode='practice';
 let cur = 0;          // index into SCREENS
 let showNames=false;  // village names hidden on the plan until the student reveals them
 let placed={};        // nodeId -> villageKey (labelling board)
@@ -769,6 +771,7 @@ function render(){
 
   app.innerHTML = `<div class="grid">${mapPanel}${right}</div>`;
   wire();
+  if(mode==='practice' && window.PracticalMinimal) PracticalMinimal.mountHint(document.querySelector('#app .qtext'),'roads',task,p.text);
 }
 
 function wire(){
