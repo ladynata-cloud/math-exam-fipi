@@ -34,13 +34,15 @@ jobs:
           echo "NODE_PATH=$RUNNER_TEMP/task11-browser/node_modules" >> "$GITHUB_ENV"
       - name: Math, learner and course contracts
         run: |
-          node --test tools/task11-minimal.test.cjs tools/task11-math-review.test.cjs
+          node --test tools/task11-minimal.test.cjs tools/task11-math-review.test.cjs tools/task11-discovery.test.cjs
           node tools/oge-algebra-contract.test.mjs
           git diff --check
       - name: Desktop, mobile, keyboard, exam and offline HTML
         env:
           TASK11_BROWSER_ARTIFACTS: artifacts/task11-minimal
-        run: node tools/task11-minimal.browser.cjs
+        run: |
+          node tools/task11-minimal.browser.cjs
+          TASK11_DISCOVERY_ARTIFACTS=artifacts/task11-minimal/discovery node tools/task11-discovery.browser.cjs
       - name: Save screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
