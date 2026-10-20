@@ -31,6 +31,8 @@ ALLOWED_PREFIXES = ('trainers/oge-basics/', 'tools/oge-basics-',
                     'tools/learning-', 'tools/fixtures/oge-basics-',
                     'docs/tasks/OGE_BASICS_CONTEXTUAL')
 ALLOWED_FILES = {'docs/PROJECT_STATUS.md', GUIDE,
+                 'tools/division-guided.browser.cjs',
+                 'tools/preoge-arithmetic.browser.cjs',
                  '.github/workflows/oge-basics-claude.yml',
                  '.github/workflows/oge-basics-contextual.yml'}
 

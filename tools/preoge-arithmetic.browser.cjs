@@ -239,7 +239,13 @@ async function learner(browser, name, width, run) {
     });
     await learner(browser, 'guided help then genuinely new work', 1280, async page => {
       await page.goto(origin + GUIDED + '?course=preoge#start'); await guidedReady(page);
-      await page.locator('#help-toggle').click(); await page.locator('#reveal').click();
+      const help = page.locator('.bh-toggle');
+      await help.waitFor({state:'visible'});
+      assert.equal(await help.getAttribute('aria-expanded'), 'false');
+      await help.click();
+      assert.equal(await help.getAttribute('aria-expanded'), 'true');
+      assert.equal(await page.locator('#help-content').isVisible(), true);
+      await page.locator('#reveal').click();
       await guidedFinish(page);
       await page.locator('#course-return-completion').click();
       let p = await summary(page, 'n3e');

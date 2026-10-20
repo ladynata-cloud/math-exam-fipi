@@ -59,13 +59,14 @@ function useHelp(){
  helpLevel=state.feedback.kind==='solution'?3:2;
  populateHelp();
 }
+function helpActions(){return '<div class="lm-actions"><button id="lm-hint"'+(readOnly?' disabled':'')+'>Подсказка к этому действию</button><button id="lm-solution"'+(readOnly?' disabled':'')+'>Разобрать этот шаг</button></div>';}
 function mountHelp(){
  const slot=$('lm-help-slot');if(!slot){nestedHelp?.close();return;}
  const id=JSON.stringify([spec.contentId,spec.seed,spec.generatorVersion,state.view,state.view==='learn'?state.lessonIndex:state.step,active()?.prompt]);
  if(helpIdentity!==id){helpIdentity=id;fallbackHelpOpen=currentHelp();helpLevel=0;}
  if(currentHelp())helpLevel=state.feedback.kind==='solution'?3:2;
  helpRoot=document.createElement('div');helpRoot.className='lm-help-root';
- helpRoot.innerHTML='<div class="lm-current-help"></div><div class="lm-actions"><button id="lm-hint"'+(readOnly?' disabled':'')+'>Подсказка к этому действию</button><button id="lm-solution"'+(readOnly?' disabled':'')+'>Разобрать этот шаг</button></div>'+multiplicationSupport();
+ helpRoot.innerHTML='<div class="lm-current-help"></div>'+helpActions()+multiplicationSupport();
  if(helpLevel&&!readOnly)populateHelp();
  const bind=()=>{helpRoot.querySelector('#lm-hint').onclick=()=>help(2);helpRoot.querySelector('#lm-solution').onclick=()=>help(3);};
  bind();
@@ -157,11 +158,12 @@ function render(focus){
  const previous=host.contains(document.activeElement)?{node:document.activeElement,id:document.activeElement.id,start:document.activeElement.selectionStart,end:document.activeElement.selectionEnd}:null;
  host.classList.toggle('lm-simple-division',spec.family==='division');
  host.classList.toggle('lm-arithmetic',spec.contentId.startsWith('multiplication-division/'));
- host.classList.add('lm-task-first');
+ host.classList.toggle('lm-task-first',true);
  const training=arithmeticTraining(),exampleCount=spec.divisionTasks.length||spec.items.length||1;
  const nextLabel=training?(exampleCount>1?'Ещё '+exampleCount+' примера →':'Следующий пример →'):'Новое условие →';
  const learn=state.view==='learn',lesson=shownLesson(state.lessonIndex),q=learn?lesson?.question:active(),done=state.completed&&!learn,disabled=readOnly?' disabled':'',segment=divisionSegment(),practice=segment||spec.items[Math.min(state.step,spec.items.length-1)]||spec.task;
- const helpSlot=!done?'<div id="lm-help-slot" class="lm-help-slot"></div>':'';
+ const staticObservation=readOnly&&!window.MathExamBasicsHelp;
+ const helpSlot=!done?'<div id="lm-help-slot" class="lm-help-slot">'+(staticObservation?'<button disabled>Нужна помощь?</button><div hidden>'+helpActions()+'</div>':'')+'</div>':'';
  const plainFeedback=readOnly?feedback():['hint','solution'].includes(state.feedback.kind)?'':feedback();
  let content='';
  if(learn&&lesson){
@@ -178,7 +180,9 @@ function render(focus){
  const nav='<div class="lm-nav"><button id="lm-practice" class="'+(!learn?'lm-selected':'')+'"'+disabled+'>'+(training?'Тренировка':'Моё задание')+'</button>'+(spec.lessons.length?'<button id="lm-learn" class="'+(learn?'lm-selected':'')+'"'+disabled+'>'+(courseStage()?'Покажи на примере':'Разобраться')+'</button>':'')+(spec.rule?'<button id="lm-rule"'+disabled+'>'+(courseStage()?'Памятка':'Правило темы')+'</button>':'')+'</div>';
  const reference=state.referenceOpen?'<div class="lm-reference">'+(spec.contentId==='multiplication-division/long-division-quotient-digit'?'Умножай на цифры от 0 до 9. Получилось больше нашего числа — цифра не подходит. Из остальных результатов бери самый большой. Ровно столько же — тоже подходит.':displayText(spec.rule))+'</div>':'';
  const rail=learn?'<div class="lm-rail">'+spec.lessons.map((l,i)=>'<button data-lesson="'+i+'" class="'+(state.lessonIndex===i?'lm-selected':'')+'"'+disabled+'>'+(state.lessonChecked[i]?'✓ ':'')+esc(shownLesson(i).short)+'</button>').join('')+'</div>':'';
- host.innerHTML='<div class="lm-header"><div><h1>'+esc(shownTitle())+'</h1></div></div>'+(readOnly?'<p class="lm-readonly-note">Вы видите текущую работу. Управление включается на доске преподавателя.</p>':'')+'<div class="lm-layout"><section class="lm-card">'+content+'</section></div><details id="lm-tools" class="lm-secondary"'+(toolsOpen||state.referenceOpen?' open':'')+'><summary>Тема и другие действия</summary><div class="lm-label">'+courseLabel()+'</div>'+nav+reference+rail+(!done?'<div class="lm-actions"><button id="lm-new"'+disabled+'>Запросить другое условие</button></div>':'')+'</details><details id="lm-notes" class="lm-secondary"'+(notesOpen?' open':'')+'><summary>Мои записи</summary><p class="lm-muted">'+(local?'Записи сохраняются в этом браузере.':'Можно записать вычисления или вопрос. Преподаватель увидит их.')+'</p><label for="lm-note">Заметки к решению</label><textarea id="lm-note" class="lm-note" maxlength="4000"'+(readOnly?' readonly':'')+'>'+esc(state.note)+'</textarea></details>';
+ host.innerHTML='<div class="lm-header"><div><h1>'+esc(shownTitle())+'</h1></div></div>'+(readOnly?'<p class="lm-readonly-note">Наблюдение. Вы видите текущую работу. Управление включается на доске преподавателя.</p>':'')+'<div class="lm-layout"><section class="lm-card">'+content+'</section></div><details id="lm-tools" class="lm-secondary"'+(toolsOpen||state.referenceOpen?' open':'')+'><summary>Тема и другие действия</summary><div class="lm-label">'+courseLabel()+'</div>'+nav+reference+rail+(!done?'<div class="lm-actions"><button id="lm-new"'+disabled+'>Запросить другое условие</button></div>':'')+'</details><details id="lm-notes" class="lm-secondary"'+(notesOpen?' open':'')+'><summary>Мои записи</summary><p class="lm-muted">'+(local?'Записи сохраняются в этом браузере.':'Можно записать вычисления или вопрос. Преподаватель увидит их.')+'</p><label for="lm-note">Заметки к решению</label><textarea id="lm-note" class="lm-note" maxlength="4000"'+(readOnly?' readonly':'')+'>'+esc(state.note)+'</textarea></details>';
+ // Without the optional helper, an observer needs only the serialized view.
+ if(staticObservation)return;
  mountHelp();
  const tools=$('lm-tools'),notes=$('lm-notes');
  tools.addEventListener('toggle',()=>{if(tools.isConnected)toolsOpen=tools.open;});
@@ -196,7 +200,7 @@ function render(focus){
  host.querySelectorAll('[data-lesson]').forEach(b=>b.onclick=()=>go('learn',Number(b.dataset.lesson)));
  const target=focus?($('lm-answer')||(done&&training?$('lm-new'):null)):previous?.node.isConnected?previous.node:previous?.id?$(previous.id):null;if(target){target.focus({preventScroll:true});if(previous&&target.id===previous.id&&typeof target.setSelectionRange==='function')target.setSelectionRange(previous.start,previous.end);}
 }
-window.addEventListener('mathexam-basics-help-ready',()=>{if(spec&&window.MathExamBasicsHelp)render();});
+window.addEventListener?.('mathexam-basics-help-ready',()=>{if(spec&&window.MathExamBasicsHelp)render();});
 window.MathExamLearning.register({trainerId:'oge-basics',contentVersion:1,getState:()=>state?clone(state):null,subscribe:callback=>{notify=callback;return()=>{notify=()=>{};};},applyState:payload=>{
  const canonical=api.create(payload.taskSpec.contentId,payload.taskSpec.seed,{generatorVersion:payload.taskSpec.generatorVersion||1}).taskSpec;
  // The account server adds this fixed identity envelope to every saved task.

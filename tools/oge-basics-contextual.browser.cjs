@@ -53,15 +53,16 @@ async function hitTarget(locator, label) {
   assert(hit, label + ': visible, usable hit target');
 }
 async function shot(page, name) {
-  await page.screenshot({path:path.join(output, name + '.png'), fullPage:true});
+  await page.screenshot({path:path.join(output, name + '.png'), fullPage:true, animations:'disabled'});
 }
 function activeFrame(page) { return page.locator('.bh-frame:visible'); }
 function helper(page) { return page.locator('.bh-toggle:visible').first(); }
 
-async function retainDraftInHelp(page, {name, route, answer, prompt, practice}) {
+async function retainDraftInHelp(page, {name, route, answer, prompt, practice, prepare}) {
   await open(page, route);
   if (practice) await page.locator(practice).waitFor({state:'visible'});
   await helper(page).waitFor({state:'visible'});
+  const verifyAccepted = prepare ? await prepare(page) : null;
   const input = page.locator(answer).filter({visible:true}).first();
   await input.waitFor({state:'visible'});
   const beforePrompt = await page.locator(prompt).first().textContent();
@@ -82,8 +83,28 @@ async function retainDraftInHelp(page, {name, route, answer, prompt, practice}) 
   await helper(page).click();
   assert.equal(await input.inputValue(), '17', name + ': reopening preserves main answer');
   assert.equal(await page.locator(prompt).first().textContent(), beforePrompt);
+  if (verifyAccepted) await verifyAccepted();
   reports.push({scenario:name, width:page.viewportSize().width, retainedMainDraft:true});
   return {input, beforePrompt};
+}
+
+async function chooseLegacyQuotientDigit(page) {
+  // This family starts with a visible multiples choice, then asks for its
+  // product. Read the two displayed numbers and use the normal choice button.
+  const partial = Number((await page.locator('#partialValue').innerText()).trim());
+  const divisor = Number((await page.locator('#divisorDisplay').innerText()).trim());
+  assert(Number.isSafeInteger(partial) && Number.isSafeInteger(divisor) && divisor > 0);
+  const digit = Math.floor(partial / divisor);
+  assert(digit >= 0 && digit <= 9, 'The displayed partial dividend has a one-digit quotient');
+  const choice = page.locator('#multiples button:visible').nth(digit);
+  assert.match(await choice.innerText(), new RegExp('^' + digit + ' [·×] ' + divisor));
+  await hitTarget(choice, 'Select the quotient digit from the visible multiples');
+  await choice.click();
+  await page.locator('#answerArea input').waitFor({state:'visible'});
+  const accepted = await page.locator('#quotientDisplay').innerText();
+  assert.equal(accepted.trim(), String(digit), 'The accepted digit is written immediately');
+  return async () => assert.equal(await page.locator('#quotientDisplay').innerText(), accepted,
+    'Opening and closing help retains the already written quotient digit');
 }
 
 async function deepHelp(page) {
@@ -197,7 +218,7 @@ async function miniCheckWithoutHelp(page) {
           answer:'#practiceAnswer input', prompt:'#practicePrompt', practice:'#view-practice'});
         await deepHelp(page);
         await retainDraftInHelp(page, {name:'legacy-division', route:'multiplication-division/long-division-one-digit.html',
-          answer:'#answerArea input', prompt:'#taskTitle', practice:'#view-practice'});
+          answer:'#answerArea input', prompt:'#taskTitle', practice:'#view-practice', prepare:chooseLegacyQuotientDigit});
         await retainDraftInHelp(page, {name:'managed-public', route:'multiplication-division/course-first-part.html',
           answer:'#lm-answer', prompt:'#learning-remediation-root .lm-card .lm-prompt', practice:'#learning-remediation-root'});
         await retainDraftInHelp(page, {name:'foundations', route:'multiplication-division/arithmetic-foundations.html',

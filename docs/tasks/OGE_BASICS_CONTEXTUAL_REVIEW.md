@@ -70,3 +70,14 @@ late optional loading. Current bank:35 sources /396075 bytes. Existing current
 contracts pass for2000 division tasks /5142 steps,198 legacy envelopes,22 robot
 scenarios /470 verified steps,17 division stages /226 actions /180 old tasks.
 Browser/mobile checks and publication remain pending at this preparation point.
+
+First cloud head2ab2a0f90d90e58850f3e5d8f65c133fe6f502f4: current math and34
+contextual DOM tests passed; all70 routes opened and the six-level320px helper
+journey passed. Screenshots were inspected. The new browser scenario incorrectly
+expected a numeric input before the legacy quotient-choice step; it now selects
+the real visible digit and verifies immediate writing first. Two older browser
+suites now open the new visible help control and retain their original arithmetic,
+storage and assisted/independent assertions. The read-only renderer preserves a
+static fallback when optional help is unavailable; the two existing persisted
+server-envelope tests and full division DOM suite pass. These fixes require a
+new exact-head cloud run; the first run is not reported as a passing final gate.
