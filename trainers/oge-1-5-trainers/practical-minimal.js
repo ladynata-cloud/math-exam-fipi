@@ -79,6 +79,10 @@ function drawModel(panel,visual){
 }
 function mountHint(host,kind,type,text){
   if(!host)return;
+  // The same legend is a given for later tasks, but an explicit answer hint for matching.
+  // Restore it before replacing the old help so native drawLegend keeps its original node.
+  const landLegend=kind==='land'?one('#legend'):null;
+  if(landLegend){const scale=one('.scale-note');if(scale)scale.before(landLegend);}
   const old=host.parentNode.querySelector('.pm-context-hint');if(old)old.remove();
   const wrapper=doc.createElement('div');wrapper.className='pm-context-hint';
   const button=doc.createElement('button');button.type='button';button.className='pm-hint-button';button.textContent='Хочешь подсказку?';
@@ -89,6 +93,15 @@ function mountHint(host,kind,type,text){
   else{panel.innerHTML=stepList(data.steps);drawModel(panel,data.visual);}
   button.addEventListener('click',()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));});
   wrapper.append(button,panel);host.after(wrapper);
+  if(kind==='land'&&type==='match'&&landLegend){
+    const clues=doc.createElement('div');clues.className='pd-land-description';
+    clues.innerHTML='<p>Найди объекты по описанию и сопоставь их с цифрами на плане.</p><ul><li>Жилой дом — Г-образное здание.</li><li>Огород находится в левом верхнем углу. Внутри него расположена узкая теплица.</li><li>Баня — квадратное здание слева внизу.</li><li>Яблони растут между баней и гаражом.</li><li>Гараж — вытянутое здание справа внизу. Сарай находится в правом верхнем углу.</li></ul>';
+    host.append(clues);
+    const check=doc.createElement('details');check.className='pm-details pd-land-legend-help';
+    const summary=doc.createElement('summary');summary.textContent='Сверить названия с цифрами на плане';
+    const content=doc.createElement('div');content.className='pm-content';content.append(landLegend);check.append(summary,content);
+    panel.insertBefore(check,panel.querySelector('.pd-return'));
+  }
 }
 function figureZoom(svg){
   if(!svg||svg.closest('.pm-figure-scroll'))return;

@@ -159,6 +159,73 @@ async function run() {
     await screenshot(page, '320-nested-or-numerator-hint');
     console.log('PASS nested fractions and all numerator-only conditions on narrow screen');
 
+
+    // Reach every distinct help family through its real step controls. This is
+    // cloud CI only; arithmetic expectations are checked independently in Node.
+    const familyExamples = JSON.parse(await state(page, `JSON.stringify((()=>{
+      const examples={};TASKS.forEach((task,taskIndex)=>Task6Hints.plan(task).steps.forEach((step,stepIndex)=>{
+        const family=Task6Labs.family(step);if(!examples[family])examples[family]={family,taskIndex,stepIndex};
+      }));return Object.values(examples);
+    })())`));
+    assert.equal(familyExamples.length,11);
+    for(const width of [320,360,1280]){
+      await page.setViewportSize({width,height:900});
+      for(const example of familyExamples){
+        await showTask(page,example.taskIndex);
+        await page.locator('#hintToggle').click();
+        for(let index=0;index<example.stepIndex;index++){
+          await page.locator('#stepAnswer').fill(await exactStep(page,index));
+          await page.locator('#stepAnswer').press('Enter');
+        }
+        await page.locator('#ans').fill('main draft');
+        await page.locator('#stepAnswer').fill('step draft');
+        const history=await state(page,'JSON.stringify({records,streak,pos,answeredCur})');
+        await page.locator('#stepHelpToggle').click();
+        assert.ok(await page.locator('#labOutput').isVisible());
+        const modelControl=page.locator('[data-lab-control]').first();
+        let value=null;
+        if(await modelControl.count()){
+          if(await modelControl.getAttribute('type')==='range'){
+            await modelControl.focus();await modelControl.press('End');
+          }else await modelControl.fill('2');
+          value=await modelControl.inputValue();
+        }else if(await page.locator('[data-lab-toggle]').count())await page.locator('[data-lab-toggle]').click();
+        else await page.locator('[data-lab-part="numerator"]').click();
+        await page.locator('#labSimple > summary').click();
+        await page.locator('#labExercise > summary').click();
+        if(await page.locator('#labMiniAnswer').count())await page.locator('#labMiniAnswer').fill('mini draft');
+        else await page.locator('[data-mini-choice]').first().click();
+        if(example.family==='pow'){
+          const fractionBars=await page.locator('.factor-tiles .f > .fn').evaluateAll(nodes=>nodes.map(node=>{
+            const style=getComputedStyle(node);return {width:parseFloat(style.borderBottomWidth),kind:style.borderBottomStyle,left:parseFloat(style.borderBottomLeftRadius),right:parseFloat(style.borderBottomRightRadius),background:style.backgroundColor};
+          }));
+          assert.ok(fractionBars.length>0,'Power example includes fraction factors');
+          for(const bar of fractionBars){assert.ok(bar.width>=1,'Fraction bar has visible thickness');assert.equal(bar.kind,'solid');assert.equal(bar.left,0,'Fraction bar left edge stays straight');assert.equal(bar.right,0,'Fraction bar right edge stays straight');assert.match(bar.background,/^(?:transparent|rgba\(0, 0, 0, 0\))$/,'Only outer factor tiles have a background');}
+        }
+        await noOverflow(page,width+'px '+example.family+' lab');
+        const labels=await page.locator('#labOutput svg text').evaluateAll(nodes=>nodes.map(node=>({
+          text:node.textContent,size:parseFloat(getComputedStyle(node).fontSize)*node.getScreenCTM().a,
+          left:node.getBoundingClientRect().left,right:node.getBoundingClientRect().right
+        })));
+        for(const label of labels){assert.ok(label.size>=16,width+'px readable SVG label '+JSON.stringify(label));assert.ok(label.left>=-1&&label.right<=width+1,width+'px SVG label stays in viewport '+JSON.stringify(label));}
+
+        await screenshot(page,width+'-lab-'+example.family);
+        await page.locator('#hintToggle').click();await page.locator('#hintToggle').click();
+        assert.equal(await page.locator('#stepAnswer').inputValue(),'step draft');
+        assert.equal(await page.locator('#ans').inputValue(),'main draft');
+        assert.equal(await page.locator('#labSimple').evaluate(e=>e.open),true);
+        assert.equal(await page.locator('#labExercise').evaluate(e=>e.open),true);
+        if(value!==null)assert.equal(await page.locator('[data-lab-control]').first().inputValue(),value);
+        if(await page.locator('#labMiniAnswer').count())assert.equal(await page.locator('#labMiniAnswer').inputValue(),'mini draft');
+        assert.equal(await state(page,'JSON.stringify({records,streak,pos,answeredCur})'),history,'Help cannot grade '+example.family);
+        await page.locator('#labReturn').click();assert.equal(await page.evaluate(()=>document.activeElement.id),'stepAnswer');
+      }
+      console.log('PASS all11 interactive families and nested draft roundtrips at '+width+'px');
+    }
+    await showTask(page,1);await page.locator('#ans').fill('retain previous');
+    await page.locator('#previous').click();assert.equal(await state(page,'pos'),0);
+    assert.equal(await page.locator('.course-return a').getAttribute('href'),'../oge/');
+
     const fractional = await state(page, 'TASKS.findIndex(task=>task.mode!=="numerator"&&!task.term)');
     await showTask(page, fractional);
     await page.locator('#hintToggle').click();
@@ -178,6 +245,7 @@ async function run() {
     assert.equal(await embedded.locator('#hintPanel').isVisible(), false);
     await embedded.locator('#hintToggle').click();
     assert.ok(await embedded.locator('#stepAnswer').isVisible());
+    await embedded.locator('#stepHelpToggle').click();assert.ok(await embedded.locator('#labOutput').isVisible());
     await embedded.locator('#ans').fill('-31/50');
     await embedded.locator('#check').click();
     assert.match(await embedded.locator('#mark').innerText(), /Верно/);
@@ -190,6 +258,7 @@ async function run() {
     await offline.goto(pathToFileURL(path.join(root, trainerPath.slice(1))).href);
     await initialScreen(offline);
     await offline.locator('#hintToggle').click();
+    await offline.locator('#stepHelpToggle').click();await offline.locator('#lab-candidate').fill('50');assert.ok(await offline.locator('#labOutput').isVisible());
     await offline.locator('#stepAnswer').fill(await exactStep(offline));
     await offline.locator('#stepAnswer').press('Enter');
     assert.ok((await offline.locator('#hintSteps').innerText()).trim());
@@ -205,6 +274,7 @@ async function run() {
     assert.deepEqual(requests, [], 'No external dependencies requested');
     await context.close();
     console.log('Task 6 minimal browser checks passed.');
+    console.log('TASK6_INTERACTIVE_HELP_OK');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));

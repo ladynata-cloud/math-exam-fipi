@@ -10,20 +10,54 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
   question paths and two tire-preparation states.
 - Independent source/DOM review passed on implementation head
   `7bdc391328bae5fabeb01b1e95e360ea9fb5a99f`; all 46 Node checks passed.
-  Release integration starts from the published task19 commit below. Cloud
-  browser checks (126 discovery cases and 39 retained route/viewport cases)
-  and publication remain pending.
-- Task6 deeper interactive help is separately in progress in PR287. It is not
-  published yet. Paid Claude API use remains deferred by the owner.
+  Release integration includes the task6 merge below. Cloud run39512336718
+  passed all46 Node tests,126 discovery cases and39 retained route/viewport
+  cases after two focused visual corrections; composed-head checks and
+  publication remain pending.
+- Task6 is a separate authorized release, recorded below. Paid Claude API use
+  remains deferred by the owner.
+
+## Published: task6 help inside every arithmetic step
+
+- [Scope](tasks/TASK6_INTERACTIVE_HELP.md): optional same-page experiments for
+  all 1,054 steps of the existing 174-task bank, covering 11 contextual families.
+- Preserve unfinished main/step answers, accepted work, model settings and
+  nested help on collapse and task navigation. Add visible previous-task and
+  course links. Bank bytes, grading and session-only progress remain unchanged.
+- Reviewed implementation head83e614726695d5f2b86beb2b16e299c0b5240d12 passed39
+  Node/JSDOM checks and independent exact-result checks for all1,054 steps.
+- PR287 merged as`813fdcc129b27e71cc83ebaa80bd590cf1d1f1f1`, sole parent
+  `df63bacb2f82acf5f8543297c372b414925d6113`, reviewed tree
+  `59ac827c1dca65393d118536f7dfeae5d853ae17`. All four final CI workflows
+  passed, including unified run39510657209. Independent visual review passed
+  after the direct-child CSS fix preserved straight fraction bars in power tiles.
+  Pages run39512745128 succeeded. The public HTML returned HTTP200,148344 bytes,
+  SHA256 `44ce6c8c70977007e9ea54a293ac2efe88ab32d1a2308f85a847989e9dc07f97`.
+  Live verification preserved main and step drafts, model settings and an open
+  explanation after help collapse, without awarding credit.
+- Tasks1–5, all8 story types, remain a separate authorized workstream. Paid
+  Claude API use remains deferred by the owner.
 
 ## Published: task19 owner feedback and analogous models
 
-- [Scope](tasks/TASK19_OWNER_FEEDBACK.md): implement the owner's34 annotated examples,
-  correct analogous geometric markings/controls, include genuine FIPI reference
-  excerpts and identify untouched cards. Work remains cloud-only.
-- Published commit `df63bacb2f82acf5f8543297c372b414925d6113`;
-  Pages run `39509146258` succeeded. Post-publication verification matched all
-  29 affected public files to the reviewed hashes.
+- [Scope](tasks/TASK19_OWNER_FEEDBACK.md): implement the owner's34 annotated
+  examples, correct analogous geometric markings/controls, include genuine
+  FIPI excerpts and identify untouched cards. Work remains cloud-only.
+- PR286 merged normally asdf63bacb2f82acf5f8543297c372b414925d6113,
+  parent43dc06bfa7bf503e3e9d455ced3ec05202b9e68e, reviewed tree
+  abcf87a3576003fe1fed0fe07b04f2db5cbaebe5. No unexpected concurrent commit.
+- Final task19 CI39508613716 passed both jobs and69 Node tests;150 owner-feedback
+  and162 family states had zero out-of-bounds labels. SEO39508613665 and focused
+  independent final review passed.
+- Pages39509146258 succeeded on the exact merged commit. All 29 published
+  runtime, reference PDF/image and offline HTML assets returned HTTP200 and
+  matched the reviewed byte hashes.
+- Public HTML: 4,952 bytes, SHA256
+  10d92b60b242229f24649f32cfcc96f9567e8959d54e5c5598b0f52c0eb2af28.
+  Core JavaScript: 36,985 bytes, SHA256
+  33eabacb0be4c9a3ee378851d68af7192c5b111821ee3e666b67d4c74484dca9.
+- Live browser verification exercised six linked sliders, their readouts and
+  retained state after reload. Help did not grade an answer automatically.
 
 ## Published: task13 interactive laboratories for every prototype
 
