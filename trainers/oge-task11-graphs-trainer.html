@@ -320,6 +320,22 @@ nav.tabs button .n{display:none}
 :focus-visible{outline:3px solid #b68013;outline-offset:4px}
 @media(max-width:540px){body{font-size:17px}.wrap{padding-left:12px;padding-right:12px}.card{padding:22px 15px}.matching-exercise h2{font-size:23px}#m4-graphs{gap:6px}#m4-graphs .gitem{padding:3px}.match-desc .row{padding:12px 10px;gap:8px}.match-desc .row>span:nth-child(2){font-size:1.05em}.match-desc select{font-size:16px;max-width:100%}#m4-hint{width:100%}.lab-layout{grid-template-columns:1fr}.lab-graph{max-width:400px;width:100%;margin:auto}.lab-families{gap:8px}.lab-families button{font-size:15px;padding:8px 10px}.next-row .btn{width:100%}.settings-content{padding:16px}.answer-line{align-items:center}}
 
+/* Help belongs to a particular formula; matching inputs stay mounted. */
+.match-desc .function-help{font:inherit;font-size:15px;min-height:44px;padding:8px 12px;border:1px solid #cbd6cc;border-radius:8px;background:#f1f5f1;color:var(--accent-dark);cursor:pointer}
+#t11-help-dialog{box-sizing:border-box;width:min(860px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:24px;border:1px solid var(--line);border-radius:16px;color:var(--ink);background:var(--paper);overflow:auto;overscroll-behavior:contain}
+#t11-help-dialog::backdrop{background:rgba(20,31,24,.45)}
+.function-help-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px;position:sticky;top:0;z-index:2;background:var(--paper);padding-bottom:12px}
+.function-help-heading h2{font-size:22px;margin:0}.function-help-heading button{flex-shrink:0}
+#t11-help-dialog .lab-layout{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+#t11-help-dialog .lab-formula{margin:0 0 12px}
+#t11-help-dialog .lab-graph{align-self:start}
+#t11-help-changed{font-size:15px;padding:12px 14px;margin:12px 0 20px;background:#eef2ed;border-radius:9px;line-height:1.8}
+#t11-help-changed p{margin:4px 0 10px}
+#t11-help-observation{border-left:3px solid #cbd9c8;padding-left:16px;margin-top:16px;line-height:1.85}
+#t11-help-look{font-size:16px;margin:16px 0}
+#t11-help-dialog .help-prompt{font-size:16px;margin:0 0 16px;color:var(--muted)}
+#t11-help-dialog .lab-readout{font-size:15px;margin:12px 0 18px}
+@media(max-width:540px){.match-desc .function-help{margin-left:auto}.function-help-heading{align-items:flex-start;gap:8px}.function-help-heading h2{font-size:20px}#t11-help-dialog{padding:18px 14px;width:calc(100% - 16px);max-height:calc(100dvh - 16px)}#t11-help-dialog .lab-layout{grid-template-columns:1fr}#t11-help-dialog .lab-graph{max-width:380px}.function-help-heading .btn{font-size:15px;padding:8px 10px}}
 </style>
 </head>
 <body>
@@ -659,6 +675,19 @@ nav.tabs button .n{display:none}
 </div>
 
 </main>
+
+<dialog id="t11-help-dialog" aria-labelledby="t11-help-title" aria-describedby="t11-help-prompt">
+  <div class="function-help-heading"><h2 id="t11-help-title">Исследуем функцию</h2><button type="button" class="btn" id="t11-help-close">К заданию</button></div>
+  <div class="lab-formula math" id="t11-help-formula"></div>
+  <p class="help-prompt" id="t11-help-prompt">Подвигай точку или измени формулу. Посмотри, что происходит с графиком.</p>
+  <div id="t11-help-changed" hidden><strong>Формула изменена</strong><p>В задании: <span class="math" id="t11-help-original"></span>. Серый график — из задания, зелёный — изменённый.</p><button type="button" class="btn" id="t11-help-reset">Вернуть формулу задания</button></div>
+  <div class="lab-layout">
+    <div class="lab-graph" id="t11-help-graph"></div>
+    <div><div id="t11-help-controls"></div><label class="lab-control" for="t11-help-x"><span>Передвинь зелёную точку</span><output id="t11-help-x-value" for="t11-help-x"></output><input id="t11-help-x" type="range" min="-5" max="5" step="0.5" value="1"></label><div class="lab-readout" id="t11-help-readout" aria-live="polite"></div></div>
+  </div>
+  <button type="button" class="btn" id="t11-help-start" aria-expanded="false" aria-controls="t11-help-observation">С чего начать?</button>
+  <section id="t11-help-observation" hidden><p id="t11-help-step"></p><button type="button" class="btn" id="t11-help-highlight" aria-expanded="false" aria-controls="t11-help-look">Покажи, где смотреть</button><p id="t11-help-look" hidden></p></section>
+</dialog>
 
 <footer class="site">
   <div class="wrap">
@@ -1640,18 +1669,17 @@ function gen42(){
       p,
       desc: '<span class="math">' + fmtQuad(p.a, p.b, p.c) + "</span>",
       plot: { fn: quadFn(p), color: COLORS.ink },
-      explain: "ветви " + (p.a > 0 ? "вверх" : "вниз") + "; <i>x</i><sub>0</sub> = " +
-        fracHtml(MIN + "(" + fnum(p.b) + ")", "2·(" + fnum(p.a) + ")") + " = " + fnum(p.x0) +
-        " — вершина " + (p.x0 < 0 ? "левее" : "правее") + " оси <i>y</i>; и контроль: <i>c</i> = " + fnum(p.c),
+      explain: "ветви направлены " + (p.a > 0 ? "вверх" : "вниз") + "; вершина " +
+        (p.x0 < 0 ? "левее" : "правее") + " оси <i>y</i>; на оси <i>y</i> график проходит через отметку " + fnum(p.c),
       sig: cb.join()
     };
   });
   return {
     title: "Тип 2. Формулы парабол и графики",
-    taskline: "Установи соответствие между формулами и графиками. Не угадывай: сначала знак <span class=\"math\"><i>a</i></span>, потом вершина через <span class=\"math\"><i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + "</span>.",
+    taskline: "Установи соответствие между формулами и графиками. Сравни направление ветвей и положение вершины относительно оси y.",
     items,
-    hint: "План из трёх шагов: 1) знак <i>a</i> — ветви; 2) <i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + " — вершина левее или правее; 3) если сомневаешься, сверь <i>c</i> с точкой на оси <i>y</i>.",
-    notice: "Пара «знак <i>a</i> + сторона вершины» различает любые две параболы здесь. Формула вершины надёжнее глазомера."
+    hint: "Сначала посмотри, куда направлены ветви. Затем — с какой стороны оси <i>y</i> находится вершина. Если у <i>a</i> и <i>b</i> одинаковые знаки, вершина слева; если разные — справа.",
+    notice: "Здесь параболы можно различить по направлению ветвей и стороне, на которой находится вершина. При одинаковых знаках <i>a</i> и <i>b</i> вершина слева от оси <i>y</i>, при разных — справа."
   };
 }
 function gen43(){
@@ -1695,8 +1723,8 @@ function gen44(){
     title: "Тип 4. Гиперболы",
     taskline: "Установи соответствие между формулами и графиками гипербол.",
     items,
-    hint: "Шаг 1: знак коэффициента — четверти (плюс: I и III, минус: II и IV). Шаг 2: подставь удобный <i>x</i> — получишь точку ветви и увидишь, как далеко она от осей.",
-    notice: "Гиперболу выдают четверти и «размах»: при <i>x</i> = 1 значение <i>y</i> равно коэффициенту."
+    hint: "Сначала сравни расположение ветвей: при положительном коэффициенте правая ветвь выше горизонтальной оси, при отрицательном — ниже. Затем сравни расстояние от осей при одном и том же <i>x</i>.",
+    notice: "Гиперболу выдают расположение ветвей и расстояние от осей. В лаборатории точка сама показывает высоту ветви — сравни графики при одном и том же <i>x</i>."
   };
 }
 function gen45(){
@@ -1704,30 +1732,30 @@ function gen45(){
   const items = fams.map(f => {
     if (f === "lin"){
       const L = genLine({ bNonZero: true });
-      return { desc: '<span class="math">' + fmtLin(L.k, L.b) + "</span>",
+      return { family: "lin", params: {k:L.k,b:L.b}, desc: '<span class="math">' + fmtLin(L.k, L.b) + "</span>",
         plot: { fn: x => L.k * x + L.b, color: COLORS.ink },
         explain: "прямая линия — линейная функция", sig: f };
     }
     if (f === "par"){
       const p = genParabola({ x0min: -2, x0max: 2 });
-      return { desc: '<span class="math">' + fmtQuad(p.a, p.b, p.c) + "</span>",
+      return { family: "par", params: {a:p.a,b:p.b,c:p.c}, desc: '<span class="math">' + fmtQuad(p.a, p.b, p.c) + "</span>",
         plot: { fn: quadFn(p), color: COLORS.ink },
         explain: "симметричная «чаша» — парабола, квадратичная функция", sig: f };
     }
     if (f === "hyp"){
       const m = pick([-4, -3, -2, 2, 3, 4]);
-      return { desc: '<span class="math">' + fmtHyp(m) + "</span>",
+      return { family: "hyp", params: {k:m}, desc: '<span class="math">' + fmtHyp(m) + "</span>",
         plot: { fn: x => m / x, color: COLORS.ink },
         explain: "две ветви, прижимающиеся к осям и не пересекающие их, — гипербола", sig: f };
     }
     if (f === "root"){
       const d = ri(-2, 2);
-      return { desc: '<span class="math">' + fmtRoot(d) + "</span>",
+      return { family: "root", params: {c:0,d}, desc: '<span class="math">' + fmtRoot(d) + "</span>",
         plot: { fn: x => Math.sqrt(x) + d, color: COLORS.ink, domain: [0, 7] },
         explain: "график начинается на границе <i>x</i> = 0 и медленно растёт вправо — корень", sig: f };
     }
     const n = pick([-3, -2, -1, 1, 2, 3]);
-    return { desc: '<span class="math">' + fmtConst(n) + "</span>",
+    return { family: "constant", params: {b:n}, desc: '<span class="math">' + fmtConst(n) + "</span>",
       plot: { fn: () => n, color: COLORS.ink },
       explain: "горизонтальная прямая на высоте " + fnum(n) + " — постоянная функция", sig: f };
   });
@@ -1738,6 +1766,24 @@ function gen45(){
     hint: "Не считай коэффициенты сразу. Сначала назови семейство: прямая, парабола, гипербола, корень или горизонтальная прямая.",
     notice: "В смешанных задачах первый вопрос всегда один: «к какому семейству относится график?» Дальше всё решается само."
   };
+}
+/* One ordinary first visit starts with three unmistakably different shapes. */
+function m4Starter(){
+  const items=[
+    {family:'lin',params:{k:1,b:0},desc:'<span class="math">'+fmtLin(1,0)+'</span>',plot:{fn:x=>x,color:COLORS.ink},explain:'прямая поднимается слева направо',sig:'lin'},
+    {family:'par',params:{a:1,b:0,c:0},desc:'<span class="math">'+fmtQuad(1,0,0)+'</span>',plot:{fn:x=>x*x,color:COLORS.ink},explain:'парабола похожа на чашу, её ветви направлены вверх',sig:'par'},
+    {family:'hyp',params:{k:1},desc:'<span class="math">'+fmtHyp(1)+'</span>',plot:{fn:x=>1/x,color:COLORS.ink},explain:'у гиперболы две отдельные ветви, приближающиеся к осям',sig:'hyp'}
+  ];
+  const order=shuffle([0,1,2]);
+  return {type:'t45',starter:true,title:'Разные виды графиков',taskline:'Найди график каждой функции.',items,order,key:LETTERS.map((_,i)=>order.indexOf(i)+1),notice:'Прямая, чаша и две отдельные ветви: сначала сравни форму.',hint:'Сравни форму графиков.'};
+}
+function m4UseStarter(){
+  if(M4.task || M4.type!=='rand' || M4.review || CP.REVIEW || CP.RO) return false;
+  try {
+    if(localStorage.getItem('mathexam.task11.discoverySeen.v1') || CP.readAll()[TID]) return false;
+    localStorage.setItem('mathexam.task11.discoverySeen.v1','1');
+  } catch(e) { /* Private or blocked storage still allows the first exercise. */ }
+  return true;
 }
 const GEN11 = { t41: gen41, t42: gen42, t43: gen43, t44: gen44, t45: gen45 };
 /* задача типа type: у трёх пунктов разные признаки; order[pos] — пункт на графике pos + 1; key[i] — график буквы i */
@@ -1756,7 +1802,7 @@ function m4Make(type){
 /* признаки типа — что проверить у каждого пункта (решение D32) */
 const FEAT_TYPE = {
   t41: "куда смотрят ветви (знак <i>a</i>) и где парабола пересекает ось <i>y</i> (знак <i>c</i>)",
-  t42: "знак <i>a</i> и сторону вершины: <i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>"),
+  t42: "направление ветвей и сторону, на которой находится вершина относительно оси <i>y</i>",
   t43: "знак <i>k</i> — прямая возрастает или убывает — и точку (0; <i>b</i>)",
   t44: "четверти (знак коэффициента) и удалённость ветвей от осей (модуль коэффициента)",
   t45: "семейство графика: прямая, парабола, гипербола, корень или горизонтальная прямая"
@@ -1764,7 +1810,7 @@ const FEAT_TYPE = {
 /* признак, которым различаются два пункта (творительный падеж для «различаются …») */
 const FEAT_NAME = {
   a: "знаком <i>a</i> (куда смотрят ветви)", c: "знаком <i>c</i> (где парабола пересекает ось <i>y</i>)",
-  side: "стороной вершины (<i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + ")",
+  side: "положением вершины слева или справа от оси <i>y</i>",
   k: "знаком <i>k</i> (прямая возрастает или убывает)", b: "знаком <i>b</i> (точка (0; <i>b</i>) на оси <i>y</i>)",
   hypq: "четвертями (знаком коэффициента)", hypm: "удалённостью ветвей от осей (модулем коэффициента)",
   family: "семейством графика"
@@ -1800,7 +1846,8 @@ function renderMatch(T, host, idp){
   T.items.forEach((it, i) => {
     h += '<div class="row"><span class="letter">' + LETTERS[i] + ')</span> <span>' + it.desc + '</span>' +
       '<select data-i="' + i + '" aria-label="график для пункта ' + LETTERS[i] + '">' +
-      '<option value="">график…</option><option>1</option><option>2</option><option>3</option></select></div>';
+      '<option value="">график…</option><option>1</option><option>2</option><option>3</option></select>' +
+      (idp==='m4' ? '<button type="button" class="function-help" data-i="'+i+'" aria-label="Нужна помощь с функцией '+LETTERS[i]+'?" aria-haspopup="dialog" aria-controls="t11-help-dialog">Нужна помощь?</button>' : '') + '</div>';
   });
   h += '</div><div class="answer-line"><label for="' + idp + '-answer">Ответ одной строкой:</label>' +
     '<input class="ans" id="' + idp + '-answer" inputmode="numeric" maxlength="3" placeholder="312" autocomplete="off"></div>';
@@ -1811,6 +1858,7 @@ function renderMatch(T, host, idp){
     gr.querySelectorAll(".gitem").forEach(x => { x.classList.remove("big"); x.setAttribute("aria-expanded", "false"); });
     if (on){ b.classList.add("big"); b.setAttribute("aria-expanded", "true"); }
   }));
+  host.querySelectorAll('.function-help').forEach(button=>button.addEventListener('click',()=>Task11Discovery.open(Number(button.dataset.i),button)));
   const sels = [...host.querySelectorAll("#" + idp + "-desc select")], txt = host.querySelector("#" + idp + "-answer");
   /* строка и списки синхронны в обе стороны (решение D33) */
   sels.forEach(sel => sel.addEventListener("change", () => {
@@ -1839,6 +1887,7 @@ function m4Msg(T, d, attempts){
 }
 function m4Banner(html){ const b = $("m4-review"); if (!b) return; b.classList.toggle("show", !!html); b.innerHTML = html; }
 function m4New(){
+  if(window.Task11Discovery) Task11Discovery.resetForTask();
   fbHide($("m4-hintbox"), $("m4-soft"), $("m4-good"), $("m4-razbor"));
   let type = M4.type === "rand" ? pick(["t42", "t43", "t44", "t45"]) : M4.type;
   if (M4.review){
@@ -1846,7 +1895,7 @@ function m4New(){
     if (open.length) type = pick(open);
     else { M4.review = false; m4Banner("<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип выше."); }
   }
-  const T = m4Make(type);
+  const T = m4UseStarter() ? m4Starter() : m4Make(type);
   Object.assign(M4, { task: T, attempts: 0, lastTry: null, missed: false, shown: false, done: false, razborStep: 0 });
   const topicNames = {t41:"Знаки a и c",t42:"Параболы",t43:"Прямые",t44:"Гиперболы",t45:"Разные виды графиков"};
   $("m4-title").textContent = topicNames[T.type];
@@ -1954,7 +2003,7 @@ const Task11Lab = (() => {
     if (!defined) pointText = kind==='hyp' ? 'При x = 0 значение не определено: на ноль делить нельзя.' : 'При x = '+fnum(x)+' под корнем получается отрицательное число. Такой точки на графике нет.';
     else {
       const approximate = Math.abs(y*100-Math.round(y*100))>1e-8;
-      pointText = 'При x = '+fnum(x)+' получаем y '+(approximate?'≈':'=')+' '+fnum(y)+'. '+(pointVisible?'Зелёная точка показывает это значение.':'Эта точка за краем рисунка; выбери x ближе к нулю или измени формулу.');
+      pointText = 'При x = '+fnum(x)+' получаем y '+(approximate?'≈':'=')+' '+fnum(y)+'. '+(pointVisible?'Зелёная точка показывает это значение.':kind==='hyp'?'Эта точка за краем рисунка; передвинь x дальше от нуля, чтобы точка приблизилась к горизонтальной оси.':'Эта точка за краем рисунка; передвинь точку или измени формулу.');
     }
     return {formula,fn,plot:{fn,color:'#253e30',domain},marks,insight,pointText,y,defined,pointVisible};
   }
@@ -1991,6 +2040,162 @@ const Task11Lab = (() => {
   return {mount,model,families};
 })();
 window.Task11Lab = Task11Lab;
+
+/* A separate exploration for each formula. It never reads the matching key,
+   changes the matching DOM, submits an answer or writes course progress. */
+const Task11Discovery = (() => {
+  const dialog=$('t11-help-dialog');
+  let states=[], index=null, trigger=null;
+  const get=id=>$('t11-help-'+id);
+  function descriptor(item){
+    if(item.family && item.params) return {kind:item.family,values:Object.assign({},item.params)};
+    if(item.p) return {kind:'par',values:{a:item.p.a,b:item.p.b,c:item.p.c}};
+    if(item.L) return {kind:'lin',values:{k:item.L.k,b:item.L.b}};
+    if(typeof item.m==='number') return {kind:'hyp',values:{k:item.m}};
+    throw Error('Function parameters are missing');
+  }
+  function current(){ return index===null ? null : states[index]; }
+  function changed(s){return Object.keys(s.original).some(k=>s.values[k]!==s.original[k]);}
+  function initialX(kind,v){
+    if(kind==='root') return v.c;
+    if(kind==='hyp') return hypPoint(v.k)[0];
+    if(kind==='par') return Math.max(-5,Math.min(5,-v.b/(2*v.a)));
+    return 0;
+  }
+  function observation(s){
+    const v=s.values;
+    if(s.kind==='lin') return 'Передвинь зелёную точку слева направо. '+(v.k>0?'Прямая поднимается: коэффициент перед x положительный.':v.k<0?'Прямая опускается: перед x стоит минус.':'Точка остаётся на одной высоте: прямая горизонтальна.');
+    if(s.kind==='par') return 'Посмотри на концы ветвей: они направлены '+(v.a>0?'вверх. Коэффициент перед x² положительный.':'вниз. Перед x² стоит минус.');
+    if(s.kind==='hyp') return v.k>0?'Справа ветвь выше горизонтальной оси, слева — ниже. В числителе положительное число.':'Справа ветвь ниже горизонтальной оси, слева — выше. Перед дробью стоит минус.';
+    if(s.kind==='root') return 'Найди начало графика. От этой точки линия идёт только вправо: слева продолжения нет.';
+    return 'Передвинь зелёную точку. Она движется вправо или влево, но остаётся на одной высоте.';
+  }
+  function deeper(s){
+    if(s.kind==='lin') return 'Ось y выделена пунктиром. Оранжевая точка показывает пересечение с ней. Измени b: точка поднимется или опустится.';
+    if(s.kind==='par'){
+      const x=-s.values.b/(2*s.values.a),y=s.values.a*x*x+s.values.b*x+s.values.c;
+      return (Math.abs(x)>6||Math.abs(y)>6?'Вершина сейчас за краем рисунка. Верни формулу задания, чтобы снова её увидеть. ':'Оранжевая точка — вершина. ')+'Пунктир делит параболу на две зеркальные части. Измени b и посмотри, куда сдвинется эта линия.';
+    }
+    if(s.kind==='hyp'){
+      if(s.pointX===0)return 'На вертикальной оси у гиперболы нет точки. Передвинь ползунок вправо или влево, чтобы сравнить высоту ветвей.';
+      const currentVisible=Math.abs(s.values.k/s.pointX)<=6,originalVisible=Math.abs(s.original.k/s.pointX)<=6;
+      const locations=(originalVisible?'Серая точка — на графике задания. ':'Серая точка исходного графика сейчас за краем рисунка. ')+(currentVisible?'Зелёная точка — на исследуемой ветви. ':'Зелёная точка исследуемой ветви сейчас за краем рисунка. ');
+      return 'Пунктир помогает сравнить высоту ветви при одном и том же x. '+locations+(!currentVisible||!originalVisible?'Передвинь x дальше от нуля, чтобы обе точки появились на рисунке.':'Измени k и сравни, как перемещается зелёная точка относительно серой.');
+    }
+    if(s.kind==='root') return 'Начало выделено оранжевым. Передвинь зелёную точку вправо: линия продолжается от начала и постепенно становится более пологой.';
+    return 'Оранжевый след горизонтален. Передвинь точку: её высота останется той же. Измени число в формуле — весь след поднимется или опустится.';
+  }
+  /* Overlay uses exactly the same fixed world (-6.8..6.8) as task thumbnails. */
+  function highlight(s,m){
+    const px=x=>(x+6.8)*360/13.6, py=y=>(6.8-y)*360/13.6;
+    const visible=(x,y)=>Number.isFinite(x)&&Number.isFinite(y)&&Math.abs(x)<=6&&Math.abs(y)<=6;
+    let h='';
+    const line=(x1,y1,x2,y2,color='#b5730a')=>{if(visible(x1,y1)&&visible(x2,y2))h+='<line x1="'+px(x1)+'" y1="'+py(y1)+'" x2="'+px(x2)+'" y2="'+py(y2)+'" stroke="'+color+'" stroke-width="3" stroke-dasharray="7 5"/>';};
+    const point=(x,y,color='#b5730a',r=7)=>{if(visible(x,y))h+='<circle cx="'+px(x)+'" cy="'+py(y)+'" r="'+r+'" fill="'+color+'" stroke="white" stroke-width="2"/>';};
+    if(s.kind==='lin'){line(0,-6,0,6);point(0,s.values.b);}
+    else if(s.kind==='par'){
+      const vx=-s.values.b/(2*s.values.a);line(vx,-6,vx,6);point(vx,m.fn(vx));
+    } else if(s.kind==='hyp'){
+      const x=s.pointX;
+      line(x,-6,x,6);point(x,s.original.k/x,'#8a948d',9);point(x,s.values.k/x,'#176c52',6);
+    } else if(s.kind==='root'){
+      point(s.values.c,s.values.d);line(s.values.c,s.values.d,Math.min(6,s.values.c+1.5),s.values.d);
+    } else {line(-6,s.values.b,6,s.values.b);point(s.pointX,s.values.b,'#176c52',6);}
+    return '<g data-discovery-highlight="'+s.kind+'" aria-hidden="true" pointer-events="none">'+h+'</g>';
+  }
+  function draw(){
+    const s=current();if(!s)return;
+    const m=Task11Lab.model(s.kind,s.values,s.pointX), edited=changed(s);
+    get('formula').innerHTML=m.formula;
+    get('changed').hidden=!edited;
+    get('original').innerHTML=Task11Lab.model(s.kind,s.original,s.pointX).formula;
+    const plots=[];
+    if(edited){const original=Task11Lab.model(s.kind,s.original,s.pointX);plots.push(Object.assign({},original.plot,{color:'#a8afa9',w:2}));}
+    plots.push(Object.assign({},m.plot,{color:'#176c52',w:3}));
+    /* Show one moving point first; symmetry and start markers unfold on demand. */
+    const marks=m.pointVisible?[{type:'point',x:s.pointX,y:m.y,color:'#176c52',r:6}]:[];
+    let svg=svgGraph(plots,marks,{size:360});
+    if(s.highlighted) svg=svg.replace('</svg>',highlight(s,m)+'</svg>');
+    get('graph').innerHTML=svg;
+    get('graph').firstElementChild.setAttribute('aria-label',Task11Lab.families[s.kind].name+'. '+m.pointText);
+    get('readout').textContent=m.pointText;
+    get('x-value').textContent='x = '+fnum(s.pointX);
+    get('controls').querySelectorAll('[data-param]').forEach(control=>{
+      const key=control.dataset.param;control.value=s.values[key];
+      const output=get('param-'+key+'-value');if(output)output.textContent=fnum(s.values[key]);
+    });
+    get('start').setAttribute('aria-expanded',String(s.started));
+    get('start').textContent=s.started?'Скрыть первый шаг':'С чего начать?';
+    get('observation').hidden=!s.started;
+    get('step').textContent=observation(s);
+    get('highlight').setAttribute('aria-expanded',String(s.highlighted));
+    get('highlight').textContent=s.highlighted?'Скрыть выделение':'Покажи, где смотреть';
+    get('look').hidden=!s.highlighted;
+    get('look').textContent=deeper(s);
+  }
+  function controls(){
+    const s=current();
+    get('controls').innerHTML=Task11Lab.families[s.kind].params.map(([key,label,min,max])=>{
+      const value=s.values[key],original=s.original[key],id='t11-help-param-'+key;
+      if(Array.isArray(min)){
+        const options=Array.from(new Set(min.concat(original))).sort((a,b)=>a-b);
+        return '<label class="lab-control" for="'+id+'"><span>'+label+'</span><select id="'+id+'" data-param="'+key+'">'+options.map(n=>'<option value="'+n+'"'+(n===value?' selected':'')+'>'+fnum(n)+'</option>').join('')+'</select></label>';
+      }
+      min=Math.min(min,original);max=Math.max(max,original);
+      return '<label class="lab-control" for="'+id+'"><span>'+label+'</span><output id="'+id+'-value" for="'+id+'">'+fnum(value)+'</output><input id="'+id+'" data-param="'+key+'" type="range" min="'+min+'" max="'+max+'" step="1" value="'+value+'"></label>';
+    }).join('');
+    get('controls').querySelectorAll('[data-param]').forEach(control=>control.addEventListener('input',()=>{
+      s.values[control.dataset.param]=Number(control.value);
+      if(s.kind==='root'){get('x').min=String(s.values.c);if(s.pointX<s.values.c)s.pointX=s.values.c;get('x').value=String(s.pointX);}
+      draw();
+    }));
+    get('x').min=s.kind==='root'?String(s.values.c):'-5';
+    get('x').value=String(s.pointX);
+  }
+  function close(returnFocus=true){
+    if(!dialog.open)return;
+    if(typeof dialog.close==='function')dialog.close();else dialog.removeAttribute('open');
+    if(returnFocus&&trigger&&trigger.isConnected)trigger.focus({preventScroll:true});
+  }
+  function open(i,button){
+    if(!M4.task||!Number.isInteger(i)||i<0||i>=M4.task.items.length)return;
+    index=i;trigger=button||document.querySelector('#m4-desc .function-help[data-i="'+i+'"]');
+    if(!states[i]){
+      const d=descriptor(M4.task.items[i]);
+      states[i]={kind:d.kind,original:Object.assign({},d.values),values:d.values,pointX:initialX(d.kind,d.values),started:false,highlighted:false};
+    }
+    get('title').textContent='Функция '+LETTERS[i];
+    controls();draw();
+    if(!dialog.open){if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');}
+    get('close').focus({preventScroll:true});dialog.scrollTop=0;
+  }
+  get('close').addEventListener('click',()=>close());
+  dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
+  dialog.addEventListener('keydown',event=>{
+    if(event.key==='Escape'){event.preventDefault();close();}
+    else if(event.key==='Tab'){
+      const nodes=[...dialog.querySelectorAll('button,input,select')].filter(node=>!node.disabled&&!node.closest('[hidden]'));
+      const first=nodes[0],last=nodes[nodes.length-1];
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+    }
+  });
+  get('x').addEventListener('input',()=>{const s=current();if(s){s.pointX=Number(get('x').value);draw();}});
+  get('start').addEventListener('click',()=>{const s=current();if(s){s.started=!s.started;if(!s.started)s.highlighted=false;draw();}});
+  get('highlight').addEventListener('click',()=>{const s=current();if(s){s.highlighted=!s.highlighted;draw();}});
+  get('reset').addEventListener('click',()=>{
+    const s=current();if(!s)return;
+    s.values=Object.assign({},s.original);s.pointX=initialX(s.kind,s.original);controls();draw();
+    get('x').focus({preventScroll:true});
+  });
+  return {
+    open,close,
+    resetForTask(){close(false);states=[];index=null;trigger=null;},
+    getState(){const s=current();return s?{index,kind:s.kind,values:Object.assign({},s.values),pointX:s.pointX,started:s.started,highlighted:s.highlighted,changed:changed(s)}:null;}
+  };
+})();
+window.Task11Discovery=Task11Discovery;
+
 
 /* =================== МОДУЛЬ 5. ДИАГНОСТИКА =================== */
 function renderDiagnostics(){

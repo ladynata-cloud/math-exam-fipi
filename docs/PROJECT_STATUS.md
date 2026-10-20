@@ -1,23 +1,40 @@
 # MathExam project status
 
-Updated: 2026-10-20 (Asia/Novosibirsk)
+Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task19 interactive discoveries
+## In progress: task11 visual discovery and help inside help
 
-- Owner requests a meaningful interactive model for every existing assertion,
-  with simple directions leading to an observation or counterexample.
-- Scope: [233 active cards](tasks/TASK19_INTERACTIVE_DISCOVERIES.md), both public
-  entry pages and standalone download. Original statements, truth labels,
-  source identities and former records remain compatible.
-- Initial audit found117 SVG-only hints and17 completely locked models.
-  The user example prev-019 will preserve CM=AM=BM as C moves.
-- Claude is still unavailable for insufficient API credits; the previous
-  PR278 exception is specific to that release. At2026-10-21T01:36:59+07:00
-  the owner deferred Claude API use until a difficult creative question arises.
-  Current task19 proceeds with independent internal review and technical gates;
-  no new provider call or approval is claimed.
-- Next: implement all constrained experiments, run exhaustive action/math/state
-  and cloud browser gates, then resolve exact-head release review and publish.
+- Owner requests a public trainer that demonstrates a useful first success
+  without requiring arithmetic. Every function gets its own interactive help,
+  then an optional observation and a deeper visual highlight.
+- Scope: [task11 discovery](tasks/TASK11_VISUAL_DISCOVERY.md), existing matching
+  page, focused tests and workflow. Three graphs and three functions remain;
+  opening help preserves choices and never grades automatically.
+- First ordinary visit starts with three distinct shapes. Each function keeps
+  an independent experiment; changed formulas are labelled and can be reset.
+- Local17 learner/math tests and668 algebra contracts passed. Independent review
+  and exact-head cloud browser/mobile/keyboard gates are next.
+- The owner deferred Claude API use until a difficult creative question arises.
+  No provider call, billing change or external approval is claimed.
+- Closing the full working course is a future separately scoped task. Public
+  standalone trainers remain available; no account/access policy changes here.
+
+## Published: task19 interactive discoveries
+
+- PR279 merged normally as3c17e78bc738a58d94ef340fef17242d679871aa;
+  parent923c326dc08918c75a8ac26279c4b094a5d0c68c, reviewed tree
+  005e814480244895c25145d118fe163b155c64fd. No base drift.
+- All233 active hints have constrained geometric controls and optional
+  measurements. Original assertion text, truths, IDs and source audit remain.
+- Exact-head53 tests and all233 browser journeys passed;38 used families at
+  320/360/1280px,176 label states with0 out-of-viewBox labels. Independent
+  geometry/state and pedagogical review passed; all38 family screenshots were
+  inspected. Three scale-only equilateral models now visibly scale linearly.
+- CI39479183994 and SEO39479184129 passed. Pages39479619833 succeeded;
+  all13 public assets returned200 and matched source SHA-256. Live median
+  movement, measurements and retained state after reload were verified.
+- Owner instruction at2026-10-21T01:36:59+07:00 deferred Claude API use.
+  No provider approval is claimed; no backend or learner-account change.
 
 ## Published: basic OGE task-first course and nested help
 
