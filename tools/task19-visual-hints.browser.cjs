@@ -33,13 +33,47 @@ async function startServer() {
 async function noOverflow(page, label) {
   const overflow = await page.evaluate(() => {
     const width = document.documentElement.clientWidth;
-    const selectors = ['main','.exercise','#statement','#hintPanel','#visualHost','#visualHost svg','#visualHost input'];
+    const selectors = ['main','.exercise','#statement','#hintPanel','#visualHost','#visualHost svg','#visualHost input','#visualHost button','#visualHost .t19-model-readout'];
     return selectors.flatMap(selector=>[...document.querySelectorAll(selector)].filter(el=>el.getClientRects().length).map(el=>({
       selector,left:el.getBoundingClientRect().left,right:el.getBoundingClientRect().right,width
     }))).filter(r=>r.left < -1 || r.right > r.width+1);
   });
   assert.deepEqual(overflow,[],label+' fits the viewport');
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth+1),label+' has no page horizontal scroll');
+}
+
+const readout = page => page.locator('#visualHost .t19-model-readout');
+const measure = page => page.locator('#visualHost .t19-measure');
+async function savedState(page) { return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),KEY); }
+async function assertUnanswered(page, previous, label) {
+  assert.equal(await page.locator('#answerPanel').isVisible(),false,label+': the learner still decides');
+  assert.equal(await page.locator('#answerExplanation').textContent(),'',label+': no premature verdict');
+  assert.deepEqual((await savedState(page)).records,previous.records,label+': experiments do not record answers');
+  assert.equal((await savedState(page)).current.answer,null,label+': no implicit answer');
+}
+async function measureUsingKeyboard(page) {
+  const button=measure(page);
+  if(!await readout(page).isVisible()){
+    assert.equal(await button.innerText(),'Измерить');await button.focus();await page.keyboard.press('Enter');
+  }
+  assert.equal(await button.innerText(),'Скрыть измерения');
+  assert.equal(await readout(page).isVisible(),true,'Measurement reveals numerical observations');
+  assert.match(await readout(page).innerText(),/\d/,'Measurements contain actual values');
+}
+async function sampleCurrentModel(page,card) {
+  return page.evaluate(({hint,key})=>{
+    const state=JSON.parse(localStorage.getItem(key));
+    return window.Task19Visuals.sample(hint.model,{...hint.params,...state.current.modelState.params});
+  },{hint:card.hint,key:KEY});
+}
+const distance=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
+const near=(a,b,label)=>assert(Math.abs(a-b)<1e-7,label+': '+a+' ≈ '+b);
+async function moveSlider(page,slider) {
+  const initial=Number(await slider.inputValue()),min=Number(await slider.getAttribute('min')),max=Number(await slider.getAttribute('max'));
+  const drawing=await page.locator('#visualHost svg').innerHTML(),numbers=await readout(page).textContent();
+  await slider.focus();await page.keyboard.press(initial-min>max-initial?'ArrowLeft':'ArrowRight');
+  assert.notEqual(Number(await slider.inputValue()),initial,'A visible control changes by keyboard');
+  return (await page.locator('#visualHost svg').innerHTML())!==drawing||(await readout(page).textContent())!==numbers;
 }
 
 async function main() {
@@ -85,6 +119,8 @@ async function main() {
         assert.equal(await page.locator('#hintPanel').isVisible(),true);
         assert.equal(await page.locator('#hintToggle').getAttribute('aria-expanded'),'true');
         assert(await page.locator('#visualHost svg').count());
+        assert.equal(await measure(page).isVisible(),true);
+        assert.equal(await readout(page).isVisible(),false,'Values wait for a deliberate measurement');
         assert.equal(await page.locator('#answerPanel').isVisible(),false);
         assert.equal(await page.locator('#progressText').textContent(),before);
         await noOverflow(page,file+' hint');
@@ -105,6 +141,26 @@ async function main() {
       assert.notEqual(await slider.inputValue(),value);
       assert.notEqual(await page.locator('#visualHost svg').innerHTML(),drawing);
       assert.equal(await page.locator('#answerPanel').isVisible(),false);
+      const experiment=await savedState(page),progressBeforeMeasurement=await page.locator('#progressText').textContent();
+      assert.equal(await readout(page).isVisible(),false,'Moving a shape does not reveal measurements automatically');
+      await measureUsingKeyboard(page);
+      await assertUnanswered(page,experiment,'Keyboard measurement');
+      assert.equal(await page.locator('#progressText').textContent(),progressBeforeMeasurement);
+      const changedValue=await slider.inputValue(),changedDrawing=await page.locator('#visualHost svg').innerHTML(),measuredText=await readout(page).innerText();
+      const modelState=(await savedState(page)).current.modelState;
+      assert.equal(modelState.measured,true,'Deliberate measurement is persisted');
+      assert(Object.keys(modelState.params).length>0,'Editable parameters are persisted');
+      await page.locator('#hintToggle').click();await page.locator('#hintToggle').click();
+      assert.equal(await slider.inputValue(),changedValue,'Closing a hint keeps the chosen parameter');
+      assert.equal(await readout(page).innerText(),measuredText,'Closing a hint keeps its measurement');
+      await page.reload();
+      assert.equal(await page.locator('#hintPanel').isVisible(),true);
+      assert.equal(await slider.inputValue(),changedValue,'Reload keeps the chosen parameter');
+      assert.equal(await page.locator('#visualHost svg').innerHTML(),changedDrawing,'Reload restores the actual model');
+      assert.equal(await readout(page).isVisible(),true,'Reload keeps a deliberate measurement');
+      assert.equal(await readout(page).innerText(),measuredText);
+      assert.deepEqual((await savedState(page)).current.modelState,modelState,'The full experiment state survives reload');
+      await assertUnanswered(page,experiment,'Restored experiment');
       await noOverflow(page,'Keyboard rhombus');
       await page.screenshot({path:path.join(artifacts,'02-hint-mobile.png'),fullPage:true});
       await page.locator('#btnTrue').focus();await page.keyboard.press('Enter');
@@ -125,14 +181,50 @@ async function main() {
       assert.equal(await page.locator('#answerExplanation').textContent(),'');
     });
 
+    await check('all 233 statements have a genuine model action without grading or an early answer',async()=>{
+      assert.equal(cards.length,233,'The full canonical corpus is exercised');
+      await page.evaluate(()=>localStorage.clear());
+      await page.setViewportSize({width:360,height:900});
+      let adjustable=0,fixedMeasurements=0;
+      for(const card of cards){
+        assert.equal(typeof card.hint.model,'string',card.id+': a working model replaces static hints');
+        assert(card.hint.model.length>0,card.id+': model is named');
+        await go('task19-trainer.html',card.id);
+        const before=await savedState(page),progress=await page.locator('#progressText').textContent();
+        assert.equal(await page.locator('#hintPanel').isVisible(),false,card.id+': a new task starts closed');
+        await page.locator('#hintToggle').click();
+        assert.equal(await page.locator('#visualHost svg').isVisible(),true,card.id+': a diagram appears immediately');
+        assert((await page.locator('#hintPrompt').innerText()).trim().length>20,card.id+': actionable observation prompt');
+        assert.equal(await readout(page).isVisible(),false,card.id+': no measurements before action');
+        assert.equal(await measure(page).isVisible(),true,card.id+': measurement is available');
+        const sliders=page.locator('#visualHost input[type=range]');
+        let changed=false;
+        for(let i=0;i<await sliders.count();i++){
+          assert.equal(await sliders.nth(i).isVisible(),true,card.id+': control is usable');
+          assert.equal(await sliders.nth(i).isDisabled(),false,card.id+': control is enabled');
+          changed=await moveSlider(page,sliders.nth(i))||changed;
+        }
+        if(await sliders.count()){assert(changed,card.id+': an adjustable model changes its geometry or numerical measurements');adjustable++;}
+        else fixedMeasurements++;
+        await assertUnanswered(page,before,card.id+' manipulation');
+        await measureUsingKeyboard(page);
+        await assertUnanswered(page,before,card.id+' measurement');
+        assert.equal(await page.locator('#progressText').textContent(),progress,card.id+': progress unchanged');
+        await noOverflow(page,card.id+' action');
+      }
+      assert(adjustable>0,'Adjustable geometry is covered');assert.equal(adjustable+fixedMeasurements,233,'Every card has a meaningful action');
+      console.log('ACTION_COVERAGE '+JSON.stringify({total:cards.length,adjustable,fixedMeasurements}));
+    });
+
     await check('all diagram families fit mobile and desktop with adjustable boundaries',async()=>{
       const representatives = [...new Map(cards.map(c=>[c.hint.model || 'static-svg',c])).values()];
-      for (const width of [360,1280]) {
+      for (const width of [320,360,1280]) {
         await page.setViewportSize({width,height:900});
         for (const card of representatives) {
           await go('task19-trainer.html',card.id);
           if (!await page.locator('#hintPanel').isVisible()) await page.locator('#hintToggle').click();
           assert.equal(await page.locator('#answerPanel').isVisible(),false,card.id+' no revealed explanation');
+          const before=await savedState(page);
           await noOverflow(page,card.id+' '+width);
           const sliders = page.locator('#visualHost input[type=range]');
           for (let i=0;i<await sliders.count();i++) {
@@ -142,10 +234,48 @@ async function main() {
             await noOverflow(page,card.id+' maximum '+i);
           }
           assert.equal(await page.locator('#answerPanel').isVisible(),false);
+          await measureUsingKeyboard(page);
+          await assertUnanswered(page,before,card.id+' boundary experiment');
+          await noOverflow(page,card.id+' measured '+width);
         }
+        await go();if(!await page.locator('#hintPanel').isVisible())await page.locator('#hintToggle').click();await measureUsingKeyboard(page);
+        await page.screenshot({path:path.join(artifacts,'families-'+width+'.png'),fullPage:true});
       }
       await go();
       await page.screenshot({path:path.join(artifacts,'04-desktop.png'),fullPage:true});
+    });
+
+    await check('prev-019 keeps the median on its circle at every keyboard boundary',async()=>{
+      const card=cards.find(c=>c.id==='prev-019');assert(card);assert.equal(card.hint.model,'triangleMedianCircle');
+      await go('task19-trainer.html',card.id);await page.locator('#hintToggle').click();
+      const before=await savedState(page),sliders=page.locator('#visualHost input[type=range]');assert(await sliders.count(),'The vertex can move while preserving the premise');
+      const invariant=async()=>{
+        const s=await sampleCurrentModel(page,card),P=s.points,M=P.M||P.O;assert(M&&P.A&&P.B&&P.C,'The geometry exposes the median endpoints');
+        near(distance(M,P.A),distance(M,P.B),'M is the midpoint of AB');
+        near(distance(M,P.A),distance(M,P.C),'MC is half of AB');
+        near(distance(M,P.A)*2,distance(P.A,P.B),'AB stays a diameter');
+        const u=[P.A[0]-P.C[0],P.A[1]-P.C[1]],v=[P.B[0]-P.C[0],P.B[1]-P.C[1]];
+        near((u[0]*v[0]+u[1]*v[1])/(Math.hypot(...u)*Math.hypot(...v)),0,'Angle ACB stays right');
+      };
+      await invariant();
+      for(let i=0;i<await sliders.count();i++)for(const key of ['Home','End']){await sliders.nth(i).focus();await page.keyboard.press(key);await invariant();await noOverflow(page,'prev-019 '+key);}
+      await measureUsingKeyboard(page);await assertUnanswered(page,before,'Constrained median experiment');
+      const state=(await savedState(page)).current.modelState;await page.reload();assert.deepEqual((await savedState(page)).current.modelState,state);await invariant();
+      await page.screenshot({path:path.join(artifacts,'median-circle-constraint.png'),fullPage:true});
+    });
+
+    await check('given triangle lengths remain fixed during an explicit measurement',async()=>{
+      for(const [id,lengths]of [['prev-038',[2,3,5]],['tri_1_2_4_exists',[1,2,4]],['tri_2_4_6_not_exist',[2,4,6]],['reference-026',[1,2,4]]]){
+        const card=cards.find(c=>c.id===id);assert(card,id);assert(card.hint.model,id+': a working model is present');
+        await go('task19-trainer.html',id);if(!await page.locator('#hintPanel').isVisible())await page.locator('#hintToggle').click();const before=await savedState(page);
+        const invariant=async()=>{const s=await sampleCurrentModel(page,card);assert.deepEqual([s.values.a,s.values.b,s.values.c],lengths,id+': given lengths never change');};
+        await invariant();const controls=await page.evaluate(hint=>window.Task19Visuals.controlsFor(hint.model,hint.params),card.hint);
+        assert(controls.every(c=>!['a','b','c'].includes(c.key)),id+': no control contradicts the specified lengths');
+        const sliders=page.locator('#visualHost input[type=range]');
+        for(let i=0;i<await sliders.count();i++)for(const key of ['Home','End']){await sliders.nth(i).focus();await page.keyboard.press(key);await invariant();}
+        await measureUsingKeyboard(page);await invariant();await assertUnanswered(page,before,id+' fixed lengths');
+        const modelState=(await savedState(page)).current.modelState;await page.reload();assert.deepEqual((await savedState(page)).current.modelState,modelState);await invariant();assert.equal(await readout(page).isVisible(),true);
+      }
     });
 
     await check('storage denial leaves the trainer usable',async()=>{
@@ -156,6 +286,11 @@ async function main() {
       await denied.goto(base+'/trainers/task19-trainer.html?card=prev-056');
       await denied.locator('#hintToggle').click();
       assert(await denied.locator('#visualHost svg').count());
+      const progress=await denied.locator('#progressText').textContent();
+      await moveSlider(denied,denied.locator('#visualHost input[type=range]').last());
+      await measureUsingKeyboard(denied);
+      assert.equal(await denied.locator('#answerPanel').isVisible(),false,'Blocked storage does not turn measurement into an answer');
+      assert.equal(await denied.locator('#progressText').textContent(),progress);
       await denied.locator('#btnFalse').click();
       assert.equal(await denied.locator('#answerPanel').isVisible(),true);
       assert.match(await denied.locator('#storageNote').textContent(),/не разрешает сохранять/);

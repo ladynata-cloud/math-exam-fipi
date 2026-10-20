@@ -35,7 +35,7 @@
       state.topic = topics.includes(saved.topic) ? saved.topic : '';
       state.review = saved.review === true;
       if (saved.current && byId.has(saved.current.id)) {
-        state.current = { id: byId.get(saved.current.id).id, answer: typeof saved.current.answer === 'boolean' ? saved.current.answer : null, hintOpen: saved.current.hintOpen === true };
+        state.current = { id: byId.get(saved.current.id).id, answer: typeof saved.current.answer === 'boolean' ? saved.current.answer : null, hintOpen: saved.current.hintOpen === true, modelState: saved.current.modelState && typeof saved.current.modelState === 'object' ? saved.current.modelState : null };
       }
       return;
     }
@@ -91,7 +91,10 @@
     const card = byId.get(state.current.id);
     if (open && !mounted) {
       el('hintPrompt').textContent = card.hint.prompt;
-      cleanup = window.Task19Visuals.mount(el('visualHost'), card.hint);
+      cleanup = window.Task19Visuals.mount(el('visualHost'), card.hint, {
+        state:state.current.modelState,
+        onChange:modelState=>{state.current.modelState=modelState;save();}
+      });
       mounted = true;
     }
     state.current.hintOpen = open;
