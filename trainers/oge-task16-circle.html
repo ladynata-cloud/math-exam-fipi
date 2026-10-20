@@ -143,6 +143,13 @@ a.crumbs{display:inline-flex;align-items:center;min-height:44px}
 .pnote div{padding:2px 0 8px}
 .codes a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px}
 </style>
+<style>
+/* Course presentation: original mathematics, progress and exam contracts stay below. */
+:root{--cream:#f6f7f5;--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--blue:#216342;--accent:#216342;--green:#216342;--line:#dbe1da}
+body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}.minimal-course .app,.minimal-course>.wrap{max-width:1000px;margin:auto;padding:24px 18px 56px;background:transparent;box-shadow:none;border:0}.minimal-course>.wrap>.app{padding:0}.minimal-course .head{margin-bottom:24px;padding:0;border:0;background:transparent;box-shadow:none}.minimal-course .head,.minimal-course .head h1{color:#202820}.minimal-course h1{font-family:inherit;font-size:24px;line-height:1.4;margin:10px 0}.minimal-course .crumbs{font-size:15px;color:#216342}.minimal-course #main,.minimal-course #view{padding:0;background:transparent}.minimal-course .grid,.minimal-course .row{gap:24px}.minimal-course .task,.minimal-course .card,.minimal-course .givens,.minimal-course .q-text,.minimal-course .cond,.minimal-course .qtext{font-size:18px;line-height:1.8}.minimal-course .task,.minimal-course .card,.minimal-course .givens{background:#fff;border-color:#dbe1da;border-radius:12px;box-shadow:none}.minimal-course .grid{padding:24px;background:#fff;border:1px solid #dbe1da;border-radius:14px}.minimal-course .grid .task{padding:0;border:0}.minimal-course .fig,.minimal-course .figbox,.minimal-course .figwrap,.minimal-course .fig-wrap{max-width:100%;background:#fff;box-shadow:none}.minimal-course svg{max-width:100%;height:auto}.minimal-course button,.minimal-course input,.minimal-course select,.minimal-course summary{min-height:44px;font-family:inherit}.minimal-course button{font-size:16px;border-radius:8px}.minimal-course button.primary,.minimal-course .btn.primary,.minimal-course .btn.blue,.minimal-course .btn.dark,.minimal-course button.act,.minimal-course button.blue,.minimal-course #check{background:#216342;color:white;border-color:#216342}.minimal-course input{font-size:20px;max-width:100%}.minimal-course .ansrow,.minimal-course .ans-row,.minimal-course .controls{gap:12px;margin-top:24px;flex-wrap:wrap}.minimal-course .minimal-settings{margin-top:28px;border-top:1px solid #dbe1da;padding-top:18px;font-size:16px}.minimal-course summary{cursor:pointer;color:#216342}.minimal-course .minimal-settings .tabs{margin:18px 0;padding:0;flex-wrap:wrap;display:flex;background:transparent;border:0}.minimal-course .minimal-settings .sub{font-size:15px;margin:16px 0}.minimal-course .minimal-settings .stats{justify-content:flex-start}.minimal-course .minimal-settings .stat{font-size:14px}.minimal-course .minimal-task-settings{margin:20px 0}.minimal-course .minimal-hint{margin:20px 0;padding:20px;background:#eef5ed;border:1px solid #dbe7da;border-radius:12px}.minimal-course .minimal-hint-toggle{display:block;background:white;color:#216342;border:1px solid #b8cbbb;margin:22px 0 16px;min-height:46px;padding:10px 16px}.minimal-course .minimal-hint p{margin:0 0 18px}.minimal-course .minimal-hint .hintbox,.minimal-course .minimal-hint .guidebox{margin:0}.minimal-course .minimal-hint .row,.minimal-course .minimal-hint .bar{gap:12px}.minimal-course [hidden]{display:none!important}.minimal-course button:focus-visible,.minimal-course input:focus-visible,.minimal-course select:focus-visible,.minimal-course summary:focus-visible,.minimal-course a:focus-visible{outline:3px solid #77a488;outline-offset:3px}.minimal-course .minimal-part2-note{font-size:15px;color:#626b63;line-height:1.7;margin:18px 0}.minimal-course .pool{gap:12px}.minimal-course .pool .card{padding:16px;font-size:17px}.minimal-course .chain .citem{margin-bottom:18px}.minimal-course .step,.minimal-course .gsteps>li{line-height:1.8;margin-bottom:18px}.minimal-course .guidehead{font-size:16px}.minimal-course .minimal-hint-toggle[aria-expanded=true]{background:#edf4ea}.minimal-course .minimal-help-actions{margin-top:20px}.minimal-course .minimal-help-actions>button{margin:12px 8px 0 0}
+@media(max-width:600px){.minimal-course .app,.minimal-course>.wrap{padding:18px 12px 40px}.minimal-course .grid{padding:18px 14px;grid-template-columns:1fr}.minimal-course .row{flex-wrap:wrap}.minimal-course .col{min-width:0;width:100%}.minimal-course h1{font-size:21px}.minimal-course .minimal-hint{padding:16px 12px}.minimal-course .task,.minimal-course .card,.minimal-course .givens{font-size:17px}.minimal-course .tabs{gap:8px}}
+@media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -2092,6 +2099,59 @@ window.__oge16={SUBS,ARCHIVE,REFS,build,buildGen,buildArchive,selftest,parseAns,
   switchTab(CP.REVIEW?'train':TAB);   // ?mode=review — сразу работа над ошибками
 })();
 
+
+/* Minimal course shell. Moves live controls, retaining their original handlers. */
+const MinimalGeometry=(()=>{
+  const q=s=>document.querySelector(s);
+  function shell(mainSelector,title){
+    document.body.classList.add('minimal-course');
+    const main=q(mainSelector);if(!main)return null;
+    if(q('.head h1'))q('.head h1').textContent=title;
+    let settings=q('#courseSettings');
+    if(!settings){
+      settings=document.createElement('details');settings.id='courseSettings';settings.className='minimal-settings';
+      const summary=document.createElement('summary');summary.textContent='Выбрать тему · мои результаты';settings.appendChild(summary);
+      let target=main.closest('.wrap')||main;if(target.querySelector('.head'))target=main;target.insertAdjacentElement('afterend',settings);
+      const content=document.createElement('div');content.className='minimal-navigation';settings.appendChild(content);
+      document.querySelectorAll('.head .sub,.head .stats,.head .badge,.head #badge,.tabs').forEach(node=>content.appendChild(node));
+      const footer=q('body>.wrap>.note');if(footer)content.appendChild(footer);
+    }
+    return settings;
+  }
+  function secondary(main,selectors){
+    const settings=q('#courseSettings');if(!settings||!main)return;
+    let box=settings.querySelector('.minimal-task-settings');
+    if(!box){box=document.createElement('div');box.className='minimal-task-settings';settings.appendChild(box);}
+    box.replaceChildren();
+    selectors.forEach(selector=>main.querySelectorAll(selector).forEach(node=>box.appendChild(node)));
+  }
+  function hint(anchor,content,open=false){
+    const button=document.createElement('button');button.type='button';button.className='minimal-hint-toggle';button.id='courseHintToggle';button.textContent='Хочешь подсказку?';button.setAttribute('aria-expanded',String(open));button.setAttribute('aria-controls','courseHintPanel');
+    const panel=document.createElement('section');panel.id='courseHintPanel';panel.className='minimal-hint';panel.setAttribute('aria-label','Подсказка');panel.hidden=!open;
+    if(typeof content==='string')panel.innerHTML=content;else if(content)panel.appendChild(content);
+    anchor.insertAdjacentElement('afterend',button);button.insertAdjacentElement('afterend',panel);
+    button.onclick=()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));};
+    return {button,panel};
+  }
+  function disclosure(panel,nodes){
+    const details=document.createElement('details');details.className='minimal-help-actions';const summary=document.createElement('summary');summary.textContent='Разобрать решение';details.appendChild(summary);
+    nodes.filter(Boolean).forEach(node=>details.appendChild(node));if(details.children.length>1)panel.appendChild(details);return details;
+  }
+  function part2(anchor){const note=document.createElement('p');note.className='minimal-part2-note';note.textContent='На ОГЭ нужно записать полное решение с обоснованием.';anchor.appendChild(note);}
+  return {shell,secondary,hint,disclosure,part2};
+})();
+if(!CP.RO && document.documentElement.nodeType===1){
+  MinimalGeometry.shell('#main','ОГЭ №16 · Окружность');
+  const originalRenderTrain=renderTrain;
+  renderTrain=function(){originalRenderTrain();const main=document.getElementById('main');
+    MinimalGeometry.secondary(main,[':scope > .filters',':scope > .pnote',':scope > .meta']);
+    const task=main.querySelector('.task');if(!task)return;
+    const help=MinimalGeometry.hint(task,'<p>'+trTask.sub.law+'</p>'+refcallHtml(trTask.sub));
+    bindRefcalls();
+    const show=document.getElementById('giveup');MinimalGeometry.disclosure(help.panel,[show]);
+  };
+  switchTab('train');
+}
 </script>
 </body>
 </html>

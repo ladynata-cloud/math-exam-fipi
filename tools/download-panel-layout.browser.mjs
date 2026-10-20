@@ -583,6 +583,12 @@ try {
         try {
           await page.goto(`${baseUrl}/${pagePath}`, { waitUntil: 'load' });
           await page.waitForTimeout(150);
+          // Optional download content is opened by the same summary used by a visitor.
+          // All existing panel geometry and tap checks still run on its visible content.
+          const disclosure = page.locator('section.download-panel > details');
+          if (await disclosure.count() && await disclosure.getAttribute('open') === null) {
+            await disclosure.locator(':scope > summary').click();
+          }
           const data = await page.evaluate(measure);
           const ab = await page.evaluate(compareCss, { basePath: BASE_CSS_PATH, tolerance: AB_TOLERANCE });
           verify(pagePath, view, data, ab);

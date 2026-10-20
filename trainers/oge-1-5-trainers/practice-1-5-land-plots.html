@@ -102,8 +102,10 @@
 
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}.btn.primary:hover{transform:none;}}
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body>
+<body data-practical-page="land-plots">
 <div class="wrap">
 
   <header class="top">
@@ -370,6 +372,7 @@ function showTask(){
   const q=state.tasks[state.idx], r=state.results[state.idx];
   document.getElementById('task-badge').textContent=`Задача ${state.idx+1} · ${TASK_LABEL[state.idx]}`;
   document.getElementById('task-q').innerHTML=q.q;
+  if(window.PracticalMinimal) PracticalMinimal.mountHint(document.getElementById('task-q'),'land',q.type,q.q);
   const ph=q.kind==='digits'?'цифры':'ответ';
   const val=(r.input||'').replace(/"/g,'&quot;');
   document.getElementById('answer-area').innerHTML=`<div class="num-in"><input id="in" type="text" inputmode="numeric" autocomplete="off" ${q.maxlen?`maxlength="${q.maxlen}"`:''} placeholder="${ph}" value="${val}"><span class="unit">${q.kind==='digits'?'цифры':q.unit}</span></div>`;

@@ -8,20 +8,24 @@ const { JSDOM } = require('jsdom');
 
 const root = path.resolve(__dirname, '..');
 const files = ['index.html', 'laboratory/index.html', 'oge/index.html',
-  'trainers/oge-course/index.html', 'trainers/oge-basics/index.html'];
+  'trainers/oge-course/index.html', 'trainers/oge-basics/index.html', 'foundations/index.html'];
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const doc = file => new JSDOM(read(file), { url: 'https://mathexam.space/' + file }).window.document;
 const home = doc('index.html'), lab = doc('laboratory/index.html');
 const division = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
 const cabinet = 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route';
-const allowedNav = new Set(['/', '/trainers/oge-course/', '/trainers/oge-basics/', '/laboratory/', cabinet]);
+const allowedNav = new Set(['/', '/foundations/', '/trainers/oge-course/', '/trainers/oge-basics/', '/laboratory/', cabinet]);
 
 assert.match(home.title, /ОГЭ/);
 assert.equal(home.querySelectorAll('h1').length, 1);
 assert.doesNotMatch(home.querySelector('main').textContent, /ЕГЭ|Атанасян|Макарычев|ДВИ|7 класс/);
-for (const href of ['/trainers/oge-course/', '/trainers/oge-basics/']) {
+// The independent foundations course became the home entry before this UI release.
+// Keep its canonical entry and the older quick-skill map separately reachable.
+for (const href of ['/trainers/oge-course/', '/foundations/']) {
   assert(home.querySelector('.hero a[href="' + href + '"]'), 'Primary route: ' + href);
 }
+assert(home.querySelector('footer a[href="/trainers/oge-basics/"]'), 'Quick-skill map remains directly reachable');
+assert.equal(doc('foundations/index.html').querySelector('link[rel="canonical"]').href, 'https://mathexam.space/foundations/');
 assert(home.querySelector('main a[href="' + division + '"]'), 'Division is directly reachable from home');
 assert.equal(home.querySelectorAll('a[href="/laboratory/"]').length, 1);
 assert(home.querySelector('footer a[href="/laboratory/"]'), 'Lab remains a discreet footer entry');
@@ -51,7 +55,8 @@ for (const file of ['index.html', 'oge/index.html', 'trainers/oge-course/index.h
 assert.equal(doc('trainers/oge-course/index.html').querySelector('[aria-current="page"]').getAttribute('href'), '/trainers/oge-course/');
 const foundations = doc('trainers/oge-basics/index.html');
 assert.match(foundations.title, /ПредОГЭ/);
-assert.equal(new URL(foundations.querySelector('.map-hero .btn.primary').href).pathname, division);
+// The skill map starts with its existing arithmetic route; direct division stays on home.
+assert.equal(new URL(foundations.querySelector('.map-hero .btn.primary').href).pathname, '/trainers/oge-basics/arithmetic-route.html');
 for (const id of ['arithmetic', 'fractions', 'negative', 'measurement', 'percentages']) {
   assert(foundations.getElementById(id), 'Foundation module remains: ' + id);
   assert(foundations.querySelector('a[href="#' + id + '"]'), 'Foundation navigation remains: ' + id);

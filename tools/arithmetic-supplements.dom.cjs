@@ -97,7 +97,7 @@ for(const [route,mod,type] of [['fraction-multiply','frac','*'],['decimal-multip
 });
 
 test('unknown and inherited object names cannot become fraction routes',t=>{
- for(const route of ['constructor','__proto__','toString','unknown']){const f=mount(t,'trainers/drobi-oge-trainer.html','#practice='+route);assert(f.d.querySelector('[data-mod="frac"]'));assert.equal(f.d.querySelector('#gType'),null);assert.deepEqual(f.errors,[]);}
+ for(const route of ['constructor','__proto__','toString','unknown']){const f=mount(t,'trainers/drobi-oge-trainer.html','#practice='+route);assert(f.d.querySelector('#dAns'),'Unknown routes start ordinary-fraction practice');assert(f.d.querySelector('[data-module="frac"]'));assert.equal(f.d.querySelector('#gType'),null);assert.deepEqual(f.errors,[]);}
 });
 
 test('both limited fraction-expression lessons expose the same-skill continuation publicly and outside the managed iframe',t=>{
@@ -125,7 +125,7 @@ test('fraction banks advertise generated arithmetic both before and after their 
  const links=()=>[...f.d.querySelectorAll('a[href*="#practice="]')].map(a=>a.hash);
  assert(links().includes('#practice=fraction-mixed'));assert(links().includes('#practice=decimal-mixed'));
  f.w.renderSummary();assert(f.d.querySelector('#again'));assert.equal(f.d.querySelectorAll('#card a[href*="#practice="]').length,2);
- const g=mount(t,'trainers/drobi-oge-trainer.html');g.d.querySelector('[data-mod="frac"]').click();g.d.querySelector('[data-t="drill"]').click();g.d.querySelector('#dDots .dot:last-child').click();g.d.querySelector('#dSkip').click();assert.equal(g.d.querySelectorAll('#dCard a[href*="#practice="]').length,2);
+ const g=mount(t,'trainers/drobi-oge-trainer.html');assert(g.d.querySelector('#dAns'),'Practice starts without a mode choice');g.d.querySelector('#fraction-options>summary').click();g.d.querySelector('[data-module="frac"]').click();g.d.querySelector('#fraction-options>summary').click();g.d.querySelector('[data-t="drill"]').click();g.d.querySelector('#dDots').closest('details').querySelector(':scope > summary').click();g.d.querySelector('#dDots .dot:last-child').click();g.d.querySelector('#dSkip').click();assert.equal(g.d.querySelectorAll('#dCard a[href*="#practice="]').length,2);
 });
 
 test('school practice advances after its 3000-record history fills, including after reload',t=>{

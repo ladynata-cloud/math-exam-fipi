@@ -338,8 +338,10 @@
     body[data-source-kind="author-analogue"] .variant-bar{gap:12px}
   }
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body data-mode="learn">
+<body data-mode="practice" data-practical-page="tires">
 
 <nav class="topnav">
   <div class="topnav-inner">
@@ -568,7 +570,7 @@ function buildVariant(v){
 
 /* ===== STATE + STORAGE ===== */
 const STORAGE_KEY='tiresTrainerV2';
-let state={ variantIdx:0, mode:'learn' };
+let state={ variantIdx:0, mode:'practice' };
 let prog={ solvedSteps:[false,false,false,false,false,false,false], streak:0, currentStep:0 };
 let VD=null;  // current buildVariant() result
 
@@ -896,7 +898,7 @@ function renderTable(){
         <button class="substep-check-btn" data-check="w-read">Проверить</button>
       </div>
       <div class="substep-feedback"></div>
-      <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+      <button class="substep-hint-btn auto-learn-hint-btn">Хочешь подсказку?</button>
       <div class="substep-hint auto-learn">B — первое число, p — второе (процент, без %), d — число после R. Для ${S.m} это ${S.B}, ${S.p} и ${S.d}.</div>
     </div>
     ${subHTML('w-dm','2','Диск в миллиметры',`Диск ${S.d}″ переведём в мм (1 дюйм = 25,4 мм): <span class="math">${S.d} · 25,4</span> = ?`,'мм',`${S.d} · 25,4 = ${fmt(S.dm)}.`,true)}

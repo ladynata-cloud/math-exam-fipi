@@ -343,39 +343,35 @@ footer{max-width:960px;margin:24px auto 0;padding:16px;color:var(--ink-faint);fo
   .reveal-body{overflow-x:auto}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Minimal course: task first; optional help and secondary controls stay reachable. */
+:root{--bg:#f6f7f5;--paper:#fff;--surface:#fff;--surface-2:#f3f6f1;--surface-3:#e8eee6;--ink:#202820;--ink2:#626b63;--ink-soft:#626b63;--muted:#626b63;--line:#dbe1da;--line2:#aeb9ac;--line-strong:#aeb9ac;--primary:#216342;--primary-d:#174d31;--primary-l:#eef5eb;--active:#216342;--active-bg:#eef5eb;--blue:#216342;--blue-d:#174d31;--blue-l:#eef5eb;--blue-r:#b9d0b7;--indigo:#216342;--indigo-deep:#174d31;--indigo-soft:#eef5eb;--indigo-ring:#b9d0b7;--shadow:none}
+body{background:var(--bg);background-image:none;font-size:18px;line-height:1.75}.wrap{max-width:850px;padding:24px 18px 60px}.minimal-header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 26px}.minimal-header .eyebrow{font-size:15px;color:var(--muted,var(--ink2));white-space:nowrap}.minimal-header h1{font:700 24px/1.4 system-ui,sans-serif;margin:0}.minimal-settings{margin-top:26px;border-top:1px solid var(--line);padding-top:18px}.minimal-settings>summary{min-height:44px;cursor:pointer;color:var(--primary,var(--blue));font-size:17px}.minimal-settings[open]>summary{margin-bottom:20px}.minimal-hint{margin:22px 0}.minimal-help{margin-top:18px;background:#f1f6ee;padding:22px;border-radius:12px}.minimal-help[hidden],[hidden]{display:none!important}.minimal-help>details{margin-top:24px}.minimal-help summary{cursor:pointer;min-height:44px;color:#566153}.minimal-proof-note{font-size:14px;color:#626b63;margin:22px 0 0;line-height:1.7}.minimal-title{font-size:21px;line-height:1.5;margin:0 0 22px}.minimal-new{display:block;margin-top:24px}.minimal-results{margin-top:22px}.minimal-results summary{color:#626b63;cursor:pointer;min-height:44px}.minimal-results[open]>summary{margin-bottom:14px}
+button,.btn,.chip,.mode,.mod-btn,.tab,.addbtn,.rmini,.rm-btn{min-height:44px}.btn.primary,.btn-check,.btn.next{background:#216342;color:white}.btn.ghost,.btn-new{background:white;border:1px solid var(--line);color:#216342}.btn,.btnrow,.btn-row{font-size:17px}.btns,.btnrow,.btn-row{gap:12px;margin-top:20px}input,select{max-width:100%}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[role=button]:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}.mathline{font-size:23px;line-height:2;max-width:100%;overflow-x:auto}.prompt,.problem,.st-task{font-size:18px;line-height:1.85}.qbox,.stage,.statement,.card{box-shadow:none}.qbox{border:0;padding:8px 0}.stagehead{padding:24px 28px 0;border:0}.stagehead .st-t{font:700 21px/1.5 system-ui,sans-serif}.body{padding:24px 28px}.sstep,.step-card,.scard{margin-top:18px}.sstep .sq,.step-prompt{font-size:17px;line-height:1.8}.sstep{opacity:1}.numin,.num{font-size:21px;min-height:46px}.stepfinal,.solution,.solbox{margin-top:24px}.solution .step,.solbox .prose{font-size:17px;line-height:1.85}.picker,.module-nav{margin-top:18px}.mcard:before{display:none}.mcard,.mod-btn{box-shadow:none}.mcard .mttl{font-size:16px}.mcard.on{box-shadow:none}.tabs,.modes{flex-wrap:wrap}.tab{border:1px solid var(--line);border-radius:8px;top:auto}.tab.on:after{display:none}.answer-label{display:block;font-size:16px;margin:22px 0 8px}.statement{padding:24px}.st-expr{font-size:24px;line-height:2}.panel-body{padding:0}.sub-chips{margin-top:20px}.gview{box-shadow:none}.mtbl{display:block;max-width:100%;overflow-x:auto}.step-input,.ans-host{overflow-x:auto}.minimal-help .mathline,.minimal-help .problem{overflow-x:auto}.minimal-help .givenbar{position:static}.minimal-help .statement{border:0;background:transparent;padding:0}.minimal-help .step-graph{margin:20px 0}
+@media(max-width:560px){.wrap{padding:18px 12px 44px}.minimal-header h1{font-size:21px}.minimal-header{gap:12px;margin-bottom:20px}.stagehead{padding:22px 18px 0}.body{padding:20px 18px}.minimal-help{padding:18px 12px}.mathline{font-size:21px}.statement{padding:22px 18px}.st-expr{font-size:22px}.btn{font-size:16px;padding:10px 13px}.minimal-settings .picker{grid-template-columns:1fr}.modes{display:flex}.numin{width:85px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+.top{position:static;background:transparent;border:0;box-shadow:none}.card{padding:26px}.panel-head{margin-bottom:20px}.panel-head h1{font:700 21px/1.5 system-ui,sans-serif}.af{flex-wrap:wrap;gap:10px}.rail{margin:20px 0}.railrow{gap:18px}.minimal-settings .score{display:flex}.minimal-help .card{padding:14px}.minimal-help .scard .sq{font-size:17px}.minimal-settings footer{margin-top:25px}@media(max-width:560px){.card{padding:22px 18px}.minimal-help .card{padding:12px}}
+
+.minimal-model-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border-radius:8px}
+.minimal-model-scroll:focus-visible{outline:3px solid #78a98c;outline-offset:3px}
+.minimal-model-scroll svg{touch-action:pan-x pan-y}
+.minimal-model-note{display:none;color:#566153;font-size:13px;line-height:1.6;margin:6px 0 12px}
+@media(max-width:560px){.minimal-model-note{display:block}}
+@media print{.minimal-model-scroll{overflow:visible}.minimal-model-scroll svg{min-width:0}.minimal-model-note{display:none}}
+.minimal-model-scroll .viz-svg{min-width:520px}
+@media print{.minimal-model-scroll .viz-svg{min-width:0}}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="top-in">
-    <div class="brand">
-      <div class="glyph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      <div><b>Текстовые задачи</b><small>ОГЭ · математика · задание 21</small></div>
-    </div>
-    <div class="score" id="score"></div>
-    <button class="printbtn" id="printBtn" title="Собрать вариант для печати" aria-label="Печать варианта">🖨</button>
-  </div>
-</header>
-
 <div class="wrap">
-  <section class="rail" aria-label="Разделы">
-    <h2>Выбери тип задачи</h2>
-    <div class="railrow" id="rail"></div>
-  </section>
-
-  <div class="modes" id="modes" role="tablist">
-    <div class="mode" data-mode="learn" role="tab">Учимся<small>теория и приёмы</small></div>
-    <div class="mode" data-mode="steps" role="tab">Пошагово<small>разбор с подсказками</small></div>
-    <div class="mode" data-mode="drill" role="tab">Марафон<small>решай сам</small></div>
-  </div>
-
-  <main id="content"><div class="empty">Загрузка…</div></main>
-
-  <footer>
-    Офлайн-тренажёр по заданию 21 ОГЭ. Все задачи генерируются с точной проверкой ответа.
-    Прототипы: открытый банк заданий, РЕШУ ОГЭ, задачник Е. А. Ширяевой (ОГЭ-2026).
-  </footer>
-</div>
+<header class="minimal-header"><div class="eyebrow">ОГЭ №21</div><h1>Текстовые задачи</h1></header>
+<main id="content"><div class="empty">Загрузка…</div></main>
+<p class="minimal-proof-note">Проверяется ответ. Развёрнутое решение запиши в тетради.</p>
+<details class="minimal-settings" id="courseSettings"><summary>Выбрать тему · мои результаты</summary>
+<div class="score" id="score"></div><section class="rail" aria-label="Разделы"><div class="railrow" id="rail"></div></section>
+<div class="modes" id="modes" role="tablist"><div class="mode" data-mode="learn" role="tab">Учимся</div><div class="mode" data-mode="steps" role="tab">Пошагово</div><div class="mode" data-mode="drill" role="tab">Тренировка</div></div>
+<button class="btn ghost" id="printBtn" type="button">Вариант для печати</button>
+<footer>Источники прототипов: открытый банк заданий, РЕШУ ОГЭ, задачник Е. А. Ширяевой (ОГЭ-2026).</footer></details></div>
 
 <script>
 "use strict";
@@ -477,18 +473,18 @@ function answerField(opts){
   inp.setAttribute('aria-label','ответ');
   decBox.appendChild(inp);
   const fracBox = el('span','fracin'); fracBox.style.display='none';
-  const fn = el('input','num'); fn.type='text'; fn.inputMode='numeric'; fn.placeholder='числитель';
+  const fn = el('input','num');fn.setAttribute('aria-label','Числитель'); fn.type='text'; fn.inputMode='numeric'; fn.placeholder='числитель';
   const bar = el('div','bar');
-  const fd = el('input','num'); fd.type='text'; fd.inputMode='numeric'; fd.placeholder='знаменатель';
+  const fd = el('input','num');fd.setAttribute('aria-label','Знаменатель'); fd.type='text'; fd.inputMode='numeric'; fd.placeholder='знаменатель';
   fracBox.appendChild(fn); fracBox.appendChild(bar); fracBox.appendChild(fd);
   wrap.appendChild(decBox); wrap.appendChild(fracBox);
   if(opts.unit){ const u=el('span','unit',opts.unit); wrap.appendChild(u); }
 
   const btnCheck = el('button','btn primary small','Проверить');
   const btnShow  = el('button','btn reveal small','Показать');
-  wrap.appendChild(btnCheck); wrap.appendChild(btnShow);
+  wrap.appendChild(btnCheck); if(opts.revealHost)opts.revealHost.appendChild(btnShow);else wrap.appendChild(btnShow);
   let fx=null;
-  if(opts.allowFrac){ fx=el('span','fx','дробью'); wrap.appendChild(fx); }
+  if(opts.allowFrac){ fx=el('button','fx','дробью');fx.type='button'; wrap.appendChild(fx); }
   const fbk = el('span','fbk'); wrap.appendChild(fbk);
 
   let fracMode=false, locked=false;
@@ -518,7 +514,7 @@ function answerField(opts){
   btnShow.onclick=()=>{
     if(locked)return;
     wrap.classList.remove('bad'); wrap.classList.remove('ok');
-    fbk.className='fbk peek'; fbk.textContent='ответ: '+fmt(ansR)+(opts.unit?(' '+opts.unit):'');
+    fbk.className='fbk peek';fbk.innerHTML='Ответ: '+(ansR.isInt()?ansR.n.toString():frac(ansR.n,ansR.d))+(opts.unit?(' '+opts.unit):'');
     if(!fracMode) inp.value=''; 
     lock();
     if(opts.revealHTML){ const rv=el('div','reveal-body',opts.revealHTML); wrap.parentNode&&wrap.parentNode.appendChild(rv); }
@@ -1971,7 +1967,7 @@ function renderMini(m){
   }
   go(); return box;
 }
-let CUR=0, MODE='learn';
+let CUR=0, MODE='drill';
 
 function buildRail(){
   const rail=$('#rail'); rail.innerHTML='';
@@ -1986,7 +1982,7 @@ function buildRail(){
       const c=el('div','chip'); c.dataset.idx=idx; a11y(c);
       c.style.setProperty('--c',CAT[cat].color);
       c.innerHTML='<div class="ct">'+m.title+'</div><div class="cb">'+m.blurb+'</div>';
-      c.onclick=()=>{ CUR=idx; syncRail(); render(); };
+      c.onclick=()=>{ CUR=idx; MODE='drill';syncModes();syncRail();render(); };
       chips.appendChild(c);
     });
     g.appendChild(chips); rail.appendChild(g);
@@ -2011,8 +2007,7 @@ function bindModes(){
 function syncModes(){ document.querySelectorAll('.mode').forEach(t=>t.dataset.on = (t.dataset.mode===MODE)?'1':'0'); }
 
 function panelHead(m){
-  const col=CAT[m.cat].color;
-  return '<div class="panel-head"><h1>'+m.title+'</h1><span class="tag" style="background:'+col+'">'+CAT[m.cat].name+'</span><p>'+m.long+'</p></div>';
+  return '<div class="panel-head"><h2 class="minimal-title">'+m.title+'</h2></div>';
 }
 
 function subTabs(m){
@@ -2025,16 +2020,25 @@ function subTabs(m){
 function render(){
   const m=MODULES[CUR]; const host=$('#content'); host.innerHTML='';
   host.insertAdjacentHTML('beforeend', panelHead(m));
-  if(m.subs) host.appendChild(subTabs(m));
+  if(m.subs){const sub=el('details','minimal-results');sub.appendChild(el('summary',null,'Выбрать подтип'));sub.appendChild(subTabs(m));host.appendChild(sub);}
   if(MODE==='learn') renderLearn(m,host);
   else if(MODE==='steps') renderStepsMode(m,host);
   else renderDrill(m,host);
-  try{window.scrollTo({top:($('.rail').offsetTop||0)-70,behavior:'smooth'});}catch(e){}
+  try{window.scrollTo({top:0,behavior:'auto'});}catch(e){}
+}
+
+function readableModels(host){
+  host.querySelectorAll('svg.viz-svg').forEach(svg=>{
+    if(svg.parentElement.classList.contains('minimal-model-scroll'))return;
+    const scroll=el('div','minimal-model-scroll');scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','Рисунок: прокрутка влево и вправо');
+    svg.replaceWith(scroll);scroll.appendChild(svg);
+    scroll.after(el('p','minimal-model-note','Рисунок можно прокручивать влево и вправо.'));
+  });
 }
 
 function renderLearn(m,host){
   const c=el('div'); c.innerHTML=m.learn(); host.appendChild(c);
-  if(m.viz){ const vh=el('div'); try{ m.viz(vh, m.gen()); }catch(e){ vh.innerHTML=''; } host.appendChild(vh); }
+  if(m.viz){ const vh=el('div'); try{ m.viz(vh, m.gen()); readableModels(vh); }catch(e){ vh.innerHTML=''; } host.appendChild(vh); }
   if(m.mini) host.appendChild(renderMini(m));
   const demo=el('div','card');
   demo.innerHTML='<div style="font-weight:700;margin-bottom:6px">Разбор одной задачи по шагам</div>'+
@@ -2067,7 +2071,7 @@ function renderStepsMode(m,host){
   function render(){
     const st=m.statement(curP); slot.innerHTML=st;
     barSlot.innerHTML=''; const gb=givenBar(st); if(gb)barSlot.appendChild(gb);
-    vizEl.innerHTML=''; if(m.viz){ try{ m.viz(vizEl,curP); }catch(e){} }
+    vizEl.innerHTML=''; if(m.viz){ try{ m.viz(vizEl,curP); readableModels(vizEl); }catch(e){} }
     sol.reset(); body.innerHTML='';
     if(STEPMODE==='full'){ sol.wrap.style.display='none'; runSteps(body, m.steps(curP), {regen:()=>{ curP=m.gen(); render(); }}); }
     else { // short: answer fields + full-solution button
@@ -2086,53 +2090,36 @@ function renderStepsMode(m,host){
 }
 
 function renderDrill(m,host){
-  const barSlot=el('div'); host.appendChild(barSlot);
-  const card=el('div','card');
-  card.innerHTML='<div class="problem" data-slot="stmt"></div>';
-  host.appendChild(card);
+  const card=el('div','card');card.innerHTML='<div class="problem" data-slot="stmt"></div>';host.appendChild(card);
   const slot=$('[data-slot="stmt"]',card);
-  const ansHost=el('div'); ansHost.style.marginTop='16px'; card.appendChild(ansHost);
-  const stepHost=el('div'); card.appendChild(stepHost);
-
-  let p, peeked=false, solvedThis=false;
-  const sol=solutionButton(m,()=>p,true,()=>scorePeek()); card.appendChild(sol.wrap);
-  const rowBtns=el('div','btnrow');
-  const byStep=el('button','btn ghost small','Решить по шагам');
-  const vizBtn=m.viz?el('button','btn ghost small','🖼 Рисунок к задаче'):null;
-  const skip=el('button','btn ghost small','↻ Другая задача');
-  const nextB=el('button','btn primary small','Следующая задача →'); nextB.style.display='none';
-  rowBtns.appendChild(byStep); if(vizBtn)rowBtns.appendChild(vizBtn); rowBtns.appendChild(skip); rowBtns.appendChild(nextB); card.appendChild(rowBtns);
-  const vizPanel=el('div'); card.appendChild(vizPanel);
-  let vizShown=false, vizBuilt=false;
-  if(vizBtn) vizBtn.onclick=()=>{
-    if(!vizShown){ if(!vizBuilt){ try{ m.viz(vizPanel,p); }catch(e){} vizBuilt=true; } vizPanel.style.display=''; vizBtn.textContent='Скрыть рисунок'; vizShown=true; scorePeek(); }
-    else { vizPanel.style.display='none'; vizBtn.textContent='🖼 Рисунок к задаче'; vizShown=false; }
-  };
-
-  function scoreOK(){ if(solvedThis)return; solvedThis=true; if(!peeked){ SCORE.streak++; SCORE.best=Math.max(SCORE.best,SCORE.streak); bumpProg(m.key); } }
-  function scorePeek(){ peeked=true; SCORE.streak=0; renderScore(); }
-
+  const hintRow=el('div','minimal-hint'),byStep=el('button','btn ghost','Хочешь подсказку?');byStep.type='button';byStep.setAttribute('aria-expanded','false');byStep.setAttribute('aria-controls','task21Help');hintRow.appendChild(byStep);card.appendChild(hintRow);
+  const hintPanel=el('section','minimal-help');hintPanel.id='task21Help';hintPanel.hidden=true;hintPanel.setAttribute('aria-label','Помощь к этой задаче');hintRow.appendChild(hintPanel);
+  const vizPanel=el('div'),stepHost=el('div');hintPanel.appendChild(vizPanel);hintPanel.appendChild(stepHost);
+  const solDetails=el('details');solDetails.appendChild(el('summary',null,'Готовое решение'));hintPanel.appendChild(solDetails);
+  const reveals=el('div','btnrow');solDetails.appendChild(reveals);
+  const ansHost=el('div');ansHost.style.marginTop='22px';card.appendChild(ansHost);
+  let p,peeked=false,solvedThis=false,hintBuilt=false;
+  const sol=solutionButton(m,()=>p,true,()=>scorePeek());solDetails.appendChild(sol.wrap);
+  const rowBtns=el('div','btnrow'),skip=el('button','btn ghost','Другая задача →'),nextB=el('button','btn primary','Следующая задача →');
+  rowBtns.appendChild(skip);rowBtns.appendChild(nextB);card.appendChild(rowBtns);
+  function scoreOK(){if(solvedThis)return;solvedThis=true;if(!peeked){SCORE.streak++;SCORE.best=Math.max(SCORE.best,SCORE.streak);bumpProg(m.key);}}
+  function scorePeek(){peeked=true;SCORE.streak=0;renderScore();}
   function go(){
-    p=m.gen(); peeked=false; solvedThis=false;
-    const st=m.statement(p); slot.innerHTML=st;
-    barSlot.innerHTML=''; const gb=givenBar(st); if(gb)barSlot.appendChild(gb);
-    ansHost.innerHTML=''; stepHost.innerHTML=''; nextB.style.display='none'; byStep.style.display=''; sol.reset();
-    if(vizBtn){ vizPanel.innerHTML=''; vizPanel.style.display='none'; vizShown=false; vizBuilt=false; vizBtn.textContent='🖼 Рисунок к задаче'; }
-    const parts=m.finalParts(p); let doneCount=0;
+    p=m.gen();peeked=false;solvedThis=false;hintBuilt=false;slot.innerHTML=m.statement(p);
+    ansHost.innerHTML='';stepHost.innerHTML='';vizPanel.innerHTML='';reveals.innerHTML='';nextB.style.display='none';sol.reset();solDetails.open=false;hintPanel.hidden=true;byStep.setAttribute('aria-expanded','false');
+    const parts=m.finalParts(p);let doneCount=0;
     parts.forEach(part=>{
-      const row=el('div'); row.style.margin='10px 0';
-      const lab=el('div'); lab.style.fontWeight='600'; lab.style.fontSize='14.5px'; lab.style.marginBottom='6px';
-      lab.innerHTML=part.label; row.appendChild(lab);
-      const af=answerField({ans:part.ans, unit:part.unit, allowFrac:part.allowFrac, revealHTML: part.revealHTML,
-        onDone:(state)=>{ if(state==='peek'){ scorePeek(); nextB.style.display=''; } doneCount++; if(doneCount>=parts.length){ if(!peeked)scoreOK(); nextB.style.display=''; nextB.focus(); } }});
-      row.appendChild(af.node);
-      ansHost.appendChild(row);
+      const row=el('div');row.style.margin='16px 0';const lab=el('div','answer-label',part.label);row.appendChild(lab);
+      const af=answerField({ans:part.ans,unit:part.unit,allowFrac:part.allowFrac,revealHTML:part.revealHTML,revealHost:reveals,
+        onDone:state=>{if(state==='peek'){scorePeek();nextB.style.display='';}doneCount++;if(doneCount>=parts.length){if(!peeked)scoreOK();nextB.style.display='';nextB.focus();}}});
+      af.inp.setAttribute('aria-label',lab.textContent.replace(/:\s*$/,''));row.appendChild(af.node);ansHost.appendChild(row);
     });
   }
-  byStep.onclick=()=>{ byStep.style.display='none'; runSteps(stepHost, m.steps(p), {regen:()=>go()}); };
-  skip.onclick=go;
-  nextB.onclick=go;
-  go();
+  byStep.onclick=()=>{
+    const opening=hintPanel.hidden;hintPanel.hidden=!opening;byStep.setAttribute('aria-expanded',String(opening));
+    if(opening&&!hintBuilt){if(m.viz){m.viz(vizPanel,p);readableModels(vizPanel);scorePeek();}runSteps(stepHost,m.steps(p),{regen:go});hintBuilt=true;}
+  };
+  skip.onclick=go;nextB.onclick=go;go();
 }
 
 function fillSheet(){

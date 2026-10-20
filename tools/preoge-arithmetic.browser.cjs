@@ -50,6 +50,11 @@ async function oldAnswer(page, value, keyboard = false) {
   if (keyboard) await page.locator('#ans').press('Enter');
   else await page.locator('#check').click();
 }
+async function revealLegacy(page) {
+  const details = page.locator('details').filter({has:page.locator('#solution')});
+  if (await details.getAttribute('open') === null) await details.locator(':scope > summary').click();
+  await page.locator('#solution').click();
+}
 async function selectPrefix(page, length) {
   while ((await oldState(page)).selLen < length) await page.locator('#more').click();
   while ((await oldState(page)).selLen > length) await page.locator('#less').click();
@@ -153,7 +158,7 @@ async function learner(browser, name, width, run) {
       await oldFinish(page);
       progress = await summary(page, 'n2d');
       assert.equal(progress.solved, 1); assert.equal(progress.independent, 1);
-      await page.locator('#next').click(); await page.locator('#solution').click();
+      await page.locator('#next').click(); await revealLegacy(page);
       progress = await summary(page, 'n2d');
       assert.equal(progress.viewed, 1, 'A revealed solution is recorded as viewed');
       assert.equal(progress.solved, 1); assert.equal(progress.independent, 1, 'Viewing does not increase completed or independent counts');

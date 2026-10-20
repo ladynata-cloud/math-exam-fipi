@@ -443,8 +443,10 @@
   }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
+<link rel="stylesheet" href="practical-minimal.css">
+<script src="practical-minimal.js"></script>
 </head>
-<body>
+<body data-practical-page="percent-table">
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand-link" href="practice-1-5-map.html" aria-label="Вернуться к карте тренажёров">
@@ -611,7 +613,7 @@
               <div class="outcome-line" id="outcome-line"><span class="outcome-dot"></span><span>Самостоятельно: верно с первой попытки и без подсказок.</span></div>
             </div>
             <div class="task-actions">
-              <button type="button" class="btn soft" id="hint-btn">Подсказка 1: найти 100%</button>
+              <button type="button" class="btn soft" id="hint-btn">Хочешь подсказку?</button>
               <button type="button" class="btn secondary" id="solution-btn">Показать решение</button>
               <button type="button" class="btn secondary" id="next-task" disabled>Следующая задача →</button>
             </div>
@@ -1325,7 +1327,7 @@ function renderPracticeStats(){
   const mastered=masteredCount(),best=state.checkpointBest.standard||0;
   document.getElementById('checkpoint-cta-copy').textContent=mastered===5?`Все пять навыков отработаны. Лучший мини-зачёт: ${best}/5.`:`Освоено ${mastered} из 5 навыков. Мини-зачёт можно пройти в любой момент.`;
 }
-function renderPractice(){
+function renderPractice(options={}){
   document.querySelectorAll('#difficulty-switch [data-difficulty]').forEach(b=>b.classList.toggle('active',b.dataset.difficulty===state.difficulty));
   document.getElementById('skill-control-wrap').style.opacity=state.difficulty==='advanced'?'.75':'1';
   renderSkillChips();renderPracticeStats();
@@ -1337,14 +1339,14 @@ function renderPractice(){
   document.getElementById('practice-question').innerHTML=t.question;
   document.getElementById('practice-unit').textContent=t.unit||'';
   const input=document.getElementById('practice-input');
-  if(!ts.answered&&!ts.solutionShown){input.value='';input.disabled=false;input.classList.remove('correct','wrong');}
+  if(!ts.answered&&!ts.solutionShown){if(!options.preserveDraft)input.value='';input.disabled=false;input.classList.remove('correct','wrong');}
   document.getElementById('practice-check').disabled=ts.answered||ts.solutionShown;
   document.getElementById('next-task').disabled=!(ts.answered||ts.solutionShown);
   clearFeedback('practice-feedback');
   document.getElementById('hint-stack').innerHTML=t.hints.slice(0,ts.hintLevel).map((h,i)=>`<div class="hint-card">${h}</div>`).join('');
   const sol=document.getElementById('practice-solution');sol.classList.toggle('show',ts.answered||ts.solutionShown);
   document.getElementById('practice-solution-steps').innerHTML=t.steps.map((s,i)=>`<div class="solution-step"><strong>${i+1}.</strong> ${s}</div>`).join('');
-  const hintLabels=['Подсказка 1: найти 100%','Подсказка 2: заполнить схему','Подсказка 3: выбрать действие','Все подсказки открыты'];
+  const hintLabels=['Хочешь подсказку?','Подсказка 2: заполнить схему','Подсказка 3: выбрать действие','Все подсказки открыты'];
   document.getElementById('hint-btn').textContent=hintLabels[Math.min(ts.hintLevel,3)];
   document.getElementById('hint-btn').disabled=ts.hintLevel>=3||ts.answered||ts.solutionShown;
   document.getElementById('solution-btn').disabled=ts.answered||ts.solutionShown;
@@ -1356,7 +1358,7 @@ function renderPractice(){
       ts.outcome==='supported'?`Верно после подсказки или исправления. Это полезная практика, но она не добавляет самостоятельное освоение. Ответ: <b>${format(t.answer)}${t.unit?' '+t.unit:''}</b>.`:
       `Решение разобрано. Эта задача не идёт в самостоятельный прогресс.`;
     showFeedback('practice-feedback',kind,msg);
-  }else setTimeout(()=>input.focus(),0);
+  }else if(!options.preserveDraft)setTimeout(()=>input.focus(),0);
 }
 function updateCreditChip(){
   const ts=state.taskState,chip=document.getElementById('credit-chip'),line=document.getElementById('outcome-line');
@@ -1388,7 +1390,7 @@ function practiceCheck(){
   }
 }
 function revealPracticeHint(){
-  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.hintLevel=Math.min(3,ts.hintLevel+1);state.independentStreak=0;renderPractice();save();
+  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.hintLevel=Math.min(3,ts.hintLevel+1);state.independentStreak=0;renderPractice({preserveDraft:true});save();
 }
 function revealPracticeSolution(){
   const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.solutionShown=true;ts.outcome='reviewed';
@@ -1527,7 +1529,7 @@ window.__PERCENT_TRAINER_TEST__={
 
 load();
 renderHome();
-setView('home');
+setView('practice');
 })();
 </script>
 </body>

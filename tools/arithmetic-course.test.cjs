@@ -32,7 +32,19 @@ function page(query = '?course=preoge&level=n3e', options = {}) {
   return { dom, w: dom.window, records, faults };
 }
 
+function openControl(w, selector) {
+  const control = w.document.querySelector(selector);
+  assert(control, 'Existing control: ' + selector);
+  const panels = [];
+  for (let ancestor = control.parentElement; ancestor; ancestor = ancestor.parentElement) {
+    if (ancestor.tagName === 'DETAILS') panels.unshift(ancestor);
+  }
+  for (const panel of panels) if (!panel.open) panel.querySelector(':scope > summary').click();
+  return control;
+}
+function reveal(w) { openControl(w, '#solution').click(); }
 function choose(w, level) {
+  openControl(w, '#level');
   w.document.getElementById('level').value = level;
   w.document.getElementById('level').dispatchEvent(new w.Event('change', { bubbles: true }));
 }
@@ -125,7 +137,7 @@ for (const level of levels) {
   assert.equal(records.at(-1).hints, 0);
   assert.equal(records.at(-1).revealed, false);
   w.document.getElementById('check').click();
-  w.document.getElementById('solution').click();
+  reveal(w);
   w.finish();
   assert.equal(records.length, before + 1, 'Repeated completion never duplicates a result');
   choose(w, level);
@@ -134,7 +146,7 @@ for (const level of levels) {
   assert(records.at(-1).hints > 0, 'Assistance recorded: ' + level);
   choose(w, level);
   const total = w.stats.total;
-  w.document.getElementById('solution').click();
+  reveal(w);
   assert.equal(w.finished, true);
   assert.equal(w.stats.total, total, 'Revealed work is not solved');
   assert.equal(records.at(-1).revealed, true);
@@ -176,8 +188,13 @@ for (const invalid of ['__proto__', 'constructor', 'n999', '%3Cscript%3E']) {
 const old = page('');
 assert.equal(old.w.courseMode, false);
 assert.equal(old.w.document.getElementById('arithmetic-title').textContent, 'Арифметика: 1–5 класс');
-assert.equal(old.w.document.getElementById('arithmetic-rules').open, true);
-assert(!old.w.document.getElementById('arithmetic-choices'));
+assert.equal(old.w.document.getElementById('arithmetic-rules').open, false);
+assert.equal(old.w.document.getElementById('arithmetic-choices').open, false);
+assert(old.w.task && !old.w.finished, 'Standalone page starts a real exercise before opening options');
+openControl(old.w, '#level');
+assert.equal(old.w.document.getElementById('arithmetic-choices').open, true, 'Standalone topics remain accessible through disclosure');
+openControl(old.w, '#arithmetic-rules').querySelector(':scope > summary').click();
+assert.equal(old.w.document.getElementById('arithmetic-rules').open, true, 'The optional rules can still be opened');
 old.w.close();
 for (const options of [{ storageBlocked: true }, { missingModule: true }]) {
   const blocked = page('?course=preoge&level=n1a', options);

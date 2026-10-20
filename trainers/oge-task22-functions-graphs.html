@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ОГЭ · Задание 22 — Графики функций</title>
 <style>:root{
   --bg:#f4f6f9; --card:#ffffff; --ink:#1e2733; --muted:#667085; --line:#e4e8ee;
@@ -190,15 +190,28 @@ svg.grapher{display:block;width:100%;height:auto;max-height:440px;background:#ff
 .chip:hover{border-color:var(--blue-r)}
 .chip-on{background:var(--blue);color:#fff;border-color:var(--blue)}
 @media(max-width:560px){.chip{min-height:38px;font-size:14px;padding:8px 14px}.chips-lab{width:100%;margin-bottom:2px}}
+
+/* Minimal course: task first; optional help and secondary controls stay reachable. */
+:root{--bg:#f6f7f5;--paper:#fff;--surface:#fff;--surface-2:#f3f6f1;--surface-3:#e8eee6;--ink:#202820;--ink2:#626b63;--ink-soft:#626b63;--muted:#626b63;--line:#dbe1da;--line2:#aeb9ac;--line-strong:#aeb9ac;--primary:#216342;--primary-d:#174d31;--primary-l:#eef5eb;--active:#216342;--active-bg:#eef5eb;--blue:#216342;--blue-d:#174d31;--blue-l:#eef5eb;--blue-r:#b9d0b7;--indigo:#216342;--indigo-deep:#174d31;--indigo-soft:#eef5eb;--indigo-ring:#b9d0b7;--shadow:none}
+body{background:var(--bg);background-image:none;font-size:18px;line-height:1.75}.wrap{max-width:850px;padding:24px 18px 60px}.minimal-header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 26px}.minimal-header .eyebrow{font-size:15px;color:var(--muted,var(--ink2));white-space:nowrap}.minimal-header h1{font:700 24px/1.4 system-ui,sans-serif;margin:0}.minimal-settings{margin-top:26px;border-top:1px solid var(--line);padding-top:18px}.minimal-settings>summary{min-height:44px;cursor:pointer;color:var(--primary,var(--blue));font-size:17px}.minimal-settings[open]>summary{margin-bottom:20px}.minimal-hint{margin:22px 0}.minimal-help{margin-top:18px;background:#f1f6ee;padding:22px;border-radius:12px}.minimal-help[hidden],[hidden]{display:none!important}.minimal-help>details{margin-top:24px}.minimal-help summary{cursor:pointer;min-height:44px;color:#566153}.minimal-proof-note{font-size:14px;color:#626b63;margin:22px 0 0;line-height:1.7}.minimal-title{font-size:21px;line-height:1.5;margin:0 0 22px}.minimal-new{display:block;margin-top:24px}.minimal-results{margin-top:22px}.minimal-results summary{color:#626b63;cursor:pointer;min-height:44px}.minimal-results[open]>summary{margin-bottom:14px}
+button,.btn,.chip,.mode,.mod-btn,.tab,.addbtn,.rmini,.rm-btn{min-height:44px}.btn.primary,.btn-check,.btn.next{background:#216342;color:white}.btn.ghost,.btn-new{background:white;border:1px solid var(--line);color:#216342}.btn,.btnrow,.btn-row{font-size:17px}.btns,.btnrow,.btn-row{gap:12px;margin-top:20px}input,select{max-width:100%}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[role=button]:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}.mathline{font-size:23px;line-height:2;max-width:100%;overflow-x:auto}.prompt,.problem,.st-task{font-size:18px;line-height:1.85}.qbox,.stage,.statement,.card{box-shadow:none}.qbox{border:0;padding:8px 0}.stagehead{padding:24px 28px 0;border:0}.stagehead .st-t{font:700 21px/1.5 system-ui,sans-serif}.body{padding:24px 28px}.sstep,.step-card,.scard{margin-top:18px}.sstep .sq,.step-prompt{font-size:17px;line-height:1.8}.sstep{opacity:1}.numin,.num{font-size:21px;min-height:46px}.stepfinal,.solution,.solbox{margin-top:24px}.solution .step,.solbox .prose{font-size:17px;line-height:1.85}.picker,.module-nav{margin-top:18px}.mcard:before{display:none}.mcard,.mod-btn{box-shadow:none}.mcard .mttl{font-size:16px}.mcard.on{box-shadow:none}.tabs,.modes{flex-wrap:wrap}.tab{border:1px solid var(--line);border-radius:8px;top:auto}.tab.on:after{display:none}.answer-label{display:block;font-size:16px;margin:22px 0 8px}.statement{padding:24px}.st-expr{font-size:24px;line-height:2}.panel-body{padding:0}.sub-chips{margin-top:20px}.gview{box-shadow:none}.mtbl{display:block;max-width:100%;overflow-x:auto}.step-input,.ans-host{overflow-x:auto}.minimal-help .mathline,.minimal-help .problem{overflow-x:auto}.minimal-help .givenbar{position:static}.minimal-help .statement{border:0;background:transparent;padding:0}.minimal-help .step-graph{margin:20px 0}
+@media(max-width:560px){.wrap{padding:18px 12px 44px}.minimal-header h1{font-size:21px}.minimal-header{gap:12px;margin-bottom:20px}.stagehead{padding:22px 18px 0}.body{padding:20px 18px}.minimal-help{padding:18px 12px}.mathline{font-size:21px}.statement{padding:22px 18px}.st-expr{font-size:22px}.btn{font-size:16px;padding:10px 13px}.minimal-settings .picker{grid-template-columns:1fr}.modes{display:flex}.numin{width:85px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.minimal-model-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border-radius:8px}
+.minimal-model-scroll:focus-visible{outline:3px solid #78a98c;outline-offset:3px}
+.minimal-model-scroll svg{touch-action:pan-x pan-y}
+.minimal-model-note{display:none;color:#566153;font-size:13px;line-height:1.6;margin:6px 0 12px}
+@media(max-width:560px){.minimal-model-note{display:block}}
+@media print{.minimal-model-scroll{overflow:visible}.minimal-model-scroll svg{min-width:0}.minimal-model-note{display:none}}
+.minimal-model-scroll svg.grapher{min-width:560px}
+.tick{fill:#626b63;font-size:12px}.badge-t1{font-size:12px}
+@media print{.minimal-model-scroll svg.grapher{min-width:0}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header class="app-head">
-<div class="eyebrow">ОГЭ · математика · задание 22</div>
-<h1>Графики функций</h1>
-<p>Строим график, ведём прямую — и считаем общие точки. Кусочные функции, модуль и гипербола с выколотой точкой.</p>
-</header>
+<header class="minimal-header"><div class="eyebrow">ОГЭ №22</div><h1>Графики функций</h1></header>
 <div id="app"></div>
 </div>
 <script>
@@ -819,10 +832,10 @@ function autoRange(pieces){
    ============================================================ */
 function makeValueInput(){
   const wrap=el('span','vinput');
-  const dec=el('input','v-dec');dec.type='text';dec.inputMode='decimal';dec.placeholder='0';
+  const dec=el('input','v-dec');dec.type='text';dec.inputMode='decimal';dec.placeholder='0';dec.setAttribute('aria-label','Значение');
   const frac=el('span','v-frac hidden');
-  const num=el('input','v-num');num.type='text';num.placeholder='';
-  const den=el('input','v-den');den.type='text';den.placeholder='';
+  const num=el('input','v-num');num.type='text';num.placeholder='';num.setAttribute('aria-label','Числитель');
+  const den=el('input','v-den');den.type='text';den.placeholder='';den.setAttribute('aria-label','Знаменатель');
   const bar=el('span','v-bar');
   frac.append(num,bar,den);
   const tog=el('button','v-tog');tog.type='button';tog.title='Дробь / десятичная';tog.textContent='½';
@@ -943,13 +956,15 @@ function drawWithMeasure(g,problem,val){
 }
 function makeGraphView(withSlider,measureKind){
   const box=el('div','gview');
-  const svg=svgEl('svg');box.appendChild(svg);
+  const scroll=el('div','minimal-model-scroll');scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','График: прокрутка влево и вправо');box.appendChild(scroll);
+  const svg=svgEl('svg');scroll.appendChild(svg);
+  box.appendChild(el('p','minimal-model-note','График можно прокручивать влево и вправо.'));
   const g=new Grapher(svg);
   let slider,label,problem,curSpec;
   if(withSlider){
     const sc=el('div','slider-wrap');
     label=el('span','slider-lab','');
-    slider=el('input','mslider');slider.type='range';
+    slider=el('input','mslider');slider.type='range';slider.setAttribute('aria-label','Положение прямой');
     sc.append(label,slider);box.appendChild(sc);
     slider.addEventListener('input',()=>redraw());
   }
@@ -1044,7 +1059,7 @@ m3:`
 </div></div>
 <div class="card"><div class="cnum">3</div><div class="cbody">
 <h3>Прямая y=kx через начало</h3>
-<p>Она всегда проходит через (0;0). С гиперболой 1/x при k&gt;0 у неё <b>две</b> точки пересечения. <b>Ровно одна</b> — когда прямая проходит через выколотую точку: тогда одно из пересечений «пропадает». Отсюда <b>k = 1/x₀²</b>.</p>
+<p>Она всегда проходит через (0;0). С гиперболой 1/x при k&gt;0 у неё <b>две</b> точки пересечения. <b>Ровно одна</b> — когда прямая проходит через выколотую точку: тогда одно из пересечений «пропадает». Отсюда <b>k = ${fracFromParts('1','x₀²',false)}</b>.</p>
 </div></div>
 <div class="card explorer"><div class="cnum">4</div><div class="cbody">
 <h3>Вращаем прямую</h3>
@@ -1082,7 +1097,7 @@ function stepPlan(problem){
          showHtml:`Точка стыка (${P.x0.toString()}; ${P.v0.toString()}) — здесь парабола переходит в ветвь гиперболы.`},
         {title:'Асимптота гиперболы',kind:'value',draw:dBoth,
          promptHtml:`Второй кусок — ветвь гиперболы. К какой горизонтальной прямой y = ? она приближается (её асимптота)?`,answer:asymY,
-         hintHtml:`В записи k/(x − a) + b горизонтальная асимптота — это y = b.`,
+         hintHtml:`В записи ${fracFromParts('k','x − a',false)} + b горизонтальная асимптота — это y = b.`,
          showHtml:`Горизонтальная асимптота y = <b>${asymY.toString()}</b>. График построен полностью.`},
         {title:'Считаем точки',kind:'atoms',draw:dBoth,
          promptHtml:`График готов. Двигайте прямую ползунком снизу вверх — счётчик показывает число общих точек. При каких m их ровно <b>${P.target}</b>?`,answer:P.atoms,
@@ -1172,16 +1187,16 @@ function stepPlan(problem){
     return [
       {title:'Сокращаем дробь',kind:'choice',draw:dHyp,
        promptHtml:`В числителе и знаменателе есть общий множитель. Сократите дробь. Какой график получается?`,
-       options:['гипербола y = 1/x (с выколотой точкой)','парабола','прямая'],answer:0,
-       showHtml:`После сокращения — <b>гипербола y = 1/x</b>. На месте сокращённого множителя — выколотая точка ○.`},
+       options:['гипербола y = '+fracFromParts('1','x',false)+' (с выколотой точкой)','парабола','прямая'],answer:0,
+       showHtml:`После сокращения — <b>гипербола y = ${fracFromParts('1','x',false)}</b>. На месте сокращённого множителя — выколотая точка ○.`},
       {title:'Выколотая точка',kind:'value',draw:dHyp,
        promptHtml:`Сокращённый множитель обращал знаменатель в нуль — там дырка. Найдите абсциссу выколотой точки x₀.`,answer:P.xh,
        hintHtml:`Это корень сокращённого множителя (нуль исходного знаменателя).`,
        showHtml:`Выколота точка (${P.xh.toString()}; ${P.yh.toString()}).`},
       {title:'Проводим прямую y = kx',kind:'vals',varname:'k',draw:dLine,
        promptHtml:`Прямая y = kx идёт через начало и обычно пересекает гиперболу в двух точках. Ровно одна получится, если прямая пройдёт через выколотую точку. При каком k?`,answer:P.vals,
-       hintHtml:`k = 1/x₀². Подставьте x₀.`,
-       showHtml:`k = 1/x₀² = <b>${P.vals[0].toString()}</b>. Прямая проходит через дырку — остаётся одна точка.`}
+       hintHtml:`k = ${fracFromParts('1','x₀²',false)}. Подставьте x₀.`,
+       showHtml:`k = ${fracFromParts('1','x₀²',false)} = <b>${P.vals[0].toString()}</b>. Прямая проходит через дырку — остаётся одна точка.`}
     ];
   }else if(P.sub==='parab_kx'){
     const dPar=g=>{g.drawCurvePieces([spec.quadSeg]);g.drawHoleDot(spec.holeX,spec.holeY);};
@@ -1197,7 +1212,7 @@ function stepPlan(problem){
        showHtml:`Выколота точка (${P.xh.toString()}; ${P.yh.toString()}).`},
       {title:'Прямые y = kx: одна общая точка',kind:'vals',varname:'k',draw:dLines,
        promptHtml:`Ровно одна общая точка бывает двух видов: прямая <b>касается</b> параболы (таких две) либо проходит через <b>выколотую</b> точку (секущая, одно пересечение пропадает). Укажите все k.`,answer:P.vals,
-       hintHtml:`Касательные: k = ±2√p (здесь p = ${P.p.toString()}). Секущая: k = y₀ / x₀.`,
+       hintHtml:`Касательные: k = ±2√p (здесь p = ${P.p.toString()}). Секущая: k = ${fracFromParts('y₀','x₀',false)}.`,
        showHtml:`Ответ: <b>${P.answer}</b>.`}
     ];
   }else{
@@ -1207,8 +1222,8 @@ function stepPlan(problem){
     return [
       {title:'Сокращаем дробь',kind:'choice',draw:dHyp,
        promptHtml:`Сократите дробь. Какой график получается?`,
-       options:['сдвинутая гипербола y = C − 1/x','обычная парабола','прямая'],answer:0,
-       showHtml:`Получается <b>гипербола y = ${P.C} − 1/x</b> с выколотой точкой.`},
+       options:['сдвинутая гипербола y = C − '+fracFromParts('1','x',false),'обычная парабола','прямая'],answer:0,
+       showHtml:`Получается <b>гипербола y = ${P.C} − ${fracFromParts('1','x',false)}</b> с выколотой точкой.`},
       {title:'Горизонтальная асимптота',kind:'value',draw:dAsym,
        promptHtml:`При x → ±∞ дробь стремится к нулю. К какой прямой y = m график приближается, но не достигает?`,answer:Frac.fromNum(P.C),
        hintHtml:`Это горизонтальная асимптота y = C.`,
@@ -1268,6 +1283,9 @@ function fracFromParts(numHtml,denHtml,big){return `<span class="frac${big?' big
 
 function sc(n){return (n<0?'−':'+')+' '+Math.abs(n);} // signed term with leading + / −
 function sc0(n){return (n<0?'−':'')+Math.abs(n);}     // signed, no leading +
+function mathDisplay(html){
+  return String(html).split(/(<[^>]*>)/g).map((part,i)=>i%2?part:part.replace(/(^|[^\w])([−-]?\d+)\/(\d+)(?![\w/])/g,(all,before,n,d)=>before+fracFromParts(n,d,false))).join('');
+}
 function statementHtml(P){
   let expr,task;
   if(P.kind==='piecewise'){
@@ -1311,7 +1329,7 @@ function retryBtn(on){return btn('btn-retry','Ещё пример этой те�
 /* ============================================================
    STEP MODE
    ============================================================ */
-function renderStep(mod,host,preset){
+function renderStep(mod,host,preset,onNew,onReveal){
   host.innerHTML='';
   const problem=preset||genProblem(mod);
   const stmt=el('div');stmt.innerHTML=statementHtml(problem);host.appendChild(stmt);
@@ -1322,7 +1340,7 @@ function renderStep(mod,host,preset){
   let range;
   range=specRange(graphSpec(problem));
   const footer=el('div','step-footer');host.appendChild(footer);
-  const retry=retryBtn(()=>renderStep(mod,host));retry.classList.add('hidden');footer.appendChild(retry);
+  const retry=retryBtn(onNew||(()=>renderStep(mod,host)));retry.classList.add('hidden');footer.appendChild(retry);
   let revealedOnce=false;
   function showRetry(){if(!revealedOnce){revealedOnce=true;retry.classList.remove('hidden');}}
 
@@ -1332,7 +1350,7 @@ function renderStep(mod,host,preset){
     const step=plan[idx];const sIdx=idx;idx++;
     const card=el('div','step-card active');
     card.innerHTML=`<div class="step-head"><span class="step-n">Шаг ${sIdx+1}</span><span class="step-title">${step.title}</span><span class="step-cue">твой ход</span></div>`;
-    const prompt=el('div','step-prompt');prompt.innerHTML=step.promptHtml;card.appendChild(prompt);
+    const prompt=el('div','step-prompt');prompt.innerHTML=mathDisplay(step.promptHtml);card.appendChild(prompt);
     if(step.draw){graphHost.classList.remove('hidden');
       if(step.kind==='atoms'||step.kind==='vals'){
         // counting/answer step: give the same draggable line + live counter as in theory/marathon
@@ -1371,8 +1389,8 @@ function renderStep(mod,host,preset){
         row.querySelectorAll('button').forEach(b=>b.disabled=true);advance();}
       else{feedback(fb,false,'','Не сходится — попробуйте ещё раз.');}});
     row.appendChild(check);
-    if(step.hintHtml){row.appendChild(btn('btn-hint','Подсказка',()=>{feedbackPeek(fb,'');fb.innerHTML=step.hintHtml;}));}
-    row.appendChild(btn('btn-show','Показать шаг',()=>{feedbackPeek(fb,'');fb.innerHTML=step.showHtml;
+    if(step.hintHtml){row.appendChild(btn('btn-hint','Подсказка',()=>{feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.hintHtml);}));}
+    row.appendChild(btn('btn-show','Показать шаг',()=>{if(onReveal)onReveal();feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.showHtml);
       card.classList.remove('active');card.classList.add('peeked');showRetry();
       if(!solved){advance();}}));
     stepsWrap.appendChild(card);
@@ -1386,48 +1404,29 @@ function renderStep(mod,host,preset){
    ============================================================ */
 function renderMarathon(mod,host){
   host.innerHTML='';
-  const score={solved:0,tries:0};
-  const scoreEl=el('div','score');host.appendChild(scoreEl);
-  let subFilter=null;
-  const subs=mod.subs||[{k:null,l:'Все'}];
-  if(subs.length>1){
-    const chipRow=el('div','sub-chips');
-    const lab=el('span','chips-lab','Тип задач:');chipRow.appendChild(lab);
-    subs.forEach(s=>{const c=el('button','chip'+(s.k===subFilter?' chip-on':''),s.l);c.type='button';
-      c.onclick=()=>{subFilter=s.k;[...chipRow.querySelectorAll('.chip')].forEach(x=>x.classList.remove('chip-on'));c.classList.add('chip-on');newProblem();};
-      chipRow.appendChild(c);});
-    host.appendChild(chipRow);
-  }
+  const score={solved:0,tries:0},results=el('details','minimal-results');results.appendChild(el('summary',null,'Мои результаты · подтипы'));
+  const scoreEl=el('div','score');results.appendChild(scoreEl);
+  let subFilter=null;const subs=mod.subs||[{k:null,l:'Все'}];
+  if(subs.length>1){const chipRow=el('div','sub-chips');subs.forEach(s=>{const c=el('button','chip'+(s.k===subFilter?' chip-on':''),s.l);c.type='button';c.onclick=()=>{subFilter=s.k;[...chipRow.querySelectorAll('.chip')].forEach(x=>x.classList.remove('chip-on'));c.classList.add('chip-on');newProblem();};chipRow.appendChild(c);});results.appendChild(chipRow);}
   const stmt=el('div');host.appendChild(stmt);
-  const gv=makeGraphView(true);host.appendChild(gv.el);
-  const help=el('div','mhelp','Подвигайте прямую ползунком, чтобы прикинуть ответ, затем соберите его ниже.');host.appendChild(help);
-  const ansHost=el('div','ans-host');host.appendChild(ansHost);
-  const fb=el('div','fb');host.appendChild(fb);
-  const row=el('div','btn-row');host.appendChild(row);
-  const retryRow=el('div','btn-row');host.appendChild(retryRow);
-  let problem,input,peeked;
+  const hintRow=el('div','minimal-hint'),hint=btn('btn-new','Хочешь подсказку?');hintRow.appendChild(hint);host.appendChild(hintRow);
+  const helpPanel=el('section','minimal-help');helpPanel.id='help-'+mod.id;helpPanel.hidden=true;helpPanel.setAttribute('aria-label','Лаборатория и шаги решения');hint.setAttribute('aria-controls',helpPanel.id);hint.setAttribute('aria-expanded','false');hintRow.appendChild(helpPanel);
+  const gv=makeGraphView(true);helpPanel.appendChild(gv.el);const help=el('div','mhelp','Двигай прямую ползунком и наблюдай, как меняется число общих точек.');helpPanel.appendChild(help);
+  const stepsBtn=btn('btn-step','Разобрать по шагам'),stepsHost=el('div');helpPanel.appendChild(stepsBtn);helpPanel.appendChild(stepsHost);
+  const solDetails=el('details');solDetails.appendChild(el('summary',null,'Готовый ответ'));helpPanel.appendChild(solDetails);
+  const ansHost=el('div','ans-host');host.appendChild(ansHost);const fb=el('div','fb');fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');host.appendChild(fb);
+  const row=el('div','btn-row');host.appendChild(row);const retryRow=el('div','btn-row');host.appendChild(retryRow);
+  host.appendChild(el('p','minimal-proof-note','Проверяется ответ. Построение графика и развёрнутое решение выполни в тетради.'));host.appendChild(results);
+  let problem,input,peeked,solvedThis=false,helpBuilt=false,stepsBuilt=false;
   function updScore(){scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;}
-  function makeInput(){ansHost.innerHTML='';
-    if(mod.answerKind==='atoms'){input=makeAnswerBuilder();ansHost.appendChild(el('div','ans-lab','Ответ:'));ansHost.appendChild(input.el);}
-    else{input=makeValueList(problem.varname);ansHost.appendChild(el('div','ans-lab','Ответ:'));ansHost.appendChild(input.el);}}
-  function grade(){
-    if(mod.answerKind==='atoms'){const at=input.getAtoms();if(at===null||at.length===0)return null;return setsEqual(at,problem.atoms);}
-    else{const vs=input.getVals();if(vs===null||vs.length===0)return null;return valsEqual(vs,problem.vals);}}
-  function newProblem(){try{problem=genProblemFiltered(mod,subFilter);host.__problem=problem;peeked=false;stmt.innerHTML=statementHtml(problem);gv.show(problem);makeInput();fb.className='fb';fb.textContent='';retryRow.innerHTML='';}catch(e){console.error('marathon problem error',e);setTimeout(newProblem,0);}}
-  row.appendChild(btn('btn-check','Проверить',()=>{const r=grade();
-    if(r===null){feedback(fb,false,'','Соберите ответ выше.');return;}
-    score.tries++;
-    if(r){if(!peeked)score.solved++;feedback(fb,true,peeked?'Верно (ответ был показан).':'Верно! Отлично.','');updScore();}
-    else{feedback(fb,false,'','Пока не совпадает — проверьте концы промежутков и значения.');updScore();}}));
-  row.appendChild(btn('btn-show','Показать ответ',()=>{peeked=true;feedbackPeek(fb,'');fb.innerHTML='Ответ: <b>'+problem.answer+'</b>';
-    if(!retryRow.querySelector('.btn-retry'))retryRow.appendChild(retryBtn(newProblem));}));
-  if(mod.answerKind==='atoms')row.appendChild(btn('btn-step','Решить по шагам',()=>{
-    // jump to step mode with this problem
-    const modeNav=host.closest('.panel').querySelector('.modes');
-    const stepBtn=[...modeNav.children].find(b=>b.dataset.mode==='step');
-    stepHostFor(mod.id).__preset=problem;stepBtn.click();}));
-  row.appendChild(btn('btn-new','Новая задача',newProblem));
-  updScore();newProblem();
+  function makeInput(){ansHost.innerHTML='';if(mod.answerKind==='atoms'){input=makeAnswerBuilder();ansHost.appendChild(el('div','ans-lab','Ответ:'));ansHost.appendChild(input.el);}else{input=makeValueList(problem.varname);ansHost.appendChild(input.el);}}
+  function grade(){if(mod.answerKind==='atoms'){const at=input.getAtoms();if(at===null||at.length===0)return null;return setsEqual(at,problem.atoms);}const vs=input.getVals();if(vs===null||vs.length===0)return null;return valsEqual(vs,problem.vals);}
+  function newProblem(){problem=genProblemFiltered(mod,subFilter);host.__problem=problem;peeked=false;solvedThis=false;checkButton.disabled=false;helpBuilt=false;stepsBuilt=false;stmt.innerHTML=statementHtml(problem);makeInput();fb.className='fb';fb.textContent='';retryRow.innerHTML='';helpPanel.hidden=true;hint.setAttribute('aria-expanded','false');solDetails.open=false;stepsHost.innerHTML='';stepsBtn.hidden=false;}
+  hint.onclick=()=>{const opening=helpPanel.hidden;helpPanel.hidden=!opening;hint.setAttribute('aria-expanded',String(opening));if(opening&&!helpBuilt){gv.show(problem);helpBuilt=true;}};
+  stepsBtn.onclick=()=>{if(!stepsBuilt){renderStep(mod,stepsHost,problem,newProblem,()=>{peeked=true;});stepsBuilt=true;stepsBtn.hidden=true;}};
+  const checkButton=btn('btn-check','Проверить',()=>{if(solvedThis)return;const r=grade();if(r===null){feedback(fb,false,'','Собери ответ выше.');return;}score.tries++;if(r){solvedThis=true;checkButton.disabled=true;if(!peeked)score.solved++;feedback(fb,true,peeked?'Верно (ответ был показан).':'Верно!','');}else feedback(fb,false,'','Пока не совпадает — проверь концы промежутков и значения.');updScore();});row.appendChild(checkButton);
+  solDetails.appendChild(btn('btn-show','Показать ответ',()=>{peeked=true;feedbackPeek(fb,'');fb.innerHTML='Ответ: <b>'+mathDisplay(problem.answer)+'</b>';if(!retryRow.querySelector('.btn-retry'))retryRow.appendChild(retryBtn(newProblem));}));
+  row.appendChild(btn('btn-new','Другая задача →',newProblem));updScore();newProblem();
 }
 
 /* ============================================================
@@ -1468,8 +1467,8 @@ const stepHosts={};
 function stepHostFor(id){return stepHosts[id];}
 function boot(){
   const root=$('#app');
-  const modNav=el('div','module-nav');root.appendChild(modNav);
   const panels=el('div','panels');root.appendChild(panels);
+  const settings=el('details','minimal-settings');settings.id='courseSettings';settings.appendChild(el('summary',null,'Выбрать тему'));const modNav=el('div','module-nav');settings.appendChild(modNav);root.appendChild(settings);
   MODULES.forEach((mod,mi)=>{
     const mb=el('button','mod-btn'+(mi===0?' active':''),'');mb.innerHTML=`<span class="mb-title">${mod.title}</span><span class="mb-sub">${mod.sub}</span>`;mb.dataset.mod=mod.id;modNav.appendChild(mb);
     const panel=el('section','panel'+(mi===0?'':' hidden'));panel.dataset.mod=mod.id;panels.appendChild(panel);
@@ -1477,8 +1476,8 @@ function boot(){
     const defs=[['learn','Учимся'],['step','Пошагово'],['marathon','Марафон']];
     const hosts={};
     defs.forEach((d,di)=>{const b=el('button','mode-btn'+(di===0?' active':''),d[1]);b.dataset.mode=d[0];modes.appendChild(b);});
-    panel.appendChild(modes);
     const body=el('div','panel-body');panel.appendChild(body);
+    const modeSettings=el('details','minimal-settings');modeSettings.appendChild(el('summary',null,'Другие режимы'));modeSettings.appendChild(modes);panel.appendChild(modeSettings);
     defs.forEach((d,di)=>{const h=el('div','mode-host'+(di===0?'':' hidden'));h.dataset.mode=d[0];body.appendChild(h);hosts[d[0]]=h;});
     stepHosts[mod.id]=hosts.step;
     // lazy render flags
@@ -1492,7 +1491,7 @@ function boot(){
     }
     modes.querySelectorAll('.mode-btn').forEach(b=>b.onclick=()=>activate(b.dataset.mode));
     // initial
-    renderTheory(mod,hosts.learn);rendered.learn=true;
+    activate('marathon');
     mb.onclick=()=>{[...modNav.children].forEach(x=>x.classList.toggle('active',x===mb));
       [...panels.children].forEach(p=>p.classList.toggle('hidden',p.dataset.mod!==mod.id));};
   });

@@ -170,6 +170,10 @@ button:focus-visible,input:focus-visible,.chip:focus-visible,a:focus-visible,sum
   section.tab.on{display:block !important}
   .card{box-shadow:none}
 }
+
+/* Minimal task-first course presentation. Math and progress stay in their existing engines. */
+:root{--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--accent:#216342;--green:#216342;--blue:#216342;--line:#dbe1da;--ui:system-ui,-apple-system,"Segoe UI",sans-serif;--hand:var(--ui)}
+body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:18px;line-height:1.75}.margin-line{display:none}.wrap,body>main,body>header{max-width:860px;margin-left:auto;margin-right:auto;padding-left:20px;padding-right:20px}body>header{background:transparent;border:0;box-shadow:none;padding-top:24px}header,h1,h2,h3,.hand{font-family:var(--ui)!important}header{margin-bottom:24px}h1{font-size:25px!important;line-height:1.4;margin:10px 0 22px!important}.crumbs{font:15px/1.6 var(--ui);color:#216342}.card,.task-card,.mtask,.panel{background:#fff!important;border:1px solid #dbe1da!important;border-radius:14px;box-shadow:none!important;padding:28px!important;margin-bottom:22px}.card:before,.card:after{display:none!important}.card p,.task-card p,.mtask p{line-height:1.8}.taskline,.task-text,.task-q,.story{font-size:19px!important;line-height:1.8!important}.taskline{margin:16px 0}.svgbox,svg{max-width:100%}.expr,.formula-box{margin:24px 0;font-size:27px;overflow-x:auto}.btn,.act,.btn-check,button.primary{background:#216342!important;color:white!important;border-color:#216342!important;font-family:var(--ui)!important;font-size:16px;min-height:46px}.ghost,.btn.ghost,.btn-ghost,.act.sec,.act.ghost,.btn.show,.btn-hint{background:#fff!important;color:#216342!important;border-color:#b9cbbb!important}button,input,select,summary{font-family:var(--ui);min-height:44px}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}input.ans,.ansfield input,.field input{font-size:21px!important;max-width:100%;border-radius:7px}.btnrow,.btn-row,.mrow,.steprow,.answer-row{gap:12px;margin-top:18px!important}.tabs{display:flex;flex-wrap:wrap;gap:9px;border:0}.tabs button,.chip,.pill,.fchip,#modes button,#types button{background:white;color:#216342;border:1px solid #dbe1da;min-height:44px;padding:9px 13px;font-size:15px}.tabs .active,.tabs .on,.chip.active,.chip.on,.pill.on,.fchip.on,#modes .active,#types .active{background:#216342!important;color:#fff!important}.minimal-settings,.minimal-options{margin:24px 0;border-top:1px solid #dbe1da;padding:18px 2px}.minimal-settings>summary,.minimal-options>summary{color:#216342;cursor:pointer;font-size:16px;padding:5px 0}.minimal-settings>summary+*,.minimal-options>summary+*{margin-top:18px}.minimal-settings .card{padding:18px!important}.minimal-settings .sub,.minimal-settings .subtitle{font-size:15px;line-height:1.75}.minimal-hint{margin:24px 0!important}.minimal-hint-panel{margin:20px 0;padding:20px;background:#f0f5ee;border-radius:12px}.minimal-task-nav{margin:20px 0}.minimal-task-nav label{display:block;font-size:15px}.minimal-task-nav select{max-width:100%;padding:8px;border:1px solid #b9cbbb;border-radius:8px;background:white;font-size:17px}.minimal-task-nav .minimal-next{display:block;margin-top:18px}.mgrid{display:block!important}.score{position:static!important;background:transparent!important;box-shadow:none!important;padding:12px!important}.minimal-meta{font-size:14px;color:#626b63}.minimal-task-title{font-size:20px;margin:0 0 24px}.minimal-task-nav [hidden],[hidden]{display:none!important}@media(max-width:560px){.wrap,body>main,body>header{padding-left:12px;padding-right:12px}.card,.task-card,.mtask,.panel{padding:22px 16px!important}h1{font-size:22px!important}.taskline,.task-text,.task-q,.story{font-size:18px!important}.minimal-hint-panel{padding:16px 12px}.expr,.formula-box{font-size:24px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -205,6 +209,37 @@ button:focus-visible,input:focus-visible,.chip:focus-visible,a:focus-visible,sum
 <section class="tab" id="tab-quiz"><div id="quiz-root"></div></section>
 </div>
 <script>
+
+/* Presentation helpers only: nodes are moved, never cloned, so their handlers and progress survive. */
+const OGEMinimal={
+  group(root,nodes,label,cls){
+    if(!root||typeof root.appendChild!=="function")return null;
+    nodes=nodes.filter(Boolean);if(!nodes.length)return null;
+    const details=document.createElement('details');details.className=cls||'minimal-options';
+    const summary=document.createElement('summary');summary.textContent=label;details.appendChild(summary);
+    nodes.forEach(node=>details.appendChild(node));root.appendChild(details);return details;
+  },
+  shell(root,selectors,title){
+    if(!root||!document.body||!document.body.querySelector)return;
+    const heading=document.querySelector('h1');if(heading)heading.textContent=title;
+    const nodes=selectors.map(s=>document.querySelector(s)).filter(Boolean);
+    this.group(root,nodes,'Темы, режимы и результаты','minimal-settings');
+  },
+  paginate(grid,selector){
+    if(!grid||!grid.querySelectorAll)return;
+    const cards=Array.from(grid.querySelectorAll(selector));if(!cards.length)return;
+    const old=grid.nextElementSibling;if(old&&old.classList.contains('minimal-task-nav'))old.remove();
+    const nav=document.createElement('div');nav.className='minimal-task-nav';
+    const next=document.createElement('button');next.type='button';next.className='btn minimal-next';next.textContent='Другое задание →';nav.appendChild(next);
+    const options=document.createElement('details');options.className='minimal-options';
+    const summary=document.createElement('summary');summary.textContent='Выбрать задание';options.appendChild(summary);
+    const label=document.createElement('label');label.textContent='Задание ';const select=document.createElement('select');select.setAttribute('aria-label','Выбрать задание');label.appendChild(select);options.appendChild(label);nav.appendChild(options);
+    cards.forEach((card,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=String(i+1)+' из '+cards.length;select.appendChild(option);});
+    let current=0;const activate=i=>{current=i;cards.forEach((card,j)=>{card.hidden=j!==i;});select.value=String(i);};
+    select.onchange=()=>activate(Number(select.value));next.onclick=()=>activate((current+1)%cards.length);activate(0);grid.after(nav);
+  }
+};
+
 /* ===== ЯДРО: точная арифметика и парсер ответов ===== */
 function gcdB(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b];}return a;}
 function F(n,d){ // дробь n/d, BigInt, нормализованная
@@ -1063,7 +1098,7 @@ function mountSteps(root,task,onDone,hooks){
     root.appendChild(div);
     let resolved=false;
     const check=()=>{
-      if(resolved)return;
+      if(resolved||(hooks&&hooks.isClosed&&hooks.isClosed()))return;
       const v=awRead(id);
       if(!v){setFB(id,'warn',MSG_EMPTY);return;}
       if(stepOK(task,s,isLast,v)){
@@ -1080,7 +1115,7 @@ function mountSteps(root,task,onDone,hooks){
     el(id+'-ck').onclick=check;
     bindEnter(id,check);
     el(id+'-sh').onclick=()=>{
-      if(resolved)return;
+      if(resolved||(hooks&&hooks.isClosed&&hooks.isClosed()))return;
       resolved=true;
       st.shown=true;task.onShow&&task.onShow();
       setFB(id,'', '<span class="redink">'+s.show+' Ответ: '+ansHTML(s.ans)+'</span>');
@@ -1215,24 +1250,31 @@ function marChips(){
 function marNew(){
   const root=el('mar-root');root.innerHTML='';
   const t=attach(marFilter==='all'?genRandom(RT):genTask(marFilter,RT));
-  let hintN=0, finished=false;
+  let hintN=0, finished=false, stepsMounted=false;
   const card=document.createElement('div');card.className='card';
   const id='w'+(++UID);
   card.innerHTML=taskHead(t)
     +`<div style="margin:10px 0"><b>Ответ:</b> `+awHTML(id,false)+`</div>`
     +`<div><button class="act" id="${id}-ck">Проверить</button>`
-    +`<button class="act ghost" id="${id}-hint">Подсказка</button>`
-    +`<button class="act ghost" id="${id}-steps">Решить по шагам</button></div>`
+    +`<button class="act ghost" id="${id}-hint">Ещё ориентир</button>`
+    +`<button class="act ghost minimal-hint" id="${id}-steps" aria-expanded="false">Хочешь подсказку?</button></div>`
     +`<div id="${id}-hintbox"></div><span class="fb" aria-live="polite" id="${id}-fb"></span><div id="${id}-after"></div>`;
   root.appendChild(card);
+  const helpButton=el(id+'-steps');card.insertBefore(helpButton,card.querySelector('.aw').parentElement);
+  const hintPanel=document.createElement('div');hintPanel.id=id+'-help';hintPanel.className='minimal-hint-panel';hintPanel.hidden=true;card.appendChild(hintPanel);
+  helpButton.setAttribute('aria-controls',hintPanel.id);
+  const setHelpOpen=open=>{hintPanel.hidden=!open;helpButton.setAttribute('aria-expanded',String(open));};
+  OGEMinimal.group(card,[card.querySelector('.tnum')],'Об этом задании');
+  hintPanel.appendChild(el(id+'-hint'));hintPanel.appendChild(el(id+'-hintbox'));hintPanel.appendChild(el(id+'-after'));
   const marTreeSvg = t.code==='10.6' ? card.querySelector('svg') : null;
   const after=()=>{
-    finished=true;
-    el(id+'-hint').disabled=true;el(id+'-steps').disabled=true;el(id+'-ck').disabled=true;
-    const a=el(id+'-after');
+    finished=true;awLock(id);
+    if(marTreeSvg) treeWink(marTreeSvg,TREE_KEYS,false);
+    el(id+'-hint').disabled=true;
+    hintPanel.querySelectorAll('.step input,.step button').forEach(e=>{e.disabled=true;});
     const b=document.createElement('button');b.className='act';b.id=id+'-next';b.textContent='Следующая задача';
     b.onclick=()=>{userActed=true;marNew();};
-    a.appendChild(b);
+    card.appendChild(b);
     if(userActed)try{b.focus({preventScroll:true});}catch(e){}
   };
   const check=()=>{
@@ -1240,9 +1282,9 @@ function marNew(){
     const v=awRead(id);
     if(!v){setFB(id,'warn',MSG_EMPTY);return;}
     if(checkAnswer(t,v)){
-      taskDone(t);
-      setFB(id,'ok','Верно!');awLock(id);
-      el(id+'-after').innerHTML=razborHTML(t);after();
+      const credited=taskDone(t);
+      setFB(id,'ok',credited===false?'Верно! Были показанные шаги — задача в счёт решённых не идёт (промахом это не считается).':'Верно!');awLock(id);
+      setHelpOpen(true);el(id+'-after').insertAdjacentHTML('beforeend',razborHTML(t));after();
     } else {
       taskMiss(t);
       setFB(id,'no',wrongMsg(t,v));
@@ -1253,18 +1295,20 @@ function marNew(){
     if(hintN<2){el(id+'-hintbox').innerHTML+=`<div class="hintbox"><b>Подсказка ${hintN+1}.</b> ${t.hints[hintN]}</div>`;hintN++;}
     if(hintN>=2)el(id+'-hint').disabled=true;
   };
-  el(id+'-steps').onclick=()=>{   // лестница блокирует главное поле: перепечатать ответ после показа нельзя
-    if(finished)return;
-    awLock(id);el(id+'-steps').disabled=true;el(id+'-ck').disabled=true;
+  helpButton.onclick=()=>{
+    const opening=hintPanel.hidden;
+    setHelpOpen(opening);
+    if(!opening||stepsMounted||finished)return;
+    stepsMounted=true;
     const box=document.createElement('div');el(id+'-after').appendChild(box);
-    const hooks = marTreeSvg ? treeStepHooks(marTreeSvg, t.meta.idx) : null;
-    mountSteps(box,t,(st)=>{
-      if(marTreeSvg) treeWink(marTreeSvg,TREE_KEYS,false);
+    const hooks=Object.assign({},marTreeSvg?treeStepHooks(marTreeSvg,t.meta.idx):null,{isClosed:()=>finished});
+    mountSteps(box,t,()=>{
+      if(finished)return;
       const ok=taskDone(t);
       if(!ok) el(id+'-after').insertAdjacentHTML('beforeend','<p><span class="redink">Были показанные шаги — задача в счёт решённых не идёт (промахом это не считается).</span></p>'+razborHTML(t));
       else el(id+'-after').insertAdjacentHTML('beforeend','<p class="okline">Решено по шагам самостоятельно — засчитано!</p>'+razborHTML(t));
       after();
-    }, hooks);
+    },hooks);
   };
   awFocus(id);
 }
@@ -1533,7 +1577,9 @@ function boot(){
   stepChips();stepNew();
   renderStats();marChips();marNew();
   buildQuizTab();
-  if(CP.REVIEW) showTab('step');
+  showTab(CP.REVIEW?'step':'mar');
+  const mar=el('tab-mar');OGEMinimal.group(mar,[el('mar-stats'),mar.querySelector(':scope>.card')],'Выбрать тему · мои результаты');
+  OGEMinimal.shell(document.querySelector('.wrap'),['nav.tabs','.wrap>.sub'],'ОГЭ №10 · Вероятность');
   if(CP.RO) selftest10();   // ?selftest=1 — маркер OGE10_SELFTEST_OK в консоли
 }
 document.addEventListener('DOMContentLoaded',boot);

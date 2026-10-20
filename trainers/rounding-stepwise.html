@@ -11,29 +11,41 @@
 body{font-size:18px}button,select{font:inherit;font-weight:800}select{max-width:100%;padding:10px;border:2px solid #cbd5e1;border-radius:12px;background:#fff}.grid>*{min-width:0}.digits{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding:4px 2px 12px;max-width:100%}.digit{flex:0 0 76px;width:76px;height:100px;padding:0 0 28px}.digit small{font-size:13px;line-height:1.15;bottom:5px;white-space:normal}.comma{flex-basis:22px}.stat span,.mini,.hist{font-size:16px}.instruction,.fb{font-size:20px;line-height:1.5}.prompt{font-size:clamp(24px,5vw,34px);overflow-wrap:anywhere}h1{font-size:clamp(28px,6vw,38px)}.save-warning{padding:14px;background:#fffbeb;border:1px solid #f59e0b;border-radius:14px;line-height:1.45}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #172033;outline-offset:3px}@media(max-width:600px){.page{padding:10px}.hero,.card{padding:14px;border-radius:18px}.digit{width:64px!important;height:92px!important;flex-basis:64px;font-size:34px!important}.comma{flex-basis:20px}.stats{gap:5px}.stat{padding:8px 3px}.stat span{font-size:14px}.answer input{max-width:100%}}
 </style>
 <link rel="stylesheet" href="/assets/download-panel.css">
-</head>
+<style id="oge-foundations-minimal">
+/* Calm training surface; working diagrams keep their semantic colours. */
+:root{--accent:#15803d;--accent-soft:#f0fdf4;--pen-green:#15803d}
+body{background:#fff!important;color:#172033;font-family:Arial,system-ui,sans-serif;font-size:18px;line-height:1.65}
+.page,.wrap{max-width:860px;margin:auto;padding:24px 20px 70px}.hero,header{background:none;box-shadow:none;border-radius:0;padding:0;margin-bottom:24px}.hero h1,h1{font-family:inherit;font-size:clamp(27px,5vw,35px);line-height:1.3;margin:16px 0}
+.grid{display:block}.card,.notebook{background:#fff;box-shadow:none;border:1px solid #e1e8e2;border-radius:16px;padding:24px;margin-bottom:24px}.notebook:before,.notebook:after{display:none}.back,a,.crumb{color:#166534}
+button:not(.digit),.b-primary,.b-next,.tab.on,.chip.on{font:inherit;font-weight:700;min-height:46px;border:1px solid #bbdfc5;border-radius:10px;background:#edf8ef;color:#166534;padding:10px 16px;cursor:pointer}button.primary,button.good,.b-primary,.b-next,.btn.check,.btn.next{background:#15803d!important;border-color:#15803d;color:white!important}button:disabled{opacity:.55;cursor:default}button.active:not(.digit){background:#15803d;color:#fff}
+button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #15803d;outline-offset:4px}input,select{font:inherit;max-width:100%;min-height:46px}input:not([type=checkbox]){border:1px solid #9caf9f;border-radius:9px}select{padding:10px;border:1px solid #bbc9be;border-radius:9px;background:white}.row,.learnrow,.answer,.answer-row{gap:12px;row-gap:16px;margin-top:18px;margin-bottom:18px}.instruction,.instr,.fb,.mark{line-height:1.75;font-size:18px}.instruction{background:#f4faf5;border:1px solid #d5e8da;border-left:3px solid #83b894}.prompt,.mexp{margin-top:28px;margin-bottom:28px;line-height:1.8}.fb:empty,.mark:empty{display:none}
+details.foundation-options,details.foundation-results,details.foundation-reference{border:1px solid #e0e7e2;border-radius:12px;padding:12px 16px;margin:20px 0;background:#fff}details>summary{cursor:pointer;color:#47624e;font-weight:600;min-height:32px}details[open]>summary{margin-bottom:20px}.foundation-results .card{border:0;padding:0;margin:0}.foundation-results h2{font-size:20px}.foundation-actions{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.foundation-help{border-top:1px solid #dce8df;margin-top:26px;padding-top:24px}.foundation-help-step{padding:18px 0;border-bottom:1px solid #e5ece7}.foundation-help-step p{margin:0 0 16px}.foundation-help-step.done{color:#506c58}.foundation-help-step .mexp{font-size:24px;margin:12px 0}.foundation-help-note{font-size:16px;color:#58705f}.foundation-answer-preview{font-size:24px;margin:12px 0;min-height:1.6em}.hint-focus{background:#f1f9f3;padding:8px;border-radius:8px}.f{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.2}.fn{border-bottom:1.7px solid currentColor;padding:2px 6px 4px}.fd{padding:4px 6px 2px}.mo{padding:0 5px}.gsteps{gap:22px}.gstep{padding:20px;line-height:1.8}.gstep.done{margin-bottom:18px}.hintbox{line-height:1.8}.stats,.stat span,.mini,.sub{line-height:1.7}.danger,button.danger{background:#fff;color:#79534a;border-color:#d9ccc8}[hidden]{display:none!important}
+@media(max-width:600px){.page,.wrap{padding:16px 12px 50px}.card,.notebook{padding:18px 14px}.answer,.answer-row{justify-content:flex-start}.prompt,.mexp{font-size:clamp(23px,5.8vw,30px)}.foundation-actions>button{max-width:100%}details.foundation-options,details.foundation-results,details.foundation-reference{padding:12px}.corner,.vert,.pyth,.fracview{overflow-x:auto;max-width:100%}.corner,.vert{justify-content:flex-start}.cleft,.cright,.vgrid{flex-shrink:0}}
+</style>
+<style>.card.notebook{padding:24px}.mexp{max-width:100%;overflow-x:auto}.foundation-help .mexp{padding-bottom:8px}@media(max-width:600px){.card.notebook{padding:18px 14px}}</style></head>
 <body>
 <main class="page">
-<section class="hero"><a class="back" href="../index.html">← На главную</a><h1>Округление чисел</h1><p class="sub">Выбери, до чего округляем. Нажимай на цифры и выполняй по одному шагу. Новых примеров хватит для любой тренировки.</p></section>
+<section class="hero"><a class="back" href="../index.html">← На главную</a><h1>Округление чисел</h1></section>
 <section class="grid">
 <div class="card">
-<div class="row"><label for="place"><b>Округляем до:</b></label><select id="place"><option value="1">десятков</option><option value="2">сотен</option><option value="3">тысяч</option><option value="4">десятков тысяч</option><option value="5">сотен тысяч</option><option value="6">миллионов</option><option value="0">единиц</option><option value="-1">десятых</option><option value="-2">сотых</option><option value="mixed">Вперемешку</option></select></div>
-<div class="row"><b>Числа:</b><button id="easy" class="active" aria-pressed="true">Попроще</button><button id="med" aria-pressed="false">Побольше</button><button id="hint" class="warn">Подсказка</button></div>
+<details class="foundation-options" id="rounding-options"><summary>Тема и сложность</summary><div class="row"><label for="place"><b>Округляем до:</b></label><select id="place"><option value="1">десятков</option><option value="2">сотен</option><option value="3">тысяч</option><option value="4">десятков тысяч</option><option value="5">сотен тысяч</option><option value="6">миллионов</option><option value="0">единиц</option><option value="-1">десятых</option><option value="-2">сотых</option><option value="mixed">Вперемешку</option></select></div>
+<div class="row"><b>Числа:</b><button id="easy" class="active" aria-pressed="true">Попроще</button><button id="med" aria-pressed="false">Побольше</button></div></details>
 <div class="prompt" id="prompt"></div>
 <div class="digits" id="digits"></div>
-<div class="instruction" id="instruction"></div>
+<div class="instruction" id="instruction"></div><div class="foundation-actions"><button id="hint">Хочешь подсказку?</button></div>
 <div id="decision" class="decision" hidden><button id="keep">Оставить цифру</button> <button id="up">Увеличить на 1</button></div>
-<div class="answer"><label for="ans">Ответ:</label><input id="ans" type="text" inputmode="decimal" autocomplete="off"><button id="check" class="primary">Проверить</button><button id="solution">Решение</button><button id="next" class="good">Следующий пример</button></div>
+<div class="answer"><label for="ans">Ответ:</label><input id="ans" type="text" inputmode="decimal" autocomplete="off"><button id="check" class="primary">Проверить</button><button id="next" class="good">Следующий пример</button></div>
+<details class="foundation-reference"><summary>Показать решение</summary><button id="solution">Открыть разбор</button></details>
 <div id="fb" class="fb" role="status" aria-live="polite">Выбери нужную цифру.</div>
 <p id="save-warning" class="save-warning" role="status" hidden></p>
 </div>
-<aside class="card">
+<details class="foundation-results" id="rounding-results"><summary>Мои результаты и памятка</summary><aside class="card">
 <div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>сразу верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
 <div class="stats"><div class="stat"><b id="acc">0%</b><span>точность</span></div><div class="stat"><b id="best">0</b><span>лучшая</span></div><div class="stat"><b id="date">—</b><span>дата</span></div></div>
 <div class="box course"><h2>Прогресс темы</h2><p><span id="status" class="badge">тема начата</span></p><p id="advice">Реши первые 10 примеров.</p><button id="reset" class="danger">Сбросить статистику</button></div>
 <div class="box rules"><h2>Алгоритм</h2><p>1. Найди нужный разряд.</p><p>2. Посмотри на цифру справа.</p><p>3. 0–4 — оставляем, 5–9 — увеличиваем.</p><p>4. В целой части справа ставим нули, в дробной части лишние цифры справа убираем.</p><p class="mini">Примеры: 374 до десятков → 370; 12,46 до десятых → 12,5; 8,736 до сотых → 8,74.</p></div>
 <h2>История</h2><div id="history"></div>
-</aside>
+</aside></details>
 </section>
 </main>
 <script>
@@ -130,7 +142,7 @@ var requestedPlace=new URLSearchParams(location.search).get('place');if(requeste
 el('place').onchange=next;el('easy').onclick=function(){setLevel('easy')};el('med').onclick=function(){setLevel('med')};el('keep').onclick=function(){decide('keep')};el('up').onclick=function(){decide('up')};el('check').onclick=check;el('next').onclick=next;el('hint').onclick=hint;el('solution').onclick=solution;el('reset').onclick=reset;el('ans').onkeydown=function(e){if(e.key==='Enter')check()};load();next();renderStats();
 </script>
 <!-- download-panel:start:rounding-stepwise -->
-<section class="download-panel" id="download">
+<section class="download-panel" id="download"><details class="foundation-reference"><summary>Скачать тренажёр</summary>
   <h2>Скачать и адаптировать</h2>
   <p>Этот тренажёр можно скачать как HTML-файл, открыть у себя на компьютере или использовать как основу для создания похожего тренажёра. Промпт для DeepSeek поможет адаптировать идею под другую тему, класс или тип ошибки.</p>
   <div class="download-actions">
@@ -140,6 +152,7 @@ el('place').onchange=next;el('easy').onclick=function(){setLevel('easy')};el('me
   </div>
   <p class="download-note">Если в тренажёре есть дополнительные файлы, удобнее скачать архив. <a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/">Как скачать и адаптировать тренажёр</a>.</p>
 </section>
+</details>
 <!-- download-panel:end:rounding-stepwise -->
 </body>
 </html>
