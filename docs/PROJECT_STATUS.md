@@ -2,20 +2,35 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task11 visual mnemonics
+## In progress: clear learner actions and return paths
 
-- [Scope](tasks/TASK11_VISUAL_MNEMONICS.md): happy/sad parabola smileys and
-  Dalí moustache imagery inside optional help, a precise x versus x+2
-  denominator comparison, and an optional sourced portrait/brief biography.
-- Added owner scope: optional vertex-side guidance from coefficient signs,
-  deeper exact-coordinate steps and a reference-material link; suitable for
-  the trial lesson without requiring arithmetic in the first matching task.
-- Existing inline task-first interface, matching problem and progress remain.
-- Read-only board audit confirmed live health and durable learning service,
-  up to eight students with switching/control transfer in the deployed code.
-  Current public task11/task19/rounding-stepwise pages lack the synchronization
-  bridges and are not managed trainers. No board changes belong to this patch;
-  no authorized pupil session was opened or changed during the audit.
+- [Scope](tasks/CLEAR_LEARNER_ACTIONS.md): clarify expected inputs and return
+  paths in the percentage trainer; add real signed-term movement to the №9
+  canonical linear-equation help using the existing manipulative.
+- General authoring rule: every input explains what to find, what to enter and
+  the next action; help returns to the same task without erasing work.
+- The owner has not selected the trainer for trial-lesson signup.
+
+## Published: task11 visual mnemonics and vertex guidance
+
+- [Scope](tasks/TASK11_VISUAL_MNEMONICS.md): happy/sad smileys, sign-first
+  vertex guidance with deeper exact-coordinate steps/FIPI link, a precise
+  x versus x+2 denominator comparison and sourced Dalí portrait/biography.
+- PR282 merged asbc392890a67ec594abed7c6a95b39402962830ec, parent
+  da13ca38669bb648e80bc78dc4b8b3f42e6df8c1, reviewed tree
+  88520215c63e01a9be9a6b556023fb8c78462922. No base drift.
+- All26 Node tests and668 algebra contracts passed; independent review passed.
+  Task11 CI39487423942, course39487423958 andSEO39487423971 passed.
+  Browser journeys covered320/360/1280px, retained answers and offline HTML.
+- Pages39488143750 succeeded on the merged SHA. Public HTML returned200 and
+  matched336442bytes /SHA256
+  204a62919de903f531a5ed71292d5bdb66c7ce56ac69a6b618f53320dbefec2f.
+  Live smile/vertex-side model and same-page help reopening verified.
+- Read-only board audit confirmed durable learning service, up to8students,
+  switching and control transfer in deployed code. New public №11/№19/rounding
+  pages still lack synchronization bridges; no live pupil sessions were opened.
+- Public course, base course and №9 were checked. №9 has task-first optional
+  steps but its next requested improvement is actual term manipulation.
 
 ## Published: task11 inline help
 
