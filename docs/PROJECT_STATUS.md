@@ -2,18 +2,19 @@
 
 Updated: 2026-10-20 (Asia/Novosibirsk)
 
-## Current follow-up: green cabinet practice buttons
+## Current task: minimalist task19 with visual hints
 
-- PR268 is merged as `5c34db8566f3a48ce47dcb721761b6a38a067934`.
-  Three exact-head PR workflows and Pages39403772030 passed; all six
-  checked public/cabinet assets matched. The live cabinet showed both practice
-  links and the existing 26-step route; durable learning storage was healthy.
-- The owner requests green styling for the two practice buttons shown in the
-  cabinet. [Scope](tasks/GREEN_PRACTICE_BUTTONS.md), SMALL: use the existing
-  green theme with white labels and a darker hover state, scoped to those links.
-- Next: verify the scoped style, publish under the existing owner authorization,
-  and inspect both buttons in the live cabinet. This entry does not claim that
-  the new green styling is live yet.
+- PR269 is published as `6dff8e7b03444ce2a84835ab5ca5ccc0393af3eb`.
+  Three exact-head workflows and Pages39409477594 passed. All four checked
+  public/cabinet responses matched; durable learning storage was healthy and
+  both green practice buttons were verified in the live cabinet.
+- The owner requests the first trainer's minimal appearance and a button
+  "Хочешь подсказку?" below each statement that opens a drawing or interactive
+  model. [Scope](tasks/TASK19_VISUAL_HINTS.md), MEDIUM: both existing public
+  task19 URLs, preserved banks, optional help and immediate post-answer reasons.
+- Next: complete visual mappings and independent math review, run focused
+  browser checks, publish and verify the live hints. Existing publication
+  permission applies; this entry does not claim the redesign is live yet.
 
 ## Current follow-up: visible arithmetic and practice retests
 
