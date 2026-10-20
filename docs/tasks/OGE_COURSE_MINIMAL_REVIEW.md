@@ -92,3 +92,14 @@ This prevents hidden innerText from becoming Number('')=0 without weakening the
 before+1 or no-duplicate assertions. The original rounding algorithm is unchanged.
 The negative-number line retains its two-point interaction and horizontal panning;
 a narrow CSS selector fix makes its actual SVG number labels dark and readable.
+
+## Third request: provider HTTP error
+
+Actions39445913833/job118707643399 for head
+`439bfbe9ff95dbc73163feacc1f421a67d83fdfc` ended with HTTP400 before any verdict.
+This is not an approval or a code-review finding. The request now uses three
+unchanged context lines per diff hunk instead of twelve, retaining every changed
+line and all six exact-head source excerpts. At the preceding head this reduces
+material from 1,131,738 to 836,296 UTF-8 bytes. A bounded, credential-redacted
+provider error reason makes any repeated request failure diagnosable.
+All21 offline boundary tests pass; HTTP errors still produce no approval artifact.

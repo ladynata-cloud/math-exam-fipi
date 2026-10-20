@@ -5,6 +5,7 @@ import io
 import json
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -64,6 +65,35 @@ class PackageBoundaries(unittest.TestCase):
             review.package_review(BASE, HEAD, {'files': paths})
             self.assertEqual(git.call_args.args[-2:], ('--', FILE))
 
+    def test_reduced_context_keeps_every_added_and_removed_line(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            def git(*args):
+                return subprocess.check_output(['git', '-C', tmp, *args], text=True)
+            git('init', '-q')
+            source = Path(tmp, FILE)
+            source.parent.mkdir(parents=True)
+            before = [f'unchanged line {n}\n' for n in range(100)]
+            source.write_text(''.join(before))
+            git('add', FILE)
+            git('-c', 'user.name=Offline Test', '-c', 'user.email=offline@example.test', 'commit', '-qm', 'base')
+            base = git('rev-parse', 'HEAD').strip()
+            after = before.copy()
+            for n in (10, 50, 90):
+                after[n] = f'changed line {n}\n'
+            source.write_text(''.join(after))
+            git('add', FILE)
+            git('-c', 'user.name=Offline Test', '-c', 'user.email=offline@example.test', 'commit', '-qm', 'head')
+            head = git('rev-parse', 'HEAD').strip()
+            wide = git('diff', '--unified=12', base, head, '--', FILE)
+            with patch.object(review, 'git', side_effect=git):
+                compact = review.package_review(base, head, MANIFEST)
+            def changed(text):
+                return [line for line in text.splitlines() if line.startswith(('+', '-'))
+                        and not line.startswith(('+++', '---'))]
+            self.assertEqual(changed(compact), changed(wide))
+            self.assertEqual(len(changed(compact)), 6)
+            self.assertLess(len(compact), len(wide))
+
 
 class ExactContextBoundaries(unittest.TestCase):
     def setUp(self):
@@ -98,7 +128,7 @@ class ExactContextBoundaries(unittest.TestCase):
             if args[:2] == ('diff', '--name-only'):
                 return '\n'.join(selected)
             if args[0] == 'diff':
-                self.assertEqual(args[1:5], ('--no-ext-diff', '--unified=12', BASE, HEAD))
+                self.assertEqual(args[1:5], ('--no-ext-diff', '--unified=3', BASE, HEAD))
                 return patch_text
             self.assertEqual(args[0], 'show')
             sha, filename = args[1].split(':', 1)
@@ -165,11 +195,14 @@ class VerdictBoundaries(unittest.TestCase):
                 def fake_open(request, timeout):
                     captured['request'] = request
                     self.assertEqual(timeout, 600)
+                    if isinstance(reply, Exception):
+                        raise reply
                     return io.BytesIO(json.dumps(reply).encode())
                 with patch.dict(os.environ, environment, clear=True), patch.object(review, 'package_review', return_value='+public UI'), patch.object(review.urllib.request, 'urlopen', side_effect=fake_open), patch.object(review.sys, 'argv', [str(SOURCE)]), contextlib.redirect_stdout(out):
                     if expected_failure:
-                        with self.assertRaises(SystemExit):
+                        with self.assertRaises(SystemExit) as failure:
                             review.main()
+                        captured['failure'] = str(failure.exception)
                     else:
                         review.main()
                 report_path = Path('artifacts/oge-course-external-review.json')
@@ -249,6 +282,42 @@ class VerdictBoundaries(unittest.TestCase):
         report, output, _ = self.run_review(response(content=[{'type': 'text', 'text': text}]), expected_failure=True)
         self.assertIsNone(report)
         self.assertNotIn('OGE_COURSE_EXTERNAL_REVIEW_OK', output)
+
+    def test_http_error_reports_only_sanitized_bounded_reason_and_never_approval(self):
+        key = 'offline-placeholder-not-a-secret'
+        values = [key, 'ghp_' + 'a' * 24, 'sk-ant-' + 'x' * 24,
+                  'opaque-password-value', 'opaque-token-value', 'opaque-bearer-value']
+        message = ('prompt is too long: 210000 tokens > 200000 limit\n' + values[0] + ' ' + values[1]
+                   + ' ' + values[2] + ' password=' + values[3] + ' token="' + values[4]
+                   + '" Bearer ' + values[5] + ' ' + 'detail ' * 200)
+        body = {'error': {'type': 'invalid_request_error', 'message': message},
+                'unrelated': 'do not echo this field'}
+        error = review.urllib.error.HTTPError('https://api.anthropic.com/v1/messages', 400,
+                                            'bad request', None, io.BytesIO(json.dumps(body).encode()))
+        report, output, captured = self.run_review(error, expected_failure=True)
+        reason = captured['failure']
+        self.assertIsNone(report)
+        self.assertIn('HTTP 400', reason)
+        self.assertIn('invalid_request_error: prompt is too long: 210000 tokens > 200000 limit', reason)
+        self.assertIn('no approval obtained', reason)
+        self.assertNotIn('OGE_COURSE_EXTERNAL_REVIEW_OK', output)
+        for value in values + ['do not echo this field', '\n']:
+            self.assertNotIn(value, reason)
+        self.assertLess(len(reason), 700)
+
+    def test_unparseable_or_oversized_provider_error_is_not_echoed(self):
+        for body in (b'private arbitrary server response', b'x' * 16_385,
+                     b'{"error":{"message":"missing type"}}', b'[]'):
+            error = review.urllib.error.HTTPError('https://api.anthropic.com/v1/messages', 400,
+                                                'bad request', None, io.BytesIO(body))
+            self.assertEqual(review.safe_provider_error(error, 'test-key'), 'provider detail unavailable')
+
+    def test_pem_content_and_credentials_in_error_type_are_redacted(self):
+        pem = '-----BEGIN RSA ' + 'PRIVATE KEY-----\nprivate content\n-----END RSA ' + 'PRIVATE KEY-----'
+        body = {'error': {'type': 'sk-ant-' + 'z' * 24, 'message': pem}}
+        error = review.urllib.error.HTTPError('https://api.anthropic.com/v1/messages', 400,
+                                            'bad request', None, io.BytesIO(json.dumps(body).encode()))
+        self.assertEqual(review.safe_provider_error(error, ''), '[REDACTED]: [REDACTED]')
 
 
 if __name__ == '__main__':

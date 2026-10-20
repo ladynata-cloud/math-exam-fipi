@@ -71,7 +71,7 @@ def package_review(base, head, manifest):
         raise ValueError('Changed files differ from the reviewed scope manifest')
     # Binary downloadable copies carry no new implementation. Review their canonical source.
     selected = [f for f in changed if not f.startswith('downloads/') and not f.endswith('.zip')]
-    patch = git('diff', '--no-ext-diff', '--unified=12', base, head, '--', *selected)
+    patch = git('diff', '--no-ext-diff', '--unified=3', base, head, '--', *selected)
     context = exact_context(head, selected)
     material = patch + context
     if len(material.encode()) > 1_500_000:
@@ -91,6 +91,34 @@ def unique_object(pairs):
             raise ValueError('Duplicate structured-review key')
         result[key] = value
     return result
+
+
+def safe_provider_error(error, key):
+    """Expose only bounded provider error fields, with credentials removed."""
+    unavailable = 'provider detail unavailable'
+    try:
+        body = error.read(16_385)
+        if len(body) > 16_384:
+            return unavailable
+        value = json.loads(body)
+        detail = value.get('error') if isinstance(value, dict) else None
+        if not isinstance(detail, dict):
+            return unavailable
+        kind, message = detail.get('type'), detail.get('message')
+        if not isinstance(kind, str) or not isinstance(message, str):
+            return unavailable
+    except (OSError, ValueError, TypeError):
+        return unavailable
+    text = kind + ': ' + message
+    if key:
+        text = text.replace(key, '[REDACTED]')
+    for pattern in (r'gh[pousr]_[A-Za-z0-9]+', r'sk-ant-[A-Za-z0-9_-]+',
+                    r'-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?(?:-----END [A-Z ]*PRIVATE KEY-----|$)',
+                    r'(?i)\bBearer\s+[A-Za-z0-9._~+/=-]+',
+                    r'''(?i)\b(?:api[_ -]?key|x-api-key|authorization|access[_ -]?token|refresh[_ -]?token|token|password|secret)\b["']?\s*[:=]\s*(?:"[^"]*"|'[^']*'|[^\s,;]+)'''):
+        text = re.sub(pattern, '[REDACTED]', text)
+    text = re.sub(r'[\x00-\x1f\x7f-\x9f]', ' ', text)
+    return ' '.join(text.split())[:600]
 
 
 def main():
@@ -122,7 +150,8 @@ SCOPED PUBLIC DIFF AND EXACT-HEAD SOURCE CONTEXT follow:\n{patch}'''
         with urllib.request.urlopen(req, timeout=600) as response:
             data = json.load(response)
     except urllib.error.HTTPError as error:
-        raise SystemExit(f'External review request failed (HTTP {error.code}); no approval obtained.') from None
+        reason = safe_provider_error(error, key)
+        raise SystemExit(f'External review request failed (HTTP {error.code}): {reason}; no approval obtained.') from None
     except (urllib.error.URLError, TimeoutError):
         raise SystemExit('External review request unavailable; no approval obtained.') from None
     raw = '\n'.join(block.get('text', '') for block in data.get('content', []) if block.get('type') == 'text').strip()
