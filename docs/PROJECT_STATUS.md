@@ -2,13 +2,40 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task19 owner feedback and analogous models
+## In progress: task6 help inside every arithmetic step
 
-- [Scope](tasks/TASK19_OWNER_FEEDBACK.md): implement the owner's34 annotated examples,
-  correct analogous geometric markings/controls, include genuine FIPI reference
-  excerpts and identify untouched cards. Work remains cloud-only.
-- Tasks1–5 (all8 story types) and task6 deeper interactive help are separate
-  authorized workstreams. Paid Claude API use remains deferred.
+- [Scope](tasks/TASK6_INTERACTIVE_HELP.md): optional same-page experiments for
+  all 1,054 steps of the existing 174-task bank, covering 11 contextual families.
+- Preserve unfinished main/step answers, accepted work, model settings and
+  nested help on collapse and task navigation. Add visible previous-task and
+  course links. Bank bytes, grading and session-only progress remain unchanged.
+- Reviewed implementation head83e614726695d5f2b86beb2b16e299c0b5240d12 passed39
+  Node/JSDOM checks and independent exact-result checks for all1,054 steps.
+- Release is composed on the authorized task19 merge below. Exact-head cloud
+  browser checks and publication are pending; no production task6 update claimed.
+- Tasks1–5, all8 story types, remain a separate authorized workstream. Paid
+  Claude API use remains deferred by the owner.
+
+## Published: task19 owner feedback and analogous models
+
+- [Scope](tasks/TASK19_OWNER_FEEDBACK.md): implement the owner's34 annotated
+  examples, correct analogous geometric markings/controls, include genuine
+  FIPI excerpts and identify untouched cards. Work remains cloud-only.
+- PR286 merged normally asdf63bacb2f82acf5f8543297c372b414925d6113,
+  parent43dc06bfa7bf503e3e9d455ced3ec05202b9e68e, reviewed tree
+  abcf87a3576003fe1fed0fe07b04f2db5cbaebe5. No unexpected concurrent commit.
+- Final task19 CI39508613716 passed both jobs and69 Node tests;150 owner-feedback
+  and162 family states had zero out-of-bounds labels. SEO39508613665 and focused
+  independent final review passed.
+- Pages39509146258 succeeded on the exact merged commit. All 29 published
+  runtime, reference PDF/image and offline HTML assets returned HTTP200 and
+  matched the reviewed byte hashes.
+- Public HTML: 4,952 bytes, SHA256
+  10d92b60b242229f24649f32cfcc96f9567e8959d54e5c5598b0f52c0eb2af28.
+  Core JavaScript: 36,985 bytes, SHA256
+  33eabacb0be4c9a3ee378851d68af7192c5b111821ee3e666b67d4c74484dca9.
+- Live browser verification exercised six linked sliders, their readouts and
+  retained state after reload. Help did not grade an answer automatically.
 
 ## Published: task13 interactive laboratories for every prototype
 
