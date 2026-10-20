@@ -161,6 +161,29 @@ test('both public URLs start with a question and optional help, not a revealed s
   }
 });
 
+test('both entry pages and the standalone download link to the existing previous-modes archive', () => {
+  const entries = [
+    {file:'trainers/task19-trainer.html',url:'https://mathexam.space/trainers/task19-trainer.html'},
+    {file:'trainers/geometry_statements_trainer_improved.html',url:'https://mathexam.space/trainers/geometry_statements_trainer_improved.html'},
+    {file:'downloads/trainers/task19-trainer/task19-trainer.html',url:'file:///task19-trainer.html'}
+  ];
+  const targets = [];
+  for (const entry of entries) {
+    const dom = new JSDOM(read(entry.file),{url:entry.url});
+    try {
+      const links = [...dom.window.document.querySelectorAll('#settings a')].filter(link=>/Прежние режимы/.test(link.textContent));
+      assert.equal(links.length,1,entry.file+': previous modes remain reachable');
+      const target = new URL(links[0].href);
+      assert.equal(target.origin,'https://mathexam.space',entry.file+': downloaded HTML must open the public archive, not a relative local file');
+      assert.match(target.pathname,/^\/trainers\/archive-5-weeks\//,entry.file+': target is a preserved trainer archive');
+      const localTarget = path.resolve(root,'.'+decodeURIComponent(target.pathname));
+      assert(fs.existsSync(localTarget) && fs.statSync(localTarget).isFile(),entry.file+': archive target exists: '+target.pathname);
+      targets.push(target.href);
+    } finally { dom.window.close(); }
+  }
+  assert.equal(new Set(targets).size,1,'Public and downloaded trainers point to the same preserved archive');
+});
+
 test('all source statements have a usable visual hint without recording an answer', () => {
   for (const card of cards) {
     const env = boot({card:card.id});
