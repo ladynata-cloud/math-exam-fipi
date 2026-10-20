@@ -24,7 +24,7 @@ test('independent example calculations and physical diagram changes',async()=>{c
  model('land','tiles','');set('need',12);set('size',6);assert.match(reading(),/2 упак/);set('need',13);assert.match(reading(),/3 упак/);
  model('land','geom','Площадь');set('a',5);set('b',3);set('u',.5);assert.match(reading(),/3,75 м²/);set('u',1);assert.match(reading(),/15 м²/);
  model('roads',3,'');set('a',3);set('b',4);Array.from(panel.querySelectorAll('button')).find(b=>b.textContent==='Измерить третью сторону').click();assert.match(reading(),/3² \+ 4² = 25; третья сторона ≈ 5/);
- model('tires','','Высота боковины');assert.match(reading(),/H = 117 мм; диск 381 мм; D = 615 мм/);
+ model('tires','','Высота боковины');assert.match(reading(),/H = 117 мм; диск 381 мм; D = 615 мм/);assert.match(panel.querySelector('svg').textContent,/D = 615 мм/);set('part','side');assert.match(panel.querySelector('svg').textContent,/H = 117 мм — каждая/);set('part','disk');assert.match(panel.querySelector('svg').textContent,/Диск: 381 мм/);set('part','radius');assert.match(panel.querySelector('svg').textContent,/Радиус: 307,5 мм/);
  model('land','percent','');set('base',80);set('p',400);assert.match(reading(),/Рост: 300%/);assert.match(reading(),/400% от основы/);
  model('tariffs','percent','Сколько рублей она составляла в 2018 году?');set('base',80);set('p',20);assert.match(reading(),/80 ÷ 0,8 ≈ 100/);
  model('paper-sheets','','Масса пачки');set('format',4);set('density',80);set('count',500);assert.match(reading(),/0,0625 м²/);assert.match(reading(),/2.?500 г = 2,5 кг/);

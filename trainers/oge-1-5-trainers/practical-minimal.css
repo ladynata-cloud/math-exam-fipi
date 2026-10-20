@@ -89,6 +89,7 @@ body.pm-minimal .wrap{max-width:1040px;padding-top:22px}
 .pm-minimal .pd-picture{overflow:auto;max-width:100%;overscroll-behavior:contain}
 .pm-minimal .pd-picture.pd-picture-zoomed{max-height:380px;border:1px solid #b7d0bf}
 .pm-minimal .pd-picture.pd-picture-zoomed svg{width:640px;max-width:none}
+@media(max-width:600px){.pm-minimal.pm-stoves .id-table{table-layout:fixed;min-width:0}.pm-minimal.pm-stoves .id-table th,.pm-minimal.pm-stoves .id-table td{padding:8px 6px;overflow-wrap:anywhere}.pm-minimal.pm-stoves .id-table select{width:100%;max-width:100%;min-width:0;padding:6px 4px;box-sizing:border-box}}
 .pm-minimal #plan .pd-derived{display:none}
 .pm-minimal #plan.pd-show-derived .pd-derived{display:initial}
 
