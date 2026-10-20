@@ -2,13 +2,28 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task19 owner feedback and analogous models
+## In progress: tasks 1–5 interactive help across all eight storylines
+
+- [Scope](tasks/OGE_1_5_INTERACTIVE_DISCOVERY.md): task-first screens, optional
+  nested help on the same page, relevant interactive models, retained answer
+  drafts and experiments. All eight existing storylines are covered: 57 final
+  question paths and two tire-preparation states.
+- Independent source/DOM review passed on implementation head
+  `7bdc391328bae5fabeb01b1e95e360ea9fb5a99f`; all 46 Node checks passed.
+  Release integration starts from the published task19 commit below. Cloud
+  browser checks (126 discovery cases and 39 retained route/viewport cases)
+  and publication remain pending.
+- Task6 deeper interactive help is separately in progress in PR287. It is not
+  published yet. Paid Claude API use remains deferred by the owner.
+
+## Published: task19 owner feedback and analogous models
 
 - [Scope](tasks/TASK19_OWNER_FEEDBACK.md): implement the owner's34 annotated examples,
   correct analogous geometric markings/controls, include genuine FIPI reference
   excerpts and identify untouched cards. Work remains cloud-only.
-- Tasks1–5 (all8 story types) and task6 deeper interactive help are separate
-  authorized workstreams. Paid Claude API use remains deferred.
+- Published commit `df63bacb2f82acf5f8543297c372b414925d6113`;
+  Pages run `39509146258` succeeded. Post-publication verification matched all
+  29 affected public files to the reviewed hashes.
 
 ## Published: task13 interactive laboratories for every prototype
 

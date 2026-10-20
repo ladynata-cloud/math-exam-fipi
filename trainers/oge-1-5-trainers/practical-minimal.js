@@ -17,7 +17,7 @@ function foldAll(selector,label){all(selector).forEach(n=>fold(n,label));}
 function moveBefore(node,reference){if(node&&reference&&node!==reference&&!node.contains(reference)&&node.nextElementSibling!==reference)reference.before(node);}
 function hintButton(button,panel){
   if(!button || !panel)return;
-  button.textContent='Хочешь подсказку?';button.classList.add('pm-hint-button');
+  button.textContent=button.dataset.pdSecondary==='1'?'Показать подсказку к этой задаче':'Хочешь подсказку?';button.classList.add('pm-hint-button');
   if(!panel.id)panel.id='pm-help-'+(++serial);
   button.setAttribute('aria-controls',panel.id);
   const shown=!panel.hidden&&(panel.classList.contains('show')||panel.closest('.hint-open')||panel.id==='feedback');
@@ -84,7 +84,9 @@ function mountHint(host,kind,type,text){
   const button=doc.createElement('button');button.type='button';button.className='pm-hint-button';button.textContent='Хочешь подсказку?';
   const panel=doc.createElement('section');panel.className='pm-model';panel.id='pm-context-'+(++serial);panel.hidden=true;panel.setAttribute('aria-label','Подсказка к текущей задаче');
   button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls',panel.id);
-  const data=modelCopy(kind,type,text||'');panel.innerHTML=stepList(data.steps);drawModel(panel,data.visual);
+  const data=modelCopy(kind,type,text||'');
+  if(global.PracticalDiscovery)global.PracticalDiscovery.build(panel,{page:kind,type,text:text||'',steps:data.steps,close:()=>{panel.hidden=true;button.setAttribute('aria-expanded','false');button.focus();}});
+  else{panel.innerHTML=stepList(data.steps);drawModel(panel,data.visual);}
   button.addEventListener('click',()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));});
   wrapper.append(button,panel);host.after(wrapper);
 }
@@ -101,6 +103,7 @@ function decorate(){
   if(observer)observer.disconnect();
   try{
     const page=doc.body.dataset.practicalPage;
+    if(global.PracticalDiscovery)global.PracticalDiscovery.decorate(page);
     if(page==='roads-grid')figureZoom(one('#map'));
     if(page==='apartments')figureZoom(one('#plan'));
     if(page==='tariffs')figureZoom(one('#graph'));

@@ -53,12 +53,12 @@ async function open(name){
 function shown(el){if(!el)return false;for(let n=el;n&&n.nodeType===1;n=n.parentElement){if(n.hidden)return false;if(n.tagName==='DETAILS'&&!n.open&&el!==n.querySelector(':scope > summary'))return false;const s=n.ownerDocument.defaultView.getComputedStyle(n);if(s.display==='none'||s.visibility==='hidden')return false;}return true;}
 function click(doc,selector){const el=doc.querySelector(selector);assert.ok(el,selector);el.click();return el;}
 const tasks={
- 'practice-1-5-roads-grid.html':['#task-card .task-question','#task-card select,#answer-input'],
+ 'practice-1-5-roads-grid.html':['#task-card .task-question','#task-card select:not([data-pd-key]),#answer-input'],
  'practice-1-5-roads-schema.html':['#app .qtext','#ans'],
  'practice-1-5-tires.html':['#quiz-B .quiz-q','#quiz-B .quiz-opt'],
- 'practice-1-5-stoves.html':['#task-card .task-question','#task-card select,#answer-input'],
+ 'practice-1-5-stoves.html':['#task-card .task-question','#task-card select:not([data-pd-key]),#answer-input'],
  'practice-1-5-land-plots.html':['#task-q','#in'],
- 'practice-1-5-apartments.html':['#taskBody .question,#taskBody .q,#taskBody p','#taskBody input,#taskBody select'],
+ 'practice-1-5-apartments.html':['#taskBody .question,#taskBody .q,#taskBody p','#taskBody input:not([data-pd-key]),#taskBody select:not([data-pd-key])'],
  'practice-1-5-tariffs.html':['#task-q','#in'],
  'practice-1-5-paper-sheets.html':['#taskCard .task-q','#matchAns'],
  'practice-1-5-plan-reading.html':['#question','#answer-area button'],
@@ -108,7 +108,7 @@ test('land economics distinguishes paint purchase from heating payback',async()=
  mount(host,'land','econ','Через сколько часов экономия от газа компенсирует разницу покупки и установки?');const heat=doc.querySelector('.pm-model').textContent;assert.match(heat,/разницу начальных расходов на экономию за один час/);assert.doesNotMatch(heat,/банок|краск/);
 }finally{dom.window.close();}});
 test('percentage comparison model supports increases greater than 100 percent',async()=>{const{dom,doc}=await open('practice-1-5-land-plots.html');try{
- dom.window.PracticalMinimal.mountHint(doc.querySelector('#task-q'),'land','percent','На сколько процентов площадь огорода больше площади сарая?');click(doc,'.pm-context-hint button');const input=doc.querySelector('.pm-model input[type=range]');assert.ok(Number(input.max)>=400);input.value='400';input.dispatchEvent(new dom.window.Event('input',{bubbles:true}));assert.match(doc.querySelector('.pm-model output').textContent,/400%/);assert.match(doc.querySelector('.pm-model').textContent,/разность площадей/);assert.equal(doc.querySelector('#in').value,'');
+ dom.window.PracticalMinimal.mountHint(doc.querySelector('#task-q'),'land','percent','На сколько процентов площадь огорода больше площади сарая?');click(doc,'.pm-context-hint button');const input=doc.querySelector('.pm-model input[data-pd-key=p]');assert.ok(Number(input.max)>=400);input.value='400';input.dispatchEvent(new dom.window.Event('input',{bubbles:true}));assert.match(doc.querySelector('.pm-model .pd-reading').textContent,/400%/);assert.match(doc.querySelector('.pm-model').textContent,/разность площадей/);assert.equal(doc.querySelector('#in').value,'');
 }finally{dom.window.close();}});
 test('paper source data stays visible for every problem type without revealing ratios or areas',async()=>{const{dom,doc}=await open('practice-1-5-paper-sheets.html');try{
  const condition=doc.querySelector('.pm-paper-condition');assert.ok(shown(condition));assert.equal(condition.nextElementSibling,doc.querySelector('#taskCard'));assert.match(condition.textContent,/1 м²/);assert.match(condition.textContent,/1189 × 841 мм/);assert.match(condition.textContent,/пополам/);assert.match(condition.textContent,/подобны/);assert.doesNotMatch(condition.textContent,/√2|0,7|1,4/);

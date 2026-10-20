@@ -155,7 +155,11 @@
       "public": true,
       "downloadHtml": "/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers.html",
       "prompt": "/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-deepseek-prompt.md",
-      "package": "/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-package.zip"
+      "package": "/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-package.zip",
+      "inlineAssets": [
+        "/trainers/oge-1-5-trainers/practical-minimal.css",
+        "/trainers/oge-1-5-trainers/practical-minimal.js"
+      ]
     },
     {
       "slug": "task19-trainer",
