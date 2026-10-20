@@ -102,3 +102,12 @@ suite needed three presentation expectations updated (retained hint versus error
 feedback, collapsed topic label, primary next-condition action). All23 commands
 from that required DOM step now pass locally without runtime or arithmetic-test
 changes. The next push changes test expectations/evidence only.
+
+Fourth cloud head2ad43a7ae5a47f3b1ac0212bdf28f65a912184d8 passed contextual
+help (all70 routes and mobile/deep interaction), guided division, PreOGE and SEO.
+Unified passed all required DOM commands, then caught a real diagnostic CSS
+regression: the shared21px input style overrode its native32px font. The shared
+font rule is now restricted to the three intended practice screens; diagnostic
+keeps its32px font and the existing >=24px accessibility assertion is unchanged.
+Its native mobile sizing and48px minimum input height are preserved.
+The next head must repeat the complete relevant gates before release.
