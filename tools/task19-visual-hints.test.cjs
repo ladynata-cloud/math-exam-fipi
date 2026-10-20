@@ -12,7 +12,7 @@ const visuals = require('../trainers/task19-visual-models.js');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const KEY = 'mathExam.task19.visualHints.v1';
-const sources = ['task19-visual-data.js', 'task19-visual-models.js', 'task19-visual-app.js'];
+const sources = ['task19-visual-data.js', 'task19-models-triangles.js', 'task19-models-circles.js', 'task19-models-lines-polygons.js', 'task19-visual-models.js', 'task19-visual-app.js'];
 const dataScope = {window:{}, module:{exports:{}}};
 vm.runInNewContext(read('trainers/task19-visual-data.js'), dataScope);
 const data = dataScope.window.Task19Data || dataScope.module.exports;
@@ -74,7 +74,7 @@ test('both prior banks retain their exact mathematical statements and truth valu
   for (const card of cards) {
     assert.equal(typeof card.truth, 'boolean', card.id);
     assert(card.theme && card.explanation && card.hint && card.hint.prompt, card.id + ': complete teaching content');
-    assert(card.hint.svg || card.hint.model, card.id + ': actual visual help is present');
+    assert(card.hint.model && !card.hint.svg, card.id + ': every active hint is an interactive model');
     if (card.hint.model) assert(visuals.modelNames.includes(card.hint.model), card.id + ': known interactive model');
     assert.doesNotMatch(card.hint.prompt, /^(?:Это утверждение\s+)?(?:верно|неверно)[.!:]/i, card.id + ': hint must not supply a verdict');
   }
@@ -345,7 +345,12 @@ const area = (a,b,c) => Math.abs((b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])
 
 function verifyGeometry(model, params) {
   const {points:P,metrics:M,values:V} = visuals.sample(model,params);
-  for (const [name,p] of Object.entries(P)) assert(p.every(Number.isFinite), model+' '+name+' has finite coordinates');
+  const verifyPoints=(p,label)=>{
+    assert(Array.isArray(p)&&p.length>0,label+' contains coordinates');
+    if(typeof p[0]==='number'){assert.equal(p.length,2,label+' is a plane point');assert(p.every(Number.isFinite),label+' has finite coordinates');}
+    else p.forEach((point,i)=>verifyPoints(point,label+'['+i+']'));
+  };
+  for (const [name,p] of Object.entries(P)) verifyPoints(p,model+' '+name);
   for (const [name,value] of Object.entries(M)) if (typeof value === 'number') assert(Number.isFinite(value), model+' '+name+' finite measurement');
   const output = visuals.render(model,params);
   assert.match(output.svg, /<svg\b/);

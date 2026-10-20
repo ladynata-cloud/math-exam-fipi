@@ -1,9 +1,12 @@
 /* Small, deterministic geometry experiments for the optional task 19 hints. */
 (function (root, factory) {
-  const api = factory();
+  const extensions = typeof module === 'object' && module.exports
+    ? [require('./task19-models-triangles.js'), require('./task19-models-circles.js'), require('./task19-models-lines-polygons.js')]
+    : [root.Task19TriangleModels, root.Task19CircleModels, root.Task19LinePolygonModels];
+  const api = factory(extensions);
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.Task19Visuals = api;
-})(typeof window === 'object' ? window : globalThis, function () {
+})(typeof window === 'object' ? window : globalThis, function (extensions) {
   'use strict';
   const RAD = Math.PI / 180;
   const BLUE = '#245ca8', GREEN = '#18704f', INK = '#263238', LIGHT = '#eaf1f8';
@@ -23,7 +26,7 @@
     triangleMedian: {title:'Медиана и высота треугольника', values:{x:1.2,height:3}, controls:[['x','Положение вершины C',0.5,5.5,0.1,''],['height','Высота CH',2,5,0.1,'']]},
     triangleSides: {title:'Три отрезка', values:{a:3,b:4,c:5}, controls:[['a','Сторона a',1,9,0.5,''],['b','Сторона b',1,9,0.5,''],['c','Сторона c',1,9,0.5,'']]},
     parallelogram: {title:'Параллелограмм ABCD', values:{base:6,side:4,angle:65}, controls:[['base','Сторона AB',3,8,0.5,''],['side','Сторона AD',2,6,0.5,''],['angle','Угол A',30,150,1,'°']]},
-    rhombus: {title:'Ромб ABCD', values:{side:4,angle:65}, controls:[['side','Сторона ромба',2,6,0.5,''],['angle','Угол A',30,150,1,'°']]},
+    rhombus: {title:'Ромб ABCD', values:{side:4,angle:65}, controls:[['side','Длина стороны',2,6,0.5,''],['angle','Угол A',30,150,1,'°']]},
     rectangle: {title:'Прямоугольник ABCD', values:{width:6,height:3}, controls:[['width','Сторона AB',2,8,0.5,''],['height','Сторона AD',2,6,0.5,'']]},
     trapezoid: {title:'Трапеция ABCD', values:{bottom:7,top:3,height:3,offset:0}, controls:[['bottom','Основание AB',5,10,0.5,''],['top','Основание CD',2,4.5,0.5,''],['height','Высота',2,5,0.1,''],['offset','Сдвиг верхнего основания',-2,2,0.1,'']]},
     circleChord: {title:'Хорда и диаметр окружности', values:{radius:5,offset:2}, controls:[['radius','Радиус',2,6,0.5,''],['offset','Расстояние от центра до хорды',0,4.9,0.1,'']]},
@@ -35,7 +38,7 @@
   function valuesFor(model, params) {
     const def = defs[model];
     if (!def) throw new Error('Unknown task 19 model: ' + model);
-    const p = Object.assign({}, def.values, params || {});
+    let p = Object.assign({}, def.values, params || {});
     def.controls.forEach(([key,,lo,hi]) => { p[key] = clamp(finite(p[key], def.values[key]), lo, hi); });
     if (model === 'triangleAngles') p.b = Math.min(p.b, 170 - p.a);
     if (model === 'circleChord') p.offset = Math.min(p.offset, p.radius - 0.1);
@@ -44,25 +47,31 @@
       p.point = clamp(p.point, p.central + 20, p.compare ? 300 : 340);
     }
     if (model === 'trapezoid') p.top = Math.min(p.top, p.bottom - 0.5);
+    if (def.normalize) p = def.normalize(p);
+    if (def.controlsFor) def.controlsFor(p).forEach(([key,,lo,hi])=>{p[key]=clamp(finite(p[key],def.values[key]),lo,hi);});
+    if (def.normalize) p = def.normalize(p);
     return p;
   }
 
   function controlsFor(model, params) {
     const p = valuesFor(model, params);
     const locked = Array.isArray(p.locked) ? p.locked : [];
-    return defs[model].controls.filter(([key]) => !locked.includes(key) && !(model === 'circleAngle' && p.diameter && key === 'central')).map(([key,label,min,max,step,unit]) => ({
+    const definition = defs[model];
+    return (definition.controlsFor ? definition.controlsFor(p) : definition.controls).filter(([key]) => !locked.includes(key) && !(model === 'circleAngle' && p.diameter && key === 'central')).map(([key,label,min,max,step,unit,choices]) => ({
       key,label,min,
       max: model === 'triangleAngles' && key === 'b' ? Math.min(max,170-p.a) : model === 'circleChord' && key === 'offset' ? p.radius-0.1 : max,
-      step,unit,value:p[key],
+      step,unit,value:p[key],choices,
       ...(model === 'circleAngle' && key === 'point' ? {min:p.central+20,max:p.compare?300:340} : {})
     }));
   }
 
   function sample(model, params) {
     const p = valuesFor(model, params), result = {model,values:p,points:{},metrics:{}};
+    if (defs[model].sample) return Object.assign(result, defs[model].sample(p), {model,values:p});
     const P = result.points, M = result.metrics;
     if (model === 'adjacentAngles') {
       M.alpha=p.angle; M.beta=180-p.angle; M.sum=180;
+      P.O=[0,0];P.A=[1,0];P.B=[-1,0];P.C=[Math.cos(p.angle*RAD),Math.sin(p.angle*RAD)];P.D=[-P.C[0],-P.C[1]];
     } else if (model === 'triangleAngles') {
       M.a=p.a; M.b=p.b; M.c=180-p.a-p.b;
       const ac=6*Math.sin(p.b*RAD)/Math.sin(M.c*RAD);
@@ -72,6 +81,7 @@
       P.A=[0,0];P.B=[b,0];P.C=[p.x,p.height];P.H=[p.x,0];P.M=[b/2,0];
       M.base=b;M.height=p.height;M.area=b*p.height/2;M.leftArea=M.area/2;M.rightArea=M.area/2;
       M.AC=hypot(P.A,P.C);M.BC=hypot(P.B,P.C);M.CM=hypot(P.C,P.M);M.AM=b/2;M.MB=b/2;
+      M.ACM=angleAt(P.A,P.C,P.M);M.MCB=angleAt(P.M,P.C,P.B);
     } else if (model === 'triangleSides') {
       M.a=p.a;M.b=p.b;M.c=p.c;M.exists=p.a+p.b>p.c&&p.a+p.c>p.b&&p.b+p.c>p.a;
       if (M.exists) {
@@ -110,6 +120,7 @@
     } else if (model === 'similarity') {
       M.scale=p.scale;M.base=3;M.height=4;M.hypotenuse=5;M.area=6;M.perimeter=12;
       M.scaledArea=6*p.scale*p.scale;M.scaledPerimeter=12*p.scale;
+      P.A=[0,0];P.B=[3,0];P.C=[0,4];P.A2=[0,0];P.B2=[3*p.scale,0];P.C2=[0,4*p.scale];
     }
     return result;
   }
@@ -138,7 +149,11 @@
 
   function render(model, params) {
     const s=sample(model,params),p=s.values,P=s.points,M=s.metrics;
-    let body='',readout=[],caption=defs[model].title;
+    if (defs[model].render) {
+      const output=defs[model].render(s);
+      return {svg:output.svg||svg(p.title||defs[model].title,output.body),readout:output.readout||[],sample:s};
+    }
+    let body='',readout=[],caption=p.title||defs[model].title;
     if (model==='adjacentAngles') {
       const vertical=p.focus==='vertical', O=[280,vertical?170:245],r=vertical?135:170,v=[r*Math.cos(p.angle*RAD),-r*Math.sin(p.angle*RAD)],Q=[O[0]+v[0],O[1]+v[1]],R=[O[0]-v[0]*(vertical?1:0.38),O[1]-v[1]*(vertical?1:0.38)];
       body=line([55,O[1]],[505,O[1]])+line(R,Q,BLUE)+dot(O)+text(O[0]-15,O[1]+22,'O');
@@ -234,38 +249,74 @@
       body+=text((b[0][0]+b[1][0])/2,303,fmt(3*k),BLUE)+text(b[0][0]-22,(b[0][1]+b[2][1])/2,fmt(4*k),BLUE)+text((b[1][0]+b[2][0])/2+18,(b[1][1]+b[2][1])/2,fmt(5*k),BLUE);
       readout=[`Стороны увеличены в ${fmt(k)} раза`,`Периметры: ${fmt(M.perimeter)} и ${fmt(M.scaledPerimeter)}`,`Площади: ${fmt(M.area)} и ${fmt(M.scaledArea)}`];
     }
+    if (p.measureSides) readout.push(`AB = ${fmt(M.base)}`, `BC = ${fmt(M.side)}`, `CD = ${fmt(M.base)}`, `AD = ${fmt(M.side)}`, `∠A = ${fmt(M.angle)}°`);
+    if (p.compareDiagonalArea) readout.push(`Площадь = ${fmt(M.area)}`, `Половина произведения диагоналей = ${fmt(M.AC*M.BD/2)}`);
+    if (p.compareAllSideProduct) readout.push(`Произведение четырёх сторон = ${fmt((M.base*M.side)**2)}`);
+    if (p.compareTriangleParts) readout.push(`AB = ${fmt(M.base)}`, `BC = ${fmt(M.side)}`, `Площадь AOB = ${fmt(M.area/4)}`, `Площадь BOC = ${fmt(M.area/4)}`);
+    if (p.compareMedianAngles) readout.push(`∠ACM = ${fmt(M.ACM)}°`, `∠MCB = ${fmt(M.MCB)}°`);
     return {svg:svg(caption,body),readout,sample:s};
   }
 
+  // Extensions are pure geometry: the host owns controls, measurement and state.
+  const kit={RAD,BLUE,GREEN,INK,LIGHT,clamp,finite,hypot,mid,esc,fmt,angleAt,line,text,dot,poly,fit,labelPoints,svg};
+  (extensions||[]).forEach(create=>{
+    if(typeof create!=='function') throw new Error('Task 19 experiment module is missing');
+    const models=create(kit);
+    Object.keys(models).forEach(name=>{
+      if(defs[name]) throw new Error('Duplicate task 19 model: '+name);
+      defs[name]=models[name];
+    });
+  });
+
+  function restoreModel(hint,saved) {
+    const params=valuesFor(hint.model,hint.params);
+    // Persist only editable numbers. Stored flags cannot alter the premise.
+    const input=saved&&saved.params;
+    controlsFor(hint.model,params).forEach(({key,min,max})=>{
+      if(input&&typeof input[key]==='number'&&Number.isFinite(input[key])) params[key]=input[key];
+    });
+    return {params:valuesFor(hint.model,params),measured:!!(saved&&saved.measured===true)};
+  }
   let mountIndex=0;
-  function mount(host,hint) {
-    if(!host||!hint)throw new Error('A hint host and data are required');
+  function mount(host,hint,options) {
+    if(!host||!hint||!hint.model)throw new Error('An interactive hint host and model are required');
     host.replaceChildren();
-    if(!hint.model) {
-      if(!hint.svg)throw new Error('Visual hint is missing a model or drawing');
-      const figure=host.ownerDocument.createElement('div');figure.className='t19-model-figure';figure.innerHTML=hint.svg;host.appendChild(figure);
-      return ()=>host.replaceChildren();
-    }
-    let params=valuesFor(hint.model,hint.params),active=true;
+    const config=options||{},initial=restoreModel(hint,config.state);
+    let params=initial.params,measured=initial.measured,active=true;
     const doc=host.ownerDocument,figure=doc.createElement('div'),readout=doc.createElement('ul'),controls=doc.createElement('div');
-    figure.className='t19-model-figure';readout.className='t19-model-readout';readout.setAttribute('aria-live','polite');controls.className='t19-model-controls';
-    host.append(figure,readout,controls);
-    const inputs=[],listeners=[],id=++mountIndex;
+    const measure=doc.createElement('button'),observe=doc.createElement('p'),preserve=doc.createElement('p');
+    const id=++mountIndex;
+    figure.className='t19-model-figure';readout.className='t19-model-readout';readout.id=`t19-measurements-${id}`;
+    readout.setAttribute('aria-live','polite');controls.className='t19-model-controls';
+    measure.type='button';measure.className='t19-measure';measure.setAttribute('aria-controls',readout.id);
+    observe.className='t19-observe';observe.textContent=hint.observe||'Что изменилось? Что осталось прежним? Теперь вернись к утверждению.';
+    preserve.className='t19-preserve';preserve.textContent=hint.preserve||'';preserve.hidden=!hint.preserve;
+    host.append(preserve,figure,controls,measure,readout,observe);
+    const inputs=[],listeners=[];
+    function snapshot() {
+      const editable={};controlsFor(hint.model,params).forEach(({key})=>{editable[key]=params[key];});
+      return {params:editable,measured};
+    }
+    function publish() {if(typeof config.onChange==='function')config.onChange(snapshot());}
     function draw() {
       const result=render(hint.model,params);params=result.sample.values;figure.innerHTML=result.svg;readout.replaceChildren();
       result.readout.forEach(s=>{const li=doc.createElement('li');li.textContent=s;readout.append(li);});
+      readout.hidden=!measured;observe.hidden=!measured;
+      measure.textContent=measured?'Скрыть измерения':'Измерить';measure.setAttribute('aria-expanded',String(measured));
       const bounds=controlsFor(hint.model,params);
-      inputs.forEach(({input,output,key})=>{const bound=bounds.find(c=>c.key===key);if(!bound)return;input.min=bound.min;input.max=bound.max;input.value=params[key];output.textContent=fmt(params[key])+bound.unit;});
+      inputs.forEach(({input,output,key})=>{const bound=bounds.find(c=>c.key===key);if(!bound)return;input.min=bound.min;input.max=bound.max;input.value=params[key];output.textContent=bound.choices?bound.choices[params[key]]:fmt(params[key])+bound.unit;if(bound.choices)input.setAttribute('aria-valuetext',bound.choices[params[key]]);});
     }
     controlsFor(hint.model,params).forEach(c=>{
       const wrap=doc.createElement('div'),label=doc.createElement('label'),input=doc.createElement('input'),output=doc.createElement('output');
       wrap.className='t19-model-control';input.type='range';input.id=`t19-model-${id}-${c.key}`;input.min=c.min;input.max=c.max;input.step=c.step;input.value=c.value;
-      label.htmlFor=input.id;label.textContent=c.label;output.htmlFor=input.id;
-      const onInput=()=>{if(active){params[c.key]=Number(input.value);draw();}};input.addEventListener('input',onInput);listeners.push([input,onInput]);
+      input.dataset.key=c.key;label.htmlFor=input.id;label.textContent=c.label;output.htmlFor=input.id;
+      const onInput=()=>{if(active){params[c.key]=Number(input.value);draw();publish();}};input.addEventListener('input',onInput);listeners.push([input,'input',onInput]);
       wrap.append(label,output,input);controls.append(wrap);inputs.push({input,output,key:c.key});
     });
-    draw();
-    return ()=>{active=false;listeners.forEach(([input,listener])=>input.removeEventListener('input',listener));host.replaceChildren();};
+    const onMeasure=()=>{if(active){measured=!measured;draw();publish();}};
+    measure.addEventListener('click',onMeasure);listeners.push([measure,'click',onMeasure]);
+    draw();publish();
+    return ()=>{active=false;listeners.forEach(([element,type,listener])=>element.removeEventListener(type,listener));host.replaceChildren();};
   }
-  return {mount,sample,render,controlsFor,modelNames:Object.keys(defs)};
+  return {mount,sample,render,controlsFor,restoreModel,modelNames:Object.keys(defs)};
 });

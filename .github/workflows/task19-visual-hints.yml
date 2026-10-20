@@ -12,7 +12,7 @@ on:
       - 'downloads/trainers/task19-trainer/**'
       - 'downloads/trainers-manifest.json'
       - 'scripts/build-trainer-downloads.mjs'
-      - 'tools/task19-visual-hints*'
+      - 'tools/task19-*'
       - '.github/workflows/task19-visual-hints.yml'
   workflow_dispatch:
 
@@ -26,7 +26,7 @@ concurrency:
 jobs:
   visual-hints:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -44,7 +44,7 @@ jobs:
           node --check trainers/task19-visual-data.js
           node --check trainers/task19-visual-models.js
           node --check trainers/task19-visual-app.js
-          node --test tools/task19-visual-hints.test.cjs
+          node --test tools/task19-*.test.cjs
           git diff --check
       - name: Desktop, narrow screen and keyboard journeys
         env:

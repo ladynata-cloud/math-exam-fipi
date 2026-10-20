@@ -2,22 +2,43 @@
 
 Updated: 2026-10-20 (Asia/Novosibirsk)
 
-## In progress: basic OGE task-first course and nested help
+## In progress: task19 interactive discoveries
 
-- PR278 implements the owner's task-first design across the existing 70 basic
-  OGE routes, including public and cabinet rendering. Main OGE PR275 remains
-  the published separate course.
-- One nearby help disclosure leads to the current hint and prerequisite
-  microtasks. Drafts, accepted steps, child models and return paths are retained;
-  child answers do not earn parent credit. Diagnostic restrictions remain.
-- The 35-source bank, arithmetic engines and saved-state contracts are intact.
-  Independent review found and corrected percentage Enter routing after a
-  lesson return and incorrect multiplication prerequisite selection.
-- Design request run39462468886 failed with insufficient Anthropic credits.
-  No Claude design advice or final approval is claimed. Final external review
-  remains unavailable; earlier task-specific exceptions do not apply.
-- Next: exact-head cloud browser/mobile evidence and all relevant CI; record
-  the release decision only after a concrete reviewed result is ready.
+- Owner requests a meaningful interactive model for every existing assertion,
+  with simple directions leading to an observation or counterexample.
+- Scope: [233 active cards](tasks/TASK19_INTERACTIVE_DISCOVERIES.md), both public
+  entry pages and standalone download. Original statements, truth labels,
+  source identities and former records remain compatible.
+- Initial audit found117 SVG-only hints and17 completely locked models.
+  The user example prev-019 will preserve CM=AM=BM as C moves.
+- Claude is still unavailable for insufficient API credits; the previous
+  PR278 exception is specific to that release. At2026-10-21T01:36:59+07:00
+  the owner deferred Claude API use until a difficult creative question arises.
+  Current task19 proceeds with independent internal review and technical gates;
+  no new provider call or approval is claimed.
+- Next: implement all constrained experiments, run exhaustive action/math/state
+  and cloud browser gates, then resolve exact-head release review and publish.
+
+## Published: basic OGE task-first course and nested help
+
+- PR278 published as923c326dc08918c75a8ac26279c4b094a5d0c68c, parent59ca8d215312831a21494e3b67099b30b1e6013d.
+  Tree de9c1094e8541597b949bfe5c80abd69403eea58 matches the reviewed result.
+- All six technical workflows passed on exact head1d727f769849eacaf2b93f0ac3e639b0acef8d9d;
+  Pages39474344117 succeeded. All50 changed public assets returned200 and
+  matched source SHA-256, with no mismatches.
+- The70 basic routes retain the35-source bank and arithmetic contracts.
+  Optional contextual help leads to26 prerequisite microtasks, with a tested
+  six-level path and retained drafts, accepted steps and model actions.
+- Live percentage practice starts with a task and nearby help. Two deeper
+  prerequisite steps and return preserved parent/child drafts; interactive
+  chip placement worked. The published screen was visually inspected.
+- Amvera anonymous status is healthy and its trainer origin is mathexam.space;
+  cabinet trainer frame bytes match. No account writes or Amvera rebuild.
+- Claude request39462468886 failed for insufficient credits. The owner
+  explicitly waived final review for PR278 at2026-10-21T01:01:34+07:00. The
+  narrow owner-waiver workflow guard skipped the external job without another
+  paid call. No external approval is claimed and no future waiver is implied.
+- No base drift, migration, rollback or further owner decision for PR278.
 
 ## Agreed workflow: Claude consultation for trainer design
 

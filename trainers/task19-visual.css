@@ -58,3 +58,10 @@ button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible,
 noscript p{max-width:760px;margin:30px auto;padding:20px}
 @media(max-width:540px){header{padding:19px 16px}main{padding:18px 12px 35px}.exercise{padding:22px 17px}.statement{font-size:23px;line-height:1.5}.hint-panel{margin-top:18px}.hint-prompt{font-size:17px}.answer-actions{gap:12px}.answer-actions button{padding:11px 12px}.visual-controls,.t19-model-controls{grid-template-columns:1fr}.answer-panel p{font-size:17px}.hint-toggle{width:100%}.next-row button{width:100%}.visual-host svg{overflow:visible}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+.t19-preserve{font-size:15px;color:var(--muted);margin:0 0 16px;line-height:1.7}
+.t19-measure{display:block;margin-top:24px;background:var(--green);border-color:var(--green);color:#fff;min-height:48px}
+.t19-measure:hover{background:#12533f;color:#fff}
+.t19-observe{font-size:18px;line-height:1.7;margin:20px 0 4px}
+.visual-host input[type=range]{min-height:48px}
+@media(max-width:540px){.t19-measure{width:100%}.t19-model-readout{padding-left:20px}}
