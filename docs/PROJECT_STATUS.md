@@ -2,7 +2,19 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task9 interactive help for every equation family
+## In progress: task13 interactive laboratories for every prototype
+
+- [Scope](tasks/TASK13_INTERACTIVE_HELP.md): extend the existing minimal
+  inequality trainer with task-specific laboratories for all 26 current tasks
+  across five families. Connect parabola signs and intervals, exact boundaries,
+  signed-term movement, denominator-free linear transformations and systems.
+- Preserve the original bank and grading. Help stays on the same page, with
+  optional deeper actions and retained experiments/answer drafts.
+- Improve adaptive plot scales and mobile readability. This is the current
+  26-task bank, not the older unexecuted generator/registry plan or a claim of
+  complete FIPI coverage. Claude API remains deferred by owner decision.
+
+## Published: task9 interactive help for every equation family
 
 - [Scope](tasks/TASK9_ALL_INTERACTIVE_HELP.md): make signed-term transfer
   available when help is requested across all bank and generated equation
@@ -12,6 +24,18 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
   other equation actions; generated tasks also start with a task and help button.
 - The owner explicitly asks for every linear and other task9 type. Trial-signup
   trainer selection remains open; paid Claude API use remains deferred.
+
+- PR284 merged normally as39c63a63602cd7ae275e76ed647057c2793f576f,
+  parent03a6d465416703fcc72a7ce471afb2ad2f3031fd, reviewed tree
+  de9ae2204e4b6721b7784a6f90b448dfb4af5f47. No base drift.
+- Final31 task9 learner tests and668 algebra contracts passed. Browser
+  39495355691 covered all16 bank families,14 visible generator routes,
+  eight discovery kinds and320/360/1280px; no JS errors. Retained-action,
+  course andSEO workflows also passed; Pages39495981513 succeeded.
+- Public HTML returned200 and matched257637bytes /SHA256
+  1cc58b1f301afb134c32acb281a9a710ee65c27db51d713ed904cc2fb20a818c.
+  Live next-task transfer, accepted-step cards, compound fractions, conditional
+  root labels and retained denominator experiments were verified.
 
 ## Published: clear learner actions and return paths
 
