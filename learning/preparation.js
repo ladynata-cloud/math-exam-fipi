@@ -2,6 +2,25 @@
 (function(root){
 'use strict';
 const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// These are separate public exercises, never managed assignments or progress.
+const focusPractices=Object.freeze({
+ 'https://mathexam.space/trainers/rounding-stepwise.html':'Округление по шагам',
+ 'https://mathexam.space/trainers/task19-trainer.html':'ОГЭ №19: геометрические утверждения'
+});
+function focusMarkup(value){
+ const text=String(value??'');if(!text)return '';
+ let html='',offset=0,linked=false;
+ for(const match of text.matchAll(/https:\/\/[^\s<>"']+/g)){
+  html+=E(text.slice(offset,match.index));
+  const token=match[0],url=token.replace(/[.,;:!?)\]}]+$/,'');
+  if(Object.hasOwn(focusPractices,url)){
+   html+=`<a class="button small" data-focus-practice href="${E(url)}" target="_blank" rel="noopener noreferrer">${E(focusPractices[url])} ↗</a>${E(token.slice(url.length))}`;linked=true;
+  }else html+=E(token);
+  offset=match.index+token.length;
+ }
+ html+=E(text.slice(offset));
+ return `<p class="prep-focus">${html}</p>${linked?'<p class="small" data-focus-practice-note>Тренажёры откроются в отдельной вкладке. Их результаты сохраняются в этом браузере и не входят в прогресс кабинета.</p>':''}`;
+}
 const complete=new Set(['independent','repeated','hinted','together','practiced']);
 function publicHref(item){try{const url=new URL(item.publicUrl||item.url,'https://mathexam.space');return url.origin==='https://mathexam.space'?url.href:'';}catch(_){return '';}}
 function mountRoute(host,context){
@@ -85,7 +104,7 @@ function mountRoute(host,context){
  function labMarkup(){return `<section class="prep-lab"><h2>Выбрать и исследовать</h2><p>Здесь можно свободно пробовать модели и способы решения. Для сохранения результата и начисления баллов нажмите «Начать задание» у материала с отметкой «Результат в кабинете».</p><label class="prep-search">Найти тему<input type="search" data-prep-search placeholder="Деление, проценты, углы…"></label><div data-prep-lab-groups>${labGroups('')}</div></section>`;}
  function labGroups(query){return map.groups.map(g=>{const items=g.items.filter(i=>(g.title+' '+i.title).toLocaleLowerCase('ru').includes(query));return items.length?`<details class="prep-group" ${query?'open':''}><summary><span>${E(g.title)}</span><span class="prep-group-count">${items.length} материалов</span></summary><p>${E(g.lead)}</p><div class="prep-task-grid">${items.map(i=>entryCard(i)).join('')}</div></details>`:'';}).join('')||'<p>Такой темы пока не найдено. Попробуйте другое слово.</p>';}
  function homeMarkup(){return `${hasPersonalRoute()?`${pendingHomework()?nextMarkup():''}${personalRouteMarkup()}`:nextMarkup()}<div class="actions prep-home-links"><a class="button" href="#route">Мой маршрут</a><a class="button" href="#assignments">Мои задания</a></div>${publishedHomework().length?`<details class="prep-group"><summary>Все задания преподавателя</summary>${homeworkMarkup()}</details>`:''}<details class="prep-group"><summary>Мой учебный опыт</summary>${rewardsMarkup()}</details><p class="small prep-home-note">Вход на другом устройстве с тем же логином открывает ту же сохранённую работу. У свободных тренажёров на сайте отдельная история в браузере.</p>`;}
- function render(){if(!alive)return;section.innerHTML=`<div class="page-heading"><div><p class="eyebrow">${oge?'ПОДГОТОВКА К ОГЭ':'ОТДЕЛЬНЫЙ БАЗОВЫЙ КУРС'}</p><h1>${home?hasPersonalRoute()?'Мой путь в математике':'Моё занятие':oge?'Мой маршрут ОГЭ':'Математические основы'}</h1><p class="lead">${oge?'Своя цель, свои задания и понятный следующий шаг.':'От понятного действия — к самостоятельному решению.'}</p>${oge?`<p class="prep-goal" data-prep-goal>${E(map.goals[goalKey].title)}${!profile.goal&&!teacher()?' · стартовый маршрут, цель можно уточнить с преподавателем':''}</p>`:''}${profile.focus?`<p class="prep-focus">${E(profile.focus)}</p>`:''}</div></div>${home?homeMarkup():`${teacher()&&oge?`<label>Посмотреть подборку<select data-prep-goal-select><option value="pass" ${goalKey==='pass'?'selected':''}>Уверенно сдать</option><option value="grade5" ${goalKey==='grade5'?'selected':''}>Подготовка на 5</option></select></label>`:''}${mode==='tasks'&&(!hasPersonalRoute()||pendingHomework())?nextMarkup():''}<div class="prep-modes segmented" role="group" aria-label="Режим курса"><button type="button" data-prep-mode="tasks" aria-pressed="${mode==='tasks'}">Задания</button><button type="button" data-prep-mode="lab" aria-pressed="${mode==='lab'}">Лаборатория</button></div><div data-prep-content>${mode==='tasks'?hasPersonalRoute()?personalRouteMarkup()+`<details class="prep-group"><summary>Другие темы и тренажёры</summary>${labMarkup()}</details>`:tasksMarkup():labMarkup()}</div>${rewardsMarkup()}<p class="prep-course-link"><a href="https://mathexam.space/foundations/" target="_blank" rel="noopener">Весь базовый курс без входа ↗</a></p>`}`;
+ function render(){if(!alive)return;section.innerHTML=`<div class="page-heading"><div><p class="eyebrow">${oge?'ПОДГОТОВКА К ОГЭ':'ОТДЕЛЬНЫЙ БАЗОВЫЙ КУРС'}</p><h1>${home?hasPersonalRoute()?'Мой путь в математике':'Моё занятие':oge?'Мой маршрут ОГЭ':'Математические основы'}</h1><p class="lead">${oge?'Своя цель, свои задания и понятный следующий шаг.':'От понятного действия — к самостоятельному решению.'}</p>${oge?`<p class="prep-goal" data-prep-goal>${E(map.goals[goalKey].title)}${!profile.goal&&!teacher()?' · стартовый маршрут, цель можно уточнить с преподавателем':''}</p>`:''}${focusMarkup(profile.focus)}</div></div>${home?homeMarkup():`${teacher()&&oge?`<label>Посмотреть подборку<select data-prep-goal-select><option value="pass" ${goalKey==='pass'?'selected':''}>Уверенно сдать</option><option value="grade5" ${goalKey==='grade5'?'selected':''}>Подготовка на 5</option></select></label>`:''}${mode==='tasks'&&(!hasPersonalRoute()||pendingHomework())?nextMarkup():''}<div class="prep-modes segmented" role="group" aria-label="Режим курса"><button type="button" data-prep-mode="tasks" aria-pressed="${mode==='tasks'}">Задания</button><button type="button" data-prep-mode="lab" aria-pressed="${mode==='lab'}">Лаборатория</button></div><div data-prep-content>${mode==='tasks'?hasPersonalRoute()?personalRouteMarkup()+`<details class="prep-group"><summary>Другие темы и тренажёры</summary>${labMarkup()}</details>`:tasksMarkup():labMarkup()}</div>${rewardsMarkup()}<p class="prep-course-link"><a href="https://mathexam.space/foundations/" target="_blank" rel="noopener">Весь базовый курс без входа ↗</a></p>`}`;
   section.querySelectorAll('[data-prep-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.prepMode;render();section.querySelector('[data-prep-mode="'+mode+'"]')?.focus();});
   section.querySelector('[data-prep-goal-select]')?.addEventListener('change',e=>{goalKey=e.target.value;render();});
   section.querySelector('[data-prep-search]')?.addEventListener('input',e=>{section.querySelector('[data-prep-lab-groups]').innerHTML=labGroups(e.target.value.trim().toLocaleLowerCase('ru'));bindStarts();});
@@ -96,5 +115,5 @@ function mountRoute(host,context){
  async function load(){if(teacher())return;const result=await Promise.allSettled([context.api('/rewards'),context.api('/plan'),context.api('/progress')]);if(!alive)return;loaded=true;if(result[0].status==='fulfilled'){rewards=result[0].value.rewards||result[0].value;rewardsError=false;}else rewardsError=true;if(result[1].status==='fulfilled'){plan=result[1].value.plan||result[1].value;planError=false;}else planError=true;if(result[2].status==='fulfilled'){progress=result[2].value.progress;progressError=false;}else progressError=true;render();}
  render();load();return()=>{alive=false;section.remove();};
 }
-root.LearningPreparationUI={mountRoute};
+root.LearningPreparationUI={mountRoute,focusMarkup};
 })(window);
