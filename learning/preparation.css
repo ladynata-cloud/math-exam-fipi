@@ -38,3 +38,6 @@
  .prep-route-meta{align-items:flex-start;flex-direction:column;gap:6px}
  .prep-route-step.is-current .prep-route-number{box-shadow:0 0 0 3px #e5eee8}
 }
+
+.prep-focus [data-focus-practice]{background:var(--green);color:#fff;border-color:var(--green)}
+.prep-focus [data-focus-practice]:hover{background:var(--green-dark);border-color:var(--green-dark)}

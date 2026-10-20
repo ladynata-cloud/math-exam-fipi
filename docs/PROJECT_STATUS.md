@@ -2,21 +2,18 @@
 
 Updated: 2026-10-20 (Asia/Novosibirsk)
 
-## Current follow-up: public practice links in cabinet notes
+## Current follow-up: green cabinet practice buttons
 
-- PR267 is merged as `2bcfec70426f36eeff2ae97e0100eb221f58ca71`.
-  The preceding release verification recorded all 24 checked public/cabinet
-  assets matching and healthy durable learning storage.
-- The owner requests the existing Claude rounding trainer and OGE mathematics
-  statement trainer as accessible practice in a pupil cabinet. These public
-  pages have no managed assignment identity and retain browser-local results.
-- [Scope](tasks/CABINET_PUBLIC_PRACTICE_LINKS.md), MEDIUM: recognise only the
-  two approved URLs in saved focus notes, share safe rendering between pupil
-  home/route and teacher preview, and preserve all existing route and progress
-  data. Five focused DOM checks plus the existing preparation and 26-step
-  route regressions pass locally.
-- Next: complete focused review, publish the scoped release and verify the
-  two links on the live cabinet. This entry does not claim that release is live.
+- PR268 is merged as `5c34db8566f3a48ce47dcb721761b6a38a067934`.
+  Three exact-head PR workflows and Pages39403772030 passed; all six
+  checked public/cabinet assets matched. The live cabinet showed both practice
+  links and the existing 26-step route; durable learning storage was healthy.
+- The owner requests green styling for the two practice buttons shown in the
+  cabinet. [Scope](tasks/GREEN_PRACTICE_BUTTONS.md), SMALL: use the existing
+  green theme with white labels and a darker hover state, scoped to those links.
+- Next: verify the scoped style, publish under the existing owner authorization,
+  and inspect both buttons in the live cabinet. This entry does not claim that
+  the new green styling is live yet.
 
 ## Current follow-up: visible arithmetic and practice retests
 
