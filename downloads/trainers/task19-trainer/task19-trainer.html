@@ -6272,7 +6272,7 @@ if(root) root.Task19Data=data;
   }
 
   const line=(a,b,color=INK,dash='')=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${color}" stroke-width="3"${dash?' stroke-dasharray="'+dash+'"':''}/>`;
-  const text=(x,y,s,color=INK,anchor='middle')=>`<text x="${x}" y="${y}" fill="${color}" font-size="20" text-anchor="${anchor}" dominant-baseline="middle">${esc(s)}</text>`;
+  const text=(x,y,s,color=INK,anchor='middle')=>`<text x="${x}" y="${y}" fill="${color}" font-size="${/^[A-ZА-Я](?:[0-9′]|[₁₂₃])?$/.test(String(s))?36:String(s).length<=12?28:20}" text-anchor="${anchor}" dominant-baseline="middle">${esc(s)}</text>`;
   const dot=(p,color=INK)=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${color}"/>`;
   const poly=pts=>`<polygon points="${pts.map(p=>p.join(',')).join(' ')}" fill="${LIGHT}" stroke="${INK}" stroke-width="3"/>`;
   function tick(a,b,count=1,color=BLUE) {

@@ -51,9 +51,11 @@ the action; radius in circleMeasure genuinely changes size and remains.
 
 ## Selected untouched cards
 
-These four modelbranches keep their drawing, controls, instructions and explanation;
+These four modelbranches keep their construction, controls, instructions and explanation;
 none requires the geometric correction or formula-reference changes in this task.
-This is a conservative review selection, not a claim that every other card changed.
+Common point-label typography is enlarged for readability across the trainer.
+This is a conservative selection untouched by the mathematical/model feedback,
+not a claim of byte-identical shared styling or that every other card changed.
 The five alreadyinteractive triangleLinkage cards are excluded from this selection
 because triangleinequality was part of the owner’s feedback by analogy.
 

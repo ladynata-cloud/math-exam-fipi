@@ -42,7 +42,7 @@ async function valid(page,label){
  const result=await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)),card=window.Task19Data.cards.find(c=>c.id===state.current.id),sample=window.Task19Visuals.sample(card.hint.model,{...card.hint.params,...state.current.modelState.params});
   const invalid=[];function scan(v,path){if(typeof v==='number'&&!Number.isFinite(v))invalid.push(path);else if(v&&typeof v==='object')Object.entries(v).forEach(([k,x])=>scan(x,path+'.'+k));}scan(sample.points,'points');scan(sample.metrics,'metrics');
   const inputs=[...document.querySelectorAll('#visualHost input[type="range"]')].map(i=>({key:i.dataset.key,value:Number(i.value),min:Number(i.min),max:Number(i.max),label:document.querySelector(`label[for="${i.id}"]`)?.textContent||''}));
-  let triangle=null;if(sample.values.focus==='sides'){const P=sample.points,L=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]),angles=[sample.metrics.a,sample.metrics.b,sample.metrics.c],sides=[L(P.B,P.C),L(P.A,P.C),L(P.A,P.B)];triangle={angles,sides};}
+  let triangle=null;if(sample.model==='triangleExplore'&&sample.values.focus==='sides'){const P=sample.points,L=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]),angles=[sample.metrics.a,sample.metrics.b,sample.metrics.c],sides=[L(P.B,P.C),L(P.A,P.C),L(P.A,P.B)];triangle={angles,sides};}
   return {invalid,inputs,triangle,badMarkup:/NaN|Infinity|\[object Object\]/.test(document.querySelector('#visualHost').innerHTML)};
  },KEY);
  assert.deepEqual(result.invalid,[],label+' finite geometry');assert.equal(result.badMarkup,false,label+' valid rendered numbers');

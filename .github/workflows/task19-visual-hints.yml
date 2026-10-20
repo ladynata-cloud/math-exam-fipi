@@ -26,8 +26,13 @@ concurrency:
 
 jobs:
   visual-hints:
+    name: visual-hints (${{ matrix.suite }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [existing, owner]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -48,15 +53,17 @@ jobs:
           node --test tools/task19-*.test.cjs
           git diff --check
       - name: Desktop, narrow screen and keyboard journeys
+        if: matrix.suite == 'existing'
         env:
           TASK19_BROWSER_ARTIFACTS: artifacts/task19-visual-hints
         run: node tools/task19-visual-hints.browser.cjs
       - name: Owner feedback examples, linked pairs and authentic reference sheets
+        if: matrix.suite == 'owner'
         env:
           TASK19_OWNER_BROWSER_ARTIFACTS: artifacts/task19-owner-feedback
         run: node tools/task19-owner-feedback.browser.cjs
       - name: Keep visual evidence
-        if: always()
+        if: always() && matrix.suite == 'existing'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: task19-visual-hints
@@ -64,7 +71,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
       - name: Keep owner feedback evidence
-        if: always()
+        if: always() && matrix.suite == 'owner'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: task19-owner-feedback
