@@ -33,8 +33,9 @@
  }catch(_){historyBlocked=true;warning||='Не удалось прочитать историю решённых примеров. Она оставлена без изменений. Можно продолжать тренировку.';}
  function updateNotice(){
   const stage=C.stages.find(s=>s.id===id)||M?.stages.find(s=>s.id===id);
-  const result=created.state.completed?(stage.guidance==='check'&&!assisted&&!errors?'Три примера решены без подсказок и ошибок. Можно решать ещё.':stage.guidance==='check'?'Три примера решены. Попробуй ещё без помощи.':'Примеры решены по шагам. Продолжай тренировку с новыми числами.'):'Здесь работа сохраняется только в этом браузере. Для занятия с преподавателем открой эту ступень из своего кабинета.';
+  const result=created.state.completed?(stage.guidance==='check'&&!assisted&&!errors?'Три примера решены без подсказок и ошибок. Можно решать ещё.':stage.guidance==='check'?'Три примера решены. Попробуй ещё без помощи.':'Примеры решены по шагам. Продолжай тренировку с новыми числами.'):'';
   notice.textContent=warning||result;
+  notice.hidden=!notice.textContent;
  }
  function saveCompleted(){
   if(created.state.completed&&!historyBlocked&&!historySaved){
@@ -94,6 +95,12 @@
   apply();
  }};
  const start=document.getElementById('practice'),practice=document.getElementById('view-practice');
- start.onclick=()=>{practice.hidden=false;start.hidden=true;host.querySelector('#lm-answer')?.focus({preventScroll:true});};
+ function showPractice(focus=false){
+  practice.hidden=false;start.hidden=true;
+  const intro=start.closest('.course-practice-start');if(intro)intro.hidden=true;
+  if(focus)host.querySelector('#lm-answer')?.focus({preventScroll:true});
+ }
+ start.onclick=()=>showPractice(true);
+ showPractice();
  updateNotice();
 })();

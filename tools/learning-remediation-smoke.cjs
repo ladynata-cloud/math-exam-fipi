@@ -19,6 +19,25 @@ window.openTrainer=(id,url)=>{let frame=document.createElement('iframe');frame.s
 window.hydrate=(id,taskSpec,state,readOnly)=>{const f=framesById[id];f.applied=null;f.frame.contentWindow.postMessage({protocol:'mathexam-learning',version:1,channel:f.channel,instance:f.instance,type:'hydrate',payload:{taskSpec,state,readOnly}},'*');};
 </script>`;
 const server=http.createServer((req,res)=>{const pathname=new URL(req.url,'http://localhost').pathname;if(pathname==='/harness'){res.setHeader('Content-Type','text/html');return res.end(harness);}const file=path.resolve(root,'.'+pathname);if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}fs.readFile(file,(err,data)=>{if(err){res.writeHead(404);return res.end();}res.setHeader('Content-Type',file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':'text/html');res.end(data);});});
+// Use the same visible disclosures as a pupil; never force-click hidden help.
+async function revealManagedControl(frame, id) {
+  const target = frame.locator('#' + id);
+  if (await target.isVisible()) return target;
+  const disclosure = id === 'lm-note' ? '#lm-notes' :
+    ['lm-learn', 'lm-practice', 'lm-rule'].includes(id) ? '#lm-tools' : null;
+  if (disclosure) {
+    const details = frame.locator(disclosure);
+    if (await details.count() && await details.getAttribute('open') === null)
+      await details.locator('summary').first().click();
+  } else {
+    const toggle = frame.locator('#lm-help-slot .bh-toggle');
+    if (await toggle.count() && await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
+    if (!await target.isVisible() && await frame.locator('#lm-help-slot .bh-root:visible').count())
+      await frame.locator('#lm-help-slot .bh-root:visible').click();
+  }
+  await target.waitFor({ state: 'visible' });
+  return target;
+}
 function expected(q){return q.answer&&typeof q.answer==='object'?q.answer.n+'/'+q.answer.d:String(q.answer);}
 async function columnSnapshot(frame){return frame.locator('.lm-multiplication-board').evaluate(board=>({html:board.outerHTML,rows:Object.fromEntries([...board.querySelectorAll('.lm-mul-row:not(.lm-mul-carry)')].map(row=>[row.dataset.mulRow,[...row.querySelectorAll('.lm-mul-filled')].map(cell=>({column:Number(cell.dataset.column),digit:cell.textContent}))]))}));}
 function checkColumnRows(snapshot,task,{complete=true}={}){
@@ -55,8 +74,8 @@ function checkColumnRows(snapshot,task,{complete=true}={}){
   if(initialColumn)for(const [row,cells]of Object.entries(initialColumn.rows))if(!['A','B'].includes(row))assert.equal(cells.length,0,'No future result cell is filled at the start');
   const first=taskSpec.steps[0]||taskSpec.items[0]||taskSpec.task;
   if(first.kind==='choice')await frame.locator('[data-choice]').evaluateAll((nodes,answer)=>nodes.find(x=>x.dataset.choice!==answer).click(),String(first.answer));else await frame.locator('#lm-answer').fill('99999999');
-  await frame.locator('#lm-note').fill('Мой черновик: '+item.contentId);
-  await frame.locator('#lm-check').click();await frame.locator('#lm-hint').click();
+  await (await revealManagedControl(frame,'lm-note')).fill('Мой черновик: '+item.contentId);
+  await frame.locator('#lm-check').click();await (await revealManagedControl(frame,'lm-hint')).click();
   await page.waitForFunction(()=>events.at(-1)?.kind==='hint');
   const saved=await page.evaluate(()=>framesById.student.state);C.normalize(taskSpec,saved);
   await page.evaluate(({taskSpec,saved})=>hydrate('teacher',taskSpec,saved,true),{taskSpec,saved});
@@ -64,7 +83,7 @@ function checkColumnRows(snapshot,task,{complete=true}={}){
   assert.equal(await teacher.locator('#lm-note').inputValue(),saved.note);
   assert.equal(await teacher.locator('.lm-feedback.hint').count(),1);
   if(isColumn){assert.equal((await columnSnapshot(frame)).html,initialColumn.html,'Wrong answers and help do not fill future cells');assert.equal((await columnSnapshot(teacher)).html,initialColumn.html,'Read-only mirror keeps the same unfinished column');assert.equal(await teacher.locator('#lm-answer').isDisabled(),true);}
-  if(taskSpec.lessons.length){await frame.locator('#lm-learn').click();assert.equal(await frame.locator('.lm-lesson').count(),1);await frame.locator('#lm-practice').click();}
+  if(taskSpec.lessons.length){await (await revealManagedControl(frame,'lm-learn')).click();assert.equal(await frame.locator('.lm-lesson').count(),1);await (await revealManagedControl(frame,'lm-practice')).click();}
   // Restore into a fresh instance, including raw draft, hint and selected view.
   await page.evaluate(({taskSpec,saved})=>hydrate('student',taskSpec,saved,false),{taskSpec,saved});
   await page.waitForFunction(()=>framesById.student.applied);
@@ -102,7 +121,7 @@ function checkColumnRows(snapshot,task,{complete=true}={}){
  }
  // Standalone mode still initializes all original family interfaces and storage.
  for(const item of process.argv.includes('--visual-only')?[]:trainerItems){
-  await page.goto(origin+item.url);await page.locator('h1').first().waitFor();
+  await page.goto(origin+item.url);await page.locator('main:visible,section:visible').first().waitFor();
   const localCourse=divisionCourse.has(item.contentId)||columns.has(item.contentId);
   assert.equal(await page.evaluate(()=>window.MathExamRemediationManaged),localCourse);
   if(localCourse)assert.equal(await page.evaluate(()=>window.MathExamDivisionCourseLocal),true);
@@ -134,7 +153,12 @@ function checkColumnRows(snapshot,task,{complete=true}={}){
    assert.equal(await page.locator('#primary').textContent(),'Проверить');
    continue;
   }
-  const button=page.locator('[data-route="practice"],[data-nav="practice"],#practice').first();await button.click();
+  if(localCourse){assert.equal(await page.locator('#learning-remediation-root').isVisible(),true);assert.equal(await page.locator('#lm-check').isVisible(),true);continue;}
+  if(!await page.locator('#view-practice').isVisible() && !await page.locator('#answer').isVisible()){
+   const menu=page.locator('details.bs-navigation');
+   if(await menu.count() && await menu.getAttribute('open')===null)await menu.locator('summary').first().click();
+   await page.locator('[data-route="practice"]:visible,[data-nav="practice"]:visible,#practice:visible').first().click();
+  }
   if(item.contentId.endsWith('/division-lab'))assert.equal(await page.locator('#answer').isVisible(),true);
   else if(item.contentId.startsWith('percentages/'))assert.equal(await page.locator('#p-q').isVisible(),true);
   else assert.equal(await page.locator('#view-practice').isVisible(),true);

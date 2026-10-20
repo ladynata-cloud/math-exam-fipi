@@ -17,6 +17,13 @@ const server = http.createServer((req, res) => {
 });
 async function ready(page, url) { await page.goto(url); await page.waitForFunction(() => window.__divisionGuidedDebug); }
 async function snapshot(page) { return page.evaluate(() => window.__divisionGuidedDebug.state()); }
+async function openGuidedHelp(page) {
+  const toggle = page.locator('.bh-toggle');
+  await toggle.waitFor({state:'visible'});
+  if (await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
+  assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
+  assert.equal(await page.locator('#help-content').isVisible(), true, 'The original step hint is inside the opened contextual panel');
+}
 async function one(page, wrong = false) {
   const state = await snapshot(page), s = state.sessions[state.active], p = G.plan(s.task);
   if (s.done) return false;
@@ -50,10 +57,11 @@ async function topic(page, id) {
     await page.locator('#primary').click();
     assert.equal((await snapshot(page)).sessions.start.step, 0, 'empty input never accepted');
     await one(page, true); assert.equal((await snapshot(page)).sessions.start.errors, 1);
-    await page.locator('#help-toggle').click(); await page.locator('#reveal').click();
+    await openGuidedHelp(page); await page.locator('#reveal').click();
     assert.match(await page.locator('#revealed').innerText(), /4/);
     await page.locator('#answer').fill('4'); await page.locator('#primary').click();
     assert.equal(await page.locator('#primary').innerText(), 'Дальше');
+    assert.equal(await page.locator('.bh-panel').isVisible(), false, 'Accepted steps close contextual help');
     assert.equal((await snapshot(page)).sessions.start.step, 0, 'correct answer waits for deliberate continuation');
     await page.reload(); await page.waitForFunction(() => window.__divisionGuidedDebug);
     assert.equal(await page.locator('#primary').innerText(), 'Дальше');

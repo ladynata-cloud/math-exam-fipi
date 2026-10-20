@@ -43,7 +43,7 @@ assert.equal(t.host.querySelector('#lm-answer').getAttribute('aria-label'),'Од
 assert.equal(t.bridge.getState().step,0);
 for(const [value,direction] of [['9','цифру поменьше'],['2','цифру побольше'],['80','одну цифру']]) {
   const input=t.host.querySelector('#lm-answer');input.value=value;input.dispatchEvent(new t.window.Event('input'));
-  t.host.querySelector('#lm-check').click();assert(t.host.querySelector('.lm-feedback').textContent.includes(direction));
+  t.host.querySelector('#lm-check').click();assert(t.host.querySelector('.lm-feedback.incorrect').textContent.includes(direction));
   assert.equal(t.bridge.getState().step,0);
 }
 t.host.querySelector('#lm-solution').click();assert.equal(t.bridge.getState().step,0);

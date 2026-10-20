@@ -6,6 +6,17 @@ const $=id=>document.getElementById(id);
 const fresh=()=>({answers:[],answer:'',help:false,feedback:null});
 const make=(seed,version)=>({...((version===1?core.make:core.makeV2)(seed)),contentId:core.id});
 let seed=1,generatorVersion=2,source=make(seed,generatorVersion),state=fresh(),storage,blocked=false,warning='';
+let contextualHelp=null,contextualHost=null,contextualContent=null;
+function updateHelp(q){
+ if(!window.MathExamBasicsHelp)return;
+ if(!q){contextualHelp?.close();if(contextualHost)contextualHost.hidden=true;return;}
+ contextualHelp=contextualHelp||window.MathExamBasicsHelp.create();
+ if(!contextualHost){contextualHost=document.createElement('div');contextualHost.className='basics-help-host';$('estimate-task').after(contextualHost);contextualContent=document.createElement('div');contextualContent.className='basics-help-root';contextualContent.append($('estimate-help'),$('estimate-solution'));}
+ contextualHost.hidden=false;$('estimate-hint').hidden=true;
+ const paint=()=>{const panel=$('estimate-help');panel.innerHTML=S?.render(source,q,{scope:'step',step:state.answers.length,level:state.feedback?.kind==='solution'?3:2})||'';if(!panel.innerHTML)panel.textContent=helpText(q,state.feedback?.kind==='solution'?'solution':'hint');panel.hidden=false;};
+ if(contextualHelp.isOpen())paint();
+ contextualHelp.update({host:contextualHost,identity:seed+':'+state.answers.length,contentId:core.id,context:{prompt:presentation(q).prompt||q.prompt,kind:q.kind},rootContent:contextualContent,onUse:()=>{state.help=true;state.feedback={kind:'hint'};save();paint();$('estimate-feedback').hidden=true;}});
+}
 try{
  storage=window.localStorage;
  const raw=storage.getItem(key);
@@ -46,10 +57,10 @@ function render(focus){
  // render() escapes its canonical numbers and text. Raw drafts and stored
  // feedback only ever reach textContent or an input's value.
  help.innerHTML=html;help.hidden=!html;
- f.hidden=!!html||(!state.feedback&&!done);f.className=kind||'correct';
+ f.hidden=!!html||(!state.feedback&&!done)||!!window.MathExamBasicsHelp&&['hint','solution'].includes(kind);f.className=kind||'correct';
  f.textContent=done?(state.help?'Получилось с подсказкой. Попробуй следующий пример сам.':'Цифра найдена самостоятельно.'):(kind?helpText(q,kind):'');
  if(q){$('estimate-prompt').textContent=presentation(q).prompt||q.prompt;$('estimate-answer').value=state.answer;$('estimate-answer').placeholder=q.kind==='digit'?'Одна цифра':'Твой ответ';$('estimate-answer').setAttribute('aria-label',q.kind==='digit'?'Одна цифра от 0 до 9':'Твой ответ');if(focus)$('estimate-answer').focus({preventScroll:true});}
- notice();
+ notice();updateHelp(q);
 }
 $('practice').onclick=()=>{$('view-practice').hidden=false;$('practice').hidden=true;render(true);};
 $('estimate-answer').oninput=e=>{state.answer=e.target.value;save();};
@@ -70,5 +81,6 @@ $('estimate-new').onclick=()=>{
  }
  warning='Не удалось выбрать другой пример. Попробуй открыть тренировку снова.';notice();
 };
-render();
+window.addEventListener('mathexam-basics-help-ready',()=>render());
+$('view-practice').hidden=false;$('practice').hidden=true;render();
 })();

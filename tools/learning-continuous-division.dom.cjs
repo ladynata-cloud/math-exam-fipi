@@ -177,7 +177,7 @@ assert.equal(other.host.querySelector('#lm-new').textContent, 'Запросит�
 other.finish();
 assert.equal(other.host.querySelectorAll('#lm-new').length, 1);
 assert.equal(other.host.querySelector('#lm-new').textContent, 'Новое условие →');
-assert.equal(other.host.querySelector('#lm-new').classList.contains('lm-primary'), false);
+assert.equal(other.host.querySelector('#lm-new').classList.contains('lm-primary'), true, 'A completed task offers the next condition as its main action');
 assert.equal(other.newCalls().length, 0);
 other.dom.window.close();
 

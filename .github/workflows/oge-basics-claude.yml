@@ -1,0 +1,70 @@
+name: OGE basics Claude consultation and review
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+    paths:
+      - 'trainers/oge-basics/**'
+      - 'tools/oge-basics-*'
+      - 'docs/tasks/OGE_BASICS_CONTEXTUAL*'
+      - '.github/workflows/oge-basics-claude.yml'
+permissions:
+  contents: read
+concurrency:
+  group: oge-basics-claude-${{ github.event.pull_request.number }}-${{ github.event.action }}
+  cancel-in-progress: false
+jobs:
+  consultation:
+    if: github.event.action == 'opened' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'feat/oge-basics-contextual-help'
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Validate consultation boundaries offline
+        run: python3 tools/oge-basics-claude.test.py
+      - name: Ask Claude about the learning design once
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
+          REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
+          REVIEW_PR: ${{ github.event.pull_request.number }}
+        run: python3 tools/oge-basics-claude.py design
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-basics-claude-design
+          path: artifacts/oge-basics-claude-design.json
+          if-no-files-found: warn
+          retention-days: 30
+  final-review:
+    # Apply this label only after an explicit owner exception recorded in the PR.
+    if: github.event.action == 'ready_for_review' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'feat/oge-basics-contextual-help' && !contains(github.event.pull_request.labels.*.name, 'owner-waived-claude')
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Fetch exact comparison base
+        env:
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
+        run: git fetch --no-tags --depth=1 origin "$REVIEW_BASE"
+      - name: Validate review boundaries offline
+        run: python3 tools/oge-basics-claude.test.py
+      - name: Ask Claude to review the exact ready head once
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
+          REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
+          REVIEW_PR: ${{ github.event.pull_request.number }}
+        run: python3 tools/oge-basics-claude.py review
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-basics-claude-review
+          path: artifacts/oge-basics-claude-review.json
+          if-no-files-found: warn
+          retention-days: 30

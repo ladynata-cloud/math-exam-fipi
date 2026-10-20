@@ -27,7 +27,7 @@
       "tools/learning-arithmetic-robots-policy.cjs": "c5dc31bd36855c50ec2baf11b71270f9006f3ced20d9b918df6f2348ecc9836c",
       "tools/learning-arithmetic-robots-oracle.cjs": "41ee59c206de03fb4dc50a8696f67be25588b1b79ab0acdb37b22eed491f9d2a",
       "tools/learning-arithmetic-robots.cjs": "243c762d3c6e6038b26d116a7b44976c430667c8f54b9758bea81b6c323bea95",
-      "tools/learning-arithmetic-robots.browser.cjs": "748fe3ab464fe1ca52e53a451aab38092f0f6dcd510d6490f34d8a4feee774bc"
+      "tools/learning-arithmetic-robots.browser.cjs": "6a7df72f12e6b0daa7cbc0b1d292f13f61ae4c55ff814eca560e4aab23de8610"
     },
     "dependencies": [
       "Node.js with node:sqlite",
@@ -64,7 +64,7 @@
     },
     "after": {
       "report": "docs/reports/arithmetic-robots-after.json",
-      "reportSha256": "6511e8260b1505b9794f0c3992a2b4ff38e6b756ddcdb44930f8b37bb509e39a",
+      "reportSha256": "9b6b23dbbd8582ceee49c78ca700356b9f6e8e88e10b8936315df3f7e6e6e91b",
       "summary": {
         "scenarios": 22,
         "completed": 22,
@@ -80,7 +80,7 @@
     },
     "current": {
       "report": "docs/reports/arithmetic-robots-current.json",
-      "reportSha256": "00e95836ba2e8ba8e9157d15d6a3b0eb23bb26de856d3e9af4eff791c162f3ea",
+      "reportSha256": "ff431057fa0264cc8eeb75b1cd469f8d152903b185018a5016dff16959eb9d34",
       "summary": {
         "scenarios": 22,
         "completed": 22,

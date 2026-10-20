@@ -8,7 +8,7 @@ const root=path.resolve(__dirname,'..'),origin='https://mathexam.space',url=orig
   await page.goto(url+'#'+stage.id);await page.locator('#answer').waitFor();
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   await page.locator('#answer').fill('999999');await page.locator('#check').click();assert(await page.locator('.feedback.error').isVisible());
-  await page.locator('#hint').click();assert(await page.locator('.hint').isVisible());
+  const help=page.locator('.bh-toggle');await help.waitFor({state:'visible'});assert.equal(await help.getAttribute('aria-expanded'),'false');await help.click();assert.equal(await help.getAttribute('aria-expanded'),'true');const hint=page.locator('.bh-current-hint .basics-help-root > p');assert(await hint.isVisible());assert.equal(await hint.innerText(),C.make(stage.id,1).steps[0].hint);
   if(output){fs.mkdirSync(output,{recursive:true});await page.screenshot({path:path.join(output,'foundations-'+stage.id+'-'+width+'.png'),fullPage:true});}
   const task=C.make(stage.id,1);
   for(const [j,q] of task.steps.entries()){

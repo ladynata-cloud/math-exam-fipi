@@ -29,6 +29,25 @@ const expectScaffolds = process.env.LEARNING_ROBOT_BASELINE !== '1';
 const reportName = expectScaffolds ? 'regression.json' : 'baseline.json';
 const api = (page, route, body) => page.evaluate(async ({ route, body }) => LearningApp.api(route, body === undefined ? {} : { method: 'POST', body: JSON.stringify(body) }), { route, body });
 const frame = page => page.frameLocator('#trainer-host iframe');
+// Use the same visible disclosures as a pupil; never force-click hidden help.
+async function revealManagedControl(frame, id) {
+  const target = frame.locator('#' + id);
+  if (await target.isVisible()) return target;
+  const disclosure = id === 'lm-note' ? '#lm-notes' :
+    ['lm-learn', 'lm-practice', 'lm-rule'].includes(id) ? '#lm-tools' : null;
+  if (disclosure) {
+    const details = frame.locator(disclosure);
+    if (await details.count() && await details.getAttribute('open') === null)
+      await details.locator('summary').first().click();
+  } else {
+    const toggle = frame.locator('#lm-help-slot .bh-toggle');
+    if (await toggle.count() && await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
+    if (!await target.isVisible() && await frame.locator('#lm-help-slot .bh-root:visible').count())
+      await frame.locator('#lm-help-slot .bh-root:visible').click();
+  }
+  await target.waitFor({ state: 'visible' });
+  return target;
+}
 async function ready(page) { await page.locator('#trainer-host iframe').waitFor(); await page.waitForFunction(() => document.querySelector('#trainer-host .frame-status')?.hidden); }
 async function saved(page) {
   try { await page.waitForFunction(() => /^(Все изменения сохранены|Сохранено в кабинете)/.test(document.querySelector('#save-state')?.textContent || '')); }
@@ -103,8 +122,8 @@ async function continueDivision(page, entry) {
       record.afterMistake = await visible(page);
       if (record.afterMistake.labels.join('|') !== before.labels.join('|')) { record.accidentalCorrect = true; entry.continuation.push(record); continue; }
     }
-    await f.locator('#lm-hint').click(); await saved(page); record.hint = await visible(page);
-    await f.locator('#lm-solution').click(); await saved(page); record.solution = await visible(page);
+    await (await revealManagedControl(f, 'lm-hint')).click(); await saved(page); record.hint = await visible(page);
+    await (await revealManagedControl(f, 'lm-solution')).click(); await saved(page); record.solution = await visible(page);
     if (expectScaffolds) assert.equal(await f.locator('[data-scaffold="division"]').count(), 1, 'Current division action has concrete optional support: ' + before.prompts.join(' / '));
     const answer = await visibleWorkedAnswer(f); record.readFromVisibleHelp = answer;
     if (!answer) { record.blocked = 'No interpretable answer in visible worked help'; entry.continuation.push(record); break; }
@@ -174,7 +193,7 @@ async function main() {
         assert.equal(await f.locator('#lm-answer').isEnabled(), true);
         await f.locator('#lm-check').click(); await saved(sp);
         assert((await f.locator('.lm-feedback').innerText()).includes('Пока не совпало'), 'The original question still accepts an answer without optional help');
-        await f.locator('#lm-hint').click(); await saved(sp);
+        await (await revealManagedControl(f, 'lm-hint')).click(); await saved(sp);
         assert.equal(await f.locator('.lm-scaffold').count(), 0);
         await sp.unroute('**/learning-scaffolds.js*'); await sp.reload(); await ready(sp);
         assert.equal(await f.locator('.lm-scaffold').count(), 1, 'Restoring the helper restores the already saved hint');
@@ -185,7 +204,7 @@ async function main() {
       else await f.locator('[data-choice]').last().click();
       await saved(sp);
       await f.locator('#lm-check').click(); await saved(sp); entry.afterMistake = await visible(sp);
-      await f.locator('#lm-hint').click(); await saved(sp); entry.hint = await visible(sp);
+      await (await revealManagedControl(f, 'lm-hint')).click(); await saved(sp); entry.hint = await visible(sp);
       if (expectScaffolds) assert.equal(await f.locator('.lm-scaffold').count(), 1, 'A hint explains the current arithmetic, not just its answer');
       if (i === 0) {
         const beforeReload = entry.hint;
@@ -204,7 +223,7 @@ async function main() {
         assert.equal((await api(sp, '/attempts/' + mirrorAttemptId)).version, beforeMirror.version, 'Read-only hydration does not change saved help accounting');
         entry.restorationAndMirror = true;
       }
-      await f.locator('#lm-solution').click(); await saved(sp); entry.solution = await visible(sp);
+      await (await revealManagedControl(f, 'lm-solution')).click(); await saved(sp); entry.solution = await visible(sp);
       await sp.screenshot({ path: path.join(artifacts, 'baseline-' + i + '-390.png'), fullPage: true });
       if (TOPICS[i] === 'decimal-add-subtract' && expectScaffolds) {
         assert(entry.solution.scaffolds.join(' ').includes('8 + 4 = 12. Пишем 2, переносим 1'), 'Worked decimal help explains carrying rather than only printing the result');
@@ -215,13 +234,13 @@ async function main() {
         await sp.setViewportSize({ width: 390, height: 844 });
       }
       if (await f.locator('#lm-learn').count()) {
-        await f.locator('#lm-learn').click(); await saved(sp);
+        await (await revealManagedControl(f, 'lm-learn')).click(); await saved(sp);
         entry.lesson = { ...await visible(sp), explanation: await f.locator('.lm-lesson').innerText() };
-        await f.locator('#lm-practice').click(); await saved(sp);
+        await (await revealManagedControl(f, 'lm-practice')).click(); await saved(sp);
       }
       if (i === 0) await continueDivision(sp, entry);
       else {
-        await f.locator('#lm-solution').click(); await saved(sp);
+        await (await revealManagedControl(f, 'lm-solution')).click(); await saved(sp);
         const answer = await visibleWorkedAnswer(f); assert(answer, 'Worked help offers an interpretable next action');
         entry.recoveryFromVisibleHelp = answer;
         await f.locator('#lm-answer').fill(answer.value); await saved(sp); await f.locator('#lm-check').click(); await saved(sp);

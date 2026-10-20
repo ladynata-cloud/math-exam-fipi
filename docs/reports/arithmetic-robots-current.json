@@ -6,8 +6,8 @@
   "mode": "after",
   "runtime": "jsdom",
   "source": {
-    "commit": "7183175263bfc11ff475220776d08243bb82abbd",
-    "trainers/oge-basics/learning-managed.js": "0b10938a53f102f19bcd8217c2cd120ee4a0d4807acb481b2afb60ef6a42c204",
+    "commit": "0afea51f9cbfcb2c530c5de783e17a2ce35e3148",
+    "trainers/oge-basics/learning-managed.js": "aba17f5c5670d1295238f2d9def126df3aadf804403c8d133a752d90499fa2e8",
     "trainers/oge-basics/learning-scaffolds.js": "57f8b897071250d96e2bfbc8931427405c38d868ea9b1f5d8a9c93fe605f1f32",
     "trainers/oge-basics/multiplication-division/multiplication-column-core.js": "e0279cf2b8a0b8ce05d8396fe52e9e91e14fb8d9b56dbce70874325539869f9b",
     "trainers/oge-basics/multiplication-division/division-course-core.js": "304556eb1e7d5f8171294392aff931960799ed0e3f13f0169dbe917fdc4f0f47",
