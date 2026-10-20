@@ -39,7 +39,8 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
   final-review:
-    if: github.event.action == 'ready_for_review' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'feat/oge-basics-contextual-help'
+    # Apply this label only after an explicit owner exception recorded in the PR.
+    if: github.event.action == 'ready_for_review' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'feat/oge-basics-contextual-help' && !contains(github.event.pull_request.labels.*.name, 'owner-waived-claude')
     runs-on: ubuntu-latest
     timeout-minutes: 7
     steps:
