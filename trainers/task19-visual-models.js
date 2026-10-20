@@ -302,12 +302,19 @@
       const T=fit(Object.values(P)),names=['A','B','C','D'],Q=Object.fromEntries(Object.keys(P).map(n=>[n,T(P[n])]));
       body=poly(names.map(n=>Q[n]));
       const focus=p.focus||'midline';
-      body+=line(Q.D,Q.H,GREEN,'7 5')+rightMark(Q.D,Q.H,[Q.H[0]+30,Q.H[1]],GREEN);
+      body+=linked('height-dh',line(Q.D,Q.H,GREEN,'7 5')+rightMark(Q.D,Q.H,[Q.H[0]+30,Q.H[1]],GREEN),'Высота DH');
       if(P.H[0]<0||P.H[0]>M.bottom)body+=line(Q.A,Q.H,INK,'5 5');
       body+=dot(Q.H,GREEN)+text(Q.H[0],Q.H[1]+28,Math.abs(P.H[0])<1e-8?'A = H':'H',GREEN);
       if(focus==='diagonals') {
-        body+=line(Q.A,Q.C,BLUE)+line(Q.B,Q.D,GREEN)+dot(Q.O)+text(Q.O[0]+12,Q.O[1]+22,'O');
-        readout=[`AC = ${fmt(M.AC)}`,`BD = ${fmt(M.BD)}`,`AO = ${fmt(M.AO)}`,`OC = ${fmt(M.OC)}`,`BO = ${fmt(M.BO)}`,`OD = ${fmt(M.OD)}`,`AD = ${fmt(M.AD)}`,`BC = ${fmt(M.BC)}`];
+        body+=linked('diagonal-ac',line(Q.A,Q.C,BLUE),'Диагональ AC')+linked('diagonal-bd',line(Q.B,Q.D,GREEN),'Диагональ BD')+dot(Q.O)+text(Q.O[0]+12,Q.O[1]+22,'O');
+        readout=[
+          {text:`AC = ${fmt(M.AC)}`,color:BLUE,group:'diagonal-ac'},
+          {text:`BD = ${fmt(M.BD)}`,color:GREEN,group:'diagonal-bd'},
+          {text:`AO = ${fmt(M.AO)}`,color:BLUE,group:'diagonal-ac'},
+          {text:`OC = ${fmt(M.OC)}`,color:BLUE,group:'diagonal-ac'},
+          {text:`BO = ${fmt(M.BO)}`,color:GREEN,group:'diagonal-bd'},
+          {text:`OD = ${fmt(M.OD)}`,color:GREEN,group:'diagonal-bd'},
+          `AD = ${fmt(M.AD)}`,`BC = ${fmt(M.BC)}`];
       } else if(focus==='sides') readout=[`AB = ${fmt(M.bottom)}`,`CD = ${fmt(M.top)}`,`AD = ${fmt(M.AD)}`,`BC = ${fmt(M.BC)}`];
       else if(focus==='angles') {
         readout=M.angles.map((a,i)=>`∠${names[i]} = ${fmt(a)}°`);
@@ -319,7 +326,7 @@
         body+=tick(Q.A,Q.E,1,BLUE)+tick(Q.E,Q.D,1,BLUE)+tick(Q.B,Q.F,2,GREEN)+tick(Q.F,Q.C,2,GREEN);
         readout=[`AB = ${fmt(M.bottom)}`,`CD = ${fmt(M.top)}`,`EF = ${fmt(M.midline)}`,`E и F — середины боковых сторон`];
       }
-      if(focus!=='area')readout.push(`Высота DH = ${fmt(M.height)}`);
+      if(focus!=='area')readout.push({text:`Высота DH = ${fmt(M.height)}`,color:GREEN,group:'height-dh'});
       body+=labelPoints(P,names.filter(n=>!(n==='A'&&Math.abs(P.H[0])<1e-8)),T);
     } else if(model==='circleChord') {
       const r=110,ratio=r/p.radius,T=q=>[280+q[0]*ratio,170-q[1]*ratio];

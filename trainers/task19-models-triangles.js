@@ -112,7 +112,7 @@
     readout.push('Сумма углов: '+fmt(M.a)+'° + '+fmt(M.b)+'° + '+fmt(M.c)+'° = 180°');
     if(['iso','equilateral'].includes(p.mode))for(let i=0;i<3;i++){const u=names[(i+1)%3],v=names[(i+2)%3],style=sideClasses[i];readout.push(measure(u+v+' = '+fmt(lengths[i]),style.color,'equal-side-'+style.count));}
     const coloredSides=()=>{
-      for(const [u,v,color,group]of [['A','B',BLUE,'leg-ab'],['A','C',GREEN,'leg-ac'],['B','C',AMBER,'side-bc']])body+=linked(group,line(T(P[u]),T(P[v]),color)+(lengths.filter(n=>Math.abs(n-M[u+v])<1e-6).length>1?tick(T(P[u]),T(P[v]),1,color):'')+text((T(P[u])[0]+T(P[v])[0])/2+10,(T(P[u])[1]+T(P[v])[1])/2-13,u+v+' = '+fmt(M[u+v]),color));
+      for(const [u,v,color,group]of [['A','B',BLUE,'leg-ab'],['A','C',GREEN,'leg-ac'],['B','C',AMBER,'side-bc']])body+=linked(group,line(T(P[u]),T(P[v]),color)+(lengths.filter(n=>Math.abs(n-M[u+v])<1e-6).length>1?tick(T(P[u]),T(P[v]),1,color):''));
       return[measure('AB = '+fmt(M.AB),BLUE,'leg-ab'),measure('AC = '+fmt(M.AC),GREEN,'leg-ac'),measure('BC = '+fmt(M.BC),AMBER,'side-bc')];
     };
     if(focus==='exterior'){
