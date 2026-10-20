@@ -2,6 +2,23 @@
 
 Updated: 2026-10-20 (Asia/Novosibirsk)
 
+## In progress: basic OGE task-first course and nested help
+
+- PR278 implements the owner's task-first design across the existing 70 basic
+  OGE routes, including public and cabinet rendering. Main OGE PR275 remains
+  the published separate course.
+- One nearby help disclosure leads to the current hint and prerequisite
+  microtasks. Drafts, accepted steps, child models and return paths are retained;
+  child answers do not earn parent credit. Diagnostic restrictions remain.
+- The 35-source bank, arithmetic engines and saved-state contracts are intact.
+  Independent review found and corrected percentage Enter routing after a
+  lesson return and incorrect multiplication prerequisite selection.
+- Design request run39462468886 failed with insufficient Anthropic credits.
+  No Claude design advice or final approval is claimed. Final external review
+  remains unavailable; earlier task-specific exceptions do not apply.
+- Next: exact-head cloud browser/mobile evidence and all relevant CI; record
+  the release decision only after a concrete reviewed result is ready.
+
 ## Agreed workflow: Claude consultation for trainer design
 
 - Owner confirmed on 2026-10-20 that substantial trainer work should include a

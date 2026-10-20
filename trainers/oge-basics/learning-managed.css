@@ -136,3 +136,34 @@
 #learning-remediation-root .lm-multiplication-support{margin:20px 0;padding:16px;border:1px solid #bfd3c7;border-radius:12px;background:#f3f8f5;font-size:20px;line-height:1.5}
 #learning-remediation-root .lm-multiplication-support p{margin:8px 0}
 #learning-remediation-root .lm-multiplication-support a{display:inline-block;padding:10px 12px;min-height:48px;color:#145d57;text-underline-offset:3px;overflow-wrap:anywhere}
+
+/* The current task comes first; explanations and other actions open on request. */
+#learning-remediation-root.lm-task-first{max-width:900px}
+#learning-remediation-root.lm-task-first .lm-header{margin-bottom:12px}
+#learning-remediation-root.lm-task-first h1{font-size:clamp(22px,3vw,28px);line-height:1.4}
+#learning-remediation-root.lm-task-first .lm-layout{display:block}
+#learning-remediation-root .lm-task-heading{min-width:0}
+#learning-remediation-root .lm-task-heading>.lm-prompt{margin-bottom:10px}
+#learning-remediation-root .lm-help-slot{margin:8px 0 20px;min-width:0;max-width:100%}
+#learning-remediation-root .lm-help-root{min-width:0;overflow-wrap:anywhere}
+#learning-remediation-root .lm-help-root .lm-feedback:first-child{margin-top:0}
+#learning-remediation-root .lm-help-root>.lm-actions{margin-bottom:0}
+#learning-remediation-root .lm-secondary{margin-top:16px;border-top:1px solid var(--lm-line);padding:0 4px 12px}
+#learning-remediation-root .lm-secondary>summary,#learning-remediation-root .lm-help-fallback>summary{cursor:pointer;min-height:48px;padding:12px 0;font-weight:600;color:#145d57;line-height:1.5}
+#learning-remediation-root .lm-secondary>summary:focus-visible,#learning-remediation-root .lm-help-fallback>summary:focus-visible{outline:3px solid #53bcb6;outline-offset:2px;border-radius:6px}
+#learning-remediation-root .lm-help-fallback[open]{padding:0 12px 12px;border:1px solid var(--lm-line);border-radius:12px;background:#f7fbf9}
+#learning-remediation-root .lm-accepted-work{margin-top:24px;padding-top:16px;border-top:1px solid var(--lm-line)}
+#learning-remediation-root .lm-accepted-work>h2{font-size:18px;margin-bottom:8px}
+#learning-remediation-root .lm-accepted-work .lm-worklog{max-height:none;overflow:visible}
+#learning-remediation-root .lm-accepted-work p{margin:12px 0 20px}
+#learning-remediation-root .lm-fraction{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.25;min-width:1.2em;margin:0 .15em}
+#learning-remediation-root .lm-fraction>span{padding:.08em .2em}
+#learning-remediation-root .lm-fraction>span:first-child{border-bottom:1.5px solid currentColor}
+@media(max-width:420px){
+ #learning-remediation-root.lm-task-first{padding:12px}
+ #learning-remediation-root.lm-task-first .lm-card{padding:14px}
+ #learning-remediation-root .lm-help-root>.lm-actions{display:grid;grid-template-columns:minmax(0,1fr)}
+ #learning-remediation-root .lm-secondary{padding-left:0;padding-right:0}
+ #learning-remediation-root .lm-answer-row{gap:8px}
+ #learning-remediation-root .lm-answer{width:100%}
+}

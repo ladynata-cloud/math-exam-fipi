@@ -14,6 +14,17 @@
   let feedback = '', feedbackKind = '';
   let decimalShift = null, decimalShiftKey = '', normalizationKey = '';
   let multiplicationRefresh = null;
+  let contextualHelp = null, contextualHost = null;
+  function updateContextualHelp(s,a){
+    if(!window.MathExamBasicsHelp)return;
+    if(s.done||s.accepted){contextualHelp?.close();if(contextualHost)contextualHost.hidden=true;return;}
+    contextualHelp=contextualHelp||window.MathExamBasicsHelp.create();
+    if(!contextualHost){contextualHost=document.createElement('div');contextualHost.className='basics-help-host';$('prompt').after(contextualHost);}
+    contextualHost.hidden=false;$('help-toggle').hidden=true;
+    const content=$('help-content');content.hidden=false;
+    if($('multiplication-refresh').parentElement!==content)content.append($('multiplication-refresh'));
+    contextualHelp.update({host:contextualHost,identity:s.id+':'+s.step,contentId:'multiplication-division/long-division-from-simple-to-decimals',context:{prompt:a.prompt,kind:a.kind},rootContent:content,onUse:()=>{s.hints=Math.min(1000000,s.hints+1);helpOpen=true;save();}});
+  }
 
   function notice(text) { $('storage-notice').hidden = false; $('storage-notice').textContent = text; }
   function whole(value, max = 1000000) { return Number.isSafeInteger(value) && value >= 0 && value <= max; }
@@ -343,6 +354,7 @@
     $('save-note').textContent = blocked || !storageAvailable ? 'Можно закончить на сегодня. Отправь учителю результат или снимок экрана: сохранение сейчас недоступно.' : 'Можно закончить на сегодня. Результат сохранится в этом браузере.';
     renderResults();
     renderRouteLinks();
+    updateContextualHelp(s,a);
   }
   function moveFocus() {
     const s = current(), a = G.plan(s.task).actions[s.step];
@@ -531,6 +543,7 @@
   if (topicIds.has(requested)) state.active = requested;
   if (!current()) newSession(state.active, false);
   else save();
+  window.addEventListener('mathexam-basics-help-ready',()=>render());
   render();
   window.__divisionGuidedDebug = {KEY, state:() => structuredClone(state), plan:() => G.plan(current().task)};
 })();

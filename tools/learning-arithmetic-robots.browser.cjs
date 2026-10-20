@@ -54,6 +54,25 @@ function staticServer(root) {
   });
 }
 
+// Use the same visible disclosures as a pupil; never force-click hidden help.
+async function revealManagedControl(frame, id) {
+  const target = frame.locator('#' + id);
+  if (await target.isVisible()) return target;
+  const disclosure = id === 'lm-note' ? '#lm-notes' :
+    ['lm-learn', 'lm-practice', 'lm-rule'].includes(id) ? '#lm-tools' : null;
+  if (disclosure) {
+    const details = frame.locator(disclosure);
+    if (await details.count() && await details.getAttribute('open') === null)
+      await details.locator('summary').first().click();
+  } else {
+    const toggle = frame.locator('#lm-help-slot .bh-toggle');
+    if (await toggle.count() && await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
+    if (!await target.isVisible() && await frame.locator('#lm-help-slot .bh-root:visible').count())
+      await frame.locator('#lm-help-slot .bh-root:visible').click();
+  }
+  await target.waitFor({ state: 'visible' });
+  return target;
+}
 async function createAdapter(browser, origin, root, scenario) {
   const session = makeSession(root, scenario);
   const width = scenario.width || (scenario.contentId.endsWith('/course-column-mixed') && scenario.seed === 103 ? 320 : 390);
@@ -127,8 +146,10 @@ async function createAdapter(browser, origin, root, scenario) {
     },
     async help(kind) {
       assert(['hint', 'solution'].includes(kind), 'Only explicit help controls are available');
+      const control = await revealManagedControl(student, kind === 'solution' ? 'lm-solution' : 'lm-hint');
+      await drain();
       const start = await page.evaluate(() => robotEvents.length);
-      await student.locator(kind === 'solution' ? '#lm-solution' : '#lm-hint').click();
+      await control.click();
       await waitForChange(start, 'hint');
       return snapshot();
     },

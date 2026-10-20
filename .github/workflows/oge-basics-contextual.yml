@@ -1,0 +1,53 @@
+name: OGE basics — contextual help and task-first screens
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-basics/**'
+      - 'tools/oge-basics-*'
+      - 'tools/learning-*'
+      - 'docs/tasks/OGE_BASICS_CONTEXTUAL*'
+      - '.github/workflows/oge-basics-contextual.yml'
+permissions:
+  contents: read
+concurrency:
+  group: oge-basics-contextual-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  learner-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated pinned test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/basics-contextual" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/basics-contextual/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/basics-contextual/node_modules" >> "$GITHUB_ENV"
+      - name: Existing mathematical and saved-state contracts
+        run: |
+          node tools/learning-remediation-bank.cjs --check
+          node tools/learning-remediation-quality.cjs
+          node tools/learning-remediation-checkpoint.cjs
+          node tools/learning-scaffolds.test.cjs
+          node --test tools/learning-arithmetic-generation-compat.test.cjs
+          node tools/preoge-arithmetic.test.cjs
+          node --test tools/oge-basics-percentages-contextual.test.cjs
+      - name: Contextual help learner regressions
+        run: |
+          python3 tools/oge-basics-claude.test.py
+          node --test tools/oge-basics-inventory.test.cjs tools/oge-basics-help.test.cjs tools/oge-basics-standalone.test.cjs tools/oge-basics-managed-help.test.cjs tools/oge-basics-special-help.dom.cjs
+          git diff --check
+      - name: All course routes, deep help and mobile interactions
+        run: node tools/oge-basics-contextual.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-basics-contextual-visual-evidence
+          path: artifacts/oge-basics-contextual
+          if-no-files-found: warn
+          retention-days: 14
