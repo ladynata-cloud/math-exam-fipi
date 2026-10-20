@@ -2,7 +2,22 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task6 help inside every arithmetic step
+## In progress: tasks 1–5 interactive help across all eight storylines
+
+- [Scope](tasks/OGE_1_5_INTERACTIVE_DISCOVERY.md): task-first screens, optional
+  nested help on the same page, relevant interactive models, retained answer
+  drafts and experiments. All eight existing storylines are covered: 57 final
+  question paths and two tire-preparation states.
+- Independent source/DOM review passed on implementation head
+  `7bdc391328bae5fabeb01b1e95e360ea9fb5a99f`; all 46 Node checks passed.
+  Release integration includes the task6 merge below. Cloud run39512336718
+  passed all46 Node tests,126 discovery cases and39 retained route/viewport
+  cases after two focused visual corrections; composed-head checks and
+  publication remain pending.
+- Task6 is a separate authorized release, recorded below. Paid Claude API use
+  remains deferred by the owner.
+
+## Published: task6 help inside every arithmetic step
 
 - [Scope](tasks/TASK6_INTERACTIVE_HELP.md): optional same-page experiments for
   all 1,054 steps of the existing 174-task bank, covering 11 contextual families.
@@ -11,10 +26,15 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
   course links. Bank bytes, grading and session-only progress remain unchanged.
 - Reviewed implementation head83e614726695d5f2b86beb2b16e299c0b5240d12 passed39
   Node/JSDOM checks and independent exact-result checks for all1,054 steps.
-- Release is composed on the authorized task19 merge below. Initial cloud
-  checks passed, but visual review found rounded power-tile styling obscured
-  fraction bars. A direct-child CSS fix and bar-visibility regression are added;
-  new exact-head cloud/visual checks and publication remain pending.
+- PR287 merged as`813fdcc129b27e71cc83ebaa80bd590cf1d1f1f1`, sole parent
+  `df63bacb2f82acf5f8543297c372b414925d6113`, reviewed tree
+  `59ac827c1dca65393d118536f7dfeae5d853ae17`. All four final CI workflows
+  passed, including unified run39510657209. Independent visual review passed
+  after the direct-child CSS fix preserved straight fraction bars in power tiles.
+  Pages run39512745128 succeeded. The public HTML returned HTTP200,148344 bytes,
+  SHA256 `44ce6c8c70977007e9ea54a293ac2efe88ab32d1a2308f85a847989e9dc07f97`.
+  Live verification preserved main and step drafts, model settings and an open
+  explanation after help collapse, without awarding credit.
 - Tasks1–5, all8 story types, remain a separate authorized workstream. Paid
   Claude API use remains deferred by the owner.
 

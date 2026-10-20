@@ -56,3 +56,45 @@ body.pm-minimal .wrap{max-width:1040px;padding-top:22px}
 
 /* The road diagram is in the same column as the task; it must not float above later controls. */
 .pm-minimal.pm-roads-schema .mapwrap{position:static;top:auto}
+
+/* Progressive discoveries: model state stays mounted while help is closed. */
+.pm-minimal .pd-first-step{font-size:19px;font-weight:600;line-height:1.75}
+.pm-minimal .pd-instruction{font-size:18px;line-height:1.8}
+.pm-minimal .pd-note{font-size:15px;line-height:1.65;color:#42584b}
+.pm-minimal .pd-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+.pm-minimal .pd-control{min-width:0;display:grid;grid-template-columns:1fr auto;align-content:start;gap:8px;margin:8px 0}
+.pm-minimal .pd-control>input,.pm-minimal .pd-control>select{grid-column:1/-1;width:100%;min-height:48px;margin:0}
+.pm-minimal .pd-control>output{font-weight:bold;margin:0;font-variant-numeric:tabular-nums}
+.pm-minimal .pd-action{min-height:48px;padding:10px 14px;text-align:left;white-space:normal;line-height:1.5}
+.pm-minimal .pd-action[aria-pressed=true]{background:#176747;color:white}
+.pm-minimal .pd-picture{max-width:430px;margin:20px auto}
+.pm-minimal .pd-picture svg{width:100%;max-height:none;margin:0}
+.pm-minimal .pd-reading{padding:14px 0;font-size:18px;line-height:1.8;min-height:2em}
+.pm-minimal .pd-table{width:100%;table-layout:fixed;font-size:16px;margin:18px 0}
+.pm-minimal .pd-table th,.pm-minimal .pd-table td{padding:7px;border:1px solid #b7d0bf;text-align:center}
+.pm-minimal .pd-table button{display:block;width:100%;min-height:48px;padding:8px 2px}
+.pm-minimal .pd-unsuitable{text-decoration:line-through;opacity:.6}
+.pm-minimal .pd-return{margin-top:18px}
+.pm-minimal .pd-native-detail .hint-box,.pm-minimal .pd-native-detail .box.hint,.pm-minimal .pd-native-detail .substep-hint{font-size:17px;line-height:1.85}
+.pm-minimal .pd-native-detail .pm-hint-button{margin-top:0}
+.pm-minimal .pd-panel[hidden]{display:none!important}
+@media(max-width:600px){.pm-minimal .pd-controls{grid-template-columns:1fr}.pm-minimal .pd-panel{padding:14px}.pm-minimal .pd-more>.pm-content{padding:0 10px 14px}.pm-minimal .pd-first-step{font-size:18px}.pm-minimal .pd-reading,.pm-minimal .pd-instruction{font-size:17px}.pm-minimal .pd-table{font-size:15px}.pm-minimal .pd-table th,.pm-minimal .pd-table td{padding:4px}.pm-minimal .pd-picture{margin:18px -4px}}
+
+.pm-minimal.pm-tires .task-gate{display:none!important}
+.pm-minimal.pm-tires .pd-original-steps .task-body{display:block!important}
+.pm-minimal.pm-tires .substep[data-pd-main="1"]{display:block;pointer-events:auto;opacity:1;margin:20px 0}
+.pm-minimal.pm-tires .substep[data-pd-main="1"] .substep-label{font-size:17px}
+.pm-minimal.pm-tires .substep[data-pd-main="1"] .substep-q{font-size:17px;line-height:1.8}
+
+.pm-minimal .pd-picture{overflow:auto;max-width:100%;overscroll-behavior:contain}
+.pm-minimal .pd-picture.pd-picture-zoomed{max-height:380px;border:1px solid #b7d0bf}
+.pm-minimal .pd-picture.pd-picture-zoomed svg{width:640px;max-width:none}
+@media(max-width:600px){.pm-minimal.pm-stoves .id-table{table-layout:fixed;min-width:0}.pm-minimal.pm-stoves .id-table th,.pm-minimal.pm-stoves .id-table td{padding:8px 6px;overflow-wrap:anywhere}.pm-minimal.pm-stoves .id-table select{width:100%;max-width:100%;min-width:0;padding:6px 4px;box-sizing:border-box}}
+.pm-minimal.pm-apartments .tab.on .n,.pm-minimal.pm-apartments .tab.on .t{color:var(--pm-green)}
+.pm-minimal .pd-land-description{font-size:17px;font-weight:400;line-height:1.7;margin-top:20px}.pm-minimal .pd-land-description li{margin:12px 0}
+.pm-minimal #plan .pd-derived{display:none}
+.pm-minimal #plan.pd-show-derived .pd-derived{display:initial}
+
+.pm-minimal .pd-original-steps .substep-input{max-width:100%;min-width:0}
+.pm-minimal .pd-original-steps .substep-input-row{flex-wrap:wrap;gap:10px}
+.pm-minimal .pm-model .calc-box,.pm-minimal .pm-model .substep-q,.pm-minimal .pm-model .box,.pm-minimal .pm-model .note,.pm-minimal .pd-native-detail .hint-box{overflow-wrap:anywhere}
