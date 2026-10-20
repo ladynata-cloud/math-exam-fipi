@@ -16,7 +16,26 @@ async function submit(page,input,button,value){await page.locator(input).fill(St
       await page.screenshot({path:path.join(output,file+'-'+width+'.png'),fullPage:true});
       if(file==='arifmetika'){const first=await page.evaluate(()=>({answer:task.csteps[cIdx].a,writes:task.csteps[cIdx].writes.filter(w=>w.row!=='CAR')}));await submit(page,'#ans','#check',first.answer);for(const write of first.writes){assert.equal(await page.evaluate(write=>task.writes[write.row][write.col],write),write.ch);}await page.locator('#hint').click();assert(await page.locator('#fb').textContent());await noOverflow(page);}
       if(file==='rounding-stepwise'){const task=await page.evaluate(()=>({ti:window.task.ti,li:window.task.li,decision:window.task.decision,answer:window.task.ansText}));await page.locator('.digit[data-i="'+task.ti+'"]').click();assert.equal(await page.evaluate(()=>step),'look');await page.locator('.digit[data-i="'+task.li+'"]').click();assert.equal(await page.evaluate(()=>step),'decision');await page.locator('#'+task.decision).click();assert.equal(await page.evaluate(()=>step),'answer');await page.locator('#hint').click();assert.equal(await page.locator('#ans').inputValue(),'');await submit(page,'#ans','#check',task.answer);assert.equal(await page.evaluate(()=>stats.total),1);await noOverflow(page);await page.screenshot({path:path.join(output,file+'-solved-'+width+'.png'),fullPage:true});}
-      if(file==='negative-numbers'){assert(await page.locator('#svg .pt').count());await page.locator('#hint').click();assert.equal(await page.locator('#ans').inputValue(),'');assert(await page.locator('#hintBox.show').count());await page.locator('#negative-options>summary').click();assert(await page.locator('a[href="/trainers/who-is-stronger.html"]').isVisible());await noOverflow(page);}
+      if(file==='negative-numbers'){
+        assert(await page.locator('#svg .pt').count());
+        const contrast=await page.locator('#svg>text').first().evaluate(node=>{
+          const luminance=value=>{const rgb=value.match(/[\d.]+/g).slice(0,3).map(Number).map(c=>{c/=255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;});return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2];};
+          const a=luminance(getComputedStyle(node).fill),b=luminance(getComputedStyle(document.querySelector('.svgWrap')).backgroundColor);
+          return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+        });
+        assert(contrast>=4.5,'Number-line labels remain readable on the light surface');
+        await page.locator('#hint').click();assert.equal(await page.locator('#ans').inputValue(),'');assert(await page.locator('#hintBox.show').count());
+        await page.screenshot({path:path.join(output,file+'-hint-'+width+'.png'),fullPage:true});
+        const task=await page.evaluate(()=>getBoardTrainerState().task);
+        await page.locator('#svg .pt').nth(task.a+10).click();
+        assert.equal(await page.evaluate(()=>getBoardTrainerState().phase),'end','A starting point outside the initial mobile window is reachable by scrolling');
+        if(width<=360)assert(await page.locator('.svgWrap').evaluate(node=>node.scrollLeft>0),'The mobile line really pans to the selected positive point');
+        await page.locator('#svg .pt').nth(task.res+10).click();
+        assert.equal(await page.evaluate(()=>getBoardTrainerState().phase),'answer');
+        await submit(page,'#ans','#check',task.res);assert.equal(await page.evaluate(()=>getBoardTrainerState().phase),'done');
+        await page.screenshot({path:path.join(output,file+'-solved-'+width+'.png'),fullPage:true});
+        await page.locator('#negative-options>summary').click();assert(await page.locator('a[href="/trainers/who-is-stronger.html"]').isVisible());await noOverflow(page);
+      }
       if(file==='drobi-oge-trainer'){assert.equal(await page.locator('#dStepsArea').isVisible(),false);await page.locator('#dStepBtn').click();assert.equal(await page.locator('#dAns').inputValue(),'');await submit(page,'#foundationHintAnswer','#foundationHintCheck','50');assert.equal(await page.locator('.foundation-help-step.done').count(),1);await page.locator('#dStepBtn').click();await page.locator('#dStepBtn').click();assert.equal(await page.locator('.foundation-help-step.done').count(),1);await page.locator('#dAns').fill('23/36');assert(await page.locator('.foundation-answer-preview .f').count());await noOverflow(page);await page.screenshot({path:path.join(output,file+'-hint-'+width+'.png'),fullPage:true});}
     }
     for(const route of ['fraction-multiply','decimal-multiply','fraction-mixed','decimal-mixed']){await page.goto(base+'/trainers/drobi-oge-trainer.html#practice='+route);await page.locator('#gIn').waitFor();assert.equal(await page.locator('#gSteps>.gstep').count(),1);await page.locator('#gHint').click();assert(await page.locator('#gHintBox').isVisible());await noOverflow(page);await page.screenshot({path:path.join(output,route+'-'+width+'.png'),fullPage:true});}

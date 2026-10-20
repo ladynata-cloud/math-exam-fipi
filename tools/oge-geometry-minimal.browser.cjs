@@ -33,9 +33,20 @@ const cases=[[16,'circle'],[17,'quadrilaterals'],[18,'grid'],[23,'geometry-calcu
    await page.evaluate(()=>window.eval("buildTask(document.querySelector('.train-host'),{sub:'rhombH',p:{DH:3,CH:2},exp:4},'train',function(){setTab('train');});"));
    await page.locator('.train-host .ans-inp').fill('4');await page.locator('.train-host .ans-inp').press('Enter');await page.getByRole('button',{name:'Следующая задача →',exact:true}).click();
   }else if(n===24){
-   const count=await page.evaluate(()=>window.eval('curTask().steps.length'));
-   for(let i=0;i<count;i++)await page.locator(`button[onclick="pickCard({type:'s',i:${i}})"]`).click();
-   await page.locator('button[onclick="nextTask()"]').click();
+   const solveProof=async()=>{const count=await page.evaluate(()=>window.eval('curTask().steps.length'));for(let i=0;i<count;i++)await page.locator(`button[onclick="pickCard({type:'s',i:${i}})"]`).click();};
+   await solveProof();assert.equal(await page.evaluate(()=>window.eval('ST.solvedNow')),true);
+   // A single-example study has no next button. Enter a real multi-task queue through the UI.
+   assert.equal(await page.locator('button[onclick="nextTask()"]').count(),0);
+   await page.locator('#courseSettings > summary').click();
+   await page.locator('#tabs').getByRole('button',{name:'Тренировка',exact:true}).click();
+   await page.locator(`.mcard[onclick="startTrain('all')"]`).click();
+   await page.locator('#courseSettings > summary').click();
+   assert.ok(await page.evaluate(()=>window.eval('ST.queue.length>1')));
+   const previousId=await page.evaluate(()=>window.eval('curTask().id'));
+   await page.locator('#courseHintToggle').click();assert.equal(await page.locator('#courseHintPanel').isVisible(),true);
+   await solveProof();await page.locator('button[onclick="nextTask()"]').click();
+   assert.equal(await page.evaluate(()=>window.eval('ST.qi')),1);
+   assert.notEqual(await page.evaluate(()=>window.eval('curTask().id')),previousId);
   }else{
    const values=await page.evaluate(()=>window.eval('trS.b.ans.map(a=>a.v)'));
    for(let i=0;i<values.length;i++)await page.locator(`[data-ai="${i}"]`).fill(String(values[i]));

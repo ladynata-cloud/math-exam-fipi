@@ -65,6 +65,89 @@ class PackageBoundaries(unittest.TestCase):
             self.assertEqual(git.call_args.args[-2:], ('--', FILE))
 
 
+class ExactContextBoundaries(unittest.TestCase):
+    def setUp(self):
+        self.sources = {
+            'trainers/oge-task10-probability.html': (
+                'outside before\nconst RECS=new Map();\nfunction recOf(t){return RECS.get(t.uid);}\n'
+                'function taskDone(t){return !recOf(t).shown;}\n'
+                '/* --- пошаговый раннер\noutside after'),
+            'trainers/oge-task20-equations.html': (
+                'outside before\nfunction mountMarathon(host, engine){\n'
+                '  const result="task20 independent-credit message";\n}\n'
+                '/* ============================ РЕНДЕР ПО ТИПАМ\noutside after'),
+            'trainers/oge-task22-functions-graphs.html': (
+                'outside before\nfunction renderMarathon(mod,host){\n'
+                '  const result="Верно (ответ был показан).";\n}\n'
+                '/* ============================================================\n   THEORY MODE\noutside after'),
+            'tools/oge-part2-minimal.test.cjs': (
+                "'use strict';\nfunction fill22(ans,p){return p;}\n"
+                "for(const n of [20,21,22])test('unrelated',()=>{});\n"
+                "test('task22: revealed helper steps stay marked through hide/reopen and final answer checking',()=>{\n"
+                "  assert.equal(score,0);\n});\n"
+                "test('unrelated between',()=>{});\n"
+                "test('task22: full answer reveal is explicitly labelled when the learner later checks the correct main answer',()=>{\n"
+                "  assert.equal(message,'Верно (ответ был показан).');\n});\n"
+                "test('unrelated after',()=>{});"),
+        }
+
+    def package(self, patch_text='+public UI', sources=None):
+        sources = self.sources if sources is None else sources
+        selected = list(sources)
+        def git(*args):
+            if args[:2] == ('diff', '--name-only'):
+                return '\n'.join(selected)
+            if args[0] == 'diff':
+                self.assertEqual(args[1:5], ('--no-ext-diff', '--unified=12', BASE, HEAD))
+                return patch_text
+            self.assertEqual(args[0], 'show')
+            sha, filename = args[1].split(':', 1)
+            self.assertEqual(sha, HEAD, 'context must come from exact head, never the working tree')
+            return sources[filename]
+        with patch.object(review, 'git', side_effect=git) as mock:
+            material = review.package_review(BASE, HEAD, {'files': selected})
+        return material, mock
+
+    def test_exact_head_functions_and_reproduction_are_separate_bounded_sources(self):
+        material, mock = self.package()
+        self.assertTrue(material.startswith('+public UI'))
+        self.assertEqual(material.count('EXACT HEAD SOURCE:'), 6)
+        for filename in self.sources:
+            self.assertIn(f'EXACT HEAD SOURCE: {filename} @ {HEAD} lines ', material)
+            self.assertEqual(sum(call.args == ('show', HEAD + ':' + filename)
+                                 for call in mock.call_args_list), 1)
+        self.assertIn('function taskDone(t){return !recOf(t).shown;}', material)
+        self.assertIn('const result="task20 independent-credit message";', material)
+        self.assertIn('const result="Верно (ответ был показан).";', material)
+        self.assertIn('function fill22(ans,p){return p;}', material)
+        self.assertIn("assert.equal(message,'Верно (ответ был показан).');\n});", material)
+        self.assertNotIn('outside', material)
+        self.assertNotIn('unrelated', material)
+
+    def test_context_is_never_filled_from_an_ambiguous_or_missing_region(self):
+        filename = 'trainers/oge-task10-probability.html'
+        original = self.sources[filename]
+        for source in [original.replace('const RECS=new Map();', 'const OTHER=new Map();'),
+                       original + '\nconst RECS=new Map();',
+                       original.replace('/* --- пошаговый раннер', '/* renamed boundary')]:
+            with self.subTest(source=source), self.assertRaises(ValueError):
+                self.package(sources={filename: source})
+
+    def test_unchanged_context_gets_the_same_credential_guard(self):
+        filename = 'trainers/oge-task10-probability.html'
+        for value in ['ghp_' + 'a' * 24, 'sk-ant-' + 'x' * 24,
+                      '-----BEGIN RSA ' + 'PRIVATE KEY-----']:
+            source = self.sources[filename].replace('function recOf', value + '\nfunction recOf')
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.package(sources={filename: source})
+
+    def test_combined_diff_and_context_obey_utf8_limit(self):
+        filename = 'trainers/oge-task10-probability.html'
+        source = self.sources[filename].replace('function recOf', 'я' * 1000 + '\nfunction recOf')
+        with self.assertRaises(ValueError):
+            self.package('+' + 'x' * 1_499_000, sources={filename: source})
+
+
 class VerdictBoundaries(unittest.TestCase):
     def run_review(self, reply, expected_failure=False):
         with tempfile.TemporaryDirectory() as tmp:
@@ -119,6 +202,18 @@ class VerdictBoundaries(unittest.TestCase):
         for verdict in values:
             with self.subTest(verdict=verdict):
                 _, output, _ = self.run_review(response(verdict), expected_failure=True)
+                self.assertNotIn('OGE_COURSE_EXTERNAL_REVIEW_OK', output)
+
+    def test_self_retracted_provider_finding_is_not_automatically_removed_or_approved(self):
+        finding = {'severity': 'high', 'file': FILE,
+                   'description': 'Candidate is not a defect; remove this finding.',
+                   'suggested_fix': 'No code change.'}
+        for declared in ['REQUEST_CHANGES', 'APPROVE']:
+            value = {'verdict': declared, 'findings': [finding], 'limits': []}
+            with self.subTest(verdict=declared):
+                report, output, _ = self.run_review(response(value), expected_failure=True)
+                self.assertEqual(report['findings'], [finding])
+                self.assertEqual(report['verdict'], declared)
                 self.assertNotIn('OGE_COURSE_EXTERNAL_REVIEW_OK', output)
 
     def test_invalid_schema_never_becomes_an_approval(self):

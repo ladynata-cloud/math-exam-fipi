@@ -53,3 +53,6 @@ body.pm-minimal .wrap{max-width:1040px;padding-top:22px}
 .pm-minimal .pm-figure-scroll:focus-visible{outline:3px solid var(--pm-green);outline-offset:3px}
 .pm-minimal .pm-zoom-button{margin:12px 0;padding:10px 14px;min-height:44px}
 .pm-minimal .pm-zoom-note{margin:0 0 12px;font-size:15px;line-height:1.6;color:#344c40}
+
+/* The road diagram is in the same column as the task; it must not float above later controls. */
+.pm-minimal.pm-roads-schema .mapwrap{position:static;top:auto}

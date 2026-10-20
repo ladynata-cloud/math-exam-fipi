@@ -13,6 +13,17 @@ async function reveal(locator){
  const ids=await locator.evaluate(el=>{const ds=[];for(let p=el.parentElement;p;p=p.parentElement)if(p.tagName==='DETAILS'&&!p.open){if(!p.id)p.id='browser-details-'+Math.random().toString(36).slice(2);ds.unshift(p.id);}return ds;});
  for(const id of ids){const summary=locator.page().locator('#'+id+'>summary');await summary.focus();await summary.press('Enter');}
 }
+async function hitTargets(page,label){
+ const targets=page.locator('button:visible:not([disabled]),input:visible:not([disabled]),select:visible:not([disabled]),.pm-details>summary:visible,a[data-topic]:visible');
+ const count=await targets.count();
+ for(let i=0;i<count;i++){
+  const target=targets.nth(i);
+  await target.evaluate(el=>el.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  const hit=await target.evaluate(el=>{const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,top=document.elementFromPoint(x,y);return{ok:!!top&&(top===el||el.contains(top)),target:el.id||el.textContent.trim().slice(0,65)||el.tagName,interceptor:top?top.tagName+'.'+top.className:'outside viewport'};});
+  assert.ok(hit.ok,label+': action is covered '+JSON.stringify(hit));
+ }
+}
 async function layout(page,label){
  const result=await page.evaluate(()=>({width:innerWidth,documentWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth}));
  assert.ok(result.documentWidth<=result.width+2&&result.bodyWidth<=result.width+2,label+': document overflow '+JSON.stringify(result));
@@ -29,7 +40,7 @@ async function layout(page,label){
   await page.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
   try{
    await page.goto(origin+'/trainers/oge-1-5-trainers/'+name);await page.waitForFunction(()=>document.documentElement.dataset.practicalMinimal==='ready');
-   await layout(page,name+'@'+width);
+   await layout(page,name+'@'+width);await hitTargets(page,name+' initial@'+width);
    if(name.includes('paper-sheets')){const condition=page.locator('.pm-paper-condition');assert.equal(await condition.isVisible(),true);assert.equal(await condition.evaluate(el=>el.nextElementSibling?.id),'taskCard');assert.match(await condition.textContent(),/1 м²/);}
    if(/entry-diagnostic|routes-checkpoint/.test(name)){
     const diag=name.includes('entry-diagnostic');const start=page.locator(diag?'#start-btn':'#start');await start.focus();await start.press('Enter');
@@ -42,7 +53,7 @@ async function layout(page,label){
       assert.equal((await page.locator('#current-num').textContent()).trim(),String(number));
       assert.equal(await page.locator('#finish-btn').isVisible(),number===total,'finish is offered only at the final question');
       assert.equal(await page.locator('#review-box').isVisible(),false,'no answers during diagnosis');
-      await layout(page,name+' question'+number+'@'+width);
+      await layout(page,name+' question'+number+'@'+width);await hitTargets(page,name+' question'+number+'@'+width);
       if(number<total)await page.locator('#skip-btn').click();
      }
     }else{await page.locator('#next').click();await layout(page,name+' started@'+width);}
@@ -51,7 +62,7 @@ async function layout(page,label){
     const button=page.locator('button:visible,summary:visible').filter({hasText:/^Хочешь подсказку\?$/}).first();
     await button.waitFor({state:'visible'});const identity=await button.evaluate(el=>{if(!el.id)el.id='browser-hint-control';return{id:el.id,tag:el.tagName};});await button.focus();await button.press('Enter');
     if(identity.tag==='BUTTON')assert.equal(await page.locator('#'+identity.id).getAttribute('aria-expanded'),'true',name+' hint ARIA');
-    await layout(page,name+' help@'+width);
+    await layout(page,name+' help@'+width);await hitTargets(page,name+' help@'+width);
     if(/land-plots|tariffs|roads-schema/.test(name)){
      assert.equal(await page.locator('.pm-context-hint section').isVisible(),true);
      const control=page.locator(name.includes('roads-schema')?'#next':'#task-tabs button:nth-child(2)');await reveal(control);await control.click();
@@ -67,6 +78,7 @@ async function layout(page,label){
     if(width===320){await figure.focus();await figure.press('ArrowRight');await page.screenshot({path:path.join(output,name.replace('.html','')+'-zoom-320.png'),fullPage:true});}
     await zoom.click();assert.equal(await zoom.getAttribute('aria-pressed'),'false');await layout(page,name+' zoom reset@'+width);
    }
+   await hitTargets(page,name+' final@'+width);
    assert.deepEqual(errors,[],name+' runtime errors');
    if(width===320)await page.screenshot({path:path.join(output,name.replace('.html','')+'-320.png'),fullPage:true});
    cases++;

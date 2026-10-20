@@ -67,3 +67,28 @@ summaries before using their controls. They retain mathematical, storage,
 provenance and task-count assertions. Download sections retain the pre-existing
 direct-body layout contract; only their contents collapse, and the layout robot
 opens them through the real summary before measuring all original assertions.
+
+## Second external response and exact-source context
+
+Anthropic response `msg_011CgDgzzDAYth6mNaQyY7pA`,
+2026-10-20T15:02:26.464736+00:00, reviewed PR275 head
+`1c5722c71b965d3cd3892fc775887494f5f5e038` against the same base.
+Actions39444458749/job118702553839 records REQUEST_CHANGES. Several entries
+explicitly retract themselves or state uncertainty. The task22 assertion mixes
+task20's feedback with task22's implementation; the actual task22 DOM and Chromium
+checks pass. The task10 concern asks for an unchanged helper omitted from the diff.
+Supply exact public source context for those functions and the regression to the
+next independent review; do not automatically transform this verdict into approval.
+
+Second Chromium run passed algebra, part2, special routes and foundations.
+It found a real sticky roads diagram overlapping controls after the layout change;
+use normal flow and verify action hit targets. The geometry harness now distinguishes
+one worked proof from a multi-task practice queue before looking for Next. Navigation
+waits for the native hashchange disclosure to open before asserting its state.
+
+The rounding robot now reads each progress counter from the opened results
+panel, requires nonempty numeric text and restores the panel's prior state.
+This prevents hidden innerText from becoming Number('')=0 without weakening the
+before+1 or no-duplicate assertions. The original rounding algorithm is unchanged.
+The negative-number line retains its two-point interaction and horizontal panning;
+a narrow CSS selector fix makes its actual SVG number labels dark and readable.

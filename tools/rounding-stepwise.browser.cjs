@@ -25,7 +25,19 @@ const server = http.createServer((req, res) => {
   res.end(response.body);
 });
 const instruction = page => page.locator('#instruction').innerText();
-const total = async page => Number(await page.locator('#total').innerText());
+async function progressValue(page, selector) {
+  const panel = page.locator('#rounding-results');
+  const wasOpen = await panel.getAttribute('open') !== null;
+  if (!wasOpen) await panel.locator(':scope > summary').click();
+  try {
+    const text = (await page.locator(selector).innerText()).trim();
+    assert.match(text, /^\d+$/, 'A visible progress counter must contain a number: ' + selector);
+    return Number(text);
+  } finally {
+    if (!wasOpen) await panel.locator(':scope > summary').click();
+  }
+}
+const total = page => progressValue(page,'#total');
 async function roundingOptions(page, open) {
   const details = page.locator('#rounding-options');
   if ((await details.getAttribute('open') !== null) !== open) await details.locator(':scope > summary').click();
@@ -92,7 +104,7 @@ async function solve(page, place, injectMistakes) {
   }
   await page.locator('#ans').fill(problem.answer);
   await page.locator('#ans').press('Enter');
-  assert.equal(await total(page), before + 1, 'A corrected answer completes this same example');
+  assert.equal(await total(page), before + 1, 'A corrected answer completes this same example: ' + problem.prompt + '; entered ' + problem.answer + '; feedback ' + await page.locator('#fb').innerText());
   assert.match(await page.locator('#fb').innerText(), /Верно|Решено/);
   await page.locator('#check').click();
   assert.equal(await total(page), before + 1, 'Repeated checking cannot count a second completion');
@@ -132,7 +144,7 @@ async function solve(page, place, injectMistakes) {
         assert.equal(await practice.locator('#place').inputValue(),'1');
         assert.equal(new URL(page.url()).pathname,route,'The starting route remains open');
         await solve(practice,1,true);
-        assert.equal(await practice.locator('#right').innerText(),'0','A corrected example is not marked immediately correct');
+        assert.equal(await progressValue(practice,'#right'),0,'A corrected example is not marked immediately correct');
         await layout(practice,'tens at ' + width);
         for (const place of [2,3,4,5,6,0,-1,-2]) {
           await choosePlace(practice,place);
