@@ -102,6 +102,7 @@ jobs:
       - name: Assignment geometry DOM and saved-state regression
         run: |
           node tools/learning-vertical-route.dom.cjs
+          node --test tools/learning-focus-links.dom.cjs
           node tools/learning-plain-division.dom.cjs
           node tools/learning-continuous-division.dom.cjs
           node tools/learning-division-next.dom.cjs
