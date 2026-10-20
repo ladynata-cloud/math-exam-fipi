@@ -34,7 +34,7 @@ jobs:
           echo "NODE_PATH=$RUNNER_TEMP/task11-browser/node_modules" >> "$GITHUB_ENV"
       - name: Math, learner and course contracts
         run: |
-          node --test tools/task11-minimal.test.cjs tools/task11-math-review.test.cjs tools/task11-discovery.test.cjs
+          node --test tools/task11-*.test.cjs
           node tools/oge-algebra-contract.test.mjs
           git diff --check
       - name: Desktop, mobile, keyboard, exam and offline HTML

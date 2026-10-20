@@ -19,7 +19,7 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
 - Closing the full working course is a future separately scoped task. Public
   standalone trainers remain available; no account/access policy changes here.
 
-## Merged: task19 interactive discoveries
+## Published: task19 interactive discoveries
 
 - PR279 merged normally as3c17e78bc738a58d94ef340fef17242d679871aa;
   parent923c326dc08918c75a8ac26279c4b094a5d0c68c, reviewed tree
@@ -30,8 +30,9 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
   320/360/1280px,176 label states with0 out-of-viewBox labels. Independent
   geometry/state and pedagogical review passed; all38 family screenshots were
   inspected. Three scale-only equilateral models now visibly scale linearly.
-- CI39479183994 and SEO39479184129 passed. Pages39479619833 is deploying;
-  public byte checks and live browser verification remain pending.
+- CI39479183994 and SEO39479184129 passed. Pages39479619833 succeeded;
+  all13 public assets returned200 and matched source SHA-256. Live median
+  movement, measurements and retained state after reload were verified.
 - Owner instruction at2026-10-21T01:36:59+07:00 deferred Claude API use.
   No provider approval is claimed; no backend or learner-account change.
 

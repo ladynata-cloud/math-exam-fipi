@@ -146,7 +146,10 @@ async function main(){
     if(i===0)await page.locator('#t11-help-dialog').screenshot({path:path.join(artifacts,width+'-02-function-a-help.png')});
     await deeper(page);
     await fits(page,width+' function '+i+' nested');
+    const returnBox=await page.locator('#t11-help-close').boundingBox();
+    assert(returnBox&&returnBox.y>=0&&returnBox.y+returnBox.height<=900,'return to the task stays on screen after deeper help');
     if(i===0)await page.locator('#t11-help-dialog').screenshot({path:path.join(artifacts,width+'-03-function-a-discovery.png')});
+    if(width===360&&i>0)await page.locator('#t11-help-dialog').screenshot({path:path.join(artifacts,width+'-03-function-'+['a','b','c'][i]+'-discovery.png')});
     await changeParameter(page);
     await movePoint(page);
     assert.equal(await page.locator('#t11-help-original').innerHTML(),originalLabels[i],'original formula remains unchanged beside experiment');
