@@ -8,7 +8,10 @@ import vm from 'node:vm';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const trainerPath = 'trainers/oge-task6-fractions.html';
-const baselineSha = 'fbd46afd92a58875b1b89af329b9d37a676abe52';
+// This task preserves the bank and contracts from its reviewed current-main
+// base. The earlier six-path scope described the historical focused fix and
+// cannot classify unrelated releases already included in current main.
+const baselineSha = '4b56350c35a67e41add8f2b25cf2bf7d73d1f71f';
 const git = (...args) => execFileSync('git',
   ['-c', 'safe.directory=' + root, ...args], { cwd: root, encoding: 'utf8' });
 const html = fs.readFileSync(path.join(root, trainerPath), 'utf8');
@@ -34,7 +37,7 @@ const context = vm.createContext({
 const initialization = script.search(/\n(?:\/\/ Initialize trainer[^\n]*\n)?\$\('shuffle'\)\.(?:onchange|addEventListener)/);
 assert.ok(initialization > 0, 'Find the explicit initialization boundary without executing DOM wiring');
 vm.runInContext(script.slice(0, initialization), context, { timeout: 1000 });
-const api = vm.runInContext('({ parseInput, eqFrac, createRecord, applyTaskEvent, summarizeRecords })', context);
+const api = vm.runInContext('({ parseInput, eqFrac, createRecord, applyTaskEvent, summarizeRecords, Task6Hints })', context);
 const plain = value => JSON.parse(JSON.stringify(value));
 const sourceMatches = (pattern, message = String(pattern)) => assert.ok(pattern.test(html), message);
 const sourceRejects = (pattern, message = String(pattern)) => assert.ok(!pattern.test(html), message);
@@ -242,6 +245,80 @@ test('all 174 displayed expressions independently match n/d, display, terminatio
   assert.equal(verified, 174);
 });
 
+function pairValue(pair, label) {
+  assert.ok(Array.isArray(pair) && pair.length === 2, label + ': rational pair');
+  assert.equal(typeof pair[0], 'bigint', label + ': exact numerator');
+  assert.equal(typeof pair[1], 'bigint', label + ': exact denominator');
+  assert.ok(pair[1] > 0n, label + ': positive denominator');
+  return rational(pair[0], pair[1]);
+}
+function evaluateAudit(audit, label) {
+  assert.ok(audit && typeof audit.op === 'string' && Array.isArray(audit.args), label + ': audit contract');
+  const args = audit.args.map((pair, index) => pairValue(pair, label + ' argument ' + index));
+  const arithmetic = { add, sub: subtract, mul: multiply, div: divide }[audit.op];
+  if (arithmetic) {
+    assert.equal(args.length, 2, label);
+    return arithmetic(...args);
+  }
+  if (audit.op === 'identity') { assert.equal(args.length, 1, label); return args[0]; }
+  if (audit.op === 'numerator') { assert.equal(args.length, 1, label); return rational(args[0].n); }
+  if (audit.op === 'pow') {
+    assert.equal(args.length, 2, label);
+    assert.equal(args[1].d, 1n, label);
+    const exponent = args[1].n;
+    assert.ok(exponent >= -100n && exponent <= 100n, label);
+    return exponent < 0n
+      ? rational(args[0].d ** -exponent, args[0].n ** -exponent)
+      : rational(args[0].n ** exponent, args[0].d ** exponent);
+  }
+  if (audit.op === 'gcd' || audit.op === 'lcm') {
+    assert.equal(args.length, 2, label);
+    for (const value of args) assert.equal(value.d, 1n, label + ': integer operands');
+    const divisor = gcd(args[0].n, args[1].n);
+    if (audit.op === 'gcd') return rational(divisor);
+    const multiple = divisor === 0n ? 0n : args[0].n / divisor * args[1].n;
+    return rational(multiple < 0n ? -multiple : multiple);
+  }
+  assert.fail(label + ': unsupported audit operation ' + audit.op);
+}
+
+test('all 174 pure hint plans and intermediate calculations agree with independent exact arithmetic', () => {
+  let verifiedSteps = 0;
+  const kinds = new Set();
+  for (const task of tasks) {
+    const id = task.code || task.cat + '#' + task.num;
+    const original = JSON.stringify(task);
+    const plan = api.Task6Hints.plan(Object.freeze({ ...task }));
+    const actual = evaluateHtml(task.html);
+    assert.equal(asFraction(pairValue(plan.final, id)), asFraction(actual), id + ': final value');
+    const requested = task.mode === 'numerator' ? rational(actual.n) : actual;
+    assert.equal(asFraction(pairValue(plan.answer, id)), asFraction(requested), id + ': requested answer');
+    assert.equal(plan.mode, task.mode, id + ': task mode');
+    assert.ok(Array.isArray(plan.steps) && plan.steps.length > 0 && plan.steps.length < 60, id + ': useful bounded plan');
+    for (const [index, step] of plan.steps.entries()) {
+      const label = id + ' step ' + (index + 1);
+      assert.ok(typeof step.prompt === 'string' && step.prompt.trim(), label + ': question');
+      assert.ok(typeof step.expressionHtml === 'string' && step.expressionHtml.trim(), label + ': visual expression');
+      assert.ok(typeof step.kind === 'string' && step.kind, label + ': meaningful kind');
+      assert.doesNotMatch(step.expressionHtml, /<(?:script|iframe|img)\b|\son\w+\s*=/i, label + ': closed markup');
+      assert.doesNotMatch(step.expressionHtml.replace(/<[^>]*>/g, ''), /\d\s*\/\s*\d/, label + ': use a fraction bar');
+      const expected = pairValue(step.expected, label);
+      assert.equal(asFraction(expected), asFraction(evaluateAudit(step.audit, label)), label + ': independently verified operation');
+      kinds.add(step.kind);
+      verifiedSteps++;
+    }
+    const tampered = api.Task6Hints.plan({ ...task, n: 99991, d: 99989, ansDisp: 'untrusted stored answer' });
+    assert.equal(asFraction(pairValue(tampered.final, id)), asFraction(actual), id + ': parse the displayed expression, not the stored answer');
+    assert.equal(tampered.steps.length, plan.steps.length, id + ': stable reasoning');
+    for (let index = 0; index < plan.steps.length; index++) {
+      assert.equal(asFraction(pairValue(tampered.steps[index].expected, id)), asFraction(pairValue(plan.steps[index].expected, id)), id + ': no intermediate depends on stored answer');
+    }
+    assert.equal(JSON.stringify(task), original, id + ': bank is immutable');
+  }
+  assert.ok(verifiedSteps > 174, 'The bank receives intermediate reasoning, not only final answers');
+  assert.ok(kinds.size >= 6, 'Plans distinguish several prerequisite skills');
+});
+
 const validInputs = [
   ['0,5', 1n, 2n], ['0.5', 1n, 2n], ['1/2', 1n, 2n], ['2/4', 1n, 2n],
   ['-0,5', -1n, 2n], ['−0.5', -1n, 2n], ['-1/2', -1n, 2n],
@@ -412,7 +489,15 @@ test('summary gives disjoint counts for current order and all-skipped truth', ()
 
 test('trainer remains offline, dependency-free and without storage APIs or dynamic code evaluation', () => {
   sourceRejects(/<script\b[^>]*\bsrc\s*=/i);
-  sourceRejects(/<link\b[^>]*\bhref\s*=\s*["'](?:https?:)?\/\//i);
+  // Current main already carries canonical SEO metadata. It does not load a
+  // resource; every other remote link (stylesheet, preload, etc.) stays banned.
+  for (const [tag] of html.matchAll(/<link\b[^>]*>/gi)) {
+    const href = tag.match(/\bhref\s*=\s*["']([^"']*)["']/i)?.[1] || '';
+    if (!/^(?:https?:)?\/\//i.test(href)) continue;
+    assert.match(tag, /\brel\s*=\s*["']canonical["']/i, 'Remote resource links are not allowed');
+    assert.equal(href, 'https://mathexam.space/trainers/oge-task6-fractions.html');
+    assert.ok(baseline.includes(tag), 'Canonical metadata must already exist in the reviewed base');
+  }
   sourceRejects(/@import\b|url\(\s*["']?(?:https?:)?\/\//i);
   scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|localStorage|sessionStorage|indexedDB)\b/);
   scriptRejects(/\beval\s*\(|\bnew\s+Function\b|\bimport\s*(?:\(|["'{*])/);
@@ -451,14 +536,15 @@ test('two scoped relative help links resolve to existing offline files', () => {
   sourceMatches(/Потренировать общий знаменатель/);
 });
 
-test('only the six approved paths differ from the approved base', () => {
+test('only the seven minimal-hint task paths differ from the approved current base', () => {
   const allowed = new Set([
     trainerPath,
     'tools/oge-task6-fractions-focused.test.mjs',
-    'tools/oge-task6-fractions-focused.browser.mjs',
-    'docs/tasks/OGE_TASK6_FRACTIONS_FOCUSED_FIX.md',
-    'tools/trainer-inventory/test/inventory.test.mjs',
-    'docs/tasks/TRAINER_INVENTORY_HASH_BASIS_V1.md',
+    'tools/task6-minimal.test.cjs',
+    'tools/task6-minimal.browser.cjs',
+    '.github/workflows/task6-minimal.yml',
+    'docs/tasks/TASK6_MINIMAL_HINTS.md',
+    'docs/PROJECT_STATUS.md',
   ]);
   const changed = [
     ...git('diff', '--name-only', baselineSha).trim().split(/\r?\n/),

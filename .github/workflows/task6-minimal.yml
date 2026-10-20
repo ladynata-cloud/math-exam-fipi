@@ -1,0 +1,53 @@
+name: Task 6 minimal screen and guided hints
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task6-fractions.html'
+      - 'tools/task6-*'
+      - 'tools/oge-task6-fractions-focused.test.mjs'
+      - 'docs/tasks/TASK6_MINIMAL_HINTS.md'
+      - '.github/workflows/task6-minimal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: task6-minimal-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  guided-hints:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Fetch the reviewed bank and scope baseline
+        run: git fetch --no-tags --depth=1 origin 4b56350c35a67e41add8f2b25cf2bf7d73d1f71f
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/task6-browser" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/task6-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/task6-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Frozen bank, exact arithmetic, learner and hint contracts
+        run: |
+          node --test tools/oge-task6-fractions-focused.test.mjs tools/task6-minimal.test.cjs
+          git diff --check
+      - name: Narrow screen, desktop, keyboard, embedding and offline HTML
+        env:
+          TASK6_BROWSER_ARTIFACTS: artifacts/task6-minimal
+        run: node tools/task6-minimal.browser.cjs
+      - name: Keep visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: task6-minimal
+          path: artifacts/task6-minimal
+          if-no-files-found: ignore
+          retention-days: 7
