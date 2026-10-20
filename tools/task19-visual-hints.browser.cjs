@@ -42,6 +42,21 @@ async function noOverflow(page, label) {
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth+1),label+' has no page horizontal scroll');
 }
 
+// Record geometry for human review, without inventing a font-size pass threshold.
+async function svgLabelEvidence(page) {
+  return page.locator('#visualHost svg').evaluate(svg=>{
+    const box=svg.viewBox.baseVal,rootInverse=svg.getCTM().inverse();
+    const viewBox={x:box.x,y:box.y,width:box.width,height:box.height};
+    const labels=[...svg.querySelectorAll('text')].filter(node=>node.textContent.trim()).map(node=>{
+      const b=node.getBBox(),matrix=rootInverse.multiply(node.getCTM());
+      const corners=[[b.x,b.y],[b.x+b.width,b.y],[b.x,b.y+b.height],[b.x+b.width,b.y+b.height]].map(([x,y])=>new DOMPoint(x,y).matrixTransform(matrix));
+      const left=Math.min(...corners.map(p=>p.x)),right=Math.max(...corners.map(p=>p.x)),top=Math.min(...corners.map(p=>p.y)),bottom=Math.max(...corners.map(p=>p.y)),screen=node.getBoundingClientRect();
+      return {text:node.textContent,bounds:{left,right,top,bottom},screen:{width:screen.width,height:screen.height},outsideViewBox:left<box.x||right>box.x+box.width||top<box.y||bottom>box.y+box.height};
+    });
+    return {viewBox,labels};
+  });
+}
+
 const readout = page => page.locator('#visualHost .t19-model-readout');
 const measure = page => page.locator('#visualHost .t19-measure');
 async function savedState(page) { return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),KEY); }
@@ -218,6 +233,12 @@ async function main() {
 
     await check('all diagram families fit mobile and desktop with adjustable boundaries',async()=>{
       const representatives = [...new Map(cards.map(c=>[c.hint.model || 'static-svg',c])).values()];
+      const familyArtifacts=path.join(artifacts,'families'),labelEvidence=[];
+      fs.mkdirSync(familyArtifacts,{recursive:true});
+      const recordLabels=async(card,state)=>{
+        labelEvidence.push({model:card.hint.model,card:card.id,width:360,state,...await svgLabelEvidence(page)});
+        fs.writeFileSync(path.join(familyArtifacts,'svg-label-bounds.json'),JSON.stringify(labelEvidence,null,2));
+      };
       for (const width of [320,360,1280]) {
         await page.setViewportSize({width,height:900});
         for (const card of representatives) {
@@ -226,12 +247,18 @@ async function main() {
           assert.equal(await page.locator('#answerPanel').isVisible(),false,card.id+' no revealed explanation');
           const before=await savedState(page);
           await noOverflow(page,card.id+' '+width);
+          if(width===360){
+            await page.screenshot({path:path.join(familyArtifacts,card.hint.model+'.png'),fullPage:true});
+            await recordLabels(card,'initial');
+          }
           const sliders = page.locator('#visualHost input[type=range]');
           for (let i=0;i<await sliders.count();i++) {
             await sliders.nth(i).focus();await page.keyboard.press('Home');
             await noOverflow(page,card.id+' minimum '+i);
+            if(width===360)await recordLabels(card,'minimum '+await sliders.nth(i).getAttribute('data-key'));
             await page.keyboard.press('End');
             await noOverflow(page,card.id+' maximum '+i);
+            if(width===360)await recordLabels(card,'maximum '+await sliders.nth(i).getAttribute('data-key'));
           }
           assert.equal(await page.locator('#answerPanel').isVisible(),false);
           await measureUsingKeyboard(page);
@@ -243,6 +270,7 @@ async function main() {
       }
       await go();
       await page.screenshot({path:path.join(artifacts,'04-desktop.png'),fullPage:true});
+      console.log('FAMILY_VISUAL_EVIDENCE '+JSON.stringify({families:representatives.length,states:labelEvidence.length,outsideViewBox:labelEvidence.filter(state=>state.labels.some(label=>label.outsideViewBox)).length}));
     });
 
     await check('prev-019 keeps the median on its circle at every keyboard boundary',async()=>{
