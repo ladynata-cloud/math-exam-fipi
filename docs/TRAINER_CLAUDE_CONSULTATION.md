@@ -61,6 +61,14 @@ Suggested focused request:
   problem, or advance the learner automatically. Keep completed steps visible.
   Apply the existing diagnostic/exam restrictions rather than enabling hints
   unconditionally in every mode.
+- Before every answer field, state what to find and what to enter, including
+  the required unit or format. Use a visible task-specific label; a generic
+  placeholder such as “ответ” or “?” is not enough. Distinguish the final
+  answer from a hint’s intermediate value, and state the next action.
+- If an instruction names an action such as moving a term, provide the action
+  or explicitly guide how to perform it. Offer keyboard/tap alternatives to
+  dragging. Help must have a clear return to the same task/step, preserving
+  inputs and the record of assistance already used.
 - Preserve entered answers and completed steps. Once a digit has been chosen,
   immediately write it in its place in the calculation.
 - Use familiar school language, including “в уме” for carrying in the relevant

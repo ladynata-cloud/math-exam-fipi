@@ -236,6 +236,15 @@
   .mini-question{margin-top:17px;padding:15px;border-radius:16px;background:#f8f9fc;border:1.5px solid var(--line)}
   .mini-question p{font-weight:850;margin-bottom:10px}
   .answer-line{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+
+  .answer-label{display:block;font-size:18px;font-weight:850;line-height:1.65;margin-bottom:7px}
+  .answer-instruction{font-size:15px;line-height:1.7;color:var(--ink-soft);margin:0 0 13px}
+  .help-purpose{font-size:15px;line-height:1.75;color:var(--ink-soft);margin:18px 0 0}
+  #practice-help[hidden]{display:none!important}
+  #practice-return-answer{margin-top:14px}
+  .return-links{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}
+  .return-links.wrap{margin:14px auto}
+  .return-links a{color:var(--blue-deep);font-size:15px;line-height:1.6;padding:8px 0}
   .answer-input{width:190px;max-width:100%;padding:11px 14px;border:2px solid var(--line);border-radius:13px;font-size:21px;font-weight:900;color:var(--ink);outline:none;background:white}
   .answer-input:focus{border-color:var(--blue);box-shadow:0 0 0 4px var(--blue-soft)}
   .answer-input.correct{border-color:var(--green);background:var(--green-soft)}
@@ -464,6 +473,7 @@
     </div>
   </div>
 </header>
+<nav class="return-links wrap" aria-label="Вернуться к темам"><a id="basics-return" href="/trainers/oge-basics/">← К базовой подготовке</a></nav>
 
 <div class="wrap">
   <main>
@@ -533,7 +543,7 @@
           <h2 style="margin-top:10px">Сначала смысл, потом формула</h2>
           <p class="lead">Каждый шаг требует небольшого действия: выбрать, посчитать, заполнить или распознать.</p>
         </div>
-        <button type="button" class="btn secondary small" data-view-go="home">К выбору маршрута</button>
+        <div class="return-links"><button type="button" class="btn secondary small" id="learn-return-task" hidden>← К текущей задаче</button><button type="button" class="btn secondary small" data-view-go="home">К выбору маршрута</button></div>
       </div>
       <div class="learn-layout">
         <article class="card lesson-card">
@@ -598,14 +608,15 @@
               <span class="credit-chip" id="credit-chip">Без подсказок — можно получить «Самостоятельно»</span>
             </div>
             <div class="question" id="practice-question"></div>
-            <div class="hint-stack" id="hint-stack"></div>
+            <section id="practice-help" aria-label="Помощь к текущей задаче" hidden><p class="help-purpose">Это промежуточные шаги решения. После подсказки ответь на вопрос над полем ввода — там нужен итог всей задачи.</p><div class="hint-stack" id="hint-stack"></div><button type="button" class="btn secondary small" id="practice-return-answer">К ответу ↓</button></section>
             <div class="solution-panel" id="practice-solution">
               <h3>Решение по шагам</h3>
               <div class="solution-steps" id="practice-solution-steps"></div>
             </div>
             <div class="task-answer">
+              <label class="answer-label" id="practice-answer-label" for="practice-input"></label><p class="answer-instruction" id="practice-answer-hint"></p>
               <div class="answer-line">
-                <input class="answer-input" id="practice-input" type="text" inputmode="decimal" autocomplete="off" placeholder="ответ" aria-label="Ответ">
+                <input class="answer-input" id="practice-input" type="text" inputmode="decimal" autocomplete="off" placeholder="Введи число" aria-labelledby="practice-answer-label" aria-describedby="practice-answer-hint">
                 <span class="answer-unit" id="practice-unit"></span>
                 <button type="button" class="btn primary" id="practice-check">Проверить</button>
               </div>
@@ -683,8 +694,9 @@
           <h2 class="task-title" id="check-title">Задача</h2>
           <div class="question" id="check-question" style="margin-top:13px"></div>
           <div class="task-answer">
-            <div class="answer-line">
-              <input class="answer-input" id="check-input" type="text" inputmode="decimal" autocomplete="off" placeholder="ответ" aria-label="Ответ на задание проверки">
+            <label class="answer-label" id="check-answer-label" for="check-input"></label><p class="answer-instruction" id="check-answer-hint"></p>
+              <div class="answer-line">
+              <input class="answer-input" id="check-input" type="text" inputmode="decimal" autocomplete="off" placeholder="Введи число" aria-labelledby="check-answer-label" aria-describedby="check-answer-hint">
               <span class="answer-unit" id="check-unit"></span>
               <button type="button" class="btn blue" id="check-save">Сохранить ответ</button>
             </div>
@@ -922,7 +934,7 @@ function setView(view,options={}){
   if(view==='learn')renderLearn();
   if(view==='practice'){
     if(leavingReview||options.fresh||!state.current)newPracticeTask();
-    else renderPractice();
+    else renderPractice({preserveDraft:true});
   }
   if(view==='check')renderCheckLanding();
   if(view==='review'){
@@ -975,7 +987,7 @@ function learnMarkup(step){
           <button type="button" data-grid="10">10%</button><button type="button" data-grid="25" class="active">25%</button><button type="button" data-grid="50">50%</button><button type="button" data-grid="100">100%</button>
         </div>
         <p class="plain-note"><b>25% от 100</b> — это 25, а <b>25% от 200</b> — уже 50. Результат зависит от целого.</p>
-        <div class="mini-question"><p>Чему равны 100% от числа 240?</p><div class="answer-line"><input class="answer-input" id="learn-whole-input" inputmode="numeric" placeholder="ответ"><button type="button" class="btn soft" id="learn-whole-check">Проверить</button></div></div>
+        <div class="mini-question"><label class="answer-label" for="learn-whole-input">Чему равны 100% от числа 240?</label><div class="answer-line"><input class="answer-input" id="learn-whole-input" inputmode="numeric" placeholder="Введи число"><button type="button" class="btn soft" id="learn-whole-check">Проверить</button></div></div>
       </div>
     </div>`;
   if(step===1)return `
@@ -1064,6 +1076,7 @@ const typeQuizData=[
 ];
 
 function renderLearn(){
+  document.getElementById('learn-return-task').hidden=!state.current;
   clearFeedback('learn-feedback');
   learnGate=state.learnStep===8;
   learnLocal={};
@@ -1207,59 +1220,59 @@ function tableHtml(t){
 function standardTask(skill){
   if(skill==='of'){
     const percent=pick([5,10,15,20,25,30,40,50,60,75,80]);const whole=pick([120,160,200,240,300,400,500,600,800]);const answer=whole*percent/100;
-    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Найти процент от числа',unit:'',answer,
+    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Найти процент от числа',unit:'',answer,answerPrompt:`Сколько составляет ${format(percent)}% от ${format(whole)}?`,inputHint:'Введи найденное число.',
       question:`Найдите <b>${percent}%</b> от числа <b>${format(whole)}</b>.`,
       hints:[
-        `<h3>1. Найдите основу</h3><p><span class="whole-text">${format(whole)}</span> — это всё число, значит оно равно 100%.</p>`,
-        `<h3>2. Заполните таблицу</h3>${tableHtml({table:{topLabel:'Искомая часть',topSub:`${percent}% от числа`,topValue:'<span class="cell-x">x</span>',topPercent:`<span class="part-text">${percent}%</span>`,bottomLabel:'Целое, равное 100%',bottomSub:'всё число',bottomValue:`<span class="whole-text">${format(whole)}</span>`,bottomPercent:'100%'}})}`,
-        `<h3>3. Составьте связь</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac('x',format(whole))} = ${frac(format(percent),'100')}</p>`
+        `<h3>1. Что здесь равно 100%</h3><p><span class="whole-text">${format(whole)}</span> — это всё число, значит оно равно 100%.</p>`,
+        `<h3>2. Сравним данные в таблице</h3>${tableHtml({table:{topLabel:'Искомая часть',topSub:`${percent}% от числа`,topValue:'<span class="cell-x">x</span>',topPercent:`<span class="part-text">${percent}%</span>`,bottomLabel:'Целое, равное 100%',bottomSub:'всё число',bottomValue:`<span class="whole-text">${format(whole)}</span>`,bottomPercent:'100%'}})}`,
+        `<h3>3. Как связаны данные</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac('x',format(whole))} = ${frac(format(percent),'100')}</p>`
       ],
       steps:[`Целое ${format(whole)} соответствует 100%.`,`Можно найти 1%: ${format(whole)} ÷ 100 = ${format(whole/100)}.`,`Умножаем на ${percent}: ${format(whole/100)} · ${percent} = <strong>${format(answer)}</strong>.`],
       diagnose:()=>`Сначала назовите целое: <b>${format(whole)} = 100%</b>. Затем найдите 1% или составьте пропорцию.`};
   }
   if(skill==='table'){
     const total=pick([200,300,400,500,800,1000]);const p=pick([15,20,25,30,35,40,45,50]);const part=total*p/100;const names=shuffle(['книги','проезд','продукты','связь','спорт','канцелярия']);const other1=total*pick([15,20,25,30])/100;const other2=total-part-other1;const rows=[[names[0],part],[names[1],other1],[names[2],other2]].map(r=>`<tr><td>${r[0]}</td><td>${format(r[1])} руб</td></tr>`).join('');
-    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Найти долю в процентах',unit:'%',answer:p,
+    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Найти долю в процентах',unit:'%',answer:p,answerPrompt:`Какой процент всех расходов приходится на «${names[0]}»?`,inputHint:'Введи число процентов. Знак % уже указан рядом с полем.',
       question:`Всего потрачено <b>${format(total)} руб</b>.<div class="mini-data"><table>${rows}</table></div>Какой процент всех расходов приходится на «<b>${names[0]}</b>»?`,
       hints:[
-        `<h3>1. Найдите основу</h3><p>Все расходы <span class="whole-text">${format(total)} руб</span> — это 100%.</p>`,
-        `<h3>2. Заполните таблицу</h3>${tableHtml({table:{topLabel:'Часть расходов',topSub:names[0],topValue:`<span class="part-text">${format(part)}</span>`,topPercent:'<span class="cell-x">x%</span>',bottomLabel:'Все расходы',bottomSub:'целое',bottomValue:`<span class="whole-text">${format(total)}</span>`,bottomPercent:'100%'}})}`,
-        `<h3>3. Составьте связь</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac(format(part),format(total))} = ${frac('x','100')}</p>`
+        `<h3>1. Что здесь равно 100%</h3><p>Все расходы <span class="whole-text">${format(total)} руб</span> — это 100%.</p>`,
+        `<h3>2. Сравним данные в таблице</h3>${tableHtml({table:{topLabel:'Часть расходов',topSub:names[0],topValue:`<span class="part-text">${format(part)}</span>`,topPercent:'<span class="cell-x">x%</span>',bottomLabel:'Все расходы',bottomSub:'целое',bottomValue:`<span class="whole-text">${format(total)}</span>`,bottomPercent:'100%'}})}`,
+        `<h3>3. Как связаны данные</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac(format(part),format(total))} = ${frac('x','100')}</p>`
       ],
       steps:[`Часть: ${format(part)} руб. Целое: ${format(total)} руб = 100%.`,`x = ${format(part)} · 100 ÷ ${format(total)}.`,`x = <strong>${format(p)}%</strong>.`],
       diagnose:v=>near(v,total/part*100)?'Похоже, дробь перевёрнута. Делим <b>часть на целое</b>, а не целое на часть.':`Сравните ${format(part)} руб со всеми ${format(total)} руб.`};
   }
   if(skill==='change'){
     const before=pick([120,160,200,240,300,400,500,600,800]);const percent=pick([10,15,20,25,30,40,50]);const direction=Math.random()<.5?'up':'down';const diff=before*percent/100;const after=direction==='up'?before+diff:before-diff;
-    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Найти процент изменения',unit:'%',answer:percent,
+    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Найти процент изменения',unit:'%',answer:percent,answerPrompt:`На сколько процентов цена ${direction==='up'?'выросла':'снизилась'} с ${format(before)} до ${format(after)} рублей?`,inputHint:'Введи число процентов изменения. Знак % уже указан рядом с полем.',
       question:`Цена изменилась с <b>${format(before)} руб</b> до <b>${format(after)} руб</b>. На сколько процентов она ${direction==='up'?'выросла':'снизилась'}?`,
       hints:[
-        `<h3>1. Найдите основу</h3><p>Старая цена <span class="whole-text">${format(before)} руб</span> — это 100%. Сравниваем с ней не новую цену, а <span class="part-text">изменение</span>.</p>`,
+        `<h3>1. Что здесь равно 100%</h3><p>Старая цена <span class="whole-text">${format(before)} руб</span> — это 100%. Сравниваем с ней не новую цену, а <span class="part-text">изменение</span>.</p>`,
         `<h3>2. Найдите изменение</h3><p>|${format(after)} − ${format(before)}| = <b>${format(diff)} руб</b>.</p>${tableHtml({table:{topLabel:'Изменение',topSub:'на сколько рублей',topValue:`<span class="part-text">${format(diff)}</span>`,topPercent:'<span class="cell-x">x%</span>',bottomLabel:'Старая цена',bottomSub:'основа сравнения',bottomValue:`<span class="whole-text">${format(before)}</span>`,bottomPercent:'100%'}})}`,
-        `<h3>3. Составьте связь</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac(format(diff),format(before))} = ${frac('x','100')}</p>`
+        `<h3>3. Как связаны данные</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac(format(diff),format(before))} = ${frac('x','100')}</p>`
       ],
       steps:[`Изменение: ${format(diff)} руб.`,`Старая цена ${format(before)} руб — это 100%.`,`x = ${format(diff)} · 100 ÷ ${format(before)} = <strong>${format(percent)}%</strong>.`],
       diagnose:v=>near(v,after/before*100)?'Вы нашли, сколько процентов новая цена составляет от старой. Вопрос просит <b>процент изменения</b>, поэтому сначала нужна разница.':`Сначала найдите разницу между ${format(after)} и ${format(before)}.`};
   }
   if(skill==='apply'){
     const before=pick([120,160,200,240,300,400,500,600,800]);const percent=pick([10,15,20,25,30,40,50]);const direction=Math.random()<.5?'up':'down';const newPercent=direction==='up'?100+percent:100-percent;const answer=before*newPercent/100;
-    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Изменить величину на процент',unit:'руб',answer,
+    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Изменить величину на процент',unit:'руб',answer,answerPrompt:'Сколько стал стоить товар после изменения цены?',inputHint:'Введи новую цену в рублях.',
       question:`Товар стоил <b>${format(before)} руб</b> и ${direction==='up'?'подорожал':'подешевел'} на <b>${percent}%</b>. Сколько он стал стоить?`,
       hints:[
-        `<h3>1. Найдите основу</h3><p>Старая цена <span class="whole-text">${format(before)} руб</span> — это 100%.</p>`,
+        `<h3>1. Что здесь равно 100%</h3><p>Старая цена <span class="whole-text">${format(before)} руб</span> — это 100%.</p>`,
         `<h3>2. Определите новый процент</h3><p>${direction==='up'?'100 +':'100 −'} ${percent} = <b>${newPercent}%</b>. Новая цена соответствует ${newPercent}% от старой.</p>`,
-        `<h3>3. Составьте связь</h3>${tableHtml({table:{topLabel:'Новая цена',topSub:'ищем',topValue:'<span class="cell-x">x</span>',topPercent:`<span class="part-text">${newPercent}%</span>`,bottomLabel:'Старая цена',bottomSub:'основа',bottomValue:`<span class="whole-text">${format(before)}</span>`,bottomPercent:'100%'}})}`
+        `<h3>3. Как связаны данные</h3>${tableHtml({table:{topLabel:'Новая цена',topSub:'ищем',topValue:'<span class="cell-x">x</span>',topPercent:`<span class="part-text">${newPercent}%</span>`,bottomLabel:'Старая цена',bottomSub:'основа',bottomValue:`<span class="whole-text">${format(before)}</span>`,bottomPercent:'100%'}})}`
       ],
       steps:[`После изменения стало ${newPercent}% от старой цены.`,`x = ${format(before)} · ${newPercent} ÷ 100.`,`x = <strong>${format(answer)} руб</strong>.`],
       diagnose:v=>near(v,Math.abs(answer-before))?'Вы нашли только величину изменения. В ответе нужна <b>новая цена целиком</b>.':`Сначала определите, сколько процентов стало: ${newPercent}%.`};
   }
   const original=pick([120,160,200,240,300,400,500,600,800]);const percent=pick([10,20,25,40,50]);const direction=Math.random()<.5?'up':'down';const currentPercent=direction==='up'?100+percent:100-percent;const current=original*currentPercent/100;
-  return{id:nowId(),skill:'reverse',label:SKILL_META.reverse.name,title:'Найти величину до изменения',unit:'руб',answer:original,
+  return{id:nowId(),skill:'reverse',label:SKILL_META.reverse.name,title:'Найти величину до изменения',unit:'руб',answer:original,answerPrompt:'Какой была цена до изменения?',inputHint:'Введи исходную цену в рублях.',
     question:`После ${direction==='up'?'повышения':'снижения'} на <b>${percent}%</b> цена стала <b>${format(current)} руб</b>. Какой была цена до изменения?`,
     hints:[
-      `<h3>1. Найдите основу</h3><p>Цена <b>до изменения</b> — это неизвестное целое, равное 100%. Текущая цена соответствует <span class="part-text">${currentPercent}%</span>.</p>`,
-      `<h3>2. Заполните таблицу</h3>${tableHtml({table:{topLabel:'Цена после изменения',topSub:`${currentPercent}% от исходной`,topValue:`<span class="part-text">${format(current)}</span>`,topPercent:`<span class="part-text">${currentPercent}%</span>`,bottomLabel:'Исходная цена',bottomSub:'ищем целое',bottomValue:'<span class="cell-x">x</span>',bottomPercent:'100%'}})}`,
-      `<h3>3. Составьте связь</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac(format(current),'x')} = ${frac(format(currentPercent),'100')}</p>`
+      `<h3>1. Что здесь равно 100%</h3><p>Цена <b>до изменения</b> — это неизвестное целое, равное 100%. Текущая цена соответствует <span class="part-text">${currentPercent}%</span>.</p>`,
+      `<h3>2. Сравним данные в таблице</h3>${tableHtml({table:{topLabel:'Цена после изменения',topSub:`${currentPercent}% от исходной`,topValue:`<span class="part-text">${format(current)}</span>`,topPercent:`<span class="part-text">${currentPercent}%</span>`,bottomLabel:'Исходная цена',bottomSub:'ищем целое',bottomValue:'<span class="cell-x">x</span>',bottomPercent:'100%'}})}`,
+      `<h3>3. Как связаны данные</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac(format(current),'x')} = ${frac(format(currentPercent),'100')}</p>`
     ],
     steps:[`После изменения текущая цена составляет ${currentPercent}% от исходной.`,`x = ${format(current)} · 100 ÷ ${currentPercent}.`,`x = <strong>${format(original)} руб</strong>.`],
     diagnose:()=>`Не применяйте процент к ${format(current)} ещё раз. Эта цена уже получена после изменения; нужно восстановить исходные 100%.`};
@@ -1269,33 +1282,33 @@ function advancedTask(){
   const type=pick(['fractional','ratio','compare','sequential','over100']);
   if(type==='fractional'){
     const percent=pick([2.5,7.5,12.5,37.5]);const whole=pick([160,240,320,480,640,800]);const answer=whole*percent/100;
-    return{id:nowId(),skill:'advanced',label:'Дробные проценты',title:'Найти дробный процент',unit:'',answer,
+    return{id:nowId(),skill:'advanced',label:'Дробные проценты',title:'Найти дробный процент',unit:'',answer,answerPrompt:`Сколько составляет ${format(percent)}% от ${format(whole)}?`,inputHint:'Введи найденное число. Дробную часть можно записать через запятую.',
       question:`Найдите <b>${format(percent)}%</b> от числа <b>${format(whole)}</b>.`,
-      hints:[`<h3>1. Основа</h3><p>${format(whole)} = 100%.</p>`,`<h3>2. Быстрый смысл</h3><p>${format(percent)}% = ${format(percent/100)} от целого.</p>`,`<h3>3. Вычисление</h3><p>${format(whole)} · ${format(percent)} ÷ 100.</p>`],
+      hints:[`<h3>1. Что здесь равно 100%</h3><p>${format(whole)} = 100%.</p>`,`<h3>2. Быстрый смысл</h3><p>${format(percent)}% = ${format(percent/100)} от целого.</p>`,`<h3>3. Вычисление</h3><p>${format(whole)} · ${format(percent)} ÷ 100.</p>`],
       steps:[`${format(percent)}% переводим в долю: ${format(percent/100)}.`,`${format(whole)} · ${format(percent/100)} = <strong>${format(answer)}</strong>.`],diagnose:()=>`Разделите ${format(percent)} на 100 и умножьте на ${format(whole)}.`};
   }
   if(type==='ratio'){
     const whole=pick([144,160,240,320,480]);const p=pick([12.5,37.5,62.5]);const part=whole*p/100;
-    return{id:nowId(),skill:'advanced',label:'Дробная доля',title:'Определить процент',unit:'%',answer:p,
+    return{id:nowId(),skill:'advanced',label:'Дробная доля',title:'Определить процент',unit:'%',answer:p,answerPrompt:`Сколько процентов составляет ${format(part)} от ${format(whole)}?`,inputHint:'Введи число процентов. Знак % уже указан рядом с полем.',
       question:`Число <b>${format(part)}</b> составляет сколько процентов от числа <b>${format(whole)}</b>?`,
-      hints:[`<h3>1. Основа</h3><p>${format(whole)} = 100%.</p>`,`<h3>2. Дробь</h3><p>Часть ÷ целое = ${format(part)} ÷ ${format(whole)}.</p>`,`<h3>3. В проценты</h3><p>Полученную долю умножьте на 100.</p>`],
+      hints:[`<h3>1. Что здесь равно 100%</h3><p>${format(whole)} = 100%.</p>`,`<h3>2. Дробь</h3><p>Часть ÷ целое = ${format(part)} ÷ ${format(whole)}.</p>`,`<h3>3. В проценты</h3><p>Полученную долю умножьте на 100.</p>`],
       steps:[`${format(part)} ÷ ${format(whole)} = ${format(part/whole)}.`,` ${format(part/whole)} · 100 = <strong>${format(p)}%</strong>.`],diagnose:()=>`Делите часть ${format(part)} на целое ${format(whole)}.`};
   }
   if(type==='compare'){
     const base=pick([160,200,240,320,400]);const p=pick([12.5,20,25,37.5,50]);const higher=Math.random()<.5;const other=higher?base*(1+p/100):base*(1-p/100);const larger=higher?other:base;const smaller=higher?base:other;const wording=higher?`На сколько процентов число <b>${format(other)}</b> больше числа <b>${format(base)}</b>?`:`На сколько процентов число <b>${format(other)}</b> меньше числа <b>${format(base)}</b>?`;
-    return{id:nowId(),skill:'advanced',label:'Сравнение чисел',title:'На сколько процентов больше или меньше',unit:'%',answer:p,question:wording,
-      hints:[`<h3>1. Основа</h3><p>Сравниваем с числом ${format(base)}: оно равно 100%.</p>`,`<h3>2. Изменение</h3><p>Разница: |${format(other)} − ${format(base)}| = ${format(Math.abs(other-base))}.</p>`,`<h3>3. Процент</h3><p>Разницу делим на основу ${format(base)} и умножаем на 100.</p>`],
+    return{id:nowId(),skill:'advanced',label:'Сравнение чисел',title:'На сколько процентов больше или меньше',unit:'%',answer:p,question:wording,answerPrompt:`На сколько процентов ${format(other)} ${higher?'больше':'меньше'} ${format(base)}?`,inputHint:'Введи число процентов различия. Знак % уже указан рядом с полем.',
+      hints:[`<h3>1. Что здесь равно 100%</h3><p>Сравниваем с числом ${format(base)}: оно равно 100%.</p>`,`<h3>2. Изменение</h3><p>Разница: |${format(other)} − ${format(base)}| = ${format(Math.abs(other-base))}.</p>`,`<h3>3. Процент</h3><p>Разницу делим на основу ${format(base)} и умножаем на 100.</p>`],
       steps:[`Разница равна ${format(Math.abs(other-base))}.`,`Основа сравнения: ${format(base)}.`,` ${format(Math.abs(other-base))} ÷ ${format(base)} · 100 = <strong>${format(p)}%</strong>.`],diagnose:()=>`Процент изменения считают от числа, с которым сравнивают: ${format(base)}.`};
   }
   if(type==='sequential'){
     const start=pick([500,800,1000,1200,1600]);const p1=pick([10,20,25]);const p2=pick([10,20,25]);const dir1=Math.random()<.5?'up':'down';const dir2=dir1==='up'?'down':'up';const factor1=dir1==='up'?1+p1/100:1-p1/100;const factor2=dir2==='up'?1+p2/100:1-p2/100;const answer=start*factor1*factor2;
-    return{id:nowId(),skill:'advanced',label:'Два изменения подряд',title:'Последовательные проценты',unit:'руб',answer,
+    return{id:nowId(),skill:'advanced',label:'Два изменения подряд',title:'Последовательные проценты',unit:'руб',answer,answerPrompt:'Какой стала цена после обоих изменений?',inputHint:'Введи окончательную цену в рублях.',
       question:`Цена была <b>${format(start)} руб</b>. Сначала она ${dir1==='up'?'выросла':'снизилась'} на <b>${p1}%</b>, затем ${dir2==='up'?'выросла':'снизилась'} на <b>${p2}%</b>. Какой стала цена?`,
       hints:[`<h3>1. Важная ловушка</h3><p>Второе изменение применяется уже к <b>новой</b> цене, а не к исходной.</p>`,`<h3>2. Первый множитель</h3><p>${dir1==='up'?'Увеличить':'Уменьшить'} на ${p1}% → умножить на ${format(factor1)}.</p>`,`<h3>3. Второй множитель</h3><p>${dir2==='up'?'Увеличить':'Уменьшить'} на ${p2}% → умножить результат на ${format(factor2)}.</p>`],
       steps:[`После первого изменения: ${format(start)} · ${format(factor1)} = ${format(start*factor1)}.`,`После второго: ${format(start*factor1)} · ${format(factor2)} = <strong>${format(answer)} руб</strong>.`,`Обратные по знаку проценты не всегда взаимно уничтожаются: основы отличаются.`],diagnose:()=>`Применяйте изменения по очереди: сначала к ${format(start)}, затем к полученному результату.`};
   }
   const percent=pick([110,125,150,175]);const whole=pick([80,120,160,240,320]);const answer=whole*percent/100;
-  return{id:nowId(),skill:'advanced',label:'Больше 100%',title:'Найти процент больше ста',unit:'',answer,
+  return{id:nowId(),skill:'advanced',label:'Больше 100%',title:'Найти процент больше ста',unit:'',answer,answerPrompt:`Сколько составляет ${format(percent)}% от ${format(whole)}?`,inputHint:'Введи найденное число.',
     question:`Найдите <b>${percent}%</b> от числа <b>${whole}</b>.`,
     hints:[`<h3>1. Смысл</h3><p>${percent}% — это всё число и ещё ${percent-100}%.</p>`,`<h3>2. Доля</h3><p>${percent}% = ${format(percent/100)} от целого.</p>`,`<h3>3. Вычисление</h3><p>${whole} · ${format(percent/100)}.</p>`],
     steps:[`${percent}% = ${format(percent/100)}.`,` ${whole} · ${format(percent/100)} = <strong>${format(answer)}</strong>.`],diagnose:()=>`${percent}% больше целого: ответ должен быть больше ${whole}.`};
@@ -1305,7 +1318,7 @@ function advancedTask(){
 function newPracticeTask(){
   const task=state.difficulty==='advanced'?advancedTask():standardTask(state.skill==='mix'?pick(SKILLS):state.skill);
   state.current=task;
-  state.taskState={hintLevel:0,wrongAttempts:0,answered:false,solutionShown:false,outcome:null,reviewRecorded:false};
+  state.taskState={hintLevel:0,helpCollapsed:false,wrongAttempts:0,answered:false,solutionShown:false,outcome:null,reviewRecorded:false};
   renderPractice();save();
 }
 function renderSkillChips(){
@@ -1327,6 +1340,22 @@ function renderPracticeStats(){
   const mastered=masteredCount(),best=state.checkpointBest.standard||0;
   document.getElementById('checkpoint-cta-copy').textContent=mastered===5?`Все пять навыков отработаны. Лучший мини-зачёт: ${best}/5.`:`Освоено ${mastered} из 5 навыков. Мини-зачёт можно пройти в любой момент.`;
 }
+function renderAnswerPrompt(prefix,t){
+  document.getElementById(prefix+'-answer-label').textContent=t.answerPrompt;
+  document.getElementById(prefix+'-answer-hint').textContent=t.inputHint;
+  document.getElementById(prefix+'-input').placeholder=t.unit==='%'?'Число процентов':t.unit==='руб'?'Цена в рублях':'Введи число';
+}
+function renderPracticeHelp(){
+  const t=state.current,ts=state.taskState;
+  const helpVisible=ts.hintLevel>0&&!ts.helpCollapsed;
+  document.getElementById('practice-help').hidden=!helpVisible;
+  document.getElementById('practice-return-answer').hidden=ts.answered||ts.solutionShown;
+  document.getElementById('hint-stack').innerHTML=helpVisible?t.hints.slice(0,ts.hintLevel).map(h=>`<div class="hint-card">${h}</div>`).join(''):'';
+  const hintLabels=['Хочешь подсказку?','Следующая подсказка','Следующая подсказка','Все подсказки открыты'];
+  document.getElementById('hint-btn').textContent=ts.helpCollapsed?'Показать подсказки снова':hintLabels[Math.min(ts.hintLevel,3)];
+  document.getElementById('hint-btn').setAttribute('aria-expanded',String(helpVisible));
+  document.getElementById('hint-btn').disabled=(ts.hintLevel>=3&&!ts.helpCollapsed)||ts.answered||ts.solutionShown;
+}
 function renderPractice(options={}){
   document.querySelectorAll('#difficulty-switch [data-difficulty]').forEach(b=>b.classList.toggle('active',b.dataset.difficulty===state.difficulty));
   document.getElementById('skill-control-wrap').style.opacity=state.difficulty==='advanced'?'.75':'1';
@@ -1338,17 +1367,15 @@ function renderPractice(options={}){
   document.getElementById('task-title').textContent=(mixed&&!ts.answered&&!ts.solutionShown)?'Определите способ решения':t.title;
   document.getElementById('practice-question').innerHTML=t.question;
   document.getElementById('practice-unit').textContent=t.unit||'';
+  renderAnswerPrompt('practice',t);
   const input=document.getElementById('practice-input');
   if(!ts.answered&&!ts.solutionShown){if(!options.preserveDraft)input.value='';input.disabled=false;input.classList.remove('correct','wrong');}
   document.getElementById('practice-check').disabled=ts.answered||ts.solutionShown;
   document.getElementById('next-task').disabled=!(ts.answered||ts.solutionShown);
   clearFeedback('practice-feedback');
-  document.getElementById('hint-stack').innerHTML=t.hints.slice(0,ts.hintLevel).map((h,i)=>`<div class="hint-card">${h}</div>`).join('');
+  renderPracticeHelp();
   const sol=document.getElementById('practice-solution');sol.classList.toggle('show',ts.answered||ts.solutionShown);
   document.getElementById('practice-solution-steps').innerHTML=t.steps.map((s,i)=>`<div class="solution-step"><strong>${i+1}.</strong> ${s}</div>`).join('');
-  const hintLabels=['Хочешь подсказку?','Подсказка 2: заполнить схему','Подсказка 3: выбрать действие','Все подсказки открыты'];
-  document.getElementById('hint-btn').textContent=hintLabels[Math.min(ts.hintLevel,3)];
-  document.getElementById('hint-btn').disabled=ts.hintLevel>=3||ts.answered||ts.solutionShown;
   document.getElementById('solution-btn').disabled=ts.answered||ts.solutionShown;
   updateCreditChip();
   if(ts.answered||ts.solutionShown){
@@ -1384,13 +1411,13 @@ function practiceCheck(){
     ts.wrongAttempts++;
     if(state.current.skill!=='advanced'){state.stats[state.current.skill].errors++;state.stats[state.current.skill].attempts++;}
     state.independentStreak=0;markInput(input,false);
-    if(ts.wrongAttempts>=2&&ts.hintLevel===0){ts.hintLevel=1;showFeedback('practice-feedback','warn',`${state.current.diagnose?state.current.diagnose(value):'Проверьте основу.'}<br><b>Первая подсказка открылась автоматически.</b>`);}
+    if(ts.wrongAttempts>=2&&ts.hintLevel===0){ts.hintLevel=1;ts.helpCollapsed=false;showFeedback('practice-feedback','warn',`${state.current.diagnose?state.current.diagnose(value):'Проверьте основу.'}<br><b>Первая подсказка открылась автоматически.</b>`);}
     else showFeedback('practice-feedback','bad',state.current.diagnose?state.current.diagnose(value):'Проверьте, что принято за 100%.');
-    updateCreditChip();document.getElementById('hint-stack').innerHTML=state.current.hints.slice(0,ts.hintLevel).map(h=>`<div class="hint-card">${h}</div>`).join('');save();
+    updateCreditChip();renderPracticeHelp();save();
   }
 }
 function revealPracticeHint(){
-  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.hintLevel=Math.min(3,ts.hintLevel+1);state.independentStreak=0;renderPractice({preserveDraft:true});save();
+  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;if(ts.helpCollapsed)ts.helpCollapsed=false;else ts.hintLevel=Math.min(3,ts.hintLevel+1);state.independentStreak=0;renderPractice({preserveDraft:true});save();
 }
 function revealPracticeSolution(){
   const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.solutionShown=true;ts.outcome='reviewed';
@@ -1422,6 +1449,7 @@ function renderCheckpointQuestion(){
   document.getElementById('check-title').textContent='Решите самостоятельно';
   document.getElementById('check-question').innerHTML=t.question;
   document.getElementById('check-unit').textContent=t.unit||'';
+  renderAnswerPrompt('check',t);
   const input=document.getElementById('check-input');input.value='';input.classList.remove('correct','wrong');clearFeedback('check-feedback');setTimeout(()=>input.focus(),0);
   document.getElementById('check-save').textContent=cp.index===4?'Завершить проверку':'Сохранить ответ';
 }
@@ -1497,6 +1525,8 @@ document.querySelectorAll('#difficulty-switch [data-difficulty]').forEach(b=>b.a
 document.getElementById('practice-check').addEventListener('click',practiceCheck);
 document.getElementById('practice-input').addEventListener('keydown',e=>{if(e.key==='Enter')practiceCheck();});
 document.getElementById('hint-btn').addEventListener('click',revealPracticeHint);
+document.getElementById('practice-return-answer').addEventListener('click',()=>{state.taskState.helpCollapsed=true;renderPractice({preserveDraft:true});document.getElementById('practice-input').focus();});
+document.getElementById('learn-return-task').addEventListener('click',()=>setView('practice'));
 document.getElementById('solution-btn').addEventListener('click',revealPracticeSolution);
 document.getElementById('next-task').addEventListener('click',newPracticeTask);
 document.getElementById('practice-to-check').addEventListener('click',()=>setView('check'));

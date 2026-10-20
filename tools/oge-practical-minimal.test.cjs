@@ -19,7 +19,12 @@ function normalize(name,text){
  if(name.includes('plan-reading'))text=text.replace("  start();\n  $('again').addEventListener","  $('again').addEventListener");
  return text;
 }
-// Hashes of inline engines at base 4b56350. Only the explicitly normalized UI edits above are allowed.
+// Strict snapshots of reviewed inline engines, after the UI normalizations above.
+// Twelve entries retain base 4b56350. The percent-table snapshot additionally
+// includes the reviewed action-clarity changes on base bc392890: answer labels,
+// input instructions, hint visibility and draft-preserving return navigation.
+// Independent review confirmed unchanged formulas, answers and credit rules;
+// percent-action-clarity.test.cjs checks all ten quantities and the new flows.
 const ENGINE_HASHES={
   "practice-1-5-entry-diagnostic-2026.html": "1efda818d5d8a6baae36b308f2a4228b6f5efd36c79ad9c12660d2e7b4d0f34f",
   "practice-1-5-tariffs.html": "49a0f0eb1f6231f436add9a99ff99f436e9e052dab718d811b027f8e07c30fe9",
@@ -30,12 +35,12 @@ const ENGINE_HASHES={
   "practice-1-5-roads-schema.html": "ae543168de89d7ff5caa68ed4a58e6d7e600954399ef28a74cfec3b50e6c51b1",
   "practice-1-5-map.html": "92a021c3a3a7c177f7efd9a6b439bd5e09139171758635b3bcb40b639bb2d903",
   "practice-1-5-tires.html": "3a4850a9be1617464a7682aba1fcd3ddf76be83d0737d21069c6d0f8c8645e99",
-  "percent-table-trainer.html": "896805b28591f1bffc08163b2a789443ab27b61d90252255c0ea9d337159e269",
+  "percent-table-trainer.html": "a845d18d42b1df213ad16e4d911af09880683f2df48071d7edff6193d76cf4fa",
   "practice-1-5-apartments.html": "af9db14b53e6b45755b9efc5a34eb540d5f7378359fed25d64b4cc95e6188cf4",
   "practice-1-5-stoves.html": "76dc7a58e0d1b96815dfc3d9af8577e334384f9d67c0f486d821eca50ef0068b",
   "practice-1-5-routes-checkpoint-2026.html": "31eb349079b5af06df5df88f2d8c88c3836b59997bcaefcb7c5ca7d631dc6c85"
 };
-test('all original banks, generators, checkers and progress code are unchanged outside explicit UI edits',()=>{
+test('all inline engines match their reviewed snapshots outside explicit UI normalizations',()=>{
  for(const name of files){const scripts=inline(fs.readFileSync(path.join(dir,name),'utf8'));scripts.forEach((s,i)=>new vm.Script(s,{filename:name+':'+i}));const normalized=normalize(name,scripts.join('\n'));assert.equal(crypto.createHash('sha256').update(normalized).digest('hex'),ENGINE_HASHES[name],name);}
  new vm.Script(fs.readFileSync(path.join(dir,'practical-minimal.js'),'utf8'));
 });

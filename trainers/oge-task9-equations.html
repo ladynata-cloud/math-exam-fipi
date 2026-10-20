@@ -296,6 +296,17 @@ kbd{font-family:var(--math); background:#eef2f7; border:1px solid var(--line);
 /* Minimal task-first course presentation. Math and progress stay in their existing engines. */
 :root{--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--accent:#216342;--green:#216342;--blue:#216342;--line:#dbe1da;--ui:system-ui,-apple-system,"Segoe UI",sans-serif;--hand:var(--ui)}
 body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:18px;line-height:1.75}.margin-line{display:none}.wrap,body>main,body>header{max-width:860px;margin-left:auto;margin-right:auto;padding-left:20px;padding-right:20px}body>header{background:transparent;border:0;box-shadow:none;padding-top:24px}header,h1,h2,h3,.hand{font-family:var(--ui)!important}header{margin-bottom:24px}h1{font-size:25px!important;line-height:1.4;margin:10px 0 22px!important}.crumbs{font:15px/1.6 var(--ui);color:#216342}.card,.task-card,.mtask,.panel{background:#fff!important;border:1px solid #dbe1da!important;border-radius:14px;box-shadow:none!important;padding:28px!important;margin-bottom:22px}.card:before,.card:after{display:none!important}.card p,.task-card p,.mtask p{line-height:1.8}.taskline,.task-text,.task-q,.story{font-size:19px!important;line-height:1.8!important}.taskline{margin:16px 0}.svgbox,svg{max-width:100%}.expr,.formula-box{margin:24px 0;font-size:27px;overflow-x:auto}.btn,.act,.btn-check,button.primary{background:#216342!important;color:white!important;border-color:#216342!important;font-family:var(--ui)!important;font-size:16px;min-height:46px}.ghost,.btn.ghost,.btn-ghost,.act.sec,.act.ghost,.btn.show,.btn-hint{background:#fff!important;color:#216342!important;border-color:#b9cbbb!important}button,input,select,summary{font-family:var(--ui);min-height:44px}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}input.ans,.ansfield input,.field input{font-size:21px!important;max-width:100%;border-radius:7px}.btnrow,.btn-row,.mrow,.steprow,.answer-row{gap:12px;margin-top:18px!important}.tabs{display:flex;flex-wrap:wrap;gap:9px;border:0}.tabs button,.chip,.pill,.fchip,#modes button,#types button{background:white;color:#216342;border:1px solid #dbe1da;min-height:44px;padding:9px 13px;font-size:15px}.tabs .active,.tabs .on,.chip.active,.chip.on,.pill.on,.fchip.on,#modes .active,#types .active{background:#216342!important;color:#fff!important}.minimal-settings,.minimal-options{margin:24px 0;border-top:1px solid #dbe1da;padding:18px 2px}.minimal-settings>summary,.minimal-options>summary{color:#216342;cursor:pointer;font-size:16px;padding:5px 0}.minimal-settings>summary+*,.minimal-options>summary+*{margin-top:18px}.minimal-settings .card{padding:18px!important}.minimal-settings .sub,.minimal-settings .subtitle{font-size:15px;line-height:1.75}.minimal-hint{margin:24px 0!important}.minimal-hint-panel{margin:20px 0;padding:20px;background:#f0f5ee;border-radius:12px}.minimal-task-nav{margin:20px 0}.minimal-task-nav label{display:block;font-size:15px}.minimal-task-nav select{max-width:100%;padding:8px;border:1px solid #b9cbbb;border-radius:8px;background:white;font-size:17px}.minimal-task-nav .minimal-next{display:block;margin-top:18px}.mgrid{display:block!important}.score{position:static!important;background:transparent!important;box-shadow:none!important;padding:12px!important}.minimal-meta{font-size:14px;color:#626b63}.minimal-task-title{font-size:20px;margin:0 0 24px}.minimal-task-nav [hidden],[hidden]{display:none!important}@media(max-width:560px){.wrap,body>main,body>header{padding-left:12px;padding-right:12px}.card,.task-card,.mtask,.panel{padding:22px 16px!important}h1{font-size:22px!important}.taskline,.task-text,.task-q,.story{font-size:18px!important}.minimal-hint-panel{padding:16px 12px}.expr,.formula-box{font-size:24px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* A term and its sign travel together; both equation sides stay available. */
+.transfer-lab{margin:20px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:#f5f8f3}
+.transfer-lab p{margin:0 0 14px}.transfer-board{display:grid;grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);gap:8px;align-items:stretch;margin:18px 0}
+.transfer-side{min-width:0;border:2px dashed #b9cbbb;border-radius:10px;padding:12px 8px;min-height:104px}.transfer-side.over{border-color:var(--accent);background:#e2f0df}
+.transfer-side-title{font:14px/1.5 var(--ui);color:var(--muted);margin-bottom:10px}.transfer-terms{display:flex;gap:9px;flex-wrap:wrap;align-items:center;min-height:48px}
+.transfer-equals{align-self:center;text-align:center;font:700 28px var(--math)}
+.transfer-term{font:22px var(--math)!important;background:white;border:1px solid #9db59f;border-radius:9px;min-height:48px;padding:9px 12px;cursor:grab;touch-action:none;user-select:none;max-width:100%}.transfer-term:active{cursor:grabbing}.transfer-term[disabled]{cursor:default;opacity:.75}
+.transfer-term.dragging{opacity:.45}.transfer-ghost{position:fixed;z-index:1000;pointer-events:none;box-shadow:0 5px 18px #24452d33;transform:translate(-50%,-50%)}
+.transfer-next{font-size:16px;line-height:1.8;margin:12px 0}.canon-fields{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}.canon-fields label{display:flex;flex-direction:column;gap:8px;font-size:15px;max-width:100%}.canon-equals{font-size:23px;line-height:48px}
+@media(max-width:560px){.transfer-lab{padding:12px 8px}.transfer-board{gap:4px;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr)}.transfer-side{padding:10px 5px}.transfer-term{font-size:19px!important;padding:8px}.transfer-equals{font-size:24px}.canon-fields{gap:8px}.canon-fields label{font-size:14px}}
 </style>
 </head>
 <body>
@@ -912,11 +923,16 @@ function needMsg(){return {ok:false,need:true,msg:'Заполни поле чи�
 function parseAll(vals){ const out=[]; for(const v of vals){const f=parseNum(v); if(f===null)return null; out.push(f);} return out; }
 
 /* «собери x слева, числа справа»: ☐·x = ☐ */
-function stCanon(root, kc, mc){
+function transferFromABC(L,R){
+  const side=p=>[T(p.B,1),T(p.C)].filter(t=>!fzero(t.c));
+  return {Lt:side(L),Rt:side(R)};
+}
+function stCanon(root, kc, mc, source){
   if(fcmp(kc,F0)<0){kc=fneg(kc);mc=fneg(mc);}
   return (state)=>({
-    q:'Перенеси слагаемые: всё с <i>x</i> — влево, числа — вправо (не забудь сменить знак!). Приведи подобные:',
+    q:'Собери слагаемые с <i>x</i> слева, числа — справа. Затем сложи подобные и впиши два результата в запись ниже:',
     ui:{type:'canon'},
+    transfer:source?source(state):null,
     hint:'Слагаемое, «перепрыгнувшее» через знак «=», меняет знак: было <b>+</b> — станет <b>−</b>, было <b>−</b> — станет <b>+</b>. Потом сложи отдельно иксы, отдельно числа.',
     check(vals,st){
       const f=parseAll(vals); if(!f)return needMsg();
@@ -965,7 +981,7 @@ function stExpand(root, revL, revR, opts){
       if(!fzero(n.A))return {ok:false,msg:'В записи остался x² — здесь квадраты должны взаимно уничтожиться.'};
       if(fzero(n.B))return {ok:false,msg:'Иксы совсем пропали — проверь раскрытие скобок.'};
       const r=fdiv(fneg(n.C),n.B);
-      if(feq(r,root))return {ok:true};
+      if(feq(r,root)){state.transferEquation=e;return {ok:true};}
       if(feq(r,fneg(root)))return {ok:false,msg:'Похоже на потерянный знак: минус перед скобкой меняет знак каждого слагаемого внутри.'};
       return {ok:false,msg:'Уравнение получилось с другим корнем. Проверь: множитель умножен на каждое слагаемое? знаки на месте?'};
     },
@@ -1008,7 +1024,7 @@ function stAfterM(task, root){
         if(!fzero(n.A))return {ok:false,msg:'x² тут появиться не мог — проверь запись.'};
         if(fzero(n.B))return {ok:false,msg:'Иксы пропали — так не должно быть.'};
         const r=fdiv(fneg(n.C),n.B);
-        if(feq(r,root))return {ok:true};
+        if(feq(r,root)){state.transferEquation=e;return {ok:true};}
         return {ok:false,msg:'Корень не сошёлся. Частая ошибка: забыли умножить на '+M+' слагаемое <b>без</b> дроби.'};
       },
       reveal:{vals:[exprStr(Lm.B,Lm.C)+'='+exprStr(Rm.B,Rm.C)],
@@ -1590,7 +1606,7 @@ function taskSteps(t, method){
   switch(t.fam){
     case 'L': {
       const {k,m}=collectCanon(t);
-      return [stCanon(roots[0],k,m), stDivide(roots[0])];
+      return [stCanon(roots[0],k,m,()=>({Lt:p.Lt,Rt:p.Rt})), stDivide(roots[0])];
     }
     case 'LB': {
       const le=expandLinearSide(p.Lt,'левой'), re=expandLinearSide(p.Rt,'правой');
@@ -1599,7 +1615,7 @@ function taskSteps(t, method){
       steps.push(...re.distSteps);
       if(re.combineStep)steps.push(re.combineStep);
       const {k,m}=collectCanon(t);
-      steps.push(stCanon(roots[0],k,m), stDivide(roots[0]));
+      steps.push(stCanon(roots[0],k,m,()=>transferFromABC(le.abc,re.abc)), stDivide(roots[0]));
       return steps;
     }
     case 'LSQ': {
@@ -1609,13 +1625,13 @@ function taskSteps(t, method){
            ph:'☐x + ☐ = ☐x + ☐',
            hint:'(x + a)² = x² + 2·a·x + a². Квадраты одинаковые с двух сторон — их можно сразу вычеркнуть.',
            revealPre:'<span class="pen-note">x² взаимно уничтожились →</span> '};
-      return [stExpand(roots[0],{B:L.B,C:L.C},{B:R.B,C:R.C},opts), stCanon(roots[0],k,m), stDivide(roots[0])];
+      return [stExpand(roots[0],{B:L.B,C:L.C},{B:R.B,C:R.C},opts), stCanon(roots[0],k,m,state=>transferFromABC((state.transferEquation||{L,R}).L,(state.transferEquation||{L,R}).R)), stDivide(roots[0])];
     }
     case 'LF': {
       const {k,m}=collectCanon(t);
       const M=lcmArr(p.dens);
       const kk=fmul(k,F(M)), mm=fmul(m,F(M));
-      return [stM(p.dens), stAfterM(t,roots[0]), stCanon(roots[0],kk,mm), stDivide(roots[0])];
+      return [stM(p.dens), stAfterM(t,roots[0]), stCanon(roots[0],kk,mm,state=>{const e=state.transferEquation;if(e)return transferFromABC(e.L,e.R);const k=F(state.M||M);return transferFromABC(scaleABC(evalTermsABC(p.Lt),k),scaleABC(evalTermsABC(p.Rt),k));}), stDivide(roots[0])];
     }
     case 'QNB': {
       const v=fdiv(fneg(n.C),n.A); const s=fsqrt(v);
@@ -1670,7 +1686,7 @@ function taskSteps(t, method){
       if(!fzero(cp.R.B)) expandProp.push(stExpandLin({B:cp.R.B,C:cp.R.C},
         'Раскрой <b>правую</b> часть: &nbsp;'+crossSideHTML(p.rn,p.ld)+' &nbsp;= &nbsp;☐<i>x</i> + ☐',
         'Умножь число на каждое слагаемое в скобке — отдельно на <i>x</i>, отдельно на число.'));
-      return [stCrossProduct(t), ...expandProp, stCanon(roots[0],k,m), stDivide(roots[0]), stODZ(dens,roots[0])];
+      return [stCrossProduct(t), ...expandProp, stCanon(roots[0],k,m,()=>transferFromABC(cp.L,cp.R)), stDivide(roots[0]), stODZ(dens,roots[0])];
     }
     case 'Z': {
       const root=roots[0];
@@ -2286,10 +2302,12 @@ function renderUI(ui, onEnter){
       read=()=>inputs.map(getRaw);
       break;}
     case 'canon':{
-      const box=document.createElement('span'); box.className='field'; box.style.fontSize='18px';
-      const a1=mkAns('?','mini'); inputs.push(a1); box.appendChild(a1);
-      const s1=document.createElement('span'); s1.innerHTML='·&nbsp;<i>x</i>&nbsp; =&nbsp;'; box.appendChild(s1);
-      const a2=mkAns('?','mini'); inputs.push(a2); box.appendChild(a2);
+      const box=document.createElement('div'); box.className='canon-fields';
+      const left=document.createElement('label'); left.innerHTML='<span>Число перед <i>x</i></span>';
+      const a1=mkAns('?','mini'); a1._input.setAttribute('aria-label','Число перед x после сложения'); inputs.push(a1);left.appendChild(a1);box.appendChild(left);
+      const s1=document.createElement('span');s1.className='canon-equals';s1.innerHTML='· <i>x</i> =';box.appendChild(s1);
+      const right=document.createElement('label');right.innerHTML='<span>Число справа от =</span>';
+      const a2=mkAns('?','mini');a2._input.setAttribute('aria-label','Число справа после сложения');inputs.push(a2);right.appendChild(a2);box.appendChild(right);
       node.appendChild(box);
       read=()=>inputs.map(getRaw);
       break;}
@@ -2370,6 +2388,8 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
   const q=document.createElement('div'); q.className='q'; q.innerHTML=def.q; card.appendChild(q);
 
   const uir=renderUI(def.ui, tryCheck);
+  const transfer=def.transfer?makeTransferLab(def.transfer,{onUse:useHint,onReady:()=>uir.focusFirst()}):null;
+  if(transfer)card.appendChild(transfer.node);
   card.appendChild(uir.node);
 
   const fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('aria-live','polite'); card.appendChild(fb);
@@ -2386,6 +2406,7 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
   let resolved=false, hintUsed=false;
   function lock(kind){ // kind: 'done' | 'shown'
     resolved=true;
+    if(transfer)transfer.lock();
     uir.inputs.forEach(w=>w._input.disabled=true);
     if(uir.node._chips)uir.node._chips.querySelectorAll('.chip').forEach(c=>c.disabled=true);
     bCheck.disabled=true; bHint.disabled=true; bShow.disabled=true;
@@ -2418,10 +2439,13 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
     }
   }
   bCheck.addEventListener('click',tryCheck);
+  function useHint(){
+    if(resolved)return;
+    if(!hintUsed){hintUsed=true;tally.hinted++;onTally();if(tally.onHint)tally.onHint();}
+  }
   bHint.addEventListener('click',()=>{
     if(resolved)return;
-    if(!hintUsed){ hintUsed=true; tally.hinted++; onTally(); }
-    if(tally.onHint)tally.onHint();
+    useHint();
     fb.className='fb'; fb.style.color='var(--accent)';
     fb.innerHTML='💡 '+def.hint;
   });
@@ -2522,78 +2546,122 @@ function practice(defFactory){
 }
 
 /* ─────────── СИГНАТУРНЫЙ ИНТЕРАКТИВ: перенос слагаемых ─────────── */
-function termFlyer(){
-  const box=elt('div','card'); box.style.background='linear-gradient(#fff,var(--accent-soft))';
-  box.appendChild(elt('div','eyebrow','потренируй перенос — кликай по слагаемым'));
-  box.appendChild(elt('p',null,'Клик по слагаемому «перебрасывает» его через знак <span class="math">=</span> — и знак меняется. Соберём <b>все иксы слева, все числа справа</b>.'));
-  const stage=elt('div'); stage.style.cssText='display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;font-size:19px;font-family:var(--math);margin:14px 0;min-height:44px;';
-  const live=elt('div','big-eq'); live.style.margin='6px 0';
-  const fb=elt('div','fb');
-  const row=elt('div','btn-row');
-  box.appendChild(stage); box.appendChild(live); box.appendChild(fb); box.appendChild(row);
-
-  let terms=[];
-  function loadTask(){
-    let t; try{t=genTask('g_l2');}catch(e){t=illus('L',{Lt:[T(4,1),T(-4)],Rt:[T(16),T(2,1)]});}
-    terms=[];
-    t.p.Lt.forEach(tm=>{ if(tm.c!==undefined) terms.push({c:tm.c, x:tm.x, side:'L'}); });
-    t.p.Rt.forEach(tm=>{ if(tm.c!==undefined) terms.push({c:tm.c, x:tm.x, side:'R'}); });
-    fb.textContent=''; fb.className='fb';
+/* Exact term model reused by the lesson and the current equation's guided step. */
+function createTransferState(source){
+  let nextId=0;
+  const terms=[];
+  for(const side of ['L','R'])for(const tm of source[side+'t']){
+    if(tm.c===undefined||(tm.x!==0&&tm.x!==1))throw Error('Transfer needs expanded linear terms');
+    if(!fzero(tm.c))terms.push({id:String(nextId++),c:F(tm.c.n,tm.c.d),x:tm.x,side});
+  }
+  return {
+    terms,
+    move(id,to){
+      const tm=terms.find(t=>t.id===String(id));
+      if(!tm||(to!=='L'&&to!=='R')||tm.side===to)return false;
+      tm.side=to;tm.c=fneg(tm.c);return true;
+    },
+    sorted(){return terms.every(t=>t.side===(t.x===1?'L':'R'));}
+  };
+}
+function makeTransferLab(source,opts){
+  opts=opts||{};
+  const model=createTransferState(source),box=elt('div','transfer-lab');
+  box.appendChild(elt('p',null,'<b>Перетащи карточку со знаком через =.</b> Собери все слагаемые с <i>x</i> слева, числа — справа. Можно просто нажать на карточку; с клавиатуры — Enter или пробел.'));
+  const board=elt('div','transfer-board'),notice=elt('div','transfer-next');notice.setAttribute('aria-live','polite');
+  const next=elt('div','transfer-next');
+  const ready=elt('button','btn ghost small','Перейти к сложению');ready.type='button';
+  box.appendChild(board);box.appendChild(notice);box.appendChild(next);if(opts.onReady)box.appendChild(ready);
+  let locked=false,dragId=null,touch=null,suppressClickUntil=0;
+  const chipHTML=tm=>{const body=termNegBody(tm);return '<span class="transfer-sign">'+(body.neg?MINUS:'+')+'</span>&thinsp;'+body.body;};
+  const chipText=tm=>(fcmp(tm.c,F0)<0?MINUS:'+')+valStr(fabs(tm.c))+(tm.x?'x':'');
+  function targetAt(x,y){
+    return [...board.querySelectorAll('.transfer-side')].find(zone=>{const r=zone.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;});
+  }
+  function clearDrag(){dragId=null;board.querySelectorAll('.over,.dragging').forEach(n=>n.classList.remove('over','dragging'));}
+  function finishTouch(){
+    if(!touch)return;
+    if(touch.ghost)touch.ghost.remove();
+    try{touch.el.releasePointerCapture(touch.pointerId);}catch(e){}
+    touch=null;clearDrag();
+  }
+  function move(id,to){
+    if(locked)return false;
+    const tm=model.terms.find(t=>t.id===String(id));if(!tm)return false;
+    const before=chipText(tm);
+    if(!model.move(id,to))return false;
+    if(opts.onUse)opts.onUse();
+    notice.textContent=before+' перенесено '+(to==='L'?'влево':'вправо')+' и стало '+chipText(tm)+'.';
     render();
-  }
-  function chipHTML(tm){
-    const neg=fcmp(tm.c,F0)<0, a=fabs(tm.c);
-    const sign=neg?MINUS:'+';
-    const body=tm.x===1?(feq(a,F1)?'<i>x</i>':coefHTML(a)+'<i>x</i>'):numHTML(a);
-    return sign+'&thinsp;'+body;
-  }
-  function sideEq(side){
-    const arr=terms.filter(t=>t.side===side);
-    if(!arr.length)return '<span style="color:var(--pencil)">0</span>';
-    return arr.map((t,i)=>{const neg=fcmp(t.c,F0)<0, a=fabs(t.c);
-      const body=t.x===1?(feq(a,F1)?'<i>x</i>':coefHTML(a)+'<i>x</i>'):numHTML(a);
-      return (i===0?(neg?MINUS:''):(neg?' '+MINUS+' ':' + '))+body;}).join('');
+    const moved=board.querySelector('[data-term-id="'+id+'"]');if(moved)moved.focus({preventScroll:true});
+    return true;
   }
   function render(){
-    stage.innerHTML='';
-    const zoneL=elt('div'); zoneL.style.cssText='display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex:1;';
-    const eq=elt('span',null,'='); eq.style.cssText='font-weight:700;padding:0 4px;';
-    const zoneR=elt('div'); zoneR.style.cssText='display:flex;gap:6px;flex-wrap:wrap;flex:1;';
-    function mkChip(tm){
-      const b=elt('button','chip'); b.type='button'; b.innerHTML=chipHTML(tm);
-      b.style.cssText='padding:5px 12px;';
-      b.addEventListener('click',()=>{ tm.side=tm.side==='L'?'R':'L'; tm.c=fneg(tm.c);
-        b.animate?b.animate([{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:180}):0;
-        fb.textContent=''; fb.className='fb'; render(); });
-      return b;
+    board.innerHTML='';
+    for(const side of ['L','R']){
+      if(side==='R')board.appendChild(elt('span','transfer-equals','='));
+      const zone=elt('div','transfer-side');zone.dataset.side=side;zone.setAttribute('role','group');zone.setAttribute('aria-label',side==='L'?'Левая часть уравнения':'Правая часть уравнения');
+      zone.appendChild(elt('div','transfer-side-title',side==='L'?'Левая часть':'Правая часть'));
+      const chips=elt('div','transfer-terms');zone.appendChild(chips);
+      model.terms.filter(t=>t.side===side).forEach(tm=>{
+        const b=elt('button','transfer-term',chipHTML(tm));b.type='button';b.draggable=!locked;b.disabled=locked;b.dataset.termId=tm.id;
+        b.setAttribute('aria-label','Слагаемое '+chipText(tm)+'. Перенести '+(side==='L'?'вправо':'влево'));
+        b.addEventListener('click',()=>{if(Date.now()<suppressClickUntil)return;move(tm.id,tm.side==='L'?'R':'L');});
+        b.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();move(tm.id,e.key==='ArrowLeft'?'L':'R');}});
+        b.addEventListener('dragstart',e=>{
+          if(locked){e.preventDefault();return;}
+          dragId=tm.id;b.classList.add('dragging');
+          if(e.dataTransfer){e.dataTransfer.setData('text/plain',tm.id);e.dataTransfer.effectAllowed='move';}
+        });
+        b.addEventListener('dragend',()=>{suppressClickUntil=Date.now()+350;clearDrag();});
+        // Touch uses the same model, with a sign preview on the moving card.
+        b.addEventListener('pointerdown',e=>{
+          if(locked||e.pointerType!=='touch')return;
+          touch={el:b,id:tm.id,pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,moved:false,ghost:null};
+          try{b.setPointerCapture(e.pointerId);}catch(err){}
+        });
+        b.addEventListener('pointermove',e=>{
+          if(!touch||touch.pointerId!==e.pointerId)return;
+          if(!touch.moved&&Math.hypot(e.clientX-touch.startX,e.clientY-touch.startY)<7)return;
+          e.preventDefault();touch.moved=true;
+          if(!touch.ghost){touch.ghost=b.cloneNode(true);touch.ghost.removeAttribute('data-term-id');touch.ghost.removeAttribute('aria-label');touch.ghost.setAttribute('aria-hidden','true');touch.ghost.tabIndex=-1;touch.ghost.classList.add('transfer-ghost');touch.ghost.disabled=true;box.appendChild(touch.ghost);b.classList.add('dragging');}
+          const zoneAt=targetAt(e.clientX,e.clientY);board.querySelectorAll('.transfer-side').forEach(z=>z.classList.toggle('over',z===zoneAt));
+          const preview=Object.assign({},tm,{c:zoneAt&&zoneAt.dataset.side!==tm.side?fneg(tm.c):tm.c});
+          touch.ghost.innerHTML=chipHTML(preview);touch.ghost.style.left=e.clientX+'px';touch.ghost.style.top=e.clientY+'px';
+        });
+        b.addEventListener('pointerup',e=>{
+          if(!touch||touch.pointerId!==e.pointerId)return;
+          const moved=touch.moved,id=touch.id,zoneAt=moved?targetAt(e.clientX,e.clientY):null;
+          if(moved)suppressClickUntil=Date.now()+350;
+          finishTouch();if(zoneAt)move(id,zoneAt.dataset.side);
+        });
+        b.addEventListener('pointercancel',()=>{if(touch){suppressClickUntil=Date.now()+350;finishTouch();}});
+        chips.appendChild(b);
+      });
+      if(!chips.children.length)chips.appendChild(elt('span','math','0'));
+      zone.addEventListener('dragover',e=>{if(!locked&&dragId!==null){e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect='move';zone.classList.add('over');}});
+      zone.addEventListener('dragleave',()=>zone.classList.remove('over'));
+      zone.addEventListener('drop',e=>{
+        e.preventDefault();if(locked||dragId===null)return;
+        const id=dragId;clearDrag();suppressClickUntil=Date.now()+350;move(id,side);
+      });
+      board.appendChild(zone);
     }
-    terms.filter(t=>t.side==='L').forEach(t=>zoneL.appendChild(mkChip(t)));
-    terms.filter(t=>t.side==='R').forEach(t=>zoneR.appendChild(mkChip(t)));
-    if(!zoneL.children.length)zoneL.appendChild(elt('span','pen-note','(пусто)'));
-    if(!zoneR.children.length)zoneR.appendChild(elt('span','pen-note','(пусто)'));
-    stage.appendChild(zoneL); stage.appendChild(eq); stage.appendChild(zoneR);
-    live.innerHTML=sideEq('L')+' = '+sideEq('R');
+    const sorted=model.sorted();
+    next.innerHTML=sorted?'<b>Слагаемые на своих местах.</b> Теперь сложи числа перед <i>x</i> слева и обычные числа справа. Впиши оба результата в поля ниже.':'Перенеси слагаемые с <i>x</i> в левую часть, обычные числа — в правую. Знак каждой перенесённой карточки изменится.';
+    if(!opts.onReady&&sorted)next.innerHTML='<b>Слагаемые на своих местах.</b> Теперь отдельно сложи числа перед <i>x</i> слева и обычные числа справа.';
+    ready.hidden=!sorted;ready.disabled=locked;
   }
-  function check(){
-    const xRight=terms.some(t=>t.x===1 && t.side==='R');
-    const nLeft=terms.some(t=>t.x===0 && t.side==='L');
-    if(xRight||nLeft){ fb.className='fb bad';
-      fb.innerHTML= xRight&&nLeft?'Ещё не всё: и икс справа, и число слева. Перенеси их.'
-        : xRight?'Икс остался справа — перенеси его влево (знак сменится).'
-        : 'Число осталось слева — перенеси его вправо.'; return; }
-    let k=F0,m=F0; terms.forEach(t=>{ if(t.x===1)k=fadd(k,t.c); else m=fadd(m,t.c); });
-    fb.className='fb good';
-    if(fzero(k)){ fb.innerHTML='Иксы сократились полностью — особый случай (корней нет или их бесконечно много). В задании 9 так не бывает — попробуй другой пример.'; return; }
-    fb.innerHTML='✓ Расставлено верно! Приводим подобные: &nbsp;<span class="math">'+
-      (feq(k,F1)?'':feq(k,F(-1))?MINUS:numHTML(k))+'<i>x</i> = '+numHTML(m)+
-      '</span>&nbsp; → делим: <span class="math"><i>x</i> = '+numHTML(fdiv(m,k))+'</span>'+
-      (fisint(fdiv(m,k))?'':' <span class="pen-note">(в бланк '+decStr(fdiv(m,k))+')</span>');
-  }
-  const bChk=elt('button','btn small','Проверить расстановку'); bChk.addEventListener('click',check);
-  const bNew=elt('button','btn ghost small','Другой пример'); bNew.addEventListener('click',loadTask);
-  row.appendChild(bChk); row.appendChild(bNew);
-  loadTask();
-  return box;
+  ready.addEventListener('click',()=>{if(!locked&&model.sorted()&&opts.onReady)opts.onReady();});
+  render();
+  return {node:box,model,lock(){locked=true;finishTouch();clearDrag();render();}};
+}
+/* The reference lesson uses the same transfer model as guided current tasks. */
+function termFlyer(){
+  const box=elt('div','card'),host=elt('div');
+  box.appendChild(elt('div','eyebrow','потренируй перенос слагаемых'));box.appendChild(host);
+  function loadTask(){const t=genTask('g_l2');host.replaceChildren(makeTransferLab({Lt:t.p.Lt,Rt:t.p.Rt}).node);}
+  const another=elt('button','btn ghost small','Другой пример');another.type='button';another.addEventListener('click',loadTask);box.appendChild(another);loadTask();return box;
 }
 
 /* ─────────── СИГНАТУРНЫЙ ИНТЕРАКТИВ: подборщик Виета ─────────── */
@@ -3167,8 +3235,8 @@ function makeMaraCard(t, onProgress){
   const q=document.createElement('div'); q.className='task-q'; q.innerHTML=taskInstrHTML(t); card.appendChild(q);
 
   const ansField=document.createElement('span'); ansField.className='field';
-  const lbl=document.createElement('span'); lbl.className='lbl'; lbl.innerHTML='Ответ:'; ansField.appendChild(lbl);
-  const a=mkAns('?'); ansField.appendChild(a); card.appendChild(ansField);
+  const lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent=['L','LB','LF','LSQ','PROP'].includes(t.fam)?'Чему равен x?':'Ответ:'; ansField.appendChild(lbl);
+  const a=mkAns('?');a._input.setAttribute('aria-label',lbl.textContent);ansField.appendChild(a);card.appendChild(ansField);
 
   const fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('aria-live','polite'); card.appendChild(fb);
   const stepHost=document.createElement('div');
@@ -3217,6 +3285,9 @@ function makeMaraCard(t, onProgress){
     if(stepHost.dataset.open){stepHost.hidden=!stepHost.hidden;bStep.setAttribute('aria-expanded',String(!stepHost.hidden));return;}
     stepHost.dataset.open='1';stepHost.className='minimal-hint-panel';bStep.setAttribute('aria-expanded','true');
     solveInline(stepHost, t, undefined, hooks);
+    const back=document.createElement('button');back.type='button';back.className='btn ghost';back.textContent='Вернуться к задаче';
+    back.addEventListener('click',()=>{stepHost.hidden=true;bStep.setAttribute('aria-expanded','false');a._input.focus({preventScroll:true});});
+    stepHost.appendChild(back);
   });
   return card;
 }
