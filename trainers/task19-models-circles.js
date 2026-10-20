@@ -57,7 +57,7 @@
   defs.radiusChord={
     title:'Радиус пересекает хорду',values:{offset:2,position:.4},controls:[range('offset','Сдвинуть хорду',1,4,.1),range('position','Передвинуть точку M вдоль хорды',-.8,.8,.05)],
     sample(p){const r=5,h=Math.sqrt(r*r-p.offset*p.offset),O=[0,0],A=[-h,p.offset],B=[h,p.offset],M=[p.position*h,p.offset],T=mul(M,r/hypot(O,M));return{points:{O,A,B,M,T},metrics:{radius:r,AM:hypot(A,M),MB:hypot(M,B),OT:hypot(O,T),angle:angleAt(O,M,A)}};},
-    render(s){const P=s.points,M=s.metrics,T=fit(bounds(P.O,5));return{body:circleAt(T,P.O,5,INK,LIGHT)+line(T(P.A),T(P.B),BLUE)+line(T(P.O),T(P.T),GREEN)+labelPoints(P,['A','B','T'],T)+origin(T,P.O)+dot(T(P.M),GREEN)+text(T(P.M)[0]-17,T(P.M)[1]+20,'M',GREEN),readout:[`AM = ${fmt(M.AM)}; MB = ${fmt(M.MB)}`,`Радиус OT = ${fmt(M.OT)}`,`Угол OMA = ${fmt(M.angle)}°`]};}
+    render(s){const P=s.points,M=s.metrics,T=fit(bounds(P.O,5));return{body:circleAt(T,P.O,5,INK,LIGHT)+line(T(P.A),T(P.B),BLUE)+line(T(P.O),T(P.T),GREEN)+labelPoints(P,['A','B','T'],T)+origin(T,P.O)+dot(T(P.M),GREEN)+text(T(P.M)[0]+(P.M[0]>=0?17:-17),T(P.M)[1]+20,'M',GREEN),readout:[`AM = ${fmt(M.AM)}; MB = ${fmt(M.MB)}`,`Радиус OT = ${fmt(M.OT)}`,`Угол OMA = ${fmt(M.angle)}°`]};}
   };
   defs.equalCircleChords={
     title:'Две равные хорды',values:{offset:2,angle:95},controls:[range('offset','Изменить длину обеих хорд',.5,4.5,.1),range('angle','Повернуть вторую хорду',40,150,1,'°')],

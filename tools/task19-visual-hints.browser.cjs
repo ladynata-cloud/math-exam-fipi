@@ -238,6 +238,8 @@ async function main() {
       const recordLabels=async(card,state)=>{
         labelEvidence.push({model:card.hint.model,card:card.id,width:360,state,...await svgLabelEvidence(page)});
         fs.writeFileSync(path.join(familyArtifacts,'svg-label-bounds.json'),JSON.stringify(labelEvidence,null,2));
+        const outside=labelEvidence.at(-1).labels.filter(label=>label.outsideViewBox);
+        assert.equal(outside.length,0,card.id+' '+state+' labels stay inside the diagram: '+outside.map(label=>label.text).join(', '));
       };
       for (const width of [320,360,1280]) {
         await page.setViewportSize({width,height:900});

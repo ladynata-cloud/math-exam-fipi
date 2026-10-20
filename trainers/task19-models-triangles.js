@@ -108,7 +108,8 @@
   function renderCenters(s){
     const P=s.points,M=s.metrics,p=s.values,focus=p.focus||'circumcenter',inside=focus==='incenter'||focus==='both',outside=focus!=='incenter';
     let bound=[P.A,P.B,P.C];if(outside)bound.push([P.O[0]-M.radius,P.O[1]-M.radius],[P.O[0]+M.radius,P.O[1]+M.radius]);
-    const T=fit(bound,{x:65,y:30,w:430,h:275}),unit=hypot(T([0,0]),T([1,0]));let body=poly([P.A,P.B,P.C].map(T))+labelPoints(P,['A','B','C'],T),readout=[];
+    // Leave room for outward vertex labels, including C above the circumcircle.
+    const T=fit(bound,{x:65,y:50,w:430,h:240}),unit=hypot(T([0,0]),T([1,0]));let body=poly([P.A,P.B,P.C].map(T))+labelPoints(P,['A','B','C'],T),readout=[];
     if(outside){body+=circle(T(P.O),M.radius*unit,BLUE);for(const name of ['A','B','C'])body+=line(T(P.O),T(P[name]),BLUE,'5 5');body+=dot(T(P.O),BLUE)+text(T(P.O)[0]+17,T(P.O)[1]+16,'O',BLUE);readout.push('OA = '+fmt(M.OA)+'; OB = '+fmt(M.OB)+'; OC = '+fmt(M.OC));
       if(p.showPerpendiculars)for(const [u,v]of [['A','B'],['B','C'],['C','A']]){const H=mid(P[u],P[v]),end=[H[0]+(P.O[0]-H[0])*1.25,H[1]+(P.O[1]-H[1])*1.25];body+=line(T(H),T(end),GREEN,'5 5')+rightMark(T(P.O),T(H),T(P[u]))+dot(T(H),GREEN);}
     }
