@@ -65,6 +65,9 @@ async function percentages(page,base,width){
   assert.equal((await percentState(page)).taskState.hintLevel,1,'reopening help does not consume another hint or erase assistance');
  }
  await page.locator('#practice-return-answer').click();
+ const modes=page.locator('details.pm-details').filter({has:page.locator('.main-nav')});
+ if(await modes.getAttribute('open')===null)await modes.locator(':scope > summary').click();
+ assert.equal(await page.locator('.main-nav [data-view="learn"]').isVisible(),true,'mode selection opens through its visible disclosure');
  await page.locator('.main-nav [data-view="learn"]').click();
  await page.locator('#learn-return-task').waitFor({state:'visible'});await page.locator('#learn-return-task').click();
  assert.equal(await page.locator('#view-practice').isVisible(),true);assert.equal(await input.inputValue(),'12,5');
