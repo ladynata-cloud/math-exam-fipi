@@ -13,6 +13,13 @@ Typographical corrections and mechanical styling changes do not require a paid
 consultation. Group related design questions into one focused discussion; do
 not send the entire repository or make a paid call on every commit.
 
+The owner clarified that, when authorized API access and balance are available,
+Claude should also be a creative collaborator: propose visual models, purposeful
+game actions, experiments, counterexamples and alternative teaching sequences.
+Consultation may happen during development of a difficult step as well as at
+the start and finish. Evaluate ideas against the learning goal and keep the
+interface simple; novelty alone is not a reason to add an interaction.
+
 ## Before implementation
 
 Prepare a small, sanitized brief containing:
@@ -44,8 +51,16 @@ Suggested focused request:
 - Start with the task. Keep the screen calm, with large readable graphics,
   generous spacing, and green primary actions. Collapse secondary settings and
   results. Use the established task11/task19 style when relevant.
-- After the condition, offer “Хочешь подсказку?”. Its drawing, interactive
-  model, or step should help the learner reason about the current task.
+- Offer “Хочешь подсказку?” after the condition and keep contextual help
+  available at difficult steps throughout practice, not only on the first
+  screen. One calm, consistent control can reveal help for the current step.
+  Adapt the hint to the condition, the current action and the learner's work.
+  Where useful, reveal a small clue, then a drawing/interactive model, then a
+  worked step on request. Do not automatically reveal the final answer.
+- Opening, changing or closing help must not erase work, replace the current
+  problem, or advance the learner automatically. Keep completed steps visible.
+  Apply the existing diagnostic/exam restrictions rather than enabling hints
+  unconditionally in every mode.
 - Preserve entered answers and completed steps. Once a digit has been chosen,
   immediately write it in its place in the calculation.
 - Use familiar school language, including “в уме” for carrying in the relevant
@@ -58,7 +73,8 @@ Suggested focused request:
 - Provide understanding through action, diagrams, explanations and
   counterexamples. Avoid an exercise becoming memorization or repeated guessing.
 - Distinguish demonstrated ability with help from independent success. Closing
-  a hint must not erase the fact that it was used.
+  a hint must not erase the fact that it was used. Check independent mastery
+  with a fresh analogous task without help, not by hiding a previously seen hint.
 
 ## Review the ready result
 
@@ -72,7 +88,8 @@ Ask for two separate assessments:
    behavior, input retention, progress accounting, and regressions.
 2. Validation: whether the activities support the stated learning goal, the
    explanation and model reveal the relevant relationship, the step size is
-   appropriate, and a learner could succeed by guessing without understanding.
+   appropriate, help addresses later difficulties as well as the initial task,
+   and a learner could succeed by guessing without understanding.
 
 Request reproducible findings tied to an example or screen. Reconcile them
 with code, independent calculations, tests and observed behavior. A model's
