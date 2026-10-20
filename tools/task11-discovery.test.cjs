@@ -9,14 +9,15 @@ const KEY='mathExamCourseProgress.v1';
 const SEEN='mathexam.task11.discoverySeen.v1';
 const plain=value=>JSON.parse(JSON.stringify(value));
 function boot(options={}){
- const errors=[],console=new VirtualConsole();console.on('jsdomError',e=>errors.push(e.message));
- const dom=new JSDOM(html,{url:'https://example.test/trainers/oge-task11-graphs-trainer.html'+(options.query||''),runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:console,beforeParse(w){
+ const errors=[],downloads=[],console=new VirtualConsole();console.on('jsdomError',e=>errors.push(e.message));
+ const dom=new JSDOM(options.html||html,{url:'https://example.test/trainers/oge-task11-graphs-trainer.html'+(options.query||''),runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:console,beforeParse(w){
+  if(options.captureDownload){const Blob=w.Blob;w.Blob=class extends Blob{constructor(parts,config){super(parts,config);downloads.push(parts.join(''));}};w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};w.HTMLAnchorElement.prototype.click=()=>{};}
   w.scrollTo=()=>{};let seed=20261020;w.Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
   if(options.seen)w.localStorage.setItem(SEEN,'1');if(options.storage)w.localStorage.setItem(KEY,JSON.stringify(options.storage));
   if(options.blocked)Object.defineProperty(w,'localStorage',{get(){throw Error('blocked');}});
  }});
  const w=dom.window,el=id=>w.document.getElementById(id);
- return {dom,w,el,errors,run:s=>w.eval(s),open(i){const b=w.document.querySelector('.function-help[data-i="'+i+'"]');b.focus();b.click();return b;},state:()=>plain(w.Task11Discovery.getState()),input(control,value){control.value=String(value);control.dispatchEvent(new w.Event('input',{bubbles:true}));}};
+ return {dom,w,el,errors,downloads,run:s=>w.eval(s),open(i){const b=w.document.querySelector('.function-help[data-i="'+i+'"]');b.focus();b.click();return b;},state:()=>plain(w.Task11Discovery.getState()),input(control,value){control.value=String(value);control.dispatchEvent(new w.Event('input',{bubbles:true}));}};
 }
 test('first ordinary visit offers three shapes; previous use, review and selftest retain their modes',()=>{
  const fresh=boot();try{
@@ -24,7 +25,7 @@ test('first ordinary visit offers three shapes; previous use, review and selftes
   assert.deepEqual(plain(fresh.run('M4.task.items.map(i=>({kind:i.family,params:i.params}))')),[{kind:'lin',params:{k:1,b:0}},{kind:'par',params:{a:1,b:0,c:0}},{kind:'hyp',params:{k:1}}]);
   assert.equal(fresh.w.document.querySelectorAll('#m4-desc .function-help').length,3);
   assert.equal(new Set([...fresh.el('m4-graphs').querySelectorAll('svg')].map(svg=>svg.innerHTML)).size,3);
-  assert(!fresh.el('t11-help-dialog').open);assert.equal(fresh.w.localStorage.getItem(KEY),null);
+  assert(fresh.el('t11-help-panel').hidden);assert.equal(fresh.w.localStorage.getItem(KEY),null);
   fresh.el('m4-next').click();assert(!fresh.run('M4.task.starter'));
  }finally{fresh.w.close();}
  for(const options of [{seen:true},{storage:{'oge-t11-grafiki':{v:1,solvedByType:{t43:2}}}},{query:'?selftest=1'},{query:'?mode=review',storage:{mistakes:{'oge-t11-grafiki|t44':{w:1,r:0}}}}]){
@@ -33,18 +34,19 @@ test('first ordinary visit offers three shapes; previous use, review and selftes
 });
 test('per-function help keeps matching DOM, partial drafts, attempts and common progress intact',()=>{
  const t=boot({storage:{other:{v:1,solvedByType:{a:9}}}});try{
-  const host=t.el('m4-match'),selects=[...t.el('m4-desc').querySelectorAll('select')];selects[0].value='2';selects[0].dispatchEvent(new t.w.Event('change'));
+  const host=t.el('m4-match'),selects=[...t.el('m4-desc').querySelectorAll(':scope > .row > select')];selects[0].value='2';selects[0].dispatchEvent(new t.w.Event('change'));
   const before=t.w.localStorage.getItem(KEY),key=plain(t.run('M4.task.key'));
   for(let i=0;i<3;i++){
-   const button=t.open(i);assert(t.el('t11-help-dialog').open);assert.equal(t.w.document.activeElement,t.el('t11-help-close'));
+   const button=t.open(i);assert(!t.el('t11-help-panel').hidden);assert.equal(t.w.document.activeElement,button);
+   assert.equal(t.el('t11-help-panel').previousElementSibling,button.closest('.row'));assert.equal(button.getAttribute('aria-expanded'),'true');
    t.el('t11-help-start').click();assert(!t.el('t11-help-observation').hidden);t.el('t11-help-highlight').click();
    assert(t.el('t11-help-graph').querySelector('[data-discovery-highlight]'));
-   t.el('t11-help-dialog').dispatchEvent(new t.w.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
-   assert(!t.el('t11-help-dialog').open);assert.equal(t.w.document.activeElement,button);
-   assert.equal(t.el('m4-match'),host);assert.equal(selects[0],t.el('m4-desc').querySelector('select'));assert.equal(selects[0].value,'2');assert.equal(selects[1].value,'');
+   t.el('t11-help-panel').dispatchEvent(new t.w.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
+   assert(t.el('t11-help-panel').hidden);assert.equal(t.w.document.activeElement,button);assert.equal(button.getAttribute('aria-expanded'),'false');
+   assert.equal(t.el('m4-match'),host);assert.equal(selects[0],t.el('m4-desc').querySelector(':scope > .row > select'));assert.equal(selects[0].value,'2');assert.equal(selects[1].value,'');
    assert.deepEqual(plain(t.run('M4.task.key')),key);assert.equal(t.run('M4.attempts'),0);assert.equal(t.run('M4.done'),false);assert.equal(t.w.localStorage.getItem(KEY),before);
   }
-  assert.equal(t.el('t11-help-dialog').querySelectorAll('input:not([type=range])').length,0,'No calculation answer fields');
+  assert.equal(t.el('t11-help-panel').querySelectorAll('input:not([type=range])').length,0,'No calculation answer fields');
   assert(!t.el('m4-good').classList.contains('show'));assert(t.el('m4-show').hidden);
   assert.deepEqual(t.errors,[]);
  }finally{t.w.close();}
@@ -89,14 +91,25 @@ test('all generated families expose exact task parameters and valid controls, in
   assert.deepEqual([...observed].sort(),['constant','hyp','lin','par','root']);assert.deepEqual(t.errors,[]);
  }finally{t.w.close();}
 });
-test('help supports keyboard focus, unique IDs alongside the old lab, and blocked storage',()=>{
+test('inline help leaves the assignment operable, moves between rows, and never traps Tab',()=>{
  const t=boot({blocked:true});try{
-  t.el('m4-hint').click();const button=t.open(0);
+  t.el('m4-hint').click();const button=t.open(0),panel=t.el('t11-help-panel');
   const ids=[...t.w.document.querySelectorAll('[id]')].map(node=>node.id);assert.equal(new Set(ids).size,ids.length);
-  t.el('t11-help-close').dispatchEvent(new t.w.KeyboardEvent('keydown',{key:'Tab',shiftKey:true,bubbles:true,cancelable:true}));
-  assert.equal(t.w.document.activeElement,t.el('t11-help-start'));
-  t.el('t11-help-start').dispatchEvent(new t.w.KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true}));assert.equal(t.w.document.activeElement,t.el('t11-help-close'));
-  t.el('t11-help-close').click();assert.equal(t.w.document.activeElement,button);
+  assert.equal(panel.tagName,'SECTION');assert.notEqual(panel.getAttribute('aria-modal'),'true');
+  assert.equal(button.getAttribute('aria-haspopup'),null);
+  const tab=new t.w.KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true});
+  t.el('t11-help-start').dispatchEvent(tab);assert.equal(tab.defaultPrevented,false,'normal page tab order is not intercepted');
+  const backTab=new t.w.KeyboardEvent('keydown',{key:'Tab',shiftKey:true,bubbles:true,cancelable:true});
+  t.el('t11-help-close').dispatchEvent(backTab);assert.equal(backTab.defaultPrevented,false);
+  t.input(t.el('t11-help-x'),2);const stateA=t.state();
+  const buttonB=t.open(1);assert.equal(panel.previousElementSibling,buttonB.closest('.row'));
+  assert.equal(button.getAttribute('aria-expanded'),'false');assert.equal(buttonB.getAttribute('aria-expanded'),'true');
+  assert.equal(t.state().index,1);assert.equal(t.state().changed,false);
+  t.open(0);assert.deepEqual(t.state(),stateA,'switching the open panel retains independent experiments');
+  button.click();assert(panel.hidden);assert.equal(button.getAttribute('aria-expanded'),'false');
+  button.click();assert(!panel.hidden);
+  const select=t.el('m4-desc').querySelector(':scope > .row > select');select.value='2';select.dispatchEvent(new t.w.Event('change'));
+  assert.equal(select.value,'2');assert.equal(t.state().index,0);assert(!panel.hidden,'answer entry does not close the inline model');
   t.input(t.el('m4-answer'),t.run('M4.task.key.join("")'));t.el('m4-check').click();assert.match(t.el('m4-good').textContent,/Верно/);
   assert.deepEqual(t.errors,[]);
  }finally{t.w.close();}
@@ -112,4 +125,27 @@ test('nested explanations remain honest when a vertex is clipped or a hyperbola 
   assert.equal(t.el('t11-help-graph').querySelectorAll('circle').length,0);assert.doesNotMatch(t.el('t11-help-graph').innerHTML,/NaN|Infinity/);
   assert.deepEqual(t.errors,[]);
  }finally{t.w.close();}
+});
+
+test('an open model with parameter selects survives new tasks and a downloaded HTML reboot',()=>{
+ const t=boot({captureDownload:true});let downloaded;
+ try{
+  t.open(2);const panel=t.el('t11-help-panel'),parameter=t.el('t11-help-param-k');t.input(parameter,4);
+  const parameterValue=parameter.value;
+  const matches=[...t.el('m4-desc').querySelectorAll(':scope > .row > select')];
+  matches.forEach((select,i)=>{select.value=['2','3','1'][i];select.dispatchEvent(new t.w.Event('change'));});
+  assert.equal(t.el('m4-answer').value,'231');assert.equal(parameter.value,parameterValue,'matching answers never modify the model parameter');
+  t.el('dl-html').click();assert.equal(t.downloads.length,1);downloaded=t.downloads[0];
+  assert.match(downloaded,/id="t11-help-panel"/);
+  t.el('m4-next').click();assert(panel.isConnected);assert(panel.hidden);assert.equal(t.state(),null);
+  assert.equal(t.el('m4-answer').value,'');t.open(0);assert.equal(t.el('t11-help-panel'),panel);assert(!panel.hidden);
+  const x=t.state().pointX;t.input(t.el('t11-help-x'),x===5?4:5);assert.notEqual(t.state().pointX,x,'moved panel keeps its event listeners after regeneration');
+  assert.deepEqual(t.errors,[]);
+ }finally{t.w.close();}
+ const reboot=boot({html:downloaded});try{
+  assert.equal(reboot.w.document.querySelectorAll('#t11-help-panel').length,1);assert(reboot.el('t11-help-panel').isConnected);assert(reboot.el('t11-help-panel').hidden);
+  reboot.open(2);assert(!reboot.el('t11-help-panel').hidden);reboot.input(reboot.el('t11-help-param-k'),4);assert.equal(reboot.state().values.k,4);
+  reboot.el('t11-help-start').click();reboot.el('t11-help-highlight').click();assert(reboot.el('t11-help-graph').querySelector('[data-discovery-highlight]'));
+  assert.deepEqual(reboot.errors,[]);
+ }finally{reboot.w.close();}
 });

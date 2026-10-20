@@ -2,7 +2,15 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task11 visual discovery and help inside help
+## In progress: task11 inline help
+
+- The owner asks for help on the same page, because the modal covers the task.
+- [Scope](tasks/TASK11_INLINE_HELP.md): expand the existing interactive model
+  immediately below the selected function, keep answers accessible and preserve
+  independent experiments and deeper help. No mathematics or backend changes.
+- Focused lifecycle, input, keyboard and mobile checks precede publication.
+
+## Published: task11 visual discovery and help inside help
 
 - Owner requests a public trainer that demonstrates a useful first success
   without requiring arithmetic. Every function gets its own interactive help,
@@ -12,8 +20,16 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
   opening help preserves choices and never grades automatically.
 - First ordinary visit starts with three distinct shapes. Each function keeps
   an independent experiment; changed formulas are labelled and can be reset.
-- Local17 learner/math tests and668 algebra contracts passed. Independent review
-  and exact-head cloud browser/mobile/keyboard gates are next.
+- PR280 merged as6ea58439e0628b76cf98b7263a598347f96fe83e, parent
+  3c17e78bc738a58d94ef340fef17242d679871aa, reviewed tree
+  04bd175a6ce4b9bc66be5d675dedd436d3d3732a. No base drift.
+- All19 learner/math tests,668 algebra contracts and independent review passed.
+  Task11 CI39480657557, course compatibility39480657533 andSEO39480657579
+  passed. Pages39481294904 succeeded on the merged commit.
+- Public HTML returned200;167383bytes andSHA256
+  1d00e44942f06e8380b30daa1367e2f30866250b954470641c80e2bd09ca3f5c
+  match reviewed source. Live controls, nested help, reset and retained choices
+  were verified; desktop/mobile screenshots inspected.
 - The owner deferred Claude API use until a difficult creative question arises.
   No provider call, billing change or external approval is claimed.
 - Closing the full working course is a future separately scoped task. Public
