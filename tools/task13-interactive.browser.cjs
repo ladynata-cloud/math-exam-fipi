@@ -147,12 +147,17 @@ async function pointerProbe(page, lab, selector) {
   const box = await plot.boundingBox();
   assert.ok(box && box.width > 100 && box.height > 20, 'Interactive plot is usable');
   const before = await lab.getAttribute('data-probe-x');
+  const pointFraction = await plot.evaluate(svg => Number(svg.querySelector('[data-probe-point]').getAttribute('cx')) / svg.viewBox.baseVal.width);
+  assert.ok(Number.isFinite(pointFraction), 'The current trial marker has a finite position');
+  // Pick the opposite part of the actual plot. A fixed 31% tap rounded back
+  // to the already selected x = −3 in systems:1, so it did not test movement.
+  const targetFraction = pointFraction < .5 ? .8 : .2;
   if (page.viewportSize().width < 600) {
-    await plot.tap({ position: { x: box.width * .31, y: box.height * .4 } });
+    await plot.tap({ position: { x: box.width * targetFraction, y: box.height * .4 } });
   } else {
-    await page.mouse.move(box.x + box.width * .2, box.y + box.height * .4);
+    await page.mouse.move(box.x + box.width * pointFraction, box.y + box.height * .4);
     await page.mouse.down();
-    await page.mouse.move(box.x + box.width * .71, box.y + box.height * .4, { steps: 8 });
+    await page.mouse.move(box.x + box.width * targetFraction, box.y + box.height * .4, { steps: 8 });
     await page.mouse.up();
   }
   assert.notEqual(await lab.getAttribute('data-probe-x'), before, 'Pointer or touch interaction changes x');
