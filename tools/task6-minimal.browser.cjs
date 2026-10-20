@@ -195,6 +195,13 @@ async function run() {
         await page.locator('#labExercise > summary').click();
         if(await page.locator('#labMiniAnswer').count())await page.locator('#labMiniAnswer').fill('mini draft');
         else await page.locator('[data-mini-choice]').first().click();
+        if(example.family==='pow'){
+          const fractionBars=await page.locator('.factor-tiles .f > .fn').evaluateAll(nodes=>nodes.map(node=>{
+            const style=getComputedStyle(node);return {width:parseFloat(style.borderBottomWidth),kind:style.borderBottomStyle,left:parseFloat(style.borderBottomLeftRadius),right:parseFloat(style.borderBottomRightRadius),background:style.backgroundColor};
+          }));
+          assert.ok(fractionBars.length>0,'Power example includes fraction factors');
+          for(const bar of fractionBars){assert.ok(bar.width>=1,'Fraction bar has visible thickness');assert.equal(bar.kind,'solid');assert.equal(bar.left,0,'Fraction bar left edge stays straight');assert.equal(bar.right,0,'Fraction bar right edge stays straight');assert.match(bar.background,/^(?:transparent|rgba\(0, 0, 0, 0\))$/,'Only outer factor tiles have a background');}
+        }
         await noOverflow(page,width+'px '+example.family+' lab');
         const labels=await page.locator('#labOutput svg text').evaluateAll(nodes=>nodes.map(node=>({
           text:node.textContent,size:parseFloat(getComputedStyle(node).fontSize)*node.getScreenCTM().a,

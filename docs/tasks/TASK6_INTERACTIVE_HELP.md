@@ -108,5 +108,24 @@ reviewed implementation.
 A new release worktree/branch was created from that composed tree with the new
 main as parent. The original reviewed branch was preserved. Integration changes
 only scope-base metadata, the corresponding CI fetch, this document and project
-status. Runtime HTML blob remains `16e4db46041507a09ab85ab32e13595d7e8e50ad`.
+status. The initial composition preserved runtime HTML blob
+`16e4db46041507a09ab85ab32e13595d7e8e50ad`; the subsequent bounded visual fix
+below intentionally changes that HTML blob.
 No reset, rebase, force operation or unrelated change is used.
+
+
+## Cloud visual review correction
+
+Initial exact-head CI39509651007 passed39 Node checks and all11 help families
+at320/360/1280px, iframe and offline checks. Independent inspection of artifact
+12306085150 found that the power-factor tile CSS also styled nested fraction
+parts, rounding away most of the horizontal fraction bar. This was a real
+visual defect despite the passing initial automated checks.
+
+The fix scopes tile background/padding/radius to direct-child tiles only:
+`.factor-tiles > span`. The browser gate now checks visible, straight fraction
+bars and transparent nested parts in the power example at all three widths.
+This is the only runtime change after the original reviewed implementation.
+Frozen task-bank bytes, parser, grading and session state remain unchanged.
+New exact-head cloud evidence and focused visual approval are required before
+release; the initial visual artifact is not treated as release approval.

@@ -11,8 +11,10 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
   course links. Bank bytes, grading and session-only progress remain unchanged.
 - Reviewed implementation head83e614726695d5f2b86beb2b16e299c0b5240d12 passed39
   Node/JSDOM checks and independent exact-result checks for all1,054 steps.
-- Release is composed on the authorized task19 merge below. Exact-head cloud
-  browser checks and publication are pending; no production task6 update claimed.
+- Release is composed on the authorized task19 merge below. Initial cloud
+  checks passed, but visual review found rounded power-tile styling obscured
+  fraction bars. A direct-child CSS fix and bar-visibility regression are added;
+  new exact-head cloud/visual checks and publication remain pending.
 - Tasks1–5, all8 story types, remain a separate authorized workstream. Paid
   Claude API use remains deferred by the owner.
 
