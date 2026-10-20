@@ -2,19 +2,21 @@
 
 Updated: 2026-10-20 (Asia/Novosibirsk)
 
-## Current task: minimalist task19 with visual hints
+## Current task: task19 terminology and source coverage
 
-- PR269 is published as `6dff8e7b03444ce2a84835ab5ca5ccc0393af3eb`.
-  Three exact-head workflows and Pages39409477594 passed. All four checked
-  public/cabinet responses matched; durable learning storage was healthy and
-  both green practice buttons were verified in the live cabinet.
-- The owner requests the first trainer's minimal appearance and a button
-  "Хочешь подсказку?" below each statement that opens a drawing or interactive
-  model. [Scope](tasks/TASK19_VISUAL_HINTS.md), MEDIUM: both existing public
-  task19 URLs, preserved banks, optional help and immediate post-answer reasons.
-- Next: complete visual mappings and independent math review, run focused
-  browser checks, publish and verify the live hints. Existing publication
-  permission applies; this entry does not claim the redesign is live yet.
+- PR270 is published as `763e89aedbd561054e3860016bb999ef6aa15b19`.
+  Task19 and SEO cloud checks, Pages39423226004 and all9 public file comparisons
+  passed. Both public URLs and the cabinet link open the minimal visual-hint UI.
+  Cabinet storage is available and durable; final gate TASK19_VISUAL_HINTS_OK.
+- The owner requests ordinary school language and recovery/completeness checking
+  of the summer assertion bank. [Scope](tasks/TASK19_CORPUS_COVERAGE.md), MEDIUM.
+- Recovered June12 source:178 authored/previous assertions, not an official FIPI
+  export. Compare every entry and available external reference; retain explicit
+  limits where the current official bank cannot be enumerated.
+- Next: finish hints and independent review, run coverage/browser checks, publish
+  and verify. Existing cloud/publication authorization applies.
+- Subsequent explicit owner task: redesign task11 in the same minimal style with
+  three graphs/functions and an optional interactive lab; publish separately.
 
 ## Current follow-up: visible arithmetic and practice retests
 

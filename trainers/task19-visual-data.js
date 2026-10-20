@@ -69,7 +69,8 @@ const data = {
     {
       "id": "prev-004",
       "aliases": [
-        "prev-004"
+        "prev-004",
+        "fipi-042"
       ],
       "theme": "Прямые и углы",
       "text": "При пересечении параллельных прямых секущей соответственные углы равны.",
@@ -83,7 +84,8 @@ const data = {
     {
       "id": "prev-005",
       "aliases": [
-        "prev-005"
+        "prev-005",
+        "fipi-027"
       ],
       "theme": "Прямые и углы",
       "text": "Если две прямые перпендикулярны одной и той же третьей прямой, то они параллельны.",
@@ -97,7 +99,8 @@ const data = {
     {
       "id": "prev-006",
       "aliases": [
-        "prev-006"
+        "prev-006",
+        "fipi-073"
       ],
       "theme": "Прямые и углы",
       "text": "Через две различные точки можно провести ровно одну прямую.",
@@ -188,7 +191,8 @@ const data = {
     {
       "id": "prev-012",
       "aliases": [
-        "prev-012"
+        "prev-012",
+        "fipi-023"
       ],
       "theme": "Треугольники",
       "text": "В треугольнике против большей стороны лежит больший угол.",
@@ -216,7 +220,9 @@ const data = {
     {
       "id": "prev-014",
       "aliases": [
-        "prev-014"
+        "prev-014",
+        "fipi-031",
+        "fipi-065"
       ],
       "theme": "Треугольники",
       "text": "В равнобедренном треугольнике углы при основании равны.",
@@ -230,7 +236,8 @@ const data = {
     {
       "id": "prev-015",
       "aliases": [
-        "prev-015"
+        "prev-015",
+        "fipi-010"
       ],
       "theme": "Треугольники",
       "text": "В равностороннем треугольнике каждый угол равен 60°.",
@@ -258,7 +265,8 @@ const data = {
     {
       "id": "prev-017",
       "aliases": [
-        "prev-017"
+        "prev-017",
+        "fipi-006"
       ],
       "theme": "Треугольники",
       "text": "В прямоугольном треугольнике гипотенуза является самой длинной стороной.",
@@ -338,7 +346,8 @@ const data = {
     {
       "id": "prev-022",
       "aliases": [
-        "prev-022"
+        "prev-022",
+        "fipi-005"
       ],
       "theme": "Треугольники",
       "text": "В любом треугольнике высота, проведённая к стороне, совпадает с медианой.",
@@ -357,7 +366,8 @@ const data = {
     {
       "id": "prev-023",
       "aliases": [
-        "prev-023"
+        "prev-023",
+        "fipi-066"
       ],
       "theme": "Треугольники",
       "text": "В равнобедренном треугольнике высота, проведённая к основанию, является и медианой, и биссектрисой.",
@@ -385,7 +395,8 @@ const data = {
     {
       "id": "prev-025",
       "aliases": [
-        "prev-025"
+        "prev-025",
+        "fipi-011"
       ],
       "theme": "Треугольники",
       "text": "Если две стороны и угол между ними равны соответствующим элементам другого треугольника, то треугольники равны.",
@@ -413,7 +424,8 @@ const data = {
     {
       "id": "prev-027",
       "aliases": [
-        "prev-027"
+        "prev-027",
+        "fipi-016"
       ],
       "theme": "Треугольники",
       "text": "Если два угла одного треугольника равны двум углам другого, то такие треугольники подобны.",
@@ -635,7 +647,8 @@ const data = {
     {
       "id": "prev-040",
       "aliases": [
-        "prev-040"
+        "prev-040",
+        "fipi-071"
       ],
       "theme": "Треугольники",
       "text": "Если в треугольнике два угла равны, то он равнобедренный.",
@@ -663,7 +676,8 @@ const data = {
     {
       "id": "prev-042",
       "aliases": [
-        "prev-042"
+        "prev-042",
+        "fipi-007"
       ],
       "theme": "Треугольники",
       "text": "Средняя линия треугольника параллельна третьей стороне и равна половине этой стороны.",
@@ -677,7 +691,8 @@ const data = {
     {
       "id": "prev-043",
       "aliases": [
-        "prev-043"
+        "prev-043",
+        "fipi-032"
       ],
       "theme": "Четырёхугольники",
       "text": "Сумма внутренних углов выпуклого четырёхугольника равна 360°.",
@@ -691,7 +706,8 @@ const data = {
     {
       "id": "prev-044",
       "aliases": [
-        "prev-044"
+        "prev-044",
+        "fipi-055"
       ],
       "theme": "Четырёхугольники",
       "text": "Диагонали параллелограмма делятся точкой пересечения пополам.",
@@ -751,7 +767,8 @@ const data = {
     {
       "id": "prev-047",
       "aliases": [
-        "prev-047"
+        "prev-047",
+        "fipi-056"
       ],
       "theme": "Четырёхугольники",
       "text": "В любом параллелограмме диагонали равны.",
@@ -851,7 +868,8 @@ const data = {
     {
       "id": "prev-052",
       "aliases": [
-        "prev-052"
+        "prev-052",
+        "fipi-015"
       ],
       "theme": "Четырёхугольники",
       "text": "Каждый ромб является квадратом.",
@@ -870,7 +888,8 @@ const data = {
     {
       "id": "prev-053",
       "aliases": [
-        "prev-053"
+        "prev-053",
+        "fipi-004"
       ],
       "theme": "Четырёхугольники",
       "text": "Каждый прямоугольник является параллелограммом.",
@@ -889,7 +908,8 @@ const data = {
     {
       "id": "prev-054",
       "aliases": [
-        "prev-054"
+        "prev-054",
+        "fipi-033"
       ],
       "theme": "Четырёхугольники",
       "text": "Каждый параллелограмм является прямоугольником.",
@@ -947,7 +967,8 @@ const data = {
     {
       "id": "prev-057",
       "aliases": [
-        "prev-057"
+        "prev-057",
+        "fipi-040"
       ],
       "theme": "Четырёхугольники",
       "text": "В любом ромбе диагонали перпендикулярны.",
@@ -1069,7 +1090,8 @@ const data = {
     {
       "id": "prev-063",
       "aliases": [
-        "prev-063"
+        "prev-063",
+        "fipi-012"
       ],
       "theme": "Четырёхугольники",
       "text": "Диагонали любой трапеции равны.",
@@ -1152,7 +1174,8 @@ const data = {
     {
       "id": "prev-067",
       "aliases": [
-        "prev-067"
+        "prev-067",
+        "fipi-049"
       ],
       "theme": "Четырёхугольники",
       "text": "Если один угол параллелограмма прямой, то этот параллелограмм является прямоугольником.",
@@ -1267,7 +1290,8 @@ const data = {
     {
       "id": "prev-073",
       "aliases": [
-        "prev-073"
+        "prev-073",
+        "fipi-020"
       ],
       "theme": "Окружность",
       "text": "Все радиусы одной окружности равны.",
@@ -1281,7 +1305,8 @@ const data = {
     {
       "id": "prev-074",
       "aliases": [
-        "prev-074"
+        "prev-074",
+        "fipi-013"
       ],
       "theme": "Окружность",
       "text": "Диаметр окружности в два раза больше её радиуса.",
@@ -1309,7 +1334,8 @@ const data = {
     {
       "id": "prev-076",
       "aliases": [
-        "prev-076"
+        "prev-076",
+        "fipi-062"
       ],
       "theme": "Окружность",
       "text": "Хорда, проходящая через центр окружности, является диаметром.",
@@ -1387,7 +1413,8 @@ const data = {
     {
       "id": "prev-081",
       "aliases": [
-        "prev-081"
+        "prev-081",
+        "fipi-017"
       ],
       "theme": "Окружность",
       "text": "Вписанный угол, опирающийся на диаметр, является прямым.",
@@ -1779,7 +1806,8 @@ const data = {
     {
       "id": "perpendicular_bisector_point_equidistant_endpoints",
       "aliases": [
-        "perpendicular_bisector_point_equidistant_endpoints"
+        "perpendicular_bisector_point_equidistant_endpoints",
+        "fipi-047"
       ],
       "theme": "Прямые и углы",
       "text": "Точка на серединном перпендикуляре к отрезку равноудалена от его концов.",
@@ -1913,7 +1941,8 @@ const data = {
     {
       "id": "all_chords_equal",
       "aliases": [
-        "all_chords_equal"
+        "all_chords_equal",
+        "fipi-030"
       ],
       "theme": "Окружность",
       "text": "Все хорды одной окружности равны между собой.",
@@ -1999,7 +2028,8 @@ const data = {
     {
       "id": "parallel_through_point_exists",
       "aliases": [
-        "parallel_through_point_exists"
+        "parallel_through_point_exists",
+        "fipi-001"
       ],
       "theme": "Прямые и углы",
       "text": "Через точку вне прямой можно провести прямую, параллельную данной прямой.",
@@ -2041,7 +2071,8 @@ const data = {
     {
       "id": "two_parallel_to_third_parallel",
       "aliases": [
-        "two_parallel_to_third_parallel"
+        "two_parallel_to_third_parallel",
+        "fipi-054"
       ],
       "theme": "Прямые и углы",
       "text": "Если две прямые параллельны третьей, то они параллельны друг другу.",
@@ -2212,7 +2243,8 @@ const data = {
     {
       "id": "obtuse_triangle_all_obtuse",
       "aliases": [
-        "obtuse_triangle_all_obtuse"
+        "obtuse_triangle_all_obtuse",
+        "fipi-053"
       ],
       "theme": "Треугольники",
       "text": "В тупоугольном треугольнике все углы тупые.",
@@ -2248,7 +2280,8 @@ const data = {
     {
       "id": "triangle_angles_sum_180",
       "aliases": [
-        "triangle_angles_sum_180"
+        "triangle_angles_sum_180",
+        "fipi-003"
       ],
       "theme": "Треугольники",
       "text": "Сумма углов любого треугольника равна 180°.",
@@ -2316,7 +2349,8 @@ const data = {
     {
       "id": "median_bisects_angle",
       "aliases": [
-        "median_bisects_angle"
+        "median_bisects_angle",
+        "fipi-067"
       ],
       "theme": "Треугольники",
       "text": "Любая медиана треугольника делит пополам угол, из вершины которого она проведена.",
@@ -2335,7 +2369,8 @@ const data = {
     {
       "id": "circumcenter_always_inside",
       "aliases": [
-        "circumcenter_always_inside"
+        "circumcenter_always_inside",
+        "fipi-018"
       ],
       "theme": "Окружность",
       "text": "Центр описанной окружности треугольника всегда лежит внутри треугольника.",
@@ -2377,7 +2412,8 @@ const data = {
     {
       "id": "right_triangle_acute_sum_90",
       "aliases": [
-        "right_triangle_acute_sum_90"
+        "right_triangle_acute_sum_90",
+        "fipi-022"
       ],
       "theme": "Треугольники",
       "text": "В прямоугольном треугольнике сумма двух острых углов равна 90°.",
@@ -2425,7 +2461,7 @@ const data = {
         "tri_aaa_congruent"
       ],
       "theme": "Треугольники",
-      "text": "Если у двух треугольников совпадают все три угла, то эти треугольники обязательно равны (конгруэнтны).",
+      "text": "Если у двух треугольников совпадают все три угла, то эти треугольники обязательно равны.",
       "truth": false,
       "explanation": "Равенство трёх углов даёт подобие, но не равенство треугольников.",
       "hint": {
@@ -2633,7 +2669,8 @@ const data = {
       "id": "parallelogram_equal_diagonals_rhombus",
       "aliases": [
         "parallelogram_equal_diagonals_rhombus",
-        "prev-048-reverse"
+        "prev-048-reverse",
+        "fipi-002"
       ],
       "theme": "Четырёхугольники",
       "text": "Если у параллелограмма диагонали равны, то он обязательно ромб.",
@@ -2823,11 +2860,1276 @@ const data = {
           "focus": "angles"
         }
       }
+    },
+    {
+      "id": "summer-008",
+      "aliases": [
+        "summer-008",
+        "fipi-008"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Диагонали любого прямоугольника перпендикулярны.",
+      "truth": false,
+      "explanation": "Диагонали прямоугольника равны, но перпендикулярны они только у квадрата.",
+      "hint": {
+        "model": "rectangle",
+        "params": {
+          "width": 6,
+          "height": 3,
+          "focus": "diagonals"
+        },
+        "prompt": "Меняй ширину и высоту. Сравни угол между диагоналями с прямым углом."
+      }
+    },
+    {
+      "id": "summer-009",
+      "aliases": [
+        "summer-009",
+        "fipi-009"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "В любом параллелограмме все углы равны.",
+      "truth": false,
+      "explanation": "Противоположные углы параллелограмма равны. Соседние могут различаться: например, 60° и 120°. Все четыре угла равны в частном случае прямоугольника.",
+      "hint": {
+        "model": "parallelogram",
+        "params": {
+          "base": 6,
+          "side": 4,
+          "angle": 60,
+          "focus": "angles"
+        },
+        "prompt": "Меняй один угол. Сравни противоположные и соседние углы."
+      }
+    },
+    {
+      "id": "summer-014",
+      "aliases": [
+        "summer-014",
+        "fipi-014"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Если у четырехугольника все стороны равны, то этот четырехугольник является ромбом.",
+      "truth": true,
+      "explanation": "Если все стороны равны, противоположные стороны равны попарно — это параллелограмм с равными сторонами, то есть ромб.",
+      "hint": {
+        "model": "rhombus",
+        "params": {
+          "side": 4,
+          "angle": 65,
+          "focus": "sides"
+        },
+        "prompt": "У фигуры все четыре стороны одинаковы. Меняй угол и вспомни, как определяется ромб."
+      }
+    },
+    {
+      "id": "summer-019",
+      "aliases": [
+        "summer-019",
+        "fipi-019"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Диагональ прямоугольника делит его на два равных треугольника.",
+      "truth": true,
+      "explanation": "Диагональ разбивает прямоугольник на два прямоугольных треугольника, равных по двум катетам.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Прямоугольник ABCD разделён диагональю AC на треугольники ABC и CDA\"><title>Прямоугольник ABCD разделён диагональю AC на треугольники ABC и CDA</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"60.000,180.000 300.000,180.000 300.000,60.000 60.000,60.000\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"60.000\" y1=\"180.000\" x2=\"300.000\" y2=\"60.000\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"72.000\" y1=\"60.000\" x2=\"72.000\" y2=\"72.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"72.000\" y1=\"72.000\" x2=\"60.000\" y2=\"72.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"288.000\" y1=\"180.000\" x2=\"288.000\" y2=\"168.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"288.000\" y1=\"168.000\" x2=\"300.000\" y2=\"168.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><text x=\"44.000\" y=\"198.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">A</text><text x=\"317.000\" y=\"198.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">B</text><text x=\"317.000\" y=\"54.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">C</text><text x=\"44.000\" y=\"54.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">D</text><text x=\"180.000\" y=\"208.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text><text x=\"321.000\" y=\"126.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">b</text></g></svg>",
+        "prompt": "Сравни треугольники ABC и CDA: найди равные стороны и прямые углы."
+      }
+    },
+    {
+      "id": "summer-021",
+      "aliases": [
+        "summer-021",
+        "fipi-021"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Если диагонали четырехугольника равны, то этот четырехугольник является прямоугольником.",
+      "truth": false,
+      "explanation": "У равнобедренной трапеции диагонали равны, но углы могут быть непрямыми. Поэтому равенства диагоналей у произвольного четырёхугольника недостаточно.",
+      "hint": {
+        "model": "trapezoid",
+        "params": {
+          "bottom": 7,
+          "top": 3,
+          "height": 3,
+          "offset": 0,
+          "locked": [
+            "offset"
+          ],
+          "focus": "diagonals"
+        },
+        "prompt": "Боковые стороны одинаковы. Сравни диагонали и проверь углы фигуры."
+      }
+    },
+    {
+      "id": "summer-024",
+      "aliases": [
+        "summer-024",
+        "fipi-024"
+      ],
+      "theme": "Площади и подобие",
+      "text": "Площадь круга радиуса r равна 2πr.",
+      "truth": false,
+      "explanation": "Площадь круга равна πr². При r = 3 она равна 9π, а выражение 2πr даёт 6π. Выражение 2πr — формула длины окружности.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Два круга с радиусами 1 и 3 изображены в одном масштабе\"><title>Два круга с радиусами 1 и 3 изображены в одном масштабе</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"60.000\" cy=\"122.000\" r=\"26.000\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><circle cx=\"236.000\" cy=\"122.000\" r=\"78.000\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><line x1=\"60.000\" y1=\"122.000\" x2=\"86.000\" y2=\"122.000\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"236.000\" y1=\"122.000\" x2=\"314.000\" y2=\"122.000\" stroke=\"#ab6719\" stroke-width=\"3\"/><circle cx=\"60.000\" cy=\"122.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><circle cx=\"236.000\" cy=\"122.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"60.000\" y=\"171.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">r = 1</text><text x=\"236.000\" y=\"223.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">r = 3</text></g></svg>",
+        "prompt": "Радиус второго круга втрое больше. Во сколько раз выросла закрашенная площадь? Проверь формулу для r = 3."
+      }
+    },
+    {
+      "id": "summer-025",
+      "aliases": [
+        "summer-025",
+        "fipi-025"
+      ],
+      "theme": "Окружность",
+      "text": "Длина окружности радиуса r равна 2πr.",
+      "truth": true,
+      "explanation": "Длина окружности равна произведению π на диаметр. Диаметр вдвое больше радиуса, поэтому длина окружности равна 2πr.",
+      "hint": {
+        "prompt": "Найди радиус и диаметр. Вспомни, чему равно отношение длины окружности к диаметру.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Диаметр AB проходит через центр окружности O\"><title>Диаметр AB проходит через центр окружности O</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"180\" cy=\"120\" r=\"82\" fill=\"none\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><circle cx=\"180\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"168\" y=\"141\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">O</text><line x1=\"98\" y1=\"120\" x2=\"262\" y2=\"120\" stroke=\"#246b8e\" stroke-width=\"3\"/><text x=\"132\" y=\"109\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">r</text><text x=\"227\" y=\"109\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">r</text><circle cx=\"98\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"83\" y=\"120\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">A</text><circle cx=\"262\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"277\" y=\"120\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">B</text></g></svg>"
+      }
+    },
+    {
+      "id": "summer-026",
+      "aliases": [
+        "summer-026",
+        "fipi-026"
+      ],
+      "theme": "Окружность",
+      "text": "Диаметр окружности является хордой этой окружности.",
+      "truth": true,
+      "explanation": "Диаметр — это хорда, проходящая через центр; самая длинная из хорд.",
+      "hint": {
+        "prompt": "Оба конца AB лежат на окружности. Вспомни определение хорды.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Диаметр AB проходит через центр окружности O\"><title>Диаметр AB проходит через центр окружности O</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"180\" cy=\"120\" r=\"82\" fill=\"none\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><circle cx=\"180\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"168\" y=\"141\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">O</text><line x1=\"98\" y1=\"120\" x2=\"262\" y2=\"120\" stroke=\"#246b8e\" stroke-width=\"3\"/><text x=\"132\" y=\"109\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">r</text><text x=\"227\" y=\"109\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">r</text><circle cx=\"98\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"83\" y=\"120\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">A</text><circle cx=\"262\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"277\" y=\"120\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">B</text></g></svg>"
+      }
+    },
+    {
+      "id": "summer-028",
+      "aliases": [
+        "summer-028",
+        "fipi-028"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "В любом квадрате диагонали равны.",
+      "truth": true,
+      "explanation": "Квадрат — прямоугольник, а у прямоугольника диагонали равны.",
+      "hint": {
+        "model": "rectangle",
+        "params": {
+          "width": 4,
+          "height": 4,
+          "locked": [
+            "width",
+            "height"
+          ],
+          "focus": "diagonals"
+        },
+        "prompt": "Перед тобой квадрат. Сравни его диагонали."
+      }
+    },
+    {
+      "id": "summer-029",
+      "aliases": [
+        "summer-029",
+        "fipi-029"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "В любом параллелограмме диагонали являются биссектрисами его углов.",
+      "truth": false,
+      "explanation": "Диагонали делят углы пополам только у ромба и квадрата.",
+      "hint": {
+        "model": "parallelogram",
+        "params": {
+          "base": 6,
+          "side": 4,
+          "angle": 65,
+          "focus": "bisectors"
+        },
+        "prompt": "Сравни две части угла A по сторонам диагонали AC. Затем измени угол или стороны."
+      }
+    },
+    {
+      "id": "summer-034",
+      "aliases": [
+        "summer-034",
+        "fipi-034"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "В квадрате все стороны равны.",
+      "truth": true,
+      "explanation": "По определению квадрата все его стороны равны.",
+      "hint": {
+        "model": "rectangle",
+        "params": {
+          "width": 4,
+          "height": 4,
+          "locked": [
+            "width",
+            "height"
+          ],
+          "focus": "sides"
+        },
+        "prompt": "Сравни все четыре стороны показанного квадрата."
+      }
+    },
+    {
+      "id": "summer-035",
+      "aliases": [
+        "summer-035",
+        "fipi-035"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "В квадрате диагонали перпендикулярны.",
+      "truth": true,
+      "explanation": "Квадрат — это ромб, а у ромба диагонали перпендикулярны.",
+      "hint": {
+        "model": "rectangle",
+        "params": {
+          "width": 4,
+          "height": 4,
+          "locked": [
+            "width",
+            "height"
+          ],
+          "focus": "diagonals"
+        },
+        "prompt": "У квадрата проведены диагонали. Сравни угол между ними с прямым углом."
+      }
+    },
+    {
+      "id": "summer-036",
+      "aliases": [
+        "summer-036",
+        "fipi-036"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "В любом прямоугольнике диагонали являются биссектрисами углов.",
+      "truth": false,
+      "explanation": "Диагональ прямоугольника делит его угол пополам только у квадрата.",
+      "hint": {
+        "model": "rectangle",
+        "params": {
+          "width": 6,
+          "height": 3,
+          "focus": "bisectors"
+        },
+        "prompt": "Меняй ширину и высоту. Сравни две части угла A по сторонам диагонали AC."
+      }
+    },
+    {
+      "id": "summer-037",
+      "aliases": [
+        "summer-037",
+        "fipi-037"
+      ],
+      "theme": "Окружность",
+      "text": "Если прямая касается окружности, то она имеет с окружностью ровно одну общую точку.",
+      "truth": true,
+      "explanation": "Определение касательной: прямая, имеющая с окружностью ровно одну общую точку.",
+      "hint": {
+        "prompt": "Посмотри, сколько точек одновременно принадлежат касательной и окружности.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Прямая касается окружности в T; проведён радиус OT\"><title>Прямая касается окружности в T; проведён радиус OT</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"140\" cy=\"120\" r=\"78\" fill=\"none\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><line x1=\"140\" y1=\"120\" x2=\"218\" y2=\"120\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"218\" y1=\"20\" x2=\"218\" y2=\"220\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"204\" y1=\"120\" x2=\"204\" y2=\"106\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"204\" y1=\"106\" x2=\"218\" y2=\"106\" stroke=\"#657e8c\" stroke-width=\"3\"/><circle cx=\"140\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"125\" y=\"124\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">O</text><circle cx=\"218\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"238\" y=\"125\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">T</text></g></svg>"
+      }
+    },
+    {
+      "id": "summer-038",
+      "aliases": [
+        "summer-038",
+        "fipi-038"
+      ],
+      "theme": "Треугольники",
+      "text": "В любом треугольнике каждая сторона меньше суммы двух других сторон.",
+      "truth": true,
+      "explanation": "Каждая сторона треугольника меньше суммы двух других. Если длина одного отрезка равна сумме двух других или больше неё, три отрезка не замкнутся в треугольник.",
+      "hint": {
+        "prompt": "Для сторон 3, 4 и 5 сравни каждую длину с суммой двух других. Почему треугольник должен замыкаться?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Прямоугольный треугольник с катетами 3 и 4 и гипотенузой 5\"><title>Прямоугольный треугольник с катетами 3 и 4 и гипотенузой 5</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"95,190 95,70 255,190\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"108\" y1=\"190\" x2=\"108\" y2=\"177\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"108\" y1=\"177\" x2=\"95\" y2=\"177\" stroke=\"#657e8c\" stroke-width=\"3\"/><text x=\"79\" y=\"133\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text><text x=\"180\" y=\"215\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">4</text><text x=\"186\" y=\"120\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">5</text></g></svg>"
+      }
+    },
+    {
+      "id": "summer-039",
+      "aliases": [
+        "summer-039",
+        "fipi-039"
+      ],
+      "theme": "Треугольники",
+      "text": "Любой треугольник имеет два прямых угла.",
+      "truth": false,
+      "explanation": "Два прямых угла дали бы в сумме уже 180°, и на третий угол ничего бы не осталось.",
+      "hint": {
+        "model": "triangleAngles",
+        "params": {
+          "a": 90,
+          "b": 45,
+          "locked": [
+            "a"
+          ]
+        },
+        "prompt": "Один угол уже равен 90°. Сколько градусов остаётся на два других? Может ли один из них тоже быть прямым?"
+      }
+    },
+    {
+      "id": "summer-041",
+      "aliases": [
+        "summer-041",
+        "fipi-041"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "В любом ромбе противоположные углы равны.",
+      "truth": true,
+      "explanation": "Ромб — параллелограмм, а у параллелограмма противоположные углы равны.",
+      "hint": {
+        "model": "rhombus",
+        "params": {
+          "side": 4,
+          "angle": 65,
+          "focus": "angles"
+        },
+        "prompt": "Меняй один угол ромба и сравни углы напротив друг друга."
+      }
+    },
+    {
+      "id": "summer-043",
+      "aliases": [
+        "summer-043",
+        "fipi-043"
+      ],
+      "theme": "Площади и подобие",
+      "text": "Площадь прямоугольника равна произведению длин его смежных сторон.",
+      "truth": true,
+      "explanation": "Формула площади прямоугольника: S = a·b.",
+      "hint": {
+        "model": "rectangle",
+        "params": {
+          "width": 6,
+          "height": 3,
+          "focus": "area"
+        },
+        "prompt": "Меняй две соседние стороны. Сравни их произведение с площадью."
+      }
+    },
+    {
+      "id": "summer-044",
+      "aliases": [
+        "summer-044",
+        "fipi-044"
+      ],
+      "theme": "Многоугольники",
+      "text": "Сумма углов любого пятиугольника равна 360 градусов.",
+      "truth": false,
+      "explanation": "Сумма углов выпуклого пятиугольника равна 180°·(5−2) = 540°.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Выпуклый пятиугольник разделён из одной вершины на три треугольника\"><title>Выпуклый пятиугольник разделён из одной вершины на три треугольника</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"180.000,29.000 271.301,95.334 236.427,202.666 123.573,202.666 88.699,95.334\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"180.000\" y1=\"29.000\" x2=\"236.427\" y2=\"202.666\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"180.000\" y1=\"29.000\" x2=\"123.573\" y2=\"202.666\" stroke=\"#ab6719\" stroke-width=\"3\"/><text x=\"229.243\" y=\"115.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">1</text><text x=\"180.000\" y=\"150.777\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">2</text><text x=\"130.757\" y=\"115.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text></g></svg>",
+        "prompt": "Посчитай треугольники. Какую сумму дают все их углы вместе?"
+      }
+    },
+    {
+      "id": "summer-045",
+      "aliases": [
+        "summer-045",
+        "fipi-045"
+      ],
+      "theme": "Окружность",
+      "text": "Окружность имеет бесконечно много центров.",
+      "truth": false,
+      "explanation": "Центр окружности единственный. Он равноудалён от всех её точек и является серединой любого диаметра. Две разные точки не могут быть серединой одного и того же отрезка.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Окружность с диаметром AB и его серединой O; точка P смещена к B, AO = 80 и PB = 50\"><title>Окружность с диаметром AB и его серединой O; точка P смещена к B, AO = 80 и PB = 50</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"180.000\" cy=\"120.000\" r=\"80.000\" fill=\"none\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><line x1=\"100.000\" y1=\"120.000\" x2=\"260.000\" y2=\"120.000\" stroke=\"#246b8e\" stroke-width=\"3\"/><circle cx=\"100.000\" cy=\"120.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"85.000\" y=\"120.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">A</text><circle cx=\"260.000\" cy=\"120.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"275.000\" y=\"120.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">B</text><circle cx=\"180.000\" cy=\"120.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"176.000\" y=\"104.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">O</text><circle cx=\"210.000\" cy=\"120.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"216.000\" y=\"144.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">P</text><text x=\"139.000\" y=\"145.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">80</text><text x=\"236.000\" y=\"145.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">50</text></g></svg>",
+        "prompt": "Сравни расстояния от O и P до A и B. Какая точка может быть центром? Как найти середину диаметра?"
+      }
+    },
+    {
+      "id": "summer-046",
+      "aliases": [
+        "summer-046",
+        "fipi-046"
+      ],
+      "theme": "Прямые и углы",
+      "text": "Серединный перпендикуляр к отрезку проходит через середину этого отрезка.",
+      "truth": true,
+      "explanation": "По определению серединный перпендикуляр проходит через середину отрезка под прямым углом к нему.",
+      "hint": {
+        "prompt": "Найди точку пересечения перпендикуляра с AB. Сравни две части отрезка.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"P лежит на серединном перпендикуляре к AB; проведены PA и PB\"><title>P лежит на серединном перпендикуляре к AB; проведены PA и PB</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><line x1=\"65\" y1=\"185\" x2=\"295\" y2=\"185\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"180\" y1=\"35\" x2=\"180\" y2=\"220\" stroke=\"#ab6719\" stroke-width=\"3\"/><circle cx=\"65\" cy=\"185\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"65\" y=\"210\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">A</text><circle cx=\"295\" cy=\"185\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"295\" y=\"210\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">B</text><circle cx=\"180\" cy=\"65\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"198\" y=\"60\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">P</text><line x1=\"180\" y1=\"65\" x2=\"65\" y2=\"185\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"180\" y1=\"65\" x2=\"295\" y2=\"185\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"193\" y1=\"185\" x2=\"193\" y2=\"172\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"193\" y1=\"172\" x2=\"180\" y2=\"172\" stroke=\"#657e8c\" stroke-width=\"3\"/><text x=\"122\" y=\"204\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text><text x=\"238\" y=\"204\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text></g></svg>"
+      }
+    },
+    {
+      "id": "summer-048",
+      "aliases": [
+        "summer-048",
+        "fipi-048"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Все углы прямоугольника прямые.",
+      "truth": true,
+      "explanation": "По определению прямоугольника все его углы прямые.",
+      "hint": {
+        "model": "rectangle",
+        "params": {
+          "width": 6,
+          "height": 3,
+          "focus": "angles"
+        },
+        "prompt": "Сравни все четыре угла прямоугольника, меняя его стороны."
+      }
+    },
+    {
+      "id": "summer-050",
+      "aliases": [
+        "summer-050",
+        "fipi-050"
+      ],
+      "theme": "Четырёхугольники",
+      "text": "Любая трапеция является параллелограммом.",
+      "truth": false,
+      "explanation": "У трапеции параллельна лишь одна пара сторон, у параллелограмма — обе.",
+      "hint": {
+        "model": "trapezoid",
+        "params": {
+          "bottom": 7,
+          "top": 3,
+          "height": 3,
+          "offset": 0,
+          "focus": "sides"
+        },
+        "prompt": "Сравни направления оснований и боковых сторон. Сколько пар параллельных сторон у фигуры?"
+      }
+    },
+    {
+      "id": "summer-051",
+      "aliases": [
+        "summer-051",
+        "fipi-051"
+      ],
+      "theme": "Треугольники",
+      "text": "Высота треугольника может лежать вне треугольника.",
+      "truth": true,
+      "explanation": "В тупоугольном треугольнике высоты из вершин острых углов проходят вне треугольника.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"В тупоугольном треугольнике ABC высота CH опущена на продолжение стороны AB\"><title>В тупоугольном треугольнике ABC высота CH опущена на продолжение стороны AB</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"120.000,190.000 300.000,190.000 60.000,45.000\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"45.000\" y1=\"190.000\" x2=\"120.000\" y2=\"190.000\" stroke=\"#657e8c\" stroke-width=\"3\" stroke-dasharray=\"6 5\"/><line x1=\"60.000\" y1=\"45.000\" x2=\"60.000\" y2=\"190.000\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"72.000\" y1=\"190.000\" x2=\"72.000\" y2=\"178.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"72.000\" y1=\"178.000\" x2=\"60.000\" y2=\"178.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><text x=\"60.000\" y=\"29.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">C</text><text x=\"60.000\" y=\"216.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">H</text><text x=\"120.000\" y=\"216.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">A</text><text x=\"300.000\" y=\"216.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">B</text></g></svg>",
+        "prompt": "Высота CH перпендикулярна прямой AB. Где находятся H и CH относительно треугольника?"
+      }
+    },
+    {
+      "id": "summer-052",
+      "aliases": [
+        "summer-052",
+        "fipi-052"
+      ],
+      "theme": "Треугольники",
+      "text": "В остроугольном треугольнике все высоты лежат внутри треугольника.",
+      "truth": true,
+      "explanation": "В остроугольном треугольнике основания всех высот лежат на сторонах, поэтому высоты идут внутри.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"В остроугольном треугольнике ABC проведены все три высоты; отмечены их основания\"><title>В остроугольном треугольнике ABC проведены все три высоты; отмечены их основания</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"50.000,200.000 310.000,200.000 145.000,40.000\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"50.000\" y1=\"200.000\" x2=\"176.001\" y2=\"70.062\" stroke=\"#ab6719\" stroke-width=\"3\"/><circle cx=\"176.001\" cy=\"70.062\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><line x1=\"310.000\" y1=\"200.000\" x2=\"117.769\" y2=\"85.863\" stroke=\"#ab6719\" stroke-width=\"3\"/><circle cx=\"117.769\" cy=\"85.863\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><line x1=\"145.000\" y1=\"40.000\" x2=\"145.000\" y2=\"200.000\" stroke=\"#ab6719\" stroke-width=\"3\"/><circle cx=\"145.000\" cy=\"200.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"50.000\" y=\"223.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">A</text><text x=\"310.000\" y=\"223.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">B</text><text x=\"145.000\" y=\"25.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">C</text></g></svg>",
+        "prompt": "Найди основания трёх высот. На сторонах или на их продолжениях лежат эти точки?"
+      }
+    },
+    {
+      "id": "summer-057",
+      "aliases": [
+        "summer-057",
+        "fipi-057"
+      ],
+      "theme": "Окружность",
+      "text": "Любой вписанный угол равен 90 градусов.",
+      "truth": false,
+      "explanation": "Вписанный угол равен половине дуги, на которую опирается, и может быть разным.",
+      "hint": {
+        "model": "circleAngle",
+        "params": {
+          "central": 120,
+          "point": 230
+        },
+        "prompt": "Меняй центральный угол и положение вершины C. Наблюдай за вписанным углом ACB."
+      }
+    },
+    {
+      "id": "summer-058",
+      "aliases": [
+        "summer-058",
+        "fipi-058"
+      ],
+      "theme": "Треугольники",
+      "text": "В прямоугольном треугольнике квадрат гипотенузы равен сумме квадратов катетов.",
+      "truth": true,
+      "explanation": "По теореме Пифагора в прямоугольном треугольнике c² = a² + b², где c — гипотенуза, a и b — катеты. Например, 5² = 3² + 4², потому что 25 = 9 + 16.",
+      "hint": {
+        "prompt": "Найди гипотенузу. Вычисли квадрат каждой стороны и сравни сумму квадратов катетов с квадратом гипотенузы.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Прямоугольный треугольник с катетами 3 и 4 и гипотенузой 5\"><title>Прямоугольный треугольник с катетами 3 и 4 и гипотенузой 5</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"95,190 95,70 255,190\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"108\" y1=\"190\" x2=\"108\" y2=\"177\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"108\" y1=\"177\" x2=\"95\" y2=\"177\" stroke=\"#657e8c\" stroke-width=\"3\"/><text x=\"79\" y=\"133\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text><text x=\"180\" y=\"215\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">4</text><text x=\"186\" y=\"120\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">5</text></g></svg>"
+      }
+    },
+    {
+      "id": "summer-059",
+      "aliases": [
+        "summer-059",
+        "fipi-059"
+      ],
+      "theme": "Треугольники",
+      "text": "Если квадрат одной стороны треугольника равен сумме квадратов двух других сторон, то треугольник прямоугольный.",
+      "truth": true,
+      "explanation": "Это теорема, обратная теореме Пифагора. Если квадрат одной стороны равен сумме квадратов двух других, то угол напротив этой стороны прямой.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Треугольник ABC со сторонами 3, 4 и 5; угол C не подписан\"><title>Треугольник ABC со сторонами 3, 4 и 5; угол C не подписан</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"95.000,190.000 95.000,70.000 255.000,190.000\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><text x=\"79.000\" y=\"133.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text><text x=\"180.000\" y=\"215.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">4</text><text x=\"186.000\" y=\"120.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">5</text><text x=\"78.000\" y=\"207.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">C</text><text x=\"78.000\" y=\"62.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">A</text><text x=\"273.000\" y=\"207.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">B</text></g></svg>",
+        "prompt": "Вычисли 3² + 4² и 5². Вспомни, что такое равенство говорит об угле напротив стороны 5."
+      }
+    },
+    {
+      "id": "summer-060",
+      "aliases": [
+        "summer-060",
+        "fipi-060"
+      ],
+      "theme": "Треугольники",
+      "text": "В любом треугольнике квадрат одной стороны равен сумме квадратов двух других сторон.",
+      "truth": false,
+      "explanation": "В равностороннем треугольнике со стороной 3 квадрат каждой стороны равен 9, а сумма квадратов двух других — 18. Равенство Пифагора выполняется в прямоугольном треугольнике.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Равносторонний треугольник со стороной 3\"><title>Равносторонний треугольник со стороной 3</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"80.000,195.000 280.000,195.000 180.000,21.795\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><text x=\"180.000\" y=\"218.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text><text x=\"111.000\" y=\"100.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text><text x=\"250.000\" y=\"100.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text></g></svg>",
+        "prompt": "Сравни квадрат одной стороны с суммой квадратов двух других."
+      }
+    },
+    {
+      "id": "summer-061",
+      "aliases": [
+        "summer-061",
+        "fipi-061"
+      ],
+      "theme": "Площади и подобие",
+      "text": "Площадь ромба равна произведению его диагоналей.",
+      "truth": false,
+      "explanation": "Площадь ромба равна половине произведения диагоналей. Если просто перемножить диагонали, получится величина вдвое больше площади.",
+      "hint": {
+        "prompt": "Диагонали разделили ромб на четыре прямоугольных треугольника. Сложи их площади.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Ромб разделён диагоналями на четыре прямоугольных треугольника; подписаны половины диагоналей\"><title>Ромб разделён диагоналями на четыре прямоугольных треугольника; подписаны половины диагоналей</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"180,35 315,125 180,215 45,125\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"180\" y1=\"35\" x2=\"180\" y2=\"215\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"45\" y1=\"125\" x2=\"315\" y2=\"125\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"193\" y1=\"125\" x2=\"193\" y2=\"112\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"193\" y1=\"112\" x2=\"180\" y2=\"112\" stroke=\"#657e8c\" stroke-width=\"3\"/><text x=\"205\" y=\"68\" text-anchor=\"middle\" font-size=\"15\" fill=\"#243b53\">d₁</text><line x1=\"191\" y1=\"76\" x2=\"219\" y2=\"76\" stroke=\"#243b53\" stroke-width=\"3\"/><text x=\"205\" y=\"95\" text-anchor=\"middle\" font-size=\"15\" fill=\"#243b53\">2</text><text x=\"245\" y=\"93\" text-anchor=\"middle\" font-size=\"15\" fill=\"#243b53\">d₂</text><line x1=\"231\" y1=\"101\" x2=\"259\" y2=\"101\" stroke=\"#243b53\" stroke-width=\"3\"/><text x=\"245\" y=\"120\" text-anchor=\"middle\" font-size=\"15\" fill=\"#243b53\">2</text></g></svg>"
+      }
+    },
+    {
+      "id": "summer-063",
+      "aliases": [
+        "summer-063",
+        "fipi-063"
+      ],
+      "theme": "Окружность",
+      "text": "Любой радиус окружности делит любую хорду пополам.",
+      "truth": false,
+      "explanation": "Хорду делит пополам радиус, перпендикулярный ей, а не любой.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Радиус OT пересекает хорду AB в точке M; AM = 4√3, MB = 2√3, общий масштаб рисунка сохранён\"><title>Радиус OT пересекает хорду AB в точке M; AM = 4√3, MB = 2√3, общий масштаб рисунка сохранён</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"180.000\" cy=\"130.000\" r=\"84.000\" fill=\"none\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><line x1=\"107.254\" y1=\"88.000\" x2=\"252.746\" y2=\"88.000\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"180.000\" y1=\"130.000\" x2=\"222.000\" y2=\"57.254\" stroke=\"#ab6719\" stroke-width=\"3\"/><circle cx=\"180.000\" cy=\"130.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"166.000\" y=\"148.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">O</text><circle cx=\"107.254\" cy=\"88.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"90.254\" y=\"88.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">A</text><circle cx=\"252.746\" cy=\"88.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"268.746\" y=\"88.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">B</text><circle cx=\"222.000\" cy=\"57.254\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"237.000\" y=\"45.254\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">T</text><circle cx=\"204.249\" cy=\"88.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"214.249\" y=\"108.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">M</text><text x=\"155.751\" y=\"75.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">4√3</text><text x=\"228.497\" y=\"75.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">2√3</text></g></svg>",
+        "prompt": "Радиус OT пересёк хорду AB в M. Сравни AM и MB. Проходит ли он через середину хорды?"
+      }
+    },
+    {
+      "id": "summer-064",
+      "aliases": [
+        "summer-064",
+        "fipi-064"
+      ],
+      "theme": "Окружность",
+      "text": "Равные хорды одной окружности находятся на равных расстояниях от центра.",
+      "truth": true,
+      "explanation": "Перпендикуляр из центра делит хорду пополам. У полученных прямоугольных треугольников равны гипотенузы, потому что это радиусы одной окружности. Равны и катеты, составляющие половины равных хорд. Значит, равны вторые катеты — расстояния от центра до хорд.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"В одной окружности проведены две равные хорды и перпендикуляры OM, ON от центра к ним\"><title>В одной окружности проведены две равные хорды и перпендикуляры OM, ON от центра к ним</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"180.000\" cy=\"120.000\" r=\"84.000\" fill=\"none\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><line x1=\"117.390\" y1=\"64.000\" x2=\"242.610\" y2=\"64.000\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"117.390\" y1=\"176.000\" x2=\"242.610\" y2=\"176.000\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"180.000\" y1=\"64.000\" x2=\"180.000\" y2=\"176.000\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"180.000\" y1=\"120.000\" x2=\"117.390\" y2=\"64.000\" stroke=\"#ab6719\" stroke-width=\"3\" stroke-dasharray=\"6 5\"/><line x1=\"180.000\" y1=\"120.000\" x2=\"117.390\" y2=\"176.000\" stroke=\"#ab6719\" stroke-width=\"3\" stroke-dasharray=\"6 5\"/><line x1=\"190.000\" y1=\"64.000\" x2=\"190.000\" y2=\"74.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"190.000\" y1=\"74.000\" x2=\"180.000\" y2=\"74.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"190.000\" y1=\"176.000\" x2=\"190.000\" y2=\"166.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><line x1=\"190.000\" y1=\"166.000\" x2=\"180.000\" y2=\"166.000\" stroke=\"#657e8c\" stroke-width=\"3\"/><circle cx=\"180.000\" cy=\"120.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"197.000\" y=\"123.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">O</text><circle cx=\"180.000\" cy=\"64.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"163.000\" y=\"59.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">M</text><circle cx=\"180.000\" cy=\"176.000\" r=\"3.000\" fill=\"#243b53\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><text x=\"163.000\" y=\"196.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">N</text><text x=\"226.000\" y=\"51.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text><text x=\"226.000\" y=\"198.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text><text x=\"162.000\" y=\"99.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">d₁</text><text x=\"162.000\" y=\"152.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">d₂</text></g></svg>",
+        "prompt": "От центра к хордам проведены перпендикуляры. Сравни два прямоугольных треугольника с радиусами и половинами хорд."
+      }
+    },
+    {
+      "id": "summer-068",
+      "aliases": [
+        "summer-068",
+        "fipi-068"
+      ],
+      "theme": "Многоугольники",
+      "text": "Сумма внутренних углов выпуклого n-угольника равна 180(n - 2) градусов.",
+      "truth": true,
+      "explanation": "Диагонали из одной вершины делят выпуклый многоугольник на n − 2 треугольника. В каждом сумма углов 180°, поэтому у многоугольника она равна 180° · (n − 2).",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Из одной вершины выпуклого пятиугольника проведены все диагонали, образованы три треугольника\"><title>Из одной вершины выпуклого пятиугольника проведены все диагонали, образованы три треугольника</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"180.000,29.000 271.301,95.334 236.427,202.666 123.573,202.666 88.699,95.334\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><line x1=\"180.000\" y1=\"29.000\" x2=\"236.427\" y2=\"202.666\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"180.000\" y1=\"29.000\" x2=\"123.573\" y2=\"202.666\" stroke=\"#ab6719\" stroke-width=\"3\"/><text x=\"229.243\" y=\"115.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">1</text><text x=\"180.000\" y=\"150.777\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">2</text><text x=\"130.757\" y=\"115.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text></g></svg>",
+        "prompt": "Посчитай вершины и треугольники. На сколько число треугольников меньше числа вершин? Что получится для n вершин?"
+      }
+    },
+    {
+      "id": "summer-069",
+      "aliases": [
+        "summer-069",
+        "fipi-069"
+      ],
+      "theme": "Многоугольники",
+      "text": "У правильного шестиугольника все стороны равны.",
+      "truth": true,
+      "explanation": "Правильный многоугольник по определению имеет равные стороны и равные углы.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Правильный шестиугольник с шестью сторонами, отмеченными буквой a\"><title>Правильный шестиугольник с шестью сторонами, отмеченными буквой a</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"268.000,120.000 224.000,196.210 136.000,196.210 92.000,120.000 136.000,43.790 224.000,43.790\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><text x=\"259.856\" y=\"171.105\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text><text x=\"180.000\" y=\"217.210\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text><text x=\"100.144\" y=\"171.105\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text><text x=\"100.144\" y=\"78.895\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text><text x=\"180.000\" y=\"32.790\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text><text x=\"259.856\" y=\"78.895\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">a</text></g></svg>",
+        "prompt": "Вспомни, какой многоугольник называют правильным. Какие свойства должны быть у его сторон?"
+      }
+    },
+    {
+      "id": "summer-070",
+      "aliases": [
+        "summer-070",
+        "fipi-070"
+      ],
+      "theme": "Многоугольники",
+      "text": "Любой шестиугольник является правильным.",
+      "truth": false,
+      "explanation": "У произвольного шестиугольника стороны и углы могут быть разными.",
+      "hint": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Выпуклый шестиугольник со сторонами 3, √2, 1, 3, √2, 1\"><title>Выпуклый шестиугольник со сторонами 3, √2, 1, 3, √2, 1</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"60.000,60.000 240.000,60.000 300.000,120.000 300.000,180.000 120.000,180.000 60.000,120.000\" fill=\"#eaf3f8\" stroke=\"#246b8e\" stroke-width=\"3\"/><text x=\"150.000\" y=\"46.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text><text x=\"210.000\" y=\"204.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">3</text><text x=\"42.000\" y=\"94.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">1</text><text x=\"319.000\" y=\"154.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">1</text><text x=\"286.000\" y=\"81.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">√2</text><text x=\"72.000\" y=\"167.000\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">√2</text></g></svg>",
+        "prompt": "Посчитай стороны и сравни их длины. Выполняется ли условие, нужное для правильного многоугольника?"
+      }
+    },
+    {
+      "id": "summer-072",
+      "aliases": [
+        "summer-072",
+        "fipi-072"
+      ],
+      "theme": "Окружность",
+      "text": "Любые две окружности имеют две общие точки.",
+      "truth": false,
+      "explanation": "Две окружности могут не иметь общих точек, касаться в одной точке или пересекаться в двух. Например, два круга, расположенные далеко друг от друга, дают окружности без общих точек.",
+      "hint": {
+        "prompt": "Посмотри, сколько общих точек у показанных окружностей. Обязательно ли окружностям пересекаться?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Две непересекающиеся окружности разных радиусов\"><title>Две непересекающиеся окружности разных радиусов</title><g font-family=\"system-ui, sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"100\" cy=\"120\" r=\"65\" fill=\"none\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><circle cx=\"270\" cy=\"120\" r=\"35\" fill=\"none\" stroke=\"#246b8e\" stroke-width=\"2.5\"/><circle cx=\"100\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"100\" y=\"142\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">O₁</text><circle cx=\"270\" cy=\"120\" r=\"3\" fill=\"#243b53\" stroke=\"#243b53\" stroke-width=\"2.5\"/><text x=\"270\" y=\"142\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">O₂</text><line x1=\"100\" y1=\"120\" x2=\"165\" y2=\"120\" stroke=\"#ab6719\" stroke-width=\"3\"/><line x1=\"270\" y1=\"120\" x2=\"305\" y2=\"120\" stroke=\"#ab6719\" stroke-width=\"3\"/><text x=\"133\" y=\"109\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">R</text><text x=\"287\" y=\"108\" text-anchor=\"middle\" font-size=\"17\" fill=\"#243b53\">r</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-005",
+      "aliases": [
+        "reference-005"
+      ],
+      "sourceNumber": 5,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Прямые и углы",
+      "text": "Через заданную точку плоскости можно провести только одну прямую.",
+      "truth": false,
+      "explanation": "Через одну точку можно провести сколько угодно прямых, меняя их направление. Единственная прямая определяется двумя различными точками.",
+      "hint": {
+        "prompt": "Посмотри на прямые a, b и c. Через какую точку проходит каждая из них? Можно ли изменить направление прямой, сохранив эту точку?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Три разные прямые проходят через одну точку O\"><title>Три разные прямые проходят через одну точку O</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"70\" y1=\"170\" x2=\"490\" y2=\"170\" stroke=\"#263238\" stroke-width=\"3\"/><line x1=\"110\" y1=\"50\" x2=\"450\" y2=\"290\" stroke=\"#245ca8\" stroke-width=\"3\"/><line x1=\"130\" y1=\"285\" x2=\"430\" y2=\"55\" stroke=\"#18704f\" stroke-width=\"3\"/><circle cx=\"280\" cy=\"170\" r=\"4\" fill=\"#263238\"/><text x=\"297\" y=\"191\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">O</text><text x=\"495\" y=\"150\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">a</text><text x=\"450\" y=\"308\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">b</text><text x=\"435\" y=\"40\" fill=\"#18704f\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">c</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-014",
+      "aliases": [
+        "reference-014"
+      ],
+      "sourceNumber": 14,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "В треугольнике против большего угла лежит большая сторона.",
+      "truth": true,
+      "explanation": "В одном треугольнике большему углу соответствует большая противоположная сторона. Например, напротив прямого угла лежит гипотенуза — самая длинная сторона прямоугольного треугольника.",
+      "hint": {
+        "prompt": "Найди самый большой угол. Какая сторона лежит напротив него? Затем сравни два остальных угла и противоположные им стороны.",
+        "model": "triangleSides",
+        "params": {
+          "a": 3,
+          "b": 4,
+          "c": 5,
+          "locked": [
+            "a",
+            "b",
+            "c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "reference-015",
+      "aliases": [
+        "reference-015"
+      ],
+      "sourceNumber": 15,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "В остроугольном треугольнике все углы острые.",
+      "truth": true,
+      "explanation": "Такой треугольник по определению имеет три острых угла: каждый из них меньше 90°.",
+      "hint": {
+        "prompt": "Сравни каждый из трёх углов с 90°. Какое условие должно выполняться для всех углов остроугольного треугольника?",
+        "model": "triangleAngles",
+        "params": {
+          "a": 65,
+          "b": 55,
+          "locked": [
+            "a",
+            "b"
+          ]
+        }
+      }
+    },
+    {
+      "id": "reference-016",
+      "aliases": [
+        "reference-016"
+      ],
+      "sourceNumber": 16,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Если в треугольнике есть один острый угол, то этот треугольник остроугольный.",
+      "truth": false,
+      "explanation": "Например, у прямоугольного треугольника углы 90°, 35° и 55°. Острые углы есть, но треугольник не остроугольный: один его угол прямой.",
+      "hint": {
+        "prompt": "Найди на рисунке острый угол. Затем проверь два остальных: достаточно ли одного острого угла для названия всего треугольника?",
+        "model": "triangleAngles",
+        "params": {
+          "a": 90,
+          "b": 35,
+          "locked": [
+            "a",
+            "b"
+          ]
+        }
+      }
+    },
+    {
+      "id": "reference-018",
+      "aliases": [
+        "reference-018"
+      ],
+      "sourceNumber": 18,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "В любом тупоугольном треугольнике есть острый угол.",
+      "truth": true,
+      "explanation": "После тупого угла на два остальных остаётся меньше 90°. Поэтому каждый из этих двух углов острый.",
+      "hint": {
+        "prompt": "Один угол больше 90°. Сколько градусов остаётся на два других угла, если сумма всех трёх равна 180°?",
+        "model": "triangleAngles",
+        "params": {
+          "a": 110,
+          "b": 35,
+          "locked": [
+            "a",
+            "b"
+          ]
+        }
+      }
+    },
+    {
+      "id": "reference-019",
+      "aliases": [
+        "reference-019"
+      ],
+      "sourceNumber": 19,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Всякий равнобедренный треугольник является остроугольным.",
+      "truth": false,
+      "explanation": "Равнобедренный треугольник может быть тупоугольным. Например, углы 30°, 30° и 120°: равные углы лежат напротив равных сторон, а третий угол тупой.",
+      "hint": {
+        "prompt": "У треугольника равны углы A и B, значит, равны и противоположные им стороны. Сравни третий угол с 90°.",
+        "model": "triangleAngles",
+        "params": {
+          "a": 30,
+          "b": 30,
+          "locked": [
+            "a",
+            "b"
+          ]
+        }
+      }
+    },
+    {
+      "id": "reference-024",
+      "aliases": [
+        "reference-024"
+      ],
+      "sourceNumber": 24,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Сумма углов равнобедренного треугольника равна 180 градусам.",
+      "truth": true,
+      "explanation": "Сумма углов любого треугольника равна 180°. Равнобедренный треугольник тоже подчиняется этому правилу.",
+      "hint": {
+        "prompt": "Углы при основании равны. Сложи три указанных угла. Меняет ли равенство двух сторон общее правило для суммы углов треугольника?",
+        "model": "triangleAngles",
+        "params": {
+          "a": 50,
+          "b": 50,
+          "locked": [
+            "a",
+            "b"
+          ]
+        }
+      }
+    },
+    {
+      "id": "reference-026",
+      "aliases": [
+        "reference-026"
+      ],
+      "sourceNumber": 26,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Треугольника со сторонами 1, 2, 4 не существует.",
+      "truth": true,
+      "explanation": "Сумма двух сторон треугольника должна быть больше третьей. Здесь 1 + 2 = 3, а 3 меньше 4, поэтому такой треугольник построить нельзя.",
+      "hint": {
+        "prompt": "Сложи длины двух коротких отрезков. Хватит ли этой суммы, чтобы соединить концы самого длинного отрезка и получить треугольник?",
+        "model": "triangleSides",
+        "params": {
+          "a": 1,
+          "b": 2,
+          "c": 4,
+          "locked": [
+            "a",
+            "b",
+            "c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "reference-029",
+      "aliases": [
+        "reference-029"
+      ],
+      "sourceNumber": 29,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "В прямоугольном треугольнике квадрат гипотенузы равен разности квадратов катетов.",
+      "truth": false,
+      "explanation": "По теореме Пифагора квадрат гипотенузы равен сумме квадратов катетов. Например, 5² = 3² + 4² = 25, а разность 4² − 3² равна 7.",
+      "hint": {
+        "prompt": "Вычисли квадраты чисел 3, 4 и 5. Сравни квадрат гипотенузы и разность квадратов катетов.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Прямоугольный треугольник с катетами 3 и 4 и гипотенузой 5\"><title>Прямоугольный треугольник с катетами 3 и 4 и гипотенузой 5</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"100,260 340,260 340,80\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><polyline points=\"328,260 328,248 340,248\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><circle cx=\"100\" cy=\"260\" r=\"4\" fill=\"#263238\"/><text x=\"77.528\" y=\"268.427\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><circle cx=\"340\" cy=\"260\" r=\"4\" fill=\"#263238\"/><text x=\"359.2\" y=\"274.4\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text><circle cx=\"340\" cy=\"80\" r=\"4\" fill=\"#263238\"/><text x=\"353.313\" y=\"60.031\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">C</text><text x=\"220\" y=\"290\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">4</text><text x=\"365\" y=\"170\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">3</text><text x=\"202\" y=\"154\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">5</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-030",
+      "aliases": [
+        "reference-030"
+      ],
+      "sourceNumber": 30,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Косинус острого угла прямоугольного треугольника равен отношению гипотенузы к прилежащему к этому углу катету.",
+      "truth": false,
+      "explanation": "Косинус — это прилежащий катет, делённый на гипотенузу. На рисунке он равен четырём пятым. Обратное отношение — пять четвёртых — больше 1 и косинусом острого угла быть не может.",
+      "hint": {
+        "prompt": "Найди гипотенузу и катет, прилежащий к углу α. Вспомни: косинус острого угла меньше 1. Какое из двух отношений здесь может ему соответствовать?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Угол α при вершине A: прилежащий катет 4, гипотенуза 5\"><title>Угол α при вершине A: прилежащий катет 4, гипотенуза 5</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"100,260 340,260 340,80\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><polyline points=\"328,260 328,248 340,248\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><circle cx=\"100\" cy=\"260\" r=\"4\" fill=\"#263238\"/><text x=\"77.528\" y=\"268.427\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><circle cx=\"340\" cy=\"260\" r=\"4\" fill=\"#263238\"/><text x=\"359.2\" y=\"274.4\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text><circle cx=\"340\" cy=\"80\" r=\"4\" fill=\"#263238\"/><text x=\"353.313\" y=\"60.031\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">C</text><text x=\"220\" y=\"290\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">4</text><text x=\"365\" y=\"170\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">3</text><text x=\"202\" y=\"154\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">5</text><path d=\"M 144 260 A 44 44 0 0 0 135.2 233.6\" fill=\"none\" stroke=\"#245ca8\" stroke-width=\"2\"/><text x=\"166\" y=\"238\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">α</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-036",
+      "aliases": [
+        "reference-036"
+      ],
+      "sourceNumber": 36,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Биссектрисы треугольника пересекаются в точке, которая является центром окружности, вписанной в треугольник.",
+      "truth": true,
+      "explanation": "Точка на биссектрисе равноудалена от сторон угла. Поэтому общая точка биссектрис одинаково удалена от всех трёх сторон. Окружность с этим центром и таким радиусом касается всех сторон — она вписана в треугольник.",
+      "hint": {
+        "prompt": "Пунктиром проведены биссектрисы. Из точки O опущены перпендикуляры к трём сторонам. Вспомни, какие расстояния равны у точки на биссектрисе угла.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Треугольник с биссектрисами, вписанной окружностью и перпендикулярами от точки O к сторонам\"><title>Треугольник с биссектрисами, вписанной окружностью и перпендикулярами от точки O к сторонам</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"65,270 485,270 185,45\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><circle cx=\"215\" cy=\"180\" r=\"90\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"3\"/><line x1=\"65\" y1=\"270\" x2=\"215\" y2=\"180\" stroke=\"#245ca8\" stroke-width=\"2\" stroke-dasharray=\"7 5\"/><line x1=\"485\" y1=\"270\" x2=\"215\" y2=\"180\" stroke=\"#245ca8\" stroke-width=\"2\" stroke-dasharray=\"7 5\"/><line x1=\"185\" y1=\"45\" x2=\"215\" y2=\"180\" stroke=\"#245ca8\" stroke-width=\"2\" stroke-dasharray=\"7 5\"/><line x1=\"215\" y1=\"180\" x2=\"215\" y2=\"270\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"5 4\"/><polyline points=\"215,260 225,260 225,270\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><circle cx=\"215\" cy=\"270\" r=\"4\" fill=\"#18704f\"/><line x1=\"215\" y1=\"180\" x2=\"269\" y2=\"108\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"5 4\"/><polyline points=\"263,116 255,110 261,102\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><circle cx=\"269\" cy=\"108\" r=\"4\" fill=\"#18704f\"/><line x1=\"215\" y1=\"180\" x2=\"135.588\" y2=\"137.647\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"5 4\"/><polyline points=\"144.412,142.353 139.706,151.176 130.882,146.471\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><circle cx=\"135.588\" cy=\"137.647\" r=\"4\" fill=\"#18704f\"/><circle cx=\"65\" cy=\"270\" r=\"4\" fill=\"#263238\"/><text x=\"42.846\" y=\"279.231\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><circle cx=\"485\" cy=\"270\" r=\"4\" fill=\"#263238\"/><text x=\"507.908\" y=\"277.159\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text><circle cx=\"185\" cy=\"45\" r=\"4\" fill=\"#263238\"/><text x=\"176.087\" y=\"22.717\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">C</text><circle cx=\"215\" cy=\"180\" r=\"4\" fill=\"#263238\"/><text x=\"235\" y=\"170\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">O</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-037",
+      "aliases": [
+        "reference-037"
+      ],
+      "sourceNumber": 37,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Серединные перпендикуляры к сторонам треугольника пересекаются в точке, являющейся центром окружности, описанной около треугольника.",
+      "truth": true,
+      "explanation": "Точка на серединном перпендикуляре равноудалена от концов отрезка. В общей точке трёх таких прямых расстояния до A, B и C равны. Поэтому окружность с центром в этой точке проходит через все три вершины.",
+      "hint": {
+        "prompt": "Вспомни свойство серединного перпендикуляра: как расположенная на нём точка удалена от концов отрезка? Примени это к сторонам треугольника и точке O.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Серединные перпендикуляры и радиусы описанной около треугольника окружности\"><title>Серединные перпендикуляры и радиусы описанной около треугольника окружности</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"280\" cy=\"165\" r=\"124\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"3\"/><polygon points=\"172.613,227 387.387,227 301.532,42.884\" fill=\"none\" stroke=\"#263238\" stroke-width=\"3\"/><line x1=\"280\" y1=\"227\" x2=\"280\" y2=\"143.3\" stroke=\"#245ca8\" stroke-width=\"2\" stroke-dasharray=\"7 5\"/><polyline points=\"280,217 290,217 290,227\" fill=\"none\" stroke=\"#245ca8\" stroke-width=\"2\"/><circle cx=\"280\" cy=\"227\" r=\"4\" fill=\"#245ca8\"/><line x1=\"344.46\" y1=\"134.942\" x2=\"257.439\" y2=\"175.52\" stroke=\"#245ca8\" stroke-width=\"2\" stroke-dasharray=\"7 5\"/><polyline points=\"335.397,139.168 331.171,130.105 340.234,125.879\" fill=\"none\" stroke=\"#245ca8\" stroke-width=\"2\"/><circle cx=\"344.46\" cy=\"134.942\" r=\"4\" fill=\"#245ca8\"/><line x1=\"237.073\" y1=\"134.942\" x2=\"295.025\" y2=\"175.52\" stroke=\"#245ca8\" stroke-width=\"2\" stroke-dasharray=\"7 5\"/><polyline points=\"245.264,140.678 239.528,148.869 231.337,143.133\" fill=\"none\" stroke=\"#245ca8\" stroke-width=\"2\"/><circle cx=\"237.073\" cy=\"134.942\" r=\"4\" fill=\"#245ca8\"/><line x1=\"280\" y1=\"165\" x2=\"172.613\" y2=\"227\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"4 6\"/><line x1=\"280\" y1=\"165\" x2=\"387.387\" y2=\"227\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"4 6\"/><line x1=\"280\" y1=\"165\" x2=\"301.532\" y2=\"42.884\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"4 6\"/><circle cx=\"172.613\" cy=\"227\" r=\"4\" fill=\"#263238\"/><text x=\"151.457\" y=\"238.333\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><circle cx=\"387.387\" cy=\"227\" r=\"4\" fill=\"#263238\"/><text x=\"407.854\" y=\"239.535\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text><circle cx=\"301.532\" cy=\"42.884\" r=\"4\" fill=\"#263238\"/><text x=\"304.32\" y=\"19.046\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">C</text><circle cx=\"280\" cy=\"165\" r=\"4\" fill=\"#263238\"/><text x=\"262\" y=\"182\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">O</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-039",
+      "aliases": [
+        "reference-039"
+      ],
+      "sourceNumber": 39,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Центры вписанной и описанной окружностей равностороннего треугольника совпадают.",
+      "truth": true,
+      "explanation": "В равностороннем треугольнике медианы, биссектрисы и серединные перпендикуляры совпадают. Их общая точка служит центром обеих окружностей.",
+      "hint": {
+        "prompt": "В равностороннем треугольнике медиана одновременно является биссектрисой и серединным перпендикуляром. Что это даёт для точек пересечения этих линий?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Равносторонний треугольник, вписанная и описанная окружности\"><title>Равносторонний треугольник, вписанная и описанная окружности</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"280\" cy=\"165\" r=\"124\" fill=\"none\" stroke=\"#245ca8\" stroke-width=\"3\"/><polygon points=\"172.613,227 387.387,227 280,41\" fill=\"none\" stroke=\"#263238\" stroke-width=\"3\"/><circle cx=\"280\" cy=\"165\" r=\"62\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"3\"/><circle cx=\"172.613\" cy=\"227\" r=\"4\" fill=\"#263238\"/><text x=\"151.828\" y=\"239\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><circle cx=\"387.387\" cy=\"227\" r=\"4\" fill=\"#263238\"/><text x=\"408.172\" y=\"239\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text><circle cx=\"280\" cy=\"41\" r=\"4\" fill=\"#263238\"/><text x=\"280\" y=\"17\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">C</text><circle cx=\"280\" cy=\"165\" r=\"4\" fill=\"#263238\"/><text x=\"299\" y=\"170\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">O</text><line x1=\"280\" y1=\"234\" x2=\"280\" y2=\"220\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"339.756\" y1=\"130.5\" x2=\"327.631\" y2=\"137.5\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"220.244\" y1=\"130.5\" x2=\"232.369\" y2=\"137.5\" stroke=\"#245ca8\" stroke-width=\"2\"/></g></svg>"
+      }
+    },
+    {
+      "id": "reference-043",
+      "aliases": [
+        "reference-043"
+      ],
+      "sourceNumber": 43,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Любые два равносторонних треугольника подобны.",
+      "truth": true,
+      "explanation": "У каждого равностороннего треугольника все углы равны 60°. Значит, любые два таких треугольника подобны по двум углам.",
+      "hint": {
+        "prompt": "Размеры треугольников разные. Какими остаются их углы, если у каждого треугольника все три стороны равны?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Два равносторонних треугольника со сторонами 2 и 4; равные стороны отмечены отдельно в каждом\"><title>Два равносторонних треугольника со сторонами 2 и 4; равные стороны отмечены отдельно в каждом</title><g font-family=\"system-ui,sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"90.0,255 180.0,255 135,177.05771365940052\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><text x=\"135\" y=\"294\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">Сторона 2</text><line x1=\"135.0\" y1=\"262.0\" x2=\"135.0\" y2=\"248.0\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"163.56217782649108\" y1=\"212.52885682970026\" x2=\"151.43782217350892\" y2=\"219.52885682970026\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"106.43782217350893\" y1=\"212.52885682970026\" x2=\"118.56217782649107\" y2=\"219.52885682970026\" stroke=\"#245ca8\" stroke-width=\"2\"/><text x=\"135\" y=\"213.05771365940052\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">60°</text><polygon points=\"300.0,255 480.0,255 390,99.11542731880104\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><text x=\"390\" y=\"294\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">Сторона 4</text><line x1=\"386.0\" y1=\"262.0\" x2=\"386.0\" y2=\"248.0\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"394.0\" y1=\"262.0\" x2=\"394.0\" y2=\"248.0\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"443.06217782649105\" y1=\"177.02181527453828\" x2=\"430.93782217350895\" y2=\"184.02181527453828\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"439.06217782649105\" y1=\"170.09361204426276\" x2=\"426.93782217350895\" y2=\"177.09361204426276\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"340.93782217350895\" y1=\"170.09361204426276\" x2=\"353.06217782649105\" y2=\"177.09361204426276\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"336.93782217350895\" y1=\"177.02181527453828\" x2=\"349.06217782649105\" y2=\"184.02181527453828\" stroke=\"#245ca8\" stroke-width=\"2\"/><text x=\"390\" y=\"135.11542731880104\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">60°</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-044",
+      "aliases": [
+        "reference-044"
+      ],
+      "sourceNumber": 44,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Все равнобедренные треугольники подобны.",
+      "truth": false,
+      "explanation": "Например, треугольники с углами 40°, 70°, 70° и 100°, 40°, 40° оба равнобедренные. Но наборы их углов различны, поэтому они не подобны.",
+      "hint": {
+        "prompt": "В каждом треугольнике отмечены две равные стороны. Сравни наборы углов двух треугольников: можно ли сопоставить равные углы?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Два равнобедренных треугольника с углами 40,70,70 и 100,40,40 градусов; отметки равных сторон относятся к каждому треугольнику отдельно\"><title>Два равнобедренных треугольника с углами 40,70,70 и 100,40,40 градусов; отметки равных сторон относятся к каждому треугольнику отдельно</title><g font-family=\"system-ui,sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"71.98687778452134,265 178.01312221547866,265 125,119.34764377818419\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><line x1=\"105.07128723776202\" y1=\"194.56796289237178\" x2=\"91.91559054675932\" y2=\"189.7796808858124\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"158.0844094532407\" y1=\"189.7796808858124\" x2=\"144.92871276223798\" y2=\"194.56796289237178\" stroke=\"#245ca8\" stroke-width=\"2\"/><text x=\"125\" y=\"95.34764377818419\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">40°</text><text x=\"71.98687778452134\" y=\"292\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">70°</text><text x=\"178.01312221547866\" y=\"292\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">70°</text><polygon points=\"283.9235557477482,265 506.0764442522518,265 395,171.7957965954518\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><line x1=\"340.89711336920396\" y1=\"226.3313598383049\" x2=\"331.89808683359246\" y2=\"215.6067376346392\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"347.02546891415574\" y1=\"221.18905896081262\" x2=\"338.02644237854423\" y2=\"210.4644367571469\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"458.10191316640754\" y1=\"215.6067376346392\" x2=\"449.10288663079604\" y2=\"226.3313598383049\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"451.97355762145577\" y1=\"210.4644367571469\" x2=\"442.97453108584426\" y2=\"221.18905896081262\" stroke=\"#245ca8\" stroke-width=\"2\"/><text x=\"395\" y=\"147.7957965954518\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">100°</text><text x=\"283.9235557477482\" y=\"292\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">40°</text><text x=\"506.0764442522518\" y=\"292\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">40°</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-047",
+      "aliases": [
+        "reference-047"
+      ],
+      "sourceNumber": 47,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Треугольники",
+      "text": "Если две стороны и угол одного треугольника равны соответственно двум сторонам и углу другого треугольника, то такие треугольники равны.",
+      "truth": false,
+      "explanation": "Важно, где расположен угол. Равенство двух сторон и угла между ними — признак равенства треугольников. Если угол не между этими сторонами, могут получиться разные треугольники: например, со сторонами 10 и 6 и углом 30° напротив стороны 6, как на рисунке.",
+      "hint": {
+        "prompt": "В обоих треугольниках стороны 10 и 6 и угол 30° одинаковы. Между какими сторонами расположен этот угол? Рисунки выполнены в одном масштабе: сравни третьи стороны.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Два разных треугольника со сторонами 10 и 6 и углом 30 градусов напротив стороны 6; рисунки выполнены в одном масштабе\"><title>Два разных треугольника со сторонами 10 и 6 и углом 30 градусов напротив стороны 6; рисунки выполнены в одном масштабе</title><g font-family=\"system-ui,sans-serif\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><polygon points=\"30,250 136.87258494977976,250 203.20508075688775,150\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><text x=\"55\" y=\"280\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">30°</text><text x=\"108.60254037844388\" y=\"180.0\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">10</text><text x=\"187.03883285333376\" y=\"200.0\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">6</text><text x=\"142\" y=\"316\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">Треугольник 1</text><path d=\"M 68 250 A 38 38 0 0 0 62.908965343808674 231.0\" fill=\"none\" stroke=\"#245ca8\" stroke-width=\"2\"/><polygon points=\"285,250 524.5375765639958,250 458.20508075688775,150\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><text x=\"310\" y=\"280\" fill=\"#245ca8\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">30°</text><text x=\"363.6025403784439\" y=\"180.0\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">10</text><text x=\"508.3713286604418\" y=\"200.0\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">6</text><text x=\"397\" y=\"316\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">Треугольник 2</text><path d=\"M 323 250 A 38 38 0 0 0 317.9089653438087 231.0\" fill=\"none\" stroke=\"#245ca8\" stroke-width=\"2\"/></g></svg>"
+      }
+    },
+    {
+      "id": "reference-054",
+      "aliases": [
+        "reference-054"
+      ],
+      "sourceNumber": 54,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "Диагональ параллелограмма делит его на два равных треугольника.",
+      "truth": true,
+      "explanation": "У параллелограмма противоположные стороны равны: AB = CD и BC = AD. Диагональ AC общая, поэтому треугольники ABC и CDA равны по трём сторонам.",
+      "hint": {
+        "prompt": "Сравни три стороны треугольников ABC и CDA. Какие две пары сторон равны у параллелограмма? Какая сторона у треугольников общая?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Параллелограмм ABCD разделён диагональю AC; противоположные стороны отмечены одинаково\"><title>Параллелограмм ABCD разделён диагональю AC; противоположные стороны отмечены одинаково</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"65,260 345,260 475,75 195,75\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><line x1=\"65\" y1=\"260\" x2=\"475\" y2=\"75\" stroke=\"#245ca8\" stroke-width=\"3\"/><circle cx=\"65\" cy=\"260\" r=\"4\" fill=\"#263238\"/><text x=\"43.124\" y=\"269.871\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><circle cx=\"345\" cy=\"260\" r=\"4\" fill=\"#263238\"/><text x=\"360.115\" y=\"278.642\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text><circle cx=\"475\" cy=\"75\" r=\"4\" fill=\"#263238\"/><text x=\"496.876\" y=\"65.129\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">C</text><circle cx=\"195\" cy=\"75\" r=\"4\" fill=\"#263238\"/><text x=\"179.885\" y=\"56.358\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">D</text><line x1=\"205\" y1=\"267\" x2=\"205\" y2=\"253\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"335\" y1=\"68\" x2=\"335\" y2=\"82\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"133.428\" y1=\"174.797\" x2=\"121.973\" y2=\"166.748\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"138.027\" y1=\"168.252\" x2=\"126.572\" y2=\"160.203\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"413.428\" y1=\"174.797\" x2=\"401.973\" y2=\"166.748\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"418.027\" y1=\"168.252\" x2=\"406.572\" y2=\"160.203\" stroke=\"#245ca8\" stroke-width=\"2\"/></g></svg>"
+      }
+    },
+    {
+      "id": "reference-055",
+      "aliases": [
+        "reference-055"
+      ],
+      "sourceNumber": 55,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "Площадь любого параллелограмма равна произведению длин его сторон.",
+      "truth": false,
+      "explanation": "Площадь параллелограмма равна основанию, умноженному на высоту. При наклонной боковой стороне высота меньше её длины. Например, при сторонах 6 и 4 и угле 30° высота равна 2, площадь — 12, а произведение сторон — 24.",
+      "hint": {
+        "prompt": "Сравни длину боковой стороны AD и высоту DH. Вычисли произведение сторон AB и AD, затем сравни его с площадью. Меняй угол A.",
+        "model": "parallelogram",
+        "params": {
+          "base": 6,
+          "side": 4,
+          "angle": 60,
+          "focus": "area"
+        }
+      }
+    },
+    {
+      "id": "reference-056",
+      "aliases": [
+        "reference-056"
+      ],
+      "sourceNumber": 56,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "Площадь параллелограмма равна половине произведения его диагоналей.",
+      "truth": false,
+      "explanation": "У прямоугольника со сторонами 6 и 3 площадь равна 18. Квадрат каждой диагонали равен 6² + 3² = 45, поэтому половина произведения диагоналей равна 22,5. Это не площадь прямоугольника.",
+      "hint": {
+        "prompt": "Прямоугольник тоже является параллелограммом. Найди его площадь по сторонам. Затем вычисли половину произведения диагоналей и сравни результаты.",
+        "model": "rectangle",
+        "params": {
+          "width": 6,
+          "height": 3,
+          "focus": "diagonals"
+        }
+      }
+    },
+    {
+      "id": "reference-068",
+      "aliases": [
+        "reference-068"
+      ],
+      "sourceNumber": 68,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "Диагонали любого прямоугольника делят его на четыре равных треугольника.",
+      "truth": false,
+      "explanation": "У прямоугольника 6 на 3 треугольник AOB имеет сторону AB = 6, а треугольник BOC — сторону BC = 3; остальные стороны обоих треугольников равны половине диагонали. Эти треугольники не равны. Все четыре имеют одинаковые площади, но равными фигурами они будут только у квадрата.",
+      "hint": {
+        "prompt": "Сравни треугольники AOB и BOC: их стороны AO, BO и CO равны между собой. А равны ли оставшиеся стороны AB и BC? Одинаковая площадь ещё не означает равенство фигур.",
+        "model": "rectangle",
+        "params": {
+          "width": 6,
+          "height": 3,
+          "focus": "diagonals"
+        }
+      }
+    },
+    {
+      "id": "reference-073",
+      "aliases": [
+        "reference-073"
+      ],
+      "sourceNumber": 73,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "Площадь прямоугольника равна произведению длин всех его сторон.",
+      "truth": false,
+      "explanation": "Для площади нужно умножить только две соседние стороны: длину и ширину. У прямоугольника 6 на 3 площадь 18, а произведение всех четырёх сторон 6 · 3 · 6 · 3 равно 324.",
+      "hint": {
+        "prompt": "Выпиши длины всех четырёх сторон. Найди их произведение и сравни с площадью прямоугольника.",
+        "model": "rectangle",
+        "params": {
+          "width": 6,
+          "height": 3,
+          "focus": "area"
+        }
+      }
+    },
+    {
+      "id": "reference-074",
+      "aliases": [
+        "reference-074"
+      ],
+      "sourceNumber": 74,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "Любой квадрат является прямоугольником.",
+      "truth": true,
+      "explanation": "Прямоугольник — четырёхугольник, у которого все углы прямые. У любого квадрата все четыре угла прямые, поэтому квадрат является прямоугольником.",
+      "hint": {
+        "prompt": "Меняй сторону квадрата и наблюдай за его углами. Какое условие об углах входит в определение прямоугольника?",
+        "model": "rhombus",
+        "params": {
+          "side": 4,
+          "angle": 90,
+          "locked": [
+            "angle"
+          ],
+          "focus": "angles"
+        }
+      }
+    },
+    {
+      "id": "reference-075",
+      "aliases": [
+        "reference-075"
+      ],
+      "sourceNumber": 75,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "Существует квадрат, который не является прямоугольником.",
+      "truth": false,
+      "explanation": "У каждого квадрата четыре прямых угла. Этого достаточно, чтобы он был прямоугольником. Поэтому квадрат, который не является прямоугольником, не существует.",
+      "hint": {
+        "prompt": "Вспомни определения квадрата и прямоугольника. Можно ли изменить размер квадрата так, чтобы хотя бы один его угол перестал быть прямым?",
+        "model": "rhombus",
+        "params": {
+          "side": 4,
+          "angle": 90,
+          "locked": [
+            "angle"
+          ],
+          "focus": "angles"
+        }
+      }
+    },
+    {
+      "id": "reference-079",
+      "aliases": [
+        "reference-079"
+      ],
+      "sourceNumber": 79,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "Все квадраты имеют равные площади.",
+      "truth": false,
+      "explanation": "Площадь зависит от длины стороны. У квадрата со стороной 2 она равна 4, а у квадрата со стороной 3 — 9. Поэтому площади всех квадратов не равны.",
+      "hint": {
+        "prompt": "Вычисли площадь каждого квадрата по его стороне. Сравни результаты.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Два квадрата со сторонами 2 и 3\"><title>Два квадрата со сторонами 2 и 3</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"70,260 190,260 190,140 70,140\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><polygon points=\"300,260 480,260 480,80 300,80\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><text x=\"130\" y=\"292\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">Сторона 2</text><text x=\"390\" y=\"292\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">Сторона 3</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-080",
+      "aliases": [
+        "reference-080"
+      ],
+      "sourceNumber": 80,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "Площадь квадрата равна произведению его диагоналей.",
+      "truth": false,
+      "explanation": "Площадь квадрата равна половине произведения его диагоналей. Произведение диагоналей даёт удвоенную площадь, поэтому в утверждении не хватает множителя «одна вторая».",
+      "hint": {
+        "prompt": "Найди площадь квадрата по стороне. Сравни её с произведением длин двух диагоналей. Во сколько раз отличаются результаты?",
+        "model": "rhombus",
+        "params": {
+          "side": 4,
+          "angle": 90,
+          "locked": [
+            "angle"
+          ],
+          "focus": "diagonals"
+        }
+      }
+    },
+    {
+      "id": "reference-082",
+      "aliases": [
+        "reference-082"
+      ],
+      "sourceNumber": 82,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Четырёхугольники",
+      "text": "В любой прямоугольной трапеции есть два равных угла.",
+      "truth": true,
+      "explanation": "В прямоугольной трапеции одна боковая сторона перпендикулярна обоим параллельным основаниям. Поэтому два угла при ней равны 90° и равны между собой.",
+      "hint": {
+        "prompt": "Меняй высоту трапеции. Следи за углами при стороне AD, перпендикулярной обоим основаниям.",
+        "model": "trapezoid",
+        "params": {
+          "bottom": 8,
+          "top": 4,
+          "height": 3,
+          "offset": -2,
+          "locked": [
+            "bottom",
+            "top",
+            "offset"
+          ],
+          "focus": "angles"
+        }
+      }
+    },
+    {
+      "id": "reference-096",
+      "aliases": [
+        "reference-096"
+      ],
+      "sourceNumber": 96,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Окружность",
+      "text": "Любые два диаметра окружности пересекаются.",
+      "truth": true,
+      "explanation": "Любой диаметр проходит через центр окружности. Поэтому два диаметра имеют общую точку — центр. Даже если диаметры совпадают, общие точки у них есть.",
+      "hint": {
+        "prompt": "Через какую точку по определению проходит каждый диаметр? Найди общую точку двух диаметров.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Два диаметра AB и CD одной окружности с центром O\"><title>Два диаметра AB и CD одной окружности с центром O</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"280\" cy=\"165\" r=\"120\" fill=\"none\" stroke=\"#263238\" stroke-width=\"3\"/><line x1=\"392.763\" y1=\"123.958\" x2=\"167.237\" y2=\"206.042\" stroke=\"#245ca8\" stroke-width=\"3\"/><line x1=\"248.942\" y1=\"49.089\" x2=\"311.058\" y2=\"280.911\" stroke=\"#18704f\" stroke-width=\"3\"/><circle cx=\"392.763\" cy=\"123.958\" r=\"4\" fill=\"#263238\"/><text x=\"415.316\" y=\"115.749\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><circle cx=\"167.237\" cy=\"206.042\" r=\"4\" fill=\"#263238\"/><text x=\"144.684\" y=\"214.251\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text><circle cx=\"248.942\" cy=\"49.089\" r=\"4\" fill=\"#263238\"/><text x=\"242.73\" y=\"25.907\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">C</text><circle cx=\"311.058\" cy=\"280.911\" r=\"4\" fill=\"#263238\"/><text x=\"317.27\" y=\"304.093\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">D</text><circle cx=\"280\" cy=\"165\" r=\"4\" fill=\"#263238\"/><text x=\"300\" y=\"181\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">O</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-097",
+      "aliases": [
+        "reference-097"
+      ],
+      "sourceNumber": 97,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Окружность",
+      "text": "Любой прямоугольник можно вписать в окружность.",
+      "truth": true,
+      "explanation": "Диагонали прямоугольника равны и делятся пополам. Значит, точка их пересечения одинаково удалена от четырёх вершин. Окружность с центром в этой точке проходит через все вершины прямоугольника.",
+      "hint": {
+        "prompt": "Диагонали прямоугольника равны и делятся точкой пересечения пополам. Сравни расстояния OA, OB, OC и OD.",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Прямоугольник с диагоналями и окружностью через его вершины\"><title>Прямоугольник с диагоналями и окружностью через его вершины</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"280\" cy=\"165\" r=\"124\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"3\"/><polygon points=\"169.091,220.454 390.909,220.454 390.909,109.546 169.091,109.546\" fill=\"none\" stroke=\"#263238\" stroke-width=\"3\"/><line x1=\"169.091\" y1=\"220.454\" x2=\"390.909\" y2=\"109.546\" stroke=\"#245ca8\" stroke-width=\"3\" stroke-dasharray=\"7 5\"/><line x1=\"390.909\" y1=\"220.454\" x2=\"169.091\" y2=\"109.546\" stroke=\"#245ca8\" stroke-width=\"3\" stroke-dasharray=\"7 5\"/><circle cx=\"169.091\" cy=\"220.454\" r=\"4\" fill=\"#263238\"/><text x=\"147.625\" y=\"231.188\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><circle cx=\"390.909\" cy=\"220.454\" r=\"4\" fill=\"#263238\"/><text x=\"412.375\" y=\"231.188\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text><circle cx=\"390.909\" cy=\"109.546\" r=\"4\" fill=\"#263238\"/><text x=\"412.375\" y=\"98.812\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">C</text><circle cx=\"169.091\" cy=\"109.546\" r=\"4\" fill=\"#263238\"/><text x=\"147.625\" y=\"98.812\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">D</text><circle cx=\"280\" cy=\"165\" r=\"4\" fill=\"#263238\"/><text x=\"280\" y=\"143\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">O</text><polyline points=\"181.091,220.454 181.091,208.454 169.091,208.454\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/></g></svg>"
+      }
+    },
+    {
+      "id": "reference-105",
+      "aliases": [
+        "reference-105"
+      ],
+      "sourceNumber": 105,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Окружность",
+      "text": "В любой ромб можно вписать окружность.",
+      "truth": true,
+      "explanation": "Точка пересечения диагоналей ромба лежит на биссектрисах его углов, поэтому одинаково удалена от всех четырёх сторон. Окружность с этим центром и таким радиусом касается каждой стороны ромба.",
+      "hint": {
+        "prompt": "Вспомни: диагонали ромба делят его углы пополам. Что можно сказать о расстояниях от точки их пересечения до всех четырёх сторон?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Ромб, окружность внутри него и четыре перпендикуляра от точки O к сторонам\"><title>Ромб, окружность внутри него и четыре перпендикуляра от точки O к сторонам</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"100,270 340,270 460,62.154 220,62.154\" fill=\"#edf3f8\" stroke=\"#263238\" stroke-width=\"3\"/><circle cx=\"280\" cy=\"166.077\" r=\"103.923\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"3\"/><line x1=\"280\" y1=\"166.077\" x2=\"280\" y2=\"270\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"6 4\"/><polyline points=\"280,260 290,260 290,270\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><line x1=\"220\" y1=\"277\" x2=\"220\" y2=\"263\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"280\" y1=\"166.077\" x2=\"370\" y2=\"218.038\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"6 4\"/><polyline points=\"361.34,213.038 366.34,204.378 375,209.378\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><line x1=\"406.062\" y1=\"169.577\" x2=\"393.938\" y2=\"162.577\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"280\" y1=\"166.077\" x2=\"280\" y2=\"62.154\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"6 4\"/><polyline points=\"280,72.154 270,72.154 270,62.154\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><line x1=\"340\" y1=\"55.154\" x2=\"340\" y2=\"69.154\" stroke=\"#245ca8\" stroke-width=\"2\"/><line x1=\"280\" y1=\"166.077\" x2=\"190\" y2=\"114.115\" stroke=\"#18704f\" stroke-width=\"2\" stroke-dasharray=\"6 4\"/><polyline points=\"198.66,119.115 193.66,127.776 185,122.776\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><line x1=\"153.938\" y1=\"162.577\" x2=\"166.062\" y2=\"169.577\" stroke=\"#245ca8\" stroke-width=\"2\"/><circle cx=\"100\" cy=\"270\" r=\"4\" fill=\"#263238\"/><text x=\"79.215\" y=\"282\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><circle cx=\"340\" cy=\"270\" r=\"4\" fill=\"#263238\"/><text x=\"352\" y=\"290.785\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text><circle cx=\"460\" cy=\"62.154\" r=\"4\" fill=\"#263238\"/><text x=\"480.785\" y=\"50.154\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">C</text><circle cx=\"220\" cy=\"62.154\" r=\"4\" fill=\"#263238\"/><text x=\"208\" y=\"41.369\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">D</text><circle cx=\"280\" cy=\"166.077\" r=\"4\" fill=\"#263238\"/><text x=\"299\" y=\"158.077\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">O</text></g></svg>"
+      }
+    },
+    {
+      "id": "reference-106",
+      "aliases": [
+        "reference-106"
+      ],
+      "sourceNumber": 106,
+      "sourceUrl": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "sourceName": "Справочный список утверждений PhysMathSch",
+      "theme": "Окружность",
+      "text": "Через любую точку, лежащую вне окружности, можно провести две касательные к этой окружности.",
+      "truth": true,
+      "explanation": "Из точки вне окружности к ней можно провести две касательные. Они касаются окружности с двух сторон, а радиусы, проведённые в точки касания, перпендикулярны касательным.",
+      "hint": {
+        "prompt": "Проверь углы между радиусами OA, OB и прямыми PA, PB. Вспомни признак касательной: какой угол она образует с радиусом в точке касания?",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Из внешней точки P проведены отрезки к двум точкам окружности; радиусы OA и OB перпендикулярны им\"><title>Из внешней точки P проведены отрезки к двум точкам окружности; радиусы OA и OB перпендикулярны им</title><g font-family=\"system-ui,sans-serif\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"200\" cy=\"170\" r=\"100\" fill=\"none\" stroke=\"#263238\" stroke-width=\"3\"/><line x1=\"471\" y1=\"179.165\" x2=\"198\" y2=\"60.018\" stroke=\"#245ca8\" stroke-width=\"3\"/><line x1=\"200\" y1=\"170\" x2=\"240\" y2=\"78.348\" stroke=\"#18704f\" stroke-width=\"3\" stroke-dasharray=\"6 4\"/><polyline points=\"235.2,89.347 246.198,94.147 250.998,83.148\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><circle cx=\"240\" cy=\"78.348\" r=\"4\" fill=\"#245ca8\"/><line x1=\"471\" y1=\"160.835\" x2=\"198\" y2=\"279.982\" stroke=\"#245ca8\" stroke-width=\"3\"/><line x1=\"200\" y1=\"170\" x2=\"240\" y2=\"261.652\" stroke=\"#18704f\" stroke-width=\"3\" stroke-dasharray=\"6 4\"/><polyline points=\"235.2,250.653 246.198,245.853 250.998,256.852\" fill=\"none\" stroke=\"#18704f\" stroke-width=\"2\"/><circle cx=\"240\" cy=\"261.652\" r=\"4\" fill=\"#245ca8\"/><circle cx=\"200\" cy=\"170\" r=\"4\" fill=\"#263238\"/><circle cx=\"450\" cy=\"170\" r=\"4\" fill=\"#263238\"/><text x=\"181\" y=\"172\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">O</text><text x=\"463\" y=\"203\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">P</text><text x=\"232\" y=\"56.348\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">A</text><text x=\"232\" y=\"284.652\" fill=\"#263238\" font-size=\"22\" text-anchor=\"middle\" dominant-baseline=\"middle\">B</text></g></svg>"
+      }
     }
   ],
   "aliases": {
     "prev-000": "prev-000",
     "prev-001": "prev-001",
+    "adjacent_angles_always_equal": "prev-001",
     "prev-002": "prev-002",
     "prev-003": "prev-003",
     "prev-004": "prev-004",
@@ -2943,7 +4245,6 @@ const data = {
     "all_chords_equal": "all_chords_equal",
     "triangle_area_less_than_product_two_sides": "triangle_area_less_than_product_two_sides",
     "similar_triangles_area_ratio_equals_k": "similar_triangles_area_ratio_equals_k",
-    "adjacent_angles_always_equal": "prev-001",
     "adjacent_angles_one_acute_one_obtuse_always": "adjacent_angles_one_acute_one_obtuse_always",
     "angle_acute_adjacent_acute": "angle_acute_adjacent_acute",
     "parallel_through_point_exists": "parallel_through_point_exists",
@@ -2985,6 +4286,7 @@ const data = {
     "quadrilaterals_equal_if_corresponding_sides_equal": "quadrilaterals_equal_if_corresponding_sides_equal",
     "parallelogram_adjacent_sides_equal_rhombus": "parallelogram_adjacent_sides_equal_rhombus",
     "parallelogram_equal_diagonals_rhombus": "parallelogram_equal_diagonals_rhombus",
+    "prev-048-reverse": "parallelogram_equal_diagonals_rhombus",
     "parallelogram_has_two_equal_angles": "parallelogram_has_two_equal_angles",
     "rect_perp_diagonals_exists": "rect_perp_diagonals_exists",
     "rect_diagonals_bisect": "rect_diagonals_bisect",
@@ -2994,12 +4296,152 @@ const data = {
     "rhombus_diagonals_bisect": "rhombus_diagonals_bisect",
     "rhombus_diagonals_equal": "rhombus_diagonals_equal",
     "rhombus_right_angle_square": "rhombus_right_angle_square",
-    "prev-048-reverse": "parallelogram_equal_diagonals_rhombus"
+    "summer-008": "summer-008",
+    "fipi-008": "summer-008",
+    "summer-009": "summer-009",
+    "fipi-009": "summer-009",
+    "summer-014": "summer-014",
+    "fipi-014": "summer-014",
+    "summer-019": "summer-019",
+    "fipi-019": "summer-019",
+    "summer-021": "summer-021",
+    "fipi-021": "summer-021",
+    "summer-024": "summer-024",
+    "fipi-024": "summer-024",
+    "summer-025": "summer-025",
+    "fipi-025": "summer-025",
+    "summer-026": "summer-026",
+    "fipi-026": "summer-026",
+    "summer-028": "summer-028",
+    "fipi-028": "summer-028",
+    "summer-029": "summer-029",
+    "fipi-029": "summer-029",
+    "summer-034": "summer-034",
+    "fipi-034": "summer-034",
+    "summer-035": "summer-035",
+    "fipi-035": "summer-035",
+    "summer-036": "summer-036",
+    "fipi-036": "summer-036",
+    "summer-037": "summer-037",
+    "fipi-037": "summer-037",
+    "summer-038": "summer-038",
+    "fipi-038": "summer-038",
+    "summer-039": "summer-039",
+    "fipi-039": "summer-039",
+    "summer-041": "summer-041",
+    "fipi-041": "summer-041",
+    "summer-043": "summer-043",
+    "fipi-043": "summer-043",
+    "summer-044": "summer-044",
+    "fipi-044": "summer-044",
+    "summer-045": "summer-045",
+    "fipi-045": "summer-045",
+    "summer-046": "summer-046",
+    "fipi-046": "summer-046",
+    "summer-048": "summer-048",
+    "fipi-048": "summer-048",
+    "summer-050": "summer-050",
+    "fipi-050": "summer-050",
+    "summer-051": "summer-051",
+    "fipi-051": "summer-051",
+    "summer-052": "summer-052",
+    "fipi-052": "summer-052",
+    "summer-057": "summer-057",
+    "fipi-057": "summer-057",
+    "summer-058": "summer-058",
+    "fipi-058": "summer-058",
+    "summer-059": "summer-059",
+    "fipi-059": "summer-059",
+    "summer-060": "summer-060",
+    "fipi-060": "summer-060",
+    "summer-061": "summer-061",
+    "fipi-061": "summer-061",
+    "summer-063": "summer-063",
+    "fipi-063": "summer-063",
+    "summer-064": "summer-064",
+    "fipi-064": "summer-064",
+    "summer-068": "summer-068",
+    "fipi-068": "summer-068",
+    "summer-069": "summer-069",
+    "fipi-069": "summer-069",
+    "summer-070": "summer-070",
+    "fipi-070": "summer-070",
+    "summer-072": "summer-072",
+    "fipi-072": "summer-072",
+    "reference-005": "reference-005",
+    "reference-014": "reference-014",
+    "reference-015": "reference-015",
+    "reference-016": "reference-016",
+    "reference-018": "reference-018",
+    "reference-019": "reference-019",
+    "reference-024": "reference-024",
+    "reference-026": "reference-026",
+    "reference-029": "reference-029",
+    "reference-030": "reference-030",
+    "reference-036": "reference-036",
+    "reference-037": "reference-037",
+    "reference-039": "reference-039",
+    "reference-043": "reference-043",
+    "reference-044": "reference-044",
+    "reference-047": "reference-047",
+    "reference-054": "reference-054",
+    "reference-055": "reference-055",
+    "reference-056": "reference-056",
+    "reference-068": "reference-068",
+    "reference-073": "reference-073",
+    "reference-074": "reference-074",
+    "reference-075": "reference-075",
+    "reference-079": "reference-079",
+    "reference-080": "reference-080",
+    "reference-082": "reference-082",
+    "reference-096": "reference-096",
+    "reference-097": "reference-097",
+    "reference-105": "reference-105",
+    "reference-106": "reference-106",
+    "fipi-001": "parallel_through_point_exists",
+    "fipi-002": "parallelogram_equal_diagonals_rhombus",
+    "fipi-003": "triangle_angles_sum_180",
+    "fipi-004": "prev-053",
+    "fipi-005": "prev-022",
+    "fipi-006": "prev-017",
+    "fipi-007": "prev-042",
+    "fipi-010": "prev-015",
+    "fipi-011": "prev-025",
+    "fipi-012": "prev-063",
+    "fipi-013": "prev-074",
+    "fipi-015": "prev-052",
+    "fipi-016": "prev-027",
+    "fipi-017": "prev-081",
+    "fipi-018": "circumcenter_always_inside",
+    "fipi-020": "prev-073",
+    "fipi-022": "right_triangle_acute_sum_90",
+    "fipi-023": "prev-012",
+    "fipi-027": "prev-005",
+    "fipi-030": "all_chords_equal",
+    "fipi-031": "prev-014",
+    "fipi-032": "prev-043",
+    "fipi-033": "prev-054",
+    "fipi-040": "prev-057",
+    "fipi-042": "prev-004",
+    "fipi-047": "perpendicular_bisector_point_equidistant_endpoints",
+    "fipi-049": "prev-067",
+    "fipi-053": "obtuse_triangle_all_obtuse",
+    "fipi-054": "two_parallel_to_third_parallel",
+    "fipi-055": "prev-044",
+    "fipi-056": "prev-047",
+    "fipi-062": "prev-076",
+    "fipi-065": "prev-014",
+    "fipi-066": "prev-023",
+    "fipi-067": "median_bisects_angle",
+    "fipi-071": "prev-040",
+    "fipi-073": "prev-006"
   },
   "sourceCounts": {
     "expanded": 105,
     "basic": 63,
-    "unique": 167
+    "unique": 233,
+    "summer": 178,
+    "reference": 106
   }
 };
 if(typeof module==='object' && module.exports) module.exports=data;

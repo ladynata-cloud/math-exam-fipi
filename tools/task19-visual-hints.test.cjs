@@ -59,8 +59,12 @@ function boot(options = {}) {
 }
 
 test('both prior banks retain their exact mathematical statements and truth values', () => {
-  assert(cards.length >= 105 && cards.length <= 168, 'Only the existing banks are combined');
   assert.equal(new Set(cards.map(c => c.id)).size, cards.length, 'Card ids are unique');
+  const identities = new Map();
+  for (const card of cards) for (const id of [card.id,...(card.aliases || [])]) {
+    assert(!identities.has(id) || identities.get(id) === card.id, 'Ambiguous source identity '+id);
+    identities.set(id,card.id);
+  }
   for (const old of originalCards()) {
     const candidates = cards.filter(c => normalize(c.text) === normalize(old.text));
     assert(candidates.length, 'Missing source statement ' + old.id);
@@ -74,6 +78,71 @@ test('both prior banks retain their exact mathematical statements and truth valu
     if (card.hint.model) assert(visuals.modelNames.includes(card.hint.model), card.id + ': known interactive model');
     assert.doesNotMatch(card.hint.prompt, /^(?:Это утверждение\s+)?(?:верно|неверно)[.!:]/i, card.id + ': hint must not supply a verdict');
   }
+});
+
+test('the source audit maps every recorded assertion to a card without changing its truth', () => {
+  const audit = JSON.parse(read('trainers/task19-source-coverage.json'));
+  assert.match(audit.auditDate,/^\d{4}-\d{2}-\d{2}$/,'Audit date is explicit');
+  assert.equal(audit.officialBank.complete,false,'A partial official-bank audit must not claim exhaustive FIPI coverage');
+  assert.equal(typeof audit.officialBank.status,'string');
+  assert(audit.officialBank.status.trim(),'Official coverage limitation is explicit');
+  assert(Array.isArray(audit.sources) && audit.sources.length,'Source snapshots are enumerated');
+  assert.equal(new Set(audit.sources.map(s=>s.id)).size,audit.sources.length,'Source ids are unique');
+  const byId = new Map(cards.map(c=>[c.id,c]));
+  const covered = new Set();
+  let entryCount = 0;
+  for (const source of audit.sources) {
+    assert(source.id && source.type,'Source has identity and provenance type');
+    assert([source.url,source.fileName].some(value=>typeof value === 'string' && value.trim()),source.id+': source has a public URL or original file name');
+    assert(Array.isArray(source.entries) && source.entries.length,source.id+': finite source snapshot');
+    const ids = new Set();
+    for (const entry of source.entries) {
+      const label = source.id+'/'+entry.sourceId;
+      assert(entry.sourceId && !ids.has(entry.sourceId),label+': unique source entry');
+      ids.add(entry.sourceId);
+      assert.equal(typeof entry.text,'string',label+': source wording retained');
+      assert(entry.text.trim(),label+': source wording is nonempty');
+      assert.equal(typeof entry.truth,'boolean',label+': source truth is explicit');
+      const card = byId.get(entry.cardId);
+      assert(card,label+': points to a canonical active card');
+      assert(['exact','equivalent','included'].includes(entry.matchType),label+': match is classified');
+      if (entry.matchType === 'exact') assert.equal(normalize(entry.text),normalize(card.text),label+': exact match preserves wording');
+      else assert(typeof entry.note === 'string' && entry.note.trim(),label+': nonliteral coverage has an audit note');
+      if (entry.matchType === 'included') {
+        assert.equal(entry.sourceId,'fipi-007',label+': inclusion is limited to the independently reviewed middle-line assertion');
+        assert.equal(card.id,'prev-042',label+': reviewed covering statement');
+        assert.equal(entry.truth,true,label+': an included source statement must be true');
+        assert.equal(card.truth,true,label+': the stronger covering statement must also be true');
+      }
+      if (entry.truth !== card.truth) {
+        const correction = entry.correction;
+        assert(correction,label+': truth mismatch requires an explicit audited correction');
+        assert.equal(correction.originalTruth,entry.truth,label+': correction names the original verdict');
+        assert.equal(correction.correctedTruth,card.truth,label+': correction matches the active verdict');
+        assert(typeof correction.reason === 'string' && correction.reason.trim(),label+': correction has a mathematical reason');
+      }
+      covered.add(card.id);
+      entryCount++;
+    }
+  }
+  for (const card of cards) assert(covered.has(card.id),card.id+': active card has an audited source mapping');
+  assert.equal(audit.counts.uniqueCards,cards.length,'Published card count follows the actual bank');
+  if ('sourceEntries' in audit.counts) assert.equal(audit.counts.sourceEntries,entryCount,'Published source-entry count follows the enumerated snapshots');
+});
+
+test('active lessons and accessible former modes use familiar school terminology', () => {
+  for (const card of cards) {
+    for (const [field,text] of Object.entries({text:card.text,explanation:card.explanation,hintPrompt:card.hint.prompt,hintSvg:card.hint.svg || ''})) {
+      assert.doesNotMatch(text,/конгруэнт/iu,card.id+' '+field+': use «равны» in the learner-facing wording');
+    }
+  }
+  for (const file of [
+    'trainers/task19-data.json',
+    'trainers/archive-5-weeks/geometry-statements-trainer-improved-370628fb.html',
+    'trainers/archive-5-weeks/geometry-statements-trainer-improved-updated-22181e31.html',
+    'trainers/archive-5-weeks/preview-5-8bb7dd76.html',
+    'trainers/archive-5-weeks/task19-before-visual-hints-20261020.html'
+  ]) assert(!/конгруэнт/iu.test(read(file)),file+': old modes retain the requested terminology correction');
 });
 
 test('both public URLs start with a question and optional help, not a revealed solution', () => {
