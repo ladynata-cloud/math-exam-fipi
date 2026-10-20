@@ -1,0 +1,51 @@
+name: Task 11 matching and interactive help
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task11-graphs-trainer.html'
+      - 'tools/task11-*'
+      - 'tools/oge-algebra-contract*'
+      - '.github/workflows/task11-minimal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: task11-minimal-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  matching-help:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/task11-browser" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/task11-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/task11-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Math, learner and course contracts
+        run: |
+          node --test tools/task11-minimal.test.cjs tools/task11-math-review.test.cjs
+          node tools/oge-algebra-contract.test.mjs
+          git diff --check
+      - name: Desktop, mobile, keyboard, exam and offline HTML
+        env:
+          TASK11_BROWSER_ARTIFACTS: artifacts/task11-minimal
+        run: node tools/task11-minimal.browser.cjs
+      - name: Save screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: task11-minimal
+          path: artifacts/task11-minimal
+          if-no-files-found: ignore
+          retention-days: 7

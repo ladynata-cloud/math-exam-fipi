@@ -2,6 +2,28 @@
 
 Updated: 2026-10-20 (Asia/Novosibirsk)
 
+## Current task: task11 matching and optional laboratory
+
+- Task19 corpus PR271 is published as `83c06b3bd0d0ea050080c4fef0dc911c1222c309`.
+  Its exact-head Node/SEO/browser CI and Pages39427754132 passed;14 public
+  files matched and the live interface showed233 cards. All178 recovered
+  entries and106 reference entries are mapped; exhaustive official FIPI
+  coverage remains unverified because the official bank returned HTTP503.
+- Follow-up PR272 (`46d308df7448c61abc282c69f128975c41285fac`) repairs the
+  previous-modes archive link found during live verification.15 Node tests and
+  cloud workflows39428479109/39428478914 passed; the reviewed tree and parent
+  match. Final link/deployment verification follows this release.
+- Cabinet health and durable learning storage were healthy after restart.
+- The owner requests the same minimal style for task11: three graphs and
+  three functions, with an optional interactive laboratory. Cloud work and
+  publication are explicitly authorized. [Scope](tasks/TASK11_MINIMAL_HINT_LAB_20261020.md), MEDIUM.
+-11 learner/math tests and the668-check algebra gate pass. Independent
+  review covered500 generated tasks and9,141 lab combinations. A missing
+  visible quadratic formula in the signs topic was corrected and regression
+  tested. Existing progress, repeat-errors and exam contracts are retained.
+- Next: exact-head mobile/desktop browser CI, publish and verify the live
+  matching screen, optional laboratory and downloadable HTML.
+
 ## Current task: task19 terminology and source coverage
 
 - PR270 is published as `763e89aedbd561054e3860016bb999ef6aa15b19`.
