@@ -104,6 +104,14 @@ Every task declares one review level: `SMALL`, `MEDIUM`, `HIGH`, or
 `NEW_ARCHETYPE`. Apply [the review policy](docs/REVIEW_POLICY.md). Claude review
 is not required for every `SMALL` PR.
 
+For a new trainer or a substantial change to its learning sequence or
+interaction, consult Claude before implementation and request a focused review
+of the ready result. Follow the owner's
+[trainer consultation workflow](docs/TRAINER_CLAUDE_CONSULTATION.md). Record
+design advice separately from an exact-head release verdict. Trivial copy and
+mechanical styling fixes do not need a paid consultation. An unavailable API
+must be reported honestly; it is not approval or a standing review waiver.
+
 Remote review handoffs must be sanitized. Include only the minimum diff,
 context, and public or approved repository information needed for review. Never
 include secret values, authentication material, private documents, personal

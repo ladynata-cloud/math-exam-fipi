@@ -57,6 +57,14 @@ assumptions and model suggestions.
 ## Review plan
 
 - Review-level rationale:
+- Trainer design consultation applicable: yes / no, with reason. Follow the
+  [consultation workflow](../TRAINER_CLAUDE_CONSULTATION.md) for new trainers or
+  substantial learning-sequence/interaction changes.
+- Before implementation: learning question, supplied material, provider/model,
+  date/source, recommendations and decisions; or explicit unavailable/not-run
+  status. Do not record a design discussion as release approval.
+- Ready-result review: mathematical/technical verification, pedagogical
+  validation, evidence supplied, remaining real-learner questions.
 - External review required: yes / no / owner decision pending
 - Sanitized handoff constraints:
 - Required provenance if external review is used: provider, PR, base SHA, head

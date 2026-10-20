@@ -41,6 +41,16 @@ used to lower the real risk level.
 Claude and other external models are optional remote reviewers without access to
 the local disk or worktree. Claude is not required for every `SMALL` PR.
 
+The owner's 2026-10-20 decision additionally requires a focused Claude design
+discussion before creating or substantially redesigning a trainer, followed by
+a review of the ready result. Apply the
+[trainer consultation workflow](TRAINER_CLAUDE_CONSULTATION.md). This does not
+require a consultation for every commit or mechanical correction, nor replace
+the review level, accepted ADR, prototype, tests, or owner release permissions.
+Design advice has its own evidence record; it is never an exact-head release
+approval. A failed request has no review verdict. Earlier task-specific
+exceptions do not waive future required reviews.
+
 All remote handoffs must be sanitized and minimized. Do not send secret values,
 authentication material, private documents, personal data, unrelated source, or
 machine-specific absolute paths. State that the reviewer sees only the supplied
