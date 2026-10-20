@@ -1,6 +1,6 @@
 'use strict';
 
-// Additional real-browser contract for the per-function discovery dialog.
+// Additional real-browser contract for the per-function inline discovery panel.
 // Run in cloud CI after copying this file to tools/ and the candidate trainer
 // to trainers/. TASK11_DISCOVERY_ROOT/FILE also permit an isolated candidate.
 const assert=require('node:assert/strict');
@@ -30,21 +30,25 @@ async function serve(){
 
 async function fits(page,label){
  const bad=await page.evaluate(()=>{
-  const selectors=['#m4','#m4 .card','#m4-graphs','#m4-desc','#m4-desc .row','#m4-desc select','#m4-desc .function-help','#t11-help-dialog[open]','#t11-help-dialog[open] input','#t11-help-dialog[open] select','#t11-help-graph svg'];
+  const selectors=['#m4','#m4 .card','#m4-graphs','#m4-desc','#m4-desc .row','#m4-desc > .row > select','#m4-desc .function-help','#t11-help-panel:not([hidden])','#t11-help-panel:not([hidden]) input','#t11-help-panel:not([hidden]) select','#t11-help-graph svg'];
   return selectors.flatMap(selector=>[...document.querySelectorAll(selector)].filter(el=>el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden').map(el=>{const r=el.getBoundingClientRect();return{selector,left:r.left,right:r.right,width:innerWidth};})).filter(r=>r.left < -1 || r.right > r.width+1);
  });
  assert.deepEqual(bad,[],label+' horizontal element bounds');
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),label+' page width');
- const dialog=page.locator('#t11-help-dialog');
- if(await dialog.isVisible()){
-  const r=await dialog.boundingBox(),height=page.viewportSize().height;
-  assert(r.y>=-1&&r.y+r.height<=height+1,label+' dialog fits viewport vertically');
+ const panel=page.locator('#t11-help-panel');
+ if(await panel.isVisible()){
+  const flow=await panel.evaluate(el=>{const c=getComputedStyle(el),r=el.getBoundingClientRect(),previous=el.previousElementSibling.getBoundingClientRect();return{position:c.position,overflowY:c.overflowY,top:r.top,previousBottom:previous.bottom,maxHeight:c.maxHeight,modal:el.matches(':modal'),inert:!!el.closest('[inert]')};});
+  assert(!['fixed','absolute'].includes(flow.position),label+' help participates in the document flow');
+  assert(!['auto','scroll','hidden'].includes(flow.overflowY),label+' help has no nested vertical scroll container');
+  assert.equal(flow.maxHeight,'none',label+' help can grow with its content');
+  assert(flow.top>=flow.previousBottom-1,label+' help appears below its function row');
+  assert.equal(flow.modal,false,label+' no modal blocks the assignment');assert.equal(flow.inert,false);
  }
 }
 
 const helpButton=(page,index)=>page.locator('#m4-desc button.function-help[data-i="'+index+'"]');
 const readState=page=>page.evaluate(()=>window.Task11Discovery.getState());
-const drafts=page=>page.evaluate(()=>({matches:[...document.querySelectorAll('#m4-desc select')].map(s=>s.value),answer:document.getElementById('m4-answer').value}));
+const drafts=page=>page.evaluate(()=>({matches:[...document.querySelectorAll('#m4-desc > .row > select')].map(s=>s.value),answer:document.getElementById('m4-answer').value}));
 const grading=page=>page.evaluate(key=>({progress:localStorage.getItem(key),attempts:M4.attempts,done:M4.done,shown:M4.shown,lastTry:M4.lastTry}),KEY);
 async function assertUntouched(page,draft,grade,label){
  assert.deepEqual(await drafts(page),draft,label+' retains all three matching drafts');
@@ -55,15 +59,19 @@ async function assertUntouched(page,draft,grade,label){
 async function openFunction(page,index){
  const trigger=helpButton(page,index);assert.equal(await trigger.count(),1,'function help '+index+' exists');
  await trigger.focus();await page.keyboard.press('Enter');
- await page.locator('#t11-help-dialog').waitFor({state:'visible'});
- assert.equal(await page.locator('#t11-help-dialog').getAttribute('open')!==null,true,'native modal is open');
- assert.equal((await readState(page)).index,index,'dialog describes the selected function');
+ await page.locator('#t11-help-panel').waitFor({state:'visible'});
+ assert.equal(await trigger.getAttribute('aria-expanded'),'true','function disclosure is expanded');
+ assert.equal(await trigger.getAttribute('aria-haspopup'),null,'help is not a modal popup');
+ assert.equal(await page.locator('#t11-help-panel').evaluate((panel,i)=>panel.previousElementSibling===document.querySelector('#m4-desc .function-help[data-i="'+i+'"]').closest('.row'),index),true,'help is directly below the chosen function');
+ assert.equal(await trigger.evaluate(button=>button===document.activeElement),true,'opening retains focus at the function');
+ assert.equal((await readState(page)).index,index,'panel describes the selected function');
  assert(await page.locator('#t11-help-formula').innerText(),'selected function formula is displayed');
  assert.equal(await page.locator('#t11-help-graph svg').count(),1,'selected function has a real graph');
 }
 async function closeFunction(page,index,method){
- if(method==='escape')await page.keyboard.press('Escape');else await page.locator('#t11-help-close').click();
- await page.locator('#t11-help-dialog').waitFor({state:'hidden'});
+ if(method==='escape'){await page.locator('#t11-help-x').focus();await page.keyboard.press('Escape');}else await page.locator('#t11-help-close').click();
+ await page.locator('#t11-help-panel').waitFor({state:'hidden'});
+ assert.equal(await helpButton(page,index).getAttribute('aria-expanded'),'false','closing updates the row disclosure');
  assert.equal(await helpButton(page,index).evaluate(button=>button===document.activeElement),true,'closing restores focus to the same function');
 }
 async function deeper(page){
@@ -121,16 +129,16 @@ async function main(){
    page.on('console',message=>{if(message.type()==='error')errors.push(width+': '+message.text());});
    await page.goto(url);await page.waitForSelector('#m4-graphs svg');
    assert.equal(await page.locator('#m4-graphs svg').count(),3,'three graphs on first screen');
-   assert.equal(await page.locator('#m4-desc select').count(),3,'three function matching inputs');
+   assert.equal(await page.locator('#m4-desc > .row > select').count(),3,'three function matching inputs');
    assert.equal(await page.locator('#m4-desc button.function-help').count(),3,'each function has its own help');
    const fingerprints=await page.locator('#m4-graphs svg').evaluateAll(graphs=>graphs.map(svg=>[...svg.querySelectorAll('polyline')].map(p=>p.getAttribute('points')).join('|')));
    assert(fingerprints.every(Boolean),'each graph includes a plotted function');
    assert.equal(new Set(fingerprints).size,3,'the initial graphs are visibly distinct');
-   assert.equal(await page.locator('#t11-help-dialog').isVisible(),false,'help is opt-in');
+   assert.equal(await page.locator('#t11-help-panel').isVisible(),false,'help is opt-in');
    await fits(page,width+' initial');
    await page.screenshot({path:path.join(artifacts,width+'-01-first-question.png'),fullPage:true});
 
-   for(let i=0;i<3;i++)await page.locator('#m4-desc select').nth(i).selectOption(['2','3','1'][i]);
+   for(let i=0;i<3;i++)await page.locator('#m4-desc > .row > select').nth(i).selectOption(['2','3','1'][i]);
    const draft=await drafts(page),grade=await grading(page);assert.equal(draft.answer,'231');
    const originalStates=[],modifiedStates=[],initialFormulas=[],originalLabels=[];
    for(let i=0;i<3;i++){
@@ -143,26 +151,25 @@ async function main(){
     initialFormulas.push(await page.locator('#t11-help-formula').innerHTML());
     originalLabels.push(await page.locator('#t11-help-original').innerHTML());
     await fits(page,width+' function '+i+' help');
-    if(i===0)await page.locator('#t11-help-dialog').screenshot({path:path.join(artifacts,width+'-02-function-a-help.png')});
+    if(i===0)await page.locator('#t11-help-panel').screenshot({path:path.join(artifacts,width+'-02-function-a-help.png')});
     await deeper(page);
     await fits(page,width+' function '+i+' nested');
-    const returnBox=await page.locator('#t11-help-close').boundingBox();
-    assert(returnBox&&returnBox.y>=0&&returnBox.y+returnBox.height<=900,'return to the task stays on screen after deeper help');
-    if(i===0)await page.locator('#t11-help-dialog').screenshot({path:path.join(artifacts,width+'-03-function-a-discovery.png')});
-    if(width===360&&i>0)await page.locator('#t11-help-dialog').screenshot({path:path.join(artifacts,width+'-03-function-'+['a','b','c'][i]+'-discovery.png')});
+    assert.equal(await page.locator('#t11-help-close').isVisible(),true,'inline help has an explicit collapse control');
+    if(i===0)await page.locator('#t11-help-panel').screenshot({path:path.join(artifacts,width+'-03-function-a-discovery.png')});
+    if(width===360&&i>0)await page.locator('#t11-help-panel').screenshot({path:path.join(artifacts,width+'-03-function-'+['a','b','c'][i]+'-discovery.png')});
     await changeParameter(page);
     await movePoint(page);
     assert.equal(await page.locator('#t11-help-original').innerHTML(),originalLabels[i],'original formula remains unchanged beside experiment');
     modifiedStates.push(await readState(page));
     await fits(page,width+' function '+i+' changed parameter');
-    if(i===0)await page.locator('#t11-help-dialog').screenshot({path:path.join(artifacts,width+'-04-function-a-experiment.png')});
+    if(i===0)await page.locator('#t11-help-panel').screenshot({path:path.join(artifacts,width+'-04-function-a-experiment.png')});
     await assertUntouched(page,draft,grade,'function '+i+' exploration');
     await closeFunction(page,i,i===1?'button':'escape');
     await assertUntouched(page,draft,grade,'function '+i+' close');
    }
 
    // Return to each item after changing the other two; compare the actual
-   // dialog controls/state, rather than only a generic "help opened" flag.
+   // panel controls/state, rather than only a generic "help opened" flag.
    for(let i=0;i<3;i++){
     await openFunction(page,i);
     assert.deepEqual(await readState(page),modifiedStates[i],'function '+i+' keeps its independent parameters and nested position');
@@ -182,8 +189,39 @@ async function main(){
     await closeFunction(page,i,'button');await assertUntouched(page,draft,grade,'function '+i+' resumed/reset');
    }
 
+   // With help open the learner can still edit an answer, inspect a task graph,
+   // switch directly to another function, and continue through normal Tab order.
+   await openFunction(page,0);
+   await page.locator('#m4-desc > .row > select').nth(0).selectOption('1');
+   assert.equal(await page.locator('#m4-answer').inputValue(),'131');
+   assert.equal(await page.locator('#t11-help-panel').isVisible(),true);
+   await page.locator('#m4-graphs .gitem').first().click();
+   assert.equal(await page.locator('#m4-graphs .gitem').first().getAttribute('aria-expanded'),'true');
+   assert.equal(await page.locator('#t11-help-panel').isVisible(),true,'graph inspection keeps inline help open');
+   await page.locator('#m4-graphs .gitem').first().click();
+   await openFunction(page,1);
+   assert.equal(await helpButton(page,0).getAttribute('aria-expanded'),'false');
+   assert.deepEqual(await readState(page),modifiedStates[1],'directly switching function restores that experiment');
+   await helpButton(page,1).click();
+   assert.equal(await page.locator('#t11-help-panel').isVisible(),false,'same function button collapses help');
+   await openFunction(page,0);
+   await page.locator('#t11-help-highlight').focus();await page.keyboard.press('Tab');
+   assert.equal(await page.locator('#m4-desc > .row > select').nth(1).evaluate(el=>el===document.activeElement),true,'Tab leaves help for the following function');
+   await page.locator('#m4-desc > .row > select').nth(0).selectOption(draft.matches[0]);
+   await assertUntouched(page,draft,grade,'assignment interaction with help open');
+   await openFunction(page,2);
+   const parameterBefore=await page.locator('#t11-help-param-k').inputValue();
+   await page.locator('#m4-desc > .row > select').nth(0).selectOption('1');
+   assert.equal(await page.locator('#m4-answer').inputValue(),'131','matching selects work with a model select also present');
+   assert.equal(await page.locator('#t11-help-param-k').inputValue(),parameterBefore,'answer selection does not change the model coefficient');
+   await page.locator('#m4-desc > .row > select').nth(0).selectOption(draft.matches[0]);
+   await assertUntouched(page,draft,grade,'hyperbola model and assignment selects');
+   await fits(page,width+' inline task interaction');
+   await page.locator('#m4').screenshot({path:path.join(artifacts,width+'-05-inline-assignment.png')});
+   // Starting another task while help is still open must park the reusable panel
+   // before the matching markup is replaced, then reopen it with working controls.
    await page.locator('#m4-next').click();
-   assert.equal(await page.locator('#t11-help-dialog').isVisible(),false);
+   assert.equal(await page.locator('#t11-help-panel').isVisible(),false);
    assert.deepEqual(await drafts(page),{matches:['','',''],answer:''},'a new task starts with new matching inputs');
    for(let i=0;i<3;i++){
     await openFunction(page,i);const state=await readState(page);
@@ -195,9 +233,9 @@ async function main(){
    }
    assert.deepEqual(await grading(page),grade,'a new task and new help do not grade or write progress');
    await fits(page,width+' next task');
-   evidence.push({width,graphs:3,independentFunctions:3,nestedSteps:true,highlight:true,reset:true,draftsRetained:true,focusReturn:true,noAutoGrade:true});
+   evidence.push({width,inlineHelp:true,assignmentOperable:true,graphs:3,independentFunctions:3,nestedSteps:true,highlight:true,reset:true,draftsRetained:true,focusReturn:true,noAutoGrade:true});
    await context.tracing.stop({path:path.join(artifacts,width+'-trace.zip')});await context.close();livePage=null;
-   console.log('PASS '+width+'px: three graphs, three independent discoveries, reset, keyboard return and untouched drafts');
+   console.log('PASS '+width+'px: inline help, operable assignment, three independent discoveries, reset, keyboard return and untouched drafts');
   }
   assert.deepEqual(errors,[],'no browser or resource errors');
   fs.writeFileSync(path.join(artifacts,'evidence.json'),JSON.stringify({ok:true,evidence,errors},null,2)+'\n');
