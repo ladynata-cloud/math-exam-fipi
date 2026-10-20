@@ -30,7 +30,7 @@ async function serve(){
 
 async function fits(page,label){
  const bad=await page.evaluate(()=>{
-  const selectors=['#m4','#m4 .card','#m4-graphs','#m4-desc','#m4-desc .row','#m4-desc > .row > select','#m4-desc .function-help','#t11-help-panel:not([hidden])','#t11-help-panel:not([hidden]) input','#t11-help-panel:not([hidden]) select','#t11-help-graph svg'];
+  const selectors=['#m4','#m4 .card','#m4-graphs','#m4-desc','#m4-desc .row','#m4-desc > .row > select','#m4-desc .function-help','#t11-help-panel:not([hidden])','#t11-help-panel:not([hidden]) input','#t11-help-panel:not([hidden]) select','#t11-help-graph svg','#t11-help-memory','#t11-help-memory button','#t11-help-memory details','#t11-help-memory img','#t11-help-denominator-graph svg','#t11-help-vertex','#t11-help-vertex details','#t11-help-vertex button','#t11-help-vertex .frac','#t11-help-vertex-graph svg'];
   return selectors.flatMap(selector=>[...document.querySelectorAll(selector)].filter(el=>el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden').map(el=>{const r=el.getBoundingClientRect();return{selector,left:r.left,right:r.right,width:innerWidth};})).filter(r=>r.left < -1 || r.right > r.width+1);
  });
  assert.deepEqual(bad,[],label+' horizontal element bounds');
@@ -116,6 +116,72 @@ async function movePoint(page){
  assert.notEqual(await page.locator('#t11-help-readout').innerText(),readout,'moving the point updates its coordinates');
 }
 
+async function vertexHelp(page,width,draft,grade){
+ const before=await readState(page),url=page.url(),pages=page.context().pages().length;
+ const outer=page.locator('#t11-help-vertex-details'),exact=page.locator('#t11-help-vertex-exact');
+ assert.equal(await outer.getAttribute('open'),null,'vertex help is opt-in');
+ await outer.locator(':scope > summary').click();
+ await page.locator('#t11-help-vertex-check-side').click();
+ assert.equal(await page.locator('#t11-help-vertex-side').isVisible(),true,'sign-based conclusion opens before calculation');
+ assert.equal(await page.locator('#t11-help-vertex-side').getAttribute('data-side'),'axis','starter parabola has b = 0');
+ assert.equal(await exact.getAttribute('open'),null,'exact arithmetic stays optional');
+ assert.equal(await page.locator('#t11-help-vertex-step-4').isVisible(),false,'calculation is not exposed by the sign help');
+ await fits(page,width+' vertex location');
+ await exact.locator(':scope > summary').click();
+ for(let i=0;i<4&&!await page.locator('#t11-help-vertex-step-4').isVisible();i++)await page.locator('#t11-help-vertex-next').click();
+ assert.equal(await page.locator('#t11-help-vertex-step-4').isVisible(),true,'learner can unfold the calculation step by step');
+ assert.equal(await page.locator('#t11-help-vertex-formula .frac').count(),1,'vertex formula is a stacked fraction');
+ assert.match(await page.locator('#t11-help-vertex-reference').getAttribute('href'),/^https:\/\//);
+ assert.deepEqual(await readState(page),before,'vertex help keeps the current model unchanged');
+ assert.equal(page.url(),url,'help stays on this page');assert.equal(page.context().pages().length,pages,'help creates no extra tab');
+ await assertUntouched(page,draft,grade,'vertex help');await fits(page,width+' exact vertex steps');
+ await page.locator('#t11-help-vertex').screenshot({path:path.join(artifacts,width+'-09-vertex-help.png')});
+ await exact.locator(':scope > summary').click();await outer.locator(':scope > summary').click();
+}
+
+async function memoryModels(page,index,width,draft,grade){
+ const before=await readState(page);
+ if(index===1){
+  const face=page.locator('#t11-help-memory [data-memory-face]');
+  assert.equal(await face.getAttribute('data-mood'),'happy');
+  await page.locator('#t11-help-mood').click();
+  const after=await readState(page);
+  assert.deepEqual(after.values,{...before.values,a:-before.values.a},'mood changes only the leading coefficient');
+  assert.equal(await face.getAttribute('data-mood'),'sad');
+  assert.equal(await page.locator('#t11-help-changed').isVisible(),true,'new experimental parabola is labelled');
+  await fits(page,width+' sad smile');
+  await page.locator('#t11-help-panel').screenshot({path:path.join(artifacts,width+'-06-sad-smile.png')});
+  await page.locator('#t11-help-mood').click();
+  assert.deepEqual((await readState(page)).values,before.values,'second mood change restores original orientation');
+  await vertexHelp(page,width,draft,grade);
+ }else if(index===2){
+  const comparison=page.locator('#t11-help-denominator-details');
+  assert.equal(await comparison.getAttribute('open'),null,'denominator comparison is optional');
+  await comparison.locator('summary').click();
+  await page.locator('#t11-help-denominator-shift').click();
+  assert.equal(await page.locator('#t11-help-denominator-graph').getAttribute('data-shift'),'2');
+  assert.equal(await page.locator('#t11-help-denominator-shift').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('#t11-help-denominator-formula .frac').count(),1);
+  assert.deepEqual(await readState(page),before,'denominator illustration never changes the matching function');
+  await fits(page,width+' shifted denominator');
+  await page.locator('#t11-help-memory').screenshot({path:path.join(artifacts,width+'-07-denominator-comparison.png')});
+  await page.locator('#t11-help-denominator-x').click();
+  assert.equal(await page.locator('#t11-help-denominator-graph').getAttribute('data-shift'),'0');
+  await comparison.locator('summary').click();
+  const bio=page.locator('#t11-help-dali');
+  assert.equal(await bio.getAttribute('open'),null,'biography is optional');
+  await bio.locator('summary').click();
+  const photo=bio.locator('[data-dali-portrait]');
+  assert.match(await photo.getAttribute('src'),/^data:image\/(jpeg|png|webp);base64,/);
+  await page.waitForFunction(()=>{const img=document.querySelector('#t11-help-dali [data-dali-portrait]');return img&&img.complete&&img.naturalWidth>0;});
+  assert.match(await bio.innerText(),/1904/);assert.match(await bio.innerText(),/1989/);
+  await fits(page,width+' Dali portrait');
+  await bio.screenshot({path:path.join(artifacts,width+'-08-dali-reference.png')});
+  await bio.locator('summary').click();
+ }
+ await assertUntouched(page,draft,grade,'mnemonic and reference exploration');
+}
+
 async function main(){
  fs.mkdirSync(artifacts,{recursive:true});
  const{server,url}=await serve();let browser,livePage;const errors=[],evidence=[];
@@ -151,6 +217,7 @@ async function main(){
     initialFormulas.push(await page.locator('#t11-help-formula').innerHTML());
     originalLabels.push(await page.locator('#t11-help-original').innerHTML());
     await fits(page,width+' function '+i+' help');
+    if(i>0)await memoryModels(page,i,width,draft,grade);
     if(i===0)await page.locator('#t11-help-panel').screenshot({path:path.join(artifacts,width+'-02-function-a-help.png')});
     await deeper(page);
     await fits(page,width+' function '+i+' nested');
@@ -220,8 +287,18 @@ async function main(){
    await page.locator('#m4').screenshot({path:path.join(artifacts,width+'-05-inline-assignment.png')});
    // Starting another task while help is still open must park the reusable panel
    // before the matching markup is replaced, then reopen it with working controls.
+   await page.locator('#t11-help-denominator-details > summary').click();
+   await page.locator('#t11-help-denominator-shift').click();
+   await page.locator('#t11-help-dali > summary').click();
+   await closeFunction(page,2,'button');await openFunction(page,2);
+   assert.notEqual(await page.locator('#t11-help-denominator-details').getAttribute('open'),null,'same task retains the open comparison');
+   assert.notEqual(await page.locator('#t11-help-dali').getAttribute('open'),null,'same task retains the open biography');
+   assert.equal(await page.locator('#t11-help-denominator-graph').getAttribute('data-shift'),'2');
    await page.locator('#m4-next').click();
    assert.equal(await page.locator('#t11-help-panel').isVisible(),false);
+   assert.equal(await page.locator('#t11-help-denominator-details').getAttribute('open'),null,'new task collapses the comparison');
+   assert.equal(await page.locator('#t11-help-dali').getAttribute('open'),null,'new task collapses the biography');
+   assert.equal(await page.locator('#t11-help-denominator-graph').getAttribute('data-shift'),'0','new task resets the denominator example');
    assert.deepEqual(await drafts(page),{matches:['','',''],answer:''},'a new task starts with new matching inputs');
    for(let i=0;i<3;i++){
     await openFunction(page,i);const state=await readState(page);
@@ -233,7 +310,7 @@ async function main(){
    }
    assert.deepEqual(await grading(page),grade,'a new task and new help do not grade or write progress');
    await fits(page,width+' next task');
-   evidence.push({width,inlineHelp:true,assignmentOperable:true,graphs:3,independentFunctions:3,nestedSteps:true,highlight:true,reset:true,draftsRetained:true,focusReturn:true,noAutoGrade:true});
+   evidence.push({width,inlineHelp:true,assignmentOperable:true,graphs:3,independentFunctions:3,nestedSteps:true,highlight:true,smile:true,vertexHelp:true,denominatorComparison:true,embeddedPortrait:true,reset:true,draftsRetained:true,focusReturn:true,noAutoGrade:true});
    await context.tracing.stop({path:path.join(artifacts,width+'-trace.zip')});await context.close();livePage=null;
    console.log('PASS '+width+'px: inline help, operable assignment, three independent discoveries, reset, keyboard return and untouched drafts');
   }

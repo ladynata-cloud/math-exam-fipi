@@ -2,13 +2,37 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task11 inline help
+## In progress: task11 visual mnemonics
+
+- [Scope](tasks/TASK11_VISUAL_MNEMONICS.md): happy/sad parabola smileys and
+  Dalí moustache imagery inside optional help, a precise x versus x+2
+  denominator comparison, and an optional sourced portrait/brief biography.
+- Added owner scope: optional vertex-side guidance from coefficient signs,
+  deeper exact-coordinate steps and a reference-material link; suitable for
+  the trial lesson without requiring arithmetic in the first matching task.
+- Existing inline task-first interface, matching problem and progress remain.
+- Read-only board audit confirmed live health and durable learning service,
+  up to eight students with switching/control transfer in the deployed code.
+  Current public task11/task19/rounding-stepwise pages lack the synchronization
+  bridges and are not managed trainers. No board changes belong to this patch;
+  no authorized pupil session was opened or changed during the audit.
+
+## Published: task11 inline help
 
 - The owner asks for help on the same page, because the modal covers the task.
 - [Scope](tasks/TASK11_INLINE_HELP.md): expand the existing interactive model
   immediately below the selected function, keep answers accessible and preserve
   independent experiments and deeper help. No mathematics or backend changes.
-- Focused lifecycle, input, keyboard and mobile checks precede publication.
+- PR281 merged asda13ca38669bb648e80bc78dc4b8b3f42e6df8c1, parent
+  6ea58439e0628b76cf98b7263a598347f96fe83e, reviewed tree
+  eae20f31e977d38af642b32585c3fbaded1d15d9. No base drift.
+- All20 Node tests and668 algebra contracts passed; independent review passed.
+  Task11 browser CI39483305659 (320/360/1280px), course39483305685 andSEO
+  39483305829 passed. Pages39483927685 succeeded on the merged commit.
+- Public HTML returned200 and matched167189bytes /SHA256
+  f20d85976e6134393a30293607c128ffd66276ebaabbb406ac5569ac7791621d.
+  Live answer entry with inline help open, model movement, collapse/reopen and
+  retained answers/experiments were verified. No account or backend writes.
 
 ## Published: task11 visual discovery and help inside help
 
