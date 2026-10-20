@@ -130,7 +130,11 @@ for (const stage of columns.stages) {
   test('real column actions, incorrect answers, saved carries and read-only mirrors: ' + stage.slug, t => {
     const f = mount(t, stage.id, { seed: fixtureSeeds[stage.slug] }), initial = clone(f.spec()), snapshots = new Set();
     assert.equal(f.host.querySelector('#lm-practice').textContent, 'Тренировка');
-    assert.match(f.host.querySelector('.lm-header').textContent, /Умножение · шаг/);
+    const topicTools = f.host.querySelector('#lm-tools');
+    assert.equal(topicTools.open, false, 'Topic navigation starts collapsed beside the task-first workspace');
+    topicTools.open = true;
+    assert.match(topicTools.querySelector('.lm-label').textContent, /Умножение · шаг/);
+    topicTools.open = false;
     assert.equal(rowDigits(f, 'RES'), '', 'The final answer is not shown before solving');
     let verified = 0;
     while (!f.state().completed) {

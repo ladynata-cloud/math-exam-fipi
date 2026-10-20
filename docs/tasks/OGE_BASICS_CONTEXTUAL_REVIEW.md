@@ -93,3 +93,12 @@ regenerated (22 scenarios,475 legacy and470 current verified steps,0 issues),
 leaving the baseline untouched. Three remaining old browser scenarios use the
 new visible help/menu controls with all mathematical assertions retained. New
 cloud verification is required for this final combined delta.
+
+Third cloud runtime4b7261b37be85464664629e90e3aa94b605a931c passed the full
+contextual browser, PreOGE arithmetic and guided-division workflows. Final mobile
+screens were inspected; optional navigation is below the task and current-step
+help is next to its question. Unified server and math checks passed; its old DOM
+suite needed three presentation expectations updated (retained hint versus error
+feedback, collapsed topic label, primary next-condition action). All23 commands
+from that required DOM step now pass locally without runtime or arithmetic-test
+changes. The next push changes test expectations/evidence only.

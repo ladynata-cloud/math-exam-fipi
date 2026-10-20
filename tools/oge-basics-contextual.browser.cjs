@@ -66,10 +66,10 @@ async function retainDraftInHelp(page, {name, route, answer, prompt, practice, p
   const input = page.locator(answer).filter({visible:true}).first();
   await input.waitFor({state:'visible'});
   const beforePrompt = await page.locator(prompt).first().textContent();
-  await input.fill('17');
   assert.equal(await helper(page).getAttribute('aria-expanded'), 'false', name + ': help starts closed');
   await noOverflow(page, name);
   await shot(page, name + '-task-' + page.viewportSize().width);
+  await input.fill('17');
   await hitTarget(helper(page), name + ' help');
   await helper(page).click();
   assert.equal(await helper(page).getAttribute('aria-expanded'), 'true');
