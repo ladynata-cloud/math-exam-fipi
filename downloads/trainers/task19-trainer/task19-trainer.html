@@ -5582,7 +5582,13 @@ if(root) root.Task19Data=data;
     return {points:{A,B,C},metrics:{AB,AC,BC,area,a:angleAt(B,A,C),b:angleAt(A,B,C),c:angleAt(A,C,B),perimeter:AB+AC+BC}};
   }
   function basicsReadout(M){return['∠A = '+fmt(M.a)+'°; ∠B = '+fmt(M.b)+'°; ∠C = '+fmt(M.c)+'°','Сумма углов: '+fmt(M.a+M.b+M.c)+'°','AB = '+fmt(M.AB)+'; AC = '+fmt(M.AC)+'; BC = '+fmt(M.BC)];}
-  function drawTriangle(s,extra=[]){const T=fit([...Object.values(s.points),...extra],{x:65,y:45,w:430,h:230}),P=s.points;return{T,body:poly(['A','B','C'].map(n=>T(P[n])))+labelPoints(P,['A','B','C'],T)};}
+  function triangleFit(s,bounds,box){
+    // A size-only experiment needs a fixed viewport: fitting the current size
+    // would cancel the pupil's scaling and leave the drawing unchanged.
+    const frame=s.values.mode==='equilateral'?bounds.map(p=>p.map(v=>v*8/s.values.scale)):bounds;
+    return fit(frame,box);
+  }
+  function drawTriangle(s,extra=[]){const T=triangleFit(s,[...Object.values(s.points),...extra],{x:65,y:45,w:430,h:230}),P=s.points;return{T,body:poly(['A','B','C'].map(n=>T(P[n])))+labelPoints(P,['A','B','C'],T)};}
   function renderExplore(s){
     const P=s.points,M=s.metrics,p=s.values,focus=p.focus||'angles',d=drawTriangle(s);let body=d.body,readout=basicsReadout(M);const T=d.T;
     for(const [a,b,c]of [['B','A','C'],['A','B','C'],['A','C','B']])body+=arc(T(P[a]),T(P[b]),T(P[c]),BLUE);
@@ -5609,7 +5615,7 @@ if(root) root.Task19Data=data;
   function renderConstruction(s){
     const P=s.points,M=s.metrics,p=s.values,focus=p.focus||'bisector',names=['A','B','C'];
     let extra=focus==='heights'?['HA','HB','HC']:focus==='midline'?['E','F']:['D','M','H'];
-    const T=fit(names.concat(extra).map(n=>P[n]),{x:65,y:40,w:430,h:245});let body=poly(names.map(n=>T(P[n])))+labelPoints(P,names,T),readout=[];
+    const T=triangleFit(s,names.concat(extra).map(n=>P[n]),{x:65,y:40,w:430,h:245});let body=poly(names.map(n=>T(P[n])))+labelPoints(P,names,T),readout=[];
     if(focus==='heights'){
       for(const [n,u,w]of [['A','B','C'],['B','A','C'],['C','A','B']]){const H=P['H'+n];body+=line(T(P[u]),T(H),INK,'5 5')+line(T(P[w]),T(H),INK,'5 5')+line(T(P[n]),T(H),GREEN)+rightMark(T(P[n]),T(H),T(P[u]))+dot(T(H),GREEN);}
       readout=['Высота из A: '+fmt(M.hA),'Высота из B: '+fmt(M.hB),'Высота из C: '+fmt(M.hC),...basicsReadout(M).slice(0,1)];
@@ -5638,7 +5644,7 @@ if(root) root.Task19Data=data;
     const P=s.points,M=s.metrics,p=s.values,focus=p.focus||'circumcenter',inside=focus==='incenter'||focus==='both',outside=focus!=='incenter';
     let bound=[P.A,P.B,P.C];if(outside)bound.push([P.O[0]-M.radius,P.O[1]-M.radius],[P.O[0]+M.radius,P.O[1]+M.radius]);
     // Leave room for outward vertex labels, including C above the circumcircle.
-    const T=fit(bound,{x:65,y:50,w:430,h:240}),unit=hypot(T([0,0]),T([1,0]));let body=poly([P.A,P.B,P.C].map(T))+labelPoints(P,['A','B','C'],T),readout=[];
+    const T=triangleFit(s,bound,{x:65,y:50,w:430,h:240}),unit=hypot(T([0,0]),T([1,0]));let body=poly([P.A,P.B,P.C].map(T))+labelPoints(P,['A','B','C'],T),readout=[];
     if(outside){body+=circle(T(P.O),M.radius*unit,BLUE);for(const name of ['A','B','C'])body+=line(T(P.O),T(P[name]),BLUE,'5 5');body+=dot(T(P.O),BLUE)+text(T(P.O)[0]+17,T(P.O)[1]+16,'O',BLUE);readout.push('OA = '+fmt(M.OA)+'; OB = '+fmt(M.OB)+'; OC = '+fmt(M.OC));
       if(p.showPerpendiculars)for(const [u,v]of [['A','B'],['B','C'],['C','A']]){const H=mid(P[u],P[v]),end=[H[0]+(P.O[0]-H[0])*1.25,H[1]+(P.O[1]-H[1])*1.25];body+=line(T(H),T(end),GREEN,'5 5')+rightMark(T(P.O),T(H),T(P[u]))+dot(T(H),GREEN);}
     }

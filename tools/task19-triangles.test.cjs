@@ -87,3 +87,24 @@ test('equal-area and similarity experiments preserve exactly their advertised co
   }
   const s=sample('triangleSimilarity',{mode:'isoPair',a:50,otherAngle:35});close(s.metrics.sides1[1],s.metrics.sides1[2]);close(s.metrics.sides2[1],s.metrics.sides2[2]);assert(Math.abs(s.metrics.angles1[0]-s.metrics.angles2[0])>1);
 });
+
+test('size-only equilateral experiments visibly scale their geometry linearly',()=>{
+  const V=require(path.join(path.dirname(source),'task19-visual-models.js'));
+  for(const [model,params]of[
+    ['triangleExplore',{mode:'equilateral'}],
+    ['triangleConstructions',{mode:'equilateral',focus:'heights'}],
+    ['triangleCenters',{mode:'equilateral',focus:'both',showPerpendiculars:true}]
+  ]){
+    const drawings=[2,5,8].map(scale=>{
+      const svg=V.render(model,{...params,scale}).svg,match=svg.match(/<polygon\b[^>]*\bpoints="([^"]+)"/);
+      assert(match,model+' triangle polygon');
+      const points=match[1].trim().split(/\s+/).map(pair=>pair.split(',').map(n=>Math.round(Number(n)*10)/10));
+      return{points,width:Math.max(...points.map(p=>p[0]))-Math.min(...points.map(p=>p[0]))};
+    });
+    assert.notDeepEqual(drawings[0].points,drawings[1].points,model+' minimum to middle');
+    assert.notDeepEqual(drawings[1].points,drawings[2].points,model+' middle to maximum');
+    assert(drawings[0].width<drawings[1].width&&drawings[1].width<drawings[2].width,model+' visible growth');
+    assert(Math.abs(drawings[1].width/drawings[0].width-2.5)<.02,model+' linear middle size');
+    assert(Math.abs(drawings[2].width/drawings[0].width-4)<.02,model+' linear maximum size');
+  }
+});
