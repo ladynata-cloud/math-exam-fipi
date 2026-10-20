@@ -37,3 +37,19 @@ test('five navigation maps retain every existing link and diagnostic requires an
  }
  const dom=new JSDOM(fs.readFileSync(path.join(base,sub+'division-diagnostic.html'),'utf8'),{url:'https://mathexam.space/trainers/oge-basics/'+sub+'division-diagnostic.html',runScripts:'outside-only'});t.after(()=>dom.window.close());const w=dom.window;w.structuredClone=structuredClone;for(const p of ['division-lab-core.js','division-diagnostic-core.js','division-diagnostic.js'])w.eval(fs.readFileSync(path.join(base,sub+p),'utf8'));assert.match(w.document.querySelector('#diagnostic').textContent,/Начать/);assert.equal(w.document.querySelector('.bh-toggle'),null);assert.equal(w.document.querySelector('input'),null);
 });
+test('special practice tasks precede every optional navigation and explanatory section',t=>{
+ for(const [id,taskSelector,secondarySelectors]of [
+  ['arithmetic-foundations','#exercise',['#stages','main>.note']],
+  ['division-lab','#workspace',['.controls','#stats','.intro p']],
+  ['quotient-estimate','#view-practice',['#estimate-notice','.rounding-preparation']]
+ ]){
+  const dom=new JSDOM(fs.readFileSync(path.join(base,sub+id+'.html'),'utf8'),{url:'https://mathexam.space/trainers/oge-basics/'+sub+id+'.html',runScripts:'outside-only'});t.after(()=>dom.window.close());const w=dom.window,d=w.document;
+  const retained=secondarySelectors.flatMap(s=>[...d.querySelectorAll(s)]),task=d.querySelector(taskSelector),form=task.querySelector('form'),nativeNodes=[...task.querySelectorAll('[id]')],links=()=>[...d.querySelectorAll('a[href]')].map(a=>a.getAttribute('href')).sort(),originalLinks=links();
+  w.eval(fs.readFileSync(path.join(base,'navigation-minimal.js'),'utf8'));d.dispatchEvent(new w.Event('DOMContentLoaded'));
+  for(const node of [...retained,...d.querySelectorAll('details.basics-secondary')])assert(task.compareDocumentPosition(node)&w.Node.DOCUMENT_POSITION_FOLLOWING,id+': the task precedes '+node.id+' '+node.textContent.slice(0,45));
+  for(const node of nativeNodes)assert.equal(d.getElementById(node.id),node,id+': original math/input node remains');
+  if(form)assert.equal(task.querySelector('form'),form);assert.deepEqual(links(),originalLinks,id+': links retained');
+  assert.equal(d.querySelector('h1').closest('details'),null,id+': heading remains visible');
+  for(const details of d.querySelectorAll('details.basics-secondary'))assert.equal(details.open,false,id+': optional sections start closed');
+ }
+});

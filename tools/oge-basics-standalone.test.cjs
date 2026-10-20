@@ -101,6 +101,7 @@ test('legacy division retains accepted digit, live input and work when assistanc
  assert.equal(state.phase,'product');assert.equal(state.quotient,String(digit));
  const inp=originalInput(f);inp.value='123';const quotient=f.d.getElementById('quotientDisplay').textContent;
  helpButton(f).click();await tick();assert(state.help>0);assert.equal(state.clean,false);
+ assert(f.d.querySelector('[data-bh-node="root"] .bh-deeper[data-bh-skill="multiply"]'),'product step must offer multiplication help');
  assert.strictEqual(originalInput(f),inp);assert.equal(inp.value,'123');
  assert.equal(f.d.getElementById('quotientDisplay').textContent,quotient);
  f.d.querySelector('[data-route="learn"]').click();f.d.querySelector('[data-route="practice"]').click();
@@ -108,6 +109,8 @@ test('legacy division retains accepted digit, live input and work when assistanc
  inp.value=String(task.steps[0].prod);f.d.querySelector('#answerArea button').click();await tick();
  assert.equal(state.phase,'remainder');assert.equal(state.quotient,String(digit));
  assert.equal(f.d.querySelector('.basics-help-host button').getAttribute('aria-expanded'),'false');
+ helpButton(f).click();await tick();
+ assert(f.d.querySelector('[data-bh-node="root"] .bh-deeper[data-bh-skill="subtract"]'),'remainder step must offer subtraction help');
 });
 
 test('percentage hint feedback does not replace live answers or hide checker feedback',async t=>{

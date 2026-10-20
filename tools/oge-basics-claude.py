@@ -32,7 +32,13 @@ ALLOWED_PREFIXES = ('trainers/oge-basics/', 'tools/oge-basics-',
                     'docs/tasks/OGE_BASICS_CONTEXTUAL')
 ALLOWED_FILES = {'docs/PROJECT_STATUS.md', GUIDE,
                  'tools/division-guided.browser.cjs',
+                 'tools/decimal-shift.browser.cjs',
+                 'tools/arithmetic-foundations.browser.cjs',
+                 'tools/division-diagnostic.browser.cjs',
                  'tools/preoge-arithmetic.browser.cjs',
+                 'docs/reports/arithmetic-robots-after.json',
+                 'docs/reports/arithmetic-robots-current.json',
+                 'docs/reports/arithmetic-robots-comparison.json',
                  '.github/workflows/oge-basics-claude.yml',
                  '.github/workflows/oge-basics-contextual.yml'}
 

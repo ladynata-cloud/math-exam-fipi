@@ -128,7 +128,18 @@ async function legacyFinish(page) {
   for (let i = 0; i < 180; i++) if (!(await legacyOne(page))) return;
   throw Error('Legacy division failed to finish');
 }
+async function revealRefreshControl(page, button) {
+  const control = page.locator(button);
+  if (await control.isVisible()) return;
+  const toggle = page.locator('.bh-toggle:visible');
+  await toggle.waitFor({state:'visible'});
+  if (await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
+  if (!await control.isVisible() && await page.locator('.bh-root:visible').count())
+    await page.locator('.bh-root:visible').click();
+  await control.waitFor({state:'visible'});
+}
 async function refresh(page, button) {
+  await revealRefreshControl(page, button);
   await page.locator(button).click();
   const dialog = page.locator('dialog.multiplication-refresh');
   assert(await dialog.isVisible(), 'Multiplication review opens beside division');
@@ -231,7 +242,13 @@ async function refresh(page, button) {
       }
       assert.equal((await guidedState(p)).sessions.decimalDivisor.step,4);
       await p.locator('#answer').fill('123');
+      const beforeHelp = await guidedState(p);
+      await revealRefreshControl(p, '#multiplication-refresh');
       const before = await guidedState(p), notebook = await notebookState(p);
+      assert.equal(before.sessions.decimalDivisor.hints, beforeHelp.sessions.decimalDivisor.hints + 1,
+        'Opening contextual division help is counted separately from a multiplication review visit');
+      for (const key of ['id','task','step','answers','accepted','done','draft','errors','reveals','repeated'])
+        assert.deepEqual(before.sessions.decimalDivisor[key], beforeHelp.sessions.decimalDivisor[key], 'Opening help preserves guided ' + key);
       await refresh(p,'#multiplication-refresh');
       const after = await guidedState(p);
       for (const key of ['id','task','step','answers','accepted','done','draft','errors','reveals','repeated']) assert.deepEqual(after.sessions.decimalDivisor[key],before.sessions.decimalDivisor[key],'Multiplication review preserves guided ' + key);

@@ -109,7 +109,9 @@
       currentIdentity = identity; usedIdentity = '';
       if (percent) hintOutput.replaceChildren();
       const condition = (percent ? $('p-q')?.querySelector('.prompt') : division ? $('taskTitle') : $('practicePrompt'))?.textContent || '';
-      helper.update({host, identity:contentId + ':' + identity, contentId, context:{prompt:condition, step:division ? $('phaseText')?.textContent || '' : ''}, rootContent:helpRoot, onUse:markUsed, disabled:false});
+      const phase = division ? root.__trainerDebug?.state?.().phase : '';
+      const kind = {product:'product',remainder:'subtract',digit:'digit',bring:'bring',comma:'comma',shiftCount:'decimal-shift',shiftDividend:'decimal-shift',shiftDivisor:'decimal-shift'}[phase] || '';
+      helper.update({host, identity:contentId + ':' + identity, contentId, context:{prompt:condition, step:division ? $('phaseText')?.textContent || '' : '',kind}, rootContent:helpRoot, onUse:markUsed, disabled:false});
     }
     function schedule() { if (!scheduled) { scheduled = true; root.queueMicrotask(refresh); } }
     const observer = new MutationObserver(schedule);

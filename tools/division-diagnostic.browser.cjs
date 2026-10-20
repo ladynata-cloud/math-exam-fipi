@@ -126,15 +126,16 @@ async function exerciseFirstStep(page, expectedURL) {
     assert(await page.evaluate(() => window.__soviet.state().sessions['column-add:practice'].accepted), 'Recommended addition exercise accepts an actual first answer');
   } else if (expectedURL.endsWith('/multiplication-ladder.html')) {
     await page.waitForFunction(() => window.__trainerDebug);
-    await page.locator('[data-route="practice"]').first().click();
+    await page.locator('#view-practice').waitFor({state:'visible'});
+    assert.equal(await page.locator('.bh-toggle').isVisible(), true, 'Recommended multiplication starts at its actual exercise');
     const q = await page.evaluate(() => window.__trainerDebug.state().current);
     if (q.kind === 'choice') await page.locator('#practiceAnswer [data-id=' + JSON.stringify(String(q.answer)) + ']').click();
     else await page.locator('#practiceAnswer input').fill(String(q.answer));
     await page.locator('#checkTask').click();
     assert(await page.locator('#practiceFeedback.good').isVisible(), 'Recommended multiplication exercise checks an actual first answer');
   } else {
-    await page.locator('#practice').click();
     await page.locator('#lm-check').waitFor({state:'visible'});
+    assert.equal(await page.locator('#learning-remediation-root').isVisible(), true, 'Recommended course starts at its actual exercise');
     const expectedId = expectedURL.replace('/trainers/oge-basics/', '').replace(/\.html$/, '');
     assert.equal(await page.locator('body').getAttribute('data-course-id'), expectedId);
     const q = await page.evaluate(() => {

@@ -29,7 +29,12 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
 .basics-special .estimate-page>.estimate-card{margin-top:20px}
 .basics-special .estimate-actions{margin-top:18px}
 .basics-special .column{margin:24px auto}.basics-special h2#question{font-size:24px;line-height:1.5}
+.basics-foundations main>.eyebrow{display:none}.basics-foundations #exercise .in-mind:empty{display:none}
+.basics-lab .intro{padding:0;margin:0 0 18px}.basics-lab .intro h1{margin:0 0 18px}
+.basics-estimate #estimate-task{font-size:24px;line-height:1.45}.basics-estimate #estimate-prompt{font-size:21px;line-height:1.6}
+.basics-estimate #estimate-notice{margin:22px 0 12px}.basics-estimate .estimate-page>header h1{margin-bottom:18px}
 .basics-special button,.basics-navigation .btn,.basics-navigation .button{min-height:44px;font-size:16px;box-shadow:none}
 .basics-special input{min-height:48px;font-size:21px}
 .basics-special [hidden],.basics-navigation [hidden]{display:none!important}
 @media(max-width:600px){.basics-navigation .wrap,.basics-navigation main{padding:22px 14px 50px}.basics-navigation .topic-grid,.basics-navigation .grid{grid-template-columns:1fr}.basics-navigation .topic-card,.basics-navigation .grid>.card{padding:16px}.basics-navigation .topbar-in{padding:10px 14px;flex-wrap:wrap}.basics-special .estimate-page{padding:16px 12px}.basics-special .workspace{grid-template-columns:1fr}.basics-special .stage,.basics-special .paper{min-width:0}.basics-special .intro h1{font-size:26px}}
+@media(max-width:420px){.basics-estimate #estimate-task{font-size:22px}.basics-estimate #estimate-prompt{font-size:20px}.basics-estimate .estimate-card{padding:15px}.basics-foundations #exercise{padding:16px}.basics-foundations .column{margin:16px auto}}

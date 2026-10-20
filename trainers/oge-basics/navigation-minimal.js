@@ -32,14 +32,26 @@
       if(header){const paragraphs=[...header.querySelectorAll(':scope > p:not(.eyebrow):not(.lead)')];fold(paragraphs,'О тренировке и сохранении');}
     }
     if(/arithmetic-foundations\.html$/.test(path)){
-      fold([document.getElementById('stages')],'Выбрать шаг');
-      const note=document.querySelector('main>.note');if(note)fold([note],'Где сохраняется работа');
+      document.body.classList.add('basics-foundations');
+      const stages=fold([document.getElementById('stages')],'Выбрать шаг');
+      const note=fold([document.querySelector('main>.note')],'Где сохраняется работа');
+      document.getElementById('exercise')?.after(...[stages,note].filter(Boolean));
     }
-    if(/quotient-estimate\.html$/.test(path))fold([document.querySelector('.rounding-preparation')],'Потренировать округление отдельно');
+    if(/quotient-estimate\.html$/.test(path)){
+      document.body.classList.add('basics-estimate');
+      const header=document.querySelector('.estimate-page>header'),heading=header?.querySelector('h1');
+      if(heading)heading.textContent='Прикидка при делении';
+      const explanation=fold(header?[...header.querySelectorAll(':scope > p:not([role="status"])')]:[],'Как решать');
+      const rounding=fold([document.querySelector('.rounding-preparation')],'Потренировать округление отдельно');
+      document.getElementById('view-practice')?.after(...[document.getElementById('estimate-notice'),explanation,rounding].filter(Boolean));
+    }
     if(/division-lab\.html$/.test(path)){
-      fold([document.querySelector('.controls')],'Выбрать тему или режим');
+      document.body.classList.add('basics-lab');
+      const controls=fold([document.querySelector('.controls')],'Выбрать тему или режим');
       const stats=document.getElementById('stats')?.closest('section');if(stats)fold([stats],'Мои результаты');
-      const intro=document.querySelector('.intro');if(intro){const h=intro.querySelector('h1');if(h)h.textContent='Деление уголком';fold([...intro.querySelectorAll('p')],'Как заниматься');}
+      const intro=document.querySelector('.intro');let explanation=null;
+      if(intro){const h=intro.querySelector('h1');if(h)h.textContent='Деление уголком';explanation=fold([...intro.querySelectorAll('p')],'Как заниматься');}
+      document.getElementById('workspace')?.after(...[controls,explanation].filter(Boolean));
     }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready();

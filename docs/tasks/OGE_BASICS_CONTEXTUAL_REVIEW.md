@@ -81,3 +81,15 @@ storage and assisted/independent assertions. The read-only renderer preserves a
 static fallback when optional help is unavailable; the two existing persisted
 server-envelope tests and full division DOM suite pass. These fixes require a
 new exact-head cloud run; the first run is not reported as a passing final gate.
+
+Second cloud head2eed3de3e386ba63e3db9d1e1f4b145647cdb7bb: the contextual
+browser workflow passed all70 routes and320/360/1280px;57 screenshots plus its
+report were retained and representative screens inspected. Guided-division
+browser gate also passed. Visual inspection prompted task-order improvements in
+three special screens and movement of managed help beside the actual step
+question; legacy help now receives the current arithmetic phase. Local focused
+suites pass37 tests after these changes. Current robot reports were genuinely
+regenerated (22 scenarios,475 legacy and470 current verified steps,0 issues),
+leaving the baseline untouched. Three remaining old browser scenarios use the
+new visible help/menu controls with all mathematical assertions retained. New
+cloud verification is required for this final combined delta.

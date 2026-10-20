@@ -50,6 +50,7 @@ test('task is immediate; optional notes and topic tools start collapsed', t => {
   assert.equal(f.$('#lm-notes').open, false);
   assert.equal(f.$('.bh-panel').hidden, true);
   assert.equal(f.$('.bh-toggle').textContent, 'Нужна помощь?');
+  assert(f.$('.lm-task-heading').contains(f.$('#lm-help-slot')), 'A one-question exercise keeps help beside its condition');
   assert.equal(f.events.length, 0);
   assert.equal(f.$('.lm-scaffold'), null, 'No answer-bearing scaffold is rendered before explicit help');
 });
@@ -96,6 +97,10 @@ test('six help levels preserve the real task, child draft, focus and notes acros
 
 test('a newly accepted division step resets help while all accepted work stays visible', t => {
   const f = mount(t, 'multiplication-division/course-whole-simple');
+  const slot = f.$('#lm-help-slot'), board = f.$('.lm-division');
+  assert(slot.previousElementSibling.matches('.lm-prompt'), 'Step help follows the actual current question');
+  assert(!f.$('.lm-task-heading').contains(slot), 'Step help is not attached to the broad example heading');
+  assert(board.compareDocumentPosition(slot) & f.window.Node.DOCUMENT_POSITION_FOLLOWING, 'The accepted board remains before the expanding helper');
   f.$('.bh-toggle').click();
   f.$('.bh-frame:not([hidden]) .bh-deeper').click();
   assert.notEqual(f.$('.bh-panel').dataset.bhDepth, '0');
