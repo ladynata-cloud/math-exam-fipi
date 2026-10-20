@@ -133,7 +133,16 @@
   }
 
   const line=(a,b,color=INK,dash='')=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${color}" stroke-width="3"${dash?' stroke-dasharray="'+dash+'"':''}/>`;
-  const text=(x,y,s,color=INK,anchor='middle')=>`<text x="${x}" y="${y}" fill="${color}" font-size="${/^[A-ZА-Я](?:[0-9′]|[₁₂₃])?$/.test(String(s))?36:String(s).length<=12?28:20}" text-anchor="${anchor}" dominant-baseline="middle">${esc(s)}</text>`;
+  function text(x,y,s,color=INK,anchor='middle') {
+    const value=String(s),size=/^[A-ZА-Я](?:[0-9′]|[₁₂₃])?$/.test(value)?36:value.length<=12?28:20;
+    // Reserve glyph space, not merely the baseline. The inset also covers
+    // labels placed by fixed-scale experiments rather than the shared fit().
+    const width=Math.min(544,Math.max(size,value.length*size*.85)),pad=8;
+    const left=anchor==='start'?pad:anchor==='end'?pad+width:pad+width/2;
+    const right=anchor==='start'?560-pad-width:anchor==='end'?560-pad:560-pad-width/2;
+    const px=clamp(x,left,right),py=clamp(y,size*.75+pad,340-size*.7-pad);
+    return `<text x="${px}" y="${py}" fill="${color}" font-size="${size}" text-anchor="${anchor}" dominant-baseline="middle">${esc(value)}</text>`;
+  }
   const dot=(p,color=INK)=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${color}"/>`;
   const poly=pts=>`<polygon points="${pts.map(p=>p.join(',')).join(' ')}" fill="${LIGHT}" stroke="${INK}" stroke-width="3"/>`;
   function tick(a,b,count=1,color=BLUE) {
@@ -162,7 +171,13 @@
   }
   const linked=(key,body,label='')=>`<g data-geometry-group="${esc(key)}" tabindex="0" role="img" aria-label="${esc(label||key)}">${body}</g>`;
   function fit(points, box) {
-    const b=box||{x:80,y:45,w:400,h:230}, xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);
+    const requested=box||{x:80,y:45,w:400,h:230};
+    // Point labels sit 23 units outside the shape and may use 36-unit type.
+    // Leave room for both before scaling; clamping text alone would push a
+    // top vertex's label back onto the vertex or its angle marking.
+    const left=Math.max(48,requested.x),right=Math.min(512,requested.x+requested.w);
+    const top=Math.max(64,requested.y),bottom=Math.min(280,requested.y+requested.h);
+    const b={x:left,y:top,w:right-left,h:bottom-top},xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);
     const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
     const scale=Math.min(b.w/Math.max(maxX-minX,1),b.h/Math.max(maxY-minY,1));
     const x=b.x+(b.w-(maxX-minX)*scale)/2,y=b.y+(b.h-(maxY-minY)*scale)/2;

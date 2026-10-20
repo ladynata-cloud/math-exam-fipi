@@ -46,6 +46,7 @@ async function valid(page,label){
   return {invalid,inputs,triangle,badMarkup:/NaN|Infinity|\[object Object\]/.test(document.querySelector('#visualHost').innerHTML)};
  },KEY);
  assert.deepEqual(result.invalid,[],label+' finite geometry');assert.equal(result.badMarkup,false,label+' valid rendered numbers');
+ const outside=(await labelEvidence(page)).filter(item=>item.outside);assert.deepEqual(outside,[],label+' labels remain inside the diagram');
  result.inputs.forEach(i=>{assert(i.label.trim(),label+' names '+i.key);assert(i.min<i.max,label+' useful range '+i.key);assert(i.value>=i.min-1e-7&&i.value<=i.max+1e-7,label+' within bounds '+i.key);});
  if(result.triangle){const {angles,sides}=result.triangle;assert(angles.every(x=>x>0&&x<180),label+' valid angles');assert(Math.abs(angles.reduce((a,b)=>a+b)-180)<1e-6,label+' angle sum');for(let i=0;i<3;i++)assert(sides[i]<sides[(i+1)%3]+sides[(i+2)%3],label+' strict triangle inequality');assert.equal(result.inputs.length,6,label+' six linked controls');}
  return result;
@@ -66,6 +67,9 @@ async function references(page,card,label){
  await sheet.locator(':scope > summary').click();await outer.locator(':scope > summary').click();
 }
 async function labelEvidence(page){return page.locator('#visualHost svg').evaluate(svg=>{const vb=svg.viewBox.baseVal;return [...svg.querySelectorAll('text')].filter(t=>t.textContent.trim()).map(t=>{const b=t.getBBox(),m=svg.getCTM().inverse().multiply(t.getCTM()),p=[new DOMPoint(b.x,b.y).matrixTransform(m),new DOMPoint(b.x+b.width,b.y+b.height).matrixTransform(m)];return{text:t.textContent,outside:p[0].x<vb.x||p[0].y<vb.y||p[1].x>vb.x+vb.width||p[1].y>vb.y+vb.height};});});}
+// Pointer/focus highlighting is transient. Compare every geometry attribute and
+// label after removing only that presentation class; highlighted() tests it separately.
+async function persistentDrawing(page){return page.locator('#visualHost svg').evaluate(svg=>{const copy=svg.cloneNode(true);copy.querySelectorAll('.t19-linked-active').forEach(node=>{node.classList.remove('t19-linked-active');if(!node.classList.length)node.removeAttribute('class');});return copy.innerHTML;});}
 async function highlighted(page,group){
  const state=await page.evaluate(group=>({active:[...document.querySelectorAll('#visualHost .t19-linked-active')].map(e=>e.dataset.geometryGroup),svg:document.querySelectorAll(`#visualHost svg [data-geometry-group="${group}"].t19-linked-active`).length,rows:document.querySelectorAll(`#visualHost li[data-geometry-group="${group}"].t19-linked-active`).length,controls:document.querySelectorAll(`#visualHost .t19-model-control[data-geometry-group="${group}"].t19-linked-active`).length}),group);
  assert(state.active.length>=6,'geometry, readout and pair are linked');assert(state.active.every(g=>g===group),'only selected opposite pair is highlighted');assert.equal(state.svg,2);assert.equal(state.rows,2);assert.equal(state.controls,2);
@@ -96,8 +100,8 @@ async function main(){
     await highlighted(page,'opposite-A');
     const slider=page.locator('input[data-key="sideA"]');if(mode.hasTouch){await slider.scrollIntoViewIfNeeded();const b=await slider.boundingBox();await slider.tap({position:{x:b.width*.7,y:b.height/2}});}else{await slider.focus();await page.keyboard.press('ArrowRight');}
     const baseSlider=page.locator('input[data-key="sideC"]');await baseSlider.focus();await page.keyboard.press('ArrowLeft');await valid(page,'linked slider');await unanswered(page,before,'linked pair');
-    const state=await saved(page),drawing=await page.locator('#visualHost svg').innerHTML();await page.locator('#hintToggle').click();await page.locator('#hintToggle').click();assert.deepEqual((await saved(page)).current.modelState,state.current.modelState);
-    await page.reload();await page.locator('#visualHost svg').waitFor();assert.deepEqual((await saved(page)).current.modelState,state.current.modelState);assert.equal(await page.locator('#visualHost svg').innerHTML(),drawing);assert(await page.locator('.t19-model-readout').isVisible());await unanswered(page,before,'restored pair');
+    const state=await saved(page),drawing=await persistentDrawing(page);await page.locator('#hintToggle').click();await page.locator('#hintToggle').click();assert.deepEqual((await saved(page)).current.modelState,state.current.modelState);
+    await page.reload();await page.locator('#visualHost svg').waitFor();assert.deepEqual((await saved(page)).current.modelState,state.current.modelState);assert.equal(await persistentDrawing(page),drawing);assert(await page.locator('.t19-model-readout').isVisible());await unanswered(page,before,'restored pair');
     const card=byId.get('reference-014');await page.locator(card.truth?'#btnFalse':'#btnTrue').click();assert.deepEqual((await saved(page)).records[card.id],{attempts:1,correct:0,needsReview:true});
     assert(await page.locator('#btnTrue').isDisabled());assert(await page.locator('#btnFalse').isDisabled());assert.equal((await saved(page)).records[card.id].attempts,1,'one explicit answer records one attempt');
    },page);

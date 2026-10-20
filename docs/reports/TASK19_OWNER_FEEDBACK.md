@@ -53,7 +53,8 @@ the action; radius in circleMeasure genuinely changes size and remains.
 
 These four modelbranches keep their construction, controls, instructions and explanation;
 none requires the geometric correction or formula-reference changes in this task.
-Common point-label typography is enlarged for readability across the trainer.
+Common point-label typography is enlarged and drawing insets reserve space for
+those labels across the trainer.
 This is a conservative selection untouched by the mathematical/model feedback,
 not a claim of byte-identical shared styling or that every other card changed.
 The five alreadyinteractive triangleLinkage cards are excluded from this selection
