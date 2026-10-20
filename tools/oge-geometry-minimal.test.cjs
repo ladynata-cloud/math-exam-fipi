@@ -29,6 +29,7 @@ for(const [n,name,input,check,answer,next] of cases){
    const settings=d.querySelector('#courseSettings');assert.ok(settings);assert.equal(settings.open,false);
    assert.ok(settings.querySelector('.tabs'),'original mode controls available in settings');
    assert.ok(d.querySelector('svg'),'condition drawing retained');
+   assert.equal(w.getComputedStyle(d.querySelector('h1')).color,'rgb(32, 40, 32)','heading remains readable on the pale page');
    const hint=d.querySelector('#courseHintToggle'),panel=d.querySelector('#courseHintPanel');assert.ok(hint);assert.equal(hint.textContent,'Хочешь подсказку?');assert.equal(panel.hidden,true);assert.equal(hint.getAttribute('aria-expanded'),'false');
    const before=storage(w);hint.click();assert.equal(panel.hidden,false);assert.equal(hint.getAttribute('aria-expanded'),'true');hint.click();assert.equal(panel.hidden,true);assert.deepEqual(storage(w),before,'opening/closing help is not an answer or mistake');
    assert.equal(d.querySelectorAll('#courseHintToggle').length,1);assert.equal(d.querySelectorAll('#courseHintPanel').length,1);
@@ -112,4 +113,24 @@ test('№24: using a hint preserves the open help and highlighting',async()=>{
 test('№24: review deep link gets minimal help and retains its open task queue',async()=>{
  const first=await load(24,'proofs');first.w.eval('CP.mlog(curTask().id,false)');const saved=storage(first.w);const id=first.w.eval('curTask().id');first.dom.window.close();
  const second=await load(24,'proofs','?mode=review',saved);try{assert.equal(second.w.eval('ST.review'),true);assert.equal(second.w.eval('ST.queue[0]'),id);assert.ok(second.d.querySelector('#courseHintToggle'));assert.equal(second.d.querySelector('#courseHintPanel').hidden,true);}finally{second.dom.window.close();}
+});
+
+test('№24: numerical proof fractions use bars without changing cards, bank or proof completion',async()=>{
+ const {dom,w,d}=await load(24,'proofs');try{
+  const original=w.eval('JSON.stringify(DATA)');w.eval("startStudy('t1')");
+  const findCard=()=>d.querySelector('button[onclick="pickCard({type:\'s\',i:2})"]');
+  const fractions=root=>Array.from(root.querySelectorAll('.proof-fraction'),f=>Array.from(f.children,s=>s.textContent).join('/'));
+  assert.deepEqual(fractions(findCard()),['6/12','1/2','12/24','1/2'],'includes fraction before punctuation');
+  assert.equal(findCard().getAttribute('onclick'),"pickCard({type:'s',i:2})");
+  for(const f of findCard().querySelectorAll('.proof-fraction')){
+   assert.equal(f.getAttribute('role'),'math');assert.equal(f.children.length,2);
+   assert.equal(w.getComputedStyle(f.firstElementChild).borderBottomStyle,'solid');
+  }
+  w.eval('renderTask();renderTask()');assert.deepEqual(fractions(findCard()),['6/12','1/2','12/24','1/2']);
+  for(let i=0;i<4;i++)d.querySelector(`button[onclick="pickCard({type:'s',i:${i}})"]`).click();
+  assert.equal(w.eval('ST.solvedNow'),true);assert.equal(w.eval('ST.placed'),4);assert.equal(w.eval('ST.err'),0);
+  assert.deepEqual(fractions(d.querySelector('.chain')),['6/12','1/2','12/24','1/2']);
+  assert.deepEqual(fractions(d.querySelector('.blanktext')),['6/12','1/2','12/24','1/2']);
+  assert.equal(w.eval('JSON.stringify(DATA)'),original,'all source bank strings and answer identity unchanged');
+ }finally{dom.window.close();}
 });

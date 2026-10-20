@@ -150,3 +150,19 @@ test('task22: revealed helper steps stay marked through hide/reopen and final an
   assert.deepEqual(t.errors,[]);
  }finally{t.close();}
 });
+
+
+test('task22: full answer reveal is explicitly labelled when the learner later checks the correct main answer',async()=>{
+ const t=await boot(22);try{
+  for(const nav of t.d.querySelectorAll('.mod-btn')){
+   nav.click();const host=t.d.querySelector('.panel:not(.hidden) .mode-host[data-mode="marathon"]'),problem=host.__problem;
+   byText(host,'Хочешь подсказку?').click();const help=host.querySelector('.minimal-help');help.querySelector('details').open=true;
+   byText(help,'Показать ответ').click();assert.match(host.querySelector(':scope > .fb').textContent,/Ответ:/);
+   assert.equal(help.querySelectorAll('.step-card').length,0,'This path uses the full answer, not helper steps');
+   fill22(host.querySelector('.ans-host'),problem);host.querySelector(':scope > .btn-row > .btn-check').click();
+   assert.equal(host.querySelector(':scope > .fb').textContent,'Верно (ответ был показан).',nav.dataset.mod+' explicitly discloses prior answer reveal');
+   assert.equal(host.querySelector('.score b').textContent,'0',nav.dataset.mod+' receives no independent credit');
+  }
+  assert.deepEqual(t.errors,[]);
+ }finally{t.close();}
+});

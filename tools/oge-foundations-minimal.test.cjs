@@ -70,3 +70,13 @@ test('arithmetic save errors remain visible outside closed results and preserve 
 test('fraction help is counted as assisted, survives hiding, and resets for a new task',t=>{
   const f=mount(t,'drobi-oge-trainer.html');f.d.getElementById('dStepBtn').click();let guard=0;while(f.d.getElementById('foundationHintCheck')){assert(guard++<30);const h=f.w.foundationTest.getHelp(),expected=h.plan.steps[h.index].expected.map(String).join('/');submit(f,'foundationHintAnswer',expected,'foundationHintCheck');}const answer=f.w.foundationTest.getHelp().plan.answer.map(String).join('/');f.d.getElementById('dStepBtn').click();submit(f,'dAns',answer,'dCheck');const dr=f.w.foundationTest.getDrill();assert.equal(dr.status[dr.order[dr.pos]],'y');assert.match(f.d.getElementById('dStats').textContent,/с подсказкой или после ошибки/);f.d.getElementById('dCheck').click();assert.equal(dr.helpUsed,false);const next=f.w.foundationTest.tasks[dr.order[dr.pos]];submit(f,'dAns',next.n+'/'+next.d,'dCheck');assert.equal(dr.status[dr.order[dr.pos]],'g');
 });
+
+
+test('optional downloads keep a full-width body panel and all download actions',t=>{
+  for(const file of ['rounding-stepwise.html','negative-numbers.html']){
+    const f=mount(t,file),panel=f.d.querySelector('section.download-panel');
+    assert.equal(panel.parentElement,f.d.body,'The download panel keeps its body-row layout contract');
+    const details=panel.querySelector(':scope > details');closed(details);details.querySelector(':scope > summary').click();
+    assert.equal(details.open,true);assert.equal(details.querySelectorAll('.download-actions a[download]').length,3);
+  }
+});

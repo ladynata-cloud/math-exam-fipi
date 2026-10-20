@@ -12,12 +12,17 @@ Updated: 2026-10-20 (Asia/Novosibirsk)
   in the cloud. [Current scope](tasks/OGE_COURSE_MINIMAL.md) is HIGH:
   main lines1–25, practical1–5 family, the existing full author variant, two hubs
   and four directly linked foundation trainers. Task6/11/19 retain their releases.
-- All seven integrated groups pass110 DOM scenarios; existing algebra668 and
+- Initial integrated groups passed110 DOM scenarios; existing algebra668 and
   geometry1873 checks pass. Independent cross-review fixed concrete provenance,
   input, contextual-help and essential-condition defects. Rounding download and
   archive match the updated canonical implementation.
 - Task15 remains honestly labelled as one external-angle lesson. The separate
   PredOGE course stays linked; it is not claimed as rebuilt in this release.
+- First cloud browser gates passed algebra, geometry, part2 and special routes.
+  External review found one confirmed task10 disclosure defect, now fixed; two
+  provenance reports were rebutted with exact code and reproducible tests.
+  Actual screenshots prompted contrast/diagram fixes. Existing robots now open
+  disclosures through visible controls; fresh exact-head gates are required.
 - Next: exact-head cloud browser gates, actual read-only external review using
   the repository's configured provider, fresh-main guard, publication and live
   route/asset verification. Approval markers alone cannot authorize publication.

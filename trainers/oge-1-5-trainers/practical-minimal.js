@@ -88,16 +88,29 @@ function mountHint(host,kind,type,text){
   button.addEventListener('click',()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));});
   wrapper.append(button,panel);host.after(wrapper);
 }
+function figureZoom(svg){
+  if(!svg||svg.closest('.pm-figure-scroll'))return;
+  const wrap=doc.createElement('div');wrap.className='pm-figure-scroll';wrap.id='pm-figure-'+(++serial);wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Рисунок с прокруткой');
+  svg.before(wrap);wrap.append(svg);
+  const button=doc.createElement('button');button.type='button';button.className='pm-zoom-button';button.textContent='Увеличить рисунок';button.setAttribute('aria-controls',wrap.id);button.setAttribute('aria-pressed','false');
+  const note=doc.createElement('p');note.className='pm-zoom-note';note.hidden=true;note.textContent='Прокручивай рисунок, чтобы рассмотреть его целиком.';
+  wrap.after(button,note);
+  button.addEventListener('click',()=>{const large=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(large));button.textContent=large?'Уменьшить рисунок':'Увеличить рисунок';wrap.classList.toggle('pm-figure-large',large);note.hidden=!large;const box=(svg.getAttribute('viewBox')||'0 0 600 400').trim().split(/\s+/).map(Number);svg.style.width=large?Math.max(600,box[2]*1.4)+'px':'';if(!large){wrap.scrollLeft=0;wrap.scrollTop=0;}});
+}
 function decorate(){
   if(observer)observer.disconnect();
   try{
     const page=doc.body.dataset.practicalPage;
+    if(page==='roads-grid')figureZoom(one('#map'));
+    if(page==='apartments')figureZoom(one('#plan'));
+    if(page==='tariffs')figureZoom(one('#graph'));
+    if(page==='stoves'){const question=one('#task-card .task-question');if(question&&question.innerHTML.includes('карточках печей выше'))question.innerHTML=question.innerHTML.replace('карточках печей выше','карточках печей ниже');}
     all('table').forEach(table=>{if(table.parentElement.classList.contains('pm-table-scroll'))return;const wrap=doc.createElement('div');wrap.className='pm-table-scroll';table.before(wrap);wrap.append(table);});
     const pairs=[['#hint-btn','#hint-box'],['#hintBtn','#hintBox'],['#bHint','#hint'],['#hint','#feedback']];
     pairs.forEach(([a,b])=>hintButton(one(a),one(b)));
     all('.substep-hint-btn').forEach(b=>hintButton(b,b.parentElement.querySelector('.substep-hint')));
     // Optional full solutions remain available, after the student has deliberately opened this disclosure.
-    ['#show-btn','#solveBtn','#bSolve','#solution-btn','#reveal'].forEach(s=>fold(one(s),'Полный разбор'));
+    ['#show-btn','#solveBtn','#bSolve','#bSol','#solution-btn','#reveal'].forEach(s=>fold(one(s),'Полный разбор'));
     if(page==='percent-table'){const b=one('#hint-btn'),stack=one('#hint-stack');if(b&&stack)b.setAttribute('aria-expanded',String(stack.children.length>0));}
     if(page==='roads-schema'){
       foldAll('#app .tabs','Выбрать задание');foldAll('#app .progress','Мои результаты');
@@ -137,6 +150,7 @@ function init(){
     const relations=one('#relations');if(relations)fold(relations.closest('.card'),'Как связаны форматы');
     foldAll('#typeChips','Выбрать тип задания');foldAll('.type-header','О типах заданий');foldAll('aside','Формулы · мои результаты');foldAll('.story','О формате бумаги');
   }else if(page==='apartments'){
+    const modeName=one('#modeName');if(modeName)modeName.textContent='тренировка';
     foldAll('#tabs','Выбрать тему');foldAll('#planpick','Выбрать план');foldAll('.side','Формулы · мои результаты · режимы');
     const body=one('#taskBody'),plan=one('#plan');if(body&&plan)moveBefore(body.closest('.panel'),plan.closest('.panel'));
   }else if(page==='land-plots'||page==='tariffs'){

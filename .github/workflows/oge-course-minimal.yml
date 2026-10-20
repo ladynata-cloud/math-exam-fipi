@@ -51,13 +51,11 @@ jobs:
           git diff --check
       - name: Mobile, desktop, hints and retained input
         run: |
-          node tools/oge-algebra-minimal.browser.cjs
-          node tools/oge-geometry-minimal.browser.cjs
-          node tools/oge-part2-minimal.browser.cjs
-          node tools/oge-special-minimal.browser.cjs
-          node tools/oge-practical-minimal.browser.cjs
-          node tools/oge-foundations-minimal.browser.cjs
-          node tools/oge-navigation-minimal.browser.cjs
+          status=0
+          for family in algebra geometry part2 special practical foundations navigation; do
+            node "tools/oge-${family}-minimal.browser.cjs" || status=1
+          done
+          exit "$status"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

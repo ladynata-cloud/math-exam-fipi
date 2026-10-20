@@ -81,7 +81,7 @@ const boardBridge=MathExamBoard.register({id:'negative-numbers-line',version:'1.
 bindSeg('mode',v=>mode=v);bindSeg('level',v=>level=v);el('check').onclick=check;el('next').onclick=newTask;el('sol').onclick=()=>showSol(true);el('hint').onclick=hint;el('reset').onclick=()=>{if(confirm('Сбросить статистику по этой теме?')){save(fresh());renderStats()}};el('ans').oninput=sendBoardTrainerState;el('ans').onkeydown=e=>{if(e.key==='Enter'&&!el('check').disabled)check()};build();renderStats();newTask();
 </script>
 <!-- download-panel:start:negative-numbers-line -->
-<details class="foundation-reference"><summary>Скачать числовую прямую</summary><section class="download-panel" id="download">
+<section class="download-panel" id="download"><details class="foundation-reference"><summary>Скачать числовую прямую</summary>
   <h2>Скачать и адаптировать</h2>
   <p>Этот тренажёр можно скачать как HTML-файл, открыть у себя на компьютере или использовать как основу для создания похожего тренажёра. Промпт для DeepSeek поможет адаптировать идею под другую тему, класс или тип ошибки.</p>
   <div class="download-actions">

@@ -197,6 +197,16 @@ body{background:var(--bg);background-image:none;font-size:18px;line-height:1.75}
 button,.btn,.chip,.mode,.mod-btn,.tab,.addbtn,.rmini,.rm-btn{min-height:44px}.btn.primary,.btn-check,.btn.next{background:#216342;color:white}.btn.ghost,.btn-new{background:white;border:1px solid var(--line);color:#216342}.btn,.btnrow,.btn-row{font-size:17px}.btns,.btnrow,.btn-row{gap:12px;margin-top:20px}input,select{max-width:100%}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[role=button]:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}.mathline{font-size:23px;line-height:2;max-width:100%;overflow-x:auto}.prompt,.problem,.st-task{font-size:18px;line-height:1.85}.qbox,.stage,.statement,.card{box-shadow:none}.qbox{border:0;padding:8px 0}.stagehead{padding:24px 28px 0;border:0}.stagehead .st-t{font:700 21px/1.5 system-ui,sans-serif}.body{padding:24px 28px}.sstep,.step-card,.scard{margin-top:18px}.sstep .sq,.step-prompt{font-size:17px;line-height:1.8}.sstep{opacity:1}.numin,.num{font-size:21px;min-height:46px}.stepfinal,.solution,.solbox{margin-top:24px}.solution .step,.solbox .prose{font-size:17px;line-height:1.85}.picker,.module-nav{margin-top:18px}.mcard:before{display:none}.mcard,.mod-btn{box-shadow:none}.mcard .mttl{font-size:16px}.mcard.on{box-shadow:none}.tabs,.modes{flex-wrap:wrap}.tab{border:1px solid var(--line);border-radius:8px;top:auto}.tab.on:after{display:none}.answer-label{display:block;font-size:16px;margin:22px 0 8px}.statement{padding:24px}.st-expr{font-size:24px;line-height:2}.panel-body{padding:0}.sub-chips{margin-top:20px}.gview{box-shadow:none}.mtbl{display:block;max-width:100%;overflow-x:auto}.step-input,.ans-host{overflow-x:auto}.minimal-help .mathline,.minimal-help .problem{overflow-x:auto}.minimal-help .givenbar{position:static}.minimal-help .statement{border:0;background:transparent;padding:0}.minimal-help .step-graph{margin:20px 0}
 @media(max-width:560px){.wrap{padding:18px 12px 44px}.minimal-header h1{font-size:21px}.minimal-header{gap:12px;margin-bottom:20px}.stagehead{padding:22px 18px 0}.body{padding:20px 18px}.minimal-help{padding:18px 12px}.mathline{font-size:21px}.statement{padding:22px 18px}.st-expr{font-size:22px}.btn{font-size:16px;padding:10px 13px}.minimal-settings .picker{grid-template-columns:1fr}.modes{display:flex}.numin{width:85px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.minimal-model-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border-radius:8px}
+.minimal-model-scroll:focus-visible{outline:3px solid #78a98c;outline-offset:3px}
+.minimal-model-scroll svg{touch-action:pan-x pan-y}
+.minimal-model-note{display:none;color:#566153;font-size:13px;line-height:1.6;margin:6px 0 12px}
+@media(max-width:560px){.minimal-model-note{display:block}}
+@media print{.minimal-model-scroll{overflow:visible}.minimal-model-scroll svg{min-width:0}.minimal-model-note{display:none}}
+.minimal-model-scroll svg.grapher{min-width:560px}
+.tick{fill:#626b63;font-size:12px}.badge-t1{font-size:12px}
+@media print{.minimal-model-scroll svg.grapher{min-width:0}}
 </style>
 </head>
 <body>
@@ -946,7 +956,9 @@ function drawWithMeasure(g,problem,val){
 }
 function makeGraphView(withSlider,measureKind){
   const box=el('div','gview');
-  const svg=svgEl('svg');box.appendChild(svg);
+  const scroll=el('div','minimal-model-scroll');scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','График: прокрутка влево и вправо');box.appendChild(scroll);
+  const svg=svgEl('svg');scroll.appendChild(svg);
+  box.appendChild(el('p','minimal-model-note','График можно прокручивать влево и вправо.'));
   const g=new Grapher(svg);
   let slider,label,problem,curSpec;
   if(withSlider){

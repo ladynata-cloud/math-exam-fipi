@@ -142,7 +142,7 @@ var requestedPlace=new URLSearchParams(location.search).get('place');if(requeste
 el('place').onchange=next;el('easy').onclick=function(){setLevel('easy')};el('med').onclick=function(){setLevel('med')};el('keep').onclick=function(){decide('keep')};el('up').onclick=function(){decide('up')};el('check').onclick=check;el('next').onclick=next;el('hint').onclick=hint;el('solution').onclick=solution;el('reset').onclick=reset;el('ans').onkeydown=function(e){if(e.key==='Enter')check()};load();next();renderStats();
 </script>
 <!-- download-panel:start:rounding-stepwise -->
-<details class="foundation-reference"><summary>Скачать тренажёр</summary><section class="download-panel" id="download">
+<section class="download-panel" id="download"><details class="foundation-reference"><summary>Скачать тренажёр</summary>
   <h2>Скачать и адаптировать</h2>
   <p>Этот тренажёр можно скачать как HTML-файл, открыть у себя на компьютере или использовать как основу для создания похожего тренажёра. Промпт для DeepSeek поможет адаптировать идею под другую тему, класс или тип ошибки.</p>
   <div class="download-actions">

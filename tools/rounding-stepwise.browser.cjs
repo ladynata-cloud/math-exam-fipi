@@ -26,6 +26,15 @@ const server = http.createServer((req, res) => {
 });
 const instruction = page => page.locator('#instruction').innerText();
 const total = async page => Number(await page.locator('#total').innerText());
+async function roundingOptions(page, open) {
+  const details = page.locator('#rounding-options');
+  if ((await details.getAttribute('open') !== null) !== open) await details.locator(':scope > summary').click();
+}
+async function choosePlace(page, place) {
+  await roundingOptions(page, true);
+  await page.locator('#place').selectOption(String(place));
+  await roundingOptions(page, false);
+}
 async function visibleProblem(page, place) {
   const prompt = await page.locator('#prompt').innerText();
   const match = prompt.match(/^Округли число (\d+(?:,\d+)?) до /);
@@ -115,7 +124,9 @@ async function solve(page, place, injectMistakes) {
         assert.deepEqual(await page.locator('[data-arithmetic-track] > header progress').evaluateAll(nodes => nodes.map(node => node.max)),[16,15]);
         assert(await preparation.evaluate(node => node.nextElementSibling.querySelector('a').getAttribute('href').startsWith('course-estimate.html')), 'Rounding immediately precedes estimation');
         const [practice] = await Promise.all([page.waitForEvent('popup'),preparation.locator('a').click()]);
-        await practice.locator('#place').waitFor({state:'visible'});
+        await practice.locator('#prompt').waitFor({state:'visible'});
+        await practice.locator('#digits .digit').first().waitFor({state:'visible'});
+        assert.equal(await practice.locator('#rounding-options').getAttribute('open'),null,'The exercise starts with optional settings folded');
         assert.equal(new URL(practice.url()).pathname,trainer);
         assert.equal(new URL(practice.url()).searchParams.get('place'),'1');
         assert.equal(await practice.locator('#place').inputValue(),'1');
@@ -124,7 +135,7 @@ async function solve(page, place, injectMistakes) {
         assert.equal(await practice.locator('#right').innerText(),'0','A corrected example is not marked immediately correct');
         await layout(practice,'tens at ' + width);
         for (const place of [2,3,4,5,6,0,-1,-2]) {
-          await practice.locator('#place').selectOption(String(place));
+          await choosePlace(practice,place);
           const previous = await solve(practice,place,false);
           await layout(practice,'place ' + place + ' at ' + width);
           await practice.locator('#next').click();
@@ -138,8 +149,10 @@ async function solve(page, place, injectMistakes) {
           assert.notEqual(current,previous,'No adjacent duplicate conditions');
           previous=current;
         }
+        await roundingOptions(practice,true);
         await practice.locator('#med').click();
         await practice.locator('#place').selectOption('6');
+        await roundingOptions(practice,false);
         await solve(practice,6,false);
         await layout(practice,'larger numbers at ' + width);
         console.log('PASS: ' + width + 'px route link, four visible steps, retry, nine places, continued examples and digit row');

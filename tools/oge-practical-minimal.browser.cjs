@@ -16,7 +16,7 @@ async function reveal(locator){
 async function layout(page,label){
  const result=await page.evaluate(()=>({width:innerWidth,documentWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth}));
  assert.ok(result.documentWidth<=result.width+2&&result.bodyWidth<=result.width+2,label+': document overflow '+JSON.stringify(result));
- const tiny=await page.locator('.pm-hint-button:visible,.pm-details>summary:visible').evaluateAll(es=>es.filter(e=>e.getBoundingClientRect().height<43).map(e=>({text:e.textContent,height:e.getBoundingClientRect().height})));
+ const tiny=await page.locator('.pm-hint-button:visible,.pm-zoom-button:visible,.pm-details>summary:visible').evaluateAll(es=>es.filter(e=>e.getBoundingClientRect().height<43).map(e=>({text:e.textContent,height:e.getBoundingClientRect().height})));
  assert.deepEqual(tiny,[],label+': small disclosure targets');
 }
 (async()=>{
@@ -36,7 +36,16 @@ async function layout(page,label){
     await page.locator(diag?'#question-text':'#question').waitFor({state:'visible'});
     assert.equal(await page.locator(diag?'#review-box':'#teacher-answer').isVisible(),false,'assessment answer leak');
     assert.equal(await page.locator('.pm-context-hint').count(),0);
-    await page.locator(diag?'#skip-btn':'#next').click();await layout(page,name+' started@'+width);
+    if(diag){
+     const total=await page.locator('#stepper button').count();assert.equal(total,10,'diagnostic keeps ten questions');
+     for(let number=1;number<=total;number++){
+      assert.equal((await page.locator('#current-num').textContent()).trim(),String(number));
+      assert.equal(await page.locator('#finish-btn').isVisible(),number===total,'finish is offered only at the final question');
+      assert.equal(await page.locator('#review-box').isVisible(),false,'no answers during diagnosis');
+      await layout(page,name+' question'+number+'@'+width);
+      if(number<total)await page.locator('#skip-btn').click();
+     }
+    }else{await page.locator('#next').click();await layout(page,name+' started@'+width);}
     await page.locator(diag?'#finish-btn':'#finish').click();await page.locator('#result').waitFor({state:'visible'});
    }else if(!name.includes('-map.')){
     const button=page.locator('button:visible,summary:visible').filter({hasText:/^Хочешь подсказку\?$/}).first();
@@ -50,6 +59,14 @@ async function layout(page,label){
      await page.locator(name.includes('tariffs')?'#graph':name.includes('land-plots')?'#plan':'#app svg').first().waitFor({state:'visible'});
     }
    }else assert.equal(await page.locator('a[data-topic]:visible').count(),12);
+   if(/roads-grid|apartments|tariffs/.test(name)){
+    const figure=page.locator('.pm-figure-scroll'),zoom=page.locator('.pm-zoom-button');
+    assert.equal(await zoom.getAttribute('aria-pressed'),'false');await zoom.focus();await zoom.press('Enter');assert.equal(await zoom.getAttribute('aria-pressed'),'true');
+    await layout(page,name+' zoom@'+width);
+    const labelSizes=await figure.locator('svg text').evaluateAll(es=>es.filter(e=>e.textContent.trim()).map(e=>parseFloat(getComputedStyle(e).fontSize)*e.getScreenCTM().a));assert.ok(labelSizes.length>0);assert.ok(Math.min(...labelSizes)>=12,name+' enlarged diagram labels remain readable: '+Math.min(...labelSizes));
+    if(width===320){await figure.focus();await figure.press('ArrowRight');await page.screenshot({path:path.join(output,name.replace('.html','')+'-zoom-320.png'),fullPage:true});}
+    await zoom.click();assert.equal(await zoom.getAttribute('aria-pressed'),'false');await layout(page,name+' zoom reset@'+width);
+   }
    assert.deepEqual(errors,[],name+' runtime errors');
    if(width===320)await page.screenshot({path:path.join(output,name.replace('.html','')+'-320.png'),fullPage:true});
    cases++;

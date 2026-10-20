@@ -351,6 +351,15 @@ button,.btn,.chip,.mode,.mod-btn,.tab,.addbtn,.rmini,.rm-btn{min-height:44px}.bt
 @media(max-width:560px){.wrap{padding:18px 12px 44px}.minimal-header h1{font-size:21px}.minimal-header{gap:12px;margin-bottom:20px}.stagehead{padding:22px 18px 0}.body{padding:20px 18px}.minimal-help{padding:18px 12px}.mathline{font-size:21px}.statement{padding:22px 18px}.st-expr{font-size:22px}.btn{font-size:16px;padding:10px 13px}.minimal-settings .picker{grid-template-columns:1fr}.modes{display:flex}.numin{width:85px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 .top{position:static;background:transparent;border:0;box-shadow:none}.card{padding:26px}.panel-head{margin-bottom:20px}.panel-head h1{font:700 21px/1.5 system-ui,sans-serif}.af{flex-wrap:wrap;gap:10px}.rail{margin:20px 0}.railrow{gap:18px}.minimal-settings .score{display:flex}.minimal-help .card{padding:14px}.minimal-help .scard .sq{font-size:17px}.minimal-settings footer{margin-top:25px}@media(max-width:560px){.card{padding:22px 18px}.minimal-help .card{padding:12px}}
+
+.minimal-model-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border-radius:8px}
+.minimal-model-scroll:focus-visible{outline:3px solid #78a98c;outline-offset:3px}
+.minimal-model-scroll svg{touch-action:pan-x pan-y}
+.minimal-model-note{display:none;color:#566153;font-size:13px;line-height:1.6;margin:6px 0 12px}
+@media(max-width:560px){.minimal-model-note{display:block}}
+@media print{.minimal-model-scroll{overflow:visible}.minimal-model-scroll svg{min-width:0}.minimal-model-note{display:none}}
+.minimal-model-scroll .viz-svg{min-width:520px}
+@media print{.minimal-model-scroll .viz-svg{min-width:0}}
 </style>
 </head>
 <body>
@@ -2018,9 +2027,18 @@ function render(){
   try{window.scrollTo({top:0,behavior:'auto'});}catch(e){}
 }
 
+function readableModels(host){
+  host.querySelectorAll('svg.viz-svg').forEach(svg=>{
+    if(svg.parentElement.classList.contains('minimal-model-scroll'))return;
+    const scroll=el('div','minimal-model-scroll');scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','Рисунок: прокрутка влево и вправо');
+    svg.replaceWith(scroll);scroll.appendChild(svg);
+    scroll.after(el('p','minimal-model-note','Рисунок можно прокручивать влево и вправо.'));
+  });
+}
+
 function renderLearn(m,host){
   const c=el('div'); c.innerHTML=m.learn(); host.appendChild(c);
-  if(m.viz){ const vh=el('div'); try{ m.viz(vh, m.gen()); }catch(e){ vh.innerHTML=''; } host.appendChild(vh); }
+  if(m.viz){ const vh=el('div'); try{ m.viz(vh, m.gen()); readableModels(vh); }catch(e){ vh.innerHTML=''; } host.appendChild(vh); }
   if(m.mini) host.appendChild(renderMini(m));
   const demo=el('div','card');
   demo.innerHTML='<div style="font-weight:700;margin-bottom:6px">Разбор одной задачи по шагам</div>'+
@@ -2053,7 +2071,7 @@ function renderStepsMode(m,host){
   function render(){
     const st=m.statement(curP); slot.innerHTML=st;
     barSlot.innerHTML=''; const gb=givenBar(st); if(gb)barSlot.appendChild(gb);
-    vizEl.innerHTML=''; if(m.viz){ try{ m.viz(vizEl,curP); }catch(e){} }
+    vizEl.innerHTML=''; if(m.viz){ try{ m.viz(vizEl,curP); readableModels(vizEl); }catch(e){} }
     sol.reset(); body.innerHTML='';
     if(STEPMODE==='full'){ sol.wrap.style.display='none'; runSteps(body, m.steps(curP), {regen:()=>{ curP=m.gen(); render(); }}); }
     else { // short: answer fields + full-solution button
@@ -2099,7 +2117,7 @@ function renderDrill(m,host){
   }
   byStep.onclick=()=>{
     const opening=hintPanel.hidden;hintPanel.hidden=!opening;byStep.setAttribute('aria-expanded',String(opening));
-    if(opening&&!hintBuilt){if(m.viz){m.viz(vizPanel,p);scorePeek();}runSteps(stepHost,m.steps(p),{regen:go});hintBuilt=true;}
+    if(opening&&!hintBuilt){if(m.viz){m.viz(vizPanel,p);readableModels(vizPanel);scorePeek();}runSteps(stepHost,m.steps(p),{regen:go});hintBuilt=true;}
   };
   skip.onclick=go;nextB.onclick=go;go();
 }

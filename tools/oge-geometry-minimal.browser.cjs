@@ -13,6 +13,12 @@ const cases=[[16,'circle'],[17,'quadrilaterals'],[18,'grid'],[23,'geometry-calcu
  try{for(const width of [320,360,1280])for(const [n,name]of cases){
   const page=await browser.newPage({viewport:{width,height:920}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+`/trainers/oge-task${n}-${name}.html`);await page.locator('#courseHintToggle').waitFor();
+  assert.equal(await page.locator('h1').evaluate(e=>getComputedStyle(e).color),'rgb(32, 40, 32)',`№${n}: readable heading at ${width}`);
+  if(n===24){
+   await page.evaluate(()=>window.eval("startStudy('t1')"));
+   const fractions=page.locator('.pool .proof-fraction');assert.equal(await fractions.count(),4);
+   assert.ok(await fractions.evaluateAll(nodes=>nodes.every(f=>{const top=f.children[0],bottom=f.children[1];return parseFloat(getComputedStyle(top).borderBottomWidth)>0&&bottom.getBoundingClientRect().top>=top.getBoundingClientRect().bottom-1;})),'numerator and denominator have an actual horizontal bar');
+  }
   assert.equal(await page.locator('#courseSettings').evaluate(e=>e.open),false);
   assert.equal(await page.locator('#courseHintPanel').isVisible(),false);
   await page.locator('#courseHintToggle').click();assert.equal(await page.locator('#courseHintPanel').isVisible(),true);

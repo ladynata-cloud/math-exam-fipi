@@ -25,6 +25,14 @@ async function initial(page,n){const host=main(page,n);await host.getByRole('but
    const help=host.locator('.minimal-help');assert(await help.isVisible());assert.equal(await hint.getAttribute('aria-expanded'),'true');assert.equal(await input.inputValue(),'123');assert.equal(await condition(page,n).innerHTML(),before);
    if(n===22){const slider=help.getByRole('slider',{name:'Положение прямой',exact:true}),svg=help.locator('svg').first(),graph=await svg.innerHTML();await slider.focus();await page.keyboard.press('End');assert.notEqual(await svg.innerHTML(),graph);await help.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();assert(await help.locator('.step-card').first().isVisible());}
    else assert(await help.locator(n===20?'.sstep':'.stepcard').first().isVisible());
+   if(n===21||n===22){
+    const model=help.locator('.minimal-model-scroll').first(),svg=model.locator('svg');
+    assert(await model.isVisible());assert.equal(await model.getAttribute('tabindex'),'0');
+    const dimensions=await model.evaluate(e=>({width:e.clientWidth,scroll:e.scrollWidth,svg:e.querySelector('svg').getBoundingClientRect().width}));
+    assert(dimensions.svg>=(n===21?520:560)-1,'Model labels retain their authored readable scale');
+    assert.equal(await help.locator('.minimal-model-scroll input').count(),0,'Model controls stay outside the scrolling drawing');
+    if(width<=360){assert(dimensions.scroll>dimensions.width,'Only the drawing scrolls horizontally');await model.focus();await page.keyboard.press('ArrowRight');await page.waitForTimeout(120);assert(await model.evaluate(e=>e.scrollLeft>0),'The enlarged model is keyboard-scrollable');await model.evaluate(e=>{e.scrollLeft=0;});}
+   }
    await noOverflow(page,n+' help '+width);await page.screenshot({path:path.join(artifacts,n+'-'+width+'-help.png'),fullPage:true});
    const accepted=await help.innerHTML();await hint.click();assert(!await help.isVisible());await hint.click();assert(await help.isVisible());assert.equal(await help.innerHTML(),accepted);assert.equal(await input.inputValue(),'123');
    await host.getByRole('button',{name:'Другая задача →',exact:true}).click();assert(!await host.locator('.minimal-help').isVisible());assert.equal(await host.getByRole('button',{name:'Хочешь подсказку?',exact:true}).getAttribute('aria-expanded'),'false');await noOverflow(page,n+' next '+width);

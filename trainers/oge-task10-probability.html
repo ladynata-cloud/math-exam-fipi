@@ -1098,7 +1098,7 @@ function mountSteps(root,task,onDone,hooks){
     root.appendChild(div);
     let resolved=false;
     const check=()=>{
-      if(resolved)return;
+      if(resolved||(hooks&&hooks.isClosed&&hooks.isClosed()))return;
       const v=awRead(id);
       if(!v){setFB(id,'warn',MSG_EMPTY);return;}
       if(stepOK(task,s,isLast,v)){
@@ -1115,7 +1115,7 @@ function mountSteps(root,task,onDone,hooks){
     el(id+'-ck').onclick=check;
     bindEnter(id,check);
     el(id+'-sh').onclick=()=>{
-      if(resolved)return;
+      if(resolved||(hooks&&hooks.isClosed&&hooks.isClosed()))return;
       resolved=true;
       st.shown=true;task.onShow&&task.onShow();
       setFB(id,'', '<span class="redink">'+s.show+' Ответ: '+ansHTML(s.ans)+'</span>');
@@ -1250,7 +1250,7 @@ function marChips(){
 function marNew(){
   const root=el('mar-root');root.innerHTML='';
   const t=attach(marFilter==='all'?genRandom(RT):genTask(marFilter,RT));
-  let hintN=0, finished=false;
+  let hintN=0, finished=false, stepsMounted=false;
   const card=document.createElement('div');card.className='card';
   const id='w'+(++UID);
   card.innerHTML=taskHead(t)
@@ -1261,17 +1261,20 @@ function marNew(){
     +`<div id="${id}-hintbox"></div><span class="fb" aria-live="polite" id="${id}-fb"></span><div id="${id}-after"></div>`;
   root.appendChild(card);
   const helpButton=el(id+'-steps');card.insertBefore(helpButton,card.querySelector('.aw').parentElement);
-  const hintPanel=document.createElement('div');hintPanel.className='minimal-hint-panel';hintPanel.hidden=true;card.appendChild(hintPanel);
+  const hintPanel=document.createElement('div');hintPanel.id=id+'-help';hintPanel.className='minimal-hint-panel';hintPanel.hidden=true;card.appendChild(hintPanel);
+  helpButton.setAttribute('aria-controls',hintPanel.id);
+  const setHelpOpen=open=>{hintPanel.hidden=!open;helpButton.setAttribute('aria-expanded',String(open));};
   OGEMinimal.group(card,[card.querySelector('.tnum')],'Об этом задании');
   hintPanel.appendChild(el(id+'-hint'));hintPanel.appendChild(el(id+'-hintbox'));hintPanel.appendChild(el(id+'-after'));
   const marTreeSvg = t.code==='10.6' ? card.querySelector('svg') : null;
   const after=()=>{
-    finished=true;
-    el(id+'-hint').disabled=true;el(id+'-steps').disabled=true;el(id+'-ck').disabled=true;
-    const a=el(id+'-after');
+    finished=true;awLock(id);
+    if(marTreeSvg) treeWink(marTreeSvg,TREE_KEYS,false);
+    el(id+'-hint').disabled=true;
+    hintPanel.querySelectorAll('.step input,.step button').forEach(e=>{e.disabled=true;});
     const b=document.createElement('button');b.className='act';b.id=id+'-next';b.textContent='Следующая задача';
     b.onclick=()=>{userActed=true;marNew();};
-    a.appendChild(b);
+    card.appendChild(b);
     if(userActed)try{b.focus({preventScroll:true});}catch(e){}
   };
   const check=()=>{
@@ -1279,9 +1282,9 @@ function marNew(){
     const v=awRead(id);
     if(!v){setFB(id,'warn',MSG_EMPTY);return;}
     if(checkAnswer(t,v)){
-      taskDone(t);
-      setFB(id,'ok','Верно!');awLock(id);
-      hintPanel.hidden=false;helpButton.setAttribute('aria-expanded','true');el(id+'-after').innerHTML=razborHTML(t);after();
+      const credited=taskDone(t);
+      setFB(id,'ok',credited===false?'Верно! Были показанные шаги — задача в счёт решённых не идёт (промахом это не считается).':'Верно!');awLock(id);
+      setHelpOpen(true);el(id+'-after').insertAdjacentHTML('beforeend',razborHTML(t));after();
     } else {
       taskMiss(t);
       setFB(id,'no',wrongMsg(t,v));
@@ -1292,19 +1295,20 @@ function marNew(){
     if(hintN<2){el(id+'-hintbox').innerHTML+=`<div class="hintbox"><b>Подсказка ${hintN+1}.</b> ${t.hints[hintN]}</div>`;hintN++;}
     if(hintN>=2)el(id+'-hint').disabled=true;
   };
-  el(id+'-steps').onclick=()=>{   // лестница блокирует главное поле: перепечатать ответ после показа нельзя
-    if(finished)return;
-    hintPanel.hidden=false;helpButton.setAttribute('aria-expanded','true');
-    awLock(id);el(id+'-steps').disabled=true;el(id+'-ck').disabled=true;
+  helpButton.onclick=()=>{
+    const opening=hintPanel.hidden;
+    setHelpOpen(opening);
+    if(!opening||stepsMounted||finished)return;
+    stepsMounted=true;
     const box=document.createElement('div');el(id+'-after').appendChild(box);
-    const hooks = marTreeSvg ? treeStepHooks(marTreeSvg, t.meta.idx) : null;
-    mountSteps(box,t,(st)=>{
-      if(marTreeSvg) treeWink(marTreeSvg,TREE_KEYS,false);
+    const hooks=Object.assign({},marTreeSvg?treeStepHooks(marTreeSvg,t.meta.idx):null,{isClosed:()=>finished});
+    mountSteps(box,t,()=>{
+      if(finished)return;
       const ok=taskDone(t);
       if(!ok) el(id+'-after').insertAdjacentHTML('beforeend','<p><span class="redink">Были показанные шаги — задача в счёт решённых не идёт (промахом это не считается).</span></p>'+razborHTML(t));
       else el(id+'-after').insertAdjacentHTML('beforeend','<p class="okline">Решено по шагам самостоятельно — засчитано!</p>'+razborHTML(t));
       after();
-    }, hooks);
+    },hooks);
   };
   awFocus(id);
 }

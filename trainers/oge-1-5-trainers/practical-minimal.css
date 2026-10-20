@@ -41,8 +41,15 @@ body.pm-minimal .wrap{max-width:1040px;padding-top:22px}
 .pm-minimal.pm-roads-schema #app>.grid{grid-template-columns:minmax(0,1fr)}
 .pm-minimal .pm-scenario-before{margin:20px 0}
 @media(max-width:600px){body.pm-minimal{font-size:16px}.pm-minimal .wrap{padding-left:14px;padding-right:14px}.pm-minimal.pm-map .grid{grid-template-columns:1fr}.pm-minimal .task-q,.pm-minimal .task-question,.pm-minimal .q,.pm-minimal .question,.pm-minimal .question-text{font-size:19px}.pm-minimal .answer-row>input,.pm-minimal .num-in>input{max-width:100%;min-width:0}.pm-minimal .topnav-inner{flex-wrap:wrap}.pm-minimal .pm-details>.pm-content{padding:0 12px 12px}.pm-minimal .plan-wrap{grid-template-columns:1fr}.pm-minimal .plan,.pm-minimal .paper{width:100%;max-width:100%;height:auto}.pm-minimal .task-card,.pm-minimal .card.task{padding:18px}.pm-minimal .titleblock{display:flex;flex-wrap:wrap;gap:12px}.pm-minimal .titleblock>div{border:0}.pm-minimal .match-grid{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){.pm-minimal *{scroll-behavior:auto!important}}
+@media(prefers-reduced-motion:reduce){.pm-minimal *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
 .pm-minimal .wrap,.pm-minimal main,.pm-minimal .main,.pm-minimal .main-col,.pm-minimal .layout,.pm-minimal .cols,.pm-minimal .grid,.pm-minimal .panel,.pm-minimal .card,.pm-minimal .task,.pm-minimal .answer{min-width:0;box-sizing:border-box}
 .pm-minimal .pm-table-scroll{max-width:100%;overflow-x:auto;margin:12px 0}.pm-minimal .pm-table-scroll table{margin-top:0;margin-bottom:0}
 .pm-minimal svg,.pm-minimal img{max-width:100%}.pm-minimal .num-in,.pm-minimal input{max-width:100%;min-width:0}
+
+.pm-minimal .pm-figure-scroll{max-width:100%;overflow:auto;min-width:0;border-radius:8px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.pm-minimal .pm-figure-scroll.pm-figure-large{max-height:70vh;border:1px solid var(--pm-line)}
+.pm-minimal .pm-figure-scroll.pm-figure-large>svg{max-width:none!important;height:auto}
+.pm-minimal .pm-figure-scroll:focus-visible{outline:3px solid var(--pm-green);outline-offset:3px}
+.pm-minimal .pm-zoom-button{margin:12px 0;padding:10px 14px;min-height:44px}
+.pm-minimal .pm-zoom-note{margin:0 0 12px;font-size:15px;line-height:1.6;color:#344c40}
