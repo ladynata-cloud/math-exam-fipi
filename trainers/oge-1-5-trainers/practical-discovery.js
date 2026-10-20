@@ -46,12 +46,13 @@ function typeFor(page,type,textValue){
  }
  if(page==='roads-grid')return /магазин|стоимост|дешев/.test(t)?'purchase':/врем|минут/.test(t)?'journey':/по прямой|расстояни.*прям/.test(t)?'triangle':/километр|шоссе через/.test(t)?'route':'map';
  if(page==='roads'||page==='roads-schema')return ({1:'map',2:'route',3:'triangle',4:'journey',5:'fuel'})[type]||'route';
- if(page==='land'||page==='land-plots')return type==='match'?'map':type==='percent'?'percent':type==='tiles'?'packs':type==='econ'?(/краск|покрас|магазин/.test(t)?'packs':'payback'):/расстояни|периметр/.test(t)?'length':'area';
+ if(page==='land'||page==='land-plots')return type==='match'?'land-map':type==='percent'?'percent':type==='tiles'?'packs':type==='econ'?(/краск|покрас|магазин/.test(t)?'packs':'payback'):/расстояни|периметр/.test(t)?'length':'area';
  if(page==='tariffs')return type==='match'||type==='count'?'chart':type==='percent'?(/сколько рублей[\s\S]*2018|прежн.*(?:цен|плат)|восстанов|прошлогод/.test(t)?'inverse-percent':'percent'):type==='switch'?'annual':'cost';
  return 'lookup';
 }
 const plans={
  map:['Найди опорный объект, затем двигайся по описанию.', 'Нажми кнопки участков: сначала «Вход → коридор», затем «Коридор → комната». Сравни с описанием своей задачи.', 'Проверяй по одной зацепке: вход, соседство, поворот, выход. В ответе соблюдай порядок названий в вопросе.'],
+ 'land-map':['Ищи связь «внутри».', 'Огород — большой прямоугольник. Узкая теплица находится внутри него. Нажимай кнопки букв: сначала выбери огород, затем теплицу.', 'Положение и форма помогают узнать объект без вычислений. На основном плане найди объекты по описанию и запиши их цифры в порядке таблицы. Буквы этой учебной модели не являются ответом к задаче.'],
  route:['Разбей маршрут на отдельные участки.', 'Нажимай кнопки выбора участков: выбранные отрезки окрасятся. Выбери оба отрезка пути через поворот.', 'Путь через поворот равен сумме двух длин. Прямая дорога между концами — другой маршрут.'],
  journey:['Для каждого участка сначала найди время.', 'Увеличь скорость при той же длине. Что произойдёт со временем? Затем добавь второй участок.', 'Время = расстояние ÷ скорость. При километрах и км/ч получатся часы; умножь на 60, чтобы получить минуты. Времена участков складываются.'],
  triangle:['Найди прямой угол и две стороны рядом с ним.', 'Измени один катет. Нажми «Измерить третью сторону» и сравни её с каждым катетом.', 'Сторона напротив прямого угла — гипотенуза. Её квадрат равен сумме квадратов катетов. Не складывай сами катеты, если нужен путь по прямой.'],
@@ -103,6 +104,22 @@ function buildModel(host,kind,options={}){
  }else if(kind==='volume'||kind==='walls'){
   const a=range(controls,'a','Длина комнаты, м',2,6,4,.5),b=range(controls,'b','Ширина комнаты, м',2,5,3,.5),h=range(controls,'h','Высота, м',2,4,2.5,.5),door=kind==='walls'?range(controls,'door','Площадь двери, м²',0,4,2,.5):null;
   watch([a,b,h,door].filter(Boolean),()=>{const A=+a.value,B=+b.value,H=+h.value;const right=55+A*34,dx=B*13,dy=B*6,top=175-H*28;if(kind==='walls'){const width=2*(A+B)*14,height=H*14,doorWidth=+door.value*7;draw(`<rect x="20" y="${140-height}" width="${width}" height="${height}" fill="#d4e8db" stroke="${green}" stroke-width="3"/><rect x="35" y="112" width="${doorWidth}" height="28" fill="#fff" stroke="${blue}" stroke-width="2"/>`+text(180,50,`Стены развернули: ${fmt(2*(A+B))} м`)+text(180,180,`Высота ${fmt(H)} м; дверь ${fmt(+door.value)} м²`));}else draw(`<path d="M55 175H${right}V${top}H55Z M55 ${top}L${55+dx} ${top-dy}H${right+dx}L${right} ${top} M${right} 175L${right+dx} ${175-dy}V${top-dy}" fill="#e1eee5" stroke="${green}" stroke-width="3"/>`+text((55+right)/2,215,`Длина ${fmt(A)} м`)+text(right+dx/2,195,fmt(B)+' м')+text(30,(175+top)/2,fmt(H)));read(kind==='volume'?`Площадь пола ${fmt(A*B)} м²; объём ${fmt(A*B*H)} м³.`:`Развёртка стен: ${fmt(2*(A+B))} · ${fmt(H)} = ${fmt(2*(A+B)*H)} м². Без двери: ${fmt(2*(A+B)*H-+door.value)} м².`);});
+ }else if(kind==='land-map'){
+  let stage=0;
+  const choices=[];
+  const render=()=>{
+   draw(`<rect x="15" y="15" width="330" height="190" fill="#f4f8ef" stroke="#94aa91" stroke-width="2"/><rect data-land-region="A" x="35" y="35" width="195" height="150" fill="${stage>0?'#b8ddc3':'#e2efdc'}" stroke="${stage>0?amber:green}" stroke-width="4"/><rect data-land-region="B" x="65" y="65" width="35" height="90" fill="${stage>1?'#97d8d3':'#d9efec'}" stroke="${stage>1?amber:blue}" stroke-width="4"/><rect data-land-region="C" x="265" y="100" width="55" height="70" fill="#eadbc7" stroke="#806b50" stroke-width="3"/>`+text(170,65,'A')+text(82.5,117,'B',blue)+text(292.5,140,'C','#806b50')+text(180,226,'Учебный участок'));
+   choices.forEach((b,i)=>b.setAttribute('aria-pressed',String(i<stage)));
+  };
+  for(const [i,letter]of ['A','B','C'].entries()){
+   const b=button(controls,letter,()=>{
+    if(stage===0){if(i!==0){read('Огород — большой прямоугольник, внутри которого есть ещё один объект. Посмотри на границы фигур.');return;}stage=1;render();read('Огород найден. Теперь выбери узкую теплицу внутри него.');}
+    else if(stage===1){if(i!==1){read('Теплица должна быть внутри огорода. Найди узкий прямоугольник, целиком окружённый его границей.');return;}stage=2;render();read('Связь найдена: огород содержит теплицу. Теперь найди нужные объекты по описанию своего участка.');}
+    else read('Огород и теплица найдены. Можно начать заново или вернуться к своей задаче.');
+   });b.dataset.pdChoice=String(i+1);b.setAttribute('aria-label','Выбрать область '+letter);b.setAttribute('aria-pressed','false');choices.push(b);
+  }
+  button(controls,'Начать заново',()=>{stage=0;render();read('Сначала выбери огород: большой прямоугольник с теплицей внутри.');});
+  render();read('Сначала выбери огород: большой прямоугольник с теплицей внутри.');
  }else if(kind==='route'||kind==='map'||kind==='journey'||kind==='fuel'){
   const a=kind==='map'?{value:6}:range(controls,'a','Первый участок, км',2,20,6),b=kind==='map'?{value:8}:range(controls,'b','Второй участок, км',2,20,8),v=kind==='journey'?range(controls,'v','Скорость на первом участке, км/ч',10,80,40,5):kind==='fuel'?range(controls,'v','Расход на просёлке, л/100 км',4,20,10,.2):null;let picks=[];
   const run=()=>{const A=+a.value,B=+b.value;let svg=line(55,40,55,170,picks.includes(1)?amber:green,6)+line(55,170,300,170,picks.includes(2)?amber:green,6);svg+='<path d="M55 152H73V170" stroke="'+green+'" fill="none"/>';svg+=(kind==='map'?'':text(28,108,fmt(A))+text(180,205,fmt(B)))+(kind==='fuel'?line(55,40,300,170,blue,3):'')+text(78,42,kind==='map'?'Вход':'A',green,'start')+text(55,225,kind==='map'?'Коридор':'B')+text(300,145,kind==='map'?'Комната':'C');draw(svg);read(kind==='journey'?`Участок 1: ${fmt(A/+v.value*60)} мин. Участок 2 при 30 км/ч: ${fmt(B/30*60)} мин. Всего ${fmt((A/+v.value+B/30)*60)} мин.`:kind==='fuel'?`Маршрут 1: ${fmt((A+B)*8/100)} л (шоссе 8 л/100 км). Маршрут 2: ${fmt(Math.hypot(A,B)*+v.value/100)} л (по прямому просёлку длиной ${fmt(Math.hypot(A,B))} км).`:kind==='map'?picks.length===2&&picks[0]===1&&picks[1]===2?'Путь найден: вход → коридор → комната. В своей задаче проверь те же связи по тексту.':'Сначала выбери путь от входа к коридору, затем от коридора к комнате.':`Выбрано участков: ${picks.length}; их длина ${fmt((picks.includes(1)?A:0)+(picks.includes(2)?B:0))} км.`);};
@@ -136,7 +153,7 @@ function build(panel,options={}){
  const kind=typeFor(options.page,options.type,options.text),plan=plans[kind];panel.dataset.discoveryModel=kind;
  const first=element('p',plan[0],'pd-first-step');panel.append(first);
  const lab=details('Помочь разобраться на модели?');panel.append(lab);const content=q('.pm-content',lab);
- content.append(element('p',plan[1],'pd-instruction'),element('p','Учебная модель на других числах. Ответ к своей задаче запиши в её поле ответа.','pd-note'));
+ content.append(element('p',plan[1],'pd-instruction'),element('p',kind==='land-map'?'Это учебный план. Затем вернись к своему заданию.':'Учебная модель на других числах. Ответ к своей задаче запиши в её поле ответа.','pd-note'));
  buildModel(content,kind,options);
  const further=details('Почему так?');q('.pm-content',further).append(element('p',plan[2]));content.append(further);
  if(options.steps?.length){const next=details('Как применить к моей задаче?');const box=q('.pm-content',next);options.steps.forEach(s=>{const step=element('div',null,'pm-model-step');step.innerHTML=s;box.append(step);});panel.append(next);}

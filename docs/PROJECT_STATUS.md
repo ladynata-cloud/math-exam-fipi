@@ -2,7 +2,15 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: tasks 1–5 interactive help across all eight storylines
+## In progress: outdoor context for the land identification lab
+
+- [Scope](tasks/LAND_IDENTIFICATION_LAB.md): replace the indoor corridor example
+  used by land matching with a garden/greenhouse containment discovery. Keep
+  original engines and other map contexts unchanged.
+- The required live smoke check found this mismatch after the verified release
+  below. A separate bounded helper/package repair is in progress.
+
+## Published: tasks 1–5 interactive help across all eight storylines
 
 - [Scope](tasks/OGE_1_5_INTERACTIVE_DISCOVERY.md): task-first screens, optional
   nested help on the same page, relevant interactive models, retained answer
@@ -10,10 +18,13 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
   question paths and two tire-preparation states.
 - Independent source/DOM review passed on implementation head
   `7bdc391328bae5fabeb01b1e95e360ea9fb5a99f`; all 46 Node checks passed.
-  Release integration includes the task6 merge below. Cloud run39512336718
-  passed all46 Node tests,126 discovery cases and39 retained route/viewport
-  cases after two focused visual corrections; composed-head checks and
-  publication remain pending.
+  PR288 merged as `647141dd168284ac1a399f0fdca8e7b6c82ba72b`, sole parent
+  `813fdcc129b27e71cc83ebaa80bd590cf1d1f1f1`, tree
+  `bed58ee36920b8ad04acec7af822c546ed79e559`. Final cloud run39513466758
+  passed47 Node checks,126 discovery cases and39 retained route/viewport cases;
+  course, SEO, task19 regression and independent final visual review passed.
+  Pages39514050862 succeeded; all18 expected public file hashes matched.
+  The live check then found the land-model context mismatch tracked above.
 - Task6 is a separate authorized release, recorded below. Paid Claude API use
   remains deferred by the owner.
 
