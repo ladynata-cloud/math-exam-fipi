@@ -303,10 +303,10 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 .transfer-side{min-width:0;border:2px dashed #b9cbbb;border-radius:10px;padding:12px 8px;min-height:104px}.transfer-side.over{border-color:var(--accent);background:#e2f0df}
 .transfer-side-title{font:14px/1.5 var(--ui);color:var(--muted);margin-bottom:10px}.transfer-terms{display:flex;gap:9px;flex-wrap:wrap;align-items:center;min-height:48px}
 .transfer-equals{align-self:center;text-align:center;font:700 28px var(--math)}
-.transfer-term{font:22px var(--math)!important;background:white;border:1px solid #9db59f;border-radius:9px;min-height:48px;padding:9px 12px;cursor:grab;touch-action:none;user-select:none;max-width:100%}.transfer-term:active{cursor:grabbing}.transfer-term[disabled]{cursor:default;opacity:.75}
+.transfer-term{font:22px var(--math)!important;background:white;border:1px solid #9db59f;border-radius:9px;min-height:48px;padding:9px 12px;cursor:grab;touch-action:none;user-select:none;max-width:100%}.transfer-term:active{cursor:grabbing}.transfer-term[disabled]{cursor:default;opacity:.75}.transfer-term{overflow-x:auto;white-space:nowrap}.transfer-compound .transfer-term{white-space:normal;overflow-wrap:break-word}.transfer-compound .transfer-term .frac{max-width:calc(100% - .5em)}.transfer-compound .transfer-term .frac>.tt,.transfer-compound .transfer-term .frac>.bb{white-space:normal}.transfer-original{margin-bottom:18px}.transfer-original .math{font-size:23px;overflow-x:auto;padding:8px 0}.transfer-source-label,.transfer-domain{font-size:14px;color:var(--muted)}
 .transfer-term.dragging{opacity:.45}.transfer-ghost{position:fixed;z-index:1000;pointer-events:none;box-shadow:0 5px 18px #24452d33;transform:translate(-50%,-50%)}
 .transfer-next{font-size:16px;line-height:1.8;margin:12px 0}.canon-fields{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}.canon-fields label{display:flex;flex-direction:column;gap:8px;font-size:15px;max-width:100%}.canon-equals{font-size:23px;line-height:48px}
-@media(max-width:560px){.transfer-lab{padding:12px 8px}.transfer-board{gap:4px;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr)}.transfer-side{padding:10px 5px}.transfer-term{font-size:19px!important;padding:8px}.transfer-equals{font-size:24px}.canon-fields{gap:8px}.canon-fields label{font-size:14px}}
+@media(max-width:560px){.transfer-lab{padding:12px 8px}.transfer-board{gap:4px;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr)}.transfer-side{padding:10px 5px}.transfer-term{font-size:19px!important;padding:8px}.transfer-equals{font-size:24px}.transfer-compound .transfer-board{grid-template-columns:minmax(0,1fr)}.transfer-compound .transfer-equals{line-height:1.2}.canon-fields{gap:8px}.canon-fields label{font-size:14px}}
 </style>
 </head>
 <body>
@@ -851,6 +851,53 @@ function taskEqnHTML(t){
     default: return renderTerms(p.Lt)+' = '+renderTerms(p.Rt);
   }
 }
+/* Whole signed terms keep their original brackets, products and denominators. */
+function cloneTransferNode(value){
+  if(Array.isArray(value))return value.map(cloneTransferNode);
+  if(value&&typeof value==='object'){const out={};Object.keys(value).forEach(k=>out[k]=cloneTransferNode(value[k]));return out;}
+  return value;
+}
+function freezeTransferNode(value){
+  if(value&&typeof value==='object'){Object.values(value).forEach(freezeTransferNode);Object.freeze(value);}return value;
+}
+function polynomialTransferSource(L,R,goal){
+  const side=p=>[T(p.A||F0,2),T(p.B||F0,1),T(p.C||F0)].filter(tm=>!fzero(tm.c));
+  return {Lt:side(L),Rt:side(R),goal:goal||'zero-side'};
+}
+function taskTransferSource(t){
+  const p=t.p;
+  const rat=(top,bot,neg)=>{
+    top=cloneTransferNode(top);bot=cloneTransferNode(bot);
+    if(top.length===1&&top[0].c!==undefined&&top[0].x===0&&fcmp(top[0].c,F0)<0){top[0].c=fabs(top[0].c);neg=!neg;}
+    return {rat:{top,bot},neg:!!neg};
+  };
+  const linear=c=>[T(1,1),T(c)].filter(tm=>!fzero(tm.c));
+  let Lt,Rt;
+  switch(t.fam){
+    case 'PROP':Lt=p.ld?[rat(p.ln,p.ld)]:cloneTransferNode(p.ln);Rt=p.rd?[rat(p.rn,p.rd)]:cloneTransferNode(p.rn);break;
+    case 'Z':Lt=[rat([T(1)],linear(p.c1)),rat([T(1)],linear(p.c2))];Rt=[T(0)];break;
+    case 'NZ':Lt=[rat([T(p.qa,2),T(p.qb,1),T(p.qc)].filter(tm=>!fzero(tm.c)),linear(p.dr))];Rt=[T(0)];break;
+    case 'XF':Lt=[T(1,1),rat([T(Math.abs(p.an))],[T(1,1)],p.an<0)];Rt=[T(p.b)];break;
+    case 'S2':Lt=[rat([T(p.a)],linear(-p.b)),rat([T(p.c)],linear(-p.d))];Rt=[T(p.k)];break;
+    case 'SB':Lt=[rat([T(1)],p.k===0?[T(1,2)]:[{sq:{s:F(-p.k)}}]),rat([T(Math.abs(p.m))],linear(-p.k),p.m<0),T(p.n)];Rt=[T(0)];break;
+    default:Lt=cloneTransferNode(p.Lt);Rt=cloneTransferNode(p.Rt);
+  }
+  return {Lt,Rt,goal:t.fam==='L'?'linear':'explore',exclusions:cloneTransferNode(taskNorm(t).excl),originalHTML:taskEqnHTML(t),original:true};
+}
+function transferTermBody(tm){
+  if(tm.c!==undefined)return termNegBody(tm);
+  const atom=tm.atom;
+  const body=atom.rat?fracHTML(renderTerms(atom.rat.top),renderTerms(atom.rat.bot)):termNegBody(atom).body;
+  return {neg:tm.sign<0,body};
+}
+function evalTransferTermAt(tm,x){
+  if(tm.c!==undefined){let value=tm.c;for(let i=0;i<tm.x;i++)value=fmul(value,x);return value;}
+  const atom=tm.atom;let value;
+  if(atom.rat){const den=evalTermsAt(atom.rat.bot,x);if(fzero(den))return null;value=fdiv(evalTermsAt(atom.rat.top,x),den);}
+  else value=evalTermsAt([atom],x);
+  return tm.sign<0?fneg(value):value;
+}
+
 /* ---------- нормализация: A x² + B x + C = 0 и запрещённые значения ---------- */
 function taskNorm(t){
   const p=t.p;
@@ -892,6 +939,7 @@ function taskKey(t){
   return null;
 }
 function askWord(t){return t.ask==='max'?'больший':'меньший';}
+function taskAnswerLabel(t){const {roots,excluded}=taskSolve(t);return roots.length+excluded.length>=2?'Какой корень запишешь в ответ? Если их несколько — '+askWord(t)+'.':'Чему равен x?';}
 function taskInstrHTML(t){
   const {roots,excluded}=taskSolve(t);
   let s='Решите уравнение &nbsp;'+taskEqnHTML(t)+'.';
@@ -1040,6 +1088,7 @@ function stABC(base, mode, extra){
       ? 'Выпиши коэффициенты (со знаками!):'
       : (extra.q||'Перенеси всё в одну сторону и приведи к виду ☐·x² + ☐·x + ☐ = 0:'),
     ui:{type:'coef3'},
+    transfer:extra.transfer?extra.transfer(state):null,
     hint: mode==='read'
       ? 'a — число перед x², b — перед x, c — свободное. Знак берём прямо из записи: перед 3x стоит минус → b = −3.'
       : (extra.hint||'Собери все слагаемые слева (перенос — со сменой знака), приведи подобные по x², по x и по числам.'),
@@ -1135,10 +1184,11 @@ function stPickRoot(task, lo, hi){
   });
 }
 /* неполное без c */
-function stMoveLeft(base){ // для формы x²=kx: приведи к ...=0
+function stMoveLeft(base,source){ // для формы x²=kx: приведи к ...=0
   return (state)=>({
     q:'Перенеси всё в левую часть (справа останется 0):',
     ui:{type:'eqn',ph:'☐x² + ☐x = 0  (справа ноль)'},
+    transfer:source?source(state):null,
     hint:'kx «перепрыгивает» через «=» и меняет знак.',
     check(vals){
       const e=parseEqn(vals[0]);
@@ -1599,7 +1649,23 @@ function expandLinearSide(terms, sideName){
   }
   return {distSteps, combineStep, abc:{A:F0,B,C}, anyBracket};
 }
-function taskSteps(t, method){
+function taskSteps(t,method){
+  const original=taskTransferSource(t);
+  return taskStepFactories(t,method).map((factory,index)=>state=>{
+    const def=factory(state);
+    if(index===0){
+      if(!def.transfer)def.transfer=cloneTransferNode(original);
+      else Object.assign(def.transfer,{originalHTML:original.originalHTML,original:true});
+      def.discoveryTask=t;
+    }
+    if(def.transfer){
+      if(!def.transfer.goal)def.transfer.goal='linear';
+      def.transfer.exclusions=cloneTransferNode(original.exclusions);
+    }
+    return def;
+  });
+}
+function taskStepFactories(t, method){
   const sol=taskSolve(t);
   const roots=sol.roots, n=sol.norm;
   const p=t.p;
@@ -1644,7 +1710,7 @@ function taskSteps(t, method){
       const base={a:n.A,b:n.B};
       const r2=fdiv(fneg(n.B),n.A);
       const arr=[];
-      if(t.fam==='QNCm')arr.push(stMoveLeft(base));
+      if(t.fam==='QNCm')arr.push(stMoveLeft(base,()=>({Lt:p.Lt,Rt:p.Rt,goal:'left-zero'})));
       arr.push(stFactorNC(base), stNCroots(r2));
       if(roots.length===2)arr.push(stPickRoot(t,roots[0],roots[1]));
       return arr;
@@ -1661,7 +1727,7 @@ function taskSteps(t, method){
         if(roots.length===2)arr.push(stPickRoot(t,roots[0],roots[1]));
         return arr;
       }
-      const arr=[stABC(base, t.fam==='QF'?'read':'reduce'), stD(), stSqrtD()];
+      const arr=[stABC(base, t.fam==='QF'?'read':'reduce',t.fam==='QR'?{transfer:()=>({Lt:p.Lt,Rt:p.Rt,goal:'zero-side'})}:undefined), stD(), stSqrtD()];
       if(roots.length===2){arr.push(stRoots(roots[0],roots[1]), stPickRoot(t,roots[0],roots[1]));}
       else {arr.push((state)=>({
         q:'D = 0 — корень один: x = −b ÷ (2a) =',
@@ -1719,6 +1785,7 @@ function taskSteps(t, method){
           leftABC, rightABC, leftHTML, rightHTML}),
         stABC(base,'reduce',{
           q:'Перенеси всё в левую часть и приведи к виду ☐x² + ☐x + ☐ = 0:',
+          transfer:()=>polynomialTransferSource(leftABC,rightABC,'left-zero'),
           hint:'Перенеси '+rightHTML+' влево со сменой знака, расставь по убыванию степени: сначала <i>x</i>², потом <i>x</i>, потом число.'}),
         stD(), stSqrtD(), stRoots(roots[0],roots[1]), stPickRoot(t,roots[0],roots[1])];
     }
@@ -1761,6 +1828,7 @@ function taskSteps(t, method){
           'Умножь на '+numHTML(F(k))+' <b>каждый</b> из трёх коэффициентов: и при <i>x</i>², и при <i>x</i>, и свободное число.'),
         stABC(base,'reduce',{
           q:'Теперь всё в одну сторону: перенеси и приведи к виду ☐x² + ☐x + ☐ = 0:',
+          transfer:()=>polynomialTransferSource(leftABC,rightABC),
           hint:'Слева '+linHTML(leftABC.B,leftABC.C)+', справа '+quadHTML(rightABC.A,rightABC.B,rightABC.C)+'. Перенеси всё в сторону, где <i>x</i>², со сменой знака, и сложи подобные.'}),
         stD(), stSqrtD(), stRoots(roots[0],roots[1]),
         (state)=>({
@@ -1808,6 +1876,7 @@ function taskSteps(t, method){
         ...expandSteps,
         stABC(base,'reduce',{
           q:'Соедини всё (1, слагаемое с '+dHTML+' и раскрытый квадрат) и приведи к виду ☐x² + ☐x + ☐ = 0:',
+          transfer:()=>({Lt:[T(1),T(m,1),T(-m*k),T(nn,2),T(-2*nn*k,1),T(nn*k*k)],Rt:[T(0)],goal:'zero-side'}),
           hint:'<i>x</i>²-часть берётся только из квадрата; <i>x</i>-часть — из '+mBody+' и из квадрата; свободное число — из 1, '+mBody+' и квадрата.'}),
         stD(), stSqrtD(), stRoots(roots[0],roots[1]),
         (state)=>({
@@ -2375,6 +2444,130 @@ function renderTally(t){
          '<span class="tally"><span class="dot s"></span>показано: <b>'+t.shown+'</b></span>';
 }
 
+/* Optional discoveries use this task's AST. They never write to answer fields or progress. */
+function makeEquationDiscovery(t,opts){
+  opts=opts||{};
+  const kinds={LB:'distribute',LSQ:'square',LF:'multiplier',PROP:'cross-products',QNB:'square-signs',QNC:'zero-product',QNCm:'zero-product',QP:'zero-product',QF:'coefficients',QR:'coefficients',Z:'denominators',NZ:'denominators',XF:'denominators',S2:'denominators',SB:'denominators'};
+  const kind=kinds[t.fam];if(!kind)return null;
+  const labels={distribute:'Помочь раскрыть скобки?',square:'Помочь раскрыть квадрат?',multiplier:'Помочь выбрать общий множитель?','cross-products':'Помочь соединить по диагонали?','square-signs':'Почему у квадрата два знака?','zero-product':'Как произведение становится нулём?',coefficients:'Помочь найти a, b и c?',denominators:'Помочь проверить знаменатели?'};
+  const box=elt('details','equation-discovery'),summary=elt('summary',null,labels[kind]);
+  box.dataset.discoveryKind=kind;box.dataset.discoveryFamily=t.fam;
+  box.style.margin='18px 0';box.appendChild(summary);
+  const body=elt('div','discovery-body');body.style.padding='12px 0';body.style.minWidth='0';box.appendChild(body);
+  const status=elt('div','discovery-status');status.dataset.discoveryStatus='';status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.style.marginTop='16px';
+  const use=()=>{if(opts.onUse)opts.onUse();},show=()=>{if(opts.onShow)opts.onShow();};
+  summary.addEventListener('click',()=>{if(!box.open)use();});
+  const note=html=>body.appendChild(elt('p',null,html));
+  const result=html=>{status.innerHTML=html;};
+  const button=(html,action,fn)=>{const b=elt('button','btn ghost small',html);b.type='button';b.dataset.discoveryAction=action;b.addEventListener('click',()=>{use();fn(b);});return b;};
+  const row=()=>{const r=elt('div','btnrow');r.style.flexWrap='wrap';r.style.gap='10px';return r;};
+  const field=(label,action,value)=>{const wrap=elt('label','discovery-field');wrap.style.display='grid';wrap.style.gap='7px';wrap.appendChild(elt('span',null,label));const input=elt('input','ans');input.type='text';input.inputMode='decimal';input.value=value||'';input.dataset.discoveryInput=action;input.style.maxWidth='180px';wrap.appendChild(input);body.appendChild(wrap);return input;};
+  const original=()=>note('<span class="math">'+taskEqnHTML(t)+'</span>');
+  const product=(a,b)=>'('+a+') · ('+b+')';
+  const p=t.p;
+  if(kind==='distribute'){
+    note('Нажми на каждое слагаемое в скобках: множитель перед скобкой должен достаться каждому.');
+    let groupIndex=0;
+    for(const side of ['Lt','Rt'])for(const tm of p[side])if(tm.br){
+      const g=elt('section','discovery-bracket');g.dataset.bracket=String(groupIndex++);
+      g.appendChild(elt('p','math',(side==='Lt'?'Слева: ':'Справа: ')+renderTerms([tm])));
+      const buttons=row(),out=elt('div','math');out.style.marginTop='12px';const picked=new Set();
+      tm.br.inner.forEach((inner,i)=>{const b=button(renderTerms([inner]),'distribute',self=>{picked.add(i);self.setAttribute('aria-pressed','true');out.innerHTML=tm.br.inner.filter((_,j)=>picked.has(j)).map(term=>product(numHTML(tm.br.k),renderTerms([term]))).join(' + ');result(picked.size===tm.br.inner.length?'В этой скобке каждое слагаемое получило множитель. Теперь вычисли произведения в основном шаге.':'Проверь остальные слагаемые этой скобки.');});b.dataset.term=String(i);b.setAttribute('aria-pressed','false');buttons.appendChild(b);});
+      g.appendChild(buttons);g.appendChild(out);body.appendChild(g);
+    }
+  }else if(kind==='square'){
+    note('Квадрат скобки — это скобка, умноженная на себя. Нажми на четыре клетки: каждое слагаемое умножается на каждое.');
+    let squareIndex=0;
+    for(const side of ['Lt','Rt'])for(const tm of p[side])if(tm.sq){
+      const q=tm.sq,terms=q.rev?[T(q.s),T(-1,1)]:[T(1,1),T(q.s)];
+      const g=elt('section','discovery-square');g.dataset.square=String(squareIndex++);g.appendChild(elt('p','math',(side==='Lt'?'Слева: ':'Справа: ')+renderTerms([tm])));
+      const grid=elt('div','discovery-products');grid.style.display='grid';grid.style.gridTemplateColumns='repeat(2,minmax(0,1fr))';grid.style.gap='10px';const picked=new Set(),out=elt('div','math');out.style.marginTop='12px';
+      for(let i=0;i<2;i++)for(let j=0;j<2;j++){
+        const key=i*2+j,html=product(renderTerms([terms[i]]),renderTerms([terms[j]]));
+        const b=button(html,'square-product',self=>{picked.add(key);self.setAttribute('aria-pressed','true');self.style.background='#e8f3e9';out.innerHTML=Array.from(picked).sort().map(k=>product(renderTerms([terms[Math.floor(k/2)]]),renderTerms([terms[k%2]]))).join(' + ');result(picked.has(1)&&picked.has(2)?'Два смешанных произведения: x умножается на число и число — на x. Поэтому среднее слагаемое нельзя пропускать.':'Найди ещё произведение, где встречаются x и число.');});b.dataset.cell=String(key);b.setAttribute('aria-pressed','false');b.style.whiteSpace='normal';grid.appendChild(b);
+      }
+      g.appendChild(grid);g.appendChild(out);body.appendChild(g);
+    }
+  }else if(kind==='multiplier'){
+    original();note('Введи положительное целое число, на которое можно умножить обе части, чтобы убрать все дроби. Проверим каждый знаменатель.');
+    const dens=[];const gather=ts=>{for(const term of ts){if(term.fr){const d=F(term.fr.bot);if(!dens.some(x=>feq(x,d)))dens.push(d);gather(term.fr.top);}if(term.br)gather(term.br.inner);if(term.mul)term.mul.forEach(gather);}};gather(p.Lt);gather(p.Rt);
+    // Stored denominators are included as well; a missing AST divisor cannot silently pass.
+    (p.dens||[]).forEach(d=>{const f=F(d);if(!dens.some(x=>feq(x,f)))dens.push(f);});
+    const input=field('Общий множитель','multiplier','');
+    body.appendChild(button('Проверить множитель','check-multiplier',()=>{const m=parseNum(input.value);if(!m||!fisint(m)||fcmp(m,F0)<=0){result('Введи положительное целое число.');return;}
+      const all=dens.every(d=>!fzero(d)&&fisint(fdiv(m,d)));status.dataset.valid=String(all);
+      result(dens.map(d=>'<div class="math">'+numHTML(m)+' : '+numHTML(d)+' — '+(!fzero(d)&&fisint(fdiv(m,d))?'делится без остатка':'не подходит')+'</div>').join('')+'<p>'+(all?'Подходит для всех знаменателей. Этим числом умножают каждое слагаемое обеих частей — целые числа тоже.':'Пока подходит не для всех знаменателей. Попробуй другое число.')+'</p>');
+    }));
+  }else if(kind==='cross-products'){
+    note('Нажми на числитель одной дроби и знаменатель другой. Затем собери вторую диагональ.');
+    const parts=[p.ln,p.ld||[T(1)],p.rn,p.rd||[T(1)]],names=['Левый числитель','Левый знаменатель','Правый числитель','Правый знаменатель'];
+    const layout=elt('div','discovery-proportion');layout.style.display='flex';layout.style.alignItems='center';layout.style.gap='14px';layout.style.flexWrap='wrap';
+    let selected=null;const completed=new Set(),buttons=[];
+    const paint=()=>buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(selected===i||completed.has(i===0||i===3?'left':'right'))));
+    for(let side=0;side<2;side++){
+      if(side)layout.appendChild(elt('span','math','='));
+      const fraction=elt('div','frac');
+      for(let pos=0;pos<2;pos++){
+        const i=side*2+pos,cell=elt('span',pos?'bb':'tt');const b=button(renderTerms(parts[i]),'cross-corner',()=>{if(selected===null){selected=i;paint();result('Теперь выбери противоположный угол другой дроби.');return;}
+          if(selected===i){selected=null;paint();result('Выбор снят. Начни с любого числителя.');return;}
+          if(selected+i!==3){selected=i;paint();result('Нужна диагональ: числитель одной дроби и знаменатель другой.');return;}
+          completed.add(i===0||i===3?'left':'right');selected=null;paint();
+          const left=product(renderTerms(parts[0]),renderTerms(parts[3])),right=product(renderTerms(parts[2]),renderTerms(parts[1]));
+          if(completed.size===2){show();result('<span class="math">'+left+' = '+right+'</span><p>Запиши произведения в основном шаге. Исходные знаменатели по-прежнему не должны равняться нулю.</p>');}
+          else result('<span class="math">'+(completed.has('left')?left:right)+'</span><p>Одна диагональ готова. Найди вторую.</p>');
+        });b.dataset.corner=String(i);b.setAttribute('aria-label',names[i]+': '+b.textContent);b.setAttribute('aria-pressed','false');buttons.push(b);cell.appendChild(b);fraction.appendChild(cell);
+      }layout.appendChild(fraction);
+    }body.appendChild(layout);
+    if(!p.rd)note('Число справа показано как дробь со знаменателем 1.');
+  }else if(kind==='square-signs'){
+    original();note('Выбери число x. Проверь его квадрат и квадрат числа с противоположным знаком.');
+    const input=field('Пробное значение x','square-x','1');
+    body.appendChild(button('Проверить оба знака','check-square',()=>{const x=parseNum(input.value);if(!x){result('Введи число: например, 3 или −3. Можно ввести дробь.');return;}
+      const square=fmul(x,x),opposite=fneg(x),L=evalTermsAt(p.Lt,x),R=evalTermsAt(p.Rt,x),match=feq(L,R);status.dataset.matches=String(match);
+      result('<div class="math">('+numHTML(x)+')² = '+numHTML(square)+'<br>('+numHTML(opposite)+')² = '+numHTML(square)+'</div><p>Квадраты равны. '+(match?'Выбранное значение подходит исходному уравнению. Проверь противоположный знак в основном шаге.':'Сейчас это число не подходит исходному уравнению. Попробуй другое.')+'</p>');
+    }));
+    body.appendChild(button('Какое значение должен иметь x²?','square-target',()=>{const n=taskNorm(t),target=fdiv(fneg(n.C),n.A);show();result('<span class="math"><i>x</i>² = '+numHTML(target)+'</span><p>Найди два числа с одинаковым квадратом. Ответы в основном шаге запиши самостоятельно.</p>');}));
+  }else if(kind==='zero-product'){
+    original();let factors;
+    if(t.fam==='QP'){
+      const tm=p.Lt.concat(p.Rt).find(term=>term.mul);factors=tm.mul;
+    }else{const n=taskNorm(t);factors=[[T(1,1)],[T(n.A,1),T(n.B)]];}
+    note('Чтобы произведение равнялось нулю, достаточно одного нулевого множителя. Выбери, какой множитель приравнять к нулю.');
+    const choices=row();body.appendChild(choices);
+    const renderFactors=()=>{for(let i=0;i<2;i++){
+      const b=button('('+renderTerms(factors[i])+')','zero-factor',()=>{result('<span class="math">'+renderTerms(factors[i])+' = 0</span><p>Это один случай. Второй множитель может быть любым. Затем отдельно рассмотри другой случай — оба одновременно обнулять не требуется.</p>');});b.dataset.factor=String(i);b.setAttribute('aria-label','Приравнять к нулю множитель '+b.textContent);choices.appendChild(b);
+    }};
+    if(t.fam==='QP')renderFactors();
+    else{const identity=elt('div','discovery-factor-identity');body.insertBefore(identity,choices);const start=button('Вынести x за скобки','show-factors',self=>{show();identity.innerHTML=(t.fam==='QNCm'?'<p>Сначала переносим всё влево: <span class="math">'+quadHTML(taskNorm(t).A,taskNorm(t).B,F0)+' = 0</span>.</p>':'')+'<p class="math">('+renderTerms(factors[0])+') · ('+renderTerms(factors[1])+') = 0</p>';renderFactors();self.disabled=true;result('Выбери первый или второй множитель. На x делить не нужно: x может быть равен нулю.');});body.insertBefore(start,identity);}
+  }else if(kind==='coefficients'){
+    original();note('Выбери карточку с числом вместе со знаком, затем нажми a, b или c. a стоит перед x², b — перед x, c — отдельное число.');
+    const n=taskNorm(t),vals=[n.A,n.B,n.C],names=['a','b','c'];
+    const match=elt('section','discovery-coefficients');match.hidden=t.fam==='QR';body.appendChild(match);
+    if(t.fam==='QR')body.insertBefore(button('Собрать слева, справа оставить 0','collect-coefficients',self=>{show();match.hidden=false;self.disabled=true;result('Теперь подбирай коэффициенты именно из собранной строки.');}),match);
+    match.appendChild(elt('p','math',(t.fam==='QR'?'После переноса и сложения: ':'Сравни со строкой ax² + bx + c = 0: ')+quadHTML(n.A,n.B,n.C)+' = 0'));
+    let selected=null;const tokens=row(),slots=row();match.appendChild(tokens);match.appendChild(slots);
+    vals.forEach((v,i)=>{const b=button(numHTML(v),'coefficient-token',self=>{selected=i;tokens.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===self)));result('Выбери место a, b или c.');});b.dataset.coefficientToken=String(i);b.setAttribute('aria-label','Выбрать число '+valStr(v));b.setAttribute('aria-pressed','false');tokens.appendChild(b);});
+    names.forEach((name,i)=>{const b=button('<i>'+name+'</i> = ?','coefficient-slot',self=>{if(selected===null){result('Сначала выбери карточку с числом.');return;}if(feq(vals[selected],vals[i])){self.innerHTML='<i>'+name+'</i> = '+numHTML(vals[selected]);self.dataset.matched='true';result('Верно: число со своим знаком относится к '+(i===0?'x²':i===1?'x':'отдельному слагаемому')+'.');}else result('Пока другое место. Посмотри, при какой степени x стоит это число. Если слагаемого нет, его коэффициент равен 0.');});b.dataset.coefficientSlot=name;b.setAttribute('aria-label','Поставить выбранное число в '+name);slots.appendChild(b);});
+  }else if(kind==='denominators'){
+    original();note('Введи пробное x и проверь каждый исходный знаменатель. Если хотя бы один равен нулю, такое x запрещено.');
+    let dens=[];
+    if(t.fam==='Z')dens=[[T(1,1),T(p.c1)],[T(1,1),T(p.c2)]];
+    else if(t.fam==='NZ')dens=[[T(1,1),T(p.dr)]];
+    else if(t.fam==='XF')dens=[[T(1,1)]];
+    else if(t.fam==='S2')dens=[[T(1,1),T(-p.b)],[T(1,1),T(-p.d)]];
+    else if(t.fam==='SB')dens=[[{sq:{s:F(-p.k)}}],[T(1,1),T(-p.k)]];
+    const input=field('Пробное значение x','denominator-x','0');
+    body.appendChild(button('Проверить знаменатели','check-denominators',()=>{const x=parseNum(input.value);if(!x){result('Введи число. Можно ввести десятичную или обычную дробь.');return;}
+      const values=dens.map(ts=>evalTermsAt(ts,x)),defined=values.every(v=>!fzero(v));status.dataset.defined=String(defined);
+      let numeratorReadout='';
+      if(t.fam==='NZ'){const numerator=evalTermsAt([T(p.qa,2),T(p.qb,1),T(p.qc)],x),zero=fzero(numerator);status.dataset.fractionZero=String(defined&&zero);numeratorReadout='<div class="math">Числитель: '+quadHTML(F(p.qa),F(p.qb),F(p.qc))+' = '+numHTML(numerator)+'</div><p>'+(!defined?'При нулевом знаменателе дробь не определена, даже если числитель тоже равен нулю.':zero?'Числитель равен нулю, знаменатель — нет. При выбранном x дробь равна нулю.':'Числитель не равен нулю, поэтому дробь при выбранном x тоже не равна нулю.')+'</p>';}
+      result(values.map((v,i)=>'<div class="math">'+renderTerms(dens[i])+' = '+numHTML(v)+(fzero(v)?' — делить нельзя':' — делить можно')+'</div>').join('')+numeratorReadout+'<p>'+(defined?(t.fam==='NZ'?'Исходная дробь при выбранном x определена.':'Все исходные знаменатели отличны от нуля: выражения определены. Это ещё не проверка равенства — выбранное x может не быть корнем.'):'Хотя бы один знаменатель равен нулю: исходное уравнение при этом x не определено. Такое значение в ответ не попадёт.')+'</p><p>Проверяем исходные знаменатели, даже если позже сокращали дроби.</p>');
+    }));
+  }
+  body.appendChild(status);
+  return box;
+}
+
 /* --- один шаг: карточка с кнопками --- */
 function makeStep(factory, state, idx, onResolve, tally, onTally){
   const def=factory(state);
@@ -2390,6 +2583,8 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
   const uir=renderUI(def.ui, tryCheck);
   const transfer=def.transfer?makeTransferLab(def.transfer,{onUse:useHint,onReady:()=>uir.focusFirst()}):null;
   if(transfer)card.appendChild(transfer.node);
+  const discovery=def.discoveryTask&&typeof makeEquationDiscovery==='function'?makeEquationDiscovery(def.discoveryTask,{onUse:useHint,onShow:showDiscovery}):null;
+  if(discovery)card.appendChild(discovery);
   card.appendChild(uir.node);
 
   const fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('aria-live','polite'); card.appendChild(fb);
@@ -2403,10 +2598,10 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
   row.appendChild(bCheck); if(def.hint)row.appendChild(bHint); row.appendChild(bShow);
   card.appendChild(row);
 
-  let resolved=false, hintUsed=false;
+  let resolved=false,hintUsed=false,discoveryShown=false;
   function lock(kind){ // kind: 'done' | 'shown'
     resolved=true;
-    if(transfer)transfer.lock();
+    if(transfer)transfer.acceptStep();
     uir.inputs.forEach(w=>w._input.disabled=true);
     if(uir.node._chips)uir.node._chips.querySelectorAll('.chip').forEach(c=>c.disabled=true);
     bCheck.disabled=true; bHint.disabled=true; bShow.disabled=true;
@@ -2416,7 +2611,7 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
     onResolve(kind);
   }
   function tryCheck(){
-    if(resolved)return;
+    if(resolved||tally.completed||(tally.isComplete&&tally.isComplete()))return;
     const vals=uir.read();
     let res;
     // пустое поле и невыбранный вариант — не попытка и не промах (решение D1)
@@ -2440,8 +2635,12 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
   }
   bCheck.addEventListener('click',tryCheck);
   function useHint(){
-    if(resolved)return;
+    if(tally.completed||(tally.isComplete&&tally.isComplete()))return;
     if(!hintUsed){hintUsed=true;tally.hinted++;onTally();if(tally.onHint)tally.onHint();}
+  }
+  function showDiscovery(){
+    if(discoveryShown||tally.completed||(tally.isComplete&&tally.isComplete()))return;
+    discoveryShown=true;tally.shown++;onTally();if(tally.onShow)tally.onShow();
   }
   bHint.addEventListener('click',()=>{
     if(resolved)return;
@@ -2450,7 +2649,7 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
     fb.innerHTML='💡 '+def.hint;
   });
   bShow.addEventListener('click',()=>{
-    if(resolved)return;
+    if(resolved||tally.completed||(tally.isComplete&&tally.isComplete()))return;
     // прогоняем check на верных значениях, чтобы наполнить общее состояние (state.q, state.D, …)
     try{ def.check(def.reveal.vals, state); }catch(e){}
     revealBox.className='reveal-box'; revealBox.style.display='block';
@@ -2460,6 +2659,13 @@ function makeStep(factory, state, idx, onResolve, tally, onTally){
     lock('shown');
   });
 
+  card.addEventListener('task9complete',()=>{
+    card.classList.remove('active');turn.textContent='задача решена';
+    uir.inputs.forEach(w=>w._input.disabled=true);
+    if(uir.node._chips)uir.node._chips.querySelectorAll('button').forEach(button=>button.disabled=true);
+    bCheck.disabled=true;bHint.disabled=true;bShow.disabled=true;
+    if(transfer)transfer.acceptStep('Задача уже решена. Карточки можно передвигать дальше — принятые ответы сохранятся.');
+  });
   setTimeout(()=>uir.focusFirst&&uir.focusFirst(),30);
   return card;
 }
@@ -2471,7 +2677,8 @@ function runSteps(container, factories, opts){
   const state={};
   const tally=Tally(); tally.total=factories.length;
   /* запись прогресса задачи (Пошагово, Марафон): промах, показ, подсказка — наружу */
-  tally.onMiss=opts.onMiss||null; tally.onShow=opts.onShow||null; tally.onHint=opts.onHint||null;
+  tally.onMiss=opts.onMiss||null;tally.onShow=opts.onShow||null;tally.onHint=opts.onHint||null;
+  tally.completed=false;tally.isComplete=opts.isComplete||null;
   if(opts.note){ // решение D3: правило сказано до первого нажатия
     const note=document.createElement('p'); note.className='pen-note ladder-note';
     note.textContent='Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.';
@@ -2487,6 +2694,7 @@ function runSteps(container, factories, opts){
   let i=0;
   function next(){
     if(i>=factories.length){
+      tally.completed=true;
       if(opts.onComplete)opts.onComplete(tally, state);
       const done=document.createElement('div'); done.className='fb good';
       done.style.marginTop='10px';
@@ -2550,31 +2758,59 @@ function practice(defFactory){
 function createTransferState(source){
   let nextId=0;
   const terms=[];
-  for(const side of ['L','R'])for(const tm of source[side+'t']){
-    if(tm.c===undefined||(tm.x!==0&&tm.x!==1))throw Error('Transfer needs expanded linear terms');
-    if(!fzero(tm.c))terms.push({id:String(nextId++),c:F(tm.c.n,tm.c.d),x:tm.x,side});
+  for(const side of ['L','R'])for(const raw of source[side+'t']){
+    const tm=cloneTransferNode(raw);
+    if(tm.c!==undefined){
+      if(![0,1,2].includes(tm.x))throw Error('Unsupported term degree');
+      if(!fzero(tm.c))terms.push({id:String(nextId++),c:F(tm.c.n,tm.c.d),x:tm.x,side,sf:!!tm.sf});
+    }else{
+      let sign=tm.neg?-1:1;delete tm.neg;
+      if(tm.br&&fcmp(tm.br.k,F0)<0){sign=-sign;tm.br.k=fabs(tm.br.k);}
+      if(tm.fr&&tm.fr.neg){sign=-sign;tm.fr.neg=false;}
+      if(!tm.br&&!tm.sq&&!tm.mul&&!tm.fr&&!tm.rat)throw Error('Unsupported transfer atom');
+      terms.push({id:String(nextId++),side,sign,atom:freezeTransferNode(tm)});
+    }
   }
+  const goal=source.goal||'linear',exclusions=freezeTransferNode(cloneTransferNode(source.exclusions||[]));
   return {
-    terms,
+    terms,goal,exclusions,
     move(id,to){
       const tm=terms.find(t=>t.id===String(id));
       if(!tm||(to!=='L'&&to!=='R')||tm.side===to)return false;
-      tm.side=to;tm.c=fneg(tm.c);return true;
+      tm.side=to;if(tm.c!==undefined)tm.c=fneg(tm.c);else tm.sign=-tm.sign;return true;
     },
-    sorted(){return terms.every(t=>t.side===(t.x===1?'L':'R'));}
+    sorted(){
+      if(goal==='left-zero')return terms.every(t=>t.side==='L');
+      if(goal==='zero-side')return terms.every(t=>t.side==='L')||terms.every(t=>t.side==='R');
+      if(goal==='explore')return false;
+      return terms.every(t=>t.c!==undefined&&t.x<=1&&t.side===(t.x===1?'L':'R'));
+    }
   };
 }
 function makeTransferLab(source,opts){
   opts=opts||{};
   const model=createTransferState(source),box=elt('div','transfer-lab');
-  box.appendChild(elt('p',null,'<b>Перетащи карточку со знаком через =.</b> Собери все слагаемые с <i>x</i> слева, числа — справа. Можно просто нажать на карточку; с клавиатуры — Enter или пробел.'));
+  box.dataset.source=source.original?'original':'step';
+  if(model.terms.some(tm=>tm.atom))box.classList.add('transfer-compound');
+  if(source.originalHTML){const original=elt('div','transfer-original');original.innerHTML='<span class="transfer-source-label">Исходное уравнение</span><div class="math">'+source.originalHTML+'</div>';box.appendChild(original);}
+  const goalText=model.goal==='linear'?'Собери все слагаемые с <i>x</i> слева, числа — справа.':model.goal==='left-zero'?'Перенеси слагаемые влево, чтобы справа остался 0.':model.goal==='zero-side'?'Собери все слагаемые в одной части, чтобы в другой остался 0.':'Скобки, произведение или дробь переносим целиком. Внутри карточки запись не меняется.';
+  box.appendChild(elt('p',null,'<b>Перетащи карточку со знаком через =.</b> '+goalText+' Можно просто нажать на карточку; с клавиатуры — Enter или пробел.'));
+  if(model.exclusions.length)box.appendChild(elt('p','transfer-domain','Знаменатель исходной дроби по-прежнему не может быть равен нулю — перенос этого не меняет.'));
   const board=elt('div','transfer-board'),notice=elt('div','transfer-next');notice.setAttribute('aria-live','polite');
   const next=elt('div','transfer-next');
-  const ready=elt('button','btn ghost small','Перейти к сложению');ready.type='button';
+  const ready=elt('button','btn ghost small',model.goal==='linear'?'Перейти к сложению':'Перейти к записи результата');ready.type='button';
   box.appendChild(board);box.appendChild(notice);box.appendChild(next);if(opts.onReady)box.appendChild(ready);
-  let locked=false,dragId=null,touch=null,suppressClickUntil=0;
-  const chipHTML=tm=>{const body=termNegBody(tm);return '<span class="transfer-sign">'+(body.neg?MINUS:'+')+'</span>&thinsp;'+body.body;};
-  const chipText=tm=>(fcmp(tm.c,F0)<0?MINUS:'+')+valStr(fabs(tm.c))+(tm.x?'x':'');
+  let accepted=false,acceptedMessage='',dragId=null,touch=null,suppressClickUntil=0;
+  const chipHTML=tm=>{const body=transferTermBody(tm);return '<span class="transfer-sign">'+(body.neg?MINUS:'+')+'</span>&thinsp;'+body.body;};
+  const chipText=tm=>{
+    const body=transferTermBody(tm),host=elt('span',null,body.body);
+    const read=node=>{
+      if(node.nodeType===3)return node.textContent;
+      if(node.classList&&node.classList.contains('frac'))return '('+read(node.querySelector(':scope > .tt'))+')/('+read(node.querySelector(':scope > .bb'))+')';
+      return [...node.childNodes].map(read).join('');
+    };
+    return (body.neg?MINUS:'+')+read(host).replace(/\s+/g,' ').trim();
+  };
   function targetAt(x,y){
     return [...board.querySelectorAll('.transfer-side')].find(zone=>{const r=zone.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;});
   }
@@ -2586,12 +2822,13 @@ function makeTransferLab(source,opts){
     touch=null;clearDrag();
   }
   function move(id,to){
-    if(locked)return false;
     const tm=model.terms.find(t=>t.id===String(id));if(!tm)return false;
-    const before=chipText(tm);
+    const before=chipText(tm),beforeHTML=chipHTML(tm);
     if(!model.move(id,to))return false;
     if(opts.onUse)opts.onUse();
-    notice.textContent=before+' перенесено '+(to==='L'?'влево':'вправо')+' и стало '+chipText(tm)+'.';
+    const direction=to==='L'?'влево':'вправо';
+    notice.innerHTML='<span class="math">'+beforeHTML+'</span> перенесено '+direction+' и стало <span class="math">'+chipHTML(tm)+'</span>.';
+    notice.setAttribute('aria-label',before+' перенесено '+direction+' и стало '+chipText(tm)+'.');
     render();
     const moved=board.querySelector('[data-term-id="'+id+'"]');if(moved)moved.focus({preventScroll:true});
     return true;
@@ -2604,19 +2841,18 @@ function makeTransferLab(source,opts){
       zone.appendChild(elt('div','transfer-side-title',side==='L'?'Левая часть':'Правая часть'));
       const chips=elt('div','transfer-terms');zone.appendChild(chips);
       model.terms.filter(t=>t.side===side).forEach(tm=>{
-        const b=elt('button','transfer-term',chipHTML(tm));b.type='button';b.draggable=!locked;b.disabled=locked;b.dataset.termId=tm.id;
+        const b=elt('button','transfer-term',chipHTML(tm));b.type='button';b.draggable=true;b.dataset.termId=tm.id;
         b.setAttribute('aria-label','Слагаемое '+chipText(tm)+'. Перенести '+(side==='L'?'вправо':'влево'));
         b.addEventListener('click',()=>{if(Date.now()<suppressClickUntil)return;move(tm.id,tm.side==='L'?'R':'L');});
         b.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();move(tm.id,e.key==='ArrowLeft'?'L':'R');}});
         b.addEventListener('dragstart',e=>{
-          if(locked){e.preventDefault();return;}
           dragId=tm.id;b.classList.add('dragging');
           if(e.dataTransfer){e.dataTransfer.setData('text/plain',tm.id);e.dataTransfer.effectAllowed='move';}
         });
         b.addEventListener('dragend',()=>{suppressClickUntil=Date.now()+350;clearDrag();});
         // Touch uses the same model, with a sign preview on the moving card.
         b.addEventListener('pointerdown',e=>{
-          if(locked||e.pointerType!=='touch')return;
+          if(e.pointerType!=='touch')return;
           touch={el:b,id:tm.id,pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,moved:false,ghost:null};
           try{b.setPointerCapture(e.pointerId);}catch(err){}
         });
@@ -2626,7 +2862,8 @@ function makeTransferLab(source,opts){
           e.preventDefault();touch.moved=true;
           if(!touch.ghost){touch.ghost=b.cloneNode(true);touch.ghost.removeAttribute('data-term-id');touch.ghost.removeAttribute('aria-label');touch.ghost.setAttribute('aria-hidden','true');touch.ghost.tabIndex=-1;touch.ghost.classList.add('transfer-ghost');touch.ghost.disabled=true;box.appendChild(touch.ghost);b.classList.add('dragging');}
           const zoneAt=targetAt(e.clientX,e.clientY);board.querySelectorAll('.transfer-side').forEach(z=>z.classList.toggle('over',z===zoneAt));
-          const preview=Object.assign({},tm,{c:zoneAt&&zoneAt.dataset.side!==tm.side?fneg(tm.c):tm.c});
+          const crossing=zoneAt&&zoneAt.dataset.side!==tm.side;
+          const preview=Object.assign({},tm,tm.c!==undefined?{c:crossing?fneg(tm.c):tm.c}:{sign:crossing?-tm.sign:tm.sign});
           touch.ghost.innerHTML=chipHTML(preview);touch.ghost.style.left=e.clientX+'px';touch.ghost.style.top=e.clientY+'px';
         });
         b.addEventListener('pointerup',e=>{
@@ -2639,22 +2876,26 @@ function makeTransferLab(source,opts){
         chips.appendChild(b);
       });
       if(!chips.children.length)chips.appendChild(elt('span','math','0'));
-      zone.addEventListener('dragover',e=>{if(!locked&&dragId!==null){e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect='move';zone.classList.add('over');}});
+      zone.addEventListener('dragover',e=>{if(dragId!==null){e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect='move';zone.classList.add('over');}});
       zone.addEventListener('dragleave',()=>zone.classList.remove('over'));
       zone.addEventListener('drop',e=>{
-        e.preventDefault();if(locked||dragId===null)return;
+        e.preventDefault();if(dragId===null)return;
         const id=dragId;clearDrag();suppressClickUntil=Date.now()+350;move(id,side);
       });
       board.appendChild(zone);
     }
     const sorted=model.sorted();
-    next.innerHTML=sorted?'<b>Слагаемые на своих местах.</b> Теперь сложи числа перед <i>x</i> слева и обычные числа справа. Впиши оба результата в поля ниже.':'Перенеси слагаемые с <i>x</i> в левую часть, обычные числа — в правую. Знак каждой перенесённой карточки изменится.';
-    if(!opts.onReady&&sorted)next.innerHTML='<b>Слагаемые на своих местах.</b> Теперь отдельно сложи числа перед <i>x</i> слева и обычные числа справа.';
-    ready.hidden=!sorted;ready.disabled=locked;
+    if(accepted)next.textContent=acceptedMessage;
+    else if(model.goal==='explore')next.textContent='Исследуй перенос, а затем ответь на вопрос этого шага. Карточки не заполняют ответ за тебя.';
+    else if(model.goal==='linear'){
+      next.innerHTML=sorted?'<b>Слагаемые на своих местах.</b> Теперь сложи числа перед <i>x</i> слева и обычные числа справа. Впиши оба результата в поля ниже.':'Перенеси слагаемые с <i>x</i> в левую часть, обычные числа — в правую. Знак каждой перенесённой карточки изменится.';
+      if(!opts.onReady&&sorted)next.innerHTML='<b>Слагаемые на своих местах.</b> Теперь отдельно сложи числа перед <i>x</i> слева и обычные числа справа.';
+    }else next.innerHTML=sorted?'<b>В одной части остался 0.</b> Теперь приведи подобные: отдельно с <i>x</i>², отдельно с <i>x</i>, отдельно числа. Запиши результат ниже.':goalText;
+    ready.hidden=accepted||!sorted;ready.disabled=accepted;
   }
-  ready.addEventListener('click',()=>{if(!locked&&model.sorted()&&opts.onReady)opts.onReady();});
+  ready.addEventListener('click',()=>{if(!accepted&&model.sorted()&&opts.onReady)opts.onReady();});
   render();
-  return {node:box,model,lock(){locked=true;finishTouch();clearDrag();render();}};
+  return {node:box,model,acceptStep(message){accepted=true;acceptedMessage=message||'Шаг уже решён. Карточки можно передвигать и дальше — принятая запись ниже сохранится.';finishTouch();clearDrag();render();}};
 }
 /* The reference lesson uses the same transfer model as guided current tasks. */
 function termFlyer(){
@@ -2992,12 +3233,14 @@ function reviewTask(){
    лестница, где все ступени ввёл ученик, — решено; «Показать шаг» —
    «решение показано»; промах — один раз на задачу и сразу. */
 function stepHooks(task){
-  const rec={missed:false, shown:false, done:false};
+  const rec={missed:false,shown:false,done:false,completed:false};
   return {note:true,
-    onMiss(){ if(!rec.missed&&!rec.shown){ rec.missed=true; CP.mlog(task.fam,false); } },
-    onShow(){ rec.shown=true; },
+    isComplete:()=>rec.completed,
+    wasShown:()=>rec.shown,
+    onMiss(){if(!rec.completed&&!rec.missed&&!rec.shown){rec.missed=true;CP.mlog(task.fam,false);}},
+    onShow(){if(!rec.completed)rec.shown=true;},
     onHint(){},
-    onComplete(){ if(rec.done||rec.shown)return; rec.done=true; CP.solvedOne(task.fam); if(!rec.missed)CP.mlog(task.fam,true); }};
+    onComplete(){if(rec.completed)return;rec.completed=true;if(rec.done||rec.shown)return;rec.done=true;CP.solvedOne(task.fam);if(!rec.missed)CP.mlog(task.fam,true);}};
 }
 
 /* ============ ПОШАГОВО ============ */
@@ -3079,64 +3322,74 @@ function startGen(item, host){
   card.scrollIntoView&&card.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+let generatedHelpSequence=0;
 function renderGenTask(item, card){
   card.innerHTML='';
   let task;
-  if(item.review){ // повтор: семейство из открытых типов; закрытые по ходу выпадают
-    if(!CP.openTypes().some(k=>FAM_GENS[k])){ // последний тип закрыт — обычный режим с сообщением
-      buildStepTab(document.getElementById('pane-step'),{normal:true,msg:'<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип ниже.'});
-      return;
+  if(item.review){
+    if(!CP.openTypes().some(k=>FAM_GENS[k])){
+      buildStepTab(document.getElementById('pane-step'),{normal:true,msg:'<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип ниже.'});return;
     }
     task=reviewTask();
-    if(!task){ card.innerHTML='<p class="fb bad">Не удалось собрать задачу, обнови страницу.</p>'; return; }
-    item={review:true, method:task.gid==='g_qf'};
-  } else {
-    try{ task=genTask(item.gid); }catch(e){ card.innerHTML='<p class="fb bad">Не удалось собрать задачу, попробуй другой тип.</p>'; return; }
+    if(!task){card.innerHTML='<p class="fb bad">Не удалось собрать задачу, обнови страницу.</p>';return;}
+    item={review:true,method:task.gid==='g_qf'};
+  }else{
+    try{task=genTask(item.gid);}catch(e){card.innerHTML='<p class="fb bad">Не удалось собрать задачу, попробуй другой тип.</p>';return;}
   }
+  card.dataset.taskFamily=task.fam;card.dataset.taskGid=task.gid||item.gid||'review';card.dataset.completed='false';
   const hooks=stepHooks(task);
-
-  const qEl=document.createElement('div'); qEl.className='task-q'; qEl.style.marginRight='0';
-  qEl.innerHTML=taskInstrHTML(task);
-  card.appendChild(qEl);
-
-  const stepHost=document.createElement('div');
-  let method;
-
-  if(item.method){
-    // селектор метода для полного квадратного
-    const n=taskNorm(task); const monic=feq(n.A,F1);
-    const sel=document.createElement('div'); sel.className='btn-row'; sel.style.marginBottom='4px';
-    const lbl=document.createElement('span'); lbl.className='pen-note'; lbl.textContent='способ:';
-    sel.appendChild(lbl);
-    const bD=document.createElement('button'); bD.className='btn ghost small'; bD.textContent='Дискриминант';
-    const bV=document.createElement('button'); bV.className='btn ghost small'; bV.textContent='По Виета';
-    sel.appendChild(bD); sel.appendChild(bV);
-    if(!monic){ bV.disabled=true; bV.style.opacity='.45';
-      bV.title='Виета удобна только при a = 1'; }
-    const note=document.createElement('span'); note.className='pen-note';
-    if(!monic)note.innerHTML='&nbsp;(здесь <i>a</i> ≠ 1 — Виета не подойдёт, идём через дискриминант)';
-    sel.appendChild(note);
-    card.appendChild(sel);
-    card.appendChild(stepHost);
-  OGEMinimal.group(card,[badge,no],"Об этом задании");
-    // смена способа начинает лестницу заново, но запись задачи одна (hooks): показ не «отмывается»
-    function choose(m,btn){ method=m; bD.classList.remove('on'); bV.classList.remove('on'); btn.classList.add('on');
-      bD.style.background=bV.style.background=''; solveInline(stepHost, task, m, hooks); }
-    bD.addEventListener('click',()=>choose(undefined,bD));
-    bV.addEventListener('click',()=>{ if(!bV.disabled)choose('vieta',bV); });
-    // по умолчанию дискриминант
-    choose(undefined,bD);
-  } else {
-    card.appendChild(stepHost);
-  OGEMinimal.group(card,[badge,no],"Об этом задании");
-    solveInline(stepHost, task, undefined, hooks);
+  const qEl=elt('div','task-q',taskInstrHTML(task));qEl.style.marginRight='0';card.appendChild(qEl);
+  const help=elt('button','btn ghost minimal-hint generated-help-toggle','Хочешь подсказку?');help.type='button';help.setAttribute('aria-expanded','false');card.appendChild(help);
+  const answerLabel=elt('label','field generated-answer-label');answerLabel.appendChild(elt('span','lbl',taskAnswerLabel(task)));
+  const a=mkAns('?');a._input.classList.add('generated-answer');a._input.setAttribute('aria-label',taskAnswerLabel(task));answerLabel.appendChild(a);card.appendChild(answerLabel);
+  const feedback=elt('div','fb generated-feedback');feedback.setAttribute('aria-live','polite');card.appendChild(feedback);
+  const mainActions=elt('div','btn-row'),check=elt('button','btn small generated-check','Проверить');check.type='button';mainActions.appendChild(check);card.appendChild(mainActions);
+  const helpHost=elt('div','minimal-hint-panel generated-help');helpHost.id='task9-generated-help-'+(++generatedHelpSequence);helpHost.hidden=true;help.setAttribute('aria-controls',helpHost.id);card.appendChild(helpHost);
+  const panels=new Map();let mounted=false;
+  const finish=hooks.onComplete;
+  function seal(){
+    if(!hooks.isComplete())return;
+    card.dataset.completed='true';a._input.disabled=true;check.disabled=true;
+    helpHost.querySelectorAll('.step').forEach(step=>step.dispatchEvent(new Event('task9complete')));
   }
-
-  const row=document.createElement('div'); row.className='btn-row'; row.style.marginTop='14px';
-  const bNext=document.createElement('button'); bNext.className='btn small'; bNext.textContent='Следующая задача →';
-  bNext.addEventListener('click',()=>renderGenTask(item, card));
-  row.appendChild(bNext);
-  card.appendChild(row);
+  hooks.onComplete=(...args)=>{finish(...args);seal();};
+  function checkAnswer(){
+    if(hooks.isComplete())return;
+    const result=checkFinal(task,getRaw(a));
+    if(result.ok){hooks.onComplete();feedback.className='fb good generated-feedback';feedback.textContent=hooks.wasShown()?'Верно. Были показанные шаги — задача в счёт решённых не идёт.':'✓ Верно';}
+    else{feedback.className='fb bad generated-feedback';feedback.innerHTML=result.msg;if(!result.need)hooks.onMiss();}
+  }
+  check.addEventListener('click',checkAnswer);a._input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();checkAnswer();}});
+  function mountHelp(){
+    if(mounted)return;mounted=true;
+    const methodRow=elt('div','btn-row generated-methods'),methodsHost=elt('div','generated-method-host');
+    const buttons=[];
+    function choose(method){
+      const key=method||'discriminant';
+      if(!panels.has(key)){
+        const pane=elt('div','generated-method');pane.dataset.method=key;methodsHost.appendChild(pane);panels.set(key,pane);
+        solveInline(pane,task,method,hooks);
+      }
+      panels.forEach((pane,paneKey)=>pane.hidden=paneKey!==key);
+      buttons.forEach(({button,value})=>{const selected=(value||'discriminant')===key;button.classList.toggle('on',selected);button.setAttribute('aria-pressed',String(selected));});
+      seal();
+    }
+    if(item.method){
+      const monic=feq(taskNorm(task).A,F1);methodRow.appendChild(elt('span','pen-note','Способ:'));
+      for(const [title,value] of [['Дискриминант',undefined],['По Виета','vieta']]){
+        const button=elt('button','btn ghost small',title);button.type='button';button.dataset.method=value||'discriminant';button.setAttribute('aria-pressed','false');
+        if(value==='vieta'&&!monic){button.disabled=true;button.title='Для этого уравнения используем дискриминант.';}
+        button.addEventListener('click',()=>{if(!button.disabled)choose(value);});methodRow.appendChild(button);buttons.push({button,value});
+      }
+      helpHost.appendChild(methodRow);
+    }
+    helpHost.appendChild(methodsHost);
+    const back=elt('button','btn ghost generated-return','Вернуться к задаче');back.type='button';
+    back.addEventListener('click',()=>{helpHost.hidden=true;help.setAttribute('aria-expanded','false');(a._input.disabled?help:a._input).focus({preventScroll:true});});helpHost.appendChild(back);
+    choose(undefined);
+  }
+  help.addEventListener('click',()=>{mountHelp();helpHost.hidden=!helpHost.hidden;help.setAttribute('aria-expanded',String(!helpHost.hidden));});
+  const nextRow=elt('div','btn-row'),next=elt('button','btn small generated-next','Следующая задача →');next.type='button';next.addEventListener('click',()=>renderGenTask(item,card));nextRow.appendChild(next);card.appendChild(nextRow);
 }
 
 /* ============ МАРАФОН ============ */
@@ -3235,7 +3488,7 @@ function makeMaraCard(t, onProgress){
   const q=document.createElement('div'); q.className='task-q'; q.innerHTML=taskInstrHTML(t); card.appendChild(q);
 
   const ansField=document.createElement('span'); ansField.className='field';
-  const lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent=['L','LB','LF','LSQ','PROP'].includes(t.fam)?'Чему равен x?':'Ответ:'; ansField.appendChild(lbl);
+  const lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent=taskAnswerLabel(t); ansField.appendChild(lbl);
   const a=mkAns('?');a._input.setAttribute('aria-label',lbl.textContent);ansField.appendChild(a);card.appendChild(ansField);
 
   const fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('aria-live','polite'); card.appendChild(fb);
@@ -3255,15 +3508,18 @@ function makeMaraCard(t, onProgress){
      задача в solvedByType не идёт и журнал молчит; вердикт журнала — один
      на задачу: первый промах сразу, успех — только без промахов */
   const st=maraRec(t.id);
+  function sealSteps(){
+    if(maraState.solved.has(t.id)||maraState.shown.has(t.id))stepHost.querySelectorAll('.step').forEach(step=>step.dispatchEvent(new Event('task9complete')));
+  }
   function markSolved(){
     if(st.shown&&!maraState.solved.has(t.id)){ // ответ после показанной ступени — «показан разбор», не «решено» (как в 7 и 8)
-      maraState.shown.add(t.id); card.classList.add('shown'); onProgress&&onProgress(); return;
+      maraState.shown.add(t.id); card.classList.add('shown'); sealSteps(); onProgress&&onProgress(); return;
     }
     if(!maraState.solved.has(t.id)){   // статус ставится один раз: разбор после решения его не меняет
       maraState.solved.add(t.id);
       if(!st.hinted&&!st.shown)maraState.clean.add(t.id);
     }
-    card.classList.add('solved');
+    card.classList.add('solved');sealSteps();
     if(!st.shown&&!st.counted){ st.counted=true; CP.solvedOne(t.fam); if(!st.verdict){ st.verdict='ok'; CP.mlog(t.fam,true); } }
     onProgress&&onProgress();
   }
@@ -3277,6 +3533,7 @@ function makeMaraCard(t, onProgress){
   a._input.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault(); doCheck();} });
   const helped=()=>{ if(!maraState.solved.has(t.id)){ maraState.clean.delete(t.id); onProgress&&onProgress(); } };
   const hooks={note:true,
+    isComplete:()=>maraState.solved.has(t.id)||maraState.shown.has(t.id),
     onMiss:miss,
     onHint(){ st.hinted=true; helped(); },
     onShow(){ st.shown=true; helped(); },
@@ -3284,7 +3541,7 @@ function makeMaraCard(t, onProgress){
   bStep.addEventListener('click',()=>{
     if(stepHost.dataset.open){stepHost.hidden=!stepHost.hidden;bStep.setAttribute('aria-expanded',String(!stepHost.hidden));return;}
     stepHost.dataset.open='1';stepHost.className='minimal-hint-panel';bStep.setAttribute('aria-expanded','true');
-    solveInline(stepHost, t, undefined, hooks);
+    solveInline(stepHost, t, undefined, hooks);sealSteps();
     const back=document.createElement('button');back.type='button';back.className='btn ghost';back.textContent='Вернуться к задаче';
     back.addEventListener('click',()=>{stepHost.hidden=true;bStep.setAttribute('aria-expanded','false');a._input.focus({preventScroll:true});});
     stepHost.appendChild(back);

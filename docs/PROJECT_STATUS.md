@@ -2,7 +2,18 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: clear learner actions and return paths
+## In progress: task9 interactive help for every equation family
+
+- [Scope](tasks/TASK9_ALL_INTERACTIVE_HELP.md): make signed-term transfer
+  available when help is requested across all bank and generated equation
+  families, preserving brackets, products, fractions and the original domain.
+- Keep completed-step cards usable for exploration while preserving accepted
+  answers and progress. Add optional task-specific discovery models for the
+  other equation actions; generated tasks also start with a task and help button.
+- The owner explicitly asks for every linear and other task9 type. Trial-signup
+  trainer selection remains open; paid Claude API use remains deferred.
+
+## Published: clear learner actions and return paths
 
 - [Scope](tasks/CLEAR_LEARNER_ACTIONS.md): clarify expected inputs and return
   paths in the percentage trainer; add real signed-term movement to the №9
@@ -10,6 +21,17 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
 - General authoring rule: every input explains what to find, what to enter and
   the next action; help returns to the same task without erasing work.
 - The owner has not selected the trainer for trial-lesson signup.
+- PR283 merged normally as03a6d465416703fcc72a7ce471afb2ad2f3031fd,
+  parentbc392890a67ec594abed7c6a95b39402962830ec, reviewed tree
+  7e8c28cf7c3ceba3210acb1929d4b2645ec1a37b. No base drift.
+- Focused24 learner tests, existing UI/practical gates,668 algebra contracts,
+  3500 independent percentage calculations and independent review passed.
+  Browser39490572190, course39490572173 andSEO39490572128 passed;
+  Pages39491135384 succeeded on the exact merged commit.
+- Both public pages returned200 and matched reviewed bytes. Live transfer,
+  reverse movement, retained drafts and percentage return paths were verified.
+  At this release transfer covered84/135 bank tasks, including60/105 prototypes;
+  the next scope above closes the remaining-family and completed-step gaps.
 
 ## Published: task11 visual mnemonics and vertex guidance
 
