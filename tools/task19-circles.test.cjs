@@ -66,3 +66,54 @@ test('moving candidate center breaks equal distances; area scales quadratically 
   close(sample('circleCenter',{x:0,y:0}).metrics.spread,0);for(const v of[{x:1,y:0},{x:0,y:1},{x:-2,y:2}])assert.ok(sample('circleCenter',v).metrics.spread>0);
   const a=sample('circleMeasure',{radius:1}).metrics,b=sample('circleMeasure',{radius:2}).metrics;close(b.area/a.area,4);close(b.length/a.length,2);assert.notEqual(sample('circleMeasure',{radius:3}).metrics.area,sample('circleMeasure',{radius:3}).metrics.comparison);
 });
+
+test('only meaningful size controls remain, and the circumference can be straightened',()=>{
+  for(const model of['circleRadii','circleLine','circleTangents'])assert.ok(!core.controlsFor(model).some(c=>c.key==='radius'),model);
+  assert.ok(!core.controlsFor('circleRhombus').some(c=>c.key==='side'));
+  assert.deepEqual(core.controlsFor('circleMeasure',{mode:'length'}).map(c=>c.key),['radius','unroll']);
+  assert.deepEqual(core.controlsFor('circleMeasure',{mode:'area'}).map(c=>c.key),['radius']);
+});
+
+function geometryGroup(svg,key){
+  const start=svg.indexOf(`<g data-geometry-group="${key}"`);assert.ok(start>=0,`missing geometry group ${key}`);
+  const suffix=svg.slice(start),tags=/<\/?g\b[^>]*>/g;let depth=0,match;
+  while((match=tags.exec(suffix))){depth+=match[0].startsWith('</')?-1:1;if(depth===0)return suffix.slice(0,tags.lastIndex);}
+  assert.fail(`unclosed geometry group ${key}`);
+}
+function equalTicks(svg,key){const body=geometryGroup(svg,key),mark=body.match(/<g data-geometry-mark="equal-segment">(.*?)<\/g>/s);return mark?(mark[1].match(/<line\b/g)||[]).length:0;}
+const rightSquares=svg=>(svg.match(/data-geometry-mark="right-angle"/g)||[]).length;
+
+test('circle diagrams mark only genuine equal groups and right angles',()=>{
+  const tangents=core.render('circleTangents').svg;
+  assert.equal(equalTicks(tangents,'PA'),equalTicks(tangents,'PB'));
+  assert.equal(equalTicks(tangents,'OA'),equalTicks(tangents,'OB'));
+  assert.notEqual(equalTicks(tangents,'PA'),equalTicks(tangents,'OA'));
+  assert.equal(rightSquares(tangents),2);
+  const rhombus=core.render('circleRhombus',{mode:'circumcircle',angle:65}).svg;
+  assert.ok(equalTicks(rhombus,'OA')>0);
+  assert.equal(equalTicks(rhombus,'OA'),equalTicks(rhombus,'OB'));
+  assert.equal(equalTicks(rhombus,'OA'),equalTicks(rhombus,'OD'));
+  assert.equal(equalTicks(rhombus,'OC'),0,'C is outside this circle');
+  assert.notEqual(equalTicks(rhombus,'OA'),equalTicks(rhombus,'AB'),'side length differs from radius');
+  assert.equal(rightSquares(core.render('circleRectangle',{mode:'circumcircle'}).svg),4);
+  assert.equal(rightSquares(core.render('circleRectangle',{mode:'incircle'}).svg),8);
+  assert.equal(rightSquares(core.render('radiusChord',{position:0}).svg),1);
+  assert.equal(rightSquares(core.render('radiusChord',{position:.4}).svg),0);
+});
+
+test('straightening preserves the exact circumference length at intermediate bends and at the line',()=>{
+  for(const radius of[1,2.7,4]){
+    const lineSvg=geometryGroup(core.render('circleMeasure',{mode:'length',radius,unroll:1}).svg,'length');
+    const circleRadius=Number(lineSvg.match(/<circle[^>]*\br="([^"]+)"/)[1]);
+    const flat=lineSvg.match(/<line x1="([^"]+)" y1="([^"]+)" x2="([^"]+)" y2="([^"]+)"/);
+    close(Math.hypot(Number(flat[3])-Number(flat[1]),Number(flat[4])-Number(flat[2])),2*Math.PI*circleRadius);
+    for(const unroll of[.05,.25,.5,.75,.95]){
+      const svg=geometryGroup(core.render('circleMeasure',{mode:'length',radius,unroll}).svg,'length');
+      const arc=svg.match(/<path d="M ([^ ]+) ([^ ]+) A ([^ ]+) ([^ ]+) 0 ([01]) 1 ([^ ]+) ([^"]+)"/);
+      assert.ok(arc,'curved part is a circular arc');
+      const r=Number(arc[3]),chord=Math.hypot(Number(arc[6])-Number(arc[1]),Number(arc[7])-Number(arc[2]));
+      let angle=2*Math.asin(Math.min(1,chord/(2*r)));if(arc[5]==='1')angle=2*Math.PI-angle;
+      close(r*angle,2*Math.PI*circleRadius,1e-7);
+    }
+  }
+});

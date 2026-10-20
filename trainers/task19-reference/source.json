@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "title": "Справочные материалы ОГЭ по математике, проект 2027 года",
+  "verifiedOn": "2026-10-20",
+  "officialIndex": "https://fipi.ru/oge/demoversii-specifikacii-kodifikatory",
+  "officialArchive": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+  "archiveSha256": "9ae4b400e5c6858b7988be583849499b3cd392c789e1e8599698f08c1795c238",
+  "archiveMember": "МА-9 ОГЭ 2027_ДЕМО.pdf",
+  "status": "project",
+  "sourceFile": "source-demo-2027.pdf",
+  "sourceSha256": "4fb94e18640856608a733d2c8a8f028fc2e4964e9b98606cc5a5c5ca00869a44",
+  "sourceBytes": 665400,
+  "sourceNote": "Неизменённый PDF из официального архива ФИПИ. Справочные материалы занимают печатные страницы 3–6. Все изображения ниже являются точными растровыми вырезками; формулы, рисунки и водяные знаки не изменены.",
+  "copyright": "© 2027 Федеральная служба по надзору в сфере образования и науки",
+  "render": {
+    "engine": "PyMuPDF",
+    "version": "1.26.6",
+    "dpi": 216,
+    "scale": 3,
+    "colorspace": "grayscale",
+    "encoding": "lossless PNG",
+    "coordinateSystem": "rectOnSheetPoints: x0,y0,x1,y1 from top-left of the displayed upright printed half-page, before raster scaling; rectPixels: corresponding exact bounds in sheet image. PDF page rotation is applied before splitting."
+  },
+  "pages": {
+    "3": {
+      "file": "fipi-oge-2027-page-03.png",
+      "printedPage": 3,
+      "physicalPage": 2,
+      "side": "left",
+      "sourcePageRotation": 270,
+      "sourceDisplayedRectPoints": [
+        0,
+        0,
+        421,
+        595.219970703125
+      ],
+      "sourceDisplayedRectPixels": [
+        0,
+        0,
+        1263,
+        1786
+      ],
+      "width": 1263,
+      "height": 1786,
+      "bytes": 109788,
+      "sha256": "b5f6fc6778dadf1bc55da37a1c3cb5fa36424df24bcf81d9b1428eef6375a37b"
+    },
+    "4": {
+      "file": "fipi-oge-2027-page-04.png",
+      "printedPage": 4,
+      "physicalPage": 2,
+      "side": "right",
+      "sourcePageRotation": 270,
+      "sourceDisplayedRectPoints": [
+        421,
+        0,
+        842,
+        595.219970703125
+      ],
+      "sourceDisplayedRectPixels": [
+        1263,
+        0,
+        2526,
+        1786
+      ],
+      "width": 1263,
+      "height": 1786,
+      "bytes": 103001,
+      "sha256": "0ac5b32d00377aa613e58ae10de717fde2e3c0e2965be795be8851a79b449a54"
+    },
+    "5": {
+      "file": "fipi-oge-2027-page-05.png",
+      "printedPage": 5,
+      "physicalPage": 3,
+      "side": "left",
+      "sourcePageRotation": 270,
+      "sourceDisplayedRectPoints": [
+        0,
+        0,
+        421,
+        595.219970703125
+      ],
+      "sourceDisplayedRectPixels": [
+        0,
+        0,
+        1263,
+        1786
+      ],
+      "width": 1263,
+      "height": 1786,
+      "bytes": 104875,
+      "sha256": "3ef258209fbbb051494b6c95cf6570c3949b4be6c4168a2bd705ddad0384f5b0"
+    },
+    "6": {
+      "file": "fipi-oge-2027-page-06.png",
+      "printedPage": 6,
+      "physicalPage": 3,
+      "side": "right",
+      "sourcePageRotation": 270,
+      "sourceDisplayedRectPoints": [
+        421,
+        0,
+        842,
+        595.219970703125
+      ],
+      "sourceDisplayedRectPixels": [
+        1263,
+        0,
+        2526,
+        1786
+      ],
+      "width": 1263,
+      "height": 1786,
+      "bytes": 91391,
+      "sha256": "a06b1fab39a08a2ffb1d3367e1ed1f8db5d608f0204396b2ee9fff316df60f58"
+    }
+  },
+  "crops": {
+    "polygon-angles": {
+      "file": "polygon-angles.png",
+      "title": "Сумма углов выпуклого многоугольника",
+      "alt": "Сумма углов выпуклого n-угольника равна 180°(n−2).",
+      "printedPage": 5,
+      "fullPageFile": "fipi-oge-2027-page-05.png",
+      "rectOnSheetPoints": [
+        47,
+        57,
+        380,
+        78
+      ],
+      "rectPixels": [
+        141,
+        171,
+        1140,
+        234
+      ],
+      "width": 999,
+      "height": 63,
+      "bytes": 4805,
+      "sha256": "8df87790a77396c2a3ee90b46bfffd2ad3f9fd2efb4eddf4f798461174ade3d0"
+    },
+    "midlines": {
+      "file": "midlines.png",
+      "title": "Средние линии треугольника и трапеции",
+      "alt": "Рисунки и формулы средних линий треугольника и трапеции.",
+      "printedPage": 5,
+      "fullPageFile": "fipi-oge-2027-page-05.png",
+      "rectOnSheetPoints": [
+        47,
+        75,
+        380,
+        166
+      ],
+      "rectPixels": [
+        141,
+        225,
+        1140,
+        498
+      ],
+      "width": 999,
+      "height": 273,
+      "bytes": 19951,
+      "sha256": "668088a8f4372842ec3f12f84eb53205e8febf6c07f9bbeaa7009fae5db07377"
+    },
+    "equilateral-triangle": {
+      "file": "equilateral-triangle.png",
+      "title": "Правильный треугольник",
+      "alt": "Радиусы вписанной и описанной окружностей, площадь и высота правильного треугольника.",
+      "printedPage": 5,
+      "fullPageFile": "fipi-oge-2027-page-05.png",
+      "rectOnSheetPoints": [
+        47,
+        183,
+        380,
+        265
+      ],
+      "rectPixels": [
+        141,
+        549,
+        1140,
+        795
+      ],
+      "width": 999,
+      "height": 246,
+      "bytes": 21344,
+      "sha256": "94693cf5266433bf4032decae4f324dcd0701c4a0aec67b70efb92a8ab355029"
+    },
+    "sine-cosine": {
+      "file": "sine-cosine.png",
+      "title": "Теоремы синусов и косинусов",
+      "alt": "Рисунок треугольника с обозначениями и формулы теорем синусов и косинусов.",
+      "printedPage": 5,
+      "fullPageFile": "fipi-oge-2027-page-05.png",
+      "rectOnSheetPoints": [
+        47,
+        280,
+        380,
+        403
+      ],
+      "rectPixels": [
+        141,
+        840,
+        1140,
+        1209
+      ],
+      "width": 999,
+      "height": 369,
+      "bytes": 30064,
+      "sha256": "51dc6b4fb22db7f9bce6bd7c966becf6dbcd76523ca67f14172918a7a26f2217"
+    },
+    "circle": {
+      "file": "circle.png",
+      "title": "Длина окружности и площадь круга",
+      "alt": "Длина окружности C = 2πr и площадь круга S = πr², рисунок радиуса.",
+      "printedPage": 5,
+      "fullPageFile": "fipi-oge-2027-page-05.png",
+      "rectOnSheetPoints": [
+        47,
+        418,
+        270,
+        490
+      ],
+      "rectPixels": [
+        141,
+        1254,
+        810,
+        1470
+      ],
+      "width": 669,
+      "height": 216,
+      "bytes": 8508,
+      "sha256": "de3feb9d37e09cc50b83ffa4bf02dead71eb33e1f818aec31ae552e9794628bc"
+    },
+    "areas": {
+      "file": "areas.png",
+      "title": "Площади фигур",
+      "alt": "Рисунки и формулы площадей параллелограмма, треугольника, трапеции и ромба.",
+      "printedPage": 6,
+      "fullPageFile": "fipi-oge-2027-page-06.png",
+      "rectOnSheetPoints": [
+        47,
+        64,
+        383,
+        240
+      ],
+      "rectPixels": [
+        141,
+        192,
+        1149,
+        720
+      ],
+      "width": 1008,
+      "height": 528,
+      "bytes": 30810,
+      "sha256": "d62ce63f213473a71781256dac90341e006f985add20ba5f3592ea69abb0eb42"
+    },
+    "parallelogram-area": {
+      "file": "parallelogram-area.png",
+      "title": "Площадь параллелограмма",
+      "alt": "Параллелограмм: S = ahₐ и S = ab sin γ; рисунок основания, высоты и угла.",
+      "printedPage": 6,
+      "fullPageFile": "fipi-oge-2027-page-06.png",
+      "rectOnSheetPoints": [
+        48,
+        86,
+        201,
+        153
+      ],
+      "rectPixels": [
+        144,
+        258,
+        603,
+        459
+      ],
+      "width": 459,
+      "height": 201,
+      "bytes": 6119,
+      "sha256": "b1f22c294e69c59e3384dfae84cdab943e823c815bde37f2c16f567bc26f161e"
+    },
+    "triangle-area": {
+      "file": "triangle-area.png",
+      "title": "Площадь треугольника",
+      "alt": "Треугольник: S = ½ahₐ и S = ½ab sin γ; рисунок основания, высоты и угла.",
+      "printedPage": 6,
+      "fullPageFile": "fipi-oge-2027-page-06.png",
+      "rectOnSheetPoints": [
+        216,
+        86,
+        378,
+        153
+      ],
+      "rectPixels": [
+        648,
+        258,
+        1134,
+        459
+      ],
+      "width": 486,
+      "height": 201,
+      "bytes": 6813,
+      "sha256": "e3674f50b19f0ee66a3d58ae60a6977f90ef92f25505fa0ac72fce735d52173d"
+    },
+    "trapezoid-area": {
+      "file": "trapezoid-area.png",
+      "title": "Площадь трапеции",
+      "alt": "Трапеция: S = (a + b)h/2; рисунок оснований и высоты с отметкой прямого угла.",
+      "printedPage": 6,
+      "fullPageFile": "fipi-oge-2027-page-06.png",
+      "rectOnSheetPoints": [
+        48,
+        159,
+        202,
+        235
+      ],
+      "rectPixels": [
+        144,
+        477,
+        606,
+        705
+      ],
+      "width": 462,
+      "height": 228,
+      "bytes": 4833,
+      "sha256": "4bfb4444141bb28ca1871d43d7ad61375659a8c0813dadeac52a0e76580a14f5"
+    },
+    "rhombus-area": {
+      "file": "rhombus-area.png",
+      "title": "Площадь ромба",
+      "alt": "Ромб: S = ½d₁d₂; рисунок и обозначения диагоналей.",
+      "printedPage": 6,
+      "fullPageFile": "fipi-oge-2027-page-06.png",
+      "rectOnSheetPoints": [
+        216,
+        159,
+        383,
+        235
+      ],
+      "rectPixels": [
+        648,
+        477,
+        1149,
+        705
+      ],
+      "width": 501,
+      "height": 228,
+      "bytes": 10399,
+      "sha256": "f3692cf58074d536fe29e6ddbd40cc179333acf49685569fa555c17b0eb11027"
+    },
+    "pythagoras": {
+      "file": "pythagoras.png",
+      "title": "Теорема Пифагора",
+      "alt": "Прямоугольный треугольник с катетами a, b и гипотенузой c; a² + b² = c². На исходном листе рядом также показаны sin, cos и tg.",
+      "printedPage": 6,
+      "fullPageFile": "fipi-oge-2027-page-06.png",
+      "rectOnSheetPoints": [
+        48,
+        251,
+        245,
+        373
+      ],
+      "rectPixels": [
+        144,
+        753,
+        735,
+        1119
+      ],
+      "width": 591,
+      "height": 366,
+      "bytes": 17091,
+      "sha256": "b61a60bbd77cb991199b3bed38d56f4dee600ee99ca60f1ffbcab040bf981668"
+    },
+    "trig-values": {
+      "file": "trig-values.png",
+      "title": "Значения тригонометрических функций",
+      "alt": "Таблица синуса, косинуса и тангенса основных углов.",
+      "printedPage": 6,
+      "fullPageFile": "fipi-oge-2027-page-06.png",
+      "rectOnSheetPoints": [
+        47,
+        394,
+        378,
+        515
+      ],
+      "rectPixels": [
+        141,
+        1182,
+        1134,
+        1545
+      ],
+      "width": 993,
+      "height": 363,
+      "bytes": 20776,
+      "sha256": "d6f8ab7df6cba87030a67df61a17d7bbced590320b0bc64c9851ce7354ba7ce6"
+    }
+  },
+  "interpretationNotes": [
+    "Сумма углов треугольника 180° получается из формулы суммы углов выпуклого n-угольника при n=3. Отдельной строки с этим частным случаем на листе нет.",
+    "На листе есть теорема Пифагора, но её обратное утверждение отдельно не сформулировано. Пояснение об обратной теореме должно быть учебным текстом рядом со снимком.",
+    "Из формулы площади ромба через диагонали можно получить объяснение, но общий случай четырёхугольника с перпендикулярными диагоналями отдельно не приведён.",
+    "Эти листы относятся к ОГЭ. Существующие learning/reference-assets относятся к ЕГЭ-базе и не являются их заменой."
+  ]
+}

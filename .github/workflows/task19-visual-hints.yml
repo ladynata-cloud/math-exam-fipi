@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'trainers/task19-*'
+      - 'trainers/task19-reference/**'
       - 'trainers/geometry_statements_trainer_improved.html'
       - 'trainers/archive-5-weeks/task19-before-visual-hints-20261020.html'
       - 'trainers/archive-5-weeks/geometry-statements-trainer-improved-370628fb.html'
@@ -50,11 +51,23 @@ jobs:
         env:
           TASK19_BROWSER_ARTIFACTS: artifacts/task19-visual-hints
         run: node tools/task19-visual-hints.browser.cjs
+      - name: Owner feedback examples, linked pairs and authentic reference sheets
+        env:
+          TASK19_OWNER_BROWSER_ARTIFACTS: artifacts/task19-owner-feedback
+        run: node tools/task19-owner-feedback.browser.cjs
       - name: Keep visual evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: task19-visual-hints
           path: artifacts/task19-visual-hints
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Keep owner feedback evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: task19-owner-feedback
+          path: artifacts/task19-owner-feedback
           if-no-files-found: ignore
           retention-days: 7

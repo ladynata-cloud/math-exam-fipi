@@ -65,3 +65,21 @@ noscript p{max-width:760px;margin:30px auto;padding:20px}
 .t19-observe{font-size:18px;line-height:1.7;margin:20px 0 4px}
 .visual-host input[type=range]{min-height:48px}
 @media(max-width:540px){.t19-measure{width:100%}.t19-model-readout{padding-left:20px}}
+
+/* Linked geometry remains usable with a mouse, touch, or keyboard. */
+[data-geometry-group]{outline-offset:4px}
+svg [data-geometry-group]{cursor:pointer}
+svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-emphasis 1.4s ease-in-out infinite}
+.t19-model-readout .t19-linked-active,.t19-model-control.t19-linked-active{background:#edf5e8;border-radius:6px;outline:2px solid #82a776}
+@keyframes t19-emphasis{0%,100%{opacity:1}50%{opacity:.55}}
+.t19-angle-pulse{animation:t19-emphasis 2s ease-in-out infinite}
+.t19-angle-pulse-second{animation-delay:1s}
+.t19-model-control[data-pair]{padding:8px;border-left:3px solid #c9dacc;background:#f8fbf6;border-radius:6px}
+.t19-reference{margin-top:24px;border-top:1px solid var(--line);padding-top:14px;font-size:16px;line-height:1.7}
+.t19-reference summary{cursor:pointer;min-height:48px;padding:10px 0;color:var(--green)}
+.t19-reference img{display:block;width:100%;height:auto;max-width:650px;margin:14px auto;background:#fff}
+.t19-reference-crop{border:1px solid #e0e6dd;border-radius:8px}
+.t19-reference a{color:var(--green);text-underline-offset:3px;overflow-wrap:anywhere}
+.t19-reference p{margin:14px 0}
+.t19-reference-sheet{margin:14px 0}
+@media(prefers-reduced-motion:reduce){svg .t19-linked-active,.t19-angle-pulse{animation:none!important}svg .t19-linked-active{filter:drop-shadow(0 0 3px currentColor)}}

@@ -6,14 +6,15 @@
   <meta name="color-scheme" content="light">
   <title>ОГЭ №19 — утверждения с наглядными подсказками · MathExam</title>
   <meta name="description" content="Геометрические утверждения ОГЭ: подумай сам или открой рисунок и интерактивную подсказку. Объяснение появляется после ответа.">
-  <link rel="stylesheet" href="task19-visual.css?v=interactive-20261021">
+  <link rel="stylesheet" href="task19-visual.css?v=feedback-20261021">
   <link rel="stylesheet" href="/assets/download-panel.css">
-  <script defer src="task19-visual-data.js?v=interactive-20261021"></script>
-  <script defer src="task19-models-triangles.js?v=interactive-20261021"></script>
-  <script defer src="task19-models-circles.js?v=interactive-20261021"></script>
-  <script defer src="task19-models-lines-polygons.js?v=interactive-20261021"></script>
-  <script defer src="task19-visual-models.js?v=interactive-20261021"></script>
-  <script defer src="task19-visual-app.js?v=interactive-20261021"></script>
+  <script defer src="task19-visual-data.js?v=feedback-20261021"></script>
+  <script defer src="task19-models-triangles.js?v=feedback-20261021"></script>
+  <script defer src="task19-models-circles.js?v=feedback-20261021"></script>
+  <script defer src="task19-models-lines-polygons.js?v=feedback-20261021"></script>
+  <script defer src="task19-visual-models.js?v=feedback-20261021"></script>
+  <script defer src="task19-reference.js?v=feedback-20261021"></script>
+  <script defer src="task19-visual-app.js?v=feedback-20261021"></script>
 </head>
 <body>
   <header><div class="page-width"><h1>ОГЭ №19</h1><p>Геометрические утверждения</p></div></header>
@@ -25,6 +26,7 @@
       <section class="hint-panel" id="hintPanel" aria-label="Наглядная подсказка" hidden>
         <p class="hint-prompt" id="hintPrompt"></p>
         <div class="visual-host" id="visualHost"></div>
+        <div id="referenceHost"></div>
       </section>
       <div class="answer-actions" id="answerActions" role="group" aria-label="Верно ли утверждение?">
         <button class="yes" id="btnTrue" aria-pressed="false">Верно</button>

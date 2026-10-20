@@ -85,6 +85,7 @@
     if (typeof cleanup === 'function') cleanup();
     cleanup = null; mounted = false;
     el('visualHost').replaceChildren();
+    if(el('referenceHost'))el('referenceHost').replaceChildren();
   }
   function showHint(open) {
     if (!state.current) return;
@@ -95,6 +96,7 @@
         state:state.current.modelState,
         onChange:modelState=>{state.current.modelState=modelState;save();}
       });
+      if(window.Task19Reference&&el('referenceHost'))window.Task19Reference.mount(el('referenceHost'),card);
       mounted = true;
     }
     state.current.hintOpen = open;
