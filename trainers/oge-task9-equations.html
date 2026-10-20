@@ -939,7 +939,7 @@ function taskKey(t){
   return null;
 }
 function askWord(t){return t.ask==='max'?'больший':'меньший';}
-function taskAnswerLabel(t){return t.ask==='max'?'Чему равен больший корень?':t.ask==='min'?'Чему равен меньший корень?':'Чему равен x?';}
+function taskAnswerLabel(t){const {roots,excluded}=taskSolve(t);return roots.length+excluded.length>=2?'Какой корень запишешь в ответ? Если их несколько — '+askWord(t)+'.':'Чему равен x?';}
 function taskInstrHTML(t){
   const {roots,excluded}=taskSolve(t);
   let s='Решите уравнение &nbsp;'+taskEqnHTML(t)+'.';

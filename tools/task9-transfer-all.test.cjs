@@ -63,6 +63,42 @@ function openCard(w,fam='L'){
   const help=button(card,'Хочешь подсказку?');help.click();return {card,help,panel:card.querySelector('.minimal-hint-panel')};
 }
 const progress=w=>w.localStorage.getItem('mathExamCourseProgress.v1');
+function assertLabelMatchesInstruction(document,html,label,context){
+  const text=document.createElement('div');text.innerHTML=html;
+  const choice=text.textContent.match(/запишите\s+(меньший|больший)\s+из корней/);
+  if(choice){
+    assert.match(label,/Какой корень запишешь в ответ\?/,context+' asks for the final answer');
+    assert.match(label,/Если их несколько/,context+' does not imply that both candidates are valid roots');
+    assert.ok(label.endsWith('— '+choice[1]+'.'),context+' follows the selection in the task');
+  }else assert.equal(label,'Чему равен x?',context+' single-root prompt');
+}
+
+test('answer labels agree with the displayed root-selection instruction across the entire bank and all generators',async()=>{
+  const dom=await boot();try{
+    const w=dom.window,data=dataset(w),instruction=w.eval('taskInstrHTML'),label=w.eval('taskAnswerLabel');
+    for(const task of [...data.bank,...data.generated])assertLabelMatchesInstruction(w.document,instruction(task),label(task),(task.id||task.gid)+' '+task.fam);
+    for(const item of w.eval('GEN_GROUPS.flatMap(g=>g.items)')){
+      const card=w.document.createElement('div');w.eval('renderGenTask')(item,card);
+      const visible=card.querySelector('.generated-answer-label .lbl').textContent;
+      assertLabelMatchesInstruction(w.document,card.querySelector('.task-q').innerHTML,visible,item.gid+' visible label');
+      assert.equal(card.querySelector('.generated-answer').getAttribute('aria-label'),visible,item.gid+' accessible label');
+    }
+  }finally{dom.window.close();}
+});
+
+test('an omitted root choice keeps the implicit smaller-root instruction even when one of two candidates is excluded',async()=>{
+  const dom=await boot();try{
+    const w=dom.window,task=w.eval("BANK.find(t=>t.id==='pf-46')"),solved=independentAnswer(task);
+    assert.equal(task.ask,null);assert.equal(solved.roots.length,1);assert.equal(solved.excluded.length,1);assert.equal(Q.str(solved.key),'4');
+    const card=w.eval("makeMaraCard(BANK.find(t=>t.id==='pf-46'),()=>{})");
+    assert.match(card.querySelector('.task-q').textContent,/запишите меньший из корней/);
+    const conditional='Какой корень запишешь в ответ? Если их несколько — меньший.';
+    assert.equal(card.querySelector('.field .lbl').textContent,conditional);assert.equal(card.querySelector('input').getAttribute('aria-label'),conditional);
+    const twoRealRoots=w.eval("Object.assign({},BANK.find(t=>t.fam==='QF'),{ask:null})");assert.equal(independentAnswer(twoRealRoots).roots.length,2);
+    assert.equal(w.eval('taskAnswerLabel')(twoRealRoots),conditional,'implicit minimum also applies with two valid roots');
+    assert.equal(w.eval('taskAnswerLabel')(w.eval('BANK[0]')),'Чему равен x?','single-root tasks retain the simple question');
+  }finally{dom.window.close();}
+});
 
 test('initial transfer covers every bank/prototype family and every generator with original residual and domain',async()=>{
   const dom=await boot();try{
