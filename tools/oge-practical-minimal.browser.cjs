@@ -60,8 +60,9 @@ async function layout(page,label){
     await page.locator(diag?'#finish-btn':'#finish').click();await page.locator('#result').waitFor({state:'visible'});
    }else if(!name.includes('-map.')){
     const button=page.locator('button:visible,summary:visible').filter({hasText:/^Хочешь подсказку\?$/}).first();
-    await button.waitFor({state:'visible'});const identity=await button.evaluate(el=>{if(!el.id)el.id='browser-hint-control';return{id:el.id,tag:el.tagName};});await button.focus();await button.press('Enter');
+    await button.waitFor({state:'visible'});if(name==='percent-table-trainer.html')await page.locator('#practice-input').fill('12,5');const identity=await button.evaluate(el=>{if(!el.id)el.id='browser-hint-control';return{id:el.id,tag:el.tagName};});await button.focus();await button.press('Enter');
     if(identity.tag==='BUTTON')assert.equal(await page.locator('#'+identity.id).getAttribute('aria-expanded'),'true',name+' hint ARIA');
+    if(name==='percent-table-trainer.html'){assert.equal(await page.locator('#practice-input').inputValue(),'12,5','hint preserves the draft');assert.equal(await page.evaluate(()=>document.activeElement.id),identity.id,'hint keeps keyboard focus');}
     await layout(page,name+' help@'+width);await hitTargets(page,name+' help@'+width);
     if(/land-plots|tariffs|roads-schema/.test(name)){
      assert.equal(await page.locator('.pm-context-hint section').isVisible(),true);
@@ -80,7 +81,7 @@ async function layout(page,label){
    }
    await hitTargets(page,name+' final@'+width);
    assert.deepEqual(errors,[],name+' runtime errors');
-   if(width===320)await page.screenshot({path:path.join(output,name.replace('.html','')+'-320.png'),fullPage:true});
+   if(width===320||(width===1280&&/roads-schema|roads-grid|apartments|tariffs/.test(name)))await page.screenshot({path:path.join(output,name.replace('.html','')+'-'+width+'.png'),fullPage:true});
    cases++;
   }catch(e){await page.screenshot({path:path.join(output,'FAIL-'+name+'-'+width+'.png'),fullPage:true}).catch(()=>{});throw e;}finally{await context.close();}
  }

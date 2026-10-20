@@ -1327,7 +1327,7 @@ function renderPracticeStats(){
   const mastered=masteredCount(),best=state.checkpointBest.standard||0;
   document.getElementById('checkpoint-cta-copy').textContent=mastered===5?`Все пять навыков отработаны. Лучший мини-зачёт: ${best}/5.`:`Освоено ${mastered} из 5 навыков. Мини-зачёт можно пройти в любой момент.`;
 }
-function renderPractice(){
+function renderPractice(options={}){
   document.querySelectorAll('#difficulty-switch [data-difficulty]').forEach(b=>b.classList.toggle('active',b.dataset.difficulty===state.difficulty));
   document.getElementById('skill-control-wrap').style.opacity=state.difficulty==='advanced'?'.75':'1';
   renderSkillChips();renderPracticeStats();
@@ -1339,7 +1339,7 @@ function renderPractice(){
   document.getElementById('practice-question').innerHTML=t.question;
   document.getElementById('practice-unit').textContent=t.unit||'';
   const input=document.getElementById('practice-input');
-  if(!ts.answered&&!ts.solutionShown){input.value='';input.disabled=false;input.classList.remove('correct','wrong');}
+  if(!ts.answered&&!ts.solutionShown){if(!options.preserveDraft)input.value='';input.disabled=false;input.classList.remove('correct','wrong');}
   document.getElementById('practice-check').disabled=ts.answered||ts.solutionShown;
   document.getElementById('next-task').disabled=!(ts.answered||ts.solutionShown);
   clearFeedback('practice-feedback');
@@ -1358,7 +1358,7 @@ function renderPractice(){
       ts.outcome==='supported'?`Верно после подсказки или исправления. Это полезная практика, но она не добавляет самостоятельное освоение. Ответ: <b>${format(t.answer)}${t.unit?' '+t.unit:''}</b>.`:
       `Решение разобрано. Эта задача не идёт в самостоятельный прогресс.`;
     showFeedback('practice-feedback',kind,msg);
-  }else setTimeout(()=>input.focus(),0);
+  }else if(!options.preserveDraft)setTimeout(()=>input.focus(),0);
 }
 function updateCreditChip(){
   const ts=state.taskState,chip=document.getElementById('credit-chip'),line=document.getElementById('outcome-line');
@@ -1390,7 +1390,7 @@ function practiceCheck(){
   }
 }
 function revealPracticeHint(){
-  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.hintLevel=Math.min(3,ts.hintLevel+1);state.independentStreak=0;renderPractice();save();
+  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.hintLevel=Math.min(3,ts.hintLevel+1);state.independentStreak=0;renderPractice({preserveDraft:true});save();
 }
 function revealPracticeSolution(){
   const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.solutionShown=true;ts.outcome='reviewed';

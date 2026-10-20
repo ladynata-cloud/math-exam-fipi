@@ -103,3 +103,23 @@ line and all six exact-head source excerpts. At the preceding head this reduces
 material from 1,131,738 to 836,296 UTF-8 bytes. A bounded, credential-redacted
 provider error reason makes any repeated request failure diagnosable.
 All21 offline boundary tests pass; HTTP errors still produce no approval artifact.
+
+## Fourth run: balance blocker and actual interaction follow-up
+
+Actions39447108962/job118712465797 on head
+`913e8c43f0b944a1bca2dbd7dc1406b594cdff95` reports the provider's bounded error:
+Anthropic credit balance is too low. No external verdict exists for that head.
+Request size was only an unconfirmed hypothesis; the sanitized reason establishes
+the actual current blocker. Publication still requires an exact-head review or
+an explicit owner exception under REVIEW_POLICY; neither is claimed here.
+
+The same run passed algebra, geometry, part2, special, foundations and navigation
+Chromium journeys. Practical hit-target checks exposed percentage-help rerendering
+that cleared the learner draft and scheduled an unwanted input focus. Preserve
+the draft and current focus while opening that help; retain the original task
+generation and progress behavior. The new DOM regression fails on the preceding
+implementation and passes on the fix. Hit-target checks are not weakened.
+
+Actual task25 mobile screenshots exposed an inherited two-column layout that made
+the condition too narrow and clipped controls despite no document overflow.
+Responsive layout and visible control bounds are checked explicitly in the follow-up.

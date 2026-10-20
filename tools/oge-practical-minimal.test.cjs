@@ -15,7 +15,7 @@ function normalize(name,text){
  if(name.includes('apartments'))text=text.replace("mode:'practice',solved:","mode:'learn',solved:").replace('id="bHint">Хочешь подсказку?','id="bHint">Подсказка');
  if(name.includes('tires'))text=text.replace("let state={ variantIdx:0, mode:'practice' };","let state={ variantIdx:0, mode:'learn' };").replace('Хочешь подсказку?</button>','показать подсказку</button>');
  if(name.includes('roads-schema'))text=text.replace("let mode='practice';","let mode='learn';");
- if(name.includes('percent-table'))text=text.replace("setView('practice');\n})();","setView('home');\n})();").replace("const hintLabels=['Хочешь подсказку?'","const hintLabels=['Подсказка 1: найти 100%'");
+ if(name.includes('percent-table'))text=text.replace("setView('practice');\n})();","setView('home');\n})();").replace("const hintLabels=['Хочешь подсказку?'","const hintLabels=['Подсказка 1: найти 100%'").replace('function renderPractice(options={}){','function renderPractice(){').replace("if(!options.preserveDraft)input.value='';","input.value='';").replace('}else if(!options.preserveDraft)setTimeout(()=>input.focus(),0);','}else setTimeout(()=>input.focus(),0);').replace('renderPractice({preserveDraft:true});save();','renderPractice();save();');
  if(name.includes('plan-reading'))text=text.replace("  start();\n  $('again').addEventListener","  $('again').addEventListener");
  return text;
 }
@@ -121,3 +121,5 @@ test('visible labels follow the actual practice mode and relocated stove data',a
 });
 
 test('single-column road diagram stays in normal flow above task controls',async()=>{const{dom,doc}=await open('practice-1-5-roads-schema.html');try{const map=doc.querySelector('.mapwrap');assert.ok(map);assert.equal(dom.window.getComputedStyle(map).position,'static');click(doc,'.pm-context-hint button');await tick();assert.equal(dom.window.getComputedStyle(map).position,'static');assert.ok(shown(doc.querySelector('#next')));click(doc,'#next');await tick();assert.equal(dom.window.getComputedStyle(doc.querySelector('.mapwrap')).position,'static');}finally{dom.window.close();}});
+
+test('percentage hint preserves the learner draft and keyboard focus instead of scrolling back to the input',async()=>{const{dom,doc}=await open('percent-table-trainer.html');try{const input=doc.querySelector('#practice-input'),hint=doc.querySelector('#hint-btn');input.value='12,5';hint.focus();assert.equal(doc.activeElement,hint);hint.click();await tick();assert.equal(input.value,'12,5');assert.equal(doc.activeElement,hint);assert.equal(doc.querySelector('#hint-stack').children.length,1);hint.click();await tick();assert.equal(input.value,'12,5');assert.equal(doc.activeElement,hint);assert.equal(doc.querySelector('#hint-stack').children.length,2);assert.match(doc.querySelector('#credit-chip').textContent,/подсказкой/);}finally{dom.window.close();}});
