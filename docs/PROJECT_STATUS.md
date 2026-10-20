@@ -2,7 +2,21 @@
 
 Updated: 2026-10-20 (Asia/Novosibirsk)
 
-## Current task: whole existing OGE course, minimal interface
+## Agreed workflow: Claude consultation for trainer design
+
+- Owner confirmed on 2026-10-20 that substantial trainer work should include a
+  Claude discussion before implementation and a review of the ready result.
+- [Active workflow](TRAINER_CLAUDE_CONSULTATION.md) records the brief, teaching
+  constraints, evidence and unavailable-API handling. Mechanical fixes are not
+  subject to mandatory paid consultation.
+- This is a documentation change; a general design-chat runner was not added.
+  The existing OGE runner remains a scoped completed-patch reviewer.
+- Last observed external request failed for insufficient provider credits.
+  No new consultation or paid request was made in this task.
+- Next: restore usable authorized API access; use the brief at the next
+  substantial trainer task; keep design findings and release review separate.
+
+## Published: whole existing OGE course, minimal interface
 
 - Task6 PR274 is published as `1bee66162fe76c5cd11b2860cd73c7a9706fb889`.
   Exact-head task6/SEO/learning checks and Pages39440749856 passed. Live HTML
@@ -22,10 +36,20 @@ Updated: 2026-10-20 (Asia/Novosibirsk)
   External review found one confirmed task10 disclosure defect, now fixed; two
   provenance reports were rebutted with exact code and reproducible tests.
   Actual screenshots prompted contrast/diagram fixes. Existing robots now open
-  disclosures through visible controls; fresh exact-head gates are required.
-- Next: exact-head cloud browser gates, actual read-only external review using
-  the repository's configured provider, fresh-main guard, publication and live
-  route/asset verification. Approval markers alone cannot authorize publication.
+  disclosures through visible controls; final exact-head results follow below.
+- PR275 was published as `e1f008f2745b9ff6228f4b9fe97e3bb5ebf4048f`. Its parent
+  equals the checked base `1bee66162fe76c5cd11b2860cd73c7a9706fb889`; its tree
+  equals the reviewed `1bb24b3f305c65581d9d3cda22b14dee925ddefb`.
+- Final technical checks passed: 122 integrated DOM scenarios; all seven browser
+  groups; 668 algebra and 1873 geometry contracts; arithmetic robots: 22 scenarios
+  and 470 steps; 228 navigation links; Unified Learning, EGE, PreOGE and SEO CI.
+- Pages 39451729801 succeeded. All 41 changed public assets matched source bytes.
+  Live course navigation and task25 hint open/close with retained input passed.
+  Cabinet health confirmed registry and durable progress storage ready.
+- Final external review was unavailable because the provider reported
+  insufficient credits. The owner explicitly accepted this release without
+  repeat review at 2026-10-20T22:45:37+07:00; provenance is recorded in PR275.
+  No final Claude approval is claimed. This exception is specific to PR275.
 
 ## Current task: task11 matching and optional laboratory
 
