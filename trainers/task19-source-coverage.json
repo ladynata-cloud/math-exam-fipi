@@ -1,0 +1,3432 @@
+{
+  "version": 1,
+  "auditDate": "2026-10-20",
+  "officialBank": {
+    "complete": false,
+    "status": "Official mathematics bank returned HTTP503/timeouts. Its complete current task set could not be enumerated; authored and secondary-source coverage is not a certification of full FIPI coverage.",
+    "url": "https://oge.fipi.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0",
+    "indexUrl": "https://fipi.ru/oge/otkrytyy-bank-zadaniy-oge",
+    "recommendedIds": [
+      "094344",
+      "0DF13F",
+      "0F4035",
+      "0F933F",
+      "116CF0",
+      "1BC48B",
+      "1F02FE",
+      "253AF7",
+      "2C9984",
+      "339D8D",
+      "3DCC83",
+      "3F9748",
+      "426640",
+      "439BFB",
+      "45B944",
+      "504138",
+      "59CF4E",
+      "633B4B",
+      "742D35",
+      "812F49",
+      "901989",
+      "913047",
+      "91CA85",
+      "978344",
+      "992B4F",
+      "9B5088",
+      "A37D67",
+      "B51738",
+      "BA9532",
+      "E20B60",
+      "E3F78B",
+      "F139F2",
+      "F54D86",
+      "FD1E8F"
+    ],
+    "navigatorSources": [
+      {
+        "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_3_3ugolniki.pdf",
+        "page": 3,
+        "ids": [
+          "A37D67",
+          "E20B60",
+          "E20B60",
+          "59CF4E",
+          "978344",
+          "992B4F",
+          "913047",
+          "633B4B",
+          "3F9748",
+          "1BC48B",
+          "812F49",
+          "439BFB",
+          "F139F2",
+          "116CF0",
+          "FD1E8F",
+          "1F02FE",
+          "253AF7",
+          "9B5088",
+          "45B944",
+          "426640",
+          "094344"
+        ]
+      },
+      {
+        "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_4_krug.pdf",
+        "page": 3,
+        "ids": [
+          "A37D67",
+          "E20B60",
+          "E20B60",
+          "59CF4E",
+          "978344",
+          "992B4F",
+          "913047",
+          "633B4B",
+          "3F9748",
+          "1BC48B",
+          "812F49",
+          "439BFB",
+          "F139F2",
+          "116CF0",
+          "FD1E8F",
+          "1F02FE",
+          "253AF7",
+          "9B5088",
+          "45B944",
+          "426640",
+          "094344"
+        ]
+      },
+      {
+        "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_6_4ugolniki.pdf",
+        "page": 3,
+        "ids": [
+          "FD1E8F",
+          "F54D86",
+          "1BC48B",
+          "2C9984",
+          "91CA85",
+          "901989",
+          "9B5088",
+          "E3F78B",
+          "339D8D",
+          "3DCC83",
+          "0DF13F",
+          "0F933F",
+          "0F4035",
+          "742D35",
+          "BA9532",
+          "B51738",
+          "504138"
+        ]
+      }
+    ],
+    "note": "These34 IDs are official preparation recommendations, not an inventory of the complete open bank; task texts cannot be inferred from IDs."
+  },
+  "sources": [
+    {
+      "id": "previous-rich-105",
+      "type": "previous-authored",
+      "url": "https://mathexam.space/trainers/archive-5-weeks/task19-before-visual-hints-20261020.html",
+      "entries": [
+        {
+          "sourceId": "prev-000",
+          "text": "Вертикальные углы равны.",
+          "truth": true,
+          "cardId": "prev-000",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-001",
+          "text": "Смежные углы всегда равны.",
+          "truth": false,
+          "cardId": "prev-001",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-002",
+          "text": "Если внутренние односторонние углы при секущей в сумме дают 180°, то прямые параллельны.",
+          "truth": true,
+          "cardId": "prev-002",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-003",
+          "text": "Если при пересечении двух прямых секущей накрест лежащие углы равны, то прямые параллельны.",
+          "truth": true,
+          "cardId": "prev-003",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-004",
+          "text": "При пересечении параллельных прямых секущей соответственные углы равны.",
+          "truth": true,
+          "cardId": "prev-004",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-005",
+          "text": "Если две прямые перпендикулярны одной и той же третьей прямой, то они параллельны.",
+          "truth": true,
+          "cardId": "prev-005",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-006",
+          "text": "Через две различные точки можно провести ровно одну прямую.",
+          "truth": true,
+          "cardId": "prev-006",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-007",
+          "text": "Через точку вне прямой можно провести две разные прямые, параллельные данной.",
+          "truth": false,
+          "cardId": "prev-007",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-008",
+          "text": "Биссектриса угла делит этот угол на два равных угла.",
+          "truth": true,
+          "cardId": "prev-008",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-009",
+          "text": "Сумма смежных углов равна 180°.",
+          "truth": true,
+          "cardId": "prev-009",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-010",
+          "text": "Если сумма двух углов равна 180°, то эти углы обязательно смежные.",
+          "truth": false,
+          "cardId": "prev-010",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-011",
+          "text": "Сумма внутренних углов любого треугольника равна 180°.",
+          "truth": true,
+          "cardId": "prev-011",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-012",
+          "text": "В треугольнике против большей стороны лежит больший угол.",
+          "truth": true,
+          "cardId": "prev-012",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-013",
+          "text": "Если в треугольнике две стороны равны, то он обязательно равносторонний.",
+          "truth": false,
+          "cardId": "prev-013",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-014",
+          "text": "В равнобедренном треугольнике углы при основании равны.",
+          "truth": true,
+          "cardId": "prev-014",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-015",
+          "text": "В равностороннем треугольнике каждый угол равен 60°.",
+          "truth": true,
+          "cardId": "prev-015",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-016",
+          "text": "Треугольник с одним прямым углом называется прямоугольным.",
+          "truth": true,
+          "cardId": "prev-016",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-017",
+          "text": "В прямоугольном треугольнике гипотенуза является самой длинной стороной.",
+          "truth": true,
+          "cardId": "prev-017",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-018",
+          "text": "Медиана, проведённая к гипотенузе прямоугольного треугольника, равна половине гипотенузы.",
+          "truth": true,
+          "cardId": "prev-018",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-019",
+          "text": "Если медиана треугольника равна половине стороны, к которой она проведена, то треугольник прямоугольный.",
+          "truth": true,
+          "cardId": "prev-019",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-020",
+          "text": "Любая медиана треугольника делит его на два равных треугольника.",
+          "truth": false,
+          "cardId": "prev-020",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-021",
+          "text": "Любая медиана треугольника делит его на два треугольника равной площади.",
+          "truth": true,
+          "cardId": "prev-021",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-022",
+          "text": "В любом треугольнике высота, проведённая к стороне, совпадает с медианой.",
+          "truth": false,
+          "cardId": "prev-022",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-023",
+          "text": "В равнобедренном треугольнике высота, проведённая к основанию, является и медианой, и биссектрисой.",
+          "truth": true,
+          "cardId": "prev-023",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-024",
+          "text": "Любая биссектриса равнобедренного треугольника является его медианой.",
+          "truth": false,
+          "cardId": "prev-024",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-025",
+          "text": "Если две стороны и угол между ними равны соответствующим элементам другого треугольника, то треугольники равны.",
+          "truth": true,
+          "cardId": "prev-025",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-026",
+          "text": "Если две стороны и не заключённый между ними угол равны, то треугольники всегда равны.",
+          "truth": false,
+          "cardId": "prev-026",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-027",
+          "text": "Если два угла одного треугольника равны двум углам другого, то такие треугольники подобны.",
+          "truth": true,
+          "cardId": "prev-027",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-028",
+          "text": "Если все углы одного треугольника равны соответствующим углам другого, то треугольники обязательно равны.",
+          "truth": false,
+          "cardId": "prev-028",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-029",
+          "text": "Если три стороны одного треугольника пропорциональны трём сторонам другого, то треугольники подобны.",
+          "truth": true,
+          "cardId": "prev-029",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-030",
+          "text": "Равные треугольники имеют равные площади.",
+          "truth": true,
+          "cardId": "prev-030",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-031",
+          "text": "Треугольники с равными площадями обязательно равны.",
+          "truth": false,
+          "cardId": "prev-031",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-032",
+          "text": "В любом треугольнике каждый угол меньше 90°.",
+          "truth": false,
+          "cardId": "prev-032",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-033",
+          "text": "Внешний угол треугольника равен сумме двух внутренних углов, не смежных с ним.",
+          "truth": true,
+          "cardId": "prev-033",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-034",
+          "text": "Хотя бы один угол любого треугольника не превышает 60°.",
+          "truth": true,
+          "cardId": "prev-034",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-035",
+          "text": "В треугольнике могут быть два тупых угла.",
+          "truth": false,
+          "cardId": "prev-035",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-036",
+          "text": "В треугольнике не может быть двух прямых углов.",
+          "truth": true,
+          "cardId": "prev-036",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-037",
+          "text": "Треугольник со сторонами 3, 4 и 5 является прямоугольным.",
+          "truth": true,
+          "cardId": "prev-037",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-038",
+          "text": "Существуют треугольники со сторонами 2, 3 и 5.",
+          "truth": false,
+          "cardId": "prev-038",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-039",
+          "text": "Любые три положительные длины могут быть сторонами треугольника.",
+          "truth": false,
+          "cardId": "prev-039",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-040",
+          "text": "Если в треугольнике два угла равны, то он равнобедренный.",
+          "truth": true,
+          "cardId": "prev-040",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-041",
+          "text": "Если треугольник равнобедренный, то все его углы равны.",
+          "truth": false,
+          "cardId": "prev-041",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-042",
+          "text": "Средняя линия треугольника параллельна третьей стороне и равна половине этой стороны.",
+          "truth": true,
+          "cardId": "prev-042",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-043",
+          "text": "Сумма внутренних углов выпуклого четырёхугольника равна 360°.",
+          "truth": true,
+          "cardId": "prev-043",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-044",
+          "text": "Диагонали параллелограмма делятся точкой пересечения пополам.",
+          "truth": true,
+          "cardId": "prev-044",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-045",
+          "text": "Если диагонали четырёхугольника делятся точкой пересечения пополам, то этот четырёхугольник — параллелограмм.",
+          "truth": true,
+          "cardId": "prev-045",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-046",
+          "text": "Противоположные стороны параллелограмма равны.",
+          "truth": true,
+          "cardId": "prev-046",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-047",
+          "text": "В любом параллелограмме диагонали равны.",
+          "truth": false,
+          "cardId": "prev-047",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-048",
+          "text": "Если диагонали параллелограмма равны, то этот параллелограмм является прямоугольником.",
+          "truth": true,
+          "cardId": "prev-048",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-049",
+          "text": "Если диагонали параллелограмма перпендикулярны, то этот параллелограмм является ромбом.",
+          "truth": true,
+          "cardId": "prev-049",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-050",
+          "text": "Если все стороны параллелограмма равны, то это ромб.",
+          "truth": true,
+          "cardId": "prev-050",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-051",
+          "text": "Каждый квадрат является ромбом.",
+          "truth": true,
+          "cardId": "prev-051",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-052",
+          "text": "Каждый ромб является квадратом.",
+          "truth": false,
+          "cardId": "prev-052",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-053",
+          "text": "Каждый прямоугольник является параллелограммом.",
+          "truth": true,
+          "cardId": "prev-053",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-054",
+          "text": "Каждый параллелограмм является прямоугольником.",
+          "truth": false,
+          "cardId": "prev-054",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-055",
+          "text": "В любом прямоугольнике диагонали равны.",
+          "truth": true,
+          "cardId": "prev-055",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-056",
+          "text": "В любом ромбе диагонали равны.",
+          "truth": false,
+          "cardId": "prev-056",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-057",
+          "text": "В любом ромбе диагонали перпендикулярны.",
+          "truth": true,
+          "cardId": "prev-057",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-058",
+          "text": "Диагонали ромба делят его углы пополам.",
+          "truth": true,
+          "cardId": "prev-058",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-059",
+          "text": "В любой трапеции боковые стороны равны.",
+          "truth": false,
+          "cardId": "prev-059",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-060",
+          "text": "Основания трапеции параллельны.",
+          "truth": true,
+          "cardId": "prev-060",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-061",
+          "text": "Средняя линия трапеции параллельна основаниям.",
+          "truth": true,
+          "cardId": "prev-061",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-062",
+          "text": "Средняя линия трапеции равна полусумме оснований.",
+          "truth": true,
+          "cardId": "prev-062",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-063",
+          "text": "Диагонали любой трапеции равны.",
+          "truth": false,
+          "cardId": "prev-063",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-064",
+          "text": "В равнобедренной трапеции диагонали равны.",
+          "truth": true,
+          "cardId": "prev-064",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-065",
+          "text": "В равнобедренной трапеции углы при каждом основании равны.",
+          "truth": true,
+          "cardId": "prev-065",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-066",
+          "text": "Если стороны двух четырёхугольников попарно равны, то четырёхугольники обязательно равны.",
+          "truth": false,
+          "cardId": "prev-066",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-067",
+          "text": "Если один угол параллелограмма прямой, то этот параллелограмм является прямоугольником.",
+          "truth": true,
+          "cardId": "prev-067",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-068",
+          "text": "Если один угол ромба прямой, то этот ромб является квадратом.",
+          "truth": true,
+          "cardId": "prev-068",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-069",
+          "text": "Если один угол четырёхугольника прямой, то этот четырёхугольник является прямоугольником.",
+          "truth": false,
+          "cardId": "prev-069",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-070",
+          "text": "Если все углы параллелограмма равны, то он является прямоугольником.",
+          "truth": true,
+          "cardId": "prev-070",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-071",
+          "text": "Если диагонали четырёхугольника равны и перпендикулярны, то это обязательно квадрат.",
+          "truth": false,
+          "cardId": "prev-071",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-072",
+          "text": "Если диагонали четырёхугольника равны и делятся точкой пересечения пополам, то это прямоугольник.",
+          "truth": true,
+          "cardId": "prev-072",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-073",
+          "text": "Все радиусы одной окружности равны.",
+          "truth": true,
+          "cardId": "prev-073",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-074",
+          "text": "Диаметр окружности в два раза больше её радиуса.",
+          "truth": true,
+          "cardId": "prev-074",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-075",
+          "text": "Расстояние от центра окружности до любой точки этой окружности равно радиусу.",
+          "truth": true,
+          "cardId": "prev-075",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-076",
+          "text": "Хорда, проходящая через центр окружности, является диаметром.",
+          "truth": true,
+          "cardId": "prev-076",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-077",
+          "text": "Диаметр является самой длинной хордой окружности.",
+          "truth": true,
+          "cardId": "prev-077",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-078",
+          "text": "Любая хорда окружности является диаметром.",
+          "truth": false,
+          "cardId": "prev-078",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-079",
+          "text": "Касательная к окружности перпендикулярна радиусу, проведённому в точку касания.",
+          "truth": true,
+          "cardId": "prev-079",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-080",
+          "text": "Отрезки касательных, проведённых из одной точки к окружности, равны.",
+          "truth": true,
+          "cardId": "prev-080",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-081",
+          "text": "Вписанный угол, опирающийся на диаметр, является прямым.",
+          "truth": true,
+          "cardId": "prev-081",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-082",
+          "text": "Вписанные углы, опирающиеся на одну и ту же дугу, равны.",
+          "truth": true,
+          "cardId": "prev-082",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-083",
+          "text": "Центральный угол в два раза больше вписанного угла, опирающегося на ту же дугу.",
+          "truth": true,
+          "cardId": "prev-083",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-084",
+          "text": "Если вписанный угол опирается на диаметр, то он всегда острый.",
+          "truth": false,
+          "cardId": "prev-084",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-085",
+          "text": "Около любого треугольника можно описать окружность.",
+          "truth": true,
+          "cardId": "prev-085",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-086",
+          "text": "В любой четырёхугольник можно вписать окружность.",
+          "truth": false,
+          "cardId": "prev-086",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-087",
+          "text": "Около любого четырёхугольника можно описать окружность.",
+          "truth": false,
+          "cardId": "prev-087",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-088",
+          "text": "Центр окружности, описанной около прямоугольного треугольника, лежит на середине гипотенузы.",
+          "truth": true,
+          "cardId": "prev-088",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-089",
+          "text": "Касательная имеет с окружностью две общие точки.",
+          "truth": false,
+          "cardId": "prev-089",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-090",
+          "text": "Секущая имеет с окружностью две общие точки.",
+          "truth": true,
+          "cardId": "prev-090",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-091",
+          "text": "Площадь параллелограмма равна произведению стороны на высоту, проведённую к этой стороне.",
+          "truth": true,
+          "cardId": "prev-091",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-092",
+          "text": "Площадь треугольника равна половине произведения стороны на высоту, проведённую к этой стороне.",
+          "truth": true,
+          "cardId": "prev-092",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-093",
+          "text": "Если у двух треугольников равны основания и высоты, проведённые к ним, то площади этих треугольников равны.",
+          "truth": true,
+          "cardId": "prev-093",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-094",
+          "text": "Если площади двух треугольников равны, то треугольники обязательно равны.",
+          "truth": false,
+          "cardId": "prev-094",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-095",
+          "text": "Площади подобных фигур относятся как квадраты коэффициента подобия.",
+          "truth": true,
+          "cardId": "prev-095",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-096",
+          "text": "Периметры подобных треугольников относятся как коэффициент подобия.",
+          "truth": true,
+          "cardId": "prev-096",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-097",
+          "text": "Если коэффициент подобия равен 2, то площадь подобной фигуры увеличивается в 2 раза.",
+          "truth": false,
+          "cardId": "prev-097",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-098",
+          "text": "Площадь квадрата со стороной a равна 4a.",
+          "truth": false,
+          "cardId": "prev-098",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-099",
+          "text": "Диагональ квадрата со стороной a равна a√2.",
+          "truth": true,
+          "cardId": "prev-099",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-100",
+          "text": "Площадь ромба равна половине произведения его диагоналей.",
+          "truth": true,
+          "cardId": "prev-100",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-101",
+          "text": "Площадь трапеции равна произведению полусуммы оснований на высоту.",
+          "truth": true,
+          "cardId": "prev-101",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-102",
+          "text": "Расстояние между точками на координатной прямой равно модулю разности их координат.",
+          "truth": true,
+          "cardId": "prev-102",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-103",
+          "text": "Координаты середины отрезка равны средним арифметическим соответствующих координат его концов.",
+          "truth": true,
+          "cardId": "prev-103",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-104",
+          "text": "Если периметры двух фигур равны, то их площади тоже равны.",
+          "truth": false,
+          "cardId": "prev-104",
+          "matchType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "basic-63",
+      "type": "previous-authored",
+      "url": "https://mathexam.space/trainers/task19-data.json",
+      "entries": [
+        {
+          "sourceId": "perpendicular_bisector_point_equidistant_endpoints",
+          "text": "Точка на серединном перпендикуляре к отрезку равноудалена от его концов.",
+          "truth": true,
+          "cardId": "perpendicular_bisector_point_equidistant_endpoints",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "point_on_angle_bisector_equidistant_sides",
+          "text": "Если точка лежит на биссектрисе угла, то она равноудалена от сторон угла.",
+          "truth": true,
+          "cardId": "point_on_angle_bisector_equidistant_sides",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "circle_intersection_point_equidistant_centers",
+          "text": "Точка пересечения двух окружностей всегда равноудалена от их центров.",
+          "truth": false,
+          "cardId": "circle_intersection_point_equidistant_centers",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "circles_intersect_if_radius_bigger",
+          "text": "Если радиус одной окружности больше радиуса другой, то окружности обязательно пересекаются.",
+          "truth": false,
+          "cardId": "circles_intersect_if_radius_bigger",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "all_diameters_equal",
+          "text": "Все диаметры одной и той же окружности равны.",
+          "truth": true,
+          "cardId": "all_diameters_equal",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "tangent_parallel_radius",
+          "text": "Касательная к окружности параллельна радиусу, проведённому в точку касания.",
+          "truth": false,
+          "cardId": "tangent_parallel_radius",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "point_on_circle_distance_radius",
+          "text": "Расстояние от точки на окружности до её центра равно радиусу.",
+          "truth": true,
+          "cardId": "point_on_circle_distance_radius",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "inscribed_angle_over_diameter_right",
+          "text": "Вписанный угол, опирающийся на диаметр, равен 90°.",
+          "truth": true,
+          "cardId": "inscribed_angle_over_diameter_right",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "inscribed_equals_central",
+          "text": "Вписанный угол, опирающийся на дугу, равен соответствующему центральному углу (на ту же дугу).",
+          "truth": false,
+          "cardId": "inscribed_equals_central",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "all_chords_equal",
+          "text": "Все хорды одной окружности равны между собой.",
+          "truth": false,
+          "cardId": "all_chords_equal",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "triangle_area_less_than_product_two_sides",
+          "text": "Площадь треугольника меньше произведения двух его сторон.",
+          "truth": true,
+          "cardId": "triangle_area_less_than_product_two_sides",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "similar_triangles_area_ratio_equals_k",
+          "text": "Отношение площадей подобных треугольников равно коэффициенту подобия.",
+          "truth": false,
+          "cardId": "similar_triangles_area_ratio_equals_k",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "adjacent_angles_always_equal",
+          "text": "Смежные углы всегда равны.",
+          "truth": false,
+          "cardId": "prev-001",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "adjacent_angles_one_acute_one_obtuse_always",
+          "text": "У любых двух смежных углов один острый, а другой тупой.",
+          "truth": false,
+          "cardId": "adjacent_angles_one_acute_one_obtuse_always",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "angle_acute_adjacent_acute",
+          "text": "Если угол острый, то смежный с ним угол тоже острый.",
+          "truth": false,
+          "cardId": "angle_acute_adjacent_acute",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "parallel_through_point_exists",
+          "text": "Через точку вне прямой можно провести прямую, параллельную данной прямой.",
+          "truth": true,
+          "cardId": "parallel_through_point_exists",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "perp_through_point_exists",
+          "text": "Через точку вне прямой можно провести прямую, перпендикулярную данной прямой.",
+          "truth": true,
+          "cardId": "perp_through_point_exists",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "three_lines_through_one_point_exist",
+          "text": "Существуют три разные прямые, проходящие через одну точку.",
+          "truth": true,
+          "cardId": "three_lines_through_one_point_exist",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "two_parallel_to_third_parallel",
+          "text": "Если две прямые параллельны третьей, то они параллельны друг другу.",
+          "truth": true,
+          "cardId": "two_parallel_to_third_parallel",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "two_parallel_to_third_perpendicular",
+          "text": "Если две прямые параллельны третьей, то они перпендикулярны.",
+          "truth": false,
+          "cardId": "two_parallel_to_third_perpendicular",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "two_perp_to_third_perp",
+          "text": "Две прямые, перпендикулярные одной и той же прямой, всегда перпендикулярны между собой.",
+          "truth": false,
+          "cardId": "two_perp_to_third_perp",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "isosceles_trapezoid_bases_equal",
+          "text": "У равнобедренной трапеции основания равны.",
+          "truth": false,
+          "cardId": "isosceles_trapezoid_bases_equal",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "trap_bases_trapezoid_parallel",
+          "text": "У любой трапеции два основания параллельны.",
+          "truth": true,
+          "cardId": "trap_bases_trapezoid_parallel",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "trapezoid_area_base_times_height",
+          "text": "Площадь трапеции равна произведению одного её основания на высоту.",
+          "truth": false,
+          "cardId": "trapezoid_area_base_times_height",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "trapezoid_diagonal_makes_equal_triangles",
+          "text": "Диагональ трапеции всегда делит её на два равных треугольника.",
+          "truth": false,
+          "cardId": "trapezoid_diagonal_makes_equal_triangles",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "trapezoid_diagonals_bisect",
+          "text": "В трапеции диагонали пересекаются и делятся точкой пересечения пополам.",
+          "truth": false,
+          "cardId": "trapezoid_diagonals_bisect",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "trapezoid_midline_equals_sum_bases",
+          "text": "Средняя линия трапеции равна сумме её оснований.",
+          "truth": false,
+          "cardId": "trapezoid_midline_equals_sum_bases",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "obtuse_triangle_all_obtuse",
+          "text": "В тупоугольном треугольнике все углы тупые.",
+          "truth": false,
+          "cardId": "obtuse_triangle_all_obtuse",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "right_triangle_angles_sum_90",
+          "text": "Сумма углов прямоугольного треугольника равна 90°.",
+          "truth": false,
+          "cardId": "right_triangle_angles_sum_90",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "triangle_angles_sum_180",
+          "text": "Сумма углов любого треугольника равна 180°.",
+          "truth": true,
+          "cardId": "triangle_angles_sum_180",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "triangle_angles_sum_360",
+          "text": "Сумма углов любого треугольника равна 360°.",
+          "truth": false,
+          "cardId": "triangle_angles_sum_360",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "triangle_has_angle_le_60",
+          "text": "В любом треугольнике найдётся угол, который не больше 60°.",
+          "truth": true,
+          "cardId": "triangle_has_angle_le_60",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "bisector_bisects_opposite_side",
+          "text": "Биссектриса треугольника всегда делит противоположную сторону пополам.",
+          "truth": false,
+          "cardId": "bisector_bisects_opposite_side",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "median_bisects_angle",
+          "text": "Любая медиана треугольника делит пополам угол, из вершины которого она проведена.",
+          "truth": false,
+          "cardId": "median_bisects_angle",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "circumcenter_always_inside",
+          "text": "Центр описанной окружности треугольника всегда лежит внутри треугольника.",
+          "truth": false,
+          "cardId": "circumcenter_always_inside",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "hypotenuse_equals_sum_legs",
+          "text": "В прямоугольном треугольнике гипотенуза равна сумме катетов.",
+          "truth": false,
+          "cardId": "hypotenuse_equals_sum_legs",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "hypotenuse_less_than_sum_legs",
+          "text": "Гипотенуза прямоугольного треугольника меньше суммы его катетов.",
+          "truth": true,
+          "cardId": "hypotenuse_less_than_sum_legs",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "right_triangle_acute_sum_90",
+          "text": "В прямоугольном треугольнике сумма двух острых углов равна 90°.",
+          "truth": true,
+          "cardId": "right_triangle_acute_sum_90",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "right_triangle_area_equals_product_legs",
+          "text": "Площадь прямоугольного треугольника равна произведению его катетов.",
+          "truth": false,
+          "cardId": "right_triangle_area_equals_product_legs",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "tri_aa_similarity",
+          "text": "Если два угла одного треугольника равны двум углам другого, то треугольники подобны.",
+          "truth": true,
+          "cardId": "tri_aa_similarity",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "tri_aaa_congruent",
+          "text": "Если у двух треугольников совпадают все три угла, то эти треугольники обязательно равны.",
+          "truth": false,
+          "cardId": "tri_aaa_congruent",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "tri_two_sides_congruent",
+          "text": "Равенства двух сторон у двух треугольников достаточно, чтобы заключить их равенство.",
+          "truth": false,
+          "cardId": "tri_two_sides_congruent",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "isosceles_all_bisectors_are_altitudes",
+          "text": "Любая биссектриса равнобедренного треугольника обязательно является высотой.",
+          "truth": false,
+          "cardId": "isosceles_all_bisectors_are_altitudes",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "isosceles_all_bisectors_are_medians",
+          "text": "Любая биссектриса равнобедренного треугольника обязательно является медианой.",
+          "truth": false,
+          "cardId": "isosceles_all_bisectors_are_medians",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "equilateral_altitudes_equal",
+          "text": "У равностороннего треугольника все высоты равны.",
+          "truth": true,
+          "cardId": "equilateral_altitudes_equal",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "tri_1_2_4_exists",
+          "text": "Треугольник со сторонами 1, 2 и 4 может существовать.",
+          "truth": false,
+          "cardId": "tri_1_2_4_exists",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "tri_2_4_6_not_exist",
+          "text": "Треугольника со сторонами 2, 4 и 6 не существует.",
+          "truth": true,
+          "cardId": "tri_2_4_6_not_exist",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "tan_acute_less_than_1",
+          "text": "Тангенс любого острого угла меньше 1.",
+          "truth": false,
+          "cardId": "tan_acute_less_than_1",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "parallelogram_cyclic",
+          "text": "Любой параллелограмм можно вписать в окружность.",
+          "truth": false,
+          "cardId": "parallelogram_cyclic",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "square_area_adjacent_sides_product",
+          "text": "Площадь квадрата равна произведению длин двух его смежных сторон.",
+          "truth": true,
+          "cardId": "square_area_adjacent_sides_product",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "equidiagonal_orthogonal_quadrilateral_square",
+          "text": "Любой выпуклый четырёхугольник с равными и перпендикулярными диагоналями — квадрат.",
+          "truth": false,
+          "cardId": "equidiagonal_orthogonal_quadrilateral_square",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "quadrilaterals_equal_if_corresponding_sides_equal",
+          "text": "Если четыре стороны одного четырёхугольника по парам равны сторонам другого, то четырёхугольники обязательно равны.",
+          "truth": false,
+          "cardId": "quadrilaterals_equal_if_corresponding_sides_equal",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "parallelogram_adjacent_sides_equal_rhombus",
+          "text": "Если у параллелограмма равны две соседние стороны, то это ромб.",
+          "truth": true,
+          "cardId": "parallelogram_adjacent_sides_equal_rhombus",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "parallelogram_equal_diagonals_rhombus",
+          "text": "Если у параллелограмма диагонали равны, то он обязательно ромб.",
+          "truth": false,
+          "cardId": "parallelogram_equal_diagonals_rhombus",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "parallelogram_has_two_equal_angles",
+          "text": "У параллелограмма есть два равных угла.",
+          "truth": true,
+          "cardId": "parallelogram_has_two_equal_angles",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "rect_perp_diagonals_exists",
+          "text": "Существует прямоугольник, у которого диагонали пересекаются под прямым углом.",
+          "truth": true,
+          "cardId": "rect_perp_diagonals_exists",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "rect_diagonals_bisect",
+          "text": "В прямоугольнике диагонали пересекаются и делятся точкой пересечения пополам.",
+          "truth": true,
+          "cardId": "rect_diagonals_bisect",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "rhombus_all_angles_equal",
+          "text": "В любом ромбе все четыре угла равны.",
+          "truth": false,
+          "cardId": "rhombus_all_angles_equal",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "rhombus_area_ab_sin",
+          "text": "Площадь ромба равна произведению двух смежных сторон на синус угла между ними.",
+          "truth": true,
+          "cardId": "rhombus_area_ab_sin",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "rhombus_area_side_times_height",
+          "text": "Площадь ромба равна произведению стороны на высоту, опущенную на эту сторону.",
+          "truth": true,
+          "cardId": "rhombus_area_side_times_height",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "rhombus_diagonals_bisect",
+          "text": "В ромбе диагонали делятся точкой пересечения пополам.",
+          "truth": true,
+          "cardId": "rhombus_diagonals_bisect",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "rhombus_diagonals_equal",
+          "text": "У ромба диагонали равны.",
+          "truth": false,
+          "cardId": "rhombus_diagonals_equal",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "rhombus_right_angle_square",
+          "text": "Если в ромбе есть прямой угол, то этот ромб — квадрат.",
+          "truth": true,
+          "cardId": "rhombus_right_angle_square",
+          "matchType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "summer-20260612-178",
+      "type": "authored-not-official-fipi",
+      "fileName": "geometry_statements_trainer_improved (4).html",
+      "sourceDate": "2026-06-12",
+      "sourceNote": "105 previous assertions and 73 authored taskbank assertions. Historical fipi-* IDs do not identify official FIPI tasks. The source explicitly says the taskbank is not from the FIPI open bank.",
+      "entries": [
+        {
+          "sourceId": "prev-000",
+          "text": "Вертикальные углы равны.",
+          "truth": true,
+          "cardId": "prev-000",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-001",
+          "text": "Смежные углы всегда равны.",
+          "truth": false,
+          "cardId": "prev-001",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-002",
+          "text": "Если внутренние односторонние углы при секущей в сумме дают 180°, то прямые параллельны.",
+          "truth": true,
+          "cardId": "prev-002",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-003",
+          "text": "Если при пересечении двух прямых секущей накрест лежащие углы равны, то прямые параллельны.",
+          "truth": true,
+          "cardId": "prev-003",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-004",
+          "text": "При пересечении параллельных прямых секущей соответственные углы равны.",
+          "truth": true,
+          "cardId": "prev-004",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-005",
+          "text": "Если две прямые перпендикулярны одной и той же третьей прямой, то они параллельны.",
+          "truth": true,
+          "cardId": "prev-005",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-006",
+          "text": "Через две различные точки можно провести ровно одну прямую.",
+          "truth": true,
+          "cardId": "prev-006",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-007",
+          "text": "Через точку вне прямой можно провести две разные прямые, параллельные данной.",
+          "truth": false,
+          "cardId": "prev-007",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-008",
+          "text": "Биссектриса угла делит этот угол на два равных угла.",
+          "truth": true,
+          "cardId": "prev-008",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-009",
+          "text": "Сумма смежных углов равна 180°.",
+          "truth": true,
+          "cardId": "prev-009",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-010",
+          "text": "Если сумма двух углов равна 180°, то эти углы обязательно смежные.",
+          "truth": false,
+          "cardId": "prev-010",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-011",
+          "text": "Сумма внутренних углов любого треугольника равна 180°.",
+          "truth": true,
+          "cardId": "prev-011",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-012",
+          "text": "В треугольнике против большей стороны лежит больший угол.",
+          "truth": true,
+          "cardId": "prev-012",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-013",
+          "text": "Если в треугольнике две стороны равны, то он обязательно равносторонний.",
+          "truth": false,
+          "cardId": "prev-013",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-014",
+          "text": "В равнобедренном треугольнике углы при основании равны.",
+          "truth": true,
+          "cardId": "prev-014",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-015",
+          "text": "В равностороннем треугольнике каждый угол равен 60°.",
+          "truth": true,
+          "cardId": "prev-015",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-016",
+          "text": "Треугольник с одним прямым углом называется прямоугольным.",
+          "truth": true,
+          "cardId": "prev-016",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-017",
+          "text": "В прямоугольном треугольнике гипотенуза является самой длинной стороной.",
+          "truth": true,
+          "cardId": "prev-017",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-018",
+          "text": "Медиана, проведённая к гипотенузе прямоугольного треугольника, равна половине гипотенузы.",
+          "truth": true,
+          "cardId": "prev-018",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-019",
+          "text": "Если медиана треугольника равна половине стороны, к которой она проведена, то треугольник прямоугольный.",
+          "truth": true,
+          "cardId": "prev-019",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-020",
+          "text": "Любая медиана треугольника делит его на два равных треугольника.",
+          "truth": false,
+          "cardId": "prev-020",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-021",
+          "text": "Любая медиана треугольника делит его на два треугольника равной площади.",
+          "truth": true,
+          "cardId": "prev-021",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-022",
+          "text": "В любом треугольнике высота, проведённая к стороне, совпадает с медианой.",
+          "truth": false,
+          "cardId": "prev-022",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-023",
+          "text": "В равнобедренном треугольнике высота, проведённая к основанию, является и медианой, и биссектрисой.",
+          "truth": true,
+          "cardId": "prev-023",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-024",
+          "text": "Любая биссектриса равнобедренного треугольника является его медианой.",
+          "truth": false,
+          "cardId": "prev-024",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-025",
+          "text": "Если две стороны и угол между ними равны соответствующим элементам другого треугольника, то треугольники равны.",
+          "truth": true,
+          "cardId": "prev-025",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-026",
+          "text": "Если две стороны и не заключённый между ними угол равны, то треугольники всегда равны.",
+          "truth": false,
+          "cardId": "prev-026",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-027",
+          "text": "Если два угла одного треугольника равны двум углам другого, то такие треугольники подобны.",
+          "truth": true,
+          "cardId": "prev-027",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-028",
+          "text": "Если все углы одного треугольника равны соответствующим углам другого, то треугольники обязательно равны.",
+          "truth": false,
+          "cardId": "prev-028",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-029",
+          "text": "Если три стороны одного треугольника пропорциональны трём сторонам другого, то треугольники подобны.",
+          "truth": true,
+          "cardId": "prev-029",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-030",
+          "text": "Равные треугольники имеют равные площади.",
+          "truth": true,
+          "cardId": "prev-030",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-031",
+          "text": "Треугольники с равными площадями обязательно равны.",
+          "truth": false,
+          "cardId": "prev-031",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-032",
+          "text": "В любом треугольнике каждый угол меньше 90°.",
+          "truth": false,
+          "cardId": "prev-032",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-033",
+          "text": "Внешний угол треугольника равен сумме двух внутренних углов, не смежных с ним.",
+          "truth": true,
+          "cardId": "prev-033",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-034",
+          "text": "Хотя бы один угол любого треугольника не превышает 60°.",
+          "truth": true,
+          "cardId": "prev-034",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-035",
+          "text": "В треугольнике могут быть два тупых угла.",
+          "truth": false,
+          "cardId": "prev-035",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-036",
+          "text": "В треугольнике не может быть двух прямых углов.",
+          "truth": true,
+          "cardId": "prev-036",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-037",
+          "text": "Треугольник со сторонами 3, 4 и 5 является прямоугольным.",
+          "truth": true,
+          "cardId": "prev-037",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-038",
+          "text": "Существуют треугольники со сторонами 2, 3 и 5.",
+          "truth": false,
+          "cardId": "prev-038",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-039",
+          "text": "Любые три положительные длины могут быть сторонами треугольника.",
+          "truth": false,
+          "cardId": "prev-039",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-040",
+          "text": "Если в треугольнике два угла равны, то он равнобедренный.",
+          "truth": true,
+          "cardId": "prev-040",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-041",
+          "text": "Если треугольник равнобедренный, то все его углы равны.",
+          "truth": false,
+          "cardId": "prev-041",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-042",
+          "text": "Средняя линия треугольника параллельна третьей стороне и равна половине этой стороны.",
+          "truth": true,
+          "cardId": "prev-042",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-043",
+          "text": "Сумма внутренних углов выпуклого четырёхугольника равна 360°.",
+          "truth": true,
+          "cardId": "prev-043",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-044",
+          "text": "Диагонали параллелограмма делятся точкой пересечения пополам.",
+          "truth": true,
+          "cardId": "prev-044",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-045",
+          "text": "Если диагонали четырёхугольника делятся точкой пересечения пополам, то этот четырёхугольник — параллелограмм.",
+          "truth": true,
+          "cardId": "prev-045",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-046",
+          "text": "Противоположные стороны параллелограмма равны.",
+          "truth": true,
+          "cardId": "prev-046",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-047",
+          "text": "В любом параллелограмме диагонали равны.",
+          "truth": false,
+          "cardId": "prev-047",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-048",
+          "text": "Если диагонали параллелограмма равны, то этот параллелограмм является прямоугольником.",
+          "truth": true,
+          "cardId": "prev-048",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-049",
+          "text": "Если диагонали параллелограмма перпендикулярны, то этот параллелограмм является ромбом.",
+          "truth": true,
+          "cardId": "prev-049",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-050",
+          "text": "Если все стороны параллелограмма равны, то это ромб.",
+          "truth": true,
+          "cardId": "prev-050",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-051",
+          "text": "Каждый квадрат является ромбом.",
+          "truth": true,
+          "cardId": "prev-051",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-052",
+          "text": "Каждый ромб является квадратом.",
+          "truth": false,
+          "cardId": "prev-052",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-053",
+          "text": "Каждый прямоугольник является параллелограммом.",
+          "truth": true,
+          "cardId": "prev-053",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-054",
+          "text": "Каждый параллелограмм является прямоугольником.",
+          "truth": false,
+          "cardId": "prev-054",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-055",
+          "text": "В любом прямоугольнике диагонали равны.",
+          "truth": true,
+          "cardId": "prev-055",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-056",
+          "text": "В любом ромбе диагонали равны.",
+          "truth": false,
+          "cardId": "prev-056",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-057",
+          "text": "В любом ромбе диагонали перпендикулярны.",
+          "truth": true,
+          "cardId": "prev-057",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-058",
+          "text": "Диагонали ромба делят его углы пополам.",
+          "truth": true,
+          "cardId": "prev-058",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-059",
+          "text": "В любой трапеции боковые стороны равны.",
+          "truth": false,
+          "cardId": "prev-059",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-060",
+          "text": "Основания трапеции параллельны.",
+          "truth": true,
+          "cardId": "prev-060",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-061",
+          "text": "Средняя линия трапеции параллельна основаниям.",
+          "truth": true,
+          "cardId": "prev-061",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-062",
+          "text": "Средняя линия трапеции равна полусумме оснований.",
+          "truth": true,
+          "cardId": "prev-062",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-063",
+          "text": "Диагонали любой трапеции равны.",
+          "truth": false,
+          "cardId": "prev-063",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-064",
+          "text": "В равнобедренной трапеции диагонали равны.",
+          "truth": true,
+          "cardId": "prev-064",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-065",
+          "text": "В равнобедренной трапеции углы при каждом основании равны.",
+          "truth": true,
+          "cardId": "prev-065",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-066",
+          "text": "Если стороны двух четырёхугольников попарно равны, то четырёхугольники обязательно равны.",
+          "truth": false,
+          "cardId": "prev-066",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-067",
+          "text": "Если один угол параллелограмма прямой, то этот параллелограмм является прямоугольником.",
+          "truth": true,
+          "cardId": "prev-067",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-068",
+          "text": "Если один угол ромба прямой, то этот ромб является квадратом.",
+          "truth": true,
+          "cardId": "prev-068",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-069",
+          "text": "Если один угол четырёхугольника прямой, то этот четырёхугольник является прямоугольником.",
+          "truth": false,
+          "cardId": "prev-069",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-070",
+          "text": "Если все углы параллелограмма равны, то он является прямоугольником.",
+          "truth": true,
+          "cardId": "prev-070",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-071",
+          "text": "Если диагонали четырёхугольника равны и перпендикулярны, то это обязательно квадрат.",
+          "truth": false,
+          "cardId": "prev-071",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-072",
+          "text": "Если диагонали четырёхугольника равны и делятся точкой пересечения пополам, то это прямоугольник.",
+          "truth": true,
+          "cardId": "prev-072",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-073",
+          "text": "Все радиусы одной окружности равны.",
+          "truth": true,
+          "cardId": "prev-073",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-074",
+          "text": "Диаметр окружности в два раза больше её радиуса.",
+          "truth": true,
+          "cardId": "prev-074",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-075",
+          "text": "Расстояние от центра окружности до любой точки этой окружности равно радиусу.",
+          "truth": true,
+          "cardId": "prev-075",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-076",
+          "text": "Хорда, проходящая через центр окружности, является диаметром.",
+          "truth": true,
+          "cardId": "prev-076",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-077",
+          "text": "Диаметр является самой длинной хордой окружности.",
+          "truth": true,
+          "cardId": "prev-077",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-078",
+          "text": "Любая хорда окружности является диаметром.",
+          "truth": false,
+          "cardId": "prev-078",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-079",
+          "text": "Касательная к окружности перпендикулярна радиусу, проведённому в точку касания.",
+          "truth": true,
+          "cardId": "prev-079",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-080",
+          "text": "Отрезки касательных, проведённых из одной точки к окружности, равны.",
+          "truth": true,
+          "cardId": "prev-080",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-081",
+          "text": "Вписанный угол, опирающийся на диаметр, является прямым.",
+          "truth": true,
+          "cardId": "prev-081",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-082",
+          "text": "Вписанные углы, опирающиеся на одну и ту же дугу, равны.",
+          "truth": true,
+          "cardId": "prev-082",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-083",
+          "text": "Центральный угол в два раза больше вписанного угла, опирающегося на ту же дугу.",
+          "truth": true,
+          "cardId": "prev-083",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-084",
+          "text": "Если вписанный угол опирается на диаметр, то он всегда острый.",
+          "truth": false,
+          "cardId": "prev-084",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-085",
+          "text": "Около любого треугольника можно описать окружность.",
+          "truth": true,
+          "cardId": "prev-085",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-086",
+          "text": "В любой четырёхугольник можно вписать окружность.",
+          "truth": false,
+          "cardId": "prev-086",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-087",
+          "text": "Около любого четырёхугольника можно описать окружность.",
+          "truth": false,
+          "cardId": "prev-087",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-088",
+          "text": "Центр окружности, описанной около прямоугольного треугольника, лежит на середине гипотенузы.",
+          "truth": true,
+          "cardId": "prev-088",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-089",
+          "text": "Касательная имеет с окружностью две общие точки.",
+          "truth": false,
+          "cardId": "prev-089",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-090",
+          "text": "Секущая имеет с окружностью две общие точки.",
+          "truth": true,
+          "cardId": "prev-090",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-091",
+          "text": "Площадь параллелограмма равна произведению стороны на высоту, проведённую к этой стороне.",
+          "truth": true,
+          "cardId": "prev-091",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-092",
+          "text": "Площадь треугольника равна половине произведения стороны на высоту, проведённую к этой стороне.",
+          "truth": true,
+          "cardId": "prev-092",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-093",
+          "text": "Если у двух треугольников равны основания и высоты, проведённые к ним, то площади этих треугольников равны.",
+          "truth": true,
+          "cardId": "prev-093",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-094",
+          "text": "Если площади двух треугольников равны, то треугольники обязательно равны.",
+          "truth": false,
+          "cardId": "prev-094",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-095",
+          "text": "Площади подобных фигур относятся как квадраты коэффициента подобия.",
+          "truth": true,
+          "cardId": "prev-095",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-096",
+          "text": "Периметры подобных треугольников относятся как коэффициент подобия.",
+          "truth": true,
+          "cardId": "prev-096",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-097",
+          "text": "Если коэффициент подобия равен 2, то площадь подобной фигуры увеличивается в 2 раза.",
+          "truth": false,
+          "cardId": "prev-097",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-098",
+          "text": "Площадь квадрата со стороной a равна 4a.",
+          "truth": false,
+          "cardId": "prev-098",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-099",
+          "text": "Диагональ квадрата со стороной a равна a√2.",
+          "truth": true,
+          "cardId": "prev-099",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-100",
+          "text": "Площадь ромба равна половине произведения его диагоналей.",
+          "truth": true,
+          "cardId": "prev-100",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-101",
+          "text": "Площадь трапеции равна произведению полусуммы оснований на высоту.",
+          "truth": true,
+          "cardId": "prev-101",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-102",
+          "text": "Расстояние между точками на координатной прямой равно модулю разности их координат.",
+          "truth": true,
+          "cardId": "prev-102",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-103",
+          "text": "Координаты середины отрезка равны средним арифметическим соответствующих координат его концов.",
+          "truth": true,
+          "cardId": "prev-103",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "prev-104",
+          "text": "Если периметры двух фигур равны, то их площади тоже равны.",
+          "truth": false,
+          "cardId": "prev-104",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-001",
+          "text": "Через точку, не лежащую на данной прямой, можно провести прямую, параллельную данной прямой.",
+          "truth": true,
+          "cardId": "parallel_through_point_exists",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-002",
+          "text": "Если диагонали параллелограмма равны, то этот параллелограмм обязательно является ромбом.",
+          "truth": false,
+          "cardId": "parallelogram_equal_diagonals_rhombus",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-003",
+          "text": "Сумма углов любого треугольника равна 180 градусов.",
+          "truth": true,
+          "cardId": "triangle_angles_sum_180",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-004",
+          "text": "Любой прямоугольник является параллелограммом.",
+          "truth": true,
+          "cardId": "prev-053",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-005",
+          "text": "Медиана треугольника всегда является его высотой.",
+          "truth": false,
+          "cardId": "prev-022",
+          "matchType": "equivalent",
+          "note": "Обе универсальные формулировки требуют совпадения медианы и высоты к одной стороне любого треугольника. Для фиксированной вершины и противоположной стороны медиана и высота единственны; требование их совпадения симметрично. Один и тот же разносторонний треугольник опровергает обе формулировки."
+        },
+        {
+          "sourceId": "fipi-006",
+          "text": "В прямоугольном треугольнике гипотенуза больше каждого из катетов.",
+          "truth": true,
+          "cardId": "prev-017",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-007",
+          "text": "Средняя линия треугольника параллельна одной из его сторон.",
+          "truth": true,
+          "cardId": "prev-042",
+          "matchType": "included",
+          "note": "Имеющаяся карточка полностью включает утверждение: средняя линия параллельна третьей стороне. В ней дополнительно дано свойство длины средней линии. Это покрытие более сильным свойством, а не буквальное совпадение."
+        },
+        {
+          "sourceId": "fipi-008",
+          "text": "Диагонали любого прямоугольника перпендикулярны.",
+          "truth": false,
+          "cardId": "summer-008",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-009",
+          "text": "В любом параллелограмме все углы равны.",
+          "truth": false,
+          "cardId": "summer-009",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-010",
+          "text": "У равностороннего треугольника все углы равны 60 градусов.",
+          "truth": true,
+          "cardId": "prev-015",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-011",
+          "text": "Если две стороны и угол между ними одного треугольника соответственно равны двум сторонам и углу между ними другого треугольника, то такие треугольники равны.",
+          "truth": true,
+          "cardId": "prev-025",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-012",
+          "text": "В любой трапеции диагонали равны.",
+          "truth": false,
+          "cardId": "prev-063",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-013",
+          "text": "Диаметр окружности в два раза больше радиуса.",
+          "truth": true,
+          "cardId": "prev-074",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-014",
+          "text": "Если у четырехугольника все стороны равны, то этот четырехугольник является ромбом.",
+          "truth": true,
+          "cardId": "summer-014",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-015",
+          "text": "Любой ромб является квадратом.",
+          "truth": false,
+          "cardId": "prev-052",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-016",
+          "text": "Если два угла одного треугольника равны двум углам другого треугольника, то такие треугольники подобны.",
+          "truth": true,
+          "cardId": "prev-027",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-017",
+          "text": "Вписанный угол, опирающийся на диаметр окружности, является прямым.",
+          "truth": true,
+          "cardId": "prev-081",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-018",
+          "text": "Центр описанной окружности любого треугольника всегда лежит внутри треугольника.",
+          "truth": false,
+          "cardId": "circumcenter_always_inside",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-019",
+          "text": "Диагональ прямоугольника делит его на два равных треугольника.",
+          "truth": true,
+          "cardId": "summer-019",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-020",
+          "text": "В любой окружности все радиусы равны.",
+          "truth": true,
+          "cardId": "prev-073",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-021",
+          "text": "Если диагонали четырехугольника равны, то этот четырехугольник является прямоугольником.",
+          "truth": false,
+          "cardId": "summer-021",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-022",
+          "text": "Сумма острых углов прямоугольного треугольника равна 90 градусов.",
+          "truth": true,
+          "cardId": "right_triangle_acute_sum_90",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-023",
+          "text": "В любом треугольнике против большей стороны лежит больший угол.",
+          "truth": true,
+          "cardId": "prev-012",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-024",
+          "text": "Площадь круга радиуса r равна 2 pi r.",
+          "truth": false,
+          "cardId": "summer-024",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-025",
+          "text": "Длина окружности радиуса r равна 2 pi r.",
+          "truth": true,
+          "cardId": "summer-025",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-026",
+          "text": "Диаметр окружности является хордой этой окружности.",
+          "truth": true,
+          "cardId": "summer-026",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-027",
+          "text": "Если две прямые перпендикулярны третьей прямой, то они параллельны.",
+          "truth": true,
+          "cardId": "prev-005",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-028",
+          "text": "В любом квадрате диагонали равны.",
+          "truth": true,
+          "cardId": "summer-028",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-029",
+          "text": "В любом параллелограмме диагонали являются биссектрисами его углов.",
+          "truth": false,
+          "cardId": "summer-029",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-030",
+          "text": "Все хорды одной окружности равны.",
+          "truth": false,
+          "cardId": "all_chords_equal",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-031",
+          "text": "Если две стороны треугольника равны, то углы, лежащие против них, равны.",
+          "truth": true,
+          "cardId": "prev-014",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-032",
+          "text": "Сумма углов выпуклого четырехугольника равна 360 градусов.",
+          "truth": true,
+          "cardId": "prev-043",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-033",
+          "text": "Любой параллелограмм является прямоугольником.",
+          "truth": false,
+          "cardId": "prev-054",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-034",
+          "text": "В квадрате все стороны равны.",
+          "truth": true,
+          "cardId": "summer-034",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-035",
+          "text": "В квадрате диагонали перпендикулярны.",
+          "truth": true,
+          "cardId": "summer-035",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-036",
+          "text": "В любом прямоугольнике диагонали являются биссектрисами углов.",
+          "truth": false,
+          "cardId": "summer-036",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-037",
+          "text": "Если прямая касается окружности, то она имеет с окружностью ровно одну общую точку.",
+          "truth": true,
+          "cardId": "summer-037",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-038",
+          "text": "В любом треугольнике каждая сторона меньше суммы двух других сторон.",
+          "truth": true,
+          "cardId": "summer-038",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-039",
+          "text": "Любой треугольник имеет два прямых угла.",
+          "truth": false,
+          "cardId": "summer-039",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-040",
+          "text": "В ромбе диагонали перпендикулярны.",
+          "truth": true,
+          "cardId": "prev-057",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-041",
+          "text": "В любом ромбе противоположные углы равны.",
+          "truth": true,
+          "cardId": "summer-041",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-042",
+          "text": "Если две параллельные прямые пересечены секущей, то соответственные углы равны.",
+          "truth": true,
+          "cardId": "prev-004",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-043",
+          "text": "Площадь прямоугольника равна произведению длин его смежных сторон.",
+          "truth": true,
+          "cardId": "summer-043",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-044",
+          "text": "Сумма углов любого пятиугольника равна 360 градусов.",
+          "truth": false,
+          "cardId": "summer-044",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-045",
+          "text": "Окружность имеет бесконечно много центров.",
+          "truth": false,
+          "cardId": "summer-045",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-046",
+          "text": "Серединный перпендикуляр к отрезку проходит через середину этого отрезка.",
+          "truth": true,
+          "cardId": "summer-046",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-047",
+          "text": "Любая точка серединного перпендикуляра к отрезку равноудалена от концов этого отрезка.",
+          "truth": true,
+          "cardId": "perpendicular_bisector_point_equidistant_endpoints",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-048",
+          "text": "Все углы прямоугольника прямые.",
+          "truth": true,
+          "cardId": "summer-048",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-049",
+          "text": "Если в параллелограмме один угол прямой, то этот параллелограмм является прямоугольником.",
+          "truth": true,
+          "cardId": "prev-067",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-050",
+          "text": "Любая трапеция является параллелограммом.",
+          "truth": false,
+          "cardId": "summer-050",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-051",
+          "text": "Высота треугольника может лежать вне треугольника.",
+          "truth": true,
+          "cardId": "summer-051",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-052",
+          "text": "В остроугольном треугольнике все высоты лежат внутри треугольника.",
+          "truth": true,
+          "cardId": "summer-052",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-053",
+          "text": "В тупоугольном треугольнике все углы тупые.",
+          "truth": false,
+          "cardId": "obtuse_triangle_all_obtuse",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-054",
+          "text": "Если две прямые параллельны одной и той же прямой, то они параллельны.",
+          "truth": true,
+          "cardId": "two_parallel_to_third_parallel",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-055",
+          "text": "Диагонали параллелограмма точкой пересечения делятся пополам.",
+          "truth": true,
+          "cardId": "prev-044",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-056",
+          "text": "Диагонали любого параллелограмма равны.",
+          "truth": false,
+          "cardId": "prev-047",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-057",
+          "text": "Любой вписанный угол равен 90 градусов.",
+          "truth": false,
+          "cardId": "summer-057",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-058",
+          "text": "В прямоугольном треугольнике квадрат гипотенузы равен сумме квадратов катетов.",
+          "truth": true,
+          "cardId": "summer-058",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-059",
+          "text": "Если квадрат одной стороны треугольника равен сумме квадратов двух других сторон, то треугольник прямоугольный.",
+          "truth": true,
+          "cardId": "summer-059",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-060",
+          "text": "В любом треугольнике квадрат одной стороны равен сумме квадратов двух других сторон.",
+          "truth": false,
+          "cardId": "summer-060",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-061",
+          "text": "Площадь ромба равна произведению его диагоналей.",
+          "truth": false,
+          "cardId": "summer-061",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-062",
+          "text": "Если хорда проходит через центр окружности, то она является диаметром.",
+          "truth": true,
+          "cardId": "prev-076",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-063",
+          "text": "Любой радиус окружности делит любую хорду пополам.",
+          "truth": false,
+          "cardId": "summer-063",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-064",
+          "text": "Равные хорды одной окружности находятся на равных расстояниях от центра.",
+          "truth": true,
+          "cardId": "summer-064",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-065",
+          "text": "Углы при основании равнобедренного треугольника равны.",
+          "truth": true,
+          "cardId": "prev-014",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-066",
+          "text": "Биссектриса, проведенная к основанию равнобедренного треугольника, является медианой и высотой.",
+          "truth": true,
+          "cardId": "prev-023",
+          "matchType": "equivalent",
+          "note": "В равнобедренном треугольнике медиана, высота и биссектриса из вершины к основанию совпадают. Перестановка названия этого отрезка не меняет условия и содержание свойства."
+        },
+        {
+          "sourceId": "fipi-067",
+          "text": "Любая медиана треугольника является его биссектрисой.",
+          "truth": false,
+          "cardId": "median_bisects_angle",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-068",
+          "text": "Сумма внутренних углов выпуклого n-угольника равна 180(n - 2) градусов.",
+          "truth": true,
+          "cardId": "summer-068",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-069",
+          "text": "У правильного шестиугольника все стороны равны.",
+          "truth": true,
+          "cardId": "summer-069",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-070",
+          "text": "Любой шестиугольник является правильным.",
+          "truth": false,
+          "cardId": "summer-070",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-071",
+          "text": "Если в треугольнике два угла равны, то стороны, лежащие против них, равны.",
+          "truth": true,
+          "cardId": "prev-040",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "fipi-072",
+          "text": "Любые две окружности имеют две общие точки.",
+          "truth": false,
+          "cardId": "summer-072",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "fipi-073",
+          "text": "Через любые две различные точки можно провести ровно одну прямую.",
+          "truth": true,
+          "cardId": "prev-006",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        }
+      ]
+    },
+    {
+      "id": "physmathsch-106",
+      "type": "secondary-curated-not-official",
+      "url": "https://physmathsch.ru/19_task_oge/all_questions.php",
+      "retrievedAt": "2026-10-20",
+      "sourceHashSha256": "cb475aa10a42d7a3de6d9125869abccdf266d7d2d7ff3e2636b7f8da331f3fa2",
+      "entries": [
+        {
+          "sourceId": "reference-001",
+          "text": "Если угол острый, то смежный с ним угол также является острым.",
+          "truth": false,
+          "cardId": "angle_acute_adjacent_acute",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-002",
+          "text": "Всегда один из двух смежных углов острый, а другой тупой.",
+          "truth": false,
+          "cardId": "adjacent_angles_one_acute_one_obtuse_always",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-003",
+          "text": "Смежные углы всегда равны.",
+          "truth": false,
+          "cardId": "prev-001",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-004",
+          "text": "Вертикальные углы равны.",
+          "truth": true,
+          "cardId": "prev-000",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-005",
+          "text": "Через заданную точку плоскости можно провести только одну прямую.",
+          "truth": false,
+          "cardId": "reference-005",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-006",
+          "text": "Существуют три прямые, которые проходят через одну точку.",
+          "truth": true,
+          "cardId": "three_lines_through_one_point_exist",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-007",
+          "text": "Через точку, не лежащую на данной прямой, можно провести прямую, параллельную этой прямой.",
+          "truth": true,
+          "cardId": "parallel_through_point_exists",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-008",
+          "text": "Через точку, не лежащую на данной прямой, можно провести прямую, перпендикулярную этой прямой.",
+          "truth": true,
+          "cardId": "perp_through_point_exists",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-009",
+          "text": "Две прямые, параллельные третьей прямой, перпендикулярны.",
+          "truth": false,
+          "cardId": "two_parallel_to_third_perpendicular",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-010",
+          "text": "Две прямые, перпендикулярные третьей прямой, перпендикулярны.",
+          "truth": false,
+          "cardId": "two_perp_to_third_perp",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-011",
+          "text": "Две различные прямые, перпендикулярные третьей прямой, параллельны.",
+          "truth": true,
+          "cardId": "prev-005",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-012",
+          "text": "Точка, лежащая на серединном перпендикуляре к отрезку, равноудалена от концов этого отрезка.",
+          "truth": true,
+          "cardId": "perpendicular_bisector_point_equidistant_endpoints",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-013",
+          "text": "Если точка лежит на биссектрисе угла, то она равноудалена от сторон этого угла.",
+          "truth": true,
+          "cardId": "point_on_angle_bisector_equidistant_sides",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-014",
+          "text": "В треугольнике против большего угла лежит большая сторона.",
+          "truth": true,
+          "cardId": "reference-014",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-015",
+          "text": "В остроугольном треугольнике все углы острые.",
+          "truth": true,
+          "cardId": "reference-015",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-016",
+          "text": "Если в треугольнике есть один острый угол, то этот треугольник остроугольный.",
+          "truth": false,
+          "cardId": "reference-016",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-017",
+          "text": "В тупоугольном треугольнике все углы тупые.",
+          "truth": false,
+          "cardId": "obtuse_triangle_all_obtuse",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-018",
+          "text": "В любом тупоугольном треугольнике есть острый угол.",
+          "truth": true,
+          "cardId": "reference-018",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-019",
+          "text": "Всякий равнобедренный треугольник является остроугольным.",
+          "truth": false,
+          "cardId": "reference-019",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-020",
+          "text": "Сумма острых углов прямоугольного треугольника равна 90 градусам.",
+          "truth": true,
+          "cardId": "right_triangle_acute_sum_90",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-021",
+          "text": "Сумма углов прямоугольного треугольника равна 90 градусам.",
+          "truth": false,
+          "cardId": "right_triangle_angles_sum_90",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-022",
+          "text": "Один из углов треугольника всегда не превышает 60 градусов.",
+          "truth": true,
+          "cardId": "prev-034",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-023",
+          "text": "Сумма углов любого треугольника равна 360 градусам.",
+          "truth": false,
+          "cardId": "triangle_angles_sum_360",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-024",
+          "text": "Сумма углов равнобедренного треугольника равна 180 градусам.",
+          "truth": true,
+          "cardId": "reference-024",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-025",
+          "text": "Треугольник со сторонами 1, 2, 4 существует.",
+          "truth": false,
+          "cardId": "tri_1_2_4_exists",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-026",
+          "text": "Треугольника со сторонами 1, 2, 4 не существует.",
+          "truth": true,
+          "cardId": "reference-026",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-027",
+          "text": "Длина гипотенузы прямоугольного треугольника меньше суммы длин его катетов.",
+          "truth": true,
+          "cardId": "hypotenuse_less_than_sum_legs",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-028",
+          "text": "В прямоугольном треугольнике гипотенуза равна сумме катетов.",
+          "truth": false,
+          "cardId": "hypotenuse_equals_sum_legs",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-029",
+          "text": "В прямоугольном треугольнике квадрат гипотенузы равен разности квадратов катетов.",
+          "truth": false,
+          "cardId": "reference-029",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-030",
+          "text": "Косинус острого угла прямоугольного треугольника равен отношению гипотенузы к прилежащему к этому углу катету.",
+          "truth": false,
+          "cardId": "reference-030",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-031",
+          "text": "Тангенс любого острого угла меньше единицы.",
+          "truth": false,
+          "cardId": "tan_acute_less_than_1",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-032",
+          "text": "Площадь прямоугольного треугольника равна произведению длин его катетов.",
+          "truth": false,
+          "cardId": "right_triangle_area_equals_product_legs",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-033",
+          "text": "Площадь треугольника меньше произведения двух его сторон.",
+          "truth": true,
+          "cardId": "triangle_area_less_than_product_two_sides",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-034",
+          "text": "Медиана треугольника делит пополам угол, из вершины которого проведена.",
+          "truth": false,
+          "cardId": "median_bisects_angle",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-035",
+          "text": "Биссектриса треугольника делит пополам сторону, к которой проведена.",
+          "truth": false,
+          "cardId": "bisector_bisects_opposite_side",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-036",
+          "text": "Биссектрисы треугольника пересекаются в точке, которая является центром окружности, вписанной в треугольник.",
+          "truth": true,
+          "cardId": "reference-036",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-037",
+          "text": "Серединные перпендикуляры к сторонам треугольника пересекаются в точке, являющейся центром окружности, описанной около треугольника.",
+          "truth": true,
+          "cardId": "reference-037",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-038",
+          "text": "Центр описанной около треугольника окружности всегда лежит внутри этого треугольника.",
+          "truth": false,
+          "cardId": "circumcenter_always_inside",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-039",
+          "text": "Центры вписанной и описанной окружностей равностороннего треугольника совпадают.",
+          "truth": true,
+          "cardId": "reference-039",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-040",
+          "text": "Все высоты равностороннего треугольника равны.",
+          "truth": true,
+          "cardId": "equilateral_altitudes_equal",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-041",
+          "text": "Каждая из биссектрис равнобедренного треугольника является его высотой.",
+          "truth": false,
+          "cardId": "isosceles_all_bisectors_are_altitudes",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-042",
+          "text": "Каждая из биссектрис равнобедренного треугольника является его медианой.",
+          "truth": false,
+          "cardId": "isosceles_all_bisectors_are_medians",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-043",
+          "text": "Любые два равносторонних треугольника подобны.",
+          "truth": true,
+          "cardId": "reference-043",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-044",
+          "text": "Все равнобедренные треугольники подобны.",
+          "truth": false,
+          "cardId": "reference-044",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-045",
+          "text": "Отношение площадей подобных треугольников равно коэффициенту подобия.",
+          "truth": false,
+          "cardId": "similar_triangles_area_ratio_equals_k",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-046",
+          "text": "Если два угла одного треугольника равны двум углам другого треугольника, то такие треугольники подобны.",
+          "truth": true,
+          "cardId": "prev-027",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-047",
+          "text": "Если две стороны и угол одного треугольника равны соответственно двум сторонам и углу другого треугольника, то такие треугольники равны.",
+          "truth": false,
+          "cardId": "reference-047",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-048",
+          "text": "Если две стороны одного треугольника соответственно равны двум сторонам другого треугольника, то такие треугольники равны.",
+          "truth": false,
+          "cardId": "tri_two_sides_congruent",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-049",
+          "text": "Если три угла одного треугольника равны соответственно трём углам другого треугольника, то такие треугольники равны.",
+          "truth": false,
+          "cardId": "tri_aaa_congruent",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-050",
+          "text": "Сумма углов выпуклого четырёхугольника равна 360 градусам.",
+          "truth": true,
+          "cardId": "prev-043",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-051",
+          "text": "Если стороны одного четырёхугольника соответственно равны сторонам другого четырёхугольника, то такие четырёхугольники равны.",
+          "truth": false,
+          "cardId": "quadrilaterals_equal_if_corresponding_sides_equal",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-052",
+          "text": "В параллелограмме есть два равных угла.",
+          "truth": true,
+          "cardId": "parallelogram_has_two_equal_angles",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-053",
+          "text": "Диагонали параллелограмма равны.",
+          "truth": false,
+          "cardId": "prev-047",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-054",
+          "text": "Диагональ параллелограмма делит его на два равных треугольника.",
+          "truth": true,
+          "cardId": "reference-054",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-055",
+          "text": "Площадь любого параллелограмма равна произведению длин его сторон.",
+          "truth": false,
+          "cardId": "reference-055",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-056",
+          "text": "Площадь параллелограмма равна половине произведения его диагоналей.",
+          "truth": false,
+          "cardId": "reference-056",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-057",
+          "text": "Диагонали ромба перпендикулярны.",
+          "truth": true,
+          "cardId": "prev-057",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-058",
+          "text": "Диагонали ромба точкой пересечения делятся пополам.",
+          "truth": true,
+          "cardId": "rhombus_diagonals_bisect",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-059",
+          "text": "Диагонали ромба равны.",
+          "truth": false,
+          "cardId": "rhombus_diagonals_equal",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-060",
+          "text": "Все углы ромба равны.",
+          "truth": false,
+          "cardId": "rhombus_all_angles_equal",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-061",
+          "text": "Если в параллелограмме две соседние стороны равны, то этот параллелограмм является ромбом.",
+          "truth": true,
+          "cardId": "parallelogram_adjacent_sides_equal_rhombus",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-062",
+          "text": "Если диагонали параллелограмма перпендикулярны, то этот параллелограмм является ромбом.",
+          "truth": true,
+          "cardId": "prev-049",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-063",
+          "text": "Если диагонали параллелограмма равны, то этот параллелограмм является ромбом.",
+          "truth": false,
+          "cardId": "parallelogram_equal_diagonals_rhombus",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-064",
+          "text": "Площадь ромба равна произведению двух его смежных сторон на синус угла между ними.",
+          "truth": true,
+          "cardId": "rhombus_area_ab_sin",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-065",
+          "text": "Площадь ромба равна произведению его стороны на высоту, проведённую к этой стороне.",
+          "truth": true,
+          "cardId": "rhombus_area_side_times_height",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-066",
+          "text": "Все углы прямоугольника равны.",
+          "truth": true,
+          "cardId": "summer-048",
+          "matchType": "equivalent",
+          "note": "Прямоугольник имеет четыре прямых угла, поэтому все они равны; условия и свойство совпадают."
+        },
+        {
+          "sourceId": "reference-067",
+          "text": "Диагонали прямоугольника точкой пересечения делятся пополам.",
+          "truth": true,
+          "cardId": "rect_diagonals_bisect",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-068",
+          "text": "Диагонали любого прямоугольника делят его на четыре равных треугольника.",
+          "truth": false,
+          "cardId": "reference-068",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-069",
+          "text": "Если диагонали параллелограмма равны, то это прямоугольник.",
+          "truth": true,
+          "cardId": "prev-048",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-070",
+          "text": "В любом прямоугольнике диагонали взаимно перпендикулярны.",
+          "truth": false,
+          "cardId": "summer-008",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-071",
+          "text": "Существует прямоугольник, диагонали которого взаимно перпендикулярны.",
+          "truth": true,
+          "cardId": "rect_perp_diagonals_exists",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-072",
+          "text": "Площадь прямоугольника равна произведению длин его смежных сторон.",
+          "truth": true,
+          "cardId": "summer-043",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-073",
+          "text": "Площадь прямоугольника равна произведению длин всех его сторон.",
+          "truth": false,
+          "cardId": "reference-073",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-074",
+          "text": "Любой квадрат является прямоугольником.",
+          "truth": true,
+          "cardId": "reference-074",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-075",
+          "text": "Существует квадрат, который не является прямоугольником.",
+          "truth": false,
+          "cardId": "reference-075",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-076",
+          "text": "Если в ромбе один из углов равен 90 градусам, то этот ромб является квадратом.",
+          "truth": true,
+          "cardId": "rhombus_right_angle_square",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-077",
+          "text": "Если диагонали выпуклого четырёхугольника равны и перпендикулярны, то этот четырёхугольник является квадратом.",
+          "truth": false,
+          "cardId": "equidiagonal_orthogonal_quadrilateral_square",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-078",
+          "text": "Площадь квадрата равна произведению двух его смежных сторон.",
+          "truth": true,
+          "cardId": "square_area_adjacent_sides_product",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-079",
+          "text": "Все квадраты имеют равные площади.",
+          "truth": false,
+          "cardId": "reference-079",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-080",
+          "text": "Площадь квадрата равна произведению его диагоналей.",
+          "truth": false,
+          "cardId": "reference-080",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-081",
+          "text": "Основания любой трапеции параллельны.",
+          "truth": true,
+          "cardId": "prev-060",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-082",
+          "text": "В любой прямоугольной трапеции есть два равных угла.",
+          "truth": true,
+          "cardId": "reference-082",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-083",
+          "text": "Боковые стороны любой трапеции равны.",
+          "truth": false,
+          "cardId": "prev-059",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-084",
+          "text": "Основания равнобедренной трапеции равны.",
+          "truth": false,
+          "cardId": "isosceles_trapezoid_bases_equal",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-085",
+          "text": "Диагонали равнобедренной трапеции равны.",
+          "truth": true,
+          "cardId": "prev-064",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-086",
+          "text": "Диагонали трапеции пересекаются и делятся точкой пересечения пополам.",
+          "truth": false,
+          "cardId": "trapezoid_diagonals_bisect",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-087",
+          "text": "Диагональ трапеции делит её на два равных треугольника.",
+          "truth": false,
+          "cardId": "trapezoid_diagonal_makes_equal_triangles",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-088",
+          "text": "Площадь трапеции равна произведению основания трапеции на высоту.",
+          "truth": false,
+          "cardId": "trapezoid_area_base_times_height",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-089",
+          "text": "Средняя линия трапеции параллельна её основаниям.",
+          "truth": true,
+          "cardId": "prev-061",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-090",
+          "text": "Средняя линия трапеции равна полусумме её оснований.",
+          "truth": true,
+          "cardId": "prev-062",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-091",
+          "text": "Средняя линия трапеции равна сумме её оснований.",
+          "truth": false,
+          "cardId": "trapezoid_midline_equals_sum_bases",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-092",
+          "text": "Вписанный угол, опирающийся на диаметр окружности, прямой.",
+          "truth": true,
+          "cardId": "prev-081",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-093",
+          "text": "Расстояние от точки, лежащей на окружности, до центра окружности равно радиусу.",
+          "truth": true,
+          "cardId": "point_on_circle_distance_radius",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-094",
+          "text": "Все диаметры окружности равны между собой.",
+          "truth": true,
+          "cardId": "all_diameters_equal",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-095",
+          "text": "Все хорды одной окружности равны между собой.",
+          "truth": false,
+          "cardId": "all_chords_equal",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-096",
+          "text": "Любые два диаметра окружности пересекаются.",
+          "truth": true,
+          "cardId": "reference-096",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-097",
+          "text": "Любой прямоугольник можно вписать в окружность.",
+          "truth": true,
+          "cardId": "reference-097",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-098",
+          "text": "Любой параллелограмм можно вписать в окружность.",
+          "truth": false,
+          "cardId": "parallelogram_cyclic",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-099",
+          "text": "Угол, вписанный в окружность, равен соответствующему центральному углу, опирающемуся на ту же дугу.",
+          "truth": false,
+          "cardId": "inscribed_equals_central",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-100",
+          "text": "Две окружности пересекаются, если радиус одной окружности больше радиуса другой окружности.",
+          "truth": false,
+          "cardId": "circles_intersect_if_radius_bigger",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-101",
+          "text": "Точка пересечения двух окружностей равноудалена от центров этих окружностей.",
+          "truth": false,
+          "cardId": "circle_intersection_point_equidistant_centers",
+          "matchType": "equivalent",
+          "note": "Та же геометрическая формулировка после замены слов, обозначений или порядка слов; условия и истинность сохранены."
+        },
+        {
+          "sourceId": "reference-102",
+          "text": "Касательная к окружности параллельна радиусу, проведённому в точку касания.",
+          "truth": false,
+          "cardId": "tangent_parallel_radius",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-103",
+          "text": "Касательная к окружности перпендикулярна радиусу, проведённому в точку касания.",
+          "truth": true,
+          "cardId": "prev-079",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-104",
+          "text": "В любой четырёхугольник можно вписать окружность.",
+          "truth": false,
+          "cardId": "prev-086",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-105",
+          "text": "В любой ромб можно вписать окружность.",
+          "truth": true,
+          "cardId": "reference-105",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "reference-106",
+          "text": "Через любую точку, лежащую вне окружности, можно провести две касательные к этой окружности.",
+          "truth": true,
+          "cardId": "reference-106",
+          "matchType": "exact"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "uniqueCards": 233,
+    "sourceEntries": 452,
+    "summerAdded": 36,
+    "referenceAdded": 30,
+    "summerCovered": 178,
+    "referenceCovered": 106
+  }
+}
