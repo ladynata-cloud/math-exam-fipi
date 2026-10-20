@@ -12,7 +12,7 @@ const visuals = require('../trainers/task19-visual-models.js');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const KEY = 'mathExam.task19.visualHints.v1';
-const sources = ['task19-visual-data.js', 'task19-models-triangles.js', 'task19-models-circles.js', 'task19-models-lines-polygons.js', 'task19-visual-models.js', 'task19-visual-app.js'];
+const sources = ['task19-visual-data.js', 'task19-models-triangles.js', 'task19-models-circles.js', 'task19-models-lines-polygons.js', 'task19-visual-models.js', 'task19-reference.js', 'task19-visual-app.js'];
 const dataScope = {window:{}, module:{exports:{}}};
 vm.runInNewContext(read('trainers/task19-visual-data.js'), dataScope);
 const data = dataScope.window.Task19Data || dataScope.module.exports;
@@ -66,7 +66,10 @@ test('both prior banks retain their exact mathematical statements and truth valu
     identities.set(id,card.id);
   }
   for (const old of originalCards()) {
-    const candidates = cards.filter(c => normalize(c.text) === normalize(old.text));
+    // Owner's PDF page 20 asks for familiar wording, with no mathematical change.
+    const expectedText=old.id==='prev-011'?'Сумма углов любого треугольника равна 180°.':old.text;
+    if(old.id==='prev-011')assert.equal(old.text,'Сумма внутренних углов любого треугольника равна 180°.');
+    const candidates = cards.filter(c => normalize(c.text) === normalize(expectedText));
     assert(candidates.length, 'Missing source statement ' + old.id);
     assert(candidates.every(c => c.truth === old.truth), 'Changed truth for ' + old.id);
     assert(candidates.some(c => c.id === old.id || (c.aliases || []).includes(old.id)), 'Lost source identity ' + old.id);
@@ -444,7 +447,13 @@ test('the downloadable trainer includes the current lessons and works without ne
     for (const file of [...sources,'task19-visual.css']) {
       const embedded = doc.querySelector('[data-inline-source="/trainers/'+file+'"]');
       assert(embedded,'Offline copy embeds '+file);
-      assert(embedded.textContent.trim() === read('trainers/'+file).trim(),'Offline copy is stale; rerun build-trainer-downloads for '+file);
+      let expected=read('trainers/'+file).trim();
+      const manifest=JSON.parse(read('downloads/trainers-manifest.json')).trainers.find(e=>e.slug==='task19-trainer');
+      for(const imagePath of manifest.inlineImageAssets||[]){
+        const embeddedImage='data:image/png;base64,'+fs.readFileSync(path.join(root,imagePath.slice(1))).toString('base64');
+        expected=expected.replaceAll(JSON.stringify(imagePath),JSON.stringify(embeddedImage));
+      }
+      assert.equal(embedded.textContent.trim(),expected,'Offline copy is stale; rerun build-trainer-downloads for '+file);
     }
     assert.equal(doc.querySelector('#hintPanel').hidden,true);
     assert.equal(doc.querySelector('#answerPanel').hidden,true);

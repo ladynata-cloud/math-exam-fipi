@@ -3,7 +3,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{JSDOM,VirtualConsole}=require('jsdom');
 const root=process.env.TASK19_TEST_ROOT||path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const KEY='mathExam.task19.visualHints.v1';
-const sources=['task19-visual-data.js','task19-models-triangles.js','task19-models-circles.js','task19-models-lines-polygons.js','task19-visual-models.js','task19-visual-app.js'];
+const sources=['task19-visual-data.js','task19-models-triangles.js','task19-models-circles.js','task19-models-lines-polygons.js','task19-visual-models.js','task19-reference.js','task19-visual-app.js'];
 const cards=require(path.join(root,'trainers/task19-visual-data.js')).cards;
 function boot(t,id='prev-056',saved){
  const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));

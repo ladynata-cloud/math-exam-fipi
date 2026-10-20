@@ -68,6 +68,19 @@ function fixLocalAssetLinks(html) {
 function inlineTrainerAssets(html, entry) {
   if (!Array.isArray(entry.inlineAssets) || !entry.inlineAssets.length) return html;
   const sources = new Map(entry.inlineAssets.map(sitePath => [sitePath, fs.readFileSync(repoPath(sitePath), "utf8")]));
+  // Optional reference screenshots stay available in the standalone HTML offline.
+  for (const imagePath of entry.inlineImageAssets || []) {
+    if (!imagePath.endsWith('.png')) throw new Error(`Unsupported inline image: ${imagePath}`);
+    const embedded = 'data:image/png;base64,' + fs.readFileSync(repoPath(imagePath)).toString('base64');
+    let found = false;
+    for (const [key, value] of sources) {
+      if (value.includes(JSON.stringify(imagePath))) {
+        sources.set(key, value.replaceAll(JSON.stringify(imagePath), JSON.stringify(embedded)));
+        found = true;
+      }
+    }
+    if (!found) throw new Error(`Inline image not referenced: ${imagePath}`);
+  }
   const used = new Set();
   const siteRef = ref => path.posix.resolve(path.posix.dirname(entry.sourceHtml), ref.split(/[?#]/)[0]);
   html = html.replace(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>\s*<\/script>/gi, (tag, ref) => {

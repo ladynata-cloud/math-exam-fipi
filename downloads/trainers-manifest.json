@@ -178,6 +178,7 @@
         "/trainers/task19-models-circles.js",
         "/trainers/task19-models-lines-polygons.js",
         "/trainers/task19-visual-models.js",
+        "/trainers/task19-reference.js",
         "/trainers/task19-visual-app.js"
       ],
       "interfaceRequirements": [
@@ -188,6 +189,22 @@
         "после ответа — объяснение; для неверного утверждения приведи подходящий контрпример, для верного — обоснование;",
         "кнопка для следующего утверждения;",
         "выбор темы, результаты и повторение ошибок — в свёрнутом дополнительном разделе."
+      ],
+      "inlineImageAssets": [
+        "/trainers/task19-reference/areas.png",
+        "/trainers/task19-reference/circle.png",
+        "/trainers/task19-reference/equilateral-triangle.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-05.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-06.png",
+        "/trainers/task19-reference/midlines.png",
+        "/trainers/task19-reference/parallelogram-area.png",
+        "/trainers/task19-reference/polygon-angles.png",
+        "/trainers/task19-reference/pythagoras.png",
+        "/trainers/task19-reference/rhombus-area.png",
+        "/trainers/task19-reference/sine-cosine.png",
+        "/trainers/task19-reference/trapezoid-area.png",
+        "/trainers/task19-reference/triangle-area.png",
+        "/trainers/task19-reference/trig-values.png"
       ]
     },
     {

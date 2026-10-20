@@ -2,7 +2,15 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task13 interactive laboratories for every prototype
+## In progress: task19 owner feedback and analogous models
+
+- [Scope](tasks/TASK19_OWNER_FEEDBACK.md): implement the owner's34 annotated examples,
+  correct analogous geometric markings/controls, include genuine FIPI reference
+  excerpts and identify untouched cards. Work remains cloud-only.
+- Tasks1–5 (all8 story types) and task6 deeper interactive help are separate
+  authorized workstreams. Paid Claude API use remains deferred.
+
+## Published: task13 interactive laboratories for every prototype
 
 - [Scope](tasks/TASK13_INTERACTIVE_HELP.md): extend the existing minimal
   inequality trainer with task-specific laboratories for all 26 current tasks
@@ -13,6 +21,17 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
 - Improve adaptive plot scales and mobile readability. This is the current
   26-task bank, not the older unexecuted generator/registry plan or a claim of
   complete FIPI coverage. Claude API remains deferred by owner decision.
+
+- PR285 merged normally as43dc06bfa7bf503e3e9d455ced3ec05202b9e68e,
+  parent39c63a63602cd7ae275e76ed647057c2793f576f, reviewed tree
+  b55c883e836c1e05ebf18907490e8664f27193d3. No base drift.
+- All25 Node tests,230 navigation links and independent mathematical/state checks
+  passed. Browser39499969166 covered all26 tasks at1280/360px and7 at320px;
+  course39499969186 andSEO39499969091 passed. Pages39500578087 succeeded.
+- Published HTML matched81031bytes /SHA256
+  8be725fefd0700c7c44f344d5b933da3e5ece40599c0f5752a75c024f22c1975.
+  Live exact−6/7 boundary, filledroot, keyboard sign experiment and retained drafts
+  were verified. Opening help did not grant automatic credit.
 
 ## Published: task9 interactive help for every equation family
 
