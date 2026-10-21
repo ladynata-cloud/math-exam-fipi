@@ -2,11 +2,27 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: task19 current sources and textbook references
+## In progress: rotating 3D tire dimensions
+
+- [Scope](tasks/TIRES_3D_DEMO.md): replace the misleading front-only wheel help
+  with a rotating model that separates axial width B from radial height H and
+  rim diameter. Original engines, learner drafts and grading remain protected.
+- Independent geometry and code review passed; all53 practical Node checks
+  passed. Actual cloud pointer/touch/mobile/offline checks are the next gate.
+
+## Merged: task19 current sources and textbook references
 
 - [Scope](tasks/TASK19_CURRENT_SOURCES.md): current FIPI access audit, supplied
   question coverage, new owner corrections, and optional verified textbook
   references for every assertion. Paid Claude use remains deferred.
+- PR290 merged as `9f9638ab1a8728eb72e190825b665bc34cf43abe`, sole parent
+  `6f42132355e0361f6bc54f0e4dacdc036b48b0e7`, exact reviewed tree
+  `0a767ef70a668ae12611748f19ba8545b431a5d3`. All83 Node checks and final
+  cloud runs39521820256/39521820264 passed. Independent source, mathematical
+  and final320px visual reviews passed. Both author lines cover all234 cards;
+  source coverage is467 entries. The current FIPI bank remained unavailable
+  (503/timeouts); complete-bank coverage is explicitly not claimed.
+- Exact-merge Pages run39522172914 and public hashes are being verified.
 
 ## Published: outdoor context for the land identification lab
 
