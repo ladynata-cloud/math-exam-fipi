@@ -141,3 +141,17 @@ actual label size and reachability. Original grading/progress code is unchanged.
 Road narration uses neutral grammatical place names. Source review and all
 focused regressions passed; final cloud artifacts/checks and publication are
 recorded in PR293 rather than preclaimed in this pre-release commit.
+
+Second cloud head `d41812e7572728a53fcc5630fcadfa98f94ddfad` passed the new
+algebra, geometry, proof and tire-quiz jobs and existing 9/11/13, discovery,
+learner-action, SEO and virtual-classroom workflows. Independent screenshot
+rechecks confirmed the algebra and geometry fixes. The remaining failures were
+test locators reusing a changed button name and matching a hidden native SVG;
+both now use stable semantic identities with every original assertion retained.
+Practical screenshot review also corrected the tariff scale/legend and replaced
+an inappropriate apartment discovery in the two road variants with a road-only
+route model. The source apartment discovery remains available unchanged.
+Additional captures cover open help in23/25 and right-panned practical diagrams.
+Shared runtime requests in the seven new pages carry a release version because
+the public host advertises a 600-second cache; cached older scripts must not be
+combined with the new presentation adapter. The offline archive is rebuilt.

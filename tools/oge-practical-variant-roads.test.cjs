@@ -148,7 +148,7 @@ test('schema preserves all twenty-four native identities and honest one-question
       for (let n = 0; n < tasks.length; n++) {
         const task = tasks[n], question = questions[n];
         const native = c.w.eval('answer(VARIANTS[' + variant + '],' + task + ')');
-        const expectedKind = ['map', 'route', 'triangle', 'journey', 'fuel'][task - 1];
+        const expectedKind = ['road-map', 'route', 'triangle', 'journey', 'fuel'][task - 1];
         assert.equal(question.querySelector('[data-discovery-model]').dataset.discoveryModel, expectedKind);
         assert.equal(await check(c, question, { answer: '-999' }), 'incorrect');
         assert.equal(await check(c, question, { answer: String(native).replace('.', ',') }), 'correct');
@@ -162,6 +162,54 @@ test('schema preserves all twenty-four native identities and honest one-question
     assert.equal(solved, 24);
     assert.deepEqual(c.errors, []);
   } finally { c.dom.window.close(); }
+});
+
+test('road identification help follows road junctions, preserves answers and leaves apartment help intact', async () => {
+  for (const slug of ['roads-grid', 'roads-schema']) {
+    const c = await open(slug);
+    try {
+      const question = cards(c)[0];
+      const values = slug === 'roads-grid' ? { v0: '4', v1: '3', v2: '2' } : { answer: '4321' };
+      fill(c, question, values);
+      const drafts = Array.from(question.querySelectorAll('[data-pv-field]'), input => input.value);
+      const before = JSON.stringify(Object.keys(c.w.localStorage).sort().map(key => [key, c.w.localStorage.getItem(key)]));
+      question.querySelector('.pv-help-button').click();
+      const panel = question.querySelector('[data-discovery-model]');
+      assert.equal(panel.dataset.discoveryModel, 'road-map');
+      assert.doesNotMatch(panel.textContent, /коридор|комнат|Вход/i);
+      assert.match(panel.textContent, /Лесное.*Озёрное.*Полевое/s);
+      const nodes = Array.from(panel.querySelectorAll('[data-road-example-node]'), node => [+node.getAttribute('cx'), +node.getAttribute('cy')]);
+      assert.equal(nodes.length, 3);
+      assert.equal((nodes[0][0] - nodes[1][0]) * (nodes[2][0] - nodes[1][0]) + (nodes[0][1] - nodes[1][1]) * (nodes[2][1] - nodes[1][1]), 0, 'the described highway turn is a right angle');
+      assert.ok(panel.querySelector('[data-road-example="direct"]').hasAttribute('stroke-dasharray'));
+      panel.querySelector('[data-pd-choice="2"]').click();
+      assert.match(panel.querySelector('.pd-reading').textContent, /Начни у известного пункта/);
+      panel.querySelector('[data-pd-choice="3"]').click();
+      assert.match(panel.querySelector('.pd-reading').textContent, /напрямую, без поворота/);
+      panel.querySelector('[data-pd-choice="1"]').click();
+      assert.match(panel.querySelector('.pd-reading').textContent, /Б — Полевое/);
+      panel.querySelector('[data-pd-choice="3"]').click();
+      assert.match(panel.querySelector('.pd-reading').textContent, /у поворота Б: продолжи по шоссе Б → В/);
+      panel.querySelector('[data-pd-choice="2"]').click();
+      assert.match(panel.querySelector('.pd-reading').textContent, /В — Озёрное/);
+      panel.querySelector('[data-pd-choice="3"]').click();
+      assert.match(panel.querySelector('.pd-reading').textContent, /Маршрут через поворот уже пройден/);
+      assert.equal(panel.querySelector('[data-pd-choice="1"]').getAttribute('aria-pressed'), 'true');
+      assert.equal(panel.querySelector('[data-pd-choice="2"]').getAttribute('aria-pressed'), 'true');
+      assert.deepEqual(Array.from(question.querySelectorAll('[data-pv-field]'), input => input.value), drafts);
+      assert.equal(JSON.stringify(Object.keys(c.w.localStorage).sort().map(key => [key, c.w.localStorage.getItem(key)])), before);
+      assert.equal(c.w.PracticalDiscovery.typeFor('apartments', '1', 'Определи комнаты'), 'map');
+      const apartment = c.d.createElement('div');
+      c.w.PracticalDiscovery.build(apartment, { page: 'apartments', type: '1', text: 'Определи комнаты' });
+      assert.match(apartment.textContent, /Вход → коридор/);
+      if (slug === 'roads-schema') {
+        const condition = c.d.querySelector('.pv-road-condition');
+        assert.equal(condition.style.fontSize, '19px');
+        assert.equal(condition.classList.contains('descbody'), false);
+      }
+      assert.deepEqual(c.errors, []);
+    } finally { c.dom.window.close(); }
+  }
 });
 
 test('schema help and variant navigation preserve drafts without awarding credit', async () => {

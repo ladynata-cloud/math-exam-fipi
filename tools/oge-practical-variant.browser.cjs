@@ -22,7 +22,7 @@ const progress = page => page.evaluate(() => JSON.stringify(Object.keys(localSto
 async function layout(page, label) {
   const box = await page.evaluate(() => ({ viewport: innerWidth, html: document.documentElement.scrollWidth, body: document.body.scrollWidth }));
   assert.ok(box.html <= box.viewport + 2 && box.body <= box.viewport + 2, label + ': document overflow ' + JSON.stringify(box));
-  const wording = await page.locator('.pv-question-condition,.pv-question-condition .q,.pv-condition .refnote').evaluateAll(nodes => nodes.map(node => parseFloat(getComputedStyle(node).fontSize)));
+  const wording = await page.locator('.pv-question-condition,.pv-question-condition .q,.pv-condition,.pv-condition *').evaluateAll(nodes => nodes.filter(node => node.matches('.pv-question-condition,.pv-question-condition .q') || node.getClientRects().length && Array.from(node.childNodes).some(child => child.nodeType === 3 && child.textContent.trim())).map(node => parseFloat(getComputedStyle(node).fontSize)));
   assert.ok(wording.every(size => size >= 17.95), label + ': question wording remains readable');
   const fields = await page.locator('.pv-answer-form input,.pv-answer-form select').evaluateAll(nodes => nodes.map(node => ({ font: parseFloat(getComputedStyle(node).fontSize), label: node.getAttribute('aria-label'), width: node.getBoundingClientRect().width })));
   for (const field of fields) { assert.ok(field.font >= 18, label + ': input font'); assert.ok(field.label.length >= 10, label + ': clear answer label'); assert.ok(field.width > 40, label + ': usable input'); }
@@ -59,6 +59,11 @@ async function help(page, host, label, screenshot) {
   const nested = panel.locator(':scope>details').first();
   assert.ok(await nested.count(), label + ': nested discovery');
   if (!(await nested.evaluate(node => node.open))) await nested.locator(':scope>summary').click();
+  if (/^roads-(grid|schema) Q1$/.test(label)) {
+    assert.equal(await panel.getAttribute('data-discovery-model'), 'road-map', label + ': road-specific identification');
+    assert.doesNotMatch(await nested.textContent(), /коридор|комнат|Вход/i, label + ': no apartment model');
+    assert.equal(await nested.locator('[data-road-example-node]').count(), 3);
+  }
   const control = panel.locator('[data-pd-key]').first();
   if (await control.count()) {
     if (await control.evaluate(node => node.tagName === 'SELECT')) {
@@ -128,6 +133,11 @@ async function initial(page, slug, width, offlineMode) {
   assert.equal(await zoom.getAttribute('aria-pressed'), 'false', slug + ': zoom returns to its original size');
   const scroller = page.locator('.pv-primary-visual .pv-figure-scroll').first();
   await scroller.focus(); await scroller.press('ArrowRight');
+  if (!offlineMode && width === 360) {
+    await scroller.evaluate(node => { node.scrollLeft = node.scrollWidth; });
+    await page.locator('.pv-primary-visual').screenshot({ path: path.join(out, 'diagram-right-' + slug + '-360.png') });
+    await scroller.evaluate(node => { node.scrollLeft = 0; });
+  }
   await layout(page, prefix + slug + ' after help');
   records.push({ slug, width, offline: offlineMode, stage: 'initial-five-questions-and-help', questions: 5 });
 }
@@ -161,9 +171,9 @@ async function allSubtypes(page, slug) {
   if (slug === 'apartments') {
     const groups = { 1: ['1'], 2: ['2.1', '2.2'], 3: ['3.1', '3.2'], 4: ['4.1', '4.2'], 5: ['5.1', '5.2', '5.3'] };
     for (let plan = 0; plan < 3; plan++) {
-      await page.getByLabel('План квартиры', { exact: true }).selectOption(String(plan));
+      await page.locator('.pv-shell').getByRole('combobox', { name: 'План квартиры', exact: true }).selectOption(String(plan));
       for (const [group, values] of Object.entries(groups)) for (const value of values) {
-        if (group !== '1') await page.getByLabel('Вариант задания ' + group, { exact: true }).selectOption(value);
+        if (group !== '1') await card(page, group).getByRole('combobox', { name: 'Вариант задания ' + group, exact: true }).selectOption(value);
         assert.equal(await card(page, group).getAttribute('data-pv-building-type'), value);
         await help(page, card(page, group), slug + ' plan ' + plan + ' type ' + value);
         records.push({ slug, width: 1280, plan, prototype: value, stage: 'canonical-help' });
@@ -175,7 +185,7 @@ async function allSubtypes(page, slug) {
         records.push({ slug, width: 1280, plan, prototype: group + '.x', stage: 'generated-help' });
       }
       const answer = await page.evaluate(() => eval('Math.ceil(roleCells("gost")/14)'));
-      await page.getByLabel('Вариант задания 2', { exact: true }).selectOption('2.1');
+      await card(page, 2).getByRole('combobox', { name: 'Вариант задания 2', exact: true }).selectOption('2.1');
       await submit(page, 2, { answer: '-999' }, 'incorrect');
       await submit(page, 2, { answer }, 'correct');
       await layout(page, slug + ' plan ' + plan);

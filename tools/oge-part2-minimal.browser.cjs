@@ -21,7 +21,8 @@ async function initial(page,n){const host=main(page,n);await host.getByRole('but
    await page.goto(origin+'/trainers/'+files[n],{waitUntil:'load'});await initial(page,n);await noOverflow(page,n+' initial '+width);
    await page.screenshot({path:path.join(artifacts,n+'-'+width+'-task.png'),fullPage:true});
    const host=main(page,n),before=await condition(page,n).innerHTML(),input=await inputFor(page,n);await input.fill('123');
-   const hint=host.getByRole('button',{name:'Хочешь подсказку?',exact:true});await hint.focus();await page.keyboard.press('Enter');
+   const helpId=await host.getByRole('button',{name:'Хочешь подсказку?',exact:true}).getAttribute('aria-controls');assert(helpId,'The help toggle identifies its panel');
+   const hint=host.locator('button[aria-controls='+JSON.stringify(helpId)+']');await hint.focus();await page.keyboard.press('Enter');
    const help=host.locator('.minimal-help');assert(await help.isVisible());assert.equal(await hint.getAttribute('aria-expanded'),'true');assert.equal(await input.inputValue(),'123');assert.equal(await condition(page,n).innerHTML(),before);
    if(n===22){const slider=help.getByRole('slider',{name:'Положение прямой',exact:true}),svg=help.locator('svg').first(),graph=await svg.innerHTML();await slider.focus();await page.keyboard.press('End');assert.notEqual(await svg.innerHTML(),graph);await help.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();assert(await help.locator('.step-card').first().isVisible());}
    else assert(await help.locator(n===20?'.sstep':'.stepcard').first().isVisible());

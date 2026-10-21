@@ -304,6 +304,9 @@
       const variant = VARIANTS[selectedVariant];
       const source = markup(descHTML(1));
       const condition = source.querySelector('.descbody');
+      condition.className = 'pv-road-condition';
+      condition.style.fontSize = '19px';
+      condition.style.lineHeight = '1.75';
       const distances = Array.from(condition.querySelectorAll('p')).find(p => p.textContent.trim().startsWith('По шоссе:'));
       if (distances) distances.remove();
       condition.append(node('p', 'Скорость по шоссе — 50 км/ч, по просёлочным дорогам — 30 км/ч.'));
