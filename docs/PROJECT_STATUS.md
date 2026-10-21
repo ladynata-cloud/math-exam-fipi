@@ -2,15 +2,32 @@
 
 Updated: 2026-10-22 (Asia/Novosibirsk)
 
-## In progress: profile and basic EGE task-first presentation
+## In progress: standalone stereometry, task first
 
-- [Scope](tasks/EGE_2027_TASK_FIRST.md): adapt both existing course engines to
-  task-first presentation, optional nested same-page help and readable controls;
-  retain mathematics, progress, historical sources and assessment boundaries.
-- Base: `13b73619de97176789bc71d06617108aeb3d5994`. The owner requested both
-  courses and continues to authorize publication. Paid Claude use is deferred.
-- Next: verify all existing practice families, independent source/visual review,
-  exact-head CI and publication identity. Release evidence is recorded in the PR.
+- [Scope](tasks/STEREO_TASK_FIRST.md): visible condition-bound figures, same-page
+  help, separate drafts, justified proof steps and known stale-tab protection.
+- Base: `8378a4dda077742ecfc1ce9e4b24f465621429e8`; HIGH review with independent
+  source/math review and full relevant state/browser gates. Paid Claude remains
+  deferred by the owner.
+- Existing foundation:39 units,38 task families,19 proof chains and99 mapped
+  points. Full Atanasyan, Merzlyak and Pogorelov10–11 PDFs are requested; complete
+  coverage of their exercises is not claimed. The author courses stay separate.
+- Next: exact-head cloud browser/visual gate, ordinary reviewed publication,
+  then exercise-by-exercise source inventory when the owner supplies the books.
+
+## Published: profile and basic EGE task-first presentation
+
+- PR295 merged as `8378a4dda077742ecfc1ce9e4b24f465621429e8`, sole parent
+  `13b73619de97176789bc71d06617108aeb3d5994`, exact reviewed tree
+  `b0d76c9bae8b7f010848a0df51554b07f63dd14a`.
+- All five exact-head workflows passed, including unified classroom/container
+  compatibility; independent source and12 actual screenshot reviews passed.
+  Pages39659264220 succeeded on the exact merge; all30 canonical/versioned/entry
+  public requests returned200 and matched reviewed hashes and sizes.
+- Gate: EGE_2027_TASK_FIRST_OK. All68 existing profile families/408tasks and107
+  base families use task-first help, retained drafts/models and honest assistance.
+  Existing mathematical banks, shared school/exam boundaries and historical
+  sources remain. Full FIPI/all legacy second-part coverage is not claimed.
 
 ## Published: OGE 2027 season labels
 
