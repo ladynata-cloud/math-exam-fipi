@@ -71,6 +71,9 @@ function calculations(){
   for(const selector of selectors)qa(':scope>'+selector,card).forEach(node=>content.append(node));
   const instruction=make('p','tvl-calculation-instruction','Впиши свои расчёты. Нажми Enter или перейди к другой ячейке — число проверится. Если видны не все столбцы, прокрути таблицу вправо.');q('.card-header',card).after(instruction);
  }
+ // The discovery layer can add this note after the calculation help exists.
+ // Keep its side-view warning next to the folded side-view drawing.
+ qa(':scope>.t3d-original-note',card).forEach(note=>q('.pm-content',help).append(note));
  // The original sample cells already have the same native blur/Enter validator.
  // Unlock only unanswered cells; accepted and teacher-filled values stay locked.
  if(doc.body.dataset.mode!=='teacher')qa('.calc-cell.sample',section).forEach(input=>{if(!input.classList.contains('correct')&&!input.hasAttribute('data-teacher-filled'))input.disabled=false;});
