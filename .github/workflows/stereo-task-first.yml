@@ -34,6 +34,7 @@ jobs:
         run: |
           node tools/stereo/task-scenes-math.test.cjs
           node tools/stereo/task-scenes.dom.test.cjs
+          node tools/stereo/task-scene-expansion.test.cjs
           node tools/stereo/task-proof-scenes.test.cjs
           node tools/stereo/task-proof-scenes.dom.test.cjs
       - name: Retained learner journey

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Геометрия 10–11 · учебник Атанасяна</title>
+<meta name="description" content="Теория и разборы упражнений по геометрии 10–11 классов: видимые пространственные модели, помощь на той же странице и обоснованные шаги решения. Готовые материалы отделены от ещё готовящихся.">
+<link rel="canonical" href="https://mathexam.space/stereo-course/textbook/">
+<link rel="stylesheet" href="../assets/task-scenes.css"><link rel="stylesheet" href="assets/style.css">
+</head><body><nav class="course-nav"><a href="../">Курсы геометрии</a><a href="/ege-profil/atanasyan-10-11/">К профильной математике</a></nav>
+<div id="textbook-app"><p>Загружаем материалы курса…</p></div>
+<noscript>Для интерактивных моделей нужен JavaScript.</noscript>
+<script src="../assets/math-text.js"></script><script src="../assets/task-scene-viewer.js"></script><script src="assets/engine.js"></script>
+<script>
+'use strict';
+fetch('data/course.json').then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(bundle=>{
+ window.textbookApp=StereoTextbook.createApp(document.getElementById('textbook-app'),bundle);
+}).catch(()=>{document.getElementById('textbook-app').textContent='Материалы сейчас не удалось открыть. Попробуй обновить страницу.';});
+</script></body></html>

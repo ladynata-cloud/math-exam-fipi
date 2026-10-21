@@ -2,19 +2,33 @@
 
 Updated: 2026-10-22 (Asia/Novosibirsk)
 
-## In progress: standalone stereometry, task first
+## In progress: Atanasyan visual theory, introduction and first parallelism block
 
-- [Scope](tasks/STEREO_TASK_FIRST.md): visible condition-bound figures, same-page
-  help, separate drafts, justified proof steps and known stale-tab protection.
-- Base: `8378a4dda077742ecfc1ce9e4b24f465621429e8`; HIGH review with independent
-  source/math review and full relevant state/browser gates. Paid Claude remains
-  deferred by the owner.
-- Existing foundation:39 units,38 task families,19 proof chains and99 mapped
-  points. The full Atanasyan12th edition2024 PDF has now arrived. Complete exercise/theory
-  inventory and solution authoring are the next separate task. Merzlyak/Pogorelov
-  PDFs are awaited; complete exercise coverage is not yet claimed.
-- Next: exact-head cloud browser/visual gate, ordinary reviewed publication,
-  then exercise-by-exercise Atanasyan authoring with task and theory figures.
+- [Scope](tasks/TEXTBOOK_ATANASYAN.md): separate textbook course with visible
+  task/theory models, justified progressive explanations, deep same-page help
+  and preserved learner work.
+- PR297; base `bc322a30111d5a4178ba1a865c56ee1fbe85f03a`; HIGH independent review.
+- Source catalogue:1056 numbered exercises,99 theory points,96 self-check
+  questions and2 appendices. This does not mean every position is authored.
+- This stage: exercises1–35/52 cards, theory1–6/11 cards;
+  independent source/math/pedagogy review passed. Integrated cloud browser
+  verification and publication remain. Remaining book content is pending.
+- Next: exact-head cloud UI/visual gate, reviewed publication of this stage,
+  then checked exercise/theory authoring in bounded source batches.
+- Merzlyak and Pogorelov are separate later courses; their PDFs are awaited.
+
+## Published: standalone stereometry, task first
+
+- PR296 merged as `bc322a30111d5a4178ba1a865c56ee1fbe85f03a`, sole parent
+  `8378a4dda077742ecfc1ce9e4b24f465621429e8`, reviewed tree
+  `0165adc7a87606f11e6de91c4cdc6e12dbaafa2f`.
+- All3 exact-head workflows passed, including full profile compatibility;
+  independent source/state review and40 actual screenshots passed.
+- Pages39665605067 succeeded on the exact merge; all10 public canonical/alias
+  requests returned200 and matched reviewed SHA256/size.
+- Gate:STEREO_TASK_FIRST_OK. Existing39 units/38 task families/19 proof chains
+  retain mathematics and saved progress; actual task models and optional help
+  are visible/readable. Full textbook exercise coverage is not claimed.
 
 ## Published: profile and basic EGE task-first presentation
 

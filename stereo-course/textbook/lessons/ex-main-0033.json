@@ -1,0 +1,865 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0033",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "№33. Три попарно пересекающиеся плоскости",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "33",
+    "chapter": "I. Параллельность прямых и плоскостей",
+    "printedPages": [
+      15
+    ],
+    "pdfPages": [
+      17
+    ]
+  },
+  "statement": {
+    "text": "Докажите, что если три плоскости, не проходящие через одну прямую, попарно пересекаются, то прямые, по которым они пересекаются, либо параллельны, либо имеют общую точку.",
+    "goal": "Докажи утверждение для всех допустимых расположений трёх плоскостей.",
+    "givens": [
+      "Плоскости α, β, γ попарно пересекаются; общей для всех трёх прямой нет.",
+      "Обозначения: l = α ∩ β, m = α ∩ γ, n = β ∩ γ."
+    ]
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Поверни модель. Сначала найди две линии, лежащие в одной плоскости.",
+    "model": {
+      "points": {
+        "_meetalpha0": [
+          -3,
+          -1,
+          0
+        ],
+        "_meetalpha1": [
+          3,
+          -1,
+          0
+        ],
+        "_meetalpha2": [
+          3,
+          3,
+          0
+        ],
+        "_meetalpha3": [
+          -3,
+          3,
+          0
+        ],
+        "_meetalphaLabel": [
+          -3,
+          3,
+          0
+        ],
+        "_meetbeta0": [
+          -3,
+          0,
+          -1
+        ],
+        "_meetbeta1": [
+          3,
+          0,
+          -1
+        ],
+        "_meetbeta2": [
+          3,
+          0,
+          3
+        ],
+        "_meetbeta3": [
+          -3,
+          0,
+          3
+        ],
+        "_meetbetaLabel": [
+          -3,
+          0,
+          3
+        ],
+        "_meetgamma0": [
+          0,
+          -2,
+          -2
+        ],
+        "_meetgamma1": [
+          0,
+          3,
+          -2
+        ],
+        "_meetgamma2": [
+          0,
+          3,
+          3
+        ],
+        "_meetgamma3": [
+          0,
+          -2,
+          3
+        ],
+        "_meetgammaLabel": [
+          0,
+          -2,
+          3
+        ],
+        "_meetl0": [
+          -3,
+          0,
+          0
+        ],
+        "_meetl1": [
+          3,
+          0,
+          0
+        ],
+        "_meetlLabel": [
+          1.8000000000000003,
+          0.0,
+          0.0
+        ],
+        "_meetm0": [
+          0,
+          -1,
+          0
+        ],
+        "_meetm1": [
+          0,
+          3,
+          0
+        ],
+        "_meetmLabel": [
+          0.0,
+          2.2,
+          0.0
+        ],
+        "_meetn0": [
+          0,
+          0,
+          -1
+        ],
+        "_meetn1": [
+          0,
+          0,
+          3
+        ],
+        "_meetnLabel": [
+          0.0,
+          0.0,
+          2.2
+        ],
+        "_parallelalpha0": [
+          -3,
+          -1,
+          0
+        ],
+        "_parallelalpha1": [
+          3,
+          -1,
+          0
+        ],
+        "_parallelalpha2": [
+          3,
+          3,
+          0
+        ],
+        "_parallelalpha3": [
+          -3,
+          3,
+          0
+        ],
+        "_parallelalphaLabel": [
+          -3,
+          3,
+          0
+        ],
+        "_parallelbeta0": [
+          -3,
+          0,
+          -1
+        ],
+        "_parallelbeta1": [
+          3,
+          0,
+          -1
+        ],
+        "_parallelbeta2": [
+          3,
+          0,
+          3
+        ],
+        "_parallelbeta3": [
+          -3,
+          0,
+          3
+        ],
+        "_parallelbetaLabel": [
+          -3,
+          0,
+          3
+        ],
+        "_parallelgamma0": [
+          -3,
+          -1,
+          3
+        ],
+        "_parallelgamma1": [
+          3,
+          -1,
+          3
+        ],
+        "_parallelgamma2": [
+          3,
+          3,
+          -1
+        ],
+        "_parallelgamma3": [
+          -3,
+          3,
+          -1
+        ],
+        "_parallelgammaLabel": [
+          -3,
+          3,
+          -1
+        ],
+        "_parallell0": [
+          -3,
+          0,
+          0
+        ],
+        "_parallell1": [
+          3,
+          0,
+          0
+        ],
+        "_parallellLabel": [
+          1.8000000000000003,
+          0.0,
+          0.0
+        ],
+        "_parallelm0": [
+          -3,
+          2,
+          0
+        ],
+        "_parallelm1": [
+          3,
+          2,
+          0
+        ],
+        "_parallelmLabel": [
+          1.8000000000000003,
+          2.0,
+          0.0
+        ],
+        "_paralleln0": [
+          -3,
+          0,
+          2
+        ],
+        "_paralleln1": [
+          3,
+          0,
+          2
+        ],
+        "_parallelnLabel": [
+          1.8000000000000003,
+          0.0,
+          2.0
+        ],
+        "O": [
+          0,
+          0,
+          0
+        ]
+      },
+      "edges": [],
+      "faces": [],
+      "labels": {
+        "_meetalphaLabel": "α",
+        "_meetbetaLabel": "β",
+        "_meetgammaLabel": "γ",
+        "_meetlLabel": "l",
+        "_meetmLabel": "m",
+        "_meetnLabel": "n",
+        "_parallelalphaLabel": "α",
+        "_parallelbetaLabel": "β",
+        "_parallelgammaLabel": "γ",
+        "_parallellLabel": "l",
+        "_parallelmLabel": "m",
+        "_parallelnLabel": "n"
+      },
+      "labelNames": [],
+      "neutralPoints": [],
+      "views": {
+        "neutral": {
+          "label": "Найди три плоскости и попарные линии их пересечения.",
+          "segments": [
+            [
+              "_meetalpha0",
+              "_meetalpha1"
+            ],
+            [
+              "_meetalpha1",
+              "_meetalpha2"
+            ],
+            [
+              "_meetalpha2",
+              "_meetalpha3"
+            ],
+            [
+              "_meetalpha3",
+              "_meetalpha0"
+            ],
+            [
+              "_meetbeta0",
+              "_meetbeta1"
+            ],
+            [
+              "_meetbeta1",
+              "_meetbeta2"
+            ],
+            [
+              "_meetbeta2",
+              "_meetbeta3"
+            ],
+            [
+              "_meetbeta3",
+              "_meetbeta0"
+            ],
+            [
+              "_meetgamma0",
+              "_meetgamma1"
+            ],
+            [
+              "_meetgamma1",
+              "_meetgamma2"
+            ],
+            [
+              "_meetgamma2",
+              "_meetgamma3"
+            ],
+            [
+              "_meetgamma3",
+              "_meetgamma0"
+            ],
+            [
+              "_meetl0",
+              "_meetl1"
+            ],
+            [
+              "_meetm0",
+              "_meetm1"
+            ],
+            [
+              "_meetn0",
+              "_meetn1"
+            ]
+          ],
+          "polygon": [
+            "_meetalpha0",
+            "_meetalpha1",
+            "_meetalpha2",
+            "_meetalpha3"
+          ],
+          "points": [
+            "_meetalphaLabel",
+            "_meetbetaLabel",
+            "_meetgammaLabel",
+            "_meetlLabel",
+            "_meetmLabel",
+            "_meetnLabel"
+          ]
+        },
+        "sameplane": {
+          "label": "Сначала сравни l и m в одной плоскости α.",
+          "segments": [
+            [
+              "_meetalpha0",
+              "_meetalpha1"
+            ],
+            [
+              "_meetalpha1",
+              "_meetalpha2"
+            ],
+            [
+              "_meetalpha2",
+              "_meetalpha3"
+            ],
+            [
+              "_meetalpha3",
+              "_meetalpha0"
+            ],
+            [
+              "_meetbeta0",
+              "_meetbeta1"
+            ],
+            [
+              "_meetbeta1",
+              "_meetbeta2"
+            ],
+            [
+              "_meetbeta2",
+              "_meetbeta3"
+            ],
+            [
+              "_meetbeta3",
+              "_meetbeta0"
+            ],
+            [
+              "_meetgamma0",
+              "_meetgamma1"
+            ],
+            [
+              "_meetgamma1",
+              "_meetgamma2"
+            ],
+            [
+              "_meetgamma2",
+              "_meetgamma3"
+            ],
+            [
+              "_meetgamma3",
+              "_meetgamma0"
+            ],
+            [
+              "_meetl0",
+              "_meetl1"
+            ],
+            [
+              "_meetm0",
+              "_meetm1"
+            ],
+            [
+              "_meetn0",
+              "_meetn1"
+            ]
+          ],
+          "polygon": [
+            "_meetalpha0",
+            "_meetalpha1",
+            "_meetalpha2",
+            "_meetalpha3"
+          ],
+          "points": [
+            "_meetalphaLabel",
+            "_meetbetaLabel",
+            "_meetgammaLabel",
+            "_meetlLabel",
+            "_meetmLabel",
+            "_meetnLabel"
+          ]
+        },
+        "meeting": {
+          "label": "Если l и m имеют общую точку O, каким плоскостям принадлежит O?",
+          "segments": [
+            [
+              "_meetalpha0",
+              "_meetalpha1"
+            ],
+            [
+              "_meetalpha1",
+              "_meetalpha2"
+            ],
+            [
+              "_meetalpha2",
+              "_meetalpha3"
+            ],
+            [
+              "_meetalpha3",
+              "_meetalpha0"
+            ],
+            [
+              "_meetbeta0",
+              "_meetbeta1"
+            ],
+            [
+              "_meetbeta1",
+              "_meetbeta2"
+            ],
+            [
+              "_meetbeta2",
+              "_meetbeta3"
+            ],
+            [
+              "_meetbeta3",
+              "_meetbeta0"
+            ],
+            [
+              "_meetgamma0",
+              "_meetgamma1"
+            ],
+            [
+              "_meetgamma1",
+              "_meetgamma2"
+            ],
+            [
+              "_meetgamma2",
+              "_meetgamma3"
+            ],
+            [
+              "_meetgamma3",
+              "_meetgamma0"
+            ],
+            [
+              "_meetl0",
+              "_meetl1"
+            ],
+            [
+              "_meetm0",
+              "_meetm1"
+            ],
+            [
+              "_meetn0",
+              "_meetn1"
+            ]
+          ],
+          "polygon": [
+            "_meetalpha0",
+            "_meetalpha1",
+            "_meetalpha2",
+            "_meetalpha3"
+          ],
+          "points": [
+            "_meetalphaLabel",
+            "_meetbetaLabel",
+            "_meetgammaLabel",
+            "_meetlLabel",
+            "_meetmLabel",
+            "_meetnLabel",
+            "O"
+          ]
+        },
+        "parallelcase": {
+          "label": "Другой допустимый пример. Рассмотри случай l ∥ m.",
+          "segments": [
+            [
+              "_parallelalpha0",
+              "_parallelalpha1"
+            ],
+            [
+              "_parallelalpha1",
+              "_parallelalpha2"
+            ],
+            [
+              "_parallelalpha2",
+              "_parallelalpha3"
+            ],
+            [
+              "_parallelalpha3",
+              "_parallelalpha0"
+            ],
+            [
+              "_parallelbeta0",
+              "_parallelbeta1"
+            ],
+            [
+              "_parallelbeta1",
+              "_parallelbeta2"
+            ],
+            [
+              "_parallelbeta2",
+              "_parallelbeta3"
+            ],
+            [
+              "_parallelbeta3",
+              "_parallelbeta0"
+            ],
+            [
+              "_parallelgamma0",
+              "_parallelgamma1"
+            ],
+            [
+              "_parallelgamma1",
+              "_parallelgamma2"
+            ],
+            [
+              "_parallelgamma2",
+              "_parallelgamma3"
+            ],
+            [
+              "_parallelgamma3",
+              "_parallelgamma0"
+            ],
+            [
+              "_parallell0",
+              "_parallell1"
+            ],
+            [
+              "_parallelm0",
+              "_parallelm1"
+            ],
+            [
+              "_paralleln0",
+              "_paralleln1"
+            ]
+          ],
+          "polygon": [
+            "_parallelalpha0",
+            "_parallelalpha1",
+            "_parallelalpha2",
+            "_parallelalpha3"
+          ],
+          "points": [
+            "_parallelalphaLabel",
+            "_parallelbetaLabel",
+            "_parallelgammaLabel",
+            "_parallellLabel",
+            "_parallelmLabel",
+            "_parallelnLabel"
+          ]
+        },
+        "thirdline": {
+          "label": "Теперь сравни l и n в плоскости β.",
+          "segments": [
+            [
+              "_parallelalpha0",
+              "_parallelalpha1"
+            ],
+            [
+              "_parallelalpha1",
+              "_parallelalpha2"
+            ],
+            [
+              "_parallelalpha2",
+              "_parallelalpha3"
+            ],
+            [
+              "_parallelalpha3",
+              "_parallelalpha0"
+            ],
+            [
+              "_parallelbeta0",
+              "_parallelbeta1"
+            ],
+            [
+              "_parallelbeta1",
+              "_parallelbeta2"
+            ],
+            [
+              "_parallelbeta2",
+              "_parallelbeta3"
+            ],
+            [
+              "_parallelbeta3",
+              "_parallelbeta0"
+            ],
+            [
+              "_parallelgamma0",
+              "_parallelgamma1"
+            ],
+            [
+              "_parallelgamma1",
+              "_parallelgamma2"
+            ],
+            [
+              "_parallelgamma2",
+              "_parallelgamma3"
+            ],
+            [
+              "_parallelgamma3",
+              "_parallelgamma0"
+            ],
+            [
+              "_parallell0",
+              "_parallell1"
+            ],
+            [
+              "_parallelm0",
+              "_parallelm1"
+            ],
+            [
+              "_paralleln0",
+              "_paralleln1"
+            ]
+          ],
+          "polygon": [
+            "_parallelbeta0",
+            "_parallelbeta1",
+            "_parallelbeta2",
+            "_parallelbeta3"
+          ],
+          "points": [
+            "_parallelalphaLabel",
+            "_parallelbetaLabel",
+            "_parallelgammaLabel",
+            "_parallellLabel",
+            "_parallelmLabel",
+            "_parallelnLabel"
+          ]
+        }
+      },
+      "note": "Показан допустимый пример расположения трёх плоскостей. В помощи можно рассмотреть другой пример; размеры и прямые углы рисунка не являются данными задачи. Плоскости продолжаются за показанными контурами."
+    }
+  },
+  "help": [
+    {
+      "id": "help-1",
+      "question": "Какие две линии удобнее рассмотреть первыми?",
+      "text": "l и m лежат в одной плоскости α. Они различны, иначе одна прямая принадлежала бы всем трём плоскостям. Поэтому l и m либо пересекаются, либо параллельны.",
+      "view": "sameplane",
+      "children": [
+        {
+          "id": "help-2",
+          "question": "Что делать, если они пересекаются?",
+          "text": "Пусть O принадлежит и l, и m. Тогда O принадлежит α, β и γ, а значит — и общей прямой β и γ.",
+          "view": "meeting"
+        },
+        {
+          "id": "help-3",
+          "question": "А если l и m параллельны?",
+          "text": "Проверь, может ли n встретить l. Такая точка принадлежала бы сразу трём плоскостям, а значит одновременно l и m, что противоречит их параллельности.",
+          "view": "parallelcase"
+        }
+      ],
+      "theoryIds": [
+        "atanasyan2024-theory-002-a3",
+        "theory-004"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Введи три линии",
+      "prompt": "Почему l, m, n различны?",
+      "explanation": "Обозначим l = α ∩ β, m = α ∩ γ, n = β ∩ γ. Если какие-нибудь две из них совпадали бы, эта общая прямая лежала бы во всех трёх плоскостях, что исключено. Прямые l и m лежат в α и различны, поэтому либо пересекаются, либо параллельны.",
+      "justifications": [
+        {
+          "kind": "given",
+          "text": "Три плоскости не проходят через одну общую прямую."
+        },
+        {
+          "kind": "theorem",
+          "text": "Атанасян и др., 2024, п. 2, с. 4, 5, 6: А3 задаёт общую прямую каждой пары различных пересекающихся плоскостей.",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "2",
+            "chapter": "Введение",
+            "printedPages": [
+              4,
+              5,
+              6
+            ],
+            "pdfPages": [
+              6,
+              7,
+              8
+            ]
+          },
+          "theoryId": "atanasyan2024-theory-002-a3"
+        },
+        {
+          "kind": "theorem",
+          "text": "Атанасян и др., 2024, п. 4, с. 9: Две прямые одной плоскости, не имеющие общих точек, называются параллельными.",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "4",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              9
+            ],
+            "pdfPages": [
+              11
+            ]
+          },
+          "theoryId": "theory-004"
+        }
+      ],
+      "view": "sameplane"
+    },
+    {
+      "id": "step-2",
+      "title": "Первый случай: l и m пересекаются",
+      "prompt": "Почему их точка пересечения принадлежит n?",
+      "explanation": "Пусть O = l ∩ m. Из O ∈ l следует O ∈ β, а из O ∈ m следует O ∈ γ. Значит, O принадлежит β ∩ γ = n. Таким образом, все три прямые проходят через O.",
+      "justifications": [
+        {
+          "kind": "definition",
+          "text": "Точка линии пересечения плоскостей принадлежит каждой из этих плоскостей."
+        },
+        {
+          "kind": "given",
+          "text": "n = β ∩ γ."
+        }
+      ],
+      "view": "meeting"
+    },
+    {
+      "id": "step-3",
+      "title": "Второй случай: l ∥ m",
+      "prompt": "Может ли n пересечь l?",
+      "explanation": "Допустим, n и l имеют общую точку Q. Тогда Q лежит в β и γ, поскольку Q ∈ n, и в α, поскольку Q ∈ l. Значит, Q ∈ α ∩ γ = m. Получается, что Q — общая точка l и m, хотя l ∥ m. Противоречие. Поэтому n не пересекает l.",
+      "justifications": [
+        {
+          "kind": "definition",
+          "text": "Параллельные прямые не имеют общих точек."
+        },
+        {
+          "kind": "given",
+          "text": "l = α ∩ β; m = α ∩ γ; n = β ∩ γ."
+        }
+      ],
+      "view": "parallelcase"
+    },
+    {
+      "id": "step-4",
+      "title": "Закончи второй случай",
+      "prompt": "Что даёт принадлежность n и l плоскости β?",
+      "explanation": "n и l — различные прямые одной плоскости β и не пересекаются. Поэтому n ∥ l. Вместе с l ∥ m это означает, что l, m и n попарно параллельны. Два рассмотренных случая исчерпывают все варианты, и утверждение доказано.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Атанасян и др., 2024, п. 4, с. 9: Определение параллельных прямых в одной плоскости.",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "4",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              9
+            ],
+            "pdfPages": [
+              11
+            ]
+          },
+          "theoryId": "theory-004"
+        },
+        {
+          "kind": "theorem",
+          "text": "Атанасян и др., 2024, п. 5, с. 11: Если две прямые параллельны третьей, то они параллельны между собой.",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "5",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              11
+            ],
+            "pdfPages": [
+              13
+            ]
+          },
+          "theoryId": "theory-005"
+        }
+      ],
+      "view": "thirdline"
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "Введи три линии пересечения и разбери два случая для двух линий, лежащих в одной плоскости."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "ege_base_inventory",
+    "at": "2026-10-21T20:10:36Z"
+  }
+}

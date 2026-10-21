@@ -1,0 +1,17 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const Ajv=require('ajv/dist/2020'),root=path.resolve(__dirname,'../..');
+const directory=path.join(root,'stereo-course/textbook');
+const ajv=new Ajv({allErrors:true,strict:true});
+require('ajv-formats')(ajv);
+const lessonSchema=JSON.parse(fs.readFileSync(path.join(directory,'schema/lesson.schema.json')));
+const catalogSchema=JSON.parse(fs.readFileSync(path.join(directory,'schema/catalog.schema.json')));
+const validLesson=ajv.compile(lessonSchema),validCatalog=ajv.compile(catalogSchema);
+const bundle=JSON.parse(fs.readFileSync(path.join(directory,'data/course.json')));
+assert(validCatalog(bundle.catalog),JSON.stringify(validCatalog.errors));
+for(const lesson of bundle.lessons)assert(validLesson(lesson),lesson.id+': '+JSON.stringify(validLesson.errors));
+assert(bundle.lessons.length>0,'No empty course release');
+const malformed=JSON.parse(JSON.stringify(bundle.lessons[0]));
+malformed.visualization.model.views.neutral={label:42};
+assert.equal(validLesson(malformed),false,'neutral view must obey the same schema as every named view');
+console.log('TEXTBOOK_JSON_SCHEMA_OK',bundle.catalog.entries.length,'catalog entries;',bundle.lessons.length,'authored cards');

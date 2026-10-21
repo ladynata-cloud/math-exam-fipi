@@ -1,0 +1,488 @@
+{
+  "catalog": {
+    "schemaVersion": 1,
+    "book": {
+      "id": "atanasyan-2024-10-11",
+      "title": "Геометрия. 10–11 классы",
+      "edition": "Атанасян и соавторы. 12-е издание, 2024",
+      "pdfPageCount": 290
+    },
+    "inventoryComplete": false,
+    "entries": [
+      {
+        "id": "fixture-exercise",
+        "revision": 1,
+        "kind": "exercise",
+        "title": "TEST ONLY fixture-exercise",
+        "status": "reviewed",
+        "source": {
+          "bookId": "atanasyan-2024-10-11",
+          "collection": "main",
+          "printedPages": [
+            3
+          ],
+          "pdfPages": [
+            5
+          ],
+          "exercise": "1"
+        }
+      },
+      {
+        "id": "fixture-theory",
+        "revision": 1,
+        "kind": "theory",
+        "title": "TEST ONLY fixture-theory",
+        "status": "reviewed",
+        "source": {
+          "bookId": "atanasyan-2024-10-11",
+          "collection": "theory",
+          "printedPages": [
+            3
+          ],
+          "pdfPages": [
+            5
+          ],
+          "point": "1"
+        }
+      },
+      {
+        "id": "fixture-proof",
+        "revision": 1,
+        "kind": "exercise",
+        "title": "TEST ONLY fixture-proof",
+        "status": "reviewed",
+        "source": {
+          "bookId": "atanasyan-2024-10-11",
+          "collection": "main",
+          "printedPages": [
+            3
+          ],
+          "pdfPages": [
+            5
+          ],
+          "exercise": "2"
+        }
+      }
+    ]
+  },
+  "lessons": [
+    {
+      "schemaVersion": 1,
+      "id": "fixture-exercise",
+      "revision": 1,
+      "kind": "exercise",
+      "title": "TEST ONLY fixture-exercise",
+      "status": "reviewed",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "printedPages": [
+          3
+        ],
+        "pdfPages": [
+          5
+        ],
+        "exercise": "1"
+      },
+      "statement": {
+        "text": "TEST ONLY: AB=2, AC=2.",
+        "givens": [
+          "AB=2",
+          "AC=2"
+        ],
+        "goal": "TEST ONLY: укажи 1/2."
+      },
+      "visualization": {
+        "type": "scene3d",
+        "caption": "TEST ONLY schematic fixture, not a textbook task.",
+        "model": {
+          "points": {
+            "A": [
+              0,
+              0,
+              0
+            ],
+            "B": [
+              2,
+              0,
+              0
+            ],
+            "C": [
+              0,
+              2,
+              0
+            ]
+          },
+          "edges": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "A",
+              "C"
+            ]
+          ],
+          "views": {
+            "neutral": {
+              "label": "TEST ONLY given edges"
+            },
+            "construction": {
+              "label": "TEST ONLY added segment",
+              "segments": [
+                [
+                  "B",
+                  "C"
+                ]
+              ]
+            }
+          },
+          "planar": true,
+          "labelNames": [
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      },
+      "help": [
+        {
+          "id": "help-main",
+          "question": "TEST ONLY помочь?",
+          "text": "TEST ONLY 1/2",
+          "theoryIds": [
+            "fixture-theory"
+          ],
+          "children": [
+            {
+              "id": "help-inner",
+              "question": "TEST ONLY ещё помощь?",
+              "text": "TEST ONLY AB/AC",
+              "view": "construction"
+            }
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "id": "step-first",
+          "title": "TEST ONLY first step",
+          "prompt": "TEST ONLY введи 2.",
+          "explanation": "TEST ONLY 1/2",
+          "justifications": [
+            {
+              "kind": "given",
+              "text": "TEST ONLY это дано.",
+              "theoryId": "fixture-theory"
+            }
+          ],
+          "view": "construction",
+          "input": {
+            "prompt": "TEST ONLY какая длина AB?",
+            "accepted": [
+              "2"
+            ],
+            "feedback": "TEST ONLY посмотри условие."
+          }
+        },
+        {
+          "id": "step-final",
+          "title": "TEST ONLY second step",
+          "prompt": "TEST ONLY проверь запись.",
+          "explanation": "TEST ONLY 1/2",
+          "justifications": [
+            {
+              "kind": "theorem",
+              "text": "TEST ONLY standalone theoretical justification."
+            }
+          ]
+        }
+      ],
+      "review": {
+        "source": "passed",
+        "mathematics": "passed",
+        "pedagogy": "passed",
+        "reviewer": "TEST FIXTURE ONLY — not a real review",
+        "at": "2026-10-21T00:00:00Z"
+      },
+      "answer": {
+        "mode": "exact",
+        "prompt": "TEST ONLY какой ответ на задачу?",
+        "accepted": [
+          "1/2"
+        ],
+        "feedback": "TEST ONLY проверь ответ."
+      },
+      "testOnly": true
+    },
+    {
+      "schemaVersion": 1,
+      "id": "fixture-theory",
+      "revision": 1,
+      "kind": "theory",
+      "title": "TEST ONLY fixture-theory",
+      "status": "reviewed",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "printedPages": [
+          3
+        ],
+        "pdfPages": [
+          5
+        ],
+        "point": "1"
+      },
+      "statement": {
+        "text": "TEST ONLY: AB=2, AC=2.",
+        "givens": [
+          "AB=2",
+          "AC=2"
+        ],
+        "goal": "TEST ONLY: укажи 1/2."
+      },
+      "visualization": {
+        "type": "scene3d",
+        "caption": "TEST ONLY schematic fixture, not a textbook task.",
+        "model": {
+          "points": {
+            "A": [
+              0,
+              0,
+              0
+            ],
+            "B": [
+              2,
+              0,
+              0
+            ],
+            "C": [
+              0,
+              2,
+              0
+            ]
+          },
+          "edges": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "A",
+              "C"
+            ]
+          ],
+          "views": {
+            "neutral": {
+              "label": "TEST ONLY given edges"
+            },
+            "construction": {
+              "label": "TEST ONLY added segment",
+              "segments": [
+                [
+                  "B",
+                  "C"
+                ]
+              ]
+            }
+          },
+          "planar": true,
+          "labelNames": [
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      },
+      "help": [],
+      "steps": [
+        {
+          "id": "step-first",
+          "title": "TEST ONLY first step",
+          "prompt": "TEST ONLY введи 2.",
+          "explanation": "TEST ONLY 1/2",
+          "justifications": [
+            {
+              "kind": "given",
+              "text": "TEST ONLY это дано.",
+              "theoryId": "fixture-theory"
+            }
+          ],
+          "view": "construction",
+          "input": {
+            "prompt": "TEST ONLY какая длина AB?",
+            "accepted": [
+              "2"
+            ],
+            "feedback": "TEST ONLY посмотри условие."
+          }
+        },
+        {
+          "id": "step-final",
+          "title": "TEST ONLY second step",
+          "prompt": "TEST ONLY проверь запись.",
+          "explanation": "TEST ONLY 1/2",
+          "justifications": [
+            {
+              "kind": "theorem",
+              "text": "TEST ONLY standalone theoretical justification."
+            }
+          ]
+        }
+      ],
+      "review": {
+        "source": "passed",
+        "mathematics": "passed",
+        "pedagogy": "passed",
+        "reviewer": "TEST FIXTURE ONLY — not a real review",
+        "at": "2026-10-21T00:00:00Z"
+      },
+      "testOnly": true
+    },
+    {
+      "schemaVersion": 1,
+      "id": "fixture-proof",
+      "revision": 1,
+      "kind": "exercise",
+      "title": "TEST ONLY fixture-proof",
+      "status": "reviewed",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "printedPages": [
+          3
+        ],
+        "pdfPages": [
+          5
+        ],
+        "exercise": "2"
+      },
+      "statement": {
+        "text": "TEST ONLY: AB=2, AC=2.",
+        "givens": [
+          "AB=2",
+          "AC=2"
+        ],
+        "goal": "TEST ONLY: укажи 1/2."
+      },
+      "visualization": {
+        "type": "scene3d",
+        "caption": "TEST ONLY schematic fixture, not a textbook task.",
+        "model": {
+          "points": {
+            "A": [
+              0,
+              0,
+              0
+            ],
+            "B": [
+              2,
+              0,
+              0
+            ],
+            "C": [
+              0,
+              2,
+              0
+            ]
+          },
+          "edges": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "A",
+              "C"
+            ]
+          ],
+          "views": {
+            "neutral": {
+              "label": "TEST ONLY given edges"
+            },
+            "construction": {
+              "label": "TEST ONLY added segment",
+              "segments": [
+                [
+                  "B",
+                  "C"
+                ]
+              ]
+            }
+          },
+          "planar": true,
+          "labelNames": [
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      },
+      "help": [
+        {
+          "id": "help-main",
+          "question": "TEST ONLY помочь?",
+          "text": "TEST ONLY 1/2",
+          "theoryIds": [
+            "fixture-theory"
+          ],
+          "children": [
+            {
+              "id": "help-inner",
+              "question": "TEST ONLY ещё помощь?",
+              "text": "TEST ONLY AB/AC",
+              "view": "construction"
+            }
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "id": "step-first",
+          "title": "TEST ONLY first step",
+          "prompt": "TEST ONLY введи 2.",
+          "explanation": "TEST ONLY 1/2",
+          "justifications": [
+            {
+              "kind": "given",
+              "text": "TEST ONLY это дано.",
+              "theoryId": "fixture-theory"
+            }
+          ],
+          "view": "construction",
+          "input": {
+            "prompt": "TEST ONLY какая длина AB?",
+            "accepted": [
+              "2"
+            ],
+            "feedback": "TEST ONLY посмотри условие."
+          }
+        },
+        {
+          "id": "step-final",
+          "title": "TEST ONLY second step",
+          "prompt": "TEST ONLY проверь запись.",
+          "explanation": "TEST ONLY 1/2",
+          "justifications": [
+            {
+              "kind": "theorem",
+              "text": "TEST ONLY standalone theoretical justification."
+            }
+          ]
+        }
+      ],
+      "review": {
+        "source": "passed",
+        "mathematics": "passed",
+        "pedagogy": "passed",
+        "reviewer": "TEST FIXTURE ONLY — not a real review",
+        "at": "2026-10-21T00:00:00Z"
+      },
+      "answer": {
+        "mode": "manual",
+        "prompt": "TEST ONLY запиши доказательство."
+      },
+      "testOnly": true
+    }
+  ]
+}
