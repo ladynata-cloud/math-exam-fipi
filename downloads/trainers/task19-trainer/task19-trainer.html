@@ -71,9 +71,10 @@ noscript p{max-width:760px;margin:30px auto;padding:20px}
 .t19-preserve{font-size:15px;color:var(--muted);margin:0 0 16px;line-height:1.7}
 .t19-measure{display:block;margin-top:24px;background:var(--green);border-color:var(--green);color:#fff;min-height:48px}
 .t19-measure:hover{background:#12533f;color:#fff}
+.t19-model-reset{display:block;margin-top:14px;color:var(--green);border-color:#d3ded5}
 .t19-observe{font-size:18px;line-height:1.7;margin:20px 0 4px}
 .visual-host input[type=range]{min-height:48px}
-@media(max-width:540px){.t19-measure{width:100%}.t19-model-readout{padding-left:20px}}
+@media(max-width:540px){.t19-measure,.t19-model-reset{width:100%}.t19-model-readout{padding-left:20px}}
 
 /* Linked geometry remains usable with a mouse, touch, or keyboard. */
 [data-geometry-group]{outline-offset:4px}
@@ -91,9 +92,28 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
 .t19-reference a{color:var(--green);text-underline-offset:3px;overflow-wrap:anywhere}
 .t19-reference p{margin:14px 0}
 .t19-reference-sheet{margin:14px 0}
+.t19-textbook{margin-top:22px;font-size:16px;line-height:1.8;overflow-wrap:anywhere}
+.t19-textbook>summary{cursor:pointer;min-height:48px;padding:10px 0;color:var(--green);width:fit-content}
+.t19-textbook[open]>summary{margin-bottom:10px}
+.t19-textbook-content{border-top:1px solid var(--line);padding-top:4px}
+.t19-textbook-content p{margin:16px 0}
+.t19-textbook-note{color:var(--muted);font-size:15px}
+.t19-textbook-topic{margin:24px 0}
+.t19-textbook-topic h3{font-size:18px;line-height:1.6;margin:0 0 12px;font-weight:600}
+.t19-textbook-sources{margin:18px 0;padding-left:22px}
+.t19-textbook-sources li{margin:18px 0}
+.t19-textbook a{color:var(--green);text-underline-offset:3px;text-decoration-thickness:1px}
+.t19-textbook-edition{display:block;color:var(--muted);font-size:14px;margin-top:5px;line-height:1.7}
+.t19-textbook-excerpt{margin:16px 0}
+.t19-textbook-excerpt img{display:block;width:100%;height:auto;max-width:650px;background:#fff;border:1px solid var(--line);border-radius:6px}
+.t19-textbook-excerpt figcaption{font-size:13px;line-height:1.6;color:var(--muted);margin-top:6px}
+.t19-textbook-close{color:var(--green);border-color:#d3ded5;margin:2px 0 8px}
+@media(max-width:540px){.t19-textbook-close{width:100%}.t19-textbook-sources{padding-left:19px}}
 @media(prefers-reduced-motion:reduce){svg .t19-linked-active,.t19-angle-pulse{animation:none!important}svg .t19-linked-active{filter:drop-shadow(0 0 3px currentColor)}}
 
 </style>
+
+
 
 
 
@@ -122,6 +142,7 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
       <section class="answer-panel" id="answerPanel" aria-live="polite" aria-atomic="true" hidden>
         <h3 id="resultTitle"></h3><p id="answerExplanation"></p>
       </section>
+      <div id="textbookHost"></div>
       <div class="next-row"><button id="nextCard">Другое утверждение →</button></div>
     </section>
     <details class="practice-settings" id="settings">
@@ -2763,7 +2784,7 @@ const data = {
       "theme": "Прямые и углы",
       "text": "Если две прямые параллельны третьей, то они перпендикулярны.",
       "truth": false,
-      "explanation": "Параллельные одной прямой прямые не обязаны быть перпендикулярны.",
+      "explanation": "На плоскости две различные прямые, параллельные третьей, параллельны друг другу. Поэтому перпендикулярными они быть не могут.",
       "hint": {
         "model": "lineRelations",
         "params": {
@@ -5223,6 +5244,28 @@ const data = {
         "preserve": "P остаётся вне окружности.",
         "observe": "Сколько касательных получается из каждого положения P?"
       }
+    },
+    {
+      "id": "tri_aaa_similarity",
+      "aliases": [
+        "tri_aaa_similarity"
+      ],
+      "theme": "Треугольники",
+      "text": "Если три угла одного треугольника равны трём углам другого треугольника, то такие треугольники подобны.",
+      "truth": true,
+      "explanation": "Если равны три пары соответствующих углов, то равны и любые две из них. Значит, выполняется признак подобия по двум углам. Размеры треугольников при этом могут различаться.",
+      "hint": {
+        "model": "triangleSimilarity",
+        "params": {
+          "mode": "free",
+          "a": 55,
+          "b": 65,
+          "scale": 2
+        },
+        "prompt": "Измени размер второго треугольника. Сравни три пары отмеченных углов и отношения соответствующих сторон.",
+        "observe": "Сохраняются ли равные углы? Во сколько раз меняется каждая сторона?",
+        "preserve": "Все три угла первого треугольника равны соответствующим углам второго."
+      }
     }
   ],
   "aliases": {
@@ -5538,7 +5581,7 @@ const data = {
   "sourceCounts": {
     "expanded": 105,
     "basic": 63,
-    "unique": 233,
+    "unique": 234,
     "summer": 178,
     "reference": 106
   }
@@ -5981,6 +6024,8 @@ if(root) root.Task19Data=data;
   const dotted=(a,b,color)=>line(a,b,color,'6 5');
   const AMBER='#a76616',PURPLE='#7954a1',COLORS=[BLUE,GREEN,AMBER,PURPLE];
   const row=(text,color,group)=>({text,color,group});
+  const clearPoint=(p,color)=>`<circle cx="${p[0]}" cy="${p[1]}" r="7" fill="white"/>`+dot(p,color);
+  const clearLabel=(x,y,label,color)=>text(x,y,label,color).replace('<text ','<text paint-order="stroke fill" stroke="white" stroke-width="5" stroke-linejoin="round" ');
   const offsetTick=(a,b,count,color)=>tick(a,[a[0]+.5*(b[0]-a[0]),a[1]+.5*(b[1]-a[1])],count,color);
   // Marks follow measured equality, including when a slider creates a special case.
   function equalityGroups(values){const unique=[];return values.map(value=>{let i=unique.findIndex(v=>Math.abs(v-value)<1e-7*Math.max(1,Math.abs(v),Math.abs(value)));if(i<0){i=unique.length;unique.push(value);}return{count:i+1,color:COLORS[i%COLORS.length]};});}
@@ -6016,12 +6061,22 @@ if(root) root.Task19Data=data;
     controls:[['angle','Поверни прямую через P',0,170,1,'°']],
     controlsFor:p=>p.mode==='many'?[['angle','Поверни третью прямую через P',15,75,1,'°']]:defs.lineThroughPoint.controls,
     normalize:p=>{if(p.mode==='many')p.angle=clamp(p.angle,15,75);return p;},
+    update:(p,key,value)=>{
+      if(key!=='angle')return {...p,[key]:value};
+      const before=p.angle-p.target,after=value-p.target;
+      // Snap on approach, but let a keyboard step leave an already aligned line.
+      // Applying this in normalize() would trap ArrowLeft/ArrowRight at the target.
+      const approaching=Math.abs(after)<Math.abs(before)||before*after<0;
+      return {...p,angle:p.mode==='twoPoints'&&Math.abs(after)<=2&&approaching?p.target:value};
+    },
     sample:p=>{const u=[3.4*Math.cos(p.angle*RAD),3.4*Math.sin(p.angle*RAD)],P={P:[0,0],B:[3*Math.cos(p.target*RAD),3*Math.sin(p.target*RAD)],U:[-u[0],-u[1]],V:u};return{points:P,metrics:{angle:p.angle,target:p.target,distance:3*Math.abs(Math.sin((p.angle-p.target)*RAD)),relative:Math.min(p.angle,180-p.angle)}};},
-    render:s=>{const p=s.values,P=s.points,T=q=>[280+q[0]*42,175-q[1]*42],u=[3.4*Math.cos(p.angle*RAD),3.4*Math.sin(p.angle*RAD)];let body=line(T([-u[0],-u[1]]),T(u),BLUE)+dot(T(P.P),BLUE)+text(266,197,'P',BLUE);
-      if(p.mode==='twoPoints')body+=dot(T(P.B),GREEN)+text(T(P.B)[0]+14,T(P.B)[1]-14,'B',GREEN);
+    render:s=>{const p=s.values,P=s.points,T=q=>[280+q[0]*42,175-q[1]*42],u=[3.4*Math.cos(p.angle*RAD),3.4*Math.sin(p.angle*RAD)],normal=[Math.sin(p.angle*RAD),Math.cos(p.angle*RAD)];let body=line(T([-u[0],-u[1]]),T(u),BLUE);
+      if(p.mode==='twoPoints'){const b=T(P.B);body+=`<g data-geometry-point="B">${clearPoint(b,GREEN)}${clearLabel(b[0]+normal[0]*32,b[1]+normal[1]*32,'B',GREEN)}</g>`;}
       else if(p.mode==='many')body+=line([70,175],[490,175],INK)+line([280,40],[280,310],GREEN)+rightMark([490,175],[280,175],[280,40]);
       else{body+=line([55,285],[505,285],GREEN)+text(80,268,'a',GREEN);if(Math.abs(p.angle-90)<1e-7)body+=rightMark(T(P.P),[280,285],[505,285]);}
-      return{body,readout:p.mode==='twoPoints'?[`Расстояние от B до синей прямой: ${fmt(s.metrics.distance)}`,`Направление синей прямой: ${fmt(p.angle)}°`]:p.mode==='many'?[`Направления трёх прямых: 0°; ${fmt(p.angle)}°; 90°`,'Все три прямые проходят через P']:[`Угол синей прямой с прямой a: ${fmt(s.metrics.relative)}°`,`Синяя прямая всё время проходит через P`]};}
+      const label=p.mode==='many'?[307,205]:[280+normal[0]*32,175+normal[1]*32];
+      body+=`<g data-geometry-point="P">${clearPoint(T(P.P),BLUE)}${clearLabel(label[0],label[1],'P',BLUE)}</g>`;
+      return{body,readout:p.mode==='twoPoints'?[`Расстояние от B до синей прямой: ${fmt(s.metrics.distance)}`,`Направление синей прямой: ${fmt(p.angle)}°`,...(s.metrics.distance<1e-9?['Прямая проходит через обе точки P и B.']:[])]:p.mode==='many'?[`Направления трёх прямых: 0°; ${fmt(p.angle)}°; 90°`,'Все три прямые проходят через P']:[`Угол синей прямой с прямой a: ${fmt(s.metrics.relative)}°`,`Синяя прямая всё время проходит через P`]};}
   };
 
   defs.bisectorDistance={
@@ -6115,7 +6170,20 @@ if(root) root.Task19Data=data;
     controlsFor:p=>p.mode==='midpoint'?[['bx','Координата x точки B',-5,5,0.5,''],['by','Координата y точки B',-3,4,0.5,'']]:defs.coordinateMeasure.controls,
     sample:p=>{const P=p.mode==='midpoint'?{A:[p.x,p.y],B:[p.bx,p.by]}:{A:[p.a,0],B:[p.b,0]};P.M=mid(P.A,P.B);return{points:P,metrics:{length:hypot(P.A,P.B),difference:p.b-p.a,midX:P.M[0],midY:P.M[1],AM:hypot(P.A,P.M),MB:hypot(P.M,P.B)}};},
     render:s=>{const p=s.values,P=s.points,T=q=>[280+q[0]*34,190-q[1]*30];let body=line([60,190],[500,190]);for(let i=-6;i<=6;i++)body+=line([280+i*34,185],[280+i*34,195])+text(280+i*34,214,i);if(p.mode==='midpoint'){body+=line([280,45],[280,295]);for(let i=-3;i<=4;i++)if(i)body+=line([275,190-i*30],[285,190-i*30])+text(263,190-i*30,i);}
-      body+=line(T(P.A),T(P.B),BLUE)+dot(T(P.A),BLUE)+dot(T(P.B),GREEN)+text(T(P.A)[0]-10,T(P.A)[1]-20,'A',BLUE)+text(T(P.B)[0]+10,T(P.B)[1]-20,'B',GREEN);if(p.mode==='midpoint')body+=linked('AM',line(T(P.A),T(P.M),BLUE)+tick(T(P.A),T(P.M),1,BLUE),'AM')+linked('MB',line(T(P.M),T(P.B),BLUE)+tick(T(P.M),T(P.B),1,BLUE),'MB')+dot(T(P.M))+text(T(P.M)[0],T(P.M)[1]+22,'M');return{body,readout:p.mode==='midpoint'?[`A (${fmt(P.A[0])}; ${fmt(P.A[1])})`,`B (${fmt(P.B[0])}; ${fmt(P.B[1])})`,`M (${fmt(s.metrics.midX)}; ${fmt(s.metrics.midY)})`,row(`AM = ${fmt(s.metrics.AM)}`,BLUE,'AM'),row(`MB = ${fmt(s.metrics.MB)}`,BLUE,'MB')]:[`Координаты: ${fmt(p.a)} и ${fmt(p.b)}`,`Разность B − A = ${fmt(s.metrics.difference)}`,`Расстояние AB = ${fmt(s.metrics.length)}`]};}
+      if(p.mode==='line'){
+        const a=T(P.A),b=T(P.B),same=s.metrics.length<1e-9,sign=p.a<=p.b?1:-1;
+        let segment=line(a,b,BLUE).replace('stroke-width="3"','stroke-width="7"');
+        if(!same)segment+=line([a[0],136],[b[0],136],BLUE)+line([a[0],130],[a[0],142],BLUE)+line([b[0],130],[b[0],142],BLUE)+dotted([a[0],145],[a[0],180],BLUE)+dotted([b[0],145],[b[0],180],BLUE);
+        segment+=clearLabel((a[0]+b[0])/2,105,`AB = ${fmt(s.metrics.length)}`,BLUE);
+        body+=linked('AB',segment,'Отрезок AB и его длина');
+        if(same)body+=clearPoint(a,BLUE)+clearLabel(a[0],163,'A = B',BLUE);
+        else body+=clearPoint(a,BLUE)+clearPoint(b,GREEN)+clearLabel(a[0]-sign*12,163,'A',BLUE)+clearLabel(b[0]+sign*12,163,'B',GREEN);
+        const signed=n=>fmt(n).replace(/^-/,'−'),subtract=p.a<0?`(${signed(p.a)})`:signed(p.a);
+        return{body,readout:[`Координата A: ${signed(p.a)}; координата B: ${signed(p.b)}`,row(`AB = |${signed(p.b)} − ${subtract}| = |${signed(s.metrics.difference)}| = ${fmt(s.metrics.length)}`,BLUE,'AB')]};
+      }
+      body+=line(T(P.A),T(P.B),BLUE)+dot(T(P.A),BLUE)+dot(T(P.B),GREEN)+text(T(P.A)[0]-10,T(P.A)[1]-20,'A',BLUE)+text(T(P.B)[0]+10,T(P.B)[1]-20,'B',GREEN);
+      body+=linked('AM',line(T(P.A),T(P.M),BLUE)+tick(T(P.A),T(P.M),1,BLUE),'AM')+linked('MB',line(T(P.M),T(P.B),BLUE)+tick(T(P.M),T(P.B),1,BLUE),'MB')+dot(T(P.M))+text(T(P.M)[0],T(P.M)[1]+22,'M');
+      return{body,readout:[`A (${fmt(P.A[0])}; ${fmt(P.A[1])})`,`B (${fmt(P.B[0])}; ${fmt(P.B[1])})`,`M (${fmt(s.metrics.midX)}; ${fmt(s.metrics.midY)})`,row(`AM = ${fmt(s.metrics.AM)}`,BLUE,'AM'),row(`MB = ${fmt(s.metrics.MB)}`,BLUE,'MB')]};}
   };
 
   defs.rhombusArea={
@@ -6575,6 +6643,11 @@ if(root) root.Task19Data=data;
     });
     const onMeasure=()=>{if(active){measured=!measured;draw();publish();}};
     measure.addEventListener('click',onMeasure);listeners.push([measure,'click',onMeasure]);
+    if(hint.model==='lineThroughPoint'){
+      const reset=doc.createElement('button');reset.type='button';reset.className='t19-model-reset';reset.textContent='Начать сначала';
+      const onReset=()=>{if(active){const initial=restoreModel(hint,null);params=initial.params;measured=false;draw();publish();}};
+      reset.addEventListener('click',onReset);listeners.push([reset,'click',onReset]);host.insertBefore(reset,readout);
+    }
     const highlight=event=>{
       const item=event.target.closest?.('[data-geometry-group]'),group=item&&host.contains(item)?item.dataset.geometryGroup:null;
       host.querySelectorAll('[data-geometry-group]').forEach(node=>node.classList.toggle('t19-linked-active',!!group&&node.dataset.geometryGroup===group));
@@ -6738,6 +6811,2193 @@ return {forCard,mount,crops};
 });
 
 </script>
+<script data-inline-source="/trainers/task19-textbook-data.js">
+/* Verified references to specific textbook editions.
+ * Explanations are original mathematical notes, not textbook quotations.
+ * Page numbers are edition-specific; external archives are labelled. */
+(function(root){
+'use strict';
+const data = {
+  "version": 1,
+  "checkedAt": "2026-10-21",
+  "label": "Для ценителей строгости и точности",
+  "books": {
+    "atanasyan2010": {
+      "title": "Геометрия. 7–9 классы",
+      "authors": "Л. С. Атанасян, В. Ф. Бутузов, С. Б. Кадомцев, Э. Г. Позняк, И. И. Юдина",
+      "edition": "20-е издание. Москва: Просвещение, 2010",
+      "year": 2010,
+      "isbn": "978-5-09-023915-8",
+      "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf",
+      "hostNote": "Скан издания на образовательном сайте ege-ok.ru. Это внешний архив, не сайт издательства."
+    },
+    "merzlyak7_2015": {
+      "title": "Геометрия. 7 класс",
+      "authors": "А. Г. Мерзляк, В. Б. Полонский, М. С. Якир",
+      "fullAuthors": "Аркадий Григорьевич Мерзляк; Виталий Борисович Полонский; Михаил Семёнович Якир",
+      "edition": "Москва: Вентана-Граф, 2015. 192 с.",
+      "year": 2015,
+      "isbn": "978-5-360-05508-2",
+      "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf",
+      "catalogUrl": "https://my-uchebnik.ru/book/geometry/5/geometry-00000035.htm",
+      "hostNote": "Скан российского издания во внешнем образовательном архиве «Мой учебник». Это не сайт издательства."
+    },
+    "merzlyak8_2013": {
+      "title": "Геометрия. 8 класс",
+      "authors": "А. Г. Мерзляк, В. Б. Полонский, М. С. Якир",
+      "fullAuthors": "Аркадий Григорьевич Мерзляк; Виталий Борисович Полонский; Михаил Семёнович Якир",
+      "edition": "Москва: Вентана-Граф, 2013. 208 с.",
+      "year": 2013,
+      "isbn": "978-5-360-04382-9",
+      "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf",
+      "catalogUrl": "https://my-uchebnik.ru/book/geometry/5/geometry-00000030.htm",
+      "hostNote": "Скан российского издания во внешнем образовательном архиве «Мой учебник». Это не сайт издательства."
+    },
+    "merzlyak9_2022": {
+      "title": "Геометрия. 9 класс",
+      "authors": "А. Г. Мерзляк, В. Б. Полонский, М. С. Якир; под редакцией В. Е. Подольского",
+      "fullAuthors": "Аркадий Григорьевич Мерзляк; Виталий Борисович Полонский; Михаил Семёнович Якир",
+      "edition": "7-е издание, стереотипное. Москва: Просвещение, 2022. 256 с. Электронное издание в PDF.",
+      "year": 2022,
+      "isbn": "978-5-09-101280-4",
+      "printIsbn": "978-5-09-087860-9",
+      "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000051.pdf",
+      "catalogUrl": "https://my-uchebnik.ru/book/geometry/1/geometry-00000051.htm",
+      "hostNote": "PDF российского издания во внешнем образовательном архиве «Мой учебник». Это не сайт издательства."
+    }
+  },
+  "topics": {
+    "points_lines": {
+      "title": "Точки и прямые",
+      "explanation": "Две различные точки задают прямую однозначно. Для одной точки направление прямой можно выбирать.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 1",
+          "printedPage": "5",
+          "pdfPage": 7,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=7"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 1, основное свойство прямой",
+          "printedPage": "9",
+          "pdfPage": 10,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=10"
+        }
+      ]
+    },
+    "angle_bisector": {
+      "title": "Биссектриса угла",
+      "explanation": "Биссектриса выходит из вершины и разделяет угол на равные части.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 6",
+          "printedPage": "12",
+          "pdfPage": 14,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=14"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 3, определение биссектрисы угла",
+          "printedPage": "22",
+          "pdfPage": 23,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=23"
+        }
+      ]
+    },
+    "adjacent_vertical": {
+      "title": "Углы при пересечении прямых",
+      "explanation": "Смежная пара образует развёрнутый угол. Вертикальная пара состоит из противоположных углов.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 11",
+          "printedPage": "22",
+          "pdfPage": 24,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=24"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 4, определение смежных углов и свойство вертикальных углов",
+          "printedPage": "29–30",
+          "pdfPage": 30,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=30"
+        }
+      ]
+    },
+    "perpendicular": {
+      "title": "Перпендикулярные прямые",
+      "explanation": "Перпендикулярность означает пересечение под прямым углом. Две различные прямые, перпендикулярные одной прямой на плоскости, параллельны.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 12",
+          "printedPage": "22–23",
+          "pdfPage": 24,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=24"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 24",
+          "printedPage": "54",
+          "pdfPage": 56,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=56"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 5, определение перпендикулярных прямых",
+          "printedPage": "34",
+          "pdfPage": 35,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=35"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 13, теорема 13.1",
+          "printedPage": "84",
+          "pdfPage": 85,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=85"
+        }
+      ]
+    },
+    "perpendicular_point": {
+      "title": "Перпендикуляр из точки",
+      "explanation": "Из внешней точки к прямой существует единственный перпендикуляр.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 16",
+          "printedPage": "32–33",
+          "pdfPage": 34,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=34"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 7, теорема 7.1",
+          "printedPage": "48",
+          "pdfPage": 49,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=49"
+        }
+      ]
+    },
+    "parallel_alternate": {
+      "title": "Признак параллельности: накрест лежащие углы",
+      "explanation": "Равенство накрест лежащих углов позволяет установить параллельность прямых.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 25, первый признак",
+          "printedPage": "55–56",
+          "pdfPage": 57,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=57"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 14, теорема 14.1",
+          "printedPage": "88",
+          "pdfPage": 89,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=89"
+        }
+      ]
+    },
+    "parallel_same_side": {
+      "title": "Признак параллельности: односторонние углы",
+      "explanation": "Если внутренние односторонние углы составляют 180°, прямые параллельны.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 25, третий признак",
+          "printedPage": "57",
+          "pdfPage": 59,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=59"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 14, теорема 14.2",
+          "printedPage": "89",
+          "pdfPage": 90,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=90"
+        }
+      ]
+    },
+    "parallel_angles": {
+      "title": "Углы у параллельных прямых",
+      "explanation": "При секущей накрест лежащие и соответственные углы попарно равны; внутренние односторонние дополняют друг друга до 180°.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 29",
+          "printedPage": "63–65",
+          "pdfPage": 65,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=65"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 15, теоремы 15.1–15.3",
+          "printedPage": "96–97",
+          "pdfPage": 97,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=97"
+        }
+      ]
+    },
+    "parallel_point": {
+      "title": "Параллельная прямая через точку",
+      "explanation": "Через внешнюю точку проходит ровно одна прямая, параллельная данной.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 28",
+          "printedPage": "60–62",
+          "pdfPage": 62,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=62"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 13, аксиома параллельности прямых",
+          "printedPage": "85",
+          "pdfPage": 86,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=86"
+        }
+      ]
+    },
+    "parallel_third": {
+      "title": "Две прямые, параллельные третьей",
+      "explanation": "У двух различных прямых, параллельных одной прямой, одинаковое направление; они не пересекаются.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 28, следствие 2°",
+          "printedPage": "62",
+          "pdfPage": 64,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=64",
+          "excerpt": {
+            "file": "data:image/png;base64,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",
+            "alt": "Если две прямые параллельны третьей прямой, то они параллельны.",
+            "width": 460,
+            "height": 60
+          }
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 13, теорема 13.2",
+          "printedPage": "85",
+          "pdfPage": 86,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=86",
+          "excerpt": {
+            "file": "data:image/png;base64,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e94NN3xt/vz5Wgfbtj0WBAWA/v7+r15zNcaIMWYYBmOMEOL7fiaT6e3tnTdv3te/9vXq6hrOxa5duzZt2vTyyy/v3bs3iqIoihobG7/4xS9efPHFtm0rpZqbm3/wgx/s27dv3rx5n/3sZ+++++7e3t5SqXTaaaddccUVZ5xxWhhFlGDHdV59ddUvf/nLnTt3zpw5U/vTtbW1n//85y+44IKqymrtob678d077rhjcHDwCFN/6tSpP//Zv5SVlwGo3bt3XXvttbFYTPtYGv9EAOedfd6P77yTUYop27lt249+9KN169aVSqWqqqpcLnfqqaf97J57s2UVepUBYPny5S+99NL4nCOMAUu+/MHltbVVI757510/yeVy5eXlV1111YzZM9JlWQCIghBhBABKys2bN3/rW98aGhq45pprrr/+egDYtXPnd7/7vZCHqVTqjjvuqFxY8drrr950002JRGLBggU//vGPY3X1vu/G7ITjOFLKYrH4wAMPrF69mjG2dOnSq666SpuniUSCc57L5e6///5XXnnFtu0oisa8SW28f+ITS65YetVPf/rTLVs2V1SWf/Ob31i9evX69euHhwerayovvPDCr1x9dUN9FUJYRGH7oc7777/v4Uceqq2ZmBsZppSce+5Hv3j5l2bOnlVw/F/c/fN169YZhqFBjoaGhtbW1sWLF+dyufPOO//0Uz587733bt68OZPJ3H3PPfPnzwclx8k1AADC6P49e1atWvXwww/39fURQmKx2OzZsz/1qU+de+65ZRUVhmlu3rz5tttuGxkZqa2tffChhyZNmrRnz56v3XBDX19ffX19LJk4/7wLj9invu8vX758x44dAGBZFiYKY6mD4rlc7tRTT33i8ScUqK3btnz/+9/nnF9//fWu6/7rv/6rzoiprKy87rrrPv03n9Z329G0/Z577tmyaQtFVHPOmNV+++23N0ye3NfdvWLFiieeeEIGqrGx8a677jqpooJ7vpFIvLHq1TGu+8xnPnP1NV/NVlUGYXDo0KGnn37617/+dXd3d3l5OUJo7ty5N9544+LFi5FCBqWvv/Hq7bf/SAjxPy44/447flJbX7Vl44Z77/3lunVrvTBavvyh6prqIAgMwxgLuBxBhJ07d/3whz/cv3+/xpni8XihUIiiKBaLVVVV3XrrrYsWLers7HziiSceffTRgYGBdDqdz+dPP/30008//aKLLmpoaDi6r7Jt2wDwxhtv3HPPPfv27Usk4mHkVVdXffKTnzzvvPPmzpmbSCQ6Ozv/963fHxgYmDZt2rJlyyorqzBir7766l133UUI+dCHPnTrrbem0+lly5atWrWKEHLFFUuvuPJvKeCBgf4777xjx44dCxYs+PnPfw6gGKMYYaxjiYA7uzp+85snn376aUIQgApCf7w3ueTCJddcc21ldTUo7jrOXXf+5OWXXy4UChUVFVoSzpoz595/vZdQSggxDHQYEVTvjU6+TzdKfNjoZoAAYUWoDCOn5OQsmwRhqa9/IF8oul4pNzLkejnXG0YoNAz85G8ev/TSS3c27fY9wWgiHiu3zOyPfnjHM888o4McGhTS0WClVD6f15GSfD6vzZkoCEqlUjKZzOVyfX192LK2b926e/fu4eHhmG27rquXVm97fa2GZfIjIxMnTiwUCoZhFIvFXC7neZ5pmqOQglI6XOd5XjKZzGQyVVVVCKF4PL5z584HH3zwscceAwBEiFcsfu9737v//vszmUwymYzFYoyxXbt23XDDDStWrGC2LcJwfJB5LMVRZyiYpuk4jhTStu18Ph+Pxzs6OqIokkqWlZVp1PGRRx55/vnnNTWklI899tiLL77Ig0Aptbup6Qc/+MFjjz3W399fKhVLpVI+n8/n867r+r4/hma0tLQwxoqlIiFkw4YNUspkMhmG4TPPPDM4OKiRbW3Oe57neV5nZ+fQ0FAulxuLAYzZmL7vU0r7+vra29sbJk9WSoFhPP/889/+9rc7OjoAoKampqenZ8M77/zjP/7jvffeq3O4NOSuIx9hGOZyuQMHDuzfv3/fvn0tLS179uzZtGnToUOHtm7dunfv3g0bNmjLZNeuXZdffvn111/f2trquu7u3bsppYODgzfffPPmzZsBoFgsak3JGMvn87fddltLS0tPT48QYs+ePcuXL4+iiBAilVy+fPmtt95aKBS04tfuUW9v73333dfU1FRySlEU2ZYdj8c1a+3Zs2d4eNg0Tc/zent7fd9XoAgmfuAjQI7jKKX6+/t7e3s551rlMMYAkJRq5e9fuPba67Zu3ea6Xn39pEwmm0ymdjc3f/rTn961axfGmDEWi8V0vkxFRYVhGDpGqJQyDCOXy2m3W5tlXV1dQRAAgOJcL4dfKoowQAgSthX5XtyK24ZNELXtRDqZ0R/WXruQQghRXl5ummYul9P3TCaShJCKiop4PJ5IJEaj42FYKBQsy0qlUlqoua6bSqXy+bzjOP39/eXl5YQQy7IwxiMjI319fZZlOY6jQ5tSyptvvnn37t0VFRU6Pe2ll1769a8fRyjN/dhAb3TjDbf95olVFdlpJq1urF/oFNibq7d/4dJrVr64VnDIjxTDgA41hdQAACAASURBVPNI+l6IgLQf6oxCkR8pMmoiwKZpDg0MlAqFwf5+W0OCCEVhCAj5rqukBIQ6D7Yv+eTFP779JzwS8+bOn1A70Sm5rfsPfP97//zKy6sAsBRy0qRJQRDYtm2aJkiJKH3ttdc6OjqUUqMxucOe/ZhFrpdDx2hHRkZGcrkwDCsrK0dGRhobG6Mo6untQYBc1y0Wi5Zl3XTTTXfffffcuXMJIcPDw57n3XLLLVrLhlF46623rl+/HhRQShOJhN4IuVwum80eOnRII2Gtra1jeQDNzc1DPT3MNEvDw6+//rpSSsMn8Xhch0sKhcLtt99+33335fP5U089tby8PJvNrl+//uabb37nnXcASc8ZURDU1VdV12SF9DMVqUJh8OFHlrXsaaJMpTMxO2ZpsaZjFu+bwzN58uR8Pq+xBymlZn4hhOM4PT095eXlAPDII4/85Cc/UUrV1dUdd9xxqVRq+/bt99xzz0MPPaQdnvEJmFp0v/3227/4xS8OHjxYLBbr6uqqqqr0nv3617/e29erAyjd3d2EkEKhoO1abWfrRWlubh7DBX3fJ4R0dHRoMfXaa6+1tLTEYrGBgYHm5uZkIqmTjHQWaxRFWpgrpdra2vL5fE9Pj+u6rut2dXUppbLZbCKRCINg7549N9xww7PPPhsEwaRJk7SjFQRBa2vrnXfemUwkY3YsDEPHdcZkkX6Q4zhHfwfDe+omFUiFhEKBQgHgMJ5IPP3M4y+vet62bcaY4xRTKfPb3/mWHZt68GDnsmUPDPQPBYH48lXXnPnhs8MovPk7/xz4cvny5TU1NYsWLSqVSpo6lmVdc8011dXVzz333Jo1bwophVQglZCKC8mFRJgww5RB+Nbat/ftb43F4oF8HzScUqpxcwVoeGTEDfzp02ZcdeVVLXua73/gASlHc7QBYSmBC2lZtuM4l1122Sc++cnA9++8885t27b5vt/e3u4UCoDRbbfe9tIrL0uAadNnXnzJxXV19Tt3ND39u6f37d/77HO/P+GkRQuPP0Gnbmq3Yywsqom+dOnSurq6YjG/a/eOp576beBHUiqMiOcGXV3dgssw5PF44p/+6ZupWOzgwbaf/vSnYRiuWPFoQ0Pj2Wef/eaba9avfwcAJRLJz3zmbxoa6keGh3/71O+6urq4UJhQUBgQMm0bYUqIQZmxbds2SmlPT8/evXs1djQ4OKjlnc4z1LENLVDGFwkYhuE4DgB4no9AmZbd091TPWHCigd/9eSTTypAdix+7T9cn06l9re2Pf7b3/X29j766KOLFi066aSTHMd5b8wDxex4LG5JCeecc042mymVSi0te1pbWznnCBGMCOfi5ZdfQQiVl5fX1tZefPHFjY2N27ZtW7VqlRDipz/9aV1dXX19vRAiHo+PjIx0dXVdeOGFS5cutSzrySefPHDgQHNz85o1b51xxmm9vT3r1q2TEkzDPumkReeee65SsHv3zvvvf2B4aGTHjqYzzviw7/thFEopS6VSGIYf/ehHzz333PXr17/11lvpdIYQosN7GJOIc530v2TJxfPmzVu1alVLSwvnkjLTLbi5fO6hFSvyeYca1pVfvvr4BcdPqJv4298+9fvnX9i/v+3OO+/84Q9/WFlZGYZhPp9Pp9MIoauvvjqVSj377LN79rQoUEoiJZVSSArAmCbisWQirYSSUmGuAIEVj4FUoGQymYjFYr09/WEQKgVIIR5Giqso4oTQKOJCyMCPfD/AGBfyJcMwueCu45uWRYmhN7OUUucHalxdJxYhhBKJhBDi8ssvv+iii6SUr7/++vr164vF4uzZsy+99FKM8bx58ymlpVLJMA3HcWbNmnHdddeVl5evWPHw879/1jTNjRs3DQ/lJRc/vP2u3c17TTOx+EOnnXnGh6fPmP76G2/89qmnEPJuvvmfVzyx/G//9u8uvLDf971XX129Y8eOUql4yimnfexjFyQS8cmTp9qGGQZhIp5MJdOlfDEKQhlJwzZDP8BAQSHuhc8++xylZirF6uomffnLV9dOnPD2W2vuv3+ZlPDoo79ubJx64knHHzx4MBaLOY5TKBRM2+44eHD16tW1tbWMsVwup7n96KFrooQQZ5111uc+92nKUC6X+9GPflQoFCsqKg3D1FwBgDzPnzlz1tVXX33cccdt2rTpqaee2rVrVzKZ3N3cPGPGzNYDrV1d3YZhppOZa6/5+8rKykKhcN9997W0tJRKJc65xiX0KqSyGS/wX1z50ulnnJGtqtq5e9eGje8ijBVAxHnJdaSSbrH4i1/8YsOGDYSQRYsWfe1rX2OMbd68+cc//vG+fftWrHjkQ4uPt2IMYVEoDvu+y4U32N/5wgvPb3j37eHhEQBp4riU4oi2FUfWAkhZVlZ2yy3fVUoOD+ceeOCBjo6ORCKxdOnS2bNnB0E4ZcqUt99+e+XKlYyxuXPnXnvttZZl7d+//3vf+16xWHz11VeXLFkyZ86c8TmYSqkNGzbce++9XV1diUTiYx/72Be+8AWl+B13/GTT5o0dHV2PP/7kddf+PQKcyZRJyV3H87ygpnpCEIQY40KhoNOhdSqfBjmCICgrK6OEvrnmjWeffW54OJdKpRKJJBxZO4RNw8zlvOHhnOu6mUz55z77ubnzZhumsXXr1qeeehIBHhkp+n6QzsTeeH3NwYOHKsorzz77nCUXL7Fsy3W8n951586dTfv2tQ4MDFZUlDNqCCGllMlECiHMhW8YRiKe4lx8oJo8XDSrAAHCCGHEDNbZ1dnb2wsAyWRSKVFdlVUSGDH27d3f3NwycUJ9WVnVLbd850BrV01N5Sc+8YnVr630fX///v1z584VQgRBoLO5TjnllJkzZ65Zs2a0jk2BUooLFQkZChEJWSy5m7dte2D5g8lUpn9gwIwlxjtwOkyt6wVjsRgAdHb3FR0/mS5bcslnXnnlZefnd5OEJYEApgAkkigSoEPEmUxm2rRpsXi8oaGhubm5r6+vrq5OO1X3L/uVFTOTieQnllzy2Usv9Vx/wYITN27Zeqiza+fuPWvXbaismVhfX6+XU+dwjx2HYXjiiSeedtppruuWrS578YVXfD+QAqJIel7Y3zfo+5FlxmfPmnfp5z7vFvK5/MgDDywLgrBpx67Nm7ec/ZFzcsP5MIwwItlM+dKlV2YryoUfbNy0vW9wOJHKYMJAIQBsWXEBkC0r7+nv37Jly8DAQDabXblyJUJo4sSJnZ2dGmrTGtH3fa0vi8Wi53mlUimbzZZKpUwmE4/HS8Wi5/updFIowIT19w8sf+ih9oPtpmVecNFFl13+xcD1LvqEvW3n7nc2vNva2rp27doTTzzxiK94BICRkSJjhmlaf/e/rpw+fWoYRrfeetuB1oOCA8EGIYbrBmEYnnDCCcPDw1/4whcuueQSADj55JPXrFljWdbw8PDAwEBDQ0M+n9fhz3Q6fcUVVxx//PGGYbS3t+/YsUNK+frrbyxYsBAhetKJJ594wskVFZWnn35qY+NkjEkykXr8saf6+wfa2g4azNASSluLruuef/75V15xZT6fX7VqlQ7TEsIAEKWG43iE0La2Q9/85k2fuvhTb7yxRpfNRRJZ8eT2tevWrN2QSiTTmfQVX76mbuKEkZHC0quqN2zcasbj7777bltbW11dXRiGtm1rD3LJkiWTJk1qaWlpamqihgFAlMJKYSmRU/IwIsPD+dzQCKWEUkOpKJ6KA0IjQ0P9fX1OqUR0rRnGAGhocNh1fYUQoYJHMgql70eeG0ipZs6YS4npuWEuV0gmlWlKHbPXYcgwDMcnP49lbJ1//vmEkCAI3nzzzSAIPM9LpVIXX3yxYRhCiPZD3ZxzBEgpNX/+/I9//OMAcPDggUd//Ug2m927rwVI1NnZ8dqalzp6DlVWVfz99VfOn7dACL74tIU7dm3avm075/7mTVuvvPJKLel6ugfWvb3B86KJE+rPOvOcSZMmUUL2Nrf0dPWN5AoxKznYP8yYXXIKpk0NgwLg0HUMy169+s14LNXV1XXu0v9x/gUXipBPbZzedqDzueeea969//nnXpw/f36hUNCrbFlWqVB48MEHN23aZNu2ZVkaRTharo3xreM4jY2N559/PoBs7+gAQIODQ42Nk2OxxGhFkEKu651zzvEXXHBhWTbb0NB44MDBDRs2xmLxlpa91mdjSsHQUC4Wi9XV13/2sssAYLC//7777vM8T0unMQ6UUk6om7h3z57N27a+9PLKq77ylTfXvrV127YFCxcUisVQ8CAMmWHk+vt+85vfDA4OZjKZc845Z9GiRQBQW1v72GOPtbW1bdu2bWhwsKK6knNeLJaEiBCgQr743HPPd3Z26dxdwIF27P5IK2CMsW3HzzvvPKUgDMPf/e6ZXG6kVCpVV9cuWnSyThF4++23Ozs7Y7HYzJkzFy9erCGlSZMm7d27t7+//6233po/f/4RanLnzp0bN26Momjq1KkXXXTRCSecwDlfsOCEHTt2Emy8+cZb/3Dd9QCEUYvzMJPJem4YhsL3fb18hUJBQ2tjGbO+78diseFc7rHHHt+2bUc2WxaGYbFYAsDjdeThxcJRKKRAqWRm4fEnXLxkCQCYhv3Ub37reeFA/1AUCkyMCy646Lzzzk8mU+WVVWEYdLYfyqYr6uoa9uzZF4UilcgiREvFout4CI829qiqrgIgoHAUhsRmH6QmkQQkFJGKSkUk0I6uvuuuvfbjH/84xtjzfZAy8oPamqlSWgdaOwwWKxRK6XS2WCw2NNZQiv/pm9dd+w9LGSOmafq+n0qlent7c7lcY2NjKpXSnBRF3DCYQkQiIoFIIAJwKNTzL6x87vfPegEvr6hxQq5rUcenlY6V0FJK8/m8VJAuq6ieMDEIIy/k1LS5QhIRhalEwBUKOVcAUsply5atWLEil8tZltXb23v11Vd/+ctfpoaxq6VlYn19vlRUmH3zW9/5wU9+LCKRSqZGCiPxVKa7o/tgR2e2rHy8R6sLFcIwLJVK1dXV+pgQks+XwkDYdsIwbMOwK8or6uoaTDMWs+P19Y1KoVgiDYhMnzZzx44mKdHGdzeHkayra5AClML5fGnFisfPPPvMgb7+Q51dBcez7FAorBBRiArAJS9YcPyiUuDncrnly5dfeeWVb7/9dllZ2eLFi5999lntSmrJqCHoYrH43e9+V3MkpbSsrOzzn//8Rz/60VQ6IxEhzCy5flXNxHc2vNPd2y+BuH744spXNry7JZvJllznUHuHZVn5fH7v3r0avBr/PVkAYFm2lMj3IttOIEQxhmQiE4bCNGMEGwBIKfjGN77R3Nzc0tKydevW3/3udwMDA4cOHdKdBPL5fEtLy4knnqjRMACYOHFiIpHQD5o5c6bOL9+5c6fn+TXVE/72b5e++OJLq1559YUXXmxv7ygVHcOkhmFixIoFV9cdUULHcOZkMimk0FHVw403sE5gy+eLSqJUMssjBYDrJk7asnn7SC7vBxwRtKNpd7a8CimIBHzy4r/xHDcWjxFKert7EJIYw549e04//XTttuqggAZqdG8Hm5lSICmRkiA4lGUr84WR+3657F9++nMphWFYlVXpc8858/Ivfam8vFJDI5TSBx5Y9tRTTw8N5VKpVCFfSqRTCCjGDAGVEnGuksnUO+9sPOOMsxACy4oRgubMmb1kyZKzzjoriiKdojK2U8ayEMnhukuMcTqdDoIgnU6PCVaMqF5ZHfgvLy/X8NfEiRPr6+v1Ves3rHF9lyOvuq7M9ZzrvvaVUsGZOXPGSGGkaUcTQaToOP39g0EgMEaEsFLRp9SaMaNRSZLJVDBmKqkIMZPJDEKso737m9/89o03/lNZWUUQ+HV1Ey+44MIln1qSzw8W8k5r66Gamqonn/ztE0/8ljFqWZYUMookQuSNN9Z+7cavlZeXa2QsFos988wzq1ev1m+tzYL3/V5S13UHBweVUjp3gXNJKTaNGEaMMTOKJMGGAsQjpSSWUqWSmZid9P3INO3amrpMuqyQLx082B5FsixbUTdx0oEDbf19/StfeCGbzWrlpKNC4zufYIwXLV5s2nZ7R8eyXz04e/685154IZFOLT7llNffeN2wrYBHiNJDhw4FQVBZWckYW7hwoeu6hBANvXR1dTmO19UxWJapcUsSpGUZcd9TT//29zt37J9YO8UPgkI+H4VYcKkX9IPqJjkXnhvG4xYoiNkWj2QUCinAMmPJRBIBam/v3LRpszavNbqjSyFPOOGEnTt3UkrXrl17+eWX6zLxsfYU27dv18ZBQ0PDlClTlFKci4aGKY7jEyw6O3v27m0N/LBQcFy31NM98Hd/d2WpVDBNw3VdzXWMMV3bNsaQBw603ffLZStfegUU9twQY0SpAYoAEFACEAGFAWHOhcHsWCzJmCUlCgMhhG5fg0slVwg1oba+qnqCiGR9Q2N/b+89d/9y5cqXheDFYoFziRDYMauvu39kKA8gv/LVr7buP8AY8Ty/sXHyz37+L+XlZel09oiE4feCrroVtSSgLAQWUlZFWbaxYdasmQsAQClhGIRIcBwehVQKM5nIMoOk06lk2uTc98PQtqwgX0ylanWVAqVU16vq3OJisTgwMIAxppRhZmJiIBohyhBhfshvv+Mu0zYuueRvkonU7bf/sLa2djzcqtO0xizEtraDbhAhYsyYNVdhRg2DMIsLJYEAZhIQl8AFUMqCIJg8eXJjY2OhUGhqakokEk888YTneXf+y7/ELDviipmxgaHha//+2nnHzRsaHEqn0n7gc8GVUNNnTCeGJZVCADooNR7NsG07nU4bhiG4CgMhBPBIem6IAEkJCGjg8zAo+F6UH3FSMTv0eSyWJMSoKK+OxZJCoC/+z/81bdr02277wcZ3N333+/+77N57MKCBwcFYPOGHPBQKMEKE+qHww2DO3OOqaqpXrHj40UcfdV23UCiceeaZ06ZN03WTpVJJRxAZY5lMpry8/Kyzzpo8eXJ3d/fDDz/c2dlZKpV27dpVXl5OmeEGUTprhkJFEhSmmOHyivJMeWU6W15eUZk/sH/69OkatZs8ebKOCr/3GxYRj1RuuFBWVi4FKAkGo6WS63tRPJYihEkBMTv2ne9855FHHq6urtao79y5c+fNm/f888/rQrHq6mqMcSqVqqysHN/SyHVdnY8zPDyczZYLDm1th6644sqWlpbGxsnpdOrjFy2ZMWPG4ODAsmXLKDV06YjnefFY/MCBA5zzyZMnT5kyhWCi+/v4fqBVFwBRShXyjhBACCsrqxwaGmlra3fdYO68BcSwBnNe0QsiqQxqWvHkwuMX1lTVRjwyLaOYLyAVplOJ6dOn60Ri7cRXVFTU1NQQQkqlkmXFQBEArCRWEkkJIyPFTKbsox89/9RTT+np6XnmmWfXrl29f09TZXn5F5cuLc9kCSAuZCaZmjF1Wl9iIAp5OpkBQig1TSPGmEkw06bA9GkzP/e5z6XTqb179z3yyEO7d+9ub2/XgX+dBK6xlrFeE47j6Ii+Dp1alqVTe4QQuvAjDPgoSKh08x2hlNIusk4mkAql0g0RH2w/5FaWV02onZbN1J980sySU8qWQf3EE8IgTGeSkyfPQEARKEYpQtS24kODI/v3t4WBKBV9jLBJ7YSVLOacZCz5sfMurKmp3rt335o1aza9s/mdte+KgC+55BLfi6qrJhTy+ZrqupkzZyklOzrakUHmzjnONI3KymrOpV5oxlh7e/sLL7wAAJ/85Cdff/11XWlwdIanFr7pdLq7u1tXAPt+YBjGyEgxDEU6VWYwG4AgoGEolMKGYRSLLqWmLqsmxIjFksWik0pmGTMqK2tuvPGby5Yt39uy+6qrrtLqJAzDsrIyLe7R2CpQMnFSfeO0qbfedquI+P3Ll7UePLDwuAUnLDrphZdfUiCLruO4jg7I6QWSUup+LAgh0zRd10UIRyFgSnlETSNtGEZ358iv9z1jGumzP3Lh9u3b3dK+gEcaMNRm4vtqSkpJKhVTCsJQUAqJRML3fdu2gyBQCkkJvu/n8wXteGh0RKfLaiRZR5eOIKmUcmRkRHOdhusQQpZpmkaMRypSYRRKzw2lBINZrvIsy0BAUslsycnr0KYuMNMVn9qhZIxt2LAhl8sJAeef/7G1a98mBEuBAAgAHvcbQGGMqZI4DDkh1LLihBgAgBG1rQTnYng4z0PpuKV77/nl73///KFD7bZtz50798MfnlZTU7t27dpNmzYmE5koEpSS/r6h4eERKUU2W+b7IWMGJSbgP3REfN/YpNI9gAAJQAphZZhEKi6VMA0ShBIDAQTxOAUAy6ROaSSTTeWGB6QIDQYuD99et76jo79h0swJEybU1NTotkaasrZt61wjpRTCVD9UHyBgYSg7O7unTJ16/PGLtmzZ0tA4JQy8IxZ+rG4aAAYG+3t6usIwNAxCGQDIkdxQOp0GEBjpghuuIDIs4jveKaeffNmllymhbv7uzWvfXjt7xuymndsPHdovZJjLDRUcd968eY2TG8495xwdc6quri6VSjrbxWBYSXW4a9bofHQDlJGRkWC0LlOZpnm4U5crpcQYMMaWZfq+D6AymQQAREJ4QaQUwhinMmUR56V88dQzzpg3/4Xdu5rNuAkEpJQVlZWE0CCMhK7SQRAJHkVRpiwzsa7m4Yeho6Pr6aefsW170qRGSg3fDyk1giAaNSmQyOdzEfenTW+88GMXDQ4NvLX29d6evgMH9iuIPn7RJxHBgR8Zhjmcy8ViMSlgJJ+vqKz81MV/c9ppp+k0onQqMTAwMGXKFJ1EB+/91mVtA7muSynxfc9xvGTSdl1HCM4Y00SilLa1tdXW1h46dOikk0766le/unDhwiAIXnrpJcbYwMAAY6xQKAwNDSFAIuJDQ0NRGIICy7J4FJVny7jgU6ZMKRaLvu/29w/oZi6nnHLqkiVL5syZuX9/2/33PyCE8LzA8z3PDQxmDg8Ph2EU+BHGWHuQjDFGzcOp+6CUiiKuFIrH4/F4IplM19dPeuedDY7jmIbR1tZqGmx4cKiqqopR+pEzz1q0aJHOIQRQmVRMikhbSI7jaH/XNE3tsDqOk0wmQz8CUHK0uE55vldhVk6bNvUj536kr29g69at+/bV5POD23bsvMyP/CgKuQzCaPqsWZ/57KV9fX1NO3YO5ke8MKAE6R+CEcGAABglH7vg/MbJkzZt3Pryyy84rrt16/ahoVwmU1YquWVlZRhTHUTXXJpOp3WHAY1ojYyM6HxXx3GCIIiiKGbHdJLR4YpYIaXCGIpFZ3hoxDRNAOz7YSKesIyYUhCF/MqlXz7uuOM6Ojr0Lo6iSAg+pbHasojrhkHgDQ8PafvG89xYzMYYW5YxPDKcd/IFt5BJZ88858xFi07y3GDb57ZZCbOjvav14IFsZYZSEkWB53nnnHP2F77wBa2EisUipTSVSsXjcUxkJBUzbIJJ68HWSKhMKnPmWee8sPJlt+jOnFWXGy4eXemWSCRqa2tbWlr0PtWNqyzLwng0Vj1aNCd1ax7qur5bKqbSaQBwS0XJOcUkEYuBAgzo3LPPfvutt1r37c0ViuWZctMykxSHXhhyR2GCEMHYAEIxMoRQMyZP6esdmDFjRnPzHkbN8oqqdDrreyFCyPUCzw91OXihUCCE9PX16S1TKBT0Rksmk8RggEAhoJQqjHIjI1EYzJw9c+7847q7e9oOHvLCQB6O7X0Q6CqEPFxZS8KIF4p5z/OSqThj1LLoGIlyuVwul3ccDwA7Tsm27eHhkXQ66/t+JvN/2nvzOKuqK198733mc+dbt+aiCqqgKKZiRhEQxYCAghpAbXHIc0yeiRpD0u1rO3mdGLtNOskziR2H/NIa7WjHvBiHRO0ENQ6ogIIDIoNQUFQVNd75jHv4/bGqDmWBFFGSF7vv+vjxc7h17zn77L32WnuN3yTnYkR/mIqKCphMyJDiXBCMC4V8KBSSZTkUMsPhsO+7iiJDbc9pp82fOHFi0cpt377tj3/8I7wgSHK4oSRJXV1d+XyxpaXlM59Zun9/W19fX39/eliSaSB7CefM8zzPcw1D55xB61CEsKqqioI45v2Zfk1Td+/etXf/3sryyngs/j+v/8KMWTN0Rd+zd3ckHsOEcM7iZeXTZ06vrx9juU4ynlAVRVZVjhFCqGjZZkj/KKerixAjhLt+byZ3UNHs/nTfwUPv7t49TpIk13cjZkhQTj2/prp61symkMEH+tuZH9u29bXWGTN81/vuP31nx3t748nqv//7vz/77LM3btx46NAhRVHmzZuXTCZ7enqgcraQKxKEsmkrFjNBIFiW1VA/7rRTFyw8bdFb2962iw50VXAcBxzogesfMmZfeP55LOxUMjz/lFbEiohbybim64LTXDHfU540qsrD1C9Ybr5gF5Kp2LimekKkSy67+MVNzx/s3G+YZtHJTZo6cWJz45tvvtV3uHPbltdXr1weC4ciprZhw4a333pLN4xrrrlm5YoVuq6NCADoug5NKyBKignyqUOZ67puRWUZtGbN5dM+dSQZHWzfX7SKlNKOwx1vbn/Dc91IJFpTVx2JhjgX/QP9XT1dDDNFVe+9995UKrVhw4bXX3+9vLycYCE491wnHNJtK8+oe87KdT/64U/6+vocm6oKvuRvLv/lL38Zj6V83w+H4owiSSKUukRihiFX15QnEmHdILV1lfv375EV4XpFTBhBwme+4LQsGZcISpUlkGBdnYf27tl1yd9c5LpuKBS6++67d+3aFYlEFi1aNGXKFGjjEhwUOGeFYlaSJEy4ohIzpDHOwxFDkpHtFDBJuZ7z6msvb9v2pmEY0Wj05ptvPv300xlj77//vmEYkHDheV7IDMmYIMZ8141GIun+gUI+r2la2779nYcO1dTWNo4dO3lyy8MP/4eiyIahz5o184orLq+pqXIc5+mnf+c4NqW+JEmKrMfj6p49u7duVj9z0AAAIABJREFU2aZroaqqmqbGZs+jrutjJDMOjinueW57e/uzzz5dWVnOOZdlgrGg1DMMravzUDbdM2VS4853KypS0Z7DBzF3sunuRFQPhUJvv/323/7d3zm2xRj76U9/aprmc88919PTMzAw0NTU1N/fH4lE6uvrn3/+ecMwVVMpWLmunk7Ls+KpmONZRkTniEkKlnUpbzvRRBVDGif6QM5VQ7GBXNfUGbPOXLbUdf1Udc0TTz+lKZh6eUWivleIR1TTIMVC0bMzskSL+YFk3HBt2yp6yURFZ0dP+8GueCxlFR3qI+qzoa4ovqop4GYAdk0kEpAJCVWDENyCE4Aiq/lccfu2t3t7+ioqKt55+z3OJYSUVCo1b86k3t6exsZEW9sBTbX27tkyZ3ZT67T6vr7ef/zHf2xrazMM45qrr6uuXikryDANM6QRSSSS0WgspKiEEOH5jqTzUEJHA4xKTiihSyZGnBFdcO5HUmZv7jAV7rjG2v7+LjMkdXTuU3UUT6QKhfzPfvbQxueeKy9PLVu67JLLLrcsYTkiHgtVVDREY/F77/upYaiSFE6UxdsOHG4YO36wodIwvGvbtvfu3ev7fqFQgFxQSZI0TSEE2bbleY6qyplMxvMcSj3fx709Xe++vW3+aafu++CDTS89z6nNfKumqgwJ37FyA+n0rp3veK47btzka66+Ztmyz1x9zTVdnYeF4MUix0RFxOBcRURnFLc0T541Y25HRwchhCBl2pQZFalKTTGz2SxBSjQcq6+vb2xsfOeddzjnL7744tlnn80537Fjx3vvvRcKhZqbJ8ycM0VwFI6pFNue7UdjkfLqyv/19b81DOOBB3+GZB5PRlVVQQgdPHjw3nvvhcX97Gc/u2jRIgjSD7VlFgIJn/qcM01TdEORJMy473oepEyfvuiMrVu2m0b07bfec2w3Hou+++77L734qqqqkXDirCVnRyMxmFSw5hVFOffcc7dt23bw4MHOzs7t27dXVVUxxje9+pKqSZ7nNk9sqqmtbGtr6+ntwoSHwvpll18ybdo0Ifidd9753HPPhUIhMKZBQUKvKFVV585tgdyi7u4uVVUrKlK2XUQIMeZLkgp1GoxT3ZB1QzIMNZfLqKrsuraua3B4Nc2QZkjhmLZnz54t2zdVVMe5cG/ccP38RXMM00inMx3dbdlCb1V1qnpMle04P7zr/+Sy+XgiJoKjAEZCiKN15DA1KYjr+hKRwqGkoceQyOqadM/d/3bfvQ/AfvNsJ5VIDvT1b/jaV6+44oqlS8/990cejsX0f7j12+PGNwnODx7o1Y3oxRdfvGzZsptvvvmJJ56QZbmqqmrdunWMscrKyoqKCsZYJBxBCEWjJsaIMRqPxyj1161bd8EFF9TVVdi2pSiK51PbtsH1D+0FoFnlU0899aMf/Wj79u2VlbV9fX3f/tZ3CSF9fX35rJvPulaB3fbN73zlK1+pqanhTBFMNfT41i3v/lR+iDG2ceNGRYqYZlKSpJBRFouWf+5zV7733tey2czzzz9n21Y8Ht+yZcuhQ4eKxeK0adOmTJ4ky8dw5uTzeXBQQMzDtu2BgX5CcCQSZoxaVtF1XYSE6zqqqm7ZsvmWW26ZPn36xo0bwTU6Z+6cyy67zPN9xtjDDz/86quvciFOPfXUefPmBS3QFEUZN24cQiifz2GMksmE67rhsN7aOu3ZZ5/lnM+YMb26usw0jXA4BEl24HZS5LCmRpHQH/nFb158YXOhUNjy+jucqdFIuHHs5GgkpWkGpbxQKIBH5brrrvvGN74RCoUefvjhurq6efPmbd68+d/+7d8gjrh06VKoWIeueEPOKyeZTBiG4boOpT7nzPf9ZDJRLBaKRWQYOsYoGo2AE6lQKDzxxBM1NTWKotxxxx3ZbFbTtFgsBvukuqqqp6eHc364q+u+e+9VZPnVV1/95X/8R319PaV09epVkoQZY4cPHzZN86WXXqqpqamvr9+2bdvLL78sSRJkcMiy8tvfPn7fffft3Pk+Y+yCCy4wzZCiqNDWWdM0yLe68sor29vbd+/ejRBau3ZtfX09hLohi1uWSLFQaGmZuGjhgk2bNrmu+5N/vevVTa/AOfeDvXt831++fDkh5Kqrrtq2bVssFjMMY+XKlWVlZZRSqCgoFgtc8EQiXldXW7QKjLG2tu4f3/XjBx96UAixa9cuIkn5gjXvlPkIESGQoqiGGSoULUWRMJZM08wV8uGQxjhzfF/VDcr4QCZTXVXtev61116XK+R0Rfco45zFYtH580/dt+8Dyyr6vm/bFjgPMRaGoSKMhJCgXBIqa+GgCR5vSqkQGNKdoNz5wIEDGzZ8raKi4g9/+IOqaK7jLThtgW1Z45ua/ubii37w/Tt9z/vBD7731JNPnXnmGS+9/GL7wUPd3T0VFRXTp08fam4sCMHFYsG2bUr9QiEfiUR0XVdVHRPCuTh8uOfWf/gHzplVdDLZNGOUUTF12jTX9dZcuG7Tq5uKjv3SKy+vX3/JrNmzn37mGU5pNpczI6GlZy+VVQV6e1JG0+mBK664fFrr1N27d9u2BSVxxyyHgK40kN3W29sLtWee57mu29vbW1FRAalt4DhljO1vO3DRJZesOvecLVu3DPQOKKrS1Ny87OwViCM9FHrg//xw27a3+gZyV1193rmrzjFNjXOey2fD4TD0bs/mMp7n5XJZhMSYMdUXXXThD37wA4TENddcff7551lWnhBcXV0Vi0UHBgYqKipvv/32u++++7HHHnvyySc7Ozu7u7t7enqgf9maNWvS6bSmaaqmmCFDViTf9774peunT2/ds2cP4zSdHoCCNFVVOzo6Hn30UYjzLVy4EKrIoDcIxhji36qq+D7inDFG8/k8IVjTVDgzrVmz5p133n3ggQdefPGP55yzqqmpadeuXdlsxjTN888/b86c2UKMRPNpbW3dsGHDHXfc0dbWduONN86aNQu8R++/v3PhwoUbNnwFXGuKInueizGi1GeMQlOCUCgkhIDaTdu2wbcBXTtuv/32mTNn7ty5E2pXwOgEVTq8v7/r+o7jOo6naQYhsqrqsixzjlzX59ySJNlxnEQiKctq24F9sWj83nvv27t374733t325lue745tGBeNxRhn4XAIIRSNRYbaio0CBjSoJiWiECQjgZivxSLVspQ1DVVTXPCYy4oiIhwxHksYqpo0jNill3++eszEp5586r33P/igrVdVlVRZzZRpLeecc45pmkKIeDw+adKk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",
+            "alt": "Если две прямые параллельны третьей прямой, то они параллельны.",
+            "width": 610,
+            "height": 56
+          }
+        }
+      ]
+    },
+    "triangle_parts": {
+      "title": "Медиана, высота и биссектриса",
+      "explanation": "Медиана находит середину стороны, биссектриса делит угол, высота перпендикулярна прямой стороны. Совпадение этих отрезков требует дополнительных условий.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 17",
+          "printedPage": "33–34",
+          "pdfPage": 35,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=35"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 7, определения высоты, медианы и биссектрисы",
+          "printedPage": "49",
+          "pdfPage": 50,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=50"
+        }
+      ]
+    },
+    "isosceles": {
+      "title": "Равнобедренный треугольник",
+      "explanation": "Равные боковые стороны дают равные углы при основании. Высота, медиана и биссектриса совпадают именно при проведении к основанию.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 18",
+          "printedPage": "35–36",
+          "pdfPage": 37,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=37"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 32, следствие 2",
+          "printedPage": "73–74",
+          "pdfPage": 75,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=75"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 9, определение и теорема 9.1; § 10, признаки",
+          "printedPage": "61–62",
+          "pdfPage": 62,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=62"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 10, теоремы 10.1 и 10.2",
+          "printedPage": "67",
+          "pdfPage": 68,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=68"
+        }
+      ]
+    },
+    "triangle_congruence": {
+      "title": "Равенство треугольников",
+      "explanation": "Две стороны определяют треугольник вместе с углом между ними. Подмена этого угла другим нарушает условие признака.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 15",
+          "printedPage": "30",
+          "pdfPage": 32,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=32"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 8, первый признак равенства",
+          "printedPage": "53",
+          "pdfPage": 54,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=54"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 11, третий признак равенства",
+          "printedPage": "72",
+          "pdfPage": 73,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=73"
+        }
+      ]
+    },
+    "equal_figures": {
+      "title": "Равенство фигур",
+      "explanation": "Равные фигуры можно совместить целиком. Одного совпадения площадей, периметров или нескольких длин для этого недостаточно.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 5",
+          "printedPage": "11",
+          "pdfPage": 13,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=13"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 7, определение равенства фигур",
+          "printedPage": "49",
+          "pdfPage": 50,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=50"
+        }
+      ]
+    },
+    "triangle_angles": {
+      "title": "Углы треугольника",
+      "explanation": "Три внутренних угла вместе дают 180°. Поэтому два угла треугольника всегда острые, а хотя бы один не больше 60°.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "пп. 30–31",
+          "printedPage": "70–71",
+          "pdfPage": 72,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=72"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 16, теорема 16.1",
+          "printedPage": "103",
+          "pdfPage": 104,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=104"
+        }
+      ]
+    },
+    "triangle_exterior": {
+      "title": "Внешний угол треугольника",
+      "explanation": "Внешний угол получается продолжением стороны. Его величину можно получить сложением двух внутренних углов, не смежных с ним.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 30, вывод о внешнем угле",
+          "printedPage": "70–71",
+          "pdfPage": 72,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=72"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 16, теорема 16.2 и следствие",
+          "printedPage": "103–104",
+          "pdfPage": 104,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=104"
+        }
+      ]
+    },
+    "triangle_types": {
+      "title": "Виды треугольников по углам",
+      "explanation": "Название определяется всеми тремя углами: остроугольный имеет три острых угла; прямоугольный — один прямой; тупоугольный — один тупой.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 31",
+          "printedPage": "71",
+          "pdfPage": 73,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=73"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 7, определения остроугольного, прямоугольного и тупоугольного треугольников",
+          "printedPage": "47",
+          "pdfPage": 48,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=48"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 16, следствие о двух острых углах",
+          "printedPage": "103",
+          "pdfPage": 104,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=104"
+        }
+      ]
+    },
+    "triangle_sides_angles": {
+      "title": "Сравнение сторон и углов",
+      "explanation": "Большая сторона и больший противоположный угол соответствуют друг другу. В прямоугольном треугольнике наибольшая сторона — гипотенуза.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 32",
+          "printedPage": "72–74",
+          "pdfPage": 74,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=74"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 16, теорема 16.4",
+          "printedPage": "105",
+          "pdfPage": 106,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=106"
+        }
+      ]
+    },
+    "triangle_inequality": {
+      "title": "Существование треугольника",
+      "explanation": "Самая длинная сторона должна быть строго короче суммы двух остальных. Равенство даёт отрезок, а не треугольник.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 33",
+          "printedPage": "74",
+          "pdfPage": 76,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=76"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 16, теорема 16.3",
+          "printedPage": "104",
+          "pdfPage": 105,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=105"
+        }
+      ]
+    },
+    "right_triangle": {
+      "title": "Прямоугольный треугольник",
+      "explanation": "После прямого угла на два остальных остаётся 90°. Гипотенуза лежит напротив прямого угла.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 31",
+          "printedPage": "71",
+          "pdfPage": 73,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=73"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 34, свойство 1°",
+          "printedPage": "76",
+          "pdfPage": 78,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=78"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 17, признаки равенства прямоугольных треугольников",
+          "printedPage": "111",
+          "pdfPage": 112,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=112"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 18, теорема 18.1 и задача о катете напротив 30°",
+          "printedPage": "117",
+          "pdfPage": 118,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=118"
+        }
+      ]
+    },
+    "median_hypotenuse": {
+      "title": "Медиана к гипотенузе",
+      "explanation": "Середина гипотенузы равноудалена от трёх вершин. Обратное утверждение проверяется через окружность: угол, опирающийся на диаметр, прямой.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 75, описанная окружность треугольника",
+          "printedPage": "184",
+          "pdfPage": 186,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=186"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "задача 231 к пп. 30–31",
+          "printedPage": "72",
+          "pdfPage": 74,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=74"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 71, следствие 2",
+          "printedPage": "172",
+          "pdfPage": 174,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=174"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 9, следствие 2: вписанный угол, опирающийся на диаметр — основа вывода",
+          "printedPage": "54",
+          "pdfPage": 55,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=55"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 19, радиус и диаметр окружности — основа вывода",
+          "printedPage": "126",
+          "pdfPage": 127,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=127"
+        }
+      ]
+    },
+    "triangle_similarity": {
+      "title": "Подобие треугольников",
+      "explanation": "Совпадение углов задаёт форму, но не размер. В подобных треугольниках соответствующие стороны имеют общий коэффициент, площади — квадрат этого коэффициента.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "пп. 56–58",
+          "printedPage": "138–140",
+          "pdfPage": 140,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=140"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 59",
+          "printedPage": "142",
+          "pdfPage": 144,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=144"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 61",
+          "printedPage": "143–144",
+          "pdfPage": 145,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=145"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 12, определение; §§ 13–14, признаки подобия",
+          "printedPage": "84",
+          "pdfPage": 85,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=85"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 13, теорема 13.1",
+          "printedPage": "89",
+          "pdfPage": 90,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=90"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 14, теоремы 14.1 и 14.2",
+          "printedPage": "100–101",
+          "pdfPage": 101,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=101"
+        }
+      ]
+    },
+    "triangle_midline": {
+      "title": "Средняя линия треугольника",
+      "explanation": "Отрезок между серединами двух сторон имеет направление третьей стороны и вдвое меньшую длину.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 62",
+          "printedPage": "146",
+          "pdfPage": 148,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=148"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 7, теорема 7.1",
+          "printedPage": "40",
+          "pdfPage": 41,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=41"
+        }
+      ]
+    },
+    "polygon_angles": {
+      "title": "Углы многоугольника",
+      "explanation": "Выпуклый многоугольник можно разбить диагоналями из одной вершины на n−2 треугольника. Отсюда сумма углов 180°·(n−2).",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 40",
+          "printedPage": "99",
+          "pdfPage": 101,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=101"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 19, теорема 19.1",
+          "printedPage": "139",
+          "pdfPage": 140,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=140"
+        }
+      ]
+    },
+    "parallelogram": {
+      "title": "Параллелограмм",
+      "explanation": "У параллелограмма противоположные стороны параллельны и равны, противоположные углы равны, диагонали делятся пополам. Равенство диагоналей и прямые углы — дополнительные условия.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 42",
+          "printedPage": "101–102",
+          "pdfPage": 103,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=103"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 2, определение и теоремы 2.1–2.3",
+          "printedPage": "13–14",
+          "pdfPage": 14,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=14"
+        }
+      ]
+    },
+    "parallelogram_tests": {
+      "title": "Признаки параллелограмма",
+      "explanation": "Деление обеих диагоналей пополам устанавливает параллелограмм. Для прямоугольника или ромба нужно проверить ещё одно условие.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 43",
+          "printedPage": "102–103",
+          "pdfPage": 104,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=104"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 3, теоремы 3.1–3.3",
+          "printedPage": "21–22",
+          "pdfPage": 22,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=22"
+        }
+      ]
+    },
+    "rectangle": {
+      "title": "Прямоугольник",
+      "explanation": "Прямоугольник сохраняет свойства параллелограмма и имеет четыре прямых угла. Его диагонали одинаковой длины; их перпендикулярность бывает у квадрата.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 45",
+          "printedPage": "108–109",
+          "pdfPage": 110,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=110"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 4, определение и теоремы 4.1–4.3",
+          "printedPage": "29–30",
+          "pdfPage": 30,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=30"
+        }
+      ]
+    },
+    "rhombus": {
+      "title": "Ромб",
+      "explanation": "Ромб — параллелограмм с одинаковыми сторонами. Его диагонали пересекаются под прямым углом и делят углы при вершинах пополам.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 46",
+          "printedPage": "109–110",
+          "pdfPage": 111,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=111"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 5, определение и теоремы 5.1–5.3",
+          "printedPage": "33–34",
+          "pdfPage": 34,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=34"
+        }
+      ]
+    },
+    "square": {
+      "title": "Квадрат",
+      "explanation": "Квадрат одновременно является прямоугольником и ромбом. Поэтому у него сохраняются свойства обоих видов фигур.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 46",
+          "printedPage": "110",
+          "pdfPage": 112,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=112"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 6, определение и связь с ромбом и прямоугольником",
+          "printedPage": "36",
+          "pdfPage": 37,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=37"
+        }
+      ]
+    },
+    "trapezoid": {
+      "title": "Трапеция",
+      "explanation": "В школьном определении у трапеции параллельна только одна пара противоположных сторон — основания. Равными могут быть боковые стороны; такая трапеция называется равнобедренной.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 44",
+          "printedPage": "103",
+          "pdfPage": 105,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=105"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 8, определение трапеции",
+          "printedPage": "43–44",
+          "pdfPage": 44,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=44"
+        }
+      ]
+    },
+    "isosceles_trapezoid": {
+      "title": "Равнобедренная трапеция",
+      "explanation": "Одинаковые боковые стороны связаны с равными углами при каждом основании и равными диагоналями. Для произвольной трапеции этого нет.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 44 и задачи 388–389",
+          "printedPage": "103, 106",
+          "pdfPage": 108,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=108"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 8, задача с доказательством свойств равнобокой трапеции",
+          "printedPage": "45–46",
+          "pdfPage": 46,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=46"
+        }
+      ]
+    },
+    "trapezoid_midline": {
+      "title": "Средняя линия трапеции",
+      "explanation": "Отрезок между серединами боковых сторон параллелен основаниям. Его длина — среднее арифметическое длин оснований.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 85",
+          "printedPage": "210",
+          "pdfPage": 212,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=212"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 8, теорема 8.1",
+          "printedPage": "44",
+          "pdfPage": 45,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=45"
+        }
+      ]
+    },
+    "circle_definition": {
+      "title": "Радиус, хорда и диаметр",
+      "explanation": "Все точки окружности удалены от её единственного центра на один радиус. Диаметр проходит через центр и состоит из двух радиусов; произвольная хорда может быть короче.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 21",
+          "printedPage": "43",
+          "pdfPage": 45,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=45"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 19, определения окружности, радиуса, хорды и диаметра",
+          "printedPage": "126",
+          "pdfPage": 127,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=127"
+        }
+      ]
+    },
+    "circle_line": {
+      "title": "Прямая и окружность",
+      "explanation": "Число общих точек зависит от расстояния до центра: две у секущей, одна у касательной, ни одной у внешней прямой.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 68",
+          "printedPage": "164–165",
+          "pdfPage": 166,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=166"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 69, определение касательной",
+          "printedPage": "166",
+          "pdfPage": 168,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=168"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 20, взаимное расположение прямой и окружности",
+          "printedPage": "131–132",
+          "pdfPage": 132,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=132"
+        }
+      ]
+    },
+    "tangent": {
+      "title": "Касательная",
+      "explanation": "Радиус в точку касания образует с касательной прямой угол. Из одной внешней точки длины отрезков двух касательных до точек касания совпадают.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 69",
+          "printedPage": "166–167",
+          "pdfPage": 168,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=168"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 20, теоремы 20.3 и 20.4, задача об отрезках касательных",
+          "printedPage": "132–133",
+          "pdfPage": 133,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=133"
+        }
+      ]
+    },
+    "inscribed_angles": {
+      "title": "Вписанные и центральные углы",
+      "explanation": "Вписанный угол измеряется половиной своей дуги; центральный — всей дугой. Полуокружности соответствует вписанный угол 90°.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "пп. 70–71",
+          "printedPage": "169–173",
+          "pdfPage": 173,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=173"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 9, теорема 9.1 и следствия 1, 2",
+          "printedPage": "53–54",
+          "pdfPage": 54,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=54"
+        }
+      ]
+    },
+    "angle_bisector_locus": {
+      "title": "Расстояния от биссектрисы",
+      "explanation": "Расстояние до стороны угла измеряют перпендикуляром к её прямой. На биссектрисе эти два расстояния совпадают.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 72",
+          "printedPage": "176–177",
+          "pdfPage": 178,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=178"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 19, теорема 19.2",
+          "printedPage": "125",
+          "pdfPage": 126,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=126"
+        }
+      ]
+    },
+    "perpendicular_bisector": {
+      "title": "Серединный перпендикуляр",
+      "explanation": "Прямая через середину отрезка под прямым углом к нему состоит из точек, одинаково удалённых от концов отрезка.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 72",
+          "printedPage": "177–178",
+          "pdfPage": 179,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=179"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 8, теорема 8.2",
+          "printedPage": "54",
+          "pdfPage": 55,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=55"
+        }
+      ]
+    },
+    "incircle": {
+      "title": "Вписанная окружность",
+      "explanation": "В треугольнике центр вписанной окружности находится на биссектрисах. Для четырёхугольника возможность касания всех сторон требует дополнительных условий.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 74",
+          "printedPage": "181–183",
+          "pdfPage": 183,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=183"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 21, вписанная окружность; следствия о центре и биссектрисах",
+          "printedPage": "138–139",
+          "pdfPage": 139,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=139"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 10, теорема 10.3 об описанном четырёхугольнике",
+          "printedPage": "63",
+          "pdfPage": 64,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=64"
+        }
+      ]
+    },
+    "circumcircle": {
+      "title": "Описанная окружность",
+      "explanation": "Центр окружности через вершины треугольника находят по серединным перпендикулярам. У четырёхугольника на окружности противоположные углы дают 180°.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 75",
+          "printedPage": "183–185",
+          "pdfPage": 185,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=185"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 21, теорема 21.1 и следствия",
+          "printedPage": "137–138",
+          "pdfPage": 138,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=138"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 10, теоремы 10.1 и 10.2 о вписанном четырёхугольнике",
+          "printedPage": "61–62",
+          "pdfPage": 62,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=62"
+        }
+      ]
+    },
+    "equal_area": {
+      "title": "Равенство площадей",
+      "explanation": "Совмещение фигур сохраняет площадь. Обратный вывод неверен: равная площадь не задаёт форму фигуры.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 48, свойство 1°",
+          "printedPage": "119",
+          "pdfPage": 121,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=121"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 52",
+          "printedPage": "125",
+          "pdfPage": 127,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=127"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 20, определение равновеликих фигур",
+          "printedPage": "144",
+          "pdfPage": 145,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=145"
+        }
+      ]
+    },
+    "rectangle_area": {
+      "title": "Площади прямоугольника и квадрата",
+      "explanation": "Площадь прямоугольника вычисляют как a·b; для квадрата получается a². Это не периметр и не произведение всех четырёх сторон.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "пп. 49–50",
+          "printedPage": "120–122",
+          "pdfPage": 122,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=122"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 20, теорема 20.1",
+          "printedPage": "144",
+          "pdfPage": 145,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=145"
+        }
+      ]
+    },
+    "parallelogram_area": {
+      "title": "Площадь параллелограмма",
+      "explanation": "Для площади нужны сторона и высота к ней: S=a·h. Длина соседней наклонной стороны не заменяет высоту.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 51",
+          "printedPage": "124–125",
+          "pdfPage": 126,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=126"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 21, теорема 21.1",
+          "printedPage": "148",
+          "pdfPage": 149,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=149"
+        }
+      ]
+    },
+    "triangle_area": {
+      "title": "Площадь треугольника",
+      "explanation": "Произведение основания и перпендикулярной ему высоты даёт удвоенную площадь. При общей высоте площади относятся как основания; медиана поэтому делит площадь пополам.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 52",
+          "printedPage": "125",
+          "pdfPage": 127,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=127"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "задача 474 к п. 52",
+          "printedPage": "128",
+          "pdfPage": 130,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=130"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 22, теорема 22.1 и следствие",
+          "printedPage": "152–153",
+          "pdfPage": 153,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=153"
+        }
+      ]
+    },
+    "triangle_sine_area": {
+      "title": "Площадь и две стороны",
+      "explanation": "Для двух сторон и угла между ними удвоенная площадь равна a·b·sin(γ). Так как sin(γ)≤1, площадь треугольника меньше произведения этих сторон.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 96",
+          "printedPage": "256",
+          "pdfPage": 258,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=258"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 5, теорема 5.1",
+          "printedPage": "33",
+          "pdfPage": 34,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000051.pdf#page=34"
+        }
+      ]
+    },
+    "rhombus_area": {
+      "title": "Площадь ромба",
+      "explanation": "При умножении диагоналей ромба получаем удвоенную площадь. Это следует из разбиения ромба на четыре прямоугольных треугольника. Через сторону и высоту используется S=a·h.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 46",
+          "printedPage": "109–110",
+          "pdfPage": 111,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=111"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "пп. 51–52",
+          "printedPage": "124–125",
+          "pdfPage": 126,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=126"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 22, задача о площади ромба",
+          "printedPage": "153",
+          "pdfPage": 154,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=154"
+        }
+      ]
+    },
+    "trapezoid_area": {
+      "title": "Площадь трапеции",
+      "explanation": "Площадь равна произведению высоты и среднего арифметического оснований. Сначала сложи основания и возьми половину суммы; затем умножь на высоту.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 53",
+          "printedPage": "126–127",
+          "pdfPage": 129,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=129"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 23, теорема 23.1",
+          "printedPage": "158",
+          "pdfPage": 159,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=159"
+        }
+      ]
+    },
+    "similarity_area": {
+      "title": "Масштаб и площадь",
+      "explanation": "При увеличении всех длин в k раз площадь меняется в k² раз. Периметр меняется в k раз.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "пп. 57–58",
+          "printedPage": "138–140",
+          "pdfPage": 140,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=140"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 20, теорема 20.2",
+          "printedPage": "180",
+          "pdfPage": 181,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000051.pdf#page=181"
+        }
+      ]
+    },
+    "pythagoras": {
+      "title": "Теорема Пифагора",
+      "explanation": "Для прямоугольного треугольника c²=a²+b², где c — гипотенуза. Если это равенство выполнено для трёх сторон треугольника, угол напротив c прямой.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "пп. 54–55",
+          "printedPage": "129–131",
+          "pdfPage": 131,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=131"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 16, теорема 16.1",
+          "printedPage": "114–115",
+          "pdfPage": 115,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=115"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 2, теорема 2.2: обратная теорема Пифагора",
+          "printedPage": "13",
+          "pdfPage": 14,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000051.pdf#page=14"
+        }
+      ]
+    },
+    "coordinates": {
+      "title": "Координаты и расстояния",
+      "explanation": "Для середины отрезка усредняют координаты концов по каждой оси. На одной оси расстояние равно модулю разности координат.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 89",
+          "printedPage": "236–237",
+          "pdfPage": 238,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=238"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 8, расстояние между точками и середина отрезка",
+          "printedPage": "74–75",
+          "pdfPage": 75,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000051.pdf#page=75"
+        }
+      ]
+    },
+    "trigonometry": {
+      "title": "Синус, косинус и тангенс",
+      "explanation": "В прямоугольном треугольнике косинус — прилежащий катет, делённый на гипотенузу; тангенс — противоположный катет, делённый на прилежащий. Тангенс может быть больше единицы.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "пп. 66–67",
+          "printedPage": "156–158",
+          "pdfPage": 158,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=158"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 17, определения синуса, косинуса и тангенса острого угла",
+          "printedPage": "120–121",
+          "pdfPage": 121,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000030.pdf#page=121"
+        }
+      ]
+    },
+    "circle_length_area": {
+      "title": "Длина окружности и площадь круга",
+      "explanation": "У длины и площади разные формулы: C=2πr, S=πr². Радиус в формуле площади возводится в квадрат.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 110",
+          "printedPage": "283–285",
+          "pdfPage": 287,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=287"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 111",
+          "printedPage": "285–286",
+          "pdfPage": 288,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=288"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 7, формулы длины окружности и площади круга",
+          "printedPage": "60–61",
+          "pdfPage": 61,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000051.pdf#page=61"
+        }
+      ]
+    },
+    "regular_polygon": {
+      "title": "Правильный многоугольник",
+      "explanation": "У правильного многоугольника равны и стороны, и углы. Само количество сторон ещё не делает фигуру правильной.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 105",
+          "printedPage": "275–276",
+          "pdfPage": 277,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=277"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 6, определение и теоремы 6.1, 6.2",
+          "printedPage": "48–49",
+          "pdfPage": 49,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000051.pdf#page=49"
+        }
+      ]
+    },
+    "equal_chords": {
+      "title": "Хорды и расстояния от центра",
+      "explanation": "Перпендикуляр из центра к хорде делит её пополам. Равные хорды дают равные прямоугольные треугольники, поэтому их расстояния до центра одинаковы.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 18, равнобедренный треугольник — основа вывода",
+          "printedPage": "35–36",
+          "pdfPage": 37,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=37"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 21, окружность — основа вывода",
+          "printedPage": "43",
+          "pdfPage": 45,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=45"
+        },
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 54, теорема Пифагора — основа вывода",
+          "printedPage": "129",
+          "pdfPage": 131,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=131"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 20, упражнения 512–513 о равных хордах и расстояниях до центра",
+          "printedPage": "134",
+          "pdfPage": 135,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=135"
+        },
+        {
+          "bookId": "merzlyak7_2015",
+          "section": "§ 20, теорема 20.1 о перпендикуляре из центра к хорде — основа вывода",
+          "printedPage": "131",
+          "pdfPage": 132,
+          "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=132"
+        }
+      ]
+    }
+  },
+  "cards": {
+    "prev-000": [
+      "adjacent_vertical"
+    ],
+    "prev-001": [
+      "adjacent_vertical"
+    ],
+    "prev-002": [
+      "parallel_same_side"
+    ],
+    "prev-003": [
+      "parallel_alternate"
+    ],
+    "prev-004": [
+      "parallel_angles"
+    ],
+    "prev-005": [
+      "perpendicular"
+    ],
+    "prev-006": [
+      "points_lines"
+    ],
+    "prev-007": [
+      "parallel_point"
+    ],
+    "prev-008": [
+      "angle_bisector"
+    ],
+    "prev-009": [
+      "adjacent_vertical"
+    ],
+    "prev-010": [
+      "adjacent_vertical"
+    ],
+    "prev-011": [
+      "triangle_angles"
+    ],
+    "prev-012": [
+      "triangle_sides_angles"
+    ],
+    "prev-013": [
+      "isosceles"
+    ],
+    "prev-014": [
+      "isosceles"
+    ],
+    "prev-015": [
+      "isosceles",
+      "triangle_angles"
+    ],
+    "prev-016": [
+      "triangle_types"
+    ],
+    "prev-017": [
+      "triangle_sides_angles"
+    ],
+    "prev-018": [
+      "median_hypotenuse"
+    ],
+    "prev-019": [
+      "median_hypotenuse"
+    ],
+    "prev-020": [
+      "triangle_parts",
+      "equal_figures"
+    ],
+    "prev-021": [
+      "triangle_area",
+      "triangle_parts"
+    ],
+    "prev-022": [
+      "triangle_parts"
+    ],
+    "prev-023": [
+      "isosceles"
+    ],
+    "prev-024": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "prev-025": [
+      "triangle_congruence"
+    ],
+    "prev-026": [
+      "triangle_congruence"
+    ],
+    "prev-027": [
+      "triangle_similarity"
+    ],
+    "prev-028": [
+      "triangle_similarity",
+      "equal_figures"
+    ],
+    "prev-029": [
+      "triangle_similarity"
+    ],
+    "prev-030": [
+      "equal_area"
+    ],
+    "prev-031": [
+      "equal_area"
+    ],
+    "prev-032": [
+      "triangle_types"
+    ],
+    "prev-033": [
+      "triangle_exterior"
+    ],
+    "prev-034": [
+      "triangle_angles"
+    ],
+    "prev-035": [
+      "triangle_angles"
+    ],
+    "prev-036": [
+      "triangle_angles"
+    ],
+    "prev-037": [
+      "pythagoras"
+    ],
+    "prev-038": [
+      "triangle_inequality"
+    ],
+    "prev-039": [
+      "triangle_inequality"
+    ],
+    "prev-040": [
+      "isosceles",
+      "triangle_sides_angles"
+    ],
+    "prev-041": [
+      "isosceles"
+    ],
+    "prev-042": [
+      "triangle_midline"
+    ],
+    "prev-043": [
+      "polygon_angles"
+    ],
+    "prev-044": [
+      "parallelogram"
+    ],
+    "prev-045": [
+      "parallelogram_tests"
+    ],
+    "prev-046": [
+      "parallelogram"
+    ],
+    "prev-047": [
+      "parallelogram",
+      "rectangle"
+    ],
+    "prev-048": [
+      "rectangle"
+    ],
+    "prev-049": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "prev-050": [
+      "rhombus"
+    ],
+    "prev-051": [
+      "square"
+    ],
+    "prev-052": [
+      "rhombus",
+      "square"
+    ],
+    "prev-053": [
+      "rectangle"
+    ],
+    "prev-054": [
+      "parallelogram",
+      "rectangle"
+    ],
+    "prev-055": [
+      "rectangle"
+    ],
+    "prev-056": [
+      "rhombus",
+      "rectangle"
+    ],
+    "prev-057": [
+      "rhombus"
+    ],
+    "prev-058": [
+      "rhombus"
+    ],
+    "prev-059": [
+      "trapezoid"
+    ],
+    "prev-060": [
+      "trapezoid"
+    ],
+    "prev-061": [
+      "trapezoid_midline"
+    ],
+    "prev-062": [
+      "trapezoid_midline"
+    ],
+    "prev-063": [
+      "trapezoid",
+      "isosceles_trapezoid"
+    ],
+    "prev-064": [
+      "isosceles_trapezoid"
+    ],
+    "prev-065": [
+      "isosceles_trapezoid"
+    ],
+    "prev-066": [
+      "equal_figures"
+    ],
+    "prev-067": [
+      "parallelogram",
+      "rectangle"
+    ],
+    "prev-068": [
+      "rhombus",
+      "square"
+    ],
+    "prev-069": [
+      "rectangle"
+    ],
+    "prev-070": [
+      "parallelogram",
+      "rectangle"
+    ],
+    "prev-071": [
+      "square",
+      "parallelogram_tests"
+    ],
+    "prev-072": [
+      "parallelogram_tests",
+      "rectangle"
+    ],
+    "prev-073": [
+      "circle_definition"
+    ],
+    "prev-074": [
+      "circle_definition"
+    ],
+    "prev-075": [
+      "circle_definition"
+    ],
+    "prev-076": [
+      "circle_definition"
+    ],
+    "prev-077": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "prev-078": [
+      "circle_definition"
+    ],
+    "prev-079": [
+      "tangent"
+    ],
+    "prev-080": [
+      "tangent"
+    ],
+    "prev-081": [
+      "inscribed_angles"
+    ],
+    "prev-082": [
+      "inscribed_angles"
+    ],
+    "prev-083": [
+      "inscribed_angles"
+    ],
+    "prev-084": [
+      "inscribed_angles"
+    ],
+    "prev-085": [
+      "circumcircle"
+    ],
+    "prev-086": [
+      "incircle"
+    ],
+    "prev-087": [
+      "circumcircle"
+    ],
+    "prev-088": [
+      "circumcircle",
+      "median_hypotenuse"
+    ],
+    "prev-089": [
+      "circle_line"
+    ],
+    "prev-090": [
+      "circle_line"
+    ],
+    "prev-091": [
+      "parallelogram_area"
+    ],
+    "prev-092": [
+      "triangle_area"
+    ],
+    "prev-093": [
+      "triangle_area"
+    ],
+    "prev-094": [
+      "equal_area"
+    ],
+    "prev-095": [
+      "similarity_area"
+    ],
+    "prev-096": [
+      "triangle_similarity",
+      "similarity_area"
+    ],
+    "prev-097": [
+      "similarity_area"
+    ],
+    "prev-098": [
+      "rectangle_area"
+    ],
+    "prev-099": [
+      "pythagoras",
+      "square"
+    ],
+    "prev-100": [
+      "rhombus_area"
+    ],
+    "prev-101": [
+      "trapezoid_area"
+    ],
+    "prev-102": [
+      "coordinates"
+    ],
+    "prev-103": [
+      "coordinates"
+    ],
+    "prev-104": [
+      "rectangle_area",
+      "equal_figures"
+    ],
+    "perpendicular_bisector_point_equidistant_endpoints": [
+      "perpendicular_bisector"
+    ],
+    "point_on_angle_bisector_equidistant_sides": [
+      "angle_bisector_locus"
+    ],
+    "circle_intersection_point_equidistant_centers": [
+      "circle_definition"
+    ],
+    "circles_intersect_if_radius_bigger": [
+      "circle_definition"
+    ],
+    "all_diameters_equal": [
+      "circle_definition"
+    ],
+    "tangent_parallel_radius": [
+      "tangent"
+    ],
+    "point_on_circle_distance_radius": [
+      "circle_definition"
+    ],
+    "inscribed_angle_over_diameter_right": [
+      "inscribed_angles"
+    ],
+    "inscribed_equals_central": [
+      "inscribed_angles"
+    ],
+    "all_chords_equal": [
+      "circle_definition"
+    ],
+    "triangle_area_less_than_product_two_sides": [
+      "triangle_sine_area"
+    ],
+    "similar_triangles_area_ratio_equals_k": [
+      "similarity_area"
+    ],
+    "adjacent_angles_one_acute_one_obtuse_always": [
+      "adjacent_vertical"
+    ],
+    "angle_acute_adjacent_acute": [
+      "adjacent_vertical"
+    ],
+    "parallel_through_point_exists": [
+      "parallel_point"
+    ],
+    "perp_through_point_exists": [
+      "perpendicular_point"
+    ],
+    "three_lines_through_one_point_exist": [
+      "points_lines"
+    ],
+    "two_parallel_to_third_parallel": [
+      "parallel_third"
+    ],
+    "two_parallel_to_third_perpendicular": [
+      "parallel_third",
+      "perpendicular"
+    ],
+    "two_perp_to_third_perp": [
+      "perpendicular"
+    ],
+    "isosceles_trapezoid_bases_equal": [
+      "trapezoid"
+    ],
+    "trap_bases_trapezoid_parallel": [
+      "trapezoid"
+    ],
+    "trapezoid_area_base_times_height": [
+      "trapezoid_area"
+    ],
+    "trapezoid_diagonal_makes_equal_triangles": [
+      "trapezoid",
+      "triangle_area"
+    ],
+    "trapezoid_diagonals_bisect": [
+      "trapezoid",
+      "parallelogram_tests"
+    ],
+    "trapezoid_midline_equals_sum_bases": [
+      "trapezoid_midline"
+    ],
+    "obtuse_triangle_all_obtuse": [
+      "triangle_types",
+      "triangle_angles"
+    ],
+    "right_triangle_angles_sum_90": [
+      "triangle_angles",
+      "right_triangle"
+    ],
+    "triangle_angles_sum_180": [
+      "triangle_angles"
+    ],
+    "triangle_angles_sum_360": [
+      "triangle_angles"
+    ],
+    "triangle_has_angle_le_60": [
+      "triangle_angles"
+    ],
+    "bisector_bisects_opposite_side": [
+      "triangle_parts",
+      "isosceles"
+    ],
+    "median_bisects_angle": [
+      "triangle_parts",
+      "isosceles"
+    ],
+    "circumcenter_always_inside": [
+      "circumcircle"
+    ],
+    "hypotenuse_equals_sum_legs": [
+      "triangle_inequality"
+    ],
+    "hypotenuse_less_than_sum_legs": [
+      "triangle_inequality"
+    ],
+    "right_triangle_acute_sum_90": [
+      "right_triangle"
+    ],
+    "right_triangle_area_equals_product_legs": [
+      "triangle_area"
+    ],
+    "tri_aa_similarity": [
+      "triangle_similarity"
+    ],
+    "tri_aaa_congruent": [
+      "triangle_similarity",
+      "equal_figures"
+    ],
+    "tri_aaa_similarity": [
+      "triangle_similarity"
+    ],
+    "tri_two_sides_congruent": [
+      "triangle_congruence"
+    ],
+    "isosceles_all_bisectors_are_altitudes": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_all_bisectors_are_medians": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "equilateral_altitudes_equal": [
+      "isosceles",
+      "triangle_congruence"
+    ],
+    "tri_1_2_4_exists": [
+      "triangle_inequality"
+    ],
+    "tri_2_4_6_not_exist": [
+      "triangle_inequality"
+    ],
+    "tan_acute_less_than_1": [
+      "trigonometry"
+    ],
+    "parallelogram_cyclic": [
+      "circumcircle",
+      "parallelogram"
+    ],
+    "square_area_adjacent_sides_product": [
+      "rectangle_area"
+    ],
+    "equidiagonal_orthogonal_quadrilateral_square": [
+      "square",
+      "parallelogram_tests"
+    ],
+    "quadrilaterals_equal_if_corresponding_sides_equal": [
+      "equal_figures"
+    ],
+    "parallelogram_adjacent_sides_equal_rhombus": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "parallelogram_equal_diagonals_rhombus": [
+      "rectangle",
+      "rhombus"
+    ],
+    "parallelogram_has_two_equal_angles": [
+      "parallelogram"
+    ],
+    "rect_perp_diagonals_exists": [
+      "square",
+      "rectangle"
+    ],
+    "rect_diagonals_bisect": [
+      "rectangle"
+    ],
+    "rhombus_all_angles_equal": [
+      "rhombus",
+      "square"
+    ],
+    "rhombus_area_ab_sin": [
+      "triangle_sine_area",
+      "parallelogram_area"
+    ],
+    "rhombus_area_side_times_height": [
+      "parallelogram_area"
+    ],
+    "rhombus_diagonals_bisect": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "rhombus_diagonals_equal": [
+      "rhombus",
+      "rectangle"
+    ],
+    "rhombus_right_angle_square": [
+      "rhombus",
+      "square"
+    ],
+    "summer-008": [
+      "rectangle",
+      "square"
+    ],
+    "summer-009": [
+      "parallelogram",
+      "rectangle"
+    ],
+    "summer-014": [
+      "rhombus",
+      "parallelogram_tests"
+    ],
+    "summer-019": [
+      "parallelogram",
+      "rectangle"
+    ],
+    "summer-021": [
+      "rectangle",
+      "parallelogram_tests"
+    ],
+    "summer-024": [
+      "circle_length_area"
+    ],
+    "summer-025": [
+      "circle_length_area"
+    ],
+    "summer-026": [
+      "circle_definition"
+    ],
+    "summer-028": [
+      "square"
+    ],
+    "summer-029": [
+      "parallelogram",
+      "rhombus"
+    ],
+    "summer-034": [
+      "square"
+    ],
+    "summer-035": [
+      "square"
+    ],
+    "summer-036": [
+      "rectangle",
+      "rhombus"
+    ],
+    "summer-037": [
+      "circle_line"
+    ],
+    "summer-038": [
+      "triangle_inequality"
+    ],
+    "summer-039": [
+      "triangle_angles"
+    ],
+    "summer-041": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "summer-043": [
+      "rectangle_area"
+    ],
+    "summer-044": [
+      "polygon_angles"
+    ],
+    "summer-045": [
+      "circle_definition",
+      "perpendicular_bisector"
+    ],
+    "summer-046": [
+      "perpendicular_bisector"
+    ],
+    "summer-048": [
+      "rectangle"
+    ],
+    "summer-050": [
+      "trapezoid",
+      "parallelogram"
+    ],
+    "summer-051": [
+      "triangle_parts"
+    ],
+    "summer-052": [
+      "triangle_parts",
+      "triangle_types"
+    ],
+    "summer-057": [
+      "inscribed_angles"
+    ],
+    "summer-058": [
+      "pythagoras"
+    ],
+    "summer-059": [
+      "pythagoras"
+    ],
+    "summer-060": [
+      "pythagoras"
+    ],
+    "summer-061": [
+      "rhombus_area"
+    ],
+    "summer-063": [
+      "equal_chords"
+    ],
+    "summer-064": [
+      "equal_chords"
+    ],
+    "summer-068": [
+      "polygon_angles"
+    ],
+    "summer-069": [
+      "regular_polygon"
+    ],
+    "summer-070": [
+      "regular_polygon"
+    ],
+    "summer-072": [
+      "circle_definition"
+    ],
+    "reference-005": [
+      "points_lines"
+    ],
+    "reference-014": [
+      "triangle_sides_angles"
+    ],
+    "reference-015": [
+      "triangle_types"
+    ],
+    "reference-016": [
+      "triangle_types"
+    ],
+    "reference-018": [
+      "triangle_types",
+      "triangle_angles"
+    ],
+    "reference-019": [
+      "isosceles",
+      "triangle_types"
+    ],
+    "reference-024": [
+      "triangle_angles"
+    ],
+    "reference-026": [
+      "triangle_inequality"
+    ],
+    "reference-029": [
+      "pythagoras"
+    ],
+    "reference-030": [
+      "trigonometry"
+    ],
+    "reference-036": [
+      "incircle"
+    ],
+    "reference-037": [
+      "circumcircle"
+    ],
+    "reference-039": [
+      "incircle",
+      "circumcircle",
+      "isosceles"
+    ],
+    "reference-043": [
+      "triangle_similarity",
+      "isosceles"
+    ],
+    "reference-044": [
+      "triangle_similarity",
+      "isosceles"
+    ],
+    "reference-047": [
+      "triangle_congruence"
+    ],
+    "reference-054": [
+      "parallelogram"
+    ],
+    "reference-055": [
+      "parallelogram_area"
+    ],
+    "reference-056": [
+      "parallelogram_area",
+      "rhombus_area"
+    ],
+    "reference-068": [
+      "rectangle",
+      "equal_figures"
+    ],
+    "reference-073": [
+      "rectangle_area"
+    ],
+    "reference-074": [
+      "square"
+    ],
+    "reference-075": [
+      "square"
+    ],
+    "reference-079": [
+      "rectangle_area"
+    ],
+    "reference-080": [
+      "rhombus_area",
+      "square"
+    ],
+    "reference-082": [
+      "trapezoid",
+      "parallel_angles"
+    ],
+    "reference-096": [
+      "circle_definition"
+    ],
+    "reference-097": [
+      "circumcircle",
+      "rectangle"
+    ],
+    "reference-105": [
+      "incircle",
+      "rhombus"
+    ],
+    "reference-106": [
+      "tangent"
+    ]
+  }
+};
+root.Task19TextbookData = data;
+if (typeof module !== 'undefined' && module.exports) module.exports = data;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script data-inline-source="/trainers/task19-textbook-reference.js">
+/* Verified textbook passage links. Explanations are authored for this trainer. */
+(function(root,factory){
+  const api=factory(()=>root.Task19TextbookData);
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  else root.Task19TextbookReference=api;
+})(typeof window==='object'?window:globalThis,function(getData){
+  'use strict';
+  const LABEL='Для ценителей строгости и точности';
+  function sourceURL(value){
+    try{const url=new URL(value);return url.protocol==='https:'?url.href:null;}
+    catch(_){return null;}
+  }
+  function excerptURL(value){
+    return typeof value==='string'&&(/^\/trainers\/task19-(?:reference|textbook)\/[a-z0-9_-]+\.(?:png|jpg|jpeg)$/i.test(value)||/^data:image\/(?:png|jpeg);base64,[a-z0-9+/=\s]+$/i.test(value))?value:null;
+  }
+  function forCard(card,data=getData()){
+    const ids=data?.cards?.[card?.id];
+    if(!Array.isArray(ids))return [];
+    return [...new Set(ids)].map(id=>({id,...data.topics?.[id]})).filter(topic=>
+      typeof topic.title==='string'&&Array.isArray(topic.passages));
+  }
+  function mount(host,card,data=getData()){
+    host.replaceChildren();
+    if(!card)return;
+    const d=host.ownerDocument,outer=d.createElement('details'),summary=d.createElement('summary');
+    outer.className='t19-textbook';outer.dataset.cardId=card.id;
+    summary.textContent=LABEL;outer.append(summary);
+    const content=d.createElement('div');content.className='t19-textbook-content';outer.append(content);
+    const paragraph=(text,className)=>{const p=d.createElement('p');p.textContent=text;if(className)p.className=className;return p;};
+    const topics=forCard(card,data);
+    if(!topics.length){
+      content.append(paragraph('Ссылки на учебники для этого утверждения пока не удалось загрузить. Можно продолжить тренировку и открыть наглядную подсказку.'));
+      host.append(outer);return;
+    }
+    content.append(paragraph('Пояснение ниже составлено для тренажёра. В учебнике по ссылке можно открыть указанное определение, теорему или задачу.','t19-textbook-note'));
+    content.append(paragraph('Утверждение в задании не обязательно совпадает с формулировкой теоремы. Сравни их условия и вывод.','t19-textbook-note'));
+    let linkCount=0;const notedBooks=new Set();
+    for(const topic of topics){
+      const section=d.createElement('section'),heading=d.createElement('h3');
+      section.className='t19-textbook-topic';section.dataset.topicId=topic.id;
+      heading.textContent=topic.title;section.append(heading);
+      if(topic.explanation)section.append(paragraph(topic.explanation));
+      const list=d.createElement('ul');list.className='t19-textbook-sources';
+      for(const passage of topic.passages){
+        const book=data.books?.[passage.bookId],url=sourceURL(passage.url);
+        if(!book||!url)continue;
+        const item=d.createElement('li'),a=d.createElement('a'),edition=d.createElement('span');
+        a.href=url;a.target='_blank';a.rel='noopener noreferrer';
+        a.textContent=[book.authors,book.title].filter(Boolean).join('. ')+
+          (passage.section?' — '+passage.section:'')+
+          (passage.printedPage?' · с. '+passage.printedPage:'');
+        a.dataset.bookId=passage.bookId;
+        a.setAttribute('aria-label',a.textContent+'. Открыть фрагмент учебника в новой вкладке.');
+        item.append(a);edition.className='t19-textbook-edition';
+        edition.textContent=[book.edition,'Откроется в новой вкладке'].filter(Boolean).join(' · ');
+        item.append(edition);
+        if(book.hostNote&&!notedBooks.has(passage.bookId)){
+          const note=d.createElement('span');note.className='t19-textbook-edition';note.textContent=book.hostNote;item.append(note);notedBooks.add(passage.bookId);
+        }
+        const excerpt=passage.excerpt,imageURL=excerptURL(excerpt?.file);
+        if(imageURL&&excerpt.alt&&Number.isFinite(excerpt.width)&&excerpt.width>0&&Number.isFinite(excerpt.height)&&excerpt.height>0){
+          const figure=d.createElement('figure'),image=d.createElement('img'),caption=d.createElement('figcaption');
+          figure.className='t19-textbook-excerpt';image.src=imageURL;image.alt=excerpt.alt;image.width=excerpt.width;image.height=excerpt.height;image.loading='lazy';
+          caption.textContent='Фрагмент учебника';figure.append(image,caption);item.append(figure);
+        }
+        list.append(item);linkCount++;
+      }
+      if(list.children.length)section.append(list);
+      content.append(section);
+    }
+    if(!linkCount)content.append(paragraph('Не удалось загрузить проверенные ссылки на учебники. Пояснение выше можно прочитать на этой странице.'));
+    const close=d.createElement('button');close.type='button';close.className='t19-textbook-close';close.textContent='Свернуть пояснение';
+    close.addEventListener('click',()=>{outer.open=false;summary.focus();});content.append(close);
+    host.append(outer);
+  }
+  return {label:LABEL,forCard,mount};
+});
+
+</script>
 <script data-inline-source="/trainers/task19-visual-app.js">
 /* One statement, optional visual help, then a reasoned answer. No network or account. */
 (function () {
@@ -6862,6 +9122,7 @@ return {forCard,mount,crops};
   }
   function render(moveFocus) {
     closePreviousModel();
+    if(el('textbookHost'))el('textbookHost').replaceChildren();
     el('answerPanel').hidden = true;
     el('resultTitle').textContent = el('answerExplanation').textContent = '';
     el('hintPanel').hidden = true;
@@ -6885,6 +9146,7 @@ return {forCard,mount,crops};
       el('topicLabel').textContent = card.theme;
       el('statement').textContent = card.text;
       el('hintToggle').hidden = el('answerActions').hidden = false;
+      if(window.Task19TextbookReference&&el('textbookHost'))window.Task19TextbookReference.mount(el('textbookHost'),card);
       if (state.current.hintOpen) showHint(true);
       if (typeof state.current.answer === 'boolean') showAnswer();
     }
@@ -6926,7 +9188,7 @@ return {forCard,mount,crops};
   el('topicSelect').addEventListener('change', () => { state.topic = el('topicSelect').value; setCard(pickNext()); });
   el('reviewOnly').addEventListener('change', () => { state.review = el('reviewOnly').checked; setCard(pickNext()); });
   document.addEventListener('keydown', event => {
-    if (event.ctrlKey || event.altKey || event.metaKey || event.repeat || /INPUT|TEXTAREA|SELECT|BUTTON/.test(event.target?.tagName || '') || event.target?.isContentEditable) return;
+    if (event.ctrlKey || event.altKey || event.metaKey || event.repeat || /^(?:INPUT|TEXTAREA|SELECT|BUTTON|SUMMARY|A)$/.test(event.target?.tagName || '') || event.target?.closest?.('#textbookHost') || event.target?.isContentEditable) return;
     if (event.code === 'KeyJ' || event.code === 'KeyN') { event.preventDefault(); answer(event.code === 'KeyJ'); }
   });
   render(false);

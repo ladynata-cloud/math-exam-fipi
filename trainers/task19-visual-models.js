@@ -436,6 +436,11 @@
     });
     const onMeasure=()=>{if(active){measured=!measured;draw();publish();}};
     measure.addEventListener('click',onMeasure);listeners.push([measure,'click',onMeasure]);
+    if(hint.model==='lineThroughPoint'){
+      const reset=doc.createElement('button');reset.type='button';reset.className='t19-model-reset';reset.textContent='Начать сначала';
+      const onReset=()=>{if(active){const initial=restoreModel(hint,null);params=initial.params;measured=false;draw();publish();}};
+      reset.addEventListener('click',onReset);listeners.push([reset,'click',onReset]);host.insertBefore(reset,readout);
+    }
     const highlight=event=>{
       const item=event.target.closest?.('[data-geometry-group]'),group=item&&host.contains(item)?item.dataset.geometryGroup:null;
       host.querySelectorAll('[data-geometry-group]').forEach(node=>node.classList.toggle('t19-linked-active',!!group&&node.dataset.geometryGroup===group));

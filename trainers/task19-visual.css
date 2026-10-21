@@ -62,9 +62,10 @@ noscript p{max-width:760px;margin:30px auto;padding:20px}
 .t19-preserve{font-size:15px;color:var(--muted);margin:0 0 16px;line-height:1.7}
 .t19-measure{display:block;margin-top:24px;background:var(--green);border-color:var(--green);color:#fff;min-height:48px}
 .t19-measure:hover{background:#12533f;color:#fff}
+.t19-model-reset{display:block;margin-top:14px;color:var(--green);border-color:#d3ded5}
 .t19-observe{font-size:18px;line-height:1.7;margin:20px 0 4px}
 .visual-host input[type=range]{min-height:48px}
-@media(max-width:540px){.t19-measure{width:100%}.t19-model-readout{padding-left:20px}}
+@media(max-width:540px){.t19-measure,.t19-model-reset{width:100%}.t19-model-readout{padding-left:20px}}
 
 /* Linked geometry remains usable with a mouse, touch, or keyboard. */
 [data-geometry-group]{outline-offset:4px}
@@ -82,4 +83,21 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
 .t19-reference a{color:var(--green);text-underline-offset:3px;overflow-wrap:anywhere}
 .t19-reference p{margin:14px 0}
 .t19-reference-sheet{margin:14px 0}
+.t19-textbook{margin-top:22px;font-size:16px;line-height:1.8;overflow-wrap:anywhere}
+.t19-textbook>summary{cursor:pointer;min-height:48px;padding:10px 0;color:var(--green);width:fit-content}
+.t19-textbook[open]>summary{margin-bottom:10px}
+.t19-textbook-content{border-top:1px solid var(--line);padding-top:4px}
+.t19-textbook-content p{margin:16px 0}
+.t19-textbook-note{color:var(--muted);font-size:15px}
+.t19-textbook-topic{margin:24px 0}
+.t19-textbook-topic h3{font-size:18px;line-height:1.6;margin:0 0 12px;font-weight:600}
+.t19-textbook-sources{margin:18px 0;padding-left:22px}
+.t19-textbook-sources li{margin:18px 0}
+.t19-textbook a{color:var(--green);text-underline-offset:3px;text-decoration-thickness:1px}
+.t19-textbook-edition{display:block;color:var(--muted);font-size:14px;margin-top:5px;line-height:1.7}
+.t19-textbook-excerpt{margin:16px 0}
+.t19-textbook-excerpt img{display:block;width:100%;height:auto;max-width:650px;background:#fff;border:1px solid var(--line);border-radius:6px}
+.t19-textbook-excerpt figcaption{font-size:13px;line-height:1.6;color:var(--muted);margin-top:6px}
+.t19-textbook-close{color:var(--green);border-color:#d3ded5;margin:2px 0 8px}
+@media(max-width:540px){.t19-textbook-close{width:100%}.t19-textbook-sources{padding-left:19px}}
 @media(prefers-reduced-motion:reduce){svg .t19-linked-active,.t19-angle-pulse{animation:none!important}svg .t19-linked-active{filter:drop-shadow(0 0 3px currentColor)}}

@@ -458,8 +458,8 @@ function verify(card, params) {
   return s;
 }
 
-test('all 233 statements offer genuine bounded geometric manipulation', () => {
-  assert.equal(data.cards.length, 233);
+test('all 234 statements offer genuine bounded geometric manipulation', () => {
+  assert.equal(data.cards.length, 234);
   for (const card of data.cards) {
     assert(card.hint.model, card.id + ': no passive SVG fallback');
     assert(visuals.modelNames.includes(card.hint.model), card.id + ': known model');

@@ -1,6 +1,6 @@
 {
   "stage": "1",
-  "updated": "2026-10-20",
+  "updated": "2026-10-21",
   "notes": "Первый этап: скачивание, промпты и архивы для ключевых публичных тренажёров. Служебные, тестовые и персональные страницы не включены.",
   "trainers": [
     {
@@ -183,6 +183,8 @@
         "/trainers/task19-models-lines-polygons.js",
         "/trainers/task19-visual-models.js",
         "/trainers/task19-reference.js",
+        "/trainers/task19-textbook-data.js",
+        "/trainers/task19-textbook-reference.js",
         "/trainers/task19-visual-app.js"
       ],
       "interfaceRequirements": [
@@ -192,7 +194,8 @@
         "кнопки «Верно» и «Неверно» сразу проверяют ответ; отдельная кнопка «Проверить» не нужна;",
         "после ответа — объяснение; для неверного утверждения приведи подходящий контрпример, для верного — обоснование;",
         "кнопка для следующего утверждения;",
-        "выбор темы, результаты и повторение ошибок — в свёрнутом дополнительном разделе."
+        "выбор темы, результаты и повторение ошибок — в свёрнутом дополнительном разделе.",
+        "необязательный раздел «Для ценителей строгости и точности» на той же странице: краткое авторское пояснение и проверенные ссылки на конкретные места учебников; внешние учебники требуют доступа к интернету."
       ],
       "inlineImageAssets": [
         "/trainers/task19-reference/areas.png",
@@ -208,7 +211,9 @@
         "/trainers/task19-reference/sine-cosine.png",
         "/trainers/task19-reference/trapezoid-area.png",
         "/trainers/task19-reference/triangle-area.png",
-        "/trainers/task19-reference/trig-values.png"
+        "/trainers/task19-reference/trig-values.png",
+        "/trainers/task19-textbook/atanasyan-parallel-third.png",
+        "/trainers/task19-textbook/merzlyak-parallel-third.png"
       ]
     },
     {

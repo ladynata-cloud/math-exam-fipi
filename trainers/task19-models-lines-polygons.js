@@ -13,6 +13,8 @@
   const dotted=(a,b,color)=>line(a,b,color,'6 5');
   const AMBER='#a76616',PURPLE='#7954a1',COLORS=[BLUE,GREEN,AMBER,PURPLE];
   const row=(text,color,group)=>({text,color,group});
+  const clearPoint=(p,color)=>`<circle cx="${p[0]}" cy="${p[1]}" r="7" fill="white"/>`+dot(p,color);
+  const clearLabel=(x,y,label,color)=>text(x,y,label,color).replace('<text ','<text paint-order="stroke fill" stroke="white" stroke-width="5" stroke-linejoin="round" ');
   const offsetTick=(a,b,count,color)=>tick(a,[a[0]+.5*(b[0]-a[0]),a[1]+.5*(b[1]-a[1])],count,color);
   // Marks follow measured equality, including when a slider creates a special case.
   function equalityGroups(values){const unique=[];return values.map(value=>{let i=unique.findIndex(v=>Math.abs(v-value)<1e-7*Math.max(1,Math.abs(v),Math.abs(value)));if(i<0){i=unique.length;unique.push(value);}return{count:i+1,color:COLORS[i%COLORS.length]};});}
@@ -48,12 +50,22 @@
     controls:[['angle','Поверни прямую через P',0,170,1,'°']],
     controlsFor:p=>p.mode==='many'?[['angle','Поверни третью прямую через P',15,75,1,'°']]:defs.lineThroughPoint.controls,
     normalize:p=>{if(p.mode==='many')p.angle=clamp(p.angle,15,75);return p;},
+    update:(p,key,value)=>{
+      if(key!=='angle')return {...p,[key]:value};
+      const before=p.angle-p.target,after=value-p.target;
+      // Snap on approach, but let a keyboard step leave an already aligned line.
+      // Applying this in normalize() would trap ArrowLeft/ArrowRight at the target.
+      const approaching=Math.abs(after)<Math.abs(before)||before*after<0;
+      return {...p,angle:p.mode==='twoPoints'&&Math.abs(after)<=2&&approaching?p.target:value};
+    },
     sample:p=>{const u=[3.4*Math.cos(p.angle*RAD),3.4*Math.sin(p.angle*RAD)],P={P:[0,0],B:[3*Math.cos(p.target*RAD),3*Math.sin(p.target*RAD)],U:[-u[0],-u[1]],V:u};return{points:P,metrics:{angle:p.angle,target:p.target,distance:3*Math.abs(Math.sin((p.angle-p.target)*RAD)),relative:Math.min(p.angle,180-p.angle)}};},
-    render:s=>{const p=s.values,P=s.points,T=q=>[280+q[0]*42,175-q[1]*42],u=[3.4*Math.cos(p.angle*RAD),3.4*Math.sin(p.angle*RAD)];let body=line(T([-u[0],-u[1]]),T(u),BLUE)+dot(T(P.P),BLUE)+text(266,197,'P',BLUE);
-      if(p.mode==='twoPoints')body+=dot(T(P.B),GREEN)+text(T(P.B)[0]+14,T(P.B)[1]-14,'B',GREEN);
+    render:s=>{const p=s.values,P=s.points,T=q=>[280+q[0]*42,175-q[1]*42],u=[3.4*Math.cos(p.angle*RAD),3.4*Math.sin(p.angle*RAD)],normal=[Math.sin(p.angle*RAD),Math.cos(p.angle*RAD)];let body=line(T([-u[0],-u[1]]),T(u),BLUE);
+      if(p.mode==='twoPoints'){const b=T(P.B);body+=`<g data-geometry-point="B">${clearPoint(b,GREEN)}${clearLabel(b[0]+normal[0]*32,b[1]+normal[1]*32,'B',GREEN)}</g>`;}
       else if(p.mode==='many')body+=line([70,175],[490,175],INK)+line([280,40],[280,310],GREEN)+rightMark([490,175],[280,175],[280,40]);
       else{body+=line([55,285],[505,285],GREEN)+text(80,268,'a',GREEN);if(Math.abs(p.angle-90)<1e-7)body+=rightMark(T(P.P),[280,285],[505,285]);}
-      return{body,readout:p.mode==='twoPoints'?[`Расстояние от B до синей прямой: ${fmt(s.metrics.distance)}`,`Направление синей прямой: ${fmt(p.angle)}°`]:p.mode==='many'?[`Направления трёх прямых: 0°; ${fmt(p.angle)}°; 90°`,'Все три прямые проходят через P']:[`Угол синей прямой с прямой a: ${fmt(s.metrics.relative)}°`,`Синяя прямая всё время проходит через P`]};}
+      const label=p.mode==='many'?[307,205]:[280+normal[0]*32,175+normal[1]*32];
+      body+=`<g data-geometry-point="P">${clearPoint(T(P.P),BLUE)}${clearLabel(label[0],label[1],'P',BLUE)}</g>`;
+      return{body,readout:p.mode==='twoPoints'?[`Расстояние от B до синей прямой: ${fmt(s.metrics.distance)}`,`Направление синей прямой: ${fmt(p.angle)}°`,...(s.metrics.distance<1e-9?['Прямая проходит через обе точки P и B.']:[])]:p.mode==='many'?[`Направления трёх прямых: 0°; ${fmt(p.angle)}°; 90°`,'Все три прямые проходят через P']:[`Угол синей прямой с прямой a: ${fmt(s.metrics.relative)}°`,`Синяя прямая всё время проходит через P`]};}
   };
 
   defs.bisectorDistance={
@@ -147,7 +159,20 @@
     controlsFor:p=>p.mode==='midpoint'?[['bx','Координата x точки B',-5,5,0.5,''],['by','Координата y точки B',-3,4,0.5,'']]:defs.coordinateMeasure.controls,
     sample:p=>{const P=p.mode==='midpoint'?{A:[p.x,p.y],B:[p.bx,p.by]}:{A:[p.a,0],B:[p.b,0]};P.M=mid(P.A,P.B);return{points:P,metrics:{length:hypot(P.A,P.B),difference:p.b-p.a,midX:P.M[0],midY:P.M[1],AM:hypot(P.A,P.M),MB:hypot(P.M,P.B)}};},
     render:s=>{const p=s.values,P=s.points,T=q=>[280+q[0]*34,190-q[1]*30];let body=line([60,190],[500,190]);for(let i=-6;i<=6;i++)body+=line([280+i*34,185],[280+i*34,195])+text(280+i*34,214,i);if(p.mode==='midpoint'){body+=line([280,45],[280,295]);for(let i=-3;i<=4;i++)if(i)body+=line([275,190-i*30],[285,190-i*30])+text(263,190-i*30,i);}
-      body+=line(T(P.A),T(P.B),BLUE)+dot(T(P.A),BLUE)+dot(T(P.B),GREEN)+text(T(P.A)[0]-10,T(P.A)[1]-20,'A',BLUE)+text(T(P.B)[0]+10,T(P.B)[1]-20,'B',GREEN);if(p.mode==='midpoint')body+=linked('AM',line(T(P.A),T(P.M),BLUE)+tick(T(P.A),T(P.M),1,BLUE),'AM')+linked('MB',line(T(P.M),T(P.B),BLUE)+tick(T(P.M),T(P.B),1,BLUE),'MB')+dot(T(P.M))+text(T(P.M)[0],T(P.M)[1]+22,'M');return{body,readout:p.mode==='midpoint'?[`A (${fmt(P.A[0])}; ${fmt(P.A[1])})`,`B (${fmt(P.B[0])}; ${fmt(P.B[1])})`,`M (${fmt(s.metrics.midX)}; ${fmt(s.metrics.midY)})`,row(`AM = ${fmt(s.metrics.AM)}`,BLUE,'AM'),row(`MB = ${fmt(s.metrics.MB)}`,BLUE,'MB')]:[`Координаты: ${fmt(p.a)} и ${fmt(p.b)}`,`Разность B − A = ${fmt(s.metrics.difference)}`,`Расстояние AB = ${fmt(s.metrics.length)}`]};}
+      if(p.mode==='line'){
+        const a=T(P.A),b=T(P.B),same=s.metrics.length<1e-9,sign=p.a<=p.b?1:-1;
+        let segment=line(a,b,BLUE).replace('stroke-width="3"','stroke-width="7"');
+        if(!same)segment+=line([a[0],136],[b[0],136],BLUE)+line([a[0],130],[a[0],142],BLUE)+line([b[0],130],[b[0],142],BLUE)+dotted([a[0],145],[a[0],180],BLUE)+dotted([b[0],145],[b[0],180],BLUE);
+        segment+=clearLabel((a[0]+b[0])/2,105,`AB = ${fmt(s.metrics.length)}`,BLUE);
+        body+=linked('AB',segment,'Отрезок AB и его длина');
+        if(same)body+=clearPoint(a,BLUE)+clearLabel(a[0],163,'A = B',BLUE);
+        else body+=clearPoint(a,BLUE)+clearPoint(b,GREEN)+clearLabel(a[0]-sign*12,163,'A',BLUE)+clearLabel(b[0]+sign*12,163,'B',GREEN);
+        const signed=n=>fmt(n).replace(/^-/,'−'),subtract=p.a<0?`(${signed(p.a)})`:signed(p.a);
+        return{body,readout:[`Координата A: ${signed(p.a)}; координата B: ${signed(p.b)}`,row(`AB = |${signed(p.b)} − ${subtract}| = |${signed(s.metrics.difference)}| = ${fmt(s.metrics.length)}`,BLUE,'AB')]};
+      }
+      body+=line(T(P.A),T(P.B),BLUE)+dot(T(P.A),BLUE)+dot(T(P.B),GREEN)+text(T(P.A)[0]-10,T(P.A)[1]-20,'A',BLUE)+text(T(P.B)[0]+10,T(P.B)[1]-20,'B',GREEN);
+      body+=linked('AM',line(T(P.A),T(P.M),BLUE)+tick(T(P.A),T(P.M),1,BLUE),'AM')+linked('MB',line(T(P.M),T(P.B),BLUE)+tick(T(P.M),T(P.B),1,BLUE),'MB')+dot(T(P.M))+text(T(P.M)[0],T(P.M)[1]+22,'M');
+      return{body,readout:[`A (${fmt(P.A[0])}; ${fmt(P.A[1])})`,`B (${fmt(P.B[0])}; ${fmt(P.B[1])})`,`M (${fmt(s.metrics.midX)}; ${fmt(s.metrics.midY)})`,row(`AM = ${fmt(s.metrics.AM)}`,BLUE,'AM'),row(`MB = ${fmt(s.metrics.MB)}`,BLUE,'MB')]};}
   };
 
   defs.rhombusArea={

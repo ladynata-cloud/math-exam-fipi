@@ -121,6 +121,7 @@
   }
   function render(moveFocus) {
     closePreviousModel();
+    if(el('textbookHost'))el('textbookHost').replaceChildren();
     el('answerPanel').hidden = true;
     el('resultTitle').textContent = el('answerExplanation').textContent = '';
     el('hintPanel').hidden = true;
@@ -144,6 +145,7 @@
       el('topicLabel').textContent = card.theme;
       el('statement').textContent = card.text;
       el('hintToggle').hidden = el('answerActions').hidden = false;
+      if(window.Task19TextbookReference&&el('textbookHost'))window.Task19TextbookReference.mount(el('textbookHost'),card);
       if (state.current.hintOpen) showHint(true);
       if (typeof state.current.answer === 'boolean') showAnswer();
     }
@@ -185,7 +187,7 @@
   el('topicSelect').addEventListener('change', () => { state.topic = el('topicSelect').value; setCard(pickNext()); });
   el('reviewOnly').addEventListener('change', () => { state.review = el('reviewOnly').checked; setCard(pickNext()); });
   document.addEventListener('keydown', event => {
-    if (event.ctrlKey || event.altKey || event.metaKey || event.repeat || /INPUT|TEXTAREA|SELECT|BUTTON/.test(event.target?.tagName || '') || event.target?.isContentEditable) return;
+    if (event.ctrlKey || event.altKey || event.metaKey || event.repeat || /^(?:INPUT|TEXTAREA|SELECT|BUTTON|SUMMARY|A)$/.test(event.target?.tagName || '') || event.target?.closest?.('#textbookHost') || event.target?.isContentEditable) return;
     if (event.code === 'KeyJ' || event.code === 'KeyN') { event.preventDefault(); answer(event.code === 'KeyJ'); }
   });
   render(false);

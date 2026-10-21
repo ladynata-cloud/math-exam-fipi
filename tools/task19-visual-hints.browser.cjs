@@ -196,8 +196,8 @@ async function main() {
       assert.equal(await page.locator('#answerExplanation').textContent(),'');
     });
 
-    await check('all 233 statements have a genuine model action without grading or an early answer',async()=>{
-      assert.equal(cards.length,233,'The full canonical corpus is exercised');
+    await check('all 234 statements have a genuine model action without grading or an early answer',async()=>{
+      assert.equal(cards.length,234,'The full canonical corpus including the current demo is exercised');
       await page.evaluate(()=>localStorage.clear());
       await page.setViewportSize({width:360,height:900});
       let adjustable=0,fixedMeasurements=0;
@@ -227,7 +227,7 @@ async function main() {
         assert.equal(await page.locator('#progressText').textContent(),progress,card.id+': progress unchanged');
         await noOverflow(page,card.id+' action');
       }
-      assert(adjustable>0,'Adjustable geometry is covered');assert.equal(adjustable+fixedMeasurements,233,'Every card has a meaningful action');
+      assert(adjustable>0,'Adjustable geometry is covered');assert.equal(adjustable+fixedMeasurements,234,'Every card has a meaningful action');
       console.log('ACTION_COVERAGE '+JSON.stringify({total:cards.length,adjustable,fixedMeasurements}));
     });
 
