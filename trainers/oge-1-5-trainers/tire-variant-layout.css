@@ -68,6 +68,9 @@ body.pm-minimal.pm-tires.tvl-exam .wrap{max-width:1500px}
 @media(max-width:600px){
  body.pm-minimal.pm-tires.tvl-exam .wrap{padding-left:10px;padding-right:10px}
  .tvl-exam .tvl-common-condition{padding:16px 8px}
+ /* The extra marking disclosure must not shrink its model below 239px. */
+ .tvl-exam .tvl-marking-help>.pm-content{padding-left:0;padding-right:0}
+ .tvl-exam #section-0>.card{padding-left:4px;padding-right:4px}
  .tvl-exam .tvl-common-condition>h2{font-size:25px}
  .tvl-exam .tvl-common-condition>.tvl-common-given,.tvl-exam .tvl-common-condition>.tvl-marking-given{font-size:18px;line-height:1.75}
  .tvl-exam #tvl-main-model .t3d-root{display:flex;flex-direction:column;gap:14px}
