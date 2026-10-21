@@ -182,10 +182,12 @@ const server = http.createServer((request, response) => {
 
     // Workshop records are created by its own UI and must survive both old and new deep links.
     await page.goto(origin + '/stereo-course/index.html#sections');
-    await page.waitForSelector('.lesson-flow');
+    await page.waitForSelector('#task-model svg');
+    assert.ok(await page.locator('#answer').isVisible(), 'workshop opens on the task with a visible model');
     assert.match(await page.locator('#app h1').textContent(), /сечен/i);
     assert.equal(await page.getByRole('link', { name: '← Маршрут к №15', exact: true }).count(), 0, 'legacy entry preserves its navigation');
-    await page.locator('.lesson-flow [data-stage="5"]').click();
+    await page.locator('.more-sections > summary').click();
+    await page.locator('.lesson-actions [data-stage="5"]').click();
     await page.locator('#written').fill('Сохранённое доказательство: точки лежат в одной плоскости.');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.sections.written.includes('Сохранённое доказательство'));
     const workshopBefore = await page.evaluate(() => JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.sections);
