@@ -4,3 +4,43 @@
 .exit-model{display:none}.space-canvas:fullscreen{background:#f7faf8;border:0;border-radius:0;margin:0;display:flex;align-items:center;justify-content:center}.space-canvas:fullscreen canvas{width:min(100vw,160vh);height:auto}.space-canvas:fullscreen .exit-model{display:block;position:absolute;top:10px;right:10px;z-index:2}
 
 h1,h2,h3{overflow-wrap:anywhere;min-width:0}input[type=file]{max-width:100%;min-width:0}label{min-width:0;max-width:100%}
+
+/* The condition and its own model remain visible while optional help unfolds. */
+:root{--teal:#146b43;--soft:#edf6ef}
+.task-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.8fr);gap:22px;align-items:start}
+.task-main #task-title{font-size:1.35rem}
+.task-main .task-question{font-size:1.16rem;line-height:1.7;margin:0 0 22px}
+.task-main label,.help-column label{font-size:1rem;line-height:1.6}
+.task-main #answer-form{margin-top:24px;border-top:1px solid var(--line);padding-top:22px}
+.task-main #answer,.help-column #step-answer{font-size:1.15rem}
+.task-main .answer-row,.help-column .answer-row{gap:12px}
+.task-main .muted{font-size:.92rem}
+.help-column{min-width:0;position:sticky;top:20px}
+.help-column>#task-help{margin:0;padding:0;background:var(--white);border:1px solid #b9d5c0;border-radius:16px;overflow:hidden}
+.help-column>#task-help>summary{display:block;background:#eaf5ed;color:#135732;padding:17px 20px;min-height:56px;font-size:1.06rem}
+.help-column>#task-help>summary::before{content:'＋';margin-right:10px}
+.help-column>#task-help[open]>summary::before{content:'−'}
+.help-column>#task-help>*:not(summary){margin-left:20px;margin-right:20px}
+.help-column>#task-help>p:last-child{margin-bottom:20px}
+.help-column summary{color:#165e3c;font-size:1rem;line-height:1.6;min-height:48px}
+.help-column .proof-list li{padding:14px 12px}
+.help-column .proof-list small{font-size:.95rem;line-height:1.65}
+.help-column .answer-row>*{max-width:100%;min-width:0}
+.help-column .answer-row input{width:100%}
+.help-column .answer-row button{width:100%}
+.source-points{padding-left:22px}
+.source-points li{margin:12px 0}
+.lesson-actions{display:flex;gap:12px;align-items:start;margin:18px 0 24px;flex-wrap:wrap}
+.lesson-actions .more-sections{border:1px solid var(--line);border-radius:11px;padding:0;margin:0;background:var(--white);max-width:100%}
+.more-sections>summary{padding:10px 16px;min-height:44px}
+.section-links{display:grid;gap:8px;padding:12px;max-width:100%}
+.section-links button{text-align:left}
+.lesson-actions [aria-current=page]{background:#eaf5ed;color:#135732;border-color:#94bca0}
+.proof-problem .proof-list small{font-size:1rem;line-height:1.65}
+#task-model{min-width:0;max-width:100%}
+#answer-format>summary{font-size:.95rem;color:var(--teal)}
+@media(max-width:860px){.task-layout{display:flex;flex-direction:column}.help-column{position:static}.task-layout>.task-main,.task-layout>.help-column{width:100%}}
+@media(max-width:480px){.back-row{flex-wrap:wrap;gap:10px}.workspace h1{font-size:1.8rem}.task-main .task-question{font-size:1.1rem}.help-column>#task-help>*:not(summary){margin-left:14px;margin-right:14px}.help-column>#task-help>summary{padding:16px 14px}.toplinks a,.toplinks button{font-size:.9rem}.task-main .answer-row input{min-width:0;width:100%;flex-basis:100%}.more-sections{flex:1}}
+.stereo-fraction{display:inline-grid;grid-template-columns:minmax(0,1fr);vertical-align:middle;min-width:0;max-width:100%;text-align:center;line-height:1.35;margin-inline:.12em}
+.stereo-numerator,.stereo-denominator{padding:.18em .25em;overflow-wrap:anywhere}
+.stereo-denominator{border-top:2px solid currentColor}
