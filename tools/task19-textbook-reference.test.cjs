@@ -37,8 +37,9 @@ test('renderer includes a source excerpt only when explicitly supplied with an a
  const dom=new JSDOM('<main></main>');try{
   const host=dom.window.document.querySelector('main'),data=structuredClone(fixture);
   data.topics.line.passages[0].excerpt={file:'/trainers/task19-reference/parallel-theorem.png',alt:'Проверенный фрагмент теоремы.',width:600,height:75};
-  references.mount(host,{id:'prev-006',truth:true},data);const image=host.querySelector('img');assert(image);assert.equal(image.alt,'Проверенный фрагмент теоремы.');assert.equal(image.width,600);assert.equal(image.loading,'lazy');
-  data.topics.line.passages[0].excerpt.file='https://unverified.test/full-book.png';references.mount(host,{id:'prev-006',truth:true},data);assert.equal(host.querySelectorAll('img').length,0);
+  references.mount(host,{id:'prev-006',truth:true},data);const image=host.querySelector('img');assert(image);assert.match(image.alt,/Скан приведённой цитаты из учебника/);assert(!image.alt.includes(data.topics.line.passages[0].excerpt.alt),'image does not repeat the readable quote for screen readers');assert.equal(image.width,600);assert.equal(image.loading,'lazy');
+  const quote=host.querySelector('blockquote');assert.equal(quote.textContent,data.topics.line.passages[0].excerpt.alt);assert.equal(quote.cite,data.topics.line.passages[0].url);assert.equal(quote.previousElementSibling.textContent,'Цитата');
+  data.topics.line.passages[0].excerpt.file='https://unverified.test/full-book.png';references.mount(host,{id:'prev-006',truth:true},data);assert.equal(host.querySelectorAll('img,blockquote').length,0);
  }finally{dom.window.close();}
 });
 test('reading and closing textbook help preserves experiment and does not submit an answer',()=>{
@@ -72,8 +73,9 @@ test('every active assertion has verified passage metadata and renderable links 
      if(/Атанасян/i.test(book.authors))authors.add('atanasyan');if(/Мерзляк/i.test(book.authors))authors.add('merzlyak');
     }
    }
-   assert.deepEqual([...authors].sort(),['atanasyan','merzlyak'],card.id+': both author lines');references.mount(host,card,data);assert(host.querySelectorAll('a').length>=2,card.id+': actual passage links');assert(!host.querySelector('details').open,card.id+': stays optional');assert(!host.querySelector('iframe,blockquote'),card.id+': links and paraphrases, no embedded book or bulk quotations');
+   assert.deepEqual([...authors].sort(),['atanasyan','merzlyak'],card.id+': both author lines');references.mount(host,card,data);assert(host.querySelectorAll('a').length>=2,card.id+': actual passage links');assert(!host.querySelector('details').open,card.id+': stays optional');assert(!host.querySelector('iframe'),card.id+': no embedded full book');
    const excerpts=topics.flatMap(topic=>topic.passages).filter(p=>p.excerpt);assert.equal(host.querySelectorAll('img').length,excerpts.length,card.id+': only explicitly verified short excerpts');
+   const quotes=[...host.querySelectorAll('blockquote')];assert.equal(quotes.length,excerpts.length,card.id+': one readable quote per supplied excerpt');quotes.forEach((q,i)=>{assert.equal(q.textContent,excerpts[i].excerpt.alt,card.id+': exact verified wording');assert.equal(q.cite,excerpts[i].url,card.id+': quotation attributed to its passage');assert.equal(q.previousElementSibling.textContent,'Цитата');assert(q.textContent.trim().split(/\s+/).length<=25,card.id+': short excerpt only');});
   }
  }finally{dom.window.close();}
 });

@@ -95,6 +95,8 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
 .t19-textbook-sources li{margin:18px 0}
 .t19-textbook a{color:var(--green);text-underline-offset:3px;text-decoration-thickness:1px}
 .t19-textbook-edition{display:block;color:var(--muted);font-size:14px;margin-top:5px;line-height:1.7}
+.t19-textbook-content .t19-textbook-quote-label{margin:18px 0 6px;font-size:14px;color:var(--muted)}
+.t19-textbook-quote{margin:0 0 16px;padding:0 0 0 12px;border-left:3px solid var(--green);font-size:17px;line-height:1.6}
 .t19-textbook-excerpt{margin:16px 0}
 .t19-textbook-excerpt img{display:block;width:100%;height:auto;max-width:650px;background:#fff;border:1px solid var(--line);border-radius:6px}
 .t19-textbook-excerpt figcaption{font-size:13px;line-height:1.6;color:var(--muted);margin-top:6px}

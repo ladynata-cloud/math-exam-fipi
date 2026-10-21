@@ -104,6 +104,8 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
 .t19-textbook-sources li{margin:18px 0}
 .t19-textbook a{color:var(--green);text-underline-offset:3px;text-decoration-thickness:1px}
 .t19-textbook-edition{display:block;color:var(--muted);font-size:14px;margin-top:5px;line-height:1.7}
+.t19-textbook-content .t19-textbook-quote-label{margin:18px 0 6px;font-size:14px;color:var(--muted)}
+.t19-textbook-quote{margin:0 0 16px;padding:0 0 0 12px;border-left:3px solid var(--green);font-size:17px;line-height:1.6}
 .t19-textbook-excerpt{margin:16px 0}
 .t19-textbook-excerpt img{display:block;width:100%;height:auto;max-width:650px;background:#fff;border:1px solid var(--line);border-radius:6px}
 .t19-textbook-excerpt figcaption{font-size:13px;line-height:1.6;color:var(--muted);margin-top:6px}
@@ -8980,8 +8982,10 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
         }
         const excerpt=passage.excerpt,imageURL=excerptURL(excerpt?.file);
         if(imageURL&&excerpt.alt&&Number.isFinite(excerpt.width)&&excerpt.width>0&&Number.isFinite(excerpt.height)&&excerpt.height>0){
+          const quote=d.createElement('blockquote');quote.className='t19-textbook-quote';quote.cite=url;quote.textContent=excerpt.alt;
+          item.append(paragraph('Цитата','t19-textbook-quote-label'),quote);
           const figure=d.createElement('figure'),image=d.createElement('img'),caption=d.createElement('figcaption');
-          figure.className='t19-textbook-excerpt';image.src=imageURL;image.alt=excerpt.alt;image.width=excerpt.width;image.height=excerpt.height;image.loading='lazy';
+          figure.className='t19-textbook-excerpt';image.src=imageURL;image.alt='Скан приведённой цитаты из учебника «'+book.title+'», '+book.authors+(passage.printedPage?', с. '+passage.printedPage:'')+'.';image.width=excerpt.width;image.height=excerpt.height;image.loading='lazy';
           caption.textContent='Фрагмент учебника';figure.append(image,caption);item.append(figure);
         }
         list.append(item);linkCount++;

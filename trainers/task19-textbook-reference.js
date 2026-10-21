@@ -59,8 +59,10 @@
         }
         const excerpt=passage.excerpt,imageURL=excerptURL(excerpt?.file);
         if(imageURL&&excerpt.alt&&Number.isFinite(excerpt.width)&&excerpt.width>0&&Number.isFinite(excerpt.height)&&excerpt.height>0){
+          const quote=d.createElement('blockquote');quote.className='t19-textbook-quote';quote.cite=url;quote.textContent=excerpt.alt;
+          item.append(paragraph('Цитата','t19-textbook-quote-label'),quote);
           const figure=d.createElement('figure'),image=d.createElement('img'),caption=d.createElement('figcaption');
-          figure.className='t19-textbook-excerpt';image.src=imageURL;image.alt=excerpt.alt;image.width=excerpt.width;image.height=excerpt.height;image.loading='lazy';
+          figure.className='t19-textbook-excerpt';image.src=imageURL;image.alt='Скан приведённой цитаты из учебника «'+book.title+'», '+book.authors+(passage.printedPage?', с. '+passage.printedPage:'')+'.';image.width=excerpt.width;image.height=excerpt.height;image.loading='lazy';
           caption.textContent='Фрагмент учебника';figure.append(image,caption);item.append(figure);
         }
         list.append(item);linkCount++;

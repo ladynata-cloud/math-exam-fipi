@@ -121,7 +121,7 @@ Explanations are original trainer notes, not attributed quotations. References
 may supply a definition, theorem, worked proof or exercise supporting a derived
 consequence; a false task sentence is never presented as a textbook quotation.
 Only the two short parallel-to-third theorem sentences are reproduced as small
-verified image excerpts, nine words from each book. No full textbook page or
+verified image excerpts and readable quotations, nine words from each book. No full textbook page or
 proof is republished. External textbook links require an internet connection;
 the trainer and the two short excerpts also remain in the offline package.
 
