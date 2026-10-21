@@ -52,7 +52,7 @@ function compatibility(){
  const section=q('#section-2'),table=section&&q('.compat-table',section),answer=q('#t1-final');if(!table||!answer)return;
  qa('.col-hl,.win',table).forEach(c=>c.classList.remove('col-hl','win'));
  let given=q('.tlf-compatibility-given',section);
- if(!given){given=make('section','tlf-compatibility-given');given.setAttribute('aria-label','Таблица совместимости из условия задачи 1');given.append(make('h3',null,'Таблица к задаче 1'),make('p',null,'В первом столбце указана ширина шины в миллиметрах, в остальных — допустимые значения второго числа маркировки (проценты). «—» означает, что сочетание не допускается.'));const wrap=table.closest('.calc-table-wrap')||table.parentElement;given.append(wrap);}
+ if(!given){given=make('section','tlf-compatibility-given');given.setAttribute('aria-label','Таблица совместимости из условия задачи 1');given.append(make('h3',null,'Таблица к задаче 1'),make('p',null,'В первом столбце указана ширина шины в миллиметрах, в остальных — допустимые значения второго числа маркировки (проценты). «—» означает, что сочетание не допускается. Если видны не все диаметры диска, прокрути таблицу вправо.'));const wrap=table.closest('.calc-table-wrap')||table.parentElement;given.append(wrap);}
  if(given.nextElementSibling!==answer)answer.before(given);
 }
 function calculations(){
@@ -62,7 +62,7 @@ function calculations(){
   const region=make('section','tlf-shared-calculations');region.setAttribute('aria-label','Твоя таблица расчётов');
   const header=make('div','tlf-calculation-heading');header.append(make('h3',null,'Твоя таблица расчётов'));
   const edit=make('button','tlf-open-calculations','Открыть и дополнить таблицу');edit.type='button';edit.dataset.goto='1';header.append(edit);
-  region.append(header,make('p','tlf-calculation-note','Здесь твои записи. ✓ — проверено; остальные числа — черновик. Чтобы дописать или исправить число, открой таблицу.'));
+  region.append(header,make('p','tlf-calculation-note','Здесь твои записи. ✓ — проверено; остальные числа — черновик. Чтобы дописать или исправить число, открой таблицу. Если видны не все столбцы, прокрути таблицу вправо.'));
   const scroll=make('div','pm-table-scroll'),table=make('table','tlf-calculation-table');table.setAttribute('aria-label','Твои записи из общей таблицы');scroll.append(table);region.append(scroll);intro.after(region);
  }
  syncCalculations();
