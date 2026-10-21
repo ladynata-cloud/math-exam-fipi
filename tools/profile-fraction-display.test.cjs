@@ -110,13 +110,14 @@ test('formatting preserves tables, choice values, answer drafts, listeners and r
   } finally { f.w.close(); }
 });
 
-function app(lesson, mode = 'independent') {
+function app(lesson, mode = 'independent', initialState = null) {
   const html = fs.readFileSync(path.join(directory, 'index.html'), 'utf8');
   const dom = new JSDOM(html, {
     url: 'https://mathexam.space/ege-profil/start/#practice/' + lesson + '/' + mode,
     runScripts: 'outside-only', pretendToBeVisual: true
   });
   const w = dom.window;
+  if (initialState) w.localStorage.setItem('mathexam.profileStart2027.v1', JSON.stringify(initialState));
   w.scrollTo = () => {}; w.HTMLElement.prototype.scrollIntoView = () => {};
   let bankBefore;
   for (const script of w.document.querySelectorAll('script[src]')) {
@@ -167,4 +168,27 @@ test('real motion hint stacks distance over speed and leaves speed units and ass
     assert.equal(JSON.stringify(f.w.ProfileLessons), f.bankBefore);
     assert.equal(f.read().answers.length, 0, 'Displaying a hint does not accept an answer');
   } finally { f.w.close(); }
+});
+
+test('written fraction choices retain their authored accessible names and values', () => {
+  for (const taskId of ['geo-right-sine', 'geo-right-cosine', 'geo-right-tangent']) {
+    const initial = { version: 1, records: {}, seen: { [taskId]: 1 }, sessions: {
+      'geo-right:guided': { taskId, step: 0, wrong: false, assisted: true, familiar: false,
+        done: false, draft: '', answers: [], started: '2026-10-22T00:00:00.000Z', registered: false }
+    } };
+    const f = app('geo-right', 'guided', initial);
+    try {
+      const task = f.w.ProfileLessons.find(l => l.id === 'geo-right').tasks.find(t => t.id === taskId);
+      const inputs = [...f.d.querySelectorAll('#answer-form input[type=radio]')];
+      assert.deepEqual(inputs.map(n => n.getAttribute('aria-label')), Array.from(task.steps[0].choices));
+      assert.deepEqual(inputs.map(n => n.value), Array.from(task.steps[0].choices));
+      assert(f.d.querySelector('#answer-form .profile-solution-fraction'), 'The visible choice still uses a fraction bar');
+      for (const input of inputs) {
+        input.click();
+        assert.equal(f.read().draft, input.value, 'The authored option remains the stored draft');
+        assert.equal(f.read().answers.length, 0, 'Selecting a choice does not submit it');
+      }
+      assert.equal(JSON.stringify(f.w.ProfileLessons), f.bankBefore);
+    } finally { f.w.close(); }
+  }
 });
