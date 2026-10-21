@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-10-21",
-  "registeredAt": "2026-10-21T21:09:32.694443+00:00",
-  "scope": "All theory points1–14 and every question in exercises1–83. Not the complete book.",
+  "registeredAt": "2026-10-21T21:22:34.472548+00:00",
+  "scope": "All introduction and chapterI: theory1–14, main exercises1–115 and chapterI self-check questions1–16. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -173,6 +173,77 @@
         "theory-014-example-3a",
         "theory-014-example-3b",
         "theory-014-example-3c"
+      ]
+    },
+    {
+      "reviewer": "Codex ege_profile_inventory; profile_test_audit",
+      "reviewedAt": "2026-10-21T21:21:13Z",
+      "registeredAt": "2026-10-21T21:22:34.413568+00:00",
+      "sourceBundleSHA256": "fd5edd8ac8eac4240d6a5ff8bb35984b8e2fc982c7131ebc763c0ea58d93ff6e",
+      "scope": "All source questions of main exercises84–115.",
+      "report": "docs/reviews/ATANASYAN_CHAPTER_I_FINAL_CONTENT.md",
+      "cardIds": [
+        "ex-main-0084",
+        "ex-main-0085",
+        "ex-main-0086",
+        "ex-main-0087-a",
+        "ex-main-0087-b",
+        "ex-main-0088-a",
+        "ex-main-0088-b",
+        "ex-main-0089",
+        "ex-main-0090-a",
+        "ex-main-0090-b",
+        "ex-main-0091",
+        "ex-main-0092",
+        "ex-main-0093",
+        "ex-main-0094",
+        "ex-main-0095",
+        "ex-main-0096",
+        "ex-main-0097",
+        "ex-main-0098",
+        "ex-main-0099",
+        "ex-main-0100",
+        "ex-main-0101",
+        "ex-main-0102",
+        "ex-main-0103",
+        "ex-main-0104",
+        "ex-main-0105",
+        "ex-main-0106",
+        "ex-main-0107",
+        "ex-main-0108",
+        "ex-main-0109",
+        "ex-main-0110",
+        "ex-main-0111",
+        "ex-main-0112",
+        "ex-main-0113",
+        "ex-main-0114",
+        "ex-main-0115"
+      ]
+    },
+    {
+      "reviewer": "Codex ege_base_inventory; geometry_scene_math_review",
+      "reviewedAt": "2026-10-21T21:16:30Z",
+      "registeredAt": "2026-10-21T21:22:34.472548+00:00",
+      "sourceBundleSHA256": "7c054e3f23720cdef84126bd99a8726c648bf83bfe7bf90bd3dbdc06c31b2e77",
+      "scope": "All16 chapterI self-check questions and every subquestion.",
+      "report": "docs/reviews/ATANASYAN_CHAPTER_I_SELFCHECK_CONTENT.md",
+      "cardIds": [
+        "ex-selfcheck-i-01",
+        "ex-selfcheck-i-02",
+        "ex-selfcheck-i-03",
+        "ex-selfcheck-i-04",
+        "ex-selfcheck-i-05",
+        "ex-selfcheck-i-06",
+        "ex-selfcheck-i-07",
+        "ex-selfcheck-i-08",
+        "ex-selfcheck-i-09",
+        "ex-selfcheck-i-10",
+        "ex-selfcheck-i-11",
+        "ex-selfcheck-i-12",
+        "ex-selfcheck-i-13",
+        "ex-selfcheck-i-14",
+        "ex-selfcheck-i-15",
+        "ex-selfcheck-i-16"
       ]
     }
   ],
@@ -704,6 +775,210 @@
     {
       "id": "theory-014-example-3c",
       "sha256": "08dece7357815cde0c2a9056e5fa75c37435371f7bff4a8e6a67dd0473429f64"
+    },
+    {
+      "id": "ex-main-0084",
+      "sha256": "504d0879fe873f19cce039ced91a917861764657fdb82e296e2f62aa0d6051b3"
+    },
+    {
+      "id": "ex-main-0085",
+      "sha256": "169b21bffae735f2b19d886869c8bf027001682391141504442434fadce7cb6d"
+    },
+    {
+      "id": "ex-main-0086",
+      "sha256": "673c892fe3be05539e1d1f287644fb55929771850da29b406fcc79c51e341283"
+    },
+    {
+      "id": "ex-main-0087-a",
+      "sha256": "fd2c775080647dccd8b328502e1638ac053017ad6279ed104efe306695c19f78"
+    },
+    {
+      "id": "ex-main-0087-b",
+      "sha256": "30b42d8943e1a738eb2e2ebecdfbf921b2fe3c3f0049000298d02aa684dd4905"
+    },
+    {
+      "id": "ex-main-0088-a",
+      "sha256": "6ad09ce6cceb7391113290be55790d078618c351446ce450ab7034964bf0fd88"
+    },
+    {
+      "id": "ex-main-0088-b",
+      "sha256": "80ed823cbd10e4a38f20f6636d33bd7591f7cc456b2fc303967b2082a3c634a1"
+    },
+    {
+      "id": "ex-main-0089",
+      "sha256": "1549eb845d312461b0f46836e63d88ffcdb6c62fdd2dca08b9b07edc35b15ace"
+    },
+    {
+      "id": "ex-main-0090-a",
+      "sha256": "15ca7d05ce5c6ef3cd4f2f02904d11d349a8f6b19a3081248c4ee04ca5651e9a"
+    },
+    {
+      "id": "ex-main-0090-b",
+      "sha256": "4bb8334f57a43c1410c5458f7192a548f549f7229dcaac3157b2ad43b0d35284"
+    },
+    {
+      "id": "ex-main-0091",
+      "sha256": "18ea211b407cf07ee80f23948584d77d9a88aee91252068294499b216014b387"
+    },
+    {
+      "id": "ex-main-0092",
+      "sha256": "b369b3707c64137505529368e4df6ed3ec38c02803c3a308ce7ac4df822c7298"
+    },
+    {
+      "id": "ex-main-0093",
+      "sha256": "5bb9a35d05c19ffc86bd9ada661a2016946e159db7d6487a918b34e675c63f37"
+    },
+    {
+      "id": "ex-main-0094",
+      "sha256": "9c8c741ec05392dd69f6e2623331030ab7c05257060d65695bd46525f10607bf"
+    },
+    {
+      "id": "ex-main-0095",
+      "sha256": "9a424639583954dd6dee20cd35ab3c2486aa7ce3292240044dfa49ae25a8e9dc"
+    },
+    {
+      "id": "ex-main-0096",
+      "sha256": "f41a75d041052d3be8291e0bf29b922e4f062e55602e7409dbfd9f75d6b8383b"
+    },
+    {
+      "id": "ex-main-0097",
+      "sha256": "600efceaa868d09d5ce807939f88775005bfedd7856d5ea8ec9cd5af182f9cb2"
+    },
+    {
+      "id": "ex-main-0098",
+      "sha256": "04f1a2c6baa2ccbe54245c05df9c0878e52babf11ccc98af5b125591191405c1"
+    },
+    {
+      "id": "ex-main-0099",
+      "sha256": "53bf6b074e10253f89aae9d0307d83159a4851d68c52a39d204374aa9d98ed1c"
+    },
+    {
+      "id": "ex-main-0100",
+      "sha256": "e31d45781e580de7d563c989ded410f14254cf50e56124deed55b6c3a47467dd"
+    },
+    {
+      "id": "ex-main-0101",
+      "sha256": "ef68613c1cb58eb977f7135a8ad40a43a1ae44f334451ff9ca64b6088e74cfe5"
+    },
+    {
+      "id": "ex-main-0102",
+      "sha256": "bed95e00d16e4a27f954e5bde2f6986adca7bee8baf1179a5bf3da4ad51617f6"
+    },
+    {
+      "id": "ex-main-0103",
+      "sha256": "f436cc0317e1171781bc67696785f1f1dcd7d561f2e9c4001420f2daf25f45cb"
+    },
+    {
+      "id": "ex-main-0104",
+      "sha256": "2bddbd98f91fd068cb401dba9bb1b5f64c65952c90f653ca2bc1a9b0cb2aa8ea"
+    },
+    {
+      "id": "ex-main-0105",
+      "sha256": "76f7f6988a2037fd06610ad52970c5559e23c599185e53a8767cd2211e86d89b"
+    },
+    {
+      "id": "ex-main-0106",
+      "sha256": "209fab74a57d410b58fb50ebdfb00ff7cdddb86aa3223f6380e4b982cf171217"
+    },
+    {
+      "id": "ex-main-0107",
+      "sha256": "02773eef7321875140d43087c71ec01c61fb1cb05dfb6fb42b88f22522a6a82e"
+    },
+    {
+      "id": "ex-main-0108",
+      "sha256": "3c7509819babfcbfa8648bf233ba75251d262970db7a9e32a4b53fcc247d39a9"
+    },
+    {
+      "id": "ex-main-0109",
+      "sha256": "626d7c9704bf49ab8720969b41f3ae894dc2e17f8f5f230d85b5279856ac20d1"
+    },
+    {
+      "id": "ex-main-0110",
+      "sha256": "e2ae9c5d23073c77075578295cb681ffc3b19c9da26f6bfcc39acb7c7bafb3f0"
+    },
+    {
+      "id": "ex-main-0111",
+      "sha256": "28f881af9d6158d048dfc9c9bba37a14845a8d63fe4ff107a27b3310307f9b6e"
+    },
+    {
+      "id": "ex-main-0112",
+      "sha256": "57a8d26b899ce5923ec90dd038d1fe07b0f1bc47f3e955bf93c3e057ed1e932e"
+    },
+    {
+      "id": "ex-main-0113",
+      "sha256": "5d0fd90743b32cb2cf4d80ce939da8c16cd8c0a7024fe8e3ac1ddfa88f5045ff"
+    },
+    {
+      "id": "ex-main-0114",
+      "sha256": "621026ffbc11597fe369ca9c1b7130ae1f3bf00b2a4d129e493abcc2b6ac5abb"
+    },
+    {
+      "id": "ex-main-0115",
+      "sha256": "fd9eeb5e4fb49530dc11461799f4c315a9bfded5e47a8be2829db77a1bd20037"
+    },
+    {
+      "id": "ex-selfcheck-i-01",
+      "sha256": "2bcac3f0d591534de089f6a4f506c552da004d68c8ebed79e5a6464a1a951281"
+    },
+    {
+      "id": "ex-selfcheck-i-02",
+      "sha256": "625d26f3b1a2e3b019878509ce4aaaf63203fb36f4e975dfb451798c97597fbd"
+    },
+    {
+      "id": "ex-selfcheck-i-03",
+      "sha256": "dfe30152da89669eea929d82a840a5364f30c606d7c3aa44ffe192d5e805393e"
+    },
+    {
+      "id": "ex-selfcheck-i-04",
+      "sha256": "59dc225bb66a6b8bcdf73fcbc4a43c56a167ddf0706388dc56b1f6c42bbe3463"
+    },
+    {
+      "id": "ex-selfcheck-i-05",
+      "sha256": "be8958a7f8d9c833d83cbbbd7813d460685a3457a21d79e5b55705e66cc136bd"
+    },
+    {
+      "id": "ex-selfcheck-i-06",
+      "sha256": "4c37240f686d54b500fa325a0214f6f5b1e72068be78b5df36600c2ad5c3a693"
+    },
+    {
+      "id": "ex-selfcheck-i-07",
+      "sha256": "2e8a13bca0ccca003786bb871df9b0710e35b5efe1298f8c3087db2c7b128001"
+    },
+    {
+      "id": "ex-selfcheck-i-08",
+      "sha256": "af781ae3080734e8c0392031fa86ca6de869446ee6a3b12bc38af1e9720fd629"
+    },
+    {
+      "id": "ex-selfcheck-i-09",
+      "sha256": "cca9089f927efd13381dbdc4e92d22ee242b2f444e797a6e45e4e66da2cc0187"
+    },
+    {
+      "id": "ex-selfcheck-i-10",
+      "sha256": "416089b58a863fa08626ddbc9faa5098c4c8467c146a0fbb1fdd59651db7c441"
+    },
+    {
+      "id": "ex-selfcheck-i-11",
+      "sha256": "eaf1b1a1551785271aabdd6faf0cf5b2702f5c01ff631de476abd2bcdb7c0f6c"
+    },
+    {
+      "id": "ex-selfcheck-i-12",
+      "sha256": "f4c61afdb79d484d6db8ac31409fa8b2325969c672c135d7f2149d03d09fae83"
+    },
+    {
+      "id": "ex-selfcheck-i-13",
+      "sha256": "8afcca5eb91ed5668744c92141496e8a90d0f54f76943ba2f0a60c63808d8430"
+    },
+    {
+      "id": "ex-selfcheck-i-14",
+      "sha256": "3988a60d34b646d508ca2cb1818cd2d0a071ad9886970ed899d89a4a9871d67c"
+    },
+    {
+      "id": "ex-selfcheck-i-15",
+      "sha256": "9ce3f933382aaf23d53e090c38b71e1fa54d625e63807277d7ff6ba68d3d2869"
+    },
+    {
+      "id": "ex-selfcheck-i-16",
+      "sha256": "273f2653800423afdb5dafd51d2f26f264306b9a367305f9cb5181aa34ea35ef"
     }
   ]
 }

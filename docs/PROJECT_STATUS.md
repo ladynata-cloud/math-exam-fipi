@@ -2,22 +2,35 @@
 
 Updated: 2026-10-22 (Asia/Novosibirsk)
 
-## In progress: Atanasyan exercises36–83 and visual theory7–14
+## In progress: complete Atanasyan introduction and chapterI
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_PARALLELISM.md): separately reviewed source
-  batches for skew lines, angles, parallel planes, tetrahedra, parallelepipeds
-  and sections. Theory receives visible models and justified progressive proofs.
-- Base: `9ca681eaa8a382d64565233f4da703bbbca4c258`; HIGH review.
-- Independently reviewed and integrated: all questions of exercises1–83 and
-  theory1–14, including every worked example in the section-construction topic.
-  132 cards (108 exercises,24 theory),454 justified steps,533 model views.
-- New source/math/pedagogy reviews cover69 cards:36–49/theory7–10 and
-  50–83/theory11–14. Exact author hashes and real sign-offs are registered.
-- Local source/schema/content/runtime gates pass; all525 polygons are planar,
-  simple and nondegenerate, all1733 displayed segments have nonzero length.
-- Next: exact-head independent integration and cloud browser/compatibility
-  review, then authorized publication and exact public-file verification.
-  Later exercises84 onward and chapter self-checks remain outside this stage.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_CHAPTER_I.md), HIGH review, base
+  `61a42de7d4f5d5aa0d440d9070294ceccffc6092`.
+- Add independently approved exercises84–115 and all16 chapterI self-checks.
+  Preserve132 earlier cards; new51 cards match frozen author content.
+- Prepared total:183 cards,115 main exercise numbers,14 theory points and16
+  self-checks;581 justified steps and659 model views. Later chapters remain pending.
+- Local catalogue/schema/content/runtime and model geometry gates passed:
+  614 simple planar polygons and2192 nonzero segments. Pre-freeze independent
+  integration review passed; exact-head review and cloud screenshots remain.
+- Next three actions: freeze/review exact Git head; run full cloud gate and
+  inspect new screenshots; publish and verify exact public bytes under standing
+  owner authorization. Paid Claude remains deferred, no Claude verdict claimed.
+
+## Published: Atanasyan exercises1–83 and visual theory1–14
+
+- PR298 merged as `61a42de7d4f5d5aa0d440d9070294ceccffc6092`, sole parent
+  `9ca681eaa8a382d64565233f4da703bbbca4c258`, exact reviewed tree
+  `79bbcc6ba0e26474c0ce4872c390e69103cfb98b`.
+- Independent source/math/pedagogy/integration and actual image reviews PASS.
+  All4 exact-head workflows succeeded; cloud Chromium264 journeys,1930 views,
+  11282 labels, no overlaps/errors;8 expansion returns and2 real-tab cases PASS.
+- Final artifact12383558596 from run39679806725 contains114 reviewed images;
+  two feedback-fraction issues corrected and visually rechecked at320/1280px.
+- Pages39681647982 succeeded on the exact merge. All14 public canonical/alias
+  requests matched reviewed SHA256 and size. Gate:ATANASYAN_PARALLELISM_CONTENT_OK.
+- Published132 cards:83 main numbers,14 theory points,454 steps,533 views.
+  This is a bounded course stage, not completion of every source position.
 
 ## Published: Atanasyan visual theory, introduction and first parallelism block
 

@@ -13,7 +13,7 @@ const expectedPath=path.resolve(process.env.TEXTBOOK_EXPECTED_BUNDLE||path.join(
 const out=path.resolve(process.env.TEXTBOOK_ARTIFACTS||path.join(os.tmpdir(),'mathexam-stereo-textbook'));
 const expectedRaw=JSON.parse(fs.readFileSync(expectedPath,'utf8')),expectedLessons=Array.isArray(expectedRaw)?expectedRaw:expectedRaw.lessons;
 assert(Array.isArray(expectedLessons)&&expectedLessons.length,'An authored lesson bundle is required');
-const expectedCount=Number(process.env.TEXTBOOK_EXPECTED_COUNT||132);
+const expectedCount=Number(process.env.TEXTBOOK_EXPECTED_COUNT||183);
 assert.equal(expectedLessons.length,expectedCount,'Unexpected authored card count; update this gate explicitly for a later batch');
 assert(/^\/[A-Za-z0-9/_-]+\/$/.test(route),'TEXTBOOK_ROUTE must be a local absolute path ending in /');
 const expectedById=new Map(expectedLessons.map(lesson=>[lesson.id,lesson]));assert.equal(expectedById.size,expectedCount);
@@ -76,7 +76,37 @@ const screenshotCases=new Map([
  ["ex-main-0059|step-1","parallel-plane-existence-directions"],
  ["ex-main-0062|condition","levels-intersecting-givens"],
  ["ex-main-0062|step-2","levels-parallel-counterexample"],
- ['ex-main-0066|condition','opposite-edge-pairs-condition']
+ ['ex-main-0066|condition','opposite-edge-pairs-condition'],
+ ['ex-main-0084|condition','trapezoid-section-givens'],
+ ['ex-main-0084|step-2','trapezoid-section-boundary'],
+ ['ex-main-0086|condition','parallel-section-givens'],
+ ['ex-main-0086|step-1','parallel-section-construction'],
+ ['ex-main-0087-a|step-2','three-edge-points-section'],
+ ['ex-main-0087-b|step-2','vertex-two-points-section'],
+ ['ex-main-0088-b|condition','trapezoid-external-given-point'],
+ ['ex-main-0088-b|step-3','trapezoid-external-point-length'],
+ ['ex-main-0098|condition','plane-through-parallel-line-question'],
+ ['ex-main-0099|step-2','parallel-plane-transversal-ratios'],
+ ['ex-main-0101|condition','tetrahedron-opposite-midpoints-givens'],
+ ['ex-main-0101|step-1','tetrahedron-midpoints-first-center'],
+ ['ex-main-0101|step-2','tetrahedron-midpoints-shared-center'],
+ ['ex-main-0103|condition','section-specified-base-area'],
+ ['ex-main-0103|step-3','section-area-scale'],
+ ['ex-main-0104|step-2','pyramid-parallel-section'],
+ ['ex-main-0110|condition','two-given-diagonal-planes'],
+ ['ex-main-0110|step-2','diagonal-plane-parallelism'],
+ ['ex-main-0113|condition','two-given-sections'],
+ ['ex-main-0113|step-2','given-section-intersection'],
+ ['ex-main-0115|condition','edge-point-parallel-plane-givens'],
+ ['ex-main-0115|step-2','edge-point-parallel-plane-section'],
+ ['ex-selfcheck-i-01|condition','selfcheck-disjoint-lines-question'],
+ ['ex-selfcheck-i-01|step-2','selfcheck-skew-counterexample'],
+ ['ex-selfcheck-i-05|step-1','selfcheck-parallel-family'],
+ ['ex-selfcheck-i-12|step-2','selfcheck-opposite-sides-counterexample'],
+ ['ex-selfcheck-i-15|step-2','selfcheck-adjacent-rhombi'],
+ ['ex-selfcheck-i-15|step-4','selfcheck-right-face-angles'],
+ ['ex-selfcheck-i-16|step-6','selfcheck-pentagon-trace'],
+ ['ex-selfcheck-i-16|step-7','selfcheck-hexagon-boundary']
 ]);
 function immutableContent(lesson){const copy=structuredClone(lesson);delete copy.status;delete copy.review;return copy;}
 function visibleLabelKeys(lesson,viewName){

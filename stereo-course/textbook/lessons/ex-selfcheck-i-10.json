@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-selfcheck-i-10",
+  "revision": 2,
+  "kind": "exercise",
+  "title": "Вопрос 10. Общая параллельная для скрещивающихся",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "selfcheck",
+    "exercise": "10",
+    "chapter": "I. Параллельность прямых и плоскостей",
+    "printedPages": [
+      33
+    ],
+    "pdfPages": [
+      35
+    ]
+  },
+  "statement": {
+    "text": "Могут ли скрещивающиеся прямые a и b быть параллельными прямой c?",
+    "goal": "Выясни, существует ли прямая c, параллельная одновременно a и b."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Рассмотри исходные объекты и поверни модель. Подсказки и шаги открывают дополнительные построения на этой же странице.",
+    "model": {
+      "points": {
+        "_a0": [
+          -3,
+          0,
+          1
+        ],
+        "_a1": [
+          3,
+          0,
+          1
+        ],
+        "_alabel": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "_b0": [
+          0,
+          -2,
+          2
+        ],
+        "_b1": [
+          0,
+          2,
+          2
+        ],
+        "_blabel": [
+          0.0,
+          0.0,
+          2.0
+        ]
+      },
+      "edges": [
+        [
+          "_a0",
+          "_a1"
+        ],
+        [
+          "_b0",
+          "_b1"
+        ]
+      ],
+      "labels": {
+        "_alabel": "a",
+        "_blabel": "b"
+      },
+      "labelNames": [
+        "_alabel",
+        "_blabel"
+      ],
+      "neutralPoints": [
+        "_alabel",
+        "_blabel"
+      ],
+      "views": {
+        "neutral": {
+          "label": "Исходные объекты"
+        }
+      },
+      "note": "На рисунке отрезки могут изображать части прямых, а многоугольники — части плоскостей. Размеры и углы рисунка не являются дополнительными условиями. Новые построения открываются вместе с объяснением."
+    }
+  },
+  "help": [
+    {
+      "id": "help-1",
+      "question": "Что даст теорема о трёх прямых?",
+      "text": "Если a∥c и b∥c, то сравни a и b.",
+      "theoryIds": [
+        "theory-005"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Проверим следствие",
+      "prompt": "Совместимо ли оно со скрещиванием?",
+      "explanation": "Если бы a∥c и b∥c, то по теореме о трёх прямых получилось бы a∥b. Это противоречит тому, что a и b скрещиваются. Поэтому такой прямой c нет.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Две различные прямые, параллельные третьей, параллельны между собой.",
+          "theoryId": "theory-005",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "printedPages": [
+              10,
+              11
+            ],
+            "pdfPages": [
+              12,
+              13
+            ],
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "point": "5"
+          }
+        },
+        {
+          "kind": "definition",
+          "text": "Скрещивающиеся прямые не являются параллельными.",
+          "theoryId": "theory-007",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              15,
+              16,
+              17
+            ],
+            "pdfPages": [
+              17,
+              18,
+              19
+            ],
+            "point": "7"
+          }
+        }
+      ]
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "Выясни, существует ли прямая c, параллельная одновременно a и b. Обоснуй ответ."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex ege_base_inventory; geometry_scene_math_review",
+    "at": "2026-10-21T21:16:30Z"
+  }
+}
