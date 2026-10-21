@@ -73,3 +73,11 @@ body.pm-minimal.pm-tires{font-size:19px;line-height:1.75}
 .pm-tires .tlf-rolling-caption{padding:12px 14px;border-left:4px solid #b8924b;background:#fff;border-radius:6px;line-height:1.75;font-size:19px}
 .pm-tires .tlf-rolling-caption[data-wheel="lower"]{border-left-color:#1e3a5f}
 .pm-tires .tlf-rolling-caption>span,.pm-tires .tlf-rolling-caption>strong{display:block;font-size:19px;overflow-wrap:anywhere}
+
+/* Override native cell and caption fonts, not just inherited table text. */
+.pm-tires :is(.calc-table,.compat-table,.side-table,.ref-mini table,.pd-table) :is(th,td,.yes){font-size:19px!important}
+.pm-tires .compat-table,body.pm-tires[data-source-kind="author-analogue"] .compat-table{min-width:620px}
+.pm-tires .compat-table :is(th,td){white-space:nowrap;overflow-wrap:normal;word-break:normal}
+.pm-tires .mode-switch{flex-wrap:wrap;max-width:100%}
+.pm-tires :is(.back-link,.topic-id,.mode-switch button,.eyebrow,.vb-factory b,.rm-card h4,.marking-label,.fig figcaption,.dim-legend .dl-title,.dl-item,.d-box,.d-box small,.anim-note,.teacher-block .label,.teacher-block .answer-display,.formula,.formula small,.stat .lbl,.reset-btn,.mode-help,.author-source p){font-size:18px!important;line-height:1.6}
+.pm-tires :is([style*="font-size:11px"],[style*="font-size:13px"],[style*="font-size:14px"]){font-size:18px!important;line-height:1.7}

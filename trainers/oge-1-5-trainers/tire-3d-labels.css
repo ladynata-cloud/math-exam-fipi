@@ -2,6 +2,7 @@
 .pm-minimal .t3d-dimensions{margin:12px 0 18px;padding:12px;border:1px solid #b6cebf;border-radius:12px;min-width:0;display:flex;flex-wrap:wrap;gap:10px}
 .pm-minimal .t3d-dimensions legend{font-size:20px;font-weight:700;line-height:1.5;padding:0 6px}
 .pm-minimal .t3d-dimension-choice{display:flex;align-items:center;gap:10px;flex:1 1 210px;min-height:48px;padding:10px;border:1px solid #d2dfd7;border-radius:8px;font-size:20px;line-height:1.45;cursor:pointer;color:var(--t3d-dimension-color);background:white}
+.pm-minimal .pm-model .t3d-dimension-choice{display:flex}
 .pm-minimal .t3d-dimension-choice:has(input:checked){border-color:var(--t3d-dimension-color);background:#f4faf6;font-weight:600}
 .pm-minimal .t3d-dimension-choice input{appearance:auto;width:24px;height:24px;flex:0 0 24px;margin:0;accent-color:var(--t3d-dimension-color);cursor:pointer}
 .pm-minimal .pd-picture.t3d-stage{max-width:520px;margin:0 auto;width:100%;border:1px solid #dce8e0;box-sizing:border-box}

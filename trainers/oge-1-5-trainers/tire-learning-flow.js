@@ -52,7 +52,7 @@ function compatibility(){
  const section=q('#section-2'),table=section&&q('.compat-table',section),answer=q('#t1-final');if(!table||!answer)return;
  qa('.col-hl,.win',table).forEach(c=>c.classList.remove('col-hl','win'));
  let given=q('.tlf-compatibility-given',section);
- if(!given){given=make('section','tlf-compatibility-given');given.setAttribute('aria-label','Таблица совместимости из условия задачи 1');given.append(make('h3',null,'Таблица к задаче 1'),make('p',null,'В первом столбце указана ширина шины в миллиметрах, в остальных — допустимые значения второго числа маркировки (проценты). «—» означает, что сочетание не допускается. Если видны не все диаметры диска, прокрути таблицу вправо.'));const wrap=table.closest('.calc-table-wrap')||table.parentElement;given.append(wrap);}
+ if(!given){given=make('section','tlf-compatibility-given');given.setAttribute('aria-label','Таблица совместимости из условия задачи 1');given.append(make('h3',null,'Таблица к задаче 1'),make('p',null,'Слева указана ширина шины в миллиметрах, сверху — диаметр диска в дюймах. В ячейках записаны допустимые сочетания: ширина / высота боковины в процентах от ширины. «—» означает, что сочетание не допускается. Если видны не все диаметры диска, прокрути таблицу вправо.'));const wrap=table.closest('.calc-table-wrap')||table.parentElement;given.append(wrap);}
  if(given.nextElementSibling!==answer)answer.before(given);
 }
 function calculations(){

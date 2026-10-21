@@ -29,6 +29,7 @@ async function run(page,width,isOffline=false){
   await page.locator('#section-0 .nav-btn.next').click();await active(page,2);
   const task1=page.locator('#section-2'),table=task1.locator('.compat-table');assert.equal(await table.isVisible(),true,'task1 matrix is visible without help');
   assert.ok(await table.locator('tbody tr').count()>1);assert.equal(await table.locator('.win,.col-hl').count(),0,'given table does not highlight the answer');
+  assert.ok((await table.locator('th,td,.yes').evaluateAll(es=>es.map(e=>parseFloat(getComputedStyle(e).fontSize)))).every(n=>n>=18),'actual compatibility cell numbers and headers are readable');
   const answer=task1.locator('[data-pd-main="1"] input');await answer.fill('17,25');
   await layout(page,'task1 variant'+value+'@'+width);
   if(value===values[0]||value===values.at(-1))await task1.screenshot({path:path.join(out,(isOffline?'offline-':'')+'task1-'+value+'-'+width+'.png')});
