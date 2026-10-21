@@ -89,6 +89,11 @@
       // Do not reinterpret URL/path fragments, or chained divisions such as a/b/c.
       if (text[left.start - 1] === '/' || text[right.end] === '/' || text[slash - 1] === ':' || text[slash + 1] === '/') continue;
       const numerator = text.slice(left.start, left.end), denominator = text.slice(right.start, right.end);
+      // Units and prose are not mathematical ratios. In particular м/с must
+      // retain its conventional unit spelling when formatting a task prompt.
+      if (/[А-Яа-яЁё]/u.test(numerator + denominator)) continue;
+      const token = text.slice(0, slash).match(/\S*$/)?.[0] + text.slice(slash + 1).match(/^\S*/)?.[0];
+      if (/:\/\/|^www\.|^\//i.test(token)) continue;
       // A function, multiword symbol or following power needs a larger grammar.
       // Keep these complete authored expressions literal rather than change scope.
       if (/^[\p{L}]{2,}$/u.test(numerator) || /^[\p{L}]{2,}$/u.test(denominator) ||
@@ -100,6 +105,24 @@
       slash = right.end - 1;
     }
     parent.append(document.createTextNode(text.slice(cursor)));
+  }
+
+  // Format authored display text in place, preserving interactive controls,
+  // their values/listeners, diagrams and already formatted expressions.
+  // This is deliberately the same conservative reader used by worked steps.
+  function formatFractions(container) {
+    if (!container) return;
+    const skip = 'svg,math,a,button,input,textarea,select,option,script,style,code,pre,sup,sub,' +
+      '.profile-solution-fraction,.profile-trig-fraction,#input-note,.number-help,[data-raw-math]';
+    const walker = document.createTreeWalker(container, 4), nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    for (const node of nodes) {
+      if (!node.textContent.includes('/') || node.parentElement?.closest(skip) ||
+          ['SUP', 'SUB'].includes(node.nextSibling?.tagName)) continue;
+      const fragment = document.createDocumentFragment();
+      appendText(fragment, node.textContent);
+      if (fragment.querySelector('.profile-solution-fraction')) node.replaceWith(fragment);
+    }
   }
 
   function appendAuthored(parent, html, inline = false) {
@@ -203,5 +226,5 @@
     if (options.initialOpen) toggle();
     return () => { disposed = true; open.removeEventListener('click', toggle); next?.removeEventListener('click', nextStep); wrapper.remove(); };
   }
-  root.ProfileSolutions = { steps, mount };
+  root.ProfileSolutions = { steps, mount, formatFractions, appendMathText: appendText };
 })(globalThis);

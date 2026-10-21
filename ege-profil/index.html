@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Профильный ЕГЭ по проекту 2027: задания 1–13 и неравенства, пошаговые разборы и самостоятельная практика. Сохранённые тренажёры по нумерации 2026 года.">
+<meta name="description" content="Подготовка к профильному ЕГЭ 2027: задача, подсказка и подробный разбор по запросу. Сборники с нумерацией 2026 года сохранены отдельно.">
 <link rel="canonical" href="https://mathexam.space/ege-profil/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ЕГЭ профиль: курс по математике и тренажёры | MathExam">
-<meta property="og:description" content="Профильный ЕГЭ по проекту 2027: задания 1–13 и неравенства, пошаговые разборы и самостоятельная практика. Сохранённые тренажёры по нумерации 2026 года.">
+<meta property="og:title" content="Курс профильного ЕГЭ 2027 — темы и тренажёры | MathExam">
+<meta property="og:description" content="Подготовка к профильному ЕГЭ 2027: задача, подсказка и подробный разбор по запросу. Сборники с нумерацией 2026 года сохранены отдельно.">
 <meta property="og:url" content="https://mathexam.space/ege-profil/">
 <meta property="og:site_name" content="MathExam">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ЕГЭ профиль: курс по математике и тренажёры | MathExam">
-<meta name="twitter:description" content="Профильный ЕГЭ по проекту 2027: задания 1–13 и неравенства, пошаговые разборы и самостоятельная практика. Сохранённые тренажёры по нумерации 2026 года.">
-<title>ЕГЭ профиль: курс по математике и тренажёры | MathExam</title>
+<meta name="twitter:title" content="Курс профильного ЕГЭ 2027 — темы и тренажёры | MathExam">
+<meta name="twitter:description" content="Подготовка к профильному ЕГЭ 2027: задача, подсказка и подробный разбор по запросу. Сборники с нумерацией 2026 года сохранены отдельно.">
+<title>Курс профильного ЕГЭ 2027 — темы и тренажёры | MathExam</title>
 <style>
   :root{
     --paper:#FAFAF4;
@@ -217,23 +217,35 @@
   .route-steps li::before{content:counter(rs);position:absolute;left:14px;top:12px;width:26px;height:26px;border-radius:50%;background:var(--ink,#1E3A9F);color:#fff;font:800 14px/26px ui-monospace,SFMono-Regular,Menlo,monospace;text-align:center}
   .route-steps li.now{border-color:var(--red,#C22F2A);box-shadow:0 0 0 3px rgba(194,47,42,.14)}
   .route-steps li.now::after{content:"вы здесь";position:absolute;right:12px;top:11px;font:700 10.5px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--red,#C22F2A)}
+
+  /* Shared task-first course entrance; historical banks keep their original labels. */
+  :root{--paper:#f6f8f6;--ink:#176652;--ink-strong:#164f40;--graphite:#193b32;--muted:#52675f;--line:#d6e1da;--red:#176652}
+  body{background-image:none;font-size:18px;line-height:1.65}body::before{display:none}
+  .sheet{max-width:1100px;padding:34px 24px 48px}h1{font-size:clamp(30px,5vw,44px);line-height:1.2}
+  .eyebrow,.facts,.line-proto,.card .meta,footer{font-family:inherit;font-size:15px;letter-spacing:normal;line-height:1.6}
+  .lede{font-size:19px;max-width:800px}.current-course{padding:24px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-top:24px}
+  .current-course>p{max-width:850px}.btn,.pill{font-size:17px;min-height:46px;padding:10px 16px}.first-three-link{font-size:17px}
+  .legacy-course{margin-top:28px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:18px}
+  summary{cursor:pointer;font-weight:700;min-height:44px;padding:8px 0}summary:focus-visible{outline:3px solid #176652;outline-offset:4px}
+  .legacy-course>section{margin-top:28px}.legacy-course .card p,.line-proto{font-size:16px}.legacy-course .line-links{max-width:380px}
+  @media(max-width:600px){.sheet{padding:22px 14px}.current-course,.legacy-course{padding:16px}.current-course .btn{display:flex;margin:10px 0}.first-three-links{grid-template-columns:1fr}.legacy-course .line{grid-template-columns:38px minmax(0,1fr)}.legacy-course .line-links{grid-column:2;justify-content:flex-start}.facts{font-size:14px}}
 </style>
 </head>
 <body>
 <div class="sheet">
 
   <header>
-    <p class="eyebrow">курс-навигатор · новый учебный маршрут 2027</p>
+    <p class="eyebrow">Подготовка к ЕГЭ · 2027</p>
     <h1>Профильный <span class="mark">ЕГЭ<svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 Q 12 2, 24 8 T 46 8 T 68 8 T 90 8 T 114 7" fill="none" stroke="#C22F2A" stroke-width="3.4" stroke-linecap="round"/></svg></span> · математика</h1>
-    <p class="lede">Вся первая часть и неравенства — понятными шагами. Одно условие и один вопрос за раз. Решение остаётся перед глазами.</p>
+    <p class="lede">Открой задачу и попробуй решить. Если трудно — нажми «Хочешь подсказку?». Объяснение появится рядом, а твоя работа останется на месте.</p>
     <p class="facts">Первая часть: №1–13. Неравенства: №16. Нумерация по проекту ФИПИ 2027; в сборниках 2026 она отличается.</p>
   </header>
 
-  <section id="profile-2027" aria-labelledby="profile-2027-h" style="padding:26px;border:2px solid #1e3a9f;border-radius:16px;background:#fff;margin-top:32px">
+  <section id="profile-2027" aria-labelledby="profile-2027-h" class="current-course">
     <p class="eyebrow">Понятный старт · ЕГЭ 2027</p>
     <h2 id="profile-2027-h">Один курс: задания №1–13 и №16</h2>
     <p>Начните с экзаменационной задачи. Если трудно, вспомните нужную школьную тему и вернитесь к решению.</p>
-    <p><a class="btn" href="start/index.html#calm">Открыть меню всех заданий →</a> <a class="btn" href="start/index.html#exam/16">Неравенства второй части →</a></p>
+    <p><a class="btn" href="start/index.html#calm">Выбрать задачу →</a> <a class="btn" href="start/index.html#exam/16">Неравенства второй части →</a></p>
     <p><a class="btn" href="atanasyan-10-11/index.html">Атанасян 10–11: отдельный курс к стереометрии №15 →</a></p>
     <nav class="first-three-links" aria-label="Первые три задания профильного ЕГЭ">
       <a class="first-three-link" href="start/index.html#exam/1"><strong>1. Планиметрия</strong><span>Углы, стороны и площади. Нужные линии видны на чертеже.</span></a>
@@ -252,6 +264,7 @@
     </details>
   </section>
 
+  <details class="legacy-course" id="legacy-course"><summary>Дополнительные тренажёры и прежние варианты</summary>
   <section id="start" aria-labelledby="start-h">
     <h2 id="start-h">Сохранённый маршрут · формат 2026</h2><p class="section-note">Все номера и пробники ниже относятся к формату 2026. Они остаются полезны для тренировки тем, но не являются полным вариантом проекта ЕГЭ 2027.</p>
     <p class="facts" id="legacy-facts">19 тренажёров в сохранённой подборке 2026 · 281 задача стереометрии в 3D и 7 «Развёрток» · финансовая математика: 14 задач, 11 схем</p>
@@ -266,7 +279,7 @@
 
   <section id="route" aria-labelledby="route-h">
     <h2 id="route-h">Маршрут экзамена · нумерация 2026</h2>
-    <p class="section-note">Номер — это номер задания в варианте. Синие ссылки ведут в тренажёры по теме, «вариант» открывает эту линию в экзаменационном тренажёре.</p>
+    <p class="section-note">Номер — это номер задания в варианте. Ссылки ведут в тренажёры по теме, «вариант» открывает эту линию в экзаменационном тренажёре.</p>
 
     <p class="part-label">Часть 1 · краткий ответ · задания 1–12</p>
     <ol class="route">
@@ -588,6 +601,8 @@
     </div>
   </section>
 
+  </details>
+
   <footer>
     <p>Прогресс каждого тренажёра хранится в браузере на этом устройстве. Сводка на этой странице появляется, когда курс открыт как сайт или через локальный сервер; если открывать файлы с диска, браузер может изолировать хранилища — тогда прогресс виден внутри самих тренажёров.</p>
     <p>Собрано из тренажёров проекта Mathexam.space. Интернет не нужен: всё работает офлайн.</p>
@@ -601,6 +616,13 @@
 <script src="qr.js"></script>
 <script src="progress-code.js"></script>
 <script>
+function revealCourseAnchor(){
+  let id=location.hash.slice(1);
+  try{id=decodeURIComponent(id);}catch{return;}
+  const target=document.getElementById(id);
+  for(let node=target?.parentElement;node;node=node.parentElement)if(node.tagName==='DETAILS')node.open=true;
+}
+addEventListener('hashchange',revealCourseAnchor);revealCourseAnchor();
 PROGRESS.mount(document, PROGRESS.liveStore());
 PROGRESS_CODE.mount(document.getElementById("myCode"), { compact:true });
 </script>

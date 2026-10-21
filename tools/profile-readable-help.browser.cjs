@@ -99,6 +99,7 @@ async function followHelp(page, target, label) {
         const open = page.locator(rich ? '[data-trig-open]' : '#task-solution [data-solution-open]');
         const panel = page.locator(rich ? '[data-trig-explanation]' : '#task-solution [data-solution-panel]');
         const steps = panel.locator(rich ? '[data-trig-step]' : '[data-solution-step]');
+        if (!rich) await page.locator('#hint').click();
         await open.click(); await panel.waitFor();
         assert.equal(await steps.count(), 1, label + ': only first worked step shown');
         await panel.locator(rich ? '[data-trig-next]' : '[data-solution-next]').click();
@@ -181,6 +182,7 @@ async function followHelp(page, target, label) {
       for (const item of [probability, richCases[0], diagram]) {
         const rich = item.lesson.id === 'geo-right', drawing = item === diagram;
         await seed(item, true, '-stale');
+        if (!rich && !drawing) await page.locator('#hint').click();
         await page.locator(drawing ? '#task-model .profile-model-controls button' : rich ? '[data-trig-open]' : '#task-solution [data-solution-open]').first().click();
         const other = await context.newPage(); await other.goto(base);
         const nextTask = item.lesson.tasks[4];
@@ -201,6 +203,7 @@ async function followHelp(page, target, label) {
       }
 
       await seed(probability, true, '-credit');
+      await page.locator('#hint').click();
       await page.locator('#task-solution [data-solution-open]').click();
       await followHelp(page, page.locator('#task-solution .profile-solution-title'), 'assistance credit:' + width);
       await fill(page, probability.task.answer); await page.locator('#submit-answer').click();

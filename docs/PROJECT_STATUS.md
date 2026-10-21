@@ -1,14 +1,27 @@
 # MathExam project status
 
-Updated: 2026-10-21 (Asia/Novosibirsk)
+Updated: 2026-10-22 (Asia/Novosibirsk)
 
-## In progress: OGE 2027 season labels
+## In progress: profile and basic EGE task-first presentation
 
-- [Scope](tasks/OGE_2027_SEASON.md): update active season copy, copied results,
-  catalogs and the practical download bundle; retain source dates and progress
-  identity. The owner continues to authorize publication.
-- Next: verify scoped copy and unchanged engines; publish the single PR after
-  checks; verify the published pages and archive. Release evidence is in the PR.
+- [Scope](tasks/EGE_2027_TASK_FIRST.md): adapt both existing course engines to
+  task-first presentation, optional nested same-page help and readable controls;
+  retain mathematics, progress, historical sources and assessment boundaries.
+- Base: `13b73619de97176789bc71d06617108aeb3d5994`. The owner requested both
+  courses and continues to authorize publication. Paid Claude use is deferred.
+- Next: verify all existing practice families, independent source/visual review,
+  exact-head CI and publication identity. Release evidence is recorded in the PR.
+
+## Published: OGE 2027 season labels
+
+- PR294 merged as `13b73619de97176789bc71d06617108aeb3d5994`, parent
+  `81712b878b7657f69b7d299f94c9adebb45fad55`, reviewed tree
+  `25b4b5d6348bec4e0b6aa377126d0a954407661a`.
+- All nine exact-head CI workflows passed. Pages39620236772 succeeded;
+  all17 canonical/versioned public asset checks returned200 and matched reviewed
+  SHA256 and sizes, including offline HTML and ZIP. Gate: OGE_2027_SEASON_OK.
+- Active headings, copied results and catalogs use2027; actual source dates,
+  mathematical engines and stored progress identity remain unchanged.
 
 ## Published: consistent exam-first OGE course
 

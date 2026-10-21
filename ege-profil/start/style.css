@@ -113,6 +113,8 @@ body{overflow-wrap:anywhere}.model-panel input[type=range]{margin-inline:0}.circ
 .profile-solution-fraction{display:inline-grid;grid-template-columns:minmax(0,1fr);vertical-align:middle;min-width:0;max-width:100%;text-align:center;line-height:1.35;margin-inline:.12em}
 .profile-solution-numerator,.profile-solution-denominator{padding:.18em .25em;overflow-wrap:anywhere}
 .profile-solution-denominator{border-top:2px solid currentColor}
+.profile-equation-formula{display:flex;align-items:center;justify-content:center;height:100%;color:#17354f;font-family:system-ui,sans-serif;line-height:1.35;text-align:center}
+.profile-equation-formula .profile-solution-numerator,.profile-equation-formula .profile-solution-denominator{white-space:nowrap;overflow-wrap:normal;padding:.08em .2em}
 .profile-solution-ratio,.profile-solution-proportion{display:flex;align-items:center;gap:.3em;min-width:0}
 .profile-solution-ratio{flex-wrap:wrap}
 .profile-solution-proportion>.profile-solution-fraction{flex:0 1 auto}
@@ -144,3 +146,20 @@ body{overflow-wrap:anywhere}.model-panel input[type=range]{margin-inline:0}.circ
 #task-model .profile-model-note,#example-model .profile-model-note,#checkpoint-model .profile-model-note,#result-model .profile-model-note{font-size:18px;line-height:1.65}
 .number-help summary,.support-details summary,.extra-help summary,#explore-lab summary{min-height:44px}
 .profile-model-note:focus{outline:3px solid #176860;outline-offset:5px;border-radius:4px;scroll-margin-block:24px}
+
+/* Task-first course: the condition and its drawing stay mounted while help opens. */
+:root{--blue:#176b4c;--paper:#f8faf8;--line:#d9e3dd}
+.button:hover{background:#115338}.button.quiet{color:#176b4c;border-color:#bcd5c6}.button.quiet:hover{background:#eff8f2}
+.task-help-entry{margin:22px 0}.task-help-entry>.button{width:auto;max-width:100%;font-size:18px}
+.task-help-entry .hint-box{background:#f2f8f3;border:1px solid #d0e4d6;padding:22px;margin:14px 0 0}
+.task-help-entry .hint-box h2{font-size:21px;color:#174e38;letter-spacing:0}
+.task-help-entry .short-hint{font-size:20px;line-height:1.75;overflow-wrap:anywhere}
+.task-foundation{margin-top:18px;padding-top:14px;border-top:1px solid #d0e4d6}
+.task-foundation summary,.task-foundation details summary{cursor:pointer;min-height:44px;font-size:18px;font-weight:650;padding:9px 0}
+.task-foundation>div,.task-foundation details{font-size:19px;line-height:1.75;margin-top:12px;overflow-wrap:anywhere}
+.task-foundation details{border-left:3px solid #b3d5bf;padding-left:16px}
+.task-panel .answer-label,.choices legend{font-size:18px;line-height:1.6;margin-bottom:10px}
+#hint-credit:empty{display:none}#hint-credit{margin:16px 0 0}
+@media(max-width:600px){.task-help-entry .hint-box{padding:17px 14px}.task-help-entry .short-hint{font-size:19px}}
+
+.course-menu{position:relative}.course-menu summary{cursor:pointer;min-height:32px}.course-menu>div{position:absolute;z-index:5;right:0;top:100%;display:grid;gap:14px;min-width:220px;padding:18px;background:white;border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 20px #153d2614}.course-menu>div a{min-height:28px}

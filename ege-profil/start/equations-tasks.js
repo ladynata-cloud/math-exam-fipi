@@ -26,7 +26,16 @@
     add('rect',{x:8,y:16,width:424,height:112,rx:14,fill:'#f1f6fa',stroke:'#ccdae5'});
     add('text',{x:24,y:44,fill:'#5b6e80','font-size':14,'font-family':'system-ui, sans-serif'},scene.earned?'После выполненного шага':'Запись из условия');
     const formula=scene.left+(scene.right!==null?' = '+scene.right:'');
-    add('text',{x:220,y:87,'text-anchor':'middle',fill:'#17354f','font-size':Math.max(14,Math.min(26,660/formula.length)),'font-family':'system-ui, sans-serif','data-current-expression':''},formula);
+    // Keep the scene and its accessible source unchanged. Only recognizable
+    // fractions use the same stacked display as the condition and worked steps.
+    const expression=doc.createElement('span');expression.setAttribute('data-current-expression','');
+    if(root.ProfileSolutions?.appendMathText)root.ProfileSolutions.appendMathText(expression,formula);
+    if(expression.querySelector('.profile-solution-fraction')){
+      const foreign=add('foreignObject',{x:20,y:51,width:400,height:74});
+      const content=doc.createElementNS('http://www.w3.org/1999/xhtml','div');
+      content.className='profile-equation-formula';content.style.fontSize=Math.max(14,Math.min(25,660/formula.length))+'px';
+      content.append(expression);foreign.append(content);
+    }else add('text',{x:220,y:87,'text-anchor':'middle',fill:'#17354f','font-size':Math.max(14,Math.min(26,660/formula.length)),'font-family':'system-ui, sans-serif','data-current-expression':''},formula);
     if(scene.domain){
       const d=scene.domain,x=220,y=191;
       add('text',{x:24,y:155,fill:'#334e68','font-size':16,'font-family':'system-ui, sans-serif'},'ОДЗ: x '+d.relation+' '+fmt(d.boundary));
@@ -46,6 +55,7 @@
     const button=doc.createElement('button');button.type='button';button.className='button quiet model-toggle';button.textContent=closedLabel;button.setAttribute('aria-pressed','false');
     const parts=doc.createElement('div');parts.hidden=true;parts.style.marginTop='12px';parts.style.lineHeight='1.6';parts.setAttribute('data-expression-parts','');
     task.diagram.parts.forEach(text=>{const p=doc.createElement('p');p.style.margin='4px 0';p.textContent=text;parts.append(p);});
+    root.ProfileSolutions?.formatFractions(parts);
     button.onclick=()=>{
       const on=button.getAttribute('aria-pressed')!=='true';
       if(on&&independent&&typeof context.onHelp==='function')context.onHelp();
