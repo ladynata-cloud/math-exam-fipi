@@ -185,7 +185,7 @@ const server = http.createServer((request, response) => {
     await page.waitForSelector('#task-model svg');
     assert.ok(await page.locator('#answer').isVisible(), 'workshop opens on the task with a visible model');
     assert.match(await page.locator('#app h1').textContent(), /сечен/i);
-    assert.equal(await page.getByRole('link', { name: '← Маршрут к №15', exact: true }).count(), 0, 'legacy entry preserves its navigation');
+    assert.equal(await page.getByRole('link', { name: '← К маршруту задания №15', exact: true }).count(), 0, 'legacy entry preserves its navigation');
     await page.locator('.more-sections > summary').click();
     await page.locator('.lesson-actions [data-stage="5"]').click();
     await page.locator('#written').fill('Сохранённое доказательство: точки лежат в одной плоскости.');
@@ -194,7 +194,7 @@ const server = http.createServer((request, response) => {
     await page.goto(origin + '/stereo-course/index.html?route=ege15#sections');
     await page.waitForSelector('#written');
     assert.equal(await page.locator('#written').inputValue(), workshopBefore.written);
-    const back = page.getByRole('link', { name: '← Маршрут к №15', exact: true });
+    const back = page.getByRole('link', { name: '← К маршруту задания №15', exact: true });
     assert.equal(await back.getAttribute('href'), '../ege-profil/atanasyan-10-11/index.html#route');
     await back.click();
     await page.waitForSelector('#modules .module');
