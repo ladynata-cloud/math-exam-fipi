@@ -50,7 +50,18 @@ const inlineHashes={
   "21": "8bfedacb0395cc10792313f0a9566474260d66956ffd09ba35451706d5bc2d72",
   "22": "af49f4c0eb64211d089fe6077e3ad3200b38be4d17147ca7b49a9413bf217859"
 };
-test('all eight original inline engines remain byte-identical to the published base',()=>{for(const [n,suffix]of Object.entries(files)){const html=fs.readFileSync(path.join(root,'trainers/oge-task'+n+'-'+suffix+'.html'),'utf8');const scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');assert.equal(crypto.createHash('sha256').update(scripts).digest('hex'),inlineHashes[n],'task '+n);}});
+test('all eight original inline engines retain their published snapshots outside approved season labels',()=>{
+ for(const [n,suffix]of Object.entries(files)){
+  const html=fs.readFileSync(path.join(root,'trainers/oge-task'+n+'-'+suffix+'.html'),'utf8');
+  let scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');
+  // The 2027 copy update changes these two displayed sentences only.
+  // Keep the historical full-engine digest, including all mathematics and grading.
+  if(n==='8')scripts=scripts
+   .replace('160 задач для подготовки к ОГЭ 2027.</p>', 'все 160 задач из реальных подборок к ОГЭ 2026.</p>')
+   .replace('Марафон · 160 задач для подготовки к ОГЭ 2027', 'Марафон · 160 задач формата ОГЭ 2026');
+  assert.equal(crypto.createHash('sha256').update(scripts).digest('hex'),inlineHashes[n],'task '+n);
+ }
+});
 
 test('writing a note merges another tab’s saved problem and tolerates corrupt archive entries',async()=>{const t=await boot(20);try{t.w.localStorage.setItem('mathexam.oge.algebra-notes.v1',JSON.stringify({other:{number:21,question:'Другая задача',questionKey:'other',text:'Не потерять запись',updated:1},broken:{number:20}}));const input=t.card().querySelector('.oca-work textarea');input.value='Новая запись';input.dispatchEvent(new t.w.Event('input'));const saved=JSON.parse(t.w.localStorage.getItem('mathexam.oge.algebra-notes.v1'));assert.equal(saved.other.text,'Не потерять запись');const archive=[...t.card().querySelectorAll('.oca-work details')].find(x=>x.firstElementChild.textContent==='Мои записи к другим задачам');archive.open=true;await settle();assert.deepEqual(t.errors,[]);}finally{t.close();}});
 for(const n of [7,14])test(n+': neutral exploration leaves native independent answer grading intact',async()=>{const t=await boot(n);try{const panel=await openHelp(t);await openLab(panel);Array.from(panel.children).find(el=>el.tagName==='BUTTON'&&el.textContent==='Вернуться к заданию').click();assert.equal(panel.hidden,true);if(n===7){const answer=t.w.eval('BANK[marIdx].key');t.card().querySelectorAll('.optbtn')[answer-1].click();}else{const value=t.w.eval('Number(__M.task.ans.n)/Number(__M.task.ans.d)');t.d.getElementById('m-dec').value=String(value);t.d.getElementById('m-ck').click();}const first=snapshot(t.w);assert(first);const progress=JSON.parse(first),record=progress[n===7?'oge-t7-pryamaya':'oge-t14-progressii'];assert(Object.values(record.solvedByType).some(x=>x===1));await settle();assert.equal(t.card().querySelector(n===7?'button.minimal-hint':'#m-solve')?.disabled,false);assert.deepEqual(t.errors,[]);}finally{t.close();}});
