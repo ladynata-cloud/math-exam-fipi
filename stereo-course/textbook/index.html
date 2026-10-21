@@ -10,7 +10,7 @@
 <script src="../assets/math-text.js"></script><script src="../assets/task-scene-viewer.js"></script><script src="assets/engine.js"></script>
 <script>
 'use strict';
-fetch('data/course.json').then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(bundle=>{
+fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(bundle=>{
  window.textbookApp=StereoTextbook.createApp(document.getElementById('textbook-app'),bundle);
 }).catch(()=>{document.getElementById('textbook-app').textContent='Материалы сейчас не удалось открыть. Попробуй обновить страницу.';});
 </script></body></html>
