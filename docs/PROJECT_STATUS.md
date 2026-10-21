@@ -2,20 +2,35 @@
 
 Updated: 2026-10-22 (Asia/Novosibirsk)
 
-## In progress: complete Atanasyan introduction and chapterI
+## In progress: exhaustive textbook browser checks in four parallel jobs
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_CHAPTER_I.md), HIGH review, base
-  `61a42de7d4f5d5aa0d440d9070294ceccffc6092`.
-- Add independently approved exercises84–115 and all16 chapterI self-checks.
-  Preserve132 earlier cards; new51 cards match frozen author content.
-- Prepared total:183 cards,115 main exercise numbers,14 theory points and16
-  self-checks;581 justified steps and659 model views. Later chapters remain pending.
-- Local catalogue/schema/content/runtime and model geometry gates passed:
-  614 simple planar polygons and2192 nonzero segments. Pre-freeze independent
-  integration review passed; exact-head review and cloud screenshots remain.
-- Next three actions: freeze/review exact Git head; run full cloud gate and
-  inspect new screenshots; publish and verify exact public bytes under standing
-  owner authorization. Paid Claude remains deferred, no Claude verdict claimed.
+- [Scope](tasks/TEXTBOOK_BROWSER_SHARDS.md), HIGH review, base
+  `5953d69400615fdb4f8c6537f0af5a3c1355865a`.
+- Preserve all183 published cards, every browser assertion and all85 screenshot
+  selections. Partition complete card journeys across four jobs and require their
+  exact union before publishing the combined evidence artifact.
+- Independent technical review,56 unit checks, five browser-free preflights and
+  independent replay of actual PR299 observations passed. Exact-head review and
+  a real four-job cloud run remain pending; replay does not replace that run.
+- Next actions: verify the frozen Git delta; run the cloud matrix and inspect
+  artifact provenance/image identity; publish under standing owner permission.
+  Paid Claude remains deferred and no Claude review is claimed.
+
+## Published: complete Atanasyan introduction and chapter I
+
+- PR299 merged as `5953d69400615fdb4f8c6537f0af5a3c1355865a`, sole parent
+  `61a42de7d4f5d5aa0d440d9070294ceccffc6092`, exact reviewed tree
+  `8f91a288ddae3c403a9b2e3c0fb0e2e5d4dbe849`.
+- All three exact-head workflows succeeded. Independent source, mathematics,
+  integration and new desktop/mobile screenshot reviews passed. Chromium checked
+  366 card-width journeys,2524 model states and14952 labels, with no overlaps or
+  browser errors; all eight expansion returns and two real-tab cases passed.
+- Artifact12384239691 contains174 PNGs:114 byte-identical reviewed images and
+  60 new images independently inspected in full. Pages39685878881 succeeded on
+  the exact merge; all14 public canonical/alias requests matched SHA256 and size.
+- Gate:ATANASYAN_CHAPTER_I_COMPLETE_OK. Published183 cards cover every question
+  of main exercises1–115, theory points1–14 and16 chapterI self-checks, with581
+  justified steps and659 model views. Later chapters remain explicitly pending.
 
 ## Published: Atanasyan exercises1–83 and visual theory1–14
 

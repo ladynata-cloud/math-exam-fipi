@@ -5,7 +5,7 @@ on:
 permissions:
   contents: read
 jobs:
-  source-model-browser:
+  source-model:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -27,17 +27,78 @@ jobs:
           node tools/stereo-textbook/model-geometry.test.cjs
       - name: Retained work, nested theory and publication boundaries
         run: node tools/stereo-textbook/runtime.test.cjs
+      - name: Exact partitions, collector failures and browser-free preflight
+        run: |
+          node tools/stereo-textbook/browser-shards.test.cjs
+          TEXTBOOK_CHECK_ONLY=1 node tools/stereo-textbook/browser.cjs
+          for i in 0 1 2 3; do
+            TEXTBOOK_CHECK_ONLY=1 TEXTBOOK_SHARD_COUNT=4 TEXTBOOK_SHARD_INDEX=$i node tools/stereo-textbook/browser.cjs
+          done
+      - run: git diff --check
+  browser-shard:
+    needs: source-model
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
       - run: npx playwright install --with-deps chromium
-      - name: Every authored lesson, mobile models and real two-tab recovery
+      - name: Complete assigned lessons at both widths, retained work and models
         env:
           TEXTBOOK_ARTIFACTS: artifacts/textbook
+          TEXTBOOK_SHARD_COUNT: '4'
+          TEXTBOOK_SHARD_INDEX: ${{ matrix.shard }}
         run: node tools/stereo-textbook/browser.cjs
-      - name: Preserve actual browser evidence
+      - name: Preserve each shard including failure evidence
         if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-textbook-shard-${{ matrix.shard }}
+          path: artifacts/textbook/
+          retention-days: 7
+          if-no-files-found: error
+  collect-browser:
+    needs: [source-model, browser-shard]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Require every preceding job to succeed
+        env:
+          SOURCE_RESULT: ${{ needs.source-model.result }}
+          BROWSER_RESULT: ${{ needs.browser-shard.result }}
+        run: test "$SOURCE_RESULT" = success && test "$BROWSER_RESULT" = success
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      # Official v8.0.2 pin: https://github.com/actions/download-artifact/tree/9000827ccba6bdab643e8b6fd33ac0654aef8333
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          pattern: atanasyan-textbook-shard-*
+          path: artifacts/shards
+          merge-multiple: false
+      - name: Verify exact union and provenance, then build flat evidence artifact
+        env:
+          TEXTBOOK_SHARD_INPUT: artifacts/shards
+          TEXTBOOK_ARTIFACTS: artifacts/textbook
+          TEXTBOOK_SHARD_COUNT: '4'
+        run: node tools/stereo-textbook/browser-collect.cjs
+      - name: Preserve combined actual browser evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: atanasyan-textbook-visuals
           path: artifacts/textbook/
           retention-days: 7
-          if-no-files-found: warn
-      - run: git diff --check
+          if-no-files-found: error
