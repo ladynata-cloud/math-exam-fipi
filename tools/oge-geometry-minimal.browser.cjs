@@ -34,7 +34,7 @@ async function assertTask25Mobile(page,width){
  assert.deepEqual(layout.clipped,[],`№25: no hidden horizontal clipping at ${width}`);
 }
 (async()=>{
- const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL(req.url,'http://local').pathname);if(!p.startsWith(root+path.sep)||!fs.existsSync(p)){res.writeHead(404);res.end();return;}res.setHeader('content-type',p.endsWith('.html')?'text/html; charset=utf-8':'application/octet-stream');fs.createReadStream(p).pipe(res);});
+ const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL(req.url,'http://local').pathname);if(!p.startsWith(root+path.sep)||!fs.existsSync(p)){res.writeHead(404);res.end();return;}res.setHeader('content-type',({'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.svg':'image/svg+xml'})[path.extname(p)]||'application/octet-stream');fs.createReadStream(p).pipe(res);});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({headless:true});fs.mkdirSync(path.join(root,'artifacts/oge-geometry-minimal'),{recursive:true});
  try{for(const width of [320,360,1280])for(const [n,name]of cases){

@@ -150,8 +150,10 @@ body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-ap
 @media(max-width:600px){.minimal-course .app,.minimal-course>.wrap{padding:18px 12px 40px}.minimal-course .grid{padding:18px 14px;grid-template-columns:1fr}.minimal-course .row{flex-wrap:wrap}.minimal-course .col{min-width:0;width:100%}.minimal-course h1{font-size:21px}.minimal-course .minimal-hint{padding:16px 12px}.minimal-course .task,.minimal-course .card,.minimal-course .givens{font-size:17px}.minimal-course .tabs{gap:8px}}
 @media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
+<link rel="stylesheet" href="oge-course-reference.css">
+<link rel="stylesheet" href="oge-course-geometry.css">
 </head>
-<body>
+<body data-oge-geometry="16">
 <div class="app">
   <div class="head">
     <div>
@@ -2153,5 +2155,9 @@ if(!CP.RO && document.documentElement.nodeType===1){
   switchTab('train');
 }
 </script>
+<script src="task19-textbook-data.js"></script>
+<script src="task19-reference.js"></script>
+<script src="oge-course-reference.js"></script>
+<script src="oge-course-geometry.js"></script>
 </body>
 </html>

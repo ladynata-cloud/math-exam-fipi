@@ -79,6 +79,7 @@ function drawModel(panel,visual){
   }
 }
 function mountHint(host,kind,type,text){
+  if(doc.body.dataset.practicalVariant==='1')return;
   if(!host)return;
   // The same legend is a given for later tasks, but an explicit answer hint for matching.
   // Restore it before replacing the old help so native drawLegend keeps its original node.
@@ -114,6 +115,7 @@ function figureZoom(svg){
   button.addEventListener('click',()=>{const large=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(large));button.textContent=large?'Уменьшить рисунок':'Увеличить рисунок';wrap.classList.toggle('pm-figure-large',large);note.hidden=!large;const box=(svg.getAttribute('viewBox')||'0 0 600 400').trim().split(/\s+/).map(Number);svg.style.width=large?Math.max(600,box[2]*1.4)+'px':'';if(!large){wrap.scrollLeft=0;wrap.scrollTop=0;}});
 }
 function decorate(){
+  if(doc.body.dataset.practicalVariant==='1')return;
   if(observer)observer.disconnect();
   try{
     const page=doc.body.dataset.practicalPage;
@@ -147,6 +149,7 @@ function decorate(){
 }
 function schedule(){if(scheduled)return;scheduled=true;Promise.resolve().then(()=>{scheduled=false;decorate();});}
 function init(){
+  if(doc.body.dataset.practicalVariant==='1')return;
   const page=doc.body.dataset.practicalPage;if(!page)return;
   doc.body.classList.add('pm-minimal','pm-'+page);
   if(['stoves','paper-sheets','apartments'].includes(page))all('[data-mode]').forEach(b=>{const selected=b.dataset.mode==='practice';b.classList.toggle('active',selected);if(b.classList.contains('pill'))b.classList.toggle('on',selected);if(b.hasAttribute('aria-selected'))b.setAttribute('aria-selected',String(selected));});

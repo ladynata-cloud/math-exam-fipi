@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "sourceFile": "../task19-reference/fipi-oge-2027-page-03.png",
+  "sourceSha256": "b5f6fc6778dadf1bc55da37a1c3cb5fa36424df24bcf81d9b1428eef6375a37b",
+  "sourcePDF": "../task19-reference/source-demo-2027.pdf",
+  "sourcePDFSha256": "4fb94e18640856608a733d2c8a8f028fc2e4964e9b98606cc5a5c5ca00869a44",
+  "officialArchive": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+  "status": "project",
+  "printedPage": 3,
+  "sourceDimensions": [
+    1263,
+    1786
+  ],
+  "method": "Lossless pixel crop of the unchanged FIPI sheet raster. Coordinates are x0,y0,x1,y1; no resizing, repainting or watermark removal. The full original sheet remains accessible next to each crop.",
+  "crops": {
+    "quadratic-roots": {
+      "file": "quadratic-roots.png",
+      "rectPixels": [
+        430,
+        275,
+        870,
+        352
+      ],
+      "width": 440,
+      "height": 77,
+      "sha256": "4ddb3b97a6714686ec65f8007d7e96dbdaaf7130900696fffbd6fa6d138a2960"
+    },
+    "parabola-vertex": {
+      "file": "parabola-vertex.png",
+      "rectPixels": [
+        562,
+        590,
+        730,
+        660
+      ],
+      "width": 168,
+      "height": 70,
+      "sha256": "6da6bbe2ec224c86f6f67d12cc8651d4b57a6df54146f397de0c36ffe08d9efa"
+    },
+    "identities": {
+      "file": "identities.png",
+      "rectPixels": [
+        480,
+        1200,
+        820,
+        1358
+      ],
+      "width": 340,
+      "height": 158,
+      "sha256": "ffdb0ca08e10919c57374759ce07809c96769adec0e006ee49243871beb8d274"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 'use strict';
+const retainedEngine=require('./oge-practical-retained-engine.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),vm=require('node:vm');
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'trainers/oge-1-5-trainers');
@@ -47,7 +48,7 @@ test('all inline engines match their reviewed snapshots outside explicit UI norm
 class Local extends ResourceLoader{fetch(url){const u=new URL(url);if(u.origin!=='https://mathexam.space')return null;for(const base of [root,fallback]){const f=path.join(base,u.pathname);if(fs.existsSync(f)&&fs.statSync(f).isFile())return Promise.resolve(fs.readFileSync(f));}return null;}}
 async function open(name){
  const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>{if(!/scrollTo|navigation|HTMLCanvasElement.prototype.getContext/.test(e.message))errors.push(e.message);});
- const dom=new JSDOM(fs.readFileSync(path.join(dir,name),'utf8'),{url:'https://mathexam.space/trainers/oge-1-5-trainers/'+name,resources:new Local(),runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){w.scrollTo=()=>{};w.confirm=()=>true;w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});w.requestAnimationFrame=()=>1;w.cancelAnimationFrame=()=>{};}});
+ const dom=new JSDOM(retainedEngine(fs.readFileSync(path.join(dir,name),'utf8')),{url:'https://mathexam.space/trainers/oge-1-5-trainers/'+name,resources:new Local(),runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){w.scrollTo=()=>{};w.confirm=()=>true;w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});w.requestAnimationFrame=()=>1;w.cancelAnimationFrame=()=>{};}});
  await new Promise(r=>dom.window.addEventListener('load',r));await tick();assert.deepEqual(errors,[],name);return{dom,doc:dom.window.document,errors};
 }
 function shown(el){if(!el)return false;for(let n=el;n&&n.nodeType===1;n=n.parentElement){if(n.hidden)return false;if(n.tagName==='DETAILS'&&!n.open&&el!==n.querySelector(':scope > summary'))return false;const s=n.ownerDocument.defaultView.getComputedStyle(n);if(s.display==='none'||s.visibility==='hidden')return false;}return true;}

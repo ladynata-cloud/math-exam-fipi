@@ -1,10 +1,11 @@
 'use strict';
+const retainedEngine=require('./oge-practical-retained-engine.cjs');
 /* Cloud CI browser coverage: actual controls, all eight storylines and every current prototype. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),out=process.env.PRACTICAL_DISCOVERY_ARTIFACTS||path.join(root,'artifacts/oge-practical-discovery');
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.json':'application/json','.png':'image/png','.jpg':'image/jpeg'};
-const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));if(!p.startsWith(root+path.sep)||!fs.existsSync(p)||!fs.statSync(p).isFile()){res.writeHead(404).end();return;}res.setHeader('Content-Type',mime[path.extname(p)]||'application/octet-stream');res.end(fs.readFileSync(p));});
+const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));if(!p.startsWith(root+path.sep)||!fs.existsSync(p)||!fs.statSync(p).isFile()){res.writeHead(404).end();return;}res.setHeader('Content-Type',mime[path.extname(p)]||'application/octet-stream');res.end(path.extname(p)==='.html'?retainedEngine(fs.readFileSync(p)):fs.readFileSync(p));});
 const rows=[];let browser;
 async function reveal(locator){const ids=await locator.evaluate(el=>{const a=[];for(let p=el.parentElement;p;p=p.parentElement)if(p.tagName==='DETAILS'&&!p.open){if(!p.id)p.id='pd-test-'+Math.random().toString(36).slice(2);a.unshift(p.id);}return a;});for(const id of ids){const summary=locator.page().locator('#'+id+'>summary');await summary.focus();await summary.press('Enter');}}
 async function choose(page,selector){const l=page.locator(selector).first();await reveal(l);await l.click();await page.waitForTimeout(30);}
