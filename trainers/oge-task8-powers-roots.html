@@ -976,7 +976,7 @@ function buildRef(){
   </div>
   <div class="card">
     <h3>С чего начать</h3>
-    <p>Если тема новая — иди во вкладку <button type="button" class="crosslink" onclick="showView('learn')">📖 Учимся</button>: там всё по пунктам и с тренажёрчиками. Если хочешь набить руку — <button type="button" class="crosslink" onclick="showView('step')">🪜 Пошагово</button> генерирует задачи бесконечно и проверяет каждый шаг. Готов к бою — <button type="button" class="crosslink" onclick="showView('mar')">🏃 Марафон</button>: все 160 задач из реальных подборок к ОГЭ 2026.</p>
+    <p>Если тема новая — иди во вкладку <button type="button" class="crosslink" onclick="showView('learn')">📖 Учимся</button>: там всё по пунктам и с тренажёрчиками. Если хочешь набить руку — <button type="button" class="crosslink" onclick="showView('step')">🪜 Пошагово</button> генерирует задачи бесконечно и проверяет каждый шаг. Готов к бою — <button type="button" class="crosslink" onclick="showView('mar')">🏃 Марафон</button>: 160 задач для подготовки к ОГЭ 2027.</p>
   </div>`;
 }
 window.sqCell=function(n){
@@ -1393,7 +1393,7 @@ function mrec(id){ return marRec[id]||(marRec[id]={verdict:"",shown:false,hinted
 function buildMar(){
   const v=document.getElementById("view-mar");
   v.innerHTML=`<div class="card">
-    <h2>Марафон · 160 задач формата ОГЭ 2026</h2>
+    <h2>Марафон · 160 задач для подготовки к ОГЭ 2027</h2>
     <p>Подборка Math4Skill по заданию 8, все 32 сюжета. Вводи ответ как в бланке: целое число или десятичная дробь через запятую (например <b>0,5</b>). У каждой задачи есть «Решить по шагам» — та же задача, разобранная на проверяемые шаги; решённая по шагам без показа засчитывается.</p>
     <div class="filters" id="marChips"></div>
     <div class="small" id="marCount" style="margin-top:6px"></div>
