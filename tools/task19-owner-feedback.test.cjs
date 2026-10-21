@@ -33,9 +33,13 @@ function boot(t,id,saved){
  return {w,d:w.document,errors,$:s=>w.document.querySelector(s),saved:()=>JSON.parse(w.localStorage.getItem(KEY)),input(key,value){const input=w.document.querySelector(`input[data-key="${key}"]`);assert(input,key+' exists');input.value=value;input.dispatchEvent(new w.Event('input',{bubbles:true}));}};
 }
 
-test('owner feedback preserves the bank except the one requested wording correction',()=>{
+test('owner feedback preserves all 233 prior cards while the verified demo adds one exact assertion',()=>{
  assert.equal(byId.get('prev-011').text,'Сумма углов любого треугольника равна 180°.');
- const bank=cards.map(c=>({id:c.id,text:c.id==='prev-011'?'Сумма внутренних углов любого треугольника равна 180°.':c.text,truth:c.truth,aliases:c.aliases}));
+ const added=byId.get('tri_aaa_similarity');
+ assert(added);assert.equal(added.truth,true);
+ assert.equal(added.text,'Если три угла одного треугольника равны трём углам другого треугольника, то такие треугольники подобны.');
+ const bank=cards.filter(c=>c.id!=='tri_aaa_similarity').map(c=>({id:c.id,text:c.id==='prev-011'?'Сумма внутренних углов любого треугольника равна 180°.':c.text,truth:c.truth,aliases:c.aliases}));
+ assert.equal(bank.length,233);
  assert.equal(crypto.createHash('sha256').update(JSON.stringify(bank)).digest('hex'),'2e53abd6b48a711a9b407654e33601d72f0eb03e24ad1035934405ee6e23b4df');
  assert.equal(DIRECT.length,34);assert.equal(new Set(DIRECT).size,34);DIRECT.forEach(id=>assert(byId.has(id),id));
 });

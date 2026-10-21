@@ -12,7 +12,7 @@ const visuals = require('../trainers/task19-visual-models.js');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const KEY = 'mathExam.task19.visualHints.v1';
-const sources = ['task19-visual-data.js', 'task19-models-triangles.js', 'task19-models-circles.js', 'task19-models-lines-polygons.js', 'task19-visual-models.js', 'task19-reference.js', 'task19-visual-app.js'];
+const sources = ['task19-visual-data.js', 'task19-models-triangles.js', 'task19-models-circles.js', 'task19-models-lines-polygons.js', 'task19-visual-models.js', 'task19-reference.js', 'task19-textbook-data.js', 'task19-textbook-reference.js', 'task19-visual-app.js'];
 const dataScope = {window:{}, module:{exports:{}}};
 vm.runInNewContext(read('trainers/task19-visual-data.js'), dataScope);
 const data = dataScope.window.Task19Data || dataScope.module.exports;

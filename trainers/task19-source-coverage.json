@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "auditDate": "2026-10-20",
+  "auditDate": "2026-10-21",
   "officialBank": {
     "complete": false,
-    "status": "Official mathematics bank returned HTTP503/timeouts. Its complete current task set could not be enumerated; authored and secondary-source coverage is not a certification of full FIPI coverage.",
+    "status": "Rechecked 21 October 2026: the official mathematics bank returned HTTP503 or timed out in public HTTP/web/cloud-browser access. Its current question set could not be enumerated. The separately downloaded official 2027 draft demo provides 3 assertions, not an inventory of the live bank; authored and secondary-source coverage does not certify full FIPI coverage.",
     "url": "https://oge.fipi.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0",
     "indexUrl": "https://fipi.ru/oge/otkrytyy-bank-zadaniy-oge",
     "recommendedIds": [
@@ -68,7 +68,9 @@
           "45B944",
           "426640",
           "094344"
-        ]
+        ],
+        "checkedAt": "2026-10-21",
+        "verification": "Official web PDF text re-read. Two direct downloads ended with IncompleteRead; no complete local PDF claimed. Its task 19 row equals the independently downloaded circle navigator row."
       },
       {
         "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_4_krug.pdf",
@@ -95,7 +97,12 @@
           "45B944",
           "426640",
           "094344"
-        ]
+        ],
+        "checkedAt": "2026-10-21",
+        "retrievedAt": "2026-10-21T00:02:59.940408+00:00",
+        "sourceHashSha256": "7bfdb8859cbba8eff962202f8bd6f85690281cc1e75ddab93da2e65309168621",
+        "downloadBytes": 529652,
+        "verification": "Complete official PDF downloaded; task 19 row rechecked."
       },
       {
         "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_6_4ugolniki.pdf",
@@ -118,10 +125,50 @@
           "BA9532",
           "B51738",
           "504138"
-        ]
+        ],
+        "checkedAt": "2026-10-21",
+        "retrievedAt": "2026-10-21T00:04:03.042201+00:00",
+        "sourceHashSha256": "f9d9a0e6e59df1822ea44d62e9d17b28be032c148669231350ed3d23288e07ad",
+        "downloadBytes": 530697,
+        "verification": "Complete official PDF downloaded; task 19 row rechecked."
       }
     ],
-    "note": "These34 IDs are official preparation recommendations, not an inventory of the complete open bank; task texts cannot be inferred from IDs."
+    "note": "These34 IDs are official preparation recommendations, not an inventory of the complete open bank; task texts cannot be inferred from IDs.",
+    "checkedAt": "2026-10-21",
+    "currentIndexTarget": "https://oge.fipi.ru/bank/index.php?crproj=BD98FF424631BFE24D6010A4B1266CA8",
+    "indexSnapshotSha256": "3e02fde781d0a77dae885c86e0b31ad35e19c3ba8eb2ca30ebd3e6d530f88406",
+    "indexRetrievedAt": "2026-10-21T00:02:54.701703+00:00",
+    "downloadedBankQuestionCount": 0,
+    "currentBankQuestionCount": null,
+    "accessChecks": [
+      {
+        "method": "public-http",
+        "url": "https://oge.fipi.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0",
+        "date": "2026-10-21",
+        "result": "HTTP503 Service Unavailable"
+      },
+      {
+        "method": "web-fetch",
+        "url": "https://oge.fipi.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0",
+        "date": "2026-10-21",
+        "result": "Timeout fetching"
+      },
+      {
+        "method": "web-fetch",
+        "url": "https://oge.fipi.ru/bank/index.php?crproj=BD98FF424631BFE24D6010A4B1266CA8",
+        "date": "2026-10-21",
+        "result": "Timeout fetching"
+      },
+      {
+        "method": "cloud-browser",
+        "url": "https://oge.fipi.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0",
+        "date": "2026-10-21",
+        "result": "upstream connect error or disconnect/reset before headers. reset reason: connection timeout",
+        "botDetectionObserved": false
+      }
+    ],
+    "recommendedIdsRecheckedAt": "2026-10-21",
+    "recommendedIdsChanged": false
   },
   "sources": [
     {
@@ -3421,14 +3468,213 @@
           "matchType": "exact"
         }
       ]
+    },
+    {
+      "id": "official-fipi-demo-2027-draft",
+      "type": "official-fipi-demonstration-draft",
+      "url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+      "indexUrl": "https://fipi.ru/oge/demoversii-specifikacii-kodifikatory",
+      "fileName": "МА-9 ОГЭ 2027_ДЕМО.pdf",
+      "retrievedAt": "2026-10-21T00:03:00.848243+00:00",
+      "archiveHashSha256": "9ae4b400e5c6858b7988be583849499b3cd392c789e1e8599698f08c1795c238",
+      "archiveBytes": 1434097,
+      "sourceHashSha256": "4fb94e18640856608a733d2c8a8f028fc2e4964e9b98606cc5a5c5ca00869a44",
+      "year": 2027,
+      "status": "Draft on the official FIPI index at retrieval time",
+      "questionNumber": 19,
+      "physicalPdfPage": 7,
+      "printedPage": 13,
+      "answerPhysicalPdfPage": 8,
+      "answerPrintedPage": 15,
+      "officialAnswer": "1",
+      "sourceNote": "Official linked archive downloaded and task19 wording visually checked against its PDF. Local q19-* entry identifiers are not FIPI open-bank IDs.",
+      "entries": [
+        {
+          "sourceId": "q19-1",
+          "text": "Если три угла одного треугольника равны трём углам другого треугольника, то такие треугольники подобны.",
+          "truth": true,
+          "cardId": "tri_aaa_similarity",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "q19-2",
+          "text": "Диагонали ромба равны.",
+          "truth": false,
+          "cardId": "rhombus_diagonals_equal",
+          "matchType": "equivalent",
+          "note": "«Диагонали ромба равны» и «У ромба диагонали равны» выражают одно и то же утверждение о произвольном ромбе; условия и ложность сохранены."
+        },
+        {
+          "sourceId": "q19-3",
+          "text": "Тангенс любого острого угла меньше единицы.",
+          "truth": false,
+          "cardId": "tan_acute_less_than_1",
+          "matchType": "equivalent",
+          "note": "Слово «единицы» заменено обозначением «1»; квантор «любого острого угла» и ложность утверждения сохранены."
+        }
+      ]
+    },
+    {
+      "id": "user-task19-crop-20261020-235544",
+      "type": "user-supplied-exam-crop-unverified-edition",
+      "fileName": "image(20261020-235544).png",
+      "reviewedAt": "2026-10-21",
+      "sourceHashSha256": "ae7d81690bf57e3442f45ce36c3566683043e8784a73d0b28a59b360272945d2",
+      "questionNumber": 19,
+      "reviewedAnswer": "1",
+      "sourceNote": "User describes the group as demo and StatGrad questions. This crop does not establish a StatGrad release date, variant code or edition; no official-bank ID or publisher is inferred. Only the visible assertion text is mapped. Private image bytes are not published.",
+      "entries": [
+        {
+          "sourceId": "q19-1",
+          "text": "Если три угла одного треугольника равны трём углам другого треугольника, то такие треугольники подобны.",
+          "truth": true,
+          "cardId": "tri_aaa_similarity",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "q19-2",
+          "text": "Диагонали ромба равны.",
+          "truth": false,
+          "cardId": "rhombus_diagonals_equal",
+          "matchType": "equivalent",
+          "note": "«Диагонали ромба равны» и «У ромба диагонали равны» выражают одно и то же утверждение о произвольном ромбе; условия и ложность сохранены."
+        },
+        {
+          "sourceId": "q19-3",
+          "text": "Тангенс любого острого угла меньше единицы.",
+          "truth": false,
+          "cardId": "tan_acute_less_than_1",
+          "matchType": "equivalent",
+          "note": "Слово «единицы» заменено обозначением «1»; квантор «любого острого угла» и ложность утверждения сохранены."
+        }
+      ],
+      "textCrossReference": "All three assertions also appear verbatim in the independently downloaded official 2027 draft demo, task 19. This text match does not establish the provenance of the cropped image."
+    },
+    {
+      "id": "user-task19-crop-20261020-235741",
+      "type": "user-supplied-exam-crop-unverified-edition",
+      "fileName": "image(20261020-235741).png",
+      "reviewedAt": "2026-10-21",
+      "sourceHashSha256": "49cfaf74268208d3381e1be5baa4b49680d4ff2a63c8fe47a3c8079a01736630",
+      "questionNumber": 19,
+      "reviewedAnswer": "23",
+      "sourceNote": "User describes the group as demo and StatGrad questions. This crop does not establish a StatGrad release date, variant code or edition; no official-bank ID or publisher is inferred. Only the visible assertion text is mapped. Private image bytes are not published.",
+      "entries": [
+        {
+          "sourceId": "q19-1",
+          "text": "В прямоугольном треугольнике гипотенуза равна сумме катетов.",
+          "truth": false,
+          "cardId": "hypotenuse_equals_sum_legs",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "q19-2",
+          "text": "Если в ромбе один из углов равен 90 градусам, то этот ромб является квадратом.",
+          "truth": true,
+          "cardId": "rhombus_right_angle_square",
+          "matchType": "equivalent",
+          "note": "Угол90° — прямой угол; «является квадратом» и «— квадрат» равнозначны. Условие о ромбе и истинность сохранены."
+        },
+        {
+          "sourceId": "q19-3",
+          "text": "Расстояние от точки, лежащей на окружности, до центра окружности равно радиусу.",
+          "truth": true,
+          "cardId": "point_on_circle_distance_radius",
+          "matchType": "equivalent",
+          "note": "«Точка, лежащая на окружности» и «точка на окружности» равнозначны; «её центр» относится к той же окружности."
+        }
+      ],
+      "visibleWatermark": "math100.ru",
+      "duplicateInputsNotCounted": [
+        {
+          "fileName": "image(20261020-235839).png",
+          "sourceHashSha256": "d0e9c49e65b3a7f5cac7f7cdae9dc8338970a2a677b51296dedb89c290f6d128"
+        }
+      ]
+    },
+    {
+      "id": "user-task19-crop-20261020-235806",
+      "type": "user-supplied-exam-crop-unverified-edition",
+      "fileName": "image(20261020-235806).png",
+      "reviewedAt": "2026-10-21",
+      "sourceHashSha256": "741c8dd26abfab4b25800afd73ba3886956500c7db7c48115b91abdec6173f72",
+      "questionNumber": 19,
+      "reviewedAnswer": "1",
+      "sourceNote": "User describes the group as demo and StatGrad questions. This crop does not establish a StatGrad release date, variant code or edition; no official-bank ID or publisher is inferred. Only the visible assertion text is mapped. Private image bytes are not published.",
+      "entries": [
+        {
+          "sourceId": "q19-1",
+          "text": "В параллелограмме есть два равных угла.",
+          "truth": true,
+          "cardId": "parallelogram_has_two_equal_angles",
+          "matchType": "equivalent",
+          "note": "«В параллелограмме есть» и «у параллелограмма есть» здесь выражают одно и то же существование двух равных углов."
+        },
+        {
+          "sourceId": "q19-2",
+          "text": "Каждая из биссектрис равнобедренного треугольника является его медианой.",
+          "truth": false,
+          "cardId": "isosceles_all_bisectors_are_medians",
+          "matchType": "equivalent",
+          "note": "«Каждая из биссектрис» и «любая биссектриса» — один и тот же общий квантор. В обеих формулировках утверждение ложно для произвольного равнобедренного треугольника."
+        },
+        {
+          "sourceId": "q19-3",
+          "text": "Площадь прямоугольного треугольника равна произведению длин его катетов.",
+          "truth": false,
+          "cardId": "right_triangle_area_equals_product_legs",
+          "matchType": "equivalent",
+          "note": "Произведение катетов означает произведение их длин; отсутствующий множитель 1/2 делает обе формулировки ложными."
+        }
+      ],
+      "visibleWatermark": "math100.ru"
+    },
+    {
+      "id": "user-task19-crop-20261020-235904",
+      "type": "user-supplied-exam-crop-unverified-edition",
+      "fileName": "image(20261020-235904).png",
+      "reviewedAt": "2026-10-21",
+      "sourceHashSha256": "618eb89c4044bb8196d28949e8e7c21b7919d5ddb0cb462289a42d95515950c7",
+      "questionNumber": 19,
+      "reviewedAnswer": "13",
+      "sourceNote": "User describes the group as demo and StatGrad questions. This crop does not establish a StatGrad release date, variant code or edition; no official-bank ID or publisher is inferred. Only the visible assertion text is mapped. Private image bytes are not published.",
+      "entries": [
+        {
+          "sourceId": "q19-1",
+          "text": "Площадь треугольника меньше произведения двух его сторон.",
+          "truth": true,
+          "cardId": "triangle_area_less_than_product_two_sides",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "q19-2",
+          "text": "Средняя линия трапеции равна сумме её оснований.",
+          "truth": false,
+          "cardId": "trapezoid_midline_equals_sum_bases",
+          "matchType": "exact"
+        },
+        {
+          "sourceId": "q19-3",
+          "text": "Если два угла одного треугольника равны двум углам другого треугольника, то такие треугольники подобны.",
+          "truth": true,
+          "cardId": "prev-027",
+          "matchType": "equivalent",
+          "note": "Слово «треугольника» после «другого» опущено в карточке, но сохраняется тот же признак подобия по двум равным углам."
+        }
+      ],
+      "visibleWatermark": "math100.ru"
     }
   ],
   "counts": {
-    "uniqueCards": 233,
-    "sourceEntries": 452,
+    "uniqueCards": 234,
+    "sourceEntries": 467,
     "summerAdded": 36,
     "referenceAdded": 30,
     "summerCovered": 178,
-    "referenceCovered": 106
+    "referenceCovered": 106,
+    "officialDemoCovered": 3,
+    "userQuestionSetsCovered": 4,
+    "userQuestionAssertionsCovered": 12,
+    "officialDemoAdded": 1
   }
 }

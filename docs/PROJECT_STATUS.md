@@ -2,13 +2,25 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: outdoor context for the land identification lab
+## In progress: task19 current sources and textbook references
+
+- [Scope](tasks/TASK19_CURRENT_SOURCES.md): current FIPI access audit, supplied
+  question coverage, new owner corrections, and optional verified textbook
+  references for every assertion. Paid Claude use remains deferred.
+
+## Published: outdoor context for the land identification lab
 
 - [Scope](tasks/LAND_IDENTIFICATION_LAB.md): replace the indoor corridor example
   used by land matching with a garden/greenhouse containment discovery. Keep
   original engines and other map contexts unchanged.
 - The required live smoke check found this mismatch after the verified release
-  below. A separate bounded helper/package repair is in progress.
+  below. PR289 repaired the context and merged as
+  `6f42132355e0361f6bc54f0e4dacdc036b48b0e7`; reviewed tree
+  `dc1b312054601ab1c3651660574f0d7c7aba2bf5`, parent
+  `647141dd168284ac1a399f0fdca8e7b6c82ba72b`. Final CI passed47 Node checks,
+  126 discovery and39 retained browser cases plus122 course checks. Independent
+  visual review passed at320/360px. Pages39515691350 succeeded; all18 public
+  assets matched. Live wrong-choice recovery, reset and retained state passed.
 
 ## Published: tasks 1–5 interactive help across all eight storylines
 

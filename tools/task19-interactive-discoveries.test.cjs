@@ -21,7 +21,7 @@ const distance=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
 const near=(a,b,label)=>assert(Math.abs(a-b)<1e-7,label+': '+a+' ≈ '+b);
 
 test('every canonical statement supplies an experiment and explicit numerical measurement without grading',t=>{
- assert.equal(cards.length,233);
+ assert.equal(cards.length,234);
  for(const card of cards){
   const f=boot(t,card.id),before=f.saved(),progress=f.$('#progressText').textContent;assert.equal(typeof card.hint.model,'string',card.id);f.open();
   assert(f.$('#visualHost svg'),card.id);assert.equal(f.$('.t19-model-readout').hidden,true,card.id+': hidden until measured');assert(f.$('.t19-measure'),card.id);
