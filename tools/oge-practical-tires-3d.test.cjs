@@ -20,7 +20,7 @@ test('mesh section width reaches the actual sidewall extrema, beyond the narrowe
   near(Math.max(...tread.map(v=>v[2]))-Math.min(...tread.map(v=>v[2])),.8*B);
   const width=tire.measurement(dim,'width');near(distance(...width.points),B);near(width.points[0][0],width.points[1][0]);near(width.points[0][1],width.points[1][1]);
   width.points.forEach(endpoint=>assert.ok(rubber.some(v=>distance(v,endpoint)<1e-8),'width witness attaches to a real max-section vertex'));
-  const h=tire.measurement(dim,'side');near(distance(...h.points),dim.H);near(h.points[0][2],h.points[1][2]);near(distance(...h.line),dim.H);near(h.line[0][0],h.line[1][0]);near(h.line[0][2],h.line[1][2]);
+  const h=tire.measurement(dim,'side');near(distance(...h.points),dim.H);near(h.points[0][2],h.points[1][2]);near(distance(...h.line),dim.H);near(h.line[0][1],h.line[1][1]);near(h.line[0][2],h.line[1][2]);
   near(distance(...tire.measurement(dim,'disk').line),25.4*d);near(distance(...tire.measurement(dim,'all').line),25.4*d+2*B*p/100);
  }
 });
@@ -35,7 +35,13 @@ test('orthographic rotation preserves geometry and uses a common scale across di
  near(projectedLength(tire.measurement(dim,'side').line,tire.presets.front),dim.H*tire.frame.scale);
  const bigger=tire.dimensions({d:16});near(projectedLength(tire.measurement(bigger,'all').line,tire.presets.front)-projectedLength(tire.measurement(dim,'all').line,tire.presets.front),25.4*tire.frame.scale);
  const max=tire.dimensions({B:255,p:80,d:19});for(const view of [...Object.values(tire.presets),{yaw:-130,pitch:70},{yaw:70,pitch:-70}])for(const f of tire.buildMesh(max).faces)for(const v of f.points){const p=tire.project(v,view);assert.ok(p.every(Number.isFinite));assert.ok(p[0]>0&&p[0]<tire.frame.width&&p[1]>0&&p[1]<tire.frame.height,'largest mesh stays in frame');}
- for(const camera of [...Object.values(tire.presets),{yaw:-130,pitch:70},{yaw:70,pitch:-70}])for(const part of ['width','side','disk','all','radius']){const markup=tire.renderSvg(max,camera,part),label=markup.match(/<text x="([^"]+)" y="([^"]+)"/);assert.ok(label);assert.ok(+label[1]>=22&&+label[1]<=tire.frame.width-22&&+label[2]>=22&&+label[2]<=tire.frame.height-22,'dimension label has readable margins');}
+ for(let yaw=-180;yaw<=180;yaw+=5)for(let pitch=-70;pitch<=70;pitch+=5)for(const part of Object.keys(tire.parts))for(const endpoint of [...tire.measurement(max,part).line,...tire.measurement(max,part).points]){const [x,y]=tire.project(endpoint,{yaw,pitch});assert.ok(x>=4&&x<=tire.frame.width-4&&y>=4&&y<=tire.frame.height-4,part+' witnesses remain in the tire area at '+yaw+','+pitch);}
+ for(const camera of [...Object.values(tire.presets),{yaw:-130,pitch:70},{yaw:70,pitch:-70}])for(const chosen of ['width','side','disk','all','radius','width,side,disk','width,side,disk,all,radius']){
+  const layout=tire.drawingLayout(chosen),dom=new JSDOM('<svg>'+tire.renderSvg(max,camera,chosen)+'</svg>');try{
+   const labels=[...dom.window.document.querySelectorAll('[data-tire-callout]')];assert.equal(labels.length,tire.selectedParts(chosen).length);
+   let priorEnd=0;for(const label of labels){const box=label.querySelector('rect'),y=+box.getAttribute('y'),h=+box.getAttribute('height');assert.ok(y>=priorEnd,'callouts do not overlap');assert.ok(y+h<=layout.height,'callouts remain inside frame');priorEnd=y+h;assert.match(label.textContent,/мм/);assert.equal(label.querySelectorAll('path').length,2,'each full name stays attached by a leader');}
+  }finally{dom.window.close();}
+ }
 });
 
 class Local extends ResourceLoader{fetch(url){const u=new URL(url);if(u.origin!=='https://mathexam.space')return null;const f=path.join(root,u.pathname);return fs.existsSync(f)?Promise.resolve(fs.readFileSync(f)):null;}}
@@ -49,7 +55,9 @@ test('real tire help rotates, changes dimensions, explains edge-on width and pre
   const section=doc.querySelector('#section-3'),answer=section.querySelector('#t2-H input');answer.value='123,4';const before=storage(dom.window),toggle=section.querySelector('.pd-toggle');toggle.click();
   const panel=section.querySelector('.pd-panel');panel.querySelector('details').open=true;const stage=panel.querySelector('.t3d-stage'),part=panel.querySelector('[data-pd-key=part]');
   assert.equal(stage.dataset.yaw,'-38');assert.equal(stage.dataset.pitch,'-12');assert.equal(part.value,'width');assert.ok(stage.querySelectorAll('polygon').length>500);
-  const original=stage.querySelector('svg').innerHTML;set(panel.querySelector('[data-pd-key=width]'),255);assert.notEqual(stage.querySelector('svg').innerHTML,original);assert.match(panel.querySelector('.pd-reading').textContent,/B = 255 мм/);
+  const original=stage.querySelector('svg').innerHTML;set(panel.querySelector('[data-pd-key=width]'),255);assert.notEqual(stage.querySelector('svg').innerHTML,original);assert.match(panel.querySelector('.pd-reading').textContent,/B = 255 мм/);assert.equal(panel.querySelector('select[aria-label="Показать размер"]'),null);
+  for(const key of ['side','disk'])panel.querySelector('[data-tire-part='+key+']').click();assert.equal(part.value,'width,side,disk');assert.equal(stage.querySelectorAll('[data-tire-dimension]').length,3);assert.match(stage.textContent,/Ширина шины/);assert.match(stage.textContent,/Высота боковины/);assert.match(stage.textContent,/Диаметр диска/);
+  set(part,'width');
   panel.querySelector('[data-tire-view=front]').click();assert.match(panel.querySelector('.t3d-view-note').textContent,/ширина скрыта/);
   panel.querySelector('[data-tire-view=tread]').click();assert.equal(stage.dataset.yaw,'90');
   stage.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'ArrowLeft',bubbles:true,cancelable:true}));assert.equal(stage.dataset.yaw,'80');
@@ -63,8 +71,8 @@ test('real tire help rotates, changes dimensions, explains edge-on width and pre
 test('rebuilding a helper restores rotation as well as its dimensions and selected measurement',async()=>{
  const c=await open(),{doc,dom}=c;try{
   const holder=doc.createElement('div'),prompt=doc.createElement('p');prompt.textContent='Проверка состояния модели';holder.append(prompt);doc.body.append(holder);const api=dom.window.PracticalDiscovery;api.attach(prompt,'tires','width-state',prompt.textContent);
-  let panel=holder.querySelector('.pd-panel');holder.querySelector('.pd-toggle').click();panel.querySelector('details').open=true;set(panel.querySelector('[data-pd-key=width]'),245);set(panel.querySelector('[data-pd-key=part]'),'disk');set(panel.querySelector('[data-pd-key=tire-yaw]'),53);set(panel.querySelector('[data-pd-key=tire-pitch]'),24);
-  holder.querySelector('.pm-context-hint').remove();delete prompt.dataset.pdAttached;api.attach(prompt,'tires','width-state',prompt.textContent);panel=holder.querySelector('.pd-panel');assert.equal(panel.hidden,false);assert.equal(panel.querySelector('[data-pd-key=width]').value,'245');assert.equal(panel.querySelector('[data-pd-key=part]').value,'disk');assert.equal(panel.querySelector('.t3d-stage').dataset.yaw,'53');assert.equal(panel.querySelector('.t3d-stage').dataset.pitch,'24');assert.deepEqual(c.errors,[]);
+  let panel=holder.querySelector('.pd-panel');holder.querySelector('.pd-toggle').click();panel.querySelector('details').open=true;set(panel.querySelector('[data-pd-key=width]'),245);set(panel.querySelector('[data-pd-key=part]'),'width,side,disk');set(panel.querySelector('[data-pd-key=tire-yaw]'),53);set(panel.querySelector('[data-pd-key=tire-pitch]'),24);
+  holder.querySelector('.pm-context-hint').remove();delete prompt.dataset.pdAttached;api.attach(prompt,'tires','width-state',prompt.textContent);panel=holder.querySelector('.pd-panel');assert.equal(panel.hidden,false);assert.equal(panel.querySelector('[data-pd-key=width]').value,'245');assert.equal(panel.querySelector('[data-pd-key=part]').value,'width,side,disk');assert.deepEqual([...panel.querySelectorAll('[data-tire-part]:checked')].map(e=>e.value),['width','side','disk']);assert.equal(panel.querySelector('.t3d-stage').dataset.yaw,'53');assert.equal(panel.querySelector('.t3d-stage').dataset.pitch,'24');assert.deepEqual(c.errors,[]);
  }finally{dom.window.close();}
 });
 
@@ -72,6 +80,7 @@ test('downloadable practical package contains the exact 3D helper and relative t
  const {execFileSync}=require('node:child_process'),zip=path.join(root,'downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-package.zip');
  const member=name=>execFileSync('unzip',['-p',zip,name],{encoding:'utf8',maxBuffer:4*1024*1024});
  assert.equal(member('tire-3d.js'),fs.readFileSync(path.join(root,'trainers/oge-1-5-trainers/tire-3d.js'),'utf8'));
+ assert.equal(member('tire-3d-labels.css'),fs.readFileSync(path.join(root,'trainers/oge-1-5-trainers/tire-3d-labels.css'),'utf8'));
  assert.equal(member('practical-discovery.js'),fs.readFileSync(path.join(root,'trainers/oge-1-5-trainers/practical-discovery.js'),'utf8'));
  assert.equal(member('practical-minimal.css'),fs.readFileSync(path.join(root,'trainers/oge-1-5-trainers/practical-minimal.css'),'utf8'));
  assert.match(member('practice-1-5-tires.html'),/<script src="tire-3d\.js"><\/script>/);

@@ -48,6 +48,10 @@ jobs:
         env:
           TIRES_3D_ARTIFACTS: artifacts/oge-practical-discovery/tires-3d
         run: node tools/oge-practical-tires-3d.browser.cjs
+      - name: Tire learning order, visible givens and shared calculations
+        env:
+          TIRES_FEEDBACK_ARTIFACTS: artifacts/oge-practical-discovery/tires-feedback
+        run: node tools/oge-practical-tires-feedback.browser.cjs
       - name: Save coverage and screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

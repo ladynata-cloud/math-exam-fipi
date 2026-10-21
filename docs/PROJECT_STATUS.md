@@ -2,15 +2,27 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: rotating 3D tire dimensions
+## In progress: tire labels, visible tables and vertical learning order
+
+- [Scope](tasks/TIRES_CLEAR_VERTICAL_FLOW.md): owner feedback on eleven
+  screenshots. Attach readable dimension labels to the wheel, use nearby
+  checkboxes and sidewall terminology, enlarge text, restore task1's essential
+  compatibility table and place shared calculations after task1.
+
+## Published: rotating 3D tire dimensions
 
 - [Scope](tasks/TIRES_3D_DEMO.md): replace the misleading front-only wheel help
   with a rotating model that separates axial width B from radial height H and
   rim diameter. Original engines, learner drafts and grading remain protected.
-- Independent geometry and code review passed; all53 practical Node checks
-  passed. Actual cloud pointer/touch/mobile/offline checks are the next gate.
+- PR291 merged as606f629e40c9859a25551b735e9fc981f6345836, sole parent
+  9f9638ab1a8728eb72e190825b665bc34cf43abe; reviewed tree
+  128c28f42fb73a76b6b7331b2e347f8add216769. All53 Node,126 discovery,
+  39 retained browser and13 tire interaction/offline cases passed. Independent
+  code and final mobile/desktop screenshot review passed. Pages39522871613
+  succeeded; all6 public files matched. Live rotation, dimension changes and
+  retention after help collapse were verified.
 
-## Merged: task19 current sources and textbook references
+## Published: task19 current sources and textbook references
 
 - [Scope](tasks/TASK19_CURRENT_SOURCES.md): current FIPI access audit, supplied
   question coverage, new owner corrections, and optional verified textbook
@@ -22,7 +34,9 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
   and final320px visual reviews passed. Both author lines cover all234 cards;
   source coverage is467 entries. The current FIPI bank remained unavailable
   (503/timeouts); complete-bank coverage is explicitly not claimed.
-- Exact-merge Pages run39522172914 and public hashes are being verified.
+- Exact-merge Pages run39522172914 succeeded. All17 public files matched their
+  expected sizes and SHA256. Live source links, readable quotes and retained
+  model state were verified. The subsequent tire release preserved the data.
 
 ## Published: outdoor context for the land identification lab
 

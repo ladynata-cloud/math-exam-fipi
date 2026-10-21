@@ -1,0 +1,19 @@
+/* Readable dimension choices live next to the rotating model. */
+.pm-minimal .t3d-dimensions{margin:12px 0 18px;padding:12px;border:1px solid #b6cebf;border-radius:12px;min-width:0;display:flex;flex-wrap:wrap;gap:10px}
+.pm-minimal .t3d-dimensions legend{font-size:20px;font-weight:700;line-height:1.5;padding:0 6px}
+.pm-minimal .t3d-dimension-choice{display:flex;align-items:center;gap:10px;flex:1 1 210px;min-height:48px;padding:10px;border:1px solid #d2dfd7;border-radius:8px;font-size:20px;line-height:1.45;cursor:pointer;color:var(--t3d-dimension-color);background:white}
+.pm-minimal .t3d-dimension-choice:has(input:checked){border-color:var(--t3d-dimension-color);background:#f4faf6;font-weight:600}
+.pm-minimal .t3d-dimension-choice input{appearance:auto;width:24px;height:24px;flex:0 0 24px;margin:0;accent-color:var(--t3d-dimension-color);cursor:pointer}
+.pm-minimal .pd-picture.t3d-stage{max-width:520px;margin:0 auto;width:100%;border:1px solid #dce8e0;box-sizing:border-box}
+.pm-minimal .t3d-stage svg{display:block;width:100%;height:auto;max-width:100%;max-height:none}
+.pm-minimal .t3d-stage.pd-picture-zoomed{max-height:650px;max-width:100%;overflow:auto}
+.pm-minimal .t3d-stage.pd-picture-zoomed svg{width:640px;max-width:none}
+.pm-minimal .t3d-marking{font-size:28px;line-height:1.5}
+.pm-minimal .t3d-controls{gap:20px;margin-top:18px}
+.pm-minimal .t3d-controls .pd-control{font-size:20px;line-height:1.6;gap:8px}
+.pm-minimal .t3d-controls output{font-size:22px;font-weight:700}
+.pm-minimal .t3d-controls input[type=range]{min-height:36px}
+.pm-minimal .t3d-reading{font-size:20px;line-height:1.6;margin-top:18px;font-weight:500}
+.pm-minimal .t3d-view-note,.pm-minimal .t3d-comparison{font-size:18px;line-height:1.7}
+.pm-minimal .t3d-views .pd-action{font-size:18px;line-height:1.5;min-height:48px}
+@media(max-width:600px){.pm-minimal .t3d-dimensions{padding:8px;gap:8px}.pm-minimal .t3d-dimension-choice{font-size:18px;padding:8px;flex-basis:100%}.pm-minimal .pd-picture.t3d-stage{max-width:100%;margin:0}.pm-minimal .t3d-controls .pd-control{font-size:18px}.pm-minimal .t3d-reading{font-size:18px}.pm-minimal .t3d-views .pd-action{font-size:18px}}
