@@ -7,11 +7,19 @@ const {pathToFileURL}=require('node:url');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..');
 const artifacts=path.resolve(process.env.TASK11_BROWSER_ARTIFACTS||path.join(root,'artifacts/task11-minimal'));
-const file=path.join(root,'trainers/oge-task11-graphs-trainer.html');
 const KEY='mathExamCourseProgress.v1';
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.png':'image/png','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.pdf':'application/pdf'};
+function serveRepositoryFile(req,res){
+ let pathname;try{pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{res.writeHead(400).end();return;}
+ if(pathname==='/favicon.ico'){res.writeHead(204).end();return;}
+ const file=path.resolve(root,'.'+pathname);
+ if(!file.startsWith(root+path.sep)){res.writeHead(404).end();return;}
+ let body;try{if(!fs.statSync(file).isFile())throw new Error('Not a file');body=fs.readFileSync(file);}catch{res.writeHead(404).end();return;}
+ res.writeHead(200,{'Content-Type':mime[path.extname(file).toLowerCase()]||'application/octet-stream','Content-Length':body.length});res.end(body);
+}
 async function main(){
  fs.mkdirSync(artifacts,{recursive:true});
- const server=http.createServer((req,res)=>{if(req.url==='/favicon.ico'){res.writeHead(204).end();return;}res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'});res.end(fs.readFileSync(file));});
+ const server=http.createServer(serveRepositoryFile);
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  let browser;const errors=[];
  try{

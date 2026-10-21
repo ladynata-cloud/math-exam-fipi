@@ -19,11 +19,18 @@ function label(x,y,text,anchor='middle'){return `<text x="${x}" y="${y}" text-an
 function poly(points,cls='ocg-shape'){return `<polygon points="${points.map(p=>p.join(',')).join(' ')}" class="${cls}"/>`;}
 function rad(deg){return deg*Math.PI/180;}
 function circ(cx,cy,r,a){return[cx+r*Math.cos(rad(a)),cy-r*Math.sin(rad(a))];}
-function frame(host,title){const wrap=el('div',null,'ocg-figure-scroll');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label',title+'; рисунок можно прокручивать');const figure=el('div',null,'ocg-figure');wrap.append(figure);host.append(wrap);return svg=>{figure.innerHTML=`<svg viewBox="0 0 440 290" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title>${svg}</svg>`;};}
+function figureNavigation(wrap,title){
+ wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label',title+'; рисунок можно прокручивать');
+ const nav=el('div',null,'ocg-figure-nav');nav.append(el('p','Если рисунок не помещается, прокрути его пальцем или кнопками. Стрелки клавиатуры тоже работают.','ocg-scroll-note'));
+ const left=button('← Влево',()=>{wrap.scrollLeft-=Math.max(160,wrap.clientWidth*.8);}),right=button('Вправо →',()=>{wrap.scrollLeft+=Math.max(160,wrap.clientWidth*.8);});
+ left.dataset.geometryPan='left';right.dataset.geometryPan='right';nav.append(left,right);wrap.before(nav);
+ return nav;
+}
+function frame(host,title){const wrap=el('div',null,'ocg-figure-scroll');const figure=el('div',null,'ocg-figure');wrap.append(figure);host.append(wrap);figureNavigation(wrap,title);return svg=>{figure.innerHTML=`<svg viewBox="0 0 440 290" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title>${svg}</svg>`;};}
 function controls(host){const box=el('div',null,'ocg-controls');host.append(box);return box;}
 function watch(inputs,run){inputs.forEach(i=>i.addEventListener('input',run));run();}
 function model(host,kind,shape){
- const captions={adjacent:'Меняй внутренний угол. Что происходит с соседним внешним углом?',tangentChord:'Меняй дугу AB. Сравни её с углом между касательной в A и хордой AB.',cyclic:'Двигай вершину D по окружности. Сравни противоположные углы A и C.',sine:'Меняй радиус и угол. Сравни длину хорды BC с синусом вписанного угла A.',isosceles:'Меняй угол при основании. Сравни два угла при основании и угол при вершине.',trapezoidAngles:'Меняй нижний угол равнобедренной трапеции. Сравни углы при каждом основании.',circleAngle:'Двигай точку C по большой дуге AB. Затем меняй центральный угол: сравни два угла над одной и той же малой дугой AB.',tangent:'Отодвигай точку P от окружности. Посмотри, какой угол между радиусом OT и касательной PT сохраняется.',chord:'Отодвигай хорду от центра. Сравни расстояние OM и длину хорды AB.',incircle:'Меняй радиус. Сравни его с расстоянием между двумя параллельными касательными.',regular:'Выбери число сторон. Сравни радиус описанной окружности с расстоянием от центра до стороны.',power:'Передвигай точку P внутри окружности. Сравни произведения отрезков двух хорд.',area:'Меняй наклон, сохраняя основание и высоту. Изменится ли площадь?',diagonal:'Меняй фигуру. Следи за длинами диагоналей и точкой их пересечения.',angles:'Меняй угол. Сравни соседние и противоположные углы.',gridLength:'Меняй горизонтальный и вертикальный шаги. Как найти прямое расстояние между концами?',gridArea:'Сначала выбери основание и высоту. Нажми «Достроить прямоугольник» и сравни площади.',midline:'Меняй размеры. Нажми «Показать среднюю линию»: какие стороны она соединяет?',ratio:'Меняй коэффициент подобия. Сравни, во сколько раз меняются длины и площади.'};
+ const captions={adjacent:'Меняй внутренний угол. Что происходит с соседним внешним углом?',tangentChord:'Меняй дугу AB. Сравни её с углом между касательной в A и хордой AB.',cyclic:'Двигай вершину D по окружности. Сравни противоположные углы A и C.',sine:'Меняй радиус и угол. Сравни длину хорды BC с синусом вписанного угла A.',isosceles:'Меняй угол при основании. Сравни два угла при основании и угол при вершине.',trapezoidAngles:'Меняй нижний угол равнобедренной трапеции. Сравни углы при каждом основании.',circleAngle:'Двигай точку C по большой дуге AB. Затем меняй центральный угол: сравни два угла над одной и той же малой дугой AB.',tangent:'Отодвигай точку P от окружности. Посмотри, какой угол между радиусом OT и касательной PT сохраняется.',chord:'Отодвигай хорду от центра. Сравни расстояние OM и длину хорды AB.',incircle:'Меняй радиус. Сравни его с расстоянием между двумя параллельными касательными.',regular:'Выбери число сторон. Сравни радиус описанной окружности с расстоянием от центра до стороны.',power:'Передвигай точку P внутри окружности. Сравни произведения отрезков двух хорд.',area:'Меняй наклон, сохраняя основание и высоту. Изменится ли площадь?',square:'Меняй сторону квадрата. Сравни сторону, периметр и площадь: как пройти от периметра к площади?',rhombArea:'Меняй диагонали ромба. Дострой прямоугольник и сравни площади: какую его часть занимает ромб?',rhombHeight:'Меняй сторону и угол ромба. Сравни сторону с высотой; затем найди площадь по основанию и высоте.',diagonal:'Меняй фигуру. Следи за длинами диагоналей и точкой их пересечения.',angles:'Меняй угол. Сравни соседние и противоположные углы.',gridLength:'Меняй горизонтальный и вертикальный шаги. Как найти прямое расстояние между концами?',gridArea:'Сначала выбери основание и высоту. Нажми «Достроить прямоугольник» и сравни площади.',midline:'Меняй размеры. Нажми «Показать среднюю линию»: какие стороны она соединяет?',ratio:'Меняй коэффициент подобия. Сравни, во сколько раз меняются длины и площади.'};
  host.dataset.geometryModel=kind;host.append(el('p',captions[kind],'ocg-instruction'),el('p','Это отдельная учебная модель. Её числа не являются ответом к твоей задаче.','ocg-note'));
  const ctl=controls(host),draw=frame(host,captions[kind]),out=el('output',null,'ocg-reading');out.setAttribute('aria-live','polite');host.append(out);
  if(kind==='adjacent'){
@@ -66,6 +73,25 @@ function model(host,kind,shape){
   const a=range(ctl,'base','Нижнее основание',4,9,7),h=range(ctl,'height','Высота',2,5,4),shift=range(ctl,'shift','Сдвиг верхней стороны',-2,2,1,.5);
   const top=shape==='trap'?range(ctl,'top','Верхнее основание',2,6,4):null;
   watch([a,h,shift,...top?[top]:[]],()=>{const A=+a.value,H=+h.value,S=+shift.value,B=top?+top.value:A,x=65,y=235,k=25,verts=[[x,y],[x+A*k,y],[x+(S+B)*k,y-H*k],[x+S*k,y-H*k]];draw(poly(verts)+line(x+S*k,y-H*k,x+S*k,y,'ocg-dashed')+label(x+A*k/2,y+26,`a=${A}`)+label(x+S*k+18,y-H*k/2,`h=${H}`)+(top?label(x+(S+B/2)*k,y-H*k-10,`b=${B}`):''));out.textContent=top?`S = (a + b) · h : 2 = ${fmt((A+B)*H/2)}. Сдвиг не меняет оснований и высоты.`:`S = a · h = ${A*H}. Наклонная сторона может меняться; высота перпендикулярна основанию.`;});
+ }else if(kind==='square'){
+  const side=range(ctl,'side','Сторона квадрата a',2,8,5);
+  watch([side],()=>{const a=+side.value,k=25,l=220-a*k/2,t=145-a*k/2,vertices=[[l,t],[l+a*k,t],[l+a*k,t+a*k],[l,t+a*k]];
+   draw(poly(vertices)+line(...vertices[0],...vertices[2],'ocg-dashed')+vertices.map((p,i)=>point(...p,'ABCD'[i],i===0||i===3?-24:10,i>1?22:-8)).join('')+label(220,t-12,`a = ${a}`)+label(l+a*k+10,148,`a = ${a}`,'start')+label(220,279,`P = ${4*a}; S = ${a*a}`));
+   out.textContent=`Все четыре стороны равны ${a}. P = 4a = ${4*a}, поэтому a = P : 4 = ${a}. Затем S = a² = ${a*a}. Диагональ d = a√2 ≈ ${fmt(a*Math.SQRT2)}. При движении ползунка фигура остаётся квадратом.`;
+  });
+ }else if(kind==='rhombArea'){
+  const a=range(ctl,'diagonal1','Горизонтальная диагональ d₁',4,12,8),b=range(ctl,'diagonal2','Вертикальная диагональ d₂',4,8,6);let shown=false;
+  const toggle=button('Достроить прямоугольник',()=>{shown=!shown;toggle.setAttribute('aria-pressed',String(shown));toggle.textContent=shown?'Убрать достроение':'Достроить прямоугольник';run();});toggle.setAttribute('aria-pressed','false');ctl.append(toggle);
+  const run=()=>{const d1=+a.value,d2=+b.value,A=d1*12.5,B=d2*12.5,vertices=[[220-A,145],[220,145-B],[220+A,145],[220,145+B]];
+   draw((shown?poly([[220-A,145-B],[220+A,145-B],[220+A,145+B],[220-A,145+B]],'ocg-complement'):'')+poly(vertices)+line(...vertices[0],...vertices[2],'ocg-blue')+line(...vertices[1],...vertices[3],'ocg-dashed')+label(220,145+B+28,`d₁ = ${d1}`)+label(240,120,`d₂ = ${d2}`,'start'));
+   out.textContent=`Диагонали ромба: d₁ = ${d1}, d₂ = ${d2}. Прямоугольник со сторонами d₁ и d₂ имеет площадь ${d1*d2}. Ромб занимает его половину: S = d₁ · d₂ : 2 = ${d1*d2/2}. Четыре угловых треугольника вместе равны ромбу по площади.`;
+  };watch([a,b],run);
+ }else if(kind==='rhombHeight'){
+  const side=range(ctl,'side','Сторона ромба a',3,7,5),angle=range(ctl,'angle','Острый угол ромба α, °',30,80,60,5);
+  watch([side,angle],()=>{const a=+side.value,A=+angle.value,k=22,h=a*Math.sin(rad(A)),dx=a*Math.cos(rad(A))*k,x=45,y=235,w=a*k,vertices=[[x,y],[x+w,y],[x+w+dx,y-h*k],[x+dx,y-h*k]],cx=x+(w+dx)/2,cy=y-h*k/2;
+   draw(poly(vertices)+line(x+dx,y-h*k,x+dx,y,'ocg-dashed')+line(cx,cy,cx,y,'ocg-blue')+point(cx,cy,'O',10,-8)+label(x+w/2,y+27,`a = ${a}`)+label(x+dx-10,y-h*k/2,`h`,'end')+label(cx+13,y-h*k/4,'ρ','start')+label(x+32,y-12,`${A}°`));
+   out.textContent=`P = 4a = ${4*a}; a = P : 4 = ${a}. Высота h = a · sin α ≈ ${fmt(h)}. Площадь S = a · h ≈ ${fmt(a*h)}. Расстояние от центра O до стороны ρ = h : 2 ≈ ${fmt(h/2)}. Для тупого угла ${180-A}° синус такой же, как для ${A}°.`;
+  });
  }else if(kind==='diagonal'){
   const a=range(ctl,'width',shape==='rect'||shape==='sq'?'Половина ширины прямоугольника':'Половина горизонтальной диагонали ромба',2,6,4),b=range(ctl,'height',shape==='rect'||shape==='sq'?'Половина высоты прямоугольника':'Половина вертикальной диагонали ромба',2,4,3);
   watch([a,b],()=>{const A=+a.value*25,B=+b.value*25;let vertices;
@@ -95,7 +121,7 @@ function model(host,kind,shape){
  return host;
 }
 const refs16={insc:['circleAngle',['inscribed_angles'],[]],radiso:['circleAngle',['isosceles','circle_definition'],[]],cyclq:['cyclic',['inscribed_angles','circumcircle'],[]],reg:['regular',['regular_polygon'],['equilateral-triangle']],sinr:['sine',['circumcircle','trigonometry'],['sine-cosine']],chord:['chord',['equal_chords','pythagoras'],['pythagoras']],spr:['incircle',['incircle','triangle_area'],['triangle-area']],tangq:['tangent',['tangent','incircle'],[]],tang:['tangent',['tangent'],[]],power:['power',['triangle_similarity','inscribed_angles'],[]]};
-const refs17={sqf:['diagonal',['square','pythagoras'],['pythagoras']],rectd:['diagonal',['rectangle','pythagoras'],['pythagoras']],rhombprop:['diagonal',['rhombus'],[]],parprop:['angles',['parallelogram'],[]],parallel:['angles',['parallel_angles'],[]],anglesum:['angles',['polygon_angles'],['polygon-angles']],isotri:['isosceles',['isosceles'],[]],isotrap:['trapezoidAngles',['isosceles_trapezoid'],[]],simtri:['ratio',['triangle_similarity'],[]],spar:['area',['parallelogram_area'],['parallelogram-area']],srhomb:['diagonal',['rhombus_area'],['rhombus-area']],strap:['area',['trapezoid_area'],['trapezoid-area']]};
+const refs17={sqf:['square',['square','pythagoras'],['pythagoras']],rectd:['diagonal',['rectangle','pythagoras'],['pythagoras']],rhombprop:['diagonal',['rhombus'],[]],parprop:['angles',['parallelogram'],[]],parallel:['angles',['parallel_angles'],[]],anglesum:['angles',['polygon_angles'],['polygon-angles']],isotri:['isosceles',['isosceles'],[]],isotrap:['trapezoidAngles',['isosceles_trapezoid'],[]],simtri:['ratio',['triangle_similarity'],[]],spar:['area',['parallelogram_area'],['parallelogram-area']],srhomb:['diagonal',['rhombus_area'],['rhombus-area']],strap:['area',['trapezoid_area'],['trapezoid-area']]};
 const refs18={pyth:['gridLength',['pythagoras'],['pythagoras']],midtri:['midline',['triangle_midline'],['midlines']],midtrap:['midline',['trapezoid_midline'],['midlines']],stri:['gridArea',['triangle_area'],['triangle-area']],spar:['area',['parallelogram_area'],['parallelogram-area']],srhomb:['diagonal',['rhombus_area'],['rhombus-area']],strap:['area',['trapezoid_area'],['trapezoid-area']],tan:['gridLength',['trigonometry'],['pythagoras','trig-values']],sim:['ratio',['triangle_similarity'],[]],circ:['ratio',['circle_length_area','similarity_area'],['circle']],cells:['gridArea',['equal_area','triangle_area'],['triangle-area']]};
 function current(){
  if(page===16&&typeof trTask!=='undefined'&&trTask)return{key:trTask.k,text:trTask.text,law:trTask.sub.law,ref:trTask.sub.ref,shape:'',task:trTask};
@@ -103,7 +129,7 @@ function current(){
  if(page===18&&typeof TR!=='undefined'&&TR.task)return{key:TR.task.sub,text:TR.task.text,law:typeof REF!=='undefined'&&REF[TR.task.ref]?REF[TR.task.ref].t:'',ref:TR.task.ref,shape:TR.task.ref==='midtrap'||TR.task.ref==='strap'?'trap':'',task:TR.task};
  return null;
 }
-function config(info){if(page===16&&info.key==='tanChord')return ['tangentChord',['tangent','inscribed_angles'],[]];return (page===16?refs16:page===17?refs17:refs18)[info.ref]||['gridLength',['pythagoras'],['pythagoras']];}
+function config(info){if(page===16&&info.key==='tanChord')return ['tangentChord',['tangent','inscribed_angles'],[]];if(info.ref==='srhomb'&&((page===17&&info.key==='rhombAreaDiag')||(page===18&&info.key==='areaRhomb')))return ['rhombArea',['rhombus_area'],['rhombus-area']];if(page===17&&['rhombHeight','rhombAreaPerim','rhombAreaDist'].includes(info.key))return ['rhombHeight',['rhombus_area','trigonometry'],['rhombus-area','trig-values']];return (page===16?refs16:page===17?refs17:refs18)[info.ref]||['gridLength',['pythagoras'],['pythagoras']];}
 function answerInstruction(info){
  const d=doc.createElement('div');d.innerHTML=info.text;const text=d.textContent;
  if(info.task.ansFmt==='concat')return 'Найди длины и запиши их подряд в порядке, который указан в условии.';
@@ -134,9 +160,9 @@ function enhance(){
  const update=()=>toggle.textContent=panel.hidden?'Хочешь подсказку?':'Убрать подсказку';toggle.addEventListener('click',update);update();
  // Same-page references must not replace the task or discard its typed answer.
  const main=q('#main');if(main&&!main.dataset.geometryReferences){main.dataset.geometryReferences='1';main.addEventListener('click',event=>{const link=event.target.closest('.refcall,[data-act="ref"],#toRef2,#toSheet2');if(!link||!q('#courseHintPanel'))return;event.preventDefault();event.stopImmediatePropagation();const live=q('#courseHintPanel');if(live.hidden)q('#courseHintToggle').click();const box=q('.ocg-reference-box',live);if(box){all('details',box).forEach(d=>d.open=true);box.scrollIntoView?.({block:'nearest'});q('summary',box)?.focus();}},true);}
- for(const figure of all('#main .diagram,#main .fig,#main .figwrap')){if(figure.closest('#courseHintPanel'))continue;figure.classList.add('ocg-primary-figure');figure.tabIndex=0;figure.setAttribute('role','region');figure.setAttribute('aria-label','Чертёж к условию; можно прокручивать');
+ for(const figure of all('#main .diagram,#main .fig,#main .figwrap')){if(figure.closest('#courseHintPanel'))continue;figure.classList.add('ocg-primary-figure');
   const svg=q('svg',figure);if(svg){const vb=(svg.getAttribute('viewBox')||'0 0 440 290').split(/\s+/).map(Number),fonts=all('text',svg).map(t=>+t.getAttribute('font-size')).filter(n=>n>0),smallest=fonts.length?Math.min(...fonts):18;svg.style.width=Math.max(440,vb[2]*Math.max(1,18/smallest))+'px';svg.style.maxWidth='none';}
-  figure.after(el('p','Если чертёж не помещается целиком, прокрути его вправо и влево.','ocg-scroll-note'));
+  figureNavigation(figure,'Чертёж к условию');
  }
  doc.documentElement.dataset.ogeGeometry='ready';
 }
@@ -145,7 +171,7 @@ function lesson15(){
  doc.body.classList.add('ocg-page');
  // The given diagram is part of the task. The explanation stays in the help.
  const originalCaption=q('figcaption',figure);if(originalCaption)q('.hint-body',hint).prepend(originalCaption);
- const relation=q('.fig-sum',figure);if(relation)relation.remove();hint.before(figure);figure.classList.add('ocg-primary-figure');figure.tabIndex=0;
+ const relation=q('.fig-sum',figure);if(relation)relation.remove();hint.before(figure);figure.classList.add('ocg-primary-figure');figureNavigation(figure,'Чертёж к условию');
  const form=el('div',null,'ocg-lesson-answer'),lab=el('label','Чему равен внешний угол при вершине C? Запиши число градусов без значка °.','ocg-answer-label'),input=el('input'),fb=el('p',null,'ocg-feedback');input.id='ocg15-answer';input.inputMode='decimal';input.autocomplete='off';lab.htmlFor=input.id;fb.setAttribute('role','status');
  const check=button('Проверить',()=>{const value=input.value.trim().replace(',','.');if(!/^\d+(?:\.\d+)?$/.test(value)){fb.textContent='Запиши число градусов, например 25.';return;}fb.textContent=+value===38?'Верно. Внешний угол равен 38°.':'Пока не совпало. Посмотри, какие два угла вместе образуют развёрнутый угол.';});input.addEventListener('keydown',e=>{if(e.key==='Enter')check.click();});form.append(lab,input,check,fb);hint.before(form);preserveDraft(input,'15|external142');
  const explore=details('Проверить на подвижной модели?');model(explore,'adjacent');q('.hint-body',hint).prepend(explore);

@@ -148,6 +148,7 @@
       let help = key === '1'
         ? 'Начни со входа: он ведёт в коридор. Сравни расположение остальных помещений с описанием над планом. Записывай цифры в порядке строк таблицы.'
         : VIEWS[key].hint();
+      help = help.replace(/\s*— подсветил(?: их)?/g, '');
       // Two native appliance hints schedule table highlighting. It applies only
       // to the hidden native surface; the persistent exam table remains neutral.
       const solution = VIEWS[key].solve();
@@ -242,8 +243,30 @@
       // The old decorative paving encoded neither the stated 27 tiles nor
       // the separately specified 2×5 platform. Do not present it as measured data.
       list('rect', svg).filter(rect => rect.getAttribute('fill') === '#dbe2ea').forEach(rect => rect.remove());
+      // The original grid was painted below nearly opaque buildings. Redraw
+      // its measured 28 px cells above the fills, then restore object outlines.
+      const shapes = list('rect,polygon', svg).filter(shape => ['var(--build)', '#dcfce7', '#99f6e4'].includes(shape.getAttribute('fill')));
+      shapes.forEach(shape => shape.setAttribute('fill-opacity', '0.45'));
+      const grid = svgElement('g', { 'data-pv-countable-grid': '1', 'aria-hidden': 'true' });
+      for (let x = 0; x <= 15; x++) grid.append(svgElement('line', { x1: 14 + x * 28, y1: 14, x2: 14 + x * 28, y2: 294, stroke: '#95aa9e', 'stroke-width': '1.1' }));
+      for (let y = 0; y <= 10; y++) grid.append(svgElement('line', { x1: 14, y1: 14 + y * 28, x2: 434, y2: 14 + y * 28, stroke: '#95aa9e', 'stroke-width': '1.1' }));
+      shapes.forEach(shape => {
+        const outline = shape.cloneNode(false);
+        outline.setAttribute('fill', 'none'); outline.removeAttribute('fill-opacity');
+        outline.setAttribute('stroke-width', '2'); grid.append(outline);
+      });
+      svg.insertBefore(grid, query('circle[r="11"]', svg));
+      // Open the gate AFTER the boundary stroke, otherwise the last boundary
+      // rectangle closes the entrance again. Two short leaves show it open.
+      list('line', svg).filter(line => line.getAttribute('stroke') === '#eefaf1').forEach(line => line.remove());
+      const gate = svgElement('g', { 'data-pv-plot-gate': 'open', 'aria-label': 'Открытые ворота на правой границе участка' });
+      gate.append(svgElement('line', { x1: 434, y1: 70, x2: 434, y2: 154, stroke: '#eefaf1', 'stroke-width': '6' }));
+      gate.append(svgElement('path', { d: 'M434 70L414 84M434 154L414 140', fill: 'none', stroke: '#2f4f38', 'stroke-width': '2.5' }));
+      svg.append(gate);
       list('text', svg).forEach(text => {
-        text.setAttribute('font-size', /^[1-7]$/.test(text.textContent) ? '22' : '18');
+        // A 1 px legacy SVG border slightly shrinks its drawing area. Keep a
+        // real margin above the 18 px rendered-label minimum on narrow screens.
+        text.setAttribute('font-size', /^[1-7]$/.test(text.textContent) ? '22' : '20');
         text.setAttribute('font-weight', '700');
       });
       list('circle', svg).filter(circle => circle.getAttribute('r') === '11').forEach(circle => circle.setAttribute('r', '14'));
@@ -274,7 +297,14 @@
     }
     function card(record) {
       const conditionNode = fromHTML(record.questionHTML);
-      if (record.type === 'tiles' && /площадка/.test(conditionNode.textContent)) conditionNode.append(platformInset());
+      if (record.type === 'tiles' && /площадка/.test(conditionNode.textContent)) {
+        // The native bank's 2×5 platform cannot fit its three-cell gap between
+        // garage and shed. Correct only that contradictory location claim;
+        // preserve every given dimension, packaging value and native answer.
+        conditionNode.innerHTML = conditionNode.innerHTML.replace('Между гаражом и сараем — площадка', 'На участке предусмотрена площадка размером');
+        conditionNode.dataset.pvConditionCorrection = 'platform-location';
+        conditionNode.append(make('p', 'Расположение этой площадки на общем плане не задано. Её размеры показаны на отдельной схеме.'), platformInset());
+      }
       const labels = { match: 'Запиши четыре цифры подряд в порядке столбцов таблицы.', geom: 'Запиши найденную величину', tiles: 'Сколько целых упаковок понадобилось?', percent: 'Запиши ответ в процентах.', econ: /часов/.test(conditionNode.textContent) ? 'Через сколько часов окупится разница расходов?' : 'Запиши наименьшую стоимость покупки с доставкой в рублях.' };
       const label = record.type === 'geom' ? labels.geom + ' (' + record.unit.replace('кв.м', 'м²') + ').' : labels[record.type];
       const node = api.question({

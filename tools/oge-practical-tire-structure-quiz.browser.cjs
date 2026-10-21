@@ -3,7 +3,7 @@
 if(!process.env.CI)throw new Error('Run this browser gate in cloud CI, not a local browser.');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),os=require('node:os');
 const{execFileSync}=require('node:child_process'),{chromium}=require('playwright');
-const root=path.resolve(__dirname,'..'),out=process.env.TIRE_QUIZ_ARTIFACTS||path.join(root,'artifacts/tire-structure-quiz'),offline=fs.mkdtempSync(path.join(os.tmpdir(),'tire-quiz-offline-'));
+const root=path.resolve(__dirname,'..'),out=process.env.TIRE_QUIZ_ARTIFACTS||path.join(root,'artifacts/oge-practical-tire-structure-quiz'),offline=fs.mkdtempSync(path.join(os.tmpdir(),'tire-quiz-offline-'));
 execFileSync('unzip',['-q',path.join(root,'downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-package.zip'),'-d',offline]);
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml'};
 const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new URL(req.url,'http://local').pathname),off=pathname.startsWith('/offline/'),base=off?offline:root,file=path.resolve(base,off?pathname.slice(9):'.'+pathname);if(!file.startsWith(base+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404).end();return;}res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));});

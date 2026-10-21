@@ -115,13 +115,17 @@ async function initial(page, slug, width, offlineMode) {
   }
   await layout(page, prefix + slug + '@' + width);
   if (!offlineMode) {
+    await page.evaluate(() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' }));
+    assert.equal(await page.evaluate(() => scrollY), 0, slug + ': main screenshot starts at the page heading');
     await page.screenshot({ path: path.join(out, prefix + 'main-' + slug + '-' + width + '.png') });
     await page.locator('.pv-primary-visual').screenshot({ path: path.join(out, prefix + 'diagram-' + slug + '-' + width + '.png') });
   }
   await fillDrafts(page);
   for (let number = 1; number <= 5; number++) await help(page, card(page, number), slug + ' Q' + number, !offlineMode && width === 360 && number === 1 ? 'help-' + slug + '-' + width + '.png' : null);
   const zoom = page.locator('.pv-primary-visual .pv-zoom').first();
-  if (await zoom.count()) { await zoom.click(); assert.equal(await zoom.getAttribute('aria-pressed'), 'true'); await layout(page, slug + ' zoom'); await zoom.click(); }
+  assert.equal(await zoom.count(), 1, slug + ': primary figure has a zoom control');
+  await zoom.click(); assert.equal(await zoom.getAttribute('aria-pressed'), 'true'); await layout(page, slug + ' zoom'); await zoom.click();
+  assert.equal(await zoom.getAttribute('aria-pressed'), 'false', slug + ': zoom returns to its original size');
   const scroller = page.locator('.pv-primary-visual .pv-figure-scroll').first();
   await scroller.focus(); await scroller.press('ArrowRight');
   await layout(page, prefix + slug + ' after help');

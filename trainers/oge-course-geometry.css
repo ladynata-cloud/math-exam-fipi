@@ -33,3 +33,12 @@
 @media(max-width:540px){.ocg-page .ocg-controls{grid-template-columns:1fr}.ocg-page .ocg-primary-figure{margin:16px 0}.ocg-page .ocg-details{padding:12px 0}.ocg-page .ocg-reading{padding:12px}.ocg-page .ocg-details p{font-size:18px}.ocg-page #courseHintPanel{padding-left:12px;padding-right:12px}.ocg-page .ocg-lesson-answer input{display:block;margin-bottom:10px}}
 
 .ocg-page #main .grid>*{min-width:0}.ocg-page .ocg-scroll-note{font:16px/1.6 system-ui,sans-serif;color:#5a695e;margin:0 0 16px}.ocg-page .ocg-primary-figure{min-width:0}
+
+/* Native figures use centered flex layouts: oversized children must start at zero,
+   otherwise their left-hand labels are clipped beyond the reachable scroll area. */
+.ocg-page .ocg-primary-figure{display:block!important;justify-content:flex-start;text-align:left}
+.ocg-page .ocg-primary-figure svg{display:block;margin-inline:auto}
+.ocg-page .ocg-figure-nav{margin:16px 0 0;max-width:100%}
+.ocg-page .ocg-figure-nav .ocg-scroll-note{margin:0;font-size:16px}
+.ocg-page .ocg-figure-nav .ocg-button{margin-top:6px;margin-bottom:0;padding:9px 14px}
+.ocg-page .ocg-figure-nav+.ocg-figure-scroll,.ocg-page .ocg-figure-nav+.ocg-primary-figure{margin-top:10px}

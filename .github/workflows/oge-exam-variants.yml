@@ -60,5 +60,5 @@ jobs:
         with:
           name: oge-exam-${{ matrix.family }}
           path: artifacts/oge-${{ matrix.family }}
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 14

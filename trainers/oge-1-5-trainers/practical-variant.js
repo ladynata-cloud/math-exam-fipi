@@ -45,10 +45,12 @@ function question(options){
 }
 function prepareFigures(host){
  for(const svg of host.querySelectorAll('svg')){
-  if(svg.closest('.pv-figure-scroll'))continue;
-  const wrap=el('div',null,'pv-figure-scroll');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label',svg.getAttribute('aria-label')||'Рисунок к условию');svg.before(wrap);wrap.append(svg);
+  let wrap=svg.closest('.pv-figure-scroll');
+  if(wrap?.dataset.pvFigureReady==='1')continue;
+  if(!wrap){wrap=el('div',null,'pv-figure-scroll');svg.before(wrap);wrap.append(svg);}
+  wrap.dataset.pvFigureReady='1';wrap.tabIndex=0;wrap.setAttribute('role','region');if(!wrap.hasAttribute('aria-label'))wrap.setAttribute('aria-label',svg.getAttribute('aria-label')||'Рисунок к условию');
   const zoom=el('button','Увеличить рисунок','pv-zoom');zoom.type='button';zoom.setAttribute('aria-pressed','false');const note=el('p','Рисунок можно прокручивать вправо и влево.','pv-scroll-note');
-  zoom.addEventListener('click',()=>{const large=zoom.getAttribute('aria-pressed')!=='true';wrap.classList.toggle('pv-figure-large',large);zoom.setAttribute('aria-pressed',String(large));zoom.textContent=large?'Уменьшить рисунок':'Увеличить рисунок';});wrap.after(zoom,note);
+  zoom.addEventListener('click',()=>{const large=zoom.getAttribute('aria-pressed')!=='true';wrap.classList.toggle('pv-figure-large',large);zoom.setAttribute('aria-pressed',String(large));zoom.textContent=large?'Уменьшить рисунок':'Увеличить рисунок';});wrap.after(zoom);if(!wrap.parentElement.querySelector('.pv-scroll-note'))zoom.after(note);
  }
  for(const table of host.querySelectorAll('table')){if(table.closest('.pv-table-scroll'))continue;const wrap=el('div',null,'pv-table-scroll');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Таблица: можно прокручивать по горизонтали');table.before(wrap);wrap.append(table);}
 }

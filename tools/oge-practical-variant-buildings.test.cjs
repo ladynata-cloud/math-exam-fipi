@@ -142,6 +142,11 @@ test('land plots: seeded variants expose all five conditions and retain original
       if (inset) {
         assert.equal(inset.querySelectorAll('svg rect').length, 10);
         assert.match(inset.textContent, /отдельная схема/);
+        const wording = card(ctx, 3).querySelector('.pv-question-condition').textContent;
+        assert.match(wording, /На участке предусмотрена площадка размером 2×5 = 10 клеток/);
+        assert.doesNotMatch(wording, /Между гаражом и сараем/);
+        assert.match(wording, /Расположение этой площадки на общем плане не задано/);
+        assert.equal(ctx.window.__plotAnswer(2), Math.ceil((2 * 5 * 2 * 2) / 3.5), 'original 2×5 dimensions and packaging key retained');
       }
     }
     for (const key of ['econ:paint', 'econ:heat', 'tiles:platform', 'tiles:paths']) assert.ok(seen.has(key), key);
@@ -192,6 +197,98 @@ test('building exact help stays optional, uses readable legend and fraction bars
         assert.equal(exact.querySelector('.legend'), null);
       }
       assert.equal(input.value, '17'); assert.equal(progress(ctx), before);
+      assert.deepEqual(ctx.errors, []);
+    } finally { ctx.dom.window.close(); }
+  }
+});
+
+
+test('plot drawing keeps countable cells above translucent buildings and an open gate above the boundary', async () => {
+  const ctx = await open('land-plots');
+  try {
+    const svg = ctx.doc.querySelector('[data-pv-plot-plan]');
+    const grid = svg.querySelector('[data-pv-countable-grid]');
+    assert.ok(grid);
+    const vertical = [...grid.querySelectorAll('line')].filter(line => line.getAttribute('x1') === line.getAttribute('x2'));
+    const horizontal = [...grid.querySelectorAll('line')].filter(line => line.getAttribute('y1') === line.getAttribute('y2'));
+    assert.deepEqual(vertical.map(line => +line.getAttribute('x1')), Array.from({ length: 16 }, (_, i) => 14 + 28 * i));
+    assert.deepEqual(horizontal.map(line => +line.getAttribute('y1')), Array.from({ length: 11 }, (_, i) => 14 + 28 * i));
+    const filled = [...svg.querySelectorAll(':scope>rect,:scope>polygon')].filter(shape => ['var(--build)', '#dcfce7', '#99f6e4'].includes(shape.getAttribute('fill')));
+    assert.equal(filled.length, 6);
+    filled.forEach(shape => {
+      assert.ok(+shape.getAttribute('fill-opacity') <= 0.45);
+      assert.ok(shape.compareDocumentPosition(grid) & ctx.window.Node.DOCUMENT_POSITION_FOLLOWING, 'grid is drawn after the filled shape');
+    });
+    assert.equal(grid.querySelectorAll('[fill="none"]').length, 6, 'all measured outlines are redrawn above the grid');
+    const gate = svg.querySelector('[data-pv-plot-gate="open"]');
+    assert.ok([...svg.querySelectorAll('text')].every(label => +label.getAttribute('font-size') >= 20), 'plot labels retain margin above 18 rendered px despite the legacy SVG border');
+    assert.equal(svg.style.minWidth, '452px');
+    assert.equal(svg.lastElementChild, gate, 'the boundary cannot repaint the gate opening');
+    const opening = gate.querySelector('line');
+    assert.equal(+opening.getAttribute('x1'), 434);
+    assert.equal(+opening.getAttribute('x2'), 434);
+    assert.equal(+opening.getAttribute('y2') - +opening.getAttribute('y1'), 3 * 28);
+    assert.match(gate.querySelector('path').getAttribute('d'), /M434 70L414 84M434 154L414 140/);
+    assert.deepEqual(ctx.errors, []);
+  } finally { ctx.dom.window.close(); }
+});
+
+test('appliance exact help does not claim invisible highlights or alter the neutral exam table', async () => {
+  const ctx = await open('apartments');
+  try {
+    for (const key of ['5.1', '5.3']) {
+      choose(ctx, 'Вариант задания 5', key);
+      const host = card(ctx, 5), table = host.querySelector('.pv-question-condition table');
+      const before = table.outerHTML, credit = progress(ctx);
+      host.querySelector('.pv-help-button').click();
+      const exact = host.querySelector('.pv-native-help'); exact.open = true;
+      await tick();
+      assert.doesNotMatch(exact.textContent, /подсветил/i);
+      assert.match(exact.textContent, key === '5.1' ? /загрузкой.*85/ : /ширину.*50.*52/s);
+      assert.equal(table.outerHTML, before);
+      assert.equal(host.querySelectorAll('.pv-question-condition .pass').length, 0);
+      assert.equal(progress(ctx), credit);
+    }
+    assert.deepEqual(ctx.errors, []);
+  } finally { ctx.dom.window.close(); }
+});
+
+test('building primary diagrams have persistent idempotent zoom without awarding native progress', async () => {
+  for (const slug of ['apartments', 'land-plots']) {
+    const ctx = await open(slug);
+    try {
+      const primary = ctx.doc.querySelector('.pv-primary-visual');
+      const wrap = primary.querySelector('.pv-figure-scroll');
+      const svg = wrap.querySelector('svg'), drawing = svg.outerHTML;
+      const zoom = primary.querySelector('.pv-zoom');
+      assert.ok(zoom, slug + ': provider-created scroll regions receive zoom');
+      assert.equal(primary.querySelectorAll('.pv-zoom').length, 1);
+      assert.equal(wrap.dataset.pvFigureReady, '1');
+      assert.equal(zoom.getAttribute('aria-pressed'), 'false');
+      assert.equal(wrap.classList.contains('pv-figure-large'), false);
+      const input = card(ctx, 1).querySelector('input'); set(ctx, input, '17');
+      const before = progress(ctx), notes = primary.querySelectorAll('.pv-scroll-note').length;
+
+      zoom.click();
+      assert.equal(zoom.getAttribute('aria-pressed'), 'true');
+      assert.equal(wrap.classList.contains('pv-figure-large'), true);
+      assert.equal(zoom.textContent, 'Уменьшить рисунок');
+      ctx.window.PracticalVariant.prepareFigures(primary);
+      ctx.window.PracticalVariant.prepareFigures(ctx.doc.querySelector('.pv-reference'));
+      assert.equal(primary.querySelectorAll('.pv-figure-scroll').length, 1);
+      assert.equal(primary.querySelectorAll('.pv-zoom').length, 1);
+      assert.equal(primary.querySelector('.pv-zoom'), zoom);
+      assert.equal(primary.querySelectorAll('.pv-scroll-note').length, notes);
+      assert.equal(zoom.getAttribute('aria-pressed'), 'true', 'preparing again preserves the enlarged state');
+      assert.equal(wrap.classList.contains('pv-figure-large'), true);
+
+      zoom.click();
+      assert.equal(zoom.getAttribute('aria-pressed'), 'false');
+      assert.equal(wrap.classList.contains('pv-figure-large'), false);
+      assert.equal(zoom.textContent, 'Увеличить рисунок');
+      assert.equal(svg.outerHTML, drawing, 'zoom preserves the original drawing and its data');
+      assert.equal(input.value, '17');
+      assert.equal(progress(ctx), before, 'zoom and repeated preparation award no native progress');
       assert.deepEqual(ctx.errors, []);
     } finally { ctx.dom.window.close(); }
   }

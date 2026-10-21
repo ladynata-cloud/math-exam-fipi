@@ -96,3 +96,48 @@ progress schemas remain authoritative; new reasoning drafts use separate keys.
 Started from the exact published PR292 main; clean dedicated worktree. The
 preceding tire publication is reconciled in PROJECT_STATUS.md. Implementation,
 exact-head checks, review and deployment evidence will be completed before merge.
+
+### First cloud review, 2026-10-21
+
+Draft PR293 head `a8d9fb8de45bd3859ee52522059acbca9874c1a9` has the same
+tree as local `d924713cf46eefe9930b0236b8e04ffa0e0e0d94`. Cloud run
+39582099037 passed the new algebra, geometry, proof and tire quiz runtime jobs.
+The practical job caught a 17.92px land-plan label; it remains a release blocker
+until the production font is enlarged and the unchanged 18px gate passes.
+Existing 9, learner-actions, practical-discovery, SEO and virtual-classroom gates
+passed. Old 11/13/course harnesses require actual local asset serving and explicit
+external-module contracts; their native mathematics and credit assertions stay.
+The tire screenshot output directory is corrected and missing artifacts now fail.
+
+Local mathematical contracts: algebra 668 assertions; geometry 1873 assertions;
+course review 21 tests. New adapter DOM tests include algebra 27, geometry 8,
+proof 8, contextual official-reference entry 4, roads 4, buildings 7, everyday 8,
+tire quiz 4. Retained practical presentation/discovery tests: 47. The special
+suite now validates exact ordered local assets and their syntax/load: 14 tests.
+
+Independent source review corrected all per-step proof mappings, missing ASA
+support and trig-law sources. It covers 85 proof and 70 calculation steps;
+18 formerly generic reasons now identify the actual mathematical operation.
+Atanasyan 2010 sine/cosine-law passages were independently reopened. Merzlyak
+edition passages were verified by the source author; the reviewer encountered
+an archive client challenge and explicitly recorded that retrieval limitation.
+Cards contain original summaries/derivations, not invented verbatim quotations.
+
+Independent practical review corrected an impossible platform location in the
+visible land condition (the 2×5 size and original answer are unchanged), a closed
+gate drawing and invisible table-highlight claims. Existing engines remain
+byte-identical. Actual cloud screenshot review and final-head gates are pending;
+none of these partial checks constitutes the final release marker.
+
+Actual first-run PNG review covered all 24 first-part geometry screenshots,
+24 representative algebra screenshots, the partial practical artifact and
+second-part geometry mobile/desktop screenshots. It found tiny original labels,
+centered overflowing diagrams, unclear pan controls and a writing area before
+the help. These were fixed in presentation adapters: reachable enlarged labels,
+explicit pan/zoom, contextual help before writing and optional collapsed geometry
+drafts. Square/rhombus discovery controls now address the actual area question.
+The follow-up cloud suite captures initial unsolved proof screens and verifies
+actual label size and reachability. Original grading/progress code is unchanged.
+Road narration uses neutral grammatical place names. Source review and all
+focused regressions passed; final cloud artifacts/checks and publication are
+recorded in PR293 rather than preclaimed in this pre-release commit.

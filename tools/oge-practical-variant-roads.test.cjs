@@ -112,6 +112,28 @@ test('road-grid draft, help, generated values and incoming Board Bridge state re
   } finally { c.dom.window.close(); }
 });
 
+test('road-grid presentation keeps place names grammatical without changing the native narrative', async () => {
+  const c = await open('roads-grid');
+  try {
+    const options = Array.from(c.d.querySelector('.pv-controls select').options).map(option => option.value);
+    for (const value of options) {
+      choose(c, value);
+      const names = c.w.eval('JSON.parse(JSON.stringify(currentScenario().towns))');
+      const condition = c.d.querySelector('.pv-condition').textContent;
+      const original = c.d.getElementById('story-text').textContent;
+      assert.ok(condition.includes(`через населённый пункт «${names.inter.short}»`));
+      assert.ok(condition.includes(`до населённого пункта «${names.dest.short}»`));
+      assert.ok(condition.includes(`в населённом пункте «${names.inter.short}»`));
+      assert.ok(condition.includes(`в населённом пункте «${names.start.short}»`));
+      assert.ok(condition.includes(`в населённый пункт «${names.dest.short}»`));
+      assert.ok(original.includes(`через ${names.inter.short}`), 'hidden source narrative is untouched');
+      assert.equal(cards(c).length, 5);
+      assert.equal(c.w.getBoardTrainerState().tasks.some(task => task.completed), false);
+    }
+    assert.deepEqual(c.errors, []);
+  } finally { c.dom.window.close(); }
+});
+
 test('schema preserves all twenty-four native identities and honest one-question extras', async () => {
   const c = await open('roads-schema');
   try {

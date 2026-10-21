@@ -28,7 +28,7 @@
     box.append(summary); host.append(box); return box;
   }
   function close(box, button) {
-    const b = action('Вернуться к заданию', () => {
+    const b = action(button ? 'Вернуться к заданию' : 'Свернуть это объяснение', () => {
       if (button) { box.hidden = true; button.setAttribute('aria-expanded', 'false'); button.textContent = 'Хочешь подсказку?'; button.focus(); }
       else { box.open = false; box.querySelector('summary').focus(); }
     });
@@ -84,7 +84,7 @@
     host.append(node('p', 'Каждая карточка — один равновозможный исход. Нажми на подходящие исходы: доля выделенных карточек и есть вероятность события. Числа этого опыта не подставляются в ответ задачи.'));
     const label = node('label', 'Модель исходов ', 'oca-control'), select = node('select');
     [['ten','10 равновозможных карточек'],['dice','Два броска игральной кости']].forEach(([value,text]) => { const o=node('option',text);o.value=value;select.append(o); }); label.append(select);host.append(label);
-    const grid=node('div',undefined,'oca-outcomes'), out=node('p',undefined,'oca-observation');out.setAttribute('aria-live','polite');host.append(grid,out);
+    const grid=node('div',undefined,'oca-outcomes'), scroll=node('div',undefined,'oca-outcome-scroll'), out=node('p',undefined,'oca-observation');out.setAttribute('aria-live','polite');scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','Исходы опыта: прокрутка влево и вправо');scroll.append(grid);host.append(scroll,node('p','Если крайние карточки не видны, прокрути карточки влево и вправо.','oca-note'),out);
     let marked=new Set();
     function result(){const total=select.value==='dice'?36:10;out.innerHTML='Подходит '+marked.size+' из '+total+'. P = '+fraction(marked.size,total)+'.';}
     function draw(){marked=new Set();grid.replaceChildren();grid.classList.toggle('oca-dice',select.value==='dice');const total=select.value==='dice'?36:10;
@@ -147,6 +147,37 @@
     if(number===7||number===14){const b=card.querySelector(number===14?'#m-solve':'button.minimal-hint');return b?makeReversible(card,b):null;}
     return card.querySelector('.minimal-hint-panel,.minimal-help');
   }
+  function syncHelp(card,panel) {
+    const button=(panel.id&&card.querySelector('button[aria-controls="'+panel.id+'"]'))||card.querySelector('.bs,button.minimal-hint,.minimal-hint > button');
+    if(!button)return;
+    if(!panel.id)panel.id=id();
+    const open=String(!panel.hidden),title=panel.hidden?'Хочешь подсказку?':'Убрать подсказку';
+    if(button.getAttribute('aria-controls')!==panel.id)button.setAttribute('aria-controls',panel.id);
+    if(button.getAttribute('aria-expanded')!==open)button.setAttribute('aria-expanded',open);
+    if(button.textContent!==title)button.textContent=title;
+    if(number>=20){const row=button.closest('div.minimal-hint'),notes=card.querySelector('.oca-work');if(row&&notes&&row.nextElementSibling!==notes)row.after(notes);}
+  }
+  function readableNativeModels(card,panel) {
+    if(number===7){
+      for(const wrap of card.querySelectorAll('.svgbox')){
+        const svg=wrap.querySelector('svg');if(!svg||wrap.dataset.ocaReadable)continue;
+        const view=String(svg.getAttribute('viewBox')||'').split(/\s+/).map(Number);if(!(view[2]>0&&view[3]>0))continue;
+        wrap.dataset.ocaReadable='1';wrap.classList.add('oca-native-line');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Координатная прямая: прокрутка влево и вправо');
+        svg.style.setProperty('--oca-line-width',Math.ceil(view[2]*1.6)+'px');svg.style.setProperty('--oca-line-height',Math.ceil(view[3]*1.6)+'px');
+        wrap.after(node('p','Координатную прямую можно прокручивать влево и вправо.','oca-line-note oca-note'));
+      }
+    }
+    if(number===21&&panel){
+      const models=panel.querySelectorAll('.vizcard');
+      if(models.length&&!panel.querySelector('.oca-assisted-notice'))panel.prepend(node('p','В модели есть промежуточные результаты. Решение с этой подсказкой не считается самостоятельным.','oca-assisted-notice oca-note'));
+      for(const caption of panel.querySelectorAll('.vizsub')){const text=caption.textContent.replace(/\s*Встреча через\s+[^.]+\s+ч\./,'');if(caption.textContent!==text)caption.textContent=text;}
+      for(const caption of panel.querySelectorAll('.vcap'))if(/^Двигай ползунок к /.test(caption.textContent))caption.textContent='Двигай ползунок времени. В какой момент участники встретятся?';
+      if(!card.dataset.ocaModelListener){card.dataset.ocaModelListener='1';card.addEventListener('input',()=>readableNativeModels(card,helpPanel(card)));}
+    }
+    if(number===22&&panel){
+      for(const graph of panel.querySelectorAll('.gview')){const badge=graph.querySelector('.badge-t2');if(!badge)continue;let count=graph.querySelector('.oca-graph-count');if(!count){count=node('p',undefined,'oca-graph-count oca-observation');count.setAttribute('aria-live','polite');graph.append(count);}const text='Общих точек сейчас: '+badge.textContent+'.';if(count.textContent!==text)count.textContent=text;}
+    }
+  }
   function inputGuidance(card) {
     const main = number===7?'Выбери один вариант ответа под условием.':number===8?'Вычисли значение выражения и запиши его в поле ответа.':number===10?'Найди вероятность события из вопроса. Запиши число от 0 до 1 или обыкновенную дробь.':number===12?(safe(()=>cur.target)?'Найди '+cur.target+' — величину из вопроса. Единицу ответа возьми из условия.':'Найди величину, которую спрашивают в последнем предложении условия.'):number===14?'Найди величину из вопроса и запиши её в указанных единицах.':number===20?'Запиши ход решения ниже, затем введи ответ в соответствующие поля.':number===21?'Обозначь неизвестное и составь уравнение. Запиши решение ниже, затем введи найденную величину.':'Построй график и обоснуй число общих точек. В ответе укажи все подходящие значения или промежутки параметра.';
     let p=card.querySelector('.oca-instruction');if(!p){p=node('p',main,'oca-instruction oca-owned');const anchor=statementOf(card);if(anchor)anchor.after(p);else card.prepend(p);}else if(p.textContent!==main)p.textContent=main;
@@ -188,7 +219,8 @@
       const statement=statementOf(card);if(!statement)continue;const key=clean(statement.innerHTML);if(!key)continue;
       const previous=cards.get(card);if(previous&&previous!==key){card.querySelectorAll('.oca-work,.oca-instruction,.oca-exploration,.oca-reference').forEach(n=>n.remove());}
       cards.set(card,key);inputGuidance(card);work(card,statement,key);
-      const panel=helpPanel(card);if(panel){addLab(panel);addReference(panel);if(!panel.querySelector(':scope > .oca-return')&&number!==7&&number!==14){const back=action('Вернуться к заданию',()=>{const toggle=card.querySelector('[aria-controls="'+panel.id+'"]')||card.querySelector('.bs,button.minimal-hint');if(toggle&&toggle.tagName==='BUTTON'){toggle.click();toggle.focus();}else{panel.hidden=true;}});back.classList.add('oca-return');panel.append(back);}}
+      const panel=helpPanel(card);if(panel){syncHelp(card,panel);addLab(panel);addReference(panel);if(!panel.querySelector(':scope > .oca-return')&&number!==7&&number!==14){const back=action('Вернуться к заданию',()=>{const toggle=card.querySelector('[aria-controls="'+panel.id+'"]')||card.querySelector('.bs,button.minimal-hint');if(toggle&&toggle.tagName==='BUTTON'){toggle.click();toggle.focus();}else{panel.hidden=true;}});back.classList.add('oca-return');panel.append(back);}}
+      readableNativeModels(card,panel);
     }
     if(number>=20)d.querySelectorAll('.minimal-proof-note').forEach(n=>{const text='Проверяется ответ. Развёрнутое решение можно записать выше или в тетради.';if(n.textContent!==text)n.textContent=text;});
   }

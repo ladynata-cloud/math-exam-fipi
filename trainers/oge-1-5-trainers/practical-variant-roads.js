@@ -126,6 +126,32 @@
     return box;
   }
 
+  function gridCondition(scenario) {
+    const condition = api.clone(doc.getElementById('story-text'));
+    const towns = scenario.towns;
+    const quoted = role => `«${towns[role].short}»`;
+    // The source bank uses nominative place names after every preposition.
+    // Keep those names and the native narrative intact, but give the visible
+    // copy neutral noun phrases whose case does not depend on the place name.
+    const replacements = [
+      [towns.start.name, `населённом пункте ${quoted('start')}`],
+      [towns.dest.name, `населённый пункт ${quoted('dest')}`],
+      [`Из ${towns.start.short}`, `Из населённого пункта ${quoted('start')}`],
+      [`через ${towns.inter.short}`, `через населённый пункт ${quoted('inter')}`],
+      [`до ${towns.corner.short}`, `до населённого пункта ${quoted('corner')}`],
+      [`до ${towns.dest.short}`, `до населённого пункта ${quoted('dest')}`],
+      [`в ${towns.inter.short}`, `в населённом пункте ${quoted('inter')}`],
+      [`в ${towns.dest.short}`, `в населённый пункт ${quoted('dest')}`]
+    ];
+    const walker = doc.createTreeWalker(condition, global.NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      let text = walker.currentNode.textContent;
+      for (const [source, target] of replacements) text = text.split(source).join(target);
+      walker.currentNode.textContent = text;
+    }
+    return condition;
+  }
+
   function schemaGivens() {
     const rows = [['Антоновка — Доломино', 12], ['Доломино — Егорка', 4], ['Егорка — Ванютино', 12], ['Ванютино — Жилино', 9], ['Жилино — Богданово', 12], ['Ванютино — Горюново', 15]];
     const table = tableBox('Расстояния по шоссе из условия', ['Между деревнями', 'Расстояние, км'], rows);
@@ -221,7 +247,7 @@
     function mountGrid() {
       const current = getState(), scenario = currentScenario(), variant = currentVariant();
       const captures = captureQuestions(current);
-      const condition = api.clone(doc.getElementById('story-text'));
+      const condition = gridCondition(scenario);
       condition.append(node('p', `Скорость по шоссе — ${scenario.road} км/ч, по дорожкам и тропинкам — ${scenario.path} км/ч.`));
       const controls = node('div', null, 'pv-controls');
       const options = SCENARIOS.flatMap((s, i) => s.variants.map((v, j) => ({ value: i + ':' + j, label: 'Сюжет ' + s.id + ' · вариант ' + (j + 1) })));

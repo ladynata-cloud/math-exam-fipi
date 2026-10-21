@@ -23,6 +23,18 @@ compulsory introductory lesson screens for the revised practical trainers.
 - Keep original conditions, mathematical meaning, answer validation and stored
   progress identities. Show readable numbers and use precise school terminology.
 
-The tire trainer is the first implementation of this revised presentation.
-This document records the general design direction; it does not claim that
-every existing trainer has already been migrated.
+The tire trainer was the first implementation of this revised presentation.
+PR293 extends it to the other seven existing practical storylines, adds
+contextual laboratories to the remaining existing course pages and supports
+written reasoning and theory beside geometry proofs. Its task record and PR
+contain the implementation scope and release evidence. A partial source set
+must remain honestly labelled; a planned but absent bank is not complete.
+
+- Optional knowledge checks are visually distinct and never block the variant.
+  The tire checks use the green heading «Тест по Шине» and «Хочешь тест?» before,
+  during and after the work. Opening or answering them preserves all main drafts.
+- Keep help next to the condition, before a large writing workspace. A drawing
+  that requires horizontal scrolling must say so; its first and last labels
+  must be reachable, and an enlargement control must preserve the learner's work.
+- Every proof transition needs a specific reason. Distinguish verified textbook
+  statements, original explanatory paraphrases and deductions made in the task.
