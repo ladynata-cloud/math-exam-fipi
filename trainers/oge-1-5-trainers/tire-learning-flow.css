@@ -66,3 +66,10 @@ body.pm-minimal.pm-tires{font-size:19px;line-height:1.75}
  .pm-tires .anim-block{padding:12px 6px}
  .pm-tires .pm-model .pd-controls{gap:16px}
 }
+
+/* Captions stay outside the paths travelled by the animated wheels. */
+.pm-tires #anim-svg [data-tlf-rolling-caption]{display:none}
+.pm-tires .tlf-rolling-captions{display:grid;gap:14px;margin:18px 0}
+.pm-tires .tlf-rolling-caption{padding:12px 14px;border-left:4px solid #b8924b;background:#fff;border-radius:6px;line-height:1.75;font-size:19px}
+.pm-tires .tlf-rolling-caption[data-wheel="lower"]{border-left-color:#1e3a5f}
+.pm-tires .tlf-rolling-caption>span,.pm-tires .tlf-rolling-caption>strong{display:block;font-size:19px;overflow-wrap:anywhere}

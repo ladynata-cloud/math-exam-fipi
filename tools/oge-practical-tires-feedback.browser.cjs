@@ -62,7 +62,8 @@ async function run(page,width,isOffline=false){
  await choose(page,6);const animation=page.locator('#section-6 .anim-block');
  if(!await page.locator('#section-6 .pd-panel').first().isVisible())await page.locator('#section-6 .pd-toggle').first().click();
  await reveal(animation);await layout(page,'rolling diagram '+width);
- const rollingFonts=await page.locator('#anim-svg text').evaluateAll(es=>es.map(e=>parseFloat(getComputedStyle(e).fontSize)*e.ownerSVGElement.getBoundingClientRect().width/e.ownerSVGElement.viewBox.baseVal.width));assert.ok(rollingFonts.length>0&&rollingFonts.every(n=>n>=18),'rolling diagram labels stay readable');
+ const rollingFonts=await page.locator('#anim-svg text').evaluateAll(es=>es.filter(e=>getComputedStyle(e).display!=='none').map(e=>parseFloat(getComputedStyle(e).fontSize)*e.ownerSVGElement.getBoundingClientRect().width/e.ownerSVGElement.viewBox.baseVal.width));assert.ok(rollingFonts.length>0&&rollingFonts.every(n=>n>=18),'rolling diagram labels stay readable');
+ const captions=animation.locator('.tlf-rolling-caption');assert.equal(await captions.count(),2);assert.equal(await captions.first().isVisible(),true);assert.equal(await captions.last().isVisible(),true);assert.ok((await captions.evaluateAll(es=>es.map(e=>parseFloat(getComputedStyle(e).fontSize)))).every(n=>n>=18),'rolling captions readable above wheels');
  await animation.screenshot({path:path.join(out,(isOffline?'offline-':'')+'rolling-diagram-'+width+'.png')});
 }
 (async()=>{

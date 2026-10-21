@@ -45,3 +45,20 @@ test('learner calculation drafts, accepted entries and final answers survive nav
   w.goToStep(2);assert.equal(answer.value,'17,25');assert.equal(input.value,String(correct));assert.deepEqual(c.errors,[]);
  }finally{w.close();}
 });
+
+test('rolling-wheel captions remain readable outside the motion paths and follow variant/reset redraws',async()=>{
+ const c=await open(),{w,doc}=c;try{
+  const check=()=>{
+   const svg=doc.querySelector('#anim-svg'),source=[...svg.querySelectorAll('text.anim-lab')];
+   const rows=[...doc.querySelectorAll('.tlf-rolling-caption')];assert.equal(rows.length,2);
+   assert.deepEqual(rows.map(row=>[row.querySelector('.tlf-rolling-caption-name').textContent,row.querySelector('.tlf-rolling-caption-circumference').textContent]),[[source[1].textContent,source[2].textContent],[source[3].textContent,source[4].textContent]]);
+   assert.deepEqual(rows.map(row=>row.dataset.wheel),['upper','lower']);assert.deepEqual(rows.map(row=>row.querySelector('strong').textContent),['Верхнее колесо','Нижнее колесо']);
+   assert.equal(svg.querySelectorAll('[data-tlf-rolling-caption]').length,4);assert.equal(source[0].textContent,'старт');assert.equal(source[0].getAttribute('y'),'24');assert.equal(source[0].hasAttribute('data-tlf-rolling-caption'),false);assert.equal(source[0].hasAttribute('aria-hidden'),false);
+   assert.ok(doc.querySelector('.tlf-rolling-captions').compareDocumentPosition(svg)&w.Node.DOCUMENT_POSITION_FOLLOWING);
+   assert.equal(w.getComputedStyle(source[1]).display,'none');assert.notEqual(w.getComputedStyle(source[0]).display,'none');
+   return rows.map(row=>row.textContent).join('|');
+  };
+  w.goToStep(6);await tick();const first=check();w.resetAnim();await tick();assert.equal(check(),first,'reset preserves exact captions without duplicate legends');
+  w.loadVariant(20);await tick();w.goToStep(6);await tick();assert.notEqual(check(),first,'author variant displays its own current dimensions');w.resetAnim();await tick();check();assert.deepEqual(c.errors,[]);
+ }finally{w.close();}
+});

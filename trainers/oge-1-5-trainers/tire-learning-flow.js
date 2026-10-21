@@ -79,6 +79,19 @@ function syncCalculations(){
 }
 function diagramNotes(){
  qa('.anim-svg-wrap,.wheel-svg-wrap').forEach(wrap=>{if(wrap.nextElementSibling?.classList.contains('tlf-scroll-note'))return;wrap.after(make('p','tlf-scroll-note','На небольшом экране прокручивай рисунок влево и вправо: подписи остаются крупными.'));});
+ qa('svg.anim-svg').forEach(svg=>{
+  const labels=qa('text.anim-lab',svg);if(labels.length!==5)return;
+  labels[0].setAttribute('y','24');
+  // The original wheels pass through their caption positions. Keep the current
+  // engine-produced strings, but place them outside the moving drawing.
+  const captions=labels.slice(1),strings=captions.map(label=>label.textContent);
+  captions.forEach(label=>{label.dataset.tlfRollingCaption='1';label.setAttribute('aria-hidden','true');});
+  const wrap=svg.closest('.anim-svg-wrap');if(!wrap)return;
+  let legend=wrap.previousElementSibling;
+  if(!legend?.classList.contains('tlf-rolling-captions')){legend=make('div','tlf-rolling-captions');legend.setAttribute('aria-label','Подписи к двум колёсам');wrap.before(legend);}
+  const signature=JSON.stringify(strings);if(legend.dataset.tlfSignature===signature)return;legend.dataset.tlfSignature=signature;
+  legend.replaceChildren(...[0,1].map(index=>{const row=make('div','tlf-rolling-caption');row.dataset.wheel=index===0?'upper':'lower';row.append(make('strong','tlf-rolling-position',index===0?'Верхнее колесо':'Нижнее колесо'),make('span','tlf-rolling-caption-name',strings[index*2]),make('span','tlf-rolling-caption-circumference',strings[index*2+1]));return row;}));
+ });
 }
 function terminology(){
  // Copy-only correction in visible UI; never visit script, input or answer data.
