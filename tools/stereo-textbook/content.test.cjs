@@ -6,10 +6,10 @@ assert.equal(review.cards.length,ls.length,'review applies to every published ca
 for(const item of review.cards){const lesson=ls.find(l=>l.id===item.id);assert(lesson,'missing reviewed card '+item.id);const content=structuredClone(lesson);delete content.status;delete content.review;assert.equal(crypto.createHash('sha256').update(JSON.stringify(canonical(content))).digest('hex'),item.sha256,'content changed after independent review: '+item.id);}
 const ids=new Set(ls.map(l=>l.id)),keys=new Set();let steps=0,views=0;
 for(const l of ls){assert.deepEqual(API.validateLesson(l,book),[],l.id);assert.equal(l.status,'reviewed');for(const field of ['source','mathematics','pedagogy'])assert.equal(l.review[field],'passed');const key=JSON.stringify([l.source.collection,l.source.point,l.source.exercise,l.source.subpart]);assert(!keys.has(key),'source identity '+l.id);keys.add(key);Viewer.prepare(l.visualization.model);steps+=l.steps.length;function h(hs){for(const x of hs){for(const id of x.theoryIds||[])assert(ids.has(id),'missing theory '+id);h(x.children||[]);}}h(l.help);for(const s of l.steps)for(const j of s.justifications)if(j.theoryId)assert(ids.has(j.theoryId),'missing theory '+j.theoryId);}
-assert.equal(ls.length,63);assert.equal(ls.filter(x=>x.kind==='exercise').length,52);
-for(let n=1;n<=35;n++)assert(ls.some(l=>l.source.exercise===String(n)),'missing exercise '+n);
-for(let n=1;n<=6;n++)assert(ls.some(l=>l.source.point===String(n)),'missing theory point '+n);
-const coverage=API.inspectBundle(bundle.catalog,ls).coverage;assert.equal(coverage.availableExercises,35);assert.equal(coverage.availableTheoryPoints,6);
+assert.equal(ls.length,132);assert.equal(ls.filter(x=>x.kind==='exercise').length,108);
+for(let n=1;n<=83;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing exercise '+n);
+for(let n=1;n<=14;n++)assert(ls.some(l=>l.source.collection==='theory'&&l.source.point===String(n)),'missing theory point '+n);
+const coverage=API.inspectBundle(bundle.catalog,ls).coverage;assert.equal(coverage.availableExercises,83);assert.equal(coverage.availableTheoryPoints,14);
 const sub=(a,b)=>a.map((x,i)=>x-b[i]),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],dot=(a,b)=>a.reduce((s,x,i)=>s+x*b[i],0),norm=a=>Math.hypot(...a),col=(p,a,b,c)=>norm(cross(sub(p[b],p[a]),sub(p[c],p[a])))<1e-8,plane=(p,a,b,c,x)=>Math.abs(dot(cross(sub(p[b],p[a]),sub(p[c],p[a])),sub(p[x],p[a])))<1e-8;
 const find=id=>ls.find(l=>l.id.endsWith(id)).visualization.model;
 const f8=find('main-001-a').points;for(const tri of [['D','P','E'],['A','E','B'],['D','M','B'],['D','K','C']])assert(col(f8,...tri),tri);

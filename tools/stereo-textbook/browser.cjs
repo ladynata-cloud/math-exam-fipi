@@ -13,7 +13,7 @@ const expectedPath=path.resolve(process.env.TEXTBOOK_EXPECTED_BUNDLE||path.join(
 const out=path.resolve(process.env.TEXTBOOK_ARTIFACTS||path.join(os.tmpdir(),'mathexam-stereo-textbook'));
 const expectedRaw=JSON.parse(fs.readFileSync(expectedPath,'utf8')),expectedLessons=Array.isArray(expectedRaw)?expectedRaw:expectedRaw.lessons;
 assert(Array.isArray(expectedLessons)&&expectedLessons.length,'An authored lesson bundle is required');
-const expectedCount=Number(process.env.TEXTBOOK_EXPECTED_COUNT||63);
+const expectedCount=Number(process.env.TEXTBOOK_EXPECTED_COUNT||132);
 assert.equal(expectedLessons.length,expectedCount,'Unexpected authored card count; update this gate explicitly for a later batch');
 assert(/^\/[A-Za-z0-9/_-]+\/$/.test(route),'TEXTBOOK_ROUTE must be a local absolute path ending in /');
 const expectedById=new Map(expectedLessons.map(lesson=>[lesson.id,lesson]));assert.equal(expectedById.size,expectedCount);
@@ -37,7 +37,46 @@ const screenshotCases=new Map([
  ['ex-main-0026|step-3','similarity-angles'],
  ['ex-main-0034|condition','tetrahedron-parts-condition'],
  ['ex-main-0034|step-5','tetrahedron-part-d'],
- ['ex-main-0035|step-3','three-line-classification']
+ ['ex-main-0035|step-3','three-line-classification'],
+ ['theory-007|condition','skew-theory-condition'],
+ ['theory-007|step-6','skew-line-parallel-plane'],
+ ['theory-008|condition','codirected-rays-condition'],
+ ['theory-008|step-8','codirected-rays-third-parallelogram'],
+ ['theory-009|condition','line-angle-condition'],
+ ['theory-009|step-4','line-angle-independent-translation'],
+ ['theory-010|condition','parallel-plane-criterion-condition'],
+ ['theory-010|step-5','parallel-plane-criterion-proof'],
+ ['ex-main-0037-b|condition','line-side-intersection-condition'],
+ ['ex-main-0037-b|help:endpoint-question','line-side-endpoint-case'],
+ ['ex-main-0038|step-2','rhombus-extended-side'],
+ ['ex-main-0043|step-3','four-midpoints-coplanar'],
+ ['ex-main-0047|condition','equal-line-angles-condition'],
+ ['ex-main-0047|step-4','equal-line-angles-proof'],
+ ["theory-011|condition","parallel-plane-properties-condition"],
+ ["theory-013|step-8","parallelepiped-first-diagonal-proof"],
+ ["theory-013|step-9","parallelepiped-third-diagonal-proof"],
+ ["theory-014|condition","section-theory-condition"],
+ ["theory-014|step-8","section-theory-six-sides"],
+ ["theory-014-example-1|step-2","tetrahedron-section-external-trace"],
+ ["theory-014-example-1|step-8","tetrahedron-section-parallel-branch"],
+ ["theory-014-example-3b|step-4","parallelepiped-pentagon"],
+ ["theory-014-example-3c|step-2","parallelepiped-hexagon-external-trace"],
+ ["theory-014-example-3c|step-5","parallelepiped-hexagon"],
+ ["ex-main-0063-b|condition","parallel-slices-numbered-condition"],
+ ["ex-main-0063-b|step-3","parallel-slices-alternative-order"],
+ ["ex-main-0067|condition","tetrahedron-exact-angle-givens"],
+ ["ex-main-0071|step-1","line-plane-external-intersection"],
+ ["ex-main-0075|step-3","tetrahedron-midpoint-area"],
+ ["ex-main-0078|step-2","parallelepiped-inscribed-faces"],
+ ["ex-main-0080|step-3","two-section-intersection"],
+ ["ex-main-0081|step-3","extended-line-upper-base"],
+ ["ex-main-0082|step-4","parallel-diagonal-plane-section"],
+ ["ex-main-0083|step-4","section-through-base-center"],
+ ["ex-main-0059|condition","parallel-plane-existence-givens"],
+ ["ex-main-0059|step-1","parallel-plane-existence-directions"],
+ ["ex-main-0062|condition","levels-intersecting-givens"],
+ ["ex-main-0062|step-2","levels-parallel-counterexample"],
+ ['ex-main-0066|condition','opposite-edge-pairs-condition']
 ]);
 function immutableContent(lesson){const copy=structuredClone(lesson);delete copy.status;delete copy.review;return copy;}
 function visibleLabelKeys(lesson,viewName){
@@ -165,7 +204,7 @@ async function card(lesson,width){
   const explanation=step.locator(':scope > details');await openDetails(explanation);assert.equal(await textWithFractions(explanation.locator(':scope > p')),authoredStep.explanation);await openDetails(explanation.locator(':scope > details'));
   assert.equal(await explanation.locator(':scope > details > p').count(),authoredStep.justifications.length);
   for(let j=0;j<authoredStep.justifications.length;j++)assert.equal(await textWithFractions(explanation.locator(':scope > details > p').nth(j)),authoredStep.justifications[j].text);
-  if(authoredStep.input){const field=step.locator('input');assert.equal(await textWithFractions(step.locator('label')),authoredStep.input.prompt);await field.fill('промежуточный '+authoredStep.id);await step.locator('form button').click();}
+  if(authoredStep.input){const field=step.locator('input');assert.equal(await textWithFractions(step.locator('label')),authoredStep.input.prompt);await field.fill('промежуточный '+authoredStep.id);await step.locator('form button').click();const feedback=step.locator('form [role=status]');assert.equal(await textWithFractions(feedback),authoredStep.input.feedback,lesson.id+' authored feedback preserved');if(lesson.id==='ex-main-0063-b'){assert.equal(await feedback.locator('.stereo-fraction').count(),1,'alternate-order numerical hint has a fraction bar');}}
   await step.getByRole('button',{name:'Показать на рисунке',exact:true}).click();await settle();assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),authoredStep.view||'neutral');await preserveCheck(lesson,keptCamera,draft);await checkLabels(lesson.id,width,authoredStep.id);await noOverflow();await takeScreenshot(lesson,width,authoredStep.id);
  }
  const modalChecked=await theoryModal(lesson,width,keptCamera,draft);await preserveCheck(lesson,keptCamera,draft);
@@ -207,7 +246,9 @@ async function main(){
  for(const expected of expectedLessons){const actual=publishedById.get(expected.id);assert(actual,expected.id+' is present in integrated data');assert.equal(actual.status,'reviewed',expected.id+' must pass independent review before browser publication gate');for(const field of ['source','mathematics','pedagogy'])assert.equal(actual.review?.[field],'passed',expected.id+' '+field+' review');assert.deepEqual(immutableContent(actual),immutableContent(expected),expected.id+' matches the authored batch except review metadata');}
  const runtimeCoverage=await page.evaluate(()=>({coverage:window.textbookApp.coverage,issues:window.textbookApp.issues}));assert(runtimeCoverage.coverage.available>=expectedCount,'every reviewed authored card is available');assert.deepEqual(runtimeCoverage.issues.filter(issue=>expectedById.has(issue.id)),[]);evidence.runtimeCoverage=runtimeCoverage.coverage;
  for(const width of evidence.widths){await page.setViewportSize({width,height:1000});await page.goto(base);await page.evaluate(()=>localStorage.clear());for(const lesson of expectedLessons)await card(lesson,width);}
- await twoTabs(true);await twoTabs(false);assert.equal(evidence.expansionScreenshots.length,4,'main/theory expanded screenshots at both widths');assert.equal(evidence.expansions.length,8,'main/theory fullscreen and both close paths at 320/1280');assert.equal(evidence.cards.length,expectedCount*2);assert.equal(evidence.screenshots.length,32,'exact representative screenshot set');assert.deepEqual(evidence.errors,[]);writeEvidence();
- console.log('ATANASYAN_TEXTBOOK_BROWSER_OK: '+expectedCount+' cards at 320/1280, authored steps/reasons, visible figures, nested theory, reload, 2 real-tab conflict scenarios, 32 screenshots');
+ await twoTabs(true);await twoTabs(false);assert.equal(evidence.expansionScreenshots.length,4,'main/theory expanded screenshots at both widths');assert.equal(evidence.expansions.length,8,'main/theory fullscreen and both close paths at 320/1280');assert.equal(evidence.cards.length,expectedCount*2);assert.equal(evidence.screenshots.length,screenshotCases.size*evidence.widths.length,'exact representative screenshot count');
+ const expectedScreenshots=[...screenshotCases.keys()].flatMap(key=>evidence.widths.map(width=>key+'|'+width)).sort();
+ assert.deepEqual(evidence.screenshots.map(item=>item.id+'|'+item.stage+'|'+item.width).sort(),expectedScreenshots,'exact representative screenshot identities at every width');assert.deepEqual(evidence.errors,[]);writeEvidence();
+ console.log('ATANASYAN_TEXTBOOK_BROWSER_OK: '+expectedCount+' cards at 320/1280, authored steps/reasons, visible figures, nested theory, reload, 2 real-tab conflict scenarios, '+evidence.screenshots.length+' screenshots');
 }
 main().catch(async error=>{fs.mkdirSync(out,{recursive:true});evidence.failure={case:activeCase,message:error.message,stack:error.stack};writeEvidence();if(page)await page.screenshot({path:path.join(out,'failure.png'),fullPage:true}).catch(()=>{});console.error(error);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)await new Promise(resolve=>server.close(resolve));});

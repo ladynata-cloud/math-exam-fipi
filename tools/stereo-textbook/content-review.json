@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-10-21",
-  "registeredAt": "2026-10-21T20:10:36Z",
-  "scope": "All theory points 1–6 and every question in exercises 1–35. Not the complete book.",
+  "registeredAt": "2026-10-21T21:09:32.694443+00:00",
+  "scope": "All theory points1–14 and every question in exercises1–83. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -84,6 +84,95 @@
         "ex-main-0033",
         "ex-main-0034",
         "ex-main-0035"
+      ]
+    },
+    {
+      "reviewer": "Codex ege_base_inventory; geometry_scene_math_review",
+      "reviewedAt": "2026-10-21T20:59:50Z",
+      "registeredAt": "2026-10-21T21:01:08.863372+00:00",
+      "sourceBundleSHA256": "51f43cc9b944d7eb3836dd5fa12dcfa272c1df746549695b2cafc450d2e199c9",
+      "scope": "All theory points7–10 and all source questions of exercises36–49.",
+      "report": "docs/reviews/ATANASYAN_SKEW_ANGLES_CONTENT.md",
+      "cardIds": [
+        "theory-007",
+        "theory-008",
+        "theory-009",
+        "theory-010",
+        "ex-main-0036",
+        "ex-main-0037-a",
+        "ex-main-0037-b",
+        "ex-main-0038",
+        "ex-main-0039",
+        "ex-main-0040",
+        "ex-main-0041",
+        "ex-main-0042-a",
+        "ex-main-0042-b",
+        "ex-main-0043",
+        "ex-main-0044-a",
+        "ex-main-0044-b",
+        "ex-main-0044-c",
+        "ex-main-0045-a",
+        "ex-main-0045-b",
+        "ex-main-0046-a",
+        "ex-main-0046-b",
+        "ex-main-0047",
+        "ex-main-0048",
+        "ex-main-0049"
+      ]
+    },
+    {
+      "reviewer": "Codex ege_independent_review; intro_geometry_audit",
+      "reviewedAt": "2026-10-21T21:05:38Z",
+      "registeredAt": "2026-10-21T21:09:32.694443+00:00",
+      "sourceBundleSHA256": "f273bb3b74780dbff56936e787d92dd321b4988a742a3fcdb0b65344430ba60e",
+      "scope": "All theory points11–14 including six worked-example branches and all 47 source parts of exercises50–83.",
+      "report": "docs/reviews/ATANASYAN_PLANES_SECTIONS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0050",
+        "ex-main-0051",
+        "ex-main-0052",
+        "ex-main-0053",
+        "ex-main-0054",
+        "ex-main-0055",
+        "ex-main-0056",
+        "ex-main-0057",
+        "ex-main-0058",
+        "ex-main-0059",
+        "ex-main-0060",
+        "ex-main-0061",
+        "ex-main-0062",
+        "ex-main-0063-a",
+        "ex-main-0063-b",
+        "ex-main-0064",
+        "ex-main-0065",
+        "ex-main-0066",
+        "ex-main-0067",
+        "ex-main-0068",
+        "ex-main-0069",
+        "ex-main-0070",
+        "ex-main-0071",
+        "ex-main-0072-a",
+        "ex-main-0072-b",
+        "ex-main-0073",
+        "ex-main-0074",
+        "ex-main-0075",
+        "ex-main-0076",
+        "ex-main-0077",
+        "ex-main-0078",
+        "ex-main-0079",
+        "ex-main-0080",
+        "ex-main-0081",
+        "ex-main-0082",
+        "ex-main-0083",
+        "theory-011",
+        "theory-012",
+        "theory-013",
+        "theory-014",
+        "theory-014-example-1",
+        "theory-014-example-2",
+        "theory-014-example-3a",
+        "theory-014-example-3b",
+        "theory-014-example-3c"
       ]
     }
   ],
@@ -339,6 +428,282 @@
     {
       "id": "theory-006",
       "sha256": "d206077776ecc29c2a7b65be1812d52c5a1119be61905028fad944a99b149cda"
+    },
+    {
+      "id": "theory-007",
+      "sha256": "5a93a9508bd3e0a4c10b069685160c1482b41a1985530bcef40c559c9e150c28"
+    },
+    {
+      "id": "theory-008",
+      "sha256": "f639829bf370be6db09c61835bc62ca92c2d470e946e995468dc7b03be4d986a"
+    },
+    {
+      "id": "theory-009",
+      "sha256": "879f242c987857f185c0706ef16d15338eb76740286dfdce6b26d8885c6f055c"
+    },
+    {
+      "id": "theory-010",
+      "sha256": "067d2ff30c6538816677e58c74b539dc69ec610cd3462f281192bebc40a1ae8c"
+    },
+    {
+      "id": "ex-main-0036",
+      "sha256": "b733f0a4c492e808d9f6e7294a59035268f098c3fe986eb4610b8ee093abc42a"
+    },
+    {
+      "id": "ex-main-0037-a",
+      "sha256": "16d70520dac26ec626c2bf1b4eb785480afc3e7bccaede04f2faa735f0d9a964"
+    },
+    {
+      "id": "ex-main-0037-b",
+      "sha256": "6a4092253e714031cb8e8b67d89df820a4e65548c437b3d9906777a2d949b9fd"
+    },
+    {
+      "id": "ex-main-0038",
+      "sha256": "106d74fc0107565736749d2c2caf850b91bc3a8830d83231a36955bd081c1e49"
+    },
+    {
+      "id": "ex-main-0039",
+      "sha256": "e62f5a336f0d8e2c90dc3b428fef35d258089d7554248274344e8649b5149754"
+    },
+    {
+      "id": "ex-main-0040",
+      "sha256": "95b42f083f002ebcaa7d27289a624bf3f2c4eabd131c533051a534883b2191e0"
+    },
+    {
+      "id": "ex-main-0041",
+      "sha256": "d06c51ec1dd0641d4a5003430de0653ce6d458aa6e5431a34a99ef9a1948a95f"
+    },
+    {
+      "id": "ex-main-0042-a",
+      "sha256": "06fa12092c6cc2c79c785f5000e084dba0f4509439040d988bb144955d4f1ae4"
+    },
+    {
+      "id": "ex-main-0042-b",
+      "sha256": "08e51dcd003853836c0cd0a81239f9bede72353cf389c89824e9616356b4d410"
+    },
+    {
+      "id": "ex-main-0043",
+      "sha256": "45f602baccee1a570ee7fa79df6acfea7837310b31b8c290e422182630ccba11"
+    },
+    {
+      "id": "ex-main-0044-a",
+      "sha256": "e9bcd5fa560de27e740f84ad6ce8cca68e20ecff1b8c5054fdacc3991fa07bb1"
+    },
+    {
+      "id": "ex-main-0044-b",
+      "sha256": "d0bf65545b36cc476deb524b7d827b2cbbf2f8813ddf3d9e85243b8f93ecadbc"
+    },
+    {
+      "id": "ex-main-0044-c",
+      "sha256": "9ff815f57d896b04070b64a0e3508872fecce7ee9bd9a27983a93257ad634e1a"
+    },
+    {
+      "id": "ex-main-0045-a",
+      "sha256": "21e0c68103a218c7dc9d92812c339af423e4b6165dfddc67539cb036999b2781"
+    },
+    {
+      "id": "ex-main-0045-b",
+      "sha256": "32c86efb81028d5ac46693e4ea87be59cd8cd4bbd45532983a1b308d02549025"
+    },
+    {
+      "id": "ex-main-0046-a",
+      "sha256": "cd81cfb3e2a832401fab5e7b98487f2e6c7e77d7e6276085287ce166b75fa073"
+    },
+    {
+      "id": "ex-main-0046-b",
+      "sha256": "3ef34512195efd73632c34645f096e02356cf26c6a3ffa1d0c628512590277db"
+    },
+    {
+      "id": "ex-main-0047",
+      "sha256": "e4aef2a3aa122547f367ba543dcf2c15d2ff4c72be784132ffa41e44ed274104"
+    },
+    {
+      "id": "ex-main-0048",
+      "sha256": "024cd759cf761d79e5fc6bd40e9a387ab339cc71f775f1f1bbb8d2a8e98ec788"
+    },
+    {
+      "id": "ex-main-0049",
+      "sha256": "320255f6d82f6f556a8e5415a5a356ad7a2a8a658b8efd6a3d12fdbc8568ff8c"
+    },
+    {
+      "id": "ex-main-0050",
+      "sha256": "a08db02a0c8deb437ae4d4f433731ce5c07c39b8245e507e343a8165f11ec914"
+    },
+    {
+      "id": "ex-main-0051",
+      "sha256": "7cb6b8ba59c7f9875faeee7ecb9ca26d1140deb13b6b77992a76947ccae905aa"
+    },
+    {
+      "id": "ex-main-0052",
+      "sha256": "6575a54d8e5fe4b4621840f6dd0d8cd72648c6b038a850f2b04dca31f2652f08"
+    },
+    {
+      "id": "ex-main-0053",
+      "sha256": "d585a786c0920c50e746acce67f1215a8e60abe26161efc2a6df6062611a0276"
+    },
+    {
+      "id": "ex-main-0054",
+      "sha256": "f2dfe23514585a3c50654c6a41a4742072ee5fca73f923fe022bc48d35b394a7"
+    },
+    {
+      "id": "ex-main-0055",
+      "sha256": "e44f87f10e63da4708693994c2a88555ffa20fae18ea5b23a06566130115292b"
+    },
+    {
+      "id": "ex-main-0056",
+      "sha256": "d39174aa910fde11b42fdefdd8ab03cbbb2dde33c8c9287072726dcd0a7487f3"
+    },
+    {
+      "id": "ex-main-0057",
+      "sha256": "e19ce89f5d5f1553645cc472a3df34eb26418702df21936155ad529d6752cc7e"
+    },
+    {
+      "id": "ex-main-0058",
+      "sha256": "5851e49da09f6dd734b3e2b4092d2361be1aa79fc3a9cc1bcd9bf17468099291"
+    },
+    {
+      "id": "ex-main-0059",
+      "sha256": "c4b724904c2f900bc84b3ae5a3fc8716aaca5ebaeb5a62bfd8bd803f1e83bfc6"
+    },
+    {
+      "id": "ex-main-0060",
+      "sha256": "4402bfbf0cc22807150705c427c71c1967abb4d993b370648f10bf244d92ea02"
+    },
+    {
+      "id": "ex-main-0061",
+      "sha256": "96fb3644f7fc26ad0af23de689ebebd82de01c280e11f3593ba5356780c898ed"
+    },
+    {
+      "id": "ex-main-0062",
+      "sha256": "965866d8a9b162dfae5706cf222a1c652479e8c80e013c0e81dcc8e44e98e3e2"
+    },
+    {
+      "id": "ex-main-0063-a",
+      "sha256": "1e63d63570779aaca9a5bfd6fd53a6b67403af6938d40870c715ec8faf58511c"
+    },
+    {
+      "id": "ex-main-0063-b",
+      "sha256": "d308605fe3c664edaee947d16ccd9caf2212b6b2e1c133831bd50b4869c93026"
+    },
+    {
+      "id": "ex-main-0064",
+      "sha256": "3b722c930b58910196ee4f2547ec701438a7cf3dc732d14ee1f8730ce9f7cedc"
+    },
+    {
+      "id": "ex-main-0065",
+      "sha256": "be94f0ebe73bb9d999d8cdf574af841ea83fa96715004d6341cd1444f4f6d721"
+    },
+    {
+      "id": "ex-main-0066",
+      "sha256": "5e511b28695221ce98df97e36b3846bd69e39026265a5fd5521fd908756b5094"
+    },
+    {
+      "id": "ex-main-0067",
+      "sha256": "3d43988c063b2028002ae40d4bd3f9894c9210a8ee6dffbf844a507cd53f9a21"
+    },
+    {
+      "id": "ex-main-0068",
+      "sha256": "c5c89ba183f879e025027135891a8818fe76b7c7b49748a5d714240c0fa72393"
+    },
+    {
+      "id": "ex-main-0069",
+      "sha256": "ebd4b9ad5a4973075d709f6c4ce04a60bfc1d371c55962f0d7d993c4108f6381"
+    },
+    {
+      "id": "ex-main-0070",
+      "sha256": "33373eba6d6b354d6cfd1110328e5491761d2735c9f884e76d57c2457dd2460a"
+    },
+    {
+      "id": "ex-main-0071",
+      "sha256": "82a29fbb550f89f6d90bd27423d2abc3429f127622fea25317de8f2a477bcdcc"
+    },
+    {
+      "id": "ex-main-0072-a",
+      "sha256": "66dc0c03c42d2f6299cbba3adc582757269df7291ccb83c0c0378aa4b986249a"
+    },
+    {
+      "id": "ex-main-0072-b",
+      "sha256": "e84dd7b8abf2026139450ccb3f8ab998203fae5782b03968644d9a30e9f0c600"
+    },
+    {
+      "id": "ex-main-0073",
+      "sha256": "f166aa99bb7c7c31e2fa5c4ec109c3e07d613858795e867d3d21a0f4527e7176"
+    },
+    {
+      "id": "ex-main-0074",
+      "sha256": "676a0ad1ff9651676bdfe89af2f7f932531abbc89bf65a3432b0750216b03f7d"
+    },
+    {
+      "id": "ex-main-0075",
+      "sha256": "ef6feb2c18a90672e07f7a2048cfddb45b662f0e292e1b831b93871934582e0e"
+    },
+    {
+      "id": "ex-main-0076",
+      "sha256": "6088a835bf7c40d7f5f4d4c86b9f0dc81a5a5e67c0e619a31929cd2f90f718ef"
+    },
+    {
+      "id": "ex-main-0077",
+      "sha256": "d7b388a58506791217776847f7c01f60e61e3f77ce1d3db90862dddb876b8a25"
+    },
+    {
+      "id": "ex-main-0078",
+      "sha256": "88cb038c2f45c05610674fd9d8b0eee2b9c4fc1dd08afa2bf5e4aba73949b7c1"
+    },
+    {
+      "id": "ex-main-0079",
+      "sha256": "76de98c741f2cfc2eae9821d5f4e5888c965150c11825abca1c26a3f9b8d804c"
+    },
+    {
+      "id": "ex-main-0080",
+      "sha256": "f9655b8c4a7c9b31ed797278d683d635f585644a8be258d3a631d67c464c4c08"
+    },
+    {
+      "id": "ex-main-0081",
+      "sha256": "a2de258d0b2b811fbfa35f4d8334bc59983a3dfd60b85f514b2a4f726919c2d9"
+    },
+    {
+      "id": "ex-main-0082",
+      "sha256": "17105c7d77af8f05fd483741740a644f6a245b280fa4816aa26be9991eb67aa1"
+    },
+    {
+      "id": "ex-main-0083",
+      "sha256": "1c2393297b6d73ec68c63ead27dc8ae27a0db5fd3f17f9f1432d4e7bdff09422"
+    },
+    {
+      "id": "theory-011",
+      "sha256": "0a1f636c275b6106d43b4e95977e3b3ce2ac422b0a05b949a61899486972cd2f"
+    },
+    {
+      "id": "theory-012",
+      "sha256": "cd37254c362c01f5c6ca45565537c681fa79b5298bf8163e65ca9457fc3e1a2d"
+    },
+    {
+      "id": "theory-013",
+      "sha256": "d6bd17c9f1d7044a9f666b6484ccf8519472fdfc317cbaf56aaa6677c6440d45"
+    },
+    {
+      "id": "theory-014",
+      "sha256": "e765e9d4c647b7f174787358908df1e512a2dbf7c997ca1faa131624893de295"
+    },
+    {
+      "id": "theory-014-example-1",
+      "sha256": "cc3ab48c3d3c0f58c50cccd04cb86e5e6747c8bfa707958b1e88f66a1fbf593f"
+    },
+    {
+      "id": "theory-014-example-2",
+      "sha256": "db56f7f9017c5e06ef61708d306df21e98289962141b4f4fbdd6a50681432e59"
+    },
+    {
+      "id": "theory-014-example-3a",
+      "sha256": "5312ae07af12eaf876f4a79ff82c282c80dad690d70979ef2a600b35ee594d6a"
+    },
+    {
+      "id": "theory-014-example-3b",
+      "sha256": "0b657f1ca7827acfb2a3563e96b5a0f05c2c9a1174e2b0aaffca132d1cf7eb08"
+    },
+    {
+      "id": "theory-014-example-3c",
+      "sha256": "08dece7357815cde0c2a9056e5fa75c37435371f7bff4a8e6a67dd0473429f64"
     }
   ]
 }

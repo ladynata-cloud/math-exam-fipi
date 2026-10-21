@@ -2,19 +2,41 @@
 
 Updated: 2026-10-22 (Asia/Novosibirsk)
 
-## In progress: Atanasyan visual theory, introduction and first parallelism block
+## In progress: Atanasyan exercises36–83 and visual theory7–14
+
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PARALLELISM.md): separately reviewed source
+  batches for skew lines, angles, parallel planes, tetrahedra, parallelepipeds
+  and sections. Theory receives visible models and justified progressive proofs.
+- Base: `9ca681eaa8a382d64565233f4da703bbbca4c258`; HIGH review.
+- Independently reviewed and integrated: all questions of exercises1–83 and
+  theory1–14, including every worked example in the section-construction topic.
+  132 cards (108 exercises,24 theory),454 justified steps,533 model views.
+- New source/math/pedagogy reviews cover69 cards:36–49/theory7–10 and
+  50–83/theory11–14. Exact author hashes and real sign-offs are registered.
+- Local source/schema/content/runtime gates pass; all525 polygons are planar,
+  simple and nondegenerate, all1733 displayed segments have nonzero length.
+- Next: exact-head independent integration and cloud browser/compatibility
+  review, then authorized publication and exact public-file verification.
+  Later exercises84 onward and chapter self-checks remain outside this stage.
+
+## Published: Atanasyan visual theory, introduction and first parallelism block
 
 - [Scope](tasks/TEXTBOOK_ATANASYAN.md): separate textbook course with visible
   task/theory models, justified progressive explanations, deep same-page help
   and preserved learner work.
-- PR297; base `bc322a30111d5a4178ba1a865c56ee1fbe85f03a`; HIGH independent review.
+- PR297 merged as `9ca681eaa8a382d64565233f4da703bbbca4c258`, sole parent
+  `bc322a30111d5a4178ba1a865c56ee1fbe85f03a`, exact reviewed tree
+  `65a4d79ed1ee813059ff6f0a5f3e5e69331c65b7`; HIGH independent review PASS.
 - Source catalogue:1056 numbered exercises,99 theory points,96 self-check
   questions and2 appendices. This does not mean every position is authored.
-- This stage: exercises1–35/52 cards, theory1–6/11 cards;
-  independent source/math/pedagogy review passed. Integrated cloud browser
-  verification and publication remain. Remaining book content is pending.
-- Next: exact-head cloud UI/visual gate, reviewed publication of this stage,
-  then checked exercise/theory authoring in bounded source batches.
+- Published: exercises1–35/52 cards, theory1–6/11 cards;195 justified steps,
+  283 model views. All4 exact-head workflows and36 independent screenshot
+  reviews passed. Cloud Chromium:126 card journeys,882 views,4746 labels,
+  no overlaps/errors;8/8 expansion returns and2 real-tab recovery cases passed.
+- Pages39672291645 succeeded on the exact merge. All14 public canonical/alias
+  requests matched reviewed SHA256 and size. Gate:ATANASYAN_TEXTBOOK_FOUNDATION_OK.
+- Remaining book content is explicitly pending; a source catalogue does not
+  constitute authored solutions.
 - Merzlyak and Pogorelov are separate later courses; their PDFs are awaited.
 
 ## Published: standalone stereometry, task first
