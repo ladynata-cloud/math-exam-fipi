@@ -100,6 +100,15 @@ function proofPanel(){
  }else h+='<p class="callout">Цепочка обоснований собрана. Теперь восстанови доказательство своими словами.</p><button data-stage="5" class="primary">Написать доказательство</button><button data-action="reset-proof">Повторить цепочку</button>';
  return h+'<details><summary>Для ценителей строгости и точности</summary>'+reference()+'</details></section>';
 }
+function formatProofChoices(container){
+ // Only authored proof choices opt in: the general text formatter skips controls.
+ // Keep the button (and its action/listeners) and its exact original accessible name.
+ container.querySelectorAll('.proof-options button').forEach(button=>{
+  const raw=button.getAttribute('aria-label')??button.textContent,content=document.createElement('span');
+  content.className='proof-choice-text';content.setAttribute('aria-hidden','true');
+  StereoMath.appendText(content,raw);button.setAttribute('aria-label',raw);button.replaceChildren(content);
+ });
+}
 function writtenPanel(){
  const p=proof();return '<section class="panel"><p class="eyebrow">'+(p?'Отдельная задача на доказательство':'Обоснование исследования')+'</p><h2>Объяснение своими словами</h2><p>'+E(p?p.given+' '+p.goal:unit.investigate)+'</p>'+(p?'<div id="proof-model" aria-label="Рисунок к задаче на доказательство"></div>':'')+'<label for="written">Запиши рассуждение: условие, необходимые построения, основания переходов и вывод.</label><textarea id="written" rows="9">'+E(record.written)+'</textarea><div class="rubric"><label><input type="checkbox"> Названы объекты и условия.</label><label><input type="checkbox"> Объяснено назначение каждой дополнительной линии или плоскости.</label><label><input type="checkbox"> У каждого перехода есть основание: условие, определение или теорема.</label><label><input type="checkbox"> Проверены особые случаи.</label></div><p class="muted">Это самопроверка. Рассуждение сохраняется для учителя и не получает автоматическую отметку за верность.</p><button class="primary" data-action="finish">Сохранить итог занятия</button><div id="finish-result" role="status"></div></section>';
 }
@@ -110,7 +119,7 @@ function render(){
  if(stage===1)h+='<section class="panel"><h2>Свободная 3D-лаборатория</h2><p>'+E(unit.investigate)+'</p><p class="callout">Это отдельное исследование. Параметры здесь можно менять; условие твоей задачи сохранено. Вернись к нему кнопкой «К задаче».</p><div id="viewer"></div><label for="observation">Что ты изменил(а), какое свойство заметил(а) и как его объяснишь?</label><textarea id="observation">'+E(record.observation)+'</textarea></section>';
  if(stage===2)h+=proofPanel();
  if(stage===5)h+=writtenPanel();
- h+='<div class="stage-footer"><button data-action="home">← Карта курса</button>'+(stage===4?'<button data-stage="5">'+(proof()?'Записать доказательство отдельной задачи':'Обосновать исследование')+'</button>':'<button data-stage="4" class="primary">К задаче</button>')+'</div></div>';if(conflict)return;root.innerHTML=h;root.dataset.condition=task().q;root.dataset.proofCondition=proof()?proof().given+' '+proof().goal:unit.investigate;StereoMath.formatFractions(root);
+ h+='<div class="stage-footer"><button data-action="home">← Карта курса</button>'+(stage===4?'<button data-stage="5">'+(proof()?'Записать доказательство отдельной задачи':'Обосновать исследование')+'</button>':'<button data-stage="4" class="primary">К задаче</button>')+'</div></div>';if(conflict)return;root.innerHTML=h;root.dataset.condition=task().q;root.dataset.proofCondition=proof()?proof().given+' '+proof().goal:unit.investigate;StereoMath.formatFractions(root);formatProofChoices(root);
  if([0,3,4].includes(stage)){
   taskViewer=StereoTaskScenes.mount(document.getElementById('task-model'),{kind:unit.task,task:task(),savedCamera:record.taskFirst.camera,step:activeStep(),onChange:camera=>{record.taskFirst.camera=camera;later();}});
   StereoMath.formatFractions(document.getElementById('task-model'));bindHelp();
@@ -177,7 +186,7 @@ root.addEventListener('click',event=>{
  const a=b.dataset.action;if(a==='home')return home();if(a==='export')return download();if(a==='reports')return reports();if(!unit||!ensureCurrent())return;
  if(b.dataset.proof!==undefined){
   const i=+b.dataset.proof,f=document.getElementById('proof-feedback');if(i!==record.proofDone.length){f.textContent='Сначала нужно установить предыдущий факт. Найди недостающее основание.';f.className='feedback error';return;}
-  pending=i;proofViewer?.setStep(i);document.getElementById('reason').innerHTML='<div class="reason-panel"><strong>Почему выбранный шаг верен?</strong><div class="proof-options"><button data-action="bad-reason">Используем вывод, который сейчас доказываем.</button><button data-action="good-reason">'+E(proof().steps[i].reason)+'</button><button data-action="bad-reason">Совпали измерения на рисунке.</button></div></div>';
+  pending=i;proofViewer?.setStep(i);document.getElementById('reason').innerHTML='<div class="reason-panel"><strong>Почему выбранный шаг верен?</strong><div class="proof-options"><button data-action="bad-reason">Используем вывод, который сейчас доказываем.</button><button data-action="good-reason">'+E(proof().steps[i].reason)+'</button><button data-action="bad-reason">Совпали измерения на рисунке.</button></div></div>';formatProofChoices(document.getElementById('reason'));
  }
  if(a==='visual-trap'||a==='bad-reason'){document.getElementById('proof-feedback').textContent='Нужен факт из условия, определение, аксиома или уже установленная теорема. Измерения и вид рисунка не заменяют доказательство.';save('proof-error');}
  if(a==='good-reason'&&pending!==null){record.proofDone.push('s'+pending);record.proof=record.proofDone.length===proof().steps.length;if(save('proof-step'))render();}

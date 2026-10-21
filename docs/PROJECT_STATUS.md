@@ -10,10 +10,11 @@ Updated: 2026-10-22 (Asia/Novosibirsk)
   source/math review and full relevant state/browser gates. Paid Claude remains
   deferred by the owner.
 - Existing foundation:39 units,38 task families,19 proof chains and99 mapped
-  points. Full Atanasyan, Merzlyak and Pogorelov10–11 PDFs are requested; complete
-  coverage of their exercises is not claimed. The author courses stay separate.
+  points. The full Atanasyan12th edition2024 PDF has now arrived. Complete exercise/theory
+  inventory and solution authoring are the next separate task. Merzlyak/Pogorelov
+  PDFs are awaited; complete exercise coverage is not yet claimed.
 - Next: exact-head cloud browser/visual gate, ordinary reviewed publication,
-  then exercise-by-exercise source inventory when the owner supplies the books.
+  then exercise-by-exercise Atanasyan authoring with task and theory figures.
 
 ## Published: profile and basic EGE task-first presentation
 

@@ -5,6 +5,7 @@
 }
 .atanasyan-model .am-svg {
   display: block;
+  box-sizing: border-box;
   width: 100%;
   max-width: 100%;
   height: auto;
@@ -88,13 +89,15 @@
 
 .task-scene { min-width:0; width:100%; margin:1rem 0; }
 .task-scene-givens { display:flex; flex-wrap:wrap; gap:.55rem; align-items:center; margin:0 0 .8rem; line-height:1.6; font-size:1.05rem; }
-.task-scene-givens span { padding:.3rem .65rem; border:1px solid #b6d1c1; border-radius:.55rem; background:#edf5ef; overflow-wrap:anywhere; }
+.task-scene-givens > span { padding:.3rem .65rem; border:1px solid #b6d1c1; border-radius:.55rem; background:#edf5ef; overflow-wrap:anywhere; }
 .task-scene-find { font-size:1.15rem; line-height:1.7; margin:1rem 0; }
 .task-scene .am-note,.task-scene .am-help {font-size:1rem;}
-.task-scene .am-svg {max-height:620px; min-height:260px;}
+.task-scene .am-svg {max-height:none; min-height:0;}
 .task-scene .am-controls:empty {display:none;}
 
 .task-scene .am-expanded {position:fixed;inset:0;z-index:10000;background:#fff;padding:16px;overflow:auto;box-sizing:border-box;}
-.task-scene .am-expanded .am-svg {max-width:1000px;max-height:70vh;margin:auto;}
+.task-scene .am-expanded .am-svg {max-width:1000px;max-height:none;margin:auto;}
 .task-scene .am-expanded .am-controls {max-width:1000px;margin:12px auto;}
 .task-scene .am-expand {flex-basis:100%;font-weight:600;}
+
+.atanasyan-model .am-label-leader { stroke:#718780; stroke-width:1; fill:none; stroke-linecap:round; pointer-events:none; }

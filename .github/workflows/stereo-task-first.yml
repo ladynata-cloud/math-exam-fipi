@@ -29,6 +29,7 @@ jobs:
           node tools/stereo/stale-state.test.cjs
           node tools/stereo/task-first.test.cjs
           node tools/stereo/task-first.integration.test.cjs
+          node tools/stereo/proof-choice-fractions.test.cjs
       - name: Numeric and proof figure invariants
         run: |
           node tools/stereo/task-scenes-math.test.cjs
@@ -42,6 +43,7 @@ jobs:
           STEREO_ARTIFACTS: artifacts/stereo-lessons
         run: node tools/stereo/task-first.browser.cjs
       - name: All figure families and proof steps
+        if: ${{ !cancelled() }}
         env:
           GEOMETRY_SCENE_SHOTS: artifacts/stereo-figures
         run: node tools/stereo/task-scenes.browser.cjs

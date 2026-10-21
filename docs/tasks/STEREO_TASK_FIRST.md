@@ -15,8 +15,9 @@ Make the existing standalone Atanasyan course usable from a clearly stated task:
 show a mathematically faithful, rotating figure immediately and offer optional
 same-page help, preserving the learner's work. Existing coverage is99 mapped
 textbook points,39 learning units,38 original task families and19 proof chains.
-This is not a complete exercise-by-exercise textbook course. Full Atanasyan,
-Merzlyak and Pogorelov geometry10–11 PDFs have been requested from the owner.
+This is not a complete exercise-by-exercise textbook course. The owner has now supplied the full Atanasyan12th edition2024 PDF; its complete
+exercise/theory inventory and detailed author course are a separate next task.
+Merzlyak and Pogorelov geometry10–11 PDFs are still awaited.
 The three author courses remain distinct; existing7–9 courses are not renamed.
 
 ## Approved scope

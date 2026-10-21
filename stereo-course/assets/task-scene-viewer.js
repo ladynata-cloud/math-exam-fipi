@@ -114,7 +114,19 @@
     container.replaceChildren(shell);
     const removers = [];
     let viewportWidth=420,viewportHeight=320,expanded=false,previousOverflow='';
-    function fitViewport(){const width=Math.max(280,Math.min(1000,svg.getBoundingClientRect().width||420));viewportWidth=width;viewportHeight=Math.max(320,Math.min(620,width*.76));svg.setAttribute('viewBox','0 0 '+viewportWidth+' '+viewportHeight);render();}
+    function fitViewport() {
+      // One SVG unit is one content-box pixel, including in nested phone panels.
+      // A minimum viewBox width would silently shrink the 20px label font.
+      const bounds = svg.getBoundingClientRect();
+      const style = typeof getComputedStyle === 'function' ? getComputedStyle(svg) : null;
+      const borderX = (parseFloat(style?.borderLeftWidth) || 0) + (parseFloat(style?.borderRightWidth) || 0);
+      const borderY = (parseFloat(style?.borderTopWidth) || 0) + (parseFloat(style?.borderBottomWidth) || 0);
+      viewportWidth = svg.clientWidth || (bounds.width > borderX ? bounds.width - borderX : 420);
+      viewportHeight = Math.max(360, Math.min(680, viewportWidth * .76));
+      svg.style.height = (viewportHeight + borderY) + 'px';
+      svg.setAttribute('viewBox', '0 0 ' + viewportWidth + ' ' + viewportHeight);
+      render();
+    }
     const initial = source.planar ? {yaw:0,pitch:-Math.PI/2} : DEFAULT;
     const saved = options.savedCamera;
     let yaw = !source.planar && Number.isFinite(saved?.yaw) ? saved.yaw % (2*Math.PI) : initial.yaw, pitch = !source.planar && Number.isFinite(saved?.pitch) ? clamp(saved.pitch,-Math.PI/2+.03,Math.PI/2-.03) : initial.pitch, selected = 'neutral', active = null, destroyed = false;
@@ -164,28 +176,78 @@
       const focused = new Set([...view.segments.flat(), ...view.polygon, ...view.points]);
       const visible = [...new Set([...data.baseNames, ...focused])].filter(name => !name.startsWith('_') || source.labels?.[name]);
       const projected = visible.map(name => ({ name, point: project(data.points[name]), focused: focused.has(name) }));
-      // Greedy screen-space label placement avoids fixed offsets that overlap at
-      // particular angles. Labels never change the actual point positions.
-      const occupied = [];
-      projected.sort((a, b) => Number(b.focused) - Number(a.focused)).forEach(item => {
-        const [x, y] = item.point;
-        const name = source.labels?.[item.name] || displayName(item.name);
-        const width = Math.max(13, [...name].length * 10.5);
-        const candidates = [[11, -12], [-width - 9, -12], [11, 18], [-width - 9, 18], [-width / 2, -18], [-width / 2, 25], [20, 3], [-width - 20, 3]];
-        let best = null;
-        candidates.forEach(([dx, dy], order) => {
-          const left = clamp(x + dx, 8, viewportWidth - 8 - width), baseline = clamp(y + dy, 23, viewportHeight-13);
-          const rect = { left: left - 3, top: baseline - 21, right: left + width + 3, bottom: baseline + 5 };
-          const overlaps = occupied.reduce((sum, box) => sum + Math.max(0, Math.min(box.right, rect.right) - Math.max(box.left, rect.left)) * Math.max(0, Math.min(box.bottom, rect.bottom) - Math.max(box.top, rect.top)), 0);
-          const nearPoints = projected.reduce((sum, other) => sum + (other.point[0] >= rect.left && other.point[0] <= rect.right && other.point[1] >= rect.top && other.point[1] <= rect.bottom ? 400 : 0), 0);
-          const score = overlaps + nearPoints + order * 0.2;
-          if (!best || score < best.score) best = { left, baseline, rect, score };
-        });
-        occupied.push(best.rect);
-        if (!item.name.startsWith('_d') && !item.name.startsWith('_area')) drawing.append(element('circle', { cx: x.toFixed(3), cy: y.toFixed(3), r: item.focused ? '2.2' : '1.7', class: 'am-point' + (item.focused ? ' am-point-focus' : ''), 'data-point': item.name }, undefined, true));
-        drawing.append(element('text', { x: best.left.toFixed(3), y: best.baseline.toFixed(3), class: 'am-label', 'data-label': item.name }, name, true));
+      // Measure the rendered font, including subscripts and mathematical labels.
+      // The measurement group is attached but invisible; JSDOM uses a deliberately
+      // generous fallback because it does not implement SVG text metrics.
+      const measurement = element('g', { visibility: 'hidden', 'aria-hidden': 'true' }, undefined, true);
+      svg.replaceChildren(title, description, defs, drawing, measurement);
+      const labels = projected.map(item => {
+        const text = source.labels?.[item.name] || displayName(item.name);
+        const node = element('text', { x: 0, y: 0, class: 'am-label', 'data-label': item.name }, text, true);
+        measurement.append(node);
+        let bounds = null;
+        try {
+          const measured = node.getBBox?.();
+          if (measured && [measured.x, measured.y, measured.width, measured.height].every(Number.isFinite) && measured.width > 0 && measured.height > 0) bounds = measured;
+        } catch (_) { /* Detached/hidden SVG or a DOM without layout. */ }
+        const metrics = bounds ? { x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height } : { x: 0, y: -20, width: Math.max(16, [...text].length * 13), height: 26 };
+        return { ...item, node, metrics };
       });
-      svg.replaceChildren(title, description, defs, drawing);
+      // Reserve space for long given/unknown labels before placing short vertex
+      // names. Collision-free positions always outrank avoiding nearby points.
+      labels.sort((a, b) => Number(b.metrics.width >= 40) - Number(a.metrics.width >= 40) || Number(b.focused) - Number(a.focused) || b.metrics.width - a.metrics.width);
+      const occupied = [], padding = 3, margin = 7;
+      const leaders = element('g', { class: 'am-label-leaders' }, undefined, true);
+      const marks = element('g', {}, undefined, true), textLayer = element('g', {}, undefined, true);
+      drawing.append(leaders, marks, textLayer);
+      const overlapArea = (a, b) => Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left)) * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+      for (const item of labels) {
+        const [x, y] = item.point, { width, height } = item.metrics;
+        let best = null;
+        const seen = new Set();
+        function consider(left, top) {
+          left = clamp(left, margin, Math.max(margin, viewportWidth - margin - width));
+          top = clamp(top, margin, Math.max(margin, viewportHeight - margin - height));
+          const key = left.toFixed(2) + ':' + top.toFixed(2);
+          if (seen.has(key)) return;
+          seen.add(key);
+          const rect = { left: left - padding, top: top - padding, right: left + width + padding, bottom: top + height + padding };
+          const overlap = occupied.reduce((sum, box) => sum + overlapArea(rect, box), 0);
+          const coveredPoints = projected.reduce((sum, other) => sum + Number(other.point[0] >= rect.left && other.point[0] <= rect.right && other.point[1] >= rect.top && other.point[1] <= rect.bottom), 0);
+          const endX = clamp(x, left, left + width), endY = clamp(y, top, top + height);
+          const distance = Math.hypot(endX - x, endY - y);
+          const candidate = { left, top, rect, overlap, coveredPoints, distance, endX, endY };
+          if (!best || overlap < best.overlap - 1e-6 || Math.abs(overlap - best.overlap) <= 1e-6 && (coveredPoints < best.coveredPoints || coveredPoints === best.coveredPoints && distance < best.distance)) best = candidate;
+        }
+        for (const gap of [9, 16, 27, 42, 60, 84, 112]) {
+          consider(x + gap, y - height - gap);
+          consider(x - width - gap, y - height - gap);
+          consider(x + gap, y + gap);
+          consider(x - width - gap, y + gap);
+          consider(x - width / 2, y - height - gap);
+          consider(x - width / 2, y + gap);
+          consider(x + gap, y - height / 2);
+          consider(x - width - gap, y - height / 2);
+        }
+        // Free strips above/below existing labels cover crowded sections without
+        // accepting overlaps just because all nearby candidates are occupied.
+        if (!best || best.overlap > 0) {
+          const xs = [margin, viewportWidth - margin - width, x - width / 2];
+          const ys = [margin, viewportHeight - margin - height, y - height / 2];
+          for (const box of occupied) {
+            xs.push(box.right + padding, box.left - width - padding);
+            ys.push(box.bottom + padding, box.top - height - padding);
+          }
+          for (const left of xs) for (const top of ys) consider(left, top);
+        }
+        occupied.push(best.rect);
+        if (best.distance > 16) leaders.append(element('line', { x1: x.toFixed(3), y1: y.toFixed(3), x2: best.endX.toFixed(3), y2: best.endY.toFixed(3), class: 'am-label-leader', 'data-for-label': item.name }, undefined, true));
+        if (!item.name.startsWith('_d') && !item.name.startsWith('_area')) marks.append(element('circle', { cx: x.toFixed(3), cy: y.toFixed(3), r: item.focused ? '2.2' : '1.7', class: 'am-point' + (item.focused ? ' am-point-focus' : ''), 'data-point': item.name }, undefined, true));
+        item.node.setAttribute('x', (best.left - item.metrics.x).toFixed(3));
+        item.node.setAttribute('y', (best.top - item.metrics.y).toFixed(3));
+        textLayer.append(item.node);
+      }
+      measurement.remove();
       svg.dataset.view = selected;
       svg.dataset.yaw = yaw.toFixed(5);
       svg.dataset.pitch = pitch.toFixed(5);
