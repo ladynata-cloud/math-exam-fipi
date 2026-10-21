@@ -3,3 +3,7 @@
 
 /* The shared last-child rule has greater specificity than .task-scene .am-expand. */
 .textbook-model .am-controls .am-button.am-expand{flex-basis:100%;}
+
+/* Long theory terms must wrap inside narrow and nested help, without clipping. */
+button,summary,small{overflow-wrap:anywhere;hyphens:auto}
+button{max-width:100%;white-space:normal}

@@ -24,7 +24,7 @@ release because both content stages completed before the first was published:
   independent integration PASS at2026-10-21T22:35:08.314527Z.
 
 The intermediate237-card stage is not described as a prior public release.
-The full132-card addition preserves all183 earlier cards, runtime, styles,
+The full132-card addition preserves all183 earlier cards, runtime,
 persistence, grading, model viewer, source catalogue identities and existing
 regression assertions. Paid Claude remains explicitly deferred; no Claude
 consultation or approval is claimed. This adds content to the existing trainer.
@@ -94,3 +94,14 @@ mobile figures. Immutable identity/source checks and actual cloud visual review
 address them. Rollback is an ordinary scoped revert of this content addition;
 never delete or rewrite learner work. No force operation or gate weakening is
 part of this task.
+
+## Cloud-discovered layout correction
+
+The first exact-head run39688373435 found horizontal overflow in the theory15
+dialog at320px (exercises117 and135). Long Russian words in closed help summaries
+and buttons had no wrapping rule. The scoped stylesheet correction allows word
+wrapping/hyphenation in buttons, summaries and small source text and bounds button
+width to its parent. It neither clips content nor reduces font size. All315
+source/model/answer files remain byte-identical; browser overflow assertions stay
+unchanged. The former exact-head verdict does not approve this later CSS delta;
+focused independent review and a new complete cloud run are required.

@@ -15,6 +15,9 @@ Updated: 2026-10-22 (Asia/Novosibirsk)
 - Preserve the verified four-job browser workflow. Add122 targeted screenshot
   states to the85 existing ones; all315 cards and all their steps still run at
   both viewport widths. Exact-head integration and cloud visual review remain.
+- The first315-card cloud run exposed long-word overflow in narrow theory
+  dialogs. A scoped CSS wrap correction is under focused review; no content or
+  overflow assertion changed.
 - Next actions: freeze and independently review the composed Git snapshot;
   run cloud checks and inspect new images; publish and verify public bytes.
   Paid Claude remains deferred, no Claude verdict claimed.
