@@ -20,26 +20,26 @@ function create(saved,hash='map'){
  return {dom,w,d:w.document};
 }
 const click=(d,s)=>{const e=d.querySelector(s);assert(e,'missing '+s);e.click();};
-const enter=(w,d,v)=>{const e=d.querySelector('#answer');assert(e);e.value=String(v);e.dispatchEvent(new w.Event('input',{bubbles:true}));d.querySelector('#answerForm').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));};
+const enter=(w,d,v,prefix='answer')=>{const e=d.querySelector('#'+prefix);assert(e);e.value=String(v);e.dispatchEvent(new w.Event('input',{bubbles:true}));d.querySelector('#'+prefix+'Form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));};
 async function go(w,s){w.location.hash=s;await tick();}
 (async()=>{
  const {dom,w,d}=create();
  assert.equal(d.querySelectorAll('#cards>.card').length,21);await go(w,'foundation');assert.equal(d.querySelectorAll('.foundation-route>li').length,13);
  for(const m of w.PathData.practice.catalog){
   await go(w,'lesson='+m.id);assert(d.querySelector('#typeSelect'));
-  click(d,'[data-stage="1"]');assert(d.querySelector('#model'));
-  click(d,'[data-stage="2"]');let t=w.PathData.task(m.id,w.PathCourse.state().lessons[m.id].seed);
-  for(const s of t.steps)enter(w,d,s.a);
-  assert(d.querySelector('#lesson').textContent.includes('Разбор завершён'),m.id);
+  d.querySelector('#taskHelp').open=true;d.querySelector('#taskModel').open=true;await tick();assert(d.querySelector('#model'));
+  d.querySelector('#taskSteps').open=true;await tick();let t=w.PathData.task(m.id,w.PathCourse.state().lessons[m.id].seed);
+  for(const s of t.steps)enter(w,d,s.a,'stepAnswer');
+  assert(d.querySelector('#taskStepsBody').textContent.includes('Разбор завершён'),m.id);
   click(d,'#new');t=w.PathData.task(m.id,w.PathCourse.state().lessons[m.id].seed);
   if(t.display)assert(d.querySelector('.task-support svg,.task-support table'),m.id+' missing exam figure');
   enter(w,d,t.answer);assert(d.querySelector('#feedback').textContent.startsWith('Верно'),m.id+' check');
  }
  // A wrong first attempt must not become independent credit after correction.
- await go(w,'lesson=practice-percent-whole');click(d,'[data-stage="3"]');click(d,'#new');let id='practice-percent-whole',l=w.PathCourse.state().lessons[id],before=l.independent,t=w.PathData.task(id,l.seed);enter(w,d,t.answer+17);assert(d.querySelector('#ege-remediation a'));
+ await go(w,'lesson=practice-percent-whole');click(d,'#new');let id='practice-percent-whole',l=w.PathCourse.state().lessons[id],before=l.independent,t=w.PathData.task(id,l.seed);enter(w,d,t.answer+17);assert(d.querySelector('#ege-remediation a'));
  const returnLink=new URL(d.querySelector('#ege-remediation a').href);assert.equal(returnLink.searchParams.get('returnTo'),'/ege-baza/path/index.html#lesson='+id);enter(w,d,t.answer);assert.equal(l.independent,before);
  // Restore the exact lesson step and unfinished answer from the existing schema.
- await go(w,'lesson=practice-fraction-add');click(d,'[data-stage="2"]');const current=w.PathCourse.state().lessons['practice-fraction-add'];current.step=1;current.draft='3/';w.dispatchEvent(new w.Event('pagehide'));const saved=w.localStorage.getItem(w.PathCourse.KEY);const b=create(saved,'lesson=practice-fraction-add');assert.equal(b.d.querySelector('#answer').value,'3/');assert.equal(b.w.PathCourse.state().lessons['practice-fraction-add'].step,1);b.w.close();
+ await go(w,'lesson=practice-fraction-add');const current=w.PathCourse.state().lessons['practice-fraction-add'];current.step=1;current.stage=2;current.draft='3/';delete current.taskFirst;w.dispatchEvent(new w.Event('pagehide'));const saved=w.localStorage.getItem(w.PathCourse.KEY);const b=create(saved,'lesson=practice-fraction-add');assert.equal(b.d.querySelector('#stepAnswer').value,'3/');assert.equal(b.w.PathCourse.state().lessons['practice-fraction-add'].step,1);b.w.close();
  // New hyphenated lesson IDs return through the existing restricted return bridge.
  const back=new JSDOM('<body></body>',{url:returnLink.href,runScripts:'outside-only'});back.window.eval(fs.readFileSync(path.join(base,'ege-baza/return-to-course.js'),'utf8'));assert.equal(back.window.document.querySelector('#ege-return a').hash,'#lesson='+id);back.window.close();
  for(const bad of ['https://evil.example/','/trainers/trainer-board.html#map','/ege-baza/path/index.html?admin=1#map']){const x=new JSDOM('<body></body>',{url:'https://course.test/trainers/oge-basics/fraction-meaning.html?returnTo='+encodeURIComponent(bad),runScripts:'outside-only'});x.window.eval(fs.readFileSync(path.join(base,'ege-baza/return-to-course.js'),'utf8'));assert(!x.window.document.querySelector('#ege-return'));x.window.close();}

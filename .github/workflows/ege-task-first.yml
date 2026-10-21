@@ -1,0 +1,43 @@
+name: EGE 2027 — task-first courses
+on:
+  pull_request:
+    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-course-entry*', '.github/workflows/ege-task-first.yml']
+permissions:
+  contents: read
+jobs:
+  task-first:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+      - run: npx playwright install --with-deps chromium
+      - name: Profile task instructions and retained contracts
+        run: node --test tools/profile-task-first.test.cjs tools/profile-calm-map.test.cjs tools/profile-calm-state.test.cjs tools/profile-step-solutions.test.cjs tools/profile-input-ui.test.cjs tools/profile-independent-models.test.cjs
+      - name: Basic EGE all families and legacy state
+        run: node tools/ege-baza-task-first.test.cjs
+      - name: Profile simulated learners
+        env:
+          PROFILE_TASK_FIRST_SHOTS: artifacts/profile-task-first
+        run: node tools/profile-task-first.browser.cjs
+      - name: Base simulated learners
+        env:
+          EGE_TASK_FIRST_SHOTS: artifacts/base-task-first
+        run: node tools/ege-baza-task-first.browser.cjs
+      - name: Both course entrances
+        env:
+          EGE_ENTRY_SHOTS: artifacts/course-entries
+        run: node tools/ege-course-entry.browser.cjs
+      - name: Keep actual browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ege-task-first-visuals
+          path: artifacts/
+          retention-days: 7
+          if-no-files-found: warn

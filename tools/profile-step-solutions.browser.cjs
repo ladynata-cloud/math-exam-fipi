@@ -106,6 +106,7 @@ async function validateCross(row) {
         await seed(item);
         assert.equal((await session(page, item)).taskId, item.task.id);
         const container = page.locator('#task-solution'), open = container.locator('[data-solution-open]');
+        await page.locator('#hint').click(); // Current-step help contains the optional worked solution.
         await open.waitFor();
         assert.equal(await container.locator('[data-solution-panel]').count(), 0, label + ': future worked answer absent from DOM');
         const draft = item.mode === 'guided' && item.task.steps[0].choices ? item.task.steps[0].choices[0] : '1/7';
@@ -153,6 +154,7 @@ async function validateCross(row) {
       const staleItem = cases[0];
       for (const action of ['open', 'next', 'reopen']) {
         await seed(staleItem, '-stale-' + action);
+        await page.locator('#hint').click();
         if (action !== 'open') await page.locator('#task-solution [data-solution-open]').click();
         if (action === 'reopen') await page.locator('#task-solution [data-solution-open]').click();
         const other = await context.newPage(); await other.goto(base);
