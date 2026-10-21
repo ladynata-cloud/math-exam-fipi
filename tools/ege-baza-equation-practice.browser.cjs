@@ -1,7 +1,7 @@
 'use strict';
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const root=path.resolve(__dirname,'..');
-const openHelp=async(p,part)=>{if(!await p.locator('#taskHelp').evaluate(e=>e.open))await p.locator('#taskHelp>summary').click();const id=part==='model'?'taskModel':'taskSteps';if(!await p.locator('#'+id).evaluate(e=>e.open))await p.locator('#'+id+'>summary').click();};
+const openHelp=async(p,part)=>{if(!await p.locator('#taskHelp').evaluate(e=>e.open))await p.locator('#taskHelp>summary').click();const id=part==='model'?'taskModel':'taskSteps';if(!await p.locator('#'+id).evaluate(e=>e.open))await p.locator('#'+id+'>summary').click();await p.locator(part==='model'?'#model':'#taskStepsBody').waitFor({state:'visible'});if(part==='model')await p.waitForFunction(()=>!!document.querySelector('#model')?.textContent.trim());};
 const server=http.createServer((req,res)=>{const p=path.join(root,decodeURIComponent(req.url.split('?')[0]));try{res.setHeader('Content-Type',p.endsWith('.js')?'text/javascript':p.endsWith('.css')?'text/css':'text/html');res.end(fs.readFileSync(p));}catch{res.statusCode=404;res.end();}});
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port+'/ege-baza/path/index.html';let browser;
  try{browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE||undefined,args:['--no-sandbox','--disable-dev-shm-usage']});const p=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];p.on('pageerror',e=>errors.push(e.message));

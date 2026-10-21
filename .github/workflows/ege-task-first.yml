@@ -18,7 +18,7 @@ jobs:
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
       - run: npx playwright install --with-deps chromium
       - name: Profile task instructions and retained contracts
-        run: node --test tools/profile-task-first.test.cjs tools/profile-calm-map.test.cjs tools/profile-calm-state.test.cjs tools/profile-step-solutions.test.cjs tools/profile-input-ui.test.cjs tools/profile-independent-models.test.cjs
+        run: node --test tools/profile-task-first.test.cjs tools/profile-fraction-display.test.cjs tools/profile-calm-map.test.cjs tools/profile-calm-state.test.cjs tools/profile-step-solutions.test.cjs tools/profile-input-ui.test.cjs tools/profile-independent-models.test.cjs
       - name: Basic EGE all families and legacy state
         run: node tools/ege-baza-task-first.test.cjs
       - name: Profile simulated learners

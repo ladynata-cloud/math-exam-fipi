@@ -60,7 +60,7 @@
  function missing(){return '<h1>Раздел не найден</h1><p class="page-intro">Выберите нужный модуль на карте курса.</p><div class="actions">'+link('К карте курса','#map')+'</div>';}
  function render(focus=false){
   disposePage();disposePage=()=>{};
-  const s=readState(),r=route();if(['today','progress','backup'].includes(r.page)&&r.query.has('module')&&!allProgress.forModule(r.query.get('module')))r.page='missing';document.title=(titles[r.page]||'Модуль')+' · Базовый ЕГЭ · MathExam';
+  const s=readState(),r=route();if(['today','progress','backup'].includes(r.page)&&r.query.has('module')&&!allProgress.forModule(r.query.get('module')))r.page='missing';document.title=(titles[r.page]||'Модуль')+' · Базовый ЕГЭ 2027 · MathExam';
   main.innerHTML=r.page==='today'?today(s):r.page==='map'?map():r.page==='module'?modulePage(r.query,s):r.page==='foundation'?foundation(r.query):r.page==='progress'?progressPage(s):r.page==='teacher'?teacher():r.page==='backup'?rootBackup():missing();
   if(['today','progress','backup'].includes(r.page))main.insertAdjacentHTML('afterbegin',moduleChoices(r.page));
   if(r.page==='backup')disposePage=globalThis.EgeBazaBackupUI.mount(main,first.id);
