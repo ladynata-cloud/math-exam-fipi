@@ -8,6 +8,9 @@ body.pv-exam{margin:0;background:#f5f7f4;color:#202d25;font:19px/1.75 system-ui,
 .pv-controls{display:flex;flex-wrap:wrap;align-items:end;gap:14px;margin:24px 0}.pv-controls label{display:grid;gap:7px}.pv-controls details{width:100%}
 .pv-condition,.pv-question,.pv-reference{background:#fff;border:1px solid #d4dfd6;border-radius:14px;padding:24px}
 .pv-condition{margin:22px 0 26px}.pv-condition:empty{display:none}
+/* Cloned native descriptions carry small .problem-text/.descbody sizes.
+   Normalize prose in every variant without changing diagrams or headings. */
+.pv-shell .pv-condition,.pv-shell .pv-condition :where(div,p,span,b,strong,em,i,li,small,a){font-size:19px;line-height:1.75}
 .pv-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
 .pv-reference{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;scrollbar-gutter:stable;min-width:0}
 .pv-task-stream{display:grid;gap:26px;min-width:0}.pv-question{min-width:0;scroll-margin-top:18px}.pv-question-condition{margin-bottom:22px}.pv-question-condition>div>p:first-child{margin-top:0}

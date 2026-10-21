@@ -12,3 +12,6 @@
 .ocp-figure-pan:focus-visible{outline:3px solid #77a488;outline-offset:3px}
 @media(max-width:540px){.ocp-figure-pan.ocp-figure-large{max-height:360px}.minimal-course .ocp-primary-figure{padding:0}}
 .minimal-course #panel-train .ansrow label{font-size:18px!important;line-height:1.7}
+
+/* The explanatory proof lines inherit this size, including fraction numerators. */
+.minimal-course #panel-train .gsteps>li{font-size:18px;line-height:1.8}

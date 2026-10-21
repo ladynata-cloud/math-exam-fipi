@@ -33,6 +33,10 @@ async function captureUnansweredHelp(page,n,width){
   await page.locator('#courseHintPanel #gAsk').waitFor();
   assert.equal(await page.locator('#courseHintPanel #gAsk').inputValue(),'');
   assert(await page.evaluate(()=>window.eval('!trS.done&&!trS.shown&&trS.gres.length===0')),'guide has no solved or revealed answer');
+  const unreadable=await page.locator('#courseHintPanel .gsteps .gh,#courseHintPanel .gsteps .gh .frac .n,#courseHintPanel .gsteps .gh .frac .d').evaluateAll(nodes=>nodes.filter(n=>n.getClientRects().length).map(n=>({text:n.textContent.slice(0,50),size:parseFloat(getComputedStyle(n).fontSize)})).filter(n=>n.size<17.8));
+  assert.deepEqual(unreadable,[],'proof explanations and fraction terms are at least18px');
+  const clipped=await page.locator('#courseHintPanel .gsteps .gh').evaluateAll(nodes=>nodes.filter(n=>n.scrollWidth>n.clientWidth+1).map(n=>n.textContent.slice(0,60)));
+  assert.deepEqual(clipped,[],'proof formulas wrap within the step at '+width);
  }
  assert.equal(await area.inputValue(),draft,'draft survives opening guided help');
  await fit(page,`unanswered-help${n}/${width}`);
