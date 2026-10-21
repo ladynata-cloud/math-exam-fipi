@@ -59,7 +59,7 @@ async function layout(page,label){
     }else{await page.locator('#next').click();await layout(page,name+' started@'+width);}
     await page.locator(diag?'#finish-btn':'#finish').click();await page.locator('#result').waitFor({state:'visible'});
    }else if(!name.includes('-map.')){
-    const button=page.locator('button:visible,summary:visible').filter({hasText:/^Хочешь подсказку\?$/}).first();
+    const button=name==='practice-1-5-tires.html'?page.locator('#section-2 .pd-toggle'):page.locator('button:visible,summary:visible').filter({hasText:/^Хочешь подсказку\?$/}).first();
     await button.waitFor({state:'visible'});if(name==='percent-table-trainer.html')await page.locator('#practice-input').fill('12,5');const identity=await button.evaluate(el=>{if(!el.id)el.id='browser-hint-control';return{id:el.id,tag:el.tagName};});await button.focus();await button.press('Enter');
     if(identity.tag==='BUTTON')assert.equal(await page.locator('#'+identity.id).getAttribute('aria-expanded'),'true',name+' hint ARIA');
     if(name==='percent-table-trainer.html'){assert.equal(await page.locator('#practice-input').inputValue(),'12,5','hint preserves the draft');assert.equal(await page.evaluate(()=>document.activeElement.id),identity.id,'hint keeps keyboard focus');}

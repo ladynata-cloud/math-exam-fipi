@@ -23,9 +23,14 @@ async function choose(page,selector){const l=page.locator(selector).first();awai
 async function layout(page,stage,label){
  const size=await page.evaluate(()=>({width:innerWidth,html:document.documentElement.scrollWidth,body:document.body.scrollWidth}));
  assert.ok(size.html<=size.width+2&&size.body<=size.width+2,label+' page overflow '+JSON.stringify(size));
- const result=await stage.evaluate(el=>{const svg=el.querySelector('svg'),t=svg.querySelector('text'),box=t.getBBox(),w=svg.viewBox.baseVal.width,h=svg.viewBox.baseVal.height;return {left:box.x,top:box.y,right:box.x+box.width,bottom:box.y+box.height,w,h,stageWidth:el.clientWidth};});
- assert.ok(result.left>=0&&result.top>=0&&result.right<=result.w&&result.bottom<=result.h,label+' selected label inside the image '+JSON.stringify(result));
- assert.ok(result.stageWidth>=160,label+' model has usable width');
+ const result=await stage.evaluate(el=>{const svg=el.querySelector('svg'),w=svg.viewBox.baseVal.width,h=svg.viewBox.baseVal.height;return {labels:[...svg.querySelectorAll('text')].map(t=>{const b=t.getBBox();return {left:b.x,top:b.y,right:b.x+b.width,bottom:b.y+b.height,font:parseFloat(getComputedStyle(t).fontSize)*t.getScreenCTM().a};}),dimensions:[...svg.querySelectorAll('[data-tire-dimension]')].map(g=>{const b=g.getBBox();return {left:b.x,top:b.y,right:b.x+b.width,bottom:b.y+b.height};}),boxes:[...svg.querySelectorAll('[data-tire-callout] rect')].map(t=>{const b=t.getBBox();return {top:b.y,bottom:b.y+b.height};}),w,h,stageWidth:el.clientWidth};});
+ for(const box of result.labels){assert.ok(box.left>=0&&box.top>=0&&box.right<=result.w&&box.bottom<=result.h,label+' full text inside image '+JSON.stringify(box));assert.ok(box.font>=18,label+' attached label readable '+box.font);}
+ for(const box of result.dimensions)assert.ok(box.left>=0&&box.top>=0&&box.right<=420&&box.bottom<=400,label+' measurement witnesses inside reserved tire area '+JSON.stringify(box));
+ for(let i=1;i<result.boxes.length;i++)assert.ok(result.boxes[i].top>=result.boxes[i-1].bottom,label+' simultaneous callouts separated');
+ assert.ok(result.stageWidth>=235,label+' model has usable width');
+}
+async function selectParts(panel,keys){
+ const checks=panel.locator('[data-tire-part]');for(const check of await checks.all())await check.setChecked(keys.includes(await check.getAttribute('data-tire-part')));
 }
 async function run(page,width,fromOffline=false){
  const origin='http://127.0.0.1:'+server.address().port;
@@ -37,10 +42,10 @@ async function run(page,width,fromOffline=false){
   const lab=panel.locator('details').first();if(!await lab.evaluate(e=>e.open))await lab.locator(':scope>summary').click();
   const stage=panel.locator('.t3d-stage').first(),part=panel.locator('[data-pd-key=part]');await stage.waitFor({state:'visible'});
   const answer=section.locator('[data-pd-main="1"] input').first();if(await answer.count())await answer.fill('123,4');
-  const answers=await section.locator('input:not([data-pd-key]),select:not([data-pd-key])').evaluateAll(es=>es.map(e=>e.value));
+  const answers=await section.locator('input:not([data-pd-key]):not([data-tire-part]),select:not([data-pd-key])').evaluateAll(es=>es.map(e=>e.value));
   const progress=await page.evaluate(()=>JSON.stringify(Object.keys(localStorage).sort().map(k=>[k,localStorage.getItem(k)])));
   assert.equal(await stage.getAttribute('data-yaw'),'-38');assert.equal(await stage.getAttribute('data-pitch'),'-12');
-  await part.selectOption('width');await layout(page,stage,'initial '+width);
+  await selectParts(panel,['width']);await layout(page,stage,'initial '+width);
   await panel.locator('.t3d-root').first().screenshot({path:path.join(out,(fromOffline?'offline-':'')+'initial-'+step+'-'+width+'.png')});
   await panel.locator('[data-tire-view=front]').click();assert.match(await panel.locator('.t3d-view-note').textContent(),/ширина скрыта/);
   await panel.locator('[data-tire-view=tread]').click();assert.equal(await stage.getAttribute('data-yaw'),'90');
@@ -57,19 +62,24 @@ async function run(page,width,fromOffline=false){
   const rotation=[await stage.getAttribute('data-yaw'),await stage.getAttribute('data-pitch')];
   for(const [key,value]of [['width','255'],['profile','80'],['disk','19']]){const control=panel.locator('[data-pd-key='+key+']');await control.focus();await control.press('End');assert.equal(await control.inputValue(),value);}
   for(const [selected,value]of [['width',255],['side',204],['disk',482.6],['all',890.6],['radius',445.3]]){
-   await part.selectOption(selected);assert.ok(Math.abs(Number(await stage.locator('[data-tire-dimension]').getAttribute('data-world-value'))-value)<1e-8);
+   await selectParts(panel,[selected]);assert.ok(Math.abs(Number(await stage.locator('[data-tire-dimension]').getAttribute('data-world-value'))-value)<1e-8);
    await layout(page,stage,selected+' max '+width);
   }
-  await part.selectOption('width');await panel.locator('[data-tire-view=quarter]').click();await stage.screenshot({path:path.join(out,(fromOffline?'offline-':'')+'max-width-'+step+'-'+width+'.png')});
-  await part.selectOption('side');await stage.screenshot({path:path.join(out,(fromOffline?'offline-':'')+'height-'+step+'-'+width+'.png')});
+  await selectParts(panel,['width']);await panel.locator('[data-tire-view=quarter]').click();await stage.screenshot({path:path.join(out,(fromOffline?'offline-':'')+'max-width-'+step+'-'+width+'.png')});
+  await selectParts(panel,['side']);await stage.screenshot({path:path.join(out,(fromOffline?'offline-':'')+'height-'+step+'-'+width+'.png')});
+  await selectParts(panel,['width','side','disk']);await layout(page,stage,'three attached dimensions '+width);assert.equal(await stage.locator('[data-tire-dimension]').count(),3);await stage.screenshot({path:path.join(out,(fromOffline?'offline-':'')+'three-dimensions-'+step+'-'+width+'.png')});
+  // All selected sizes remain readable when a dimension turns edge-on and at both pitch limits.
+  await selectParts(panel,['width','side','disk','all','radius']);await stage.focus();await stage.press('Home');for(let i=0;i<18;i++)await stage.press('ArrowRight');for(let i=0;i<11;i++)await stage.press('ArrowUp');await layout(page,stage,'all dimensions upper pitch '+width);for(let i=0;i<20;i++)await stage.press('ArrowDown');await layout(page,stage,'all dimensions lower pitch '+width);await panel.locator('[data-tire-view=tread]').click();await layout(page,stage,'all dimensions edge-on '+width);await selectParts(panel,['width','side','disk']);await panel.locator('[data-tire-view=quarter]').click();
+  // A native checkbox supports Space as well as pointer/touch activation.
+  const widthCheck=panel.locator('[data-tire-part=width]');await widthCheck.focus();await widthCheck.press('Space');assert.equal(await widthCheck.isChecked(),false);await widthCheck.press('Space');assert.equal(await widthCheck.isChecked(),true);
   // Preserve a non-preset orientation through close/open, not merely a reset preset.
   await stage.focus();await stage.press('ArrowRight');const saved=[await stage.getAttribute('data-yaw'),await stage.getAttribute('data-pitch')];
   await panel.locator(':scope>.pd-return').click();assert.equal(await panel.isVisible(),false);await toggle.click();
   assert.deepEqual([await stage.getAttribute('data-yaw'),await stage.getAttribute('data-pitch')],saved);
-  assert.equal(await panel.locator('[data-pd-key=width]').inputValue(),'255');assert.equal(await part.inputValue(),'side');
-  assert.deepEqual(await section.locator('input:not([data-pd-key]),select:not([data-pd-key])').evaluateAll(es=>es.map(e=>e.value)),answers);
+  assert.equal(await panel.locator('[data-pd-key=width]').inputValue(),'255');assert.equal(await part.inputValue(),'width,side,disk');assert.equal(await panel.locator('[data-tire-part]:checked').count(),3);
+  assert.deepEqual(await section.locator('input:not([data-pd-key]):not([data-tire-part]),select:not([data-pd-key])').evaluateAll(es=>es.map(e=>e.value)),answers);
   assert.equal(await page.evaluate(()=>JSON.stringify(Object.keys(localStorage).sort().map(k=>[k,localStorage.getItem(k)]))),progress,'no auto-credit or draft mutation');
-  if(step===5){assert.equal(await stage.locator('[data-tire-baseline]').count(),1);assert.match(await panel.locator('.t3d-comparison').textContent(),/профиль 60% при тех же B и d/);}
+  if(step===5){assert.equal(await stage.locator('[data-tire-baseline]').count(),1);assert.match(await panel.locator('.t3d-comparison').textContent(),/высотой боковины 60% от B при тех же B и d/);}
   await toggle.click();records.push({width,step,offline:fromOffline,rotation});
  }
 }

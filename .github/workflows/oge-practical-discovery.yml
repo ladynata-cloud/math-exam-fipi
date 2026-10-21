@@ -36,6 +36,14 @@ jobs:
           node --test tools/oge-practical-*.test.cjs
           node tools/oge-check-links.mjs
           git diff --check
+      - name: Tire 3D geometry, touch, keyboard and offline package
+        env:
+          TIRES_3D_ARTIFACTS: artifacts/oge-practical-discovery/tires-3d
+        run: node tools/oge-practical-tires-3d.browser.cjs
+      - name: Complete tire variant, persistent tables and contextual help
+        env:
+          TIRES_FEEDBACK_ARTIFACTS: artifacts/oge-practical-discovery/tires-feedback
+        run: node tools/oge-practical-tires-feedback.browser.cjs
       - name: Retained original routes on mobile and desktop
         env:
           PRACTICAL_SCREENSHOT_DIR: artifacts/oge-practical-discovery/original-routes
@@ -44,10 +52,6 @@ jobs:
         env:
           PRACTICAL_DISCOVERY_ARTIFACTS: artifacts/oge-practical-discovery/new-method
         run: node tools/oge-practical-discovery.browser.cjs
-      - name: Tire 3D geometry, touch, keyboard and offline package
-        env:
-          TIRES_3D_ARTIFACTS: artifacts/oge-practical-discovery/tires-3d
-        run: node tools/oge-practical-tires-3d.browser.cjs
       - name: Save coverage and screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

@@ -8,9 +8,12 @@
  if(root)root.Tire3D=api;
 })(typeof window!=='undefined'?window:null,function(){
  'use strict';
- const TAU=2*Math.PI,green='#176747';
+ const TAU=2*Math.PI;
  const presets={quarter:{yaw:-38,pitch:-12},front:{yaw:0,pitch:0},tread:{yaw:90,pitch:0}};
  const frame={width:420,height:400,cx:210,cy:195,scale:.37};
+ const parts={width:{name:'Ширина шины',symbol:'B',color:'#176747'},side:{name:'Высота боковины',symbol:'H',color:'#91520a'},disk:{name:'Диаметр диска',symbol:'d',color:'#245d98'},all:{name:'Диаметр колеса',symbol:'D',color:'#744499'},radius:{name:'Радиус колеса',symbol:'R',color:'#14747a'}};
+ const selectedParts=value=>Object.keys(parts).filter(key=>(Array.isArray(value)?value:String(value||'').split(',')).includes(key));
+ function drawingLayout(value){const selected=selectedParts(value);return {selected,offset:selected.length?84:0,width:frame.width,height:frame.height+selected.length*84};}
  const fmt=n=>Number(n.toFixed(2)).toLocaleString('ru-RU');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let serial=0;
@@ -61,10 +64,10 @@
    const y=r+.55*H,guide=R+34;
    return {symbol:'B',value:B,points:[[0,y,-B/2],[0,y,B/2]],line:[[0,guide,-B/2],[0,guide,B/2]],direction:'axial'};
   }
-  if(part==='side')return {symbol:'H',value:H,points:[[0,r,.34*B],[0,R,.34*B]],line:[[0,r,z],[0,R,z]],direction:'radial'};
+  if(part==='side')return {symbol:'H',value:H,points:[[-r,0,.34*B],[-R,0,.34*B]],line:[[-r,0,z],[-R,0,z]],direction:'radial'};
   if(part==='disk')return {symbol:'d',value:dm,points:[[0,-r,.34*B],[0,r,.34*B]],line:[[0,-r,z],[0,r,z]],direction:'diameter'};
   if(part==='radius')return {symbol:'R',value:R,points:[[0,0,0],[R,0,0]],line:[[0,0,z],[R,0,z]],direction:'radial'};
-  return {symbol:'D',value:D,points:[[0,-R,.40*B],[0,R,.40*B]],line:[[0,-R,z],[0,R,z]],direction:'diameter'};
+  return {symbol:'D',value:D,points:[[0,-R,.40*B],[0,R,.40*B]],line:[[-120,-R,z],[-120,R,z]],direction:'diameter'};
  }
  function norm(v){const n=Math.hypot(...v)||1;return v.map(x=>x/n);}
  function faceColor(face,view,part){
@@ -78,32 +81,41 @@
  function path(points){return points.map(p=>p[0].toFixed(2)+','+p[1].toFixed(2)).join(' ');}
  function circlePath(r,z,view){return path(Array.from({length:65},(_,i)=>project(radial(r,z,i*TAU/64),view)));}
  function renderSvg(dim,view=presets.quarter,part='width',id='tire3d',compare=false){
-  const mesh=buildMesh(dim),m=measurement(dim,part);
+  const layout=drawingLayout(part),selected=layout.selected,mesh=buildMesh(dim);
   const faces=mesh.faces.map(f=>({face:f,points:f.points.map(v=>project(v,view))})).sort((a,b)=>a.points.reduce((s,p)=>s+p[2],0)/a.points.length-b.points.reduce((s,p)=>s+p[2],0)/b.points.length);
-  let html=`<defs><marker id="${id}-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M10 1L1 5L10 9" fill="none" stroke="${green}" stroke-width="2"/></marker></defs>`;
-  html+='<g data-tire-solid="1" aria-hidden="true">';
-  for(const {face,points}of faces){const color=faceColor(face,view,part);html+=`<polygon points="${path(points)}" fill="${color}" stroke="${color}" stroke-width=".35"/>`;}
+  let html='<defs>';
+  for(const key of selected)html+=`<marker id="${id}-${key}-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M10 1L1 5L10 9" fill="none" stroke="${parts[key].color}" stroke-width="2"/></marker>`;
+  html+=`</defs><g transform="translate(0 ${layout.offset})"><g data-tire-solid="1" aria-hidden="true">`;
+  for(const {face,points}of faces){const color=faceColor(face,view,selected.includes('side')?'side':selected.includes('all')?'all':'width');html+=`<polygon points="${path(points)}" fill="${color}" stroke="${color}" stroke-width=".35"/>`;}
   html+='</g>';
   if(compare){
    const baseline=dimensions({B:dim.B,p:60,d:dim.d});
    html+=`<g data-tire-baseline="60" fill="none" stroke="#56846e" stroke-width="1.6" stroke-dasharray="4 4" opacity=".85"><polyline points="${circlePath(baseline.R,-.40*dim.B,view)}"/><polyline points="${circlePath(baseline.R,.40*dim.B,view)}"/></g>`;
   }
-  const ends=m.line.map(v=>project(v,view)),touch=m.points.map(v=>project(v,view)),length=Math.hypot(ends[1][0]-ends[0][0],ends[1][1]-ends[0][1]);
-  html+=`<g data-tire-dimension="${part}" data-world-value="${m.value}" fill="none" stroke="${green}" stroke-linecap="round">`;
-  touch.forEach((p,i)=>{html+=`<line x1="${p[0]}" y1="${p[1]}" x2="${ends[i][0]}" y2="${ends[i][1]}" stroke-width="1.3" stroke-dasharray="3 3"/><circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#fff" stroke-width="2"/>`;});
-  if(length>9)html+=`<line x1="${ends[0][0]}" y1="${ends[0][1]}" x2="${ends[1][0]}" y2="${ends[1][1]}" stroke="#fff" stroke-width="6"/><line x1="${ends[0][0]}" y1="${ends[0][1]}" x2="${ends[1][0]}" y2="${ends[1][1]}" stroke-width="2.5" marker-start="url(#${id}-arrow)" marker-end="url(#${id}-arrow)"/>`;
-  const dx=ends[1][0]-ends[0][0],dy=ends[1][1]-ends[0][1],offset=length>9?[-dy/length*19,dx/length*19]:[18,-8];
-  const mid=[(ends[0][0]+ends[1][0])/2,(ends[0][1]+ends[1][1])/2];
-  const candidate=[mid[0]+offset[0],mid[1]+offset[1]];
-  const safe=candidate[0]>=22&&candidate[0]<=frame.width-22&&candidate[1]>=22&&candidate[1]<=frame.height-22;
-  const x=Math.max(22,Math.min(frame.width-22,mid[0]+(safe?1:-1)*offset[0])),y=Math.max(22,Math.min(frame.height-22,mid[1]+(safe?1:-1)*offset[1]));
-  html+=`<text x="${x}" y="${y}" fill="${green}" stroke="#fff" stroke-width="4" paint-order="stroke" font-size="25" font-weight="700" text-anchor="middle" dominant-baseline="middle">${m.symbol}</text></g>`;
+  const annotations=[];
+  for(const key of selected){
+   const m=measurement(dim,key),color=parts[key].color,ends=m.line.map(v=>project(v,view)),touch=m.points.map(v=>project(v,view)),length=Math.hypot(ends[1][0]-ends[0][0],ends[1][1]-ends[0][1]);
+   html+=`<g data-tire-dimension="${key}" data-world-value="${m.value}" fill="none" stroke="${color}" stroke-linecap="round">`;
+   touch.forEach((p,i)=>{html+=`<line x1="${p[0]}" y1="${p[1]}" x2="${ends[i][0]}" y2="${ends[i][1]}" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#fff" stroke-width="2"/>`;});
+   if(length>9)html+=`<line x1="${ends[0][0]}" y1="${ends[0][1]}" x2="${ends[1][0]}" y2="${ends[1][1]}" stroke="#fff" stroke-width="7"/><line x1="${ends[0][0]}" y1="${ends[0][1]}" x2="${ends[1][0]}" y2="${ends[1][1]}" stroke-width="3" marker-start="url(#${id}-${key}-arrow)" marker-end="url(#${id}-${key}-arrow)"/>`;
+   const mid=[(ends[0][0]+ends[1][0])/2,(ends[0][1]+ends[1][1])/2];
+   annotations.push({key,m,color,mid,length});html+='</g>';
+  }
+  html+='</g>';
+  // Full names live inside the visualization. Separate rows keep any combination
+  // readable; each leader follows its real dimension as the wheel rotates.
+  annotations.forEach(({key,m,color,mid,length},i)=>{
+   const y=i===0?6:frame.height+layout.offset+(i-1)*84+6,cy=y+36,mx=mid[0],my=mid[1]+layout.offset;
+   const route=i===0?`M${mx} ${my}L210 ${y+74}`:`M${mx} ${my}L${9+(i-1)*4} ${my}V${cy}H24`;
+   const value=key==='disk'?`${m.symbol} = ${fmt(m.value)} мм (${fmt(dim.d)}″)`:`${m.symbol} = ${fmt(m.value)} мм`;
+   html+=`<g data-tire-callout="${key}" data-projected-hidden="${length<=9}" aria-hidden="true"><path d="${route}" fill="none" stroke="#fff" stroke-width="5"/><path d="${route}" fill="none" stroke="${color}" stroke-width="2"/><circle cx="${mx}" cy="${my}" r="3" fill="${color}"/><rect x="24" y="${y}" width="372" height="74" rx="10" fill="#fff" stroke="${color}" stroke-width="2"/><text x="210" y="${y+31}" text-anchor="middle" font-family="Arial,sans-serif" font-size="32" font-weight="600" fill="${color}">${escape(parts[key].name)}</text><text x="210" y="${y+65}" text-anchor="middle" font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="${color}">${escape(value)}</text></g>`;
+  });
   return html;
  }
  function selectedText(dim,part){
   const {B,p,d,H,dm,D,R}=dim;
   if(part==='width')return `B = ${fmt(B)} мм — ширина между самыми выпуклыми частями боковин.`;
-  if(part==='side')return `H = ${fmt(H)} мм — высота профиля: ${fmt(B)} · ${fmt(p)} ÷ 100.`;
+  if(part==='side')return `H = ${fmt(H)} мм — высота боковины: ${fmt(B)} · ${fmt(p)} ÷ 100.`;
   if(part==='disk')return `Диаметр диска: ${fmt(dm)} мм = ${fmt(d)} · 25,4.`;
   if(part==='radius')return `Радиус: ${fmt(R)} мм = ${fmt(D)} ÷ 2.`;
   return `D = ${fmt(D)} мм: ${fmt(H)} + ${fmt(dm)} + ${fmt(H)}.`;
@@ -113,6 +125,9 @@
   const el=(tag,text,cls)=>{const n=doc.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
   const root=el('div',null,'t3d-root');root.dataset.tire3d='1';host.append(root);
   const marking=el('p',null,'t3d-marking');root.append(marking);
+  const choices=el('fieldset',null,'t3d-dimensions');choices.append(el('legend','Что показать на шине?'));root.append(choices);
+  const checkboxes={};for(const [key,info] of Object.entries(parts)){const label=el('label',null,'t3d-dimension-choice'),check=el('input');check.type='checkbox';check.value=key;check.dataset.tirePart=key;label.style.setProperty('--t3d-dimension-color',info.color);label.append(check,el('span',info.name+' '+info.symbol));choices.append(label);checkboxes[key]=check;}
+  const part=el('input');part.type='hidden';part.dataset.pdKey='part';part.value=compare?'all':'width';root.append(part);
   const stage=el('div',null,'pd-picture t3d-stage');stage.tabIndex=0;stage.setAttribute('role','group');stage.setAttribute('aria-label','Вращать колесо: потяни мышью или пальцем, либо нажимай стрелки. Home — объёмный вид.');stage.setAttribute('aria-keyshortcuts','ArrowLeft ArrowRight ArrowUp ArrowDown Home');root.append(stage);
   const svg=doc.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox',`0 0 ${frame.width} ${frame.height}`);svg.setAttribute('role','img');stage.append(svg);
   const read=el('p',null,'pd-reading t3d-reading');read.setAttribute('aria-live','polite');root.append(read);
@@ -120,9 +135,7 @@
   const views=el('div',null,'t3d-views');views.setAttribute('aria-label','Выбери вид колеса');root.append(views);
   const controls=el('div',null,'pd-controls t3d-controls');root.append(controls);
   function range(key,label,min,max,value,step){const box=el('label',null,'pd-control'),name=el('span',label),out=el('output',fmt(value)),input=el('input');input.type='range';Object.assign(input,{min,max,value,step});input.dataset.pdKey=key;input.setAttribute('aria-label',label);input.addEventListener('input',()=>out.textContent=fmt(+input.value));box.append(name,out,input);controls.append(box);return input;}
-  const width=range('width','Ширина B, мм',155,255,195,10),profile=range('profile','Высота профиля, % от B',40,80,60,5),disk=range('disk','Диаметр диска, дюймы',13,19,15,1);
-  const label=el('label','Показать размер','pd-control'),part=el('select');part.dataset.pdKey='part';part.setAttribute('aria-label','Показать размер');
-  for(const [value,text]of [['width','Ширина B'],['side','Высота профиля H'],['disk','Диаметр диска d'],['all','Диаметр колеса D'],['radius','Радиус колеса']]){const o=el('option',text);o.value=value;part.append(o);}part.value=compare?'all':'width';label.append(part);controls.append(label);
+  const width=range('width','Ширина B, мм',155,255,195,10),profile=range('profile','Высота боковины H, % от ширины B',40,80,60,5),disk=range('disk','Диаметр диска, дюймы',13,19,15,1);
   const rotation={};for(const key of ['yaw','pitch']){const input=el('input');input.type='hidden';input.value=presets.quarter[key];input.dataset.pdKey='tire-'+key;root.append(input);rotation[key]=input;}
   const buttons={};
   function action(parent,text,fn){const b=el('button',text,'pd-action');b.type='button';b.addEventListener('click',fn);parent.append(b);return b;}
@@ -132,14 +145,19 @@
   const zoom=action(root,'Увеличить модель',()=>{const on=zoom.getAttribute('aria-pressed')!=='true';zoom.setAttribute('aria-pressed',String(on));zoom.textContent=on?'Уменьшить модель':'Увеличить модель';stage.classList.toggle('pd-picture-zoomed',on);});zoom.dataset.pdChoice='zoom';zoom.setAttribute('aria-pressed','false');
   const comparison=compare?el('p',null,'pd-note t3d-comparison'):null;if(comparison)root.append(comparison);
   function draw(){
-   const dim=dimensions({B:+width.value,p:+profile.value,d:+disk.value}),camera=view(),m=measurement(dim,part.value),ends=m.line.map(v=>project(v,camera)),hidden=Math.hypot(ends[1][0]-ends[0][0],ends[1][1]-ends[0][1])<9;
-   svg.innerHTML=renderSvg(dim,camera,part.value,id,compare);svg.setAttribute('aria-label',`Объёмная учебная модель ${fmt(dim.B)}/${fmt(dim.p)} R${fmt(dim.d)}. ${selectedText(dim,part.value)}`);
-   marking.textContent=`${fmt(dim.B)}/${fmt(dim.p)} R${fmt(dim.d)}`;read.textContent=selectedText(dim,part.value);
+   const dim=dimensions({B:+width.value,p:+profile.value,d:+disk.value}),camera=view(),selected=selectedParts(part.value),layout=drawingLayout(selected);
+   part.value=selected.join(',');for(const key of Object.keys(checkboxes))checkboxes[key].checked=selected.includes(key);
+   svg.setAttribute('viewBox',`0 0 ${layout.width} ${layout.height}`);svg.innerHTML=renderSvg(dim,camera,selected,id,compare);
+   const description=selected.map(key=>selectedText(dim,key)).join(' ');
+   svg.setAttribute('aria-label',`Объёмная учебная модель ${fmt(dim.B)}/${fmt(dim.p)} R${fmt(dim.d)}. ${description}`);
+   marking.textContent=`${fmt(dim.B)}/${fmt(dim.p)} R${fmt(dim.d)}`;read.textContent=description||'Отметь размер флажком над колесом.';
    stage.dataset.yaw=camera.yaw;stage.dataset.pitch=camera.pitch;stage.dataset.selectedDimension=part.value;
-   viewNote.textContent=hidden?'С этой стороны размер скрыт. Поверни колесо или выбери другой вид.':part.value==='width'?'Ширина идёт вдоль оси колеса. Протектор немного уже.':'Зелёный отрезок показывает выбранный размер.';if(hidden&&part.value==='width')viewNote.textContent='С этой стороны ширина скрыта. Поверни колесо или нажми «Со стороны протектора».';
+   const hidden=selected.filter(key=>{const ends=measurement(dim,key).line.map(v=>project(v,camera));return Math.hypot(ends[1][0]-ends[0][0],ends[1][1]-ends[0][1])<9;});
+   viewNote.textContent=hidden.includes('width')?'С этой стороны ширина скрыта. Поверни колесо или нажми «Со стороны протектора».':hidden.length?'С этой стороны один из размеров скрыт. Поверни колесо или выбери другой вид.':selected.includes('width')?'Ширина идёт вдоль оси колеса. Протектор немного уже.':'Цветные отрезки соединяют подписи с выбранными размерами.';
    for(const key of Object.keys(buttons))buttons[key].setAttribute('aria-pressed',String(Math.abs(camera.yaw-presets[key].yaw)<.001&&Math.abs(camera.pitch-presets[key].pitch)<.001));
-   if(comparison){const baseline=dimensions({B:dim.B,p:60,d:dim.d}),diff=dim.D-baseline.D;comparison.textContent=`Пунктир — профиль 60% при тех же B и d. Его диаметр ${fmt(baseline.D)} мм. ${diff===0?'Диаметры равны.':`Текущий диаметр ${diff>0?'больше':'меньше'} на ${fmt(Math.abs(diff))} мм; радиус — на ${fmt(Math.abs(diff)/2)} мм.`}`;}
+   if(comparison){const baseline=dimensions({B:dim.B,p:60,d:dim.d}),diff=dim.D-baseline.D;comparison.textContent=`Пунктир — колесо с высотой боковины 60% от B при тех же B и d. Его диаметр ${fmt(baseline.D)} мм. ${diff===0?'Диаметры равны.':`Текущий диаметр ${diff>0?'больше':'меньше'} на ${fmt(Math.abs(diff))} мм; радиус — на ${fmt(Math.abs(diff)/2)} мм.`}`;}
   }
+  Object.values(checkboxes).forEach(check=>check.addEventListener('input',()=>{part.value=Object.keys(checkboxes).filter(key=>checkboxes[key].checked).join(',');part.dispatchEvent(new win.Event('input',{bubbles:true}));}));
   [width,profile,disk,part,rotation.yaw,rotation.pitch].forEach(input=>input.addEventListener('input',draw));
   let drag=null;
   stage.addEventListener('pointerdown',event=>{if(event.button!==undefined&&event.button!==0)return;drag={id:event.pointerId,x:event.clientX,y:event.clientY,camera:view()};stage.setPointerCapture?.(event.pointerId);stage.classList.add('t3d-dragging');stage.focus({preventScroll:true});});
@@ -149,5 +167,5 @@
   stage.addEventListener('keydown',event=>{const camera=view(),keys={ArrowLeft:[-10,0],ArrowRight:[10,0],ArrowUp:[0,-8],ArrowDown:[0,8]};if(event.key==='Home'){event.preventDefault();setView(presets.quarter.yaw,presets.quarter.pitch);}else if(keys[event.key]){event.preventDefault();setView(camera.yaw+keys[event.key][0],camera.pitch+keys[event.key][1]);}});
   draw();return {root,stage,draw};
  }
- return {dimensions,buildMesh,rotate,project,measurement,renderSvg,selectedText,mount,presets,frame};
+ return {dimensions,buildMesh,rotate,project,measurement,renderSvg,selectedText,mount,presets,frame,parts,selectedParts,drawingLayout};
 });

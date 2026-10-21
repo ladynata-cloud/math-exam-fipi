@@ -17,10 +17,11 @@ function foldAll(selector,label){all(selector).forEach(n=>fold(n,label));}
 function moveBefore(node,reference){if(node&&reference&&node!==reference&&!node.contains(reference)&&node.nextElementSibling!==reference)reference.before(node);}
 function hintButton(button,panel){
   if(!button || !panel)return;
-  button.textContent=button.dataset.pdSecondary==='1'?'Показать подсказку к этой задаче':'Хочешь подсказку?';button.classList.add('pm-hint-button');
+  button.classList.add('pm-hint-button');
   if(!panel.id)panel.id='pm-help-'+(++serial);
   button.setAttribute('aria-controls',panel.id);
   const shown=!panel.hidden&&(panel.classList.contains('show')||panel.closest('.hint-open')||panel.id==='feedback');
+  button.textContent=doc.body.dataset.practicalPage==='tires'?(shown?'Убрать подсказку':'Хочешь подсказку?'):(button.dataset.pdSecondary==='1'?'Показать подсказку к этой задаче':'Хочешь подсказку?');
   button.setAttribute('aria-expanded',shown?'true':'false');
 }
 function stepList(steps){return steps.map(s=>'<div class="pm-model-step">'+s+'</div>').join('');}
@@ -137,8 +138,11 @@ function decorate(){
       if(card){
         const legend=one('.dim-legend',card);if(legend){const d=fold(legend,'Хочешь подсказку?');if(d)d.classList.add('pm-wheel-hint');}
         all('#section-0 .figures, #section-0 figure.fig').forEach(n=>fold(n,'Модель колеса'));
+        all('.pm-wheel-hint').forEach(d=>{const summary=one('summary',d);if(summary)summary.textContent=d.open?'Убрать подсказку':'Хочешь подсказку?';});
       }
     }
+    if(page==='tires'&&global.TireLearningFlow)global.TireLearningFlow.decorate();
+    if(page==='tires'&&global.TireVariantLayout)global.TireVariantLayout.decorate();
   }finally{if(observer)observer.observe(doc.body,{subtree:true,childList:true});}
 }
 function schedule(){if(scheduled)return;scheduled=true;Promise.resolve().then(()=>{scheduled=false;decorate();});}
@@ -157,7 +161,7 @@ function init(){
     foldAll('#group-tabs','Выбрать тему');foldAll('#chip-row','Выбрать задание');foldAll('.sidebar','Справочник · мои результаты');
     moveBefore(one('#task-card'),one('.bath-card'));
   }else if(page==='tires'){
-    foldAll('.variant-bar','Выбрать вариант');foldAll('.roadmap','Как устроена тренировка');foldAll('#step-stepper','Выбрать шаг');
+    if(!global.TireVariantLayout)foldAll('.variant-bar','Выбрать вариант');foldAll('.roadmap','Как устроена тренировка');foldAll('#step-stepper',global.TireVariantLayout?'Перейти к вопросу':'Выбрать шаг');
     const side=one('.sidebar');if(side)all('.side-card',side).slice(1).forEach(n=>fold(n,'Формулы · результаты · режимы'));
   }else if(page==='paper-sheets'){
     const card=one('#taskCard'),chart=one('#paper');
