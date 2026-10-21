@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Интерактивный тренажёр: как читать план и условие в заданиях 1–5 ОГЭ по математике 2026">
+<meta name="description" content="Интерактивный тренажёр: как читать план и условие в заданиях 1–5 ОГЭ по математике 2027">
 <title>Как читать план и условие · ОГЭ 1–5</title>
 <style>
   :root {
@@ -64,7 +64,7 @@
     <div class="nav-left">
       <a class="back" href="practice-1-5-map.html">← К карте тренажёров</a>
       <span class="topic">practicePlanReadingTrainer</span>
-      <span class="badge">ОГЭ-2026</span>
+      <span class="badge">ОГЭ-2027</span>
     </div>
     <div class="nav-right">
       <div class="modes" role="group" aria-label="Режим работы">
@@ -322,7 +322,7 @@
   }
   function resultText(){
     const weak=skills.filter(s=>{const st=state.skillStats[s];return st.total&&st.right<st.total;});
-    return `Тренажёр «Как читать план и условие» (ОГЭ-2026): ${state.score} из 10. Комплект: ${state.variant}. ${weak.length?'Повторить: '+weak.join(', ')+'.':'Все базовые навыки выполнены без ошибок.'}`;
+    return `Тренажёр «Как читать план и условие» (ОГЭ-2027): ${state.score} из 10. Комплект: ${state.variant}. ${weak.length?'Повторить: '+weak.join(', ')+'.':'Все базовые навыки выполнены без ошибок.'}`;
   }
   $('copy').addEventListener('click',async()=>{const text=resultText();try{await navigator.clipboard.writeText(text);$('copy-note').textContent='Результат скопирован. Вернитесь в Stepik и вставьте его в поле ответа.';}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();$('copy-note').textContent='Результат скопирован.';}});
   start();

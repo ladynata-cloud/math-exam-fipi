@@ -2,7 +2,23 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: consistent exam-first OGE course
+## In progress: OGE 2027 season labels
+
+- [Scope](tasks/OGE_2027_SEASON.md): update active season copy, copied results,
+  catalogs and the practical download bundle; retain source dates and progress
+  identity. The owner continues to authorize publication.
+- Next: verify scoped copy and unchanged engines; publish the single PR after
+  checks; verify the published pages and archive. Release evidence is in the PR.
+
+## Published: consistent exam-first OGE course
+
+- PR293 merged as `81712b878b7657f69b7d299f94c9adebb45fad55`, parent
+  `a006abab6ca2a0148c4b51739da0d5e080f39fe9`. All ten exact-head CI workflows
+  passed; Pages run39589150975 succeeded. The preceding release verification
+  matched all53 public assets and checked the course and tire quiz live.
+- Existing task15 coverage remains one external-angle lesson, not a complete
+  prototype bank.
+
 
 - [Scope](tasks/OGE_COURSE_EXAM_VARIANTS.md): extend the continuous variant to
   seven remaining practical storylines; improve remaining first/second-part

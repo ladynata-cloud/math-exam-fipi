@@ -8,6 +8,10 @@ const files=fs.readdirSync(dir).filter(n=>n.endsWith('.html')&&n!=='index.html')
 const tick=()=>new Promise(r=>setTimeout(r,25));
 function inline(html){return [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(m=>! /\bsrc\s*=/.test(m[1])).map(m=>m[2]);}
 function normalize(name,text){
+ // Owner-requested season copy only; the original bank/engine hash stays pinned.
+ text=text.replace('Входная диагностика ОГЭ-2027 по заданиям 1–5:', 'Входная диагностика ОГЭ-2026 по заданиям 1–5:')
+  .replace('Тренажёр «Как читать план и условие» (ОГЭ-2027):', 'Тренажёр «Как читать план и условие» (ОГЭ-2026):')
+  .replace('Проверочная работа «Планы и маршруты» (ОГЭ-2027):', 'Проверочная работа «Планы и маршруты» (ОГЭ-2026):');
  text=text.replace(/^  if\(window\.PracticalMinimal\) PracticalMinimal\.mountHint[^\n]*\n/gm,'')
   .replace(/^  if\(mode==='practice' && window\.PracticalMinimal\) PracticalMinimal\.mountHint[^\n]*\n/gm,'');
  if(name.includes('roads-grid'))text=text.replace("loadStoredSession()||catalogSession(0,0,'practice','off')","loadStoredSession()||catalogSession(0,0,'learn','off')").replace('id="hint-btn">Хочешь подсказку?','id="hint-btn">Подсказка');
