@@ -1,4 +1,5 @@
 'use strict';
+const retainedEngine=require('./oge-practical-retained-engine.cjs');
 /* Run with Playwright's installed Chromium. Covers actual layouts, keyboard and retained scenario data. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright');
@@ -6,7 +7,7 @@ const root=path.resolve(__dirname,'..'),fallback=process.env.OGE_SOURCE_ROOT||ro
 const output=process.env.PRACTICAL_SCREENSHOT_DIR||path.join(root,'artifacts/oge-practical-minimal');
 const names=['practice-1-5-map.html','practice-1-5-roads-grid.html','practice-1-5-roads-schema.html','practice-1-5-tires.html','practice-1-5-stoves.html','practice-1-5-land-plots.html','practice-1-5-apartments.html','practice-1-5-tariffs.html','practice-1-5-paper-sheets.html','percent-table-trainer.html','practice-1-5-plan-reading.html','practice-1-5-entry-diagnostic-2026.html','practice-1-5-routes-checkpoint-2026.html'];
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.json':'application/json','.png':'image/png'};
-const server=http.createServer((req,res)=>{let p;try{p=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{res.writeHead(400).end();return;}for(const base of [root,fallback]){const f=path.resolve(base,'.'+p);if(!f.startsWith(base+path.sep))continue;if(fs.existsSync(f)&&fs.statSync(f).isFile()){res.setHeader('Content-Type',mime[path.extname(f)]||'application/octet-stream');res.end(fs.readFileSync(f));return;}}res.writeHead(404).end('not found');});
+const server=http.createServer((req,res)=>{let p;try{p=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{res.writeHead(400).end();return;}for(const base of [root,fallback]){const f=path.resolve(base,'.'+p);if(!f.startsWith(base+path.sep))continue;if(fs.existsSync(f)&&fs.statSync(f).isFile()){res.setHeader('Content-Type',mime[path.extname(f)]||'application/octet-stream');res.end(path.extname(f)==='.html'?retainedEngine(fs.readFileSync(f)):fs.readFileSync(f));return;}}res.writeHead(404).end('not found');});
 let browser;
 async function reveal(locator){
  // Open the real native details by keyboard, from outer to inner.

@@ -44,14 +44,15 @@ function typeFor(page,type,textValue){
   if(/стиральн|электроплит|5\./.test(t))return 'compare';
   return 'map';
  }
- if(page==='roads-grid')return /магазин|стоимост|дешев/.test(t)?'purchase':/врем|минут/.test(t)?'journey':/по прямой|расстояни.*прям/.test(t)?'triangle':/километр|шоссе через/.test(t)?'route':'map';
- if(page==='roads'||page==='roads-schema')return ({1:'map',2:'route',3:'triangle',4:'journey',5:'fuel'})[type]||'route';
+ if(page==='roads-grid')return /магазин|стоимост|дешев/.test(t)?'purchase':/врем|минут/.test(t)?'journey':/по прямой|расстояни.*прям/.test(t)?'triangle':/километр|шоссе через/.test(t)?'route':'road-map';
+ if(page==='roads'||page==='roads-schema')return ({1:'road-map',2:'route',3:'triangle',4:'journey',5:'fuel'})[type]||'route';
  if(page==='land'||page==='land-plots')return type==='match'?'land-map':type==='percent'?'percent':type==='tiles'?'packs':type==='econ'?(/краск|покрас|магазин/.test(t)?'packs':'payback'):/расстояни|периметр/.test(t)?'length':'area';
  if(page==='tariffs')return type==='match'||type==='count'?'chart':type==='percent'?(/сколько рублей[\s\S]*2018|прежн.*(?:цен|плат)|восстанов|прошлогод/.test(t)?'inverse-percent':'percent'):type==='switch'?'annual':'cost';
  return 'lookup';
 }
 const plans={
  map:['Найди опорный объект, затем двигайся по описанию.', 'Нажми кнопки участков: сначала «Вход → коридор», затем «Коридор → комната». Сравни с описанием своей задачи.', 'Проверяй по одной зацепке: вход, соседство, поворот, выход. В ответе соблюдай порядок названий в вопросе.'],
+ 'road-map':['Начни с известного населённого пункта и проследи маршрут до поворота.', 'На учебной схеме Лесное обозначено буквой А. Из Лесного в Озёрное едут по шоссе через Полевое; в Полевом поворачивают под прямым углом. Выбирай участки в порядке движения. Какая буква обозначает Полевое, а какая — Озёрное?', 'Полевое узнаём по прямому углу шоссе, Озёрное — по концу маршрута. Пунктир — отдельная прямая дорога, а не путь через поворот. В своём условии так же свяжи известный пункт, поворот и конец маршрута; затем запиши цифры в порядке названий вопроса.'],
  'land-map':['Ищи связь «внутри».', 'Огород — большой прямоугольник. Узкая теплица находится внутри него. Нажимай кнопки букв: сначала выбери огород, затем теплицу.', 'Положение и форма помогают узнать объект без вычислений. На основном плане найди объекты по описанию и запиши их цифры в порядке таблицы. Буквы этой учебной модели не являются ответом к задаче.'],
  route:['Разбей маршрут на отдельные участки.', 'Нажимай кнопки выбора участков: выбранные отрезки окрасятся. Выбери оба отрезка пути через поворот.', 'Путь через поворот равен сумме двух длин. Прямая дорога между концами — другой маршрут.'],
  journey:['Для каждого участка сначала найди время.', 'Увеличь скорость при той же длине. Что произойдёт со временем? Затем добавь второй участок.', 'Время = расстояние ÷ скорость. При километрах и км/ч получатся часы; умножь на 60, чтобы получить минуты. Времена участков складываются.'],
@@ -118,6 +119,22 @@ function buildModel(host,kind,options={}){
   }
   button(controls,'Начать заново',()=>{stage=0;render();read('Сначала выбери огород: большой прямоугольник с теплицей внутри.');});
   render();read('Сначала выбери огород: большой прямоугольник с теплицей внутри.');
+ }else if(kind==='road-map'){
+  let stage=0;const choices=[];
+  const render=()=>{
+   draw(line(55,45,55,165,stage>0?amber:green,6)+line(55,165,290,165,stage>1?amber:green,6)+`<line data-road-example="direct" x1="55" y1="45" x2="290" y2="165" stroke="${blue}" stroke-width="3" stroke-dasharray="7 5"/><path d="M55 145H75V165" stroke="${green}" fill="none" stroke-width="2"/>`+[[55,45,'А'],[55,165,'Б'],[290,165,'В']].map(([x,y,name])=>`<circle data-road-example-node="${name}" cx="${x}" cy="${y}" r="6" fill="white" stroke="${green}" stroke-width="2"/>`).join('')+text(78,42,'А — Лесное',green,'start')+text(55,197,'Б')+text(290,197,'В')+text(180,225,'Сплошная линия — шоссе'));
+   choices.forEach((b,i)=>b.setAttribute('aria-pressed',String(i<stage)));
+  };
+  for(const [i,label]of ['А → Б по шоссе','Б → В по шоссе','А → В по прямой'].entries()){
+   const b=button(controls,label,()=>{
+    if(i===2){read(stage===0?'Пунктир идёт напрямую, без поворота. По условию нужно ехать по шоссе через Полевое. Выбери сплошную линию от А.':stage===1?'Пунктир — отдельная прямая дорога. Мы уже у поворота Б: продолжи по шоссе Б → В.':'Маршрут через поворот уже пройден. Начни заново или вернись к своей задаче; выбирать прямую дорогу теперь не нужно.');return;}
+    if(stage===0){if(i!==0){read('Начни у известного пункта: Лесное — буква А. Найди участок шоссе, который выходит из А.');return;}stage=1;render();read('Доехали до Б: здесь шоссе поворачивает под прямым углом. Значит, Б — Полевое. Теперь выбери шоссе после поворота.');}
+    else if(stage===1){if(i!==1){read('Мы уже у поворота Б. Продолжи по шоссе от Б к следующему пункту.');return;}stage=2;render();read('Маршрут найден: А — Лесное, Б — Полевое, В — Озёрное. Теперь найди такие же связи на плане своей задачи. Эти буквы не являются её ответом.');}
+    else read('Маршрут уже пройден. Начни заново или вернись к своему плану и найди пункт поворота по его описанию.');
+   });b.dataset.pdChoice=String(i+1);b.setAttribute('aria-pressed','false');choices.push(b);
+  }
+  button(controls,'Начать заново',()=>{stage=0;render();read('Начни в Лесном (А): выбери шоссе до первого поворота.');});
+  render();read('Начни в Лесном (А): выбери шоссе до первого поворота.');
  }else if(kind==='route'||kind==='map'||kind==='journey'||kind==='fuel'){
   const a=kind==='map'?{value:6}:range(controls,'a','Первый участок, км',2,20,6),b=kind==='map'?{value:8}:range(controls,'b','Второй участок, км',2,20,8),v=kind==='journey'?range(controls,'v','Скорость на первом участке, км/ч',10,80,40,5):kind==='fuel'?range(controls,'v','Расход на просёлке, л/100 км',4,20,10,.2):null;let picks=[];
   const run=()=>{const A=+a.value,B=+b.value;let svg=line(55,40,55,170,picks.includes(1)?amber:green,6)+line(55,170,300,170,picks.includes(2)?amber:green,6);svg+='<path d="M55 152H73V170" stroke="'+green+'" fill="none"/>';svg+=(kind==='map'?'':text(28,108,fmt(A))+text(180,205,fmt(B)))+(kind==='fuel'?line(55,40,300,170,blue,3):'')+text(78,42,kind==='map'?'Вход':'A',green,'start')+text(55,225,kind==='map'?'Коридор':'B')+text(300,145,kind==='map'?'Комната':'C');draw(svg);read(kind==='journey'?`Участок 1: ${fmt(A/+v.value*60)} мин. Участок 2 при 30 км/ч: ${fmt(B/30*60)} мин. Всего ${fmt((A/+v.value+B/30)*60)} мин.`:kind==='fuel'?`Маршрут 1: ${fmt((A+B)*8/100)} л (шоссе 8 л/100 км). Маршрут 2: ${fmt(Math.hypot(A,B)*+v.value/100)} л (по прямому просёлку длиной ${fmt(Math.hypot(A,B))} км).`:kind==='map'?picks.length===2&&picks[0]===1&&picks[1]===2?'Путь найден: вход → коридор → комната. В своей задаче проверь те же связи по тексту.':'Сначала выбери путь от входа к коридору, затем от коридора к комнате.':`Выбрано участков: ${picks.length}; их длина ${fmt((picks.includes(1)?A:0)+(picks.includes(2)?B:0))} км.`);};
@@ -151,7 +168,7 @@ function build(panel,options={}){
  const kind=typeFor(options.page,options.type,options.text),plan=plans[kind];panel.dataset.discoveryModel=kind;
  const first=element('p',plan[0],'pd-first-step');panel.append(first);
  const lab=details('Помочь разобраться на модели?');panel.append(lab);const content=q('.pm-content',lab);
- content.append(element('p',plan[1],'pd-instruction'),element('p',kind==='land-map'?'Это учебный план. Затем вернись к своему заданию.':'Учебная модель на других числах. Ответ к своей задаче запиши в её поле ответа.','pd-note'));
+ content.append(element('p',plan[1],'pd-instruction'),element('p',kind==='road-map'?'Это отдельный учебный план. Его буквы и названия не являются ответом к твоему заданию.':kind==='land-map'?'Это учебный план. Затем вернись к своему заданию.':'Учебная модель на других числах. Ответ к своей задаче запиши в её поле ответа.','pd-note'));
  buildModel(content,kind,options);
  const further=details('Почему так?');q('.pm-content',further).append(element('p',plan[2]));content.append(further);
  if(options.steps?.length){const next=details('Как применить к моей задаче?');const box=q('.pm-content',next);options.steps.forEach(s=>{const step=element('div',null,'pm-model-step');step.innerHTML=s;box.append(step);});panel.append(next);}

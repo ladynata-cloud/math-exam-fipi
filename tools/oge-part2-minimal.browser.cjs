@@ -5,7 +5,7 @@ const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),artifacts=path.resolve(root,process.env.OGE_PART2_BROWSER_ARTIFACTS||'artifacts/oge-part2-minimal');
 const files={20:'oge-task20-equations.html',21:'oge-task21-word-problems.html',22:'oge-task22-functions-graphs.html'};
 const errors=[],external=[];fs.mkdirSync(artifacts,{recursive:true});
-const server=http.createServer((req,res)=>{const name=decodeURIComponent(new URL(req.url,'http://localhost').pathname),file=path.resolve(root,'.'+name);if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);return res.end();}res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'});fs.createReadStream(file).pipe(res);});
+const server=http.createServer((req,res)=>{const name=decodeURIComponent(new URL(req.url,'http://localhost').pathname),file=path.resolve(root,'.'+name);if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);return res.end();}res.writeHead(200,{'Content-Type':({'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.svg':'image/svg+xml'})[path.extname(file)]||'application/octet-stream'});fs.createReadStream(file).pipe(res);});
 function watch(page){page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(!/^(?:http:\/\/127\.0\.0\.1:|file:|data:)/.test(r.url()))external.push(r.url());});}
 function main(page,n){return n===20?page.locator('#body'):n===21?page.locator('#content'):page.locator('.panel:not(.hidden) .mode-host[data-mode="marathon"]');}
 function condition(page,n){return n===20?page.locator('#body .qbox > .prompt'):n===21?page.locator('#content [data-slot="stmt"]'):main(page,n).locator('.statement').first();}
@@ -21,7 +21,8 @@ async function initial(page,n){const host=main(page,n);await host.getByRole('but
    await page.goto(origin+'/trainers/'+files[n],{waitUntil:'load'});await initial(page,n);await noOverflow(page,n+' initial '+width);
    await page.screenshot({path:path.join(artifacts,n+'-'+width+'-task.png'),fullPage:true});
    const host=main(page,n),before=await condition(page,n).innerHTML(),input=await inputFor(page,n);await input.fill('123');
-   const hint=host.getByRole('button',{name:'Хочешь подсказку?',exact:true});await hint.focus();await page.keyboard.press('Enter');
+   const helpId=await host.getByRole('button',{name:'Хочешь подсказку?',exact:true}).getAttribute('aria-controls');assert(helpId,'The help toggle identifies its panel');
+   const hint=host.locator('button[aria-controls='+JSON.stringify(helpId)+']');await hint.focus();await page.keyboard.press('Enter');
    const help=host.locator('.minimal-help');assert(await help.isVisible());assert.equal(await hint.getAttribute('aria-expanded'),'true');assert.equal(await input.inputValue(),'123');assert.equal(await condition(page,n).innerHTML(),before);
    if(n===22){const slider=help.getByRole('slider',{name:'Положение прямой',exact:true}),svg=help.locator('svg').first(),graph=await svg.innerHTML();await slider.focus();await page.keyboard.press('End');assert.notEqual(await svg.innerHTML(),graph);await help.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();assert(await help.locator('.step-card').first().isVisible());}
    else assert(await help.locator(n===20?'.sstep':'.stepcard').first().isVisible());

@@ -204,10 +204,11 @@
   @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
-<script src="practical-discovery.js"></script>
-<script src="practical-minimal.js"></script>
+<script src="practical-discovery.js?v=20261021-exam-variants"></script>
+<script src="practical-minimal.js?v=20261021-exam-variants"></script>
+<link rel="stylesheet" href="practical-variant.css">
 </head>
-<body data-practical-page="roads-schema">
+<body data-practical-page="roads-schema" data-practical-variant="1">
 <div class="wrap">
   <header class="top">
     <p class="kicker">ОГЭ · математика · задания 1–5</p>
@@ -973,5 +974,7 @@ document.querySelectorAll('.tab[data-mode]').forEach(b=>{
 buildVarbar();
 render();
 </script>
+<script src="practical-variant.js"></script>
+<script src="practical-variant-roads.js"></script>
 </body>
 </html>

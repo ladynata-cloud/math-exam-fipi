@@ -150,10 +150,11 @@ footer{margin-top:26px;font-family:var(--mono);font-size:11px;color:var(--muted)
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
-<script src="practical-discovery.js"></script>
-<script src="practical-minimal.js"></script>
+<script src="practical-discovery.js?v=20261021-exam-variants"></script>
+<script src="practical-minimal.js?v=20261021-exam-variants"></script>
+<link rel="stylesheet" href="practical-variant.css">
 </head>
-<body data-practical-page="apartments">
+<body data-practical-page="apartments" data-practical-variant="1">
 <div class="wrap">
   <div class="titleblock">
     <div class="tb-main"><div class="tb-k">Объект · план этажа</div>
@@ -794,5 +795,7 @@ $('teachTxt').innerHTML=teacherNotes[1];
 try{var _mr=(JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}'))['practiceApartmentsTrainer'];if(_mr){state.solved=new Set(_mr.solvedList||[]);state.streak=_mr.streak||0;}}catch(e){}
 selectGroup(1);updateStats();
 </script>
+<script src="practical-variant.js"></script>
+<script src="practical-variant-buildings.js"></script>
 </body>
 </html>

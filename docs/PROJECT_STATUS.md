@@ -2,7 +2,15 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: exam-like tire variant with persistent tables
+## In progress: consistent exam-first OGE course
+
+- [Scope](tasks/OGE_COURSE_EXAM_VARIANTS.md): extend the continuous variant to
+  seven remaining practical storylines; improve remaining first/second-part
+  trainers with clear actions, contextual laboratories and saved reasoning.
+  Geometry proofs must name the mathematical justification and offer verified
+  Atanasyan/Merzlyak and official OGE reference material in place.
+
+## Published: exam-like tire variant with persistent tables
 
 - [Presentation principles](TRAINER_PRESENTATION_PRINCIPLES.md): the owner's
   revised task-first direction, initially implemented in the tire trainer.
@@ -12,6 +20,15 @@ Updated: 2026-10-21 (Asia/Novosibirsk)
   keep the 3D tire immediately visible and both tables continuously available,
   with a calculation pane beside the task stream and contextual question help.
   Preserve the tested dimension labels, sidewall terminology and enlarged text.
+
+- PR292 merged as `a006abab6ca2a0148c4b51739da0d5e080f39fe9`, sole parent
+  `606f629e40c9859a25551b735e9fc981f6345836`; reviewed tree
+  `a701e97045cb875d2e28fbc70f66c445e7076ab8`. All 56 Node checks, 13 tire
+  3D cases, 27 continuous-variant cases, 39 retained routes and 126 discovery
+  cases passed. Independent source/math and actual mobile/desktop screenshot
+  review passed. Pages run39532838450 succeeded on the exact merge; all11
+  public changed files matched SHA256. Live visible model, five questions,
+  persistent tables and contextual help were verified.
 
 ## Published: rotating 3D tire dimensions
 
