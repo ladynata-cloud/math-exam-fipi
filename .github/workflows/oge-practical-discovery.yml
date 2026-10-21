@@ -44,6 +44,10 @@ jobs:
         env:
           PRACTICAL_DISCOVERY_ARTIFACTS: artifacts/oge-practical-discovery/new-method
         run: node tools/oge-practical-discovery.browser.cjs
+      - name: Tire 3D geometry, touch, keyboard and offline package
+        env:
+          TIRES_3D_ARTIFACTS: artifacts/oge-practical-discovery/tires-3d
+        run: node tools/oge-practical-tires-3d.browser.cjs
       - name: Save coverage and screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

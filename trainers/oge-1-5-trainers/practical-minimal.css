@@ -98,3 +98,23 @@ body.pm-minimal .wrap{max-width:1040px;padding-top:22px}
 .pm-minimal .pd-original-steps .substep-input{max-width:100%;min-width:0}
 .pm-minimal .pd-original-steps .substep-input-row{flex-wrap:wrap;gap:10px}
 .pm-minimal .pm-model .calc-box,.pm-minimal .pm-model .substep-q,.pm-minimal .pm-model .box,.pm-minimal .pm-model .note,.pm-minimal .pd-native-detail .hint-box{overflow-wrap:anywhere}
+
+/* Tire width is axial: preserve the true projected proportions, including edge-on views. */
+.pm-minimal .t3d-root{min-width:0}
+.pm-minimal .t3d-marking{font-size:24px;line-height:1.4;font-weight:700;text-align:center;letter-spacing:.03em;margin:16px 0 0}
+.pm-minimal .pd-picture.t3d-stage{max-width:500px;margin:0 auto;cursor:grab;touch-action:none;overflow:hidden;border-radius:12px;background:#f9fcfa;outline-offset:3px}
+.pm-minimal .t3d-stage:focus-visible{outline:3px solid #176747}
+.pm-minimal .t3d-stage.t3d-dragging{cursor:grabbing}
+.pm-minimal .t3d-stage svg{display:block;user-select:none;-webkit-user-select:none;max-height:none}
+.pm-minimal .t3d-stage svg *{pointer-events:none}
+.pm-minimal .t3d-stage.pd-picture-zoomed{max-width:100%;max-height:440px;overflow:auto;touch-action:pan-x pan-y}
+.pm-minimal .t3d-stage.pd-picture-zoomed svg{width:640px;max-width:none}
+.pm-minimal .t3d-reading{margin:4px 0;padding:8px 0;font-size:19px;font-weight:600;min-height:0}
+.pm-minimal .t3d-view-note{margin:0 0 16px}
+.pm-minimal .t3d-views{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 20px}
+.pm-minimal .t3d-views .pd-action{flex:1 1 120px;text-align:center;font-size:15px;line-height:1.45;padding:10px 8px}
+.pm-minimal .t3d-controls{padding-top:4px;border-top:1px solid #d8e5dd}
+.pm-minimal .t3d-comparison{margin-top:20px}
+@media(max-width:600px){.pm-minimal .t3d-marking{font-size:22px}.pm-minimal .pd-picture.t3d-stage{margin:0 -8px;max-width:none}.pm-minimal .t3d-reading{font-size:17px}.pm-minimal .t3d-views{gap:6px}.pm-minimal .t3d-views .pd-action{flex-basis:100px}}
+.pm-minimal .t3d-views button.pd-action[aria-pressed=true]{background:#176747!important;color:#fff!important;border-color:#176747!important}
+.pm-minimal .t3d-controls .pd-control{display:grid}
