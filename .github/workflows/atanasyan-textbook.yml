@@ -23,6 +23,7 @@ jobs:
           python3 tools/stereo-textbook/catalog.test.py
           node tools/stereo-textbook/schema.test.cjs
           node tools/stereo-textbook/content.test.cjs
+          node tools/stereo-textbook/parallel-content.test.cjs
       - name: Retained work, nested theory and publication boundaries
         run: node tools/stereo-textbook/runtime.test.cjs
       - run: npx playwright install --with-deps chromium

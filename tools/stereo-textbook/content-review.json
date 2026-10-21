@@ -1,8 +1,92 @@
 {
-  "reviewer": "Codex independent content and coordinate review",
+  "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-10-21",
-  "sourceBundleSHA256": "5fe4617d01fe492c47210475ec9d16d77e1389da2808b3491037219696d04912",
-  "scope": "All introduction theory points 1–3 and every question in exercises 1–15. Not the complete book.",
+  "registeredAt": "2026-10-21T20:10:36Z",
+  "scope": "All theory points 1–6 and every question in exercises 1–35. Not the complete book.",
+  "batches": [
+    {
+      "reviewer": "Codex independent content and coordinate review",
+      "reviewedAt": "2026-10-21",
+      "sourceBundleSHA256": "5fe4617d01fe492c47210475ec9d16d77e1389da2808b3491037219696d04912",
+      "scope": "All introduction theory points 1–3 and every question in exercises 1–15. Not the complete book.",
+      "cardIds": [
+        "atanasyan2024-theory-001",
+        "atanasyan2024-theory-002-notation",
+        "atanasyan2024-theory-002-a1",
+        "atanasyan2024-theory-002-a2",
+        "atanasyan2024-theory-002-a3",
+        "atanasyan2024-theory-002-planimetry",
+        "atanasyan2024-theory-003-line-point",
+        "atanasyan2024-theory-003-intersecting-lines",
+        "atanasyan2024-main-001-a",
+        "atanasyan2024-main-001-b",
+        "atanasyan2024-main-001-c",
+        "atanasyan2024-main-001-d",
+        "atanasyan2024-main-002-a",
+        "atanasyan2024-main-002-b",
+        "atanasyan2024-main-002-c",
+        "atanasyan2024-main-002-d",
+        "atanasyan2024-main-002-e",
+        "atanasyan2024-main-003-a",
+        "atanasyan2024-main-003-b",
+        "atanasyan2024-main-003-c",
+        "atanasyan2024-main-003-d",
+        "atanasyan2024-main-004-a",
+        "atanasyan2024-main-004-b",
+        "atanasyan2024-main-005",
+        "atanasyan2024-main-006",
+        "atanasyan2024-main-007-a",
+        "atanasyan2024-main-007-b",
+        "atanasyan2024-main-008-a",
+        "atanasyan2024-main-008-b",
+        "atanasyan2024-main-009",
+        "atanasyan2024-main-010-a",
+        "atanasyan2024-main-010-b",
+        "atanasyan2024-main-011",
+        "atanasyan2024-main-012",
+        "atanasyan2024-main-013-a",
+        "atanasyan2024-main-013-b",
+        "atanasyan2024-main-013-c",
+        "atanasyan2024-main-014",
+        "atanasyan2024-main-015"
+      ]
+    },
+    {
+      "reviewer": "ege_base_inventory",
+      "reviewedAt": "2026-10-21",
+      "registeredAt": "2026-10-21T20:10:36Z",
+      "registrationNote": "Timestamp records registration of the already received independent PASS, not a newly inferred review.",
+      "sourceBundleSHA256": "88efda9f8684908325f694f97e692517fee583e82124774ec3877ca45fc5140b",
+      "scope": "All theory points 4–6 and all exercises 16–35, including every subpart. Exercise 18 is split into two cards.",
+      "report": "docs/reviews/ATANASYAN_PARALLEL_CONTENT.md",
+      "cardIds": [
+        "theory-004",
+        "theory-005",
+        "theory-006",
+        "ex-main-0016",
+        "ex-main-0017",
+        "ex-main-0018-a",
+        "ex-main-0018-b",
+        "ex-main-0019",
+        "ex-main-0020",
+        "ex-main-0021",
+        "ex-main-0022",
+        "ex-main-0023",
+        "ex-main-0024",
+        "ex-main-0025",
+        "ex-main-0026",
+        "ex-main-0027",
+        "ex-main-0028",
+        "ex-main-0029",
+        "ex-main-0030",
+        "ex-main-0031",
+        "ex-main-0032",
+        "ex-main-0033",
+        "ex-main-0034",
+        "ex-main-0035"
+      ]
+    }
+  ],
   "cards": [
     {
       "id": "atanasyan2024-theory-001",
@@ -159,6 +243,102 @@
     {
       "id": "atanasyan2024-main-015",
       "sha256": "3beed2a81185c93893b8b9b191df9a0faab39e86fa213db9df8adc29991a5480"
+    },
+    {
+      "id": "ex-main-0016",
+      "sha256": "c95dd42760a5ebdd865b8fcda2772961dd984f804fa55ae9468d870370bfe286"
+    },
+    {
+      "id": "ex-main-0017",
+      "sha256": "6c65f8b75dfe03cf3a1355a7eef87d76dca12a98e56f9c270fe1087247cd2a01"
+    },
+    {
+      "id": "ex-main-0018-a",
+      "sha256": "4462bc11a2b54cebe7c8d68dc5df7c98c2df68dc6cf658b575ab09ff285ac063"
+    },
+    {
+      "id": "ex-main-0018-b",
+      "sha256": "d550b8befd0ffd4891da725cfd220d6c4d236047606732b20084b754cca34cdd"
+    },
+    {
+      "id": "ex-main-0019",
+      "sha256": "71bf1cddc37ac782da076abef43de0e898ce7af1e451aea6efcc56ac586726ba"
+    },
+    {
+      "id": "ex-main-0020",
+      "sha256": "cd729213b0cd67156d992e0c0ca3db1b9c11bacf146daae487c82c013bd7096f"
+    },
+    {
+      "id": "ex-main-0021",
+      "sha256": "66c3d383a9f43e2ec89c43c61702b080423d43e44bea4c1654c9d00bec0c21c3"
+    },
+    {
+      "id": "ex-main-0022",
+      "sha256": "c527006f00ab43b50b0eeadf4f26f097d40b050e1f1c619e6bb109f70bb1ce7d"
+    },
+    {
+      "id": "ex-main-0023",
+      "sha256": "a12c991e05f2b16d84a900382fef0a7293635b6873cace596cfe44ff5210f635"
+    },
+    {
+      "id": "ex-main-0024",
+      "sha256": "fdd7313f8966ece3d54bd85c423657936d7469ae6ade37e4d7e1f5f01b4ce0fb"
+    },
+    {
+      "id": "ex-main-0025",
+      "sha256": "cf7b0e5f786e9f7920761b7c6a145b7e9408a52fa2fd9d000b77ea252dabba7e"
+    },
+    {
+      "id": "ex-main-0026",
+      "sha256": "1c62b03365daaedd52d50fd5c3411915ed41d396b1eaab7b1db542372f12b573"
+    },
+    {
+      "id": "ex-main-0027",
+      "sha256": "dc2227adbe4024a3e124fe33495407232ce2293450c7a86401475a078356b9cc"
+    },
+    {
+      "id": "ex-main-0028",
+      "sha256": "518266307787f0352feb6108fd62dfd350444db950dc69d0a95cee64f0802fef"
+    },
+    {
+      "id": "ex-main-0029",
+      "sha256": "7a83b4346651eef44bb6f100722e005cbcb84b316c675a32f32873459364f1f0"
+    },
+    {
+      "id": "ex-main-0030",
+      "sha256": "aeb7abb11ed6eb218f3084eeb7cb6af615cf2bbd93828a15083cd96d130cfc74"
+    },
+    {
+      "id": "ex-main-0031",
+      "sha256": "2ad79c0b9c6c27ebe61b1646c5f88b80c7a3f71363539af61d1a9e67a24216c9"
+    },
+    {
+      "id": "ex-main-0032",
+      "sha256": "3e483fe10257ab53b2643290019acc720c0518fa8893128dc352538a12716643"
+    },
+    {
+      "id": "ex-main-0033",
+      "sha256": "86d829232b20154d9dac4d17ac3a9f51eefdc533c1aa1e8181daaae721ac032f"
+    },
+    {
+      "id": "ex-main-0034",
+      "sha256": "340e42e47d11b1bf26aff7ecc50cc280254f2e02a551f9da8aa6a7c1bf504f1b"
+    },
+    {
+      "id": "ex-main-0035",
+      "sha256": "f64cfc6d63d7c55083c4fdbe8fe318407c49266e42edf69cdaf805aa862dd229"
+    },
+    {
+      "id": "theory-004",
+      "sha256": "504ddcab5292ebe7de73e266b399c689048e8d28d3acaf8aedf720f46f98972f"
+    },
+    {
+      "id": "theory-005",
+      "sha256": "c0dd8937f13f4215309a129437e654808a2eb2474080cfe554a55a4b133feb20"
+    },
+    {
+      "id": "theory-006",
+      "sha256": "d206077776ecc29c2a7b65be1812d52c5a1119be61905028fad944a99b149cda"
     }
   ]
 }

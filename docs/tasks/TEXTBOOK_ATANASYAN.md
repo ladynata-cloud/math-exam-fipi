@@ -19,8 +19,8 @@ Branch: `feat/atanasyan-textbook-2024`.
 - Separate `/stereo-course/textbook/`, linked from the existing foundation and
   profile supplement. Retain the existing39-unit workshop and its stored work.
 - Full source number/page catalogue, distinguishing historical EGE namespaces.
-- Detailed introduction: all15 exercises and their parts (31 cards), all theory
-  points1–3 (8 focused cards). Further content is visible as pending inventory,
+- Detailed introduction and first parallelism block: all35 exercises and their
+  parts (52 cards), all theory points1–6 (11 focused cards). Further content is visible as pending inventory,
   with no generic substitute solution or unsupported completion claim.
 - Existing mathematical renderer and fraction display; condition and model first,
   optional help/questions and progressive explanations in place.
@@ -63,7 +63,8 @@ Review level HIGH: authored mathematics and persistent learner work.
 - Fresh-main check before ordinary squash; verify reviewed tree/parent, exact-merge
   Pages deployment and public SHA256/size/HTTP identity after publication.
 
-Gate for this stage: ATANASYAN_TEXTBOOK_INTRO_OK. It does not mean the entire book
+Gate for this stage: ATANASYAN_TEXTBOOK_FOUNDATION_OK (introduction and first
+parallelism block). It does not mean the entire book
 has been authored. Record exact base/head/tree and all release evidence in the PR.
 
 ## Risks and rollback

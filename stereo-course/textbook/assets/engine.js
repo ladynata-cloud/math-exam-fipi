@@ -127,14 +127,14 @@ function createApp(root,options){
   dialog=el('dialog',undefined,{class:'theory-dialog','aria-labelledby':'theory-dialog-title','data-theory':id});dialog._returnFocus=from;
   const shownDialog=dialog;let restoring=!!backState;dialogView='neutral';
   function selectTheoryView(view){if(restoring||dialog!==shownDialog)return;dialogView=view;dialogViewer?.setView(view);}
-  const close=el('button',theoryTrail.length?'Назад к объяснению':'Вернуться к задаче',{type:'button'}),title=el('h2',lesson.title,{id:'theory-dialog-title'}),model=el('div',undefined,{class:'textbook-model'});
+  const close=el('button',theoryTrail.length?'Назад к объяснению':'Вернуться к задаче',{type:'button'}),title=el('h2',lesson.title,{id:'theory-dialog-title'}),model=el('div',undefined,{class:'textbook-model task-scene'});
   close.addEventListener('click',()=>{if(theoryTrail.length){const previous=theoryTrail.pop();showTheory(previous.id,from,previous);}else closeTheory();});dialog.addEventListener('cancel',event=>{event.preventDefault();closeTheory();});
   function focusable(node){
    if(node.disabled||node.closest('[hidden],[inert]')||node.getAttribute('tabindex')==='-1')return false;
    for(let parent=node.parentElement;parent&&parent!==dialog;parent=parent.parentElement)if(parent.tagName==='DETAILS'&&!parent.open){const summary=[...parent.children].find(child=>child.tagName==='SUMMARY');if(!summary?.contains(node))return false;}
    const style=win.getComputedStyle?.(node);return style?.display!=='none'&&style?.visibility!=='hidden';
   }
-  dialog.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();closeTheory();}if(event.key==='Tab'){const nodes=[...dialog.querySelectorAll('button,input,textarea,summary,a[href],[tabindex="0"]')].filter(focusable);if(event.shiftKey&&doc.activeElement===nodes[0]){event.preventDefault();nodes.at(-1).focus();}else if(!event.shiftKey&&doc.activeElement===nodes.at(-1)){event.preventDefault();nodes[0].focus();}}});
+  dialog.addEventListener('keydown',event=>{if(event.defaultPrevented)return;if(event.key==='Escape'){event.preventDefault();closeTheory();}if(event.key==='Tab'){const nodes=[...dialog.querySelectorAll('button,input,textarea,summary,a[href],[tabindex="0"]')].filter(focusable);if(event.shiftKey&&doc.activeElement===nodes[0]){event.preventDefault();nodes.at(-1).focus();}else if(!event.shiftKey&&doc.activeElement===nodes.at(-1)){event.preventDefault();nodes[0].focus();}}});
   dialog.append(close,title,el('p',lesson.statement.text),model,el('p',lesson.statement.goal),el('p',lesson.visualization.caption),sourceNode(lesson));
   const nestedHelp=el('div');mountHelp(lesson.help,nestedHelp,()=>({setView:selectTheoryView}));dialog.append(nestedHelp);
   const steps=el('div');for(const step of lesson.steps){const d=el('details');d.append(el('summary',step.title),el('p',step.prompt),el('p',step.explanation));justifications(step,d);d.addEventListener('toggle',()=>{if(d.isConnected&&d.open)selectTheoryView(step.view||'neutral');});steps.append(d);}dialog.append(steps);root.append(dialog);
@@ -162,7 +162,7 @@ function createApp(root,options){
   win.history?.replaceState(null,'','#'+lesson.id);
   const back=el('button','← Все материалы курса',{type:'button'});back.addEventListener('click',home);
   const header=el('header');header.append(back,el('p',lesson.kind==='theory'?'Теория':'Задача'),el('h1',lesson.title));view.append(header);
-  const layout=el('div',undefined,{class:'textbook-layout'}),main=el('section',undefined,{class:'textbook-main'}),side=el('aside',undefined,{class:'textbook-help','aria-label':'Помощь к текущей задаче'}),model=el('div',undefined,{class:'textbook-model','data-main-model':''});
+  const layout=el('div',undefined,{class:'textbook-layout'}),main=el('section',undefined,{class:'textbook-main'}),side=el('aside',undefined,{class:'textbook-help','aria-label':'Помощь к текущей задаче'}),model=el('div',undefined,{class:'textbook-model task-scene','data-main-model':''});
   main.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));main.append(list);}main.append(el('p',lesson.statement.goal,{class:'textbook-goal'}),model,el('p',lesson.visualization.caption),sourceNode(lesson));
   if(lesson.answer){
    const form=el('form',undefined,{'data-final-form':''}),label=el('label',lesson.answer.prompt,{for:'final-answer'}),input=el(lesson.answer.mode==='manual'?'textarea':'input',undefined,{id:'final-answer',autocomplete:'off'}),check=el('button',lesson.answer.mode==='manual'?'Сохранить рассуждение':'Проверить ответ',{type:'submit'}),feedback=el('p',undefined,{role:'status','data-final-feedback':''});input.value=state.draft;

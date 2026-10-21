@@ -45,3 +45,27 @@ Paths under `atanasyan-integration`:
 ## Release limit
 
 This review checked inventory metadata, joins, counts, schemas, runtime behavior and the existing introductory content approval. It did not independently reread all 1,253 textbook source positions or approve their mathematical solutions. A final integrated commit must still be checked for byte identity and pass actual browser/mobile evidence before release.
+
+## Expanded first release and actual-browser findings
+
+The first release was expanded within the approved full-book task to include the
+independently reviewed parallelism block: points4–6 and exercises16–35. The separate
+`ATANASYAN_PARALLEL_CONTENT.md` records its source/content provenance. The composed
+course has63 cards,195 justified steps and283 model views, covering35 exercise
+numbers and6 theory points. The1253-position source index remains unchanged in
+scope; its additional explicit completeness contracts produce1275 catalog rows,
+including1212 pending positions. Original introductory card content is unchanged.
+
+The first actual cloud run,39667382436, failed a focus-test oracle: Chromium retained
+layout rectangles for controls inside closed details. The observed focus remained
+on a visible summary, correctly. The revised oracle asks native focus directly and
+checks both Shift+Tab and Tab wrapping; it does not copy the runtime's visibility
+filter. Independent review accepted this test correction.
+
+Actual screenshot inspection also found a product issue: the textbook model lacked
+the shared `task-scene` CSS ancestry, clipping its expand button and preventing the
+expanded viewport layout. Escape in an expanded theory model also reached its
+parent dialog. The scoped fix restores the shared CSS ancestry and lets the embedded viewer
+handle its own keyboard event before the parent theory dialog. Actual cloud
+open/close/return checks remain a release gate. The exact final commit and browser evidence will be
+recorded in PR297; this report does not pre-certify those pending checks.

@@ -13,11 +13,11 @@ const expectedPath=path.resolve(process.env.TEXTBOOK_EXPECTED_BUNDLE||path.join(
 const out=path.resolve(process.env.TEXTBOOK_ARTIFACTS||path.join(os.tmpdir(),'mathexam-stereo-textbook'));
 const expectedRaw=JSON.parse(fs.readFileSync(expectedPath,'utf8')),expectedLessons=Array.isArray(expectedRaw)?expectedRaw:expectedRaw.lessons;
 assert(Array.isArray(expectedLessons)&&expectedLessons.length,'An authored lesson bundle is required');
-const expectedCount=Number(process.env.TEXTBOOK_EXPECTED_COUNT||39);
+const expectedCount=Number(process.env.TEXTBOOK_EXPECTED_COUNT||63);
 assert.equal(expectedLessons.length,expectedCount,'Unexpected authored card count; update this gate explicitly for a later batch');
 assert(/^\/[A-Za-z0-9/_-]+\/$/.test(route),'TEXTBOOK_ROUTE must be a local absolute path ending in /');
 const expectedById=new Map(expectedLessons.map(lesson=>[lesson.id,lesson]));assert.equal(expectedById.size,expectedCount);
-const evidence={authoredCards:expectedCount,separateAuthorBundle:!!process.env.TEXTBOOK_EXPECTED_BUNDLE,authoredFileSha256:crypto.createHash('sha256').update(fs.readFileSync(expectedPath)).digest('hex'),commit:process.env.GITHUB_SHA||null,widths:[320,1280],cards:[],labels:[],screenshots:[],twoTabs:[],errors:[]};
+const evidence={authoredCards:expectedCount,separateAuthorBundle:!!process.env.TEXTBOOK_EXPECTED_BUNDLE,authoredFileSha256:crypto.createHash('sha256').update(fs.readFileSync(expectedPath)).digest('hex'),commit:process.env.GITHUB_SHA||null,widths:[320,1280],cards:[],labels:[],screenshots:[],expansionScreenshots:[],expansions:[],twoTabs:[],errors:[]};
 let browser,context,page,server,base,activeCase='startup';
 const writeEvidence=()=>fs.writeFileSync(path.join(out,'browser-evidence.json'),JSON.stringify(evidence,null,2));
 const stateKey=lesson=>'mathExamTextbook.v1:'+lesson.source.bookId+':'+lesson.id+':r'+lesson.revision;
@@ -29,7 +29,15 @@ const screenshotCases=new Map([
  ['atanasyan2024-main-002-c|step-3','figure9-back-plane'],
  ['atanasyan2024-main-008-a|step-2','circle-two-points-counterexample'],
  ['atanasyan2024-main-010-a|step-2','triangle-vertex-counterexample'],
- ['atanasyan2024-main-001-a|nested-theory','nested-theory']
+ ['atanasyan2024-main-001-a|nested-theory','nested-theory'],
+ ['theory-004|condition','parallel-theory-condition'],
+ ['theory-006|condition','line-plane-theory-condition'],
+ ['theory-006|step-2','line-contained-plane'],
+ ['ex-main-0020|step-3','trapezoid-coincident-plane'],
+ ['ex-main-0026|step-3','similarity-angles'],
+ ['ex-main-0034|condition','tetrahedron-parts-condition'],
+ ['ex-main-0034|step-5','tetrahedron-part-d'],
+ ['ex-main-0035|step-3','three-line-classification']
 ]);
 function immutableContent(lesson){const copy=structuredClone(lesson);delete copy.status;delete copy.review;return copy;}
 function visibleLabelKeys(lesson,viewName){
@@ -82,6 +90,29 @@ async function preserveCheck(lesson,keptCamera,draft){
  assert(await page.evaluate(()=>window.__textbookKept.svg===document.querySelector('[data-main-model] svg')&&window.__textbookKept.field===document.querySelector('#final-answer')),lesson.id+' original model/answer nodes retained');
  assert.deepEqual(await camera(),keptCamera,lesson.id+' camera retained');if(lesson.answer)assert.equal(await page.locator('#final-answer').inputValue(),draft,lesson.id+' final draft retained');
 }
+async function expandLabel(selector){
+ const button=page.locator(selector+' .am-expand');await button.scrollIntoViewIfNeeded();await settle();
+ const label=await button.evaluate(node=>{const b=node.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(node);const text=range.getBoundingClientRect(),font=parseFloat(getComputedStyle(node).fontSize);return {text:node.textContent,font,button:{x:b.x,y:b.y,width:b.width,height:b.height},label:{x:text.x,y:text.y,width:text.width,height:text.height},clientWidth:node.clientWidth,scrollWidth:node.scrollWidth};});
+ assert.equal(label.text,'Развернуть рисунок');assert(label.font>=18,'expand label has readable actual font');assert(label.scrollWidth<=label.clientWidth+1,'expand label is not clipped');
+ assert(label.label.x>=label.button.x-1&&label.label.x+label.label.width<=label.button.x+label.button.width+1&&label.label.y>=label.button.y-1&&label.label.y+label.label.height<=label.button.y+label.button.height+1,'entire expand label lies inside its button');return label;
+}
+async function fullscreen(lesson,width,selector,scope){
+ const label=await expandLabel(selector),button=page.locator(selector+' .am-expand');
+ const saved=await page.locator(selector).evaluate(node=>{const svg=node.querySelector('svg'),dialog=node.closest('dialog');window.__textbookExpandedSvg=svg;return {view:svg.dataset.view,yaw:svg.dataset.yaw,pitch:svg.dataset.pitch,overflow:document.body.style.overflow,x:scrollX,y:scrollY,dialogTop:dialog?.scrollTop??null};});
+ for(const closeBy of ['button','Escape']){
+  await button.click();await settle();const shell=page.locator(selector+' .am-expanded');await shell.waitFor({state:'visible'});
+  const bounds=await shell.evaluate(node=>{const b=node.getBoundingClientRect();return {x:b.x,y:b.y,width:b.width,height:b.height,position:getComputedStyle(node).position,viewportWidth:innerWidth,viewportHeight:innerHeight,overflow:document.body.style.overflow};});
+  assert.equal(bounds.position,'fixed',scope+' model is fixed to viewport');assert(Math.abs(bounds.x)<=1&&Math.abs(bounds.y)<=1&&Math.abs(bounds.width-bounds.viewportWidth)<=1&&Math.abs(bounds.height-bounds.viewportHeight)<=1,scope+' expansion covers actual viewport');assert.equal(bounds.overflow,'hidden');
+  assert.equal(await button.innerText(),'Закрыть рисунок');await checkLabels(lesson.id,width,scope+'-expanded-'+closeBy,page,selector+' svg');
+  if(closeBy==='button'){const file=scope+'-expanded-'+width+'.png';await page.screenshot({path:path.join(out,file),fullPage:false});evidence.expansionScreenshots.push({id:lesson.id,width,scope,file});writeEvidence();}
+  // Closing via both paths must preserve the exact instance and selected model.
+  if(closeBy==='Escape'){await button.focus();await page.keyboard.press('Escape');}else await button.click();await settle();assert.equal(await page.locator(selector+' .am-expanded').count(),0);
+  const restored=await page.locator(selector).evaluate(node=>{const svg=node.querySelector('svg'),dialog=node.closest('dialog');return {same:svg===window.__textbookExpandedSvg,view:svg.dataset.view,yaw:svg.dataset.yaw,pitch:svg.dataset.pitch,overflow:document.body.style.overflow,x:scrollX,y:scrollY,dialogTop:dialog?.scrollTop??null};});
+  assert(restored.same,scope+' expansion retains original SVG');for(const field of ['view','yaw','pitch','overflow'])assert.equal(restored[field],saved[field],scope+' restored '+field);
+  assert(Math.abs(restored.x-saved.x)<=1&&Math.abs(restored.y-saved.y)<=1,scope+' document scroll restored');if(scope==='theory'){assert.equal(await page.locator('dialog.theory-dialog').count(),1,'first Escape closes only drawing');assert(Math.abs(restored.dialogTop-saved.dialogTop)<=1,'theory scroll restored');}
+  evidence.expansions.push({id:lesson.id,width,scope,closeBy,label,bounds,restored:true});writeEvidence();
+ }
+}
 async function helpTree(lesson,items,width,keptCamera,draft){
  for(const item of items){const details=page.locator('[data-help="'+item.id+'"]');await openDetails(details);await settle();assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),item.view||'neutral',lesson.id+' help view '+item.id);await preserveCheck(lesson,keptCamera,draft);await checkLabels(lesson.id,width,'help:'+item.id);await helpTree(lesson,item.children||[],width,keptCamera,draft);}
 }
@@ -93,10 +124,11 @@ async function theoryModal(lesson,width,keptCamera,draft){
  const trigger=explanation.getByRole('button',{name:'Почему? '+expectedById.get(theoryId).title,exact:true}).first();await trigger.click();const modal=page.locator('dialog.theory-dialog');await modal.waitFor({state:'visible'});
  assert.equal(await modal.getAttribute('data-theory'),theoryId);await checkLabels(theoryId,width,'theory-modal',page,'dialog .textbook-model svg');await preserveCheck(lesson,keptCamera,draft);
  // A Shift+Tab wrap must land on the last visible control, not a descendant of a
- // closed details disclosure. Browser visibility is used rather than a selector guess.
+ // closed details disclosure. Ask native focus itself: Chromium can retain layout
+// boxes for descendants of closed details, so getClientRects is not visibility.
  assert(await modal.evaluate(node=>node.scrollWidth<=node.clientWidth+1),'theory dialog has no horizontal overflow');
- const visible=await modal.locator('button,input,textarea,summary,a[href],[tabindex="0"]').evaluateAll(nodes=>nodes.filter(node=>!node.disabled&&node.getAttribute('tabindex')!=='-1'&&node.getClientRects().length&&getComputedStyle(node).visibility!=='hidden').map((node,index)=>{node.dataset.browserFocusId='focus-'+index;return node.dataset.browserFocusId;}));
- await modal.locator(':scope > button').focus();await page.keyboard.press('Shift+Tab');assert.equal(await page.evaluate(()=>document.activeElement.dataset.browserFocusId),visible.at(-1),'modal trap uses visible controls');
+ const visible=await modal.locator('button,input,textarea,summary,a[href],[tabindex="0"]').evaluateAll(nodes=>nodes.filter(node=>{if(node.disabled||node.getAttribute('tabindex')==='-1')return false;node.focus({preventScroll:true});return document.activeElement===node;}).map((node,index)=>{node.dataset.browserFocusId='focus-'+index;return node.dataset.browserFocusId;}));
+ await modal.locator(':scope > button').focus();await page.keyboard.press('Shift+Tab');assert.equal(await page.evaluate(()=>document.activeElement.dataset.browserFocusId),visible.at(-1),'modal trap uses visible controls');await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement.dataset.browserFocusId),visible[0],'forward Tab returns to the first actually focusable control');
  // Figure8 -> point3 -> A1 supplies a genuinely nested theory explanation.
  if(lesson.id==='atanasyan2024-main-001-a'){
   const theory=expectedById.get(theoryId),nestedStep=theory.steps.findIndex(s=>s.justifications.some(j=>j.theoryId&&j.theoryId!==theoryId&&expectedById.has(j.theoryId)));assert(nestedStep>=0,'representative theory has a nested reference');
@@ -108,6 +140,7 @@ async function theoryModal(lesson,width,keptCamera,draft){
   await details.getByRole('button',{name:'Почему? '+expectedById.get(nestedId).title,exact:true}).first().click();assert.equal(await modal.getAttribute('data-theory'),nestedId);await checkLabels(nestedId,width,'nested-theory',page,'dialog .textbook-model svg');await takeScreenshot(lesson,width,'nested-theory');
   await modal.locator(':scope > button').click();await settle();assert.equal(await modal.getAttribute('data-theory'),theoryId);assert.deepEqual(await camera(page,'dialog .textbook-model svg'),oldCamera,'nested theory camera restored');assert.equal(await modal.locator('.textbook-model svg').getAttribute('data-view'),oldView,'selected view survives reverse-order disclosure restoration');assert.deepEqual(await modal.locator('details').evaluateAll(nodes=>nodes.map((node,index)=>node.open?index:-1).filter(index=>index>=0)),opened,'nested theory disclosures restored');
  }
+ if(lesson.id==='atanasyan2024-main-001-a'){await fullscreen(expectedById.get(theoryId),width,'dialog .textbook-model','theory');await preserveCheck(lesson,keptCamera,draft);}
  await page.keyboard.press('Escape');await modal.waitFor({state:'detached'});assert(await trigger.evaluate(node=>node===document.activeElement),'focus returns to theory trigger');await preserveCheck(lesson,keptCamera,draft);return true;
 }
 async function card(lesson,width){
@@ -122,7 +155,9 @@ async function card(lesson,width){
  // may appear before help merely because it exists in model.points.
  assert.deepEqual((await page.locator('[data-main-model] .am-label').evaluateAll(nodes=>nodes.map(node=>node.dataset.label))).sort(),visibleLabelKeys(lesson,'neutral'),lesson.id+' neutral labels exactly follow givens');
  await noOverflow();await checkLabels(lesson.id,width,'condition');await takeScreenshot(lesson,width,'condition');
+ await expandLabel('[data-main-model]');
  const rotate=page.locator('[data-main-model] button[aria-label="Повернуть влево"]');if(await rotate.count())await rotate.click();const keptCamera=await camera();
+ if(lesson.id==='atanasyan2024-main-001-a'){await fullscreen(lesson,width,'[data-main-model]','main');await preserveCheck(lesson,keptCamera,draft);}
  await openDetails(page.locator('[data-main-help]'));await helpTree(lesson,lesson.help,width,keptCamera,draft);
  for(const authoredStep of lesson.steps){
   await page.locator('[data-steps]+button').click();const step=page.locator('[data-step="'+authoredStep.id+'"]');await step.waitFor({state:'visible'});assert.equal(await textWithFractions(step.locator(':scope > p')),authoredStep.prompt);
@@ -171,7 +206,7 @@ async function main(){
  for(const expected of expectedLessons){const actual=publishedById.get(expected.id);assert(actual,expected.id+' is present in integrated data');assert.equal(actual.status,'reviewed',expected.id+' must pass independent review before browser publication gate');for(const field of ['source','mathematics','pedagogy'])assert.equal(actual.review?.[field],'passed',expected.id+' '+field+' review');assert.deepEqual(immutableContent(actual),immutableContent(expected),expected.id+' matches the authored batch except review metadata');}
  const runtimeCoverage=await page.evaluate(()=>({coverage:window.textbookApp.coverage,issues:window.textbookApp.issues}));assert(runtimeCoverage.coverage.available>=expectedCount,'every reviewed authored card is available');assert.deepEqual(runtimeCoverage.issues.filter(issue=>expectedById.has(issue.id)),[]);evidence.runtimeCoverage=runtimeCoverage.coverage;
  for(const width of evidence.widths){await page.setViewportSize({width,height:1000});await page.goto(base);await page.evaluate(()=>localStorage.clear());for(const lesson of expectedLessons)await card(lesson,width);}
- await twoTabs(true);await twoTabs(false);assert.equal(evidence.cards.length,expectedCount*2);assert.equal(evidence.screenshots.length,16,'exact representative screenshot set');assert.deepEqual(evidence.errors,[]);writeEvidence();
- console.log('ATANASYAN_TEXTBOOK_BROWSER_OK: '+expectedCount+' cards at 320/1280, authored steps/reasons, visible figures, nested theory, reload, 2 real-tab conflict scenarios, 16 screenshots');
+ await twoTabs(true);await twoTabs(false);assert.equal(evidence.expansionScreenshots.length,4,'main/theory expanded screenshots at both widths');assert.equal(evidence.expansions.length,8,'main/theory fullscreen and both close paths at 320/1280');assert.equal(evidence.cards.length,expectedCount*2);assert.equal(evidence.screenshots.length,32,'exact representative screenshot set');assert.deepEqual(evidence.errors,[]);writeEvidence();
+ console.log('ATANASYAN_TEXTBOOK_BROWSER_OK: '+expectedCount+' cards at 320/1280, authored steps/reasons, visible figures, nested theory, reload, 2 real-tab conflict scenarios, 32 screenshots');
 }
 main().catch(async error=>{fs.mkdirSync(out,{recursive:true});evidence.failure={case:activeCase,message:error.message,stack:error.stack};writeEvidence();if(page)await page.screenshot({path:path.join(out,'failure.png'),fullPage:true}).catch(()=>{});console.error(error);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)await new Promise(resolve=>server.close(resolve));});

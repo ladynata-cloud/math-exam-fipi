@@ -2,15 +2,15 @@
 
 Updated: 2026-10-22 (Asia/Novosibirsk)
 
-## In progress: complete Atanasyan source catalogue and detailed introduction
+## In progress: Atanasyan visual theory, introduction and first parallelism block
 
 - [Scope](tasks/TEXTBOOK_ATANASYAN.md): separate textbook course with visible
   task/theory models, justified progressive explanations, deep same-page help
   and preserved learner work.
-- Base `bc322a30111d5a4178ba1a865c56ee1fbe85f03a`; HIGH independent review.
+- PR297; base `bc322a30111d5a4178ba1a865c56ee1fbe85f03a`; HIGH independent review.
 - Source catalogue:1056 numbered exercises,99 theory points,96 self-check
   questions and2 appendices. This does not mean every position is authored.
-- This stage: all15 introduction exercises/31 parts, theory1–3/8 cards;
+- This stage: exercises1–35/52 cards, theory1–6/11 cards;
   independent source/math/pedagogy review passed. Integrated cloud browser
   verification and publication remain. Remaining book content is pending.
 - Next: exact-head cloud UI/visual gate, reviewed publication of this stage,

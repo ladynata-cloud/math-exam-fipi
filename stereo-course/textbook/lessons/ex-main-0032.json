@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0032",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "№32. Прямая и общее ребро двух плоскостей",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "32",
+    "chapter": "I. Параллельность прямых и плоскостей",
+    "printedPages": [
+      14,
+      15
+    ],
+    "pdfPages": [
+      16,
+      17
+    ]
+  },
+  "statement": {
+    "text": "Плоскости α и β пересекаются по прямой AB. Прямая a параллельна как плоскости α, так и плоскости β. Докажите, что прямые a и AB параллельны.",
+    "goal": "Докажи, что a ∥ AB.",
+    "givens": [
+      "α ∩ β = AB.",
+      "a ∥ α и a ∥ β."
+    ]
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Поверни модель и найди общую прямую AB двух плоскостей.",
+    "model": {
+      "points": {
+        "A": [
+          -1,
+          0,
+          0
+        ],
+        "B": [
+          1,
+          0,
+          0
+        ],
+        "M": [
+          2,
+          0,
+          0
+        ],
+        "_aL": [
+          -3,
+          2,
+          2
+        ],
+        "_aR": [
+          3,
+          2,
+          2
+        ],
+        "_a": [
+          2.8,
+          2,
+          2
+        ],
+        "_abL": [
+          -3,
+          0,
+          0
+        ],
+        "_abR": [
+          3,
+          0,
+          0
+        ],
+        "_alpha0": [
+          -3.5,
+          -2.5,
+          0
+        ],
+        "_alpha1": [
+          3.5,
+          -2.5,
+          0
+        ],
+        "_alpha2": [
+          3.5,
+          2.5,
+          0
+        ],
+        "_alpha3": [
+          -3.5,
+          2.5,
+          0
+        ],
+        "_alphaLabel": [
+          -3.5,
+          2.5,
+          0
+        ],
+        "_beta0": [
+          -3.5,
+          0,
+          -2.5
+        ],
+        "_beta1": [
+          3.5,
+          0,
+          -2.5
+        ],
+        "_beta2": [
+          3.5,
+          0,
+          2.5
+        ],
+        "_beta3": [
+          -3.5,
+          0,
+          2.5
+        ],
+        "_betaLabel": [
+          -3.5,
+          0,
+          2.5
+        ]
+      },
+      "edges": [
+        [
+          "_aL",
+          "_aR"
+        ],
+        [
+          "_abL",
+          "_abR"
+        ]
+      ],
+      "faces": [
+        [
+          "_alpha0",
+          "_alpha1",
+          "_alpha2",
+          "_alpha3"
+        ],
+        [
+          "_beta0",
+          "_beta1",
+          "_beta2",
+          "_beta3"
+        ]
+      ],
+      "labels": {
+        "_a": "a",
+        "_alphaLabel": "α",
+        "_betaLabel": "β"
+      },
+      "labelNames": [
+        "A",
+        "B",
+        "_a",
+        "_alphaLabel",
+        "_betaLabel"
+      ],
+      "neutralPoints": [
+        "A",
+        "B",
+        "_a",
+        "_alphaLabel",
+        "_betaLabel"
+      ],
+      "views": {
+        "neutral": {
+          "label": "Поверни модель. Найди все точки и линии, названные в условии.",
+          "segments": [],
+          "polygon": [],
+          "points": []
+        },
+        "construct": {
+          "label": "Через A проведи AM, параллельную a.",
+          "segments": [
+            [
+              "A",
+              "M"
+            ],
+            [
+              "_aL",
+              "_aR"
+            ]
+          ],
+          "polygon": [],
+          "points": [
+            "M"
+          ]
+        },
+        "inalpha": {
+          "label": "Проверь принадлежность AM плоскости α.",
+          "segments": [
+            [
+              "A",
+              "M"
+            ]
+          ],
+          "polygon": [
+            "_alpha0",
+            "_alpha1",
+            "_alpha2",
+            "_alpha3"
+          ],
+          "points": [
+            "M"
+          ]
+        },
+        "inbeta": {
+          "label": "Проверь принадлежность той же AM плоскости β.",
+          "segments": [
+            [
+              "A",
+              "M"
+            ]
+          ],
+          "polygon": [
+            "_beta0",
+            "_beta1",
+            "_beta2",
+            "_beta3"
+          ],
+          "points": [
+            "M"
+          ]
+        },
+        "intersection": {
+          "label": "Сопоставь AM с общей прямой плоскостей.",
+          "segments": [
+            [
+              "A",
+              "M"
+            ],
+            [
+              "A",
+              "B"
+            ]
+          ],
+          "polygon": [],
+          "points": [
+            "M"
+          ]
+        }
+      },
+      "note": "Размеры и углы, не указанные в условии, выбраны только для рисунка. Плоскости показаны ограниченными участками; они продолжаются за их границами. Рисунок не заменяет доказательство."
+    }
+  },
+  "help": [
+    {
+      "id": "help-1",
+      "question": "Как перенести направление a в общую точку плоскостей?",
+      "text": "Через A проведи прямую AM, параллельную a. Проверь её положение относительно каждой плоскости по отдельности.",
+      "view": "construct",
+      "children": [
+        {
+          "id": "help-2",
+          "question": "Почему AM лежит в α?",
+          "text": "AM ∥ a и a ∥ α. По утверждению 2° пункта 6 AM либо лежит в α, либо параллельна α. Но A ∈ α, поэтому AM лежит в α. То же рассуждение работает для β.",
+          "view": "inalpha",
+          "theoryIds": [
+            "theory-006"
+          ]
+        }
+      ],
+      "theoryIds": [
+        "theory-004"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Проведи вспомогательную прямую",
+      "prompt": "Какая прямая через A сохраняет направление a?",
+      "explanation": "Через точку A проведём AM ∥ a. Это возможно и единственно: A не лежит на a, поскольку A ∈ α, а a ∥ α.",
+      "justifications": [
+        {
+          "kind": "given",
+          "text": "A ∈ α, a ∥ α."
+        },
+        {
+          "kind": "theorem",
+          "text": "Атанасян и др., 2024, п. 4, с. 9: Теорема о единственной прямой через внешнюю точку, параллельной данной.",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "4",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              9
+            ],
+            "pdfPages": [
+              11
+            ]
+          },
+          "theoryId": "theory-004"
+        }
+      ],
+      "view": "construct"
+    },
+    {
+      "id": "step-2",
+      "title": "Плоскость α",
+      "prompt": "Почему AM лежит в α, а не параллельна ей?",
+      "explanation": "AM ∥ a, a ∥ α. По утверждению 2° AM либо лежит в α, либо параллельна α. Общая точка A исключает второй случай, поэтому AM ⊂ α.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Атанасян и др., 2024, п. 6, с. 13: Утверждение 2° о параллельных прямых и плоскости.",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "6",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              13
+            ],
+            "pdfPages": [
+              15
+            ]
+          },
+          "theoryId": "theory-006"
+        },
+        {
+          "kind": "given",
+          "text": "A ∈ α."
+        }
+      ],
+      "view": "inalpha"
+    },
+    {
+      "id": "step-3",
+      "title": "Плоскость β",
+      "prompt": "Что даёт такое же рассуждение для β?",
+      "explanation": "AM ∥ a, a ∥ β и A ∈ β. Поэтому по тому же утверждению AM ⊂ β.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Атанасян и др., 2024, п. 6, с. 13: Утверждение 2°.",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "6",
+            "chapter": "I. Параллельность прямых и плоскостей",
+            "printedPages": [
+              13
+            ],
+            "pdfPages": [
+              15
+            ]
+          },
+          "theoryId": "theory-006"
+        },
+        {
+          "kind": "given",
+          "text": "A ∈ β; a ∥ β."
+        }
+      ],
+      "view": "inbeta"
+    },
+    {
+      "id": "step-4",
+      "title": "Используй общую прямую",
+      "prompt": "Может ли AM отличаться от AB?",
+      "explanation": "AM лежит в обеих плоскостях, значит, принадлежит их пересечению AB. Поэтому AM и AB — одна прямая. Из AM ∥ a получаем AB ∥ a.",
+      "justifications": [
+        {
+          "kind": "given",
+          "text": "Пересечение α и β — прямая AB."
+        },
+        {
+          "kind": "theorem",
+          "text": "Атанасян и др., 2024, п. 2, с. 4, 5, 6: А3: общие точки двух различных плоскостей лежат на их общей прямой.",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "2",
+            "chapter": "Введение",
+            "printedPages": [
+              4,
+              5,
+              6
+            ],
+            "pdfPages": [
+              6,
+              7,
+              8
+            ]
+          },
+          "theoryId": "atanasyan2024-theory-002-a3"
+        }
+      ],
+      "view": "intersection"
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "Запиши доказательство своими словами. Укажи свойства или теоремы для каждого перехода."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "ege_base_inventory",
+    "at": "2026-10-21T20:10:36Z"
+  }
+}
