@@ -59,8 +59,8 @@ async function run(page,width,isOffline=false){
  const progress=await page.evaluate(()=>JSON.stringify(Object.keys(localStorage).sort().map(k=>[k,localStorage.getItem(k)])));
  await toggle.click();assert.equal((await toggle.textContent()).trim(),'Хочешь подсказку?');await toggle.click();assert.deepEqual(await panel.locator('[data-tire-part]:checked').evaluateAll(es=>es.map(e=>e.dataset.tirePart)),chosen);
  await panel.locator(':scope>.pd-return').click();assert.equal((await toggle.textContent()).trim(),'Хочешь подсказку?');assert.equal(await page.evaluate(()=>JSON.stringify(Object.keys(localStorage).sort().map(k=>[k,localStorage.getItem(k)]))),progress,'help changes no credit');
- await choose(page,6);const animation=page.locator('#section-6 .anim-block');await reveal(animation);
- if(!await animation.isVisible())await page.locator('#section-6 .pd-toggle').first().click();
+ await choose(page,6);const animation=page.locator('#section-6 .anim-block');
+ if(!await page.locator('#section-6 .pd-panel').first().isVisible())await page.locator('#section-6 .pd-toggle').first().click();
  await reveal(animation);await layout(page,'rolling diagram '+width);
  const rollingFonts=await page.locator('#anim-svg text').evaluateAll(es=>es.map(e=>parseFloat(getComputedStyle(e).fontSize)*e.ownerSVGElement.getBoundingClientRect().width/e.ownerSVGElement.viewBox.baseVal.width));assert.ok(rollingFonts.length>0&&rollingFonts.every(n=>n>=18),'rolling diagram labels stay readable');
  await animation.screenshot({path:path.join(out,(isOffline?'offline-':'')+'rolling-diagram-'+width+'.png')});
