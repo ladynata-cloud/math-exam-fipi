@@ -342,7 +342,7 @@ root.SpaceViewer={mount};})(window);
     shell.append(svg, instructions, controls, focusNote, legend, note, status);
     container.replaceChildren(shell);
     const removers = [];
-    let viewportWidth=420,viewportHeight=320,expanded=false,previousOverflow='';
+    let viewportWidth=420,viewportHeight=320,expanded=false,previousOverflow='',expansionOrigin=null;
     function fitViewport() {
       // One SVG unit is one content-box pixel, including in nested phone panels.
       // A minimum viewBox width would silently shrink the 20px label font.
@@ -492,7 +492,32 @@ root.SpaceViewer={mount};})(window);
       if (speak) announce('Вид модели изменён. Геометрия осталась прежней.');
     }
     const expandButton=element('button',{type:'button',class:'am-button am-expand','aria-expanded':'false'},'Развернуть рисунок');controls.append(expandButton);
-    function toggleExpanded(force){const next=typeof force==='boolean'?force:!expanded;if(next===expanded)return;expanded=next;shell.classList.toggle('am-expanded',expanded);expandButton.textContent=expanded?'Закрыть рисунок':'Развернуть рисунок';expandButton.setAttribute('aria-expanded',String(expanded));if(expanded){previousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';shell.setAttribute('role','dialog');shell.setAttribute('aria-modal','true');shell.setAttribute('aria-label','Увеличенный рисунок задачи');}else{document.body.style.overflow=previousOverflow;shell.removeAttribute('role');shell.removeAttribute('aria-modal');shell.removeAttribute('aria-label');}fitViewport();expandButton.focus();}
+    function rememberExpansionOrigin() {
+      const bounds=shell.getBoundingClientRect(),style=getComputedStyle(shell),ancestors=[],left=window.scrollX,top=window.scrollY;
+      for(let node=shell.parentElement;node;node=node.parentElement)ancestors.push({node,left:node.scrollLeft,top:node.scrollTop});
+      // A fixed shell leaves normal flow. Retain its complete original space so
+      // document/dialog height cannot shrink and clamp their scroll positions.
+      const placeholder=element('div',{class:'am-expansion-placeholder','aria-hidden':'true'});
+      Object.assign(placeholder.style,{height:bounds.height+'px',boxSizing:'border-box',marginTop:style.marginTop,marginBottom:style.marginBottom,pointerEvents:'none'});
+      shell.before(placeholder);
+      return {placeholder,ancestors,left,top};
+    }
+    function restoreExpansionScroll(origin) {
+      // Restore inner scroll containers before the document; this includes a
+      // containing theory dialog. No deferred restore may affect later navigation.
+      for(const saved of origin.ancestors){saved.node.scrollLeft=saved.left;saved.node.scrollTop=saved.top;}
+      if(window.scrollX!==origin.left||window.scrollY!==origin.top)window.scrollTo({left:origin.left,top:origin.top,behavior:'instant'});
+    }
+    function toggleExpanded(force){
+      const next=typeof force==='boolean'?force:!expanded;if(next===expanded)return;
+      if(next)expansionOrigin=rememberExpansionOrigin();
+      expanded=next;shell.classList.toggle('am-expanded',expanded);
+      expandButton.textContent=expanded?'Закрыть рисунок':'Развернуть рисунок';expandButton.setAttribute('aria-expanded',String(expanded));
+      if(expanded){previousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';shell.setAttribute('role','dialog');shell.setAttribute('aria-modal','true');shell.setAttribute('aria-label','Увеличенный рисунок задачи');}
+      else{document.body.style.overflow=previousOverflow;shell.removeAttribute('role');shell.removeAttribute('aria-modal');shell.removeAttribute('aria-label');expansionOrigin.placeholder.remove();}
+      fitViewport();expandButton.focus({preventScroll:true});
+      if(!expanded){restoreExpansionScroll(expansionOrigin);expansionOrigin=null;}
+    }
     on(expandButton,'click',()=>toggleExpanded());
     on(shell,'keydown',event=>{if(!expanded)return;if(event.key==='Escape'){event.preventDefault();toggleExpanded(false);}else if(event.key==='Tab'){const all=[...shell.querySelectorAll('button,[tabindex="0"]')],first=all[0],last=all.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}});
     function reset() { yaw = initial.yaw; pitch = initial.pitch; render(); changed(); announce('Исходный вид модели восстановлен.'); }
