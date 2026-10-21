@@ -32,8 +32,8 @@ const screenshotCases=new Map([
  ['atanasyan2024-main-001-a|nested-theory','nested-theory'],
  ['theory-004|condition','parallel-theory-condition'],
  ['theory-006|condition','line-plane-theory-condition'],
- ['theory-006|step-2','line-contained-plane'],
- ['ex-main-0020|step-3','trapezoid-coincident-plane'],
+ ['theory-006|help:missing-condition','line-contained-plane'],
+ ['ex-main-0020|step-4','trapezoid-coincident-plane'],
  ['ex-main-0026|step-3','similarity-angles'],
  ['ex-main-0034|condition','tetrahedron-parts-condition'],
  ['ex-main-0034|step-5','tetrahedron-part-d'],
@@ -108,13 +108,14 @@ async function fullscreen(lesson,width,selector,scope){
   // Closing via both paths must preserve the exact instance and selected model.
   if(closeBy==='Escape'){await button.focus();await page.keyboard.press('Escape');}else await button.click();await settle();assert.equal(await page.locator(selector+' .am-expanded').count(),0);
   const restored=await page.locator(selector).evaluate(node=>{const svg=node.querySelector('svg'),dialog=node.closest('dialog');return {same:svg===window.__textbookExpandedSvg,view:svg.dataset.view,yaw:svg.dataset.yaw,pitch:svg.dataset.pitch,overflow:document.body.style.overflow,x:scrollX,y:scrollY,dialogTop:dialog?.scrollTop??null};});
+  const attempt={id:lesson.id,width,scope,closeBy,label,bounds,saved,after:restored,restored:false};evidence.expansions.push(attempt);writeEvidence();
   assert(restored.same,scope+' expansion retains original SVG');for(const field of ['view','yaw','pitch','overflow'])assert.equal(restored[field],saved[field],scope+' restored '+field);
   assert(Math.abs(restored.x-saved.x)<=1&&Math.abs(restored.y-saved.y)<=1,scope+' document scroll restored');if(scope==='theory'){assert.equal(await page.locator('dialog.theory-dialog').count(),1,'first Escape closes only drawing');assert(Math.abs(restored.dialogTop-saved.dialogTop)<=1,'theory scroll restored');}
-  evidence.expansions.push({id:lesson.id,width,scope,closeBy,label,bounds,restored:true});writeEvidence();
+  attempt.restored=true;writeEvidence();
  }
 }
 async function helpTree(lesson,items,width,keptCamera,draft){
- for(const item of items){const details=page.locator('[data-help="'+item.id+'"]');await openDetails(details);await settle();assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),item.view||'neutral',lesson.id+' help view '+item.id);await preserveCheck(lesson,keptCamera,draft);await checkLabels(lesson.id,width,'help:'+item.id);await helpTree(lesson,item.children||[],width,keptCamera,draft);}
+ for(const item of items){const details=page.locator('[data-help="'+item.id+'"]');await openDetails(details);await settle();assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),item.view||'neutral',lesson.id+' help view '+item.id);await preserveCheck(lesson,keptCamera,draft);await checkLabels(lesson.id,width,'help:'+item.id);await takeScreenshot(lesson,width,'help:'+item.id);await helpTree(lesson,item.children||[],width,keptCamera,draft);}
 }
 async function theoryModal(lesson,width,keptCamera,draft){
  const sourceStep=lesson.id==='atanasyan2024-main-001-a'?lesson.steps.find(step=>step.justifications.some(j=>j.theoryId==='atanasyan2024-theory-003-line-point')):lesson.steps.find(step=>step.justifications.some(j=>j.theoryId&&expectedById.has(j.theoryId)));
@@ -193,7 +194,7 @@ async function main(){
  fs.mkdirSync(out,{recursive:true});
  if(process.env.TEXTBOOK_CHECK_ONLY==='1'){
   for(const lesson of expectedLessons){assert(lesson.id&&lesson.visualization?.model&&lesson.steps?.length,'authored structure');for(const step of lesson.steps)assert(step.id&&step.justifications?.length,'authored step justification');for(const view of Object.keys(lesson.visualization.model.views))visibleLabelKeys(lesson,view);}
-  for(const key of screenshotCases.keys()){const [id,stage]=key.split('|'),lesson=expectedById.get(id);assert(lesson,'known screenshot lesson '+key);if(stage.startsWith('step-'))assert(lesson.steps.some(step=>step.id===stage),'known screenshot step '+key);}
+  for(const key of screenshotCases.keys()){const [id,stage]=key.split('|'),lesson=expectedById.get(id);assert(lesson,'known screenshot lesson '+key);if(stage.startsWith('step-'))assert(lesson.steps.some(step=>step.id===stage),'known screenshot step '+key);if(stage.startsWith('help:')){const found=(items)=>items.some(item=>item.id===stage.slice(5)||found(item.children||[]));assert(found(lesson.help),'known screenshot help '+key);}}
   console.log('TEXTBOOK_BROWSER_PREFLIGHT_OK: '+expectedCount+' authored cards; no browser launched, no review flags changed');return;
  }
  base=process.env.TEXTBOOK_BASE_URL||await hostStatic();assert(base.endsWith('/'),'TEXTBOOK_BASE_URL must end in /');

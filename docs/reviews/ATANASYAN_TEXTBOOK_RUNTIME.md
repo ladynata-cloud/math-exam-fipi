@@ -69,3 +69,11 @@ parent dialog. The scoped fix restores the shared CSS ancestry and lets the embe
 handle its own keyboard event before the parent theory dialog. Actual cloud
 open/close/return checks remain a release gate. The exact final commit and browser evidence will be
 recorded in PR297; this report does not pre-certify those pending checks.
+
+The second cloud run39669443461 completed all63 mobile cards and all4 mobile
+expansion/return paths before detecting a desktop document-scroll jump. The shared
+viewer now retains the original layout space while fixed and restores document/
+ancestor scroll positions when closing, with prevent-scroll focus. A dedicated
+DOM contract test verifies preservation and cleanup; the existing real-browser
+scroll assertions remain unchanged. All inherited stereometry/profile gates are
+required on this final shared-viewer change.
