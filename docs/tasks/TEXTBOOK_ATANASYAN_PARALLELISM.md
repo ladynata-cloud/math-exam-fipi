@@ -79,3 +79,14 @@ storage. No server, authentication, payment or storage-protocol change.
   screenshot cases at both widths, plus4 expanded-model screenshots. Preserve
   real two-tab conflict recovery, scroll, camera, answer drafts and theory returns.
 - Textbook PDF, scans and raw extracts are excluded. No paid Claude API is used.
+
+## Visual-review correction
+
+Independent inspection of the real mobile screenshot for exercise63b found
+fraction feedback rendered as slash text after a wrong intermediate answer.
+The common display path now uses the same safe fraction formatter for dynamic
+step and final feedback as for explanations. It replaces prior feedback, keeps
+HTML-like input inert, and preserves answer fields/model instances. The source
+lesson content is unchanged. A focused UI regression covers wrong/correct
+transitions, literal markup and the numerator/denominator; the cloud journey
+checks actual63b feedback bars. Final exact-head cloud and screen review follow.

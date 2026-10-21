@@ -88,6 +88,7 @@ function createApp(root,options){
  const theoryTrail=[];
  const cache=new Map();
  function el(tag,text,attrs={}){const node=doc.createElement(tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);if(text!==undefined)math.appendText(node,String(text));return node;}
+ function setDisplayText(node,text){node.replaceChildren();math.appendText(node,String(text));}
  const alerts=el('div',undefined,{class:'course-alerts','aria-live':'polite'}),view=el('main');root.replaceChildren(alerts,view);
  function status(text){if(![...alerts.children].some(node=>node.tagName==='P'&&node.textContent===text))alerts.append(el('p',text));}
  function safeRead(k){try{return storage?.getItem(k)||null;}catch{status('Сохранение в браузере недоступно. Оставь страницу открытой, чтобы сохранить текущие записи.');return null;}}
@@ -171,15 +172,15 @@ function createApp(root,options){
     // Open native disclosures count as help even before their queued toggle fires.
     if(side.querySelector('details[open]'))state.assisted=true;
     if(!save())return;
-    if(lesson.answer.mode==='manual'){feedback.textContent='Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.';return;}
+    if(lesson.answer.mode==='manual'){setDisplayText(feedback,'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.');return;}
     const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
-    feedback.textContent=correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.');if(correct)state.checked=true;else state.assisted=true;save();
+    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;save();
    });form.append(label,input,check,feedback);main.append(form);
   }
   const help=el('details',undefined,{'data-main-help':''}),summary=el('summary','Хочешь подсказку?'),helpBody=el('div');summary.addEventListener('click',event=>{if(!help.open&&!assisted())event.preventDefault();});help.addEventListener('toggle',()=>{if(help.isConnected&&help.open)assisted();});help.append(summary,helpBody);mountHelp(lesson.help,helpBody);
   const steps=el('section',undefined,{'data-steps':''}),next=el('button','Разобрать по шагам',{type:'button'});helpBody.append(steps,next);
   function addStep(index){const step=lesson.steps[index],section=el('section',undefined,{class:'textbook-step','data-step':step.id});section.append(el('h3',step.title),el('p',step.prompt));const explain=el('details');explain.append(el('summary','Показать объяснение'),el('p',step.explanation));justifications(step,explain);section.append(explain);
-   if(step.input){const form=el('form'),fieldId='step-'+step.id,input=el('input',undefined,{id:fieldId,autocomplete:'off'}),feedback=el('p',undefined,{role:'status'});input.value=state.stepDrafts[step.id]||'';input.addEventListener('input',()=>{state.stepDrafts[step.id]=input.value;save();});form.append(el('label',step.input.prompt,{for:fieldId}),input,el('button','Проверить этот шаг',{type:'submit'}),feedback);form.addEventListener('submit',event=>{event.preventDefault();if(!assisted())return;feedback.textContent=step.input.accepted.some(value=>normalized(value)===normalized(input.value))?'Ответ на этот шаг совпал.':step.input.feedback;});section.append(form);}
+   if(step.input){const form=el('form'),fieldId='step-'+step.id,input=el('input',undefined,{id:fieldId,autocomplete:'off'}),feedback=el('p',undefined,{role:'status'});input.value=state.stepDrafts[step.id]||'';input.addEventListener('input',()=>{state.stepDrafts[step.id]=input.value;save();});form.append(el('label',step.input.prompt,{for:fieldId}),input,el('button','Проверить этот шаг',{type:'submit'}),feedback);form.addEventListener('submit',event=>{event.preventDefault();if(!assisted())return;setDisplayText(feedback,step.input.accepted.some(value=>normalized(value)===normalized(input.value))?'Ответ на этот шаг совпал.':step.input.feedback);});section.append(form);}
    const onModel=el('button','Показать на рисунке',{type:'button'});onModel.addEventListener('click',()=>{if(assisted())viewer?.setView(step.view||'neutral');});section.append(onModel);steps.append(section);
   }
   for(let i=0;i<state.revealed;i++)addStep(i);if(state.revealed>0){help.open=true;state.assisted=true;}
