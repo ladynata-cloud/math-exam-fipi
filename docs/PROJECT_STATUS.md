@@ -2,12 +2,16 @@
 
 Updated: 2026-10-21 (Asia/Novosibirsk)
 
-## In progress: tire labels, visible tables and vertical learning order
+## In progress: exam-like tire variant with persistent tables
+
+- [Presentation principles](TRAINER_PRESENTATION_PRINCIPLES.md): the owner's
+  revised task-first direction, initially implemented in the tire trainer.
 
 - [Scope](tasks/TIRES_CLEAR_VERTICAL_FLOW.md): owner feedback on eleven
-  screenshots. Attach readable dimension labels to the wheel, use nearby
-  checkboxes and sidewall terminology, enlarge text, restore task1's essential
-  compatibility table and place shared calculations after task1.
+  screenshots, revised before publication: show the real tasks1–5 together,
+  keep the 3D tire immediately visible and both tables continuously available,
+  with a calculation pane beside the task stream and contextual question help.
+  Preserve the tested dimension labels, sidewall terminology and enlarged text.
 
 ## Published: rotating 3D tire dimensions
 

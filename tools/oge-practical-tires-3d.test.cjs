@@ -12,7 +12,7 @@ test('tire marking produces independent axial, radial and bead-seat dimensions',
 });
 
 test('mesh section width reaches the actual sidewall extrema, beyond the narrower tread',()=>{
- for(const B of [155,195,255])for(const p of [40,60,80])for(const d of [13,15,19]){
+ for(const B of [155,195,255,265])for(const p of [40,60,80])for(const d of [12,13,15,19]){
   const dim=tire.dimensions({B,p,d}),mesh=tire.buildMesh(dim),rubber=mesh.faces.filter(f=>f.material==='sidewall'||f.material==='tread').flatMap(f=>f.points),tread=mesh.faces.filter(f=>f.material==='tread').flatMap(f=>f.points);
   near(Math.max(...rubber.map(v=>v[2]))-Math.min(...rubber.map(v=>v[2])),B);
   near(Math.max(...rubber.map(v=>Math.hypot(v[0],v[1]))),dim.R);
@@ -34,7 +34,7 @@ test('orthographic rotation preserves geometry and uses a common scale across di
  assert.ok(projectedLength(width.line,tire.presets.quarter)>dim.B*tire.frame.scale*.5);
  near(projectedLength(tire.measurement(dim,'side').line,tire.presets.front),dim.H*tire.frame.scale);
  const bigger=tire.dimensions({d:16});near(projectedLength(tire.measurement(bigger,'all').line,tire.presets.front)-projectedLength(tire.measurement(dim,'all').line,tire.presets.front),25.4*tire.frame.scale);
- const max=tire.dimensions({B:255,p:80,d:19});for(const view of [...Object.values(tire.presets),{yaw:-130,pitch:70},{yaw:70,pitch:-70}])for(const f of tire.buildMesh(max).faces)for(const v of f.points){const p=tire.project(v,view);assert.ok(p.every(Number.isFinite));assert.ok(p[0]>0&&p[0]<tire.frame.width&&p[1]>0&&p[1]<tire.frame.height,'largest mesh stays in frame');}
+ const max=tire.dimensions({B:265,p:80,d:19});for(const view of [...Object.values(tire.presets),{yaw:-130,pitch:70},{yaw:70,pitch:-70}])for(const f of tire.buildMesh(max).faces)for(const v of f.points){const p=tire.project(v,view);assert.ok(p.every(Number.isFinite));assert.ok(p[0]>0&&p[0]<tire.frame.width&&p[1]>0&&p[1]<tire.frame.height,'largest mesh stays in frame');}
  for(let yaw=-180;yaw<=180;yaw+=5)for(let pitch=-70;pitch<=70;pitch+=5)for(const part of Object.keys(tire.parts))for(const endpoint of [...tire.measurement(max,part).line,...tire.measurement(max,part).points]){const [x,y]=tire.project(endpoint,{yaw,pitch});assert.ok(x>=4&&x<=tire.frame.width-4&&y>=4&&y<=tire.frame.height-4,part+' witnesses remain in the tire area at '+yaw+','+pitch);}
  for(const camera of [...Object.values(tire.presets),{yaw:-130,pitch:70},{yaw:70,pitch:-70}])for(const chosen of ['width','side','disk','all','radius','width,side,disk','width,side,disk,all,radius']){
   const layout=tire.drawingLayout(chosen),dom=new JSDOM('<svg>'+tire.renderSvg(max,camera,chosen)+'</svg>');try{

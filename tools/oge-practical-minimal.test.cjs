@@ -55,7 +55,7 @@ function click(doc,selector){const el=doc.querySelector(selector);assert.ok(el,s
 const tasks={
  'practice-1-5-roads-grid.html':['#task-card .task-question','#task-card select:not([data-pd-key]),#answer-input'],
  'practice-1-5-roads-schema.html':['#app .qtext','#ans'],
- 'practice-1-5-tires.html':['#quiz-B .quiz-q','#quiz-B .quiz-opt'],
+ 'practice-1-5-tires.html':['#section-2 .card-intro','#t1-final input','#tvl-main-model .t3d-stage','#master-table'],
  'practice-1-5-stoves.html':['#task-card .task-question','#task-card select:not([data-pd-key]),#answer-input'],
  'practice-1-5-land-plots.html':['#task-q','#in'],
  'practice-1-5-apartments.html':['#taskBody .question,#taskBody .q,#taskBody p','#taskBody input:not([data-pd-key]),#taskBody select:not([data-pd-key])'],

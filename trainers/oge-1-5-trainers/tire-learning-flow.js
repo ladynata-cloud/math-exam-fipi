@@ -30,6 +30,7 @@ function syncCurrent(){
 }
 function navigation(){
  arrange(order);
+ if(global.TireVariantLayout)return;
  qa('#step-stepper .step-btn').forEach(b=>{const id=+b.dataset.step;setText(q('.step-num',b),String(order.indexOf(id)+1));setText(q('.step-name',b),names[id]);b.setAttribute('aria-label',names[id]);});
  for(let i=0;i<order.length;i++){
   const section=q('#section-'+order[i]),nav=section&&q('.nav-row',section);if(!nav)continue;
@@ -56,6 +57,7 @@ function compatibility(){
  if(given.nextElementSibling!==answer)answer.before(given);
 }
 function calculations(){
+ if(global.TireVariantLayout)return;
  const source=q('#master-table');if(!source)return;
  for(const step of [3,4,5,6]){
   const section=q('#section-'+step),intro=section&&q('.card-intro',section);if(!intro||q('.tlf-shared-calculations',section))continue;
