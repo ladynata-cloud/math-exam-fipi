@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-10-21",
-  "registeredAt": "2026-10-21T21:22:34.472548+00:00",
-  "scope": "All introduction and chapterI: theory1–14, main exercises1–115 and chapterI self-check questions1–16. Not the complete book.",
+  "registeredAt": "2026-10-21T22:23:26.831968+00:00",
+  "scope": "Introduction and chaptersI–II: main1–217, theory1–26, chapterI self-check1–16 and chapterII self-check1–10. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -244,6 +244,204 @@
         "ex-selfcheck-i-14",
         "ex-selfcheck-i-15",
         "ex-selfcheck-i-16"
+      ]
+    },
+    {
+      "reviewer": "Codex ege_base_inventory; geometry_scene_math_review",
+      "reviewedAt": "2026-10-21T21:45:45Z",
+      "registeredAt": "2026-10-21",
+      "registrationNote": "Registration of the independent exact-author-bundle content PASS; not an exact-Git-head or integration approval.",
+      "sourceBundleSHA256": "02a5299af84de6b880e7d76c71873c870cf9fd35b35f7a452e6039f691ecbe7d",
+      "scope": "Every source question in main exercises116–149;34 cards.",
+      "report": "docs/reviews/ATANASYAN_PERPENDICULAR_116_149_CONTENT.md",
+      "cardIds": [
+        "ex-main-0116",
+        "ex-main-0117",
+        "ex-main-0118",
+        "ex-main-0119",
+        "ex-main-0120",
+        "ex-main-0121",
+        "ex-main-0122",
+        "ex-main-0123",
+        "ex-main-0124",
+        "ex-main-0125",
+        "ex-main-0126",
+        "ex-main-0127",
+        "ex-main-0128",
+        "ex-main-0129",
+        "ex-main-0130",
+        "ex-main-0131",
+        "ex-main-0132",
+        "ex-main-0133",
+        "ex-main-0134",
+        "ex-main-0135",
+        "ex-main-0136",
+        "ex-main-0137",
+        "ex-main-0138",
+        "ex-main-0139",
+        "ex-main-0140",
+        "ex-main-0141",
+        "ex-main-0142",
+        "ex-main-0143",
+        "ex-main-0144",
+        "ex-main-0145",
+        "ex-main-0146",
+        "ex-main-0147",
+        "ex-main-0148",
+        "ex-main-0149"
+      ]
+    },
+    {
+      "reviewer": "Codex ege_independent_review; intro_geometry_audit",
+      "reviewedAt": "2026-10-21T21:54:05.325049+00:00",
+      "registeredAt": "2026-10-21",
+      "registrationNote": "Registration of the independent exact-author-bundle content PASS; not an exact-Git-head or integration approval.",
+      "sourceBundleSHA256": "dd35d86e0b5a5b4aa7fbf7102915e13ad222c9328093b4572fb3a7245c82103d",
+      "scope": "All theory points15–21, including all definitions, proofs and embedded examples;10 cards.",
+      "report": "docs/reviews/ATANASYAN_PERPENDICULAR_THEORY15_21_CONTENT.md",
+      "cardIds": [
+        "theory-015",
+        "theory-016",
+        "theory-017",
+        "theory-017-example",
+        "theory-018",
+        "theory-019",
+        "theory-019-distances",
+        "theory-020",
+        "theory-021",
+        "theory-021-central"
+      ]
+    },
+    {
+      "reviewer": "Codex ege_profile_inventory",
+      "reviewedAt": "2026-10-21T21:52:04Z",
+      "registeredAt": "2026-10-21",
+      "registrationNote": "Registration of the independent exact-author-bundle content PASS; not an exact-Git-head or integration approval.",
+      "sourceBundleSHA256": "e03c770ed6c898209ed7ddc364f7e3f91fa174d4cd46b0fcad8e3686f4e38c48",
+      "scope": "All theory points22–26, including all definitions, proofs and embedded examples;10 cards.",
+      "report": "docs/reviews/ATANASYAN_PERPENDICULAR_THEORY22_26_CONTENT.md",
+      "cardIds": [
+        "theory-022",
+        "theory-022-right",
+        "theory-022-obtuse",
+        "theory-023-angles",
+        "theory-023",
+        "theory-024",
+        "theory-024-cube",
+        "theory-025",
+        "theory-026",
+        "theory-026-angle-sum"
+      ]
+    },
+    {
+      "sourceBundleSHA256": "0ba27f645dbaa4e27872e0a4ba7f482b3eaa0cc8d22b949e33e83b6319c57fb3",
+      "reviewer": "Codex ege_independent_review",
+      "reviewedAt": "2026-10-21T22:13:35.809431+00:00",
+      "scope": "All source questions of main exercises150–183;34 cards,95 steps,86 views.",
+      "report": "docs/reviews/ATANASYAN_CHAPTER_II_150_183_CONTENT.md",
+      "registeredAt": "2026-10-21T22:23:26.831968+00:00",
+      "registrationNote": "Registration of the received independent exact-author-bundle content PASS; not integration, exact-Git-head or cloud-browser approval.",
+      "cardIds": [
+        "ex-main-0150",
+        "ex-main-0151",
+        "ex-main-0152",
+        "ex-main-0153",
+        "ex-main-0154",
+        "ex-main-0155",
+        "ex-main-0156",
+        "ex-main-0157",
+        "ex-main-0158",
+        "ex-main-0159",
+        "ex-main-0160",
+        "ex-main-0161",
+        "ex-main-0162",
+        "ex-main-0163",
+        "ex-main-0164",
+        "ex-main-0165",
+        "ex-main-0166",
+        "ex-main-0167",
+        "ex-main-0168",
+        "ex-main-0169",
+        "ex-main-0170",
+        "ex-main-0171",
+        "ex-main-0172",
+        "ex-main-0173",
+        "ex-main-0174",
+        "ex-main-0175",
+        "ex-main-0176",
+        "ex-main-0177",
+        "ex-main-0178",
+        "ex-main-0179",
+        "ex-main-0180",
+        "ex-main-0181",
+        "ex-main-0182",
+        "ex-main-0183"
+      ]
+    },
+    {
+      "sourceBundleSHA256": "8ff787dcc288254b3256d2588a4a3839d55d9ecbfdec337f14ce352469fcae3d",
+      "reviewer": "Codex atanasyan_150_183_author",
+      "reviewedAt": "2026-10-21T22:06:51.243851+00:00",
+      "scope": "All10 chapterII self-check numbers and all14 source questions;31 steps,36 views.",
+      "report": "docs/reviews/ATANASYAN_CHAPTER_II_SELFCHECK_CONTENT.md",
+      "registeredAt": "2026-10-21T22:23:26.831968+00:00",
+      "registrationNote": "Registration of the received independent exact-author-bundle content PASS; not integration, exact-Git-head or cloud-browser approval.",
+      "cardIds": [
+        "ex-selfcheck-ii-01",
+        "ex-selfcheck-ii-02",
+        "ex-selfcheck-ii-03",
+        "ex-selfcheck-ii-04",
+        "ex-selfcheck-ii-05",
+        "ex-selfcheck-ii-06",
+        "ex-selfcheck-ii-07",
+        "ex-selfcheck-ii-08",
+        "ex-selfcheck-ii-09",
+        "ex-selfcheck-ii-10"
+      ]
+    },
+    {
+      "sourceBundleSHA256": "4f3d5219944602ef478fc9a9d4db89353cbf3d9c6e0741435bf595b05bf6dc84",
+      "reviewer": "Codex atanasyan_theory22_26_author",
+      "reviewedAt": "2026-10-21T22:19:44.401737+00:00",
+      "scope": "All34 source numbers184–217 and all46 source questions;92 steps,85 views.",
+      "report": "docs/reviews/ATANASYAN_CHAPTER_II_184_217_CONTENT.md",
+      "registeredAt": "2026-10-21T22:23:26.831968+00:00",
+      "registrationNote": "Registration of the received independent exact-author-bundle content PASS; not integration, exact-Git-head or cloud-browser approval.",
+      "cardIds": [
+        "ex-main-0184",
+        "ex-main-0185",
+        "ex-main-0186",
+        "ex-main-0187",
+        "ex-main-0188",
+        "ex-main-0189",
+        "ex-main-0190",
+        "ex-main-0191",
+        "ex-main-0192",
+        "ex-main-0193",
+        "ex-main-0194",
+        "ex-main-0195",
+        "ex-main-0196",
+        "ex-main-0197",
+        "ex-main-0198",
+        "ex-main-0199",
+        "ex-main-0200",
+        "ex-main-0201",
+        "ex-main-0202",
+        "ex-main-0203",
+        "ex-main-0204",
+        "ex-main-0205",
+        "ex-main-0206",
+        "ex-main-0207",
+        "ex-main-0208",
+        "ex-main-0209",
+        "ex-main-0210",
+        "ex-main-0211",
+        "ex-main-0212",
+        "ex-main-0213",
+        "ex-main-0214",
+        "ex-main-0215",
+        "ex-main-0216",
+        "ex-main-0217"
       ]
     }
   ],
@@ -979,6 +1177,534 @@
     {
       "id": "ex-selfcheck-i-16",
       "sha256": "273f2653800423afdb5dafd51d2f26f264306b9a367305f9cb5181aa34ea35ef"
+    },
+    {
+      "id": "ex-main-0116",
+      "sha256": "1d76e8166749d0d0cadb4d72d1485a884233df69b26ed64d9826e34e2efad93b"
+    },
+    {
+      "id": "ex-main-0117",
+      "sha256": "3ee44f257f42edd0de5297c9e22d7f3de974355a4afd2d6ef0b159ccac85b140"
+    },
+    {
+      "id": "ex-main-0118",
+      "sha256": "2aa03d820703bbb499c8ce5c122a52e06ceeaf2d35229fe040f823a4636f1dc9"
+    },
+    {
+      "id": "ex-main-0119",
+      "sha256": "2698d6e1caa3160483d6ecb4c25bc56fe99f004068bd0a8b9a50e303488e64a0"
+    },
+    {
+      "id": "ex-main-0120",
+      "sha256": "b403f02396cdfacde4463d71a1a350d0b9e682c09297678c6a1a7456a1603e0c"
+    },
+    {
+      "id": "ex-main-0121",
+      "sha256": "a23bdf640ab37d69b26c9fb811b10a842e58ff3a7d62b754f0a17515bd28b18e"
+    },
+    {
+      "id": "ex-main-0122",
+      "sha256": "904e0163f2800e1f108aa7606f57c75c94ad78ae20844d941312b43798000aff"
+    },
+    {
+      "id": "ex-main-0123",
+      "sha256": "a5dc8f009ec625a1333d92dcc28cb590c5381bce39b3702fd4ef577b714a567c"
+    },
+    {
+      "id": "ex-main-0124",
+      "sha256": "0993051c75ed8e142f09ff27f11c6f6d50cf5a41385dccd21184149fe8d62d1c"
+    },
+    {
+      "id": "ex-main-0125",
+      "sha256": "5e9dafb9873d49cf37c34c60aef0fe1eca326fdc764f4e73c9b13aa26d65dfca"
+    },
+    {
+      "id": "ex-main-0126",
+      "sha256": "6981bc7955771677bd953d04f373a9ceb3e4e4c9cadc2b5cd7bcc94360a98fd6"
+    },
+    {
+      "id": "ex-main-0127",
+      "sha256": "3aa398f864c40ea6e3fd35c5b9488fb2148aae3e4fc15ea2700979cd9f7e9ea0"
+    },
+    {
+      "id": "ex-main-0128",
+      "sha256": "071809cac3dfed181931007baf9f97cb0b9707099fa399a1e9eaa640b3cbc8d2"
+    },
+    {
+      "id": "ex-main-0129",
+      "sha256": "410a113d861e686edab9ea35be5cb14ae8a0a0d1c247d21e1ac86b005e9c1ded"
+    },
+    {
+      "id": "ex-main-0130",
+      "sha256": "e682c17dd016ab91293ce14fe39c7e63f84c3dbc5dea24c4871eaabe8400eb6c"
+    },
+    {
+      "id": "ex-main-0131",
+      "sha256": "00a0a3d01b1d71fb9f6aa2a635e0b36953a7dbbbac02b64bed18e827c5df47d7"
+    },
+    {
+      "id": "ex-main-0132",
+      "sha256": "847ea14c8ac55d8c6a6a276b00e0bc798dd2ee45dc92b8b3af3d9f35d304d59d"
+    },
+    {
+      "id": "ex-main-0133",
+      "sha256": "a9acd78e852da90b2c62ca3624c6bc6dbdad3047a5bbb4a81523a6b56929d105"
+    },
+    {
+      "id": "ex-main-0134",
+      "sha256": "5dc31e559c4db4b2701da5a55efc5cedb9b01ced3ebf15e9b0c16d0b803c5c46"
+    },
+    {
+      "id": "ex-main-0135",
+      "sha256": "8412eed855bc410ac87422d4e1170df3a6095107b3944c29887d34a7fa68b260"
+    },
+    {
+      "id": "ex-main-0136",
+      "sha256": "6fea53c894536f5614a047a2b35912e7b67614d4853e9aca17006ad98540ab89"
+    },
+    {
+      "id": "ex-main-0137",
+      "sha256": "752b0b2fa9981c24206516bb1a3d39a9153b4d9895202335126c7d7c5464977a"
+    },
+    {
+      "id": "ex-main-0138",
+      "sha256": "8bd44b88e65749e45497d2a23d2f46616a619e3dc67b61eb35c12760112e084d"
+    },
+    {
+      "id": "ex-main-0139",
+      "sha256": "955ef913318d0a74f3f1127dabac6da77b26ee0c6ba9518334cab77b2c25d0b8"
+    },
+    {
+      "id": "ex-main-0140",
+      "sha256": "5c38bd6fef87e74f571b4c2fb2629e8ac0945c5caf9a3f4b43ef49a4dfd467a4"
+    },
+    {
+      "id": "ex-main-0141",
+      "sha256": "88c2249aaddb3a418c2a1dda725e41ae38f4e713d186019d73197bee4ca2a104"
+    },
+    {
+      "id": "ex-main-0142",
+      "sha256": "777afc35f6e2b584213dd50794dde13de22b5668a5c635d21a8beb767ee32759"
+    },
+    {
+      "id": "ex-main-0143",
+      "sha256": "a379561ffb2e8147061860aace5983c68848da917b261daf042996cc6c0c8bb3"
+    },
+    {
+      "id": "ex-main-0144",
+      "sha256": "4b140b37201114c0b346fc433f7924fac4ec68150f8d4632b436039df39c7232"
+    },
+    {
+      "id": "ex-main-0145",
+      "sha256": "0ad7b1b7dbf9c5e6500c5af85c8b8c83d26730a7de89391a91900e2664b4c972"
+    },
+    {
+      "id": "ex-main-0146",
+      "sha256": "2eb34071fa82c3da4b84a4b9bed409d81953a4006b6e220b47e6f507c84eddbc"
+    },
+    {
+      "id": "ex-main-0147",
+      "sha256": "e4d806997049760c6358a6a6ec3047d28e1db854e0b4c3f18aee998293ebb47c"
+    },
+    {
+      "id": "ex-main-0148",
+      "sha256": "edf7c6e21b719f82223bab1a9227a623fe23ec66e22257f8228ebdad62f4ad0f"
+    },
+    {
+      "id": "ex-main-0149",
+      "sha256": "74f739436f2fb4a181f8065622668a24d985103deff11fd3952d41ab83d1b9f4"
+    },
+    {
+      "id": "theory-015",
+      "sha256": "dca4675b070ce4da313b861f1d7849b3b9c4396f7e8da996a2b64fa780769929"
+    },
+    {
+      "id": "theory-016",
+      "sha256": "9a64659f384637c3faeb068ad0ed217e20f306755e22562d2444ea728bc5aedc"
+    },
+    {
+      "id": "theory-017",
+      "sha256": "5472231d02d6642150c67dce97d46a3e4d2c257c8357b2a486f75c4efe11376a"
+    },
+    {
+      "id": "theory-017-example",
+      "sha256": "70e9483ad21e9ccb384714797ee90558c045d4a98bb28427f5df325688dd0a5b"
+    },
+    {
+      "id": "theory-018",
+      "sha256": "7d15c6a6b3e49f5618e505ee063c5f7ef5f3fb04464b815c74f6ec5ef4e1d97d"
+    },
+    {
+      "id": "theory-019",
+      "sha256": "2ae5477c7e98021f920704a1e43e2549dfafe966dc990618d877e076e3f6457d"
+    },
+    {
+      "id": "theory-019-distances",
+      "sha256": "1d70c80b8ed4f23150d19d53f89b101d390e95085d9ee6a34c05bfe171818e3e"
+    },
+    {
+      "id": "theory-020",
+      "sha256": "f965d1acc656055a5a29bbc17d68d81d739f0ed190aad7e98345afd8ad2a8cca"
+    },
+    {
+      "id": "theory-021",
+      "sha256": "a77afd3ea17555a069c227533b8633ebc63d432d67722db4b5dd6f2ab51944d8"
+    },
+    {
+      "id": "theory-021-central",
+      "sha256": "2dfda74c898c4ff3308fff8acaa50f2844b940a1e1a7b33be229df465d0bfa8e"
+    },
+    {
+      "id": "theory-022",
+      "sha256": "a1a6d2b4505e5fe5df1763aea8d6d2cc463599cff95b21e8ea0b1cd06fceaea9"
+    },
+    {
+      "id": "theory-022-right",
+      "sha256": "41da5caf1b1689fceaceb77eeb2b7a967d20eba754c6c19378840dedd64d09e8"
+    },
+    {
+      "id": "theory-022-obtuse",
+      "sha256": "d2d6a8a32fbbd34781e4b3f5715703265120eb10fe252123a09c11076b310113"
+    },
+    {
+      "id": "theory-023-angles",
+      "sha256": "37843a780ec25ca5a0b44a40078082f27cc85c0e95f6bafc56230500bcd7d006"
+    },
+    {
+      "id": "theory-023",
+      "sha256": "7d2f42a04d0101767ad5baf6a08affd2d40a45f57a47f424d7318ddb2aa60bf8"
+    },
+    {
+      "id": "theory-024",
+      "sha256": "f0070cdaf271758639e893db739540b90f19af3920d65a6bb2750d894863d021"
+    },
+    {
+      "id": "theory-024-cube",
+      "sha256": "4aafbf2cf029e4d34ca6b88d1ba7786c7661b12971dfbf2acf61d76240625b69"
+    },
+    {
+      "id": "theory-025",
+      "sha256": "0a3c5ee0ed73c5dc6b0bf029a5824c7e5277fc05ecfe2e3ff911b5279a485d06"
+    },
+    {
+      "id": "theory-026",
+      "sha256": "a5a67bc4f5ea5586bf6fc1f66cb526378de2bd259cacf106c86acc4d04f396e4"
+    },
+    {
+      "id": "theory-026-angle-sum",
+      "sha256": "8e9700d6abfcf42e44f917d46d09b996386f29ab135eb414ce9acd372fa7885c"
+    },
+    {
+      "id": "ex-main-0150",
+      "sha256": "93d8fd05dcd0b5781f7219d2c6af304384a1f7d909c31a7f3fce1781f07f62b8"
+    },
+    {
+      "id": "ex-main-0151",
+      "sha256": "224e1e8a2c60de44f6318da58beb4dbfcafa45f0be446cc7304d50badd315ba7"
+    },
+    {
+      "id": "ex-main-0152",
+      "sha256": "5a29a3caa6c116435f3f205253fce24971bcf37bcba7944224fe7048bd54e09a"
+    },
+    {
+      "id": "ex-main-0153",
+      "sha256": "968378cd6707cb6afd140d2802913ca7f22cad5088c59c1ac3e690211f41bebb"
+    },
+    {
+      "id": "ex-main-0154",
+      "sha256": "8d24598454464f395d055eecbcd03dbaf17bc0306add4997fce90119b6c887b4"
+    },
+    {
+      "id": "ex-main-0155",
+      "sha256": "c8c4eecae310e64f04a3ca4686786205cf2a9d3774e560e6185ae97f4d07a850"
+    },
+    {
+      "id": "ex-main-0156",
+      "sha256": "b2e4aa06ceefb23028bad136ec6b2d03ce4ced83245d4b033ae9baf61443d399"
+    },
+    {
+      "id": "ex-main-0157",
+      "sha256": "245149fe7474467d9ca3c3eb36832e399c4fae17fa86afb05e946964315e2568"
+    },
+    {
+      "id": "ex-main-0158",
+      "sha256": "41eff0292263be71966503f19975187950880247e265fa6b24c11f4bc22038e5"
+    },
+    {
+      "id": "ex-main-0159",
+      "sha256": "33f009e95ef3937e7519931275c3cdea3dcec10ee5fdb13597d06c9a525e431d"
+    },
+    {
+      "id": "ex-main-0160",
+      "sha256": "de77e62bacd916b8d4bd61dffabcb9322baa745b697dc3e59102168c946017a5"
+    },
+    {
+      "id": "ex-main-0161",
+      "sha256": "7bfecf92932fd8b24f1a218acba9b169a07b252c0e26171927fc238ee3c9de67"
+    },
+    {
+      "id": "ex-main-0162",
+      "sha256": "2ad943f0e12f71a5b92e1f1e3519e11f8eead7cc81ca26da77539ac0bedc0d2a"
+    },
+    {
+      "id": "ex-main-0163",
+      "sha256": "df0444494d5b09feb844217e454488c7287a3faff54c657f1ad518c9a1c3985d"
+    },
+    {
+      "id": "ex-main-0164",
+      "sha256": "b3698266fd9ea6e51bb0488eede0d83ccce8571395346987c7c66cec3949915a"
+    },
+    {
+      "id": "ex-main-0165",
+      "sha256": "34b4775abc787d0fc4d02a5f4e0cc385c60e39f9ab2b4acccded59deff2b3bcc"
+    },
+    {
+      "id": "ex-main-0166",
+      "sha256": "79d1a32f5697cebfbaa0b65d46a3409a46d13145447d75219a734ba3491ca496"
+    },
+    {
+      "id": "ex-main-0167",
+      "sha256": "e4ca4ce32bbc95941c9f4dc3a412428ee4670792c17abe9fe2757ec1c730237f"
+    },
+    {
+      "id": "ex-main-0168",
+      "sha256": "b497c731fec324aaed91b8602b7870939bc2b3df7a18442ea8d46b198b9fb0a1"
+    },
+    {
+      "id": "ex-main-0169",
+      "sha256": "807e86d7c37029eac06820f6049541547fa67f9747a23b7434ac2b26709615c0"
+    },
+    {
+      "id": "ex-main-0170",
+      "sha256": "932c24cd0adbb97cc67f4c33e54ba76b785824a1eb5038e32611acfb28bc460a"
+    },
+    {
+      "id": "ex-main-0171",
+      "sha256": "123b6ddbc41d1b32f0559321e8f5f4978f3c2946739c7cc6fd562f1a198d0172"
+    },
+    {
+      "id": "ex-main-0172",
+      "sha256": "267a60d77bc3558c6d0edfcafb2b0d20bc41902b927800a96575a69bdbac4bb5"
+    },
+    {
+      "id": "ex-main-0173",
+      "sha256": "d8ac9cbc9c7e00cedeac3e5035389d47025565587ddce3f7c68e2bf2b54ebe35"
+    },
+    {
+      "id": "ex-main-0174",
+      "sha256": "b7fd7bae035a7822b7b5118568632baa72ee6c182810e93e5865790575de9ac4"
+    },
+    {
+      "id": "ex-main-0175",
+      "sha256": "4931aea9d8869f7a2618090323cddb9d831b1dd5fe660c30af3c14e1b0923d2a"
+    },
+    {
+      "id": "ex-main-0176",
+      "sha256": "fa48f0718453d76040d3fefef5cdfa91f443bd0571d91d88a88ff7f86732b422"
+    },
+    {
+      "id": "ex-main-0177",
+      "sha256": "d5926fbbb4c0988bbc1dc32eea9faa34d0ff16f0ca44b4b376111f68cc19cd19"
+    },
+    {
+      "id": "ex-main-0178",
+      "sha256": "0496cba6d33c264864f3f90bb13831b4bddfce30205ef0da427c552bd763de07"
+    },
+    {
+      "id": "ex-main-0179",
+      "sha256": "ce2767485aee6d608b0c8b10919f3e0a9e169c5d04fc24d74748f4e435aee468"
+    },
+    {
+      "id": "ex-main-0180",
+      "sha256": "2f86814e9113236f26f4f7ec2052de8b4ed86bed4d8850ca726a0f3bf6c379ee"
+    },
+    {
+      "id": "ex-main-0181",
+      "sha256": "0e77df6eecd7e733e351c68aced1daeebce4e79bd5a422f1947565b64698bb42"
+    },
+    {
+      "id": "ex-main-0182",
+      "sha256": "6a110f155a321d2f087b7680b9930389876cc9f96829346919ceb3d59de0fe70"
+    },
+    {
+      "id": "ex-main-0183",
+      "sha256": "7a682a0383132a8aec3af2f62d2382501bc60c015e320d6a6abaad4181bd7e6a"
+    },
+    {
+      "id": "ex-selfcheck-ii-01",
+      "sha256": "9aecf7267505e587138e9a3bd5521f798d9413c29a0ddea290850f180fe7fddc"
+    },
+    {
+      "id": "ex-selfcheck-ii-02",
+      "sha256": "a31aa2746637e6478d9fbdfa11a1ce5061f5fa4c91eb4f82b2e6a9e8b0660ff1"
+    },
+    {
+      "id": "ex-selfcheck-ii-03",
+      "sha256": "bd374e1fbc877a42b834804826000071c8c1cf3f01752d9716616518c00020bb"
+    },
+    {
+      "id": "ex-selfcheck-ii-04",
+      "sha256": "42e0cc8aa730af600c24dbf8228a5a263b32dfae3f67537c9a3049e3e81b2077"
+    },
+    {
+      "id": "ex-selfcheck-ii-05",
+      "sha256": "e1424c818636c2031d84a4a83531d7b7b215cab8fdcb19a18a707b440e683a27"
+    },
+    {
+      "id": "ex-selfcheck-ii-06",
+      "sha256": "0215f081d7a772d52bc46d324050940ac0a1255c14d563274ab410631398f767"
+    },
+    {
+      "id": "ex-selfcheck-ii-07",
+      "sha256": "dbf185d29e2dbed83194c2edd80a28dcdf85d432b4db00d4f7dedb71cf155829"
+    },
+    {
+      "id": "ex-selfcheck-ii-08",
+      "sha256": "ec85691f88fbbb6504375c7cae8e3d519ccf2807f7faa3debbc7cdc2cc054b84"
+    },
+    {
+      "id": "ex-selfcheck-ii-09",
+      "sha256": "6873ccacfcf510a0c0f9ab6749992412eaca20f5b12b7c1d1f041eea8915f3a6"
+    },
+    {
+      "id": "ex-selfcheck-ii-10",
+      "sha256": "b66414edab98d922f567c512c6a90133056270e974fa5b0d5e7759d69f62b71c"
+    },
+    {
+      "id": "ex-main-0184",
+      "sha256": "753adf8f3361ca51b99cb4159828498c42cb45978d7f1e5d998ee94d3816c969"
+    },
+    {
+      "id": "ex-main-0185",
+      "sha256": "78645f34e56ae5ce3b9cdc7048074d4f73f398ca9d5a2ce258d95833625229fd"
+    },
+    {
+      "id": "ex-main-0186",
+      "sha256": "c6884cbb324d313c8082eac3d1ef1a8e2c28201f6fa65000add21a688b1ed942"
+    },
+    {
+      "id": "ex-main-0187",
+      "sha256": "eb92a3483fcf1e4333ae5d38b06d89e667e7a1a4151179de63ded24a6d2bbcc0"
+    },
+    {
+      "id": "ex-main-0188",
+      "sha256": "ba693a489d0f1dd14517343ee766d34073ff9a06b32fb28cc3a7a5e29d596d0d"
+    },
+    {
+      "id": "ex-main-0189",
+      "sha256": "51c24259db0f015cdb7d09eb324203b2e68726439b684229be6b6c1a88beb04d"
+    },
+    {
+      "id": "ex-main-0190",
+      "sha256": "ebf45ba04a06213d66b66e6e060124d1a7fced1203a0d03344db87c245c1ce2a"
+    },
+    {
+      "id": "ex-main-0191",
+      "sha256": "334712c348f11c1b795dd41e5dba4161726255b15c16ddba4a30ab0f1ea40371"
+    },
+    {
+      "id": "ex-main-0192",
+      "sha256": "ee7d1c760cd68259833a7a4e241cc5f9fdb1c1712ad67fdc1c8cf640e09317ea"
+    },
+    {
+      "id": "ex-main-0193",
+      "sha256": "1b61948e98f9faca1d100894867896aedf51a2bb873debd1dff470d7e384e287"
+    },
+    {
+      "id": "ex-main-0194",
+      "sha256": "9a7193364bb2b8345fbda6f79f6e4324ca9d09c14ace73164ad8c00a892d080a"
+    },
+    {
+      "id": "ex-main-0195",
+      "sha256": "73703cfc179c43228ec222e47a2b6ec91e6e2512ca2418b73e33eb97c291e595"
+    },
+    {
+      "id": "ex-main-0196",
+      "sha256": "c40512edee547dc00f88a5f6185e61fdb6544f1e32a707d4be16c25ae3767d87"
+    },
+    {
+      "id": "ex-main-0197",
+      "sha256": "e683857054a744d09ce69f33eea1d93522ddaee9ad89dd2ff91d4a0525f173c1"
+    },
+    {
+      "id": "ex-main-0198",
+      "sha256": "37918fef32122c954bca6533ea64e6cfa2654d33845e2c5f70693a813f4ffc1c"
+    },
+    {
+      "id": "ex-main-0199",
+      "sha256": "a6c07abeea8fb98bd7af420040c819ecda5499bf46eae1d96dafcc812bc71850"
+    },
+    {
+      "id": "ex-main-0200",
+      "sha256": "9a61938b9f2905a8a35380f171c4d68b42f14e51bdc85bc4b363348568abaf2a"
+    },
+    {
+      "id": "ex-main-0201",
+      "sha256": "5a2af3bab4124ebc09dbd893d50adc49521643f737556e74876397b6b377ec9f"
+    },
+    {
+      "id": "ex-main-0202",
+      "sha256": "e8b1ed92843da404cf1c40e4349bdee7e377885d8baafa78f15d1ffdaa39cc3e"
+    },
+    {
+      "id": "ex-main-0203",
+      "sha256": "05caa45b6795770226fac77590ed3d74fdf5a2cd061d62c581a4fc61d36b9195"
+    },
+    {
+      "id": "ex-main-0204",
+      "sha256": "865e44be28dd3f04507e9207f29b733904b3fabd79bc5ded14674a1c2379c6f2"
+    },
+    {
+      "id": "ex-main-0205",
+      "sha256": "0a9fa6eddec954db5fbc7c6e4d09741fe7860464c77840c71f7eb67e3094cf22"
+    },
+    {
+      "id": "ex-main-0206",
+      "sha256": "29679545a2200ed20a530baa161250d33e160a70cc8f7673d6d14dd7d6b9d891"
+    },
+    {
+      "id": "ex-main-0207",
+      "sha256": "e9b98a3705ca18b4c0d86c1a563304556e5a036332ca05d9bafa271773e03415"
+    },
+    {
+      "id": "ex-main-0208",
+      "sha256": "7553913a06d6f30fd9d7dee74aa626a4062c08e0cdfe3318c675644250e4899f"
+    },
+    {
+      "id": "ex-main-0209",
+      "sha256": "26d93f777badd197976ccb8d65f501e72d33fab56ece460bbdb64b93115c1c17"
+    },
+    {
+      "id": "ex-main-0210",
+      "sha256": "942479bcab42d2ca7b30c2a71056fbedf1895bcd5852c39b82fc3cbb41488c7d"
+    },
+    {
+      "id": "ex-main-0211",
+      "sha256": "c511a0e7be909001fc23a74ae6f1877e57c8117fddd9f3e0ed5add990b769cd6"
+    },
+    {
+      "id": "ex-main-0212",
+      "sha256": "2e91dcbd7ef7fe8f330db4b771462dc4d885d3f8ac64bc26cb7865e6e11bc71a"
+    },
+    {
+      "id": "ex-main-0213",
+      "sha256": "ed7aacdb5e74f05f3512394e18859c38cc163df568aeac4c1c0ef3eab9c99b0a"
+    },
+    {
+      "id": "ex-main-0214",
+      "sha256": "57ff05a76ca6ff26b7881c573ef0428be2cada5950c262458fa88cb9767f26ad"
+    },
+    {
+      "id": "ex-main-0215",
+      "sha256": "5b255d38f38f20517e2a22c42a7870edbbaa32da0e0642b9cedb8b2df65c47cf"
+    },
+    {
+      "id": "ex-main-0216",
+      "sha256": "a6d9fce4998a8483fbfcc0c0bcee946eb7e50ba40fbade0754d992390b8224d4"
+    },
+    {
+      "id": "ex-main-0217",
+      "sha256": "2b184586f3d630434efbba182e0bf7909955f7a59521e7f3d249c4f32101386b"
     }
   ]
 }
