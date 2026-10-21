@@ -13,108 +13,22 @@ const expectedPath=path.resolve(process.env.TEXTBOOK_EXPECTED_BUNDLE||path.join(
 const out=path.resolve(process.env.TEXTBOOK_ARTIFACTS||path.join(os.tmpdir(),'mathexam-stereo-textbook'));
 const expectedRaw=JSON.parse(fs.readFileSync(expectedPath,'utf8')),expectedLessons=Array.isArray(expectedRaw)?expectedRaw:expectedRaw.lessons;
 assert(Array.isArray(expectedLessons)&&expectedLessons.length,'An authored lesson bundle is required');
-const expectedCount=Number(process.env.TEXTBOOK_EXPECTED_COUNT||183);
+const {EXPECTED_COUNT,SCHEMA,WIDTHS,shardSettings,visibleLabelKeys,makePlan,validateShard}=require('./browser-shards.cjs');
+const expectedCount=Number(process.env.TEXTBOOK_EXPECTED_COUNT||EXPECTED_COUNT);
 assert.equal(expectedLessons.length,expectedCount,'Unexpected authored card count; update this gate explicitly for a later batch');
 assert(/^\/[A-Za-z0-9/_-]+\/$/.test(route),'TEXTBOOK_ROUTE must be a local absolute path ending in /');
 const expectedById=new Map(expectedLessons.map(lesson=>[lesson.id,lesson]));assert.equal(expectedById.size,expectedCount);
-const evidence={authoredCards:expectedCount,separateAuthorBundle:!!process.env.TEXTBOOK_EXPECTED_BUNDLE,authoredFileSha256:crypto.createHash('sha256').update(fs.readFileSync(expectedPath)).digest('hex'),commit:process.env.GITHUB_SHA||null,widths:[320,1280],cards:[],labels:[],screenshots:[],expansionScreenshots:[],expansions:[],twoTabs:[],errors:[]};
-let browser,context,page,server,base,activeCase='startup';
+const hashFile=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+const shard=shardSettings(process.env);
+const metadata={commit:process.env.GITHUB_SHA||null,authoredFileSha256:hashFile(expectedPath),bundleFileSha256:hashFile(path.join(root,'stereo-course/textbook/data/course.json')),separateAuthorBundle:!!process.env.TEXTBOOK_EXPECTED_BUNDLE};
+const plan=makePlan(expectedLessons,{...shard,...metadata});
+const evidence={schemaVersion:SCHEMA,completed:false,authoredCards:expectedCount,...metadata,shard:{...shard,assignedIds:plan.assignedIds},widths:WIDTHS,cards:[],labels:[],screenshots:[],expansionScreenshots:[],expansions:[],twoTabs:[],errors:[]};
+let browser,context,page,server,base,activeCase='startup',ownerId=null;
 const writeEvidence=()=>fs.writeFileSync(path.join(out,'browser-evidence.json'),JSON.stringify(evidence,null,2));
 const stateKey=lesson=>'mathExamTextbook.v1:'+lesson.source.bookId+':'+lesson.id+':r'+lesson.revision;
-const screenshotCases=new Map([
- ['atanasyan2024-main-001-a|condition','figure8-condition'],
- ['atanasyan2024-main-002-c|condition','figure9-condition'],
- ['atanasyan2024-theory-002-a1|condition','axiom-a1-condition'],
- ['atanasyan2024-main-001-a|step-1','figure8-lines'],
- ['atanasyan2024-main-002-c|step-3','figure9-back-plane'],
- ['atanasyan2024-main-008-a|step-2','circle-two-points-counterexample'],
- ['atanasyan2024-main-010-a|step-2','triangle-vertex-counterexample'],
- ['atanasyan2024-main-001-a|nested-theory','nested-theory'],
- ['theory-004|condition','parallel-theory-condition'],
- ['theory-006|condition','line-plane-theory-condition'],
- ['theory-006|help:missing-condition','line-contained-plane'],
- ['ex-main-0020|step-4','trapezoid-coincident-plane'],
- ['ex-main-0026|step-3','similarity-angles'],
- ['ex-main-0034|condition','tetrahedron-parts-condition'],
- ['ex-main-0034|step-5','tetrahedron-part-d'],
- ['ex-main-0035|step-3','three-line-classification'],
- ['theory-007|condition','skew-theory-condition'],
- ['theory-007|step-6','skew-line-parallel-plane'],
- ['theory-008|condition','codirected-rays-condition'],
- ['theory-008|step-8','codirected-rays-third-parallelogram'],
- ['theory-009|condition','line-angle-condition'],
- ['theory-009|step-4','line-angle-independent-translation'],
- ['theory-010|condition','parallel-plane-criterion-condition'],
- ['theory-010|step-5','parallel-plane-criterion-proof'],
- ['ex-main-0037-b|condition','line-side-intersection-condition'],
- ['ex-main-0037-b|help:endpoint-question','line-side-endpoint-case'],
- ['ex-main-0038|step-2','rhombus-extended-side'],
- ['ex-main-0043|step-3','four-midpoints-coplanar'],
- ['ex-main-0047|condition','equal-line-angles-condition'],
- ['ex-main-0047|step-4','equal-line-angles-proof'],
- ["theory-011|condition","parallel-plane-properties-condition"],
- ["theory-013|step-8","parallelepiped-first-diagonal-proof"],
- ["theory-013|step-9","parallelepiped-third-diagonal-proof"],
- ["theory-014|condition","section-theory-condition"],
- ["theory-014|step-8","section-theory-six-sides"],
- ["theory-014-example-1|step-2","tetrahedron-section-external-trace"],
- ["theory-014-example-1|step-8","tetrahedron-section-parallel-branch"],
- ["theory-014-example-3b|step-4","parallelepiped-pentagon"],
- ["theory-014-example-3c|step-2","parallelepiped-hexagon-external-trace"],
- ["theory-014-example-3c|step-5","parallelepiped-hexagon"],
- ["ex-main-0063-b|condition","parallel-slices-numbered-condition"],
- ["ex-main-0063-b|step-3","parallel-slices-alternative-order"],
- ["ex-main-0067|condition","tetrahedron-exact-angle-givens"],
- ["ex-main-0071|step-1","line-plane-external-intersection"],
- ["ex-main-0075|step-3","tetrahedron-midpoint-area"],
- ["ex-main-0078|step-2","parallelepiped-inscribed-faces"],
- ["ex-main-0080|step-3","two-section-intersection"],
- ["ex-main-0081|step-3","extended-line-upper-base"],
- ["ex-main-0082|step-4","parallel-diagonal-plane-section"],
- ["ex-main-0083|step-4","section-through-base-center"],
- ["ex-main-0059|condition","parallel-plane-existence-givens"],
- ["ex-main-0059|step-1","parallel-plane-existence-directions"],
- ["ex-main-0062|condition","levels-intersecting-givens"],
- ["ex-main-0062|step-2","levels-parallel-counterexample"],
- ['ex-main-0066|condition','opposite-edge-pairs-condition'],
- ['ex-main-0084|condition','trapezoid-section-givens'],
- ['ex-main-0084|step-2','trapezoid-section-boundary'],
- ['ex-main-0086|condition','parallel-section-givens'],
- ['ex-main-0086|step-1','parallel-section-construction'],
- ['ex-main-0087-a|step-2','three-edge-points-section'],
- ['ex-main-0087-b|step-2','vertex-two-points-section'],
- ['ex-main-0088-b|condition','trapezoid-external-given-point'],
- ['ex-main-0088-b|step-3','trapezoid-external-point-length'],
- ['ex-main-0098|condition','plane-through-parallel-line-question'],
- ['ex-main-0099|step-2','parallel-plane-transversal-ratios'],
- ['ex-main-0101|condition','tetrahedron-opposite-midpoints-givens'],
- ['ex-main-0101|step-1','tetrahedron-midpoints-first-center'],
- ['ex-main-0101|step-2','tetrahedron-midpoints-shared-center'],
- ['ex-main-0103|condition','section-specified-base-area'],
- ['ex-main-0103|step-3','section-area-scale'],
- ['ex-main-0104|step-2','pyramid-parallel-section'],
- ['ex-main-0110|condition','two-given-diagonal-planes'],
- ['ex-main-0110|step-2','diagonal-plane-parallelism'],
- ['ex-main-0113|condition','two-given-sections'],
- ['ex-main-0113|step-2','given-section-intersection'],
- ['ex-main-0115|condition','edge-point-parallel-plane-givens'],
- ['ex-main-0115|step-2','edge-point-parallel-plane-section'],
- ['ex-selfcheck-i-01|condition','selfcheck-disjoint-lines-question'],
- ['ex-selfcheck-i-01|step-2','selfcheck-skew-counterexample'],
- ['ex-selfcheck-i-05|step-1','selfcheck-parallel-family'],
- ['ex-selfcheck-i-12|step-2','selfcheck-opposite-sides-counterexample'],
- ['ex-selfcheck-i-15|step-2','selfcheck-adjacent-rhombi'],
- ['ex-selfcheck-i-15|step-4','selfcheck-right-face-angles'],
- ['ex-selfcheck-i-16|step-6','selfcheck-pentagon-trace'],
- ['ex-selfcheck-i-16|step-7','selfcheck-hexagon-boundary']
-]);
+const screenshotCases=require('./browser-cases.cjs');
 function immutableContent(lesson){const copy=structuredClone(lesson);delete copy.status;delete copy.review;return copy;}
-function visibleLabelKeys(lesson,viewName){
- const model=lesson.visualization.model,view=model.views[viewName];assert(view,lesson.id+' known authored view '+viewName);
- let baseNames=model.labelNames||[...new Set([...(model.edges||[]).flat(),...(model.faces||[]).flat(),...(model.neutralPoints||[])])];
- if(!baseNames.length&&!model.labelNames)baseNames=Object.keys(model.points);
- return [...new Set([...baseNames,...(view.segments||[]).flat(),...(view.polygon||[]),...(view.points||[])])].filter(name=>!name.startsWith('_')||model.labels?.[name]).sort();
-}
+
 function hostStatic(){
  const mime={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2'};
  return new Promise((resolve,reject)=>{
@@ -143,7 +57,7 @@ async function checkLabels(id,width,stage,target=page,selector='[data-main-model
  });
  const overlaps=[];for(let i=0;i<result.labels.length;i++)for(let j=i+1;j<result.labels.length;j++){const a=result.labels[i],b=result.labels[j];if(Math.min(a.x+a.width,b.x+b.width)-Math.max(a.x,b.x)>1&&Math.min(a.y+a.height,b.y+b.height)-Math.max(a.y,b.y)>1)overlaps.push([a.key,b.key]);}
  const expectedLabels=visibleLabelKeys(expectedById.get(id),result.view);
- evidence.labels.push({id,viewport:width,stage,...result,expectedLabels,overlaps});writeEvidence();
+ evidence.labels.push({ownerId,id,viewport:width,stage,...result,expectedLabels,overlaps});writeEvidence();
  assert(result.finite,id+' finite SVG '+stage);assert(result.width>0&&result.height>0,id+' nonempty viewBox');
  // Some neutral counterexample scenes intentionally name no points (13в). Require
  // exactly the authored visible labels, not an invented label or an early answer.
@@ -216,7 +130,7 @@ async function theoryModal(lesson,width,keptCamera,draft){
 async function card(lesson,width){
  // Different query strings force a full document load: the runtime deliberately
  // uses its own open() navigation and does not handle arbitrary hash changes.
- activeCase=lesson.id+' '+width;await page.goto(base+'?browser-card='+lesson.id+'-'+width+'#'+lesson.id);await page.waitForFunction(id=>window.textbookApp&&document.querySelector('[data-main-model] svg')&&location.hash==='#'+id,lesson.id);
+ ownerId=lesson.id;activeCase=lesson.id+' '+width;await page.goto(base+'?browser-card='+lesson.id+'-'+width+'#'+lesson.id);await page.waitForFunction(id=>window.textbookApp&&document.querySelector('[data-main-model] svg')&&location.hash==='#'+id,lesson.id);
  await page.evaluate(id=>{const el=document.querySelector('[data-main-model] svg');window.__textbookKept={svg:el,field:document.querySelector('#final-answer')};},lesson.id);
  assert.equal(await textWithFractions(page.locator('.textbook-condition')),lesson.statement.text);assert.equal(await textWithFractions(page.locator('.textbook-goal')),lesson.statement.goal);assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),'neutral');assert.equal(await isOpen(page.locator('[data-main-help]')),false,'new card has closed help');assert.equal(await page.locator('[data-steps] [data-step]').count(),0,'no revealed solution step on first screen');
  const draft='Черновик '+lesson.id+' '+width;
@@ -264,21 +178,23 @@ async function main(){
  if(process.env.TEXTBOOK_CHECK_ONLY==='1'){
   for(const lesson of expectedLessons){assert(lesson.id&&lesson.visualization?.model&&lesson.steps?.length,'authored structure');for(const step of lesson.steps)assert(step.id&&step.justifications?.length,'authored step justification');for(const view of Object.keys(lesson.visualization.model.views))visibleLabelKeys(lesson,view);}
   for(const key of screenshotCases.keys()){const [id,stage]=key.split('|'),lesson=expectedById.get(id);assert(lesson,'known screenshot lesson '+key);if(stage.startsWith('step-'))assert(lesson.steps.some(step=>step.id===stage),'known screenshot step '+key);if(stage.startsWith('help:')){const found=(items)=>items.some(item=>item.id===stage.slice(5)||found(item.children||[]));assert(found(lesson.help),'known screenshot help '+key);}}
-  console.log('TEXTBOOK_BROWSER_PREFLIGHT_OK: '+expectedCount+' authored cards; no browser launched, no review flags changed');return;
+  console.log('TEXTBOOK_BROWSER_PREFLIGHT_OK: '+expectedCount+' authored cards; shard '+shard.index+'/'+shard.count+' has '+plan.assigned.length+' cards, '+plan.screenshots.length+' screenshots; no browser launched, no review flags changed');return;
  }
  base=process.env.TEXTBOOK_BASE_URL||await hostStatic();assert(base.endsWith('/'),'TEXTBOOK_BASE_URL must end in /');
  const {chromium}=require('playwright');browser=await chromium.launch({headless:true,executablePath:process.env.TEXTBOOK_CHROMIUM||undefined,args:['--no-sandbox']});
  context=await browser.newContext({viewport:{width:1280,height:1000},reducedMotion:'reduce'});page=await context.newPage();watch(page);page.setDefaultTimeout(15000);
  await page.goto(base);await page.waitForFunction(()=>window.textbookApp);
- const published=await page.evaluate(async()=>{const response=await fetch('data/course.json');if(!response.ok)throw Error('Missing published data');return response.json();});
- const publishedById=new Map(published.lessons.map(lesson=>[lesson.id,lesson]));
- assert.equal(published.lessons.filter(lesson=>expectedById.has(lesson.id)&&lesson.status==='reviewed').length,expectedCount,'reviewed authored count matches the exact expected batch');
+ const published=await page.evaluate(async()=>{const response=await fetch('data/course.json');if(!response.ok)throw Error('Missing published data');return response.text();});
+ assert.equal(crypto.createHash('sha256').update(published).digest('hex'),metadata.bundleFileSha256,'served bundle matches exact checkout bytes');
+ const publishedData=JSON.parse(published);
+ const publishedById=new Map(publishedData.lessons.map(lesson=>[lesson.id,lesson]));
+ assert.equal(publishedData.lessons.filter(lesson=>expectedById.has(lesson.id)&&lesson.status==='reviewed').length,expectedCount,'reviewed authored count matches the exact expected batch');
  for(const expected of expectedLessons){const actual=publishedById.get(expected.id);assert(actual,expected.id+' is present in integrated data');assert.equal(actual.status,'reviewed',expected.id+' must pass independent review before browser publication gate');for(const field of ['source','mathematics','pedagogy'])assert.equal(actual.review?.[field],'passed',expected.id+' '+field+' review');assert.deepEqual(immutableContent(actual),immutableContent(expected),expected.id+' matches the authored batch except review metadata');}
  const runtimeCoverage=await page.evaluate(()=>({coverage:window.textbookApp.coverage,issues:window.textbookApp.issues}));assert(runtimeCoverage.coverage.available>=expectedCount,'every reviewed authored card is available');assert.deepEqual(runtimeCoverage.issues.filter(issue=>expectedById.has(issue.id)),[]);evidence.runtimeCoverage=runtimeCoverage.coverage;
- for(const width of evidence.widths){await page.setViewportSize({width,height:1000});await page.goto(base);await page.evaluate(()=>localStorage.clear());for(const lesson of expectedLessons)await card(lesson,width);}
- await twoTabs(true);await twoTabs(false);assert.equal(evidence.expansionScreenshots.length,4,'main/theory expanded screenshots at both widths');assert.equal(evidence.expansions.length,8,'main/theory fullscreen and both close paths at 320/1280');assert.equal(evidence.cards.length,expectedCount*2);assert.equal(evidence.screenshots.length,screenshotCases.size*evidence.widths.length,'exact representative screenshot count');
- const expectedScreenshots=[...screenshotCases.keys()].flatMap(key=>evidence.widths.map(width=>key+'|'+width)).sort();
- assert.deepEqual(evidence.screenshots.map(item=>item.id+'|'+item.stage+'|'+item.width).sort(),expectedScreenshots,'exact representative screenshot identities at every width');assert.deepEqual(evidence.errors,[]);writeEvidence();
- console.log('ATANASYAN_TEXTBOOK_BROWSER_OK: '+expectedCount+' cards at 320/1280, authored steps/reasons, visible figures, nested theory, reload, 2 real-tab conflict scenarios, '+evidence.screenshots.length+' screenshots');
+ for(const width of evidence.widths){await page.setViewportSize({width,height:1000});await page.goto(base);await page.evaluate(()=>localStorage.clear());for(const lesson of plan.assigned)await card(lesson,width);}
+ if(shard.index===0){await twoTabs(true);await twoTabs(false);}assert.equal(evidence.expansionScreenshots.length,plan.expansionScreenshots.length,'assigned main/theory expanded screenshots at both widths');assert.equal(evidence.expansions.length,plan.expansions.length,'assigned main/theory fullscreen and both close paths at 320/1280');assert.equal(evidence.cards.length,plan.assigned.length*2);assert.equal(evidence.screenshots.length,plan.screenshots.length,'exact assigned representative screenshot count');
+ const expectedScreenshots=plan.screenshots.map(item=>item.id+'|'+item.stage+'|'+item.width).sort();
+ assert.deepEqual(evidence.screenshots.map(item=>item.id+'|'+item.stage+'|'+item.width).sort(),expectedScreenshots,'exact representative screenshot identities at every width');assert.deepEqual(evidence.errors,[]);evidence.completed=true;validateShard(evidence,plan);writeEvidence();
+ console.log('ATANASYAN_TEXTBOOK_BROWSER_OK: shard '+shard.index+'/'+shard.count+', '+plan.assigned.length+' cards at 320/1280, authored steps/reasons, visible figures, nested theory, reload, '+evidence.twoTabs.length+' real-tab conflict scenarios, '+evidence.screenshots.length+' screenshots');
 }
-main().catch(async error=>{fs.mkdirSync(out,{recursive:true});evidence.failure={case:activeCase,message:error.message,stack:error.stack};writeEvidence();if(page)await page.screenshot({path:path.join(out,'failure.png'),fullPage:true}).catch(()=>{});console.error(error);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)await new Promise(resolve=>server.close(resolve));});
+main().catch(async error=>{fs.mkdirSync(out,{recursive:true});evidence.completed=false;evidence.failure={case:activeCase,message:error.message,stack:error.stack};writeEvidence();if(page)await page.screenshot({path:path.join(out,'failure.png'),fullPage:true}).catch(()=>{});console.error(error);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)await new Promise(resolve=>server.close(resolve));});
