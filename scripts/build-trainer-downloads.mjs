@@ -51,6 +51,34 @@ function copyDir(src, dest) {
   }
 }
 
+// Folder bundles may use a shared script from their parent directory (for
+// example the roads trainer's Board Bridge). Keep it inside the archive and
+// rewrite only the packaged HTML; URL cache versions remain unchanged.
+function includeFolderParentScripts(sourceDir, pkgDir) {
+  const visit = folder => {
+    for (const entry of fs.readdirSync(folder, { withFileTypes: true })) {
+      const file = path.join(folder, entry.name);
+      if (entry.isDirectory()) { visit(file); continue; }
+      if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
+      const original = fs.readFileSync(file, 'utf8');
+      const html = original.replace(/<script\b[^>]*\bsrc=(["'])(\.\.\/[^"']+)\1[^>]*>/gi, (tag, quote, ref) => {
+        const [, pathname, suffix = ''] = ref.match(/^([^?#]+)([?#].*)?$/);
+        const source = path.resolve(sourceDir, path.dirname(path.relative(pkgDir, file)), pathname);
+        if (source.startsWith(sourceDir + path.sep)) return tag;
+        if (!source.startsWith(root + path.sep) || !fs.existsSync(source) || !fs.statSync(source).isFile()) {
+          throw new Error(`Missing shared folder script: ${ref} in ${file}`);
+        }
+        const target = path.join(pkgDir, '_shared', path.relative(root, source));
+        copyFile(source, target);
+        const localRef = path.relative(path.dirname(file), target).split(path.sep).join('/') + suffix;
+        return tag.replace(ref, localRef);
+      });
+      if (html !== original) fs.writeFileSync(file, html, 'utf8');
+    }
+  };
+  visit(pkgDir);
+}
+
 function stripDownloadPanel(html) {
   return html
     .replace(/\n?<!-- download-panel:start:[\s\S]*?<!-- download-panel:end:[\s\S]*?-->\n?/g, "\n")
@@ -301,6 +329,7 @@ function prepareTrainer(entry) {
     const sourceDir = repoPath(entry.sourceDir);
     if (fs.existsSync(sourceDir)) {
       copyDir(sourceDir, pkgDir);
+      if (entry.slug === 'oge-1-5-trainers') includeFolderParentScripts(sourceDir, pkgDir);
     } else {
       warnings.push(`Не найдена папка: ${entry.sourceDir}`);
     }
