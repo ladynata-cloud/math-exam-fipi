@@ -1,0 +1,164 @@
+{
+  "reviewer": "Codex independent content and coordinate review",
+  "reviewedAt": "2026-10-21",
+  "sourceBundleSHA256": "5fe4617d01fe492c47210475ec9d16d77e1389da2808b3491037219696d04912",
+  "scope": "All introduction theory points 1–3 and every question in exercises 1–15. Not the complete book.",
+  "cards": [
+    {
+      "id": "atanasyan2024-theory-001",
+      "sha256": "809e1ffdc74a4917d72e1002c44bbf3c40774af34d5f17ca6e838f91828aeb3f"
+    },
+    {
+      "id": "atanasyan2024-theory-002-notation",
+      "sha256": "6b9511e93bd2f81214ded76b0ddda5eb0ef8bf52e365d72c363bb2b85843391b"
+    },
+    {
+      "id": "atanasyan2024-theory-002-a1",
+      "sha256": "e73b46330edca54f2d78c15ddfb74d35f04460398abd99fecd7de21891e6e22b"
+    },
+    {
+      "id": "atanasyan2024-theory-002-a2",
+      "sha256": "d8c56d2c6126954b2a59f5d8526de20a64333ea9a3ce604c20b2c4c2120e0bef"
+    },
+    {
+      "id": "atanasyan2024-theory-002-a3",
+      "sha256": "9f0124dbe7ae5d974a7b4df66a9a2f7bc7319a598ee035f861d54de47ff8f393"
+    },
+    {
+      "id": "atanasyan2024-theory-002-planimetry",
+      "sha256": "30512a9967804a7741d0193e042a7c29d8df60e431d1dde7087ef6c2a861acc8"
+    },
+    {
+      "id": "atanasyan2024-theory-003-line-point",
+      "sha256": "29fb250752cc6a206209987810cf6a2bd50bb140fec3532ae072a5ac1fe30a78"
+    },
+    {
+      "id": "atanasyan2024-theory-003-intersecting-lines",
+      "sha256": "fd9305e07262db1e9677e2c504114852b24a13002d8af56afd803592ce353363"
+    },
+    {
+      "id": "atanasyan2024-main-001-a",
+      "sha256": "718b771755efd7e8e273d75588eba0923e90f23230f616086913e0b1990e049e"
+    },
+    {
+      "id": "atanasyan2024-main-001-b",
+      "sha256": "0de07de4652bda583bdddd950696120a80b904ed3a4891ebe64fb0774e451c9d"
+    },
+    {
+      "id": "atanasyan2024-main-001-c",
+      "sha256": "9741688435e97bc856d3850db8c7097e093539bfbc7db367364b66f33fd269fa"
+    },
+    {
+      "id": "atanasyan2024-main-001-d",
+      "sha256": "2872f8fdc883a1b8c85c97b107948bb8741ee84a657e694ef44298689a7fa3cd"
+    },
+    {
+      "id": "atanasyan2024-main-002-a",
+      "sha256": "fd1b922b73ef4a7f240937945d2dc2618f73ece8911c793a08751a887e20be78"
+    },
+    {
+      "id": "atanasyan2024-main-002-b",
+      "sha256": "79f89f11dc5a41a19fa2b4d5d156cb4749c3930f62bf774f9b3728024fdfb298"
+    },
+    {
+      "id": "atanasyan2024-main-002-c",
+      "sha256": "6f505f180220e7c384a04bcedd99e8e981507c739b288b7fc553ff86064f9fd8"
+    },
+    {
+      "id": "atanasyan2024-main-002-d",
+      "sha256": "d0393d3f603669afd846fc0de3b233a7429e653524b8504a2325abfde19e1fe7"
+    },
+    {
+      "id": "atanasyan2024-main-002-e",
+      "sha256": "cef162cfad1bbedacb9556ec78661aae79fe7dad04fad6dabd14edc7903c1e35"
+    },
+    {
+      "id": "atanasyan2024-main-003-a",
+      "sha256": "f0c1b58237e2e315f6d56c7bb815429bb35c7c6a08a35eeb27a9b54d9a3ce514"
+    },
+    {
+      "id": "atanasyan2024-main-003-b",
+      "sha256": "93c88a1aaa0ec415b84bb4f85e2c9e20aea136b57af1b5efbd8cfe5e3e65a9ab"
+    },
+    {
+      "id": "atanasyan2024-main-003-c",
+      "sha256": "6772308de46cd3854fe86d306cde93839439dafc379ca4c485be183c1168dfa3"
+    },
+    {
+      "id": "atanasyan2024-main-003-d",
+      "sha256": "f154793f96d68165037a6b0057d233834bb8532cc49bc43fed77e27871510722"
+    },
+    {
+      "id": "atanasyan2024-main-004-a",
+      "sha256": "868c00f179a5c379f79ecbf9f3c6a0e4e6ec51ef550c1b98ecd8a4b28f5e30bd"
+    },
+    {
+      "id": "atanasyan2024-main-004-b",
+      "sha256": "270fbadd9fe02f7c4bd2eb9f31fe4b6a7809673bd2af8f9a142e5ee5eed2d95b"
+    },
+    {
+      "id": "atanasyan2024-main-005",
+      "sha256": "a217f8cfcfaa30cd0ef34138e5cdd8f0c229500715a4ae3205cf7ffa0484e633"
+    },
+    {
+      "id": "atanasyan2024-main-006",
+      "sha256": "798ecc66d62c507b83281c82128adb4ffbfab8d498deba8ef45327a1b6ed5adc"
+    },
+    {
+      "id": "atanasyan2024-main-007-a",
+      "sha256": "80c0fafc3c2e4e4462260329d1626656f0cccb0453e5f6b6fb1c908cf440943d"
+    },
+    {
+      "id": "atanasyan2024-main-007-b",
+      "sha256": "5340ec72c471f99378e0c7438691ef69d8ce047aaf1937a53c3c4ac67879889e"
+    },
+    {
+      "id": "atanasyan2024-main-008-a",
+      "sha256": "86c10783644bf01a44c1c6e1442c81fa4ca3be52a177f07b21fdb451b22ae505"
+    },
+    {
+      "id": "atanasyan2024-main-008-b",
+      "sha256": "af778df09532cafb151e38d5b7aa979dd0b0c9386726efcfd6df73f66b180a63"
+    },
+    {
+      "id": "atanasyan2024-main-009",
+      "sha256": "d25078b37834de79b99ec4486267de41a7a1a7158119c0a2f5a74c998fd72363"
+    },
+    {
+      "id": "atanasyan2024-main-010-a",
+      "sha256": "4882b72a47697e056d72d5e337729dc6d21677700df9c49f311fd8d799c2f5f2"
+    },
+    {
+      "id": "atanasyan2024-main-010-b",
+      "sha256": "b1112a40a96406812ccb6f55459252221d950f2ddee8df9faa1509a431916f19"
+    },
+    {
+      "id": "atanasyan2024-main-011",
+      "sha256": "88a698508796c1b63d7de1d7dea7571386796ca42209d34f32ac8687646c7f5b"
+    },
+    {
+      "id": "atanasyan2024-main-012",
+      "sha256": "0eca3a16399c9e80a1df338fa2b5152a28afec8f6a1ec25625fcfa159fea2eed"
+    },
+    {
+      "id": "atanasyan2024-main-013-a",
+      "sha256": "27d9f04e99fac1eb1a5138e642576fad3822c0f4acb69b25dcb629d8399a612f"
+    },
+    {
+      "id": "atanasyan2024-main-013-b",
+      "sha256": "be458cff97407d7d533f2c8a1113270922035f2dc184469581079b11d5a663ba"
+    },
+    {
+      "id": "atanasyan2024-main-013-c",
+      "sha256": "6970edb75bdd2dc812e361186ccf30e86e24045423a5c8cfbccc59a1b2b98643"
+    },
+    {
+      "id": "atanasyan2024-main-014",
+      "sha256": "7e4a93f07dea2f15f3f9d3546ba9d892b014afd3ff72f066ad1fd53728e4ab42"
+    },
+    {
+      "id": "atanasyan2024-main-015",
+      "sha256": "3beed2a81185c93893b8b9b191df9a0faab39e86fa213db9df8adc29991a5480"
+    }
+  ]
+}

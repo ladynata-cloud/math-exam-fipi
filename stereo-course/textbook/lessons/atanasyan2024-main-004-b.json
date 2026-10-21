@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "revision": 1,
+  "id": "atanasyan2024-main-004-b",
+  "kind": "exercise",
+  "title": "4б. Прямые AB и CD",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "printedPages": [
+      8
+    ],
+    "pdfPages": [
+      10
+    ],
+    "chapter": "Введение",
+    "exercise": "4",
+    "subpart": "б"
+  },
+  "statement": {
+    "text": "Точки A, B, C и D не лежат в одной плоскости. Могут ли прямые AB и CD пересекаться?",
+    "givens": [
+      "A, B, C, D не лежат в одной плоскости."
+    ],
+    "goal": "Определи, возможно ли указанное расположение. Обоснуй ответ."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Четыре точки не лежат в одной плоскости. Модель показывает именно это условие; длины и углы не заданы и не используются.",
+    "model": {
+      "points": {
+        "A": [
+          -2,
+          -1,
+          0
+        ],
+        "B": [
+          1,
+          -2,
+          0
+        ],
+        "C": [
+          2,
+          1,
+          0
+        ],
+        "D": [
+          0,
+          0,
+          3
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "A",
+          "D"
+        ],
+        [
+          "B",
+          "D"
+        ],
+        [
+          "C",
+          "D"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "D",
+          "B"
+        ],
+        [
+          "D",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "C",
+          "D"
+        ]
+      ],
+      "views": {
+        "neutral": {
+          "label": "Исходная конфигурация. Поверни модель и сопоставь её с условием."
+        },
+        "abc": {
+          "label": "Плоскость ABC",
+          "polygon": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "abd": {
+          "label": "Плоскость ABD",
+          "polygon": [
+            "A",
+            "D",
+            "B"
+          ]
+        },
+        "bcd": {
+          "label": "Плоскость BCD",
+          "polygon": [
+            "D",
+            "B",
+            "C"
+          ]
+        },
+        "acd": {
+          "label": "Плоскость ACD",
+          "polygon": [
+            "A",
+            "C",
+            "D"
+          ]
+        },
+        "ab": {
+          "label": "Прямая AB",
+          "segments": [
+            [
+              "A",
+              "B"
+            ]
+          ]
+        }
+      },
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    }
+  },
+  "help": [
+    {
+      "question": "Что дали бы пересекающиеся AB и CD?",
+      "text": "Через две пересекающиеся прямые проходит плоскость. Проверь, какие из четырёх данных точек она содержала бы.",
+      "theoryIds": [],
+      "children": [],
+      "id": "help-1"
+    }
+  ],
+  "steps": [
+    {
+      "title": "Предположи пересечение",
+      "prompt": "Какая плоскость существует, если AB и CD пересекаются?",
+      "explanation": "По теореме существует плоскость, содержащая обе прямые.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Через две пересекающиеся прямые проходит единственная плоскость.",
+          "theoryId": "atanasyan2024-theory-003-intersecting-lines"
+        }
+      ],
+      "id": "step-1"
+    },
+    {
+      "title": "Проверь четыре точки",
+      "prompt": "Где тогда лежат A, B, C, D?",
+      "explanation": "A и B лежат на первой прямой, C и D — на второй. Все четыре точки принадлежат найденной плоскости, что противоречит условию.",
+      "justifications": [
+        {
+          "kind": "given",
+          "text": "A, B ∈ AB; C, D ∈ CD."
+        },
+        {
+          "kind": "given",
+          "text": "Данные четыре точки не лежат в одной плоскости."
+        }
+      ],
+      "id": "step-2"
+    }
+  ],
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex independent content review: ege_independent_review with intro_geometry_audit",
+    "at": "2026-10-21T19:51:25Z"
+  },
+  "answer": {
+    "mode": "manual",
+    "prompt": "Запиши решение: Определи, возможно ли указанное расположение. Обоснуй ответ."
+  }
+}
