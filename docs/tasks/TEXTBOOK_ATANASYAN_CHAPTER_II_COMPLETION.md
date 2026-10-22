@@ -153,3 +153,11 @@ installation failed, so actual browser validation is delegated to the existing
 GitHub Actions workflows; no local browser success is claimed. Release remains
 conditional on fresh cloud checks and actual image review, including the
 widest radicals in main67 and158. No gate or assertion was weakened.
+
+The first typography cloud run39844979332 caught an accessible-name regression:
+an inline-block digit split the browser name of the theory button containing
+`A2`, so the existing exact-name interaction failed. Correct the two shared
+atom/mixed-number styles to ordinary inline flow while retaining `nowrap`.
+This preserves text boundaries and requires no engine or control-label change.
+Add a stylesheet regression; retain all exact browser selectors, baseline,
+mixed-number placement and paragraph-boundary assertions for the next run.

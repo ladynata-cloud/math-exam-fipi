@@ -25,5 +25,14 @@ el.textContent='x8 2/3';w.StereoMath.formatFractions(el);assert.equal(el.querySe
 const course=JSON.parse(fs.readFileSync(root+'/stereo-course/textbook/data/course.json','utf8'));let checked=0;
 function checkStrings(value){if(typeof value==='string'){el.replaceChildren();w.StereoMath.appendText(el,value);assert.equal(originalText(el),value,'authored text '+value);checked++;}else if(Array.isArray(value))value.forEach(checkStrings);else if(value&&typeof value==='object')for(const [key,child]of Object.entries(value))if(!['model','source','review'].includes(key))checkStrings(child);}
 course.lessons.forEach(checkStrings);
+// An inline-block around the digit in A2 causes browser accessible-name
+// calculation to insert a word boundary (A 2). Keep the authored inline flow
+// while nowrap prevents internal line breaks; browser tests retain exact names.
+for(const file of ['stereo-course/assets/style.css','stereo-course/textbook/assets/style.css']){
+ const style=w.document.createElement('style');style.textContent=fs.readFileSync(root+'/'+file,'utf8');w.document.head.append(style);
+ el.replaceChildren();w.StereoMath.appendText(el,'Почему? 2. Аксиома A2: две точки прямой');
+ for(const atom of el.querySelectorAll('.stereo-math-atom')){assert.equal(w.getComputedStyle(atom).display,'inline',file+' accessible inline flow');assert.equal(w.getComputedStyle(atom).whiteSpace,'nowrap',file+' indivisible atom');}
+ style.remove();
+}
 el.innerHTML='<p>1/2 + 1/4</p><input value="1/2"><textarea>1/3</textarea><code>1/3</code><button>1/4</button><svg><text>1/2</text></svg><p>1/x<sup>2</sup></p>';const input=el.querySelector('input'),button=el.querySelector('button');let clicks=0;button.onclick=()=>clicks++;
 w.StereoMath.formatFractions(el);w.StereoMath.formatFractions(el);assert.equal(el.querySelectorAll('.stereo-fraction').length,2);assert.strictEqual(el.querySelector('input'),input);assert.equal(input.value,'1/2');assert.strictEqual(el.querySelector('button'),button);button.click();assert.equal(clicks,1);assert.equal(el.querySelector('code').textContent,'1/3');assert.equal(el.querySelector('svg text').textContent,'1/2');assert.equal(el.querySelector('sup').previousSibling.textContent,'1/x');d.window.close();console.log('STEREO_MATH_TEXT_OK: fractions, indivisible atoms/mixed numbers, explicit trigonometric denominators, live controls; '+checked+' authored strings preserved');
