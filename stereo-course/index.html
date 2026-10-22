@@ -43,6 +43,8 @@ h1,h2,h3{overflow-wrap:anywhere;min-width:0}input[type=file]{max-width:100%;min-
 @media(max-width:480px){.back-row{flex-wrap:wrap;gap:10px}.workspace h1{font-size:1.8rem}.task-main .task-question{font-size:1.1rem}.help-column>#task-help>*:not(summary){margin-left:14px;margin-right:14px}.help-column>#task-help>summary{padding:16px 14px}.toplinks a,.toplinks button{font-size:.9rem}.task-main .answer-row input{min-width:0;width:100%;flex-basis:100%}.more-sections{flex:1}}
 .stereo-fraction{display:inline-grid;grid-template-columns:minmax(0,1fr);vertical-align:middle;min-width:0;max-width:100%;text-align:center;line-height:1.35;margin-inline:.12em}
 .stereo-numerator,.stereo-denominator{padding:.18em .25em;overflow-wrap:anywhere}
+.stereo-math-atom,.stereo-mixed-number{display:inline;white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
+.stereo-fraction,.stereo-numerator,.stereo-denominator{white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 .stereo-denominator{border-top:2px solid currentColor}
 .atanasyan-model {
   min-width: 0;
@@ -956,8 +958,10 @@ const api={open,clean,validate,drawing,download,KEY};root.StereoStore=api;if(typ
       node.setAttribute('role', 'math');
       node.setAttribute('aria-label', 'Дробь: числитель ' + numerator + ', знаменатель ' + denominator);
     }
-    const top = span(node, 'stereo-numerator', numerator);
-    const bottom = span(node, 'stereo-denominator', denominator);
+    const top = span(node, 'stereo-numerator', '');
+    const bottom = span(node, 'stereo-denominator', '');
+    appendAtoms(top, numerator);
+    appendAtoms(bottom, denominator);
     if (!hidden) { top.setAttribute('aria-hidden', 'true'); bottom.setAttribute('aria-hidden', 'true'); }
     if (side) {
       top.classList.add(side === 'left' ? 'stereo-extreme' : 'stereo-mean');
@@ -969,6 +973,54 @@ const api={open,clean,validate,drawing,download,KEY};root.StereoStore=api;if(typ
   // Read only a single explicit mathematical atom on either side of a slash.
   // Parentheses are balanced; no algebra is inferred and no expressions run.
   const atomCharacter = /[\p{L}\p{N}.,°√]/u;
+  function closingParenthesis(text, opening) {
+    let depth = 1, end = opening + 1;
+    while (end < text.length && depth) {
+      if (text[end] === '(') depth++;
+      if (text[end] === ')') depth--;
+      end++;
+    }
+    return depth ? null : end;
+  }
+  // A radical and its coefficient are one display atom. Preserve the authored
+  // characters and parentheses; this reader neither evaluates nor simplifies.
+  function radicalAt(text, start, prefix) {
+    const root = start + prefix.length - 1, opening = root + 1;
+    if (text[opening] === '(') {
+      const end = closingParenthesis(text, opening);
+      if (end && !/[А-Яа-яЁё]/u.test(text.slice(opening, end))) return { start, end, root, opening };
+      return null;
+    }
+    const body = text.slice(opening).match(/^(?:\d+(?:[.,]\d+)?|[A-Za-zΑ-Ωα-ω])(?:[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?/u);
+    return body ? { start, end: opening + body[0].length, root } : null;
+  }
+  function radicalRanges(text) {
+    const matcher = /(?:\d+(?:[.,]\d+)?|[A-Za-zΑ-Ωα-ω])?√/gu, result = [];
+    for (let match; (match = matcher.exec(text));) {
+      const radical = radicalAt(text, match.index, match[0]);
+      if (radical) { result.push(radical); matcher.lastIndex = radical.end; }
+    }
+    return result;
+  }
+  function appendAtoms(parent, text) {
+    const matcher = /(?:\d+(?:[.,]\d+)?|[A-Za-zΑ-Ωα-ω])?√|\d+(?:[.,]\d+)?(?:[⁰¹²³⁴⁵⁶⁷⁸⁹]+|°)?/gu;
+    let cursor = 0;
+    for (let match; (match = matcher.exec(text));) {
+      const radical = match[0].endsWith('√') ? radicalAt(text, match.index, match[0]) : null;
+      if (match[0].endsWith('√') && !radical) continue;
+      const end = radical ? radical.end : matcher.lastIndex;
+      parent.append(document.createTextNode(text.slice(cursor, match.index)));
+      const node = span(parent, 'stereo-math-atom', '');
+      if (radical?.opening !== undefined) {
+        node.append(document.createTextNode(text.slice(match.index, radical.opening + 1)));
+        appendText(node, text.slice(radical.opening + 1, end - 1));
+        node.append(document.createTextNode(')'));
+      } else node.textContent = text.slice(match.index, end);
+      cursor = end;
+      matcher.lastIndex = end;
+    }
+    parent.append(document.createTextNode(text.slice(cursor)));
+  }
   function atomLeft(text, end) {
     while (end >= 0 && /\s/.test(text[end])) end--;
     if (text[end] === ')') {
@@ -984,8 +1036,29 @@ const api={open,clean,validate,drawing,download,KEY};root.StereoStore=api;if(typ
     while (start >= 0 && atomCharacter.test(text[start])) start--;
     return start === end ? null : { start: start + 1, end: end + 1 };
   }
+  function trigRight(text, start) {
+    const name = text.slice(start).match(/^(?:sin|cos|ctg|tg|tan|cot)/);
+    if (!name) return null;
+    let argument = start + name[0].length;
+    while (/\s/.test(text[argument] || '') && argument < text.length) argument++;
+    if (text[argument] === '(') {
+      const end = closingParenthesis(text, argument);
+      if (end && !/[А-Яа-яЁё]/u.test(text.slice(argument, end))) return { start, end, trig: true };
+      return null;
+    }
+    // An adjacent Greek letter or numeric angle is unambiguous. Latin names
+    // require whitespace (sin x); do not reinterpret words such as sinh.
+    const value = text.slice(argument).match(argument > start + name[0].length
+      ? /^(?:[A-Za-zΑ-Ωα-ω]|\d+(?:[.,]\d+)?°?)/u
+      : /^(?:[Α-Ωα-ω]|\d+(?:[.,]\d+)?°?)/u);
+    if (!value) return null;
+    const end = argument + value[0].length;
+    return /[\p{L}\p{N}]/u.test(text[end] || '') ? null : { start, end, trig: true };
+  }
   function atomRight(text, start) {
     while (start < text.length && /\s/.test(text[start])) start++;
+    const trig = trigRight(text, start);
+    if (trig) return trig;
     let opening = start;
     if (text[opening] === '√') opening++;
     if (text[opening] === '(') {
@@ -1001,9 +1074,15 @@ const api={open,clean,validate,drawing,download,KEY};root.StereoStore=api;if(typ
   }
   function appendText(parent, text) {
     text = String(text ?? '');
+    const radicals = radicalRanges(text);
     let cursor = 0;
     for (let slash = text.indexOf('/'); slash !== -1; slash = text.indexOf('/', slash + 1)) {
+      // Format divisions inside a radical recursively, after its full extent
+      // is known. Otherwise a slash could detach the root from its radicand.
+      if (radicals.some(r => slash > r.root && slash < r.end)) continue;
       const left = atomLeft(text, slash - 1), right = atomRight(text, slash + 1);
+      const wholeRadical = left && radicals.find(r => r.end === left.end);
+      if (wholeRadical) left.start = wholeRadical.start;
       if (!left || !right || left.start < cursor || text.slice(left.start, slash).includes('/') || text.slice(slash + 1, right.end).includes('/')) continue;
       // Do not reinterpret URL/path fragments, or chained divisions such as a/b/c.
       if (text[left.start - 1] === '/' || text[right.end] === '/' || text[slash - 1] === ':' || text[slash + 1] === '/') continue;
@@ -1015,15 +1094,24 @@ const api={open,clean,validate,drawing,download,KEY};root.StereoStore=api;if(typ
       if (/:\/\/|^www\.|^\//i.test(token)) continue;
       // A function, multiword symbol or following power needs a larger grammar.
       // Keep these complete authored expressions literal rather than change scope.
-      if ((/^[\p{L}]{2,}$/u.test(numerator) && !/^[A-Z]{2}$/.test(numerator)) || (/^[\p{L}]{2,}$/u.test(denominator) && !/^[A-Z]{2}$/.test(denominator)) ||
+      if ((/^[\p{L}]{2,}$/u.test(numerator) && !/^[A-Z]{2}$/.test(numerator)) || (!right.trig && /^[\p{L}]{2,}$/u.test(denominator) && !/^[A-Z]{2}$/.test(denominator)) ||
           /(?:sin|cos|tg|ctg|sqrt|log|ln)\s*$/i.test(text.slice(0, left.start)) ||
           /^[²³⁴⁵⁶⁷⁸⁹⁰^('′]/.test(text.slice(right.end)) || text[left.start - 1] === '^') continue;
-      parent.append(document.createTextNode(text.slice(cursor, left.start)));
-      fraction(parent, numerator, denominator);
+      const whole = /^\d+$/.test(numerator) && /^\d+$/.test(denominator)
+        ? text.slice(cursor, left.start).match(/([+−-]?\d+)([ \t\u00a0\u202f]+)$/u) : null;
+      const mixedStart = whole ? left.start - whole[0].length : -1;
+      const mixed = whole && !/[\p{L}\p{N}.,]/u.test(text[mixedStart - 1] || '');
+      appendAtoms(parent, text.slice(cursor, mixed ? mixedStart : left.start));
+      if (mixed) {
+        const node = span(parent, 'stereo-mixed-number', '');
+        appendAtoms(node, whole[1]);
+        node.append(document.createTextNode(whole[2]));
+        fraction(node, numerator, denominator);
+      } else fraction(parent, numerator, denominator);
       cursor = right.end;
       slash = right.end - 1;
     }
-    parent.append(document.createTextNode(text.slice(cursor)));
+    appendAtoms(parent, text.slice(cursor));
   }
 
   // Format authored display text in place, preserving interactive controls,
@@ -1032,15 +1120,15 @@ const api={open,clean,validate,drawing,download,KEY};root.StereoStore=api;if(typ
   function formatFractions(container) {
     if (!container) return;
     const skip = 'svg,math,a,button,input,textarea,select,option,script,style,code,pre,sup,sub,' +
-      '.stereo-fraction,.stereo-trig-fraction,#input-note,.number-help,[data-raw-math]';
+      '.stereo-fraction,.stereo-trig-fraction,.stereo-math-atom,.stereo-mixed-number,#input-note,.number-help,[data-raw-math]';
     const walker = document.createTreeWalker(container, 4), nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     for (const node of nodes) {
-      if (!node.textContent.includes('/') || node.parentElement?.closest(skip) ||
+      if (!/[\/√\d]/u.test(node.textContent) || node.parentElement?.closest(skip) ||
           ['SUP', 'SUB'].includes(node.nextSibling?.tagName)) continue;
       const fragment = document.createDocumentFragment();
       appendText(fragment, node.textContent);
-      if (fragment.querySelector('.stereo-fraction')) node.replaceWith(fragment);
+      if (fragment.querySelector('.stereo-fraction,.stereo-math-atom')) node.replaceWith(fragment);
     }
   }
 

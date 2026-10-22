@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0197",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Прямая и плоскость над прямоугольником",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "197",
+    "chapter": "II. Перпендикулярность прямых и плоскостей",
+    "printedPages": [
+      61
+    ],
+    "pdfPages": [
+      63
+    ]
+  },
+  "statement": {
+    "text": "BM перпендикулярен плоскости прямоугольника ABCD.",
+    "goal": "Докажи CD⊥(MBC)."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Поверни модель. Дополнительные построения открываются вместе с шагами на этой странице.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          5,
+          0,
+          0
+        ],
+        "C": [
+          5,
+          3,
+          0
+        ],
+        "D": [
+          0,
+          3,
+          0
+        ],
+        "M": [
+          5,
+          0,
+          4
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "B",
+          "M"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "M"
+      ],
+      "neutralPoints": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "M"
+      ],
+      "labels": {},
+      "views": {
+        "neutral": {
+          "label": "Данные задачи"
+        },
+        "proof": {
+          "label": "Две прямые плоскости MBC",
+          "segments": [
+            [
+              "M",
+              "C"
+            ]
+          ],
+          "polygon": [
+            "M",
+            "B",
+            "C"
+          ]
+        }
+      },
+      "note": "Поверни модель и найди данные условия. Показан один допустимый пример; общий вывод обоснуй в решении."
+    }
+  },
+  "help": [
+    {
+      "question": "С чего начать?",
+      "text": "Сопоставь точки модели с условием. Первый шаг предлагает конкретный вопрос и показывает нужное построение.",
+      "id": "h1"
+    }
+  ],
+  "steps": [
+    {
+      "title": "Найди две перпендикулярности",
+      "prompt": "Почему CD перпендикулярна BC и BM?",
+      "explanation": "CD⊥BC, потому что ABCD — прямоугольник. BM⊥CD, потому что BM перпендикулярен плоскости ABCD.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Смежные стороны прямоугольника перпендикулярны."
+        },
+        {
+          "kind": "theorem",
+          "text": "Определение перпендикулярности прямой и плоскости.",
+          "theoryId": "theory-016",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "16",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              36,
+              37,
+              38
+            ],
+            "pdfPages": [
+              38,
+              39,
+              40
+            ]
+          }
+        }
+      ],
+      "view": "proof",
+      "id": "step-1"
+    },
+    {
+      "title": "Примени признак",
+      "prompt": "Какие две пересекающиеся прямые плоскости MBC уже найдены?",
+      "explanation": "BM и BC пересекаются в B; обе лежат в MBC. CD перпендикулярна каждой из них, значит CD⊥(MBC).",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Признак перпендикулярности прямой и плоскости.",
+          "theoryId": "theory-017",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "17",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              38,
+              39,
+              40
+            ],
+            "pdfPages": [
+              40,
+              41,
+              42
+            ],
+            "subpart": "criterion"
+          }
+        }
+      ],
+      "view": "proof",
+      "id": "step-2"
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "Докажи CD⊥(MBC). Запиши ответ и обоснуй основные переходы."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex atanasyan_theory22_26_author",
+    "at": "2026-10-21T22:19:44.401737+00:00"
+  }
+}

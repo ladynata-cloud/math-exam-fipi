@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0145",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Наклонная над прямоугольным треугольником",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "145",
+    "chapter": "II. Перпендикулярность прямых и плоскостей",
+    "printedPages": [
+      48
+    ],
+    "pdfPages": [
+      50
+    ]
+  },
+  "statement": {
+    "text": "В треугольнике ABC угол C прямой. Через A проведена прямая AD, перпендикулярная плоскости ABC.",
+    "goal": "а) Докажи, что треугольник CBD прямоугольный. б) Найди BD, если BC=a, DC=b."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Поверни рисунок и найди данные условия. Дополнительные отрезки появляются вместе с подсказкой или шагом.",
+    "model": {
+      "points": {
+        "C": [
+          0,
+          0,
+          0
+        ],
+        "A": [
+          4,
+          0,
+          0
+        ],
+        "B": [
+          0,
+          3,
+          0
+        ],
+        "D": [
+          4,
+          0,
+          3
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "A",
+          "D"
+        ],
+        [
+          "C",
+          "D"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "neutralPoints": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "labels": {},
+      "views": {
+        "neutral": {
+          "label": "Данные задачи"
+        },
+        "projection": {
+          "label": "Наклонная DC и её проекция AC",
+          "segments": [
+            [
+              "A",
+              "D"
+            ],
+            [
+              "A",
+              "C"
+            ],
+            [
+              "C",
+              "D"
+            ]
+          ],
+          "polygon": [
+            "D",
+            "A",
+            "C"
+          ]
+        },
+        "cbd": {
+          "label": "Треугольник CBD",
+          "segments": [
+            [
+              "B",
+              "D"
+            ]
+          ],
+          "polygon": [
+            "C",
+            "B",
+            "D"
+          ]
+        }
+      },
+      "note": "Модель показывает допустимое положение. Поверни рисунок, чтобы рассмотреть пространственную конфигурацию; выводы обосновывай по условию."
+    }
+  },
+  "help": [
+    {
+      "id": "help-start",
+      "question": "Где искать прямой угол?",
+      "text": "Найди проекцию DC на плоскость ABC. Затем сравни её направление с BC.",
+      "theoryIds": [
+        "theory-020"
+      ],
+      "view": "projection"
+    }
+  ],
+  "steps": [
+    {
+      "title": "Найди проекцию DC",
+      "prompt": "Каким отрезком является проекция наклонной DC на ABC?",
+      "explanation": "Так как AD⊥(ABC), A — проекция D, а C уже лежит в плоскости. Поэтому проекция DC — AC. По условию AC⊥BC.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Проекция наклонной соединяет её основание с основанием перпендикуляра.",
+          "theoryId": "theory-019",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "19",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              43,
+              44
+            ],
+            "pdfPages": [
+              45,
+              46
+            ],
+            "subpart": "point-distance"
+          }
+        },
+        {
+          "kind": "given",
+          "text": "∠ACB=90°."
+        }
+      ],
+      "view": "projection",
+      "id": "step-1"
+    },
+    {
+      "title": "а) Обоснуй прямой угол",
+      "prompt": "Как применить теорему о трёх перпендикулярах в точке C?",
+      "explanation": "BC лежит в плоскости ABC, проходит через основание C наклонной DC и перпендикулярна её проекции AC. Значит, BC⊥DC. Треугольник CBD прямоугольный при C.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Теорема о трёх перпендикулярах.",
+          "theoryId": "theory-020",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "20",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              44,
+              45
+            ],
+            "pdfPages": [
+              46,
+              47
+            ]
+          }
+        }
+      ],
+      "view": "cbd",
+      "id": "step-2"
+    },
+    {
+      "title": "б) Вычисли гипотенузу",
+      "prompt": "Какие стороны в CBD являются катетами?",
+      "explanation": "Катеты — BC=a и DC=b, а BD — гипотенуза. По теореме Пифагора BD²=a²+b², поэтому BD=√(a²+b²).",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Теорема Пифагора."
+        }
+      ],
+      "view": "cbd",
+      "id": "step-3"
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "а) Докажи, что треугольник CBD прямоугольный. б) Найди BD, если BC=a, DC=b. Запиши решение и укажи основания своих выводов."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex ege_base_inventory; geometry_scene_math_review",
+    "at": "2026-10-21T21:45:45Z"
+  }
+}

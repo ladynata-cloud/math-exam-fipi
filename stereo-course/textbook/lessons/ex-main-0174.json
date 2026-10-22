@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0174",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Три прямых угла в тетраэдре",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "174",
+    "chapter": "II. Перпендикулярность прямых и плоскостей",
+    "printedPages": [
+      58
+    ],
+    "pdfPages": [
+      60
+    ]
+  },
+  "statement": {
+    "text": "В тетраэдре ABCD углы DAB, DAC и ACB прямые. AC=CB=5, DB=5√5.",
+    "goal": "Найди двугранный угол ABCD."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Сначала сопоставь точки, линии и плоскости модели с условием. Нужные дополнительные построения появятся по кнопкам помощи и в шагах.",
+    "model": {
+      "points": {
+        "C": [
+          0,
+          0,
+          0
+        ],
+        "A": [
+          5,
+          0,
+          0
+        ],
+        "B": [
+          0,
+          5,
+          0
+        ],
+        "D": [
+          5,
+          0,
+          8.660254037844386
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "D",
+          "B"
+        ],
+        [
+          "D",
+          "C"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "A",
+          "C",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "neutralPoints": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "labels": {},
+      "views": {
+        "neutral": {
+          "label": "Данные задачи",
+          "segments": [],
+          "points": []
+        },
+        "work": {
+          "label": "Прямые AB и AC, перпендикулярные AD",
+          "segments": [
+            [
+              "A",
+              "D"
+            ],
+            [
+              "A",
+              "B"
+            ],
+            [
+              "A",
+              "C"
+            ]
+          ],
+          "points": []
+        },
+        "section": {
+          "label": "Сечение ACD перпендикулярно ребру BC",
+          "segments": [
+            [
+              "C",
+              "A"
+            ],
+            [
+              "C",
+              "D"
+            ],
+            [
+              "A",
+              "D"
+            ]
+          ],
+          "points": [],
+          "polygon": [
+            "A",
+            "C",
+            "D"
+          ]
+        }
+      },
+      "note": "Вращай модель, чтобы рассмотреть данные. Геометрия при повороте не меняется; доказательство приведено в шагах."
+    }
+  },
+  "help": [
+    {
+      "id": "start",
+      "question": "Какая перпендикулярность следует из двух углов при A?",
+      "text": "AD перпендикулярна сразу AB и AC, поэтому она перпендикулярна всей плоскости ABC.",
+      "view": "work",
+      "children": [
+        {
+          "id": "deeper",
+          "question": "Как не перепутать искомое ребро?",
+          "text": "В записи ABCD средние буквы B,C задают ребро BC. Линейный угол нужно строить именно поперёк BC.",
+          "view": "work"
+        }
+      ],
+      "theoryIds": [
+        "theory-017"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Докажем перпендикулярность AD основанию",
+      "prompt": "Какие две пересекающиеся прямые перпендикулярны AD?",
+      "explanation": "Из данных углов AD⊥AB и AD⊥AC. Прямые AB и AC пересекаются, поэтому AD⊥(ABC). В прямоугольном ACB: AB²=5²+5²=50.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Признак перпендикулярности прямой и плоскости; теорема Пифагора.",
+          "theoryId": "theory-017",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "17",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              38,
+              39,
+              40
+            ],
+            "pdfPages": [
+              40,
+              41,
+              42
+            ],
+            "subpart": "criterion"
+          }
+        }
+      ],
+      "view": "work"
+    },
+    {
+      "id": "step-2",
+      "title": "Найдём AD",
+      "prompt": "Как использовать гипотенузу DB?",
+      "explanation": "В прямоугольном DAB: AD²=DB²−AB²=125−50=75, поэтому AD=5√3.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Теорема Пифагора."
+        }
+      ],
+      "view": "work"
+    },
+    {
+      "id": "step-3",
+      "title": "Построим линейный угол при BC",
+      "prompt": "Почему лучи CA и CD оба перпендикулярны BC?",
+      "explanation": "CA⊥BC по условию. Кроме того, AD⊥BC, так как AD⊥(ABC). Значит BC перпендикулярна двум пересекающимся прямым AC и AD плоскости ACD, то есть BC⊥(ACD), в частности BC⊥CD. Поэтому ∠ACD — нужный линейный угол.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Признак перпендикулярности прямой и плоскости; определение линейного угла.",
+          "theoryId": "theory-017",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "17",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              38,
+              39,
+              40
+            ],
+            "pdfPages": [
+              40,
+              41,
+              42
+            ],
+            "subpart": "criterion"
+          }
+        }
+      ],
+      "view": "section"
+    },
+    {
+      "id": "step-4",
+      "title": "Вычислим угол",
+      "prompt": "Чему равен тангенс ∠ACD?",
+      "explanation": "В прямоугольном ACD: tan∠ACD=AD/AC=(5√3)/5=√3. Угол ACD острый, значит равен 60°.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Определение тангенса; tan60°=√3."
+        }
+      ],
+      "view": "section"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "prompt": "Введи величину двугранного угла ABCD в градусах.",
+    "accepted": [
+      "60",
+      "60°",
+      "60 градусов"
+    ],
+    "feedback": "Линейный угол ACD имеет тангенс √3, поэтому равен 60°."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex ege_independent_review",
+    "at": "2026-10-21T22:13:35.809431+00:00"
+  }
+}

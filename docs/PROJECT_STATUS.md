@@ -1,20 +1,46 @@
 # MathExam project status
 
-Updated: 2026-10-22 (Asia/Novosibirsk)
+Updated: 2026-10-23 (Asia/Novosibirsk)
 
-## In progress: exhaustive textbook browser checks in four parallel jobs
+## In progress: complete Atanasyan chapter II
 
-- [Scope](tasks/TEXTBOOK_BROWSER_SHARDS.md), HIGH review, base
-  `5953d69400615fdb4f8c6537f0af5a3c1355865a`.
-- Preserve all183 published cards, every browser assertion and all85 screenshot
-  selections. Partition complete card journeys across four jobs and require their
-  exact union before publishing the combined evidence artifact.
-- Independent technical review,56 unit checks, five browser-free preflights and
-  independent replay of actual PR299 observations passed. Exact-head review and
-  a real four-job cloud run remain pending; replay does not replace that run.
-- Next actions: verify the frozen Git delta; run the cloud matrix and inspect
-  artifact provenance/image identity; publish under standing owner permission.
-  Paid Claude remains deferred and no Claude review is claimed.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_CHAPTER_II_COMPLETION.md), HIGH review, base
+  `434a8d53c7357a20bb1e2ecef853133b14805e84`.
+- Compose two independently approved preparations into one chapter-wide release:
+  main116–217, theory15–26 and all ten chapterII self-checks. The intermediate
+  237-card preparation was not separately published.
+- Preserve183 earlier cards; add132 exact independently reviewed cards. Total315
+  cards:217 main numbers,26 theory points and26 self-checks, with1020 justified
+  steps and1086 model views. Later chapters remain pending.
+- Preserve the verified four-job browser workflow. Add122 targeted screenshot
+  states to the85 existing ones; all315 cards and all their steps still run at
+  both viewport widths. Exact-head integration and cloud visual review remain.
+- The saved PR301 head `a7eebad90f6ee75e85e03999a02479a5cdaaab96` passed
+  textbook, stereometry and profile cloud checks after the theory-dialog wrap
+  correction. Actual screenshot review then found mathematical typography
+  issues: split numeric/radical tokens, split mixed numbers and literal
+  trigonometric fraction slashes. Publication remained pending.
+- The owner requested continuation on2026-10-23. Resume the saved315-card
+  release with a bounded formatter correction and additive browser regressions;
+  lesson data, grading and stored learner work remain unchanged.
+- Next actions: independently review the formatter and final composed diff;
+  rerun exact-head cloud checks and inspect changed images; publish and verify
+  public bytes. Next textbook content starts at chapterIII, main218–238 and
+  theory27–31, as a separate bounded task after this release.
+  Paid Claude remains deferred, no Claude verdict claimed.
+
+## Published: exhaustive textbook browser checks in four parallel jobs
+
+- PR300 merged as `434a8d53c7357a20bb1e2ecef853133b14805e84`, sole parent
+  `5953d69400615fdb4f8c6537f0af5a3c1355865a`, exact reviewed tree
+  `85e311fc025989fef6d70f4ac529536cc2261645`. All product content is unchanged.
+- Independent technical and exact-head reviews passed. Run39686386737 passed
+  source-model, all four browser jobs and the strict collector. Artifact12387485077
+  contains366 journeys,2524 label states, eight restores and two real-tab cases;
+  all174 PNGs are byte-identical to the independently reviewed PR299 images.
+- Pages39687154299 succeeded on the exact merge. All14 public canonical/alias
+  requests matched the unchanged reviewed SHA256 and sizes.
+- Gate:ATANASYAN_BROWSER_SHARDS_OK. No base drift, learner-data or product change.
 
 ## Published: complete Atanasyan introduction and chapter I
 
@@ -65,7 +91,9 @@ Updated: 2026-10-22 (Asia/Novosibirsk)
   requests matched reviewed SHA256 and size. Gate:ATANASYAN_TEXTBOOK_FOUNDATION_OK.
 - Remaining book content is explicitly pending; a source catalogue does not
   constitute authored solutions.
-- Merzlyak and Pogorelov are separate later courses; their PDFs are awaited.
+- Merzlyak and Pogorelov are separate later courses. Their uploaded PDFs were
+  located on2026-10-23; their detailed10–11 courses are not yet authored. The
+  recovered Atanasyan2024 PDF exactly matches the current source-catalogue hash.
 
 ## Published: standalone stereometry, task first
 

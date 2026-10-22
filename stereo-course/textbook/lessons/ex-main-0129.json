@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0129",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Диагональ и плоскость через перпендикуляр",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "129",
+    "chapter": "II. Перпендикулярность прямых и плоскостей",
+    "printedPages": [
+      42
+    ],
+    "pdfPages": [
+      44
+    ]
+  },
+  "statement": {
+    "text": "AM⊥(ABCD), где ABCD — квадрат, а O — точка пересечения его диагоналей.",
+    "goal": "а) Докажи BD⊥(AMO). б) Докажи MO⊥BD."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Поверни рисунок и найди данные условия. Нужное дополнительное построение появится в соответствующем шаге.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          5,
+          0,
+          0
+        ],
+        "C": [
+          5,
+          5,
+          0
+        ],
+        "D": [
+          0,
+          5,
+          0
+        ],
+        "O": [
+          2.5,
+          2.5,
+          0
+        ],
+        "M": [
+          0,
+          0,
+          4
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "B",
+          "D"
+        ],
+        [
+          "A",
+          "M"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "O",
+        "M"
+      ],
+      "neutralPoints": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "O",
+        "M"
+      ],
+      "labels": {},
+      "views": {
+        "neutral": {
+          "label": "Данные задачи"
+        },
+        "amo": {
+          "label": "Плоскость AMO",
+          "segments": [
+            [
+              "M",
+              "O"
+            ]
+          ],
+          "polygon": [
+            "A",
+            "M",
+            "O"
+          ]
+        }
+      },
+      "note": "Изображён один допустимый пример. Поворот меняет вид, но не условия. Общий вывод нужно обосновать в решении."
+    }
+  },
+  "help": [
+    {
+      "question": "С чего начать?",
+      "text": "Найди на модели точки и линии из условия. Затем открой первый шаг: вопрос подскажет, какое утверждение сейчас нужно обосновать.",
+      "id": "h1"
+    }
+  ],
+  "steps": [
+    {
+      "title": "а) Найди две нужные прямые в AMO",
+      "prompt": "Почему BD перпендикулярна AM и AO?",
+      "explanation": "AM перпендикулярна всей плоскости квадрата, поэтому AM⊥BD. Диагонали квадрата взаимно перпендикулярны: BD⊥AC, а значит BD⊥AO.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Определение перпендикулярности прямой и плоскости.",
+          "theoryId": "theory-016",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "16",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              36,
+              37,
+              38
+            ],
+            "pdfPages": [
+              38,
+              39,
+              40
+            ]
+          }
+        },
+        {
+          "kind": "theorem",
+          "text": "Диагонали квадрата взаимно перпендикулярны."
+        }
+      ],
+      "view": "amo",
+      "id": "step-1"
+    },
+    {
+      "title": "а) Примени признак",
+      "prompt": "Где пересекаются AM и AO?",
+      "explanation": "AM и AO пересекаются в A и лежат в плоскости AMO. Поэтому BD⊥(AMO). Плоскость определена, поскольку M находится вне плоскости квадрата, а O≠A.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Признак перпендикулярности прямой и плоскости.",
+          "theoryId": "theory-017",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "17",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              38,
+              39,
+              40
+            ],
+            "pdfPages": [
+              40,
+              41,
+              42
+            ],
+            "subpart": "criterion"
+          }
+        }
+      ],
+      "view": "amo",
+      "id": "step-2"
+    },
+    {
+      "title": "б) Выбери прямую MO",
+      "prompt": "Как перейти от плоскости к одной её прямой?",
+      "explanation": "MO лежит в плоскости AMO. Из BD⊥(AMO) следует BD⊥MO.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Перпендикуляр к плоскости перпендикулярен каждой её прямой.",
+          "theoryId": "theory-016",
+          "source": {
+            "bookId": "atanasyan-2024-10-11",
+            "collection": "theory",
+            "point": "16",
+            "chapter": "II. Перпендикулярность прямых и плоскостей",
+            "printedPages": [
+              36,
+              37,
+              38
+            ],
+            "pdfPages": [
+              38,
+              39,
+              40
+            ]
+          }
+        }
+      ],
+      "view": "amo",
+      "id": "step-3"
+    }
+  ],
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex ege_base_inventory; geometry_scene_math_review",
+    "at": "2026-10-21T21:45:45Z"
+  },
+  "answer": {
+    "mode": "manual",
+    "prompt": "а) Докажи BD⊥(AMO). б) Докажи MO⊥BD. Запиши решение с обоснованием каждого вывода."
+  }
+}
