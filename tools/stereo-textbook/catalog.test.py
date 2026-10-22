@@ -32,7 +32,9 @@ class SourceCoverage(unittest.TestCase):
         self.assertEqual(sum(x['status'] == 'draft' for x in parts), 3)
 
     def test_partial_unlettered_question_or_theory_never_hides_siblings(self):
-        cases = [('main', '18', None, 2), ('main', '7', None, 2), ('theory', None, '2', 5), ('theory', None, '3', 2)]
+        cases = [('main', '18', None, 2), ('main', '7', None, 2), ('theory', None, '2', 5), ('theory', None, '3', 2),
+                 ('main', '229', None, 4), ('theory', None, '27', 2),
+                 ('theory', None, '30', 2), ('theory', None, '31', 4)]
         for collection, number, point, expected in cases:
             first = next(x for x in LESSONS if x['source']['collection'] == collection
                          and x['source'].get('exercise') == number and x['source'].get('point') == point)

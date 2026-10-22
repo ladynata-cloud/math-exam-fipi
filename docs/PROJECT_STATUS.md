@@ -2,32 +2,41 @@
 
 Updated: 2026-10-23 (Asia/Novosibirsk)
 
-## In progress: complete Atanasyan chapter II
+## In progress: Atanasyan chapter III §1, polyhedra and prisms
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_CHAPTER_II_COMPLETION.md), HIGH review, base
-  `434a8d53c7357a20bb1e2ecef853133b14805e84`.
-- Compose two independently approved preparations into one chapter-wide release:
-  main116–217, theory15–26 and all ten chapterII self-checks. The intermediate
-  237-card preparation was not separately published.
-- Preserve183 earlier cards; add132 exact independently reviewed cards. Total315
-  cards:217 main numbers,26 theory points and26 self-checks, with1020 justified
-  steps and1086 model views. Later chapters remain pending.
-- Preserve the verified four-job browser workflow. Add122 targeted screenshot
-  states to the85 existing ones; all315 cards and all their steps still run at
-  both viewport widths. Exact-head integration and cloud visual review remain.
-- The saved PR301 head `a7eebad90f6ee75e85e03999a02479a5cdaaab96` passed
-  textbook, stereometry and profile cloud checks after the theory-dialog wrap
-  correction. Actual screenshot review then found mathematical typography
-  issues: split numeric/radical tokens, split mixed numbers and literal
-  trigonometric fraction slashes. Publication remained pending.
-- The owner requested continuation on2026-10-23. Resume the saved315-card
-  release with a bounded formatter correction and additive browser regressions;
-  lesson data, grading and stored learner work remain unchanged.
-- Next actions: independently review the formatter and final composed diff;
-  rerun exact-head cloud checks and inspect changed images; publish and verify
-  public bytes. Next textbook content starts at chapterIII, main218–238 and
-  theory27–31, as a separate bounded task after this release.
-  Paid Claude remains deferred, no Claude verdict claimed.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PRISMS_SECTION.md), HIGH review, base
+  `6a1f0488e33f9836663382a2e220e69092910337`.
+- Prepared and independently reviewed all source questions in main218–238 and
+  theory27–31, including starred projection-area proofs and De Gua's theorem.
+  Add36 cards while preserving315 published cards byte for byte:351 cards,
+  1164 justified steps and1216 model views. Future sections remain pending.
+- Local source/model/runtime gates pass;26 new mathematical regression groups
+  and all56 sharding checks pass. Preserve215 earlier screenshot cases and add157:
+  748 width-specific and expanded images are planned for cloud verification.
+- Next actions: finish exact-head cloud journeys; inspect actual new/changed
+  images; publish and verify public bytes.
+- The initial cloud run passed, but actual review of all314 new images found
+  geometry orientations and mobile wrapping to improve. Eleven revised cards
+  passed independent source/math/pedagogy re-review; a fresh cloud visual pass
+  and deployment verification are required before release.
+- The owner requested uninterrupted cloud continuation. Paid Claude remains
+  deferred; no Claude verdict is claimed.
+
+## Published: complete Atanasyan chapter II
+
+- PR301 merged as `6a1f0488e33f9836663382a2e220e69092910337`, sole parent
+  `434a8d53c7357a20bb1e2ecef853133b14805e84`, exact reviewed tree
+  `5ae0ef27d2094a7c4f15c9788215f09eff4a4f6e`.
+- All four applicable exact-head workflows passed. Independent source, mathematics,
+  integration and434-image browser review passed;215 ordinary screenshot states
+  retain all previous cases. Mobile numeric/radical groups, mixed numbers and
+  explicit trigonometric fractions remain readable without changing authored text.
+- Published315 cards cover main1–217, theory1–26 and26 chapterI–II self-checks,
+  with1020 justified steps and1086 model views. Future sections remain pending.
+- Pages39849875322 succeeded on the exact merge. All14 public canonical/cache-busted
+  asset requests matched reviewed SHA256 and size; course bundle SHA256
+  `9a075802ec782aca7b0417f33afb5891d9657c967b99a102988145bea1c69b81`.
+- Gate: `ATANASYAN_CHAPTER_II_COMPLETE_OK`. No learner-data or grading change.
 
 ## Published: exhaustive textbook browser checks in four parallel jobs
 

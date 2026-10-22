@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-21",
-  "registeredAt": "2026-10-21T22:23:26.831968+00:00",
-  "scope": "Introduction and chaptersI–II: main1–217, theory1–26, chapterI self-check1–16 and chapterII self-check1–10. Not the complete book.",
+  "reviewedAt": "2026-10-22T21:52:19.740Z",
+  "registeredAt": "2026-10-22T21:52:35.107Z",
+  "scope": "Introduction, chaptersI–II and chapterIII §1: main1–238, theory1–31, chapterI self-check1–16 and chapterII self-check1–10. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -442,6 +442,75 @@
         "ex-main-0215",
         "ex-main-0216",
         "ex-main-0217"
+      ]
+    },
+    {
+      "reviewer": "Codex independent prisms_review; exercise_review",
+      "reviewedAt": "2026-10-22T21:09:07.102Z",
+      "registeredAt": "2026-10-22T21:11:10.663Z",
+      "canonicalCardsSHA256": "df2d5dc2e8f0e899fbc09108aa1f21db3bfe567dd17d60e0b27af7e4e1d14b39",
+      "hashMethod": "SHA256 of canonical JSON array of36newcards excluding status/review",
+      "scope": "Atanasyan2024 chapterIII §1, all source content of theory27–31 and exercises218–238. Exactly36newcards; futurebookcontent remains outside this review.",
+      "report": "docs/reviews/ATANASYAN_PRISMS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0218-a",
+        "ex-main-0218-b",
+        "ex-main-0219",
+        "ex-main-0220",
+        "ex-main-0221",
+        "ex-main-0222",
+        "ex-main-0223",
+        "ex-main-0224",
+        "ex-main-0225",
+        "ex-main-0226",
+        "ex-main-0227-a",
+        "ex-main-0227-b",
+        "ex-main-0228",
+        "ex-main-0229-a",
+        "ex-main-0229-b",
+        "ex-main-0229-c",
+        "ex-main-0229-d",
+        "ex-main-0230",
+        "ex-main-0231",
+        "ex-main-0232",
+        "ex-main-0233",
+        "ex-main-0234",
+        "ex-main-0235",
+        "ex-main-0236",
+        "ex-main-0237",
+        "ex-main-0238",
+        "theory-027",
+        "theory-027-convex",
+        "theory-028",
+        "theory-029",
+        "theory-030",
+        "theory-030-area",
+        "theory-031",
+        "theory-031-projection-a",
+        "theory-031-projection-b",
+        "theory-031-projection-general"
+      ]
+    },
+    {
+      "reviewer": "Codex independent prisms_review; prisms_218_228",
+      "reviewedAt": "2026-10-22T21:52:19.740Z",
+      "registeredAt": "2026-10-22T21:52:35.107Z",
+      "canonicalCardsSHA256": "4e16906f5a295c08e8ad929e1896b89fc739535b50472e73ef717d5474476a0b",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded",
+      "scope": "Eleven revised chapterIII §1 cards after actual cloud visual findings. Five rigid model rotations, shorter titles and formula spacing; one clarified projection-height sentence. Source, mathematics and pedagogy re-reviewed; fresh cloud visual review is a separate release gate.",
+      "report": "docs/reviews/ATANASYAN_PRISMS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0231",
+        "ex-main-0235",
+        "ex-main-0237",
+        "ex-main-0238",
+        "theory-028",
+        "theory-029",
+        "theory-030",
+        "theory-030-area",
+        "theory-031",
+        "theory-031-projection-a",
+        "theory-031-projection-general"
       ]
     }
   ],
@@ -1705,6 +1774,150 @@
     {
       "id": "ex-main-0217",
       "sha256": "2b184586f3d630434efbba182e0bf7909955f7a59521e7f3d249c4f32101386b"
+    },
+    {
+      "id": "ex-main-0218-a",
+      "sha256": "8e68e33567eac8daca27b4baafd00009509f30c359b5d307b550091c38deba72"
+    },
+    {
+      "id": "ex-main-0218-b",
+      "sha256": "fa1c9193fc1000f0942938bbc2ea1ebe64e3f2307ab58c45f956e4e62954a238"
+    },
+    {
+      "id": "ex-main-0219",
+      "sha256": "ee553a10617efded59c4960f3ec2af6a25530708f29b68909d7f1dd40eddcb10"
+    },
+    {
+      "id": "ex-main-0220",
+      "sha256": "5f7b8b253d969282a7fdd6318cb8ef6b51f7b5f5143dc2ca25ef89c30778986b"
+    },
+    {
+      "id": "ex-main-0221",
+      "sha256": "c75972224b8743f8506b0b712b9cccc38096d758db0c6b95fee25bb24678881c"
+    },
+    {
+      "id": "ex-main-0222",
+      "sha256": "987e18a6df1059b575ed6be0d7e38264cfee6a8cb16efcf3e8d1431ac1b561c4"
+    },
+    {
+      "id": "ex-main-0223",
+      "sha256": "822055b6bca9510bc91ccd5a4e50ac8594447ff3d6b45c296912373cf6538cfb"
+    },
+    {
+      "id": "ex-main-0224",
+      "sha256": "94ef26b82f0c7610ab3329213e378eaba226e91eb565ac7a54fd2a9314dedb1a"
+    },
+    {
+      "id": "ex-main-0225",
+      "sha256": "3f31eee2b3d77cb7cdc4a4290879e22b2f0228def02cc221cbd90789ec04807b"
+    },
+    {
+      "id": "ex-main-0226",
+      "sha256": "e8a6b86c8e2c60bcdb2467d7a7ff74f6c3ea278d1cb4e507e2fbbe8fe5ec3f75"
+    },
+    {
+      "id": "ex-main-0227-a",
+      "sha256": "50d58fde1c64422d81c367ac5c2433d42cd23e3ca563fd6418150c530464dc2f"
+    },
+    {
+      "id": "ex-main-0227-b",
+      "sha256": "ce939e88e823fd949f85b5dfed8b90a3881befa530d5046b6e82a890cbcf8568"
+    },
+    {
+      "id": "ex-main-0228",
+      "sha256": "4668e68bfc4009a7f9e1dc08d077dddc8ec72fcb787642cec14973bf23e82321"
+    },
+    {
+      "id": "ex-main-0229-a",
+      "sha256": "f02815984fe00037930291a075f952ae2bbe1f55d1316475dc843058cc89e688"
+    },
+    {
+      "id": "ex-main-0229-b",
+      "sha256": "baf7fb82064ec0195e81eacfcc631027e3c24f385c042e67bb02bd04904b3ac6"
+    },
+    {
+      "id": "ex-main-0229-c",
+      "sha256": "d392ae3fbadc8a4ac609b987c93fc867dcedbab364c0d4e5b52d19bee0c8c5bd"
+    },
+    {
+      "id": "ex-main-0229-d",
+      "sha256": "5c2381ba0f02820ad8e0b9a18d76fd3c5acf909c1f8d5a62e195eb7e5c2e6806"
+    },
+    {
+      "id": "ex-main-0230",
+      "sha256": "2b993625cc1076671bc2050febba9f1df36817d79737c9267b873e65ca90c600"
+    },
+    {
+      "id": "ex-main-0231",
+      "sha256": "8bae02bb1242946efb595b5820ab09b644b405d377a14734ce98144d3453bd0d"
+    },
+    {
+      "id": "ex-main-0232",
+      "sha256": "5f9ba9251b929f54e193d34fb0bb118362603bc23ebea35bfb6a7b246bd6d755"
+    },
+    {
+      "id": "ex-main-0233",
+      "sha256": "c4c97a86c0dee33b9006874dc64b76e667ed335c7c6d6d724295d171d0a23bde"
+    },
+    {
+      "id": "ex-main-0234",
+      "sha256": "9af2bfe4e60b976eda51e899cc22a35fb2f84b184173650114217cb2535a2f12"
+    },
+    {
+      "id": "ex-main-0235",
+      "sha256": "94c7b22a8a00b92df632a2edd3565135249a50d6261962d09063e9f5833b785c"
+    },
+    {
+      "id": "ex-main-0236",
+      "sha256": "88b6820c3aee269c1b1c395fefd1a330d7f5a49c3f536e350ae1e9d58f4cbe39"
+    },
+    {
+      "id": "ex-main-0237",
+      "sha256": "65ac44c70fd4ccafeba7620bf0289165761ea415c59123dda884b27a73ccf4e9"
+    },
+    {
+      "id": "ex-main-0238",
+      "sha256": "510bb26aba07bf858c860041ed753480cfb6606de2ea08ec35b145a30bbc7334"
+    },
+    {
+      "id": "theory-027",
+      "sha256": "f69629518e4d0cd7f0a64823a6ca63702506164605bc2dcd7f30be26591d12e5"
+    },
+    {
+      "id": "theory-027-convex",
+      "sha256": "8bbd8ed112f84090b3098e05f5e987a843bc5e8aace2dde97649b81dabde3091"
+    },
+    {
+      "id": "theory-028",
+      "sha256": "5f219670937d43fe634e3b8fb4f7edd6dbf30d934a373f25fe09e3709256e65d"
+    },
+    {
+      "id": "theory-029",
+      "sha256": "0a9e26db09bfc820b2db3e031b10cbcfbaa7669720f02319ccb5dfbaa810aeef"
+    },
+    {
+      "id": "theory-030",
+      "sha256": "aed5eb58de81424d037100af1df49a8d4db7ddf725dfa5d803d60e629fa932af"
+    },
+    {
+      "id": "theory-030-area",
+      "sha256": "91e73d0aa1e50cbbb73007038f3c7ed65d22e1d09f19828962820e405992b5e6"
+    },
+    {
+      "id": "theory-031",
+      "sha256": "5ba05f60ed2e380fadcc9e3383f0df6838b5728bf6d5291c1b6e1bd939432d59"
+    },
+    {
+      "id": "theory-031-projection-a",
+      "sha256": "98fb20606fbf7367ff0b2851998a185f9fe537b16e297176d98ce72481b724c9"
+    },
+    {
+      "id": "theory-031-projection-b",
+      "sha256": "6725aa4a32dbf3a282ab6b60e98e17ea3d494083accb05b546ee8b5694ad65ca"
+    },
+    {
+      "id": "theory-031-projection-general",
+      "sha256": "5e39cd9e217162ed27c029dda4bd777aa632024090653e59e50d39257f492962"
     }
   ]
 }
