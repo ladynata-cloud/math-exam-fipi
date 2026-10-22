@@ -2,6 +2,33 @@
 
 Updated: 2026-10-23 (Asia/Novosibirsk)
 
+
+## In preparation: Vilenkin grade5 part1 with arithmetic detours
+
+- Scope: [grade5 course and arithmetic practice](tasks/VILENKIN5_PART1_PRACTICE.md),
+  branch `course/vilenkin5-part1-practice`, base
+  `8a774d65dba0dfe01e4e5c86172ced1e73f3e36c`.
+- All24 main topics and four applications from the supplied2023 first part,
+  plus entry recap. Separate arithmetic practice preserves the original task,
+  draft and assistance provenance. Existing published courses are preserved.
+- Prepared29modules,87worked examples,522tasks and11arithmetic families with
+  three levels. Content/model/state gates and independent review passed.
+- Next actions: complete the exact-head CI; deliver the offline course; resolve
+  this task's external-review exception and publication permission before release.
+  Anthropic balance remains
+  insufficient; no new reviewer approval or earlier standing waiver is claimed.
+
+## Published: Vilenkin grade6 part1
+
+- PR306 merged as `8a774d65dba0dfe01e4e5c86172ced1e73f3e36c` with exact reviewed
+  tree `e3a8220ea67d4fe0d5cfdd35ee1f178d5eebb547`. Pages39872124423 succeeded;
+  all16 changed public files and the canonical course route matched reviewed
+  bytes.27modules,81worked examples,475authored exercises. Original navigator is
+  explicitly distinguished from complete individually authored solutions.
+- Course/SEO gates passed. External review was unavailable due to insufficient
+  Anthropic credit and explicitly waived by the owner for that release only.
+  Browser visual QA was unavailable and was not claimed. Full evidence: PR306.
+
 ## In progress: Atanasyan chapter III §1, polyhedra and prisms
 
 - [Scope](tasks/TEXTBOOK_ATANASYAN_PRISMS_SECTION.md), HIGH review, base
