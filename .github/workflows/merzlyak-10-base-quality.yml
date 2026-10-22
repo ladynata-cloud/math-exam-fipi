@@ -94,6 +94,7 @@ jobs:
           python3 tools/merzlyak-10-base/articles-platonic-models.test.py
           python3 tools/merzlyak-10-base/reviewer-theory-articles-checks.py
           python3 tools/merzlyak-10-base/review-state-review.test.py
+          python3 tools/merzlyak-10-base/orientation-models.test.py
           python3 tools/merzlyak-10-base/reviewer-build-checks.py
           node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs
       - name: Every authored model and view at mobile and desktop widths
@@ -102,7 +103,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: merzlyak-10-base-draft-models
+          name: merzlyak-10-base-models
           path: artifacts/merzlyak-models/
           retention-days: 7
           if-no-files-found: warn

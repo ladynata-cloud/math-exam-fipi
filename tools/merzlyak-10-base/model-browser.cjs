@@ -36,6 +36,7 @@ let browser;
      window.modelPreview=TaskSceneViewer.mount(document.getElementById('model'),lesson.visualization.model);
     },lesson);
     const views=Object.keys(lesson.visualization.model.views);
+    const lastAuthoredView=views.findLast(view=>view!=='neutral')||'neutral';
     for(const view of views){
      await page.evaluate(view=>{modelPreview.setView(view);document.getElementById('view').textContent=view;},view);
      await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
@@ -49,7 +50,7 @@ let browser;
       const a=result.labels[i],b=result.labels[j];
       if(Math.min(a.x+a.width,b.x+b.width)-Math.max(a.x,b.x)>1&&Math.min(a.y+a.height,b.y+b.height)-Math.max(a.y,b.y)>1)overlaps.push([a.key,b.key]);
      }
-     const entry={id:lesson.id,width,view,...result,overlaps};evidence.states.push(entry);
+     const entry={id:lesson.id,viewportWidth:width,width,view,...result,overlaps};evidence.states.push(entry);
      assert(result.finite&&result.width>0&&result.height>0,lesson.id+' finite nonempty model');
      assert.deepEqual(overlaps,[],lesson.id+' '+view+' no label overlap at '+width);
      for(const label of result.labels){
@@ -57,7 +58,7 @@ let browser;
       assert(label.x>=-1&&label.y>=-1&&label.x+label.width<=result.width+1&&label.y+label.height<=result.height+1,lesson.id+' unclipped label '+label.key);
      }
      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),lesson.id+' page does not overflow');
-     if(view==='neutral'||view===views.at(-1)){
+     if(view==='neutral'||view===lastAuthoredView){
       const file=lesson.id+'-'+view+'-'+width+'.png';
       await page.screenshot({path:path.join(out,file),fullPage:true});
       evidence.screenshots.push({id:lesson.id,width,view,file});

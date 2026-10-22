@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "reviewer": "independent agent /root/theory_course; none of the five implementation/test files authored by this reviewer",
   "reviewLevel": "HIGH",
-  "reviewedAt": "2026-10-22T23:08:09.349076+00:00",
-  "repositoryHeadAtReview": "22c0b967af4ee62fdd50d51e027ea710a63569ce",
+  "reviewedAt": "2026-10-22T23:43:17.822974+00:00",
+  "repositoryHeadAtReview": "fecfe304cc2434f565195ff28cdc8e71185869f5",
   "scope": "Isolated Merzlyak builder, wrapper entry page, runtime fork with two changes, and build/schema/runtime regressions. Final 989-card reviewed input snapshot tested; source content and status-transition implementation remain under separate independent reviews.",
   "verdictWithinScope": "pass",
   "verdicts": {
@@ -127,14 +127,14 @@
     },
     "currentlyTestedBundle": {
       "path": "stereo-course/merzlyak-10-base/data/course.json",
-      "sha256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2"
+      "sha256": "95a5c2ee0427b94e9590ff64941e3dce52e9ce40b3e5afed356b8bc56d6a5f17"
     },
     "contentReviewLedger": {
       "path": "tools/merzlyak-10-base/content-review-ledger.json",
-      "sha256": "884167d7c2aca9bf280243385ee3fd4b291aa8e80b733600e29242975666b3fc",
+      "sha256": "ec5aebbfee827e57c543ee7b9997e2ba4ef25102bfd2fbba9d59d533f75bc5f4",
       "scopeNote": "Recorded for exact input provenance; status transition and content evidence audit are reviewed separately."
     },
-    "independentlyRebuiltBundleSha256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2",
+    "independentlyRebuiltBundleSha256": "95a5c2ee0427b94e9590ff64941e3dce52e9ce40b3e5afed356b8bc56d6a5f17",
     "authoredCards": 989,
     "catalogEntries": 989,
     "availableCards": 989,
@@ -177,6 +177,11 @@
         "total": 759
       },
       "note": "Engine coverage counts complete source groups, ignoring subpart within a source number; it does not report physical exercise-card count. The 989 cards contain903 exercise-kind cards and86 theory-kind cards."
+    },
+    "contentReviewManifest": {
+      "path": "tools/merzlyak-10-base/content-review-manifest.json",
+      "sha256": "a0ec0b61c8223f65e031d8334239fb6031e704dc79a7edfba802ab749544c3cc",
+      "scopeNote": "Exact input evidence pin recorded; independent content audit and status-transition implementation are separately reviewed."
     }
   },
   "resolvedTestSetupIssues": [
@@ -212,5 +217,127 @@
       "implementationGateWeakened": false,
       "finalBundleSha256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2"
     }
-  ]
+  ],
+  "inputSnapshotHistory": [
+    {
+      "reviewedAt": "2026-10-22T23:08:09.349076+00:00",
+      "repositoryHeadAtReview": "22c0b967af4ee62fdd50d51e027ea710a63569ce",
+      "reportSha256BeforeRefresh": "267de052bc4b1b077b1b88ef462bc0be4b210cf369949ffa13427764c7809758",
+      "inputEvidence": {
+        "sourceIndex": {
+          "path": "stereo-course/merzlyak-10-base/source-index.json",
+          "sha256": "167e99656d5da2af82ecc08a87c9992e87df23a44e1b8de410347a6257b6da53"
+        },
+        "currentlyTestedBundle": {
+          "path": "stereo-course/merzlyak-10-base/data/course.json",
+          "sha256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2"
+        },
+        "contentReviewLedger": {
+          "path": "tools/merzlyak-10-base/content-review-ledger.json",
+          "sha256": "884167d7c2aca9bf280243385ee3fd4b291aa8e80b733600e29242975666b3fc",
+          "scopeNote": "Recorded for exact input provenance; status transition and content evidence audit are reviewed separately."
+        },
+        "independentlyRebuiltBundleSha256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2",
+        "authoredCards": 989,
+        "catalogEntries": 989,
+        "availableCards": 989,
+        "inventoryComplete": true,
+        "runtimeCoverage": {
+          "inventoried": 989,
+          "available": 989,
+          "draft": 0,
+          "inReview": 0,
+          "blocked": 0,
+          "inventoryComplete": true,
+          "exercises": 759,
+          "theoryPoints": 19,
+          "selfchecks": 97,
+          "appendices": 0,
+          "examples": 0,
+          "availableExercises": 759,
+          "availableTheoryPoints": 19,
+          "availableSelfchecks": 97,
+          "availableAppendices": 0,
+          "availableExamples": 0,
+          "partiallyAvailable": 0
+        },
+        "countSemantics": {
+          "physicalCards": {
+            "main": 749,
+            "supplementary": 13,
+            "practical": 39,
+            "projects": 5,
+            "selfchecks": 97,
+            "theory": 86
+          },
+          "numberedExerciseCardsIncludingSupplementary": 762,
+          "mainSourceNumbers": 723,
+          "runtimeExerciseSourceGroups": {
+            "main": 723,
+            "supplementary": 13,
+            "practical": 18,
+            "projects": 5,
+            "total": 759
+          },
+          "note": "Engine coverage counts complete source groups, ignoring subpart within a source number; it does not report physical exercise-card count. The 989 cards contain903 exercise-kind cards and86 theory-kind cards."
+        }
+      },
+      "tests": [
+        {
+          "command": "python tools/merzlyak-10-base/build.test.py",
+          "result": "PASS",
+          "detail": "3 regressions: canonical metadata, missing requiredParts rejection, wrong-book rejection."
+        },
+        {
+          "command": "node tools/merzlyak-10-base/schema-runtime.test.cjs",
+          "result": "PASS",
+          "detail": "AJV/runtime validate all 989 current bundle lessons; available989, blocked0. Regressions cover isolated page offset, decimal exact search, reviewed/draft/test-only boundaries, storage namespace and retained work."
+        },
+        {
+          "command": "node tools/stereo-textbook/runtime.test.cjs",
+          "result": "PASS",
+          "detail": "Retained publication/source/model, help/theory/camera/draft, proof-mode honesty, stale-tab recovery, quota fallback, safe text, real scene viewer, focus and catalogue pagination regressions."
+        },
+        {
+          "command": "python tools/stereo-textbook/catalog.test.py",
+          "result": "PASS",
+          "detail": "7 retained source completeness/catalog regressions."
+        },
+        {
+          "command": "python tools/merzlyak-10-base/reviewer-build-checks.py",
+          "result": "PASS",
+          "detail": "Independently copied all 989 current lesson inputs to a TemporaryDirectory; built twice byte-identically and matched the checked-in-path bundle; verified every input unchanged and status/review/statement/model/source/step preservation."
+        },
+        {
+          "command": "node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs",
+          "result": "PASS",
+          "detail": "Actual index and local script sequence with network replaced: 989 available; first page24 buttons; exact decimal main-collection searches match one ready card. Separate deep-copied bundle with catalogue/lesson draft and review pending has0 available and exact searches match pending entries. cache:no-cache and graceful HTTP/network/JSON/malformed-catalog failures pass."
+        },
+        {
+          "command": "git diff --check",
+          "result": "PASS",
+          "detail": "No whitespace errors in current working diff at review time."
+        }
+      ],
+      "reasonSuperseded": "Four independently reviewed rigid model rotations and their explicit status-only reacceptance changed the input bundle; implementation scope hashes did not change."
+    }
+  ],
+  "inputSnapshotFollowup": {
+    "reason": "Four proper Z rotations preserve the source mathematics while improving initial projected readability. Only bundle/manifest/ledger input evidence is refreshed here; the source-index and all implementation/reference/check hashes are unchanged.",
+    "repeatedCommands": [
+      "python tools/merzlyak-10-base/reviewer-build-checks.py",
+      "node tools/merzlyak-10-base/schema-runtime.test.cjs",
+      "node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs",
+      "node tools/stereo-textbook/runtime.test.cjs",
+      "git diff --check"
+    ],
+    "result": "PASS:989 available,0 blocked, byte-identical two-build reproduction matching the current bundle, forced-draft available0, exact decimal search, pagination24, four bounded loading-error states, retained runtime regressions.",
+    "earlierBuildAndCatalogRegressionResults": "Preserved from the preceding snapshot because builder, build tests, source-index and catalog inputs/schema were unchanged; not redundantly rerun in this focused follow-up.",
+    "contentFollowup": {
+      "path": "tools/merzlyak-10-base/independent-review-16-17.json",
+      "sha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
+      "scope": "Separate focused four-row source/math/projected-geometry follow-up; other72 review rows and historical review metadata preserved."
+    },
+    "releaseApproval": false
+  }
 }

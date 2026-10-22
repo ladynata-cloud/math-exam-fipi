@@ -595,7 +595,7 @@
     },
     {
       "path": "tools/merzlyak-10-base/independent-review-16-17.json",
-      "sha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+      "sha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
       "reviewerAgent": "/root/theory_course",
       "identityCheck": {
         "selector": "reviewer",

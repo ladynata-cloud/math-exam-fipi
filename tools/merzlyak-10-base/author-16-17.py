@@ -26,6 +26,11 @@ def L(sec,n,title,text,goal,m,steps,hint,accepted=None,part=None,caption=None):
  if accepted:answer={'mode':'exact','prompt':goal+' Введи число без единиц.','accepted':accepted,'feedback':'Проверь формулу, подстановку исходных данных и арифметику.'}
  d={'schemaVersion':1,'revision':1,'id':id,'kind':'exercise','title':f'№ {sec}.{n}. {title}'+(f' (пункт {part})' if part is not None else ''),'status':'draft','source':source,'statement':{'text':text,'goal':goal},'visualization':{'type':'scene3d','caption':caption or 'Точная числовая модель иллюстрирует условия задачи. При буквенных данных выбран один допустимый числовой пример; общая формула доказывается в шагах. Длины и углы не измеряют по экрану.','model':m},'help':[{'id':'help-1','question':'С чего начать?','text':hint}],'steps':[dict(s,id=f'step-{i+1}') for i,s in enumerate(steps)],'answer':answer,'review':{'source':'pending','mathematics':'pending','pedagogy':'pending'}}
  assert 3<=len(steps)<=7
+ # Rigid Z rotations keep every given metric while making the initial projection readable.
+ degrees={'ex-16-010':165,'ex-16-021':330,'ex-16-027':90,'ex-17-027':180}.get(id)
+ if degrees is not None:
+  theta=math.radians(degrees);c,s=math.cos(theta),math.sin(theta)
+  d['visualization']['model']['points']={k:[round(c*x-s*y,12),round(s*x+c*y,12),z] for k,(x,y,z) in d['visualization']['model']['points'].items()}
  CARDS.append(d);OUT.mkdir(parents=True,exist_ok=True);(OUT/(id+'.json')).write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
 def chain(ns):return [[ns[i],ns[(i+1)%len(ns)]] for i in range(len(ns))]
 def prism(base,shift):

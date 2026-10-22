@@ -3,7 +3,7 @@
   "status": "PASS",
   "manifest": {
     "path": "tools/merzlyak-10-base/content-review-manifest.json",
-    "sha256": "686c3b12a0e5315a9b0700cd3c6c990c195e2354b1636f7a7b07d340ed84f036"
+    "sha256": "a0ec0b61c8223f65e031d8334239fb6031e704dc79a7edfba802ab749544c3cc"
   },
   "contentKeys": [
     "id",
@@ -19,7 +19,7 @@
   "contentHashAlgorithm": "SHA-256 of UTF-8 JSON over present contentKeys, ensure_ascii=false, sorted keys, compact separators, finite numbers only.",
   "ledger": {
     "path": "tools/merzlyak-10-base/content-review-ledger.json",
-    "sha256": "884167d7c2aca9bf280243385ee3fd4b291aa8e80b733600e29242975666b3fc"
+    "sha256": "ec5aebbfee827e57c543ee7b9997e2ba4ef25102bfd2fbba9d59d533f75bc5f4"
   },
   "lessonCount": 989,
   "fullyReviewedCards": 989,
@@ -204,7 +204,7 @@
     },
     {
       "path": "tools/merzlyak-10-base/independent-review-16-17.json",
-      "manifestSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+      "manifestSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
       "expectedCards": 76,
       "reviewer": "/root/theory_course",
       "dimensions": [
@@ -212,7 +212,7 @@
         "mathematics",
         "pedagogy"
       ],
-      "actualSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+      "actualSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
       "status": "PASS",
       "acceptedCards": 76,
       "excludedHistoricalRecords": []
@@ -52209,7 +52209,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/0",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52237,7 +52237,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/0",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52265,7 +52265,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/0",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52307,7 +52307,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/1",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52335,7 +52335,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/1",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52363,7 +52363,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/1",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52405,7 +52405,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/2",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52433,7 +52433,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/2",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52461,7 +52461,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/2",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52503,7 +52503,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/3",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52531,7 +52531,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/3",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52559,7 +52559,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/3",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52601,7 +52601,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/4",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52629,7 +52629,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/4",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52657,7 +52657,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/4",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52699,7 +52699,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/5",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52727,7 +52727,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/5",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52755,7 +52755,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/5",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52797,7 +52797,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/6",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52825,7 +52825,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/6",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52853,7 +52853,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/6",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52895,7 +52895,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/7",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52923,7 +52923,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/7",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52951,7 +52951,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/7",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -52993,7 +52993,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/8",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53021,7 +53021,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/8",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53049,7 +53049,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/8",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53080,8 +53080,8 @@
       "path": "stereo-course/merzlyak-10-base/lessons/ex-16-010.json",
       "lessonId": "ex-16-010",
       "author": "/root/lessons_para2",
-      "currentSha256": "eb9d7e34092d57fb3631de8e383460146b00362d2f3727edd89d4022b5838718",
-      "contentSha256": "e8e1ebc3044e9f6c90085b30c0067a81ea7f43e04460f4cc67685c15c8911e5d",
+      "currentSha256": "99b8d3193596d48d879b8bd392e78ebabd1907278e7ddc16ad9a1aecafa5fa3f",
+      "contentSha256": "aea9d9391d4b14ddf67fc395af6cbc733fcae9e662a9a0af6e7fcd1b3f599cc8",
       "verdicts": {
         "source": "PASS",
         "mathematics": "PASS",
@@ -53091,11 +53091,11 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/9",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "788bde30899251095c0f930df0f11ee77a306fbfaeca51720c4c2567090d3ebe",
+            "reviewedSha256": "9cd13239f7ef18289ee368add1740ee56ba09f83683ff47b576db7c97bcf5985",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -53119,11 +53119,11 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/9",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "788bde30899251095c0f930df0f11ee77a306fbfaeca51720c4c2567090d3ebe",
+            "reviewedSha256": "9cd13239f7ef18289ee368add1740ee56ba09f83683ff47b576db7c97bcf5985",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -53147,11 +53147,11 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/9",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "788bde30899251095c0f930df0f11ee77a306fbfaeca51720c4c2567090d3ebe",
+            "reviewedSha256": "9cd13239f7ef18289ee368add1740ee56ba09f83683ff47b576db7c97bcf5985",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -53189,7 +53189,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/10",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53217,7 +53217,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/10",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53245,7 +53245,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/10",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53287,7 +53287,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/11",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53315,7 +53315,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/11",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53343,7 +53343,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/11",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53385,7 +53385,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/12",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53413,7 +53413,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/12",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53441,7 +53441,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/12",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53483,7 +53483,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/13",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53511,7 +53511,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/13",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53539,7 +53539,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/13",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53581,7 +53581,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/14",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53609,7 +53609,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/14",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53637,7 +53637,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/14",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53679,7 +53679,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/15",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53707,7 +53707,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/15",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53735,7 +53735,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/15",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53777,7 +53777,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/16",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53805,7 +53805,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/16",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53833,7 +53833,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/16",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53875,7 +53875,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/17",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53903,7 +53903,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/17",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53931,7 +53931,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/17",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -53973,7 +53973,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/18",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54001,7 +54001,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/18",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54029,7 +54029,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/18",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54071,7 +54071,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/19",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54099,7 +54099,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/19",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54127,7 +54127,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/19",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54158,8 +54158,8 @@
       "path": "stereo-course/merzlyak-10-base/lessons/ex-16-021.json",
       "lessonId": "ex-16-021",
       "author": "/root/lessons_para2",
-      "currentSha256": "789d0788af54b1cfe798894eada11ad1e71d7b301c866e5f785cf861d7457f49",
-      "contentSha256": "06344bafa109eb350c41882fb33d78c3d5ea8cd2d89a48bb1c11401c3ce04a7a",
+      "currentSha256": "74a8d4cab6d0de0bc3508964a5c9f87a93a519e17fc80d0bfe94b85fdd1fa371",
+      "contentSha256": "c4c614364661cf8db473fe9d20512eb5b957be456cecbc5347db0803bbc57f5c",
       "verdicts": {
         "source": "PASS",
         "mathematics": "PASS",
@@ -54169,11 +54169,11 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/20",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "bd1a4481e27a47f075f17d3188eccae1b65e07200ebd5504e56ca49389d4fde5",
+            "reviewedSha256": "b2c9e0f7a902df3e9f6558e914fa5148fe7e63ac26c37eda392b737c5e5e84ab",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -54197,11 +54197,11 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/20",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "bd1a4481e27a47f075f17d3188eccae1b65e07200ebd5504e56ca49389d4fde5",
+            "reviewedSha256": "b2c9e0f7a902df3e9f6558e914fa5148fe7e63ac26c37eda392b737c5e5e84ab",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -54225,11 +54225,11 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/20",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "bd1a4481e27a47f075f17d3188eccae1b65e07200ebd5504e56ca49389d4fde5",
+            "reviewedSha256": "b2c9e0f7a902df3e9f6558e914fa5148fe7e63ac26c37eda392b737c5e5e84ab",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -54267,7 +54267,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/21",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54295,7 +54295,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/21",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54323,7 +54323,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/21",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54365,7 +54365,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/22",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54393,7 +54393,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/22",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54421,7 +54421,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/22",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54463,7 +54463,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/23",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54491,7 +54491,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/23",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54519,7 +54519,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/23",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54561,7 +54561,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/24",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54589,7 +54589,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/24",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54617,7 +54617,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/24",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54659,7 +54659,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/25",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54687,7 +54687,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/25",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54715,7 +54715,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/25",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54746,8 +54746,8 @@
       "path": "stereo-course/merzlyak-10-base/lessons/ex-16-027.json",
       "lessonId": "ex-16-027",
       "author": "/root/lessons_para2",
-      "currentSha256": "fe4cedb873e92000bd88e0c9d52a125abaa0ce8306032ccf3dd96c5ddd292d09",
-      "contentSha256": "31b50853fa53c2565bf3ec483f7bfcc566388443e9cd3224e0b9f9f8f1fcaed2",
+      "currentSha256": "90be9d1a7be61158cb13eac0b5ff52804a226f28863a5122eb86f2a32c6b31ee",
+      "contentSha256": "e6a060841c15b96b56a4176e45da76dfb54a680954ee2e6e3419529af6324871",
       "verdicts": {
         "source": "PASS",
         "mathematics": "PASS",
@@ -54757,11 +54757,11 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/26",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "c902cc5e58fa92af708852a721c8d595fd464488fd886a41365e1c180ad75660",
+            "reviewedSha256": "6d107669cbec2b91c5f05040ec2b13f168e507070dd96476b3179f46b3760170",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -54785,11 +54785,11 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/26",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "c902cc5e58fa92af708852a721c8d595fd464488fd886a41365e1c180ad75660",
+            "reviewedSha256": "6d107669cbec2b91c5f05040ec2b13f168e507070dd96476b3179f46b3760170",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -54813,11 +54813,11 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/26",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "c902cc5e58fa92af708852a721c8d595fd464488fd886a41365e1c180ad75660",
+            "reviewedSha256": "6d107669cbec2b91c5f05040ec2b13f168e507070dd96476b3179f46b3760170",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -54855,7 +54855,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/27",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54883,7 +54883,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/27",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54911,7 +54911,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/27",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54953,7 +54953,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/28",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -54981,7 +54981,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/28",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55009,7 +55009,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/28",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55051,7 +55051,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/29",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55079,7 +55079,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/29",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55107,7 +55107,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/29",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55149,7 +55149,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/30",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55177,7 +55177,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/30",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55205,7 +55205,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/30",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55247,7 +55247,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/31",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55275,7 +55275,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/31",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55303,7 +55303,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/31",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55345,7 +55345,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/32",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55373,7 +55373,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/32",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55401,7 +55401,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/32",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55443,7 +55443,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/33",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55471,7 +55471,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/33",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55499,7 +55499,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/33",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55541,7 +55541,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/34",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55569,7 +55569,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/34",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55597,7 +55597,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/34",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55639,7 +55639,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/35",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55667,7 +55667,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/35",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55695,7 +55695,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/35",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55737,7 +55737,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/36",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55765,7 +55765,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/36",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55793,7 +55793,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/36",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55835,7 +55835,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/37",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55863,7 +55863,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/37",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55891,7 +55891,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/37",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55933,7 +55933,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/38",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55961,7 +55961,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/38",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -55989,7 +55989,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/38",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56031,7 +56031,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/39",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56059,7 +56059,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/39",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56087,7 +56087,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/39",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56129,7 +56129,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/40",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56157,7 +56157,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/40",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56185,7 +56185,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/40",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56227,7 +56227,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/41",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56255,7 +56255,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/41",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56283,7 +56283,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/41",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56325,7 +56325,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/42",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56353,7 +56353,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/42",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56381,7 +56381,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/42",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56423,7 +56423,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/43",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56451,7 +56451,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/43",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56479,7 +56479,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/43",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56521,7 +56521,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/44",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56549,7 +56549,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/44",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56577,7 +56577,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/44",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56619,7 +56619,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/45",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56647,7 +56647,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/45",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56675,7 +56675,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/45",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56717,7 +56717,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/46",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56745,7 +56745,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/46",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56773,7 +56773,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/46",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56815,7 +56815,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/47",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56843,7 +56843,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/47",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56871,7 +56871,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/47",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56913,7 +56913,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/48",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56941,7 +56941,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/48",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -56969,7 +56969,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/48",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57011,7 +57011,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/49",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57039,7 +57039,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/49",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57067,7 +57067,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/49",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57109,7 +57109,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/50",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57137,7 +57137,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/50",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57165,7 +57165,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/50",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57207,7 +57207,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/51",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57235,7 +57235,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/51",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57263,7 +57263,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/51",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57305,7 +57305,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/52",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57333,7 +57333,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/52",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57361,7 +57361,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/52",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57403,7 +57403,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/53",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57431,7 +57431,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/53",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57459,7 +57459,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/53",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57501,7 +57501,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/54",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57529,7 +57529,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/54",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57557,7 +57557,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/54",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57599,7 +57599,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/55",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57627,7 +57627,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/55",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57655,7 +57655,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/55",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57697,7 +57697,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/56",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57725,7 +57725,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/56",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57753,7 +57753,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/56",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57795,7 +57795,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/57",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57823,7 +57823,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/57",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57851,7 +57851,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/57",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57893,7 +57893,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/58",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57921,7 +57921,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/58",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57949,7 +57949,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/58",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -57991,7 +57991,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/59",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58019,7 +58019,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/59",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58047,7 +58047,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/59",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58089,7 +58089,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/60",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58117,7 +58117,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/60",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58145,7 +58145,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/60",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58187,7 +58187,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/61",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58215,7 +58215,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/61",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58243,7 +58243,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/61",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58285,7 +58285,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/62",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58313,7 +58313,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/62",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58341,7 +58341,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/62",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58383,7 +58383,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/63",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58411,7 +58411,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/63",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58439,7 +58439,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/63",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58481,7 +58481,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/64",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58509,7 +58509,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/64",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58537,7 +58537,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/64",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58579,7 +58579,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/65",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58607,7 +58607,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/65",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58635,7 +58635,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/65",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58677,7 +58677,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/66",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58705,7 +58705,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/66",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58733,7 +58733,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/66",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58775,7 +58775,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/67",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58803,7 +58803,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/67",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58831,7 +58831,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/67",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58873,7 +58873,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/68",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58901,7 +58901,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/68",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58929,7 +58929,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/68",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58971,7 +58971,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/69",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -58999,7 +58999,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/69",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59027,7 +59027,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/69",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59069,7 +59069,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/70",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59097,7 +59097,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/70",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59125,7 +59125,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/70",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59167,7 +59167,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/71",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59195,7 +59195,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/71",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59223,7 +59223,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/71",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59265,7 +59265,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/72",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59293,7 +59293,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/72",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59321,7 +59321,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/72",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59352,8 +59352,8 @@
       "path": "stereo-course/merzlyak-10-base/lessons/ex-17-027.json",
       "lessonId": "ex-17-027",
       "author": "/root/lessons_para2",
-      "currentSha256": "e93e6e13e63760ff52bda3dbae03d3341cc625007e91c71b1a25b7cb4c11030b",
-      "contentSha256": "69820a81406c64a3ffc35ed8afa5ee95f43e4f174c9d57c85666d771052ba3de",
+      "currentSha256": "53fbc652f994633ede40cf0ef64402df77373264c103bcaa6dfabeca4c2b7e88",
+      "contentSha256": "a342820c31f294b5a79975eee9cc4a2f3dba7bfb179dd88d92b2834625e6848d",
       "verdicts": {
         "source": "PASS",
         "mathematics": "PASS",
@@ -59363,11 +59363,11 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/73",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "c2d3914dbca22fe5ca3347d5d579336cb66b7d313e28822c9e03ed13203888e2",
+            "reviewedSha256": "e990940328730e037886e4286fcaf9b74db6f92db2ba2cf1eefe1345b6c02c3c",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -59391,11 +59391,11 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/73",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "c2d3914dbca22fe5ca3347d5d579336cb66b7d313e28822c9e03ed13203888e2",
+            "reviewedSha256": "e990940328730e037886e4286fcaf9b74db6f92db2ba2cf1eefe1345b6c02c3c",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -59419,11 +59419,11 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/73",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
-            "reviewedSha256": "c2d3914dbca22fe5ca3347d5d579336cb66b7d313e28822c9e03ed13203888e2",
+            "reviewedSha256": "e990940328730e037886e4286fcaf9b74db6f92db2ba2cf1eefe1345b6c02c3c",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
@@ -59461,7 +59461,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/74",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59489,7 +59489,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/74",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59517,7 +59517,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/74",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59559,7 +59559,7 @@
         "source": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/75",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59587,7 +59587,7 @@
         "mathematics": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/75",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",
@@ -59615,7 +59615,7 @@
         "pedagogy": [
           {
             "report": "tools/merzlyak-10-base/independent-review-16-17.json",
-            "reportSha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+            "reportSha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc",
             "recordPointer": "/lessons/75",
             "reviewer": "/root/theory_course",
             "author": "/root/lessons_para2",

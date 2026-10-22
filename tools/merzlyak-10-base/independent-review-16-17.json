@@ -263,7 +263,7 @@
     {
       "lessonId": "ex-16-010",
       "file": "stereo-course/merzlyak-10-base/lessons/ex-16-010.json",
-      "sha256": "788bde30899251095c0f930df0f11ee77a306fbfaeca51720c4c2567090d3ebe",
+      "sha256": "9cd13239f7ef18289ee368add1740ee56ba09f83683ff47b576db7c97bcf5985",
       "source": {
         "bookId": "merzlyak-2022-10-base",
         "collection": "main",
@@ -280,7 +280,71 @@
       "solutionMathematics": "pass",
       "taskModel": "pass",
       "schoolLevelPedagogy": "pass",
-      "stepCount": 3
+      "stepCount": 3,
+      "contentSha256": "aea9d9391d4b14ddf67fc395af6cbc733fcae9e662a9a0af6e7fcd1b3f599cc8",
+      "orientationFollowup": {
+        "reviewer": "independent agent /root/theory_course",
+        "reviewedAt": "2026-10-22T23:37:32.292995+00:00",
+        "scope": "Coordinates-only initial orientation repair; original source, solutions, answers, help, topology and view definitions are unchanged.",
+        "previousReviewedDraftSha256": "788bde30899251095c0f930df0f11ee77a306fbfaeca51720c4c2567090d3ebe",
+        "baselineReviewedSha256": "eb9d7e34092d57fb3631de8e383460146b00362d2f3727edd89d4022b5838718",
+        "baselineContentSha256": "e8e1ebc3044e9f6c90085b30c0067a81ea7f43e04460f4cc67685c15c8911e5d",
+        "currentDraftSha256": "9cd13239f7ef18289ee368add1740ee56ba09f83683ff47b576db7c97bcf5985",
+        "currentContentSha256": "aea9d9391d4b14ddf67fc395af6cbc733fcae9e662a9a0af6e7fcd1b3f599cc8",
+        "nonCoordinateContentSha256": "b5a946769fdea379aef3d03192f1b8d45a13a4bd15a93a7db2b3e392a44c8be1",
+        "rigidTransform": {
+          "axis": "Z",
+          "angleDegrees": 165,
+          "zUnchanged": true,
+          "properIsometry": true,
+          "preservedPairDistances": 45,
+          "tolerance": 2e-09
+        },
+        "pedagogyEvidence": {
+          "sceneWidthPx": 280,
+          "camera": {
+            "yaw": -0.62,
+            "pitch": 0.43
+          },
+          "allHighlightedPolygonMinimumWidthsExceedPx": 20,
+          "projectedGeometry": {
+            "projection": {
+              "areaPx2": 831.3003957714383,
+              "minWidthPx": 24.778716921259655
+            },
+            "angle": {
+              "areaPx2": 699.5618772089834,
+              "minWidthPx": 21.556804838217438
+            },
+            "section": {
+              "areaPx2": 1496.6330278147798,
+              "minWidthPx": 39.506030239105556
+            }
+          },
+          "method": "Independent orthographic area/width and point-separation calculations using the unchanged viewer default camera; no browser accessibility verdict claimed.",
+          "includedSegmentTriangle": "A closed highlighted triangle drawn as three segments is included in the minimum-width checks."
+        },
+        "checks": [
+          {
+            "command": "python tools/merzlyak-10-base/orientation-models.test.py",
+            "sha256": "b7d05f29a8b0d45308f0f06a53c338534167936456807e985b8ce321b49836f4",
+            "result": "PASS:4 models,137 pair distances, unchanged non-coordinate content, all highlighted polygons and closed segment triangles>20px minimum width, D/B1 gap>20px,5 negative regressions"
+          },
+          {
+            "command": "python tools/merzlyak-10-base/reviewer-16-17-checks.py",
+            "sha256": "8e45ea0a9b3fb3384ac46e3628212817de7ec06787d0a49ec36a7cb6f88e0322",
+            "result": "PASS:all76 source-page and mathematical model regressions, including these4 rotated configurations"
+          }
+        ],
+        "verdicts": {
+          "source": "PASS",
+          "mathematics": "PASS",
+          "pedagogy": "PASS"
+        },
+        "reviewFlagsChanged": false,
+        "releaseApproval": false,
+        "unresolvedFindings": []
+      }
     },
     {
       "lessonId": "ex-16-011",
@@ -505,7 +569,7 @@
     {
       "lessonId": "ex-16-021",
       "file": "stereo-course/merzlyak-10-base/lessons/ex-16-021.json",
-      "sha256": "bd1a4481e27a47f075f17d3188eccae1b65e07200ebd5504e56ca49389d4fde5",
+      "sha256": "b2c9e0f7a902df3e9f6558e914fa5148fe7e63ac26c37eda392b737c5e5e84ab",
       "source": {
         "bookId": "merzlyak-2022-10-base",
         "collection": "main",
@@ -522,7 +586,67 @@
       "solutionMathematics": "pass",
       "taskModel": "pass",
       "schoolLevelPedagogy": "pass",
-      "stepCount": 3
+      "stepCount": 3,
+      "contentSha256": "c4c614364661cf8db473fe9d20512eb5b957be456cecbc5347db0803bbc57f5c",
+      "orientationFollowup": {
+        "reviewer": "independent agent /root/theory_course",
+        "reviewedAt": "2026-10-22T23:37:32.292995+00:00",
+        "scope": "Coordinates-only initial orientation repair; original source, solutions, answers, help, topology and view definitions are unchanged.",
+        "previousReviewedDraftSha256": "bd1a4481e27a47f075f17d3188eccae1b65e07200ebd5504e56ca49389d4fde5",
+        "baselineReviewedSha256": "789d0788af54b1cfe798894eada11ad1e71d7b301c866e5f785cf861d7457f49",
+        "baselineContentSha256": "06344bafa109eb350c41882fb33d78c3d5ea8cd2d89a48bb1c11401c3ce04a7a",
+        "currentDraftSha256": "b2c9e0f7a902df3e9f6558e914fa5148fe7e63ac26c37eda392b737c5e5e84ab",
+        "currentContentSha256": "c4c614364661cf8db473fe9d20512eb5b957be456cecbc5347db0803bbc57f5c",
+        "nonCoordinateContentSha256": "2db927eef6e57e883fff27dc3cf6fc8bab57bcea775c2fe9a18dbbd1393dfb4a",
+        "rigidTransform": {
+          "axis": "Z",
+          "angleDegrees": 330,
+          "zUnchanged": true,
+          "properIsometry": true,
+          "preservedPairDistances": 28,
+          "tolerance": 2e-09
+        },
+        "pedagogyEvidence": {
+          "sceneWidthPx": 280,
+          "camera": {
+            "yaw": -0.62,
+            "pitch": 0.43
+          },
+          "allHighlightedPolygonMinimumWidthsExceedPx": 20,
+          "projectedGeometry": {
+            "large": {
+              "areaPx2": 6509.6669239684725,
+              "minWidthPx": 66.67930643534514
+            },
+            "small": {
+              "areaPx2": 2683.1255913881196,
+              "minWidthPx": 58.56834418215723
+            }
+          },
+          "method": "Independent orthographic area/width and point-separation calculations using the unchanged viewer default camera; no browser accessibility verdict claimed.",
+          "includedSegmentTriangle": "A closed highlighted triangle drawn as three segments is included in the minimum-width checks."
+        },
+        "checks": [
+          {
+            "command": "python tools/merzlyak-10-base/orientation-models.test.py",
+            "sha256": "b7d05f29a8b0d45308f0f06a53c338534167936456807e985b8ce321b49836f4",
+            "result": "PASS:4 models,137 pair distances, unchanged non-coordinate content, all highlighted polygons and closed segment triangles>20px minimum width, D/B1 gap>20px,5 negative regressions"
+          },
+          {
+            "command": "python tools/merzlyak-10-base/reviewer-16-17-checks.py",
+            "sha256": "8e45ea0a9b3fb3384ac46e3628212817de7ec06787d0a49ec36a7cb6f88e0322",
+            "result": "PASS:all76 source-page and mathematical model regressions, including these4 rotated configurations"
+          }
+        ],
+        "verdicts": {
+          "source": "PASS",
+          "mathematics": "PASS",
+          "pedagogy": "PASS"
+        },
+        "reviewFlagsChanged": false,
+        "releaseApproval": false,
+        "unresolvedFindings": []
+      }
     },
     {
       "lessonId": "ex-16-022",
@@ -637,7 +761,7 @@
     {
       "lessonId": "ex-16-027",
       "file": "stereo-course/merzlyak-10-base/lessons/ex-16-027.json",
-      "sha256": "c902cc5e58fa92af708852a721c8d595fd464488fd886a41365e1c180ad75660",
+      "sha256": "6d107669cbec2b91c5f05040ec2b13f168e507070dd96476b3179f46b3760170",
       "source": {
         "bookId": "merzlyak-2022-10-base",
         "collection": "main",
@@ -654,7 +778,67 @@
       "solutionMathematics": "pass",
       "taskModel": "pass",
       "schoolLevelPedagogy": "pass",
-      "stepCount": 3
+      "stepCount": 3,
+      "contentSha256": "e6a060841c15b96b56a4176e45da76dfb54a680954ee2e6e3419529af6324871",
+      "orientationFollowup": {
+        "reviewer": "independent agent /root/theory_course",
+        "reviewedAt": "2026-10-22T23:37:32.292995+00:00",
+        "scope": "Coordinates-only initial orientation repair; original source, solutions, answers, help, topology and view definitions are unchanged.",
+        "previousReviewedDraftSha256": "c902cc5e58fa92af708852a721c8d595fd464488fd886a41365e1c180ad75660",
+        "baselineReviewedSha256": "fe4cedb873e92000bd88e0c9d52a125abaa0ce8306032ccf3dd96c5ddd292d09",
+        "baselineContentSha256": "31b50853fa53c2565bf3ec483f7bfcc566388443e9cd3224e0b9f9f8f1fcaed2",
+        "currentDraftSha256": "6d107669cbec2b91c5f05040ec2b13f168e507070dd96476b3179f46b3760170",
+        "currentContentSha256": "e6a060841c15b96b56a4176e45da76dfb54a680954ee2e6e3419529af6324871",
+        "nonCoordinateContentSha256": "42723277da3ece14c0fe438e16ac6460a5bc37138811d724e825d35994b6cf8c",
+        "rigidTransform": {
+          "axis": "Z",
+          "angleDegrees": 90,
+          "zUnchanged": true,
+          "properIsometry": true,
+          "preservedPairDistances": 36,
+          "tolerance": 2e-09
+        },
+        "pedagogyEvidence": {
+          "sceneWidthPx": 280,
+          "camera": {
+            "yaw": -0.62,
+            "pitch": 0.43
+          },
+          "allHighlightedPolygonMinimumWidthsExceedPx": 20,
+          "projectedGeometry": {
+            "angle": {
+              "areaPx2": 2146.5004731107238,
+              "minWidthPx": 34.58341072436947
+            },
+            "section": {
+              "areaPx2": 5428.196448009374,
+              "minWidthPx": 78.83548974191216
+            }
+          },
+          "method": "Independent orthographic area/width and point-separation calculations using the unchanged viewer default camera; no browser accessibility verdict claimed.",
+          "includedSegmentTriangle": "A closed highlighted triangle drawn as three segments is included in the minimum-width checks."
+        },
+        "checks": [
+          {
+            "command": "python tools/merzlyak-10-base/orientation-models.test.py",
+            "sha256": "b7d05f29a8b0d45308f0f06a53c338534167936456807e985b8ce321b49836f4",
+            "result": "PASS:4 models,137 pair distances, unchanged non-coordinate content, all highlighted polygons and closed segment triangles>20px minimum width, D/B1 gap>20px,5 negative regressions"
+          },
+          {
+            "command": "python tools/merzlyak-10-base/reviewer-16-17-checks.py",
+            "sha256": "8e45ea0a9b3fb3384ac46e3628212817de7ec06787d0a49ec36a7cb6f88e0322",
+            "result": "PASS:all76 source-page and mathematical model regressions, including these4 rotated configurations"
+          }
+        ],
+        "verdicts": {
+          "source": "PASS",
+          "mathematics": "PASS",
+          "pedagogy": "PASS"
+        },
+        "reviewFlagsChanged": false,
+        "releaseApproval": false,
+        "unresolvedFindings": []
+      }
     },
     {
       "lessonId": "ex-16-028",
@@ -1671,7 +1855,7 @@
     {
       "lessonId": "ex-17-027",
       "file": "stereo-course/merzlyak-10-base/lessons/ex-17-027.json",
-      "sha256": "c2d3914dbca22fe5ca3347d5d579336cb66b7d313e28822c9e03ed13203888e2",
+      "sha256": "e990940328730e037886e4286fcaf9b74db6f92db2ba2cf1eefe1345b6c02c3c",
       "source": {
         "bookId": "merzlyak-2022-10-base",
         "collection": "main",
@@ -1688,7 +1872,70 @@
       "solutionMathematics": "pass",
       "taskModel": "pass",
       "schoolLevelPedagogy": "pass",
-      "stepCount": 3
+      "stepCount": 3,
+      "contentSha256": "a342820c31f294b5a79975eee9cc4a2f3dba7bfb179dd88d92b2834625e6848d",
+      "orientationFollowup": {
+        "reviewer": "independent agent /root/theory_course",
+        "reviewedAt": "2026-10-22T23:37:32.292995+00:00",
+        "scope": "Coordinates-only initial orientation repair; original source, solutions, answers, help, topology and view definitions are unchanged.",
+        "previousReviewedDraftSha256": "c2d3914dbca22fe5ca3347d5d579336cb66b7d313e28822c9e03ed13203888e2",
+        "baselineReviewedSha256": "e93e6e13e63760ff52bda3dbae03d3341cc625007e91c71b1a25b7cb4c11030b",
+        "baselineContentSha256": "69820a81406c64a3ffc35ed8afa5ee95f43e4f174c9d57c85666d771052ba3de",
+        "currentDraftSha256": "e990940328730e037886e4286fcaf9b74db6f92db2ba2cf1eefe1345b6c02c3c",
+        "currentContentSha256": "a342820c31f294b5a79975eee9cc4a2f3dba7bfb179dd88d92b2834625e6848d",
+        "nonCoordinateContentSha256": "87df16a60eca1a12c6a72b9d4b88d801ee87c1e6d926e8468be5cf578fa873d5",
+        "rigidTransform": {
+          "axis": "Z",
+          "angleDegrees": 180,
+          "zUnchanged": true,
+          "properIsometry": true,
+          "preservedPairDistances": 28,
+          "tolerance": 2e-09
+        },
+        "pedagogyEvidence": {
+          "sceneWidthPx": 280,
+          "camera": {
+            "yaw": -0.62,
+            "pitch": 0.43
+          },
+          "allHighlightedPolygonMinimumWidthsExceedPx": 20,
+          "projectedGeometry": {
+            "perp": {
+              "areaPx2": 4647.309847373009,
+              "minWidthPx": 46.1060794107301
+            },
+            "target": {
+              "areaPx2": 8627.50399896587,
+              "minWidthPx": 85.5936870053039
+            },
+            "D-B1": {
+              "gapPx": 155.17233059910492
+            }
+          },
+          "method": "Independent orthographic area/width and point-separation calculations using the unchanged viewer default camera; no browser accessibility verdict claimed.",
+          "includedSegmentTriangle": "A closed highlighted triangle drawn as three segments is included in the minimum-width checks."
+        },
+        "checks": [
+          {
+            "command": "python tools/merzlyak-10-base/orientation-models.test.py",
+            "sha256": "b7d05f29a8b0d45308f0f06a53c338534167936456807e985b8ce321b49836f4",
+            "result": "PASS:4 models,137 pair distances, unchanged non-coordinate content, all highlighted polygons and closed segment triangles>20px minimum width, D/B1 gap>20px,5 negative regressions"
+          },
+          {
+            "command": "python tools/merzlyak-10-base/reviewer-16-17-checks.py",
+            "sha256": "8e45ea0a9b3fb3384ac46e3628212817de7ec06787d0a49ec36a7cb6f88e0322",
+            "result": "PASS:all76 source-page and mathematical model regressions, including these4 rotated configurations"
+          }
+        ],
+        "verdicts": {
+          "source": "PASS",
+          "mathematics": "PASS",
+          "pedagogy": "PASS"
+        },
+        "reviewFlagsChanged": false,
+        "releaseApproval": false,
+        "unresolvedFindings": []
+      }
     },
     {
       "lessonId": "ex-17-028",
