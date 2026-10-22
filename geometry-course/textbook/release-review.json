@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "authoredContentSha256": "12525e9093c143c4ee6570a9fea00c7f9ccf15eb0a7ef4ab274cc62a982fa4da",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "source": "passed",
+  "mathematics": "passed",
+  "models": "passed",
+  "pedagogy": "passed",
+  "browser": "passed",
+  "reviewer": "Independent OpenAI content, model, frontend and image reviewers; primary agent evidence synthesis",
+  "at": "2026-10-22T21:54:41.085586+00:00",
+  "reviewKind": "Hash-bound chapter-I content and implementation review; exact GitHub head CI and release authorization remain separate.",
+  "scope": {
+    "chapter": "I",
+    "mainNumbers": 91,
+    "mainParts": 134,
+    "theory": 13,
+    "selfchecks": 26,
+    "cards": 173,
+    "views": 845,
+    "authoredSteps": 499,
+    "fullBookComplete": false
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CONTENT_ADDENDUM.json",
+      "sha256": "68903676e57bbfa6594fe2039f16e171e31d313966937d31aa8461c39e9721fd"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_BUILD_REVIEW.json",
+      "sha256": "ca46f57abcc3100a0e070fe141bfeeced45f0e61d00f6fb2bb540eac19fdda3b"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_MODEL_CROSS_REVIEW.json",
+      "sha256": "dd97057df1384ac98ae8d585d46908024e449ff1bb4c6e13ea6e6c218eb1c870"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_FRONTEND_REVIEW.json",
+      "sha256": "67ef657c517aa28fff1b8d5aad23dc9ab857a394e526cca760a682dc1b1b4ace"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_BROWSER_REVIEW.json",
+      "sha256": "e64640506c09d54dc0d0afe01dcab04319570e14a81779f931d6b529698a1ffd"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_THEORY_VISUAL_REVIEW.json",
+      "sha256": "f673d6c39a230ef7d96eb8c678842c047bb8f63181721f83664f0ca6e308034a"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-01-models-a-visual-review.json",
+      "sha256": "bbf01b26fe0f9c2fe6306173fb53502e0d0a4c1d2224ecba66263ef889bdb61e"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-01-models-b-visual-review.json",
+      "sha256": "80918247de1b585a233f05613ea01766ba7560bbd988248d7d5c63683bf071bc"
+    },
+    {
+      "path": "geometry-course/textbook/preparation/chapter-01-models-c-visual-review.json",
+      "sha256": "90a2bb182f800b45bb90363f3d5d79c31327a28191abf6fb852fe68993f82fd4"
+    }
+  ],
+  "browserEvidence": {
+    "sha256": "859d72f106c2c37363ddf93deeee17095148ec27480c6f60cb6030e49b951a0b",
+    "mode": "explicit labelled engineering preview",
+    "renderedViews": 1690,
+    "widths": [
+      320,
+      1280
+    ],
+    "initialFinalPngsIndependentlyAccountedFor": 692,
+    "manualReviewScope": "All initial/final images, with exact-byte reuse of previously viewed images where explicitly documented, plus targeted originals. Every845 view receives actual-browser geometry checks."
+  },
+  "claude": "Not consulted; owner waived for this task on2026-10-23. No external Claude verdict claimed.",
+  "mergeOrDeploymentAuthorization": false
+}

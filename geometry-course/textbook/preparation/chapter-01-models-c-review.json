@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-23",
+  "timezone": "Asia/Novosibirsk",
+  "reviewerRole": "Independent AI reviewer, separate from the author of batch C",
+  "reviewerTask": "models_31_60 independent review of models_61_91",
+  "target": "geometry-course/textbook/models/chapter-01-c.json",
+  "targetSha256": "fda759f01529544b6ce35bef458c425a294b695560c0bb6cd535683d69643731",
+  "referencePreparation": "geometry-course/textbook/preparation/chapter-01.json",
+  "referencePreparationSha256": "460fd91d5ab2e6c245a75872ee04be27a20cb86340b39ef924b89d78c1e5f57f",
+  "referenceReview": "geometry-course/textbook/preparation/chapter-01-review.json",
+  "sourceBookId": "atanasyan-2023-7-9",
+  "coverage": {
+    "numberedExercises": 31,
+    "range": [
+      61,
+      91
+    ],
+    "explicitParts": 48,
+    "views": 224,
+    "coordinateClaims": 161
+  },
+  "checksPassed": [
+    "Compared all 48 part models and their step views against the frozen independently source-reviewed preparation and corresponding conditions, answers, and visual plans.",
+    "Recomputed all 161 explicit coordinate claims through check_models.validate and checked visible right-angle and equal-length markers.",
+    "Independently recomputed every positive equal-angle-marker group across all 224 scenes; no group asserts unequal angles are equal.",
+    "Inspected all scene primitives and step timing, alternate cases, explanatory notes, and missing figure givens.",
+    "73/74 use separate valid perpendicular-principle scenes instead of false right-angle marks on oblique lines.",
+    "89 keeps the original valid perpendicular-bisector geometry fixed and clearly labels the separate same-side counterfactual.",
+    "90 has correct perpendicular feet and a separate labeled consequence of the contradictory assumption.",
+    "91 uses square grids, preserves both four-square arrangements, and labels n=6 examples without restricting the general formula."
+  ],
+  "resolvedFindings": [
+    {
+      "numbers": [
+        69
+      ],
+      "finding": "Initial highlight arcs asserted inferred vertical-angle equality before the solution.",
+      "resolution": "Initial arcs now have marks: 0; equality marks appear only in later solution views."
+    },
+    {
+      "numbers": [
+        73,
+        74,
+        90
+      ],
+      "finding": "Line labels used underscore-prefixed identifiers suppressed by the renderer.",
+      "resolution": "Visible line labels now use non-helper identifiers."
+    },
+    {
+      "numbers": [
+        90
+      ],
+      "finding": "Initial scene omitted the perpendiculars already supplied by the condition.",
+      "resolution": "Neutral scene now includes both actual perpendicular lines and true right-angle marks; auxiliary foot labels remain hidden until needed."
+    }
+  ],
+  "unresolvedMathematicalFindings": [],
+  "limitations": [
+    "This review compares against the independently reviewed preparation; it does not claim a second inspection of every source-page image.",
+    "Mathematical and scene-content review is separate from rendering. The completed final Chromium gate and narrowly scoped independent manual image review are referenced in separateFinalBrowserReview.",
+    "No Claude consultation, external-provider review, pupil trial, deployment verification or full-book completion is claimed."
+  ],
+  "verdict": "passed-mathematics-and-scene-content; separate final browser evidence and scoped manual visual review passed",
+  "publicationApproval": false,
+  "labelOnlyRevision": {
+    "priorReviewedSha256": "7624943f5280b9b6dc3f95eaaa87b357a693c691864d1a7d69221ba5db12b7d9",
+    "numbers": [
+      72,
+      74,
+      88,
+      89
+    ],
+    "evidence": "Reverting only seven labelOffsets in memory reproduces the prior reviewed model file SHA256 exactly; coordinates, views, conditions, didactics, and checks are identical.",
+    "coordinateGateRerun": "passed; 48 models, 161 explicit coordinate claims",
+    "browserRecheck": "passed; final initial/last PNGs at widths 320 and 1280 actually viewed in the separately hashed visual review"
+  },
+  "markerRadiusRevision": {
+    "priorReviewedSha256": "39749d44129678a8b4d761967922bc451b73277b45e1ba880a59e8923ee154fd",
+    "number": 71,
+    "view": "step-1",
+    "changes": [
+      {
+        "path": "/models/20/model/views/step-1/angleArcs/0/radius",
+        "before": 10,
+        "after": 16
+      },
+      {
+        "path": "/models/20/model/views/step-1/angleArcs/1/radius",
+        "before": 10,
+        "after": 16
+      }
+    ],
+    "reason": "The two highlighting arcs are moved outward to give the vertex label space among the intersecting lines.",
+    "independentEvidence": "A recursive comparison found exactly two radius changes. Arc vertex, endpoint rays, marks, point coordinates, scene timing, conditions and didactics are byte-for-byte unchanged. Radius changes do not change the angle measures or vertical-angle relationship.",
+    "coordinateGateRerun": "passed for all 48 models and 161 explicit claims",
+    "browserRecheck": "passed; final original exercise 71 step-1 PNG at width 320 actually viewed, png SHA256 3bd26efea6920b7a370cc2456e68e30d48b91db49ad4fe070b64f3d3acd20612"
+  },
+  "separateFinalBrowserReview": {
+    "report": "geometry-course/textbook/preparation/chapter-01-models-c-visual-review.json",
+    "sha256": "90a2bb182f800b45bb90363f3d5d79c31327a28191abf6fb852fe68993f82fd4",
+    "batchCModelSha256": "fda759f01529544b6ce35bef458c425a294b695560c0bb6cd535683d69643731",
+    "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+    "authoredContentSha256": "12525e9093c143c4ee6570a9fea00c7f9ccf15eb0a7ef4ab274cc62a982fa4da",
+    "bundleSha256": "4453db2a52e310aa5f0335da2221794713759f09f6e980f565b673ab29afff90",
+    "manualScope": "192 initial/last PNGs at two widths plus exercise 71 step-1/320; not all intermediate scenes",
+    "automatedBatchCSceneChecks": 448,
+    "reportedAutomatedIssues": 0
+  }
+}
