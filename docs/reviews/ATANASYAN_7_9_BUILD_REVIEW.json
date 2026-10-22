@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-23",
+  "reviewTimezone": "Asia/Novosibirsk",
+  "reviewerRole": "Independent AI reviewer, separate from the build/integration author",
+  "reviewerTask": "models_61_91 independent build and integration review",
+  "verdict": "passed-build-source-gates-and-integration",
+  "reviewedFiles": {
+    "tools/geometry-textbook/build_course.py": "8fb0c24aeed6c98789151922fb32680a5317666eb0cd263be51e6637ec76d89f",
+    "tools/geometry-textbook/check_course.cjs": "77239627238fbaa9fc93384f1844789a6dc7b543bf6eba5f064ac1e7f973bddd",
+    "tools/geometry-textbook/check_models.py": "3d9335bd10cdbe88ccbb2fa32487e7a4d75de792ac655f60625904f547234feb",
+    "tools/geometry-textbook/model_claims_test.py": "a2ceb02506280224fd30e195d510cbcd2f62b0ef7f38c859e2dd988b65be6b74",
+    ".github/workflows/atanasyan-planimetry.yml": "4b0fd555b2cddad93073f7e2e40813add0119a3f1a2bb22e08517c1f76e70173",
+    "tools/geometry/build_site.py": "991d058ef763a3e34fa71866e3ef8640caab0afa4825b6ca459d452c5676c20c",
+    "tools/geometry/check_textbook_preparation.py": "9c2b88446ac4ca54c5fbf7002369320b4051e00a9072c5f422557c5fcd1315b9",
+    "tools/geometry-textbook/reviewer_runtime_check.cjs": "9b7028f3c32bbbfd170ebaf84139a8c0f2ab91f511e16239e1a342418eea271d",
+    "geometry-course/textbook/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "geometry-course/index.html": "26330fc2598e555e569e5a2cb0ccd24ca828ddb6f73806cd5a801b13e1d48bb6"
+  },
+  "reviewedFilesDigest": "b252018371a074697afadb2b72f6c06277c50d4c5ec89fa9794fd7f888bc8878",
+  "digestConvention": "SHA256 of compact sorted-key JSON mapping repository-relative paths to their file SHA256 values.",
+  "repositoryContext": {
+    "reviewedWorkingTreeParent": "6730b77126f35f57313d7e24a7f1de1bbae37930",
+    "taskMergeBase": "434a8d53c7357a20bb1e2ecef853133b14805e84",
+    "observedLocalOriginMain": "6a1f0488e33f9836663382a2e220e69092910337",
+    "exactHeadReleaseVerdict": false
+  },
+  "sourceAndCompleteness": {
+    "bookId": "atanasyan-2023-7-9",
+    "pdfPageOffset": 1,
+    "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "continuousNumberInventory": 1431,
+    "implementedChapterNumbers": 91,
+    "implementedParts": 134,
+    "theoryPoints": 13,
+    "selfcheckQuestions": 26,
+    "implementedCards": 173,
+    "models": 173,
+    "authoredViews": 845,
+    "coordinateClaims": 453,
+    "fullTextbookComplete": false,
+    "claimReview": "1431 is explicitly the continuous-number inventory, not a claim that all source pages, subparts, solutions or chapters have been implemented."
+  },
+  "frozenInputs": {
+    "geometry-course/textbook/preparation/chapter-01.json": {
+      "sha256": "460fd91d5ab2e6c245a75872ee04be27a20cb86340b39ef924b89d78c1e5f57f",
+      "byteIdenticalToWorkingTreeParent": true
+    },
+    "geometry-course/textbook/preparation/chapter-01-review.json": {
+      "sha256": "f49120c3ce6863ae9ae4758905e0b55081b2fedd7017b131e1da912f75aee282",
+      "byteIdenticalToWorkingTreeParent": true
+    },
+    "geometry-course/textbook/source-inventory.json": {
+      "sha256": "3c45623e571ae18495ffa11088d25068c50da586cbbab20e9ec88bbd26bf4bfd",
+      "byteIdenticalToWorkingTreeParent": true
+    }
+  },
+  "publicationGuard": {
+    "baselinePublicCards": 0,
+    "publicationReviewMatchesAtCheck": false,
+    "required": [
+      "passed status",
+      "exact normalized authored-content SHA256",
+      "exact implementation-file SHA256 map digest",
+      "source/mathematics/models/pedagogy/browser all passed",
+      "nonempty reviewer and timestamp"
+    ],
+    "independentIsolatedChecksPassed": 19,
+    "negativeCases": [
+      "absent review",
+      "non-passed status",
+      "each of the five non-passed review dimensions",
+      "empty reviewer",
+      "empty timestamp",
+      "stale content hash",
+      "stale implementation hash",
+      "changed engine bytes",
+      "missing previously reviewed engine",
+      "changed corrected condition",
+      "corrections for another book",
+      "corrections for another chapter",
+      "corrections tied to changed preparation",
+      "correction source pages outside the exercise pages"
+    ],
+    "positiveControl": "An exactly matching synthetic review approved only the isolated temporary fixture; no synthetic approval was written to the repository.",
+    "hashScope": "The content digest covers composed authored lessons, including corrections, didactics and model scenes. Implementation digest covers index, engine, viewer, CSS and scoped math formatter. Source inventory identity is separately enforced by the preparation gate."
+  },
+  "integration": {
+    "existingIndexOnlyAdditiveTextbookLink": true,
+    "existingIndexSEOHeadUnchanged": true,
+    "oldStoreByteIdenticalToWorkingTreeParent": true,
+    "oldRoutesNoChangesInThisWorktree": true,
+    "scopedFormatter": {
+      "path": "geometry-course/textbook/assets/math-text.js",
+      "canonicalReference": "origin/main:stereo-course/assets/math-text.js",
+      "canonicalCommit": "6a1f0488e33f9836663382a2e220e69092910337",
+      "byteIdentical": true,
+      "sha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+      "globalFormatterModifiedByThisTask": false
+    },
+    "isolatedBuildSiteReproduction": {
+      "filesCompared": 174,
+      "changedFiles": [],
+      "retainedLegacyTrainers": 70,
+      "standaloneLessons": 63
+    }
+  },
+  "executedChecks": [
+    {
+      "command": "python tools/geometry/check_textbook_preparation.py",
+      "result": "passed; 91 numbers/134 parts; source inventory1431; frozen preparation remains publicationApproved=false"
+    },
+    {
+      "command": "python tools/geometry-textbook/check_models.py",
+      "result": "passed; 173 models,845 views,453 coordinate claims"
+    },
+    {
+      "command": "python tools/geometry-textbook/model_claims_test.py",
+      "result": "passed;5 tests including false right-angle, false midpoint, hidden scene, false parallel/ratio claims"
+    },
+    {
+      "command": "node tools/geometry-textbook/check_course.cjs",
+      "result": "passed; exact main134/theory1–13/selfcheck1–26; all173 pending cards withheld in public mode"
+    },
+    {
+      "command": "node tools/geometry-textbook/reviewer_runtime_check.cjs",
+      "result": "passed with jsdom;173 lessons,499 step checkpoints,nested theory restoration and unchanged-help no-op write; layoutVerified=false"
+    },
+    {
+      "command": "node tools/geometry/check.js",
+      "result": "passed;63 units137 points52 proofs46551 assertions"
+    },
+    {
+      "command": "python tools/seo-check.py",
+      "result": "passed;30 entries,6 static topic pages,167 local links"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "isolated compose() publication/provenance mutation controls",
+      "result": "all19 checks passed"
+    },
+    {
+      "command": "isolated python tools/geometry/build_site.py",
+      "result": "passed;174 files reproduce byte-for-byte"
+    }
+  ],
+  "ciReview": {
+    "prHeadCheckout": true,
+    "readOnlyRepositoryPermissions": true,
+    "pinnedActionCommits": true,
+    "sourceJobRequiresExactReproducibleBundle": true,
+    "independentReviewerRuntimeCheckIncluded": true,
+    "browserDependsOnSourceJob": true,
+    "browserEvidencePreservedOnFailure": true,
+    "browserEvidenceHeadFromPullRequestHead": true,
+    "noHardcodedPassingBrowserVerdict": true
+  },
+  "unresolvedFindingsWithinScope": [],
+  "limitations": [
+    "This is a hash-bound build/integration review, not an exact Git-head release approval.",
+    "Engine, planar viewer and CSS are being revised independently; their final implementation hashes and browser evidence are deliberately not approved here.",
+    "The final build_course.py --check and final full Chromium run must execute after all authored models and implementation files are frozen.",
+    "The runtime reviewer check verifies DOM progression and retained state, not visual layout.",
+    "The model validator checks explicit coordinate claims and all drawn equality/right-angle markers; it does not replace independent source and mathematical reasoning review.",
+    "No CI execution result, deployment verification, external-provider review or full-book completion is claimed."
+  ],
+  "publicationApproval": false
+}

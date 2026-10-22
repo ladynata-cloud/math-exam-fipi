@@ -1,0 +1,64 @@
+name: Atanasyan 7–9 — exact source, planar models and retained work
+on:
+  pull_request:
+    paths:
+      - 'geometry-course/textbook/**'
+      - 'geometry-course/index.html'
+      - 'tools/geometry-textbook/**'
+      - 'tools/geometry/check_textbook_preparation.py'
+      - 'tools/geometry/build_site.py'
+      - '.github/workflows/atanasyan-planimetry.yml'
+permissions:
+  contents: read
+jobs:
+  source-and-models:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+      - name: Source identity, completeness and exact reproducible build
+        run: |
+          python3 tools/geometry/check_textbook_preparation.py
+          python3 tools/geometry-textbook/build_course.py --check
+          python3 tools/geometry-textbook/check_models.py
+          python3 tools/geometry-textbook/model_claims_test.py
+          node tools/geometry-textbook/check_course.cjs
+          node tools/geometry-textbook/runtime_check.cjs
+          node tools/geometry-textbook/reviewer_runtime_check.cjs
+          node tools/geometry/check.js
+          python3 tools/seo-check.py
+          git diff --check
+  browser:
+    needs: source-and-models
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: All 173 cards, every drawing, mobile and desktop, actual saved work
+        env:
+          GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/geometry-textbook
+          GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: node tools/geometry-textbook/browser_check.js
+      - name: Preserve actual browser evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-planimetry-browser
+          path: artifacts/geometry-textbook/
+          retention-days: 7
+          if-no-files-found: error

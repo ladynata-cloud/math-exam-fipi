@@ -1,0 +1,484 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-23",
+  "timezone": "Asia/Novosibirsk",
+  "reviewerRole": "Independent AI reviewer, separate from the author of batch A",
+  "reviewerTask": "models_61_91 independent review of models_01_30",
+  "target": "geometry-course/textbook/models/chapter-01-a.json",
+  "targetSha256": "b01c8ec4cc2c621dd360a547ffe314e901c0fa3f446b97bb2cb2a844f8e8ea52",
+  "referencePreparation": "geometry-course/textbook/preparation/chapter-01.json",
+  "referencePreparationSha256": "460fd91d5ab2e6c245a75872ee04be27a20cb86340b39ef924b89d78c1e5f57f",
+  "referenceReview": "geometry-course/textbook/preparation/chapter-01-review.json",
+  "sourceBookId": "atanasyan-2023-7-9",
+  "coverage": {
+    "numberedExercises": 30,
+    "range": [
+      1,
+      30
+    ],
+    "explicitParts": 45,
+    "views": 269,
+    "coordinateClaims": 68,
+    "visibleEqualSegmentMarks": 92,
+    "visiblePositiveAngleMarks": 16
+  },
+  "checksPassed": [
+    "Original independent cross-review checked all45 part models and all269 scene descriptions/primitives against the frozen independently source-reviewed preparation, questions, answers and visual plans.",
+    "Current model file independently revalidated: all68 coordinate claims and every visible segment/angle equality marker pass.",
+    "The reconstructed prior JSON was independently hashed and exactly matches the previously reviewed SHA256; byte identity is established by the full256-bit digest, not an assumed author claim.",
+    "Independent structural comparison proves that only labelOffsets differ in9 entries across5 numbered exercises; all coordinates, scene primitives, step/case timing, notes, givens, didactics and checks are identical.",
+    "Initial scenes do not include later numerical answers; distinct configurations/counterexamples are separated into views.",
+    "The №16 nonexample is explicitly labeled; №7а final highlighted AB matches its explanation; №5в K/R are reconciled by the separately source-reviewed corrections."
+  ],
+  "labelOnlyRevision": {
+    "priorReviewedSha256": "49098c4d9a8d276c39f6918e03a835ad6713eeb69dadca67015e35669f44e94e",
+    "priorBytesReconstructedFrom": "Author recovered label offsets from first-browser glyph bounds; independent reviewer verified the entire reconstructed JSON hash against the already recorded historical digest.",
+    "independentFullHashMatch": true,
+    "changedNumbers": [
+      5,
+      12,
+      16,
+      20,
+      26
+    ],
+    "changedPartEntries": 9,
+    "geometryAndTeachingContentUnchanged": true,
+    "changes": [
+      {
+        "number": 5,
+        "part": "а",
+        "oldLabelOffsets": null,
+        "newLabelOffsets": {
+          "a": [
+            0,
+            -8
+          ]
+        }
+      },
+      {
+        "number": 5,
+        "part": "б",
+        "oldLabelOffsets": null,
+        "newLabelOffsets": {
+          "a": [
+            0,
+            -8
+          ]
+        }
+      },
+      {
+        "number": 5,
+        "part": "в",
+        "oldLabelOffsets": null,
+        "newLabelOffsets": {
+          "a": [
+            0,
+            -8
+          ]
+        }
+      },
+      {
+        "number": 12,
+        "part": "single",
+        "oldLabelOffsets": {
+          "O": [
+            -4,
+            -4
+          ],
+          "M": [
+            -4,
+            -4
+          ],
+          "A": [
+            0,
+            -5
+          ],
+          "B": [
+            1,
+            4
+          ],
+          "h": [
+            0,
+            -5
+          ],
+          "k": [
+            1,
+            4
+          ]
+        },
+        "newLabelOffsets": {
+          "O": [
+            -4,
+            -4
+          ],
+          "M": [
+            -4,
+            -4
+          ],
+          "A": [
+            0,
+            -5
+          ],
+          "B": [
+            -5,
+            2
+          ],
+          "h": [
+            0,
+            -5
+          ],
+          "k": [
+            -5,
+            2
+          ]
+        }
+      },
+      {
+        "number": 16,
+        "part": "single",
+        "oldLabelOffsets": {
+          "O": [
+            -4,
+            -3
+          ],
+          "h": [
+            0,
+            -4
+          ],
+          "k": [
+            0,
+            4
+          ],
+          "M": [
+            -3,
+            -4
+          ],
+          "N": [
+            2,
+            -4
+          ],
+          "Mc": [
+            -4,
+            2
+          ],
+          "Nc": [
+            2,
+            2
+          ]
+        },
+        "newLabelOffsets": {
+          "O": [
+            -4,
+            -3
+          ],
+          "h": [
+            0,
+            -4
+          ],
+          "k": [
+            0,
+            4
+          ],
+          "M": [
+            -3,
+            -4
+          ],
+          "N": [
+            2,
+            -4
+          ],
+          "Mc": [
+            -4,
+            2
+          ],
+          "Nc": [
+            1,
+            -2
+          ]
+        }
+      },
+      {
+        "number": 20,
+        "part": "single",
+        "oldLabelOffsets": {
+          "O": [
+            -4,
+            -3
+          ],
+          "A": [
+            0,
+            4
+          ],
+          "B": [
+            1,
+            -4
+          ],
+          "h": [
+            0,
+            1.8
+          ],
+          "l": [
+            2,
+            2
+          ],
+          "n": [
+            -4,
+            0
+          ],
+          "m": [
+            -3,
+            -2
+          ],
+          "k": [
+            1,
+            -4
+          ]
+        },
+        "newLabelOffsets": {
+          "O": [
+            -4,
+            -3
+          ],
+          "A": [
+            0,
+            4
+          ],
+          "B": [
+            1,
+            -4
+          ],
+          "h": [
+            -1,
+            6
+          ],
+          "l": [
+            -2.3,
+            5.6
+          ],
+          "n": [
+            -4,
+            0
+          ],
+          "m": [
+            -3,
+            -2
+          ],
+          "k": [
+            2.3,
+            5.6
+          ]
+        }
+      },
+      {
+        "number": 26,
+        "part": "а",
+        "oldLabelOffsets": {
+          "O": [
+            -4,
+            -4
+          ],
+          "A": [
+            0,
+            4
+          ],
+          "B": [
+            1,
+            4
+          ],
+          "C": [
+            3,
+            1
+          ],
+          "D": [
+            3,
+            0
+          ],
+          "E": [
+            3,
+            -2
+          ],
+          "F": [
+            0,
+            -4
+          ]
+        },
+        "newLabelOffsets": {
+          "O": [
+            -4,
+            -4
+          ],
+          "A": [
+            -4,
+            2
+          ],
+          "B": [
+            -1,
+            5
+          ],
+          "C": [
+            0,
+            6
+          ],
+          "D": [
+            0,
+            5
+          ],
+          "E": [
+            0,
+            -6
+          ],
+          "F": [
+            -4,
+            -4
+          ]
+        }
+      },
+      {
+        "number": 26,
+        "part": "б",
+        "oldLabelOffsets": {
+          "O": [
+            -4,
+            -4
+          ],
+          "A": [
+            0,
+            4
+          ],
+          "B": [
+            1,
+            4
+          ],
+          "C": [
+            3,
+            1
+          ],
+          "D": [
+            3,
+            0
+          ],
+          "E": [
+            3,
+            -2
+          ],
+          "F": [
+            0,
+            -4
+          ]
+        },
+        "newLabelOffsets": {
+          "O": [
+            -4,
+            -4
+          ],
+          "A": [
+            -4,
+            2
+          ],
+          "B": [
+            -1,
+            5
+          ],
+          "C": [
+            0,
+            6
+          ],
+          "D": [
+            0,
+            5
+          ],
+          "E": [
+            0,
+            -6
+          ],
+          "F": [
+            -4,
+            -4
+          ]
+        }
+      },
+      {
+        "number": 26,
+        "part": "сравнение",
+        "oldLabelOffsets": {
+          "O": [
+            -4,
+            -4
+          ],
+          "A": [
+            0,
+            4
+          ],
+          "B": [
+            1,
+            4
+          ],
+          "C": [
+            3,
+            1
+          ],
+          "D": [
+            3,
+            0
+          ],
+          "E": [
+            3,
+            -2
+          ],
+          "F": [
+            0,
+            -4
+          ]
+        },
+        "newLabelOffsets": {
+          "O": [
+            -4,
+            -4
+          ],
+          "A": [
+            -4,
+            2
+          ],
+          "B": [
+            -1,
+            5
+          ],
+          "C": [
+            0,
+            6
+          ],
+          "D": [
+            0,
+            5
+          ],
+          "E": [
+            0,
+            -6
+          ],
+          "F": [
+            -4,
+            -4
+          ]
+        }
+      }
+    ],
+    "coordinateGateRerun": "passed;45 models,269 views,68 explicit coordinate claims,92 equal-segment marks,16 positive angle marks",
+    "browserRecheck": "pending final candidate screenshots after renderer placement changes"
+  },
+  "resolvedFindings": [
+    {
+      "number": 16,
+      "finding": "Alternative picture could be read as another valid construction.",
+      "resolution": "Explicit view note identifies the unsuccessful example."
+    }
+  ],
+  "unresolvedMathematicalFindings": [],
+  "limitations": [
+    "This carries the prior independent full mathematical/scene-content review forward through a cryptographically verified offset-only change; it does not claim a fresh scan of every source-page image.",
+    "The first-browser manual review covered180 initial/final images, not every authored view; the final renderer changes require a separate new screenshot review.",
+    "This is not a final browser, mobile-control, storage, deployment or publication verdict.",
+    "No Claude consultation, external-provider review, pupil trial or full-book completion is claimed."
+  ],
+  "verdict": "passed-mathematics-and-scene-content; final browser gate still required",
+  "publicationApproval": false
+}
