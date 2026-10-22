@@ -2,7 +2,42 @@
 
 Updated: 2026-10-23 (Asia/Novosibirsk)
 
-## In progress: Atanasyan chapter III §1, polyhedra and prisms
+## Prepared for release review: Atanasyan 7–9 chapter II, triangles
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_II.md), HIGH review, base
+  `c62e5047fa2e774d43899e4ee20d5e1127c53e64`.
+- All99 numbered exercises92–190 and132 subparts, theory14–23 and21 review
+  questions are prepared and independently checked against the supplied2023
+  edition, printed pages29–52:163 new cards,554 steps and803 views.
+- All173 published chapter-I cards and catalog entries are exactly preserved.
+  The combined course has336 cards,1053 steps,1648 views and1057 coordinate
+  claims. Runtime and learner storage keys are unchanged.
+- Source, mathematics, pedagogy, integration and all1606 new width-specific
+  model images passed independent review. The final frozen browser run passed
+  3296 view checks,672 card journeys and9 interaction scenarios with no errors;
+  all11 source/model/runtime/regression gates passed.
+- Chapter-specific hash-bound review manifests approve the checked content.
+  Exact-head CI, virtual composition with current main and the owner release
+  decision are recorded in the resulting Draft PR. No chapter-II publication
+  or completion of later chapters is claimed here.
+
+## Published: Atanasyan 7–9 chapter I
+
+- PR302 merged as `c62e5047fa2e774d43899e4ee20d5e1127c53e64`, sole parent
+  `fa8273a36d33eb0ed854119d26cfa8d55b681d20`. The reviewed48-file delta and all
+  changed-file blobs match; composed tree `f4463f39a1581f6d7a92ac1340d396e3ed66cbe9`.
+- Published173 cards cover all134 parts of exercises1–91, thirteen theory points
+  and26 review questions, with499 justified steps,845 views and453 geometric
+  checks. All1690 width-specific view checks and346 card journeys passed;
+  all692 initial/final images were independently reviewed or verified identical.
+- Exact-head CI and Pages39868162647 succeeded. All14 canonical/cache-busted
+  public requests matched reviewed bytes; public bundle SHA256
+  `c8fee8a373b5fd00b883794066fd82857e9a10ee4890b6e0a2695086fba10daf`.
+- Live course, deep links, saved draft/steps, theory return, full-screen return
+  and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
+  Later chapters and real-pupil validation remain pending.
+
+## Published: Atanasyan 10–11 chapter III §1, polyhedra and prisms
 
 - [Scope](tasks/TEXTBOOK_ATANASYAN_PRISMS_SECTION.md), HIGH review, base
   `6a1f0488e33f9836663382a2e220e69092910337`.
@@ -13,12 +48,16 @@ Updated: 2026-10-23 (Asia/Novosibirsk)
 - Local source/model/runtime gates pass;26 new mathematical regression groups
   and all56 sharding checks pass. Preserve215 earlier screenshot cases and add157:
   748 width-specific and expanded images are planned for cloud verification.
-- Next actions: finish exact-head cloud journeys; inspect actual new/changed
-  images; publish and verify public bytes.
+- PR303 merged as `fa8273a36d33eb0ed854119d26cfa8d55b681d20`, sole parent
+  `6a1f0488e33f9836663382a2e220e69092910337`, exact reviewed tree
+  `5be3aaca3cdcf8a035718a6bf52d71a2a3cd7df4`.
 - The initial cloud run passed, but actual review of all314 new images found
   geometry orientations and mobile wrapping to improve. Eleven revised cards
-  passed independent source/math/pedagogy re-review; a fresh cloud visual pass
-  and deployment verification are required before release.
+  passed independent source/math/pedagogy re-review. The fresh run passed702
+  card-width journeys,4904 label states and748 screenshots; all748 images were
+  reviewed or verified identical to reviewed images. Pages39863669592 succeeded
+  on the exact merge and all14 public asset requests matched SHA256 and size.
+  Gate:`ATANASYAN_PRISMS_SECTION_OK`.
 - The owner requested uninterrupted cloud continuation. Paid Claude remains
   deferred; no Claude verdict is claimed.
 

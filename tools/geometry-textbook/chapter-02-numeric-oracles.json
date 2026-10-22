@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "bookId": "atanasyan-2023-7-9",
+  "edition": "2023, 14-е издание, переработанное",
+  "chapter": 2,
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "derivation": "Independent calculation from visually inspected source pages, before reviewing the authored solutions. Values are mathematical expectations, not text patterns copied from implementation.",
+  "numericCases": [
+    {
+      "number": 95,
+      "part": "single",
+      "expected": {
+        "perimeterCm": 75
+      },
+      "reason": "17 + 2·17 + (2·17 − 10) = 75."
+    },
+    {
+      "number": 96,
+      "part": "single",
+      "expected": {
+        "otherSidesCm": [
+          12.7,
+          17.3
+        ]
+      },
+      "reason": "The other sides sum to 48−18=30 and differ by 4.6; (30±4.6)/2."
+    },
+    {
+      "number": 98,
+      "part": "б",
+      "expected": {
+        "angleADegrees": 42,
+        "angleCDegrees": 47
+      },
+      "reason": "SAS identifies A with E and C with D."
+    },
+    {
+      "number": 99,
+      "part": "б",
+      "expected": {
+        "BDCm": 5,
+        "ABCm": 15
+      },
+      "reason": "Congruence identifies BD with DC and AB with AC."
+    },
+    {
+      "number": 100,
+      "part": "б",
+      "expected": {
+        "ABCm": 14,
+        "BCCm": 17
+      },
+      "reason": "Congruence identifies AB with DC and BC with AD."
+    },
+    {
+      "number": 101,
+      "part": "б",
+      "expected": {
+        "angleACDDegrees": 110
+      },
+      "reason": "Congruence gives angle OCD=74; angle ACD=36+74."
+    },
+    {
+      "number": 110,
+      "part": "б",
+      "expected": {
+        "angleABCDegrees": 46
+      },
+      "reason": "SAS gives angle DBC=44; subtract it from right angle ABD."
+    },
+    {
+      "number": 111,
+      "part": "б",
+      "expected": {
+        "angleACEDegrees": 96
+      },
+      "reason": "Congruence gives angle DCE=40; angle ACE=56+40."
+    },
+    {
+      "number": 112,
+      "part": "single",
+      "expected": {
+        "lateralSideCm": 20,
+        "baseCm": 10
+      },
+      "reason": "Let base x and legs 2x; 5x=50."
+    },
+    {
+      "number": 113,
+      "part": "single",
+      "expected": {
+        "ABCm": 12.5,
+        "BCCm": 15
+      },
+      "reason": "BC=45/3=15; AB=(40−15)/2."
+    },
+    {
+      "number": 114,
+      "part": "single",
+      "expected": {
+        "AMCm": 8
+      },
+      "reason": "AB+BM=32/2=16; AM=24−16."
+    },
+    {
+      "number": 117,
+      "part": "single",
+      "expected": {
+        "angle2Degrees": 50
+      },
+      "reason": "The angle at C is 180−130=50 and equals the angle at A; angle 2 is vertical to A."
+    },
+    {
+      "number": 118,
+      "part": "б",
+      "expected": {
+        "angleNOMDegrees": 37.5
+      },
+      "reason": "SAS gives angle NOM=POQ and these plus105 form180; (180−105)/2."
+    },
+    {
+      "number": 124,
+      "part": "single",
+      "expected": {
+        "KFCm": 8,
+        "angleDEKDegrees": 86,
+        "angleEFDDegrees": 90
+      },
+      "reason": "Bisector at E is median and altitude; KF=16/2, angle DEK=2·43, angle EFD=90."
+    },
+    {
+      "number": 126,
+      "part": "б",
+      "expected": {
+        "BCCm": 15,
+        "COCm": 13
+      },
+      "reason": "Congruence gives BC=AD=15 and CO=CD/2=13."
+    },
+    {
+      "number": 127,
+      "part": "б",
+      "expected": {
+        "ABCm": 11,
+        "BCCm": 19
+      },
+      "reason": "Congruence gives AB=CD=11 and BC=AD=19."
+    },
+    {
+      "number": 131,
+      "part": "single",
+      "expected": {
+        "BDCm": 13
+      },
+      "reason": "ASA gives BD=AC=13."
+    },
+    {
+      "number": 141,
+      "part": "single",
+      "expected": {
+        "angleCADDegreesAllCases": [
+          25,
+          155
+        ]
+      },
+      "reason": "AD may bisect the internal 50-degree angle or its 310-degree reflex counterpart."
+    },
+    {
+      "number": 150,
+      "part": "single",
+      "expected": {
+        "anglePOMDegrees": 90
+      },
+      "reason": "Equal radii and chords give angle POM=POK; they are adjacent supplementary angles."
+    },
+    {
+      "number": 151,
+      "part": "single",
+      "expected": {
+        "perimeterAODCm": 29
+      },
+      "reason": "OA=OD=8 and AD=BC=13, so 8+8+13=29."
+    },
+    {
+      "number": 160,
+      "part": "а",
+      "expected": {
+        "constructedAngleDegrees": 45
+      },
+      "reason": "Bisect a constructed right angle once."
+    },
+    {
+      "number": 160,
+      "part": "б",
+      "expected": {
+        "constructedAngleDegrees": 22.5
+      },
+      "reason": "Bisect a constructed right angle twice."
+    },
+    {
+      "number": 161,
+      "part": "single",
+      "expected": {
+        "ABCm": 4,
+        "BCCm": 6,
+        "ACCm": 5
+      },
+      "reason": "Let AB=x; BC=x+2, AC=x+1; 3x+3=15."
+    },
+    {
+      "number": 162,
+      "part": "single",
+      "expected": {
+        "lateralSideCm": 5,
+        "baseCm": 7
+      },
+      "reason": "Let leg=x; base=x+2=2x−3, so x=5 and base7."
+    },
+    {
+      "number": 163,
+      "part": "single",
+      "expected": {
+        "lateralSideCmAllCases": [
+          6,
+          10
+        ]
+      },
+      "reason": "The split perimeters differ by |leg−8|=2; leg6 or10."
+    },
+    {
+      "number": 173,
+      "part": "single",
+      "expected": {
+        "angleDBEDegrees": 40
+      },
+      "reason": "Isosceles ABD and BEC give angles ABD38 and EBC32; 110−38−32=40."
+    }
+  ],
+  "coverage": "26 numeric exercise/subpart cases; not a substitute for all 132 solution and model reviews."
+}

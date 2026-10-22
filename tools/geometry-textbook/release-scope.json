@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "bookId": "atanasyan-2023-7-9",
+  "chapters": [
+    {"chapter": 1, "label": "I", "exerciseNumbers": [1, 91], "mainParts": 134, "theoryPoints": [1, 13], "selfcheckQuestions": 26, "cards": 173},
+    {"chapter": 2, "label": "II", "exerciseNumbers": [92, 190], "mainParts": 132, "theoryPoints": [14, 23], "selfcheckQuestions": 21, "cards": 163}
+  ],
+  "totalCards": 336,
+  "fullTextbookComplete": false
+}
