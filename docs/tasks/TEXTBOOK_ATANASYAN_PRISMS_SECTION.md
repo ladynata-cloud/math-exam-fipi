@@ -95,6 +95,12 @@ Cloud browser/visual review and publication remain pending in this commit; no
 release marker is claimed. Exact head, PR, workflow results, any failures and
 production identity are recorded in the PR to avoid rewriting a tested head.
 
+The first cloud run39855680695 passed automated checks. Actual inspection of all
+314 new screenshots found geometry orientations and mobile wrapping to improve.
+Eleven cards were corrected and independently re-reviewed by canonical hash;
+all315 published cards and all tests/runtime/workflows remain unchanged. Fresh
+cloud verification and visual approval of the corrected head remain pending.
+
 ## Required handoff
 
 Report task, PR, base/head, gate, passed/failed/not-run checks, scope deviations,

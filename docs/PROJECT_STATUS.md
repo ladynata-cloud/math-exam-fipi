@@ -15,6 +15,10 @@ Updated: 2026-10-23 (Asia/Novosibirsk)
   748 width-specific and expanded images are planned for cloud verification.
 - Next actions: finish exact-head cloud journeys; inspect actual new/changed
   images; publish and verify public bytes.
+- The initial cloud run passed, but actual review of all314 new images found
+  geometry orientations and mobile wrapping to improve. Eleven revised cards
+  passed independent source/math/pedagogy re-review; a fresh cloud visual pass
+  and deployment verification are required before release.
 - The owner requested uninterrupted cloud continuation. Paid Claude remains
   deferred; no Claude verdict is claimed.
 

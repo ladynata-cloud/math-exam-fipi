@@ -3,7 +3,7 @@
   "id": "theory-028",
   "revision": 1,
   "kind": "theory",
-  "title": "Геометрическое тело, внутренняя точка и граница",
+  "title": "Тело, внутренняя точка и граница",
   "status": "reviewed",
   "source": {
     "bookId": "atanasyan-2024-10-11",
@@ -352,7 +352,7 @@
     "source": "passed",
     "mathematics": "passed",
     "pedagogy": "passed",
-    "reviewer": "Codex independent prisms_review and exercise_review",
-    "at": "2026-10-22T21:09:07.102Z"
+    "reviewer": "Codex independent prisms_review",
+    "at": "2026-10-22T21:48:46.388Z"
   }
 }

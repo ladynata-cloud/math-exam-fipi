@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-22T21:09:07.102Z",
-  "registeredAt": "2026-10-22T21:11:10.663Z",
+  "reviewedAt": "2026-10-22T21:52:19.740Z",
+  "registeredAt": "2026-10-22T21:52:35.107Z",
   "scope": "Introduction, chaptersI–II and chapterIII §1: main1–238, theory1–31, chapterI self-check1–16 and chapterII self-check1–10. Not the complete book.",
   "batches": [
     {
@@ -488,6 +488,28 @@
         "theory-031",
         "theory-031-projection-a",
         "theory-031-projection-b",
+        "theory-031-projection-general"
+      ]
+    },
+    {
+      "reviewer": "Codex independent prisms_review; prisms_218_228",
+      "reviewedAt": "2026-10-22T21:52:19.740Z",
+      "registeredAt": "2026-10-22T21:52:35.107Z",
+      "canonicalCardsSHA256": "4e16906f5a295c08e8ad929e1896b89fc739535b50472e73ef717d5474476a0b",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded",
+      "scope": "Eleven revised chapterIII §1 cards after actual cloud visual findings. Five rigid model rotations, shorter titles and formula spacing; one clarified projection-height sentence. Source, mathematics and pedagogy re-reviewed; fresh cloud visual review is a separate release gate.",
+      "report": "docs/reviews/ATANASYAN_PRISMS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0231",
+        "ex-main-0235",
+        "ex-main-0237",
+        "ex-main-0238",
+        "theory-028",
+        "theory-029",
+        "theory-030",
+        "theory-030-area",
+        "theory-031",
+        "theory-031-projection-a",
         "theory-031-projection-general"
       ]
     }
@@ -1827,7 +1849,7 @@
     },
     {
       "id": "ex-main-0231",
-      "sha256": "29244547d1d728daf754883f49ff97cc138a530016fd54282a0f02e413e7f968"
+      "sha256": "8bae02bb1242946efb595b5820ab09b644b405d377a14734ce98144d3453bd0d"
     },
     {
       "id": "ex-main-0232",
@@ -1843,7 +1865,7 @@
     },
     {
       "id": "ex-main-0235",
-      "sha256": "9542554d484737c4f4dfa329015f335a437b43f71dccffd722c937a3d3fcfb3e"
+      "sha256": "94c7b22a8a00b92df632a2edd3565135249a50d6261962d09063e9f5833b785c"
     },
     {
       "id": "ex-main-0236",
@@ -1851,11 +1873,11 @@
     },
     {
       "id": "ex-main-0237",
-      "sha256": "56df60453477c4d5da8c01b610cc245fedf98ab66db2a1358cf8adc7c006aa30"
+      "sha256": "65ac44c70fd4ccafeba7620bf0289165761ea415c59123dda884b27a73ccf4e9"
     },
     {
       "id": "ex-main-0238",
-      "sha256": "cfcd436bd78ffde0fa914fdeb5fcc756acb2313ddb6501ce9fc62a0e45f66acb"
+      "sha256": "510bb26aba07bf858c860041ed753480cfb6606de2ea08ec35b145a30bbc7334"
     },
     {
       "id": "theory-027",
@@ -1867,27 +1889,27 @@
     },
     {
       "id": "theory-028",
-      "sha256": "92999a6b6fdbbde030c6202fedb90ef2e97de549395ba76f94971b1dd61005fd"
+      "sha256": "5f219670937d43fe634e3b8fb4f7edd6dbf30d934a373f25fe09e3709256e65d"
     },
     {
       "id": "theory-029",
-      "sha256": "7743f0b15859f880e692d9b229796d187805215af5a06dd9310dd67af71f36f0"
+      "sha256": "0a9e26db09bfc820b2db3e031b10cbcfbaa7669720f02319ccb5dfbaa810aeef"
     },
     {
       "id": "theory-030",
-      "sha256": "f078431d891be57f3143265c8124538dd16c5ecd3c5b3875a6ac816d48bf1cd3"
+      "sha256": "aed5eb58de81424d037100af1df49a8d4db7ddf725dfa5d803d60e629fa932af"
     },
     {
       "id": "theory-030-area",
-      "sha256": "03de8d689439f644800179267433db83eea23742b87819968d6f1942e9c4ff3c"
+      "sha256": "91e73d0aa1e50cbbb73007038f3c7ed65d22e1d09f19828962820e405992b5e6"
     },
     {
       "id": "theory-031",
-      "sha256": "0d78d565211806ef099dd8aad67a75525e53de0414363c29f9c8234801f943bb"
+      "sha256": "5ba05f60ed2e380fadcc9e3383f0df6838b5728bf6d5291c1b6e1bd939432d59"
     },
     {
       "id": "theory-031-projection-a",
-      "sha256": "5ca7afece1a065279a6d6818c1e6261bb912296e6f06b33d64635e6fe2721eed"
+      "sha256": "98fb20606fbf7367ff0b2851998a185f9fe537b16e297176d98ce72481b724c9"
     },
     {
       "id": "theory-031-projection-b",
@@ -1895,7 +1917,7 @@
     },
     {
       "id": "theory-031-projection-general",
-      "sha256": "b545b3e1f787a41143bdb8ce55b6e56d1e3363f0046da463b38ce32ec4ea9867"
+      "sha256": "5e39cd9e217162ed27c029dda4bd777aa632024090653e59e50d39257f492962"
     }
   ]
 }

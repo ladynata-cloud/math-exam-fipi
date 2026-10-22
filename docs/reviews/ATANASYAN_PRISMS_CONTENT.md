@@ -63,3 +63,34 @@ not an exact-Git-head browser or release verdict. Cloud journeys, actual748-imag
 evidence, final head/tree identity and public deployment verification are separate
 release gates recorded in the PR. Paid Claude remains deferred by the owner;
 no external Claude approval is claimed.
+
+## Re-review after cloud visual findings
+
+The initial cloud run39855680695 passed its automated checks. Actual inspection
+of all314 newly added PNGs then found narrow projected faces/sections and awkward
+mobile title/formula wrapping. This initial visual review was not a release PASS.
+
+Eleven cards were revised and independently re-reviewed against their final
+canonical content hashes: seven theory cards by `prisms_review` at
+2026-10-22T21:48:46.388Z and four exercises by `prisms_218_228` at
+2026-10-22T21:52:19.740Z. Neither reviewer authored the cards they reviewed.
+Both reviews passed source, mathematics and pedagogy; registration validated all
+eleven hashes before updating their review status. The canonical array hash,
+using the sorted card IDs in the new registry batch, is
+`4e16906f5a295c08e8ad929e1896b89fc739535b50472e73ef717d5474476a0b`.
+
+- Five complete models undergo rigid rotations about z: theory30 by30 degrees,
+  theory30-area by90, theory31-general by180, exercise237 by120 and238 by90.
+  Every point is transformed together. Independent checks preserve distances,
+  angles, incidences, areas, prism translations and heights; all non-coordinate
+  model fields stay unchanged. In238 the final approved rotation is90 degrees.
+- Shorter titles and spaces around formula operators improve mobile wrapping.
+  Theory31-projection-a now explicitly says that projection height equals the
+  original height multiplied by cos(phi). No formula or accepted answer changes.
+- All315 published cards, source contracts, runtime, browser cases, tests and
+  workflows remain unchanged by this correction.
+
+The new hash-bound content approvals supersede the affected initial card hashes,
+while the earlier batch remains in the registry as review history. Fresh exact-head
+cloud screenshots, actual visual review and public deployment checks are still
+required. Their final results belong to the PR release record.
