@@ -1,0 +1,67 @@
+name: Merzlyak 10 basic — source, state and draft figures
+on:
+  pull_request:
+    paths: ['stereo-course/merzlyak-10-base/**', 'tools/merzlyak-10-base/**', '.github/workflows/merzlyak-10-base-quality.yml']
+permissions:
+  contents: read
+jobs:
+  bounded-consultation:
+    if: github.event.action == 'opened' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: One focused consultation, or explicit unavailable evidence
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          REVIEW_PR_URL: ${{ github.event.pull_request.html_url }}
+        run: python3 tools/merzlyak-10-base/claude-review.py
+      - name: Preserve limited consultation provenance
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: merzlyak-10-base-consultation
+          path: artifacts/merzlyak-consultation/
+          retention-days: 7
+          if-no-files-found: warn
+  content-and-figures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+      - run: npx playwright install --with-deps chromium
+      - name: Source completeness and reproducible bundle
+        run: |
+          python3 tools/merzlyak-10-base/build.test.py
+          python3 tools/merzlyak-10-base/build.py
+          git diff --exit-code -- stereo-course/merzlyak-10-base/data/course.json
+      - name: Schemas, draft gates and retained learner work
+        run: node tools/merzlyak-10-base/schema-runtime.test.cjs
+      - name: Geometric integrity of authored models
+        run: |
+          node tools/stereo-textbook/model-geometry.test.cjs stereo-course/merzlyak-10-base/data/course.json
+          python3 tools/merzlyak-10-base/para01-models.test.py
+          python3 tools/merzlyak-10-base/para02-models.test.py
+          node tools/merzlyak-10-base/theory-models.test.cjs
+      - name: Every draft model and view at mobile and desktop widths
+        run: node tools/merzlyak-10-base/model-browser.cjs
+      - name: Preserve visual evidence (not a publication approval)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: merzlyak-10-base-draft-models
+          path: artifacts/merzlyak-models/
+          retention-days: 7
+          if-no-files-found: warn
+      - run: git diff --check
