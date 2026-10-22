@@ -52,18 +52,18 @@ Paid Claude is deferred by the owner; no Claude verdict is claimed.
 
 Hash each recursively key-sorted JavaScript JSON object after excluding only
 its top-level status and review fields. The ordered52-card canonical array has
-SHA256 `3803f8718b35d6f95ffcf24ccbe42839106e39b854ba623eb3a30b229a63bb19`.
+SHA256 `4623e2e46746bde22b8f29e5c2ba0ebf105d5391748f97f2040f7480893b642f`.
 The registry stores every per-card hash and the actual reviewer/time.
 
 | Card | Canonical SHA256 | Reviewer |
 | --- | --- | --- |
 | ex-main-0239 | `e2a6d3a8a4bd3f264b98b395466c33eaa2730b58ed0ceef8db57d7a5d8a1dd3d` | prisms_218_228 |
 | ex-main-0240 | `e6b2bc17547bdc2f2c4222080ee6e5b8f42f0748e9dbd4bd16ede5b586a97fce` | prisms_218_228 |
-| ex-main-0241 | `6e16ba317a0eaac8e16352c3fc5cc6f32f48fdd0976d8b0d5fb74a93334b0f75` | prisms_218_228 |
-| ex-main-0242-a | `91ca62551a1f7d279e2e97e1078fe54d799c42b1d8e468310b8b755246bfe43e` | prisms_218_228 |
-| ex-main-0242-b | `371515fef722696ad355186fd311c024d442ed8fe383c18e4582738010ffb987` | prisms_218_228 |
-| ex-main-0243 | `e6c9e6ddd0d5d66f7decff4e6af7077181c2bcf8a187d8333fa2c863cdb25460` | prisms_218_228 |
-| ex-main-0244 | `0b0fa76928ebf4e874ff5cdc9f2a2aa0b520f18c07d1dac592cb1469fa1a7294` | prisms_218_228 |
+| ex-main-0241 | `30273312414d4185c558ce36978d0f115ac39778d10eb5d9078dae21520e0e66` | prisms_218_228 |
+| ex-main-0242-a | `5002bf5fdaf556c5f73d4e520435ef9f52102133b80ccae0a96a024acd8fb5b5` | pyramid_model_fixes_review |
+| ex-main-0242-b | `ac5c679ed6bfe607751451875932e5a8a0371b6de6a24b081587eb886c643bd6` | pyramid_model_fixes_review |
+| ex-main-0243 | `0a73eef3a979ca385ee41d4ae4f24e2d3ea01aa3d820f15304432ef0fec063e2` | pyramid_model_fixes_review |
+| ex-main-0244 | `4a4da553d0f0af6cce43e37a2a41be4214a732c6eebfc7d8d73ac42f61fefa68` | pyramid_model_fixes_review |
 | ex-main-0245 | `36ff80d2f18fdbe239018b4276bdc898c372758bd222872de02a966104afcc2f` | prisms_218_228 |
 | ex-main-0246-a | `962cd8cafb179170afaa1634b1ad38a62e612a5383b11b5adce27170bc81b5c6` | prisms_218_228 |
 | ex-main-0246-b | `2d5a5082da0d99685f2b5b6d0763dff87a7a3426c3681a18ef6a6ebdccc4cdf2` | prisms_218_228 |
@@ -84,7 +84,7 @@ The registry stores every per-card hash and the actual reviewer/time.
 | ex-main-0254-e | `330cea319162ae71d2d7c7b67ba2832a9dbeff73b8b356dfddfdb03c0192c7eb` | prisms_review |
 | ex-main-0255 | `b847b5de6ec18a8708b27d3a536b522355b2f880f49fabc1c4a7000d8535ffed` | prisms_review |
 | ex-main-0256-a | `9f3193077df349da8d9c4e27a670aa5b16952e392cd94c3fd796c67332c9373d` | prisms_review |
-| ex-main-0256-b | `6bab000285f67df4f6cb7b196cd7d119240da44732fde1dc4b171426fa650497` | prisms_review |
+| ex-main-0256-b | `9ef1d53d311a57959620c1e7080ae0323bbf0a22a8c5aa080ffeda3433e12952` | prisms_218_228 |
 | ex-main-0256-c | `1367734f433a881e39fe5577dd549f3e9e0bf7eb6f2d3512bbc9dc9e00527f38` | prisms_review |
 | ex-main-0256-d | `72135a808f20f112dd70211810ed1b6d181e419200b21751bc0e4f16282a0a0c` | prisms_review |
 | ex-main-0257 | `3a5e986c350c7eb0067eaf3fd0c9275409bb249bf6ae4e322c583523c9cd78c0` | prisms_review |
@@ -98,7 +98,7 @@ The registry stores every per-card hash and the actual reviewer/time.
 | ex-main-0263-b | `6255fbd8ed511ff55465fe7c8cf01e0ecbcd9989ceefc745e36beb8d772b2d21` | prisms_review |
 | ex-main-0264 | `d36ca4ed4eb45f59d5626e3f8d332c668b83ba33953fdad6a5acfc57f0223685` | prisms_review |
 | ex-main-0265 | `3b702cdc4d7e98e3bf068a864826bfa4e04d92681e4853290978f6b9526e5693` | prisms_review |
-| ex-main-0266 | `861e95dd7a7739fe1db1710ce8095e8f545412c3b533960725b74509a06fb5db` | prisms_review |
+| ex-main-0266 | `1d4280da44d33fc56365311d9b5cfeae98f1b8bdb9840360eb476069bc0b83f0` | pyramid_model_fixes_review |
 | ex-main-0267 | `64b78e79a7f86c0d3d26d0e9ab45eda18440707144df19fb0ea022f483be1538` | prisms_review |
 | ex-main-0268 | `3478f7cda37ae600eea6bd6aceeaea857521d182998f74bb75cb6389d517ef02` | prisms_review |
 | ex-main-0269 | `b164d0d68a07f1564bb01c7e052800b3b71edbb0c93ad6a3220d28cadffdfe80` | prisms_review |
@@ -118,6 +118,30 @@ coordinate changes,45 points,165 distances,1170 angles and43 polygons; all
 texts/answers and14 other early-exercise files stayed unchanged. The original
 52-card approval remains in registry history; this six-card approval supersedes
 only its affected hashes. Report SHA256: `7d0d089f833e0b19a9f078807972310b4d69d4bf1bf16883476083891f74b334`.
-Current six-card canonical array SHA256: `9a126db3e7f2ff429c3c6c67dd6dec4ad59b8da32bf242dad1b4f63433cc9fa2`.
+Pre-cloud six-card canonical array SHA256: `9a126db3e7f2ff429c3c6c67dd6dec4ad59b8da32bf242dad1b4f63433cc9fa2`.
 Actual native model previews cover all210 new reachable views across the three
 author batches. These previews do not replace actual full-page cloud review.
+
+## First cloud review and scoped corrections
+
+All 1,218 full-page PNGs were reconciled: 748 published baseline images were
+byte-identical, and all 470 new images received actual native-resolution review
+through 500 sheets and 1,943 tiles. The first candidate had 27 images requiring
+correction; it did not receive visual release approval. Combined review SHA256:
+`b25fc5ecbb70d630cc02721be731c9b75b6259671ab33a56feee487b51bf0b94`.
+
+Exercise241 now separates the long Pythagorean equality into two short equations.
+Exercise256b correctly names SA as the hypotenuse of triangle SAE. Five models
+(242a/b,243,244,266) use independently checked proper rigid rotations, preserving
+all distances, angles, areas, constructions, source conditions and answers.
+The actual browser turns the model left before step capture, so both the default
+and after-left cameras were checked at both content widths. In266 the true
+height remains 2 above a 6 by8 rectangular base after the tilted rotation.
+
+Independent text report SHA256: `ece3a0342e7546f5e5f8a9efbad6a07bfdf33b26b00e73924e639767515fab7e`.
+Independent model report SHA256: `a9f3330079a3f871c056061ca6745e8839a8e47c4bc49628e89e47f8c9c8d516`.
+Two-card canonical array SHA256: `fadcb11927fb51286c99b46c48998c68513d96b75f6bf312e601ed0ba00881d4`.
+Five-card canonical array SHA256: `06df7a26caa8a3b9ca250c7195bcb0097ccfd8f41c73ca1d0691788a0624a6ad`.
+The other396 lesson files and registry entries are unchanged; all16 earlier
+review batches remain intact. Fresh exact-head cloud screenshots, actual review
+of every changed or previously flagged image, and publication are still pending.

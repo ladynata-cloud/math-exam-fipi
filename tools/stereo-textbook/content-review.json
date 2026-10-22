@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-22T22:26:36.223Z",
-  "registeredAt": "2026-10-22T22:27:49.775Z",
+  "reviewedAt": "2026-10-22T23:36:33.577894+00:00",
+  "registeredAt": "2026-10-22T23:36:49.420Z",
   "scope": "Introduction, chapters I–II and chapter III §§1–2: main1–270, theory1–34, chapterI self-check1–16 and chapterII self-check1–10. Not the complete book.",
   "batches": [
     {
@@ -591,6 +591,35 @@
         "ex-main-0247-b",
         "ex-main-0247-c",
         "ex-main-0251"
+      ]
+    },
+    {
+      "reviewer": "Codex independent prisms_218_228",
+      "reviewedAt": "2026-10-22T23:14:23.497Z",
+      "registeredAt": "2026-10-22T23:36:49.420Z",
+      "canonicalCardsSHA256": "fadcb11927fb51286c99b46c48998c68513d96b75f6bf312e601ed0ba00881d4",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded",
+      "scope": "Two scoped text fixes in241 and256b after actual cloud review. All other content preserved; fresh exact-head cloud visual review remains mandatory.",
+      "report": "docs/reviews/ATANASYAN_PYRAMIDS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0241",
+        "ex-main-0256-b"
+      ]
+    },
+    {
+      "reviewer": "Codex independent pyramid_model_fixes_review",
+      "reviewedAt": "2026-10-22T23:36:33.577894+00:00",
+      "registeredAt": "2026-10-22T23:36:49.420Z",
+      "canonicalCardsSHA256": "06df7a26caa8a3b9ca250c7195bcb0097ccfd8f41c73ca1d0691788a0624a6ad",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded",
+      "scope": "Five proper rigid rotations in242a/b,243,244,266 after actual cloud review. All non-coordinate lesson content preserved; default and after-left projections checked. Fresh exact-head cloud visual review remains mandatory.",
+      "report": "docs/reviews/ATANASYAN_PYRAMIDS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0242-a",
+        "ex-main-0242-b",
+        "ex-main-0243",
+        "ex-main-0244",
+        "ex-main-0266"
       ]
     }
   ],
@@ -2009,23 +2038,23 @@
     },
     {
       "id": "ex-main-0241",
-      "sha256": "6e16ba317a0eaac8e16352c3fc5cc6f32f48fdd0976d8b0d5fb74a93334b0f75"
+      "sha256": "30273312414d4185c558ce36978d0f115ac39778d10eb5d9078dae21520e0e66"
     },
     {
       "id": "ex-main-0242-a",
-      "sha256": "91ca62551a1f7d279e2e97e1078fe54d799c42b1d8e468310b8b755246bfe43e"
+      "sha256": "5002bf5fdaf556c5f73d4e520435ef9f52102133b80ccae0a96a024acd8fb5b5"
     },
     {
       "id": "ex-main-0242-b",
-      "sha256": "371515fef722696ad355186fd311c024d442ed8fe383c18e4582738010ffb987"
+      "sha256": "ac5c679ed6bfe607751451875932e5a8a0371b6de6a24b081587eb886c643bd6"
     },
     {
       "id": "ex-main-0243",
-      "sha256": "e6c9e6ddd0d5d66f7decff4e6af7077181c2bcf8a187d8333fa2c863cdb25460"
+      "sha256": "0a73eef3a979ca385ee41d4ae4f24e2d3ea01aa3d820f15304432ef0fec063e2"
     },
     {
       "id": "ex-main-0244",
-      "sha256": "0b0fa76928ebf4e874ff5cdc9f2a2aa0b520f18c07d1dac592cb1469fa1a7294"
+      "sha256": "4a4da553d0f0af6cce43e37a2a41be4214a732c6eebfc7d8d73ac42f61fefa68"
     },
     {
       "id": "ex-main-0245",
@@ -2109,7 +2138,7 @@
     },
     {
       "id": "ex-main-0256-b",
-      "sha256": "6bab000285f67df4f6cb7b196cd7d119240da44732fde1dc4b171426fa650497"
+      "sha256": "9ef1d53d311a57959620c1e7080ae0323bbf0a22a8c5aa080ffeda3433e12952"
     },
     {
       "id": "ex-main-0256-c",
@@ -2165,7 +2194,7 @@
     },
     {
       "id": "ex-main-0266",
-      "sha256": "861e95dd7a7739fe1db1710ce8095e8f545412c3b533960725b74509a06fb5db"
+      "sha256": "1d4280da44d33fc56365311d9b5cfeae98f1b8bdb9840360eb476069bc0b83f0"
     },
     {
       "id": "ex-main-0267",

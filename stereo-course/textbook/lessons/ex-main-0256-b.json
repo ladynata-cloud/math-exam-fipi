@@ -216,7 +216,7 @@
     },
     {
       "title": "Выдели искомую длину",
-      "prompt": "Как выразить гипотенузу SAE?",
+      "prompt": "Как выразить гипотенузу SA треугольника SAE?",
       "explanation": "sin(α/2) = AE/SA = m/(2SA). Поэтому каждое боковое ребро равно m/(2sin(α/2)). При 0°<α<90° эта длина больше радиуса m/√2 основания, что согласовано с положительной высотой.",
       "justifications": [
         {
@@ -256,7 +256,7 @@
     "source": "passed",
     "mathematics": "passed",
     "pedagogy": "passed",
-    "reviewer": "Codex independent prisms_review",
-    "at": "2026-10-22T22:13:49.636139+00:00"
+    "reviewer": "Codex independent prisms_218_228",
+    "at": "2026-10-22T23:14:23.497Z"
   }
 }

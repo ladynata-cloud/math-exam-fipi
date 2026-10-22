@@ -96,3 +96,18 @@ PR without changing a tested head solely to record its own publication.
 
 Report task, PR, base/head, gate, passed/failed/not-run checks, scope deviations,
 current main/base drift, release identity and any genuine remaining owner decision.
+
+### First cloud review and revision
+
+Eight checks passed for the first head ea708ccaa6f0cb2aeb366f138616496548538edc.
+Actual native inspection of all470 new PNGs found27 affected images, reduced to
+two text changes and five rigid model rotations. Scoped independent re-review
+passed;396 other lessons, all351 published cards, runtime and workflow files
+remain unchanged. Earlier review batches remain in history. Fresh cloud checks
+and screenshot review are mandatory for this revision.
+
+Concurrent main publications of planimetry PR302 and Vilenkin PR306 were inspected:
+main8a774d65dba0dfe01e4e5c86172ced1e73f3e36c changes71 paths with zero overlap
+with this63-file patch. The new synthetic merge must be revalidated against the
+latest main and its complete tree before normal publication. No history rewrite
+or base-update exemption is used.
