@@ -31,7 +31,7 @@ jobs:
           if-no-files-found: warn
   content-and-figures:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -55,6 +55,12 @@ jobs:
           python3 tools/merzlyak-10-base/para01-models.test.py
           python3 tools/merzlyak-10-base/para02-models.test.py
           python3 tools/merzlyak-10-base/para03-models.test.py
+          python3 tools/merzlyak-10-base/para04-05-models.test.py
+          python3 tools/merzlyak-10-base/para08-09-models.test.py
+          python3 tools/merzlyak-10-base/exercises-10-11-models.test.py
+          python3 tools/merzlyak-10-base/para12-13-models.test.py
+          python3 tools/merzlyak-10-base/supplementary-models.test.py
+          python3 tools/merzlyak-10-base/selfcheck-models-review.test.py
           node tools/merzlyak-10-base/theory-models.test.cjs
           python3 tools/merzlyak-10-base/theory-models.test.py
           python3 tools/merzlyak-10-base/review-math-01-02.py

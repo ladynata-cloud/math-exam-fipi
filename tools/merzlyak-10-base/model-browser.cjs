@@ -16,7 +16,7 @@ const evidence={schemaVersion:1,purpose:'Engineering visual inspection of draft 
  authoredCards:bundle.lessons.length,widths:[320,1280],states:[],screenshots:[],errors:[],completed:false};
 assert(bundle.lessons.length>0,'No authored cards');
 const write=()=>fs.writeFileSync(path.join(out,'model-evidence.json'),JSON.stringify(evidence,null,2));
-const css=fs.readFileSync(path.join(root,'stereo-course/assets/task-scenes.css'),'utf8');
+const css=fs.readFileSync(path.join(root,'stereo-course/assets/task-scenes.css'),'utf8')+'\n'+fs.readFileSync(path.join(root,'stereo-course/textbook/assets/style.css'),'utf8');
 const renderer=fs.readFileSync(path.join(root,'stereo-course/assets/task-scene-viewer.js'),'utf8');
 let browser;
 (async()=>{
@@ -26,6 +26,7 @@ let browser;
    const page=await browser.newPage({viewport:{width,height:1000},deviceScaleFactor:1});
    page.on('pageerror',error=>evidence.errors.push(error.message));
    await page.setContent('<!doctype html><html lang="ru"><meta charset="utf-8"><style>'+css+'</style><style>html{box-sizing:border-box}*{box-sizing:inherit}body{margin:0;padding:12px;font:18px/1.5 system-ui;color:#15392d;background:#f7faf7}h1{font-size:24px;line-height:1.25}h2{font-size:20px}.note{font-size:14px;color:#765d22}#model{width:100%;max-width:900px;min-height:420px;margin:auto}#model .am-wrap{width:100%}#condition,#caption,#view{max-width:900px;margin:16px auto;overflow-wrap:anywhere}</style><p class="note">Инженерный просмотр черновика. Проверка оформления модели.</p><h1 id="title"></h1><p id="condition"></p><div id="model"></div><p id="caption"></p><h2 id="view"></h2></html>');
+   await page.locator('#model').evaluate(node=>node.className='textbook-model task-scene');
    await page.addScriptTag({content:renderer});
    for(const lesson of bundle.lessons){
     await page.evaluate(lesson=>{

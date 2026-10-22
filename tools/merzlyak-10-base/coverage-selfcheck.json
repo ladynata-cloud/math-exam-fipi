@@ -1,0 +1,1365 @@
+{
+  "entries": [
+    {
+      "sourceEntryId": "source-question-01-01",
+      "exercise": "1.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        11
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-01-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-01-02",
+      "exercise": "1.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        11
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-01-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-01-03",
+      "exercise": "1.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        11
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-01-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-01-04",
+      "exercise": "1.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        11
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-01-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-01-05",
+      "exercise": "1.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        11
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-01-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-02-01",
+      "exercise": "2.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        15
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-02-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-02-02",
+      "exercise": "2.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        15
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-02-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-03-01",
+      "exercise": "3.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        22
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-03-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-03-02",
+      "exercise": "3.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        22
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-03-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-03-03",
+      "exercise": "3.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        22
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-03-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-03-04",
+      "exercise": "3.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        22
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-03-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-04-01",
+      "exercise": "4.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        37
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-04-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-04-02",
+      "exercise": "4.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        37
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-04-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-04-03",
+      "exercise": "4.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        37
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-04-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-04-04",
+      "exercise": "4.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        37
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-04-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-04-05",
+      "exercise": "4.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        38
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-04-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-04-06",
+      "exercise": "4.6",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        38
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-04-06.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-04-07",
+      "exercise": "4.7",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        38
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-04-07.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-05-01",
+      "exercise": "5.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        46
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-05-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-05-02",
+      "exercise": "5.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        46
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-05-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-05-03",
+      "exercise": "5.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        46
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-05-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-05-04",
+      "exercise": "5.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        46
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-05-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-06-01",
+      "exercise": "6.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        56
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-06-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-06-02",
+      "exercise": "6.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        56
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-06-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-06-03",
+      "exercise": "6.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        56
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-06-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-06-04",
+      "exercise": "6.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        56
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-06-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-07-01",
+      "exercise": "7.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        68
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-07-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-07-02",
+      "exercise": "7.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        69
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-07-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-07-03",
+      "exercise": "7.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        69
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-07-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-07-04",
+      "exercise": "7.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        69
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-07-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-07-05",
+      "exercise": "7.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        69
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-07-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-07-06",
+      "exercise": "7.6",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        69
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-07-06.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-07-07",
+      "exercise": "7.7",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        69
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-07-07.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-08-01",
+      "exercise": "8.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        86
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-08-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-08-02",
+      "exercise": "8.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        86
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-08-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-08-03",
+      "exercise": "8.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        86
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-08-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-08-04",
+      "exercise": "8.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        86
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-08-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-09-01",
+      "exercise": "9.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        95
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-09-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-09-02",
+      "exercise": "9.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        95
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-09-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-09-03",
+      "exercise": "9.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        95
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-09-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-09-04",
+      "exercise": "9.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        95
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-09-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-09-05",
+      "exercise": "9.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        95
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-09-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-09-06",
+      "exercise": "9.6",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        95
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-09-06.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-09-07",
+      "exercise": "9.7",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        95
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-09-07.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-09-08",
+      "exercise": "9.8",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        95
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-09-08.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-10-01",
+      "exercise": "10.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        103
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-10-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-10-02",
+      "exercise": "10.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        103
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-10-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-10-03",
+      "exercise": "10.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        103
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-10-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-10-04",
+      "exercise": "10.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        103
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-10-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-10-05",
+      "exercise": "10.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        103
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-10-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-10-06",
+      "exercise": "10.6",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        103
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-10-06.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-10-07",
+      "exercise": "10.7",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        103
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-10-07.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-10-08",
+      "exercise": "10.8",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        103
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-10-08.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-11-01",
+      "exercise": "11.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        109
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-11-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-12-01",
+      "exercise": "12.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        115
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-12-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-13-01",
+      "exercise": "13.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        123
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-13-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-13-02",
+      "exercise": "13.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        123
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-13-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-13-03",
+      "exercise": "13.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        123
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-13-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-13-04",
+      "exercise": "13.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        123
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-13-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-13-05",
+      "exercise": "13.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        123
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-13-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-13-06",
+      "exercise": "13.6",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        123
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-13-06.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-13-07",
+      "exercise": "13.7",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        123
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-13-07.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-14-01",
+      "exercise": "14.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        132
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-14-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-14-02",
+      "exercise": "14.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        132
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-14-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-14-03",
+      "exercise": "14.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        132
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-14-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-15-01",
+      "exercise": "15.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        138
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-15-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-01",
+      "exercise": "16.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-02",
+      "exercise": "16.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-03",
+      "exercise": "16.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-04",
+      "exercise": "16.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-05",
+      "exercise": "16.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-06",
+      "exercise": "16.6",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-06.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-07",
+      "exercise": "16.7",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-07.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-08",
+      "exercise": "16.8",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-08.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-09",
+      "exercise": "16.9",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-09.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-10",
+      "exercise": "16.10",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-10.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-16-11",
+      "exercise": "16.11",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        153
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-16-11.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-17-01",
+      "exercise": "17.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        161
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-17-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-17-02",
+      "exercise": "17.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        161
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-17-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-17-03",
+      "exercise": "17.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        161
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-17-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-17-04",
+      "exercise": "17.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        161
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-17-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-17-05",
+      "exercise": "17.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        161
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-17-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-17-06",
+      "exercise": "17.6",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        161
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-17-06.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-17-07",
+      "exercise": "17.7",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        161
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-17-07.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-18-01",
+      "exercise": "18.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        167
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-18-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-18-02",
+      "exercise": "18.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        167
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-18-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-18-03",
+      "exercise": "18.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        167
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-18-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-18-04",
+      "exercise": "18.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        167
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-18-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-18-05",
+      "exercise": "18.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        167
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-18-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-18-06",
+      "exercise": "18.6",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        167
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-18-06.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-18-07",
+      "exercise": "18.7",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        167
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-18-07.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-19-01",
+      "exercise": "19.1",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        174
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-19-01.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-19-02",
+      "exercise": "19.2",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        174
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-19-02.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-19-03",
+      "exercise": "19.3",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        174
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-19-03.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-19-04",
+      "exercise": "19.4",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        174
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-19-04.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-19-05",
+      "exercise": "19.5",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        174
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-19-05.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-question-19-06",
+      "exercise": "19.6",
+      "collection": "selfcheck",
+      "requiredParts": [
+        null
+      ],
+      "sourcePdfPages": [
+        174
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/question-19-06.json"
+      ]
+    }
+  ],
+  "unresolved": [],
+  "sourceReview": "Question text read from OCR of the supplied source; independent visual source review is still required.",
+  "publicationApproval": false
+}
