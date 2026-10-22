@@ -1,0 +1,37 @@
+name: Vilenkin 5 part 1 and arithmetic practice
+on:
+  pull_request:
+    paths:
+      - 'courses/vilenkin-5-part-1/**'
+      - 'tools/vilenkin5-course/**'
+      - 'docs/tasks/VILENKIN5_PART1_PRACTICE.md'
+      - '.github/workflows/vilenkin5-part1.yml'
+permissions:
+  contents: read
+jobs:
+  course-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated DOM dependency
+        run: |
+          npm install --prefix "$RUNNER_TEMP/vilenkin5-dom" --no-save --no-package-lock --ignore-scripts linkedom@0.18.14
+          echo "NODE_PATH=$RUNNER_TEMP/vilenkin5-dom/node_modules" >> "$GITHUB_ENV"
+      - name: Course, arithmetic and retained-work regression
+        run: |
+          node --check courses/vilenkin-5-part-1/app.js
+          node --check courses/vilenkin-5-part-1/labs.js
+          node --check courses/vilenkin-5-part-1/practice.js
+          node tools/vilenkin5-course/check.cjs
+          node tools/vilenkin5-course/practice.test.cjs
+          node tools/vilenkin5-course/dom.cjs
+          python3 tools/vilenkin5-course/build-offline.py
+          git diff --exit-code -- courses/vilenkin-5-part-1/offline.html
+          git diff --check
