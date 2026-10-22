@@ -105,3 +105,51 @@ width to its parent. It neither clips content nor reduces font size. All315
 source/model/answer files remain byte-identical; browser overflow assertions stay
 unchanged. The former exact-head verdict does not approve this later CSS delta;
 focused independent review and a new complete cloud run are required.
+
+## Resumed publication: mathematical typography
+
+On 2026-10-23 the owner asked to continue the saved work after the original
+conversation lost its connection. Resume this PR from remote head
+`a7eebad90f6ee75e85e03999a02479a5cdaaab96`; production base remains
+`434a8d53c7357a20bb1e2ecef853133b14805e84`. The earlier instruction to complete
+and publish the cloud course remains applicable. Paid Claude review remains
+deferred; independent review and all relevant technical gates still apply.
+
+The exact-head cloud checks on that saved head succeeded, but inspection of
+artifact12387284090 exposed four remaining display defects: numbers could wrap
+inside a token, a radical could separate from its radicand, the whole part of a
+mixed number could separate from its fraction, and explicit trigonometric
+denominators could retain a slash. Correct only the shared display formatter
+and its two stylesheets, rebuild the standalone stereometry HTML, and add
+targeted source-preservation and real-browser regressions. Do not change lesson
+content, answer parsing, grading, source identities, storage keys or review flags.
+
+The saved artifact SHA256 is
+`94862971386439dc44384e93fa89d6e699fb8e67347d481a9107f5503f446bda`.
+It contains418 actual PNGs and serves as the before-image comparison. Preserve
+all existing browser journeys and screenshot states; append specific typography
+cases where needed. Inspect actual new or changed screenshots before release.
+Retest shared stereometry and the profile bridge as well as the textbook.
+
+The original uploaded PDF was recovered and its SHA256 independently matched
+the catalogue: `bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770`.
+The PDF and extracted source text remain outside the public repository.
+
+### Typography review and validation before cloud execution
+
+Independent review of the composed formatter and browser changes passed on
+2026-10-23. The reviewer inspected operand grouping in nested radicals,
+coefficient fractions, mixed numbers and explicit trigonometric denominators;
+the verdict is conditional on real narrow-screen rendering. All15,209 authored
+string values round-trip unchanged. Source content, grading and storage remain
+unchanged, and all207 previous screenshot states are retained with8 added.
+The complete browser evidence target is434 PNGs including expanded models.
+
+Local source/catalogue/schema/content/parallel-content/model-geometry checks
+passed for315 cards,1020 steps and1086 model views. Formatter, proof-choice,
+task-first DOM/integration, textbook runtime, browser preflight and56 shard
+checks passed. The standalone generated HTML was rebuilt. Local Chromium
+installation failed, so actual browser validation is delegated to the existing
+GitHub Actions workflows; no local browser success is claimed. Release remains
+conditional on fresh cloud checks and actual image review, including the
+widest radicals in main67 and158. No gate or assertion was weakened.

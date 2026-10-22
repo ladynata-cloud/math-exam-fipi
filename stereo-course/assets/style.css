@@ -43,4 +43,6 @@ h1,h2,h3{overflow-wrap:anywhere;min-width:0}input[type=file]{max-width:100%;min-
 @media(max-width:480px){.back-row{flex-wrap:wrap;gap:10px}.workspace h1{font-size:1.8rem}.task-main .task-question{font-size:1.1rem}.help-column>#task-help>*:not(summary){margin-left:14px;margin-right:14px}.help-column>#task-help>summary{padding:16px 14px}.toplinks a,.toplinks button{font-size:.9rem}.task-main .answer-row input{min-width:0;width:100%;flex-basis:100%}.more-sections{flex:1}}
 .stereo-fraction{display:inline-grid;grid-template-columns:minmax(0,1fr);vertical-align:middle;min-width:0;max-width:100%;text-align:center;line-height:1.35;margin-inline:.12em}
 .stereo-numerator,.stereo-denominator{padding:.18em .25em;overflow-wrap:anywhere}
+.stereo-math-atom,.stereo-mixed-number{display:inline-block;white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
+.stereo-fraction,.stereo-numerator,.stereo-denominator{white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 .stereo-denominator{border-top:2px solid currentColor}

@@ -1,6 +1,6 @@
 # MathExam project status
 
-Updated: 2026-10-22 (Asia/Novosibirsk)
+Updated: 2026-10-23 (Asia/Novosibirsk)
 
 ## In progress: complete Atanasyan chapter II
 
@@ -15,11 +15,18 @@ Updated: 2026-10-22 (Asia/Novosibirsk)
 - Preserve the verified four-job browser workflow. Add122 targeted screenshot
   states to the85 existing ones; all315 cards and all their steps still run at
   both viewport widths. Exact-head integration and cloud visual review remain.
-- The first315-card cloud run exposed long-word overflow in narrow theory
-  dialogs. A scoped CSS wrap correction is under focused review; no content or
-  overflow assertion changed.
-- Next actions: freeze and independently review the composed Git snapshot;
-  run cloud checks and inspect new images; publish and verify public bytes.
+- The saved PR301 head `a7eebad90f6ee75e85e03999a02479a5cdaaab96` passed
+  textbook, stereometry and profile cloud checks after the theory-dialog wrap
+  correction. Actual screenshot review then found mathematical typography
+  issues: split numeric/radical tokens, split mixed numbers and literal
+  trigonometric fraction slashes. Publication remained pending.
+- The owner requested continuation on2026-10-23. Resume the saved315-card
+  release with a bounded formatter correction and additive browser regressions;
+  lesson data, grading and stored learner work remain unchanged.
+- Next actions: independently review the formatter and final composed diff;
+  rerun exact-head cloud checks and inspect changed images; publish and verify
+  public bytes. Next textbook content starts at chapterIII, main218–238 and
+  theory27–31, as a separate bounded task after this release.
   Paid Claude remains deferred, no Claude verdict claimed.
 
 ## Published: exhaustive textbook browser checks in four parallel jobs
@@ -84,7 +91,9 @@ Updated: 2026-10-22 (Asia/Novosibirsk)
   requests matched reviewed SHA256 and size. Gate:ATANASYAN_TEXTBOOK_FOUNDATION_OK.
 - Remaining book content is explicitly pending; a source catalogue does not
   constitute authored solutions.
-- Merzlyak and Pogorelov are separate later courses; their PDFs are awaited.
+- Merzlyak and Pogorelov are separate later courses. Their uploaded PDFs were
+  located on2026-10-23; their detailed10–11 courses are not yet authored. The
+  recovered Atanasyan2024 PDF exactly matches the current source-catalogue hash.
 
 ## Published: standalone stereometry, task first
 

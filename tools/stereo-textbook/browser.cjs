@@ -27,6 +27,22 @@ let browser,context,page,server,base,activeCase='startup',ownerId=null;
 const writeEvidence=()=>fs.writeFileSync(path.join(out,'browser-evidence.json'),JSON.stringify(evidence,null,2));
 const stateKey=lesson=>'mathExamTextbook.v1:'+lesson.source.bookId+':'+lesson.id+':r'+lesson.revision;
 const screenshotCases=require('./browser-cases.cjs');
+// Actual authored cases behind the narrow-screen formula regressions. These
+// assertions apply to mathematical atoms/operands, not an entire formula: a
+// line may still break legitimately between operations or adjacent formulas.
+const explanation=stage=>'[data-step="'+stage+'"] > details > p';
+const mathLayoutCases=new Map([
+ ['ex-main-0203|step-1',[{selector:explanation('step-1'),atoms:['48','16'],fractions:[['48','16']]}]],
+ ['ex-main-0205|step-2',[{selector:explanation('step-2'),atoms:['49','13','√13'],fractions:[['49','13'],['7','√13']]}]],
+ ['ex-main-0207|condition',[{selector:'.textbook-condition',mixed:['8 2/3']}]],
+ ['ex-main-0138|step-2',[{selector:explanation('step-2'),fractions:[['d','cos φ']]}]],
+ ['ex-main-0168|step-2',[{selector:explanation('step-2'),fractions:[['d','sinφ']]}]],
+ ['ex-main-0168|step-3',[{selector:explanation('step-3'),fractions:[['d','sin90°']]}]],
+ ['ex-main-0158|step-3',[{selector:explanation('step-3'),atoms:['√((25/2)²+(25√3/2)²)'],fractions:[['25','2'],['25√3','2']]}]],
+ ['ex-main-0067|step-1',[{selector:explanation('step-1'),atoms:['√(724−720cos54°)','√(765−756cos72°)']}]],
+ ['ex-main-0102|step-3',[{selector:explanation('step-3'),atoms:['√((10√3)² − 5²)','5√11','25√11']}]],
+ ['ex-main-0212|condition',[{selector:'.textbook-goal',fractions:[['S','cosα']]},{selector:'label[for="final-answer"]',fractions:[['S','cosα']]}]]
+]);
 function immutableContent(lesson){const copy=structuredClone(lesson);delete copy.status;delete copy.review;return copy;}
 
 function hostStatic(){
@@ -43,12 +59,50 @@ function hostStatic(){
 }
 function watch(target){target.on('pageerror',error=>evidence.errors.push({case:activeCase,message:error.message}));target.on('response',response=>{const url=new URL(response.url());if(response.status()>=400&&url.origin===new URL(base).origin&&url.pathname!=='/favicon.ico')evidence.errors.push({case:activeCase,status:response.status(),url:response.url()});});}
 async function settle(target=page){await target.evaluate(async()=>{if(document.fonts)await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});}
-async function textWithFractions(locator){return locator.evaluate(node=>{const copy=node.cloneNode(true);copy.querySelectorAll('.stereo-fraction').forEach(f=>f.replaceWith(f.querySelector('.stereo-numerator').textContent+'/'+f.querySelector('.stereo-denominator').textContent));return copy.textContent;});}
+async function textWithFractions(locator){return locator.evaluate(node=>{const copy=node.cloneNode(true);[...copy.querySelectorAll('.stereo-fraction')].reverse().forEach(f=>f.replaceWith(f.querySelector(':scope > .stereo-numerator').textContent+'/'+f.querySelector(':scope > .stereo-denominator').textContent));return copy.textContent;});}
 async function camera(target=page,selector='[data-main-model] svg'){return target.locator(selector).evaluate(svg=>({yaw:svg.dataset.yaw,pitch:svg.dataset.pitch}));}
 async function readRecord(target,lesson){return target.evaluate(key=>JSON.parse(localStorage.getItem(key)),stateKey(lesson));}
 async function isOpen(locator){return locator.evaluate(node=>node.open);}
 async function openDetails(locator){if(!await isOpen(locator))await locator.locator(':scope > summary').click();}
 async function noOverflow(target=page){assert(await target.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),activeCase+' horizontal document overflow');}
+async function checkMathLayout(lesson,width,stage){
+ const specs=mathLayoutCases.get(lesson.id+'|'+stage);if(!specs)return;
+ for(const spec of specs){
+  const scope=page.locator(spec.selector);await scope.waitFor({state:'visible'});
+  const actual=await scope.evaluate(node=>{
+   const flatten=element=>{const copy=element.cloneNode(true);[...copy.querySelectorAll('.stereo-fraction')].reverse().forEach(f=>f.replaceWith(f.querySelector(':scope > .stereo-numerator').textContent+'/'+f.querySelector(':scope > .stereo-denominator').textContent));return copy.textContent;};
+   const box=element=>{const b=element.getBoundingClientRect();return {left:b.left,right:b.right,top:b.top,bottom:b.bottom,width:b.width,height:b.height};};
+   const measure=element=>{
+    const range=document.createRange(),walker=document.createTreeWalker(element,NodeFilter.SHOW_TEXT),lineTops=[];
+    // Fraction rows intentionally occupy different baselines. Check each row
+    // separately below, and only the surrounding text here (e.g. a radical).
+    while(walker.nextNode()){
+     const text=walker.currentNode;if(!text.textContent.trim()||text.parentElement.closest('.stereo-fraction')!==element.closest('.stereo-fraction'))continue;
+     range.selectNodeContents(text);for(const rect of range.getClientRects())if(rect.width)lineTops.push(rect.top);
+    }
+    return {text:flatten(element),box:box(element),clientWidth:element.clientWidth,scrollWidth:element.scrollWidth,whiteSpace:getComputedStyle(element).whiteSpace,lineTops};
+   };
+   return {box:box(node),clientWidth:node.clientWidth,scrollWidth:node.scrollWidth,
+    atoms:[...node.querySelectorAll('.stereo-math-atom')].map(measure),
+    fractions:[...node.querySelectorAll('.stereo-fraction')].map(f=>({numerator:flatten(f.querySelector(':scope > .stereo-numerator')),denominator:flatten(f.querySelector(':scope > .stereo-denominator'))})),
+    operands:[...node.querySelectorAll('.stereo-numerator,.stereo-denominator')].map(measure),
+    mixed:[...node.querySelectorAll('.stereo-mixed-number')].map(m=>({...measure(m),whole:box(m.querySelector(':scope > .stereo-math-atom')),fraction:box(m.querySelector(':scope > .stereo-fraction'))}))};
+  });
+  const name=lesson.id+' '+width+' '+stage+' '+spec.selector;
+  assert(actual.scrollWidth<=actual.clientWidth+1,name+' formula paragraph has no internal horizontal overflow');
+  for(const expected of spec.atoms||[])assert(actual.atoms.some(atom=>atom.text===expected),name+' intact mathematical atom '+expected);
+  for(const [numerator,denominator] of spec.fractions||[])assert(actual.fractions.some(f=>f.numerator===numerator&&f.denominator===denominator),name+' complete stacked fraction '+numerator+'/'+denominator);
+  for(const expected of spec.mixed||[])assert(actual.mixed.some(m=>m.text===expected),name+' whole mixed number '+expected);
+  for(const token of [...actual.atoms,...actual.operands,...actual.mixed]){
+   assert.equal(token.whiteSpace,'nowrap',name+' no internal wrapping in '+token.text);
+   assert(token.box.width>0&&token.box.height>0,name+' measurable token '+token.text);
+   assert(token.scrollWidth<=token.clientWidth+1,name+' no clipping inside '+token.text);
+   assert(token.box.left>=actual.box.left-1&&token.box.right<=actual.box.right+1,name+' token stays inside its paragraph: '+token.text);
+   if(token.lineTops.length)assert(Math.max(...token.lineTops)-Math.min(...token.lineTops)<=1,name+' one text baseline inside '+token.text);
+  }
+  for(const mixed of actual.mixed){assert(mixed.fraction.left>=mixed.whole.right-1,name+' mixed fraction follows the whole part');const middle=(mixed.whole.top+mixed.whole.bottom)/2;assert(middle>=mixed.fraction.top&&middle<=mixed.fraction.bottom,name+' mixed whole and fraction share a line');}
+ }
+}
 async function checkLabels(id,width,stage,target=page,selector='[data-main-model] svg'){
  await settle(target);const svg=target.locator(selector);await svg.waitFor({state:'visible'});
  const result=await svg.evaluate(node=>{
@@ -67,7 +121,7 @@ async function checkLabels(id,width,stage,target=page,selector='[data-main-model
 }
 async function takeScreenshot(lesson,width,stage){
  const name=screenshotCases.get(lesson.id+'|'+stage);if(!name)return;
- const filename=name+'-'+width+'.png';await settle();if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
+ const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
 }
 async function preserveCheck(lesson,keptCamera,draft){
  assert(await page.evaluate(()=>window.__textbookKept.svg===document.querySelector('[data-main-model] svg')&&window.__textbookKept.field===document.querySelector('#final-answer')),lesson.id+' original model/answer nodes retained');
@@ -178,6 +232,7 @@ async function main(){
  if(process.env.TEXTBOOK_CHECK_ONLY==='1'){
   for(const lesson of expectedLessons){assert(lesson.id&&lesson.visualization?.model&&lesson.steps?.length,'authored structure');for(const step of lesson.steps)assert(step.id&&step.justifications?.length,'authored step justification');for(const view of Object.keys(lesson.visualization.model.views))visibleLabelKeys(lesson,view);}
   for(const key of screenshotCases.keys()){const [id,stage]=key.split('|'),lesson=expectedById.get(id);assert(lesson,'known screenshot lesson '+key);if(stage.startsWith('step-'))assert(lesson.steps.some(step=>step.id===stage),'known screenshot step '+key);if(stage.startsWith('help:')){const found=(items)=>items.some(item=>item.id===stage.slice(5)||found(item.children||[]));assert(found(lesson.help),'known screenshot help '+key);}}
+  for(const key of mathLayoutCases.keys())assert(screenshotCases.has(key),'formula regression has a screenshot at both widths: '+key);
   console.log('TEXTBOOK_BROWSER_PREFLIGHT_OK: '+expectedCount+' authored cards; shard '+shard.index+'/'+shard.count+' has '+plan.assigned.length+' cards, '+plan.screenshots.length+' screenshots; no browser launched, no review flags changed');return;
  }
  base=process.env.TEXTBOOK_BASE_URL||await hostStatic();assert(base.endsWith('/'),'TEXTBOOK_BASE_URL must end in /');

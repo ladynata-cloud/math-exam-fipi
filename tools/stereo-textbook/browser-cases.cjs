@@ -208,7 +208,16 @@ const entries=[
  ["ex-main-0216|step-1","ex-main-0216-shift"],
  ["ex-main-0152|help:deeper","ex-main-0152-help-deeper"],
  ["ex-main-0162|help:deeper","ex-main-0162-help-deeper"],
- ["ex-main-0168|help:deeper","ex-main-0168-help-deeper"]
+ ["ex-main-0168|help:deeper","ex-main-0168-help-deeper"],
+ // Formula regression evidence supplements every existing representative image.
+ ["ex-main-0203|step-1","math-multidigit-fraction"],
+ ["ex-main-0205|step-2","math-radical-denominator"],
+ ["ex-main-0138|step-2","math-spaced-trig-denominator"],
+ ["ex-main-0168|step-2","math-trig-denominator"],
+ ["ex-main-0158|step-3","math-radical-inner-fractions"],
+ ["ex-main-0067|step-1","math-long-radicals"],
+ ["ex-main-0102|step-3","math-nested-radical"],
+ ["ex-main-0212|condition","math-trig-goal-answer-label"]
 ];
 assert.equal(new Set(entries.map(([key])=>key)).size,entries.length,'duplicate screenshot case key');
 assert.equal(new Set(entries.map(([,name])=>name)).size,entries.length,'duplicate screenshot filename');
