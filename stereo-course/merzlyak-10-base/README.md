@@ -40,7 +40,9 @@ node tools/merzlyak-10-base/schema-runtime.test.cjs
 node tools/stereo-textbook/model-geometry.test.cjs stereo-course/merzlyak-10-base/data/course.json
 python3 tools/merzlyak-10-base/para01-models.test.py
 python3 tools/merzlyak-10-base/para02-models.test.py
+python3 tools/merzlyak-10-base/para03-models.test.py
 node tools/merzlyak-10-base/theory-models.test.cjs
+python3 tools/merzlyak-10-base/theory-models.test.py
 ```
 
 DOM/схемам нужны `jsdom`, `ajv`, `ajv-formats`. Облачный workflow запускает
@@ -52,6 +54,10 @@ Chromium для всех авторских видов моделей при ш�
 при наличии уже настроенного ключа. Отсутствие ключа или ошибка поставщика
 явно фиксируются как отсутствие консультации. Консультация по нескольким
 образцам не является проверкой всего учебника или разрешением публикации.
+
+Первый запрос выполнен в Actions run `39857930153`, PR304. Провайдер вернул
+HTTP400; ответа и внешнего verdict нет. Повторные запросы не выполнялись.
+Успех задания, сохранившего этот отчёт, не означает успех самой консультации.
 
 Скан, полный OCR, изображения страниц и данные учеников не включены.
 SHA256 источника и точные ссылки на страницы находятся в реестре.

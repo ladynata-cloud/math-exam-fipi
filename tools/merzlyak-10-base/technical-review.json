@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Codex independent agent /root/lessons_para2",
+  "at": "2026-10-22T21:34:59.598905+00:00",
+  "observedGitHead": "ed403d2f45651849581981bbefbbbdee6fed7a74",
+  "snapshotContract": "This review covers exactly the listed working-tree file SHA256 values. A Git head recorded here does not imply later uncommitted or committed changes were reviewed.",
+  "verdict": "no-blocking-findings-in-reviewed-technical-scope",
+  "releaseApproval": false,
+  "reviewedScope": [
+    "Cloud workflow permissions, one-attempt consultation gating, pinned consultation checkout and included source-metric checks.",
+    "Sanitized six-sample consultation input, fixed input/output bounds, HTTP failure and truncation reporting, no automatic retries or review-state promotion.",
+    "Direct-renderer draft-model browser checks and truthful limits of their evidence.",
+    "Reproducible builder, source metadata arithmetic and explicit incomplete-inventory/draft state."
+  ],
+  "resolvedFindings": [
+    {
+      "finding": "Repeated paid request on rerun of opened event",
+      "resolution": "Workflow requires opened and github.run_attempt == 1."
+    },
+    {
+      "finding": "Independent source-metric tests missing from CI",
+      "resolution": "Workflow invokes paragraph 01,02,03 assertions, both theory model checks, and independent review-math-01-02.py / review-math-03.py with pinned numpy==2.3.5."
+    },
+    {
+      "finding": "Consultation checkout provenance could differ from named head",
+      "resolution": "Consultation checkout pins github.event.pull_request.head.sha."
+    },
+    {
+      "finding": "Truncated response could appear completed",
+      "resolution": "stopReason is recorded and max_tokens yields status truncated."
+    },
+    {
+      "finding": "Missing samples and input size not bounded",
+      "resolution": "All six fixed files required; 120000-byte payload cap plus recorded inputSHA256 and inputBytes."
+    },
+    {
+      "finding": "Python bytecode could enter the commit",
+      "resolution": "Scoped .gitignore covers __pycache__/ and *.pyc; check-ignore confirmed."
+    }
+  ],
+  "checks": [
+    {
+      "name": "node --check model-browser.cjs",
+      "result": "passed"
+    },
+    {
+      "name": "Python AST syntax of claude-review.py",
+      "result": "passed"
+    },
+    {
+      "name": "build.test.py",
+      "result": "passed",
+      "tests": 3
+    },
+    {
+      "name": "Consultation failure/bounds controls with mocked urllib transport",
+      "result": "passed",
+      "realNetworkRequests": 0,
+      "cases": [
+        {
+          "case": "no-key",
+          "status": "unavailable",
+          "mockedTransportCalls": 0
+        },
+        {
+          "case": "missing-sample",
+          "status": "insufficient-evidence",
+          "mockedTransportCalls": 0
+        },
+        {
+          "case": "input-budget",
+          "status": "insufficient-evidence",
+          "mockedTransportCalls": 0
+        },
+        {
+          "case": "truncated",
+          "status": "truncated",
+          "mockedTransportCalls": 1
+        },
+        {
+          "case": "http400",
+          "status": "failed",
+          "mockedTransportCalls": 1
+        },
+        {
+          "case": "completed",
+          "status": "completed",
+          "mockedTransportCalls": 1
+        }
+      ]
+    },
+    {
+      "name": "Inventory and draft-state arithmetic",
+      "result": "passed",
+      "sourcePositions": 875,
+      "numberedParagraphExercises": 723,
+      "standaloneNumberedExercises": 736,
+      "authoredCards": 102,
+      "reviewedCards": 0,
+      "inventoryComplete": false
+    }
+  ],
+  "privacyReview": {
+    "credentialUsedOnlyAsRequestHeader": true,
+    "noCredentialValuesInPayloadOrLogs": true,
+    "fixedSamplesContainNoPupilRecords": true,
+    "noOriginalPDFScansOrFullOCRSent": true,
+    "recordedPathsAreRepositoryRelative": true,
+    "responseContentIsNeverExecuted": true
+  },
+  "externalConsultationEvidence": {
+    "record": "tools/merzlyak-10-base/external-review-attempt.json",
+    "recordedStatus": "failed",
+    "recordedHTTPStatus": 400,
+    "note": "The saved evidence records a failed initial request. This reviewer made no provider request and did not turn that failure into approval. No repeat is planned."
+  },
+  "limitations": [
+    "Not a release approval, not a waiver of the failed external consultation, and not permission to merge or deploy.",
+    "No full-course browser interaction or student UI verification was performed by this technical review. model-browser.cjs mounts the renderer directly and skips lesson engine/math text/step flows.",
+    "No screenshots or live cloud Actions run were reviewed in this technical pass; its verdict concerns code, static evidence and explicitly listed local/mock checks.",
+    "No claim that 736 exercises are authored or that all theory components are complete. The source inventory explicitly remains incomplete.",
+    "Per-lesson mathematics and source fidelity are separate content-review scopes; the six mocked transport tests are engineering tests, not an external mathematical review."
+  ],
+  "reviewedFiles": [
+    {
+      "path": ".github/workflows/merzlyak-10-base-quality.yml",
+      "sha256": "afa1ba135b0b3f46e2c75f0297bab26335450b8585444b03e6ae70f7d7e0ca0d",
+      "bytes": 3394
+    },
+    {
+      "path": "tools/merzlyak-10-base/model-browser.cjs",
+      "sha256": "3e498ba5f87004359dfd4f6ee0f250f7280808b034b5e1edab3f1e706b057f80",
+      "bytes": 5630
+    },
+    {
+      "path": "tools/merzlyak-10-base/claude-review.py",
+      "sha256": "968b3c70ab67d609d390a21d167531dfa97f88d0d71a7c1e41cb55e8c854d31d",
+      "bytes": 6753
+    },
+    {
+      "path": "tools/merzlyak-10-base/.gitignore",
+      "sha256": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793",
+      "bytes": 19
+    },
+    {
+      "path": "tools/merzlyak-10-base/build.py",
+      "sha256": "4bfd16cb9a2bb71d495a3aadbe52175801e94d6ddaed517ee75fa4213c9ed295",
+      "bytes": 3125
+    },
+    {
+      "path": "tools/merzlyak-10-base/build.test.py",
+      "sha256": "1b8c1ac5c4144e257c88498fb2a6d0277a9ce7a89f96b0543e404974f412e6e4",
+      "bytes": 4586
+    },
+    {
+      "path": "tools/merzlyak-10-base/schema-runtime.test.cjs",
+      "sha256": "fb36c0f0c7f30f3075c8da7650049aab4b08d998926fc637a55efa495e1a4761",
+      "bytes": 8954
+    },
+    {
+      "path": "tools/merzlyak-10-base/external-review-attempt.json",
+      "sha256": "1e3cf58ab3ff31100828488498df1318d60a3c9326bff6ccebebd432b670d0d3",
+      "bytes": 1117
+    },
+    {
+      "path": "docs/tasks/MERZLYAK_10_BASE_FULL_COURSE.md",
+      "sha256": "095939ece78a40fb3d23e06a122214a60f800844f25481cc8e7823a00b8e1f1b",
+      "bytes": 4947
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/source-index.json",
+      "sha256": "90deeda93e0187806eb709dc32052ba9b94637267cc3a4521b46e5bc6b44fd9d",
+      "bytes": 639092
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/data/course.json",
+      "sha256": "8538f3b4d58fc5d74ed529ac73a963630b50b4962ed775d12c66feb346c88537",
+      "bytes": 774194
+    }
+  ]
+}

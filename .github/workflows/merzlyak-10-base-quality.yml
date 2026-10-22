@@ -40,6 +40,7 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+      - run: python3 -m pip install --disable-pip-version-check numpy==2.3.5
       - run: npx playwright install --with-deps chromium
       - name: Source completeness and reproducible bundle
         run: |
@@ -53,7 +54,11 @@ jobs:
           node tools/stereo-textbook/model-geometry.test.cjs stereo-course/merzlyak-10-base/data/course.json
           python3 tools/merzlyak-10-base/para01-models.test.py
           python3 tools/merzlyak-10-base/para02-models.test.py
+          python3 tools/merzlyak-10-base/para03-models.test.py
           node tools/merzlyak-10-base/theory-models.test.cjs
+          python3 tools/merzlyak-10-base/theory-models.test.py
+          python3 tools/merzlyak-10-base/review-math-01-02.py
+          python3 tools/merzlyak-10-base/review-math-03.py
       - name: Every draft model and view at mobile and desktop widths
         run: node tools/merzlyak-10-base/model-browser.cjs
       - name: Preserve visual evidence (not a publication approval)
