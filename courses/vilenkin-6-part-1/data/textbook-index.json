@@ -1,0 +1,8159 @@
+{
+  "source": {
+    "title": "Математика. 6 класс. Часть 1. Н. Я. Виленкин и др.",
+    "edition": "4-е издание, стереотипное. Просвещение, 2024",
+    "pages": 160,
+    "pdfPages": 163,
+    "pdf": "textbook.pdf",
+    "note": "Здесь полный указатель 931 сквозного номера и 37 заданий «Применяем математику». Ссылки открывают оригинальную страницу. Авторские тренировки курса не являются готовыми решениями всех номеров учебника. Номера с буквой П — местная нумерация рубрики «Применяем математику»."
+  },
+  "topics": [
+    {
+      "id": 0,
+      "title": "Повторение курса 5 класса",
+      "page": 4,
+      "endPage": 12,
+      "exerciseRange": "Теория повторения, без сквозных номеров"
+    },
+    {
+      "id": 1,
+      "title": "Среднее арифметическое",
+      "page": 14,
+      "endPage": 18,
+      "exerciseRange": "1.1–1.40"
+    },
+    {
+      "id": 2,
+      "title": "Проценты",
+      "page": 19,
+      "endPage": 26,
+      "exerciseRange": "1.41–1.96"
+    },
+    {
+      "id": 3,
+      "title": "Представление числовой информации в круговых диаграммах",
+      "page": 27,
+      "endPage": 31,
+      "exerciseRange": "1.97–1.133"
+    },
+    {
+      "id": 4,
+      "title": "Виды треугольников",
+      "page": 32,
+      "endPage": 36,
+      "exerciseRange": "1.134–1.163"
+    },
+    {
+      "id": 5,
+      "title": "Понятие множества",
+      "page": 37,
+      "endPage": 41,
+      "exerciseRange": "1.164–1.198"
+    },
+    {
+      "id": 6,
+      "title": "Разложение числа на простые множители",
+      "page": 43,
+      "endPage": 49,
+      "exerciseRange": "2.1–2.56"
+    },
+    {
+      "id": 7,
+      "title": "Наибольший общий делитель. Взаимно простые числа",
+      "page": 50,
+      "endPage": 54,
+      "exerciseRange": "2.57–2.94"
+    },
+    {
+      "id": 8,
+      "title": "Наименьшее общее кратное натуральных чисел",
+      "page": 55,
+      "endPage": 59,
+      "exerciseRange": "2.95–2.127"
+    },
+    {
+      "id": 9,
+      "title": "Приведение дробей к наименьшему общему знаменателю",
+      "page": 60,
+      "endPage": 64,
+      "exerciseRange": "2.128–2.147"
+    },
+    {
+      "id": 10,
+      "title": "Сравнение, сложение и вычитание обыкновенных дробей",
+      "page": 64,
+      "endPage": 71,
+      "exerciseRange": "2.148–2.204"
+    },
+    {
+      "id": 11,
+      "title": "Действия сложения и вычитания смешанных чисел",
+      "page": 71,
+      "endPage": 80,
+      "exerciseRange": "2.205–2.258"
+    },
+    {
+      "id": 12,
+      "title": "Действие умножения смешанных чисел",
+      "page": 80,
+      "endPage": 86,
+      "exerciseRange": "2.259–2.315"
+    },
+    {
+      "id": 13,
+      "title": "Нахождение дроби от числа",
+      "page": 87,
+      "endPage": 93,
+      "exerciseRange": "2.316–2.363"
+    },
+    {
+      "id": 14,
+      "title": "Применение распределительного свойства умножения",
+      "page": 93,
+      "endPage": 99,
+      "exerciseRange": "2.364–2.406"
+    },
+    {
+      "id": 15,
+      "title": "Действие деления смешанных чисел",
+      "page": 99,
+      "endPage": 106,
+      "exerciseRange": "2.407–2.471"
+    },
+    {
+      "id": 16,
+      "title": "Нахождение числа по его дроби",
+      "page": 106,
+      "endPage": 110,
+      "exerciseRange": "2.472–2.506"
+    },
+    {
+      "id": 17,
+      "title": "Дробные выражения",
+      "page": 110,
+      "endPage": 116,
+      "exerciseRange": "2.507–2.540"
+    },
+    {
+      "id": 18,
+      "title": "Отношения",
+      "page": 119,
+      "endPage": 125,
+      "exerciseRange": "3.1–3.38"
+    },
+    {
+      "id": 19,
+      "title": "Пропорция",
+      "page": 125,
+      "endPage": 129,
+      "exerciseRange": "3.39–3.62"
+    },
+    {
+      "id": 20,
+      "title": "Прямая и обратная пропорциональные зависимости",
+      "page": 130,
+      "endPage": 135,
+      "exerciseRange": "3.63–3.100"
+    },
+    {
+      "id": 21,
+      "title": "Масштаб",
+      "page": 136,
+      "endPage": 141,
+      "exerciseRange": "3.101–3.127"
+    },
+    {
+      "id": 22,
+      "title": "Симметрии",
+      "page": 142,
+      "endPage": 148,
+      "exerciseRange": "3.128–3.161"
+    },
+    {
+      "id": 23,
+      "title": "Длина окружности и площадь круга. Шар",
+      "page": 149,
+      "endPage": 154,
+      "exerciseRange": "3.162–3.193"
+    },
+    {
+      "id": 24,
+      "title": "Применяем математику: покупки и данные",
+      "page": 42,
+      "endPage": 42,
+      "exerciseRange": "П1.1–П1.7"
+    },
+    {
+      "id": 25,
+      "title": "Применяем математику: дроби в жизни",
+      "page": 116,
+      "endPage": 118,
+      "exerciseRange": "П2.1–П2.16"
+    },
+    {
+      "id": 26,
+      "title": "Применяем математику: пропорции и измерения",
+      "page": 154,
+      "endPage": 156,
+      "exerciseRange": "П3.1–П3.14"
+    }
+  ],
+  "exercises": [
+    {
+      "number": "1.1",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.1",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.2",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.2",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.3",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.3",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.4",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.4",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.5",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.5",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.6",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.6",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.7",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.7",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.8",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.8",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.9",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.9",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.10",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.10",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.11",
+      "printedPage": 15,
+      "pdfPage": 16,
+      "lesson": 1,
+      "title": "Учебник № 1.11",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.12",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.12",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.13",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.13",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.14",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.14",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.15",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.15",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.16",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.16",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.17",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.17",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.18",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.18",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.19",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.19",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.20",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.20",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.21",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.21",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.22",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.22",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.23",
+      "printedPage": 16,
+      "pdfPage": 17,
+      "lesson": 1,
+      "title": "Учебник № 1.23",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.24",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.24",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.25",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.25",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.26",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.26",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.27",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.27",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.28",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.28",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.29",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.29",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.30",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.30",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.31",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.31",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.32",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.32",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.33",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.33",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.34",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.34",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.35",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.35",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.36",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.36",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.37",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.37",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.38",
+      "printedPage": 17,
+      "pdfPage": 18,
+      "lesson": 1,
+      "title": "Учебник № 1.38",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.39",
+      "printedPage": 18,
+      "pdfPage": 19,
+      "lesson": 1,
+      "title": "Учебник № 1.39",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.40",
+      "printedPage": 18,
+      "pdfPage": 19,
+      "lesson": 1,
+      "title": "Учебник № 1.40",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.41",
+      "printedPage": 20,
+      "pdfPage": 21,
+      "lesson": 2,
+      "title": "Учебник № 1.41",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.42",
+      "printedPage": 20,
+      "pdfPage": 21,
+      "lesson": 2,
+      "title": "Учебник № 1.42",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.43",
+      "printedPage": 20,
+      "pdfPage": 21,
+      "lesson": 2,
+      "title": "Учебник № 1.43",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.44",
+      "printedPage": 21,
+      "pdfPage": 22,
+      "lesson": 2,
+      "title": "Учебник № 1.44",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.45",
+      "printedPage": 21,
+      "pdfPage": 22,
+      "lesson": 2,
+      "title": "Учебник № 1.45",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.46",
+      "printedPage": 21,
+      "pdfPage": 22,
+      "lesson": 2,
+      "title": "Учебник № 1.46",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.47",
+      "printedPage": 21,
+      "pdfPage": 22,
+      "lesson": 2,
+      "title": "Учебник № 1.47",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.48",
+      "printedPage": 21,
+      "pdfPage": 22,
+      "lesson": 2,
+      "title": "Учебник № 1.48",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.49",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.49",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.50",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.50",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.51",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.51",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.52",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.52",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.53",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.53",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.54",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.54",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.55",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.55",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.56",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.56",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.57",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.57",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.58",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.58",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.59",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.59",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.60",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.60",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.61",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.61",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.62",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.62",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.63",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.63",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.64",
+      "printedPage": 22,
+      "pdfPage": 23,
+      "lesson": 2,
+      "title": "Учебник № 1.64",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.65",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.65",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.66",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.66",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.67",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.67",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.68",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.68",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.69",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.69",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.70",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.70",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.71",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.71",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.72",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.72",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.73",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.73",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.74",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.74",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.75",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.75",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.76",
+      "printedPage": 23,
+      "pdfPage": 24,
+      "lesson": 2,
+      "title": "Учебник № 1.76",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.77",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.77",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.78",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.78",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.79",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.79",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.80",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.80",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.81",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.81",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.82",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.82",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.83",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.83",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.84",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.84",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.85",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.85",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.86",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.86",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.87",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.87",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.88",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.88",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.89",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.89",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.90",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.90",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.91",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.91",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.92",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.92",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.93",
+      "printedPage": 24,
+      "pdfPage": 25,
+      "lesson": 2,
+      "title": "Учебник № 1.93",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.94",
+      "printedPage": 25,
+      "pdfPage": 26,
+      "lesson": 2,
+      "title": "Учебник № 1.94",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.95",
+      "printedPage": 25,
+      "pdfPage": 26,
+      "lesson": 2,
+      "title": "Учебник № 1.95",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.96",
+      "printedPage": 25,
+      "pdfPage": 26,
+      "lesson": 2,
+      "title": "Учебник № 1.96",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.97",
+      "printedPage": 28,
+      "pdfPage": 29,
+      "lesson": 3,
+      "title": "Учебник № 1.97",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.98",
+      "printedPage": 28,
+      "pdfPage": 29,
+      "lesson": 3,
+      "title": "Учебник № 1.98",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.99",
+      "printedPage": 28,
+      "pdfPage": 29,
+      "lesson": 3,
+      "title": "Учебник № 1.99",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.100",
+      "printedPage": 28,
+      "pdfPage": 29,
+      "lesson": 3,
+      "title": "Учебник № 1.100",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.101",
+      "printedPage": 28,
+      "pdfPage": 29,
+      "lesson": 3,
+      "title": "Учебник № 1.101",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.102",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.102",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.103",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.103",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.104",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.104",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.105",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.105",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.106",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.106",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.107",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.107",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.108",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.108",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.109",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.109",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.110",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.110",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.111",
+      "printedPage": 29,
+      "pdfPage": 30,
+      "lesson": 3,
+      "title": "Учебник № 1.111",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.112",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.112",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.113",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.113",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.114",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.114",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.115",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.115",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.116",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.116",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.117",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.117",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.118",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.118",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.119",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.119",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.120",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.120",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.121",
+      "printedPage": 30,
+      "pdfPage": 31,
+      "lesson": 3,
+      "title": "Учебник № 1.121",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.122",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.122",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.123",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.123",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.124",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.124",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.125",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.125",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.126",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.126",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.127",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.127",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.128",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.128",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.129",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.129",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.130",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.130",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.131",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.131",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.132",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.132",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.133",
+      "printedPage": 31,
+      "pdfPage": 32,
+      "lesson": 3,
+      "title": "Учебник № 1.133",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.134",
+      "printedPage": 33,
+      "pdfPage": 34,
+      "lesson": 4,
+      "title": "Учебник № 1.134",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.135",
+      "printedPage": 34,
+      "pdfPage": 35,
+      "lesson": 4,
+      "title": "Учебник № 1.135",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.136",
+      "printedPage": 34,
+      "pdfPage": 35,
+      "lesson": 4,
+      "title": "Учебник № 1.136",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.137",
+      "printedPage": 34,
+      "pdfPage": 35,
+      "lesson": 4,
+      "title": "Учебник № 1.137",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.138",
+      "printedPage": 34,
+      "pdfPage": 35,
+      "lesson": 4,
+      "title": "Учебник № 1.138",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.139",
+      "printedPage": 34,
+      "pdfPage": 35,
+      "lesson": 4,
+      "title": "Учебник № 1.139",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.140",
+      "printedPage": 34,
+      "pdfPage": 35,
+      "lesson": 4,
+      "title": "Учебник № 1.140",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.141",
+      "printedPage": 34,
+      "pdfPage": 35,
+      "lesson": 4,
+      "title": "Учебник № 1.141",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.142",
+      "printedPage": 34,
+      "pdfPage": 35,
+      "lesson": 4,
+      "title": "Учебник № 1.142",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.143",
+      "printedPage": 34,
+      "pdfPage": 35,
+      "lesson": 4,
+      "title": "Учебник № 1.143",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.144",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.144",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.145",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.145",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.146",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.146",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.147",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.147",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.148",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.148",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.149",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.149",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.150",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.150",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.151",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.151",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.152",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.152",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.153",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.153",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.154",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.154",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.155",
+      "printedPage": 35,
+      "pdfPage": 36,
+      "lesson": 4,
+      "title": "Учебник № 1.155",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.156",
+      "printedPage": 36,
+      "pdfPage": 37,
+      "lesson": 4,
+      "title": "Учебник № 1.156",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.157",
+      "printedPage": 36,
+      "pdfPage": 37,
+      "lesson": 4,
+      "title": "Учебник № 1.157",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.158",
+      "printedPage": 36,
+      "pdfPage": 37,
+      "lesson": 4,
+      "title": "Учебник № 1.158",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.159",
+      "printedPage": 36,
+      "pdfPage": 37,
+      "lesson": 4,
+      "title": "Учебник № 1.159",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.160",
+      "printedPage": 36,
+      "pdfPage": 37,
+      "lesson": 4,
+      "title": "Учебник № 1.160",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.161",
+      "printedPage": 36,
+      "pdfPage": 37,
+      "lesson": 4,
+      "title": "Учебник № 1.161",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.162",
+      "printedPage": 36,
+      "pdfPage": 37,
+      "lesson": 4,
+      "title": "Учебник № 1.162",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.163",
+      "printedPage": 36,
+      "pdfPage": 37,
+      "lesson": 4,
+      "title": "Учебник № 1.163",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.164",
+      "printedPage": 39,
+      "pdfPage": 40,
+      "lesson": 5,
+      "title": "Учебник № 1.164",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.165",
+      "printedPage": 39,
+      "pdfPage": 40,
+      "lesson": 5,
+      "title": "Учебник № 1.165",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.166",
+      "printedPage": 39,
+      "pdfPage": 40,
+      "lesson": 5,
+      "title": "Учебник № 1.166",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.167",
+      "printedPage": 39,
+      "pdfPage": 40,
+      "lesson": 5,
+      "title": "Учебник № 1.167",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.168",
+      "printedPage": 39,
+      "pdfPage": 40,
+      "lesson": 5,
+      "title": "Учебник № 1.168",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.169",
+      "printedPage": 39,
+      "pdfPage": 40,
+      "lesson": 5,
+      "title": "Учебник № 1.169",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.170",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.170",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.171",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.171",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.172",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.172",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.173",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.173",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.174",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.174",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.175",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.175",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.176",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.176",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.177",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.177",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.178",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.178",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.179",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.179",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.180",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.180",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.181",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.181",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.182",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.182",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.183",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.183",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.184",
+      "printedPage": 40,
+      "pdfPage": 41,
+      "lesson": 5,
+      "title": "Учебник № 1.184",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.185",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.185",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.186",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.186",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.187",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.187",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.188",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.188",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.189",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.189",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.190",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.190",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.191",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.191",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.192",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.192",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.193",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.193",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.194",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.194",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.195",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.195",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.196",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.196",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.197",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.197",
+      "kind": "textbook"
+    },
+    {
+      "number": "1.198",
+      "printedPage": 41,
+      "pdfPage": 42,
+      "lesson": 5,
+      "title": "Учебник № 1.198",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.1",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.1",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.2",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.2",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.3",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.3",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.4",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.4",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.5",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.5",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.6",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.6",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.7",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.7",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.8",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.8",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.9",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.9",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.10",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.10",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.11",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.11",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.12",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.12",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.13",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.13",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.14",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.14",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.15",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.15",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.16",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.16",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.17",
+      "printedPage": 45,
+      "pdfPage": 46,
+      "lesson": 6,
+      "title": "Учебник № 2.17",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.18",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.18",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.19",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.19",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.20",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.20",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.21",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.21",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.22",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.22",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.23",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.23",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.24",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.24",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.25",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.25",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.26",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.26",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.27",
+      "printedPage": 46,
+      "pdfPage": 47,
+      "lesson": 6,
+      "title": "Учебник № 2.27",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.28",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.28",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.29",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.29",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.30",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.30",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.31",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.31",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.32",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.32",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.33",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.33",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.34",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.34",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.35",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.35",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.36",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.36",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.37",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.37",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.38",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.38",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.39",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.39",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.40",
+      "printedPage": 47,
+      "pdfPage": 48,
+      "lesson": 6,
+      "title": "Учебник № 2.40",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.41",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.41",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.42",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.42",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.43",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.43",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.44",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.44",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.45",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.45",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.46",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.46",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.47",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.47",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.48",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.48",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.49",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.49",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.50",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.50",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.51",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.51",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.52",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.52",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.53",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.53",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.54",
+      "printedPage": 48,
+      "pdfPage": 49,
+      "lesson": 6,
+      "title": "Учебник № 2.54",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.55",
+      "printedPage": 49,
+      "pdfPage": 50,
+      "lesson": 6,
+      "title": "Учебник № 2.55",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.56",
+      "printedPage": 49,
+      "pdfPage": 50,
+      "lesson": 6,
+      "title": "Учебник № 2.56",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.57",
+      "printedPage": 51,
+      "pdfPage": 52,
+      "lesson": 7,
+      "title": "Учебник № 2.57",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.58",
+      "printedPage": 51,
+      "pdfPage": 52,
+      "lesson": 7,
+      "title": "Учебник № 2.58",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.59",
+      "printedPage": 51,
+      "pdfPage": 52,
+      "lesson": 7,
+      "title": "Учебник № 2.59",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.60",
+      "printedPage": 51,
+      "pdfPage": 52,
+      "lesson": 7,
+      "title": "Учебник № 2.60",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.61",
+      "printedPage": 51,
+      "pdfPage": 52,
+      "lesson": 7,
+      "title": "Учебник № 2.61",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.62",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.62",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.63",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.63",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.64",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.64",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.65",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.65",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.66",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.66",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.67",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.67",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.68",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.68",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.69",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.69",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.70",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.70",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.71",
+      "printedPage": 52,
+      "pdfPage": 53,
+      "lesson": 7,
+      "title": "Учебник № 2.71",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.72",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.72",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.73",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.73",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.74",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.74",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.75",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.75",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.76",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.76",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.77",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.77",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.78",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.78",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.79",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.79",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.80",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.80",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.81",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.81",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.82",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.82",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.83",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.83",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.84",
+      "printedPage": 53,
+      "pdfPage": 54,
+      "lesson": 7,
+      "title": "Учебник № 2.84",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.85",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.85",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.86",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.86",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.87",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.87",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.88",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.88",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.89",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.89",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.90",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.90",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.91",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.91",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.92",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.92",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.93",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.93",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.94",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Учебник № 2.94",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.95",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "lesson": 8,
+      "title": "Учебник № 2.95",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.96",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "lesson": 8,
+      "title": "Учебник № 2.96",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.97",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "lesson": 8,
+      "title": "Учебник № 2.97",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.98",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "lesson": 8,
+      "title": "Учебник № 2.98",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.99",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "lesson": 8,
+      "title": "Учебник № 2.99",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.100",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "lesson": 8,
+      "title": "Учебник № 2.100",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.101",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "lesson": 8,
+      "title": "Учебник № 2.101",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.102",
+      "printedPage": 56,
+      "pdfPage": 57,
+      "lesson": 8,
+      "title": "Учебник № 2.102",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.103",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.103",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.104",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.104",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.105",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.105",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.106",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.106",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.107",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.107",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.108",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.108",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.109",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.109",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.110",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.110",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.111",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.111",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.112",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.112",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.113",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.113",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.114",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.114",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.115",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.115",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.116",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.116",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.117",
+      "printedPage": 57,
+      "pdfPage": 58,
+      "lesson": 8,
+      "title": "Учебник № 2.117",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.118",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.118",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.119",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.119",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.120",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.120",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.121",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.121",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.122",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.122",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.123",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.123",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.124",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.124",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.125",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.125",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.126",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.126",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.127",
+      "printedPage": 58,
+      "pdfPage": 59,
+      "lesson": 8,
+      "title": "Учебник № 2.127",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.128",
+      "printedPage": 61,
+      "pdfPage": 62,
+      "lesson": 9,
+      "title": "Учебник № 2.128",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.129",
+      "printedPage": 61,
+      "pdfPage": 62,
+      "lesson": 9,
+      "title": "Учебник № 2.129",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.130",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.130",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.131",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.131",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.132",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.132",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.133",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.133",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.134",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.134",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.135",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.135",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.136",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.136",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.137",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.137",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.138",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.138",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.139",
+      "printedPage": 62,
+      "pdfPage": 63,
+      "lesson": 9,
+      "title": "Учебник № 2.139",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.140",
+      "printedPage": 63,
+      "pdfPage": 64,
+      "lesson": 9,
+      "title": "Учебник № 2.140",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.141",
+      "printedPage": 63,
+      "pdfPage": 64,
+      "lesson": 9,
+      "title": "Учебник № 2.141",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.142",
+      "printedPage": 63,
+      "pdfPage": 64,
+      "lesson": 9,
+      "title": "Учебник № 2.142",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.143",
+      "printedPage": 63,
+      "pdfPage": 64,
+      "lesson": 9,
+      "title": "Учебник № 2.143",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.144",
+      "printedPage": 63,
+      "pdfPage": 64,
+      "lesson": 9,
+      "title": "Учебник № 2.144",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.145",
+      "printedPage": 63,
+      "pdfPage": 64,
+      "lesson": 9,
+      "title": "Учебник № 2.145",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.146",
+      "printedPage": 63,
+      "pdfPage": 64,
+      "lesson": 9,
+      "title": "Учебник № 2.146",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.147",
+      "printedPage": 63,
+      "pdfPage": 64,
+      "lesson": 9,
+      "title": "Учебник № 2.147",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.148",
+      "printedPage": 65,
+      "pdfPage": 66,
+      "lesson": 10,
+      "title": "Учебник № 2.148",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.149",
+      "printedPage": 65,
+      "pdfPage": 66,
+      "lesson": 10,
+      "title": "Учебник № 2.149",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.150",
+      "printedPage": 65,
+      "pdfPage": 66,
+      "lesson": 10,
+      "title": "Учебник № 2.150",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.151",
+      "printedPage": 65,
+      "pdfPage": 66,
+      "lesson": 10,
+      "title": "Учебник № 2.151",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.152",
+      "printedPage": 65,
+      "pdfPage": 66,
+      "lesson": 10,
+      "title": "Учебник № 2.152",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.153",
+      "printedPage": 65,
+      "pdfPage": 66,
+      "lesson": 10,
+      "title": "Учебник № 2.153",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.154",
+      "printedPage": 65,
+      "pdfPage": 66,
+      "lesson": 10,
+      "title": "Учебник № 2.154",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.155",
+      "printedPage": 65,
+      "pdfPage": 66,
+      "lesson": 10,
+      "title": "Учебник № 2.155",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.156",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.156",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.157",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.157",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.158",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.158",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.159",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.159",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.160",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.160",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.161",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.161",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.162",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.162",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.163",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.163",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.164",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.164",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.165",
+      "printedPage": 66,
+      "pdfPage": 67,
+      "lesson": 10,
+      "title": "Учебник № 2.165",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.166",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.166",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.167",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.167",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.168",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.168",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.169",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.169",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.170",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.170",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.171",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.171",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.172",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.172",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.173",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.173",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.174",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.174",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.175",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.175",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.176",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.176",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.177",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.177",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.178",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.178",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.179",
+      "printedPage": 67,
+      "pdfPage": 68,
+      "lesson": 10,
+      "title": "Учебник № 2.179",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.180",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.180",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.181",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.181",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.182",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.182",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.183",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.183",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.184",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.184",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.185",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.185",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.186",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.186",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.187",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.187",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.188",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.188",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.189",
+      "printedPage": 68,
+      "pdfPage": 69,
+      "lesson": 10,
+      "title": "Учебник № 2.189",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.190",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.190",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.191",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.191",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.192",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.192",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.193",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.193",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.194",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.194",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.195",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.195",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.196",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.196",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.197",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.197",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.198",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.198",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.199",
+      "printedPage": 69,
+      "pdfPage": 70,
+      "lesson": 10,
+      "title": "Учебник № 2.199",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.200",
+      "printedPage": 70,
+      "pdfPage": 71,
+      "lesson": 10,
+      "title": "Учебник № 2.200",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.201",
+      "printedPage": 70,
+      "pdfPage": 71,
+      "lesson": 10,
+      "title": "Учебник № 2.201",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.202",
+      "printedPage": 70,
+      "pdfPage": 71,
+      "lesson": 10,
+      "title": "Учебник № 2.202",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.203",
+      "printedPage": 70,
+      "pdfPage": 71,
+      "lesson": 10,
+      "title": "Учебник № 2.203",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.204",
+      "printedPage": 70,
+      "pdfPage": 71,
+      "lesson": 10,
+      "title": "Учебник № 2.204",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.205",
+      "printedPage": 73,
+      "pdfPage": 74,
+      "lesson": 11,
+      "title": "Учебник № 2.205",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.206",
+      "printedPage": 73,
+      "pdfPage": 74,
+      "lesson": 11,
+      "title": "Учебник № 2.206",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.207",
+      "printedPage": 73,
+      "pdfPage": 74,
+      "lesson": 11,
+      "title": "Учебник № 2.207",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.208",
+      "printedPage": 73,
+      "pdfPage": 74,
+      "lesson": 11,
+      "title": "Учебник № 2.208",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.209",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.209",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.210",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.210",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.211",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.211",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.212",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.212",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.213",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.213",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.214",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.214",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.215",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.215",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.216",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.216",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.217",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.217",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.218",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.218",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.219",
+      "printedPage": 74,
+      "pdfPage": 75,
+      "lesson": 11,
+      "title": "Учебник № 2.219",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.220",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.220",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.221",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.221",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.222",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.222",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.223",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.223",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.224",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.224",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.225",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.225",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.226",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.226",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.227",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.227",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.228",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.228",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.229",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.229",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.230",
+      "printedPage": 75,
+      "pdfPage": 76,
+      "lesson": 11,
+      "title": "Учебник № 2.230",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.231",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.231",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.232",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.232",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.233",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.233",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.234",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.234",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.235",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.235",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.236",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.236",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.237",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.237",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.238",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.238",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.239",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.239",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.240",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.240",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.241",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.241",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.242",
+      "printedPage": 76,
+      "pdfPage": 77,
+      "lesson": 11,
+      "title": "Учебник № 2.242",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.243",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.243",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.244",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.244",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.245",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.245",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.246",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.246",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.247",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.247",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.248",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.248",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.249",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.249",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.250",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.250",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.251",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.251",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.252",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.252",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.253",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.253",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.254",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.254",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.255",
+      "printedPage": 77,
+      "pdfPage": 78,
+      "lesson": 11,
+      "title": "Учебник № 2.255",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.256",
+      "printedPage": 78,
+      "pdfPage": 79,
+      "lesson": 11,
+      "title": "Учебник № 2.256",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.257",
+      "printedPage": 78,
+      "pdfPage": 79,
+      "lesson": 11,
+      "title": "Учебник № 2.257",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.258",
+      "printedPage": 78,
+      "pdfPage": 79,
+      "lesson": 11,
+      "title": "Учебник № 2.258",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.259",
+      "printedPage": 81,
+      "pdfPage": 82,
+      "lesson": 12,
+      "title": "Учебник № 2.259",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.260",
+      "printedPage": 81,
+      "pdfPage": 82,
+      "lesson": 12,
+      "title": "Учебник № 2.260",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.261",
+      "printedPage": 81,
+      "pdfPage": 82,
+      "lesson": 12,
+      "title": "Учебник № 2.261",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.262",
+      "printedPage": 81,
+      "pdfPage": 82,
+      "lesson": 12,
+      "title": "Учебник № 2.262",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.263",
+      "printedPage": 81,
+      "pdfPage": 82,
+      "lesson": 12,
+      "title": "Учебник № 2.263",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.264",
+      "printedPage": 81,
+      "pdfPage": 82,
+      "lesson": 12,
+      "title": "Учебник № 2.264",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.265",
+      "printedPage": 81,
+      "pdfPage": 82,
+      "lesson": 12,
+      "title": "Учебник № 2.265",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.266",
+      "printedPage": 81,
+      "pdfPage": 82,
+      "lesson": 12,
+      "title": "Учебник № 2.266",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.267",
+      "printedPage": 81,
+      "pdfPage": 82,
+      "lesson": 12,
+      "title": "Учебник № 2.267",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.268",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.268",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.269",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.269",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.270",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.270",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.271",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.271",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.272",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.272",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.273",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.273",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.274",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.274",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.275",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.275",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.276",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.276",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.277",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.277",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.278",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.278",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.279",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.279",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.280",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.280",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.281",
+      "printedPage": 82,
+      "pdfPage": 83,
+      "lesson": 12,
+      "title": "Учебник № 2.281",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.282",
+      "printedPage": 83,
+      "pdfPage": 84,
+      "lesson": 12,
+      "title": "Учебник № 2.282",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.283",
+      "printedPage": 83,
+      "pdfPage": 84,
+      "lesson": 12,
+      "title": "Учебник № 2.283",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.284",
+      "printedPage": 83,
+      "pdfPage": 84,
+      "lesson": 12,
+      "title": "Учебник № 2.284",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.285",
+      "printedPage": 83,
+      "pdfPage": 84,
+      "lesson": 12,
+      "title": "Учебник № 2.285",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.286",
+      "printedPage": 83,
+      "pdfPage": 84,
+      "lesson": 12,
+      "title": "Учебник № 2.286",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.287",
+      "printedPage": 83,
+      "pdfPage": 84,
+      "lesson": 12,
+      "title": "Учебник № 2.287",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.288",
+      "printedPage": 83,
+      "pdfPage": 84,
+      "lesson": 12,
+      "title": "Учебник № 2.288",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.289",
+      "printedPage": 83,
+      "pdfPage": 84,
+      "lesson": 12,
+      "title": "Учебник № 2.289",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.290",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.290",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.291",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.291",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.292",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.292",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.293",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.293",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.294",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.294",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.295",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.295",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.296",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.296",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.297",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.297",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.298",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.298",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.299",
+      "printedPage": 84,
+      "pdfPage": 85,
+      "lesson": 12,
+      "title": "Учебник № 2.299",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.300",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.300",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.301",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.301",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.302",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.302",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.303",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.303",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.304",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.304",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.305",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.305",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.306",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.306",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.307",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.307",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.308",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.308",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.309",
+      "printedPage": 85,
+      "pdfPage": 86,
+      "lesson": 12,
+      "title": "Учебник № 2.309",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.310",
+      "printedPage": 86,
+      "pdfPage": 87,
+      "lesson": 12,
+      "title": "Учебник № 2.310",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.311",
+      "printedPage": 86,
+      "pdfPage": 87,
+      "lesson": 12,
+      "title": "Учебник № 2.311",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.312",
+      "printedPage": 86,
+      "pdfPage": 87,
+      "lesson": 12,
+      "title": "Учебник № 2.312",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.313",
+      "printedPage": 86,
+      "pdfPage": 87,
+      "lesson": 12,
+      "title": "Учебник № 2.313",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.314",
+      "printedPage": 86,
+      "pdfPage": 87,
+      "lesson": 12,
+      "title": "Учебник № 2.314",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.315",
+      "printedPage": 86,
+      "pdfPage": 87,
+      "lesson": 12,
+      "title": "Учебник № 2.315",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.316",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.316",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.317",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.317",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.318",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.318",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.319",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.319",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.320",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.320",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.321",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.321",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.322",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.322",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.323",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.323",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.324",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.324",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.325",
+      "printedPage": 88,
+      "pdfPage": 89,
+      "lesson": 13,
+      "title": "Учебник № 2.325",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.326",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.326",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.327",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.327",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.328",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.328",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.329",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.329",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.330",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.330",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.331",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.331",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.332",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.332",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.333",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.333",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.334",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.334",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.335",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.335",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.336",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.336",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.337",
+      "printedPage": 89,
+      "pdfPage": 90,
+      "lesson": 13,
+      "title": "Учебник № 2.337",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.338",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.338",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.339",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.339",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.340",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.340",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.341",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.341",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.342",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.342",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.343",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.343",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.344",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.344",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.345",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.345",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.346",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.346",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.347",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.347",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.348",
+      "printedPage": 90,
+      "pdfPage": 91,
+      "lesson": 13,
+      "title": "Учебник № 2.348",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.349",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.349",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.350",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.350",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.351",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.351",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.352",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.352",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.353",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.353",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.354",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.354",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.355",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.355",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.356",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.356",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.357",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.357",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.358",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.358",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.359",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.359",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.360",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.360",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.361",
+      "printedPage": 91,
+      "pdfPage": 92,
+      "lesson": 13,
+      "title": "Учебник № 2.361",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.362",
+      "printedPage": 92,
+      "pdfPage": 93,
+      "lesson": 13,
+      "title": "Учебник № 2.362",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.363",
+      "printedPage": 92,
+      "pdfPage": 93,
+      "lesson": 13,
+      "title": "Учебник № 2.363",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.364",
+      "printedPage": 94,
+      "pdfPage": 95,
+      "lesson": 14,
+      "title": "Учебник № 2.364",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.365",
+      "printedPage": 94,
+      "pdfPage": 95,
+      "lesson": 14,
+      "title": "Учебник № 2.365",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.366",
+      "printedPage": 94,
+      "pdfPage": 95,
+      "lesson": 14,
+      "title": "Учебник № 2.366",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.367",
+      "printedPage": 94,
+      "pdfPage": 95,
+      "lesson": 14,
+      "title": "Учебник № 2.367",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.368",
+      "printedPage": 94,
+      "pdfPage": 95,
+      "lesson": 14,
+      "title": "Учебник № 2.368",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.369",
+      "printedPage": 94,
+      "pdfPage": 95,
+      "lesson": 14,
+      "title": "Учебник № 2.369",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.370",
+      "printedPage": 94,
+      "pdfPage": 95,
+      "lesson": 14,
+      "title": "Учебник № 2.370",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.371",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.371",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.372",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.372",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.373",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.373",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.374",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.374",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.375",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.375",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.376",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.376",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.377",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.377",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.378",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.378",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.379",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.379",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.380",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.380",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.381",
+      "printedPage": 95,
+      "pdfPage": 96,
+      "lesson": 14,
+      "title": "Учебник № 2.381",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.382",
+      "printedPage": 96,
+      "pdfPage": 97,
+      "lesson": 14,
+      "title": "Учебник № 2.382",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.383",
+      "printedPage": 96,
+      "pdfPage": 97,
+      "lesson": 14,
+      "title": "Учебник № 2.383",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.384",
+      "printedPage": 96,
+      "pdfPage": 97,
+      "lesson": 14,
+      "title": "Учебник № 2.384",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.385",
+      "printedPage": 96,
+      "pdfPage": 97,
+      "lesson": 14,
+      "title": "Учебник № 2.385",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.386",
+      "printedPage": 96,
+      "pdfPage": 97,
+      "lesson": 14,
+      "title": "Учебник № 2.386",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.387",
+      "printedPage": 96,
+      "pdfPage": 97,
+      "lesson": 14,
+      "title": "Учебник № 2.387",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.388",
+      "printedPage": 96,
+      "pdfPage": 97,
+      "lesson": 14,
+      "title": "Учебник № 2.388",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.389",
+      "printedPage": 96,
+      "pdfPage": 97,
+      "lesson": 14,
+      "title": "Учебник № 2.389",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.390",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.390",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.391",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.391",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.392",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.392",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.393",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.393",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.394",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.394",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.395",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.395",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.396",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.396",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.397",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.397",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.398",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.398",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.399",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.399",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.400",
+      "printedPage": 97,
+      "pdfPage": 98,
+      "lesson": 14,
+      "title": "Учебник № 2.400",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.401",
+      "printedPage": 98,
+      "pdfPage": 99,
+      "lesson": 14,
+      "title": "Учебник № 2.401",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.402",
+      "printedPage": 98,
+      "pdfPage": 99,
+      "lesson": 14,
+      "title": "Учебник № 2.402",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.403",
+      "printedPage": 98,
+      "pdfPage": 99,
+      "lesson": 14,
+      "title": "Учебник № 2.403",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.404",
+      "printedPage": 98,
+      "pdfPage": 99,
+      "lesson": 14,
+      "title": "Учебник № 2.404",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.405",
+      "printedPage": 98,
+      "pdfPage": 99,
+      "lesson": 14,
+      "title": "Учебник № 2.405",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.406",
+      "printedPage": 98,
+      "pdfPage": 99,
+      "lesson": 14,
+      "title": "Учебник № 2.406",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.407",
+      "printedPage": 100,
+      "pdfPage": 101,
+      "lesson": 15,
+      "title": "Учебник № 2.407",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.408",
+      "printedPage": 100,
+      "pdfPage": 101,
+      "lesson": 15,
+      "title": "Учебник № 2.408",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.409",
+      "printedPage": 100,
+      "pdfPage": 101,
+      "lesson": 15,
+      "title": "Учебник № 2.409",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.410",
+      "printedPage": 100,
+      "pdfPage": 101,
+      "lesson": 15,
+      "title": "Учебник № 2.410",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.411",
+      "printedPage": 100,
+      "pdfPage": 101,
+      "lesson": 15,
+      "title": "Учебник № 2.411",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.412",
+      "printedPage": 100,
+      "pdfPage": 101,
+      "lesson": 15,
+      "title": "Учебник № 2.412",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.413",
+      "printedPage": 100,
+      "pdfPage": 101,
+      "lesson": 15,
+      "title": "Учебник № 2.413",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.414",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.414",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.415",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.415",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.416",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.416",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.417",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.417",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.418",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.418",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.419",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.419",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.420",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.420",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.421",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.421",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.422",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.422",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.423",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.423",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.424",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.424",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.425",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.425",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.426",
+      "printedPage": 101,
+      "pdfPage": 102,
+      "lesson": 15,
+      "title": "Учебник № 2.426",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.427",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.427",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.428",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.428",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.429",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.429",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.430",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.430",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.431",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.431",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.432",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.432",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.433",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.433",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.434",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.434",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.435",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.435",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.436",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.436",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.437",
+      "printedPage": 102,
+      "pdfPage": 103,
+      "lesson": 15,
+      "title": "Учебник № 2.437",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.438",
+      "printedPage": 103,
+      "pdfPage": 104,
+      "lesson": 15,
+      "title": "Учебник № 2.438",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.439",
+      "printedPage": 103,
+      "pdfPage": 104,
+      "lesson": 15,
+      "title": "Учебник № 2.439",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.440",
+      "printedPage": 103,
+      "pdfPage": 104,
+      "lesson": 15,
+      "title": "Учебник № 2.440",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.441",
+      "printedPage": 103,
+      "pdfPage": 104,
+      "lesson": 15,
+      "title": "Учебник № 2.441",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.442",
+      "printedPage": 103,
+      "pdfPage": 104,
+      "lesson": 15,
+      "title": "Учебник № 2.442",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.443",
+      "printedPage": 103,
+      "pdfPage": 104,
+      "lesson": 15,
+      "title": "Учебник № 2.443",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.444",
+      "printedPage": 103,
+      "pdfPage": 104,
+      "lesson": 15,
+      "title": "Учебник № 2.444",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.445",
+      "printedPage": 103,
+      "pdfPage": 104,
+      "lesson": 15,
+      "title": "Учебник № 2.445",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.446",
+      "printedPage": 103,
+      "pdfPage": 104,
+      "lesson": 15,
+      "title": "Учебник № 2.446",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.447",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.447",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.448",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.448",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.449",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.449",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.450",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.450",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.451",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.451",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.452",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.452",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.453",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.453",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.454",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.454",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.455",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.455",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.456",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.456",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.457",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.457",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.458",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.458",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.459",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "lesson": 15,
+      "title": "Учебник № 2.459",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.460",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.460",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.461",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.461",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.462",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.462",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.463",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.463",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.464",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.464",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.465",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.465",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.466",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.466",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.467",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.467",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.468",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.468",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.469",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.469",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.470",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "lesson": 15,
+      "title": "Учебник № 2.470",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.471",
+      "printedPage": 106,
+      "pdfPage": 107,
+      "lesson": 15,
+      "title": "Учебник № 2.471",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.472",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.472",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.473",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.473",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.474",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.474",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.475",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.475",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.476",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.476",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.477",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.477",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.478",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.478",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.479",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.479",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.480",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.480",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.481",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.481",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.482",
+      "printedPage": 107,
+      "pdfPage": 108,
+      "lesson": 16,
+      "title": "Учебник № 2.482",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.483",
+      "printedPage": 108,
+      "pdfPage": 109,
+      "lesson": 16,
+      "title": "Учебник № 2.483",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.484",
+      "printedPage": 108,
+      "pdfPage": 109,
+      "lesson": 16,
+      "title": "Учебник № 2.484",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.485",
+      "printedPage": 108,
+      "pdfPage": 109,
+      "lesson": 16,
+      "title": "Учебник № 2.485",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.486",
+      "printedPage": 108,
+      "pdfPage": 109,
+      "lesson": 16,
+      "title": "Учебник № 2.486",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.487",
+      "printedPage": 108,
+      "pdfPage": 109,
+      "lesson": 16,
+      "title": "Учебник № 2.487",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.488",
+      "printedPage": 108,
+      "pdfPage": 109,
+      "lesson": 16,
+      "title": "Учебник № 2.488",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.489",
+      "printedPage": 108,
+      "pdfPage": 109,
+      "lesson": 16,
+      "title": "Учебник № 2.489",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.490",
+      "printedPage": 108,
+      "pdfPage": 109,
+      "lesson": 16,
+      "title": "Учебник № 2.490",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.491",
+      "printedPage": 108,
+      "pdfPage": 109,
+      "lesson": 16,
+      "title": "Учебник № 2.491",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.492",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.492",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.493",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.493",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.494",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.494",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.495",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.495",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.496",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.496",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.497",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.497",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.498",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.498",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.499",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.499",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.500",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.500",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.501",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.501",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.502",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.502",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.503",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.503",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.504",
+      "printedPage": 109,
+      "pdfPage": 110,
+      "lesson": 16,
+      "title": "Учебник № 2.504",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.505",
+      "printedPage": 110,
+      "pdfPage": 111,
+      "lesson": 16,
+      "title": "Учебник № 2.505",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.506",
+      "printedPage": 110,
+      "pdfPage": 111,
+      "lesson": 16,
+      "title": "Учебник № 2.506",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.507",
+      "printedPage": 111,
+      "pdfPage": 112,
+      "lesson": 17,
+      "title": "Учебник № 2.507",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.508",
+      "printedPage": 111,
+      "pdfPage": 112,
+      "lesson": 17,
+      "title": "Учебник № 2.508",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.509",
+      "printedPage": 111,
+      "pdfPage": 112,
+      "lesson": 17,
+      "title": "Учебник № 2.509",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.510",
+      "printedPage": 111,
+      "pdfPage": 112,
+      "lesson": 17,
+      "title": "Учебник № 2.510",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.511",
+      "printedPage": 111,
+      "pdfPage": 112,
+      "lesson": 17,
+      "title": "Учебник № 2.511",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.512",
+      "printedPage": 112,
+      "pdfPage": 113,
+      "lesson": 17,
+      "title": "Учебник № 2.512",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.513",
+      "printedPage": 112,
+      "pdfPage": 113,
+      "lesson": 17,
+      "title": "Учебник № 2.513",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.514",
+      "printedPage": 112,
+      "pdfPage": 113,
+      "lesson": 17,
+      "title": "Учебник № 2.514",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.515",
+      "printedPage": 112,
+      "pdfPage": 113,
+      "lesson": 17,
+      "title": "Учебник № 2.515",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.516",
+      "printedPage": 112,
+      "pdfPage": 113,
+      "lesson": 17,
+      "title": "Учебник № 2.516",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.517",
+      "printedPage": 112,
+      "pdfPage": 113,
+      "lesson": 17,
+      "title": "Учебник № 2.517",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.518",
+      "printedPage": 112,
+      "pdfPage": 113,
+      "lesson": 17,
+      "title": "Учебник № 2.518",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.519",
+      "printedPage": 112,
+      "pdfPage": 113,
+      "lesson": 17,
+      "title": "Учебник № 2.519",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.520",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.520",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.521",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.521",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.522",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.522",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.523",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.523",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.524",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.524",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.525",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.525",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.526",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.526",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.527",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.527",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.528",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.528",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.529",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.529",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.530",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.530",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.531",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.531",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.532",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.532",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.533",
+      "printedPage": 113,
+      "pdfPage": 114,
+      "lesson": 17,
+      "title": "Учебник № 2.533",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.534",
+      "printedPage": 114,
+      "pdfPage": 115,
+      "lesson": 17,
+      "title": "Учебник № 2.534",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.535",
+      "printedPage": 114,
+      "pdfPage": 115,
+      "lesson": 17,
+      "title": "Учебник № 2.535",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.536",
+      "printedPage": 114,
+      "pdfPage": 115,
+      "lesson": 17,
+      "title": "Учебник № 2.536",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.537",
+      "printedPage": 114,
+      "pdfPage": 115,
+      "lesson": 17,
+      "title": "Учебник № 2.537",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.538",
+      "printedPage": 114,
+      "pdfPage": 115,
+      "lesson": 17,
+      "title": "Учебник № 2.538",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.539",
+      "printedPage": 114,
+      "pdfPage": 115,
+      "lesson": 17,
+      "title": "Учебник № 2.539",
+      "kind": "textbook"
+    },
+    {
+      "number": "2.540",
+      "printedPage": 114,
+      "pdfPage": 115,
+      "lesson": 17,
+      "title": "Учебник № 2.540",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.1",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.1",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.2",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.2",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.3",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.3",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.4",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.4",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.5",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.5",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.6",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.6",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.7",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.7",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.8",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.8",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.9",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.9",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.10",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.10",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.11",
+      "printedPage": 121,
+      "pdfPage": 122,
+      "lesson": 18,
+      "title": "Учебник № 3.11",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.12",
+      "printedPage": 122,
+      "pdfPage": 123,
+      "lesson": 18,
+      "title": "Учебник № 3.12",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.13",
+      "printedPage": 122,
+      "pdfPage": 123,
+      "lesson": 18,
+      "title": "Учебник № 3.13",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.14",
+      "printedPage": 122,
+      "pdfPage": 123,
+      "lesson": 18,
+      "title": "Учебник № 3.14",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.15",
+      "printedPage": 122,
+      "pdfPage": 123,
+      "lesson": 18,
+      "title": "Учебник № 3.15",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.16",
+      "printedPage": 122,
+      "pdfPage": 123,
+      "lesson": 18,
+      "title": "Учебник № 3.16",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.17",
+      "printedPage": 122,
+      "pdfPage": 123,
+      "lesson": 18,
+      "title": "Учебник № 3.17",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.18",
+      "printedPage": 122,
+      "pdfPage": 123,
+      "lesson": 18,
+      "title": "Учебник № 3.18",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.19",
+      "printedPage": 122,
+      "pdfPage": 123,
+      "lesson": 18,
+      "title": "Учебник № 3.19",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.20",
+      "printedPage": 122,
+      "pdfPage": 123,
+      "lesson": 18,
+      "title": "Учебник № 3.20",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.21",
+      "printedPage": 123,
+      "pdfPage": 124,
+      "lesson": 18,
+      "title": "Учебник № 3.21",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.22",
+      "printedPage": 123,
+      "pdfPage": 124,
+      "lesson": 18,
+      "title": "Учебник № 3.22",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.23",
+      "printedPage": 123,
+      "pdfPage": 124,
+      "lesson": 18,
+      "title": "Учебник № 3.23",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.24",
+      "printedPage": 123,
+      "pdfPage": 124,
+      "lesson": 18,
+      "title": "Учебник № 3.24",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.25",
+      "printedPage": 123,
+      "pdfPage": 124,
+      "lesson": 18,
+      "title": "Учебник № 3.25",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.26",
+      "printedPage": 123,
+      "pdfPage": 124,
+      "lesson": 18,
+      "title": "Учебник № 3.26",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.27",
+      "printedPage": 123,
+      "pdfPage": 124,
+      "lesson": 18,
+      "title": "Учебник № 3.27",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.28",
+      "printedPage": 123,
+      "pdfPage": 124,
+      "lesson": 18,
+      "title": "Учебник № 3.28",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.29",
+      "printedPage": 123,
+      "pdfPage": 124,
+      "lesson": 18,
+      "title": "Учебник № 3.29",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.30",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Учебник № 3.30",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.31",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Учебник № 3.31",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.32",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Учебник № 3.32",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.33",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Учебник № 3.33",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.34",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Учебник № 3.34",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.35",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Учебник № 3.35",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.36",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Учебник № 3.36",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.37",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Учебник № 3.37",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.38",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Учебник № 3.38",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.39",
+      "printedPage": 127,
+      "pdfPage": 128,
+      "lesson": 19,
+      "title": "Учебник № 3.39",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.40",
+      "printedPage": 127,
+      "pdfPage": 128,
+      "lesson": 19,
+      "title": "Учебник № 3.40",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.41",
+      "printedPage": 127,
+      "pdfPage": 128,
+      "lesson": 19,
+      "title": "Учебник № 3.41",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.42",
+      "printedPage": 127,
+      "pdfPage": 128,
+      "lesson": 19,
+      "title": "Учебник № 3.42",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.43",
+      "printedPage": 127,
+      "pdfPage": 128,
+      "lesson": 19,
+      "title": "Учебник № 3.43",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.44",
+      "printedPage": 127,
+      "pdfPage": 128,
+      "lesson": 19,
+      "title": "Учебник № 3.44",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.45",
+      "printedPage": 128,
+      "pdfPage": 129,
+      "lesson": 19,
+      "title": "Учебник № 3.45",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.46",
+      "printedPage": 128,
+      "pdfPage": 129,
+      "lesson": 19,
+      "title": "Учебник № 3.46",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.47",
+      "printedPage": 128,
+      "pdfPage": 129,
+      "lesson": 19,
+      "title": "Учебник № 3.47",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.48",
+      "printedPage": 128,
+      "pdfPage": 129,
+      "lesson": 19,
+      "title": "Учебник № 3.48",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.49",
+      "printedPage": 128,
+      "pdfPage": 129,
+      "lesson": 19,
+      "title": "Учебник № 3.49",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.50",
+      "printedPage": 128,
+      "pdfPage": 129,
+      "lesson": 19,
+      "title": "Учебник № 3.50",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.51",
+      "printedPage": 128,
+      "pdfPage": 129,
+      "lesson": 19,
+      "title": "Учебник № 3.51",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.52",
+      "printedPage": 128,
+      "pdfPage": 129,
+      "lesson": 19,
+      "title": "Учебник № 3.52",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.53",
+      "printedPage": 128,
+      "pdfPage": 129,
+      "lesson": 19,
+      "title": "Учебник № 3.53",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.54",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Учебник № 3.54",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.55",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Учебник № 3.55",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.56",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Учебник № 3.56",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.57",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Учебник № 3.57",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.58",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Учебник № 3.58",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.59",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Учебник № 3.59",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.60",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Учебник № 3.60",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.61",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Учебник № 3.61",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.62",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Учебник № 3.62",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.63",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.63",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.64",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.64",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.65",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.65",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.66",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.66",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.67",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.67",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.68",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.68",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.69",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.69",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.70",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.70",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.71",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.71",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.72",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.72",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.73",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.73",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.74",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.74",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.75",
+      "printedPage": 132,
+      "pdfPage": 133,
+      "lesson": 20,
+      "title": "Учебник № 3.75",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.76",
+      "printedPage": 133,
+      "pdfPage": 134,
+      "lesson": 20,
+      "title": "Учебник № 3.76",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.77",
+      "printedPage": 133,
+      "pdfPage": 134,
+      "lesson": 20,
+      "title": "Учебник № 3.77",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.78",
+      "printedPage": 133,
+      "pdfPage": 134,
+      "lesson": 20,
+      "title": "Учебник № 3.78",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.79",
+      "printedPage": 133,
+      "pdfPage": 134,
+      "lesson": 20,
+      "title": "Учебник № 3.79",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.80",
+      "printedPage": 133,
+      "pdfPage": 134,
+      "lesson": 20,
+      "title": "Учебник № 3.80",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.81",
+      "printedPage": 133,
+      "pdfPage": 134,
+      "lesson": 20,
+      "title": "Учебник № 3.81",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.82",
+      "printedPage": 133,
+      "pdfPage": 134,
+      "lesson": 20,
+      "title": "Учебник № 3.82",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.83",
+      "printedPage": 133,
+      "pdfPage": 134,
+      "lesson": 20,
+      "title": "Учебник № 3.83",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.84",
+      "printedPage": 133,
+      "pdfPage": 134,
+      "lesson": 20,
+      "title": "Учебник № 3.84",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.85",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.85",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.86",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.86",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.87",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.87",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.88",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.88",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.89",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.89",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.90",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.90",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.91",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.91",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.92",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.92",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.93",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.93",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.94",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.94",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.95",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.95",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.96",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.96",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.97",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.97",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.98",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.98",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.99",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.99",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.100",
+      "printedPage": 134,
+      "pdfPage": 135,
+      "lesson": 20,
+      "title": "Учебник № 3.100",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.101",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.101",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.102",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.102",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.103",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.103",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.104",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.104",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.105",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.105",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.106",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.106",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.107",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.107",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.108",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.108",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.109",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.109",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.110",
+      "printedPage": 137,
+      "pdfPage": 138,
+      "lesson": 21,
+      "title": "Учебник № 3.110",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.111",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.111",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.112",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.112",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.113",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.113",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.114",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.114",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.115",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.115",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.116",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.116",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.117",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.117",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.118",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.118",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.119",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.119",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.120",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.120",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.121",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.121",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.122",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.122",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.123",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.123",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.124",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.124",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.125",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.125",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.126",
+      "printedPage": 138,
+      "pdfPage": 139,
+      "lesson": 21,
+      "title": "Учебник № 3.126",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.127",
+      "printedPage": 139,
+      "pdfPage": 140,
+      "lesson": 21,
+      "title": "Учебник № 3.127",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.128",
+      "printedPage": 144,
+      "pdfPage": 145,
+      "lesson": 22,
+      "title": "Учебник № 3.128",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.129",
+      "printedPage": 145,
+      "pdfPage": 146,
+      "lesson": 22,
+      "title": "Учебник № 3.129",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.130",
+      "printedPage": 145,
+      "pdfPage": 146,
+      "lesson": 22,
+      "title": "Учебник № 3.130",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.131",
+      "printedPage": 145,
+      "pdfPage": 146,
+      "lesson": 22,
+      "title": "Учебник № 3.131",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.132",
+      "printedPage": 145,
+      "pdfPage": 146,
+      "lesson": 22,
+      "title": "Учебник № 3.132",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.133",
+      "printedPage": 145,
+      "pdfPage": 146,
+      "lesson": 22,
+      "title": "Учебник № 3.133",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.134",
+      "printedPage": 145,
+      "pdfPage": 146,
+      "lesson": 22,
+      "title": "Учебник № 3.134",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.135",
+      "printedPage": 145,
+      "pdfPage": 146,
+      "lesson": 22,
+      "title": "Учебник № 3.135",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.136",
+      "printedPage": 146,
+      "pdfPage": 147,
+      "lesson": 22,
+      "title": "Учебник № 3.136",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.137",
+      "printedPage": 146,
+      "pdfPage": 147,
+      "lesson": 22,
+      "title": "Учебник № 3.137",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.138",
+      "printedPage": 146,
+      "pdfPage": 147,
+      "lesson": 22,
+      "title": "Учебник № 3.138",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.139",
+      "printedPage": 146,
+      "pdfPage": 147,
+      "lesson": 22,
+      "title": "Учебник № 3.139",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.140",
+      "printedPage": 146,
+      "pdfPage": 147,
+      "lesson": 22,
+      "title": "Учебник № 3.140",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.141",
+      "printedPage": 146,
+      "pdfPage": 147,
+      "lesson": 22,
+      "title": "Учебник № 3.141",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.142",
+      "printedPage": 146,
+      "pdfPage": 147,
+      "lesson": 22,
+      "title": "Учебник № 3.142",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.143",
+      "printedPage": 146,
+      "pdfPage": 147,
+      "lesson": 22,
+      "title": "Учебник № 3.143",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.144",
+      "printedPage": 146,
+      "pdfPage": 147,
+      "lesson": 22,
+      "title": "Учебник № 3.144",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.145",
+      "printedPage": 147,
+      "pdfPage": 148,
+      "lesson": 22,
+      "title": "Учебник № 3.145",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.146",
+      "printedPage": 147,
+      "pdfPage": 148,
+      "lesson": 22,
+      "title": "Учебник № 3.146",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.147",
+      "printedPage": 147,
+      "pdfPage": 148,
+      "lesson": 22,
+      "title": "Учебник № 3.147",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.148",
+      "printedPage": 147,
+      "pdfPage": 148,
+      "lesson": 22,
+      "title": "Учебник № 3.148",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.149",
+      "printedPage": 147,
+      "pdfPage": 148,
+      "lesson": 22,
+      "title": "Учебник № 3.149",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.150",
+      "printedPage": 147,
+      "pdfPage": 148,
+      "lesson": 22,
+      "title": "Учебник № 3.150",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.151",
+      "printedPage": 147,
+      "pdfPage": 148,
+      "lesson": 22,
+      "title": "Учебник № 3.151",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.152",
+      "printedPage": 147,
+      "pdfPage": 148,
+      "lesson": 22,
+      "title": "Учебник № 3.152",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.153",
+      "printedPage": 147,
+      "pdfPage": 148,
+      "lesson": 22,
+      "title": "Учебник № 3.153",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.154",
+      "printedPage": 148,
+      "pdfPage": 149,
+      "lesson": 22,
+      "title": "Учебник № 3.154",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.155",
+      "printedPage": 148,
+      "pdfPage": 149,
+      "lesson": 22,
+      "title": "Учебник № 3.155",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.156",
+      "printedPage": 148,
+      "pdfPage": 149,
+      "lesson": 22,
+      "title": "Учебник № 3.156",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.157",
+      "printedPage": 148,
+      "pdfPage": 149,
+      "lesson": 22,
+      "title": "Учебник № 3.157",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.158",
+      "printedPage": 148,
+      "pdfPage": 149,
+      "lesson": 22,
+      "title": "Учебник № 3.158",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.159",
+      "printedPage": 148,
+      "pdfPage": 149,
+      "lesson": 22,
+      "title": "Учебник № 3.159",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.160",
+      "printedPage": 148,
+      "pdfPage": 149,
+      "lesson": 22,
+      "title": "Учебник № 3.160",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.161",
+      "printedPage": 148,
+      "pdfPage": 149,
+      "lesson": 22,
+      "title": "Учебник № 3.161",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.162",
+      "printedPage": 150,
+      "pdfPage": 151,
+      "lesson": 23,
+      "title": "Учебник № 3.162",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.163",
+      "printedPage": 150,
+      "pdfPage": 151,
+      "lesson": 23,
+      "title": "Учебник № 3.163",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.164",
+      "printedPage": 150,
+      "pdfPage": 151,
+      "lesson": 23,
+      "title": "Учебник № 3.164",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.165",
+      "printedPage": 150,
+      "pdfPage": 151,
+      "lesson": 23,
+      "title": "Учебник № 3.165",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.166",
+      "printedPage": 151,
+      "pdfPage": 152,
+      "lesson": 23,
+      "title": "Учебник № 3.166",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.167",
+      "printedPage": 151,
+      "pdfPage": 152,
+      "lesson": 23,
+      "title": "Учебник № 3.167",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.168",
+      "printedPage": 151,
+      "pdfPage": 152,
+      "lesson": 23,
+      "title": "Учебник № 3.168",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.169",
+      "printedPage": 151,
+      "pdfPage": 152,
+      "lesson": 23,
+      "title": "Учебник № 3.169",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.170",
+      "printedPage": 151,
+      "pdfPage": 152,
+      "lesson": 23,
+      "title": "Учебник № 3.170",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.171",
+      "printedPage": 151,
+      "pdfPage": 152,
+      "lesson": 23,
+      "title": "Учебник № 3.171",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.172",
+      "printedPage": 151,
+      "pdfPage": 152,
+      "lesson": 23,
+      "title": "Учебник № 3.172",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.173",
+      "printedPage": 151,
+      "pdfPage": 152,
+      "lesson": 23,
+      "title": "Учебник № 3.173",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.174",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.174",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.175",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.175",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.176",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.176",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.177",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.177",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.178",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.178",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.179",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.179",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.180",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.180",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.181",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.181",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.182",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.182",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.183",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.183",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.184",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "lesson": 23,
+      "title": "Учебник № 3.184",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.185",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Учебник № 3.185",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.186",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Учебник № 3.186",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.187",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Учебник № 3.187",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.188",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Учебник № 3.188",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.189",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Учебник № 3.189",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.190",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Учебник № 3.190",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.191",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Учебник № 3.191",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.192",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Учебник № 3.192",
+      "kind": "textbook"
+    },
+    {
+      "number": "3.193",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Учебник № 3.193",
+      "kind": "textbook"
+    },
+    {
+      "number": "П1.1",
+      "printedPage": 42,
+      "pdfPage": 43,
+      "lesson": 24,
+      "title": "Применяем математику · § 1, задача 1",
+      "kind": "applied"
+    },
+    {
+      "number": "П1.2",
+      "printedPage": 42,
+      "pdfPage": 43,
+      "lesson": 24,
+      "title": "Применяем математику · § 1, задача 2",
+      "kind": "applied"
+    },
+    {
+      "number": "П1.3",
+      "printedPage": 42,
+      "pdfPage": 43,
+      "lesson": 24,
+      "title": "Применяем математику · § 1, задача 3",
+      "kind": "applied"
+    },
+    {
+      "number": "П1.4",
+      "printedPage": 42,
+      "pdfPage": 43,
+      "lesson": 24,
+      "title": "Применяем математику · § 1, задача 4",
+      "kind": "applied"
+    },
+    {
+      "number": "П1.5",
+      "printedPage": 42,
+      "pdfPage": 43,
+      "lesson": 24,
+      "title": "Применяем математику · § 1, задача 5",
+      "kind": "applied"
+    },
+    {
+      "number": "П1.6",
+      "printedPage": 42,
+      "pdfPage": 43,
+      "lesson": 24,
+      "title": "Применяем математику · § 1, задача 6",
+      "kind": "applied"
+    },
+    {
+      "number": "П1.7",
+      "printedPage": 42,
+      "pdfPage": 43,
+      "lesson": 24,
+      "title": "Применяем математику · § 1, задача 7",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.1",
+      "printedPage": 116,
+      "pdfPage": 117,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 1",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.2",
+      "printedPage": 116,
+      "pdfPage": 117,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 2",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.3",
+      "printedPage": 116,
+      "pdfPage": 117,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 3",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.4",
+      "printedPage": 116,
+      "pdfPage": 117,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 4",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.5",
+      "printedPage": 117,
+      "pdfPage": 118,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 5",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.6",
+      "printedPage": 117,
+      "pdfPage": 118,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 6",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.7",
+      "printedPage": 117,
+      "pdfPage": 118,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 7",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.8",
+      "printedPage": 117,
+      "pdfPage": 118,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 8",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.9",
+      "printedPage": 117,
+      "pdfPage": 118,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 9",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.10",
+      "printedPage": 117,
+      "pdfPage": 118,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 10",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.11",
+      "printedPage": 117,
+      "pdfPage": 118,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 11",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.12",
+      "printedPage": 117,
+      "pdfPage": 118,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 12",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.13",
+      "printedPage": 118,
+      "pdfPage": 119,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 13",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.14",
+      "printedPage": 118,
+      "pdfPage": 119,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 14",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.15",
+      "printedPage": 118,
+      "pdfPage": 119,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 15",
+      "kind": "applied"
+    },
+    {
+      "number": "П2.16",
+      "printedPage": 118,
+      "pdfPage": 119,
+      "lesson": 25,
+      "title": "Применяем математику · § 2, задача 16",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.1",
+      "printedPage": 154,
+      "pdfPage": 155,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 1",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.2",
+      "printedPage": 154,
+      "pdfPage": 155,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 2",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.3",
+      "printedPage": 154,
+      "pdfPage": 155,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 3",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.4",
+      "printedPage": 155,
+      "pdfPage": 156,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 4",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.5",
+      "printedPage": 155,
+      "pdfPage": 156,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 5",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.6",
+      "printedPage": 155,
+      "pdfPage": 156,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 6",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.7",
+      "printedPage": 155,
+      "pdfPage": 156,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 7",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.8",
+      "printedPage": 155,
+      "pdfPage": 156,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 8",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.9",
+      "printedPage": 155,
+      "pdfPage": 156,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 9",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.10",
+      "printedPage": 156,
+      "pdfPage": 157,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 10",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.11",
+      "printedPage": 156,
+      "pdfPage": 157,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 11",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.12",
+      "printedPage": 156,
+      "pdfPage": 157,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 12",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.13",
+      "printedPage": 156,
+      "pdfPage": 157,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 13",
+      "kind": "applied"
+    },
+    {
+      "number": "П3.14",
+      "printedPage": 156,
+      "pdfPage": 157,
+      "lesson": 26,
+      "title": "Применяем математику · § 3, задача 14",
+      "kind": "applied"
+    }
+  ],
+  "checks": [
+    {
+      "number": "К19.1",
+      "printedPage": 19,
+      "pdfPage": 20,
+      "lesson": 2,
+      "title": "Проценты · Проверочная работа"
+    },
+    {
+      "number": "К26.1",
+      "printedPage": 26,
+      "pdfPage": 27,
+      "lesson": 2,
+      "title": "Проценты · Проверочная работа № 1"
+    },
+    {
+      "number": "К26.2",
+      "printedPage": 26,
+      "pdfPage": 27,
+      "lesson": 2,
+      "title": "Проценты · Проверочная работа № 2"
+    },
+    {
+      "number": "К26.3",
+      "printedPage": 26,
+      "pdfPage": 27,
+      "lesson": 2,
+      "title": "Проценты · Проверочная работа № 3"
+    },
+    {
+      "number": "К49.1",
+      "printedPage": 49,
+      "pdfPage": 50,
+      "lesson": 6,
+      "title": "Разложение числа на простые множители · Проверочная работа № 1"
+    },
+    {
+      "number": "К49.2",
+      "printedPage": 49,
+      "pdfPage": 50,
+      "lesson": 6,
+      "title": "Разложение числа на простые множители · Проверочная работа № 2"
+    },
+    {
+      "number": "К50.1",
+      "printedPage": 50,
+      "pdfPage": 51,
+      "lesson": 7,
+      "title": "Наибольший общий делитель. Взаимно простые числа · Проверочная работа № 3"
+    },
+    {
+      "number": "К54.1",
+      "printedPage": 54,
+      "pdfPage": 55,
+      "lesson": 7,
+      "title": "Наибольший общий делитель. Взаимно простые числа · Проверочная работа"
+    },
+    {
+      "number": "К60.1",
+      "printedPage": 60,
+      "pdfPage": 61,
+      "lesson": 9,
+      "title": "Приведение дробей к наименьшему общему знаменателю · Проверочная работа"
+    },
+    {
+      "number": "К63.1",
+      "printedPage": 63,
+      "pdfPage": 64,
+      "lesson": 9,
+      "title": "Приведение дробей к наименьшему общему знаменателю · Проверочная работа"
+    },
+    {
+      "number": "К70.1",
+      "printedPage": 70,
+      "pdfPage": 71,
+      "lesson": 10,
+      "title": "Сравнение, сложение и вычитание обыкновенных дробей · Проверочная работа № 1"
+    },
+    {
+      "number": "К71.1",
+      "printedPage": 71,
+      "pdfPage": 72,
+      "lesson": 10,
+      "title": "Сравнение, сложение и вычитание обыкновенных дробей · Проверочная работа № 2"
+    },
+    {
+      "number": "К78.1",
+      "printedPage": 78,
+      "pdfPage": 79,
+      "lesson": 11,
+      "title": "Действия сложения и вычитания смешанных чисел · Проверочная работа № 1"
+    },
+    {
+      "number": "К78.2",
+      "printedPage": 78,
+      "pdfPage": 79,
+      "lesson": 11,
+      "title": "Действия сложения и вычитания смешанных чисел · Проверочная работа № 2"
+    },
+    {
+      "number": "К79.1",
+      "printedPage": 79,
+      "pdfPage": 80,
+      "lesson": 11,
+      "title": "Действия сложения и вычитания смешанных чисел · Проверочная работа № 3"
+    },
+    {
+      "number": "К86.1",
+      "printedPage": 86,
+      "pdfPage": 87,
+      "lesson": 12,
+      "title": "Действие умножения смешанных чисел · Проверочная работа"
+    },
+    {
+      "number": "К93.1",
+      "printedPage": 93,
+      "pdfPage": 94,
+      "lesson": 13,
+      "title": "Нахождение дроби от числа · Проверочная работа"
+    },
+    {
+      "number": "К98.1",
+      "printedPage": 98,
+      "pdfPage": 99,
+      "lesson": 14,
+      "title": "Применение распределительного свойства умножения · Проверочная работа № 1"
+    },
+    {
+      "number": "К99.1",
+      "printedPage": 99,
+      "pdfPage": 100,
+      "lesson": 14,
+      "title": "Применение распределительного свойства умножения · Проверочная работа № 2"
+    },
+    {
+      "number": "К106.1",
+      "printedPage": 106,
+      "pdfPage": 107,
+      "lesson": 15,
+      "title": "Действие деления смешанных чисел · Проверочная работа"
+    },
+    {
+      "number": "К110.1",
+      "printedPage": 110,
+      "pdfPage": 111,
+      "lesson": 16,
+      "title": "Нахождение числа по его дроби · Проверочная работа"
+    },
+    {
+      "number": "К115.1",
+      "printedPage": 115,
+      "pdfPage": 116,
+      "lesson": 17,
+      "title": "Дробные выражения · Проверочная работа"
+    },
+    {
+      "number": "К124.1",
+      "printedPage": 124,
+      "pdfPage": 125,
+      "lesson": 18,
+      "title": "Отношения · Проверочная работа № 1"
+    },
+    {
+      "number": "К125.1",
+      "printedPage": 125,
+      "pdfPage": 126,
+      "lesson": 18,
+      "title": "Отношения · Проверочная работа № 2"
+    },
+    {
+      "number": "К129.1",
+      "printedPage": 129,
+      "pdfPage": 130,
+      "lesson": 19,
+      "title": "Пропорция · Проверочная работа"
+    },
+    {
+      "number": "К135.1",
+      "printedPage": 135,
+      "pdfPage": 136,
+      "lesson": 20,
+      "title": "Прямая и обратная пропорциональные зависимости · Проверочная работа № 1"
+    },
+    {
+      "number": "К135.2",
+      "printedPage": 135,
+      "pdfPage": 136,
+      "lesson": 20,
+      "title": "Прямая и обратная пропорциональные зависимости · Проверочная работа № 2"
+    },
+    {
+      "number": "К139.1",
+      "printedPage": 139,
+      "pdfPage": 140,
+      "lesson": 21,
+      "title": "Масштаб · Проверочная работа"
+    },
+    {
+      "number": "К153.1",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Длина окружности и площадь круга. Шар · Проверочная работа № 1"
+    },
+    {
+      "number": "К153.2",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "lesson": 23,
+      "title": "Длина окружности и площадь круга. Шар · Проверочная работа № 2"
+    }
+  ]
+}
