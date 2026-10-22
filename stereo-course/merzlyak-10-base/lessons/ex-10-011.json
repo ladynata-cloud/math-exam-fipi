@@ -4,7 +4,7 @@
   "id": "merz-ex-10-011",
   "kind": "exercise",
   "title": "10.11. Общий перпендикуляр между параллельными плоскостями",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -201,8 +201,10 @@
     "prompt": "Запиши результат и объясни ключевой переход. Доказательство проверяется преподавателем. Ожидаемый вывод: 10 см."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/ocr_source",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

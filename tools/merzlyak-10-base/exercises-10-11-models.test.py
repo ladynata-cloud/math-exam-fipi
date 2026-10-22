@@ -1,6 +1,7 @@
 """Author-side geometric invariants; not independent pedagogical/release review."""
 import json,math,itertools
 from pathlib import Path
+from review_state import assert_review_state
 R=Path(__file__).resolve().parents[2];D=R/'stereo-course/merzlyak-10-base/lessons'
 Q=math.sqrt
 sub=lambda a,b:[x-y for x,y in zip(a,b)]
@@ -37,7 +38,7 @@ files=[D/f'ex-{g:02}-{n:03}.json' for g,limit in [(10,41),(11,30)] for n in rang
 lessons={}
 for f in files:
  l=json.loads(f.read_text());lessons[l['source']['exercise']]=l;p=l['visualization']['model']['points'];m=l['visualization']['model']
- assert l['status']=='draft' and set(l['review'].values())=={'pending'}
+ assert_review_state(l)
  assert len(l['steps'])>=3
  for a,b in m['edges']+[s for vv in m['views'].values() for s in vv.get('segments',[])]:assert d(a,b)>1e-8,(f,a,b)
  for poly in m.get('faces',[])+[vv['polygon'] for vv in m['views'].values() if 'polygon'in vv]:
@@ -153,4 +154,4 @@ for item in cov['entries']:
 assert next(x for x in cov['entries']if x['exercise']=='10.1')['authoredSourceSubparts']==['1','2','3']
 assert next(x for x in cov['entries']if x['exercise']=='10.2')['authoredSourceSubparts']==['1','2','3']
 assert next(x for x in cov['entries']if x['exercise']=='10.15')['authoredSourceSubparts']==['1','2','3','4']
-print('EXERCISES_10_11_MODELS_OK 71: source mapping, all faces/segments and task-specific numeric invariants; draft-only.')
+print('EXERCISES_10_11_MODELS_OK 71: source mapping, all faces/segments and task-specific numeric invariants; draft or ledger-verified review state.')

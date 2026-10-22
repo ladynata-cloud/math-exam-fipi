@@ -4,7 +4,7 @@
   "id": "merz-theory-15-detail-01",
   "kind": "theory",
   "title": "§ 15. Почему формула площади работает для любого треугольника",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "theory",
@@ -264,8 +264,10 @@
     "prompt": "Запиши собственное доказательство или решение. Текст сохраняется для обсуждения с преподавателем; автоматической проверки правильности нет."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/ocr_source",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

@@ -1,0 +1,1026 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/ocr_source",
+  "authors": [
+    "/root/textbook_inventory"
+  ],
+  "reviewedAt": "2026-10-22T23:00:19.334016+00:00",
+  "scope": {
+    "lessonCards": 13,
+    "newDetailCards": 13,
+    "paragraphs": [
+      15,
+      19
+    ],
+    "articles": [
+      "«Стереометрическое» расположение двух прямых",
+      "Платоновы тела",
+      "Геометрическое тело"
+    ],
+    "articlePdfPages": [
+      140,
+      141,
+      142,
+      143,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183
+    ],
+    "additionalFigurePdfPages": [
+      148
+    ],
+    "sourcePageCount": 13,
+    "allAuthoredStatementsHintsProofsExamplesAndViewsRead": true,
+    "inventoryEntriesReviewed": 46,
+    "unitsMappedToNewCards": 37,
+    "existingStandaloneExerciseReferencesChecked": 7,
+    "priorTheoremReferencesChecked": 2,
+    "oldOverviewOrDetailCardsRecertified": 0
+  },
+  "verdicts": {
+    "source": "PASS",
+    "mathematics": "PASS",
+    "pedagogy": "PASS"
+  },
+  "method": [
+    "Visually read all12 article source PNGs and figure16.2 on PDF148; printed page equals PDF page minus1. OCR served only as a locator. Compared all printed definitions, claims, proof prompts, worked examples, alternative methods and seven standalone exercise identities with the explicit inventory.",
+    "Read all13 new cards in full, including optional hints, hypotheses, model coordinates, labels, source pages and every step/view mapping. Rechecked all five resolved findings on the final bytes.",
+    "Independently analyzed general arguments rather than inferring validity from a sample drawing: midpoint-locus surjectivity, minimum joins, general skew-line projection, convex vertex bounds, topology definitions and counterexamples.",
+    "Wrote reviewer-theory-articles-checks.py without author imports: actual model invariants plus100 deterministic random families for midpoint endpoints, skew-line projection and ball witness radii; exact manifold and regularity checks of all five Platonic solids and the duplicate classification model.",
+    "Separately inspected all46 manifest units and requiredParts additions. The seven article exercises have exact source identities and existing files; their solution verdicts remain with the separate exercise review. The trihedral prerequisite proof in project3 was reread for logical validity, not granted a new whole-card verdict here."
+  ],
+  "tests": [
+    {
+      "command": "python tools/merzlyak-10-base/reviewer-theory-articles-checks.py",
+      "result": "PASS",
+      "independentAssertions": 5168,
+      "actualNewCards": 13,
+      "randomFamilySamples": 100,
+      "actualRegularModelsChecked": 6,
+      "inventoryUnitsChecked": 46
+    },
+    {
+      "command": "python tools/merzlyak-10-base/articles-platonic-models.test.py",
+      "result": "PASS",
+      "reviewer": "/root/theory_course",
+      "models": 6,
+      "negativeMutationRegressions": 4,
+      "scope": "Independent geometric check only, supplementing this source/content review."
+    },
+    {
+      "command": "python tools/merzlyak-10-base/articles-models.test.py",
+      "result": "PASS",
+      "testGroups": 4,
+      "role": "Author regression only; not a substitute for independent review."
+    },
+    {
+      "command": "AJV2020 lesson schema and engine.validateLesson over all13 current new lesson files",
+      "result": "PASS",
+      "cards": 13
+    }
+  ],
+  "findings": [
+    {
+      "id": "RART-001",
+      "dimensions": [
+        "mathematics",
+        "pedagogy"
+      ],
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-02.json",
+      "finding": "U,V named in the midpoint converse proof initially denoted unrelated upper-plane corners; A0,B0,C0 and the asserted parallelogram were absent.",
+      "resolution": "Decorative corners renamed; actual A0,B0,C0,U,V added. Verified U=(A+B0)/2, V=(A0+B)/2, C=(A+B)/2 and C0+C=U+V. The all view now shows the construction in the middle plane.",
+      "status": "resolved"
+    },
+    {
+      "id": "RART-002",
+      "dimensions": [
+        "mathematics",
+        "pedagogy"
+      ],
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-05.json",
+      "finding": "General proof named AB as a common perpendicular while the cube AB was an edge with a different role.",
+      "resolution": "Proof now uses PQ; actual P on B1C and Q on A1C1 added with a common view. Independently checked both incidence and orthogonality conditions and PQ=KH.",
+      "status": "resolved"
+    },
+    {
+      "id": "RART-003",
+      "dimensions": [
+        "pedagogy"
+      ],
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-04.json",
+      "finding": "The final view did not display the distance PQ being computed.",
+      "resolution": "Final upper view now displays PQ and BD1 alongside the upper supporting plane; verified current model and step mapping.",
+      "status": "resolved"
+    },
+    {
+      "id": "RART-004",
+      "dimensions": [
+        "source"
+      ],
+      "paths": [
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-03.json",
+        "stereo-course/merzlyak-10-base/lessons/theory-19-detail-05.json"
+      ],
+      "finding": "Natural pyrite/virus examples were omitted from the individual cards source-page references.",
+      "resolution": "Dodecahedron card now includes PDF176–180 and icosahedron PDF177–179; matching manifest page unions updated and rechecked.",
+      "status": "resolved"
+    },
+    {
+      "id": "RART-005",
+      "dimensions": [
+        "pedagogy"
+      ],
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json",
+      "finding": "The proof of the vertex angle bound referred to a cut polygon Vi, but its view showed only original octahedron edges.",
+      "resolution": "Added ordered midpoints V1–V4 around S=P1 and the local section view with all four rays. Independently verified midpoint incidence, coplanarity, convexity, the 240-degree apex sum and each strict triangle-angle inequality used in the proof.",
+      "status": "resolved"
+    }
+  ],
+  "unresolvedFindings": [],
+  "articleReviewNotes": [
+    {
+      "cards": [
+        "theory-15-detail-02",
+        "theory-15-detail-03"
+      ],
+      "review": "The midpoint locus proof includes both inclusions: three parallel planes for containment and two independent half-homotheties/parallelogram for surjectivity. The minimum-distance argument includes the equality case H=Q and distinguishes arbitrary joins from a common perpendicular."
+    },
+    {
+      "cards": [
+        "theory-15-detail-04",
+        "theory-15-detail-05"
+      ],
+      "review": "Both printed cube methods are retained. The first correctly uses supporting planes and a diagonal trisected by similarity; it explicitly says the feet need not lie on the original lines. The second proves the projection method for arbitrary skew lines, invariance under shifting the perpendicular plane, then calculates the cube distance using a right-triangle altitude."
+    },
+    {
+      "cards": [
+        "theory-19-detail-02",
+        "theory-19-detail-03",
+        "theory-19-detail-04",
+        "theory-19-detail-05"
+      ],
+      "review": "All parts of the regular-polyhedron definition are included: convexity, congruent regular faces and uniform vertex degree. Five actual models exist, with tetrahedron linked to the previously reviewed theory18-detail04. Independent calculations establish all face angles, edge lengths, convex supporting planes, manifold incidence, vertex links and Euler counts. Natural objects are explicitly approximations rather than assertions of exact regularity."
+    },
+    {
+      "cards": [
+        "theory-19-detail-06"
+      ],
+      "review": "The strict convex vertex-angle bound is proved by cutting off the vertex and applying the trihedral angle inequality from project3, whose supplied proof was separately reread. The five integer pairs follow correctly. Necessary incidence conditions are explicitly distinguished from constructing existing solids and from a separate rigidity/uniqueness theorem."
+    },
+    {
+      "cards": [
+        "theory-19-detail-07",
+        "theory-19-detail-08"
+      ],
+      "review": "All open/bounded/adherent definitions use three-dimensional positive-radius balls. Interior and exterior witness radii are explicit; endpoints of an open interval are correctly adherent but excluded. Wire circles are captioned as approximate boundary sections, not solid balls. Nonempty planar figures are correctly nonopen in ambient space."
+    },
+    {
+      "cards": [
+        "theory-19-detail-09",
+        "theory-19-detail-10"
+      ],
+      "review": "Connectedness uses nonempty disjoint partitions and adherence; the optional interval proof identifies its completeness argument. Boundary requires adherence to both figure and complement. The body definition retains boundedness and a nonempty connected open generating set plus its whole boundary. F is disconnected; G is connected but has disconnected interior, so both fail the body definition for distinct reasons. All source examples and historical context are addressed."
+    }
+  ],
+  "inventoryAudit": [
+    {
+      "unitId": "skew-midpoints-containment",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        140
+      ],
+      "coveredBy": [
+        "merz-theory-15-detail-02"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "skew-midpoints-whole-plane",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        141
+      ],
+      "coveredBy": [
+        "merz-theory-15-detail-02"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "skew-common-perpendicular-minimum",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        141
+      ],
+      "coveredBy": [
+        "merz-theory-15-detail-03"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "skew-cube-worked-3-first",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        141,
+        142
+      ],
+      "coveredBy": [
+        "merz-theory-15-detail-04"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "skew-perpendicular-projection-method",
+      "kind": "theorem_proof",
+      "sourcePdfPages": [
+        142
+      ],
+      "coveredBy": [
+        "merz-theory-15-detail-05"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "skew-cube-worked-3-second",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        142,
+        143
+      ],
+      "coveredBy": [
+        "merz-theory-15-detail-05"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-definition",
+      "kind": "definition",
+      "sourcePdfPages": [
+        176
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-02"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-cube-example",
+      "kind": "example",
+      "sourcePdfPages": [
+        177
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-02"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-tetrahedron-example",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        177
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-02",
+        "merz-theory-18-detail-04"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-history-name",
+      "kind": "context",
+      "sourcePdfPages": [
+        178
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-02"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-додекаэдр",
+      "kind": "example",
+      "sourcePdfPages": [
+        176,
+        177,
+        178,
+        179,
+        180
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-03"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-октаэдр",
+      "kind": "example",
+      "sourcePdfPages": [
+        177,
+        178
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-04"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-octahedron-two-pyramids",
+      "kind": "construction",
+      "sourcePdfPages": [
+        177,
+        178
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-04"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-икосаэдр",
+      "kind": "example",
+      "sourcePdfPages": [
+        177,
+        178,
+        179
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-05"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-vertex-angle-sum",
+      "kind": "theorem",
+      "sourcePdfPages": [
+        178
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-06",
+        "merz-project-3"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-five-pairs-proof",
+      "kind": "proof",
+      "sourcePdfPages": [
+        178,
+        179
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-06"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-five-existence-models",
+      "kind": "examples",
+      "sourcePdfPages": [
+        178
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-06",
+        "merz-theory-18-detail-04",
+        "merz-theory-19-detail-02",
+        "merz-theory-19-detail-03",
+        "merz-theory-19-detail-04",
+        "merz-theory-19-detail-05"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "plato-nature-architecture",
+      "kind": "context",
+      "sourcePdfPages": [
+        179,
+        180
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-06"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-open-definition",
+      "kind": "definition",
+      "sourcePdfPages": [
+        180
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-07"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-space-open",
+      "kind": "example",
+      "sourcePdfPages": [
+        180
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-07"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-open-ball-proof",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        180
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-07"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-line-plane-not-open",
+      "kind": "counterexample",
+      "sourcePdfPages": [
+        181
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-07"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-bounded-definition",
+      "kind": "definition",
+      "sourcePdfPages": [
+        181
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-08"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-bounded-examples",
+      "kind": "examples",
+      "sourcePdfPages": [
+        181
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-08"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-adherence-definition",
+      "kind": "definition",
+      "sourcePdfPages": [
+        181
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-08"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-own-points-adherence",
+      "kind": "example",
+      "sourcePdfPages": [
+        181
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-08"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-open-segment-endpoints",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        181
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-08"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-exterior-ball-gap",
+      "kind": "worked_example",
+      "sourcePdfPages": [
+        181
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-08"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-connected-definition",
+      "kind": "definition",
+      "sourcePdfPages": [
+        182
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-09"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-two-balls-disconnected",
+      "kind": "counterexample",
+      "sourcePdfPages": [
+        182
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-09"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-connected-examples",
+      "kind": "examples",
+      "sourcePdfPages": [
+        182
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-09"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-boundary-definition",
+      "kind": "definition",
+      "sourcePdfPages": [
+        182
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-09"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-boundary-examples",
+      "kind": "examples",
+      "sourcePdfPages": [
+        182
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-09"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-solid-definition",
+      "kind": "definition",
+      "sourcePdfPages": [
+        182
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-10"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-solid-positive-examples",
+      "kind": "examples",
+      "sourcePdfPages": [
+        180,
+        182
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-10"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-solid-nonexamples",
+      "kind": "proof_prompt",
+      "sourcePdfPages": [
+        182,
+        148
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-10"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "body-topology-context",
+      "kind": "context",
+      "sourcePdfPages": [
+        182,
+        183
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-10"
+      ],
+      "sourceMapping": "PASS",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "unitId": "skew-parallel-support-planes-reference",
+      "kind": "prior_theorem_reference",
+      "sourcePdfPages": [
+        140
+      ],
+      "coveredBy": [
+        "ex-06-025"
+      ],
+      "sourceMapping": "PASS",
+      "scopeNote": "Reference existence and source identity checked here; full content verdict remains in its separate exercise/theory review."
+    },
+    {
+      "unitId": "skew-common-perpendicular-reference",
+      "kind": "prior_theorem_reference",
+      "sourcePdfPages": [
+        141
+      ],
+      "coveredBy": [
+        "merz-theory-10-detail-04"
+      ],
+      "sourceMapping": "PASS",
+      "scopeNote": "Reference existence and source identity checked here; full content verdict remains in its separate exercise/theory review."
+    },
+    {
+      "unitId": "skew-exercise-1",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "coveredBy": [
+        "research-skew-lines-001"
+      ],
+      "sourceMapping": "PASS",
+      "scopeNote": "Reference existence and source identity checked here; full content verdict remains in its separate exercise/theory review."
+    },
+    {
+      "unitId": "skew-exercise-2",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "coveredBy": [
+        "research-skew-lines-002"
+      ],
+      "sourceMapping": "PASS",
+      "scopeNote": "Reference existence and source identity checked here; full content verdict remains in its separate exercise/theory review."
+    },
+    {
+      "unitId": "skew-exercise-3",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "coveredBy": [
+        "research-skew-lines-003"
+      ],
+      "sourceMapping": "PASS",
+      "scopeNote": "Reference existence and source identity checked here; full content verdict remains in its separate exercise/theory review."
+    },
+    {
+      "unitId": "skew-exercise-4",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "coveredBy": [
+        "research-skew-lines-004"
+      ],
+      "sourceMapping": "PASS",
+      "scopeNote": "Reference existence and source identity checked here; full content verdict remains in its separate exercise/theory review."
+    },
+    {
+      "unitId": "skew-exercise-5",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "coveredBy": [
+        "research-skew-lines-005"
+      ],
+      "sourceMapping": "PASS",
+      "scopeNote": "Reference existence and source identity checked here; full content verdict remains in its separate exercise/theory review."
+    },
+    {
+      "unitId": "skew-exercise-6",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "coveredBy": [
+        "research-skew-lines-006"
+      ],
+      "sourceMapping": "PASS",
+      "scopeNote": "Reference existence and source identity checked here; full content verdict remains in its separate exercise/theory review."
+    },
+    {
+      "unitId": "skew-exercise-7",
+      "kind": "standalone_exercise",
+      "sourcePdfPages": [
+        143
+      ],
+      "coveredBy": [
+        "research-skew-lines-007"
+      ],
+      "sourceMapping": "PASS",
+      "scopeNote": "Reference existence and source identity checked here; full content verdict remains in its separate exercise/theory review."
+    }
+  ],
+  "cards": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-02.json",
+      "lessonId": "merz-theory-15-detail-02",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "9ee80bf4cea0b3b82a1a2e936d9dc29232c5048abcce6c8c00a7b1dba3742551",
+      "contentSha256": "95649754fff06fd09dc4a924883649f776e754715422d0457041cdd862f5bfce",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-03.json",
+      "lessonId": "merz-theory-15-detail-03",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "0c8ba74c1cffbc856b02300d169c086eac5ea51e6a3d063d0d5d418df3ea222a",
+      "contentSha256": "3ff2222128bd401fad022697c6417141269ae4d1d67bb8c9184e6132058926fe",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-04.json",
+      "lessonId": "merz-theory-15-detail-04",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "444fd1b6bdf289f6f226d5466826830c1d464ad89dd4f383031fbb8468e63477",
+      "contentSha256": "b27c31446019ef58395fb93f0c125e31842cd3ff97d3e4f74dcd8d96e2d80f14",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-05.json",
+      "lessonId": "merz-theory-15-detail-05",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "f0b55445c166fe642a3a591ac4a4363e9662261c74139bf7c9210712598ca2b8",
+      "contentSha256": "43f2f0135238b33e2df8c30d2893e6866687c557bfc63c5d16d8c9923797c53d",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-02.json",
+      "lessonId": "merz-theory-19-detail-02",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "ce094d371a3ca434ff1c5bae40eee523316fd50ea5705fef6ed08bdebbf1a6c3",
+      "contentSha256": "4d9a75e2f1059998b97ac229c6086de18a7d00445f54fba59d0a4eddb80ebf2a",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-03.json",
+      "lessonId": "merz-theory-19-detail-03",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "69a9584579ca6961165c5af67924464bb86a845d624d146b66ea674821b93f2e",
+      "contentSha256": "1839a63f3a86c9c91360bc6372b04a6f04d839dbcbf8c103864d547d0fa6795a",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-04.json",
+      "lessonId": "merz-theory-19-detail-04",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "1c26ebcf347a10bc81077bb13371fa46c7dcee07ff8a9894c29afec827da9490",
+      "contentSha256": "989cd9d15f15d5e90f30031d84ad7bd02f2ff9b6855108ce133191f24bee09bc",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-05.json",
+      "lessonId": "merz-theory-19-detail-05",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "31720246226aad20de6380ded90609cac5d1325d596923344b07db2975b5a594",
+      "contentSha256": "388e231656a9c400619c63c5c74902ee6cba920540255cf0ad5a923b12ef144b",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-06.json",
+      "lessonId": "merz-theory-19-detail-06",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "fac094ee7946170996fab522f9b55705acf24f8d09dec1afe6d302f7fd39d5c0",
+      "contentSha256": "101214a12abb105ff56e44a3907639f48cf261bb4d558aee5344b5fa5444a450",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-07.json",
+      "lessonId": "merz-theory-19-detail-07",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "5a5429f3fadf7e834e0de704ed68dd48dc5d0141f494e5e600ccdb0f75b6957a",
+      "contentSha256": "573aae5c67d1f4a7c69e40875a109318893a6ce419d2e4cbe0c751237367bf17",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-08.json",
+      "lessonId": "merz-theory-19-detail-08",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "990baa75c7511642c8368773d76957630c50eb84c0d88db489b3e748fefc4d6e",
+      "contentSha256": "8ddd1f1dc0776a8429d5f8424422439110b60d2c09d94eb60c67aa6a168bec07",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-09.json",
+      "lessonId": "merz-theory-19-detail-09",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "96dc2c741dfb7243d5465e5a328054e2a8c4ffa81f132a06a6af8d482bf7ac20",
+      "contentSha256": "687de001e3a55d73210dc2eb16bb10825db7b35cf1cd4224cfad786eb229e6f6",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-10.json",
+      "lessonId": "merz-theory-19-detail-10",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "dce3172f51079730b4432bfe2359cb8e1ebda6154b6e7b2e4fa46bdd23830e5d",
+      "contentSha256": "304acc22eadcd258a83b03d3d50352082fbdba95e7a1cef0a6103a8518adc0e0",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "tools/merzlyak-10-base/coverage-theory-articles.json",
+      "sha256": "bb51122cc9682acdf2fc217e2ac40a92699f5b7e1d32519a20d4c7646ad8da46"
+    },
+    {
+      "path": "tools/merzlyak-10-base/author-theory-articles.py",
+      "sha256": "f51df6495f379ea9dd5642e2c596b107841b44dbc42475faae9ac3ab6ef3f98f"
+    },
+    {
+      "path": "tools/merzlyak-10-base/reviewer-theory-articles-checks.py",
+      "sha256": "0ce3395f1f45dc5b8e3d5518275e84037c99687ffe33ec9fc44653b5d1171997"
+    },
+    {
+      "path": "tools/merzlyak-10-base/articles-models.test.py",
+      "sha256": "8be44c6451e8bd340232415377e86c78b118a111038fe3b9088aa4446e0efad7"
+    },
+    {
+      "path": "tools/merzlyak-10-base/articles-platonic-models.test.py",
+      "sha256": "eadfb4c46467c6695c8408fe30b5fbfd32d62bf460292bc17ccc667eb8479e4e"
+    }
+  ],
+  "canonicalContentKeys": [
+    "id",
+    "kind",
+    "title",
+    "source",
+    "statement",
+    "visualization",
+    "help",
+    "steps",
+    "answer"
+  ],
+  "canonicalContentEncoding": "UTF-8 JSON, ensure_ascii=false, sort_keys=true, separators=(comma,colon)",
+  "releaseApproval": false,
+  "limitations": [
+    "This is an independent source/mathematics/pedagogy content review on exact file and canonical-content hashes. It changes no lesson review flags and authorizes no merge or publication.",
+    "Live browser rendering, mobile layout and external release checks remain separate. This review checks content-to-view correspondence, all model data and a maximum of8 visible point names per view, not a live browser session.",
+    "The declared three-article inventory is complete against the visually read source. This addendum does not independently certify the whole-book inventory or recertify existing exercise/project/overview cards. It closes the article scope excluded from independent-review-theory-10-19.json.",
+    "Author-added explanatory proofs for the vertex-angle bound and interval connectedness are distinguished from the source article which states the associated facts. Historical photographs and portraits are summarized rather than reproduced."
+  ]
+}

@@ -4,7 +4,7 @@
   "id": "merz-theory-04-detail-01",
   "kind": "theory",
   "title": "§ 4. Единственная параллельная через внешнюю точку",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "theory",
@@ -165,8 +165,10 @@
     "prompt": "Запиши доказательство или построение своими словами, указывая условия применённых теорем. Запись сохраняется; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

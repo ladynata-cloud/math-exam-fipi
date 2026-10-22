@@ -37,8 +37,10 @@ The original PDF, full OCR and page images are not repository deliverables.
 - Add individually authored lessons and complete-part contracts as they are
   visually verified. Keep unreviewed or unfinished material explicitly pending.
 - Add reproducible build and source/schema/model/runtime checks.
-- Keep first preparation separately reviewable: chapter-I exercises and
-  paragraph theory overviews; this is not completion of the requested book.
+- Preserve separately reviewable cloud checkpoints while completing all four
+  chapters, cumulative revision, questions, computer work and project guides.
+- Include all five additional articles, with their definitions, worked examples
+  and proofs; the numbered paragraph inventory alone is not the whole course.
 
 Out of scope: student accounts, personal records, board/server protocols,
 payment settings, unrelated courses, automatic promotion of draft lessons.
@@ -53,6 +55,10 @@ payment settings, unrelated courses, automatic promotion of draft lessons.
 - Keep `inventoryComplete:false` while subpart verification remains incomplete.
 - Builders must not mark lessons reviewed. Required review fields are evidence,
   not a formatting workaround. Public students see only reviewed lessons.
+- A manual content-review transition must cite independent source, mathematics
+  and pedagogy verdicts for every exact draft hash. Preserve the original
+  reports and a ledger proving that only status/review fields changed; audit
+  every current file against that evidence in CI. This is not merge approval.
 - Report source positions, authored cards and reviewed/available cards
   separately, together with missing checks and remaining source sections.
 
@@ -64,12 +70,19 @@ search, hidden-draft behavior, reproducible build, `git diff --check`, and
 independent source/mathematics review. Browser evidence must distinguish
 engineering preview of drafts from publication readiness.
 
-The existing Claude consultation policy was read. No Anthropic/Claude API
-credential is exposed in this execution environment, and plugin discovery
-returned no Claude integration. The repository has a separate Claude Actions
-workflow; its secret/balance has not been established. No paid review or
-external approval has been claimed. Preparation and technical checks continue;
-an unavailable review cannot be treated as a waiver or a passed release gate.
+The existing Claude consultation policy was read. One bounded request ran in
+GitHub Actions run `39857930153` using the existing Actions secret. The provider
+returned HTTP400 without an answer or verdict; exact evidence is retained in
+`tools/merzlyak-10-base/external-review-attempt.json`. No retries were made.
+Independent content review covers every exact draft hash; external exact-head
+release review remains unavailable and has not been waived.
+
+The completed content inventory is 875 source groups / 989 required components:
+762 solution cards for all 736 standalone exercise numbers, 86 theory cards,
+97 selfcheck answers, 39 computer-work cards and five project guides. The manual
+review transition retains all original reports and an exact before/after ledger.
+The current main may advance through concurrent Atanasyan PRs; the final PR
+records authoritative base provenance and the tested virtual composition.
 
 ## Risk, isolation and rollback
 

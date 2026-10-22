@@ -4,7 +4,7 @@
   "id": "ex-18-008",
   "kind": "exercise",
   "title": "18.8. Апофема и двугранный угол",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -258,8 +258,10 @@
     "prompt": "Запишите доказательство или ответ и объясните каждый переход. Доказательство обсуждается с учителем и автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

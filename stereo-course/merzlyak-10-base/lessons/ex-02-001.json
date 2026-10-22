@@ -4,7 +4,7 @@
   "id": "ex-02-001",
   "kind": "exercise",
   "title": "№ 2.1. Прямая и точка: два случая",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -191,8 +191,10 @@
     "prompt": "Запиши вывод и его обоснование. Запись сохраняется для обсуждения с преподавателем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

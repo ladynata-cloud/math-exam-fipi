@@ -4,7 +4,7 @@
   "id": "ex-07-013",
   "kind": "exercise",
   "title": "№ 7.13. Сохранение отношения на прямой",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -178,8 +178,10 @@
     "feedback": "Проверь соотношение величин и вычисление в последних шагах."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/course_architecture",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

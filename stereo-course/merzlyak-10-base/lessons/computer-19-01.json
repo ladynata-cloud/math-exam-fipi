@@ -4,7 +4,7 @@
   "id": "merz-computer-19-01",
   "kind": "exercise",
   "title": "Компьютер · § 19: Классификатор многогранников",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "practical",
@@ -148,7 +148,17 @@
       ],
       "views": {
         "neutral": {
-          "label": "Исходная модель: сопоставь названия точек с пояснением."
+          "label": "Исходная модель: сопоставь названия точек с пояснением.",
+          "points": [
+            "A",
+            "B",
+            "A1",
+            "B1",
+            "M",
+            "M1",
+            "O",
+            "O1"
+          ]
         },
         "bases": {
           "label": "Два основания лежат в параллельных плоскостях",
@@ -226,16 +236,7 @@
           "D1"
         ]
       ],
-      "labelNames": [
-        "A",
-        "B",
-        "A1",
-        "B1",
-        "M",
-        "M1",
-        "O",
-        "O1"
-      ]
+      "labelNames": []
     }
   },
   "help": [
@@ -331,8 +332,10 @@
     "prompt": "Запиши построение или алгоритм и результат его проверки на примере. Эта запись сохраняется; полноценная программа и геометрическое доказательство требуют обсуждения с преподавателем."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

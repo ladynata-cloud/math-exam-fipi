@@ -4,7 +4,7 @@
   "id": "merz-ex-20-080",
   "kind": "exercise",
   "title": "20.80. Угол плоскости трёх середин рёбер",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -277,8 +277,10 @@
     "prompt": "Запиши результат и обоснуй его. Доказательство и построение проверяет преподаватель. Ожидаемый вывод: arctg(√2/3)."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para2",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

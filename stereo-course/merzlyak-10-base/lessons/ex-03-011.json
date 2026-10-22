@@ -4,7 +4,7 @@
   "id": "ex-03-011",
   "kind": "exercise",
   "title": "3.11. Сечение через продолжение бокового ребра",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -160,6 +160,15 @@
             "E"
           ]
         },
+        "ae": {
+          "label": "След AE на основании",
+          "segments": [
+            [
+              "A",
+              "E"
+            ]
+          ]
+        },
         "ed": {
           "label": "Прямая ED",
           "segments": [
@@ -219,7 +228,7 @@
           "text": "Две общие точки определяют прямую пересечения двух различных плоскостей. В каждой грани сечение идёт по прямой."
         }
       ],
-      "view": "neutral",
+      "view": "ae",
       "id": "step-1"
     },
     {
@@ -267,8 +276,10 @@
     "prompt": "Запишите ответ или выполните построение и обоснуйте каждый шаг. Запись предназначена для обсуждения с учителем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

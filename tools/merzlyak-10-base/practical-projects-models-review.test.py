@@ -4,6 +4,7 @@ import json,math,unittest
 from pathlib import Path
 from collections import Counter
 import numpy as np
+from review_state import assert_review_state
 ROOT=Path(__file__).resolve().parents[2];DIR=ROOT/'stereo-course/merzlyak-10-base/lessons'
 FILES=sorted(DIR.glob('computer-*.json'))+sorted(DIR.glob('project-*.json'))
 DATA={p.name:json.loads(p.read_text())for p in FILES}
@@ -17,7 +18,7 @@ class Review(unittest.TestCase):
   self.assertEqual(len(FILES),44)
   for name,d in DATA.items():
    with self.subTest(name=name):
-    p=points(name);m=model(name);self.assertEqual(d['source']['printedPages'],[x-1 for x in d['source']['pdfPages']]);self.assertEqual(d['status'],'draft');self.assertEqual(set(d['review'].values()),{'pending'})
+    p=points(name);m=model(name);self.assertEqual(d['source']['printedPages'],[x-1 for x in d['source']['pdfPages']]);assert_review_state(d)
     for v in p.values():self.assertEqual(v.shape,(3,));self.assertTrue(np.isfinite(v).all())
     for edge in m.get('edges',[]):self.assertGreater(norm(p[edge[1]]-p[edge[0]]),1e-8)
     polygons=list(m.get('faces',[]))

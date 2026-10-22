@@ -4,7 +4,7 @@
   "id": "merz-question-17-05",
   "kind": "exercise",
   "title": "§ 17. Вопрос 5: Что называют измерениями прямоугольного параллелепипеда?",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "selfcheck",
@@ -190,6 +190,38 @@
             "C",
             "C1"
           ]
+        },
+        "height": {
+          "label": "Боковое ребро AA₁ перпендикулярно основанию",
+          "segments": [
+            [
+              "A",
+              "A1"
+            ]
+          ],
+          "polygon": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ]
+        },
+        "dimensions": {
+          "label": "Три измерения: AB, AD, AA₁",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "A",
+              "D"
+            ],
+            [
+              "A",
+              "A1"
+            ]
+          ]
         }
       },
       "faces": [
@@ -261,7 +293,7 @@
           "text": "§ 17: определения и свойства, к которым относится вопрос 5."
         }
       ],
-      "view": "base"
+      "view": "dimensions"
     },
     {
       "id": "step-2",
@@ -274,7 +306,7 @@
           "text": "Заданные координатами отношения в модели иллюстрируют определение или теорему; рисунок не заменяет общего доказательства."
         }
       ],
-      "view": "base"
+      "view": "dimensions"
     }
   ],
   "answer": {
@@ -282,8 +314,10 @@
     "prompt": "Запиши ответ своими словами, сохраняя все условия определения или теоремы. Запись сохраняется для обсуждения с преподавателем; автоматически её правильность не определяется."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

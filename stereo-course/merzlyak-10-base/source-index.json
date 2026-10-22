@@ -10,9 +10,8 @@
   },
   "sourceSHA256": "bc50e2e2871ca872f4abeb5dcff406a1fd07caab622aeaf8a19523fe502db6a3",
   "inventoryScope": "723 numbered paragraph exercises (594 main, 38 paragraph review, 91 cumulative review), 13 supplementary numbered exercises, 19 theory paragraphs, 97 theory-question entries, 18 computer-assignment blocks and 5 research-project topics. The 736 standalone exercise numbers exclude subparts, theory questions, computer work and research projects. Embedded worked examples and proofs belong to the corresponding paragraph or supplement article. Supplement articles are recorded separately. Source metadata is not a completed lesson.",
-  "inventoryComplete": false,
-  "inventoryIncompleteReason": "Exercise labels and start pages are inventoried, but subparts and page continuations have not all been independently verified; computer work is inventoried by paragraph block rather than individual directive; embedded examples and theory subtopics have not been itemized.",
-  "sourcePageMapping": "PDF page = printed page + 1. Main exercise source pages identify where each exercise begins.",
+  "inventoryComplete": true,
+  "sourcePageMapping": "PDF page = printed page + 1. Entries and their components record verified source pages, including continuations.",
   "sourceExtractionNote": "Much of the textbook body is vector outlines. Extracted text does not contain complete statements. Exercise statements must be reconstructed and visually checked before authoring. Raw scans and OCR are not included in this index.",
   "answerNumberingNote": "The answers section includes 20.92; the main exercise sequence ends at 20.91 on printed page 194. Inventory follows exercise statements, not answer labels.",
   "counts": {
@@ -1078,20 +1077,32 @@
         "printedPages": [
           135,
           136,
-          137
+          137,
+          139,
+          140,
+          141,
+          142
         ],
         "pdfPages": [
           136,
           137,
-          138
+          138,
+          140,
+          141,
+          142,
+          143
         ]
       },
       "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
       "requiredParts": [
         "обзор",
-        "доказательство: общий треугольник и разбиение многоугольника"
+        "доказательство: общий треугольник и разбиение многоугольника",
+        "статья: множество середин между скрещивающимися прямыми",
+        "статья: общий перпендикуляр — кратчайшее соединение",
+        "статья: расстояние A₁C₁ и B₁C через параллельные плоскости",
+        "статья: проекция для расстояния и второй способ задачи 3"
       ],
-      "authorshipManifest": "tools/merzlyak-10-base/coverage-theory-10-19.json"
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-theory-articles.json"
     },
     {
       "id": "source-theory-16",
@@ -1208,22 +1219,49 @@
         "chapter": "Глава 4. Многогранники",
         "paragraph": 19,
         "printedPages": [
+          147,
           171,
           172,
-          173
+          173,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182
         ],
         "pdfPages": [
+          148,
           172,
           173,
-          174
+          174,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183
         ]
       },
       "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
       "requiredParts": [
         "обзор",
-        "доказательства: равенство апофем и теорема 19.1"
+        "доказательства: равенство апофем и теорема 19.1",
+        "статья: определение правильного многогранника и первые примеры",
+        "статья: додекаэдр и его свойства",
+        "статья: октаэдр и его свойства",
+        "статья: икосаэдр и его свойства",
+        "статья: почему возможны только пять типов",
+        "статья: открытая фигура и примеры",
+        "статья: ограниченность и точки прикосновения",
+        "статья: связность и поверхность",
+        "статья: строгое определение тела и контрпримеры"
       ],
-      "authorshipManifest": "tools/merzlyak-10-base/coverage-theory-10-19.json"
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-theory-articles.json"
     },
     {
       "id": "source-main-01-001",
@@ -13798,7 +13836,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-002",
@@ -13819,7 +13861,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-003",
@@ -13840,7 +13886,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-004",
@@ -13861,7 +13911,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-005",
@@ -13882,7 +13936,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-006",
@@ -13903,7 +13961,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-007",
@@ -13924,7 +13986,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-008",
@@ -13945,7 +14011,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-009",
@@ -13966,7 +14036,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-010",
@@ -13987,7 +14061,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-011",
@@ -14008,7 +14086,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-012",
@@ -14029,7 +14111,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-013",
@@ -14050,7 +14136,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-014",
@@ -14071,7 +14161,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-015",
@@ -14092,7 +14186,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-016",
@@ -14113,7 +14211,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-017",
@@ -14134,7 +14236,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-018",
@@ -14155,7 +14261,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-019",
@@ -14176,7 +14286,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-020",
@@ -14197,7 +14311,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-021",
@@ -14218,7 +14336,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-022",
@@ -14239,7 +14361,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-023",
@@ -14260,7 +14386,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-024",
@@ -14281,7 +14411,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-025",
@@ -14302,7 +14436,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-026",
@@ -14323,7 +14461,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-027",
@@ -14344,7 +14486,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-028",
@@ -14365,7 +14511,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-029",
@@ -14386,7 +14536,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-030",
@@ -14407,7 +14561,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-031",
@@ -14428,7 +14586,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-032",
@@ -14449,7 +14611,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-033",
@@ -14470,7 +14636,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-034",
@@ -14491,7 +14661,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-035",
@@ -14512,7 +14686,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-036",
@@ -14533,7 +14711,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-037",
@@ -14554,7 +14736,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-038",
@@ -14575,7 +14761,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-039",
@@ -14596,7 +14786,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-040",
@@ -14617,7 +14811,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-041",
@@ -14638,7 +14836,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-042",
@@ -14659,7 +14861,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-043",
@@ -14680,7 +14886,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-044",
@@ -14701,7 +14911,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-045",
@@ -14722,7 +14936,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-046",
@@ -14743,7 +14961,11 @@
       },
       "sourceCategory": "paragraph_review",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-16-047",
@@ -14764,7 +14986,11 @@
       },
       "sourceCategory": "paragraph_review",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-001",
@@ -14785,7 +15011,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-002",
@@ -14806,7 +15036,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-003",
@@ -14827,7 +15061,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-004",
@@ -14848,7 +15086,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-005",
@@ -14869,7 +15111,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-006",
@@ -14890,7 +15136,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-007",
@@ -14911,7 +15161,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-008",
@@ -14932,7 +15186,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-009",
@@ -14953,7 +15211,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-010",
@@ -14974,7 +15236,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-011",
@@ -14995,7 +15261,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-012",
@@ -15016,7 +15286,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-013",
@@ -15037,7 +15311,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-014",
@@ -15058,7 +15336,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-015",
@@ -15079,7 +15361,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-016",
@@ -15100,7 +15386,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-017",
@@ -15121,7 +15411,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-018",
@@ -15142,7 +15436,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-019",
@@ -15163,7 +15461,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-020",
@@ -15184,7 +15486,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-021",
@@ -15205,7 +15511,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-022",
@@ -15226,7 +15536,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-023",
@@ -15247,7 +15561,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-024",
@@ -15268,7 +15586,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-025",
@@ -15289,7 +15611,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-026",
@@ -15310,7 +15636,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-027",
@@ -15331,7 +15661,11 @@
       },
       "sourceCategory": "exercise",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-028",
@@ -15352,7 +15686,11 @@
       },
       "sourceCategory": "paragraph_review",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-17-029",
@@ -15373,7 +15711,11 @@
       },
       "sourceCategory": "paragraph_review",
       "sourcePageScope": "exercise_start_page",
-      "coverageReview": "Exercise number and starting page checked against PDF text labels; statement, subparts, solution and model still require source verification."
+      "coverageReview": "Explicit authored draft mapping; source, mathematical and pedagogical release reviews remain separate. Open-ended research entries represent worked guidance, not completed pupil reports.",
+      "requiredParts": [
+        null
+      ],
+      "authorshipManifest": "tools/merzlyak-10-base/coverage-16-17.json"
     },
     {
       "id": "source-main-18-001",
@@ -23010,5 +23352,14 @@
       ],
       "authorshipManifest": "tools/merzlyak-10-base/coverage-projects.json"
     }
-  ]
+  ],
+  "inventoryVerification": {
+    "sourceGroups": 875,
+    "requiredComponents": 989,
+    "numberedExercises": 736,
+    "independentReviewManifest": "tools/merzlyak-10-base/content-review-manifest.json",
+    "contentReviewLedger": "tools/merzlyak-10-base/content-review-ledger.json",
+    "scope": "All numbered exercises and source subparts; theory definitions, proofs and worked examples; all five supplementary articles; theory questions, computer instructions and project guides. Source ambiguities are documented in the corresponding cards.",
+    "releaseApproval": false
+  }
 }

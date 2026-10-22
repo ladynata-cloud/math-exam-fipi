@@ -4,7 +4,7 @@
   "id": "merz-ex-10-020",
   "kind": "exercise",
   "title": "10.20. Проверка совместимости условия",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -214,8 +214,10 @@
     "prompt": "Запиши результат и объясни ключевой переход. Доказательство проверяется преподавателем. Ожидаемый вывод: Такой конфигурации не существует: в напечатанном условии противоречие."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/ocr_source",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

@@ -4,7 +4,7 @@
   "id": "merz-question-12-01",
   "kind": "exercise",
   "title": "§ 12. Вопрос 1: Что называют углом между прямой и плоскостью?",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "selfcheck",
@@ -182,8 +182,10 @@
     "prompt": "Запиши ответ своими словами, сохраняя все условия определения или теоремы. Запись сохраняется для обсуждения с преподавателем; автоматически её правильность не определяется."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

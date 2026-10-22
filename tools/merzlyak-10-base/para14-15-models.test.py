@@ -3,6 +3,7 @@ This author test does not mark any review as passed.
 """
 import json,math
 from pathlib import Path
+from review_state import assert_review_state
 ROOT=Path(__file__).resolve().parents[2];DIR=ROOT/'stereo-course/merzlyak-10-base/lessons'
 def lesson(s,n):return json.loads((DIR/f'ex-{s:02}-{n:03}.json').read_text())
 def pts(s,n):return lesson(s,n)['visualization']['model']['points']
@@ -120,8 +121,8 @@ c=json.loads((ROOT/'tools/merzlyak-10-base/coverage-14-15.json').read_text());as
 for e in c['entries']:
  assert e['requiredParts']==[None]
  for file in e['lessonFiles']:
-  x=json.loads((ROOT/file).read_text());assert x['status']=='draft';assert set(x['review'].values())=={'pending'};assert x['source']['pdfPages']==[p+1 for p in x['source']['printedPages']]
-print('MERZLYAK_PARA14_15_MODEL_METRICS_OK: source metrics, plane/line angles, actual orthogonal maps, 9 complete section clips, all 54 draft cards')
+  x=json.loads((ROOT/file).read_text());assert_review_state(x);assert x['source']['pdfPages']==[p+1 for p in x['source']['printedPages']]
+print('MERZLYAK_PARA14_15_MODEL_METRICS_OK: source metrics, plane/line angles, actual orthogonal maps, 9 complete section clips, all 54 cards with verified review state')
 
 # Reviewer R1415-002: auxiliary perpendicular is visible in the step introducing it.
 for num in (31,32):

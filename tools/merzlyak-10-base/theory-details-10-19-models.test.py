@@ -3,9 +3,12 @@
 import json, math, unittest
 from pathlib import Path
 import numpy as np
+from review_state import assert_review_state
 ROOT=Path(__file__).resolve().parents[2]; DIR=ROOT/'stereo-course/merzlyak-10-base/lessons'
 COVER=json.loads((ROOT/'tools/merzlyak-10-base/coverage-theory-10-19.json').read_text())
-CARDS={tuple(map(int,(d['source']['point'],p.stem.split('-')[-1]))):d for p in DIR.glob('theory-*-detail-*.json') if 10<=int(p.stem.split('-')[1])<=19 for d in [json.loads(p.read_text())]}
+FILES=[ROOT/card['lessonFile'] for card in COVER['newCards']]
+assert len(FILES)==27 and len(set(FILES))==27, 'exact original detail-card manifest'
+CARDS={tuple(map(int,(d['source']['point'],p.stem.split('-')[-1]))):d for p in FILES for d in [json.loads(p.read_text())]}
 def pts(n,k):return {name:np.array(x,dtype=float)for name,x in CARDS[n,k]['visualization']['model']['points'].items()}
 def vec(p,a,b):return p[b]-p[a]
 def length(p,a,b):return np.linalg.norm(vec(p,a,b))
@@ -26,7 +29,7 @@ class Models(unittest.TestCase):
   self.assertEqual(len(CARDS),27);self.assertEqual(COVER['counts']['newDetailCards'],27)
   for (n,k),d in CARDS.items():
    with self.subTest(n=n,k=k):
-    m=d['visualization']['model'];p=pts(n,k);self.assertEqual(d['status'],'draft');self.assertEqual(set(d['review'].values()),{'pending'})
+    m=d['visualization']['model'];p=pts(n,k);assert_review_state(d)
     self.assertEqual(d['source']['printedPages'],[x-1 for x in d['source']['pdfPages']]);self.assertEqual(d['source']['collection'],'theory');self.assertEqual(d['source']['chapter'],'Глава 3. Перпендикулярность в пространстве' if n<16 else 'Глава 4. Многогранники')
     for x in p.values():self.assertEqual(x.shape,(3,));self.assertTrue(np.all(np.isfinite(x)))
     for a,b in m['edges']:self.assertGreater(length(p,a,b),1e-8)

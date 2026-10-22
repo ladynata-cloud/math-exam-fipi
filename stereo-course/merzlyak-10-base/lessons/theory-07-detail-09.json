@@ -4,7 +4,7 @@
   "id": "merz-theory-07-detail-09",
   "kind": "theory",
   "title": "§ 7. Три диагонали встречаются в одной точке",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "theory",
@@ -284,11 +284,28 @@
       ],
       "views": {
         "neutral": {
-          "label": "Условие и обозначения"
+          "label": "Условие и обозначения",
+          "points": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ]
         },
         "original": {
           "label": "Шесть чевиан и внутренний шестиугольник",
           "polygon": [
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P"
+          ],
+          "points": [
+            "A",
+            "B",
+            "C",
             "K",
             "L",
             "M",
@@ -300,6 +317,11 @@
         "regular": {
           "label": "Равносторонний треугольник ABD",
           "polygon": [
+            "A",
+            "B",
+            "D"
+          ],
+          "points": [
             "A",
             "B",
             "D"
@@ -322,6 +344,12 @@
             ]
           ],
           "points": [
+            "K1",
+            "N1",
+            "L1",
+            "O1",
+            "M1",
+            "P1",
             "G1"
           ]
         },
@@ -342,30 +370,17 @@
             ]
           ],
           "points": [
+            "K",
+            "N",
+            "L",
+            "O",
+            "M",
+            "P",
             "G"
           ]
         }
       },
-      "labelNames": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "G",
-        "K1",
-        "L1",
-        "M1",
-        "N1",
-        "O1",
-        "P1",
-        "G1"
-      ],
+      "labelNames": [],
       "faces": [
         [
           "A",
@@ -446,8 +461,10 @@
     "prompt": "Запиши доказательство или построение своими словами, указывая условия применённых теорем. Запись сохраняется; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

@@ -4,7 +4,7 @@
   "id": "merz-project-3",
   "kind": "exercise",
   "title": "Проект3. Две теоремы о трёхгранном угле",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "research",
@@ -272,8 +272,10 @@
     "prompt": "Запиши тезисы своего исследования, доказательства и источники. Проект оценивается по содержанию и аргументации при обсуждении с преподавателем, а не автоматической отметкой."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

@@ -314,8 +314,8 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/theory-07-detail-09.json",
       "lessonId": "merz-theory-07-detail-09",
-      "sha256": "9d2dc93308e3f809c5ddc622d34f917b61a87500aee33818425cf7a34776cc57",
-      "contentSha256": "e75b9f4787db607b37652b7e72b4b213c40ab2d1c053488fc20c7a03528d0018",
+      "sha256": "9c809c1165c233885424caa2eff3348b33418308f13d90b37df510e215bd3afb",
+      "contentSha256": "5ca8d556880c000d9b1d8cb0036e9aa17133ab38c97ca336eb1e7048a1b0d6ce",
       "source": "PASS",
       "mathematics": "PASS",
       "pedagogy": "PASS"
@@ -372,5 +372,22 @@
     "help",
     "steps",
     "answer"
+  ],
+  "followupReviews": [
+    {
+      "reviewedAt": "2026-10-22T22:51:48.959829+00:00",
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-07-detail-09.json",
+      "beforeSha256": "9d2dc93308e3f809c5ddc622d34f917b61a87500aee33818425cf7a34776cc57",
+      "afterSha256": "9c809c1165c233885424caa2eff3348b33418308f13d90b37df510e215bd3afb",
+      "finding": "Cloud 900-card mobile screenshot showed crowded global labels in the affine-concurrency construction despite no literal label overlaps.",
+      "resolution": "Each view now labels only its own plane or diagonal endpoints:4/9/3/7/7 names.",
+      "independentVerification": "Compared complete old/new JSON after excluding only labelNames and view.points; every coordinate, edge, source field, proof and answer is identical. Independently checked exact view point sets. Mathematical/source conclusions retained; pedagogical focus improved.",
+      "verdicts": {
+        "source": "PASS",
+        "mathematics": "PASS",
+        "pedagogy": "PASS"
+      },
+      "browserCheck": "Final cloud check still required for the new label sets."
+    }
   ]
 }

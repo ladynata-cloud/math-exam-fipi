@@ -4,7 +4,7 @@
   "id": "ex-03-003",
   "kind": "exercise",
   "title": "3.3. Плоскость через вершину и ребро",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -164,7 +164,7 @@
           "text": "Две общие точки определяют прямую пересечения двух различных плоскостей. В каждой грани сечение идёт по прямой."
         }
       ],
-      "view": "neutral",
+      "view": "section",
       "id": "step-2"
     },
     {
@@ -186,8 +186,10 @@
     "prompt": "Запишите ответ или выполните построение и обоснуйте каждый шаг. Запись предназначена для обсуждения с учителем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

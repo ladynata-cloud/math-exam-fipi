@@ -4,7 +4,7 @@
   "id": "ex-12-028",
   "kind": "exercise",
   "title": "№ 12.28. Проекция в заднюю грань",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -223,8 +223,10 @@
     "prompt": "Запиши ответ по каждому пункту с единицами и обоснованием. Запись сохраняется для обсуждения с преподавателем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

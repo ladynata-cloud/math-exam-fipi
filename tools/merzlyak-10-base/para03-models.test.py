@@ -8,6 +8,7 @@ import math
 from pathlib import Path
 import unittest
 from collections import Counter
+from review_state import assert_review_state
 
 ROOT=Path(__file__).resolve().parents[2]
 LESSONS=ROOT/'stereo-course/merzlyak-10-base/lessons'
@@ -32,8 +33,7 @@ class ParagraphThree(unittest.TestCase):
         for path in files:
             d=json.loads(path.read_text());m=d['visualization']['model'];p=m['points']
             with self.subTest(file=path.name):
-                self.assertEqual(d['status'],'draft')
-                self.assertEqual(d['review'],dict(source='pending',mathematics='pending',pedagogy='pending'))
+                assert_review_state(d)
                 self.assertEqual(d['source']['chapter'],'Глава 1. Введение в стереометрию')
                 self.assertEqual(d['source']['pdfPages'],[x+1 for x in d['source']['printedPages']])
                 for q in p.values():self.assertTrue(len(q)==3 and all(math.isfinite(x) for x in q))

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Historical cloud QA evidence. A checkpoint applies only to its exact authored tree and bundle; it does not approve later content or publication.",
+  "checkpoints": [
+    {
+      "authoredCards": 542,
+      "head": "aaecf515ab9bdd9f46586c7fb62fccc6197ddcee",
+      "testedMergeCommit": "c7a570cffa1b40538b129be31e3ba63a1357f057",
+      "run": 39863119027,
+      "job": 120118536283,
+      "result": "PASS",
+      "bundleSHA256": "b4cbe9dca9c7b69f24bda87de567fcddd9d34de0ac22de3066e0662e3a3a0771",
+      "viewWidthStates": 3662,
+      "screenshots": 2134,
+      "artifact": 12461664702
+    },
+    {
+      "authoredCards": 900,
+      "head": "36266d49858fec48bc65783ba09f4023b9513dcf",
+      "testedMergeCommit": "e3749ef9d1fe599196be8ba6f82a464e434b4995",
+      "run": 39866111680,
+      "job": 120128593375,
+      "result": "PASS",
+      "bundleSHA256": "e98bf1ab2c1161f03412b75884220482beb432a1abdae038e475bd7c77e4af88",
+      "viewWidthStates": 5962,
+      "screenshots": 3528,
+      "artifact": 12464272168,
+      "manualVisualReview": {
+        "scope": "Six selected 320px screenshots:14.31,20.83,theory7detail9,theory13detail4,computer16.3,question17.5. This is sampling, not manual review of every screenshot.",
+        "finding": "Theory7detail9 displayed 18 global labels despite no literal overlap; focused view labels requested for the next checkpoint. Reset button wrapping fix was visibly effective."
+      }
+    }
+  ],
+  "externalConsultation": {
+    "run": 39857930153,
+    "result": "UNAVAILABLE",
+    "providerHTTPStatus": 400,
+    "responseOrVerdictReceived": false,
+    "automaticRetries": 0
+  },
+  "releaseApproval": false
+}

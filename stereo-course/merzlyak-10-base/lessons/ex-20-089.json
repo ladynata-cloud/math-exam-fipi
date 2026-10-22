@@ -4,7 +4,7 @@
   "id": "merz-ex-20-089",
   "kind": "exercise",
   "title": "20.89. Боковая площадь пирамиды с двумя вертикальными гранями",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -189,8 +189,10 @@
     "prompt": "Запиши результат и обоснуй его. Доказательство и построение проверяет преподаватель. Ожидаемый вывод: 600 см²."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para2",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

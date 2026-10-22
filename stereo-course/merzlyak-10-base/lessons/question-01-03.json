@@ -4,7 +4,7 @@
   "id": "merz-question-01-03",
   "kind": "exercise",
   "title": "§ 1. Вопрос 3: В каком случае говорят, что прямая пересекает плоскость?",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "selfcheck",
@@ -107,6 +107,23 @@
             "B",
             "D"
           ]
+        },
+        "intersection": {
+          "label": "AD пересекает плоскость ABC только в A",
+          "segments": [
+            [
+              "A",
+              "D"
+            ]
+          ],
+          "polygon": [
+            "A",
+            "B",
+            "C"
+          ],
+          "points": [
+            "A"
+          ]
         }
       },
       "faces": [
@@ -149,7 +166,7 @@
           "text": "§ 1: определения и свойства, к которым относится вопрос 3."
         }
       ],
-      "view": "other"
+      "view": "intersection"
     },
     {
       "id": "step-2",
@@ -162,7 +179,7 @@
           "text": "Заданные координатами отношения в модели иллюстрируют определение или теорему; рисунок не заменяет общего доказательства."
         }
       ],
-      "view": "other"
+      "view": "intersection"
     }
   ],
   "answer": {
@@ -170,8 +187,10 @@
     "prompt": "Запиши ответ своими словами, сохраняя все условия определения или теоремы. Запись сохраняется для обсуждения с преподавателем; автоматически её правильность не определяется."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

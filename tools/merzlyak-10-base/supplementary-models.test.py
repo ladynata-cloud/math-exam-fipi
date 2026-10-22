@@ -5,6 +5,7 @@ Python 3 + NumPy. Loads JSON directly; does not import the authoring generator.
 from pathlib import Path
 import json, math, unittest
 import numpy as np
+from review_state import assert_review_state
 ROOT=Path(__file__).resolve().parents[2]
 LESSONS=ROOT/'stereo-course/merzlyak-10-base/lessons'
 EPS=2e-7
@@ -29,7 +30,7 @@ class SupplementaryModels(unittest.TestCase):
    for n in range(1,total+1):
     d=load(group,n);m=d['visualization']['model'];p=points(m)
     with self.subTest(group=group,n=n):
-     self.assertEqual(d['status'],'draft');self.assertEqual(d['review'],dict(source='pending',mathematics='pending',pedagogy='pending'))
+     assert_review_state(d)
      self.assertEqual(d['source']['exercise'],f'{group}-{n}');self.assertEqual(d['source']['collection'],'research')
      self.assertEqual(d['source']['printedPages'],[30 if group=='sections' else 142]);self.assertEqual(d['source']['pdfPages'],[31 if group=='sections' else 143])
      for q in p.values():self.assertTrue(q.shape==(3,) and np.isfinite(q).all())

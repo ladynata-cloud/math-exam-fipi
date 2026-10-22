@@ -4,7 +4,7 @@
   "id": "merz-ex-20-041",
   "kind": "exercise",
   "title": "20.41. Симметрия параллельной плоскости",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -197,8 +197,10 @@
     "prompt": "Запиши результат и обоснуй его. Доказательство и построение проверяет преподаватель. Ожидаемый вывод: β₁∥α."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para2",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

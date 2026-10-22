@@ -4,7 +4,7 @@
   "id": "ex-07-017",
   "kind": "exercise",
   "title": "№ 7.17. Прямоугольник в эллипсе",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -716,8 +716,10 @@
     "prompt": "Запиши ответ, построение или доказательство с обоснованием. Запись сохраняется для обсуждения с преподавателем; автоматической оценки доказательства нет."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/course_architecture",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

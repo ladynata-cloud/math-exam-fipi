@@ -4,7 +4,7 @@
   "id": "merz-ex-04-011-2",
   "kind": "exercise",
   "title": "4.11(2). Параллельная и скрещивающаяся",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -151,8 +151,10 @@
     "prompt": "Запиши ответ, ход построения или доказательство. Рассуждение сохраняется для обсуждения с преподавателем и автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/ocr_source",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

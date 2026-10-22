@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "reviewer": "Independent source, mathematics, model and school-level exposition review by textbook_inventory; authors are root.",
-  "reviewedAt": "2026-10-22T22:29:50.867049+00:00",
+  "reviewedAt": "2026-10-22T22:45:52.304796+00:00",
   "scope": "All 39 computer-activity lessons and 5 open-ended project guides. Source task coverage and topic boundaries, mathematical statements and algorithms, full worked examples, model incidence and pedagogical prerequisites were checked.",
   "sourcePagesVisuallyChecked": [
     196,
@@ -272,7 +272,7 @@
         ],
         "subpart": "3.3"
       },
-      "sha256": "b305088877de9260c45614904ea57373d32615aa30409e1cf8fa4c68d8f8ed5c",
+      "sha256": "80c1e30b20c3636a8ac21d0a67d1a552715d57f1e1aa436026213f80c3feb7ac",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass",
@@ -296,7 +296,7 @@
         ],
         "subpart": "3.4"
       },
-      "sha256": "4c914a1abd522469278681c74eb0fbd8264033b8f49de66c685875444aec3895",
+      "sha256": "19bb13b87d52e65cb039998528c29e7bad22a4bf8ea3fd8590f80806bc3d49ff",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass",
@@ -984,7 +984,7 @@
         ],
         "subpart": "классификация"
       },
-      "sha256": "9eb53ebca851a8973fe2a6e5dde73b7835ccf2945e924c9fd7010f7cbda0b898",
+      "sha256": "1037eff5c45c51c39a20a36a07024070534883f992923c4a85cbf0e2ef1585d2",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass",
@@ -1099,6 +1099,31 @@
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass",
       "pedagogyReview": "pass_with_stated_project_scope"
+    }
+  ],
+  "followupReviews": [
+    {
+      "reviewedAt": "2026-10-22T22:45:52.304796+00:00",
+      "scope": "Computer03.01/02 focus improvements plus computer19.01 scoped labels.",
+      "method": "Read final diffs: computer03.01 selects existing section; computer03.02 adds correct DP segment and selects it. Both match independently reviewed exercise3.3/3.4. computer19.01 moves the same8 existing point labels from global model.labelNames into neutral.points; coordinates, source and classification arguments unchanged. All7 independent regression groups pass.",
+      "sourceOrMathematicalTextChanged": false,
+      "updates": [
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/computer-03-01.json",
+          "previousSha256": "b305088877de9260c45614904ea57373d32615aa30409e1cf8fa4c68d8f8ed5c",
+          "sha256": "80c1e30b20c3636a8ac21d0a67d1a552715d57f1e1aa436026213f80c3feb7ac"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/computer-03-02.json",
+          "previousSha256": "4c914a1abd522469278681c74eb0fbd8264033b8f49de66c685875444aec3895",
+          "sha256": "19bb13b87d52e65cb039998528c29e7bad22a4bf8ea3fd8590f80806bc3d49ff"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/computer-19-01.json",
+          "previousSha256": "9eb53ebca851a8973fe2a6e5dde73b7835ccf2945e924c9fd7010f7cbda0b898",
+          "sha256": "1037eff5c45c51c39a20a36a07024070534883f992923c4a85cbf0e2ef1585d2"
+        }
+      ]
     }
   ]
 }

@@ -4,12 +4,13 @@ These assertions do not promote mathematical review or certify every proof.
 """
 import json, math
 from pathlib import Path
+from review_state import assert_review_state
 ROOT=Path(__file__).resolve().parents[2]/'stereo-course/merzlyak-10-base/lessons'
 N=0;CHECKED=[];P={}
 def load(p,n):
  global P
  d=json.loads((ROOT/f'ex-{p:02}-{n:03}.json').read_text());P=d['visualization']['model']['points'];CHECKED.append((p,n))
- assert d['status']=='draft' and set(d['review'].values())=={'pending'}
+ assert_review_state(d)
  return d
 def sub(a,b):return [x-y for x,y in zip(a,b)]
 def dot(a,b):return sum(x*y for x,y in zip(a,b))

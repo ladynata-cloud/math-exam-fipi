@@ -4,7 +4,7 @@
   "id": "ex-03-032",
   "kind": "exercise",
   "title": "3.32. Площадь треугольника через центр тяжести",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -127,7 +127,7 @@
     {
       "id": "help-1",
       "question": "С чего начать?",
-      "text": "Найдите две точки, которые лежат в одной грани и в искомой плоскости. Соедините их; при необходимости продолжите прямую до ребра или его продолжения."
+      "text": "Точка пересечения медиан делит каждую медиану в отношении 2:1 от вершины. Найдите коэффициент подобия малого и большого треугольников, затем возведите его в квадрат."
     }
   ],
   "steps": [
@@ -182,8 +182,10 @@
     "feedback": "Используйте квадрат коэффициента подобия 2/3."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

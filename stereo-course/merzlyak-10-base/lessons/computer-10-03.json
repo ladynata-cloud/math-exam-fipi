@@ -4,7 +4,7 @@
   "id": "merz-computer-10-03",
   "kind": "exercise",
   "title": "Компьютер · § 10: Ортогональные виды параллелепипеда",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "practical",
@@ -296,8 +296,10 @@
     "prompt": "Запиши построение или алгоритм и результат его проверки на примере. Эта запись сохраняется; полноценная программа и геометрическое доказательство требуют обсуждения с преподавателем."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

@@ -4,7 +4,7 @@
   "id": "ex-03-009-d",
   "kind": "exercise",
   "title": "3.9г. Сечение призмы, рисунок г",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -336,8 +336,10 @@
     "prompt": "Запишите ответ или выполните построение и обоснуйте каждый шаг. Запись предназначена для обсуждения с учителем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

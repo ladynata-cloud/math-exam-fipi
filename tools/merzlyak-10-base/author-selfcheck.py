@@ -132,6 +132,18 @@ def transfer_scene(central=False):
 def scene_for(n,q):
     model_n={(10,5):5,(10,6):6,(13,6):6,(16,9):17}.get((n,q),n)
     visual=copy.deepcopy(THEORY[model_n]['visualization'])
+    if (n,q)==(1,3):
+        visual['model']['views']['intersection']={'label':'AD пересекает плоскость ABC только в A','segments':[['A','D']],'polygon':['A','B','C'],'points':['A']}
+    if n==8 and q in [3,4]:
+        visual['model']['points']['D']=[0,3,2]
+        visual['model']['points']['E']=[0,3,0]
+        visual['caption']='AB и CD — перпендикулярные скрещивающиеся прямые: AE∥CD, а AB⊥AE. Прямой угол подтверждается направлениями, а не измерением изображения.'
+        visual['model']['views']['angle']['label']='AB⊥AE и AE∥CD, поэтому угол между AB и CD равен 90°'
+    if n==17 and q in [3,4,5]:
+        visual['model']['views']['height']={'label':'Боковое ребро AA₁ перпендикулярно основанию','segments':[['A','A1']],'polygon':['A','B','C','D']}
+        visual['model']['views']['dimensions']={'label':'Три измерения: AB, AD, AA₁','segments':[['A','B'],['A','D'],['A','A1']]}
+    if (n,q)==(18,6):
+        visual['model']['views']['side']={'label':'SAB — одна из четырёх боковых граней; основание не включаем','polygon':['S','A','B']}
     if n==7 and q in [2,3,4,5]:return transfer_scene(q==3)
     if n==10 and q in [5,6]:
         segment=['E','A'] if q==5 else ['A','A1']
@@ -156,12 +168,17 @@ def main():
         entry=ENTRIES[f'source-question-{n:02}-{q:02}']
         source=copy.deepcopy(entry['source']);source.pop('paragraph',None)
         visual=scene_for(n,q)
+        view={(1,3):'intersection',(8,3):'angle',(8,4):'angle',(17,3):'height',(17,4):'dimensions',(17,5):'dimensions',(18,6):'side'}.get((n,q),view)
+        if n==8 and q in [3,4]:
+            example='AE параллельна CD, а AB перпендикулярна AE. Поэтому угол между AB и CD равен 90°; эти скрещивающиеся прямые и лежащие на них отрезки перпендикулярны.'
         assert view in visual['model']['views'],(identity,view)
         steps=[]
         for i,component in enumerate(answer.split('¦'),1):
             steps.append({'id':f'step-{i}','title':('Формулируем ответ' if i==1 else 'Уточняем следующее условие'),
               'prompt':question if i==1 else 'Какое ещё утверждение требуется в этом вопросе?',
               'explanation':component,'justifications':[{'kind':'definition','text':f'§ {n}: определения и свойства, к которым относится вопрос {q}.'}], 'view':view})
+            if (n,q)==(4,4) and i==1:steps[-1]['view']='parallel'
+            if (n,q)==(10,2) and i==1:steps[-1]['view']='perp'
         steps.append({'id':f'step-{len(steps)+1}','title':'Связываем ответ с моделью','prompt':'Найди на модели названные объекты и проверь условия формулировки.',
           'explanation':example,'justifications':[{'kind':'given','text':'Заданные координатами отношения в модели иллюстрируют определение или теорему; рисунок не заменяет общего доказательства.'}],'view':view})
         lesson={'schemaVersion':1,'revision':1,'id':f'merz-question-{n:02}-{q:02}','kind':'exercise',

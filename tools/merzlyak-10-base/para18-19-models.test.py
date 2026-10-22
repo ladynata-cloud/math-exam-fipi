@@ -3,6 +3,7 @@ Standard library only; never imports or executes the authoring generator.
 """
 import json,math,unittest
 from pathlib import Path
+from review_state import assert_review_state
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'stereo-course/merzlyak-10-base/lessons'
 EPS=2e-7
@@ -36,7 +37,7 @@ class Pyramids(unittest.TestCase):
   for f in files:
    x=json.loads(f.read_text());m=x['visualization']['model'];p=m['points']
    with self.subTest(file=f.name):
-    self.assertEqual(x['status'],'draft');self.assertEqual(set(x['review'].values()),{'pending'});self.assertEqual(x['source']['chapter'],'Глава 4. Многогранники')
+    assert_review_state(x);self.assertEqual(x['source']['chapter'],'Глава 4. Многогранники')
     self.assertEqual(x['source']['pdfPages'],[q+1 for q in x['source']['printedPages']]);self.assertTrue(3<=len(x['steps'])<=7)
     for q in p.values():self.assertTrue(len(q)==3 and all(math.isfinite(v) for v in q))
     for a,b in m['edges']:self.assertIn(a,p);self.assertIn(b,p);self.assertGreater(d(p,a,b),EPS)

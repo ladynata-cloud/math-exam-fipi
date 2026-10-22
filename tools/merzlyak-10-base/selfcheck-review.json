@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "reviewer": "independent source/mathematics review by textbook_inventory agent; author is root",
-  "reviewedAt": "2026-10-22T22:06:50.362393+00:00",
+  "reviewedAt": "2026-10-22T22:37:44.715274+00:00",
   "scope": "All 97 self-check cards, including source question wording, complete requested answer components, correctness of definitions/theorem conditions, and actual numerical model relationships.",
   "sourceQuestionPagesVisuallyChecked": [
     11,
@@ -34,7 +34,7 @@
   "sourceQuestionCount": 97,
   "result": "pass_with_resolved_findings",
   "checks": {
-    "independentNumericalAndStructuralChecks": 4869,
+    "independentNumericalAndStructuralChecks": 4911,
     "script": "tools/merzlyak-10-base/selfcheck-models-review.test.py",
     "command": "python tools/merzlyak-10-base/selfcheck-models-review.test.py",
     "result": "pass"
@@ -64,7 +64,7 @@
   ],
   "authorGenerator": {
     "path": "tools/merzlyak-10-base/author-selfcheck.py",
-    "sha256": "fa1f9087ffc7c8d04d7bcbb81db62c596e240430b7415af579788380ce20f576"
+    "sha256": "b60a41642872d66c2c853294853f9a46269d98612481a8e83321264c522da064"
   },
   "entries": [
     {
@@ -122,7 +122,7 @@
           11
         ]
       },
-      "sha256": "d109c3c64b90a59503526a72981e38334c35515a8f8a9a97c99d44fb11278228",
+      "sha256": "d7668600e5097726be082e72567925d59e1552db8f36fd2d1482476506966624",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
@@ -362,7 +362,7 @@
           37
         ]
       },
-      "sha256": "5b121a33fc92652c3d999f25262fefd0838a59cf7f65fcfae71f7cd0c09ebcd7",
+      "sha256": "59672a6eb3fcbccd09a2398feb9ca3b1a59c572638b1780d8cbd36dbaebfcae0",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
@@ -782,7 +782,7 @@
           86
         ]
       },
-      "sha256": "8cb83a3f7d23fe34fbdae22c2ea31dcbad079be049f9a91389eaf03d91efa4b4",
+      "sha256": "f395f686f0875632aa9163ebb0067ff11b43d1196d3eef7987b584886844ccbf",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
@@ -802,7 +802,7 @@
           86
         ]
       },
-      "sha256": "464faa670951ff193a3fed696369babdfa5be21067cc8d136112890bdedd4e2f",
+      "sha256": "31d4d1642261faada68fad1727f922e3077e105db391647c5df22459df706f1c",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
@@ -1002,7 +1002,7 @@
           103
         ]
       },
-      "sha256": "d23693edd5b5d5acfbe52e5388a0f476071cbf1ed18dcbe1eba15aa0e6f19e83",
+      "sha256": "6097ce86015620ee953efafed3c204f3686762fcd4a0757b13d92da002d702b1",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
@@ -1662,7 +1662,7 @@
           161
         ]
       },
-      "sha256": "c7b0351fca567f55e20e6f2925a96e5905747415dda4da954befdcc7426ae5e6",
+      "sha256": "a5efea5143d445b47759f9a30b57fb92f2d3daa01c3ca7832fd1ddc4aa4a149c",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
@@ -1682,7 +1682,7 @@
           161
         ]
       },
-      "sha256": "8f38aaf96f8bc87d7920e36bcbe7c5c4740f83abecccbfbf267a521d717c72b7",
+      "sha256": "3d7dcadc775e8fa07841cfd29154d58aba2e605a847755e0db1efcb479f50f73",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
@@ -1702,7 +1702,7 @@
           161
         ]
       },
-      "sha256": "8769520e3dcb5cbec4405382b49006800e67696ebf64d4045a988140eddc8f36",
+      "sha256": "dac0f8c9203c121a7d1159a8d2cdc42aaf8ee972ba6e779b67a841cc6a9bc18b",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
@@ -1862,7 +1862,7 @@
           167
         ]
       },
-      "sha256": "a1f426d08ca8f915ff242646bcab9aa2ac747d71d037f7bf83e677bc77c9440a",
+      "sha256": "e6e4c9fd478c87b202bb297ffa1dbd8df4c8fda14a2096a0e669bc8ca1a12d26",
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
@@ -2006,6 +2006,24 @@
       "sourceReview": "pass",
       "mathematicsReview": "pass",
       "modelRelationsReview": "pass"
+    }
+  ],
+  "followupReviews": [
+    {
+      "scope": "Independent mathematical recheck after focus/view improvements identified by lessons_para1.",
+      "changedLessons": [
+        "stereo-course/merzlyak-10-base/lessons/question-01-03.json",
+        "stereo-course/merzlyak-10-base/lessons/question-04-04.json",
+        "stereo-course/merzlyak-10-base/lessons/question-08-03.json",
+        "stereo-course/merzlyak-10-base/lessons/question-08-04.json",
+        "stereo-course/merzlyak-10-base/lessons/question-10-02.json",
+        "stereo-course/merzlyak-10-base/lessons/question-17-03.json",
+        "stereo-course/merzlyak-10-base/lessons/question-17-04.json",
+        "stereo-course/merzlyak-10-base/lessons/question-17-05.json",
+        "stereo-course/merzlyak-10-base/lessons/question-18-06.json"
+      ],
+      "checks": "All changed views and explanatory captions read. question08.03/04 now have AB perpendicular to AE, AE parallel to CD, and AB/CD skew; other §8 models retain 60 degrees. All97 models rechecked, 4911 assertions pass.",
+      "sourceQuestionWordingChanged": false
     }
   ]
 }

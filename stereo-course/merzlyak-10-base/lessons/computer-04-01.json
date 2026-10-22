@@ -4,7 +4,7 @@
   "id": "merz-computer-04-01",
   "kind": "exercise",
   "title": "Компьютер · § 4: Взаимное расположение прямых",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "practical",
@@ -310,8 +310,10 @@
     "prompt": "Запиши построение или алгоритм и результат его проверки на примере. Эта запись сохраняется; полноценная программа и геометрическое доказательство требуют обсуждения с преподавателем."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

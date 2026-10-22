@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "verdict": "PASS",
+  "at": "2026-10-22T23:09:19.468818+00:00",
+  "commands": [
+    {
+      "command": "python3 tools/merzlyak-10-base/audit-content-reviews.py --no-write",
+      "exitCode": 0,
+      "seconds": 1.18
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/audit-content-reviews.test.py",
+      "exitCode": 0,
+      "seconds": 0.1
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/audit-content-reviews-independent.test.py",
+      "exitCode": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/build.test.py",
+      "exitCode": 0,
+      "seconds": 0.19
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/inventory-contract-review.test.py",
+      "exitCode": 0,
+      "seconds": 0.23
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/build.py",
+      "exitCode": 0,
+      "seconds": 0.35
+    },
+    {
+      "command": "node tools/stereo-textbook/model-geometry.test.cjs stereo-course/merzlyak-10-base/data/course.json",
+      "exitCode": 0,
+      "seconds": 0.2
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para01-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.03
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para02-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.03
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para03-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.1
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para04-05-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.09
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para06-07-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.3
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para08-09-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.12
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/exercises-10-11-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.11
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para12-13-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para14-15-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.09
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para16-17-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.23
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/para18-19-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.17
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/exercises-20-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.13
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/theory-details-01-09-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.17
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/theory-details-10-19-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.27
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/supplementary-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.22
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/selfcheck-models-review.test.py",
+      "exitCode": 0,
+      "seconds": 0.23
+    },
+    {
+      "command": "node tools/merzlyak-10-base/theory-models.test.cjs",
+      "exitCode": 0,
+      "seconds": 0.07
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/theory-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.03
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/review-math-01-02.py",
+      "exitCode": 0,
+      "seconds": 0.18
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/review-math-03.py",
+      "exitCode": 0,
+      "seconds": 0.17
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-04-05-checks.py",
+      "exitCode": 0,
+      "seconds": 0.05
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/independent-models-06-07.test.py",
+      "exitCode": 0,
+      "seconds": 0.18
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-08-09-checks.py",
+      "exitCode": 0,
+      "seconds": 0.04
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-10-11-checks.py",
+      "exitCode": 0,
+      "seconds": 0.04
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-12-13-checks.py",
+      "exitCode": 0,
+      "seconds": 0.03
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-supplementary-checks.py",
+      "exitCode": 0,
+      "seconds": 0.04
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/independent-theory-01-09.test.py",
+      "exitCode": 0,
+      "seconds": 0.13
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/independent-models-14-15.test.py",
+      "exitCode": 0,
+      "seconds": 0.17
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/practical-projects-models-review.test.py",
+      "exitCode": 0,
+      "seconds": 0.25
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/merge-coverage-review.test.py",
+      "exitCode": 0,
+      "seconds": 0.37
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-16-17-checks.py",
+      "exitCode": 0,
+      "seconds": 0.1
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-18-19-checks.py",
+      "exitCode": 0,
+      "seconds": 0.25
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-20-checks.py",
+      "exitCode": 0,
+      "seconds": 0.29
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-theory-10-19-checks.py",
+      "exitCode": 0,
+      "seconds": 0.04,
+      "firstExitCode": 1,
+      "rerun": "PASS 6292 assertions after explicit 37-card scope selection; no mathematics predicate changed"
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/articles-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.23
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/articles-platonic-models.test.py",
+      "exitCode": 0,
+      "seconds": 0.05
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-theory-articles-checks.py",
+      "exitCode": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/review-state-review.test.py",
+      "exitCode": 0,
+      "seconds": 0.12
+    },
+    {
+      "command": "python3 tools/merzlyak-10-base/reviewer-build-checks.py",
+      "exitCode": 0,
+      "seconds": 1.31
+    },
+    {
+      "command": "node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs",
+      "exitCode": 0,
+      "seconds": 0.97
+    }
+  ],
+  "inputHashes": {
+    ".github/workflows/merzlyak-10-base-quality.yml": "43f1bea7c1fba21d28fc9a9ef70da7f2c28f710ccc56fc355017b224645bfcc5",
+    "stereo-course/merzlyak-10-base/source-index.json": "167e99656d5da2af82ecc08a87c9992e87df23a44e1b8de410347a6257b6da53",
+    "stereo-course/merzlyak-10-base/data/course.json": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2",
+    "tools/merzlyak-10-base/content-review-manifest.json": "686c3b12a0e5315a9b0700cd3c6c990c195e2354b1636f7a7b07d340ed84f036",
+    "tools/merzlyak-10-base/content-review-ledger.json": "884167d7c2aca9bf280243385ee3fd4b291aa8e80b733600e29242975666b3fc"
+  },
+  "counts": {
+    "sourceGroups": 875,
+    "requiredComponents": 989,
+    "reviewedCards": 989,
+    "standaloneNumberedExercises": 736,
+    "numberedExerciseSolutionCards": 762,
+    "theoryCards": 86,
+    "selfcheckAnswers": 97,
+    "computerWorkCards": 39,
+    "projectGuides": 5
+  },
+  "limitations": [
+    "Browser is run separately in GitHub Actions; exact final run and tested merge tree are recorded in PR304.",
+    "Uncommitted bundle differs from last commit as expected; independent byte-for-byte reproducibility passed. CI verifies committed bundle with git diff --exit-code.",
+    "External Anthropic request returned HTTP400 and has no verdict. Merge and deployment are not approved."
+  ],
+  "fixedBeforeFinalGate": [
+    "Reviewed metadata initially lacked reviewer/at; exact evidence identities and integration timestamp were added within review-only ledger transition. Schema and runtime passed.",
+    "Theory 10–19 reviewer glob expanded to newly added article cards; explicit original 37-card scope now passes all 6292 unchanged mathematical assertions."
+  ],
+  "releaseApproval": false
+}

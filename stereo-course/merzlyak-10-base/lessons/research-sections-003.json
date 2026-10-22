@@ -4,7 +4,7 @@
   "id": "research-sections-003",
   "kind": "exercise",
   "title": "Метод сечений · 3. Параллельный след",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "research",
@@ -264,8 +264,10 @@
     "prompt": "Запишите построение или доказательство. Сверьте рассуждение с шагами; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/theory_course",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

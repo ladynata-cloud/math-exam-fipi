@@ -4,7 +4,7 @@
   "id": "merz-ex-10-028",
   "kind": "exercise",
   "title": "10.28. Проекции стороны и диагоналей ромба",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -202,8 +202,10 @@
     "prompt": "Запиши результат и объясни ключевой переход. Доказательство проверяется преподавателем. Ожидаемый вывод: CD: 4 см; AC: √55 см; BD: 3√3 см."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/ocr_source",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

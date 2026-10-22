@@ -4,7 +4,7 @@
   "id": "merz-theory-15",
   "kind": "theory",
   "title": "§ 15. Площадь ортогональной проекции · обзор",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "theory",
@@ -261,8 +261,10 @@
     "prompt": "Запиши своими словами главное правило и условия, при которых его можно применять. Запись сохраняется для обсуждения с преподавателем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/course_architecture; /root/ocr_source",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

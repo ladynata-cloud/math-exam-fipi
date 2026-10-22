@@ -4,7 +4,7 @@
   "id": "ex-09-018",
   "kind": "exercise",
   "title": "9.18. Прямая совпадает со своим отражением",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -186,8 +186,10 @@
     "prompt": "Запишите доказательство или ответ и объясните каждый переход. Доказательство обсуждается с учителем и автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

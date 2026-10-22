@@ -4,7 +4,7 @@
   "id": "ex-03-029",
   "kind": "exercise",
   "title": "3.29. Сечение через точки внутри граней",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -219,14 +219,26 @@
             [
               "X",
               "Y"
+            ],
+            [
+              "U",
+              "X"
+            ],
+            [
+              "U",
+              "Y"
             ]
+          ],
+          "points": [
+            "V",
+            "W"
           ]
         },
         "sides": {
           "label": "Следы на боковых гранях",
           "segments": [
             [
-              "M",
+              "P",
               "Z"
             ],
             [
@@ -239,7 +251,7 @@
             ]
           ],
           "points": [
-            "P",
+            "M",
             "Q"
           ]
         }
@@ -313,8 +325,10 @@
     "prompt": "Запишите ответ или выполните построение и обоснуйте каждый шаг. Запись предназначена для обсуждения с учителем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

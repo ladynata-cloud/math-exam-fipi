@@ -46,7 +46,7 @@ def model_relations(n,q,p):
   else:
    parallel(p,'A','A1','B','B1');parallel(p,'A','A1','C','C1');midpoint(p,'M','A','B');midpoint(p,'M1','A1','B1')
  elif n==8:
-  skew(p,'A','B','C','D');parallel(p,'A','E','C','D');near(np.dot(vector(p,'A','B'),vector(p,'A','E'))/(length(p,'A','B')*length(p,'A','E')),.5)
+  skew(p,'A','B','C','D');parallel(p,'A','E','C','D');near(np.dot(vector(p,'A','B'),vector(p,'A','E'))/(length(p,'A','B')*length(p,'A','E')),0 if q in [3,4] else .5)
  elif n==9:
   perpendicular(p,'M','O','O','A');perpendicular(p,'M','O','O','B');parallel(p,'M','O','N','Q');midpoint(p,'O','M','M1')
  elif n==10 and q in [7,8]:

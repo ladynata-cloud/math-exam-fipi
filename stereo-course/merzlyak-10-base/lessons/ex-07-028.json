@@ -4,7 +4,7 @@
   "id": "ex-07-028",
   "kind": "exercise",
   "title": "№ 7.28. Центр по изображениям двух высот",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -197,8 +197,10 @@
     "prompt": "Запиши ответ, построение или доказательство с обоснованием. Запись сохраняется для обсуждения с преподавателем; автоматической оценки доказательства нет."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/course_architecture",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

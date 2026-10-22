@@ -4,7 +4,7 @@
   "id": "merz-ex-11-019",
   "kind": "exercise",
   "title": "11.19. Прямоугольная описанная трапеция",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -275,8 +275,10 @@
     "prompt": "Запиши результат и объясни ключевой переход. Доказательство проверяется преподавателем. Ожидаемый вывод: 3√10 см до каждой стороны."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/ocr_source",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

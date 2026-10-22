@@ -4,7 +4,7 @@
   "id": "merz-ex-20-039",
   "kind": "exercise",
   "title": "20.39. Продолжение отрезка пересекает плоскость",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -165,8 +165,10 @@
     "prompt": "Запиши результат и обоснуй его. Доказательство и построение проверяет преподаватель. Ожидаемый вывод: B₁C=12/5 см."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para2",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

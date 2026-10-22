@@ -1,0 +1,1081 @@
+{
+  "schemaVersion": 1,
+  "expectedLessonCount": 989,
+  "lessonDirectory": "stereo-course/merzlyak-10-base/lessons",
+  "contentKeys": [
+    "id",
+    "kind",
+    "title",
+    "source",
+    "statement",
+    "visualization",
+    "help",
+    "steps",
+    "answer"
+  ],
+  "authorshipBasis": "Explicit task assignments and author/reviewer confirmations in this work session; report scope is card-specific, not release approval.",
+  "authors": [
+    {
+      "fileNameRegex": "ex-(?:01|04|05|14|15)-.+\\.json",
+      "agent": "/root/lessons_para1"
+    },
+    {
+      "fileNameRegex": "ex-(?:02|06|07|16|17)-.+\\.json",
+      "agent": "/root/lessons_para2"
+    },
+    {
+      "fileNameRegex": "ex-(?:03|08|09|18|19)-.+\\.json",
+      "agent": "/root/ocr_source"
+    },
+    {
+      "fileNameRegex": "ex-(?:10|11|20)-.+\\.json",
+      "agent": "/root/theory_course"
+    },
+    {
+      "fileNameRegex": "ex-(?:12|13)-.+\\.json",
+      "agent": "/root/course_architecture"
+    },
+    {
+      "fileNameRegex": "(?:question|computer|project)-.+\\.json",
+      "agent": "/root"
+    },
+    {
+      "fileNameRegex": "research-.+\\.json",
+      "agent": "/root/textbook_inventory"
+    },
+    {
+      "fileNameRegex": "theory-\\d{2}\\.json",
+      "agent": "/root/theory_course"
+    },
+    {
+      "fileNameRegex": "theory-0[1-9]-detail-\\d{2}\\.json",
+      "agent": "/root/course_architecture"
+    },
+    {
+      "fileNameRegex": "theory-1[0-9]-detail-\\d{2}\\.json",
+      "agent": "/root/textbook_inventory"
+    }
+  ],
+  "reports": [
+    {
+      "path": "tools/merzlyak-10-base/chapter1-review.json",
+      "sha256": "a631b123680d111aed70571ca018e390ae22d793e15e1c09abb281703134c1b7",
+      "reviewerAgent": "/root/textbook_inventory",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": {
+          "role": "independent_content_and_geometry_reviewer",
+          "agent": "textbook_inventory",
+          "provider": "OpenAI",
+          "authoredReviewedLessons": false,
+          "externalClaudeReview": false
+        }
+      },
+      "fileNameRegex": "ex-0[123]-.+\\.json",
+      "expectedCards": 83,
+      "records": "files",
+      "pathKey": "file",
+      "idKey": "id",
+      "hashKey": "fileSha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdict.sourceAndMathematics",
+          "equals": "no_remaining_findings_for_listed_files"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "sourceComparison",
+          "accept": [
+            "reviewed"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "no_remaining_findings"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "remainingFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/theory-review.json",
+      "sha256": "c656899bc1b0687ddc028bb9d88b1f014ffbb3eae27aae75a38872c0e026171c",
+      "reviewerAgent": "/root/course_architecture",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": {
+          "agent": "course_architecture",
+          "role": "independent sibling review of theory_course author",
+          "externalReviewer": false,
+          "claudeReviewPerformed": false
+        }
+      },
+      "fileNameRegex": "theory-(?:0[1-9]|1[0-8])\\.json",
+      "expectedCards": 18,
+      "records": "cards",
+      "pathKey": "file",
+      "idKey": "id",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "decision.overviewReview",
+          "equals": "passed_with_scope_limits"
+        },
+        {
+          "selector": "decision.unresolvedMathematicsBlockersWithinInspectedScope",
+          "equals": 0
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "sourceAlignment",
+          "accept": [
+            "overview definitions, named theorem conditions and displayed formulas checked against the uploaded textbook"
+          ]
+        },
+        "mathematics": {
+          "selector": "overviewResult",
+          "accept": [
+            "no unresolved mathematical issue found in inspected scope"
+          ]
+        }
+      },
+      "unresolvedSelectors": [],
+      "excludedRecords": [
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+          "sha256": "4ea308efd56b3df78bdb29f97b31c5f9ad8a446772c032e3e57cb8c4fc3075b8",
+          "reason": "Historical theory19 record predates explicit model-label changes; original reviewer requested exclusion instead of retroactive hash rewrite.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-theory-10-19.json"
+        }
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/selfcheck-review.json",
+      "sha256": "51347bd66bfa955717c29c8c772f1630757253eea946e7fca730608dd969e615",
+      "reviewerAgent": "/root/textbook_inventory",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent source/mathematics review by textbook_inventory agent; author is root"
+      },
+      "fileNameRegex": "question-.+\\.json",
+      "expectedCards": 97,
+      "records": "entries",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "result",
+          "equals": "pass_with_resolved_findings"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "sourceReview",
+          "accept": [
+            "pass"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematicsReview",
+          "accept": [
+            "pass"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "openFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/practical-projects-review.json",
+      "sha256": "3342bcdad1cdd51e9b3478d4b4b921183ac20d8e3bad24eb10337f5d32c08688",
+      "reviewerAgent": "/root/textbook_inventory",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "Independent source, mathematics, model and school-level exposition review by textbook_inventory; authors are root."
+      },
+      "fileNameRegex": "(?:computer|project)-.+\\.json",
+      "expectedCards": 44,
+      "records": "entries",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "result",
+          "equals": "pass_with_resolved_findings"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "sourceReview",
+          "accept": [
+            "pass"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematicsReview",
+          "accept": [
+            "pass"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogyReview",
+          "accept": [
+            "pass_with_stated_project_scope"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "openFindings"
+      ],
+      "acceptedFollowup": "2026-10-22T22:45:52.304796+00:00: explicit source/model/pedagogy re-review of computer03.01/02 and computer19.01; original and new hashes recorded in report."
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-18-19.json",
+      "sha256": "cc58a9a701be063b6824b1361971fa4bc884d59c0590c599dc26abdf54578a81",
+      "reviewerAgent": "/root/textbook_inventory",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "Independent source, mathematics, model and school-level exposition review by textbook_inventory; author is ocr_source."
+      },
+      "fileNameRegex": "ex-(?:18|19)-.+\\.json",
+      "expectedCards": 75,
+      "records": "entries",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "result",
+          "equals": "pass_with_resolved_findings"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "sourceReview",
+          "accept": [
+            "pass"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematicsReview",
+          "accept": [
+            "pass"
+          ]
+        },
+        "pedagogy": {
+          "selector": "schoolLevelExpositionReview",
+          "accept": [
+            "pass"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "openFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-04-05.json",
+      "sha256": "e2e58f07524df13fd34dd7765ebe930376d086e38ab2a9626214d10b26a93d09",
+      "reviewerAgent": "/root/ocr_source",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/ocr_source"
+      },
+      "fileNameRegex": "ex-0[45]-.+\\.json",
+      "expectedCards": 72,
+      "records": "files",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-06-07.json",
+      "sha256": "9e4f5c09e251f4cd8548a7fcbb1c3938f78bac9b38439e4bef01b7316990f97b",
+      "reviewerAgent": "/root/course_architecture",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/course_architecture"
+      },
+      "fileNameRegex": "ex-0[67]-.+\\.json",
+      "expectedCards": 84,
+      "records": "files",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-10-11.json",
+      "sha256": "523a5277446b7874f43b9d49d1b46f718fd171a21d25dce01aa1e27468690bdf",
+      "reviewerAgent": "/root/ocr_source",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/ocr_source"
+      },
+      "fileNameRegex": "ex-(?:10|11)-.+\\.json",
+      "expectedCards": 71,
+      "records": "files",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-14-15.json",
+      "sha256": "3d81a3c414890b5f0ead4d81505a7fbb861b9c4fd601ed0913a0c24c4a88f441",
+      "reviewerAgent": "/root/course_architecture",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/course_architecture"
+      },
+      "fileNameRegex": "ex-(?:14|15)-.+\\.json",
+      "expectedCards": 54,
+      "records": "files",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-08-09.json",
+      "sha256": "97c7d206a3465ab204f9c974921762220178ad066494eae047a866deda770f8f",
+      "reviewerAgent": "/root/lessons_para1",
+      "identityCheck": {
+        "selector": "reviewerAgent",
+        "equals": "/root/lessons_para1"
+      },
+      "fileNameRegex": "ex-0[89]-.+\\.json",
+      "expectedCards": 68,
+      "records": "lessons",
+      "pathKey": "file",
+      "idKey": "id",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "verdicts.source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "verdicts.mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "verdicts.pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolved"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-12-13.json",
+      "sha256": "675dfae542671a0c288790bac1967e426423dd79775c016de243b6d278546897",
+      "reviewerAgent": "/root/lessons_para1",
+      "identityCheck": {
+        "selector": "reviewerAgent",
+        "equals": "/root/lessons_para1"
+      },
+      "fileNameRegex": "ex-(?:12|13)-.+\\.json",
+      "expectedCards": 75,
+      "records": "lessons",
+      "pathKey": "file",
+      "idKey": "id",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "verdicts.source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "verdicts.mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "verdicts.pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolved"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-16-17.json",
+      "sha256": "4bb04b73d18389c0567556ddc5551608124d41df60c10565dd1501e9947af54d",
+      "reviewerAgent": "/root/theory_course",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/theory_course (not the §§16–17 author)"
+      },
+      "fileNameRegex": "ex-(?:16|17)-.+\\.json",
+      "expectedCards": 76,
+      "records": "lessons",
+      "pathKey": "file",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdictWithinScope",
+          "equals": "pass after corrections"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "sourceStatementAndParts",
+          "accept": [
+            "pass"
+          ]
+        },
+        "mathematics": {
+          "selector": "solutionMathematics",
+          "accept": [
+            "pass"
+          ]
+        },
+        "pedagogy": {
+          "selector": "schoolLevelPedagogy",
+          "accept": [
+            "pass"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolved"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-supplementary.json",
+      "sha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
+      "reviewerAgent": "/root/theory_course",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/theory_course (not the supplementary author)"
+      },
+      "fileNameRegex": "research-.+\\.json",
+      "expectedCards": 13,
+      "records": "lessons",
+      "pathKey": "file",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdictWithinScope",
+          "equals": "pass after corrections"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "sourceStatementAndParts",
+          "accept": [
+            "pass"
+          ]
+        },
+        "mathematics": {
+          "selector": "solutionMathematics",
+          "accept": [
+            "pass"
+          ]
+        },
+        "pedagogy": {
+          "selector": "schoolLevelPedagogy",
+          "accept": [
+            "pass"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolved"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-theory-01-09.json",
+      "sha256": "64bc6f33135c63dc7b82f9c4551b9a51e06e36a6acb486654e1d6b4faec61fbe",
+      "reviewerAgent": "/root",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root"
+      },
+      "fileNameRegex": "theory-0[1-9]-detail-\\d{2}\\.json",
+      "expectedCards": 27,
+      "records": "cards",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ],
+      "acceptedFollowup": "2026-10-22T22:51:48.959829+00:00: independent exact old/new comparison of theory07-detail09 label-only changes, all3 verdicts explicitly retained after verification."
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-overviews-01-09.json",
+      "sha256": "353f486105b46791960349e9d8298e65eb23603f02a02870c0c1a9f3cf9d2f27",
+      "reviewerAgent": "/root",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root"
+      },
+      "fileNameRegex": "theory-0[1-9]\\.json",
+      "expectedCards": 9,
+      "records": "cards",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-pedagogy-01.json",
+      "sha256": "6fdc24c6f504a85442cfca6c500a8f1dce333b1ba68f97a2d44bc8ade80f304f",
+      "reviewerAgent": "/root",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root"
+      },
+      "fileNameRegex": "ex-01-.+\\.json",
+      "expectedCards": 27,
+      "records": "cards",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-pedagogy-02-03.json",
+      "sha256": "f838412bff1784faa9ff9d2c8a56f94e423b7733108a5fd8046be531256831b8",
+      "reviewerAgent": "/root/lessons_para1",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/lessons_para1"
+      },
+      "fileNameRegex": "ex-0[23]-.+\\.json",
+      "expectedCards": 56,
+      "records": "cards",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-pedagogy-selfcheck.json",
+      "sha256": "160c3c414f63dbf3d8d14645c4507d7438d0e11921b7ae54f138fc264d38187b",
+      "reviewerAgent": "/root/lessons_para1",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/lessons_para1"
+      },
+      "fileNameRegex": "question-.+\\.json",
+      "expectedCards": 97,
+      "records": "cards",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-20.json",
+      "sha256": "f2cb246011e1c69c73dc4255c1505b08bbb0e80598e0b01482798e5c27c2f918",
+      "reviewerAgent": "/root/lessons_para2",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/lessons_para2"
+      },
+      "fileNameRegex": "ex-20-.+\\.json",
+      "expectedCards": 91,
+      "records": "files",
+      "pathKey": "path",
+      "idKey": "id",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS_WITH_EXPLICIT_SOURCE_CAVEATS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "origin": "report",
+          "selector": "verdicts.source",
+          "accept": [
+            "PASS_WITH_EXPLICIT_SOURCE_CAVEATS"
+          ]
+        },
+        "mathematics": {
+          "origin": "report",
+          "selector": "verdicts.mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "origin": "report",
+          "selector": "verdicts.pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedContentFindings"
+      ],
+      "sourceCaveatPolicy": "The report explicitly verifies all source wording/subparts and separately diagnoses source ambiguities or typographical errors; original source verdict is preserved verbatim as evidence."
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-theory-10-19.json",
+      "sha256": "6a4b0f92ad05a04a073a5774c947e26ff2bdd7b334b7dfbb819ec002c4a0cc53",
+      "reviewerAgent": "/root/ocr_source",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "independent agent /root/ocr_source"
+      },
+      "fileNameRegex": "theory-1[0-9](?:-detail-\\d{2})?\\.json",
+      "expectedCards": 37,
+      "records": "cards",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ],
+      "fileNames": [
+        "theory-10-detail-01.json",
+        "theory-10-detail-02.json",
+        "theory-10-detail-03.json",
+        "theory-10-detail-04.json",
+        "theory-10.json",
+        "theory-11-detail-01.json",
+        "theory-11.json",
+        "theory-12-detail-01.json",
+        "theory-12-detail-02.json",
+        "theory-12.json",
+        "theory-13-detail-01.json",
+        "theory-13-detail-02.json",
+        "theory-13-detail-03.json",
+        "theory-13-detail-04.json",
+        "theory-13.json",
+        "theory-14-detail-01.json",
+        "theory-14-detail-02.json",
+        "theory-14-detail-03.json",
+        "theory-14.json",
+        "theory-15-detail-01.json",
+        "theory-15.json",
+        "theory-16-detail-01.json",
+        "theory-16-detail-02.json",
+        "theory-16-detail-03.json",
+        "theory-16-detail-04.json",
+        "theory-16-detail-05.json",
+        "theory-16-detail-06.json",
+        "theory-16.json",
+        "theory-17-detail-01.json",
+        "theory-17.json",
+        "theory-18-detail-01.json",
+        "theory-18-detail-02.json",
+        "theory-18-detail-03.json",
+        "theory-18-detail-04.json",
+        "theory-18.json",
+        "theory-19-detail-01.json",
+        "theory-19.json"
+      ]
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-theory-articles.json",
+      "sha256": "68a2265f78576fa99fdfe78f813bec7fdffed003514165fee86193c77ead62d4",
+      "reviewerAgent": "/root/ocr_source",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "/root/ocr_source"
+      },
+      "fileNameRegex": "(?!)",
+      "expectedCards": 13,
+      "records": "cards",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdicts.source",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.mathematics",
+          "equals": "PASS"
+        },
+        {
+          "selector": "verdicts.pedagogy",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolvedFindings"
+      ],
+      "fileNames": [
+        "theory-15-detail-02.json",
+        "theory-15-detail-03.json",
+        "theory-15-detail-04.json",
+        "theory-15-detail-05.json",
+        "theory-19-detail-02.json",
+        "theory-19-detail-03.json",
+        "theory-19-detail-04.json",
+        "theory-19-detail-05.json",
+        "theory-19-detail-06.json",
+        "theory-19-detail-07.json",
+        "theory-19-detail-08.json",
+        "theory-19-detail-09.json",
+        "theory-19-detail-10.json"
+      ],
+      "acceptedScopeNote": "Final independent review after RART001–005; 13 exact-hash cards, 46 inventory units, all three explicit dimensions PASS. Historical source-article gap is now covered."
+    }
+  ]
+}

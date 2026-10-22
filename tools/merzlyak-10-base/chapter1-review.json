@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "bookId": "merzlyak-2022-10-base",
-  "reviewedAt": "2026-10-22T21:34:34.022699+00:00",
+  "reviewedAt": "2026-10-22T22:40:52.160969+00:00",
   "reviewer": {
     "role": "independent_content_and_geometry_reviewer",
     "agent": "textbook_inventory",
@@ -718,8 +718,8 @@
       "sourcePdfPages": [
         16
       ],
-      "fileSha256": "fdea25899d4418d47b3ab47dd747d34c6c20ad3750bfae7e7497ba29ffc1499c",
-      "reviewedContentSha256": "14812426aa9acc85e3adf1f906bdde292d7d11d9d8ac686e9e452da386c6ce46",
+      "fileSha256": "97c4f97ec40035e33923f8dac3b52087287d4876671cdddf6d581f934cd9fdd8",
+      "reviewedContentSha256": "731274db4cc5cde11666033832dd5ce5802d833fd3a19a0e9a3c60160a7d0112",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 6
@@ -732,8 +732,8 @@
       "sourcePdfPages": [
         16
       ],
-      "fileSha256": "3f82587e912b737536cd8d33a361f7a5974509b4c2298eaca55242c76d7db05b",
-      "reviewedContentSha256": "f04131caec2f30a56ff76919ef3ef6524a3e087fb52ecfa8e164ed6c4ba55d76",
+      "fileSha256": "e2ad0159bc31951a56b9f2611516f2deedd0eccb728a1517f9eed02eafb1cd8d",
+      "reviewedContentSha256": "6a7c9b465cb6c273abe2e5a3899c495045a347290dafed0b28bb307eb904b88f",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 9
@@ -886,8 +886,8 @@
       "sourcePdfPages": [
         22
       ],
-      "fileSha256": "f46ee8d78b33504688622b50d7dc785ff7e2cdbd5f84aeec4987b92d3da98e58",
-      "reviewedContentSha256": "02da4881fa83ee7ebe2155d208f04b1c47300498fd7e4d42520e9efa8d4079f5",
+      "fileSha256": "50e712a1529c2a5e568736859106c8ec5416cc61361538e6c703df8f2f8a7edb",
+      "reviewedContentSha256": "ab5602ca1cce1fdf852cb1854825d2b74e29d8d179e2fe6ad38e13362b7ab25f",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 17
@@ -900,8 +900,8 @@
       "sourcePdfPages": [
         23
       ],
-      "fileSha256": "cc25fbd189cc3e5ec5ae62a7e040ed16f3a98d1663d95a30430e259fc7b211cb",
-      "reviewedContentSha256": "a86f12f5416a8ef5e90e357199bbc4baccc349208a95d96080778f92cf184e07",
+      "fileSha256": "0cb834c8c465bfcf1e5d593f6bc6fd955544c78284d9e10b9f73604846cae7a7",
+      "reviewedContentSha256": "c116bbb8e3b74f2cb2aedff6de57d40be50e93c1967ee4014246debfdfd50245",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 13
@@ -914,8 +914,8 @@
       "sourcePdfPages": [
         23
       ],
-      "fileSha256": "5cfa32dd59a3f8e89a64e3a573a09ae329578b31375068c38a5308fc9cc4719a",
-      "reviewedContentSha256": "f86d885e279a575197417bf1cf8ceba6e4bd987ae2e6281b32c8977bdb9eb031",
+      "fileSha256": "d824d56bcc6b653b72f16312a8f862e59c60a13609bd5a1cf4122aa871731099",
+      "reviewedContentSha256": "84501919f43fd58b8e756966de6eac690e39e6a0901d235d442b00861ae09b09",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 16
@@ -928,8 +928,8 @@
       "sourcePdfPages": [
         23
       ],
-      "fileSha256": "2cd9bfef2c4d4b7124dfff1b407c82c370991bd40df03828c20a7307db9f1dd2",
-      "reviewedContentSha256": "0a215d80b49e1d8783f1266d4afe0659e08983c4f82d0dbc638dc76c151f65ce",
+      "fileSha256": "1aca72ba0fda21f369496fb53ed6adbad77be87f690ef3697a0bac0161b53d47",
+      "reviewedContentSha256": "37a22f1164bcf6c985b61adc83bca2c69c2d514d84195170e2d0a60c3406eb9d",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 18
@@ -1073,8 +1073,8 @@
         23,
         24
       ],
-      "fileSha256": "bf3ec0b7b2b1b4b3fc9eea25b22b6863a45c2cf08869e0e5723936bf48fa7534",
-      "reviewedContentSha256": "79bb02423773ba40ef24ab20cc6b335a3dd0ddfc113f47e1565d31ce405e8cf8",
+      "fileSha256": "3580ad5ed1a24b3407df82030ba9c48988aea876f66173d57f8743a496262c01",
+      "reviewedContentSha256": "c388a81f8617bc07d3ac4c86f8957a1aed30c928b016513c328dc8da5d15c3d6",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 23
@@ -1088,8 +1088,8 @@
         23,
         24
       ],
-      "fileSha256": "94a547ccebc57a3791bf9ed41baad7c5d21c38983731c38dd64692f575d82c24",
-      "reviewedContentSha256": "6ac862a72b469232f602905c08f4f8215e1f6b5bded3ce7ed3bbc0b0c85f77ab",
+      "fileSha256": "55c3181b4b9b0e043f35f7c9bf72000e3255414f433765eb2ddebffefb07746c",
+      "reviewedContentSha256": "13bc1575237cd03171db0856f203dc670d1a9db40c6016c6699be831fd236dd0",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 23
@@ -1103,8 +1103,8 @@
         23,
         24
       ],
-      "fileSha256": "3b3f889afcb15b2759b8d39058e8c66415ca42aac52a793c6fd76b0795e553b2",
-      "reviewedContentSha256": "bce0c6bc9a7f2de3b7816f11c6f930287d9a340ae513753b20f841b84d3b0a1c",
+      "fileSha256": "e883eeee19cfebffb2449c8d8a687043ddf3550d80e626dd6d0aa82673acd5c0",
+      "reviewedContentSha256": "6181d639a85a7c7182b66434afbcd5fa36173fe30bfb2bb2df78df68560acff4",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 15
@@ -1117,8 +1117,8 @@
       "sourcePdfPages": [
         24
       ],
-      "fileSha256": "f7a6f1777406bb779e8b9db3d5f6ccb4467b2fdb264c4e265244c06c488e9544",
-      "reviewedContentSha256": "d4f72c806f7204e1e31359a44c7a0b713759876ae0f89dae84f0a87d336f875a",
+      "fileSha256": "cc4b253ecf4492a9ef6d5cb2165c90fbfa5a1491e8fa79c93370e6cab4e44f2b",
+      "reviewedContentSha256": "fb1a1c4d9518bd164442044bdf2127f860643579f3d8d9891e60a1a6201c9e5e",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 17
@@ -1243,8 +1243,8 @@
       "sourcePdfPages": [
         26
       ],
-      "fileSha256": "0e46d97f31b0fa5a1a4f74403bc3ab70f233a0c7536f883ea9f13d04b4b2db81",
-      "reviewedContentSha256": "0f1bf05cc308a8e62df02a5789b4fb67766cc223dd6fe8677790960b6737da9f",
+      "fileSha256": "9fa7ca373933429ccb71f5ddcc0adfdbdad107ea19a56273676d4707f04d64ea",
+      "reviewedContentSha256": "7ae8c19f895cec5145b9e1f7bd12fa181f9deabe39dfaac9ca1a2b859cfcfe5c",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 22
@@ -1299,8 +1299,8 @@
       "sourcePdfPages": [
         26
       ],
-      "fileSha256": "d768a0bbb8185a8101169095ed6b5bae681e950189486e66e6b0ea3280c39356",
-      "reviewedContentSha256": "92c8a2d2853166f01bced92b378e2504e7c026613efa90a8bd50973f937ee664",
+      "fileSha256": "e5a49e6de253975534591ebbf221452205944d950d46b80cf4e2e52264e81ea2",
+      "reviewedContentSha256": "fc989c6216c8847345e3742af3017ae1d7cad610d84e4e38ee64bacb3f46bbae",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 28
@@ -1341,8 +1341,8 @@
       "sourcePdfPages": [
         27
       ],
-      "fileSha256": "01b2770919d0c1072b5d306058f0e1e155cee6030f1ad48a3b9ca93266c36ff3",
-      "reviewedContentSha256": "ac8013db7d3ca48d62718a461d008fb65226b94be0967975a5537b5f35a776ca",
+      "fileSha256": "8cf6a6e473977d4e14678547f555e0b494f18668ce991d2e42a5016ad4f3710e",
+      "reviewedContentSha256": "75bc9df1ff662cf637841112115bc3c3dee78d298a31513b563555007731ca42",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 41
@@ -1355,8 +1355,8 @@
       "sourcePdfPages": [
         27
       ],
-      "fileSha256": "8d011ca30833e691b804fa3b9abd4ca0a1b45acd68712934bae7c7dc81759f53",
-      "reviewedContentSha256": "cf9ce37a84e6d919f7348ec1ebd11f0fb35eb7161c1483e8c41fde313e247c7d",
+      "fileSha256": "5e5c08abf791ed0bca21a55eb5b51534a1945ec454b2ab99cf6019644546cd72",
+      "reviewedContentSha256": "a1886a34243f74feab06eacbd55ffe31d3717eda3ceae9b2fbc8505c343ac7cb",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 8
@@ -1383,11 +1383,135 @@
       "sourcePdfPages": [
         27
       ],
-      "fileSha256": "0e89eacbc3e6176b2bb49db51a2f6d556e80dca693757bd6126e6f75355aa836",
-      "reviewedContentSha256": "acbbe0bb893b0c940cd69a285da995d02b5d99e765957b6f9482ac8cce443df9",
+      "fileSha256": "005866347b9eb030c67236158df6b6bb563e8c85ef8450c4da82eff89d26cdd9",
+      "reviewedContentSha256": "1f87e51647b342c55dc529d4ef03ef35d36fc51992cb8c50d45ff87ca4560521",
       "sourceComparison": "reviewed",
       "mathematics": "no_remaining_findings",
       "numericalAssertionsPassed": 6
+    }
+  ],
+  "followupReviews": [
+    {
+      "reviewedAt": "2026-10-22T22:40:52.160969+00:00",
+      "reason": "Targeted source/mathematics re-review after independently requested pedagogical focus and help improvements.",
+      "scope": "All15 changed cards:2.9/2.10 and13 cards in§3.",
+      "method": "Read full help/view diff for13 paragraph3 cards and current2.9/2.10 intersection steps and both highlighted lines. Re-read3.22/3.29 trace constructions against actual coordinates. No exercise conditions or mathematical answers changed.",
+      "regression": {
+        "independentAssertions": 1120,
+        "passed": 1120,
+        "failed": 0,
+        "paragraphs1And2": 326,
+        "paragraph3": 794
+      },
+      "result": "no_remaining_source_or_mathematics_findings",
+      "workflowStatusChanges": false,
+      "updates": [
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-02-009.json",
+          "previousFileSha256": "fdea25899d4418d47b3ab47dd747d34c6c20ad3750bfae7e7497ba29ffc1499c",
+          "previousReviewedContentSha256": "14812426aa9acc85e3adf1f906bdde292d7d11d9d8ac686e9e452da386c6ce46",
+          "fileSha256": "97c4f97ec40035e33923f8dac3b52087287d4876671cdddf6d581f934cd9fdd8",
+          "reviewedContentSha256": "731274db4cc5cde11666033832dd5ce5802d833fd3a19a0e9a3c60160a7d0112"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-02-010.json",
+          "previousFileSha256": "3f82587e912b737536cd8d33a361f7a5974509b4c2298eaca55242c76d7db05b",
+          "previousReviewedContentSha256": "f04131caec2f30a56ff76919ef3ef6524a3e087fb52ecfa8e164ed6c4ba55d76",
+          "fileSha256": "e2ad0159bc31951a56b9f2611516f2deedd0eccb728a1517f9eed02eafb1cd8d",
+          "reviewedContentSha256": "6a7c9b465cb6c273abe2e5a3899c495045a347290dafed0b28bb307eb904b88f"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-001.json",
+          "previousFileSha256": "f46ee8d78b33504688622b50d7dc785ff7e2cdbd5f84aeec4987b92d3da98e58",
+          "previousReviewedContentSha256": "02da4881fa83ee7ebe2155d208f04b1c47300498fd7e4d42520e9efa8d4079f5",
+          "fileSha256": "50e712a1529c2a5e568736859106c8ec5416cc61361538e6c703df8f2f8a7edb",
+          "reviewedContentSha256": "ab5602ca1cce1fdf852cb1854825d2b74e29d8d179e2fe6ad38e13362b7ab25f"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-002.json",
+          "previousFileSha256": "cc25fbd189cc3e5ec5ae62a7e040ed16f3a98d1663d95a30430e259fc7b211cb",
+          "previousReviewedContentSha256": "a86f12f5416a8ef5e90e357199bbc4baccc349208a95d96080778f92cf184e07",
+          "fileSha256": "0cb834c8c465bfcf1e5d593f6bc6fd955544c78284d9e10b9f73604846cae7a7",
+          "reviewedContentSha256": "c116bbb8e3b74f2cb2aedff6de57d40be50e93c1967ee4014246debfdfd50245"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-003.json",
+          "previousFileSha256": "5cfa32dd59a3f8e89a64e3a573a09ae329578b31375068c38a5308fc9cc4719a",
+          "previousReviewedContentSha256": "f86d885e279a575197417bf1cf8ceba6e4bd987ae2e6281b32c8977bdb9eb031",
+          "fileSha256": "d824d56bcc6b653b72f16312a8f862e59c60a13609bd5a1cf4122aa871731099",
+          "reviewedContentSha256": "84501919f43fd58b8e756966de6eac690e39e6a0901d235d442b00861ae09b09"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-004.json",
+          "previousFileSha256": "2cd9bfef2c4d4b7124dfff1b407c82c370991bd40df03828c20a7307db9f1dd2",
+          "previousReviewedContentSha256": "0a215d80b49e1d8783f1266d4afe0659e08983c4f82d0dbc638dc76c151f65ce",
+          "fileSha256": "1aca72ba0fda21f369496fb53ed6adbad77be87f690ef3697a0bac0161b53d47",
+          "reviewedContentSha256": "37a22f1164bcf6c985b61adc83bca2c69c2d514d84195170e2d0a60c3406eb9d"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-010.json",
+          "previousFileSha256": "bf3ec0b7b2b1b4b3fc9eea25b22b6863a45c2cf08869e0e5723936bf48fa7534",
+          "previousReviewedContentSha256": "79bb02423773ba40ef24ab20cc6b335a3dd0ddfc113f47e1565d31ce405e8cf8",
+          "fileSha256": "3580ad5ed1a24b3407df82030ba9c48988aea876f66173d57f8743a496262c01",
+          "reviewedContentSha256": "c388a81f8617bc07d3ac4c86f8957a1aed30c928b016513c328dc8da5d15c3d6"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-011.json",
+          "previousFileSha256": "94a547ccebc57a3791bf9ed41baad7c5d21c38983731c38dd64692f575d82c24",
+          "previousReviewedContentSha256": "6ac862a72b469232f602905c08f4f8215e1f6b5bded3ce7ed3bbc0b0c85f77ab",
+          "fileSha256": "55c3181b4b9b0e043f35f7c9bf72000e3255414f433765eb2ddebffefb07746c",
+          "reviewedContentSha256": "13bc1575237cd03171db0856f203dc670d1a9db40c6016c6699be831fd236dd0"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-012.json",
+          "previousFileSha256": "3b3f889afcb15b2759b8d39058e8c66415ca42aac52a793c6fd76b0795e553b2",
+          "previousReviewedContentSha256": "bce0c6bc9a7f2de3b7816f11c6f930287d9a340ae513753b20f841b84d3b0a1c",
+          "fileSha256": "e883eeee19cfebffb2449c8d8a687043ddf3550d80e626dd6d0aa82673acd5c0",
+          "reviewedContentSha256": "6181d639a85a7c7182b66434afbcd5fa36173fe30bfb2bb2df78df68560acff4"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-013.json",
+          "previousFileSha256": "f7a6f1777406bb779e8b9db3d5f6ccb4467b2fdb264c4e265244c06c488e9544",
+          "previousReviewedContentSha256": "d4f72c806f7204e1e31359a44c7a0b713759876ae0f89dae84f0a87d336f875a",
+          "fileSha256": "cc4b253ecf4492a9ef6d5cb2165c90fbfa5a1491e8fa79c93370e6cab4e44f2b",
+          "reviewedContentSha256": "fb1a1c4d9518bd164442044bdf2127f860643579f3d8d9891e60a1a6201c9e5e"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-022.json",
+          "previousFileSha256": "0e46d97f31b0fa5a1a4f74403bc3ab70f233a0c7536f883ea9f13d04b4b2db81",
+          "previousReviewedContentSha256": "0f1bf05cc308a8e62df02a5789b4fb67766cc223dd6fe8677790960b6737da9f",
+          "fileSha256": "9fa7ca373933429ccb71f5ddcc0adfdbdad107ea19a56273676d4707f04d64ea",
+          "reviewedContentSha256": "7ae8c19f895cec5145b9e1f7bd12fa181f9deabe39dfaac9ca1a2b859cfcfe5c"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-026.json",
+          "previousFileSha256": "d768a0bbb8185a8101169095ed6b5bae681e950189486e66e6b0ea3280c39356",
+          "previousReviewedContentSha256": "92c8a2d2853166f01bced92b378e2504e7c026613efa90a8bd50973f937ee664",
+          "fileSha256": "e5a49e6de253975534591ebbf221452205944d950d46b80cf4e2e52264e81ea2",
+          "reviewedContentSha256": "fc989c6216c8847345e3742af3017ae1d7cad610d84e4e38ee64bacb3f46bbae"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-029.json",
+          "previousFileSha256": "01b2770919d0c1072b5d306058f0e1e155cee6030f1ad48a3b9ca93266c36ff3",
+          "previousReviewedContentSha256": "ac8013db7d3ca48d62718a461d008fb65226b94be0967975a5537b5f35a776ca",
+          "fileSha256": "8cf6a6e473977d4e14678547f555e0b494f18668ce991d2e42a5016ad4f3710e",
+          "reviewedContentSha256": "75bc9df1ff662cf637841112115bc3c3dee78d298a31513b563555007731ca42"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-030.json",
+          "previousFileSha256": "8d011ca30833e691b804fa3b9abd4ca0a1b45acd68712934bae7c7dc81759f53",
+          "previousReviewedContentSha256": "cf9ce37a84e6d919f7348ec1ebd11f0fb35eb7161c1483e8c41fde313e247c7d",
+          "fileSha256": "5e5c08abf791ed0bca21a55eb5b51534a1945ec454b2ab99cf6019644546cd72",
+          "reviewedContentSha256": "a1886a34243f74feab06eacbd55ffe31d3717eda3ceae9b2fbc8505c343ac7cb"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-032.json",
+          "previousFileSha256": "0e89eacbc3e6176b2bb49db51a2f6d556e80dca693757bd6126e6f75355aa836",
+          "previousReviewedContentSha256": "acbbe0bb893b0c940cd69a285da995d02b5d99e765957b6f9482ac8cce443df9",
+          "fileSha256": "005866347b9eb030c67236158df6b6bb563e8c85ef8450c4da82eff89d26cdd9",
+          "reviewedContentSha256": "1f87e51647b342c55dc529d4ef03ef35d36fc51992cb8c50d45ff87ca4560521"
+        }
+      ]
     }
   ]
 }

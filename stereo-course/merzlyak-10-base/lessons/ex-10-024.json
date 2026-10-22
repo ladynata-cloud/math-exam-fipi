@@ -4,7 +4,7 @@
   "id": "merz-ex-10-024",
   "kind": "exercise",
   "title": "10.24. Равноудалённость от вершин",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -189,8 +189,10 @@
     "prompt": "Запиши результат и объясни ключевой переход. Доказательство проверяется преподавателем. Ожидаемый вывод: √(d²+a²/(4sin²α))."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/ocr_source",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

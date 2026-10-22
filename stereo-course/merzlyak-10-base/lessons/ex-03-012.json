@@ -4,7 +4,7 @@
   "id": "ex-03-012",
   "kind": "exercise",
   "title": "3.12. Пересечение прямой с основанием",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -154,6 +154,15 @@
             "V"
           ]
         },
+        "uv": {
+          "label": "След UV вспомогательной плоскости",
+          "segments": [
+            [
+              "U",
+              "V"
+            ]
+          ]
+        },
         "cross": {
           "label": "Точка X на основании",
           "segments": [
@@ -205,7 +214,7 @@
           "text": "Две общие точки определяют прямую пересечения двух различных плоскостей. В каждой грани сечение идёт по прямой."
         }
       ],
-      "view": "neutral",
+      "view": "uv",
       "id": "step-2"
     },
     {
@@ -227,8 +236,10 @@
     "prompt": "Запишите ответ или выполните построение и обоснуйте каждый шаг. Запись предназначена для обсуждения с учителем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

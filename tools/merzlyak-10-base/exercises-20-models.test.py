@@ -1,6 +1,7 @@
 """Author-side geometric invariants; not independent pedagogical/release review."""
 import json,math,itertools
 from pathlib import Path
+from review_state import assert_review_state
 R=Path(__file__).resolve().parents[2];D=R/'stereo-course/merzlyak-10-base/lessons'
 Q=math.sqrt;PI=math.pi
 sub=lambda a,b:[x-y for x,y in zip(a,b)]
@@ -36,7 +37,7 @@ def incenter(names,r,h,dist):
 lessons={};checks=set()
 for n in range(1,92):
  f=D/f'ex-20-{n:03}.json';l=json.loads(f.read_text());lessons[n]=l;p=l['visualization']['model']['points'];m=l['visualization']['model']
- assert l['status']=='draft' and set(l['review'].values())=={'pending'} and len(l['steps'])>=3
+ assert_review_state(l);assert len(l['steps'])>=3
  for a,b in m['edges']+[s for vv in m['views'].values()for s in vv.get('segments',[])]:assert d(a,b)>1e-8,(n,a,b)
  for poly in m.get('faces',[])+[vv['polygon']for vv in m['views'].values()if'polygon'in vv]:
   nn=normal(*poly[:3]);assert norm(nn)>1e-8,(n,poly)
@@ -190,4 +191,4 @@ for item in cov['entries']:
  assert l['source']['pdfPages']==item['sourcePdfPages']
  assert item['requiredParts']==[None] and not l['source'].get('subpart')
  for f in item['lessonFiles']:assert(R/f).is_file()
-print('EXERCISES_20_MODELS_OK 91: source mapping, every face/segment, task-specific numerical invariants and source58 counterexample; draft-only.')
+print('EXERCISES_20_MODELS_OK 91: source mapping, every face/segment, task-specific numerical invariants and source58 counterexample; draft or ledger-verified review state.')

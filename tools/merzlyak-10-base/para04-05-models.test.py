@@ -3,6 +3,7 @@ No claim of source, pedagogical or publication review approval is made here.
 """
 import json, math
 from pathlib import Path
+from review_state import assert_review_state
 ROOT=Path(__file__).resolve().parents[2]
 DIR=ROOT/'stereo-course/merzlyak-10-base/lessons'
 def lesson(s,n,part=''):
@@ -96,6 +97,6 @@ assert len(coverage['entries'])==69 and not coverage['unresolved']
 assert sum(len(c['lessonFiles']) for c in coverage['entries'])==72
 for c in coverage['entries']:
  for file in c['lessonFiles']:
-  x=json.loads((ROOT/file).read_text());assert x['status']=='draft';assert all(v=='pending' for v in x['review'].values());assert x['source'].get('subpart') in c['requiredParts']
+  x=json.loads((ROOT/file).read_text());assert_review_state(x);assert x['source'].get('subpart') in c['requiredParts']
   assert x['source']['pdfPages']==[p+1 for p in x['source']['printedPages']]
-print('MERZLYAK_PARA04_05_MODEL_METRICS_OK: numeric givens, parallel directions, 12 complete solid-edge section clips, 72 draft cards / 69 exercises')
+print('MERZLYAK_PARA04_05_MODEL_METRICS_OK: numeric givens, parallel directions, 12 complete solid-edge section clips, 72 cards with verified review state / 69 exercises')

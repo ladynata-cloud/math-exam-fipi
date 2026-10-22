@@ -5,6 +5,7 @@ These are deterministic mathematical checks, not independent review or release a
 import json, math
 from pathlib import Path
 import numpy as np
+from review_state import assert_review_state
 ROOT=Path(__file__).resolve().parents[2]
 DIR=ROOT/'stereo-course/merzlyak-10-base/lessons'
 COUNT=0
@@ -53,7 +54,7 @@ for d in allcards:
  s=d['source'];sec,n=map(int,s['exercise'].split('.'));page=(55 if n<=7 else 56 if n<=14 else 57 if n<=22 else 58 if n<=29 else 59) if sec==6 else (68 if n<=6 else 69 if n<=13 else 70 if n<=20 else 71 if n<=29 else 72 if n<=38 else 73)
  pages=[58,59] if sec==6 and n==29 else [68,69] if sec==7 and n in (1,2) else [page]
  check(s['printedPages']==pages and s['pdfPages']==[x+1 for x in pages],d['id']+' exact source pages')
- check(d['status']=='draft' and all(d['review'][k]=='pending' for k in ('source','mathematics','pedagogy')),d['id']+' no unearned review')
+ assert_review_state(d)
  check(3<=len(d['steps'])<=7,d['id']+' meaningful bounded sequence')
  check(all(x.get('view') in d['visualization']['model']['views'] for x in d['steps']),d['id']+' every step resolves a view')
 for g in cov['entries']:
@@ -212,4 +213,4 @@ p=pts(7,39);near(dist(p,'A','B'),6,'7.39 side');near(dist(p,'A','D'),2*math.sqrt
 p=pts(7,40)
 for a,b,v in [('A','B',13),('B','C',5*math.sqrt(2)),('A','C',7)]:near(dist(p,a,b),v,'7.40 source length')
 near(angle(p,'A','C','B'),135,'7.40 triangle angle');near(angle(p,'_X','C','B'),45,'7.40 line angle')
-print(f'MERZLYAK_PARA06_07_SOURCE_AND_MODEL_OK: {COUNT} assertions, 84 draft cards, 74 exercises; not independent review')
+print(f'MERZLYAK_PARA06_07_SOURCE_AND_MODEL_OK: {COUNT} assertions, 84 cards with verified review state, 74 exercises; not independent review')

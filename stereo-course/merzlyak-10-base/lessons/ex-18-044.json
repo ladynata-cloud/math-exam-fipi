@@ -4,7 +4,7 @@
   "id": "ex-18-044",
   "kind": "exercise",
   "title": "18.44. Двугранный угол при боковом ребре",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -19,7 +19,7 @@
   },
   "statement": {
     "text": "Двугранный угол правильной четырёхугольной пирамиды при боковом ребре равен α. Найдите плоский угол при вершине.",
-    "goal": "Двугранный угол при боковом ребре. Обоснуйте результат."
+    "goal": "Плоский угол при вершине. Обоснуйте результат."
   },
   "visualization": {
     "type": "scene3d",
@@ -305,8 +305,10 @@
     "prompt": "Запишите доказательство или ответ и объясните каждый переход. Доказательство обсуждается с учителем и автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

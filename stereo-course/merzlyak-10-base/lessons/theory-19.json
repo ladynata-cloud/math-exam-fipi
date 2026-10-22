@@ -4,7 +4,7 @@
   "id": "merz-theory-19",
   "kind": "theory",
   "title": "§ 19. Усечённая пирамида · обзор",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "theory",
@@ -152,7 +152,17 @@
       ],
       "views": {
         "neutral": {
-          "label": "Исходная модель: сопоставь названия точек с пояснением."
+          "label": "Исходная модель: сопоставь названия точек с пояснением.",
+          "points": [
+            "A",
+            "B",
+            "A1",
+            "B1",
+            "M",
+            "M1",
+            "O",
+            "O1"
+          ]
         },
         "bases": {
           "label": "Два основания лежат в параллельных плоскостях",
@@ -230,16 +240,7 @@
           "D1"
         ]
       ],
-      "labelNames": [
-        "A",
-        "B",
-        "A1",
-        "B1",
-        "M",
-        "M1",
-        "O",
-        "O1"
-      ]
+      "labelNames": []
     }
   },
   "help": [
@@ -335,8 +336,10 @@
     "prompt": "Запиши своими словами главное правило и условия, при которых его можно применять. Запись сохраняется для обсуждения с преподавателем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/ocr_source",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

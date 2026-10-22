@@ -4,7 +4,7 @@
   "id": "ex-03-004",
   "kind": "exercise",
   "title": "3.4. Сечение через прямую и точку",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "main",
@@ -123,6 +123,15 @@
             "M"
           ]
         },
+        "dp": {
+          "label": "След DP на основании",
+          "segments": [
+            [
+              "D",
+              "P"
+            ]
+          ]
+        },
         "sp": {
           "label": "Проводим SM до AC",
           "segments": [
@@ -179,7 +188,7 @@
           "text": "Две общие точки определяют прямую пересечения двух различных плоскостей. В каждой грани сечение идёт по прямой."
         }
       ],
-      "view": "neutral",
+      "view": "dp",
       "id": "step-2"
     },
     {
@@ -201,8 +210,10 @@
     "prompt": "Запишите ответ или выполните построение и обоснуйте каждый шаг. Запись предназначена для обсуждения с учителем; доказательство автоматически не оценивается."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

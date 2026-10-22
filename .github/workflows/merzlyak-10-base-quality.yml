@@ -1,4 +1,4 @@
-name: Merzlyak 10 basic — source, state and draft figures
+name: Merzlyak 10 basic — source, state and figures
 on:
   pull_request:
     paths: ['stereo-course/merzlyak-10-base/**', 'tools/merzlyak-10-base/**', '.github/workflows/merzlyak-10-base-quality.yml']
@@ -44,7 +44,11 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Source completeness and reproducible bundle
         run: |
+          python3 tools/merzlyak-10-base/audit-content-reviews.py --no-write
+          python3 tools/merzlyak-10-base/audit-content-reviews.test.py
+          python3 tools/merzlyak-10-base/audit-content-reviews-independent.test.py
           python3 tools/merzlyak-10-base/build.test.py
+          python3 tools/merzlyak-10-base/inventory-contract-review.test.py
           python3 tools/merzlyak-10-base/build.py
           git diff --exit-code -- stereo-course/merzlyak-10-base/data/course.json
       - name: Schemas, draft gates and retained learner work
@@ -61,6 +65,7 @@ jobs:
           python3 tools/merzlyak-10-base/exercises-10-11-models.test.py
           python3 tools/merzlyak-10-base/para12-13-models.test.py
           python3 tools/merzlyak-10-base/para14-15-models.test.py
+          python3 tools/merzlyak-10-base/para16-17-models.test.py
           python3 tools/merzlyak-10-base/para18-19-models.test.py
           python3 tools/merzlyak-10-base/exercises-20-models.test.py
           python3 tools/merzlyak-10-base/theory-details-01-09-models.test.py
@@ -80,7 +85,18 @@ jobs:
           python3 tools/merzlyak-10-base/independent-theory-01-09.test.py
           python3 tools/merzlyak-10-base/independent-models-14-15.test.py
           python3 tools/merzlyak-10-base/practical-projects-models-review.test.py
-      - name: Every draft model and view at mobile and desktop widths
+          python3 tools/merzlyak-10-base/merge-coverage-review.test.py
+          python3 tools/merzlyak-10-base/reviewer-16-17-checks.py
+          python3 tools/merzlyak-10-base/reviewer-18-19-checks.py
+          python3 tools/merzlyak-10-base/reviewer-20-checks.py
+          python3 tools/merzlyak-10-base/reviewer-theory-10-19-checks.py
+          python3 tools/merzlyak-10-base/articles-models.test.py
+          python3 tools/merzlyak-10-base/articles-platonic-models.test.py
+          python3 tools/merzlyak-10-base/reviewer-theory-articles-checks.py
+          python3 tools/merzlyak-10-base/review-state-review.test.py
+          python3 tools/merzlyak-10-base/reviewer-build-checks.py
+          node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs
+      - name: Every authored model and view at mobile and desktop widths
         run: node tools/merzlyak-10-base/model-browser.cjs
       - name: Preserve visual evidence (not a publication approval)
         if: always()

@@ -2,6 +2,7 @@
 """Semantic invariants of the concrete proof/section/projection scenes."""
 import json, math, hashlib,itertools
 from pathlib import Path
+from review_state import assert_review_state, matches_reviewed_hash
 R=Path(__file__).resolve().parents[2];D=R/'stereo-course/merzlyak-10-base/lessons';N=0
 
 def chk(x,msg):
@@ -86,6 +87,10 @@ for suffix in ['', '1']:
    t=param(a,b,p[names[j]+suffix],p[names[(j+2)%5]+suffix]);
    if 0<t<1:ts.append(t)
   ts.sort();chk(len(ts)==2,'two diagonal intersections');eq(ts[0],1-ts[1],'equal outer parts');eq((ts[1]-ts[0])/ts[0],(math.sqrt(5)-1)/2,'all diagonal ratios1:lambda:1')
+scene=json.loads((D/'theory-07-detail-09.json').read_text())['visualization']['model']
+chk(scene['labelNames']==[],'six-cevian labels scoped to current view')
+for key,names in {'neutral':list('ABCD'),'original':list('ABCKLMNOP'),'regular':list('ABD'),'concurrent':['K1','N1','L1','O1','M1','P1','G1'],'back':list('KNLOMPG')}.items():
+ view=scene['views'][key];visible=set(scene['labelNames']+view.get('points',[])+view.get('polygon',[])+sum(view.get('segments',[]),[]));chk(visible==set(names),'six-cevian exact focused labels: '+key)
 p=pts(7,9);eq(length(p,'A','B'),length(p,'A','D'),'equilateral target');eq(length(p,'A','B'),length(p,'B','D'),'equilateral target2')
 for k in 'KLMNOPGUVWX':par(p,k,k+'1','C','D')
 for a,b in [('K','N'),('L','O'),('M','P')]:online(p,'G',a,b);online(p,'G1',a+'1',b+'1')
@@ -102,8 +107,8 @@ p=pts(9,2);par(p,'A','A1','B','M');perp(p,'B','M','B','C');chk(abs(dot(sub(p['M'
 
 coverage=json.loads((R/'tools/merzlyak-10-base/coverage-theory-01-09.json').read_text());chk(coverage['newDraftLessonCount']==27,'27 cards')
 for entry in coverage['paragraphs']:
- ov=entry['overview'];chk(hashlib.sha256((R/ov['file']).read_bytes()).hexdigest()==ov['sha256'],'overview hash')
+ ov=entry['overview'];chk(matches_reviewed_hash(R/ov['file'],ov['sha256']),'overview hash')
  for card in entry['addedLessons']:
-  path=R/card['file'];lesson=json.loads(path.read_text());chk(hashlib.sha256(path.read_bytes()).hexdigest()==card['sha256'],'detail hash');chk(lesson['status']=='draft' and set(lesson['review'].values())=={'pending'},'no promoted reviews');chk(card['part'] in entry['requiredParts'],'exact part contract')
+  path=R/card['file'];lesson=json.loads(path.read_text());chk(matches_reviewed_hash(path,card['sha256']),'detail hash');assert_review_state(lesson);chk(card['part'] in entry['requiredParts'],'exact part contract')
   for s in lesson['steps']:chk(s['view'] in lesson['visualization']['model']['views'],'step view exists')
 print(f'PASS: 27 theory-detail scenes, {N} semantic and coverage assertions.')

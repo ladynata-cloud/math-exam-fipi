@@ -4,7 +4,7 @@
   "id": "merz-question-18-06",
   "kind": "exercise",
   "title": "§ 18. Вопрос 6: Что называют площадью боковой поверхности пирамиды?",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "selfcheck",
@@ -154,6 +154,14 @@
             "O",
             "M"
           ]
+        },
+        "side": {
+          "label": "SAB — одна из четырёх боковых граней; основание не включаем",
+          "polygon": [
+            "S",
+            "A",
+            "B"
+          ]
         }
       },
       "faces": [
@@ -215,7 +223,7 @@
           "text": "§ 18: определения и свойства, к которым относится вопрос 6."
         }
       ],
-      "view": "base"
+      "view": "side"
     },
     {
       "id": "step-2",
@@ -228,7 +236,7 @@
           "text": "Заданные координатами отношения в модели иллюстрируют определение или теорему; рисунок не заменяет общего доказательства."
         }
       ],
-      "view": "base"
+      "view": "side"
     }
   ],
   "answer": {
@@ -236,8 +244,10 @@
     "prompt": "Запиши ответ своими словами, сохраняя все условия определения или теоремы. Запись сохраняется для обсуждения с преподавателем; автоматически её правильность не определяется."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

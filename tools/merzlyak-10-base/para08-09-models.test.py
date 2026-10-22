@@ -3,6 +3,7 @@ Standard library only; never imports or executes the authoring generator.
 """
 import json,math,unittest
 from pathlib import Path
+from review_state import assert_review_state
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'stereo-course/merzlyak-10-base/lessons'
 EPS=2e-7
@@ -32,7 +33,7 @@ class SourceModels(unittest.TestCase):
   for f in files:
    x=json.loads(f.read_text());m=x['visualization']['model'];p=m['points']
    with self.subTest(file=f.name):
-    self.assertEqual(x['status'],'draft');self.assertEqual(set(x['review'].values()),{'pending'})
+    assert_review_state(x)
     self.assertEqual(x['source']['pdfPages'],[n+1 for n in x['source']['printedPages']])
     para,num=map(int,x['source']['exercise'].split('.'))
     page=(85 if num<=5 else 86 if num<=11 else 87) if para==8 else (94 if num<=7 else 95 if num<=13 else 96 if num<=24 else 97 if num<=35 else 98)

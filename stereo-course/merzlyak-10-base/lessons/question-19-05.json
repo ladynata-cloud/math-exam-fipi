@@ -4,7 +4,7 @@
   "id": "merz-question-19-05",
   "kind": "exercise",
   "title": "§ 19. Вопрос 5: Что называют площадью боковой поверхности усечённой пирамиды?",
-  "status": "draft",
+  "status": "reviewed",
   "source": {
     "bookId": "merzlyak-2022-10-base",
     "collection": "selfcheck",
@@ -278,8 +278,10 @@
     "prompt": "Запиши ответ своими словами, сохраняя все условия определения или теоремы. Запись сохраняется для обсуждения с преподавателем; автоматически её правильность не определяется."
   },
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/lessons_para1; /root/textbook_inventory",
+    "at": "2026-10-22T23:06:23Z"
   }
 }

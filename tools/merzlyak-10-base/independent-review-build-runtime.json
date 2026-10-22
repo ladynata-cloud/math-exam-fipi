@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent /root/theory_course; none of the five implementation/test files authored by this reviewer",
+  "reviewLevel": "HIGH",
+  "reviewedAt": "2026-10-22T23:08:09.349076+00:00",
+  "repositoryHeadAtReview": "22c0b967af4ee62fdd50d51e027ea710a63569ce",
+  "scope": "Isolated Merzlyak builder, wrapper entry page, runtime fork with two changes, and build/schema/runtime regressions. Final 989-card reviewed input snapshot tested; source content and status-transition implementation remain under separate independent reviews.",
+  "verdictWithinScope": "pass",
+  "verdicts": {
+    "independentCodeReview": "PASS",
+    "targetedRegression": "PASS",
+    "reproducibleBuild": "PASS"
+  },
+  "releaseApproval": false,
+  "externalReview": "not performed by this reviewer; no external approval or waiver asserted",
+  "files": [
+    {
+      "path": "tools/merzlyak-10-base/build.py",
+      "sha256": "4bfd16cb9a2bb71d495a3aadbe52175801e94d6ddaed517ee75fa4213c9ed295"
+    },
+    {
+      "path": "tools/merzlyak-10-base/build.test.py",
+      "sha256": "1b8c1ac5c4144e257c88498fb2a6d0277a9ce7a89f96b0543e404974f412e6e4"
+    },
+    {
+      "path": "tools/merzlyak-10-base/schema-runtime.test.cjs",
+      "sha256": "fb36c0f0c7f30f3075c8da7650049aab4b08d998926fc637a55efa495e1a4761"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/index.html",
+      "sha256": "745c5314f95df9db1eaa187ccd8940c369d60e54c045464c0af43e5febc9acde"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/assets/engine.js",
+      "sha256": "5e9cec42a68bc426645ba6fd702b80ad8b3e4a0c9ee1ba7c641b42d468ee6877"
+    }
+  ],
+  "referenceAndCheckFiles": [
+    {
+      "path": "tools/stereo-textbook/build_textbook.py",
+      "sha256": "96e1e919ae6f231ae63ef5ba9fa57819e820a325ab128fd129a53c25b2aa9dc3"
+    },
+    {
+      "path": "stereo-course/textbook/assets/engine.js",
+      "sha256": "3b2f3c3fae68a9c8e6f532d32a19df1fb1c5749b60253c75d9241ff639066ad4"
+    },
+    {
+      "path": "stereo-course/textbook/schema/catalog.schema.json",
+      "sha256": "a497a09012767582238db69a7966f43d08f293b6a43f1ffc70ce6b15ed5a6e08"
+    },
+    {
+      "path": "stereo-course/textbook/schema/lesson.schema.json",
+      "sha256": "0afbe8ada69985cda31e8c77168ac101aac05f04ae53c401b91c1bfd969972ba"
+    },
+    {
+      "path": "stereo-course/assets/math-text.js",
+      "sha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b"
+    },
+    {
+      "path": "stereo-course/assets/task-scene-viewer.js",
+      "sha256": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6"
+    },
+    {
+      "path": "tools/merzlyak-10-base/reviewer-build-checks.py",
+      "sha256": "dfaddb377971b126a1cfe1de74476bbe9b58e5c13371613b8aaaee59525a43cc"
+    },
+    {
+      "path": "tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs",
+      "sha256": "53efce5f192ca74c0d3af436dd6d30d73376451e79e704d3273dd5b4f6f0c9e6"
+    }
+  ],
+  "testEnvironment": {
+    "node": "24.19.0",
+    "jsdom": "26.1.0",
+    "ajv": "8.17.1",
+    "ajv-formats": "3.0.1",
+    "dependencyUse": "Existing temporary test dependency installation; no network/package install in this review."
+  },
+  "tests": [
+    {
+      "command": "python tools/merzlyak-10-base/build.test.py",
+      "result": "PASS",
+      "detail": "3 regressions: canonical metadata, missing requiredParts rejection, wrong-book rejection."
+    },
+    {
+      "command": "node tools/merzlyak-10-base/schema-runtime.test.cjs",
+      "result": "PASS",
+      "detail": "AJV/runtime validate all 989 current bundle lessons; available989, blocked0. Regressions cover isolated page offset, decimal exact search, reviewed/draft/test-only boundaries, storage namespace and retained work."
+    },
+    {
+      "command": "node tools/stereo-textbook/runtime.test.cjs",
+      "result": "PASS",
+      "detail": "Retained publication/source/model, help/theory/camera/draft, proof-mode honesty, stale-tab recovery, quota fallback, safe text, real scene viewer, focus and catalogue pagination regressions."
+    },
+    {
+      "command": "python tools/stereo-textbook/catalog.test.py",
+      "result": "PASS",
+      "detail": "7 retained source completeness/catalog regressions."
+    },
+    {
+      "command": "python tools/merzlyak-10-base/reviewer-build-checks.py",
+      "result": "PASS",
+      "detail": "Independently copied all 989 current lesson inputs to a TemporaryDirectory; built twice byte-identically and matched the checked-in-path bundle; verified every input unchanged and status/review/statement/model/source/step preservation."
+    },
+    {
+      "command": "node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs",
+      "result": "PASS",
+      "detail": "Actual index and local script sequence with network replaced: 989 available; first page24 buttons; exact decimal main-collection searches match one ready card. Separate deep-copied bundle with catalogue/lesson draft and review pending has0 available and exact searches match pending entries. cache:no-cache and graceful HTTP/network/JSON/malformed-catalog failures pass."
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "detail": "No whitespace errors in current working diff at review time."
+    }
+  ],
+  "reviewedDesignProperties": [
+    "Builder invokes the retained source completeness builder and rejects the wrong book before writing output. It strips only unsupported bibliographic/source metadata from copies; it does not rewrite source files or infer reviews/completeness.",
+    "Runtime fork is byte-for-byte the retained engine with exactly two substitutions: printed-to-PDF offset+2 becomes+1; numeric search accepts an optional decimal paragraph/exercise suffix.",
+    "Entry page uses local shared math/viewer assets and its own engine/data. A failed fetch, malformed JSON or rejected catalog produces the same bounded user error state.",
+    "Default publication requires reviewed content with all three passed review fields; test-only fixtures are blocked unless explicitly enabled in a test call.",
+    "Progress uses bookId+lessonId+revision; the fork does not migrate, overwrite or share the other textbook namespace."
+  ],
+  "inputEvidence": {
+    "sourceIndex": {
+      "path": "stereo-course/merzlyak-10-base/source-index.json",
+      "sha256": "167e99656d5da2af82ecc08a87c9992e87df23a44e1b8de410347a6257b6da53"
+    },
+    "currentlyTestedBundle": {
+      "path": "stereo-course/merzlyak-10-base/data/course.json",
+      "sha256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2"
+    },
+    "contentReviewLedger": {
+      "path": "tools/merzlyak-10-base/content-review-ledger.json",
+      "sha256": "884167d7c2aca9bf280243385ee3fd4b291aa8e80b733600e29242975666b3fc",
+      "scopeNote": "Recorded for exact input provenance; status transition and content evidence audit are reviewed separately."
+    },
+    "independentlyRebuiltBundleSha256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2",
+    "authoredCards": 989,
+    "catalogEntries": 989,
+    "availableCards": 989,
+    "inventoryComplete": true,
+    "runtimeCoverage": {
+      "inventoried": 989,
+      "available": 989,
+      "draft": 0,
+      "inReview": 0,
+      "blocked": 0,
+      "inventoryComplete": true,
+      "exercises": 759,
+      "theoryPoints": 19,
+      "selfchecks": 97,
+      "appendices": 0,
+      "examples": 0,
+      "availableExercises": 759,
+      "availableTheoryPoints": 19,
+      "availableSelfchecks": 97,
+      "availableAppendices": 0,
+      "availableExamples": 0,
+      "partiallyAvailable": 0
+    },
+    "countSemantics": {
+      "physicalCards": {
+        "main": 749,
+        "supplementary": 13,
+        "practical": 39,
+        "projects": 5,
+        "selfchecks": 97,
+        "theory": 86
+      },
+      "numberedExerciseCardsIncludingSupplementary": 762,
+      "mainSourceNumbers": 723,
+      "runtimeExerciseSourceGroups": {
+        "main": 723,
+        "supplementary": 13,
+        "practical": 18,
+        "projects": 5,
+        "total": 759
+      },
+      "note": "Engine coverage counts complete source groups, ignoring subpart within a source number; it does not report physical exercise-card count. The 989 cards contain903 exercise-kind cards and86 theory-kind cards."
+    }
+  },
+  "resolvedTestSetupIssues": [
+    {
+      "issue": "Default Node dependency path lacks jsdom.",
+      "resolution": "Re-ran against the existing temporary pinned test dependency installation; tests passed."
+    },
+    {
+      "issue": "Initial independent search assertion assumed only one collection can contain number1.1.",
+      "resolution": "Constrained test to collection main; shared numbering across collections is legitimate, not a product defect."
+    }
+  ],
+  "unresolvedFindings": [],
+  "rollbackAssessment": {
+    "scopePlan": "Restore the isolated route files and its matching generated course.json from the prior reviewed deployment artifact. Source JSON and browser data do not require migration; progress namespace remains versioned and separate from the retained textbook.",
+    "verification": "Read code/data boundaries and namespace regressions; isolated builder does not mutate inputs.",
+    "productionRollbackExecuted": false
+  },
+  "notRun": [
+    "No production deployment, hosting rollback, merge or external-provider review was performed.",
+    "CSS/fullbrowser and source-index/coverage/workflow changes are reviewed by the separately assigned reviewer.",
+    "No whole-repository release gate or exact release-head verdict is claimed by this scoped report."
+  ],
+  "recommendation": "Scoped implementation and final 989-card regressions pass and are suitable for integration with the separate content/status-transition/workflow reviews. Retain the HIGH external-review and owner release requirements; this is not a release approval.",
+  "portableCommandsNote": "Commands are shown with dependencies on the normal Node module path. During review an environment-specific NODE_PATH located installed dependencies; that machine-specific path is deliberately omitted.",
+  "initialImplementationReviewAt": "2026-10-22T22:43:08.260433+00:00",
+  "resolvedFindings": [
+    {
+      "id": "RT-001",
+      "severity": "blocking input metadata",
+      "finding": "First 989-card reviewed transition omitted mandatory review.reviewer and review.at in all989 cards. AJV rejected the bundle and real wrapper reported available0, so the independent checks failed as intended.",
+      "resolution": "Coordinator regenerated reviewed metadata using the actual independent reviewers and review-acceptance timestamp, retained original before/content hashes, updated the ledger and rebuilt. Final AJV/runtime/wrapper checks pass with989 available and the forced-draft copy remains unavailable.",
+      "implementationGateWeakened": false,
+      "finalBundleSha256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2"
+    }
+  ]
+}

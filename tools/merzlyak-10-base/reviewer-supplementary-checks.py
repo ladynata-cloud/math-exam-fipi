@@ -3,6 +3,7 @@
 Source pages independently inspected: PDF31/143. This is not an approval marker.
 """
 import json, math, pathlib, hashlib
+from review_state import assert_review_state
 BASE=pathlib.Path(__file__).resolve().parents[2]
 LESSONS=BASE/'stereo-course/merzlyak-10-base/lessons'
 EPS=2e-7
@@ -16,7 +17,7 @@ def zero(a):close(norm(a),0)
 def load(f,n):
  global p,current
  current=f'research-{f}-{n:03d}'; d=json.loads((LESSONS/(current+'.json')).read_text());p=d['visualization']['model']['points'];checks.append(current)
- assert d['status']=='draft' and all(v=='pending' for v in d['review'].values())
+ assert_review_state(d)
  assert d['source']['printedPages']==([30] if f=='sections' else [142]);assert d['source']['pdfPages']==([31] if f=='sections' else [143])
  return d
 def v(a,b):return sub(p[b],p[a])
