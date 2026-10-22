@@ -1,0 +1,1380 @@
+{
+  "schemaVersion": 1,
+  "bookId": "atanasyan-2023-7-9",
+  "edition": "Атанасян и др. Геометрия 7–9. Базовый уровень. 14-е изд., перераб., Просвещение, 2023",
+  "chapter": 1,
+  "reviewDate": "2026-10-23",
+  "reviewerRole": "Independent AI agent, separate from the content author in this task",
+  "sourceSHA256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "contentSHA256": "460fd91d5ab2e6c245a75872ee04be27a20cb86340b39ef924b89d78c1e5f57f",
+  "verdict": "draft-preparation-reviewed-with-open-interpretations",
+  "publicationApproved": false,
+  "scope": {
+    "numberedExerciseRange": [
+      1,
+      91
+    ],
+    "numberedExercisesReviewed": 91,
+    "partsReviewed": 134,
+    "numberedExercisesWithoutUnresolvedMathematicalIssues": 88,
+    "partsWithoutUnresolvedMathematicalIssues": 131,
+    "printedPageRange": [
+      5,
+      28
+    ],
+    "pdfPageRange": [
+      6,
+      29
+    ],
+    "exercisePrintedPages": [
+      8,
+      9,
+      10,
+      11,
+      13,
+      14,
+      17,
+      18,
+      19,
+      21,
+      22,
+      25,
+      26,
+      27,
+      28
+    ],
+    "supportingPrintedPages": [
+      6,
+      23
+    ],
+    "excluded": [
+      "Theory explanations and 26 chapter review questions",
+      "Other textbook chapters",
+      "Executable interactive models",
+      "User interface and publication",
+      "Pupil testing",
+      "External Claude review"
+    ]
+  },
+  "method": [
+    "Compared every numbered exercise and all authored subparts with the supplied textbook scans, including source-dependent diagrams and labels.",
+    "Independently recomputed numerical answers and checked proof steps, construction logic, positional cases, and exercises with no fixed numerical answer.",
+    "Read textual visual plans for consistency with the conditions and the proposed solution. This is not a rendered-model or interface review.",
+    "Rechecked the final corrected plans for exercises 73, 74, 89, 90, the straight-angle edge case in 48, and the interpretation notes for 9 against the final content hash."
+  ],
+  "openInterpretations": [
+    {
+      "exercise": 9,
+      "printedPages": [
+        6,
+        9
+      ],
+      "status": "interpretation-pending",
+      "finding": "The phrase about digits using polylines does not determine one traversal or decomposition. The definition allows nonadjacent links to meet; self-contact alone does not exclude digits 6, 8, or 9. Digit 8 has valid edge-covering traces with 6 or 7 links depending on whether the right side is one uninterrupted link.",
+      "requiredAction": "Choose and state a traversal/decomposition convention before implementing automatic answer acceptance. Preserve the documented alternatives."
+    },
+    {
+      "exercise": 10,
+      "printedPages": [
+        9
+      ],
+      "status": "interpretation-pending",
+      "finding": "The three-triangle diagonal construction is correct. Allowing additional points also gives valid four- and five-triangle partitions in which every triangle shares a full side with the pentagon. The restriction on additional points and the associated request to name other polygons need an explicit teaching convention.",
+      "requiredAction": "Retain the valid 3, 4, and 5 constructions and define which constructions and polygon names the activity expects before automatic assessment."
+    },
+    {
+      "exercise": 44,
+      "printedPages": [
+        19
+      ],
+      "status": "interpretation-pending",
+      "finding": "The simple closed routes have lengths 9, 9, and 12 cm; the maximum among them is 12 cm. If the last question includes open routes with no repeated edge, B-A-D-C-B-D has length 15 cm. Permitting repeated edges would remove any finite maximum.",
+      "requiredAction": "State whether the final maximum concerns closed routes only or also open routes, and prohibit repeated edges in a finite-maximum activity."
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "exercises": [
+        29
+      ],
+      "finding": "The explanation now counts intervals between marks rather than confusing marks and intervals.",
+      "status": "verified"
+    },
+    {
+      "exercises": [
+        48
+      ],
+      "finding": "The solution includes the straight-angle case: construction is possible exactly for a positive acute or right initial angle, and is impossible for an obtuse or straight initial angle.",
+      "status": "verified"
+    },
+    {
+      "exercises": [
+        73,
+        74,
+        90
+      ],
+      "finding": "Contradiction assumptions are outside the original diagram. Separate geometrically valid scenes show perpendicular lines; the plan no longer places false right-angle markers on oblique lines.",
+      "status": "verified-textual-plan"
+    },
+    {
+      "exercises": [
+        89
+      ],
+      "finding": "The proof excludes the same-side case before deriving a straight angle. The initial scene satisfies the perpendicular-bisector condition without changing the geometry to fabricate a conclusion. The corrupted terminology in the final note was corrected.",
+      "status": "verified-textual-plan"
+    },
+    {
+      "exercises": [
+        91
+      ],
+      "finding": "Both rectangular arrangements of four equal squares are included, and the general case distinguishes area from the factor-pair-dependent perimeter.",
+      "status": "verified"
+    },
+    {
+      "exercises": [
+        46,
+        50,
+        68,
+        70,
+        86
+      ],
+      "finding": "Source numerals and degree/minute calculations were checked visually and mathematically; decimal-comma notation in 86 is correct.",
+      "status": "verified"
+    }
+  ],
+  "implementationReviewStillRequired": [
+    "Build and inspect a separate executable model for each exercise or meaningful subpart, including switchable positional cases.",
+    "Verify coordinates and geometric invariants, step controls, visibility of answers, label collisions, and uncluttered placement on actual desktop and mobile screens.",
+    "For the same-side case in exercise 89, render true bisectors whose angle is less than 90 degrees; never add a false perpendicular mark.",
+    "Complete pedagogy, pupil-use, and required external review before claiming publication readiness."
+  ],
+  "exerciseChecks": [
+    {
+      "number": 1,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 2,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 3,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 4,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 5,
+      "partsReviewed": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        8
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 6,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        8
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 7,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        9
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 8,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        9
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 9,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        9
+      ],
+      "source": "checked",
+      "mathematics": "interpretation-pending",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 10,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        9
+      ],
+      "source": "checked",
+      "mathematics": "interpretation-pending",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 11,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        10
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 12,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 13,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 14,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 15,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 16,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 17,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        11
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 18,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 19,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 20,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        11
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 21,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        13
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 22,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        13
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 23,
+      "partsReviewed": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        13
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 24,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        13
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 25,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        14
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 26,
+      "partsReviewed": [
+        "а",
+        "б",
+        "сравнение"
+      ],
+      "printedPages": [
+        14
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 27,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        17
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 28,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        17
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 29,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        17
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 30,
+      "partsReviewed": [
+        "2AB",
+        "1/2AB",
+        "1/4AB"
+      ],
+      "printedPages": [
+        17
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 31,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        17
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 32,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        17
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 33,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 34,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 35,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 36,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 37,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 38,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 39,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 40,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 41,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 42,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 43,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        18
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 44,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        19
+      ],
+      "source": "checked",
+      "mathematics": "interpretation-pending",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 45,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        21
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 46,
+      "partsReviewed": [
+        "AOB",
+        "AOC",
+        "AOD"
+      ],
+      "printedPages": [
+        21
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 47,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        21
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 48,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        21
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 49,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 50,
+      "partsReviewed": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        22
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 51,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        22
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 52,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 53,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 54,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 55,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 56,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 57,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        22
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 58,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 59,
+      "partsReviewed": [
+        "острый",
+        "прямой",
+        "тупой"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 60,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 61,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 62,
+      "partsReviewed": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 63,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 64,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 65,
+      "partsReviewed": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 66,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 67,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 68,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 69,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        25
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 70,
+      "partsReviewed": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        26
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 71,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        26
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 72,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        26
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 73,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        26
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 74,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        26
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 75,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        27
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 76,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        27
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 77,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        27
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 78,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        27
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 79,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        27
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 80,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        27
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 81,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        27
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 82,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 83,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 84,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 85,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 86,
+      "partsReviewed": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 87,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 88,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 89,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 90,
+      "partsReviewed": [
+        "single"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    },
+    {
+      "number": 91,
+      "partsReviewed": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        28
+      ],
+      "source": "checked",
+      "mathematics": "passed",
+      "visualPlan": "text-reviewed",
+      "executableModel": "not-reviewed-not-implemented"
+    }
+  ],
+  "reviewTimezone": "Asia/Novosibirsk"
+}
