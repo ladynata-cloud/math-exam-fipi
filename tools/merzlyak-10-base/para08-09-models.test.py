@@ -36,7 +36,8 @@ class SourceModels(unittest.TestCase):
     self.assertEqual(x['source']['pdfPages'],[n+1 for n in x['source']['printedPages']])
     para,num=map(int,x['source']['exercise'].split('.'))
     page=(85 if num<=5 else 86 if num<=11 else 87) if para==8 else (94 if num<=7 else 95 if num<=13 else 96 if num<=24 else 97 if num<=35 else 98)
-    self.assertEqual(x['source']['printedPages'],[page])
+    expected=[96,97] if (para,num)==(9,24) else [97,98] if (para,num)==(9,35) else [page]
+    self.assertEqual(x['source']['printedPages'],expected)
     self.assertEqual(x['source']['chapter'],'Глава 3. Перпендикулярность в пространстве')
     for q in p.values():self.assertTrue(len(q)==3 and all(math.isfinite(z) for z in q))
     for group in m.get('edges',[])+m.get('faces',[]):self.assertTrue(set(group)<=p.keys())

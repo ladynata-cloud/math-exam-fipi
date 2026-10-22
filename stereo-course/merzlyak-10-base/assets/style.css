@@ -1,2 +1,10 @@
 /* Reuse the established large-model, retained-step textbook layout. */
 @import url('../../textbook/assets/style.css');
+
+/* Keep the reset control readable at narrow phone widths. */
+.textbook-model .am-button[aria-label="Вернуть исходный вид"] {
+  flex: 1 0 76px;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  hyphens: none;
+}

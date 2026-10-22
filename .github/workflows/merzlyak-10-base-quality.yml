@@ -56,15 +56,30 @@ jobs:
           python3 tools/merzlyak-10-base/para02-models.test.py
           python3 tools/merzlyak-10-base/para03-models.test.py
           python3 tools/merzlyak-10-base/para04-05-models.test.py
+          python3 tools/merzlyak-10-base/para06-07-models.test.py
           python3 tools/merzlyak-10-base/para08-09-models.test.py
           python3 tools/merzlyak-10-base/exercises-10-11-models.test.py
           python3 tools/merzlyak-10-base/para12-13-models.test.py
+          python3 tools/merzlyak-10-base/para14-15-models.test.py
+          python3 tools/merzlyak-10-base/para18-19-models.test.py
+          python3 tools/merzlyak-10-base/exercises-20-models.test.py
+          python3 tools/merzlyak-10-base/theory-details-01-09-models.test.py
+          python3 tools/merzlyak-10-base/theory-details-10-19-models.test.py
           python3 tools/merzlyak-10-base/supplementary-models.test.py
           python3 tools/merzlyak-10-base/selfcheck-models-review.test.py
           node tools/merzlyak-10-base/theory-models.test.cjs
           python3 tools/merzlyak-10-base/theory-models.test.py
           python3 tools/merzlyak-10-base/review-math-01-02.py
           python3 tools/merzlyak-10-base/review-math-03.py
+          python3 tools/merzlyak-10-base/reviewer-04-05-checks.py
+          python3 tools/merzlyak-10-base/independent-models-06-07.test.py
+          python3 tools/merzlyak-10-base/reviewer-08-09-checks.py
+          python3 tools/merzlyak-10-base/reviewer-10-11-checks.py
+          python3 tools/merzlyak-10-base/reviewer-12-13-checks.py
+          python3 tools/merzlyak-10-base/reviewer-supplementary-checks.py
+          python3 tools/merzlyak-10-base/independent-theory-01-09.test.py
+          python3 tools/merzlyak-10-base/independent-models-14-15.test.py
+          python3 tools/merzlyak-10-base/practical-projects-models-review.test.py
       - name: Every draft model and view at mobile and desktop widths
         run: node tools/merzlyak-10-base/model-browser.cjs
       - name: Preserve visual evidence (not a publication approval)

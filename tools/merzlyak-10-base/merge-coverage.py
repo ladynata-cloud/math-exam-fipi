@@ -16,20 +16,33 @@ def main():
     for manifest_path in args.manifests:
         manifest_path=manifest_path.resolve()
         manifest=json.loads(manifest_path.read_text())
-        for record in manifest['entries']:
+        records=manifest.get('entries')
+        if records is None and 'paragraphs' in manifest:
+            records=[]
+            for paragraph in manifest['paragraphs']:
+                record=dict(paragraph)
+                record['lessonFiles']=[paragraph['overview']['file']]+[x['file'] for x in paragraph['addedLessons']]
+                records.append(record)
+        if not isinstance(records,list):raise ValueError('No explicit coverage records: '+str(manifest_path))
+        for record in records:
             identity=record.get('sourceEntryId',record.get('sourceId'))
             if identity not in entries:raise ValueError('Unknown source identity: '+str(identity))
             entry=entries[identity]
             parts=record['requiredParts']
             if not parts or len(set(parts))!=len(parts):raise ValueError('Invalid required parts: '+identity)
             files=record.get('lessonFiles') or ([record['file']] if 'file' in record else None)
+            if files is None and 'existingOverview' in record:
+                files=[record['existingOverview']['lessonFile']]+record['newLessonFiles']
             if files is None:
                 ids=record.get('lessonIds',record.get('coveredBy',[]))
                 files=[f'stereo-course/merzlyak-10-base/lessons/{i}.json' for i in ids]
             if not files:raise ValueError('No explicit authored files: '+identity)
             lessons=[json.loads((root/f).read_text()) for f in files]
             for lesson in lessons:
-                for key in ['bookId','collection','exercise','point']:
+                identity_keys=['bookId','collection','exercise','point']
+                if entry['source']['collection'] in ['selfcheck','example']:
+                    identity_keys.append('chapter')
+                for key in identity_keys:
                     if lesson['source'].get(key)!=entry['source'].get(key):
                         raise ValueError(f'{identity}: {lesson["id"]} mismatched source {key}')
             authored=[lesson['source'].get('subpart') for lesson in lessons]

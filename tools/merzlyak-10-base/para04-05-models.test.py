@@ -83,6 +83,13 @@ for n,count,names in sections:
    if not any(math.dist(x,h)<1e-8 for h in hits):hits.append(x)
  assert len(hits)==len(names),(n,'unexpected edge intersection count',hits,names)
  for h in hits:assert any(math.dist(h,p[k])<1e-8 for k in names),(n,'missing section vertex',h)
+# Reviewer-requested construction traces, checked as actual intersections.
+p=pts(5,38)
+for a,b,c in [('M','N','T'),('M0','N0','T'),('N','K','U'),('N0','K0','U'),('T','U','X'),('T','U','Y'),('T','U','Z'),('A','C','X'),('A','B','Y'),('B','C','Z'),('X','M','P'),('Y','N','Q'),('Z','K','R')]:collinear(p,a,b,c)
+for k in ['T','U','X','Y','Z']:eq(p[k][2],0)
+p=pts(5,39)
+for a,b,c in [('U','V','B'),('A','E','U'),('C','D','V'),('U','M','P'),('V','N','Q'),('S','A','P'),('S','C','Q')]:collinear(p,a,b,c)
+parallel(p,'U','V','E','D')
 # Metadata and all internal source references stay explicit.
 coverage=json.loads((ROOT/'tools/merzlyak-10-base/coverage-04-05.json').read_text())
 assert len(coverage['entries'])==69 and not coverage['unresolved']

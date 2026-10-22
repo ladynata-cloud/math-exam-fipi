@@ -8,8 +8,10 @@ Scope assumptions explicitly disclosed in cards: named points on edges are the i
 
 Verification completed:
 - All 72 cards pass the course runtime lesson validator, with `draft` and all review flags `pending`.
-- The generic model test checks 247 planar simple polygons and 705 nonzero segments.
+- The generic model test checks 247 planar simple polygons and 723 nonzero segments.
 - `para04-05-models.test.py` independently verifies source lengths and ratios, construction collinearities and parallel directions, numeric answers, and complete edge–plane intersections for 12 solid sections. It catches missing or extra section vertices, not only planarity.
 - The §4 alternative-intersection model in 4.10 has X on both AC and BD₂.
 
 No source items remain unresolved. These checks do not replace independent mathematical, source, pedagogical, or browser review.
+
+Independent reviewer corrections incorporated: standalone stems for 4.14(2),(3); explicit AC continuation to X in 4.10; corrected wording about the shorter diagonal in 5.41; exact construction traces T,U,X,Y,Z for 5.38 and U,V for 5.39, shown only in focused steps. The trace intersections have reproducible collinearity assertions in the model test.

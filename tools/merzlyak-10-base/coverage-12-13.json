@@ -437,7 +437,7 @@
         "ex-12-014"
       ],
       "file": "stereo-course/merzlyak-10-base/lessons/ex-12-014.json",
-      "sha256": "78219836f9cd75c565aa907a311d2dcbdc5fce632953d24bbee266a7d8c02de5",
+      "sha256": "bd69e43da577454a17b559179596299424fd9b9d8482a6f42a57f3b6b2e4b4bb",
       "sourceIssue": "Printed116/PDF117 specifies incompatible angles60°,45°,90°; answer-page formal3√10 does not describe an existing spatial configuration.",
       "coverage": "draft analysis; source clarification remains pending"
     },
@@ -993,7 +993,7 @@
         "ex-13-004"
       ],
       "file": "stereo-course/merzlyak-10-base/lessons/ex-13-004.json",
-      "sha256": "7f050fa3568e8053af2ade49860710828a5c069c6f4b4d6f853429a30cecec28",
+      "sha256": "c9477fd5c0ef0c36042ea5da61af8e6510ed392dbae3a6a28cd8817749ebf31b",
       "sourceIssue": null,
       "coverage": "draft solution of all literal cases"
     },
@@ -1364,7 +1364,7 @@
         "ex-13-020"
       ],
       "file": "stereo-course/merzlyak-10-base/lessons/ex-13-020.json",
-      "sha256": "520ceb339048edc3de83592ed933635754c9228892682ab88e16c674d7319b04",
+      "sha256": "587c0c5b163032766d3e607321c4074b6172137ad79548f6241c527285acda18",
       "sourceIssue": null,
       "coverage": "draft solution of all literal cases"
     },
@@ -1663,7 +1663,7 @@
         "ex-13-033"
       ],
       "file": "stereo-course/merzlyak-10-base/lessons/ex-13-033.json",
-      "sha256": "c2232576ec8f394f0b74750a360c7a9ec6fdfa23e1a86e624bd029d5abc36044",
+      "sha256": "c946a1c350f0b4dc85cb8d8928b62b62e70102426d8676f20a5e64029b16f7f7",
       "sourceIssue": null,
       "coverage": "draft solution of all literal cases"
     },
@@ -1686,7 +1686,7 @@
         "ex-13-034"
       ],
       "file": "stereo-course/merzlyak-10-base/lessons/ex-13-034.json",
-      "sha256": "c1e39fecd441ffe9a18179307732fa6afad7ccb6353c2888f7e311ddbc66ecb9",
+      "sha256": "ec9fc29c7a0bcb40199bed47b800edc79e9248853126264861ce367ff6cbf2ea",
       "sourceIssue": null,
       "coverage": "draft solution of all literal cases"
     },
@@ -1709,7 +1709,7 @@
         "ex-13-035"
       ],
       "file": "stereo-course/merzlyak-10-base/lessons/ex-13-035.json",
-      "sha256": "fdb8e723ac31b6e7d8d4465f425facd995a9cd690129df18f7e2062d8de62891",
+      "sha256": "cb67495a250b99f4a126fda7dafc2e709ba94c3929c5fdfd71e180abfacc6c5c",
       "sourceIssue": null,
       "coverage": "draft solution of all literal cases"
     },

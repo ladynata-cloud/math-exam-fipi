@@ -48,7 +48,7 @@ load(12,10);eqs([('M','A',5*sq(2)),('M','C',10)]);near(angle('M','A','B'),45);ne
 load(12,11);near(angle('A','B','H'),45);near(angle('A','C','H'),60);near(dist('A','C'),4*sq(3));near(dist('A','B'),6*sq(2))
 load(12,12);near(dist('D','A'),2);near(angle('D','A','O'),30);near(angle('D','B','O'),30);near(angle('A','O','B'),120);near(dist('A','B'),3)
 load(12,13);near(angle('B','A','O'),45);near(angle('B','C','O'),45);near(dist('A','C'),16);near(angle('A','B','C'),60);near(dist('B','O'),8*sq(2))
-d=load(12,14);near(dist('A','H'),3*sq(3));near(angle('A','B','H'),60);near(angle('A','C','H'),45);near(angle('B','A','C'),75);assert 'невозможно' in str(d['steps']);near(-dist('A','H')**2/(dist('H','B')*dist('H','C')),-sq(3))
+d=load(12,14);near(dist('A','H'),3*sq(3));near(angle('A','B','H'),60);near(angle('A','C','H'),45);near(angle('B','A','C'),75);assert 'противоречие' in str(d['steps']);assert dist('H','B')+dist('H','C')<3*sq(10)
 load(12,15);near(dist('M','A'),6);near(angle('M','A','O'),45);near(angle('M','B','O'),30);near(angle('A','M','B'),45);near(dist('A','B'),6)
 load(12,16)
 for a in ['A','B','C','D']:near(dist('M',a),12)
@@ -80,7 +80,7 @@ load(12,34);near(dist('B','C'),35);near(dist('A','B')/dist('A','C'),3/8);near(an
 load(13,1);near(angle('A','O','H'),60)
 load(13,2);near(dist('A','O'),18);near(angle('A','O','H'),30);near(dist('A','H'),9)
 load(13,3);near(dist('A','O'),8);near(dist('A','H'),4*sq(3));near(angle('A','O','H'),60)
-load(13,4);eqs([('A','B',21),('A','C',12),('D','F',20),('D','E',35)]);perp('A','C','B','C');perp('D','F','E','F');near(angle('A','B','C'),angle('D','E','F'))
+load(13,4);eqs([('A','B',21),('A','C',12),('D','F',20),('D','E',35)]);perp('A','C','B','C');perp('D','F','E','F');near(angle('A','B','C'),angle('D','E','F'));assert 'H' not in P and 'O' not in P
 load(13,5);eqs([('A','H',14),('B','P',8),('A','O',42),('B','K',24)])
 load(13,6);eqs([('B','O',2),('B','F',sq(2)),('B','G',sq(3))]);perp('B','G','O','G');near(angle('F','O','G'),105)
 load(13,7);perp('C','P','O','P');perp('C','Q','O','Q');near(angle('P','C','Q'),110);near(angle('P','O','Q'),70)
@@ -98,7 +98,7 @@ for a,b in [('A','B'),('A','C'),('A','D'),('B','C'),('B','D'),('C','D')]:near(di
 perp('A','M','C','D');perp('B','M','C','D');near(plane_angle('A','C','D','B','C','D'),angle('A','M','B'))
 load(13,18);eqs([('A','D',sq(3)),('A','A1',3)]);near(plane_angle('A','B','C','A1','B1','C'),60)
 load(13,19);eqs([('O','A',2*sq(2)),('O','B',3),('A','B',sq(5))]);near(angle('A','O','B'),45);perp('A','B','A','A1')
-load(13,20);eqs([('O','A',3),('O','B',5),('A','B',7)]);near(angle('A','O','B'),120)
+load(13,20);eqs([('O','A',3),('O','B',5),('A','B',7)]);near(angle('A','O','B'),120);perp('A','B','A','A1');perp('A','B','B','B1');near(norm(cross(v('A','A1'),v('B','B1'))));near(plane_distance('B1','A','A1','B'));near(line_distance('A','B','B1'),7)
 load(13,21);eqs([('A','B',8),('B','C',8),('C','A',8),('B','D',4*sq(7))]);near(plane_angle('A','B','C','B','C','D'),45)
 load(13,22);eqs([('A','C',7),('B','C',7),('A','D',7*sq(5))]);near(angle('A','C','B'),90);near(plane_angle('A','B','C','A','C','D'),60)
 load(13,23);eqs([('A','C',2),('B','C',2),('D','O',sq(3))]);near(dist('D','A'),dist('D','B'));near(dist('D','A'),dist('D','C'));near(plane_angle('A','B','C','A','C','D'),60)
@@ -113,9 +113,12 @@ load(13,31);eqs([('A','D',10),('A','B',16),('C','D',2*sq(13))]);near(angle('A','
 load(13,32)
 for a,b in [('A','B'),('B','C'),('A','D'),('C','D')]:near(dist(a,b),4)
 near(dist('A','C'),6);near(dist('B','D'),sq(21));near(plane_angle('A','B','C','A','D','C'),60)
-load(13,33);eqs([('A','B',7),('B','D',3),('C','D',11),('A','C',16)]);near(plane_angle('L','R','_a','L','R','_c'),60)
-load(13,34);eqs([('A','C',2),('C','D',2),('B','D',2),('A','B',2*sq(2))]);near(plane_angle('L','R','_a','L','R','_c'),60)
-load(13,35);eqs([('D','F',4*sq(3)),('E','F',2),('C','D',5),('C2','D',5),('C','E',3),('C2','E',9)]);near(plane_angle('L','R','_a','L','R','_c'),30)
+d=load(13,33);eqs([('A','B',7),('B','D',3),('C','D',11),('A','C',16)]);near(plane_angle('L','R','_a','L','R','_c'),60)
+near(dist('C','Cp'),3);near(dist('B','Cp'),11);near(angle('A','B','Cp'),120);near(dist('A','Cp')**2,247);perp('C','Cp','A','Cp');assert 'Cp' not in d['visualization']['model']['labelNames']
+d=load(13,34);eqs([('A','C',2),('C','D',2),('B','D',2),('A','B',2*sq(2))]);near(plane_angle('L','R','_a','L','R','_c'),60)
+near(dist('B','Bp'),2);near(dist('C','Bp'),2);near(dist('A','Bp'),2);near(angle('A','C','Bp'),60);perp('B','Bp','A','Bp');assert 'Bp' not in d['visualization']['model']['labelNames']
+d=load(13,35);eqs([('D','F',4*sq(3)),('E','F',2),('C','D',5),('C2','D',5),('C','E',3),('C2','E',9)]);near(plane_angle('L','R','_a','L','R','_c'),30)
+near(dist('D','Dp'),2);near(dist('E','Dp'),4*sq(3));near(dist('C','Dp')**2,21);near(dist('C2','Dp')**2,21);near(angle('C','E','Dp'),30);perp('D','Dp','C','Dp');assert 'Dp' not in d['visualization']['model']['labelNames']
 load(13,36);near(dist('M','A'),dist('A','B'));near(angle('A','B','C'),120);near(math.tan(math.radians(plane_angle('A','B','C','M','C','D'))),2*sq(3)/3)
 load(13,37);near(dist('C','M'),dist('M','C1'));near(plane_angle('B','M','D','A1','B','D'),90)
 load(13,38);near(dist('M','O'),dist('A','C'));near(dist('M','K'),dist('K','C'));near(math.tan(math.radians(plane_angle('B','M','D','B','K','D'))),.5)

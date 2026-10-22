@@ -1,0 +1,381 @@
+{
+  "scope": "91 exercise drafts20.1–20.91",
+  "reviewKind": "author-side-source-and-geometric-check",
+  "reviewApproval": false,
+  "status": "draft-pending-independent-review",
+  "evidence": [
+    "Engine validateLesson passed91",
+    "exercises-20-models.test.py passed91 task-specific model checks, all faces/segments, exact source mapping, explicit20.58 counterexample"
+  ],
+  "limitations": [
+    "Not independent review",
+    "Browser and pedagogy review separate",
+    "20.58 needs explicit source interpretation; source28 editorial word; source83 answer-order difference"
+  ],
+  "files": [
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-001.json",
+      "sha256": "8f054eaba3127baccbc22c969c6e4afaf6dfb767b8261cb9b14092ad16f4a907"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-002.json",
+      "sha256": "b8b5288404fb95aeca16d36912a0220d7aea8b45cefe4fa4ad16be9390831687"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-003.json",
+      "sha256": "af22ce9322e981139989439da41567f699ead842c3986d72add0451030f7464e"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-004.json",
+      "sha256": "2d8dcaf46efc8d90c03198ec54c570915615afb3d48c534697234b39bbec8e5b"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-005.json",
+      "sha256": "1030c884128c6d6e639bd8953729a22eb85381e407d7b67d8eb7cb132564b219"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-006.json",
+      "sha256": "dadf4b71cd58ce3f42cb76ee7dca58f0fa3c66a363b78324499fca41a13b07dd"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-007.json",
+      "sha256": "6e3a44b3a6f9d248f1fc3a5088bf070c43a1bf06209fd375b2943104d9a8ba40"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-008.json",
+      "sha256": "060a28214a3dd18c868b68a5ae0471feec7b5ef0e7dbeb74e908ebd28b42d36b"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-009.json",
+      "sha256": "139ba6cb990ab0587e20e0472087f97763cc7b902cbabb8c21c23de779dfd754"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-010.json",
+      "sha256": "2844bc4013f943661fbe283f7f45e9c386bd70fdca1d157c8a082271135860b3"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-011.json",
+      "sha256": "d5482fc7c987bc4369a1264496011e9df2d69ca340b5e71eed4067a9fad12a6d"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-012.json",
+      "sha256": "764318d597f8b640e1c8224b1efd4d4862dc5189b5fb339d9d97cb5d5820c50f"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-013.json",
+      "sha256": "66e18aec5489061e474874f6c54893dbaa1d41400d8ef183f8323bf366bc8329"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-014.json",
+      "sha256": "b33bf81d37adc10068a7a7fd6396fa6c8841207dd405b08ff225ea444145f278"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-015.json",
+      "sha256": "3afa3fc8b39b84c100b74d96b9c5702055aee81fb39105d8295aff6afd781041"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-016.json",
+      "sha256": "d0cb61508323aa4f8a4140a165c952cbe06e18b2f75cd8e12c8aaba2f8ee167d"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-017.json",
+      "sha256": "ac6873ca2c76a515f5661d2ff40d9ce75836aa5d846e8562708a44c7508aa3ae"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-018.json",
+      "sha256": "a7bbd61277e64ff26cb1e6ba92b81855e5f7767b0b214bc66ce68bfef1f7e9bd"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-019.json",
+      "sha256": "d2ff6c2f57c07ef70202196dccb061171bfd05956060df2ba47f4b1f25f6ffad"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-020.json",
+      "sha256": "80c3338275a35bc87e0f32c0a95228f33459c8c917b6b2a2d78ed6551cddb793"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-021.json",
+      "sha256": "c56e6b413109a93ff94c23156e643ff33972a731d0eee65ea2b6f933280f9c78"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-022.json",
+      "sha256": "df10697ae7f489b488812b1b8b390326f6a21fba08f0ef3b129a405b5c79e6c8"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-023.json",
+      "sha256": "98858c9f6a8192f35c94c8477d36702f7213f3e48013138716f9529a7f85a1bc"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-024.json",
+      "sha256": "9232df5bc8fd1a96896b32592a6e1227ed4333bbe94d813520aeaa07609ad0f4"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-025.json",
+      "sha256": "1b9cfcd5b7d376a0f592da8cf962483f970fcebf6015fa52ec8dd6d956c3352a"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-026.json",
+      "sha256": "d0a134dace03ec81dbaaa5630e9ec5585da61622a2148e921913961efd69c64c"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-027.json",
+      "sha256": "96a8c6b8feab58643afee14798de077561c79fd2b232845983841cb9a1619eab"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-028.json",
+      "sha256": "187d873207d6cb4e387495f06eba4cac8b7a4b9c7b8c11f1677fa24f6a350eba"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-029.json",
+      "sha256": "a1056a0c89daa1706488988e40f46683f2e2692534c8995ed9400685eb553463"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-030.json",
+      "sha256": "a25c24fba880f9419fddba2cdb8fc3afce6ae774fffa81ca4a62db1be34b6087"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-031.json",
+      "sha256": "24ec614cabd400aa0dbc9b2a8abfb4bc917759b7dd07ac6634b29b1a676a38db"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-032.json",
+      "sha256": "e7c9aa7d80348dcae2dd7eebea19c9f5f1fdc70b0597be190213e1822c056312"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-033.json",
+      "sha256": "09e45d989217074de8966635b19f1511dab8bb1659a369df18b41da216859fed"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-034.json",
+      "sha256": "3b9cf052ad08334003c5f56886e7c78dc95c481da427e84238094e4a14de697a"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-035.json",
+      "sha256": "5dd239094899491fddfc445eecf88def114bf5ebee6b616b8ed1231165b3baa3"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-036.json",
+      "sha256": "9f33ca3764b1ad7549a8646638eb42179e628d0a456094bde1a34eb98c5110c1"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-037.json",
+      "sha256": "cf351b8916b0529ddb6b4dc159a1d06b219a0f327065f541fef11469bcaf4733"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-038.json",
+      "sha256": "300a98e6d066cb31c09c38d586942ba97274e7c718212333f992dd6958b1d8cf"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-039.json",
+      "sha256": "225b233bac4bbe9693a092141a24a6a90fb05a19f3dac915b491ca0738420ee7"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-040.json",
+      "sha256": "6a446ea22b6ee188c4cd2c0bae1ca34dbba6e379c3ca0edb1daa065c8bf0c4f2"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-041.json",
+      "sha256": "cb575419ee2abb481f8314d062e5cceb3fd7e3b79183ab9b63d9ea40099d1940"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-042.json",
+      "sha256": "1b498d085a947832e934da56441c493a3a222a590cb51205478e6280d0347c0a"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-043.json",
+      "sha256": "b36bd073779f8915ab55874e35ccd972c751d11cb2d5b848bc6239690e70ad1e"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-044.json",
+      "sha256": "7b15051505adc896179bee11b9776f9e863e113aa96812f667cb239e6161f879"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-045.json",
+      "sha256": "197ac714deba5a832a57b2ac200446efbf78ee48b5eba3de677c28d8ab2e6227"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-046.json",
+      "sha256": "22cd0e7d23874381bfe6bb08938256a049898af16a2a2f7aa28f4ccebcc4ce3b"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-047.json",
+      "sha256": "6c444b0941ff845ef79ab7538656c70064421018e15e0bd026dc9f01a6fea843"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-048.json",
+      "sha256": "55e6f255818b13601958dfbeb9a8e4d4ee1c27ef56f792a9c765d6d6dd7f2c42"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-049.json",
+      "sha256": "3b08eea3566638deb385c3d5e3abf088f4b16ade0a96b14c932e680c56389759"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-050.json",
+      "sha256": "7e8c683c8fd76df21f02867bbc02782735c4ca8cb304e83c13ed01d4cb48445d"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-051.json",
+      "sha256": "f210c9852b16f90b7d7d8d2e8e7b088f3e9a143e8a12348b361747721786beb6"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-052.json",
+      "sha256": "73678415c2e6639805a5f73dad0f4a25938b01eb25033441d6f5e08d051dbda3"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-053.json",
+      "sha256": "f38228a59cfde7a2ff4f721964c59db3298bd13722dc294659c2bcd1d027a15a"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-054.json",
+      "sha256": "ee76ed07790e6b8978a761ac4510d5886fcba4dba590b3e8673fe691ce684c20"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-055.json",
+      "sha256": "a0200885c587ae1bb80a83e1e00ea2c7dcc7c79e43ebdfca8f8fa2732c37cdce"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-056.json",
+      "sha256": "bbea90baec670af2856ace2e25fc84c95b5a3b4dfb062fb2a22f7727df28e54c"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-057.json",
+      "sha256": "c8d4af20e3e4c1508472617d263bd119773485e41c96ce665c0c15d3df520220"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-058.json",
+      "sha256": "0c82e950ba4038ee80c1efc8be6e653a575bc7ee7da63e8202b9af4b67015b57"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-059.json",
+      "sha256": "3e45122f8e7d0aa752d0056ba978de2ad04815c03d11da5238773f4c7146d56d"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-060.json",
+      "sha256": "accc0c96a3edb166f91bff7db3407df5689003f8bde8c866edc693f48710fa9b"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-061.json",
+      "sha256": "3c41f9c5c93ed9854dc89db81267313c871fbd16853d537e1a3039c5db6f1569"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-062.json",
+      "sha256": "38d228ea88ef69b62cde6643fb45890608835d7a67310efccb9ae529d5f2a21c"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-063.json",
+      "sha256": "c91f8c4919579faa361a1af06d1838b2c1c4beaff48f5b9a0b39498c8183082d"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-064.json",
+      "sha256": "48a8d36d88d503aa42c3526eac964686a2b4e9420d43437ce377c58601ffcca4"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-065.json",
+      "sha256": "92972c5c19ec19331195971dc3c0516ed43f2762f364177727f126d78262baf1"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-066.json",
+      "sha256": "1a2870f59d7328e89c334f7ce28abfb6eefde93e213aaa51d969f82c1017b157"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-067.json",
+      "sha256": "ac15cdff09aea562a64572da8aaf8ef48845249c60cdc0e450a3884e08c014de"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-068.json",
+      "sha256": "f0e78ad23897c67b9412f2d8878c282a33eafd3d17f9a08f6bbacee9292c041a"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-069.json",
+      "sha256": "3d43c2462a798a6ecb4de4a9d45ab5f49618342997aed7d92b72e2a02295505b"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-070.json",
+      "sha256": "a81a4831f519f3c6fcf8620be46fecf3fcb6b8cd9314981b00c17c0c9ff18020"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-071.json",
+      "sha256": "7839a7a41b9e324ef03ce4fc660fd457cd0fb56cf06c759d7df029f1135ceadc"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-072.json",
+      "sha256": "a6dfd06dc72d3fd2573152839e330e946ad6cc7356278a9a0d8313198afea93d"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-073.json",
+      "sha256": "aabe160e9d98689f0f8d6e6ddbf7b2950aaf97205ae04811561c392852d885c3"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-074.json",
+      "sha256": "ed84bccb90f80d58862ec164618b8d21175366788b17936a74ed078261ba07f7"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-075.json",
+      "sha256": "f5b67de4ce68bbbc5cf5a968a77c71187064342eb63f7366d950eb3822cef8a6"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-076.json",
+      "sha256": "49476424998cf57b5542e27900cbd627e98891834527b2a247772206570ef280"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-077.json",
+      "sha256": "fbc891296e10cdd47eafc20e0c44ed6b9b636dcbbb364268491bb10c6882b757"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-078.json",
+      "sha256": "4c6c83daa9e08bcb5d8275e15f8181aa10629682c544cc4fd253839072da2fdb"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-079.json",
+      "sha256": "5b251605e6ff70c0bb0186c6d8159d82ecaf5d8b2b5f48b540d5a7375b405f8a"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-080.json",
+      "sha256": "280d06fbc0afa65c68333c9ecfcac34952784c24ad3359bc1644d73771b65e11"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-081.json",
+      "sha256": "8a3faba29bb7535834f9aaacd13f04e9d50e7ca85aeee8d39d81f95e2b49fb14"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-082.json",
+      "sha256": "633f5dc1e421db2be88ea9caa5db2a833848b373fdb548c7cd9d14085d6636d0"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-083.json",
+      "sha256": "5a30f63ed552ce15f7c3e422708143d7e7df07166e7768efb74e7391cbebc233"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-084.json",
+      "sha256": "c205400eebca8fb6fa16a3d158a78310ca43c5a08fa8d079cfc42ec87d76ab77"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-085.json",
+      "sha256": "ae29ac1b244a6331bc62ad7e6742bea5886cd91f0a7aba08c6e1469ec8ac34f5"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-086.json",
+      "sha256": "949aa823c76cba99c8b21f99a3b657757f2d02d705928e23f40fab3ff6362cad"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-087.json",
+      "sha256": "99af81040d8cddef9c3fc46e9749969155c71c533365d4b9716c830806a63f0a"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-088.json",
+      "sha256": "9508d492b4e552e48794e2e1a026dc534eac90ba6f97bd928b96f5ebb6558902"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-089.json",
+      "sha256": "0268739fe236c52bbd9016fc5196b4fb5f7808a9dab856b105439169002c58e4"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-090.json",
+      "sha256": "50e1753ad4a803ed4e529df2436ade4789419a5595eb0815a412bd3d8543a885"
+    },
+    {
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-20-091.json",
+      "sha256": "ce8f7c2dd32af931fdd2866520e8c3693a0abe1aede58dff81335c86d4f96c72"
+    }
+  ]
+}

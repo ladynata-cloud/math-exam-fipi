@@ -1,0 +1,1104 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Independent source, mathematics, model and school-level exposition review by textbook_inventory; authors are root.",
+  "reviewedAt": "2026-10-22T22:29:50.867049+00:00",
+  "scope": "All 39 computer-activity lessons and 5 open-ended project guides. Source task coverage and topic boundaries, mathematical statements and algorithms, full worked examples, model incidence and pedagogical prerequisites were checked.",
+  "sourcePagesVisuallyChecked": [
+    196,
+    197,
+    198,
+    199,
+    200,
+    97
+  ],
+  "priorIndependentSourceReviewReused": [
+    "PDF12 for original exercises 1.1–1.4",
+    "PDF23 for original exercises 3.3–3.5; cloned original solution text and models compared directly"
+  ],
+  "result": "pass_with_resolved_findings",
+  "counts": {
+    "computerLessons": 39,
+    "projectGuides": 5,
+    "sourceComputerBlocks": 18,
+    "sourceProjectTopics": 5
+  },
+  "checks": {
+    "script": "tools/merzlyak-10-base/practical-projects-models-review.test.py",
+    "command": "python tools/merzlyak-10-base/practical-projects-models-review.test.py",
+    "testGroups": 7,
+    "result": "pass",
+    "specificChecks": [
+      "All card coordinates/edges/faces/highlighted polygons and references",
+      "All 13 cloned original exercise models and explanations agree exactly",
+      "Full independent clipping of all 12 cube edges for all 5 plane cuts in both cube lessons",
+      "Inverse projection ambiguity: rectangle and nonrectangular rhombus from one square image at 60 degrees",
+      "Simple cubic lattice shell counts 6/12/8; unit-length bonds",
+      "Regular tetrahedron edge lengths, volume and internal dihedral cosine 1/3",
+      "Trihedral angle model 100/80/70 degrees, auxiliary equal triangles and complete triangle-inequality/sum proof",
+      "Octahedron closed manifold and regular faces; independently constructed truncated tetrahedron edges/counts"
+    ]
+  },
+  "resolvedFindings": [
+    {
+      "id": "P-01",
+      "lessons": [
+        "computer-03-04.json"
+      ],
+      "finding": "Cube section algorithm displayed a 4×3×2 rectangular box.",
+      "resolution": "Replaced by exact unit cube and actual triangular, square, diagonal, pentagonal and hexagonal section views; full 12-edge intersection comparison passes."
+    },
+    {
+      "id": "P-02",
+      "lessons": [
+        "computer-16-03.json"
+      ],
+      "finding": "Several section constructions had no actual section polygons; diagonal view showed a spatial diagonal.",
+      "resolution": "Five exact sections now present; each proof/example step selects its actual polygon."
+    },
+    {
+      "id": "P-03",
+      "lessons": [
+        "computer-16-03.json",
+        "computer-16-04.json"
+      ],
+      "finding": "Unqualified statements about connected parallelogram cuts and convex hull of projected bases failed for nonconvex prisms.",
+      "resolution": "Author added explicit convexity conditions and explains nonconvex alternatives."
+    },
+    {
+      "id": "P-04",
+      "lessons": [
+        "computer-02-01.json",
+        "computer-03-04.json",
+        "computer-04-01.json",
+        "computer-05-01.json",
+        "computer-06-01.json",
+        "computer-07-01.json",
+        "computer-13-01.json",
+        "computer-17-01.json",
+        "computer-17-02.json"
+      ],
+      "finding": "Advanced coordinate operations and linear-system solvability had no accessible definition for the basic-level audience.",
+      "resolution": "Eight affected cards now define coordinate vector operations in help; §2 has an explicit small-system example and identifies extra arithmetic operations."
+    },
+    {
+      "id": "P-05",
+      "lessons": [
+        "computer-03-04.json",
+        "computer-16-03.json"
+      ],
+      "finding": "New cut views used unsupported view.labelNames.",
+      "resolution": "Author replaced with supported view.points and scoped neutral labels; independently checked final JSON view keys."
+    }
+  ],
+  "openFindings": [],
+  "externalReferencesIndependentlyOpened": [
+    {
+      "url": "https://www.iucr.org/what-we-do/education/pamphlets/matrices-mappings-and-crystallographic-symmetry",
+      "reviewedScope": "Section 1.5 supports translation-lattice context; the guide clearly labels a simple cubic idealization."
+    },
+    {
+      "url": "https://mathcircle.berkeley.edu/sites/default/files/BMC6/ps0405/dehn.pdf",
+      "reviewedScope": "Fuchs, Hilbert problem and Dehn theorem: guide correctly limits the impossible dissection claim to a regular tetrahedron and explicitly uses an external theorem."
+    },
+    {
+      "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect35.pdf",
+      "reviewedScope": "Sections 35.4, Theorem 35.11 and regular tetrahedron computation support the cited invariant claim; guide does not pretend to provide the full advanced algebraic proof."
+    }
+  ],
+  "limitations": [
+    "Project topics are open-ended; these are substantive guides with worked mathematics, not fictitious completed student reports or exhaustive monographs.",
+    "External Dehn-invariant theorem is explicitly cited and not proved from school axioms.",
+    "Browser interaction, graphical legibility and accessibility remain separate integration checks.",
+    "This internal review does not change workflow flags or authorize external release."
+  ],
+  "authorGenerators": [
+    {
+      "path": "tools/merzlyak-10-base/author-practical.py",
+      "sha256": "30eca68d451de8a8c755bb74979939490a12c2e3cffd834b289bcd2c82cd61b5"
+    },
+    {
+      "path": "tools/merzlyak-10-base/author-projects.py",
+      "sha256": "12d0145541048e9825454b66ccc5722f25be7b4e55de26aa80ab1ae9a6b8b182"
+    }
+  ],
+  "entries": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-01-01.json",
+      "lessonId": "merz-computer-01-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-1",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195
+        ],
+        "pdfPages": [
+          196
+        ],
+        "subpart": "плоскости"
+      },
+      "sha256": "20d625ce69faf293d813f080e61833c5294e63eb352191ff84e19ed0e5f94b31",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-01-02.json",
+      "lessonId": "merz-computer-01-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-1",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195
+        ],
+        "pdfPages": [
+          196
+        ],
+        "subpart": "1.1"
+      },
+      "sha256": "0348d776d31a07c2f4fa70333bbc5353f1af7722f22018ccd6fc3729f2ee7754",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-01-03.json",
+      "lessonId": "merz-computer-01-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-1",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195
+        ],
+        "pdfPages": [
+          196
+        ],
+        "subpart": "1.2"
+      },
+      "sha256": "64807680f88f3cba91cc3f46a9029496aef9fb6aa1b975e0f364f6b71eb7aaa8",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-01-04.json",
+      "lessonId": "merz-computer-01-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-1",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195
+        ],
+        "pdfPages": [
+          196
+        ],
+        "subpart": "1.3"
+      },
+      "sha256": "5331c2d73359e818ed80a3783fbc7d55f102bad66a4592e26f5213481c2eb88a",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-01-05.json",
+      "lessonId": "merz-computer-01-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-1",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195
+        ],
+        "pdfPages": [
+          196
+        ],
+        "subpart": "1.4"
+      },
+      "sha256": "10a8516b5b4027eb5f49d9ac4987d678f25d38eed5967624125333881b15ae9c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-02-01.json",
+      "lessonId": "merz-computer-02-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-2",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195
+        ],
+        "pdfPages": [
+          196
+        ],
+        "subpart": "алгоритмы"
+      },
+      "sha256": "9a637ebe738218915e69db1e0eea2dbdcf51f15cac2d5829fe419883824a3ebe",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-03-01.json",
+      "lessonId": "merz-computer-03-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-3",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195,
+          196
+        ],
+        "pdfPages": [
+          196,
+          197
+        ],
+        "subpart": "3.3"
+      },
+      "sha256": "b305088877de9260c45614904ea57373d32615aa30409e1cf8fa4c68d8f8ed5c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-03-02.json",
+      "lessonId": "merz-computer-03-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-3",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195,
+          196
+        ],
+        "pdfPages": [
+          196,
+          197
+        ],
+        "subpart": "3.4"
+      },
+      "sha256": "4c914a1abd522469278681c74eb0fbd8264033b8f49de66c685875444aec3895",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-03-03.json",
+      "lessonId": "merz-computer-03-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-3",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195,
+          196
+        ],
+        "pdfPages": [
+          196,
+          197
+        ],
+        "subpart": "3.5"
+      },
+      "sha256": "b38aa58236d7987fdd2d713aa4138491b14574963943e4424b7287c37868aa36",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-03-04.json",
+      "lessonId": "merz-computer-03-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-3",
+        "chapter": "Глава 1. Введение в стереометрию",
+        "printedPages": [
+          195,
+          196
+        ],
+        "pdfPages": [
+          196,
+          197
+        ],
+        "subpart": "3.19-алгоритм"
+      },
+      "sha256": "31dad3cc29ca9d79ea7056bd8d27cc48ddd0f30c7cbc904fc4c923db0ca8b80c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-04-01.json",
+      "lessonId": "merz-computer-04-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-4",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "алгоритм"
+      },
+      "sha256": "2fd8508f5462d80c65844f8c714f7158517c0a76c0c4e3c2f838a036ffc16512",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-05-01.json",
+      "lessonId": "merz-computer-05-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-5",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "алгоритм"
+      },
+      "sha256": "7207655f18cba04e332cc193d3f1c4d156846b454425733684b90847b46a9b9e",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-06-01.json",
+      "lessonId": "merz-computer-06-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-6",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "алгоритм"
+      },
+      "sha256": "aca9c15714f05990d31e86410895b1bdaf6b9ef85acb7c35e1a3be1e4affc753",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-07-01.json",
+      "lessonId": "merz-computer-07-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-7",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "проектирование"
+      },
+      "sha256": "00ee2539b8c83b7b6d5db401fb88b359680117df56fe588841402fa34371c932",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-07-02.json",
+      "lessonId": "merz-computer-07-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-7",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "цилиндр"
+      },
+      "sha256": "437dd08107e6bc32d80046269c11ea7405d0a41f6990fc94c087020167319b2c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-07-03.json",
+      "lessonId": "merz-computer-07-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-7",
+        "chapter": "Глава 2. Параллельность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "конус"
+      },
+      "sha256": "d218535514bf5a9817324ebc851b049ba35169c3602a342ccf1c32234434e79a",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-08-01.json",
+      "lessonId": "merz-computer-08-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-8",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "контрпример"
+      },
+      "sha256": "d55e719b394e71a05218f6ec4ea0b641d66f967fbe2deb96baa019b62734dadc",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-09-01.json",
+      "lessonId": "merz-computer-09-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-9",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "9.19 · 1"
+      },
+      "sha256": "c9517d2d931edacdd7f0bdec9162115988a1939c2e02708ed020b1359ea48fd7",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-09-02.json",
+      "lessonId": "merz-computer-09-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-9",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "9.19 · 2"
+      },
+      "sha256": "70413142edbcf6b522d045ee5abb73a3c1d748b29f0f6e09f279762f0c28ebfb",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-09-03.json",
+      "lessonId": "merz-computer-09-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-9",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "9.19 · 3"
+      },
+      "sha256": "ffbfd4608053ac4f5e2131b9dadfa72560489f2554d9b7ff7a9664ef4f432076",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-09-04.json",
+      "lessonId": "merz-computer-09-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-9",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "9.19 · 4"
+      },
+      "sha256": "4bee8e4f7019e1ee80cba8b8cc4868f248ca27097ff56f251125171ad8d8e29d",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-09-05.json",
+      "lessonId": "merz-computer-09-05",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-9",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "9.19 · 5"
+      },
+      "sha256": "75043693cb183e737f776531a3735d980cfa432660ca223c39b7f5ff760fca38",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-09-06.json",
+      "lessonId": "merz-computer-09-06",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-9",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "9.19 · 6"
+      },
+      "sha256": "dadad0ad71c1826df8ec563841edbfe569bf10a4622d53152b8f8bef78e40d15",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-10-01.json",
+      "lessonId": "merz-computer-10-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-10",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "цилиндр"
+      },
+      "sha256": "08eb7cdc664430cf2c211ccacd2bd4dd75c0196627744ab6f17e099159ffb939",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-10-02.json",
+      "lessonId": "merz-computer-10-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-10",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "конус"
+      },
+      "sha256": "cd005ab243723676abdfac7f4bd6c1228f351bd7c4f7e4d14c4c8e77fc8b2484",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-10-03.json",
+      "lessonId": "merz-computer-10-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-10",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196
+        ],
+        "pdfPages": [
+          197
+        ],
+        "subpart": "многогранник"
+      },
+      "sha256": "0579900673b1b7c32023b065b74c009f69bc53e26881d7726608e35ceac5b804",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-12-01.json",
+      "lessonId": "merz-computer-12-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-12",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          196,
+          197
+        ],
+        "pdfPages": [
+          197,
+          198
+        ],
+        "subpart": "обратные-функции"
+      },
+      "sha256": "542f1cf84ee2f9425c159c31a8c3494c4b4506c598e9eef4d5f29c4647d50420",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-13-01.json",
+      "lessonId": "merz-computer-13-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-13",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "угол-плоскостей"
+      },
+      "sha256": "386be13be91ec78088dfce0947cb2fb1ed32ce18b4948b278d5f853c0b0b77e8",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-14-01.json",
+      "lessonId": "merz-computer-14-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-14",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "изображение"
+      },
+      "sha256": "599268888e26263aa6d1297a151fb600d2dfdb7b787a4b2a169941f6e7e1e25b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-15-01.json",
+      "lessonId": "merz-computer-15-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-15",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "площадь"
+      },
+      "sha256": "d303bbef01f7b905b385c026f9891169764667ef6fa1abcab77d8d8007779d7b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-15-02.json",
+      "lessonId": "merz-computer-15-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-15",
+        "chapter": "Глава 3. Перпендикулярность в пространстве",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "обратная-классификация"
+      },
+      "sha256": "23e32db0645ee803227e8aa1ec99ca1c571b0e3b9ab8da512cf19e817c9f352e",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-16-01.json",
+      "lessonId": "merz-computer-16-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-16",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "прямая-призма"
+      },
+      "sha256": "3d6f9d421c1b9b33e567ff549495b601a68260d738b145435b429838adb3705c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-16-02.json",
+      "lessonId": "merz-computer-16-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-16",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "наклонная-призма"
+      },
+      "sha256": "adcbc2a79e7b7df22f61df42e4d5f98acd0dc50805f6204513207eef58fe4dbf",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-16-03.json",
+      "lessonId": "merz-computer-16-03",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-16",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "сечения"
+      },
+      "sha256": "80934e0781509da2baf599a909c6dd52c8d39aca164a1c38d31802c2345f33b3",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-16-04.json",
+      "lessonId": "merz-computer-16-04",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-16",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "проекции"
+      },
+      "sha256": "0c0254b90be0a66c21effe8527cc276a4e5c5bb8af600404f1ff44442960469b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-17-01.json",
+      "lessonId": "merz-computer-17-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-17",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "прямоугольный"
+      },
+      "sha256": "9c2df6dc54442fa743db2af806144099d0cd1573a781bafa2f47af9feeeafdea",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-17-02.json",
+      "lessonId": "merz-computer-17-02",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-17",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "наклонный"
+      },
+      "sha256": "e10ebe81767675839e85f751222433df82b79a47e3c043a21234c78ed2e0849e",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-18-01.json",
+      "lessonId": "merz-computer-18-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-18",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "построение"
+      },
+      "sha256": "854c9f4ea20f061cb35f2fc0504aee303814f659808c3ad28ab1eecc72663e13",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/computer-19-01.json",
+      "lessonId": "merz-computer-19-01",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "practical",
+        "exercise": "paragraph-19",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          197
+        ],
+        "pdfPages": [
+          198
+        ],
+        "subpart": "классификация"
+      },
+      "sha256": "9eb53ebca851a8973fe2a6e5dde73b7835ccf2945e924c9fd7010f7cbda0b898",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/project-1.json",
+      "lessonId": "merz-project-1",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "project-1",
+        "printedPages": [
+          198
+        ],
+        "pdfPages": [
+          199
+        ],
+        "chapter": "Проектная работа",
+        "subpart": "исследовательский разбор"
+      },
+      "sha256": "a2676f2620da20cb51a801ed7fadcf3297276426f4e9e7186ba9b2d0f69d17f6",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/project-2.json",
+      "lessonId": "merz-project-2",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "project-2",
+        "printedPages": [
+          198
+        ],
+        "pdfPages": [
+          199
+        ],
+        "chapter": "Проектная работа",
+        "subpart": "исследовательский разбор"
+      },
+      "sha256": "a0f77fa351d8513db8c4464791a455d3a5565c33e811d69af6fe46e3f5d1948e",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/project-3.json",
+      "lessonId": "merz-project-3",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "project-3",
+        "printedPages": [
+          198
+        ],
+        "pdfPages": [
+          199
+        ],
+        "chapter": "Проектная работа",
+        "subpart": "исследовательский разбор"
+      },
+      "sha256": "e4c014fceca2da68c7c74de034bc592c4f2652f9e1baa9a33cd4215ea0b0a3de",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/project-4.json",
+      "lessonId": "merz-project-4",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "project-4",
+        "printedPages": [
+          198
+        ],
+        "pdfPages": [
+          199
+        ],
+        "chapter": "Проектная работа",
+        "subpart": "исследовательский разбор"
+      },
+      "sha256": "21308ebf311b3614c47c1348250e41d2a4ea249c6f52e369e6939d52eae300ae",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/project-5.json",
+      "lessonId": "merz-project-5",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "research",
+        "exercise": "project-5",
+        "printedPages": [
+          199
+        ],
+        "pdfPages": [
+          200
+        ],
+        "chapter": "Проектная работа",
+        "subpart": "исследовательский разбор"
+      },
+      "sha256": "8da57055d7d63412842b3a8b004f0f10f27e4d45d60c04faf9508dc23f892021",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "pedagogyReview": "pass_with_stated_project_scope"
+    }
+  ]
+}
