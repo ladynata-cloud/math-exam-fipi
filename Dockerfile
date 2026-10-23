@@ -11,6 +11,7 @@ COPY learning/ /app/learning/
 COPY ege-baza/path/ /app/ege-baza/path/
 COPY trainers/oge-basics/ /app/trainers/oge-basics/
 COPY trainers/motion-grade6/ /app/trainers/motion-grade6/
+COPY geometry-course/textbook/learning-contracts.js /app/geometry-course/textbook/learning-contracts.js
 
 RUN mkdir -p /data
 
