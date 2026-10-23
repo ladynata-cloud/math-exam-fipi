@@ -53,7 +53,7 @@ test('only the six expressions lessons and their supported complete routes are a
     assert.equal(normalize(sourcePath + hash), wrapperPath + hash, hash);
   }
   for (const hash of [
-    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/7', '#calm/9',
+    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/5', '#calm/9',
     '#lesson/trig-angle', '#example/bridge-fractions', '#repair-task/expr-powers',
     '#practice/expr-powers', '#practice/expr-powers/other',
     '#practice/expr-powers/guided/extra', '#lesson/expr-powers/extra',
@@ -116,7 +116,7 @@ test('the wrapper reuses the original scripts in order without a base, redirect,
     .map(src => '/ege-profil/start/' + src);
   const wrapperScripts = scripts(wrapper);
   const bridge = '/trainers/board-bridge.js';
-  const adapter = '/ege-profil/start/board-session.js?v=20261023-stereo-board';
+  const adapter = '/ege-profil/start/board-session.js?v=20261024-added-board';
   assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), canonicalScripts);
   const app = wrapperScripts.findIndex(src => src.startsWith('/ege-profil/start/app.js?'));
   assert.deepEqual(wrapperScripts.slice(app - 2, app), [bridge, adapter]);

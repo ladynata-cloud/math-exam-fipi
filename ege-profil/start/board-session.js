@@ -1,9 +1,9 @@
 (function (root) {
   'use strict';
 
-  // Only these two registered wrappers activate a board session. The ordinary
+  // Only these registered wrappers activate a board session. The ordinary
   // course keeps its existing browser storage and navigation. Configurations
-  // are fixed here; routes or messages cannot extend either course boundary.
+  // are fixed here; routes or messages cannot extend any course boundary.
   const EXPRESSIONS = Object.freeze({
     id: 'ege-profile-expressions', marker: 'expressions', number: 8,
     path: '/trainers/ege-profile-expressions.html', debugKey: '__profileExpressionsBoard',
@@ -13,6 +13,31 @@
     id: 'ege-profile-stereometry', marker: 'stereometry', number: 3,
     path: '/trainers/ege-profile-stereometry.html', debugKey: '__profileStereoBoard',
     lessonIds: Object.freeze(['stereo-box', 'stereo-cube', 'stereo-prism', 'stereo-pyramid', 'stereo-cylinder', 'stereo-cone', 'stereo-sphere', 'stereo-compound'])
+  });
+  const PLANIMETRY = Object.freeze({
+    id: 'ege-profile-planimetry', marker: 'planimetry', number: 1,
+    path: '/trainers/ege-profile-planimetry.html', debugKey: '__profilePlanimetryBoard',
+    lessonIds: Object.freeze(['geo-angles', 'geo-right', 'geo-similarity', 'geo-area', 'geo-quadrilaterals', 'geo-circle'])
+  });
+  const VECTORS = Object.freeze({
+    id: 'ege-profile-vectors', marker: 'vectors', number: 2,
+    path: '/trainers/ege-profile-vectors.html', debugKey: '__profileVectorsBoard',
+    lessonIds: Object.freeze(['vec-coordinates', 'vec-length', 'vec-operations', 'vec-dot'])
+  });
+  const PROBABILITY = Object.freeze({
+    id: 'ege-profile-probability', marker: 'probability', number: 4,
+    path: '/trainers/ege-profile-probability.html', debugKey: '__profileProbabilityBoard',
+    lessonIds: Object.freeze(['prob-count', 'prob-complement', 'prob-range'])
+  });
+  const RANDOM_VARIABLES = Object.freeze({
+    id: 'ege-profile-random-variables', marker: 'random-variables', number: 6,
+    path: '/trainers/ege-profile-random-variables.html', debugKey: '__profileRandomVariablesBoard',
+    lessonIds: Object.freeze(['prob-distribution', 'prob-variance', 'prob-continuous'])
+  });
+  const EQUATIONS = Object.freeze({
+    id: 'ege-profile-equations', marker: 'equations', number: 7,
+    path: '/trainers/ege-profile-equations.html', debugKey: '__profileEquationsBoard',
+    lessonIds: Object.freeze(['algebra-exponential', 'algebra-logarithmic', 'eq-linear', 'eq-rational', 'eq-quadratic', 'eq-root'])
   });
   const MODES = ['guided', 'plan', 'independent'];
   const PROGRESS_KEY = 'mathexam.profileStart2027.v1';
@@ -102,7 +127,14 @@
       const question = live ? (mode === 'guided' ? task.steps[session.step] : task) : null;
       const model = page === 'lesson' ? root.ProfileModels?.[lesson.model] :
         ['example', 'practice'].includes(page) ? root.ProfileTaskModels?.[task.id] : null;
-      return { page, id, mode, lesson, session, task, live, solved, question, model };
+      // Match the existing renderer's semantic context. In particular, worked
+      // examples and completed tasks hide the in-drawing walkthrough entirely.
+      const modelContext = page === 'example' ? { mode: 'independent', strict: true, step: 0, solved: false, completed: 0, hideWalkthrough: true } :
+        page === 'practice' ? live ? { step: session.step, solved, mode: mode === 'plan' ? 'independent' : mode, completed: session.answers.length } :
+          { mode: 'independent', step: 0, completed: 0, solved: false, hideWalkthrough: true } : undefined;
+      const inlineSolution = config.number === 1 && live && !!model &&
+        ['geo-right-sine', 'geo-right-cosine', 'geo-right-tangent'].includes(task.id);
+      return { page, id, mode, lesson, session, task, live, solved, question, model, modelContext, inlineSolution };
     }
     function validateState(value) {
       try {
@@ -149,9 +181,11 @@
               prefs.enabled && integer(index, 0, c.session.answers.length - 1))) return false;
         if (view.help !== null && (!fields(view.help, ['kind', 'controlIndex']) ||
             !['model', 'solution'].includes(view.help.kind) || !integer(view.help.controlIndex, -1, 16) ||
-            (view.help.kind === 'model' && !c.model))) return false;
-        if (c.model ? !c.model.validateBoardState?.(view.model) : view.model !== null) return false;
-        if (['practice', 'example'].includes(c.page)) {
+            (view.help.kind === 'model' && !c.model) || (view.help.kind === 'solution' && c.inlineSolution))) return false;
+        if (c.model ? !c.model.validateBoardState?.(view.model, c.modelContext) : view.model !== null) return false;
+        if (c.inlineSolution) {
+          if (view.solution !== null) return false;
+        } else if (['practice', 'example'].includes(c.page)) {
           if (!root.ProfileSolutions.validateBoardState(c.task, view.solution)) return false;
           if (c.page === 'example' && (view.solution.count < 1 || prefs.examples[c.id] !== view.solution.count - 1)) return false;
         } else if (view.solution !== null) return false;
@@ -198,9 +232,16 @@
       validRoute: hash => validRoute(hash, config), create: lessons => create(lessons, config)
     });
   }
-  const expressions = api(EXPRESSIONS), stereometry = api(STEREOMETRY);
+  const expressions = api(EXPRESSIONS), stereometry = api(STEREOMETRY), planimetry = api(PLANIMETRY),
+    vectors = api(VECTORS), probability = api(PROBABILITY), randomVariables = api(RANDOM_VARIABLES), equations = api(EQUATIONS);
   root.ProfileExpressionsBoard = expressions;
   root.ProfileStereoBoard = stereometry;
-  // Preserve the published №8 CommonJS API while exposing the bounded №3 API.
-  if (typeof module !== 'undefined' && module.exports) module.exports = Object.freeze({ ...expressions, stereometry });
+  root.ProfilePlanimetryBoard = planimetry;
+  root.ProfileVectorsBoard = vectors;
+  root.ProfileProbabilityBoard = probability;
+  root.ProfileRandomVariablesBoard = randomVariables;
+  root.ProfileEquationsBoard = equations;
+  // Preserve the published №8 default and №3 named CommonJS APIs.
+  if (typeof module !== 'undefined' && module.exports) module.exports = Object.freeze({ ...expressions, stereometry,
+    planimetry, vectors, probability, randomVariables, equations });
 })(globalThis);

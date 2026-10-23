@@ -66,8 +66,8 @@ test('the eight authored stereometry lessons and all complete supported routes a
   assert.equal(routes.length, 90);
   for (const hash of routes) assert.equal(normalize(sourcePath + hash), wrapperPath + hash, hash);
   for (const hash of [
-    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/2', '#exam/15', '#calm/9',
-    '#lesson/geo-right', '#lesson/stereo-t14', '#example/stereo-other', '#repair-task/stereo-box',
+    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/5', '#exam/15', '#calm/9',
+    '#lesson/geo-unknown', '#lesson/stereo-t14', '#example/stereo-other', '#repair-task/stereo-box',
     '#practice/stereo-box', '#practice/stereo-box/other', '#practice/stereo-box/guided/extra',
     '#lesson/stereo-box/extra', '#example/stereo-box/guided', '#pause/stereo-box',
     '#exam/03', '#exam/3/', '#exam/3/extra', '#lesson/STEREO-box', '#%65xam/3'
@@ -131,7 +131,7 @@ test('the stereometry wrapper reuses canonical assets and the existing bridge wi
     .map(src => '/ege-profil/start/' + src);
   const wrapperScripts = scripts(wrapper);
   const bridge = '/trainers/board-bridge.js';
-  const adapter = '/ege-profil/start/board-session.js?v=20261023-stereo-board';
+  const adapter = '/ege-profil/start/board-session.js?v=20261024-added-board';
   assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), canonicalScripts);
   const app = wrapperScripts.findIndex(src => src.startsWith('/ege-profil/start/app.js?'));
   assert.deepEqual(wrapperScripts.slice(app - 2, app), [bridge, adapter]);
