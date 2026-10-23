@@ -3,11 +3,11 @@
 ## Identity and scope
 
 - Date: 2026-10-24 (Asia/Novosibirsk).
-- Base: `main`, `d524c9107133d6a948ff11c18095b5ca01b660de`.
+- Base: `main`, `b3f2c8999b8155dc9ef249da46b400c396f187d7`.
   Initial implementation used `1f9d8aec82bd2909917ab22746d94571d87c59c4`;
-  concurrently published PRs #318, #315, #319 and #313 are preserved through normal
+  concurrently published PRs #318, #315, #319, #313 and #316 are preserved through normal
   merges, including course entries, V6 profile schema/decoders and the
-  published board writing, screenshot and layout tools.
+  published board writing, screenshot and layout tools, and added START mirrors.
 - Branch: `feat/peterson6-board-sync`.
 - Review level: MEDIUM, bounded integration using the existing board protocol.
 - The owner requests the published Peterson course in an existing learner's

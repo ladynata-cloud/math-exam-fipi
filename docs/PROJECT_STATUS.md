@@ -5,7 +5,7 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 ## In progress: Peterson 6 course in the cabinet and on the shared board
 
 - [Scope](tasks/PETERSON6_BOARD_SYNC.md), MEDIUM review, base
-  `d524c9107133d6a948ff11c18095b5ca01b660de`, branch
+  `b3f2c8999b8155dc9ef249da46b400c396f187d7`, branch
   `feat/peterson6-board-sync`. The owner requested cloud assignment of the
   published course and synchronization with the existing interactive board.
 - Thin registered wrapper for all 14 topics / 224 tasks and 20 practice skills.
@@ -17,12 +17,27 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 - Local and exact-head cloud evidence, review findings and publication status
   will be recorded in the PR. No completed deployment is claimed here.
 
-- Concurrent PRs #318, #315, #319 and #313 are preserved through normal merges:
-  both board aliases, the ten-entry mirror registry, Atanasyan manual work,
+- Concurrent PRs #318, #315, #319, #313 and #316 are preserved through normal merges:
+  both board aliases, the fifteen-entry mirror registry, Atanasyan manual work,
   all Vilenkin managed modules/profiles, the standalone Makarychev course,
-  and the published writing/screenshot/layout tools. The host keeps the
-  combined Peterson/Atanasyan picker cache token and iframe keyboard protection.
+  the published writing/screenshot/layout tools, and all five added START
+  mirrors. The host keeps the combined picker cache token and iframe keyboard protection.
   Combined checks and independent merge review are required before publication.
+
+## Merged code: five added START sections on the shared board
+
+- [Scope](tasks/PROFILE_ADDED_TRAINERS_BOARD_SYNC.md), [PR #316](https://github.com/ladynata-cloud/math-exam-fipi/pull/316), MEDIUM review.
+  Merged as `b3f2c8999b8155dc9ef249da46b400c396f187d7`, sole parent
+  `d524c9107133d6a948ff11c18095b5ca01b660de`, exact reviewed tree
+  `2cd789549146000d466998047f6a54e69bd9731c`.
+- Five fixed START wrappers synchronize drafts, models, hints and solution
+  state. Published task-3/task-8 integration and individual board tools remain.
+- The merge records the owner's ordered release authorization, independent
+  focused review, 150 focused units, six browser gates and all twelve exact-head
+  CI jobs passing on `63c0b20f1559cfc3497a42d92e58c5f89f95c082`.
+- Peterson integration preserves all 31 published blobs except the explicitly
+  composed picker/registry expectations, readiness waits and host cache token.
+  Production lesson verification is not inferred from this status reconciliation.
 
 ## Merged code: individual board tools and screen modes
 
