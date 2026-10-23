@@ -1016,8 +1016,8 @@ async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
 }
 
 async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
-  assert.equal(registry.trainers.length, 8, 'runtime registry exposes exactly eight mirror entries');
-  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['ege-profile-expressions', 'ege-profile-stereometry', 'linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example']);
+  assert.equal(registry.trainers.length, 9, 'runtime registry exposes exactly nine mirror entries');
+  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['ege-profile-expressions', 'ege-profile-stereometry', 'linear-inequalities-stepwise', 'negative-numbers-line', 'peterson6', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example']);
   const catalog = await (await fetch(`${siteOrigin}/trainers/board-compat.json`)).json();
   const expectedCatalog = JSON.parse(readFileSync(resolve(REPO_ROOT, 'trainers', 'board-compat.json'), 'utf8'));
   assert.deepEqual(catalog, expectedCatalog, 'served catalog exactly matches the committed manifest');
@@ -1030,8 +1030,8 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
     catalogIds.add(entry.trainerId);
     catalogFiles.add(entry.file.toLowerCase());
   }
-  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 8, 'catalog exposes exactly eight mirrors');
-  assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same eight mirror ids');
+  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 9, 'catalog exposes exactly nine mirrors');
+  assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same nine mirror ids');
 
   const teacherContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const teacher = await teacherContext.newPage();
