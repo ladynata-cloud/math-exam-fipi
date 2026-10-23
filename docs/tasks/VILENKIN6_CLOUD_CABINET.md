@@ -110,3 +110,27 @@ tests now wait for the actual task/guided screen while retaining answer, feedbac
 state, read-only and direct-link assertions. The relevant production assets are
 byte-identical to the base; only tests and this execution record changed after
 the owner's release confirmation. New exact-head browser CI is required.
+
+
+### Concurrent main reconciliation
+
+Before publication, main advanced from the original base to
+`202d39bf826c8c7e030e59ff162fe808000cae7e` (PR #318, Atanasyan 92a).
+Its public PR records owner publication authorization, a scoped external-review
+exception and twelve successful exact-head checks. A read-only merge first
+identified nine overlapping files. The authorized cloud integration is reconciled
+additively: both adapters and Docker dependencies, V6 previous-state validation,
+all 27 V6 modules, the single manual Atanasyan entry, classic registry nine and
+all prior catalog records are retained. No reset, rebase or force update is used.
+
+Composed local checks: full backend **309/309 PASS**; catalog **378** exact
+identities; all 377 prior V6-branch records and all 351 main records retain every
+field; legacy route 62 and cabinet DOM 8/8 PASS. Managed course 108 views and
+27 models, the actual bridge protocol and deterministic source/offline checks
+are rerun. Browser test reconciliation retains the stronger accepted-step and
+full-state restoration assertions, the exact enhancement marker and main's
+no-assistance assertion; native disclosure persistence is awaited explicitly.
+A fresh combined head must pass CI before publication; old-head checks alone
+are not evidence for this composed result. The user's current explicit cloud
+publication approval is applied to this routine preservation within the same
+task; it is not an external-review verdict or a general waiver.

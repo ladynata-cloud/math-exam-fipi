@@ -882,6 +882,13 @@
     grade6: true, trainingOnly: true, lessonId, taskCount,
     url: '/courses/vilenkin-6-part-1/index.html#lesson/' + lessonId + '/theory'
   })));
+  items.push(Object.freeze({
+    id: 'atanasyan-7-9:atanasyan-7-9-main-92-part-1', trainerId: 'atanasyan-7-9',
+    contentId: 'atanasyan-7-9-main-92-part-1', title: 'Атанасян 7–9 · Задача 92а',
+    contentVersion: 1, position: null, topicId: 'plane', family: 'atanasyan-7-9',
+    grade7: true, trainingOnly: true, answerMode: 'manual', taskCount: 1,
+    url: '/trainers/atanasyan-7-9.html'
+  }));
   const byId = Object.create(null);
   for (const item of items) {
     if (byId[item.id]) throw new Error('Duplicate learning item: ' + item.id);
