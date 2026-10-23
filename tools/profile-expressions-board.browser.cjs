@@ -341,6 +341,9 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await teacherFrame.locator('.support-details > summary').click();
   await teacherFrame.locator('#repair-current').click();
   await teacherFrame.waitForFunction(() => location.hash === '#practice/expr-powers/guided', null, { polling: 50 });
+  // The hash changes before its render handler runs; the previous independent
+  // screen has the same form and task ID, so wait for the actual guided question.
+  await teacherFrame.locator('#current-step').filter({ hasText: /^Шаг 1 из \d+$/ }).waitFor();
   await teacherFrame.locator('#answer-form').waitFor();
   assert.equal(await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view'), taskId, 'remediation retains the current task');
   const acceptedAnswer = await teacherFrame.evaluate(id => {
@@ -349,6 +352,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   }, taskId);
   await teacherFrame.locator('#answer').fill(acceptedAnswer);
   await teacherFrame.locator('#submit-answer').click();
+  await teacherFrame.locator('#answer:disabled').waitFor();
   await synchronized(teacherFrame, studentFrame, 'accepted guided step before advancing');
   assert.equal(await studentFrame.locator('#answer').isDisabled(), true);
   assert.equal(await studentFrame.locator('#next').isVisible(), true);

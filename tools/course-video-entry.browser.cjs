@@ -255,7 +255,13 @@ async function main() {
       const normal = await open(), p = normal.page;
       await p.goto(origin + routes[id]);
       if (['negative-numbers', 'fractions', 'proportions', 'percentages'].includes(id)) {
-        await p.locator('#view-home').waitFor(); assert.equal(await p.locator('#view-practice').isVisible(), false);
+        // The standalone shell intentionally opens the first task after its
+        // asynchronous loader finishes. Wait for that shell, not legacy home.
+        const kind = ['proportions', 'percentages'].includes(id) ? 'percent' : 'basic';
+        await p.locator('body[data-basics-standalone="' + kind + '"] #view-practice').waitFor();
+        assert.equal(await p.locator('#view-home').isVisible(), false, id + ': ordinary entry is task-first');
+        assert.equal(await p.locator(kind === 'percent' ? '#p-q input' : '#practiceAnswer input, #practiceAnswer button').first().isVisible(), true, id + ': ordinary entry opens an answer control');
+        assert.equal(await p.locator(kind === 'percent' ? '#p-check' : '#checkTask').isVisible(), true, id + ': ordinary entry keeps its checker');
       } else if (id !== 'adjacent-angles') {
         await p.locator('[data-stage="0"][aria-current="step"]').waitFor(); assert.equal(await p.locator('#answer').count(), 0);
       } else await p.locator('#pool button').first().waitFor();
