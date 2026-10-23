@@ -2003,3 +2003,38 @@ and six-step subtraction prerequisite ladders. They appear alongside the two
 existing cabinet tracks and use separate tab-local practice. Diagnostic links
 point to the relevant carry/borrow stage. Production publication remains pending
 final exact-head CI and deployment verification; see PR266 for current evidence.
+
+## Prepared: Makarychev 7 (2024), full topic course
+
+- [Scope](tasks/MAKARYCHEV7_FULL_COURSE.md), MEDIUM review, branch
+  `feat/makarychev7-full-course`, base
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`.
+- Requested analogue of the published grade-eight course: all 46 numbered
+  topics, original theory, selected source tasks, authored practice, interactive
+  models and preserved computation detours. Separate route and browser storage.
+- Source map covers all 1247 exercise numbers with verified header pages.
+  Individual worked solutions are selected, not claimed for every number.
+- All 46 topics, 160 theory blocks, 276 tasks (92 selected textbook and
+  184 authored), 795 worked steps and 10 model families are complete.
+- Independent source/math and model reviews passed. Automated verification
+  walks every task/step, all source-range boundaries, all 46 model mounts
+  and 727 control changes; browser-state/import/computation detours passed.
+  Desktop visual inspection passed; final publication evidence belongs in the PR.
+- Claude consultation/review was unavailable and is not claimed. No pupil
+  account, backend or board-protocol changes belong to this task.
+
+## Published: Makarychev 8 (2024), full topic course
+
+- [PR #319](https://github.com/ladynata-cloud/math-exam-fipi/pull/319) merged as
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`; public route
+  `/school/makarychev8/`. All 51 topics, 172 theory blocks, 306 worked tasks
+  (102 selected textbook tasks/subparts and 204 authored), 958 worked steps.
+- All six final PR jobs passed; production course CI and Pages deployment
+  `40016014762` succeeded. Course HTML, six dependencies, catalog and sitemap
+  returned 200 and matched reviewed bytes. Actual parent was concurrent
+  Vilenkin release `52cb1c1a5c731acd660139328f0001ccfa33a08b`; the exact
+  reviewed 23-file delta was verified and relevant gates rerun after merge.
+- Visual browser QA and external Claude review were not completed; these
+  limitations were disclosed. Progress is browser-local; no synchronized-board
+  or cloud learner-storage claim is made. Final evidence is in PR #319.
+
