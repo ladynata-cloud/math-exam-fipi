@@ -3,7 +3,9 @@
 ## Identity and scope
 
 - Date: 2026-10-24 (Asia/Novosibirsk).
-- Base: `main`, `1f9d8aec82bd2909917ab22746d94571d87c59c4`.
+- Base: `main`, `202d39bf826c8c7e030e59ff162fe808000cae7e`.
+  Initial implementation used `1f9d8aec82bd2909917ab22746d94571d87c59c4`;
+  concurrently published PR #318 is preserved through a normal merge.
 - Branch: `feat/peterson6-board-sync`.
 - Review level: MEDIUM, bounded integration using the existing board protocol.
 - The owner requests the published Peterson course in an existing learner's

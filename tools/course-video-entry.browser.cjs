@@ -34,7 +34,7 @@ const originalIds = Object.keys(routes), ids = [...originalIds, 'numeric-express
   'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale',
   'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion', 'pre7-place-value', 'pre7-natural-compare', 'pre7-add-carry', 'pre7-subtract-borrow', 'pre7-smart-calculation', 'pre7-inverse-components', 'pre7-divisibility', 'pre7-scale-reading', 'pre7-comparison-stories', 'pre7-fraction-line', 'pre7-equivalent-fractions', 'pre7-fraction-compare', 'pre7-fraction-part-whole', 'pre7-decimal-compare', 'pre7-mass-capacity', 'pre7-ruler-length', 'pre7-perimeter', 'pre7-grid-area', 'grade7-g-core-point-line-ray', 'grade7-g-core-perpendicular', 'grade7-g-core-angle-measure', 'grade7-g-core-triangle-elements', 'grade7-g-core-triangle-perimeter', 'grade7-g-core-sas', 'grade7-g-core-median', 'grade7-g-core-bisector', 'grade7-g-core-altitude', 'grade7-g-core-isosceles-elements', 'grade7-g-core-isosceles-base-angles', 'grade7-g-core-isosceles-vertex-line', 'grade7-g-practice-segment-equation', 'grade7-g-practice-angle-parts', 'grade7-g-practice-vertical-proof', 'grade7-g-practice-sas-common-side', 'grade7-g-practice-sas-vertical', 'grade7-g-practice-cevian-reason', 'grade7-g-practice-isosceles-perimeter', 'grade7-g-practice-isosceles-proof'];
 const guides = require('../learning/topic-guides');
-const newItems = require('../learning/catalog').items.filter(item => item.grade7 && !item.geometryRebuild);
+const newItems = require('../learning/catalog').items.filter(item => item.trainerId === 'ege-path' && item.grade7 && !item.geometryRebuild);
 assert.equal(newItems.length, 62);
 assert.equal(newItems.filter(item=>item.pre7).length,18);
 assert.equal(ids.length, 68);
@@ -266,7 +266,7 @@ async function main() {
         await p.locator('.task-first-course #answer').waitFor();
         assert.equal(await p.locator('#answerForm button[type="submit"]').isVisible(), true, id + ': ordinary entry keeps its checker');
         assert.equal(await p.locator('#taskHelp').evaluate(node => node.open), false, id + ': help starts closed');
-        assert.equal(await p.evaluate(() => PathCourse.state().lessons[location.hash.slice(8)].help), false, id + ': entry does not count as using help');
+        assert.equal(await p.evaluate(() => PathCourse.state().lessons[new URLSearchParams(location.hash.slice(1)).get('lesson')].help), false, id + ': entry does not count as using help');
       } else await p.locator('#pool button').first().waitFor();
       await normal.context.close();
       const actual = await open(), q = actual.page;
@@ -289,6 +289,15 @@ async function main() {
     const saved = await open(), savedPage = saved.page;
     await savedPage.goto(origin + routes.brackets);
     await savedPage.locator('.task-first-course #answer').waitFor();
+    await savedPage.locator('#answer').fill('271');
+    const unassisted = await savedPage.evaluate(() => PathCourse.state());
+    await savedPage.goto(origin + practicePath('brackets'));
+    await savedPage.locator('.task-first-course #answer').waitFor();
+    assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), unassisted, 'Practice entry preserves the full task before any help is used');
+    assert.equal(await savedPage.locator('#answer').inputValue(), '271', 'Unassisted final draft survives practice entry');
+    assert.equal(await savedPage.locator('#taskHelp').evaluate(node => node.open), false, 'Practice entry keeps unused help closed');
+    assert.equal(await savedPage.evaluate(() => PathCourse.state().lessons['equations-brackets'].help), false, 'Practice entry does not count as assistance');
+    await savedPage.locator('#answer').fill('');
     await savedPage.locator('#taskHelp > summary').click();
     await savedPage.locator('#taskSteps > summary').click();
     const firstStep = await savedPage.evaluate(() => {
@@ -322,8 +331,10 @@ async function main() {
       assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), before, 'Practice entry preserves the full saved task with ' + part);
       const lesson = before.lessons['equations-brackets'], ui = lesson.taskFirst;
       assert.equal(await savedPage.locator('#answer').inputValue(), ui.finalDraft, 'Final draft remains in its own field');
+      assert.equal(await savedPage.locator('#answer').inputValue(), part === 'guided draft' ? '' : '271', 'Final draft retains the entered value');
       assert.equal(await savedPage.locator('#stepAnswer').inputValue(), '317', 'Guided draft remains distinct from the final draft');
       assert.equal(await savedPage.locator('#note').inputValue(), lesson.note, 'Written reflection remains in its own field');
+      assert.equal(await savedPage.locator('#note').inputValue(), part === 'written reflection' ? 'Моя сохранённая запись' : '', 'Written reflection retains the entered text');
       assert.equal(await savedPage.locator('#taskStepsBody .steps li').count(), 1, 'The accepted step remains in the saved work');
       for (const [id, key] of [['taskHelp', 'helpOpen'], ['taskSteps', 'stepsOpen'], ['taskNote', 'noteOpen']])
         assert.equal(await savedPage.locator('#' + id).evaluate(node => node.open), ui[key], 'Practice entry preserves ' + id);
