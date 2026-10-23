@@ -2,56 +2,66 @@
 
 Updated: 2026-10-24 (Asia/Novosibirsk)
 
+
 ## In progress: grade 10 Merzlyak cabinet entry and shared board
 
-- [Scope](tasks/MERZLYAK10_CABINET_BOARD.md), MEDIUM integration, base
-  `1f9d8aec82bd2909917ab22746d94571d87c59c4`, branch
-  `feat/merzlyak10-cabinet-board`. The owner requested cloud pupil setup,
-  course access and synchronization with the existing classic board.
-- Reuse the per-pupil focus note for the exact course attachment, with grade-10
-  primary navigation. No account/schema/progress migration or real pupil data
-  in source. The board uses a separate memory-only semantic session.
-- The complete Merzlyak course was published in PR #304, production commit
+- [Scope](tasks/MERZLYAK10_CABINET_BOARD.md), [Draft PR #314](https://github.com/ladynata-cloud/math-exam-fipi/pull/314), MEDIUM integration.
+  Original base `1f9d8aec82bd2909917ab22746d94571d87c59c4`; reviewed head
+  `9bd75ca376610c3ca9afe3495fd88dfa02134e8e` passed all eight workflows before
+  concurrent PR #318 advanced main to `202d39bf826c8c7e030e59ff162fe808000cae7e`.
+- On 2026-10-24 the owner explicitly approved the proposed conflict-resolution
+  scope: combine both integrations, retain their behavior and repeat the gates.
+  This approval does not claim a release of the resulting unreviewed composition.
+- Resolve eight overlapping files with 39 catalog entries / 10 mirror trainers,
+  both exact URL aliases and picker entries. Preserve Atanasyan manual saving,
+  catalog/packaging and host keyboard protection, and Merzlyak cabinet attachment.
+  No account, authentication, database or authored-course content changes.
+- Real account setup remains in the private teacher interface; no real pupil
+  information or credentials appear in source or synthetic tests.
+- The complete Merzlyak course was published in PR #304 as
   `f4ea5c4de842faa4c26cbb73093f708c2c77578b`: 989 reviewed cards and solutions
   for all 736 numbered exercises. Course content remains unchanged here.
-- PR #312 has since merged as the task base above; the older prepared-release
-  paragraph below is historical. Its exact release evidence is in PR #312.
-- The first integration head passed new board/cabinet browser checks and visual
-  review, course checks for all 989 cards / 6,628 model states, and the other
-  existing workflows. An unchanged expressions browser assertion failed twice.
-  Its known route-readiness gap is being repaired only in the test, retaining
-  every existing assertion and adding acceptance diagnostics; final evidence
-  belongs to the amended exact-head gates in PR #314.
-- Next three actions: finish the scoped integration and independent checks;
-  pass exact-head cloud gates in one Draft PR; obtain the concrete release
-  decision and verify both Pages and Amvera before claiming live synchronization.
+- Prior expressions readiness failures and the one raw-operation substring
+  failure remain recorded in PR #314. All final prior-base jobs passed except
+  the explicitly skipped content consultation. That evidence does not establish
+  the correctness of this new composition.
+- Next three actions: resolve and independently review the combined diff;
+  pass exact-head cloud registry, cabinet and both-course board gates;
+  present the concrete release candidate for the owner's release decision.
 
-## Prepared for release review: profile task 3 stereometry on the shared board
+## Merged: Atanasyan 92a in the cabinet and on the shared board
 
-- [Scope](tasks/PROFILE_STEREOMETRY_BOARD_SYNC.md), MEDIUM review, base
-  `40682b243b3e7342d4330272f7329e60a1d0f417`, branch
-  `feat/ege3-board-sync`. The owner requested the latest task-3 course after
-  publication of the separate task-8 integration.
-- Bounded scope: eight existing stereometry topics / 48 tasks, shared drafts,
-  steps, help, worked solutions and model views on the classic board. Reuse
-  the existing profile adapter with two fixed course boundaries and preserve
-  task-8 behavior, authored mathematics and personal progress isolation.
-- The registered wrapper and exact canonical aliases are implemented. The
-  course overview now exposes its board link; shared model state contains
-  camera orientation, additional-view disclosure and the last spoken status.
-  Independent code and test reviews found no remaining blocking issue.
-- Final combined adapter/model/picker/registry contracts: 66/66 PASS.
-  Standalone state/Calm/input/solution contracts: 97/97 PASS; stereo/model
-  regression group: 20/20 PASS (groups overlap). The actual task-3 board
-  journey, task-first 68-family browser, 42 worked-solution journeys, picker
-  smoke and targeted B2 live/fail-closed checks passed.
-- The unchanged task-8 browser passed on an isolated repeat after one
-  concurrent run failed its cleared-angle-input assertion. The cause is not
-  established, and the failure is retained in the task record. The known
-  inherited B2 Roads harness issue remains outside this task.
-- Exact-head cloud checks and final gate are recorded in the resulting PR.
-  Merge/publication of this new task requires separate owner authorization.
-  No real-account or production-room testing has been performed.
+- [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), [PR #318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318), HIGH review. Merged as
+  `202d39bf826c8c7e030e59ff162fe808000cae7e`, parent
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`; reviewed head
+  `78151b0c50e0c4df2400779f3736bbf9074c2813`.
+- One existing grade-7 exercise has a fixed wrapper, isolated shared state,
+  manual learning contract and catalog entry. All 336 authored cards, models
+  and the sealed textbook runtime are preserved.
+- The PR records 12/12 successful exact-head cloud checks, independent technical
+  review, scoped owner external-review waiver and owner release authorization.
+  These records are specific to PR #318 and are not approval for PR #314.
+- The shared host's observer protection uses iframe inert/tabIndex and clears
+  focus on control revoke. The scoped resolution retains that behavior.
+- This reconciliation verifies the merge identity, not a new production pupil
+  attempt or an independent deployment verification for that task.
+
+## Published: profile task 3 stereometry on the shared board
+
+- [Scope](tasks/PROFILE_STEREOMETRY_BOARD_SYNC.md), MEDIUM review. PR #312
+  merged as `1f9d8aec82bd2909917ab22746d94571d87c59c4`, sole parent
+  `40682b243b3e7342d4330272f7329e60a1d0f417`; reviewed head
+  `4c0a958383d304dc5167730034c487df059d26ac`.
+- Exact-head CI passed 8/8 checks. The published 21-file delta and tree
+  `8bd1cc3059d9b942524555abb955707c4da17f4c` matched the reviewed result.
+  Pages run 39993968816 and automatic profile run 39993968452 succeeded.
+- All 20 frontend byte probes passed; the authoritative backend returned the
+  exact eight-entry registry, including task 3 and preserved task 8, with
+  healthy status. Complete evidence and earlier failures/retries are in PR #312.
+- The local/cloud teacher-observer tests passed. A supplemental production
+  Chromium render was not run because TLS certificate validation failed;
+  verification was not disabled. No real account or production-room writes
+  were performed in that task. Publication verification passed.
 
 ## Published: profile task 8 on the shared board
 
@@ -97,24 +107,23 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
   not performed. Course content, learner data and progress semantics were
   unchanged. Release gate: `PROFILE_FULL_COURSE_ENTRY_PUBLISHED_OK`.
 
-## Prepared for release review: Atanasyan 7–9 chapter II, triangles
+## Published: Atanasyan 7–9 chapter II, triangles
 
-- [Scope](tasks/ATANASYAN_7_9_CHAPTER_II.md), HIGH review, base
-  `c62e5047fa2e774d43899e4ee20d5e1127c53e64`.
-- All99 numbered exercises92–190 and132 subparts, theory14–23 and21 review
-  questions are prepared and independently checked against the supplied2023
-  edition, printed pages29–52:163 new cards,554 steps and803 views.
-- All173 published chapter-I cards and catalog entries are exactly preserved.
-  The combined course has336 cards,1053 steps,1648 views and1057 coordinate
-  claims. Runtime and learner storage keys are unchanged.
-- Source, mathematics, pedagogy, integration and all1606 new width-specific
-  model images passed independent review. The final frozen browser run passed
-  3296 view checks,672 card journeys and9 interaction scenarios with no errors;
-  all11 source/model/runtime/regression gates passed.
-- Chapter-specific hash-bound review manifests approve the checked content.
-  Exact-head CI, virtual composition with current main and the owner release
-  decision are recorded in the resulting Draft PR. No chapter-II publication
-  or completion of later chapters is claimed here.
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_II.md), HIGH review. PR #308 merged as
+  `6bad56115ff023815e2840873dc7bc60cd3dba1e`, sole parent
+  `e72b7c707d3cff4d0da75f6d4053401a91eb1616`; reviewed head
+  `4b231d446046be36457f3069b9753cb4553a878e`.
+- All 99 numbered exercises 92–190 and 132 subparts, theory 14–23 and
+  21 review questions are published: 163 new cards. The combined course has
+  336 cards, 1053 steps and 1648 views; all 173 chapter-I cards are intact.
+- Independent source/mathematical/visual review and exact-head CI passed.
+  Current-base verification passed 25 checks, 3296 browser views, 672 card
+  journeys and nine interaction scenarios. All 1165 concurrent files stayed
+  intact. Pages 39878390626, 14 public byte checks and live UI passed.
+- Gate: `ATANASYAN_7_9_CHAPTER_II_PUBLISHED_OK`. Complete identity evidence is
+  recorded in PR #308. The owner waived unavailable Claude review for that
+  course release; this is not a standing waiver for unrelated integrations.
+  Real-pupil trials and later book chapters remain pending.
 
 ## Published: Atanasyan 7–9 chapter I
 

@@ -36,6 +36,10 @@ jobs:
         env:
           MERZLYAK_BOARD_SHOTS: artifacts/merzlyak-board
         run: node tools/merzlyak-board.browser.cjs
+      - name: Preserve existing registry arrival and role boundaries
+        run: |
+          B2_SMOKE_SECTION=fail-closed node tools/trainer-registry-client-cutover-smoke.cjs
+          B2_SMOKE_SECTION=live node tools/trainer-registry-client-cutover-smoke.cjs
       - name: Grade 10 cabinet views
         env:
           MERZLYAK_BOARD_ARTIFACTS: artifacts/merzlyak-board

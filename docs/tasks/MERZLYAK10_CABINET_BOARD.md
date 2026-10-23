@@ -69,7 +69,7 @@ Risks: missing transient state, asynchronous disclosure echo, stale model closur
 misleading cabinet labels and frontend/backend registry version mismatch. Revert
 only the scoped integration through the release process, retaining accounts,
 notes, existing work and the published course. No data migration is necessary.
-Publication must verify exact frontend files and the ninth mirror in Amvera's
+Publication must verify exact frontend files and the complete ten-mirror projection in Amvera's
 authoritative registry; Pages success alone does not establish synchronization.
 Course answers retain the published browser storage behavior. Shared board work
 does not become a personal cabinet attempt or independent success automatically.
@@ -102,3 +102,27 @@ diagnostics and rethrow. No production expressions, SDK or protocol code changes
 Independent review approved this bounded validation repair. The readiness gap
 is established by code; the cause of the two earlier failures remains unproven
 until the amended gate runs. Preserve both failures in the PR record.
+
+## Authorized concurrent-integration resolution, 2026-10-24
+
+The owner explicitly approved the presented resolution scope after eight virtual
+conflicts against main `202d39bf826c8c7e030e59ff162fe808000cae7e` (PR #318).
+Continue this same task and PR #314 with a history-preserving merge; retain
+reviewed head `9bd75ca376610c3ca9afe3495fd88dfa02134e8e` as a parent/source.
+No force, reset or rebase, and no production merge or deployment in this step.
+
+Combine both registry/picker entries and exact URL aliases, with 39 catalog
+entries and ten mirrors. Preserve full expected ID/file vectors and synthetic
+addition/removal fixtures (11/9). Use coherent cache tags, preserving both the
+Atanasyan catalog and Merzlyak attachment script in the cabinet entry page.
+Keep PR #318's shared-host observer keyboard protection, manual saving, server
+contracts, catalog and Docker packaging. Do not change either course's authored
+content, private account data or permission model.
+
+Independent review and composed-tree checks must cover both adapters, the full
+server and registry suites, cabinet navigation, Atanasyan managed saving and
+keyboard revoke, Merzlyak role/reload/late-join flows, retained profile boards,
+and applicable course gates. Old-base passes are retained as history, never
+counted as composed-tree validation. The final PR records exact new identity,
+actual checks, failures and not-run work. Release authorization remains a
+separate concrete decision after review of the resolved candidate.

@@ -100,7 +100,7 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=20261024-merzlyak-board"></script>
+  <script src="board-picker.js?v=20261024-merzlyak-atanasyan-board"></script>
   <script src="board-bridge.js"></script>
   <script>
     const KEY='mathexam.trainerBoard.v1';
@@ -285,7 +285,7 @@
     function controlHolder(){return(shared.participants||[]).find(item=>item?.id===shared.control)||null}
     function controlLabel(){const holder=controlHolder();return holder?.role==='student'?'Ученик':'Учитель'}
     function closeTextEditor(){editor.classList.add('hidden');editor.value='';textPoint=null}
-    function updateControlUi(){const writable=canWrite();document.body.classList.toggle('viewer',!writable);document.body.classList.toggle('control-owner',writable);if(controlBadge)controlBadge.textContent=`У доски: ${controlLabel()}`;if(controlToggle){const studentHasControl=controlHolder()?.role==='student';controlToggle.textContent=studentHasControl?'Забрать ход':'Передать ход';controlToggle.disabled=!shared.connected||shared.role!=='teacher'}if(releaseControl)releaseControl.disabled=!shared.connected||!writable||shared.role!=='student';buttons()}
+    function updateControlUi(){const writable=canWrite();frame.inert=!writable;frame.tabIndex=writable?0:-1;if(!writable&&document.activeElement===frame)frame.blur();document.body.classList.toggle('viewer',!writable);document.body.classList.toggle('control-owner',writable);if(controlBadge)controlBadge.textContent=`У доски: ${controlLabel()}`;if(controlToggle){const studentHasControl=controlHolder()?.role==='student';controlToggle.textContent=studentHasControl?'Забрать ход':'Передать ход';controlToggle.disabled=!shared.connected||shared.role!=='teacher'}if(releaseControl)releaseControl.disabled=!shared.connected||!writable||shared.role!=='student';buttons()}
     function genPageId(){return `local-${Date.now()}-${Math.random().toString(36).slice(2,9)}`}
     function ensurePageId(p){if(!p.id)p.id=genPageId();return p.id}
     function remotePage(p,i=0){return{id:p?.id||`remote-${i+1}`,bg:p?.bg||'grid',strokes:Array.isArray(p?.strokes)?p.strokes:[],redo:[]}}

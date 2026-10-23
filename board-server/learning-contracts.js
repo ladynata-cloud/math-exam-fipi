@@ -8,6 +8,7 @@ const { LearningError, requireValue } = require('./learning-auth');
 const pathState = require('../ege-baza/path/managed-state');
 const remediation = require('./learning-remediation-contracts');
 const motion = require('../trainers/motion-grade6/learning-contracts');
+const atanasyan = require('../geometry-course/textbook/learning-contracts');
 const catalog = require('../learning/catalog');
 const pathExamPool = require('../ege-baza/path/exam-pool');
 const context = vm.createContext({}, { codeGeneration: { strings: false, wasm: false } });
@@ -44,6 +45,10 @@ function list() {
 
 function create(trainerId, contentId, seed = crypto.randomInt(1, 1000000)) {
   requireValue(Number.isSafeInteger(seed) && seed >= 0 && seed <= 1000000000, 'LEARNING_TASK_INVALID');
+  if (trainerId === 'atanasyan-7-9') {
+    requireValue(catalog.get('atanasyan-7-9:' + contentId), 'LEARNING_TRAINER_UNKNOWN');
+    return atanasyan.create(contentId, seed);
+  }
   if (trainerId === 'motion-grade6') {
     requireValue(catalog.get('motion-grade6:' + contentId), 'LEARNING_TRAINER_UNKNOWN');
     return motion.create(contentId, seed);
@@ -60,8 +65,9 @@ function create(trainerId, contentId, seed = crypto.randomInt(1, 1000000)) {
 }
 
 function normalize(trainerId, taskSpec, state) {
-  bounded(state);
   try {
+    if (trainerId === 'atanasyan-7-9') return atanasyan.normalize(taskSpec, state);
+    bounded(state);
     if (trainerId === 'motion-grade6') return motion.normalize(taskSpec, state);
     if (trainerId === 'oge-basics') return remediation.normalize(taskSpec, state);
     requireValue(trainerId === 'ege-path' && meta.has(taskSpec.contentId) && taskSpec.contentVersion === 1, 'LEARNING_TRAINER_UNKNOWN');
@@ -73,8 +79,9 @@ function normalize(trainerId, taskSpec, state) {
 }
 
 function evaluate(trainerId, taskSpec, details, normalizedState) {
-  bounded(details);
   try {
+    if (trainerId === 'atanasyan-7-9') return atanasyan.evaluate(taskSpec, details, normalizedState);
+    bounded(details);
     if (trainerId === 'motion-grade6') return motion.evaluate(taskSpec, details, normalizedState);
     if (trainerId === 'oge-basics') return remediation.evaluate(taskSpec, details);
     requireValue(trainerId === 'ege-path' && meta.has(taskSpec.contentId) && taskSpec.contentVersion === 1, 'LEARNING_TRAINER_UNKNOWN');
@@ -97,6 +104,7 @@ function evaluate(trainerId, taskSpec, details, normalizedState) {
 }
 
 function describe(taskSpec) {
+  if (taskSpec.trainerId === 'atanasyan-7-9') return atanasyan.describe(taskSpec);
   if (taskSpec.trainerId === 'motion-grade6') return motion.describe(taskSpec);
   if (taskSpec.trainerId === 'oge-basics') return remediation.describe(taskSpec);
   const item = meta.get(taskSpec.contentId);
@@ -106,6 +114,7 @@ function describe(taskSpec) {
 
 // Identity ignores seeds and answer keys. Repetition must use a different question.
 function questionIdentity(taskSpec) {
+  if (taskSpec.trainerId === 'atanasyan-7-9') return crypto.createHash('sha256').update(atanasyan.questionIdentity(taskSpec)).digest('hex');
   if (taskSpec.trainerId === 'motion-grade6') return crypto.createHash('sha256').update(motion.questionIdentity(taskSpec)).digest('hex');
   const task = taskSpec.task || {};
   const choices = taskSpec.trainerId === 'ege-path' && meta.get(taskSpec.contentId)?.geometryRebuild
@@ -116,6 +125,7 @@ function questionIdentity(taskSpec) {
 }
 
 function assistance(trainerId, taskSpec, state) {
+  if (trainerId === 'atanasyan-7-9') return atanasyan.assistance(taskSpec, state);
   if (trainerId === 'motion-grade6') return motion.assistance(taskSpec, state);
   if (trainerId === 'ege-path') return state.work.help || state.work.stage < 3 || !!state.view.hintText;
   if (trainerId === 'oge-basics') return state.view === 'learn' || state.hint > 0 || ['hint', 'solution'].includes(state.feedback.kind);

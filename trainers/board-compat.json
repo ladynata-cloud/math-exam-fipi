@@ -434,6 +434,20 @@
       "notes": "Зеркалируются текущий шаг вложенного логарифма, ввод, подсказки и записи решения. Отдельная попытка от первого примера; прогресс кабинета не подключён."
     },
     {
+      "trainerId": "atanasyan-7-9",
+      "file": "trainers/atanasyan-7-9.html",
+      "title": "Атанасян 7–9 · №92а: стороны и углы треугольника",
+      "group": "7 класс / геометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа над №92а: рассуждение, шаги, подсказки и виды чертежа. Доказательство проверяет учитель; работа на общей доске не начисляет личный прогресс."
+    },
+    {
       "trainerId": "merzlyak-10-base",
       "file": "trainers/merzlyak-10-base.html",
       "title": "Мерзляк · геометрия 10 класс · базовый уровень",
