@@ -1,33 +1,60 @@
 # MathExam project status
 
-Updated: 2026-10-23 (Asia/Novosibirsk)
+Updated: 2026-10-24 (Asia/Novosibirsk)
 
-## Prepared for release review: profile task 3 stereometry on the shared board
+## Prepared for release review: individual board writing tools
 
-- [Scope](tasks/PROFILE_STEREOMETRY_BOARD_SYNC.md), MEDIUM review, base
-  `40682b243b3e7342d4330272f7329e60a1d0f417`, branch
-  `feat/ege3-board-sync`. The owner requested the latest task-3 course after
-  publication of the separate task-8 integration.
-- Bounded scope: eight existing stereometry topics / 48 tasks, shared drafts,
-  steps, help, worked solutions and model views on the classic board. Reuse
-  the existing profile adapter with two fixed course boundaries and preserve
-  task-8 behavior, authored mathematics and personal progress isolation.
-- The registered wrapper and exact canonical aliases are implemented. The
-  course overview now exposes its board link; shared model state contains
-  camera orientation, additional-view disclosure and the last spoken status.
-  Independent code and test reviews found no remaining blocking issue.
-- Final combined adapter/model/picker/registry contracts: 66/66 PASS.
-  Standalone state/Calm/input/solution contracts: 97/97 PASS; stereo/model
-  regression group: 20/20 PASS (groups overlap). The actual task-3 board
-  journey, task-first 68-family browser, 42 worked-solution journeys, picker
-  smoke and targeted B2 live/fail-closed checks passed.
-- The unchanged task-8 browser passed on an isolated repeat after one
-  concurrent run failed its cleared-angle-input assertion. The cause is not
-  established, and the failure is retained in the task record. The known
-  inherited B2 Roads harness issue remains outside this task.
-- Exact-head cloud checks and final gate are recorded in the resulting PR.
-  Merge/publication of this new task requires separate owner authorization.
-  No real-account or production-room testing has been performed.
+- [Scope](tasks/INDIVIDUAL_BOARD_TOOLS.md), MEDIUM review, base
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`, branch
+  `feat/individual-board-tools`.
+- The owner requested practical writing tools beside the trainer, then explicitly
+  added screenshot insertion and three workspace modes. This is the classic
+  board; the cabinet and group board are separate components.
+- Implementation and the focused gate `INDIVIDUAL_BOARD_TOOLS_OK` passed:
+  21 geometry/image units, the full local/two-participant writing browser, the
+  picker browser, and existing task-3/task-8 shared-board regressions.
+- New writing controls, screenshot insertion, three screen modes, local split
+  and view preferences reuse the existing room/control transport. File and
+  clipboard import, export, handoff, author-owned undo/redo, reload and late join
+  were verified with synthetic local rooms. No release of this task is claimed.
+- Physical stylus/iPad behavior and real production lessons remain untested.
+  The Draft PR records the exact head and CI; merge/publication requires a new
+  owner decision.
+- The additional request to synchronize all recently added START trainers is a
+  separate task. Existing task-3 and task-8 integration must remain intact.
+
+## Published: profile task 3 stereometry on the shared board
+
+- [Scope](tasks/PROFILE_STEREOMETRY_BOARD_SYNC.md), MEDIUM review.
+  [PR #312](https://github.com/ladynata-cloud/math-exam-fipi/pull/312) merged at
+  2026-10-23 17:18:23 UTC as
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`, sole parent/authorized base
+  `40682b243b3e7342d4330272f7329e60a1d0f417`. Reviewed head
+  `4c0a958383d304dc5167730034c487df059d26ac`, exact reviewed tree
+  `8bd1cc3059d9b942524555abb955707c4da17f4c`. No base drift occurred.
+- All eight pre-merge checks passed. The post-merge profile run
+  [39993968452](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/39993968452)
+  and Pages run
+  [39993968816](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/39993968816)
+  succeeded on the merge commit. The release check matched all ten changed
+  public frontend assets through ordinary and versioned URLs (20/20).
+- The backend health and eight-entry registry were verified at 17:20:59 UTC,
+  after restart at 17:20:18.585 UTC. Registry digest:
+  `sha256:aa381b8c633fa5e04c656e9f29ec2b3c7cd478d1b70d07c8b0cf8822e538d336`.
+- Eight existing topics / 48 tasks now share draft, steps, help, worked solutions
+  and model view through `trainers/ege-profile-stereometry.html`. Existing task-8
+  behavior, authored mathematics and personal progress isolation were preserved.
+- Local adapter/model/picker/registry checks passed (66 combined assertions),
+  and the actual task-3 teacher/observer browser journey passed. The unchanged
+  task-8 browser passed on an isolated repeat after an earlier concurrent run
+  failed its cleared-angle-input assertion; that earlier failure is retained.
+- Publication was verified using the release evidence above and the merged PR
+  was rechecked at the start of the individual-board task. No real-account or
+  production-room test was performed. Supplemental production browser access
+  was blocked by certificate validation; TLS validation was not disabled. The
+  unrelated inherited full-B2 Roads harness issue remains outside this task.
+- The owner's PR #312 merge/publication authorization has been completed and
+  does not authorize the next board or trainer-integration release.
 
 ## Published: profile task 8 on the shared board
 
