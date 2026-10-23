@@ -25,7 +25,7 @@ Main risks are transcription of source mathematics, limited accepted symbolic an
 
 ## Permissions
 
-The current direct user requests authorize implementation, testing, commits, pushing and a Draft PR. Repository policy requires a separate merge/publication decision; no merge, auto-merge or deployment is authorized by this task record.
+The initial user requests authorized implementation and testing. After reviewing the completed course and stated visual-QA limitation, the owner explicitly answered «Разрешаю» to the request to upload this course to the public ladynata-cloud/math-exam-fipi repository and publish it on mathexam.space. This authorizes the scoped course release and its required merge/deployment; it does not authorize unrelated changes.
 
 ## Execution record
 
@@ -35,3 +35,4 @@ The current direct user requests authorize implementation, testing, commits, pus
 - Not run: browser visual QA (cloud browser policy rejected observation), actual pupil trial, external Claude review, live board/cabinet synchronization.
 - Standalone static course only; browser storage is not cloud learner storage.
 - Gate: MAKARYCHEV8_COURSE_TECHNICAL_OK; visual and external-review release limitations remain explicit.
+- Publication check: the initial public-SEO gate found that the new route was missing from the reviewed sitemap seed manifest. Added the course seed and regenerated the sitemap; the sitemap regressions, deterministic generation check and public entrance metadata checks pass.
