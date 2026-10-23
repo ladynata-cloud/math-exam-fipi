@@ -339,18 +339,31 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   phase = 'accepted guided step and history';
   const taskId = await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view');
   await teacherFrame.locator('.support-details > summary').click();
+  const independentForm = await teacherFrame.locator('#answer-form').elementHandle();
   await teacherFrame.locator('#repair-current').click();
   await teacherFrame.waitForFunction(() => location.hash === '#practice/expr-powers/guided', null, { polling: 50 });
+  // The hash changes before its route handler replaces the independent form.
+  // Wait for the new guided DOM, then let both participants receive that view
+  // before typing an answer into its attempt.
+  await teacherFrame.waitForFunction(form => !form.isConnected &&
+    /^Шаг 1 из \d+$/.test(document.querySelector('#current-step')?.textContent.trim() || '') &&
+    document.querySelector('#answer')?.disabled === false, independentForm, { polling: 50 });
+  await independentForm.dispose();
   await teacherFrame.locator('#answer-form').waitFor();
   // The hash changes before its handler replaces the independent task's form.
   await teacherFrame.locator('#current-step').filter({ hasText: /^Шаг 1 из \d+$/ }).waitFor();
   assert.equal(await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view'), taskId, 'remediation retains the current task');
+  await synchronized(teacherFrame, studentFrame, 'guided remediation is rendered before input');
   const acceptedAnswer = await teacherFrame.evaluate(id => {
     const task = ProfileLessons.find(lesson => lesson.id === 'expr-powers').tasks.find(task => task.id === id);
     return String(task.steps[0].answer);
   }, taskId);
   await teacherFrame.locator('#answer').fill(acceptedAnswer);
+  assert.equal(await teacherFrame.locator('#answer').inputValue(), acceptedAnswer, 'controller retains the guided answer before submission');
+  assert.equal((await snapshot(teacherFrame)).progress.sessions['expr-powers:guided'].draft, acceptedAnswer, 'input updates the guided attempt');
   await teacherFrame.locator('#submit-answer').click();
+  assert.equal(await teacherFrame.locator('#answer').isDisabled(), true, 'controller accepted the guided step');
+  assert.deepEqual((await snapshot(teacherFrame)).progress.sessions['expr-powers:guided'].answers, [acceptedAnswer], 'controller recorded the expected guided answer');
   await synchronized(teacherFrame, studentFrame, 'accepted guided step before advancing');
   assert.equal(await studentFrame.locator('#answer').isDisabled(), true);
   assert.equal(await studentFrame.locator('#next').isVisible(), true);
