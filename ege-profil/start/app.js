@@ -1,6 +1,6 @@
 (function(){'use strict';
 const lessons=globalThis.ProfileLessons||[],byId=new Map(lessons.map(l=>[l.id,l])),main=document.getElementById('main'),groups=[['foundations','00','Вспомнить нужную основу','Короткие темы по пробелам, без повторения всего курса'],['geometry','01','Планиметрия','Научиться видеть решение на чертеже'],['vectors','02','Векторы','От перемещения — к скалярному произведению'],['stereometry','03','Стереометрия','Увидеть основание, высоту и нужное сечение'],['trigonometry','04','Тригонометрия','Понять круг, координаты и знаки'],['algebra','05','Алгебра для экзамена','Уравнения, степени, корни и логарифмы'],['probability','06','Вероятность и случайные величины','Исходы, события и распределения'],['calculus','07','Производная','Наклон, изменение и экстремумы'],['functions','08','Функции и графики','Связать формулу с рисунком'],['applied','09','Прикладные и текстовые задачи','Из условия — в понятную запись'],['finance','10','Финансовые расчёты','Проценты, долг и платежи']];
-const boardAdapter=[globalThis.ProfileExpressionsBoard,globalThis.ProfileStereoBoard].find(adapter=>adapter&&location.pathname===adapter.path&&document.body.dataset.profileBoard===adapter.marker)||null;
+const boardAdapter=[globalThis.ProfileExpressionsBoard,globalThis.ProfileStereoBoard,globalThis.ProfilePlanimetryBoard,globalThis.ProfileVectorsBoard,globalThis.ProfileProbabilityBoard,globalThis.ProfileRandomVariablesBoard,globalThis.ProfileEquationsBoard].find(adapter=>adapter&&location.pathname===adapter.path&&document.body.dataset.profileBoard===adapter.marker)||null;
 const boardSession=boardAdapter?boardAdapter.create(lessons):null;
 let applyingBoardState=false,boardNotifyTimer=null,boardNotify=()=>{},boardViews=new Map(),boardFeedback='none',boardHelp=null;
 let boardRenderFeedback=()=>{},boardRenderHint=()=>{},boardRenderHelp=()=>{};
@@ -82,7 +82,7 @@ function exam(n){
  const ongoing=list.flatMap(l=>['guided','plan','independent'].map(mode=>({l,mode,s:state.data.sessions[l.id+':'+mode]}))).filter(x=>x.s&&!x.s.done).sort((a,b)=>String(b.s.started).localeCompare(String(a.s.started)))[0];
  const initial=list.find(l=>l.id===examStarts[n])||list[0];
  const next=ongoing?.l||(list.some(l=>state.record(l.id).attempts)?list.find(l=>!state.record(l.id).guided.length):initial)||initial;
- shell('<p class="breadcrumb"><a href="#calm">← Все задания: №1–13 и №16</a></p><section class="exam-head"><p class="eyebrow">ЕГЭ профиль · проект 2027 · №'+n+'</p><h1>'+examNames[n]+'</h1><p class="lead">'+examDescriptions[n]+'</p><a class="button" id="exam-start" href="#practice/'+next.id+'/'+(ongoing?.mode||'independent')+'">'+(ongoing?(ongoing.mode==='independent'?'Продолжить самостоятельно':'Продолжить по шагам'):'Попробовать задачу')+' →</a><p class="small">'+esc(next.title)+'</p>'+(n===3||n===8?board('#exam/'+n):'')+'</section><h2 class="topic-heading">Или выберите тему</h2><div class="exam-topics">'+list.map((l,i)=>'<article class="exam-topic"><span class="topic-number">'+String(i+1).padStart(2,'0')+'</span><div><h3>'+esc(l.title)+'</h3><p>'+esc(l.summary)+'</p><span class="small">'+status(l)+'</span></div><div class="topic-actions"><a class="button" href="#practice/'+l.id+'/independent">Решить самому</a><a href="#practice/'+l.id+'/guided">По шагам</a><a href="#lesson/'+l.id+'">Вспомнить правило</a></div></article>').join('')+'</div><p class="small">'+list.reduce((n,l)=>n+l.tasks.length,0)+' задач в этом маршруте.'+'</p>'+globalThis.ProfileCourse.resources(n));
+ shell('<p class="breadcrumb"><a href="#calm">← Все задания: №1–13 и №16</a></p><section class="exam-head"><p class="eyebrow">ЕГЭ профиль · проект 2027 · №'+n+'</p><h1>'+examNames[n]+'</h1><p class="lead">'+examDescriptions[n]+'</p><a class="button" id="exam-start" href="#practice/'+next.id+'/'+(ongoing?.mode||'independent')+'">'+(ongoing?(ongoing.mode==='independent'?'Продолжить самостоятельно':'Продолжить по шагам'):'Попробовать задачу')+' →</a><p class="small">'+esc(next.title)+'</p>'+([1,2,3,4,6,7,8].includes(n)?board('#exam/'+n):'')+'</section><h2 class="topic-heading">Или выберите тему</h2><div class="exam-topics">'+list.map((l,i)=>'<article class="exam-topic"><span class="topic-number">'+String(i+1).padStart(2,'0')+'</span><div><h3>'+esc(l.title)+'</h3><p>'+esc(l.summary)+'</p><span class="small">'+status(l)+'</span></div><div class="topic-actions"><a class="button" href="#practice/'+l.id+'/independent">Решить самому</a><a href="#practice/'+l.id+'/guided">По шагам</a><a href="#lesson/'+l.id+'">Вспомнить правило</a></div></article>').join('')+'</div><p class="small">'+list.reduce((n,l)=>n+l.tasks.length,0)+' задач в этом маршруте.'+'</p>'+globalThis.ProfileCourse.resources(n));
 }
 function lesson(l){
  const active=activeIndependent(l);if(active&&!active.done&&!active.answers.length)markHelp(active,'independent');
@@ -135,6 +135,7 @@ function practice(l,mode){
  function mountModel(){
   modelCleanup();if(!hasModel)return;
   const container=document.getElementById('task-model');let controlIndex=-1;
+  if(boardSession)container.replaceChildren();
   const rememberControl=e=>{const control=e.target.closest('button,summary');if(control&&container.contains(control))controlIndex=[...container.querySelectorAll('button,summary')].indexOf(control);};
   container.addEventListener('click',rememberControl,true);
   const dispose=globalThis.ProfileTaskModels[t.id](container,t,{step:s.step,solved:mode==='guided'?s.answers.length>s.step:s.answers.length>0,mode:mode==='plan'?'independent':mode,completed:s.answers.length,isCurrent:ensureCurrent,onHelp(){
@@ -168,7 +169,7 @@ function practice(l,mode){
    next.disabled=false;next.hidden=false;submit.disabled=true;submit.hidden=true;
    if(mode==='guided')s.answers[s.step]=s.draft;else s.answers[0]=s.draft;
    for(const input of form.querySelectorAll('input'))input.disabled=true;
-   save();rendered=stamp(s);document.getElementById('solution-history').outerHTML=history(t,s,mode);mountModel();formatDisplay();next.focus({preventScroll:true});
+   save();rendered=stamp(s);document.getElementById('solution-history').outerHTML=history(t,s,mode);mountModel();if(boardSession)boardRenderHint(!document.getElementById('hint-box').hidden);formatDisplay();next.focus({preventScroll:true});
   }else{s.wrong=true;document.getElementById('difficulty-help').hidden=false;save();}
  };
  const hintButton=document.getElementById('hint'),hintBox=document.getElementById('hint-box');

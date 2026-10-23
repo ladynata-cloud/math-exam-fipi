@@ -210,12 +210,25 @@
     return s;
   }
 
+  function validBoardState(task, context, value) {
+    if (!task || value === null || typeof value !== 'object' || Array.isArray(value) ||
+        ![Object.prototype, null].includes(Object.getPrototypeOf(value)) || Reflect.ownKeys(value).length !== 3 ||
+        !['taskId', 'projection', 'construction'].every(key => {
+          const property = Object.getOwnPropertyDescriptor(value, key);
+          return property && property.enumerable && Object.hasOwn(property, 'value');
+        }) || value.taskId !== task.id || typeof value.projection !== 'boolean' || typeof value.construction !== 'boolean') return false;
+    const scene = sceneFor(task, context, {});
+    return (!value.projection || (!scene.schematic && (scene.coordinates || task.id === 'vec-dot-angle'))) &&
+      (!value.construction || !!scene.construction);
+  }
+
   function render(container, task, context) {
     context = context || {};
     const independent = context.mode === 'independent' && !context.solved;
     const document = container.ownerDocument;
     const NS = 'http://www.w3.org/2000/svg', uid = 'vt-' + (++instance);
     const options = { projection: false, construction: false };
+    let disposed = false;
     const wrap = document.createElement('div'); wrap.className = 'task-vector-model';
     const drawing = document.createElement('div'); drawing.className = 'task-vector-drawing';
     const legend = document.createElement('p'); legend.className = 'model-legend small';
@@ -365,10 +378,28 @@
       }
     }
     paint();
-    return () => { controls.querySelectorAll('button').forEach(button => { button.onclick = null; }); };
+    const cleanup = () => { disposed = true; controls.querySelectorAll('button').forEach(button => { button.onclick = null; }); };
+    cleanup.getBoardState = () => ({ taskId: task.id, projection: options.projection, construction: options.construction });
+    cleanup.applyBoardState = value => {
+      if (disposed || !validBoardState(task, context, value)) throw new TypeError('Invalid vector model board state');
+      options.projection = value.projection; options.construction = value.construction;
+      for (const button of controls.querySelectorAll('[data-model-action]')) {
+        const on = options[button.getAttribute('data-model-action')];
+        button.setAttribute('aria-pressed', String(on));
+        if (independent) button.textContent = on ? 'Скрыть подсказку' : 'Показать подсказку к рисунку';
+      }
+      paint();
+    };
+    return cleanup;
   }
 
   const models = root.ProfileTaskModels = root.ProfileTaskModels || {};
-  for (const id of ids) models[id] = render;
+  for (const id of ids) {
+    models[id] = (container, task, context) => render(container, task, context);
+    models[id].validateBoardState = (value, context) => {
+      const task = (root.ProfileLessons || []).flatMap(lesson => lesson.tasks).find(task => task.id === id);
+      return validBoardState(task, context, value);
+    };
+  }
   if (typeof module !== 'undefined' && module.exports) module.exports = { ids, sceneFor, render };
 })(globalThis);

@@ -10,6 +10,28 @@
   const mix = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
   const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
   const fmt = n => String(n).replace('.', ',');
+  const TRIG_TASKS = new Set(['geo-right-sine', 'geo-right-cosine', 'geo-right-tangent']);
+  const boardFields = (value, keys) => value !== null && typeof value === 'object' && !Array.isArray(value) &&
+    (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null) &&
+    Reflect.ownKeys(value).length === keys.length && keys.every(key => {
+      const property = Object.getOwnPropertyDescriptor(value, key);
+      return property && property.enumerable && Object.hasOwn(property, 'value');
+    });
+  function validBoardState(taskId, value, context = {}) {
+    if (!boardFields(value, ['taskId', 'toggles', 'feedbackIndex', 'walkthrough']) || value.taskId !== taskId) return false;
+    const trig = TRIG_TASKS.has(taskId), count = trig ? 0 : taskId === 'geo-area-common-height' ? 2 : 1;
+    if (!Array.isArray(value.toggles) || Object.getPrototypeOf(value.toggles) !== Array.prototype ||
+        value.toggles.length !== count || Reflect.ownKeys(value.toggles).length !== count + 1 ||
+        !Array.from({ length: count }, (_, index) => {
+          const property = Object.getOwnPropertyDescriptor(value.toggles, String(index));
+          return property && property.enumerable && Object.hasOwn(property, 'value') && typeof property.value === 'boolean';
+        }).every(Boolean) || !Number.isInteger(value.feedbackIndex) || value.feedbackIndex < -1 || value.feedbackIndex >= count ||
+        (value.feedbackIndex >= 0 && !value.toggles[value.feedbackIndex])) return false;
+    if (!trig || context.hideWalkthrough) return value.walkthrough === null;
+    return boardFields(value.walkthrough, ['open', 'count']) && typeof value.walkthrough.open === 'boolean' &&
+      Number.isInteger(value.walkthrough.count) && value.walkthrough.count >= 0 && value.walkthrough.count <= 5 &&
+      (!value.walkthrough.open || value.walkthrough.count > 0);
+  }
   function el(name, attrs, parent, content) {
     const node = document.createElementNS(NS, name);
     Object.entries(attrs || {}).forEach(([k, v]) => node.setAttribute(k, String(v)));
@@ -45,7 +67,13 @@
     const scale = Math.min(330 / Math.max(1, xmax - xmin), 220 / Math.max(1, ymax - ymin));
     const center = [(xmin + xmax) / 2, (ymin + ymax) / 2];
     const xy = p => [240 + (p[0] - center[0]) * scale, 165 - (p[1] - center[1]) * scale];
-    let parent = svg; const disposers = [];
+    let parent = svg, disposed = false, feedbackIndex = -1, boardWalkthrough = null;
+    const disposers = [], boardToggles = [];
+    function showToggle(control, active) {
+      control.active = active; control.button.setAttribute('aria-pressed', String(active));
+      if (independent) control.button.textContent = active ? 'Скрыть подсказку' : 'Показать подсказку к рисунку';
+      control.layer.setAttribute('visibility', active ? 'visible' : 'hidden');
+    }
     const api = {
       xy, points, svg,
       line(a, b, color = ink, dashed = false, width = 2.5) {
@@ -92,10 +120,10 @@
         feedback.textContent = independent ? 'Это чертёж к текущей задаче. Открытие разбора — подсказка.' : 'Если нужна помощь, открой разбор. Каждый шаг останется перед глазами.';
         const button = document.createElement('button'); button.type = 'button'; button.dataset.trigOpen = '';
         button.textContent = 'Разобрать решение по шагам'; button.setAttribute('aria-expanded', 'false'); controls.append(button);
-        let panel, list, next, layer, steps, shown = 0;
+        let panel, list, next, layer, steps, shown = 0, removeNext = () => {};
         const permitted = () => typeof context.isCurrent !== 'function' || context.isCurrent() !== false;
-        const revealStep = () => {
-          if (shown === steps.length || !permitted()) return;
+        const appendStep = () => {
+          if (shown === steps.length) return;
           const step = steps[shown], item = document.createElement('li'); item.className = 'profile-trig-step'; item.dataset.trigStep = String(shown + 1);
           const heading = document.createElement('h3'); heading.textContent = `Шаг ${shown + 1} из ${steps.length}. ${step.title}`; item.append(heading);
           step.lines.forEach(line => {
@@ -140,13 +168,8 @@
           next.setAttribute('aria-disabled', String(shown === steps.length));
           next.textContent = shown < steps.length ? `Следующий шаг: ${shown + 1} из ${steps.length}` : `Все ${steps.length} шагов открыты`;
         };
-        const onClick = () => {
-          const opening = button.getAttribute('aria-expanded') !== 'true';
-          // Guard a stale attempt before opening or reopening its explanation.
-          if (opening && !permitted()) return;
-          if (!panel) {
-            // Record help once, before any worked answer enters the DOM.
-            if (!notifyExplanation()) return;
+        const revealStep = () => { if (permitted()) appendStep(); };
+        function createPanel() {
             steps = makeSteps();
             layer = el('g', { 'data-model-layer': 'Стороны для разбора' }, svg);
             const old = parent; parent = layer; highlight(api); parent = old;
@@ -155,31 +178,68 @@
             const title = document.createElement('h2'); title.className = 'profile-solution-title'; title.tabIndex = -1; title.textContent = 'Решение с помощью — по шагам'; panel.append(title);
             list = document.createElement('ol'); list.dataset.trigSteps = ''; list.setAttribute('aria-live', 'polite'); list.setAttribute('aria-relevant', 'additions'); panel.append(list);
             next = document.createElement('button'); next.type = 'button'; next.dataset.trigNext = ''; next.addEventListener('click', revealStep); panel.append(next);
-            wrapper.append(panel); disposers.push(() => next.removeEventListener('click', revealStep));
+            const nextButton = next; removeNext = () => nextButton.removeEventListener('click', revealStep);
+            wrapper.append(panel);
+        }
+        function showPanel(opening) {
+          if (panel) { panel.hidden = !opening; layer.setAttribute('visibility', opening ? 'visible' : 'hidden'); }
+          button.setAttribute('aria-expanded', String(opening)); button.textContent = opening ? 'Свернуть разбор' : 'Разобрать решение по шагам';
+        }
+        const onClick = () => {
+          const opening = button.getAttribute('aria-expanded') !== 'true';
+          // Guard a stale attempt before opening or reopening its explanation.
+          if (opening && !permitted()) return;
+          if (!panel) {
+            // Record help once, before any worked answer enters the DOM.
+            if (!notifyExplanation()) return;
+            createPanel();
             revealStep();
           }
-          panel.hidden = !opening; layer.setAttribute('visibility', opening ? 'visible' : 'hidden');
-          button.setAttribute('aria-expanded', String(opening)); button.textContent = opening ? 'Свернуть разбор' : 'Разобрать решение по шагам';
+          showPanel(opening);
         };
-        button.addEventListener('click', onClick); disposers.push(() => button.removeEventListener('click', onClick));
+        button.addEventListener('click', onClick); disposers.push(() => { button.removeEventListener('click', onClick); removeNext(); });
+        boardWalkthrough = {
+          read: () => ({ open: button.getAttribute('aria-expanded') === 'true', count: shown }),
+          apply(value) {
+            // Hydration restores authored steps directly, without replaying help,
+            // stale-attempt checks or another learner action.
+            if (!value.count) {
+              removeNext(); removeNext = () => {}; panel?.remove(); layer?.remove();
+              panel = list = next = layer = steps = undefined; shown = 0;
+            } else {
+              if (!panel) createPanel();
+              if (shown > value.count) { list.replaceChildren(); shown = 0; }
+              while (shown < value.count) appendStep();
+            }
+            showPanel(value.open);
+          }
+        };
       },
       toggle(label, render, explanation, initial = false) {
         if (independent) initial = false;
         const layer = el('g', { 'data-model-layer': label, visibility: initial ? 'visible' : 'hidden' }, svg), old = parent; parent = layer; render(api); parent = old;
         const button = document.createElement('button'); button.type = 'button'; button.textContent = independent ? 'Показать подсказку к рисунку' : label; button.setAttribute('aria-pressed', String(initial)); button.style.cssText = 'min-height:44px;max-width:100%;white-space:normal'; controls.append(button);
+        const control = { button, layer, explanation, active: initial }, index = boardToggles.length; boardToggles.push(control);
         const onClick = () => {
           const active = button.getAttribute('aria-pressed') !== 'true';
           if (active && !notifyExplanation()) return;
-          button.setAttribute('aria-pressed', String(active));
-          if (independent) button.textContent = active ? 'Скрыть подсказку' : 'Показать подсказку к рисунку';
-          layer.setAttribute('visibility', active ? 'visible' : 'hidden');
+          showToggle(control, active); feedbackIndex = active ? index : -1;
           feedback.textContent = active ? explanation : defaultNote;
         };
         button.addEventListener('click', onClick); disposers.push(() => button.removeEventListener('click', onClick));
       }
     };
     draw(api, points);
-    return () => { disposers.forEach(f => f()); wrapper.remove(); };
+    const initialFeedback = feedback.textContent;
+    const cleanup = () => { disposed = true; disposers.forEach(f => f()); wrapper.remove(); };
+    cleanup.getBoardState = () => ({ taskId: task.id, toggles: boardToggles.map(control => control.active), feedbackIndex, walkthrough: boardWalkthrough?.read() || null });
+    cleanup.applyBoardState = value => {
+      if (disposed || !validBoardState(task.id, value, context)) throw new TypeError('Invalid planimetry model board state');
+      boardToggles.forEach((control, index) => showToggle(control, value.toggles[index]));
+      feedbackIndex = value.feedbackIndex; feedback.textContent = feedbackIndex < 0 ? initialFeedback : boardToggles[feedbackIndex].explanation;
+      if (boardWalkthrough) boardWalkthrough.apply(value.walkthrough);
+    };
+    return cleanup;
   }
   function triangleLabels(d, p) { d.polygon([p.A, p.B, p.C]); d.point(p.A, 'A', 0, -20); d.point(p.B, 'B', -14, 20); d.point(p.C, 'C', 14, 20); }
   function rightTrigSteps(task) {
@@ -252,7 +312,10 @@
   }
   // Reuse the same authored derivation in examples and completed solutions.
   root.ProfileRightTrigSteps = task => ['geo-right-sine', 'geo-right-cosine', 'geo-right-tangent'].includes(task.id) ? rightTrigSteps(task) : null;
-  function register(ids, fn) { ids.forEach(id => { registry[id] = (container, task, context) => fn(container, task, context || {}); }); }
+  function register(ids, fn) { ids.forEach(id => {
+    registry[id] = (container, task, context) => fn(container, task, context || {});
+    registry[id].validateBoardState = (value, context) => validBoardState(id, value, context);
+  }); }
   register(['geo-angles-sum', 'geo-angles-isosceles', 'geo-angles-exterior', 'geo-angles-ratio', 'geo-angles-bisector', 'geo-angles-parallel'], (container, task, context) => {
     const id = task.id, m = task.meta;
     let a, b;
