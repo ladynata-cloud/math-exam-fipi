@@ -18,7 +18,7 @@ This first-release selection covers all 27 source topics with six numbered tasks
 - `node tools/shestakov-yaschenko/model-browser.cjs`
 - `node tools/shestakov-yaschenko/runtime-browser.cjs`
 
-Browser scripts use Playwright. An optional CHROME_PATH selects an existing executable for constrained executors. Default CI uses the pinned Playwright Chromium. Model checks cover every authored view at 320px and 1280px. Runtime checks cover every retained-step sequence plus representative answer, help, theory, restoration, search and stale-tab scenarios. Manual proofs are never auto-approved. Human visual samples and independent mathematics have separate evidence records; simulated journeys are not a real pupil trial.
+Browser scripts use Playwright. An optional CHROME_PATH selects an existing executable for constrained executors. Default CI uses the pinned Playwright Chromium. Model checks cover every authored view at 320px and 1280px. Runtime checks cover every retained-step sequence plus representative answer, help, theory, restoration, search and stale-tab scenarios. Manual proofs are never auto-approved. Sampled visual inspections by independent AI reviewers and mathematical checks have separate evidence records; simulated journeys are not a real pupil trial.
 
 The offline packager accepts one output HTML path. It embeds current course data and the same CSS/JS, makes no fetch request and requires all authored cards to be independently reviewed. The HTML can be opened directly without a server. Local progress remains browser-local; no cabinet or shared-board synchronization is claimed.
 

@@ -41,7 +41,7 @@
       "bytes": 2518943
     }
   },
-  "visualReview": "See exact inspected screenshot manifests in visual-review-1-3.json and visual-review-4-6.json; sampling is not exhaustive human inspection.",
+  "visualReview": "Independent AI reviewers inspected the exact screenshot samples recorded in visual-review-1-3.json and visual-review-4-6.json. This is not exhaustive visual inspection or human teacher sign-off.",
   "limitations": [
     "Not a complete set of all 1980 solutions; 1656 source variants remain explicitly pending.",
     "Not a real pupil trial or teacher sign-off.",
