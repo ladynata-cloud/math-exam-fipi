@@ -150,7 +150,7 @@ screen modes; this task supplies the additional trainer integrations.
   focused test cases, plus the applicable geometry, planimetry, vector,
   probability, equations, algebra and independent-model regression suites.
 - Passed browsers: full five-wrapper/22-topic local teacher/pupil journey and
-  the unchanged stereometry and expressions journeys, run sequentially. The
+  the existing stereometry and expressions journeys, run sequentially. The
   new gate checks the 132-task inventory; exhaustive drawing contexts are
   covered by model units, not claimed as 132 full browser journeys.
 - The new browser gate checked task/draft/feedback/help/step state, model
@@ -176,8 +176,21 @@ screen modes; this task supplies the additional trainer integrations.
 - Not run: production rooms/accounts, physical devices and unrelated full
   B2/group suites. The B2 smoke's exact registry fixture was updated and its
   syntax checked; the full inherited B2 issue is not claimed fixed.
+- First-publication CI caught an existing expressions browser-gate race during
+  remediation: the URL changed before the independent form was replaced, so
+  the test could type into the old form and submit the new guided form empty.
+  A controlled hashchange delay reproduced the exact failure. The gate now
+  waits for old-form disposal and actual guided step 1, synchronizes that view,
+  and verifies the controller's draft and accepted answer before peer equality.
+  The same delayed-render scenario and the ordinary complete browser gate
+  passed on Chromium 151.0.7922.34. All prior assertions remain; no timeout or
+  runtime change was made. Independent focused review passed.
 - The companion board-writing implementation is prepared in Draft PR #313;
-  it is not merged or published by this task.
+  all five of its exact-head CI checks passed. It is not merged or published
+  by this task. The two initial implementation trees composed cleanly; writing
+  and added-five browser gates both passed in that combined runtime. The final
+  expressions-gate-only correction is checked separately against the same
+  runtime before the final PR handoff.
 - Scope deviations: none.
 
 ## Required handoff
