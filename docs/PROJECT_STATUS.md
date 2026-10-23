@@ -2,6 +2,23 @@
 
 Updated: 2026-10-23 (Asia/Novosibirsk)
 
+## Prepared for review: profile cabinet entry to the full current course
+
+- [Scope](tasks/PROFILE_FULL_COURSE_ENTRY.md), SMALL review, base
+  `a05f3b60a590da5ca5d149c86262241ace186973`; explicit owner START received.
+- Live cabinet practice links already open the current profile course, including
+  `#practice/stereo-box/independent`. Its first screen only exposes thirteen
+  quick entries; the full `#calm` page additionally has task 16, a mixed checkpoint
+  and school-topic revision. The existing published profile status is consistent
+  with the course content; the missing full-course entry is a navigation gap.
+- A visible canonical full-course link is prepared above the existing practice
+  cards. The existing profile-entry browser regression passed; desktop1365px and
+  mobile390px screenshots show the complete button before the catalogue. Syntax,
+  catalogue freshness and whitespace checks passed: `PROFILE_FULL_COURSE_ENTRY_OK`.
+- Course content, learner data and progress semantics are unchanged. Exact-head
+  CI belongs to the Draft PR handoff. Board synchronization remains paused.
+  No merge or deployment is authorized or claimed.
+
 ## Prepared for release review: Atanasyan 7–9 chapter II, triangles
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_II.md), HIGH review, base
