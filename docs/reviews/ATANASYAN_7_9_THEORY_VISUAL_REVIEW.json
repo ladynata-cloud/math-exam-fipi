@@ -1,0 +1,2789 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-23",
+  "reviewTimezone": "Asia/Novosibirsk",
+  "reviewerRole": "independent-content-and-visual-review-agent",
+  "verdict": "passed-for-reviewed-final-model-screenshots",
+  "scope": {
+    "chapter": 1,
+    "theoryCards": 13,
+    "selfcheckCards": 26,
+    "uniqueCards": 39,
+    "viewportWidths": [
+      320,
+      1280
+    ],
+    "stages": [
+      "initial",
+      "last"
+    ],
+    "originalPngCount": 156,
+    "byteIdenticalPngsReusingFirstReview": 109,
+    "changedPngsNewlyVisuallyInspected": 47,
+    "finalContactSheetsActuallyViewed": 15,
+    "originalPngsAdditionallyViewedAtOriginalResolution": 4
+  },
+  "method": [
+    "Computed the SHA256 of every final original PNG and compared it with its exact hash recorded in the completed first visual review. Reused that review only for 109 byte-identical images.",
+    "Opened all 15 final contact-sheet PNGs that contain changed screenshots through view_image. Actually inspected every one of the 47 changed model screenshots.",
+    "Opened all four theory6 original PNGs at original resolution to inspect the changed caption in initial/last states at 320/1280 viewport widths.",
+    "Checked distinct and unclipped point labels, readable angle/equality markers, correct initial/final geometric relationships and model clutter. The newly written caption was fully checked in the originals; some contact-sheet tiles crop captions.",
+    "Programmatically verified the complete 39 × 2 × 2 image matrix and membership in the final browser evidence screenshot list."
+  ],
+  "captureProvenance": {
+    "run": "geometry-browser-final-candidate",
+    "browserEvidenceFile": "browser-evidence.json",
+    "browserEvidenceSha256": "859d72f106c2c37363ddf93deeee17095148ec27480c6f60cb6030e49b951a0b",
+    "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+    "authoredContentSha256": "12525e9093c143c4ee6570a9fea00c7f9ccf15eb0a7ef4ab274cc62a982fa4da",
+    "bundleSha256": "4453db2a52e310aa5f0335da2221794713759f09f6e980f565b673ab29afff90",
+    "captureAutomationCompleted": true,
+    "captureAutomationErrors": []
+  },
+  "firstReviewUsedForIdenticalImages": {
+    "reportSha256": "125befe9010b4a570479e2eab81e2604a7b25bf5320bc94c85ea03ac4623444c",
+    "run": "geometry-browser-first",
+    "previousBrowserEvidenceSha256": "c0bae6a2e60c2ef31ee753a1ef90ab4f1f3277fc14d8f3c2de210a2b27467897",
+    "contactSheetsActuallyViewed": 20,
+    "originalPngsCovered": 156,
+    "additionalOriginalResolutionRechecks": [
+      {
+        "file": "atanasyan-7-9-theory-9-part-1-initial-320.png",
+        "sha256": "78631416f5cabc737ee6f2e48767df4f0f45518460c5f5ade42611f0256bec39",
+        "pixelDimensions": [
+          274,
+          400
+        ]
+      },
+      {
+        "file": "atanasyan-7-9-theory-12-part-1-last-320.png",
+        "sha256": "0adf8e00b39cfc6f3ee9af7060eb34c3628002b57342f5fb3179b6d8d4e40656",
+        "pixelDimensions": [
+          274,
+          423
+        ]
+      },
+      {
+        "file": "atanasyan-7-9-selfcheck-12-part-1-initial-320.png",
+        "sha256": "3254d401c95ce1746b4e744e579f7d8089bab6aa710dbe84bdbf1fb108fff6a0",
+        "pixelDimensions": [
+          274,
+          422
+        ]
+      },
+      {
+        "file": "atanasyan-7-9-selfcheck-25-part-1-last-320.png",
+        "sha256": "0a18aa8661a6c602e06b13f1f47c7fc35e76c4db0f74a12f198bbd4a6307d5c1",
+        "pixelDimensions": [
+          274,
+          422
+        ]
+      }
+    ],
+    "contactSheets": [
+      {
+        "file": "theory-1280-01.png",
+        "sha256": "8922e3625aaecbb123a85e0b07db49c95469f802d5d300bd87126ee2b0e5270e",
+        "mappingSha256": "10a8f08aea96a6625d5c5bcd98e98cb768ecc857427302406738b429d857c61a",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-1280-02.png",
+        "sha256": "2980e3a89be636d0b1bcf5ee78b4876e00480a6a019e330a9f1686c4402a3b1f",
+        "mappingSha256": "c4ed808ff6935a8c71c98f22e89f0533ac72c56aafbeb1c88927459a9d041c16",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-1280-03.png",
+        "sha256": "bc8996264673e1cc6bac864068d388131e785fbdc5ad95f508b83167f57e456a",
+        "mappingSha256": "47dd7e8bac3f4cf01dd3a464098af1d97676410b8e9180bd030d5d09517faab1",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-1280-04.png",
+        "sha256": "503d4c9b59466ff4b5f90c9211430f52577eb8a8d390a4218141eda8185538cd",
+        "mappingSha256": "0fcb100ab4ce009f474dd1404e15db0585fe284df34bf20ff0eb7d6a2412028b",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-1280-05.png",
+        "sha256": "9e78656d9229c33ca93b3be7b7b22c2a05833baee26692d15431a5aeaf58ae45",
+        "mappingSha256": "ca3a086cc4838711c3674dabcad85574944b2c56397c2c97666374020751b8b0",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-1280-06.png",
+        "sha256": "561b01d777da5aec5d5e207376aa5fd0504c632c6978865e5c52848dfd41734d",
+        "mappingSha256": "e57fd461adea91f88d97c5fe42a35ce92a2b63620ffe209dfb2cd8b76329c014",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-1280-07.png",
+        "sha256": "c710e23c9433e148f7ed57bff71a68d6e0b0afb21384aca4455fad6bc99a9a6d",
+        "mappingSha256": "79026f8fffc7de40a5f3bdcd3a0b8f6d774297e8805baf68d660ccd0ae665485",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-1280-08.png",
+        "sha256": "a73da155a6cc9813b0a67526c370cf2d6589628767668dc0cf188cd553cb74a8",
+        "mappingSha256": "1218dcbafb8c652256d1124b903445461afc7a365653418858c7eeb34c3d89e2",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-1280-09.png",
+        "sha256": "dd5535fe56de2d3e735693c30660cbfbacf5296f30b5c55bdebd5a245c70b093",
+        "mappingSha256": "64b6ab04eaf2fcd941e9f6af57a2b164586521f26e026297085895e2cc82d618",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-1280-10.png",
+        "sha256": "dcb432715b419145a3f34cdab1a1529f63c0360125dfe30b255e89155f220952",
+        "mappingSha256": "e1680ccb941540fa9d8ecfdf58a6af453515666889168a35eb75591eac628f8e",
+        "imageCount": 6,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-01.png",
+        "sha256": "9335d0b0cd35720ebf2b355a2141bab8e071aa1152a7423ea459c380721de7ce",
+        "mappingSha256": "837fa7a8c6f55da7ef730a1d8290288e20bd6223f5c3936cd67632e59ba6a961",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-02.png",
+        "sha256": "02b676f107fad0ef2a63bf93bd7401506003147967afb49122001269e491d0d5",
+        "mappingSha256": "985241656c1585f31e5ed8948040d38360a4414f7f883751ba3a171236f1e891",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-03.png",
+        "sha256": "7b7815df275b94a7fa1330700ba77a66b1a14cabc223482b3da54d08c1718900",
+        "mappingSha256": "5f6f3e4f6b167f19dbcc8ac493d5ad32e9bddd91de02a69eefeae06a8c7dab9e",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-04.png",
+        "sha256": "ccd2e08c1ae6660a3da2eae3b110c4091fdbdc143eb69a8038ec7dd92b343ea9",
+        "mappingSha256": "82b7fc6f1910ff4630202a3a824bc703e854e6ae01dc06e2ebf9a8fe4dddf747",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-05.png",
+        "sha256": "ae5d4c528a23ef04b4c010bcada2c7378514423bc118e8ad8d604f9452b1a4d3",
+        "mappingSha256": "960d7d0e957da9c9bb0da0dd1aabac1355d19ef3d4d022a6dcea9f3959775d0c",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-06.png",
+        "sha256": "608ad435dad63775c85936978657e758615d8fa4a8d28da4f302a8576d3f7bd7",
+        "mappingSha256": "860ed8aab229246b75e33349a3488d6fd0bc3729d00149642dbfb4b6663dcaee",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-07.png",
+        "sha256": "1ff100aff06446d319091fbd2a70edb0f5c282a3bbfbd1e3030f60c8cf066d53",
+        "mappingSha256": "b2362148b4f08e39ad4a7a899ae19144588fee380eb90b8dee00cd0a642a56c4",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-08.png",
+        "sha256": "2a463f721fceebe2d33a29f4fabc387d3334e28501efa9bf24d9153b6d9c0435",
+        "mappingSha256": "371dd3939aed06e1a8eb45ff1c32ba55d388beafce4d89e5ebd748f9ba8a5207",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-09.png",
+        "sha256": "14d520dcd97ffb3bbf2a4720584d074576bb8ccf6b162986255f1a1c834852f5",
+        "mappingSha256": "146dec008a6fd204f72ae280dc6f23357f144cde8d7527c90854e6a189c64cc7",
+        "imageCount": 8,
+        "visuallyInspected": true
+      },
+      {
+        "file": "theory-320-10.png",
+        "sha256": "0899149583a4bbb675ceeba11bdfc16c88bc6a77e52207a4a24c2743b20e087e",
+        "mappingSha256": "9e71a48efe5b5eb1e14711c4e82175c6d663a4ff29978bef420844bfb3e1808e",
+        "imageCount": 6,
+        "visuallyInspected": true
+      }
+    ],
+    "note": "The first browser run later failed a separate course-conflict interaction. Its complete screenshot visual review is reused only where the final PNG is byte-identical; final automation is independently recorded as completed."
+  },
+  "reviewedSourceFiles": [
+    {
+      "path": "geometry-course/textbook/preparation/chapter-01-theory.json",
+      "sha256": "c12e0ea1a911b30bcab2ecd22369e86fb6f628b3336d95c58d013b26118b5983"
+    },
+    {
+      "path": "geometry-course/textbook/models/chapter-01-theory.json",
+      "sha256": "74a34c6c441f65e3c957a6c46ef99cdb265a2442ee85db5f99743ee5fa7143ff"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "observation",
+      "subject": "all 156 final model screenshots",
+      "result": "No overlapping or clipped point labels, incorrect final geometric relationships, or congested model interiors were found in the reviewed images."
+    },
+    {
+      "severity": "observation",
+      "subject": "theory6 caption, all four final original PNGs",
+      "result": "The caption correctly names the separate views for segment/angle comparison, a segment midpoint and an angle bisector. Its text is complete and readable at both widths, without clipping."
+    },
+    {
+      "severity": "observation",
+      "subject": "theory9 320 px model",
+      "result": "The left-hand label B is now farther from the model boundary and remains fully visible."
+    },
+    {
+      "severity": "observation",
+      "subject": "selfcheck12 initial 320 px model",
+      "result": "This image is byte-identical to the previously checked original. A and P remain close but distinct and readable."
+    },
+    {
+      "severity": "observation",
+      "subject": "angle and equality markers in changed PNGs",
+      "result": "Ordinary angle arcs and equality tick marks remain legible and separate from point labels."
+    }
+  ],
+  "residualVisualBlockers": [],
+  "limitations": [
+    "This report certifies initial and last model screenshots only; it does not newly certify every intermediate state or alternative case visually.",
+    "Full-page layout, dynamic controls, fullscreen behavior, persistence and concurrent-session behavior are outside this image-only review; the completed browser automation is separate evidence.",
+    "This verdict applies to the exact final PNG hashes listed. Later changed images require renewed visual inspection.",
+    "The browser version was reported by the capture operator; it is not independently established by these screenshots or the evidence JSON."
+  ],
+  "originalResolutionRechecks": [
+    {
+      "file": "atanasyan-7-9-theory-6-part-1-initial-320.png",
+      "sha256": "ff9f7cf9ffc84a7d0759e311d28e4a63058e11108f1e23da2c71128b72e09960",
+      "pixelDimensions": [
+        274,
+        400
+      ]
+    },
+    {
+      "file": "atanasyan-7-9-theory-6-part-1-last-320.png",
+      "sha256": "3537da9de0645d87d39fa00d17db267184e1197a8199593b16a744f18f9392f9",
+      "pixelDimensions": [
+        274,
+        400
+      ]
+    },
+    {
+      "file": "atanasyan-7-9-theory-6-part-1-initial-1280.png",
+      "sha256": "a9e5a4d5f4899c4ca802bb9a842a44c81d1e6d36d6d1d933c55c0e331b3a9183",
+      "pixelDimensions": [
+        749,
+        669
+      ]
+    },
+    {
+      "file": "atanasyan-7-9-theory-6-part-1-last-1280.png",
+      "sha256": "edc8b195aa97bf59610cdaa431d3601a215deaad69bce61e5b503e8459b7a9d0",
+      "pixelDimensions": [
+        749,
+        669
+      ]
+    }
+  ],
+  "contactSheets": [
+    {
+      "file": "theory-1280-01.png",
+      "sha256": "1bdb1468b06e41f17718e76d3eae0dfe2fd5418bf9def2385f4ce96928a20e74",
+      "mappingSha256": "10a8f08aea96a6625d5c5bcd98e98cb768ecc857427302406738b429d857c61a",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-1280-02.png",
+      "sha256": "d1e905395199ecfb7bbb359284965b5eacde4a57f2f5febf0f1a7bd051cfd474",
+      "mappingSha256": "c4ed808ff6935a8c71c98f22e89f0533ac72c56aafbeb1c88927459a9d041c16",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-1280-03.png",
+      "sha256": "e47afcd06b365d7ff5649b604be262031c5f2097be283721d1dfc0c1fcd073a3",
+      "mappingSha256": "47dd7e8bac3f4cf01dd3a464098af1d97676410b8e9180bd030d5d09517faab1",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-1280-04.png",
+      "sha256": "920cc9b1188ae0361ca2283367db25aa36c98ffc53f2c9c7b33b48119cf4b024",
+      "mappingSha256": "0fcb100ab4ce009f474dd1404e15db0585fe284df34bf20ff0eb7d6a2412028b",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-1280-05.png",
+      "sha256": "9e78656d9229c33ca93b3be7b7b22c2a05833baee26692d15431a5aeaf58ae45",
+      "mappingSha256": "ca3a086cc4838711c3674dabcad85574944b2c56397c2c97666374020751b8b0",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": false
+    },
+    {
+      "file": "theory-1280-06.png",
+      "sha256": "561b01d777da5aec5d5e207376aa5fd0504c632c6978865e5c52848dfd41734d",
+      "mappingSha256": "e57fd461adea91f88d97c5fe42a35ce92a2b63620ffe209dfb2cd8b76329c014",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": false
+    },
+    {
+      "file": "theory-1280-07.png",
+      "sha256": "e3209f9f9adaec2c6ee6ac484e056224397a9f2ffe85353df9f331aea4b1e394",
+      "mappingSha256": "79026f8fffc7de40a5f3bdcd3a0b8f6d774297e8805baf68d660ccd0ae665485",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-1280-08.png",
+      "sha256": "a73da155a6cc9813b0a67526c370cf2d6589628767668dc0cf188cd553cb74a8",
+      "mappingSha256": "1218dcbafb8c652256d1124b903445461afc7a365653418858c7eeb34c3d89e2",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": false
+    },
+    {
+      "file": "theory-1280-09.png",
+      "sha256": "4ea41f4d29fe1c55e4bf5b3fe7b79b2c3b2197992609fb8887b933a87f9c32ec",
+      "mappingSha256": "64b6ab04eaf2fcd941e9f6af57a2b164586521f26e026297085895e2cc82d618",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-1280-10.png",
+      "sha256": "dcb432715b419145a3f34cdab1a1529f63c0360125dfe30b255e89155f220952",
+      "mappingSha256": "e1680ccb941540fa9d8ecfdf58a6af453515666889168a35eb75591eac628f8e",
+      "imageCount": 6,
+      "visuallyInspectedInFinalReview": false
+    },
+    {
+      "file": "theory-320-01.png",
+      "sha256": "a17cbef6a93f75ca8904cdd8b3ced9af5212671145debc40367cb3a13809aa77",
+      "mappingSha256": "837fa7a8c6f55da7ef730a1d8290288e20bd6223f5c3936cd67632e59ba6a961",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-320-02.png",
+      "sha256": "37db10706fe9176a260d1edc18bcccfdf7d82c0999eb8f1e166e068ba45e95dd",
+      "mappingSha256": "985241656c1585f31e5ed8948040d38360a4414f7f883751ba3a171236f1e891",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-320-03.png",
+      "sha256": "7fc487f3e5f1b06afcf16552e837ccf83fd0d4122ecec380fcdd10da05ecec95",
+      "mappingSha256": "5f6f3e4f6b167f19dbcc8ac493d5ad32e9bddd91de02a69eefeae06a8c7dab9e",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-320-04.png",
+      "sha256": "fbf5b0b5a0832e54e19447abc6b6a76f0057db51ce3e99344763526f83637c5c",
+      "mappingSha256": "82b7fc6f1910ff4630202a3a824bc703e854e6ae01dc06e2ebf9a8fe4dddf747",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-320-05.png",
+      "sha256": "fe2332187f055c2b22d1242261a84e6e7779e5ea1f9680bd38d33ed2c61ea391",
+      "mappingSha256": "960d7d0e957da9c9bb0da0dd1aabac1355d19ef3d4d022a6dcea9f3959775d0c",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-320-06.png",
+      "sha256": "dd5f978c09480d2797e2a5c928fc972ffa42f70ea8a90594a4dadf5f430643ec",
+      "mappingSha256": "860ed8aab229246b75e33349a3488d6fd0bc3729d00149642dbfb4b6663dcaee",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-320-07.png",
+      "sha256": "00fcd8e5309fa8f51be55dfda381821d98ea62c2cb2b7f924c55d0dfc6f603e4",
+      "mappingSha256": "b2362148b4f08e39ad4a7a899ae19144588fee380eb90b8dee00cd0a642a56c4",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-320-08.png",
+      "sha256": "94e03eda9cfd42e4b5723ba3bb18faafb01dc7e8dc6faecf8026aba43debeda3",
+      "mappingSha256": "371dd3939aed06e1a8eb45ff1c32ba55d388beafce4d89e5ebd748f9ba8a5207",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-320-09.png",
+      "sha256": "c1777d82f855943507bd35d743711985d741ab91604c64e6d027907ed84c7bdd",
+      "mappingSha256": "146dec008a6fd204f72ae280dc6f23357f144cde8d7527c90854e6a189c64cc7",
+      "imageCount": 8,
+      "visuallyInspectedInFinalReview": true
+    },
+    {
+      "file": "theory-320-10.png",
+      "sha256": "7de7bb6fbe3a4bef2e299d63642f112135ce4bb818fdbc7d1794bffc85600a93",
+      "mappingSha256": "9e71a48efe5b5eb1e14711c4e82175c6d663a4ff29978bef420844bfb3e1808e",
+      "imageCount": 6,
+      "visuallyInspectedInFinalReview": false
+    }
+  ],
+  "screenshots": [
+    {
+      "id": "atanasyan-7-9-theory-1-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-1-part-1-initial-1280.png",
+      "sha256": "0bc7709f32b796bbe1e17e504677f7e0817a92356044e5399bb092f66e5ad1d8",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "0bc7709f32b796bbe1e17e504677f7e0817a92356044e5399bb092f66e5ad1d8",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-1-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-1-part-1-last-1280.png",
+      "sha256": "e86d50030d5d9569559294e494be4f54554ba18c1ad1f75cef7169137185f88e",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "e86d50030d5d9569559294e494be4f54554ba18c1ad1f75cef7169137185f88e",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-2-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-2-part-1-initial-1280.png",
+      "sha256": "12e1835d6aab27fb673db3e68f526c7257a017fa1ce38c399f228d5064e1d23e",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "12e1835d6aab27fb673db3e68f526c7257a017fa1ce38c399f228d5064e1d23e",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-2-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-2-part-1-last-1280.png",
+      "sha256": "4f570ef66ff452b74728522b8fefe97ae4daa17e986cb14d45c25f11dfd453a6",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "4f570ef66ff452b74728522b8fefe97ae4daa17e986cb14d45c25f11dfd453a6",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-3-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-3-part-1-initial-1280.png",
+      "sha256": "1aa013a69ee89e84dccc561e6d9c984dac0b463c3108fe002285755dbf0ada0b",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "1aa013a69ee89e84dccc561e6d9c984dac0b463c3108fe002285755dbf0ada0b",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-3-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-3-part-1-last-1280.png",
+      "sha256": "abd4a10cfde84b4425cbe521a17fc62c5084c8b5cd5d75e033de2e85ad542948",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "abd4a10cfde84b4425cbe521a17fc62c5084c8b5cd5d75e033de2e85ad542948",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-4-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-4-part-1-initial-1280.png",
+      "sha256": "198b565742bd6f778d1960847a1fb54e44e4ca997a52b0cf1bffadb35ad862cd",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "198b565742bd6f778d1960847a1fb54e44e4ca997a52b0cf1bffadb35ad862cd",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-4-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-4-part-1-last-1280.png",
+      "sha256": "d888da401e7791f8bc7089e2e14ea86ab3f1b7560ff67695a454480aff335d76",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "47071029c2cbd157e2f9bba4ee431bee48973ca26ed16a35cd25511dfee8bb56",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-5-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-5-part-1-initial-1280.png",
+      "sha256": "71a6a4cf1d20ccc91a00b5137bd7927a46514896b175695c370b36b8f478aee0",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "71a6a4cf1d20ccc91a00b5137bd7927a46514896b175695c370b36b8f478aee0",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-5-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-5-part-1-last-1280.png",
+      "sha256": "5e77eff7282af6aa178dc4c1a37f561169845ca919b6bf0e437b237213782d30",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "5e77eff7282af6aa178dc4c1a37f561169845ca919b6bf0e437b237213782d30",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-6-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-6-part-1-initial-1280.png",
+      "sha256": "a9e5a4d5f4899c4ca802bb9a842a44c81d1e6d36d6d1d933c55c0e331b3a9183",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "b51248d87d4ed648befd11011f4731e6a0f2b033649756cd87ffa5a74744ec95",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-6-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-6-part-1-last-1280.png",
+      "sha256": "edc8b195aa97bf59610cdaa431d3601a215deaad69bce61e5b503e8459b7a9d0",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "53ed0e054b6331f6411b30aa60f86e5eb686ebc05e792973f29b47e49c75a36b",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-7-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-7-part-1-initial-1280.png",
+      "sha256": "a70df6db75a95a71e49b99148016a9b3af37362c07799d676a6e61343294a497",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "a70df6db75a95a71e49b99148016a9b3af37362c07799d676a6e61343294a497",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-7-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-7-part-1-last-1280.png",
+      "sha256": "b403cd1955bee56057ea1ac5db491d6ef25edbc5cee9ca14ead2e2040f4912c6",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "b403cd1955bee56057ea1ac5db491d6ef25edbc5cee9ca14ead2e2040f4912c6",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-8-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-8-part-1-initial-1280.png",
+      "sha256": "dfa26c7c6166c6229711d6addf613094c2721cfb458a7eb4eb1774fb0167a631",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "dfa26c7c6166c6229711d6addf613094c2721cfb458a7eb4eb1774fb0167a631",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-8-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-8-part-1-last-1280.png",
+      "sha256": "1a0602f89048264d9ed73a12c8587efb523a97bd0cfd5a85d2fa56699dc717be",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "1a0602f89048264d9ed73a12c8587efb523a97bd0cfd5a85d2fa56699dc717be",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-9-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-9-part-1-initial-1280.png",
+      "sha256": "333a4cf8887fe2b76a92a897e507ff6258e894bbf8a926b19dd32e43e737baf7",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "f2eb234074de5b359ffa39005c25c2dd55c0ca34b0c40c05ec19b821a85e796b",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-9-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-9-part-1-last-1280.png",
+      "sha256": "f180b5d7c37f8c10d6e711bf09cee62f42e6535f536f7e1be236b44d6a3f0900",
+      "pixelDimensions": [
+        749,
+        714
+      ],
+      "firstRunSha256": "64c59a674b2a938ffa7360d0d0b84b7940894ddad94f6310c3ec8e34c76dee8a",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-10-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-10-part-1-initial-1280.png",
+      "sha256": "9977d4ab4541039e3c7e781ccf88a186dc33c395e515018e8d96dd57700ce37e",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "9977d4ab4541039e3c7e781ccf88a186dc33c395e515018e8d96dd57700ce37e",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-10-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-10-part-1-last-1280.png",
+      "sha256": "5b40f9ea44bac46c59b133f97308dd77b3e6cc1b8cf5f73ccb95a815c28d0a43",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "5b40f9ea44bac46c59b133f97308dd77b3e6cc1b8cf5f73ccb95a815c28d0a43",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-11-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-11-part-1-initial-1280.png",
+      "sha256": "38a17529320a425b588fbc57157e26709afe2656fbba1eb5055fd43d1e5fddb5",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "203445260d174f7c67d1814efbd8f48a5fc7cc9111d0ed5febc0669831c098e1",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-11-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-11-part-1-last-1280.png",
+      "sha256": "04ff504b2d28fa1c8a2ea297eed006519f70956a817a1c386d27cd87ca7af024",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "a2cedf1acd5a608269a91801188088c1b716d654ea7b4c62e8ca4fb71269f023",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-12-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-12-part-1-initial-1280.png",
+      "sha256": "a38cf5b4ae1211ae3222f7fc876d52604f3219770174e4664826b1c8f15ad5db",
+      "pixelDimensions": [
+        749,
+        668
+      ],
+      "firstRunSha256": "a38cf5b4ae1211ae3222f7fc876d52604f3219770174e4664826b1c8f15ad5db",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-12-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-12-part-1-last-1280.png",
+      "sha256": "f2c110bd70e5e14e5ae9174b405223e2e32823fdb319acfda6489137d1c54050",
+      "pixelDimensions": [
+        749,
+        668
+      ],
+      "firstRunSha256": "f2c110bd70e5e14e5ae9174b405223e2e32823fdb319acfda6489137d1c54050",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-13-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-13-part-1-initial-1280.png",
+      "sha256": "35251a5ff082d3873fcba19b85f4c8593d2fe829c45a29362bbb023f1c5c9e3d",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "35251a5ff082d3873fcba19b85f4c8593d2fe829c45a29362bbb023f1c5c9e3d",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-13-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-13-part-1-last-1280.png",
+      "sha256": "0a388c178c8ea324b6415796f8a4b2b8a63782b61fd946cf5cab67daa404df30",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "0a388c178c8ea324b6415796f8a4b2b8a63782b61fd946cf5cab67daa404df30",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-1-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-1-part-1-initial-1280.png",
+      "sha256": "69708b23ff872d862c05041f581aafbdb15dc75bc45b84e2e592805a53fb553b",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "69708b23ff872d862c05041f581aafbdb15dc75bc45b84e2e592805a53fb553b",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-1-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-1-part-1-last-1280.png",
+      "sha256": "a3dd60708ac3e32c1cbe558539e16c4e5c7bda535825cfc034ca31a243e0c5a7",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "a3dd60708ac3e32c1cbe558539e16c4e5c7bda535825cfc034ca31a243e0c5a7",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-2-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-2-part-1-initial-1280.png",
+      "sha256": "ac0117ab87722ce189f855ff0900fb7d19aa4e0234aa871c9a030c964d35b130",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "14e150356109a22aa62a8d07b95d2e60405eb59fc0f1f180af9b921d05b1ddfe",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-2-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-2-part-1-last-1280.png",
+      "sha256": "97cc26786c1970c53004d2d4cd3acc20479a310ef8d1da22441cd5d6f892d509",
+      "pixelDimensions": [
+        749,
+        714
+      ],
+      "firstRunSha256": "3f6eaa7dc3bb4520fa46f6c56669e5e96a10287ccad2b494f34a4f34bc49ab02",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-3-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-3-part-1-initial-1280.png",
+      "sha256": "a7796e79dbf68002534e8d495feabb4dc7668c19352d21f613a4c4ce0e4f0730",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "a7796e79dbf68002534e8d495feabb4dc7668c19352d21f613a4c4ce0e4f0730",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-3-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-3-part-1-last-1280.png",
+      "sha256": "9ccb11725a3cb8438e80c7c0b560381f9fa501ff0400dca4741d86dcbbefb278",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "9ccb11725a3cb8438e80c7c0b560381f9fa501ff0400dca4741d86dcbbefb278",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-4-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-4-part-1-initial-1280.png",
+      "sha256": "48963967fdcded72551424139d457a98ba008e41f4892a30ea6a9452a24a9f66",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "48963967fdcded72551424139d457a98ba008e41f4892a30ea6a9452a24a9f66",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-4-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-4-part-1-last-1280.png",
+      "sha256": "04bde4b3aec77456a148a5aae1f229c1da0f66cc51071576060e3ad3213a3261",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "04bde4b3aec77456a148a5aae1f229c1da0f66cc51071576060e3ad3213a3261",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-5-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-5-part-1-initial-1280.png",
+      "sha256": "fa2b2d74b1dc5fb898a227c98107362c228613d21d9b0d0aad32d2a2b2ea3dab",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "fa2b2d74b1dc5fb898a227c98107362c228613d21d9b0d0aad32d2a2b2ea3dab",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-5-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-5-part-1-last-1280.png",
+      "sha256": "4390a670c8b4efb3f554de5b63fce394a46d31ced9c11d5a4aab5b0002f03b9e",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "4390a670c8b4efb3f554de5b63fce394a46d31ced9c11d5a4aab5b0002f03b9e",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-6-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-6-part-1-initial-1280.png",
+      "sha256": "fde91ec01edc8e6e4ab4e75da02687e396935f4417dcfc9289a1889163a0748f",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "fde91ec01edc8e6e4ab4e75da02687e396935f4417dcfc9289a1889163a0748f",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-6-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-6-part-1-last-1280.png",
+      "sha256": "c96de232da464bcc6c24377ec54e30f2a76704c075bda7a5fec4b11128d095e1",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "c96de232da464bcc6c24377ec54e30f2a76704c075bda7a5fec4b11128d095e1",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-7-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-7-part-1-initial-1280.png",
+      "sha256": "71ffad717642093542565487baf4e6275bba2479508a7b490d7e8f7f0d2ba3c2",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "71ffad717642093542565487baf4e6275bba2479508a7b490d7e8f7f0d2ba3c2",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-7-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-7-part-1-last-1280.png",
+      "sha256": "0f1787f82b2b13b8e0d59ad4440abe775c637ae2ac80a2a0cc6c74480eb98dfe",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "0f1787f82b2b13b8e0d59ad4440abe775c637ae2ac80a2a0cc6c74480eb98dfe",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-8-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-8-part-1-initial-1280.png",
+      "sha256": "46c31e4b60db8f0045b7e308265f685efa1a2d831d88e3905fc6d2e9766dfb7b",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "46c31e4b60db8f0045b7e308265f685efa1a2d831d88e3905fc6d2e9766dfb7b",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-8-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-8-part-1-last-1280.png",
+      "sha256": "e2290641d1da5fc518237f8b135e8f9357dc71514a024dae0ef81f9553452cf2",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "e2290641d1da5fc518237f8b135e8f9357dc71514a024dae0ef81f9553452cf2",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-9-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-9-part-1-initial-1280.png",
+      "sha256": "23e983b5e1661fa15a3f64ba52420e5fcdc965518b16111ec133eb057dc018cb",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "23e983b5e1661fa15a3f64ba52420e5fcdc965518b16111ec133eb057dc018cb",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-9-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-9-part-1-last-1280.png",
+      "sha256": "48bbcee08fd3a903e94125554bbf9e9c7e68fb26c82bfbc16150c03d140b85de",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "48bbcee08fd3a903e94125554bbf9e9c7e68fb26c82bfbc16150c03d140b85de",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-10-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-10-part-1-initial-1280.png",
+      "sha256": "3d9e030f50ba0dc43be346bae1bc75dd28711429f3b958fae24138b0b4c82c2b",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "3d9e030f50ba0dc43be346bae1bc75dd28711429f3b958fae24138b0b4c82c2b",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-10-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-10-part-1-last-1280.png",
+      "sha256": "5239866d6b6d6156b521c0bd0102b6ac476b1dc11665a9c6428fe0326f0a0a92",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "5239866d6b6d6156b521c0bd0102b6ac476b1dc11665a9c6428fe0326f0a0a92",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-11-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-11-part-1-initial-1280.png",
+      "sha256": "9f258c4a43ba79881e53d93a5e037e16ab160df1e9b7009134def2cb61c4a0ed",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "9f258c4a43ba79881e53d93a5e037e16ab160df1e9b7009134def2cb61c4a0ed",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-11-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-11-part-1-last-1280.png",
+      "sha256": "d8a480baceed5c3072a2d2d9b749df42d00895a5e363284aff76ea21543e919f",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "d8a480baceed5c3072a2d2d9b749df42d00895a5e363284aff76ea21543e919f",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-12-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-12-part-1-initial-1280.png",
+      "sha256": "fc05aebf37977a68b11f5cf651e399123560d9dd146d345ee0eafc995f750359",
+      "pixelDimensions": [
+        749,
+        668
+      ],
+      "firstRunSha256": "fc05aebf37977a68b11f5cf651e399123560d9dd146d345ee0eafc995f750359",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-12-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-12-part-1-last-1280.png",
+      "sha256": "433e17bd83ea0d90a368002a46fb9d74120906d486fac498646e7266a52e7725",
+      "pixelDimensions": [
+        749,
+        668
+      ],
+      "firstRunSha256": "dbf9bd6b192e3cc1cae847c0d2ff7c833f42da335705d3c59f5c13fb7878bb67",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-13-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-13-part-1-initial-1280.png",
+      "sha256": "cea9af5f8c8417f9d2483f2a060e485330741f92b4a5b85596e67de517b99c71",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "cea9af5f8c8417f9d2483f2a060e485330741f92b4a5b85596e67de517b99c71",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-13-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-13-part-1-last-1280.png",
+      "sha256": "dccee23edefcca71c165eba023804d6dd544799ee361f349ee0a7b4f7c3a49f3",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "dccee23edefcca71c165eba023804d6dd544799ee361f349ee0a7b4f7c3a49f3",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-14-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-14-part-1-initial-1280.png",
+      "sha256": "27c27d1bec65864c6f9bbe1ac03b400dcbf61b801ad8dc29864907ae0123f7fd",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "27c27d1bec65864c6f9bbe1ac03b400dcbf61b801ad8dc29864907ae0123f7fd",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-14-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-14-part-1-last-1280.png",
+      "sha256": "52bd8343139b628aa7329b8a5c97cfdddd2b8eb07597cf6f6066c36fd7beb764",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "52bd8343139b628aa7329b8a5c97cfdddd2b8eb07597cf6f6066c36fd7beb764",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-15-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-15-part-1-initial-1280.png",
+      "sha256": "48963967fdcded72551424139d457a98ba008e41f4892a30ea6a9452a24a9f66",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "48963967fdcded72551424139d457a98ba008e41f4892a30ea6a9452a24a9f66",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-15-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-15-part-1-last-1280.png",
+      "sha256": "090ffca3db17c63911afbfcd2f221efbae2c126567c15c194c91cc76d6c7e772",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "090ffca3db17c63911afbfcd2f221efbae2c126567c15c194c91cc76d6c7e772",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-16-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-16-part-1-initial-1280.png",
+      "sha256": "cb788b8dabb6fe63cf45fcaa76e0f90ad7eae9feafd2031da212e2edc75a39bf",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "cb788b8dabb6fe63cf45fcaa76e0f90ad7eae9feafd2031da212e2edc75a39bf",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-16-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-16-part-1-last-1280.png",
+      "sha256": "d17d1d8bf51c0d7d94c0340535ecde636c76d5ce504d143c445f8169ab83ee62",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "d17d1d8bf51c0d7d94c0340535ecde636c76d5ce504d143c445f8169ab83ee62",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-17-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-17-part-1-initial-1280.png",
+      "sha256": "fa2b2d74b1dc5fb898a227c98107362c228613d21d9b0d0aad32d2a2b2ea3dab",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "fa2b2d74b1dc5fb898a227c98107362c228613d21d9b0d0aad32d2a2b2ea3dab",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-17-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-17-part-1-last-1280.png",
+      "sha256": "1bbf4331bdc8641bd6a7a5271346ab32537f6aee8a5feed2725df0c006f162da",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "1bbf4331bdc8641bd6a7a5271346ab32537f6aee8a5feed2725df0c006f162da",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-18-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-18-part-1-initial-1280.png",
+      "sha256": "d854355f835551c91739878ee1d88623cfbb122aaeb59456e9944d9921cb078f",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "d854355f835551c91739878ee1d88623cfbb122aaeb59456e9944d9921cb078f",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-18-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-18-part-1-last-1280.png",
+      "sha256": "97df0bb3a613cc8fb7372a04f86a3681439af78a910b700eb0bb0bb82e71b9e7",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "97df0bb3a613cc8fb7372a04f86a3681439af78a910b700eb0bb0bb82e71b9e7",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-19-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-19-part-1-initial-1280.png",
+      "sha256": "6fac4bc7ca24c5ba95571c886cb795baaf1db84ab8df54524de51ea72d8a9956",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "6fac4bc7ca24c5ba95571c886cb795baaf1db84ab8df54524de51ea72d8a9956",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-19-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-19-part-1-last-1280.png",
+      "sha256": "6ecb172de3eae130e050e69e611a84bc6b4b16217f246928a140e7e89da1ffc1",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "6ecb172de3eae130e050e69e611a84bc6b4b16217f246928a140e7e89da1ffc1",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-20-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-20-part-1-initial-1280.png",
+      "sha256": "2d668946c212f59c6a29ecd5d75a5d20f3dea4779705f637ce33bb042a75896c",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "834079ad2e4c0f51d92bbf06c1bc24d28cae6e6369e4ffe562742be9451f4e13",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-20-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-20-part-1-last-1280.png",
+      "sha256": "6c193103a78f8ae5dc8c622a1af0ef3fa4cbe602bfd48d5d7bdb7e286e569454",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "b609db64be2eee0086a0b716c74c226d9e4906158ebd9fbf9fe909fefc5d0cd7",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-21-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-21-part-1-initial-1280.png",
+      "sha256": "254f06c91538f723559bd4ffdf4ef30a2312052627a5314ada26ba13b6ee143e",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "254f06c91538f723559bd4ffdf4ef30a2312052627a5314ada26ba13b6ee143e",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-21-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-21-part-1-last-1280.png",
+      "sha256": "6d1cbc6fb57e9af9a33b4d1acbf561099dd6e4c83ef845828ef46f0707ffa4ac",
+      "pixelDimensions": [
+        749,
+        714
+      ],
+      "firstRunSha256": "eb28a0dbf14b7a2dafd5a1aa1f41f725d1a5c2f2c0a68c125ae5d77a9ffcbfa0",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-22-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-22-part-1-initial-1280.png",
+      "sha256": "10f4a0a01d5cab2d8e54acf3b830176ea38b9eb38ed124fb26d5ea62a22f9029",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "eb0382904aba735f4c8c17c5e363a0243cbd842c5d1d3ac4f1975dc9f186bbc1",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-22-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-22-part-1-last-1280.png",
+      "sha256": "72bb249fd6372d09ced62d7e8a2ea268869d3d96f653a0e997b0c54db51f9c41",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "93b39e4acb59519e2deb08f912e03e4b9cde844b4d9704b23e27650e4c863660",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-23-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-23-part-1-initial-1280.png",
+      "sha256": "b4924699530b4c4ee635db3fc0af8529fcddd03ee589d218c707919ae588b34e",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "3e86cc12534bf6551c3079437a0e8b747a7983a8c26739ebb70860e6a435570c",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-23-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-23-part-1-last-1280.png",
+      "sha256": "89e9ae0fd3ad575a0596c9c5fb369f84338dd1bd084d336e5107c567c2de9e05",
+      "pixelDimensions": [
+        749,
+        644
+      ],
+      "firstRunSha256": "32c92451ddbdcd302db557cb6d1502ea3eb19761ec2454b1a5cecb10021f92b2",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-1280-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-24-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-24-part-1-initial-1280.png",
+      "sha256": "46da0ea808b841f98e0da793c88d2b374be160b91c1ef8d6d4dc462e5b8f4b8e",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "46da0ea808b841f98e0da793c88d2b374be160b91c1ef8d6d4dc462e5b8f4b8e",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-24-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-24-part-1-last-1280.png",
+      "sha256": "378de9eb69fdfe5f3cc3af75400196a79829c7126a0ee21fb7ff3df038c99b48",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "378de9eb69fdfe5f3cc3af75400196a79829c7126a0ee21fb7ff3df038c99b48",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-25-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-25-part-1-initial-1280.png",
+      "sha256": "da06279ad62a7a83c0b4d528f47e9bffb3aacf51d156b2bfb687a6556d7f07b3",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "da06279ad62a7a83c0b4d528f47e9bffb3aacf51d156b2bfb687a6556d7f07b3",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-25-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-25-part-1-last-1280.png",
+      "sha256": "b22989a0a544602347e1e65c5a769626f8f536185f3384d478a118ab9d592377",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "b22989a0a544602347e1e65c5a769626f8f536185f3384d478a118ab9d592377",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-26-part-1",
+      "width": 1280,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-26-part-1-initial-1280.png",
+      "sha256": "b046ac58b74e484786461dd2fab094643c01fc65b5d8ca375080c7cfbad97b48",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "b046ac58b74e484786461dd2fab094643c01fc65b5d8ca375080c7cfbad97b48",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-26-part-1",
+      "width": 1280,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-26-part-1-last-1280.png",
+      "sha256": "7c83fdc4aeaf41c1d9a0de26ca951636aab8a67904a1b93d06f179770891cd1e",
+      "pixelDimensions": [
+        749,
+        669
+      ],
+      "firstRunSha256": "7c83fdc4aeaf41c1d9a0de26ca951636aab8a67904a1b93d06f179770891cd1e",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-1280-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-1-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-1-part-1-initial-320.png",
+      "sha256": "77327cc76027f510278d7b47501a5e4236015a591c059cb0a8cb43edc7d1c102",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "77327cc76027f510278d7b47501a5e4236015a591c059cb0a8cb43edc7d1c102",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-1-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-1-part-1-last-320.png",
+      "sha256": "f1d476a9626205b12d02713b0c4beb3cb70fe31e0ba238b72e7453791b43779d",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "f1d476a9626205b12d02713b0c4beb3cb70fe31e0ba238b72e7453791b43779d",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-2-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-2-part-1-initial-320.png",
+      "sha256": "86cf78ead3bed52304abcf2f857941a6a16a6a7cd680177742176c3394fb0265",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "86cf78ead3bed52304abcf2f857941a6a16a6a7cd680177742176c3394fb0265",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-2-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-2-part-1-last-320.png",
+      "sha256": "b7a6ccf6c59bd44d2ccbaca153fbe96bd043e253f649ed4ebb1ac21689ea20ef",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "b7a6ccf6c59bd44d2ccbaca153fbe96bd043e253f649ed4ebb1ac21689ea20ef",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-3-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-3-part-1-initial-320.png",
+      "sha256": "605407bccb5a5b40d65d227c30b1f47701001153f83d8c210e9e2ba656c0ef75",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "605407bccb5a5b40d65d227c30b1f47701001153f83d8c210e9e2ba656c0ef75",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-3-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-3-part-1-last-320.png",
+      "sha256": "90d5f8f2c1c15585b47e491170e4eeb071301a88b69389ea9c3c04b1284a981c",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "90d5f8f2c1c15585b47e491170e4eeb071301a88b69389ea9c3c04b1284a981c",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-4-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-4-part-1-initial-320.png",
+      "sha256": "7937c40bd7ffd3bff6af317480d3d062180cc16fe091d38fc3ec5776ef849fb1",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "6cff8c5b10ef4adfc40806f4a60e7649652d09c1182c3d15898599047d9fca96",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-4-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-4-part-1-last-320.png",
+      "sha256": "70982b929bd0a18fbbe4aa23b21b1d904ced30e8d72c0e27e0c9ac5276e4916c",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "9e3843e6644f024bbe799cf3b6ea5a3a4f2a9407ea8588809ecf70fc336ec093",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-01.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-5-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-5-part-1-initial-320.png",
+      "sha256": "efb42c2fc7e4e88c203ea48daf4c0247b661b4d5dcc039b6ab5f4287ec621859",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "efb42c2fc7e4e88c203ea48daf4c0247b661b4d5dcc039b6ab5f4287ec621859",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-5-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-5-part-1-last-320.png",
+      "sha256": "6a9f5641dac73a05c34f2aefc2ab8746a85d17a67169792136f5ce75193dca63",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "6a9f5641dac73a05c34f2aefc2ab8746a85d17a67169792136f5ce75193dca63",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-6-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-6-part-1-initial-320.png",
+      "sha256": "ff9f7cf9ffc84a7d0759e311d28e4a63058e11108f1e23da2c71128b72e09960",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "a5051264d8515925ea828114c8b288a223083891d2f7739cd569a870d736aa7b",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-6-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-6-part-1-last-320.png",
+      "sha256": "3537da9de0645d87d39fa00d17db267184e1197a8199593b16a744f18f9392f9",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "58e19833508544212b984e55078eabbcd4f454cd005f269ae7c988acbccac32f",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-7-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-7-part-1-initial-320.png",
+      "sha256": "ec8337aff68dc2060f535bd793279a1ddc31a17b4b7d78c8e7ebde00c6f89d7d",
+      "pixelDimensions": [
+        274,
+        423
+      ],
+      "firstRunSha256": "ec8337aff68dc2060f535bd793279a1ddc31a17b4b7d78c8e7ebde00c6f89d7d",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-7-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-7-part-1-last-320.png",
+      "sha256": "1d10936a008f24d151517e2f8e40b192743fa2e535a26dbf643ee6d47e58ea26",
+      "pixelDimensions": [
+        274,
+        423
+      ],
+      "firstRunSha256": "1d10936a008f24d151517e2f8e40b192743fa2e535a26dbf643ee6d47e58ea26",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-8-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-8-part-1-initial-320.png",
+      "sha256": "43887a994b46446f74aaf3e5cb135db872b8d6ac69b6adbc147138b95ef71e1d",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "43887a994b46446f74aaf3e5cb135db872b8d6ac69b6adbc147138b95ef71e1d",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-8-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-8-part-1-last-320.png",
+      "sha256": "bf89611c12e0ec3be1e6393aca809d569d85e7dc17f12a1db649098c2e36fc07",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "bf89611c12e0ec3be1e6393aca809d569d85e7dc17f12a1db649098c2e36fc07",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-02.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-9-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-9-part-1-initial-320.png",
+      "sha256": "34c0c1fbd58c3c6967fa71209a8ec2b3a0b89873870cb0373e47bec184d241e7",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "78631416f5cabc737ee6f2e48767df4f0f45518460c5f5ade42611f0256bec39",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-9-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-9-part-1-last-320.png",
+      "sha256": "ea8aade3910d3c50d980dfb49d0eafe6925a6cd4a748eb29e619a754e27fc836",
+      "pixelDimensions": [
+        274,
+        572
+      ],
+      "firstRunSha256": "7918216ed974dcf702ffa250d0d3b6eb14c917c07169428b5da3c6c3acd46458",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-10-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-10-part-1-initial-320.png",
+      "sha256": "2b465711d0214953c8237fc3fe8544ed444288b641b844a0950d7452580457af",
+      "pixelDimensions": [
+        274,
+        423
+      ],
+      "firstRunSha256": "4171341ccec84a637c32b6eb342e628583fd5f524cfd0d372c789e66da4d3bb5",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-10-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-10-part-1-last-320.png",
+      "sha256": "1f9a05f4387f0f305505c8b76b461481bbcae4f4d69bc6be8a5134046ac6d365",
+      "pixelDimensions": [
+        274,
+        423
+      ],
+      "firstRunSha256": "9b085527c95e241697d4c5f17a27a61f93d6edbce320a2df19a42e0190061788",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-11-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-11-part-1-initial-320.png",
+      "sha256": "f3621e0929f07b8c3e06e16e4aa4d11cc76233f3eafe972c1df99a8b263fda3a",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "c55f0d905adc32dff4e1d4407f9c262cd69a29fa0f058771e15c273942729983",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-11-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-11-part-1-last-320.png",
+      "sha256": "281aa07bd138c4c0fbd1806ebfc6b3cea539ee75217b0e15c0595826e8242e29",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "7f3e55d232c7052c45a6ac68523f78f444cc350289bbda3b5d1f4c1f37e6e789",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-12-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-12-part-1-initial-320.png",
+      "sha256": "ec7a43bc3206384fdb48436b89bc6c00dfd88673be0ee30dfbc4d2a2a2cdc2dc",
+      "pixelDimensions": [
+        274,
+        423
+      ],
+      "firstRunSha256": "ec7a43bc3206384fdb48436b89bc6c00dfd88673be0ee30dfbc4d2a2a2cdc2dc",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-12-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-12-part-1-last-320.png",
+      "sha256": "0adf8e00b39cfc6f3ee9af7060eb34c3628002b57342f5fb3179b6d8d4e40656",
+      "pixelDimensions": [
+        274,
+        423
+      ],
+      "firstRunSha256": "0adf8e00b39cfc6f3ee9af7060eb34c3628002b57342f5fb3179b6d8d4e40656",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-03.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-13-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-theory-13-part-1-initial-320.png",
+      "sha256": "2dbecc20c09bda37d12a592e4e469b38379b6093e2e0c228b6ae1516182bbbcd",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "2dbecc20c09bda37d12a592e4e469b38379b6093e2e0c228b6ae1516182bbbcd",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-theory-13-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-theory-13-part-1-last-320.png",
+      "sha256": "e22511aaf316f637dbb22d0a4e1a6435ccf785e0975c9ea982b0f61f981b3f78",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "e22511aaf316f637dbb22d0a4e1a6435ccf785e0975c9ea982b0f61f981b3f78",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-1-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-1-part-1-initial-320.png",
+      "sha256": "d247e78dbde7ccf61eaee98c6c9c98655a8c96dd3c86366459e09d1e45d7bad3",
+      "pixelDimensions": [
+        274,
+        379
+      ],
+      "firstRunSha256": "d247e78dbde7ccf61eaee98c6c9c98655a8c96dd3c86366459e09d1e45d7bad3",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-1-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-1-part-1-last-320.png",
+      "sha256": "b647631932fecf5916c742c3a25d8f3d81b8dc0bebe9b3382240402d4b068076",
+      "pixelDimensions": [
+        274,
+        379
+      ],
+      "firstRunSha256": "e3404c07ad6a90a4308985c09dd02b241d6ba92364dd16cf2d1d2442fed0fa83",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-2-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-2-part-1-initial-320.png",
+      "sha256": "b4b5a2e9367b1afb451aab0c8b6b7fc790505e5d4ff48507e58f16f2c318242d",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "b52e78004f333916c11c96a3913f17f0dce4e047b88e3c198b6ba66923b5d850",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-2-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-2-part-1-last-320.png",
+      "sha256": "c67e7927a4c3152ea065216ae8b4045eb51c9fd40ca7b0e399f617492b500780",
+      "pixelDimensions": [
+        274,
+        468
+      ],
+      "firstRunSha256": "a8d192d98439d6453fc002bb184a8833334c527ee358065a66efaf469450e26c",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-3-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-3-part-1-initial-320.png",
+      "sha256": "b708f3ef01df093ccee091111c89177eb38ade33deb730b46c7fde1ae42b556a",
+      "pixelDimensions": [
+        274,
+        379
+      ],
+      "firstRunSha256": "b708f3ef01df093ccee091111c89177eb38ade33deb730b46c7fde1ae42b556a",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-3-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-3-part-1-last-320.png",
+      "sha256": "8bce7c034bd5191cf4afe6745f6d93740c265342bfc8a4d38135e2049f066cbf",
+      "pixelDimensions": [
+        274,
+        379
+      ],
+      "firstRunSha256": "8bce7c034bd5191cf4afe6745f6d93740c265342bfc8a4d38135e2049f066cbf",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-04.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-4-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-4-part-1-initial-320.png",
+      "sha256": "498845400149417e1e5a66ba2e5ff3e537e375cfa37188608d119abb7deaf0d5",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "498845400149417e1e5a66ba2e5ff3e537e375cfa37188608d119abb7deaf0d5",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-4-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-4-part-1-last-320.png",
+      "sha256": "56b60cc39b34b3592d00599df34f2ff42b449638bee6b168ab22c274a890b9ec",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "56b60cc39b34b3592d00599df34f2ff42b449638bee6b168ab22c274a890b9ec",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-5-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-5-part-1-initial-320.png",
+      "sha256": "9bc3cd420e1c53b50ddeb562b4d0cff4142bfcefa58566193d42198f28a49efc",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "9bc3cd420e1c53b50ddeb562b4d0cff4142bfcefa58566193d42198f28a49efc",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-5-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-5-part-1-last-320.png",
+      "sha256": "9bc3cd420e1c53b50ddeb562b4d0cff4142bfcefa58566193d42198f28a49efc",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "9bc3cd420e1c53b50ddeb562b4d0cff4142bfcefa58566193d42198f28a49efc",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-6-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-6-part-1-initial-320.png",
+      "sha256": "4d887589ea3de8ac65d4b34dfc5efc3c2ce6def03ff49c58825f4c08441bc355",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "4d887589ea3de8ac65d4b34dfc5efc3c2ce6def03ff49c58825f4c08441bc355",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-6-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-6-part-1-last-320.png",
+      "sha256": "34abb2916b283ea1b1ac5786627b0b75cf05f1c988a1ac593ffd895cb814bd16",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "34abb2916b283ea1b1ac5786627b0b75cf05f1c988a1ac593ffd895cb814bd16",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-7-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-7-part-1-initial-320.png",
+      "sha256": "f0f8eed129e93a276658b1e6cb4d2785f9cc8025d19c13f2e2ffa545cf6a7272",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "41fd5675bf6ab57da2fe1cfc0e0502d728b361e741a045e4bbe7b269c77c845e",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-7-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-7-part-1-last-320.png",
+      "sha256": "26d9c9f5345feb0f29255b8779569bb93fcf15819af6b354b296b665f1f3dd16",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "4f2ef7b86518a836487d4f791aed5d0a095dcd2ebdb0e2d5529713d3eebbf45a",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-05.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-8-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-8-part-1-initial-320.png",
+      "sha256": "2db59012e6d7ca28261988ea3290d1820be094bc3c2999e03206ce533891380e",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "4d47185da91dc2cd8b23dca53d564f5068ac27b59b13cab9204a5f152ab37c73",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-8-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-8-part-1-last-320.png",
+      "sha256": "2c9d8f97a643afbef9222685e927d1f7e109344f935db872de3187309fb9cf2f",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "db084995aa37d27877045a6e7309f91281c5f943bf52ee24bb8d8fb2a30cd87a",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-9-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-9-part-1-initial-320.png",
+      "sha256": "157dc6195c7ed4339c2bf0ed977bf0e5a2569fed0e2f46f0a9afd0f3b16e2f52",
+      "pixelDimensions": [
+        274,
+        423
+      ],
+      "firstRunSha256": "157dc6195c7ed4339c2bf0ed977bf0e5a2569fed0e2f46f0a9afd0f3b16e2f52",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-9-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-9-part-1-last-320.png",
+      "sha256": "ce44421d09248a7d723e0123e24b02fd64f034e773ed389756f8e9140e3c5218",
+      "pixelDimensions": [
+        274,
+        423
+      ],
+      "firstRunSha256": "ce44421d09248a7d723e0123e24b02fd64f034e773ed389756f8e9140e3c5218",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-10-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-10-part-1-initial-320.png",
+      "sha256": "7e1c5d6ccedb08e4c298ba24980cda409eb7306b4bed32da42a95ff26082d3b0",
+      "pixelDimensions": [
+        274,
+        378
+      ],
+      "firstRunSha256": "7e1c5d6ccedb08e4c298ba24980cda409eb7306b4bed32da42a95ff26082d3b0",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-10-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-10-part-1-last-320.png",
+      "sha256": "dab4f32be22a84e4d59f35cde9e97a8c4536857f18dc58f0908703e14fcb73cf",
+      "pixelDimensions": [
+        274,
+        378
+      ],
+      "firstRunSha256": "dab4f32be22a84e4d59f35cde9e97a8c4536857f18dc58f0908703e14fcb73cf",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-11-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-11-part-1-initial-320.png",
+      "sha256": "c60315b3c22c99319d872c1df7f408428df7cc007bc2c4301d0bcebdcfefd3c9",
+      "pixelDimensions": [
+        274,
+        378
+      ],
+      "firstRunSha256": "c60315b3c22c99319d872c1df7f408428df7cc007bc2c4301d0bcebdcfefd3c9",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-11-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-11-part-1-last-320.png",
+      "sha256": "40e69f15830ad8f9e66c51ec81012428c51a6feb71b78533ced072354bc5ae2d",
+      "pixelDimensions": [
+        274,
+        378
+      ],
+      "firstRunSha256": "40e69f15830ad8f9e66c51ec81012428c51a6feb71b78533ced072354bc5ae2d",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-06.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-12-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-12-part-1-initial-320.png",
+      "sha256": "3254d401c95ce1746b4e744e579f7d8089bab6aa710dbe84bdbf1fb108fff6a0",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "3254d401c95ce1746b4e744e579f7d8089bab6aa710dbe84bdbf1fb108fff6a0",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-12-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-12-part-1-last-320.png",
+      "sha256": "03026e8f3355d9d3fd5671745440ea59eab4975361f18895d60a9ee83b66a505",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "fcee41bd5789c6da211ab9fe3cbd923f4424f12f0ca816ee6c1a9f853153ee17",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-13-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-13-part-1-initial-320.png",
+      "sha256": "4a069b209d98274f8d8b3d6c4a9faf369bf7acb103b935bd9b95578d551dc00c",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "3e8272644cc97cd3ce4079751fa61f4b07c0309aeee1bc2811bc4728871e6779",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-13-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-13-part-1-last-320.png",
+      "sha256": "0d3f9299f600927141b9f61738a66feed6ae4ac13e11b377744e9a248285e7ff",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "c94d56466565e62a6fec0745ee5c28b4974bd95bcd5a4e74e4d9dcdc0cc9d050",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-14-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-14-part-1-initial-320.png",
+      "sha256": "937513627b0a2041e5c8780b80940130dac918729d7a1c515ea7e75a26a61e70",
+      "pixelDimensions": [
+        274,
+        379
+      ],
+      "firstRunSha256": "937513627b0a2041e5c8780b80940130dac918729d7a1c515ea7e75a26a61e70",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-14-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-14-part-1-last-320.png",
+      "sha256": "c26045fffaca1989e1c9ae4d756ef0b519c8d5e1b97a85c4d0b55e469de8ff49",
+      "pixelDimensions": [
+        274,
+        379
+      ],
+      "firstRunSha256": "c26045fffaca1989e1c9ae4d756ef0b519c8d5e1b97a85c4d0b55e469de8ff49",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-15-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-15-part-1-initial-320.png",
+      "sha256": "498845400149417e1e5a66ba2e5ff3e537e375cfa37188608d119abb7deaf0d5",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "498845400149417e1e5a66ba2e5ff3e537e375cfa37188608d119abb7deaf0d5",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-15-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-15-part-1-last-320.png",
+      "sha256": "6d7bbc1e7d386b0e62bdc8a0c2b2270fc26b74436d7b0ecb5544b3f007552391",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "6d7bbc1e7d386b0e62bdc8a0c2b2270fc26b74436d7b0ecb5544b3f007552391",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-07.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-16-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-16-part-1-initial-320.png",
+      "sha256": "4331608cd103b9048aa00a6357ef80eaef099579606d9b824d3134141c9a2fd0",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "4331608cd103b9048aa00a6357ef80eaef099579606d9b824d3134141c9a2fd0",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-16-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-16-part-1-last-320.png",
+      "sha256": "d6ac0023cdb580a7e3a50c72d73aae0981e68434fff0d9df248847fe04713cc9",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "d6ac0023cdb580a7e3a50c72d73aae0981e68434fff0d9df248847fe04713cc9",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-17-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-17-part-1-initial-320.png",
+      "sha256": "96ccdfa4711e2a63955ccc0b11155549a33edb4882342b72447cc1eac676dfcf",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "96ccdfa4711e2a63955ccc0b11155549a33edb4882342b72447cc1eac676dfcf",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-17-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-17-part-1-last-320.png",
+      "sha256": "466f7dfed450e941611a6b8af26e465aeb2f64ba3fd114f4a4be9d556761427d",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "466f7dfed450e941611a6b8af26e465aeb2f64ba3fd114f4a4be9d556761427d",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-18-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-18-part-1-initial-320.png",
+      "sha256": "57bed22ef180c978657c21b957a0944dc66c9ddb2d954a04961255ad558c3cf4",
+      "pixelDimensions": [
+        274,
+        379
+      ],
+      "firstRunSha256": "57bed22ef180c978657c21b957a0944dc66c9ddb2d954a04961255ad558c3cf4",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-18-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-18-part-1-last-320.png",
+      "sha256": "437c49ff72c731117de381ceba1cae6d9c21aa6f728193414ea7b5b47dbe9ed9",
+      "pixelDimensions": [
+        274,
+        379
+      ],
+      "firstRunSha256": "437c49ff72c731117de381ceba1cae6d9c21aa6f728193414ea7b5b47dbe9ed9",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-19-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-19-part-1-initial-320.png",
+      "sha256": "f21b4766ceccb8d10781d79d117421317f69bb7b6d4fc0ce74178917be427408",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "8e4cde24518773c3572bc906152503e602c60a4c0d8220422bf910a56ccbc194",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-19-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-19-part-1-last-320.png",
+      "sha256": "a9406fa4eca86bf340ff3aa5ebb8dd3ed851b80b0fda000eb34522d452d2f722",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "b28cbdf1ab2b415c23ea5a8955b296fb1e2a75b5e5d53986b9095ee98d38f239",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-08.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-20-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-20-part-1-initial-320.png",
+      "sha256": "e8918992ca3e6fdd436cb79ba729692a94a0e4912bf3538325ad999c42dc4400",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "f37c4ea99d3574100b3672448f20e13f2a81f2942595ea5c8fcdce52010c6912",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-20-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-20-part-1-last-320.png",
+      "sha256": "e8918992ca3e6fdd436cb79ba729692a94a0e4912bf3538325ad999c42dc4400",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "f37c4ea99d3574100b3672448f20e13f2a81f2942595ea5c8fcdce52010c6912",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-21-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-21-part-1-initial-320.png",
+      "sha256": "67c2d3d84ff2c1d14d0277d47d4598bc815c15684e134506b895f3d8e2b9a824",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "96b44fec2556aa54da3bbc664606457bd76ee54e5a9bbf99dcd99b134a5385fb",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-21-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-21-part-1-last-320.png",
+      "sha256": "913cd7fc24eebabd225bde026bfbec205a37411adb5e48efdb8bac12a23d7a81",
+      "pixelDimensions": [
+        274,
+        520
+      ],
+      "firstRunSha256": "738a8c67997b21cf52de6b71e7a3dcaf3997c0f80e3880b063bf50500a93da4a",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-22-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-22-part-1-initial-320.png",
+      "sha256": "c930b4be48428e4dbec3cb25ee21cd7ddb16f4e8b3cb41469980bbb045874612",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "86540c8d27df674c3cd62296b77db365a3f660996d1827aa43566dbe6fe2c30b",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-22-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-22-part-1-last-320.png",
+      "sha256": "0875e1c1ec8a4b7bf0cfa6ac6cc9890917dd74c33cea2b087ccc178a23e85049",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "5990e69689ac0c03680d14090805a53011624e702ca65131af40725e3ff55f72",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-23-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-23-part-1-initial-320.png",
+      "sha256": "f656204728bcb468dc8981e367cc2430428a3e86d17a023948f2e3dce516c906",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "5f07dca7978f90d2c0e94f3fe258cdaf2e48eebb5b50902c6c58e8eb512b0df2",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-23-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-23-part-1-last-320.png",
+      "sha256": "f5eb53d2b77fdd785ae0a430f4c9b2023e3fdff8dcf746a8772c3aa11b9ea293",
+      "pixelDimensions": [
+        274,
+        401
+      ],
+      "firstRunSha256": "d64c8249e1034ea4f8c4fc9c55f40370d60c8844daacc6439dd25cb5d949fc2c",
+      "byteIdenticalToFirstReview": false,
+      "reviewMethod": "new-visual-inspection-in-final-contact-sheet",
+      "contactSheet": "theory-320-09.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-24-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-24-part-1-initial-320.png",
+      "sha256": "f1f04d0b0216aed6fc2f750e034f8d7c7d4cd4eae5f76433da19a8589bcf4621",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "f1f04d0b0216aed6fc2f750e034f8d7c7d4cd4eae5f76433da19a8589bcf4621",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-24-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-24-part-1-last-320.png",
+      "sha256": "bb33dcab22a6288f7138f50443da0f596a05a490f7000347a0efc006dc2bc716",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "bb33dcab22a6288f7138f50443da0f596a05a490f7000347a0efc006dc2bc716",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-25-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-25-part-1-initial-320.png",
+      "sha256": "e53ab5fac83ccfda144c48eba34b9f3edf9f494bd2b662c8acd5cf0483ec191f",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "e53ab5fac83ccfda144c48eba34b9f3edf9f494bd2b662c8acd5cf0483ec191f",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-25-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-25-part-1-last-320.png",
+      "sha256": "0a18aa8661a6c602e06b13f1f47c7fc35e76c4db0f74a12f198bbd4a6307d5c1",
+      "pixelDimensions": [
+        274,
+        422
+      ],
+      "firstRunSha256": "0a18aa8661a6c602e06b13f1f47c7fc35e76c4db0f74a12f198bbd4a6307d5c1",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-26-part-1",
+      "width": 320,
+      "stage": "initial",
+      "file": "atanasyan-7-9-selfcheck-26-part-1-initial-320.png",
+      "sha256": "e407d3a9509ac2afbdb9db5637015b58d86a280ac3db19995d5a9f6803572228",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "e407d3a9509ac2afbdb9db5637015b58d86a280ac3db19995d5a9f6803572228",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-10.png"
+    },
+    {
+      "id": "atanasyan-7-9-selfcheck-26-part-1",
+      "width": 320,
+      "stage": "last",
+      "file": "atanasyan-7-9-selfcheck-26-part-1-last-320.png",
+      "sha256": "4d74113714d61a72a41a1489f5195bc0f182bc5f02d6f6f48d5eca109afa6f09",
+      "pixelDimensions": [
+        274,
+        400
+      ],
+      "firstRunSha256": "4d74113714d61a72a41a1489f5195bc0f182bc5f02d6f6f48d5eca109afa6f09",
+      "byteIdenticalToFirstReview": true,
+      "reviewMethod": "reused-previous-visual-review-after-exact-hash-match",
+      "contactSheet": "theory-320-10.png"
+    }
+  ]
+}

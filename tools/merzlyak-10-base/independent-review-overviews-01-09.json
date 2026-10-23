@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent /root",
+  "author": "agent /root/theory_course",
+  "reviewedAt": "2026-10-22T22:38:08.991579+00:00",
+  "scope": {
+    "paragraphs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "overviewCards": 9,
+    "reviewDimensions": [
+      "pedagogy"
+    ]
+  },
+  "verdicts": {
+    "pedagogy": "PASS"
+  },
+  "method": [
+    "Read all nine overview cards and inspected their model views in conjunction with every detailed proof and worked-example card for paragraphs1–9.",
+    "Checked use of introductory axioms, hypotheses in plane-determination and parallelism criteria, distinction between a finite drawing and an infinite object, and accessible school-level explanations.",
+    "The overviews act as introductions; complete proofs and source examples are mapped separately by coverage-theory-01-09.json and independently reviewed in independent-review-theory-01-09.json. Source and mathematical review of overview cards is recorded in theory-review.json."
+  ],
+  "findings": [],
+  "unresolvedFindings": [],
+  "cards": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-01.json",
+      "lessonId": "merz-theory-01",
+      "sha256": "6dd76ce10d60ae4afb33f06983be7abf9aa64caacabb9bcb254cb02639fc2fc0",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-02.json",
+      "lessonId": "merz-theory-02",
+      "sha256": "bf984a970561a0ffb95a2debdcc3f24561036a8ede6bd79addeb01d3b812e7bc",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-03.json",
+      "lessonId": "merz-theory-03",
+      "sha256": "33a847606000966be8865b8a613683312e4d2f3845650fee6bdf8d78e72bf81d",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-04.json",
+      "lessonId": "merz-theory-04",
+      "sha256": "e9261771942c495988411d8308198f53e8cb0b959852cc273466c3c5ba636c9e",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-05.json",
+      "lessonId": "merz-theory-05",
+      "sha256": "1173d1a143967a1a1b93e2d610cef094845f64de80a5972b92ed4ea2093e0293",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-06.json",
+      "lessonId": "merz-theory-06",
+      "sha256": "1c835d0859b476651fadfa9e008a36098f1f5090ad73b46698364c32650d340c",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-07.json",
+      "lessonId": "merz-theory-07",
+      "sha256": "79b6b9146099bd5ae4f538603ad6c926c5559ba3f153f067772a3aa9775f79a0",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-08.json",
+      "lessonId": "merz-theory-08",
+      "sha256": "86b86b96892b4c531d5b3ed8780b05c7842836fdfde553dd18f6d920c578c6e2",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-09.json",
+      "lessonId": "merz-theory-09",
+      "sha256": "181c5feeb2ab908e2660219dab8edda6be72aebfef49bf01be5134e71f7ab6b1",
+      "pedagogy": "PASS"
+    }
+  ],
+  "releaseApproval": false
+}

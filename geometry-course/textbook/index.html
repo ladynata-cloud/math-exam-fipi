@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Геометрия 7–9 · учебник Атанасяна</title>
+<meta name="description" content="Поэтапные решения задач учебника Атанасяна 7–9 классов: собственный чертёж каждой задачи, теория рядом и сохранение записей ученика. Курс постепенно дополняется.">
+<link rel="canonical" href="https://mathexam.space/geometry-course/textbook/">
+<link rel="stylesheet" href="assets/style.css">
+</head><body><nav class="course-nav"><a href="../">Курс геометрии 7–9</a><a href="../../stereo-course/textbook/">Атанасян 10–11</a></nav>
+<div id="textbook-app"><p>Загружаем материалы курса…</p></div>
+<noscript>Для интерактивных чертежей нужен JavaScript.</noscript>
+<script src="assets/math-text.js"></script><script src="assets/planar-viewer.js"></script><script src="assets/engine.js"></script>
+<script>
+'use strict';
+fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(bundle=>{
+ window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),bundle);
+}).catch(()=>{document.getElementById('textbook-app').textContent='Материалы сейчас не удалось открыть. Попробуй обновить страницу.';});
+</script></body></html>

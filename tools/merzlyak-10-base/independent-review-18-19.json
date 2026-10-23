@@ -1,0 +1,1783 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Independent source, mathematics, model and school-level exposition review by textbook_inventory; author is ocr_source.",
+  "reviewedAt": "2026-10-22T22:39:56.619660+00:00",
+  "scope": "All75 full main-exercise cards in §§18–19. All statements and every solution step read; all numbered subparts checked, including combined cards. Source figures and conditions checked against actual page images.",
+  "sourcePagesVisuallyChecked": [
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    174,
+    175,
+    176
+  ],
+  "result": "pass_with_resolved_findings",
+  "counts": {
+    "lessons": 75,
+    "paragraph18": 59,
+    "paragraph19": 16,
+    "exercisesWithNumberedSubparts": 15,
+    "numberedSubparts": 34
+  },
+  "checks": {
+    "independentScript": "tools/merzlyak-10-base/reviewer-18-19-checks.py",
+    "independentTestGroups": 7,
+    "independentResult": "pass",
+    "authorTestScriptAlsoRun": "tools/merzlyak-10-base/para18-19-models.test.py",
+    "authorTestGroups": 5,
+    "authorTestResult": "pass",
+    "specificChecks": [
+      "75 source metadata entries compared with earlier independent source inventory; all actual model faces/highlighted polygons and references verified",
+      "Full independent edge clipping for all9 section models, including supporting-face adjacency",
+      "Internal dihedral formulas18.43/44 checked on12 independently constructed pyramids, including obtuse face angles",
+      "General formulas18.45/46 checked through face cross-product areas and distances to actual planes on8 independently constructed pyramids",
+      "General frustum formulas19.13/14 checked on4 independently constructed examples; nonregular19.11/12 extended ribs verified concurrent",
+      "Both internal/external bisector solutions18.54 verified and source permits both; convex external-height witness18.56 verified",
+      "Tetrahedron construction18.57 verified for20 varied pairs of distinct side points, including endpoints",
+      "Manual derivations checked all numerical answers and general proof conditions; author tests independently rerun as additional regression, not counted as independent review code"
+    ]
+  },
+  "resolvedFindings": [
+    {
+      "id": "R1819-001",
+      "lesson": "ex-18-044.json",
+      "finding": "statement.goal asked for the given dihedral angle, while the source asks for the planar apex angle.",
+      "resolution": "Author corrected goal to the planar apex angle in generator and JSON. Current bytes re-read."
+    }
+  ],
+  "openFindings": [],
+  "importantSourceCases": [
+    {
+      "exercise": "18.54",
+      "finding": "Height foot can lie outside base. Both 8√3/3 and8√3 cases are explicitly solved and modeled."
+    },
+    {
+      "exercise": "18.56",
+      "finding": "Two nonadjacent vertical side faces are possible when height foot is outside the convex quadrilateral. Actual convex witness checked."
+    },
+    {
+      "exercise": "18.43",
+      "finding": "Dihedral angle is the internal angle, possibly obtuse; projection to the line of the side edge is allowed outside the segment."
+    },
+    {
+      "exercise": "19.16",
+      "finding": "SSA data yield two possible triangles; both75°/60° and15°/120° cases shown."
+    }
+  ],
+  "limitations": [
+    "Browser interaction, accessibility and screen-layout review are outside this source/mathematics review.",
+    "This is an internal independent review, not external-provider release approval.",
+    "18.57 uses the standard named-distinct-points convention, stated explicitly in the final step; coincident A1=C1=B would be a degenerate excluded choice.",
+    "No lesson workflow flags were changed by this reviewer."
+  ],
+  "authorGenerator": {
+    "path": "tools/merzlyak-10-base/author-18-19.py",
+    "sha256": "d2f98efd1bcfd52a866542eca6c0cd98d562fb88baf73a509ab5051870dcf278"
+  },
+  "entries": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-001.json",
+      "lessonId": "ex-18-001",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.1",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "4f95aa36824bd0873df9db47c8a3e4292eff3b1d097453a1ed82581f83138582",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-002.json",
+      "lessonId": "ex-18-002",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.2",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "2bdd3176af44ded422e95989bc668e94c816f1a84c52e39a46689d83bf1c9e00",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-003.json",
+      "lessonId": "ex-18-003",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.3",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "a8aa88b9012f6f3d133061aafdf9b6a10d97d66fa5546e7d6de3f8e180a59d64",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-004.json",
+      "lessonId": "ex-18-004",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.4",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2",
+        "3"
+      ],
+      "sha256": "ea6ae4d2913fffb98257a17777399a7e0209901a21965cf0e3c1a0c3b683fb5c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-005.json",
+      "lessonId": "ex-18-005",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.5",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2",
+        "3"
+      ],
+      "sha256": "c2859c30958340db9dd5d6933d986a2e9608d3bfd6d22f1fc3206ed32ad16e05",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-006.json",
+      "lessonId": "ex-18-006",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.6",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          166
+        ],
+        "pdfPages": [
+          167
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "4ee0bd55990de0074c0de15d5efa4d9ff2de83d7faaf469b416f64ed4c953d20",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-007.json",
+      "lessonId": "ex-18-007",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.7",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "22abfc596efa57e3686f51dd4b45090cd1e71c71bc0bdb83ba22774293ea25c1",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-008.json",
+      "lessonId": "ex-18-008",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.8",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "0712186c611427cdd212053e8e7bca3dd3bfac9a3a418f5fe730ea721d58769a",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-009.json",
+      "lessonId": "ex-18-009",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.9",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "fcc222c80ebf3bbba77ee6e01572bf463b6b0d744d379285db79f9f62ccf0340",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-010.json",
+      "lessonId": "ex-18-010",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.10",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "ebd1d4cb397c88318765e9b992deb43c40e57c1a4799b1d5a6bb822de11f5ac5",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-011.json",
+      "lessonId": "ex-18-011",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.11",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "6cdfb98a442b6e5f7c30507eff6ee27b08abbcbbe842e9c28a48f96b2069cbf9",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-012.json",
+      "lessonId": "ex-18-012",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.12",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "faaedaa9c16c4e3df766aebbbd90bda9e8f01b8c0a95099cccd1ad9dd0a45e89",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-013.json",
+      "lessonId": "ex-18-013",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.13",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "282e4c3c711b689f3ccd3211fb66838455b0990963eb93f6a92c3e6c6c4f4e94",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-014.json",
+      "lessonId": "ex-18-014",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.14",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "36b3d37a21f4376966929b2dd13517d90db2432a98668ac48407b9293cf014e6",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-015.json",
+      "lessonId": "ex-18-015",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.15",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "21c2a43850d9d40eb66945efc6a63414209381b680ec1754fe55611d33b520e5",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-016.json",
+      "lessonId": "ex-18-016",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.16",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "92747427cca003c0a3b8ec4172a976707a1333925e2a295982a50d043f6da858",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-017.json",
+      "lessonId": "ex-18-017",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.17",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "2f042c4a492e0cbebbb92b35a869632d53f4ab06a902ffca175becae785f6524",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-018.json",
+      "lessonId": "ex-18-018",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.18",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "c84f0ab3969857170983feaf928cccb02d6f9a59b4cc363b240d995af78df748",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-019.json",
+      "lessonId": "ex-18-019",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.19",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          167
+        ],
+        "pdfPages": [
+          168
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "20b2874901d5d7229f9f56a5fdc6ec3afa674f38ec2736822c85cc123d049ca7",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-020.json",
+      "lessonId": "ex-18-020",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.20",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "de729cd81e5dac5e88b1b0cc3c2d68c1c8e75abcbff50fa2ab3c3fa62b102d53",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-021.json",
+      "lessonId": "ex-18-021",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.21",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "c7d5c5a1ad09811518b7dc7b6d2ed515a2e429828c2af9ccdd219e7cfb48a893",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-022.json",
+      "lessonId": "ex-18-022",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.22",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2",
+        "3"
+      ],
+      "sha256": "00aee7af8dfeeb17b24ffa4223cc152c9a83378c4e3ec710f7f0f8c04dea3cb9",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-023.json",
+      "lessonId": "ex-18-023",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.23",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "279a2d3547d52c959320e161c55aa6af69616f2d33ddda96e1ecf32836007a74",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-024.json",
+      "lessonId": "ex-18-024",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.24",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "da20e1db13251d3144718a11e6069f64e90f303973115d6f5a672c1b1691966c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-025.json",
+      "lessonId": "ex-18-025",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.25",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "621b72fdaba47cf6cb4d339499933edce3f9bc7ed8005bfa4843fd88979967cd",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-026.json",
+      "lessonId": "ex-18-026",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.26",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "f4a380ae38b67622372149d04aa0b706684509cc2095316d083bfa7f6659017d",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-027.json",
+      "lessonId": "ex-18-027",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.27",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "63a20ab3f6fa4b5eba5e22f5d8501de4bec90a2fdcbb19086e62f690b8be6b6b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-028.json",
+      "lessonId": "ex-18-028",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.28",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "af872e6c34213156373f9b0656a5a8c987f3373623649d400a1b485e09e2f766",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-029.json",
+      "lessonId": "ex-18-029",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.29",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "3226f337873b9bad2ced7feac405cfb0a56c9b8c1b9d38144e9d7ddb4ef94f8f",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-030.json",
+      "lessonId": "ex-18-030",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.30",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "512f9b76ddcbe23a2a7c62c148cbd166143a8f61658f316e87483348365f6699",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-031.json",
+      "lessonId": "ex-18-031",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.31",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          168
+        ],
+        "pdfPages": [
+          169
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "a356ea9957997f3d1ddae069b6e451d3c166e7f802db8e1a4bcb92dd3d007405",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-032.json",
+      "lessonId": "ex-18-032",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.32",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "d44fef32aaf22e06f06bc35f203e0c1fa70f122ae7c8b640c9e6919fcb3cba4f",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-033.json",
+      "lessonId": "ex-18-033",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.33",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "45c6868e0fefe024c9d86900c17bbd81df17fa92a876fc02ffd601560f025119",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-034.json",
+      "lessonId": "ex-18-034",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.34",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "2d99ad01559fcb6597876af98cd7efc979f26a38ab2da29ffd60030bca720adb",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-035.json",
+      "lessonId": "ex-18-035",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.35",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "c7cbe6a4a565440bd8967e4ac3e9e55b8f53476f3fc4992dc5648dc21a8b299c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-036.json",
+      "lessonId": "ex-18-036",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.36",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "2113df215fd0ed28d631bf333f0723abe3ddd555f4ee27fc7bf8070899166740",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-037.json",
+      "lessonId": "ex-18-037",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.37",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "e5f392b37882c7773204a56fd5d685876b58afd21b148ea9c7ece7706595d9a7",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-038.json",
+      "lessonId": "ex-18-038",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.38",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "bc99377cb90c4183771d982e9f07d6338d0df59679f8e8281097350bcb590b6b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-039.json",
+      "lessonId": "ex-18-039",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.39",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "024af399b359de8abbef78e8a5db0b0ffbc306103e0ef958f9b6969c4f98c4e4",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-040.json",
+      "lessonId": "ex-18-040",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.40",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "19121fd32065026570298d91ededc5ab33a4422d7093eeeec86a794420e5d62e",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-041.json",
+      "lessonId": "ex-18-041",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.41",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          169
+        ],
+        "pdfPages": [
+          170
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "c65791d053d009a8170e2926c0cc23dd619e5e8457e139cf304a5570762a8bbf",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-042.json",
+      "lessonId": "ex-18-042",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.42",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "19ac5adc5ff071db256fb7212cc5298bd09940434f5e54a41f61f343927a9425",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-043.json",
+      "lessonId": "ex-18-043",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.43",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "223d16c867ed2df47fdbb75f30d55ed4f62cc44de5f248b11b41adb7d253c7b7",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-044.json",
+      "lessonId": "ex-18-044",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.44",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "7abdde7e3b555ec2f1ae33b9f2e423ce1b2f39aedd6138cbb749184980a55fc5",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-045.json",
+      "lessonId": "ex-18-045",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.45",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "f9d3c587b3d17854a2372dc3a6e1e04c1d1e268f24aad0242e16d88f9ba69e44",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-046.json",
+      "lessonId": "ex-18-046",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.46",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "0caab0b3fc63897b5db254d493605b0c79f21cb194a64c1ae8ce3d84f92c6b3b",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-047.json",
+      "lessonId": "ex-18-047",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.47",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "19b60e1d4a41114b8ff8945fa462ceb2fb5690439f9ef900bf7e3d8259e312c2",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-048.json",
+      "lessonId": "ex-18-048",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.48",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "06a9780a0151b7460ddbc6da199b2d8991ff1dc3c2e3bdf5666dcec5d80d3cef",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-049.json",
+      "lessonId": "ex-18-049",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.49",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "47885843cfc540725ea6d9216c901dc0acaf408b339aea5ffc9f07d7a090ffdd",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-050.json",
+      "lessonId": "ex-18-050",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.50",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "d77caf79f48ee325a97c3c32d4d9f93ddba403d8c5629809ee1abadc13235982",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-051.json",
+      "lessonId": "ex-18-051",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.51",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          171
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "fe5f9d9afebe9549be8ea96543d2c8c11318b10b089b5d6c67c2924fa5bfb010",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-052.json",
+      "lessonId": "ex-18-052",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.52",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "b14ff85f5b0607fc5d8ac1502e994e267faf42ff2ce6af36711bf0ac5367ac5f",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-053.json",
+      "lessonId": "ex-18-053",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.53",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "d5117706592e98204ac7ed1a1b48515ccd275222a6392da197e692db026953f1",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-054.json",
+      "lessonId": "ex-18-054",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.54",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "40e38bf619bd04f9cdf98b1675e47939a1f4bdf476879e68e8b51fbb76c732bc",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-055.json",
+      "lessonId": "ex-18-055",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.55",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "a3bb09999af8d8baf82957607248ed28ed9463e930e206588c3900326a04c196",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-056.json",
+      "lessonId": "ex-18-056",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.56",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "14c562c12fda2fa42aee9ef8a9173c74b07defc6119660457c8682749b9357c2",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-057.json",
+      "lessonId": "ex-18-057",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.57",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "5abb22fd379132df8247e0fccb4b6f3469702964d9c247aedbfe7296b05fd64c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-058.json",
+      "lessonId": "ex-18-058",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.58",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "f25b1469b79193c8e1cf7ba4cf3a3cd3e99181bb2ad56f42d0ce5081901bab84",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-18-059.json",
+      "lessonId": "ex-18-059",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "18.59",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "61962960bb5ca835ac10e4587a5c253432f34116dfdc4dcfd30579fb892713d6",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-001.json",
+      "lessonId": "ex-19-001",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.1",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          173
+        ],
+        "pdfPages": [
+          174
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "e86ab4ac77876af8f6390d1f69483c71cea38504854d2b04f3d618c0f573fb2c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-002.json",
+      "lessonId": "ex-19-002",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.2",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          173
+        ],
+        "pdfPages": [
+          174
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "133f6d0942ce6dc3b82819f6d78f63641c882316e4fc708adaf2d2e393315ff3",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-003.json",
+      "lessonId": "ex-19-003",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.3",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          173,
+          174
+        ],
+        "pdfPages": [
+          174,
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "45fea549c070582900bf50ce17821b1306bf7e8ec4374cb89d85eec44a52a94c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-004.json",
+      "lessonId": "ex-19-004",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.4",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          174
+        ],
+        "pdfPages": [
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "c1d5ed393adc15063ad6b15f4771a162d001abd3a7aaab85c42429e8e7aad55c",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-005.json",
+      "lessonId": "ex-19-005",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.5",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          174
+        ],
+        "pdfPages": [
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2",
+        "3"
+      ],
+      "sha256": "37961e7e5ed0849d7e616748474ca656d57944e79643ffded648e52beb2e9735",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-006.json",
+      "lessonId": "ex-19-006",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.6",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          174
+        ],
+        "pdfPages": [
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [
+        "1",
+        "2"
+      ],
+      "sha256": "6839aa0e53a9d5cc4e2ae068f72012356a86b03031668cb32916baf94573f12a",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-007.json",
+      "lessonId": "ex-19-007",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.7",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          174
+        ],
+        "pdfPages": [
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "c8fd23a9ef4ae0236c27ed30558306d3ccfc266f37c8e3199da81e9fa32f6337",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-008.json",
+      "lessonId": "ex-19-008",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.8",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          174
+        ],
+        "pdfPages": [
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "960dbb7d7f556272620f85d5324d9e060af99faa3c3f5d4a360df725489fd68a",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-009.json",
+      "lessonId": "ex-19-009",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.9",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          174
+        ],
+        "pdfPages": [
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "a480ea6938bc46d9a404e34f1a1ce5ca835b7e794d916fed0550bbf33e1a110f",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-010.json",
+      "lessonId": "ex-19-010",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.10",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          174
+        ],
+        "pdfPages": [
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "32eab25cf22b4036c32f42443052e828aa69811b3d3fc9454b8cc957bd5d06df",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-011.json",
+      "lessonId": "ex-19-011",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.11",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          174
+        ],
+        "pdfPages": [
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "cc650c406558df82d8fc3ad717b5bb1aae2b84ceb893dd18a62183d6a05f1daf",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-012.json",
+      "lessonId": "ex-19-012",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.12",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          174
+        ],
+        "pdfPages": [
+          175
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "ab9a65eda151f7c41a26865d18b6c3b9b8ebd33efa42808eac56872544583a14",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-013.json",
+      "lessonId": "ex-19-013",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.13",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          175
+        ],
+        "pdfPages": [
+          176
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "66f41efe23a6160b15c9ce0a5b002e0095739e2bafe58ce2aa773e2f817676c8",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-014.json",
+      "lessonId": "ex-19-014",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.14",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          175
+        ],
+        "pdfPages": [
+          176
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "efa1aa9e51283a6a68631c1c5adb8c084359908b7062517246e28492fc6b037f",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-015.json",
+      "lessonId": "ex-19-015",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.15",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          175
+        ],
+        "pdfPages": [
+          176
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "54f607e01eb15c0e086e386654d385906ae34960fecfe040e0f2a9277fe3058d",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-19-016.json",
+      "lessonId": "ex-19-016",
+      "source": {
+        "bookId": "merzlyak-2022-10-base",
+        "collection": "main",
+        "exercise": "19.16",
+        "chapter": "Глава 4. Многогранники",
+        "printedPages": [
+          175
+        ],
+        "pdfPages": [
+          176
+        ]
+      },
+      "sourceNumberedSubparts": [],
+      "sha256": "bcf6c2a0ce7e203d1df93f8bf47ea9c4b4e633547d0d6a4d0c5ed158e767cd97",
+      "sourceReview": "pass",
+      "mathematicsReview": "pass",
+      "modelRelationsReview": "pass",
+      "schoolLevelExpositionReview": "pass"
+    }
+  ]
+}

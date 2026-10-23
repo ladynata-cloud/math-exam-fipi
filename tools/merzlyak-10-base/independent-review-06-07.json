@@ -1,0 +1,1482 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent /root/course_architecture",
+  "author": "agent /root/lessons_para2",
+  "reviewedAt": "2026-10-22T22:26:53.175061+00:00",
+  "scope": {
+    "paragraphs": [
+      6,
+      7
+    ],
+    "numberedExercises": 74,
+    "lessonCards": 84,
+    "allTextbookSubpartsChecked": true,
+    "printedSourcePages": [
+      55,
+      56,
+      57,
+      58,
+      59,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73
+    ],
+    "pdfSourcePages": [
+      56,
+      57,
+      58,
+      59,
+      60,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74
+    ]
+  },
+  "verdicts": {
+    "source": "PASS",
+    "mathematics": "PASS",
+    "pedagogy": "PASS"
+  },
+  "method": [
+    "Read all literal source conditions and figures from the page PNGs, with OCR only as navigation; read every card condition, hint, explanation and justification.",
+    "Recomputed quantitative answers, tested general proof implications and all negative answers, including the valid nonuniqueness diagnostic in7.31.",
+    "Inspected all84 model coordinate sets and step views; independently reconstructed eight complete cube sections from edge-plane intersections, checked their boundary-face adjacency, and verified projection rays, actual affine mappings, tangent and circle constructions and realizable preimages.",
+    "Rechecked every author correction and bound the content verdict to final exact SHA-256 hashes below. No lesson review flags were modified."
+  ],
+  "tests": [
+    {
+      "command": "python tools/merzlyak-10-base/independent-models-06-07.test.py",
+      "result": "PASS",
+      "assertions": 1347
+    },
+    {
+      "command": "python tools/merzlyak-10-base/para06-07-models.test.py",
+      "result": "PASS",
+      "assertions": 1580,
+      "role": "author regression suite rerun by independent reviewer"
+    }
+  ],
+  "findings": [
+    {
+      "id": "R0607-001",
+      "lessonIds": [
+        "ex-06-007"
+      ],
+      "category": "mathematics",
+      "finding": "Two unused named upper points missed the stated oblique plane.",
+      "resolution": "Author removed those redundant points; remaining upper endpoints independently verified on the plane.",
+      "status": "resolved"
+    },
+    {
+      "id": "R0607-002",
+      "lessonIds": [
+        "ex-06-029",
+        "ex-07-001",
+        "ex-07-002"
+      ],
+      "category": "source",
+      "finding": "Source references needed next-page figures.",
+      "resolution": "Author expanded printed/PDF references; reviewer checked the figures and offset.",
+      "status": "resolved"
+    },
+    {
+      "id": "R0607-003",
+      "lessonIds": [
+        "ex-06-027",
+        "ex-06-028"
+      ],
+      "category": "pedagogy",
+      "finding": "Construction introduced X without a visible model point or step focus.",
+      "resolution": "Author added both exact intersections and auxiliary views; step3 focuses X in each card. Reviewer independently checked incidences and focus.",
+      "status": "resolved"
+    },
+    {
+      "id": "R0607-004",
+      "lessonIds": [
+        "ex-07-006-3"
+      ],
+      "category": "pedagogy",
+      "finding": "Question wording conflicted with the correct yes-answer about a projection becoming longer.",
+      "resolution": "Question now asks directly whether a parallel projection can be longer.",
+      "status": "resolved"
+    },
+    {
+      "id": "R0607-005",
+      "lessonIds": [
+        "ex-07-031"
+      ],
+      "category": "pedagogy",
+      "finding": "Additional metric data were stated as an absolute height without its relation to the base.",
+      "resolution": "Author now specifies the ratio of height to base AB and the direction of its image; nonuniqueness argument remains correct.",
+      "status": "resolved"
+    }
+  ],
+  "unresolvedFindings": [],
+  "sourceNotes": [
+    "6.4 explicitly separates the undefined plane at fraction0 and coincident planes at fraction1 from the stated parallel interior case. This faithfully diagnoses the literal boundary possibilities; it does not claim the unrestricted source statement is true.",
+    "7.31 is underdetermined as written: arbitrary triangle image and projection direction alone do not fix an inscribed square image. The card gives two actual spatial preimages with the same triangle projection and different square projections, and identifies sufficient extra metric information. It is approved as a diagnosis, not as a nonexistent unique construction.",
+    "7.1 and7.2 include the page containing shared figure7.23;6.29 includes the next-page figure6.22."
+  ],
+  "limitations": [
+    "This is a content review only, not external provider review, exact-head release approval, merge approval or publication permission.",
+    "No browser rendering session was performed by this reviewer. Coordinate/view-content inspection and numeric geometry supplement, but do not replace, the separate browser and workflow gates."
+  ],
+  "files": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-001.json",
+      "sha256": "84d90b316f2ec87e7fa6ac7bac9b094efe591961c11bf4520f06d15e7c4a3895",
+      "lessonId": "ex-06-001",
+      "exercise": "6.1",
+      "subpart": null,
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-002.json",
+      "sha256": "3279e86565daf50a84e16e31f1df9376db05a262bfda07007d9d23f53d08fa38",
+      "lessonId": "ex-06-002",
+      "exercise": "6.2",
+      "subpart": null,
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-003.json",
+      "sha256": "6bf894765ddb23d2dcc334bf777ab4c5aaabe122e760283e0fcdf1e102c62a37",
+      "lessonId": "ex-06-003",
+      "exercise": "6.3",
+      "subpart": null,
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-004.json",
+      "sha256": "0467152f4c3599956010b7688e58c21c63a63042f467288cd7a272eb601ab97e",
+      "lessonId": "ex-06-004",
+      "exercise": "6.4",
+      "subpart": null,
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-005.json",
+      "sha256": "5df29b9548c878acb64b7670b1913001a87e212db55248163c37f314c55ce8c7",
+      "lessonId": "ex-06-005",
+      "exercise": "6.5",
+      "subpart": null,
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-006.json",
+      "sha256": "c5425617ad99752e076bed10e1fe6f661a5b7b295e2ba393ca141e8ee820e2b2",
+      "lessonId": "ex-06-006",
+      "exercise": "6.6",
+      "subpart": null,
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-007.json",
+      "sha256": "7469b540f70c08b0204174e966b8f6088c0b3e2c5156f61fad162f0261fe4013",
+      "lessonId": "ex-06-007",
+      "exercise": "6.7",
+      "subpart": null,
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-008.json",
+      "sha256": "0ded94e5c46c5ab19c28aba6d625f4687fbbbcd651aa3c071c7469e5250b2a82",
+      "lessonId": "ex-06-008",
+      "exercise": "6.8",
+      "subpart": null,
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-009.json",
+      "sha256": "8e9f5147116fafb86f309428c8ac6ecd5f4c00304ce5a6b2289d4afa1adc701b",
+      "lessonId": "ex-06-009",
+      "exercise": "6.9",
+      "subpart": null,
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-010.json",
+      "sha256": "a03b67e3c8e82a7424610a66616655246fb67a104875a960786be2044ab63326",
+      "lessonId": "ex-06-010",
+      "exercise": "6.10",
+      "subpart": null,
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-011.json",
+      "sha256": "4945f15e524b1fafc3b4f4b59c59da7c4f8c89cd2a6246cdf67e80e81d3644c5",
+      "lessonId": "ex-06-011",
+      "exercise": "6.11",
+      "subpart": null,
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-012-1.json",
+      "sha256": "ff98f5a9aaf38b91830d4d5bce5158d6561547f0061fdbeb98eb9287a9f4cda8",
+      "lessonId": "ex-06-012-1",
+      "exercise": "6.12",
+      "subpart": "1",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-012-2.json",
+      "sha256": "7ae7465b8ef5f66c9ae85a5080bdc0a4d24acbf764dac7683a21e152a00aed18",
+      "lessonId": "ex-06-012-2",
+      "exercise": "6.12",
+      "subpart": "2",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-013.json",
+      "sha256": "77f2797eb473673f8e3f8d0de01792b04c51ce8f16e8681098f9e95a79f226cf",
+      "lessonId": "ex-06-013",
+      "exercise": "6.13",
+      "subpart": null,
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-014.json",
+      "sha256": "62e7d2685b13059c1d3d2afab23f87cc2794dad8b5d019588682cec075b5e290",
+      "lessonId": "ex-06-014",
+      "exercise": "6.14",
+      "subpart": null,
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-015.json",
+      "sha256": "e544da05cd313cfada3a38c39e14e98f46bd6d06101dffcc430ae666eb05bff1",
+      "lessonId": "ex-06-015",
+      "exercise": "6.15",
+      "subpart": null,
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-016.json",
+      "sha256": "ce1e1ecac17f14fe1052202e361e543de3f2fa2a14f3ef369abee03a0354ee16",
+      "lessonId": "ex-06-016",
+      "exercise": "6.16",
+      "subpart": null,
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-017.json",
+      "sha256": "ef90e1ef2e30fbb8dfb2e063fa2953112a6be911311fe1db5275a62a6401103e",
+      "lessonId": "ex-06-017",
+      "exercise": "6.17",
+      "subpart": null,
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-018.json",
+      "sha256": "1bfb46b2140399b0c03703f6059d349d1073c646f7bedb4bd340b85c9ab2edf6",
+      "lessonId": "ex-06-018",
+      "exercise": "6.18",
+      "subpart": null,
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-019.json",
+      "sha256": "7abd83a84631fde766fa2f3e95ee9b5f3afa053291831e6596b1f212059e9088",
+      "lessonId": "ex-06-019",
+      "exercise": "6.19",
+      "subpart": null,
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-020.json",
+      "sha256": "2d444c392601823e947c723b770f2a3b60bb252148bf31d5214841ddc238c62f",
+      "lessonId": "ex-06-020",
+      "exercise": "6.20",
+      "subpart": null,
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-021.json",
+      "sha256": "548040f578e2a03e866712a98be8f539d19445dbd4647bbe28b83f4e8fe7ad68",
+      "lessonId": "ex-06-021",
+      "exercise": "6.21",
+      "subpart": null,
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-022.json",
+      "sha256": "aa33df81ef4e93889c1ce0a83563f0fc676e67b4eed50ab382ff441f4fd79c92",
+      "lessonId": "ex-06-022",
+      "exercise": "6.22",
+      "subpart": null,
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-023.json",
+      "sha256": "2276fd6f1755990d3ba51562fed03a97b537ddcfb80f8d5c5cb64f4c82e300bd",
+      "lessonId": "ex-06-023",
+      "exercise": "6.23",
+      "subpart": null,
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-024.json",
+      "sha256": "e8dd195b69bdcbb537bf62edb3eb920dc70290be024dd8d4757b0983c725a38b",
+      "lessonId": "ex-06-024",
+      "exercise": "6.24",
+      "subpart": null,
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-025.json",
+      "sha256": "cfff01630ee292e300c77dc7fd1fcbdeaba46334caaa2d94511062235b498cfd",
+      "lessonId": "ex-06-025",
+      "exercise": "6.25",
+      "subpart": null,
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-026.json",
+      "sha256": "00afc5afedefd978a639e4cbf4a7b9c2fe288f849086912aec57693efa08fbe0",
+      "lessonId": "ex-06-026",
+      "exercise": "6.26",
+      "subpart": null,
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-027.json",
+      "sha256": "e2c0bab08dc47a96a76fb53699fcaef885d03e3abc52df7a201dbbeb214d7dd7",
+      "lessonId": "ex-06-027",
+      "exercise": "6.27",
+      "subpart": null,
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-028.json",
+      "sha256": "82f134e71ce8c6e3c88b4694bd0151d5a305118e505b63fb5ec2e8210b75f8fa",
+      "lessonId": "ex-06-028",
+      "exercise": "6.28",
+      "subpart": null,
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-029.json",
+      "sha256": "8f45d379784dd268daea819294bd3c1f68daaf60b929826b1fd0e6d69388decf",
+      "lessonId": "ex-06-029",
+      "exercise": "6.29",
+      "subpart": null,
+      "printedPages": [
+        58,
+        59
+      ],
+      "pdfPages": [
+        59,
+        60
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-030.json",
+      "sha256": "9b0fd7e5b18678294241350e56c1a3625a1806ee755add3ca592abe0a7045478",
+      "lessonId": "ex-06-030",
+      "exercise": "6.30",
+      "subpart": null,
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-031.json",
+      "sha256": "c099c5984a744e39f5827dd5fc34eaa67398f955a74248ce6e04decee62ec8a0",
+      "lessonId": "ex-06-031",
+      "exercise": "6.31",
+      "subpart": null,
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-032.json",
+      "sha256": "bcf3d13f328d7240c4572f603348a46782f24159b691a8969df3f77dd070d395",
+      "lessonId": "ex-06-032",
+      "exercise": "6.32",
+      "subpart": null,
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-033.json",
+      "sha256": "a2ea4a8b95a333718cb7e7cd3b73b26c2f02bb9242ef927a693d6bac92fed5ee",
+      "lessonId": "ex-06-033",
+      "exercise": "6.33",
+      "subpart": null,
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-06-034.json",
+      "sha256": "bf885bbdd35af7fa5e8ec45ac3a73425c7366726caaf6f26672c4419ae3525b8",
+      "lessonId": "ex-06-034",
+      "exercise": "6.34",
+      "subpart": null,
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-001.json",
+      "sha256": "a629a51fd5d504cd4c2315940f092e83f4f28f21d68408da7a70a604a2de0db0",
+      "lessonId": "ex-07-001",
+      "exercise": "7.1",
+      "subpart": null,
+      "printedPages": [
+        68,
+        69
+      ],
+      "pdfPages": [
+        69,
+        70
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-002.json",
+      "sha256": "1e83a979cf2881d4e6c3926770ea404f60a54d41bee815f3f56393dc9dc70018",
+      "lessonId": "ex-07-002",
+      "exercise": "7.2",
+      "subpart": null,
+      "printedPages": [
+        68,
+        69
+      ],
+      "pdfPages": [
+        69,
+        70
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-003.json",
+      "sha256": "01307342f177ccc630a5b13ec1fc08ed3917a5adef16a2f7213f66193755b600",
+      "lessonId": "ex-07-003",
+      "exercise": "7.3",
+      "subpart": null,
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-004.json",
+      "sha256": "732681e177d7d06cd36c4d69dc0a35b22ad9ec170e4f3fca19560658c68972d3",
+      "lessonId": "ex-07-004",
+      "exercise": "7.4",
+      "subpart": null,
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-005.json",
+      "sha256": "192703d0ab9e7bded5be133cc770463c89e4c14cf5745d1c4b1db07edb081a93",
+      "lessonId": "ex-07-005",
+      "exercise": "7.5",
+      "subpart": null,
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-006-1.json",
+      "sha256": "3fb97c613018791fbb39292ed5fc94adaeb821cccbf1dab4dfd728fee8f0682d",
+      "lessonId": "ex-07-006-1",
+      "exercise": "7.6",
+      "subpart": "1",
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-006-2.json",
+      "sha256": "66dd923b745cc6409684df98537938fb97fdfd918dc5826b070e1aa426790b78",
+      "lessonId": "ex-07-006-2",
+      "exercise": "7.6",
+      "subpart": "2",
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-006-3.json",
+      "sha256": "852514a639d0710140072055080f9c52540e1f6b969c325594a458406e1ef545",
+      "lessonId": "ex-07-006-3",
+      "exercise": "7.6",
+      "subpart": "3",
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-006-4.json",
+      "sha256": "72fab8ee25b75f684c3d11e91525ef53bedf90b0b7a00607981e64b9fa1fd64d",
+      "lessonId": "ex-07-006-4",
+      "exercise": "7.6",
+      "subpart": "4",
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-007.json",
+      "sha256": "8bd59532043e2baaea317f10e7f91e3bb64a4f03a69ab3c92c15811be841051f",
+      "lessonId": "ex-07-007",
+      "exercise": "7.7",
+      "subpart": null,
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-008.json",
+      "sha256": "7c241f26857e1407b45992ca060ce4772ef2e7442e52ce08cf2a5371fa17fc35",
+      "lessonId": "ex-07-008",
+      "exercise": "7.8",
+      "subpart": null,
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-009.json",
+      "sha256": "3190acefcd3ea1b05143c6565117e03d390e5e7beea6223cb2c859910f79a183",
+      "lessonId": "ex-07-009",
+      "exercise": "7.9",
+      "subpart": null,
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-010.json",
+      "sha256": "4cb5aefeb7c37f775e7c626d2cf6fdae013522c32ccd2ac4a15a7f2f49358820",
+      "lessonId": "ex-07-010",
+      "exercise": "7.10",
+      "subpart": null,
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-011.json",
+      "sha256": "1a059738cb88e357d1fa1b5febdd8a22b4a765b94059b7d9d2191ca33e9465f3",
+      "lessonId": "ex-07-011",
+      "exercise": "7.11",
+      "subpart": null,
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-012.json",
+      "sha256": "732d94a0fea7609fbc90eae08eaba862f629c32a332192e62a9bb3014e863e96",
+      "lessonId": "ex-07-012",
+      "exercise": "7.12",
+      "subpart": null,
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-013.json",
+      "sha256": "a432070026bf34442e831e1f85a3ed84869d7137f58c181554bc38259baf72de",
+      "lessonId": "ex-07-013",
+      "exercise": "7.13",
+      "subpart": null,
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-014.json",
+      "sha256": "91416637cb41261203d9d43441db710a0fd3209138625db425dfbb82d8a9dd8a",
+      "lessonId": "ex-07-014",
+      "exercise": "7.14",
+      "subpart": null,
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-015.json",
+      "sha256": "9163b5af1a82d49501c7b4e67350162636f13cc436bd94dadc0ab044e9ed7cc9",
+      "lessonId": "ex-07-015",
+      "exercise": "7.15",
+      "subpart": null,
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-016.json",
+      "sha256": "b3cfb2bcf0640d245a235ff5253d271f20fe942a3f59889f413150d9b46f7a6b",
+      "lessonId": "ex-07-016",
+      "exercise": "7.16",
+      "subpart": null,
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-017.json",
+      "sha256": "bc808fde9ad6725064bdc6b2d388eb5dd0f6a97ee1243c46b16cc7999cca2b83",
+      "lessonId": "ex-07-017",
+      "exercise": "7.17",
+      "subpart": null,
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-018.json",
+      "sha256": "ca36ad32c15091847f582e7260bea794751b90609a546ded182874d90750cd8e",
+      "lessonId": "ex-07-018",
+      "exercise": "7.18",
+      "subpart": null,
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-019-1.json",
+      "sha256": "4e99a6b32d3498ae24ecc74580ad02598232d6525200140e88b0398a783f72d9",
+      "lessonId": "ex-07-019-1",
+      "exercise": "7.19",
+      "subpart": "1",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-019-2.json",
+      "sha256": "dfaa7c54de0de3089dbe6b8309555c55da4def5e4963f80d82d7c18c8d74ccfc",
+      "lessonId": "ex-07-019-2",
+      "exercise": "7.19",
+      "subpart": "2",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-020-1.json",
+      "sha256": "9eda451ff4ae7db4e2982c9ef5a2cdcd4a5225e3ff20daa658bc69f5515bc2a2",
+      "lessonId": "ex-07-020-1",
+      "exercise": "7.20",
+      "subpart": "1",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-020-2.json",
+      "sha256": "f989cbdf7e8441f80c39639af6bef0886e43ea852c1d17fdb0ff85fb554f5b34",
+      "lessonId": "ex-07-020-2",
+      "exercise": "7.20",
+      "subpart": "2",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-021-1.json",
+      "sha256": "f7215d7fe0f52748554d9dc3d95b244753f7607ed1b72419fb74c54366222e0a",
+      "lessonId": "ex-07-021-1",
+      "exercise": "7.21",
+      "subpart": "1",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-021-2.json",
+      "sha256": "2bfa6ea325f1c0c865c785a5617fd7e770fe80c9c1f70fb98175131785a88889",
+      "lessonId": "ex-07-021-2",
+      "exercise": "7.21",
+      "subpart": "2",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-022-1.json",
+      "sha256": "c21392398ff22c885f65d84978d04978e1590eac00c54ae8ad14c4288fc14302",
+      "lessonId": "ex-07-022-1",
+      "exercise": "7.22",
+      "subpart": "1",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-022-2.json",
+      "sha256": "801787c725c470104dd35436b7bd23254f99cf3a8d21e40b13ba52bc9da63cd5",
+      "lessonId": "ex-07-022-2",
+      "exercise": "7.22",
+      "subpart": "2",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-023.json",
+      "sha256": "b6cb39f5fd6d29e8ea9736eaf925b762b9bdf954defd115223b6a56c11e94014",
+      "lessonId": "ex-07-023",
+      "exercise": "7.23",
+      "subpart": null,
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-024.json",
+      "sha256": "91153f3ab874bf7ddcc632fa2051e521fd5f3919a7698c91439dfd1d1b62ef21",
+      "lessonId": "ex-07-024",
+      "exercise": "7.24",
+      "subpart": null,
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-025.json",
+      "sha256": "3669008d37e7b190581d00de70bda03c6090af31a7bc414cd9c72b94e792a0bb",
+      "lessonId": "ex-07-025",
+      "exercise": "7.25",
+      "subpart": null,
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-026.json",
+      "sha256": "d29f4ed429464dbea73380ea0dab3d37d1c4ec8ca8cff97b661f5e27b572b180",
+      "lessonId": "ex-07-026",
+      "exercise": "7.26",
+      "subpart": null,
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-027.json",
+      "sha256": "e96ffd6c959310aa644ed7290333688689ee13b60e57edd5008f64b5ee97e1d2",
+      "lessonId": "ex-07-027",
+      "exercise": "7.27",
+      "subpart": null,
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-028.json",
+      "sha256": "35d348e2e9d27335eda7042a72e53920fc6a6537fef34bd3e346dea5cab03d8b",
+      "lessonId": "ex-07-028",
+      "exercise": "7.28",
+      "subpart": null,
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-029.json",
+      "sha256": "d704afbdec63748ce1b336b9e7904f901b59bd568d603b155c1cf6fdc058c1e5",
+      "lessonId": "ex-07-029",
+      "exercise": "7.29",
+      "subpart": null,
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-030.json",
+      "sha256": "93f1c90594f755a2b94a12061db67294da6ec0951ea17824ec8dbe8d0cc77654",
+      "lessonId": "ex-07-030",
+      "exercise": "7.30",
+      "subpart": null,
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-031.json",
+      "sha256": "f10d33eef1fb19c13ff5ff3d33f18fefaf96499a5997eca82d237d84fd74a682",
+      "lessonId": "ex-07-031",
+      "exercise": "7.31",
+      "subpart": null,
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-032.json",
+      "sha256": "bc16c846b01dfa054b72efcd150d8ccdbc13e7a4392715837f5bc0dd4bebaa01",
+      "lessonId": "ex-07-032",
+      "exercise": "7.32",
+      "subpart": null,
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-033.json",
+      "sha256": "b9910b1fb934784bbfe7642e8841232dfb7d77b6fa281a2b5ea43162a5f8b773",
+      "lessonId": "ex-07-033",
+      "exercise": "7.33",
+      "subpart": null,
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-034.json",
+      "sha256": "bb039ae929fd598875b8689caaca85afde95dd29a6f489823152ce08b21323df",
+      "lessonId": "ex-07-034",
+      "exercise": "7.34",
+      "subpart": null,
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-035.json",
+      "sha256": "33f17ee7dc8f200a0cd32b821d33df84d8f1d1e60c28e9a8dbc90ce6183b30b9",
+      "lessonId": "ex-07-035",
+      "exercise": "7.35",
+      "subpart": null,
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-036-1.json",
+      "sha256": "940cb27e77883a08a87f27b79917986f0cef538f993cb680e80059a2427db24b",
+      "lessonId": "ex-07-036-1",
+      "exercise": "7.36",
+      "subpart": "1",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-036-2.json",
+      "sha256": "43213213559b263d0dc0475bda8dc8576b62340cf4386415281825ccd6cc8f22",
+      "lessonId": "ex-07-036-2",
+      "exercise": "7.36",
+      "subpart": "2",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-037-1.json",
+      "sha256": "4677b62be39ade571cb40fd51f03365ee053feec633b269fa7a0ddcf5e9fb1a7",
+      "lessonId": "ex-07-037-1",
+      "exercise": "7.37",
+      "subpart": "1",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-037-2.json",
+      "sha256": "ea76c0ddca314c5e64ea83bf7707e004b03b743b450d5e5c7068e9b9ac71f0c1",
+      "lessonId": "ex-07-037-2",
+      "exercise": "7.37",
+      "subpart": "2",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-038.json",
+      "sha256": "3c32c81ea7fc05c608211c84b513f106133f66f03945e827efe8c99f15fc247b",
+      "lessonId": "ex-07-038",
+      "exercise": "7.38",
+      "subpart": null,
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-039.json",
+      "sha256": "7ec1b15e8062a35b1fda1329fc3cc04657828eeb707d11e078c3545fa0e014a7",
+      "lessonId": "ex-07-039",
+      "exercise": "7.39",
+      "subpart": null,
+      "printedPages": [
+        73
+      ],
+      "pdfPages": [
+        74
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-07-040.json",
+      "sha256": "75f152421a30e4b8a55de54bff35f853c12b12709ba9a8f542a761b59cca56d5",
+      "lessonId": "ex-07-040",
+      "exercise": "7.40",
+      "subpart": null,
+      "printedPages": [
+        73
+      ],
+      "pdfPages": [
+        74
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    }
+  ]
+}

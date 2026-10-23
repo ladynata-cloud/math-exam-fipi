@@ -1,0 +1,1517 @@
+{
+  "schemaVersion": 1,
+  "bookId": "merzlyak-2022-10-base",
+  "reviewedAt": "2026-10-22T22:40:52.160969+00:00",
+  "reviewer": {
+    "role": "independent_content_and_geometry_reviewer",
+    "agent": "textbook_inventory",
+    "provider": "OpenAI",
+    "authoredReviewedLessons": false,
+    "externalClaudeReview": false
+  },
+  "verdict": {
+    "sourceAndMathematics": "no_remaining_findings_for_listed_files",
+    "releaseApproval": false,
+    "wholeChapterComplete": false,
+    "wholeBookComplete": false,
+    "lessonStatusesChanged": false
+  },
+  "scope": {
+    "chapter": "Глава 1. Введение в стереометрию",
+    "paragraphs": [
+      1,
+      2,
+      3
+    ],
+    "mainExerciseNumbers": 79,
+    "lessonCards": 83,
+    "paragraphCounts": [
+      {
+        "paragraph": 1,
+        "exerciseNumbers": 27,
+        "lessonCards": 27
+      },
+      {
+        "paragraph": 2,
+        "exerciseNumbers": 20,
+        "lessonCards": 20
+      },
+      {
+        "paragraph": 3,
+        "exerciseNumbers": 32,
+        "lessonCards": 36
+      }
+    ],
+    "splitSubparts": {
+      "3.7": [
+        "1",
+        "2"
+      ],
+      "3.9": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ]
+    },
+    "allOtherMainSubparts": "Reviewed together inside the corresponding single card.",
+    "notIncluded": [
+      "Six supplementary section-construction exercises following paragraph 3",
+      "Theory questions, computer activities, research projects and theory lessons",
+      "Chapters 2–4 and paragraph 20",
+      "Whole-book completeness certification"
+    ]
+  },
+  "sourceEvidence": {
+    "source": "User-supplied Geometry 10 basic-level Merzlyak et al., 2022, 5th stereotyped edition",
+    "sourcePdfSha256": "bc50e2e2871ca872f4abeb5dcff406a1fd07caab622aeaf8a19523fe502db6a3",
+    "pageOffset": "PDF page = printed page + 1",
+    "exercisePdfPagesVisuallyInspected": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ],
+    "answerAndHintPdfPagesVisuallyInspected": [
+      201
+    ],
+    "method": "Read every exercise statement and diagram from page renders, compared all authored statements and source subparts, and checked solutions independently. OCR was an aid; page renders were the authority. Source PDF and raw OCR are excluded."
+  },
+  "reviewMethods": [
+    "Read all 83 statements, hints and step sequences; checked all source subparts and the distinction between a pictured example, a universal statement and a counterexample.",
+    "Independently derived the odd-midpoint proof in 1.25, common-point and common-plane arguments in paragraph 2, construction traces in paragraph 3, the seven-cube counterexample in 3.28 and impossibility proof in 3.30.",
+    "Checked finite coordinates, incidence, collinearity, coplanarity, nondegeneracy, source metric constraints and auxiliary intersections.",
+    "Computed each of 19 plane cuts independently from all primary solid edges, checked every intended corner, adjacent face membership and consistent convex boundary order.",
+    "Re-read final construction-view edits and reran numeric checks after the final author changes."
+  ],
+  "validation": {
+    "independentNumericalAssertions": 1120,
+    "passed": 1120,
+    "failed": 0,
+    "paragraphs1And2Assertions": 326,
+    "paragraph3Assertions": 794,
+    "planeCutCardInstances": 19,
+    "reproduction": {
+      "dependency": "Python 3 and NumPy",
+      "commands": [
+        "python3 tools/merzlyak-10-base/review-math-01-02.py",
+        "python3 tools/merzlyak-10-base/review-math-03.py"
+      ],
+      "optionalIndividualAssertions": "Each script accepts --report PATH. A failed assertion produces a nonzero exit code."
+    },
+    "authorRegressionChecksAlsoRun": [
+      {
+        "file": "tools/merzlyak-10-base/para02-models.test.py",
+        "result": "pass"
+      },
+      {
+        "file": "tools/merzlyak-10-base/para03-models.test.py",
+        "tests": 5,
+        "result": "pass"
+      }
+    ],
+    "notRunByThisReviewer": [
+      "Browser rendering, interaction, camera framing and screenshot review",
+      "External Claude consultation or exact-head release review",
+      "Full repository CI and deployment gates"
+    ]
+  },
+  "resolvedFindings": [
+    {
+      "exercises": [
+        "2.18"
+      ],
+      "type": "mathematics",
+      "finding": "The old text put PQ∩AC between A and C; in the pictured order and model it lies beyond C.",
+      "resolution": "Corrected to the extension of AC beyond C and explicitly stated the relative positions."
+    },
+    {
+      "exercises": [
+        "1.16",
+        "2.4",
+        "2.5"
+      ],
+      "type": "explanation_model_alignment",
+      "finding": "The general case could be confused with the displayed exceptional counterexample.",
+      "resolution": "Explicitly identified the general case as different from the displayed model."
+    },
+    {
+      "exercises": [
+        "2.14",
+        "2.15"
+      ],
+      "type": "source_figure_clarity",
+      "finding": "The corrected model alone obscured which incidence in the source figure was wrong.",
+      "resolution": "Statements now describe the incorrect noncollinearity and identify the model as corrected."
+    },
+    {
+      "exercises": [
+        "3.9"
+      ],
+      "type": "construction_completeness",
+      "finding": "A generic instruction did not specify each face intersection in all four diagrams.",
+      "resolution": "Four concrete sequences name all intersections and section vertices; outside points are distinguished from section vertices."
+    },
+    {
+      "exercises": [
+        "3.19",
+        "3.20",
+        "3.21",
+        "3.22",
+        "3.23",
+        "3.24",
+        "3.26",
+        "3.27",
+        "3.29",
+        "3.30"
+      ],
+      "type": "construction_visuals",
+      "finding": "Some named auxiliary points were absent or rays stopped short of the constructed intersection.",
+      "resolution": "Added points and focused views; 3.24 shows KX and MX. Independently rechecked all added intersections."
+    },
+    {
+      "exercises": [
+        "3.29"
+      ],
+      "type": "special_case",
+      "finding": "The generalized construction omitted a section plane parallel to the base.",
+      "resolution": "Added the parallel-base case, yielding a triangle on AD, BD and CD."
+    },
+    {
+      "exercises": [
+        "3.30"
+      ],
+      "type": "proof_completeness",
+      "finding": "The initial proof assumed the two face planes intersect.",
+      "resolution": "Added why parallel planes force parallel corresponding edges, contrary to the diagram."
+    }
+  ],
+  "remainingFindings": [],
+  "limitations": [
+    "This report covers the listed 83 draft cards only. The chapter also has supplemental and other activities and is not certified complete.",
+    "Numerical tests establish authored model constraints, not universal geometric theorems. General arguments were reviewed separately in the step text.",
+    "Illustrative coordinates are schematic. Source diagrams are preserved by incidence and relative position rather than exact pixel measurement.",
+    "This is independent internal content review, not external provider approval, owner approval, or permission to merge or publish.",
+    "The reviewer did not change lesson status or review fields; they remained draft/pending at the recorded hashes."
+  ],
+  "hashPolicy": {
+    "fileSha256": "SHA-256 of exact JSON file bytes at review time",
+    "reviewedContentSha256": "SHA-256 of UTF-8 JSON with ensure_ascii=false, sorted keys and compact separators for the listed content keys; excludes revision, status and review workflow fields.",
+    "contentKeys": [
+      "id",
+      "kind",
+      "title",
+      "source",
+      "statement",
+      "visualization",
+      "help",
+      "steps",
+      "answer"
+    ],
+    "invalidation": "Changes to reviewed content require targeted re-review. Workflow-status-only changes preserve the content hash but change the file hash."
+  },
+  "files": [
+    {
+      "id": "merz-ex-01-001",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-001.json",
+      "exercise": "1.1",
+      "subpart": null,
+      "sourcePdfPages": [
+        11
+      ],
+      "fileSha256": "7cbbeca2ab83d3f2b587321ac0af33149f8d0ac34ede0c1a9cb476b483cdd621",
+      "reviewedContentSha256": "3f4dd88ac80a1ce737bd5faa80db57ad85a3bc9e15703ea0094343e9759ce112",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "merz-ex-01-002",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-002.json",
+      "exercise": "1.2",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "8a8588bf22921b8f2c7fd177d0dae7b705b4ecae3f3a3d0aa3652968dfbf747a",
+      "reviewedContentSha256": "162bded00be32c48109d754fea16c1364627af8f5770ad41111e65b0f0dcedf5",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "merz-ex-01-003",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-003.json",
+      "exercise": "1.3",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "6a3b4e7514084334b2acad2a57f3e5c978dc941b8d8da06cf1d61e0f7a3621fc",
+      "reviewedContentSha256": "d46cdfe8e1ec1e6ac6cff309b009808701cc5c02b2ac6cf1dec896413074a24d",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 3
+    },
+    {
+      "id": "merz-ex-01-004",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-004.json",
+      "exercise": "1.4",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "ee0f94438057d6cd4ae0d414be1f15bd2f598cf88aa942879e3435b6de193848",
+      "reviewedContentSha256": "4e79c0d5ebf7c9a6a3b22bcd78e28ff02715c21f3cacf01f3a17548cd0430dfa",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "merz-ex-01-005",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-005.json",
+      "exercise": "1.5",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "2f02d3a8fa4c145b3219172a098939c73ebe1fe6a27086f066d3a79648c34635",
+      "reviewedContentSha256": "5bc2c35a931cf355a0c5720d9ad66e2a2b583e5a102ad8a93d66db0e7abb0333",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "merz-ex-01-006",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-006.json",
+      "exercise": "1.6",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "1acd3709414432da56918abcca2480ee266ebf8e178bba11061a426815d26bd6",
+      "reviewedContentSha256": "a427633717104c8322c0f1cf905bbf407a2e5d355354a11b90ac6fab09ce5524",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "merz-ex-01-007",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-007.json",
+      "exercise": "1.7",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "a7d09427c20e72c6c49b1b4d56f72f37aa66c2162e732f8172c2f908a68ad035",
+      "reviewedContentSha256": "374d3687accd21d5ff203412448b098fda6f9fb9e6e5b9fd7b96b33446c3bde9",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 8
+    },
+    {
+      "id": "merz-ex-01-008",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-008.json",
+      "exercise": "1.8",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "10f2e9146fac6a9ec1ea92726132aa427b8087695524ab64ffaf9ef47217657c",
+      "reviewedContentSha256": "5043d7040f586d8c2788647243b1c180de38d0514c6cadbf632d69b8277c7edf",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 9
+    },
+    {
+      "id": "merz-ex-01-009",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-009.json",
+      "exercise": "1.9",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "3379b1166fc07b57acd3d440566fb64107a86c11eef51a5ff06c0460484805f6",
+      "reviewedContentSha256": "81b675c40b8385ba7603de4e35bacbb0f10a073ec5bf8900a39ec4791d73a7e8",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "merz-ex-01-010",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-010.json",
+      "exercise": "1.10",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "ec453162aac96c3066cf8a938e3d979925926d42c5b9724e3808e802b91eb8ff",
+      "reviewedContentSha256": "6c9cb0d2aefb8bc4a428b0cf13af9af29e9c41cd9d60b9c4f55b24e6bfb9e16a",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "merz-ex-01-011",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-011.json",
+      "exercise": "1.11",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "ee513539dc0dd1680e43eb0d6f1b50e1e5b291fa586500ee52fe5ff3be9060ac",
+      "reviewedContentSha256": "dd817e65115ee943c3649b0b46862aa5f02542b3cca064c70676d3164d5a794c",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 7
+    },
+    {
+      "id": "merz-ex-01-012",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-012.json",
+      "exercise": "1.12",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "59a7364971a08804e1c12aca6821ca3ec56e8992905ca7b43ea564458dc78c46",
+      "reviewedContentSha256": "0450be39642328b05938290793de7f2c6fe58e2508c3699015bb9a3adcbbf195",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 11
+    },
+    {
+      "id": "merz-ex-01-013",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-013.json",
+      "exercise": "1.13",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "dd52cbe52f88d0d5f6f1368dc19fa480f50b1ae0f52862f89e901e3850a13638",
+      "reviewedContentSha256": "3add481c6802801e45b955fce0fcaf6fec5cea0fdb635a3e04c86f3676795f18",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 7
+    },
+    {
+      "id": "merz-ex-01-014",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-014.json",
+      "exercise": "1.14",
+      "subpart": null,
+      "sourcePdfPages": [
+        12
+      ],
+      "fileSha256": "a1145c990c0d833fc69312f8607ea347364d83275706313ca4fa1d6955cda5c5",
+      "reviewedContentSha256": "ae044b679faed34ecf0ffb07690905d28ac707ac0f2e887296c9393c011ca102",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 7
+    },
+    {
+      "id": "merz-ex-01-015",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-015.json",
+      "exercise": "1.15",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "2fd82f9f912ddea3bd8f034c50877c850b44e18701e8b3168cb2dfc34bf90a82",
+      "reviewedContentSha256": "12c347ccf3cf0a9918265a9c055e63e1270572c054bc74bc1a8377be0e3c9fc0",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 11
+    },
+    {
+      "id": "merz-ex-01-016",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-016.json",
+      "exercise": "1.16",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "6b5478d8838ad4aa136528ee194d7d20195d61099a23c5c2b4216b31cf4443b0",
+      "reviewedContentSha256": "82098568ead12cf0e2cd010f9ba83cbd30b7f8fffaffc8e47279fe66cdfa80a0",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "merz-ex-01-017",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-017.json",
+      "exercise": "1.17",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "9e9335065bea20aee30c094d849d97ecc51b7092f4734662af28f4c4726aee50",
+      "reviewedContentSha256": "dbe3477962b529bfc5718be39da53234c3cf9db2b77c2ced5f583c1bd41b6803",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "merz-ex-01-018",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-018.json",
+      "exercise": "1.18",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "528e2ae4ccc02e24a41c894dcd84b992007ec81c3adba2aa7f96f9f1ab44a8d7",
+      "reviewedContentSha256": "7acfa0a27dc94d53a0c9d6f017735de5122a3ec5bf8093599589ec44fe327147",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 7
+    },
+    {
+      "id": "merz-ex-01-019",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-019.json",
+      "exercise": "1.19",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "92373566aafa8a3acbf033710e651163419a9a3d1808d559bc6a30ce94bd71fc",
+      "reviewedContentSha256": "1916c8c47c2de1974381ed34c04615d9b83376a9cba850fb2c59aab5c9111849",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 4
+    },
+    {
+      "id": "merz-ex-01-020",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-020.json",
+      "exercise": "1.20",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "c9dfcb9cb5dd35ab88e08e6682cb40676fbff27a323df5da6b101bade82ebd33",
+      "reviewedContentSha256": "5206d892cec94880ef57b35993868ce96f7460b2a7a6a2db957ab04cc7b38820",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 4
+    },
+    {
+      "id": "merz-ex-01-021",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-021.json",
+      "exercise": "1.21",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "2859419c8caa98e1516dda256c4f84fb18e256460a42ca1c5b6402ab578c52ed",
+      "reviewedContentSha256": "e43a9412a01b6c93e3d5607f50aeccadbaac8f53f3aae327110f1f3583c94bfe",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 8
+    },
+    {
+      "id": "merz-ex-01-022",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-022.json",
+      "exercise": "1.22",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "e3e9301a65fc6467900818c153e37fce619bfa8344a802243e53afe211b680cc",
+      "reviewedContentSha256": "7959c8db56399108e77dd7743f1fd89e07f1069aa06d0ec492871694c97597ea",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 10
+    },
+    {
+      "id": "merz-ex-01-023",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-023.json",
+      "exercise": "1.23",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "47f78d70718e06286ac4eda0082554e6f515973888fc81ad97fbb7f5840a5dd7",
+      "reviewedContentSha256": "77522397310674d4c9036a8f073634ad83516868f4cdba572bfe2f7d9f54ae58",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 7
+    },
+    {
+      "id": "merz-ex-01-024",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-024.json",
+      "exercise": "1.24",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "3f47b000d10f73c103bf9b7e025591edbc42cd97061993bea8a5b5b682a03cdc",
+      "reviewedContentSha256": "81ee3756d73567372e6980100258ff738006e338cc8e039deee96eabdbf8869d",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 8
+    },
+    {
+      "id": "merz-ex-01-025",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-025.json",
+      "exercise": "1.25",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "86a8d6c7832adfc8c8b8e80561429f2469b450c38173eb2166ee765fdb0c7f14",
+      "reviewedContentSha256": "45c4b188c95aff6c0c052753dd2b4578ad3328dc1e1b4985d44e5a9387a34f38",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 8
+    },
+    {
+      "id": "merz-ex-01-026",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-026.json",
+      "exercise": "1.26",
+      "subpart": null,
+      "sourcePdfPages": [
+        13
+      ],
+      "fileSha256": "7deacc85d6884aefc12da689bbf2da8767fcd97fec21cd123284a048bc0f64ce",
+      "reviewedContentSha256": "5d5f8f45e6cd9fa8b70c5212fc9579e89458583e4c1f3db8bbc9f0782faf31a8",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 8
+    },
+    {
+      "id": "merz-ex-01-027",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-01-027.json",
+      "exercise": "1.27",
+      "subpart": null,
+      "sourcePdfPages": [
+        14
+      ],
+      "fileSha256": "f0ea1d598b5a92e312c0b797332feab58f00ea55c0c7319181ea3eba749b1097",
+      "reviewedContentSha256": "e48c6f9ee3870f621e874aacb9273dd97991e3e718a2e7712d01804902114250",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 19
+    },
+    {
+      "id": "ex-02-001",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-001.json",
+      "exercise": "2.1",
+      "subpart": null,
+      "sourcePdfPages": [
+        15
+      ],
+      "fileSha256": "71a3ab3097af8075ba0f70d084f268519dcdc778402cb85f2b0e6e8fccf25139",
+      "reviewedContentSha256": "50b2ef68aff986f74e0e978f7d2e0bcaca2d13e1a2f770d51a0764310c44273a",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 7
+    },
+    {
+      "id": "ex-02-002",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-002.json",
+      "exercise": "2.2",
+      "subpart": null,
+      "sourcePdfPages": [
+        15
+      ],
+      "fileSha256": "0361c995aac2004355a5dafbaea282da39093f07e7badf8278337977aa812a13",
+      "reviewedContentSha256": "9f946ac882889c24df5ae0d4fd76159b8af6f18fdd2e3d804fb2c95a8ef8d0e8",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 7
+    },
+    {
+      "id": "ex-02-003",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-003.json",
+      "exercise": "2.3",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "3f6fe2ce152dee811d03135f8cd8a24bec5db52f29ea5f4f84fbd5884aae5258",
+      "reviewedContentSha256": "7a39168d2f539fe9fc0329704dfefebd0826b0bd1e2fbbfa52d3f94ecbc65d05",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 4
+    },
+    {
+      "id": "ex-02-004",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-004.json",
+      "exercise": "2.4",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "553409bc254007698cc115ec78ddcadd36f2230b30e33e99a92562beeda489f0",
+      "reviewedContentSha256": "c41f34bf9380dd3b127b23560da78353ce8a31d00da2133bc4b8f9b26eaceff7",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 6
+    },
+    {
+      "id": "ex-02-005",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-005.json",
+      "exercise": "2.5",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "a1512f1de651dada667110cd3b4acfc5df88db7cd5169044a857b0e1ea39b146",
+      "reviewedContentSha256": "3c8591b9e12fec84fbb0b4584021eeb7be382319dd08c0ad478457c7c75aa589",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 9
+    },
+    {
+      "id": "ex-02-006",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-006.json",
+      "exercise": "2.6",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "a898cf8d3a6b25d5e6ab832cdd51b49f5d4bb02e9c0ce389a1ea437c0023ce01",
+      "reviewedContentSha256": "77ceac252fc0c8763511aa14c66903df6f60af13313c283faaf2affe82a6ab8c",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 5
+    },
+    {
+      "id": "ex-02-007",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-007.json",
+      "exercise": "2.7",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "10d4860143ffbd1d61ae85c7aa8213e0ab836fd3c6b827219847295e0b90cfe6",
+      "reviewedContentSha256": "2a6d0d5a794d6f78c79b4fcc8bb4c5055a36aefcd60be1105e8cb7eff0495c00",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 3
+    },
+    {
+      "id": "ex-02-008",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-008.json",
+      "exercise": "2.8",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "1f9922e0a9a830dcc28c23023c981a4c368d330b5f0613ed7598668775f6570e",
+      "reviewedContentSha256": "2f626997ee3c3378336d3c7f653c8e967ca7a85a3ad5981870ee11c8869704f1",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 4
+    },
+    {
+      "id": "ex-02-009",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-009.json",
+      "exercise": "2.9",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "97c4f97ec40035e33923f8dac3b52087287d4876671cdddf6d581f934cd9fdd8",
+      "reviewedContentSha256": "731274db4cc5cde11666033832dd5ce5802d833fd3a19a0e9a3c60160a7d0112",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 6
+    },
+    {
+      "id": "ex-02-010",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-010.json",
+      "exercise": "2.10",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "e2ad0159bc31951a56b9f2611516f2deedd0eccb728a1517f9eed02eafb1cd8d",
+      "reviewedContentSha256": "6a7c9b465cb6c273abe2e5a3899c495045a347290dafed0b28bb307eb904b88f",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 9
+    },
+    {
+      "id": "ex-02-011",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-011.json",
+      "exercise": "2.11",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "b7e1ac2d926e1d92f4ce08aaf830e81662654833bbb8ec80bb3a7e7414018fb7",
+      "reviewedContentSha256": "185d4c6828b75e5e0d6b4003dcd44ab6beeb8132a8e7bb6b48c24fc41ad5dc13",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 4
+    },
+    {
+      "id": "ex-02-012",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-012.json",
+      "exercise": "2.12",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "c5ca5f8ba8e182f7b76d090e1cfdfdfc0116f9324d70dc361a897120bf6a0629",
+      "reviewedContentSha256": "4bcf9dad81c740b70dd5b89cf04c643cfe87b2638eabd3612f180f5ab83aa2ad",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 8
+    },
+    {
+      "id": "ex-02-013",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-013.json",
+      "exercise": "2.13",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "00231728a969911b356ee9b62963503d370110c35c05fd7822bf276f4f746aac",
+      "reviewedContentSha256": "7e8fec7618ba90a1efb7277dac101e3c1b0f50a6baa2facbbaafff01bad60d33",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 4
+    },
+    {
+      "id": "ex-02-014",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-014.json",
+      "exercise": "2.14",
+      "subpart": null,
+      "sourcePdfPages": [
+        16
+      ],
+      "fileSha256": "b1a290ac774ec3556eb60ff8c27a99d095837ba4b86ef06b2ae5679e4a1d06e5",
+      "reviewedContentSha256": "414c190c2cbe373d24dd036ef29a928826ceeeb2310f0ae6953704c473694c9b",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 8
+    },
+    {
+      "id": "ex-02-015",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-015.json",
+      "exercise": "2.15",
+      "subpart": null,
+      "sourcePdfPages": [
+        17
+      ],
+      "fileSha256": "5a896f7581289702fa8d8be5555a5fbfcd146634d69d307d92e324ced4d67166",
+      "reviewedContentSha256": "e52cf87657c169982c075352f5303940b41a66b9bac994d621885020dbe51847",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 10
+    },
+    {
+      "id": "ex-02-016",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-016.json",
+      "exercise": "2.16",
+      "subpart": null,
+      "sourcePdfPages": [
+        17
+      ],
+      "fileSha256": "cd8ef60b043c3ba1bbc359db478f0ec1da51ee5b688011bd6c0bda4345011732",
+      "reviewedContentSha256": "88cfc45f2f387f9eec1a8b700cd293f380061a6ddaec4b782bbec37e27f4a678",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 6
+    },
+    {
+      "id": "ex-02-017",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-017.json",
+      "exercise": "2.17",
+      "subpart": null,
+      "sourcePdfPages": [
+        17
+      ],
+      "fileSha256": "751c23349aba150856fa63b807dc490e84e3c895c1b4c50712d9c864eb4b12c2",
+      "reviewedContentSha256": "659f15a988488812a4e0bf2075d692ffd31a9e252ab9b0d82d35f9920d95fbac",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 3
+    },
+    {
+      "id": "ex-02-018",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-018.json",
+      "exercise": "2.18",
+      "subpart": null,
+      "sourcePdfPages": [
+        17
+      ],
+      "fileSha256": "2fa92ab2f524bea6e316c23191afa71d2e619f56f95312e01bfa1332b1d6522b",
+      "reviewedContentSha256": "8829ac98405011f8f8dddf3ae1c953ce7c5f99c0af4c65dd428485e7c0949a6c",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 12
+    },
+    {
+      "id": "ex-02-019",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-019.json",
+      "exercise": "2.19",
+      "subpart": null,
+      "sourcePdfPages": [
+        17
+      ],
+      "fileSha256": "661ca29fea1634c41fb5a6649dd157f08dd5f37348bfa10d098b3e50cb96709f",
+      "reviewedContentSha256": "365b5a5e5127cc097a3a6f1f612447607ee427c87efee3ca32f827d054b551e6",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 8
+    },
+    {
+      "id": "ex-02-020",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-02-020.json",
+      "exercise": "2.20",
+      "subpart": null,
+      "sourcePdfPages": [
+        17
+      ],
+      "fileSha256": "c70c88c6e45320238bef4530941c5e995c6bd40b244c0a13f62b596658bcf705",
+      "reviewedContentSha256": "308fee57caee5b5355bf90a9d26596ff9592219bd60540cac3203110d946dc2f",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 12
+    },
+    {
+      "id": "ex-03-001",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-001.json",
+      "exercise": "3.1",
+      "subpart": null,
+      "sourcePdfPages": [
+        22
+      ],
+      "fileSha256": "50e712a1529c2a5e568736859106c8ec5416cc61361538e6c703df8f2f8a7edb",
+      "reviewedContentSha256": "ab5602ca1cce1fdf852cb1854825d2b74e29d8d179e2fe6ad38e13362b7ab25f",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 17
+    },
+    {
+      "id": "ex-03-002",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-002.json",
+      "exercise": "3.2",
+      "subpart": null,
+      "sourcePdfPages": [
+        23
+      ],
+      "fileSha256": "0cb834c8c465bfcf1e5d593f6bc6fd955544c78284d9e10b9f73604846cae7a7",
+      "reviewedContentSha256": "c116bbb8e3b74f2cb2aedff6de57d40be50e93c1967ee4014246debfdfd50245",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 13
+    },
+    {
+      "id": "ex-03-003",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-003.json",
+      "exercise": "3.3",
+      "subpart": null,
+      "sourcePdfPages": [
+        23
+      ],
+      "fileSha256": "d824d56bcc6b653b72f16312a8f862e59c60a13609bd5a1cf4122aa871731099",
+      "reviewedContentSha256": "84501919f43fd58b8e756966de6eac690e39e6a0901d235d442b00861ae09b09",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 16
+    },
+    {
+      "id": "ex-03-004",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-004.json",
+      "exercise": "3.4",
+      "subpart": null,
+      "sourcePdfPages": [
+        23
+      ],
+      "fileSha256": "1aca72ba0fda21f369496fb53ed6adbad77be87f690ef3697a0bac0161b53d47",
+      "reviewedContentSha256": "37a22f1164bcf6c985b61adc83bca2c69c2d514d84195170e2d0a60c3406eb9d",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 18
+    },
+    {
+      "id": "ex-03-005",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-005.json",
+      "exercise": "3.5",
+      "subpart": null,
+      "sourcePdfPages": [
+        23
+      ],
+      "fileSha256": "aab383710633a1f45659e8854ed79387e52b891c6274d2bdac87b74ceaf3204f",
+      "reviewedContentSha256": "defcd0dad814dfed1abc26e617bb552c81f8d69770a1cab6f58aed97ccad3e50",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 17
+    },
+    {
+      "id": "ex-03-006",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-006.json",
+      "exercise": "3.6",
+      "subpart": null,
+      "sourcePdfPages": [
+        23
+      ],
+      "fileSha256": "825c8a3511f90a407fe27c3f96123bd8234ebd54c405a090248ea1eb447a91a7",
+      "reviewedContentSha256": "a14682b8c39286082b9bceeeaf77b5f59f38fc008c462fd392fca5f8cd0b1c26",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 17
+    },
+    {
+      "id": "ex-03-007-a",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-007-a.json",
+      "exercise": "3.7",
+      "subpart": "1",
+      "sourcePdfPages": [
+        23
+      ],
+      "fileSha256": "d22851726d0feb258f1b1821df442e21fcff76a0404a0c48ff5c73243e4f62ba",
+      "reviewedContentSha256": "31a61ec0547ad3e4b4d774fffc38ed4dd65b0ec65cabe1c58606cac3a4de9b96",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 19
+    },
+    {
+      "id": "ex-03-007-b",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-007-b.json",
+      "exercise": "3.7",
+      "subpart": "2",
+      "sourcePdfPages": [
+        23
+      ],
+      "fileSha256": "4a6bd535d5fc21a4ce93af72f0b032621bc5aa7717c8fcf3d7f5ce2387301eae",
+      "reviewedContentSha256": "2d38f942ab6560664203e5e13f5803905ed96c83cbe62816b5a955c6b10fe2be",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 19
+    },
+    {
+      "id": "ex-03-008",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-008.json",
+      "exercise": "3.8",
+      "subpart": null,
+      "sourcePdfPages": [
+        23
+      ],
+      "fileSha256": "3c52a99450c440c66a4435d177add3e9a572a747d6894219cddb4a338475b181",
+      "reviewedContentSha256": "dc8cecddcac23f125581a42f7c2bc9fb9590777fa6fdffa8257d8ea1a3aaecc0",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 17
+    },
+    {
+      "id": "ex-03-009-a",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-009-a.json",
+      "exercise": "3.9",
+      "subpart": "а",
+      "sourcePdfPages": [
+        23,
+        24
+      ],
+      "fileSha256": "af5b6004931630481e9c7d45198db50c7c8a03db38a61e8a72a6e1e75319892f",
+      "reviewedContentSha256": "c52bb3dd47636ef3934f39d93417f198b1cd0cb97055f2852c4712dcdbe6f2d2",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 26
+    },
+    {
+      "id": "ex-03-009-b",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-009-b.json",
+      "exercise": "3.9",
+      "subpart": "б",
+      "sourcePdfPages": [
+        23,
+        24
+      ],
+      "fileSha256": "2bbbcf64194763636688f762efc18f71be7a39b8a77f1cb670bced14f1d14ba9",
+      "reviewedContentSha256": "14573d4bec79173a586cdad9c32dd833fa7f336f77b9b643029e173e22fa3bba",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 26
+    },
+    {
+      "id": "ex-03-009-c",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-009-c.json",
+      "exercise": "3.9",
+      "subpart": "в",
+      "sourcePdfPages": [
+        23,
+        24
+      ],
+      "fileSha256": "0f0fb973160bb34b194cb0e70535984ead74b24c8d28dd993cd91bde044d5ffc",
+      "reviewedContentSha256": "621a2e4be5c6dd0cfa624ec3fbbc7b795de970fa77e45b0e4c35f20c5fde7148",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 30
+    },
+    {
+      "id": "ex-03-009-d",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-009-d.json",
+      "exercise": "3.9",
+      "subpart": "г",
+      "sourcePdfPages": [
+        23,
+        24
+      ],
+      "fileSha256": "028247e571fbfd157184b7976b8954c59966018dc672064798b5b0377eb784f6",
+      "reviewedContentSha256": "bd3684bf1e40040791d1b73666ff1351b3b42353cbe0fa8137e7b99f54fe9284",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 34
+    },
+    {
+      "id": "ex-03-010",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-010.json",
+      "exercise": "3.10",
+      "subpart": null,
+      "sourcePdfPages": [
+        23,
+        24
+      ],
+      "fileSha256": "3580ad5ed1a24b3407df82030ba9c48988aea876f66173d57f8743a496262c01",
+      "reviewedContentSha256": "c388a81f8617bc07d3ac4c86f8957a1aed30c928b016513c328dc8da5d15c3d6",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 23
+    },
+    {
+      "id": "ex-03-011",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-011.json",
+      "exercise": "3.11",
+      "subpart": null,
+      "sourcePdfPages": [
+        23,
+        24
+      ],
+      "fileSha256": "55c3181b4b9b0e043f35f7c9bf72000e3255414f433765eb2ddebffefb07746c",
+      "reviewedContentSha256": "13bc1575237cd03171db0856f203dc670d1a9db40c6016c6699be831fd236dd0",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 23
+    },
+    {
+      "id": "ex-03-012",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-012.json",
+      "exercise": "3.12",
+      "subpart": null,
+      "sourcePdfPages": [
+        23,
+        24
+      ],
+      "fileSha256": "e883eeee19cfebffb2449c8d8a687043ddf3550d80e626dd6d0aa82673acd5c0",
+      "reviewedContentSha256": "6181d639a85a7c7182b66434afbcd5fa36173fe30bfb2bb2df78df68560acff4",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 15
+    },
+    {
+      "id": "ex-03-013",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-013.json",
+      "exercise": "3.13",
+      "subpart": null,
+      "sourcePdfPages": [
+        24
+      ],
+      "fileSha256": "cc4b253ecf4492a9ef6d5cb2165c90fbfa5a1491e8fa79c93370e6cab4e44f2b",
+      "reviewedContentSha256": "fb1a1c4d9518bd164442044bdf2127f860643579f3d8d9891e60a1a6201c9e5e",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 17
+    },
+    {
+      "id": "ex-03-014",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-014.json",
+      "exercise": "3.14",
+      "subpart": null,
+      "sourcePdfPages": [
+        24
+      ],
+      "fileSha256": "ecbf8ebb42910eab252f419442547f0bc3fc6b8974181e5b7d2c70e1c988dae2",
+      "reviewedContentSha256": "f9f32588556688be313c38f0b487e75ae2efb298e7f9f27269ecfa1040e17bdf",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 13
+    },
+    {
+      "id": "ex-03-015",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-015.json",
+      "exercise": "3.15",
+      "subpart": null,
+      "sourcePdfPages": [
+        25
+      ],
+      "fileSha256": "363448fceaa479ec8ec3af0e07c4be805dde25620422027a1f5975d8459036b7",
+      "reviewedContentSha256": "349cbea12e51a07588a7b7e550054e0604a2d9a826075d3eb530f6ed2e83f723",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 15
+    },
+    {
+      "id": "ex-03-016",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-016.json",
+      "exercise": "3.16",
+      "subpart": null,
+      "sourcePdfPages": [
+        25
+      ],
+      "fileSha256": "6ea72a4575b9dc34013179899ecff0b57acee62b0d4f0099bd2588573f66ee25",
+      "reviewedContentSha256": "2541ea57a2667b267e7d9e5f50ecb5f8445ac427e92629eebd43bf38f5a31a64",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 11
+    },
+    {
+      "id": "ex-03-017",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-017.json",
+      "exercise": "3.17",
+      "subpart": null,
+      "sourcePdfPages": [
+        25
+      ],
+      "fileSha256": "04ff4517c9efd6b8e4e08b1b0d64a4e4702ec3ee78f624e05e3e5e019a34eddb",
+      "reviewedContentSha256": "0dc17c2f5c29b6bc92ca5806b68f64d755528aefeb3c44ea6598d304ab734024",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 14
+    },
+    {
+      "id": "ex-03-018",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-018.json",
+      "exercise": "3.18",
+      "subpart": null,
+      "sourcePdfPages": [
+        25
+      ],
+      "fileSha256": "ad42b6804f3fe02260302ed2bc70617a4a37316f8660fc0cc2eb061988bd1e15",
+      "reviewedContentSha256": "e58144ae273a23f4cbd32767cd05449296c1d39837f6ea1e058697ff4bff00cd",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 15
+    },
+    {
+      "id": "ex-03-019",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-019.json",
+      "exercise": "3.19",
+      "subpart": null,
+      "sourcePdfPages": [
+        25
+      ],
+      "fileSha256": "355037d93c1cc3f9ba95e4c2f9d6dcc8c979225a66a11389b054fb8ed0468662",
+      "reviewedContentSha256": "ff5d099f60fa2ad7343d0ea40411115ea077470b75e2f50df4e98fad5fb6199a",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 30
+    },
+    {
+      "id": "ex-03-020",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-020.json",
+      "exercise": "3.20",
+      "subpart": null,
+      "sourcePdfPages": [
+        25
+      ],
+      "fileSha256": "e2a7e4b0536ce5f2d53a20b0199dd263afd07e3d5af9f9edc8f7176cb429f861",
+      "reviewedContentSha256": "c8da968b8d21ddb2f9945204e3528d7a5dbb332140f64ba0f71ecd2e909bf988",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 29
+    },
+    {
+      "id": "ex-03-021",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-021.json",
+      "exercise": "3.21",
+      "subpart": null,
+      "sourcePdfPages": [
+        25
+      ],
+      "fileSha256": "eecb8cee1cccccb91049ff0a82d459cedbd809fd71f9ee30171efafc955da9e5",
+      "reviewedContentSha256": "752d3c99e6f92486e446008fd7e42ab2d9d25b948287a3739df915cf6b3109f4",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 30
+    },
+    {
+      "id": "ex-03-022",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-022.json",
+      "exercise": "3.22",
+      "subpart": null,
+      "sourcePdfPages": [
+        26
+      ],
+      "fileSha256": "9fa7ca373933429ccb71f5ddcc0adfdbdad107ea19a56273676d4707f04d64ea",
+      "reviewedContentSha256": "7ae8c19f895cec5145b9e1f7bd12fa181f9deabe39dfaac9ca1a2b859cfcfe5c",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 22
+    },
+    {
+      "id": "ex-03-023",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-023.json",
+      "exercise": "3.23",
+      "subpart": null,
+      "sourcePdfPages": [
+        26
+      ],
+      "fileSha256": "fa4388b246c725847c0885c278421c6179e63969f3564860580bc186847eac4d",
+      "reviewedContentSha256": "2959921b6b7f4bf78aace208be7a9473b199d08398a171d6a42595b3bcef4b1d",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 22
+    },
+    {
+      "id": "ex-03-024",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-024.json",
+      "exercise": "3.24",
+      "subpart": null,
+      "sourcePdfPages": [
+        26
+      ],
+      "fileSha256": "fdbbccfb7595b9e0556d9ac19d426bf0a1f6db90cd9f49580a450d851c5198f2",
+      "reviewedContentSha256": "81afd182cd8472720d2507b38b81ca99c55d38ece34bdddb87021fa5cc57150c",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 21
+    },
+    {
+      "id": "ex-03-025",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-025.json",
+      "exercise": "3.25",
+      "subpart": null,
+      "sourcePdfPages": [
+        26
+      ],
+      "fileSha256": "75b9b7edede959a4ff3799ec4a39576730b0f336fd6d7ce25800d425b18891f0",
+      "reviewedContentSha256": "42cc35fa170394c3f133026e71c4a85aec1864c57793cdd468da62e3ea332468",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 17
+    },
+    {
+      "id": "ex-03-026",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-026.json",
+      "exercise": "3.26",
+      "subpart": null,
+      "sourcePdfPages": [
+        26
+      ],
+      "fileSha256": "e5a49e6de253975534591ebbf221452205944d950d46b80cf4e2e52264e81ea2",
+      "reviewedContentSha256": "fc989c6216c8847345e3742af3017ae1d7cad610d84e4e38ee64bacb3f46bbae",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 28
+    },
+    {
+      "id": "ex-03-027",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-027.json",
+      "exercise": "3.27",
+      "subpart": null,
+      "sourcePdfPages": [
+        26
+      ],
+      "fileSha256": "3068b935ca6064ec8342c2f5cefc937ce1d6d245a5818a8523745c6c163c41ed",
+      "reviewedContentSha256": "8ba78a4e37c32cc5c41de613051583196f36c5f006c7f925533b93407da5f1ca",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 24
+    },
+    {
+      "id": "ex-03-028",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-028.json",
+      "exercise": "3.28",
+      "subpart": null,
+      "sourcePdfPages": [
+        27
+      ],
+      "fileSha256": "89986be27b9aa281129f3b8a69dba3ba9932b6b6a7eda64df1e20a3d3f0ba7af",
+      "reviewedContentSha256": "3a0c0d4f43744ca81d09402dae4ae5a6d847a90ac4dd2c606153cdcc5ae32ec4",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 94
+    },
+    {
+      "id": "ex-03-029",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-029.json",
+      "exercise": "3.29",
+      "subpart": null,
+      "sourcePdfPages": [
+        27
+      ],
+      "fileSha256": "8cf6a6e473977d4e14678547f555e0b494f18668ce991d2e42a5016ad4f3710e",
+      "reviewedContentSha256": "75bc9df1ff662cf637841112115bc3c3dee78d298a31513b563555007731ca42",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 41
+    },
+    {
+      "id": "ex-03-030",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-030.json",
+      "exercise": "3.30",
+      "subpart": null,
+      "sourcePdfPages": [
+        27
+      ],
+      "fileSha256": "5e5c08abf791ed0bca21a55eb5b51534a1945ec454b2ab99cf6019644546cd72",
+      "reviewedContentSha256": "a1886a34243f74feab06eacbd55ffe31d3717eda3ceae9b2fbc8505c343ac7cb",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 8
+    },
+    {
+      "id": "ex-03-031",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-031.json",
+      "exercise": "3.31",
+      "subpart": null,
+      "sourcePdfPages": [
+        27
+      ],
+      "fileSha256": "d421cdd06424bdb94cd64c51f670d1c40a82d0eff245789729710fd721eb92dd",
+      "reviewedContentSha256": "ffe618b0b5399c4c3610f38a01252a7c67e4f3460b6d10523040fa371f89685e",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 7
+    },
+    {
+      "id": "ex-03-032",
+      "file": "stereo-course/merzlyak-10-base/lessons/ex-03-032.json",
+      "exercise": "3.32",
+      "subpart": null,
+      "sourcePdfPages": [
+        27
+      ],
+      "fileSha256": "005866347b9eb030c67236158df6b6bb563e8c85ef8450c4da82eff89d26cdd9",
+      "reviewedContentSha256": "1f87e51647b342c55dc529d4ef03ef35d36fc51992cb8c50d45ff87ca4560521",
+      "sourceComparison": "reviewed",
+      "mathematics": "no_remaining_findings",
+      "numericalAssertionsPassed": 6
+    }
+  ],
+  "followupReviews": [
+    {
+      "reviewedAt": "2026-10-22T22:40:52.160969+00:00",
+      "reason": "Targeted source/mathematics re-review after independently requested pedagogical focus and help improvements.",
+      "scope": "All15 changed cards:2.9/2.10 and13 cards in§3.",
+      "method": "Read full help/view diff for13 paragraph3 cards and current2.9/2.10 intersection steps and both highlighted lines. Re-read3.22/3.29 trace constructions against actual coordinates. No exercise conditions or mathematical answers changed.",
+      "regression": {
+        "independentAssertions": 1120,
+        "passed": 1120,
+        "failed": 0,
+        "paragraphs1And2": 326,
+        "paragraph3": 794
+      },
+      "result": "no_remaining_source_or_mathematics_findings",
+      "workflowStatusChanges": false,
+      "updates": [
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-02-009.json",
+          "previousFileSha256": "fdea25899d4418d47b3ab47dd747d34c6c20ad3750bfae7e7497ba29ffc1499c",
+          "previousReviewedContentSha256": "14812426aa9acc85e3adf1f906bdde292d7d11d9d8ac686e9e452da386c6ce46",
+          "fileSha256": "97c4f97ec40035e33923f8dac3b52087287d4876671cdddf6d581f934cd9fdd8",
+          "reviewedContentSha256": "731274db4cc5cde11666033832dd5ce5802d833fd3a19a0e9a3c60160a7d0112"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-02-010.json",
+          "previousFileSha256": "3f82587e912b737536cd8d33a361f7a5974509b4c2298eaca55242c76d7db05b",
+          "previousReviewedContentSha256": "f04131caec2f30a56ff76919ef3ef6524a3e087fb52ecfa8e164ed6c4ba55d76",
+          "fileSha256": "e2ad0159bc31951a56b9f2611516f2deedd0eccb728a1517f9eed02eafb1cd8d",
+          "reviewedContentSha256": "6a7c9b465cb6c273abe2e5a3899c495045a347290dafed0b28bb307eb904b88f"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-001.json",
+          "previousFileSha256": "f46ee8d78b33504688622b50d7dc785ff7e2cdbd5f84aeec4987b92d3da98e58",
+          "previousReviewedContentSha256": "02da4881fa83ee7ebe2155d208f04b1c47300498fd7e4d42520e9efa8d4079f5",
+          "fileSha256": "50e712a1529c2a5e568736859106c8ec5416cc61361538e6c703df8f2f8a7edb",
+          "reviewedContentSha256": "ab5602ca1cce1fdf852cb1854825d2b74e29d8d179e2fe6ad38e13362b7ab25f"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-002.json",
+          "previousFileSha256": "cc25fbd189cc3e5ec5ae62a7e040ed16f3a98d1663d95a30430e259fc7b211cb",
+          "previousReviewedContentSha256": "a86f12f5416a8ef5e90e357199bbc4baccc349208a95d96080778f92cf184e07",
+          "fileSha256": "0cb834c8c465bfcf1e5d593f6bc6fd955544c78284d9e10b9f73604846cae7a7",
+          "reviewedContentSha256": "c116bbb8e3b74f2cb2aedff6de57d40be50e93c1967ee4014246debfdfd50245"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-003.json",
+          "previousFileSha256": "5cfa32dd59a3f8e89a64e3a573a09ae329578b31375068c38a5308fc9cc4719a",
+          "previousReviewedContentSha256": "f86d885e279a575197417bf1cf8ceba6e4bd987ae2e6281b32c8977bdb9eb031",
+          "fileSha256": "d824d56bcc6b653b72f16312a8f862e59c60a13609bd5a1cf4122aa871731099",
+          "reviewedContentSha256": "84501919f43fd58b8e756966de6eac690e39e6a0901d235d442b00861ae09b09"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-004.json",
+          "previousFileSha256": "2cd9bfef2c4d4b7124dfff1b407c82c370991bd40df03828c20a7307db9f1dd2",
+          "previousReviewedContentSha256": "0a215d80b49e1d8783f1266d4afe0659e08983c4f82d0dbc638dc76c151f65ce",
+          "fileSha256": "1aca72ba0fda21f369496fb53ed6adbad77be87f690ef3697a0bac0161b53d47",
+          "reviewedContentSha256": "37a22f1164bcf6c985b61adc83bca2c69c2d514d84195170e2d0a60c3406eb9d"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-010.json",
+          "previousFileSha256": "bf3ec0b7b2b1b4b3fc9eea25b22b6863a45c2cf08869e0e5723936bf48fa7534",
+          "previousReviewedContentSha256": "79bb02423773ba40ef24ab20cc6b335a3dd0ddfc113f47e1565d31ce405e8cf8",
+          "fileSha256": "3580ad5ed1a24b3407df82030ba9c48988aea876f66173d57f8743a496262c01",
+          "reviewedContentSha256": "c388a81f8617bc07d3ac4c86f8957a1aed30c928b016513c328dc8da5d15c3d6"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-011.json",
+          "previousFileSha256": "94a547ccebc57a3791bf9ed41baad7c5d21c38983731c38dd64692f575d82c24",
+          "previousReviewedContentSha256": "6ac862a72b469232f602905c08f4f8215e1f6b5bded3ce7ed3bbc0b0c85f77ab",
+          "fileSha256": "55c3181b4b9b0e043f35f7c9bf72000e3255414f433765eb2ddebffefb07746c",
+          "reviewedContentSha256": "13bc1575237cd03171db0856f203dc670d1a9db40c6016c6699be831fd236dd0"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-012.json",
+          "previousFileSha256": "3b3f889afcb15b2759b8d39058e8c66415ca42aac52a793c6fd76b0795e553b2",
+          "previousReviewedContentSha256": "bce0c6bc9a7f2de3b7816f11c6f930287d9a340ae513753b20f841b84d3b0a1c",
+          "fileSha256": "e883eeee19cfebffb2449c8d8a687043ddf3550d80e626dd6d0aa82673acd5c0",
+          "reviewedContentSha256": "6181d639a85a7c7182b66434afbcd5fa36173fe30bfb2bb2df78df68560acff4"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-013.json",
+          "previousFileSha256": "f7a6f1777406bb779e8b9db3d5f6ccb4467b2fdb264c4e265244c06c488e9544",
+          "previousReviewedContentSha256": "d4f72c806f7204e1e31359a44c7a0b713759876ae0f89dae84f0a87d336f875a",
+          "fileSha256": "cc4b253ecf4492a9ef6d5cb2165c90fbfa5a1491e8fa79c93370e6cab4e44f2b",
+          "reviewedContentSha256": "fb1a1c4d9518bd164442044bdf2127f860643579f3d8d9891e60a1a6201c9e5e"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-022.json",
+          "previousFileSha256": "0e46d97f31b0fa5a1a4f74403bc3ab70f233a0c7536f883ea9f13d04b4b2db81",
+          "previousReviewedContentSha256": "0f1bf05cc308a8e62df02a5789b4fb67766cc223dd6fe8677790960b6737da9f",
+          "fileSha256": "9fa7ca373933429ccb71f5ddcc0adfdbdad107ea19a56273676d4707f04d64ea",
+          "reviewedContentSha256": "7ae8c19f895cec5145b9e1f7bd12fa181f9deabe39dfaac9ca1a2b859cfcfe5c"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-026.json",
+          "previousFileSha256": "d768a0bbb8185a8101169095ed6b5bae681e950189486e66e6b0ea3280c39356",
+          "previousReviewedContentSha256": "92c8a2d2853166f01bced92b378e2504e7c026613efa90a8bd50973f937ee664",
+          "fileSha256": "e5a49e6de253975534591ebbf221452205944d950d46b80cf4e2e52264e81ea2",
+          "reviewedContentSha256": "fc989c6216c8847345e3742af3017ae1d7cad610d84e4e38ee64bacb3f46bbae"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-029.json",
+          "previousFileSha256": "01b2770919d0c1072b5d306058f0e1e155cee6030f1ad48a3b9ca93266c36ff3",
+          "previousReviewedContentSha256": "ac8013db7d3ca48d62718a461d008fb65226b94be0967975a5537b5f35a776ca",
+          "fileSha256": "8cf6a6e473977d4e14678547f555e0b494f18668ce991d2e42a5016ad4f3710e",
+          "reviewedContentSha256": "75bc9df1ff662cf637841112115bc3c3dee78d298a31513b563555007731ca42"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-030.json",
+          "previousFileSha256": "8d011ca30833e691b804fa3b9abd4ca0a1b45acd68712934bae7c7dc81759f53",
+          "previousReviewedContentSha256": "cf9ce37a84e6d919f7348ec1ebd11f0fb35eb7161c1483e8c41fde313e247c7d",
+          "fileSha256": "5e5c08abf791ed0bca21a55eb5b51534a1945ec454b2ab99cf6019644546cd72",
+          "reviewedContentSha256": "a1886a34243f74feab06eacbd55ffe31d3717eda3ceae9b2fbc8505c343ac7cb"
+        },
+        {
+          "file": "stereo-course/merzlyak-10-base/lessons/ex-03-032.json",
+          "previousFileSha256": "0e89eacbc3e6176b2bb49db51a2f6d556e80dca693757bd6126e6f75355aa836",
+          "previousReviewedContentSha256": "acbbe0bb893b0c940cd69a285da995d02b5d99e765957b6f9482ac8cce443df9",
+          "fileSha256": "005866347b9eb030c67236158df6b6bb563e8c85ef8450c4da82eff89d26cdd9",
+          "reviewedContentSha256": "1f87e51647b342c55dc529d4ef03ef35d36fc51992cb8c50d45ff87ca4560521"
+        }
+      ]
+    }
+  ]
+}

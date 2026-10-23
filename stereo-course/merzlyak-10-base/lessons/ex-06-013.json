@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "revision": 1,
+  "id": "ex-06-013",
+  "kind": "exercise",
+  "title": "№ 6.13. Пересекающиеся отрезки",
+  "status": "reviewed",
+  "source": {
+    "bookId": "merzlyak-2022-10-base",
+    "collection": "main",
+    "exercise": "6.13",
+    "chapter": "Глава 2. Параллельность в пространстве",
+    "printedPages": [
+      56
+    ],
+    "pdfPages": [
+      57
+    ]
+  },
+  "statement": {
+    "text": "α∥β, A,B∈α, C,D∈β; отрезки AC и BD пересекаются в O. 1) Докажите AO/OC=BO/OD. 2) Найдите AB, если CD=32 см и AC:AO=7:3.",
+    "goal": "Докажи отношение и вычисли AB."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Схема показывает конкретную конфигурацию с выполненными условиями. Доказательство относится ко всем допустимым конфигурациям; длины и углы не измеряют по экрану.",
+    "model": {
+      "points": {
+        "O": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "A": [
+          -12.0,
+          -6.0,
+          0.0
+        ],
+        "B": [
+          12.0,
+          -6.0,
+          0.0
+        ],
+        "C": [
+          16.0,
+          8.0,
+          0.0
+        ],
+        "D": [
+          -16.0,
+          8.0,
+          0.0
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "C"
+        ],
+        [
+          "B",
+          "D"
+        ],
+        [
+          "A",
+          "B"
+        ],
+        [
+          "C",
+          "D"
+        ]
+      ],
+      "views": {
+        "neutral": {
+          "label": "Данные задачи"
+        },
+        "small": {
+          "label": "Треугольник AOB",
+          "polygon": [
+            "A",
+            "O",
+            "B"
+          ]
+        },
+        "large": {
+          "label": "Треугольник COD",
+          "polygon": [
+            "C",
+            "O",
+            "D"
+          ]
+        }
+      },
+      "labelNames": [
+        "O",
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "planar": true
+    }
+  },
+  "help": [
+    {
+      "id": "help-1",
+      "question": "Как начать?",
+      "text": "Не подставляй AC вместо OC в пропорцию подобия."
+    }
+  ],
+  "steps": [
+    {
+      "title": "Параллельные основания",
+      "prompt": "Почему AB∥CD?",
+      "explanation": "Пересекающиеся AC и BD задают плоскость. Её следы в α и β — AB и CD — параллельны.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Свойство параллельных плоскостей."
+        }
+      ],
+      "view": "small",
+      "id": "step-1"
+    },
+    {
+      "title": "Пункт 1",
+      "prompt": "Какие треугольники подобны?",
+      "explanation": "∠AOB=∠COD как вертикальные, а углы при параллельных AB,CD и секущих равны. Поэтому AOB∼COD, откуда AO/OC=BO/OD=AB/CD.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Подобие по двум углам."
+        }
+      ],
+      "view": "large",
+      "id": "step-2"
+    },
+    {
+      "title": "Пункт 2",
+      "prompt": "Как перейти от AC:AO к AO:OC?",
+      "explanation": "Пусть AC=7x, AO=3x. Так как O лежит на отрезке AC, OC=4x. Тогда AB=CD·AO/OC=32·3/4=24 см.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Сложение отрезков и пропорция подобия."
+        }
+      ],
+      "view": "small",
+      "id": "step-3"
+    }
+  ],
+  "answer": {
+    "mode": "manual",
+    "prompt": "Запиши ответ, построение или доказательство с обоснованием. Запись сохраняется для обсуждения с преподавателем; автоматической оценки доказательства нет."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "/root/course_architecture",
+    "at": "2026-10-22T23:06:23Z"
+  }
+}

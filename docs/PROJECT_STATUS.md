@@ -2,6 +2,41 @@
 
 Updated: 2026-10-23 (Asia/Novosibirsk)
 
+## Prepared for release review: Atanasyan 7–9 chapter II, triangles
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_II.md), HIGH review, base
+  `c62e5047fa2e774d43899e4ee20d5e1127c53e64`.
+- All99 numbered exercises92–190 and132 subparts, theory14–23 and21 review
+  questions are prepared and independently checked against the supplied2023
+  edition, printed pages29–52:163 new cards,554 steps and803 views.
+- All173 published chapter-I cards and catalog entries are exactly preserved.
+  The combined course has336 cards,1053 steps,1648 views and1057 coordinate
+  claims. Runtime and learner storage keys are unchanged.
+- Source, mathematics, pedagogy, integration and all1606 new width-specific
+  model images passed independent review. The final frozen browser run passed
+  3296 view checks,672 card journeys and9 interaction scenarios with no errors;
+  all11 source/model/runtime/regression gates passed.
+- Chapter-specific hash-bound review manifests approve the checked content.
+  Exact-head CI, virtual composition with current main and the owner release
+  decision are recorded in the resulting Draft PR. No chapter-II publication
+  or completion of later chapters is claimed here.
+
+## Published: Atanasyan 7–9 chapter I
+
+- PR302 merged as `c62e5047fa2e774d43899e4ee20d5e1127c53e64`, sole parent
+  `fa8273a36d33eb0ed854119d26cfa8d55b681d20`. The reviewed48-file delta and all
+  changed-file blobs match; composed tree `f4463f39a1581f6d7a92ac1340d396e3ed66cbe9`.
+- Published173 cards cover all134 parts of exercises1–91, thirteen theory points
+  and26 review questions, with499 justified steps,845 views and453 geometric
+  checks. All1690 width-specific view checks and346 card journeys passed;
+  all692 initial/final images were independently reviewed or verified identical.
+- Exact-head CI and Pages39868162647 succeeded. All14 canonical/cache-busted
+  public requests matched reviewed bytes; public bundle SHA256
+  `c8fee8a373b5fd00b883794066fd82857e9a10ee4890b6e0a2695086fba10daf`.
+- Live course, deep links, saved draft/steps, theory return, full-screen return
+  and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
+  Later chapters and real-pupil validation remain pending.
+
 ## In progress: Atanasyan chapter III §2, pyramids
 
 - [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_SECTION.md), HIGH review, base
@@ -11,8 +46,10 @@ Updated: 2026-10-23 (Asia/Novosibirsk)
 - Integrated403 cards,1361 steps and1426 views; all351 published cards preserved.
   Source limitations in246/247/248 are explained explicitly.
 - Local source/model/runtime and45 new mathematical regression groups pass.
-  Fresh exact-head cloud browser checks, actual screenshot review and publication
-  remain pending. Private model previews do not count as cloud browser approval.
+  All8 cloud checks passed on reviewed head `15fde0125509d4e2879f4fe65b7927c5f2368cf0`;
+  all1218 images passed actual review or verified byte-identical reuse.
+  Concurrent course status entries are preserved. The documentation-only conflict
+  resolution requires fresh exact-head CI; publication remains pending.
 - The owner requested uninterrupted cloud continuation. Paid Claude remains
   deferred; no Claude verdict is claimed.
 

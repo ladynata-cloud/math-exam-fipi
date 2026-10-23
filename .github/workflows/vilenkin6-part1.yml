@@ -1,0 +1,58 @@
+name: Vilenkin 6 part 1 publication
+on:
+  pull_request:
+    paths:
+      - 'courses/vilenkin-6-part-1/**'
+      - 'tools/vilenkin6-course/**'
+      - 'docs/tasks/VILENKIN6_PART1_PUBLISH.md'
+      - '.github/workflows/vilenkin6-part1.yml'
+permissions:
+  contents: read
+jobs:
+  course-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated DOM test dependency
+        run: |
+          npm install --prefix "$RUNNER_TEMP/vilenkin-dom" --no-save --no-package-lock --ignore-scripts linkedom@0.18.14
+          echo "NODE_PATH=$RUNNER_TEMP/vilenkin-dom/node_modules" >> "$GITHUB_ENV"
+      - name: Content and retained-work regression
+        run: |
+          node --check courses/vilenkin-6-part-1/app.js
+          node --check courses/vilenkin-6-part-1/labs.js
+          node tools/vilenkin6-course/check.cjs
+          node tools/vilenkin6-course/dom.cjs
+          python3 tools/vilenkin6-course/build-offline.py
+          git diff --exit-code -- courses/vilenkin-6-part-1/offline.html
+          git diff --check
+  external-review:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'publish/vilenkin6-part1-course'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Exact-head read-only external review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
+          REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
+          REVIEW_PR: ${{ github.event.pull_request.number }}
+        run: python3 tools/vilenkin6-course/external-review.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: vilenkin6-external-review
+          path: artifacts/vilenkin6-external-review.json
+          if-no-files-found: warn
+          retention-days: 30

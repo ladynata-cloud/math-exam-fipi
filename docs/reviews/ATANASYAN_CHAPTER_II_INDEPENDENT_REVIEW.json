@@ -1,0 +1,3195 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Independent chapter-II review agent; not an author of preparation or model files",
+  "reviewedAt": "2026-10-22T23:45:16.489973+00:00",
+  "baseCommit": "c62e5047fa2e774d43899e4ee20d5e1127c53e64",
+  "reviewBinding": "Content hashes below; this is not an exact-head release approval.",
+  "scope": {
+    "bookId": "atanasyan-2023-7-9",
+    "edition": "2023, 14-е издание, переработанное",
+    "chapter": 2,
+    "printedPages": [
+      29,
+      52
+    ],
+    "pdfPages": [
+      30,
+      53
+    ],
+    "mainNumbers": [
+      92,
+      190
+    ],
+    "counts": {
+      "mainNumbers": 99,
+      "mainParts": 132,
+      "theory": 10,
+      "selfchecks": 21,
+      "cards": 163
+    }
+  },
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "verdict": {
+    "source": "PASS",
+    "mathematics": "PASS",
+    "pedagogy": "PASS",
+    "coordinateGate": "PASS",
+    "assignedVisualReview": "PASS",
+    "release": "NOT_REVIEWED"
+  },
+  "method": [
+    "Independently viewed every source page PDF 030–053 (printed 29–52), including all exercise figures, theory proofs and selfcheck questions. Re-rendered source PDF 043 was used after the first render was corrupted.",
+    "Derived and persisted an independent source inventory: every number, formal subpart and printed page, all 10 theory points and all 21 selfcheck questions.",
+    "Derived numerical oracles from the source before reading authored solutions.",
+    "Read every condition/answer/solution step of all 132 exercise cards, all 10 theory cards and all 21 selfcheck cards; checked source fidelity, complete cases, mathematical validity and prerequisite order.",
+    "Inspected model data and progression for exercise solutions and corrected premature conclusion markings and missing compass construction stages. Ran the coordinate gate independently.",
+    "Completed the assigned visual audit of every theory/selfcheck view at both capture widths: all 382 views were covered by exact-RGB representatives on 41 manually inspected contact sheets. After the circle-stroke correction, all 56 views of the two affected cards were recaptured from the final v4 candidate and inspected on 8 additional sheets; the strengthened painted-bounds gate also passed."
+  ],
+  "filesSha256": {
+    "geometry-course/textbook/models/chapter-02-a.json": "7678ddd773b5132aee66014c241d2baefb82c4f0000aca22581ae9cb43299717",
+    "geometry-course/textbook/models/chapter-02-b.json": "0b7c3874dac28779c46bb2c01fa361ff829adcf959b13af2d06863e1a2198090",
+    "geometry-course/textbook/models/chapter-02-c.json": "05fa573d941e612e263f3dc97fb376850fa78a99b67bd81133060f16986a707d",
+    "geometry-course/textbook/models/chapter-02-theory.json": "30c006ca60c8b7481d32925cb6029b4a7261b42e7c0d64fa3b4830dc0a904f6a",
+    "geometry-course/textbook/preparation/chapter-02-a.json": "2b61b581d00189331d820b5440518a23ca1c4671772effa3144f71f0a8c75250",
+    "geometry-course/textbook/preparation/chapter-02-b.json": "7255b10084efce92277edf3aca6d77a215f259c1680990b221cf8cb225ea0b14",
+    "geometry-course/textbook/preparation/chapter-02-c.json": "d421e4390fe583dede8770895dde9c484575068de240f2cd35e84c537d6c3c47",
+    "geometry-course/textbook/preparation/chapter-02-theory.json": "9edce3117e42d7482c8acb166fb6b688ea58c89172022e41c12f5e636158dfac"
+  },
+  "fixturesSha256": {
+    "tools/geometry-textbook/chapter-02-source-map.json": "9b2c9e5f335e626edd009c3a56fac5bedff571ff2998f5d8124b0f5193cea62d",
+    "tools/geometry-textbook/chapter-02-numeric-oracles.json": "693e260d788941b9d906f7a3701cea2e7a690fe6b85ecc8609ef0c30f3ba60a5"
+  },
+  "exerciseReview": [
+    {
+      "number": 92,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        31
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 93,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        31
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 94,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 95,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 96,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 97,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 98,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 99,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 100,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 101,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 102,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 103,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 104,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 105,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 106,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 107,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 108,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 109,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 110,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 111,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 112,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 113,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 114,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 115,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 116,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 117,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 118,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        38
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 119,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 120,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 121,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 122,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 123,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        38
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 124,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 125,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        38
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 126,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        41
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 127,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        41
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 128,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 129,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 130,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 131,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 132,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 133,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 134,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 135,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 136,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 137,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 138,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 139,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 140,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 141,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 142,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 143,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 144,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 145,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 146,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        43
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 147,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        43
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 148,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 149,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 150,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 151,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 152,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 153,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 154,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 155,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 156,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 157,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 158,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48,
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 159,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 160,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 161,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 162,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 163,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 164,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 165,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 166,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 167,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 168,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 169,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 170,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        51
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 171,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 172,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 173,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 174,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 175,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 176,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 177,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 178,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 179,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 180,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 181,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 182,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 183,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 184,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 185,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 186,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 187,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 188,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 189,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 190,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    }
+  ],
+  "theoryReview": [
+    {
+      "number": 14,
+      "printedPages": [
+        29,
+        30
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 15,
+      "printedPages": [
+        30,
+        31
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 16,
+      "printedPages": [
+        33,
+        34
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 17,
+      "printedPages": [
+        34,
+        35
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 18,
+      "printedPages": [
+        35,
+        36
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 19,
+      "printedPages": [
+        38,
+        39
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 20,
+      "printedPages": [
+        39,
+        40,
+        41
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 21,
+      "printedPages": [
+        43,
+        44
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 22,
+      "printedPages": [
+        44,
+        45
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 23,
+      "printedPages": [
+        45,
+        46,
+        47
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    }
+  ],
+  "selfcheckReview": [
+    {
+      "number": 1,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 2,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 3,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 4,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 5,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 6,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 7,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 8,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 9,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 10,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 11,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 12,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 13,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 14,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 15,
+      "printedPages": [
+        49
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 16,
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 17,
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 18,
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 19,
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 20,
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "number": 21,
+      "printedPages": [
+        50
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "items": [
+        "main:115"
+      ],
+      "issue": "AB=AC conclusion marks appeared before the proof.",
+      "resolution": "Neutral and first two steps show only the given equal half-base and perpendicular; side equality first appears after SAS."
+    },
+    {
+      "items": [
+        "theory:16",
+        "selfcheck:6"
+      ],
+      "issue": "Reflection proof omitted the case where the chosen segment was already perpendicular.",
+      "resolution": "Explicit initial perpendicular branch; reflected construction is used only otherwise."
+    },
+    {
+      "items": [
+        "main:159:а",
+        "main:159:б",
+        "main:159:в",
+        "main:190"
+      ],
+      "issue": "Some compass operations described in text were absent from the model progression.",
+      "resolution": "Separate uncluttered views now show actual equal-radius circles, their intersections and constructed bisectors/heights/midpoints. Independently verified coordinates including both circles for 159а."
+    },
+    {
+      "items": [
+        "main:185",
+        "main:189"
+      ],
+      "issue": "Construction existence wording was imprecise.",
+      "resolution": "185 states 0/1/2 solutions; 189 conditions the intersection step on existence and preserves the no-solution case."
+    },
+    {
+      "items": [
+        "A",
+        "B",
+        "C",
+        "theory"
+      ],
+      "issue": "Several links referenced neighbouring chapter-I theory numbers.",
+      "resolution": "Relevant links corrected for segment length, angle measure, comparison/bisectors, vertical/adjacent angles and perpendicular lines."
+    },
+    {
+      "items": [
+        "theory:23 step6",
+        "selfcheck:19 step1"
+      ],
+      "issue": "Circle at the lower viewport boundary lost half its stroke at1280; numeric geometric bounds passed.",
+      "resolution": "All six points of the affected bisector construction translated +3 in y, preserving every equality/angle. All 56 views of the two cards independently recaptured and manually reviewed; enhanced painted-bounds gate passes."
+    }
+  ],
+  "specialCasesVerified": [
+    "108: six altitudes across acute and obtuse triangles",
+    "120: no use of future triangle angle-sum theorem",
+    "141: 25° and 155°",
+    "142 and 147: both half-plane configurations",
+    "155: 0/1/2/infinite circle intersections",
+    "163: both possible side lengths",
+    "165: off-line/on-line/midpoint cases",
+    "170: K=A boundary case and collinearity proof",
+    "178–179: exterior-angle inequality and AAS without future angle-sum theorem",
+    "188: coincident circles and degenerate vertex exclusion",
+    "189: no solution and endpoint B cases",
+    "20 / selfcheck 15: all three SSS proof configurations"
+  ],
+  "checks": [
+    {
+      "command": "python tools/geometry-textbook/check_models.py",
+      "result": "PASS",
+      "models": 336,
+      "views": 1648,
+      "coordinateClaims": 1057
+    },
+    {
+      "check": "Independent source-map comparison with all four preparation files",
+      "result": "PASS",
+      "mainNumbers": 99,
+      "mainParts": 132,
+      "theory": 10,
+      "selfchecks": 21,
+      "allPrintedPagesMatch": true
+    }
+  ],
+  "openFindings": [],
+  "notRunOrPending": [
+    "Overall browser interactions, exercise screenshot review and baseline regression are assigned to the coordinating team; not certified by this subset report.",
+    "Exact-commit release gate, PR review and merge authorization."
+  ],
+  "recommendation": "PASS for the complete chapter-II source/math/pedagogy review and the assigned all-view theory/selfcheck visual review, bound to the listed v4 content hashes. No open findings in this reviewer scope. Overall release requires the coordinating team’s complete browser/regression gates and separate repository authorization.",
+  "assignedVisualAudit": {
+    "reviewedAt": "2026-10-22T23:41:02.620357+00:00",
+    "scope": "All 10 chapter-II theory and all 21 selfcheck cards, every authored scene, widths 320 and 1280; full model element screenshots, not sampled views.",
+    "status": "PASS_AFTER_CORRECTION_RECHECK",
+    "captureEvidenceSha256": "ec3aca366e945689e5a154f0d8215b790ce7a3b75d630f9dc16a4453db94b489",
+    "captureManifestSha256": "948634afe521b2f5da837c8ed67095abfa9182f5296e11bbeef348e5cee96909",
+    "captureBundleSha256": "52371c9c2c68112d2fda5de4abf20077e5917dc2ddde8ef307161538a1b9f40e",
+    "captureImplementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+    "captureGateScriptSha256": "dc32166206e797e8c862277dbc908347d636a7605839d31ccfd416558f43a5e5",
+    "parentGateScriptSha256": "50e6cecd6c6f452f447c36e6c00c11563e4c662a221ac638b591ba48cbd4bdd6",
+    "counts": {
+      "cards": 31,
+      "authoredViews": 191,
+      "widths": [
+        320,
+        1280
+      ],
+      "fullScreenshots": 382,
+      "exactRGBUniqueFrames": 326,
+      "manuallyInspectedContactSheets": 41
+    },
+    "automatedGate": {
+      "completed": true,
+      "issues": 0,
+      "jsErrors": [],
+      "actualCSSViewportClippingIncluded": true
+    },
+    "manualMethod": "Viewed all 41 contact sheets (14 mobile + 27 desktop), each containing exact-RGB representatives. Deduplication uses dimensions plus every RGB byte of the complete model screenshot; all 382 input images remain mapped in the manifest. Opened the theory-23 step-6 desktop image at full resolution to verify the circle-stroke clipping finding.",
+    "sheetsInspected": [
+      {
+        "file": "theory-320-01.png",
+        "sha256": "60136ac2bf6f02fbba558b6e8dabec9b072c83bc94b8e5a2fb6f13e9a754f784",
+        "representatives": [
+          "atanasyan-7-9-theory-14-part-1-neutral-320-view.png",
+          "atanasyan-7-9-theory-14-part-1-step-1-320-view.png",
+          "atanasyan-7-9-theory-14-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-14-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-14-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-14-part-1-step-5-320-view.png",
+          "atanasyan-7-9-theory-15-part-1-neutral-320-view.png",
+          "atanasyan-7-9-theory-15-part-1-step-1-320-view.png",
+          "atanasyan-7-9-theory-15-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-15-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-15-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-16-part-1-neutral-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-02.png",
+        "sha256": "bb694bfe649cc5dbeeee5c42775edd201fd8920c5d7e5c136146fb6cecfa5cde",
+        "representatives": [
+          "atanasyan-7-9-theory-16-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-16-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-16-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-16-part-1-step-5-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-neutral-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-1-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-5-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-6-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-case-1-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-03.png",
+        "sha256": "8c5954d2c6df2ca47e716b0c13438ebf3f72509dac8ddf677d0e25646420a06d",
+        "representatives": [
+          "atanasyan-7-9-theory-17-part-1-case-2-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-case-3-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-case-4-320-view.png",
+          "atanasyan-7-9-theory-17-part-1-case-5-320-view.png",
+          "atanasyan-7-9-theory-18-part-1-neutral-320-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-1-320-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-5-320-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-6-320-view.png",
+          "atanasyan-7-9-theory-19-part-1-neutral-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-04.png",
+        "sha256": "3460fed399255920260afd5764cbd1b23429e9aae86311722031a5a477ec920a",
+        "representatives": [
+          "atanasyan-7-9-theory-19-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-19-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-19-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-20-part-1-neutral-320-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-5-320-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-6-320-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-7-320-view.png",
+          "atanasyan-7-9-theory-20-part-1-case-1-320-view.png",
+          "atanasyan-7-9-theory-20-part-1-case-2-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-05.png",
+        "sha256": "e8661957dfeb52636d136e86a5120bbf63324435252c06c67993dd18807f8174",
+        "representatives": [
+          "atanasyan-7-9-theory-20-part-1-case-3-320-view.png",
+          "atanasyan-7-9-theory-21-part-1-neutral-320-view.png",
+          "atanasyan-7-9-theory-21-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-21-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-21-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-21-part-1-step-5-320-view.png",
+          "atanasyan-7-9-theory-21-part-1-step-6-320-view.png",
+          "atanasyan-7-9-theory-22-part-1-neutral-320-view.png",
+          "atanasyan-7-9-theory-22-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-22-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-22-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-neutral-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-06.png",
+        "sha256": "ec60df19d77d1715f8dc2f8f90419737e9ea5e48029a0b2213ff812b3d162c1a",
+        "representatives": [
+          "atanasyan-7-9-theory-23-part-1-step-1-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-2-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-3-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-4-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-5-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-6-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-7-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-8-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-9-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-10-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-11-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-12-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-07.png",
+        "sha256": "5eec32c4d9ec4db1e9e8a9e52920ac6af2b53583cbd44b7ee974a614f99ef1a6",
+        "representatives": [
+          "atanasyan-7-9-theory-23-part-1-step-13-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-14-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-15-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-16-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-17-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-18-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-case-1-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-case-2-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-case-3-320-view.png",
+          "atanasyan-7-9-theory-23-part-1-case-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-1-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-1-part-1-step-1-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-08.png",
+        "sha256": "e07131cfb6809a15ded176974acff1e46522613d1b4ba20e81b9a0f4d58ed121",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-1-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-1-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-2-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-2-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-3-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-3-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-3-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-3-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-4-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-4-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-4-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-4-part-1-step-3-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-09.png",
+        "sha256": "11c410d9b2e710cd740bf7b6113fb044eee650ebe99c8658e512232385828d78",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-4-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-5-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-5-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-6-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-6-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-6-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-6-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-7-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-7-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-7-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-7-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-8-part-1-step-1-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-10.png",
+        "sha256": "9db4c156a061603c6ec88a6820999382c2fa0d3d138233f30da94c7d5e177632",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-8-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-8-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-9-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-9-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-9-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-9-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-10-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-10-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-11-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-11-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-12-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-12-part-1-step-4-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-11.png",
+        "sha256": "ed280d0f914190247accc9a6706dc9898974adeb865f7eb839c912f5dd9db96d",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-13-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-13-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-13-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-13-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-13-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-14-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-14-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-14-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-14-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-14-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-2-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-12.png",
+        "sha256": "ee17a37bcab6457b272763389ee0f2c708675b64f1365b9c1e648ede45a97dae",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-5-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-6-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-case-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-case-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-case-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-16-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-16-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-16-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-16-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-17-part-1-neutral-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-13.png",
+        "sha256": "cd136b692c87ff6566e77d350588cc0a6a59e76c42265d418ec3a8e8114fc984",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-17-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-17-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-17-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-5-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-2-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-320-14.png",
+        "sha256": "8b413ce84e939d7f9c8958f2857ab5de6f24242edc2bddd333f567d6a0308db1",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-step-4-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-neutral-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-step-1-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-step-2-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-step-3-320-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-step-4-320-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-01.png",
+        "sha256": "660b574f3f76734f206ce1938e566ab2749d80932b36b2627df470607f422e90",
+        "representatives": [
+          "atanasyan-7-9-theory-14-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-theory-14-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-theory-14-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-theory-14-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-theory-14-part-1-step-5-1280-view.png",
+          "atanasyan-7-9-theory-15-part-1-neutral-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-02.png",
+        "sha256": "5997df4d46f643b8fb8a7d904cb44a5cc2d1e376068b199eca6be823e68135a1",
+        "representatives": [
+          "atanasyan-7-9-theory-15-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-theory-15-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-theory-15-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-theory-16-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-theory-16-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-theory-16-part-1-step-3-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-03.png",
+        "sha256": "16a6e975e91205035f3446e2077ec6e260e952ecb5a69609c9cfb8f82e0c40bc",
+        "representatives": [
+          "atanasyan-7-9-theory-16-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-theory-16-part-1-step-5-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-1-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-3-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-04.png",
+        "sha256": "301ef5a16939a9a3a34e3807b3d6dfe903be71eb46ad6f9e89098024d38d9ced",
+        "representatives": [
+          "atanasyan-7-9-theory-17-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-5-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-step-6-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-case-1-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-case-2-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-case-3-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-05.png",
+        "sha256": "987247dd579d15e4e2e8bbce483912de04635826543ab44a9cd4e3f2b7397dfc",
+        "representatives": [
+          "atanasyan-7-9-theory-17-part-1-case-4-1280-view.png",
+          "atanasyan-7-9-theory-17-part-1-case-5-1280-view.png",
+          "atanasyan-7-9-theory-18-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-4-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-06.png",
+        "sha256": "d507f4dafa7d2a0a3b1294ef55902bced8532c921101236f1066f14df48d3150",
+        "representatives": [
+          "atanasyan-7-9-theory-18-part-1-step-5-1280-view.png",
+          "atanasyan-7-9-theory-18-part-1-step-6-1280-view.png",
+          "atanasyan-7-9-theory-19-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-theory-19-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-theory-19-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-theory-19-part-1-step-4-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-07.png",
+        "sha256": "2bb0691436c3ccf63d72b1b7af5975154a3d09467780ed1f41fea87b030b840a",
+        "representatives": [
+          "atanasyan-7-9-theory-20-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-5-1280-view.png",
+          "atanasyan-7-9-theory-20-part-1-step-6-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-08.png",
+        "sha256": "392b71134187ac2b38225434bcc8499587b9d04f7b4d3e8b5967cdb2c2db90ac",
+        "representatives": [
+          "atanasyan-7-9-theory-20-part-1-step-7-1280-view.png",
+          "atanasyan-7-9-theory-20-part-1-case-1-1280-view.png",
+          "atanasyan-7-9-theory-20-part-1-case-2-1280-view.png",
+          "atanasyan-7-9-theory-20-part-1-case-3-1280-view.png",
+          "atanasyan-7-9-theory-21-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-theory-21-part-1-step-2-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-09.png",
+        "sha256": "665ef05065722e37d439eb97566ce8867e1fa51595b010c61fb1a7b00c316eb5",
+        "representatives": [
+          "atanasyan-7-9-theory-21-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-theory-21-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-theory-21-part-1-step-5-1280-view.png",
+          "atanasyan-7-9-theory-21-part-1-step-6-1280-view.png",
+          "atanasyan-7-9-theory-22-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-theory-22-part-1-step-2-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-10.png",
+        "sha256": "cf73c4baf3ad871deab3b44b5cbc0d25db07aea41da4aff4a03b6a1db64a1979",
+        "representatives": [
+          "atanasyan-7-9-theory-22-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-theory-22-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-1-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-3-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-11.png",
+        "sha256": "52f90c3f8a0a2f4043be8816f575e147ee156cb4803926254a415faf20427546",
+        "representatives": [
+          "atanasyan-7-9-theory-23-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-5-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-6-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-7-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-8-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-9-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-12.png",
+        "sha256": "c252a84b8396e790fc8f1837d8e4c683c3e73ba8df825357a62dc57f53212f61",
+        "representatives": [
+          "atanasyan-7-9-theory-23-part-1-step-10-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-11-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-12-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-13-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-14-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-15-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-13.png",
+        "sha256": "ee3d6c93921597626c0321ac145bde8c23d7526c818a980181b4f4ca94330d43",
+        "representatives": [
+          "atanasyan-7-9-theory-23-part-1-step-16-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-17-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-step-18-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-case-1-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-case-2-1280-view.png",
+          "atanasyan-7-9-theory-23-part-1-case-3-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-14.png",
+        "sha256": "d57786d027c5a40429a76abdd153d36969ed3decbd7dbbfacb917b012cdb7360",
+        "representatives": [
+          "atanasyan-7-9-theory-23-part-1-case-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-1-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-1-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-1-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-2-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-2-part-1-step-2-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-15.png",
+        "sha256": "501c71fa9cbe7bc62164c93cd0fc9f5bd5d6f2acf59bb2c68b333aa7b7ba3114",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-3-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-3-part-1-step-1-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-3-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-3-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-4-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-4-part-1-step-2-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-16.png",
+        "sha256": "83cfc18d3f0a2c50a282f6b07628742ac12e8e0d0cff90c6027bb6664279f65f",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-4-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-4-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-5-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-5-part-1-step-1-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-6-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-6-part-1-step-3-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-17.png",
+        "sha256": "cbe2ace35c9568ed484a768969d2ec1adf62b98b891c5d663daadca1bacb1f7b",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-6-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-7-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-7-part-1-step-1-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-7-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-7-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-8-part-1-step-1-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-18.png",
+        "sha256": "7720043bde04c5979d71b22b7d06344017caeeaa1679725519c53b38ac311b38",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-8-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-8-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-9-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-9-part-1-step-1-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-9-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-9-part-1-step-3-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-19.png",
+        "sha256": "abadc2d2bc0db44e0984f48d50416002b54f7043768b2aa898040bdf0d54c636",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-10-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-10-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-11-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-11-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-12-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-12-part-1-step-4-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-20.png",
+        "sha256": "386596e5de1cb1fd13988dd53afc4e1a29ba451e8a60198369ccf8b44c5ff4f7",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-13-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-13-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-14-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-14-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-14-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-14-part-1-step-4-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-21.png",
+        "sha256": "360a314f874531e90b7bb05d280ef252c3da87bb74fbc96b1aa967c729311b01",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-5-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-step-6-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-22.png",
+        "sha256": "8c2682fb56a4b1a6613492e879f783626e213b8d98635056677e531ef85b34bd",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-case-1-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-case-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-15-part-1-case-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-16-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-16-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-16-part-1-step-3-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-23.png",
+        "sha256": "0ff0d6266e5b14eccf0521400137b250eaad33354390db3f032e0ebc65f07151",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-16-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-17-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-17-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-17-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-17-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-neutral-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-24.png",
+        "sha256": "dfcc7362c84c648edc1ec5c71b241e56300f9a0cafe321f5d538362e608c1fc5",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-1-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-18-part-1-step-5-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-neutral-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-25.png",
+        "sha256": "730acae501a08a250662d2773d269fbb6c5d6d2128487fe1b69e4462e56c2954",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-1-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-step-1-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-26.png",
+        "sha256": "7e89bb2c5f4a70f79e1cf63e9c99f8b90fae133d8f83b2e327b5fbe7942d07eb",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-step-2-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-20-part-1-step-4-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-neutral-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-step-1-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-step-2-1280-view.png"
+        ]
+      },
+      {
+        "file": "theory-1280-27.png",
+        "sha256": "f7e28d8db26bfeb22b86c6568899c9a16a5889bbeb7404ebb6a41c40a9dfa952",
+        "representatives": [
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-step-3-1280-view.png",
+          "atanasyan-7-9-selfcheck-chapter-2-21-part-1-step-4-1280-view.png"
+        ]
+      }
+    ],
+    "reviewedCards": [
+      {
+        "id": "atanasyan-7-9-theory-14-part-1",
+        "canonicalLessonSha256": "02b87b4a7b9ae465f4adad42d23d9d142b66ba35ff03758091a46c112786a2be",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-theory-15-part-1",
+        "canonicalLessonSha256": "534c94f6e1a30e0379bdbc2e9be877345a33cad70ba00e3094e415f20c1dddde",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-theory-16-part-1",
+        "canonicalLessonSha256": "602ba39f9b734318c0fc065994659830de315ce6ab0f1866b3876b7d301c740b",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-theory-17-part-1",
+        "canonicalLessonSha256": "8dc8287ff73e638f423b91aaae77081d5838a9b0ff18547408747809423b922a",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6",
+          "case-1",
+          "case-2",
+          "case-3",
+          "case-4",
+          "case-5"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-theory-18-part-1",
+        "canonicalLessonSha256": "e7ced99d4da129b845442c93383b8f6ed10e470555b7cb3d77e2dbee3df55104",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6",
+          "step-7"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-theory-19-part-1",
+        "canonicalLessonSha256": "f72bbc8c0062247405c93959122f68784aba6985d4f31a0bd30b85b9f3197126",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-theory-20-part-1",
+        "canonicalLessonSha256": "deedbf3ed21b7bfb92839b4ced64f97279eadaadef6a3f17fb21b6a5aa466f6d",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6",
+          "step-7",
+          "case-1",
+          "case-2",
+          "case-3"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-theory-21-part-1",
+        "canonicalLessonSha256": "d56c3b7f15463b580e342185027d3139957e6c79fcbb4de007836b74478de510",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-theory-22-part-1",
+        "canonicalLessonSha256": "064804286d11dc01a8c0c1b7367c9fcb962c2424eedb315c87b425ce575efa1f",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-theory-23-part-1",
+        "canonicalLessonSha256": "585423148bbd8e10e4f7f679d08be9d2f511a1c1527c149674b5619c5d445ec4",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6",
+          "step-7",
+          "step-8",
+          "step-9",
+          "step-10",
+          "step-11",
+          "step-12",
+          "step-13",
+          "step-14",
+          "step-15",
+          "step-16",
+          "step-17",
+          "step-18",
+          "case-1",
+          "case-2",
+          "case-3",
+          "case-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-1-part-1",
+        "canonicalLessonSha256": "70364069dfca9978706f07473a1996e6191e0263a6d6d07a33ca96ce3fe25065",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-2-part-1",
+        "canonicalLessonSha256": "06e8b98e8728c3bc4c5f0b9478f7fe1fc0c625288edd82996114d860634d7903",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-3-part-1",
+        "canonicalLessonSha256": "243096941ac32ecf0d896193e1dfea573c8b242bced7587b54b21076d8d6f650",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-4-part-1",
+        "canonicalLessonSha256": "a2d67ac0912cfc5623eb0b79d5f43ba7328a8ece7da49c4e3e3421adb77123bb",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-5-part-1",
+        "canonicalLessonSha256": "0fff53c95841b7cb880ee1294a81ea81213db35a465394356ff596a20d260187",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-6-part-1",
+        "canonicalLessonSha256": "e40f432eec8999c64204a945c874d3caf528a2b8f8467fd41cfa39b6aea612a3",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-7-part-1",
+        "canonicalLessonSha256": "36bfa0bbb419a8f3b68bf9e39ce40b0f36fb7d620f63ad70f6e07ea586dde0d6",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-8-part-1",
+        "canonicalLessonSha256": "d564b221001158b08072b97f9bb7bfb821d2c772a6bda0d82d0de106def58760",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-9-part-1",
+        "canonicalLessonSha256": "8ad531eea8a71fe4e4b54e046748ee0ab67da61b2a07a2780d0e8c9b5c8cf107",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-10-part-1",
+        "canonicalLessonSha256": "622ce5d159a577b93b018dd4a2ac232cf276dd9778b920cda2492ec65f19841f",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-11-part-1",
+        "canonicalLessonSha256": "c163efe9f50778470751910dc66bc5952dfa4c0b4ef3223cb5bfd7e51d20233e",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-12-part-1",
+        "canonicalLessonSha256": "765037549e2d1479f9c4eb5aef7bde3e9ebb23954b73cceee0d902664aac7397",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-13-part-1",
+        "canonicalLessonSha256": "0f3989b02612750717c700978d38e0f7a3055445ccd8a17f9b2982d19d3abb6d",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-14-part-1",
+        "canonicalLessonSha256": "37ab9b3efc0bf1c3c58222f49f35bf708e913203e6aa2b20f35d38672101add4",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-15-part-1",
+        "canonicalLessonSha256": "c6bde2418345196ada68b01e0feed99f854f71066242dd3f979b2966c196d88a",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6",
+          "case-1",
+          "case-2",
+          "case-3"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-16-part-1",
+        "canonicalLessonSha256": "e705b5a913b2b7f2b875bd5f4e38d9065d562b1acb7eb1a406db493ba716d13b",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-17-part-1",
+        "canonicalLessonSha256": "5f75cbecb5b32c43af2cf15be6ce097d6f18255c1079d182dbda69f8049d836d",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-18-part-1",
+        "canonicalLessonSha256": "e7026d1cb9d92bf75a90e8a3740fcc40c098b44bd525f7066e48a397d9565842",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-19-part-1",
+        "canonicalLessonSha256": "a7fff8c468714f13b47d51a34dbcca53a1b19fcf62f745bccf097301b0b188ff",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-20-part-1",
+        "canonicalLessonSha256": "cb38aca645b3bf45d8125f022fb9abdee0827bf0730dd573bca53996bae4e354",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      },
+      {
+        "id": "atanasyan-7-9-selfcheck-chapter-2-21-part-1",
+        "canonicalLessonSha256": "184c2b8293477604c7512d9ca8687840c23e136bff35a935af82a94c34a661f0",
+        "views": [
+          "neutral",
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4"
+        ]
+      }
+    ],
+    "lessonHashCanonicalization": "UTF-8 JSON, ensure_ascii=false, sorted object keys, separators comma/colon with no whitespace",
+    "findings": [
+      {
+        "id": "CIRCLE_STROKE_TOUCHES_VIEWPORT",
+        "severity": "minor",
+        "cards": [
+          "atanasyan-7-9-theory-23-part-1",
+          "atanasyan-7-9-selfcheck-chapter-2-19-part-1"
+        ],
+        "views": [
+          "theory 23 step-6 at1280",
+          "selfcheck19 step-1 at1280"
+        ],
+        "observation": "Circle is geometrically tangent to the lower model viewport; half the visible stroke is clipped. The numeric bounding-box gate permits this tangent boundary and did not catch the stroke.",
+        "resolutionStatus": "RESOLVED: independently inspected all 56 views of both corrected cards at 320/1280, including full-resolution theory23 step6. The circle now has visible space below its entire stroke; strengthened painted-bounds gate also passes."
+      }
+    ],
+    "limitations": "This subset does not independently review browser interactions or exercise screenshots. Those are assigned to other reviewers and the coordinating agent.",
+    "finalCandidateBinding": {
+      "snapshot": "v4",
+      "bundleSha256": "49bb8653fd166efbfa1ead90bf44980b72b72e3a2de356387ef59c720c77260f",
+      "chapterContentSha256": "4867af61bb95cd42b259afde9d507c7183d4c2942bceedf25580ecbbae23aab3",
+      "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+      "unchangedCardsReused": 29,
+      "unchangedImplementationFiles": true,
+      "comparison": "Exact equality of all 29 unchanged serialized lesson objects and all implementation-file SHA256 values between the original captured v2 candidate and final v4 candidate. Both changed cards independently recaptured and inspected in every view.",
+      "reviewedCards": [
+        {
+          "id": "atanasyan-7-9-theory-14-part-1",
+          "canonicalLessonSha256": "02b87b4a7b9ae465f4adad42d23d9d142b66ba35ff03758091a46c112786a2be",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-theory-15-part-1",
+          "canonicalLessonSha256": "534c94f6e1a30e0379bdbc2e9be877345a33cad70ba00e3094e415f20c1dddde",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-theory-16-part-1",
+          "canonicalLessonSha256": "602ba39f9b734318c0fc065994659830de315ce6ab0f1866b3876b7d301c740b",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5",
+            "step-6"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-theory-17-part-1",
+          "canonicalLessonSha256": "8dc8287ff73e638f423b91aaae77081d5838a9b0ff18547408747809423b922a",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5",
+            "step-6",
+            "case-1",
+            "case-2",
+            "case-3",
+            "case-4",
+            "case-5"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-theory-18-part-1",
+          "canonicalLessonSha256": "e7ced99d4da129b845442c93383b8f6ed10e470555b7cb3d77e2dbee3df55104",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5",
+            "step-6",
+            "step-7"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-theory-19-part-1",
+          "canonicalLessonSha256": "f72bbc8c0062247405c93959122f68784aba6985d4f31a0bd30b85b9f3197126",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-theory-20-part-1",
+          "canonicalLessonSha256": "deedbf3ed21b7bfb92839b4ced64f97279eadaadef6a3f17fb21b6a5aa466f6d",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5",
+            "step-6",
+            "step-7",
+            "case-1",
+            "case-2",
+            "case-3"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-theory-21-part-1",
+          "canonicalLessonSha256": "d56c3b7f15463b580e342185027d3139957e6c79fcbb4de007836b74478de510",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5",
+            "step-6"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-theory-22-part-1",
+          "canonicalLessonSha256": "064804286d11dc01a8c0c1b7367c9fcb962c2424eedb315c87b425ce575efa1f",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-theory-23-part-1",
+          "canonicalLessonSha256": "708f9e66b9f578c406cd30faf38c2f3b7cf302ca8baf69ebceed3db3a9a56afa",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5",
+            "step-6",
+            "step-7",
+            "step-8",
+            "step-9",
+            "step-10",
+            "step-11",
+            "step-12",
+            "step-13",
+            "step-14",
+            "step-15",
+            "step-16",
+            "step-17",
+            "step-18",
+            "case-1",
+            "case-2",
+            "case-3",
+            "case-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-1-part-1",
+          "canonicalLessonSha256": "70364069dfca9978706f07473a1996e6191e0263a6d6d07a33ca96ce3fe25065",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-2-part-1",
+          "canonicalLessonSha256": "06e8b98e8728c3bc4c5f0b9478f7fe1fc0c625288edd82996114d860634d7903",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-3-part-1",
+          "canonicalLessonSha256": "243096941ac32ecf0d896193e1dfea573c8b242bced7587b54b21076d8d6f650",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-4-part-1",
+          "canonicalLessonSha256": "a2d67ac0912cfc5623eb0b79d5f43ba7328a8ece7da49c4e3e3421adb77123bb",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-5-part-1",
+          "canonicalLessonSha256": "0fff53c95841b7cb880ee1294a81ea81213db35a465394356ff596a20d260187",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-6-part-1",
+          "canonicalLessonSha256": "e40f432eec8999c64204a945c874d3caf528a2b8f8467fd41cfa39b6aea612a3",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5",
+            "step-6"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-7-part-1",
+          "canonicalLessonSha256": "36bfa0bbb419a8f3b68bf9e39ce40b0f36fb7d620f63ad70f6e07ea586dde0d6",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-8-part-1",
+          "canonicalLessonSha256": "d564b221001158b08072b97f9bb7bfb821d2c772a6bda0d82d0de106def58760",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-9-part-1",
+          "canonicalLessonSha256": "8ad531eea8a71fe4e4b54e046748ee0ab67da61b2a07a2780d0e8c9b5c8cf107",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-10-part-1",
+          "canonicalLessonSha256": "622ce5d159a577b93b018dd4a2ac232cf276dd9778b920cda2492ec65f19841f",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-11-part-1",
+          "canonicalLessonSha256": "c163efe9f50778470751910dc66bc5952dfa4c0b4ef3223cb5bfd7e51d20233e",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-12-part-1",
+          "canonicalLessonSha256": "765037549e2d1479f9c4eb5aef7bde3e9ebb23954b73cceee0d902664aac7397",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-13-part-1",
+          "canonicalLessonSha256": "0f3989b02612750717c700978d38e0f7a3055445ccd8a17f9b2982d19d3abb6d",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-14-part-1",
+          "canonicalLessonSha256": "37ab9b3efc0bf1c3c58222f49f35bf708e913203e6aa2b20f35d38672101add4",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-15-part-1",
+          "canonicalLessonSha256": "c6bde2418345196ada68b01e0feed99f854f71066242dd3f979b2966c196d88a",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5",
+            "step-6",
+            "case-1",
+            "case-2",
+            "case-3"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-16-part-1",
+          "canonicalLessonSha256": "e705b5a913b2b7f2b875bd5f4e38d9065d562b1acb7eb1a406db493ba716d13b",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-17-part-1",
+          "canonicalLessonSha256": "5f75cbecb5b32c43af2cf15be6ce097d6f18255c1079d182dbda69f8049d836d",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-18-part-1",
+          "canonicalLessonSha256": "e7026d1cb9d92bf75a90e8a3740fcc40c098b44bd525f7066e48a397d9565842",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4",
+            "step-5"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-19-part-1",
+          "canonicalLessonSha256": "ed0a6483f68a0ad8882fe88a68a86e140b195abc199c3be3c4ea9bb4b6068cce",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-20-part-1",
+          "canonicalLessonSha256": "cb38aca645b3bf45d8125f022fb9abdee0827bf0730dd573bca53996bae4e354",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "atanasyan-7-9-selfcheck-chapter-2-21-part-1",
+          "canonicalLessonSha256": "184c2b8293477604c7512d9ca8687840c23e136bff35a935af82a94c34a661f0",
+          "views": [
+            "neutral",
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        }
+      ]
+    },
+    "correctionRecapture": {
+      "scope": "All 28 authored views of theory23 and selfcheck19 at 320 and1280 (56 complete model screenshots).",
+      "captureEvidenceSha256": "8ea0850bb46084951e6f26435a7a4d4c9042c681ee1f3329210c4d841c8482ba",
+      "captureManifestSha256": "63b526f52f64f51e4a466938a7c7135a41c0d2ecd05cba14c315ac57770b374c",
+      "captureBundleSha256": "49bb8653fd166efbfa1ead90bf44980b72b72e3a2de356387ef59c720c77260f",
+      "captureGateScriptSha256": "86fc11d5011e8f84511be1b110bd0f519d53bdd6be06e87c84243922f5e5cf81",
+      "parentGateScriptSha256": "20b78be634195f6da9f4d612d9a3e73eb890e0270f87bb0cf4f9f04b7d99f62d",
+      "automatedGate": {
+        "completed": true,
+        "views": 56,
+        "issues": 0,
+        "jsErrors": [],
+        "actualCSSViewportClippingIncluded": true,
+        "paintedStrokeBoundsIncluded": true
+      },
+      "manualMethod": "Viewed all 8 contact sheets covering every one of the 56 captured views, then opened theory23 step6 at1280 at full resolution. No remaining clipping, label collisions, hidden construction stage, or unnecessary accumulation inside the figure was found.",
+      "sheetsInspected": [
+        {
+          "file": "theory-320-01.png",
+          "sha256": "cd0b64c0e12944640756fcc3017f76d3966605f25126350299947890b7201765",
+          "representatives": [
+            "atanasyan-7-9-theory-23-part-1-neutral-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-1-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-2-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-3-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-4-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-5-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-6-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-7-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-8-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-9-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-10-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-11-320-view.png"
+          ]
+        },
+        {
+          "file": "theory-320-02.png",
+          "sha256": "b22e7a23ebbd5ff6bb6f1013a2f72295b6dbcf807892faecca5053442983f869",
+          "representatives": [
+            "atanasyan-7-9-theory-23-part-1-step-12-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-13-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-14-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-15-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-16-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-17-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-18-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-case-1-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-case-2-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-case-3-320-view.png",
+            "atanasyan-7-9-theory-23-part-1-case-4-320-view.png",
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-neutral-320-view.png"
+          ]
+        },
+        {
+          "file": "theory-320-03.png",
+          "sha256": "2ee9d7241343d11a4bedc4dcde7bd58e66530d8d42886a084c4d9f7cf5e5d750",
+          "representatives": [
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-1-320-view.png",
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-2-320-view.png",
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-3-320-view.png",
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-4-320-view.png"
+          ]
+        },
+        {
+          "file": "theory-1280-01.png",
+          "sha256": "ecc799b9a3c9b149e3cdea8dd694060aa4dbc8e1c67e4fb90fa8f08d5ac8de4e",
+          "representatives": [
+            "atanasyan-7-9-theory-23-part-1-neutral-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-1-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-2-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-3-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-4-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-5-1280-view.png"
+          ]
+        },
+        {
+          "file": "theory-1280-02.png",
+          "sha256": "958798b96cb098f8816092cd91d87fcc58d67986f8aef4b903beb0067fe6bf37",
+          "representatives": [
+            "atanasyan-7-9-theory-23-part-1-step-6-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-7-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-8-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-9-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-10-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-11-1280-view.png"
+          ]
+        },
+        {
+          "file": "theory-1280-03.png",
+          "sha256": "2c4d97f59c3cbf51f1b6e25b8078b9a10e6b2ed8e9b25ba998aacfd939b47b90",
+          "representatives": [
+            "atanasyan-7-9-theory-23-part-1-step-12-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-13-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-14-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-15-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-16-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-step-17-1280-view.png"
+          ]
+        },
+        {
+          "file": "theory-1280-04.png",
+          "sha256": "19c93d435822bb7638da5278c9a34ba6331358c4e784ac201ae538a6d3fe9560",
+          "representatives": [
+            "atanasyan-7-9-theory-23-part-1-step-18-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-case-1-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-case-2-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-case-3-1280-view.png",
+            "atanasyan-7-9-theory-23-part-1-case-4-1280-view.png",
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-neutral-1280-view.png"
+          ]
+        },
+        {
+          "file": "theory-1280-05.png",
+          "sha256": "b4ec04bc780ed4ec1a3c2ef1a63735433432b8b16d356b6d8aab653bb9615f08",
+          "representatives": [
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-1-1280-view.png",
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-2-1280-view.png",
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-3-1280-view.png",
+            "atanasyan-7-9-selfcheck-chapter-2-19-part-1-step-4-1280-view.png"
+          ]
+        }
+      ]
+    }
+  },
+  "followupContentAudit": {
+    "snapshot": "v3",
+    "sourceMathPedagogy": "PASS",
+    "changesVerified": [
+      "A106 step1 midpoint visibility and A109a/b/c step1 angle rays now match the narrated operations.",
+      "C159в,178,179,181,186 changed only by uniform similarity transforms; independently computed maximum coordinate residual below 1.6e-9.",
+      "C187 and C188 move the arbitrary given B; both illustrated solutions remain noncollinear, verified by nonzero determinants.",
+      "Theory23/selfcheck19 correction is exclusively a (0,+3) translation of six construction points per card; all other 29 theory/selfcheck models and all proof text are unchanged."
+    ],
+    "filesAwaitFinalHashRefresh": false,
+    "finalSnapshot": "v4"
+  }
+}

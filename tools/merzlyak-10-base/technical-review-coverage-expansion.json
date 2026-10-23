@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 1,
+  "reviewLevel": "HIGH technical scope, independent portion only",
+  "reviewer": "independent agent /root/course_architecture",
+  "reviewedAt": "2026-10-22T23:45:33.473547+00:00",
+  "snapshotContract": "Only listed exact working-tree SHA-256 values are reviewed. Complete875-sourcegroup/989-component structural mapping and989 exact before/after review transitions were independently verified. This is not an external-provider verdict or release/head approval.",
+  "verdict": "PASS for independently reviewed technical implementation, four coordinate-only orientation repairs and exact content-evidence provenance. New cloud browser run, external-review requirement and merge/deployment permission remain separate.",
+  "releaseApproval": false,
+  "mergeApproval": false,
+  "independentScope": [
+    "merge-coverage explicit entries and both theory formats, identity matching, atomic failure and no review-state promotion",
+    "source-index structural matching against authored lesson identities, source pages and requiredParts; not a re-review of authored mathematical content",
+    "scoped reset-button CSS and exact inclusion of that CSS in engineering browser previews",
+    "new workflow regression invocations and evidence limits",
+    "root-authored review_state.py transition verifier; exact after bytes, reconstructed before bytes, immutable fields and authored-hash continuity",
+    "Independent content-evidence auditor: explicit report scope, pinned raw hashes, reviewer/author separation, immutable-before restoration, atomic report acceptance and required accepted historical replacement",
+    "Final989-card ledger compared with an independently captured pre-transition snapshot and21 pinned reviewer reports; each metadata reviewer equals the actual accepted evidence agents; source-index875 entries unchanged through completeness metadata update",
+    "Four source/model orientation repairs are exactly proper Z rotations; non-coordinate educational fields/topology unchanged. Independent review of CI viewport metadata, final nonneutral screenshot selection and orientation regression implementation; no new browser layout verdict claimed."
+  ],
+  "excludedForAuthorship": [
+    "Original isolated build.py wrapper, copied engine.js adaptations and schema-runtime.test.cjs were authored by this reviewer. They require another independent reviewer; no independent claim is made here.",
+    "Own exercise12–13 and theory01–09 source/mathematics/pedagogy evaluation is outside this technical review.",
+    "Mechanical17-file regression adaptations were implemented by this reviewer, then independently examined by /root/lessons_para2 in independent-review-state-adaptations.json. That report distinguishes14 committed baselines from4 late scripts without a committed baseline, including the later root-authored article adaptation. Their successful execution is regression validation, not new mathematical review."
+  ],
+  "resolvedFindings": [
+    {
+      "id": "R-TECH-EXPANSION-001",
+      "file": "tools/merzlyak-10-base/merge-coverage.py",
+      "finding": "Importer omitted chapter from the identity check for chapter-scoped selfcheck/example entries. A wrong-chapter lesson could pass the explicit-manifest mapping.",
+      "resolution": "Parent added chapter equality for those collections. Independent fixtures test both collections and verify byte-identical index on failure after a prior valid record.",
+      "status": "resolved"
+    },
+    {
+      "id": "R-TECH-EXPANSION-002",
+      "file": ".github/workflows/merzlyak-10-base-quality.yml",
+      "finding": "New independent14–15 geometry regression was not yet invoked.",
+      "resolution": "Workflow now invokes independent-models-14-15.test.py.",
+      "status": "resolved"
+    },
+    {
+      "id": "R-TECH-EXPANSION-003",
+      "file": "tools/merzlyak-10-base/review_state.py",
+      "finding": "The first root-created reviewed-state transition omitted schema-required reviewer and at metadata; root detected this in the full schema gate. That intermediate ledger is not the reviewed final result.",
+      "resolution": "Root added actual unique reviewer agents from accepted evidence and an ISO time with timezone; helper now requires both. Independent18 negative/positive fixtures include missing, empty, malformed and wrongly typed metadata with matching after hashes. Final989-card schema/runtime gate passes.",
+      "status": "resolved",
+      "detectedBy": "root schema gate"
+    },
+    {
+      "id": "R-TECH-EXPANSION-004",
+      "file": "tools/merzlyak-10-base/theory-details-10-19-models.test.py; tools/merzlyak-10-base/reviewer-theory-10-19-checks.py",
+      "finding": "Adding13 article cards caused broad filename globs to silently expand the intended old27-detail/37-overview-and-detail test scopes, failing expected counts.",
+      "resolution": "Author suite now selects explicit27 authored files; independent reviewer suite selects exact37 paths from its pinned original report. Independent check confirms these37 match manifest fileNames and are disjoint from all13 new article cards, which have separate regression and source/math/pedagogy review. The37-card reviewer suite passes6292 assertions.",
+      "status": "resolved"
+    },
+    {
+      "id": "R-TECH-EXPANSION-005",
+      "file": "Four exercises16.10/16.21/16.27/17.27 and tools/merzlyak-10-base/model-browser.cjs",
+      "detectedBy": "root manual cloud screenshot QA",
+      "finding": "Four initial projections obscured relevant geometry; CI evidence width was overwritten by SVG width and numeric view keys caused4.4 to miss the final nonneutral screenshot.",
+      "resolution": "Proper Z rotations165/330/90/180 degrees preserve137 pair distances (maximum observed error1.011e-12) and all other educational content. The recorder now retains viewportWidth separately and selects the final nonneutral view; actual-script control-flow verification preserves6628 states and changes screenshot selection3884→3886. All4 exact drafts received focused independent source/math/pedagogy follow-up before a documented ledger transition.",
+      "status": "resolved"
+    }
+  ],
+  "checks": [
+    {
+      "name": "merge-coverage-review.test.py",
+      "result": "PASS",
+      "tests": 6,
+      "cases": [
+        "explicit entries preserve metadata and inventoryComplete false",
+        "theory paragraphs overview+addedLessons",
+        "theory entries existingOverview+newLessonFiles",
+        "wrong chapter rejected for selfcheck and example, failure atomic",
+        "wrong book/unknown part rejected atomically",
+        "duplicate requiredParts rejected"
+      ]
+    },
+    {
+      "name": "node --check tools/merzlyak-10-base/model-browser.cjs",
+      "result": "PASS"
+    },
+    {
+      "name": "git diff --check",
+      "result": "PASS"
+    },
+    {
+      "name": "Shared course/runtime paths unchanged versus origin/main",
+      "result": "PASS",
+      "paths": [
+        "stereo-course/assets",
+        "stereo-course/textbook",
+        "tools/stereo-textbook"
+      ]
+    },
+    {
+      "name": "inventory-contract-review.test.py",
+      "result": "PASS",
+      "checks": 17505,
+      "sourcePositions": 875,
+      "standaloneNumberedExercises": 736,
+      "paragraphExercises": 723,
+      "supplementaryExercises": 13,
+      "theoryParagraphs": 19,
+      "theoryQuestions": 97,
+      "computerBlocks": 18,
+      "projectTopics": 5,
+      "requiredComponents": 989,
+      "authoredCards": 989,
+      "inventoryCompleteFlag": true,
+      "sourceIndexSHA256": "167e99656d5da2af82ecc08a87c9992e87df23a44e1b8de410347a6257b6da53",
+      "lessonFilesFingerprintSHA256": "a333e5a0ecefcc191411a4839e8ec4f5f88994dc7da2178a33dd5f5d98275fb7",
+      "fingerprintFormat": "SHA256 of compact JSON sorted [repositoryRelativePath,fileSHA256] pairs",
+      "mathematicsReviewedByThisAudit": false
+    },
+    {
+      "name": "review-state-review.test.py",
+      "result": "PASS",
+      "tests": 18,
+      "cases": [
+        "valid pending draft without ledger",
+        "valid exact status-only transition",
+        "original author hash retained",
+        "wrong status/incomplete review",
+        "missing ledger",
+        "current file mutation",
+        "content changed with updated after/content hashes",
+        "revision or unexpected-field mutation",
+        "argument differs from file",
+        "invalid before state",
+        "wrong after/content digests",
+        "duplicate ledger IDs/paths",
+        "unsafe allowedChangedKeys",
+        "wrong path/missing row",
+        "noncanonical current bytes",
+        "missing reviewer or review time with matching after hash",
+        "empty, whitespace or non-string reviewer with matching after hash",
+        "invalid, impossible, timezone-free or non-string timestamp with matching after hash"
+      ]
+    },
+    {
+      "name": "all19 review-state-aware geometry/reviewer suites",
+      "result": "PASS",
+      "suiteCount": 19,
+      "scripts": [
+        "tools/merzlyak-10-base/articles-models.test.py",
+        "tools/merzlyak-10-base/exercises-10-11-models.test.py",
+        "tools/merzlyak-10-base/exercises-20-models.test.py",
+        "tools/merzlyak-10-base/orientation-models.test.py",
+        "tools/merzlyak-10-base/para03-models.test.py",
+        "tools/merzlyak-10-base/para04-05-models.test.py",
+        "tools/merzlyak-10-base/para06-07-models.test.py",
+        "tools/merzlyak-10-base/para08-09-models.test.py",
+        "tools/merzlyak-10-base/para12-13-models.test.py",
+        "tools/merzlyak-10-base/para14-15-models.test.py",
+        "tools/merzlyak-10-base/para16-17-models.test.py",
+        "tools/merzlyak-10-base/para18-19-models.test.py",
+        "tools/merzlyak-10-base/practical-projects-models-review.test.py",
+        "tools/merzlyak-10-base/reviewer-16-17-checks.py",
+        "tools/merzlyak-10-base/reviewer-20-checks.py",
+        "tools/merzlyak-10-base/reviewer-supplementary-checks.py",
+        "tools/merzlyak-10-base/supplementary-models.test.py",
+        "tools/merzlyak-10-base/theory-details-01-09-models.test.py",
+        "tools/merzlyak-10-base/theory-details-10-19-models.test.py"
+      ],
+      "state": "Final989 reviewed state including four new orientation-review transitions."
+    },
+    {
+      "name": "canonical before serialization",
+      "result": "PASS",
+      "checkedFiles": 989,
+      "noncanonicalBeforeFiles": 0
+    },
+    {
+      "name": "audit-content-reviews.test.py and audit-content-reviews-independent.test.py",
+      "result": "PASS",
+      "authorFixtureTests": 15,
+      "independentFixtureTests": 9,
+      "cases": [
+        "exact pinned baseline",
+        "one invalid record prevents whole-report acceptance",
+        "missing dimension remains pending",
+        "unresolved findings rejected",
+        "path escape rejected",
+        "historical replacement must actually supply every dimension",
+        "writing evidence does not mutate source lessons/reports",
+        "exact fileNames scope accepted",
+        "duplicate or substituted fileNames rejected"
+      ]
+    },
+    {
+      "name": "Independent final ledger and reviewer provenance",
+      "result": "PASS",
+      "entries": 989,
+      "unchangedLedgerEntries": 985,
+      "newOrientationEntries": 4,
+      "beforeRawHashMatches": 989,
+      "afterRawHashMatches": 989,
+      "contentHashMatches": 989,
+      "reviewerMetadataMatchesAcceptedEvidence": 989,
+      "reviewerMetadataFormat": "985 exact reviewer-agent lists;4 explicit independent-reviewer and integrator attributions",
+      "beforeSnapshots": "985 initial drafts plus4 independently captured rotated drafts",
+      "changedReportRows": 4,
+      "unchangedReportRows": 72,
+      "historicalReportMetadataUnchanged": true,
+      "previousLedgerEntriesRetainedExactlyInHistory": true,
+      "manifestChangedOnlyOneReportSHA": true,
+      "allAcceptedEvidenceMatches": "ledger-restored-exact",
+      "sourceIndexBytesUnchanged": true,
+      "ledgerSHA256": "ec5aebbfee827e57c543ee7b9997e2ba4ef25102bfd2fbba9d59d533f75bc5f4",
+      "manifestSHA256": "a0ec0b61c8223f65e031d8334239fb6031e704dc79a7edfba802ab749544c3cc",
+      "followupReportSHA256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc"
+    },
+    {
+      "name": "Final content evidence audit",
+      "result": "PASS",
+      "lessonCount": 989,
+      "fullyReviewedCards": 989,
+      "dimensionPassCounts": {
+        "source": 989,
+        "mathematics": 989,
+        "pedagogy": 989
+      },
+      "pinnedReports": 21,
+      "errors": [],
+      "pendingReports": [],
+      "allAcceptedEvidenceMatches": "ledger-restored-exact"
+    },
+    {
+      "name": "Final schema-runtime.test.cjs execution",
+      "result": "PASS",
+      "availableCards": 989,
+      "draftCards": 0,
+      "blockedCards": 0,
+      "inventoryComplete": true,
+      "scopeLimitation": "Observed integration gate result; independent review of the original wrapper is owned by another reviewer."
+    },
+    {
+      "name": "reviewer-theory-10-19-checks.py explicit scope",
+      "result": "PASS",
+      "selectedCards": 37,
+      "independentAssertions": 6292,
+      "matchesPinnedManifestFileNames": true,
+      "disjointFromNew13ArticleCards": true
+    },
+    {
+      "name": "orientation-models.test.py independent implementation review and execution",
+      "result": "PASS",
+      "models": 4,
+      "pairDistances": 137,
+      "negativeRegressions": 5,
+      "cameraMatchesSharedRenderer": true,
+      "projectedWidth": 280,
+      "allHighlightedPolygonAndClosedTriangleMinimumWidthsExceedPx": 20,
+      "scopeLimitation": "Projected-geometry calculations; not actual browser accessibility inspection."
+    },
+    {
+      "name": "Actual model-browser.cjs control-flow execution with fs/browser interception",
+      "result": "PASS",
+      "oldViewWidthStates": 6628,
+      "newViewWidthStates": 6628,
+      "oldSelectedScreenshots": 3884,
+      "newSelectedScreenshots": 3886,
+      "addedScreenshotNames": [
+        "merz-ex-04-004-6-320.png",
+        "merz-ex-04-004-6-1280.png"
+      ],
+      "viewportWidthSurvivesDistinctSVGWidth": true,
+      "scopeLimitation": "Geometry/DOM browser results were stubbed to test recorder selection and metadata only; no screenshot/layout pass is inferred."
+    }
+  ],
+  "notRun": [
+    {
+      "name": "Playwright browser rendering by this reviewer",
+      "reason": "Playwright is not installed in the local node dependency set. Parent/cloud CI owns actual browser run; code inspection is not called a browser pass."
+    }
+  ],
+  "recommendations": [
+    "Run the final cloud browser and all required CI gates on the committed989-card tree composed with the current remote main; historical900-card evidence does not certify it.",
+    "Treat content completeness and accepted review evidence separately from the external-provider requirement and explicit merge/deployment permission.",
+    "Immediately before any future merge, recheck remote base and current PR head under repository base-drift policy."
+  ],
+  "rollbackAssessment": "All changed product paths are isolated to the new course; scoped CSS leaves retained courses unchanged. Reverting those paths removes this course without modifying server state or existing course storage. No rollback or deployment was performed.",
+  "files": [
+    {
+      "path": "tools/merzlyak-10-base/merge-coverage.py",
+      "sha256": "e4e7b9b5623c08264e2e12f809d801edf1ce841560f5f544be8d53e34522a882"
+    },
+    {
+      "path": "tools/merzlyak-10-base/merge-coverage-review.test.py",
+      "sha256": "bbd999e0f839e1d153e6012395fd7d9615051a87e977db03439adc56efca3e7b"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/source-index.json",
+      "sha256": "167e99656d5da2af82ecc08a87c9992e87df23a44e1b8de410347a6257b6da53"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/assets/style.css",
+      "sha256": "adc8507e49997ff6b69ac84f40d08361e687fce11fd828efb3df42aa1066a615"
+    },
+    {
+      "path": "tools/merzlyak-10-base/model-browser.cjs",
+      "sha256": "55b4f755cd16682612ed529a7a736d52f2b7e2e6436b3ae79b537ad4b3d6a55e"
+    },
+    {
+      "path": ".github/workflows/merzlyak-10-base-quality.yml",
+      "sha256": "ab08bb09dcee87c7a13c4af28692870b0819943f330e37e51d1424a1747685b5"
+    },
+    {
+      "path": "tools/merzlyak-10-base/inventory-contract-review.test.py",
+      "sha256": "eef741d7c26fc66edab7c78f51c686a1eac31ab494657497eaa13c41dda175e9"
+    },
+    {
+      "path": "tools/merzlyak-10-base/review_state.py",
+      "sha256": "6401bdb17a9053fc10743c823a0f5b7590335e8ba085bab669c5dcbb58590c17"
+    },
+    {
+      "path": "tools/merzlyak-10-base/review-state-review.test.py",
+      "sha256": "b3ed5e245a2d28754c4442a1a83cfb600cb6e6141cae785ad7f33083f5bfb2f2"
+    },
+    {
+      "path": "tools/merzlyak-10-base/audit-content-reviews.py",
+      "sha256": "58c26527269fae8445cb00ba62c305ebc17f958496604fa4f821890f9946321e"
+    },
+    {
+      "path": "tools/merzlyak-10-base/audit-content-reviews.test.py",
+      "sha256": "21b1ad307153fd4ea3e8ffff10791811112d2f0080b250ecf53446bb0dc929db"
+    },
+    {
+      "path": "tools/merzlyak-10-base/audit-content-reviews-independent.test.py",
+      "sha256": "5c9bb78949125bd7bc8101464678cdb460cc53e5550425ee178a83ace254d4ff"
+    },
+    {
+      "path": "tools/merzlyak-10-base/content-review-manifest.json",
+      "sha256": "a0ec0b61c8223f65e031d8334239fb6031e704dc79a7edfba802ab749544c3cc"
+    },
+    {
+      "path": "tools/merzlyak-10-base/content-review-ledger.json",
+      "sha256": "ec5aebbfee827e57c543ee7b9997e2ba4ef25102bfd2fbba9d59d533f75bc5f4"
+    },
+    {
+      "path": "tools/merzlyak-10-base/content-review-audit.json",
+      "sha256": "ab1de81c888be7668ee9473f1238041887c497ddeb875bed06fb609d5e558ece"
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-state-adaptations.json",
+      "sha256": "92c067dcd19859312a68b4da3b211ec97975f071ae61cb70d822aa4fbac9d392"
+    },
+    {
+      "path": "tools/merzlyak-10-base/reviewer-theory-10-19-checks.py",
+      "sha256": "b5d5c6249f7152566fdef8e99873f80daf77492bf5725fa80cd4f2c6e14de1d0"
+    },
+    {
+      "path": "tools/merzlyak-10-base/author-16-17.py",
+      "sha256": "2e58d2645d970c33a688fe44f91e9527724bf32bd34820d6192d1f0b30e35170"
+    },
+    {
+      "path": "tools/merzlyak-10-base/orientation-models.test.py",
+      "sha256": "b7d05f29a8b0d45308f0f06a53c338534167936456807e985b8ce321b49836f4"
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-16-17.json",
+      "sha256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc"
+    }
+  ],
+  "concurrency": {
+    "originalBase": "6a1f0488e33f9836663382a2e220e69092910337",
+    "observedRemoteMainObject": "c62e5047fa2e774d43899e4ee20d5e1127c53e64",
+    "observedLocalCheckoutHead": "22c0b967af4ee62fdd50d51e027ea710a63569ce",
+    "verification": "Local read-only git object comparison; no merge/rebase/checkout/cloud mutation by reviewer",
+    "mainChangedPaths": 95,
+    "committedPathOverlap": [],
+    "workingTreePathOverlap": [],
+    "mainChangedSharedRuntime": [],
+    "branchChangedSharedRuntime": [],
+    "requiredFinalCheck": "Final pull-request synthetic-merge CI on current main plus final remote PR head; prior900-card checkpoint does not certify989-card snapshot.",
+    "subsequentParentReportedMain": "8a774d65dba0dfe01e4e5c86172ced1e73f3e36c",
+    "subsequentDrift": "Parent reports merged PR306 afterc62. Independent PR provenance and final virtual-composition review will follow upload; earlierc62 check is historical.",
+    "finalCompositionRecheckPending": true
+  },
+  "observedLocalCheckoutHead": "fecfe304cc2434f565195ff28cdc8e71185869f5",
+  "remoteFinalPRHead": "Projection-QA follow-up head not yet assigned at this freeze; parent will bind new CI to committed bytes and latest main. Previous remote head f220eb4e84748455e9054f44d694085385af3b78.",
+  "finalContentSnapshot": {
+    "sourceIndexSHA256": "167e99656d5da2af82ecc08a87c9992e87df23a44e1b8de410347a6257b6da53",
+    "lessonFilesFingerprintSHA256": "a333e5a0ecefcc191411a4839e8ec4f5f88994dc7da2178a33dd5f5d98275fb7",
+    "ledgerSHA256": "ec5aebbfee827e57c543ee7b9997e2ba4ef25102bfd2fbba9d59d533f75bc5f4",
+    "manifestSHA256": "a0ec0b61c8223f65e031d8334239fb6031e704dc79a7edfba802ab749544c3cc",
+    "sourceGroups": 875,
+    "requiredComponents": 989,
+    "canonicalBeforeFiles": 989,
+    "allExactBeforeAndAfterHashesVerified": true,
+    "sourceMathematicsPedagogyEvidenceVerified": true,
+    "directMathematicalRereviewByThisTechnicalAudit": false,
+    "beforeSnapshotScope": "985 initial drafts plus4 independently captured rotated drafts"
+  },
+  "releaseConstraints": {
+    "contentSnapshotComplete": true,
+    "finalCloud989Gate": "Pending new run on the orientation follow-up commit composed with current main;6628 states/3886 screenshots expected from verified recorder logic.",
+    "externalConsultation": "The recorded provider request failed with HTTP400 and produced no verdict; no automatic retry or waiver is claimed.",
+    "mergeApproval": false,
+    "deploymentApproval": false
+  },
+  "orientationFollowup": {
+    "result": "PASS",
+    "entries": 989,
+    "unchangedLedgerEntries": 985,
+    "newOrientationEntries": 4,
+    "beforeRawHashMatches": 989,
+    "afterRawHashMatches": 989,
+    "contentHashMatches": 989,
+    "reviewerMetadataMatchesAcceptedEvidence": 989,
+    "reviewerMetadataFormat": "985 exact reviewer-agent lists;4 explicit independent-reviewer and integrator attributions",
+    "beforeSnapshots": "985 initial drafts plus4 independently captured rotated drafts",
+    "changedReportRows": 4,
+    "unchangedReportRows": 72,
+    "historicalReportMetadataUnchanged": true,
+    "previousLedgerEntriesRetainedExactlyInHistory": true,
+    "manifestChangedOnlyOneReportSHA": true,
+    "allAcceptedEvidenceMatches": "ledger-restored-exact",
+    "sourceIndexBytesUnchanged": true,
+    "ledgerSHA256": "ec5aebbfee827e57c543ee7b9997e2ba4ef25102bfd2fbba9d59d533f75bc5f4",
+    "manifestSHA256": "a0ec0b61c8223f65e031d8334239fb6031e704dc79a7edfba802ab749544c3cc",
+    "followupReportSHA256": "f42e16031001545e26880b4450590ff2808aa5b6aea394cc08b21a555dcd56fc"
+  }
+}
