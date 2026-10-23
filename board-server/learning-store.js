@@ -16,8 +16,9 @@ const QUICK_TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
 
 function migrateProfileCourse(db) {
   const schema = db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='learning_profiles'").get()?.sql;
-  const previousCheck = "CHECK(course IN ('school','foundations','oge','ege'))";
-  const currentCheck = "CHECK(course IN ('school','foundations','oge','ege','ege-profile'))";
+  const previousChecks = ["CHECK(course IN ('school','foundations','oge','ege'))", "CHECK(course IN ('school','foundations','oge','ege','ege-profile'))"];
+  const currentCheck = "CHECK(course IN ('school','foundations','oge','ege','ege-profile','vilenkin6'))";
+  const previousCheck = previousChecks.find(check => schema?.includes(check));
   if (schema?.includes(currentCheck)) return;
   // Keep the existing backup format (user_version=1). Only this additive
   // feature's enum changes; identities, attempts and their contracts do not.
@@ -66,7 +67,7 @@ class LearningStore {
           login TEXT NOT NULL UNIQUE, name TEXT NOT NULL, password_hash TEXT, auth_epoch INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL);
         CREATE UNIQUE INDEX IF NOT EXISTS one_teacher ON accounts(role) WHERE role='teacher';
         CREATE TABLE IF NOT EXISTS learning_profiles(learner_id TEXT PRIMARY KEY REFERENCES accounts(id), teacher_id TEXT NOT NULL REFERENCES accounts(id),
-          course TEXT NOT NULL CHECK(course IN ('school','foundations','oge','ege','ege-profile')), goal TEXT CHECK(goal IN ('pass','grade5')),
+          course TEXT NOT NULL CHECK(course IN ('school','foundations','oge','ege','ege-profile','vilenkin6')), goal TEXT CHECK(goal IN ('pass','grade5')),
           focus TEXT NOT NULL, version INTEGER NOT NULL, updated_at INTEGER NOT NULL, CHECK(course='oge' OR goal IS NULL));
         CREATE TABLE IF NOT EXISTS invitations(hash TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), purpose TEXT NOT NULL,
           expires_at INTEGER NOT NULL, used_at INTEGER);
@@ -246,7 +247,7 @@ class LearningStore {
     this.ownsStudent(auth, learnerId);
     exactKeys(body, ['opId','expectedVersion','course','goal','focus'], ['opId','expectedVersion','course','goal','focus']);
     requireValue(Number.isSafeInteger(body.expectedVersion) && body.expectedVersion >= 0, 'LEARNING_PROFILE_INVALID');
-    requireValue(['school','foundations','oge','ege','ege-profile'].includes(body.course), 'LEARNING_PROFILE_INVALID');
+    requireValue(['school','foundations','oge','ege','ege-profile','vilenkin6'].includes(body.course), 'LEARNING_PROFILE_INVALID');
     requireValue((body.goal === null || ['pass','grade5'].includes(body.goal)) && (body.course === 'oge' || body.goal === null), 'LEARNING_PROFILE_INVALID');
     requireValue(typeof body.focus === 'string' && body.focus.length <= 1200
       && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(body.focus), 'LEARNING_PROFILE_INVALID');
@@ -462,7 +463,7 @@ class LearningStore {
     const runFilter = this.runGuard ? `AND id NOT IN (SELECT a.attempt_id FROM learning_run_attempts a
       JOIN learning_runs r ON r.id=a.run_id WHERE r.finished_at IS NULL)` : '';
     const rows = this.db.prepare(`SELECT id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,outcome,updated_at,created_at
-      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6')
+      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1')
         AND id NOT IN (SELECT attempt_id FROM assignments WHERE status!='published')
         ${runFilter}
       ORDER BY updated_at DESC,id DESC`).iterate(auth.id);
@@ -498,7 +499,7 @@ class LearningStore {
   }
   grade7Exposure(learnerId, trainerId, taskSpec, excludeAttemptId = '') {
     // Pinned finite banks retain exposure; leave other legacy assessment alone.
-    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && trainerId !== 'motion-grade6') return null;
+    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && !['motion-grade6','vilenkin6-part1'].includes(trainerId)) return null;
     // Reset clears current progress, not knowledge of an already shown question.
     // Archived homework has lost its former publication status, so conservatively
     // retain it; an unpublished current draft is not learner exposure.
@@ -532,7 +533,7 @@ class LearningStore {
       const exposure = this.grade7Exposure(auth.id, body.trainerId, generated.taskSpec);
       if (exposure) {
         // Motion has exactly 12 authored exercises per lesson, independent of seed.
-        for (let tries = 0; body.trainerId !== 'motion-grade6' && tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
+        for (let tries = 0; !['motion-grade6','vilenkin6-part1'].includes(body.trainerId) && tries < 15 && (exposure.truncated || exposure.fingerprints.has(this.taskFingerprint(generated.taskSpec))); tries++) {
           generated = this.contracts.create(body.trainerId, body.contentId);
         }
       } else if (source && body.fresh) {
@@ -598,13 +599,13 @@ class LearningStore {
       if (type === 'state') {
         exactKeys(payload, ['state'], ['state']);
         requireValue(Buffer.byteLength(json(payload.state)) <= 64 * 1024, 'LEARNING_STATE_TOO_LARGE');
-        attempt.state = this.contracts.normalize(attempt.trainerId, attempt.taskSpec, payload.state);
+        attempt.state = this.contracts.normalize(attempt.trainerId, attempt.taskSpec, payload.state, attempt.state);
         if (attempt.state?.work?.help === true || (typeof this.contracts.assistance === 'function'
           && this.contracts.assistance(attempt.trainerId, attempt.taskSpec, attempt.state))) attempt.assistance.hints = true;
       } else if (type === 'check') {
         exactKeys(payload, ['state','details'], ['state','details']);
         requireValue(Buffer.byteLength(json(payload.state)) <= 64 * 1024, 'LEARNING_STATE_TOO_LARGE');
-        attempt.state = this.contracts.normalize(attempt.trainerId, attempt.taskSpec, payload.state);
+        attempt.state = this.contracts.normalize(attempt.trainerId, attempt.taskSpec, payload.state, attempt.state);
         if (attempt.state?.work?.help === true || (typeof this.contracts.assistance === 'function'
           && this.contracts.assistance(attempt.trainerId, attempt.taskSpec, attempt.state))) attempt.assistance.hints = true;
         evaluation = this.contracts.evaluate(attempt.trainerId, attempt.taskSpec, payload.details, attempt.state);
@@ -614,7 +615,7 @@ class LearningStore {
       } else if (type === 'hint') {
         exactKeys(payload, ['step','state','details']);
         if (payload.step !== undefined) requireValue(Number.isInteger(payload.step) && payload.step >= 0 && payload.step < 100);
-        if (payload.state !== undefined) attempt.state = this.contracts.normalize(attempt.trainerId, attempt.taskSpec, payload.state);
+        if (payload.state !== undefined) attempt.state = this.contracts.normalize(attempt.trainerId, attempt.taskSpec, payload.state, attempt.state);
         if (payload.details !== undefined) {
           exactKeys(payload.details, ['step']);
           if (payload.details.step !== undefined) requireValue(Number.isInteger(payload.details.step) && payload.details.step >= 0 && payload.details.step < 100);

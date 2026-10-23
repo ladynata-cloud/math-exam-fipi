@@ -738,6 +738,150 @@
     grade6: true, trainingOnly: true, lessonIndex, taskCount: 12,
     url: '/trainers/motion-grade6/index.html#lesson=' + encodeURIComponent(contentId)
   })));
+  // Published first part: one durable attempt for each of its 27 modules.
+  const vilenkin6Rows = [
+    [
+        0,
+        "Вспоминаем математику 5 класса",
+        18
+    ],
+    [
+        1,
+        "Среднее арифметическое",
+        18
+    ],
+    [
+        2,
+        "Проценты",
+        18
+    ],
+    [
+        3,
+        "Круговые диаграммы",
+        18
+    ],
+    [
+        4,
+        "Виды треугольников",
+        18
+    ],
+    [
+        5,
+        "Множества",
+        18
+    ],
+    [
+        6,
+        "Разложение числа на простые множители",
+        15
+    ],
+    [
+        7,
+        "Наибольший общий делитель. Взаимно простые числа",
+        15
+    ],
+    [
+        8,
+        "Наименьшее общее кратное натуральных чисел",
+        18
+    ],
+    [
+        9,
+        "Приведение дробей к наименьшему общему знаменателю",
+        17
+    ],
+    [
+        10,
+        "Сравнение, сложение и вычитание обыкновенных дробей",
+        18
+    ],
+    [
+        11,
+        "Действия сложения и вычитания смешанных чисел",
+        18
+    ],
+    [
+        12,
+        "Действие умножения смешанных чисел",
+        18
+    ],
+    [
+        13,
+        "Нахождение дроби от числа",
+        19
+    ],
+    [
+        14,
+        "Распределительное свойство умножения",
+        18
+    ],
+    [
+        15,
+        "Деление смешанных чисел",
+        20
+    ],
+    [
+        16,
+        "Нахождение числа по его дроби",
+        15
+    ],
+    [
+        17,
+        "Дробные выражения",
+        22
+    ],
+    [
+        18,
+        "Отношения",
+        17
+    ],
+    [
+        19,
+        "Пропорция",
+        17
+    ],
+    [
+        20,
+        "Прямая и обратная пропорциональные зависимости",
+        15
+    ],
+    [
+        21,
+        "Масштаб",
+        19
+    ],
+    [
+        22,
+        "Симметрии",
+        18
+    ],
+    [
+        23,
+        "Длина окружности и площадь круга. Шар",
+        21
+    ],
+    [
+        24,
+        "Применяем математику: покупки и данные",
+        15
+    ],
+    [
+        25,
+        "Практикум: дроби в жизни",
+        17
+    ],
+    [
+        26,
+        "Применяем математику: пропорции и измерения",
+        15
+    ]
+];
+  items.push(...vilenkin6Rows.map(([lessonId, title, taskCount]) => Object.freeze({
+    id: 'vilenkin6-part1:lesson-' + lessonId, trainerId: 'vilenkin6-part1', contentId: 'lesson-' + lessonId,
+    title, contentVersion: 1, position: null, topicId: 'foundation', family: 'vilenkin6-part1',
+    grade6: true, trainingOnly: true, lessonId, taskCount,
+    url: '/courses/vilenkin-6-part-1/index.html#lesson/' + lessonId + '/theory'
+  })));
   const byId = Object.create(null);
   for (const item of items) {
     if (byId[item.id]) throw new Error('Duplicate learning item: ' + item.id);

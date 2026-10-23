@@ -4,7 +4,7 @@
   const $ = id => document.getElementById(id), main = $('main');
   const E = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const labels = window.LearningOutcomes.labels;
-  const courses = { school: '7 класс', foundations: 'Математическая основа', oge: 'ОГЭ по математике', ege: 'ЕГЭ · базовая математика', 'ege-profile': 'ЕГЭ · профильная математика' };
+  const courses = { vilenkin6: '6 класс · Виленкин', school: '7 класс', foundations: 'Математическая основа', oge: 'ОГЭ по математике', ege: 'ЕГЭ · базовая математика', 'ege-profile': 'ЕГЭ · профильная математика' };
   const goals = { pass: 'Уверенно сдать', grade5: 'Подготовка на 5' };
   const controllers = new Set();
   let parent = null, csrf = '', invitation = null, loginHint = '', childName = '', revision = 0, busy = false, hiddenDuringInvite = false;

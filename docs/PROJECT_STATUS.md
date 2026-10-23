@@ -1,6 +1,33 @@
 # MathExam project status
 
-Updated: 2026-10-23 (Asia/Novosibirsk)
+Updated: 2026-10-24 (Asia/Novosibirsk)
+
+## Prepared: Vilenkin 6 part 1 in cloud cabinets
+
+- [Scope](tasks/VILENKIN6_CLOUD_CABINET.md), HIGH review, branch
+  `feat/vilenkin6-cloud-cabinet`, base/current observed production main
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4` (includes PR #312).
+- All 27 published modules are registered in the existing managed-learning
+  system. Per-module cloud work retains drafts, completed steps, help, model
+  controls, checkpoints and owned textbook notes. The original 475 tasks,
+  81 examples and source PDF are unchanged; standalone browser data is isolated.
+- A dedicated grade-six direction and course view resume exact saved work,
+  including completed modules. Existing profiles migrate additively with rows,
+  indexes and triggers retained. No authentication mechanism was changed.
+- Local final verification: 299/299 backend tests, 8/8 cabinet DOM tests,
+  5/5 actual bridge protocol tests; managed course 108 views / 27 models /
+  16 scenarios; standalone course 108 views / 27 models / 80 controls. Content,
+  catalog/preparation and deterministic offline checks passed. Independent
+  review found no remaining blocking code issue.
+- No production account or assignment was created: the browser's automatic
+  approval review requires action-time confirmation of the persistent access
+  grant. No merge/deployment, production backup or live two-device test is
+  claimed. The known unavailable external reviewer is not an approval or a
+  standing waiver. Exact-head CI and release decision belong in the task PR.
+- Rollback must retain the new enum and V6 decoder/catalog while disabling new
+  UI entry; a raw old server image cannot read the expanded schema. Preserve
+  persistent data. Next: exact-head CI, required owner decisions, then deployment
+  and authenticated pupil/teacher verification.
 
 ## Prepared for release review: profile task 3 stereometry on the shared board
 
