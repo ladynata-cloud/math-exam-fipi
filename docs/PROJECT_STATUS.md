@@ -37,29 +37,37 @@ Updated: 2026-10-23 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## Published: Atanasyan 10–11 chapter III §1, polyhedra and prisms
+## In progress: Atanasyan chapter III §2, pyramids
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_PRISMS_SECTION.md), HIGH review, base
-  `6a1f0488e33f9836663382a2e220e69092910337`.
-- Prepared and independently reviewed all source questions in main218–238 and
-  theory27–31, including starred projection-area proofs and De Gua's theorem.
-  Add36 cards while preserving315 published cards byte for byte:351 cards,
-  1164 justified steps and1216 model views. Future sections remain pending.
-- Local source/model/runtime gates pass;26 new mathematical regression groups
-  and all56 sharding checks pass. Preserve215 earlier screenshot cases and add157:
-  748 width-specific and expanded images are planned for cloud verification.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_SECTION.md), HIGH review, base
+  `fa8273a36d33eb0ed854119d26cfa8d55b681d20`.
+- All source requests in theory32–34 and exercises239–270 have independent
+  source/math/pedagogy approval:52 cards,197 steps,210 reachable model views.
+- Integrated403 cards,1361 steps and1426 views; all351 published cards preserved.
+  Source limitations in246/247/248 are explained explicitly.
+- Local source/model/runtime and45 new mathematical regression groups pass.
+  All8 cloud checks passed on reviewed head `15fde0125509d4e2879f4fe65b7927c5f2368cf0`;
+  all1218 images passed actual review or verified byte-identical reuse.
+  Concurrent course status entries are preserved. The documentation-only conflict
+  resolution requires fresh exact-head CI; publication remains pending.
+- The owner requested uninterrupted cloud continuation. Paid Claude remains
+  deferred; no Claude verdict is claimed.
+
+## Published: Atanasyan chapter III §1, polyhedra and prisms
+
 - PR303 merged as `fa8273a36d33eb0ed854119d26cfa8d55b681d20`, sole parent
   `6a1f0488e33f9836663382a2e220e69092910337`, exact reviewed tree
   `5be3aaca3cdcf8a035718a6bf52d71a2a3cd7df4`.
-- The initial cloud run passed, but actual review of all314 new images found
-  geometry orientations and mobile wrapping to improve. Eleven revised cards
-  passed independent source/math/pedagogy re-review. The fresh run passed702
-  card-width journeys,4904 label states and748 screenshots; all748 images were
-  reviewed or verified identical to reviewed images. Pages39863669592 succeeded
-  on the exact merge and all14 public asset requests matched SHA256 and size.
-  Gate:`ATANASYAN_PRISMS_SECTION_OK`.
-- The owner requested uninterrupted cloud continuation. Paid Claude remains
-  deferred; no Claude verdict is claimed.
+- Published351 cards cover main1–238, theory1–31 and26 self-checks;1164 steps
+  and1216 views. All315 earlier cards remain byte-identical.
+- All8 exact-head cloud check runs passed. Actual visual review covers748 PNGs:
+  434 published-baseline and204 previously approved images are byte-identical;
+  110 images were re-reviewed through57 native sheets with complete pixel coverage.
+  All13 earlier findings were resolved; no failed image was inherited as PASS.
+- Pages39863669592 succeeded on the actual merge. All14 public canonical and
+  cache-busted requests returned200 and matched reviewed SHA256 and sizes.
+  Course SHA256: `7e10ed49d9e35682b99876dae8aba5be30942c942da6cb2f2cc4f6d30ba3206a`.
+- Gate: `ATANASYAN_PRISMS_SECTION_OK`. No learner-data or grading change.
 
 ## Published: complete Atanasyan chapter II
 
