@@ -108,3 +108,20 @@ Aggregate canonical SHA256: `cace816635b55de1cb2bf45ea66ac98d228fa8834bbc2a6a571
 | ex-main-0278-b | `3fa72c6e8c5d2bdeaccee5fd1a40072926c09e0e7682ca466b3b7997382475e3` |
 | ex-main-0278-c | `622559458862de552fd63ec265dcc2a7eb2aa4e5d0e9569310efd74f421ddda1` |
 | ex-main-0278-c-regular | `f77829a0a99c2d46cf759af08bcac8cd000759ad83cc9a2a22d49ad51f894156` |
+
+## Independent integration review
+
+Reviewer `symmetry_review` independently checked the integrated candidate at
+`2026-10-23T21:06:56Z`: remote head
+`a1649af126e29e2a5fbfb81637d25c3eac8275c5`, tree
+`264ca6dc7cf9e5383c31a2dbf9fd552c1ee7e3c5`. Verdict: **PASS for integration**.
+All403 prior lessons are identical; only the four intended source contracts
+changed; previous registry batches and hashes are preserved; all15 new canonical
+hashes match both lessons and bundle. The builder and engine are unchanged.
+Byte-reproducible build, full content418/1411/1469, symmetry15/50/43 and diff checks
+passed independently. Regression tests retain the actual unreviewed-content guard
+and four missing point35 components.
+
+This integration verdict does not certify cloud/visual checks. Final remote-head
+binding and fresh actual browser evidence will be recorded in PR321; neither
+this report nor its integration verdict authorizes merge or publication.

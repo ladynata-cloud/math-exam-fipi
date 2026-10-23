@@ -82,8 +82,10 @@ Next user decision: separate merge/publication authorization after the final gat
 
 Main risks: confusing arbitrary rotation with half-turn symmetry, dropping the
 regular-tetrahedron case, finite drawings of infinite half-planes and leaking
-auxiliary constructions. These are explicitly explained and checked. Draft
-removal is a normal revert; production content and learner state are untouched.
+auxiliary constructions. These are explicitly explained and checked. Rollback
+reverts the15 added cards, their source contracts, registry entries, generated
+bundle and matching count/tests together. The previous403 lesson contents and
+learner state are unchanged.
 
 ## Permissions
 

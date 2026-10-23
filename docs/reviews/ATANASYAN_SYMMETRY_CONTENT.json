@@ -124,5 +124,13 @@
   },
   "verdict": "PASS_CONTENT_SOURCE_MATHEMATICS_PEDAGOGY; VISUAL_DELTA_PENDING",
   "visualGate": "All43 original390px model states visually inspected independently. Corrected two view label sets require fresh screenshot inspection: theory-035-figure:center and ex-main-0278-a:diagonal. No remaining text or coordinate blocker.",
-  "scope": "15 cards,50 justified steps,43 views. Course is incomplete. No merge/deploy authorization, no paid Claude review, no exact-head external release verdict."
+  "scope": "15 cards,50 justified steps,43 views. Course is incomplete. No merge/deploy authorization, no paid Claude review, no exact-head external release verdict.",
+  "integrationReview": {
+    "reviewer": "Codex independent symmetry_review",
+    "reviewedAt": "2026-10-23T21:06:56Z",
+    "headSHA": "a1649af126e29e2a5fbfb81637d25c3eac8275c5",
+    "treeSHA": "264ca6dc7cf9e5383c31a2dbf9fd552c1ee7e3c5",
+    "verdict": "PASS_INTEGRATION; CLOUD_AND_VISUAL_RELEASE_PENDING",
+    "scope": "Source contracts, review registry and canonical identity; all prior403 cards identical; builder and engine unchanged; reproducible bundle; content418/1411/1469 and symmetry15/50/43 gates. Final exact-head binding will be recorded in PR321 after cloud and visual checks."
+  }
 }
