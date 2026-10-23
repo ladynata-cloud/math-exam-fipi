@@ -1,0 +1,1027 @@
+{
+  "entries": [
+    {
+      "sourceEntryId": "source-main-04-001",
+      "exercise": "4.1",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2"
+      ],
+      "sourcePdfPages": [
+        38
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-001.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-002",
+      "exercise": "4.2",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        38
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-002.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-003",
+      "exercise": "4.3",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        38
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-003.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-004",
+      "exercise": "4.4",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "sourcePdfPages": [
+        38
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-004.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-005",
+      "exercise": "4.5",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "sourcePdfPages": [
+        38
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-005.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-006",
+      "exercise": "4.6",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        38
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-006.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-007",
+      "exercise": "4.7",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-007.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-008",
+      "exercise": "4.8",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-008.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-009",
+      "exercise": "4.9",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-009.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-010",
+      "exercise": "4.10",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-010.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-011",
+      "exercise": "4.11",
+      "requiredParts": [
+        "1",
+        "2"
+      ],
+      "textbookParts": [
+        "1",
+        "2"
+      ],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-011-1.json",
+        "stereo-course/merzlyak-10-base/lessons/ex-04-011-2.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-012",
+      "exercise": "4.12",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-012.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-013",
+      "exercise": "4.13",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-013.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-014",
+      "exercise": "4.14",
+      "requiredParts": [
+        "1",
+        "2",
+        "3"
+      ],
+      "textbookParts": [
+        "1",
+        "2",
+        "3"
+      ],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-014-1.json",
+        "stereo-course/merzlyak-10-base/lessons/ex-04-014-2.json",
+        "stereo-course/merzlyak-10-base/lessons/ex-04-014-3.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-015",
+      "exercise": "4.15",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-015.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-016",
+      "exercise": "4.16",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2"
+      ],
+      "sourcePdfPages": [
+        39
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-016.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-017",
+      "exercise": "4.17",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        40
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-017.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-018",
+      "exercise": "4.18",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        40
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-018.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-019",
+      "exercise": "4.19",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        40
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-019.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-020",
+      "exercise": "4.20",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        40
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-020.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-021",
+      "exercise": "4.21",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        40
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-021.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-022",
+      "exercise": "4.22",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        40
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-022.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-023",
+      "exercise": "4.23",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        40
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-023.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-024",
+      "exercise": "4.24",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        40
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-024.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-025",
+      "exercise": "4.25",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        41
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-025.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-026",
+      "exercise": "4.26",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        41
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-026.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-027",
+      "exercise": "4.27",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        41
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-027.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-04-028",
+      "exercise": "4.28",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        41
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-04-028.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-001",
+      "exercise": "5.1",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        46
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-001.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-002",
+      "exercise": "5.2",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2",
+        "3"
+      ],
+      "sourcePdfPages": [
+        46
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-002.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-003",
+      "exercise": "5.3",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "sourcePdfPages": [
+        46
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-003.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-004",
+      "exercise": "5.4",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        46
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-004.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-005",
+      "exercise": "5.5",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2",
+        "3"
+      ],
+      "sourcePdfPages": [
+        47
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-005.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-006",
+      "exercise": "5.6",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        47
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-006.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-007",
+      "exercise": "5.7",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        47
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-007.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-008",
+      "exercise": "5.8",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "sourcePdfPages": [
+        47
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-008.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-009",
+      "exercise": "5.9",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        47
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-009.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-010",
+      "exercise": "5.10",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        47
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-010.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-011",
+      "exercise": "5.11",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        47
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-011.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-012",
+      "exercise": "5.12",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        47
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-012.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-013",
+      "exercise": "5.13",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        47
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-013.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-014",
+      "exercise": "5.14",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        48
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-014.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-015",
+      "exercise": "5.15",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        48
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-015.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-016",
+      "exercise": "5.16",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        48
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-016.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-017",
+      "exercise": "5.17",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2"
+      ],
+      "sourcePdfPages": [
+        48
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-017.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-018",
+      "exercise": "5.18",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [
+        "1",
+        "2"
+      ],
+      "sourcePdfPages": [
+        48
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-018.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-019",
+      "exercise": "5.19",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        48,
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-019.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-020",
+      "exercise": "5.20",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-020.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-021",
+      "exercise": "5.21",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-021.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-022",
+      "exercise": "5.22",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-022.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-023",
+      "exercise": "5.23",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-023.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-024",
+      "exercise": "5.24",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-024.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-025",
+      "exercise": "5.25",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-025.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-026",
+      "exercise": "5.26",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-026.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-027",
+      "exercise": "5.27",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-027.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-028",
+      "exercise": "5.28",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        49
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-028.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-029",
+      "exercise": "5.29",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        50
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-029.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-030",
+      "exercise": "5.30",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        50
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-030.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-031",
+      "exercise": "5.31",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        50
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-031.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-032",
+      "exercise": "5.32",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        50
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-032.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-033",
+      "exercise": "5.33",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        50
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-033.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-034",
+      "exercise": "5.34",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        50
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-034.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-035",
+      "exercise": "5.35",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        50
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-035.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-036",
+      "exercise": "5.36",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        50
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-036.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-037",
+      "exercise": "5.37",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        50
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-037.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-038",
+      "exercise": "5.38",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        51
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-038.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-039",
+      "exercise": "5.39",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        51
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-039.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-040",
+      "exercise": "5.40",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        51
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-040.json"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-05-041",
+      "exercise": "5.41",
+      "requiredParts": [
+        null
+      ],
+      "textbookParts": [],
+      "sourcePdfPages": [
+        51
+      ],
+      "lessonFiles": [
+        "stereo-course/merzlyak-10-base/lessons/ex-05-041.json"
+      ]
+    }
+  ],
+  "unresolved": []
+}

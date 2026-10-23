@@ -1,0 +1,978 @@
+{
+  "paragraphs": [
+    8,
+    9
+  ],
+  "numberedExercises": 59,
+  "lessonCount": 68,
+  "entries": [
+    {
+      "sourceId": "source-main-08-001",
+      "exercise": "8.1",
+      "printedPages": [
+        85
+      ],
+      "pdfPages": [
+        86
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-001"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-002",
+      "exercise": "8.2",
+      "printedPages": [
+        85
+      ],
+      "pdfPages": [
+        86
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-002"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-003",
+      "exercise": "8.3",
+      "printedPages": [
+        85
+      ],
+      "pdfPages": [
+        86
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-003"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-004",
+      "exercise": "8.4",
+      "printedPages": [
+        85
+      ],
+      "pdfPages": [
+        86
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-004"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-005",
+      "exercise": "8.5",
+      "printedPages": [
+        85
+      ],
+      "pdfPages": [
+        86
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-005"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-006",
+      "exercise": "8.6",
+      "printedPages": [
+        86
+      ],
+      "pdfPages": [
+        87
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-006"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-007",
+      "exercise": "8.7",
+      "printedPages": [
+        86
+      ],
+      "pdfPages": [
+        87
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-007"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-008",
+      "exercise": "8.8",
+      "printedPages": [
+        86
+      ],
+      "pdfPages": [
+        87
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-008"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-009",
+      "exercise": "8.9",
+      "printedPages": [
+        86
+      ],
+      "pdfPages": [
+        87
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-009"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-010",
+      "exercise": "8.10",
+      "printedPages": [
+        86
+      ],
+      "pdfPages": [
+        87
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-010"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-011",
+      "exercise": "8.11",
+      "printedPages": [
+        86
+      ],
+      "pdfPages": [
+        87
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-011"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-012",
+      "exercise": "8.12",
+      "printedPages": [
+        87
+      ],
+      "pdfPages": [
+        88
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-012"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-013",
+      "exercise": "8.13",
+      "printedPages": [
+        87
+      ],
+      "pdfPages": [
+        88
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-013"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-014",
+      "exercise": "8.14",
+      "printedPages": [
+        87
+      ],
+      "pdfPages": [
+        88
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-014"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-015",
+      "exercise": "8.15",
+      "printedPages": [
+        87
+      ],
+      "pdfPages": [
+        88
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-015"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-016",
+      "exercise": "8.16",
+      "printedPages": [
+        87
+      ],
+      "pdfPages": [
+        88
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-016"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-017",
+      "exercise": "8.17",
+      "printedPages": [
+        87
+      ],
+      "pdfPages": [
+        88
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-017"
+      ]
+    },
+    {
+      "sourceId": "source-main-08-018",
+      "exercise": "8.18",
+      "printedPages": [
+        87
+      ],
+      "pdfPages": [
+        88
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-08-018"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-001",
+      "exercise": "9.1",
+      "printedPages": [
+        94
+      ],
+      "pdfPages": [
+        95
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-001"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-002",
+      "exercise": "9.2",
+      "printedPages": [
+        94
+      ],
+      "pdfPages": [
+        95
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-002"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-003",
+      "exercise": "9.3",
+      "printedPages": [
+        94
+      ],
+      "pdfPages": [
+        95
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-003"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-007",
+      "exercise": "9.7",
+      "printedPages": [
+        94
+      ],
+      "pdfPages": [
+        95
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-007"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-004",
+      "exercise": "9.4",
+      "printedPages": [
+        94
+      ],
+      "pdfPages": [
+        95
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-004"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-005",
+      "exercise": "9.5",
+      "printedPages": [
+        94
+      ],
+      "pdfPages": [
+        95
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-005"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-006",
+      "exercise": "9.6",
+      "printedPages": [
+        94
+      ],
+      "pdfPages": [
+        95
+      ],
+      "requiredParts": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "lessonIds": [
+        "ex-09-006-1",
+        "ex-09-006-2",
+        "ex-09-006-3",
+        "ex-09-006-4",
+        "ex-09-006-5"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-008",
+      "exercise": "9.8",
+      "printedPages": [
+        95
+      ],
+      "pdfPages": [
+        96
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-008"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-009",
+      "exercise": "9.9",
+      "printedPages": [
+        95
+      ],
+      "pdfPages": [
+        96
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-009"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-010",
+      "exercise": "9.10",
+      "printedPages": [
+        95
+      ],
+      "pdfPages": [
+        96
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-010"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-011",
+      "exercise": "9.11",
+      "printedPages": [
+        95
+      ],
+      "pdfPages": [
+        96
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-011"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-012",
+      "exercise": "9.12",
+      "printedPages": [
+        95
+      ],
+      "pdfPages": [
+        96
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-012"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-013",
+      "exercise": "9.13",
+      "printedPages": [
+        95
+      ],
+      "pdfPages": [
+        96
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-013"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-014",
+      "exercise": "9.14",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-014"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-015",
+      "exercise": "9.15",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-015"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-016",
+      "exercise": "9.16",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-016"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-017",
+      "exercise": "9.17",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-017"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-018",
+      "exercise": "9.18",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-018"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-019",
+      "exercise": "9.19",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "lessonIds": [
+        "ex-09-019-1",
+        "ex-09-019-2",
+        "ex-09-019-3",
+        "ex-09-019-4",
+        "ex-09-019-5",
+        "ex-09-019-6"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-020",
+      "exercise": "9.20",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-020"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-021",
+      "exercise": "9.21",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-021"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-022",
+      "exercise": "9.22",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-022"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-023",
+      "exercise": "9.23",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        97
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-023"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-024",
+      "exercise": "9.24",
+      "printedPages": [
+        96,
+        97
+      ],
+      "pdfPages": [
+        97,
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-024"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-025",
+      "exercise": "9.25",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-025"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-026",
+      "exercise": "9.26",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-026"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-027",
+      "exercise": "9.27",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-027"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-028",
+      "exercise": "9.28",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-028"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-029",
+      "exercise": "9.29",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-029"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-030",
+      "exercise": "9.30",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-030"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-031",
+      "exercise": "9.31",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-031"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-032",
+      "exercise": "9.32",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-032"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-033",
+      "exercise": "9.33",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-033"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-034",
+      "exercise": "9.34",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        98
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-034"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-035",
+      "exercise": "9.35",
+      "printedPages": [
+        97,
+        98
+      ],
+      "pdfPages": [
+        98,
+        99
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-035"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-036",
+      "exercise": "9.36",
+      "printedPages": [
+        98
+      ],
+      "pdfPages": [
+        99
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-036"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-037",
+      "exercise": "9.37",
+      "printedPages": [
+        98
+      ],
+      "pdfPages": [
+        99
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-037"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-038",
+      "exercise": "9.38",
+      "printedPages": [
+        98
+      ],
+      "pdfPages": [
+        99
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-038"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-039",
+      "exercise": "9.39",
+      "printedPages": [
+        98
+      ],
+      "pdfPages": [
+        99
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-039"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-040",
+      "exercise": "9.40",
+      "printedPages": [
+        98
+      ],
+      "pdfPages": [
+        99
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-040"
+      ]
+    },
+    {
+      "sourceId": "source-main-09-041",
+      "exercise": "9.41",
+      "printedPages": [
+        98
+      ],
+      "pdfPages": [
+        99
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-09-041"
+      ]
+    }
+  ],
+  "omissions": [],
+  "sourceVerification": "Conditions and diagrams inspected in source PNGs for printed pp.85–87,94–98; answer hints p.201 inspected. Reviews remain pending."
+}

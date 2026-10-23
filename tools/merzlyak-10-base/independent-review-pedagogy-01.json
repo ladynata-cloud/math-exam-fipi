@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent /root",
+  "author": "agent /root/lessons_para1",
+  "reviewedAt": "2026-10-22T22:31:08.509878+00:00",
+  "scope": {
+    "paragraphs": [
+      1
+    ],
+    "lessonCards": 27,
+    "reviewDimensions": [
+      "pedagogy"
+    ]
+  },
+  "verdicts": {
+    "pedagogy": "PASS"
+  },
+  "method": [
+    "Read all 27 statements, all steps including their prompts, help and answers, and inspected model coordinates and every view.",
+    "Checked use of the axioms and introductory concepts, explanation of symbol notation, complete handling of counterexamples and alternative configurations, and distinction between a plane and its finite drawing.",
+    "Checked school-accessible proof steps, model correspondence, the general argument for the odd closed polyline, and planimetric prerequisites in the final two revision exercises.",
+    "Source and mathematical checks are recorded separately in chapter1-review.json; this report adds an independent pedagogical assessment without altering lesson content."
+  ],
+  "findings": [],
+  "unresolvedFindings": [],
+  "cards": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-001.json",
+      "lessonId": "merz-ex-01-001",
+      "sha256": "7cbbeca2ab83d3f2b587321ac0af33149f8d0ac34ede0c1a9cb476b483cdd621",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-002.json",
+      "lessonId": "merz-ex-01-002",
+      "sha256": "8a8588bf22921b8f2c7fd177d0dae7b705b4ecae3f3a3d0aa3652968dfbf747a",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-003.json",
+      "lessonId": "merz-ex-01-003",
+      "sha256": "6a3b4e7514084334b2acad2a57f3e5c978dc941b8d8da06cf1d61e0f7a3621fc",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-004.json",
+      "lessonId": "merz-ex-01-004",
+      "sha256": "ee0f94438057d6cd4ae0d414be1f15bd2f598cf88aa942879e3435b6de193848",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-005.json",
+      "lessonId": "merz-ex-01-005",
+      "sha256": "2f02d3a8fa4c145b3219172a098939c73ebe1fe6a27086f066d3a79648c34635",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-006.json",
+      "lessonId": "merz-ex-01-006",
+      "sha256": "1acd3709414432da56918abcca2480ee266ebf8e178bba11061a426815d26bd6",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-007.json",
+      "lessonId": "merz-ex-01-007",
+      "sha256": "a7d09427c20e72c6c49b1b4d56f72f37aa66c2162e732f8172c2f908a68ad035",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-008.json",
+      "lessonId": "merz-ex-01-008",
+      "sha256": "10f2e9146fac6a9ec1ea92726132aa427b8087695524ab64ffaf9ef47217657c",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-009.json",
+      "lessonId": "merz-ex-01-009",
+      "sha256": "3379b1166fc07b57acd3d440566fb64107a86c11eef51a5ff06c0460484805f6",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-010.json",
+      "lessonId": "merz-ex-01-010",
+      "sha256": "ec453162aac96c3066cf8a938e3d979925926d42c5b9724e3808e802b91eb8ff",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-011.json",
+      "lessonId": "merz-ex-01-011",
+      "sha256": "ee513539dc0dd1680e43eb0d6f1b50e1e5b291fa586500ee52fe5ff3be9060ac",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-012.json",
+      "lessonId": "merz-ex-01-012",
+      "sha256": "59a7364971a08804e1c12aca6821ca3ec56e8992905ca7b43ea564458dc78c46",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-013.json",
+      "lessonId": "merz-ex-01-013",
+      "sha256": "dd52cbe52f88d0d5f6f1368dc19fa480f50b1ae0f52862f89e901e3850a13638",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-014.json",
+      "lessonId": "merz-ex-01-014",
+      "sha256": "a1145c990c0d833fc69312f8607ea347364d83275706313ca4fa1d6955cda5c5",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-015.json",
+      "lessonId": "merz-ex-01-015",
+      "sha256": "2fd82f9f912ddea3bd8f034c50877c850b44e18701e8b3168cb2dfc34bf90a82",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-016.json",
+      "lessonId": "merz-ex-01-016",
+      "sha256": "6b5478d8838ad4aa136528ee194d7d20195d61099a23c5c2b4216b31cf4443b0",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-017.json",
+      "lessonId": "merz-ex-01-017",
+      "sha256": "9e9335065bea20aee30c094d849d97ecc51b7092f4734662af28f4c4726aee50",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-018.json",
+      "lessonId": "merz-ex-01-018",
+      "sha256": "528e2ae4ccc02e24a41c894dcd84b992007ec81c3adba2aa7f96f9f1ab44a8d7",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-019.json",
+      "lessonId": "merz-ex-01-019",
+      "sha256": "92373566aafa8a3acbf033710e651163419a9a3d1808d559bc6a30ce94bd71fc",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-020.json",
+      "lessonId": "merz-ex-01-020",
+      "sha256": "c9dfcb9cb5dd35ab88e08e6682cb40676fbff27a323df5da6b101bade82ebd33",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-021.json",
+      "lessonId": "merz-ex-01-021",
+      "sha256": "2859419c8caa98e1516dda256c4f84fb18e256460a42ca1c5b6402ab578c52ed",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-022.json",
+      "lessonId": "merz-ex-01-022",
+      "sha256": "e3e9301a65fc6467900818c153e37fce619bfa8344a802243e53afe211b680cc",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-023.json",
+      "lessonId": "merz-ex-01-023",
+      "sha256": "47f78d70718e06286ac4eda0082554e6f515973888fc81ad97fbb7f5840a5dd7",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-024.json",
+      "lessonId": "merz-ex-01-024",
+      "sha256": "3f47b000d10f73c103bf9b7e025591edbc42cd97061993bea8a5b5b682a03cdc",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-025.json",
+      "lessonId": "merz-ex-01-025",
+      "sha256": "86a8d6c7832adfc8c8b8e80561429f2469b450c38173eb2166ee765fdb0c7f14",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-026.json",
+      "lessonId": "merz-ex-01-026",
+      "sha256": "7deacc85d6884aefc12da689bbf2da8767fcd97fec21cd123284a048bc0f64ce",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-01-027.json",
+      "lessonId": "merz-ex-01-027",
+      "sha256": "f0ea1d598b5a92e312c0b797332feab58f00ea55c0c7319181ea3eba749b1097",
+      "pedagogy": "PASS"
+    }
+  ],
+  "releaseApproval": false
+}

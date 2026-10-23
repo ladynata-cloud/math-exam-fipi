@@ -1,0 +1,1404 @@
+{
+  "schemaVersion": 1,
+  "scope": "§§6–7 numbered exercises, source-verified draft authoring; not release approval",
+  "status": "draft",
+  "numberedExercises": 74,
+  "lessonCards": 84,
+  "sourceInspection": {
+    "kind": "visual reading of full page PNGs plus OCR",
+    "pdfPages": [
+      56,
+      57,
+      58,
+      59,
+      60,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74
+    ],
+    "answerPagesConsulted": [
+      201,
+      202
+    ]
+  },
+  "entries": [
+    {
+      "sourceEntryId": "source-main-06-001",
+      "collection": "main",
+      "exercise": "6.1",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-001"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-002",
+      "collection": "main",
+      "exercise": "6.2",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-002"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-003",
+      "collection": "main",
+      "exercise": "6.3",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-003"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-004",
+      "collection": "main",
+      "exercise": "6.4",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-004"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-005",
+      "collection": "main",
+      "exercise": "6.5",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-005"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-006",
+      "collection": "main",
+      "exercise": "6.6",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-006"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-007",
+      "collection": "main",
+      "exercise": "6.7",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        56
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-007"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-008",
+      "collection": "main",
+      "exercise": "6.8",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-008"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-009",
+      "collection": "main",
+      "exercise": "6.9",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-009"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-010",
+      "collection": "main",
+      "exercise": "6.10",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-010"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-011",
+      "collection": "main",
+      "exercise": "6.11",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-011"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-012",
+      "collection": "main",
+      "exercise": "6.12",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "requiredParts": [
+        "1",
+        "2"
+      ],
+      "lessonIds": [
+        "ex-06-012-1",
+        "ex-06-012-2"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-013",
+      "collection": "main",
+      "exercise": "6.13",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-013"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-014",
+      "collection": "main",
+      "exercise": "6.14",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        57
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-014"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-015",
+      "collection": "main",
+      "exercise": "6.15",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-015"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-016",
+      "collection": "main",
+      "exercise": "6.16",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-016"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-017",
+      "collection": "main",
+      "exercise": "6.17",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-017"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-018",
+      "collection": "main",
+      "exercise": "6.18",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-018"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-019",
+      "collection": "main",
+      "exercise": "6.19",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-019"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-020",
+      "collection": "main",
+      "exercise": "6.20",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-020"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-021",
+      "collection": "main",
+      "exercise": "6.21",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-021"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-022",
+      "collection": "main",
+      "exercise": "6.22",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        57
+      ],
+      "pdfPages": [
+        58
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-022"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-023",
+      "collection": "main",
+      "exercise": "6.23",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-023"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-024",
+      "collection": "main",
+      "exercise": "6.24",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-024"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-025",
+      "collection": "main",
+      "exercise": "6.25",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-025"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-026",
+      "collection": "main",
+      "exercise": "6.26",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-026"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-027",
+      "collection": "main",
+      "exercise": "6.27",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-027"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-028",
+      "collection": "main",
+      "exercise": "6.28",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        59
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-028"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-029",
+      "collection": "main",
+      "exercise": "6.29",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        58,
+        59
+      ],
+      "pdfPages": [
+        59,
+        60
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-029"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-030",
+      "collection": "main",
+      "exercise": "6.30",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-030"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-031",
+      "collection": "main",
+      "exercise": "6.31",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-031"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-032",
+      "collection": "main",
+      "exercise": "6.32",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-032"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-033",
+      "collection": "main",
+      "exercise": "6.33",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-033"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-06-034",
+      "collection": "main",
+      "exercise": "6.34",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        60
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-06-034"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-001",
+      "collection": "main",
+      "exercise": "7.1",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        68,
+        69
+      ],
+      "pdfPages": [
+        69,
+        70
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-001"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-002",
+      "collection": "main",
+      "exercise": "7.2",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        68,
+        69
+      ],
+      "pdfPages": [
+        69,
+        70
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-002"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-003",
+      "collection": "main",
+      "exercise": "7.3",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-003"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-004",
+      "collection": "main",
+      "exercise": "7.4",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-004"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-005",
+      "collection": "main",
+      "exercise": "7.5",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-005"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-006",
+      "collection": "main",
+      "exercise": "7.6",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        68
+      ],
+      "pdfPages": [
+        69
+      ],
+      "requiredParts": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "lessonIds": [
+        "ex-07-006-1",
+        "ex-07-006-2",
+        "ex-07-006-3",
+        "ex-07-006-4"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-007",
+      "collection": "main",
+      "exercise": "7.7",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-007"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-008",
+      "collection": "main",
+      "exercise": "7.8",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-008"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-009",
+      "collection": "main",
+      "exercise": "7.9",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-009"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-010",
+      "collection": "main",
+      "exercise": "7.10",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-010"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-011",
+      "collection": "main",
+      "exercise": "7.11",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-011"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-012",
+      "collection": "main",
+      "exercise": "7.12",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-012"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-013",
+      "collection": "main",
+      "exercise": "7.13",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        70
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-013"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-014",
+      "collection": "main",
+      "exercise": "7.14",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-014"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-015",
+      "collection": "main",
+      "exercise": "7.15",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-015"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-016",
+      "collection": "main",
+      "exercise": "7.16",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-016"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-017",
+      "collection": "main",
+      "exercise": "7.17",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-017"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-018",
+      "collection": "main",
+      "exercise": "7.18",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-018"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-019",
+      "collection": "main",
+      "exercise": "7.19",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "requiredParts": [
+        "1",
+        "2"
+      ],
+      "lessonIds": [
+        "ex-07-019-1",
+        "ex-07-019-2"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-020",
+      "collection": "main",
+      "exercise": "7.20",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        71
+      ],
+      "requiredParts": [
+        "1",
+        "2"
+      ],
+      "lessonIds": [
+        "ex-07-020-1",
+        "ex-07-020-2"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-021",
+      "collection": "main",
+      "exercise": "7.21",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "requiredParts": [
+        "1",
+        "2"
+      ],
+      "lessonIds": [
+        "ex-07-021-1",
+        "ex-07-021-2"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-022",
+      "collection": "main",
+      "exercise": "7.22",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "requiredParts": [
+        "1",
+        "2"
+      ],
+      "lessonIds": [
+        "ex-07-022-1",
+        "ex-07-022-2"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-023",
+      "collection": "main",
+      "exercise": "7.23",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-023"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-024",
+      "collection": "main",
+      "exercise": "7.24",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-024"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-025",
+      "collection": "main",
+      "exercise": "7.25",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-025"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-026",
+      "collection": "main",
+      "exercise": "7.26",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-026"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-027",
+      "collection": "main",
+      "exercise": "7.27",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-027"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-028",
+      "collection": "main",
+      "exercise": "7.28",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-028"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-029",
+      "collection": "main",
+      "exercise": "7.29",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        71
+      ],
+      "pdfPages": [
+        72
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-029"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-030",
+      "collection": "main",
+      "exercise": "7.30",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-030"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-031",
+      "collection": "main",
+      "exercise": "7.31",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-031"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-032",
+      "collection": "main",
+      "exercise": "7.32",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-032"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-033",
+      "collection": "main",
+      "exercise": "7.33",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-033"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-034",
+      "collection": "main",
+      "exercise": "7.34",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-034"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-035",
+      "collection": "main",
+      "exercise": "7.35",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-035"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-036",
+      "collection": "main",
+      "exercise": "7.36",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "requiredParts": [
+        "1",
+        "2"
+      ],
+      "lessonIds": [
+        "ex-07-036-1",
+        "ex-07-036-2"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-037",
+      "collection": "main",
+      "exercise": "7.37",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "requiredParts": [
+        "1",
+        "2"
+      ],
+      "lessonIds": [
+        "ex-07-037-1",
+        "ex-07-037-2"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-038",
+      "collection": "main",
+      "exercise": "7.38",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        72
+      ],
+      "pdfPages": [
+        73
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-038"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-039",
+      "collection": "main",
+      "exercise": "7.39",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        73
+      ],
+      "pdfPages": [
+        74
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-039"
+      ]
+    },
+    {
+      "sourceEntryId": "source-main-07-040",
+      "collection": "main",
+      "exercise": "7.40",
+      "chapter": "Глава 2. Параллельность в пространстве",
+      "printedPages": [
+        73
+      ],
+      "pdfPages": [
+        74
+      ],
+      "requiredParts": [
+        null
+      ],
+      "lessonIds": [
+        "ex-07-040"
+      ]
+    }
+  ],
+  "unresolved": [
+    {
+      "exercise": "6.4",
+      "kind": "endpoint-degeneracy",
+      "description": "The printed proof requires non-endpoint edge points: common ratio 0 gives no EFK plane and ratio 1 gives coincidence rather than distinct parallel planes. Draft explains this explicitly."
+    },
+    {
+      "exercise": "7.31",
+      "kind": "insufficient-metric-data",
+      "description": "The printed task asks to construct the image of an inscribed square from an arbitrary triangle image alone. Two source triangles with the same projection give different square images; draft proves nonuniqueness rather than inventing missing metric givens. Root independently confirmed the counterexample."
+    }
+  ],
+  "review": {
+    "source": "pending",
+    "mathematics": "pending",
+    "pedagogy": "pending"
+  }
+}

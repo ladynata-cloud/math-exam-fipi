@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Historical cloud QA evidence. A checkpoint applies only to its exact authored tree and bundle; it does not approve later content or publication.",
+  "checkpoints": [
+    {
+      "authoredCards": 542,
+      "head": "aaecf515ab9bdd9f46586c7fb62fccc6197ddcee",
+      "testedMergeCommit": "c7a570cffa1b40538b129be31e3ba63a1357f057",
+      "run": 39863119027,
+      "job": 120118536283,
+      "result": "PASS",
+      "bundleSHA256": "b4cbe9dca9c7b69f24bda87de567fcddd9d34de0ac22de3066e0662e3a3a0771",
+      "viewWidthStates": 3662,
+      "screenshots": 2134,
+      "artifact": 12461664702
+    },
+    {
+      "authoredCards": 900,
+      "head": "36266d49858fec48bc65783ba09f4023b9513dcf",
+      "testedMergeCommit": "e3749ef9d1fe599196be8ba6f82a464e434b4995",
+      "run": 39866111680,
+      "job": 120128593375,
+      "result": "PASS",
+      "bundleSHA256": "e98bf1ab2c1161f03412b75884220482beb432a1abdae038e475bd7c77e4af88",
+      "viewWidthStates": 5962,
+      "screenshots": 3528,
+      "artifact": 12464272168,
+      "manualVisualReview": {
+        "scope": "Six selected 320px screenshots:14.31,20.83,theory7detail9,theory13detail4,computer16.3,question17.5. This is sampling, not manual review of every screenshot.",
+        "finding": "Theory7detail9 displayed 18 global labels despite no literal overlap; focused view labels requested for the next checkpoint. Reset button wrapping fix was visibly effective."
+      }
+    },
+    {
+      "authoredCards": 989,
+      "reviewedCards": 989,
+      "head": "f220eb4e84748455e9054f44d694085385af3b78",
+      "testedBase": "c62e5047fa2e774d43899e4ee20d5e1127c53e64",
+      "testedMergeCommit": "5927072fd2d8b4f47b4f179fa5a0a59441871f67",
+      "testedMergeTree": "549cfdff8cf5c055c1a8176d97d6d6d0fe27af22",
+      "run": 39870470330,
+      "job": 120143329438,
+      "result": "PASS automated checks; superseded after manual orientation findings",
+      "bundleSHA256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2",
+      "viewWidthStates": 6628,
+      "screenshots": 3884,
+      "artifact": 12466218384,
+      "artifactSHA256": "6f56623f4ac36ff89711b49acb7368d525f85d78e1c70c12537c7a3039a2a653",
+      "artifactBytes": 393501589,
+      "allFourWorkflowsPassed": [
+        39870470330,
+        39870470348,
+        39870470362,
+        39870470326
+      ],
+      "manualVisualReview": {
+        "mobileScreenshotCount": 190,
+        "desktopScreenshotCount": 2,
+        "scope": "All89 final-added cards (76 numbered exercises in16–17 and13 article cards):178mobile PNGs; six additional revised cards:12mobile PNGs; two desktop samples. This is not manual inspection of all3884 PNGs.",
+        "reviewers": [
+          "/root/visual_articles",
+          "/root/visual_para16",
+          "/root/visual_para17",
+          "/root"
+        ],
+        "actionable": [
+          "ex-16-010/section near-edge-on DEF",
+          "ex-16-021/small narrow BDD1",
+          "ex-16-027/section narrow BDA1",
+          "ex-17-027 D and B1 project nearly together"
+        ],
+        "nonblocking": [
+          "ex-17-026 is genuinely shallow (height2 on base side8); current camera remains rotatable, and the dedicated height view is distinct from the last base view.",
+          "Shared planar helper mentions condition data on the figure; letter labels are present while numeric givens are in the statement. Shared renderer copy is outside this isolated task."
+        ],
+        "followUp": "Four rigid Z rotations preserve all source geometry; independent targeted review and a new cloud run are required."
+      },
+      "evidenceNotes": [
+        "State.width records SVG viewBox width; ordered pass validation and all3884 PNG pixel widths independently confirmed configured320/1280 viewports. Next recorder includes explicit viewportWidth.",
+        "Numerical view keys in4.4 enumerate before neutral in JavaScript, so this checkpoint captured only its neutral view; every numerical view was still tested. Next recorder captures last nonneutral view explicitly."
+      ],
+      "releaseApproval": false
+    }
+  ],
+  "externalConsultation": {
+    "run": 39857930153,
+    "result": "UNAVAILABLE",
+    "providerHTTPStatus": 400,
+    "responseOrVerdictReceived": false,
+    "automaticRetries": 0
+  },
+  "releaseApproval": false
+}
