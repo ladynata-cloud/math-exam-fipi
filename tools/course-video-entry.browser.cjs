@@ -263,7 +263,10 @@ async function main() {
         assert.equal(await p.locator(kind === 'percent' ? '#p-q input' : '#practiceAnswer input, #practiceAnswer button').first().isVisible(), true, id + ': ordinary entry opens an answer control');
         assert.equal(await p.locator(kind === 'percent' ? '#p-check' : '#checkTask').isVisible(), true, id + ': ordinary entry keeps its checker');
       } else if (id !== 'adjacent-angles') {
-        await p.locator('[data-stage="0"][aria-current="step"]').waitFor(); assert.equal(await p.locator('#answer').count(), 0);
+        await p.locator('.task-first-course #answer').waitFor();
+        assert.equal(await p.locator('#answerForm button[type="submit"]').isVisible(), true, id + ': ordinary entry keeps its checker');
+        assert.equal(await p.locator('#taskHelp').evaluate(node => node.open), false, id + ': help starts closed');
+        assert.equal(await p.evaluate(() => PathCourse.state().lessons[location.hash.slice(8)].help), false, id + ': entry does not count as using help');
       } else await p.locator('#pool button').first().waitFor();
       await normal.context.close();
       const actual = await open(), q = actual.page;
@@ -285,13 +288,45 @@ async function main() {
 
     const saved = await open(), savedPage = saved.page;
     await savedPage.goto(origin + routes.brackets);
-    for (const stage of [2, 3, 4]) {
-      await savedPage.locator('[data-stage="' + stage + '"]').click();
-      await savedPage.locator(stage === 4 ? '#note' : '#answer').fill(stage === 4 ? 'Моя сохранённая запись' : '317');
+    await savedPage.locator('.task-first-course #answer').waitFor();
+    await savedPage.locator('#taskHelp > summary').click();
+    await savedPage.locator('#taskSteps > summary').click();
+    const firstStep = await savedPage.evaluate(() => {
+      const lesson = PathCourse.state().lessons['equations-brackets'];
+      return PathData.task('equations-brackets', lesson.seed).steps[lesson.step].a;
+    });
+    await savedPage.locator('#stepAnswer').fill(String(firstStep));
+    await savedPage.locator('#stepAnswerForm button[type="submit"]').click();
+    await savedPage.waitForFunction(() => PathCourse.state().lessons['equations-brackets'].step === 1);
+    // The current shell keeps these three independent drafts in one task,
+    // with guided work and notes behind saved disclosures, instead of stages.
+    for (const part of ['guided draft', 'final draft', 'written reflection']) {
+      if (part === 'guided draft') await savedPage.locator('#stepAnswer').fill('317');
+      else if (part === 'final draft') {
+        await savedPage.locator('#returnToAnswer').click();
+        await savedPage.locator('#answer').fill('271');
+      } else {
+        await savedPage.locator('#taskNote > summary').click();
+        await savedPage.locator('#note').fill('Моя сохранённая запись');
+      }
+      // Disclosure toggle handlers save asynchronously. Capture only after
+      // their saved flags agree with the actual visible/open state.
+      await savedPage.waitForFunction(() => {
+        const ui = PathCourse.state().lessons['equations-brackets'].taskFirst;
+        return [['taskHelp', 'helpOpen'], ['taskSteps', 'stepsOpen'], ['taskNote', 'noteOpen']]
+          .every(([id, key]) => document.getElementById(id).open === ui[key]);
+      });
       const before = await savedPage.evaluate(() => PathCourse.state());
       await savedPage.goto(origin + practicePath('brackets'));
-      await savedPage.locator('[data-stage="' + stage + '"][aria-current="step"]').waitFor();
-      assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), before, 'Practice entry preserves the full saved task at stage ' + stage);
+      await savedPage.locator('.task-first-course #answer').waitFor();
+      assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), before, 'Practice entry preserves the full saved task with ' + part);
+      const lesson = before.lessons['equations-brackets'], ui = lesson.taskFirst;
+      assert.equal(await savedPage.locator('#answer').inputValue(), ui.finalDraft, 'Final draft remains in its own field');
+      assert.equal(await savedPage.locator('#stepAnswer').inputValue(), '317', 'Guided draft remains distinct from the final draft');
+      assert.equal(await savedPage.locator('#note').inputValue(), lesson.note, 'Written reflection remains in its own field');
+      assert.equal(await savedPage.locator('#taskStepsBody .steps li').count(), 1, 'The accepted step remains in the saved work');
+      for (const [id, key] of [['taskHelp', 'helpOpen'], ['taskSteps', 'stepsOpen'], ['taskNote', 'noteOpen']])
+        assert.equal(await savedPage.locator('#' + id).evaluate(node => node.open), ui[key], 'Practice entry preserves ' + id);
     }
     await saved.context.close();
     const helper = await fs.readFile(path.join(ROOT, 'learning/practice-entry.js'), 'utf8');
