@@ -26,7 +26,9 @@ const multiplicationColumn=require('../trainers/oge-basics/multiplication-divisi
 const addedMultiplicationIds=new Set(multiplicationColumn.stages.map(stage=>'oge-basics:'+stage.id));
 assert.equal(addedMultiplicationIds.size,9);
 assert.equal(catalog.items.filter(item=>addedMultiplicationIds.has(item.id)).length,9,'All column multiplication topics are available');
-assert.equal(catalog.items.filter(item=>!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)).length,217,'Existing identities remain available');
+const addedVilenkin6Ids=new Set(Array.from({length:27},(_,index)=>'vilenkin6-part1:lesson-'+index));
+assert.deepEqual(catalog.items.filter(item=>item.trainerId==='vilenkin6-part1').map(item=>item.id).sort(),[...addedVilenkin6Ids].sort(),'Every Vilenkin 6 lesson is available exactly once');
+assert.equal(catalog.items.filter(item=>!addedVilenkin6Ids.has(item.id)&&!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)).length,217,'Existing identities remain available');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

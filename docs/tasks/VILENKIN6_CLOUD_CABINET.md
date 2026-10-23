@@ -70,8 +70,9 @@ decoder, catalog and container data. Preserve the SQLite file and existing work.
 The old server cannot open the expanded constraint or interpret new attempts;
 therefore a raw old-image rollback is unsafe. Never downgrade a live database or
 delete student work automatically. A backup restore that discards later work
-requires a separate data-loss decision. Verify the standard private backup before
-a server rollout; this task has not yet performed a production backup.
+requires a separate data-loss decision. The atomic migration and compatibility
+rollback are covered by synthetic storage tests. No production backup has been
+performed or claimed by this task.
 
 ## Execution record
 
@@ -91,3 +92,7 @@ message-bus and synthetic SQLite tests are not live browser/two-device evidence.
 The current production service reports healthy durable storage, but no new
 production cabinet, assignment, backup, synchronized attempt, merge or deployment
 is claimed. Exact-head CI, PR identity and owner decisions are recorded in the PR.
+
+The first exact-head CI run also found an old geometry integration assertion
+that assumed no additional catalog families. It is updated to preserve the
+original 217 identities separately and require exactly the 27 V6 module IDs.
