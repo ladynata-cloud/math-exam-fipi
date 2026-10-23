@@ -225,13 +225,13 @@ async function narrowShot(page, frame, name, selector) {
   const shots = process.env.PETERSON6_BOARD_SHOTS;
   if (shots) { mkdirSync(shots, { recursive: true }); await page.screenshot({ path: join(shots, name + '.png') }); }
   const layout = await frame.evaluate(() => ({
-    width: innerWidth, scroll: document.documentElement.scrollWidth,
+    width: innerWidth, scroll: document.documentElement.scrollWidth, scrollX,
     offenders: [...document.querySelectorAll('#main, #main *, .topbar, .topbar *, footer, footer *')].flatMap(element => {
       const box = element.getBoundingClientRect();
-      if (!box.width || !box.height || (box.left >= -1 && box.right <= innerWidth + 1)) return [];
+      if (!box.width || !box.height || (box.left >= -1 && box.right <= innerWidth + 1 && element.scrollWidth <= element.clientWidth + 1)) return [];
       return [{ tag: element.tagName, id: element.id, className: element.getAttribute('class') || '',
         left: Math.round(box.left * 100) / 100, right: Math.round(box.right * 100) / 100,
-        width: Math.round(box.width * 100) / 100, scroll: element.scrollWidth,
+        width: Math.round(box.width * 100) / 100, client: element.clientWidth, scroll: element.scrollWidth,
         minWidth: getComputedStyle(element).minWidth, overflow: getComputedStyle(element).overflowX,
         text: (element.textContent || '').trim().slice(0, 120) }];
     }).slice(0, 24)
