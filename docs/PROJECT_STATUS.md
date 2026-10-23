@@ -16,6 +16,12 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
   for all 736 numbered exercises. Course content remains unchanged here.
 - PR #312 has since merged as the task base above; the older prepared-release
   paragraph below is historical. Its exact release evidence is in PR #312.
+- The first integration head passed new board/cabinet browser checks and visual
+  review, course checks for all 989 cards / 6,628 model states, and the other
+  existing workflows. An unchanged expressions browser assertion failed twice.
+  Its known route-readiness gap is being repaired only in the test, retaining
+  every existing assertion and adding acceptance diagnostics; final evidence
+  belongs to the amended exact-head gates in PR #314.
 - Next three actions: finish the scoped integration and independent checks;
   pass exact-head cloud gates in one Draft PR; obtain the concrete release
   decision and verify both Pages and Amvera before claiming live synchronization.

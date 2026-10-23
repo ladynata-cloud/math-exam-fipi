@@ -200,6 +200,26 @@ async function synchronized(controller, observer, label) {
   return expected;
 }
 
+// Only synthetic task/DOM values: never include board URLs, room tokens or
+// storage contents in a failure report.
+async function guidedStepDiagnostic(frame) {
+  return frame.evaluate(() => {
+    const current = window.__profileExpressionsBoard.getState();
+    const session = current.progress.sessions['expr-powers:guided'];
+    return {
+      route: location.hash,
+      step: document.querySelector('#current-step')?.textContent.trim(),
+      taskId: document.querySelector('[data-equation-view]')?.getAttribute('data-equation-view'),
+      session: session ? { taskId: session.taskId, step: session.step, draft: session.draft, answers: session.answers, done: session.done } : null,
+      input: document.querySelector('#answer')?.value,
+      answerDisabled: document.querySelector('#answer')?.disabled,
+      submitDisabled: document.querySelector('#submit-answer')?.disabled,
+      feedback: current.view.feedback,
+      feedbackText: document.querySelector('#feedback')?.textContent.trim()
+    };
+  });
+}
+
 const messages = page => page.evaluate(() => window.__profileGateMessages);
 
 async function quietMessages(pages, label) {
@@ -340,18 +360,40 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   const taskId = await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view');
   await teacherFrame.locator('.support-details > summary').click();
   await teacherFrame.locator('#repair-current').click();
-  await teacherFrame.waitForFunction(() => location.hash === '#practice/expr-powers/guided', null, { polling: 50 });
-  await teacherFrame.locator('#answer-form').waitFor();
-  assert.equal(await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view'), taskId, 'remediation retains the current task');
-  const acceptedAnswer = await teacherFrame.evaluate(id => {
-    const task = ProfileLessons.find(lesson => lesson.id === 'expr-powers').tasks.find(task => task.id === id);
-    return String(task.steps[0].answer);
-  }, taskId);
-  await teacherFrame.locator('#answer').fill(acceptedAnswer);
-  await teacherFrame.locator('#submit-answer').click();
-  await synchronized(teacherFrame, studentFrame, 'accepted guided step before advancing');
-  assert.equal(await studentFrame.locator('#answer').isDisabled(), true);
-  assert.equal(await studentFrame.locator('#next').isVisible(), true);
+  try {
+    // Setting location.hash precedes the hashchange render. The old independent
+    // screen already has #answer-form and the same task ID, so neither proves
+    // that the guided input is current. Wait for its actual step and session.
+    await teacherFrame.waitForFunction(id => {
+      const task = ProfileLessons.find(lesson => lesson.id === 'expr-powers').tasks.find(task => task.id === id);
+      const session = window.__profileExpressionsBoard.getState().progress.sessions['expr-powers:guided'];
+      const form = document.querySelector('#answer-form'), input = document.querySelector('#answer');
+      return location.hash === '#practice/expr-powers/guided' &&
+        document.querySelector('#current-step')?.textContent.trim() === 'Шаг 1 из ' + task.steps.length &&
+        document.querySelector('[data-equation-view]')?.getAttribute('data-equation-view') === id &&
+        session?.taskId === id && session.step === 0 && session.answers.length === 0 &&
+        !!input && form?.contains(input) && !input.disabled &&
+        document.querySelector('#submit-answer')?.disabled === false;
+    }, taskId, { polling: 50 });
+    assert.equal(await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view'), taskId, 'remediation retains the current task');
+    const acceptedAnswer = await teacherFrame.evaluate(id => {
+      const task = ProfileLessons.find(lesson => lesson.id === 'expr-powers').tasks.find(task => task.id === id);
+      return String(task.steps[0].answer);
+    }, taskId);
+    await teacherFrame.locator('#answer').fill(acceptedAnswer);
+    assert.equal((await snapshot(teacherFrame)).progress.sessions['expr-powers:guided'].draft, acceptedAnswer, 'the current guided session receives the entered first-step answer');
+    await teacherFrame.locator('#submit-answer').click();
+    assert.equal(await teacherFrame.locator('#answer').isDisabled(), true, 'teacher has accepted the guided answer before synchronization is assessed');
+    const accepted = await synchronized(teacherFrame, studentFrame, 'accepted guided step before advancing');
+    assert.equal(accepted.view.feedback, 'right', 'matching snapshots represent an accepted answer');
+    assert.deepEqual(accepted.progress.sessions['expr-powers:guided'].answers, [acceptedAnswer], 'the first guided answer is retained');
+    assert.equal(await studentFrame.locator('#answer').isDisabled(), true);
+    assert.equal(await studentFrame.locator('#next').isVisible(), true);
+  } catch (error) {
+    const diagnostics = await Promise.allSettled([guidedStepDiagnostic(teacherFrame), guidedStepDiagnostic(studentFrame)]);
+    console.error('PROFILE_EXPRESSIONS_GUIDED_STEP_DIAGNOSTIC ' + JSON.stringify(diagnostics.map((result, index) => ({ role: index ? 'observer' : 'teacher', ...(result.status === 'fulfilled' ? { state: result.value } : { unavailable: true }) }))));
+    throw error;
+  }
   await teacherFrame.locator('#next').click();
   await synchronized(teacherFrame, studentFrame, 'next guided step and accepted history');
   assert.match(await studentFrame.locator('#current-step').innerText(), /Шаг 2/);

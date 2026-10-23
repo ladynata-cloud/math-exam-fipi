@@ -88,3 +88,17 @@ GitHub Actions and record their actual results. Private account setup is checked
 in the authenticated cloud teacher UI; synthetic tests never use real pupil data.
 Final test totals, head, PR, independent verdict and release status belong in
 the accompanying PR execution record.
+
+## Existing regression readiness repair
+
+The first exact-head run and one unchanged-head retry both failed the existing
+expressions board browser check at accepted guided-step input state. Its prior
+wait observed a new hash and a form/task ID also present on the old screen,
+while the runtime renders the new route asynchronously on `hashchange`.
+Strengthen only that test to wait for the actual first guided step and matching
+fresh session, then assert teacher acceptance before observer synchronization.
+Keep every original observer/history assertion; add bounded synthetic failure
+diagnostics and rethrow. No production expressions, SDK or protocol code changes.
+Independent review approved this bounded validation repair. The readiness gap
+is established by code; the cause of the two earlier failures remains unproven
+until the amended gate runs. Preserve both failures in the PR record.
