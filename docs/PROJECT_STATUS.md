@@ -12,8 +12,8 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 - On 2026-10-24 the owner explicitly approved the proposed conflict-resolution
   scope: combine both integrations, retain their behavior and repeat the gates.
   This approval does not claim a release of the resulting unreviewed composition.
-- Resolve eight overlapping files with 39 catalog entries / 10 mirror trainers,
-  both exact URL aliases and picker entries. Preserve Atanasyan manual saving,
+- Resolved eight overlapping files with 39 catalog entries / 10 mirror trainers,
+  both exact URL aliases and picker entries. Preserved Atanasyan manual saving,
   catalog/packaging and host keyboard protection, and Merzlyak cabinet attachment.
   No account, authentication, database or authored-course content changes.
 - Real account setup remains in the private teacher interface; no real pupil
@@ -28,6 +28,30 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 - Next three actions: resolve and independently review the combined diff;
   pass exact-head cloud registry, cabinet and both-course board gates;
   present the concrete release candidate for the owner's release decision.
+
+## Merged: Vilenkin 6 cloud cabinet and Makarychev 8 course
+
+- PR #315 merged as `52cb1c1a5c731acd660139328f0001ccfa33a08b`, followed by
+  PR #319 as `07189de58b7f5d60c02ea6ca6aa9450a324a377f`. Both are traceable
+  same-repository publications with task-specific owner authorization recorded
+  in their PRs. Their private-conversation permissions are not reused here.
+- Vilenkin adds 27 managed modules, durable drafts, module notes and a new
+  direction. Preserve its server contracts, profile migration, catalog records,
+  teacher/parent flow and container dependencies without editing their behavior.
+- Makarychev adds 51 topics and 306 worked tasks plus course-directory/SEO links.
+  Its 23-file patch does not overlap this integration and is retained unchanged.
+- The Merzlyak task's current permission to resolve concurrent course changes
+  covers additive preservation of these existing features. This is routine
+  reconciliation within the requested cabinet/board integration, not permission
+  to change those curricula, migrate pupil profiles, or deploy untested code.
+- Prior Atanasyan-only composition `ad1bb1d427ecdf11bb7682381f887c4e8adf08a8`
+  passed local server 298/298 and focused checks; no Actions runs started while
+  the newer base conflicted. The five new conflicts cover cabinet navigation,
+  script tags, the expressions readiness test and this status document.
+- Combined routes retain every assertion. Both cabinet fixtures load both course
+  helpers to verify coexistence. Run the full backend and managed-course/cabinet/
+  board regressions on the exact result.
+  Current production deployment/assignment is not independently claimed here.
 
 ## Merged: Atanasyan 92a in the cabinet and on the shared board
 

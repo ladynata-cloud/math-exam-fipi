@@ -375,6 +375,9 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
         !!input && form?.contains(input) && !input.disabled &&
         document.querySelector('#submit-answer')?.disabled === false;
     }, taskId, { polling: 50 });
+    // Preserve the concurrent readiness guard's visible form/step checks too.
+    await teacherFrame.locator('#answer-form').waitFor();
+    await teacherFrame.locator('#current-step').filter({ hasText: /^Шаг 1 из \d+$/ }).waitFor();
     assert.equal(await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view'), taskId, 'remediation retains the current task');
     const acceptedAnswer = await teacherFrame.evaluate(id => {
       const task = ProfileLessons.find(lesson => lesson.id === 'expr-powers').tasks.find(task => task.id === id);

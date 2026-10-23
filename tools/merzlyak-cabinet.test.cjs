@@ -60,6 +60,7 @@ async function fixture({role='student', route='home', selected=true, helper=true
     return {ok:true,status:200,json:async()=>structuredClone(responses[route])};
   };
   if(helper)window.eval(read('learning/attached-course.js'));
+  window.eval(read('learning/vilenkin6-course.js'));
   window.eval(read('learning/preparation.js'));
   window.eval(read('learning/teaching.js'));
   window.eval(read('learning/app.js'));

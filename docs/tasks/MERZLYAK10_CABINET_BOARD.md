@@ -126,3 +126,24 @@ and applicable course gates. Old-base passes are retained as history, never
 counted as composed-tree validation. The final PR records exact new identity,
 actual checks, failures and not-run work. Release authorization remains a
 separate concrete decision after review of the resolved candidate.
+
+### Continued additive preservation of concurrent releases
+
+Before Actions could start, main advanced through PR #315 (Vilenkin cloud
+cabinet) and PR #319 (Makarychev 8) to
+`07189de58b7f5d60c02ea6ca6aa9450a324a377f`. Provenance and a read-only virtual
+merge were inspected before editing; five files conflicted. The owner's current
+explicit conflict-resolution instruction, together with the original cloud
+cabinet/board task, covers preserving these existing publications while finishing
+the same integration. No separate owner statement naming these new hashes is
+claimed. Do not repeat an approval request for this routine additive preservation.
+
+Retain all Vilenkin contracts, durable storage/profile migration, catalog,
+Docker and parent behavior byte-for-byte. Combine only the already-overlapping
+cabinet routes, preview, teacher profile display and cache tags. Keep Merzlyak
+attachment primary only when its exact course token is present; ordinary Vilenkin
+profiles retain all 27 managed modules. Preserve both browser readiness fixes and
+all stronger acceptance/history assertions. Makarychev source/SEO stays unchanged.
+Rerun full server, Vilenkin managed/cabinet, both board courses and retained profile
+regressions. This remains a resolution/testing step, with the exact final release
+candidate presented after validation; no production merge is implied.
