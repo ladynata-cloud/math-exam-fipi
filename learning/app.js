@@ -74,8 +74,8 @@ function profileExamCatalog(){
 function profileCoursePage(home=false){
  const profile=profileFor(),homework=assignments.filter(a=>a.status==='published'),savedWork=home?attempts.filter(a=>a.learnerId===account.id&&!a.archivedAt).sort((a,b)=>String(b.updatedAt).localeCompare(String(a.updatedAt))):[];
  main.innerHTML=`<section data-profile-course>
-  <div class="page-heading"><div><p class="eyebrow">ПОДГОТОВКА К ЕГЭ · ЗАДАНИЯ 1–13</p><h1>${E(courseLabels['ege-profile'])}</h1><p>Цель — самостоятельно решать все 13 заданий первой части.</p></div></div>
-  <section class="hero-card"><div><h2>Просто бери и решай! Всё получится)</h2><p>Выбери задание и попробуй решить. Если трудно — повтори нужную тему и вернись к задаче.</p></div></section>
+  <div class="page-heading"><div><p class="eyebrow">ПОДГОТОВКА К ЕГЭ · ПРОФИЛЬНЫЙ УРОВЕНЬ</p><h1>${E(courseLabels['ege-profile'])}</h1><p>Цель — самостоятельно решать все 13 заданий первой части.</p></div></div>
+  <section class="hero-card"><div><h2>Просто бери и решай! Всё получится)</h2><p>Выбери задание и попробуй решить. Если трудно — повтори нужную тему и вернись к задаче.</p><p>В полном курсе — темы заданий №1–13, №16 и смешанная проверка.</p><div class="actions"><a class="button primary" data-profile-full-course href="${profileCourseURL}#calm">Открыть полный курс ЕГЭ профиль →</a></div></div></section>
   ${profileExamCatalog()}
   <p class="form-hint profile-exam-storage">Решения в этом курсе пока сохраняются в браузере.</p>
   ${!teacher()&&profile.focus?`<section class="panel profile-focus"><h2>На что обратить внимание</h2><p>${E(profile.focus)}</p></section>`:''}
