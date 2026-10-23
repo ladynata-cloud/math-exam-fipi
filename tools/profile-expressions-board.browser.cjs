@@ -350,8 +350,6 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
     document.querySelector('#answer')?.disabled === false, independentForm, { polling: 50 });
   await independentForm.dispose();
   await teacherFrame.locator('#answer-form').waitFor();
-  // The hash changes before its handler replaces the independent task's form.
-  await teacherFrame.locator('#current-step').filter({ hasText: /^Шаг 1 из \d+$/ }).waitFor();
   assert.equal(await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view'), taskId, 'remediation retains the current task');
   await synchronized(teacherFrame, studentFrame, 'guided remediation is rendered before input');
   const acceptedAnswer = await teacherFrame.evaluate(id => {
@@ -362,6 +360,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.equal(await teacherFrame.locator('#answer').inputValue(), acceptedAnswer, 'controller retains the guided answer before submission');
   assert.equal((await snapshot(teacherFrame)).progress.sessions['expr-powers:guided'].draft, acceptedAnswer, 'input updates the guided attempt');
   await teacherFrame.locator('#submit-answer').click();
+  await teacherFrame.locator('#answer:disabled').waitFor();
   assert.equal(await teacherFrame.locator('#answer').isDisabled(), true, 'controller accepted the guided step');
   assert.deepEqual((await snapshot(teacherFrame)).progress.sessions['expr-powers:guided'].answers, [acceptedAnswer], 'controller recorded the expected guided answer');
   await synchronized(teacherFrame, studentFrame, 'accepted guided step before advancing');
