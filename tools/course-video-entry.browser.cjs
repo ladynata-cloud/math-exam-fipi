@@ -255,7 +255,13 @@ async function main() {
       const normal = await open(), p = normal.page;
       await p.goto(origin + routes[id]);
       if (['negative-numbers', 'fractions', 'proportions', 'percentages'].includes(id)) {
-        await p.locator('#view-home').waitFor(); assert.equal(await p.locator('#view-practice').isVisible(), false);
+        // The existing standalone enhancement opens the current task on ordinary
+        // entry too. Wait for that asynchronous enhancement before checking it.
+        await p.locator('body[data-basics-standalone]').waitFor();
+        await p.locator('#view-practice').waitFor();
+        assert.equal(await p.locator('#view-home').isVisible(), false, id + ': ordinary entry opens the task-first screen');
+        const ordinaryAnswer = p.locator(['negative-numbers', 'fractions'].includes(id) ? '#practiceAnswer input, #practiceAnswer button' : '#p-q input').first();
+        assert.equal(await ordinaryAnswer.isVisible(), true, id + ': ordinary entry has a visible answer control');
       } else if (id !== 'adjacent-angles') {
         await p.locator('[data-stage="0"][aria-current="step"]').waitFor(); assert.equal(await p.locator('#answer').count(), 0);
       } else await p.locator('#pool button').first().waitFor();

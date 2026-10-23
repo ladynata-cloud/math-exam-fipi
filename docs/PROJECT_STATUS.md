@@ -19,15 +19,19 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
   16 scenarios; standalone course 108 views / 27 models / 80 controls. Content,
   catalog/preparation and deterministic offline checks passed. Independent
   review found no remaining blocking code issue.
-- No production account or assignment was created: the browser's automatic
-  approval review requires action-time confirmation of the persistent access
-  grant. No merge/deployment, production backup or live two-device test is
-  claimed. The known unavailable external reviewer is not an approval or a
-  standing waiver. Exact-head CI and release decision belong in the task PR.
+- The owner confirmed the private account-access grant and the requested cabinet
+  was created through the teacher UI. The owner also confirmed a one-time
+  external-review exception for PR315 because of the documented provider credit
+  failure. No merge/deployment, course assignment, production backup or live
+  two-device test is claimed yet. Final CI and release evidence belong in PR315.
+- Full cloud learning/container and dedicated V6 CI passed. Two unchanged
+  browser tests exposed stale task-first/guided-render timing assumptions; their
+  narrow readiness corrections preserve all answer/state assertions and require
+  another exact-head CI run. No production code changed in those corrections.
 - Rollback must retain the new enum and V6 decoder/catalog while disabling new
   UI entry; a raw old server image cannot read the expanded schema. Preserve
-  persistent data. Next: exact-head CI, required owner decisions, then deployment
-  and authenticated pupil/teacher verification.
+  persistent data. Next: exact-head CI, publication and authenticated
+  pupil/teacher verification.
 
 ## Prepared for release review: profile task 3 stereometry on the shared board
 

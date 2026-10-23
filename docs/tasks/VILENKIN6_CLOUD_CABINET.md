@@ -56,13 +56,16 @@ Independent code review is required. No new teaching sequence or authored
 mathematics is introduced, so a new design consultation is not needed. Exact-head
 external release review remains required by policy. The known Anthropic balance
 failure is unresolved; no further paid retry, approval or standing waiver is
-inferred. Record the final exception decision separately if the owner makes one.
+inferred. On 2026-10-24 the owner explicitly confirmed the one-time release
+exception for PR315, citing that unavailable review. This is not a review verdict
+or a waiver of the required automated checks.
 
 The current user request authorizes implementation and publication. Real pupil
 records and credentials belong only in the private cabinet, never in this
 repository, tests, logs or review payloads. The browser's automatic approval
-review blocked account creation as a new persistent access grant; that operation
-is pending action-time owner confirmation and must not be retried indirectly.
+review initially blocked account creation as a new persistent access grant. The
+owner then confirmed that exact action, and the private cabinet was created and
+verified through the normal teacher UI. No indirect creation route was used.
 
 Rollback is a forward compatibility patch: disable the new course entry and
 assignment UI while retaining the expanded profile enum, migration, Vilenkin
@@ -90,10 +93,20 @@ new module IDs. The final complete run passed 299/299.
 
 Independent code review is complete with no remaining blocking finding. DOM,
 message-bus and synthetic SQLite tests are not live browser/two-device evidence.
-The current production service reports healthy durable storage, but no new
-production cabinet, assignment, backup, synchronized attempt, merge or deployment
-is claimed. Exact-head CI, PR identity and owner decisions are recorded in the PR.
+The production service reports healthy durable storage and the requested private
+cabinet has been created. Course assignment, a synchronized production attempt,
+merge and deployment are still pending. Exact-head CI, PR identity and release
+evidence are recorded in the PR; no production backup is claimed.
 
 The first exact-head CI run also found an old geometry integration assertion
 that assumed no additional catalog families. It is updated to preserve the
 original 217 identities separately and require exactly the 27 V6 module IDs.
+
+The following CI run passed the cloud course, full learning/container, navigation,
+SEO and contextual-help workflows. Two existing browser tests exposed stale
+timing assumptions already present on the base: ordinary OGE entry now opens the
+task directly, and a profile hash change can precede the guided DOM render. The
+tests now wait for the actual task/guided screen while retaining answer, feedback,
+state, read-only and direct-link assertions. The relevant production assets are
+byte-identical to the base; only tests and this execution record changed after
+the owner's release confirmation. New exact-head browser CI is required.
