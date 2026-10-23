@@ -1,10 +1,10 @@
 name: Profile 2027 — learning start
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', 'trainers/board-picker-data.json', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', 'trainers/ege-profile-expressions.html', 'trainers/board-bridge.js', 'trainers/board-picker.js', 'trainers/board-picker.css', 'trainers/board-workspace.js', 'trainers/board-picker-data.json', 'trainers/board-compat.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/board-picker-smoke.cjs', 'tools/trainer-registry-client-cutover-smoke.cjs', '.github/workflows/profile-start.yml']
   push:
     branches: [main]
-    paths: ['ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', 'trainers/ege-profile-expressions.html', 'trainers/board-bridge.js', 'trainers/board-picker.js', 'trainers/board-picker.css', 'trainers/board-workspace.js', 'trainers/board-picker-data.json', 'trainers/board-compat.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/board-picker-smoke.cjs', 'tools/trainer-registry-client-cutover-smoke.cjs', '.github/workflows/profile-start.yml']
 permissions:
   contents: read
 concurrency:
@@ -45,3 +45,25 @@ jobs:
         run: node --test tools/atanasyan-profile15-a.test.cjs tools/atanasyan-profile15-b.test.cjs && node tools/atanasyan-profile15.test.cjs && node tools/atanasyan-profile15-model.test.cjs && node tools/atanasyan-profile15.browser.cjs
       - name: Existing profile regression
         run: npm --prefix ege-profil test
+  expressions-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned browser tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/expressions-board-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/expressions-board-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/expressions-board-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Expressions adapter and picker contracts
+        run: node --test tools/profile-expressions-board.test.cjs tools/profile-expressions-picker.test.cjs
+      - name: Expressions teacher and observer synchronization
+        run: node tools/profile-expressions-board.browser.cjs

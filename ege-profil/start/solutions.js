@@ -183,6 +183,15 @@
     parent.append(paragraph);
   }
 
+  function validateBoardState(task, value) {
+    const fields = ['open', 'count'];
+    if (!value || typeof value !== 'object' || Array.isArray(value) || Reflect.ownKeys(value).length !== fields.length ||
+      !fields.every(key => { const property = Object.getOwnPropertyDescriptor(value, key); return property && property.enumerable && Object.hasOwn(property, 'value'); }) ||
+      typeof value.open !== 'boolean' || !Number.isInteger(value.count) || value.count < 0 || (value.open && value.count === 0) ||
+      !task || !Array.isArray(task.steps)) return false;
+    return value.count <= steps(task).length;
+  }
+
   function mount(container, task, options = {}) {
     if (!container) return () => {};
     const wrapper = document.createElement('section'); wrapper.className = 'profile-solution';
@@ -191,31 +200,40 @@
     open.textContent = label; open.setAttribute('aria-expanded', 'false'); wrapper.append(open); container.append(wrapper);
     let panel, list, next, authored, shown = 0, disposed = false;
     function permitted() { return !disposed && (typeof options.onHelp !== 'function' || options.onHelp() !== false); }
-    function reveal(prechecked = false) {
-      if (!panel || shown >= authored.length || disposed || (!prechecked && !permitted())) return;
+    function updateNext() {
+      next.setAttribute('aria-disabled', String(shown === authored.length));
+      next.textContent = shown < authored.length ? `Следующий шаг: ${shown + 1} из ${authored.length}` : `Все ${authored.length} шагов открыты`;
+    }
+    function appendStep() {
       const step = authored[shown], item = document.createElement('li');
       item.className = 'profile-solution-step'; item.dataset.solutionStep = String(shown + 1);
       if (options.stepAttribute && /^data-[a-z-]+$/.test(options.stepAttribute)) item.setAttribute(options.stepAttribute, String(shown));
       const heading = document.createElement('h3'); heading.append(document.createTextNode(`Шаг ${shown + 1} из ${authored.length}. `)); appendAuthored(heading, step.title, true); item.append(heading);
       step.lines.forEach(value => line(item, value)); list.append(item); shown++;
-      next.setAttribute('aria-disabled', String(shown === authored.length));
-      next.textContent = shown < authored.length ? `Следующий шаг: ${shown + 1} из ${authored.length}` : `Все ${authored.length} шагов открыты`;
+      updateNext();
+    }
+    function reveal(prechecked = false) {
+      if (!panel || shown >= authored.length || disposed || (!prechecked && !permitted())) return;
+      appendStep();
       options.onProgress?.(shown, authored.length);
+    }
+    function createPanel() {
+      authored = authored || steps(task);
+      panel = document.createElement('section'); panel.className = 'profile-solution-panel'; panel.dataset.solutionPanel = ''; panel.id = 'profile-solution-' + (++sequence);
+      panel.setAttribute('aria-label', 'Решение этой задачи по шагам'); open.setAttribute('aria-controls', panel.id);
+      const title = document.createElement('h2'); title.className = 'profile-solution-title'; title.tabIndex = -1; title.textContent = 'Решение с помощью — по шагам'; title.id = panel.id + '-title';
+      panel.setAttribute('aria-labelledby', title.id); panel.append(title);
+      list = document.createElement('ol'); list.setAttribute('aria-live', 'polite'); list.setAttribute('aria-relevant', 'additions'); panel.append(list);
+      next = document.createElement('button'); next.type = 'button'; next.className = 'button quiet'; next.dataset.solutionNext = '';
+      if (options.nextId) next.id = options.nextId;
+      next.addEventListener('click', nextStep); panel.append(next); wrapper.append(panel);
     }
     function toggle() {
       if (disposed) return;
       const opening = open.getAttribute('aria-expanded') !== 'true';
       if (opening && !permitted()) return;
       if (!panel) {
-        authored = steps(task);
-        panel = document.createElement('section'); panel.className = 'profile-solution-panel'; panel.dataset.solutionPanel = ''; panel.id = 'profile-solution-' + (++sequence);
-        panel.setAttribute('aria-label', 'Решение этой задачи по шагам'); open.setAttribute('aria-controls', panel.id);
-        const title = document.createElement('h2'); title.className = 'profile-solution-title'; title.tabIndex = -1; title.textContent = 'Решение с помощью — по шагам'; title.id = panel.id + '-title';
-        panel.setAttribute('aria-labelledby', title.id); panel.append(title);
-        list = document.createElement('ol'); list.setAttribute('aria-live', 'polite'); list.setAttribute('aria-relevant', 'additions'); panel.append(list);
-        next = document.createElement('button'); next.type = 'button'; next.className = 'button quiet'; next.dataset.solutionNext = '';
-        if (options.nextId) next.id = options.nextId;
-        next.addEventListener('click', nextStep); panel.append(next); wrapper.append(panel);
+        createPanel();
         const initial = Math.max(1, Math.min(authored.length, Number.isInteger(options.initialCount) ? options.initialCount : 1));
         for (let i = 0; i < initial; i++) { reveal(i === 0); if (disposed) return; }
       }
@@ -224,7 +242,25 @@
     function nextStep() { reveal(); }
     open.addEventListener('click', toggle);
     if (options.initialOpen) toggle();
-    return () => { disposed = true; open.removeEventListener('click', toggle); next?.removeEventListener('click', nextStep); wrapper.remove(); };
+    const cleanup = () => { disposed = true; open.removeEventListener('click', toggle); next?.removeEventListener('click', nextStep); wrapper.remove(); };
+    cleanup.getBoardState = () => ({ open: open.getAttribute('aria-expanded') === 'true', count: shown });
+    cleanup.applyBoardState = value => {
+      if (disposed || !validateBoardState(task, value)) throw new TypeError('Invalid solution board state');
+      const definition = authored || steps(task);
+      // Restore disclosure directly, without recording a fresh request for help.
+      authored = definition;
+      if (value.count === 0) {
+        next?.removeEventListener('click', nextStep); panel?.remove();
+        panel = list = next = undefined; shown = 0; open.removeAttribute('aria-controls');
+      } else {
+        if (!panel) createPanel();
+        while (shown > value.count) { list.lastElementChild.remove(); shown--; }
+        while (shown < value.count) appendStep();
+        updateNext(); panel.hidden = !value.open;
+      }
+      open.setAttribute('aria-expanded', String(value.open)); open.textContent = value.open ? 'Свернуть разбор' : label;
+    };
+    return cleanup;
   }
-  root.ProfileSolutions = { steps, mount, formatFractions, appendMathText: appendText };
+  root.ProfileSolutions = { steps, mount, formatFractions, appendMathText: appendText, validateBoardState };
 })(globalThis);
