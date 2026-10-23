@@ -70,9 +70,10 @@ decoder, catalog and container data. Preserve the SQLite file and existing work.
 The old server cannot open the expanded constraint or interpret new attempts;
 therefore a raw old-image rollback is unsafe. Never downgrade a live database or
 delete student work automatically. A backup restore that discards later work
-requires a separate data-loss decision. The atomic migration and compatibility
-rollback are covered by synthetic storage tests. No production backup has been
-performed or claimed by this task.
+requires a separate data-loss decision. Synthetic storage tests cover the atomic
+migration and reopening migrated profiles and saved attempts. The forward
+compatibility recovery plan has been inspected; no production rollback or backup
+has been performed or claimed by this task.
 
 ## Execution record
 
