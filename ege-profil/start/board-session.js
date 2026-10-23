@@ -1,9 +1,19 @@
 (function (root) {
   'use strict';
 
-  // Only the registered №8 wrapper loads this adapter. The ordinary course
-  // continues to use its existing browser storage and navigation.
-  const LESSON_IDS = Object.freeze(['expr-powers', 'expr-roots', 'expr-fractions', 'expr-logarithms', 'algebra-cosine', 'algebra-double-angle']);
+  // Only these two registered wrappers activate a board session. The ordinary
+  // course keeps its existing browser storage and navigation. Configurations
+  // are fixed here; routes or messages cannot extend either course boundary.
+  const EXPRESSIONS = Object.freeze({
+    id: 'ege-profile-expressions', marker: 'expressions', number: 8,
+    path: '/trainers/ege-profile-expressions.html', debugKey: '__profileExpressionsBoard',
+    lessonIds: Object.freeze(['expr-powers', 'expr-roots', 'expr-fractions', 'expr-logarithms', 'algebra-cosine', 'algebra-double-angle'])
+  });
+  const STEREOMETRY = Object.freeze({
+    id: 'ege-profile-stereometry', marker: 'stereometry', number: 3,
+    path: '/trainers/ege-profile-stereometry.html', debugKey: '__profileStereoBoard',
+    lessonIds: Object.freeze(['stereo-box', 'stereo-cube', 'stereo-prism', 'stereo-pyramid', 'stereo-cylinder', 'stereo-cone', 'stereo-sphere', 'stereo-compound'])
+  });
   const MODES = ['guided', 'plan', 'independent'];
   const PROGRESS_KEY = 'mathexam.profileStart2027.v1';
   const PREFERENCES_KEY = 'mathexam.profileCalmPreferences.v1';
@@ -21,10 +31,10 @@
   });
   const integer = (value, min, max) => Number.isInteger(value) && value >= min && value <= max;
   const text = value => typeof value === 'string' && value.length <= 200 && !/<\/?[a-z][^>]*>/i.test(value);
-  function validRoute(hash) {
-    if (hash === '#exam/8' || hash === '#calm/8') return true;
+  function validRoute(hash, config) {
+    if (hash === '#exam/' + config.number || hash === '#calm/' + config.number) return true;
     const match = /^#(lesson|example|practice|repair|pause)\/([a-z0-9-]+)(?:\/(guided|plan|independent))?$/.exec(hash || '');
-    return !!match && LESSON_IDS.includes(match[2]) &&
+    return !!match && config.lessonIds.includes(match[2]) &&
       (['lesson', 'example'].includes(match[1]) ? !match[3] : !!match[3]);
   }
   function safeJson(value, depth = 1, seen = new Set()) {
@@ -46,10 +56,12 @@
     seen.delete(value);
     return true;
   }
-  function create(lessons) {
+  function create(lessons, config) {
+    const LESSON_IDS = config.lessonIds;
+    const routeValid = hash => validRoute(hash, config);
     const known = new Map(lessons.filter(l => LESSON_IDS.includes(l.id)).map(l => [l.id, l]));
     const tasks = new Map([...known.values()].flatMap(l => l.tasks.map(t => [t.id, t])));
-    if (known.size !== LESSON_IDS.length) throw new Error('Incomplete expressions course');
+    if (known.size !== LESSON_IDS.length) throw new Error('Incomplete ' + config.marker + ' course');
     const memory = new Map();
     const storage = { getItem: key => memory.get(key) ?? null, setItem: (key, value) => memory.set(key, String(value)), removeItem: key => memory.delete(key) };
     const subset = (source, keys) => Object.fromEntries(keys.filter(key => Object.hasOwn(source, key)).map(key => [key, clone(source[key])]));
@@ -95,10 +107,10 @@
     function validateState(value) {
       try {
         if (!safeJson(value) || new TextEncoder().encode(JSON.stringify(value)).length > 64 * 1024 ||
-            !fields(value, ['route', 'returnToTask', 'progress', 'preferences', 'view']) || !validRoute(value.route)) return false;
+            !fields(value, ['route', 'returnToTask', 'progress', 'preferences', 'view']) || !routeValid(value.route)) return false;
         const data = value.progress, prefs = value.preferences, view = value.view;
         if (!fields(data, ['version', 'records', 'seen', 'sessions']) || data.version !== 1 || !fields(data.records, LESSON_IDS) ||
-            !object(data.seen) || !object(data.sessions) || Object.keys(data.sessions).length > 18) return false;
+            !object(data.seen) || !object(data.sessions) || Object.keys(data.sessions).length > LESSON_IDS.length * MODES.length) return false;
         for (const id of LESSON_IDS) {
           const record = data.records[id], lesson = known.get(id);
           if (!fields(record, ['guided', 'independent', 'attempts']) || !integer(record.attempts, 0, 100000)) return false;
@@ -116,7 +128,7 @@
         if (['practice', 'repair', 'pause'].includes(page) && !data.sessions[id + ':' + mode]) return false;
         if (['calm', 'example'].includes(page) && !prefs.enabled) return false;
         if (value.returnToTask !== null) {
-          if (!validRoute(value.returnToTask) || !value.returnToTask.startsWith('#practice/') || value.returnToTask === value.route) return false;
+          if (!routeValid(value.returnToTask) || !value.returnToTask.startsWith('#practice/') || value.returnToTask === value.route) return false;
           const [, lessonId, returnMode] = value.returnToTask.slice(1).split('/');
           if (!data.sessions[lessonId + ':' + returnMode]) return false;
         }
@@ -132,7 +144,7 @@
         if ((d.lab && (c.page !== 'lesson' || !c.model)) || (d.materials && c.page !== 'lesson') ||
             (d.foundation && !c.live) || (d.simpler && (!c.live || !c.lesson.prereq?.text)) ||
             (d.numberInput && (!c.live || c.question.choices)) || (d.extraSupport && !c.live) ||
-            ((d.calmBasics || d.trigBasics) && c.page !== 'calm') ||
+            (d.calmBasics && c.page !== 'calm') || (d.trigBasics && (c.page !== 'calm' || config.number !== 8)) ||
             new Set(d.earned).size !== d.earned.length || !d.earned.every(index => c.page === 'practice' && c.mode === 'guided' &&
               prefs.enabled && integer(index, 0, c.session.answers.length - 1))) return false;
         if (view.help !== null && (!fields(view.help, ['kind', 'controlIndex']) ||
@@ -147,7 +159,7 @@
       } catch (_) { return false; }
     }
     function replace(value) {
-      if (!validateState(value)) throw new TypeError('Invalid expressions board state');
+      if (!validateState(value)) throw new TypeError('Invalid ' + config.marker + ' board state');
       memory.clear();
       storage.setItem(PROGRESS_KEY, JSON.stringify(value.progress));
       storage.setItem(PREFERENCES_KEY, JSON.stringify(value.preferences));
@@ -165,12 +177,12 @@
       [...main.querySelectorAll('.earned-explanation')].forEach((element, index) => { element.open = value.earned.includes(index); });
     }
     // Resolve authored course-relative links against the canonical course, not
-    // against /trainers/. Only the six registered topics stay in the room.
+    // against /trainers/. Only this wrapper's registered topics stay in the room.
     function scopeLinks(main) {
       const canonical = new URL('/ege-profil/start/index.html', location.origin);
       for (const link of main.querySelectorAll('a[href]')) {
         const href = link.getAttribute('href');
-        if (href.startsWith('#') && (validRoute(href) || ['#task-model', '#task-solution', '#main'].includes(href))) continue;
+        if (href.startsWith('#') && (routeValid(href) || ['#task-model', '#task-solution', '#main'].includes(href))) continue;
         const url = new URL(href, canonical);
         if (!['http:', 'https:'].includes(url.protocol)) continue;
         link.href = url.href;
@@ -179,7 +191,16 @@
     }
     return { storage, progress, preferences, validateState, replace, readDetails, applyDetails, scopeLinks };
   }
-  const api = { LESSON_IDS, validRoute, create };
-  root.ProfileExpressionsBoard = api;
-  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  function api(config) {
+    return Object.freeze({
+      LESSON_IDS: config.lessonIds, id: config.id, marker: config.marker,
+      path: config.path, debugKey: config.debugKey, defaultRoute: '#exam/' + config.number,
+      validRoute: hash => validRoute(hash, config), create: lessons => create(lessons, config)
+    });
+  }
+  const expressions = api(EXPRESSIONS), stereometry = api(STEREOMETRY);
+  root.ProfileExpressionsBoard = expressions;
+  root.ProfileStereoBoard = stereometry;
+  // Preserve the published №8 CommonJS API while exposing the bounded №3 API.
+  if (typeof module !== 'undefined' && module.exports) module.exports = Object.freeze({ ...expressions, stereometry });
 })(globalThis);

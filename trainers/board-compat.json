@@ -378,6 +378,20 @@
       "notes": "Совместная работа по шести темам №8: маршрут, задача, ответы, шаги и подсказки. Личный прогресс курса не изменяется."
     },
     {
+      "trainerId": "ege-profile-stereometry",
+      "file": "trainers/ege-profile-stereometry.html",
+      "title": "ЕГЭ профиль №3: стереометрия",
+      "group": "ЕГЭ профиль / геометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по восьми темам №3: маршрут, задача, ответы, шаги, подсказки и вращение модели. Личный прогресс курса не изменяется."
+    },
+    {
       "trainerId": "profile-log-inequalities",
       "file": "trainers/ege-profile/log-inequalities/index.html",
       "title": "Логарифмические неравенства — по шагам",
