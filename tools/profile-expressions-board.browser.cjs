@@ -350,6 +350,8 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
     document.querySelector('#answer')?.disabled === false, independentForm, { polling: 50 });
   await independentForm.dispose();
   await teacherFrame.locator('#answer-form').waitFor();
+  // The hash changes before its handler replaces the independent task's form.
+  await teacherFrame.locator('#current-step').filter({ hasText: /^Шаг 1 из \d+$/ }).waitFor();
   assert.equal(await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view'), taskId, 'remediation retains the current task');
   await synchronized(teacherFrame, studentFrame, 'guided remediation is rendered before input');
   const acceptedAnswer = await teacherFrame.evaluate(id => {

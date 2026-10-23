@@ -6,7 +6,8 @@
 - Owner: repository owner
 - Date: 2026-10-24 (Asia/Novosibirsk)
 - Base branch: `main`
-- Base SHA: `1f9d8aec82bd2909917ab22746d94571d87c59c4`
+- Base SHA: `07189de58b7f5d60c02ea6ca6aa9450a324a377f`
+- Original implementation base SHA: `1f9d8aec82bd2909917ab22746d94571d87c59c4`
 - Planned branch: `feat/profile-added-trainers-sync`
 - Review level: `MEDIUM`
 - Related architecture: the existing SDK v1 board session and runtime registry.
@@ -140,7 +141,7 @@ screen modes; this task supplies the additional trainer integrations.
 ## Execution record
 
 - Actual branch: `feat/profile-added-trainers-sync`
-- Actual base SHA: `1f9d8aec82bd2909917ab22746d94571d87c59c4`
+- Original implementation base SHA: `1f9d8aec82bd2909917ab22746d94571d87c59c4`
 - Actual head SHA / PR: to be recorded in the Draft PR without a self-referential
   commit.
 - Gate: `PROFILE_ADDED_TRAINERS_BOARD_SYNC_OK`.
@@ -210,6 +211,79 @@ screen modes; this task supplies the additional trainer integrations.
   expressions-gate-only correction is checked separately against the same
   runtime before the final PR handoff.
 - Scope deviations: none.
+
+## Authorized base-drift resolution — 2026-10-24
+
+- The owner explicitly authorized the proposed bounded conflict resolution and
+  repeated validation after the continuation reported the new main. This
+  authorization covers updating the existing task/PR; it does not authorize
+  merging into main, auto-merge or deployment.
+- Original reviewed head: `e9bf2bc06668dc03f88cf8a193ce4e0cf92be923`, based on
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`. The initial resolution baseline was
+  main `202d39bf826c8c7e030e59ff162fe808000cae7e`, whose sole concurrent commit is
+  the merged PR #318 for the fixed Atanasyan 92a cabinet/board integration.
+- The read-only virtual merge identified five conflicting files: the two
+  registry test files, registry cutover smoke, picker JS and board HTML. The
+  Atanasyan manifest/catalog additions merge independently of the five START
+  additions; authored tasks and mathematical models do not conflict.
+- Resolution preserves all existing authorizations and the exact Atanasyan
+  alias, keyboard protection and cabinet/container assertions. Registry tests
+  now require exactly 43 catalog entries and 14 mirrors; synthetic addition
+  and removal require 15 and 13 mirrors. No exact-list assertion is relaxed.
+- The picker script and its catalog request share the fresh cache suffix
+  `20261024-board-integrations`. Application behavior, the original task scope
+  and the final native-dialog readiness fix remain intact.
+- On that initial baseline, focused validation passed 129/129 tests: added START and existing
+  task-3/task-8 adapter/model/picker suites, Atanasyan adapter/picker/manual
+  learning contracts, and exact registry plus real server/container-equivalent
+  integration. JavaScript and board inline-script syntax, conflict-marker
+  absence and `git diff --check` also passed. No test assertion was weakened.
+- Applicable fresh-base units, registry/container integration, existing
+  task-3/task-8 and Atanasyan browser regressions, and the complete added-five
+  browser gate must pass on the resolved tree. PR #313 composition is verified
+  separately. Final results and the published head/tree belong in the PR body;
+  earlier-head checks are not represented as approval of this resolution.
+- Production accounts/lessons, physical devices, merge and deployment remain
+  outside this continuation's authorization and evidence.
+
+- Executed browser gates on the initial baseline passed: all five START wrappers and 22
+  topic families, existing task 3/task 8, and Atanasyan classic/managed flows
+  including keyboard revoke and manual save. The paired runtime additionally
+  passed all 150 focused tests plus writing, picker and those four browser
+  gates. Local Chromium 151.0.7922.34 used only synthetic isolated data.
+- Independent focused resolution review passed; this task retains exactly its
+  original 31-file scope. All authored START runtime bytes and both existing
+  browser readiness corrections match the preceding reviewed head. No local
+  test failed during this reconciliation. Final exact-head GitHub CI is assessed
+  after branch publication and recorded in the PR; older CI is not reused.
+
+## Second base movement before publication — 2026-10-24
+
+- Before any branch ref update, remote main advanced to
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`. The two new commits are
+  `52cb1c1a5c731acd660139328f0001ccfa33a08b` (merged PR #315, Vilenkin 6
+  cloud cabinets) and `07189de58b7f5d60c02ea6ca6aa9450a324a377f` (merged
+  PR #319, Makarychev 8 course). The repeated composition is clean and remains
+  within the already authorized bounded branch reconciliation. It does not
+  authorize merging either pending PR into main or deploying it.
+- The resulting delta against this current base still has exactly the original
+  31 task files. New-main Vilenkin and Makarychev content, cabinet behavior and
+  unrelated records are preserved. No additional runtime fix was necessary.
+- Registry integration retains both course-contract copies, the exact 378
+  cabinet entries, the original 244-entry bank, all 27 Vilenkin modules,
+  grade-6 count 39 and grade-7 counts 62/63. Only the intended mirror count/list
+  assertions differ from new main. The expressions browser retains new main's
+  two guided-readiness lines together with this task's 13 stronger readiness
+  and source-acceptance assertions.
+- Earlier 202d39b-based test results above are historical evidence. New-base
+  server, Vilenkin, focused and browser results are recorded separately; no
+  earlier result is relabelled as a run against the later base.
+- Full server regression passed 309/309 tests on this base. The Vilenkin cloud
+  workflow commands passed: 11 learning tests (included in the server total),
+  course/schema checks for 27 lessons and 475 tasks, 108 standalone and 108
+  managed DOM views, five bridge tests and eight cabinet DOM tests. Rebuilding
+  the offline course preserved its exact bytes. These DOM tests are not a
+  physical-device or browser-visual validation claim.
 
 ## Required handoff
 
