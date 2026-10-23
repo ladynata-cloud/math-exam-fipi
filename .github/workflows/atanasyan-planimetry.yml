@@ -27,6 +27,7 @@ jobs:
         run: |
           python3 tools/geometry/check_textbook_preparation.py
           python3 tools/geometry-textbook/build_course.py --check
+          python3 tools/geometry-textbook/review_scope_test.py
           python3 tools/geometry-textbook/check_models.py
           python3 tools/geometry-textbook/model_claims_test.py
           node tools/geometry-textbook/check_course.cjs
@@ -49,7 +50,7 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
       - run: npx playwright install --with-deps chromium
-      - name: All 173 cards, every drawing, mobile and desktop, actual saved work
+      - name: All source-audited cards, every drawing, mobile and desktop, actual saved work
         env:
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/geometry-textbook
           GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}

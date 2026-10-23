@@ -43,7 +43,9 @@ let checks=0;
 {
  const {dom,w,d,app}=setup();app.destroy();
  const publicApp=w.GeometryTextbook.createApp(d.getElementById('app'),bundle);
- if(!bundle.build.publicationReviewMatches){assert.equal(publicApp.coverage.available,0);assert.equal(publicApp.open(sample.id),false);}
+ const approved=bundle.lessons.filter(l=>l.status==='reviewed');
+ assert.equal(publicApp.coverage.available,approved.length);
+ for(const lesson of bundle.lessons)assert.equal(publicApp.open(lesson.id),lesson.status==='reviewed','Public chapter boundary '+lesson.id);
  assert.equal(d.querySelector('[data-preview-notice]'),null);
  checks++;publicApp.destroy();dom.window.close();
 }
@@ -59,5 +61,20 @@ let checks=0;
  const {dom,w,d,app}=setup();app.open(sample.id);const input=d.getElementById('final-answer');input.value='Не переписывать неизменённую работу';input.dispatchEvent(new w.Event('input',{bubbles:true}));
  let writes=0;const original=w.Storage.prototype.setItem;w.Storage.prototype.setItem=function(...args){writes++;return original.apply(this,args);};d.querySelector('[data-final-form]').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));assert.equal(writes,0,'An unchanged save must not rewrite a stale renderer cache');assert.match(d.querySelector('[data-final-feedback]').textContent,/Рассуждение сохранено/);w.Storage.prototype.setItem=original;
  checks++;app.destroy();dom.window.close();
+}
+{
+ const {dom,w,d,app}=setup();
+ const questions=['I','II'].map(chapter=>bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='selfcheck'&&l.source.exercise==='1'));
+ assert(questions.every(Boolean),'Both chapter review questions must exist');assert.notEqual(questions[0].id,questions[1].id);
+ for(let i=0;i<questions.length;i++){app.open(questions[i].id);const input=d.getElementById('final-answer');input.value='Отдельный черновик главы '+i;input.dispatchEvent(new w.Event('input',{bubbles:true}));}
+ for(let i=0;i<questions.length;i++){app.open(questions[i].id);assert.equal(d.getElementById('final-answer').value,'Отдельный черновик главы '+i,'Restarted question numbers must not overwrite learner work');}
+ const exercise=bundle.lessons.find(l=>l.source.chapter==='II'&&l.source.collection==='main'&&l.help.some(h=>h.theoryIds?.some(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter==='II')));
+ assert(exercise,'New exercises link to new theory');app.open(exercise.id);
+ const input=d.getElementById('final-answer');input.value='Рассуждение о равенстве треугольников';input.dispatchEvent(new w.Event('input',{bubbles:true}));
+ const theoryId=exercise.help.flatMap(h=>h.theoryIds||[]).find(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter==='II'),theory=bundle.lessons.find(l=>l.id===theoryId);
+ const button=[...d.querySelectorAll('button')].find(b=>b.textContent==='Почему? '+theory.title);assert(button);button.click();
+ assert.equal(d.querySelector('dialog').dataset.theory,theoryId);d.querySelector('dialog>button').click();
+ assert.equal(d.querySelector('dialog'),null);assert.equal(d.getElementById('final-answer').value,'Рассуждение о равенстве треугольников');
+ checks+=3;app.destroy();dom.window.close();
 }
 console.log('ATANASYAN_7_9_RETAINED_WORK_OK '+JSON.stringify({checks}));

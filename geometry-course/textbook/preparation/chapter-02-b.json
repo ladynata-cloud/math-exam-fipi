@@ -1,0 +1,1241 @@
+{
+  "bookId": "atanasyan-2023-7-9",
+  "edition": "14-е издание, переработанное, 2023",
+  "chapter": 2,
+  "title": "Треугольники",
+  "status": "authored-awaiting-independent-review",
+  "source": {
+    "pdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPages": [
+      38,
+      41,
+      42,
+      43,
+      48
+    ],
+    "figureReferencePages": [
+      32
+    ],
+    "verification": "Все условия и рисунки сверены автором визуально по указанным страницам PDF; OCR использован только как вспомогательный текст."
+  },
+  "review": {
+    "independent": false,
+    "status": "pending"
+  },
+  "coverage": {
+    "first": 125,
+    "last": 157,
+    "numbers": 33,
+    "parts": 44
+  },
+  "exercises": [
+    {
+      "number": 125,
+      "printedPages": [
+        38
+      ],
+      "pdfPages": [
+        39
+      ],
+      "parts": [
+        {
+          "part": "а",
+          "conditionSummary": "В ABC стороны AB и BC равны, BD — медиана к AC. На AB и CB выбраны E и F с AE = CF. Докажите равенство BDE и BDF.",
+          "answer": "△BDE = △BDF по двум сторонам и углу между ними.",
+          "steps": [
+            "AB = BC и AE = CF, поэтому BE = AB − AE = BC − CF = BF.",
+            "В равнобедренном ABC медиана BD к основанию одновременно является биссектрисой: ∠EBD = ∠DBF.",
+            "BE = BF, BD — общая сторона, ∠EBD = ∠DBF. По первому признаку △BDE = △BDF."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "б",
+          "conditionSummary": "В ABC стороны AB и BC равны, BD — медиана к AC. На AB и CB выбраны E и F с AE = CF. Докажите равенство ADE и CDF.",
+          "answer": "△ADE = △CDF по двум сторонам и углу между ними.",
+          "steps": [
+            "AD = DC, поскольку BD — медиана; AE = CF по условию.",
+            "Лучи AE и AB совпадают, CF и CB совпадают. Углы EAD и FCD — углы при основании равнобедренного ABC, поэтому они равны.",
+            "Две стороны и заключённый между ними угол равны: △ADE = △CDF."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 126,
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        42
+      ],
+      "parts": [
+        {
+          "part": "а",
+          "conditionSummary": "AB и CD пересекаются в O; AO = OB, ∠OAD = ∠OBC. Докажите △CBO = △DAO.",
+          "answer": "△CBO = △DAO по стороне и двум прилежащим углам.",
+          "steps": [
+            "∠AOD = ∠BOC, так как это вертикальные углы.",
+            "В треугольниках CBO и DAO: BO = AO, ∠CBO = ∠DAO, ∠COB = ∠DOA.",
+            "Сторона и два прилежащих угла равны, поэтому △CBO = △DAO."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "б",
+          "conditionSummary": "AB и CD пересекаются в O; AO = OB, ∠OAD = ∠OBC. При CD = 26 см и AD = 15 см найдите BC и CO.",
+          "answer": "BC = 15 см; CO = 13 см.",
+          "steps": [
+            "∠AOD = ∠BOC, так как это вертикальные углы.",
+            "В треугольниках CBO и DAO: BO = AO, ∠CBO = ∠DAO, ∠COB = ∠DOA.",
+            "Сторона и два прилежащих угла равны, поэтому △CBO = △DAO.",
+            "Из равенства треугольников BC = AD = 15 см и CO = DO.",
+            "O лежит на CD, поэтому CD = CO + OD = 2CO. Значит, CO = 26 : 2 = 13 см."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 127,
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        42
+      ],
+      "parts": [
+        {
+          "part": "а",
+          "conditionSummary": "В четырёхугольнике ABCD проведена AC (рис. 59): ∠BCA = ∠CAD и ∠BAC = ∠ACD. Докажите △ABC = △CDA.",
+          "answer": "△ABC = △CDA.",
+          "steps": [
+            "AC — общая сторона треугольников ABC и CDA.",
+            "При A в первом треугольнике и при C во втором углы равны; при C в первом и при A во втором — тоже.",
+            "По стороне AC и двум прилежащим углам △ABC = △CDA."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "б",
+          "conditionSummary": "В четырёхугольнике ABCD проведена AC (рис. 59): ∠BCA = ∠CAD и ∠BAC = ∠ACD. Найдите AB и BC при AD = 19 см, CD = 11 см.",
+          "answer": "AB = 11 см; BC = 19 см.",
+          "steps": [
+            "AC — общая сторона треугольников ABC и CDA.",
+            "При A в первом треугольнике и при C во втором углы равны; при C в первом и при A во втором — тоже.",
+            "По стороне AC и двум прилежащим углам △ABC = △CDA.",
+            "AB соответствует CD, а BC — AD. Поэтому AB = 11 см и BC = 19 см."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 128,
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        42
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "Точка D лежит на биссектрисе угла A; B и C — на его сторонах, причём ∠ADB = ∠ADC. Докажите BD = CD.",
+          "answer": "BD = CD.",
+          "steps": [
+            "AD лежит на биссектрисе, значит ∠BAD = ∠DAC.",
+            "AD — общая; углы при A равны по свойству биссектрисы, а при D — по условию. Поэтому △ADB = △ADC по второму признаку.",
+            "BD и CD — соответствующие стороны равных треугольников, следовательно, BD = CD."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 129,
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        42
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "На рис. 79 C, O, B лежат на одной прямой, T, O, P — на другой; CO = OB, CT ⟂ CB и BP ⟂ CB. Докажите OP = OT и ∠BPO = ∠CTO.",
+          "answer": "OP = OT; ∠BPO = ∠CTO.",
+          "steps": [
+            "∠TCO и ∠PBO прямые; ∠TOC и ∠POB вертикальные, значит обе пары углов равны.",
+            "CO = OB по условию, поэтому △TCO = △PBO по стороне и двум прилежащим углам.",
+            "Соответствующие стороны OT и OP равны, как и соответствующие углы CTO и BPO."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 130,
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        42
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "На рис. 80 AD и BC пересекаются в O; ∠DAC = ∠DBC и AO = BO. Докажите ∠ACB = ∠BDA и AC = BD.",
+          "answer": "∠ACB = ∠BDA; AC = BD.",
+          "steps": [
+            "Лучи AD и AO совпадают, как и BC и BO. Поэтому ∠OAC = ∠OBD.",
+            "∠AOC = ∠BOD как вертикальные. Вместе с AO = BO это даёт △AOC = △BOD по второму признаку.",
+            "AC = BD и ∠ACO = ∠BDO. Лучи CO и CB, DO и DA совпадают, значит ∠ACB = ∠BDA."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 131,
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        42
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "В конфигурации рис. 80 даны ∠DAB = ∠CBA, ∠CAB = ∠DBA и AC = 13 см. Найдите BD.",
+          "answer": "BD = 13 см.",
+          "steps": [
+            "Рассмотрим DAB и CBA: сторона AB общая, а обе пары прилежащих к ней углов равны по условию.",
+            "△DAB = △CBA по второму признаку. При этом D соответствует C, A — B, B — A.",
+            "BD = AC = 13 см."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 132,
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        42
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "В ABC и A₁B₁C₁ равны AB и A₁B₁, BC и B₁C₁, углы B и B₁. На AB и A₁B₁ взяты D и D₁, причём ∠ACD = ∠A₁C₁D₁. Докажите △BCD = △B₁C₁D₁.",
+          "answer": "△BCD = △B₁C₁D₁.",
+          "steps": [
+            "△ABC = △A₁B₁C₁ по двум сторонам и углу между ними. Поэтому ∠BCA = ∠B₁C₁A₁.",
+            "Вычтем из равных полных углов при C и C₁ равные углы ACD и A₁C₁D₁: ∠BCD = ∠B₁C₁D₁.",
+            "D лежит на AB, D₁ — на A₁B₁, значит ∠CBD = ∠C₁B₁D₁. Вместе с BC = B₁C₁ и равенством углов при C получаем искомое равенство по второму признаку."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 133,
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        42
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "В равных ABC и A₁B₁C₁ проведены биссектрисы AD и A₁D₁ к соответствующим сторонам BC и B₁C₁. Докажите AD = A₁D₁.",
+          "answer": "Соответствующие биссектрисы равных треугольников равны.",
+          "steps": [
+            "AB = A₁B₁, ∠A = ∠A₁, ∠B = ∠B₁, поскольку исходные треугольники равны.",
+            "∠BAD = ½∠A = ½∠A₁ = ∠B₁A₁D₁. Также ∠ABD = ∠A₁B₁D₁.",
+            "△ABD = △A₁B₁D₁ по стороне AB и двум прилежащим углам. Следовательно, AD = A₁D₁."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 134,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "AC и BD пересекаются в середине AC — точке O. Известно, что ∠BCO = ∠DAO. Докажите △BOA = △DOC.",
+          "answer": "△BOA = △DOC.",
+          "steps": [
+            "CO = AO; ∠BCO = ∠DAO по условию; ∠BOC = ∠DOA как вертикальные. Поэтому △BCO = △DAO по второму признаку.",
+            "Из равенства BCO и DAO получаем BO = DO.",
+            "BO = DO, OA = OC и ∠BOA = ∠DOC как вертикальные. Следовательно, △BOA = △DOC по первому признаку."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 135,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "а",
+          "conditionSummary": "В ABC и A₁B₁C₁ отрезки CO и C₁O₁ — медианы; BC = B₁C₁, ∠B = ∠B₁, ∠C = ∠C₁. Докажите △ACO = △A₁C₁O₁.",
+          "answer": "△ACO = △A₁C₁O₁.",
+          "steps": [
+            "△ABC = △A₁B₁C₁ по стороне BC и двум прилежащим углам. Значит, AB = A₁B₁, AC = A₁C₁ и ∠A = ∠A₁.",
+            "O и O₁ — середины равных сторон. Поэтому AO = A₁O₁ и BO = B₁O₁.",
+            "AC = A₁C₁, AO = A₁O₁, ∠CAO = ∠C₁A₁O₁. Поэтому △ACO = △A₁C₁O₁ по первому признаку."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "б",
+          "conditionSummary": "В ABC и A₁B₁C₁ отрезки CO и C₁O₁ — медианы; BC = B₁C₁, ∠B = ∠B₁, ∠C = ∠C₁. Докажите △BCO = △B₁C₁O₁.",
+          "answer": "△BCO = △B₁C₁O₁.",
+          "steps": [
+            "△ABC = △A₁B₁C₁ по стороне BC и двум прилежащим углам. Значит, AB = A₁B₁, AC = A₁C₁ и ∠A = ∠A₁.",
+            "O и O₁ — середины равных сторон. Поэтому AO = A₁O₁ и BO = B₁O₁.",
+            "BC = B₁C₁, BO = B₁O₁, ∠CBO = ∠C₁B₁O₁. Поэтому △BCO = △B₁C₁O₁ по первому признаку."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 136,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "В DEF и MNP даны EF = NP, DF = MP, ∠F = ∠P. Биссектрисы углов D и E пересекаются в O, углов M и N — в K. Докажите ∠DOE = ∠MKN.",
+          "answer": "∠DOE = ∠MKN.",
+          "steps": [
+            "△DEF = △MNP по двум сторонам и углу между ними. Поэтому DE = MN, ∠D = ∠M и ∠E = ∠N.",
+            "∠ODE = ∠KMN и ∠OED = ∠KNM, поскольку DO, EO, MK, NK — биссектрисы соответствующих углов.",
+            "По стороне DE = MN и двум прилежащим углам △DOE = △MKN. Следовательно, ∠DOE = ∠MKN."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 137,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "Прямая, перпендикулярная биссектрисе угла A, пересекает его стороны в M и N. Докажите, что AMN равнобедренный.",
+          "answer": "AM = AN, поэтому △AMN равнобедренный.",
+          "steps": [
+            "Пусть H — пересечение MN с биссектрисой. Тогда ∠MAH = ∠HAN, а углы AHM и AHN прямые.",
+            "AH общая. По ней и двум прилежащим углам △AMH = △ANH.",
+            "AM = AN как соответствующие стороны. Следовательно, AMN равнобедренный с основанием MN."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 138,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "В ABC биссектриса AD одновременно является высотой. Докажите, что ABC равнобедренный.",
+          "answer": "AB = AC.",
+          "steps": [
+            "∠BAD = ∠DAC по определению биссектрисы; ∠ADB = ∠ADC = 90°, так как AD — высота.",
+            "AD — общая сторона между указанными углами. Поэтому △ABD = △ACD по второму признаку.",
+            "Соответствующие стороны AB и AC равны, следовательно, ABC равнобедренный."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 139,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "У двух равнобедренных треугольников ABC и A₁B₁C₁ основания BC и B₁C₁ равны; равны также углы B и B₁ при этих основаниях. Докажите равенство треугольников.",
+          "answer": "△ABC = △A₁B₁C₁.",
+          "steps": [
+            "В каждом равнобедренном треугольнике углы при основании равны: ∠C = ∠B и ∠C₁ = ∠B₁. Поэтому ∠C = ∠C₁.",
+            "BC = B₁C₁, ∠B = ∠B₁ и ∠C = ∠C₁. Следовательно, треугольники равны по стороне и двум прилежащим углам."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 140,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "Одна сторона равностороннего ABC равна стороне равностороннего A₁B₁C₁. Докажите, что треугольники равны.",
+          "answer": "△ABC = △A₁B₁C₁.",
+          "steps": [
+            "В равностороннем треугольнике все три стороны равны. Если AB = A₁B₁, то и BC = B₁C₁, CA = C₁A₁.",
+            "Три стороны одного треугольника соответственно равны трём сторонам другого; значит, треугольники равны."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 141,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "В ABD и ACD даны AB = AC и BD = DC. B и C находятся по разные стороны прямой AD; ∠BAC = 50°. Найдите ∠CAD.",
+          "answer": "∠CAD = 25° или 155°; выбор зависит от направления луча AD.",
+          "steps": [
+            "AB = AC, BD = DC, AD — общая сторона. Поэтому △ABD = △ACD и ∠BAD = ∠CAD.",
+            "Тогда ∠BAC = ∠BAD + ∠DAC = 2∠CAD, поэтому ∠CAD = 50° : 2 = 25°.",
+            "Да: условие задаёт разные стороны прямой AD, но не направление луча AD. В этом положении противоположный AD луч делит угол BAC пополам, а ∠CAD смежен с углом 25°.",
+            "Во втором положении ∠CAD = 180° − 25° = 155°. Оба положения удовлетворяют исходным равенствам, поэтому без дополнительного условия ответ содержит два значения."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": [
+              "D внутри угла BAC",
+              "D на противоположном луче"
+            ]
+          },
+          "notes": [
+            "В источнике направление луча AD внутри угла BAC не задано; рассмотрены оба допустимых ответа."
+          ]
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 142,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "В ABC и ADC выполнены BC = AD и AB = CD. Докажите ∠ABC = ∠CDA, рассматривая разные положения B и D.",
+          "answer": "∠ABC = ∠CDA при обоих взаимных положениях B и D.",
+          "steps": [
+            "В треугольниках ABC и CDA: AB = CD, BC = DA, AC — общая сторона. Значит, △ABC = △CDA по трём сторонам.",
+            "B соответствует D, поэтому ∠ABC = ∠CDA. Это доказательство работает, когда B и D по разные стороны AC.",
+            "Нет. Все три равенства сторон сохраняются и при B и D в одной полуплоскости относительно AC; третьему признаку не требуется расположение по разные стороны общей стороны."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": [
+              "B и D по разные стороны AC",
+              "B и D по одну сторону AC"
+            ]
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 143,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "а",
+          "conditionSummary": "В четырёхугольнике ABCD на рис. 81 AB = CD и BD = AC. Докажите ∠CAD = ∠ADB.",
+          "answer": "∠CAD = ∠ADB.",
+          "steps": [
+            "Рассмотрим CAD и BDA: CA = BD, CD = BA, AD — общая сторона.",
+            "△CAD = △BDA. Вершина A первого соответствует D второго, поэтому ∠CAD = ∠BDA = ∠ADB."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "б",
+          "conditionSummary": "В четырёхугольнике ABCD на рис. 81 AB = CD и BD = AC. Докажите ∠BAC = ∠CDB.",
+          "answer": "∠BAC = ∠CDB.",
+          "steps": [
+            "В треугольниках BAC и CDB: BA = CD, AC = DB, BC — общая сторона.",
+            "△BAC = △CDB по трём сторонам. Поэтому углы при A и D равны: ∠BAC = ∠CDB."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 144,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "а",
+          "conditionSummary": "В ABCD (рис. 82) AB = CD, AD = BC. BE — биссектриса ABC, DF — биссектриса ADC; E и F лежат на AC. Докажите ∠ABE = ∠ADF.",
+          "answer": "∠ABE = ∠ADF.",
+          "steps": [
+            "△ABC = △CDA по трём сторонам: AB = CD, BC = DA, AC общая. Поэтому ∠ABC = ∠CDA и ∠BAC = ∠DCA.",
+            "∠ABE = ½∠ABC, а ∠ADF = ½∠CDA. Половины равных углов равны, значит ∠ABE = ∠ADF."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "б",
+          "conditionSummary": "В ABCD (рис. 82) AB = CD, AD = BC. BE — биссектриса ABC, DF — биссектриса ADC; E и F лежат на AC. Докажите △ABE = △CDF.",
+          "answer": "△ABE = △CDF.",
+          "steps": [
+            "△ABC = △CDA по трём сторонам: AB = CD, BC = DA, AC общая. Поэтому ∠ABC = ∠CDA и ∠BAC = ∠DCA.",
+            "∠ABE = ½∠ABC, а ∠ADF = ½∠CDA. Половины равных углов равны, значит ∠ABE = ∠ADF.",
+            "DF — биссектриса, поэтому ∠CDF = ∠ADF = ∠ABE. Поскольку E и F лежат на AC, ∠BAE = ∠DCF.",
+            "AB = CD; равны углы при A и C, при B и D. Следовательно, △ABE = △CDF по второму признаку."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 145,
+      "printedPages": [
+        42
+      ],
+      "pdfPages": [
+        43
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "В ABC и A₁B₁C₁ медианы BM и B₁M₁ равны; AB = A₁B₁ и AC = A₁C₁. Докажите равенство треугольников.",
+          "answer": "△ABC = △A₁B₁C₁.",
+          "steps": [
+            "AM = ½AC и A₁M₁ = ½A₁C₁, поэтому AM = A₁M₁.",
+            "AB = A₁B₁, BM = B₁M₁, AM = A₁M₁. Значит, △ABM = △A₁B₁M₁ по трём сторонам и ∠BAM = ∠B₁A₁M₁.",
+            "Лучи AM и AC совпадают, как и A₁M₁ и A₁C₁. Значит, ∠BAC = ∠B₁A₁C₁. С AB = A₁B₁ и AC = A₁C₁ это даёт равенство по первому признаку."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 146,
+      "printedPages": [
+        43
+      ],
+      "pdfPages": [
+        44
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "В ABC и A₁B₁C₁ отрезки AD и A₁D₁ — биссектрисы. Даны AB = A₁B₁, BD = B₁D₁ и AD = A₁D₁. Докажите △ABC = △A₁B₁C₁.",
+          "answer": "△ABC = △A₁B₁C₁.",
+          "steps": [
+            "△ABD = △A₁B₁D₁ по трём сторонам. Значит, ∠BAD = ∠B₁A₁D₁ и ∠ABD = ∠A₁B₁D₁.",
+            "AD и A₁D₁ — биссектрисы, поэтому ∠BAC = 2∠BAD = 2∠B₁A₁D₁ = ∠B₁A₁C₁.",
+            "D лежит на BC, D₁ — на B₁C₁, значит ∠ABC = ∠A₁B₁C₁. По стороне AB = A₁B₁ и двум прилежащим углам исходные треугольники равны."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 147,
+      "printedPages": [
+        43
+      ],
+      "pdfPages": [
+        44
+      ],
+      "parts": [
+        {
+          "part": "а",
+          "conditionSummary": "Равнобедренные ADC и BCD имеют общее основание DC. Прямая AB пересекает DC в O. Докажите ∠ADB = ∠ACB.",
+          "answer": "∠ADB = ∠ACB.",
+          "steps": [
+            "В ADB и ACB: AD = AC, DB = CB, AB — общая сторона. Значит, △ADB = △ACB.",
+            "При указанном соответствии D ↔ C. Поэтому ∠ADB = ∠ACB. Это верно при A и B как по разные, так и по одну сторону DC."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": [
+              "A и B по разные стороны DC",
+              "A и B по одну сторону DC"
+            ]
+          },
+          "notes": []
+        },
+        {
+          "part": "б",
+          "conditionSummary": "Равнобедренные ADC и BCD имеют общее основание DC. Прямая AB пересекает DC в O. Докажите DO = OC.",
+          "answer": "DO = OC.",
+          "steps": [
+            "В ADB и ACB: AD = AC, DB = CB, AB — общая сторона. Значит, △ADB = △ACB.",
+            "Из равенства треугольников ∠DAB = ∠BAC. Если луч AO совпадает с AB, то ∠DAO = ∠OAC; если противоположен ему, получаем равенство смежных с ними углов.",
+            "AD = AC, AO — общая сторона, ∠DAO = ∠OAC. По первому признаку △ADO = △ACO, откуда DO = OC."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": [
+              "A и B по разные стороны DC",
+              "A и B по одну сторону DC"
+            ]
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 148,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "а",
+          "conditionSummary": "Рассмотрите модель рис. 96 с центром O: показаны AB, MN, CD, PO, C₁D₁ и TS. Какие из изображённых отрезков — хорды?",
+          "answer": "AB, MN и CD.",
+          "steps": [
+            "Оба конца хорды принадлежат окружности. Этому условию удовлетворяют AB, MN и CD.",
+            "У PO один конец — центр; D₁ лежит внутри окружности; S — вне неё. Поэтому PO, C₁D₁, TS не являются хордами."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "б",
+          "conditionSummary": "Рассмотрите модель рис. 96 с центром O: показаны AB, MN, CD, PO, C₁D₁ и TS. Какой отрезок является диаметром?",
+          "answer": "AB.",
+          "steps": [
+            "Диаметр — хорда через центр. AB проходит через O, значит AB — диаметр."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "в",
+          "conditionSummary": "Рассмотрите модель рис. 96 с центром O: показаны AB, MN, CD, PO, C₁D₁ и TS. Какие отрезки рисунка являются радиусами?",
+          "answer": "OA, OB и OP.",
+          "steps": [
+            "Радиус соединяет центр с точкой окружности. На рисунке это OA, OB и OP; OA и OB — части изображённого диаметра AB.",
+            "Хотя C₁ лежит на окружности, D₁ не совпадает с центром O."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 149,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "а",
+          "conditionSummary": "AB и CD — диаметры одной окружности с центром O. Докажите BD = AC.",
+          "answer": "BD = AC.",
+          "steps": [
+            "OA = OB, OC = OD как радиусы. ∠AOC = ∠BOD как вертикальные.",
+            "△AOC = △BOD по первому признаку, поэтому AC = BD."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "б",
+          "conditionSummary": "AB и CD — диаметры одной окружности с центром O. Докажите AD = BC.",
+          "answer": "AD = BC.",
+          "steps": [
+            "Рассмотрим AOD и BOC: OA = OB, OD = OC как радиусы, а ∠AOD = ∠BOC как вертикальные.",
+            "△AOD = △BOC по первому признаку, поэтому AD = BC."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        },
+        {
+          "part": "в",
+          "conditionSummary": "AB и CD — диаметры одной окружности с центром O. Докажите ∠BAD = ∠BCD.",
+          "answer": "∠BAD = ∠BCD.",
+          "steps": [
+            "Рассмотрим AOD и BOC: OA = OB, OD = OC как радиусы, а ∠AOD = ∠BOC как вертикальные.",
+            "△AOD = △BOC по первому признаку, поэтому AD = BC.",
+            "В BAD и DCB: BA = DC как диаметры одной окружности, AD = CB доказано, BD — общая сторона. Поэтому △BAD = △DCB по трём сторонам.",
+            "Угол BAD соответствует углу DCB, то есть BCD. Поэтому ∠BAD = ∠BCD."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 150,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "MK — диаметр окружности с центром O; хорды MP и PK равны. Найдите ∠POM.",
+          "answer": "∠POM = 90°.",
+          "steps": [
+            "PM = PK, поэтому PMK равнобедренный с основанием MK. O — середина диаметра MK.",
+            "PO — медиана к основанию равнобедренного треугольника; она также является высотой. Следовательно, PO ⟂ MK.",
+            "OM лежит на MK, поэтому ∠POM = 90°."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 151,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "AB и CD — диаметры окружности с центром O; CB = 13 см, AB = 16 см. Найдите периметр AOD.",
+          "answer": "P(AOD) = 29 см.",
+          "steps": [
+            "AO = OD = AB : 2 = 8 см, поскольку все радиусы одной окружности равны.",
+            "В AOD и BOC равны две пары радиусов и вертикальные углы при O. По первому признаку треугольники равны, значит AD = BC = 13 см.",
+            "P(AOD) = AO + OD + AD = 8 + 8 + 13 = 29 см."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 152,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "A и B лежат на окружности с центром O, ∠AOB = 90°. BC — диаметр. Докажите AB = AC.",
+          "answer": "AB = AC.",
+          "steps": [
+            "OB и OC — противоположные лучи, поэтому ∠AOC = 180° − 90° = 90°.",
+            "OA — общая сторона, OB = OC как радиусы. Углы AOB и AOC между ними равны.",
+            "△AOB = △AOC по первому признаку, поэтому AB = AC."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 153,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "На прямой даны A и B. На продолжении луча BA постройте C, для которой BC = 2AB.",
+          "answer": "Отложите AC = AB за точкой A на луче BA; тогда BC = 2AB.",
+          "steps": [
+            "Двигаемся от B через A и далее; A должна лежать между B и C.",
+            "Проведём окружность с центром A радиуса AB. Из её пересечений с прямой AB выберем C, противоположную B относительно A. Тогда AC = AB.",
+            "BC = BA + AC = AB + AB = 2AB."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 154,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "Даны прямая a, точка B вне неё и отрезок PQ. Постройте на a точку M с BM = PQ. Всегда ли она существует?",
+          "answer": "Искомые точки — пересечения a с окружностью центра B радиуса PQ. Возможны две, одна или ни одной.",
+          "steps": [
+            "Они образуют окружность с центром B и радиусом PQ. Построим её циркулем.",
+            "Берём общие точки построенной окружности и прямой a. Каждая такая точка M лежит на a и имеет BM = PQ.",
+            "Нет. Прямая может пересечь окружность в двух точках, коснуться в одной или пройти вне неё. Отдельные варианты модели показывают все три случая для разных длин PQ."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": [
+              "Две точки пересечения",
+              "Одна точка: касание",
+              "Пересечений нет"
+            ]
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 155,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "Даны окружность, точка A, не лежащая на ней, и отрезок PQ. Постройте на окружности M так, чтобы AM = PQ. Всегда ли это возможно?",
+          "answer": "Пересеките данную окружность с окружностью центра A радиуса PQ. Возможны 0, 1, 2 решения; при совпадении окружностей — бесконечно много.",
+          "steps": [
+            "Построим окружность с центром A и радиусом PQ. Все её точки и только они удовлетворяют AM = PQ.",
+            "Общие точки двух окружностей лежат на данной окружности и находятся на расстоянии PQ от A. Каждая из них — решение.",
+            "Нет. Для двух несовпадающих окружностей возможны отсутствие общих точек, одна точка касания либо две точки пересечения.",
+            "A может быть центром данной окружности: центр не лежит на окружности. Если PQ равен её радиусу, построенная окружность совпадает с данной и подходит любая её точка; решений бесконечно много. Если при том же центре радиусы различны, решений нет."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": [
+              "Две общие точки",
+              "Одна общая точка",
+              "Общих точек нет",
+              "A — центр, окружности совпали"
+            ]
+          },
+          "notes": [
+            "Фраза «не лежит на окружности» допускает точку внутри круга, в том числе центр. Это не условие «вне круга»."
+          ]
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 156,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "Даны острый ∠BAC и луч XY. Постройте ∠YXZ, равный удвоенному ∠BAC.",
+          "answer": "Последовательно отложите от XY два угла, каждый равный ∠BAC.",
+          "steps": [
+            "Построением из пункта 23 отложим от XY угол YXW, равный BAC, в выбранную полуплоскость.",
+            "От XW отложим угол WXZ, равный BAC, по другую сторону от XW относительно луча XY, чтобы новый угол продолжал первый.",
+            "Так как BAC острый, 2∠BAC < 180°. Луч XW находится внутри YXZ; поэтому ∠YXZ = ∠YXW + ∠WXZ = 2∠BAC."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "number": 157,
+      "printedPages": [
+        48
+      ],
+      "pdfPages": [
+        49
+      ],
+      "parts": [
+        {
+          "part": "single",
+          "conditionSummary": "Дан тупой ∠AOB. Постройте луч OX так, чтобы ∠XOA и ∠XOB были равными тупыми углами.",
+          "answer": "Постройте биссектрису OM угла AOB и проведите противоположный ей луч OX.",
+          "steps": [
+            "Циркулем и линейкой построим биссектрису OM. Тогда ∠AOM = ∠MOB = ½∠AOB.",
+            "Продолжим прямую OM за O и выберем на противоположном луче точку X. Углы XOA и XOB смежны соответственно с AOM и MOB.",
+            "Оба равны 180° − ½∠AOB. Поскольку 90° < ∠AOB < 180°, его половина лежит между 45° и 90°, а искомые углы — между 90° и 135°. Значит, они равны и тупые."
+          ],
+          "sourceVerified": true,
+          "mathVerified": true,
+          "visual": {
+            "initial": "Отдельная фигура по условию; дополнительные линии открываются по шагам.",
+            "stepChanges": [],
+            "cases": []
+          },
+          "notes": []
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

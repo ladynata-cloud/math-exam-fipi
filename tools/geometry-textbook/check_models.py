@@ -2,6 +2,7 @@
 """Check geometric claims in every authored scene, including hidden later views."""
 import json
 import math
+import re
 from collections import defaultdict
 from pathlib import Path
 
@@ -79,8 +80,15 @@ def validate(model):
                 if mark not in (1, 2, 3) or any(not close(d, degrees[0]) for d in degrees):
                     raise ValueError(f'False equal-angle marks: {mark}: {degrees}')
             for circle in view.get('circles', []):
-                if length([circle['center'], circle['through']]) < EPS:
+                radius = length([circle['center'], circle['through']])
+                if radius < EPS:
                     raise ValueError('Degenerate circle')
+                bounds = model.get('bounds')
+                if bounds:
+                    x, y = p(circle['center'])
+                    if (x - radius < bounds[0] - EPS or y - radius < bounds[1] - EPS
+                            or x + radius > bounds[2] + EPS or y + radius > bounds[3] + EPS):
+                        raise ValueError('Circle is clipped by the authored bounds')
             for polygon in view.get('polygons', []):
                 if len(polygon) < 3:
                     raise ValueError('Invalid polygon')
@@ -120,8 +128,14 @@ def main():
     models, views, claims, errors = 0, 0, 0, []
     identities = set()
     for path in sorted((COURSE / 'models').glob('*.json')):
-        for item in json.loads(path.read_text())['models']:
-            identity = (item.get('collection', 'main'), item['number'], item.get('part', 'single'))
+        chapter = int(re.fullmatch(r'chapter-(\d{2})-[a-z]+\.json', path.name)[1])
+        data = json.loads(path.read_text())
+        if data.get('chapter', chapter) != chapter:
+            errors.append(f'Model chapter disagrees with filename: {path.name}')
+        for item in data['models']:
+            if item.get('chapter', chapter) != chapter:
+                errors.append(f'Model item chapter disagrees with filename: {path.name}')
+            identity = (chapter, item.get('collection', 'main'), item['number'], item.get('part', 'single'))
             if identity in identities:
                 errors.append(f'Duplicate identity {identity}')
             identities.add(identity)

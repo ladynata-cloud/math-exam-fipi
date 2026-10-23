@@ -6,12 +6,14 @@ const {chromium}=require('playwright');
 const root=path.resolve(process.env.GEOMETRY_TEXTBOOK_ROOT||path.join(__dirname,'../..'));
 const bundleFile=path.join(root,'geometry-course/textbook/data/course.json');
 const bundle=JSON.parse(fs.readFileSync(bundleFile,'utf8'));
-assert.equal(bundle.lessons.length,Number(process.env.GEOMETRY_TEXTBOOK_EXPECTED_CARDS||173),'Complete chapter-I candidate must contain all173 cards');
+const releaseScope=JSON.parse(fs.readFileSync(path.join(root,'tools/geometry-textbook/release-scope.json'),'utf8'));
+assert.equal(bundle.lessons.length,releaseScope.totalCards,'Complete release candidate must contain every source-audited card');
+for(const chapter of releaseScope.chapters)assert.equal(bundle.lessons.filter(l=>l.source.chapter===chapter.label).length,chapter.cards,'Complete chapter '+chapter.chapter);
 const out=path.resolve(process.env.GEOMETRY_TEXTBOOK_ARTIFACTS||path.join(os.tmpdir(),'atanasyan-planar-browser'));
 fs.mkdirSync(out,{recursive:true});
 const interactionsOnly=process.env.GEOMETRY_TEXTBOOK_INTERACTIONS_ONLY==='1',viewsOnly=process.env.GEOMETRY_TEXTBOOK_VIEWS_ONLY==='1';
 assert(!(interactionsOnly&&viewsOnly),'Select at most one focused browser mode');
-const evidence={schemaVersion:1,scope:interactionsOnly?'interactions-only':viewsOnly?'views-only':'full-course',head:process.env.GEOMETRY_TEXTBOOK_HEAD||process.env.GITHUB_SHA||null,implementationSha256:bundle.build?.implementationSha256||null,authoredContentSha256:bundle.build?.authoredContentSha256||null,bundleSha256:crypto.createHash('sha256').update(fs.readFileSync(bundleFile)).digest('hex'),widths:[320,1280],lessons:bundle.lessons.length,views:[],stepFlows:[],screenshots:[],interactions:[],errors:[],completed:false};
+const evidence={schemaVersion:1,gateScriptSha256:crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex'),scope:interactionsOnly?'interactions-only':viewsOnly?'views-only':'full-course',head:process.env.GEOMETRY_TEXTBOOK_HEAD||process.env.GITHUB_SHA||null,implementationSha256:bundle.build?.implementationSha256||null,authoredContentSha256:bundle.build?.authoredContentSha256||null,bundleSha256:crypto.createHash('sha256').update(fs.readFileSync(bundleFile)).digest('hex'),widths:[320,1280],lessons:bundle.lessons.length,views:[],stepFlows:[],screenshots:[],interactions:[],errors:[],completed:false};
 let server,browser,context,page,base;
 const write=()=>fs.writeFileSync(path.join(out,'browser-evidence.json'),JSON.stringify(evidence,null,2));
 function serve(){return new Promise(resolve=>{server=http.createServer((request,response)=>{try{const url=new URL(request.url,'http://127.0.0.1'),pathname=decodeURIComponent(url.pathname),file=path.resolve(root,'.'+pathname+(pathname.endsWith('/')?'index.html':''));if(!file.startsWith(root+path.sep))return response.writeHead(403).end();const mime={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8'};response.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream','Cache-Control':'no-store'});fs.createReadStream(file).on('error',()=>response.end()).pipe(response);}catch{response.writeHead(404).end();}});server.listen(0,'127.0.0.1',()=>resolve('http://127.0.0.1:'+server.address().port+'/geometry-course/textbook/'));});}
@@ -26,7 +28,41 @@ async function inspect(){return page.locator('[data-main-model] svg').evaluate(s
  const edges=[];for(const edge of svg.querySelectorAll('line.planar-edge,polyline.planar-edge,line.planar-marker,polyline.planar-marker')){if(edge.tagName.toLowerCase()==='line')edges.push([[edge.x1.baseVal.value,edge.y1.baseVal.value],[edge.x2.baseVal.value,edge.y2.baseVal.value]]);else for(let i=1;i<edge.points.numberOfItems;i++){const p=edge.points.getItem(i-1),q=edge.points.getItem(i);edges.push([[p.x,p.y],[q.x,q.y]]);}}
  function crosses(p,q,label){const lo=[label.x+.2,label.y+.2],hi=[label.x+label.width-.2,label.y+label.height-.2];let enter=0,leave=1;for(let axis=0;axis<2;axis++){const d=q[axis]-p[axis];if(Math.abs(d)<1e-9){if(p[axis]<=lo[axis]||p[axis]>=hi[axis])return false;continue;}let a=(lo[axis]-p[axis])/d,b=(hi[axis]-p[axis])/d;if(a>b)[a,b]=[b,a];enter=Math.max(enter,a);leave=Math.min(leave,b);}return leave>enter&&Math.hypot(q[0]-p[0],q[1]-p[1])*(leave-enter)>.2;}
  const lineThroughLabel=[];for(const label of labels)for(const edge of edges)if(crosses(...edge,label))lineThroughLabel.push({label:label.id,edge});for(const id of new Set(lineThroughLabel.map(x=>x.label)))issues.push('line through label '+id);
- return {view:svg.dataset.view,labels,lineThroughLabel,issues};
+ const circles=[...svg.querySelectorAll('circle.planar-edge')].map(node=>({x:node.cx.baseVal.value,y:node.cy.baseVal.value,r:node.r.baseVal.value})),circleThroughLabel=[];
+ for(const circle of circles){
+  if(circle.x-circle.r<b.x-.01||circle.y-circle.r<b.y-.01||circle.x+circle.r>b.x+b.width+.01||circle.y+circle.r>b.y+b.height+.01)issues.push('clipped circle');
+  for(const label of labels){
+   const left=label.x+.2,right=label.x+label.width-.2,top=label.y+.2,bottom=label.y+label.height-.2;
+   const nearest=Math.hypot(Math.max(left-circle.x,0,circle.x-right),Math.max(top-circle.y,0,circle.y-bottom));
+   const farthest=Math.max(...[[left,top],[left,bottom],[right,top],[right,bottom]].map(([x,y])=>Math.hypot(x-circle.x,y-circle.y)));
+   if(nearest<circle.r-.05&&farthest>circle.r+.05)circleThroughLabel.push({label:label.id,circle});
+  }
+ }
+ for(const id of new Set(circleThroughLabel.map(x=>x.label)))issues.push('circle through label '+id);
+ // SVG viewBox containment alone does not detect a tall drawing hidden below
+ // the scroll viewport at its initial 100% zoom. Check the actual CSS clip too.
+ const viewport=svg.closest('.planar-viewport'),rect=viewport.getBoundingClientRect();
+ const clip={left:rect.left+viewport.clientLeft,top:rect.top+viewport.clientTop};clip.right=clip.left+viewport.clientWidth;clip.bottom=clip.top+viewport.clientHeight;
+ const viewportClipping=[];
+ for(const [index,node] of [...svg.querySelectorAll('.planar-label,.planar-point,.planar-edge,.planar-marker,.planar-polygon')].entries()){
+  const r=node.getBoundingClientRect();let strokePadX=0,strokePadY=0;
+  if(node.matches('circle,ellipse,line,path,polygon,polyline,rect')){
+   const style=getComputedStyle(node),halfStroke=parseFloat(style.strokeWidth)/2,matrix=node.getScreenCTM();
+   if(style.stroke!=='none'&&Number(style.strokeOpacity)!==0&&halfStroke>0&&matrix){
+    // DOM geometry bounds exclude painted strokes. The CTM row norms give
+    // their maximum screen-space extension along each axis (round caps/joins).
+    const fixed=style.vectorEffect==='non-scaling-stroke';
+    strokePadX=halfStroke*(fixed?1:Math.hypot(matrix.a,matrix.c));
+    strokePadY=halfStroke*(fixed?1:Math.hypot(matrix.b,matrix.d));
+   }
+  }
+  if(r.left-strokePadX<clip.left-.05||r.top-strokePadY<clip.top-.05||r.right+strokePadX>clip.right+.05||r.bottom+strokePadY>clip.bottom+.05){
+   const label=node.classList.contains('planar-label')?node.dataset.point:null;
+   viewportClipping.push({index,tag:node.tagName,label,x:r.left-clip.left,y:r.top-clip.top,width:r.width,height:r.height,strokePadX,strokePadY});
+   issues.push(label?'viewport clips label '+label:'viewport clips geometry '+index);
+  }
+ }
+ return {view:svg.dataset.view,labels,lineThroughLabel,circleThroughLabel,viewport:{width:viewport.clientWidth,height:viewport.clientHeight},viewportClipping,issues};
 });}
 async function expansion(selector,label){
  const scope=page.locator(selector);const before=await scope.locator('svg').evaluate(node=>{window.__expandedSvg=node;return node.dataset.view;});const draft=await page.locator('#final-answer').count()?await page.locator('#final-answer').inputValue():null;
@@ -49,6 +85,22 @@ async function interactions(){
  if(sample){await page.evaluate(id=>window.textbookApp.open(id),sample.id);await page.locator('#final-answer').fill('Запись перед теорией.');if(!await page.locator('[data-main-help]').evaluate(n=>n.open))await page.locator('[data-main-help] > summary').click();const help=page.locator('[data-main-help] [data-help]').first();await help.locator(':scope > summary').click();await help.getByRole('button',{name:/^Почему\?/}).first().click();await page.locator('dialog').waitFor({state:'visible'});await expansion('dialog .textbook-model','theory-1280');assert.equal(await page.locator('dialog').count(),1,'First Escape only closes expanded drawing');await page.locator('dialog > button').first().click();assert.equal(await page.locator('#final-answer').inputValue(),'Запись перед теорией.');evidence.interactions.push('theory-return-retains-answer');}
  await page.evaluate(id=>window.textbookApp.open(id),exercise.id);await page.locator('[data-final-form] button').click();assert.match(await page.locator('[data-final-feedback]').innerText(),/обсудить с учителем/,'Manual proof is not certified correct');evidence.interactions.push('manual-answer-honesty');
  const old=await context.newPage();await old.goto(base);await old.waitForFunction(()=>window.textbookApp);await old.evaluate(async id=>{const bundle=await(await fetch('data/course.json')).json();window.textbookApp.destroy();window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),{...bundle,allowInReview:bundle.build?.publicationReviewMatches!==true});window.textbookApp.open(id);},exercise.id);evidence.twoTabs={before:{first:await page.evaluate(k=>({raw:localStorage.getItem(k),readonly:document.getElementById('final-answer').readOnly,conflict:!!document.querySelector('.course-conflict')}),key),second:await old.evaluate(k=>({raw:localStorage.getItem(k),readonly:document.getElementById('final-answer').readOnly,conflict:!!document.querySelector('.course-conflict')}),key)}};await page.locator('#final-answer').fill('Новое решение в первом окне.');await settle();evidence.twoTabs.after={first:await page.evaluate(k=>({raw:localStorage.getItem(k),value:document.getElementById('final-answer').value,readonly:document.getElementById('final-answer').readOnly,conflict:!!document.querySelector('.course-conflict')}),key),second:await old.evaluate(k=>({raw:localStorage.getItem(k),value:document.getElementById('final-answer').value,readonly:document.getElementById('final-answer').readOnly,conflict:!!document.querySelector('.course-conflict')}),key)};write();await old.locator('.course-conflict').waitFor({state:'visible'});assert(await old.locator('#final-answer').getAttribute('readonly')!==null);await old.close();evidence.interactions.push('two-tab-conflict-preserves-work');
+ await chapterInteractions();
+}
+async function chapterInteractions(){
+ const questions=['I','II'].map(chapter=>bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='selfcheck'&&l.source.exercise==='1'));
+ assert(questions.every(Boolean),'Both chapter review questions must exist');assert.notEqual(questions[0].id,questions[1].id);
+ for(let i=0;i<questions.length;i++){await page.evaluate(id=>window.textbookApp.open(id),questions[i].id);await page.locator('#final-answer').fill('Отдельный черновик главы '+i);}
+ await startPreview();
+ for(let i=0;i<questions.length;i++){await page.evaluate(id=>window.textbookApp.open(id),questions[i].id);assert.equal(await page.locator('#final-answer').inputValue(),'Отдельный черновик главы '+i,'Restarted question numbers retain independent work after reload');}
+ evidence.interactions.push('chapter-selfcheck-draft-isolation-and-reload');
+ const exercise=bundle.lessons.find(l=>l.source.chapter==='II'&&l.source.collection==='main'&&l.help.some(h=>h.theoryIds?.some(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter==='II')));
+ assert(exercise,'A new exercise links to chapter-II theory');
+ const theoryId=exercise.help.flatMap(h=>h.theoryIds||[]).find(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter==='II'),theory=bundle.lessons.find(l=>l.id===theoryId);
+ await page.evaluate(id=>window.textbookApp.open(id),exercise.id);await page.locator('#final-answer').fill('Доказательство по новой главе.');
+ await page.locator('[data-main-help] > summary').click();const help=page.locator('[data-main-help] [data-help="recall-theory"]');await help.locator(':scope > summary').click();await help.getByRole('button',{name:'Почему? '+theory.title,exact:true}).click();
+ assert.equal(await page.locator('dialog').getAttribute('data-theory'),theoryId);await page.getByRole('button',{name:'Вернуться к задаче',exact:true}).click();assert.equal(await page.locator('#final-answer').inputValue(),'Доказательство по новой главе.');
+ await page.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();await startPreview();await page.evaluate(id=>window.textbookApp.open(id),exercise.id);assert.equal(await page.locator('#final-answer').inputValue(),'Доказательство по новой главе.');assert.equal(await page.locator('[data-step]').count(),1);evidence.interactions.push('chapter-II-theory-return-and-saved-step');
 }
 (async()=>{
  try{
