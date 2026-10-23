@@ -61,7 +61,9 @@
       ],
       "faces": [],
       "labelNames": [
-        "A"
+        "A",
+        "U",
+        "V"
       ],
       "neutralPoints": [
         "A",
