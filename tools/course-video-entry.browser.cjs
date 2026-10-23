@@ -263,11 +263,18 @@ async function main() {
         const ordinaryAnswer = p.locator(['negative-numbers', 'fractions'].includes(id) ? '#practiceAnswer input, #practiceAnswer button' : '#p-q input').first();
         assert.equal(await ordinaryAnswer.isVisible(), true, id + ': ordinary entry has a visible answer control');
       } else if (id !== 'adjacent-angles') {
-        await p.locator('[data-stage="0"][aria-current="step"]').waitFor(); assert.equal(await p.locator('#answer').count(), 0);
+        await p.locator('.task-first-course').waitFor();
+        assert.equal(await p.locator('#answer').isVisible(), true, id + ': ordinary entry opens the final answer');
+        assert.equal(await p.locator('#taskHelp').evaluate(node => node.open), false, id + ': help starts closed');
+        assert.equal(await p.locator('#stepAnswer').isVisible(), false, id + ': guided work is not opened automatically');
+        assert.equal(await p.locator('#taskNote').evaluate(node => node.open), false, id + ': reflection starts closed');
       } else await p.locator('#pool button').first().waitFor();
       await normal.context.close();
       const actual = await open(), q = actual.page;
       await q.goto(origin + practicePath(id));
+      if (['negative-numbers', 'fractions', 'proportions', 'percentages'].includes(id)) {
+        await q.locator('body[data-basics-standalone]').waitFor();
+      }
       let input, check, feedback;
       if (['negative-numbers', 'fractions'].includes(id)) { input = q.locator('#practiceAnswer input, #practiceAnswer button').first(); check = '#checkTask'; feedback = '#practiceFeedback'; }
       else if (['proportions', 'percentages'].includes(id)) { input = q.locator('#p-q input').first(); check = '#p-check'; feedback = '#p-fb'; }
@@ -285,14 +292,39 @@ async function main() {
 
     const saved = await open(), savedPage = saved.page;
     await savedPage.goto(origin + routes.brackets);
-    for (const stage of [2, 3, 4]) {
-      await savedPage.locator('[data-stage="' + stage + '"]').click();
-      await savedPage.locator(stage === 4 ? '#note' : '#answer').fill(stage === 4 ? 'Моя сохранённая запись' : '317');
+    async function reopenSaved(label) {
       const before = await savedPage.evaluate(() => PathCourse.state());
       await savedPage.goto(origin + practicePath('brackets'));
-      await savedPage.locator('[data-stage="' + stage + '"][aria-current="step"]').waitFor();
-      assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), before, 'Practice entry preserves the full saved task at stage ' + stage);
+      await savedPage.locator('.task-first-course').waitFor();
+      assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), before, 'Practice entry preserves the full saved task: ' + label);
+      const lesson = before.lessons['equations-brackets'], work = lesson.taskFirst;
+      assert.equal(await savedPage.locator('#answer').inputValue(), work.finalDraft, label + ': final draft');
+      assert.equal(await savedPage.locator('#stepAnswer').inputValue(), work.stepDraft, label + ': guided draft');
+      assert.equal(await savedPage.locator('#note').inputValue(), lesson.note, label + ': written reflection');
+      for (const [selector, key] of [['#taskHelp', 'helpOpen'], ['#taskSteps', 'stepsOpen'], ['#taskNote', 'noteOpen']]) {
+        assert.equal(await savedPage.locator(selector).evaluate(node => node.open), work[key], label + ': ' + key);
+      }
     }
+    await savedPage.locator('#answer').fill('317');
+    await reopenSaved('unfinished final answer');
+    await savedPage.locator('#taskHelp > summary').click();
+    await savedPage.locator('#taskSteps > summary').click();
+    const acceptedStep = await savedPage.evaluate(() => {
+      const lesson = PathCourse.state().lessons['equations-brackets'];
+      return PathData.answerText(PathData.task('equations-brackets', lesson.seed).steps[lesson.step]);
+    });
+    await savedPage.locator('#stepAnswer').fill(acceptedStep);
+    await savedPage.locator('#stepAnswerForm button[type="submit"]').click();
+    await savedPage.waitForFunction(() => PathCourse.state().lessons['equations-brackets'].step === 1);
+    await savedPage.locator('#stepAnswer').fill('19/');
+    assert.match(await savedPage.locator('#taskStepsBody h2').innerText(), /^Шаг 2 из \d+$/);
+    assert.equal(await savedPage.locator('#taskStepsBody .steps > li').count(), 1, 'The accepted guided step is shown before reopening');
+    await reopenSaved('accepted guided step, next draft and opened help');
+    assert.equal(await savedPage.locator('#taskStepsBody .steps > li').count(), 1, 'The accepted guided step remains visible after reopening');
+    await savedPage.locator('#taskNote > summary').click();
+    await savedPage.locator('#note').fill('Моя сохранённая запись');
+    await savedPage.waitForFunction(() => PathCourse.state().lessons['equations-brackets'].taskFirst.noteOpen === true);
+    await reopenSaved('written reflection with both drafts and accepted work');
     await saved.context.close();
     const helper = await fs.readFile(path.join(ROOT, 'learning/practice-entry.js'), 'utf8');
     for (const search of ['', '?practice=1&learning=1']) vm.runInNewContext(helper, {
