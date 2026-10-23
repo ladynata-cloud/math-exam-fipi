@@ -23,6 +23,8 @@ const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+decodeU
     await page.locator('#work').fill('Проверочная запись');
     const card=await page.evaluate(i=>symmetryPreview.cards[i],i);
     assert.equal(card.status,'in-review');
+    const overlap=await page.evaluate(()=>document.querySelector('#model').getBoundingClientRect().bottom>document.querySelector('#goal').getBoundingClientRect().top+1);
+    assert.equal(overlap,false,'model and controls must not overlap the goal');
     await page.screenshot({path:path.join(out,`${width}-${id}-initial.png`),fullPage:true});
     for(const name of Object.keys(card.visualization.model.views)){
      assert(await page.evaluate(name=>symmetryPreview.mount.setView(name),name));
