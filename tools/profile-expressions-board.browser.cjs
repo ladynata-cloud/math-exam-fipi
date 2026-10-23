@@ -342,6 +342,8 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await teacherFrame.locator('#repair-current').click();
   await teacherFrame.waitForFunction(() => location.hash === '#practice/expr-powers/guided', null, { polling: 50 });
   await teacherFrame.locator('#answer-form').waitFor();
+  // The hash changes before its handler replaces the independent task's form.
+  await teacherFrame.locator('#current-step').filter({ hasText: /^Шаг 1 из \d+$/ }).waitFor();
   assert.equal(await teacherFrame.locator('[data-equation-view]').getAttribute('data-equation-view'), taskId, 'remediation retains the current task');
   const acceptedAnswer = await teacherFrame.evaluate(id => {
     const task = ProfileLessons.find(lesson => lesson.id === 'expr-powers').tasks.find(task => task.id === id);

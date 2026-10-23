@@ -6,7 +6,8 @@
 - Owner: repository owner
 - Date: 2026-10-24 (Asia/Novosibirsk)
 - Base branch: `main`
-- Base SHA: `1f9d8aec82bd2909917ab22746d94571d87c59c4`
+- Base SHA: `07189de58b7f5d60c02ea6ca6aa9450a324a377f`
+- Original implementation base SHA: `1f9d8aec82bd2909917ab22746d94571d87c59c4`
 - Planned branch: `feat/individual-board-tools`
 - Review level: `MEDIUM`
 - Related issue or ADR: existing classic board; ADR 0001 remains Proposed.
@@ -140,7 +141,7 @@ the bounded implementation scope selected for that request.
 ## Execution record
 
 - Actual branch: `feat/individual-board-tools`
-- Actual base SHA: `1f9d8aec82bd2909917ab22746d94571d87c59c4`
+- Original implementation base SHA: `1f9d8aec82bd2909917ab22746d94571d87c59c4`
 - Actual head SHA / PR: recorded in the Draft PR without a self-referential
   commit.
 - Gate: `INDIVIDUAL_BOARD_TOOLS_OK`.
@@ -167,6 +168,74 @@ the bounded implementation scope selected for that request.
 - Not run: physical stylus/iPad, real learner/production rooms, unrelated full
   B2/group suites. These limits remain as declared above.
 - Scope deviations: none.
+
+## Authorized current-base reconciliation — 2026-10-24
+
+- The owner explicitly answered "Разрешаю" to the bounded proposal to resolve
+  conflicts in PR #313 and PR #316 and repeat their checks. This authorizes
+  reconciliation of the existing task branches; it does not authorize merging
+  either PR into main, auto-merge or deployment.
+- Original reviewed base: `1f9d8aec82bd2909917ab22746d94571d87c59c4`.
+  Original PR #313 head: `41b5a40c0247877e0620e54c4aede84d16d3736b`, with
+  five successful exact-head CI checks. First reconciliation base:
+  `202d39bf826c8c7e030e59ff162fe808000cae7e`, then the sole concurrent squash merge
+  of PR #318. Its approved Atanasyan integration is preserved.
+- The read-only preflight found two conflict files. The resolved board host
+  keeps this task's new controls and adds main's exact iframe inert, tab-index
+  and focused-frame blur behavior to prevent keyboard input after control loss.
+  The project-status record retains both tasks and the published chapter-II
+  record. Atanasyan is recorded as merged code; this task does not claim its
+  production deployment.
+- The picker script keeps main's `20261024-atanasyan-board` cache suffix because
+  this task does not modify the picker or its catalog. The separate START task
+  owns its own consistent fresh cache suffix; ordered composition is reviewed
+  separately, without absorbing that task into this one.
+- Revalidation plan: board geometry/image units, full writing and picker
+  browsers, existing task-3/task-8 browsers, Atanasyan classic/managed browser
+  including keyboard revoke, applicable registry/contract tests, syntax and
+  whitespace checks. The combined two-PR tree additionally requires all-five
+  START coverage and exact registry/catalog preservation.
+- The original gates above remain historical evidence for the original head.
+  New-base gate results, exact resolved tree and final head are recorded in the
+  updated PR after execution; no pending or old result is called a new pass.
+- The resolution changes no authored curriculum, trainer adapter, backend
+  runtime, authentication, role, storage or deployment configuration. Concurrent
+  main additions remain byte-identical outside the two conflict resolutions.
+
+- Executed checks on the first reconciliation base `202d39b` passed:
+  21/21 board units; full writing, picker,
+  existing task-3/task-8 and Atanasyan classic/managed browser gates, including
+  keyboard-revoke protection. The paired runtime also passed 150/150 focused
+  tests and six browser gates: writing, all five START wrappers/22 topics,
+  task 3, task 8, Atanasyan and picker. Local Chromium 151.0.7922.34 used
+  synthetic isolated rooms/accounts; no production writes occurred.
+- Independent focused resolution review passed. Both original file sets remain
+  exact (13 files for this task, 31 for START); all course/runtime source outside
+  the declared conflict preservation is unchanged. No local test failed during
+  the first reconciliation. Exact-head GitHub CI is assessed after branch publication
+  and recorded in the PR, without claiming older checks for the new head.
+
+## Preserving subsequent main changes — 2026-10-24
+
+- Before publication of either updated task branch, main advanced to
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f` through merged PR #315
+  (`52cb1c1a5c731acd660139328f0001ccfa33a08b`, Vilenkin 6 cloud cabinets)
+  and PR #319 (Makarychev 8 course). The same owner-authorized bounded conflict
+  resolution preserves these concurrent implementations; it adds no feature
+  scope and provides no merge or deployment authorization.
+- The fresh read-only composition found only the project-status conflict for
+  this task. The board runtime, the inherited expressions readiness fix and
+  the new course/cabinet code compose cleanly. The status resolution retains
+  Vilenkin's inherited preparation record, the verified code-merge provenance,
+  our board/Atanasyan notes and published chapter-II evidence. Deployment of
+  the concurrent tasks is not claimed by this reconciliation.
+- Results recorded above belong to the first `202d39b` composition. Required
+  runtime/contract gates are repeated against the new `07189de` base and exact
+  resulting tree. Their outcomes are recorded only after execution in the PR;
+  no previous PASS is substituted for the new-base gate.
+- The current-base review remains the original 13-file task delta. Concurrent
+  source outside that delta is preserved. No runtime or test file is edited by
+  this second, documentation-only conflict resolution.
 
 ## Required handoff
 

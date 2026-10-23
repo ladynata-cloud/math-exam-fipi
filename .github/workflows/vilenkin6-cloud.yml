@@ -1,0 +1,42 @@
+name: Vilenkin 6 cloud cabinet
+on:
+  pull_request:
+    paths:
+      - 'courses/vilenkin-6-part-1/**'
+      - 'learning/**'
+      - 'board-server/**'
+      - 'Dockerfile'
+      - 'tools/vilenkin6-course/**'
+      - 'tools/learning-vilenkin6.dom.cjs'
+      - 'docs/tasks/VILENKIN6_CLOUD_CABINET.md'
+      - '.github/workflows/vilenkin6-cloud.yml'
+permissions:
+  contents: read
+jobs:
+  managed-course:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install locked backend and isolated DOM dependencies
+        run: |
+          npm --prefix board-server ci --include=optional
+          npm install --prefix "$RUNNER_TEMP/v6-cloud" --no-save --no-package-lock --ignore-scripts linkedom@0.18.14 jsdom@26.1.0
+          echo "NODE_PATH=$RUNNER_TEMP/v6-cloud/node_modules" >> "$GITHUB_ENV"
+      - name: Cloud persistence, managed course and standalone regression
+        run: |
+          node --test board-server/test/learning-vilenkin6.test.js
+          node tools/vilenkin6-course/check.cjs
+          node tools/vilenkin6-course/dom.cjs
+          node tools/vilenkin6-course/managed-dom.cjs
+          node --test tools/vilenkin6-course/bridge.test.cjs
+          node tools/learning-vilenkin6.dom.cjs
+          python3 tools/vilenkin6-course/build-offline.py
+          git diff --exit-code -- courses/vilenkin-6-part-1/offline.html
+          git diff --check
