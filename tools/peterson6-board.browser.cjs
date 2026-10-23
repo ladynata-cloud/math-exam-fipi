@@ -221,12 +221,24 @@ async function lesson(frame, id, index = 0) {
 
 async function narrowShot(page, frame, name, selector) {
   await page.setViewportSize({ width: 320, height: 900 });
-  const layout = await frame.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth }));
-  assert(layout.width <= 320, name + ': iframe is narrow');
-  assert(layout.scroll <= layout.width + 1, name + ': no horizontal document overflow');
   await frame.locator(selector).scrollIntoViewIfNeeded();
   const shots = process.env.PETERSON6_BOARD_SHOTS;
   if (shots) { mkdirSync(shots, { recursive: true }); await page.screenshot({ path: join(shots, name + '.png') }); }
+  const layout = await frame.evaluate(() => ({
+    width: innerWidth, scroll: document.documentElement.scrollWidth,
+    offenders: [...document.querySelectorAll('#main, #main *, .topbar, .topbar *, footer, footer *')].flatMap(element => {
+      const box = element.getBoundingClientRect();
+      if (!box.width || !box.height || (box.left >= -1 && box.right <= innerWidth + 1)) return [];
+      return [{ tag: element.tagName, id: element.id, className: element.getAttribute('class') || '',
+        left: Math.round(box.left * 100) / 100, right: Math.round(box.right * 100) / 100,
+        width: Math.round(box.width * 100) / 100, scroll: element.scrollWidth,
+        minWidth: getComputedStyle(element).minWidth, overflow: getComputedStyle(element).overflowX,
+        text: (element.textContent || '').trim().slice(0, 120) }];
+    }).slice(0, 24)
+  }));
+  if (layout.width > 320 || layout.scroll > layout.width + 1) console.error('PETERSON6_NARROW_LAYOUT', JSON.stringify({ name, ...layout }));
+  assert(layout.width <= 320, name + ': iframe is narrow');
+  assert(layout.scroll <= layout.width + 1, name + ': no horizontal document overflow');
   await page.setViewportSize({ width: 1440, height: 1000 });
 }
 
