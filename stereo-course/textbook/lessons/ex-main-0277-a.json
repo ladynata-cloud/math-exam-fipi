@@ -4,7 +4,7 @@
   "revision": 1,
   "kind": "exercise",
   "title": "Оси симметрии отрезка в пространстве",
-  "status": "in-review",
+  "status": "reviewed",
   "source": {
     "bookId": "atanasyan-2024-10-11",
     "collection": "main",
@@ -137,6 +137,15 @@
       "question": "Почему не две оси, как на плоском рисунке?",
       "text": "В пространстве перпендикуляр через середину можно поворачивать вокруг AB. Он не обязан лежать в плоскости экрана.",
       "view": "tilted"
+    },
+    {
+      "id": "definition",
+      "question": "Какое определение симметрии здесь используется?",
+      "text": "Ось проходит через середину отрезка между точкой и её образом и перпендикулярна этому отрезку. Точки оси остаются неподвижными.",
+      "theoryIds": [
+        "theory-035-axis",
+        "theory-035-figure"
+      ]
     }
   ],
   "steps": [
@@ -148,7 +157,8 @@
       "justifications": [
         {
           "kind": "definition",
-          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре."
+          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре.",
+          "theoryId": "theory-035-figure"
         }
       ],
       "id": "step-1"
@@ -161,7 +171,8 @@
       "justifications": [
         {
           "kind": "definition",
-          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре."
+          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре.",
+          "theoryId": "theory-035-figure"
         }
       ],
       "id": "step-2"
@@ -174,16 +185,19 @@
       "justifications": [
         {
           "kind": "definition",
-          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре."
+          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре.",
+          "theoryId": "theory-035-figure"
         }
       ],
       "id": "step-3"
     }
   ],
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex independent symmetry_review; visual_pedagogy_review",
+    "at": "2026-10-23T21:04:00.795Z"
   },
   "answer": {
     "mode": "manual",

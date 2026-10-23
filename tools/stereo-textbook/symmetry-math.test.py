@@ -7,7 +7,7 @@ check, not a claim of independent human/model source or pedagogical review.
 import itertools,json,math
 from pathlib import Path
 import numpy as np
-D=Path(__file__).with_name('pending-symmetry')
+D=Path(__file__).resolve().parents[2] / 'stereo-course/textbook/lessons'
 def lesson(name): return json.loads((D/(name+'.json')).read_text())
 def vertices(name,names):
  p=lesson(name)['visualization']['model']['points']

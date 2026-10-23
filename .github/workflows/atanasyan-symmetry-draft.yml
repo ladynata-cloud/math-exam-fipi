@@ -1,14 +1,20 @@
-name: Atanasyan symmetry draft — content and editorial preview
+name: Atanasyan symmetry — source regression and editorial preview
 on:
   pull_request:
     paths:
+      - 'stereo-course/textbook/lessons/theory-035*.json'
+      - 'stereo-course/textbook/lessons/ex-main-0276*.json'
+      - 'stereo-course/textbook/lessons/ex-main-0277*.json'
+      - 'stereo-course/textbook/lessons/ex-main-0278*.json'
+      - 'stereo-course/textbook/source-index.json'
+      - 'stereo-course/textbook/data/course.json'
       - 'tools/stereo-textbook/pending-symmetry/**'
       - 'tools/stereo-textbook/symmetry-*'
       - '.github/workflows/atanasyan-symmetry-draft.yml'
 permissions:
   contents: read
 jobs:
-  draft-checks:
+  symmetry-checks:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -20,7 +26,7 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
       - run: python3 -m pip install numpy==2.2.6
-      - run: node tools/stereo-textbook/symmetry-pending.test.cjs
+      - run: node tools/stereo-textbook/symmetry-content.test.cjs
       - run: python3 tools/stereo-textbook/symmetry-math.test.py
       - run: npx playwright install --with-deps chromium
       - run: node tools/stereo-textbook/symmetry-preview.browser.cjs
@@ -28,7 +34,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: atanasyan-symmetry-draft-preview
+          name: atanasyan-symmetry-editorial-preview
           path: artifacts/symmetry-preview/
           retention-days: 7
           if-no-files-found: error

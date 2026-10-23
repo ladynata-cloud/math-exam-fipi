@@ -4,7 +4,7 @@
   "revision": 1,
   "kind": "exercise",
   "title": "Треугольная пирамида: все рёбра равны",
-  "status": "in-review",
+  "status": "reviewed",
   "source": {
     "bookId": "atanasyan-2024-10-11",
     "collection": "main",
@@ -151,6 +151,15 @@
       "id": "h2",
       "question": "Почему ответ не может быть одним числом без оговорки?",
       "text": "В условии не исключён правильный тетраэдр. Поэтому полный ответ обязан учитывать этот особый случай."
+    },
+    {
+      "id": "definition",
+      "question": "Какое определение симметрии здесь используется?",
+      "text": "Плоскость проходит через середину отрезка между точкой и её образом и перпендикулярна этому отрезку. Точки плоскости остаются неподвижными.",
+      "theoryIds": [
+        "theory-035-plane",
+        "theory-035-figure"
+      ]
     }
   ],
   "steps": [
@@ -163,7 +172,8 @@
       "justifications": [
         {
           "kind": "definition",
-          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре."
+          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре.",
+          "theoryId": "theory-035-figure"
         }
       ]
     },
@@ -202,7 +212,8 @@
       "justifications": [
         {
           "kind": "definition",
-          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре."
+          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре.",
+          "theoryId": "theory-035-figure"
         }
       ]
     },
@@ -221,9 +232,11 @@
     }
   ],
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex independent symmetry_review; visual_pedagogy_review",
+    "at": "2026-10-23T21:04:00.795Z"
   },
   "answer": {
     "mode": "manual",

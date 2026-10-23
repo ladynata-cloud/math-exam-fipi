@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "in-review",
+  "status": "reviewed-partial",
   "cards": [
     "theory-035-center",
     "theory-035-axis",
@@ -18,12 +18,16 @@
     "ex-main-0278-c",
     "ex-main-0278-c-regular"
   ],
-  "proposedSourceContracts": {
+  "reviewedSourceContracts": {
     "35": [
       "center",
       "axis",
       "plane",
-      "figure"
+      "figure",
+      "parallelepiped-examples",
+      "unbounded-examples",
+      "general-solids-examples",
+      "applications-elements"
     ],
     "276": [
       "а",

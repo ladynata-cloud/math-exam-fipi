@@ -4,7 +4,7 @@
   "revision": 1,
   "kind": "theory",
   "title": "Симметрия относительно плоскости",
-  "status": "in-review",
+  "status": "reviewed",
   "source": {
     "bookId": "atanasyan-2024-10-11",
     "collection": "theory",
@@ -147,7 +147,7 @@
       "justifications": [
         {
           "kind": "definition",
-          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре."
+          "text": "Для двух различных точек, симметричных относительно плоскости, эта плоскость проходит через середину соединяющего их отрезка и перпендикулярна ему; точки плоскости неподвижны."
         }
       ],
       "id": "step-1"
@@ -160,7 +160,7 @@
       "justifications": [
         {
           "kind": "definition",
-          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре."
+          "text": "Условия AH ⟂ плоскости, A–H–A₁ и HA = HA₁ означают, что данная плоскость перпендикулярна AA₁ и проходит через его середину."
         }
       ],
       "id": "step-2"
@@ -172,16 +172,18 @@
       "view": "pair",
       "justifications": [
         {
-          "kind": "definition",
-          "text": "Определение симметрии: образ каждой точки должен принадлежать той же фигуре."
+          "kind": "theorem",
+          "text": "По определениям точки центра, оси или плоскости остаются на месте, а любая точка вне соответствующего множества переходит в отличную от неё точку."
         }
       ],
       "id": "step-3"
     }
   ],
   "review": {
-    "source": "pending",
-    "mathematics": "pending",
-    "pedagogy": "pending"
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex independent symmetry_review; visual_pedagogy_review",
+    "at": "2026-10-23T21:04:00.795Z"
   }
 }

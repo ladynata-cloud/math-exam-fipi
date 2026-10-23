@@ -1,5 +1,5 @@
 'use strict';
-// Editorial preview only. No status mutation, production bundle or pupil writes.
+// Editorial preview of reviewed production records. No status mutation or pupil writes.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'../..'),out=path.resolve(process.env.SYMMETRY_ARTIFACTS||'artifacts/symmetry-preview');
@@ -22,7 +22,7 @@ const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+decodeU
     assert.equal(await page.locator('#steps article').count(),0);
     await page.locator('#work').fill('Проверочная запись');
     const card=await page.evaluate(i=>symmetryPreview.cards[i],i);
-    assert.equal(card.status,'in-review');
+    assert.equal(card.status,'reviewed');
     const overlap=await page.evaluate(()=>document.querySelector('#model').getBoundingClientRect().bottom>document.querySelector('#goal').getBoundingClientRect().top+1);
     assert.equal(overlap,false,'model and controls must not overlap the goal');
     await page.screenshot({path:path.join(out,`${width}-${id}-initial.png`),fullPage:true});
