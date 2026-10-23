@@ -1,33 +1,39 @@
 # MathExam project status
 
-Updated: 2026-10-23 (Asia/Novosibirsk)
+Updated: 2026-10-24 (Asia/Novosibirsk)
 
-## Prepared for release review: profile task 3 stereometry on the shared board
+## In progress: Peterson 6 course in the cabinet and on the shared board
 
-- [Scope](tasks/PROFILE_STEREOMETRY_BOARD_SYNC.md), MEDIUM review, base
-  `40682b243b3e7342d4330272f7329e60a1d0f417`, branch
-  `feat/ege3-board-sync`. The owner requested the latest task-3 course after
-  publication of the separate task-8 integration.
-- Bounded scope: eight existing stereometry topics / 48 tasks, shared drafts,
-  steps, help, worked solutions and model views on the classic board. Reuse
-  the existing profile adapter with two fixed course boundaries and preserve
-  task-8 behavior, authored mathematics and personal progress isolation.
-- The registered wrapper and exact canonical aliases are implemented. The
-  course overview now exposes its board link; shared model state contains
-  camera orientation, additional-view disclosure and the last spoken status.
-  Independent code and test reviews found no remaining blocking issue.
-- Final combined adapter/model/picker/registry contracts: 66/66 PASS.
-  Standalone state/Calm/input/solution contracts: 97/97 PASS; stereo/model
-  regression group: 20/20 PASS (groups overlap). The actual task-3 board
-  journey, task-first 68-family browser, 42 worked-solution journeys, picker
-  smoke and targeted B2 live/fail-closed checks passed.
-- The unchanged task-8 browser passed on an isolated repeat after one
-  concurrent run failed its cleared-angle-input assertion. The cause is not
-  established, and the failure is retained in the task record. The known
-  inherited B2 Roads harness issue remains outside this task.
-- Exact-head cloud checks and final gate are recorded in the resulting PR.
-  Merge/publication of this new task requires separate owner authorization.
-  No real-account or production-room testing has been performed.
+- [Scope](tasks/PETERSON6_BOARD_SYNC.md), MEDIUM review, base
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`, branch
+  `feat/peterson6-board-sync`. The owner requested cloud assignment of the
+  published course and synchronization with the existing interactive board.
+- Thin registered wrapper for all 14 topics / 224 tasks and 20 practice skills.
+  Shared state covers drafts, steps, feedback, help, notes, model controls and
+  the detour/return. Personal browser progress remains isolated.
+- Existing cloud plans gain a fixed course reference card with role-appropriate
+  course, practice and teacher-board links. No fictitious managed attempt,
+  personal credit or server persistence contract is introduced.
+- Local and exact-head cloud evidence, review findings and publication status
+  will be recorded in the PR. No completed deployment is claimed here.
+
+## Published: profile task 3 stereometry on the shared board
+
+- PR #312 merged as `1f9d8aec82bd2909917ab22746d94571d87c59c4`, sole parent
+  `40682b243b3e7342d4330272f7329e60a1d0f417`; reviewed head
+  `4c0a958383d304dc5167730034c487df059d26ac`, exact tree
+  `8bd1cc3059d9b942524555abb955707c4da17f4c`.
+- All eight exact-head checks passed. Pages run `39993968816` and automatic
+  post-merge profile run `39993968452` succeeded on this merge. The PR release
+  record verifies 20 public frontend requests and the exact eight-entry Amvera
+  registry. No private-account or production-room write was part of that task.
+- Eight existing stereometry topics / 48 tasks mirror their drafts, steps,
+  feedback, help, solutions and model views on the classic board; the separate
+  task-8 integration and personal storage remain preserved.
+- Gate: `PROFILE_STEREOMETRY_BOARD_SYNC_OK`. The release record retains the
+  initial cloud retry and the inherited supplemental B2 Roads test limitation.
+  Supplemental production DOM rendering was not run because local Chromium
+  rejected the certificate; TLS verification was not disabled.
 
 ## Published: profile task 8 on the shared board
 

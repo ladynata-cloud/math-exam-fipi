@@ -3,11 +3,29 @@ on:
   pull_request:
     paths:
       - 'school/peterson6/**'
+      - 'trainers/peterson6.html'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker.js'
+      - 'trainers/board-picker-data.json'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-bridge.js'
+      - 'learning/**'
+      - 'tools/peterson6-*'
+      - 'tools/learning-peterson-plan.dom.cjs'
       - '.github/workflows/peterson6-quality.yml'
   push:
     branches: [main]
     paths:
       - 'school/peterson6/**'
+      - 'trainers/peterson6.html'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker.js'
+      - 'trainers/board-picker-data.json'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-bridge.js'
+      - 'learning/**'
+      - 'tools/peterson6-*'
+      - 'tools/learning-peterson-plan.dom.cjs'
       - '.github/workflows/peterson6-quality.yml'
 permissions:
   contents: read
@@ -35,3 +53,35 @@ jobs:
         run: npm install --prefix "$RUNNER_TEMP/peterson-qa" --no-audit --no-fund jsdom@26.1.0
       - name: Course DOM journeys (not visual browser QA)
         run: NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules" node school/peterson6/test-ui.cjs
+  board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned test tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/peterson-board" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/peterson-board/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/peterson-board/node_modules" >> "$GITHUB_ENV"
+      - name: Board, models, picker and cabinet contracts
+        run: |
+          node school/peterson6/test-models-board.cjs
+          node --test tools/peterson6-session.test.cjs tools/peterson6-board.test.cjs tools/peterson6-picker.test.cjs tools/learning-peterson-plan.dom.cjs tools/learning-focus-links.dom.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+      - name: Synthetic teacher and learner on the real board
+        run: PETERSON6_BOARD_SHOTS="$RUNNER_TEMP/peterson-board-shots" node tools/peterson6-board.browser.cjs
+      - name: Retain visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: peterson-board-screenshots
+          path: ${{ runner.temp }}/peterson-board-shots
+          if-no-files-found: ignore

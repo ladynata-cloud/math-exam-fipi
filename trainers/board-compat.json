@@ -432,6 +432,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Зеркалируются текущий шаг вложенного логарифма, ввод, подсказки и записи решения. Отдельная попытка от первого примера; прогресс кабинета не подключён."
+    },
+    {
+      "trainerId": "peterson6",
+      "file": "trainers/peterson6.html",
+      "title": "Петерсон · 6 класс · часть 1",
+      "group": "Математика / 6 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по 14 темам: задача, ответы, шаги, подсказки, модели и отдельные вычислительные тренировки с возвратом. Личный прогресс курса не изменяется."
     }
   ]
 }
