@@ -2,6 +2,41 @@
 
 Updated: 2026-10-24 (Asia/Novosibirsk)
 
+## In progress: individual board tools reconciled with current main
+
+- [Scope](tasks/INDIVIDUAL_BOARD_TOOLS.md), MEDIUM review, current review base
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`, branch
+  `feat/individual-board-tools`.
+- The owner requested practical writing tools beside the trainer, then explicitly
+  added screenshot insertion and three workspace modes. This is the classic
+  board; the cabinet and group board are separate components.
+- Implementation and the focused gate `INDIVIDUAL_BOARD_TOOLS_OK` passed:
+  21 geometry/image units, the full local/two-participant writing browser, the
+  picker browser, and existing task-3/task-8 shared-board regressions.
+- New writing controls, screenshot insertion, three screen modes, local split
+  and view preferences reuse the existing room/control transport. File and
+  clipboard import, export, handoff, author-owned undo/redo, reload and late join
+  were verified with synthetic local rooms. No release of this task is claimed.
+- Original head `41b5a40c0247877e0620e54c4aede84d16d3736b` passed all five
+  GitHub checks. After PR #318 changed main to
+  `202d39bf826c8c7e030e59ff162fe808000cae7e`, the owner authorized bounded
+  conflict resolution and repeat checks. The new controls retain the newer
+  iframe keyboard protection; results for the reconciled tree belong to the
+  updated PR. Earlier gates do not approve this new tree.
+- Before branch publication, main advanced through Vilenkin cabinet PR #315
+  (`52cb1c1a5c731acd660139328f0001ccfa33a08b`) and Makarychev 8 PR #319
+  (`07189de58b7f5d60c02ea6ca6aa9450a324a377f`). Both code merges are preserved;
+  their production deployment is not inferred here. The inherited Vilenkin
+  preparation record below remains historical evidence for its task.
+- The second reconciliation has only a project-status conflict. Runtime changes
+  compose cleanly; relevant gates are repeated on the new base before results
+  are recorded in PR #313. Results against `202d39b` remain historical.
+- Physical stylus/iPad behavior and real production lessons remain untested.
+  The Draft PR records the exact head and CI; merge/publication requires a new
+  owner decision.
+- The additional request to synchronize all recently added START trainers is a
+  separate task. Existing task-3 and task-8 integration must remain intact.
+
 ## Prepared: Vilenkin 6 part 1 in cloud cabinets
 
 - [Scope](tasks/VILENKIN6_CLOUD_CABINET.md), HIGH review, branch
@@ -39,23 +74,29 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
   persistent data. Next: exact-head CI, publication and authenticated
   pupil/teacher verification.
 
-## Merged: Atanasyan 92a in the cabinet and on the shared board
+## Merged code: Atanasyan 92a in the cabinet and on the shared board
 
-- [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), [PR #318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318), HIGH review, based on
-  `1f9d8aec82bd2909917ab22746d94571d87c59c4`.
+- [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), [PR #318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318), HIGH review.
+  The verified merge is `202d39bf826c8c7e030e59ff162fe808000cae7e`, sole parent
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`; reviewed head
+  `78151b0c50e0c4df2400779f3736bbf9074c2813`. All twelve exact-head CI checks
+  passed; the PR records the owner's release authorization and scoped external
+  review exception, not an external-provider verdict.
 - One existing grade-7 exercise gains a fixed wrapper, isolated shared state,
   a managed learning contract and a catalog entry. Published mathematics,
   diagrams, all 336 cards and the sealed textbook runtime remain unchanged.
 - The actual pupil cabinet already exists; its earlier plan and work are
   preserved. The original exercise link was added through the teacher UI.
-  The native plan card and production synchronization await reviewed deployment.
+  Production delivery of the native card and synchronization is not verified by
+  this board-tools reconciliation; consult PR #318 for its release evidence.
 - Implementation and independent technical review are complete. Full server
   tests 298/298 and the 21-test new contract group pass; actual classic and
   managed browser journeys, previous task-3/task-8 board journeys and scoped
-  B2 regressions pass. Exact-head CI is recorded in the resulting Draft PR.
+  B2 regressions pass, as recorded in that PR.
 - A confirmed keyboard gap after control revoke was closed with iframe inert
   state. Managed manual-save and theory-state restoration were verified in a
   real sandboxed cabinet with SQLite, without an automatic correctness award.
+  The board-tools conflict resolution must preserve this keyboard protection.
 - PR #318 merged at `202d39bf826c8c7e030e59ff162fe808000cae7e` after
   the owner authorized publication and a scoped external-review exception;
   its 12 exact-head cloud checks passed. No external-provider verdict is
@@ -64,20 +105,36 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 
 ## Published: profile task 3 stereometry on the shared board
 
-- [Scope](tasks/PROFILE_STEREOMETRY_BOARD_SYNC.md), MEDIUM review. PR #312
-  merged as `1f9d8aec82bd2909917ab22746d94571d87c59c4`, sole parent
-  `40682b243b3e7342d4330272f7329e60a1d0f417`; reviewed head
-  `4c0a958383d304dc5167730034c487df059d26ac`.
-- Exact-head CI passed 8/8 checks. The published 21-file delta and tree
-  `8bd1cc3059d9b942524555abb955707c4da17f4c` matched the reviewed result.
-  Pages run 39993968816 and automatic profile run 39993968452 succeeded.
-- All 20 frontend byte probes passed; the authoritative backend returned the
-  exact eight-entry registry, including task 3 and preserved task 8, with
-  healthy status. Complete evidence and earlier failures/retries are in PR #312.
-- The local/cloud teacher-observer tests passed. A supplemental production
-  Chromium render was not run because TLS certificate validation failed;
-  verification was not disabled. No real account or production-room writes
-  were performed in that task. Publication verification passed.
+- [Scope](tasks/PROFILE_STEREOMETRY_BOARD_SYNC.md), MEDIUM review.
+  [PR #312](https://github.com/ladynata-cloud/math-exam-fipi/pull/312) merged at
+  2026-10-23 17:18:23 UTC as
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`, sole parent/authorized base
+  `40682b243b3e7342d4330272f7329e60a1d0f417`. Reviewed head
+  `4c0a958383d304dc5167730034c487df059d26ac`, exact reviewed tree
+  `8bd1cc3059d9b942524555abb955707c4da17f4c`. No base drift occurred.
+- All eight pre-merge checks passed. The post-merge profile run
+  [39993968452](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/39993968452)
+  and Pages run
+  [39993968816](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/39993968816)
+  succeeded on the merge commit. The release check matched all ten changed
+  public frontend assets through ordinary and versioned URLs (20/20).
+- The backend health and eight-entry registry were verified at 17:20:59 UTC,
+  after restart at 17:20:18.585 UTC. Registry digest:
+  `sha256:aa381b8c633fa5e04c656e9f29ec2b3c7cd478d1b70d07c8b0cf8822e538d336`.
+- Eight existing topics / 48 tasks now share draft, steps, help, worked solutions
+  and model view through `trainers/ege-profile-stereometry.html`. Existing task-8
+  behavior, authored mathematics and personal progress isolation were preserved.
+- Local adapter/model/picker/registry checks passed (66 combined assertions),
+  and the actual task-3 teacher/observer browser journey passed. The unchanged
+  task-8 browser passed on an isolated repeat after an earlier concurrent run
+  failed its cleared-angle-input assertion; that earlier failure is retained.
+- Publication was verified using the release evidence above and the merged PR
+  was rechecked at the start of the individual-board task. No real-account or
+  production-room test was performed. Supplemental production browser access
+  was blocked by certificate validation; TLS validation was not disabled. The
+  unrelated inherited full-B2 Roads harness issue remains outside this task.
+- The owner's PR #312 merge/publication authorization has been completed and
+  does not authorize the next board or trainer-integration release.
 
 ## Published: profile task 8 on the shared board
 
