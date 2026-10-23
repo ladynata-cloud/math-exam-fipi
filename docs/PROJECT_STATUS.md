@@ -2,9 +2,46 @@
 
 Updated: 2026-10-24 (Asia/Novosibirsk)
 
-## Prepared for review: Atanasyan 92a in the cabinet and on the shared board
+## Prepared: Vilenkin 6 part 1 in cloud cabinets
 
-- [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), [Draft PR #318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318), HIGH review, based on
+- [Scope](tasks/VILENKIN6_CLOUD_CABINET.md), HIGH review, branch
+  `feat/vilenkin6-cloud-cabinet`, original base
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`; current observed main
+  `202d39bf826c8c7e030e59ff162fe808000cae7e` adds authorized PR #318.
+  Concurrent cabinet/catalog/container changes are composed additively and
+  require fresh combined gates; earlier exact-head CI is not combined evidence.
+- All 27 published modules are registered in the existing managed-learning
+  system. Per-module cloud work retains drafts, completed steps, help, model
+  controls, checkpoints and owned textbook notes. The original 475 tasks,
+  81 examples and source PDF are unchanged; standalone browser data is isolated.
+- A dedicated grade-six direction and course view resume exact saved work,
+  including completed modules. Existing profiles migrate additively with rows,
+  indexes and triggers retained. No authentication mechanism was changed.
+- Local final verification: 299/299 backend tests, 8/8 cabinet DOM tests,
+  5/5 actual bridge protocol tests; managed course 108 views / 27 models /
+  16 scenarios; standalone course 108 views / 27 models / 80 controls. Content,
+  catalog/preparation and deterministic offline checks passed. Independent
+  review found no remaining blocking code issue.
+- The owner confirmed the private account-access grant and the requested cabinet
+  was created through the teacher UI. The owner also confirmed a one-time
+  external-review exception for PR315 because of the documented provider credit
+  failure. No merge/deployment, course assignment, production backup or live
+  two-device test is claimed yet. Final CI and release evidence belong in PR315.
+- Full cloud learning/container and dedicated V6 CI passed. Two unchanged
+  browser tests exposed stale task-first/guided-render timing assumptions; their
+  narrow readiness corrections preserve all answer/state assertions and require
+  another exact-head CI run. No production code changed in those corrections.
+- After concurrent PR #318 reconciliation, the full backend passes 309/309;
+  the exact catalog union contains 378 entries with all old record fields retained.
+  Course/cabinet checks pass; new combined-head CI remains required.
+- Rollback must retain the new enum and V6 decoder/catalog while disabling new
+  UI entry; a raw old server image cannot read the expanded schema. Preserve
+  persistent data. Next: exact-head CI, publication and authenticated
+  pupil/teacher verification.
+
+## Merged: Atanasyan 92a in the cabinet and on the shared board
+
+- [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), [PR #318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318), HIGH review, based on
   `1f9d8aec82bd2909917ab22746d94571d87c59c4`.
 - One existing grade-7 exercise gains a fixed wrapper, isolated shared state,
   a managed learning contract and a catalog entry. Published mathematics,
@@ -19,8 +56,11 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 - A confirmed keyboard gap after control revoke was closed with iframe inert
   state. Managed manual-save and theory-state restoration were verified in a
   real sandboxed cabinet with SQLite, without an automatic correctness award.
-- No external-review verdict, code deployment or production synchronization
-  is claimed. The task record states the remaining release requirements.
+- PR #318 merged at `202d39bf826c8c7e030e59ff162fe808000cae7e` after
+  the owner authorized publication and a scoped external-review exception;
+  its 12 exact-head cloud checks passed. No external-provider verdict is
+  claimed. Production assignment/synchronization belongs to that task
+  and has not been independently verified here.
 
 ## Published: profile task 3 stereometry on the shared board
 

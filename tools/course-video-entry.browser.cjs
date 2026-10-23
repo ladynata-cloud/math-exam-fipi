@@ -255,24 +255,29 @@ async function main() {
       const normal = await open(), p = normal.page;
       await p.goto(origin + routes[id]);
       if (['negative-numbers', 'fractions', 'proportions', 'percentages'].includes(id)) {
-        // PR #278 made ordinary OGE entry task-first through an asynchronous
-        // enhancement. Wait for its marker, not the transient legacy overview.
+        // The existing standalone enhancement opens the current task on ordinary
+        // entry too. Wait for that asynchronous enhancement before checking it.
         const mode = ['proportions', 'percentages'].includes(id) ? 'percent' : 'basic';
         await p.locator('body[data-basics-standalone="' + mode + '"]').waitFor();
         await p.locator('#view-practice').waitFor();
-        assert.equal(await p.locator('#view-home').isVisible(), false, id + ': ordinary entry opens the current task');
-        const answer = p.locator(mode === 'percent' ? '#p-q input' : '#practiceAnswer input, #practiceAnswer button').first();
-        assert.equal(await answer.isVisible(), true, id + ': ordinary entry provides an answer control');
+        assert.equal(await p.locator('#view-home').isVisible(), false, id + ': ordinary entry opens the task-first screen');
+        const ordinaryAnswer = p.locator(['negative-numbers', 'fractions'].includes(id) ? '#practiceAnswer input, #practiceAnswer button' : '#p-q input').first();
+        assert.equal(await ordinaryAnswer.isVisible(), true, id + ': ordinary entry has a visible answer control');
       } else if (id !== 'adjacent-angles') {
-        // PR #295 likewise made these EGE lessons start with the final answer,
-        // with explanations available only when the learner asks for help.
-        await p.locator('.task-first-course #answer').waitFor();
-        assert.equal(await p.locator('#taskHelp').evaluate(node => node.open), false, id + ': ordinary entry keeps help closed');
+        await p.locator('.task-first-course').waitFor();
+        assert.equal(await p.locator('#answer').isVisible(), true, id + ': ordinary entry opens the final answer');
+        assert.equal(await p.locator('#taskHelp').evaluate(node => node.open), false, id + ': help starts closed');
         assert.equal(await p.evaluate(() => PathCourse.state().lessons[new URLSearchParams(location.hash.slice(1)).get('lesson')].help), false, id + ': ordinary entry does not count as assistance');
+        assert.equal(await p.locator('#stepAnswer').isVisible(), false, id + ': guided work is not opened automatically');
+        assert.equal(await p.locator('#taskNote').evaluate(node => node.open), false, id + ': reflection starts closed');
       } else await p.locator('#pool button').first().waitFor();
       await normal.context.close();
       const actual = await open(), q = actual.page;
       await q.goto(origin + practicePath(id));
+      if (['negative-numbers', 'fractions', 'proportions', 'percentages'].includes(id)) {
+        const mode = ['proportions', 'percentages'].includes(id) ? 'percent' : 'basic';
+        await q.locator('body[data-basics-standalone="' + mode + '"]').waitFor();
+      }
       let input, check, feedback;
       if (['negative-numbers', 'fractions'].includes(id)) { input = q.locator('#practiceAnswer input, #practiceAnswer button').first(); check = '#checkTask'; feedback = '#practiceFeedback'; }
       else if (['proportions', 'percentages'].includes(id)) { input = q.locator('#p-q input').first(); check = '#p-check'; feedback = '#p-fb'; }
@@ -290,16 +295,9 @@ async function main() {
 
     const saved = await open(), savedPage = saved.page;
     await savedPage.goto(origin + routes.brackets);
-    // The former stages now coexist in PR #295's task-first presentation.
-    // Preserve each separate draft and the complete saved work on practice entry.
-    for (const part of ['final', 'steps', 'note']) {
-      if (part === 'steps') {
-        await savedPage.locator('#taskHelp > summary').click();
-        await savedPage.locator('#taskSteps > summary').click();
-      } else if (part === 'note') await savedPage.locator('#taskNote > summary').click();
-      await savedPage.locator(part === 'note' ? '#note' : part === 'steps' ? '#stepAnswer' : '#answer').fill(part === 'note' ? 'Моя сохранённая запись' : part === 'steps' ? '59' : '317');
-      // Native details.toggle is queued separately from click/input. Capture
-      // the saved state only after its disclosure flags match the visible UI.
+    async function reopenSaved(label, expected = {}) {
+      // Native details.toggle is queued separately from click/input. Snapshot
+      // only after every persisted disclosure agrees with the visible UI.
       await savedPage.waitForFunction(() => {
         const work = PathCourse.state().lessons['equations-brackets'].taskFirst;
         return [['#taskHelp', 'helpOpen'], ['#taskSteps', 'stepsOpen'], ['#taskNote', 'noteOpen']]
@@ -307,16 +305,39 @@ async function main() {
       });
       const before = await savedPage.evaluate(() => PathCourse.state());
       await savedPage.goto(origin + practicePath('brackets'));
-      await savedPage.locator('.task-first-course #answer').waitFor();
-      assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), before, 'Practice entry preserves the full saved task: ' + part);
-      assert.equal(await savedPage.locator('#answer').inputValue(), '317', 'Final draft survives practice entry');
-      if (part !== 'final') assert.equal(await savedPage.locator('#stepAnswer').inputValue(), '59', 'Guided draft remains separate from the final answer');
-      if (part === 'note') assert.equal(await savedPage.locator('#note').inputValue(), 'Моя сохранённая запись', 'Written explanation survives practice entry');
-      const work = before.lessons['equations-brackets'].taskFirst;
+      await savedPage.locator('.task-first-course').waitFor();
+      assert.deepEqual(await savedPage.evaluate(() => PathCourse.state()), before, 'Practice entry preserves the full saved task: ' + label);
+      const lesson = before.lessons['equations-brackets'], work = lesson.taskFirst;
+      assert.equal(work.finalDraft, '317', label + ': final input was persisted');
+      if (expected.stepDraft !== undefined) assert.equal(work.stepDraft, expected.stepDraft, label + ': guided input was persisted');
+      if (expected.note !== undefined) assert.equal(lesson.note, expected.note, label + ': reflection input was persisted');
+      assert.equal(await savedPage.locator('#answer').inputValue(), work.finalDraft, label + ': final draft');
+      assert.equal(await savedPage.locator('#stepAnswer').inputValue(), work.stepDraft, label + ': guided draft');
+      assert.equal(await savedPage.locator('#note').inputValue(), lesson.note, label + ': written reflection');
       for (const [selector, key] of [['#taskHelp', 'helpOpen'], ['#taskSteps', 'stepsOpen'], ['#taskNote', 'noteOpen']]) {
-        assert.equal(await savedPage.locator(selector).evaluate(node => node.open), work[key], part + ': restored disclosure ' + key);
+        assert.equal(await savedPage.locator(selector).evaluate(node => node.open), work[key], label + ': ' + key);
       }
     }
+    await savedPage.locator('#answer').fill('317');
+    await reopenSaved('unfinished final answer');
+    await savedPage.locator('#taskHelp > summary').click();
+    await savedPage.locator('#taskSteps > summary').click();
+    const acceptedStep = await savedPage.evaluate(() => {
+      const lesson = PathCourse.state().lessons['equations-brackets'];
+      return PathData.answerText(PathData.task('equations-brackets', lesson.seed).steps[lesson.step]);
+    });
+    await savedPage.locator('#stepAnswer').fill(acceptedStep);
+    await savedPage.locator('#stepAnswerForm button[type="submit"]').click();
+    await savedPage.waitForFunction(() => PathCourse.state().lessons['equations-brackets'].step === 1);
+    await savedPage.locator('#stepAnswer').fill('19/');
+    assert.match(await savedPage.locator('#taskStepsBody h2').innerText(), /^Шаг 2 из \d+$/);
+    assert.equal(await savedPage.locator('#taskStepsBody .steps > li').count(), 1, 'The accepted guided step is shown before reopening');
+    await reopenSaved('accepted guided step, next draft and opened help', { stepDraft: '19/' });
+    assert.equal(await savedPage.locator('#taskStepsBody .steps > li').count(), 1, 'The accepted guided step remains visible after reopening');
+    await savedPage.locator('#taskNote > summary').click();
+    await savedPage.locator('#note').fill('Моя сохранённая запись');
+    await savedPage.waitForFunction(() => PathCourse.state().lessons['equations-brackets'].taskFirst.noteOpen === true);
+    await reopenSaved('written reflection with both drafts and accepted work', { stepDraft: '19/', note: 'Моя сохранённая запись' });
     await saved.context.close();
     const helper = await fs.readFile(path.join(ROOT, 'learning/practice-entry.js'), 'utf8');
     for (const search of ['', '?practice=1&learning=1']) vm.runInNewContext(helper, {
