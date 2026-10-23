@@ -1,0 +1,55 @@
+{
+  "at": "2026-10-23T21:25:14.078777+00:00",
+  "bundleSHA256": "a79e4df90570693454a010b1e74de5a3742c0861b143d3eeca68cc652525f054",
+  "status": "passed",
+  "gate": "SHESTAKOV_YASCHENKO_COURSE_CHECKED",
+  "scope": {
+    "topics": 27,
+    "authoredExercises": 324,
+    "authoredTheory": 27,
+    "sourceVariants": 1980,
+    "pendingVariants": 1656
+  },
+  "checks": {
+    "schemaAndSourceInventory": "passed",
+    "matchingIndependentChapterReviews": 6,
+    "geometry": {
+      "cards": 351,
+      "planarSimplePolygons": 1093,
+      "nonzeroSegments": 8595
+    },
+    "independentMathematics": "Four executable chapter checks passed; all six chapters have separate source and mathematics review records.",
+    "modelBrowser": {
+      "cards": 351,
+      "viewWidthStates": 2318,
+      "widths": [
+        320,
+        1280
+      ],
+      "errors": [],
+      "completed": true
+    },
+    "runtimeBrowser": {
+      "passed": true,
+      "journeys": 351,
+      "scenarios": 12,
+      "errors": []
+    },
+    "offlineHTML": {
+      "passed": true,
+      "sha256": "1cf99e15a348119a8029a2f28de152643d31a00e5a90d1b34f0e2eac967669d9",
+      "bytes": 2518943
+    }
+  },
+  "visualReview": "See exact inspected screenshot manifests in visual-review-1-3.json and visual-review-4-6.json; sampling is not exhaustive human inspection.",
+  "limitations": [
+    "Not a complete set of all 1980 solutions; 1656 source variants remain explicitly pending.",
+    "Not a real pupil trial or teacher sign-off.",
+    "Local browser storage; no shared board, cabinet or server synchronization.",
+    "No external provider release approval; bounded consultation is separate and cannot approve all content.",
+    "No merge or deployment performed."
+  ],
+  "environmentNotes": [
+    "Standard Playwright Chromium download failed in this executor; actual local browser tests used Chromium 153.0.8010.0. CI uses pinned Playwright 1.62.1 default Chromium."
+  ]
+}

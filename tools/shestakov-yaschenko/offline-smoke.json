@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "at": "2026-10-23T21:23:21.318Z",
+  "mode": "file:// with context.setOffline(true)",
+  "htmlFile": "Shestakov_Yaschenko_Geometria_Course.html",
+  "htmlSHA256": "1cf99e15a348119a8029a2f28de152643d31a00e5a90d1b34f0e2eac967669d9",
+  "htmlBytes": 2518943,
+  "expectedCards": 351,
+  "task": "sy-6-1-a1-a",
+  "verified": [
+    "351 available catalog cards and zero bundle issues while browser is offline",
+    "6.1 A1а: answer 15 accepted as independent work before help",
+    "file reload restores deep-linked task, answer 15 and independent result",
+    "reload retains two revealed steps, final-answer draft and intermediate diameter draft 8",
+    "help use remains recorded after reload and final answer is marked assisted",
+    "task and catalog have no horizontal overflow at 320 CSS pixels",
+    "zero JavaScript errors, zero HTTP(S) resource requests, HTML hash unchanged"
+  ],
+  "errors": [],
+  "networkRequests": [],
+  "screenshots": [
+    "artifacts/shestakov-offline/task-mobile.png",
+    "artifacts/shestakov-offline/catalog-mobile.png"
+  ],
+  "browser": "153.0.8010.0",
+  "cards": 351,
+  "mobile": {
+    "width": 320,
+    "task": {
+      "scrollWidth": 320,
+      "innerWidth": 320
+    },
+    "catalog": {
+      "scrollWidth": 320,
+      "innerWidth": 320
+    }
+  }
+}

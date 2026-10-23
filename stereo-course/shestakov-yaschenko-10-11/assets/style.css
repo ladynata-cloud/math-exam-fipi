@@ -1,0 +1,5 @@
+@import url('../../textbook/assets/style.css');
+.textbook-model .am-button[aria-label="Вернуть исходный вид"]{flex:1 0 76px;white-space:nowrap;overflow-wrap:normal;hyphens:none}
+.course-intro{max-width:74rem;margin:1rem auto;padding:1rem 1.4rem;background:#fff;border:1px solid #cbd9cf;border-radius:1rem}.course-intro p{margin:.4rem 0}.course-badge{font-size:.85rem;color:#4c6857}.catalog-results [data-catalog-ready]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.2rem}.catalog-results [data-catalog-ready]>h2,.catalog-results [data-catalog-ready]>p,.catalog-results [data-catalog-ready]>nav{grid-column:1/-1}.catalog-results article button{width:100%}@media(max-width:850px){.catalog-results [data-catalog-ready]{grid-template-columns:1fr}}
+
+.sy-lesson .course-intro{display:none}

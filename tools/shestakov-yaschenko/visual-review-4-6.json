@@ -1,0 +1,2275 @@
+{
+  "reviewer": "/root/chapter3",
+  "at": "2026-10-23T21:26:35.678093+00:00",
+  "verdict": "passed",
+  "scopeQualifier": "Passed within the sampled static model-view scope described below; no exhaustive-course visual claim.",
+  "bundle": {
+    "file": "stereo-course/shestakov-yaschenko-10-11/data/course.json",
+    "sha256": "a79e4df90570693454a010b1e74de5a3742c0861b143d3eeca68cc652525f054"
+  },
+  "chapterFiles": [
+    {
+      "file": "stereo-course/shestakov-yaschenko-10-11/chapters/ch4.json",
+      "sha256": "7ff9f756bf4fc0e15612839eb83e9a99889d4fd3dda6d1c7fe0f2ad80e8a520b"
+    },
+    {
+      "file": "stereo-course/shestakov-yaschenko-10-11/chapters/ch5.json",
+      "sha256": "a02706a57d214837c6c288bea44a8ec6ac909ff69cefbd3bffe41a0b369b1cb3"
+    },
+    {
+      "file": "stereo-course/shestakov-yaschenko-10-11/chapters/ch6.json",
+      "sha256": "1e3262e07f88f46c485aa5fa9e2adb04cdd86209a613f0e40e4b28f8eaa917c5"
+    }
+  ],
+  "scope": {
+    "chapters": [
+      4,
+      5,
+      6
+    ],
+    "subsections": 15,
+    "distinctCards": 60,
+    "theoryCards": 15,
+    "exerciseCards": 45,
+    "screenshots": 135,
+    "desktopScreenshotsAt1280": 120,
+    "mobileScreenshotsAt320": 15,
+    "selection": "Every theory card and the first selected exercise at each of A/B/C in each subsection. For every card: neutral and last declared non-neutral model view at 1280 px. Also neutral theory views at 320 px.",
+    "sectionCards": {
+      "4.1": [
+        "sy-4-1-theory",
+        "sy-4-1-a1-a",
+        "sy-4-1-b1-a",
+        "sy-4-1-c1-a"
+      ],
+      "4.2": [
+        "sy-4-2-theory",
+        "sy-4-2-a1-a",
+        "sy-4-2-b1-a",
+        "sy-4-2-c2-a"
+      ],
+      "4.3": [
+        "sy-4-3-theory",
+        "sy-4-3-a9-a",
+        "sy-4-3-b1-a",
+        "sy-4-3-c1-a"
+      ],
+      "4.4": [
+        "sy-4-4-theory",
+        "sy-4-4-a2-a",
+        "sy-4-4-b1-a",
+        "sy-4-4-c2-a"
+      ],
+      "4.5": [
+        "sy-4-5-theory",
+        "sy-4-5-a1-a",
+        "sy-4-5-b4-a",
+        "sy-4-5-c1-a"
+      ],
+      "4.6": [
+        "sy-4-6-theory",
+        "sy-4-6-a25-a",
+        "sy-4-6-b2-a",
+        "sy-4-6-c1-a"
+      ],
+      "5.1": [
+        "sy-5-1-theory",
+        "sy-5-1-a1-a",
+        "sy-5-1-b2-a",
+        "sy-5-1-c6-a"
+      ],
+      "5.2": [
+        "sy-5-2-theory",
+        "sy-5-2-a1-a",
+        "sy-5-2-b1-a",
+        "sy-5-2-c6-a"
+      ],
+      "5.3": [
+        "sy-5-3-theory",
+        "sy-5-3-a8-a",
+        "sy-5-3-b5-a",
+        "sy-5-3-c4-a"
+      ],
+      "5.4": [
+        "sy-5-4-theory",
+        "sy-5-4-a1-a",
+        "sy-5-4-b9-a",
+        "sy-5-4-c2-a"
+      ],
+      "5.5": [
+        "sy-5-5-theory",
+        "sy-5-5-a3-a",
+        "sy-5-5-b1-a",
+        "sy-5-5-c1-a"
+      ],
+      "6.1": [
+        "sy-6-1-theory",
+        "sy-6-1-a1-a",
+        "sy-6-1-b1-a",
+        "sy-6-1-c2-a"
+      ],
+      "6.2": [
+        "sy-6-2-theory",
+        "sy-6-2-a1-a",
+        "sy-6-2-b1-a",
+        "sy-6-2-c2-a"
+      ],
+      "6.3": [
+        "sy-6-3-theory",
+        "sy-6-3-a1-a",
+        "sy-6-3-b1-a",
+        "sy-6-3-c2-a"
+      ],
+      "6.4": [
+        "sy-6-4-theory",
+        "sy-6-4-a1-a",
+        "sy-6-4-b1-a",
+        "sy-6-4-c2-a"
+      ]
+    }
+  },
+  "method": "Actually viewed all 15 final contact sheets generated from these PNGs using view_image at original detail. Each cell shows the full model region including its border and labels. Also viewed two selected full screenshots at original detail to inspect dense labels and the compact plane. Hashes were computed for the same inspected files after final rendering.",
+  "checks": [
+    "Figure and point-label legibility; clipping and excessive overlap within the sampled model regions.",
+    "Initial and final view comparison: source-given objects remain visible and the highlighted line/plane is distinguishable.",
+    "No computed numerical answers or concealed solution constructions visibly revealed in sampled initial figures. This is a visual screen inspection, not a new mathematical proof audit.",
+    "All 15 neutral mobile theory models remain within their figure areas and have readable labels."
+  ],
+  "resolvedFindings": [
+    {
+      "card": "sy-4-1-theory",
+      "finding": "The earlier capture did not include the added section construction.",
+      "resolution": "Final section view visibly contains M, N, M1, N1 and the highlighted quadrilateral."
+    },
+    {
+      "card": "sy-4-4-c2-a",
+      "finding": "Distant auxiliary plane points reduced the useful prism size in the earlier capture; the caption named a different highlight color.",
+      "resolution": "Final capture uses compact U/V and shows a larger prism. Caption now says «Выделенный треугольник». The final full screenshot was inspected."
+    }
+  ],
+  "observations": [
+    {
+      "severity": "nonblocking",
+      "card": "sy-4-4-c2-a",
+      "note": "The small plane fragment is nearly edge-on in the default camera angle. K, U and V remain distinct at full size; rotation controls are present. No content or layout blocker was found."
+    },
+    {
+      "severity": "nonblocking",
+      "card": "sy-5-2-b1-a",
+      "note": "L, K, T and X cluster near the apex by the source ratio. Full-size inspection shows separate readable labels; no overlap or clipping requiring a correction was found."
+    }
+  ],
+  "remainingBlockingFindings": [],
+  "limits": [
+    "This review covers 60 cards and 135 screenshots, not all 351 course cards.",
+    "Only neutral and last declared non-neutral desktop model views were visually sampled; intermediate views and other exercises were not visually inspected here.",
+    "Mobile coverage is neutral theory models only; it does not establish full mobile exercise coverage.",
+    "Most screenshots were inspected as model-region crops, so this report does not certify the surrounding learner navigation, answer entry, text flow, persistence or accessibility interactions.",
+    "The screenshots are from the engineering model preview. Interactive rotation and learner-state behavior were not exercised by this reviewer.",
+    "Source accuracy and all mathematical solutions are covered by separate content reviews, not inferred from these screenshots."
+  ],
+  "contactSheets": [
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "sha256": "e778b15297e3bd13a5c17a5560e262e975d43bb0f33dfc023f9dc9b5e63b0cee",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "sha256": "17559ea92c68dd3f20f43a50cfdc4632295aad14027025f9261f294ebc7f8d8a",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "sha256": "7c906f9aa7984bb5164c5991ed67148026966f353202100c61731123358dd37c",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "sha256": "3feb5dcd20ce1f3b147076b562fa7ae1f0c2c40cbc2591654602fcff31bb0273",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "sha256": "c60a90f3e6e275b1d5b687f5b3e81ef75f87287830b239f305e80352fbf7b7e6",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "sha256": "0d0a536b249c2103038df51bc6ecf5f03528a90273b81794f4f44ddf9fa94804",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "sha256": "02095c1a150fd2348e7f4744c9204230528cd3e7830ccc4b183522c9aaaf8ee9",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "sha256": "ebaa6841ff567895fbe7012887584fb0d72632681e31c0a6f9a3bad974763aac",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "sha256": "109e40ed1d3c9e511961b48992ec0d730d4b19bb918b5ff86d4d2299821bad06",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "sha256": "989269162ddd263b7e5b1a75b92e5c41f99046548beb95f44c59bd4874c775fd",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "sha256": "9ea12ac51ac53fc194845b22a986903e7a16db983e6b25762b1709968578d5a8",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "sha256": "54fab4cd8d51bf22b56aa90af3f7e4c57d90a3ce7eea9e4164a358b3e8e746f5",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "sha256": "6f0397572ce983a6e84aae2a535647d6b268eddc0ec24d22005470c098d53c3d",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "sha256": "a19c3b8b0b90ab74582fca76d2ae4f3f96672c6c8bf9ad8a7a2628edf1b2546e",
+      "visuallyInspected": true
+    },
+    {
+      "file": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "sha256": "27bf5e01973c9cf234226c577bd4e641546e78097a08ded1959b3edd2344bdfa",
+      "visuallyInspected": true
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "artifacts/shestakov-models/sy-4-1-theory-neutral-1280.png",
+      "sha256": "c09fe619aa6f400419bfd19989c21d6c17ae9f5c0dc8eaf441cb9aa63d0edce7",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-4-1-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-1-theory-section-1280.png",
+      "sha256": "db41382a37c3b566ce2e0455cb101032567ae659f2c588210e6d230d743691ca",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-4-1-theory",
+      "viewportWidth": 1280,
+      "view": "section",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-1-theory-neutral-320.png",
+      "sha256": "f52e7bc6af55415704ebfdec1fc6ff21e7d3e8c9548c23cebeca9bfbd7e1746d",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "crop": [
+        4,
+        424,
+        316,
+        801
+      ],
+      "cardId": "sy-4-1-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-1-a1-a-neutral-1280.png",
+      "sha256": "a54588ae2b228872097b605f6fc740bf872853e80bc172a50175c6d3f9acd842",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-1-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-1-a1-a-angle-1280.png",
+      "sha256": "42bce3317fb49e536a1b0aca18b51b8b412d885908b46db91871b568746f2d91",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-1-a1-a",
+      "viewportWidth": 1280,
+      "view": "angle",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-1-b1-a-neutral-1280.png",
+      "sha256": "e5494cf7047cb948bb2c27ffeb372ba8c4051f930d55273c07db779ac0691e62",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-1-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-1-b1-a-target-1280.png",
+      "sha256": "883b32f34f5a59676341480c52bfa92b6a0968255bc1b45c25d5b30a35e83ea8",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-1-b1-a",
+      "viewportWidth": 1280,
+      "view": "target",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-1-c1-a-neutral-1280.png",
+      "sha256": "0e0ebddca561badfe0fcbaa0430d0467388d21ec4c12b674cdfb98204e1d4cfe",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-4-1-c1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-1-c1-a-target-1280.png",
+      "sha256": "59c7d6e9eb21bd77a0f293f4d1bd17870432e2ec55c600d2e00e8c80b6943449",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-1.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-4-1-c1-a",
+      "viewportWidth": 1280,
+      "view": "target",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-2-theory-neutral-1280.png",
+      "sha256": "d080624066a998f9dc08bb7be484da96a0109b9e2066d26db7e1c1dbc063d028",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-2-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-2-theory-diag-1280.png",
+      "sha256": "951768af02850257b03eb3b59b9b6e16e7322ba5a20d88fc8bdce728e6c6b541",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-2-theory",
+      "viewportWidth": 1280,
+      "view": "diag",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-2-theory-neutral-320.png",
+      "sha256": "bcbe29be6dd30e059cd4e302371c81ed5947c3523dc28c52f0031bae30369eae",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "crop": [
+        4,
+        316,
+        316,
+        693
+      ],
+      "cardId": "sy-4-2-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-2-a1-a-neutral-1280.png",
+      "sha256": "38d5b11b8d921fdf9e1c3ff8b0f215e36bb7a2af458c67146e158bfd68b8479d",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-4-2-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-2-a1-a-angle-1280.png",
+      "sha256": "71525e9ec994dd2dd24498ba86cba82ae64629f3c99320534d0b5af60f15d4ff",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-4-2-a1-a",
+      "viewportWidth": 1280,
+      "view": "angle",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-2-b1-a-neutral-1280.png",
+      "sha256": "023d6f965e4ddcada9dd5489c223610bcbdc70e441b1e9713f574a7ef092fd09",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-2-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-2-b1-a-edge-1280.png",
+      "sha256": "db7d1652bd63e41e368ee3394dab5aa07cc1eda197c990b90295a5aeee319211",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-2-b1-a",
+      "viewportWidth": 1280,
+      "view": "edge",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-2-c2-a-neutral-1280.png",
+      "sha256": "6d1852657ca1eed8896ec6cdc5f1ee4779ee8290782ff8837d2eabe56b7abe47",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-2-c2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-2-c2-a-target-1280.png",
+      "sha256": "f79cf3f17ebf8a8f5e0d072096e5e3c37aaef4f6e087f87bebcc232b66475401",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-2-c2-a",
+      "viewportWidth": 1280,
+      "view": "target",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-3-theory-neutral-1280.png",
+      "sha256": "46bf4988020f0b76e01ae0ec75ad951a4f2c97edfb324a69f0ac5d2e94bd7f55",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-3-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-3-theory-diag-1280.png",
+      "sha256": "e8fdbfcf3da60fb9e956a96503a685ad9d6576c6f468591d3f65fd88a5125207",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-3-theory",
+      "viewportWidth": 1280,
+      "view": "diag",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-3-theory-neutral-320.png",
+      "sha256": "1fc4530b1d84cc3bc5dd72be54ef614f262cfd728595a3734b27b928d40a42f2",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "crop": [
+        4,
+        400,
+        316,
+        777
+      ],
+      "cardId": "sy-4-3-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-3-a9-a-neutral-1280.png",
+      "sha256": "d380f4589548397815a4c82f0f0ae5c35c06c7cd485f24151356c622435b3c9a",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-4-3-a9-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-3-a9-a-diag-1280.png",
+      "sha256": "927f492f6f84192e9bde3a64365affe8e32e44d06cd1fec4608926bf4fa1e865",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-4-3-a9-a",
+      "viewportWidth": 1280,
+      "view": "diag",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-3-b1-a-neutral-1280.png",
+      "sha256": "9fa29d207a9632dfbd9d3f3b894dbf052f7d4957225abe4ba82d17f3397415c9",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-3-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-3-b1-a-line-1280.png",
+      "sha256": "fa489c974f3a19b870d4a2f2f758376682aba2ff740bccae346fba83a5011bff",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-3-b1-a",
+      "viewportWidth": 1280,
+      "view": "line",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-3-c1-a-neutral-1280.png",
+      "sha256": "bef3136fcf0f79f2199fcf40b5ab85cd656aae3140eae6f329d87cf5b68a68a9",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-3-c1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-3-c1-a-angle-1280.png",
+      "sha256": "d64217d86a7f617ab43cc9fe9504598e2f3d54511d7594652e1eab045798181f",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-3-c1-a",
+      "viewportWidth": 1280,
+      "view": "angle",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-4-theory-neutral-1280.png",
+      "sha256": "10e4ae1ecc40258c8f609b4380ffc4bb1996a540c390ccd83352ef709c3795de",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-4-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-4-theory-diagonals-1280.png",
+      "sha256": "59ec2857fe19a2629db31e882a0cf2238e23fbf7ec57ff14f2cb0a7daf8c42c0",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-4-theory",
+      "viewportWidth": 1280,
+      "view": "diagonals",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-4-theory-neutral-320.png",
+      "sha256": "76e7a87e115afafa95b44de3c44669ce7fbbcdb711b3a5543cfe06d38c204d0f",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "crop": [
+        4,
+        370,
+        316,
+        747
+      ],
+      "cardId": "sy-4-4-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-4-a2-a-neutral-1280.png",
+      "sha256": "9518b7735e57bff2a86edc2187e1a9dc170c5de4bf319877efb94b2986d6041b",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-4-a2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-4-a2-a-diagonals-1280.png",
+      "sha256": "fa887a447f61f2e7a7a6d559699bc0f1c9bf780297453a63ac77d72f63165c09",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-4-a2-a",
+      "viewportWidth": 1280,
+      "view": "diagonals",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-4-b1-a-neutral-1280.png",
+      "sha256": "6bda94e7f3ffb798c00b089079ea23ea6b78dc948606e53eafeab2831e2002e1",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-4-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-4-b1-a-distance-1280.png",
+      "sha256": "4a4a65dd6cc88d7bd4b276ec8701ba02818f09e8db06bf1527208581bacae1c5",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-4-b1-a",
+      "viewportWidth": 1280,
+      "view": "distance",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-4-c2-a-neutral-1280.png",
+      "sha256": "a2ea4ac05905658136ced285b088fc9ceeef7a6616278f47691a838976abd351",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-4-4-c2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-4-c2-a-target-1280.png",
+      "sha256": "c2a3720233fc19ec421739523dd9f8006cc30cc32dd23842b33434c188857e74",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-4.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-4-4-c2-a",
+      "viewportWidth": 1280,
+      "view": "target",
+      "inspection": "Full screenshot and model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-5-theory-neutral-1280.png",
+      "sha256": "f5adce5a8d12c7cc0555919cc9b29b6841a884061337b55abc7073f4f83cf489",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-5-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-5-theory-diagonals-1280.png",
+      "sha256": "dd029ff1203f6eab3c3454958d9660605087e523c172b890970438ca2160054d",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-5-theory",
+      "viewportWidth": 1280,
+      "view": "diagonals",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-5-theory-neutral-320.png",
+      "sha256": "de789c0323fbd870eb591f1d64a60b67310da08e4816260856908fb5b45c8be0",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "crop": [
+        4,
+        427,
+        316,
+        804
+      ],
+      "cardId": "sy-4-5-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-5-a1-a-neutral-1280.png",
+      "sha256": "ee9fd5ec6c5d4b5e312cdf15fd5726056267f3a465a958b3bff668dfc4630ee6",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-5-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-5-a1-a-triangle-1280.png",
+      "sha256": "598b1a56b4433290999b44d9300b638d887390bc091fbf8f357e26be59d1a3d3",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-5-a1-a",
+      "viewportWidth": 1280,
+      "view": "triangle",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-5-b4-a-neutral-1280.png",
+      "sha256": "17cb7945cfad1e3aca741bbc709c80d62a1b817d0802df99035835ae40724b3d",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-4-5-b4-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-5-b4-a-base-diag-1280.png",
+      "sha256": "fc085b0fc9c68bc9cbb5922749fc77499fc2c369f17cb43923c962470a5a4350",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-4-5-b4-a",
+      "viewportWidth": 1280,
+      "view": "base-diag",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-5-c1-a-neutral-1280.png",
+      "sha256": "50164d24546f3ddf530e88799d29261a4b86c5e4da6f874a241555ada6ffd56a",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-5-c1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-5-c1-a-target-1280.png",
+      "sha256": "07a20a7bfa6b8209f2286ea7afabfd7534164a7dc673853d37a4ee4493da18de",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-5-c1-a",
+      "viewportWidth": 1280,
+      "view": "target",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-6-theory-neutral-1280.png",
+      "sha256": "1f3fdde9948e7bcfab068c9aaf7eeb8545ce95d9912ae82a926b451f3231b3c4",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-6-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-6-theory-top-1280.png",
+      "sha256": "cb8cc571e2df765b5645c556203ca4096160177524dec849f061ab70cd4df885",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-6-theory",
+      "viewportWidth": 1280,
+      "view": "top",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-6-theory-neutral-320.png",
+      "sha256": "931295260b8bb05571470b7e038d2a5ef4fa3a87782b93e96eae2d69cfe5de7e",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "crop": [
+        4,
+        427,
+        316,
+        804
+      ],
+      "cardId": "sy-4-6-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-6-a25-a-neutral-1280.png",
+      "sha256": "f242c21abdb1cc308505a39ed30966e0e8b67c679fd3d3ed1cf68acf650118f0",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-6-a25-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-6-a25-a-top-1280.png",
+      "sha256": "36378449e7c2e05cc4158263655e74f4a012ee80d0063b8c3f7dd566cb882a9f",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-6-a25-a",
+      "viewportWidth": 1280,
+      "view": "top",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-6-b2-a-neutral-1280.png",
+      "sha256": "39300573cdb3b46ec61d00ab507d699fe50a17dec7d97b3d93aaf765427874cb",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-6-b2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-6-b2-a-second-1280.png",
+      "sha256": "5069073fac69698b19f6c441e408b8b535aacf090923d95396f93f7dcf6324ef",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-4-6-b2-a",
+      "viewportWidth": 1280,
+      "view": "second",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-6-c1-a-neutral-1280.png",
+      "sha256": "53f1d0c2b58635a80d6086924b7c50a6d469a32e584dfcf6ed196b4f95e6a015",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-4-6-c1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-4-6-c1-a-perp-1280.png",
+      "sha256": "e21e6996a76ebcbbc1bc0bd2948d951e0b523bd114b516f57f520795871a8f26",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-4-6.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-4-6-c1-a",
+      "viewportWidth": 1280,
+      "view": "perp",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-1-theory-neutral-1280.png",
+      "sha256": "593ca547429ae587d7b0b92bac21577748a22c5f1a875ba2d294adf6b57ff6a5",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-1-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-1-theory-apothem-1280.png",
+      "sha256": "5be7fc0019bfa28a20b3161794d802a70d469ccb112ebfa38ad294d44c0e4d1c",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-1-theory",
+      "viewportWidth": 1280,
+      "view": "apothem",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-1-theory-neutral-320.png",
+      "sha256": "ccfbbad6b437bed3de3057062ee506495955d87a0efc9dce834aa29c1008903a",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "crop": [
+        4,
+        514,
+        316,
+        891
+      ],
+      "cardId": "sy-5-1-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-1-a1-a-neutral-1280.png",
+      "sha256": "f9003e9f0402a5f4c33387637531ce5f8b739f6083c239f965198199bd89b14d",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-1-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-1-a1-a-edge-1280.png",
+      "sha256": "0c0f50db528b3d199bea9b2e411266b10d2ec542e88ec88b4a5db6dab5a31d8b",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-1-a1-a",
+      "viewportWidth": 1280,
+      "view": "edge",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-1-b2-a-neutral-1280.png",
+      "sha256": "ae9d45a1ab944a886dd07397b619df9d89683f8d59005ef8304025743bd63dfe",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-1-b2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-1-b2-a-midpoints-1280.png",
+      "sha256": "58e6d8a18426bc601f7aa5b748e489a80013f08e17766dda606817a1d73d2184",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-1-b2-a",
+      "viewportWidth": 1280,
+      "view": "midpoints",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-1-c6-a-neutral-1280.png",
+      "sha256": "3dcd95eff8d7405d20334f78dcf9c8492f226937ffc89486c53e2cba2fa7cf91",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-1-c6-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-1-c6-a-distance-1280.png",
+      "sha256": "f1517312ad008b4f7c23ba533e49fe2c113ccaf9a74e3bda5aea96f63336d02a",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-1-c6-a",
+      "viewportWidth": 1280,
+      "view": "distance",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-2-theory-neutral-1280.png",
+      "sha256": "2d946764e2425c3a8fcad2b0b33762a87260e3a7bb50319e884933d3f1a26520",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-2-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-2-theory-apothem-1280.png",
+      "sha256": "6be3512fcc817b602b8ec910eca34a7be2ec66ddba371899543f34cf4b48af9b",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-2-theory",
+      "viewportWidth": 1280,
+      "view": "apothem",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-2-theory-neutral-320.png",
+      "sha256": "083704ba4727af7fef635ff22a139861cb1b1ef10e6bfcd5f21ca9d16e886098",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "crop": [
+        4,
+        484,
+        316,
+        861
+      ],
+      "cardId": "sy-5-2-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-2-a1-a-neutral-1280.png",
+      "sha256": "2cfa031c4c2a76e4a04b1d398684deb6f17a84465ddf2f6fe2d4ca1831bd76a4",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-2-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-2-a1-a-face-1280.png",
+      "sha256": "b1e3069ea174a286725b99fa254a17d230eefd8d512ab8af0c3199312b208811",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-2-a1-a",
+      "viewportWidth": 1280,
+      "view": "face",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-2-b1-a-neutral-1280.png",
+      "sha256": "a4659cbba718a80ab34e19f14937733ade80ec9a3c1b1346bcacef0d67463b7e",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-2-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-2-b1-a-median-1280.png",
+      "sha256": "885dad2f26df41a78f12c91e2af2ea7a8ee782318046bca90cd64460d7431a14",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-2-b1-a",
+      "viewportWidth": 1280,
+      "view": "median",
+      "inspection": "Full screenshot and model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-2-c6-a-neutral-1280.png",
+      "sha256": "08a11e920886000ac956460a5f572d3596648df2bd92404b1680f17db165942d",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-2-c6-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-2-c6-a-distance-1280.png",
+      "sha256": "b77ce5b5d9a5713ab57c7d9bd1372e4e227661fffaed283eaac7c4c833af4831",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-2-c6-a",
+      "viewportWidth": 1280,
+      "view": "distance",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-3-theory-neutral-1280.png",
+      "sha256": "7bd96870dbfee1e8249dba79e6b8a2ba11389b0c3cb5d627246029fec72a405f",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-3-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-3-theory-apothem-1280.png",
+      "sha256": "5368dac1ee84f32d7f65194bd4a5252da84e4ed98cb5043a3458828dce8d24e3",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-3-theory",
+      "viewportWidth": 1280,
+      "view": "apothem",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-3-theory-neutral-320.png",
+      "sha256": "c4db2883b2a6a1c29a7d93a41e72162cee00cbe79526fbde12e6b40e198251ae",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "crop": [
+        4,
+        487,
+        316,
+        864
+      ],
+      "cardId": "sy-5-3-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-3-a8-a-neutral-1280.png",
+      "sha256": "68feb992758bc8b0ab380bb737bc9f9d2484bd9e658a5c4feb53faecd1350509",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-3-a8-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-3-a8-a-apothem-1280.png",
+      "sha256": "a338f155fe6dc23524104cd266e069c44b962338fe2f8f05fb94e052c463a63e",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-3-a8-a",
+      "viewportWidth": 1280,
+      "view": "apothem",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-3-b5-a-neutral-1280.png",
+      "sha256": "184db9ea7ba58682b9fce94e6c63a0e82289c0249d594fce7a0313abf2e29970",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-5-3-b5-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-3-b5-a-parallel-1280.png",
+      "sha256": "4d7d3bb638f748ae120d8f20f7df01c2ddd15cae9c173d3837e4dfbe4d526d24",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-5-3-b5-a",
+      "viewportWidth": 1280,
+      "view": "parallel",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-3-c4-a-neutral-1280.png",
+      "sha256": "089bcecbe93d3eaacf3ef5ca1548c5a340ceddc834c19e4470cc26e02548bffa",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-3-c4-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-3-c4-a-distance-1280.png",
+      "sha256": "c67a94140e15015d82c3e85977bb19f61296c92a6e9c7a685104235f163c28bf",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-3.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-3-c4-a",
+      "viewportWidth": 1280,
+      "view": "distance",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-4-theory-neutral-1280.png",
+      "sha256": "3481a3535f1b4434f2b43c01401d1a7ddeadfbe5da1cfd2d4f1fa6a8c823b275",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-4-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-4-theory-height-1280.png",
+      "sha256": "03d52afc3334a997fe8d36359e3d616bafc01ec7ad0b81fd0f5f7f403e94fb35",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-4-theory",
+      "viewportWidth": 1280,
+      "view": "height",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-4-theory-neutral-320.png",
+      "sha256": "6ea0b00395e87720e340b783f583310b59b77f0af735fee435a6f6896c6e2a59",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "crop": [
+        4,
+        457,
+        316,
+        834
+      ],
+      "cardId": "sy-5-4-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-4-a1-a-neutral-1280.png",
+      "sha256": "f7e857ac1e55150847a71d5bdc9cf81584cb99dbaa206d6ff15b020950a71b18",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-4-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-4-a1-a-right-1280.png",
+      "sha256": "422be0fefacb5e426573d4a7e0f50c6af9cb0c91d79fede757dbf6ed9186cac1",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-4-a1-a",
+      "viewportWidth": 1280,
+      "view": "right",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-4-b9-a-neutral-1280.png",
+      "sha256": "9307ccaf2c6652dcebaeb57bb2215d326131efda6dd7b4c44757dfa2e1cc8160",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-5-4-b9-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-4-b9-a-lines-1280.png",
+      "sha256": "aa67665c5cc3a2b02f5498bdb906c85d0c8d9fa157ae13f9240e05d085d930fc",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-5-4-b9-a",
+      "viewportWidth": 1280,
+      "view": "lines",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-4-c2-a-neutral-1280.png",
+      "sha256": "06fffdbd5872405e567d8791d793ba31359122d1fc666a9fd045a69ec2614395",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-4-c2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-4-c2-a-projection-1280.png",
+      "sha256": "ea318b77ea3f7bbc71486033eab5abb7847156a9c6285494605ad0444b1ced48",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-4-c2-a",
+      "viewportWidth": 1280,
+      "view": "projection",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-5-theory-neutral-1280.png",
+      "sha256": "aaed86c0ed665f4da5e2392cf4f24296aa8a3179bff36c4749f90c672db94b23",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-5-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-5-theory-pyramid-1280.png",
+      "sha256": "bd264e003689d83587917f8b2a00f2f54e36cd9f41dae62b30b9b4c24c4752e3",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-5-theory",
+      "viewportWidth": 1280,
+      "view": "pyramid",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-5-theory-neutral-320.png",
+      "sha256": "e200dc3ccbafff030cb5013e9c04cbc9ab05d1d0289663ff7610421d946c816f",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "crop": [
+        4,
+        427,
+        316,
+        804
+      ],
+      "cardId": "sy-5-5-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-5-a3-a-neutral-1280.png",
+      "sha256": "260957a0b2895ca99750f5ed9932d4dbf487d2f68d9a12a6e8d0170ee1478f50",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-5-a3-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-5-a3-a-pyramid-1280.png",
+      "sha256": "4f1b1c17d02fa5d99fa29d3bf8c670761b771857dc8dfe20049b06fbf48660ac",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-5-a3-a",
+      "viewportWidth": 1280,
+      "view": "pyramid",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-5-b1-a-neutral-1280.png",
+      "sha256": "283b03ed389142b0e43d65fdbcfcc8e054ae7d16337ec8b4d7ecf42dd58dd8e3",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-5-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-5-b1-a-pyramid-1280.png",
+      "sha256": "275a4bf0be2c8297907666ca65567a36ba67b425a7469e52958318bd02a08f81",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-5-5-b1-a",
+      "viewportWidth": 1280,
+      "view": "pyramid",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-5-c1-a-neutral-1280.png",
+      "sha256": "1a66b4529bbbedd22ba3c6eb8d4d80669f8d31bad6f70c3953f5903f00a6afe9",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-5-c1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-5-5-c1-a-overlap-1280.png",
+      "sha256": "bdffedc3e4475f91839de1ea98d2681596e5114dbe3b579d52b1fc9fa5b7c3ff",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-5-5.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-5-5-c1-a",
+      "viewportWidth": 1280,
+      "view": "overlap",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-1-theory-neutral-1280.png",
+      "sha256": "22d417996f917a826a36117c54bae9854de0c10dfb806afb7a0c620eac2dd0cd",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-1-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-1-theory-diag-1280.png",
+      "sha256": "5053d899b07a1aec155ee43c161de9a9638d844dc2771108eeff3c7b4d4cc100",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-1-theory",
+      "viewportWidth": 1280,
+      "view": "diag",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-1-theory-neutral-320.png",
+      "sha256": "9c4f6148bd5b052100806e3ea6ec3ca6b17777e0e3b5d62ec038d0a16479f7a8",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "crop": [
+        4,
+        370,
+        316,
+        747
+      ],
+      "cardId": "sy-6-1-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-1-a1-a-neutral-1280.png",
+      "sha256": "2474161f6976d2e5b2473f37df2c904386eebf21b1d970f926592e000e0c38b6",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-1-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-1-a1-a-diag-1280.png",
+      "sha256": "82d763e04fca0e63a5313b30e1e4f1b697d3a27bac5de134f54e327a60e4eac9",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-1-a1-a",
+      "viewportWidth": 1280,
+      "view": "diag",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-1-b1-a-neutral-1280.png",
+      "sha256": "8c0e7639e0a99bc4f8333c238727b222defa1b4843ee059015adb350e6df8685",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-1-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-1-b1-a-diag-1280.png",
+      "sha256": "bbd7b50e323002e5110dfd5d28a7c46b8518f3a6f4fab7f3e53115fd6cbf0134",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-1-b1-a",
+      "viewportWidth": 1280,
+      "view": "diag",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-1-c2-a-neutral-1280.png",
+      "sha256": "848d178ec3e8f60763eb90f4a2b78fab8eaeabaff5a3ac9845192a09513ceb98",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-6-1-c2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-1-c2-a-diag-1280.png",
+      "sha256": "71490dc08d853a0a10f40c65493ad86bb4a2184f893e9399cbb803fbf8e4b44d",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-1.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-6-1-c2-a",
+      "viewportWidth": 1280,
+      "view": "diag",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-2-theory-neutral-1280.png",
+      "sha256": "790683485ad819c976ee6957c222c5d5360a094624846bdc81c2b03455ca2b70",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-2-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-2-theory-height-1280.png",
+      "sha256": "b1d615dd25f7a7f17bce2d0160b4c62d4efd7bfe4a9e040a00a4e47df3211593",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-2-theory",
+      "viewportWidth": 1280,
+      "view": "height",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-2-theory-neutral-320.png",
+      "sha256": "6b8d10799289ba94347fae20f8c55aa405532a82286abe4150d1688a8e4241df",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "crop": [
+        4,
+        427,
+        316,
+        804
+      ],
+      "cardId": "sy-6-2-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-2-a1-a-neutral-1280.png",
+      "sha256": "477ea2132a6624e689c9e797aadd7cc16862d813ee61523a2b5a65f1a491e90f",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-6-2-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-2-a1-a-height-1280.png",
+      "sha256": "de5c06ba300d7d2be0b20ca9bea668642265d97302be45493014038ff9f2cf4a",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-6-2-a1-a",
+      "viewportWidth": 1280,
+      "view": "height",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-2-b1-a-neutral-1280.png",
+      "sha256": "2878f7fda5f39246a03df01b51f4dc0d703a95b6c20226cccb14d600f21c8738",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-2-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-2-b1-a-cones-1280.png",
+      "sha256": "b8b9a536970505d9c60fbdd649d72d1d5a1c3330a893221bb957434257aca441",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-2-b1-a",
+      "viewportWidth": 1280,
+      "view": "cones",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-2-c2-a-neutral-1280.png",
+      "sha256": "408164bbd6cd4431673022d16bf707ea609f632d8784308248aa488d4feb097e",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-6-2-c2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-2-c2-a-height-1280.png",
+      "sha256": "8e060ab45d5c2ff8c54d6f2a6f45a80e35f335d4725046ae50f9c042c2d04c9a",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-2.jpg",
+      "crop": [
+        180,
+        208,
+        1100,
+        905
+      ],
+      "cardId": "sy-6-2-c2-a",
+      "viewportWidth": 1280,
+      "view": "height",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-3-theory-neutral-1280.png",
+      "sha256": "4603e2b7aa7860aa955047ee575b2833b45d3d7ed84393dd8df4c3bbfb98ef02",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-3-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-3-theory-half-1280.png",
+      "sha256": "e8d7c672bf1bcdb127c30334faca2dd9b4cbfa405c817b22538ce8461db00ea5",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-3-theory",
+      "viewportWidth": 1280,
+      "view": "half",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-3-theory-neutral-320.png",
+      "sha256": "cdc6676673ce8b2485f6c47da6e9abdc6e915039a2224629fb52781acffb4e7f",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "crop": [
+        4,
+        370,
+        316,
+        747
+      ],
+      "cardId": "sy-6-3-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-3-a1-a-neutral-1280.png",
+      "sha256": "99240aac68f0e38c4f4d75d073ede581416e43e725ea3617331f832cd9e2fad3",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-3-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-3-a1-a-half-1280.png",
+      "sha256": "1cc06ae4600d7358d423051aee979d86198ba34d4797d83acbfc5b71114fc81d",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-3-a1-a",
+      "viewportWidth": 1280,
+      "view": "half",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-3-b1-a-neutral-1280.png",
+      "sha256": "9a0174c1d8dec4a0c2cc7af1769f706c79024b73c24a356a7d6d2fee29411472",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-3-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-3-b1-a-second-1280.png",
+      "sha256": "359bca4deaade88cd47a76d8731835bc823fde246505efa8fead86516c8b1905",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-3-b1-a",
+      "viewportWidth": 1280,
+      "view": "second",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-3-c2-a-neutral-1280.png",
+      "sha256": "f3d1a49ab7ffb1c64c11e35ea69fb172ec65c7a4021a1d41f6c996645fb714ac",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-3-c2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-3-c2-a-diameter-1280.png",
+      "sha256": "1456bcf488365ed31a8f47bd921a0f08e613cc336015591d7666f28caa450455",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-3.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-3-c2-a",
+      "viewportWidth": 1280,
+      "view": "diameter",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-4-theory-neutral-1280.png",
+      "sha256": "5b83fbc24d5986d9c94d2814358cd05fa0a362258a62021e02e5b07e0bb82e09",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-4-theory",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-4-theory-center-1280.png",
+      "sha256": "6022e4426d63a1d07756948ee7da4a2ed9d48a290d4f3b0457c874d07e953976",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "crop": [
+        180,
+        181,
+        1100,
+        878
+      ],
+      "cardId": "sy-6-4-theory",
+      "viewportWidth": 1280,
+      "view": "center",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-4-theory-neutral-320.png",
+      "sha256": "da121e3149362483dcde7441d972b6edf268e1d556bb42d70f39a6e141e84dcc",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "crop": [
+        4,
+        400,
+        316,
+        777
+      ],
+      "cardId": "sy-6-4-theory",
+      "viewportWidth": 320,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-4-a1-a-neutral-1280.png",
+      "sha256": "2f6482e82ff5e86c88b4eb7b6903d263a2e08da2f1bda8b908910f84330df981",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-6-4-a1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-4-a1-a-diag-1280.png",
+      "sha256": "848961acc10b10f4518e88280317abe89fc22734032b780bd83fee5d04fbc827",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-6-4-a1-a",
+      "viewportWidth": 1280,
+      "view": "diag",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-4-b1-a-neutral-1280.png",
+      "sha256": "7ba532af6aa9088cd1010e3c13f7f67e56c2824d869e622a9dfac3774d1ae70c",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-6-4-b1-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-4-b1-a-center-1280.png",
+      "sha256": "e57fc7adaafb95ce8b08d24ed298849e1e837cc1f1aa518d89a71f1c1351a411",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "crop": [
+        180,
+        154,
+        1100,
+        851
+      ],
+      "cardId": "sy-6-4-b1-a",
+      "viewportWidth": 1280,
+      "view": "center",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-4-c2-a-neutral-1280.png",
+      "sha256": "3ce852a1d1c7881ffa0ef7cc6a21774ec70a2974e6ae20923096275a580decab",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "crop": [
+        180,
+        235,
+        1100,
+        932
+      ],
+      "cardId": "sy-6-4-c2-a",
+      "viewportWidth": 1280,
+      "view": "neutral",
+      "inspection": "Model crop in contact sheet"
+    },
+    {
+      "file": "artifacts/shestakov-models/sy-6-4-c2-a-radii-1280.png",
+      "sha256": "f357e23c57c9b464f29692ccf68848f337c0393a8b1e55e2180407fe665b0510",
+      "contactSheet": "artifacts/shestakov-visual-4-6/section-6-4.jpg",
+      "crop": [
+        180,
+        235,
+        1100,
+        932
+      ],
+      "cardId": "sy-6-4-c2-a",
+      "viewportWidth": 1280,
+      "view": "radii",
+      "inspection": "Model crop in contact sheet"
+    }
+  ]
+}

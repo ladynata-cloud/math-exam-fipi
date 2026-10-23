@@ -1,0 +1,111 @@
+{
+  "reviewer": "/root/chapter6",
+  "at": "2026-10-23T21:19:34.396391+00:00",
+  "file": "stereo-course/shestakov-yaschenko-10-11/chapters/ch1.json",
+  "sha256": "aa4304d0ef6cabe7695b6afc73565be5a454b66a3a6b0f09d8393ce95cdb7829",
+  "verdict": "passed",
+  "scope": {
+    "sourceVariants": 60,
+    "theoryCards": 5,
+    "sections": [
+      "1.1",
+      "1.2",
+      "1.3",
+      "1.4",
+      "1.5"
+    ],
+    "source": "Yashchenko–Shestakov 2021 third edition supplied PDF",
+    "sourceSha256": "bd125372e8cb96c0d99cb061f26eb6264ad66d0cd88bdf90484c52b11cb39115"
+  },
+  "method": [
+    "Read all 60 conditions and complete step sequences, compared every selected source number against extracted original source paragraphs.",
+    "Visually inspected source PDF pages 11,12,13,16,17,21,23,26,30,31,32 to verify split-page variants, illustrations, numeric data and mathematical notation.",
+    "Independently recalculated every final answer from source data and checked all accepted answer spellings using restricted arithmetic parsing.",
+    "Inspected coordinates and highlighted segments of all 65 models; tested salient lengths, angles, perpendiculars, medians, bisectors, incentres and reflection constructions.",
+    "Read all five companion theory modules for definitions, formulas, applicability and common errors; no unsupported source theory attribution.",
+    "Checked optional help/retained steps are authored as separate prompts and explanations; browser interaction verification belongs to the root integration run.",
+    "Re-reviewed 34 updated initial configurations after all-60 given-object audit: independently verified initial visibility and precise geometry of exterior rays, perpendicular bisectors, given heights/medians/bisectors and marked points; true derived auxiliaries remain hidden."
+  ],
+  "fixedFindings": [
+    {
+      "id": "1.2-B2-b",
+      "issue": "Source page was 11 but variant b begins on page 12.",
+      "fix": "Generator and JSON now use page 12."
+    },
+    {
+      "id": "1.2-C3-b",
+      "issue": "Source page was 12 but variant b begins on page 13.",
+      "fix": "Generator and JSON now use page 13."
+    },
+    {
+      "id": "1.3-B2-b",
+      "issue": "Source page was 16 but variant b begins on page 17.",
+      "fix": "Generator and JSON now use page 17."
+    },
+    {
+      "id": "1.4-A2-a/b",
+      "issue": "Replacing view map removed required neutral view.",
+      "fix": "Added neutral view to the generator and regenerated both cards."
+    },
+    {
+      "id": "1.4-A2-b",
+      "issue": "Initial caption disclosed requested angle C=72 degrees before help.",
+      "fix": "Replaced caption with a neutral description containing no final answer."
+    },
+    {
+      "id": "Initial-givens audit: 34 cards / 17 number pairs",
+      "issue": "Some given points and segments were hidden with solution-only auxiliary constructions.",
+      "fix": "Author selectively placed given objects in the neutral figure; independently reviewed all changed geometry and captions. No answers/source/theory changed."
+    }
+  ],
+  "validatedExistingCorrections": [
+    "1.1-B1-b explicitly excludes the impossible P-between-R-and-B ordering using PR=2RB.",
+    "Radical, decimal and coordinate answer aliases were verified numerically rather than assumed equivalent."
+  ],
+  "tests": [
+    "python3 tools/shestakov-yaschenko/reviewer-ch1-checks.py — PASS (60 answers/all accepted syntax; geometric relations; five theory references)",
+    "python3 tools/shestakov-yaschenko/reviewer-ch1-checks.py — PASS again after initial-givens update (all60 mathematical answers, all accepted inputs, 34 changed initial models, auxiliary hiding)."
+  ],
+  "limitations": [
+    "No claim of full 252-variant chapter coverage; selected 60 variants only.",
+    "Reviewer did not run the browser or conduct a real-pupil pilot; root owns runtime/visual browser QA.",
+    "This independent Codex review is not an external Claude verdict."
+  ],
+  "remainingFindings": [],
+  "initialModelChangedIds": [
+    "1.1-A8-a",
+    "1.1-A8-b",
+    "1.2-A1-a",
+    "1.2-A1-b",
+    "1.2-A8-a",
+    "1.2-A8-b",
+    "1.2-A9-a",
+    "1.2-A9-b",
+    "1.2-B2-a",
+    "1.2-B2-b",
+    "1.2-B3-a",
+    "1.2-B3-b",
+    "1.2-C3-a",
+    "1.2-C3-b",
+    "1.3-A8-a",
+    "1.3-A8-b",
+    "1.3-B1-a",
+    "1.3-B1-b",
+    "1.3-B2-a",
+    "1.3-B2-b",
+    "1.3-C4-a",
+    "1.3-C4-b",
+    "1.4-A2-a",
+    "1.4-A2-b",
+    "1.4-A14-a",
+    "1.4-A14-b",
+    "1.4-B2-a",
+    "1.4-B2-b",
+    "1.4-C6-a",
+    "1.4-C6-b",
+    "1.5-B2-a",
+    "1.5-B2-b",
+    "1.5-C2-a",
+    "1.5-C2-b"
+  ]
+}

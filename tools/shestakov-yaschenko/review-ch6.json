@@ -1,0 +1,73 @@
+{
+  "reviewer": "/root/source_inventory",
+  "at": "2026-10-23T21:20:23.447229+00:00",
+  "file": "stereo-course/shestakov-yaschenko-10-11/chapters/ch6.json",
+  "sha256": "1e3262e07f88f46c485aa5fa9e2adb04cdd86209a613f0e40e4b28f8eaa917c5",
+  "verdict": "passed",
+  "scope": {
+    "lessons": 48,
+    "theory": 4,
+    "source": "Attached 2021 PDF; all selected task statements compared with extracted source, formula-sensitive pages 188, 200, 208, 218, 219 rendered and inspected; cross-page variants 189 and 225 confirmed.",
+    "mathematics": "All 48 solution derivations and answers checked; cylinder internal/external division and maximum-volume derivative proof checked independently.",
+    "models": "Named coordinates, circle radii, axial cuts and tetrahedron centres inspected; all references valid. Rotated meridional views explicitly described in captions. Follow-up initial-givens audit after visual review: all 52 models rechecked; 28 affected exercise models checked against their stated givens. The 6.4 A1 diagonal section was rederived independently.",
+    "pedagogy": "Step-specific reasons, separate initial model, no proof auto-grading, 4 substantive theory modules."
+  },
+  "findings": [],
+  "fixes": [
+    {
+      "cards": [
+        "6.1-B1-a",
+        "6.1-B1-b"
+      ],
+      "issue": "Inherited rectangle width label incorrectly called nonaxial chord a diameter.",
+      "resolution": "Changed to «Ширина сечения — хорда основания» in generator and JSON."
+    },
+    {
+      "cards": [
+        "6.2-C2-b"
+      ],
+      "issue": "Russian plural agreement «четыре раз».",
+      "resolution": "Changed to «четыре раза»."
+    },
+    {
+      "cards": [
+        "6.3-theory"
+      ],
+      "issue": "Farthest-point explanation unnecessarily limited the reference point to an external point, while examples use a point on sphere.",
+      "resolution": "Changed «внешней» to «заданной»; formula valid for any point, with centre exception stated."
+    },
+    {
+      "cards": [
+        "6.1 A1/A2/A23/B1/B2, both variants",
+        "6.2 A1/A2/B2, both variants",
+        "6.3 A1/A2/A3/B1, both variants",
+        "6.4 A1/A2, both variants"
+      ],
+      "issue": "Source-given points or segments were deferred to step views; 6.4 A1 square section could not display the given space diagonal.",
+      "resolution": "Author exposed given radii, heights, distances, diagonal and P in base geometry and labels; replaced 6.4 A1 with the actual diagonal section and clarified the caption. Independently verified model/generator coordinates and references."
+    }
+  ],
+  "checks": {
+    "circleConfigurations": 25,
+    "modelReferences": "passed",
+    "optimalCylinderCoordinates": "passed",
+    "internalExternalChordRatios": "passed",
+    "independentNumericalIdentities": "passed",
+    "initialGivenVisibility": "passed: 28 affected variants; condition-named points checked across all 48 variants",
+    "cubeDiagonalSectionTangency": "passed: both variants",
+    "generatorParity": "passed"
+  },
+  "limits": [
+    "No claim of exhaustive 231-number chapter coverage: delivered chapter contains 48 selected solved variants.",
+    "Browser rendering is reviewed by the parent integration workflow."
+  ],
+  "followup": {
+    "previousReviewedSHA256": "c46c61712a61d317a6af616752d4d8f60fa04b34b39375f66e9c77823d7baacf",
+    "reason": "Initial-givens visibility corrections and cube diagonal-section replacement",
+    "checkedExerciseModels": 28,
+    "allModelReferencesChecked": 52,
+    "generatorParity": "passed",
+    "cubeDiagonalSection": "Width a√2, height a, diagonal a√3; circle radius a/2 touches top and bottom only, verified numerically for both variants. Given AC visible initially; BC and OT remain the correct edge and radius in step views.",
+    "finding": "No remaining issue found in the reviewed changes. Final browser rendering is outside this follow-up."
+  }
+}
