@@ -1,0 +1,637 @@
+{
+  "source": {
+    "authors": [
+      "Г. В. Дорофеев",
+      "Л. Г. Петерсон"
+    ],
+    "title": "Математика. 6 класс. Учебник в 3 частях. Часть 1",
+    "publisher": "БИНОМ. Лаборатория знаний",
+    "year": 2019,
+    "pdfPages": 112,
+    "printedPageEqualsPdfPage": true,
+    "availableParts": [
+      1
+    ],
+    "missingParts": [
+      2,
+      3
+    ]
+  },
+  "scope": {
+    "chapters": 2,
+    "sections": 4,
+    "topics": 14,
+    "numberedExercises": 497,
+    "exerciseRange": [
+      1,
+      497
+    ],
+    "selfCheckGroups": 3,
+    "answersPages": [
+      111,
+      112
+    ],
+    "warning": "497 refers to numbered exercises, not subparts; this inventory does not claim that solutions have been authored."
+  },
+  "topics": [
+    {
+      "id": "negation",
+      "title": "Понятие отрицания",
+      "chapter": 1,
+      "section": 1,
+      "point": 1,
+      "startPage": 3,
+      "endPage": 9,
+      "firstExercise": 1,
+      "lastExercise": 25
+    },
+    {
+      "id": "general-negation",
+      "title": "Отрицания общих высказываний",
+      "chapter": 1,
+      "section": 1,
+      "point": 2,
+      "startPage": 10,
+      "endPage": 16,
+      "firstExercise": 26,
+      "lastExercise": 58
+    },
+    {
+      "id": "existence-negation",
+      "title": "Отрицания высказываний о существовании",
+      "chapter": 1,
+      "section": 1,
+      "point": 3,
+      "startPage": 17,
+      "endPage": 19,
+      "firstExercise": 59,
+      "lastExercise": 70
+    },
+    {
+      "id": "variables",
+      "title": "Понятие переменной. Выражения с переменными",
+      "chapter": 1,
+      "section": 2,
+      "point": 1,
+      "startPage": 20,
+      "endPage": 25,
+      "firstExercise": 71,
+      "lastExercise": 97
+    },
+    {
+      "id": "variable-propositions",
+      "title": "Предложения с переменными",
+      "chapter": 1,
+      "section": 2,
+      "point": 2,
+      "startPage": 26,
+      "endPage": 32,
+      "firstExercise": 98,
+      "lastExercise": 119
+    },
+    {
+      "id": "quantifiers",
+      "title": "Переменная и кванторы",
+      "chapter": 1,
+      "section": 2,
+      "point": 3,
+      "startPage": 33,
+      "endPage": 38,
+      "firstExercise": 120,
+      "lastExercise": 142
+    },
+    {
+      "id": "quantifier-negation",
+      "title": "Отрицание утверждений с кванторами",
+      "chapter": 1,
+      "section": 2,
+      "point": 4,
+      "startPage": 38,
+      "endPage": 42,
+      "firstExercise": 143,
+      "lastExercise": 166
+    },
+    {
+      "id": "mixed-fractions",
+      "title": "Совместные действия с обыкновенными и десятичными дробями",
+      "chapter": 2,
+      "section": 1,
+      "point": 1,
+      "startPage": 44,
+      "endPage": 55,
+      "firstExercise": 176,
+      "lastExercise": 220
+    },
+    {
+      "id": "river",
+      "title": "Задачи на движение по реке",
+      "chapter": 2,
+      "section": 1,
+      "point": 2,
+      "startPage": 56,
+      "endPage": 63,
+      "firstExercise": 221,
+      "lastExercise": 256
+    },
+    {
+      "id": "mean",
+      "title": "Среднее арифметическое",
+      "chapter": 2,
+      "section": 1,
+      "point": 3,
+      "startPage": 63,
+      "endPage": 72,
+      "firstExercise": 257,
+      "lastExercise": 296
+    },
+    {
+      "id": "percent-concept",
+      "title": "Понятие о проценте",
+      "chapter": 2,
+      "section": 2,
+      "point": 1,
+      "startPage": 74,
+      "endPage": 82,
+      "firstExercise": 308,
+      "lastExercise": 350
+    },
+    {
+      "id": "percent-problems",
+      "title": "Задачи на проценты",
+      "chapter": 2,
+      "section": 2,
+      "point": 2,
+      "startPage": 83,
+      "endPage": 97,
+      "firstExercise": 351,
+      "lastExercise": 426
+    },
+    {
+      "id": "simple-growth",
+      "title": "Простой процентный рост",
+      "chapter": 2,
+      "section": 2,
+      "point": 3,
+      "startPage": 97,
+      "endPage": 105,
+      "firstExercise": 427,
+      "lastExercise": 461
+    },
+    {
+      "id": "compound-growth",
+      "title": "Сложный процентный рост",
+      "chapter": 2,
+      "section": 2,
+      "point": 4,
+      "startPage": 105,
+      "endPage": 109,
+      "firstExercise": 462,
+      "lastExercise": 487
+    }
+  ],
+  "selfChecks": [
+    {
+      "id": "logic-review",
+      "title": "Самопроверка: язык и логика",
+      "page": 43,
+      "firstExercise": 167,
+      "lastExercise": 175
+    },
+    {
+      "id": "arithmetic-review",
+      "title": "Самопроверка: числа и действия",
+      "page": 73,
+      "firstExercise": 297,
+      "lastExercise": 307
+    },
+    {
+      "id": "percent-review",
+      "title": "Самопроверка: проценты",
+      "page": 110,
+      "firstExercise": 488,
+      "lastExercise": 497
+    }
+  ],
+  "exercisePageRanges": [
+    {
+      "page": 6,
+      "firstExercise": 1,
+      "lastExercise": 4
+    },
+    {
+      "page": 7,
+      "firstExercise": 5,
+      "lastExercise": 12
+    },
+    {
+      "page": 8,
+      "firstExercise": 13,
+      "lastExercise": 18
+    },
+    {
+      "page": 9,
+      "firstExercise": 19,
+      "lastExercise": 25
+    },
+    {
+      "page": 12,
+      "firstExercise": 26,
+      "lastExercise": 28
+    },
+    {
+      "page": 13,
+      "firstExercise": 29,
+      "lastExercise": 33
+    },
+    {
+      "page": 14,
+      "firstExercise": 34,
+      "lastExercise": 39
+    },
+    {
+      "page": 15,
+      "firstExercise": 40,
+      "lastExercise": 49
+    },
+    {
+      "page": 16,
+      "firstExercise": 50,
+      "lastExercise": 58
+    },
+    {
+      "page": 18,
+      "firstExercise": 59,
+      "lastExercise": 63
+    },
+    {
+      "page": 19,
+      "firstExercise": 64,
+      "lastExercise": 70
+    },
+    {
+      "page": 22,
+      "firstExercise": 71,
+      "lastExercise": 76
+    },
+    {
+      "page": 23,
+      "firstExercise": 77,
+      "lastExercise": 82
+    },
+    {
+      "page": 24,
+      "firstExercise": 83,
+      "lastExercise": 88
+    },
+    {
+      "page": 25,
+      "firstExercise": 89,
+      "lastExercise": 97
+    },
+    {
+      "page": 28,
+      "firstExercise": 98,
+      "lastExercise": 101
+    },
+    {
+      "page": 29,
+      "firstExercise": 102,
+      "lastExercise": 106
+    },
+    {
+      "page": 30,
+      "firstExercise": 107,
+      "lastExercise": 108
+    },
+    {
+      "page": 31,
+      "firstExercise": 109,
+      "lastExercise": 111
+    },
+    {
+      "page": 32,
+      "firstExercise": 112,
+      "lastExercise": 119
+    },
+    {
+      "page": 34,
+      "firstExercise": 120,
+      "lastExercise": 121
+    },
+    {
+      "page": 35,
+      "firstExercise": 122,
+      "lastExercise": 127
+    },
+    {
+      "page": 36,
+      "firstExercise": 128,
+      "lastExercise": 131
+    },
+    {
+      "page": 37,
+      "firstExercise": 132,
+      "lastExercise": 139
+    },
+    {
+      "page": 38,
+      "firstExercise": 140,
+      "lastExercise": 142
+    },
+    {
+      "page": 39,
+      "firstExercise": 143,
+      "lastExercise": 146
+    },
+    {
+      "page": 40,
+      "firstExercise": 147,
+      "lastExercise": 151
+    },
+    {
+      "page": 41,
+      "firstExercise": 152,
+      "lastExercise": 158
+    },
+    {
+      "page": 42,
+      "firstExercise": 159,
+      "lastExercise": 166
+    },
+    {
+      "page": 43,
+      "firstExercise": 167,
+      "lastExercise": 175
+    },
+    {
+      "page": 46,
+      "firstExercise": 176,
+      "lastExercise": 176
+    },
+    {
+      "page": 47,
+      "firstExercise": 177,
+      "lastExercise": 182
+    },
+    {
+      "page": 48,
+      "firstExercise": 183,
+      "lastExercise": 186
+    },
+    {
+      "page": 49,
+      "firstExercise": 187,
+      "lastExercise": 191
+    },
+    {
+      "page": 50,
+      "firstExercise": 192,
+      "lastExercise": 195
+    },
+    {
+      "page": 51,
+      "firstExercise": 196,
+      "lastExercise": 198
+    },
+    {
+      "page": 52,
+      "firstExercise": 199,
+      "lastExercise": 202
+    },
+    {
+      "page": 53,
+      "firstExercise": 203,
+      "lastExercise": 207
+    },
+    {
+      "page": 54,
+      "firstExercise": 208,
+      "lastExercise": 214
+    },
+    {
+      "page": 55,
+      "firstExercise": 215,
+      "lastExercise": 220
+    },
+    {
+      "page": 58,
+      "firstExercise": 221,
+      "lastExercise": 227
+    },
+    {
+      "page": 59,
+      "firstExercise": 228,
+      "lastExercise": 233
+    },
+    {
+      "page": 60,
+      "firstExercise": 234,
+      "lastExercise": 238
+    },
+    {
+      "page": 61,
+      "firstExercise": 239,
+      "lastExercise": 242
+    },
+    {
+      "page": 62,
+      "firstExercise": 243,
+      "lastExercise": 251
+    },
+    {
+      "page": 63,
+      "firstExercise": 252,
+      "lastExercise": 256
+    },
+    {
+      "page": 66,
+      "firstExercise": 257,
+      "lastExercise": 263
+    },
+    {
+      "page": 67,
+      "firstExercise": 264,
+      "lastExercise": 269
+    },
+    {
+      "page": 68,
+      "firstExercise": 270,
+      "lastExercise": 274
+    },
+    {
+      "page": 69,
+      "firstExercise": 275,
+      "lastExercise": 280
+    },
+    {
+      "page": 70,
+      "firstExercise": 281,
+      "lastExercise": 284
+    },
+    {
+      "page": 71,
+      "firstExercise": 285,
+      "lastExercise": 292
+    },
+    {
+      "page": 72,
+      "firstExercise": 293,
+      "lastExercise": 296
+    },
+    {
+      "page": 73,
+      "firstExercise": 297,
+      "lastExercise": 307
+    },
+    {
+      "page": 75,
+      "firstExercise": 308,
+      "lastExercise": 309
+    },
+    {
+      "page": 76,
+      "firstExercise": 310,
+      "lastExercise": 316
+    },
+    {
+      "page": 77,
+      "firstExercise": 317,
+      "lastExercise": 322
+    },
+    {
+      "page": 78,
+      "firstExercise": 323,
+      "lastExercise": 328
+    },
+    {
+      "page": 79,
+      "firstExercise": 329,
+      "lastExercise": 336
+    },
+    {
+      "page": 80,
+      "firstExercise": 337,
+      "lastExercise": 339
+    },
+    {
+      "page": 81,
+      "firstExercise": 340,
+      "lastExercise": 344
+    },
+    {
+      "page": 82,
+      "firstExercise": 345,
+      "lastExercise": 350
+    },
+    {
+      "page": 86,
+      "firstExercise": 351,
+      "lastExercise": 358
+    },
+    {
+      "page": 87,
+      "firstExercise": 359,
+      "lastExercise": 366
+    },
+    {
+      "page": 88,
+      "firstExercise": 367,
+      "lastExercise": 375
+    },
+    {
+      "page": 89,
+      "firstExercise": 376,
+      "lastExercise": 380
+    },
+    {
+      "page": 90,
+      "firstExercise": 381,
+      "lastExercise": 386
+    },
+    {
+      "page": 91,
+      "firstExercise": 387,
+      "lastExercise": 392
+    },
+    {
+      "page": 92,
+      "firstExercise": 393,
+      "lastExercise": 396
+    },
+    {
+      "page": 93,
+      "firstExercise": 397,
+      "lastExercise": 402
+    },
+    {
+      "page": 94,
+      "firstExercise": 403,
+      "lastExercise": 406
+    },
+    {
+      "page": 95,
+      "firstExercise": 407,
+      "lastExercise": 414
+    },
+    {
+      "page": 96,
+      "firstExercise": 415,
+      "lastExercise": 423
+    },
+    {
+      "page": 97,
+      "firstExercise": 424,
+      "lastExercise": 426
+    },
+    {
+      "page": 100,
+      "firstExercise": 427,
+      "lastExercise": 435
+    },
+    {
+      "page": 101,
+      "firstExercise": 436,
+      "lastExercise": 441
+    },
+    {
+      "page": 102,
+      "firstExercise": 442,
+      "lastExercise": 446
+    },
+    {
+      "page": 103,
+      "firstExercise": 447,
+      "lastExercise": 452
+    },
+    {
+      "page": 104,
+      "firstExercise": 453,
+      "lastExercise": 458
+    },
+    {
+      "page": 105,
+      "firstExercise": 459,
+      "lastExercise": 461
+    },
+    {
+      "page": 107,
+      "firstExercise": 462,
+      "lastExercise": 465
+    },
+    {
+      "page": 108,
+      "firstExercise": 466,
+      "lastExercise": 474
+    },
+    {
+      "page": 109,
+      "firstExercise": 475,
+      "lastExercise": 487
+    },
+    {
+      "page": 110,
+      "firstExercise": 488,
+      "lastExercise": 497
+    }
+  ]
+}

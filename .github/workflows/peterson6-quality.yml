@@ -1,0 +1,37 @@
+name: Peterson 6 part 1 quality
+on:
+  pull_request:
+    paths:
+      - 'school/peterson6/**'
+      - '.github/workflows/peterson6-quality.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'school/peterson6/**'
+      - '.github/workflows/peterson6-quality.yml'
+permissions:
+  contents: read
+jobs:
+  course:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Syntax and content bundle
+        run: |
+          node --check school/peterson6/app.js
+          node --check school/peterson6/math.js
+          node --check school/peterson6/models.js
+          node school/peterson6/build.cjs --check
+          node school/peterson6/test-content.cjs
+      - name: Exact math, saved state and models
+        run: |
+          node school/peterson6/test-math.cjs
+          node school/peterson6/test-state.cjs
+          node school/peterson6/test-models.cjs
+      - name: Install in-memory DOM for code tests
+        run: npm install --prefix "$RUNNER_TEMP/peterson-qa" --no-audit --no-fund jsdom@26.1.0
+      - name: Course DOM journeys (not visual browser QA)
+        run: NODE_PATH="$RUNNER_TEMP/peterson-qa/node_modules" node school/peterson6/test-ui.cjs
