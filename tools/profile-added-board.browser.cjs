@@ -200,7 +200,14 @@ async function handoff(teacher, student, config, studentControls) {
   await previousFrame.waitForFunction(count => window.__profileGateApplied > count, applied, { polling: 25 });
   assert.deepEqual(await snapshot(nextFrame), before, config.id + ': handoff preserves current work');
   await synchronized(nextFrame, previousFrame, 'settled ownership transfer');
+  // dialog.close() hides immediately, then its queued close handler restores
+  // focus. Finish that lifecycle before the next fill can focus the trainer.
+  await teacher.evaluate(() => {
+    window.__profileGateShareClosed = false;
+    document.querySelector('#sharePanel').addEventListener('close', () => { window.__profileGateShareClosed = true; }, { once: true });
+  });
   await teacher.locator('#sharePanel [data-close-panel]').click();
+  await teacher.waitForFunction(() => window.__profileGateShareClosed && !document.querySelector('#sharePanel').open, null, { polling: 25 });
 }
 async function answer(frame, value) {
   if (await frame.locator('#answer').count()) await frame.locator('#answer').fill(String(value));

@@ -185,6 +185,24 @@ screen modes; this task supplies the additional trainer integrations.
   The same delayed-render scenario and the ordinary complete browser gate
   passed on Chromium 151.0.7922.34. All prior assertions remain; no timeout or
   runtime change was made. Independent focused review passed.
+- A later exact-head CI run completed with eight successful checks and one
+  added-board browser failure at the first teacher draft after control revoke
+  (`9/13` instead of `3/17`). Controlled native-dialog event delivery reproduced
+  the exact signature: the share-panel close handler restored focus between
+  Playwright's focus/select and insertText commands. No beforeinput/input event
+  reached the answer field, and no remote state application overwrote a draft.
+  The test now awaits the real dialog close handler completion before typing.
+  This adds seven lines to the handoff helper, retaining every assertion and
+  timeout; no runtime change, sleep, retry or assertion relaxation was made.
+- The controlled old test failed as expected; the corrected handoff stayed
+  pending while the close event was held, then accepted and shared `3/17`
+  after event delivery. The ordinary complete added-five browser gate also
+  passed on Chromium 151.0.7922.34 (five wrappers, 22 topic families). Source
+  bytes matched the tested bytes; focused independent review passed.
+- At the owner's requested completed checkpoint, the bounded test correction
+  and this record are saved to the existing Draft PR. Exact-head CI for that
+  follow-up must be assessed in the continuation session; it is not claimed
+  green from an older head. No merge, auto-merge or deployment is performed.
 - The companion board-writing implementation is prepared in Draft PR #313;
   all five of its exact-head CI checks passed. It is not merged or published
   by this task. The two initial implementation trees composed cleanly; writing
