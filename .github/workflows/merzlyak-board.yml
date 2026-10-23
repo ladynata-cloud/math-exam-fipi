@@ -1,0 +1,51 @@
+name: Merzlyak cabinet and shared board
+on:
+  pull_request:
+    paths: ['learning/**', 'stereo-course/merzlyak-10-base/**', 'trainers/merzlyak-10-base.html', 'trainers/board-*.js', 'trainers/board-*.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/merzlyak-*', '.github/workflows/merzlyak-board.yml']
+permissions:
+  contents: read
+concurrency:
+  group: merzlyak-board-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  cabinet-and-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned test tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/merzlyak-board-tools" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+          "$RUNNER_TEMP/merzlyak-board-tools/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/merzlyak-board-tools/node_modules" >> "$GITHUB_ENV"
+      - name: Cabinet, board and registry contracts
+        run: |
+          node --test tools/merzlyak-cabinet.test.cjs tools/learning-focus-links.dom.cjs tools/merzlyak-board-picker.test.cjs tools/merzlyak-board.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          node tools/merzlyak-10-base/schema-runtime.test.cjs
+          node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs
+      - name: Shared teacher and pupil journey
+        env:
+          MERZLYAK_BOARD_SHOTS: artifacts/merzlyak-board
+        run: node tools/merzlyak-board.browser.cjs
+      - name: Grade 10 cabinet views
+        env:
+          MERZLYAK_BOARD_ARTIFACTS: artifacts/merzlyak-board
+        run: node tools/merzlyak-cabinet.browser.cjs
+      - name: Preserve synthetic visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: merzlyak-cabinet-board
+          path: artifacts/merzlyak-board
+          if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check

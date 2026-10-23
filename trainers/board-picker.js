@@ -24,6 +24,9 @@ function normalize(value){
   const file=profileCourseRoute(u.hash,'8',PROFILE_EXPRESSIONS_LESSONS)?'ege-profile-expressions.html':profileCourseRoute(u.hash,'3',PROFILE_STEREOMETRY_LESSONS)?'ege-profile-stereometry.html':null;
   if(file)return '/trainers/'+file+u.search+u.hash;
  }
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/stereo-course/merzlyak-10-base/','/stereo-course/merzlyak-10-base/index.html'].includes(u.pathname)){
+  return '/trainers/merzlyak-10-base.html'+u.search+u.hash;
+ }
  return raw;
 }
 function canonical(value){const u=new URL(normalize(value),location.href);u.searchParams.delete('seed');return u.origin===location.origin?u.pathname+u.search+u.hash:u.href;}
@@ -57,7 +60,7 @@ function mount(options){
  $('retryOpenedTrainer').onclick=()=>{if(!active)return;checks.delete(headerKey(active));options.retry();};loading();
  function setEntries(list){const seen=new Set();entries=list.filter(x=>{try{const key=canonical(x.href);if(seen.has(key))return false;seen.add(key);return typeof x.title==='string';}catch(_){return false;}});const groups=[...new Set(entries.map(x=>x.group))];group.replaceChildren(new Option('Все разделы',''),new Option('Недавние','recent'),...groups.map(x=>new Option(x,x)));renderRecent();render();if(active)$('openedTrainerTitle').textContent=titleFor(active);}
  setEntries(options.fallback.map(x=>({href:'/'+x.file,title:x.title,group:x.group})));
- fetch('board-picker-data.json?v=20261023-stereo-board').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
+ fetch('board-picker-data.json?v=20261024-merzlyak-board').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
  const query=new URLSearchParams(location.search).get('trainer');if(query&&options.role()==='teacher')choose(query);
 }
 root.BoardPicker={normalize,canonical,mount,error,clearError};

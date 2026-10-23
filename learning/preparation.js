@@ -4,6 +4,7 @@
 const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // These are separate public exercises, never managed assignments or progress.
 const focusPractices=Object.freeze({
+ 'https://mathexam.space/stereo-course/merzlyak-10-base/':'10 класс · Геометрия Мерзляк',
  'https://mathexam.space/trainers/rounding-stepwise.html':'Округление по шагам',
  'https://mathexam.space/trainers/task19-trainer.html':'ОГЭ №19: геометрические утверждения'
 });

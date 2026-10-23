@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Мерзляк · 10 класс · совместная работа на доске</title>
+<link rel="canonical" href="https://mathexam.space/stereo-course/merzlyak-10-base/">
+<link rel="stylesheet" href="/stereo-course/assets/task-scenes.css"><link rel="stylesheet" href="/stereo-course/merzlyak-10-base/assets/style.css">
+</head><body data-merzlyak-board="true">
+<p class="course-note">Совместная работа на доске · без зачёта в личный прогресс. При выборе другой задачи начинается новый общий разбор.</p>
+<div id="textbook-app"><p>Загружаем материалы курса…</p></div>
+<noscript>Для совместной работы нужен JavaScript.</noscript>
+<script src="/stereo-course/assets/math-text.js"></script><script src="/stereo-course/assets/task-scene-viewer.js"></script>
+<script src="/stereo-course/merzlyak-10-base/assets/engine.js?v=20261024-board"></script>
+<script src="/trainers/board-bridge.js"></script><script src="/stereo-course/merzlyak-10-base/assets/board-session.js?v=20261024-board"></script>
+<script>
+'use strict';
+fetch('/stereo-course/merzlyak-10-base/data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Course unavailable');return response.json();}).then(bundle=>{
+ window.merzlyakBoardApp=MerzlyakBoard.boot(bundle,document.getElementById('textbook-app'));
+}).catch(()=>{document.getElementById('textbook-app').textContent='Материалы сейчас не удалось открыть. Попробуй обновить страницу.';});
+</script></body></html>

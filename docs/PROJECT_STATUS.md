@@ -1,6 +1,24 @@
 # MathExam project status
 
-Updated: 2026-10-23 (Asia/Novosibirsk)
+Updated: 2026-10-24 (Asia/Novosibirsk)
+
+## In progress: grade 10 Merzlyak cabinet entry and shared board
+
+- [Scope](tasks/MERZLYAK10_CABINET_BOARD.md), MEDIUM integration, base
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`, branch
+  `feat/merzlyak10-cabinet-board`. The owner requested cloud pupil setup,
+  course access and synchronization with the existing classic board.
+- Reuse the per-pupil focus note for the exact course attachment, with grade-10
+  primary navigation. No account/schema/progress migration or real pupil data
+  in source. The board uses a separate memory-only semantic session.
+- The complete Merzlyak course was published in PR #304, production commit
+  `f4ea5c4de842faa4c26cbb73093f708c2c77578b`: 989 reviewed cards and solutions
+  for all 736 numbered exercises. Course content remains unchanged here.
+- PR #312 has since merged as the task base above; the older prepared-release
+  paragraph below is historical. Its exact release evidence is in PR #312.
+- Next three actions: finish the scoped integration and independent checks;
+  pass exact-head cloud gates in one Draft PR; obtain the concrete release
+  decision and verify both Pages and Amvera before claiming live synchronization.
 
 ## Prepared for release review: profile task 3 stereometry on the shared board
 

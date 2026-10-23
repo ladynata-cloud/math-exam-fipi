@@ -14,7 +14,20 @@ jobs:
         with:
           persist-credentials: false
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Determine whether authored consultation inputs changed
+        id: consultation-scope
+        env:
+          REVIEW_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git fetch --no-tags --depth=1 origin "$REVIEW_BASE_SHA"
+          if git diff --quiet "$REVIEW_BASE_SHA" HEAD -- stereo-course/merzlyak-10-base/lessons stereo-course/merzlyak-10-base/data/course.json stereo-course/merzlyak-10-base/source-index.json tools/merzlyak-10-base/claude-review.py; then
+            echo 'required=false' >> "$GITHUB_OUTPUT"
+            echo 'Authored consultation inputs unchanged; bounded runtime integration needs technical review, not a repeat content consultation.'
+          else
+            echo 'required=true' >> "$GITHUB_OUTPUT"
+          fi
       - name: One focused consultation, or explicit unavailable evidence
+        if: steps.consultation-scope.outputs.required == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           REVIEW_BASE_SHA: ${{ github.event.pull_request.base.sha }}
