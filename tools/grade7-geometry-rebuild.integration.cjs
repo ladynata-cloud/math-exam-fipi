@@ -26,7 +26,11 @@ const multiplicationColumn=require('../trainers/oge-basics/multiplication-divisi
 const addedMultiplicationIds=new Set(multiplicationColumn.stages.map(stage=>'oge-basics:'+stage.id));
 assert.equal(addedMultiplicationIds.size,9);
 assert.equal(catalog.items.filter(item=>addedMultiplicationIds.has(item.id)).length,9,'All column multiplication topics are available');
-assert.equal(catalog.items.filter(item=>!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)).length,217,'Existing identities remain available');
+const originalTrainers=new Set(['ege-path','oge-basics','motion-grade6']);
+assert.equal(catalog.items.filter(item=>originalTrainers.has(item.trainerId)&&!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)).length,217,'Existing identities remain available');
+const manualItems=catalog.items.filter(item=>item.trainerId==='atanasyan-7-9');
+assert.deepEqual(manualItems.map(item=>item.id),['atanasyan-7-9:atanasyan-7-9-main-92-part-1'],'The fixed manual exercise is separate from the original trainer identities');
+assert.equal(catalog.items.length,217+items.length+addedDivisionIds.size+addedMultiplicationIds.size+manualItems.length,'Every catalog entry belongs to an explicitly checked group');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

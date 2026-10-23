@@ -100,7 +100,8 @@ workflow, merge/deployment of code requires a separate reviewed base/head
 authorization. No force, rebase, reset, auto-merge or security bypass is allowed.
 
 - Actual base/branch: as above; initially clean.
-- PR/head: pending.
+- PR: [#318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318).
+  The current immutable head/tree and CI runs are recorded in its handoff.
 - Technical checks: PASS locally in the cloud workspace. Full server suite
   298/298; new adapter/picker/manual contract group 21/21; registry integration
   7/7; exact registry/picker group 28/28; preserved profile picker group 14/14.
@@ -119,8 +120,17 @@ authorization. No force, rebase, reset, auto-merge or security bypass is allowed
 - Independent technical review: no remaining blocking findings on the frozen
   production files; separate code/state validation and real browser evidence.
   This is agent review, not an external-provider verdict.
-- Exact-head CI: pending Draft PR publication; record its immutable run and
-  head in the PR before the owner release decision.
+- Synthetic delivery audit: PASS on both school and foundations profiles.
+  Teacher UI adds a thirteenth recommendation while preserving the first
+  twelve and the plan note. The learner opens and saves the native attempt
+  without creating a photo assignment or artificial deadline.
+  Catalog-reference browser checks cover all 351 identities; the grade-7
+  browser gate covers 169 entry cards and 62 original route cards, including
+  retained work, handoff, reload and manual submission.
+- Exact-head CI: running on the Draft PR; record its immutable final run and
+  head in the PR before the owner release decision. The first head passed
+  the new actual cabinet/board job and production-container job; two older
+  fixture failures were diagnosed as described below, not counted as passes.
 - Production assignment/board verification: pending deployment.
 
 ## Resolved development findings and limits
@@ -140,9 +150,27 @@ authorization. No force, rebase, reset, auto-merge or security bypass is allowed
 - Registry/count and original ege-path fixtures were updated precisely for
   one new manual trainer. No existing family assertion was removed. The
   container-equivalent test now includes the exact new scoped Docker COPY.
+- First-head CI exposed a further rebuild fixture that included the new
+  manual card in its count of 217 original identities. The test now checks
+  the original trainer set, the exact manual identity and the full 351-entry
+  partition separately. Independent review confirmed no overlaps or missing
+  groups, and all 34 mathematical/curriculum workflow commands pass.
+- The video-entry gate still expected an OGE home page even though PR #278
+  intentionally starts those four public trainers in practice. The runtime
+  files and stale assertion were identical on the base. The fixture now
+  waits for the existing standalone-ready marker and checks the intended
+  visible practice/input state; explicit practice and answer-feedback checks
+  remain in place. The same fixture still used the pre-PR #295 EGE stage
+  navigation. Its default-entry and saved-work checks now exercise the
+  existing task-first UI, preserving complete state equality for the final
+  answer, independent guided draft, written note and disclosure flags.
+  Native toggle completion is awaited semantically, without timing sleeps.
+  No public trainer behavior is changed by these corrections. Full MP4
+  playback cannot run in the sparse local checkout, which omits video media;
+  its earlier CI section passed and the final full gate runs in GitHub.
 - An initial runtime attempt lacked jsdom; pinned dependencies resolved that
   environment issue. Early fixture failures and the two behavior bugs above
-  were corrected and rerun; no known final technical failure remains.
+  were corrected and rerun; final remote results remain explicitly pending.
 - Not run: real learner pilot, external-provider review, new code deployment
   or production synchronized assignment. The existing pupil's plan link is
   saved; its original assignments and work were not changed.

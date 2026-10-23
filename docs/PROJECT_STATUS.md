@@ -4,14 +4,14 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 
 ## Prepared for review: Atanasyan 92a in the cabinet and on the shared board
 
-- [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), HIGH review, based on
+- [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), [Draft PR #318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318), HIGH review, based on
   `1f9d8aec82bd2909917ab22746d94571d87c59c4`.
 - One existing grade-7 exercise gains a fixed wrapper, isolated shared state,
   a managed learning contract and a catalog entry. Published mathematics,
   diagrams, all 336 cards and the sealed textbook runtime remain unchanged.
 - The actual pupil cabinet already exists; its earlier plan and work are
   preserved. The original exercise link was added through the teacher UI.
-  Native assignment and production synchronization await reviewed deployment.
+  The native plan card and production synchronization await reviewed deployment.
 - Implementation and independent technical review are complete. Full server
   tests 298/298 and the 21-test new contract group pass; actual classic and
   managed browser journeys, previous task-3/task-8 board journeys and scoped
