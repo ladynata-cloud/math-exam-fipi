@@ -331,9 +331,48 @@ async function trainerFrame(page, suffix) {
   throw new Error(`Missing trainer frame ${suffix}`);
 }
 
+// Current boards put these controls in dialogs; the historical fixture keeps
+// its visible quick picker and share controls. Exercise either UI normally.
+async function chooseTrainer(page, file) {
+  await page.waitForLoadState('domcontentloaded');
+  if (!await page.locator('#chooseTrainer').count()) {
+    await page.selectOption('#trainerQuick', file);
+    return;
+  }
+  await page.click('#chooseTrainer');
+  const filename = new URL(file, page.url()).pathname.split('/').pop();
+  await page.fill('#pickerSearch', filename);
+  await page.waitForFunction(() => document.querySelectorAll('#pickerResults .picker-item').length === 1, null, { polling: 100 });
+  const result = page.locator('#pickerResults .picker-item');
+  assert.equal(await result.count(), 1, `catalog search uniquely identifies ${file}`);
+  await result.click();
+  await page.locator('#trainerPicker').waitFor({ state: 'hidden' });
+}
+
+async function openTrainerByUrl(page, file) {
+  await page.waitForLoadState('domcontentloaded');
+  const modernPicker = await page.locator('#chooseTrainer').count();
+  if (modernPicker) {
+    await page.click('#chooseTrainer');
+    if (!await page.locator('#trainerUrl').isVisible()) await page.locator('#manualTrainerEntry > summary').click();
+  }
+  await page.fill('#trainerUrl', file);
+  await page.click('#openTrainer');
+  if (modernPicker) await page.locator('#trainerPicker').waitFor({ state: 'hidden' });
+}
+
+async function clickShareControl(page, selector) {
+  await page.waitForLoadState('domcontentloaded');
+  const control = page.locator(selector);
+  await control.waitFor({ state: 'attached' });
+  const openPanel = !await control.isVisible() && await page.locator('#openShare').count();
+  if (openPanel) await page.click('#openShare');
+  await control.click();
+  if (openPanel) await page.locator('#sharePanel [data-close-panel]').click();
+}
+
 async function createRoom(page) {
-  await page.locator('#createRoom').waitFor({ state: 'attached' });
-  await page.locator('#createRoom').evaluate(button => button.click());
+  await clickShareControl(page, '#createRoom');
   try {
     await page.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено', null, { polling: 100 });
   } catch (error) {
@@ -543,11 +582,13 @@ async function arrivalAndFailClosed(browser, siteOrigin, boardOrigin, registry) 
   await page.waitForTimeout(10200);
   const requestsBeforeRecovery = frameRequests.length;
   control.mode = { body: registry };
+  const openTrainerPanel = !await page.locator('#retryTrainerRegistry').isVisible() && await page.locator('#trainerOptions').count();
+  if (openTrainerPanel) await page.click('#trainerOptions');
   await page.click('#retryTrainerRegistry');
+  if (openTrainerPanel) await page.locator('#trainerPanel [data-close-panel]').click();
   await waitMirror(page, 'connected', 15000);
   assert.equal(frameRequests.length, requestsBeforeRecovery + 1, 'expired bridge recovers with one controlled reload');
-  await page.fill('#trainerUrl', 'like-terms-trainer.html');
-  await page.click('#openTrainer');
+  await openTrainerByUrl(page, 'like-terms-trainer.html');
   await trainerFrame(page, 'like-terms-trainer.html');
   await waitMirror(page, 'unsupported-trainer');
   assertNoPageErrors(evidence);
@@ -700,7 +741,7 @@ async function liveTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
   await student.goto(studentLink, { waitUntil: 'domcontentloaded' });
   await waitMirror(student, 'connected');
 
-  await teacher.selectOption('#trainerQuick', 'linear-inequalities-stepwise.html');
+  await chooseTrainer(teacher, 'linear-inequalities-stepwise.html');
   const teacherLinear = await trainerFrame(teacher, 'linear-inequalities-stepwise.html');
   const studentLinear = await trainerFrame(student, 'linear-inequalities-stepwise.html');
   await waitMirror(teacher, 'connected');
@@ -720,17 +761,17 @@ async function liveTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
   studentRegistryControl.mode = { waitFor: pendingRegistryGate, body: registry };
   await student.evaluate(() => { window.__pendingRegistryRefresh = loadTrainerRegistry({ force: true }); });
   await waitMirror(student, 'pending');
-  await teacher.click('#controlToggle');
+  await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => document.body.classList.contains('control-owner'), null, { polling: 100 });
   await studentLinear.fill('#val', '66');
-  await teacher.click('#controlToggle');
+  await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => !document.body.classList.contains('control-owner'), null, { polling: 100 });
   releasePendingRegistry();
   await waitMirror(student, 'connected');
   assert.equal(await teacherLinear.inputValue('#val'), beforePendingRevoke, 'revoke during pending registry hydration drops student state');
   studentRegistryControl.mode = 'live';
 
-  await teacher.click('#controlToggle');
+  await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => document.body.classList.contains('control-owner'), null, { polling: 100 });
   await studentLinear.fill('#val', '7');
   await teacherLinear.waitForFunction(() => document.querySelector('#val').value === '7', null, { polling: 100 });
@@ -743,7 +784,7 @@ async function liveTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
   await teacher.waitForTimeout(150);
   assert.equal(await teacherLinear.inputValue('#val'), '7', 'revoke drops debounced mid-input state');
 
-  await teacher.click('#controlToggle');
+  await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => document.body.classList.contains('control-owner'), null, { polling: 100 });
   await teacher.reload({ waitUntil: 'domcontentloaded' });
   await teacher.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено', null, { polling: 100 });
@@ -752,7 +793,7 @@ async function liveTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
   assert.ok(await student.evaluate(() => document.body.classList.contains('control-owner')), 'student keeps control through teacher reload');
   await studentLinear.fill('#val', '9');
   await reloadedTeacherLinear.waitForFunction(() => document.querySelector('#val').value === '9', null, { polling: 100 });
-  await teacher.click('#controlToggle');
+  await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => !document.body.classList.contains('control-owner'), null, { polling: 100 });
 
   const isolatedContext = await browser.newContext();
@@ -783,8 +824,7 @@ async function liveTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
   assert.equal(new Set(participants).size, participants.length, 'participants are not duplicated after reload');
   assert.equal(participants.length, 2, 'teacher and the logical student participant are online');
 
-  await teacher.fill('#trainerUrl', 'negative-numbers-line.html');
-  await teacher.click('#openTrainer');
+  await openTrainerByUrl(teacher, 'negative-numbers-line.html');
   const teacherNegative = await trainerFrame(teacher, 'negative-numbers-line.html');
   const studentNegative = await trainerFrame(student, 'negative-numbers-line.html');
   await waitMirror(teacher, 'connected');
@@ -976,8 +1016,8 @@ async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
 }
 
 async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
-  assert.equal(registry.trainers.length, 6, 'runtime registry exposes exactly six mirror entries');
-  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example']);
+  assert.equal(registry.trainers.length, 7, 'runtime registry exposes exactly seven mirror entries');
+  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['ege-profile-expressions', 'linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example']);
   const catalog = await (await fetch(`${siteOrigin}/trainers/board-compat.json`)).json();
   const expectedCatalog = JSON.parse(readFileSync(resolve(REPO_ROOT, 'trainers', 'board-compat.json'), 'utf8'));
   assert.deepEqual(catalog, expectedCatalog, 'served catalog exactly matches the committed manifest');
@@ -990,8 +1030,8 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
     catalogIds.add(entry.trainerId);
     catalogFiles.add(entry.file.toLowerCase());
   }
-  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 6, 'catalog exposes exactly six mirrors');
-  assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same six mirror ids');
+  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 7, 'catalog exposes exactly seven mirrors');
+  assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same seven mirror ids');
 
   const teacherContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const teacher = await teacherContext.newPage();
@@ -1008,7 +1048,7 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
   await student.goto(studentLink, { waitUntil: 'domcontentloaded' });
   await waitMirror(student, 'connected');
 
-  await teacher.selectOption('#trainerQuick', ROADS_TRAINER_PATH);
+  await chooseTrainer(teacher, ROADS_TRAINER_PATH);
   const teacherRoads = await trainerFrame(teacher, 'practice-1-5-roads-grid.html');
   const studentRoads = await trainerFrame(student, 'practice-1-5-roads-grid.html');
   await waitMirror(teacher, 'connected');
@@ -1054,7 +1094,7 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
   assert.equal(studentProbe.localStorage, studentStorage, 'viewer statistics and unrelated keys remain byte-identical');
   assert.equal(studentProbe.sessionStorage, null, 'embedded viewer remote apply does not write standalone session storage');
 
-  await teacher.click('#controlToggle');
+  await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => document.body.classList.contains('control-owner'), null, { polling: 100 });
   await studentRoads.click('#task-stepper .step-btn[data-task="2"]');
   await studentRoads.fill('#answer-input', '7');
@@ -1076,7 +1116,7 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
   await teacher.waitForTimeout(150);
   assert.equal(await teacherRoads.evaluate(() => window.getBoardTrainerState().tasks[2].answer), '7', 'revoke drops roads-grid debounced pending input');
 
-  await teacher.click('#controlToggle');
+  await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => document.body.classList.contains('control-owner'), null, { polling: 100 });
   await studentRoads.fill('#answer-input', '9');
   await teacherRoads.waitForFunction(() => window.getBoardTrainerState().tasks[2].answer === '9', null, { polling: 100 });
@@ -1085,7 +1125,7 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
   await waitMirror(teacher, 'connected');
   const reloadedTeacherRoads = await trainerFrame(teacher, 'practice-1-5-roads-grid.html');
   await reloadedTeacherRoads.waitForFunction(() => window.getBoardTrainerState().tasks[2].answer === '9', null, { polling: 100 });
-  await teacher.click('#controlToggle');
+  await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => !document.body.classList.contains('control-owner'), null, { polling: 100 });
   const authoritativeState = await reloadedTeacherRoads.evaluate(() => window.getBoardTrainerState());
 

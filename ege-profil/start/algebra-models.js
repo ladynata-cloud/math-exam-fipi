@@ -17,6 +17,21 @@
     const subscriptions = [];
     return { on(el, name, fn, options) { el.addEventListener(name, fn, options); subscriptions.push(() => el.removeEventListener(name, fn, options)); }, cleanup() { subscriptions.forEach(fn => fn()); } };
   }
+  function boardShape(value, keys) {
+    return value !== null && typeof value === 'object' && !Array.isArray(value) &&
+      Reflect.ownKeys(value).length === keys.length && keys.every(key => {
+        const property = Object.getOwnPropertyDescriptor(value, key);
+        return property && property.enumerable && Object.hasOwn(property, 'value');
+      });
+  }
+  const boardDraft = value => typeof value === 'string' && value.length <= 200 &&
+    (value === '' || (Number.isFinite(Number(value)) && /^-?(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value)));
+  const boardFeedback = value => ['initial', 'changed', 'correct', 'incorrect'].includes(value);
+  function showFeedback(element, mode, messages) {
+    element.textContent = messages[mode];
+    if (mode === 'correct' || mode === 'incorrect') element.dataset.correct = String(mode === 'correct');
+    else delete element.dataset.correct;
+  }
   const circleOptions = {
     'angle-circle': {
       title: 'Один луч — разные повороты', goal: 'Установите угол −300°. Убедитесь, что конечный луч совпадает с 60°, а запись в радианах сохраняет отрицательный поворот.',
@@ -55,10 +70,19 @@
       retry: 'Нужно удвоить α и получить 64°. Угол α должен быть острым, без полного оборота.'
     }
   };
+  function validCircleBoardState(kind, value) {
+    if(!boardShape(value,['kind','degrees','input','error','feedback'])||value.kind!==kind||
+      !Number.isFinite(value.degrees)||value.degrees < -3600||value.degrees > 3600||Math.round(value.degrees*10)/10!==value.degrees||
+      !boardDraft(value.input)||!['none','empty','range'].includes(value.error)||!boardFeedback(value.feedback))return false;
+    const draftNumber=Number(value.input),checked=value.feedback==='correct'||value.feedback==='incorrect';
+    return !((value.error==='none'&&value.input!==String(value.degrees))||(value.error==='empty'&&value.input!=='')||
+      (value.error==='range'&&(value.input===''||(Number.isFinite(draftNumber)&&draftNumber>=-3600&&draftNumber<=3600)))||
+      (checked&&(value.feedback==='correct')!==circleOptions[kind].test(value.degrees,clean(Math.sin(value.degrees*Math.PI/180)),clean(Math.cos(value.degrees*Math.PI/180)))));
+  }
   function circleFactory(kind) {
     return function (container) {
       const config = circleOptions[kind], life = lifecycle(), id = `profile-circle-${++sequence}`;
-      let degrees = 20, dragging = false, activePointer = null, goalChecked = false;
+      let degrees = 20, dragging = false, activePointer = null, goalChecked = false, goalFeedback = 'initial', inputError = 'none', disposed = false;
       container.innerHTML = `<div class="circle-lab">
         <h3>${config.title}</h3>
         <p>Это лаборатория: её значения не связаны с ответами практики. Перетащите точку P или измените угол с клавиатуры.</p>
@@ -97,13 +121,16 @@
         <p class="lab-feedback" data-feedback role="status" aria-live="polite">Измените угол и проверьте свою конструкцию.</p>
       </div>`;
       const get = s => container.querySelector(s), svg = get('svg'), number = get('[data-angle-number]'), range = get('[data-angle-range]'), feedback = get('[data-feedback]');
+      const errors = { none: '', empty: 'Введите угол в градусах.', range: 'Введите угол от −3600° до 3600°.' };
+      const messages = { initial: 'Измените угол и проверьте свою конструкцию.', changed: 'Конструкция изменена. Проверьте цель ещё раз.', correct: config.success, incorrect: config.retry };
+      function showError(code) { inputError = code; get('[data-input-error]').textContent = errors[code]; }
       const setAttrs = (el, attrs) => Object.entries(attrs).forEach(([key,value]) => el.setAttribute(key,value));
       const point = a => ({x:220+125*Math.cos(a*Math.PI/180),y:185-125*Math.sin(a*Math.PI/180)});
       if (config.reference !== undefined) {
         const ref=point(config.reference);
         get('[data-reference]').innerHTML=`<path d="M220 185L${ref.x} ${ref.y}" stroke="#768397" stroke-dasharray="5 4"/><path d="M95 ${ref.y}H345" stroke="#aeb9c9" stroke-dasharray="4 4"/><circle cx="${ref.x}" cy="${ref.y}" r="7" fill="#768397"/><text x="${ref.x+10}" y="${ref.y+10}" fill="#4c5b71" font-size="14">40°</text>`;
       }
-      function render() {
+      function render(preserveGoal = false) {
         const radians=degrees*Math.PI/180,s=clean(Math.sin(radians)),c=clean(Math.cos(radians)),p=point(degrees),tan=c===0?null:s/c;
         number.value=String(degrees); range.value=String(clamp(degrees,-720,720));
         setAttrs(get('[data-point]'),{cx:p.x,cy:p.y}); setAttrs(get('[data-label]'),{x:clamp(p.x+15,50,360),y:clamp(p.y-10,46,335)});
@@ -131,15 +158,15 @@
           } else text+='<br>Луч параллелен прямой x = 1: точки пересечения нет.';
           get('[data-tangent]').innerHTML=drawing;
         }
-        get('[data-readout]').innerHTML=text;
+        get('[data-readout]').innerHTML=text;root.ProfileSolutions?.formatFractions(get('[data-readout]'));
         get('desc').textContent=`Угол ${fmt(degrees)} градусов. Косинус ${fmt(c)}, синус ${fmt(s)}. ${quadrant}. Стрелки меняют угол на один градус, Home задаёт ноль.`;
-        if (goalChecked) { goalChecked=false; feedback.textContent='Конструкция изменена. Проверьте цель ещё раз.';delete feedback.dataset.correct; }
+        if (goalChecked && !preserveGoal) { goalChecked=false; goalFeedback='changed'; showFeedback(feedback, goalFeedback, messages); }
       }
       function setDegree(value) {
-        if (!Number.isFinite(value)||value < -3600||value > 3600) { get('[data-input-error]').textContent='Введите угол от −3600° до 3600°.';return; }
-        degrees=Math.round(value*10)/10;get('[data-input-error]').textContent='';render();
+        if (!Number.isFinite(value)||value < -3600||value > 3600) { showError('range');return; }
+        degrees=Math.round(value*10)/10;showError('none');render();
       }
-      life.on(number,'input',()=>{ if(number.value.trim()===''){get('[data-input-error]').textContent='Введите угол в градусах.';return;}setDegree(Number(number.value)); });
+      life.on(number,'input',()=>{ if(number.value.trim()===''){showError('empty');return;}setDegree(Number(number.value)); });
       life.on(range,'input',()=>setDegree(Number(range.value)));
       container.querySelectorAll('[data-delta]').forEach(button=>life.on(button,'click',()=>setDegree(clamp(degrees+Number(button.dataset.delta),-3600,3600))));
       life.on(get('[data-reset]'),'click',()=>setDegree(0));
@@ -163,12 +190,23 @@
       life.on(svg,'pointerup',endDrag);life.on(svg,'pointercancel',endDrag);life.on(svg,'lostpointercapture',()=>{dragging=false;activePointer=null;});
       life.on(get('[data-check]'),'click',()=>{
         const s=clean(Math.sin(degrees*Math.PI/180)),c=clean(Math.cos(degrees*Math.PI/180));
-        const passed=config.test(degrees,s,c);feedback.textContent=passed?config.success:config.retry;feedback.dataset.correct=String(passed);goalChecked=true;
+        const passed=config.test(degrees,s,c);goalFeedback=passed?'correct':'incorrect';showFeedback(feedback, goalFeedback, messages);goalChecked=true;
       });
-      render();return()=>{life.cleanup();if(activePointer!==null&&svg.hasPointerCapture(activePointer))svg.releasePointerCapture(activePointer);};
+      render();
+      const cleanup=()=>{disposed=true;life.cleanup();if(activePointer!==null&&svg.hasPointerCapture(activePointer))svg.releasePointerCapture(activePointer);};
+      cleanup.getBoardState=()=>({kind,degrees,input:number.value,error:inputError,feedback:goalFeedback});
+      cleanup.applyBoardState=value=>{
+        if(disposed||!validCircleBoardState(kind,value))throw new TypeError('Invalid circle board state');
+        const checked=value.feedback==='correct'||value.feedback==='incorrect';
+        // Hydration renders the saved construction directly; it is not a learner action.
+        dragging=false;if(activePointer!==null&&svg.hasPointerCapture(activePointer))svg.releasePointerCapture(activePointer);activePointer=null;
+        degrees=value.degrees;goalFeedback=value.feedback;goalChecked=checked;
+        render(true);number.value=value.input;showError(value.error);showFeedback(feedback,goalFeedback,messages);
+      };
+      return cleanup;
     };
   }
-  Object.keys(circleOptions).forEach(id=>{models[id]=circleFactory(id);});
+  Object.keys(circleOptions).forEach(id=>{models[id]=circleFactory(id);models[id].validateBoardState=value=>validCircleBoardState(id,value);});
 
   models['power-log'] = function (container) {
     const life=lifecycle(),id=`profile-power-${++sequence}`;

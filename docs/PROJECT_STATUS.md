@@ -2,22 +2,48 @@
 
 Updated: 2026-10-23 (Asia/Novosibirsk)
 
-## Prepared for review: profile cabinet entry to the full current course
+## Prepared for review: profile task 8 on the shared board
 
-- [Scope](tasks/PROFILE_FULL_COURSE_ENTRY.md), SMALL review, base
-  `a05f3b60a590da5ca5d149c86262241ace186973`; explicit owner START received.
-- Live cabinet practice links already open the current profile course, including
-  `#practice/stereo-box/independent`. Its first screen only exposes thirteen
-  quick entries; the full `#calm` page additionally has task 16, a mixed checkpoint
-  and school-topic revision. The existing published profile status is consistent
-  with the course content; the missing full-course entry is a navigation gap.
-- A visible canonical full-course link is prepared above the existing practice
-  cards. The existing profile-entry browser regression passed; desktop1365px and
-  mobile390px screenshots show the complete button before the catalogue. Syntax,
-  catalogue freshness and whitespace checks passed: `PROFILE_FULL_COURSE_ENTRY_OK`.
-- Course content, learner data and progress semantics are unchanged. Exact-head
-  CI belongs to the Draft PR handoff. Board synchronization remains paused.
-  No merge or deployment is authorized or claimed.
+- [Scope](tasks/PROFILE_EXPRESSIONS_BOARD_SYNC.md), MEDIUM review, base
+  `5496bde6f9dff75221cde7ed30a1905f71ae7ec5`, branch
+  `feat/ege8-board-sync`. This separate task resumes the requested trainer
+  synchronization after completion of PR #310.
+- The original `ege-profil/start/index.html#exam/8` URL opens a registered
+  wrapper of the same six topics. Shared state includes task/draft, accepted
+  steps, feedback, help, worked solutions, models and the current route.
+  The existing protocol handles control transfer, reload and late joining.
+- The real two-participant browser gate passed, including the original URL,
+  320px layout, teacher/student reload, late join and no echo. Personal course,
+  calm, checkpoint and return stores remained unchanged. Independent review
+  covered 44 routes and 54 completed attempts with 248 restoration roundtrips.
+- Adapter/picker unit, registry unit/integration and affected standalone
+  mathematics, input, calm, solution and browser regressions passed. The B2
+  live harness now follows the existing board dialogs with all assertions
+  preserved. Exact-head CI is pending publication and will be recorded in the
+  Draft PR handoff.
+- Supplemental B2 `roads` failed on an inherited legacy-UI selector; that
+  trainer's runtime is unchanged. The full B2 suite is not claimed as passing.
+- Authored data, checking/credit rules and server/SDK contracts are unchanged.
+  No merge or publication is claimed; PR #310 release permission does not
+  authorize release of this task.
+
+## Published: profile cabinet entry to the full current course
+
+- [Scope](tasks/PROFILE_FULL_COURSE_ENTRY.md), SMALL review. PR #310 merged as
+  `5496bde6f9dff75221cde7ed30a1905f71ae7ec5` on 2026-10-23 at 14:22:04 UTC,
+  with sole parent `a05f3b60a590da5ca5d149c86262241ace186973`.
+- All four checks passed on reviewed head
+  `8114f71e3f6242211cc82cc56da14a0872d3ee3f`; the school check's initial
+  dependency-download timeout passed on a rerun of the same head.
+  Pages run `39969019947` succeeded on the merge commit.
+- At 14:23:34 UTC, the published `learning/index.html` and `learning/app.js`
+  bytes matched the reviewed files on both Pages and Amvera. The live teacher
+  interface displayed "Открыть полный курс ЕГЭ профиль →"; following it opened
+  the canonical `#calm` course with tasks 1–13, task 16, the mixed checkpoint
+  and current stereometry material.
+- Synthetic profile-entry regression passed. A real learner-account login was
+  not performed. Course content, learner data and progress semantics were
+  unchanged. Release gate: `PROFILE_FULL_COURSE_ENTRY_PUBLISHED_OK`.
 
 ## Prepared for release review: Atanasyan 7–9 chapter II, triangles
 

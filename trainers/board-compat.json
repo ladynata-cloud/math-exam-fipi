@@ -364,6 +364,20 @@
       "notes": "Открывается в iframe доски; автопоказ, сценарий и экспорт сцен не изменяют прогресс ученика."
     },
     {
+      "trainerId": "ege-profile-expressions",
+      "file": "trainers/ege-profile-expressions.html",
+      "title": "ЕГЭ профиль №8: выражения",
+      "group": "ЕГЭ профиль / алгебра",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по шести темам №8: маршрут, задача, ответы, шаги и подсказки. Личный прогресс курса не изменяется."
+    },
+    {
       "trainerId": "profile-log-inequalities",
       "file": "trainers/ege-profile/log-inequalities/index.html",
       "title": "Логарифмические неравенства — по шагам",
