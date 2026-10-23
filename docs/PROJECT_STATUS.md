@@ -5,7 +5,7 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 ## In progress: Peterson 6 course in the cabinet and on the shared board
 
 - [Scope](tasks/PETERSON6_BOARD_SYNC.md), MEDIUM review, base
-  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`, branch
+  `d524c9107133d6a948ff11c18095b5ca01b660de`, branch
   `feat/peterson6-board-sync`. The owner requested cloud assignment of the
   published course and synchronization with the existing interactive board.
 - Thin registered wrapper for all 14 topics / 224 tasks and 20 practice skills.
@@ -17,10 +17,30 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 - Local and exact-head cloud evidence, review findings and publication status
   will be recorded in the PR. No completed deployment is claimed here.
 
-- Concurrent PRs #318, #315 and #319 are preserved through normal merges:
+- Concurrent PRs #318, #315, #319 and #313 are preserved through normal merges:
   both board aliases, the ten-entry mirror registry, Atanasyan manual work,
-  all Vilenkin managed modules/profiles and the standalone Makarychev course.
+  all Vilenkin managed modules/profiles, the standalone Makarychev course,
+  and the published writing/screenshot/layout tools. The host keeps the
+  combined Peterson/Atanasyan picker cache token and iframe keyboard protection.
   Combined checks and independent merge review are required before publication.
+
+## Merged code: individual board tools and screen modes
+
+- [Scope](tasks/INDIVIDUAL_BOARD_TOOLS.md), [PR #313](https://github.com/ladynata-cloud/math-exam-fipi/pull/313), MEDIUM review.
+  Merged as `d524c9107133d6a948ff11c18095b5ca01b660de`, sole parent
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`, exact reviewed tree
+  `a789ea65f334e1a4db10e36515a5144492314baa`.
+- Adds writing tools, screenshot insertion, independent split/pan/zoom and
+  Together / Trainer / Board views using the existing room/control transport.
+  The live trainer, shared control, own-author undo/redo and keyboard protection
+  remain intact. Existing rooms remain memory-backed.
+- PR #313 records six exact-head CI jobs passing on
+  `f22265363dd0145e8fd9641f418f6aded0b293eb`, focused independent review,
+  150 focused checks and six combined browser gates. Its first writing job was
+  cancelled during dependency downloads; the unchanged second attempt passed.
+  The merge commit records the owner's explicit release authorization.
+- Production lesson and physical stylus/iPad verification are not inferred by
+  this reconciliation. Additional START adapters belong to their separate task.
 
 ## Merged: Vilenkin 6 part 1 in cloud cabinets
 
