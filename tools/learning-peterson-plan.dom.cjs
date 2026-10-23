@@ -182,3 +182,98 @@ test('actual teacher preview exposes the same pupil course card and preserves in
     } finally { dom.window.close(); }
   }
 });
+
+function combinedCabinet(t, { teacher = false, readPlan = async () => structuredClone(plan), legacyHelper = false } = {}) {
+  const dom = fixture(source('index.html'), 'https://cabinet.example/learning/#home'), { window } = dom, calls = [];
+  const pupil = { id: 'fixture_combined', name: 'Проверочный ученик', login: 'fixture-combined', role: 'student', profile: { course: 'vilenkin6', goal: null, focus: '', version: 1 } };
+  window.setInterval = () => 0;
+  window.HTMLDialogElement.prototype.close = function () { this.open = false; };
+  window.HTMLDialogElement.prototype.showModal = function () { this.open = true; };
+  window.eval(source('vilenkin6-course.js'));
+  if (legacyHelper) delete window.LearningPreparationUI.planCoursesMarkup;
+  const app = source('app.js'), startup = app.lastIndexOf("(async()=>{const revision=authRevision;try{try{const status=await api('/status')");
+  assert(startup > 0);
+  window.eval(app.slice(0, startup) + `window.fixtureApp={set(person,people=[]){account=person;students=people;assignments=[];attempts=[];authReady=false;},render};})();`);
+  window.fetch = async (url, options = {}) => {
+    const route = url.replace('/api/learning', ''); calls.push({ route, method: options.method || 'GET' });
+    let result;
+    if (route === '/plan' || route === '/teacher/students/fixture_combined/plan') result = await readPlan();
+    else if (route === '/progress') result = { progress: [{ trainerId: 'vilenkin6-part1', contentId: 'lesson-1', completed: true, latest: { id: 'fixture_saved_work', outcome: 'hinted' } }] };
+    else if (route.endsWith('/profile')) result = { profile: pupil.profile };
+    else if (route.endsWith('/report')) result = { student: pupil, attempts: [] };
+    else throw Error('Unexpected API route ' + route);
+    return { ok: true, status: 200, json: async () => result };
+  };
+  window.fixtureApp.set(teacher ? { id: 'fixture_teacher', role: 'teacher', name: 'Преподаватель' } : pupil, [pupil]);
+  t.after(() => window.close());
+  return { window, calls, pupil, main: window.document.querySelector('#main'), async go(route) { window.history.replaceState(null, '', '#' + route); await window.fixtureApp.render(); await tick(); } };
+}
+
+test('combined Vilenkin profile keeps its 27 saved topics and shows the Peterson reference on home, route and course', async t => {
+  const mixedPlan = { ...structuredClone(plan), items: [...plan.items, { catalogId: 'vilenkin6-part1:lesson-2', reason: 'Повтори тему курса.', priority: 'normal' }] };
+  const before = JSON.stringify(mixedPlan), f = combinedCabinet(t, { readPlan: async () => structuredClone(mixedPlan) });
+  for (const route of ['home', 'route', 'course']) {
+    const start = f.calls.length;
+    await f.go(route);
+    links(f.main);
+    const course = f.main.querySelector('[data-vilenkin6-course]'); assert(course, route);
+    const all = [...course.querySelectorAll('[data-vilenkin6-open]')];
+    assert.equal(new Set(all.map(n => n.dataset.vilenkin6Open)).size, 27, 'All Vilenkin topics remain accessible');
+    assert.equal(course.querySelectorAll('[data-vilenkin6-plan] button').length, 1, 'Existing Vilenkin plan filtering remains intact');
+    assert.equal(course.querySelector('[data-vilenkin6-plan] p').textContent, mixedPlan.note);
+    assert.match(course.querySelector('[data-vilenkin6-progress]').textContent, /Открыто 1 из 27/);
+    assert.match(course.querySelector('[data-vilenkin6-status="vilenkin6-part1:lesson-1"]').textContent, /Продолжить сохранённую работу/);
+    assert.deepEqual(f.calls.slice(start).map(c => c.route).sort(), ['/plan', '/progress'], 'The linked card reuses the one existing plan read');
+    assert.equal(f.pupil.profile.course, 'vilenkin6');
+    assert.equal(JSON.stringify(mixedPlan), before);
+  }
+  assert(f.calls.every(c => c.method === 'GET'), 'Rendering neither starts nor rewrites a managed attempt');
+});
+
+test('combined teacher preview retains Vilenkin contents and the pupil-safe Peterson card', async t => {
+  const f = combinedCabinet(t, { teacher: true });
+  await f.go('preview=fixture_combined');
+  links(f.main);
+  assert.equal(f.main.querySelectorAll('[data-vilenkin6-preview] ol li').length, 27);
+  assert.equal(f.main.querySelector('.route-plan-note').textContent, plan.note);
+  assert.equal(f.main.querySelector('.route-plan-note').parentElement.querySelectorAll('ol li').length, 3);
+  assert.equal(f.main.querySelectorAll('[data-vilenkin6-open]').length, 0, 'Teacher preview remains read-only');
+  assert(f.calls.every(c => c.method === 'GET'));
+});
+
+test('a Vilenkin profile without a linked course retains its saved work without a Peterson card', async t => {
+  const originalPlan = { ...structuredClone(plan), note: 'Прежние рекомендации по курсу.' };
+  const before = JSON.stringify(originalPlan), f = combinedCabinet(t, { readPlan: async () => structuredClone(originalPlan) });
+  await f.go('home');
+  assert(f.main.querySelector('[data-vilenkin6-course]'));
+  assert.equal(f.main.querySelector('[data-plan-course]'), null);
+  assert.equal(new Set([...f.main.querySelectorAll('[data-vilenkin6-open]')].map(n => n.dataset.vilenkin6Open)).size, 27);
+  assert.equal(f.main.querySelector('[data-vilenkin6-plan] p').textContent, originalPlan.note);
+  assert.match(f.main.querySelector('[data-vilenkin6-status="vilenkin6-part1:lesson-1"]').textContent, /Продолжить сохранённую работу/);
+  assert.deepEqual(f.calls.map(c => c.route).sort(), ['/plan', '/progress']);
+  assert(f.calls.every(c => c.method === 'GET'));
+  assert.equal(JSON.stringify(originalPlan), before);
+});
+
+test('late Vilenkin plan responses cannot attach a Peterson card to another cabinet view', async t => {
+  let resolvePlan;
+  const waiting = new Promise(resolve => { resolvePlan = resolve; });
+  const f = combinedCabinet(t, { readPlan: () => waiting });
+  await f.go('home');
+  assert(f.main.querySelector('[data-vilenkin6-course]'));
+  await f.go('assignments');
+  const nextView = f.main.innerHTML;
+  resolvePlan(structuredClone(plan)); await tick();
+  assert.equal(f.main.innerHTML, nextView);
+  assert.equal(f.main.querySelector('[data-plan-course]'), null);
+});
+
+test('cached older linked-course helper does not block Vilenkin saved work', async t => {
+  const f = combinedCabinet(t, { legacyHelper: true });
+  await f.go('home');
+  assert(f.main.querySelector('[data-vilenkin6-course]'));
+  assert.equal(f.main.querySelector('[data-plan-course]'), null);
+  assert.equal(f.main.querySelector('[data-vilenkin6-plan] p').textContent, plan.note);
+  assert.match(f.main.querySelector('[data-vilenkin6-progress]').textContent, /Открыто 1 из 27/);
+  assert(f.calls.every(c => c.method === 'GET'));
+});

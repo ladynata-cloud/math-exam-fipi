@@ -3,9 +3,10 @@
 ## Identity and scope
 
 - Date: 2026-10-24 (Asia/Novosibirsk).
-- Base: `main`, `202d39bf826c8c7e030e59ff162fe808000cae7e`.
+- Base: `main`, `07189de58b7f5d60c02ea6ca6aa9450a324a377f`.
   Initial implementation used `1f9d8aec82bd2909917ab22746d94571d87c59c4`;
-  concurrently published PR #318 is preserved through a normal merge.
+  concurrently published PRs #318, #315 and #319 are preserved through normal
+  merges, including their course entries, V6 profile schema and learning decoders.
 - Branch: `feat/peterson6-board-sync`.
 - Review level: MEDIUM, bounded integration using the existing board protocol.
 - The owner requests the published Peterson course in an existing learner's
@@ -70,7 +71,8 @@ Main risks are divergent model closures, draft loss, accidentally importing
 personal work and incorrect cabinet credit. Mitigations are semantic snapshots,
 strict bounds, isolated memory and reference cards outside managed attempts.
 Rollback is a normal scoped revert; do not delete personal course storage,
-learner accounts, earlier teaching plans or other published courses.
+learner accounts, earlier teaching plans or other published courses. Preserve
+the already-published V6 schema and decoder; do not deploy a pre-V6 server image.
 
 ## Execution
 

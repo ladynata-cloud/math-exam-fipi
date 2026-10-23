@@ -5,7 +5,7 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 ## In progress: Peterson 6 course in the cabinet and on the shared board
 
 - [Scope](tasks/PETERSON6_BOARD_SYNC.md), MEDIUM review, base
-  `202d39bf826c8c7e030e59ff162fe808000cae7e`, branch
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`, branch
   `feat/peterson6-board-sync`. The owner requested cloud assignment of the
   published course and synchronization with the existing interactive board.
 - Thin registered wrapper for all 14 topics / 224 tasks and 20 practice skills.
@@ -17,10 +17,30 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 - Local and exact-head cloud evidence, review findings and publication status
   will be recorded in the PR. No completed deployment is claimed here.
 
-- Integrated concurrently published PR #318 through a normal merge: both course
-  entries and aliases, the ten-entry mirror registry, the Atanasyan manual
-  learning contract and host keyboard protection are preserved. Combined checks
-  and independent merge review are required before publication.
+- Concurrent PRs #318, #315 and #319 are preserved through normal merges:
+  both board aliases, the ten-entry mirror registry, Atanasyan manual work,
+  all Vilenkin managed modules/profiles and the standalone Makarychev course.
+  Combined checks and independent merge review are required before publication.
+
+## Merged: Vilenkin 6 part 1 in cloud cabinets
+
+- [Scope](tasks/VILENKIN6_CLOUD_CABINET.md), [PR #315](https://github.com/ladynata-cloud/math-exam-fipi/pull/315), HIGH review.
+  Merged as `52cb1c1a5c731acd660139328f0001ccfa33a08b`, sole parent
+  `202d39bf826c8c7e030e59ff162fe808000cae7e`, exact reviewed tree
+  `8c9abbf25ed963f1ae2ad68bd536c4528138d308`.
+- All 27 published modules use managed cloud learning with saved drafts,
+  accepted steps, help, models, checkpoints and owned textbook notes.
+  The original 475 tasks, 81 examples and source PDF remain unchanged.
+  Dedicated profiles migrate additively; authentication remains unchanged.
+- PR #315 records independent review, 309/309 composed backend tests and
+  all nine exact-head workflows passing: 12 successful jobs and the explicitly
+  waived external-review job skipped, not counted as a pass. Reviewed head:
+  `06381875e14826ea3e5d0d0beea1a27228c2dc27`. The owner authorized that
+  publication and its scoped external-review exception.
+- Production assignment and deployment verification belong to that PR's
+  release record; no additional pupil action is claimed by this reconciliation.
+- Preserve the expanded profile enum, V6 decoder/catalog and persistent data
+  during rollback. A raw pre-V6 server image cannot read the expanded schema.
 
 ## Merged: Atanasyan 92a in the cabinet and on the shared board
 
