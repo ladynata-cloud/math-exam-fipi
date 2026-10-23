@@ -5,6 +5,8 @@
   const taskModels = root.ProfileTaskModels = root.ProfileTaskModels || {};
   const labs = root.ProfileModels = root.ProfileModels || {};
   const TAU = Math.PI * 2;
+  const BOARD_YAW_LIMIT = 1e6;
+  const boardFields = ['taskId', 'yaw', 'pitch', 'extraOpen', 'announcement', 'announcedYaw', 'announcedPitch'];
   const C = { ink: '#264b48', edge: '#48736b', hidden: '#81978f', base: '#bfe3d5', height: '#ae5428', section: '#bcd9f1', face: '#e7f0eb', radius: '#855b98' };
   const names = { box: 'Прямоугольный параллелепипед', cube: 'Куб', prism: 'Призма', pyramid: 'Пирамида', cylinder: 'Цилиндр', cone: 'Конус', sphere: 'Шар', compound: 'Составное тело' };
   const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -17,6 +19,29 @@
   const mid = (a, b) => mul(add(a, b), 0.5);
   const mean = points => mul(points.reduce((s, p) => add(s, p), [0, 0, 0]), 1 / points.length);
   const finitePositive = n => typeof n === 'number' && Number.isFinite(n) && n > 0;
+  const validCamera = (yaw, pitch) => Number.isFinite(yaw) && Math.abs(yaw) <= BOARD_YAW_LIMIT &&
+    Number.isFinite(pitch) && pitch >= 0.14 && pitch <= 1.25;
+  // Keep ordinary cumulative rotations and their spoken degrees unchanged. Only
+  // an extreme accumulated angle is reduced by whole turns before publication.
+  const boundedYaw = value => Math.abs(value) > BOARD_YAW_LIMIT ? value % TAU : value;
+  function readBoardState(taskId, value) {
+    try {
+      if (value === null || typeof value !== 'object' || Array.isArray(value) ||
+        ![Object.prototype, null].includes(Object.getPrototypeOf(value)) ||
+        Reflect.ownKeys(value).length !== boardFields.length) return null;
+      const state = {};
+      for (const key of boardFields) {
+        const property = Object.getOwnPropertyDescriptor(value, key);
+        if (!property || !property.enumerable || !Object.hasOwn(property, 'value')) return null;
+        state[key] = property.value;
+      }
+      if (state.taskId !== taskId || !validCamera(state.yaw, state.pitch) || typeof state.extraOpen !== 'boolean' ||
+        !['none', 'rotate', 'reset', 'top', 'side'].includes(state.announcement)) return null;
+      if (state.announcement === 'rotate' ? !validCamera(state.announcedYaw, state.announcedPitch) :
+        state.announcedYaw !== null || state.announcedPitch !== null) return null;
+      return state;
+    } catch (_) { return null; }
+  }
   function shown(key, value) {
     const text = String(value);
     if (key === 'scale' || key === 'cut' || text === key || /=|основан|поверх|объём|объем|площадь|радиус|высота|ребро|сторон/i.test(text)) return text;
@@ -31,9 +56,12 @@
     const stepData = typeof step === 'object' ? step : (task.steps || [])[Number(step) || 0];
     const focus = independent ? (diagram.focus || 'neutral') : (stepData && stepData.focus) || diagram.focus || 'base';
     const saved = container._profileStereoView;
-    let yaw = saved && saved.task === task.id ? saved.yaw : -0.65;
-    let pitch = saved && saved.task === task.id ? saved.pitch : 0.40;
+    const savedCamera = saved && saved.task === task.id && Number.isFinite(saved.yaw) &&
+      Number.isFinite(saved.pitch) && saved.pitch >= 0.14 && saved.pitch <= 1.25;
+    let yaw = savedCamera ? boundedYaw(saved.yaw) : -0.65;
+    let pitch = savedCamera ? saved.pitch : 0.40;
     let active = null;
+    let disposed = false, announcement = 'none', announcedYaw = null, announcedPitch = null;
     const listeners = [];
     const has = key => Object.prototype.hasOwnProperty.call(labels, key);
     const numbers = diagram.dimensions || [];
@@ -77,13 +105,26 @@
     const svg = container.querySelector('svg');
     const controls = container.querySelector('.stereo-controls');
     const extraControls = container.querySelector('.stereo-extra-controls');
+    const extraView = extraControls.closest('details');
     const status = container.querySelector('.stereo-rotation-status');
     function on(el, name, handler) { el.addEventListener(name, handler); listeners.push(() => el.removeEventListener(name, handler)); }
-    function rotate(dx, dy, announce) {
-      yaw += dx; pitch = clamp(pitch + dy, 0.14, 1.25); render();
-      if (announce) status.textContent = `Вид изменён. Поворот ${Math.round(yaw * 180 / Math.PI)} градусов; наклон ${Math.round(pitch * 180 / Math.PI)} градусов.`;
+    function renderAnnouncement() {
+      status.textContent = announcement === 'rotate'
+        ? `Вид изменён. Поворот ${Math.round(announcedYaw * 180 / Math.PI)} градусов; наклон ${Math.round(announcedPitch * 180 / Math.PI)} градусов.`
+        : ({ none: '', reset: 'Исходный вид.', top: 'Вид сверху под углом.', side: 'Вид сбоку под небольшим углом.' })[announcement];
     }
-    function reset() { yaw = -0.65; pitch = 0.40; render(); status.textContent = 'Исходный вид.'; }
+    function announce(mode) {
+      announcement = mode;
+      announcedYaw = mode === 'rotate' ? yaw : null;
+      announcedPitch = mode === 'rotate' ? pitch : null;
+      renderAnnouncement();
+    }
+    function rotate(dx, dy, shouldAnnounce) {
+      if (!Number.isFinite(dx) || !Number.isFinite(dy)) return;
+      yaw = boundedYaw(yaw + dx); pitch = clamp(pitch + dy, 0.14, 1.25); render();
+      if (shouldAnnounce) announce('rotate');
+    }
+    function reset() { yaw = -0.65; pitch = 0.40; render(); announce('reset'); }
     function button(text, action, options = {}) {
       const el = document.createElement('button'); el.type = 'button'; el.textContent = text;
       el.style.cssText = 'min-height:44px;max-width:100%;padding:8px 11px;border:1px solid #8aada0;border-radius:8px;background:#fff;color:#164c41;font:inherit;cursor:pointer';
@@ -92,8 +133,8 @@
     }
     button('← Повернуть', () => rotate(-Math.PI / 9, 0, true), { label: 'Повернуть влево' });
     button('Повернуть →', () => rotate(Math.PI / 9, 0, true), { label: 'Повернуть вправо' });
-    button('Посмотреть сверху', () => { pitch = 1.04; render(); status.textContent = 'Вид сверху под углом.'; }, { extra: true });
-    button('Посмотреть сбоку', () => { pitch = 0.14; render(); status.textContent = 'Вид сбоку под небольшим углом.'; }, { extra: true });
+    button('Посмотреть сверху', () => { pitch = 1.04; render(); announce('top'); }, { extra: true });
+    button('Посмотреть сбоку', () => { pitch = 0.14; render(); announce('side'); }, { extra: true });
     button('Исходный вид', reset, { extra: true });
     on(svg, 'keydown', e => {
       const moves = { ArrowLeft: [-Math.PI / 18, 0], ArrowRight: [Math.PI / 18, 0], ArrowUp: [0, 0.10], ArrowDown: [0, -0.10] };
@@ -103,7 +144,7 @@
     on(svg, 'pointerdown', e => {
       if (e.button !== 0 || active) return;
       active = { id: e.pointerId, x: e.clientX, y: e.clientY };
-      if (svg.setPointerCapture) svg.setPointerCapture(e.pointerId);
+      try { if (svg.setPointerCapture) svg.setPointerCapture(e.pointerId); } catch (_) { /* A detached SVG cannot capture a pointer. */ }
       svg.style.cursor = 'grabbing';
     });
     on(svg, 'pointermove', e => {
@@ -112,12 +153,14 @@
       active.x = e.clientX; active.y = e.clientY;
       rotate(dx * 0.012, -dy * 0.007, false);
     });
-    function release(e) {
-      if (active && e.pointerId === active.id) {
-        active = null; svg.style.cursor = 'grab';
-        if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) svg.releasePointerCapture(e.pointerId);
-      }
+    function stopDrag() {
+      const pointer = active;
+      active = null; svg.style.cursor = 'grab';
+      try {
+        if (pointer && svg.releasePointerCapture && (!svg.hasPointerCapture || svg.hasPointerCapture(pointer.id))) svg.releasePointerCapture(pointer.id);
+      } catch (_) { /* Capture may already be lost during a board rerender. */ }
     }
+    function release(e) { if (active && e.pointerId === active.id) stopDrag(); }
     on(svg, 'pointerup', release); on(svg, 'pointercancel', release);
     on(svg, 'lostpointercapture', () => { active = null; svg.style.cursor = 'grab'; });
 
@@ -378,10 +421,31 @@
       container._profileStereoView = { task: task.id, yaw, pitch };
     }
     render();
-    return () => { active = null; listeners.splice(0).forEach(remove => remove()); };
+    const cleanup = () => {
+      disposed = true; listeners.splice(0).forEach(remove => remove()); stopDrag();
+    };
+    cleanup.getBoardState = () => ({ taskId: task.id, yaw, pitch, extraOpen: extraView.open, announcement, announcedYaw, announcedPitch });
+    cleanup.applyBoardState = value => {
+      const state = !disposed && readBoardState(task.id, value);
+      if (!state) throw new TypeError('Invalid stereometry board state');
+      // A remote snapshot restores presentation only. Pointer gestures and
+      // learner callbacks are never replayed, and cannot survive hydration.
+      stopDrag();
+      yaw = state.yaw; pitch = state.pitch;
+      announcement = state.announcement; announcedYaw = state.announcedYaw; announcedPitch = state.announcedPitch;
+      render(); extraView.open = state.extraOpen; renderAnnouncement();
+    };
+    return cleanup;
   }
   (root.ProfileLessons || []).filter(lesson => lesson.group === 'stereometry').forEach(lesson => {
-    (lesson.tasks || []).forEach(task => { if (task.diagram) taskModels[task.id] = (container, current, context) => drawing(container, current || task, context || {}); });
-    if (lesson.model && lesson.tasks && lesson.tasks[0]) labs[lesson.model] = container => drawing(container, lesson.tasks[0], { step: 0, mode: 'introduction' });
+    (lesson.tasks || []).forEach(task => {
+      if (!task.diagram) return;
+      taskModels[task.id] = (container, current, context) => drawing(container, current || task, context || {});
+      taskModels[task.id].validateBoardState = value => !!readBoardState(task.id, value);
+    });
+    if (lesson.model && lesson.tasks && lesson.tasks[0]) {
+      labs[lesson.model] = container => drawing(container, lesson.tasks[0], { step: 0, mode: 'introduction' });
+      labs[lesson.model].validateBoardState = value => !!readBoardState(lesson.tasks[0].id, value);
+    }
   });
 })(globalThis);

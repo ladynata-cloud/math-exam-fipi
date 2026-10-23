@@ -2,30 +2,58 @@
 
 Updated: 2026-10-23 (Asia/Novosibirsk)
 
-## Prepared for review: profile task 8 on the shared board
+## Prepared for release review: profile task 3 stereometry on the shared board
 
-- [Scope](tasks/PROFILE_EXPRESSIONS_BOARD_SYNC.md), MEDIUM review, base
-  `5496bde6f9dff75221cde7ed30a1905f71ae7ec5`, branch
-  `feat/ege8-board-sync`. This separate task resumes the requested trainer
-  synchronization after completion of PR #310.
-- The original `ege-profil/start/index.html#exam/8` URL opens a registered
-  wrapper of the same six topics. Shared state includes task/draft, accepted
-  steps, feedback, help, worked solutions, models and the current route.
-  The existing protocol handles control transfer, reload and late joining.
-- The real two-participant browser gate passed, including the original URL,
-  320px layout, teacher/student reload, late join and no echo. Personal course,
-  calm, checkpoint and return stores remained unchanged. Independent review
-  covered 44 routes and 54 completed attempts with 248 restoration roundtrips.
-- Adapter/picker unit, registry unit/integration and affected standalone
-  mathematics, input, calm, solution and browser regressions passed. The B2
-  live harness now follows the existing board dialogs with all assertions
-  preserved. Exact-head CI is pending publication and will be recorded in the
-  Draft PR handoff.
-- Supplemental B2 `roads` failed on an inherited legacy-UI selector; that
-  trainer's runtime is unchanged. The full B2 suite is not claimed as passing.
-- Authored data, checking/credit rules and server/SDK contracts are unchanged.
-  No merge or publication is claimed; PR #310 release permission does not
-  authorize release of this task.
+- [Scope](tasks/PROFILE_STEREOMETRY_BOARD_SYNC.md), MEDIUM review, base
+  `40682b243b3e7342d4330272f7329e60a1d0f417`, branch
+  `feat/ege3-board-sync`. The owner requested the latest task-3 course after
+  publication of the separate task-8 integration.
+- Bounded scope: eight existing stereometry topics / 48 tasks, shared drafts,
+  steps, help, worked solutions and model views on the classic board. Reuse
+  the existing profile adapter with two fixed course boundaries and preserve
+  task-8 behavior, authored mathematics and personal progress isolation.
+- The registered wrapper and exact canonical aliases are implemented. The
+  course overview now exposes its board link; shared model state contains
+  camera orientation, additional-view disclosure and the last spoken status.
+  Independent code and test reviews found no remaining blocking issue.
+- Final combined adapter/model/picker/registry contracts: 66/66 PASS.
+  Standalone state/Calm/input/solution contracts: 97/97 PASS; stereo/model
+  regression group: 20/20 PASS (groups overlap). The actual task-3 board
+  journey, task-first 68-family browser, 42 worked-solution journeys, picker
+  smoke and targeted B2 live/fail-closed checks passed.
+- The unchanged task-8 browser passed on an isolated repeat after one
+  concurrent run failed its cleared-angle-input assertion. The cause is not
+  established, and the failure is retained in the task record. The known
+  inherited B2 Roads harness issue remains outside this task.
+- Exact-head cloud checks and final gate are recorded in the resulting PR.
+  Merge/publication of this new task requires separate owner authorization.
+  No real-account or production-room testing has been performed.
+
+## Published: profile task 8 on the shared board
+
+- [Scope](tasks/PROFILE_EXPRESSIONS_BOARD_SYNC.md), MEDIUM review. PR #311
+  merged as `40682b243b3e7342d4330272f7329e60a1d0f417`, sole parent
+  `5496bde6f9dff75221cde7ed30a1905f71ae7ec5`; reviewed head
+  `10644c33005a4d66e5839ab7221dd47eeceb02ce`, exact reviewed tree
+  `67aad910e855a0c16ff8fb1fe578a13a6983db58`. No base drift occurred.
+- All seven pre-merge CI checks passed. The automatic post-push profile run
+  `39982828499` has also completed SUCCESS. Pages `39982826964` succeeded on
+  the exact merge. All 12 changed public frontend files matched reviewed
+  bytes through ordinary and versioned URLs (24/24 checks).
+- The active Amvera registry returned the exact seven-entry projection,
+  including `ege-profile-expressions`, with digest
+  `sha256:6201dfb928a792d53a80474ac459966655c3b78b6babcbd30302d4556579d14c`.
+  Final health and registry requests succeeded at 2026-10-23 23:01:59 +07
+  after one transient health 503 during rollout.
+- The original task-8 link opens the wrapper of its six existing topics.
+  Shared state includes task/draft, accepted steps, feedback, help, solutions,
+  models and route. Real local teacher/observer tests covered narrow layout,
+  control handoff, reload, late join and no echo; personal stores stayed intact.
+- Gate: `PROFILE_EXPRESSIONS_BOARD_SYNC_OK`; publication verified. No real
+  account or production-room test was performed. Supplemental B2 Roads has an
+  inherited legacy-selector failure; the full B2 suite is not claimed passing.
+- No new curriculum, mathematical data, server/SDK contract or personal credit
+  rule changed. The owner's PR #311 release authorization has been completed.
 
 ## Published: profile cabinet entry to the full current course
 

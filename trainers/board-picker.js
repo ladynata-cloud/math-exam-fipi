@@ -2,10 +2,11 @@
 (function(root){'use strict';
 const RECENT_KEY='mathexam.trainerBoard.recent.v1';
 const PROFILE_EXPRESSIONS_LESSONS=new Set(['expr-powers','expr-roots','expr-fractions','expr-logarithms','algebra-cosine','algebra-double-angle']);
-function expressionsRoute(hash){
+const PROFILE_STEREOMETRY_LESSONS=new Set(['stereo-box','stereo-cube','stereo-prism','stereo-pyramid','stereo-cylinder','stereo-cone','stereo-sphere','stereo-compound']);
+function profileCourseRoute(hash,position,lessons){
  const parts=hash.slice(1).split('/');
- if(parts.length===2&&['exam','calm'].includes(parts[0])&&parts[1]==='8')return true;
- if(!PROFILE_EXPRESSIONS_LESSONS.has(parts[1]))return false;
+ if(parts.length===2&&['exam','calm'].includes(parts[0])&&parts[1]===position)return true;
+ if(!lessons.has(parts[1]))return false;
  return parts.length===2&&['lesson','example'].includes(parts[0])||parts.length===3&&['practice','repair','pause'].includes(parts[0])&&['guided','plan','independent'].includes(parts[2]);
 }
 function normalize(value){
@@ -19,7 +20,10 @@ function normalize(value){
  // Alias only the literal same-origin course entry. Keep the registry's
  // trainers/ boundary and its rejection of encoded or traversing paths intact.
  const rawPath=raw.replace(/^(?:https?:)?\/\/[^/?#]*/i,'').split(/[?#]/,1)[0];
- if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-profil/start/index.html','/ege-profil/start/'].includes(u.pathname)&&expressionsRoute(u.hash))return '/trainers/ege-profile-expressions.html'+u.search+u.hash;
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-profil/start/index.html','/ege-profil/start/'].includes(u.pathname)){
+  const file=profileCourseRoute(u.hash,'8',PROFILE_EXPRESSIONS_LESSONS)?'ege-profile-expressions.html':profileCourseRoute(u.hash,'3',PROFILE_STEREOMETRY_LESSONS)?'ege-profile-stereometry.html':null;
+  if(file)return '/trainers/'+file+u.search+u.hash;
+ }
  return raw;
 }
 function canonical(value){const u=new URL(normalize(value),location.href);u.searchParams.delete('seed');return u.origin===location.origin?u.pathname+u.search+u.hash:u.href;}
@@ -53,7 +57,7 @@ function mount(options){
  $('retryOpenedTrainer').onclick=()=>{if(!active)return;checks.delete(headerKey(active));options.retry();};loading();
  function setEntries(list){const seen=new Set();entries=list.filter(x=>{try{const key=canonical(x.href);if(seen.has(key))return false;seen.add(key);return typeof x.title==='string';}catch(_){return false;}});const groups=[...new Set(entries.map(x=>x.group))];group.replaceChildren(new Option('Все разделы',''),new Option('Недавние','recent'),...groups.map(x=>new Option(x,x)));renderRecent();render();if(active)$('openedTrainerTitle').textContent=titleFor(active);}
  setEntries(options.fallback.map(x=>({href:'/'+x.file,title:x.title,group:x.group})));
- fetch('board-picker-data.json?v=20261023-board').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
+ fetch('board-picker-data.json?v=20261023-stereo-board').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
  const query=new URLSearchParams(location.search).get('trainer');if(query&&options.role()==='teacher')choose(query);
 }
 root.BoardPicker={normalize,canonical,mount,error,clearError};
