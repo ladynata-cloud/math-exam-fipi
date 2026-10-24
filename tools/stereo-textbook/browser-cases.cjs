@@ -725,7 +725,9 @@ const entries=[
  ["ex-main-0280-intersecting|step-3", "regular-ex-main-0280-intersecting-height"],
  ["ex-main-0280-parallel|condition", "regular-ex-main-0280-parallel-neutral"],
  ["ex-main-0280-parallel|step-2", "regular-ex-main-0280-parallel-rectangle"],
- ["ex-main-0280-parallel|step-3", "regular-ex-main-0280-parallel-right"]
+ ["ex-main-0280-parallel|step-3", "regular-ex-main-0280-parallel-right"],
+ ["theory-036-icosahedron-existence|help:h2","regular-theory-036-icosahedron-existence-distance-fractions"],
+ ["ex-main-0280-intersecting|step-4","regular-ex-main-0280-intersecting-area"]
 ];
 assert.equal(new Set(entries.map(([key])=>key)).size,entries.length,'duplicate screenshot case key');
 assert.equal(new Set(entries.map(([,name])=>name)).size,entries.length,'duplicate screenshot filename');

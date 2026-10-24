@@ -567,7 +567,7 @@
     {
       "title": "Используй середины сторон",
       "prompt": "Где находится центр треугольной грани?",
-      "explanation": "Пусть M — середина одной стороны пятиугольника соседей. Центр G соответствующей равносторонней грани лежит на медиане PM и делит её в отношении 2 : 1 от P: PG = (2/3)PM.",
+      "explanation": "Пусть M — середина одной стороны пятиугольника соседей. Центр G соответствующей равносторонней грани лежит на медиане PM и делит её в отношении 2 : 1 от P: PG = (2PM)/3.",
       "view": "median",
       "justifications": [
         {
@@ -661,7 +661,7 @@
     "source": "passed",
     "mathematics": "passed",
     "pedagogy": "passed",
-    "reviewer": "next_block_review; independent coordinate audit by polyhedra_math_audit",
-    "at": "2026-10-24T04:56:28.889Z"
+    "reviewer": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit",
+    "at": "2026-10-24T05:23:05.522Z"
   }
 }

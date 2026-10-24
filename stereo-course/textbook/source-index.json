@@ -6354,7 +6354,7 @@
       "requiredParts": [
         null
       ],
-      "coverageReview": "next_block_review; independent coordinate audit by polyhedra_math_audit; 2026-10-24T04:56:28.889Z; source/mathematics/written pedagogy PASS; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
+      "coverageReview": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit; 2026-10-24T05:23:05.522Z; source/mathematics/written pedagogy PASS after display corrections; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-main-0280",
@@ -6377,7 +6377,7 @@
         "пересекающиеся диагонали",
         "параллельные диагонали"
       ],
-      "coverageReview": "next_block_review; independent coordinate audit by polyhedra_math_audit; 2026-10-24T04:56:28.889Z; source/mathematics/written pedagogy PASS; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
+      "coverageReview": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit; 2026-10-24T05:23:05.522Z; source/mathematics/written pedagogy PASS after display corrections; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-main-0281",
@@ -22119,7 +22119,7 @@
         "general-solids-examples",
         "applications-elements"
       ],
-      "coverageReview": "next_block_review; independent coordinate audit by polyhedra_math_audit; 2026-10-24T04:56:28.889Z; source/mathematics/written pedagogy PASS; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
+      "coverageReview": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit; 2026-10-24T05:23:05.522Z; source/mathematics/written pedagogy PASS after display corrections; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-theory-036",
@@ -22155,7 +22155,7 @@
         "icosahedron-existence",
         "dodecahedron-existence"
       ],
-      "coverageReview": "next_block_review; independent coordinate audit by polyhedra_math_audit; 2026-10-24T04:56:28.889Z; source/mathematics/written pedagogy PASS; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
+      "coverageReview": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit; 2026-10-24T05:23:05.522Z; source/mathematics/written pedagogy PASS after display corrections; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-theory-037",

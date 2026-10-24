@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-24T04:56:28.889Z",
-  "registeredAt": "2026-10-24T04:57:43.317Z",
+  "reviewedAt": "2026-10-24T05:23:05.522Z",
+  "registeredAt": "2026-10-24T05:23:58.446Z",
   "scope": "Introduction and chapters I–II; chapter III theory1–36 and exercises1–270,276–280;26self-checks. Practical271–275, point37, exercises281 onward remain pending. Not the complete book.",
   "batches": [
     {
@@ -649,11 +649,11 @@
       ]
     },
     {
-      "reviewer": "next_block_review; independent coordinate audit by polyhedra_math_audit",
+      "reviewer": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit",
       "provider": "OpenAI Codex independent agent review",
-      "reviewedAt": "2026-10-24T04:56:28.889Z",
-      "registeredAt": "2026-10-24T04:57:43.317Z",
-      "sourceBundleSHA256": "78a2d547838e63aa50c0d1d3ba64e533478114fb5389ad172f49c52061cd0622",
+      "reviewedAt": "2026-10-24T05:23:05.522Z",
+      "registeredAt": "2026-10-24T05:23:58.446Z",
+      "sourceBundleSHA256": "657e8c110a2508bb9d6c0810651c71c420a2d072fa5e10e96e32424475e3ea87",
       "scope": "Four remaining point35 parts; all of point36 in ten cards; exercises279–280 in three cards. Point37 and practical271–275 remain pending.",
       "report": "docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md",
       "cardIds": [
@@ -674,7 +674,8 @@
         "ex-main-0279",
         "ex-main-0280-intersecting",
         "ex-main-0280-parallel"
-      ]
+      ],
+      "revisionNote": "Six cards received independently checked display-only fraction/spacing corrections after actual visual review; geometry unchanged; fresh browser verification required."
     }
   ],
   "cards": [
@@ -2352,7 +2353,7 @@
     },
     {
       "id": "theory-035-parallelepiped-examples",
-      "sha256": "f8bfc4fea8be6ffe19d98792ef472cb11a901a5bd904ad4fbb6a7d2b8808376f"
+      "sha256": "b6409d37d5c3d2c21218e857837c33638821b230b03275be198e48ac532a8c36"
     },
     {
       "id": "theory-035-unbounded-examples",
@@ -2360,11 +2361,11 @@
     },
     {
       "id": "theory-035-general-solids-examples",
-      "sha256": "b8ab834495d9d1072669f64a7f41d45624f5591257a44af1fa83f98435a782a5"
+      "sha256": "61c6ddf3dd3eec56c34b4c34d5db40a287e37573b8cb1766b3ac6fb0395584a5"
     },
     {
       "id": "theory-035-applications-elements",
-      "sha256": "87f8dfe8700fbc17c5df7507f65d0bf127f1400313283683d7aa59893af892e1"
+      "sha256": "6b79954a6795ff631fb99849b65d86ccd05885b4d1d1be7fe345c4b810871504"
     },
     {
       "id": "theory-036-cube",
@@ -2376,7 +2377,7 @@
     },
     {
       "id": "theory-036-dodecahedron-existence",
-      "sha256": "ca19ab5daecaad3379699fd31998d62d44d0eb6e8fb33ae95fd1d3973baf90db"
+      "sha256": "bd9e2e83ea13c338308dea70b7f0ad9c58b20d54cb4482ac57dc7c1920c21f43"
     },
     {
       "id": "theory-036-dodecahedron",
@@ -2388,7 +2389,7 @@
     },
     {
       "id": "theory-036-icosahedron-existence",
-      "sha256": "572d2e23a7226a6b721554eb5f21f7c8a1b69610f37a3861ee95e6245cdd07a1"
+      "sha256": "44f461481028aef60628efa3f7da91dae2bbac404f0b8965417016873ebe7db7"
     },
     {
       "id": "theory-036-icosahedron",
@@ -2412,7 +2413,7 @@
     },
     {
       "id": "ex-main-0280-intersecting",
-      "sha256": "d3a96285d247449a8caeb499d92bc45371d4cc6d7217d26dd75ea2a14430be32"
+      "sha256": "5561f6ea0a701f5086dbb773f14a3210ca6d33a5fffae421cf710dd658b932e7"
     },
     {
       "id": "ex-main-0280-parallel",

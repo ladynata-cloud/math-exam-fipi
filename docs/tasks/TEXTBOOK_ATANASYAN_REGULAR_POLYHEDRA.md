@@ -81,3 +81,17 @@ source contracts now differ. No existing lesson content changed.
 Concurrent main5de3d1ad4ad1fb77f477f31a6fdd44f091f86a20 adds PR324
 Shestakov–Yaschenko27topic files, with no overlap in this patch. This task branch
 was not rebased or merged. Exact head, PR and final gates belong in the PR handoff.
+
+
+## Actual visual findings and correction
+
+The first exact-head cloud run passed all12 latest checks and completed435cards
+at320/1280. Independent reviewers inspected all140new model panels; geometry and
+labels passed. Native long-text review nevertheless found literal slash fractions
+in the icosahedron and triangular-section explanations, a separated bracket in
+the dodecahedron proof, and missing number spacing in three point35cards.
+Six new cards receive display-only notation/copy corrections; source mathematics,
+model coordinates and runtime stay unchanged. Real-formatter regression covers all
+17cards, and actual browser assertions/captures cover the affected formulas.
+The corrected head requires fresh cloud evidence and targeted actual visual review.
+The earlier green checks do not constitute approval of these later edits.

@@ -1,3 +1,18 @@
+# Independent revised content review — PR 325
+
+Reviewed at 2026-10-24T05:23:05.522Z. Reviewer: next_block_review; independent coordinate and formatter audit by polyhedra_math_audit.
+
+**PASS: source, mathematics and written pedagogy for the 17 canonical card hashes in the sibling JSON.** Aggregate SHA256: `657e8c110a2508bb9d6c0810651c71c420a2d072fa5e10e96e32424475e3ea87`. There are 17 cards, 90 justified steps and 70 model states.
+
+The six changed cards have been reread against the previous exact git objects. Changes are limited to ordinary fractions with explicit whole numerators, three cards' word/number spacing, and one view caption's missing space. All geometry coordinates, source contracts, step structures and theorem links are preserved. Eleven cards retain their earlier content hashes. The actual unchanged formatter passes all 36 ratio-bearing strings and preserves the exact new numerators and denominators.
+
+The triangle area chain is mathematically unchanged: the product of a√2 and a√6 divided by 4 equals a²√3 divided by 2. The median equality PG=2PM/3 is equivalent to the original. Existing independent source and coordinate reviews remain applicable.
+
+Historical cloud review inspected all 140 native desktop/mobile model states and passed geometry, labels, focus and controls. Native full text inspection found four slash fractions in the icosahedron card and missing word/number spaces; the complete actual-formatter scan also found the outer slash in the final exercise 280 area step, which was absent from the original screenshot set. The six content corrections address these findings. Fresh corrected-head cloud images, including the added final area capture, remain required before final visual approval. **This report does not approve release or publication.**
+
+
+## Earlier source review checkpoint
+
 # Independent content review: Atanasyan 35–36 and exercises 279–280
 
 Provider: OpenAI Codex. Independent reviewer: `next_block_review`; additional independent mathematical audit: `polyhedra_math_audit`. Neither reviewer authored the lesson files. No Claude call or Claude verdict is claimed.

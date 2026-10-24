@@ -240,7 +240,7 @@
     },
     {
       "question": "Любое вращение вокруг оси является осевой симметрией?",
-      "text": "В смысле пункта35 проверяется именно поворот на180°. Поворот на120° может сохранять некоторое тело, но его ось не обязательно является осью полуоборота.",
+      "text": "В смысле пункта 35 проверяется именно поворот на 180°. Поворот на 120° может сохранять некоторое тело, но его ось не обязательно является осью полуоборота.",
       "theoryIds": [
         "theory-035-axis"
       ],
@@ -308,7 +308,7 @@
     "source": "passed",
     "mathematics": "passed",
     "pedagogy": "passed",
-    "reviewer": "next_block_review; independent coordinate audit by polyhedra_math_audit",
-    "at": "2026-10-24T04:56:28.889Z"
+    "reviewer": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit",
+    "at": "2026-10-24T05:23:05.522Z"
   }
 }

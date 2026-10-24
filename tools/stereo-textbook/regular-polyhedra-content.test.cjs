@@ -13,6 +13,7 @@ const validate=ajv.compile(require(root+'/stereo-course/textbook/schema/lesson.s
 const {JSDOM}=require('jsdom');
 const dom=new JSDOM('<div id="m"></div>',{pretendToBeVisual:true,runScripts:'outside-only'});
 dom.window.eval(fs.readFileSync(root+'/stereo-course/assets/task-scene-viewer.js','utf8'));
+dom.window.eval(fs.readFileSync(root+'/stereo-course/assets/math-text.js','utf8'));
 const cards=manifest.cards.map(id=>require(path.join(dir,id+'.json')));
 assert.equal(cards.length,17);assert.equal(new Set(manifest.cards).size,17);
 assert.equal(cards.filter(c=>c.source.point==='35').length,4);
@@ -37,6 +38,20 @@ for(const c of cards){
  assert.equal(c.status,'reviewed',c.id+': reviewed integration only');
  for(const field of ['source','mathematics','pedagogy'])assert.equal(c.review[field],'passed',c.id+': '+field);
  assert.deepEqual(allById.get(c.id),c,c.id+': integrated content is the authored record');
+ // Exercise the real formatter over every new display string. All arithmetic
+ // ratios in this batch must render as fraction bars, including nested radicals.
+ function display(value,at){
+  if(typeof value==='string'){
+   assert(!/[А-Яа-яЁё]\d/u.test(value),c.id+at+': readable separation before numbers');
+   if(value.includes('/')){
+    const element=dom.window.document.createElement('div');dom.window.StereoMath.appendText(element,value);
+    for(const fraction of element.querySelectorAll('.stereo-fraction'))fraction.remove();
+    assert(!element.textContent.includes('/'),c.id+at+': unformatted arithmetic slash');
+   }
+  }else if(Array.isArray(value))value.forEach((x,i)=>display(x,at+'.'+i));
+  else if(value&&typeof value==='object')for(const [key,x]of Object.entries(value))display(x,at+'.'+key);
+ }
+ for(const [key,value]of Object.entries(c))if(!['review','source'].includes(key))display(value,'.'+key);
  const m=c.visualization.model,refs=[],used=new Set(['neutral',...c.steps.map(s=>s.view)].filter(Boolean));
  function help(items){for(const h of items){if(h.view)used.add(h.view);refs.push(...h.theoryIds||[]);help(h.children||[]);}}
  help(c.help);

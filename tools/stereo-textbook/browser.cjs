@@ -32,6 +32,11 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ // Actual continuation text: whole numerators must remain stacked and fit narrow panels.
+ ['theory-036-icosahedron-existence|help:h2',[{selector:'[data-main-help] [data-help="h2"] > p',fractions:[['(a(1 + √5))','2'],['(a²(3 + √5))','2']]}]],
+ ['theory-036-icosahedron-existence|step-6',[{selector:explanation('step-6'),fractions:[['(a(1 + √5))','2']]}]],
+ ['ex-main-0280-intersecting|step-4',[{selector:explanation('step-4'),fractions:[['(CB₁·AM)','2'],['((a√2)·(a√6))','4'],['(a²√3)','2']]}]],
+ ['theory-036-dodecahedron-existence|step-2',[{selector:explanation('step-2'),fractions:[['(2PM)','3']]}]],
  ['ex-main-0203|step-1',[{selector:explanation('step-1'),atoms:['48','16'],fractions:[['48','16']]}]],
  ['ex-main-0205|step-2',[{selector:explanation('step-2'),atoms:['49','13','√13'],fractions:[['49','13'],['7','√13']]}]],
  ['ex-main-0207|condition',[{selector:'.textbook-condition',mixed:['8 2/3']}]],
