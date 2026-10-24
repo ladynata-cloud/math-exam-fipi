@@ -392,6 +392,76 @@
       "notes": "Совместная работа по восьми темам №3: маршрут, задача, ответы, шаги, подсказки и вращение модели. Личный прогресс курса не изменяется."
     },
     {
+      "trainerId": "ege-profile-planimetry",
+      "file": "trainers/ege-profile-planimetry.html",
+      "title": "ЕГЭ профиль №1: планиметрия",
+      "group": "ЕГЭ профиль / геометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по темам №1: маршрут, задача, ответы, шаги, подсказки и рисунки. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "ege-profile-vectors",
+      "file": "trainers/ege-profile-vectors.html",
+      "title": "ЕГЭ профиль №2: векторы",
+      "group": "ЕГЭ профиль / геометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по темам №2: маршрут, задача, ответы, шаги, подсказки и рисунки. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "ege-profile-probability",
+      "file": "trainers/ege-profile-probability.html",
+      "title": "ЕГЭ профиль №4: простая вероятность",
+      "group": "ЕГЭ профиль / вероятность",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по темам №4: маршрут, задача, ответы, шаги, подсказки и рисунки. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "ege-profile-random-variables",
+      "file": "trainers/ege-profile-random-variables.html",
+      "title": "ЕГЭ профиль №6: случайные величины",
+      "group": "ЕГЭ профиль / вероятность",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по темам №6: маршрут, задача, ответы, шаги, подсказки и рисунки. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "ege-profile-equations",
+      "file": "trainers/ege-profile-equations.html",
+      "title": "ЕГЭ профиль №7: уравнения",
+      "group": "ЕГЭ профиль / алгебра",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по темам №7: маршрут, задача, ответы, шаги, подсказки и рисунки. Личный прогресс курса не изменяется."
+    },
+    {
       "trainerId": "profile-log-inequalities",
       "file": "trainers/ege-profile/log-inequalities/index.html",
       "title": "Логарифмические неравенства — по шагам",
@@ -446,6 +516,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместная работа над №92а: рассуждение, шаги, подсказки и виды чертежа. Доказательство проверяет учитель; работа на общей доске не начисляет личный прогресс."
+    },
+    {
+      "trainerId": "peterson6",
+      "file": "trainers/peterson6.html",
+      "title": "Петерсон · 6 класс · часть 1",
+      "group": "Математика / 6 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по 14 темам: задача, ответы, шаги, подсказки, модели и отдельные вычислительные тренировки с возвратом. Личный прогресс курса не изменяется."
     }
   ]
 }

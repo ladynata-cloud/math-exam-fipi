@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-22T23:36:33.577894+00:00",
-  "registeredAt": "2026-10-22T23:36:49.420Z",
-  "scope": "Introduction, chapters I–II and chapter III §§1–2: main1–270, theory1–34, chapterI self-check1–16 and chapterII self-check1–10. Not the complete book.",
+  "reviewedAt": "2026-10-23T21:04:00.795Z",
+  "registeredAt": "2026-10-23T21:04:33.982Z",
+  "scope": "Introduction, chapters I–II and chapter III §§1–2: main1–270, theory1–34, chapterI self-check1–16 and chapterII self-check1–10; symmetry exercises276–278 and four focused parts of theory35. Four theory35 example/application parts remain pending. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -620,6 +620,32 @@
         "ex-main-0243",
         "ex-main-0244",
         "ex-main-0266"
+      ]
+    },
+    {
+      "reviewer": "Codex independent symmetry_review; visual_pedagogy_review",
+      "reviewedAt": "2026-10-23T21:04:00.795Z",
+      "registeredAt": "2026-10-23T21:04:33.982Z",
+      "canonicalCardsSHA256": "cace816635b55de1cb2bf45ea66ac98d228fa8834bbc2a6a5715c844d4df8ba7",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded; JSON.stringify UTF-8",
+      "scope": "15 approved symmetry cards: theory35 center/axis/plane/figure (partial point); all source subparts of276–278, including the regular-tetrahedron exception. Fresh integrated UI visual gate remains required.",
+      "report": "docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md",
+      "cardIds": [
+        "theory-035-center",
+        "theory-035-axis",
+        "theory-035-plane",
+        "theory-035-figure",
+        "ex-main-0276-a",
+        "ex-main-0276-b",
+        "ex-main-0276-c",
+        "ex-main-0276-d",
+        "ex-main-0277-a",
+        "ex-main-0277-b",
+        "ex-main-0277-c",
+        "ex-main-0278-a",
+        "ex-main-0278-b",
+        "ex-main-0278-c",
+        "ex-main-0278-c-regular"
       ]
     }
   ],
@@ -2235,6 +2261,66 @@
     {
       "id": "theory-034-regular",
       "sha256": "5361f8e5877b889d25f0aa049b87c466c8324d1ffe72f3ae973d2f585a3ede66"
+    },
+    {
+      "id": "theory-035-center",
+      "sha256": "80f34668d791bb95a13065c5a8cfc7df2b415821bc8142771f31f538100ea2cb"
+    },
+    {
+      "id": "theory-035-axis",
+      "sha256": "79086997c740b08e3e7ae218192f87e3c94260aedebbb8656d364bf0bbff7880"
+    },
+    {
+      "id": "theory-035-plane",
+      "sha256": "ff1218341588dcd19d9f8b27d46ed1d5bc5d669b64372eed386710f61793ceeb"
+    },
+    {
+      "id": "theory-035-figure",
+      "sha256": "1523d810939e82dbdea5bd82948f8800edd41be325cb6eff916d387d868b5126"
+    },
+    {
+      "id": "ex-main-0276-a",
+      "sha256": "9b20c9b73c073b1a0b78ea8ff59d1aadab526194f5be101bb9eaa5fe2af1ed20"
+    },
+    {
+      "id": "ex-main-0276-b",
+      "sha256": "1cfab8b204522abccebf75fa7f8e19604112dc3fca8ba22ef82b45494a426856"
+    },
+    {
+      "id": "ex-main-0276-c",
+      "sha256": "45d179e6cbb90755c266663c45a975e99b0ddafbd5008f90e394cb7b53e3cb4d"
+    },
+    {
+      "id": "ex-main-0276-d",
+      "sha256": "675c9e85f756fbdc4091fcc079c4894cc76ab830dd882a65b5a8c4822423483c"
+    },
+    {
+      "id": "ex-main-0277-a",
+      "sha256": "f215d4164a4ed1b6daee08a507dc4f10f40d02fd33bd69b6383f0465959d1dc2"
+    },
+    {
+      "id": "ex-main-0277-b",
+      "sha256": "03580d023d48753ce7248ac1ca05e7784c9b0897443b9902309b526ba41882ad"
+    },
+    {
+      "id": "ex-main-0277-c",
+      "sha256": "bf32b5b5a29ddf26f630d8b490d6c67d881c10160730b4bc643fbbf42acbf45d"
+    },
+    {
+      "id": "ex-main-0278-a",
+      "sha256": "608349c0e339abb9d7d934cc5aa777681855300646e7921d891ec9c7a5dee05d"
+    },
+    {
+      "id": "ex-main-0278-b",
+      "sha256": "3fa72c6e8c5d2bdeaccee5fd1a40072926c09e0e7682ca466b3b7997382475e3"
+    },
+    {
+      "id": "ex-main-0278-c",
+      "sha256": "622559458862de552fd63ec265dcc2a7eb2aa4e5d0e9569310efd74f421ddda1"
+    },
+    {
+      "id": "ex-main-0278-c-regular",
+      "sha256": "f77829a0a99c2d46cf759af08bcac8cd000759ad83cc9a2a22d49ad51f894156"
     }
   ]
 }
