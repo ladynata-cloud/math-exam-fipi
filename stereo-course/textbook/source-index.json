@@ -23966,7 +23966,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-02",
@@ -23985,7 +23988,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-03",
@@ -24004,7 +24010,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-04",
@@ -24023,7 +24032,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-05",
@@ -24042,7 +24054,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-06",
@@ -24061,7 +24076,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-07",
@@ -24080,7 +24098,11 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-3-08",
@@ -24099,7 +24121,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-09",
@@ -24118,7 +24143,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-10",
@@ -24137,7 +24165,13 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        "zero",
+        "one",
+        "two",
+        "nonconvex"
+      ]
     },
     {
       "id": "source-selfcheck-3-11",
@@ -24156,7 +24190,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-12",
@@ -24175,7 +24212,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-13",
@@ -24194,7 +24234,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-14",
@@ -24213,7 +24256,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-01",

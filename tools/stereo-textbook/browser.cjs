@@ -32,6 +32,10 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ ['ex-selfcheck-iii-08|step-4',[{selector:explanation('step-4'),fractions:[['(3ah)','2'],['(5ah)','2']]}]],
+ ['ex-selfcheck-iii-09|step-4',[{selector:explanation('step-4'),fractions:[['360°','n']]}]],
+ ['ex-selfcheck-iii-13|step-2',[{selector:explanation('step-2'),fractions:[['26','4']]}]],
+ ['ex-selfcheck-iii-13|step-3',[{selector:explanation('step-3'),fractions:[['(10√2)','2']]}]],
  ['ex-main-0283-a|step-4',[{selector:explanation('step-4'),fractions:[['(2a)','3'],['(a²√3)','4'],['(a²√3)','9']]}]],
  ['ex-main-0283-b|step-6',[{selector:explanation('step-6'),fractions:[['(MN·KG)','2'],['(a√2)','3'],['(a²√2)','9']]}]],
  ['ex-main-0286-a|step-5',[{selector:explanation('step-5'),fractions:[['2m²','3'],['3h²','2'],['(h√6)','2']]}]],

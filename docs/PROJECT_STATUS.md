@@ -218,38 +218,57 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## In progress: Atanasyan point 37 and exercises 281–287
+## In progress: Atanasyan chapter III self-check questions
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_SYMMETRY.md), HIGH review; current
-  continuation request. Branch `feat/atanasyan-polyhedra-symmetry` starts from
-  reviewed PR #325 head `9215006712a31d30d9bc0ef7d7acb5e0034b8019`.
-- Separate stacked increment: complete symmetry counts for all five regular
-  solids and all eleven questions of exercises 281–287. Preserve the 435-card
-  dependency, its runtime and pupil-state contracts. Full book still incomplete.
-- Implemented 21 cards, 113 steps and 94 model states. Independent exact-content
-  source/math/pedagogy review and 18 local gate commands passed. Candidate:
-  456 cards, 1,614 steps, 1,633 views; 282 complete exercises, 37 theory points
-  and 26 self-checks. Exact-head cloud/visual review is pending at this checkpoint.
-- Next: verify the committed integration and cloud run; inspect actual new
-  desktop/mobile images; hand off the separate Draft PR with final evidence.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_SELFCHECK.md), HIGH review;
+  owner requested publication and continuation on 2026-10-24. Branch
+  `feat/atanasyan-polyhedra-selfcheck` starts from release head
+  `96cd674faebfc1353194325ab8fb5011fdf11519`, now an ancestor of production.
+- Eighteen cards cover all fourteen questions, including both original parts
+  of question7 and four explicit cases for question10. The unrestricted
+  nonconvex case has a general construction, not only a counterexample.
+- Independent exact source, mathematics, pedagogy and coordinate reviews
+  passed at 2026-10-24T10:51:46.357Z. Added79steps and76modelstates. Candidate:
+  474cards,1693steps,1709views;282complete exercises,37theory points and40
+  self-checks. All456 previous cards, runtime and pupil-state contracts remain.
+- Exact-head cloud and actual visual review remain pending at this checkpoint.
+  Next: verify the committed cloud run, inspect new desktop/mobile images,
+  and record the separate Draft PR handoff. Practical271–275 and additional
+  exercises288 onward remain pending; the entire book is not complete.
 
-## Prepared: Atanasyan regular polyhedra continuation
+## Published: Atanasyan point37 and exercises281–287
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_REGULAR_POLYHEDRA.md), HIGH review; current
-  owner continuation request, base `96d44cc06a3dbc1e40482a774eda6c18fac89242`.
-- Finish the four remaining point35 parts, all of point36, and exercises279–280.
-  Source35 needs an explicit mathematical correction; source280 needs two cases.
-- Existing418cards and runtime remain unchanged. Independent exact-content
-  source/math/written-pedagogy review passed for17newcards,90steps,70views.
-  The candidate has435cards,1501steps,1539views;275complete exercises,36theory
-  points,26self-checks, no partial source position.
-- [PR #325](https://github.com/ladynata-cloud/math-exam-fipi/pull/325) is Draft,
-  unmerged, exact head `9215006712a31d30d9bc0ef7d7acb5e0034b8019`. Independent
-  source/math review, current-main composition, all 12 cloud checks and actual
-  mobile/desktop visual review passed. Final evidence is recorded in that PR.
-  Browser run 40066210783 completed 870 journeys and 1,448 captures; its 144 new
-  captures were covered by actual review and verified pixel continuity.
-  No publication yet; production remains the 418-card course below.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_SYMMETRY.md). Original reviewed
+  [PR #326](https://github.com/ladynata-cloud/math-exam-fipi/pull/326) is closed
+  as superseded by [release PR #328](https://github.com/ladynata-cloud/math-exam-fipi/pull/328).
+  Its branch was preserved; after the dependency squash, the identical38-file
+  delta was applied to the released base without changing any content bytes.
+- Release head `96cd674faebfc1353194325ab8fb5011fdf11519`; merge
+  `0f080e9dba396e6bbe7bc7c6df0959c70d2d3437`, first parent
+  `054b8a43803686d647ff7b8cf89dc21b618439d0`; exact reviewed composition tree
+  `e55e4afb8eea5106a7b312c43b702981b5e2da37`. All11 fresh cloud checks passed,
+  with912journeys and1664captures in run40086658043. Existing independent
+  mathematics and216-panel/42-complete-proof visual review apply by exact
+  content and tested-input identity; no second manual image review is claimed.
+- Pages40087429216 succeeded on that merge. At2026-10-24T10:52:20.761465Z,
+  all90 ordinary/versioned public requests matched reviewed bytes: both new
+  blocks'38cards, bundle, source index and core display assets. Live course:
+  456cards,1614steps,1633views;282complete exercises,37theory points,26self-checks.
+  Bundle SHA256 `e51200d031fc5e644f9047c240808837c3e70caf8bf81f737e9af5c91b4a64ad`.
+
+## Published: Atanasyan regular polyhedra continuation
+
+- [Scope](tasks/TEXTBOOK_ATANASYAN_REGULAR_POLYHEDRA.md),
+  [PR #325](https://github.com/ladynata-cloud/math-exam-fipi/pull/325), reviewed
+  head `9215006712a31d30d9bc0ef7d7acb5e0034b8019`. It completed point35,
+  point36 and exercises279–280 in17cards,90steps and70modelstates.
+- Squashed as `054b8a43803686d647ff7b8cf89dc21b618439d0`, sole parent
+  `043006f439475124b3bb814c81fc887ecbadbe7c`; exact tested tree
+  `871d3bdfa636276a8876a97e90b28946c9f2aadf`. All12 reviewed-head checks,
+  independent content/integration and actual visual review passed.
+- Pages40086548022 succeeded; the435-card public bundle matched SHA256
+  `097848bc113d3b7e6167b826603855aa67048209066cb15957124288a9a5a4c3`.
+  This increment is also preserved in the subsequent456-card publication above.
 
 ## Published: Atanasyan pyramids and first symmetry block
 

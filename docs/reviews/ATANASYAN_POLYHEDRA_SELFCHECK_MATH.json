@@ -1,0 +1,138 @@
+{
+  "task": "TEXTBOOK_ATANASYAN_POLYHEDRA_SELFCHECK",
+  "reviewer": "Codex independent prism_proof_audit",
+  "role": "Independent mathematical proof and actual-coordinate review; no lesson authorship",
+  "reviewedAt": "2026-10-24T10:50:45.111Z",
+  "verdict": "PASS_INDEPENDENT_MATHEMATICS_AND_ACTUAL_COORDINATES",
+  "authorBase": "96cd674faebfc1353194325ab8fb5011fdf11519",
+  "scope": {
+    "cards": 18,
+    "sourceQuestions": 14,
+    "steps": 79,
+    "modelStates": 76
+  },
+  "canonicalization": "Omit only top-level status and review; recursively sort object keys, preserve array order; Node JSON.stringify UTF-8 SHA256. Aggregate is canonical array in manifest order.",
+  "aggregateSHA256": "36a43a88aea2f3aed0795be86d5344817b4415837336ebcb879594d9a909fef0",
+  "cards": [
+    {
+      "id": "ex-selfcheck-iii-01",
+      "canonicalSHA256": "b7661caaf25c796f51c73411b3264380e9b367c930bd437d4ed027ddba1f1a5f"
+    },
+    {
+      "id": "ex-selfcheck-iii-02",
+      "canonicalSHA256": "c61f5d8fec3bffdc8186913fd27b36cee736d538e250dda9c8de3087a7eddbde"
+    },
+    {
+      "id": "ex-selfcheck-iii-03",
+      "canonicalSHA256": "77def022a7687bf90c5514b2aa1003395b9d0695c6518b9ff95cee19b88344fa"
+    },
+    {
+      "id": "ex-selfcheck-iii-04",
+      "canonicalSHA256": "3114b63734a94df720a6b86637ac9b296e76fe546ed5049a7ebab4a65d3fe177"
+    },
+    {
+      "id": "ex-selfcheck-iii-05",
+      "canonicalSHA256": "be7c30e4950b66438cf9f4c9997bf712e8a1a42eddcfb3f46e97a3c2d96d3e10"
+    },
+    {
+      "id": "ex-selfcheck-iii-06",
+      "canonicalSHA256": "d71611e16254c9f5cdcb548b0d53c5e3df63c5b29618b11291b9b027e1f57bc6"
+    },
+    {
+      "id": "ex-selfcheck-iii-07-a",
+      "canonicalSHA256": "2bd9a1c18db41013580f97f22ac9b26c7500580c0eaf800938e40a6af282ce7f"
+    },
+    {
+      "id": "ex-selfcheck-iii-07-b",
+      "canonicalSHA256": "31a4c703a72c644936e15e0b74c46d74a07af7474c433da18d03b80231ddb18a"
+    },
+    {
+      "id": "ex-selfcheck-iii-08",
+      "canonicalSHA256": "78fd0123e13204f4bfcb23f7c6cd4ecf25d7f32553d9eb963dca19e1912d2d86"
+    },
+    {
+      "id": "ex-selfcheck-iii-09",
+      "canonicalSHA256": "266f8c6c6fdcc75a5990ca1b266f391039c0560fd3d6f7df4f25339159cfeb5b"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-zero",
+      "canonicalSHA256": "57ea89522bc6ce4fc8a253d73468c3344ca300fed536a1971d97be5e1c5a9601"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-one",
+      "canonicalSHA256": "86740a11dc22c9da781aead6a7a0e13b34f13979ee2018fdfd5b81f5c9345e29"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-two",
+      "canonicalSHA256": "9db0106283ca35247d2ed47f70fa39a2218ed81859f7ff3928c4ddb2323b6656"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-nonconvex",
+      "canonicalSHA256": "ade909281d4497fb08c6373597805d328838e782ac4e812a658ac3f0f0dced44"
+    },
+    {
+      "id": "ex-selfcheck-iii-11",
+      "canonicalSHA256": "36dbc40d23c4519cfb784f53ddb827aaeddc81e7cfb43421805e469f0b9c79a5"
+    },
+    {
+      "id": "ex-selfcheck-iii-12",
+      "canonicalSHA256": "cf7d457bfac78bf6ba8be5260cd6dede77b358201b6009eb2727c18aa78400ba"
+    },
+    {
+      "id": "ex-selfcheck-iii-13",
+      "canonicalSHA256": "feef278713c9d3d4514163e4e1427653d60adb58e2c8a365cc9197e37c404c4a"
+    },
+    {
+      "id": "ex-selfcheck-iii-14",
+      "canonicalSHA256": "3f6a1c0c2a523935cbe50bfcf8245ac5ac397dc83487ef1398467e65af18c91c"
+    }
+  ],
+  "oracle": {
+    "path": "tools/stereo-textbook/polyhedra-selfcheck-math.test.py",
+    "sha256": "f145236a2b2c7827b429eefb056ab846bd31809ce816f595cc75a0921e011951",
+    "command": "python tools/stereo-textbook/polyhedra-selfcheck-math.test.py",
+    "result": "PASS",
+    "coverage": [
+      "Closed actual edge/face incidence and planar simple nondegenerate polygons for all17 solid-scene models; exact displayed prism/cut edges for question14.",
+      "Tetrahedron six-edge realization and independent vertex-degree incidence; actual pentagonal-prism face count.",
+      "Prism translations, vertical adjacent side planes, distinct interior height, all12 equal rhombic-prism edges with60/120-degree base angles.",
+      "One common side-face/prism altitude in an oblique prism; all three base-edge directions and all three side-plane perpendicularities.",
+      "Question8 independently summed lateral-face areas, including shared cut face in both solids, give3:5.",
+      "Question9 actual equilateral lateral triangles, common projected center/radius, positive height and equal cyclic angular gaps; general simple-cycle/chord proof read separately.",
+      "Question10 actual convex models have0/1/2 vertical side planes; revised actual nonconvex model has exactly3. Independently generated simple2k-gons for k3through12 have exactlyk vertical faces and no connector lines through height foot; general sector proof read separately.",
+      "Question11 convex base and external height foot, with exactlytwo opposite vertical side planes.",
+      "Question12 allfour tetrahedron faces have independently located right angles; positive volume.",
+      "Question13 valid illustrative10-cm square pyramid, positive height and independent66-cm budget contradiction.",
+      "Question14 supporting-plane hull enumeration yields tetrahedron and quadrangular pyramid; exact displayed edge sets and1/3plus2/3volume partition."
+    ]
+  },
+  "proofReview": {
+    "all18ExplanationsRead": true,
+    "all18ModelDefinitionsRead": true,
+    "generalResults": [
+      "Question3 uses uniqueness of the normal in two adjacent vertical side planes.",
+      "Question4 proves both directions and does not identify the displayed interior height with an edge.",
+      "Question7 distinguishes skew perpendicular directions and tests the correct upper vertex for each face.",
+      "Question9 excludes coincidence of height foot with a base vertex before using nondegenerate right triangles; a simple inscribed polygon follows circular order, equal chords cannot include a major arc, hence all angular gaps equal.",
+      "Question10 distinguishes convex0/1/2 from nonconvex bases; the radial-sector construction works for every integer k≥3, so no absolute bound exists when base side count varies.",
+      "Question13 treats the numerical impossibility separately from the valid model.",
+      "Question14 applies to oblique as well as right triangular prisms."
+    ]
+  },
+  "resolvedFindings": [
+    {
+      "id": "Q9_HEIGHT_FOOT_DEGENERACY",
+      "resolution": "Author explicitly excludes the height foot coinciding with a base vertex before invoking a right triangle for every vertex."
+    },
+    {
+      "id": "Q10_UNRESTRICTED_NONCONVEX_CASE",
+      "resolution": "Author and root extended the supplementary counterexample to a complete arbitrary-k construction; actual model changed to k3 of the same construction."
+    }
+  ],
+  "openFindings": [],
+  "limitations": [
+    "No browser screenshots were inspected by this review.",
+    "No paid external-provider review or real-pupil learning pilot is claimed.",
+    "Hashes bind exact current authored contents; material later changes require renewed review."
+  ]
+}

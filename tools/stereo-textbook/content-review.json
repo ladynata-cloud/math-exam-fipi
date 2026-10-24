@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-24T06:50:24.196Z",
-  "registeredAt": "2026-10-24T06:51:26.406Z",
-  "scope": "Introduction and chapters I–II; chapter III theory 1–37 and exercises 1–270, 276–287; 26 self-checks. Practical 271–275, chapter III self-checks and additional exercises 288 onward remain pending. Not the complete book.",
+  "reviewedAt": "2026-10-24T10:51:46.357Z",
+  "registeredAt": "2026-10-24T10:52:36.847Z",
+  "scope": "Introduction and chapters I–III: theory points1–37; exercises1–270 and276–287; all40 self-check questions of chaptersI–III. Practical271–275 and additional exercises288 onward remain pending. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -706,6 +706,35 @@
         "ex-main-0287-a",
         "ex-main-0287-b",
         "ex-main-0287-c"
+      ]
+    },
+    {
+      "reviewer": "Codex independent next_source_scope; prism_proof_audit",
+      "reviewedAt": "2026-10-24T10:51:46.357Z",
+      "registeredAt": "2026-10-24T10:52:36.847Z",
+      "sourceBundleSHA256": "36a43a88aea2f3aed0795be86d5344817b4415837336ebcb879594d9a909fef0",
+      "scope": "All 14 chapter III self-check questions in 18 cards: question 7 has the original two subparts; question 10 has three explicit convex cases plus a complete general nonconvex construction. Practical tasks 271–275 and additional exercises 288 onward remain outside this increment; the full textbook is incomplete.",
+      "report": "docs/reviews/ATANASYAN_POLYHEDRA_SELFCHECK_CONTENT.md",
+      "mathematicalReport": "docs/reviews/ATANASYAN_POLYHEDRA_SELFCHECK_MATH.json",
+      "cardIds": [
+        "ex-selfcheck-iii-01",
+        "ex-selfcheck-iii-02",
+        "ex-selfcheck-iii-03",
+        "ex-selfcheck-iii-04",
+        "ex-selfcheck-iii-05",
+        "ex-selfcheck-iii-06",
+        "ex-selfcheck-iii-07-a",
+        "ex-selfcheck-iii-07-b",
+        "ex-selfcheck-iii-08",
+        "ex-selfcheck-iii-09",
+        "ex-selfcheck-iii-10-zero",
+        "ex-selfcheck-iii-10-one",
+        "ex-selfcheck-iii-10-two",
+        "ex-selfcheck-iii-10-nonconvex",
+        "ex-selfcheck-iii-11",
+        "ex-selfcheck-iii-12",
+        "ex-selfcheck-iii-13",
+        "ex-selfcheck-iii-14"
       ]
     }
   ],
@@ -2533,6 +2562,78 @@
     {
       "id": "ex-main-0287-c",
       "sha256": "da766a0d37ebdb5c9bf95403e983c1de355856083024e1b7a087ca8b315cd35f"
+    },
+    {
+      "id": "ex-selfcheck-iii-01",
+      "sha256": "b7661caaf25c796f51c73411b3264380e9b367c930bd437d4ed027ddba1f1a5f"
+    },
+    {
+      "id": "ex-selfcheck-iii-02",
+      "sha256": "c61f5d8fec3bffdc8186913fd27b36cee736d538e250dda9c8de3087a7eddbde"
+    },
+    {
+      "id": "ex-selfcheck-iii-03",
+      "sha256": "77def022a7687bf90c5514b2aa1003395b9d0695c6518b9ff95cee19b88344fa"
+    },
+    {
+      "id": "ex-selfcheck-iii-04",
+      "sha256": "3114b63734a94df720a6b86637ac9b296e76fe546ed5049a7ebab4a65d3fe177"
+    },
+    {
+      "id": "ex-selfcheck-iii-05",
+      "sha256": "be7c30e4950b66438cf9f4c9997bf712e8a1a42eddcfb3f46e97a3c2d96d3e10"
+    },
+    {
+      "id": "ex-selfcheck-iii-06",
+      "sha256": "d71611e16254c9f5cdcb548b0d53c5e3df63c5b29618b11291b9b027e1f57bc6"
+    },
+    {
+      "id": "ex-selfcheck-iii-07-a",
+      "sha256": "2bd9a1c18db41013580f97f22ac9b26c7500580c0eaf800938e40a6af282ce7f"
+    },
+    {
+      "id": "ex-selfcheck-iii-07-b",
+      "sha256": "31a4c703a72c644936e15e0b74c46d74a07af7474c433da18d03b80231ddb18a"
+    },
+    {
+      "id": "ex-selfcheck-iii-08",
+      "sha256": "78fd0123e13204f4bfcb23f7c6cd4ecf25d7f32553d9eb963dca19e1912d2d86"
+    },
+    {
+      "id": "ex-selfcheck-iii-09",
+      "sha256": "266f8c6c6fdcc75a5990ca1b266f391039c0560fd3d6f7df4f25339159cfeb5b"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-zero",
+      "sha256": "57ea89522bc6ce4fc8a253d73468c3344ca300fed536a1971d97be5e1c5a9601"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-one",
+      "sha256": "86740a11dc22c9da781aead6a7a0e13b34f13979ee2018fdfd5b81f5c9345e29"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-two",
+      "sha256": "9db0106283ca35247d2ed47f70fa39a2218ed81859f7ff3928c4ddb2323b6656"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-nonconvex",
+      "sha256": "ade909281d4497fb08c6373597805d328838e782ac4e812a658ac3f0f0dced44"
+    },
+    {
+      "id": "ex-selfcheck-iii-11",
+      "sha256": "36dbc40d23c4519cfb784f53ddb827aaeddc81e7cfb43421805e469f0b9c79a5"
+    },
+    {
+      "id": "ex-selfcheck-iii-12",
+      "sha256": "cf7d457bfac78bf6ba8be5260cd6dede77b358201b6009eb2727c18aa78400ba"
+    },
+    {
+      "id": "ex-selfcheck-iii-13",
+      "sha256": "feef278713c9d3d4514163e4e1427653d60adb58e2c8a365cc9197e37c404c4a"
+    },
+    {
+      "id": "ex-selfcheck-iii-14",
+      "sha256": "3f6a1c0c2a523935cbe50bfcf8245ac5ac397dc83487ef1398467e65af18c91c"
     }
   ]
 }

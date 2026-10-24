@@ -3,8 +3,8 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../..'),dir=path.join(root,'stereo-course/textbook/lessons');
 const manifest=require('./regular-polyhedra-manifest.json');
-const production=require(root+'/stereo-course/textbook/data/course.json');
 const sourceIndex=require(root+'/stereo-course/textbook/source-index.json');
+const production=require('./selfcheck-baseline.cjs').previousCourse(require(root+'/stereo-course/textbook/data/course.json'),sourceIndex);
 const API=require(root+'/stereo-course/textbook/assets/engine.js');
 const screenshots=require('./browser-cases.cjs');
 const Ajv=require('ajv/dist/2020'),ajv=new Ajv({allErrors:true,strict:true});

@@ -1,0 +1,526 @@
+{
+  "provider": "OpenAI Codex independent agent review",
+  "reviewer": "next_source_scope",
+  "reviewedAt": "2026-10-24T10:51:46.357Z",
+  "base": "96cd674faebfc1353194325ab8fb5011fdf11519",
+  "pr": null,
+  "head": null,
+  "verdict": "PASS_SOURCE_MATHEMATICS_WRITTEN_PEDAGOGY_AND_MODEL_COORDINATES",
+  "scope": "All 14 chapter III self-check questions in 18 cards: question 7 has the original two subparts; question 10 has three explicit convex cases plus a complete general nonconvex construction. Practical tasks 271–275 and additional exercises 288 onward remain outside this increment; the full textbook is incomplete.",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+    "printedPages": [
+      85,
+      86
+    ],
+    "pdfPages": [
+      87,
+      88
+    ],
+    "sourceVisuallyInspected": true,
+    "additionalDefinitionChecks": "Printed 63–64 and 72: the source explicitly admits nonconvex polyhedra and does not restrict the pyramid definition to convex bases."
+  },
+  "sourceContracts": {
+    "1": [
+      null
+    ],
+    "2": [
+      null
+    ],
+    "3": [
+      null
+    ],
+    "4": [
+      null
+    ],
+    "5": [
+      null
+    ],
+    "6": [
+      null
+    ],
+    "7": [
+      "а",
+      "б"
+    ],
+    "8": [
+      null
+    ],
+    "9": [
+      null
+    ],
+    "10": [
+      "zero",
+      "one",
+      "two",
+      "nonconvex"
+    ],
+    "11": [
+      null
+    ],
+    "12": [
+      null
+    ],
+    "13": [
+      null
+    ],
+    "14": [
+      null
+    ]
+  },
+  "changedSourceIds": [
+    "source-selfcheck-3-01",
+    "source-selfcheck-3-02",
+    "source-selfcheck-3-03",
+    "source-selfcheck-3-04",
+    "source-selfcheck-3-05",
+    "source-selfcheck-3-06",
+    "source-selfcheck-3-07",
+    "source-selfcheck-3-08",
+    "source-selfcheck-3-09",
+    "source-selfcheck-3-10",
+    "source-selfcheck-3-11",
+    "source-selfcheck-3-12",
+    "source-selfcheck-3-13",
+    "source-selfcheck-3-14"
+  ],
+  "sourceContractReview": "Compared the actual source-index delta against the authoring base: precisely the fourteen scoped records gain requiredParts; original IDs, titles, source fields and broad page metadata are unchanged. Lesson-specific exact pages are 85/87 for questions 1–11 and 86/88 for questions 12–14. Cyrillic source subparts а/б are retained for question 7. The four pedagogical cases of question 10 are explicitly identified as explanatory subdivisions, not invented textbook subquestions.",
+  "canonicalization": "Recursively sort object keys; preserve array order; omit only top-level status and review; Node JSON.stringify UTF-8 SHA256. Aggregate hashes the array of canonical content objects in manifest.cards order.",
+  "aggregateSHA256": "36a43a88aea2f3aed0795be86d5344817b4415837336ebcb879594d9a909fef0",
+  "cardCount": 18,
+  "exerciseCards": 18,
+  "theoryCards": 0,
+  "steps": 79,
+  "views": 76,
+  "cards": [
+    {
+      "id": "ex-selfcheck-iii-01",
+      "sha256": "b7661caaf25c796f51c73411b3264380e9b367c930bd437d4ed027ddba1f1a5f",
+      "steps": 4,
+      "views": 3,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "1",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-02",
+      "sha256": "c61f5d8fec3bffdc8186913fd27b36cee736d538e250dda9c8de3087a7eddbde",
+      "steps": 4,
+      "views": 4,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "2",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-03",
+      "sha256": "77def022a7687bf90c5514b2aa1003395b9d0695c6518b9ff95cee19b88344fa",
+      "steps": 5,
+      "views": 5,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "3",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-04",
+      "sha256": "3114b63734a94df720a6b86637ac9b296e76fe546ed5049a7ebab4a65d3fe177",
+      "steps": 4,
+      "views": 3,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "4",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-05",
+      "sha256": "be7c30e4950b66438cf9f4c9997bf712e8a1a42eddcfb3f46e97a3c2d96d3e10",
+      "steps": 4,
+      "views": 4,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "5",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-06",
+      "sha256": "d71611e16254c9f5cdcb548b0d53c5e3df63c5b29618b11291b9b027e1f57bc6",
+      "steps": 4,
+      "views": 4,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "6",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-07-a",
+      "sha256": "2bd9a1c18db41013580f97f22ac9b26c7500580c0eaf800938e40a6af282ce7f",
+      "steps": 4,
+      "views": 4,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "7",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ],
+        "subpart": "а"
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-07-b",
+      "sha256": "31a4c703a72c644936e15e0b74c46d74a07af7474c433da18d03b80231ddb18a",
+      "steps": 5,
+      "views": 5,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "7",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ],
+        "subpart": "б"
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-08",
+      "sha256": "78fd0123e13204f4bfcb23f7c6cd4ecf25d7f32553d9eb963dca19e1912d2d86",
+      "steps": 4,
+      "views": 4,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "8",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-09",
+      "sha256": "266f8c6c6fdcc75a5990ca1b266f391039c0560fd3d6f7df4f25339159cfeb5b",
+      "steps": 5,
+      "views": 5,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "9",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-10-zero",
+      "sha256": "57ea89522bc6ce4fc8a253d73468c3344ca300fed536a1971d97be5e1c5a9601",
+      "steps": 3,
+      "views": 3,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "10",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ],
+        "subpart": "zero"
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-10-one",
+      "sha256": "86740a11dc22c9da781aead6a7a0e13b34f13979ee2018fdfd5b81f5c9345e29",
+      "steps": 3,
+      "views": 3,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "10",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ],
+        "subpart": "one"
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-10-two",
+      "sha256": "9db0106283ca35247d2ed47f70fa39a2218ed81859f7ff3928c4ddb2323b6656",
+      "steps": 4,
+      "views": 4,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "10",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ],
+        "subpart": "two"
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-10-nonconvex",
+      "sha256": "ade909281d4497fb08c6373597805d328838e782ac4e812a658ac3f0f0dced44",
+      "steps": 7,
+      "views": 6,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "10",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ],
+        "subpart": "nonconvex"
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-11",
+      "sha256": "36dbc40d23c4519cfb784f53ddb827aaeddc81e7cfb43421805e469f0b9c79a5",
+      "steps": 3,
+      "views": 4,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "11",
+        "chapter": "III. Многогранники",
+        "printedPages": [
+          85
+        ],
+        "pdfPages": [
+          87
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-12",
+      "sha256": "cf7d457bfac78bf6ba8be5260cd6dede77b358201b6009eb2727c18aa78400ba",
+      "steps": 6,
+      "views": 5,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "chapter": "III. Многогранники",
+        "exercise": "12",
+        "printedPages": [
+          86
+        ],
+        "pdfPages": [
+          88
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-13",
+      "sha256": "feef278713c9d3d4514163e4e1427653d60adb58e2c8a365cc9197e37c404c4a",
+      "steps": 5,
+      "views": 5,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "chapter": "III. Многогранники",
+        "exercise": "13",
+        "printedPages": [
+          86
+        ],
+        "pdfPages": [
+          88
+        ]
+      }
+    },
+    {
+      "id": "ex-selfcheck-iii-14",
+      "sha256": "3f6a1c0c2a523935cbe50bfcf8245ac5ac397dc83487ef1398467e65af18c91c",
+      "steps": 5,
+      "views": 5,
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "chapter": "III. Многогранники",
+        "exercise": "14",
+        "printedPages": [
+          86
+        ],
+        "pdfPages": [
+          88
+        ]
+      }
+    }
+  ],
+  "checks": {
+    "fullManualRead": "Read all 18 statements, goals, complete explanations, prompts, justifications, contextual help, answer contracts, model captions, notes, point coordinates, edges, faces and view definitions. Re-read the actual corrected files, including the expanded arbitrary-k proof.",
+    "sourceFidelity": "Every original question is answered with its generality preserved. Author examples are identified as examples, and proofs do not silently assume regularity, right prisms, an interior height foot, or convexity where the source supplies none.",
+    "manualGrading": "All 18 answers use the existing manual mode and require the reasoning or construction appropriate to the original question. No automatic proof-grading claim is made.",
+    "prerequisiteLinks": {
+      "count": 15,
+      "ids": [
+        "theory-015",
+        "theory-016",
+        "theory-017",
+        "theory-018",
+        "theory-019",
+        "theory-020",
+        "theory-021",
+        "theory-023",
+        "theory-027",
+        "theory-027-convex",
+        "theory-028",
+        "theory-030",
+        "theory-030-area",
+        "theory-032",
+        "theory-033"
+      ],
+      "existAndReviewed": true,
+      "semanticRelevanceManuallyChecked": true
+    },
+    "modelPedagogy": "One scoped model per card; auxiliary feet and constructions are introduced through the relevant views. Question 7(b) now exposes H in the construction step. Question 14 shows each resulting solid separately while retaining the common cut triangle; its prompt does not give away the solid names.",
+    "mathematicalReview": {
+      "1": "At least four vertices and at least three incident edges per vertex give 2E≥3V≥12; the displayed nondegenerate tetrahedron attains six edges.",
+      "2": "A k-gonal prism has k lateral faces plus two bases, so k=n−2 and n≥5; the displayed pentagonal prism has the stated incidence counts.",
+      "3": "Both adjacent side planes contain the unique perpendicular to the base through their common lower vertex; their intersection is the lateral-edge line. Parallel lateral edges establish a right prism for any base polygon.",
+      "4": "The equivalence with a right prism is proved in both directions. The actual height KH is through interior points and is distinct from every lateral edge, avoiding coincident-line ambiguity.",
+      "5": "The displayed right rhombic prism has all twelve edges of length 2, base angle 60 degrees, and a nonregular base; it is a valid counterexample.",
+      "6": "For translation (1,0,2), the displayed A1H has length 2, lies inside the lateral parallelogram and is perpendicular to the base and AB. The lateral edge has length sqrt(5), so the prism is oblique.",
+      "7": "In the exact right-triangular base and translation (1,0,2), the lateral direction is perpendicular only to AB, while the only vertical side plane is ACC1A1. The other two planes are excluded using the actual feet H and K, including external K. Skew-line perpendicularity is handled by parallel translation.",
+      "8": "The two right prisms have base perimeters 3a/2 and 5a/2 and common height. Each new cut face is included in its own lateral surface, giving the ordered ratio 3:5.",
+      "9": "Equal lateral-face edge lengths propagate around the apex. The height foot cannot be a base vertex, since an equilateral face would then have a right angle. Pythagoras puts all base vertices on one circle. Simplicity forces circular order; equal chords give minor angle theta, a major consecutive gap would make the total exceed 360 degrees, and the diameter case is excluded. Equal consecutive arcs establish a regular base and its center at the height foot. The actual five-sided model has equilateral lateral faces.",
+      "11": "The actual convex quadrilateral has opposite-side extensions AB and CD meeting at external H. P above H makes exactly those two side-face planes vertical. The proof correctly permits a height foot outside the base.",
+      "12": "The actual orthoscheme coordinates make ABC and ABD right at B, ACD and BCD right at C. The proof explicitly checks all four faces, including the fourth via the theorem of three perpendiculars.",
+      "13": "The square base consumes 40 cm, so each equal lateral edge could be at most 6.5 cm. Nonzero height requires b>5sqrt(2), incompatible with that bound. The displayed pyramid is a valid illustrative shape and does not pretend that impossible 6.5 cm edges exist.",
+      "14": "For the actual oblique prism, the cut plane A1BC leaves tetrahedron A1ABC and the quadrangular pyramid with apex A1 and base BCC1B1. Both complete face sets and the noncoplanarity of apex/base are explained. The argument uses only prism properties and applies to oblique as well as right prisms.",
+      "10-convex": "A side-face plane is perpendicular to the base exactly when its base-side LINE contains the height foot. The actual square-base models realize exactly 0,1,2 such faces. Supporting-line classification establishes the upper bound of two for every convex base, including an external foot; plane membership is distinguished from membership in the bounded triangular face.",
+      "10-general": "For every k≥3, choose k equally spaced rays from H and points at radii r and 2r. Alternating radial edges and connectors form a simple polygon: connector interiors lie in distinct sectors of angle 360/k<180 degrees, and radial segments lie on sector boundaries. Inner vertices are reflex, so the polygon is nonconvex. Exactly k radial side-lines pass through H; connector lines do not. Placing the apex above H gives exactly k perpendicular side faces. With the convex 0/1/2 examples, every nonnegative integer is possible when the base side count is not fixed. The actual k=3 coordinates realize the stated three faces and H is inside this revised base. Opposite radial faces for even k may be coplanar but remain distinct nonadjacent faces."
+    },
+    "reviewMethod": "Independent source inspection, full manual mathematical derivation and direct review of actual displayed coordinates. The separate automated numerical oracle is complementary evidence and is not claimed to have been authored or run by this reviewer."
+  },
+  "resolvedFindings": [
+    {
+      "cards": [
+        "ex-selfcheck-iii-03",
+        "ex-selfcheck-iii-07-b",
+        "ex-selfcheck-iii-10-zero",
+        "ex-selfcheck-iii-10-one",
+        "ex-selfcheck-iii-10-two",
+        "ex-selfcheck-iii-11"
+      ],
+      "finding": "Some phrases attributed a whole perpendicular line to a bounded face.",
+      "resolution": "The corrected prose and relevant captions explicitly refer to the plane of the face; actual segment containment is claimed only where valid."
+    },
+    {
+      "cards": [
+        "ex-selfcheck-iii-09"
+      ],
+      "finding": "Pythagoras was applied to POX before excluding O=X.",
+      "resolution": "The proof first excludes a height foot at any base vertex because a lateral equilateral face would then have a right angle."
+    },
+    {
+      "cards": [
+        "ex-selfcheck-iii-10-nonconvex"
+      ],
+      "finding": "A single three-face counterexample did not complete the generally worded count question.",
+      "resolution": "The final card proves an arbitrary-k construction with a revised exact three-ray model and concludes that all nonnegative counts occur without a fixed bound on the base side count."
+    },
+    {
+      "cards": [
+        "ex-selfcheck-iii-10-nonconvex"
+      ],
+      "finding": "Final captions conflated lines with rays; a title omitted lateral from six faces and one sentence duplicated a word.",
+      "resolution": "Actual corrected captions state that sides lie on rays, the title counts six lateral faces, the duplicated wording is removed, and connector interiors are explicitly confined to open sector interiors."
+    },
+    {
+      "cards": [
+        "ex-selfcheck-iii-12"
+      ],
+      "finding": "A help phrase could be read as a rectangular base and called a lateral edge a side.",
+      "resolution": "It now explicitly says a right-triangular base and a lateral edge."
+    }
+  ],
+  "unresolvedFindings": [],
+  "visual": "Source PDF images were actually inspected. Fresh product browser screenshots of this increment have not been inspected by this review; no product visual or release approval is claimed.",
+  "notRun": [
+    "Fresh product browser visual review",
+    "Exact remote head binding after commit",
+    "Deployment",
+    "Paid external Claude review",
+    "Real-pupil pilot"
+  ],
+  "boundary": "This report is independent of authorship and binds exact canonical card content before commit. Top-level status/review promotion does not change these hashes. Any content change requires a renewed review. No merge or publication authorization is supplied."
+}
