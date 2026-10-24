@@ -68,9 +68,9 @@ assert.equal(point35.length,8);
 assert.deepEqual(point35.filter(e=>e.status==='reviewed').map(e=>e.source.subpart).sort(),[...readyParts].sort());
 assert.deepEqual(point35.filter(e=>e.status==='draft').map(e=>e.source.subpart).sort(),[...pendingParts].sort());
 const coverage=API.inspectBundle(production.catalog,production.lessons).coverage;
-assert.equal(coverage.availableTheoryPoints,36);
-assert.equal(coverage.partiallyAvailable,0);assert.equal(coverage.availableExercises,275);
-assert.equal(production.catalog.entries.length,1351);
+assert.equal(coverage.availableTheoryPoints,37);
+assert.equal(coverage.partiallyAvailable,0);assert.equal(coverage.availableExercises,282);
+assert.equal(production.catalog.entries.length,1364);
 // Preserve the original partial-coverage guard by withholding the new four cards
 // in an isolated copy. Old definitions alone must never complete point35.
 const definitionsOnly=structuredClone(production);
@@ -78,7 +78,7 @@ const withheld=new Set(continuationParts.map(part=>'theory-035-'+part));
 for(const entry of definitionsOnly.catalog.entries)if(withheld.has(entry.id))entry.status='draft';
 definitionsOnly.lessons=definitionsOnly.lessons.filter(card=>!withheld.has(card.id));
 const partial=API.inspectBundle(definitionsOnly.catalog,definitionsOnly.lessons).coverage;
-assert.equal(partial.availableTheoryPoints,35,'point36 is complete; definitions alone leave point35 incomplete');
+assert.equal(partial.availableTheoryPoints,36,'points36–37 are complete; definitions alone leave point35 incomplete');
 assert.equal(partial.partiallyAvailable,1,'missing example parts remain visible');
 // This isolated mutation tests the real guard; it never changes authored files.
 const unreviewed=structuredClone(cards);
