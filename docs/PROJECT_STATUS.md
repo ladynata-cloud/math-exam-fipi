@@ -237,23 +237,53 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## In progress: Atanasyan chapter III self-check questions
+## In progress: Atanasyan practical nets 271–275
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_SELFCHECK.md), HIGH review;
-  owner requested publication and continuation on 2026-10-24. Branch
-  `feat/atanasyan-polyhedra-selfcheck` starts from release head
-  `96cd674faebfc1353194325ab8fb5011fdf11519`, now an ancestor of production.
-- Eighteen cards cover all fourteen questions, including both original parts
-  of question7 and four explicit cases for question10. The unrestricted
-  nonconvex case has a general construction, not only a counterexample.
-- Independent exact source, mathematics, pedagogy and coordinate reviews
-  passed at 2026-10-24T10:51:46.357Z. Added79steps and76modelstates. Candidate:
-  474cards,1693steps,1709views;282complete exercises,37theory points and40
-  self-checks. All456 previous cards, runtime and pupil-state contracts remain.
-- Exact-head cloud and actual visual review remain pending at this checkpoint.
-  Next: verify the committed cloud run, inspect new desktop/mobile images,
-  and record the separate Draft PR handoff. Practical271–275 and additional
-  exercises288 onward remain pending; the entire book is not complete.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_PRACTICAL.md), HIGH content review;
+  current owner request «продолжай курс», 2026-10-24. Branch
+  `feat/atanasyan-polyhedra-practical`, base
+  `631d2d644d87162d60585c3efb8365af8311a3f5`.
+- Five source-specific paper nets from printed84 / PDF86, figures95–99:
+  tetrahedron, cube, octahedron, dodecahedron and icosahedron. Add fold/cut
+  guidance, complete matching seams and manually assessed physical assembly.
+  Preserve all474 published cards and the existing interaction/runtime.
+- All five cards are authored and independently approved for source, mathematics
+  and written pedagogy: 37 steps, 75 model states and all 45 seam pairs. The
+  [review record](reviews/ATANASYAN_POLYHEDRA_PRACTICAL_MATH.json) binds the actual
+  source inspection, coordinate checks and complete instructional text to hashes.
+- The candidate contains 479 cards, 1,730 steps and 1,784 model states. All main
+  exercises 1–287, 37 theory points and 40 chapter self-checks are covered.
+  Exact historical fixtures preserve all 474 prior cards and 917 capture cases.
+- Content, schema, runtime and numerical checks passed locally. Eighty added
+  capture cases cover every new view and each complete explanation at 320/1280.
+  Exact-head cloud journeys and independent pixel inspection remain the next
+  release gates; no new content is published at this commit checkpoint.
+- Next actions: complete cloud/browser/visual evidence in one Draft PR; record
+  its exact head and base; obtain a separate release decision. Additional
+  exercises 288 onward remain later work.
+
+## Published: Atanasyan chapter III self-check questions
+
+- [PR329](https://github.com/ladynata-cloud/math-exam-fipi/pull/329) merged as
+  `631d2d644d87162d60585c3efb8365af8311a3f5`, sole parent
+  `ff4d60fcd071b8208b93373a063d1a194aea93b7`; reviewed head
+  `7842c7701f7edd7b12b3c7a86cefab4fdb28c8bc`. The owner separately authorized
+  merge and publication; the immediate remote-base comparison found no drift.
+- All38 changed paths/blobs and stable patch ID matched the independently
+  reviewed composition, tree `30c5687363bc2026a97a64a1dd68da4dec15a416`.
+  Eighteen cards complete all14 chapter III self-check questions:79steps and
+  76modelstates. Published totals:474cards,1693steps,1709views,282complete main
+  exercises,37theory points,40self-checks. All456 preceding cards are intact.
+- Independent content/mathematics review, all11 exact-head jobs, actual review
+  of174 new images and36 complete proof views at320/1280 passed. Pages40111565939
+  and Profile40111566094 passed all6 jobs on the actual merge; all54 public-byte
+  requests matched. Focused live desktop help/theory-return/reload also passed.
+- Published bundle SHA256:
+  `bcb10fec3e270460d16729fe924530685b82b4f08b16e1667c3023fb3be7a9c3`.
+  Rechecked at this continuation start: HTTP200 and the same474-card bytes.
+  Gate: `ATANASYAN_POLYHEDRA_SELFCHECK_PUBLISHED_OK`.
+- No paid external-provider verdict, new live mobile run or physical-pupil
+  trial is claimed. The entire textbook remains incomplete.
 
 ## Published: Atanasyan point37 and exercises281–287
 
