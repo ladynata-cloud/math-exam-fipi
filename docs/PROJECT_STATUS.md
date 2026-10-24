@@ -1,6 +1,29 @@
 # MathExam project status
 
-Updated: 2026-10-24 (Asia/Novosibirsk)
+Updated: 2026-10-25 (Asia/Novosibirsk)
+
+## In progress: grade-six НОК / НОД trainers and shared board
+
+- [Scope](tasks/GRADE6_NOK_NOD_BOARD.md), MEDIUM bounded integration, branch
+  `feat/grade6-nok-nod-board`, base
+  `91dd1e5a3f85e29709df922fa88859204aac100d`.
+- The existing requested cabinet and its Vilenkin grade-six direction were
+  verified in the live teacher interface. The merged PR315 integration is
+  present; its 27 managed modules and the learning catalog stay unchanged.
+- Prepared two standalone trainers with prime-factor columns, retained steps,
+  occurrence-aware matching, contextual help and the existing board SDK.
+  Fixed plan cards use the existing saved-note mechanism without a new attempt
+  contract, account or storage migration.
+- External Claude consultation is unavailable in this environment and remains
+  explicitly incomplete. Independent technical checks are not an external
+  verdict or a standing release exception.
+- Mathematics, all 48 guided journeys, cabinet and registry regression checks,
+  and both actual local board journeys passed. Independent internal review
+  resolved the embedded navigation escape; no external verdict is claimed.
+- Next: complete exact-head cloud verification and the Draft PR handoff;
+  obtain the concrete release decision; verify deployment and then save the
+  two references in the selected existing plan. No new live assignment is
+  claimed by this status entry.
 
 ## In progress: complete chapter 1 of Shestakov–Yaschenko
 
