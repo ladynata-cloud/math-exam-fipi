@@ -1,7 +1,7 @@
 {
   "provider": "OpenAI Codex independent agent review",
   "reviewer": "next_source_scope",
-  "reviewedAt": "2026-10-24T10:51:46.357Z",
+  "reviewedAt": "2026-10-24T11:06:17.229Z",
   "base": "96cd674faebfc1353194325ab8fb5011fdf11519",
   "pr": null,
   "head": null,
@@ -51,10 +51,10 @@
       null
     ],
     "10": [
-      "zero",
-      "one",
-      "two",
-      "nonconvex"
+      "внутренняя точка",
+      "точка на стороне",
+      "точка в вершине",
+      "невыпуклое основание"
     ],
     "11": [
       null
@@ -87,7 +87,7 @@
   ],
   "sourceContractReview": "Compared the actual source-index delta against the authoring base: precisely the fourteen scoped records gain requiredParts; original IDs, titles, source fields and broad page metadata are unchanged. Lesson-specific exact pages are 85/87 for questions 1–11 and 86/88 for questions 12–14. Cyrillic source subparts а/б are retained for question 7. The four pedagogical cases of question 10 are explicitly identified as explanatory subdivisions, not invented textbook subquestions.",
   "canonicalization": "Recursively sort object keys; preserve array order; omit only top-level status and review; Node JSON.stringify UTF-8 SHA256. Aggregate hashes the array of canonical content objects in manifest.cards order.",
-  "aggregateSHA256": "36a43a88aea2f3aed0795be86d5344817b4415837336ebcb879594d9a909fef0",
+  "aggregateSHA256": "127ba160c5ce38902a3292113e932b9e7ae643e479dcf1841b151e669a802b69",
   "cardCount": 18,
   "exerciseCards": 18,
   "theoryCards": 0,
@@ -278,7 +278,7 @@
     },
     {
       "id": "ex-selfcheck-iii-10-zero",
-      "sha256": "57ea89522bc6ce4fc8a253d73468c3344ca300fed536a1971d97be5e1c5a9601",
+      "sha256": "1b9f1e412ba2e77614f0941ed09f694b8ed60eb086af32f397b5daaaa7395a33",
       "steps": 3,
       "views": 3,
       "source": {
@@ -292,12 +292,12 @@
         "pdfPages": [
           87
         ],
-        "subpart": "zero"
+        "subpart": "внутренняя точка"
       }
     },
     {
       "id": "ex-selfcheck-iii-10-one",
-      "sha256": "86740a11dc22c9da781aead6a7a0e13b34f13979ee2018fdfd5b81f5c9345e29",
+      "sha256": "6dd0662d63421ff81d77a1a4459e203df50645bac13ef2fe1f51af480688e729",
       "steps": 3,
       "views": 3,
       "source": {
@@ -311,12 +311,12 @@
         "pdfPages": [
           87
         ],
-        "subpart": "one"
+        "subpart": "точка на стороне"
       }
     },
     {
       "id": "ex-selfcheck-iii-10-two",
-      "sha256": "9db0106283ca35247d2ed47f70fa39a2218ed81859f7ff3928c4ddb2323b6656",
+      "sha256": "1592ab2ce4ab73c9b3823c7e17d9514f3b3ed851fa0e034296e06349c67a959a",
       "steps": 4,
       "views": 4,
       "source": {
@@ -330,12 +330,12 @@
         "pdfPages": [
           87
         ],
-        "subpart": "two"
+        "subpart": "точка в вершине"
       }
     },
     {
       "id": "ex-selfcheck-iii-10-nonconvex",
-      "sha256": "ade909281d4497fb08c6373597805d328838e782ac4e812a658ac3f0f0dced44",
+      "sha256": "4c3b8c69f02b020678030241cafb426a28ff7696e348783ab91b7ad99f11d019",
       "steps": 7,
       "views": 6,
       "source": {
@@ -349,7 +349,7 @@
         "pdfPages": [
           87
         ],
-        "subpart": "nonconvex"
+        "subpart": "невыпуклое основание"
       }
     },
     {
@@ -511,6 +511,16 @@
       ],
       "finding": "A help phrase could be read as a rectangular base and called a lateral edge a side.",
       "resolution": "It now explicitly says a right-triangular base and a lateral edge."
+    },
+    {
+      "cards": [
+        "ex-selfcheck-iii-10-zero",
+        "ex-selfcheck-iii-10-one",
+        "ex-selfcheck-iii-10-two",
+        "ex-selfcheck-iii-10-nonconvex"
+      ],
+      "finding": "Internal English case keys were used as pupil-facing source subparts by the unchanged sourceText renderer.",
+      "resolution": "The four source subparts now use neutral Russian pedagogical labels; matching coverage contracts are synchronized, and internal stable card IDs/view keys are unchanged."
     }
   ],
   "unresolvedFindings": [],
@@ -522,5 +532,52 @@
     "Paid external Claude review",
     "Real-pupil pilot"
   ],
-  "boundary": "This report is independent of authorship and binds exact canonical card content before commit. Top-level status/review promotion does not change these hashes. Any content change requires a renewed review. No merge or publication authorization is supplied."
+  "boundary": "This report is independent of authorship and binds exact canonical card content before commit. Top-level status/review promotion does not change these hashes. Any content change requires a renewed review. No merge or publication authorization is supplied.",
+  "originalReviewedAt": "2026-10-24T10:51:46.357Z",
+  "sourceLabelCorrection": {
+    "reviewedAt": "2026-10-24T11:06:17.229Z",
+    "verdict": "PASS_EXACT_FOUR_SOURCE_LABEL_LOCALIZATION",
+    "reason": "The unchanged engine.sourceText displays source.subpart directly. Russian pedagogical labels identify the cases without exposing internal English keys or revealing the numerical answers.",
+    "changedCards": [
+      {
+        "id": "ex-selfcheck-iii-10-zero",
+        "oldLabel": "zero",
+        "newLabel": "внутренняя точка",
+        "oldSHA256": "57ea89522bc6ce4fc8a253d73468c3344ca300fed536a1971d97be5e1c5a9601",
+        "newSHA256": "1b9f1e412ba2e77614f0941ed09f694b8ed60eb086af32f397b5daaaa7395a33"
+      },
+      {
+        "id": "ex-selfcheck-iii-10-one",
+        "oldLabel": "one",
+        "newLabel": "точка на стороне",
+        "oldSHA256": "86740a11dc22c9da781aead6a7a0e13b34f13979ee2018fdfd5b81f5c9345e29",
+        "newSHA256": "6dd0662d63421ff81d77a1a4459e203df50645bac13ef2fe1f51af480688e729"
+      },
+      {
+        "id": "ex-selfcheck-iii-10-two",
+        "oldLabel": "two",
+        "newLabel": "точка в вершине",
+        "oldSHA256": "9db0106283ca35247d2ed47f70fa39a2218ed81859f7ff3928c4ddb2323b6656",
+        "newSHA256": "1592ab2ce4ab73c9b3823c7e17d9514f3b3ed851fa0e034296e06349c67a959a"
+      },
+      {
+        "id": "ex-selfcheck-iii-10-nonconvex",
+        "oldLabel": "nonconvex",
+        "newLabel": "невыпуклое основание",
+        "oldSHA256": "ade909281d4497fb08c6373597805d328838e782ac4e812a658ac3f0f0dced44",
+        "newSHA256": "4c3b8c69f02b020678030241cafb426a28ff7696e348783ab91b7ad99f11d019"
+      }
+    ],
+    "unchangedCards": 14,
+    "changesVerified": "For each of all 18 canonical records, compared actual current content with the previously reviewed committed object. Exactly the four source.subpart strings changed; all remaining prose, geometry, IDs, view keys and answer contracts are identical. Matching manifest/source-index requiredParts use the same four labels. No runtime change is part of this correction."
+  },
+  "history": [
+    {
+      "reviewedAt": "2026-10-24T10:51:46.357Z",
+      "aggregateSHA256": "36a43a88aea2f3aed0795be86d5344817b4415837336ebcb879594d9a909fef0",
+      "verdict": "PASS_SOURCE_MATHEMATICS_WRITTEN_PEDAGOGY_AND_MODEL_COORDINATES",
+      "reportSHA256": "5b7227da6f5f84575dc6798bec6940db3382862cb0c6dc21339fa40ea26fd471",
+      "binding": "Original complete source, mathematics, written pedagogy and actual model-coordinate review; preserved as historical evidence."
+    }
+  ]
 }

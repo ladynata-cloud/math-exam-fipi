@@ -54,3 +54,19 @@ The preceding publication is verified: PR325 merged as `054b8a43803686d647ff7b8c
 and release PR328 as `0f080e9dba396e6bbe7bc7c6df0959c70d2d3437`.
 Pages40087429216 and all 90 public byte comparisons passed. The task author
 base is an ancestor of that current main, with an identical full tree.
+
+## Source-caption correction before visual review
+
+The actual source renderer exposes `source.subpart` in catalog rows and source
+details. Four new question10 case labels therefore needed understandable Russian
+wording instead of internal English identifiers. Only those source labels and
+their matching contracts changed; all explanations, answers, hints and models
+remain identical. A regression now opens the real catalog and lesson source
+details to verify the displayed labels. Runtime code and internal card IDs are
+unchanged.
+
+Independent source and mathematical rebinding passed at
+2026-10-24T11:06:17.229Z, aggregate
+`127ba160c5ce38902a3292113e932b9e7ae643e479dcf1841b151e669a802b69`.
+Original review provenance is retained in both reports. The revised head needs
+fresh cloud evidence and actual image review; earlier head checks are historical.

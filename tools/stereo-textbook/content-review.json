@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-24T10:51:46.357Z",
-  "registeredAt": "2026-10-24T10:52:36.847Z",
+  "reviewedAt": "2026-10-24T11:06:17.229Z",
+  "registeredAt": "2026-10-24T11:06:51.264Z",
   "scope": "Introduction and chapters I–III: theory points1–37; exercises1–270 and276–287; all40 self-check questions of chaptersI–III. Practical271–275 and additional exercises288 onward remain pending. Not the complete book.",
   "batches": [
     {
@@ -710,9 +710,9 @@
     },
     {
       "reviewer": "Codex independent next_source_scope; prism_proof_audit",
-      "reviewedAt": "2026-10-24T10:51:46.357Z",
-      "registeredAt": "2026-10-24T10:52:36.847Z",
-      "sourceBundleSHA256": "36a43a88aea2f3aed0795be86d5344817b4415837336ebcb879594d9a909fef0",
+      "reviewedAt": "2026-10-24T11:06:17.229Z",
+      "registeredAt": "2026-10-24T11:06:51.264Z",
+      "sourceBundleSHA256": "127ba160c5ce38902a3292113e932b9e7ae643e479dcf1841b151e669a802b69",
       "scope": "All 14 chapter III self-check questions in 18 cards: question 7 has the original two subparts; question 10 has three explicit convex cases plus a complete general nonconvex construction. Practical tasks 271–275 and additional exercises 288 onward remain outside this increment; the full textbook is incomplete.",
       "report": "docs/reviews/ATANASYAN_POLYHEDRA_SELFCHECK_CONTENT.md",
       "mathematicalReport": "docs/reviews/ATANASYAN_POLYHEDRA_SELFCHECK_MATH.json",
@@ -735,7 +735,9 @@
         "ex-selfcheck-iii-12",
         "ex-selfcheck-iii-13",
         "ex-selfcheck-iii-14"
-      ]
+      ],
+      "originalReviewedAt": "2026-10-24T10:51:46.357Z",
+      "revisionNote": "Four source-case captions localized; all mathematical content and models unchanged and independently rebound."
     }
   ],
   "cards": [
@@ -2605,19 +2607,19 @@
     },
     {
       "id": "ex-selfcheck-iii-10-zero",
-      "sha256": "57ea89522bc6ce4fc8a253d73468c3344ca300fed536a1971d97be5e1c5a9601"
+      "sha256": "1b9f1e412ba2e77614f0941ed09f694b8ed60eb086af32f397b5daaaa7395a33"
     },
     {
       "id": "ex-selfcheck-iii-10-one",
-      "sha256": "86740a11dc22c9da781aead6a7a0e13b34f13979ee2018fdfd5b81f5c9345e29"
+      "sha256": "6dd0662d63421ff81d77a1a4459e203df50645bac13ef2fe1f51af480688e729"
     },
     {
       "id": "ex-selfcheck-iii-10-two",
-      "sha256": "9db0106283ca35247d2ed47f70fa39a2218ed81859f7ff3928c4ddb2323b6656"
+      "sha256": "1592ab2ce4ab73c9b3823c7e17d9514f3b3ed851fa0e034296e06349c67a959a"
     },
     {
       "id": "ex-selfcheck-iii-10-nonconvex",
-      "sha256": "ade909281d4497fb08c6373597805d328838e782ac4e812a658ac3f0f0dced44"
+      "sha256": "4c3b8c69f02b020678030241cafb426a28ff7696e348783ab91b7ad99f11d019"
     },
     {
       "id": "ex-selfcheck-iii-11",

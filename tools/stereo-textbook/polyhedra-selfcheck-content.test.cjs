@@ -11,7 +11,7 @@ const expectedIds=[...Array.from({length:6},(_,i)=>'ex-selfcheck-iii-'+String(i+
  'ex-selfcheck-iii-07-a','ex-selfcheck-iii-07-b','ex-selfcheck-iii-08','ex-selfcheck-iii-09',
  ...['zero','one','two','nonconvex'].map(part=>'ex-selfcheck-iii-10-'+part),
  ...Array.from({length:4},(_,i)=>'ex-selfcheck-iii-'+String(i+11))];
-const ids=new Set(expectedIds),contracts=Object.fromEntries(Array.from({length:14},(_,i)=>[String(i+1),i===6?['а','б']:i===9?['zero','one','two','nonconvex']:[null]]));
+const ids=new Set(expectedIds),contracts=Object.fromEntries(Array.from({length:14},(_,i)=>[String(i+1),i===6?['а','б']:i===9?['внутренняя точка','точка на стороне','точка в вершине','невыпуклое основание']:[null]]));
 const exact=(actual,expected,label)=>{assert.equal(new Set(actual).size,actual.length,label+' unique');assert.deepEqual([...actual].sort(),[...expected].sort(),label);};
 const canon=x=>Array.isArray(x)?x.map(canon):x&&typeof x==='object'?Object.fromEntries(Object.keys(x).sort().map(k=>[k,canon(x[k])])):x;
 const sha=x=>crypto.createHash('sha256').update(JSON.stringify(canon(x))).digest('hex');
@@ -39,7 +39,7 @@ assert.equal(sha(previousCases),'4028ebca32f8a2eccfc05cf7b463d4573790780a35a2a63
 
 const Ajv=require('ajv/dist/2020'),ajv=new Ajv({allErrors:true,strict:true});require('ajv-formats')(ajv);
 const validate=ajv.compile(require(root+'/stereo-course/textbook/schema/lesson.schema.json'));
-const {JSDOM}=require('jsdom'),dom=new JSDOM('<div id="model"></div>',{pretendToBeVisual:true,runScripts:'outside-only'});
+const {JSDOM}=require('jsdom'),dom=new JSDOM('<div id="model"></div>',{url:'https://example.test/stereo-course/textbook/',pretendToBeVisual:true,runScripts:'outside-only'});
 dom.window.eval(fs.readFileSync(root+'/stereo-course/assets/math-text.js','utf8'));
 dom.window.eval(fs.readFileSync(root+'/stereo-course/assets/task-scene-viewer.js','utf8'));
 let steps=0,views=0;
@@ -101,4 +101,16 @@ for(const id of expectedIds.filter(id=>id.startsWith('ex-selfcheck-iii-07-')||id
 const unpublished=structuredClone(cards);for(const card of unpublished){card.status='in-review';card.review={source:'pending',mathematics:'pending',pedagogy:'pending'};}
 const unpublishedCatalog={...production.catalog,entries:unpublished.map(card=>Object.fromEntries(['id','revision','kind','title','status','source'].map(k=>[k,card[k]])))};
 assert.equal(API.inspectBundle(unpublishedCatalog,unpublished).available.size,0,'unreviewed new cards cannot publish');
+// Source metadata is visible in both catalog rows and the real source disclosure.
+// Pedagogical case identifiers must therefore be understandable Russian labels.
+const appRoot=dom.window.document.createElement('div');dom.window.document.body.append(appRoot);
+dom.window.HTMLElement.prototype.scrollIntoView=()=>{};dom.window.scrollTo=()=>{};
+const app=API.createApp(appRoot,production),caseCards=cards.filter(c=>c.source.exercise==='10');
+for(const [selector,value]of [['#catalog-collection','selfcheck'],['#catalog-chapter','III. Многогранники'],['#catalog-search','10']]){
+ const control=appRoot.querySelector(selector);control.value=value;control.dispatchEvent(new dom.window.Event(selector==='#catalog-search'?'input':'change',{bubbles:true}));
+}
+assert.equal(appRoot.querySelectorAll('[data-catalog-ready] article').length,4);
+for(const card of caseCards){const row=appRoot.querySelector('[data-lesson="'+card.id+'"]').closest('article');assert(row.textContent.includes(card.source.subpart),card.id+': localized catalog source');assert(!/\b(?:zero|one|two|nonconvex)\b/.test(row.textContent));}
+for(const card of caseCards){assert(app.open(card.id));const summary=[...appRoot.querySelectorAll('summary')].find(node=>node.textContent==='Где это в учебнике?');assert(summary,card.id+': actual source disclosure');const text=summary.parentElement.querySelector('p').textContent;assert(text.includes(card.source.subpart),card.id+': localized source disclosure');assert(!/\b(?:zero|one|two|nonconvex)\b/.test(text));}
+app.destroy();
 dom.window.close();console.log('ATANASYAN_POLYHEDRA_SELFCHECK_CONTENT_OK',cards.length,'cards',steps,'steps',views,'states; prior456 exact; chapterIII questions1–14 complete');

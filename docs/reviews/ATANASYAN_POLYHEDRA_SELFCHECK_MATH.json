@@ -2,8 +2,8 @@
   "task": "TEXTBOOK_ATANASYAN_POLYHEDRA_SELFCHECK",
   "reviewer": "Codex independent prism_proof_audit",
   "role": "Independent mathematical proof and actual-coordinate review; no lesson authorship",
-  "reviewedAt": "2026-10-24T10:50:45.111Z",
-  "verdict": "PASS_INDEPENDENT_MATHEMATICS_AND_ACTUAL_COORDINATES",
+  "reviewedAt": "2026-10-24T11:06:08.942Z",
+  "verdict": "PASS_INDEPENDENT_MATHEMATICS_AND_DISPLAY_ONLY_REBINDING",
   "authorBase": "96cd674faebfc1353194325ab8fb5011fdf11519",
   "scope": {
     "cards": 18,
@@ -12,79 +12,127 @@
     "modelStates": 76
   },
   "canonicalization": "Omit only top-level status and review; recursively sort object keys, preserve array order; Node JSON.stringify UTF-8 SHA256. Aggregate is canonical array in manifest order.",
-  "aggregateSHA256": "36a43a88aea2f3aed0795be86d5344817b4415837336ebcb879594d9a909fef0",
+  "aggregateSHA256": "127ba160c5ce38902a3292113e932b9e7ae643e479dcf1841b151e669a802b69",
   "cards": [
     {
       "id": "ex-selfcheck-iii-01",
-      "canonicalSHA256": "b7661caaf25c796f51c73411b3264380e9b367c930bd437d4ed027ddba1f1a5f"
+      "oldCanonicalSHA256": "b7661caaf25c796f51c73411b3264380e9b367c930bd437d4ed027ddba1f1a5f",
+      "canonicalSHA256": "b7661caaf25c796f51c73411b3264380e9b367c930bd437d4ed027ddba1f1a5f",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-02",
-      "canonicalSHA256": "c61f5d8fec3bffdc8186913fd27b36cee736d538e250dda9c8de3087a7eddbde"
+      "oldCanonicalSHA256": "c61f5d8fec3bffdc8186913fd27b36cee736d538e250dda9c8de3087a7eddbde",
+      "canonicalSHA256": "c61f5d8fec3bffdc8186913fd27b36cee736d538e250dda9c8de3087a7eddbde",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-03",
-      "canonicalSHA256": "77def022a7687bf90c5514b2aa1003395b9d0695c6518b9ff95cee19b88344fa"
+      "oldCanonicalSHA256": "77def022a7687bf90c5514b2aa1003395b9d0695c6518b9ff95cee19b88344fa",
+      "canonicalSHA256": "77def022a7687bf90c5514b2aa1003395b9d0695c6518b9ff95cee19b88344fa",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-04",
-      "canonicalSHA256": "3114b63734a94df720a6b86637ac9b296e76fe546ed5049a7ebab4a65d3fe177"
+      "oldCanonicalSHA256": "3114b63734a94df720a6b86637ac9b296e76fe546ed5049a7ebab4a65d3fe177",
+      "canonicalSHA256": "3114b63734a94df720a6b86637ac9b296e76fe546ed5049a7ebab4a65d3fe177",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-05",
-      "canonicalSHA256": "be7c30e4950b66438cf9f4c9997bf712e8a1a42eddcfb3f46e97a3c2d96d3e10"
+      "oldCanonicalSHA256": "be7c30e4950b66438cf9f4c9997bf712e8a1a42eddcfb3f46e97a3c2d96d3e10",
+      "canonicalSHA256": "be7c30e4950b66438cf9f4c9997bf712e8a1a42eddcfb3f46e97a3c2d96d3e10",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-06",
-      "canonicalSHA256": "d71611e16254c9f5cdcb548b0d53c5e3df63c5b29618b11291b9b027e1f57bc6"
+      "oldCanonicalSHA256": "d71611e16254c9f5cdcb548b0d53c5e3df63c5b29618b11291b9b027e1f57bc6",
+      "canonicalSHA256": "d71611e16254c9f5cdcb548b0d53c5e3df63c5b29618b11291b9b027e1f57bc6",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-07-a",
-      "canonicalSHA256": "2bd9a1c18db41013580f97f22ac9b26c7500580c0eaf800938e40a6af282ce7f"
+      "oldCanonicalSHA256": "2bd9a1c18db41013580f97f22ac9b26c7500580c0eaf800938e40a6af282ce7f",
+      "canonicalSHA256": "2bd9a1c18db41013580f97f22ac9b26c7500580c0eaf800938e40a6af282ce7f",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-07-b",
-      "canonicalSHA256": "31a4c703a72c644936e15e0b74c46d74a07af7474c433da18d03b80231ddb18a"
+      "oldCanonicalSHA256": "31a4c703a72c644936e15e0b74c46d74a07af7474c433da18d03b80231ddb18a",
+      "canonicalSHA256": "31a4c703a72c644936e15e0b74c46d74a07af7474c433da18d03b80231ddb18a",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-08",
-      "canonicalSHA256": "78fd0123e13204f4bfcb23f7c6cd4ecf25d7f32553d9eb963dca19e1912d2d86"
+      "oldCanonicalSHA256": "78fd0123e13204f4bfcb23f7c6cd4ecf25d7f32553d9eb963dca19e1912d2d86",
+      "canonicalSHA256": "78fd0123e13204f4bfcb23f7c6cd4ecf25d7f32553d9eb963dca19e1912d2d86",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-09",
-      "canonicalSHA256": "266f8c6c6fdcc75a5990ca1b266f391039c0560fd3d6f7df4f25339159cfeb5b"
+      "oldCanonicalSHA256": "266f8c6c6fdcc75a5990ca1b266f391039c0560fd3d6f7df4f25339159cfeb5b",
+      "canonicalSHA256": "266f8c6c6fdcc75a5990ca1b266f391039c0560fd3d6f7df4f25339159cfeb5b",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-10-zero",
-      "canonicalSHA256": "57ea89522bc6ce4fc8a253d73468c3344ca300fed536a1971d97be5e1c5a9601"
+      "oldCanonicalSHA256": "57ea89522bc6ce4fc8a253d73468c3344ca300fed536a1971d97be5e1c5a9601",
+      "canonicalSHA256": "1b9f1e412ba2e77614f0941ed09f694b8ed60eb086af32f397b5daaaa7395a33",
+      "displayOnlySourceSubpartChange": {
+        "before": "zero",
+        "after": "внутренняя точка"
+      }
     },
     {
       "id": "ex-selfcheck-iii-10-one",
-      "canonicalSHA256": "86740a11dc22c9da781aead6a7a0e13b34f13979ee2018fdfd5b81f5c9345e29"
+      "oldCanonicalSHA256": "86740a11dc22c9da781aead6a7a0e13b34f13979ee2018fdfd5b81f5c9345e29",
+      "canonicalSHA256": "6dd0662d63421ff81d77a1a4459e203df50645bac13ef2fe1f51af480688e729",
+      "displayOnlySourceSubpartChange": {
+        "before": "one",
+        "after": "точка на стороне"
+      }
     },
     {
       "id": "ex-selfcheck-iii-10-two",
-      "canonicalSHA256": "9db0106283ca35247d2ed47f70fa39a2218ed81859f7ff3928c4ddb2323b6656"
+      "oldCanonicalSHA256": "9db0106283ca35247d2ed47f70fa39a2218ed81859f7ff3928c4ddb2323b6656",
+      "canonicalSHA256": "1592ab2ce4ab73c9b3823c7e17d9514f3b3ed851fa0e034296e06349c67a959a",
+      "displayOnlySourceSubpartChange": {
+        "before": "two",
+        "after": "точка в вершине"
+      }
     },
     {
       "id": "ex-selfcheck-iii-10-nonconvex",
-      "canonicalSHA256": "ade909281d4497fb08c6373597805d328838e782ac4e812a658ac3f0f0dced44"
+      "oldCanonicalSHA256": "ade909281d4497fb08c6373597805d328838e782ac4e812a658ac3f0f0dced44",
+      "canonicalSHA256": "4c3b8c69f02b020678030241cafb426a28ff7696e348783ab91b7ad99f11d019",
+      "displayOnlySourceSubpartChange": {
+        "before": "nonconvex",
+        "after": "невыпуклое основание"
+      }
     },
     {
       "id": "ex-selfcheck-iii-11",
-      "canonicalSHA256": "36dbc40d23c4519cfb784f53ddb827aaeddc81e7cfb43421805e469f0b9c79a5"
+      "oldCanonicalSHA256": "36dbc40d23c4519cfb784f53ddb827aaeddc81e7cfb43421805e469f0b9c79a5",
+      "canonicalSHA256": "36dbc40d23c4519cfb784f53ddb827aaeddc81e7cfb43421805e469f0b9c79a5",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-12",
-      "canonicalSHA256": "cf7d457bfac78bf6ba8be5260cd6dede77b358201b6009eb2727c18aa78400ba"
+      "oldCanonicalSHA256": "cf7d457bfac78bf6ba8be5260cd6dede77b358201b6009eb2727c18aa78400ba",
+      "canonicalSHA256": "cf7d457bfac78bf6ba8be5260cd6dede77b358201b6009eb2727c18aa78400ba",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-13",
-      "canonicalSHA256": "feef278713c9d3d4514163e4e1427653d60adb58e2c8a365cc9197e37c404c4a"
+      "oldCanonicalSHA256": "feef278713c9d3d4514163e4e1427653d60adb58e2c8a365cc9197e37c404c4a",
+      "canonicalSHA256": "feef278713c9d3d4514163e4e1427653d60adb58e2c8a365cc9197e37c404c4a",
+      "displayOnlySourceSubpartChange": null
     },
     {
       "id": "ex-selfcheck-iii-14",
-      "canonicalSHA256": "3f6a1c0c2a523935cbe50bfcf8245ac5ac397dc83487ef1398467e65af18c91c"
+      "oldCanonicalSHA256": "3f6a1c0c2a523935cbe50bfcf8245ac5ac397dc83487ef1398467e65af18c91c",
+      "canonicalSHA256": "3f6a1c0c2a523935cbe50bfcf8245ac5ac397dc83487ef1398467e65af18c91c",
+      "displayOnlySourceSubpartChange": null
     }
   ],
   "oracle": {
@@ -134,5 +182,17 @@
     "No browser screenshots were inspected by this review.",
     "No paid external-provider review or real-pupil learning pilot is claimed.",
     "Hashes bind exact current authored contents; material later changes require renewed review."
-  ]
+  ],
+  "originalMathematicalReviewAt": "2026-10-24T10:50:45.111Z",
+  "originalAggregateSHA256": "36a43a88aea2f3aed0795be86d5344817b4415837336ebcb879594d9a909fef0",
+  "rebind": {
+    "baseCommit": "f3fdc8ef333f33091bda2e5af08c9fbcd1bfce9d",
+    "baseTree": "e2c3b2075598dd949b4731c4cf9c547ed28e65a3",
+    "equivalentRemoteHead": "66c56b3a1f8fa77ccefe5dcc4baa27ca5e41f2cf",
+    "method": "Compare every canonical record against the exact committed mathematical-review baseline, allowing only four explicitly listed source.subpart replacements. Exclude only top-level status/review as in the original canonical contract.",
+    "changedDisplayFields": 4,
+    "unchangedCanonicalCards": 14,
+    "proofsModelsAnswersHintsAndJustifications": "byte-equivalent canonical values in all18 cards",
+    "oracleRerun": "PASS on localized source labels; no oracle changes"
+  }
 }
