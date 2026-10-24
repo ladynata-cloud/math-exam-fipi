@@ -20,13 +20,17 @@ for(const l of bundle.lessons){
 assert.equal(bundle.catalog.entries.length,2007);
 assert.equal(bundle.catalog.entries.filter(e=>e.kind==='exercise').length,1980);
 assert.equal(topics.size,27,'All source topics have authored support');
-assert.equal(bundle.lessons.filter(l=>l.kind==='exercise').length,324,'First-release selection contains 324 source variants');
-for(const [s,t] of topics){assert.equal(t.theory,1,s+' theory');assert.equal(t.exercise,12,s+' six source numbers, two variants each');}
+assert.equal(bundle.lessons.filter(l=>l.kind==='exercise').length,516,'Chapter-one completion: 516 source variants');
+const chapterOneCoverage={'1.1':32,'1.2':38,'1.3':50,'1.4':104,'1.5':28};
+for(const [s,t] of topics){assert.equal(t.theory,1,s+' theory');assert.equal(t.exercise,chapterOneCoverage[s]||12,s+' exact authored coverage');}
+const chapterOneIds=bundle.catalog.entries.filter(e=>e.kind==='exercise'&&e.source.section.startsWith('1.')).map(e=>e.id).sort();
+assert.deepEqual(bundle.lessons.filter(l=>l.kind==='exercise'&&l.source.section.startsWith('1.')).map(l=>l.id).sort(),chapterOneIds,'Every chapter-one source variant exactly once');
 const inspection=api.inspectBundle(bundle.catalog,bundle.lessons);
 assert.deepEqual(inspection.issues,[]);
 assert.equal(inspection.coverage.exercises,990);
 assert.equal(inspection.coverage.theoryPoints,27);
 assert.equal(inspection.coverage.available,bundle.lessons.filter(l=>l.status==='reviewed').length);
+assert.equal(inspection.coverage.draft,1464,'Only remaining book variants stay pending');
 const invalid=structuredClone(bundle.lessons[0]);invalid.source.pdfPages=invalid.source.printedPages.map(p=>p+1);assert(api.validateLesson(invalid,bundle.catalog.book).length>0,'wrong source offset rejected');
 const bad=structuredClone(bundle);bad.lessons[0].steps[0].view='absent';if(bad.lessons[0].status==='reviewed')assert(api.inspectBundle(bad.catalog,bad.lessons).issues.length>0,'invalid model view blocked');
 const draft=structuredClone(bundle);draft.catalog.entries.forEach(e=>e.status='draft');draft.lessons.forEach(e=>e.status='draft');assert.equal(api.inspectBundle(draft.catalog,draft.lessons).available.size,0,'pending source numbers cannot masquerade as solutions');

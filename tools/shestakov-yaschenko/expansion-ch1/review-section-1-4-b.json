@@ -1,0 +1,78 @@
+{
+  "author": "/root/chapter5",
+  "reviewer": "/root/chapter4",
+  "at": "2026-10-24T06:47:02.994901+00:00",
+  "verdict": "passed",
+  "remainingFindings": [],
+  "checkedIds": [
+    "1.4-B1-a",
+    "1.4-B1-b",
+    "1.4-B11-a",
+    "1.4-B11-b",
+    "1.4-B12-a",
+    "1.4-B12-b",
+    "1.4-B13-a",
+    "1.4-B13-b",
+    "1.4-B14-a",
+    "1.4-B14-b",
+    "1.4-B15-a",
+    "1.4-B15-b",
+    "1.4-B16-a",
+    "1.4-B16-b",
+    "1.4-B17-a",
+    "1.4-B17-b",
+    "1.4-B18-a",
+    "1.4-B18-b",
+    "1.4-B19-a",
+    "1.4-B19-b",
+    "1.4-B3-a",
+    "1.4-B3-b",
+    "1.4-B4-a",
+    "1.4-B4-b",
+    "1.4-B5-a",
+    "1.4-B5-b",
+    "1.4-B6-a",
+    "1.4-B6-b",
+    "1.4-B7-a",
+    "1.4-B7-b",
+    "1.4-B8-a",
+    "1.4-B8-b",
+    "1.4-B9-a",
+    "1.4-B9-b"
+  ],
+  "sha256": "a77fe0dddb01e90aa8e2a48c21b9b28f86df998993ae5b55749a42dfc174aa6d",
+  "recordsSHA256": "c0b08decfb0fa51942aceac6a548dc0fb01b8a2fdf4f4f5eaff29e6bb694af39",
+  "sourcePages": [
+    21,
+    22,
+    23,
+    24,
+    25
+  ],
+  "sourceSHA256": "bd125372e8cb96c0d99cb061f26eb6264ad66d0cd88bdf90484c52b11cb39115",
+  "method": [
+    "Read every condition and complete solution/reason sequence for all 34 variants; compared source data, requested quantities and page mapping against original PDF21–25.",
+    "Rendered and visually inspected all five source pages; independently read all four B18/B19 grid configurations and checked radical glyphs B1/B9.",
+    "Independently computed all 34 answers from actual model coordinates and every finite accepted alias with a restricted arithmetic AST parser (no eval). Checked all twelve intermediate answer inputs.",
+    "Checked given side lengths, angles, incidence, ratios, bisectors, perpendicular feet, areas, midpoint definitions, source grid coordinates, initial visibility and hidden auxiliary points.",
+    "Recalculated B7 ratios for ten additional configurations, including MP perpendicular AB; checked B16 area ratio for eight positions of M. Inspected the applicability of every similarity, sine, cosine, triangle-area and area-subtraction argument."
+  ],
+  "fixes": [
+    {
+      "ids": [
+        "1.4-B7-a",
+        "1.4-B7-b"
+      ],
+      "issue": "Similarity of MHK and MRP does not apply when MP is perpendicular AB because both projected feet coincide with M.",
+      "resolution": "Final author module explicitly treats MP perpendicular AB using direct height lengths, then applies similarity only in the oblique case. Re-read and independently checked both branches."
+    }
+  ],
+  "checks": [
+    "python3 tools/shestakov-yaschenko/expansion-ch1/review-section-1-4-b-checks.py — PASS: all34 source variants, 1499 assertions."
+  ],
+  "limitations": [
+    "This review covers only the 34 newly authored section1.4 B variants; released B2/B10 are outside this scope.",
+    "Source figures were visually reviewed; course browser screenshots and final aggregate gates are owned by the root agent and are not claimed here.",
+    "This is independent AI-agent source/mathematics/content review, not human-teacher approval, a pupil pilot, provider Claude approval or deployment permission."
+  ]
+}

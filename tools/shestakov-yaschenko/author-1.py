@@ -267,6 +267,15 @@ for l in lessons:
 assert len(lessons)==60,len(lessons)
 assert len(theory)==5
 assert len({(x['section'],x['level'],x['number'],x['part']) for x in lessons})==60
+# Extend the released records without executing another writer or changing them.
+import runpy,sys
+extension_dir=pathlib.Path(__file__).with_name('expansion-ch1')
+sys.path.insert(0,str(extension_dir))
+extension_files=['sections-1-1-1-5.py','section-1-2.py','section-1-3.py','section-1-4-a.py','section-1-4-b.py','section-1-4-c.py']
+for filename in extension_files:
+ lessons.extend(runpy.run_path(str(extension_dir/filename))['lessons'])
+assert len(lessons)==252,len(lessons)
+assert len({(x['section'],x['level'],x['number'],x['part']) for x in lessons})==252
 for item in lessons+theory:
  assert len(item['steps'])>=3
  for st in item['steps']:assert st['view'] in item['model']['views'],(item.get('number'),st['view'])

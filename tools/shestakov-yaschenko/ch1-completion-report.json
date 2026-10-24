@@ -1,0 +1,102 @@
+{
+  "task": "SHESTAKOV_CHAPTER1_COMPLETE",
+  "at": "2026-10-24T07:01:50.053952+00:00",
+  "implementationBase": "043006f439475124b3bb814c81fc887ecbadbe7c",
+  "branch": "content/shestakov-chapter1-complete",
+  "reviewLevel": "HIGH",
+  "localGate": "SHESTAKOV_CHAPTER1_COMPLETE_CHECKED",
+  "localGateStatus": "passed",
+  "releaseStatus": "Draft PR preparation; new publication not performed",
+  "coverage": {
+    "chapterOneNumbers": 126,
+    "chapterOneVariants": 252,
+    "newNumbers": 96,
+    "newVariants": 192,
+    "newSteps": 679,
+    "newManualCards": 9,
+    "allCourseExerciseVariants": 516,
+    "allCourseTheoryCards": 27,
+    "allCourseCards": 543,
+    "pendingSourceVariants": 1464
+  },
+  "content": {
+    "chapterSHA256": "db73c654ae3bd9b684f9065bbd0e67ab2be16953173edbf7324cec1de277a20f",
+    "bundleSHA256": "581f90697a950ce3bb1b17df9f1c3fc0808726238183c16d7da0c76b16ee9f44",
+    "preservedReleasedExerciseRecords": 60,
+    "preservedTheoryRecords": 5,
+    "sharedRuntimeChanged": false
+  },
+  "independentReviews": {
+    "scopes": 6,
+    "newVariants": 192,
+    "record": "tools/shestakov-yaschenko/review-ch1-completion.json",
+    "technical": "tools/shestakov-yaschenko/ch1-technical-review.json",
+    "visualSamples": "tools/shestakov-yaschenko/ch1-visual-samples.json",
+    "type": "Independent AI source/mathematics/model reviews; not external Claude or human pupil validation"
+  },
+  "tests": {
+    "sourceSchemaCoverage": "passed",
+    "releasedRecordPreservation": "passed",
+    "deterministicAuthoring": "passed",
+    "exactScopedReviewHashes": "passed",
+    "sixIndependentNewMathematicsSuites": "passed",
+    "fourPreservedMathematicsSuites": "passed",
+    "geometry": {
+      "cards": 543,
+      "planarPolygons": 1212,
+      "nonzeroSegments": 10934,
+      "status": "passed"
+    },
+    "models": {
+      "cards": 543,
+      "viewWidthStates": 3780,
+      "widths": [
+        320,
+        1280
+      ],
+      "errors": [],
+      "status": "passed",
+      "binding": "tools/shestakov-yaschenko/ch1-model-input-binding.json",
+      "note": "Full run precedes review-metadata promotion; all actual rendering inputs and dependencies were then proven identical. Final-head CI repeats the full gate."
+    },
+    "runtime": {
+      "passed": true,
+      "journeys": 543,
+      "scenarios": 12,
+      "errors": []
+    },
+    "newAnswerFamilies": {
+      "cases": 10,
+      "mobileRetainedStepCases": 2,
+      "errors": [],
+      "status": "passed"
+    },
+    "offline": {
+      "file": "Shestakov_Yaschenko_Geometria_Course.html",
+      "sha256": "816494b8ded565965bbe2347feb4497452e175683fb1445087cf094a3fe344e2",
+      "bytes": 3306445,
+      "cards": 543,
+      "networkRequests": [],
+      "status": "passed"
+    },
+    "noAutomaticProviderRetry": "passed; network trap not called"
+  },
+  "sourceClarifications": [
+    "1.3 C1б is underdetermined without specifying the position of M; the manual card explains both valid configurations and does not claim a unique automatic answer."
+  ],
+  "earlierTestFailures": [
+    {
+      "test": "new focused chapter-one browser",
+      "reason": "The initial test expected independent credit after submitting an incorrect answer, contrary to the unchanged engine contract.",
+      "resolution": "Test now separately asserts correct-first independent credit, stale-result clearing, incorrect-answer rejection, and assisted retry with persistence. The executing reviewer rechecked the test fix; the final browser run passed. No runtime, content or gate was weakened."
+    }
+  ],
+  "finalFailures": [],
+  "notRun": [
+    "Final-head remote CI before this local report; results will be recorded in the PR.",
+    "External Claude release verdict: preceding HTTP400 is not retried automatically; no standing waiver claimed.",
+    "Human teacher sign-off or real-pupil trial.",
+    "New main merge, deployment and production smoke."
+  ],
+  "permissions": "Continuation authorizes this implementation and Draft PR. The earlier publication authorization bound the preceding unchanged head; a concrete new release decision remains required."
+}

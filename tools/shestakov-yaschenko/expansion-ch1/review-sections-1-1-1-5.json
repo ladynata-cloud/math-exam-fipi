@@ -1,0 +1,105 @@
+{
+  "author": "/root/source_inventory",
+  "reviewer": "/root/chapter5",
+  "at": "2026-10-24T06:52:02.953336+00:00",
+  "verdict": "passed",
+  "remainingFindings": [],
+  "checkedIds": [
+    "1.1-A10-a",
+    "1.1-A10-b",
+    "1.1-A11-a",
+    "1.1-A11-b",
+    "1.1-A12-a",
+    "1.1-A12-b",
+    "1.1-A3-a",
+    "1.1-A3-b",
+    "1.1-A4-a",
+    "1.1-A4-b",
+    "1.1-A5-a",
+    "1.1-A5-b",
+    "1.1-A6-a",
+    "1.1-A6-b",
+    "1.1-A7-a",
+    "1.1-A7-b",
+    "1.1-B3-a",
+    "1.1-B3-b",
+    "1.1-B4-a",
+    "1.1-B4-b",
+    "1.5-A1-a",
+    "1.5-A1-b",
+    "1.5-A2-a",
+    "1.5-A2-b",
+    "1.5-A3-a",
+    "1.5-A3-b",
+    "1.5-A7-a",
+    "1.5-A7-b",
+    "1.5-B1-a",
+    "1.5-B1-b",
+    "1.5-B3-a",
+    "1.5-B3-b",
+    "1.5-C1-a",
+    "1.5-C1-b",
+    "1.5-C3-a",
+    "1.5-C3-b"
+  ],
+  "sha256": "d5195b3042322e79e8120473857b3fb8f58ffcdc439e7b42f2f44c51e353c56b",
+  "recordsSHA256": "e0eaa5e827685b5091c06097de1b9266007076c50ee1c7bf99327072ded30e2e",
+  "coverage": {
+    "cards": 36,
+    "sourceNumberPairs": 18,
+    "steps": 125,
+    "manualProofCards": 3,
+    "sourcePagesVisuallyInspected": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      29,
+      30,
+      31,
+      32
+    ],
+    "independentAssertions": 3287
+  },
+  "method": [
+    "Read every source condition and every authored condition, goal, hint, solution step and justification. Independently derived all results before reading the author module.",
+    "Rendered and visually inspected the original PDF pages5–9 and29–32. Checked all grid vertex positions, ray directions, source angle ordering and coordinate-figure labels against the actual images.",
+    "Independently checked all36 coordinate models, source lengths/angles/ratios, median and bisector incidence, perpendicular feet, vector decompositions, reflection minima, and all exact answer aliases. Proof cards A10a/A12a/A12b remain manual; their logical arguments and geometric models were checked.",
+    "Checked initial visibility of source-given points, lines, medians, bisectors and vector directions; constructed heights, reflection points, result vectors and square-completion vertices remain hidden until the corresponding steps.",
+    "Used the existing shared renderer for every authored view at320px and1280px:188 states, no JavaScript errors, nonfinite geometry, clipped labels or label overlaps. Saved12 representative screenshots and manually inspected mobile1.1A4b, mobile1.1B4b, mobile1.5C1a and desktop1.1A5b. Grid lines remain distinguishable from the orange source geometry."
+  ],
+  "sourceNotes": [
+    "1.1A11 explicitly preserves the source diagram order OA,OB,OC,OD; the numeric answers would otherwise be underdetermined by text alone.",
+    "1.1B4b asks for the upper angle between two rays. The source figure gives135°, so the tangent is−1; the course does not replace it with the acute angle between the containing lines.",
+    "1.5C1 requires both decomposition coefficients and vector length. The answer contract checks all three components in the stated order; every supported coefficient/radical spelling was numerically verified.",
+    "1.5C3 proves a global lower bound by reflection and triangle inequality, then proves unique attainment at the segment-axis intersection. Both minimizers were checked against the source coordinates."
+  ],
+  "resolvedRecommendations": [
+    {
+      "ids": [
+        "1.5-C1-a",
+        "1.5-C1-b"
+      ],
+      "change": "Added arrowheads to the given vectors BA,BC,BM so their directions are visible initially. Reviewed in numeric checks and mobile screenshot.",
+      "status": "resolved"
+    },
+    {
+      "ids": [
+        "1.5-C1-a",
+        "1.5-C1-b"
+      ],
+      "change": "Added valid decimal coefficient aliases0.6;0.4 and0.625;0.375 alongside exact fractions, preserving full three-component checking. All aliases verified.",
+      "status": "resolved"
+    }
+  ],
+  "checks": [
+    "python3 tools/shestakov-yaschenko/expansion-ch1/review-sections-1-1-1-5-checks.py — PASS,3287 assertions across all36 cards; script does not import the author’s check.",
+    "Shared-renderer local browser sweep — PASS,188 states at320/1280px; independent of content approval flags."
+  ],
+  "limitations": [
+    "No real learner pilot.",
+    "Browser sweep used the shared renderer in an isolated engineering harness; full integrated course navigation, persistence and offline packaging remain parent-owned checks.",
+    "The review covers these36 additions, not the previously authored cards or other authors’ additions."
+  ]
+}
