@@ -218,21 +218,32 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## In progress: Atanasyan chapter III §2, pyramids
+## In progress: Atanasyan regular polyhedra continuation
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_SECTION.md), HIGH review, base
-  `fa8273a36d33eb0ed854119d26cfa8d55b681d20`.
-- All source requests in theory32–34 and exercises239–270 have independent
-  source/math/pedagogy approval:52 cards,197 steps,210 reachable model views.
-- Integrated403 cards,1361 steps and1426 views; all351 published cards preserved.
-  Source limitations in246/247/248 are explained explicitly.
-- Local source/model/runtime and45 new mathematical regression groups pass.
-  All8 cloud checks passed on reviewed head `15fde0125509d4e2879f4fe65b7927c5f2368cf0`;
-  all1218 images passed actual review or verified byte-identical reuse.
-  Concurrent course status entries are preserved. The documentation-only conflict
-  resolution requires fresh exact-head CI; publication remains pending.
-- The owner requested uninterrupted cloud continuation. Paid Claude remains
-  deferred; no Claude verdict is claimed.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_REGULAR_POLYHEDRA.md), HIGH review; current
+  owner continuation request, base `96d44cc06a3dbc1e40482a774eda6c18fac89242`.
+- Finish the four remaining point35 parts, all of point36, and exercises279–280.
+  Source35 needs an explicit mathematical correction; source280 needs two cases.
+- Existing418cards and runtime remain unchanged. Independent exact-content
+  source/math/written-pedagogy review passed for17newcards,90steps,70views.
+  The candidate has435cards,1501steps,1539views;275complete exercises,36theory
+  points,26self-checks, no partial source position. Actual browser/visual and
+  exact-head checks remain pending at this checkpoint. No publication yet.
+
+## Published: Atanasyan pyramids and first symmetry block
+
+- The preceding course increments are published. PR321 merged as
+  `f616ec8cbd70dd18e3cecfa58be683c32303a573`; Pages40056093696 succeeded on that
+  exact merge (rechecked at this task start), and the commit is in current main.
+- Production evidence in PR321 records44 successful ordinary/versioned public
+  requests with byte identity. Published bundle SHA256:
+  `2adb3cd6f05848c6ccee7bc6e49d52231f635b2bb20b8c61b760e723b25a1643`.
+- Published418cards,1411steps and1469views: exercises1–270 and276–278,
+  theory1–34, four of eight parts of point35, and26self-checks.
+- Point35 remains partial; practical271–275, points36–37 and exercises279 onward
+  are not covered by that release. The full book remains incomplete.
+- The previous52-card pyramid increment and15-card symmetry increment have
+  independent content reviews. PaidClaude remains deferred; no verdict claimed.
 
 ## Published: Atanasyan chapter III §1, polyhedra and prisms
 

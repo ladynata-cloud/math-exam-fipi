@@ -1,0 +1,53 @@
+{
+  "status": "reviewed",
+  "cards": [
+    "theory-035-parallelepiped-examples",
+    "theory-035-unbounded-examples",
+    "theory-035-general-solids-examples",
+    "theory-035-applications-elements",
+    "theory-036-definition",
+    "theory-036-vertex-angles",
+    "theory-036-tetrahedron",
+    "theory-036-octahedron",
+    "theory-036-icosahedron",
+    "theory-036-cube",
+    "theory-036-dodecahedron",
+    "theory-036-euler-count",
+    "theory-036-icosahedron-existence",
+    "theory-036-dodecahedron-existence",
+    "ex-main-0279",
+    "ex-main-0280-intersecting",
+    "ex-main-0280-parallel"
+  ],
+  "reviewedSourceContracts": {
+    "35": [
+      "center",
+      "axis",
+      "plane",
+      "figure",
+      "parallelepiped-examples",
+      "unbounded-examples",
+      "general-solids-examples",
+      "applications-elements"
+    ],
+    "36": [
+      "definition",
+      "vertex-angles",
+      "tetrahedron",
+      "octahedron",
+      "icosahedron",
+      "cube",
+      "dodecahedron",
+      "euler-count",
+      "icosahedron-existence",
+      "dodecahedron-existence"
+    ],
+    "279": [
+      null
+    ],
+    "280": [
+      "пересекающиеся диагонали",
+      "параллельные диагонали"
+    ]
+  }
+}

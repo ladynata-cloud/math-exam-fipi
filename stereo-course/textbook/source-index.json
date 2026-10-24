@@ -6350,7 +6350,11 @@
           86
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ],
+      "coverageReview": "next_block_review; independent coordinate audit by polyhedra_math_audit; 2026-10-24T04:56:28.889Z; source/mathematics/written pedagogy PASS; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-main-0280",
@@ -6368,7 +6372,12 @@
           86
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        "пересекающиеся диагонали",
+        "параллельные диагонали"
+      ],
+      "coverageReview": "next_block_review; independent coordinate audit by polyhedra_math_audit; 2026-10-24T04:56:28.889Z; source/mathematics/written pedagogy PASS; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-main-0281",
@@ -22110,7 +22119,7 @@
         "general-solids-examples",
         "applications-elements"
       ],
-      "coverageReview": "Codex independent symmetry_review; visual_pedagogy_review; 2026-10-23T21:04:00.795Z; PARTIAL: four focused definitions/figure cards approved; four named example/application parts pending. Full point35 is not complete. See docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md."
+      "coverageReview": "next_block_review; independent coordinate audit by polyhedra_math_audit; 2026-10-24T04:56:28.889Z; source/mathematics/written pedagogy PASS; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-theory-036",
@@ -22133,7 +22142,20 @@
           84,
           85
         ]
-      }
+      },
+      "requiredParts": [
+        "definition",
+        "vertex-angles",
+        "tetrahedron",
+        "octahedron",
+        "icosahedron",
+        "cube",
+        "dodecahedron",
+        "euler-count",
+        "icosahedron-existence",
+        "dodecahedron-existence"
+      ],
+      "coverageReview": "next_block_review; independent coordinate audit by polyhedra_math_audit; 2026-10-24T04:56:28.889Z; source/mathematics/written pedagogy PASS; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-theory-037",
