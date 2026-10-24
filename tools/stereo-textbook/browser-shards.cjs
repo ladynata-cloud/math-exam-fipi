@@ -2,7 +2,7 @@
 // Pure partition/evidence contract. No browser, network, filesystem or product state.
 const assert=require('node:assert/strict');
 const screenshotCases=require('./browser-cases.cjs');
-const EXPECTED_COUNT=456; // Explicit reviewed release boundary; never inferred from data.
+const EXPECTED_COUNT=474; // Explicit reviewed release boundary; never inferred from data.
 const WIDTHS=[320,1280],REPRESENTATIVE='atanasyan2024-main-001-a',SCHEMA=2;
 const key=(...parts)=>JSON.stringify(parts);
 function visibleLabelKeys(lesson,viewName){

@@ -28,6 +28,7 @@ jobs:
           node tools/stereo-textbook/model-geometry.test.cjs
           python3 tools/stereo-textbook/regular-polyhedra-math.test.py
           python3 tools/stereo-textbook/polyhedra-symmetry-math.test.py
+          python3 tools/stereo-textbook/polyhedra-selfcheck-math.test.py
       - name: Retained work, nested theory and publication boundaries
         run: node tools/stereo-textbook/runtime.test.cjs
       - name: Exact partitions, collector failures and browser-free preflight

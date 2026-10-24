@@ -3,8 +3,10 @@
 // Source/mathematics review and actual cloud images remain independent gates.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..'),dir=path.join(root,'stereo-course/textbook/lessons');
-const manifest=require('./polyhedra-symmetry-manifest.json'),production=require(root+'/stereo-course/textbook/data/course.json');
-const sourceIndex=require(root+'/stereo-course/textbook/source-index.json'),registry=require('./content-review.json');
+const manifest=require('./polyhedra-symmetry-manifest.json');
+const sourceIndex=require(root+'/stereo-course/textbook/source-index.json'),baseline=require('./selfcheck-baseline.cjs');
+const production=baseline.previousCourse(require(root+'/stereo-course/textbook/data/course.json'),sourceIndex);
+const registry=structuredClone(require('./content-review.json'));registry.cards=registry.cards.filter(c=>!baseline.ids.has(c.id));
 const API=require(root+'/stereo-course/textbook/assets/engine.js'),screenshots=require('./browser-cases.cjs');
 const theoryParts=['tetrahedron-center','tetrahedron-axes','tetrahedron-planes','cube-center','cube-axes','cube-planes','cube-plane-correction','octahedron','icosahedron','dodecahedron'];
 const exerciseParts={'281':[null],'282':[null],'283':['а','б'],'284':[null],'285':[null],'286':['а','б'],'287':['а','б','в']};
