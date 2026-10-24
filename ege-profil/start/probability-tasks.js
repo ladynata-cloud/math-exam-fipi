@@ -5,6 +5,14 @@
   const NS = 'http://www.w3.org/2000/svg';
   const C = { ink: '#253f48', muted: '#64757a', green: '#176c58', pale: '#e8f4ed', orange: '#b3531c', line: '#d3dfdc', blue: '#426b9d' };
   const f = x => String(Number(Number(x).toFixed(10))).replace('.', ',');
+  function validBoardState(taskId, value) {
+    return value !== null && typeof value === 'object' && !Array.isArray(value) &&
+      (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null) &&
+      Reflect.ownKeys(value).length === 2 && ['taskId', 'opened'].every(key => {
+        const property = Object.getOwnPropertyDescriptor(value, key);
+        return property && property.enumerable && Object.hasOwn(property, 'value');
+      }) && value.taskId === taskId && typeof value.opened === 'boolean';
+  }
   function element(name, attrs, parent, text) {
     const node = document.createElementNS(NS, name);
     Object.entries(attrs || {}).forEach(([key, value]) => node.setAttribute(key, String(value)));
@@ -162,19 +170,32 @@
       else if (d.type === 'range') range(); else if (d.type === 'sequence') sequence(); else if (d.type === 'bernoulli') bernoulli();
       else if (d.type === 'uniform') uniform(); else if (d.type === 'normal') normal(); else drawRows(d.rows);
     }
-    function toggle() {
-      if (disposed) return;
-      if (!opened && independent && !context.solved && typeof context.onHelp === 'function') context.onHelp();
-      opened = !opened; button.setAttribute('aria-pressed', String(opened));
+    function showOpened(value) {
+      opened = value; button.setAttribute('aria-pressed', String(opened));
       button.textContent = opened ? 'Скрыть подсказку' : buttonText;
       status.textContent = opened ? (d.type === 'bernoulli' ? 'Посчитай строки. В каждом порядке ровно нужное число попаданий.' : step.hint) : neutral + notice;
       draw();
     }
+    function toggle() {
+      if (disposed) return;
+      if (!opened && independent && !context.solved && typeof context.onHelp === 'function') context.onHelp();
+      showOpened(!opened);
+    }
     button.addEventListener('click', toggle); draw();
-    return () => { disposed = true; button.removeEventListener('click', toggle); };
+    const cleanup = () => { disposed = true; button.removeEventListener('click', toggle); };
+    cleanup.getBoardState = () => ({ taskId: task.id, opened });
+    cleanup.applyBoardState = value => {
+      if (disposed || !validBoardState(task.id, value)) throw new TypeError('Invalid probability model board state');
+      showOpened(value.opened);
+    };
+    return cleanup;
   }
   (root.ProfileLessons || []).filter(l => l.group === 'probability').forEach(l => {
-    l.tasks.forEach(task => { if (task.diagram) registry[task.id] = (container, current, context) => model(container, current || task, context); });
+    l.tasks.forEach(task => { if (task.diagram) {
+      registry[task.id] = (container, current, context) => model(container, current || task, context);
+      registry[task.id].validateBoardState = value => validBoardState(task.id, value);
+    } });
     labs[l.model] = container => model(container, l.tasks[0], { mode: 'introduction', step: 0 });
+    labs[l.model].validateBoardState = value => validBoardState(l.tasks[0].id, value);
   });
 })(globalThis);

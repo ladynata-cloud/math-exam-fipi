@@ -147,3 +147,33 @@ all stronger acceptance/history assertions. Makarychev source/SEO stays unchange
 Rerun full server, Vilenkin managed/cabinet, both board courses and retained profile
 regressions. This remains a resolution/testing step, with the exact final release
 candidate presented after validation; no production merge is implied.
+
+## Authorized publication and final concurrent preservation, 2026-10-24
+
+The user answered the concrete PR #314 merge/publication question with an
+explicit approval. The named candidate was head `d8d07fea84fb8d6312705b97436ec9441d9c116d`
+on base `07189de58b7f5d60c02ea6ca6aa9450a324a377f`, with all 11 cloud workflows
+passing. This supersedes the earlier task-stage stop before release.
+
+Fresh authoritative main is `f616ec8cbd70dd18e3cecfa58be683c32303a573` after
+traceable releases #313, #316, #320, #317 and #321. A read-only virtual merge
+identified 12 conflicts before any edits. Preserve these published changes
+within the already authorized conflict-resolution and publication task; the
+current direct user authorization and execution instructions take precedence
+over repeated routine approval loops. No new owner statement naming a later
+hash, and no permission from another PR's conversation, is claimed.
+
+Resolve only overlapping integration/cache/test expectations, preserving exact
+START/Peterson/Atanasyan/Merzlyak aliases and full registry vectors (45 catalog
+records,16 mirrors,1450 picker links; synthetic17/15). Keep current-main board
+writing/image/layout and keyboard-revoke behavior unchanged. Preserve Peterson
+plan rendering/cleanup and all Vilenkin managed behavior alongside the exact
+Merzlyak focus attachment. Retain every expressions acceptance/history check
+and both route-readiness protections. Other course content remains byte-identical.
+
+Obtain fresh independent review and applicable exact-head cloud checks,
+including writing, five START mirrors and Peterson journeys. Recheck remote main
+before release, verify the scoped delta and actual merge identity, then verify
+Pages and Amvera. The 16-mirror projection replaces the obsolete ten-mirror
+release target. Never claim deployment from Pages alone. Preserve all earlier
+failure/skip history in PR #314 and record actual production evidence there.

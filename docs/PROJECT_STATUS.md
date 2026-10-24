@@ -2,73 +2,126 @@
 
 Updated: 2026-10-24 (Asia/Novosibirsk)
 
+## Release in progress: grade 10 Merzlyak cabinet and shared board
 
-## In progress: grade 10 Merzlyak cabinet entry and shared board
+- [Scope](tasks/MERZLYAK10_CABINET_BOARD.md), [PR #314](https://github.com/ladynata-cloud/math-exam-fipi/pull/314), MEDIUM bounded integration.
+  The owner explicitly authorized the presented merge and publication on
+  2026-10-24. Reviewed head `d8d07fea84fb8d6312705b97436ec9441d9c116d`
+  passed all 11 workflows: 14 successful jobs and one skipped content consultation.
+- Main subsequently advanced from `07189de58b7f5d60c02ea6ca6aa9450a324a377f`
+  through PRs #313, #316, #320, #317 and #321 to
+  `f616ec8cbd70dd18e3cecfa58be683c32303a573`. Their release provenance and
+  read-only virtual composition were inspected first; 12 files conflicted.
+- Continue the already authorized course-preservation work: retain writing,
+  screenshots and layout tools, all five START mirrors, Peterson plan cards
+  and board, Vilenkin managed work, Atanasyan and Makarychev content. No new
+  teaching content, account/schema migration or hosting configuration is added.
+- Expected exact union is 45 catalog records, 16 mirrors and 1,450 picker links.
+  Both readiness protections and every assertion in the overlapping expressions
+  test remain. The shared host differs from current main only in picker cache.
+- The published Merzlyak course still contains 989 reviewed cards and solutions
+  to all 736 numbered exercises. This integration does not change authored content.
+  Real account details and credentials remain solely in the private teacher UI.
+- Prior checks are history, not proof of the new composition. Fresh results,
+  exact base/head, failed or skipped checks, independent review and actual
+  publication evidence belong in PR #314; no live release is claimed here.
+- Next: complete composed-tree review and cloud gates; publish the validated
+  scoped integration under the owner's current authorization; verify Pages,
+  Amvera cabinet assets and the complete 16-mirror authoritative registry.
 
-- [Scope](tasks/MERZLYAK10_CABINET_BOARD.md), [Draft PR #314](https://github.com/ladynata-cloud/math-exam-fipi/pull/314), MEDIUM integration.
-  Original base `1f9d8aec82bd2909917ab22746d94571d87c59c4`; reviewed head
-  `9bd75ca376610c3ca9afe3495fd88dfa02134e8e` passed all eight workflows before
-  concurrent PR #318 advanced main to `202d39bf826c8c7e030e59ff162fe808000cae7e`.
-- On 2026-10-24 the owner explicitly approved the proposed conflict-resolution
-  scope: combine both integrations, retain their behavior and repeat the gates.
-  This approval does not claim a release of the resulting unreviewed composition.
-- Resolved eight overlapping files with 39 catalog entries / 10 mirror trainers,
-  both exact URL aliases and picker entries. Preserved Atanasyan manual saving,
-  catalog/packaging and host keyboard protection, and Merzlyak cabinet attachment.
-  No account, authentication, database or authored-course content changes.
-- Real account setup remains in the private teacher interface; no real pupil
-  information or credentials appear in source or synthetic tests.
-- The complete Merzlyak course was published in PR #304 as
-  `f4ea5c4de842faa4c26cbb73093f708c2c77578b`: 989 reviewed cards and solutions
-  for all 736 numbered exercises. Course content remains unchanged here.
-- Prior expressions readiness failures and the one raw-operation substring
-  failure remain recorded in PR #314. All final prior-base jobs passed except
-  the explicitly skipped content consultation. That evidence does not establish
-  the correctness of this new composition.
-- Next three actions: resolve and independently review the combined diff;
-  pass exact-head cloud registry, cabinet and both-course board gates;
-  present the concrete release candidate for the owner's release decision.
+## In progress: Peterson 6 course in the cabinet and on the shared board
 
-## Merged: Vilenkin 6 cloud cabinet and Makarychev 8 course
+- [Scope](tasks/PETERSON6_BOARD_SYNC.md), MEDIUM review, base
+  `b3f2c8999b8155dc9ef249da46b400c396f187d7`, branch
+  `feat/peterson6-board-sync`. The owner requested cloud assignment of the
+  published course and synchronization with the existing interactive board.
+- Thin registered wrapper for all 14 topics / 224 tasks and 20 practice skills.
+  Shared state covers drafts, steps, feedback, help, notes, model controls and
+  the detour/return. Personal browser progress remains isolated.
+- Existing cloud plans gain a fixed course reference card with role-appropriate
+  course, practice and teacher-board links. No fictitious managed attempt,
+  personal credit or server persistence contract is introduced.
+- Local and exact-head cloud evidence, review findings and publication status
+  will be recorded in the PR. No completed deployment is claimed here.
 
-- PR #315 merged as `52cb1c1a5c731acd660139328f0001ccfa33a08b`, followed by
-  PR #319 as `07189de58b7f5d60c02ea6ca6aa9450a324a377f`. Both are traceable
-  same-repository publications with task-specific owner authorization recorded
-  in their PRs. Their private-conversation permissions are not reused here.
-- Vilenkin adds 27 managed modules, durable drafts, module notes and a new
-  direction. Preserve its server contracts, profile migration, catalog records,
-  teacher/parent flow and container dependencies without editing their behavior.
-- Makarychev adds 51 topics and 306 worked tasks plus course-directory/SEO links.
-  Its 23-file patch does not overlap this integration and is retained unchanged.
-- The Merzlyak task's current permission to resolve concurrent course changes
-  covers additive preservation of these existing features. This is routine
-  reconciliation within the requested cabinet/board integration, not permission
-  to change those curricula, migrate pupil profiles, or deploy untested code.
-- Prior Atanasyan-only composition `ad1bb1d427ecdf11bb7682381f887c4e8adf08a8`
-  passed local server 298/298 and focused checks; no Actions runs started while
-  the newer base conflicted. The five new conflicts cover cabinet navigation,
-  script tags, the expressions readiness test and this status document.
-- Combined routes retain every assertion. Both cabinet fixtures load both course
-  helpers to verify coexistence. Run the full backend and managed-course/cabinet/
-  board regressions on the exact result.
-  Current production deployment/assignment is not independently claimed here.
+- Concurrent PRs #318, #315, #319, #313 and #316 are preserved through normal merges:
+  both board aliases, the fifteen-entry mirror registry, Atanasyan manual work,
+  all Vilenkin managed modules/profiles, the standalone Makarychev course,
+  the published writing/screenshot/layout tools, and all five added START
+  mirrors. The host keeps the combined picker cache token and iframe keyboard protection.
+  Combined checks and independent merge review are required before publication.
+
+## Merged code: five added START sections on the shared board
+
+- [Scope](tasks/PROFILE_ADDED_TRAINERS_BOARD_SYNC.md), [PR #316](https://github.com/ladynata-cloud/math-exam-fipi/pull/316), MEDIUM review.
+  Merged as `b3f2c8999b8155dc9ef249da46b400c396f187d7`, sole parent
+  `d524c9107133d6a948ff11c18095b5ca01b660de`, exact reviewed tree
+  `2cd789549146000d466998047f6a54e69bd9731c`.
+- Five fixed START wrappers synchronize drafts, models, hints and solution
+  state. Published task-3/task-8 integration and individual board tools remain.
+- The merge records the owner's ordered release authorization, independent
+  focused review, 150 focused units, six browser gates and all twelve exact-head
+  CI jobs passing on `63c0b20f1559cfc3497a42d92e58c5f89f95c082`.
+- Peterson integration preserves all 31 published blobs except the explicitly
+  composed picker/registry expectations, readiness waits and host cache token.
+  Production lesson verification is not inferred from this status reconciliation.
+
+## Merged code: individual board tools and screen modes
+
+- [Scope](tasks/INDIVIDUAL_BOARD_TOOLS.md), [PR #313](https://github.com/ladynata-cloud/math-exam-fipi/pull/313), MEDIUM review.
+  Merged as `d524c9107133d6a948ff11c18095b5ca01b660de`, sole parent
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`, exact reviewed tree
+  `a789ea65f334e1a4db10e36515a5144492314baa`.
+- Adds writing tools, screenshot insertion, independent split/pan/zoom and
+  Together / Trainer / Board views using the existing room/control transport.
+  The live trainer, shared control, own-author undo/redo and keyboard protection
+  remain intact. Existing rooms remain memory-backed.
+- PR #313 records six exact-head CI jobs passing on
+  `f22265363dd0145e8fd9641f418f6aded0b293eb`, focused independent review,
+  150 focused checks and six combined browser gates. Its first writing job was
+  cancelled during dependency downloads; the unchanged second attempt passed.
+  The merge commit records the owner's explicit release authorization.
+- Production lesson and physical stylus/iPad verification are not inferred by
+  this reconciliation. Additional START adapters belong to their separate task.
+
+## Merged: Vilenkin 6 part 1 in cloud cabinets
+
+- [Scope](tasks/VILENKIN6_CLOUD_CABINET.md), [PR #315](https://github.com/ladynata-cloud/math-exam-fipi/pull/315), HIGH review.
+  Merged as `52cb1c1a5c731acd660139328f0001ccfa33a08b`, sole parent
+  `202d39bf826c8c7e030e59ff162fe808000cae7e`, exact reviewed tree
+  `8c9abbf25ed963f1ae2ad68bd536c4528138d308`.
+- All 27 published modules use managed cloud learning with saved drafts,
+  accepted steps, help, models, checkpoints and owned textbook notes.
+  The original 475 tasks, 81 examples and source PDF remain unchanged.
+  Dedicated profiles migrate additively; authentication remains unchanged.
+- PR #315 records independent review, 309/309 composed backend tests and
+  all nine exact-head workflows passing: 12 successful jobs and the explicitly
+  waived external-review job skipped, not counted as a pass. Reviewed head:
+  `06381875e14826ea3e5d0d0beea1a27228c2dc27`. The owner authorized that
+  publication and its scoped external-review exception.
+- Production assignment and deployment verification belong to that PR's
+  release record; no additional pupil action is claimed by this reconciliation.
+- Preserve the expanded profile enum, V6 decoder/catalog and persistent data
+  during rollback. A raw pre-V6 server image cannot read the expanded schema.
 
 ## Merged: Atanasyan 92a in the cabinet and on the shared board
 
-- [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), [PR #318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318), HIGH review. Merged as
-  `202d39bf826c8c7e030e59ff162fe808000cae7e`, parent
-  `1f9d8aec82bd2909917ab22746d94571d87c59c4`; reviewed head
-  `78151b0c50e0c4df2400779f3736bbf9074c2813`.
-- One existing grade-7 exercise has a fixed wrapper, isolated shared state,
-  manual learning contract and catalog entry. All 336 authored cards, models
-  and the sealed textbook runtime are preserved.
-- The PR records 12/12 successful exact-head cloud checks, independent technical
-  review, scoped owner external-review waiver and owner release authorization.
-  These records are specific to PR #318 and are not approval for PR #314.
-- The shared host's observer protection uses iframe inert/tabIndex and clears
-  focus on control revoke. The scoped resolution retains that behavior.
-- This reconciliation verifies the merge identity, not a new production pupil
-  attempt or an independent deployment verification for that task.
+- [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), [PR #318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318), HIGH review.
+  Merged as `202d39bf826c8c7e030e59ff162fe808000cae7e`, sole parent
+  `1f9d8aec82bd2909917ab22746d94571d87c59c4`, exact reviewed tree
+  `0b5d21b00419f8a8c4801753acaeef3884ed2213`.
+- The existing exercise gains a fixed wrapper, isolated board state, a managed
+  manual learning contract and a catalog entry. Published mathematics, diagrams,
+  all 336 cards and the sealed textbook runtime remain unchanged.
+- All 12 exact-head cloud checks passed on
+  `78151b0c50e0c4df2400779f3736bbf9074c2813`; full server tests 298/298,
+  real shared-board/cabinet journeys and independent technical review passed.
+  The owner authorized publication and a scoped external-review exception,
+  documented in PR #318; no external-provider verdict is claimed.
+- The host uses iframe inert state after control revoke. Manual save and theory
+  restoration retain the existing no-automatic-credit rule. Production delivery
+  and deployment evidence belong to the PR release record; no additional
+  production pupil action is claimed by this status reconciliation.
 
 ## Published: profile task 3 stereometry on the shared board
 
@@ -2011,3 +2064,37 @@ and six-step subtraction prerequisite ladders. They appear alongside the two
 existing cabinet tracks and use separate tab-local practice. Diagnostic links
 point to the relevant carry/borrow stage. Production publication remains pending
 final exact-head CI and deployment verification; see PR266 for current evidence.
+
+## Prepared: Makarychev 7 (2024), full topic course
+
+- [Scope](tasks/MAKARYCHEV7_FULL_COURSE.md), MEDIUM review, branch
+  `feat/makarychev7-full-course`, base
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`.
+- Requested analogue of the published grade-eight course: all 46 numbered
+  topics, original theory, selected source tasks, authored practice, interactive
+  models and preserved computation detours. Separate route and browser storage.
+- Source map covers all 1247 exercise numbers with verified header pages.
+  Individual worked solutions are selected, not claimed for every number.
+- All 46 topics, 160 theory blocks, 276 tasks (92 selected textbook and
+  184 authored), 795 worked steps and 10 model families are complete.
+- Independent source/math and model reviews passed. Automated verification
+  walks every task/step, all source-range boundaries, all 46 model mounts
+  and 727 control changes; browser-state/import/computation detours passed.
+  Desktop visual inspection passed; final publication evidence belongs in the PR.
+- Claude consultation/review was unavailable and is not claimed. No pupil
+  account, backend or board-protocol changes belong to this task.
+
+## Published: Makarychev 8 (2024), full topic course
+
+- [PR #319](https://github.com/ladynata-cloud/math-exam-fipi/pull/319) merged as
+  `07189de58b7f5d60c02ea6ca6aa9450a324a377f`; public route
+  `/school/makarychev8/`. All 51 topics, 172 theory blocks, 306 worked tasks
+  (102 selected textbook tasks/subparts and 204 authored), 958 worked steps.
+- All six final PR jobs passed; production course CI and Pages deployment
+  `40016014762` succeeded. Course HTML, six dependencies, catalog and sitemap
+  returned 200 and matched reviewed bytes. Actual parent was concurrent
+  Vilenkin release `52cb1c1a5c731acd660139328f0001ccfa33a08b`; the exact
+  reviewed 23-file delta was verified and relevant gates rerun after merge.
+- Visual browser QA and external Claude review were not completed; these
+  limitations were disclosed. Progress is browser-local; no synchronized-board
+  or cloud learner-storage claim is made. Final evidence is in PR #319.

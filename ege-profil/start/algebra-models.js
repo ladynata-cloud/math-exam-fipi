@@ -208,9 +208,17 @@
   }
   Object.keys(circleOptions).forEach(id=>{models[id]=circleFactory(id);models[id].validateBoardState=value=>validCircleBoardState(id,value);});
 
+  function validPowerBoardState(value) {
+    if (!boardShape(value, ['kind', 'base', 'exponent', 'input', 'error', 'feedback']) ||
+        ![Object.prototype, null].includes(Object.getPrototypeOf(value)) || value.kind !== 'power-log' ||
+        ![0.5, 2, 3].includes(value.base) || !Number.isFinite(value.exponent) || value.exponent < -2 || value.exponent > 3 ||
+        !boardDraft(value.input) || typeof value.error !== 'boolean' || !boardFeedback(value.feedback)) return false;
+    const passed = value.base === 3 && Math.abs(value.exponent + 2) < 1e-8;
+    return (value.feedback !== 'correct' || passed) && (value.feedback !== 'incorrect' || !passed);
+  }
   models['power-log'] = function (container) {
     const life=lifecycle(),id=`profile-power-${++sequence}`;
-    let base=2,exponent=1,checked=false;
+    let base=2,exponent=1,checked=false,disposed=false,inputError=false,goalFeedback='initial';
     container.innerHTML=`<div class="power-log-lab"><h3>Степень и логарифм читают одну пару чисел</h3>
       <p>Значения лаборатории отдельны от практики. Измените основание и показатель; точка степени и точка логарифма поменяются координатами.</p>
       <svg class="lab-svg" viewBox="0 0 500 340" style="display:block;width:100%;max-width:640px;height:auto" role="img" aria-labelledby="${id}-title ${id}-desc">
@@ -224,6 +232,9 @@
       <p data-error role="status"></p><div class="lab-readout" data-readout style="padding:12px;background:#eef5f8;border-radius:12px"></div>
       <p><b>Цель:</b> выберите основание 3 и найдите показатель, при котором аргумент логарифма равен 1/9. Сравните зелёную точку (t; aᵗ) и фиолетовую (aᵗ; t).</p><button type="button" data-check>Проверить связь</button><p class="lab-feedback" data-feedback role="status" aria-live="polite">Подберите пару и проверьте её.</p></div>`;
     const get=s=>container.querySelector(s);
+    const messages={initial:'Подберите пару и проверьте её.',changed:'Пара изменена. Проверьте связь ещё раз.',
+      correct:'Связь найдена: 3⁻² = 1/9, поэтому log₃(1/9) = −2. Координаты точек переставлены.',
+      incorrect:'Проверьте основание 3. Число 1/9 обратно числу 3², поэтому нужен отрицательный показатель.'};
     let viewMax=3;
     const mapX=x=>104+(x+2.5)/(viewMax+2.5)*278,mapY=y=>298-(y+2.5)/(viewMax+2.5)*278;
     const point=(x,y)=>`${mapX(x)},${mapY(y)}`;
@@ -243,14 +254,25 @@
       get('[data-connector]').setAttribute('d',`M${point(exponent,result)}L${point(result,exponent)}`);
       get('[data-readout]').innerHTML=`<span style="color:#047857"><b>Степень:</b> (${baseText})<sup>${fmt(exponent)}</sup> ≈ ${fmt(result)}; точка (${fmt(exponent)}; ${fmt(result)})</span><br><span style="color:#6d28d9"><b>Логарифм:</b> log<sub>${baseText}</sub>(${fmt(result)}) ≈ ${fmt(exponent)}; точка (${fmt(result)}; ${fmt(exponent)})</span><br>Основание положительно и не равно 1; аргумент ${fmt(result)} > 0. ${base<1?'При увеличении показателя результат уменьшается.':'При увеличении показателя результат растёт.'} Значения на экране округлены; связь aᵗ = b ⇔ logₐb = t точная.`;
       get('desc').textContent=`Зелёная точка: показатель ${fmt(exponent)}, степень ${fmt(result)}. Фиолетовая точка меняет эти координаты местами. Серая диагональ y = x — ось отражения.`;
-      if(checked){get('[data-feedback]').textContent='Пара изменена. Проверьте связь ещё раз.';delete get('[data-feedback]').dataset.correct;checked=false;}
+      if(checked){goalFeedback='changed';showFeedback(get('[data-feedback]'),goalFeedback,messages);checked=false;}
     }
     life.on(get('[data-base]'),'change',()=>{base=Number(get('[data-base]').value);render();});
-    function changeExponent(input){const value=Number(input.value);if(input.value.trim()===''||!Number.isFinite(value)||value< -2||value>3){get('[data-error]').textContent='Введите показатель от −2 до 3.';return;}get('[data-error]').textContent='';exponent=value;render();}
+    function changeExponent(input){const value=Number(input.value);if(input.value.trim()===''||!Number.isFinite(value)||value< -2||value>3){inputError=true;get('[data-error]').textContent='Введите показатель от −2 до 3.';return;}inputError=false;get('[data-error]').textContent='';exponent=value;render();}
     life.on(get('[data-exponent]'),'input',()=>changeExponent(get('[data-exponent]')));life.on(get('[data-exponent-range]'),'input',()=>changeExponent(get('[data-exponent-range]')));
-    life.on(get('[data-check]'),'click',()=>{const passed=base===3&&Math.abs(exponent+2)<1e-8;get('[data-feedback]').textContent=passed?'Связь найдена: 3⁻² = 1/9, поэтому log₃(1/9) = −2. Координаты точек переставлены.':'Проверьте основание 3. Число 1/9 обратно числу 3², поэтому нужен отрицательный показатель.';get('[data-feedback]').dataset.correct=String(passed);checked=true;});
-    render();return life.cleanup;
+    life.on(get('[data-check]'),'click',()=>{const passed=base===3&&Math.abs(exponent+2)<1e-8;goalFeedback=passed?'correct':'incorrect';showFeedback(get('[data-feedback]'),goalFeedback,messages);checked=true;});
+    render();
+    const cleanup=()=>{disposed=true;life.cleanup();};
+    cleanup.getBoardState=()=>({kind:'power-log',base,exponent,input:get('[data-exponent]').value,error:inputError,feedback:goalFeedback});
+    cleanup.applyBoardState=value=>{
+      if(disposed||!validPowerBoardState(value))throw new TypeError('Invalid power/log model board state');
+      base=value.base;exponent=value.exponent;checked=false;render();
+      get('[data-base]').value=String(base);get('[data-exponent]').value=value.input;
+      inputError=value.error;get('[data-error]').textContent=inputError?'Введите показатель от −2 до 3.':'';
+      goalFeedback=value.feedback;checked=goalFeedback==='correct'||goalFeedback==='incorrect';showFeedback(get('[data-feedback]'),goalFeedback,messages);
+    };
+    return cleanup;
   };
+  models['power-log'].validateBoardState=validPowerBoardState;
   root.ProfileModels=Object.assign(root.ProfileModels||{},models);
   if(typeof module!=='undefined'&&module.exports)module.exports=models;
 })(typeof globalThis!=='undefined'?globalThis:window);
