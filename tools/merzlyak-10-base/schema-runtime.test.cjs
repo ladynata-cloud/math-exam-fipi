@@ -65,7 +65,10 @@ assert.equal(API.inspectBundle(draft.catalog,draft.lessons,allow).coverage.avail
 const retained=fs.readFileSync(path.join(root,'stereo-course/textbook/assets/engine.js'),'utf8')
  .replace('source.pdfPages[i]!==n+2','source.pdfPages[i]!==n+1')
  .replace('q.match(/^(?:№\\s*)?(\\d+)$/)','q.match(/^(?:№\\s*)?(\\d+(?:\\.\\d+)?)$/)');
-assert.equal(fs.readFileSync(runtime,'utf8'),retained,'only source offset and exact decimal-number search differ from retained engine');
+const isolated=fs.readFileSync(runtime,'utf8');
+const boardBlocks=isolated.match(/\n \/\* MERZLYAK_BOARD_BEGIN:[\s\S]*?\/\* MERZLYAK_BOARD_END \*\//g)||[];
+assert.equal(boardBlocks.length,3,'exactly three delimited optional board additions');
+assert.equal(isolated.replace(/\n \/\* MERZLYAK_BOARD_BEGIN:[\s\S]*?\/\* MERZLYAK_BOARD_END \*\//g,''),retained,'outside the tested optional board additions only source offset and exact decimal-number search differ from retained engine');
 
 function boot(saved={}){
  const dom=new JSDOM('<div id="app"></div>',{url:'https://example.test/stereo-course/merzlyak-10-base/',runScripts:'outside-only',pretendToBeVisual:true});

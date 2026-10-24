@@ -24,6 +24,7 @@ function fixture(html = '<main></main>', url = 'https://cabinet.example/learning
   const dom = new JSDOM(html, { url, runScripts: 'outside-only' });
   dom.window.LearningCatalog = catalog;
   dom.window.LearningPreparation = map;
+  dom.window.eval(source('attached-course.js'));
   dom.window.eval(source('preparation.js'));
   return dom;
 }

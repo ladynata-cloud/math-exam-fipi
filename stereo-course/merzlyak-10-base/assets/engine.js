@@ -87,6 +87,9 @@ function createApp(root,options){
  let current=null,state=null,key='',expected=null,viewer=null,dialogViewer=null,dialog=null,dialogView='neutral',locked=false,destroyed=false;
  const theoryTrail=[];
  const cache=new Map();
+ /* MERZLYAK_BOARD_BEGIN: optional isolated room state; standalone code is retained verbatim. */
+ let boardCatalog=null;
+ /* MERZLYAK_BOARD_END */
  function el(tag,text,attrs={}){const node=doc.createElement(tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);if(text!==undefined)math.appendText(node,String(text));return node;}
  function setDisplayText(node,text){node.replaceChildren();math.appendText(node,String(text));}
  const alerts=el('div',undefined,{class:'course-alerts','aria-live':'polite'}),view=el('main');root.replaceChildren(alerts,view);
@@ -215,7 +218,115 @@ function createApp(root,options){
    }
   }
   function filterChanged(){readyPage=0;pendingPage=0;renderResults();}search.addEventListener('input',filterChanged);for(const node of [kind,collection,chapter])node.addEventListener('change',filterChanged);renderResults();
+ /* MERZLYAK_BOARD_BEGIN: semantic catalog state, activated only by the registered wrapper. */
+  if(options.boardSession)boardCatalog={
+   read:()=>({search:search.value,kind:kind.value,collection:collection.value,chapter:chapter.value,readyPage,pendingPage}),
+   apply(value){search.value=value.search;kind.value=value.kind;collection.value=value.collection;chapter.value=value.chapter;readyPage=value.readyPage;pendingPage=value.pendingPage;renderResults();}
+  };
+ /* MERZLYAK_BOARD_END */
  }
+ /* MERZLYAK_BOARD_BEGIN: current-card mirror; no personal progress is imported or credited. */
+ if(options.boardSession){
+  const session=options.boardSession,copy=value=>JSON.parse(JSON.stringify(value));
+  let applying=false,catalogState={search:'',kind:'',collection:'',chapter:'',readyPage:0,pendingPage:0};
+  const pendingToggles=new Map(),oldSave=save,oldAssisted=assisted,oldOpen=open,oldHome=home,oldTheory=showTheory;
+  const announcements={none:'',rotate:'Вид модели изменён. Геометрия осталась прежней.',reset:'Исходный вид модели восстановлен.'};
+  const announcement=node=>Object.keys(announcements).find(key=>announcements[key]===(node?.querySelector('.am-sr-only')?.textContent||''))||'none';
+  const opened=node=>[...node.querySelectorAll('details')].flatMap((detail,index)=>detail.open?[index]:[]);
+  const selected=node=>node?.querySelector('svg[data-view]')?.dataset.view||'neutral';
+  function modelState(node,instance){return {camera:instance.getState(),view:selected(node),announcement:announcement(node)};}
+  function theoryState(){return dialog?{id:dialog.dataset.theory,camera:dialogViewer.getState(),view:dialogView,opened:opened(dialog),announcement:announcement(dialog)}:null;}
+  function setAnnouncement(node,value){const output=node?.querySelector('.am-sr-only');if(output)output.textContent=announcements[value];}
+  function restoreDetails(node,indexes){
+   const indices=new Set(indexes);
+   [...node.querySelectorAll('details')].forEach((detail,index)=>{
+    // A newly rendered open disclosure already has a queued native toggle.
+    // Suppress its teaching side effects as well as the toggles changed below.
+    if(detail.open||detail.open!==indices.has(index))pendingToggles.set(detail,indices.has(index));
+    detail.open=indices.has(index);
+   });
+  }
+  function feedbackText(lesson,kind){return {none:'',manual:'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.',already:'Этот ответ уже проверен.',assisted:'Ответ совпал с проверенным после обращения к помощи.',independent:'Ответ совпал с проверенным. Решено самостоятельно.',wrong:lesson.answer?.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'}[kind];}
+  function getState(){
+   if(!current){if(boardCatalog)catalogState=boardCatalog.read();return {version:1,bookId:catalog.book.id,lessonId:null,work:null,catalog:{...copy(catalogState),search:session.encodeText(catalogState.search)},view:null};}
+   const model=modelState(view.querySelector('[data-main-model]'),viewer),work=copy(state);work.camera=copy(model.camera);
+   work.draft=session.encodeText(work.draft);for(const id of Object.keys(work.stepDrafts))work.stepDrafts[id]=session.encodeText(work.stepDrafts[id]);
+   const feedback={final:view.querySelector('[data-final-feedback]')?.dataset.boardFeedback||'none',steps:{}};
+   for(const section of view.querySelectorAll('[data-step]')){const output=section.querySelector('form [role=status]');if(output)feedback.steps[section.dataset.step]=output.dataset.boardFeedback||'none';}
+   return {version:1,bookId:catalog.book.id,lessonId:current.id,work,catalog:{...copy(catalogState),search:session.encodeText(catalogState.search)},view:{model,opened:opened(view),feedback,theory:{active:theoryState(),trail:theoryTrail.map(item=>({...copy(item),announcement:item.announcement||'none'}))}}};
+  }
+  save=function(){return applying?true:oldSave();};
+  assisted=function(){return applying?true:oldAssisted();};
+  open=function(id){
+   if(!available.has(id))return oldOpen(id);
+   if(!applying){if(!current&&boardCatalog)catalogState=boardCatalog.read();if(current?.id!==id){session.clearStorage();cache.clear();}}
+   const result=oldOpen(id);
+   if(result)for(const input of view.querySelectorAll('input,textarea'))input.maxLength=2000;
+   return result;
+  };
+  home=function(){
+   if(!applying){session.clearStorage();cache.clear();}
+   oldHome();boardCatalog?.apply(catalogState);
+   const search=view.querySelector('#catalog-search');if(search)search.maxLength=200;
+  };
+  showTheory=function(id,from,backState){
+   if(!applying&&!backState&&dialog&&theoryTrail.length>=8){status('Вернись к предыдущему объяснению, чтобы открыть новое.');return;}
+   const previous=dialog?announcement(dialog):'none',before=theoryTrail.length;
+   oldTheory(id,from,backState);
+   if(theoryTrail.length>before)theoryTrail.at(-1).announcement=previous;
+   if(backState)setAnnouncement(dialog,backState.announcement||'none');
+  };
+  function applyState(value){
+   if(!session.validateState(value))throw new TypeError('Invalid Merzlyak board state');
+   pendingToggles.clear();applying=true;
+   try{
+    session.clearStorage();cache.clear();catalogState=copy(value.catalog);catalogState.search=session.decodeText(catalogState.search);locked=false;
+    if(value.lessonId===null){home();return;}
+    const lesson=available.get(value.lessonId),storageKey='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;
+    const work=copy(value.work);work.draft=session.decodeText(work.draft);for(const id of Object.keys(work.stepDrafts))work.stepDrafts[id]=session.decodeText(work.stepDrafts[id]);
+    storage.setItem(storageKey,JSON.stringify(work));open(lesson.id);
+    restoreDetails(view,value.view.opened);viewer.setView(value.view.model.view);setAnnouncement(view.querySelector('[data-main-model]'),value.view.model.announcement);
+    const output=view.querySelector('[data-final-feedback]');if(output){output.dataset.boardFeedback=value.view.feedback.final;setDisplayText(output,feedbackText(lesson,value.view.feedback.final));}
+    for(const [id,kind]of Object.entries(value.view.feedback.steps)){const section=[...view.querySelectorAll('[data-step]')].find(node=>node.dataset.step===id),output=section?.querySelector('form [role=status]'),step=lesson.steps.find(item=>item.id===id);if(output){output.dataset.boardFeedback=kind;setDisplayText(output,kind==='none'?'':kind==='correct'?'Ответ на этот шаг совпал.':step.input.feedback);}}
+    const theory=value.view.theory;
+    if(theory.active){
+     theoryTrail.push(...copy(theory.trail));
+     // Restore the viewer through its existing camera option, without replaying
+     // clicks or submits. An empty disclosure list leaves its closure live.
+     showTheory(theory.active.id,view.querySelector('button'),{...copy(theory.active),opened:[]});
+     restoreDetails(dialog,theory.active.opened);setAnnouncement(dialog,theory.active.announcement);
+    }
+   }finally{applying=false;}
+  }
+  root.addEventListener('toggle',event=>{
+   if(!pendingToggles.has(event.target))return;
+   const expectedOpen=pendingToggles.get(event.target);pendingToggles.delete(event.target);
+   // A controller may already have changed this disclosure after hydration.
+   // Suppress only the queued remote state, not that newer local action.
+   if(event.target.open===expectedOpen)event.stopImmediatePropagation();
+  },true);
+  root.addEventListener('input',event=>{
+   if(applying)return;const input=event.target;if(!input.matches('input,textarea'))return;
+   // Bound drafts before the ordinary listener; never replace mathematical
+   // comparison signs. The snapshot layer handles lossless wire escaping.
+   input.value=input.value.slice(0,input.id==='catalog-search'?200:2000);
+  },true);
+  root.addEventListener('submit',event=>{
+   if(applying||!current)return;const form=event.target;
+   if(form.matches('[data-final-form]')){
+    const output=form.querySelector('[data-final-feedback]'),answer=current.answer,input=form.querySelector('input,textarea');
+    output.dataset.boardFeedback=answer.mode==='manual'?'manual':answer.accepted.some(value=>normalized(value)===normalized(input.value))?(state.checked?'already':state.assisted||view.querySelector('[data-main-help] details[open], [data-main-help][open]')?'assisted':'independent'):'wrong';
+   }else{
+    const section=form.closest('[data-step]'),step=current.steps.find(item=>item.id===section?.dataset.step),output=form.querySelector('[role=status]');
+    if(step?.input&&output)output.dataset.boardFeedback=step.input.accepted.some(value=>normalized(value)===normalized(form.querySelector('input').value))?'correct':'wrong';
+   }
+  },true);
+  session.attach({getState,applyState,isApplying:()=>{
+   for(const detail of pendingToggles.keys())if(!root.contains(detail))pendingToggles.delete(detail);
+   return applying||pendingToggles.size>0;
+  }});
+ }
+ /* MERZLYAK_BOARD_END */
  function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();}
  win.addEventListener('storage',onStorage);const start=win.location.hash.slice(1);if(start&&available.has(start))open(start);else home();
  return {open,home,coverage,issues,destroy(){destroyed=true;destroyScene();win.removeEventListener('storage',onStorage);root.replaceChildren();}};

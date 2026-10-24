@@ -2,6 +2,33 @@
 
 Updated: 2026-10-24 (Asia/Novosibirsk)
 
+## Release in progress: grade 10 Merzlyak cabinet and shared board
+
+- [Scope](tasks/MERZLYAK10_CABINET_BOARD.md), [PR #314](https://github.com/ladynata-cloud/math-exam-fipi/pull/314), MEDIUM bounded integration.
+  The owner explicitly authorized the presented merge and publication on
+  2026-10-24. Reviewed head `d8d07fea84fb8d6312705b97436ec9441d9c116d`
+  passed all 11 workflows: 14 successful jobs and one skipped content consultation.
+- Main subsequently advanced from `07189de58b7f5d60c02ea6ca6aa9450a324a377f`
+  through PRs #313, #316, #320, #317 and #321 to
+  `f616ec8cbd70dd18e3cecfa58be683c32303a573`. Their release provenance and
+  read-only virtual composition were inspected first; 12 files conflicted.
+- Continue the already authorized course-preservation work: retain writing,
+  screenshots and layout tools, all five START mirrors, Peterson plan cards
+  and board, Vilenkin managed work, Atanasyan and Makarychev content. No new
+  teaching content, account/schema migration or hosting configuration is added.
+- Expected exact union is 45 catalog records, 16 mirrors and 1,450 picker links.
+  Both readiness protections and every assertion in the overlapping expressions
+  test remain. The shared host differs from current main only in picker cache.
+- The published Merzlyak course still contains 989 reviewed cards and solutions
+  to all 736 numbered exercises. This integration does not change authored content.
+  Real account details and credentials remain solely in the private teacher UI.
+- Prior checks are history, not proof of the new composition. Fresh results,
+  exact base/head, failed or skipped checks, independent review and actual
+  publication evidence belong in PR #314; no live release is claimed here.
+- Next: complete composed-tree review and cloud gates; publish the validated
+  scoped integration under the owner's current authorization; verify Pages,
+  Amvera cabinet assets and the complete 16-mirror authoritative registry.
+
 ## In progress: Peterson 6 course in the cabinet and on the shared board
 
 - [Scope](tasks/PETERSON6_BOARD_SYNC.md), MEDIUM review, base
@@ -2071,4 +2098,3 @@ final exact-head CI and deployment verification; see PR266 for current evidence.
 - Visual browser QA and external Claude review were not completed; these
   limitations were disclosed. Progress is browser-local; no synchronized-board
   or cloud learner-storage claim is made. Final evidence is in PR #319.
-

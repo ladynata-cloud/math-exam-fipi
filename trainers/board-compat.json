@@ -530,6 +530,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместная работа по 14 темам: задача, ответы, шаги, подсказки, модели и отдельные вычислительные тренировки с возвратом. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "merzlyak-10-base",
+      "file": "trainers/merzlyak-10-base.html",
+      "title": "Мерзляк · геометрия 10 класс · базовый уровень",
+      "group": "Мерзляк · геометрия 10 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по курсу: карточка, ввод, шаги, подсказки, теория и ракурс модели. Личный прогресс курса не изменяется."
     }
   ]
 }
