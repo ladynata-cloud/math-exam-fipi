@@ -1,0 +1,70 @@
+name: Grade 6 NOK and NOD trainers
+on:
+  pull_request:
+    paths:
+      - 'trainers/grade6-nok.html'
+      - 'trainers/grade6-nod.html'
+      - 'trainers/number-theory/**'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-bridge.js'
+      - 'learning/preparation.js'
+      - 'learning/index.html'
+      - 'tools/number-theory*'
+      - 'tools/learning-number-theory*'
+      - '.github/workflows/number-theory-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/grade6-nok.html'
+      - 'trainers/grade6-nod.html'
+      - 'trainers/number-theory/**'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-bridge.js'
+      - 'learning/preparation.js'
+      - 'learning/index.html'
+      - 'tools/number-theory*'
+      - 'tools/learning-number-theory*'
+      - '.github/workflows/number-theory-board.yml'
+permissions:
+  contents: read
+jobs:
+  mathematics-and-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned test tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/number-theory-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/number-theory-qa/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/number-theory-qa/node_modules" >> "$GITHUB_ENV"
+      - name: Mathematics, retained work, state validation and cabinet cards
+        run: |
+          node --check trainers/number-theory/math.js
+          node --check trainers/number-theory/trainer.js
+          node --test tools/number-theory.test.cjs tools/number-theory.dom.cjs tools/learning-number-theory-plan.dom.cjs tools/learning-peterson-plan.dom.cjs tools/learning-focus-links.dom.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          node tools/board-picker-smoke.cjs
+          git diff --check
+      - name: Synthetic teacher and pupil on the actual board
+        run: NUMBER_THEORY_SHOTS="$RUNNER_TEMP/number-theory-shots" node tools/number-theory-board.browser.cjs
+      - name: Preserve visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: number-theory-browser-evidence
+          path: ${{ runner.temp }}/number-theory-shots
+          if-no-files-found: warn
+          retention-days: 14

@@ -26,10 +26,22 @@ function focusMarkup(value){
 // course without creating a managed attempt or claiming its whole-course result.
 function planCoursesMarkup(value,{teacher=false}={}){
  const canonical='https://mathexam.space/school/peterson6/';
- const tokens=String(value??'').match(/https:\/\/[^\s<>"']+/g)||[];
- if(!tokens.some(token=>token.replace(/[.,;:!?)\]}]+$/,'')===canonical))return '';
+ const tokens=new Set((String(value??'').match(/https:\/\/[^\s<>"']+/g)||[]).map(token=>token.replace(/[.,;:!?)\]}]+$/,'')));
+ const cards=[];
  const board='https://mathexam.space/trainers/trainer-board.html?trainer=%2Fschool%2Fpeterson6%2F';
- return `<section class="panel prep-linked-course" data-plan-course="peterson6"><p class="eyebrow">КУРС В УЧЕБНОМ ПЛАНЕ</p><h2>Петерсон · 6 класс · часть 1</h2><p>Выбери тему, решай задачи и тренируй трудные вычисления отдельно. После тренировки можно вернуться к исходной задаче.</p><div class="actions"><a class="button primary" data-plan-course-open href="${canonical}" target="_blank" rel="noopener noreferrer">Открыть курс →</a><a class="button" data-plan-course-practice href="${canonical}#skills" target="_blank" rel="noopener noreferrer">Тренировка вычислений</a>${teacher?`<a class="button" data-plan-course-board href="${board}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div><p class="small" data-plan-course-note>Личные решения курса сохраняются в этом браузере и не входят в итоги кабинета. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p></section>`;
+ if(tokens.has(canonical))cards.push(`<section class="panel prep-linked-course" data-plan-course="peterson6"><p class="eyebrow">КУРС В УЧЕБНОМ ПЛАНЕ</p><h2>Петерсон · 6 класс · часть 1</h2><p>Выбери тему, решай задачи и тренируй трудные вычисления отдельно. После тренировки можно вернуться к исходной задаче.</p><div class="actions"><a class="button primary" data-plan-course-open href="${canonical}" target="_blank" rel="noopener noreferrer">Открыть курс →</a><a class="button" data-plan-course-practice href="${canonical}#skills" target="_blank" rel="noopener noreferrer">Тренировка вычислений</a>${teacher?`<a class="button" data-plan-course-board href="${board}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div><p class="small" data-plan-course-note>Личные решения курса сохраняются в этом браузере и не входят в итоги кабинета. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p></section>`);
+ // Only fixed public trainer URLs become cards. Notes are neither HTML nor a
+ // source of managed content IDs; no attempt or result is created here.
+ for(const [id,title,description] of [
+  ['grade6-nok','НОК · наименьшее общее кратное','Разложи числа на простые множители и добавь недостающие. Разбери пример по шагам, затем потренируйся самостоятельно.'],
+  ['grade6-nod','НОД · наибольший общий делитель','Разложи числа на простые множители и найди общие пары. Разбери пример по шагам, затем потренируйся самостоятельно.']
+ ]){
+  const href='https://mathexam.space/trainers/'+id+'.html';
+  if(!tokens.has(href))continue;
+  const shared='https://mathexam.space/trainers/trainer-board.html?trainer='+encodeURIComponent('/trainers/'+id+'.html');
+  cards.push(`<section class="panel prep-linked-course" data-plan-course="${id}"><p class="eyebrow">ТРЕНАЖЁР · 6 КЛАСС</p><h2>${title}</h2><p>${description}</p><div class="actions"><a class="button primary" data-plan-course-open href="${href}" target="_blank" rel="noopener noreferrer">Потренироваться →</a>${teacher?`<a class="button" data-plan-course-board href="${shared}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div></section>`);
+ }
+ return cards.join('');
 }
 const complete=new Set(['independent','repeated','hinted','together','practiced']);
 function publicHref(item){try{const url=new URL(item.publicUrl||item.url,'https://mathexam.space');return url.origin==='https://mathexam.space'?url.href:'';}catch(_){return '';}}
