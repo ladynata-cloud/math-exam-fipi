@@ -516,6 +516,34 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместная работа над №92а: рассуждение, шаги, подсказки и виды чертежа. Доказательство проверяет учитель; работа на общей доске не начисляет личный прогресс."
+    },
+    {
+      "trainerId": "peterson6",
+      "file": "trainers/peterson6.html",
+      "title": "Петерсон · 6 класс · часть 1",
+      "group": "Математика / 6 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по 14 темам: задача, ответы, шаги, подсказки, модели и отдельные вычислительные тренировки с возвратом. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "merzlyak-10-base",
+      "file": "trainers/merzlyak-10-base.html",
+      "title": "Мерзляк · геометрия 10 класс · базовый уровень",
+      "group": "Мерзляк · геометрия 10 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по курсу: карточка, ввод, шаги, подсказки, теория и ракурс модели. Личный прогресс курса не изменяется."
     }
   ]
 }

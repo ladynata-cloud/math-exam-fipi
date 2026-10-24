@@ -4,12 +4,14 @@
 <meta name="description" content="Курс по учебнику Мерзляка и соавторов, геометрия 10 класса, базовый уровень, 2022: модели, теория и пошаговые решения с точными номерами и страницами. Проверенные материалы отделены от готовящихся.">
 <link rel="canonical" href="https://mathexam.space/stereo-course/merzlyak-10-base/">
 <link rel="stylesheet" href="../assets/task-scenes.css"><link rel="stylesheet" href="assets/style.css">
-</head><body><nav class="course-nav"><a href="../">Курсы геометрии</a><a href="/ege-profil/">К профильной математике</a></nav>
+</head><body><nav class="course-nav"><a href="../">Курсы геометрии</a><a href="/ege-profil/">К профильной математике</a><a id="course-board-link" href="/trainers/trainer-board.html?trainer=%2Fstereo-course%2Fmerzlyak-10-base%2F">Открыть курс на доске</a></nav>
 <div id="textbook-app"><p>Загружаем материалы курса…</p></div>
 <noscript>Для интерактивных моделей нужен JavaScript.</noscript>
 <script src="../assets/math-text.js"></script><script src="../assets/task-scene-viewer.js"></script><script src="assets/engine.js"></script>
 <script>
 'use strict';
+function updateBoardLink(){document.getElementById('course-board-link').href='/trainers/trainer-board.html?trainer='+encodeURIComponent('/stereo-course/merzlyak-10-base/'+location.hash);}
+updateBoardLink();window.addEventListener('hashchange',updateBoardLink);document.addEventListener('click',updateBoardLink);
 fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(bundle=>{
  window.textbookApp=StereoTextbook.createApp(document.getElementById('textbook-app'),bundle);
 }).catch(()=>{document.getElementById('textbook-app').textContent='Материалы сейчас не удалось открыть. Попробуй обновить страницу.';});

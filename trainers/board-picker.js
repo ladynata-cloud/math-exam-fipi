@@ -12,6 +12,15 @@ const PROFILE_COURSES=[
  ['7','ege-profile-equations.html',new Set(['algebra-exponential','algebra-logarithmic','eq-linear','eq-rational','eq-quadratic','eq-root'])],
  ['8','ege-profile-expressions.html',PROFILE_EXPRESSIONS_LESSONS]
 ];
+const PETERSON_TASK_COUNTS=Object.freeze({p01:14,p02:14,p03:14,p04:14,p05:14,p06:14,p07:14,p08:18,p09:18,p10:18,p11:18,p12:18,p13:18,p14:18});
+const PETERSON_SKILLS=new Set(['fraction-reduce','fraction-mixed','fraction-add','fraction-subtract','fraction-multiply','fraction-divide','decimal-add','decimal-subtract','decimal-multiply','decimal-divide','decimal-to-fraction','fraction-to-decimal','mixed-multiply','mixed-divide','unlike-multiply','unlike-divide','order-operations','percent-part','percent-whole','percent-ratio']);
+function petersonRoute(hash){
+ if(['','#home','#skills','#progress'].includes(hash))return true;
+ const lesson=/^#lesson\/(p\d{2})(?:\/(0|[1-9]\d*))?$/.exec(hash);
+ if(lesson)return Object.hasOwn(PETERSON_TASK_COUNTS,lesson[1])&&(lesson[2]===undefined||Number(lesson[2])<PETERSON_TASK_COUNTS[lesson[1]]);
+ const practice=/^#practice\/([a-z-]+)\/([123])$/.exec(hash);
+ return !!practice&&PETERSON_SKILLS.has(practice[1]);
+}
 function profileCourseRoute(hash,position,lessons){
  const parts=hash.slice(1).split('/');
  if(parts.length===2&&['exam','calm'].includes(parts[0])&&parts[1]===position)return true;
@@ -32,6 +41,12 @@ function normalize(value){
  if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-profil/start/index.html','/ege-profil/start/'].includes(u.pathname)){
   const file=PROFILE_COURSES.find(([number,_,lessons])=>profileCourseRoute(u.hash,number,lessons))?.[1];
   if(file)return '/trainers/'+file+u.search+u.hash;
+ }
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/stereo-course/merzlyak-10-base/','/stereo-course/merzlyak-10-base/index.html'].includes(u.pathname)){
+  return '/trainers/merzlyak-10-base.html'+u.search+u.hash;
+ }
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson6/','/school/peterson6/index.html'].includes(u.pathname)&&petersonRoute(u.hash)){
+  return '/trainers/peterson6.html'+u.search+u.hash;
  }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/geometry-course/textbook/','/geometry-course/textbook/index.html'].includes(u.pathname)&&u.hash==='#atanasyan-7-9-main-92-part-1')return '/trainers/atanasyan-7-9.html'+u.search+u.hash;
  return raw;
@@ -67,7 +82,7 @@ function mount(options){
  $('retryOpenedTrainer').onclick=()=>{if(!active)return;checks.delete(headerKey(active));options.retry();};loading();
  function setEntries(list){const seen=new Set();entries=list.filter(x=>{try{const key=canonical(x.href);if(seen.has(key))return false;seen.add(key);return typeof x.title==='string';}catch(_){return false;}});const groups=[...new Set(entries.map(x=>x.group))];group.replaceChildren(new Option('Все разделы',''),new Option('Недавние','recent'),...groups.map(x=>new Option(x,x)));renderRecent();render();if(active)$('openedTrainerTitle').textContent=titleFor(active);}
  setEntries(options.fallback.map(x=>({href:'/'+x.file,title:x.title,group:x.group})));
- fetch('board-picker-data.json?v=20261024-board-integrations').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
+ fetch('board-picker-data.json?v=20261024-merzlyak-release-board').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
  const query=new URLSearchParams(location.search).get('trainer');if(query&&options.role()==='teacher')choose(query);
 }
 root.BoardPicker={normalize,canonical,mount,error,clearError};

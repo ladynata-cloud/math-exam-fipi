@@ -1,0 +1,179 @@
+# Grade 10 Merzlyak: cabinet entry and shared board
+
+## Identity and goal
+
+- Owner: repository owner; task started by the current direct request.
+- Date: 2026-10-24 (Asia/Novosibirsk).
+- Base: `main`, `1f9d8aec82bd2909917ab22746d94571d87c59c4` (PR #312).
+- Branch: `feat/merzlyak10-cabinet-board`.
+- Review: `MEDIUM`, bounded integration in existing cabinet and board behavior.
+- Goal: attach the published Merzlyak grade 10 basic geometry course to a
+  teacher-selected pupil's cabinet and mirror its existing interactions on
+  the classic shared board. All development and verification run in the cloud.
+
+## Evidence and scope
+
+The published course contains 989 reviewed cards and 736 numbered exercises.
+Authored content, source inventory, model geometry and review flags are unchanged.
+The existing teacher interface creates accounts and persists a per-pupil focus
+note. There is no grade-10 profile enum and no arbitrary managed-course assignment.
+Recognize the exact canonical public course URL in that existing note, with a
+prominent grade-10 course/board entry and accurate labels. Keep existing work
+available; do not migrate accounts, roles, profiles, credentials or the database.
+Real pupil information and credentials belong only to the private cabinet, never
+to this repository, test fixtures, review material or CI artifacts.
+
+Reuse the implemented Bridge v1/Registry B1/B2 contract and the PR #312 example.
+ADR 0001 remains Proposed; code and tests establish the reused behavior.
+The accepted unified-learning ADR's account and origin boundaries stay intact.
+Register only `trainers/merzlyak-10-base.html`, ID `merzlyak-10-base`, version
+1.0.0, state schema 1, bridge protocol 1, no seed or legacy HTML. The wrapper uses
+memory-only course state, no cabinet credential, no personal storage or credit.
+Mirror the selected card, draft, revealed steps/help, feedback, model view/camera,
+catalog selection and bounded theory-return trail through semantic state. Reject
+malformed snapshots before mutation, and restore without replaying user actions.
+
+Include one registry/picker entry, exact canonical URL aliases, cache versions,
+an entry link on the original course, focused contracts and real multi-participant
+browser tests. Preserve other trainers and all ordinary standalone course behavior.
+Do not change the board SDK, server protocol, authentication, hosting configuration,
+curriculum, cloud attempt schemas or group-board behavior.
+
+## Acceptance and checks
+
+- Pupil home/course/route and teacher preview identify grade 10 and expose the
+  exact course and board links only for the selected attachment; peers and
+  existing work are isolated. Similar/foreign URLs cannot select the attachment.
+- Exact course URLs and all 989 card hashes map to the registered wrapper;
+  existing registry entries and literal-path authorization remain unchanged.
+- Teacher/observer state and rendered work agree; grant/revoke, both-role reload,
+  late join and the next interaction work without echo or personal-store writes.
+- Preserve standalone runtime, source/math/content gates and existing board and
+  cabinet regressions. Inspect the final diff and run `git diff --check`.
+- New checks: `tools/merzlyak-cabinet.test.cjs`,
+  `tools/merzlyak-board-picker.test.cjs`, adapter contract and real-board browser
+  gate, plus existing focus-link, registry, profile board and course runtime checks.
+- Final gate: `MERZLYAK10_CABINET_BOARD_OK`. Record exact-head Actions and any
+  failed/not-run check in the PR; do not equate a prepared integration with release.
+
+## Review, risk and rollback
+
+Independent review covers state validation, quiet restoration, storage isolation,
+cabinet selection and regression guarantees. No teaching sequence or trainer
+interaction is redesigned: a new paid pedagogical consultation is not required
+for this MEDIUM integration. The old content-consultation job should run only
+when its authored-content inputs change; all existing technical gates remain.
+No external reviewer approval is claimed.
+
+Risks: missing transient state, asynchronous disclosure echo, stale model closures,
+misleading cabinet labels and frontend/backend registry version mismatch. Revert
+only the scoped integration through the release process, retaining accounts,
+notes, existing work and the published course. No data migration is necessary.
+Publication must verify exact frontend files and the complete ten-mirror projection in Amvera's
+authoritative registry; Pages success alone does not establish synchronization.
+Course answers retain the published browser storage behavior. Shared board work
+does not become a personal cabinet attempt or independent success automatically.
+
+## Permissions and execution
+
+The current direct user instruction authorizes implementation, cloud account
+setup through existing teacher controls, branch, commits, push and a Draft PR.
+Under AGENTS.md and the release skill, merge and deployment of the resulting
+code still require a separate owner decision for the concrete base/head after
+review. Earlier course-release approval applies only to that earlier PR.
+
+Local browser installation failed because the downloaded Chromium archive was
+empty/truncated; do not repeat that download. Execute real-browser gates on
+GitHub Actions and record their actual results. Private account setup is checked
+in the authenticated cloud teacher UI; synthetic tests never use real pupil data.
+Final test totals, head, PR, independent verdict and release status belong in
+the accompanying PR execution record.
+
+## Existing regression readiness repair
+
+The first exact-head run and one unchanged-head retry both failed the existing
+expressions board browser check at accepted guided-step input state. Its prior
+wait observed a new hash and a form/task ID also present on the old screen,
+while the runtime renders the new route asynchronously on `hashchange`.
+Strengthen only that test to wait for the actual first guided step and matching
+fresh session, then assert teacher acceptance before observer synchronization.
+Keep every original observer/history assertion; add bounded synthetic failure
+diagnostics and rethrow. No production expressions, SDK or protocol code changes.
+Independent review approved this bounded validation repair. The readiness gap
+is established by code; the cause of the two earlier failures remains unproven
+until the amended gate runs. Preserve both failures in the PR record.
+
+## Authorized concurrent-integration resolution, 2026-10-24
+
+The owner explicitly approved the presented resolution scope after eight virtual
+conflicts against main `202d39bf826c8c7e030e59ff162fe808000cae7e` (PR #318).
+Continue this same task and PR #314 with a history-preserving merge; retain
+reviewed head `9bd75ca376610c3ca9afe3495fd88dfa02134e8e` as a parent/source.
+No force, reset or rebase, and no production merge or deployment in this step.
+
+Combine both registry/picker entries and exact URL aliases, with 39 catalog
+entries and ten mirrors. Preserve full expected ID/file vectors and synthetic
+addition/removal fixtures (11/9). Use coherent cache tags, preserving both the
+Atanasyan catalog and Merzlyak attachment script in the cabinet entry page.
+Keep PR #318's shared-host observer keyboard protection, manual saving, server
+contracts, catalog and Docker packaging. Do not change either course's authored
+content, private account data or permission model.
+
+Independent review and composed-tree checks must cover both adapters, the full
+server and registry suites, cabinet navigation, Atanasyan managed saving and
+keyboard revoke, Merzlyak role/reload/late-join flows, retained profile boards,
+and applicable course gates. Old-base passes are retained as history, never
+counted as composed-tree validation. The final PR records exact new identity,
+actual checks, failures and not-run work. Release authorization remains a
+separate concrete decision after review of the resolved candidate.
+
+### Continued additive preservation of concurrent releases
+
+Before Actions could start, main advanced through PR #315 (Vilenkin cloud
+cabinet) and PR #319 (Makarychev 8) to
+`07189de58b7f5d60c02ea6ca6aa9450a324a377f`. Provenance and a read-only virtual
+merge were inspected before editing; five files conflicted. The owner's current
+explicit conflict-resolution instruction, together with the original cloud
+cabinet/board task, covers preserving these existing publications while finishing
+the same integration. No separate owner statement naming these new hashes is
+claimed. Do not repeat an approval request for this routine additive preservation.
+
+Retain all Vilenkin contracts, durable storage/profile migration, catalog,
+Docker and parent behavior byte-for-byte. Combine only the already-overlapping
+cabinet routes, preview, teacher profile display and cache tags. Keep Merzlyak
+attachment primary only when its exact course token is present; ordinary Vilenkin
+profiles retain all 27 managed modules. Preserve both browser readiness fixes and
+all stronger acceptance/history assertions. Makarychev source/SEO stays unchanged.
+Rerun full server, Vilenkin managed/cabinet, both board courses and retained profile
+regressions. This remains a resolution/testing step, with the exact final release
+candidate presented after validation; no production merge is implied.
+
+## Authorized publication and final concurrent preservation, 2026-10-24
+
+The user answered the concrete PR #314 merge/publication question with an
+explicit approval. The named candidate was head `d8d07fea84fb8d6312705b97436ec9441d9c116d`
+on base `07189de58b7f5d60c02ea6ca6aa9450a324a377f`, with all 11 cloud workflows
+passing. This supersedes the earlier task-stage stop before release.
+
+Fresh authoritative main is `f616ec8cbd70dd18e3cecfa58be683c32303a573` after
+traceable releases #313, #316, #320, #317 and #321. A read-only virtual merge
+identified 12 conflicts before any edits. Preserve these published changes
+within the already authorized conflict-resolution and publication task; the
+current direct user authorization and execution instructions take precedence
+over repeated routine approval loops. No new owner statement naming a later
+hash, and no permission from another PR's conversation, is claimed.
+
+Resolve only overlapping integration/cache/test expectations, preserving exact
+START/Peterson/Atanasyan/Merzlyak aliases and full registry vectors (45 catalog
+records,16 mirrors,1450 picker links; synthetic17/15). Keep current-main board
+writing/image/layout and keyboard-revoke behavior unchanged. Preserve Peterson
+plan rendering/cleanup and all Vilenkin managed behavior alongside the exact
+Merzlyak focus attachment. Retain every expressions acceptance/history check
+and both route-readiness protections. Other course content remains byte-identical.
+
+Obtain fresh independent review and applicable exact-head cloud checks,
+including writing, five START mirrors and Peterson journeys. Recheck remote main
+before release, verify the scoped delta and actual merge identity, then verify
+Pages and Amvera. The 16-mirror projection replaces the obsolete ten-mirror
+release target. Never claim deployment from Pages alone. Preserve all earlier
+failure/skip history in PR #314 and record actual production evidence there.

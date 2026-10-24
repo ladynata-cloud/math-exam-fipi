@@ -57,6 +57,7 @@ function cabinetFixture(t, role='student'){
  const dom=new JSDOM(html,{url:'https://cabinet.example/learning/#home',runScripts:'outside-only'}),w=dom.window,calls=[];
  w.setInterval=()=>0;w.HTMLDialogElement.prototype.close=function(){this.open=false;};w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
  w.LearningCatalog=catalog;w.eval(source);
+ w.eval(fs.readFileSync(path.join(__dirname,'../learning/attached-course.js'),'utf8'));
  const startup=appSource.lastIndexOf("(async()=>{const revision=authRevision;try{try{const status=await api('/status')");assert(startup>0);
  w.eval(appSource.slice(0,startup)+`window.fixtureApp={set(person,people=[]){account=person;students=people;assignments=[];attempts=[];authReady=false;},render,assignmentDialog,assignmentItems,previewStudent};})();`);
  w.fetch=async (url,options)=>{calls.push({url,options});const result=url.endsWith('/progress')?{progress:[]}:url.endsWith('/profile')?{profile:learner.profile}:url.endsWith('/report')?{report:{student:learner,attempts:[],positions:[]}}:url.endsWith('/ai-drafts')?{drafts:[]}:url.endsWith('/parent-access')?{parentAccess:{exists:false}}:{plan:{items:[]}};return{ok:true,status:200,json:async()=>result};};

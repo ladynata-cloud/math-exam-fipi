@@ -6268,7 +6268,14 @@
         "б",
         "в",
         "г"
-      ]
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "coverageReview": "Codex independent symmetry_review; visual_pedagogy_review; 2026-10-23T21:04:00.795Z; COMPLETE: all four source subparts; dihedral definition in point22 excludes coplanar halfplanes. Answer to276в is0. See docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md."
     },
     {
       "id": "source-main-0277",
@@ -6290,7 +6297,13 @@
         "а",
         "б",
         "в"
-      ]
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "coverageReview": "Codex independent symmetry_review; visual_pedagogy_review; 2026-10-23T21:04:00.795Z; COMPLETE: all three source subparts; axial symmetry is180-degree half-turn. See docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md."
     },
     {
       "id": "source-main-0278",
@@ -6312,7 +6325,14 @@
         "а",
         "б",
         "в"
-      ]
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в · боковое ребро не равно стороне основания",
+        "в · все рёбра равны"
+      ],
+      "coverageReview": "Codex independent symmetry_review; visual_pedagogy_review; 2026-10-23T21:04:00.795Z; COMPLETE: all three source subparts;278в requires two cases (3 planes or6 for regular tetrahedron). See docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md."
     },
     {
       "id": "source-main-0279",
@@ -22079,7 +22099,18 @@
           81,
           82
         ]
-      }
+      },
+      "requiredParts": [
+        "center",
+        "axis",
+        "plane",
+        "figure",
+        "parallelepiped-examples",
+        "unbounded-examples",
+        "general-solids-examples",
+        "applications-elements"
+      ],
+      "coverageReview": "Codex independent symmetry_review; visual_pedagogy_review; 2026-10-23T21:04:00.795Z; PARTIAL: four focused definitions/figure cards approved; four named example/application parts pending. Full point35 is not complete. See docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md."
     },
     {
       "id": "source-theory-036",

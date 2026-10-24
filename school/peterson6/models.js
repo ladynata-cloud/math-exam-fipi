@@ -1,6 +1,55 @@
 (function (root) {
   'use strict';
   const NS = 'http://www.w3.org/2000/svg';
+  const MODEL_LESSONS = Object.freeze({
+    logic: ['p01', 'p02', 'p03', 'p06', 'p07'], variable: ['p04', 'p05'],
+    fractions: ['p08'], river: ['p09'], mean: ['p10'], percent: ['p11', 'p12'], growth: ['p13', 'p14']
+  });
+  const MODEL_FIELDS = Object.freeze({
+    logic: ['chosen', 'mode'], variable: ['x'], fractions: ['a', 'b'], river: ['own', 'current'],
+    mean: ['piles', 'from', 'to', 'notice'], percent: ['whole', 'p'], growth: ['initial', 'rate', 'years']
+  });
+  function fields(value, names) {
+    if (!value || typeof value !== 'object' || Array.isArray(value) ||
+        ![Object.prototype, null].includes(Object.getPrototypeOf(value))) return false;
+    const keys = Reflect.ownKeys(value);
+    return keys.length === names.length && names.every(key => {
+      const property = Object.getOwnPropertyDescriptor(value, key);
+      return property && property.enumerable && Object.prototype.hasOwnProperty.call(property, 'value');
+    });
+  }
+  function integers(value, length, min, max) {
+    if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype || value.length !== length ||
+        Reflect.ownKeys(value).length !== length + 1) return false;
+    for (let i = 0; i < length; i++) {
+      const property = Object.getOwnPropertyDescriptor(value, String(i));
+      if (!property || !property.enumerable || !Object.prototype.hasOwnProperty.call(property, 'value') ||
+          !Number.isInteger(property.value) || property.value < min || property.value > max) return false;
+    }
+    return true;
+  }
+  function stepped(value, min, max, step = 1) {
+    return typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max &&
+      Number.isInteger((value - min) / step);
+  }
+  function validateBoardState(lesson, value) {
+    try {
+      const kind = lesson?.model, id = lesson?.id;
+      if (!MODEL_LESSONS[kind]?.includes(id) || !fields(value, ['lessonId', 'kind', ...MODEL_FIELDS[kind]]) ||
+          value.lessonId !== id || value.kind !== kind) return false;
+      if (kind === 'logic') return Array.isArray(value.chosen) && integers(value.chosen, value.chosen.length, 1, 8) && value.chosen.length <= 8 &&
+        value.chosen.every((n, index) => !index || value.chosen[index - 1] < n) &&
+        (id !== 'p01' || value.chosen.length === 1) &&
+        (['p06', 'p07'].includes(id) ? ['all', 'exists'].includes(value.mode) : value.mode === (id === 'p03' ? 'exists' : 'all'));
+      if (kind === 'variable') return stepped(value.x, 0, 8);
+      if (kind === 'fractions') return stepped(value.a, 0, 5) && stepped(value.b, 0, 4);
+      if (kind === 'river') return stepped(value.own, 6, 20) && stepped(value.current, 0, 5, 0.5);
+      if (kind === 'mean') return integers(value.piles, 3, 0, 15) && value.piles.reduce((a, b) => a + b, 0) === 15 &&
+        stepped(value.from, 0, 2) && stepped(value.to, 0, 2) && ['none', 'same', 'empty'].includes(value.notice);
+      if (kind === 'percent') return stepped(value.whole, 20, 400, 20) && stepped(value.p, 0, 200, 5);
+      return stepped(value.initial, 100, 2000, 100) && stepped(value.rate, 5, 25, 5) && stepped(value.years, 1, 6);
+    } catch (_) { return false; }
+  }
   let sequence = 0;
   function el(tag, className, text) {
     const n = document.createElement(tag);
@@ -78,8 +127,9 @@
     let mode = modeDefault;
     const chosen = new Set(simple ? [4] : [2, 4, 6]);
     const ui = basics(host, simple ? 'Утверждение и его отрицание' : 'Проверь утверждение на своём наборе', simple ? 'Выбери одно число. Проверь, могут ли утверждение и его отрицание быть истинны одновременно.' : 'Нажимай на числа, чтобы включать и исключать их из набора. Попробуй добавить один контрпример.');
+    let selector = null;
     if (!simple && (lesson.id === 'p06' || lesson.id === 'p07')) {
-      field(ui.controls, 'Какое утверждение проверяем?', ['Все выбранные числа чётные', 'Есть хотя бы одно чётное число'], v => { mode = v === 0 ? 'all' : 'exists'; draw(); });
+      selector = field(ui.controls, 'Какое утверждение проверяем?', ['Все выбранные числа чётные', 'Есть хотя бы одно чётное число'], v => { mode = v === 0 ? 'all' : 'exists'; draw(); });
     }
     const buttons = [];
     for (let i = 1; i <= 8; i++) {
@@ -121,12 +171,20 @@
       ui.result.replaceChildren(el('p', '', 'Утверждение: ' + statement + ' — ' + (truth ? 'верно.' : 'неверно.')), el('p', '', 'Отрицание: ' + negation + ' — ' + (!truth ? 'верно.' : 'неверно.')), el('p', 'pm-note', explanation));
     }
     draw();
+    return {
+      getState: () => ({ chosen: [...chosen].sort((a, b) => a - b), mode }),
+      applyState(value) {
+        chosen.clear(); value.chosen.forEach(n => chosen.add(n)); mode = value.mode;
+        if (selector) selector.value = mode === 'all' ? '0' : '1';
+        draw();
+      }
+    };
   }
   function variable(host, lesson) {
     const predicate = lesson.id === 'p05';
     const ui = basics(host, predicate ? 'Когда предложение становится верным?' : 'Одна переменная — разные значения', predicate ? 'Меняй x. Найди все целые значения от 0 до 8, при которых 2 · x + 3 < 12.' : 'Меняй x и подставляй его на одно и то же место. Посмотри, как меняется значение выражения 2 · x + 3.');
     let x = 2;
-    slider(ui.controls, 'Значение x', 0, 8, x, 1, v => { x = v; draw(); });
+    const control = slider(ui.controls, 'Значение x', 0, 8, x, 1, v => { x = v; draw(); });
     function draw() {
       const formula = el('div', 'pm-equation', '2 · ' + x + ' + 3 = ' + (2 * x + 3));
       const table = el('table', 'pm-table');
@@ -143,12 +201,13 @@
       ui.result.textContent = predicate ? 'При x = ' + x + ': ' + (2 * x + 3) + ' < 12 — ' + (2 * x + 3 < 12 ? 'верно.' : 'неверно.') + ' Здесь проверяем только целые значения из заданного набора.' : 'Сначала умножаем выбранное x на 2, затем прибавляем 3. При увеличении x на 1 значение выражения увеличивается на 2.';
     }
     draw();
+    return { getState: () => ({ x }), applyState(value) { x = value.x; control.set(x); draw(); } };
   }
   function fractions(host) {
     const ui = basics(host, 'Доля от доли — умножение', 'Меняй выделенные столбцы и строки. Зелёное пересечение показывает, какую часть целого занимает доля от доли.');
     let a = 2, b = 3;
-    slider(ui.controls, 'Из 5 столбцов выделено', 0, 5, a, 1, v => { a = v; draw(); });
-    slider(ui.controls, 'Из 4 строк выделено', 0, 4, b, 1, v => { b = v; draw(); });
+    const columns = slider(ui.controls, 'Из 5 столбцов выделено', 0, 5, a, 1, v => { a = v; draw(); });
+    const rows = slider(ui.controls, 'Из 4 строк выделено', 0, 4, b, 1, v => { b = v; draw(); });
     function draw() {
       const s = chart('Сетка 5 на 4. Пересечение: ' + (a * b) + ' клеток из 20.', 440, 300);
       for (let row = 0; row < 4; row++) for (let col = 0; col < 5; col++) {
@@ -163,12 +222,13 @@
       ui.result.textContent = 'В пересечении ' + a + ' · ' + b + ' = ' + (a * b) + ' клеток. Числители перемножаем, чтобы узнать число выделенных частей. Знаменатели перемножаем, чтобы узнать число всех равных частей.';
     }
     draw();
+    return { getState: () => ({ a, b }), applyState(value) { a = value.a; b = value.b; columns.set(a); rows.set(b); draw(); } };
   }
   function river(host) {
     const ui = basics(host, 'Течение помогает и мешает', 'Измени скорость лодки и течения. Сравни две скорости относительно берега.');
     let own = 10, current = 2;
-    slider(ui.controls, 'Собственная скорость лодки, км/ч', 6, 20, own, 1, v => { own = v; draw(); });
-    slider(ui.controls, 'Скорость течения, км/ч', 0, 5, current, 0.5, v => { current = v; draw(); });
+    const ownControl = slider(ui.controls, 'Собственная скорость лодки, км/ч', 6, 20, own, 1, v => { own = v; draw(); });
+    const currentControl = slider(ui.controls, 'Скорость течения, км/ч', 0, 5, current, 0.5, v => { current = v; draw(); });
     function draw() {
       const s = chart('Скорость по течению ' + number(own + current) + ', против течения ' + number(own - current) + ' километров в час.', 590, 242);
       const scale = 16; const start = 65;
@@ -183,18 +243,23 @@
       ui.result.replaceChildren(el('p', 'pm-equation', number(own) + ' + ' + number(current) + ' = ' + number(own + current) + ' км/ч'), el('p', 'pm-equation', number(own) + ' − ' + number(current) + ' = ' + number(own - current) + ' км/ч'), el('p', '', 'Разность: ' + number(own + current) + ' − ' + number(own - current) + ' = ' + number(2 * current) + ' = 2 · ' + number(current) + ' км/ч.'), el('p', 'pm-note', 'В одном случае течение прибавили, в другом вычли. Поэтому разность равна двум скоростям течения. Плот плывёт со скоростью самого течения.'));
     }
     draw();
+    return { getState: () => ({ own, current }), applyState(value) { own = value.own; current = value.current; ownControl.set(own); currentControl.set(current); draw(); } };
   }
   function mean(host) {
     const ui = basics(host, 'Собрать и распределить поровну', 'Перекладывай по одному кружку между коробками. Следи за суммой и средним: число коробок не меняется.');
-    let piles = [2, 8, 5], from = 1, to = 0;
+    let piles = [2, 8, 5], from = 1, to = 0, noticeKind = 'none';
     const source = field(ui.controls, 'Из какой коробки?', ['Коробка 1', 'Коробка 2', 'Коробка 3'], v => { from = v; }); source.value = '1';
-    field(ui.controls, 'В какую коробку?', ['Коробка 1', 'Коробка 2', 'Коробка 3'], v => { to = v; });
+    const destination = field(ui.controls, 'В какую коробку?', ['Коробка 1', 'Коробка 2', 'Коробка 3'], v => { to = v; });
     const notice = el('p', 'pm-note'); notice.setAttribute('aria-live', 'polite');
+    function showNotice(kind) {
+      noticeKind = kind;
+      notice.textContent = kind === 'same' ? 'Выбери две разные коробки.' : kind === 'empty' ? 'Эта коробка пуста. Выбери другую.' : '';
+    }
     ui.controls.append(button('Переложить 1 кружок', () => {
-      if (from === to) { notice.textContent = 'Выбери две разные коробки.'; return; }
-      if (!piles[from]) { notice.textContent = 'Эта коробка пуста. Выбери другую.'; return; }
-      piles[from]--; piles[to]++; notice.textContent = ''; draw();
-    }), button('Начать заново', () => { piles = [2, 8, 5]; notice.textContent = ''; draw(); }), notice);
+      if (from === to) { showNotice('same'); return; }
+      if (!piles[from]) { showNotice('empty'); return; }
+      piles[from]--; piles[to]++; showNotice('none'); draw();
+    }), button('Начать заново', () => { piles = [2, 8, 5]; showNotice('none'); draw(); }), notice);
     function draw() {
       const s = chart('В коробках ' + piles.join(', ') + ' кружков. Всего 15.', 510, 300);
       piles.forEach((amount, i) => {
@@ -207,12 +272,19 @@
       ui.result.replaceChildren(el('p', 'pm-equation', piles.join(' + ') + ' = 15'), el('p', '', 'Среднее: 15 : 3 = 5 кружков.'), el('p', 'pm-note', piles.every(n => n === 5) ? 'Получилось поровну! В каждой коробке по 5. Сумма осталась 15.' : 'Сумма остаётся 15, среднее остаётся 5. Постарайся получить по 5 в каждой коробке.'));
     }
     draw();
+    return {
+      getState: () => ({ piles: piles.slice(), from, to, notice: noticeKind }),
+      applyState(value) {
+        piles = value.piles.slice(); from = value.from; to = value.to;
+        source.value = String(from); destination.value = String(to); showNotice(value.notice); draw();
+      }
+    };
   }
   function percent(host, lesson) {
     let whole = 200, p = lesson.id === 'p12' ? 25 : 35;
     const ui = basics(host, 'Одно целое — 100 процентов', 'Меняй целое и процент. Сравни: процент тот же, а количество может измениться. Процент бывает больше 100.');
-    slider(ui.controls, 'Целое: принято за 100%', 20, 400, whole, 20, v => { whole = v; draw(); });
-    slider(ui.controls, 'Сколько процентов?', 0, 200, p, 5, v => { p = v; draw(); });
+    const wholeControl = slider(ui.controls, 'Целое: принято за 100%', 20, 400, whole, 20, v => { whole = v; draw(); });
+    const percentControl = slider(ui.controls, 'Сколько процентов?', 0, 200, p, 5, v => { p = v; draw(); });
     function draw() {
       const groups = p > 100 ? 2 : 1;
       const grids = el('div', 'pm-percent-grids');
@@ -228,14 +300,15 @@
       ui.result.replaceChildren(el('p', 'pm-equation', '1% = ' + whole + ' : 100 = ' + number(whole / 100)), el('p', 'pm-equation', p + '% = ' + number(whole / 100) + ' · ' + p + ' = ' + number(whole * p / 100)), el('p', 'pm-note', p > 100 ? 'Здесь нужно больше одного целого: ' + p + '% — это 100% и ещё ' + (p - 100) + '%.' : 'Каждая клетка — одна сотая выбранного целого. Она равна 1%, а не обязательно одному предмету.'));
     }
     draw();
+    return { getState: () => ({ whole, p }), applyState(value) { whole = value.whole; p = value.p; wholeControl.set(whole); percentControl.set(p); draw(); } };
   }
   function growth(host, lesson) {
     const simpleLesson = lesson.id === 'p13';
     let rate = 10, years = 3, initial = 1000;
     const ui = basics(host, simpleLesson ? 'Одна и та же прибавка каждый год' : 'Проценты от нового количества', 'Сравни два правила роста. При простом росте процент считают от начала, при сложном — от результата предыдущего года.');
-    slider(ui.controls, 'Начальное количество', 100, 2000, initial, 100, v => { initial = v; draw(); });
-    slider(ui.controls, 'Рост за один год, %', 5, 25, rate, 5, v => { rate = v; draw(); });
-    slider(ui.controls, 'Прошло лет', 1, 6, years, 1, v => { years = v; draw(); });
+    const initialControl = slider(ui.controls, 'Начальное количество', 100, 2000, initial, 100, v => { initial = v; draw(); });
+    const rateControl = slider(ui.controls, 'Рост за один год, %', 5, 25, rate, 5, v => { rate = v; draw(); });
+    const yearsControl = slider(ui.controls, 'Прошло лет', 1, 6, years, 1, v => { years = v; draw(); });
     function draw() {
       const table = el('table', 'pm-table');
       table.append(el('caption', '', 'Сравниваем при одинаковом начале и проценте'));
@@ -254,6 +327,7 @@
       ui.result.replaceChildren(el('p', '', 'Простой рост: каждый год прибавляется ' + number(initial * rate / 100) + '. Через ' + years + ' лет: ' + number(simple) + '.'), el('p', '', 'Сложный рост: каждый год умножаем предыдущий результат на ' + number(1 + rate / 100) + '. Через ' + years + ' лет: ' + number(compound) + '.'), el('p', 'pm-note', 'Значения показаны с округлением до сотых; промежуточные вычисления сохраняются без такого округления. При положительном росте со второго года правила дают разные результаты.'));
     }
     draw();
+    return { getState: () => ({ initial, rate, years }), applyState(value) { initial = value.initial; rate = value.rate; years = value.years; initialControl.set(initial); rateControl.set(rate); yearsControl.set(years); draw(); } };
   }
   const renderers = { logic, variable, fractions, river, mean, percent, growth };
   function addStyles() {
@@ -266,14 +340,22 @@
     document.head.append(style);
   }
   root.PetersonModels = {
+    validateBoardState,
     mount(container, lesson) {
       if (!container || !lesson || !renderers[lesson.model]) return function () {};
       addStyles();
       const host = el('section', 'pm-model');
       host.setAttribute('aria-label', 'Модель: ' + (lesson.title || 'Исследование'));
       container.replaceChildren(host);
-      renderers[lesson.model](host, lesson);
-      return function cleanup() { host.remove(); };
+      const controller = renderers[lesson.model](host, lesson);
+      function cleanup() { host.remove(); }
+      cleanup.getBoardState = () => ({ lessonId: lesson.id, kind: lesson.model, ...controller.getState() });
+      cleanup.validateBoardState = value => validateBoardState(lesson, value);
+      cleanup.applyBoardState = value => {
+        if (!validateBoardState(lesson, value)) throw new TypeError('Invalid Peterson model board state');
+        controller.applyState(value);
+      };
+      return cleanup;
     }
   };
 })(typeof window !== 'undefined' ? window : globalThis);
