@@ -41,7 +41,9 @@ def distance(p,a,b):return math.dist(p[a],p[b])
 def angle(p,a,o,b):
  u=[x-y for x,y in zip(p[a],p[o])];v=[x-y for x,y in zip(p[b],p[o])]
  return math.degrees(math.acos(max(-1,min(1,sum(x*y for x,y in zip(u,v))/math.hypot(*u)/math.hypot(*v)))))
-for t in p['lessons']:
+released=[t for t in p['lessons'] if f"{t['section']}-{t['level']}{t['number']}-{t['part']}" in expected]
+assert len(released)==len(expected)==60,'All original reviewed source cases remain present'
+for t in released:
  key=f"{t['section']}-{t['level']}{t['number']}-{t['part']}";E=expected[key]
  for a in t['answer']['accepted']:eq(value(a),E)
  m=t['model'];q=m['points'];assert 'neutral' in m['views']
@@ -91,7 +93,7 @@ given={
  ('1.4','B',2):(['M','H'],[('B','M'),('B','H')]),('1.4','C',6):(['M'],[('B','M')]),
  ('1.5','B',2):(['M'],[]),('1.5','C',2):(['E'],[])}
 checked=0
-for t in p['lessons']:
+for t in released:
  key=(t['section'],t['level'],t['number']);m=t['model'];q=m['points']
  if key in given:
   names,edges=given[key]

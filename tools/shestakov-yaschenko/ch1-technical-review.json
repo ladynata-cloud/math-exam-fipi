@@ -1,0 +1,108 @@
+{
+  "reviewer": "/root/chapter4",
+  "at": "2026-10-24T06:48:23.161619+00:00",
+  "verdict": "no-blocking-findings-in-reviewed-technical-scope",
+  "scope": "Read-only technical review of chapter-one author integration, preservation, coverage/review checks, workflow wiring, bounded-provider suppression and new answer-family browser scenarios. This is not a final release/test verdict.",
+  "checkedFiles": [
+    {
+      "file": "tools/shestakov-yaschenko/expansion-ch1/common.py",
+      "sha256": "0e30d2b756cbd246ffa2976f3097709b3cb8d2ae1c0e44c59afa99c4202f8fe1"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/author-1.py",
+      "sha256": "f712a0a145b881b34bbf7a50865643817dc0e4a6f72afe86cb95478901245808"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/check.cjs",
+      "sha256": "fc30a39cfbb16ecaa0e854ca76a925f568cc8f925f4f23f4dea061f7384a2baf"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/ch1-completion-scope.json",
+      "sha256": "d76b42cb9479127a0c2d74920caeed2bc2c7dd81a2ee7fcdef0c61a7960548b4"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/ch1-preservation-check.py",
+      "sha256": "db8464b4ab28237631313dfe12077e53dc770ccdc1fd739c53cf58f302e7fff8"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/ch1-authoring-check.py",
+      "sha256": "5378b377bb26018530a5a94c3aa80d55e3df17687e6302fb4a6d3b5d7d6ee711"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/ch1-review-check.py",
+      "sha256": "46223abe7d244e3164c50aa76262efe807c8e2c439a69a35f957d02c9ba8befb"
+    },
+    {
+      "file": ".github/workflows/shestakov-yaschenko-quality.yml",
+      "sha256": "11508fc2f4484c32458fb0af5e86161a65055a13b7ce5bda3289019021dbf611"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/consultation-state.json",
+      "sha256": "336fb3b42c2efa8bdd94a9461f650f442ddaf0229fa40a42ce2cd5b51a56e1c5"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/claude-review.py",
+      "sha256": "c0ca26f818c3e6eab436d5a7ea7c21e3fa7375569451aa97c85a3c0b564069e0"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/ch1-completion-browser.cjs",
+      "sha256": "79193d6683f384fe170d2fc7386b4df9e1e7ff07099116b488702dba73d0e06a"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/reviewer-ch1-checks.py",
+      "sha256": "dffef73bda8fd726f7dade42bb056fc227837709e562fbbf283dfc1fe2a6329b"
+    },
+    {
+      "file": "tools/shestakov-yaschenko/offline-smoke.cjs",
+      "sha256": "961c9dbea34bea65cd8487f77a6a8acfd987639da81989bb65cad96160638a54"
+    }
+  ],
+  "verified": [
+    "Compared all60 exercise and5 theory canonical preservation hashes, plus released chapter byte hash, to git object043006f439475124b3bb814c81fc887ecbadbe7c. They match exactly.",
+    "Executed only the author-1.py prefix preceding extension imports and final writer; independently verified it regenerates exactly the same60 released exercise and5 theory records. No shared chapter or bundle was written by this check.",
+    "Read fixed module-list integration and252 unique-identity assertions; verified coverage arithmetic252 chapter-one+264 other source variants=516, plus27 theory cards=543; remaining source variants1980−516=1464.",
+    "Read preservation and authoring checks; source inventory identity equality catches omissions and extras, preserved canonical records catch changed old content, regeneration mismatch fails the authoring check.",
+    "Read independent-review check: module byte hash, canonical generated-record hash, actual chapter-record equality, independent reviewer name, exact source-ID scope and executable checker presence are all required. Changes in common.py that affect generated records invalidate the canonical-record binding.",
+    "Read workflow: new structural gates and all independent math checkers run before model/runtime browsers. runtime-browser.cjs independently requires every authored card status to be reviewed.",
+    "Ran an isolated copied consultation script with a fake credential and a trapping urlopen replacement. The disabled automatic-request state stopped execution before any network call, emitted unavailable plus automaticRetrySuppressed, preserved prior null verdict, and produced no provider response or approval.",
+    "Reviewed subsequent dynamic solved/pending count derivation in the disabled consultation brief; this fixes the stale324/1656 context without changing the suppression guard.",
+    "Read all ten new browser cases and their wrong-answer, manual/exact mode, persistence, help-state, mobile retained-step and overflow assertions. Reviewed exact task IDs/answer forms for the §1.4 cases against the authored/reviewed records. Workflow executes the new script and retains its artifact directory.",
+    "node --check tools/shestakov-yaschenko/ch1-completion-browser.cjs passed."
+  ],
+  "findingsResolved": [
+    {
+      "file": "tools/shestakov-yaschenko/claude-review.py",
+      "observation": "Dormant consultation context contained obsolete324 solved/1656 pending counts.",
+      "resolution": "Root replaced constants with counts derived from the actual bundle; inspected the update."
+    },
+    {
+      "file": "tools/shestakov-yaschenko/ch1-completion-browser.cjs",
+      "observation": "The initial focused test incorrectly expected independent success after submitting an incorrect answer first. The unchanged engine sets state.assisted=true on an incorrect submission.",
+      "resolution": "Re-reviewed the new order against engine.js submit/input/reopen logic: first correct answer succeeds independently and persists; editing clears stale success; wrong answer is rejected; the next correct answer is assisted and persists. These assertions match the existing engine behavior and retain both independent and assisted paths. No engine/content edit was required."
+    }
+  ],
+  "remainingFindings": [],
+  "limitations": [
+    "Full author regeneration,252-card preservation gate,six-scope review gate,bundle/schema and browser execution were not run for this technical review because remaining author modules/reviews were still being completed. Root owns those final runs.",
+    "check.cjs deliberately permits authored in-review records while checking authored coverage. It is not independently a publication-readiness gate; full workflow runtime-browser requires every record reviewed.",
+    "The release commit5de3d1a was unavailable as a local git object; baseline hashes were independently checked against the declared implementation base043006f4 whose chapter byte hash equals the recorded released chapter hash.",
+    "New browser expected answers outside §1.4 were reviewed as integration inputs, not independently re-audited mathematically here; those have separate assigned source-content reviewers.",
+    "No provider request, external approval, CI success, human teacher/pupil review or deployment readiness is claimed. HIGH external review or an explicit justified owner exception remains required."
+  ],
+  "reReviews": [
+    {
+      "at": "2026-10-24T06:58:49.939089+00:00",
+      "file": "tools/shestakov-yaschenko/ch1-completion-browser.cjs",
+      "sha256": "79193d6683f384fe170d2fc7386b4df9e1e7ff07099116b488702dba73d0e06a",
+      "verified": [
+        "Read the changed exact-answer branch and compared each assertion to engine.js input, submit and reopened-feedback behavior.",
+        "node --check tools/shestakov-yaschenko/ch1-completion-browser.cjs passed.",
+        "git diff for the course engine is empty; no runtime-engine modification accompanies the test correction."
+      ],
+      "limitations": [
+        "Focused browser rerun was ongoing when this re-review was recorded. No runtime pass is claimed here; root owns the actual run result."
+      ],
+      "remainingFindings": []
+    }
+  ]
+}

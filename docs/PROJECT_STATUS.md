@@ -2,6 +2,25 @@
 
 Updated: 2026-10-24 (Asia/Novosibirsk)
 
+## In progress: complete chapter 1 of Shestakov–Yaschenko
+
+- [Scope](tasks/SHESTAKOV_CHAPTER1_COMPLETE.md), HIGH content review, branch
+  `content/shestakov-chapter1-complete`, base `043006f439475124b3bb814c81fc887ecbadbe7c`.
+  The owner requested continuation after the verified first publication.
+- PR324 is published as `5de3d1ad4ad1fb77f477f31a6fdd44f091f86a20`:
+  324 exercise variants and 27 theory cards across 27 topics; 1,656 variants pending.
+  Pages, post-merge workflows, 18 public file responses and actual live desktop
+  learning interactions passed. Mobile checks ran on the identical composed bytes;
+  no production-only mobile run or real-pupil trial is claimed.
+- This continuation adds the 192 missing chapter-one variants, aiming at all
+  126 numbers / 252 variants in that chapter. The intended course total is
+  516 exercises plus 27 theories, with 1,464 variants still pending.
+- Preserve all previously published content and runtime/storage behavior. The
+  previous exact-head release authorization is not claimed for new content.
+- Next three actions: author and independently review the 192 additions;
+  complete source/mathematics/model/runtime/offline gates and one Draft PR;
+  obtain the concrete new release decision after the result is reviewable.
+
 ## Release in progress: grade 10 Merzlyak cabinet and shared board
 
 - [Scope](tasks/MERZLYAK10_CABINET_BOARD.md), [PR #314](https://github.com/ladynata-cloud/math-exam-fipi/pull/314), MEDIUM bounded integration.

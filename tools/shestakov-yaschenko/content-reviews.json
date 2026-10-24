@@ -1,113 +1,78 @@
 {
   "1": {
-    "reviewer": "/root/chapter6",
-    "at": "2026-10-23T21:19:34.396391+00:00",
+    "reviewer": "Six independent scoped AI cross-reviews; preserved first-release review for unchanged records",
+    "at": "2026-10-24T06:56:13.711421+00:00",
     "file": "stereo-course/shestakov-yaschenko-10-11/chapters/ch1.json",
-    "sha256": "aa4304d0ef6cabe7695b6afc73565be5a454b66a3a6b0f09d8393ce95cdb7829",
+    "sha256": "db73c654ae3bd9b684f9065bbd0e67ab2be16953173edbf7324cec1de277a20f",
     "verdict": "passed",
     "scope": {
-      "sourceVariants": 60,
-      "theoryCards": 5,
-      "sections": [
-        "1.1",
-        "1.2",
-        "1.3",
-        "1.4",
-        "1.5"
-      ],
-      "source": "Yashchenko–Shestakov 2021 third edition supplied PDF",
-      "sourceSha256": "bd125372e8cb96c0d99cb061f26eb6264ad66d0cd88bdf90484c52b11cb39115"
+      "sourceVariants": 252,
+      "newVariantsIndependentlyReviewed": 192,
+      "unchangedPreviouslyReviewedVariants": 60,
+      "unchangedTheoryCards": 5,
+      "source": "Supplied 2021 third edition, pages5–32",
+      "sourceSHA256": "bd125372e8cb96c0d99cb061f26eb6264ad66d0cd88bdf90484c52b11cb39115"
     },
-    "method": [
-      "Read all 60 conditions and complete step sequences, compared every selected source number against extracted original source paragraphs.",
-      "Visually inspected source PDF pages 11,12,13,16,17,21,23,26,30,31,32 to verify split-page variants, illustrations, numeric data and mathematical notation.",
-      "Independently recalculated every final answer from source data and checked all accepted answer spellings using restricted arithmetic parsing.",
-      "Inspected coordinates and highlighted segments of all 65 models; tested salient lengths, angles, perpendiculars, medians, bisectors, incentres and reflection constructions.",
-      "Read all five companion theory modules for definitions, formulas, applicability and common errors; no unsupported source theory attribution.",
-      "Checked optional help/retained steps are authored as separate prompts and explanations; browser interaction verification belongs to the root integration run.",
-      "Re-reviewed 34 updated initial configurations after all-60 given-object audit: independently verified initial visibility and precise geometry of exterior rays, perpendicular bisectors, given heights/medians/bisectors and marked points; true derived auxiliaries remain hidden."
-    ],
-    "fixedFindings": [
+    "scopedReviews": [
       {
-        "id": "1.2-B2-b",
-        "issue": "Source page was 11 but variant b begins on page 12.",
-        "fix": "Generator and JSON now use page 12."
+        "file": "tools/shestakov-yaschenko/expansion-ch1/review-section-1-2.json",
+        "sha256": "c3496dfe20d4cc744c18892ab1fce61dbd2ead7bef79f190c33265d36d6c7348",
+        "reviewer": "/root/chapter3",
+        "author": "/root/chapter2",
+        "checkedVariants": 26
       },
       {
-        "id": "1.2-C3-b",
-        "issue": "Source page was 12 but variant b begins on page 13.",
-        "fix": "Generator and JSON now use page 13."
+        "file": "tools/shestakov-yaschenko/expansion-ch1/review-section-1-3.json",
+        "sha256": "afde629243e9f4e16c304a570dce4810361fd6362e41a2acb66d64508cb4aeb4",
+        "reviewer": "/root/chapter2",
+        "author": "/root/chapter3",
+        "checkedVariants": 38
       },
       {
-        "id": "1.3-B2-b",
-        "issue": "Source page was 16 but variant b begins on page 17.",
-        "fix": "Generator and JSON now use page 17."
+        "file": "tools/shestakov-yaschenko/expansion-ch1/review-section-1-4-a.json",
+        "sha256": "2195b72d2fb9fa1e77455bf02b84e127ff6699785a82978b46d7b38479766549",
+        "reviewer": "/root/chapter6",
+        "author": "/root/chapter4",
+        "checkedVariants": 24
       },
       {
-        "id": "1.4-A2-a/b",
-        "issue": "Replacing view map removed required neutral view.",
-        "fix": "Added neutral view to the generator and regenerated both cards."
+        "file": "tools/shestakov-yaschenko/expansion-ch1/review-section-1-4-b.json",
+        "sha256": "24f3366b4338b0b5378ac91be12544a91dc9fd0ca7975a0bc058509832ce18c0",
+        "reviewer": "/root/chapter4",
+        "author": "/root/chapter5",
+        "checkedVariants": 34
       },
       {
-        "id": "1.4-A2-b",
-        "issue": "Initial caption disclosed requested angle C=72 degrees before help.",
-        "fix": "Replaced caption with a neutral description containing no final answer."
+        "file": "tools/shestakov-yaschenko/expansion-ch1/review-section-1-4-c.json",
+        "sha256": "03f944ce19f6cddd6d1a32613983901361e42094f9697a7c435bf9f6cd002d62",
+        "reviewer": "/root/source_inventory",
+        "author": "/root/chapter6",
+        "checkedVariants": 34
       },
       {
-        "id": "Initial-givens audit: 34 cards / 17 number pairs",
-        "issue": "Some given points and segments were hidden with solution-only auxiliary constructions.",
-        "fix": "Author selectively placed given objects in the neutral figure; independently reviewed all changed geometry and captions. No answers/source/theory changed."
+        "file": "tools/shestakov-yaschenko/expansion-ch1/review-sections-1-1-1-5.json",
+        "sha256": "ba17f842bd86c6b60d5e32ed58f2329a5581242eab43187ef455f95edefbe3e0",
+        "reviewer": "/root/chapter5",
+        "author": "/root/source_inventory",
+        "checkedVariants": 36
       }
     ],
-    "validatedExistingCorrections": [
-      "1.1-B1-b explicitly excludes the impossible P-between-R-and-B ordering using PR=2RB.",
-      "Radical, decimal and coordinate answer aliases were verified numerically rather than assumed equivalent."
+    "preservedReview": "tools/shestakov-yaschenko/review-ch1.json",
+    "preservationManifest": "tools/shestakov-yaschenko/ch1-completion-scope.json",
+    "checks": [
+      "All six independent mathematical/source/model check scripts passed on the final modules.",
+      "Exact module and generated-record review hashes and all192 IDs verified.",
+      "All60 released exercise records and5 theory records retain their canonical hashes.",
+      "Deterministic authoring and exhaustive252-variant chapter source coverage passed."
     ],
-    "tests": [
-      "python3 tools/shestakov-yaschenko/reviewer-ch1-checks.py — PASS (60 answers/all accepted syntax; geometric relations; five theory references)",
-      "python3 tools/shestakov-yaschenko/reviewer-ch1-checks.py — PASS again after initial-givens update (all60 mathematical answers, all accepted inputs, 34 changed initial models, auxiliary hiding)."
-    ],
-    "limitations": [
-      "No claim of full 252-variant chapter coverage; selected 60 variants only.",
-      "Reviewer did not run the browser or conduct a real-pupil pilot; root owns runtime/visual browser QA.",
-      "This independent Codex review is not an external Claude verdict."
+    "sourceClarifications": [
+      "1.3 C1б omits a condition locating M; both an interior and an exterior point meet the specified distances. The manual card explicitly discusses the missing condition and provides valid counterexamples.",
+      "Printed duplicate а) label for the second part of1.2 B1 is retained in source notes and indexed as the intended b variant."
     ],
     "remainingFindings": [],
-    "initialModelChangedIds": [
-      "1.1-A8-a",
-      "1.1-A8-b",
-      "1.2-A1-a",
-      "1.2-A1-b",
-      "1.2-A8-a",
-      "1.2-A8-b",
-      "1.2-A9-a",
-      "1.2-A9-b",
-      "1.2-B2-a",
-      "1.2-B2-b",
-      "1.2-B3-a",
-      "1.2-B3-b",
-      "1.2-C3-a",
-      "1.2-C3-b",
-      "1.3-A8-a",
-      "1.3-A8-b",
-      "1.3-B1-a",
-      "1.3-B1-b",
-      "1.3-B2-a",
-      "1.3-B2-b",
-      "1.3-C4-a",
-      "1.3-C4-b",
-      "1.4-A2-a",
-      "1.4-A2-b",
-      "1.4-A14-a",
-      "1.4-A14-b",
-      "1.4-B2-a",
-      "1.4-B2-b",
-      "1.4-C6-a",
-      "1.4-C6-b",
-      "1.5-B2-a",
-      "1.5-B2-b",
-      "1.5-C2-a",
-      "1.5-C2-b"
+    "limitations": [
+      "Independent AI review is not external Claude approval, human teacher sign-off or a real-pupil trial.",
+      "Runtime/offline integration checks and final-head CI are separate evidence."
     ]
   },
   "2": {
