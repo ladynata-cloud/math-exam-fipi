@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-24T05:23:05.522Z",
-  "registeredAt": "2026-10-24T05:23:58.446Z",
-  "scope": "Introduction and chapters I–II; chapter III theory1–36 and exercises1–270,276–280;26self-checks. Practical271–275, point37, exercises281 onward remain pending. Not the complete book.",
+  "reviewedAt": "2026-10-24T06:50:24.196Z",
+  "registeredAt": "2026-10-24T06:51:26.406Z",
+  "scope": "Introduction and chapters I–II; chapter III theory 1–37 and exercises 1–270, 276–287; 26 self-checks. Practical 271–275, chapter III self-checks and additional exercises 288 onward remain pending. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -676,6 +676,37 @@
         "ex-main-0280-parallel"
       ],
       "revisionNote": "Six cards received independently checked display-only fraction/spacing corrections after actual visual review; geometry unchanged; fresh browser verification required."
+    },
+    {
+      "reviewer": "symmetries_source_review (theory and source contracts); next_block_review (exercises), with independent exercise audit by polyhedra_math_audit",
+      "reviewedAt": "2026-10-24T06:50:24.196Z",
+      "registeredAt": "2026-10-24T06:51:26.406Z",
+      "sourceBundleSHA256": "0dbfc3f582015dfc63e58ffd61805cc6400439891f136c78ae89791554c75d83",
+      "scope": "All of point 37 in ten cards and exercises 281–287 in eleven cards. The full book remains incomplete; practical 271–275, chapter III self-check questions and additional tasks 288 onward remain outside this increment.",
+      "report": "docs/reviews/ATANASYAN_POLYHEDRA_SYMMETRY_CONTENT.md",
+      "cardIds": [
+        "theory-037-tetrahedron-center",
+        "theory-037-tetrahedron-axes",
+        "theory-037-tetrahedron-planes",
+        "theory-037-cube-center",
+        "theory-037-cube-axes",
+        "theory-037-cube-planes",
+        "theory-037-cube-plane-correction",
+        "theory-037-octahedron",
+        "theory-037-icosahedron",
+        "theory-037-dodecahedron",
+        "ex-main-0281",
+        "ex-main-0282",
+        "ex-main-0283-a",
+        "ex-main-0283-b",
+        "ex-main-0284",
+        "ex-main-0285",
+        "ex-main-0286-a",
+        "ex-main-0286-b",
+        "ex-main-0287-a",
+        "ex-main-0287-b",
+        "ex-main-0287-c"
+      ]
     }
   ],
   "cards": [
@@ -2418,6 +2449,90 @@
     {
       "id": "ex-main-0280-parallel",
       "sha256": "cda7fea17259c7e64534b3825a97ab6afce4ab24881fae5916942de0659e5ff8"
+    },
+    {
+      "id": "theory-037-tetrahedron-center",
+      "sha256": "c03fdaf6c6ece4abf0217e1628073c2f9ea70d1cb245088883d0da0861d44919"
+    },
+    {
+      "id": "theory-037-tetrahedron-axes",
+      "sha256": "d2c06c37ecc723cc8a8a09472c0de79857dfeaea48a4ee99d36d0dcfb2056a58"
+    },
+    {
+      "id": "theory-037-tetrahedron-planes",
+      "sha256": "e06cd84b0b5b3f96eb3cd5ee4842d3005468cf703ad599f16cc1a401050554b5"
+    },
+    {
+      "id": "theory-037-cube-center",
+      "sha256": "e5a3e9624394d4809156b3363da6f044cc6304fe9a7ae965783cc6a0c012dc44"
+    },
+    {
+      "id": "theory-037-cube-axes",
+      "sha256": "33afaff8022530e0bbec9f485a638be6a6f57ee0abe70d935c60cf672cd1eafe"
+    },
+    {
+      "id": "theory-037-cube-planes",
+      "sha256": "56ba92479bbe335e4b47717c7848fe19472bec990d42b2afd8b0b64ab3bdd065"
+    },
+    {
+      "id": "theory-037-cube-plane-correction",
+      "sha256": "efa43725cba2bd38404a1a58b0204d89fe5daa8666fac52c27e0b5594db0dd57"
+    },
+    {
+      "id": "theory-037-octahedron",
+      "sha256": "2b5a0b3249802d40402e213f1f47f20375bfdd520875ad26a71833bde68a90c0"
+    },
+    {
+      "id": "theory-037-icosahedron",
+      "sha256": "158e1076c5cc2ac7a8ffdf40ae2c3b1a35d51793eb8b5fffb2a7bb85eefe94eb"
+    },
+    {
+      "id": "theory-037-dodecahedron",
+      "sha256": "76b81f70403b02fd66596c150d0a000a704503e16cf16c75f49e97e15ba28a1e"
+    },
+    {
+      "id": "ex-main-0281",
+      "sha256": "ed568a5db64711cb79a677f4d5f877df00f893306b6824e63b3da8f9ab0e58a5"
+    },
+    {
+      "id": "ex-main-0282",
+      "sha256": "7d0b6a7f5ffb11ac3d72ad65ad69c914c8a21fa34acdcc637114ef41680222e2"
+    },
+    {
+      "id": "ex-main-0283-a",
+      "sha256": "b86f3f12d8c5d13fe18e7b5d48161c1e4228a12e9c65273829d1ba612485f94a"
+    },
+    {
+      "id": "ex-main-0283-b",
+      "sha256": "5c59a6b9bf84f0d32f6af30d15140cb1b6c9abe47d8e067fcc03554ef16a4f24"
+    },
+    {
+      "id": "ex-main-0284",
+      "sha256": "4f4f2dc70fbc90f0b323eb347bd7ea13232a98affac3561625752d25bd41e293"
+    },
+    {
+      "id": "ex-main-0285",
+      "sha256": "94e575fc21cf478508b7d8eb9211bcfd3d541221668221e7cfd90926e461ab26"
+    },
+    {
+      "id": "ex-main-0286-a",
+      "sha256": "94e59c3fcc0b7688925bd2a465061b52e0c4352a7d5e6e27752bac97a9dbdaed"
+    },
+    {
+      "id": "ex-main-0286-b",
+      "sha256": "c02e2a1282e2484244d9180ceed95a7610cc8aea345934bfeeaff5f30afb20b7"
+    },
+    {
+      "id": "ex-main-0287-a",
+      "sha256": "4b0fd6816fb909cf0036f01b4599564149896178fd292c46e71b0e4f8117635c"
+    },
+    {
+      "id": "ex-main-0287-b",
+      "sha256": "017882fb24542dba6075dbba014761e9f8efb8c4cb5997c3ab8110645943be40"
+    },
+    {
+      "id": "ex-main-0287-c",
+      "sha256": "da766a0d37ebdb5c9bf95403e983c1de355856083024e1b7a087ca8b315cd35f"
     }
   ]
 }

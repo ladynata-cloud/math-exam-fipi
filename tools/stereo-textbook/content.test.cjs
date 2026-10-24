@@ -6,11 +6,11 @@ assert.equal(review.cards.length,ls.length,'review applies to every published ca
 for(const item of review.cards){const lesson=ls.find(l=>l.id===item.id);assert(lesson,'missing reviewed card '+item.id);const content=structuredClone(lesson);delete content.status;delete content.review;assert.equal(crypto.createHash('sha256').update(JSON.stringify(canonical(content))).digest('hex'),item.sha256,'content changed after independent review: '+item.id);}
 const ids=new Set(ls.map(l=>l.id)),keys=new Set();let steps=0,views=0;
 for(const l of ls){assert.deepEqual(API.validateLesson(l,book),[],l.id);assert.equal(l.status,'reviewed');for(const field of ['source','mathematics','pedagogy'])assert.equal(l.review[field],'passed');const key=JSON.stringify([l.kind,l.source.bookId,l.source.collection,['main','theory'].includes(l.source.collection)?null:l.source.chapter,l.source.examTask,l.source.point,l.source.exercise,l.source.subpart]);assert(!keys.has(key),'source identity '+l.id);keys.add(key);Viewer.prepare(l.visualization.model);steps+=l.steps.length;function h(hs){for(const x of hs){for(const id of x.theoryIds||[])assert(ids.has(id),'missing theory '+id);h(x.children||[]);}}h(l.help);for(const s of l.steps)for(const j of s.justifications)if(j.theoryId)assert(ids.has(j.theoryId),'missing theory '+j.theoryId);}
-assert.equal(ls.length,435);assert.equal(ls.filter(x=>x.kind==='exercise').length,357);
+assert.equal(ls.length,456);assert.equal(ls.filter(x=>x.kind==='exercise').length,368);
 for(let n=1;n<=270;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing exercise '+n);
-for(const n of [276,277,278,279,280])assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing symmetry exercise '+n);
-for(let n=1;n<=36;n++)assert(ls.some(l=>l.source.collection==='theory'&&l.source.point===String(n)),'missing theory point '+n);
-const coverage=API.inspectBundle(bundle.catalog,ls).coverage;assert.equal(coverage.availableExercises,275);assert.equal(coverage.availableTheoryPoints,36);assert.equal(coverage.availableSelfchecks,26);assert.equal(coverage.partiallyAvailable,0,'points35–36 complete; later sources remain inventoried drafts');
+for(let n=276;n<=287;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing regular-polyhedra exercise '+n);
+for(let n=1;n<=37;n++)assert(ls.some(l=>l.source.collection==='theory'&&l.source.point===String(n)),'missing theory point '+n);
+const coverage=API.inspectBundle(bundle.catalog,ls).coverage;assert.equal(coverage.availableExercises,282);assert.equal(coverage.availableTheoryPoints,37);assert.equal(coverage.availableSelfchecks,26);assert.equal(coverage.partiallyAvailable,0,'points35–37 complete; later sources remain inventoried drafts');
 for(let n=1;n<=16;n++)assert(ls.some(l=>l.source.collection==='selfcheck'&&l.source.chapter==='I. Параллельность прямых и плоскостей'&&l.source.exercise===String(n)),'missing chapterI self-check '+n);
 for(let n=1;n<=10;n++)assert(ls.some(l=>l.source.collection==='selfcheck'&&l.source.chapter==='II. Перпендикулярность прямых и плоскостей'&&l.source.exercise===String(n)),'missing chapterII self-check '+n);
 const sub=(a,b)=>a.map((x,i)=>x-b[i]),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],dot=(a,b)=>a.reduce((s,x,i)=>s+x*b[i],0),norm=a=>Math.hypot(...a),col=(p,a,b,c)=>norm(cross(sub(p[b],p[a]),sub(p[c],p[a])))<1e-8,plane=(p,a,b,c,x)=>Math.abs(dot(cross(sub(p[b],p[a]),sub(p[c],p[a])),sub(p[x],p[a])))<1e-8;
@@ -28,9 +28,10 @@ assert.match(find('main-008-a').views.circleplane.label,/α/,'selected polygon b
 for(const l of ls.filter(l=>l.kind==='exercise'))assert(!/бесконеч|контрпример|ровно две невозможны|именно по AB|почему ответ 2|одна или три/i.test(l.title+' '+l.statement.goal+' '+l.answer.prompt),l.id+': premature verdict');
 const dom=new JSDOM('<div id="m"></div>',{runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.eval(fs.readFileSync(path.join(root,'stereo-course/assets/task-scene-viewer.js'),'utf8'));
 for(const l of ls){const mount=w.TaskSceneViewer.mount(w.document.getElementById('m'),l.visualization.model);assert(w.document.querySelector('svg'));for(const name of Object.keys(l.visualization.model.views)){assert.equal(mount.setView(name),true);assert(!/NaN|Infinity/.test(w.document.querySelector('svg').outerHTML),l.id+':'+name);views++;}mount.destroy();}
-assert.equal(steps,1501,'exact justified-step count');assert.equal(views,1539,'exact authored-view count');
+assert.equal(steps,1614,'exact justified-step count');assert.equal(views,1633,'exact authored-view count');
 require('./symmetry-content.test.cjs');
 require('./regular-polyhedra-content.test.cjs');
+require('./polyhedra-symmetry-content.test.cjs');
 require('./prism-content.test.cjs');
 const pyramidEarly=require('./pyramid-ex239-253-content.test.cjs').run(bundle);
 console.log(`ATANASYAN_PYRAMID_EX239_253_CONTENT_OK ${pyramidEarly.cards} cards, ${pyramidEarly.groups} source-derived regression groups`);

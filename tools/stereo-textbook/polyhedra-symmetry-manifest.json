@@ -1,0 +1,75 @@
+{
+  "status": "reviewed",
+  "cards": [
+    "theory-037-tetrahedron-center",
+    "theory-037-tetrahedron-axes",
+    "theory-037-tetrahedron-planes",
+    "theory-037-cube-center",
+    "theory-037-cube-axes",
+    "theory-037-cube-planes",
+    "theory-037-cube-plane-correction",
+    "theory-037-octahedron",
+    "theory-037-icosahedron",
+    "theory-037-dodecahedron",
+    "ex-main-0281",
+    "ex-main-0282",
+    "ex-main-0283-a",
+    "ex-main-0283-b",
+    "ex-main-0284",
+    "ex-main-0285",
+    "ex-main-0286-a",
+    "ex-main-0286-b",
+    "ex-main-0287-a",
+    "ex-main-0287-b",
+    "ex-main-0287-c"
+  ],
+  "reviewedSourceContracts": {
+    "37": [
+      "tetrahedron-center",
+      "tetrahedron-axes",
+      "tetrahedron-planes",
+      "cube-center",
+      "cube-axes",
+      "cube-planes",
+      "cube-plane-correction",
+      "octahedron",
+      "icosahedron",
+      "dodecahedron"
+    ],
+    "281": [
+      null
+    ],
+    "282": [
+      null
+    ],
+    "283": [
+      "а",
+      "б"
+    ],
+    "284": [
+      null
+    ],
+    "285": [
+      null
+    ],
+    "286": [
+      "а",
+      "б"
+    ],
+    "287": [
+      "а",
+      "б",
+      "в"
+    ]
+  },
+  "expected": {
+    "cards": 21,
+    "theoryCards": 10,
+    "exerciseCards": 11,
+    "totalCards": 456,
+    "completeTheoryPoints": 37,
+    "completeExercises": 282,
+    "selfchecks": 26,
+    "catalogEntries": 1364
+  }
+}
