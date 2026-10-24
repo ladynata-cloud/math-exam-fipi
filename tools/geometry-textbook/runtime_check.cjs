@@ -64,17 +64,21 @@ let checks=0;
 }
 {
  const {dom,w,d,app}=setup();
- const questions=['I','II'].map(chapter=>bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='selfcheck'&&l.source.exercise==='1'));
- assert(questions.every(Boolean),'Both chapter review questions must exist');assert.notEqual(questions[0].id,questions[1].id);
+ const chapters=bundle.build.chapters.map(chapter=>chapter.chapterLabel);
+ const questions=chapters.map(chapter=>bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='selfcheck'&&l.source.exercise==='1'));
+ assert(questions.every(Boolean),'Every chapter review question must exist');assert.equal(new Set(questions.map(question=>question.id)).size,chapters.length);
  for(let i=0;i<questions.length;i++){app.open(questions[i].id);const input=d.getElementById('final-answer');input.value='Отдельный черновик главы '+i;input.dispatchEvent(new w.Event('input',{bubbles:true}));}
  for(let i=0;i<questions.length;i++){app.open(questions[i].id);assert.equal(d.getElementById('final-answer').value,'Отдельный черновик главы '+i,'Restarted question numbers must not overwrite learner work');}
- const exercise=bundle.lessons.find(l=>l.source.chapter==='II'&&l.source.collection==='main'&&l.help.some(h=>h.theoryIds?.some(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter==='II')));
- assert(exercise,'New exercises link to new theory');app.open(exercise.id);
- const input=d.getElementById('final-answer');input.value='Рассуждение о равенстве треугольников';input.dispatchEvent(new w.Event('input',{bubbles:true}));
- const theoryId=exercise.help.flatMap(h=>h.theoryIds||[]).find(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter==='II'),theory=bundle.lessons.find(l=>l.id===theoryId);
- const button=[...d.querySelectorAll('button')].find(b=>b.textContent==='Почему? '+theory.title);assert(button);button.click();
- assert.equal(d.querySelector('dialog').dataset.theory,theoryId);d.querySelector('dialog>button').click();
- assert.equal(d.querySelector('dialog'),null);assert.equal(d.getElementById('final-answer').value,'Рассуждение о равенстве треугольников');
- checks+=3;app.destroy();dom.window.close();
+ for(const chapter of chapters.slice(1)){
+  const exercise=bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='main'&&l.help.some(h=>h.theoryIds?.some(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter===chapter)));
+  assert(exercise,'Chapter '+chapter+' exercises link to its theory');app.open(exercise.id);
+  const draft='Рассуждение по главе '+chapter,input=d.getElementById('final-answer');input.value=draft;input.dispatchEvent(new w.Event('input',{bubbles:true}));
+  const theoryId=exercise.help.flatMap(h=>h.theoryIds||[]).find(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter===chapter),theory=bundle.lessons.find(l=>l.id===theoryId);
+  const button=[...d.querySelectorAll('button')].find(b=>b.textContent==='Почему? '+theory.title);assert(button);button.click();
+  assert.equal(d.querySelector('dialog').dataset.theory,theoryId);d.querySelector('dialog>button').click();
+  assert.equal(d.querySelector('dialog'),null);assert.equal(d.getElementById('final-answer').value,draft);
+  checks+=2;
+ }
+ checks++;app.destroy();dom.window.close();
 }
 console.log('ATANASYAN_7_9_RETAINED_WORK_OK '+JSON.stringify({checks}));

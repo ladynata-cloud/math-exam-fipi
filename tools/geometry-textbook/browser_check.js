@@ -18,7 +18,17 @@ let server,browser,context,page,base;
 const write=()=>fs.writeFileSync(path.join(out,'browser-evidence.json'),JSON.stringify(evidence,null,2));
 function serve(){return new Promise(resolve=>{server=http.createServer((request,response)=>{try{const url=new URL(request.url,'http://127.0.0.1'),pathname=decodeURIComponent(url.pathname),file=path.resolve(root,'.'+pathname+(pathname.endsWith('/')?'index.html':''));if(!file.startsWith(root+path.sep))return response.writeHead(403).end();const mime={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8'};response.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream','Cache-Control':'no-store'});fs.createReadStream(file).on('error',()=>response.end()).pipe(response);}catch{response.writeHead(404).end();}});server.listen(0,'127.0.0.1',()=>resolve('http://127.0.0.1:'+server.address().port+'/geometry-course/textbook/'));});}
 async function settle(){await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
-async function startPreview(){await page.goto(base);await page.waitForFunction(()=>window.GeometryTextbook&&window.textbookApp);await page.evaluate(async()=>{const bundle=await(await fetch('data/course.json')).json();window.textbookApp.destroy();window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),{...bundle,allowInReview:bundle.build?.publicationReviewMatches!==true});window.__bundle=bundle;});assert.equal(await page.locator('[data-preview-notice]').count(),bundle.build?.publicationReviewMatches===true?0:1,'Only explicit engineering preview is labelled');}
+async function startPreview(initialId=null){
+ await page.goto(base+(initialId?'#'+initialId:''));await page.waitForFunction(()=>window.GeometryTextbook&&window.textbookApp);
+ if(initialId&&bundle.build?.publicationReviewMatches===true)assert.equal(await page.locator('.lesson-permalink').getAttribute('href'),'#'+initialId,'Reviewed public entry opens the requested source card');
+ await page.evaluate(async initialId=>{const bundle=await(await fetch('data/course.json')).json();window.textbookApp.destroy();
+  // Unreviewed cards remain unavailable at the public entry. Set only this
+  // engineering fixture's URL before creating its explicitly labelled preview.
+  if(initialId&&bundle.build?.publicationReviewMatches!==true)history.replaceState(null,'','#'+initialId);
+  window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),{...bundle,allowInReview:bundle.build?.publicationReviewMatches!==true});window.__bundle=bundle;
+ },initialId);
+ assert.equal(await page.locator('[data-preview-notice]').count(),bundle.build?.publicationReviewMatches===true?0:1,'Only explicit engineering preview is labelled');
+}
 async function inspect(){return page.locator('[data-main-model] svg').evaluate(svg=>{
  const b=svg.viewBox.baseVal,m=svg.getScreenCTM(),scale=Math.min(Math.hypot(m.a,m.b),Math.hypot(m.c,m.d)),labels=[...svg.querySelectorAll('.planar-label')].map(node=>{const r=node.getBBox();return{id:node.dataset.point,placement:node.dataset.labelPlacement,offset:[Number(node.dataset.offsetX),Number(node.dataset.offsetY)],text:node.textContent,x:r.x,y:r.y,width:r.width,height:r.height,pixels:Number(node.getAttribute('font-size'))*scale};}),issues=[];
  for(const label of labels){if(!['authored','adjusted'].includes(label.placement))issues.push('unresolved label placement '+label.id);if(label.pixels<17.6)issues.push('small label '+label.id+': '+label.pixels);if(label.x<b.x||label.y<b.y||label.x+label.width>b.x+b.width||label.y+label.height>b.y+b.height)issues.push('clipped label '+label.id);}
@@ -88,19 +98,27 @@ async function interactions(){
  await chapterInteractions();
 }
 async function chapterInteractions(){
- const questions=['I','II'].map(chapter=>bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='selfcheck'&&l.source.exercise==='1'));
- assert(questions.every(Boolean),'Both chapter review questions must exist');assert.notEqual(questions[0].id,questions[1].id);
+ const chapters=releaseScope.chapters.map(chapter=>chapter.label);
+ const questions=chapters.map(chapter=>bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='selfcheck'&&l.source.exercise==='1'));
+ assert(questions.every(Boolean),'Every chapter review question must exist');assert.equal(new Set(questions.map(question=>question.id)).size,chapters.length);
  for(let i=0;i<questions.length;i++){await page.evaluate(id=>window.textbookApp.open(id),questions[i].id);await page.locator('#final-answer').fill('Отдельный черновик главы '+i);}
  await startPreview();
  for(let i=0;i<questions.length;i++){await page.evaluate(id=>window.textbookApp.open(id),questions[i].id);assert.equal(await page.locator('#final-answer').inputValue(),'Отдельный черновик главы '+i,'Restarted question numbers retain independent work after reload');}
  evidence.interactions.push('chapter-selfcheck-draft-isolation-and-reload');
- const exercise=bundle.lessons.find(l=>l.source.chapter==='II'&&l.source.collection==='main'&&l.help.some(h=>h.theoryIds?.some(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter==='II')));
- assert(exercise,'A new exercise links to chapter-II theory');
- const theoryId=exercise.help.flatMap(h=>h.theoryIds||[]).find(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter==='II'),theory=bundle.lessons.find(l=>l.id===theoryId);
- await page.evaluate(id=>window.textbookApp.open(id),exercise.id);await page.locator('#final-answer').fill('Доказательство по новой главе.');
- await page.locator('[data-main-help] > summary').click();const help=page.locator('[data-main-help] [data-help="recall-theory"]');await help.locator(':scope > summary').click();await help.getByRole('button',{name:'Почему? '+theory.title,exact:true}).click();
- assert.equal(await page.locator('dialog').getAttribute('data-theory'),theoryId);await page.getByRole('button',{name:'Вернуться к задаче',exact:true}).click();assert.equal(await page.locator('#final-answer').inputValue(),'Доказательство по новой главе.');
- await page.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();await startPreview();await page.evaluate(id=>window.textbookApp.open(id),exercise.id);assert.equal(await page.locator('#final-answer').inputValue(),'Доказательство по новой главе.');assert.equal(await page.locator('[data-step]').count(),1);evidence.interactions.push('chapter-II-theory-return-and-saved-step');
+ for(const chapter of chapters.slice(1)){
+  const exercise=bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='main'&&l.help.some(h=>h.theoryIds?.some(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter===chapter)));
+  assert(exercise,'An exercise links to chapter-'+chapter+' theory');
+  const theoryId=exercise.help.flatMap(h=>h.theoryIds||[]).find(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter===chapter),theory=bundle.lessons.find(l=>l.id===theoryId),draft='Доказательство по главе '+chapter;
+  await page.evaluate(id=>window.textbookApp.open(id),exercise.id);await page.locator('#final-answer').fill(draft);
+  await page.locator('[data-main-help] > summary').click();const help=page.locator('[data-main-help] [data-help="recall-theory"]');await help.locator(':scope > summary').click();await help.getByRole('button',{name:'Почему? '+theory.title,exact:true}).click();
+  assert.equal(await page.locator('dialog').getAttribute('data-theory'),theoryId);await page.getByRole('button',{name:'Вернуться к задаче',exact:true}).click();assert.equal(await page.locator('#final-answer').inputValue(),draft);
+  await page.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();await startPreview();await page.evaluate(id=>window.textbookApp.open(id),exercise.id);assert.equal(await page.locator('#final-answer').inputValue(),draft);assert.equal(await page.locator('[data-step]').count(),1);evidence.interactions.push('chapter-'+chapter+'-theory-return-and-saved-step');
+  const exercises=bundle.lessons.filter(lesson=>lesson.source.chapter===chapter&&lesson.source.collection==='main');
+  for(const lesson of [exercises[0],exercises.at(-1)]){
+   await startPreview(lesson.id);assert.equal(await page.locator('.lesson-permalink').getAttribute('href'),'#'+lesson.id);assert.equal(await page.locator('main h1').innerText(),lesson.title);assert.equal(await page.locator('[data-main-model] svg').count(),1);
+  }
+  evidence.interactions.push('chapter-'+chapter+'-first-and-last-direct-entry');
+ }
 }
 (async()=>{
  try{

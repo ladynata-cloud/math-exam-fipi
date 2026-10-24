@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "task": "ATANASYAN_7_9_CHAPTER_III",
+  "status": "PASS: local source, mathematics, models, pedagogy, image, full-browser and public-mode gates; exact-head cloud CI belongs to the PR handoff",
+  "at": "2026-10-24T17:49:07.134831+00:00",
+  "baseSha": "631d2d644d87162d60585c3efb8365af8311a3f5",
+  "reviewer": "Primary coordinator reviewing independently authored exercise blocks, gate changes, source coverage and preservation; own theory independently reviewed by exercise-block B reviewer",
+  "reviewKind": "Local evidence synthesis, not an external-provider verdict or release authorization",
+  "source": {
+    "edition": "Atanasyan et al., Geometry 7–9, 14th revised edition, 2023",
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPages": [
+      53,
+      68
+    ],
+    "pdfPages": [
+      54,
+      69
+    ],
+    "sourceMapSha256": "de20ef06a0155f74286540449eaf2f895f798edf7193ad1caf0fb80e33c42a75",
+    "inspection": "Coordinator visually read all16 source pages. Independent cross-reviewers separately checked the complete assigned conditions, figures, theory and all self-checks."
+  },
+  "scope": {
+    "chapter": "III",
+    "mainNumbers": 37,
+    "mainParts": 43,
+    "theory": 7,
+    "selfchecks": 17,
+    "cards": 67,
+    "steps": 280,
+    "views": 394,
+    "coordinateClaims": 348,
+    "fullBookComplete": false
+  },
+  "combinedCourse": {
+    "mainNumbers": 227,
+    "mainParts": 309,
+    "theory": 30,
+    "selfchecks": 64,
+    "cards": 403,
+    "steps": 1333,
+    "views": 2042,
+    "coordinateClaims": 1405
+  },
+  "identity": {
+    "authoredContentSha256": "dc90b0cd4abb96051378a3b913a95908f890a6e9afe4839fa61ad0f41ec0f898",
+    "chapterAuthoredContentSha256": "d4862c0288793383e7edf9b1989abb9971fcaa6411f3f736cca0eb8f1bb7159e",
+    "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+    "engineeringPreviewBundleSha256": "90927ba9e2ad64d9d3d86d3ad006c643556f411a83dcead6442ac6a9deeebd31",
+    "inputs": {
+      "geometry-course/textbook/models/chapter-03-a.json": "ef5a5988e0945041c0ea34a20ff966b011302e2fef5ea9c0987f440fc465173d",
+      "geometry-course/textbook/models/chapter-03-b.json": "5aab78fd9b9b3ef77f236df601b332c8050a5498934e46edcb1c02903fd56a06",
+      "geometry-course/textbook/models/chapter-03-theory.json": "6724b3349c1e287ba06c33fe9837f15bf0b2dd7db35f201904f8a52739f6ae00",
+      "geometry-course/textbook/preparation/chapter-03-a.json": "823aebf87d1eca1641e71ac9420d9f64d3b4fe1d1e9319005077731d3ada6fd4",
+      "geometry-course/textbook/preparation/chapter-03-b.json": "7a98acfc88154e220f01e348eb26335473915fdfd9cd977d0cef62aae56a0ef6",
+      "geometry-course/textbook/preparation/chapter-03-theory.json": "1cad741797f564a2530b1f1878eafeac2c8154f57377e7ec11f49d11f2b51b10",
+      "tools/geometry-textbook/models_ch3_a.py": "48341dbaaf0bda965540e68c725d354d820668391f651b3c0c18695c693437b4",
+      "tools/geometry-textbook/models_ch3_b.py": "14325fb65bdd38c7e939d97e711a7d2b246734be3e01fa1f6860857bb93c9f64",
+      "tools/geometry-textbook/models_ch3_theory.py": "92c190125b7b2c7f8db9cf4dec325656b11fad1e403bea094081edb6b6651743"
+    },
+    "gateFiles": {
+      "tools/geometry-textbook/check_course.cjs": "b34e6f0de652b7c55bc60ab108979054bdb1c88f859bb6af964a01f17c8a447f",
+      "tools/geometry-textbook/review_scope_test.py": "65231fb800ce540dece08e65d8cbf831a9f4dc38865508a9860f814eb29b41b6",
+      "tools/geometry-textbook/runtime_check.cjs": "7c1148e68c42e5d2cf5bb3246064bb2a5d60ee54fae5dcb75c0a179516c64577",
+      "tools/geometry-textbook/browser_check.js": "5ab1711e51cb0e6831c911908b80bbf9eb82a85d856dd6fd444adcaeae48d6f9",
+      "tools/geometry-textbook/release-scope.json": "a0269a3e5bb0d5942e0fb7d84e0ee6cde17d42b5e17693a0bfaedc23d0e102fb",
+      "tools/geometry-textbook/published-chapters-01-02.json": "62c6b4efb3d9eceb6b6d5bbc8d65aeedc16becf21882f12e66531fb5a872e58f"
+    },
+    "publicReviewedBundleSha256": "1c56f49a1a1c5f3a34468cd88ea3557ca0fcb9389561d429f7034a58559046f4"
+  },
+  "publishedPreservation": {
+    "cards": 336,
+    "sourceCommit": "631d2d644d87162d60585c3efb8365af8311a3f5",
+    "baselineIndependentlyRecomputedFromGitObject": true,
+    "normalizedLessonsSha256": "60587ace530087e7489ac7b6d367c3113bc0ffc20ea27a37a52222269a21329c",
+    "normalizedCatalogEntriesSha256": "78a418970852786a5a137f5e0edcf728682a190dbd06de64b091f3ddbdafa9dd",
+    "fiveRuntimeFilesByteIdentical": true,
+    "existingReviewProvenanceUnchanged": true,
+    "existingLessonAndLearnerStorageIdentifiersUnchanged": true
+  },
+  "completedChecks": [
+    {
+      "command": "python tools/geometry-textbook/check_models.py",
+      "result": "PASS",
+      "models": 403,
+      "views": 2042,
+      "coordinateClaims": 1405
+    },
+    {
+      "command": "python tools/geometry-textbook/review_scope_test.py",
+      "result": "PASS",
+      "tests": 7
+    },
+    {
+      "command": "python tools/geometry-textbook/model_claims_test.py",
+      "result": "PASS",
+      "tests": 6
+    },
+    {
+      "command": "node tools/geometry-textbook/check_course.cjs",
+      "result": "PASS",
+      "note": "Before the final review manifest, chapterIII correctly remains in-review."
+    },
+    {
+      "command": "node tools/geometry-textbook/runtime_check.cjs",
+      "result": "PASS",
+      "checks": 15
+    },
+    {
+      "command": "node tools/geometry-textbook/reviewer_runtime_check.cjs",
+      "result": "PASS",
+      "lessons": 403,
+      "checkpoints": 1333,
+      "nestedTheory": true,
+      "restoredHelpNoopWrite": true,
+      "layoutVerified": false
+    },
+    {
+      "command": "node tools/geometry/check.js",
+      "result": "PASS",
+      "units": 63,
+      "points": 137,
+      "proofs": 52,
+      "assertions": 46551
+    },
+    {
+      "command": "python tools/seo-check.py",
+      "result": "PASS",
+      "entrances": 30,
+      "staticTopics": 6,
+      "localLinks": 167
+    },
+    {
+      "command": "node --test tools/atanasyan-board-adapter.test.cjs tools/atanasyan-board-picker.test.cjs board-server/test/learning-atanasyan.test.js board-server/test/trainer-registry.test.js",
+      "result": "PASS",
+      "testFiles": 4
+    },
+    {
+      "command": "node tools/learning-catalog-reference-test.cjs",
+      "result": "PASS",
+      "identities": 378,
+      "newGeometryFamilies": 106,
+      "preservedIdentities": 217,
+      "examPositions": 21,
+      "helpVariants": 1925,
+      "originalReferencePages": 4
+    },
+    {
+      "command": "All three chapterIII authoring generators, followed by SHA256 comparison of all six JSON inputs",
+      "result": "PASS",
+      "files": 6,
+      "note": "Repeated on the final A205/B227/theory inputs; every output byte unchanged."
+    },
+    {
+      "command": "python tools/geometry-textbook/build_course.py --check",
+      "result": "PASS",
+      "candidate": "v3"
+    },
+    {
+      "command": "ChapterIII focused Chromium view diagnostic with unchanged repository inspect function",
+      "result": "PASS",
+      "cards": 67,
+      "viewWidthPairs": 788,
+      "issues": 0,
+      "pageErrors": 0,
+      "evidenceSha256": "32d35e86b85c595949d7f30df38845eeb627d79a5f3b579016ad4b237513cc2c",
+      "inspectSha256": "870df6bc761f79baeae9cd8a4f406eb140f009fde4342214ad9d505f2ae3fc26"
+    },
+    {
+      "command": "python tools/geometry/check_textbook_preparation.py",
+      "result": "PASS",
+      "note": "Historical chapter-I preparation structure only:91 numbers/134 parts; its unresolved draft flags and zero-model counter are historical and do not describe this403-card candidate. New source completeness is checked by the independent chapterIII source map and course gate."
+    },
+    {
+      "command": "node tools/geometry-textbook/browser_check.js",
+      "result": "PASS",
+      "scope": "full-course",
+      "cards": 403,
+      "viewChecks": 4084,
+      "stepFlows": 806,
+      "initialFinalScreenshots": 1612,
+      "interactionScenarios": 12,
+      "geometryIssues": 0,
+      "pageErrors": 0,
+      "evidenceSha256": "3d2d9de8924456af91125b6b5fd07e12dc8b2e35e68ffbab8e2db055665c30dd"
+    },
+    {
+      "command": "node tools/geometry-textbook/check_course.cjs --require-reviewed",
+      "result": "PASS",
+      "reviewedCards": 403
+    },
+    {
+      "command": "Public-mode browser_check.js with GEOMETRY_TEXTBOOK_INTERACTIONS_ONLY=1",
+      "result": "PASS",
+      "interactions": 10,
+      "errors": 0,
+      "evidenceSha256": "1e675f40d19a3bb76b6791457e4e5c74da48cb32804783bfc63a352c4747f83b"
+    },
+    {
+      "command": "Post-manifest build --check, review-scope tests and full-object comparison against base Git blob",
+      "result": "PASS",
+      "tests": 7,
+      "unchangedLessons": 336,
+      "unchangedCatalogEntries": 336,
+      "allCardsReviewed": 403
+    }
+  ],
+  "resolvedFindings": [
+    "193: restored the common intersection as the shared midpoint, excluding overlapping collinear segments.",
+    "205: final PQ comparison retains BC and its labels; later pixel review moved C to the same side of p as its own vertex.",
+    "209: explicitly handles the secant coinciding with AB, when C=A and D=B.",
+    "226: alternate-interior sectors match steps3 and5, separately from the earlier vertical-angle steps.",
+    "Theory29/selfcheck14: the second right-angle mark appears only in the conclusion.",
+    "Theory25/29 and selfchecks4/5/15: compared angles retain all named U,V,T points.",
+    "Theory30/selfchecks16/17: M and its angle, auxiliary COD and the second angle, and coincident supporting-line cases are shown at their actual proof steps.",
+    "Theory26/selfcheck6: the translated working edge contains M and both set squares are congruent.",
+    "Combined theory30 cases use case- identifiers so the real UI exposes them at the correct steps.",
+    "202: the common-point label avoids the four incident lines at320px.",
+    "227: all compass circles fit the drawing viewport; the second construction has enough separation for A,E,F,K labels at320px."
+  ],
+  "developmentFailures": [
+    "Initial full views-only run found four202 label failures at320px and five227 clipping failures at1280px. These are resolved by authored-model changes, not by relaxing checks.",
+    "The v2 full-course browser run exposed a further227 step7/320 label failure and was stopped after the known defective candidate was superseded. It is not counted as a passing full-course run.",
+    "A default browser download returned an empty archive; verification uses the existing Chrome for Testing156.0.8078.47 with Playwright1.62.1. No TLS validation was disabled.",
+    "Initial local board-contract invocation lacked the sparse-checkout ege-baza dependency; the source directory was obtained and the complete targeted group passed.",
+    "A scratch focused diagnostic initially had a syntax error in its loop filter; it was corrected before execution. Repository gate code was unaffected."
+  ],
+  "notRun": [
+    "External Claude review: the confirmed parent full-course owner exception applies; no Claude consultation or external verdict is claimed.",
+    "Real-pupil learning pilot.",
+    "Merge, deployment and chapterIII production verification: require separate explicit owner authorization."
+  ],
+  "mergeOrDeploymentAuthorization": false,
+  "scopeSecurityAudit": {
+    "reviewer": "Exercise-block A agent, read-only whole-diff audit",
+    "result": "PASS",
+    "oldLessonObjects": 336,
+    "oldCatalogEntries": 336,
+    "runtimeFiles": 5,
+    "currentInputHashesMatched": 9,
+    "finalVisualStates": 788,
+    "allChanged205And227StatesFreshlyCaptured": true,
+    "noPrivateSourceOrMachinePaths": true,
+    "note": "The sole noted stale gate hash was updated after coordinator inspection of the accessibility guard."
+  },
+  "accessibilityGuardIndependentReview": {
+    "reviewer": "Primary coordinator; did not author the guard",
+    "at": "2026-10-24T17:36:06.416691+00:00",
+    "checkCourseSha256": "b34e6f0de652b7c55bc60ab108979054bdb1c88f859bb6af964a01f17c8a447f",
+    "positiveLessons": 403,
+    "negativeFixturesRejected": 6,
+    "fixtureEvidenceSha256": "17a8997b673758410304037d866fa24478a3cb17250e3cce097117a572d2eabc",
+    "result": "PASS",
+    "assessment": "The coordinator read the full diff and fixture implementation, then independently reran the complete gate with each controlled mutation. Original assertions and416 ignored neutral/step unlock fields are preserved; actual case-button reachability is now enforced."
+  },
+  "fullBrowserEvidence": {
+    "artifact": "chapter3-browser-v3/browser-evidence.json",
+    "sha256": "3d2d9de8924456af91125b6b5fd07e12dc8b2e35e68ffbab8e2db055665c30dd",
+    "bundleSha256": "90927ba9e2ad64d9d3d86d3ad006c643556f411a83dcead6442ac6a9deeebd31",
+    "gateScriptSha256": "5ab1711e51cb0e6831c911908b80bbf9eb82a85d856dd6fd444adcaeae48d6f9",
+    "mode": "Explicit labelled engineering preview before chapter-III publication review; unchanged authored content and runtime are bound by hashes.",
+    "widths": [
+      320,
+      1280
+    ],
+    "cards": 403,
+    "viewChecks": 4084,
+    "stepFlows": 806,
+    "initialFinalScreenshots": 1612,
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry"
+    ],
+    "pageErrors": 0,
+    "geometryIssues": 0,
+    "completed": true
+  },
+  "publicModeEvidence": {
+    "artifact": "chapter3-public-interactions/browser-evidence.json",
+    "sha256": "1e675f40d19a3bb76b6791457e4e5c74da48cb32804783bfc63a352c4747f83b",
+    "bundleSha256": "1c56f49a1a1c5f3a34468cd88ea3557ca0fcb9389561d429f7034a58559046f4",
+    "scope": "interactions-only",
+    "completed": true,
+    "interactions": [
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry"
+    ],
+    "pageErrors": 0,
+    "note": "Actual reviewed public entry is asserted before recreation. This focused run does not repeat the complete view sweep or the two lesson-expansion flows; those passed in the full v3 run."
+  }
+}

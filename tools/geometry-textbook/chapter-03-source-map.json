@@ -1,0 +1,545 @@
+{
+  "schemaVersion": 1,
+  "bookId": "atanasyan-2023-7-9",
+  "edition": "2023, 14-е издание, переработанное",
+  "chapter": 3,
+  "title": "Параллельные прямые",
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPages": [
+      53,
+      68
+    ],
+    "pdfPages": [
+      54,
+      69
+    ],
+    "pdfPageOffset": 1,
+    "inspection": "Primary agent visually read all16 source pages before authoring; exact source/map/mathematics independently reviewed before final readiness."
+  },
+  "exercises": [
+    {
+      "number": 191,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 192,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 193,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 194,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 195,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 196,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 197,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 198,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 199,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 200,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        57
+      ]
+    },
+    {
+      "number": 201,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        65
+      ]
+    },
+    {
+      "number": 202,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        65
+      ]
+    },
+    {
+      "number": 203,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        65
+      ]
+    },
+    {
+      "number": 204,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 205,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 206,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 207,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 208,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 209,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 210,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 211,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 212,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 213,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 214,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 215,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        66
+      ]
+    },
+    {
+      "number": 216,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 217,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 218,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 219,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 220,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 221,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 222,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 223,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 224,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 225,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 226,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 227,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        68
+      ]
+    }
+  ],
+  "theory": [
+    {
+      "number": 24,
+      "title": "Определение параллельных прямых",
+      "printedPages": [
+        53,
+        54
+      ]
+    },
+    {
+      "number": 25,
+      "title": "Признаки параллельности двух прямых",
+      "printedPages": [
+        54,
+        55,
+        56
+      ]
+    },
+    {
+      "number": 26,
+      "title": "Практические способы построения параллельных прямых",
+      "printedPages": [
+        56
+      ]
+    },
+    {
+      "number": 27,
+      "title": "Об аксиомах геометрии",
+      "printedPages": [
+        58,
+        59
+      ]
+    },
+    {
+      "number": 28,
+      "title": "Аксиома параллельных прямых",
+      "printedPages": [
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "number": 29,
+      "title": "Теоремы об углах, образованных параллельными прямыми и секущей",
+      "printedPages": [
+        61,
+        62,
+        63
+      ]
+    },
+    {
+      "number": 30,
+      "title": "Углы с соответственно параллельными или перпендикулярными сторонами",
+      "printedPages": [
+        64,
+        65
+      ]
+    }
+  ],
+  "selfchecks": [
+    {
+      "number": 1,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 2,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 3,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 4,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 5,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 6,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 7,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 8,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 9,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 10,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 11,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 12,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 13,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 14,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 15,
+      "printedPages": [
+        67
+      ]
+    },
+    {
+      "number": 16,
+      "printedPages": [
+        68
+      ]
+    },
+    {
+      "number": 17,
+      "printedPages": [
+        68
+      ]
+    }
+  ],
+  "counts": {
+    "mainNumbers": 37,
+    "mainParts": 43,
+    "theory": 7,
+    "selfchecks": 17,
+    "cards": 67
+  },
+  "caseRequirements": {
+    "191": "Three explicitly lettered hypotheses; retain the source angle sectors.",
+    "199": "Construct parallels at each of all three triangle vertices.",
+    "200": "Construct both parallels through D; distinguish practical drawings from fixed measurements.",
+    "202": "Three or four intersections depending on whether the unique parallel is among the four distinct lines.",
+    "211": "Parallel and intersecting configurations are both possible; distinguish sides of BC.",
+    "212": "Neither orientation is parallel; intersections are possible.",
+    "216": "Both lettered bisector claims, including the perpendicular case.",
+    "217": "Obtuse B fixes the correct ray directions; acute angle C20 gives angle AHB20, not160.",
+    "224": "Distinct source lines; construct a parallel through another point of a to contradict intersection.",
+    "227": "Actual compass-and-straightedge construction with justification, not a protractor substitute."
+  },
+  "reviewScope": "Exact source structure and required cases; this file alone does not approve authored content or a release."
+}
