@@ -1,0 +1,159 @@
+{
+  "reviewer": "/root/chapter5",
+  "at": "2026-10-23T21:20:13.011449+00:00",
+  "sha256": "7ff9f756bf4fc0e15612839eb83e9a99889d4fd3dda6d1c7fe0f2ad80e8a520b",
+  "verdict": "passed",
+  "coverage": {
+    "lessons": 72,
+    "theory": 6,
+    "sourceNumberPairs": 36,
+    "independentAssertions": 10356,
+    "scope": "All selected source conditions, complete solution steps, numerical/ratio/angle answers, answer prompts and intermediate checks; all coordinate models, face planarity and staged-view references. Each exact answer independently recomputed from model geometry; closed meshes oriented independently and integrated for volume. All 6 theory lessons read for mathematical and pedagogical coherence. Selected source texts compared with PDF extraction and source inventory; PDF pages 116, 117, 119, 130, 131, 135 visually inspected to resolve radicals, printed typo, shape dimensions and ambiguous configuration."
+  },
+  "selectedPairs": {
+    "4.1": [
+      "A1",
+      "A15",
+      "A18",
+      "B1",
+      "B2",
+      "C1"
+    ],
+    "4.2": [
+      "A1",
+      "A10",
+      "A8",
+      "B1",
+      "B4",
+      "C2"
+    ],
+    "4.3": [
+      "A10",
+      "A12",
+      "A9",
+      "B1",
+      "B4",
+      "C1"
+    ],
+    "4.4": [
+      "A2",
+      "A3",
+      "A6",
+      "B1",
+      "B2",
+      "C2"
+    ],
+    "4.5": [
+      "A1",
+      "A6",
+      "A7",
+      "B4",
+      "B6",
+      "C1"
+    ],
+    "4.6": [
+      "A25",
+      "A26",
+      "A27",
+      "A28",
+      "B2",
+      "C1"
+    ]
+  },
+  "findings": [],
+  "fixes": [
+    {
+      "id": "4.3-B4-a / 4.3-B4-b",
+      "problem": "Independent answer prompt contained the final ratio 1:14.",
+      "resolution": "Replaced by the neutral ratio format m:n; final result appears only in solution.",
+      "status": "resolved"
+    },
+    {
+      "id": "4.5-B6-b",
+      "problem": "Correct volume 375 had an incorrect sentence claiming CE passes through the opposite vertices C,F.",
+      "resolution": "Author replaced with the correct coordinate justification that BC is horizontal and CE is vertical, length a√3, hence the base triangle is right angled. Geometry and answer independently verified.",
+      "status": "resolved"
+    },
+    {
+      "id": "theory-4.1",
+      "problem": "Final explanation introduced M,N,M₁,N₁, but the initial theory model did not have the section points.",
+      "resolution": "Author added all four midpoints and a dedicated section view.",
+      "status": "resolved"
+    },
+    {
+      "id": "4.6-A1-a / 4.6-A1-b",
+      "problem": "The PDF prints repeated endpoint C in angle CB₁C in part b. A corrected endpoint would be an unsupported source repair.",
+      "resolution": "At parent request the entire pair was removed from solved selection and replaced with unambiguous A28 a/b on PDF page131. Both source drawings, matching notched meshes and volumes72/56 reviewed. Full source inventory retains original A1.",
+      "status": "resolved"
+    },
+    {
+      "id": "initial-givens-audit",
+      "problem": "Some source-given diagonals, midpoints, target lines, planes and internal solids were absent initially.",
+      "resolution": "Reviewed all72 conditions against initial scenes. Author restored given objects in52 variants (bothparts of26pairs). Four-midpoint section4.1A18 is visible;4.4C2 uses an unlabeled finite given-plane patch throughK, with compact displaybounds in the same plane. Derived feet and unknown intersection Q remain hidden until steps.",
+      "changedPairs": {
+        "4.1": [
+          "A1",
+          "A18",
+          "B1",
+          "B2",
+          "C1"
+        ],
+        "4.2": [
+          "A1",
+          "A10",
+          "B1",
+          "B4",
+          "C2"
+        ],
+        "4.3": [
+          "A9",
+          "A12",
+          "B1",
+          "B4",
+          "C1"
+        ],
+        "4.4": [
+          "A2",
+          "A3",
+          "B1",
+          "C2"
+        ],
+        "4.5": [
+          "A1",
+          "B4",
+          "B6",
+          "C1"
+        ],
+        "4.6": [
+          "A25",
+          "B2",
+          "C1"
+        ]
+      },
+      "status": "resolved"
+    }
+  ],
+  "sourceNotes": [
+    {
+      "id": "4.6-B2-a / 4.6-B2-b",
+      "note": "The source fixes the acute angle between the rectangle planes as60° without specifying the two occupied half-planes. Both arrangements satisfy it, yielding cosines1/5 and3/5 for the requested lines. Manual reasoning card explicitly explains both and asks for the missing placement condition. Independent normals and dot products confirm both configurations."
+    },
+    {
+      "id": "4.6-A25 / A26 / A27 / A28",
+      "note": "All depicted dimensions visually checked against source PDF. A27b numeral1 labels the removed width; A28 lower ledge heights3 and2 are heights above the base, so removed heights are2 and1. Mesh integration matches2520/1134,24/33,48/26,72/56."
+    }
+  ],
+  "checks": [
+    "python3 tools/shestakov-yaschenko/review-ch4-checks.py: passed 10356 independent assertions. Script does not import author generator.",
+    "All72 selected variant IDs unique, found in source index and within source page ranges;12 variants per subsection and1 theory per subsection.",
+    "Exact numerical, algebraic, trigonometric and ratio answers independently recomputed; manual B2 cards checked for both cases.",
+    "All model points finite, all referenced point/view IDs exist, all displayed segments nonzero, all face/highlight polygons nondegenerate and planar.",
+    "Closed stepped/notched polyhedron meshes have two incident faces per edge, admit consistent orientation, and integrate to their stated volumes.",
+    "Re-ran all independent geometry checks after initial-view changes; answers remain valid. Given-direction and plane-patch vectors in4.4C2 checked parallel to original directions; no solution foot added to initial views."
+  ],
+  "limitations": [
+    "No exhaustive browser layout or interaction review by this reviewer; parent performs browser checks.",
+    "No real learner pilot.",
+    "Unsolved source inventory is indexed but not claimed to have authored solutions."
+  ]
+}

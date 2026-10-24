@@ -1,0 +1,66 @@
+name: Shestakov–Yaschenko — source, models and learner work
+on:
+  pull_request:
+    paths: ['stereo-course/shestakov-yaschenko-10-11/**', 'tools/shestakov-yaschenko/**', '.github/workflows/shestakov-yaschenko-quality.yml']
+permissions:
+  contents: read
+jobs:
+  bounded-consultation:
+    if: github.event.action == 'opened' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: One bounded response or explicit unavailable evidence
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          REVIEW_PR_URL: ${{ github.event.pull_request.html_url }}
+        run: python3 tools/shestakov-yaschenko/claude-review.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: shestakov-bounded-consultation
+          path: artifacts/shestakov-consultation/
+          retention-days: 7
+          if-no-files-found: warn
+  course-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Exact source inventory and reproducible reviewed bundle
+        run: |
+          python3 tools/shestakov-yaschenko/build.py --check
+          node tools/shestakov-yaschenko/check.cjs
+          python3 tools/shestakov-yaschenko/reviewer-ch1-checks.py
+          python3 tools/shestakov-yaschenko/review-ch3-checks.py
+          python3 tools/shestakov-yaschenko/review-ch4-checks.py
+          python3 tools/shestakov-yaschenko/reviewer-ch5-checks.py
+          node tools/stereo-textbook/model-geometry.test.cjs stereo-course/shestakov-yaschenko-10-11/data/course.json
+      - name: Every model view at mobile and desktop widths
+        run: node tools/shestakov-yaschenko/model-browser.cjs
+      - name: Retained steps, theory return, proof handling and stale tabs
+        run: node tools/shestakov-yaschenko/runtime-browser.cjs
+      - name: Keep browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: shestakov-yaschenko-browser-evidence
+          path: |
+            artifacts/shestakov-models/
+            artifacts/shestakov-runtime/
+          retention-days: 7
+          if-no-files-found: warn
+      - run: git diff --check

@@ -1,0 +1,182 @@
+{
+  "reviewer": "/root/source_inventory",
+  "at": "2026-10-23T21:21:09.214176+00:00",
+  "verdict": "passed",
+  "scope": "Independent static technical review of the isolated course engine against the Merzlyak baseline, state persistence and answer contracts, catalog filtering, reviewed-content gate, bundle build and offline packaging, and browser/CI check coverage. Focused pure-function regressions executed; no independent real-browser execution in this review.",
+  "files": {
+    "stereo-course/shestakov-yaschenko-10-11/assets/engine.js": {
+      "sha256": "63d7bf186aefcdaddc901516ea73c2d857802902250759ca2708ce1a1c49d9b6"
+    },
+    "stereo-course/shestakov-yaschenko-10-11/assets/style.css": {
+      "sha256": "50f9b908847d632532345d31eda84474175c773de5ce147f6a7cfc0dad964160"
+    },
+    "stereo-course/shestakov-yaschenko-10-11/index.html": {
+      "sha256": "c91324c93b1c9e686690c537a2c190dac349df8112677bd7b181133c3c0a3780"
+    },
+    "tools/shestakov-yaschenko/build.py": {
+      "sha256": "7c916d786bcc3efe8e6649fde9232fa69671fd4fd19d64aac889f38451dd13ca"
+    },
+    "tools/shestakov-yaschenko/check.cjs": {
+      "sha256": "84a0951ce8c742585d91aabc59c3cb3acb60d58d8b2087396352dd7a674b6940"
+    },
+    "tools/shestakov-yaschenko/runtime-browser.cjs": {
+      "sha256": "5d5ed0a2b675deac75fc7c3fb4e8616fb7f63db64547cc3c4c302f9869c904fe"
+    },
+    "tools/shestakov-yaschenko/package-offline.py": {
+      "sha256": "558215aae98392e80c0641d39f529b96853faa28c10e15703b15d475361a06f4"
+    },
+    "tools/shestakov-yaschenko/claude-review.py": {
+      "sha256": "2e58a770a8bf27541acaa43018ff82da92e59e0eb541698add9967568ca29d65"
+    },
+    ".github/workflows/shestakov-yaschenko-quality.yml": {
+      "sha256": "7a2e74ba25ad59c08aca9abb9a2cfaa7e15fb5c53ba64df650654a168eeec592"
+    },
+    "stereo-course/merzlyak-10-base/assets/engine.js": {
+      "sha256": "5e9cec42a68bc426645ba6fd702b80ad8b3e4a0c9ee1ba7c641b42d468ee6877"
+    },
+    "stereo-course/assets/math-text.js": {
+      "sha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b"
+    },
+    "stereo-course/assets/task-scene-viewer.js": {
+      "sha256": "a3e470e55b45d658cb74b2e32b5f1e9479785fa9b014be3929591bdcd55cefe6"
+    },
+    "tools/shestakov-yaschenko/reviewer-ch1-checks.py": {
+      "sha256": "f62ea080c86bf4d09d10fef21ec86833e8bc3e54aaa5e550be51b09bec7307b8"
+    },
+    "tools/shestakov-yaschenko/review-ch3-checks.py": {
+      "sha256": "e3ed893eadd08792e480ae8975f6f286cba5efcd0eee58098336a85db492e3d1"
+    },
+    "tools/shestakov-yaschenko/review-ch4-checks.py": {
+      "sha256": "90596be84370f42f4b969de203dbfc25f2beb24b9aa4affe261d259d5a34bcac"
+    },
+    "tools/shestakov-yaschenko/reviewer-ch5-checks.py": {
+      "sha256": "b894311a719aa28176bd1f595b4ae65f0d998a9b1a4b52f53571925ad12e474e"
+    }
+  },
+  "resolvedFindings": [
+    {
+      "id": "answer-whitespace",
+      "finding": "Equivalent authored numeric answers with spaces around punctuation were rejected.",
+      "resolution": "Normalize whitespace only around arithmetic/list punctuation. Preserve whitespace between alphanumerics, including the space in mixed fractions. Tested nine equivalent/distinct pairs."
+    },
+    {
+      "id": "stale-success",
+      "finding": "Editing a previously successful final answer could leave the old success feedback visible.",
+      "resolution": "Input now clears checked and successMode and replaces the feedback with an explicit recheck/save message. Successful-state restoration verifies the saved answer still matches."
+    },
+    {
+      "id": "source-search",
+      "finding": "Bare topic search omitted exercises, A1 search could include A10, and Cyrillic б did not map to the Latin subpart alias.",
+      "resolution": "Exact topic/level/number/part matching and symmetric Cyrillic query/index normalization. Regression checks cover 4.2, A1, Cyrillic А1б and level C1."
+    },
+    {
+      "id": "manual-feedback",
+      "finding": "General recheck wording was inappropriate for manually reviewed proofs.",
+      "resolution": "Manual proof drafts are saved with distinct wording and explicitly require teacher discussion; no automatic correctness claim."
+    },
+    {
+      "id": "planar-instruction",
+      "finding": "The generic planar viewer instruction claimed numeric data were labelled on every drawing.",
+      "resolution": "Course-local viewer wrapper says numbers and ratios are given in the problem statement."
+    },
+    {
+      "id": "final-prompt",
+      "finding": "Generic final-answer prompts did not remind learners what quantity to enter.",
+      "resolution": "Build prepends the authored goal to generic final prompts without mutating source answer objects."
+    },
+    {
+      "id": "justification-threshold",
+      "finding": "An arbitrary minimum explanation length rejected valid concise algebra such as 2x−x=x.",
+      "resolution": "Schema retains nonempty justifications with an allowed kind; the course check rejects placeholders without an arbitrary character threshold."
+    },
+    {
+      "id": "browser-coverage-description",
+      "finding": "An earlier test comment overstated per-card answer/proof verification.",
+      "resolution": "The comment now accurately distinguishes all-card retained-step journeys from representative exact-answer/manual-proof interaction scenarios."
+    }
+  ],
+  "verifiedProperties": [
+    "Changes are isolated to the Shestakov course engine; baseline engine remains a comparison reference.",
+    "Per-lesson state keys include book id, lesson id and revision. Drafts, intermediate inputs, revealed steps, assistance, success history and camera are persisted. Stale-window writes are checked against the expected stored state; a conflict freezes edits and exposes recoverable old text.",
+    "Manual proof mode saves text without granting correctness. Exact mode compares authored accepted strings after limited normalization, with no expression evaluation.",
+    "Catalog filters reset pagination. Full source identities include section-qualified exercise numbers, so A1 in different sections remains distinct.",
+    "The builder only marks chapter content reviewed when the current chapter bytes match a passed review hash with reviewer/date. The runtime only opens validated, catalog-matching reviewed lessons and blocks draft/in-review or malformed material.",
+    "UI text uses the shared safe text renderer; inputs are not evaluated as JavaScript. Model/content identifiers reject reserved prototype names.",
+    "Offline packager inlines styles, shared scripts, course engine and JSON. It removes CSS imports and runtime fetch, escapes script termination in embedded scripts and less-than characters in embedded JSON, and retains intentional external navigation links.",
+    "The task view hides the generic introductory block via sy-lesson body class and restores it on catalog return.",
+    "The consultation workflow uses a fixed three-card input and explicit unavailable/failed/truncated outcomes. Its result is bounded consultation evidence, not an exhaustive content review or deployment approval."
+  ],
+  "executedChecks": [
+    {
+      "name": "JavaScript syntax",
+      "status": "passed",
+      "commands": [
+        "node --check stereo-course/shestakov-yaschenko-10-11/assets/engine.js",
+        "node --check tools/shestakov-yaschenko/check.cjs",
+        "node --check tools/shestakov-yaschenko/runtime-browser.cjs"
+      ]
+    },
+    {
+      "name": "Python syntax",
+      "status": "passed",
+      "commands": [
+        "python3 -m py_compile tools/shestakov-yaschenko/build.py tools/shestakov-yaschenko/package-offline.py"
+      ]
+    },
+    {
+      "name": "Extracted normalization regression",
+      "status": "passed",
+      "cases": [
+        "6; -4 equals 6;-4",
+        "11 : 8 equals 11:8",
+        "12 + 4sqrt( 3 ) equals 12+4sqrt(3)",
+        "14,4 equals 14.4",
+        "3 * sqrt(3) equals 3·sqrt(3)",
+        "Unicode minus equals ASCII minus",
+        "1 2/3 differs from 12/3",
+        "x y differs from xy",
+        "1 2 differs from 12"
+      ]
+    },
+    {
+      "name": "Actual catalog filter expression regression",
+      "status": "passed",
+      "cases": [
+        "Topic 4.2 includes exercises and excludes other topics",
+        "4.2 A1 and 4.2 А1 each yield exactly its two variants",
+        "4.2 A1б, 4.2 А1б and 4.2 A1b each yield only variant б",
+        "Bare C1 excludes C10 and other levels"
+      ]
+    },
+    {
+      "name": "Four independent mathematical checks added to CI workflow",
+      "status": "passed",
+      "commands": [
+        "python3 tools/shestakov-yaschenko/reviewer-ch1-checks.py",
+        "python3 tools/shestakov-yaschenko/review-ch3-checks.py",
+        "python3 tools/shestakov-yaschenko/review-ch4-checks.py",
+        "python3 tools/shestakov-yaschenko/reviewer-ch5-checks.py"
+      ],
+      "results": [
+        "Chapter 1: all 60 answers and accepted spellings; geometry; 5 theory structures; 34 initial configurations.",
+        "Chapter 3: 36 variants and 3 theory models; 2010 assertions.",
+        "Chapter 4: 72 variants and 6 theory models; 10356 assertions.",
+        "Chapter 5: 60 independent coordinate checks and 42 given-object neutral-view checks."
+      ]
+    }
+  ],
+  "limitations": [
+    "This record does not assert that real-browser checks or a file:// offline smoke test were executed by this reviewer. Parent owns final browser evidence.",
+    "runtime-browser.cjs walks every card through all retained steps and checks mobile overflow. It submits answers/proofs in representative scenarios rather than every accepted spelling on every card.",
+    "Final content coverage, source accuracy, mathematics, screenshots, and chapter review hashes are covered by separate records; chapter-specific mathematical checks were rerun at the follow-up timestamp.",
+    "Exact-mode checking recognizes listed forms plus limited normalization; it is not a general symbolic equivalence engine.",
+    "No external request, publication, repository commit or deployment was performed by this reviewer."
+  ],
+  "openFindings": [],
+  "followup": {
+    "previousReviewAt": "2026-10-23T21:13:08.617963+00:00",
+    "scope": "Verified that the only change among previously hashed technical files was the workflow addition of four independent Python mathematical checks. Read these scripts and executed all four successfully; they use Python standard-library dependencies and read the authored chapter/source JSON. Updated workflow and check-script hashes.",
+    "workflowSHA256": "7a2e74ba25ad59c08aca9abb9a2cfaa7e15fb5c53ba64df650654a168eeec592",
+    "chapter6CountCorrection": "The author confirmed 14 pairs = 28 changed variants, matching review-ch6.json; earlier message saying 30 was a counting error."
+  }
+}
