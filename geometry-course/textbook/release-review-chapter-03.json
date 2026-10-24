@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "authoredContentSha256": "d4862c0288793383e7edf9b1989abb9971fcaa6411f3f736cca0eb8f1bb7159e",
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "source": "passed",
+  "mathematics": "passed",
+  "models": "passed",
+  "pedagogy": "passed",
+  "browser": "passed",
+  "reviewer": "Independent OpenAI source, mathematics, model, integration and image reviewers; primary coordinator evidence synthesis",
+  "at": "2026-10-24T17:48:10.090904+00:00",
+  "reviewKind": "Hash-bound chapter-III content and implementation review; exact-head CI and owner release decision remain separate.",
+  "scope": {
+    "chapter": "III",
+    "mainNumbers": 37,
+    "mainParts": 43,
+    "theory": 7,
+    "selfchecks": 17,
+    "cards": 67,
+    "steps": 280,
+    "views": 394,
+    "coordinateClaims": 348,
+    "fullBookComplete": false
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_A_REVIEW.md",
+      "sha256": "412cbed0e7c39897aadc5eb7cfb0ac8577a193e9093b181711ac77665a2a880a"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_A_VISUAL_REVIEW.json",
+      "sha256": "c19cd68abd5aceed49dce735d17feeda2c39206a582862b2e233f139997b2ebf"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_B_REVIEW.md",
+      "sha256": "f571dd308cbb0f3cce47705e900bf0924ce5a1aefed082d627b4e4241025bf93"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_B_VISUAL_REVIEW.json",
+      "sha256": "4a37394cac74ff769129761ec150b0daed73810a4eda6b1169205b0e3d80881d"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_THEORY_REVIEW.md",
+      "sha256": "83924f7df07041a3546b93a9ca06505f73e52653b77481a8979463beb2af28bb"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_THEORY_VISUAL_REVIEW.json",
+      "sha256": "8b9fceec40fe2ed373c05989e40f2ad0d06c00374391379de0e9c6d470adfa88"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_GATES_REVIEW.md",
+      "sha256": "f4cfe3a310182951c382d0c76cb2c239793ac83870647dee805784c971ac4dc3"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_III_LOCAL_REVIEW.json",
+      "sha256": "96aa016b1db248c199de8aa1202397454102c0b0aa9a05e4d5fc5aed2ef1fae7"
+    }
+  ],
+  "browserEvidence": {
+    "artifact": "chapter3-browser-v3/browser-evidence.json",
+    "sha256": "3d2d9de8924456af91125b6b5fd07e12dc8b2e35e68ffbab8e2db055665c30dd",
+    "bundleSha256": "90927ba9e2ad64d9d3d86d3ad006c643556f411a83dcead6442ac6a9deeebd31",
+    "gateScriptSha256": "5ab1711e51cb0e6831c911908b80bbf9eb82a85d856dd6fd444adcaeae48d6f9",
+    "mode": "Explicit labelled engineering preview before chapter-III publication review; unchanged authored content and runtime are bound by hashes.",
+    "widths": [
+      320,
+      1280
+    ],
+    "cards": 403,
+    "viewChecks": 4084,
+    "stepFlows": 806,
+    "initialFinalScreenshots": 1612,
+    "interactions": [
+      "expansion-lesson-320-button-and-Escape",
+      "expansion-lesson-1280-button-and-Escape",
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry"
+    ],
+    "pageErrors": 0,
+    "geometryIssues": 0,
+    "completed": true
+  },
+  "manualImageReview": {
+    "newChapterViewsAtBothWidths": 788,
+    "exerciseViews": 438,
+    "theoryAndSelfcheckViews": 350,
+    "unchangedFinalStatesTransferred": 744,
+    "freshFinalV3States": 44,
+    "provenance": "Independent non-author reviewers inspected all final view/width pairs. Frozen v2 PNGs apply to 65 unchanged chapter-III cards by exact whole-lesson equality and byte-identical rendering files; all 44 states of corrected exercises 205 and 227 were freshly captured and viewed on v3. There are no coverage gaps or duplicate coverage claims.",
+    "baseCaptureManifestSha256": "174aabc69e01854d67b656d7a51c8fbb78554ce4edce689bed674873087979a5",
+    "deltaCaptureManifestSha256": "4e09f64797e3b197e36262fbab1fcd4d798182696195313e2c785e3b9f02b0b0",
+    "exactTransferManifestSha256": "1ba3f23ed843ca1d542a4ef6159dad400cb953885b4c54caa8ce0888156f2dae",
+    "openFindings": 0
+  },
+  "claude": "Confirmed owner full-course exception applies; no Claude consultation or external-provider verdict claimed.",
+  "mergeOrDeploymentAuthorization": false,
+  "publicModeEvidence": {
+    "artifact": "chapter3-public-interactions/browser-evidence.json",
+    "sha256": "1e675f40d19a3bb76b6791457e4e5c74da48cb32804783bfc63a352c4747f83b",
+    "bundleSha256": "1c56f49a1a1c5f3a34468cd88ea3557ca0fcb9389561d429f7034a58559046f4",
+    "scope": "interactions-only",
+    "completed": true,
+    "interactions": [
+      "notes-and-steps-reload",
+      "expansion-theory-1280-button-and-Escape",
+      "theory-return-retains-answer",
+      "manual-answer-honesty",
+      "two-tab-conflict-preserves-work",
+      "chapter-selfcheck-draft-isolation-and-reload",
+      "chapter-II-theory-return-and-saved-step",
+      "chapter-II-first-and-last-direct-entry",
+      "chapter-III-theory-return-and-saved-step",
+      "chapter-III-first-and-last-direct-entry"
+    ],
+    "pageErrors": 0,
+    "note": "Actual reviewed public entry is asserted before recreation. This focused run does not repeat the complete view sweep or the two lesson-expansion flows; those passed in the full v3 run."
+  }
+}

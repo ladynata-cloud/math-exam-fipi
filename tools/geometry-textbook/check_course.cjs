@@ -4,19 +4,47 @@ const root=path.resolve(__dirname,'../..'),course=path.join(root,'geometry-cours
 const bundle=JSON.parse(fs.readFileSync(path.join(course,'data/course.json'),'utf8'));
 const engine=require(path.join(course,'assets/engine.js')),viewer=require(path.join(course,'assets/planar-viewer.js'));
 const scope=JSON.parse(fs.readFileSync(path.join(__dirname,'release-scope.json'),'utf8'));
-const chapterTwoSource=JSON.parse(fs.readFileSync(path.join(__dirname,'chapter-02-source-map.json'),'utf8'));
+const chapterSources=new Map(scope.chapters.filter(chapter=>chapter.chapter>=2).map(chapter=>[
+ chapter.chapter,JSON.parse(fs.readFileSync(path.join(__dirname,'chapter-'+String(chapter.chapter).padStart(2,'0')+'-source-map.json'),'utf8'))
+]));
 const read=name=>JSON.parse(fs.readFileSync(path.join(course,name),'utf8'));
 const sequence=([first,last])=>Array.from({length:last-first+1},(_,i)=>first+i);
+function assertReachableViews(lesson){
+ const views=lesson.visualization.model.views,stepViews=new Set();
+ for(const [index,step] of lesson.steps.entries()){
+  const expected='step-'+(index+1);stepViews.add(expected);
+  assert.equal(step.view,expected,lesson.id+' natural step must select '+expected);
+  assert.ok(Object.hasOwn(views,expected),lesson.id+' missing reachable step view '+expected);
+ }
+ for(const [id,view] of Object.entries(views)){
+  if(id==='neutral')continue;
+  if(/^step-[1-9]\d*$/.test(id)){
+   assert.ok(stepViews.has(id),lesson.id+' unreferenced step view '+id);continue;
+  }
+  // The real viewer creates buttons only for case-*; a programmatic setView
+  // can otherwise render an authored view that pupils can never reach.
+  assert.ok(/^case-.+$/.test(id)&&id.slice(5).trim(),lesson.id+' unreachable authored view '+id);
+  const unlock=view.availableFromStep===undefined?0:view.availableFromStep;
+  assert.ok(Number.isInteger(unlock)&&unlock>=0&&unlock<=lesson.steps.length,
+   lesson.id+' case unlock outside natural steps: '+id);
+ }
+ // Legacy neutral/step views may retain copied availableFromStep metadata.
+ // The viewer ignores it there; only actual case buttons need this upper bound.
+}
 assert.equal(bundle.catalog.book.id,'atanasyan-2023-7-9');
 assert.equal(bundle.catalog.book.pdfPageOffset,1);
 assert.equal(bundle.build.fullTextbookComplete,false);
 assert.equal(bundle.catalog.inventoryComplete,false);
 assert.equal(bundle.sourceInventory.summary.continuousNumberCount,1431);
-assert.equal(chapterTwoSource.source.sha256,'3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72');
+for(const [chapter,source] of chapterSources){
+ assert.equal(source.bookId,'atanasyan-2023-7-9');assert.equal(source.chapter,chapter);
+ assert.equal(source.source.sha256,'3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72');
+}
 const groups={main:[],theory:[],selfcheck:[]};
 for(const lesson of bundle.lessons){
  assert.deepEqual(engine.validateLesson(lesson,bundle.catalog.book),[],lesson.id);
  assert.deepEqual(viewer.validateModel(lesson.visualization.model),[],lesson.id);
+ assertReachableViews(lesson);
  groups[lesson.source.collection].push(lesson);
  if(lesson.kind==='exercise')assert.equal(lesson.answer.mode,'manual','Proofs/constructions need human reasoning review');
  for(const step of lesson.steps){
@@ -29,6 +57,7 @@ assert.deepEqual(bundle.build.chapters.map(c=>c.chapter),scope.chapters.map(c=>c
 assert.equal(scope.totalCards,scope.chapters.reduce((total,c)=>total+c.cards,0));
 for(const chapter of scope.chapters){
  const source=bundle.sourceInventory.chapters.find(c=>c.chapter===chapter.chapter),prefix='preparation/chapter-'+String(chapter.chapter).padStart(2,'0');
+ const independentSource=chapterSources.get(chapter.chapter);
  assert.deepEqual(chapter.exerciseNumbers,source.exerciseNumbers,'Release scope agrees with exact source');
  const preparationFiles=fs.readdirSync(path.join(course,'preparation')).filter(name=>new RegExp('^chapter-'+String(chapter.chapter).padStart(2,'0')+'(?:-[a-z])?\\.json$').test(name));
  const exercises=preparationFiles.flatMap(name=>read('preparation/'+name).exercises).sort((a,b)=>a.number-b.number);
@@ -46,15 +75,16 @@ for(const chapter of scope.chapters){
   const actual=main.filter(l=>l.source.exercise===String(original.number));
   assert.deepEqual(actual.map(l=>l.source.subpart||'single'),original.parts.map(p=>p.part),'Missing source part '+original.number);
   assert.deepEqual(actual.map(l=>l.id),original.parts.map((p,i)=>'atanasyan-7-9-main-'+original.number+'-part-'+(i+1)),'Stable exercise and learner-work IDs');
-  if(chapter.chapter===2){
-   const independentlyChecked=chapterTwoSource.exercises.find(e=>e.number===original.number);assert(independentlyChecked,'Independently inventoried exercise '+original.number);
+  if(independentSource){
+   const independentlyChecked=independentSource.exercises.find(e=>e.number===original.number);assert(independentlyChecked,'Independently inventoried exercise '+original.number);
    assert.deepEqual(original.parts.map(p=>p.part),independentlyChecked.parts,'Independent source subparts '+original.number);
    assert.deepEqual(original.printedPages,independentlyChecked.printedPages,'Independent source pages '+original.number);
   }
  }
- if(chapter.chapter===2){
-  assert.equal(chapter.cards,chapterTwoSource.counts.cards);assert.equal(chapter.mainParts,chapterTwoSource.counts.mainParts);
-  for(const [prepared,independent] of [[theory.theory,chapterTwoSource.theory],[theory.selfchecks,chapterTwoSource.selfchecks]]){
+ if(independentSource){
+  assert.deepEqual(independentSource.exercises.map(item=>item.number),sequence(source.exerciseNumbers),'Complete independent exercise inventory');
+  assert.equal(chapter.cards,independentSource.counts.cards);assert.equal(chapter.mainParts,independentSource.counts.mainParts);
+  for(const [prepared,independent] of [[theory.theory,independentSource.theory],[theory.selfchecks,independentSource.selfchecks]]){
    assert.deepEqual(prepared.map(p=>p.number),independent.map(p=>p.number),'Independent source theory/review inventory');
    for(const item of prepared)assert.deepEqual(item.printedPages,independent.find(p=>p.number===item.number).printedPages,'Independent theory/review pages '+item.number);
   }

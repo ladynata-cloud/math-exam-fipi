@@ -123,7 +123,7 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 - Preserve the expanded profile enum, V6 decoder/catalog and persistent data
   during rollback. A raw pre-V6 server image cannot read the expanded schema.
 
-## Merged: Atanasyan 92a in the cabinet and on the shared board
+## Published: Atanasyan 92a in the cabinet and on the shared board
 
 - [Scope](tasks/ATANASYAN_92_CABINET_BOARD.md), [PR #318](https://github.com/ladynata-cloud/math-exam-fipi/pull/318), HIGH review.
   Merged as `202d39bf826c8c7e030e59ff162fe808000cae7e`, sole parent
@@ -138,9 +138,15 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
   The owner authorized publication and a scoped external-review exception,
   documented in PR #318; no external-provider verdict is claimed.
 - The host uses iframe inert state after control revoke. Manual save and theory
-  restoration retain the existing no-automatic-credit rule. Production delivery
-  and deployment evidence belong to the PR release record; no additional
-  production pupil action is claimed by this status reconciliation.
+  restoration retain the existing no-automatic-credit rule.
+- The completed [PR #318 release record](https://github.com/ladynata-cloud/math-exam-fipi/pull/318)
+  confirms Pages deployment 40012195196, both post-merge integration checks,
+  34/34 static byte comparisons and the completed Amvera rollout. Public
+  backend verification at 2026-10-23T20:32:13Z passed; the fixed 92a contract
+  remains intact alongside later shared-catalog releases.
+- Native plan delivery was saved and verified after reload in that release.
+  This status reconciliation creates no additional assignment or pupil attempt;
+  real-pupil learning outcomes remain unverified.
 
 ## Published: profile task 3 stereometry on the shared board
 
@@ -202,6 +208,32 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 - Synthetic profile-entry regression passed. A real learner-account login was
   not performed. Course content, learner data and progress semantics were
   unchanged. Release gate: `PROFILE_FULL_COURSE_ENTRY_PUBLISHED_OK`.
+
+## In review: Atanasyan 7–9 chapter III, parallel lines
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_III.md), HIGH review; branch
+  `content/atanasyan-7-9-chapter3`, based on
+  `631d2d644d87162d60585c3efb8365af8311a3f5`.
+- The exact 2023 edition was checked on printed pages 53–68. The candidate
+  adds every number 191–227: 43 exercise parts, theory 24–30 and all 17 review
+  questions, totaling 67 new cards. The combined candidate has 403 cards,
+  227 exercise numbers, 309 exercise parts, 30 theory points and 64 self-checks.
+- All 336 published chapter-I/II cards, normalized catalog entries, review
+  provenance, runtime files and learner-work identifiers remain unchanged.
+  The existing cabinet/board integration still selects exactly 92a and its
+  four prerequisite theory cards.
+- Independent source, mathematical, authored-model and actual image reviews
+  passed. All 788 new view/width pairs are covered. The final full-course browser
+  run passed 4084 view checks, 806 step flows and 12 interactions at 320/1280
+  pixels without geometry issues or page errors. The hash-bound chapter-III
+  review manifest is separate from both earlier chapter reviews. The strict
+  reviewed-content gate and ten public interaction scenarios also pass.
+- Detailed evidence is recorded in `docs/reviews/ATANASYAN_7_9_CHAPTER_III_*`.
+  Exact-head cloud CI and the committed identity belong to this task's Draft PR
+  handoff; no publication result is inferred from a local review manifest.
+- This section describes a development candidate. Chapters I–II remain the
+  published baseline until a separate owner-authorized release of chapter III.
+  Later book chapters and a real-pupil pilot are outside this task.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 
