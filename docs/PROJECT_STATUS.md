@@ -218,7 +218,22 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## In progress: Atanasyan regular polyhedra continuation
+## In progress: Atanasyan point 37 and exercises 281–287
+
+- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_SYMMETRY.md), HIGH review; current
+  continuation request. Branch `feat/atanasyan-polyhedra-symmetry` starts from
+  reviewed PR #325 head `9215006712a31d30d9bc0ef7d7acb5e0034b8019`.
+- Separate stacked increment: complete symmetry counts for all five regular
+  solids and all eleven questions of exercises 281–287. Preserve the 435-card
+  dependency, its runtime and pupil-state contracts. Full book still incomplete.
+- Implemented 21 cards, 113 steps and 94 model states. Independent exact-content
+  source/math/pedagogy review and 18 local gate commands passed. Candidate:
+  456 cards, 1,614 steps, 1,633 views; 282 complete exercises, 37 theory points
+  and 26 self-checks. Exact-head cloud/visual review is pending at this checkpoint.
+- Next: verify the committed integration and cloud run; inspect actual new
+  desktop/mobile images; hand off the separate Draft PR with final evidence.
+
+## Prepared: Atanasyan regular polyhedra continuation
 
 - [Scope](tasks/TEXTBOOK_ATANASYAN_REGULAR_POLYHEDRA.md), HIGH review; current
   owner continuation request, base `96d44cc06a3dbc1e40482a774eda6c18fac89242`.
@@ -227,8 +242,14 @@ Updated: 2026-10-24 (Asia/Novosibirsk)
 - Existing418cards and runtime remain unchanged. Independent exact-content
   source/math/written-pedagogy review passed for17newcards,90steps,70views.
   The candidate has435cards,1501steps,1539views;275complete exercises,36theory
-  points,26self-checks, no partial source position. Actual browser/visual and
-  exact-head checks remain pending at this checkpoint. No publication yet.
+  points,26self-checks, no partial source position.
+- [PR #325](https://github.com/ladynata-cloud/math-exam-fipi/pull/325) is Draft,
+  unmerged, exact head `9215006712a31d30d9bc0ef7d7acb5e0034b8019`. Independent
+  source/math review, current-main composition, all 12 cloud checks and actual
+  mobile/desktop visual review passed. Final evidence is recorded in that PR.
+  Browser run 40066210783 completed 870 journeys and 1,448 captures; its 144 new
+  captures were covered by actual review and verified pixel continuity.
+  No publication yet; production remains the 418-card course below.
 
 ## Published: Atanasyan pyramids and first symmetry block
 

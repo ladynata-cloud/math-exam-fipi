@@ -1,0 +1,402 @@
+{
+  "provider": "OpenAI Codex independent agent review",
+  "reviewer": "symmetries_source_review (theory and source contracts); next_block_review (exercises), with independent exercise audit by polyhedra_math_audit",
+  "reviewedAt": "2026-10-24T06:50:24.196Z",
+  "base": "9215006712a31d30d9bc0ef7d7acb5e0034b8019",
+  "pr": null,
+  "head": null,
+  "verdict": "PASS_SOURCE_MATHEMATICS_WRITTEN_PEDAGOGY_AND_MODEL_COORDINATES",
+  "scope": "All of point 37 in ten cards and exercises 281–287 in eleven cards. The full book remains incomplete; practical 271–275, chapter III self-check questions and additional tasks 288 onward remain outside this increment.",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+    "printedPages": [
+      83,
+      85
+    ],
+    "pdfPages": [
+      85,
+      87
+    ],
+    "sourceVisuallyInspected": true
+  },
+  "sourceContracts": {
+    "37": [
+      "tetrahedron-center",
+      "tetrahedron-axes",
+      "tetrahedron-planes",
+      "cube-center",
+      "cube-axes",
+      "cube-planes",
+      "cube-plane-correction",
+      "octahedron",
+      "icosahedron",
+      "dodecahedron"
+    ],
+    "281": [
+      null
+    ],
+    "282": [
+      null
+    ],
+    "283": [
+      "а",
+      "б"
+    ],
+    "284": [
+      null
+    ],
+    "285": [
+      null
+    ],
+    "286": [
+      "а",
+      "б"
+    ],
+    "287": [
+      "а",
+      "б",
+      "в"
+    ]
+  },
+  "changedSourceIds": [
+    "source-theory-037",
+    "source-main-0281",
+    "source-main-0282",
+    "source-main-0283",
+    "source-main-0284",
+    "source-main-0285",
+    "source-main-0286",
+    "source-main-0287"
+  ],
+  "sourceContractReview": "Compared the actual source-index diff against the reviewed base: only the eight scoped records change; original source fields and Cyrillic sourceSubparts are preserved; only complete requiredParts contracts are added.",
+  "canonicalization": "Recursively sort object keys; preserve array order; omit only top-level status and review; Node JSON.stringify UTF-8 SHA256. Aggregate hashes the array of canonical content objects in manifest.cards order.",
+  "cards": [
+    {
+      "id": "theory-037-tetrahedron-center",
+      "file": "stereo-course/textbook/lessons/theory-037-tetrahedron-center.json",
+      "sha256": "c03fdaf6c6ece4abf0217e1628073c2f9ea70d1cb245088883d0da0861d44919",
+      "steps": 5,
+      "views": 3,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "theory-037-tetrahedron-axes",
+      "file": "stereo-course/textbook/lessons/theory-037-tetrahedron-axes.json",
+      "sha256": "d2c06c37ecc723cc8a8a09472c0de79857dfeaea48a4ee99d36d0dcfb2056a58",
+      "steps": 6,
+      "views": 5,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "theory-037-tetrahedron-planes",
+      "file": "stereo-course/textbook/lessons/theory-037-tetrahedron-planes.json",
+      "sha256": "e06cd84b0b5b3f96eb3cd5ee4842d3005468cf703ad599f16cc1a401050554b5",
+      "steps": 5,
+      "views": 3,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "theory-037-cube-center",
+      "file": "stereo-course/textbook/lessons/theory-037-cube-center.json",
+      "sha256": "e5a3e9624394d4809156b3363da6f044cc6304fe9a7ae965783cc6a0c012dc44",
+      "steps": 4,
+      "views": 3,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "theory-037-cube-axes",
+      "file": "stereo-course/textbook/lessons/theory-037-cube-axes.json",
+      "sha256": "33afaff8022530e0bbec9f485a638be6a6f57ee0abe70d935c60cf672cd1eafe",
+      "steps": 6,
+      "views": 4,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "theory-037-cube-planes",
+      "file": "stereo-course/textbook/lessons/theory-037-cube-planes.json",
+      "sha256": "56ba92479bbe335e4b47717c7848fe19472bec990d42b2afd8b0b64ab3bdd065",
+      "steps": 5,
+      "views": 4,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "theory-037-cube-plane-correction",
+      "file": "stereo-course/textbook/lessons/theory-037-cube-plane-correction.json",
+      "sha256": "efa43725cba2bd38404a1a58b0204d89fe5daa8666fac52c27e0b5594db0dd57",
+      "steps": 6,
+      "views": 5,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "theory-037-octahedron",
+      "file": "stereo-course/textbook/lessons/theory-037-octahedron.json",
+      "sha256": "2b5a0b3249802d40402e213f1f47f20375bfdd520875ad26a71833bde68a90c0",
+      "steps": 7,
+      "views": 5,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "theory-037-icosahedron",
+      "file": "stereo-course/textbook/lessons/theory-037-icosahedron.json",
+      "sha256": "158e1076c5cc2ac7a8ffdf40ae2c3b1a35d51793eb8b5fffb2a7bb85eefe94eb",
+      "steps": 9,
+      "views": 5,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "theory-037-dodecahedron",
+      "file": "stereo-course/textbook/lessons/theory-037-dodecahedron.json",
+      "sha256": "76b81f70403b02fd66596c150d0a000a704503e16cf16c75f49e97e15ba28a1e",
+      "steps": 7,
+      "views": 6,
+      "reviewer": "symmetries_source_review"
+    },
+    {
+      "id": "ex-main-0281",
+      "file": "stereo-course/textbook/lessons/ex-main-0281.json",
+      "sha256": "ed568a5db64711cb79a677f4d5f877df00f893306b6824e63b3da8f9ab0e58a5",
+      "steps": 4,
+      "views": 4,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0282",
+      "file": "stereo-course/textbook/lessons/ex-main-0282.json",
+      "sha256": "7d0b6a7f5ffb11ac3d72ad65ad69c914c8a21fa34acdcc637114ef41680222e2",
+      "steps": 3,
+      "views": 3,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0283-a",
+      "file": "stereo-course/textbook/lessons/ex-main-0283-a.json",
+      "sha256": "b86f3f12d8c5d13fe18e7b5d48161c1e4228a12e9c65273829d1ba612485f94a",
+      "steps": 4,
+      "views": 5,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0283-b",
+      "file": "stereo-course/textbook/lessons/ex-main-0283-b.json",
+      "sha256": "5c59a6b9bf84f0d32f6af30d15140cb1b6c9abe47d8e067fcc03554ef16a4f24",
+      "steps": 6,
+      "views": 5,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0284",
+      "file": "stereo-course/textbook/lessons/ex-main-0284.json",
+      "sha256": "4f4f2dc70fbc90f0b323eb347bd7ea13232a98affac3561625752d25bd41e293",
+      "steps": 5,
+      "views": 5,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0285",
+      "file": "stereo-course/textbook/lessons/ex-main-0285.json",
+      "sha256": "94e575fc21cf478508b7d8eb9211bcfd3d541221668221e7cfd90926e461ab26",
+      "steps": 5,
+      "views": 5,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0286-a",
+      "file": "stereo-course/textbook/lessons/ex-main-0286-a.json",
+      "sha256": "94e59c3fcc0b7688925bd2a465061b52e0c4352a7d5e6e27752bac97a9dbdaed",
+      "steps": 5,
+      "views": 4,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0286-b",
+      "file": "stereo-course/textbook/lessons/ex-main-0286-b.json",
+      "sha256": "c02e2a1282e2484244d9180ceed95a7610cc8aea345934bfeeaff5f30afb20b7",
+      "steps": 4,
+      "views": 4,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0287-a",
+      "file": "stereo-course/textbook/lessons/ex-main-0287-a.json",
+      "sha256": "4b0fd6816fb909cf0036f01b4599564149896178fd292c46e71b0e4f8117635c",
+      "steps": 5,
+      "views": 5,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0287-b",
+      "file": "stereo-course/textbook/lessons/ex-main-0287-b.json",
+      "sha256": "017882fb24542dba6075dbba014761e9f8efb8c4cb5997c3ab8110645943be40",
+      "steps": 5,
+      "views": 5,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    },
+    {
+      "id": "ex-main-0287-c",
+      "file": "stereo-course/textbook/lessons/ex-main-0287-c.json",
+      "sha256": "da766a0d37ebdb5c9bf95403e983c1de355856083024e1b7a087ca8b315cd35f",
+      "steps": 7,
+      "views": 6,
+      "reviewer": "next_block_review; polyhedra_math_audit for six geometry cases"
+    }
+  ],
+  "aggregateSHA256": "0dbfc3f582015dfc63e58ffd61805cc6400439891f136c78ae89791554c75d83",
+  "cardCount": 21,
+  "theoryCards": 10,
+  "exerciseCards": 11,
+  "steps": 113,
+  "views": 94,
+  "theoryReview": {
+    "reviewer": "symmetries_source_review",
+    "reviewedAt": "2026-10-24T06:50:24.196Z",
+    "verdict": "PASS_SOURCE_MATHEMATICS_WRITTEN_PEDAGOGY_AND_MODEL_COORDINATES",
+    "aggregateSHA256": "3382dca2b9e7b2d0540407f7f922cf8ef3c94ae076ed4bfdf3d14435d363863c",
+    "point37Counts": {
+      "tetrahedron": [
+        0,
+        3,
+        6
+      ],
+      "cube": [
+        1,
+        9,
+        9
+      ],
+      "octahedron": [
+        1,
+        9,
+        9
+      ],
+      "icosahedron": [
+        1,
+        15,
+        15
+      ],
+      "dodecahedron": [
+        1,
+        15,
+        15
+      ]
+    },
+    "proofChecks": [
+      "Axes mean precisely the 180-degree transformation of point 35; other rotational axes are excluded consistently.",
+      "Tetrahedron nonexistence of a center, all three axes and all six mirrors have both existence and exhaustive permutation arguments.",
+      "Cube center is unique; three face-center and six edge-midpoint axes are proved valid and complete. Its nine mirror planes follow both explicit coordinates and the bijection with perpendicular half-turn axes.",
+      "The source error about any two cube axes is explicitly corrected. The actual drawn UU1 and VV1 axes are valid; their actual spanned plane sends C1 to P outside the cube. Projection H, midpoint and perpendicular relations are correct.",
+      "Octahedron counts have explicit vertex and edge-axis transformations and a complete boundary-intersection argument.",
+      "Icosahedron: cyclic coordinate permutations and even sign changes act transitively on vertices; the actual five neighbors form a regular pentagon. A 72-degree rotation preserves both antipodal rings and poles. This establishes edge transitivity. One explicit genuine half-turn is transported to every opposite-edge pair, yielding fifteen distinct axes. Odd face/vertex incidences exclude every other case.",
+      "Dodecahedron: symmetry transfer through face centers is proved in both directions. All twelve pentagon centers are one positive common scaling of the original icosahedron. The exact scale is justified by the displayed coordinate/radius calculation. No count rests merely on the assertion that the two solids look similar.",
+      "For centrally symmetric solids, composing a half-turn with central inversion gives reflection in the perpendicular plane through the center; the converse is also shown."
+    ],
+    "numericalGate": {
+      "command": "python3 tools/stereo-textbook/polyhedra-symmetry-math.test.py",
+      "independentlyRunByReviewer": true,
+      "result": "PASS",
+      "orthogonalGroupOrders": [
+        24,
+        48,
+        48,
+        120,
+        120
+      ],
+      "method": "The complete orthogonal group is enumerated from images of one independent centered vertex triple, not from a selected list of axes. Actual displayed axes, mirrors, section polygons, helper points, both directions of duality and all exercise section/distance constructions are additionally verified."
+    }
+  },
+  "exerciseReview": {
+    "reviewer": "next_block_review; independent mathematical audit by next_block_review/polyhedra_math_audit",
+    "reviewedAt": "2026-10-24T06:48:24.087Z",
+    "verdict": "PASS_SOURCE_MATHEMATICS_WRITTEN_PEDAGOGY_AND_MODEL_COORDINATES",
+    "aggregateSHA256": "2bbf9902e09f2ed7de2866364c346eba127036c4438966507fccb51f7a168b6a",
+    "allElevenCurrentHashesMatched": true,
+    "checks": {
+      "fullManualRead": "All11 statements, goals, helps,53steps, justifications, answer contracts, model captions, coordinates and referenced theory cards read.",
+      "sourceFidelity": "Exercise numbers, printed/PDF pages, Latin h/m/n, source subparts and ordering preserved; no fabricated subpart for281/282/284/285.",
+      "actualFormatter": {
+        "displayStrings": 1573,
+        "ratioFields": 43,
+        "rawArithmeticSlashes": 0,
+        "joinedCyrillicWordAndNumberOrRadical": 0
+      },
+      "schemaAndRuntime": "All11 pass draft2020-12 schema, actual runtime validateLesson and actual viewer prepare.",
+      "theoryReferences": {
+        "count": 15,
+        "ids": [
+          "theory-009",
+          "theory-011",
+          "theory-016",
+          "theory-017",
+          "theory-018",
+          "theory-019-distances",
+          "theory-024-cube",
+          "theory-027",
+          "theory-027-convex",
+          "theory-033",
+          "theory-034",
+          "theory-035-center",
+          "theory-036-definition",
+          "theory-036-octahedron",
+          "theory-036-tetrahedron"
+        ],
+        "existAndReviewed": true,
+        "semanticRelevanceManuallyChecked": true
+      },
+      "independentMathematics": {
+        "281": "All6 edges are cube face diagonals; tetrahedron has nonzero volume; B and D1 are on opposite sides of AB1C; cube/tetrahedron surface ratio equals sqrt(3).",
+        "282": "Exhaustively checked all12 common-endpoint edge pairs that share no face: each angle is90degrees.",
+        "283": "Both section planes independently derived; all6original edges intersected; G membership and orientation checked. Parallel section is equilateral with area a²sqrt(3)/9. Perpendicular section is isosceles with AM=AN=2a/3,AK=a/3, sides a/sqrt(3), altitude a sqrt(2)/3 and area a²sqrt(2)/9.",
+        "284": "Independent halfspace clipping yields exactly6original-edge midpoints,8supporting equilateral facets,12unit edges, valence4. The center remains strictly inside; result is a regular octahedron.",
+        "285": "All6face-center distances computed independently for the regular tetrahedron and equal one third of its edge; actual G,H,M are correct centroids/midpoint.",
+        "286": "Actual height and centroid coordinates satisfy m=h sqrt(6)/2 and n=m/3; perpendicularity and median proportions checked.",
+        "287": "All12adjacent-face pairs and4opposite-face pairs checked; distances are a sqrt(2),a sqrt(2)/3,a sqrt(6)/3. Opposite-face-center segment is a common perpendicular with endpoints inside the faces.",
+        "generic": "104nonzero highlighted segments and29planar convex highlighted polygons independently checked."
+      }
+    },
+    "secondaryReview": {
+      "reviewer": "next_block_review/polyhedra_math_audit",
+      "reviewedAt": "2026-10-24T06:46:44.286Z",
+      "scope": [
+        "ex-main-0283-a",
+        "ex-main-0283-b",
+        "ex-main-0284",
+        "ex-main-0287-a",
+        "ex-main-0287-b",
+        "ex-main-0287-c"
+      ],
+      "verdict": "PASS_SOURCE_MATHEMATICS_AND_MODEL_COORDINATES",
+      "allSixCanonicalHashesMatchedCurrentFiles": true
+    }
+  },
+  "resolvedFindings": [
+    {
+      "card": "theory-037-tetrahedron-axes",
+      "finding": "A justification overgeneralized all fixed-point-free permutations to pair exchanges.",
+      "resolution": "The actual text now explicitly restricts to permutations whose repetition returns every vertex, as required for a half-turn."
+    },
+    {
+      "card": "theory-037-cube-center",
+      "finding": "Hypothetical center names reused cube vertex letters C and D.",
+      "resolution": "The help now uses unnamed hypothetical centers and their scalar coordinates c,d."
+    },
+    {
+      "card": "theory-037-dodecahedron",
+      "finding": "The auxiliary exact value t/rho appeared without its coordinate derivation.",
+      "resolution": "The actual help now derives rho squared, the neighbor-plane distance and t/rho = phi/(phi+2) = 1/sqrt(5), then the common dual-recovery scale."
+    },
+    {
+      "card": "ex-main-0281",
+      "finding": "Step2 used vertex B without displaying its label in view tetra.",
+      "resolution": "Author added B to views.tetra.points; reviewer reread actual file and verified the viewer includes it in focused labels. Coordinates and proof unchanged."
+    }
+  ],
+  "unresolvedFindings": [],
+  "visual": "Actual product browser screenshots of this increment remain pending. Source PDF pages were inspected, but that does not provide product visual approval. No cloud visual or public-release verdict is claimed here.",
+  "notRun": [
+    "Fresh product browser visual review",
+    "Exact remote head binding after commit",
+    "Deployment",
+    "Paid external Claude review",
+    "Real-pupil pilot"
+  ],
+  "boundary": "Authors did not approve their own lesson review flags. This report binds the exact canonical card contents before commit; top-level status/review promotion does not alter those hashes. A content change requires renewed review. No merge, deployment or publication authorization is provided."
+}

@@ -32,6 +32,11 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ ['ex-main-0283-a|step-4',[{selector:explanation('step-4'),fractions:[['(2a)','3'],['(a²√3)','4'],['(a²√3)','9']]}]],
+ ['ex-main-0283-b|step-6',[{selector:explanation('step-6'),fractions:[['(MN·KG)','2'],['(a√2)','3'],['(a²√2)','9']]}]],
+ ['ex-main-0286-a|step-5',[{selector:explanation('step-5'),fractions:[['2m²','3'],['3h²','2'],['(h√6)','2']]}]],
+ ['ex-main-0287-c|step-7',[{selector:explanation('step-7'),fractions:[['(a√6)','3']]}]],
+ ['theory-037-cube-plane-correction|step-4',[{selector:explanation('step-4'),fractions:[['5','3'],['1','3']]}]],
  // Actual continuation text: whole numerators must remain stacked and fit narrow panels.
  ['theory-036-icosahedron-existence|help:h2',[{selector:'[data-main-help] [data-help="h2"] > p',fractions:[['(a(1 + √5))','2'],['(a²(3 + √5))','2']]}]],
  ['theory-036-icosahedron-existence|step-6',[{selector:explanation('step-6'),fractions:[['(a(1 + √5))','2']]}]],

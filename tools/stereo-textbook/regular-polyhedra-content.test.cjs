@@ -98,7 +98,14 @@ const unreviewed=structuredClone(cards);
 for(const c of unreviewed){c.status='in-review';c.review={source:'pending',mathematics:'pending',pedagogy:'pending'};}
 const catalog={...production.catalog,entries:unreviewed.map(c=>Object.fromEntries(['id','revision','kind','title','status','source'].map(k=>[k,c[k]])))};
 assert.equal(API.inspectBundle(catalog,unreviewed).available.size,0,'real in-review guard');
-const report=API.inspectBundle(production.catalog,production.lessons);
+// Preserve the exact previous 435-card release boundary in an isolated copy.
+// The newer point37/exercises281–287 block is independently checked below by
+// its own test; advancing the course must not relax the old completeness gate.
+const laterIds=new Set(require('./polyhedra-symmetry-manifest.json').cards);
+const baseline=structuredClone(production);
+for(const entry of baseline.catalog.entries)if(laterIds.has(entry.id))entry.status='draft';
+baseline.lessons=baseline.lessons.filter(card=>!laterIds.has(card.id));
+const report=API.inspectBundle(baseline.catalog,baseline.lessons);
 assert.equal(report.available.size,435,'418 previously reviewed cards plus17 continuation cards');
 assert.equal(report.coverage.availableTheoryPoints,36);
 assert.equal(report.coverage.availableExercises,275);

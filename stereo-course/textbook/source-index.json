@@ -6395,7 +6395,10 @@
           87
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0282",
@@ -6413,7 +6416,10 @@
           87
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0283",
@@ -6434,6 +6440,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -6452,7 +6462,10 @@
           87
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0285",
@@ -6470,7 +6483,10 @@
           87
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0286",
@@ -6489,6 +6505,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -6510,6 +6530,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -22172,7 +22197,19 @@
         "pdfPages": [
           85
         ]
-      }
+      },
+      "requiredParts": [
+        "tetrahedron-center",
+        "tetrahedron-axes",
+        "tetrahedron-planes",
+        "cube-center",
+        "cube-axes",
+        "cube-planes",
+        "cube-plane-correction",
+        "octahedron",
+        "icosahedron",
+        "dodecahedron"
+      ]
     },
     {
       "id": "source-theory-038",
