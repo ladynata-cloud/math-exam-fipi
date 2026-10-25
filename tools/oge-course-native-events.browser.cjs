@@ -86,6 +86,7 @@ async function run(context, origin, entry) {
       }
     } else if (n >= 20 && n <= 22) {
       const stage = teacher.locator('.oge-native-shared-stage');
+      if (n === 22) await click('add a single answer value', stage.getByRole('button', {name:'+ отдельное значение',exact:true}));
       await fill('answer draft', stage.locator('input:not([type=range]):not([type=checkbox]):visible'));
       await click('check answer', stage.getByRole('button', {name:'Проверить',exact:true}));
       await click('hint', stage.getByRole('button', {name:'Хочешь подсказку?',exact:true}));
@@ -152,7 +153,12 @@ async function run(context, origin, entry) {
     Object.defineProperty(window,'localStorage',{get(){window.__personalAccesses++;throw Error('Shared native browser touched personal storage');}});
     window.MathExamBoard = {register(config){window.__nativeBoard=config;config.subscribe(() => window.__nativePublications.push(JSON.parse(JSON.stringify(config.getState()))));}};
   });
-  for (const entry of entries) await run(context,origin,entry);
+  const failures = [];
+  for (const entry of entries) {
+    try { await run(context,origin,entry); }
+    catch (error) { failures.push(entry.trainerId + ': ' + error.message); console.error(error); }
+  }
+  assert.deepEqual(failures, [], 'Every native trainer must pass; failures are collected without skipping later pages');
   assert.equal(records.length,25);
   console.log(JSON.stringify({marker:'OGE_NATIVE_BROWSER_EVENTS_OK',trainers:records.length,actions:records.reduce((sum,item)=>sum+item.actions,0),personalAccesses:0,productionRoomWrites:0}));
 })().catch(error => {console.error(error);process.exitCode=1;}).finally(async () => {await browser?.close();server.close();});

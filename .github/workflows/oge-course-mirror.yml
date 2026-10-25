@@ -81,4 +81,5 @@ jobs:
       - name: Native teacher actions publish their completed state to the peer
         run: node tools/oge-course-native-events.browser.cjs
       - name: Existing picker viewport and room controls
+        if: always()
         run: node tools/board-picker-smoke.cjs
