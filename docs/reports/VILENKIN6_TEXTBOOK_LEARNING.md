@@ -98,3 +98,14 @@ older-course overview link remain in this task. The existing catalogue copy
 continues to describe the retained earlier edition; its editorial update is
 not part of this patch. No concurrent main changes were copied into the task
 branch and no branch merge/rebase/reset was used.
+
+A final keyboard check found and fixed the skip link changing the SPA route to
+the home page. It now focuses the current task without changing its URL; DOM
+and real-keyboard Chromium checks cover this path.
+
+The actual ready-result provider call for PR339/head
+d99f86fec8bd4e54210744ec3f5347123d083595 returned HTTP400, insufficient
+Anthropic credit (run40202615862/job121196784845, 2026-10-25T14:31:24Z).
+Further commits retain the external gate as failed/UNAVAILABLE without retrying
+that known provider condition. This hold must only be removed after authorized
+confirmation that access changed. It is not a passing review or owner waiver.

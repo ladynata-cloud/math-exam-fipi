@@ -2,6 +2,7 @@
   'use strict';
   const M=window.TextbookMath, KEY='mathexam-vilenkin6-textbook-2024-v1';
   const main=document.getElementById('main');
+  document.querySelector('.skip-link')?.addEventListener('click',event=>{event.preventDefault();main.focus();main.scrollIntoView?.({block:'start'});});
   const statusLabels={independent:'Решено самостоятельно',assisted:'Решено с помощью',learned:'Разобрано по шагам',manual:'Проверено по памятке',repeated:'Решено повторно'};
   const roleLabels={learn:'Разбираем вместе',practice:'Тренируемся',check:'Проверяем себя'};
   let units=[], taskMap=new Map(), unitMap=new Map(), state={version:1,last:'',tasks:{}}, resetPending=false, writesBlocked=false, renderEpoch=0;

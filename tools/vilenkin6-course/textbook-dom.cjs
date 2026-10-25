@@ -42,7 +42,11 @@ function url(unit,task){return `#unit/${unit.id}/task/${task.id}`;}
   }
   const learnUnit=units.find(u=>u.tasks.some(t=>t.role==='learn'&&t.steps.length>=2&&t.steps[0].answerType!=='self-check'));
   const learn=learnUnit.tasks.find(t=>t.role==='learn'&&t.steps.length>=2&&t.steps[0].answerType!=='self-check');
-  await go(ctx,url(learnUnit,learn));submit(ctx,firstAnswer(learn.steps[0]));
+  await go(ctx,url(learnUnit,learn));
+  const taskHash=ctx.w.location.hash;click(ctx,'.skip-link');await tick();
+  assert.equal(ctx.w.location.hash,taskHash,'keyboard skip link must keep the current task route');
+  assert.equal(ctx.d.activeElement,ctx.d.querySelector('#main'));assert(ctx.d.querySelector('.condition'));
+  submit(ctx,firstAnswer(learn.steps[0]));
   assert.equal(ctx.d.querySelectorAll('.step-history li').length,1);
   const visibleCondition=ctx.d.querySelector('.prompt').textContent;
   const step2=ctx.d.querySelector('#answer');if(step2){step2.value='123456789';step2.dispatchEvent(new ctx.w.Event('input',{bubbles:true}));}

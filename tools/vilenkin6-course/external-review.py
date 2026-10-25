@@ -39,6 +39,9 @@ def main():
  out=ROOT/'artifacts/vilenkin6-external-review.json';out.parent.mkdir(exist_ok=True)
  def write():out.write_text(json.dumps(report,ensure_ascii=False,indent=2))
  if '--prepare-only' in sys.argv:print(json.dumps({'material_bytes':report['material_bytes'],'files':len(FILES)}));return
+ hold=os.environ.get('REVIEW_PROVIDER_HOLD','').strip()
+ if TEXTBOOK_MODE and hold:
+  report['reason']='No provider retry: '+hold;write();raise SystemExit(report['reason'])
  key=os.environ.get('ANTHROPIC_API_KEY','').strip()
  if not key:report['reason']='Configured ANTHROPIC_API_KEY is missing';write();raise SystemExit(report['reason'])
  context=('The owner requested understandable learning from actual textbook tasks, with synchronization as a later stage. This is a source-based revision of the first part: introductory review and 23 numbered topics, selected real exercises with number/page attribution, retained completed steps, optional help, strict answer representations and separate browser progress. Public entry routes to the new edition; managed cabinet attempts retain the old contract. Source figures are not supplied to you. Manual construction tasks are explicitly self-check, never automatic correctness. No full-book completeness or measured learning outcomes are claimed. This is the ready-result review, not a prior design consultation.' if TEXTBOOK_MODE else 'The existing standalone course has 27 modules, 81 worked examples and 475 authored tasks; original numbers are a separate source catalogue. No new backend or account protocol.')

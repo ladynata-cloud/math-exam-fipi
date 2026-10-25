@@ -77,6 +77,9 @@ jobs:
           REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
           REVIEW_PR: ${{ github.event.pull_request.number }}
           REVIEW_TEXTBOOK_LEARNING: ${{ github.head_ref == 'fix/vilenkin6-textbook-learning' && '1' || '0' }}
+          # Keep the required gate failed without retrying a known credit error.
+          # Re-enable only after authorized confirmation that provider access changed.
+          REVIEW_PROVIDER_HOLD: ${{ github.head_ref == 'fix/vilenkin6-textbook-learning' && 'Insufficient Anthropic credit confirmed in run40202615862, job121196784845 on2026-10-25; external review remains required' || '' }}
         run: python3 tools/vilenkin6-course/external-review.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

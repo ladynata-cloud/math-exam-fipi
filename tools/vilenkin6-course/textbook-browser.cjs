@@ -42,6 +42,9 @@ let browser;
    }
  }
  const u=units.find(x=>x.id===11),t=u.tasks[1];await nav(u,t);
+ const taskLocation=page.url();await page.locator('.skip-link').focus();await page.keyboard.press('Enter');
+ assert.equal(page.url(),taskLocation,'keyboard skip link must preserve the current task');
+ assert(await page.evaluate(()=>document.activeElement===document.getElementById('main')));
  const first=t.steps[0],firstAnswer=Array.isArray(first.answer)?first.answer[0]:first.answer;
  await page.locator('#answer').fill(firstAnswer);await page.locator('#answer-form').evaluate(f=>f.requestSubmit());
  assert.equal(await page.locator('.step-history li').count(),1);
@@ -58,6 +61,6 @@ let browser;
  await page.goto(base+'?learning=1');await page.waitForLoadState('domcontentloaded');
  assert(!page.url().includes('textbook.html'),'managed entry must retain legacy contract');
  assert.deepEqual(errors,[]);
- const result={status:'PASS',gate:'VILENKIN6_TEXTBOOK_BROWSER_OK',viewports:[1280,390],taskViews:views,flows:['public default','all source figures load','no page overflow','step/hint/draft reload','managed entry preserved'],screenshots:4};
+ const result={status:'PASS',gate:'VILENKIN6_TEXTBOOK_BROWSER_OK',viewports:[1280,390],taskViews:views,flows:['public default','all source figures load','no page overflow','keyboard skip preserves task','step/hint/draft reload','managed entry preserved'],screenshots:4};
  fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));
 })().catch(e=>{console.error(e);process.exitCode=1}).finally(async()=>{if(browser)await browser.close();server.close()});
