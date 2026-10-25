@@ -20,6 +20,14 @@ const stages = { 10:'#mar-root', 11:'#m4', 12:'#taskArea', 13:'section.main', 14
 const checks = { 10:'button[id$="-ck"]', 11:'#m4-check', 12:'#checkBtn', 13:'#check', 14:'#m-ck' };
 const hints = { 10:'.minimal-hint', 11:'#m4-hint', 12:'.minimal-hint', 13:'#hintToggle', 14:'#m-solve' };
 const server = http.createServer((req, res) => {
+  const url = new URL(req.url, 'http://localhost');
+  if (url.pathname === '/trainers/trainer-board.html' && url.searchParams.has('nativeHarness')) {
+    const entry = entries.find(item => item.file === url.searchParams.get('trainer'));
+    if (!entry) { res.writeHead(400).end(); return; }
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.end('<!doctype html><meta charset="utf-8"><style>body{margin:0}iframe{display:block;width:100%;height:100vh;border:0}</style><iframe name="native-trainer" src="/' + entry.file + '?board=1"></iframe>');
+    return;
+  }
   let file;
   try { file = path.resolve(root, '.' + decodeURIComponent(new URL(req.url, 'http://localhost').pathname)); }
   catch (_) { res.writeHead(400).end(); return; }
@@ -33,16 +41,20 @@ const server = http.createServer((req, res) => {
 });
 let browser;
 const records = [];
+const hosts = new WeakMap();
 const snapshot = page => page.evaluate(() => JSON.parse(JSON.stringify(window.__nativeBoard.getState())));
 
 async function boot(context, origin, entry, errors) {
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(entry.trainerId + ': ' + error.message));
-  await page.goto(origin + '/' + entry.file + '?board=1');
-  await page.waitForFunction(() => !!window.__nativeBoard);
-  assert.equal(await page.evaluate(() => window.__nativeBoard.id), entry.trainerId);
+  await page.goto(origin + '/trainers/trainer-board.html?nativeHarness=1&trainer=' + encodeURIComponent(entry.file));
+  const frame = page.frame({name:'native-trainer'});
+  assert(frame, entry.trainerId + ': native trainer is embedded like the actual board');
+  await frame.waitForFunction(() => !!window.__nativeBoard);
+  assert.equal(await frame.evaluate(() => window.__nativeBoard.id), entry.trainerId);
   await page.waitForTimeout(30);
-  return page;
+  hosts.set(frame,page);
+  return frame;
 }
 
 async function run(context, origin, entry) {
@@ -51,7 +63,7 @@ async function run(context, origin, entry) {
   async function mirror() {
     const state = await snapshot(teacher), before = await pupil.evaluate(() => window.__nativePublications.length);
     await pupil.evaluate(value => window.__nativeBoard.applyState(value), state);
-    await pupil.waitForTimeout(40);
+    await hosts.get(pupil).waitForTimeout(40);
     assert.deepEqual(await snapshot(pupil), state, entry.trainerId + ': exact native peer restoration');
     assert.equal(await pupil.evaluate(() => window.__nativePublications.length), before, entry.trainerId + ': apply must not echo');
   }
@@ -168,7 +180,7 @@ async function run(context, origin, entry) {
     assert.equal(await pupil.evaluate(() => window.__personalAccesses), 0);
     records.push({id:entry.trainerId,actions});
     console.log('NATIVE_EVENTS_OK ' + entry.trainerId + ' ' + actions);
-  } finally { await teacher.close(); await pupil.close(); }
+  } finally { await hosts.get(teacher).close(); await hosts.get(pupil).close(); }
 }
 
 (async () => {
