@@ -2,6 +2,20 @@
 
 Updated: 2026-10-25 (Asia/Novosibirsk)
 
+## In progress: lesson enquiries and channel subscriptions
+
+- [Scope](tasks/LESSON_CONTACTS_CHANNELS.md), SMALL static HTML/CSS task; base
+  `76f99426e32e7afa5917a26f540ea84274e5d9b0`.
+- Prepared: /lessons/, contact and subscription invitations on ten public
+  entrances, personal Telegram/VK links and Telegram/MAX channel links supplied
+  by the owner. Trainer logic, cabinets and the board are unchanged.
+- Local gate: `LESSON_CONTACTS_STATIC_OK`; SEO/sitemap, 22 responsive browser
+  checks and 11 no-JS routes passed. Existing scripts/inline styles are preserved.
+- Next: open the scoped Draft PR; verify exact-head CI; obtain separate merge
+  authorization and verify production.
+- This preparation is not a production release. Older entries below describe
+  other tasks and have not been re-certified by this contact-only change.
+
 ## In progress: college board native-event ordering fix
 
 - [Scope](tasks/COLLEGE_FUNCTIONS_BOARD_EVENT_ORDER.md), SMALL scheduling fix;
