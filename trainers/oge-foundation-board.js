@@ -10,7 +10,7 @@
   const ignored='.oca-exploration,.oca-reference,.oca-work,.oca-instruction';
   const copy=v=>JSON.parse(JSON.stringify(v));
   const bytes=v=>new Blob([JSON.stringify(v)]).size;
-  let task=0,actions=[],applying=false,notify=()=>{},previous='';
+  let task=0,actions=[],applying=false,pending=false,notify=()=>{},previous='';
   const shell=doc.createElement('main');shell.id='oge-foundation-room';
   const heading=doc.createElement('h1');heading.textContent='ОГЭ №'+page+' · совместная тренировка';
   const note=doc.createElement('p');note.textContent='Общий банк: '+count+' заданий. Ответы, шаги и исследования видны обоим участникам. Личный зачёт не изменяется. Генераторы и зачёт доступны в отдельном тренажёре.';
@@ -39,7 +39,12 @@
   const card=()=>stage.firstElementChild;
   function getState(){return {schemaVersion:1,task:{source:'bank',index:task},actions:copy(actions),auxiliary:auxiliary?auxiliary.getState(card()):null};}
   function changed(){if(applying)return;auxiliary?.enhanceCard(card());const serialized=JSON.stringify(getState());if(serialized!==previous){previous=serialized;notify();}}
-  const later=()=>Promise.resolve().then(changed);
+  function later(){
+    if(applying||pending)return;pending=true;
+    // Native dispatch may checkpoint microtasks between capture and target.
+    // Read auxiliary controls and enhance the card only after native handlers.
+    root.setTimeout(()=>{pending=false;changed();},0);
+  }
   function choose(index){actions=[];render((index+count)%count);changed();}
   previousButton.onclick=()=>choose(task-1);nextButton.onclick=()=>choose(task+1);restart.onclick=()=>choose(task);select.onchange=()=>choose(Number(select.value));
   function groupOf(node){

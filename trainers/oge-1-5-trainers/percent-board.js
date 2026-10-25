@@ -14,7 +14,13 @@
     const getState=()=>({native:native.getState(),disclosures:details().map(el=>el.open)});
     function prepare(v){if(!safe(v)||!exact(v,['native','disclosures'])||!Array.isArray(v.disclosures)||v.disclosures.length!==details().length||v.disclosures.some(x=>typeof x!=='boolean')||!native.validateState(v.native))throw new TypeError('Invalid percent shared state');return copy(v);}
     function applyState(v){const next=prepare(v);applying=true;try{native.applyState(next.native);details().forEach((el,i)=>el.open=next.disclosures[i]);previous=JSON.stringify(getState());}finally{applying=false;}}
-    function changed(){if(applying||pending)return;pending=true;Promise.resolve().then(()=>{pending=false;if(applying)return;const current=JSON.stringify(getState());if(current!==previous){previous=current;notify();}});}
+    function changed(){
+      if(applying||pending)return;
+      pending=true;
+      // Native event dispatch may checkpoint microtasks before app handlers.
+      // Coalesce notifications into a task that reads their completed state.
+      root.setTimeout(()=>{pending=false;if(applying)return;const current=JSON.stringify(getState());if(current!==previous){previous=current;notify();}},0);
+    }
     doc.addEventListener('input',e=>{if(e.target.matches('input,textarea'))e.target.value=e.target.value.replace(/[<>\u0000-\u001f]/g,'').slice(0,80);changed();},true);
     ['click','keydown','change','toggle'].forEach(type=>doc.addEventListener(type,changed,true));
     const note=doc.createElement('p');note.className='percent-board-note';note.setAttribute('role','note');note.style.cssText='padding:14px 18px;margin-bottom:18px;background:#e8f1ff;border-radius:12px;line-height:1.6';note.textContent='На доске доступны совместная тренировка и разбор: базовые и усложнённые проценты. Обучающий маршрут, личный прогресс и мини-зачёт доступны при отдельном открытии тренажёра. Общие ответы не считаются самостоятельным зачётом.';doc.querySelector('main').prepend(note);

@@ -8,16 +8,36 @@ const ROOT=path.resolve(__dirname,'..');
 const files={23:'oge-task23-geometry-calculations.html',24:'oge-task24-proofs.html',25:'oge-task25-geometry.html'};
 class Local extends ResourceLoader{fetch(url){const p=new URL(url);if(p.pathname.endsWith('/board-bridge.js'))return Promise.resolve(Buffer.from(''));const file=path.join(ROOT,p.pathname);return fs.existsSync(file)&&fs.statSync(file).isFile()?Promise.resolve(fs.readFileSync(file)):null;}}
 const tick=()=>new Promise(r=>setTimeout(r,15));
-async function boot(page,shared=true){const errors=[],reads=[],writes=[];const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e));let registration;
- const dom=new JSDOM(fs.readFileSync(path.join(ROOT,'trainers',files[page]),'utf8'),{url:'https://math.test/trainers/'+files[page]+(shared?'?board=1':''),runScripts:'dangerously',resources:new Local(),pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){w.TextEncoder=TextEncoder;w.HTMLElement.prototype.scrollIntoView=()=>{};w.scrollTo=()=>{};w.MathExamBoard={register:x=>registration=x};const proto=w.Storage.prototype;proto.getItem=function(key){reads.push(key);return null;};proto.setItem=function(key,val){writes.push(key);};}});
- await new Promise(r=>dom.window.addEventListener('load',r,{once:true}));await tick();assert.deepEqual(errors.map(e=>e.message),[],files[page]+': initialization');if(shared)assert.ok(registration,files[page]+': native registered');return {dom,w:dom.window,api:registration,errors,reads,writes};}
+async function boot(page,shared=true){const errors=[],reads=[],writes=[],captures=new Map();const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e));let registration;
+ const dom=new JSDOM(fs.readFileSync(path.join(ROOT,'trainers',files[page]),'utf8'),{url:'https://math.test/trainers/'+files[page]+(shared?'?board=1':''),runScripts:'dangerously',resources:new Local(),pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){const add=w.document.addEventListener.bind(w.document);w.document.addEventListener=(name,listener,options)=>{if(options===true)captures.set(name,listener);return add(name,listener,options);};w.TextEncoder=TextEncoder;w.HTMLElement.prototype.scrollIntoView=()=>{};w.scrollTo=()=>{};w.MathExamBoard={register:x=>registration=x};const proto=w.Storage.prototype;proto.getItem=function(key){reads.push(key);return null;};proto.setItem=function(key,val){writes.push(key);};}});
+ await new Promise(r=>dom.window.addEventListener('load',r,{once:true}));await tick();assert.deepEqual(errors.map(e=>e.message),[],files[page]+': initialization');if(shared)assert.ok(registration,files[page]+': native registered');return {dom,w:dom.window,api:registration,errors,reads,writes,captures};}
 function snap(c){return JSON.parse(JSON.stringify(c.api.getState()));}
 function send(a,b){const s=snap(a);try{b.api.applyState(b.w.JSON.parse(JSON.stringify(s)));}catch(error){console.error('STATE',JSON.stringify({task:s.task,actions:s.actions,drafts:s.drafts}));throw error;}assert.deepEqual(snap(b),s);}
 function click(c,op){const b=[...c.w.document.querySelectorAll('[data-board-action]')].find(b=>b.dataset.boardAction===op&&!b.disabled&&!b.closest('.step.done'));assert.ok(b,'button '+op);b.click();}
 function input(c,selector,value){const field=c.w.document.querySelector(selector);assert.ok(field,selector);field.value=value;field.dispatchEvent(new c.w.Event('input',{bubbles:true}));}
 function select(c,selector,value){const el=c.w.document.querySelector(selector);el.value=value;el.dispatchEvent(new c.w.Event('change',{bubbles:true}));}
 function attack(c,mutate){const old=snap(c),bad=c.w.JSON.parse(JSON.stringify(old));mutate(bad);assert.throws(()=>c.api.applyState(bad));assert.deepEqual(snap(c),old,'malformed update must leave current native view intact');}
-(async()=>{for(const page of [23,24,25]){const a=await boot(page),b=await boot(page);let echoes=0;b.api.subscribe(()=>echoes++);send(a,b);await tick();assert.equal(echoes,0,'apply must not echo');
+// Model the browser checkpoint between document capture and native target/bubble
+// handlers. Scripted dispatchEvent alone keeps one stack and misses this ordering.
+async function captureCheckpoint(c,name,target){const listener=c.captures.get(name);assert.equal(typeof listener,'function',name+' capture listener');listener({target});await Promise.resolve();await Promise.resolve();}
+async function eventOrder(page,a,b){
+ const published=[];let echoes=0;a.api.subscribe(()=>{published.push(snap(a));send(a,b);});b.api.subscribe(()=>echoes++);
+ const note=a.w.document.querySelector('.ocp-writing textarea');note.value='x < 5; y > 2.\u0001';
+ await captureCheckpoint(a,'input',note);assert.equal(published.length,0,page+': capture must wait for native note normalization');
+ note.dispatchEvent(new a.w.Event('input',{bubbles:true}));await tick();
+ assert.equal(published.length,1,page+': one input publishes without a later user event');assert.equal(published[0].workspace.notes,'x ＜ 5; y ＞ 2.');
+ const zoom=a.w.document.querySelector('.ocp-figure-zoom');assert.ok(zoom,page+': native figure control');const oldZoom=snap(a).workspace.figureLarge;
+ published.length=0;await captureCheckpoint(a,'click',zoom);assert.equal(published.length,0,page+': capture must wait for native figure handler');zoom.click();await tick();
+ assert.equal(published.length,1);assert.notDeepEqual(published[0].workspace.figureLarge,oldZoom);assert.equal(published[0].workspace.notes,'x ＜ 5; y ＞ 2.');
+ published.length=0;note.value='Полная запись после ввода';await captureCheckpoint(a,'input',note);note.dispatchEvent(new a.w.Event('input',{bubbles:true}));await captureCheckpoint(a,'change',note);await captureCheckpoint(a,'click',zoom);zoom.click();assert.equal(published.length,0,'nested native notifications must coalesce');await tick();assert.equal(published.length,1);assert.equal(published[0].workspace.notes,'Полная запись после ввода');assert.deepEqual(published[0],snap(b));
+ // Intercepted native learning actions are synchronous and must include the
+ // already completed note handler. The queued timer must not duplicate them.
+ published.length=0;note.value='Запись перед шагом';await captureCheckpoint(a,'input',note);note.dispatchEvent(new a.w.Event('input',{bubbles:true}));click(a,page===23?'hint':page===24?'card:s:0':'tr-hint');await tick();assert.equal(published.length,1,page+': native action plus queued input publishes once');assert.equal(published[0].actions.length,1);assert.equal(published[0].workspace.notes,'Запись перед шагом');assert.deepEqual(published[0],snap(b));
+ // A previously queued local capture must not echo a complete remote snapshot.
+ published.length=0;const currentNote=a.w.document.querySelector('.ocp-writing textarea');await captureCheckpoint(a,'input',currentNote);const remote=a.w.JSON.parse(JSON.stringify(snap(a)));remote.workspace.notes='Запись другого участника';a.api.applyState(remote);await tick();assert.equal(published.length,0);assert.equal(echoes,0);assert.equal(snap(a).workspace.notes,'Запись другого участника');
+ a.api.subscribe(()=>{});b.api.subscribe(()=>{});console.log('✓ native '+page+': capture checkpoint, note normalization, model/action coalescing, no echo');
+}
+(async()=>{for(const page of [23,24,25]){const a=await boot(page),b=await boot(page);await eventOrder(page,a,b);let echoes=0;b.api.subscribe(()=>echoes++);send(a,b);await tick();assert.equal(echoes,0,'apply must not echo');
  const keys=[...a.w.document.querySelector('#oge-part2-type').options].map(o=>o.value);
  for(const key of keys){select(a,'#oge-part2-type',key);send(a,b);assert.equal(snap(b).task.key,key);}
  // Finish every native subtype and preserve the complete accepted learning sequence.

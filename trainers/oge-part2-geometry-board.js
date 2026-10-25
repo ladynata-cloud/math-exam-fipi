@@ -12,7 +12,7 @@ const host=()=>q(page===23?'.train-host':page===24?'#view':'#panel-train');
 const inputs=()=>qa('input.ans-inp,input[data-ai],#gAsk',host()).filter(x=>!x.disabled&&!x.readOnly);
 const drafts=()=>inputs().map(x=>x.value);
 const types=()=>page===23?ORDER.map(key=>({key,name:SUBS[key].name})):page===24?TASKS.map(t=>({key:t.id,name:t.title})):TYPES.map(t=>({key:String(t.id),name:t.title}));
-let task=null,mode='train',actions=[],helpUsed=false,applying=false,running=false,notify=()=>{},previous='',started=false;
+let task=null,mode='train',actions=[],helpUsed=false,applying=false,running=false,notify=()=>{},previous='',started=false,captureTimer=null;
 function seeded(seed,fn){const original=Math.random;let n=seed>>>0;Math.random=()=>{n+=0x6D2B79F5;let t=n;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};try{return fn();}finally{Math.random=original;}}
 function uint(x){return Number.isInteger(x)&&x>=0&&x<=4294967295;}
 function object(x,keys){if(!x||typeof x!=='object'||Array.isArray(x)||![Object.prototype,null].includes(Object.getPrototypeOf(x))||Reflect.ownKeys(x).length!==keys.length)return false;return keys.every(k=>{const p=Object.getOwnPropertyDescriptor(x,k);return p&&p.enumerable&&Object.prototype.hasOwnProperty.call(p,'value');});}
@@ -72,7 +72,9 @@ function restore(s){reset(s.task,s.mode);s.actions.forEach((a,i)=>{runAction(a,i
 }
 function apply(s){validate(s);const old=state();applying=true;try{restore(s);previous=JSON.stringify(state());}catch(error){restore(old);previous=JSON.stringify(state());throw error;}finally{applying=false;}}
 function changed(){if(applying||running||!started)return;const now=JSON.stringify(state());if(now!==previous){previous=now;notify();}}
-function after(){Promise.resolve().then(changed);}
+// Native events may checkpoint microtasks between capture and target listeners.
+// Wait until dispatch has completed, and publish only the final combined state.
+function after(){if(!started||applying||running||captureTimer!==null)return;captureTimer=root.setTimeout(()=>{captureTimer=null;changed();},0);}
 function next(key=task?.key||types()[0].key,newMode=mode){const seed=Math.floor(Math.random()*4294967296);const description={key,source:page===23?'generator':page===24?'proof':'pool',value:page===23?seed:page===24?0:Math.floor(Math.random()*byId(Number(key)).pool.length),seed};applying=true;try{reset(description,newMode);}finally{applying=false;}changed();}
 function perform(op,point=null){const a={op,drafts:drafts(),point};const old=state();const ui=captureUI();const candidate={...old,helpUsed:old.helpUsed||assisted.has(op),actions:[...actions,a]};
  try{validate(candidate);}catch(_){q('#oge-part2-status').textContent='История этой задачи заполнена. Сохраните записи и перейдите к следующей задаче.';return;}
@@ -96,7 +98,7 @@ doc.addEventListener('click',event=>{if(!started||applying||running)return;const
 },true);
 doc.addEventListener('keydown',event=>{if(!started||applying||running||event.key!=='Enter'||!inputs().includes(event.target))return;const container=event.target.closest('.ans-row,.ansrow');const b=container&&q('[data-board-action]',container);if(b){event.preventDefault();event.stopImmediatePropagation();perform(b.dataset.boardAction);}},true);
 doc.addEventListener('input',event=>{if(!started||applying||running)return;if(inputs().includes(event.target))event.target.value=event.target.value.replace(/[<>\u0000-\u001f]/g,'').slice(0,80);after();},true);
-root.addEventListener('pagehide',()=>{started=false;});
+root.addEventListener('pagehide',()=>{started=false;if(captureTimer!==null){root.clearTimeout(captureTimer);captureTimer=null;}});
 doc.addEventListener('change',after,true);doc.addEventListener('toggle',after,true);
 if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })(window,document);

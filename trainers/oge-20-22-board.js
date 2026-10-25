@@ -97,7 +97,13 @@
   }
   function install(context){current=context;slot.replaceChildren(context.stage);picker.value=context.module;native.onLive(context.module);bind(context);warning.hidden=true;}
   function applyState(incoming){applying=true;try{const prepared=prepare(incoming);common.applyState(incoming.shared,native.card(prepared.stage));install(prepared);previous=JSON.stringify(getState());}finally{applying=false;}}
-  function changed(){if(applying||scheduled)return;scheduled=true;Promise.resolve().then(()=>{scheduled=false;if(applying)return;const state=getState(),serialized=JSON.stringify(state);if(unescape(encodeURIComponent(serialized)).length>60000){applyState(JSON.parse(previous));warning.textContent='Общий снимок этой задачи заполнен. Сократите запись или выберите другую задачу.';warning.hidden=false;return;}if(serialized!==previous){previous=serialized;notify();}});}
+  function changed(){
+    if(applying||scheduled)return;scheduled=true;
+    // Native events may checkpoint microtasks between capture and target
+    // listeners. Publish after the full dispatch, including note normalization
+    // and native checks, while coalescing all events from the same interaction.
+    root.setTimeout(()=>{scheduled=false;if(applying)return;const state=getState(),serialized=JSON.stringify(state);if(unescape(encodeURIComponent(serialized)).length>60000){applyState(JSON.parse(previous));warning.textContent='Общий снимок этой задачи заполнен. Сократите запись или выберите другую задачу.';warning.hidden=false;return;}if(serialized!==previous){previous=serialized;notify();}},0);
+  }
   function fresh(){const module=picker.value;install(make(module,Math.floor(Math.random()*4294967296)));changed();}
   picker.addEventListener('change',fresh);next.addEventListener('click',fresh);
   function bind(context){

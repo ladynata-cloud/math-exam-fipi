@@ -38,7 +38,12 @@ function clean(s){return String(s).replace(/[<>\u0000-\u001f]/g,'').slice(0,80);
 function atCapacity(){return history.length>=320||new Blob([JSON.stringify(history)]).size>=28000;}
 function reflectCapacity(){const full=atCapacity();stage().inert=full;const limit=byId('oge-board-limit');if(limit)limit.hidden=!full;}
 function add(op){const prev=history[history.length-1];if(['input','change','probe','details'].includes(op[0])&&prev&&prev[0]===op[0]&&prev[1]===op[1]&&prev[2]===op[2])history[history.length-1]=op;else history.push(op);reflectCapacity();}
-function enqueue(){if(applying||queued)return;queued=true;Promise.resolve().then(()=>{queued=false;if(applying)return;const now=JSON.stringify(getState());if(now!==last){last=now;notify();}});}
+function enqueue(){
+ if(applying||queued)return;queued=true;
+ // Native events may checkpoint microtasks between capture and target handlers.
+ // Read the completed native action only after the entire dispatch has returned.
+ root.setTimeout(()=>{queued=false;if(applying||!root.document)return;const now=JSON.stringify(getState());if(now!==last){last=now;notify();}},0);
+}
 function ensureCapacity(event){if(!atCapacity())return true;event?.preventDefault();event?.stopImmediatePropagation();byId('oge-board-limit').hidden=false;return false;}
 function markHelp(el){if(el.closest('.minimal-hint-panel,.oca-help,.oca-exploration,.oca-reference,.oca-work,.oca-instruction,#m4-hintbox,#t11-help-panel,#hintPanel,[data-task13-lab],[data-lab-kind]')||el.matches('.minimal-hint,.function-help')||/hint|solve|show|steps/.test(el.id))helpUsed=true;}
 function record(event){

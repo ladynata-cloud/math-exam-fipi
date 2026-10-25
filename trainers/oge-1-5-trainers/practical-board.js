@@ -17,7 +17,13 @@
  let provider=null,applying=false,notify=()=>{},previous='',queued=false;
  const cards=()=>Array.from(doc.querySelectorAll('.pv-shell .pv-question'));
  function getState(){if(!provider)throw new Error('Practical provider not ready');return {descriptor:copy(provider.get()),questions:cards().map(card=>card.__practicalQuestion.capture()),calculations:Array.from(doc.querySelectorAll('.pv-shell .pv-calculation')).map(i=>i.value),zoom:Array.from(doc.querySelectorAll('.pv-reference .pv-zoom')).map(b=>b.getAttribute('aria-pressed')==='true')};}
- function changed(){if(!active||applying||!provider||queued)return;queued=true;queueMicrotask(()=>{queued=false;if(applying||!provider)return;const value=JSON.stringify(getState());if(value!==previous){previous=value;notify();}});}
+ function changed(){
+  if(!active||applying||!provider||queued)return;
+  queued=true;
+  // Native browser events may checkpoint microtasks between capture and the
+  // native target/bubble handlers. Publish only after the full dispatch ends.
+  root.setTimeout(()=>{queued=false;if(applying||!provider)return;const value=JSON.stringify(getState());if(value!==previous){previous=value;notify();}},0);
+ }
  function prepare(value){const fail=()=>{throw new TypeError('Invalid practical shared state');};if(!safe(value)||!exact(value,['descriptor','questions','calculations','zoom'])||!provider.valid(value.descriptor))fail();const specs=provider.describe(value.descriptor);if(!Array.isArray(value.questions)||value.questions.length!==specs.length||!Array.isArray(value.calculations)||value.calculations.length!==(provider.calculations||0)||!value.calculations.every(x=>typeof x==='string')||!Array.isArray(value.zoom)||value.zoom.length!==(provider.zoom||1)||value.zoom.some(x=>typeof x!=='boolean'))fail();
   value.questions.forEach((q,index)=>{const spec=specs[index];if(!exact(q,['answers','checked','helpUsed','helpOpen','details','model','zoom'])||!exact(q.answers,Object.keys(spec.fields))||['checked','helpUsed','helpOpen'].some(k=>typeof q[k]!=='boolean'))fail();for(const [key,choices]of Object.entries(spec.fields))if(typeof q.answers[key]!=='string'||(choices&&!choices.includes(q.answers[key])))fail();if(!Array.isArray(q.details)||q.details.length!==spec.details||q.details.some(x=>typeof x!=='boolean')||!Array.isArray(q.zoom)||q.zoom.length!==spec.zoom||q.zoom.some(x=>typeof x!=='boolean')||((q.helpOpen||q.details.some(Boolean))&&!q.helpUsed)||!root.PracticalDiscovery.validateState(q.model,spec.model)||(!q.helpUsed&&!root.PracticalDiscovery.isInitialState(q.model)))fail();});return copy(value);
  }

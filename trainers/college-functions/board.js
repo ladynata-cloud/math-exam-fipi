@@ -76,7 +76,9 @@
       function changed() {
         if (applying || pending) return;
         pending=true;
-        Promise.resolve().then(()=>{
+        // Native events may run microtasks between capture and app listeners.
+        // Read the settled state only after the entire event dispatch completes.
+        root.setTimeout(()=>{
           pending=false;
           if (applying || !root.document) return;
           const next=getState(),serialized=JSON.stringify(next);
@@ -84,7 +86,7 @@
           if (!validateState(next)) return;
           last=serialized;
           if (notify) notify();
-        });
+        },0);
       }
       const api={getState,applyState,validateState};
       root.CollegeFunctionsBoard=api;

@@ -46,7 +46,9 @@
       function changed() {
         if (pending || applying) return;
         pending = true;
-        Promise.resolve().then(() => { pending = false; if (applying) return; const current = JSON.stringify(getState()); if (current !== last) { last = current; notify(); } });
+        // Browser capture callbacks can checkpoint microtasks before native
+        // handlers run. Read once after the whole event dispatch has finished.
+        root.setTimeout(() => { pending = false; if (applying) return; const current = JSON.stringify(getState()); if (current !== last) { last = current; notify(); } }, 0);
       }
       doc.addEventListener('input', event => {
         if (applying) return;

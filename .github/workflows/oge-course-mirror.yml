@@ -50,6 +50,8 @@ jobs:
       - name: Native two-window restoration and visible capability
         run: |
           node --test tools/oge-foundation-board.test.cjs tools/oge-native-10-14-board.test.cjs tools/oge-20-22-board.test.cjs tools/oge-part2-geometry-board.test.cjs tools/oge-practical-diagnostic-board.test.cjs tools/oge-percent-table-board.test.cjs tools/oge-practical-variant-board.test.cjs tools/oge-course-board-ui.test.cjs
+      - name: Native event dispatch ordering
+        run: node --test tools/oge-*-event-order.test.cjs
       - name: Practical exact answers and downloadable bundle
         run: |
           node tools/oge-tire-exact-grading.test.cjs
@@ -60,3 +62,23 @@ jobs:
           node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
           git diff --check
           echo OGE_COURSE_MIRROR_AUDIT_OK
+
+  native-browser-events:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-native-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          echo "NODE_PATH=$RUNNER_TEMP/oge-native-browser/node_modules" >> "$GITHUB_ENV"
+          node "$RUNNER_TEMP/oge-native-browser/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Native teacher actions publish their completed state to the peer
+        run: node tools/oge-course-native-events.browser.cjs
+      - name: Existing picker viewport and room controls
+        run: node tools/board-picker-smoke.cjs
