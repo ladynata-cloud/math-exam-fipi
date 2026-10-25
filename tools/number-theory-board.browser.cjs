@@ -12,6 +12,7 @@ const { chromium } = require('playwright');
 
 const ROOT = resolve(__dirname, '..');
 const SHOTS = process.env.NUMBER_THEORY_SHOTS;
+const PRIME_CHOICES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
 const wait = ms => new Promise(done => setTimeout(done, ms));
 let phase = 'startup';
 
@@ -169,10 +170,43 @@ async function screen(page, frame, name, width) {
   await page.setViewportSize({ width, height: 1000 });
   const size = await frame.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth }));
   assert(size.scroll <= size.width + 1, name + ': no horizontal overflow ' + JSON.stringify(size));
+  const buttons = await frame.locator('[data-prime]').evaluateAll(elements => elements.map(element => {
+    const box = element.getBoundingClientRect();
+    return { prime: Number(element.dataset.prime), left: box.left, right: box.right, width: box.width, height: box.height, viewport: innerWidth };
+  }));
+  if (buttons.length) {
+    assert.deepEqual(buttons.map(button => button.prime), PRIME_CHOICES, name + ': all prime choices stay available');
+    assert(buttons.every(button => button.width >= 43.5 && button.height >= 43.5), name + ': prime choices retain touch targets');
+    assert(buttons.every(button => button.left >= -1 && button.right <= button.viewport + 1), name + ': prime choices wrap inside the viewport');
+  }
   if (SHOTS) {
     mkdirSync(SHOTS, { recursive: true });
     await page.screenshot({ path: join(SHOTS, name + '.png'), fullPage: true });
   }
+}
+
+async function primeChoices(frame) {
+  const buttons = await frame.locator('[data-prime]').evaluateAll(elements => elements.map(element => ({
+    prime: Number(element.dataset.prime), disabled: element.disabled, classes: element.className
+  })));
+  assert.deepEqual(buttons.map(button => button.prime), PRIME_CHOICES);
+  assert(buttons.every(button => !button.disabled && button.classes === ''), 'Prime choices do not reveal the correct divisors');
+}
+
+async function openLegacyTask(teacher, student, kind) {
+  await teacher.locator('#chooseTrainer').click();
+  if (!await teacher.locator('#manualTrainerEntry').evaluate(element => element.open)) {
+    await teacher.locator('#manualTrainerEntry summary').click();
+  }
+  await teacher.locator('#trainerUrl').fill('/trainers/grade6-' + kind + '.html?task=nt-1-1');
+  await teacher.locator('#openTrainer').click();
+  if (await teacher.locator('#pickerClose').isVisible()) await teacher.locator('#pickerClose').click();
+  await Promise.all([connected(teacher), connected(student)]);
+  const teacherFrame = await frameFor(teacher, kind), studentFrame = await frameFor(student, kind);
+  await Promise.all([teacherFrame, studentFrame].map(frame => frame.waitForFunction(() => NumberTheoryTrainer.getState().taskId === 'nt-1-1')));
+  assert.equal(new URL(teacherFrame.url()).searchParams.get('task'), 'nt-1-1');
+  assert.equal(new URL(studentFrame.url()).searchParams.get('task'), 'nt-1-1');
+  return { teacherFrame, studentFrame };
 }
 
 async function handoff(teacher, student, studentControls) {
@@ -191,6 +225,9 @@ async function run(browser, origin, serverOrigin, errors) {
     const page = standalone.page;
     await page.goto(origin + '/trainers/grade6-' + kind + '.html');
     await page.waitForFunction(() => !!window.NumberTheoryTrainer);
+    assert.equal((await snapshot(page)).taskId, 'nt-3-9', 'Fresh session uses the advanced default');
+    assert.equal(await page.locator('.task-numbers').innerText(), '132 и 88');
+    await primeChoices(page);
     await page.locator('#divisor-a').fill('2');
     const before = await snapshot(page);
     await page.locator('#hint-toggle').click();
@@ -201,12 +238,17 @@ async function run(browser, origin, serverOrigin, errors) {
     assert.equal(after.hintUsed, true);
     await screen(page, page, kind + '-standalone-desktop', 1100);
     await screen(page, page, kind + '-standalone-mobile', 390);
+    // Preserve the original 4/6 regression as an explicit task URL. The new
+    // default receives its own layout and real shared-board coverage below.
+    await page.goto(origin + '/trainers/grade6-' + kind + '.html?task=nt-1-1');
+    await page.waitForFunction(() => window.NumberTheoryTrainer?.getState().taskId === 'nt-1-1');
     await page.locator('#mode-independent').click();
     await page.locator('#fresh-independent').click();
     await page.locator('#answer-input').fill(kind === 'nok' ? '24' : '2');
     await page.locator('#check-answer').click();
     assert.equal((await snapshot(page)).feedback.scope, 'answer');
     assert.equal((await snapshot(page)).hintUsed, false);
+    assert.equal(await page.locator('[data-feedback-scope="answer"]').evaluate(element => element.classList.contains('success')), true);
     await standalone.context.close();
   }
 
@@ -230,7 +272,47 @@ async function run(browser, origin, serverOrigin, errors) {
     await teacher.locator('#pickerResults .picker-item').click();
     await Promise.all([connected(teacher), connected(student)]);
     let teacherFrame = await frameFor(teacher, kind), studentFrame = await frameFor(student, kind);
-    await sync(teacherFrame, studentFrame, 'initial');
+    const advanced = await sync(teacherFrame, studentFrame, 'advanced initial task');
+    assert.equal(advanced.taskId, 'nt-3-9');
+    await primeChoices(teacherFrame); await primeChoices(studentFrame);
+    await screen(teacher, teacherFrame, kind + '-advanced-board-split', 1440);
+    await screen(teacher, teacherFrame, kind + '-advanced-board-mobile', 390);
+    await teacher.setViewportSize({ width: 1440, height: 1000 });
+
+    phase = kind + ': large-prime choice and advanced-state control handoff';
+    await teacherFrame.locator('[data-prime="11"]').click();
+    const chosen = await sync(teacherFrame, studentFrame, 'prime 11 chosen from the expanded list');
+    assert.equal(chosen.activeA, 11);
+    await teacherFrame.locator('#quotient-a').fill('12');
+    const advancedDraft = await sync(teacherFrame, studentFrame, 'advanced quotient draft');
+    await student.reload();
+    await connected(student);
+    studentFrame = await frameFor(student, kind);
+    await waitSnapshot(studentFrame, advancedDraft);
+    await handoff(teacher, student, true);
+    await studentFrame.locator('#accept-a').click();
+    const largePrimeWork = await sync(studentFrame, teacherFrame, 'pupil continues advanced factorization');
+    assert.deepEqual(largePrimeWork.rowsA, [{ divisor: 11, quotient: 12 }]);
+    await primeChoices(studentFrame);
+    await studentFrame.locator('[data-prime="47"]').click();
+    const wrongLargePrime = await sync(studentFrame, teacherFrame, 'incorrect large prime keeps accepted work');
+    assert.equal(wrongLargePrime.feedback.code, 'not-divisor');
+    assert.deepEqual(wrongLargePrime.rowsA, largePrimeWork.rowsA);
+    await studentFrame.locator('#divisor-a').fill('3');
+    await sync(studentFrame, teacherFrame, 'pupil restores a manual divisor draft');
+    await handoff(teacher, student, false);
+    const advancedLate = await session(browser, origin, 'advanced-late-' + kind, errors);
+    await advancedLate.page.goto(pupilLink);
+    await connected(advancedLate.page);
+    const advancedLateFrame = await frameFor(advancedLate.page, kind);
+    await sync(teacherFrame, advancedLateFrame, 'late join restores advanced work and larger prime choices');
+    await primeChoices(advancedLateFrame);
+    assert.deepEqual(await advancedLateFrame.evaluate(() => window.__numberTheoryStorage), []);
+    await advancedLate.context.close();
+
+    phase = kind + ': explicit legacy task and preserved regressions';
+    ({ teacherFrame, studentFrame } = await openLegacyTask(teacher, student, kind));
+    await sync(teacherFrame, studentFrame, 'explicit legacy initial task');
     const baseline = await quiet([teacher, student]);
 
     phase = kind + ': drafts, hints, accepted factors';
@@ -312,7 +394,7 @@ async function run(browser, origin, serverOrigin, errors) {
   await teacherSession.context.close();
   await studentSession.context.close();
   assert.deepEqual(errors, [], 'no browser errors or missing local resources');
-  console.log('NUMBER_THEORY_BOARD_BROWSER_OK: both trainers; standalone desktop/mobile; actual registry/board/server; drafts, factorization, hints and matching; teacher/student transfer and reload; late join; malformed-state rejection; no echo or personal storage');
+  console.log('NUMBER_THEORY_BOARD_BROWSER_OK: both trainers; advanced 132/88 default; all 15 prime buttons at desktop/mobile/split widths; actual registry/board/server; prime 11 and 47, drafts, factorization, hints and matching; advanced and legacy teacher/student transfer and reload; advanced and legacy late join; malformed-state rejection; no echo or personal storage');
 }
 
 (async () => {

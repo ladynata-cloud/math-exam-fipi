@@ -11,6 +11,8 @@
     ? 'Самое маленькое положительное число, которое делится на оба данных числа без остатка.'
     : 'Самое большое число, на которое оба данных числа делятся без остатка.';
   const levels = ['Первые шаги', 'Больше множителей', 'Закрепление'];
+  const primeChoices = Object.freeze([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]);
+  const defaultTaskId = 'nt-3-9';
   const taskMap = new Map(math.bank.map(function (task) { return [task.id, task]; }));
   const feedbackCodes = {
     none: ['none'],
@@ -34,7 +36,7 @@
     };
   }
   const requested = new URLSearchParams(window.location.search).get('task');
-  let state = initial(taskMap.has(requested) ? requested : math.bank[0].id, 'guided');
+  let state = initial(taskMap.has(requested) ? requested : defaultTaskId, 'guided');
 
   function fail() { throw new Error('Invalid number theory trainer state'); }
   function record(value, keys) {
@@ -452,14 +454,12 @@
       field = input('divisor-' + side, state['divisorDraft' + upper], 'На какой простой делитель разделим ' + remainder + '?');
       field.row.append(button('accept-' + side, 'Проверить шаг', 'primary'));
       calculation.append(field.wrap);
-      if (task().level === 1) {
-        const choices = h('div', 'prime-choices'); choices.append(h('span', '', 'Можно выбрать:'));
-        [2, 3, 5, 7].forEach(function (prime) {
-          const choice = button('', prime); choice.dataset.prime = String(prime); choice.dataset.side = side;
-          choice.setAttribute('aria-label', 'Выбрать простой делитель ' + prime); choices.append(choice);
-        });
-        calculation.append(choices);
-      }
+      const choices = h('div', 'prime-choices'); choices.append(h('span', '', 'Можно выбрать простой делитель:'));
+      primeChoices.forEach(function (prime) {
+        const choice = button('', prime); choice.dataset.prime = String(prime); choice.dataset.side = side;
+        choice.setAttribute('aria-label', 'Выбрать простой делитель ' + prime); choices.append(choice);
+      });
+      calculation.append(choices);
     } else {
       calculation.append(paragraph('Делитель ' + chosen + ' записан справа.', 'accepted-divisor'));
       field = input('quotient-' + side, state['quotientDraft' + upper], 'Сколько получится: ' + remainder + ' : ' + chosen + '?');
@@ -655,7 +655,7 @@
   render();
   if (window.MathExamBoard) {
     window.MathExamBoard.register({
-      id: 'grade6-' + kind, version: '1.0.0', stateSchemaVersion: 1,
+      id: 'grade6-' + kind, version: '1.1.0', stateSchemaVersion: 1,
       parentOrigin: window.location.origin, getState: getState, applyState: applyState,
       subscribe: function (callback) { notify = callback; return function () { notify = function () {}; }; }
     });

@@ -30,14 +30,19 @@ function planCoursesMarkup(value,{teacher=false}={}){
  const cards=[];
  const board='https://mathexam.space/trainers/trainer-board.html?trainer=%2Fschool%2Fpeterson6%2F';
  if(tokens.has(canonical))cards.push(`<section class="panel prep-linked-course" data-plan-course="peterson6"><p class="eyebrow">КУРС В УЧЕБНОМ ПЛАНЕ</p><h2>Петерсон · 6 класс · часть 1</h2><p>Выбери тему, решай задачи и тренируй трудные вычисления отдельно. После тренировки можно вернуться к исходной задаче.</p><div class="actions"><a class="button primary" data-plan-course-open href="${canonical}" target="_blank" rel="noopener noreferrer">Открыть курс →</a><a class="button" data-plan-course-practice href="${canonical}#skills" target="_blank" rel="noopener noreferrer">Тренировка вычислений</a>${teacher?`<a class="button" data-plan-course-board href="${board}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div><p class="small" data-plan-course-note>Личные решения курса сохраняются в этом браузере и не входят в итоги кабинета. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p></section>`);
- // Only fixed public trainer URLs become cards. Notes are neither HTML nor a
- // source of managed content IDs; no attempt or result is created here.
+ cards.push(numberTheoryCardsMarkup({teacher,ids:['grade6-nok','grade6-nod'].filter(id=>tokens.has('https://mathexam.space/trainers/'+id+'.html'))}));
+ return cards.join('');
+}
+// The same fixed cards serve plan references and the explicit two-trainer route.
+// Caller-provided IDs can only select from this allowlist, never supply a URL.
+function numberTheoryCardsMarkup({teacher=false,ids=['grade6-nok','grade6-nod']}={}){
+ const cards=[];
  for(const [id,title,description] of [
   ['grade6-nok','НОК · наименьшее общее кратное','Разложи числа на простые множители и добавь недостающие. Разбери пример по шагам, затем потренируйся самостоятельно.'],
   ['grade6-nod','НОД · наибольший общий делитель','Разложи числа на простые множители и найди общие пары. Разбери пример по шагам, затем потренируйся самостоятельно.']
  ]){
   const href='https://mathexam.space/trainers/'+id+'.html';
-  if(!tokens.has(href))continue;
+  if(!ids.includes(id))continue;
   const shared='https://mathexam.space/trainers/trainer-board.html?trainer='+encodeURIComponent('/trainers/'+id+'.html');
   cards.push(`<section class="panel prep-linked-course" data-plan-course="${id}"><p class="eyebrow">ТРЕНАЖЁР · 6 КЛАСС</p><h2>${title}</h2><p>${description}</p><div class="actions"><a class="button primary" data-plan-course-open href="${href}" target="_blank" rel="noopener noreferrer">Потренироваться →</a>${teacher?`<a class="button" data-plan-course-board href="${shared}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div></section>`);
  }
@@ -137,5 +142,5 @@ function mountRoute(host,context){
  async function load(){if(teacher())return;const result=await Promise.allSettled([context.api('/rewards'),context.api('/plan'),context.api('/progress')]);if(!alive)return;loaded=true;if(result[0].status==='fulfilled'){rewards=result[0].value.rewards||result[0].value;rewardsError=false;}else rewardsError=true;if(result[1].status==='fulfilled'){plan=result[1].value.plan||result[1].value;planError=false;}else planError=true;if(result[2].status==='fulfilled'){progress=result[2].value.progress;progressError=false;}else progressError=true;render();}
  render();load();return()=>{alive=false;section.remove();};
 }
-root.LearningPreparationUI={mountRoute,focusMarkup,planCoursesMarkup};
+root.LearningPreparationUI={mountRoute,focusMarkup,planCoursesMarkup,numberTheoryCardsMarkup};
 })(window);

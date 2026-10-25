@@ -10,6 +10,9 @@ on:
       - 'trainers/trainer-board.html'
       - 'trainers/board-bridge.js'
       - 'learning/preparation.js'
+      - 'learning/attached-course.js'
+      - 'learning/app.js'
+      - 'learning/teaching.js'
       - 'learning/index.html'
       - 'tools/number-theory*'
       - 'tools/learning-number-theory*'
@@ -25,6 +28,9 @@ on:
       - 'trainers/trainer-board.html'
       - 'trainers/board-bridge.js'
       - 'learning/preparation.js'
+      - 'learning/attached-course.js'
+      - 'learning/app.js'
+      - 'learning/teaching.js'
       - 'learning/index.html'
       - 'tools/number-theory*'
       - 'tools/learning-number-theory*'
@@ -54,17 +60,25 @@ jobs:
         run: |
           node --check trainers/number-theory/math.js
           node --check trainers/number-theory/trainer.js
-          node --test tools/number-theory.test.cjs tools/number-theory.dom.cjs tools/learning-number-theory-plan.dom.cjs tools/learning-peterson-plan.dom.cjs tools/learning-focus-links.dom.cjs
-          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          node --check learning/attached-course.js
+          node --check learning/app.js
+          node --check learning/teaching.js
+          node --check learning/preparation.js
+          node --test tools/number-theory.test.cjs tools/number-theory.dom.cjs tools/learning-number-theory-plan.dom.cjs tools/learning-number-theory-route.dom.cjs tools/learning-peterson-plan.dom.cjs tools/learning-focus-links.dom.cjs tools/merzlyak-cabinet.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js board-server/test/learning-profiles.test.js
           node tools/board-picker-smoke.cjs
           git diff --check
       - name: Synthetic teacher and pupil on the actual board
         run: NUMBER_THEORY_SHOTS="$RUNNER_TEMP/number-theory-shots" node tools/number-theory-board.browser.cjs
+      - name: Selected two-trainer cabinet through real local profile saves
+        run: NUMBER_THEORY_ROUTE_ARTIFACTS="$RUNNER_TEMP/number-theory-route-shots" node tools/learning-number-theory-route.browser.cjs
       - name: Preserve visual evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: number-theory-browser-evidence
-          path: ${{ runner.temp }}/number-theory-shots
+          path: |
+            ${{ runner.temp }}/number-theory-shots
+            ${{ runner.temp }}/number-theory-route-shots
           if-no-files-found: warn
           retention-days: 14

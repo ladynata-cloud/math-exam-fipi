@@ -297,7 +297,7 @@ test('runtime registry has exact parity with all eighteen mirror authorizations'
     {
       trainerId: 'grade6-nod',
       file: 'trainers/grade6-nod.html',
-      version: '1.0.0',
+      version: '1.1.0',
       stateSchemaVersion: 1,
       bridgeProtocolVersion: 1,
       allowLegacyHtml: false
@@ -305,7 +305,7 @@ test('runtime registry has exact parity with all eighteen mirror authorizations'
     {
       trainerId: 'grade6-nok',
       file: 'trainers/grade6-nok.html',
-      version: '1.0.0',
+      version: '1.1.0',
       stateSchemaVersion: 1,
       bridgeProtocolVersion: 1,
       allowLegacyHtml: false
