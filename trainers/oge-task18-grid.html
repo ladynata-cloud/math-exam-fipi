@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
+<script src="oge-geometry-board-mode.js?v=20261025"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ОГЭ, задание 18: фигуры на клетчатой бумаге | MathExam</title>
@@ -147,10 +148,11 @@ const QUIZ_TOTAL=10;   // размер зачёта
 const PASS_AT=8;       // зачёт сдан при 8 из 10
 const CP=(function(){
   var KEY="mathExamCourseProgress.v1";
-  var RO=/[?&]selftest=1/.test(location.search||"");
+  var RO=/[?&]selftest=1/.test(location.search||"") || window.OgeGeometryBoardMode === true;
   function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
   function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
   function readAll(){
+    if (window.OgeGeometryBoardMode === true) return {};
     try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
     catch (e) { return {}; }
   }
@@ -1148,7 +1150,8 @@ function drawTrain(state){
       fb.classList.add('ok');fb.innerHTML='Верно! Ответ '+fmt(t.ans)+'.';
       logE({e:'quiz_ok',sub:t.sub,id:t.id});
       /* решено без показа результата — в счёт; журнал: один вердикт на задачу */
-      if(!TR.shown){CP.solvedOne(t.sub); if(!TR.missed)CP.mlog(t.sub,true);}
+      if(window.OgeGeometryHelpUsed)fb.textContent += " Решено с подсказкой.";
+      if(!TR.shown&&!window.OgeGeometryHelpUsed){CP.solvedOne(t.sub); if(!TR.missed)CP.mlog(t.sub,true);}
       close();
     }else{
       if(!TR.missed){TR.missed=true;CP.mlog(t.sub,false);}
@@ -1529,7 +1532,7 @@ const MinimalGeometry=(()=>{
   function part2(anchor){const note=document.createElement('p');note.className='minimal-part2-note';note.textContent='На ОГЭ нужно записать полное решение с обоснованием.';anchor.appendChild(note);}
   return {shell,secondary,hint,disclosure,part2};
 })();
-if(!CP.RO && document.documentElement.nodeType===1){
+if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.nodeType===1){
   MinimalGeometry.shell('#main','ОГЭ №18 · Фигуры на клетках');
   const originalDrawTrain=drawTrain;
   drawTrain=function(state){originalDrawTrain(state);const main=document.getElementById('main');
@@ -1547,5 +1550,7 @@ if(!CP.RO && document.documentElement.nodeType===1){
 </script><script src="task19-textbook-data.js"></script>
 <script src="task19-reference.js"></script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-geometry.js"></script>
+<script src="oge-course-geometry.js?v=20261025-oge-geometry"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-geometry-board.js?v=20261025"></script>
 </body></html>

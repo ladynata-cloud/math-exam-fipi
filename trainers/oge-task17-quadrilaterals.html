@@ -1,5 +1,6 @@
 ﻿<!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ru"><head>
+<script src="oge-geometry-board-mode.js?v=20261025"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ОГЭ №17 — Четырёхугольники · тренажёр</title>
 <style>
 :root{--bg:#e8e4db;--card:#fffdf7;--ink:#1a1a2e;--muted:#5b5b6e;--line:#d8d2c2;--accent:#2d70b3;--good:#16a34a;--bad:#dc2626;--warn:#c2410c;--amber:#d97706;--violet:#7c3aed;--teal:#0d9488;--pink:#db2777;--soft:#eef4fa}
@@ -1117,10 +1118,11 @@ const QUIZ_TOTAL=10;   // размер зачёта
 const PASS_AT=8;       // зачёт сдан при 8 из 10
 const CP=(function(){
   var KEY="mathExamCourseProgress.v1";
-  var RO=/[?&]selftest=1/.test(location.search||"");
+  var RO=/[?&]selftest=1/.test(location.search||"") || window.OgeGeometryBoardMode === true;
   function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
   function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
   function readAll(){
+    if (window.OgeGeometryBoardMode === true) return {};
     try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
     catch (e) { return {}; }
   }
@@ -1410,14 +1412,15 @@ function renderTrain(newTask){hdr();
   /* missed — промах по задаче уже записан в журнал; shown — открыт шаг решения
      или решение целиком: задача тогда не идёт в счёт решённых самостоятельно */
   let missed=false, shown=false, done=false;
-  const finish=()=>{done=true;$('nxt').style.display='inline-block';$('chk').disabled=true;};
+  const finish=()=>{done=true;$('ans').disabled=true;$('nxt').style.display='inline-block';$('chk').disabled=true;};
   $('chk').onclick=()=>{if(done)return;const raw=$('ans').value;
     /* пустое или нечисловое поле — не попытка и не промах */
     if(!raw.trim()||(t.ansFmt!=='concat'&&parseAns(raw)==null)){fb.className='msg warn';fb.textContent='Впишите ответ числом: целое, десятичная дробь или дробь вида 7/2.';return;}
     if(isRight(t,raw)){
       fb.className='msg ok';fb.textContent='Верно! Ответ: '+fnum(t.ans)+'.'+(shown?' Шаги решения были открыты — задача засчитана как разобранная.':'');
       upd(rec=>{rec.solved=CP.num(rec.solved)+1;});hdr();logE('solved',{sub:t.key});
-      if(!shown){CP.solvedOne(t.key); if(!missed)CP.mlog(t.key,true);}   // один вердикт на задачу
+      if(window.OgeGeometryHelpUsed)fb.textContent += " Решено с подсказкой.";
+      if(!shown&&!window.OgeGeometryHelpUsed){CP.solvedOne(t.key); if(!missed)CP.mlog(t.key,true);}   // один вердикт на задачу
       finish();}
     else{const v=parseAns(raw);
       if(!missed){missed=true;CP.mlog(t.key,false);}
@@ -1735,7 +1738,7 @@ const MinimalGeometry=(()=>{
   function part2(anchor){const note=document.createElement('p');note.className='minimal-part2-note';note.textContent='На ОГЭ нужно записать полное решение с обоснованием.';anchor.appendChild(note);}
   return {shell,secondary,hint,disclosure,part2};
 })();
-if(!CP.RO && document.documentElement.nodeType===1){
+if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.nodeType===1){
   MinimalGeometry.shell('#main','ОГЭ №17 · Четырёхугольники');
   const originalRenderTrain=renderTrain;
   renderTrain=function(newTask){originalRenderTrain(newTask);const main=document.getElementById('main');
@@ -1753,6 +1756,8 @@ if(!CP.RO && document.documentElement.nodeType===1){
 <script src="task19-textbook-data.js"></script>
 <script src="task19-reference.js"></script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-geometry.js"></script>
+<script src="oge-course-geometry.js?v=20261025-oge-geometry"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-geometry-board.js?v=20261025"></script>
 </body>
 </html>

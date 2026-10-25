@@ -572,6 +572,76 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместная работа: пример, разложение на простые множители, шаги, введённый ответ и подсказки."
+    },
+    {
+      "trainerId": "oge-task15-triangles",
+      "file": "trainers/oge-task15-triangles.html",
+      "title": "ОГЭ №15 · Треугольники",
+      "group": "ОГЭ / геометрия 15–19",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная тренировка: условие, ответ, помощь, шаги и модель. Личный прогресс и зачёт не изменяются."
+    },
+    {
+      "trainerId": "oge-task16-circle",
+      "file": "trainers/oge-task16-circle.html",
+      "title": "ОГЭ №16 · Окружность и связанные фигуры",
+      "group": "ОГЭ / геометрия 15–19",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная тренировка: условие, ответ, помощь, шаги и модель. Личный прогресс и зачёт не изменяются."
+    },
+    {
+      "trainerId": "oge-task17-quadrilaterals",
+      "file": "trainers/oge-task17-quadrilaterals.html",
+      "title": "ОГЭ №17 · Четырёхугольники",
+      "group": "ОГЭ / геометрия 15–19",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная тренировка: условие, ответ, помощь, шаги и модель. Личный прогресс и зачёт не изменяются."
+    },
+    {
+      "trainerId": "oge-task18-grid",
+      "file": "trainers/oge-task18-grid.html",
+      "title": "ОГЭ №18 · Геометрия на клетках",
+      "group": "ОГЭ / геометрия 15–19",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная тренировка: условие, ответ, помощь, шаги и модель. Личный прогресс и зачёт не изменяются."
+    },
+    {
+      "trainerId": "oge-task19",
+      "file": "trainers/task19-trainer.html",
+      "title": "ОГЭ №19 · Геометрические утверждения",
+      "group": "ОГЭ / геометрия 15–19",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная тренировка: условие, ответ, помощь, шаги и модель. Личный прогресс и зачёт не изменяются."
     }
   ]
 }
