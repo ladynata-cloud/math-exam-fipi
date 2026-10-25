@@ -2,6 +2,30 @@
 
 Updated: 2026-10-25 (Asia/Novosibirsk)
 
+## In progress: static catalog discovery and the current Vilenkin entry
+
+- [Scope](tasks/SEO_STATIC_CATALOG_COURSE_ENTRY_20261025.md), SMALL bounded
+  HTML/metadata follow-up; base `76f99426e32e7afa5917a26f540ea84274e5d9b0`.
+- Three existing catalogs gain ordinary HTML links before JavaScript renders;
+  their data, destinations, filters and stored progress remain unchanged.
+- The Vilenkin canonical, public catalog and sitemap now identify the actual
+  textbook entry; managed and legacy routes retain their existing behavior.
+- Local SEO, catalog parity and Vilenkin entry/retained-work/browser checks
+  pass; independent scoped review has no remaining blockers. Ready for one
+  Draft PR and exact-head CI. Merge and deployment require a separate decision.
+
+## Published: SEO consistency and Vilenkin textbook entry
+
+- [PR #337](https://github.com/ladynata-cloud/math-exam-fipi/pull/337) corrected
+  inconsistent redirect/fragment canonicals and expanded reviewed course
+  discovery. Correct home and OGE canonicals were retained.
+- [PR #339](https://github.com/ladynata-cloud/math-exam-fipi/pull/339), merged as
+  `76f99426e32e7afa5917a26f540ea84274e5d9b0`, made the Vilenkin textbook view the
+  normal public entry: 24 sections and 192 selected textbook tasks. The older
+  managed/legacy course remains available through its established routes.
+- The bounded indexing follow-up above reconciles public discovery with that
+  new entry; it makes no claim about historical search-engine decisions.
+
 ## In progress: college board native-event ordering fix
 
 - [Scope](tasks/COLLEGE_FUNCTIONS_BOARD_EVENT_ORDER.md), SMALL scheduling fix;

@@ -157,7 +157,15 @@ display:grid;place-items:center;font-weight:900;font-size:16px}
 <h2>Порядок прохождения</h2>
 <p>Первые два тренажёра дают смысл и вычисление. Третий — единственный, где не нужно считать:
 он тренирует выбор действия по тексту, и именно на этом шаге чаще всего теряют баллы.</p>
-<div class="map" id="map"></div>
+<div class="map" id="map"><!-- seo-catalog-fallback:map:start -->
+<a class="item" href="percent-meaning.html"><div class="num">1</div><div><h3>100%, 1% и доля</h3><p>Что берут за целое, чему равен один процент, как выразить часть в процентах.</p></div></a>
+<a class="item" href="percent-of-number-and-whole.html"><div class="num">2</div><div><h3>Три вопроса о проценте</h3><p>Процент от числа, число по его проценту и «сколько процентов» — через один общий приём.</p></div></a>
+<a class="item" href="percent-choose-question.html"><div class="num">3</div><div><h3>Что спрашивают в задаче</h3><p>Разобрать условие и выбрать действие. Здесь ничего не считают — только рассуждают.</p></div></a>
+<a class="item" href="percent-change.html"><div class="num">4</div><div><h3>Увеличение, уменьшение и изменение</h3><p>Изменить величину на процент, найти процент изменения, два изменения подряд.</p></div></a>
+<a class="item" href="proportion.html"><div class="num">5</div><div><h3>Пропорция</h3><p>Крест-накрест, составление пропорции по задаче и проценты как её частный случай.</p></div></a>
+<a class="item" href="percent-final-checkpoint.html"><div class="num">6</div><div><h3>Итоговая проверка</h3><p>Все навыки вперемешку — так, как они встречаются в задачах 1–5.</p></div></a>
+
+<!-- seo-catalog-fallback:map:end --></div>
 </section>
 
 <section class="card">
@@ -194,6 +202,7 @@ let store={};
 try{store=(JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}').topics)||{}}catch(e){}
 const box=document.getElementById('map');
 let doneTotal=0,allTotal=0,firstOpen=-1;
+box.replaceChildren();
 TOPICS.forEach((t,i)=>{
  const p=store[t.id]||{},solved=Math.min(t.n,p.solved||0),ready=solved>=t.n;
  doneTotal+=solved;allTotal+=t.n;

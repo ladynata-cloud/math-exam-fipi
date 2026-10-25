@@ -29,3 +29,7 @@ jobs:
           python3 tools/build-sitemap.py --check
           python3 tools/seo-check.py
           git diff --check
+      - name: Static catalog and JavaScript destination parity
+        run: |
+          npm install --prefix "$RUNNER_TEMP/seo-catalog-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+          NODE_PATH="$RUNNER_TEMP/seo-catalog-qa/node_modules" node tools/seo-catalog.test.cjs
