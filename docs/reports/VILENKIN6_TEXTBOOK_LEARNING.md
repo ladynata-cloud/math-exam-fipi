@@ -88,6 +88,13 @@ nor a green content test constitutes an external verdict. There is no standing
 waiver for a missing consultation or unavailable provider.
 
 Release requires the separate owner decision under `AGENTS.md`, followed by
-the base-drift guard. Rollback restores the public entry and catalogue links;
+the base-drift guard. Rollback restores the public entry and older-course overview link;
 the old runtime and cloud records are untouched. New browser progress should
 be retained, not erased, during rollback.
+
+The shared catalogue copy edit was dropped when the separately published SEO
+PR #337 changed the same minified file. The revised Vilenkin public entry and
+older-course overview link remain in this task. The existing catalogue copy
+continues to describe the retained earlier edition; its editorial update is
+not part of this patch. No concurrent main changes were copied into the task
+branch and no branch merge/rebase/reset was used.

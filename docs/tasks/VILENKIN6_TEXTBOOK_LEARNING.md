@@ -79,3 +79,9 @@ During implementation remote main advanced to
 Its changed files do not overlap this task. The task branch remains based on
 8e681831e874a9af129f50c16179bd2a424c5474; no rebase, reset or branch merge was
 performed. A read-only composed-tree check is required before release.
+
+Main subsequently advanced to 3c6681b06313fb411b7b8e8c73dd62f08fbc0017
+through SEO PR #337, which overlapped the optional shared catalogue copy edit.
+That optional edit was removed from this task; Vilenkin runtime/default entry
+and its old overview link remain. Main's catalogue changes are preserved by
+the composed result without updating or merging main into the task branch.
