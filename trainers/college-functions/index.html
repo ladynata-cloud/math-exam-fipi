@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Графики функций: пошаговый тренажёр для колледжа | MathExam</title>
+  <meta name="description" content="Постройте и исследуйте графики функций: корни, параболы, показательные, логарифмы и функции по частям. 40 задач, пошаговые подсказки и самостоятельная проверка.">
+  <link rel="canonical" href="https://mathexam.space/trainers/college-functions/">
+  <meta property="og:title" content="Графики функций — от первой точки до исследования">
+  <meta property="og:description" content="40 задач для колледжа. Область определения, таблица точек, график и свойства — шаг за шагом.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mathexam.space/trainers/college-functions/">
+  <link rel="stylesheet" href="./style.css?v=1">
+  <script src="./data.js?v=1" defer></script>
+  <script src="./engine.js?v=1" defer></script>
+  <script src="./plot.js?v=1" defer></script>
+  <script src="./app.js?v=1" defer></script>
+</head>
+<body>
+  <header class="topbar"><a href="../../" class="brand">MathExam<span>Математика по шагам</span></a><a href="../">Все тренажёры <span aria-hidden="true">↗</span></a></header>
+  <main>
+    <div class="heading"><div><p class="eyebrow">КОЛЛЕДЖ · ПОСТРОЕНИЕ И ИССЛЕДОВАНИЕ</p><h1>Графики функций</h1><p class="intro">От допустимых значений x — к точкам, графику и его свойствам.</p></div><button id="diagnose" class="secondary">С чего начать? <span>8 коротких вопросов</span></button></div>
+    <nav id="families" class="families" aria-label="Разделы курса"></nav>
+    <section class="toolbar" aria-label="Выбор задания"><label class="task-select">Задание<select id="task-select"></select></label><div class="modes" aria-label="Режим работы"><button id="learn-mode" aria-pressed="true">Учимся</button><button id="test-mode" aria-pressed="false">Самостоятельно</button></div><button id="next-task" class="secondary">Другая задача <span aria-hidden="true">→</span></button></section>
+    <p id="mode-note" class="mode-note"></p>
+    <div class="workspace" id="workspace">
+      <section class="graph-card" aria-label="Функция и координатная плоскость"><div class="function-head"><span id="task-id" class="badge"></span><div id="formula" class="formula"></div></div><svg id="graph" viewBox="0 0 640 460" role="img" aria-label="Координатная плоскость"></svg><p id="graph-caption" class="graph-caption"></p><div id="point-controls" class="point-controls"></div><details class="reference"><summary>Как записывать ответы</summary><div><p><b>Промежуток:</b> <code>[-2; +∞)</code>. Квадратная скобка включает границу, круглая — исключает. У бесконечности всегда круглая скобка.</p><p><b>Все числа:</b> <code>R</code> или <code>ℝ</code>. <b>Нет значений:</b> <code>нет</code> или <code>∅</code>.</p><p><b>Несколько частей:</b> <code>(-∞; 0) ∪ (2; +∞)</code>. Отдельное число: <code>{3}</code>. Разделитель внутри промежутка — точка с запятой.</p><p><b>Числа:</b> можно вводить <code>0,5</code>, <code>0.5</code> или <code>1/2</code>. Несколько нулей функции: <code>-2; 2</code>.</p><p>Вместо ∞ можно писать <code>inf</code>, вместо ∪ — <code>U</code>. На убывание и возрастание записывайте каждый промежуток отдельно.</p></div></details></section>
+      <section class="work-card" aria-label="Шаги решения"><div class="work-heading"><span id="step-counter"></span><span id="assistance" class="assistance"></span></div><div class="progress-track"><div id="step-progress"></div></div><div id="history" class="history"></div><div id="current-step"></div><div id="feedback" role="status" aria-live="polite"></div><div id="help-area"></div><div id="step-actions" class="step-actions"></div></section>
+    </div>
+    <section class="course-tools"><details id="progress-panel"><summary>Мои результаты <span id="progress-count"></span></summary><div id="progress-detail"></div><p class="muted">Работа сохраняется только в этом браузере. В другом браузере или после очистки данных её не будет.</p><button id="reset-progress" class="secondary">Сбросить мои результаты</button></details><details><summary>Памятка к курсу</summary><div class="cheatsheet"><p><b>Корень:</b> подкоренное выражение ≥ 0. Для таблицы удобно получить 0, 1, 4, 9.</p><p><b>Парабола:</b> найдите вершину. Возьмите точки справа и слева на одинаковом расстоянии от её оси.</p><p><b>Показательная:</b> любая степень положительного основания положительна. Линия, к которой график приближается, может не достигаться.</p><p><b>Логарифм:</b> аргумент строго больше нуля. logₐb=c означает aᶜ=b.</p><p><b>По частям:</b> сначала выберите подходящее условие, затем подставляйте x. На границах отмечайте закрашенные и выколотые точки.</p><p><b>Нуль функции</b> — значение x, при котором y=0. <b>Минимум</b> — наименьшее значение y.</p></div></details></section>
+    <footer><a href="../">Каталог тренажёров</a><span>40 графиков · 5 разделов · спокойная практика</span><a href="../../courses/">Учебные курсы</a></footer>
+  </main>
+  <dialog id="diagnostic-dialog" aria-labelledby="diagnostic-title"><div class="dialog-top"><h2 id="diagnostic-title">С чего начать?</h2><button id="close-diagnostic" class="icon" aria-label="Закрыть диагностику">×</button></div><p class="muted">8 вопросов без подсказок. После них появится рекомендация. Текущая задача сохранится.</p><div id="diagnostic-body"></div></dialog>
+  <noscript><p class="noscript">Для интерактивного тренажёра включите JavaScript. Здесь изучаются корни, параболы, показательные, логарифмы и функции по частям.</p></noscript>
+</body>
+</html>

@@ -1,0 +1,33 @@
+name: College functions trainer
+on:
+  pull_request:
+    paths:
+      - 'trainers/college-functions/**'
+      - '.github/workflows/college-functions.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/college-functions/**'
+      - '.github/workflows/college-functions.yml'
+permissions:
+  contents: read
+jobs:
+  mathematics-and-journeys:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install pinned DOM test dependency
+        run: |
+          npm install --prefix "$RUNNER_TEMP/college-functions-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+          echo "NODE_PATH=$RUNNER_TEMP/college-functions-qa/node_modules" >> "$GITHUB_ENV"
+      - name: Mathematical keys, parsing, graphs and all learner journeys
+        run: |
+          node --check trainers/college-functions/app.js
+          node --test trainers/college-functions/*.test.cjs
+          git diff --check
