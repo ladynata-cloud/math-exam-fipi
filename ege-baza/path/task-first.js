@@ -25,6 +25,7 @@
   return `<form id="${prefix}Form" class="task-first-form"><label for="${prefix}">${root.PathPracticeView.math(label)}</label><p id="${prefix}Format" class="muted">${format}</p><div class="actions"><input id="${prefix}" ${choices?'type="hidden"':''} maxlength="10000" autocomplete="off" aria-describedby="${prefix}Format" value="">${choices?`<div class="actions">${choices.map((choice,i)=>`<button type="button" data-${prefix}-choice="${E(choice.value)}" aria-pressed="false">${root.PathPracticeView.math(choice.label)}</button>`).join('')}</div>`:''}<button class="primary" type="submit">${prefix==='answer'?'Проверить ответ':'Проверить этот шаг'}</button></div></form>`;
  }
  function primaryVisual(task) {
+  if(root.PathStereoFigures?.supports(task))return root.PathStereoFigures.visual(task);
   if(task.display)return '';
   const m=task.model, line=(d)=>`<path d="${d}" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>`,label=(x,y,text)=>`<text x="${x}" y="${y}" text-anchor="middle">${E(text)}</text>`;
   let picture='';
