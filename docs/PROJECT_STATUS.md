@@ -2,7 +2,26 @@
 
 Updated: 2026-10-25 (Asia/Novosibirsk)
 
-## In progress: college function graphs on the shared board
+## In progress: college board native-event ordering fix
+
+- [Scope](tasks/COLLEGE_FUNCTIONS_BOARD_EVENT_ORDER.md), SMALL scheduling fix;
+  base `d73200d80f81334699d2e78d0fcc22f45d7d7f2c`, branch
+  `fix/college-functions-event-order`.
+- Live release QA found that synchronized input could arrive one action late:
+  the capture listener's Promise microtask could read state before the
+  application handler updated it. Earlier synthetic event tests missed this
+  native-browser ordering.
+- Added a timer after event dispatch, a focused ordering regression and an
+  adapter cache-reference bump. Authentication, protocol, persistence and
+  mathematical content remain unchanged.
+- Local timing tests pass 3/3 (the old adapter fails two); all seven existing
+  board tests and independent internal review pass. Real two-frame cloud
+  preview verified the first action, hints, table/curve and control handoff
+  without observer echo.
+- Next: exact-head CI, publication and deployed two-participant verification.
+  The production synchronization gate remains pending at this checkpoint.
+
+## Published, live fix pending: college graphs on the shared board
 
 - [Scope](tasks/COLLEGE_FUNCTIONS_BOARD.md), MEDIUM bounded adapter and selected
   course attachment; base `741e9ce987cc9bdb452463d2d835632e5233c472`, branch
@@ -10,8 +29,14 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
 - Owner requested mirror synchronization, then a new college learner cabinet
   with this course. Existing shared SDK and versioned profile form are reused;
   no new server/authentication contract is planned.
-- Next: finish two-participant and isolation gates, publish, verify the live
-  backend registry and room, then confirm saved course placement privately.
+- [PR338](https://github.com/ladynata-cloud/math-exam-fipi/pull/338) published as
+  `d73200d80f81334699d2e78d0fcc22f45d7d7f2c`. All 14 checked public assets,
+  including the cabinet entry and attached-course script, match this merge;
+  the deployed backend registry contains all 26 expected mirrors.
+- Live two-participant verification exposed the event-order defect above.
+  The overall synchronization gate is not passed; deployed bytes and passing
+  synthetic tests do not override that finding. Learner-specific verification
+  remains private and is not reproduced in this status document.
 
 ## Published: college function graphs
 
