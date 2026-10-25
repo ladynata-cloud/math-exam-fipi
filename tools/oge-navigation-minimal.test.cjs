@@ -10,7 +10,7 @@ const base=process.env.OGE_BASE_ROOT||root;
 const files=['trainers/oge-course/index.html','oge/index.html'];
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const load=(f,hash='')=>new JSDOM(read(f),{url:'https://mathexam.space/'+f+hash,runScripts:'dangerously'});
-test('course keeps every task route and the required honest lesson/variant labels',()=>{
+test('course keeps every task route and the required honest trainer/variant labels',()=>{
  const d=load(files[0]).window.document;
  assert.equal(d.querySelectorAll('h1').length,1);
  for(let n=6;n<=25;n++){
@@ -18,8 +18,9 @@ test('course keeps every task route and the required honest lesson/variant label
   assert.equal(links.length,1,'line '+n);
  }
  assert(d.querySelector('h3 a[href="/trainers/oge-1-5-trainers/"]'));
- const lesson=d.querySelector('a[href="/oge/geometry/task-15-external-angle.html"]').closest('article');
- assert.match(lesson.textContent,/урок с разбором/);
+ const trainer=d.querySelector('a[href="/trainers/oge-task15-triangles.html"]').closest('article');
+ assert.match(trainer.textContent,/биссектрисы.*по шагам/);
+ assert(d.querySelector('#gaps a[href="/oge/geometry/task-15-external-angle.html"]'));
  assert.match(d.querySelector('#full-variants').textContent,/Не является официальным материалом ФИПИ/);
  assert(d.querySelector('#full-variants h3 a[href="/trainers/oge-2027-analogue-1.html"]'));
  assert.match(d.querySelector('#geometry').textContent,/рисунки и контрпримеры/);

@@ -1,6 +1,6 @@
 {
   "stage": "1",
-  "updated": "2026-10-21",
+  "updated": "2026-10-25",
   "notes": "Первый этап: скачивание, промпты и архивы для ключевых публичных тренажёров. Служебные, тестовые и персональные страницы не включены.",
   "trainers": [
     {
@@ -177,6 +177,8 @@
       "package": "/downloads/trainers/task19-trainer/task19-trainer-package.zip",
       "inlineAssets": [
         "/trainers/task19-visual.css",
+        "/trainers/board-bridge.js",
+        "/trainers/task19-board-session.js",
         "/trainers/task19-visual-data.js",
         "/trainers/task19-models-triangles.js",
         "/trainers/task19-models-circles.js",

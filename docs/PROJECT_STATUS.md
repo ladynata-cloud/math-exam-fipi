@@ -2,6 +2,15 @@
 
 Updated: 2026-10-25 (Asia/Novosibirsk)
 
+## In progress: OGE geometry 15–19 shared practice
+
+- [Scope](tasks/OGE_15_19_SHARED_BOARD.md), HIGH review; base `fbacc5b14cca8f698733212c91823ff82437e65b` (published PR334), branch `feat/oge-15-19-board`; routine additive conflicts preserve both releases.
+- Production audit: the five course pages were not registered semantic mirrors; task15 linked only one external-angle lesson.
+- Prepared: restored task15 candidate/remediation (26 types/66 variants), five isolated shared-practice adapters, corrected square/incircle and trapezoid-midline models, and fixed selected-plan cards. Existing personal work and other mirrors remain separate.
+- FIPI project2027 examples checked; no mathematics structure/content change is announced. Task19 remains single-statement understanding practice, not a full exam simulator.
+- Mathematical, DOM/state and actual local Socket.IO tests are recorded in the task. Publication and selected-cabinet activation are not yet claimed.
+- Next: exact-head cloud gates and required external review, then release and live verification if all gates permit it.
+
 ## In progress: harder НОК / НОД and a selected two-trainer cabinet
 
 - [Scope](tasks/GRADE6_NOK_NOD_ADVANCED_ONLY.md), MEDIUM bounded content/UI

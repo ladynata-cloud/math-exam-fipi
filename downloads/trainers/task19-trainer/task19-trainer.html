@@ -124,6 +124,8 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
 
 
 
+
+
 </head>
 <body>
   <header><div class="page-width"><h1>ОГЭ №19</h1><p>Геометрические утверждения</p></div></header>
@@ -159,6 +161,472 @@ svg .t19-linked-active{filter:drop-shadow(0 0 2px currentColor);animation:t19-em
     </details>
   </main>
   <noscript><p>Для тренировки включи JavaScript в браузере.</p></noscript>
+<script data-inline-source="/trainers/board-bridge.js">
+(function (global) {
+  'use strict';
+
+  const PROTOCOL_VERSION = 1;
+  const DEFAULT_HYDRATION_TIMEOUT_MS = 10000;
+  const MAX_STATE_BYTES = 64 * 1024;
+  const MAX_STATE_DEPTH = 8;
+  const MAX_ARRAY_LENGTH = 2000;
+  const VERSION_STATE_KEYS = new Set([
+    'protocolVersion',
+    'trainerVersion',
+    'stateSchemaVersion'
+  ]);
+  const MESSAGE_TYPES = new Set([
+    'mathexam:hydrate',
+    'mathexam:request-trainer-state',
+    'mathexam:apply-trainer-state'
+  ]);
+  let activeRegistration = null;
+
+  function utf8Size(value) {
+    if (typeof TextEncoder === 'function') {
+      return new TextEncoder().encode(value).length;
+    }
+    return unescape(encodeURIComponent(value)).length;
+  }
+
+  function looksLikeHtml(value) {
+    return /<\/?[a-z][^>]*>/i.test(value);
+  }
+
+  function validateState(state, options) {
+    const allowHtml = options && options.allowHtml === true;
+    const seen = new Set();
+
+    function visit(value, depth, key) {
+      if (depth > MAX_STATE_DEPTH) return 'state-too-deep';
+      if (value === null) return '';
+      const type = typeof value;
+      if (type === 'string') {
+        return !allowHtml && looksLikeHtml(value) ? 'state-html-not-allowed' : '';
+      }
+      if (type === 'number') return Number.isFinite(value) ? '' : 'state-number-invalid';
+      if (type === 'boolean') return '';
+      if (type !== 'object') return 'state-value-not-json-safe';
+      if (seen.has(value)) return 'state-cycle';
+      seen.add(value);
+      if (Array.isArray(value)) {
+        if (value.length > MAX_ARRAY_LENGTH) return 'state-array-too-large';
+        for (let index = 0; index < value.length; index += 1) {
+          const error = visit(value[index], depth + 1, String(index));
+          if (error) return error;
+        }
+        seen.delete(value);
+        return '';
+      }
+      const prototype = Object.getPrototypeOf(value);
+      if (prototype !== Object.prototype && prototype !== null) return 'state-object-invalid';
+      for (const entry of Object.keys(value)) {
+        if (entry === '__proto__' || entry === 'prototype' || entry === 'constructor') {
+          return 'state-key-invalid';
+        }
+        if (depth === 1 && VERSION_STATE_KEYS.has(entry)) return 'state-version-in-body';
+        if (!allowHtml && /html$/i.test(entry)) return 'state-html-not-allowed';
+        const error = visit(value[entry], depth + 1, entry);
+        if (error) return error;
+      }
+      seen.delete(value);
+      return '';
+    }
+
+    if (!state || typeof state !== 'object' || Array.isArray(state)) {
+      return { ok: false, code: 'state-object-required' };
+    }
+    const code = visit(state, 1, 'state');
+    if (code) return { ok: false, code };
+    try {
+      const serialized = JSON.stringify(state);
+      if (utf8Size(serialized) > MAX_STATE_BYTES) {
+        return { ok: false, code: 'state-too-large' };
+      }
+      return { ok: true, serialized };
+    } catch (_error) {
+      return { ok: false, code: 'state-serialize-failed' };
+    }
+  }
+
+  function createInstanceId() {
+    try {
+      if (global.crypto && typeof global.crypto.randomUUID === 'function') {
+        return global.crypto.randomUUID();
+      }
+      if (global.crypto && typeof global.crypto.getRandomValues === 'function') {
+        const bytes = new Uint8Array(16);
+        global.crypto.getRandomValues(bytes);
+        bytes[6] = (bytes[6] & 15) | 64;
+        bytes[8] = (bytes[8] & 63) | 128;
+        const hex = Array.from(bytes, value => value.toString(16).padStart(2, '0')).join('');
+        return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+      }
+    } catch (_error) {
+      // Fall through to a non-cryptographic identity used only for message correlation.
+    }
+    return `bridge-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+  }
+
+  function inertHandle() {
+    return Object.freeze({
+      notifyStateChanged() {},
+      isApplyingRemoteState() { return false; },
+      destroy() {}
+    });
+  }
+
+  function requireCoreConfig(config) {
+    if (!config || typeof config !== 'object') throw new TypeError('Bridge config is required');
+    if (typeof config.id !== 'string' || !config.id.trim()) throw new TypeError('Bridge id is required');
+    if (typeof config.version !== 'string' || !config.version.trim()) throw new TypeError('Bridge version is required');
+    if (!Number.isInteger(config.stateSchemaVersion) || config.stateSchemaVersion < 1) {
+      throw new TypeError('Bridge stateSchemaVersion must be a positive integer');
+    }
+    if (typeof config.getState !== 'function') throw new TypeError('Bridge getState is required');
+    if (typeof config.applyState !== 'function') throw new TypeError('Bridge applyState is required');
+    if (config.subscribe !== undefined && typeof config.subscribe !== 'function') {
+      throw new TypeError('Bridge subscribe must be a function');
+    }
+    if (typeof config.parentOrigin !== 'string' || !config.parentOrigin.trim() || config.parentOrigin === '*') {
+      throw new TypeError('Bridge parentOrigin must be an exact trusted origin');
+    }
+  }
+
+  function requireConfig(config) {
+    requireCoreConfig(config);
+    let parentOrigin;
+    try {
+      parentOrigin = new URL(config.parentOrigin).origin;
+    } catch (_error) {
+      throw new TypeError('Bridge parentOrigin is invalid');
+    }
+    if (parentOrigin === 'null' || parentOrigin !== config.parentOrigin.trim()) {
+      throw new TypeError('Bridge parentOrigin must contain only the origin');
+    }
+    return {
+      id: config.id.trim(),
+      version: config.version.trim(),
+      stateSchemaVersion: config.stateSchemaVersion,
+      parentOrigin,
+      getState: config.getState,
+      applyState: config.applyState,
+      subscribe: config.subscribe,
+      hydrationTimeoutMs: Number.isFinite(Number(config.hydrationTimeoutMs))
+        ? Math.max(1, Number(config.hydrationTimeoutMs))
+        : DEFAULT_HYDRATION_TIMEOUT_MS
+    };
+  }
+
+  function register(input) {
+    if (!global.parent || global.parent === global) {
+      requireCoreConfig(input);
+      return inertHandle();
+    }
+    if (input && typeof input.parentOrigin === 'string' && input.parentOrigin.trim() === 'null') {
+      requireCoreConfig(input);
+      return inertHandle();
+    }
+    const config = requireConfig(input);
+    if (activeRegistration && !activeRegistration.destroyed) {
+      throw new Error('A trainer bridge is already registered');
+    }
+
+    const registration = {
+      config,
+      bridgeInstanceId: createInstanceId(),
+      hydrated: false,
+      timedOut: false,
+      applyingRemoteState: false,
+      destroyed: false,
+      hydrationTimer: null,
+      notifyTimer: null,
+      subscribeCleanup: null,
+      lastSerializedState: null,
+      listener: null
+    };
+    activeRegistration = registration;
+
+    function envelope(type, extra) {
+      return Object.assign({
+        type,
+        protocolVersion: PROTOCOL_VERSION,
+        trainerId: config.id,
+        trainerVersion: config.version,
+        stateSchemaVersion: config.stateSchemaVersion,
+        bridgeInstanceId: registration.bridgeInstanceId
+      }, extra || {});
+    }
+
+    function diagnostic(code, detail) {
+      const payload = {
+        code,
+        detail: detail ? String(detail) : '',
+        trainerId: config.id,
+        bridgeInstanceId: registration.bridgeInstanceId
+      };
+      try {
+        if (global.console && typeof global.console.warn === 'function') {
+          global.console.warn('[MathExamBoard]', code, payload.detail);
+        }
+      } catch (_error) {}
+      try {
+        global.dispatchEvent(new CustomEvent('mathexam:bridge-diagnostic', { detail: payload }));
+      } catch (_error) {}
+    }
+
+    function post(type, extra) {
+      if (registration.destroyed) return false;
+      try {
+        global.parent.postMessage(envelope(type, extra), config.parentOrigin);
+        return true;
+      } catch (error) {
+        diagnostic('post-message-failed', error && error.message);
+        return false;
+      }
+    }
+
+    function envelopeMatches(data) {
+      return data
+        && data.protocolVersion === PROTOCOL_VERSION
+        && data.trainerId === config.id
+        && data.trainerVersion === config.version
+        && data.stateSchemaVersion === config.stateSchemaVersion
+        && data.bridgeInstanceId === registration.bridgeInstanceId;
+    }
+
+    function currentState(force) {
+      if (!registration.hydrated || registration.timedOut || registration.destroyed) return;
+      let state;
+      try {
+        state = config.getState();
+      } catch (error) {
+        diagnostic('get-state-failed', error && error.message);
+        return;
+      }
+      const validation = validateState(state);
+      if (!validation.ok) {
+        diagnostic(validation.code);
+        return;
+      }
+      if (!force && validation.serialized === registration.lastSerializedState) return;
+      registration.lastSerializedState = validation.serialized;
+      post('mathexam:trainer-state', { state });
+    }
+
+    function applyRemoteState(state, initial) {
+      const validation = validateState(state);
+      if (!validation.ok) {
+        diagnostic(validation.code);
+        return false;
+      }
+      registration.applyingRemoteState = true;
+      try {
+        config.applyState(state);
+        registration.lastSerializedState = validation.serialized;
+        return true;
+      } catch (error) {
+        diagnostic(initial ? 'hydrate-apply-failed' : 'remote-apply-failed', error && error.message);
+        return false;
+      } finally {
+        registration.applyingRemoteState = false;
+      }
+    }
+
+    registration.listener = event => {
+      const data = event.data;
+      if (!data || !MESSAGE_TYPES.has(data.type)) return;
+      if (event.source !== global.parent) {
+        diagnostic('source-mismatch');
+        return;
+      }
+      if (event.origin !== config.parentOrigin) {
+        diagnostic('origin-mismatch');
+        return;
+      }
+      if (!envelopeMatches(data)) {
+        diagnostic('envelope-mismatch');
+        return;
+      }
+      if (registration.timedOut || registration.destroyed) return;
+
+      if (data.type === 'mathexam:hydrate') {
+        if (registration.hydrated) return;
+        if (data.mode === 'state') {
+          if (!applyRemoteState(data.state, true)) return;
+        } else if (data.mode !== 'empty') {
+          diagnostic('hydrate-mode-invalid');
+          return;
+        }
+        registration.hydrated = true;
+        clearTimeout(registration.hydrationTimer);
+        return;
+      }
+
+      if (!registration.hydrated) {
+        diagnostic('message-before-hydration');
+        return;
+      }
+      if (data.type === 'mathexam:request-trainer-state') {
+        currentState(true);
+        return;
+      }
+      applyRemoteState(data.state, false);
+    };
+
+    global.addEventListener('message', registration.listener);
+    if (config.subscribe) {
+      try {
+        const cleanup = config.subscribe(() => {
+          if (registration.applyingRemoteState || registration.destroyed || registration.timedOut) return;
+          clearTimeout(registration.notifyTimer);
+          registration.notifyTimer = setTimeout(() => currentState(false), 40);
+        });
+        if (typeof cleanup === 'function') registration.subscribeCleanup = cleanup;
+      } catch (error) {
+        diagnostic('subscribe-failed', error && error.message);
+      }
+    }
+
+    post('mathexam:trainer-ready');
+    registration.hydrationTimer = setTimeout(() => {
+      if (registration.hydrated || registration.destroyed) return;
+      registration.timedOut = true;
+      diagnostic('hydration-timeout');
+    }, config.hydrationTimeoutMs);
+
+    return Object.freeze({
+      notifyStateChanged() {
+        if (registration.applyingRemoteState || registration.destroyed || registration.timedOut) return;
+        clearTimeout(registration.notifyTimer);
+        registration.notifyTimer = setTimeout(() => currentState(false), 40);
+      },
+      isApplyingRemoteState() {
+        return registration.applyingRemoteState;
+      },
+      destroy() {
+        if (registration.destroyed) return;
+        registration.destroyed = true;
+        clearTimeout(registration.hydrationTimer);
+        clearTimeout(registration.notifyTimer);
+        global.removeEventListener('message', registration.listener);
+        if (registration.subscribeCleanup) {
+          try { registration.subscribeCleanup(); } catch (_error) {}
+        }
+        if (activeRegistration === registration) activeRegistration = null;
+      }
+    });
+  }
+
+  global.MathExamBoard = Object.freeze({
+    PROTOCOL_VERSION,
+    DEFAULT_HYDRATION_TIMEOUT_MS,
+    validateState,
+    register
+  });
+})(window);
+
+</script>
+<script data-inline-source="/trainers/task19-board-session.js">
+/* Closed semantic room state. No HTML, personal progress or credit claims. */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.Task19BoardSession = api;
+})(typeof window === 'object' ? window : globalThis, function () {
+  'use strict';
+  const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
+  const plain = value => value && typeof value === 'object' && !Array.isArray(value) &&
+    [Object.prototype, null].includes(Object.getPrototypeOf(value));
+  const fields = (value, keys) => plain(value) && Reflect.ownKeys(value).length === keys.length && keys.every(key => {
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    return descriptor && descriptor.enumerable && own(descriptor, 'value');
+  });
+  function safe(value, depth = 0, seen = new Set()) {
+    if (depth > 7) return false;
+    if (value === null || typeof value === 'boolean') return true;
+    if (typeof value === 'number') return Number.isFinite(value);
+    if (typeof value === 'string') return value.length <= 200 && !/[<>\u0000-\u001f]/.test(value);
+    if ((!plain(value) && !Array.isArray(value)) || seen.has(value)) return false;
+    const keys = Reflect.ownKeys(value);
+    if (Array.isArray(value) && (Object.getPrototypeOf(value) !== Array.prototype || value.length > 300 || keys.length !== value.length + 1 ||
+        !Array.from({ length: value.length }, (_, index) => own(value, String(index))).every(Boolean))) return false;
+    seen.add(value);
+    for (const key of keys) {
+      if (Array.isArray(value) && key === 'length') continue;
+      if (Array.isArray(value) && !/^(0|[1-9]\d*)$/.test(String(key))) return false;
+      const descriptor = Object.getOwnPropertyDescriptor(value, key);
+      if (typeof key !== 'string' || ['__proto__', 'prototype', 'constructor'].includes(key) ||
+          !descriptor.enumerable || !own(descriptor, 'value') || !safe(descriptor.value, depth + 1, seen)) return false;
+    }
+    seen.delete(value);
+    return true;
+  }
+  const copy = value => JSON.parse(JSON.stringify(value));
+  function create(cards, visuals, reference) {
+    const byId = new Map(cards.map(card => [card.id, card]));
+    const topics = new Set(cards.map(card => card.theme));
+    function model(hint, value) {
+      if (value === null) return null;
+      if (!fields(value, ['params', 'measured']) || !plain(value.params) || typeof value.measured !== 'boolean') throw new TypeError('Invalid model');
+      const restored = visuals.restoreModel(hint, value);
+      const controls = visuals.controlsFor(hint.model, restored.params);
+      if (!fields(value.params, controls.map(control => control.key))) throw new TypeError('Invalid model parameters');
+      const params = {};
+      for (const { key } of controls) {
+        const raw = value.params[key], normalized = restored.params[key];
+        if (typeof raw !== 'number' || Math.abs(raw - normalized) > 1e-8 * Math.max(1, Math.abs(normalized))) throw new TypeError('Invalid model range');
+        params[key] = normalized;
+      }
+      return { params, measured: value.measured };
+    }
+    function validate(value) {
+      if (!safe(value) || !fields(value, ['topic', 'review', 'current', 'answers', 'view']) ||
+          (value.topic !== '' && !topics.has(value.topic)) || typeof value.review !== 'boolean' ||
+          !Array.isArray(value.answers) || value.answers.length > cards.length ||
+          !fields(value.view, ['settings', 'textbook', 'reference']) ||
+          typeof value.view.settings !== 'boolean' || typeof value.view.textbook !== 'boolean' ||
+          !Array.isArray(value.view.reference) || !value.view.reference.every(v => typeof v === 'boolean')) throw new TypeError('Invalid task 19 room state');
+      const seen = new Set();
+      for (const tuple of value.answers) {
+        if (!Array.isArray(tuple) || tuple.length !== 3 || !byId.has(tuple[0]) || seen.has(tuple[0]) ||
+            typeof tuple[1] !== 'boolean' || typeof tuple[2] !== 'boolean') throw new TypeError('Invalid room answer');
+        seen.add(tuple[0]);
+      }
+      const current = value.current;
+      if (current === null) {
+        if (!value.review || value.view.textbook || value.view.reference.length || value.answers.some(tuple =>
+          (!value.topic || byId.get(tuple[0]).theme === value.topic) && tuple[1] !== byId.get(tuple[0]).truth)) throw new TypeError('Invalid empty review');
+      } else {
+        if (!fields(current, ['id', 'answer', 'hintOpen', 'helpUsed', 'modelState']) || !byId.has(current.id) ||
+            (current.answer !== null && typeof current.answer !== 'boolean') || typeof current.hintOpen !== 'boolean' ||
+            typeof current.helpUsed !== 'boolean' || ((current.hintOpen || current.modelState !== null || value.view.textbook) && !current.helpUsed)) throw new TypeError('Invalid current assertion');
+        const card = byId.get(current.id);
+        if (value.topic && value.topic !== card.theme) throw new TypeError('Invalid topic');
+        if (current.hintOpen && current.modelState === null) throw new TypeError('Missing model');
+        model(card.hint, current.modelState);
+        const count = current.modelState === null ? 0 : reference.forCard(card).length;
+        if (value.view.reference.length !== (count ? count + 1 : 0)) throw new TypeError('Invalid reference disclosures');
+        const answered = value.answers.find(tuple => tuple[0] === current.id);
+        if (typeof current.answer === 'boolean' && (!answered || answered[1] !== current.answer || answered[2] && !current.helpUsed)) throw new TypeError('Answer history mismatch');
+      }
+      if (JSON.stringify(value).length > 48000) throw new TypeError('Room state too large');
+      return copy(value);
+    }
+    return Object.freeze({ validate });
+  }
+  function isBoard(window) {
+    if (window.parent === window) return false;
+    if (new URLSearchParams(window.location.search).get('board') === '1') return true;
+    try {
+      return window.parent.location.origin === window.location.origin &&
+        /^\/trainers\/(?:trainer-board|group-board)\.html$/.test(window.parent.location.pathname);
+    } catch (_) { return false; }
+  }
+  return Object.freeze({ id: 'oge-task19', version: '1.0.0', create, isBoard });
+});
+
+</script>
 <script data-inline-source="/trainers/task19-visual-data.js">
 /* Existing statement banks, with on-demand visual hints.
  * Original source identities and truth labels are retained.
@@ -9003,7 +9471,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
 
 </script>
 <script data-inline-source="/trainers/task19-visual-app.js">
-/* One statement, optional visual help, then a reasoned answer. No network or account. */
+/* One statement and optional help. Shared rooms never read or write personal progress. */
 (function () {
   'use strict';
   const cards = window.Task19Data && window.Task19Data.cards;
@@ -9018,6 +9486,11 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
   cards.forEach(c => { byId.set(c.id, c); (c.aliases || []).forEach(id => byId.set(id, c)); });
   const topics = [...new Set(cards.map(c => c.theme))];
   let state = { version: 1, topic: '', review: false, records: {}, current: null };
+  const adapter = window.Task19BoardSession;
+  const boardMode = !!(adapter && adapter.isBoard(window));
+  const room = boardMode ? adapter.create(cards, window.Task19Visuals, window.Task19Reference) : null;
+  let roomAnswers = [], applyingRoom = false, notify = () => {}, notifyTimer = null, lastSent = '';
+  let view = { settings: false, textbook: false, reference: [] };
   let mounted = false, cleanup = null, storageWorks = true;
   const integer = value => Number.isFinite(value) ? Math.max(0, Math.min(1000000, Math.floor(value))) : 0;
   function readJSON(storageKey) {
@@ -9034,13 +9507,16 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
     state.records[card.id] = { attempts, correct: Math.min(attempts, integer(record.correct)), needsReview: record.needsReview === true };
   }
   function restore() {
+    if (boardMode) return;
     const saved = readJSON(key);
     if (saved && saved.version === 1 && saved.records && typeof saved.records === 'object' && !Array.isArray(saved.records)) {
       Object.entries(saved.records).forEach(([id, r]) => canonicalRecord(id, r));
       state.topic = topics.includes(saved.topic) ? saved.topic : '';
       state.review = saved.review === true;
       if (saved.current && byId.has(saved.current.id)) {
-        state.current = { id: byId.get(saved.current.id).id, answer: typeof saved.current.answer === 'boolean' ? saved.current.answer : null, hintOpen: saved.current.hintOpen === true, modelState: saved.current.modelState && typeof saved.current.modelState === 'object' ? saved.current.modelState : null };
+        state.current = { id: byId.get(saved.current.id).id, answer: typeof saved.current.answer === 'boolean' ? saved.current.answer : null, hintOpen: saved.current.hintOpen === true, helpUsed: saved.current.helpUsed === true || saved.current.hintOpen === true || !!saved.current.modelState, modelState: saved.current.modelState && typeof saved.current.modelState === 'object' ? saved.current.modelState : null };
+        state.current.answerHelpUsed = typeof saved.current.answerHelpUsed === 'boolean'
+          ? saved.current.answerHelpUsed : state.current.helpUsed;
       }
       return;
     }
@@ -9060,6 +9536,11 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
     });
   }
   function save() {
+    if (boardMode) {
+      el('storageNote').textContent = 'Общая работа в комнате. Личные результаты ученика не изменяются.';
+      scheduleNotify();
+      return;
+    }
     try { localStorage.setItem(key, JSON.stringify(state)); }
     catch (_) { storageWorks = false; }
     el('storageNote').textContent = storageWorks
@@ -9083,7 +9564,9 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
     const answered = records.reduce((n, r) => n + r.attempts, 0);
     const correct = records.reduce((n, r) => n + r.correct, 0);
     const mistakes = records.filter(r => r.needsReview).length;
-    el('progressText').textContent = `Ответов: ${answered}. Верных: ${correct}. Повторить: ${mistakes}.`;
+    el('progressText').textContent = boardMode
+      ? `В этой комнате разобрано утверждений: ${answered}. Верных ответов: ${correct}. Повторить: ${mistakes}.`
+      : `Ответов: ${answered}. Верных: ${correct}. Повторить: ${mistakes}.`;
     el('topicCount').textContent = `Утверждений в выбранной теме: ${cards.filter(c => !state.topic || c.theme === state.topic).length}.`;
   }
   function closePreviousModel() {
@@ -9095,7 +9578,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
   function showHint(open) {
     if (!state.current) return;
     const card = byId.get(state.current.id);
-    if (open && !mounted) {
+    if (open) state.current.helpUsed = true;
+    if ((open || state.current.modelState) && !mounted) {
       el('hintPrompt').textContent = card.hint.prompt;
       cleanup = window.Task19Visuals.mount(el('visualHost'), card.hint, {
         state:state.current.modelState,
@@ -9114,9 +9598,11 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
     const card = byId.get(state.current.id);
     const answer = state.current.answer;
     const correct = answer === card.truth;
+    const answerHelpUsed = boardMode ? roomAnswers.find(tuple => tuple[0] === card.id)?.[2] === true
+      : state.current.answerHelpUsed === true;
     el('answerPanel').hidden = false;
     el('answerPanel').dataset.correct = String(correct);
-    el('resultTitle').textContent = correct ? 'Да, ты прав.' : 'Давай разберёмся.';
+    el('resultTitle').textContent = correct ? (answerHelpUsed ? 'Верно. С подсказкой.' : boardMode ? 'Верно. Разобрали на уроке.' : 'Да, ты прав.') : 'Давай разберёмся.';
     el('answerExplanation').textContent = `${card.truth ? 'Утверждение верное.' : 'Утверждение неверное.'} ${card.explanation}`;
     el('btnTrue').disabled = el('btnFalse').disabled = true;
     el('btnTrue').setAttribute('aria-pressed', String(answer));
@@ -9151,25 +9637,35 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
       el('statement').textContent = card.text;
       el('hintToggle').hidden = el('answerActions').hidden = false;
       if(window.Task19TextbookReference&&el('textbookHost'))window.Task19TextbookReference.mount(el('textbookHost'),card);
-      if (state.current.hintOpen) showHint(true);
+      if (state.current.hintOpen || state.current.modelState) showHint(state.current.hintOpen);
       if (typeof state.current.answer === 'boolean') showAnswer();
     }
     updateProgress(); save();
     if (moveFocus) el('statement').focus({ preventScroll: false });
   }
   function setCard(card) {
-    state.current = card ? { id: card.id, answer: null, hintOpen: false } : null;
+    state.current = card ? { id: card.id, answer: null, hintOpen: false, helpUsed: false, modelState: null } : null;
+    view.textbook = false; view.reference = [];
     render(true);
   }
   function answer(value) {
     if (!state.current || typeof state.current.answer === 'boolean') return;
     const card = byId.get(state.current.id);
-    const record = state.records[card.id] || { attempts: 0, correct: 0, needsReview: false };
+    // A disclosure may have opened immediately before this click, before its
+    // asynchronous toggle event. Inspect it now to keep assistance sticky.
+    if (document.querySelector('#textbookHost details[open]')) state.current.helpUsed = true;
+    const record = boardMode ? { attempts: 0, correct: 0, needsReview: false }
+      : state.records[card.id] || { attempts: 0, correct: 0, needsReview: false };
     record.attempts++;
     if (value === card.truth) record.correct++;
     record.needsReview = value !== card.truth;
     state.records[card.id] = record;
     state.current.answer = value;
+    state.current.answerHelpUsed = state.current.helpUsed === true;
+    if (boardMode) {
+      roomAnswers = roomAnswers.filter(tuple => tuple[0] !== card.id);
+      roomAnswers.push([card.id, value, state.current.helpUsed === true]);
+    }
     showAnswer(); updateProgress(); save();
   }
   restore();
@@ -9177,13 +9673,13 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
   const requested = new URLSearchParams(location.search).get('card');
   if (requested && byId.has(requested)) {
     const card = byId.get(requested);
-    if (state.current?.id !== card.id) state.current = { id: card.id, answer: null, hintOpen: false };
+    if (state.current?.id !== card.id) state.current = { id: card.id, answer: null, hintOpen: false, helpUsed: false, modelState: null };
     state.topic = ''; state.review = false;
   }
   if (state.current && state.topic && byId.get(state.current.id).theme !== state.topic) state.current = null;
   if (!state.current) {
     const first = !state.review && !state.topic && !Object.keys(state.records).length ? byId.get('prev-056') : pickNext();
-    state.current = first ? { id: first.id, answer: null, hintOpen: false } : null;
+    state.current = first ? { id: first.id, answer: null, hintOpen: false, helpUsed: false, modelState: null } : null;
   }
   el('hintToggle').addEventListener('click', () => { if (state.current) showHint(!state.current.hintOpen); });
   el('btnTrue').addEventListener('click', () => answer(true));
@@ -9195,7 +9691,71 @@ if (typeof module !== 'undefined' && module.exports) module.exports = data;
     if (event.ctrlKey || event.altKey || event.metaKey || event.repeat || /^(?:INPUT|TEXTAREA|SELECT|BUTTON|SUMMARY|A)$/.test(event.target?.tagName || '') || event.target?.closest?.('#textbookHost') || event.target?.isContentEditable) return;
     if (event.code === 'KeyJ' || event.code === 'KeyN') { event.preventDefault(); answer(event.code === 'KeyJ'); }
   });
+  function readView() {
+    return { settings: el('settings').open, textbook: !!document.querySelector('#textbookHost details[open]'),
+      reference: [...document.querySelectorAll('#referenceHost details')].map(node => node.open) };
+  }
+  function getRoomState() {
+    const visible = readView();
+    // Native details.toggle is asynchronous; a host snapshot may be requested
+    // between opening the disclosure and that event being dispatched.
+    if (visible.textbook && state.current) state.current.helpUsed = true;
+    const current = state.current ? { id: state.current.id, answer: state.current.answer,
+      hintOpen: state.current.hintOpen === true, helpUsed: state.current.helpUsed === true,
+      modelState: state.current.modelState || null } : null;
+    return room.validate({ topic: state.topic, review: state.review, current, answers: roomAnswers, view: visible });
+  }
+  function applyRoomState(value) {
+    const incoming = room.validate(value); // Reject the whole snapshot before any mutation.
+    clearTimeout(notifyTimer); applyingRoom = true;
+    try {
+      roomAnswers = incoming.answers;
+      const records = {};
+      for (const [id, answer] of roomAnswers) records[id] = { attempts: 1, correct: Number(answer === byId.get(id).truth), needsReview: answer !== byId.get(id).truth };
+      state = { version: 1, topic: incoming.topic, review: incoming.review, records, current: incoming.current };
+      view = incoming.view;
+      render(false);
+      el('settings').open = view.settings;
+      const textbook = document.querySelector('#textbookHost details');
+      if (textbook) textbook.open = view.textbook;
+      document.querySelectorAll('#referenceHost details').forEach((node, i) => { node.open = view.reference[i]; });
+      lastSent = JSON.stringify(getRoomState());
+    } finally { applyingRoom = false; }
+  }
+  function scheduleNotify() {
+    if (!boardMode || applyingRoom) return;
+    clearTimeout(notifyTimer);
+    notifyTimer = setTimeout(() => {
+      if (applyingRoom) return;
+      const snapshot = JSON.stringify(getRoomState());
+      if (snapshot !== lastSent) { lastSent = snapshot; notify(); }
+    }, 0);
+  }
+  document.addEventListener('toggle', event => {
+    if (applyingRoom || !event.target.isConnected) return;
+    if (event.target.closest?.('#textbookHost') && event.target.open && state.current) {
+      state.current.helpUsed = true;
+      if (typeof state.current.answer === 'boolean') showAnswer();
+      save();
+    }
+    if (event.target.id === 'settings' || event.target.closest?.('#textbookHost, #referenceHost')) scheduleNotify();
+  }, true);
   render(false);
+  if (boardMode) {
+    const download = el('download'); if (download) download.hidden = true;
+    const archive = document.querySelector('#settings a'); if (archive) archive.hidden = true;
+    el('settings').querySelector('summary').textContent = 'Выбрать тему · работа в комнате';
+    const api = Object.freeze({ getState: getRoomState, applyState: applyRoomState, validateState: value => { try { room.validate(value); return true; } catch (_) { return false; } } });
+    window.Task19Board = api;
+    window.getBoardTrainerState = getRoomState;
+    window.applyBoardTrainerState = applyRoomState;
+    lastSent = JSON.stringify(getRoomState());
+    if (window.MathExamBoard) window.MathExamBoard.register({
+      id: adapter.id, version: adapter.version, stateSchemaVersion: 1, parentOrigin: location.origin,
+      getState: getRoomState, applyState: applyRoomState,
+      subscribe(callback) { notify = callback; return () => { clearTimeout(notifyTimer); notify = () => {}; }; }
+    });
+  }
 })();
 
 </script>
