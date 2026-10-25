@@ -574,6 +574,34 @@
       "notes": "Совместная работа: пример, разложение на простые множители, шаги, введённый ответ и подсказки."
     },
     {
+      "trainerId": "ege-baza-11",
+      "file": "trainers/ege-baza-11.html",
+      "title": "ЕГЭ база №11: стереометрия",
+      "group": "ЕГЭ база / стереометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа в последней версии курса: условие и чертёж, ответы, шаги, подсказки и модель. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "ege-baza-13",
+      "file": "trainers/ege-baza-13.html",
+      "title": "ЕГЭ база №13: стереометрия",
+      "group": "ЕГЭ база / стереометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа в последней версии курса: условие и чертёж, ответы, шаги, подсказки и модель. Личный прогресс курса не изменяется."
+    },
+    {
       "trainerId": "oge-task15-triangles",
       "file": "trainers/oge-task15-triangles.html",
       "title": "ОГЭ №15 · Треугольники",

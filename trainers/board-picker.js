@@ -38,6 +38,12 @@ function normalize(value){
  // Alias only the literal same-origin course entry. Keep the registry's
  // trainers/ boundary and its rejection of encoded or traversing paths intact.
  const rawPath=raw.replace(/^(?:https?:)?\/\/[^/?#]*/i,'').split(/[?#]/,1)[0];
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-baza/path/','/ege-baza/path/index.html'].includes(u.pathname)){
+  const id=u.hash.startsWith('#lesson=')?u.hash.slice(8):'';
+  const position=['box','practice-displacement','practice-pour','practice-joined-surface','practice-faces'].includes(id)?11:['roundbody','pyramid','scale','practice-cone-area','practice-pyramid-lateral','practice-box-diagonal','practice-similar-volume'].includes(id)?13:null;
+  if(position)return '/trainers/ege-baza-'+position+'.html'+u.search+u.hash;
+ }
+
  if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-profil/start/index.html','/ege-profil/start/'].includes(u.pathname)){
   const file=PROFILE_COURSES.find(([number,_,lessons])=>profileCourseRoute(u.hash,number,lessons))?.[1];
   if(file)return '/trainers/'+file+u.search+u.hash;

@@ -3,7 +3,8 @@
 ## Identity
 
 - Date: 2026-10-25 (Asia/Novosibirsk)
-- Base: `main`, `aa048f28d9797bca5468169a0f703b21dee1b4cd`
+- Current base: `main`, `fbacc5b14cca8f698733212c91823ff82437e65b` (PR334)
+- Original base: `aa048f28d9797bca5468169a0f703b21dee1b4cd` (PR333)
 - Branch: `feat/oge-15-19-board`
 - Review: HIGH (five integrations and previously unpublished task-15 candidate)
 - Related: existing Trainer Bridge/Registry implementation; ADR 0001 remains Proposed.
@@ -104,3 +105,20 @@ gates to obtain a pass.
   learner record or live plan was modified.
 - Exact PR/base/head, CI/external review and any release evidence belong in the
   PR record. No production publication or selected-cabinet activation is claimed.
+
+## Concurrent release integration
+
+While PR335 was being prepared, the owner merged PR334 (basic EGE11/13)
+as `fbacc5b14cca8f698733212c91823ff82437e65b`, parent equal to the original
+base. The exact remote PR head initially had four additive conflicts in the
+shared registry, its two expected-ID tests and the picker cache token. The
+current publication request covers their routine reversible resolution: a
+normal two-parent merge preserves all EGE changes, all five OGE additions and
+all earlier trainers. No force, rebase, deletion or production write is used.
+The combined registry has 54 entries and 25 mirrors. Gates and external review
+must refer to the resulting head and updated base.
+
+Integration revalidation: 175/175 mathematical, model, retained-state and cabinet
+checks pass across both releases; 19/19 actual OGE room transport and learner
+profile checks pass. Unchanged EGE course sources are preserved exactly from
+PR334. Cloud browser still shows no selected learner in the current roster.
