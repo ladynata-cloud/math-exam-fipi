@@ -145,8 +145,26 @@ included in the implementation scope to avoid duplicate fallback cards.
   a negative control proves an injected script inside those markers is rejected.
   The reviewer rechecked SEO, sitemap, preservation and the exact two-statement
   executable diff. Unchanged robots and embedded offline scripts were verified.
+- PR #343 initial CI exposed an existing contextual-shell preservation test
+  that still hashed the entire pre-fallback percentage map. Run
+  [40216132850](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/40216132850)
+  failed that assertion; the SEO and Vilenkin checks passed.
+- The follow-up changes only that test and this execution record. Its original
+  fixture hashes remain unchanged: normalization accepts exactly one bounded
+  six-card fallback, pinned to its reviewed SHA256, and exactly one clear
+  statement in the original render context. The normalized page must still
+  match both original hashes. Arbitrary marker contents cannot be discarded.
+- PASS: three percentage contextual tests, including six negative controls
+  (script inside fallback, changed href, missing/duplicate clear statement,
+  other runtime change, and new noindex); catalog source/render/base parity;
+  12 sitemap regressions; SEO preservation against current base; whitespace.
+  No production HTML, runtime, indexing directive or historical fixture changed.
+- Independent review of the test-only follow-up PASS: original fixture and
+  HTML bytes remain unchanged; exact normalization and all six negative
+  controls verified. No remaining blockers.
 - Head / PR: recorded in the final handoff, after commit/publication.
-- Failures: none in completed checks. CI on the eventual PR head is pending;
+- Failures: the initial contextual preservation CI failure is fixed locally;
+  exact-head CI rerun for that follow-up is pending;
   external-provider review is optional for this SMALL change and was not run.
   Scope deviations: none. No merge or deployment was performed.
 
@@ -154,14 +172,14 @@ included in the implementation scope to avoid duplicate fallback cards.
 EXECUTIVE STATUS
 
 Task: SEO_STATIC_CATALOG_COURSE_ENTRY_20261025
-PR: pending
+PR: #343
 Base: 693442f82e934bcea1b32507a8afc8bdd529542f
 Head: pending
 Gate: SEO_STATIC_CATALOG_COURSE_ENTRY_OK (local; PR CI pending)
 Tests: SEO, source/render/base parity, Vilenkin standalone/textbook/managed/browser PASS
-Failures: none
-Not run: exact-head GitHub CI, optional external-provider review
+Failures: initial contextual hash assertion fixed locally; CI rerun pending
+Not run: follow-up exact-head GitHub CI, optional external-provider review
 Scope deviations: none
-Recommendation: publish one Draft PR; do not merge
+Recommendation: update Draft PR #343 and verify CI; do not merge
 Next user decision: separate release decision after the reviewed result
 ```
