@@ -12,6 +12,7 @@ const ROOT = path.resolve(__dirname, '..');
 const tick = () => new Promise(resolve => setImmediate(resolve));
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const plain = value => JSON.parse(JSON.stringify(value));
+const PRIME_CHOICES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
 
 function factors(n) {
   const result = [];
@@ -29,8 +30,11 @@ function oracle(kind, a, b) {
   assert.fail('No positive answer for the fixture');
 }
 
-async function fixture(t, kind, { board = false } = {}) {
-  const url = 'https://mathexam.space/trainers/grade6-' + kind + '.html';
+async function fixture(t, kind, { board = false, taskId = 'nt-1-1' } = {}) {
+  // Legacy arithmetic assertions name their fixture explicitly. A null taskId
+  // exercises the real fresh-session default instead of pinning old content.
+  const url = 'https://mathexam.space/trainers/grade6-' + kind + '.html' +
+    (taskId === null ? '' : '?task=' + encodeURIComponent(taskId));
   const html = fs.readFileSync(path.join(ROOT, 'trainers/grade6-' + kind + '.html'), 'utf8');
   const errors = [], messages = [], diagnostics = [];
   const virtualConsole = new VirtualConsole();
@@ -79,7 +83,7 @@ async function fixture(t, kind, { board = false } = {}) {
   assert.ok(api && registration, 'The actual trainer API and board registration must be available');
   const initial = plain(api.getState());
   const f = {
-    window, api, initial, kind, stats, messages, diagnostics,
+    window, api, initial, kind, stats, messages, diagnostics, registration,
     state: () => plain(api.getState()),
     realm: value => window.JSON.parse(JSON.stringify(value)),
     q: selector => window.document.querySelector(selector),
@@ -193,6 +197,66 @@ test('both real entry pages expose accessible labels, inert standalone bridge an
   }
 });
 
+test('fresh sessions open 132 and 88 while explicit old task URLs retain priority', async t => {
+  for (const kind of ['nok', 'nod']) {
+    const fresh = await fixture(t, kind, { taskId: null });
+    assert.equal(fresh.state().taskId, 'nt-3-9');
+    assert.equal(fresh.q('.task-numbers').textContent, '132 и 88');
+    assert.equal(fresh.registration.version, '1.1.0');
+    assert.equal(fresh.registration.stateSchemaVersion, 1);
+    assert.equal(fresh.q('#level-select').value, '3');
+    const legacy = await fixture(t, kind, { taskId: 'nt-1-1' });
+    assert.equal(legacy.state().taskId, 'nt-1-1');
+    assert.equal(legacy.q('.task-numbers').textContent, '4 и 6');
+    const explicit = await fixture(t, kind, { taskId: 'nt-2-7' });
+    assert.equal(explicit.q('.task-numbers').textContent, '8 и 15');
+    const invalid = await fixture(t, kind, { taskId: 'unknown-task' });
+    assert.equal(invalid.state().taskId, 'nt-3-9');
+    valid(fresh); valid(legacy); valid(explicit); valid(invalid);
+  }
+});
+
+test('all fifteen prime buttons remain unfiltered and usable in both columns at every level', async t => {
+  for (const kind of ['nok', 'nod']) {
+    const f = await fixture(t, kind);
+    const checkChoices = side => {
+      const buttons = [...f.window.document.querySelectorAll('[data-prime]')];
+      assert.deepEqual(buttons.map(button => Number(button.dataset.prime)), PRIME_CHOICES);
+      assert.ok(buttons.every(button => button.dataset.side === side && !button.disabled));
+      assert.ok(buttons.every(button => button.className === '' && !button.hasAttribute('aria-pressed')),
+        'The choices do not mark or filter the divisors that happen to be correct');
+      assert.ok(f.q('#divisor-' + side), 'Manual entry is available with the list');
+    };
+    for (const level of [1, 2, 3]) {
+      const select = f.q('#level-select'); select.value = String(level);
+      select.dispatchEvent(new f.window.Event('change', { bubbles: true }));
+      checkChoices('a');
+      const task = math.bank.find(item => item.id === f.state().taskId);
+      factorAll(f, 'a', task.a);
+      checkChoices('b');
+    }
+    for (const prime of PRIME_CHOICES) {
+      f.load('nt-3-9');
+      click(f, '[data-prime="' + prime + '"]');
+      if (132 % prime === 0) {
+        assert.equal(f.state().activeA, prime);
+        assert.ok(f.q('#quotient-a'));
+      } else {
+        assert.equal(f.state().activeA, null);
+        assert.equal(f.state().feedback.code, 'not-divisor');
+        assert.equal(f.q('#divisor-a').value, String(prime));
+      }
+      assert.deepEqual(f.state().rowsA, []);
+      assert.equal(f.state().hintUsed, false, 'Choosing a divisor is a learner action, not a shown answer');
+    }
+    f.load('nt-3-9');
+    click(f, '[data-prime="11"]');
+    enter(f, '#quotient-a', '12'); click(f, '#accept-a');
+    assert.deepEqual(f.state().rowsA, [{ divisor: 11, quotient: 12 }]);
+    checkChoices('a');
+  }
+});
+
 test('embedded navigation cannot move only one participant out of the selected trainer iframe', async t => {
   for (const kind of ['nok', 'nod']) {
     const f = await fixture(t, kind, { board: true });
@@ -223,7 +287,8 @@ test('embedded navigation cannot move only one participant out of the selected t
   }
 });
 
-test('all 48 guided tasks can be solved by actions with repeated factors and retained work', async t => {
+test('all 112 guided tasks can be solved by actions with repeated factors and retained work', async t => {
+  assert.equal(math.bank.length, 56, 'The complete UI gate covers 56 pairs in both trainers');
   for (const kind of ['nok', 'nod']) {
     const f = await fixture(t, kind);
     for (const task of math.bank) {
@@ -534,7 +599,8 @@ test('remote hydration restores partial rows, typed drafts and help without echo
     click(source, '#hint-toggle');
     click(source, '#hint-step');
     const pending = source.state();
-    const peer = await fixture(t, kind, { board: true });
+    const peer = await fixture(t, kind, { board: true, taskId: null });
+    assert.equal(peer.state().taskId, 'nt-3-9', 'A newly loaded frame starts at the advanced default before hydration');
     const beforeMessages = peer.messages.length;
     peer.send('mathexam:hydrate', pending, { mode: 'state' });
     await pause(70);
@@ -573,7 +639,7 @@ test('remote independent drafts, checked feedback and settings restore without g
   const details = source.q('#task-settings'); details.open = true;
   details.dispatchEvent(new source.window.Event('toggle'));
   const snapshot = source.state();
-  const peer = await fixture(t, 'nok', { board: true });
+  const peer = await fixture(t, 'nok', { board: true, taskId: null });
   peer.send('mathexam:hydrate', snapshot, { mode: 'state' });
   await pause(70);
   assert.deepEqual(peer.state(), snapshot);

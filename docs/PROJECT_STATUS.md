@@ -2,7 +2,27 @@
 
 Updated: 2026-10-25 (Asia/Novosibirsk)
 
-## In progress: grade-six НОК / НОД trainers and shared board
+## In progress: harder НОК / НОД and a selected two-trainer cabinet
+
+- [Scope](tasks/GRADE6_NOK_NOD_ADVANCED_ONLY.md), MEDIUM bounded content/UI
+  update, branch `feat/grade6-nok-nod-advanced`, base
+  `5e68b35e8e9af54cdfa39558bec121138118fade`.
+- The owner requested stronger examples, more prime-divisor choices and only
+  the two number-theory trainers in one existing learner's visible route.
+- Implemented: every published task ID retained, 32 pairs added within 2..200,
+  fresh sessions start at 132 and 88, 15 primes through 47 are available, and
+  the existing board state schema and synchronization behavior are preserved.
+- The selected cabinet mode uses an explicit per-profile focus choice;
+  no account, schema, authorization, saved-work or global-course change.
+- Local mathematics, 112 guided journeys, actual two-sided board sessions,
+  real form/API/SQLite cabinet saves, retained-work/peer checks and focused
+  regressions pass. Independent technical review is complete; the task record
+  lists results and resolved test-environment failures.
+- Next: complete exact-head cloud gates in one Draft PR; obtain the concrete
+  release decision before publication and the live cabinet setting. The new
+  trainer version and exclusive route are not yet claimed as published.
+
+## Published: grade-six НОК / НОД trainers and shared board
 
 - [Scope](tasks/GRADE6_NOK_NOD_BOARD.md), MEDIUM bounded integration, branch
   `feat/grade6-nok-nod-board`, base
@@ -10,20 +30,25 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
 - The existing requested cabinet and its Vilenkin grade-six direction were
   verified in the live teacher interface. The merged PR315 integration is
   present; its 27 managed modules and the learning catalog stay unchanged.
-- Prepared two standalone trainers with prime-factor columns, retained steps,
+- Published two standalone trainers with prime-factor columns, retained steps,
   occurrence-aware matching, contextual help and the existing board SDK.
   Fixed plan cards use the existing saved-note mechanism without a new attempt
   contract, account or storage migration.
-- External Claude consultation is unavailable in this environment and remains
-  explicitly incomplete. Independent technical checks are not an external
-  verdict or a standing release exception.
+- External Claude consultation was unavailable. The owner authorized the
+  exact PR #332 release with a task-specific exception; this is not an external
+  verdict or a standing exception for later work.
 - Mathematics, all 48 guided journeys, cabinet and registry regression checks,
   and both actual local board journeys passed. Independent internal review
   resolved the embedded navigation escape; no external verdict is claimed.
-- Next: complete exact-head cloud verification and the Draft PR handoff;
-  obtain the concrete release decision; verify deployment and then save the
-  two references in the selected existing plan. No new live assignment is
-  claimed by this status entry.
+- [PR #332](https://github.com/ladynata-cloud/math-exam-fipi/pull/332) records
+  the completed release at `5e68b35e8e9af54cdfa39558bec121138118fade`: 13/13
+  pre-merge workflows, 7/7 post-merge workflows, 20/20 published asset checks,
+  the exact 18-mirror registry and production synchronization readiness for
+  both trainers. The two plan references were saved through the teacher UI
+  and verified after reload and in learner preview, with Vilenkin retained.
+- Gate: `GRADE6_NOK_NOD_CABINET_BOARD_OK`. No real-pupil learning-outcome
+  trial is claimed. The subsequent harder/exclusive-route request is the
+  separate task above, not an extension of the completed release permission.
 
 ## In progress: complete chapter 1 of Shestakov–Yaschenko
 
