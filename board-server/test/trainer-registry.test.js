@@ -79,6 +79,7 @@ const expectedCatalogFiles = [
   'trainers/oge-task17-quadrilaterals.html',
   'trainers/oge-task18-grid.html',
   'trainers/task19-trainer.html',
+  'trainers/college-functions/index.html',
   'trainers/oge-task6-fractions.html',
   'trainers/oge-task8-powers-roots.html',
   'trainers/oge-task9-equations.html',
@@ -231,15 +232,15 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with seventy-four catalog entries and fifty mirrors', () => {
+test('current manifest validates with seventy-five catalog entries and fifty-one mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 74);
-  assert.equal(result.trainers.length, 50);
+  assert.equal(manifest.trainers.length, 75);
+  assert.equal(result.trainers.length, 51);
   assert.deepEqual(result.progressTrainers, [{
     trainerId: 'yashchenko-t12',
     file: 'trainers/ege-profile/yashchenko-lines-1-2.html',
@@ -255,12 +256,20 @@ test('current manifest validates with seventy-four catalog entries and fifty mir
   }]);
 });
 
-test('runtime registry has exact parity with all fifty mirror authorizations', () => {
+test('runtime registry has exact parity with all fifty-one mirror authorizations', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.deepEqual(registry.entries, [
     {
       trainerId: 'atanasyan-7-9',
       file: 'trainers/atanasyan-7-9.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'college-functions',
+      file: 'trainers/college-functions/index.html',
       version: '1.0.0',
       stateSchemaVersion: 1,
       bridgeProtocolVersion: 1,
@@ -465,7 +474,7 @@ test('bundled default loads relative to the server module', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.equal(registry.loaded, true);
   assert.equal(registry.source, 'bundled-default');
-  assert.equal(registry.entries.length, 50);
+  assert.equal(registry.entries.length, 51);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
 });
 
@@ -657,7 +666,7 @@ test('an additional synthetic mirror entry needs no registry core change', () =>
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 51);
+    assert.equal(registry.entries.length, 52);
     assert.equal(registry.getById(synthetic.trainerId).file, synthetic.file);
   });
 });
@@ -668,7 +677,7 @@ test('removing a mirror entry removes its runtime authorization', () => {
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 49);
+    assert.equal(registry.entries.length, 50);
     assert.equal(registry.getById('linear-inequalities-stepwise'), null);
   });
 });

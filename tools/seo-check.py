@@ -6,6 +6,7 @@ The optional base check proves that metadata edits preserved trainer bodies,
 executable scripts, styles and existing indexing directives.
 """
 import argparse
+import importlib.util
 import json
 import re
 import subprocess
@@ -110,7 +111,47 @@ def local_path(url):
     return ROOT / (path + "index.html" if not path or path.endswith("/") else path)
 
 
+def check_canonical_signals(page, url, label):
+    """Check declared canonicals without making every HTML file indexable.
+
+    A noindex board wrapper can still have a valid canonical to its public
+    course. A refresh may navigate to a fragment, but a canonical identifies
+    the document, not an application state within that document.
+    """
+    base = urljoin(url, page.base or "")
+    canonicals = {urljoin(base, href) for href in page.canonicals}
+    require(len(canonicals) <= 1, label + ": conflicting canonical links")
+    for canonical in canonicals:
+        require(not urlsplit(canonical).fragment,
+                label + ": canonical must not contain a fragment")
+        if page.refresh_target:
+            destination = urlsplit(urljoin(base, page.refresh_target))._replace(fragment="").geturl()
+            require(canonical == destination,
+                    label + ": canonical conflicts with meta refresh destination " + destination)
+
+
+def check_public_canonical_signals(root=ROOT):
+    # Reuse the sitemap parser and its reviewed technical-path exclusions;
+    # do not add these files to the sitemap or change any noindex directive.
+    spec = importlib.util.spec_from_file_location("seo_sitemap", Path(__file__).with_name("build-sitemap.py"))
+    sitemap = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(sitemap)
+    checked, redirects = 0, 0
+    for file in sorted(root.rglob("*.html")):
+        path = "/" + file.relative_to(root).as_posix()
+        if sitemap.excluded_path(path):
+            continue
+        page = sitemap.Page(file.read_text(encoding="utf-8"))
+        if not page.canonicals:
+            continue
+        check_canonical_signals(page, ORIGIN + path, path)
+        checked += 1
+        redirects += bool(page.refresh_target)
+    return checked, redirects
+
+
 def run(base=None):
+    canonical_count, redirect_count = check_public_canonical_signals()
     titles, descriptions = set(), set()
     checked_links = 0
     for relative in ENTRANCES + TOPICS:
@@ -181,6 +222,7 @@ def run(base=None):
         require(urlsplit(public_url(topic)).path in home.links, "homepage missing topic link " + topic)
     require("ПредОГЭ" in Page((ROOT / "trainers/oge-basics/index.html").read_text()).title[0], "preserve PreOGE title")
     print(f"SEO_ENTRANCES_OK: {len(titles)} distinct titles/descriptions/canonicals; {len(TOPICS)} static topic pages; {checked_links} valid local links.")
+    print(f"SEO_CANONICAL_SIGNALS_OK: {canonical_count} public-path canonical declarations; {redirect_count} consistent refresh destinations.")
     if base:
         print(f"SEO_PRESERVATION_OK: 24 existing pages retain executable scripts, styles and indexing directives against {base}.")
 

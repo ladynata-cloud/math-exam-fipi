@@ -7270,6 +7270,11 @@
       "group": "ОГЭ / геометрия 15–19",
       "title": "ОГЭ №15 · Треугольники",
       "href": "/trainers/oge-task15-triangles.html"
+    },
+    {
+      "title": "Колледж · Графики функций · 40 задач по шагам",
+      "group": "Колледж / математика",
+      "href": "/trainers/college-functions/index.html"
     }
   ]
 }

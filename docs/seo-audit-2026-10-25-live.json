@@ -1,0 +1,251 @@
+{
+  "audit": "Anonymous public HTTP/HTML indexing signals before proposed SEO fixes",
+  "repository_base": "fbacc5b14cca8f698733212c91823ff82437e65b",
+  "captured_at_utc": "2026-10-25T13:00:45.717542+00:00",
+  "method": "curl GET with redirects followed; raw response headers and raw canonical/robots/refresh tags retained; response body identified by SHA-256",
+  "limits": [
+    "No Search Console coverage or Google-selected canonical data is inferred from these public responses.",
+    "HTTP 200 does not imply search indexing. HTML meta refresh is recorded separately from HTTP redirects.",
+    "Raw header text may contain HTTP CONNECT proxy acknowledgement blocks; use curl final status and redirect count for the request outcome.",
+    "Set-Cookie headers are omitted. No authentication or private account content was requested."
+  ],
+  "responses": [
+    {
+      "requested_url": "https://mathexam.space/",
+      "started_at_utc": "2026-10-25T13:00:27.216356+00:00",
+      "completed_at_utc": "2026-10-25T13:00:32.770389+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:32 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-3c75\"\nexpires: Sun, 25 Oct 2026 13:03:15 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 8E36:97A7:1BE4C00:1FA4C2C:6ADDFBBB\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 437\ndate: Sun, 25 Oct 2026 13:00:32 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11862-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933233.567880,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: 6931c5fefb7229849e88d4eca78cc342e798ca3b\ncontent-length: 15477\nx-envoy-upstream-service-time: 220\n\n",
+      "body_sha256": "08fdebd707d9acd6e472511660902601ec4ffcdd46a2184e0293cb8cf31748e7",
+      "body_bytes": 15477,
+      "raw_html_indexing_tags": [
+        "<link rel=\"canonical\" href=\"https://mathexam.space/\">"
+      ]
+    },
+    {
+      "requested_url": "https://mathexam.space/index.html",
+      "started_at_utc": "2026-10-25T13:00:27.215337+00:00",
+      "completed_at_utc": "2026-10-25T13:00:32.776829+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/index.html\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/index.html",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:32 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-3c75\"\nexpires: Sun, 25 Oct 2026 13:03:21 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: B9F8:3AA22B:1C0609B:1FC6634:6ADDFBC1\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 431\ndate: Sun, 25 Oct 2026 13:00:32 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11862-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933233.567903,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: 0f18a3ac943e35aec6c4ed7be0e4a052617bb270\ncontent-length: 15477\nx-envoy-upstream-service-time: 247\n\n",
+      "body_sha256": "08fdebd707d9acd6e472511660902601ec4ffcdd46a2184e0293cb8cf31748e7",
+      "body_bytes": 15477,
+      "raw_html_indexing_tags": [
+        "<link rel=\"canonical\" href=\"https://mathexam.space/\">"
+      ]
+    },
+    {
+      "requested_url": "https://mathexam.space/trainers/oge-course/",
+      "started_at_utc": "2026-10-25T13:00:27.217330+00:00",
+      "completed_at_utc": "2026-10-25T13:00:32.651543+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/trainers/oge-course/\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/trainers/oge-course/",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:32 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-4c17\"\nexpires: Sun, 25 Oct 2026 13:03:27 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 64C6:3FE1A9:216DBA9:24C045E:6ADDFBC5\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 425\ndate: Sun, 25 Oct 2026 13:00:32 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11862-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933233.567887,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: 8031b404e14448fd74d983f999f909bbaed31882\ncontent-length: 19479\nx-envoy-upstream-service-time: 230\n\n",
+      "body_sha256": "c53755ba51b18891a98b152563650bd3caaae06a91a75fdedc6dfb1ade7993c7",
+      "body_bytes": 19479,
+      "raw_html_indexing_tags": [
+        "<link href=\"https://mathexam.space/trainers/oge-course/\" rel=\"canonical\"/>"
+      ]
+    },
+    {
+      "requested_url": "https://mathexam.space/trainers/oge-course/index.html",
+      "started_at_utc": "2026-10-25T13:00:27.219047+00:00",
+      "completed_at_utc": "2026-10-25T13:00:32.947680+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/trainers/oge-course/index.html\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/trainers/oge-course/index.html",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:32 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nx-origin-cache: HIT\nlast-modified: Sun, 25 Oct 2026 11:47:09 GMT\naccess-control-allow-origin: *\netag: \"6addec3d-4c17\"\nexpires: Sun, 25 Oct 2026 13:03:33 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 7DD6:34D89F:21D09AF:252176B:6ADDFBCD\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 419\ndate: Sun, 25 Oct 2026 13:00:32 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11852-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933233.855553,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: 6c67043e725c92f57b99b1228d269ff00008b515\ncontent-length: 19479\nx-envoy-upstream-service-time: 559\n\n",
+      "body_sha256": "c53755ba51b18891a98b152563650bd3caaae06a91a75fdedc6dfb1ade7993c7",
+      "body_bytes": 19479,
+      "raw_html_indexing_tags": [
+        "<link href=\"https://mathexam.space/trainers/oge-course/\" rel=\"canonical\"/>"
+      ]
+    },
+    {
+      "requested_url": "https://mathexam.space/trainers/oge-task13-inequalities.html",
+      "started_at_utc": "2026-10-25T13:00:32.783542+00:00",
+      "completed_at_utc": "2026-10-25T13:00:38.373348+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/trainers/oge-task13-inequalities.html\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/trainers/oge-task13-inequalities.html",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:38 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-445\"\nexpires: Sun, 25 Oct 2026 13:03:39 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 7EA2:3ACA60:22CAE33:261D04B:6ADDFBD1\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 419\ndate: Sun, 25 Oct 2026 13:00:38 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11862-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933238.330727,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: ce67f84fc1ffccdb52a14a1d09bf28ed9ab58af8\ncontent-length: 1093\nx-envoy-upstream-service-time: 60\n\n",
+      "body_sha256": "a5ba2eeeb44cacc1bd82da4c805b41d739fdb295048630336a60eef5ed90fbcd",
+      "body_bytes": 1093,
+      "raw_html_indexing_tags": [
+        "<link rel=\"canonical\" href=\"https://mathexam.space/trainers/oge-task13-inequalities.html\">",
+        "<meta http-equiv=\"refresh\" content=\"0; url=/trainers/oge13-inequalities-series.html\">"
+      ]
+    },
+    {
+      "requested_url": "https://mathexam.space/trainers/oge13-inequalities-series.html",
+      "started_at_utc": "2026-10-25T13:00:32.785470+00:00",
+      "completed_at_utc": "2026-10-25T13:00:38.448659+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/trainers/oge13-inequalities-series.html\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/trainers/oge13-inequalities-series.html",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:38 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nx-origin-cache: HIT\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-13d5d\"\nexpires: Sun, 25 Oct 2026 13:03:45 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: A286:11E08:23641F9:26B6226:6ADDFBD7\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 413\ndate: Sun, 25 Oct 2026 13:00:38 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11862-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933238.334771,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: d018edd819b95ee0e75784ac7bcf5dbe517125d5\ncontent-length: 81245\nx-envoy-upstream-service-time: 63\n\n",
+      "body_sha256": "ab839e9f2607ec11b621b3daa738c4409337338b2d284fb433d74c6fd1557e76",
+      "body_bytes": 81245,
+      "raw_html_indexing_tags": []
+    },
+    {
+      "requested_url": "https://mathexam.space/trainers/oge-1-5-trainers/",
+      "started_at_utc": "2026-10-25T13:00:32.788576+00:00",
+      "completed_at_utc": "2026-10-25T13:00:38.375191+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/trainers/oge-1-5-trainers/\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/trainers/oge-1-5-trainers/",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:38 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-31a\"\nexpires: Sun, 25 Oct 2026 13:05:19 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 0B6A:31C33C:21C8AF9:251CC54:6ADDFC36\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 319\ndate: Sun, 25 Oct 2026 13:00:38 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11852-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933238.329267,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: 44dcd86479e7dd2e011fa1bc6af4789106b57311\ncontent-length: 794\nx-envoy-upstream-service-time: 60\n\n",
+      "body_sha256": "2feda005aa8084fd31849465dec8c3e65a85c420a3c485696f33e9f8b211717d",
+      "body_bytes": 794,
+      "raw_html_indexing_tags": [
+        "<meta http-equiv=\"refresh\" content=\"0; url=practice-1-5-map.html\">",
+        "<link rel=\"canonical\" href=\"https://mathexam.space/trainers/oge-1-5-trainers/\">"
+      ]
+    },
+    {
+      "requested_url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "started_at_utc": "2026-10-25T13:00:32.958510+00:00",
+      "completed_at_utc": "2026-10-25T13:00:38.457866+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:38 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nx-origin-cache: HIT\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-7246\"\nexpires: Sun, 25 Oct 2026 13:05:19 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 1C86:65443:2227422:257A719:6ADDFC37\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 319\ndate: Sun, 25 Oct 2026 13:00:38 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11862-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933238.335359,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: 8dc1cded3a61c1be7c8528b0ebb945a94e675cdf\ncontent-length: 29254\nx-envoy-upstream-service-time: 92\n\n",
+      "body_sha256": "a8d83b04a8e2a483ebfcaf4a96d48fa3fcb2252fef409d5931242453d8bea2d8",
+      "body_bytes": 29254,
+      "raw_html_indexing_tags": [
+        "<link rel=\"canonical\" href=\"https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html\">"
+      ]
+    },
+    {
+      "requested_url": "http://mathexam.space/",
+      "started_at_utc": "2026-10-25T13:00:38.376535+00:00",
+      "completed_at_utc": "2026-10-25T13:00:44.145196+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttp://mathexam.space/\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "http://mathexam.space/",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ncontent-length: 15477\nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-3c75\"\nexpires: Sun, 25 Oct 2026 13:05:25 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: EAA4:51608:F29A61:13E9DDD:6ADDFC3D\nx-github-edge-region: iad\naccept-ranges: bytes\ndate: Sun, 25 Oct 2026 13:00:44 GMT\nvia: 1.1 varnish\nage: 318\nx-served-by: cache-msp11858-MSP\nx-cache: HIT\nx-cache-hits: 1\nx-timer: S1792933244.101056,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: dfd117f8e9a5d9fc0e12d3f02cc1a28a9b1c37d3\nx-envoy-upstream-service-time: 128\n\n",
+      "body_sha256": "08fdebd707d9acd6e472511660902601ec4ffcdd46a2184e0293cb8cf31748e7",
+      "body_bytes": 15477,
+      "raw_html_indexing_tags": [
+        "<link rel=\"canonical\" href=\"https://mathexam.space/\">"
+      ]
+    },
+    {
+      "requested_url": "https://www.mathexam.space/",
+      "started_at_utc": "2026-10-25T13:00:38.379354+00:00",
+      "completed_at_utc": "2026-10-25T13:00:45.703413+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/\t1",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/",
+      "http_redirects": 1,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:41 GMT\n\nHTTP/2 301 \nserver: envoy\ncontent-type: text/html\nlocation: https://mathexam.space/\nx-github-request-id: D9D4:EEAE6:1E964B:22D443:6ADDFC3B\nx-github-edge-region: westus3\naccept-ranges: bytes\nage: 318\ndate: Sun, 25 Oct 2026 13:00:42 GMT\nvia: 1.1 varnish\nx-served-by: cache-sjc1000144-SJC\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933242.369117,VS0,VE2\nvary: Accept-Encoding\nx-fastly-request-id: bd4eebc85bac3723a3bbd9e022f1a3ad48c9fede\ncontent-length: 162\nx-envoy-upstream-service-time: 383\n\nHTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:45 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-3c75\"\nexpires: Sun, 25 Oct 2026 13:03:15 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 8E36:97A7:1BE4C00:1FA4C2C:6ADDFBBB\nx-github-edge-region: iad\naccept-ranges: bytes\ndate: Sun, 25 Oct 2026 13:00:45 GMT\nvia: 1.1 varnish\nage: 450\nx-served-by: cache-msp11862-MSP\nx-cache: HIT\nx-cache-hits: 1\nx-timer: S1792933246.615129,VS0,VE2\nvary: Accept-Encoding\nx-fastly-request-id: a1e91e82ac3a38196a0bd70a3475312c37e7d309\ncontent-length: 15477\nx-envoy-upstream-service-time: 60\n\n",
+      "body_sha256": "08fdebd707d9acd6e472511660902601ec4ffcdd46a2184e0293cb8cf31748e7",
+      "body_bytes": 15477,
+      "raw_html_indexing_tags": [
+        "<link rel=\"canonical\" href=\"https://mathexam.space/\">"
+      ]
+    },
+    {
+      "requested_url": "https://ladynata-cloud.github.io/math-exam-fipi/",
+      "started_at_utc": "2026-10-25T13:00:38.459247+00:00",
+      "completed_at_utc": "2026-10-25T13:00:44.140903+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttp://mathexam.space/\t1",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "http://mathexam.space/",
+      "http_redirects": 1,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:41 GMT\n\nHTTP/2 301 \nserver: envoy\ncontent-type: text/html\nlocation: http://mathexam.space/\nx-github-request-id: 97A2:DE4D2:1E904D:22CEA3:6ADDFC3B\nx-github-edge-region: westus3\naccept-ranges: bytes\nage: 318\ndate: Sun, 25 Oct 2026 13:00:41 GMT\nvia: 1.1 varnish\nx-served-by: cache-sjc10022-SJC\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933242.684392,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: e1239a56e5ea0a5b3777f9e299b8994a642f4da8\ncontent-length: 162\nx-envoy-upstream-service-time: 24\n\nHTTP/1.1 200 OK\ncontent-length: 15477\nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-3c75\"\nexpires: Sun, 25 Oct 2026 13:05:25 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: EAA4:51608:F29A61:13E9DDD:6ADDFC3D\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 318\ndate: Sun, 25 Oct 2026 13:00:44 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11834-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933244.095963,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: d9d8df0181cb594cdd6b6dccf8e3e35f13f461df\nx-envoy-upstream-service-time: 120\n\n",
+      "body_sha256": "08fdebd707d9acd6e472511660902601ec4ffcdd46a2184e0293cb8cf31748e7",
+      "body_bytes": 15477,
+      "raw_html_indexing_tags": [
+        "<link rel=\"canonical\" href=\"https://mathexam.space/\">"
+      ]
+    },
+    {
+      "requested_url": "https://mathexam.space/ege-profil/trainers/parameters-18/graphic.html",
+      "started_at_utc": "2026-10-25T13:00:38.468105+00:00",
+      "completed_at_utc": "2026-10-25T13:00:42.359823+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/ege-profil/trainers/parameters-18/graphic.html\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/ege-profil/trainers/parameters-18/graphic.html",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:42 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-a203\"\nexpires: Sun, 25 Oct 2026 13:05:22 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 92C2:353E83:22E71A7:263A558:6ADDFC36\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 320\ndate: Sun, 25 Oct 2026 13:00:42 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11852-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933242.272224,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: 57439be6b111e621be07af6c9ad637b361600d0f\ncontent-length: 41475\nx-envoy-upstream-service-time: 56\n\n",
+      "body_sha256": "fb296da8cc99f2ad0ece5b0847d23b904a11c61d06e0069aac4ef20f4e5d9bfc",
+      "body_bytes": 41475,
+      "raw_html_indexing_tags": [
+        "<link rel=\"canonical\" href=\"https://mathexam.space/ege-profil/trainers/parameters-t18.html\">"
+      ]
+    },
+    {
+      "requested_url": "https://mathexam.space/ege-profil/trainers/parameters-t18.html",
+      "started_at_utc": "2026-10-25T13:00:42.365092+00:00",
+      "completed_at_utc": "2026-10-25T13:00:45.708514+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/ege-profil/trainers/parameters-t18.html\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/ege-profil/trainers/parameters-t18.html",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:45 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-9c5c\"\nexpires: Sun, 25 Oct 2026 13:05:25 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 097C:105465:10A6E34:1565EF5:6ADDFC3D\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 320\ndate: Sun, 25 Oct 2026 13:00:45 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11862-MSP\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792933246.622877,VS0,VE2\nvary: Accept-Encoding\nx-fastly-request-id: 8c5c59624eb98da9224e35d9e94a8eef29f2e075\ncontent-length: 40028\nx-envoy-upstream-service-time: 60\n\n",
+      "body_sha256": "dcc36c26c618a88a0ffceb1163c69b5f4cf01691084cc0613c9de3c3516ea251",
+      "body_bytes": 40028,
+      "raw_html_indexing_tags": []
+    },
+    {
+      "requested_url": "https://mathexam.space/trainers/atanasyan-7-9.html",
+      "started_at_utc": "2026-10-25T13:00:44.151261+00:00",
+      "completed_at_utc": "2026-10-25T13:00:45.708847+00:00",
+      "curl_exit_code": 0,
+      "curl_result": "200\thttps://mathexam.space/trainers/atanasyan-7-9.html\t0",
+      "error": "",
+      "final_http_status": 200,
+      "final_url": "https://mathexam.space/trainers/atanasyan-7-9.html",
+      "http_redirects": 0,
+      "raw_response_headers": "HTTP/1.1 200 OK\ndate: Sun, 25 Oct 2026 13:00:45 GMT\n\nHTTP/2 200 \nserver: envoy\ncontent-type: text/html; charset=utf-8\nlast-modified: Sun, 25 Oct 2026 11:47:08 GMT\naccess-control-allow-origin: *\netag: \"6addec3c-7bc\"\nexpires: Sun, 25 Oct 2026 13:10:45 GMT\ncache-control: max-age=600\nx-proxy-cache: MISS\nx-github-request-id: 782A:2D273C:1B1554A:1EDA426:6ADDFD7D\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 0\ndate: Sun, 25 Oct 2026 13:00:45 GMT\nvia: 1.1 varnish\nx-served-by: cache-msp11852-MSP\nx-cache: MISS\nx-cache-hits: 0\nx-timer: S1792933246.610954,VS0,VE55\nvary: Accept-Encoding\nx-fastly-request-id: a825cb41bb2d823f3f97dffc9a99fa9287d655db\ncontent-length: 1980\nx-envoy-upstream-service-time: 112\n\n",
+      "body_sha256": "8669703c3677cab1b48fe16b74cec7cb16c61130ce851284d4113b5eae7df2b0",
+      "body_bytes": 1980,
+      "raw_html_indexing_tags": [
+        "<meta name=\"robots\" content=\"noindex\">",
+        "<link rel=\"canonical\" href=\"https://mathexam.space/geometry-course/textbook/#atanasyan-7-9-main-92-part-1\">"
+      ]
+    }
+  ]
+}

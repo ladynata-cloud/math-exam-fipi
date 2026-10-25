@@ -13,6 +13,12 @@
     url: 'https://mathexam.space/stereo-course/merzlyak-10-base/',
     boardURL: 'https://mathexam.space/trainers/trainer-board.html?trainer=' + encodeURIComponent('/trainers/merzlyak-10-base.html')
   });
+  const collegeFunctions = Object.freeze({
+    id: 'college-functions',
+    title: 'Колледж · Графики функций',
+    url: 'https://mathexam.space/trainers/college-functions/',
+    boardURL: 'https://mathexam.space/trainers/trainer-board.html?trainer=' + encodeURIComponent('/trainers/college-functions/index.html')
+  });
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
   // An explicit presentation choice in the existing versioned focus note.
   // URLs or a pupil's identity never opt a profile into this mode.
@@ -51,6 +57,7 @@
     if (numberTheoryOnly(profile)) return numberTheory;
     const urls = focusURLs(profile.focus);
     if (urls.has(course.url)) return course;
+    if (urls.has(collegeFunctions.url)) return collegeFunctions;
     if (profile.course === 'ege' && egeBaseLessons.every(lesson => urls.has(egeBaseURL(lesson.id)))) return egeBase;
     return null;
   }
@@ -58,6 +65,9 @@
     const active = selected(profile);
     if (!active) return '';
     const tag = heading === 'h1' ? 'h1' : 'h2';
+    if (active === collegeFunctions) {
+      return `<section class="panel attached-course" data-attached-course="${collegeFunctions.id}"><p class="eyebrow">МОЙ КУРС · КОЛЛЕДЖ</p><${tag}>${collegeFunctions.title}</${tag}><p>40 задач по графикам: корни, параболы, показательные и логарифмические функции, функции по частям. Стройте по точкам и исследуйте свойства шаг за шагом.</p><div class="actions"><a class="button primary" data-attached-course-open href="${collegeFunctions.url}" target="_blank" rel="noopener noreferrer">Открыть тренажёр →</a>${teacher ? `<a class="button" data-attached-course-board href="${collegeFunctions.boardURL}" target="_blank" rel="noopener noreferrer">Открыть на общей доске →</a>` : ''}</div><p class="form-hint" data-college-functions-room>${teacher ? 'Для совместного занятия откройте тренажёр на доске и передайте ученику ссылку этой комнаты.' : 'Для совместного занятия открой ссылку комнаты, которую пришлёт преподаватель.'}</p><p class="form-hint" data-attached-course-storage>Личные решения курса сохраняются в браузере. Работа на общей доске не записывается как самостоятельное решение в кабинете.</p></section>`;
+    }
     if (active === egeBase) {
       const cardTag = tag === 'h1' ? 'h2' : 'h3';
       const cards = egeBaseLessons.map(lesson => {

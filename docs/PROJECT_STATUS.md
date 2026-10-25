@@ -2,7 +2,18 @@
 
 Updated: 2026-10-25 (Asia/Novosibirsk)
 
-## Prepared for requested publication: college function graphs
+## In progress: college function graphs on the shared board
+
+- [Scope](tasks/COLLEGE_FUNCTIONS_BOARD.md), MEDIUM bounded adapter and selected
+  course attachment; base `741e9ce987cc9bdb452463d2d835632e5233c472`, branch
+  `feat/college-functions-board`.
+- Owner requested mirror synchronization, then a new college learner cabinet
+  with this course. Existing shared SDK and versioned profile form are reused;
+  no new server/authentication contract is planned.
+- Next: finish two-participant and isolation gates, publish, verify the live
+  backend registry and room, then confirm saved course placement privately.
+
+## Published: college function graphs
 
 - [Scope and checks](tasks/COLLEGE_FUNCTIONS_COURSE.md), MEDIUM static trainer;
   base `8e681831e874a9af129f50c16179bd2a424c5474`, branch
@@ -12,9 +23,12 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
 - Mathematical and DOM journeys, desktop/mobile rendering, sitemap and SEO
   checks pass. Independent internal review is recorded in the PR; unavailable
   Claude consultation is explicitly not claimed as completed.
-- Owner requested creation and publication on the existing site. Next: exact-head
-  CI, normal scoped release, then live verification at the new public route.
-  Publication is not claimed by this prepared-status entry.
+- [PR336](https://github.com/ladynata-cloud/math-exam-fipi/pull/336) published as
+  `741e9ce987cc9bdb452463d2d835632e5233c472`; both pre-merge CI workflows,
+  post-merge tests and Pages deployment passed. All eight published assets
+  matched the checked bytes; actual live B1 advances and retains its first step.
+- Static gate: `COLLEGE_FUNCTIONS_STATIC_OK`. The subsequent synchronization and
+  cabinet request is the separate task above.
 
 ## In progress: whole-course OGE audit and shared practice
 

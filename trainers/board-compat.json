@@ -688,6 +688,20 @@
       "notes": "Совместная тренировка: условие, ответ, помощь, шаги и модель. Личный прогресс и зачёт не изменяются."
     },
     {
+      "trainerId": "college-functions",
+      "file": "trainers/college-functions/index.html",
+      "title": "Колледж · Графики функций",
+      "group": "Колледж / математика",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа: выбранная функция, шаги исследования, ответы, отмеченные точки, подсказки и диагностика. Личный прогресс не изменяется."
+    },
+    {
       "trainerId": "oge-task6-fractions",
       "file": "trainers/oge-task6-fractions.html",
       "title": "ОГЭ №6 · Дроби",
