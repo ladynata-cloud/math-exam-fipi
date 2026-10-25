@@ -3,11 +3,27 @@ on:
   pull_request:
     paths:
       - 'trainers/college-functions/**'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/trainer-board.html'
+      - 'board-server/**'
+      - 'learning/attached-course.js'
+      - 'learning/index.html'
+      - 'tools/college-functions-cabinet.test.cjs'
       - '.github/workflows/college-functions.yml'
   push:
     branches: [main]
     paths:
       - 'trainers/college-functions/**'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/trainer-board.html'
+      - 'board-server/**'
+      - 'learning/attached-course.js'
+      - 'learning/index.html'
+      - 'tools/college-functions-cabinet.test.cjs'
       - '.github/workflows/college-functions.yml'
 permissions:
   contents: read
@@ -21,13 +37,19 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: '22'
+          node-version: '24.21.0'
       - name: Install pinned DOM test dependency
         run: |
           npm install --prefix "$RUNNER_TEMP/college-functions-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
           echo "NODE_PATH=$RUNNER_TEMP/college-functions-qa/node_modules" >> "$GITHUB_ENV"
-      - name: Mathematical keys, parsing, graphs and all learner journeys
+      - name: Install local board transport dependencies
+        run: npm ci --prefix board-server --include=optional --no-audit --no-fund
+      - name: Mathematics, learner journeys, mirrored board transport and cabinet regression
         run: |
           node --check trainers/college-functions/app.js
+          node --check trainers/college-functions/board-mode.js
+          node --check trainers/college-functions/board.js
           node --test trainers/college-functions/*.test.cjs
+          node --test tools/college-functions-cabinet.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
           git diff --check

@@ -3,3 +3,9 @@
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 
 .piecewise{display:inline-flex;align-items:center;border:0;border-radius:0;padding-left:0;font-size:1em;gap:7px}.piecewise>.cases{display:inline-grid;gap:8px;font-size:.76em;border-left:2px solid currentColor;border-radius:13px;padding-left:13px}.cases>.case{display:grid;grid-template-columns:minmax(70px,1fr) auto;gap:14px;align-items:center}.case>span:last-child{font:0.7em/1.4 system-ui,sans-serif;white-space:nowrap}
+
+/* Board sessions share only the current exercise, never personal browser results. */
+.college-board-mode #progress-panel,.college-board-mode #open-board,.college-board-mode footer a,.college-board-mode .topbar>a:not(.brand){display:none}
+.college-board-mode .topbar .brand{cursor:default}
+.topbar #open-board{margin-left:auto;margin-right:24px}
+@media(max-width:650px){.topbar{height:auto;min-height:65px;flex-wrap:wrap;gap:8px;padding-top:12px;padding-bottom:12px}.topbar #open-board{order:3;flex-basis:100%;margin:0;text-align:right;font-size:12px}}
