@@ -9,7 +9,13 @@ const path = require('node:path');
 const http = require('node:http');
 const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '..');
-const entries = require('./fixtures/oge-course-board-entries.json');
+const entries = require('./fixtures/oge-course-board-entries.json').concat([
+  {trainerId:'oge-task15-triangles',file:'trainers/oge-task15-triangles.html'},
+  {trainerId:'oge-task16-circle',file:'trainers/oge-task16-circle.html'},
+  {trainerId:'oge-task17-quadrilaterals',file:'trainers/oge-task17-quadrilaterals.html'},
+  {trainerId:'oge-task18-grid',file:'trainers/oge-task18-grid.html'},
+  {trainerId:'oge-task19',file:'trainers/task19-trainer.html'}
+]);
 const stages = { 10:'#mar-root', 11:'#m4', 12:'#taskArea', 13:'section.main', 14:'#m-task' };
 const checks = { 10:'button[id$="-ck"]', 11:'#m4-check', 12:'#checkBtn', 13:'#check', 14:'#m-ck' };
 const hints = { 10:'.minimal-hint', 11:'#m4-hint', 12:'.minimal-hint', 13:'#hintToggle', 14:'#m-solve' };
@@ -84,6 +90,28 @@ async function run(context, origin, entry) {
         await click('probability model', stage.locator('.oca-exploration > details > summary'));
         await click('one native outcome after help already used', stage.locator('.oca-outcomes button'));
       }
+    } else if (n === 15) {
+      await fill('answer draft', teacher.locator('#board-answer'));
+      await click('check answer', teacher.locator('#board-check'));
+      await click('hint', teacher.locator('#board-hint'));
+      await click('reference', teacher.locator('#board-reference'));
+      await click('guided solution', teacher.locator('#board-guide'));
+      await click('show first step', teacher.locator('[data-step-reveal="0"]'));
+    } else if (n >= 16 && n <= 18) {
+      await fill('answer draft', teacher.locator(n === 18 ? '#ansIn' : '#ans'));
+      await click('check answer', teacher.locator(n === 16 ? '#check' : n === 17 ? '#chk' : '#chkBtn'));
+      await click('native help', teacher.locator('#courseHintToggle'));
+      const model = teacher.locator('[data-geometry-model]').first();
+      await click('open native geometry model', model.locator(':scope > summary'));
+      const slider = model.locator('input[type=range]').first();
+      if (await slider.count()) await act('one native geometry slider edit', async () => {const key = await slider.evaluate(el => Number(el.value) >= Number(el.max) ? 'ArrowLeft' : 'ArrowRight'); await slider.focus(); await slider.press(key);});
+      const toggle = model.locator('button[aria-pressed]').first();
+      if (await toggle.count()) await click('one native geometry model button', toggle);
+    } else if (n === 19) {
+      await click('statement hint', teacher.locator('#hintToggle'));
+      await click('native measurement', teacher.locator('.t19-measure'));
+      await click('statement choice', teacher.locator('#btnTrue'));
+      await click('settings disclosure', teacher.locator('#settings > summary'));
     } else if (n >= 20 && n <= 22) {
       const stage = teacher.locator('.oge-native-shared-stage');
       if (n === 22) await click('add a single answer value', stage.getByRole('button', {name:'+ отдельное значение',exact:true}));
@@ -159,6 +187,6 @@ async function run(context, origin, entry) {
     catch (error) { failures.push(entry.trainerId + ': ' + error.message); console.error(error); }
   }
   assert.deepEqual(failures, [], 'Every native trainer must pass; failures are collected without skipping later pages');
-  assert.equal(records.length,25);
+  assert.equal(records.length,30);
   console.log(JSON.stringify({marker:'OGE_NATIVE_BROWSER_EVENTS_OK',trainers:records.length,actions:records.reduce((sum,item)=>sum+item.actions,0),personalAccesses:0,productionRoomWrites:0}));
 })().catch(error => {console.error(error);process.exitCode=1;}).finally(async () => {await browser?.close();server.close();});
