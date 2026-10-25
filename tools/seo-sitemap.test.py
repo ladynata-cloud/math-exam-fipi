@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Black-box public-discovery checks: python3 tools/seo-sitemap.test.py."""
 
+import importlib.util
 import json
 from pathlib import Path
 import subprocess
@@ -13,6 +14,67 @@ import xml.etree.ElementTree as ET
 GENERATOR = Path(__file__).with_name("build-sitemap.py")
 ORIGIN = "https://mathexam.space"
 NS = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+
+
+def load_tool(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class CanonicalSignalTests(unittest.TestCase):
+    """Cover declarations on pages intentionally omitted from the sitemap."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.generator = load_tool("seo_sitemap_test_generator", GENERATOR)
+        cls.seo = load_tool("seo_check_test", GENERATOR.with_name("seo-check.py"))
+
+    def check(self, head, url=ORIGIN + "/public/old.html"):
+        page = self.generator.Page("<html><head>" + head + "</head></html>")
+        self.seo.check_canonical_signals(page, url, "fixture")
+
+    def test_redirect_self_canonical_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "conflicts with meta refresh"):
+            self.check('<link rel="canonical" href="/public/old.html">'
+                       '<meta http-equiv="refresh" content="0; url=new.html">')
+
+    def test_relative_redirect_and_fragment_navigation_agree_with_document_canonical(self):
+        self.check('<link rel="canonical" href="/public/new.html">'
+                   '<meta http-equiv="refresh" content="0; url=new.html#step-2">')
+        self.check('<base href="/public/">'
+                   '<link rel="canonical" href="new.html">'
+                   '<meta http-equiv="refresh" content="0; url=new.html">')
+
+    def test_noindex_wrapper_canonical_fragment_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "must not contain a fragment"):
+            self.check('<meta name="robots" content="noindex">'
+                       '<link rel="canonical" href="/public/course/#task-92">')
+
+    def test_noindex_wrapper_and_alternate_page_may_point_to_public_document(self):
+        self.check('<meta name="robots" content="noindex">'
+                   '<link rel="canonical" href="/public/course/">')
+        self.check('<link rel="canonical" href="/public/course/">')
+        self.check('<link rel="canonical" href="/public/index.html">', ORIGIN + "/public/")
+
+    def test_conflicting_canonicals_are_rejected_even_on_noindex_wrapper(self):
+        with self.assertRaisesRegex(ValueError, "conflicting canonical links"):
+            self.check('<meta name="robots" content="noindex">'
+                       '<link rel="canonical" href="/public/one.html">'
+                       '<link rel="canonical" href="/public/two.html">')
+
+    def test_scan_checks_unlisted_noindex_wrappers_but_excludes_source_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "trainers").mkdir()
+            (root / "sources").mkdir()
+            bad = '<meta name="robots" content="noindex"><link rel="canonical" href="/course/#task">'
+            (root / "sources/original.html").write_text(bad, encoding="utf-8")
+            self.assertEqual(self.seo.check_public_canonical_signals(root), (0, 0))
+            (root / "trainers/wrapper.html").write_text(bad, encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "must not contain a fragment"):
+                self.seo.check_public_canonical_signals(root)
 
 
 class SitemapDiscoveryTests(unittest.TestCase):
