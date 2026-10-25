@@ -22,7 +22,7 @@ jobs:
           node-version: '24.21.0'
       - name: Install isolated DOM test dependency
         run: |
-          npm install --prefix "$RUNNER_TEMP/vilenkin-dom" --no-save --no-package-lock --ignore-scripts linkedom@0.18.14
+          npm install --prefix "$RUNNER_TEMP/vilenkin-dom" --no-save --no-package-lock --ignore-scripts linkedom@0.18.14 jsdom@26.1.0
           echo "NODE_PATH=$RUNNER_TEMP/vilenkin-dom/node_modules" >> "$GITHUB_ENV"
       - name: Content and retained-work regression
         run: |
@@ -30,11 +30,39 @@ jobs:
           node --check courses/vilenkin-6-part-1/labs.js
           node tools/vilenkin6-course/check.cjs
           node tools/vilenkin6-course/dom.cjs
+          node tools/vilenkin6-course/textbook-check.cjs
+          node tools/vilenkin6-course/textbook-entry.test.cjs
+          node tools/vilenkin6-course/textbook-dom.cjs
           python3 tools/vilenkin6-course/build-offline.py
           git diff --exit-code -- courses/vilenkin-6-part-1/offline.html
           git diff --check
+  textbook-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated browser dependency
+        run: |
+          npm install --prefix "$RUNNER_TEMP/vilenkin-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/vilenkin-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/vilenkin-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Textbook learner flows and mobile layout
+        run: node tools/vilenkin6-course/textbook-browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: vilenkin6-textbook-browser
+          path: artifacts/vilenkin6-textbook
+          if-no-files-found: warn
+          retention-days: 14
   external-review:
-    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'publish/vilenkin6-part1-course'
+    if: github.event.pull_request.head.repo.full_name == github.repository && (github.head_ref == 'publish/vilenkin6-part1-course' || github.head_ref == 'fix/vilenkin6-textbook-learning')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -48,6 +76,7 @@ jobs:
           REVIEW_BASE: ${{ github.event.pull_request.base.sha }}
           REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
           REVIEW_PR: ${{ github.event.pull_request.number }}
+          REVIEW_TEXTBOOK_LEARNING: ${{ github.head_ref == 'fix/vilenkin6-textbook-learning' && '1' || '0' }}
         run: python3 tools/vilenkin6-course/external-review.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

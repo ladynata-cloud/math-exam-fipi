@@ -1,0 +1,113 @@
+{
+  "reviewer": "book_content_b (independent from runtime author textbook_runtime)",
+  "status": "PASS",
+  "openFindings": [],
+  "scope": [
+    "textbook-course.js runtime and saved-state restoration",
+    "textbook-math.js typed exact answer checking",
+    "textbook-entry.js public/legacy routing",
+    "content, entry, DOM and browser test implementation review"
+  ],
+  "reviewedFileSha256": {
+    "courses/vilenkin-6-part-1/textbook-course.js": "3a5d10e17b77605b7a0fb086360f4a66587e579ba46813dc3a07bda09d69a62d",
+    "courses/vilenkin-6-part-1/textbook-math.js": "57ed2da60e0daf0451f469674738e6b00f2a078f81bfd2f947020928aee08e37",
+    "courses/vilenkin-6-part-1/textbook-entry.js": "85687ff8b6f2d275754e901990f4255062dd335838519d3eee2eba83527d6819",
+    "tools/vilenkin6-course/textbook-check.cjs": "9faf3ad15da3ff141b9e7a0a437a32224075675ce7955b21ec938e5a74b0d9fe",
+    "tools/vilenkin6-course/textbook-entry.test.cjs": "7f923979b34936f8fc432eb24b3eba0df7eb4dc440a130640b46b244fe0137eb",
+    "tools/vilenkin6-course/textbook-dom.cjs": "7d86bd0a064a61dab1673520f5365f41a5da746b73b22757eefdf6e81c4c31da",
+    "tools/vilenkin6-course/textbook-browser.cjs": "0a3462aa328ed96c536e3366e99801e9c7fef49cca2ff9a5017656aee53a6891"
+  },
+  "validation": {
+    "sourceAndFormatGate": "PASS: 24 units, 192 source tasks, 605 guided steps, 4 manual tasks, 25 source image uses",
+    "entryGate": "PASS: public route and managed/legacy/file preservation",
+    "domGate": {
+      "status": "PASS",
+      "taskViews": 192,
+      "sourceFigures": 25,
+      "namedJourneyCount": 24,
+      "journeys": [
+        "step-reload",
+        "wrong-hint-reload",
+        "assisted",
+        "independent",
+        "repeat",
+        "reset",
+        "guided",
+        "manual",
+        "progress",
+        "book",
+        "corrupt-state",
+        "step-reveal-reload",
+        "stale-submit",
+        "bounded-input",
+        "hidden-hint",
+        "rules-help",
+        "source-help",
+        "unit-zero-resume",
+        "preserve-unreadable-state",
+        "stale-repeat-reset-navigation-continue",
+        "reconcile-help-evidence",
+        "reconcile-completed-answers",
+        "validate-step-prefix",
+        "hint-reset-remains-familiar"
+      ]
+    },
+    "independentFormatProbes": "PASS: 1610 cases covering equivalent rational values, rejection of wrong values and unreduced answers, exact common denominators, decimal format, reduced mixed numbers, prime products and malformed fractions",
+    "independentRuntimeProbes": [
+      {
+        "probe": "detached repeat after navigation",
+        "result": "PASS; prior result and current screen unchanged"
+      },
+      {
+        "probe": "detached confirm-reset after navigation",
+        "result": "PASS; prior result and current screen unchanged"
+      },
+      {
+        "probe": "hint then topic reset then correct answer",
+        "result": "PASS; repeated, never first independent"
+      },
+      {
+        "probe": "saved solution=true with helped=false",
+        "result": "PASS; visible solution forces assisted completion"
+      },
+      {
+        "probe": "saved independent status with wrong draft and help/repeat evidence",
+        "result": "PASS; completion discarded, work reopened conservatively"
+      },
+      {
+        "probe": "numeric check saved as learned with correct draft",
+        "result": "PASS; repeated, never upgraded to independent"
+      },
+      {
+        "probe": "numeric check saved as manual with correct draft",
+        "result": "PASS; repeated, never upgraded to independent"
+      }
+    ]
+  },
+  "resolvedFindings": [
+    {
+      "id": "RUNTIME-STATE",
+      "severity": "medium",
+      "before": "Stored completion/help labels could conflict with visible solutions, wrong answers or incompatible result types and still claim independent success.",
+      "fix": "Restoration verifies answer and completed step prefix, infers help from surviving evidence, reconciles status conservatively and treats incompatible old labels as familiar work."
+    },
+    {
+      "id": "RUNTIME-STALE",
+      "severity": "medium",
+      "before": "Detached repeat/reset callbacks could mutate old work and redraw the wrong view after navigation.",
+      "fix": "Mutating handlers and links check rendering epoch and hash; task callbacks also verify current progress identity."
+    },
+    {
+      "id": "RUNTIME-RESET",
+      "severity": "medium",
+      "before": "After hint/reveal work, topic reset erased familiarity and allowed the same task to claim first independent completion.",
+      "fix": "Reset preserves familiarity from help, attempts, completed steps, hints, revealed steps and prior completion."
+    }
+  ],
+  "limits": [
+    "Review is code inspection plus Node/jsdom and exact answer probes. The independent reviewer did not rerun Chromium; root is performing final Chromium layout/learner-flow verification against these guards.",
+    "Local browser progress is a learning record, not an authenticated examination or a claim about pupil mastery. Account/cloud synchronization and simultaneous-tab conflict resolution are outside this task.",
+    "Real pupil comprehension and assistive technology testing are not established by these automated checks."
+  ],
+  "modifiedProductionFilesByReviewer": false
+}
