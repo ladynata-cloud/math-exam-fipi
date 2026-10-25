@@ -2,6 +2,20 @@
 
 Updated: 2026-10-25 (Asia/Novosibirsk)
 
+## Prepared for requested publication: college function graphs
+
+- [Scope and checks](tasks/COLLEGE_FUNCTIONS_COURSE.md), MEDIUM static trainer;
+  base `8e681831e874a9af129f50c16179bd2a424c5474`, branch
+  `feat/college-functions-course`.
+- 40 graph tasks, eight diagnostics, retained eight-step solutions, contextual
+  help and independent practice. Progress is browser-local; no cabinet or sync.
+- Mathematical and DOM journeys, desktop/mobile rendering, sitemap and SEO
+  checks pass. Independent internal review is recorded in the PR; unavailable
+  Claude consultation is explicitly not claimed as completed.
+- Owner requested creation and publication on the existing site. Next: exact-head
+  CI, normal scoped release, then live verification at the new public route.
+  Publication is not claimed by this prepared-status entry.
+
 ## In progress: OGE geometry 15–19 shared practice
 
 - [Scope](tasks/OGE_15_19_SHARED_BOARD.md), HIGH review; base `fbacc5b14cca8f698733212c91823ff82437e65b` (published PR334), branch `feat/oge-15-19-board`; routine additive conflicts preserve both releases.
