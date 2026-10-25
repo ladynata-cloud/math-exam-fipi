@@ -11,7 +11,9 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
   by the owner. Trainer logic, cabinets and the board are unchanged.
 - Local gate: `LESSON_CONTACTS_STATIC_OK`; SEO/sitemap, 22 responsive browser
   checks and 11 no-JS routes passed. Existing scripts/inline styles are preserved.
-- Next: open the scoped Draft PR; verify exact-head CI; obtain separate merge
+- Draft PR #342 is open. The navigation contract now recognizes the requested
+  lesson contact page and checks its two personal contact destinations.
+- Next: verify exact-head CI; obtain separate merge
   authorization and verify production.
 - This preparation is not a production release. Older entries below describe
   other tasks and have not been re-certified by this contact-only change.

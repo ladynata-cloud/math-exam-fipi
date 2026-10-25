@@ -14,7 +14,14 @@ const doc = file => new JSDOM(read(file), { url: 'https://mathexam.space/' + fil
 const home = doc('index.html'), lab = doc('laboratory/index.html');
 const division = '/trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html';
 const cabinet = 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route';
-const allowedNav = new Set(['/', '/foundations/', '/trainers/oge-course/', '/trainers/oge-basics/', '/laboratory/', cabinet]);
+// Private-lesson contact is an owner-requested service entry, not another course.
+const allowedNav = new Set(['/', '/foundations/', '/trainers/oge-course/', '/trainers/oge-basics/', '/laboratory/', '/lessons/', cabinet]);
+const lessons = doc('lessons/index.html');
+assert.equal(lessons.querySelector('link[rel="canonical"]').href, 'https://mathexam.space/lessons/');
+assert(lessons.getElementById('contact'), 'Lesson invitation has a contact destination');
+for (const href of ['https://t.me/ladynata3000', 'https://vk.ru/ladynata3000']) {
+  assert(lessons.querySelector('#contact a[href="' + href + '"]'), 'Owner-supplied lesson contact: ' + href);
+}
 
 assert.match(home.title, /ОГЭ/);
 assert.equal(home.querySelectorAll('h1').length, 1);

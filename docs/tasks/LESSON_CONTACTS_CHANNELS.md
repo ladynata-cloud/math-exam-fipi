@@ -44,7 +44,7 @@ This is the task's start instruction; no separate release instruction is assumed
 - VK URL is the owner's profile, not a guaranteed direct-message dialog; page text
   explains that the visitor still needs to send a message in the chosen service.
 - MAX invite can be revoked by its owner; update all static copies if it changes.
-- Rollback: revert the single task commit, restoring previous HTML and sitemap.
+- Rollback: revert this task's commits, restoring previous HTML and sitemap.
 - Public contact details were explicitly supplied for publication by the owner.
   No credentials or private student information are included.
 
@@ -69,6 +69,10 @@ This is the task's start instruction; no separate release instruction is assumed
 - PASS: visual inspection of desktop/mobile lessons and home mobile screenshots;
   contact controls are readable, in normal flow and separate from subscriptions.
 - PASS: all existing executable script elements and inline styles match base.
+- Initial CI caught a stale navigation allowlist: it classified /lessons/ as
+  another course. Updated that contract for the requested contact entry and
+  added assertions for its canonical URL, contact anchor and both personal
+  destinations. Existing course restrictions remain enforced.
 - Earlier environment failures: default Playwright browser absent and CDN returned
   invalid archives. A temporary npm Chromium binary completed the checks after
   removing an empty stale temporary executable. The test harness was corrected
