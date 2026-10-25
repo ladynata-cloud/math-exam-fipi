@@ -453,6 +453,9 @@
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
+<script src="../oge-course-shared-mode.js"></script>
+<script src="../board-bridge.js"></script>
+<script src="percent-board.js"></script>
 <script src="practical-minimal.js"></script>
 </head>
 <body data-practical-page="percent-table">
@@ -781,10 +784,12 @@
   </footer>
 </div>
 
-<script src="progress.js"></script>
+<script src="progress.js?v=20261025-oge-course-mirror"></script>
 <script>
 (function(){
 'use strict';
+const shared=window.OgeCourseSharedMode===true;
+const board=window.PercentBoardBridge;
 
 const OWN_KEY='percentTrainer.v1';
 const MAP_KEY='mathExamCourseProgress.v1';
@@ -815,12 +820,13 @@ const LEARN_TITLES=[
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const round=(n,d=2)=>Math.round(n*10**d)/10**d;
-const format=n=>Number.isInteger(Number(n))?Number(n).toLocaleString('ru-RU'):String(round(Number(n),2)).replace('.',',');
+const format=n=>Number.isInteger(Number(n))?Number(n).toLocaleString('ru-RU'):String(round(Number(n),4)).replace('.',',');
 const parseNumber=s=>{
-  const cleaned=String(s||'').replace(/\s/g,'').replace(',','.').replace(/[^0-9.\-]/g,'');
-  return cleaned===''?NaN:Number(cleaned);
+  const cleaned=String(s??'').trim().replace(/\s/g,'').replace(',','.');
+  return /^[-+]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(cleaned)?Number(cleaned):NaN;
 };
-const near=(a,b)=>Number.isFinite(a)&&Math.abs(a-b)<=Math.max(.01,Math.abs(b)*.0001);
+// Every generated answer is a terminating decimal; only floating-point noise is allowed.
+const near=(a,b)=>Number.isFinite(a)&&Math.abs(a-b)<=1e-8;
 const frac=(a,b)=>`<span class="frac"><span>${a}</span><span>${b}</span></span>`;
 const nowId=()=>`${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
 const sum=o=>Object.values(o).reduce((a,b)=>a+b,0);
@@ -851,6 +857,14 @@ let state=initialState();
 let learnGate=true;
 let learnLocal={};
 let checkTimerId=null;
+let boardTask=null,boardReview=null,boardActions=[],boardDraft='',boardReplaying=false;
+function recordBoardAction(action){
+  if(!shared||boardReplaying)return true;
+  if(boardActions.length>=64){document.getElementById('next-task').disabled=false;return false;}
+  boardActions.push(action);if(boardActions.length===64)document.getElementById('next-task').disabled=false;return true;
+}
+function freshTaskState(){return{hintLevel:0,helpCollapsed:false,wrongAttempts:0,answered:false,solutionShown:false,outcome:null,reviewRecorded:false};}
+function boardGenerate(d){return board.seeded(d.seed,()=>d.level==='advanced'?advancedTask():standardTask(d.skill==='mix'?pick(SKILLS):d.skill));}
 
 function normalizeStats(saved){
   const stats={};
@@ -865,6 +879,7 @@ function normalizeStats(saved){
   return stats;
 }
 function load(){
+  if(shared)return;
   try{
     const saved=JSON.parse(localStorage.getItem(OWN_KEY)||'null');
     if(!saved)return;
@@ -892,6 +907,7 @@ function topicSolved(){
 }
 function totalBy(kind){return SKILLS.reduce((n,k)=>n+(Number(state.stats[k][kind])||0),0)+(Number(state.advanced[kind])||0);}
 function save(){
+  if(shared)return;
   const legacyPerType={};SKILLS.forEach(k=>legacyPerType[k]=state.stats[k].independent);
   try{
     localStorage.setItem(OWN_KEY,JSON.stringify({
@@ -925,6 +941,7 @@ function save(){
 }
 
 function setView(view,options={}){
+  if(shared&&!['practice','review'].includes(view))view='practice';
   if(!['home','learn','practice','check','review'].includes(view))view='home';
   const leavingReview=state.view==='review'&&view==='practice';
   state.view=view;
@@ -1316,9 +1333,10 @@ function advancedTask(){
 
 /* ---------------- Практика ---------------- */
 function newPracticeTask(){
-  const task=state.difficulty==='advanced'?advancedTask():standardTask(state.skill==='mix'?pick(SKILLS):state.skill);
+  if(shared){boardTask={seed:board.seed(),level:state.difficulty,skill:state.skill};boardActions=[];boardDraft='';}
+  const task=shared?boardGenerate(boardTask):state.difficulty==='advanced'?advancedTask():standardTask(state.skill==='mix'?pick(SKILLS):state.skill);
   state.current=task;
-  state.taskState={hintLevel:0,helpCollapsed:false,wrongAttempts:0,answered:false,solutionShown:false,outcome:null,reviewRecorded:false};
+  state.taskState=freshTaskState();
   renderPractice();save();
 }
 function renderSkillChips(){
@@ -1328,7 +1346,7 @@ function renderSkillChips(){
   }
   box.innerHTML=[{key:'mix',name:'🎲 Вперемешку'},...SKILLS.map(k=>({key:k,name:SKILL_META[k].short}))].map(item=>{
     const stat=item.key==='mix'?null:state.stats[item.key];const mastered=stat&&stat.independent>=MASTERY;
-    return `<button type="button" class="skill-chip ${state.skill===item.key?'active ':''}${mastered?'mastered':''}" data-skill="${item.key}">${item.name}${stat?` <span class="mini-count">${Math.min(MASTERY,stat.independent)}/${MASTERY}</span>`:''}</button>`;
+    return `<button type="button" class="skill-chip ${state.skill===item.key?'active ':''}${mastered&&!shared?'mastered':''}" data-skill="${item.key}">${item.name}${stat&&!shared?` <span class="mini-count">${Math.min(MASTERY,stat.independent)}/${MASTERY}</span>`:''}</button>`;
   }).join('');
   document.querySelectorAll('[data-skill]').forEach(b=>b.addEventListener('click',()=>{state.skill=b.dataset.skill;newPracticeTask();}));
 }
@@ -1371,7 +1389,7 @@ function renderPractice(options={}){
   const input=document.getElementById('practice-input');
   if(!ts.answered&&!ts.solutionShown){if(!options.preserveDraft)input.value='';input.disabled=false;input.classList.remove('correct','wrong');}
   document.getElementById('practice-check').disabled=ts.answered||ts.solutionShown;
-  document.getElementById('next-task').disabled=!(ts.answered||ts.solutionShown);
+  document.getElementById('next-task').disabled=!(ts.answered||ts.solutionShown||(shared&&boardActions.length>=64));
   clearFeedback('practice-feedback');
   renderPracticeHelp();
   const sol=document.getElementById('practice-solution');sol.classList.toggle('show',ts.answered||ts.solutionShown);
@@ -1379,17 +1397,18 @@ function renderPractice(options={}){
   document.getElementById('solution-btn').disabled=ts.answered||ts.solutionShown;
   updateCreditChip();
   if(ts.answered||ts.solutionShown){
-    input.value=format(t.answer);input.disabled=true;input.classList.add('correct');
+    input.value=format(t.answer);input.disabled=true;input.classList.remove('wrong');input.classList.add('correct');
     const kind=ts.outcome==='independent'?'good':ts.outcome==='supported'?'warn':'info';
     const msg=ts.outcome==='independent'?`Самостоятельно и с первой попытки. Ответ: <b>${format(t.answer)}${t.unit?' '+t.unit:''}</b>.`:
       ts.outcome==='supported'?`Верно после подсказки или исправления. Это полезная практика, но она не добавляет самостоятельное освоение. Ответ: <b>${format(t.answer)}${t.unit?' '+t.unit:''}</b>.`:
       `Решение разобрано. Эта задача не идёт в самостоятельный прогресс.`;
-    showFeedback('practice-feedback',kind,msg);
+    showFeedback('practice-feedback',kind,shared?`Совместная работа: ${ts.solutionShown?'решение разобрано':'ответ верный'}. Личный зачёт не записывается.`:msg);
   }else if(!options.preserveDraft)setTimeout(()=>input.focus(),0);
 }
 function updateCreditChip(){
   const ts=state.taskState,chip=document.getElementById('credit-chip'),line=document.getElementById('outcome-line');
   chip.className='credit-chip';line.innerHTML='';
+  if(shared){chip.textContent=ts.solutionShown?'Совместный разбор':ts.hintLevel||ts.wrongAttempts?'Совместно · с поддержкой':'Совместная практика';line.textContent='Общий ответ не записывается как самостоятельное освоение.';return;}
   if(ts.solutionShown){chip.classList.add('reviewed');chip.textContent='Разобрано — без зачёта';line.innerHTML='<span class="outcome-dot reviewed"></span><span>Полное решение открыто.</span>';return;}
   if(ts.hintLevel>0||ts.wrongAttempts>0){chip.classList.add('supported');chip.textContent='С подсказкой / после исправления';line.innerHTML='<span class="outcome-dot supported"></span><span>Правильный ответ будет отмечен как решение с поддержкой.</span>';return;}
   chip.textContent='Без подсказок — можно получить «Самостоятельно»';line.innerHTML='<span class="outcome-dot"></span><span>Верно с первой попытки и без подсказок.</span>';
@@ -1397,6 +1416,7 @@ function updateCreditChip(){
 function practiceCheck(){
   const ts=state.taskState;if(ts.answered||ts.solutionShown)return;
   const input=document.getElementById('practice-input'),value=parseNumber(input.value);
+  if(!recordBoardAction({op:'check',value:input.value}))return;
   if(!Number.isFinite(value)){showFeedback('practice-feedback','warn','Введите число. Знак процента и слово «руб» писать не нужно.');return;}
   if(near(value,state.current.answer)){
     const independent=ts.wrongAttempts===0&&ts.hintLevel===0;
@@ -1417,10 +1437,10 @@ function practiceCheck(){
   }
 }
 function revealPracticeHint(){
-  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;if(ts.helpCollapsed)ts.helpCollapsed=false;else ts.hintLevel=Math.min(3,ts.hintLevel+1);state.independentStreak=0;renderPractice({preserveDraft:true});save();
+  const ts=state.taskState;if(ts.answered||ts.solutionShown||(ts.hintLevel>=3&&!ts.helpCollapsed))return;if(!recordBoardAction({op:'hint'}))return;if(ts.helpCollapsed)ts.helpCollapsed=false;else ts.hintLevel=Math.min(3,ts.hintLevel+1);state.independentStreak=0;renderPractice({preserveDraft:true});save();
 }
 function revealPracticeSolution(){
-  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.solutionShown=true;ts.outcome='reviewed';
+  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;if(!recordBoardAction({op:'solution'}))return;ts.solutionShown=true;ts.outcome='reviewed';
   if(!ts.reviewRecorded){if(state.current.skill==='advanced')state.advanced.reviewed++;else state.stats[state.current.skill].reviewed++;ts.reviewRecorded=true;}
   state.independentStreak=0;save();renderPractice();
 }
@@ -1433,6 +1453,7 @@ function renderCheckLanding(){
   document.getElementById('check-best-line').innerHTML=(s||a)?`Лучшие результаты: базовая — <b>${s}/5</b>, усложнённая — <b>${a}/5</b>.`:'Лучший результат пока не зафиксирован.';
 }
 function startCheckpoint(level){
+  if(shared)return;
   const tasks=level==='standard'?shuffle(SKILLS.map(k=>standardTask(k))):Array.from({length:5},()=>advancedTask());
   state.checkpoint={level,tasks,index:0,answers:[],startedAt:Date.now(),finished:false,duration:0,score:0};
   document.getElementById('check-start').hidden=true;document.getElementById('check-active').hidden=false;document.getElementById('check-result').hidden=true;
@@ -1498,7 +1519,7 @@ async function copyCheckpointResult(){
 
 /* ---------------- Разбор ---------------- */
 function makeReviewTask(){return state.reviewSkill==='advanced'?advancedTask():standardTask(state.reviewSkill==='mix'?pick(SKILLS):state.reviewSkill);}
-function newReviewTask(){state.reviewCurrent=makeReviewTask();renderReview();save();}
+function newReviewTask(){if(shared)boardReview={seed:board.seed(),level:state.reviewSkill==='advanced'?'advanced':'standard',skill:state.reviewSkill==='advanced'?'mix':state.reviewSkill};state.reviewCurrent=shared?boardGenerate(boardReview):makeReviewTask();renderReview();save();}
 function renderReviewChips(){
   document.getElementById('review-chips').innerHTML=[{key:'mix',name:'🎲 Вперемешку'},...SKILLS.map(k=>({key:k,name:SKILL_META[k].short})),{key:'advanced',name:'★ Усложнённые'}].map(x=>`<button type="button" class="skill-chip ${state.reviewSkill===x.key?'active':''}" data-review-skill="${x.key}">${x.name}</button>`).join('');
   document.querySelectorAll('[data-review-skill]').forEach(b=>b.addEventListener('click',()=>{state.reviewSkill=b.dataset.reviewSkill;newReviewTask();}));
@@ -1524,8 +1545,10 @@ document.getElementById('learn-next').addEventListener('click',()=>{
 document.querySelectorAll('#difficulty-switch [data-difficulty]').forEach(b=>b.addEventListener('click',()=>{state.difficulty=b.dataset.difficulty;if(state.difficulty==='advanced')state.skill='mix';newPracticeTask();}));
 document.getElementById('practice-check').addEventListener('click',practiceCheck);
 document.getElementById('practice-input').addEventListener('keydown',e=>{if(e.key==='Enter')practiceCheck();});
+document.getElementById('practice-input').addEventListener('input',()=>{if(shared&&!state.taskState.answered&&!state.taskState.solutionShown)boardDraft=document.getElementById('practice-input').value;});
 document.getElementById('hint-btn').addEventListener('click',revealPracticeHint);
-document.getElementById('practice-return-answer').addEventListener('click',()=>{state.taskState.helpCollapsed=true;renderPractice({preserveDraft:true});document.getElementById('practice-input').focus();});
+function collapsePracticeHelp(){if(!recordBoardAction({op:'collapse'}))return;state.taskState.helpCollapsed=true;renderPractice({preserveDraft:true});document.getElementById('practice-input').focus();}
+document.getElementById('practice-return-answer').addEventListener('click',collapsePracticeHelp);
 document.getElementById('learn-return-task').addEventListener('click',()=>setView('practice'));
 document.getElementById('solution-btn').addEventListener('click',revealPracticeSolution);
 document.getElementById('next-task').addEventListener('click',newPracticeTask);
@@ -1540,6 +1563,7 @@ document.getElementById('result-practice').addEventListener('click',()=>setView(
 document.getElementById('new-review-task').addEventListener('click',newReviewTask);
 document.getElementById('try-similar').addEventListener('click',()=>{state.difficulty=state.reviewSkill==='advanced'?'advanced':'standard';state.skill=SKILLS.includes(state.reviewSkill)?state.reviewSkill:'mix';setView('practice',{fresh:true});});
 document.getElementById('reset-all').addEventListener('click',()=>{
+  if(shared)return;
   if(!confirm('Сбросить обучение, результаты и весь прогресс по процентам?'))return;
   try{
     localStorage.removeItem(OWN_KEY);
@@ -1560,6 +1584,40 @@ window.__PERCENT_TRAINER_TEST__={
 load();
 renderHome();
 setView('practice');
+if(shared){
+  document.querySelectorAll('.main-nav [data-view]').forEach(el=>{el.hidden=!['practice','review'].includes(el.dataset.view);});
+  document.querySelectorAll('#practice-to-check,#reset-all,.footer').forEach(el=>el.hidden=true);
+  document.querySelectorAll('#view-practice .side-stack .side-card').forEach((el,i)=>{if(i>0)el.hidden=true;});
+  document.querySelector('#view-practice .lead').textContent='Решайте вместе, сравнивайте способы и открывайте подсказки по шагам. Результат общей работы не попадает в личный зачёт.';
+  const descriptor=d=>board.exact(d,['seed','level','skill'])&&board.uint(d.seed)&&['standard','advanced'].includes(d.level)&&['mix',...SKILLS].includes(d.skill)&&(d.level!=='advanced'||d.skill==='mix');
+  board.connect({
+    getState(){return{task:board.copy(boardTask),review:board.copy(boardReview),view:state.view,actions:board.copy(boardActions),draft:boardDraft};},
+    validateState(v){
+      if(!board.exact(v,['task','review','view','actions','draft'])||!descriptor(v.task)||(v.review!==null&&!descriptor(v.review))||!['practice','review'].includes(v.view)||(v.view==='review'&&v.review===null)||!Array.isArray(v.actions)||v.actions.length>64||!board.text(v.draft))return false;
+      const task=boardGenerate(v.task),model=freshTaskState();
+      for(const action of v.actions){
+        if(!board.exact(action,action.op==='check'?['op','value']:['op'])||!['check','hint','collapse','solution'].includes(action.op)||model.answered||model.solutionShown)return false;
+        if(action.op==='check'){
+          if(!board.text(action.value))return false;const value=parseNumber(action.value);
+          if(Number.isFinite(value)){if(near(value,task.answer))model.answered=true;else{model.wrongAttempts++;if(model.wrongAttempts>=2&&model.hintLevel===0){model.hintLevel=1;model.helpCollapsed=false;}}}
+        }else if(action.op==='hint'){if(model.hintLevel>=3&&!model.helpCollapsed)return false;if(model.helpCollapsed)model.helpCollapsed=false;else model.hintLevel++;}
+        else if(action.op==='collapse'){if(model.hintLevel===0||model.helpCollapsed)return false;model.helpCollapsed=true;}
+        else model.solutionShown=true;
+      }
+      return true;
+    },
+    applyState(v){
+      boardReplaying=true;
+      try{
+        state=initialState();state.difficulty=v.task.level;state.skill=v.task.skill;state.current=boardGenerate(v.task);state.taskState=freshTaskState();boardTask=board.copy(v.task);boardReview=board.copy(v.review);boardActions=[];boardDraft='';renderPractice();
+        for(const action of v.actions){if(action.op==='check'){document.getElementById('practice-input').value=action.value;practiceCheck();}else if(action.op==='hint')revealPracticeHint();else if(action.op==='collapse')collapsePracticeHelp();else revealPracticeSolution();}
+        boardActions=board.copy(v.actions);boardDraft=v.draft;if(!state.taskState.answered&&!state.taskState.solutionShown)document.getElementById('practice-input').value=v.draft;if(boardActions.length>=64)document.getElementById('next-task').disabled=false;
+        if(v.review){state.reviewSkill=v.review.level==='advanced'?'advanced':v.review.skill;state.reviewCurrent=boardGenerate(v.review);}
+        state.view=v.view;if(v.view==='review')renderReview();document.querySelectorAll('.view').forEach(el=>el.hidden=el.id!=='view-'+v.view);document.querySelectorAll('.main-nav [data-view]').forEach(el=>el.classList.toggle('active',el.dataset.view===v.view));
+      }finally{boardReplaying=false;}
+    }
+  });
+}
 })();
 </script>
 </body>

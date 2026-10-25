@@ -204,6 +204,7 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 </main>
 </div>
 
+<script src="oge-course-shared-mode.js"></script>
 <script>
 
 /* Presentation helpers only: nodes are moved, never cloned, so their handlers and progress survive. */
@@ -250,12 +251,13 @@ const CP=(function(){
   function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
   function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
   function readAll(){
+    if (window.OgeCourseSharedMode) return {};
     try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
     catch (e) { return {}; }
   }
   /* меняет только свою ветку: читает ключ заново прямо перед записью */
   function saveRec(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var rec = isObj(all[TID]) ? all[TID] : {};
@@ -279,7 +281,7 @@ const CP=(function(){
   /* журнал: промах открывает тип, три верных подряд закрывают;
      верный ответ по типу без промахов записи не заводит */
   function mlog(type, ok){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var key = TID + "|" + type;
@@ -305,7 +307,7 @@ const CP=(function(){
   /* §6: старый ключ читается один раз; переносится сопоставимое с ядром; ставится
      migratedFrom; старый ключ не удаляется и не переписывается */
   function migrate(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var raw = localStorage.getItem(OLD_KEY);
       if (raw === null) return;
@@ -322,7 +324,7 @@ const CP=(function(){
   /* «Сбросить прогресс»: своя ветка и свои записи журнала (по префиксу TID|);
      отметка миграции остаётся — иначе старый ключ перенёсся бы снова */
   function resetOwn(){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll(), rec = all[TID];
       if (isObj(rec) && typeof rec.migratedFrom === "string") all[TID] = { v:1, solvedByType:{}, migratedFrom:rec.migratedFrom, updatedAt:Date.now() };
@@ -335,7 +337,7 @@ const CP=(function(){
   /* своя статистика панели тренажёра — поле ext ветки (адаптер курса его не читает) */
   function ext(){ var r = readAll()[TID]; return isObj(r) && isObj(r.ext) ? r.ext : {}; }
   function saveExt(fn){ saveRec(function(rec){ if (!isObj(rec.ext)) rec.ext = {}; fn(rec.ext); }); }
-  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  var REVIEW = !window.OgeCourseSharedMode && /[?&]mode=review(&|$)/.test(location.search || "");
   return { RO:RO, REVIEW:REVIEW, KEY:KEY, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
     solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes,
     migrate:migrate, resetOwn:resetOwn, ext:ext, saveExt:saveExt };
@@ -2250,7 +2252,7 @@ function runLadder(ctx){
         const b=document.createElement("button"); b.className="choice"; b.type="button"; b.innerHTML=o.t;
         b.onclick=()=>{
           if(handled) return;
-          if(o.ok){ handled=true; [...opts.children].forEach(x=>{ x.disabled=true; }); b.classList.add("sel-ok"); fb.className="fb ok"; fb.innerHTML=s.choice.why; setTimeout(()=>advance(i),50); }
+          if(o.ok){ handled=true; [...opts.children].forEach(x=>{ x.disabled=true; }); b.classList.add("sel-ok"); fb.className="fb ok"; fb.innerHTML=s.choice.why; if(window.OgeCourseSharedMode)advance(i);else setTimeout(()=>advance(i),50); }
           else { recMiss(ctx.rec); b.classList.add("sel-no"); b.disabled=true; fb.className="fb try"; fb.innerHTML="Не совсем. "+s.choice.why; }
         };
         opts.appendChild(b);
@@ -2309,7 +2311,7 @@ function runLadder(ctx){
       s._peeked=true; local.shown=true; ctx.rec.shown=true;
       ans.fill(s.a); ans.lock();
       fb.className="fb info"; fb.innerHTML=s.reveal;
-      setTimeout(()=>advance(i),50);
+      if(window.OgeCourseSharedMode)advance(i);else setTimeout(()=>advance(i),50);
     };
     ans.focus();
   }
@@ -2524,9 +2526,9 @@ function resetProgress(){
   host.querySelector("#rs-yes").onclick=()=>{ CP.resetOwn(); host.innerHTML=""; renderStats(); };
   host.querySelector("#rs-no").onclick=()=>{ host.innerHTML=""; };
 }
-function nextMarathon(){
+function nextMarathon(boardTask){
   const seed=Math.floor(Math.random()*1e9);
-  const task=T.randomTask(activeCodes(), seed);
+  const task=boardTask||T.randomTask(activeCodes(), seed);
   M.task=task; M.rec=newRec(task); M.done=false; M.ladder=false;
   const host=document.getElementById("m-task");
   host.innerHTML=`
@@ -2560,6 +2562,7 @@ function checkMarathon(ans, fb){
   if(v===null){ fb.className="fb try"; fb.textContent="Впиши число в поле ответа."; return; }
   if(Fr.eq(v,task.ans)){
     M.done=true; recDone(M.rec);
+    ans.lock();
     fb.className="fb ok"; fb.innerHTML="Верно! Ответ "+nb(fmtN(task.ans))+" "+(task.unit||"")+".";
     showMarAfter();
     return;
@@ -2667,6 +2670,7 @@ function finishQuiz14(el,quiz,res){
   renderStats();
 }
 
+T.boardMount=(code,seed)=>nextMarathon(T.makeTask(code,seed));
 T.renderStepsMode=renderStepsMode;
 T.renderMarathon=renderMarathon;
 T.renderQuiz=renderQuiz;
@@ -2831,6 +2835,8 @@ if(CP.RO) selftest14();   // ?selftest=1 — маркер OGE14_SELFTEST_OK в �
 
 </script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-algebra.js" data-oge-task="14"></script>
+<script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="14"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-native-10-14-board.js" data-oge-native="14"></script>
 </body>
 </html>

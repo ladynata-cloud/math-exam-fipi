@@ -1,0 +1,62 @@
+name: OGE whole-course shared practice
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-*'
+      - 'trainers/oge13-*'
+      - 'trainers/oge-1-5-trainers/**'
+      - 'trainers/board-*'
+      - 'trainers/trainer-board.html'
+      - 'board-server/test/*registry*'
+      - 'tools/oge-*'
+      - 'tools/fixtures/oge-course-board-entries.json'
+      - 'docs/tasks/OGE_COURSE_MIRROR*'
+      - '.github/workflows/oge-course-mirror.yml'
+  push:
+    branches: [main, feat/oge-course-mirror-audit]
+    paths:
+      - 'trainers/oge-*'
+      - 'trainers/oge13-*'
+      - 'trainers/oge-1-5-trainers/**'
+      - 'trainers/board-*'
+      - 'trainers/trainer-board.html'
+      - 'board-server/test/*registry*'
+      - 'tools/oge-*'
+      - 'tools/fixtures/oge-course-board-entries.json'
+      - '.github/workflows/oge-course-mirror.yml'
+permissions:
+  contents: read
+jobs:
+  native-mathematics-state-and-transport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install locked server and pinned DOM tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/oge-course" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+          echo "NODE_PATH=$RUNNER_TEMP/oge-course/node_modules:$GITHUB_WORKSPACE/board-server/node_modules" >> "$GITHUB_ENV"
+      - name: Native mathematics and independent work
+        run: |
+          node tools/oge-algebra-contract.test.mjs
+          node tools/oge-geometry-contract.test.mjs
+          node --test tools/oge-course-algebra.test.cjs tools/oge-course-proof.test.cjs
+      - name: Native two-window restoration and visible capability
+        run: |
+          node --test tools/oge-foundation-board.test.cjs tools/oge-native-10-14-board.test.cjs tools/oge-20-22-board.test.cjs tools/oge-part2-geometry-board.test.cjs tools/oge-practical-diagnostic-board.test.cjs tools/oge-percent-table-board.test.cjs tools/oge-practical-variant-board.test.cjs tools/oge-course-board-ui.test.cjs
+      - name: Practical exact answers and downloadable bundle
+        run: |
+          node tools/oge-tire-exact-grading.test.cjs
+          node --test tools/oge-practical-minimal.test.cjs tools/oge-practical-variant-buildings.test.cjs tools/oge-practical-variant-everyday.test.cjs tools/oge-practical-variant-roads.test.cjs tools/oge-practical-discovery.test.cjs tools/oge-practical-variant-offline.test.cjs tools/oge-practical-tires-3d.test.cjs
+      - name: Actual room transport, authorization and retained mirrors
+        run: |
+          node --test tools/oge-course-transport.test.cjs tools/oge-geometry-transport.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          git diff --check
+          echo OGE_COURSE_MIRROR_AUDIT_OK

@@ -34,6 +34,7 @@
 </section>
 <details id="settings"><summary>Выбрать тему · мои результаты</summary><div class="card"><h2>Тема</h2><div class="tabs" id="tabs"></div></div><div class="card"><label class="task-picker-label">Выбрать задание<select id="taskPicker" onchange="jumpTask(this.value)"></select></label></div><div class="card"><button class="good" id="newRound" type="button" onclick="startNewRound()">Начать новый круг</button><p class="small">Задания начнутся заново. Накопленные результаты сохранятся.</p></div><div class="card"><h2>Мои результаты</h2><p class="statLine">Проверок: <b id="solved">0</b> · верных: <b id="correct">0</b> · серия: <b id="streak">0</b></p><button onclick="resetStats()">Сбросить статистику</button></div><a href="../index.html">К списку тренажёров</a></details>
 </main>
+<script src="oge-course-shared-mode.js"></script>
 <script>
 const KEY='mathExamCourseProgress.v1', TOPIC='oge13InequalitiesSeries';
 const MODS=[['linear','Линейные'],['quad','Квадратные'],['graph','По рисунку'],['special','Нет/любое'],['systems','Системы']];
@@ -79,7 +80,7 @@ let mod='quad', idx={linear:0,quad:0,graph:0,special:0,systems:0}, selectedChoic
 const sessionStates={};
 const labCache=new Map();
 const $=id=>document.getElementById(id);function make(tag,a){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const k in a)e.setAttribute(k,a[k]);return e}function setMsg(t,c='info'){$('msg').innerHTML=t;$('msg').className='msg '+c}function signText(s){return s==='gt'?'> 0':s==='gte'?'≥ 0':s==='lt'?'< 0':'≤ 0'}function strict(s){return s==='gt'||s==='lt'}function correctZones(t){if(t.a&&t.a<0){return (t.sign==='gt'||t.sign==='gte')?[false,true,false]:[true,false,true]}return (t.sign==='gt'||t.sign==='gte')?[true,false,true]:[false,true,false]}function zlab(i,t){if(i===0)return `(−∞; ${t.l1}${strict(t.sign)?')':']'}`;if(i===1)return `${strict(t.sign)?'(':'['}${t.l1}; ${t.l2}${strict(t.sign)?')':']'}`;return `${strict(t.sign)?'(':'['}${t.l2}; +∞)`}function answerText(t,z=selectedZones){let p=[];z.forEach((v,i)=>{if(v)p.push(zlab(i,t))});return p.length?p.join(' ∪ '):'—'}
-function loadStats(){try{let d=JSON.parse(localStorage.getItem(KEY)||'{}');return d[TOPIC]||{solved:0,correct:0,streak:0,bestStreak:0,history:[]}}catch{return{solved:0,correct:0,streak:0,bestStreak:0,history:[]}}}function saveStats(s){let d={};try{d=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{}d[TOPIC]=s;localStorage.setItem(KEY,JSON.stringify(d))}function rec(ok){let s=loadStats();s.solved++;if(ok){s.correct++;s.streak++;s.bestStreak=Math.max(s.bestStreak||0,s.streak)}else s.streak=0;s.history=[ok?1:0,...(s.history||[])].slice(0,10);saveStats(s);renderStats()}function resetStats(){if(confirm('Сбросить статистику?')){let d=JSON.parse(localStorage.getItem(KEY)||'{}');d[TOPIC]={solved:0,correct:0,streak:0,bestStreak:0,history:[]};localStorage.setItem(KEY,JSON.stringify(d));renderStats()}}function renderStats(){const s=loadStats();$('solved').textContent=s.solved||0;$('correct').textContent=s.correct||0;$('streak').textContent=s.streak||0}
+function loadStats(){if(window.OgeCourseSharedMode)return{solved:0,correct:0,streak:0,bestStreak:0,history:[]};try{let d=JSON.parse(localStorage.getItem(KEY)||'{}');return d[TOPIC]||{solved:0,correct:0,streak:0,bestStreak:0,history:[]}}catch{return{solved:0,correct:0,streak:0,bestStreak:0,history:[]}}}function saveStats(s){if(window.OgeCourseSharedMode)return;let d={};try{d=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{}d[TOPIC]=s;localStorage.setItem(KEY,JSON.stringify(d))}function rec(ok){let s=loadStats();s.solved++;if(ok){s.correct++;s.streak++;s.bestStreak=Math.max(s.bestStreak||0,s.streak)}else s.streak=0;s.history=[ok?1:0,...(s.history||[])].slice(0,10);saveStats(s);renderStats()}function resetStats(){if(window.OgeCourseSharedMode)return;if(confirm('Сбросить статистику?')){let d=JSON.parse(localStorage.getItem(KEY)||'{}');d[TOPIC]={solved:0,correct:0,streak:0,bestStreak:0,history:[]};localStorage.setItem(KEY,JSON.stringify(d));renderStats()}}function renderStats(){const s=loadStats();$('solved').textContent=s.solved||0;$('correct').textContent=s.correct||0;$('streak').textContent=s.streak||0}
 function drawAxis(svg,y,l=70,r=670){svg.appendChild(make('line',{x1:l,y1:y,x2:r,y2:y,stroke:'#475569','stroke-width':3,'stroke-linecap':'round'}));svg.appendChild(make('polygon',{points:`${r},${y} ${r-12},${y-6} ${r-12},${y+6}`,fill:'#475569'}))}
 function drawQuad(t){
  const svg=$('board');svg.replaceChildren();svg.setAttribute('viewBox','0 0 360 245');svg.setAttribute('aria-label','График выражения: нули '+t.l1+' и '+t.l2);
@@ -202,8 +203,8 @@ const T13L = (() => {
   function svg(tag,attrs){const n=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v]of Object.entries(attrs||{}))n.setAttribute(k,String(v));return n;}
   function label(s,x,y,text){const n=svg('text',{x,y,'text-anchor':'middle','font-size':25,fill:'#3f4a43'});n.textContent=text;s.append(n);}
   function axis(s,y,scale,marks=[]){s.append(svg('line',{x1:24,y1:y,x2:336,y2:y,stroke:'#67716a','stroke-width':2}));s.append(svg('path',{d:`M328 ${y-5} L336 ${y} L328 ${y+5}`,fill:'none',stroke:'#67716a','stroke-width':2}));marks.forEach((v,i)=>{const x=scale(v);s.append(svg('line',{x1:x,y1:y-5,x2:x,y2:y+5,stroke:'#67716a','stroke-width':2}));label(s,x,y+32+(i%2)*23,fmt(v));});}
-  function attachProbe(svgNode,input,scaleMin,scaleMax,onChange){let active=false;
-    function setFromEvent(e){const rect=svgNode.getBoundingClientRect();if(!rect.width)return;const px=(e.clientX-rect.left)*360/rect.width;const v=scaleMin+(Math.min(336,Math.max(24,px))-24)/312*(scaleMax-scaleMin);onChange(q(String(Math.round(v*10)/10)));}
+  function attachProbe(svgNode,input,scaleMin,scaleMax,onChange){let active=false;svgNode.ogeSetProbe=value=>onChange(q(String(value)));svgNode.ogeProbeRange=[scaleMin,scaleMax];
+    function setFromEvent(e){const rect=svgNode.getBoundingClientRect();if(!rect.width)return;const px=(e.clientX-rect.left)*360/rect.width;const v=scaleMin+(Math.min(336,Math.max(24,px))-24)/312*(scaleMax-scaleMin);const value=Math.round(v*10)/10;if(window.OgeCourseSharedMode&&!svgNode.dispatchEvent(new CustomEvent('oge13:probe',{bubbles:true,cancelable:true,detail:{value}})))return;onChange(q(String(value)));}
     svgNode.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;active=true;svgNode.setPointerCapture?.(e.pointerId);setFromEvent(e);});
     svgNode.addEventListener('pointermove',e=>{if(active)setFromEvent(e);});
     svgNode.addEventListener('pointerup',()=>{active=false;});svgNode.addEventListener('pointercancel',()=>{active=false;});
@@ -276,7 +277,8 @@ function makeTask13LinearLab(mod,t,index){
   function cardText(term){const c=term.kind==='bracket'?term.k:term.c;const sign=c<0?'−':'+';const abs=Math.abs(c);if(term.kind==='bracket')return sign+' '+abs+'(4x + 1)';return sign+' '+(term.x?(abs===1?'':abs)+'x':abs);}
   function ready(){return terms.every(t=>t.kind==='term'&&(t.x?t.side==='left':t.side==='right'));}
   function invalidate(){collected=null;validDivisor=false;selectedSign=null;divisor.value='';divisorStatus.textContent='';renderDivision();}
-  function move(id,target){const term=terms.find(t=>t.id===id);if(!term)return;const dest=target||(term.side==='left'?'right':'left');if(dest===term.side)return;term.side=dest;if(term.kind==='bracket'){term.k=-term.k;expandedParts=[false,false];}else term.c=-term.c;invalidate();renderBoard();renderBracket();say('Карточка перенесена: её знак поменялся. Знак '+source.sign+' остался прежним.');zones[dest].querySelector('[data-term-id="'+id+'"]')?.focus({preventScroll:true});}
+  function move(id,target){const term=terms.find(t=>t.id===id);if(!term)return;const dest=target||(term.side==='left'?'right':'left');if(dest===term.side)return;if(window.OgeCourseSharedMode&&!root.dispatchEvent(new CustomEvent('oge13:move',{bubbles:true,cancelable:true,detail:{term:id,side:dest}})))return;term.side=dest;if(term.kind==='bracket'){term.k=-term.k;expandedParts=[false,false];}else term.c=-term.c;invalidate();renderBoard();renderBracket();say('Карточка перенесена: её знак поменялся. Знак '+source.sign+' остался прежним.');zones[dest].querySelector('[data-term-id="'+id+'"]')?.focus({preventScroll:true});}
+  root.ogeMoveTerm=move;
   function renderBoard(){for(const side of ['left','right']){zones[side].replaceChildren(L.el('span','t13l-side-label',side==='left'?'Слева':'Справа'));const current=terms.filter(t=>t.side===side);if(!current.length)zones[side].append(L.el('span','t13l-formula','0'));current.forEach(term=>{
     const b=L.button(cardText(term),'move-term',()=>{if(suppressClick){suppressClick=false;return;}move(term.id);});b.classList.add('t13l-term');b.dataset.termId=term.id;b.dataset.side=side;b.dataset.kind=term.kind;if(term.kind==='bracket')b.dataset.k=String(term.k);else b.dataset.c=String(term.c);b.dataset.power=String(term.x||0);b.draggable=true;b.setAttribute('aria-label',cardText(term)+'. Перенести '+(side==='left'?'вправо':'влево'));
     b.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();move(term.id,e.key==='ArrowLeft'?'left':'right');}});
@@ -374,9 +376,11 @@ const T13C = (() => {
     const fromPosition=p=>Number((range.min+(range.max-range.min)*Math.min(200,Math.max(0,p))/200).toFixed(3));
     input.addEventListener('input',()=>onChange(fromPosition(Number(input.value))));
     let drag=null;
+    svg.ogeSetProbe=value=>onChange(value);svg.ogeProbeRange=[range.min,range.max];svg.ogeProbeRollback=true;
+    const pointerChange=value=>{if(window.OgeCourseSharedMode&&!svg.dispatchEvent(new CustomEvent('oge13:probe',{bubbles:true,cancelable:true,detail:{value}})))return;onChange(value);};
     const pointerX=e=>{const r=svg.getBoundingClientRect();if(!r.width)return null;const px=(e.clientX-r.left)/r.width*320;return fromPosition((px-24)/272*200);};
-    svg.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;const v=pointerX(e);if(v===null)return;drag={id:e.pointerId,start:getConfig()};try{svg.setPointerCapture(e.pointerId);}catch{}onChange(v);e.preventDefault();});
-    svg.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const v=pointerX(e);if(v!==null)onChange(v);e.preventDefault();});
+    svg.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;const v=pointerX(e);if(v===null)return;drag={id:e.pointerId,start:getConfig()};try{svg.setPointerCapture(e.pointerId);}catch{}pointerChange(v);e.preventDefault();});
+    svg.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const v=pointerX(e);if(v!==null)pointerChange(v);e.preventDefault();});
     svg.addEventListener('pointerup',e=>{if(!drag||drag.id!==e.pointerId)return;drag=null;try{svg.releasePointerCapture(e.pointerId);}catch{}});
     svg.addEventListener('pointercancel',e=>{if(!drag||drag.id!==e.pointerId)return;const old=drag.start;drag=null;onChange(old.x,old.label);});
     return {input,svg,output,update(x,labelText){input.value=String(Math.round((x-range.min)/(range.max-range.min)*200));input.setAttribute('aria-valuetext','x = '+String(labelText||number(x)));output.innerHTML='x = '+math(labelText||number(x));}};
@@ -500,5 +504,7 @@ renderAll();
 <script src="oge-course-reference.js"></script>
 <script src="oge-course-algebra-reference.js"></script>
 <script src="oge-course-reference-entry.js"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-native-10-14-board.js" data-oge-native="13"></script>
 </body>
 </html>

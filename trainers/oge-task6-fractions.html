@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
+<script src="oge-course-shared-mode.js?v=20261025"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ОГЭ, задание 6: действия с дробями — тренажёр | MathExam</title>
 <meta name="description" content="Тренировка задания 6 ОГЭ по математике: действия с дробями и проверка ответов. Выбирайте раздел и возвращайтесь к смыслу дроби и общему знаменателю.">
@@ -28,7 +29,7 @@ details#settings{margin-top:24px;border-top:1px solid var(--line);padding:18px 2
 @media(max-width:560px){.step-lab{padding:18px 10px;margin-left:-3px;margin-right:-3px}.step-lab h3{font-size:20px}.step-lab .lab-equation{font-size:20px}.decimal-board{font-size:24px}.step-lab .answer-row{display:grid}.step-lab .answer-row .ans{width:100%}.task-actions{display:grid;justify-content:start}}
 </style>
 </head>
-<body>
+<body data-oge-foundation="6">
 <a class="skip-link" href="#taskHeading">Перейти к заданию</a>
 <main class="wrap">
 <nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>
@@ -735,5 +736,7 @@ $('shuffle').onchange=event=>{shuffle=event.target.checked;startSet();};
 $('taskJump').onchange=event=>{pos=Number(event.target.value);renderTask();};
 buildChips();startSet();
 </script>
+<script src="board-bridge.js"></script>
+<script src="oge-foundation-board.js?v=20261025"></script>
 </body>
 </html>

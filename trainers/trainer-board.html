@@ -12,7 +12,7 @@
     :root{--bg:#f6f7fb;--panel:#fff;--ink:#172033;--muted:#647086;--line:#dfe5ef;--blue:#2563eb;--blue-soft:#eef4ff;--green:#15803d;--red:#be123c;--amber:#b45309;--shadow:0 10px 24px rgba(23,32,51,.08)}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow:auto}.lesson{min-height:calc(100vh - 58px);height:auto;padding:12px;display:grid;grid-template-columns:minmax(360px,.92fr) minmax(480px,1.08fr);gap:12px}.lesson.hide-trainer{grid-template-columns:1fr}.hide-trainer .trainer{display:none}.trainer,.board{min-width:0;min-height:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}.head,.board-head,.share,.toolbar{padding:12px;border-bottom:1px solid var(--line);background:#fff}.url-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}.share-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:end}label{display:block;color:var(--muted);font-size:13px;font-weight:800;margin-bottom:4px}input[type=text],input[type=url],select{min-height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:8px 10px}.btn,.tool,.quick{min-height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-weight:800;padding:8px 11px;cursor:pointer;white-space:nowrap}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.warn{color:var(--red);border-color:#f3cbd4;background:#fff7f9}.btn:disabled,.tool:disabled{opacity:.45;cursor:not-allowed}.btn:hover,.quick:hover,.tool[aria-pressed=true]{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}.btn.primary:hover{background:#1d4ed8;color:#fff}.quick-row,.mirror-row,.sheet,.tools,.actions,.share-meta,.participants-list,.control-panel{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.quick-row,.mirror-row{margin-top:10px}.frame{width:100%;flex:1;min-height:0;border:0;background:#fff}.board-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.title h1{font-size:22px;margin:0 0 4px}.title p{margin:0;color:var(--muted);font-weight:700}.sheet-count{min-width:92px;text-align:center;color:var(--muted);font-weight:800}.share{background:#fbfcff}.share h2{font-size:16px;margin:0 0 10px}.share input{width:100%}.share-link{margin-top:8px}.share-link input{font-size:13px}.participants{margin-top:8px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 10px}.participants b{display:block;margin-bottom:6px;font-size:13px}.participants-list{gap:6px}.participant{display:inline-flex;align-items:center;gap:6px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;padding:5px 8px;color:#334155;font-size:12px;font-weight:800}.participant-dot{width:9px;height:9px;border-radius:999px;display:inline-block;flex:0 0 auto}.participant-role{color:#64748b}.participant-status{color:#166534}.participant.offline{opacity:.72}.participant.offline .participant-status{color:#9f1239}.participant.local .participant-status{color:#64748b}.participants-empty{color:#64748b;font-size:12px;font-weight:800}.board-tip{margin:-2px 0 10px;color:#475569;font-size:13px;font-weight:800;line-height:1.4}.status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:900}.status.ok{background:#dcfce7;color:#166534}.status.bad{background:#ffe4e6;color:#9f1239}.status.wait{background:#fef3c7;color:#92400e}.role{display:inline-flex;border-radius:999px;padding:5px 9px;background:#f1f5f9;color:#334155;font-size:12px;font-weight:900}.viewer-note,.control-banner{display:none;margin-top:8px;border:1px solid #bae6fd;background:#f0f9ff;color:#075985;border-radius:8px;padding:8px 10px;font-weight:800}.control-banner{justify-content:space-between;gap:10px;align-items:center}.student-mode .viewer-note{display:block}.student-mode.control-owner .viewer-note{display:none}.student-mode.control-owner .control-banner{display:flex}.student-mode .teacher-only{display:none!important}.student-mode:not(.control-owner) .toolbar{display:none}.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;background:#f8fafc}.tools>span{height:32px;border-left:1px solid var(--line)}input[type=color]{width:44px;height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:4px}input[type=range]{width:112px}.size{min-width:42px;color:var(--muted);font-weight:800}.canvas-wrap{position:relative;flex:1 1 360px;min-height:360px;padding:12px;background:#eef2f7}canvas{display:block;width:100%;height:100%;min-height:0;border:1px solid var(--line);border-radius:8px;background:#fff;touch-action:none;cursor:crosshair}.viewer canvas{cursor:default}.viewer .frame{pointer-events:none}.editor{position:absolute;z-index:4;min-width:170px;min-height:42px;border:2px solid var(--blue);border-radius:8px;padding:8px 10px;background:#fff;color:var(--ink);box-shadow:0 12px 28px rgba(23,32,51,.18);font:20px Inter,system-ui,sans-serif;resize:both}.hidden{display:none}@media(max-width:1050px){body{overflow:auto}.lesson{height:auto;min-height:calc(100vh - 58px);grid-template-columns:1fr;grid-template-rows:minmax(340px,42vh) minmax(620px,1fr)}.toolbar{grid-template-columns:1fr}.actions{justify-content:flex-start}}@media(max-width:720px){.lesson{padding:8px}.url-row,.share-row{grid-template-columns:1fr}.board-head{display:block}.sheet{margin-top:10px}.canvas-wrap{min-height:460px}}
   </style>
-  <link rel="stylesheet" href="board-picker.css?v=20261002-compact-1">
+  <link rel="stylesheet" href="board-picker.css?v=20261025-oge-course-mirror">
   <link rel="stylesheet" href="board-tools.css?v=20261024-writing-1">
 </head>
 <body>
@@ -29,6 +29,7 @@
         <div class="panel-heading"><div class="panel-label"><span class="eyebrow">ТРЕНАЖЁР</span><p class="opened-title" id="openedTrainerTitle">Выберите занятие</p></div><div class="heading-actions"><button class="btn teacher-only" id="chooseTrainer" type="button">Выбрать</button><button class="btn" id="expandTrainer" type="button" aria-pressed="false">Развернуть</button><button class="btn icon-button" id="trainerOptions" type="button" data-open-panel="trainerPanel" aria-label="Настройки тренажёра" title="Настройки тренажёра">⋯</button></div></div>
         <p id="pickerError" class="picker-error" role="alert" hidden></p>
         <p id="frameStatus" class="frame-status" role="status"></p>
+        <div class="mirror-row" aria-label="Состояние синхронизации тренажёра"><span id="mirrorStatus" class="status wait" aria-live="polite">Подключаем синхронизацию…</span><button class="btn hidden" id="retryTrainerRegistry" type="button">Повторить</button></div>
       </div>
       <iframe class="frame" id="trainerFrame" title="Открытый тренажёр" src="about:blank"></iframe>
     </section>
@@ -58,7 +59,7 @@
   <dialog id="sharePanel" class="workspace-dialog" aria-labelledby="shareTitle"><header><div><span class="eyebrow">СОВМЕСТНЫЙ УРОК</span><h2 id="shareTitle">Участники и приглашение</h2></div><button class="btn icon-button" data-close-panel type="button" aria-label="Закрыть участников">×</button></header>
       <div class="share" aria-label="Общая доска">
 
-        <div class="board-tip teacher-only">При подключении сервера ученик видит доску в режиме просмотра. Тренажёр синхронизируется по ссылке; одинаковые задания работают у тренажёров с поддержкой seed.</div>
+        <div class="board-tip teacher-only">При подключении к комнате ученик видит общие записи. Состояние синхронизации самого тренажёра показано рядом с его названием. Чтобы ученик мог отвечать и писать, передайте ему ход.</div>
         <div class="share-row">
           <button class="btn primary teacher-only" id="createRoom" type="button">Создать комнату</button>
           <button class="btn teacher-only" id="connectRoom" type="button">Подключиться</button>
@@ -85,8 +86,7 @@
   <dialog id="trainerPanel" class="workspace-dialog" aria-labelledby="trainerTitle"><header><h2 id="trainerTitle">Тренажёр</h2><button class="btn icon-button" data-close-panel type="button" aria-label="Закрыть настройки тренажёра">×</button></header>
     <p class="dialog-help">Откройте занятие отдельно или освободите место для записей.</p>
     <div class="frame-actions"><a class="btn" id="openTrainerSeparate" target="_blank" rel="noopener noreferrer">Открыть отдельно ↗</a><button class="btn" id="retryOpenedTrainer" type="button">Перезагрузить</button><button class="btn teacher-only" id="toggleTrainer" type="button">Скрыть тренажёр</button><button class="btn" id="focusBoard" type="button">К записям ↓</button></div>
-    <div class="mirror-row" aria-label="Состояние синхронизации тренажёра"><span id="mirrorStatus" class="status wait" aria-live="polite">Подключаем синхронизацию…</span><button class="btn hidden" id="retryTrainerRegistry" type="button">Повторить</button></div>
-    <p class="dialog-help">Открытие на доске и синхронизация действий — разные возможности. Состояние синхронизации показано выше.</p>
+    <p class="dialog-help">Состояние синхронизации показано рядом с названием открытого тренажёра. У материалов без синхронизации общими остаются записи на доске.</p>
   </dialog>
   <dialog id="boardPanel" class="workspace-dialog" aria-labelledby="boardTitle"><header><h2 id="boardTitle">Настройки доски</h2><button class="btn icon-button" data-close-panel type="button" aria-label="Закрыть настройки доски">×</button></header>
     <div class="board-setting"><label for="size">Толщина линии</label><input id="size" type="range" min="2" max="34" value="5"><b class="size" id="sizeText">5 px</b></div>
@@ -116,7 +116,7 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=20261025-oge15-19-ege11-13"></script>
+  <script src="board-picker.js?v=20261025-oge-course-mirror"></script>
   <script src="board-bridge.js"></script>
   <script src="board-ink.js?v=20261024-writing-1"></script>
   <script src="board-images.js?v=20261024-writing-1"></script>
@@ -210,7 +210,7 @@
       }
       return Object.freeze({schemaVersion:data.schemaVersion,digest:data.digest,entries:Object.freeze(entries),byId,byFile})
     }
-    function clearActiveTrainerRegistry(server,status='pending'){trainerRegistry.status=status;trainerRegistry.server=server;trainerRegistry.digest='';trainerRegistry.byId=new Map();trainerRegistry.byFile=new Map();trainerRegistry.errorCode='';setMirrorStatus(status==='pending'?'pending':'registry-unavailable')}
+    function clearActiveTrainerRegistry(server,status='pending'){trainerRegistry.status=status;trainerRegistry.server=server;trainerRegistry.digest='';trainerRegistry.byId=new Map();trainerRegistry.byFile=new Map();trainerRegistry.errorCode='';setMirrorStatus(status==='pending'?'pending':'registry-unavailable');document.dispatchEvent(new Event('mathexam:trainer-registry-change'))}
     async function fetchTrainerRegistryAttempt(server,requestGeneration,budgetMs){
       const controller=new AbortController();trainerRegistry.controller=controller;let timedOut=false;const timeout=setTimeout(()=>{timedOut=true;controller.abort()},Math.min(REGISTRY_ATTEMPT_TIMEOUT_MS,Math.max(1,budgetMs)));
       try{
@@ -225,7 +225,7 @@
         throw error
       }finally{clearTimeout(timeout);if(trainerRegistry.controller===controller)trainerRegistry.controller=null}
     }
-    function applyTrainerRegistry(projection,server){trainerRegistry.status='ready';trainerRegistry.server=server;trainerRegistry.digest=projection.digest;trainerRegistry.byId=projection.byId;trainerRegistry.byFile=projection.byFile;trainerRegistry.errorCode='';trainerRegistry.lastValid=projection;reconcileTrainerMirror();recoverExpiredBridgeOnce()}
+    function applyTrainerRegistry(projection,server){trainerRegistry.status='ready';trainerRegistry.server=server;trainerRegistry.digest=projection.digest;trainerRegistry.byId=projection.byId;trainerRegistry.byFile=projection.byFile;trainerRegistry.errorCode='';trainerRegistry.lastValid=projection;reconcileTrainerMirror();recoverExpiredBridgeOnce();document.dispatchEvent(new Event('mathexam:trainer-registry-change'))}
     async function loadTrainerRegistry({force=false}={}){
       const server=normalizeServer(shared.server);
       if(!server){clearActiveTrainerRegistry('', 'failed');trainerRegistry.errorCode='REGISTRY_SERVER_INVALID';return null}
@@ -435,9 +435,9 @@
     if(hasTeacherRoomMarker){removeTeacherTokenFromUrl();if(restoredTeacherRoomSession){replaceTeacherRoomUrl();shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink}}
     try{state.trainerUrl=normalizeTrainer(state.trainerUrl)}catch(_){state.trainerUrl='negative-numbers-line.html'}
     trainerUrl.value=state.trainerUrl;loadTrainerRegistry();setTrainerFrameSrc(state.trainerUrl);applyRole();setTrainerHidden(state.trainerHidden);setTool(tool);loadTrainerQuickSelect();sync(false);requestAnimationFrame(resize);if(shared.roomId&&shared.token&&shared.server)connectRoom();else if(missingTeacherRoomSession)setStatus('Сессия учителя не восстановлена. Создайте новую комнату.','bad');else setStatus('локальный режим','');
-    BoardPicker.mount({open:url=>{if(!openTrainer(url))return false;setTrainerHidden(false);return true},retry:()=>setTrainerFrameSrc(state.trainerUrl,{force:true}),role:()=>shared.role,fallback:lessonTrainers});
+    BoardPicker.mount({open:url=>{if(!openTrainer(url))return false;setTrainerHidden(false);return true},retry:()=>setTrainerFrameSrc(state.trainerUrl,{force:true}),role:()=>shared.role,mirrorCapability:url=>trainerRegistry.status==='ready'?(mirrorEntryFromUrl(BoardPicker.normalize(url))?'supported':'unsupported'):'unknown',fallback:lessonTrainers});
   </script>
-  <script src="board-workspace.js?v=20261002-compact-1"></script>
+  <script src="board-workspace.js?v=20261025-oge-course-mirror"></script>
   <script src="board-layout.js?v=20261024-writing-1"></script>
 </body>
 </html>

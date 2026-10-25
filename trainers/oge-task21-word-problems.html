@@ -1,6 +1,7 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ru">
 <head>
+<script src="oge-course-shared-mode.js?v=20261025"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ОГЭ · Задание 21 · Текстовые задачи — тренажёр</title>
@@ -504,7 +505,7 @@ function answerField(opts){
       return Math.abs(v-target) <= 1e-6*Math.max(1,Math.abs(target));
     }
   }
-  function lock(){ locked=true; inp.disabled=true; fn.disabled=true; fd.disabled=true; btnCheck.disabled=true; btnShow.disabled=true; if(fx)fx.style.opacity=.4; }
+  function lock(){ locked=true; inp.disabled=true; fn.disabled=true; fd.disabled=true; btnCheck.disabled=true; btnShow.disabled=true; if(fx){fx.style.opacity=.4;fx.disabled=true;} }
   btnCheck.onclick=()=>{
     if(locked)return;
     const r=correct();
@@ -602,12 +603,12 @@ function runSteps(host, steps, opts){
     function done(state){
       if(state==='peek'){ anyPeek=true; card.classList.remove('active'); card.classList.add('peeked'); turn.className='turn peek'; turn.textContent='подсмотрено'; showMore(); }
       else { card.classList.remove('active'); card.classList.add('done'); turn.className='turn done'; turn.textContent='готово'; }
-      setTimeout(advance,220);
+      if(window.OgeCourseSharedMode)advance();else setTimeout(advance,220);
     }
 
     if(s.t==='note'){
       const row=el('div','btnrow'); const b=el('button','btn primary small','Далее →');
-      b.onclick=()=>{ b.disabled=true; card.classList.remove('active'); card.classList.add('done'); turn.className='turn done'; turn.textContent='ок'; setTimeout(advance,180); };
+      b.onclick=()=>{ b.disabled=true; card.classList.remove('active'); card.classList.add('done'); turn.className='turn done'; turn.textContent='ок'; if(window.OgeCourseSharedMode)advance();else setTimeout(advance,180); };
       row.appendChild(b); card.appendChild(row);
     } else if(s.t==='pick'){
       card.appendChild(choiceGroup(s.options, done));
@@ -1700,7 +1701,7 @@ function svgRoot(vb){ const s=sv('svg',{viewBox:vb,class:'viz-svg'}); s.setAttri
 function f2(v){ return (Math.round(v*100)/100).toString().replace('.',','); }
 function reduceMotion(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } }
 function runAnim(dur,onframe,onend){
-  if(reduceMotion()){ onframe(1); onend&&onend(); return {cancel(){}}; }
+  if(window.OgeCourseSharedMode||reduceMotion()){ onframe(1); onend&&onend(); return {cancel(){}}; }
   let start=null,raf=0,cx=false;
   function step(ts){ if(cx)return; if(start===null)start=ts; const p=Math.min(1,(ts-start)/dur); onframe(p); if(p<1)raf=requestAnimationFrame(step); else onend&&onend(); }
   raf=requestAnimationFrame(step); return {cancel(){ cx=true; cancelAnimationFrame(raf); }};
@@ -1917,11 +1918,12 @@ MODULES.forEach(m=>{ if(VIZ[m.key]) m.viz=VIZ[m.key]; });
    APP CONTROLLER
    ================================================================== */
 const SCORE={streak:0,best:0};
-const PROG=(function(){ try{ return JSON.parse(localStorage.getItem('oge21_prog')||'{}')||{}; }catch(e){ return {}; } })();
-function saveProg(){ try{ localStorage.setItem('oge21_prog', JSON.stringify(PROG)); }catch(e){} }
+const PROG=(function(){ if(window.OgeCourseSharedMode)return {};try{ return JSON.parse(localStorage.getItem('oge21_prog')||'{}')||{}; }catch(e){ return {}; } })();
+function saveProg(){ if(window.OgeCourseSharedMode)return;try{ localStorage.setItem('oge21_prog', JSON.stringify(PROG)); }catch(e){} }
 function progTotal(){ let s=0; for(const k in PROG) s+=(PROG[k]||0); return s; }
-function bumpProg(key){ PROG[key]=(PROG[key]||0)+1; saveProg(); updateBadges(); renderScore(); }
+function bumpProg(key){ if(window.OgeCourseSharedMode)return;PROG[key]=(PROG[key]||0)+1; saveProg(); updateBadges(); renderScore(); }
 function renderScore(){
+  if(window.OgeCourseSharedMode)return;
   $('#score').innerHTML='<span class="pill">Решено: <b>'+progTotal()+'</b></span>'+
               '<span class="pill">Серия: <b>'+SCORE.streak+'</b></span>';
 }
@@ -2104,8 +2106,8 @@ function renderDrill(m,host){
   const sol=solutionButton(m,()=>p,true,()=>scorePeek());solDetails.appendChild(sol.wrap);
   const rowBtns=el('div','btnrow'),skip=el('button','btn ghost','Другая задача →'),nextB=el('button','btn primary','Следующая задача →');
   rowBtns.appendChild(skip);rowBtns.appendChild(nextB);card.appendChild(rowBtns);
-  function scoreOK(){if(solvedThis)return;solvedThis=true;if(!peeked){SCORE.streak++;SCORE.best=Math.max(SCORE.best,SCORE.streak);bumpProg(m.key);}}
-  function scorePeek(){peeked=true;SCORE.streak=0;renderScore();}
+  function scoreOK(){if(solvedThis)return;solvedThis=true;if(window.OgeCourseSharedMode)return;if(!peeked){SCORE.streak++;SCORE.best=Math.max(SCORE.best,SCORE.streak);bumpProg(m.key);}}
+  function scorePeek(){peeked=true;if(window.OgeCourseSharedMode)return;SCORE.streak=0;renderScore();}
   function go(){
     p=m.gen();peeked=false;solvedThis=false;hintBuilt=false;slot.innerHTML=m.statement(p);
     ansHost.innerHTML='';stepHost.innerHTML='';vizPanel.innerHTML='';reveals.innerHTML='';nextB.style.display='none';sol.reset();solDetails.open=false;hintPanel.hidden=true;byStep.setAttribute('aria-expanded','false');
@@ -2165,9 +2167,17 @@ function init(){
   const pb=$('#printBtn'); if(pb) pb.onclick=openPrintModal;
 }
 window.__T={MODULES:MODULES,Rn:Rn,quadSteps:quadSteps,isqrt:isqrt,fmt:fmt,SCORE:SCORE,progTotal:progTotal,PROG:PROG,fracClearingQuad:fracClearingQuad};
-document.addEventListener('DOMContentLoaded',init);
+if(window.OgeCourseSharedMode){
+  const sharedModules=[];
+  MODULES.forEach((m,i)=>{sharedModules.push({key:m.key,label:m.title,index:i,sub:null});if(m.subs)m.subs.forEach(s=>sharedModules.push({key:m.key+':'+s.k,label:m.title+' · '+s.label,index:i,sub:s.k}));});
+  window.Oge2022Native={number:21,id:'oge-task21-word-problems',host:'#content',hide:'#rail,.mode,#score,#printBtn',modules:sharedModules,
+    mount(host,key){const row=sharedModules.find(x=>x.key===key);CUR=row.index;MODE='drill';const m=Object.assign({},MODULES[CUR],{_forceSub:row.sub});renderDrill(m,host);},
+    card:host=>host.querySelector('.card'),onLive(key){CUR=sharedModules.find(x=>x.key===key).index;MODE='drill';}}
+}else document.addEventListener('DOMContentLoaded',init);
 </script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-algebra.js" data-oge-task="21"></script>
+<script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="21"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-20-22-board.js?v=20261025"></script>
 </body>
 </html>

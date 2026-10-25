@@ -150,7 +150,10 @@ footer{margin-top:26px;font-family:var(--mono);font-size:11px;color:var(--muted)
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
-<script src="practical-discovery.js?v=20261021-exam-variants"></script>
+<script src="../oge-course-shared-mode.js"></script>
+<script src="../board-bridge.js"></script>
+<script src="practical-board.js"></script>
+<script src="practical-discovery.js?v=20261025-oge-course-mirror"></script>
 <script src="practical-minimal.js?v=20261021-exam-variants"></script>
 <link rel="stylesheet" href="practical-variant.css">
 </head>
@@ -390,7 +393,7 @@ function dimSeg(svg,x1,y1,x2,y2,o,txt){
 }
 /* ================= ХЕЛПЕРЫ ОТВЕТОВ ================= */
 const fmt=x=>x.toString().replace('.',',');
-const parseNum=s=>parseFloat(String(s).replace(/\s/g,'').replace(',','.'));
+const parseNum=s=>{const raw=String(s).replace(/\s/g,'').replace(',','.');return /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)?Number(raw):NaN;};
 const near=(a,b,e=0.005)=>Math.abs(a-b)<e;
 const rub=x=>x.toLocaleString('ru-RU');
 const total5=(price,conn,dlv)=>price+conn+Math.round(price*dlv/100);
@@ -442,7 +445,7 @@ function buildT2a(){
 }
 function checkT2a(){
   const inp=byId('a2a'),v=parseNum(inp.value),b=roleCells('gost'),ans=Math.ceil(b/14);
-  if(near(v,ans,0.5)){setIn(inp,true);return good(`Верно: <b>${ans}</b> уп. ${b} досок ÷ 14 = ${fmt((b/14).toFixed(2))} → вверх.`);}
+  if(near(v,ans,1e-9)){setIn(inp,true);return good(`Верно: <b>${ans}</b> уп. ${b} досок ÷ 14 = ${fmt((b/14).toFixed(2))} → вверх.`);}
   setIn(inp,false);
   if(near(v,ans-1,0.5))return bad(`${ans-1} мало: ${(ans-1)*14} досок < ${b}. Нужна ещё упаковка — <b>${ans}</b>.`);
   if(near(v,b,0.5))return bad(`${b} — это число <b>досок</b>. Разделите на 14 и округлите вверх.`);
@@ -465,7 +468,7 @@ function buildT2b(){
 }
 function checkT2b(){
   const inp=byId('a2b'),v=parseNum(inp.value),lk=roleCells('logK'),lb=roleCells('logB'),t=lk+lb,ans=Math.ceil(t/12);
-  if(near(v,ans,0.5)){setIn(inp,true);return good(`Верно: <b>${ans}</b>. ${lk} + ${lb} = ${t} плиток ÷ 12 = ${fmt((t/12).toFixed(2))} → вверх.`);}
+  if(near(v,ans,1e-9)){setIn(inp,true);return good(`Верно: <b>${ans}</b>. ${lk} + ${lb} = ${t} плиток ÷ 12 = ${fmt((t/12).toFixed(2))} → вверх.`);}
   setIn(inp,false);
   if(near(v,ans-1,0.5))return bad(`${ans-1} мало: ${(ans-1)*12} плиток < ${t}. Нужна ещё упаковка — <b>${ans}</b>.`);
   if(near(v,t,0.5))return bad(`${t} — число <b>плиток</b>. Разделите на 12 и округлите вверх.`);
@@ -488,7 +491,7 @@ function buildArea(id,who){
 }
 function areaCheckImpl(n,id){
   const inp=byId(id),v=parseNum(inp.value),ans=m2Of(n),c=cellsOf(n);
-  if(near(v,ans)){setIn(inp,true);return good(`Верно: ${c} клеток · 0,16 = <b>${fmt(ans)} м²</b>.`);}
+  if(near(v,ans,1e-9)){setIn(inp,true);return good(`Верно: ${c} клеток · 0,16 = <b>${fmt(ans)} м²</b>.`);}
   setIn(inp,false);
   if(near(v,c,0.5))return bad(`${c} — это число <b>клеток</b>. Умножьте на 0,16 м².`);
   const rr=rectsOf(n);
@@ -506,7 +509,7 @@ function areaSolve(n,who){const c=cellsOf(n);
     <div class="ans-final">Ответ: <b>${fmt(m2Of(n))}</b></div>`;}
 function checkT3corr(){
   const n=roleNum('kor'),inp=byId('a3'),v=parseNum(inp.value),c=cellsOf(n),ans=m2Of(n);
-  if(near(v,ans)){setIn(inp,true);return good(`Верно: коридор ${c} клеток · 0,16 = <b>${fmt(ans)} м²</b>.`);}
+  if(near(v,ans,1e-9)){setIn(inp,true);return good(`Верно: коридор ${c} клеток · 0,16 = <b>${fmt(ans)} м²</b>.`);}
   setIn(inp,false);
   const rr=rectsOf(n);
   if(rr.length>1){const big=rr.map(([,,w,h])=>w*h).sort((a,b)=>b-a)[0];
@@ -518,7 +521,7 @@ function checkT3corr(){
 function checkT3loj(){
   const big=roleNum(biggerLoggia()),small=roleNum(biggerLoggia()==='logB'?'logK':'logB');
   const inp=byId('a3'),v=parseNum(inp.value),ans=m2Of(big);
-  if(near(v,ans)){setIn(inp,true);return good(`Верно: большая лоджия ${cellsOf(big)} клеток · 0,16 = <b>${fmt(ans)} м²</b>.`);}
+  if(near(v,ans,1e-9)){setIn(inp,true);return good(`Верно: большая лоджия ${cellsOf(big)} клеток · 0,16 = <b>${fmt(ans)} м²</b>.`);}
   setIn(inp,false);
   if(near(v,m2Of(small),0.05))return bad(`Это площадь <b>меньшей</b> лоджии (${cellsOf(small)} кл). Большая — ${cellsOf(big)} клеток.`);
   if(near(v,cellsOf(big),0.5))return bad(`${cellsOf(big)} — число клеток. Умножьте на 0,16 м².`);
@@ -533,7 +536,7 @@ function buildPct(id,A,B){
 }
 function pctCheckImpl(A,B,id){
   const inp=byId(id),v=parseNum(inp.value),a=cellsOf(A),b=cellsOf(B),ans=+(((a-b)/b)*100).toFixed(4);
-  if(near(v,ans,0.05)){setIn(inp,true);return good(`Верно: (${a} − ${b})/${b}·100% = <b>${fmt(ans)}%</b>.`);}
+  if(near(v,ans,1e-9)){setIn(inp,true);return good(`Верно: (${a} − ${b})/${b}·100% = <b>${fmt(ans)}%</b>.`);}
   setIn(inp,false);
   const d1=+(((a-b)/a)*100).toFixed(4); if(near(v,d1,0.1))return bad(`Вы поделили на <b>большую</b>. Делить надо на <b>меньшую</b> (${b}) — тогда ${fmt(ans)}%.`);
   const rt=+((a/b)*100).toFixed(4); if(near(v,rt,0.1))return bad(`Это отношение ${a}/${b}·100%. Для «на сколько больше» вычтите 100%: ${fmt(rt)} − 100 = ${fmt(ans)}%.`);
@@ -589,7 +592,7 @@ const washPass=x=>x.ld==="верт."&&(+x.dim.split('×')[0])<=85;
 function checkT51(){const inp=byId('a51'),v=parseNum(inp.value);
   const pass=WASH.filter(washPass).map(x=>({...x,tot:total5(x.p,x.c,x.d)}));const best=pass.reduce((m,x)=>x.tot<m.tot?x:m);
   markPass('w5',WASH,washPass);
-  if(near(v,best.tot,0.5)){setIn(inp,true);return good(`Верно: модель <b>${best.m}</b> — ${rub(best.p)} + ${rub(best.c)} = <b>${rub(best.tot)} ₽</b>.`);}
+  if(near(v,best.tot,1e-9)){setIn(inp,true);return good(`Верно: модель <b>${best.m}</b> — ${rub(best.p)} + ${rub(best.c)} = <b>${rub(best.tot)} ₽</b>.`);}
   setIn(inp,false);
   for(const x of pass){if(near(v,x.p,0.5))return bad(`${rub(x.p)} — только цена «${x.m}». Добавьте подключение. Дешевле — ${best.m} (${rub(best.tot)} ₽).`);}
   const wl=WASH.filter(x=>(+x.dim.split('×')[0])<=85&&x.ld==="фронт.").map(x=>total5(x.p,x.c,x.d));
@@ -610,7 +613,7 @@ function buildT52(){return `<div class="q">Планируется интерне
   <div class="ansrow"><label>Ответ</label><input class="ans mono" id="a52" inputmode="numeric" placeholder="рублей"><span class="unit">₽</span></div>`;}
 function checkT52(){const inp=byId('a52'),v=parseNum(inp.value),T=1000;
   const costs=NET.map(p=>({m:p.m,c:netCost(T,p)}));const best=costs.reduce((m,x)=>x.c<m.c?x:m);
-  if(near(v,best.c,0.5)){setIn(inp,true);return good(`Верно: тариф ${best.m} — <b>${rub(best.c)} ₽</b>.`);}
+  if(near(v,best.c,1e-9)){setIn(inp,true);return good(`Верно: тариф ${best.m} — <b>${rub(best.c)} ₽</b>.`);}
   setIn(inp,false);
   const c6=netCost(T,NET[0]),c9=netCost(T,NET[1]);
   if(near(v,c6,0.5))return bad(`${rub(c6)} — тариф «600»: 650 + 2·400. Он дороже. Сравните с «900» (${rub(c9)}) и «Безлимитным» (950).`);
@@ -635,7 +638,7 @@ const stovePass=x=>(+x.dim.split('×')[1])===50&&x.ov>=52;
 function checkT53(){const inp=byId('a53'),v=parseNum(inp.value);
   const pass=STOVE.filter(stovePass).map(x=>({...x,tot:total5(x.p,x.c,x.d)}));const best=pass.reduce((m,x)=>x.tot<m.tot?x:m);
   markPass('s5',STOVE,stovePass);
-  if(near(v,best.tot,0.5)){setIn(inp,true);return good(`Верно: модель <b>${best.m}</b> — ${rub(best.p)} + ${rub(best.c)} + доставка = <b>${rub(best.tot)} ₽</b>.`);}
+  if(near(v,best.tot,1e-9)){setIn(inp,true);return good(`Верно: модель <b>${best.m}</b> — ${rub(best.p)} + ${rub(best.c)} + доставка = <b>${rub(best.tot)} ₽</b>.`);}
   setIn(inp,false);
   for(const x of pass){if(near(v,x.p+x.c,0.5))return bad(`Для «${x.m}» забыта доставка ${x.d===0?'(её нет)':x.d+'% = '+rub(Math.round(x.p*x.d/100))+' ₽'}. Дешевле — ${best.m} (${rub(best.tot)} ₽).`);}
   const wv=STOVE.filter(x=>(+x.dim.split('×')[1])===50&&x.ov<52).map(x=>total5(x.p,x.c,x.d));
@@ -765,7 +768,7 @@ function selectGroup(g){state.group=g;if(VIEWS[state.viewKey].g!==g)state.viewKe
 function updateStats(){const s=CANON.filter(k=>state.solved.has(sk(k))).length;
   $('sSolved').textContent=s+' / 10';$('sStreak').textContent=state.streak;$('sTries').textContent=state.tries;
   const pct=Math.round(s/10*100);$('pbar').style.width=pct+'%';$('pctTag').textContent=pct+'%';
-  try{var _mp=JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}');_mp['practiceApartmentsTrainer']={solved:s,total:CANON.length,solvedList:[...state.solved],streak:state.streak};localStorage.setItem('mathExamCourseProgress.v1',JSON.stringify(_mp));}catch(e){}}
+  try{var _mp=JSON.parse((window.PracticalPageStorage || localStorage).getItem('mathExamCourseProgress.v1')||'{}');_mp['practiceApartmentsTrainer']={solved:s,total:CANON.length,solvedList:[...state.solved],streak:state.streak};(window.PracticalPageStorage || localStorage).setItem('mathExamCourseProgress.v1',JSON.stringify(_mp));}catch(e){}}
 function updateTabs(){document.querySelectorAll('#tabs .tab').forEach(t=>{const g=+t.dataset.g;
   t.classList.toggle('done',GROUP_CANON[g].every(k=>state.solved.has(sk(k))));});}
 
@@ -792,10 +795,10 @@ document.querySelectorAll('.pill[data-mode]').forEach(p=>p.onclick=()=>{
 /* ================= INIT ================= */
 setPlan(0);resetRollDefaults();buildPlanPicker();
 $('teachTxt').innerHTML=teacherNotes[1];
-try{var _mr=(JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}'))['practiceApartmentsTrainer'];if(_mr){state.solved=new Set(_mr.solvedList||[]);state.streak=_mr.streak||0;}}catch(e){}
+try{var _mr=(JSON.parse((window.PracticalPageStorage || localStorage).getItem('mathExamCourseProgress.v1')||'{}'))['practiceApartmentsTrainer'];if(_mr){state.solved=new Set(_mr.solvedList||[]);state.streak=_mr.streak||0;}}catch(e){}
 selectGroup(1);updateStats();
 </script>
-<script src="practical-variant.js"></script>
-<script src="practical-variant-buildings.js"></script>
+<script src="practical-variant.js?v=20261025-oge-course-mirror"></script>
+<script src="practical-variant-buildings.js?v=20261025-oge-course-mirror"></script>
 </body>
 </html>

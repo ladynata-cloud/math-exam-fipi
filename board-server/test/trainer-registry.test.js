@@ -23,6 +23,7 @@ const conformanceFixturePath = path.resolve(
   __dirname,
   '../../tools/fixtures/trainer-path-conformance.json'
 );
+const addedOgeEntries = require('../../tools/fixtures/oge-course-board-entries.json');
 const expectedCatalogFiles = [
   'trainers/negative-numbers-line.html',
   'trainers/negative-numbers.html',
@@ -77,7 +78,27 @@ const expectedCatalogFiles = [
   'trainers/oge-task16-circle.html',
   'trainers/oge-task17-quadrilaterals.html',
   'trainers/oge-task18-grid.html',
-  'trainers/task19-trainer.html'
+  'trainers/task19-trainer.html',
+  'trainers/oge-task6-fractions.html',
+  'trainers/oge-task8-powers-roots.html',
+  'trainers/oge-task9-equations.html',
+  'trainers/oge-task10-probability.html',
+  'trainers/oge-task11-graphs-trainer.html',
+  'trainers/oge-task12-formulas-trainer.html',
+  'trainers/oge13-inequalities-series.html',
+  'trainers/oge-task14-progressions.html',
+  'trainers/oge-task20-equations.html',
+  'trainers/oge-task21-word-problems.html',
+  'trainers/oge-task22-functions-graphs.html',
+  'trainers/oge-task23-geometry-calculations.html',
+  'trainers/oge-task24-proofs.html',
+  'trainers/oge-task25-geometry.html',
+  'trainers/oge-1-5-trainers/practice-1-5-roads-schema.html',
+  'trainers/oge-1-5-trainers/practice-1-5-stoves.html',
+  'trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html',
+  'trainers/oge-1-5-trainers/practice-1-5-tariffs.html',
+  'trainers/oge-1-5-trainers/practice-1-5-apartments.html',
+  'trainers/oge-1-5-trainers/practice-1-5-land-plots.html'
 ];
 
 function currentManifest() {
@@ -210,15 +231,15 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with fifty-four catalog entries and twenty-five mirrors', () => {
+test('current manifest validates with seventy-four catalog entries and fifty mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 54);
-  assert.equal(result.trainers.length, 25);
+  assert.equal(manifest.trainers.length, 74);
+  assert.equal(result.trainers.length, 50);
   assert.deepEqual(result.progressTrainers, [{
     trainerId: 'yashchenko-t12',
     file: 'trainers/ege-profile/yashchenko-lines-1-2.html',
@@ -234,7 +255,7 @@ test('current manifest validates with fifty-four catalog entries and twenty-five
   }]);
 });
 
-test('runtime registry has exact parity with all twenty-five mirror authorizations', () => {
+test('runtime registry has exact parity with all fifty mirror authorizations', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.deepEqual(registry.entries, [
     {
@@ -437,14 +458,14 @@ test('runtime registry has exact parity with all twenty-five mirror authorizatio
       bridgeProtocolVersion: 1,
       allowLegacyHtml: false
     }
-  ]);
+  ].concat(addedOgeEntries.map(({trainerId,file}) => ({trainerId,file,version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false}))).sort((a,b) => a.trainerId.localeCompare(b.trainerId)));
 });
 
 test('bundled default loads relative to the server module', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.equal(registry.loaded, true);
   assert.equal(registry.source, 'bundled-default');
-  assert.equal(registry.entries.length, 25);
+  assert.equal(registry.entries.length, 50);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
 });
 
@@ -636,7 +657,7 @@ test('an additional synthetic mirror entry needs no registry core change', () =>
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 26);
+    assert.equal(registry.entries.length, 51);
     assert.equal(registry.getById(synthetic.trainerId).file, synthetic.file);
   });
 });
@@ -647,7 +668,7 @@ test('removing a mirror entry removes its runtime authorization', () => {
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 24);
+    assert.equal(registry.entries.length, 49);
     assert.equal(registry.getById('linear-inequalities-stepwise'), null);
   });
 });

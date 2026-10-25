@@ -1,6 +1,7 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
+<script src="oge-course-shared-mode.js?v=20261025"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Задание 20 ОГЭ — тренажёр</title>
@@ -918,12 +919,12 @@ function mountStepper(host, cfg){
       fb=el('<div class="fb"></div>'); node.appendChild(fb);
       ck.addEventListener('click',function(){
         var r=st.check(w.read);
-        if(r.ok){ node.classList.add('done'); advance(i); }
+        if(r.ok){ node.classList.add('done'); node.querySelectorAll('input,select,button').forEach(function(x){x.disabled=true;}); advance(i); }
         else { fb.className='fb no show'; fb.innerHTML=st.reasonText?st.reasonText(r):'Не сходится — попробуй ещё раз.'; }
       });
       sh.addEventListener('click',function(){
         if(cfg.onReveal)cfg.onReveal();
-        node.classList.add('peeked'); node.classList.remove('active');
+        node.classList.add('peeked'); node.classList.remove('active');node.querySelectorAll('input,select,button').forEach(function(x){x.disabled=true;});
         fb.className='fb peek show'; fb.innerHTML='Правильно: '+st.reveal; advance(i,true);
       });
     } else {
@@ -934,7 +935,7 @@ function mountStepper(host, cfg){
       if(st.reveal){ node.appendChild(rev); }
       sh2.addEventListener('click',function(){
         if(st.reveal){if(cfg.onReveal)cfg.onReveal();rev.className='fb peek show';rev.innerHTML=st.reveal;}
-        node.classList.add('done'); advance(i);
+        node.classList.add('done');sh2.disabled=true; advance(i);
       });
     }
     nodes[i]=node; list.appendChild(node);
@@ -1010,7 +1011,7 @@ function mountMarathon(host, engine){
     ck.addEventListener('click',function(){
       if(done)return;
       var r=R.check(w.read, data);
-      if(r.ok){fb.className='fb ok show';fb.innerHTML=peeked?'Верно. Один из шагов был показан — самостоятельный зачёт не начисляется.':'<b>Верно!</b> '+(R.okNote||'');done=true;if(!peeked){state.solved++;state.streak++;}refreshTop();ck.disabled=true;sh.disabled=true;nextBtn();}
+      if(r.ok){fb.className='fb ok show';fb.innerHTML=peeked?'Верно. Один из шагов был показан — самостоятельный зачёт не начисляется.':'<b>Верно!</b> '+(R.okNote||'');done=true;wslot.querySelectorAll('input,select,button').forEach(function(x){x.disabled=true;});if(!peeked){state.solved++;state.streak++;}refreshTop();ck.disabled=true;sh.disabled=true;nextBtn();}
       else{ fb.className='fb no show'; fb.innerHTML=(R.reasonText?R.reasonText(r):'Пока неверно — посмотри решение по шагам, если застрял.'); if(state.streak){state.streak=0;refreshTop();} }
     });
     sh.addEventListener('click',function(){
@@ -2282,10 +2283,18 @@ function render(){
 }
 window.__T20={STATE:STATE, render:render, MODULES:MODULES, ORDER:ORDER, R:R, M:M,
   _test:{mountMini:mountMini,mountStepper:mountStepper,mountMarathon:mountMarathon,rootsetWidget:rootsetWidget,fracField:fracField,pointsetWidget:pointsetWidget,intervalWidget:intervalWidget,fmtPoly:fmtPoly}};
-render();
+if(window.OgeCourseSharedMode){
+  window.Oge2022Native={number:20,id:'oge-task20-equations',host:'#body',hide:'#picker,#tabs,#courseSettings',
+    modules:ORDER.map(function(key){return {key:key,label:MODULES[key].title};}),
+    mount:function(host,key){STATE.module=key;STATE.mode='drill';mountMarathon(host,MODULES[key].engine());},
+    card:function(host){return host.querySelector('.qbox');},
+    onLive:function(key){STATE.module=key;STATE.mode='drill';$('#stageTitle').textContent='ОГЭ №20 · '+MODULES[key].title;$('#stageSub').textContent=MODULES[key].tagline;}}
+}else render();
 })();
 </script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-algebra.js" data-oge-task="20"></script>
+<script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="20"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-20-22-board.js?v=20261025"></script>
 </body>
 </html>

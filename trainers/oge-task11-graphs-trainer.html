@@ -727,6 +727,7 @@ nav.tabs button .n{display:none}
     </div>
   </div>
 </footer>
+<script src="oge-course-shared-mode.js"></script>
 <script>
 "use strict";
 /* ============================================================
@@ -907,12 +908,13 @@ const CP=(function(){
   function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
   function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
   function readAll(){
+    if (window.OgeCourseSharedMode) return {};
     try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
     catch (e) { return {}; }
   }
   /* меняет только свою ветку: читает ключ заново прямо перед записью */
   function saveRec(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var rec = isObj(all[TID]) ? all[TID] : {};
@@ -936,7 +938,7 @@ const CP=(function(){
   /* журнал: промах открывает тип, три верных подряд закрывают;
      верный ответ по типу без промахов записи не заводит */
   function mlog(type, ok){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll();
       var key = TID + "|" + type;
@@ -962,7 +964,7 @@ const CP=(function(){
   /* §6: старый ключ читается один раз; переносится сопоставимое с ядром; ставится
      migratedFrom; старый ключ не удаляется и не переписывается */
   function migrate(fn){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var raw = localStorage.getItem(OLD_KEY);
       if (raw === null) return;
@@ -979,7 +981,7 @@ const CP=(function(){
   /* «Сбросить прогресс»: своя ветка и свои записи журнала (по префиксу TID|);
      отметка миграции остаётся — иначе старый ключ перенёсся бы снова */
   function resetOwn(){
-    if (RO) return;
+    if (RO || window.OgeCourseSharedMode) return;
     try {
       var all = readAll(), rec = all[TID];
       if (isObj(rec) && typeof rec.migratedFrom === "string") all[TID] = { v:1, solvedByType:{}, migratedFrom:rec.migratedFrom, updatedAt:Date.now() };
@@ -992,7 +994,7 @@ const CP=(function(){
   /* своя статистика панели тренажёра — поле ext ветки (адаптер курса его не читает) */
   function ext(){ var r = readAll()[TID]; return isObj(r) && isObj(r.ext) ? r.ext : {}; }
   function saveExt(fn){ saveRec(function(rec){ if (!isObj(rec.ext)) rec.ext = {}; fn(rec.ext); }); }
-  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  var REVIEW = !window.OgeCourseSharedMode && /[?&]mode=review(&|$)/.test(location.search || "");
   return { RO:RO, REVIEW:REVIEW, KEY:KEY, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
     solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes,
     migrate:migrate, resetOwn:resetOwn, ext:ext, saveExt:saveExt };
@@ -1806,6 +1808,7 @@ function m4Starter(){
   return {type:'t45',starter:true,title:'Разные виды графиков',taskline:'Найди график каждой функции.',items,order,key:LETTERS.map((_,i)=>order.indexOf(i)+1),notice:'Прямая, улыбка и две отдельные ветви-«усы»: сначала сравни форму.',hint:'Сравни форму графиков.'};
 }
 function m4UseStarter(){
+  if(window.OgeCourseSharedMode)return false;
   if(M4.task || M4.type!=='rand' || M4.review || CP.REVIEW || CP.RO) return false;
   try {
     if(localStorage.getItem('mathexam.task11.discoverySeen.v1') || CP.readAll()[TID]) return false;
@@ -2748,5 +2751,7 @@ if (CP.RO) selftest11();   // ?selftest=1 — маркер OGE11_SELFTEST_OK в 
 <script src="oge-course-reference.js"></script>
 <script src="oge-course-algebra-reference.js"></script>
 <script src="oge-course-reference-entry.js"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-native-10-14-board.js" data-oge-native="11"></script>
 </body>
 </html>

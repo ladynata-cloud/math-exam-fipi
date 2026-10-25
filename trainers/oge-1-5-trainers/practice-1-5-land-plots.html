@@ -103,7 +103,10 @@
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}.btn.primary:hover{transform:none;}}
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
-<script src="practical-discovery.js?v=20261021-exam-variants"></script>
+<script src="../oge-course-shared-mode.js"></script>
+<script src="../board-bridge.js"></script>
+<script src="practical-board.js"></script>
+<script src="practical-discovery.js?v=20261025-oge-course-mirror"></script>
 <script src="practical-minimal.js?v=20261021-exam-variants"></script>
 <link rel="stylesheet" href="practical-variant.css">
 </head>
@@ -160,7 +163,7 @@
 
 </div>
 
-<script src="progress.js"></script>
+<script src="progress.js?v=20261025-oge-course-mirror"></script>
 <script>
 (function(){
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
@@ -281,11 +284,11 @@ const MASTERY=3, TOTAL_TYPES=5;
 const OWN='landPlotsTrainer.v2', MAP='mathExamCourseProgress.v1', TOPIC='practiceLandPlotsTrainer';
 let state={perType:{},streak:0,tasks:[],results:[],idx:0,vcount:1};
 TYPES.forEach(t=>state.perType[t]=0);
-function load(){try{const s=JSON.parse(localStorage.getItem(OWN));if(s){TYPES.forEach(t=>state.perType[t]=(s.perType&&s.perType[t])||0);state.streak=s.streak||0;state.vcount=s.vcount||1;}}catch(e){}}
+function load(){try{const s=JSON.parse((window.PracticalPageStorage || localStorage).getItem(OWN));if(s){TYPES.forEach(t=>state.perType[t]=(s.perType&&s.perType[t])||0);state.streak=s.streak||0;state.vcount=s.vcount||1;}}catch(e){}}
 const mastered=()=>TYPES.filter(t=>state.perType[t]>=MASTERY).length;
 function save(){
-  try{localStorage.setItem(OWN,JSON.stringify({perType:state.perType,streak:state.streak,vcount:state.vcount}));}catch(e){}
-  if(window.CourseProgress){CourseProgress.write(TOPIC,mastered(),TOTAL_TYPES);}else try{const d=JSON.parse(localStorage.getItem(MAP)||'{}');d[TOPIC]={...(d[TOPIC]||{}),solved:mastered(),total:TOTAL_TYPES};localStorage.setItem(MAP,JSON.stringify(d));}catch(e){}
+  try{(window.PracticalPageStorage || localStorage).setItem(OWN,JSON.stringify({perType:state.perType,streak:state.streak,vcount:state.vcount}));}catch(e){}
+  if(window.CourseProgress){CourseProgress.write(TOPIC,mastered(),TOTAL_TYPES);}else try{const d=JSON.parse((window.PracticalPageStorage || localStorage).getItem(MAP)||'{}');d[TOPIC]={...(d[TOPIC]||{}),solved:mastered(),total:TOTAL_TYPES};(window.PracticalPageStorage || localStorage).setItem(MAP,JSON.stringify(d));}catch(e){}
 }
 
 /* ===================== ОТРИСОВКА ПЛАНА ===================== */
@@ -397,7 +400,7 @@ function doCheck(){
   const raw=(document.getElementById('in').value||'').trim();if(raw==='')return;
   let ok;
   if(q.kind==='digits') ok=raw.replace(/\s/g,'')===q.answer;
-  else{const v=parseFloat(raw.replace(',','.').replace(/[^\d.\-]/g,''));ok=isFinite(v)&&near(v,q.answer);}
+  else{const normalized=raw.replace(/\s/g,'').replace(',','.');const v=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(normalized)?Number(normalized):NaN;ok=isFinite(v)&&near(v,q.answer);}
   r.answered=true;r.correct=ok;r.input=raw;
   if(ok){state.perType[q.type]=Math.min(MASTERY,state.perType[q.type]+1);state.streak++;}else state.streak=0;
   save();renderProgress();renderTabs();
@@ -418,15 +421,18 @@ document.getElementById('newvar-btn').addEventListener('click',()=>{state.vcount
 document.getElementById('reset-btn').addEventListener('click',()=>{
   if(confirm('Сбросить прогресс по участку?')){
     TYPES.forEach(t=>state.perType[t]=0);state.streak=0;
-    try{localStorage.removeItem(OWN);if(window.CourseProgress)CourseProgress.clear(TOPIC);else{const d=JSON.parse(localStorage.getItem(MAP)||'{}');delete d[TOPIC];localStorage.setItem(MAP,JSON.stringify(d));}}catch(e){}
+    try{(window.PracticalPageStorage || localStorage).removeItem(OWN);if(window.CourseProgress)CourseProgress.clear(TOPIC);else{const d=JSON.parse((window.PracticalPageStorage || localStorage).getItem(MAP)||'{}');delete d[TOPIC];(window.PracticalPageStorage || localStorage).setItem(MAP,JSON.stringify(d));}}catch(e){}
     renderProgress();newVariant();
   }
 });
 drawPlan();drawLegend();load();try{var _vq=parseInt(new URLSearchParams(location.search).get('v'),10);if(_vq>0)state.vcount=_vq;}catch(e){}
 renderProgress();save();newVariant();
+window.PracticalNativeVariant={get:()=>({variant:state.vcount}),valid:d=>{const B=window.PracticalBoard;return B.exact(d,['variant'])&&Number.isInteger(d.variant)&&d.variant>=1&&d.variant<=1000000;},
+ describe:d=>{const B=window.PracticalBoard,old=RAND;RAND=mulberry32((0x85EBCA6B^d.variant)>>>0);try{return TASK_FNS.map(f=>{const t=f();return B.description(B.kind('land',t.type,t.q),{answer:null},t.type==='match'?4:2,t.type==='tiles'&&/площадка/.test(t.q)?1:0);});}finally{RAND=old;}},
+ set:d=>{state.vcount=d.variant;state.perType=Object.fromEntries(TYPES.map(t=>[t,0]));state.streak=0;newVariant();}};
 })();
 </script>
-<script src="practical-variant.js"></script>
-<script src="practical-variant-buildings.js"></script>
+<script src="practical-variant.js?v=20261025-oge-course-mirror"></script>
+<script src="practical-variant-buildings.js?v=20261025-oge-course-mirror"></script>
 </body>
 </html>

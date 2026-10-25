@@ -16,7 +16,7 @@ function help(options={}){
  const close=()=>{panel.hidden=true;toggle.textContent='Хочешь подсказку?';toggle.setAttribute('aria-expanded','false');toggle.focus();};
  if(global.PracticalDiscovery){global.PracticalDiscovery.build(panel,{page:options.page,type:options.type,text:options.text,steps:options.steps,close});for(const picture of panel.querySelectorAll('.pd-picture'))picture.after(el('p','На узком экране рисунок можно прокручивать в сторону.','pv-scroll-note'));}
  else panel.append(el('p','Прочитай, что нужно найти. Выпиши данные и единицы измерения.'));
- if(options.native){const details=el('details',null,'pv-native-help pm-details'),summary=el('summary','Помочь с числами из условия?'),content=el('div',null,'pm-content');details.append(summary,content);let built=false;details.addEventListener('toggle',()=>{if(details.open&&!built){append(content,options.native());built=true;}});const back=panel.querySelector('.pd-return');back?back.before(details):panel.append(details);}
+ if(options.native){const details=el('details',null,'pv-native-help pm-details'),summary=el('summary','Помочь с числами из условия?'),content=el('div',null,'pm-content');details.append(summary,content);let built=false;if(global.OgeCourseSharedMode){append(content,options.native());built=true;}details.addEventListener('toggle',()=>{if(details.open&&!built){append(content,options.native());built=true;}});const back=panel.querySelector('.pd-return');back?back.before(details):panel.append(details);}
  toggle.addEventListener('click',()=>{panel.hidden=!panel.hidden;toggle.textContent=panel.hidden?'Хочешь подсказку?':'Убрать подсказку';toggle.setAttribute('aria-expanded',String(!panel.hidden));});
  wrap.append(toggle,panel);return wrap;
 }
@@ -27,20 +27,29 @@ function question(options){
  const form=el('form',null,'pv-answer-form'),fields=new Map();
  for(const spec of options.fields||[]){const label=el('label',null,'pv-field');label.append(el('span',spec.label||'Запиши ответ.'));let input;
   if(spec.options){input=el('select');for(const entry of spec.options){const option=el('option',Array.isArray(entry)?entry[1]:typeof entry==='object'?entry.label:entry);option.value=String(Array.isArray(entry)?entry[0]:typeof entry==='object'?entry.value:entry);input.append(option);}}
-  else{input=el(spec.type==='textarea'?'textarea':'input');if(input.tagName==='INPUT'){input.type=spec.type==='number'?'text':(spec.type||'text');input.inputMode=spec.inputMode||'decimal';}input.autocomplete='off';}
+  else{input=el(spec.type==='textarea'?'textarea':'input');if(input.tagName==='INPUT'){input.type=spec.type==='number'?'text':(spec.type||'text');input.inputMode=spec.inputMode||'decimal';}input.autocomplete='off';if(global.OgeCourseSharedMode)input.maxLength=100;}
   input.dataset.pvField=spec.key;input.name=spec.key;input.value=spec.value??'';input.setAttribute('aria-label',spec.label||'Ответ');if(spec.placeholder)input.placeholder=spec.placeholder;
   fields.set(spec.key,input);label.append(input);form.append(label);
  }
  const values=()=>Object.fromEntries([...fields].map(([key,input])=>[key,input.value]));
- for(const input of fields.values()){input.addEventListener('input',()=>options.onDraft?.(values()));input.addEventListener('change',()=>options.onDraft?.(values()));}
+ const cleanDraft=input=>{if(global.OgeCourseSharedMode)input.value=input.value.replace(/[<>\u0000-\u001f]/g,'').slice(0,100);};
+ for(const input of fields.values()){input.addEventListener('input',()=>{if(!locked){cleanDraft(input);lastCheck=false;feedback.replaceChildren();card.dataset.result='';options.onDraft?.(values());}});input.addEventListener('change',()=>{if(!locked){cleanDraft(input);lastCheck=false;feedback.replaceChildren();card.dataset.result='';options.onDraft?.(values());}});}
  const check=el('button','Проверить ответ','pv-check');check.type='submit';
  const feedback=el('div',null,'pv-feedback');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
- let locked=false;
- function show(result){if(!result)return;feedback.replaceChildren();result.html?append(feedback,result.html):feedback.append(doc.createTextNode(result.message||''));feedback.classList.toggle('pv-correct',result.ok===true);feedback.classList.toggle('pv-incorrect',result.ok===false);card.dataset.result=result.ok===true?'correct':result.ok===false?'incorrect':'';if(result.locked){locked=true;for(const input of fields.values())input.disabled=true;check.disabled=true;}}
+ let locked=false,lastCheck=!!options.status,helpUsed=false;
+ function show(result){if(!result)return;feedback.replaceChildren();result.html?append(feedback,result.html):feedback.append(doc.createTextNode(result.message||''));feedback.classList.toggle('pv-correct',result.ok===true);feedback.classList.toggle('pv-incorrect',result.ok===false);card.dataset.result=result.ok===true?'correct':result.ok===false?'incorrect':'';if(result.locked||result.ok===true){locked=true;for(const input of fields.values())input.disabled=true;check.disabled=true;}}
  show(typeof options.status==='object'?options.status:options.status?{ok:true,message:'Ответ уже проверен.'}:null);
- form.addEventListener('submit',async event=>{event.preventDefault();if(locked)return;check.disabled=true;try{const result=await options.check(values());show(result);}catch(error){feedback.textContent='Не удалось проверить ответ. Попробуй ещё раз.';global.console.error(error);}finally{check.disabled=locked;if(!locked)check.focus();else{feedback.tabIndex=-1;feedback.focus();}}});
+ form.addEventListener('submit',async event=>{event.preventDefault();if(locked)return;check.disabled=true;try{lastCheck=true;const result=await options.check(values());show(result);}catch(error){feedback.textContent='Не удалось проверить ответ. Попробуй ещё раз.';global.console.error(error);}finally{check.disabled=locked;if(!locked)check.focus();else{feedback.tabIndex=-1;feedback.focus();}}});
  form.append(check,feedback);card.append(form);
- card.append(help({page:options.page||doc.body.dataset.practicalPage,type:options.helpType,text:condition.textContent,steps:options.helpSteps,native:options.helpNative}));
+ const assistance=help({page:options.page||doc.body.dataset.practicalPage,type:options.helpType,text:condition.textContent,steps:options.helpSteps,native:options.helpNative});card.append(assistance);
+ assistance.addEventListener('click',()=>{helpUsed=true;},true);assistance.addEventListener('input',()=>{helpUsed=true;},true);assistance.addEventListener('toggle',()=>{if(assistance.querySelector('details[open]'))helpUsed=true;},true);
+ card.__practicalQuestion={options,fields,values,capture:()=>({answers:values(),checked:lastCheck,helpUsed,helpOpen:!assistance.querySelector('.pv-help-panel').hidden,details:Array.from(assistance.querySelectorAll('details')).map(d=>d.open),model:global.PracticalDiscovery.captureState(assistance.querySelector('.pv-help-panel')),zoom:Array.from(card.querySelectorAll('.pv-zoom')).map(b=>b.getAttribute('aria-pressed')==='true')}),restore:value=>{
+  for(const [key,input]of fields){input.value=value.answers[key];}options.onDraft?.(values());
+  if(value.checked){const result=options.check(values());if(result&&typeof result.then==='function')throw new TypeError('Synchronous practical checker required');show(result);lastCheck=true;}
+  const panel=assistance.querySelector('.pv-help-panel');if(value.helpOpen!==!panel.hidden)assistance.querySelector('.pv-help-button').click();
+  let ds=Array.from(assistance.querySelectorAll('details'));const native=assistance.querySelector('.pv-native-help');if(native&&value.details.length>ds.length){native.open=true;native.dispatchEvent(new Event('toggle'));}for(let i=0;i<value.details.length;i++){ds=Array.from(assistance.querySelectorAll('details'));if(ds[i]){ds[i].open=value.details[i];ds[i].dispatchEvent(new Event('toggle'));}}
+  global.PracticalDiscovery.applyState(panel,value.model);Array.from(card.querySelectorAll('.pv-zoom')).forEach((b,i)=>{if((b.getAttribute('aria-pressed')==='true')!==!!value.zoom[i])b.click();});helpUsed=value.helpUsed;
+ }};
  return card;
 }
 function prepareFigures(host){
@@ -58,7 +67,7 @@ function mount(options){
  const previous=doc.querySelector('.pv-shell');
  const shell=el('main',null,'pv-shell'),nav=el('nav',null,'pv-nav');nav.setAttribute('aria-label','Вернуться к курсу');
  for(const [href,text] of [['index.html','Все сюжеты 1–5'],['../oge-course/','Весь курс ОГЭ']]){const link=el('a',text);link.href=href;nav.append(link);}
- shell.append(nav,el('h1',options.title),el('p','Реши задания по условию. Подсказки открываются рядом с вопросом.','pv-intro'));
+ shell.append(nav,el('h1',options.title),el('p',global.OgeCourseSharedMode?'Совместная практика. Ответы и подсказки видны обоим участникам; личные результаты кабинета здесь не изменяются.':'Реши задания по условию. Подсказки открываются рядом с вопросом.','pv-intro'));
  if(options.controls){options.controls.classList.add('pv-controls');shell.append(options.controls);}
  const condition=el('section',null,'pv-condition');condition.setAttribute('aria-label','Общее условие');append(condition,options.condition);shell.append(condition);
  const workspace=el('div',null,'pv-workspace'),reference=el('aside',null,'pv-reference');reference.setAttribute('aria-label','Рисунок и данные варианта');
@@ -68,6 +77,7 @@ function mount(options){
  workspace.append(reference,stream);shell.append(workspace);prepareFigures(reference);
  for(const root of options.nativeRoots||[]){root.hidden=true;root.inert=true;root.dataset.pvNative='1';}
  previous?previous.replaceWith(shell):doc.body.append(shell);doc.body.classList.add('pv-exam');doc.documentElement.dataset.practicalVariant='ready';doc.documentElement.dataset.practicalMinimal='ready';
+ global.PracticalBoard?.changed();
  return shell;
 }
 function register(page,init){providers.set(page,init);}

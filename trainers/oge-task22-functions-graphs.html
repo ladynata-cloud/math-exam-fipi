@@ -1,6 +1,7 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
+<script src="oge-course-shared-mode.js?v=20261025"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ОГЭ · Задание 22 — Графики функций</title>
@@ -1388,15 +1389,15 @@ function renderStep(mod,host,preset,onNew,onReveal){
     const check=btn('btn-check','Проверить',()=>{const r=checkFn();
       if(r===null){feedback(fb,false,'','Введите ответ.');return;}
       if(r){feedback(fb,true,'Верно!','');solved=true;card.classList.remove('active');card.classList.add('solved');
-        row.querySelectorAll('button').forEach(b=>b.disabled=true);advance();}
+        row.querySelectorAll('button').forEach(b=>b.disabled=true);inputWrap.querySelectorAll('input,select,button').forEach(b=>b.disabled=true);advance();}
       else{feedback(fb,false,'','Не сходится — попробуйте ещё раз.');}});
     row.appendChild(check);
     if(step.hintHtml){row.appendChild(btn('btn-hint','Подсказка',()=>{feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.hintHtml);}));}
     row.appendChild(btn('btn-show','Показать шаг',()=>{if(onReveal)onReveal();feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.showHtml);
-      card.classList.remove('active');card.classList.add('peeked');showRetry();
+      card.classList.remove('active');card.classList.add('peeked');row.querySelectorAll('button').forEach(b=>b.disabled=true);inputWrap.querySelectorAll('input,select,button').forEach(b=>b.disabled=true);showRetry();
       if(!solved){advance();}}));
     stepsWrap.appendChild(card);
-    let advanced=false;function advance(){if(advanced)return;advanced=true;setTimeout(renderNext,120);}
+    let advanced=false;function advance(){if(advanced)return;advanced=true;if(window.OgeCourseSharedMode)renderNext();else setTimeout(renderNext,120);}
   }catch(e){console.error('step render error',e);const c=el('div','step-card');const p=el('div','step-prompt');p.textContent='Не удалось отобразить этот шаг. Возьмите новый пример.';c.appendChild(p);stepsWrap.appendChild(c);showRetry();} }
   renderNext();
 }
@@ -1408,7 +1409,7 @@ function renderMarathon(mod,host){
   host.innerHTML='';
   const score={solved:0,tries:0},results=el('details','minimal-results');results.appendChild(el('summary',null,'Мои результаты · подтипы'));
   const scoreEl=el('div','score');results.appendChild(scoreEl);
-  let subFilter=null;const subs=mod.subs||[{k:null,l:'Все'}];
+  let subFilter=mod.sharedSub||null;const subs=mod.subs||[{k:null,l:'Все'}];
   if(subs.length>1){const chipRow=el('div','sub-chips');subs.forEach(s=>{const c=el('button','chip'+(s.k===subFilter?' chip-on':''),s.l);c.type='button';c.onclick=()=>{subFilter=s.k;[...chipRow.querySelectorAll('.chip')].forEach(x=>x.classList.remove('chip-on'));c.classList.add('chip-on');newProblem();};chipRow.appendChild(c);});results.appendChild(chipRow);}
   const stmt=el('div');host.appendChild(stmt);
   const hintRow=el('div','minimal-hint'),hint=btn('btn-new','Хочешь подсказку?');hintRow.appendChild(hint);host.appendChild(hintRow);
@@ -1426,7 +1427,7 @@ function renderMarathon(mod,host){
   function newProblem(){problem=genProblemFiltered(mod,subFilter);host.__problem=problem;peeked=false;solvedThis=false;checkButton.disabled=false;helpBuilt=false;stepsBuilt=false;stmt.innerHTML=statementHtml(problem);makeInput();fb.className='fb';fb.textContent='';retryRow.innerHTML='';helpPanel.hidden=true;hint.setAttribute('aria-expanded','false');solDetails.open=false;stepsHost.innerHTML='';stepsBtn.hidden=false;}
   hint.onclick=()=>{const opening=helpPanel.hidden;helpPanel.hidden=!opening;hint.setAttribute('aria-expanded',String(opening));if(opening&&!helpBuilt){gv.show(problem);helpBuilt=true;}};
   stepsBtn.onclick=()=>{if(!stepsBuilt){renderStep(mod,stepsHost,problem,newProblem,()=>{peeked=true;});stepsBuilt=true;stepsBtn.hidden=true;}};
-  const checkButton=btn('btn-check','Проверить',()=>{if(solvedThis)return;const r=grade();if(r===null){feedback(fb,false,'','Собери ответ выше.');return;}score.tries++;if(r){solvedThis=true;checkButton.disabled=true;if(!peeked)score.solved++;feedback(fb,true,peeked?'Верно (ответ был показан).':'Верно!','');}else feedback(fb,false,'','Пока не совпадает — проверь концы промежутков и значения.');updScore();});row.appendChild(checkButton);
+  const checkButton=btn('btn-check','Проверить',()=>{if(solvedThis)return;const r=grade();if(r===null){feedback(fb,false,'','Собери ответ выше.');return;}score.tries++;if(r){solvedThis=true;ansHost.querySelectorAll('input,select,button').forEach(b=>b.disabled=true);checkButton.disabled=true;if(!peeked)score.solved++;feedback(fb,true,peeked?'Верно (ответ был показан).':'Верно!','');}else feedback(fb,false,'','Пока не совпадает — проверь концы промежутков и значения.');updScore();});row.appendChild(checkButton);
   solDetails.appendChild(btn('btn-show','Показать ответ',()=>{peeked=true;feedbackPeek(fb,'');fb.innerHTML='Ответ: <b>'+mathDisplay(problem.answer)+'</b>';if(!retryRow.querySelector('.btn-retry'))retryRow.appendChild(retryBtn(newProblem));}));
   row.appendChild(btn('btn-new','Другая задача →',newProblem));updScore();newProblem();
 }
@@ -1499,11 +1500,19 @@ function boot(){
   });
 }
 if(typeof window!=='undefined'&&window.__TESTHOOK__)window.__api={genPiecewise,genModulus,genHyperbola,setsEqual,valsEqual,solveTarget,fmtAnswer,Frac,Fr,NEG_INF,POS_INF,pieceVal};
-if(typeof document!=='undefined'&&document.getElementById('app'))boot();
+if(window.OgeCourseSharedMode){
+  const sharedModules=[];
+  MODULES.forEach((m,i)=>{sharedModules.push({key:m.id,label:m.title,index:i,sub:null});(m.subs||[]).filter(s=>s.k!==null).forEach(s=>sharedModules.push({key:m.id+':'+s.k,label:m.title+' · '+s.l,index:i,sub:s.k}));});
+  window.Oge2022Native={number:22,id:'oge-task22-functions-graphs',host:'#app',hide:'',modules:sharedModules,
+    mount(host,key){const row=sharedModules.find(x=>x.key===key);host.classList.add('mode-host');host.dataset.mode='marathon';renderMarathon(Object.assign({},MODULES[row.index],{sharedSub:row.sub}),host);},
+    card:host=>host,onLive(){}}
+}else if(typeof document!=='undefined'&&document.getElementById('app'))boot();
 
 })();
 </script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-algebra.js" data-oge-task="22"></script>
+<script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="22"></script>
+<script src="board-bridge.js"></script>
+<script src="oge-20-22-board.js?v=20261025"></script>
 </body>
 </html>

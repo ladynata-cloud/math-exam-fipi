@@ -25,25 +25,27 @@ function normalize(name,text){
  return text;
 }
 // Strict snapshots of reviewed inline engines, after the UI normalizations above.
-// Twelve entries retain base 4b56350. The percent-table snapshot additionally
-// includes the reviewed action-clarity changes on base bc392890: answer labels,
-// input instructions, hint visibility and draft-preserving return navigation.
-// Independent review confirmed unchanged formulas, answers and credit rules;
-// percent-action-clarity.test.cjs checks all ten quantities and the new flows.
+// OGE course audit on base 8e68183 updates only these eleven explicit entries:
+// shared-mode store guards/native state hooks; two corrected diagnostic diagrams;
+// strict finite-decimal grading (including whole packs/width lists); percent
+// explanation precision and parser. Task banks, required rounding and independent
+// math gates are retained. Evidence: practical-variant-board, diagnostic-board,
+// percent-table-board, tire-exact-grading and the existing native/discovery suites.
+// roads-grid and the map remain pinned to their previously reviewed engines.
 const ENGINE_HASHES={
-  "practice-1-5-entry-diagnostic-2026.html": "1efda818d5d8a6baae36b308f2a4228b6f5efd36c79ad9c12660d2e7b4d0f34f",
-  "practice-1-5-tariffs.html": "49a0f0eb1f6231f436add9a99ff99f436e9e052dab718d811b027f8e07c30fe9",
-  "practice-1-5-plan-reading.html": "06e0c08bf82f9592706aa85bb246d850025faddf999a2beaa8bc01cd68e3e864",
+  "practice-1-5-entry-diagnostic-2026.html": "01863d2cba47af52021564cff82a33e545f6f38c0d7a06fa15b7918baa1f8230",
+  "practice-1-5-tariffs.html": "deed6a7414def62124615ee2e219b2919bb785de88bcb1bea2b5139752595c83",
+  "practice-1-5-plan-reading.html": "afc72aa727686ec192a33aa1da16795a2056296e8e7549dac89920f9b490c5f5",
   "practice-1-5-roads-grid.html": "0a8b72fc4c1a3554291e7d31569fc941982a558d9d5441d11b325774b4f17256",
-  "practice-1-5-paper-sheets.html": "1dc2522bb435b4b8c9e43d8427166c21debf20e293ce4e9385ec3266a405ff5e",
-  "practice-1-5-land-plots.html": "a4a70b458adb563bfb7fe465e533ba957903e2d6d2592a09bee8956207e6d84c",
-  "practice-1-5-roads-schema.html": "ae543168de89d7ff5caa68ed4a58e6d7e600954399ef28a74cfec3b50e6c51b1",
+  "practice-1-5-paper-sheets.html": "fc1a87030ef315a618bfe110f65b3710cebed3b5579ddd0a8711853e413bceaa",
+  "practice-1-5-land-plots.html": "9a3bd36188abccdeed4f1b23098642c90b0b88c9c923d2ffa65226739b4b655c",
+  "practice-1-5-roads-schema.html": "79e22555fac90ec073c59e08c111cb60efb1988f331a900b964f012f7046411d",
   "practice-1-5-map.html": "92a021c3a3a7c177f7efd9a6b439bd5e09139171758635b3bcb40b639bb2d903",
-  "practice-1-5-tires.html": "3a4850a9be1617464a7682aba1fcd3ddf76be83d0737d21069c6d0f8c8645e99",
-  "percent-table-trainer.html": "a845d18d42b1df213ad16e4d911af09880683f2df48071d7edff6193d76cf4fa",
-  "practice-1-5-apartments.html": "af9db14b53e6b45755b9efc5a34eb540d5f7378359fed25d64b4cc95e6188cf4",
-  "practice-1-5-stoves.html": "76dc7a58e0d1b96815dfc3d9af8577e334384f9d67c0f486d821eca50ef0068b",
-  "practice-1-5-routes-checkpoint-2026.html": "31eb349079b5af06df5df88f2d8c88c3836b59997bcaefcb7c5ca7d631dc6c85"
+  "practice-1-5-tires.html": "7c9d25a566219e37698076db1e2e55083ea251f93aab2f948643b4d24c5c5501",
+  "percent-table-trainer.html": "384e143e5e5c3ca962d7b6e50fe3476184b2c05534318d4748cf9ad9fabb673d",
+  "practice-1-5-apartments.html": "e9957b28005a6a0a3fb029b570ab673307509349122f44e6738c51a20d5eefc4",
+  "practice-1-5-stoves.html": "1efc4f134ee3e9df6fc8e705dd7a54e3ce8d56d7c155c212293c6021a1cb22aa",
+  "practice-1-5-routes-checkpoint-2026.html": "cebdcffd0dd1ff43f8547ae5bf4bff4386d9da596ec20a651cc13183b6014584"
 };
 test('all inline engines match their reviewed snapshots outside explicit UI normalizations',()=>{
  for(const name of files){const scripts=inline(fs.readFileSync(path.join(dir,name),'utf8'));scripts.forEach((s,i)=>new vm.Script(s,{filename:name+':'+i}));const normalized=normalize(name,scripts.join('\n'));assert.equal(crypto.createHash('sha256').update(normalized).digest('hex'),ENGINE_HASHES[name],name);}
