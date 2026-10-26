@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-26T13:24:09.368Z",
-  "registeredAt": "2026-10-26T13:24:45.108Z",
+  "reviewedAt": "2026-10-26T14:06:36.794Z",
+  "registeredAt": "2026-10-26T14:08:09.956Z",
   "scope": "Introduction and chapters I–III: main exercises 1–314, theory points 1–37, all 40 chapter self-check questions. Additional exercises 315 onward remain pending. Not the complete book.",
   "batches": [
     {
@@ -793,9 +793,9 @@
     },
     {
       "reviewer": "Codex independent_math_prisms",
-      "reviewedAt": "2026-10-26T13:24:09.368Z",
-      "registeredAt": "2026-10-26T13:24:45.108Z",
-      "sourceBundleSHA256": "e3fc5a7de49703ba6e9c4e2606a9e3a9130e7525d4f6b36147079ac7a6fc7c28",
+      "reviewedAt": "2026-10-26T14:06:36.794Z",
+      "registeredAt": "2026-10-26T14:08:09.956Z",
+      "sourceBundleSHA256": "83063ffb98db747f11fea0f9bcc6831110d0ba269cd2d953d1f21aa6c95b530e",
       "scope": "Eighteen cards for sixteen additional pyramid exercises 299–314, including actual subparts. Source, complete mathematics and written pedagogy independently reviewed; actual browser pixels are a separate gate.",
       "report": "docs/reviews/ATANASYAN_PYRAMIDS_299_314_CONTENT.json",
       "cardIds": [
@@ -2867,7 +2867,7 @@
     },
     {
       "id": "ex-main-0313",
-      "sha256": "2720c4fdb8d155e268eb813a5fa6f95e8785696213ca2aff7a969833f4ac6591"
+      "sha256": "f71fb4ad67e75bed5ccc2da799b374ba6f5c23938680d84f903371d215486c20"
     },
     {
       "id": "ex-main-0314",

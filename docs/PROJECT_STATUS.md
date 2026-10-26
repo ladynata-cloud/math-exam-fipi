@@ -1,6 +1,6 @@
 # MathExam project status
 
-Updated: 2026-10-25 (Asia/Novosibirsk)
+Updated: 2026-10-26 (Asia/Novosibirsk)
 
 ## In progress: lesson enquiries and channel subscriptions
 
@@ -429,9 +429,12 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
   dedicated progressive models and fully justified source-specific proofs.
 - Preserve all495 prior raw cards,25 review batches,1,099 capture cases and
   runtime/schema/builder contracts. Target513 cards and all main exercises1–314.
-- Next: independent source/math/model review; exact-head cloud and actual
-  mobile/desktop inspection; separate concrete release decision. Final
-  polyhedron exercises315–319 and chapterIV remain pending.
+- Source/math/model review passed. First actual images identified small legs
+  in the normal triangle of313; a reviewed rigid rotation and targeted
+  readability regression address this finding. Fresh exact-head cloud images
+  and independent mobile/desktop inspection are pending, followed by the
+  separate release decision. Final polyhedron exercises315–319 and chapterIV
+  remain pending.
 
 ## Published: Atanasyan remaining prism exercises 294–298
 

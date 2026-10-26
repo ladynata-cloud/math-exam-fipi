@@ -272,14 +272,21 @@ async function checkPyramidProjection(lesson,width,stage){
    // face-on area using its exact model scale and the SVG-to-screen Jacobian.
    // This ratio is |cos(normal, viewing direction)|, independent of triangle
    // size. A small source triangle therefore is not mistaken for an edge-on one.
-   return {pathCount:paths.length,commands:d.replace(/[-\d.\s]/g,''),view:node.dataset.view,yaw:node.dataset.yaw,pitch:node.dataset.pitch,points,area,area3D,radius,svgScale,screenAreaScale,normalProjection:area/(area3D*svgScale**2*screenAreaScale),apparentThickness:area/diameter};
+   return {pathCount:paths.length,commands:d.replace(/[-\d.\s]/g,''),view:node.dataset.view,yaw:node.dataset.yaw,pitch:node.dataset.pitch,points,area,area3D,radius,svgScale,screenAreaScale,normalProjection:area/(area3D*svgScale**2*screenAreaScale),apparentThickness:area/diameter,minimumTriangleAltitude:points.length===3?2*area/diameter:null};
   },{area3D,radius});
   const label=lesson.id+' '+width+' '+stage+' '+orientation+' pyramid polygon';
   assert.equal(actual.pathCount,1,label+' exactly one highlighted polygon');assert.equal(actual.commands,'M'+'L'.repeat(polygon.length-1)+'Z',label+' complete authored outline');assert.equal(actual.view,view,label+' exact view');
   for(const key of ['area','normalProjection','apparentThickness'])assert(Number.isFinite(actual[key]),label+' finite '+key);
   assert(actual.normalProjection<=1.001,label+' projected area cannot exceed the face-on area');
   assert(actual.normalProjection>=.10,label+' projected area ratio '+actual.normalProjection+' must be at least 0.10 of its face-on area');
-  assert(actual.apparentThickness>=2.5,label+' apparent thickness '+actual.apparentThickness+' must be at least 2.5 screen pixels');
+  // area/diameter equals HALF the minimum altitude for a triangle, not its
+  // literal thickness. Keep the general floor; the 313 normal triangle needs
+  // an 8px minimum altitude so its two short legs remain visually distinct.
+  assert(actual.apparentThickness>=2.5,label+' area/diameter '+actual.apparentThickness+' must be at least 2.5 screen pixels');
+  if(lesson.id==='ex-main-0313'&&view==='projection'){
+   assert.equal(actual.points.length,3,label+' the source normal section is triangular');
+   assert(actual.apparentThickness>=4,label+' area/diameter '+actual.apparentThickness+' must be at least 4 screen pixels (8px minimum triangle altitude)');
+  }
   return actual;
  }
  const row=evidence.labels.find(x=>x.ownerId===lesson.id&&x.id===lesson.id&&x.viewport===width&&x.stage===stage);assert(row,lesson.id+' projection belongs to verified label state');
