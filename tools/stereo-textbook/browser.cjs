@@ -32,6 +32,17 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ // Additional prism formulas: inspect the entire final paragraph and every
+ // radical/fraction operand at both widths, including the fully revealed page.
+ ['ex-main-0289|step-5',[{selector:explanation('step-5'),fractions:[['d²','3']]}]],
+ ['ex-main-0290|step-3',[{selector:explanation('step-3'),fractions:[['(l·cosφ)','cosθ']]}]],
+ ['ex-main-0290|step-4',[{selector:explanation('step-4'),fractions:[['(l²·cos²φ)','(cos²θ)'],['l','cosθ']]}]],
+ ['ex-main-0290|step-5',[{selector:explanation('step-5'),atoms:['√(cos²φ−cos²θ)'],fractions:[['√(cos²φ−cos²θ)','cosθ']]}]],
+ ['ex-main-0290|step-6',[{selector:explanation('step-5'),atoms:['√(cos²φ−cos²θ)'],fractions:[['√(cos²φ−cos²θ)','cosθ']]}]],
+ ['ex-main-0291|step-5',[{selector:explanation('step-5'),atoms:['√(cos²φ−cos²θ)']}]],
+ ['ex-main-0291|step-6',[{selector:explanation('step-5'),atoms:['√(cos²φ−cos²θ)']}]],
+ ['ex-main-0292|step-6',[{selector:explanation('step-6'),fractions:[['(6·8)','2'],['(10·AH)','2'],['48','10']]}]],
+ ['ex-main-0293|step-4',[{selector:explanation('step-4'),fractions:[['(2a)','2']]}]],
  ['ex-selfcheck-iii-08|step-4',[{selector:explanation('step-4'),fractions:[['(3ah)','2'],['(5ah)','2']]}]],
  ['ex-selfcheck-iii-09|step-4',[{selector:explanation('step-4'),fractions:[['360°','n']]}]],
  ['ex-selfcheck-iii-13|step-2',[{selector:explanation('step-2'),fractions:[['26','4']]}]],

@@ -3,12 +3,14 @@
 // alter authored files, the current bundle, source contracts or review flags.
 const assert=require('node:assert/strict'),crypto=require('node:crypto');
 const published=require('./polyhedra-practical-baseline.json');
+const additional=require('./additional288-baseline.cjs');
 const ids=new Set(Array.from({length:5},(_,i)=>'ex-main-'+String(i+271).padStart(4,'0')));
 const numbers=new Set(['271','272','273','274','275']);
 const canon=x=>Array.isArray(x)?x.map(canon):x&&typeof x==='object'?Object.fromEntries(Object.keys(x).sort().map(k=>[k,canon(x[k])])):x;
 const sha=x=>crypto.createHash('sha256').update(JSON.stringify(canon(x))).digest('hex');
 function target(entry){return entry.source.collection==='main'&&numbers.has(entry.source.exercise);}
 function previousIndex(sourceIndex){
+ if(sourceIndex.entries.some(entry=>additional.target(entry)&&Object.hasOwn(entry,'requiredParts')))sourceIndex=additional.previousIndex(sourceIndex);
  const copy=structuredClone(sourceIndex),entries=copy.entries.filter(target);
  assert.equal(entries.length,5,'five original practical source positions');
  for(const entry of entries){
@@ -22,6 +24,7 @@ function previousIndex(sourceIndex){
  return copy;
 }
 function previousCourse(course,sourceIndex){
+ if(course.lessons.some(card=>additional.ids.has(card.id))){course=additional.previousCourse(course,sourceIndex);sourceIndex=additional.previousIndex(sourceIndex);}
  const index=previousIndex(sourceIndex),originals=new Map(index.entries.filter(target).map(e=>[e.source.exercise,e]));
  const copy=structuredClone(course),seen=new Set();
  copy.lessons=copy.lessons.filter(card=>!ids.has(card.id));
@@ -36,6 +39,7 @@ function previousCourse(course,sourceIndex){
  return copy;
 }
 function previousRegistry(registry){
+ if(registry.cards.some(card=>additional.ids.has(card.id)))registry=additional.previousRegistry(registry);
  const copy={...structuredClone(registry),...structuredClone(published.registryMetadata)};
  copy.cards=copy.cards.filter(card=>!ids.has(card.id));
  copy.batches=copy.batches.slice(0,published.reviewBatches);
@@ -44,6 +48,7 @@ function previousRegistry(registry){
  return copy;
 }
 function previousCases(cases){
+ if([...cases.keys()].some(key=>additional.ids.has(key.split('|')[0])))cases=additional.previousCases(cases);
  const rows=[...cases].filter(([key])=>!ids.has(key.split('|')[0]));
  assert.equal(rows.length,917);assert.equal(sha(rows),published.screenshotCasesSHA256,'all917 prior browser cases preserved');
  return new Map(rows);
