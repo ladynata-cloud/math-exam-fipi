@@ -5,10 +5,10 @@ if(!D||!M){main.innerHTML='<h1>Не все файлы курса загрузи�
 const KEY='mathexam.peterson5.v1', blank=()=>({version:1,tasks:{},practice:{},last:null,origin:null});
 let state=blank(),writable=true,active=null,cleanup=null;
 const e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fractionScalar=String.raw`[−+\-]?(?:\d+(?:[.,]\d+)?[A-Za-zА-Яа-я]?|[A-Za-zА-Яа-я])(?:[²³]|\^\d+)?`;
+const fractionScalar=String.raw`[−+\-]?(?:\d+(?:[.,]\d+)?[A-Za-zА-Яа-я]?|[A-Za-zА-Яа-я]|□)(?:[²³]|\^\d+)?`;
 const fractionExpression=fractionScalar+String.raw`(?:\s*[+−\-·×*]\s*`+fractionScalar+')*';
 const fractionAtom=String.raw`(?:\(\s*`+fractionExpression+String.raw`\s*\)|`+fractionScalar+')';
-const simpleFractionPattern=new RegExp(String.raw`(?<![\p{L}\p{N}_{}:/])(`+fractionAtom+String.raw`)\s*/\s*(`+fractionAtom+String.raw`)(?![\p{L}\p{N}_{}:/])`,'gu');
+const simpleFractionPattern=new RegExp(String.raw`(?<![\p{L}\p{N}_{}:/])(`+fractionAtom+String.raw`)\s*/\s*(`+fractionAtom+String.raw`)(?![\p{L}\p{N}_{}/])`,'gu');
 function fmt(v){
  let s=String(v??'');
  // A narrow school-math grammar recognizes fractions; all content is escaped. No expression is evaluated.
