@@ -198,6 +198,8 @@ async function takeScreenshot(lesson,width,stage){
 }
 async function checkPyramidProjection(lesson,width,stage){
  if(!['ex-main-0308','ex-main-0309'].includes(lesson.id)||!stage.startsWith('step-'))return;
+ const authoredStep=lesson.steps.find(step=>step.id===stage),authoredView=lesson.visualization.model.views[authoredStep.view||'neutral'];
+ const expectedPolygons=Array.isArray(authoredView.polygon)?1:0;
  const svg=page.locator('[data-main-model] svg'),kept=await camera();
  async function measure(orientation){
   await settle();
@@ -207,7 +209,7 @@ async function checkPyramidProjection(lesson,width,stage){
    let twiceArea=0,diameter=0;for(let i=0;i<points.length;i++){const p=points[i],q=points[(i+1)%points.length];twiceArea+=p.x*q.y-q.x*p.y;for(const other of points)diameter=Math.max(diameter,Math.hypot(p.x-other.x,p.y-other.y));}
    return {vertices:points.length,area:Math.abs(twiceArea)/2,apparentAltitude:Math.abs(twiceArea)/diameter};
   }));
-  assert.equal(polygons.length,1,lesson.id+' '+width+' '+stage+' '+orientation+' exactly one highlighted polygon');
+  assert.equal(polygons.length,expectedPolygons,lesson.id+' '+width+' '+stage+' '+orientation+' exactly the authored polygon count');
   for(const polygon of polygons){const label=lesson.id+' '+width+' '+stage+' '+orientation;
    assert(polygon.vertices>=3&&Number.isFinite(polygon.apparentAltitude),label+' finite polygon');
    assert(polygon.apparentAltitude>=16,label+' highlighted polygon must have at least 16px apparent altitude, got '+polygon.apparentAltitude);
