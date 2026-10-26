@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-26T08:04:47.191Z",
-  "registeredAt": "2026-10-26T08:05:30.172Z",
-  "scope": "Introduction and chapters I–III: main exercises 1–293, theory points 1–37, all 40 chapter self-check questions. Additional exercises 294 onward remain pending. Not the complete book.",
+  "reviewedAt": "2026-10-26T11:42:15.435Z",
+  "registeredAt": "2026-10-26T11:43:25.075Z",
+  "scope": "Introduction and chapters I–III: main exercises 1–298, theory points 1–37, all 40 chapter self-check questions. Additional exercises 299 onward remain pending. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -769,6 +769,26 @@
         "ex-main-0291",
         "ex-main-0292",
         "ex-main-0293"
+      ]
+    },
+    {
+      "reviewer": "Codex independent_math_prisms",
+      "reviewedAt": "2026-10-26T11:42:15.435Z",
+      "registeredAt": "2026-10-26T11:43:25.075Z",
+      "sourceBundleSHA256": "3da8106a2541fcc2893b2babfe03497770b4c2027f66e0708a033c6eb7a07be5",
+      "scope": "Ten cards for five additional prism exercises 294–298, including actual subparts. Source, complete mathematics and written pedagogy independently reviewed; actual browser pixels are a separate gate.",
+      "report": "docs/reviews/ATANASYAN_PRISMS_294_298_CONTENT.json",
+      "cardIds": [
+        "ex-main-0294",
+        "ex-main-0295-a",
+        "ex-main-0295-b",
+        "ex-main-0295-c",
+        "ex-main-0295-d",
+        "ex-main-0296",
+        "ex-main-0297-a",
+        "ex-main-0297-b",
+        "ex-main-0297-c",
+        "ex-main-0298"
       ]
     }
   ],
@@ -2712,6 +2732,46 @@
     {
       "id": "ex-main-0293",
       "sha256": "10261d9b2a5f59c2aa8f2075d7c0c2117d068cac80940ebfecc1f05e92e085b0"
+    },
+    {
+      "id": "ex-main-0294",
+      "sha256": "7167d38dc0831fae67f8fd5ba63a05b12e39dd3adc673675c25f3890d8de93dc"
+    },
+    {
+      "id": "ex-main-0295-a",
+      "sha256": "52a0800a715ff86563478c7a8489cb75fa972a376589005a4bd41447fb10ec04"
+    },
+    {
+      "id": "ex-main-0295-b",
+      "sha256": "333a422427758f8f535f835cca5c84c18ebe58a62fbbfb96696673bf7ebdc300"
+    },
+    {
+      "id": "ex-main-0295-c",
+      "sha256": "37d6bce99a6f0e33f7ee606b114762862e6326532fbda0bb004e40021ab69758"
+    },
+    {
+      "id": "ex-main-0295-d",
+      "sha256": "6b618b445e73040d0570b2a2f13df6f9114eab4cf419572ba20c02ad62f97a89"
+    },
+    {
+      "id": "ex-main-0296",
+      "sha256": "77827ea93643f60b217161750438088c27d0bec93f451678d53c9cc2bd6a65d3"
+    },
+    {
+      "id": "ex-main-0297-a",
+      "sha256": "f971b246fc37d08fa6f304034fbfe646275a6d74b83fcd31456294d7a8f0ca74"
+    },
+    {
+      "id": "ex-main-0297-b",
+      "sha256": "5e4fbfb92b1c22af7455dc5e5c46a019ee56bb057a4793b3b75f429d446790da"
+    },
+    {
+      "id": "ex-main-0297-c",
+      "sha256": "73d50824f58730822b1563caa29769f53fe36677debe765481b8dbbed8627583"
+    },
+    {
+      "id": "ex-main-0298",
+      "sha256": "aa1cb5ef09a3034b6a5155b091adb100c0bd3adca1255bc2bc8964e60e796f51"
     }
   ]
 }
