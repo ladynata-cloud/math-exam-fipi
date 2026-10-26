@@ -148,3 +148,36 @@ for (const [kind, ids] of Object.entries(variants)) for (const id of ids) {
 assert.equal(getterCalls, 0, 'validators do not evaluate untrusted accessors');
 assert.equal(models.validateBoardState({ id: 'p08', model: 'logic' }, mount('logic', 'p01').handle.getBoardState()), false);
 console.log(JSON.stringify({ ok: true, lessonVariants: 14, roundtrips, rejections, coverage: 'model/controls/closure/notice hydrate, no replay, next local interaction, strict atomic validation', visualBrowserQA: false }));
+// The new state is task-specific and restores both controls and future interaction closures.
+require('./continuation-models.js');
+function continuation(id,taskId=id+'-sample'){
+ const host=new Node('div'),lesson={id,model:'continuation',title:id},task={id:taskId};
+ return {host,lesson,task,handle:models.mount(host,lesson,task)};
+}
+let continuationRoundtrips=0,continuationRejected=0;
+function syncContinuation(a,b){const value=a.handle.getBoardState(),calls=dispatched;assert(models.validateBoardState(b.lesson,value,b.task));b.handle.applyBoardState(value);assert.deepEqual(b.handle.getBoardState(),value);assert.deepEqual(visual(b.host),visual(a.host));assert.equal(dispatched,calls);continuationRoundtrips++;}
+function invalidContinuation(f,v){const before=f.handle.getBoardState(),picture=visual(f.host);assert.equal(models.validateBoardState(f.lesson,v,f.task),false);assert.throws(()=>f.handle.applyBoardState(v),/Invalid Peterson model board state/);assert.deepEqual(f.handle.getBoardState(),before);assert.deepEqual(visual(f.host),picture);continuationRejected++;}
+for(let n=15;n<=58;n++){
+ const id='p'+n,a=continuation(id),b=continuation(id);syncContinuation(a,b);
+ for(const [i,control]of elements(a,'select').entries()){
+  const options=PetersonContinuationModels.configs[id].controls[i].values;
+  for(const option of [options[0],options.at(-1)]){set(control,Array.isArray(option)?option[0]:option,'change');syncContinuation(a,b);}
+ }
+ for(let i=0;i<5;i++){press(a,'Следующий шаг модели');syncContinuation(a,b);}
+ press(b,'Начать модель заново');syncContinuation(b,a);
+ const valid=a.handle.getBoardState();
+ for(const bad of [null,[],{...valid,kind:'logic'},{...valid,lessonId:'p99'},{...valid,taskId:'different'},{...valid,extra:true},{...valid,stage:6},{...valid,stage:-1},{...valid,stage:0.5},{...valid,values:[]},{...valid,values:valid.values.map(()=>Infinity)},{...valid,values:valid.values.map(()=>99999)},Object.assign(Object.create({x:1}),valid)])invalidContinuation(a,bad);
+ const getter=clone(valid);Object.defineProperty(getter,'values',{enumerable:true,get(){getterCalls++;return valid.values;}});invalidContinuation(a,getter);
+ const accessor=clone(valid);Object.defineProperty(accessor.values,'0',{enumerable:true,get(){getterCalls++;return valid.values[0];}});invalidContinuation(a,accessor);
+ const symbol=clone(valid);symbol[Symbol('extra')]=1;invalidContinuation(a,symbol);
+ const extraArray=clone(valid);extraArray.values.extra=1;invalidContinuation(a,extraArray);
+ const exposed=a.handle.getBoardState();exposed.values[0]=9999;assert.notEqual(a.handle.getBoardState().values[0],9999);
+ const incoming=a.handle.getBoardState();a.handle.applyBoardState(incoming);incoming.values[0]=9999;assert.notEqual(a.handle.getBoardState().values[0],9999);
+ a.handle();b.handle();
+}
+assert.equal(getterCalls,0,'new validators must not call untrusted accessors');
+// A restored coordinate model must use restored x in the next y update.
+let ca=continuation('p39'),cb=continuation('p39');set(elements(ca,'select')[0],-4,'change');set(elements(ca,'select')[1],2,'change');syncContinuation(ca,cb);set(elements(cb,'select')[1],-3,'change');assert(cb.host.textContent.includes('A(-4; -3)'));assert.deepEqual(cb.handle.getBoardState().values,[-4,-3]);
+// Restored sign choices must drive later arithmetic, rather than stale initial closures.
+ca=continuation('p28');cb=continuation('p28');set(elements(ca,'select')[0],4,'change');set(elements(ca,'select')[1],-2,'change');syncContinuation(ca,cb);set(elements(cb,'select')[1],3,'change');assert(cb.host.textContent.includes('4 − (3) = 1'));
+console.log(JSON.stringify({continuationLessons:44,continuationRoundtrips,continuationRejected,validated:'task identity, no getters, no aliasing, atomic restore, visual equality, post-hydration controls',visualBrowserQA:false}));

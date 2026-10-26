@@ -1,0 +1,1075 @@
+{
+  "source": {
+    "authors": [
+      "Г. В. Дорофеев",
+      "Л. Г. Петерсон"
+    ],
+    "title": "Математика. 6 класс. Учебник (в 3 частях). Часть 3",
+    "publisher": "БИНОМ. Лаборатория знаний",
+    "year": 2019,
+    "pdfPages": 176,
+    "printedPageEqualsPdfPage": true,
+    "availableParts": [
+      1,
+      2,
+      3
+    ],
+    "missingParts": []
+  },
+  "scope": {
+    "chapters": 2,
+    "sections": 7,
+    "topics": 26,
+    "numberedExercises": 778,
+    "exerciseRange": [
+      1,
+      778
+    ],
+    "selfCheckGroups": 2,
+    "answersPages": [
+      176,
+      176
+    ],
+    "warning": "778 — количество нумерованных упражнений, а не подпунктов. Карта не означает, что для всех номеров созданы решения."
+  },
+  "topics": [
+    {
+      "id": "p33",
+      "title": "Раскрытие скобок",
+      "chapter": 3,
+      "section": 3,
+      "point": 1,
+      "startPage": 3,
+      "endPage": 8,
+      "firstExercise": 1,
+      "lastExercise": 26
+    },
+    {
+      "id": "p34",
+      "title": "Коэффициент",
+      "chapter": 3,
+      "section": 3,
+      "point": 2,
+      "startPage": 8,
+      "endPage": 11,
+      "firstExercise": 27,
+      "lastExercise": 41
+    },
+    {
+      "id": "p35",
+      "title": "Приведение подобных слагаемых",
+      "chapter": 3,
+      "section": 3,
+      "point": 3,
+      "startPage": 11,
+      "endPage": 15,
+      "firstExercise": 42,
+      "lastExercise": 68
+    },
+    {
+      "id": "p36",
+      "title": "Понятие уравнения",
+      "chapter": 3,
+      "section": 3,
+      "point": 4,
+      "startPage": 16,
+      "endPage": 19,
+      "firstExercise": 69,
+      "lastExercise": 85
+    },
+    {
+      "id": "p37",
+      "title": "Решение уравнений",
+      "chapter": 3,
+      "section": 3,
+      "point": 5,
+      "startPage": 19,
+      "endPage": 26,
+      "firstExercise": 86,
+      "lastExercise": 114
+    },
+    {
+      "id": "p38",
+      "title": "Решение задач с помощью уравнений",
+      "chapter": 3,
+      "section": 3,
+      "point": 6,
+      "startPage": 26,
+      "endPage": 37,
+      "firstExercise": 115,
+      "lastExercise": 167
+    },
+    {
+      "id": "p39",
+      "title": "Прямоугольные координаты на плоскости",
+      "chapter": 3,
+      "section": 4,
+      "point": 1,
+      "startPage": 37,
+      "endPage": 45,
+      "firstExercise": 168,
+      "lastExercise": 207
+    },
+    {
+      "id": "p40",
+      "title": "Графики зависимостей величин",
+      "chapter": 3,
+      "section": 4,
+      "point": 2,
+      "startPage": 45,
+      "endPage": 49,
+      "firstExercise": 208,
+      "lastExercise": 230
+    },
+    {
+      "id": "p41",
+      "title": "Понятие логического следования",
+      "chapter": 3,
+      "section": 5,
+      "point": 1,
+      "startPage": 49,
+      "endPage": 53,
+      "firstExercise": 231,
+      "lastExercise": 245
+    },
+    {
+      "id": "p42",
+      "title": "Отрицание следования",
+      "chapter": 3,
+      "section": 5,
+      "point": 2,
+      "startPage": 53,
+      "endPage": 56,
+      "firstExercise": 246,
+      "lastExercise": 257
+    },
+    {
+      "id": "p43",
+      "title": "Обратное утверждение",
+      "chapter": 3,
+      "section": 5,
+      "point": 3,
+      "startPage": 57,
+      "endPage": 62,
+      "firstExercise": 258,
+      "lastExercise": 282
+    },
+    {
+      "id": "p44",
+      "title": "Следование и равносильность",
+      "chapter": 3,
+      "section": 5,
+      "point": 4,
+      "startPage": 62,
+      "endPage": 65,
+      "firstExercise": 283,
+      "lastExercise": 298
+    },
+    {
+      "id": "p45",
+      "title": "Следование и свойства предметов",
+      "chapter": 3,
+      "section": 5,
+      "point": 5,
+      "startPage": 65,
+      "endPage": 69,
+      "firstExercise": 299,
+      "lastExercise": 309
+    },
+    {
+      "id": "p46",
+      "title": "Что такое геометрия? Рисунки и определения геометрических понятий",
+      "chapter": 4,
+      "section": 1,
+      "point": 1,
+      "startPage": 71,
+      "endPage": 78,
+      "firstExercise": 324,
+      "lastExercise": 350
+    },
+    {
+      "id": "p47",
+      "title": "Классификация геометрических фигур",
+      "chapter": 4,
+      "section": 1,
+      "point": 2,
+      "startPage": 78,
+      "endPage": 85,
+      "firstExercise": 351,
+      "lastExercise": 376
+    },
+    {
+      "id": "p48",
+      "title": "Задачи на построение",
+      "chapter": 4,
+      "section": 1,
+      "point": 3,
+      "startPage": 85,
+      "endPage": 95,
+      "firstExercise": 377,
+      "lastExercise": 415
+    },
+    {
+      "id": "p49",
+      "title": "Замечательные точки в треугольнике",
+      "chapter": 4,
+      "section": 1,
+      "point": 4,
+      "startPage": 95,
+      "endPage": 102,
+      "firstExercise": 416,
+      "lastExercise": 449
+    },
+    {
+      "id": "p50",
+      "title": "Пространственные фигуры и их изображение",
+      "chapter": 4,
+      "section": 2,
+      "point": 1,
+      "startPage": 103,
+      "endPage": 110,
+      "firstExercise": 450,
+      "lastExercise": 476
+    },
+    {
+      "id": "p51",
+      "title": "Многогранники",
+      "chapter": 4,
+      "section": 2,
+      "point": 2,
+      "startPage": 111,
+      "endPage": 118,
+      "firstExercise": 477,
+      "lastExercise": 508
+    },
+    {
+      "id": "p52",
+      "title": "Тела вращения",
+      "chapter": 4,
+      "section": 2,
+      "point": 3,
+      "startPage": 119,
+      "endPage": 125,
+      "firstExercise": 509,
+      "lastExercise": 535
+    },
+    {
+      "id": "p53",
+      "title": "Измерение величин. Длина, площадь, объём",
+      "chapter": 4,
+      "section": 3,
+      "point": 1,
+      "startPage": 125,
+      "endPage": 132,
+      "firstExercise": 536,
+      "lastExercise": 570
+    },
+    {
+      "id": "p54",
+      "title": "Измерение углов. Транспортир",
+      "chapter": 4,
+      "section": 3,
+      "point": 2,
+      "startPage": 133,
+      "endPage": 140,
+      "firstExercise": 571,
+      "lastExercise": 607
+    },
+    {
+      "id": "p55",
+      "title": "Красота и симметрия",
+      "chapter": 4,
+      "section": 4,
+      "point": 1,
+      "startPage": 140,
+      "endPage": 149,
+      "firstExercise": 608,
+      "lastExercise": 635
+    },
+    {
+      "id": "p56",
+      "title": "Преобразования плоскости. Равные фигуры",
+      "chapter": 4,
+      "section": 4,
+      "point": 2,
+      "startPage": 149,
+      "endPage": 158,
+      "firstExercise": 636,
+      "lastExercise": 685
+    },
+    {
+      "id": "p57",
+      "title": "Правильные многоугольники",
+      "chapter": 4,
+      "section": 4,
+      "point": 3,
+      "startPage": 158,
+      "endPage": 164,
+      "firstExercise": 686,
+      "lastExercise": 710
+    },
+    {
+      "id": "p58",
+      "title": "Правильные многогранники",
+      "chapter": 4,
+      "section": 4,
+      "point": 4,
+      "startPage": 164,
+      "endPage": 167,
+      "firstExercise": 711,
+      "lastExercise": 722
+    }
+  ],
+  "selfChecks": [
+    {
+      "id": "part3-rational-review",
+      "title": "Самопроверка: рациональные числа",
+      "page": 69,
+      "endPage": 70,
+      "firstExercise": 310,
+      "lastExercise": 323,
+      "lessonId": "p45"
+    },
+    {
+      "id": "part3-geometry-review",
+      "title": "Самопроверка: геометрия",
+      "page": 167,
+      "endPage": 169,
+      "firstExercise": 723,
+      "lastExercise": 742,
+      "lessonId": "p58"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "part3-final-review",
+      "title": "Задачи на повторение",
+      "page": 170,
+      "endPage": 173,
+      "firstExercise": 743,
+      "lastExercise": 778,
+      "lessonId": "p58"
+    }
+  ],
+  "exercisePageRanges": [
+    {
+      "page": 4,
+      "firstExercise": 1,
+      "lastExercise": 3
+    },
+    {
+      "page": 5,
+      "firstExercise": 4,
+      "lastExercise": 10
+    },
+    {
+      "page": 6,
+      "firstExercise": 11,
+      "lastExercise": 16
+    },
+    {
+      "page": 7,
+      "firstExercise": 17,
+      "lastExercise": 22
+    },
+    {
+      "page": 8,
+      "firstExercise": 23,
+      "lastExercise": 26
+    },
+    {
+      "page": 9,
+      "firstExercise": 27,
+      "lastExercise": 31
+    },
+    {
+      "page": 10,
+      "firstExercise": 32,
+      "lastExercise": 40
+    },
+    {
+      "page": 11,
+      "firstExercise": 41,
+      "lastExercise": 41
+    },
+    {
+      "page": 12,
+      "firstExercise": 42,
+      "lastExercise": 47
+    },
+    {
+      "page": 13,
+      "firstExercise": 48,
+      "lastExercise": 53
+    },
+    {
+      "page": 14,
+      "firstExercise": 54,
+      "lastExercise": 58
+    },
+    {
+      "page": 15,
+      "firstExercise": 59,
+      "lastExercise": 68
+    },
+    {
+      "page": 17,
+      "firstExercise": 69,
+      "lastExercise": 69
+    },
+    {
+      "page": 18,
+      "firstExercise": 70,
+      "lastExercise": 78
+    },
+    {
+      "page": 19,
+      "firstExercise": 79,
+      "lastExercise": 85
+    },
+    {
+      "page": 22,
+      "firstExercise": 86,
+      "lastExercise": 89
+    },
+    {
+      "page": 23,
+      "firstExercise": 90,
+      "lastExercise": 96
+    },
+    {
+      "page": 24,
+      "firstExercise": 97,
+      "lastExercise": 104
+    },
+    {
+      "page": 25,
+      "firstExercise": 105,
+      "lastExercise": 113
+    },
+    {
+      "page": 26,
+      "firstExercise": 114,
+      "lastExercise": 114
+    },
+    {
+      "page": 28,
+      "firstExercise": 115,
+      "lastExercise": 115
+    },
+    {
+      "page": 29,
+      "firstExercise": 116,
+      "lastExercise": 121
+    },
+    {
+      "page": 30,
+      "firstExercise": 122,
+      "lastExercise": 126
+    },
+    {
+      "page": 31,
+      "firstExercise": 127,
+      "lastExercise": 131
+    },
+    {
+      "page": 32,
+      "firstExercise": 132,
+      "lastExercise": 135
+    },
+    {
+      "page": 33,
+      "firstExercise": 136,
+      "lastExercise": 143
+    },
+    {
+      "page": 34,
+      "firstExercise": 144,
+      "lastExercise": 149
+    },
+    {
+      "page": 35,
+      "firstExercise": 150,
+      "lastExercise": 156
+    },
+    {
+      "page": 36,
+      "firstExercise": 157,
+      "lastExercise": 164
+    },
+    {
+      "page": 37,
+      "firstExercise": 165,
+      "lastExercise": 167
+    },
+    {
+      "page": 39,
+      "firstExercise": 168,
+      "lastExercise": 172
+    },
+    {
+      "page": 40,
+      "firstExercise": 173,
+      "lastExercise": 179
+    },
+    {
+      "page": 41,
+      "firstExercise": 180,
+      "lastExercise": 184
+    },
+    {
+      "page": 42,
+      "firstExercise": 185,
+      "lastExercise": 193
+    },
+    {
+      "page": 43,
+      "firstExercise": 194,
+      "lastExercise": 197
+    },
+    {
+      "page": 44,
+      "firstExercise": 198,
+      "lastExercise": 206
+    },
+    {
+      "page": 45,
+      "firstExercise": 207,
+      "lastExercise": 207
+    },
+    {
+      "page": 47,
+      "firstExercise": 208,
+      "lastExercise": 214
+    },
+    {
+      "page": 48,
+      "firstExercise": 215,
+      "lastExercise": 223
+    },
+    {
+      "page": 49,
+      "firstExercise": 224,
+      "lastExercise": 230
+    },
+    {
+      "page": 51,
+      "firstExercise": 231,
+      "lastExercise": 233
+    },
+    {
+      "page": 52,
+      "firstExercise": 234,
+      "lastExercise": 238
+    },
+    {
+      "page": 53,
+      "firstExercise": 239,
+      "lastExercise": 245
+    },
+    {
+      "page": 55,
+      "firstExercise": 246,
+      "lastExercise": 250
+    },
+    {
+      "page": 56,
+      "firstExercise": 251,
+      "lastExercise": 257
+    },
+    {
+      "page": 59,
+      "firstExercise": 258,
+      "lastExercise": 263
+    },
+    {
+      "page": 60,
+      "firstExercise": 264,
+      "lastExercise": 269
+    },
+    {
+      "page": 61,
+      "firstExercise": 270,
+      "lastExercise": 277
+    },
+    {
+      "page": 62,
+      "firstExercise": 278,
+      "lastExercise": 282
+    },
+    {
+      "page": 63,
+      "firstExercise": 283,
+      "lastExercise": 284
+    },
+    {
+      "page": 64,
+      "firstExercise": 285,
+      "lastExercise": 292
+    },
+    {
+      "page": 65,
+      "firstExercise": 293,
+      "lastExercise": 298
+    },
+    {
+      "page": 68,
+      "firstExercise": 299,
+      "lastExercise": 304
+    },
+    {
+      "page": 69,
+      "firstExercise": 305,
+      "lastExercise": 313
+    },
+    {
+      "page": 70,
+      "firstExercise": 314,
+      "lastExercise": 323
+    },
+    {
+      "page": 74,
+      "firstExercise": 324,
+      "lastExercise": 327
+    },
+    {
+      "page": 75,
+      "firstExercise": 328,
+      "lastExercise": 333
+    },
+    {
+      "page": 76,
+      "firstExercise": 334,
+      "lastExercise": 339
+    },
+    {
+      "page": 77,
+      "firstExercise": 340,
+      "lastExercise": 344
+    },
+    {
+      "page": 78,
+      "firstExercise": 345,
+      "lastExercise": 350
+    },
+    {
+      "page": 80,
+      "firstExercise": 351,
+      "lastExercise": 352
+    },
+    {
+      "page": 81,
+      "firstExercise": 353,
+      "lastExercise": 357
+    },
+    {
+      "page": 82,
+      "firstExercise": 358,
+      "lastExercise": 364
+    },
+    {
+      "page": 83,
+      "firstExercise": 365,
+      "lastExercise": 368
+    },
+    {
+      "page": 84,
+      "firstExercise": 369,
+      "lastExercise": 373
+    },
+    {
+      "page": 85,
+      "firstExercise": 374,
+      "lastExercise": 376
+    },
+    {
+      "page": 89,
+      "firstExercise": 377,
+      "lastExercise": 379
+    },
+    {
+      "page": 90,
+      "firstExercise": 380,
+      "lastExercise": 384
+    },
+    {
+      "page": 91,
+      "firstExercise": 385,
+      "lastExercise": 389
+    },
+    {
+      "page": 92,
+      "firstExercise": 390,
+      "lastExercise": 394
+    },
+    {
+      "page": 93,
+      "firstExercise": 395,
+      "lastExercise": 401
+    },
+    {
+      "page": 94,
+      "firstExercise": 402,
+      "lastExercise": 410
+    },
+    {
+      "page": 95,
+      "firstExercise": 411,
+      "lastExercise": 415
+    },
+    {
+      "page": 98,
+      "firstExercise": 416,
+      "lastExercise": 419
+    },
+    {
+      "page": 99,
+      "firstExercise": 420,
+      "lastExercise": 427
+    },
+    {
+      "page": 100,
+      "firstExercise": 428,
+      "lastExercise": 435
+    },
+    {
+      "page": 101,
+      "firstExercise": 436,
+      "lastExercise": 442
+    },
+    {
+      "page": 102,
+      "firstExercise": 443,
+      "lastExercise": 449
+    },
+    {
+      "page": 104,
+      "firstExercise": 450,
+      "lastExercise": 450
+    },
+    {
+      "page": 105,
+      "firstExercise": 451,
+      "lastExercise": 453
+    },
+    {
+      "page": 106,
+      "firstExercise": 454,
+      "lastExercise": 455
+    },
+    {
+      "page": 107,
+      "firstExercise": 456,
+      "lastExercise": 459
+    },
+    {
+      "page": 108,
+      "firstExercise": 460,
+      "lastExercise": 466
+    },
+    {
+      "page": 109,
+      "firstExercise": 467,
+      "lastExercise": 470
+    },
+    {
+      "page": 110,
+      "firstExercise": 471,
+      "lastExercise": 476
+    },
+    {
+      "page": 113,
+      "firstExercise": 477,
+      "lastExercise": 478
+    },
+    {
+      "page": 114,
+      "firstExercise": 479,
+      "lastExercise": 483
+    },
+    {
+      "page": 115,
+      "firstExercise": 484,
+      "lastExercise": 488
+    },
+    {
+      "page": 116,
+      "firstExercise": 489,
+      "lastExercise": 493
+    },
+    {
+      "page": 117,
+      "firstExercise": 494,
+      "lastExercise": 499
+    },
+    {
+      "page": 118,
+      "firstExercise": 500,
+      "lastExercise": 508
+    },
+    {
+      "page": 120,
+      "firstExercise": 509,
+      "lastExercise": 510
+    },
+    {
+      "page": 121,
+      "firstExercise": 511,
+      "lastExercise": 513
+    },
+    {
+      "page": 122,
+      "firstExercise": 514,
+      "lastExercise": 518
+    },
+    {
+      "page": 123,
+      "firstExercise": 519,
+      "lastExercise": 524
+    },
+    {
+      "page": 124,
+      "firstExercise": 525,
+      "lastExercise": 532
+    },
+    {
+      "page": 125,
+      "firstExercise": 533,
+      "lastExercise": 535
+    },
+    {
+      "page": 127,
+      "firstExercise": 536,
+      "lastExercise": 536
+    },
+    {
+      "page": 128,
+      "firstExercise": 537,
+      "lastExercise": 545
+    },
+    {
+      "page": 129,
+      "firstExercise": 546,
+      "lastExercise": 550
+    },
+    {
+      "page": 130,
+      "firstExercise": 551,
+      "lastExercise": 556
+    },
+    {
+      "page": 131,
+      "firstExercise": 557,
+      "lastExercise": 564
+    },
+    {
+      "page": 132,
+      "firstExercise": 565,
+      "lastExercise": 570
+    },
+    {
+      "page": 134,
+      "firstExercise": 571,
+      "lastExercise": 571
+    },
+    {
+      "page": 135,
+      "firstExercise": 572,
+      "lastExercise": 576
+    },
+    {
+      "page": 136,
+      "firstExercise": 577,
+      "lastExercise": 583
+    },
+    {
+      "page": 137,
+      "firstExercise": 584,
+      "lastExercise": 588
+    },
+    {
+      "page": 138,
+      "firstExercise": 589,
+      "lastExercise": 596
+    },
+    {
+      "page": 139,
+      "firstExercise": 597,
+      "lastExercise": 604
+    },
+    {
+      "page": 140,
+      "firstExercise": 605,
+      "lastExercise": 607
+    },
+    {
+      "page": 143,
+      "firstExercise": 608,
+      "lastExercise": 610
+    },
+    {
+      "page": 144,
+      "firstExercise": 611,
+      "lastExercise": 614
+    },
+    {
+      "page": 145,
+      "firstExercise": 615,
+      "lastExercise": 619
+    },
+    {
+      "page": 146,
+      "firstExercise": 620,
+      "lastExercise": 626
+    },
+    {
+      "page": 147,
+      "firstExercise": 627,
+      "lastExercise": 628
+    },
+    {
+      "page": 148,
+      "firstExercise": 629,
+      "lastExercise": 633
+    },
+    {
+      "page": 149,
+      "firstExercise": 634,
+      "lastExercise": 635
+    },
+    {
+      "page": 151,
+      "firstExercise": 636,
+      "lastExercise": 638
+    },
+    {
+      "page": 152,
+      "firstExercise": 639,
+      "lastExercise": 645
+    },
+    {
+      "page": 153,
+      "firstExercise": 646,
+      "lastExercise": 652
+    },
+    {
+      "page": 154,
+      "firstExercise": 653,
+      "lastExercise": 659
+    },
+    {
+      "page": 155,
+      "firstExercise": 660,
+      "lastExercise": 668
+    },
+    {
+      "page": 156,
+      "firstExercise": 669,
+      "lastExercise": 673
+    },
+    {
+      "page": 157,
+      "firstExercise": 674,
+      "lastExercise": 683
+    },
+    {
+      "page": 158,
+      "firstExercise": 684,
+      "lastExercise": 685
+    },
+    {
+      "page": 160,
+      "firstExercise": 686,
+      "lastExercise": 686
+    },
+    {
+      "page": 161,
+      "firstExercise": 687,
+      "lastExercise": 694
+    },
+    {
+      "page": 162,
+      "firstExercise": 695,
+      "lastExercise": 700
+    },
+    {
+      "page": 163,
+      "firstExercise": 701,
+      "lastExercise": 708
+    },
+    {
+      "page": 164,
+      "firstExercise": 709,
+      "lastExercise": 710
+    },
+    {
+      "page": 165,
+      "firstExercise": 711,
+      "lastExercise": 712
+    },
+    {
+      "page": 166,
+      "firstExercise": 713,
+      "lastExercise": 717
+    },
+    {
+      "page": 167,
+      "firstExercise": 718,
+      "lastExercise": 725
+    },
+    {
+      "page": 168,
+      "firstExercise": 726,
+      "lastExercise": 734
+    },
+    {
+      "page": 169,
+      "firstExercise": 735,
+      "lastExercise": 742
+    },
+    {
+      "page": 170,
+      "firstExercise": 743,
+      "lastExercise": 751
+    },
+    {
+      "page": 171,
+      "firstExercise": 752,
+      "lastExercise": 759
+    },
+    {
+      "page": 172,
+      "firstExercise": 760,
+      "lastExercise": 768
+    },
+    {
+      "page": 173,
+      "firstExercise": 769,
+      "lastExercise": 778
+    }
+  ],
+  "sourceErrata": [
+    {
+      "pages": [
+        66,
+        67
+      ],
+      "type": "factual_error",
+      "description": "Ель и сосна в теоретическом примере названы покрытосеменными; это голосеменные. В курс не переносить. Выбраны математические примеры свойств и признаков."
+    },
+    {
+      "number": "673а",
+      "page": 156,
+      "verifiedByPageImage": true,
+      "textFact": "В исходнике напечатано ∠A=90°, AB=BC=4 см.",
+      "issue": "При прямом угле A сторона BC — гипотенуза, поэтому не может равняться катету AB. Невырожденный треугольник с этими условиями не существует.",
+      "handling": "Не включать как обычное выполнимое построение и не исправлять молча; требуется редакционная пометка. В предлагаемом маршруте исключено."
+    }
+  ],
+  "notes": [
+    "PDF-нумерация с 1 совпадает с печатной; машинный индекс страницы на единицу меньше.",
+    "Некоторые стартовые страницы содержат сверху последние задания предыдущей темы: тематические диапазоны учитывают заголовки.",
+    "Построения и доказательства оцениваются вручную, даже если отдельные числовые этапы имеют автоматическую проверку.",
+    "Номера извлечены по отдельному шрифту меток заданий NewtonC 16 и проверены на непрерывность 1–778."
+  ]
+}

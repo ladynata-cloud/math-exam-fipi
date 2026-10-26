@@ -520,16 +520,16 @@
     {
       "trainerId": "peterson6",
       "file": "trainers/peterson6.html",
-      "title": "Петерсон · 6 класс · часть 1",
+      "title": "Петерсон · 6 класс · части1–3",
       "group": "Математика / 6 класс",
       "boardCompatibility": "board-mirror",
       "supportsSeed": false,
       "supportsBoardMirror": true,
-      "version": "1.0.0",
-      "stateSchemaVersion": 1,
+      "version": "2.0.0",
+      "stateSchemaVersion": 2,
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
-      "notes": "Совместная работа по 14 темам: задача, ответы, шаги, подсказки, модели и отдельные вычислительные тренировки с возвратом. Личный прогресс курса не изменяется."
+      "notes": "Совместный курс трёх частей: задача, черновики, шаги, заметки, модели и переходы к тренировке. Личная самостоятельная работа и ручная проверка доказательств не подменяются общей работой."
     },
     {
       "trainerId": "merzlyak-10-base",

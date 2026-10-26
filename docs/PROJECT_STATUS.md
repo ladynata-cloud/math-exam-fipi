@@ -210,6 +210,21 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   scoped integration under the owner's current authorization; verify Pages,
   Amvera cabinet assets and the complete 16-mirror authoritative registry.
 
+## Prepared: Peterson 6, continuation with parts 2 and 3
+
+- [Scope](tasks/PETERSON6_PARTS2_3.md), HIGH review; owner requested the standard extended course on 2026-10-26.
+- Existing 14 topics and 224 task identities remain intact. Added 44 topics and 204 selected textbook tasks; total 58 topics, 428 tasks, 43 practice skills and 75 essential figures.
+- Number search distinguishes all three parts, including the duplicated 143 and absent 144 in part 2. Written proofs and constructions remain for teacher review.
+- Optional models/theory, retained work, new independent checks and the existing shared board are covered by the [verification report](reports/PETERSON6_PARTS2_3.md).
+- Branch `feat/peterson6-parts2-3`, starting base `44eab4d11046d8613b50a73b00185755c814dba6`. Source PDFs are not included.
+- Next: exact-head Draft PR checks, required consultation or a current owner exception, and separate coordinated frontend/backend release authorization. This entry is not a production release.
+
+## Published: Peterson 5 textbook companion
+
+- PR349 merged as `aa43e225ab254f4d82137796e17555515e8c86bd`: 43 topics, 131 selected cards and 25 computation skills.
+- Pages deployment and course gate passed; eight public entry/runtime/catalog/sitemap files matched the merge byte-for-byte. Course and catalog navigation were checked in cloud Chrome.
+- This is topic coverage with selected source exercises, not solutions to every number. Board/cabinet synchronization was outside that task.
+
 ## In progress: Peterson 6 course in the cabinet and on the shared board
 
 - [Scope](tasks/PETERSON6_BOARD_SYNC.md), MEDIUM review, base

@@ -163,7 +163,9 @@ function view(frame) {
       controls: [...document.querySelectorAll('#model input,#model select')].map(element => element.value),
       pressed: [...document.querySelectorAll('#model [aria-pressed]')].map(element => element.getAttribute('aria-pressed')),
       modelText: text('#model'), geometry: one('#model .pm-visual')?.innerHTML || '',
-      number: one('#exercise-number')?.value ?? null, numberResult: text('#number-result'),
+      figure: one('#task-figure')?.innerHTML || '',
+      number: one('#exercise-number')?.value ?? null, numberPart: one('#book-part')?.value ?? null,
+      numberResult: text('#number-result'),
       returnBanner: text('.return-banner')
     };
   });
@@ -171,6 +173,7 @@ function view(frame) {
 
 async function synchronized(controller, observer, label) {
   const expected = await snapshot(controller);
+  assert(Buffer.byteLength(JSON.stringify(expected.work), 'utf8') <= 48 * 1024, label + ': work stays within the unchanged 48 KiB budget');
   assert.equal(await controller.evaluate(value => window.__peterson6Board.validateState(value), expected), true, label + ': valid exported snapshot');
   await waitSnapshot(observer, expected, label);
   assert.deepEqual(await snapshot(observer), expected, label + ': complete semantic state');
@@ -216,7 +219,26 @@ async function lesson(frame, id, index = 0) {
   await frame.locator('header nav a[href="#home"]').click();
   await frame.locator('.lesson-card[href="#lesson/' + id + '"]').click();
   if (index) await frame.locator('.side-list [data-index="' + index + '"]').click();
-  await frame.locator('#answer-form').waitFor();
+  await frame.locator('#problem .prompt').waitFor();
+  assert.equal(await frame.evaluate(() => location.hash), '#lesson/' + id + (index ? '/' + index : ''));
+}
+
+async function openModel(frame) {
+  const disclosure = frame.locator('details[data-lesson-help="model"]');
+  if (!await disclosure.evaluate(element => element.open)) await disclosure.locator(':scope > summary').click();
+  await frame.locator('#model').waitFor({ state: 'visible' });
+}
+
+async function manualWithoutCredit(frame, id, expectedStep) {
+  const record = await frame.evaluate(taskId => PetersonApp.getState().tasks[taskId], id);
+  assert(record, id + ': work record exists');
+  assert.equal(record.value, 'recorded', id + ': manually recorded for review');
+  assert.equal(record.step, expectedStep, id + ': instruction progress is retained');
+  assert.equal(record.correct, false, id + ': recording is not automatic correctness');
+  assert.equal(record.independent, false, id + ': board work has no independent credit');
+  assert.equal(record.attempts, 0, id + ': manual recording is not a numeric attempt');
+  assert.equal(record.completion, null, id + ': no automatic completion');
+  assert.equal(await frame.locator('#answer-form').count(), 0, id + ': no automatic answer form');
 }
 
 async function narrowShot(page, frame, name, selector) {
@@ -256,7 +278,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await entry.page.goto(boardLink.href, { waitUntil: 'domcontentloaded' });
   const entryFrame = await courseFrame(entry.page);
   assert.equal(new URL(entryFrame.url()).pathname, '/trainers/' + WRAPPER);
-  assert.equal(await entryFrame.locator('.lesson-card').count(), 14);
+  assert.equal(await entryFrame.locator('.lesson-card').count(), 58);
   assert.equal((await snapshot(entryFrame)).route, '#home');
   assert.equal(Object.keys((await snapshot(entryFrame)).work.tasks).length, 0, 'shared course does not import personal solved tasks');
   await assertPersonalStorage(entry, entryFrame);
@@ -281,7 +303,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   let teacherFrame = await courseFrame(teacher), studentFrame = await courseFrame(student);
   await synchronized(teacherFrame, studentFrame, 'initial home');
   assert.equal((await snapshot(teacherFrame)).route, '#home');
-  assert.equal(await teacherFrame.locator('.lesson-card').count(), 14);
+  assert.equal(await teacherFrame.locator('.lesson-card').count(), 58);
   await narrowShot(teacher, teacherFrame, 'peterson-board-320-home', '.topbar');
   assert.match(await teacherFrame.locator('footer').innerText(), /без зачёта в личный прогресс/);
   const baselineCounts = await quietMessages([teacher, student], 'initial quiet');
@@ -315,7 +337,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await teacherFrame.locator('#final-answer').fill('0,86');
   await teacherFrame.locator('.problem > details > summary').click();
   await teacherFrame.locator('#notebook').fill('Сначала 0,36 + 0,5. Вернусь после тренировки.');
-  await teacherFrame.locator('#main > details > summary').click();
+  await teacherFrame.locator('details[data-lesson-help="theory"] > summary').click();
   await synchronized(teacherFrame, studentFrame, 'draft, notebook and theory disclosure');
   await narrowShot(teacher, teacherFrame, 'peterson-board-320-task', '#problem');
 
@@ -356,6 +378,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
 
   phase = 'river model, student reload and continued slider closure';
   await lesson(teacherFrame, 'p09');
+  await openModel(teacherFrame);
   await teacherFrame.getByLabel('Собственная скорость лодки, км/ч', { exact: true }).press('End');
   await teacherFrame.getByLabel('Скорость течения, км/ч', { exact: true }).press('End');
   await teacherFrame.getByLabel('Скорость течения, км/ч', { exact: true }).press('ArrowLeft');
@@ -390,6 +413,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
 
   phase = 'mean-model transfer and late join';
   await lesson(teacherFrame, 'p10');
+  await openModel(teacherFrame);
   await teacherFrame.getByLabel('Из какой коробки?', { exact: true }).selectOption('1');
   await teacherFrame.getByLabel('В какую коробку?', { exact: true }).selectOption('0');
   await teacherFrame.getByRole('button', { name: 'Переложить 1 кружок', exact: true }).click();
@@ -411,6 +435,125 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await synchronized(teacherFrame, studentFrame, 'original participant follows teacher');
   assert.deepEqual(afterLate.view.model.piles, [5, 5, 5]);
 
+  phase = 'part-two lookup and mixed instruction/number steps';
+  await teacherFrame.locator('header nav a[href="#home"]').click();
+  await teacherFrame.locator('#book-part').selectOption('2');
+  await teacherFrame.locator('#exercise-number').fill('66');
+  await teacherFrame.locator('#number-form button').click();
+  const partTwoLookup = await synchronized(teacherFrame, studentFrame, 'part-two source lookup');
+  assert.deepEqual(partTwoLookup.view.number, { part: 2, draft: '66', submitted: 66 });
+  assert.equal(await studentFrame.locator('#book-part').inputValue(), '2');
+  assert.match(await studentFrame.locator('#number-result').innerText(), /Часть 2 · № 66 · страница 19/);
+  await teacherFrame.locator('#number-result a[href="#lesson/p17/2"]').click();
+  await teacherFrame.locator('[data-action="guided"]').click();
+  await teacherFrame.locator('[data-action="instruction"][data-step="0"]').click();
+  await teacherFrame.locator('[data-step-input="1"]').fill('60');
+  await teacherFrame.locator('[data-step-form="1"] button').click();
+  await teacherFrame.locator('#final-answer').fill('10/');
+  await teacherFrame.locator('.problem > details > summary').click();
+  await teacherFrame.locator('#notebook').fill('Крест-накрест: 6a = 60. Сохраняю разбор и модель.');
+  await openModel(teacherFrame);
+  await teacherFrame.locator('#model select').selectOption('5');
+  await teacherFrame.locator('#model').getByRole('button', { name: 'Следующий шаг модели', exact: true }).click();
+  await teacherFrame.locator('#model').getByRole('button', { name: 'Следующий шаг модели', exact: true }).click();
+  const continuation = await synchronized(teacherFrame, studentFrame, 'instruction, numeric step and continuation model');
+  assert.equal(continuation.work.tasks['p17-t03'][2], 2);
+  assert.deepEqual(continuation.work.tasks['p17-t03'][1], ['done', '60']);
+  assert.deepEqual(continuation.view.model.values, [5]);
+  assert.equal(continuation.view.model.stage, 2);
+  assert.equal(continuation.view.model.taskId, 'p17-t03');
+  await narrowShot(teacher, teacherFrame, 'peterson-board-320-continuation', '#model');
+
+  phase = 'continuation detour, new check and diagnostic route';
+  await teacherFrame.locator('[data-action="detour"][data-skill="proportion"]').click();
+  await teacherFrame.locator('[data-action="hint"]').click();
+  const helpedPractice = await synchronized(teacherFrame, studentFrame, 'helped continuation practice');
+  const practiceId = 'practice:proportion:1:' + helpedPractice.work.practice['proportion:1'];
+  const oldCondition = await teacherFrame.locator('.prompt').innerText();
+  await teacherFrame.locator('[data-action="start-check"]').click();
+  const checkStart = await synchronized(teacherFrame, studentFrame, 'new check without help');
+  assert.equal(checkStart.route, '#check/proportion/1');
+  assert.notEqual(await teacherFrame.locator('.prompt').innerText(), oldCondition, 'new check has an unseen condition');
+  assert.equal(await studentFrame.locator('[data-action="hint"],[data-action="guided"]').count(), 0, 'check hides assistance controls');
+  assert.deepEqual(checkStart.work.tasks[practiceId], helpedPractice.work.tasks[practiceId], 'new check preserves helped practice');
+  const checkId = 'check:proportion:1:' + checkStart.work.practice['proportion:1'];
+  const checkAnswer = await teacherFrame.evaluate(seed => PetersonMath.generate('proportion', seed, 1).answer, checkStart.work.practice['proportion:1']);
+  await teacherFrame.locator('#final-answer').fill(checkAnswer);
+  await teacherFrame.locator('#answer-form button[type="submit"]').click();
+  await synchronized(teacherFrame, studentFrame, 'shared check result');
+  const checked = await studentFrame.evaluate(id => PetersonApp.getState().tasks[id], checkId);
+  assert.equal(checked.correct, true);
+  assert.equal(checked.independent, false, 'a board check never awards personal independent credit');
+  assert.equal(checked.completion.independent, false);
+  await teacherFrame.locator('.breadcrumb a[href="#diagnostic"]').click();
+  const diagnostic = await synchronized(teacherFrame, studentFrame, 'diagnostic with return target');
+  assert.equal(diagnostic.route, '#diagnostic');
+  assert.equal(await studentFrame.locator('.skill-card').count(), 43);
+  await teacherFrame.locator('.return-banner [data-action="return"]').click();
+  await openModel(teacherFrame);
+  const returnedContinuation = await synchronized(teacherFrame, studentFrame, 'continuation return restores drafts and model');
+  assert.equal(returnedContinuation.route, '#lesson/p17/2');
+  assert.deepEqual(returnedContinuation.work.tasks['p17-t03'], continuation.work.tasks['p17-t03']);
+  assert.deepEqual(returnedContinuation.view.model, continuation.view.model);
+  assert.equal(await studentFrame.locator('#final-answer').inputValue(), '10/');
+  assert.equal(await studentFrame.locator('.step.completed').count(), 2);
+
+  phase = 'continuation model reload and control handoff';
+  await student.reload({ waitUntil: 'domcontentloaded' });
+  await waitConnected(student);
+  studentFrame = await courseFrame(student);
+  await waitSnapshot(studentFrame, returnedContinuation, 'continuation student reload');
+  assert.deepEqual(await view(studentFrame), await view(teacherFrame), 'reload restores continuation values, stages, figure and notebook');
+  await ownership(teacher, student, true);
+  await studentFrame.locator('#model select').selectOption('4');
+  await studentFrame.locator('#model').getByRole('button', { name: 'Следующий шаг модели', exact: true }).click();
+  const changedContinuation = await synchronized(studentFrame, teacherFrame, 'restored continuation control and stage closure');
+  assert.deepEqual(changedContinuation.view.model.values, [4]);
+  assert.equal(changedContinuation.view.model.stage, 3, 'next model step continues from restored stage two');
+  await ownership(teacher, student, false);
+
+  phase = 'part-three manual work, instructions and per-task model cache';
+  await lesson(teacherFrame, 'p39', 1);
+  assert.equal(await teacherFrame.locator('#task-figure svg').count(), 1, 'required source figure is visible before help');
+  assert.equal(await teacherFrame.locator('#answer-form').count(), 0);
+  await teacherFrame.locator('[data-action="record-manual"]').click();
+  await synchronized(teacherFrame, studentFrame, 'manual recording requires a note');
+  assert.equal((await snapshot(studentFrame)).work.tasks['p39-t02'][0], '');
+  await teacherFrame.locator('#notebook').fill('Точки с абсциссой −2 построены в тетради; объяснение записано.');
+  await teacherFrame.locator('[data-action="guided"]').click();
+  await teacherFrame.locator('[data-action="instruction"][data-step="0"]').click();
+  await teacherFrame.locator('[data-action="record-manual"]').click();
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Координата x', { exact: true }).selectOption('-2');
+  await teacherFrame.getByLabel('Координата y', { exact: true }).selectOption('4');
+  const manual = await synchronized(teacherFrame, studentFrame, 'manual note and first instruction');
+  await manualWithoutCredit(studentFrame, 'p39-t02', 1);
+  assert.deepEqual(manual.view.model.values, [-2, 4]);
+  await narrowShot(teacher, teacherFrame, 'peterson-board-320-manual', '#problem');
+  await teacherFrame.locator('[data-action="detour"][data-skill="integer-compare"]').click();
+  await synchronized(teacherFrame, studentFrame, 'manual-task practice detour');
+  await teacherFrame.locator('.return-banner [data-action="return"]').click();
+  const manualReturned = await synchronized(teacherFrame, studentFrame, 'manual-task return');
+  assert.deepEqual(manualReturned.work.tasks['p39-t02'], manual.work.tasks['p39-t02']);
+  assert.deepEqual(manualReturned.view.model, manual.view.model);
+  await student.reload({ waitUntil: 'domcontentloaded' });
+  await waitConnected(student);
+  studentFrame = await courseFrame(student);
+  await waitSnapshot(studentFrame, manualReturned, 'manual work reload');
+  await manualWithoutCredit(studentFrame, 'p39-t02', 1);
+  await ownership(teacher, student, true);
+  await studentFrame.locator('[data-action="instruction"][data-step="1"]').click();
+  await synchronized(studentFrame, teacherFrame, 'manual instruction after handoff');
+  await manualWithoutCredit(teacherFrame, 'p39-t02', 2);
+  await ownership(teacher, student, false);
+  await lesson(teacherFrame, 'p39', 2);
+  const siblingModel = await synchronized(teacherFrame, studentFrame, 'different task has its own model cache');
+  assert.notDeepEqual(siblingModel.view.model.values, [-2, 4]);
+  await lesson(teacherFrame, 'p39', 1);
+  const restoredManual = await synchronized(teacherFrame, studentFrame, 'original task restores its own model cache');
+  assert.deepEqual(restoredManual.view.model.values, [-2, 4]);
+  await manualWithoutCredit(studentFrame, 'p39-t02', 2);
+
   phase = 'choice tasks and all route families';
   await lesson(teacherFrame, 'p01');
   const correctChoice = await teacherFrame.evaluate(() => { const t = PetersonCourse.lessons[0].tasks[0]; return t.choices.indexOf(t.answer); });
@@ -418,14 +561,22 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await teacherFrame.locator('#answer-form button[type="submit"]').click();
   await synchronized(teacherFrame, studentFrame, 'multiple-choice solution');
   assert.equal(await studentFrame.locator('#answer-form button[type="submit"]').isDisabled(), true);
-  for (let n = 1; n <= 14; n++) {
+  const authoredWorkBeforeTour = Object.keys((await snapshot(teacherFrame)).work.tasks).filter(id => /^p\d\d-/.test(id)).sort();
+  for (let n = 1; n <= 58; n++) {
     const id = 'p' + String(n).padStart(2, '0');
     await lesson(teacherFrame, id);
-    await synchronized(teacherFrame, studentFrame, 'lesson ' + id);
+    const topic = await synchronized(teacherFrame, studentFrame, 'lesson ' + id);
     assert.equal(await studentFrame.locator('#model .pm-model').count(), 1);
+    assert.equal(topic.view.model.lessonId, id, 'correct model for ' + id);
+    if (n >= 15) {
+      assert.equal(topic.view.model.kind, 'continuation');
+      assert.equal(topic.view.model.taskId, id + '-t01');
+    }
   }
+  assert.deepEqual(Object.keys((await snapshot(teacherFrame)).work.tasks).filter(id => /^p\d\d-/.test(id)).sort(), authoredWorkBeforeTour,
+    'browsing all topics does not serialize untouched textbook task records');
   const skills = await teacherFrame.evaluate(() => PetersonMath.skills.map(skill => skill.id));
-  assert.equal(skills.length, 20);
+  assert.equal(skills.length, 43);
   let practiceScreens = 0;
   for (const skill of skills) {
     await teacherFrame.locator('header nav a[href="#skills"]').click();
@@ -438,7 +589,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
       practiceScreens++;
     }
   }
-  assert.equal(practiceScreens, 60);
+  assert.equal(practiceScreens, 129);
   await teacherFrame.locator('header nav a[href="#progress"]').click();
   await synchronized(teacherFrame, studentFrame, 'shared lesson results');
   assert.equal(await teacherFrame.locator('#import-file').count(), 0, 'shared mode cannot import personal results');
@@ -459,7 +610,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.deepEqual(await Promise.all([teacher, student, lateSession.page].map(messages)), stable);
   await Promise.all([[teacherSession, teacherFrame], [studentSession, studentFrame], [lateSession, lateFrame]].map(([session, frame]) => assertPersonalStorage(session, frame)));
   assert.deepEqual(failures, [], 'no browser errors or failed local resources');
-  console.log('PETERSON6_BOARD_BROWSER_OK: canonical link/alias; real registry/board/server; 14 lessons and 60 practice screens; drafts, guided steps, hints, notebook, detour/return, source lookup, choice; river/mean closure restore; teacher/student reload; grant/revoke; late join; no echo; personal progress isolated; 320px home/task/model');
+  console.log('PETERSON6_BOARD_BROWSER_OK: canonical link/alias; real registry/board/server; 58 topics, 43 skills and 129 practice screens; part-aware source lookup; numeric/instruction steps; manual work without automatic credit; check/diagnostic routes; continuation model cache, detour/reload/handoff; legacy river/mean restoration; grant/revoke; late join; no echo; unchanged 48 KiB work budget; personal progress isolated; 320px home/task/model/continuation/manual');
 }
 
 (async () => {
@@ -477,7 +628,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
     browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'], timeout: 15000 });
     await Promise.race([
       run(browser, siteOrigin, boardOrigin, []),
-      new Promise((_, reject) => { watchdog = setTimeout(() => reject(new Error('Browser gate exceeded 240 seconds at ' + phase)), 240000); })
+      new Promise((_, reject) => { watchdog = setTimeout(() => reject(new Error('Browser gate exceeded 420 seconds at ' + phase)), 420000); })
     ]);
   } finally {
     clearTimeout(watchdog);

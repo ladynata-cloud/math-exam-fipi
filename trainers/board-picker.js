@@ -12,13 +12,13 @@ const PROFILE_COURSES=[
  ['7','ege-profile-equations.html',new Set(['algebra-exponential','algebra-logarithmic','eq-linear','eq-rational','eq-quadratic','eq-root'])],
  ['8','ege-profile-expressions.html',PROFILE_EXPRESSIONS_LESSONS]
 ];
-const PETERSON_TASK_COUNTS=Object.freeze({p01:14,p02:14,p03:14,p04:14,p05:14,p06:14,p07:14,p08:18,p09:18,p10:18,p11:18,p12:18,p13:18,p14:18});
-const PETERSON_SKILLS=new Set(['fraction-reduce','fraction-mixed','fraction-add','fraction-subtract','fraction-multiply','fraction-divide','decimal-add','decimal-subtract','decimal-multiply','decimal-divide','decimal-to-fraction','fraction-to-decimal','mixed-multiply','mixed-divide','unlike-multiply','unlike-divide','order-operations','percent-part','percent-whole','percent-ratio']);
+const PETERSON_TASK_COUNTS=Object.freeze({"p01":14,"p02":14,"p03":14,"p04":14,"p05":14,"p06":14,"p07":14,"p08":18,"p09":18,"p10":18,"p11":18,"p12":18,"p13":18,"p14":18,"p15":6,"p16":6,"p17":6,"p18":6,"p19":6,"p20":6,"p21":6,"p22":6,"p23":6,"p24":5,"p25":5,"p26":5,"p27":5,"p28":5,"p29":5,"p30":5,"p31":5,"p32":5,"p33":4,"p34":4,"p35":4,"p36":4,"p37":4,"p38":4,"p39":4,"p40":4,"p41":4,"p42":4,"p43":4,"p44":4,"p45":4,"p46":4,"p47":4,"p48":4,"p49":4,"p50":4,"p51":4,"p52":4,"p53":4,"p54":4,"p55":4,"p56":5,"p57":4,"p58":4});
+const PETERSON_SKILLS=new Set(["fraction-reduce","fraction-mixed","fraction-add","fraction-subtract","fraction-multiply","fraction-divide","decimal-add","decimal-subtract","decimal-multiply","decimal-divide","decimal-to-fraction","fraction-to-decimal","mixed-multiply","mixed-divide","unlike-multiply","unlike-divide","order-operations","percent-part","percent-whole","percent-ratio","ratio","scale","proportion","direct-proportion","inverse-proportion","proportional-parts","signed-add","signed-subtract","signed-multiply","signed-divide","integer-compare","absolute-value","number-base","linear-equation","like-terms","angle-measure","unit-conversion","rectangle-area","rectangular-volume","bracket-evaluate","coefficient","point-distance","triangle-angle"]);
 function petersonRoute(hash){
- if(['','#home','#skills','#progress'].includes(hash))return true;
+ if(['','#home','#skills','#progress','#diagnostic'].includes(hash))return true;
  const lesson=/^#lesson\/(p\d{2})(?:\/(0|[1-9]\d*))?$/.exec(hash);
  if(lesson)return Object.hasOwn(PETERSON_TASK_COUNTS,lesson[1])&&(lesson[2]===undefined||Number(lesson[2])<PETERSON_TASK_COUNTS[lesson[1]]);
- const practice=/^#practice\/([a-z-]+)\/([123])$/.exec(hash);
+ const practice=/^#(?:practice|check)\/([a-z-]+)\/([123])$/.exec(hash);
  return !!practice&&PETERSON_SKILLS.has(practice[1]);
 }
 function profileCourseRoute(hash,position,lessons){
@@ -88,7 +88,7 @@ function mount(options){
  $('retryOpenedTrainer').onclick=()=>{if(!active)return;checks.delete(headerKey(active));options.retry();};loading();
  function setEntries(list){const seen=new Set();entries=list.filter(x=>{try{const key=canonical(x.href);if(seen.has(key))return false;seen.add(key);return typeof x.title==='string';}catch(_){return false;}});const groups=[...new Set(entries.map(x=>x.group))];group.replaceChildren(new Option('Все разделы',''),new Option('Недавние','recent'),...groups.map(x=>new Option(x,x)));renderRecent();render();if(active)$('openedTrainerTitle').textContent=titleFor(active);}
  setEntries(options.fallback.map(x=>({href:'/'+x.file,title:x.title,group:x.group})));
- fetch('board-picker-data.json?v=20261025-college-functions').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
+ fetch('board-picker-data.json?v=20261026-peterson-parts23').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
  const query=new URLSearchParams(location.search).get('trainer');if(query&&options.role()==='teacher')choose(query);
 }
 root.BoardPicker={normalize,canonical,mount,error,clearError};
