@@ -2,6 +2,18 @@
 
 Updated: 2026-10-25 (Asia/Novosibirsk)
 
+## In progress: Atanasyan 10–11, additional pyramid exercises 299–309
+
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_299_309.md), HIGH review; owner explicitly
+  requested continuation and publication on 2026-10-26.
+- Verified starting release: PR345 merged as `6c7339a730ba3591859bd4c8c0d8ce9be64efd7c`;
+  495 cards, 1,819 steps and 1,877 model states, main exercises1–298.
+- Preparing twelve source-specific cards for299–309 (307а/б), with independent
+  source/proof/model review and retained historical content/browser checks.
+- Next: finish independent review and actual responsive-image checks, publish
+  the scoped increment under the current authorization and verify live files.
+  This entry does not claim that the full book or this increment is published.
+
 ## In progress: lesson enquiries and channel subscriptions
 
 - [Scope](tasks/LESSON_CONTACTS_CHANNELS.md), SMALL static HTML/CSS task; base
