@@ -82,15 +82,15 @@ checks must remain explicit. No completion or publication is claimed here.
 
 ## Verified pre-publication checkpoint
 
-Independent source/mathematical/written review PASS at2026-10-26T12:53:28.840Z,
-canonical aggregate `d3cd2407dff7fa9d29ebb052a8f35658092757e0507773f1b581735e5d39d9d5`.
+Independent source/mathematical/written review PASS at2026-10-26T13:29:38.661Z,
+canonical aggregate `ab551f451284e2fbbe2112af0ebde107f6fd3abcde332ba85d619b5feffb0da5`.
 An independent integration reviewer recomputed all14 frozen baseline fields and
 rejected12 corruptions of prior lessons, source contracts, review records and
 capture cases. All495 prior raw lessons and9 runtime/schema/builder files remain
 byte-identical; all25 prior batches and1099 capture cases are retained.
 
 The507-card bundle has1896 steps,1966 states andSHA256
-`487a3b070e85d2ebd80577f612bcb7471dd46659a6335902e076ed641859d363`.
+`0aca5154f8f81edbc2df35d7bff112a0781c862b956d51fabc022ae2e00e6fa2`.
 Reproducible build,7 source-catalog tests, schema, integrated/historical content,
 parallel content,2410 model polygons/7166 segments, runtime, all mathematics,
 56 partition/collector checks, full/four-shard preflights,SEO/sitemap and whitespace
@@ -102,3 +102,12 @@ lines; complete fraction operands;308/309 rigid rotations selected to keep all
 highlighted polygons visible at both normal camera orientations. Additional
 browser checks measure compound-fraction bounds and actual polygon thickness.
 These projected-geometry calculations do not replace inspection of real images.
+
+Actual-image review also found nine plain-text model captions/notes with slash
+ratios and one incomplete displayed numerator in the305 double-angle reason.
+The captions now use equivalent words/relations and the whole numerator is
+explicitly grouped. Mounted-renderer and actual browser operand checks cover
+these corrections; the independent report is rebound to the exact new content.
+The polygon visibility check was also corrected to require the authored count
+on construction stages with no polygon, retaining the16px minimum for polygons.
+Final browser and pixel evidence belongs in the PR after the fresh full run.

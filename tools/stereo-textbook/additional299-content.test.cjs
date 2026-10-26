@@ -74,7 +74,10 @@ for(const card of cards){
  assert(screenshots.has(id+'|condition'));assert(screenshots.has(id+'|'+card.steps.at(-1).id),id+': complete final proof capture');
  exact([...captured],Object.keys(model.views),id+': every model state captured at both browser widths');
  const mount=win.TaskSceneViewer.mount(win.document.getElementById('model'),model);
- for(const view of used){assert(mount.setView(view));assert(!/NaN|Infinity/.test(win.document.querySelector('#model svg').outerHTML),id+': finite '+view);}mount.destroy();
+ for(const view of used){
+  assert(mount.setView(view));assert(!/NaN|Infinity/.test(win.document.querySelector('#model svg').outerHTML),id+': finite '+view);
+  for(const node of win.document.querySelectorAll('#model .am-focus,#model .am-note'))assert(!node.textContent.includes('/'),id+': plain-text model caption/note must express ratios without an unformatted slash in '+view);
+ }mount.destroy();
  function display(value,at){if(typeof value==='string'){
   assert(!/[А-Яа-яЁё]\d/u.test(value),id+at+': readable number spacing');
   if(value.includes('/')){const node=win.document.createElement('div');win.StereoMath.appendText(node,value);for(const f of node.querySelectorAll('.stereo-fraction'))f.remove();assert(!node.textContent.includes('/'),id+at+': arithmetic ratios use fraction bars');}
@@ -100,6 +103,10 @@ const appRoot=win.document.getElementById('app'),app=API.createApp(appRoot,produ
 for(const card of cards){
  assert(app.open(card.id));const next=[...appRoot.querySelectorAll('button')].find(b=>b.textContent==='Разобрать по шагам');assert(next);
  for(let i=0;i<card.steps.length;i++)next.click();assert.equal(appRoot.querySelectorAll('[data-step]').length,card.steps.length);
+ if(card.source.exercise==='305'){
+  const fractions=[...appRoot.querySelectorAll('[data-step="step-6"] > details > details > p .stereo-fraction')];
+  assert(fractions.some(f=>f.querySelector(':scope > .stereo-numerator').textContent==='(2tan x)'&&f.querySelector(':scope > .stereo-denominator').textContent==='(1 − tan²x)'),card.id+': the complete double-angle numerator is stacked in the rendered justification');
+ }
  const form=appRoot.querySelector('[data-final-form]'),field=form.querySelector('textarea,input');assert(field);
  const stateKey='mathExamTextbook.v1:'+production.catalog.book.id+':'+card.id+':r'+card.revision;
  if(card.source.exercise==='308'){

@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-26T12:53:28.840Z",
-  "registeredAt": "2026-10-26T12:53:55.381Z",
+  "reviewedAt": "2026-10-26T13:29:38.661Z",
+  "registeredAt": "2026-10-26T13:30:31.704Z",
   "scope": "Introduction and chapters I–III: main exercises 1–309, theory points 1–37, all 40 chapter self-check questions. Additional exercises 310 onward remain pending. Not the complete book.",
   "batches": [
     {
@@ -793,8 +793,8 @@
     },
     {
       "reviewer": "Codex independent_review (no lesson authorship)",
-      "reviewedAt": "2026-10-26T12:53:28.840Z",
-      "sourceBundleSHA256": "d3cd2407dff7fa9d29ebb052a8f35658092757e0507773f1b581735e5d39d9d5",
+      "reviewedAt": "2026-10-26T13:29:38.661Z",
+      "sourceBundleSHA256": "ab551f451284e2fbbe2112af0ebde107f6fd3abcde332ba85d619b5feffb0da5",
       "scope": "All twelve source-specific cards for eleven main exercises299–309,including both actual subparts307а/б. Independently inspected the supplied2024 edition printed page87/PDF page89,all conditions,77 explanations and their justifications,all help/final prompts,68 theory references,and89 coordinate-model states. This is source,mathematics and written-pedagogy review; actual rendered pixels require separate evidence.",
       "cardIds": [
         "ex-main-0299",
@@ -2800,7 +2800,7 @@
     },
     {
       "id": "ex-main-0300",
-      "sha256": "2c6e80c11dae78c7f1a906951b5c62f95f882e3930619ecd6d6667184e7bc1f3"
+      "sha256": "23a6b2f7ca9022ffb9402069d963d02c3c16d4371e87d9c3bdca71864b1b2881"
     },
     {
       "id": "ex-main-0301",
@@ -2820,15 +2820,15 @@
     },
     {
       "id": "ex-main-0305",
-      "sha256": "79f3ae2843e8f4c4d85edc7430af95dbd3cec79d31d3f809851991d8b26b1ab1"
+      "sha256": "2f539360f10bb81c9156a1b238ef91423f6aa643942f32c1751739d8d7fc8a2a"
     },
     {
       "id": "ex-main-0306",
-      "sha256": "5723aa5e01aef179712e95827619d823b2f8cd488ba930c24ed491a3140d817e"
+      "sha256": "9727399b903fd6ac5869ba20ea843a6645da5eff13159f859507859930cac31e"
     },
     {
       "id": "ex-main-0307-a",
-      "sha256": "015cb0a625b9f71f96c653f87336476e8c8034c96e8708982aeb5a5ae5be58d0"
+      "sha256": "cc83cfd1282febb96c7881f0749d448419ff440ac3b36d4058a04466a1d60a3c"
     },
     {
       "id": "ex-main-0307-b",
@@ -2840,7 +2840,7 @@
     },
     {
       "id": "ex-main-0309",
-      "sha256": "0cc04e77e9aba3ab01fea9ad4fda9794bc0125b33b19324d5ef3a62683915d00"
+      "sha256": "c7eb431dd3feffb6f4c6171310c329855c9e907ea4b13a602cdd7e817e5cc638"
     }
   ]
 }

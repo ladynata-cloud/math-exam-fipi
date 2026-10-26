@@ -82,7 +82,7 @@ const mathLayoutCases=new Map([
  ['ex-main-0299|step-5',[{selector:explanation('step-5'),fractions:[['m','2']]}]],
  ['ex-main-0300|step-6',[{selector:explanation('step-6'),fractions:[['(a · b)','4'],['a','√3']]}]],
  ['ex-main-0305|step-4',[{selector:explanation('step-4'),fractions:[['h²','(1 − t²)']]}]],
- ['ex-main-0305|step-6',[{selector:explanation('step-6'),fractions:[['(4h²t)','(1 − t²)'],['2t','(1 − t²)']]}]],
+ ['ex-main-0305|step-6',[{selector:explanation('step-6'),fractions:[['(4h²t)','(1 − t²)'],['2t','(1 − t²)']]},{selector:'[data-step="step-6"] > details > details > p',fractions:[['(2tan x)','(1 − tan²x)']]}]],
  ['ex-main-0306|step-5',[{selector:explanation('step-5'),fractions:[['h','cos φ']]}]],
  ['ex-main-0306|step-6',[{selector:explanation('step-6'),fractions:[['(4h² · tan φ)','(cos φ)']]}]],
  ['ex-main-0306|step-7',[{selector:explanation('step-7'),fractions:[['(sin φ · (1 + sin φ))','(cos²φ)'],['(4h² · sin φ)','(1 − sin φ)']]}]],

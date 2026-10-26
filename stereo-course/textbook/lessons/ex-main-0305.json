@@ -149,7 +149,7 @@
           ]
         },
         "halfangle": {
-          "label": "В плоскости SAB: ∠ASK = α/2, AK = a/2, SK = l",
+          "label": "В плоскости SAB: угол ASK равен половине α, AK — половине a, SK = l",
           "polygon": [
             "S",
             "A",
@@ -170,7 +170,7 @@
           ]
         },
         "height": {
-          "label": "В перпендикулярном сечении SOK: l² = h² + a²/4",
+          "label": "В перпендикулярном сечении SOK: l² = h² + OK²",
           "polygon": [
             "S",
             "O",
@@ -196,7 +196,7 @@
           ]
         },
         "apothem": {
-          "label": "Вырази l² через h и t = tan(α/2)",
+          "label": "Вырази квадрат апофемы через высоту и тангенс половины угла α",
           "polygon": [
             "S",
             "O",
@@ -432,7 +432,7 @@
       "justifications": [
         {
           "kind": "theorem",
-          "text": "Формула тангенса двойного угла: tan(2x) = 2tan x/(1 − tan²x)."
+          "text": "Формула тангенса двойного угла: tan(2x) = (2tan x)/(1 − tan²x)."
         }
       ],
       "id": "step-6"
@@ -456,7 +456,7 @@
     "mathematics": "passed",
     "pedagogy": "passed",
     "reviewer": "Codex independent_review (no lesson authorship)",
-    "at": "2026-10-26T12:53:28.840Z"
+    "at": "2026-10-26T13:29:38.661Z"
   },
   "answer": {
     "mode": "manual",
