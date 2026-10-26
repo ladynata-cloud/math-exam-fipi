@@ -271,6 +271,13 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await entry.page.locator('.board-link').waitFor();
   assert.equal(await entry.page.evaluate(() => typeof window.__peterson6Board), 'undefined', 'ordinary course does not activate board mode');
   assert.equal(await entry.page.locator('.hero a.button').first().getAttribute('href'), '#lesson/p09/2', 'ordinary course still reads its existing personal continuation');
+  // This context visits the personal course first. Its normal v1 migration adds
+  // an empty model cache before the board isolation boundary starts. Preserve
+  // every old field, then freeze these exact bytes for the subsequent board visit.
+  const migratedPersonal = await entry.page.evaluate(key => localStorage.getItem(key), PERSONAL_KEY);
+  assert.deepEqual(JSON.parse(migratedPersonal), { ...JSON.parse(entry.values[PERSONAL_KEY]), models: {} },
+    'ordinary-course migration preserves all legacy work and only adds an empty model cache');
+  entry.values[PERSONAL_KEY] = migratedPersonal;
   const boardLink = new URL(await entry.page.locator('.board-link').getAttribute('href'), siteOrigin);
   const canonical = boardLink.searchParams.get('trainer');
   assert(['/school/peterson6/', '/school/peterson6/#home', '/school/peterson6/index.html#home'].includes(canonical), 'board link carries the canonical course entry');
