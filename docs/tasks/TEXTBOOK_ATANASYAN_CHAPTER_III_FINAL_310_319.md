@@ -102,15 +102,15 @@ and runtime contracts remain untouched.
 ## Execution record
 
 Independent source, mathematics and written-pedagogy review passed at
-2026-10-26T15:39:27.251Z. Eleven canonical card objects bind to aggregate
-`2fb310dde60e848104ae34655cf1b96ece02329eee361d6ea94466d9e9fe2c83`.
+2026-10-26T15:53:31.463Z. Eleven canonical card objects bind to aggregate
+`053ed1c1b166b306e7d21592e09bcf75ab4ea15632ee56f2bff586824e7a534c`.
 The independent integration review reports no unresolved findings. Reports:
 [content](../reviews/ATANASYAN_CHAPTER_III_FINAL_310_319_CONTENT.json) and
 [integration](../reviews/ATANASYAN_CHAPTER_III_FINAL_310_319_INTEGRATION.json).
 
 The reproducible bundle has 518 cards, 1,969 steps and 2,050 model states;
-4,194,186 bytes, SHA256
-`1f654579118929757f68ac81424a0962167365550306892565ef336cf31af38d`.
+4,194,224 bytes, SHA256
+`6450ea80dc28439e3e1836a3396f2465f0b305368f8a2ca594579c993f8fe28a`.
 All main numbers 1–319 are covered. Chapter III has 203 reviewed catalogue
 rows and zero pending rows. The full book remains incomplete.
 
@@ -139,3 +139,14 @@ numeric radical, and state the general formula in words. Independent review
 reconfirmed equivalence and preserved all other card fields. The original
 renderer and all overflow/projection gates remain unchanged. Fresh exact-head
 browser and image checks are required for the corrected content.
+
+
+Actual-image review then identified a remaining title in 313 that called the
+whole axial section rectangular. The title now names the right triangle
+inside that section. An independent terminology audit also corrected the
+plain focus labels in 312 (two right triangles) and 314 (the axial plane OEF).
+Exactly three strings changed; coordinates, formulas, source identities,
+progression, renderer and gates remain unchanged. All eleven cards were
+crosschecked for the same terminology mismatch, with no further finding.
+The individual updated review timestamps are retained in the content report.
+These final strings require their own exact-head browser and image binding.

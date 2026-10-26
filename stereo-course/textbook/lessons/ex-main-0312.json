@@ -288,7 +288,7 @@
           ]
         },
         "combine": {
-          "label": "В двух прямоугольных сечениях общий катет MO; соседние катеты — OA и OK",
+          "label": "В двух прямоугольных треугольниках общий катет MO; другие катеты — OA и OK",
           "segments": [
             [
               "M",
@@ -540,7 +540,7 @@
     "mathematics": "passed",
     "pedagogy": "passed",
     "reviewer": "Codex independent_review (no lesson authorship)",
-    "at": "2026-10-26T15:15:42.871Z"
+    "at": "2026-10-26T15:53:31.463Z"
   },
   "answer": {
     "mode": "manual",

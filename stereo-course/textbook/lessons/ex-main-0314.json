@@ -224,7 +224,7 @@
           ]
         },
         "section": {
-          "label": "В осевом сечении OEF построен прямоугольный треугольник EHF",
+          "label": "В осевой плоскости OEF построен прямоугольный треугольник EHF",
           "segments": [
             [
               "O",
@@ -486,6 +486,6 @@
     "mathematics": "passed",
     "pedagogy": "passed",
     "reviewer": "Codex independent_review (no lesson authorship)",
-    "at": "2026-10-26T15:15:42.871Z"
+    "at": "2026-10-26T15:53:31.463Z"
   }
 }
