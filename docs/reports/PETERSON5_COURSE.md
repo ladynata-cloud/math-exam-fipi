@@ -25,3 +25,7 @@ A separate technical reviewer inspected the composed implementation. Findings fi
 Claude design and final consultation are unavailable: no authorized Claude/Anthropic connector or local secret is exposed. No external approval is claimed; previous releases do not waive this requirement. No real-pupil learning-outcome trial, account assignment, synchronization or deployment was performed.
 
 The task is ready for Draft PR and exact-head CI. Merge/publication requires a separate owner decision under AGENTS.md and `.agents/skills/mathexam-pr/SKILL.md`; release without Claude consultation also needs an explicit scoped exception. Rollback is deletion of this additive course and its single catalog/sitemap addition; no existing learner state is migrated.
+
+## Cloud verification follow-up
+
+The first exact-head course and SEO/sitemap workflows passed. The existing self-study-video workflow failed before tests because its locked Playwright 1.55 cannot install Chromium on the new ubuntu-latest (26.04) runner. This task pins that workflow to supported ubuntu-24.04, preserving every dependency version, command and test. Independent review accepted this as a minimal validation-environment compatibility fix. Other browser workflows successfully installed their newer pinned Playwright; they remain unchanged. Exact-head CI is rerun after this one-line environment correction.

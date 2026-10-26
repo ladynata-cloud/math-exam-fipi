@@ -28,6 +28,9 @@ Before implementation, the repository consultation instructions were read and in
 
 Independent agents verify each source part and a separate review checks the composed runtime/content. No source PDFs, private student records or credentials are sent to external reviewers.
 
+## Validation-environment correction
+The triggered existing self-study-video check could not install its locked Playwright on Ubuntu26.04. Pin only that workflow to Ubuntu24.04; preserve all dependencies, commands and test assertions. This bounded compatibility correction is needed to complete validation and does not change production behavior.
+
 ## Risk and rollback
 Risks: source transcription, instructional step size, answer format and saved-work regressions. Mitigate with PDF visual verification, rational math checks and actual DOM journeys. Rollback removes this additive course and its catalog/sitemap links. No existing key or account migration.
 
