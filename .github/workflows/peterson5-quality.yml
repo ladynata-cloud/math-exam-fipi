@@ -1,0 +1,43 @@
+name: Peterson 5 textbook course
+on:
+  pull_request:
+    paths:
+      - 'school/peterson5/**'
+      - '.github/workflows/peterson5-quality.yml'
+      - 'docs/tasks/PETERSON5_TEXTBOOK_COURSE.md'
+      - 'courses/index.html'
+      - 'tools/seo-public-pages.json'
+      - 'sitemap.xml'
+  push:
+    branches: [main]
+    paths:
+      - 'school/peterson5/**'
+      - '.github/workflows/peterson5-quality.yml'
+permissions:
+  contents: read
+jobs:
+  course:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Syntax and deterministic content
+        run: |
+          node --check school/peterson5/app.js
+          node --check school/peterson5/math.js
+          node --check school/peterson5/models.js
+          node school/peterson5/build.cjs --check
+          node school/peterson5/test-math.cjs
+      - name: Install in-memory DOM
+        run: npm install --prefix "$RUNNER_TEMP/peterson5-qa" --no-audit --no-fund jsdom@26.1.0
+      - name: Saved work and all course journeys
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/peterson5-qa/node_modules"
+          node school/peterson5/test-runtime.cjs
+          node school/peterson5/test-course.cjs
+      - name: Sitemap and patch whitespace
+        run: |
+          python3 tools/build-sitemap.py --check
+          git diff --check

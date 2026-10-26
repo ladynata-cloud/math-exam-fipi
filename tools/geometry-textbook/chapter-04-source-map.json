@@ -1,0 +1,1256 @@
+{
+  "schemaVersion": 1,
+  "bookId": "atanasyan-2023-7-9",
+  "edition": "2023, 14-е издание, переработанное",
+  "chapter": 4,
+  "title": "Соотношения между сторонами и углами треугольника",
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPages": [
+      69,
+      90
+    ],
+    "pdfPages": [
+      70,
+      91
+    ],
+    "pdfPageOffset": 1,
+    "inspection": "Independent inventory reviewer visually read all 22 source page images, printed 69–90, before reading chapter-IV authored preparations. Number, subpart, theory and review-question counts were derived directly from the source."
+  },
+  "exercises": [
+    {
+      "number": 228,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 229,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 230,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 231,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 232,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 233,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 234,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 235,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 236,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 237,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 238,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 239,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 240,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        71
+      ]
+    },
+    {
+      "number": 241,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 242,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 243,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 244,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 245,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 246,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 247,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 248,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 249,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 250,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 251,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        74
+      ]
+    },
+    {
+      "number": 252,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        75
+      ]
+    },
+    {
+      "number": 253,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        75
+      ]
+    },
+    {
+      "number": 254,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        75
+      ]
+    },
+    {
+      "number": 255,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        75
+      ]
+    },
+    {
+      "number": 256,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        75
+      ]
+    },
+    {
+      "number": 257,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        75
+      ]
+    },
+    {
+      "number": 258,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        75
+      ]
+    },
+    {
+      "number": 259,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 260,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 261,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 262,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 263,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 264,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 265,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 266,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 267,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 268,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 269,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 270,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        79
+      ]
+    },
+    {
+      "number": 271,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        80
+      ]
+    },
+    {
+      "number": 272,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        80
+      ]
+    },
+    {
+      "number": 273,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        80
+      ]
+    },
+    {
+      "number": 274,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        80
+      ]
+    },
+    {
+      "number": 275,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        80
+      ]
+    },
+    {
+      "number": 276,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        80
+      ]
+    },
+    {
+      "number": 277,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        80
+      ]
+    },
+    {
+      "number": 278,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        80
+      ]
+    },
+    {
+      "number": 279,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 280,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 281,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 282,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 283,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 284,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 285,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 286,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 287,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 288,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 289,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 290,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 291,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        85
+      ]
+    },
+    {
+      "number": 292,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        86
+      ]
+    },
+    {
+      "number": 293,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        86
+      ]
+    },
+    {
+      "number": 294,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        86
+      ]
+    },
+    {
+      "number": 295,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        86
+      ]
+    },
+    {
+      "number": 296,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        86
+      ]
+    },
+    {
+      "number": 297,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        86
+      ]
+    },
+    {
+      "number": 298,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        86
+      ]
+    },
+    {
+      "number": 299,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        86
+      ]
+    },
+    {
+      "number": 300,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        87
+      ]
+    },
+    {
+      "number": 301,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        87
+      ]
+    },
+    {
+      "number": 302,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        87
+      ]
+    },
+    {
+      "number": 303,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        87
+      ]
+    },
+    {
+      "number": 304,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 305,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 306,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 307,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 308,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 309,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 310,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 311,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 312,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 313,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 314,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 315,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 316,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 317,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 318,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 319,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 320,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 321,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 322,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 323,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 324,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "ж",
+        "з",
+        "и"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 325,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 326,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 327,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 328,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 329,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    },
+    {
+      "number": 330,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        90
+      ]
+    }
+  ],
+  "theory": [
+    {
+      "number": 31,
+      "title": "Теорема о сумме углов треугольника",
+      "printedPages": [
+        69,
+        70
+      ]
+    },
+    {
+      "number": 32,
+      "title": "Остроугольный, прямоугольный и тупоугольный треугольники",
+      "printedPages": [
+        70,
+        71
+      ]
+    },
+    {
+      "number": 33,
+      "title": "Теорема о соотношениях между сторонами и углами треугольника",
+      "printedPages": [
+        72,
+        73
+      ]
+    },
+    {
+      "number": 34,
+      "title": "Неравенство треугольника",
+      "printedPages": [
+        73,
+        74
+      ]
+    },
+    {
+      "number": 35,
+      "title": "Некоторые свойства и признаки прямоугольных треугольников",
+      "printedPages": [
+        75,
+        76,
+        77
+      ]
+    },
+    {
+      "number": 36,
+      "title": "Признаки равенства прямоугольных треугольников",
+      "printedPages": [
+        77,
+        78,
+        79
+      ]
+    },
+    {
+      "number": 37,
+      "title": "Расстояние от точки до прямой. Расстояние между параллельными прямыми",
+      "printedPages": [
+        80,
+        81,
+        82,
+        83
+      ]
+    },
+    {
+      "number": 38,
+      "title": "Построение треугольника по трём элементам",
+      "printedPages": [
+        83,
+        84,
+        85
+      ]
+    }
+  ],
+  "selfchecks": [
+    {
+      "number": 1,
+      "printedPages": [
+        87
+      ]
+    },
+    {
+      "number": 2,
+      "printedPages": [
+        87
+      ]
+    },
+    {
+      "number": 3,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 4,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 5,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 6,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 7,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 8,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 9,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 10,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 11,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 12,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 13,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 14,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 15,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 16,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 17,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 18,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 19,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 20,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 21,
+      "printedPages": [
+        88
+      ]
+    },
+    {
+      "number": 22,
+      "printedPages": [
+        89
+      ]
+    },
+    {
+      "number": 23,
+      "printedPages": [
+        89
+      ]
+    }
+  ],
+  "counts": {
+    "mainNumbers": 103,
+    "mainParts": 135,
+    "theory": 8,
+    "selfchecks": 23,
+    "cards": 166
+  },
+  "caseRequirements": {
+    "228": "Four labelled cases, including the admissible nondegenerate domain for the parameter alpha in cases в and г.",
+    "231": "Both claims: acute base angles and obtuse exterior angles at the base.",
+    "233": "Three labelled values. Where possible distinguish whether the specified angle is the vertex angle or a base angle; do not discard a valid configuration.",
+    "236": "Prove the converse median-half-side property from prior facts; point 35 has not yet been introduced at this exercise.",
+    "239": "The given 115-degree exterior angle may be at the vertex opposite the base or at a base vertex; consider both admissible triangles.",
+    "241": "Both side orderings and the separate question whether angle A may be obtuse.",
+    "244": "Non-strict median/altitude inequality; include equality when the midpoint is the perpendicular foot.",
+    "252": "Figure 136: retain both claims, including that AO meets BC at its midpoint and is perpendicular to BC.",
+    "253": "Two nonexistence cases; equality of one side and the sum of the other two is degenerate, not a triangle.",
+    "255": "Three labelled side pairs; test both candidates for the repeated side by the strict triangle inequality.",
+    "256": "Broken-line length is not less than endpoint distance; distinguish equality from strict inequality.",
+    "268": "The original triangle is explicitly acute; do not add the extraneous obtuse configuration.",
+    "271": "The points lie on the sides of angle O; explain why the ray OC is the interior bisector.",
+    "272": "Both given triangles are explicitly acute; use that constraint when identifying corresponding right triangles.",
+    "274": "The source states equality of two corresponding angles and BH=B1H1; allow feet on side extensions where appropriate.",
+    "275": "Construct a line through the interior point cutting equal segments on the angle sides; justify the construction.",
+    "277": "The third vertex is distinct from the diameter endpoints; the radius/median argument may be used without the later inscribed-angle theorem.",
+    "278": "Use the 15-degree acute angle, the median and altitude from the right vertex; CH=4 and the target is the whole hypotenuse AB.",
+    "283": "The point is on the base and equidistant from the two supporting lines of the lateral sides; prove the perpendicular conclusion.",
+    "284": "Include the line coinciding with the segment line: both distances are zero; avoid a nondegenerate triangle argument in that case.",
+    "285": "Lines b and c may be on the same or opposite sides of a, producing two distances.",
+    "288": "Locus lies strictly inside the nonstraight angle and at positive distance PQ from line BC; boundary intersection is excluded.",
+    "289": "For two distinct parallel lines the locus is their middle parallel line, with both inclusions justified.",
+    "291": "At a positive prescribed distance, both parallel lines are needed; if zero is discussed, the original line is the locus.",
+    "292": "Compass-and-straightedge construction has two parallel-line solutions, one on each side of a.",
+    "293": "Intersect the given line a with both distance-PQ parallels to b, obtaining the two possible points.",
+    "294": "Construct by a side, an adjacent angle and the bisector from that angle; include the existence restriction rather than assuming every positive bisector length works.",
+    "295": "Construct by the side, a median to one of the other sides and the included angle; identify the intended median correctly.",
+    "296": "Both angle-half and angle-quarter cases, with the sum of the two specified angles strictly below 180 degrees.",
+    "297": "One angle is the whole first given angle and the other is half the second; check the angle-sum existence condition.",
+    "298": "Two separate right-triangle constructions: both legs, and a leg plus its adjacent acute angle.",
+    "299": "All five constructions а–д, including base plus median to the base; include feasibility for base plus lateral side.",
+    "300": "Both transformed side triples; answer the explicit existence question using strict triangle inequalities.",
+    "301": "Preserve the source construction by a side, its adjacent angle and altitude to that side; obtuse adjacent angle gives an exterior foot.",
+    "302": "Two sides and the altitude to one of them may yield no, one or two noncongruent triangles; treat circle/parallel intersections and exclude degeneracy.",
+    "303": "Two sides and the median to one of them require a construction and existence analysis; midpoint versus side-endpoint coincidences are not triangles.",
+    "307": "Figure 152 has the full chain AP=PQ=QR=RB=BC and AB=AC; retain the point order P,R on AC and Q on AB.",
+    "308": "Prove both the interior foot from the obtuse vertex and the exterior feet from the acute vertices.",
+    "309": "Both equal and ordered projections; do not use the later Pythagorean theorem without proof.",
+    "310": "Both converse claims, with equal or ordered obliques; do not use the later Pythagorean theorem without proof.",
+    "311": "Strict median inequality; use a reflected vertex and the triangle inequality.",
+    "312": "M is strictly inside the triangle and the inequality is strict.",
+    "314": "The source explicitly requests proof by contradiction.",
+    "318": "AB>AC is given; correctly order angles B and C and consider altitude feet on extensions.",
+    "321": "The strict inequality requires the point on the open opposite side; if endpoints are discussed, state the necessary boundary qualification.",
+    "322": "Two sides and the median to the third side; construct using an auxiliary triangle with twice the median and state strict triangle inequalities.",
+    "323": "All three right-triangle constructions: hypotenuse/acute angle, leg/opposite angle, hypotenuse/leg.",
+    "324": "Nine labelled compass-and-straightedge angles: а30, б60, в15, г120, д150, е135, ж165, з75, и105 degrees; not protractor measurements.",
+    "325": "Side, altitude to it and median to one of the other sides: handle intersection counts and degenerate cases.",
+    "326": "D on AB, E on BC, DE parallel AC and DE=AD+CE; preserve all constraints in construction and proof.",
+    "327": "Given equilateral ABC and B1 on AC; construct A1 on BC and C1 on AB with A1B1C1 equilateral. Treat endpoint cases explicitly if admitting them.",
+    "328": "Given angle, altitude and bisector are all from the same vertex; analyze zero/one/two solutions and degenerate angle cases.",
+    "329": "Given side with altitude and median both to it; compare median and height, and exclude the collinear case.",
+    "330": "ABC is right at A; M lies on AB and its distance to line BC must equal AM, not a different prescribed segment."
+  },
+  "reviewScope": "Exact source structure and required cases independently inventoried; this file does not approve authored solutions, models, screenshots or publication."
+}

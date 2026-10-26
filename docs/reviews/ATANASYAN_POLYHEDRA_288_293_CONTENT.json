@@ -1,0 +1,106 @@
+{
+  "reviewer": "independent_math",
+  "reviewedAt": "2026-10-26T08:04:47.191Z",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+  "authorBase": "d2d3c2a059879352002194598a44b055c1c62de3",
+  "authorReviewerSeparation": {
+    "reviewerAuthoredLessons": false,
+    "lessonAuthors": [
+      "cards_288_289",
+      "cards_290_291",
+      "cards_292_293"
+    ]
+  },
+  "scope": "All six source statements, final prompts,33 step explanations and justifications, help trees, theory-source metadata, and33 model states for exercises288–293. Visually inspected printed86/PDF88 of the supplied2024 edition.",
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "canonicalization": "Remove top-level status and review; recursively sort object keys; JSON.stringify UTF-8; SHA256. Same algorithm as repository content-review.",
+  "cards": [
+    {
+      "id": "ex-main-0288",
+      "sha256": "f593d4db4acd6f1595671b76b9e50b16b368fc7c14dff38b1179afbf88b6471d",
+      "findings": [],
+      "verification": "Arbitrary n≥3 gives2n vertices and3n disjoint edges; oblique pentagonal model correctly identified as example.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0289",
+      "sha256": "ed42136b45837fcdc75f1492f45f22468261eadc23a300631ae8acae4c01962a",
+      "findings": [],
+      "verification": "Six square faces and two right triangles give S=6a²,d²=3a²; space diagonal distinguished from face diagonal.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0290",
+      "sha256": "8a23a5cdac88511c2e036728b19ac4012243c17d5474d6db533218cbd2675eeb",
+      "findings": [],
+      "verification": "Same base side relates φ to planar diagonal and θ to body diagonal. Formula and strict0<φ<θ<90 domain independently derived.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0291",
+      "sha256": "839626df73d477f4912428ac955e8082696a4766eed584af81f918dce1222e2a",
+      "findings": [],
+      "verification": "φ is inclination to base plane, θ angle with side. Projection and all three positive dimensions justified; formula independently derived.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0292",
+      "sha256": "e3897f3264028a92daf173f99ecabd3d4a5090d313bdcea6e41f5a969205964f",
+      "findings": [],
+      "verification": "Constructed common perpendicular PN has endpoints inside both finite segments; independent triple-product distance24/5cm; plane-by-plane construction and transfer valid.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0293",
+      "sha256": "10261d9b2a5f59c2aa8f2075d7c0c2117d068cac80940ebfecc1f05e92e085b0",
+      "findings": [],
+      "verification": "Perpendicular-diagonal rectangular section gives heighta√2; all body diagonals2a; OA1=OB1=A1B1=a; acute line angle60°.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    }
+  ],
+  "numericalChecks": {
+    "angle_formula_samples": 125,
+    "source_and_theory_links": "passed",
+    "prism_and_cube_coordinates": "passed",
+    "box_right_triangle_coordinates": "passed",
+    "skew_segment_distance": "24/5 cm; both endpoints interior",
+    "perpendicular_diagonals_and_angle": "passed; cosine1/2",
+    "planar_polygon_checks": 43
+  },
+  "aggregateSHA256": "95c2c517cb60a4d79377f6ede4bdbe7f83ae60aae6b66710cc82a2449df174f0",
+  "openFindings": [],
+  "notRun": [
+    "Actual rendered browser pixels; handled by separate visual review.",
+    "Real-pupil efficacy trial.",
+    "Physical-device or screen-reader trial.",
+    "External Claude review; existing course deferral does not mean provider approval."
+  ],
+  "pedagogicalAssessment": "Each proof proceeds from source data through named triangles or planes; large constructions appear only when needed. Help remains task-specific under unchanged runtime. This is a written-design assessment, not evidence of learning gains.",
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-10-26T07:34:32.554Z",
+      "aggregateSHA256": "f912f1a153759975a59097d9385158799bd1354516115fcbe1d8e60644b5b6bd",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "changedCardPreviousHash": "0f50f59c02d99ba769f74abf0fd322db35394a4a4cf3d50904d5c3a7082cabb8"
+    }
+  ],
+  "revisionReview": {
+    "changedCard": "ex-main-0291",
+    "changedField": "steps[3].explanation",
+    "newText": "В плоскости основания ABCD треугольник ABC прямоугольный при B. По теореме Пифагора: b² = AC² − a². Подставляем найденные длины: b² = d²·cos²φ − d²·cos²θ. Выносим общий множитель: b² = d²·(cos²φ − cos²θ). Извлекаем положительный корень: b = d·√(cos²φ−cos²θ), поскольку b>0.",
+    "scope": "Only step4 explanation changed; five other canonical cards and all other291fields hash-identical.",
+    "assessment": "PASS: The same Pythagoras substitution and factorization are separated into explicit short actions; positive square root and original domain unchanged. Mathematics and written pedagogy preserved/improved. New pixels still require separate review."
+  }
+}

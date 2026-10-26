@@ -120,3 +120,102 @@
 - The cloud browser suite is extended from the 25 new mirrors to all 30 numbered/new-practical mirrors by adding native 15–19 actions, help, reference/model interactions and first-event notification assertions. The separate established roads-grid room/browser gates cover the 31st supported OGE trainer.
 - On intermediate head `ea5aa6a109ffb35ccac4539c8a885a345b224f2d`, the actual browser gate passed all 25 new mirrors and 88 native actions, with zero personal-store access or production room writes; the unchanged picker viewport/drawing/recovery gate passed. The extension and original16–18 correction require a new exact-head run; prior25 success is not represented as evidence for those additional five pages.
 - Final changed-path count against main `4c42cb8328fc57ded507bd07ce5110caadb93bf9` is 83: 78 previously reviewed paths plus the existing16–18 adapter, its test and three page cache references. No registry schema/ID/version, authentication or personal progress contract changes are introduced by this follow-up.
+
+
+## Compatibility repair requested by owner — 2026-10-27
+
+This is continuation of PR340, not a new task or release authorization. The
+owner explicitly requested branch reconciliation without destructive history
+rewriting, repeat synchronization/save/board checks, and no publication before
+the checks and HIGH review decision are complete.
+
+### Frozen inputs and actual conflicts
+
+- Prior PR head: `6dc5980cc577adb2677e50606472059baa772499`.
+- Current main: `92d733a49692744ce043503c57f29b77bfb09a24`.
+- Merge base: `4c42cb8328fc57ded507bd07ce5110caadb93bf9`.
+- Actual divergence: main 13 commits / PR 6 commits. Main has 12 first-parent
+  releases plus the source commit included by the PR330 merge. This supersedes
+  the earlier 12-commit snapshot supplied at task start.
+- Main changes 674 paths; the PR changes 83. There are 27 overlapping paths,
+  not 27 conflicts. `git merge-tree --write-tree` reports exactly one content
+  conflict: `trainers/oge-course/index.html`.
+- The conflict comes from independent insertions on one long HTML line: the PR
+  adds the shared-board link; main adds the lesson-contact section. Resolution
+  is current main's entire page plus the exact single PR navigation link.
+- In the other 25 overlapping HTML files, removing only the newly added
+  canonical declaration yields byte-identical PR source. All 647 main-only
+  files remain byte-identical to current main. Project-status sections from
+  both branches are retained; this continuation adds current OGE evidence.
+
+### Provenance of concurrent main history
+
+| Commit | Origin | Scope retained |
+| --- | --- | --- |
+| `76f9942` | PR339 | Vilenkin textbook entry and course |
+| `693442f` | PR342 | Lesson enquiries and channel links |
+| `038aa19` | PR343 | Crawlable catalog and Vilenkin canonical |
+| `18197a2` | PR330 merge | Atanasyan practical nets |
+| `d2d3c2a` | PR330 second-parent source | Same practical-net implementation; not an extra unexplained release |
+| `9cf995d` | PR344 | Additional polyhedra 288–293 |
+| `6c7339a` | PR345 | Additional prisms 294–298 |
+| `72fb986` | PR348 | Pyramids 299–309 |
+| `aa43e22` | PR349 | Peterson grade 5 |
+| `44eab4d` | PR346 | Atanasyan chapter IV 228–330 |
+| `1aa517e` | PR347 | Pogorelov textbook companion |
+| `e50fcfb` | PR356 | Metrika lesson-enquiry instrumentation |
+| `92d733a` | PR357 | HTTPS canonicals and static trainer metadata |
+
+### Preservation and update method
+
+- Preserve both histories with a two-parent integration commit on the existing
+  PR branch (prior PR head first, current main second). Advance only that branch
+  by fast-forward with an expected-head check. No reset, rebase, force push,
+  main mutation, merge of PR340, deployment, or branch-protection change.
+- PR335 remains an ancestor of both inputs. Tasks15/19, geometry models and
+  cabinet presentation retain current-main source; tasks16–18 retain the PR's
+  already-tested completed-event notification fix and script cache versions.
+  No mathematical engine or model is replaced during reconciliation.
+- The 25 new registrations remain in place: 51 mirrors / 75 catalog entries
+  overall, and 31/32 core OGE trainers. Tires remain explicitly unsupported for
+  complete mirroring; supplemental routes are not included in that count.
+- The final delta against current main has84 paths: the original83 plus the
+  existing download manifest, whose package byte size must follow the rebuild.
+- Rebuild only the existing practical download package so its HTML also keeps
+  current canonical declarations. Two builds are identical: 399743 bytes,
+  39 files, SHA256
+  `e861ffcdb19354e495b1564585515fab3b48104313348f67f1e10c92de9011f4`.
+  Its JavaScript/CSS assets remain identical to the prior PR archive.
+
+### Validation and release boundary
+
+- Local independent mathematics: algebra668, geometry1873, tires105 pass.
+- Local native algebra/proof46, adapter/UI83, event-order27, practical/offline84,
+  retained geometry/state42, geometry/task19 regressions103, cabinet-plan32,
+  board ink/images21 and full server309 checks pass.
+- SEO sitemap12, sitemap rebuild parity, SEO route validation and static catalog
+  parity pass. No assertion, test timeout or production permission was relaxed.
+- Actual local Socket.IO transport passes32/32 checks: all25 added adapters
+  and all five retained geometry mirrors, controller grant/revoke, forbidden
+  writes, late joins and preserved drafts. All26 pre-existing mirror contract
+  records are unchanged. New-head cloud browser/CI results and the final exact
+  head are recorded in the PR after completion. The prior 25/25 workflows are
+  historical evidence only and cannot certify the integrated tree.
+- Local Chromium launch is blocked by the execution environment at
+  `socket() failed: Operation not permitted`, before opening the trainer.
+  Native-browser, picker and registry-cutover browser runs therefore do not
+  count as local passes. Use the existing cloud workflows without weakening
+  their browser assertions; local Node/Socket.IO results are separate evidence.
+- HIGH external review is still missing: GitHub has no submitted PR340 review.
+  The prior insufficient-credit response is not a verdict and has not been
+  retried. PR335's waiver does not apply. Independent review of this integrated
+  head and external review (or an explicit reasoned task-scoped owner exception)
+  remain release requirements. The external-review job in the geometry workflow
+  is restricted to PR335's branch; green PR340 CI cannot supply that verdict.
+- Rollback: reject this Draft before publication, or after a separately authorized
+  release use a normal reviewed revert of PR340's delta against the named main.
+  Preserve the 647 main-only paths, PR335 geometry and personal saved work; no
+  database migration is involved. Never revert the entire integration commit
+  as though the concurrent main releases belonged to PR340.
+- Next: read exact-head cloud checks; obtain current HIGH review/exception;
+  only then consider a separately authorized release with a fresh main check.

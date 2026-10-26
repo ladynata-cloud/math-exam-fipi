@@ -326,9 +326,15 @@ test('board quick-select entries are iframe-only and never promise mirror', asyn
 test('trainer sources contain no secrets, local paths, network calls, or bridge code', async () => {
   for (const entryPath of [planPath, checkpointPath]) {
     const html = await readFile(entryPath, 'utf8');
+    const relative = path.relative(repoRoot, entryPath).split(path.sep).join('/');
+    const canonical = `<link rel="canonical" href="https://mathexam.space/${relative}">`;
+    assert.equal(html.split(canonical).length, 2, 'one exact HTTPS self-canonical');
+    assert.ok(html.indexOf(canonical) < html.indexOf('</head>'), 'canonical stays in head');
     assert.doesNotMatch(html, /(?:token|password|passwd|api[_-]?key)\s*[:=]\s*["'][^"']+["']/i);
     assert.doesNotMatch(html, /(?:[A-Za-z]:[\\/](?:Users|home)[\\/]|file:\/\/)/i);
-    assert.doesNotMatch(html, /(?:src|href)=["']https?:\/\//i);
+    // Search metadata performs no network request; every other external
+    // resource or navigation URL is still prohibited by the original check.
+    assert.doesNotMatch(html.replace(canonical, ''), /(?:src|href)=["']https?:\/\//i);
     assert.doesNotMatch(html, /\b(?:fetch|XMLHttpRequest|WebSocket)\s*\(/);
     assert.doesNotMatch(html, /\b(?:TrainerBridge|postMessage|socket\.io|io\()\b/i);
   }

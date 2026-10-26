@@ -4,7 +4,7 @@
 const assert=require('node:assert/strict');
 const ids=new Set(require('./polyhedra-selfcheck-manifest.json').cards);
 function previousCourse(course,sourceIndex){
- const copy=structuredClone(course),seen=new Set();
+ const copy=require('./practical-baseline.cjs').previousCourse(course,sourceIndex),seen=new Set();
  const originals=new Map(sourceIndex.entries.filter(e=>e.id.startsWith('source-selfcheck-3-')).map(e=>[e.source.exercise,e]));
  assert.equal(originals.size,14,'fourteen original chapter III source positions');
  copy.lessons=copy.lessons.filter(card=>!ids.has(card.id));

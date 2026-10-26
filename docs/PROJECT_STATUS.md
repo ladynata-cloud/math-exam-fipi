@@ -1,6 +1,110 @@
 # MathExam project status
 
-Updated: 2026-10-25 (Asia/Novosibirsk)
+Updated: 2026-10-27 (Asia/Novosibirsk)
+
+## Prepared, not published: PR340 compatibility repair
+
+- Owner requested reconciliation of the existing OGE Draft with current main
+  `92d733a49692744ce043503c57f29b77bfb09a24`; prior head `6dc5980`.
+- [Compatibility record](tasks/OGE_COURSE_MIRROR_AUDIT.md#compatibility-repair-requested-by-owner--2026-10-27):
+  13/6 history divergence, 27 common paths, one real HTML conflict. Both the
+  shared-board link and published lesson contacts survive; 647 main-only files
+  and published PR335 improvements are preserved.
+- Keep 25 new registrations and 31/32 core OGE coverage. The practical archive
+  is rebuilt with current canonical links. No merge or deployment is claimed.
+- Local mathematical, state, saved-work, board primitives and server checks
+  pass; local browser launch is environment-blocked. Exact-head cloud results
+  belong in [PR340](https://github.com/ladynata-cloud/math-exam-fipi/pull/340).
+- Next: complete cloud gates, obtain integrated-head HIGH review or a reasoned
+  task-scoped exception, then seek separate release authorization. Neither old
+  CI nor the PR335 waiver satisfies the current release conditions.
+
+## Prepared: HTTPS canonicals and static trainer metadata
+
+- [Scope](tasks/YANDEX_PUBLIC_INDEXING_20261027.md), SMALL metadata-only task,
+  base `e50fcfb7ffe4a99447ee18e4d2ca2f937cd1dd68`.
+- [Public audit and checks](reports/YANDEX_PUBLIC_INDEXING_20261027.md): all 529
+  published sitemap URLs respond successfully and match the base source.
+- Prepared 455 canonical declarations, 12 specific static titles and 10 topic
+  descriptions. The known task-19 duplicate remains usable but points to its
+  established main route; the resulting sitemap contains 528 canonical URLs.
+- Runtime scripts, styles, indexing exclusions and learner content are retained.
+  HTTP-to-HTTPS hosting enforcement remains an operational follow-up.
+- Next: Draft PR checks and separate owner release authorization. These metadata
+  changes are not yet published; crawl acceptance and search indexing are separate.
+
+## Prepared: Pogorelov course accompanying numbered textbook exercises
+
+- [Scope](tasks/POGORELOV_TEXTBOOK_COMPANION.md), MEDIUM isolated companion;
+  base `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
+- New `geometry-pogorelov/textbook/`: 134 trainers for 92 exercise numbers
+  with selected subparts across all 15 paragraphs of the 2022 edition.
+  Every task shows §, number, part and printed page. The condition remains in
+  the learner's book; explanations and SVG models are original.
+- Calm task-first interface, retained optional steps, explicit assistance,
+  safe numeric checking, human review of proofs, browser-local records and
+  JSON export. The old thematic course remains intact. Standalone HTML export
+  is available from the same source.
+- [Local report](reports/POGORELOV_TEXTBOOK_COMPANION.md): 201 numerical oracles,
+  340 step journeys, storage regressions, desktop/390px browser inspection,
+  old-course regression and SEO checks pass. Gate: `POGORELOV_COMPANION_LOCAL_OK`.
+- Claude consultation is unavailable and not completed; no previous exception
+  is reused. Next: exact-head Draft PR CI, consultation or current exception,
+  and separate owner merge authorization. This is not a production release.
+- Older entries below concern different tasks and are not re-certified here.
+
+
+## In progress: Atanasyan 10–11, additional pyramid exercises 299–309
+
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_299_309.md), HIGH review; owner explicitly
+  requested continuation and publication on 2026-10-26.
+- Verified starting release: PR345 merged as `6c7339a730ba3591859bd4c8c0d8ce9be64efd7c`;
+  495 cards, 1,819 steps and 1,877 model states, main exercises1–298.
+- Preparing twelve source-specific cards for299–309 (307а/б), with independent
+  source/proof/model review and retained historical content/browser checks.
+- Next: finish independent review and actual responsive-image checks, publish
+  the scoped increment under the current authorization and verify live files.
+  This entry does not claim that the full book or this increment is published.
+
+## Published: lesson enquiries and channel subscriptions
+
+- [PR #342](https://github.com/ladynata-cloud/math-exam-fipi/pull/342) was merged as
+  `693442f82e934bcea1b32507a8afc8bdd529542f`; the deployment and 13 published
+  HTML/CSS/sitemap byte checks passed. Invitations cover 11 public pages.
+- Personal Telegram/VK and channel Telegram/MAX links are available. Clicks
+  were not collected in that release; messages/bookings are not inferred.
+- [LESSON_FUNNEL_METRIKA](tasks/LESSON_FUNNEL_METRIKA.md),
+  [PR #356](https://github.com/ladynata-cloud/math-exam-fipi/pull/356), is published
+  as `e50fcfb7ffe4a99447ee18e4d2ca2f937cd1dd68`: counter 113810914 on the 11 pages,
+  with separate page, invitation-view and click events. Deployment and all 12
+  checked live HTML/JS resources match the reviewed release.
+- Keep private goal configuration and account reports out of this public status.
+  The Webmaster connection does not grant Metrika report access; published
+  instrumentation alone cannot establish traffic, enquiries or subscriptions.
+
+## In progress: static catalog discovery and the current Vilenkin entry
+
+- [Scope](tasks/SEO_STATIC_CATALOG_COURSE_ENTRY_20261025.md), SMALL bounded
+  HTML/metadata follow-up; base `693442f82e934bcea1b32507a8afc8bdd529542f`.
+- Three existing catalogs gain ordinary HTML links before JavaScript renders;
+  their data, destinations, filters and stored progress remain unchanged.
+- The Vilenkin canonical, public catalog and sitemap now identify the actual
+  textbook entry; managed and legacy routes retain their existing behavior.
+- Local SEO, catalog parity and Vilenkin entry/retained-work/browser checks
+  pass; independent scoped review has no remaining blockers. Ready for one
+  Draft PR and exact-head CI. Merge and deployment require a separate decision.
+
+## Published: SEO consistency and Vilenkin textbook entry
+
+- [PR #337](https://github.com/ladynata-cloud/math-exam-fipi/pull/337) corrected
+  inconsistent redirect/fragment canonicals and expanded reviewed course
+  discovery. Correct home and OGE canonicals were retained.
+- [PR #339](https://github.com/ladynata-cloud/math-exam-fipi/pull/339), merged as
+  `76f99426e32e7afa5917a26f540ea84274e5d9b0`, made the Vilenkin textbook view the
+  normal public entry: 24 sections and 192 selected textbook tasks. The older
+  managed/legacy course remains available through its established routes.
+- The bounded indexing follow-up above reconciles public discovery with that
+  new entry; it makes no claim about historical search-engine decisions.
 
 ## In progress: college board native-event ordering fix
 
@@ -324,7 +428,7 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
   not performed. Course content, learner data and progress semantics were
   unchanged. Release gate: `PROFILE_FULL_COURSE_ENTRY_PUBLISHED_OK`.
 
-## In review: Atanasyan 7–9 chapter III, parallel lines
+## Published: Atanasyan 7–9 chapter III, parallel lines
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_III.md), HIGH review; branch
   `content/atanasyan-7-9-chapter3`, based on
@@ -346,9 +450,38 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
 - Detailed evidence is recorded in `docs/reviews/ATANASYAN_7_9_CHAPTER_III_*`.
   Exact-head cloud CI and the committed identity belong to this task's Draft PR
   handoff; no publication result is inferred from a local review manifest.
-- This section describes a development candidate. Chapters I–II remain the
-  published baseline until a separate owner-authorized release of chapter III.
-  Later book chapters and a real-pupil pilot are outside this task.
+- Publication is now confirmed: PR #331 was squash-merged as
+  `91dd1e5a3f85e29709df922fa88859204aac100d`; exact-commit Pages40121467624
+  and post-merge board40121468027 passed. The current public bundle checked
+  on26 October contains403 reviewed cards through exercise227, with matching
+  reviews for all three chapters. The earlier candidate wording above records
+  the preparation evidence; it is not the current publication status.
+- ChapterIV is the next scoped continuation; a real-pupil pilot is not claimed.
+
+## Reviewed candidate: Atanasyan 7–9 chapter IV
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_IV.md), HIGH review; branch
+  `content/atanasyan-7-9-chapter4`, base
+  `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
+- Exact source: 2023 revised edition, printed69–90; all228–330, theory31–38
+  and23 review questions. Grade7 also includes chapterV and advanced413–461.
+- Prior conversation reported a prepared chapterIV candidate, but its source
+  and evidence files could not be recovered. This continuation rebuilds from
+  the exact provided PDF and requires fresh review; no old test claim is reused.
+- Published403 cards, their runtime and learner identifiers remain the baseline.
+  Whole-course board synchronization and cabinet changes are outside this scope.
+- [Draft PR #346](https://github.com/ladynata-cloud/math-exam-fipi/pull/346)
+  contains166 new cards:135 exercise parts,8 theory points and23 selfchecks,
+  569 cards combined. Independent source, mathematics, models and actual
+  image review pass. All1728 new view/width pairs are covered and21 grouped
+  findings are closed. Clean browser run40323700008 checks5812 views,
+  1138 step flows and14 interactions with no geometry issues or page errors.
+- The chapterIV review manifest binds the final content/runtime and evidence;
+  production remains403 cards until a separately authorized release. Final
+  exact-head CI and current-main composition evidence are recorded in PR346.
+- After successful exact-head CI, next three actions: obtain the owner's
+  current-base release decision; perform the authorized merge/deployment;
+  verify the published bundle and production regression gates.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 
@@ -384,23 +517,60 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## In progress: Atanasyan chapter III self-check questions
+## In progress: Atanasyan remaining prism exercises 294–298
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_POLYHEDRA_SELFCHECK.md), HIGH review;
-  owner requested publication and continuation on 2026-10-24. Branch
-  `feat/atanasyan-polyhedra-selfcheck` starts from release head
-  `96cd674faebfc1353194325ab8fb5011fdf11519`, now an ancestor of production.
-- Eighteen cards cover all fourteen questions, including both original parts
-  of question7 and four explicit cases for question10. The unrestricted
-  nonconvex case has a general construction, not only a counterexample.
-- Independent exact source, mathematics, pedagogy and coordinate reviews
-  passed at 2026-10-24T10:51:46.357Z. Added79steps and76modelstates. Candidate:
-  474cards,1693steps,1709views;282complete exercises,37theory points and40
-  self-checks. All456 previous cards, runtime and pupil-state contracts remain.
-- Exact-head cloud and actual visual review remain pending at this checkpoint.
-  Next: verify the committed cloud run, inspect new desktop/mobile images,
-  and record the separate Draft PR handoff. Practical271–275 and additional
-  exercises288 onward remain pending; the entire book is not complete.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PRISMS_294_298.md), HIGH, branch
+  `content/atanasyan-294-298`, base `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
+- Owner requested continuation after the verified publication below. Five
+  source numbers become ten cards, preserving the actual parts of295 and297.
+- Distinguish both diagonal-section cases in294 and the actual midline in296;
+  give each proof its own progressively revealed model and contextual theory.
+- Preserve all485 prior cards,24 review batches,1,033 capture cases and runtime.
+  Target495 cards and all main exercises1–298. Pyramids299 onward remain pending.
+- Next: source-specific authoring and independent review; exact-head cloud and
+  actual mobile/desktop inspection; separate concrete release decision.
+
+## Published: Atanasyan practical nets271–275 and additional exercises288–293
+
+- [PR330](https://github.com/ladynata-cloud/math-exam-fipi/pull/330) merged as
+  `18197a2ce67245766114be48cbb440706eebf696`; [PR344](https://github.com/ladynata-cloud/math-exam-fipi/pull/344)
+  as `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`, after explicit owner publication.
+- Exact reviewed37-file union, both merge parents, affected blobs and stable
+  patch IDs verified; concurrent main additions preserved.
+- Live485 cards,1,763 steps,1,817 model states; all main exercises1–293,
+  theory points1–37 and40 self-check questions. Not the complete book.
+- Pages40296047583 passed for finalcommit;16 public files returnedHTTP200 and
+  matched merged bytes at2026-10-26T09:02:21Z. BundleSHA256:
+  `9ca4e58191b2073098745f0da2f76932f296cdb9d261e0ec59f578fb9a39a48c`.
+- Both increments passed independent source/math/pedagogy and actual responsive
+  inspection. Final exact-head CI:4 workflows/11 jobs;970 card journeys,
+  7,316 label states and2,070 images. The291 mobile power-wrap finding was fixed
+  and rereviewed. Post-push Profile40296049025 subsequently passed all3 jobs.
+- No pupil/physical-device trial or paid external-provider review is claimed.
+  Whole-course paid-review deferral remains recorded in the parent scope.
+
+## Published: Atanasyan chapter III self-check questions
+
+- [PR329](https://github.com/ladynata-cloud/math-exam-fipi/pull/329) merged as
+  `631d2d644d87162d60585c3efb8365af8311a3f5`, sole parent
+  `ff4d60fcd071b8208b93373a063d1a194aea93b7`; reviewed head
+  `7842c7701f7edd7b12b3c7a86cefab4fdb28c8bc`. The owner separately authorized
+  merge and publication; the immediate remote-base comparison found no drift.
+- All38 changed paths/blobs and stable patch ID matched the independently
+  reviewed composition, tree `30c5687363bc2026a97a64a1dd68da4dec15a416`.
+  Eighteen cards complete all14 chapter III self-check questions:79steps and
+  76modelstates. Published totals:474cards,1693steps,1709views,282complete main
+  exercises,37theory points,40self-checks. All456 preceding cards are intact.
+- Independent content/mathematics review, all11 exact-head jobs, actual review
+  of174 new images and36 complete proof views at320/1280 passed. Pages40111565939
+  and Profile40111566094 passed all6 jobs on the actual merge; all54 public-byte
+  requests matched. Focused live desktop help/theory-return/reload also passed.
+- Published bundle SHA256:
+  `bcb10fec3e270460d16729fe924530685b82b4f08b16e1667c3023fb3be7a9c3`.
+  Rechecked at this continuation start: HTTP200 and the same474-card bytes.
+  Gate: `ATANASYAN_POLYHEDRA_SELFCHECK_PUBLISHED_OK`.
+- No paid external-provider verdict, new live mobile run or physical-pupil
+  trial is claimed. The entire textbook remains incomplete.
 
 ## Published: Atanasyan point37 and exercises281–287
 
