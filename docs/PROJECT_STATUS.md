@@ -2,13 +2,34 @@
 
 Updated: 2026-10-26 (Asia/Novosibirsk)
 
+## Prepared: Pogorelov course accompanying numbered textbook exercises
+
+- [Scope](tasks/POGORELOV_TEXTBOOK_COMPANION.md), MEDIUM isolated companion;
+  base `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
+- New `geometry-pogorelov/textbook/`: 134 trainers for 92 exercise numbers
+  with selected subparts across all 15 paragraphs of the 2022 edition.
+  Every task shows §, number, part and printed page. The condition remains in
+  the learner's book; explanations and SVG models are original.
+- Calm task-first interface, retained optional steps, explicit assistance,
+  safe numeric checking, human review of proofs, browser-local records and
+  JSON export. The old thematic course remains intact. Standalone HTML export
+  is available from the same source.
+- [Local report](reports/POGORELOV_TEXTBOOK_COMPANION.md): 201 numerical oracles,
+  340 step journeys, storage regressions, desktop/390px browser inspection,
+  old-course regression and SEO checks pass. Gate: `POGORELOV_COMPANION_LOCAL_OK`.
+- Claude consultation is unavailable and not completed; no previous exception
+  is reused. Next: exact-head Draft PR CI, consultation or current exception,
+  and separate owner merge authorization. This is not a production release.
+- Older entries below concern different tasks and are not re-certified here.
+
+
 ## In progress: Atanasyan 10–11, remaining pyramid exercises 310–314
 
 - [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_310_314.md), HIGH review; owner approved
   transfer of only six cards onto the current published baseline on2026-10-26.
-- Branch `content/atanasyan-310-314`, base `44eab4d11046d8613b50a73b00185755c814dba6`.
+- Branch `content/atanasyan-310-314`, base `1aa517ed819d09ff18649b0855319ecccaee5bc0`.
   Preserve published299–309 and all507 prior cards,26 batches,1188 captures,
-  existing course/runtime contracts and the Peterson5 increment in this base.
+  existing course/runtime contracts and the Peterson5, Atanasyan7–9 and Pogorelov increments in this base.
 - Target513 cards,1931 justified steps,2001 model states and main exercises1–314.
   Fresh exact-head cloud and actual image checks precede a separate release decision.
 - Supersede blocked PR350; its withdrawn309 source review is not part of this transfer.

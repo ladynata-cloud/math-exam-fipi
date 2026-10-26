@@ -4,7 +4,7 @@
 
 - Task: TEXTBOOK_ATANASYAN_PYRAMIDS_310_314.
 - Owner instruction: «переноси», 2026-10-26, approving transfer of only 310–314 onto the current published baseline and completion of checks.
-- Base: main `44eab4d11046d8613b50a73b00185755c814dba6`.
+- Base: main `1aa517ed819d09ff18649b0855319ecccaee5bc0`.
 - Branch: `content/atanasyan-310-314`.
 - Review level: HIGH; mathematical content in the established textbook interaction.
 - Parent goal: [complete textbook](TEXTBOOK_ATANASYAN.md).
@@ -15,7 +15,7 @@ Complete five numbered exercises with six cards:310,311а,311б,312,313,314. Pre
 
 PR348 published 299–309 as commit `72fb9861e2d333d92d4b55fb5d1c9f61c567f86a`. Its 507 cards contain 1896 justified steps and 1966 model states; all main exercises 1–309, 37 theory points and 40 self-check questions are available. Pages40335646555 and post-merge Profile40335646864 succeeded. The published bundle SHA256 is `0aca5154f8f81edbc2df35d7bff112a0781c862b956d51fabc022ae2e00e6fa2`.
 
-The current base also includes PR346 (Atanasyan7–9 chapterIV) and PR349, the Peterson grade5 companion and its existing video-runner adjustment. Preserve both parallel increments exactly, except the scoped Atanasyan10–11 status entries. The old competing PR350 is blocked and is superseded by this six-card transfer; its withdrawn 309 source review must never enter the new batch. Published 309 correctly uses a rectangular base and has area 80/3 square decimetres.
+The current base also includes PR346 (Atanasyan7–9 chapterIV), PR349 (the Peterson grade5 companion and its existing video-runner adjustment), and PR347 (the Pogorelov companion). Preserve all three parallel increments exactly, except the scoped Atanasyan10–11 status entries. The frozen 507-card content baseline and independent six-card source review remain bound to44eab4d; the subsequent1aa517ed commit changes no Atanasyan10–11 content or test files. Within the approved transfer, an ordinary merge of current main into the feature branch resolves only the adjacent project-status headings and preserves all18 other Pogorelov paths exactly; no published branch is modified. The old competing PR350 is blocked and is superseded by this six-card transfer; its withdrawn 309 source review must never enter the new batch. Published 309 correctly uses a rectangular base and has area 80/3 square decimetres.
 
 The supplied Atanasyan 12th edition (2024) places 310–314 on printed page 88 / PDF page 90. Source SHA256: `bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770`. The actual page was freshly inspected before this transfer. Publish authored explanations, original models and bibliographic metadata only; exclude the source PDF, page images, private file identifiers and machine paths.
 
