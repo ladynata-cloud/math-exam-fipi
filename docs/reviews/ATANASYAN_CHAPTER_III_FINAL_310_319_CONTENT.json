@@ -146,6 +146,14 @@
       "field": "visualization.model.views.section, visualization.model.views.length, steps[step-4], steps[step-5], help[h1]",
       "finding": "The source-faithful small right triangle is narrow in the full-model projection. Filling a larger axial section required explicit geometric justification and consistent terminology.",
       "resolution": "Author fills the actual axial trapezoid CEFC₁ and retains all three triangle segments. The text establishes the common plane through corresponding parallel medians; the help now calls EHF a right triangle within the axial section. Independent plane-edge intersection, lengths, convexity, and rigid-transform checks pass."
+    },
+    {
+      "cards": [
+        "ex-main-0311-a"
+      ],
+      "field": "steps[step-1].explanation and justifications[0].text",
+      "finding": "Actual CI image at width 320 showed both long Heron radicands overflowing the first explanation and its opened reason.",
+      "resolution": "Author replaces the long numerical substitution by explicit differences 6, 8, 7 and the short product 21·6·8·7; the general Heron formula is stated accurately in words through the square of the area. Independent review of the actual failure image, exact two-field diff, arithmetic, and mounted DOM confirms equivalent mathematics and a complete semiperimeter fraction. Geometry, source, step count, and all other content are unchanged. Fresh responsive browser pixels remain a separate release gate."
     }
   ],
   "limitations": [
@@ -179,7 +187,7 @@
       "pixelScope": "This geometric and textual verification does not claim an actual-image pass."
     }
   ],
-  "reviewedAt": "2026-10-26T15:15:42.871Z",
+  "reviewedAt": "2026-10-26T15:39:27.251Z",
   "cards": [
     {
       "id": "ex-main-0310",
@@ -195,15 +203,15 @@
     },
     {
       "id": "ex-main-0311-a",
-      "sha256": "2bf000fbeb318311984eacbc0ca02f7eb70d2cd4e035e4d2275a0f364c2e1b62",
-      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "sha256": "a556504701ab9aa81da5f7193bf9082df596e21fb984734e5b05aa9ae61c788d",
+      "reviewedAt": "2026-10-26T15:39:27.251Z",
       "steps": 7,
       "modelStates": 8,
       "source": "PASS",
       "mathematics": "PASS",
       "writtenPedagogy": "PASS",
       "findings": [],
-      "verification": "Source sides 13, 14, 15 and perpendicular edge 9 are preserved. Heron's formula gives base area 84; the base altitude is 12 with its foot inside BC, at distances 9 and 5. The other face altitude is 15; the complete four-face area is 315 cm²."
+      "verification": "Source sides 13, 14, 15 and perpendicular edge 9 are preserved. Heron's formula gives base area 84; the base altitude is 12 with its foot inside BC, at distances 9 and 5. The other face altitude is 15; the complete four-face area is 315 cm². Targeted re-review confirms that the shortened Heron computation and verbal theorem state the same product and positive square root; all other card fields are deeply identical to the previously reviewed content."
     },
     {
       "id": "ex-main-0311-b",
@@ -314,9 +322,24 @@
       "verification": "Each of the three planes through A and another vertex is the perpendicular bisector plane of the remaining edge and preserves every vertex and the convex body. Any reflection fixing A must fix exactly one of the other vertices and swap the remaining pair; the perpendicular bisector plane is unique. This proves exactly three. Every actual reflected vertex and the exhaustive 24-permutation classification agree."
     }
   ],
-  "aggregateSHA256": "e914dd47c49dcf11e1140897692209ea80a1281ab49cf54e9cddc2f73d44e376",
+  "aggregateSHA256": "2fb310dde60e848104ae34655cf1b96ece02329eee361d6ea94466d9e9fe2c83",
   "oracle": {
     "path": "tools/stereo-textbook/additional310-math.test.py",
     "sha256": "d6406827f9ce57d61f92960191f85d8b8893855d14d442f1c9e0dcc78b6ddaa3"
-  }
+  },
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-10-26T15:39:27.251Z",
+      "previousReviewedAt": "2026-10-26T15:15:42.871Z",
+      "previousAggregateSHA256": "e914dd47c49dcf11e1140897692209ea80a1281ab49cf54e9cddc2f73d44e376",
+      "changedCards": [
+        {
+          "id": "ex-main-0311-a",
+          "previousSHA256": "2bf000fbeb318311984eacbc0ca02f7eb70d2cd4e035e4d2275a0f364c2e1b62",
+          "sha256": "a556504701ab9aa81da5f7193bf9082df596e21fb984734e5b05aa9ae61c788d"
+        }
+      ],
+      "scope": "Targeted independent re-review of exactly two authored text fields after an actual 320px CI overflow finding. The ten unchanged card rows retain their original hashes and review timestamps. Oracle bytes are unchanged; this content PASS does not claim a fresh responsive-browser PASS."
+    }
+  ]
 }

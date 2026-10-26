@@ -102,15 +102,15 @@ and runtime contracts remain untouched.
 ## Execution record
 
 Independent source, mathematics and written-pedagogy review passed at
-2026-10-26T15:15:42.871Z. Eleven canonical card objects bind to aggregate
-`e914dd47c49dcf11e1140897692209ea80a1281ab49cf54e9cddc2f73d44e376`.
+2026-10-26T15:39:27.251Z. Eleven canonical card objects bind to aggregate
+`2fb310dde60e848104ae34655cf1b96ece02329eee361d6ea94466d9e9fe2c83`.
 The independent integration review reports no unresolved findings. Reports:
 [content](../reviews/ATANASYAN_CHAPTER_III_FINAL_310_319_CONTENT.json) and
 [integration](../reviews/ATANASYAN_CHAPTER_III_FINAL_310_319_INTEGRATION.json).
 
 The reproducible bundle has 518 cards, 1,969 steps and 2,050 model states;
-4,193,981 bytes, SHA256
-`9d0594cc25e49a3756465cbbee1ac81c0080a301b30613d6be8514d4eb6e9fc3`.
+4,194,186 bytes, SHA256
+`1f654579118929757f68ac81424a0962167365550306892565ef336cf31af38d`.
 All main numbers 1–319 are covered. Chapter III has 203 reviewed catalogue
 rows and zero pending rows. The full book remains incomplete.
 
@@ -129,3 +129,13 @@ and its exact-head cloud gates will be verified before ordinary publication
 under the current continuation and publication authorization. Record final
 base/head, merge identity, actual pixels, deployment and public bytes in the
 PR; none of those pending stages is claimed here.
+
+
+The first exact-head cloud run found mobile overflow in exercise 311a's first
+step: two long nonbreaking Heron radicals exceeded the 320px page. Actual
+failure pixels confirmed both fields. Only that explanation and justification
+were rewritten: compute the three differences separately, retain the short
+numeric radical, and state the general formula in words. Independent review
+reconfirmed equivalence and preserved all other card fields. The original
+renderer and all overflow/projection gates remain unchanged. Fresh exact-head
+browser and image checks are required for the corrected content.

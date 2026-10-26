@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-26T15:15:42.871Z",
-  "registeredAt": "2026-10-26T15:19:04.047Z",
+  "reviewedAt": "2026-10-26T15:39:27.251Z",
+  "registeredAt": "2026-10-26T15:40:07.730Z",
   "scope": "Introduction and chapters I–III: main exercises 1–319, theory points 1–37, all 40 chapter self-check questions. Chapter III is complete. Chapter IV and main exercises 320 onward remain pending. Not the complete book.",
   "batches": [
     {
@@ -814,8 +814,8 @@
     },
     {
       "reviewer": "Codex independent_review (no lesson authorship)",
-      "reviewedAt": "2026-10-26T15:15:42.871Z",
-      "sourceBundleSHA256": "e914dd47c49dcf11e1140897692209ea80a1281ab49cf54e9cddc2f73d44e376",
+      "reviewedAt": "2026-10-26T15:39:27.251Z",
+      "sourceBundleSHA256": "2fb310dde60e848104ae34655cf1b96ece02329eee361d6ea94466d9e9fe2c83",
       "scope": "All eleven source-specific cards for main exercises 310–319, including both printed parts of 311. Source, mathematics, written pedagogy, 73 steps and 84 coordinate-model states independently reviewed. Final browser pixels require separate evidence.",
       "cardIds": [
         "ex-main-0310",
@@ -2869,7 +2869,7 @@
     },
     {
       "id": "ex-main-0311-a",
-      "sha256": "2bf000fbeb318311984eacbc0ca02f7eb70d2cd4e035e4d2275a0f364c2e1b62"
+      "sha256": "a556504701ab9aa81da5f7193bf9082df596e21fb984734e5b05aa9ae61c788d"
     },
     {
       "id": "ex-main-0311-b",
