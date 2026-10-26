@@ -5,12 +5,16 @@ if(!D||!M){main.innerHTML='<h1>Не все файлы курса загрузи�
 const KEY='mathexam.peterson5.v1', blank=()=>({version:1,tasks:{},practice:{},last:null,origin:null});
 let state=blank(),writable=true,active=null,cleanup=null;
 const e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fractionScalar=String.raw`[−+\-]?(?:\d+(?:[.,]\d+)?[A-Za-zА-Яа-я]?|[A-Za-zА-Яа-я])(?:[²³]|\^\d+)?`;
+const fractionExpression=fractionScalar+String.raw`(?:\s*[+−\-·×*]\s*`+fractionScalar+')*';
+const fractionAtom=String.raw`(?:\(\s*`+fractionExpression+String.raw`\s*\)|`+fractionScalar+')';
+const simpleFractionPattern=new RegExp(String.raw`(?<![\p{L}\p{N}_{}:/])(`+fractionAtom+String.raw`)\s*/\s*(`+fractionAtom+String.raw`)(?![\p{L}\p{N}_{}:/])`,'gu');
 function fmt(v){
  let s=String(v??'');
- // Only numerical notation is interpreted; all text is escaped before markup is added.
+ // A narrow school-math grammar recognizes fractions; all content is escaped. No expression is evaluated.
  s=s.replace(/(^|[^\d:}])([−\-]?\d+)\s+(\d+)\s*\/\s*(\d+)(?!\d)/g,(_,p,w,n,d)=>p+'{{mix:'+w+':'+n+':'+d+'}}');
- s=s.replace(/(^|[^\d:}])([−\-]?\d+)\s*\/\s*(\d+)(?!\d)/g,(_,p,n,d)=>p+'{{frac:'+n+':'+d+'}}');
- return e(s).replace(/\{\{mix:([−\-\d]+):(\d+):(\d+)\}\}/g,(_,w,n,d)=>'<span class="mixed">'+w+'<span class="fra" aria-label="'+n+' делить на '+d+'"><span>'+n+'</span><span>'+d+'</span></span></span>').replace(/\{\{frac:([−\-\d]+):([−\-\d]+)\}\}/g,(_,n,d)=>'<span class="fra" aria-label="'+n+' делить на '+d+'"><span>'+n+'</span><span>'+d+'</span></span>').replace(/\n/g,'<br>');
+ s=s.replace(simpleFractionPattern,(_,n,d)=>'{{mathfrac:'+n+':'+d+'}}');
+ return e(s).replace(/\{\{mathfrac:([^{}:]+):([^{}:]+)\}\}/g,(_,n,d)=>'<span class="fra" aria-label="'+n+' делить на '+d+'"><span>'+n+'</span><span>'+d+'</span></span>').replace(/\{\{mix:([−\-\d]+):(\d+):(\d+)\}\}/g,(_,w,n,d)=>'<span class="mixed">'+w+'<span class="fra" aria-label="'+n+' делить на '+d+'"><span>'+n+'</span><span>'+d+'</span></span></span>').replace(/\{\{frac:([−\-\d]+):([−\-\d]+)\}\}/g,(_,n,d)=>'<span class="fra" aria-label="'+n+' делить на '+d+'"><span>'+n+'</span><span>'+d+'</span></span>').replace(/\n/g,'<br>');
 }
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])),skills=Object.fromEntries(M.skills.map(s=>[s.id,s])),taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
