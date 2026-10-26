@@ -1,6 +1,6 @@
 # MathExam project status
 
-Updated: 2026-10-25 (Asia/Novosibirsk)
+Updated: 2026-10-26 (Asia/Novosibirsk)
 
 ## In progress: Atanasyan 10–11, additional pyramid exercises 299–309
 
@@ -371,7 +371,7 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
   not performed. Course content, learner data and progress semantics were
   unchanged. Release gate: `PROFILE_FULL_COURSE_ENTRY_PUBLISHED_OK`.
 
-## In review: Atanasyan 7–9 chapter III, parallel lines
+## Published: Atanasyan 7–9 chapter III, parallel lines
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_III.md), HIGH review; branch
   `content/atanasyan-7-9-chapter3`, based on
@@ -393,9 +393,38 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
 - Detailed evidence is recorded in `docs/reviews/ATANASYAN_7_9_CHAPTER_III_*`.
   Exact-head cloud CI and the committed identity belong to this task's Draft PR
   handoff; no publication result is inferred from a local review manifest.
-- This section describes a development candidate. Chapters I–II remain the
-  published baseline until a separate owner-authorized release of chapter III.
-  Later book chapters and a real-pupil pilot are outside this task.
+- Publication is now confirmed: PR #331 was squash-merged as
+  `91dd1e5a3f85e29709df922fa88859204aac100d`; exact-commit Pages40121467624
+  and post-merge board40121468027 passed. The current public bundle checked
+  on26 October contains403 reviewed cards through exercise227, with matching
+  reviews for all three chapters. The earlier candidate wording above records
+  the preparation evidence; it is not the current publication status.
+- ChapterIV is the next scoped continuation; a real-pupil pilot is not claimed.
+
+## Reviewed candidate: Atanasyan 7–9 chapter IV
+
+- [Scope](tasks/ATANASYAN_7_9_CHAPTER_IV.md), HIGH review; branch
+  `content/atanasyan-7-9-chapter4`, base
+  `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
+- Exact source: 2023 revised edition, printed69–90; all228–330, theory31–38
+  and23 review questions. Grade7 also includes chapterV and advanced413–461.
+- Prior conversation reported a prepared chapterIV candidate, but its source
+  and evidence files could not be recovered. This continuation rebuilds from
+  the exact provided PDF and requires fresh review; no old test claim is reused.
+- Published403 cards, their runtime and learner identifiers remain the baseline.
+  Whole-course board synchronization and cabinet changes are outside this scope.
+- [Draft PR #346](https://github.com/ladynata-cloud/math-exam-fipi/pull/346)
+  contains166 new cards:135 exercise parts,8 theory points and23 selfchecks,
+  569 cards combined. Independent source, mathematics, models and actual
+  image review pass. All1728 new view/width pairs are covered and21 grouped
+  findings are closed. Clean browser run40323700008 checks5812 views,
+  1138 step flows and14 interactions with no geometry issues or page errors.
+- The chapterIV review manifest binds the final content/runtime and evidence;
+  production remains403 cards until a separately authorized release. Final
+  exact-head CI and current-main composition evidence are recorded in PR346.
+- After successful exact-head CI, next three actions: obtain the owner's
+  current-base release decision; perform the authorized merge/deployment;
+  verify the published bundle and production regression gates.
 
 ## Published: Atanasyan 7–9 chapter II, triangles
 
