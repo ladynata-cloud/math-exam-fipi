@@ -35,21 +35,20 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   the scoped increment under the current authorization and verify live files.
   This entry does not claim that the full book or this increment is published.
 
-## In progress: lesson enquiries and channel subscriptions
+## Published: lesson enquiries and channel subscriptions
 
-- [Scope](tasks/LESSON_CONTACTS_CHANNELS.md), SMALL static HTML/CSS task; base
-  `76f99426e32e7afa5917a26f540ea84274e5d9b0`.
-- Prepared: /lessons/, contact and subscription invitations on ten public
-  entrances, personal Telegram/VK links and Telegram/MAX channel links supplied
-  by the owner. Trainer logic, cabinets and the board are unchanged.
-- Local gate: `LESSON_CONTACTS_STATIC_OK`; SEO/sitemap, 22 responsive browser
-  checks and 11 no-JS routes passed. Existing scripts/inline styles are preserved.
-- Draft PR #342 is open. The navigation contract now recognizes the requested
-  lesson contact page and checks its two personal contact destinations.
-- Next: verify exact-head CI; obtain separate merge
-  authorization and verify production.
-- This preparation is not a production release. Older entries below describe
-  other tasks and have not been re-certified by this contact-only change.
+- [PR #342](https://github.com/ladynata-cloud/math-exam-fipi/pull/342) was merged as
+  `693442f82e934bcea1b32507a8afc8bdd529542f`; the deployment and 13 published
+  HTML/CSS/sitemap byte checks passed. Invitations cover 11 public pages.
+- Personal Telegram/VK and channel Telegram/MAX links are available. Clicks
+  were not collected in that release; messages/bookings are not inferred.
+- New task [LESSON_FUNNEL_METRIKA](tasks/LESSON_FUNNEL_METRIKA.md) prepares counter
+  113810914 with separate page, invitation-view and click events. Local tests,
+  static preservation/SEO and 22 responsive browser journeys pass. Real counter
+  delivery and goal configuration are not yet verified.
+- Next: review/publish the scoped analytics PR after authorization, create the
+  six goals, verify receipt in Metrika. The Webmaster connection does not grant
+  Metrika report access; weekly monitoring cannot yet claim traffic numbers.
 
 ## In progress: static catalog discovery and the current Vilenkin entry
 

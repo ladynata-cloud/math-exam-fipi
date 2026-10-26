@@ -102,6 +102,13 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def is_lesson_funnel(script):
+    # This optional observer never renders lesson text. Keep other executable
+    # scripts prohibited on static topic explanations.
+    attrs, text = script
+    return attrs == {"defer": None, "src": "/assets/lesson-funnel.js?v=20261026"} and not text.strip()
+
+
 def public_url(path):
     return ORIGIN + "/" + path.removesuffix("index.html") if path.endswith("index.html") else ORIGIN + "/" + path
 
@@ -180,7 +187,8 @@ def run(base=None):
         if relative in TOPICS:
             require(page.h1 == 1, label + "one H1")
             require(len(page.ids) == len(set(page.ids)), label + "duplicate DOM IDs")
-            require(not page.scripts, label + "explanation must work without executable JavaScript")
+            require(len(page.scripts) <= 1 and all(is_lesson_funnel(s) for s in page.scripts),
+                    label + "explanation must remain static; only the optional deferred funnel observer is allowed")
             require(page.schemas, label + "missing breadcrumbs")
             graph = page.schemas[0]["@graph"]
             crumb = next(node for node in graph if node.get("@type") == "BreadcrumbList")
@@ -221,7 +229,9 @@ def run(base=None):
                     for ident in ("countCards", "countSections"):
                         old_count = re.search(rf'<b id="{ident}">[^<]+', old).group()
                         preserved = re.sub(rf'<b id="{ident}">[^<]+', old_count, preserved, count=1)
-            require(before.scripts == Page(script_text).scripts, label + "executable scripts changed outside scoped catalog replacement")
+            without_funnel = lambda scripts: [s for s in scripts if not is_lesson_funnel(s)]
+            require(without_funnel(before.scripts) == without_funnel(Page(script_text).scripts),
+                    label + "executable scripts changed outside scoped catalog/funnel additions")
             require(before.styles == page.styles, label + "existing styles changed")
             require(before.style_links == page.style_links, label + "existing stylesheet links changed")
             for key in ("robots", "googlebot", "yandex", "viewport"):
