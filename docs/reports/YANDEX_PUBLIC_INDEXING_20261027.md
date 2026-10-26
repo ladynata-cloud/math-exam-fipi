@@ -59,6 +59,16 @@ Scope: [YANDEX_PUBLIC_INDEXING_20261027](../tasks/YANDEX_PUBLIC_INDEXING_2026102
   outside head, injected script, noindex and changed learner content.
 - All 35 existing OGE basics contextual-help/state tests pass. Cloud reruns are
   recorded in the PR; the initial failed runs are not presented as successes.
+- A further existing inequality-course link check treated an absolute canonical
+  as a relative filesystem path. It now resolves same-site HTTPS URLs to real
+  files, including directory indexes; missing resources and external hosts still
+  fail, with explicit negative checks. Mathematical assertions are unchanged.
+- An exploratory run of three older, non-CI snapshot suites has ten failures on
+  the reviewed base as well as on this patch. They assert historical source,
+  catalog and platform snapshots and are not current release gates. The one new
+  offline-check failure caused by the canonical was corrected by allowing only
+  its exact head declaration; resource/navigation/network prohibitions remain.
+  These ten baseline failures are disclosed, not claimed as passing or repaired.
 - `git diff --check`: passes after retaining original CRLF lines and fixing the
   one trailing-space case. Initial whitespace findings were resolved, not waived.
 - Initial local jsdom resolution was unavailable; catalog checks then passed

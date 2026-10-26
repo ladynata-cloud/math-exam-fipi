@@ -49,6 +49,10 @@ titles for existing public trainers, while preserving every learner interaction.
   for incorrect metadata, injected scripts and changed content.
 - Enforce self-canonical coverage for every sitemap entry in the existing SEO
   gate so later generator rebuilds cannot silently discard the metadata.
+- Resolve same-site absolute canonical URLs to real files in the existing
+  inequality-course link check, retaining rejection of missing or external links.
+- Distinguish exact self-canonical metadata from external resource/navigation URLs
+  in the existing plan/route trainer offline check; network restrictions remain.
 - Reconcile the published lesson-funnel release in project status and document
   public audit results and remaining operational work.
 
