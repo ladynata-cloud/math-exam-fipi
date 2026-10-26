@@ -1,0 +1,322 @@
+{
+  "reviewer": "Codex independent_review (no lesson authorship)",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+  "authorBase": "72fb9861e2d333d92d4b55fb5d1c9f61c567f86a",
+  "authorReviewerSeparation": {
+    "reviewerAuthoredLessons": false,
+    "lessonAuthors": [
+      "author_299_302",
+      "author_303_306",
+      "author_307_309"
+    ],
+    "reviewerOwnedFiles": [
+      "tools/stereo-textbook/additional310-math.test.py",
+      "docs/reviews/ATANASYAN_CHAPTER_III_FINAL_310_319_CONTENT.json"
+    ]
+  },
+  "scope": "Independent source, mathematics, written pedagogy, actual coordinate models, and focused rendered-DOM review of all eleven cards for main exercises 310–319, including both printed parts of 311. Every condition, prompt, explanation, justification, help item, answer contract, model note, focus label, and model state was read. This report does not replace responsive browser or actual-image review.",
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "edition": "2024, 12th edition",
+    "printedPages": [
+      88
+    ],
+    "pdfPages": [
+      90
+    ],
+    "inspection": "The supplied original page image was visually read before independent derivation and before reading the authored cards.",
+    "sourceSubparts": {
+      "311": [
+        "а",
+        "б"
+      ]
+    }
+  },
+  "canonicalization": "Remove top-level status and review; recursively sort object keys while preserving arrays; SHA256 of UTF-8 JSON.stringify serialization. Aggregate uses the ordered array of the eleven canonical card objects.",
+  "independentMathematics": {
+    "parameterFamilies": 1320,
+    "familiesPerPart": 120,
+    "groups": [
+      "310",
+      "311a",
+      "311b",
+      "312",
+      "313",
+      "314",
+      "315",
+      "316",
+      "317",
+      "318",
+      "319"
+    ],
+    "additionalBoundaryCases": 18,
+    "checks": [
+      "Vector-product areas and exact source dimensions",
+      "Independent orthogonal plane projection and internal altitude position",
+      "Regular n-gons for varying n and acute face angles, with additional n up to 1024",
+      "Homothetic frustum bases, true apothems, and source height/ratio constraints",
+      "Maximal supporting hull faces, regularity, noncoplanarity, edge incidence, and displayed edge graphs",
+      "Interior dihedrals from outward face normals and independently checked inward section rays",
+      "All 24 vertex permutations of a regular tetrahedron, selecting all six plane reflections and exactly three through a chosen vertex",
+      "Arbitrary positive scale, rigid orientation, and translation for the spatial families"
+    ]
+  },
+  "actualModelVerification": {
+    "models": 11,
+    "states": 84,
+    "planarStrictlyConvexPolygons": 103,
+    "nonzeroSegments": 343
+  },
+  "renderedDOMVerification": {
+    "modelStates": 84,
+    "plainCaptionAndNoteNodesPerState": 2,
+    "plainPointLabelsAlsoChecked": true,
+    "slashFractionsInPlainSurfaces": 0,
+    "richTextFractions": 89,
+    "theoryReferences": 72,
+    "exactTheoryMetadataMatches": true,
+    "retainedSteps": 73,
+    "wrongExactAnswersRejected": 4,
+    "writtenProofSubmissionsNotCertified": 7,
+    "method": "Existing TaskSceneViewer and StereoMath mounted in JSDOM. Actual application interaction used an isolated in-memory reviewed fixture; no publication flags or product files were changed."
+  },
+  "openFindings": [],
+  "resolvedFindings": [
+    {
+      "cards": [
+        "ex-main-0313"
+      ],
+      "field": "answer.feedback",
+      "finding": "The error-feedback field initially began with a success claim and disclosed the numeric answer, although the existing engine displays that field for wrong answers.",
+      "resolution": "Author replaced it with neutral guidance without the answer. Independent actual-app interaction confirmed wrong numeric answers stay unchecked and receive no success claim or answer disclosure."
+    },
+    {
+      "cards": [
+        "ex-main-0318"
+      ],
+      "field": "steps[step-5].prompt",
+      "finding": "The prompt requested a plane through the whole edge EF perpendicular to that edge, which is impossible.",
+      "resolution": "Author now requests a plane through the midpoint of EF perpendicular to the edge; the construction and proof use that exact normal section."
+    },
+    {
+      "cards": [
+        "ex-main-0317"
+      ],
+      "field": "steps[step-5].justifications[0]",
+      "finding": "The property of a perpendicular to a plane cited the perpendicularity criterion instead of the corresponding property lesson.",
+      "resolution": "Author changed the contextual reference to theory-016 and copied its exact source metadata."
+    },
+    {
+      "cards": [
+        "ex-main-0319"
+      ],
+      "field": "answer.prompt",
+      "finding": "The restriction of automatic checking to the numerical count was stated only in error feedback, which is not displayed after a correct answer.",
+      "resolution": "The permanent answer prompt now explicitly says only the count is checked and asks for the construction and completeness proof separately. The original source question asks for this count; written proofs remain outside automatic certification."
+    },
+    {
+      "cards": [
+        "ex-main-0311-b"
+      ],
+      "field": "steps[step-5], help[h2], model.views.proof",
+      "finding": "The proof introduced a line through H parallel to BC, but the model showed only the direction BC.",
+      "resolution": "Author named HJ, constructed it in plane DBC, and revealed its segment and point only in the relevant proof view. Independent coordinates verify HJ parallel to BC and J in the face plane."
+    },
+    {
+      "cards": [
+        "ex-main-0317"
+      ],
+      "field": "steps[step-7].explanation",
+      "finding": "The classification of all supporting faces benefited from an explicit bridge from arbitrary faces to triples of vertices.",
+      "resolution": "Author now states every face has at least three vertices, classifies triples without an opposite pair, and rules out any supporting face containing an opposite pair through the centre."
+    },
+    {
+      "cards": [
+        "ex-main-0319"
+      ],
+      "field": "visualization.model.note",
+      "finding": "Naming all three auxiliary midpoints in the initial note could hint at the requested count before the construction.",
+      "resolution": "Author replaced the note with neutral progressive-construction guidance without naming the three points."
+    },
+    {
+      "cards": [
+        "ex-main-0313"
+      ],
+      "field": "visualization.model.views.section, visualization.model.views.length, steps[step-4], steps[step-5], help[h1]",
+      "finding": "The source-faithful small right triangle is narrow in the full-model projection. Filling a larger axial section required explicit geometric justification and consistent terminology.",
+      "resolution": "Author fills the actual axial trapezoid CEFC₁ and retains all three triangle segments. The text establishes the common plane through corresponding parallel medians; the help now calls EHF a right triangle within the axial section. Independent plane-edge intersection, lengths, convexity, and rigid-transform checks pass."
+    }
+  ],
+  "limitations": [
+    "The source/math/written review does not certify final browser pixels or responsive layout.",
+    "No real-pupil learning-efficacy, physical-device, or screen-reader trial was performed.",
+    "Paid external-provider review remains deferred under the established task scope; none is claimed."
+  ],
+  "geometryRevisionVerification": [
+    {
+      "id": "ex-main-0313",
+      "points": 11,
+      "properRigidTransformation": true,
+      "determinant": 1.0000000000000002,
+      "maxPointFitError": 2.094764613337708e-15,
+      "maxPairwiseDistanceChange": 1.7763568394002505e-15,
+      "nonCoordinateContentChanged": true
+    },
+    {
+      "id": "ex-main-0316",
+      "points": 10,
+      "properRigidTransformation": true,
+      "determinant": 1.0000000000000009,
+      "maxPointFitError": 2.022922624776835e-15,
+      "maxPairwiseDistanceChange": 8.881784197001252e-16,
+      "nonCoordinateContentChanged": false
+    },
+    {
+      "id": "ex-main-0313",
+      "change": "The section and length views fill the complete axial trapezoid C–E–F–C₁ while explicitly drawing EH, HF and EF. The explanation proves that the parallel corresponding medians CE and C₁F determine the same axial plane, and the help distinguishes the full section from its inner right triangle.",
+      "independentVerification": "Plane/edge intersection against all nine actual frustum edges gives exactly C, E, F, C₁. The full section is planar and convex, has area 9√3/2, and the retained inner right triangle has catheti √3 and 1 and hypotenuse 2. All source dimensions are unchanged.",
+      "pixelScope": "This geometric and textual verification does not claim an actual-image pass."
+    }
+  ],
+  "reviewedAt": "2026-10-26T15:15:42.871Z",
+  "cards": [
+    {
+      "id": "ex-main-0310",
+      "sha256": "f69b70024294087bed31ec844311457b8d19a87d6c87475fde808aa5c1e65310",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 6,
+      "modelStates": 7,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Source dimensions 25, 25, 40 and 8 are preserved. The base median is justified as an altitude; its length is 15. The three-perpendicular theorem gives the face altitude 17. The two right faces have area 100 each and the remaining face 340, giving lateral area 540 cm² without adding the base."
+    },
+    {
+      "id": "ex-main-0311-a",
+      "sha256": "2bf000fbeb318311984eacbc0ca02f7eb70d2cd4e035e4d2275a0f364c2e1b62",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 7,
+      "modelStates": 8,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Source sides 13, 14, 15 and perpendicular edge 9 are preserved. Heron's formula gives base area 84; the base altitude is 12 with its foot inside BC, at distances 9 and 5. The other face altitude is 15; the complete four-face area is 315 cm²."
+    },
+    {
+      "id": "ex-main-0311-b",
+      "sha256": "d7961e31f90f19a177c691699c98851f6cd5a7db261b71f169fc0214a81ade66",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 6,
+      "modelStates": 7,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "The independently constructed orthogonal foot lies inside DE, at DH/DE=9/25. The named planes and ET parallel to AD establish BC perpendicular to DAE; HJ in DBC provides the second intersecting face direction, so AH is perpendicular to the whole face plane. Area equality gives AH=36/5 cm. The proof is assessed manually."
+    },
+    {
+      "id": "ex-main-0312",
+      "sha256": "d8d9e1c8359cae679ce3cf3c4a50a7cf7e2d1895f0725b44a62591b22e5d71bd",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 6,
+      "modelStates": 7,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "The synthetic derivation uses an arbitrary finite integer n≥3, the circumradius R, inradius r, and common height h. It distinguishes the edge angle from the acute face/base dihedral, proves r/R=cos(180°/n), and obtains tan α=cos(180°/n)·tan φ for 0°<φ<90°. The hexagon with R=4 and h=3 is explicitly only an illustration."
+    },
+    {
+      "id": "ex-main-0313",
+      "sha256": "8d12cf27671b84361b0dad742e458130d35b41b2072c2d17d425a5348be85e44",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 7,
+      "modelStates": 8,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "The parallel corresponding radii and named axial section justify the projection and right triangle. The difference of inradii is √3, vertical height 1, and the true face apothem 2. The three trapezoids total 54 dm². Exact coordinates preserve the notably shallow source proportions. The larger filled axial trapezoid CEFC₁ is independently recovered from all frustum edges; the inner EHF remains explicitly drawn and correctly described."
+    },
+    {
+      "id": "ex-main-0314",
+      "sha256": "61972714000fa5a43c073363c941716ae9bd359acc41a75f24dfc707fa927bce",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 6,
+      "modelStates": 7,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "The axial section separates the vertical height 63 from the apothem 65. The half-side difference is 16; together with the 7:3 ratio this gives larger side 56 and smaller side 24 cm. Both values are verified against the original constraints, and the pair plus reasoning is assessed manually."
+    },
+    {
+      "id": "ex-main-0315",
+      "sha256": "998c893ac8d4528c1e225b0c84cfb0a07b9f10077ea54116bcfa6f0a458e027f",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 8,
+      "modelStates": 9,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "The midpoint square and two homotheties produce two parallel equal squares of face centroids. Joining edges are perpendicular to their planes and have length ST/3=a√2/3, equal to a square side. The resulting convex straight prism is a cube. All eight actual centroids, six supporting square faces, and twelve displayed edges are independently verified."
+    },
+    {
+      "id": "ex-main-0316",
+      "sha256": "c9e41d086c7ee0227e0eecef4a86a322ba2fb54a8995ff75822f987f8182459a",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 7,
+      "modelStates": 8,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "A shared-edge midpoint and the same one-third homothety prove the six centre distances are all a/3. The three-centre plane is parallel and distinct from the opposite original face, placing the fourth centre outside it. The four noncoplanar centres form a regular tetrahedron; hull faces and volume ratio 1/27 independently confirm this."
+    },
+    {
+      "id": "ex-main-0317",
+      "sha256": "e5baeeb69deac7a30ceb1bee3d3fac617a275c9dab4383a2edd311792515f581",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 7,
+      "modelStates": 8,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "The four side-face centres form a square in the middle section; the other two lie on its perpendicular centre axis. All twelve prospective edges have length a√2/2. The proof establishes the eight supporting triangular faces, excludes every other possible face via opposite pairs, and checks four edges at each vertex. The full centroid hull and displayed edge graph agree."
+    },
+    {
+      "id": "ex-main-0318",
+      "sha256": "9b44ade9b851040070b57686c735d5894b91f39662ab980e7c63e06e7c90874b",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 7,
+      "modelStates": 8,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Cutting all four corners at edge midpoints leaves a convex octahedron with exactly eight equal equilateral faces. The corner tetrahedron is similar to the original. A normal section through the midpoint K of EF gives the inward rays KA, KG and KH, with KA and KH opposite. Thus the interior angles are supplementary; independent outward-normal checks give cosines 1/3 and −1/3."
+    },
+    {
+      "id": "ex-main-0319",
+      "sha256": "4700d2c3c77f3208fda02f4fa4d220c880d9573e6caf4ccacd5faa52ecffff3d",
+      "reviewedAt": "2026-10-26T15:15:42.871Z",
+      "steps": 6,
+      "modelStates": 7,
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS",
+      "findings": [],
+      "verification": "Each of the three planes through A and another vertex is the perpendicular bisector plane of the remaining edge and preserves every vertex and the convex body. Any reflection fixing A must fix exactly one of the other vertices and swap the remaining pair; the perpendicular bisector plane is unique. This proves exactly three. Every actual reflected vertex and the exhaustive 24-permutation classification agree."
+    }
+  ],
+  "aggregateSHA256": "e914dd47c49dcf11e1140897692209ea80a1281ab49cf54e9cddc2f73d44e376",
+  "oracle": {
+    "path": "tools/stereo-textbook/additional310-math.test.py",
+    "sha256": "d6406827f9ce57d61f92960191f85d8b8893855d14d442f1c9e0dcc78b6ddaa3"
+  }
+}
