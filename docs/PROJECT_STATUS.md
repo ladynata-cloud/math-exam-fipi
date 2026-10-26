@@ -1,6 +1,26 @@
 # MathExam project status
 
-Updated: 2026-10-25 (Asia/Novosibirsk)
+Updated: 2026-10-26 (Asia/Novosibirsk)
+
+## Prepared: Pogorelov course accompanying numbered textbook exercises
+
+- [Scope](tasks/POGORELOV_TEXTBOOK_COMPANION.md), MEDIUM isolated companion;
+  base `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
+- New `geometry-pogorelov/textbook/`: 134 trainers for 92 exercise numbers
+  with selected subparts across all 15 paragraphs of the 2022 edition.
+  Every task shows §, number, part and printed page. The condition remains in
+  the learner's book; explanations and SVG models are original.
+- Calm task-first interface, retained optional steps, explicit assistance,
+  safe numeric checking, human review of proofs, browser-local records and
+  JSON export. The old thematic course remains intact. Standalone HTML export
+  is available from the same source.
+- [Local report](reports/POGORELOV_TEXTBOOK_COMPANION.md): 201 numerical oracles,
+  340 step journeys, storage regressions, desktop/390px browser inspection,
+  old-course regression and SEO checks pass. Gate: `POGORELOV_COMPANION_LOCAL_OK`.
+- Claude consultation is unavailable and not completed; no previous exception
+  is reused. Next: exact-head Draft PR CI, consultation or current exception,
+  and separate owner merge authorization. This is not a production release.
+- Older entries below concern different tasks and are not re-certified here.
 
 ## In progress: lesson enquiries and channel subscriptions
 
