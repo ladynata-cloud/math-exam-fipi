@@ -1,0 +1,1086 @@
+{
+  "book": {
+    "author": "А. В. Погорелов",
+    "title": "Геометрия. 7–9 классы",
+    "edition": "11-е издание, стереотипное",
+    "publisher": "Просвещение",
+    "year": 2022,
+    "isbn": "978-5-09-101284-2",
+    "pdfPageOffset": 1
+  },
+  "completeExerciseCoverage": false,
+  "exercises": [
+    {
+      "id": "p1-n3",
+      "paragraph": 1,
+      "number": 3,
+      "part": "",
+      "printedPage": 17,
+      "pdfPage": 18
+    },
+    {
+      "id": "p1-n7-1",
+      "paragraph": 1,
+      "number": 7,
+      "part": "1",
+      "printedPage": 18,
+      "pdfPage": 19
+    },
+    {
+      "id": "p1-n7-2",
+      "paragraph": 1,
+      "number": 7,
+      "part": "2",
+      "printedPage": 18,
+      "pdfPage": 19
+    },
+    {
+      "id": "p1-n7-3",
+      "paragraph": 1,
+      "number": 7,
+      "part": "3",
+      "printedPage": 18,
+      "pdfPage": 19
+    },
+    {
+      "id": "p1-n9",
+      "paragraph": 1,
+      "number": 9,
+      "part": "",
+      "printedPage": 18,
+      "pdfPage": 19
+    },
+    {
+      "id": "p1-n15-1",
+      "paragraph": 1,
+      "number": 15,
+      "part": "1",
+      "printedPage": 18,
+      "pdfPage": 19
+    },
+    {
+      "id": "p1-n15-2",
+      "paragraph": 1,
+      "number": 15,
+      "part": "2",
+      "printedPage": 18,
+      "pdfPage": 19
+    },
+    {
+      "id": "p1-n15-3",
+      "paragraph": 1,
+      "number": 15,
+      "part": "3",
+      "printedPage": 18,
+      "pdfPage": 19
+    },
+    {
+      "id": "p1-n15-4",
+      "paragraph": 1,
+      "number": 15,
+      "part": "4",
+      "printedPage": 18,
+      "pdfPage": 19
+    },
+    {
+      "id": "p1-n24-1",
+      "paragraph": 1,
+      "number": 24,
+      "part": "1",
+      "printedPage": 19,
+      "pdfPage": 20
+    },
+    {
+      "id": "p1-n24-2",
+      "paragraph": 1,
+      "number": 24,
+      "part": "2",
+      "printedPage": 19,
+      "pdfPage": 20
+    },
+    {
+      "id": "p1-n24-3",
+      "paragraph": 1,
+      "number": 24,
+      "part": "3",
+      "printedPage": 19,
+      "pdfPage": 20
+    },
+    {
+      "id": "p1-n31-1",
+      "paragraph": 1,
+      "number": 31,
+      "part": "1",
+      "printedPage": 20,
+      "pdfPage": 21
+    },
+    {
+      "id": "p1-n31-2",
+      "paragraph": 1,
+      "number": 31,
+      "part": "2",
+      "printedPage": 20,
+      "pdfPage": 21
+    },
+    {
+      "id": "p2-n3",
+      "paragraph": 2,
+      "number": 3,
+      "part": "",
+      "printedPage": 27,
+      "pdfPage": 28
+    },
+    {
+      "id": "p2-n6-1",
+      "paragraph": 2,
+      "number": 6,
+      "part": "1",
+      "printedPage": 27,
+      "pdfPage": 28
+    },
+    {
+      "id": "p2-n6-2",
+      "paragraph": 2,
+      "number": 6,
+      "part": "2",
+      "printedPage": 27,
+      "pdfPage": 28
+    },
+    {
+      "id": "p2-n6-3",
+      "paragraph": 2,
+      "number": 6,
+      "part": "3",
+      "printedPage": 27,
+      "pdfPage": 28
+    },
+    {
+      "id": "p2-n6-4",
+      "paragraph": 2,
+      "number": 6,
+      "part": "4",
+      "printedPage": 27,
+      "pdfPage": 28
+    },
+    {
+      "id": "p2-n7",
+      "paragraph": 2,
+      "number": 7,
+      "part": "",
+      "printedPage": 28,
+      "pdfPage": 29
+    },
+    {
+      "id": "p2-n8",
+      "paragraph": 2,
+      "number": 8,
+      "part": "",
+      "printedPage": 28,
+      "pdfPage": 29
+    },
+    {
+      "id": "p2-n15-1",
+      "paragraph": 2,
+      "number": 15,
+      "part": "1",
+      "printedPage": 28,
+      "pdfPage": 29
+    },
+    {
+      "id": "p2-n15-2",
+      "paragraph": 2,
+      "number": 15,
+      "part": "2",
+      "printedPage": 28,
+      "pdfPage": 29
+    },
+    {
+      "id": "p2-n15-3",
+      "paragraph": 2,
+      "number": 15,
+      "part": "3",
+      "printedPage": 28,
+      "pdfPage": 29
+    },
+    {
+      "id": "p2-n19",
+      "paragraph": 2,
+      "number": 19,
+      "part": "",
+      "printedPage": 28,
+      "pdfPage": 29
+    },
+    {
+      "id": "p3-n1",
+      "paragraph": 3,
+      "number": 1,
+      "part": "",
+      "printedPage": 38,
+      "pdfPage": 39
+    },
+    {
+      "id": "p3-n2",
+      "paragraph": 3,
+      "number": 2,
+      "part": "",
+      "printedPage": 38,
+      "pdfPage": 39
+    },
+    {
+      "id": "p3-n8",
+      "paragraph": 3,
+      "number": 8,
+      "part": "",
+      "printedPage": 40,
+      "pdfPage": 41
+    },
+    {
+      "id": "p3-n9",
+      "paragraph": 3,
+      "number": 9,
+      "part": "",
+      "printedPage": 40,
+      "pdfPage": 41
+    },
+    {
+      "id": "p3-n10-1",
+      "paragraph": 3,
+      "number": 10,
+      "part": "1",
+      "printedPage": 40,
+      "pdfPage": 41
+    },
+    {
+      "id": "p3-n10-2",
+      "paragraph": 3,
+      "number": 10,
+      "part": "2",
+      "printedPage": 40,
+      "pdfPage": 41
+    },
+    {
+      "id": "p3-n26",
+      "paragraph": 3,
+      "number": 26,
+      "part": "",
+      "printedPage": 41,
+      "pdfPage": 42
+    },
+    {
+      "id": "p3-n30",
+      "paragraph": 3,
+      "number": 30,
+      "part": "",
+      "printedPage": 42,
+      "pdfPage": 43
+    },
+    {
+      "id": "p4-n18-1",
+      "paragraph": 4,
+      "number": 18,
+      "part": "1",
+      "printedPage": 54,
+      "pdfPage": 55
+    },
+    {
+      "id": "p4-n18-2",
+      "paragraph": 4,
+      "number": 18,
+      "part": "2",
+      "printedPage": 54,
+      "pdfPage": 55
+    },
+    {
+      "id": "p4-n18-3",
+      "paragraph": 4,
+      "number": 18,
+      "part": "3",
+      "printedPage": 54,
+      "pdfPage": 55
+    },
+    {
+      "id": "p4-n18-4",
+      "paragraph": 4,
+      "number": 18,
+      "part": "4",
+      "printedPage": 54,
+      "pdfPage": 55
+    },
+    {
+      "id": "p4-n19-1",
+      "paragraph": 4,
+      "number": 19,
+      "part": "1",
+      "printedPage": 55,
+      "pdfPage": 56
+    },
+    {
+      "id": "p4-n19-2",
+      "paragraph": 4,
+      "number": 19,
+      "part": "2",
+      "printedPage": 55,
+      "pdfPage": 56
+    },
+    {
+      "id": "p4-n19-3",
+      "paragraph": 4,
+      "number": 19,
+      "part": "3",
+      "printedPage": 55,
+      "pdfPage": 56
+    },
+    {
+      "id": "p4-n25",
+      "paragraph": 4,
+      "number": 25,
+      "part": "",
+      "printedPage": 55,
+      "pdfPage": 56
+    },
+    {
+      "id": "p4-n33",
+      "paragraph": 4,
+      "number": 33,
+      "part": "",
+      "printedPage": 55,
+      "pdfPage": 56
+    },
+    {
+      "id": "p4-n44",
+      "paragraph": 4,
+      "number": 44,
+      "part": "",
+      "printedPage": 56,
+      "pdfPage": 57
+    },
+    {
+      "id": "p5-n5-1",
+      "paragraph": 5,
+      "number": 5,
+      "part": "1",
+      "printedPage": 67,
+      "pdfPage": 68
+    },
+    {
+      "id": "p5-n5-2",
+      "paragraph": 5,
+      "number": 5,
+      "part": "2",
+      "printedPage": 67,
+      "pdfPage": 68
+    },
+    {
+      "id": "p5-n9",
+      "paragraph": 5,
+      "number": 9,
+      "part": "",
+      "printedPage": 67,
+      "pdfPage": 68
+    },
+    {
+      "id": "p5-n11",
+      "paragraph": 5,
+      "number": 11,
+      "part": "",
+      "printedPage": 67,
+      "pdfPage": 68
+    },
+    {
+      "id": "p5-n20-1",
+      "paragraph": 5,
+      "number": 20,
+      "part": "1",
+      "printedPage": 68,
+      "pdfPage": 69
+    },
+    {
+      "id": "p5-n20-2",
+      "paragraph": 5,
+      "number": 20,
+      "part": "2",
+      "printedPage": 68,
+      "pdfPage": 69
+    },
+    {
+      "id": "p5-n20-3",
+      "paragraph": 5,
+      "number": 20,
+      "part": "3",
+      "printedPage": 68,
+      "pdfPage": 69
+    },
+    {
+      "id": "p5-n26",
+      "paragraph": 5,
+      "number": 26,
+      "part": "",
+      "printedPage": 69,
+      "pdfPage": 70
+    },
+    {
+      "id": "p6-n8",
+      "paragraph": 6,
+      "number": 8,
+      "part": "",
+      "printedPage": 87,
+      "pdfPage": 88
+    },
+    {
+      "id": "p6-n9",
+      "paragraph": 6,
+      "number": 9,
+      "part": "",
+      "printedPage": 87,
+      "pdfPage": 88
+    },
+    {
+      "id": "p6-n10",
+      "paragraph": 6,
+      "number": 10,
+      "part": "",
+      "printedPage": 87,
+      "pdfPage": 88
+    },
+    {
+      "id": "p6-n20",
+      "paragraph": 6,
+      "number": 20,
+      "part": "",
+      "printedPage": 87,
+      "pdfPage": 88
+    },
+    {
+      "id": "p6-n50",
+      "paragraph": 6,
+      "number": 50,
+      "part": "",
+      "printedPage": 89,
+      "pdfPage": 90
+    },
+    {
+      "id": "p6-n51",
+      "paragraph": 6,
+      "number": 51,
+      "part": "",
+      "printedPage": 89,
+      "pdfPage": 90
+    },
+    {
+      "id": "p6-n67",
+      "paragraph": 6,
+      "number": 67,
+      "part": "",
+      "printedPage": 90,
+      "pdfPage": 91
+    },
+    {
+      "id": "p6-n69",
+      "paragraph": 6,
+      "number": 69,
+      "part": "",
+      "printedPage": 90,
+      "pdfPage": 91
+    },
+    {
+      "id": "p7-n2-1",
+      "paragraph": 7,
+      "number": 2,
+      "part": "1",
+      "printedPage": 101,
+      "pdfPage": 102
+    },
+    {
+      "id": "p7-n2-2",
+      "paragraph": 7,
+      "number": 2,
+      "part": "2",
+      "printedPage": 101,
+      "pdfPage": 102
+    },
+    {
+      "id": "p7-n2-3",
+      "paragraph": 7,
+      "number": 2,
+      "part": "3",
+      "printedPage": 101,
+      "pdfPage": 102
+    },
+    {
+      "id": "p7-n3-1",
+      "paragraph": 7,
+      "number": 3,
+      "part": "1",
+      "printedPage": 101,
+      "pdfPage": 102
+    },
+    {
+      "id": "p7-n3-2",
+      "paragraph": 7,
+      "number": 3,
+      "part": "2",
+      "printedPage": 101,
+      "pdfPage": 102
+    },
+    {
+      "id": "p7-n3-3",
+      "paragraph": 7,
+      "number": 3,
+      "part": "3",
+      "printedPage": 101,
+      "pdfPage": 102
+    },
+    {
+      "id": "p7-n4",
+      "paragraph": 7,
+      "number": 4,
+      "part": "",
+      "printedPage": 101,
+      "pdfPage": 102
+    },
+    {
+      "id": "p7-n27",
+      "paragraph": 7,
+      "number": 27,
+      "part": "",
+      "printedPage": 102,
+      "pdfPage": 103
+    },
+    {
+      "id": "p7-n44",
+      "paragraph": 7,
+      "number": 44,
+      "part": "",
+      "printedPage": 104,
+      "pdfPage": 105
+    },
+    {
+      "id": "p8-n5",
+      "paragraph": 8,
+      "number": 5,
+      "part": "",
+      "printedPage": 118,
+      "pdfPage": 119
+    },
+    {
+      "id": "p8-n6",
+      "paragraph": 8,
+      "number": 6,
+      "part": "",
+      "printedPage": 118,
+      "pdfPage": 119
+    },
+    {
+      "id": "p8-n11-1",
+      "paragraph": 8,
+      "number": 11,
+      "part": "1",
+      "printedPage": 118,
+      "pdfPage": 119
+    },
+    {
+      "id": "p8-n11-2",
+      "paragraph": 8,
+      "number": 11,
+      "part": "2",
+      "printedPage": 118,
+      "pdfPage": 119
+    },
+    {
+      "id": "p8-n12-1",
+      "paragraph": 8,
+      "number": 12,
+      "part": "1",
+      "printedPage": 119,
+      "pdfPage": 120
+    },
+    {
+      "id": "p8-n12-2",
+      "paragraph": 8,
+      "number": 12,
+      "part": "2",
+      "printedPage": 119,
+      "pdfPage": 120
+    },
+    {
+      "id": "p8-n12-3",
+      "paragraph": 8,
+      "number": 12,
+      "part": "3",
+      "printedPage": 119,
+      "pdfPage": 120
+    },
+    {
+      "id": "p8-n17",
+      "paragraph": 8,
+      "number": 17,
+      "part": "",
+      "printedPage": 119,
+      "pdfPage": 120
+    },
+    {
+      "id": "p8-n25",
+      "paragraph": 8,
+      "number": 25,
+      "part": "",
+      "printedPage": 119,
+      "pdfPage": 120
+    },
+    {
+      "id": "p9-n3",
+      "paragraph": 9,
+      "number": 3,
+      "part": "",
+      "printedPage": 135,
+      "pdfPage": 136
+    },
+    {
+      "id": "p9-n14-1",
+      "paragraph": 9,
+      "number": 14,
+      "part": "1",
+      "printedPage": 135,
+      "pdfPage": 136
+    },
+    {
+      "id": "p9-n14-2",
+      "paragraph": 9,
+      "number": 14,
+      "part": "2",
+      "printedPage": 135,
+      "pdfPage": 136
+    },
+    {
+      "id": "p9-n14-3",
+      "paragraph": 9,
+      "number": 14,
+      "part": "3",
+      "printedPage": 135,
+      "pdfPage": 136
+    },
+    {
+      "id": "p9-n29-1",
+      "paragraph": 9,
+      "number": 29,
+      "part": "1",
+      "printedPage": 136,
+      "pdfPage": 137
+    },
+    {
+      "id": "p9-n29-2",
+      "paragraph": 9,
+      "number": 29,
+      "part": "2",
+      "printedPage": 136,
+      "pdfPage": 137
+    },
+    {
+      "id": "p9-n29-3",
+      "paragraph": 9,
+      "number": 29,
+      "part": "3",
+      "printedPage": 136,
+      "pdfPage": 137
+    },
+    {
+      "id": "p9-n19",
+      "paragraph": 9,
+      "number": 19,
+      "part": "",
+      "printedPage": 136,
+      "pdfPage": 137
+    },
+    {
+      "id": "p10-n5",
+      "paragraph": 10,
+      "number": 5,
+      "part": "",
+      "printedPage": 149,
+      "pdfPage": 150
+    },
+    {
+      "id": "p10-n7",
+      "paragraph": 10,
+      "number": 7,
+      "part": "",
+      "printedPage": 149,
+      "pdfPage": 150
+    },
+    {
+      "id": "p10-n8-1",
+      "paragraph": 10,
+      "number": 8,
+      "part": "1",
+      "printedPage": 149,
+      "pdfPage": 150
+    },
+    {
+      "id": "p10-n8-2",
+      "paragraph": 10,
+      "number": 8,
+      "part": "2",
+      "printedPage": 149,
+      "pdfPage": 150
+    },
+    {
+      "id": "p10-n10-1",
+      "paragraph": 10,
+      "number": 10,
+      "part": "1",
+      "printedPage": 149,
+      "pdfPage": 150
+    },
+    {
+      "id": "p10-n10-2",
+      "paragraph": 10,
+      "number": 10,
+      "part": "2",
+      "printedPage": 149,
+      "pdfPage": 150
+    },
+    {
+      "id": "p10-n19",
+      "paragraph": 10,
+      "number": 19,
+      "part": "",
+      "printedPage": 150,
+      "pdfPage": 151
+    },
+    {
+      "id": "p10-n26",
+      "paragraph": 10,
+      "number": 26,
+      "part": "",
+      "printedPage": 151,
+      "pdfPage": 152
+    },
+    {
+      "id": "p10-n35",
+      "paragraph": 10,
+      "number": 35,
+      "part": "",
+      "printedPage": 151,
+      "pdfPage": 152
+    },
+    {
+      "id": "p11-n6",
+      "paragraph": 11,
+      "number": 6,
+      "part": "",
+      "printedPage": 167,
+      "pdfPage": 168
+    },
+    {
+      "id": "p11-n11",
+      "paragraph": 11,
+      "number": 11,
+      "part": "",
+      "printedPage": 167,
+      "pdfPage": 168
+    },
+    {
+      "id": "p11-n12",
+      "paragraph": 11,
+      "number": 12,
+      "part": "",
+      "printedPage": 167,
+      "pdfPage": 168
+    },
+    {
+      "id": "p11-n18",
+      "paragraph": 11,
+      "number": 18,
+      "part": "",
+      "printedPage": 168,
+      "pdfPage": 169
+    },
+    {
+      "id": "p11-n20-1",
+      "paragraph": 11,
+      "number": 20,
+      "part": "1",
+      "printedPage": 168,
+      "pdfPage": 169
+    },
+    {
+      "id": "p11-n20-2",
+      "paragraph": 11,
+      "number": 20,
+      "part": "2",
+      "printedPage": 168,
+      "pdfPage": 169
+    },
+    {
+      "id": "p11-n40",
+      "paragraph": 11,
+      "number": 40,
+      "part": "",
+      "printedPage": 169,
+      "pdfPage": 170
+    },
+    {
+      "id": "p11-n50",
+      "paragraph": 11,
+      "number": 50,
+      "part": "",
+      "printedPage": 170,
+      "pdfPage": 171
+    },
+    {
+      "id": "p12-n1",
+      "paragraph": 12,
+      "number": 1,
+      "part": "",
+      "printedPage": 177,
+      "pdfPage": 178
+    },
+    {
+      "id": "p12-n2",
+      "paragraph": 12,
+      "number": 2,
+      "part": "",
+      "printedPage": 177,
+      "pdfPage": 178
+    },
+    {
+      "id": "p12-n14",
+      "paragraph": 12,
+      "number": 14,
+      "part": "",
+      "printedPage": 177,
+      "pdfPage": 178
+    },
+    {
+      "id": "p12-n18",
+      "paragraph": 12,
+      "number": 18,
+      "part": "",
+      "printedPage": 178,
+      "pdfPage": 179
+    },
+    {
+      "id": "p12-n26-1",
+      "paragraph": 12,
+      "number": 26,
+      "part": "1",
+      "printedPage": 178,
+      "pdfPage": 179
+    },
+    {
+      "id": "p12-n26-2",
+      "paragraph": 12,
+      "number": 26,
+      "part": "2",
+      "printedPage": 178,
+      "pdfPage": 179
+    },
+    {
+      "id": "p13-n9",
+      "paragraph": 13,
+      "number": 9,
+      "part": "",
+      "printedPage": 192,
+      "pdfPage": 193
+    },
+    {
+      "id": "p13-n12-1",
+      "paragraph": 13,
+      "number": 12,
+      "part": "1",
+      "printedPage": 192,
+      "pdfPage": 193
+    },
+    {
+      "id": "p13-n12-2",
+      "paragraph": 13,
+      "number": 12,
+      "part": "2",
+      "printedPage": 192,
+      "pdfPage": 193
+    },
+    {
+      "id": "p13-n13-1",
+      "paragraph": 13,
+      "number": 13,
+      "part": "1",
+      "printedPage": 192,
+      "pdfPage": 193
+    },
+    {
+      "id": "p13-n13-2",
+      "paragraph": 13,
+      "number": 13,
+      "part": "2",
+      "printedPage": 192,
+      "pdfPage": 193
+    },
+    {
+      "id": "p13-n38-1",
+      "paragraph": 13,
+      "number": 38,
+      "part": "1",
+      "printedPage": 194,
+      "pdfPage": 195
+    },
+    {
+      "id": "p13-n38-2",
+      "paragraph": 13,
+      "number": 38,
+      "part": "2",
+      "printedPage": 194,
+      "pdfPage": 195
+    },
+    {
+      "id": "p13-n39",
+      "paragraph": 13,
+      "number": 39,
+      "part": "",
+      "printedPage": 194,
+      "pdfPage": 195
+    },
+    {
+      "id": "p14-n5",
+      "paragraph": 14,
+      "number": 5,
+      "part": "",
+      "printedPage": 206,
+      "pdfPage": 207
+    },
+    {
+      "id": "p14-n6",
+      "paragraph": 14,
+      "number": 6,
+      "part": "",
+      "printedPage": 206,
+      "pdfPage": 207
+    },
+    {
+      "id": "p14-n7",
+      "paragraph": 14,
+      "number": 7,
+      "part": "",
+      "printedPage": 206,
+      "pdfPage": 207
+    },
+    {
+      "id": "p14-n17",
+      "paragraph": 14,
+      "number": 17,
+      "part": "",
+      "printedPage": 206,
+      "pdfPage": 207
+    },
+    {
+      "id": "p14-n19",
+      "paragraph": 14,
+      "number": 19,
+      "part": "",
+      "printedPage": 206,
+      "pdfPage": 207
+    },
+    {
+      "id": "p14-n29-1",
+      "paragraph": 14,
+      "number": 29,
+      "part": "1",
+      "printedPage": 207,
+      "pdfPage": 208
+    },
+    {
+      "id": "p14-n29-2",
+      "paragraph": 14,
+      "number": 29,
+      "part": "2",
+      "printedPage": 207,
+      "pdfPage": 208
+    },
+    {
+      "id": "p14-n29-3",
+      "paragraph": 14,
+      "number": 29,
+      "part": "3",
+      "printedPage": 207,
+      "pdfPage": 208
+    },
+    {
+      "id": "p14-n38",
+      "paragraph": 14,
+      "number": 38,
+      "part": "",
+      "printedPage": 208,
+      "pdfPage": 209
+    },
+    {
+      "id": "p14-n54-1",
+      "paragraph": 14,
+      "number": 54,
+      "part": "1",
+      "printedPage": 209,
+      "pdfPage": 210
+    },
+    {
+      "id": "p15-n1",
+      "paragraph": 15,
+      "number": 1,
+      "part": "",
+      "printedPage": 212,
+      "pdfPage": 213
+    },
+    {
+      "id": "p15-n19",
+      "paragraph": 15,
+      "number": 19,
+      "part": "",
+      "printedPage": 217,
+      "pdfPage": 218
+    },
+    {
+      "id": "p15-n22",
+      "paragraph": 15,
+      "number": 22,
+      "part": "",
+      "printedPage": 217,
+      "pdfPage": 218
+    },
+    {
+      "id": "p15-n25",
+      "paragraph": 15,
+      "number": 25,
+      "part": "",
+      "printedPage": 217,
+      "pdfPage": 218
+    },
+    {
+      "id": "p15-n33",
+      "paragraph": 15,
+      "number": 33,
+      "part": "",
+      "printedPage": 218,
+      "pdfPage": 219
+    },
+    {
+      "id": "p15-n40",
+      "paragraph": 15,
+      "number": 40,
+      "part": "",
+      "printedPage": 218,
+      "pdfPage": 219
+    },
+    {
+      "id": "p15-n45",
+      "paragraph": 15,
+      "number": 45,
+      "part": "",
+      "printedPage": 221,
+      "pdfPage": 222
+    },
+    {
+      "id": "p15-n47",
+      "paragraph": 15,
+      "number": 47,
+      "part": "",
+      "printedPage": 221,
+      "pdfPage": 222
+    }
+  ]
+}

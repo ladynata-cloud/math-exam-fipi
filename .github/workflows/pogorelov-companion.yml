@@ -1,0 +1,43 @@
+name: Pogorelov textbook companion
+on:
+  pull_request:
+    paths:
+      - 'geometry-pogorelov/textbook/**'
+      - 'tools/pogorelov-textbook/**'
+      - '.github/workflows/pogorelov-companion.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'geometry-pogorelov/textbook/**'
+      - 'tools/pogorelov-textbook/**'
+      - '.github/workflows/pogorelov-companion.yml'
+permissions:
+  contents: read
+jobs:
+  content-and-learning-flow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reproduce original teaching material
+        run: |
+          python3 tools/pogorelov-textbook/build.py
+          git diff --exit-code -- geometry-pogorelov/textbook/data.js geometry-pogorelov/textbook/source-map.json
+      - name: Independent answer, parser and model oracles
+        run: node tools/pogorelov-textbook/check.cjs
+      - name: Install DOM test dependency in temporary storage
+        run: npm install --prefix "$RUNNER_TEMP/pogorelov-dom" --no-save --no-package-lock --ignore-scripts --no-audit --no-fund jsdom@26.1.0
+      - name: All guided and independent journeys
+        run: NODE_PATH="$RUNNER_TEMP/pogorelov-dom/node_modules" node tools/pogorelov-textbook/runtime.cjs
+      - name: Syntax and whitespace
+        run: |
+          node --check geometry-pogorelov/textbook/app.js
+          node --check geometry-pogorelov/textbook/core.js
+          git diff --check
