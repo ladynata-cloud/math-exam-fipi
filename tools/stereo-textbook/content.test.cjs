@@ -6,11 +6,11 @@ assert.equal(review.cards.length,ls.length,'review applies to every published ca
 for(const item of review.cards){const lesson=ls.find(l=>l.id===item.id);assert(lesson,'missing reviewed card '+item.id);const content=structuredClone(lesson);delete content.status;delete content.review;assert.equal(crypto.createHash('sha256').update(JSON.stringify(canonical(content))).digest('hex'),item.sha256,'content changed after independent review: '+item.id);}
 const ids=new Set(ls.map(l=>l.id)),keys=new Set();let steps=0,views=0;
 for(const l of ls){assert.deepEqual(API.validateLesson(l,book),[],l.id);assert.equal(l.status,'reviewed');for(const field of ['source','mathematics','pedagogy'])assert.equal(l.review[field],'passed');const key=JSON.stringify([l.kind,l.source.bookId,l.source.collection,['main','theory'].includes(l.source.collection)?null:l.source.chapter,l.source.examTask,l.source.point,l.source.exercise,l.source.subpart]);assert(!keys.has(key),'source identity '+l.id);keys.add(key);Viewer.prepare(l.visualization.model);steps+=l.steps.length;function h(hs){for(const x of hs){for(const id of x.theoryIds||[])assert(ids.has(id),'missing theory '+id);h(x.children||[]);}}h(l.help);for(const s of l.steps)for(const j of s.justifications)if(j.theoryId)assert(ids.has(j.theoryId),'missing theory '+j.theoryId);}
-assert.equal(ls.length,495);assert.equal(ls.filter(x=>x.kind==='exercise').length,407);
+assert.equal(ls.length,507);assert.equal(ls.filter(x=>x.kind==='exercise').length,419);
 for(let n=1;n<=270;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing exercise '+n);
-for(let n=271;n<=298;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing polyhedra exercise '+n);
+for(let n=271;n<=309;n++)assert(ls.some(l=>l.source.collection==='main'&&l.source.exercise===String(n)),'missing polyhedra exercise '+n);
 for(let n=1;n<=37;n++)assert(ls.some(l=>l.source.collection==='theory'&&l.source.point===String(n)),'missing theory point '+n);
-const coverage=API.inspectBundle(bundle.catalog,ls).coverage;assert.equal(coverage.availableExercises,298);assert.equal(coverage.availableTheoryPoints,37);assert.equal(coverage.availableSelfchecks,40);assert.equal(coverage.partiallyAvailable,0,'points35–37 and chapter III self-checks complete; later sources remain inventoried drafts');
+const coverage=API.inspectBundle(bundle.catalog,ls).coverage;assert.equal(coverage.availableExercises,309);assert.equal(coverage.availableTheoryPoints,37);assert.equal(coverage.availableSelfchecks,40);assert.equal(coverage.partiallyAvailable,0,'points35–37 and chapter III self-checks complete; later sources remain inventoried drafts');
 for(let n=1;n<=16;n++)assert(ls.some(l=>l.source.collection==='selfcheck'&&l.source.chapter==='I. Параллельность прямых и плоскостей'&&l.source.exercise===String(n)),'missing chapterI self-check '+n);
 for(let n=1;n<=10;n++)assert(ls.some(l=>l.source.collection==='selfcheck'&&l.source.chapter==='II. Перпендикулярность прямых и плоскостей'&&l.source.exercise===String(n)),'missing chapterII self-check '+n);
 for(let n=1;n<=14;n++)assert(ls.some(l=>l.source.collection==='selfcheck'&&l.source.chapter==='III. Многогранники'&&l.source.exercise===String(n)),'missing chapterIII self-check '+n);
@@ -29,7 +29,7 @@ assert.match(find('main-008-a').views.circleplane.label,/α/,'selected polygon b
 for(const l of ls.filter(l=>l.kind==='exercise'))assert(!/бесконеч|контрпример|ровно две невозможны|именно по AB|почему ответ 2|одна или три/i.test(l.title+' '+l.statement.goal+' '+l.answer.prompt),l.id+': premature verdict');
 const dom=new JSDOM('<div id="m"></div>',{runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.eval(fs.readFileSync(path.join(root,'stereo-course/assets/task-scene-viewer.js'),'utf8'));
 for(const l of ls){const mount=w.TaskSceneViewer.mount(w.document.getElementById('m'),l.visualization.model);assert(w.document.querySelector('svg'));for(const name of Object.keys(l.visualization.model.views)){assert.equal(mount.setView(name),true);assert(!/NaN|Infinity/.test(w.document.querySelector('svg').outerHTML),l.id+':'+name);views++;}mount.destroy();}
-assert.equal(steps,1819,'exact justified-step count');assert.equal(views,1877,'exact authored-view count');
+assert.equal(steps,1896,'exact justified-step count');assert.equal(views,1966,'exact authored-view count');
 require('./symmetry-content.test.cjs');
 require('./regular-polyhedra-content.test.cjs');
 require('./polyhedra-symmetry-content.test.cjs');
@@ -37,6 +37,7 @@ require('./polyhedra-selfcheck-content.test.cjs');
 require('./polyhedra-practical-content.test.cjs');
 require('./additional288-content.test.cjs');
 require('./additional294-content.test.cjs');
+require('./additional299-content.test.cjs');
 require('./prism-content.test.cjs');
 const pyramidEarly=require('./pyramid-ex239-253-content.test.cjs').run(bundle);
 console.log(`ATANASYAN_PYRAMID_EX239_253_CONTENT_OK ${pyramidEarly.cards} cards, ${pyramidEarly.groups} source-derived regression groups`);

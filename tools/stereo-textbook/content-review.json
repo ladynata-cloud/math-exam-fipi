@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-26T11:42:15.435Z",
-  "registeredAt": "2026-10-26T11:43:25.075Z",
-  "scope": "Introduction and chapters I–III: main exercises 1–298, theory points 1–37, all 40 chapter self-check questions. Additional exercises 299 onward remain pending. Not the complete book.",
+  "reviewedAt": "2026-10-26T12:53:28.840Z",
+  "registeredAt": "2026-10-26T12:53:55.381Z",
+  "scope": "Introduction and chapters I–III: main exercises 1–309, theory points 1–37, all 40 chapter self-check questions. Additional exercises 310 onward remain pending. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -790,6 +790,27 @@
         "ex-main-0297-c",
         "ex-main-0298"
       ]
+    },
+    {
+      "reviewer": "Codex independent_review (no lesson authorship)",
+      "reviewedAt": "2026-10-26T12:53:28.840Z",
+      "sourceBundleSHA256": "d3cd2407dff7fa9d29ebb052a8f35658092757e0507773f1b581735e5d39d9d5",
+      "scope": "All twelve source-specific cards for eleven main exercises299–309,including both actual subparts307а/б. Independently inspected the supplied2024 edition printed page87/PDF page89,all conditions,77 explanations and their justifications,all help/final prompts,68 theory references,and89 coordinate-model states. This is source,mathematics and written-pedagogy review; actual rendered pixels require separate evidence.",
+      "cardIds": [
+        "ex-main-0299",
+        "ex-main-0300",
+        "ex-main-0301",
+        "ex-main-0302",
+        "ex-main-0303",
+        "ex-main-0304",
+        "ex-main-0305",
+        "ex-main-0306",
+        "ex-main-0307-a",
+        "ex-main-0307-b",
+        "ex-main-0308",
+        "ex-main-0309"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_PYRAMIDS_299_309_CONTENT.json"
     }
   ],
   "cards": [
@@ -2772,6 +2793,54 @@
     {
       "id": "ex-main-0298",
       "sha256": "aa1cb5ef09a3034b6a5155b091adb100c0bd3adca1255bc2bc8964e60e796f51"
+    },
+    {
+      "id": "ex-main-0299",
+      "sha256": "b21bb41b7d0ed276b6c50d58fb5f622be789a4ccc01e587948d7f7d40cc19cb7"
+    },
+    {
+      "id": "ex-main-0300",
+      "sha256": "2c6e80c11dae78c7f1a906951b5c62f95f882e3930619ecd6d6667184e7bc1f3"
+    },
+    {
+      "id": "ex-main-0301",
+      "sha256": "2af6e779a33894cdb207efabc5f161b6051af6183bddbaaa9f6624797a800454"
+    },
+    {
+      "id": "ex-main-0302",
+      "sha256": "3a71e79307e0432351fa6c520ddfe9843d1927fbd484b4a72cedf3f8b650d498"
+    },
+    {
+      "id": "ex-main-0303",
+      "sha256": "d36cf49bea631faac004074ce0c14cb58ba1f926064b8270e45382d450777d5f"
+    },
+    {
+      "id": "ex-main-0304",
+      "sha256": "9629aa41126d45e4c5217f6d440cfe9541816b1f3542ed9452513625968a64bf"
+    },
+    {
+      "id": "ex-main-0305",
+      "sha256": "79f3ae2843e8f4c4d85edc7430af95dbd3cec79d31d3f809851991d8b26b1ab1"
+    },
+    {
+      "id": "ex-main-0306",
+      "sha256": "5723aa5e01aef179712e95827619d823b2f8cd488ba930c24ed491a3140d817e"
+    },
+    {
+      "id": "ex-main-0307-a",
+      "sha256": "015cb0a625b9f71f96c653f87336476e8c8034c96e8708982aeb5a5ae5be58d0"
+    },
+    {
+      "id": "ex-main-0307-b",
+      "sha256": "ff026090bacdb4b78656fa3d5634c0ad83b8326a04233deba61a1ff7265bfd5b"
+    },
+    {
+      "id": "ex-main-0308",
+      "sha256": "189912d850f7fd7b0f94ec7095a15211ede97ab458e3a19b900a749ba3f18290"
+    },
+    {
+      "id": "ex-main-0309",
+      "sha256": "0cc04e77e9aba3ab01fea9ad4fda9794bc0125b33b19324d5ef3a62683915d00"
     }
   ]
 }
