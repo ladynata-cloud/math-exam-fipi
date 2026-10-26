@@ -431,7 +431,7 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   checked URLs match the reviewed file sizes/hashes. The preparation wording
   above is historical; the current published baseline includes chapterIV.
 
-## In progress: Atanasyan 7–9 chapter V
+## Paused by owner: Atanasyan 7–9 chapter V
 
 - [Scope](tasks/ATANASYAN_7_9_CHAPTER_V.md), HIGH review; owner requested
   continuation after the verified publication of chapterIV.
@@ -439,11 +439,15 @@ Updated: 2026-10-26 (Asia/Novosibirsk)
   `content/atanasyan-7-9-chapter5`.
 - Exact 2023 revised edition: printed91–115, all331–412, theory39–45 and
   30 review questions; independent inventory confirms136 new cards and705
-  total. All materials are authored; independent reviews are in progress.
+  total. All materials are authored; independent source, mathematics, didactic
+  and authored-model reviews passed for all four fragments.
 - Initial local content/model, DOM/retained-work and all9 preservation tests
   pass. New cards remain `in-review`; published569 remain reviewed.
-- Next: close independent content/model reviews; inspect actual mobile/desktop
-  images; complete exact-head CI and the review-bound candidate handoff.
+- Draft PR #354; paused by owner on 26 October 2026. Actual mobile/desktop
+  captures and image review are pending. Resume from the
+  [pause checkpoint](tasks/ATANASYAN_7_9_CHAPTER_V_PAUSE.md).
+- Next: inspect every new image and close visual findings; complete exact-head
+  and composed-base gates; prepare the review-bound publication decision.
 - Existing569 cards and runtime remain preserved. Advanced413–461 and later
   chapters remain separate; no new content is claimed published at this stage.
 

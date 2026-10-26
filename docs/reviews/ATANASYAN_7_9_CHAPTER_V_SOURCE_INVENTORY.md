@@ -12,7 +12,10 @@ boundaries and source-condition caveats were derived directly from those pages.
 The chapter-IV map was used only as a structural schema example. A later
 cross-reference check during the A review corrected 354's page list to include
 its required figure on page 99, which the reviewer re-opened and verified
-directly. This correction changes no number, part or card count.
+directly. After the independent B review identified the coincident-line
+boundary in 358, the reviewer re-opened page 104 and corrected the case notes
+for 358 and the center-on-given-line construction in 359. These corrections
+change no number, part or card count.
 
 Exact source: Atanasyan et al., Geometry 7–9, basic level, 14th revised edition,
 2023, ISBN 978-5-09-102538-5. Source PDF SHA256:
@@ -20,7 +23,7 @@ Exact source: Atanasyan et al., Geometry 7–9, basic level, 14th revised editio
 
 The machine-readable inventory is
 `tools/geometry-textbook/chapter-05-source-map.json`, SHA256:
-`bd99bd11b3d4750ef0871caac769807dac65a87f1bf8686c7ab06a74cec98d4f`.
+`ba1b0a530640df2c03a452bd014b66ad0e8e5b18a9faaedadac09b97b1e8d7d8`.
 
 Source scans and raw extracted text are not included. The map's case notes are
 review requirements and mathematical observations, not quotations or silent
@@ -142,6 +145,15 @@ important for the later source and mathematical review.
 - Tangency of a segment or ray requires its contact point to belong to it.
   This matters in 347 and in the actual side segments of 368. Theory 43
   requires existence and uniqueness of both triangle circles.
+- In 358 parallel lines must be distinct. The two endpoint tangents to the
+  diameter perpendicular to the given line are both admissible unless the
+  given line is itself tangent. In that case one candidate coincides with it
+  and must be excluded; exactly one distinct parallel tangent remains. The
+  inventory's earlier unconditional two-solution statement was incorrect.
+- In 359 there are two perpendicular tangents. The supporting line of the
+  required diameter is the parallel through the center when the center is
+  off the given line; if the center lies on the given line, use that line
+  itself. Do not request a distinct parallel through one of its own points.
 - Constructions 360/361 require the strict and equality feasibility cases.
   Compass-only reflection in 375 and selfcheck 30 is not satisfied by merely
   describing a ruler-and-compass construction.

@@ -15,10 +15,19 @@ this record confers no pixel, CI or publication approval.
 | `tools/geometry-textbook/models_ch5_a.py` | `960197baf9119966060b3016a12ab782494742b45d5f0ec39002c9a787de2e7e` |
 | `geometry-course/textbook/preparation/chapter-05-a.json` | `8798875fe0ec80bbc5c3013a6bf03882d6c974c3513dfffb969f0a89b60b8a1c` |
 | `geometry-course/textbook/models/chapter-05-a.json` | `150c09e09f1d4805830dd5a8e7b0ec1ed177701c375ba3640f59f39ba7ce5c3d` |
-| `tools/geometry-textbook/chapter-05-source-map.json` | `bd99bd11b3d4750ef0871caac769807dac65a87f1bf8686c7ab06a74cec98d4f` |
-| `docs/reviews/ATANASYAN_7_9_CHAPTER_V_SOURCE_INVENTORY.md` | `fb987ee6c95a9cacc9464231119a1d3f6ea8dbc4cbe3f25c84c36203c83cbbdc` |
+| `tools/geometry-textbook/chapter-05-source-map.json` | `ba1b0a530640df2c03a452bd014b66ad0e8e5b18a9faaedadac09b97b1e8d7d8` |
+| `docs/reviews/ATANASYAN_7_9_CHAPTER_V_SOURCE_INVENTORY.md` | `48f6e8c8e6f6f895a89c0cc008dfd80f6a1f1d8ae9a606d83ebd6a8066d29134` |
 | `tools/geometry-textbook/check_models.py` | `43b473df652fcfb66cf9a90030725bdfdfd5f50063bb50f62467b8c12f0709ad` |
 | `geometry-course/textbook/assets/planar-viewer.js` | `0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061` |
+
+Source-binding recheck: compared the map in engineering snapshot `c154254`
+(SHA256 `bd99bd11b3d4750ef0871caac769807dac65a87f1bf8686c7ab06a74cec98d4f`)
+with the current map. The only semantic changes are `caseRequirements.358`
+and `caseRequirements.359`, both outside block A. All A number/part records,
+page lists and case requirements are identical. The three authored A file
+hashes above were independently rechecked and are unchanged, so their
+conditions, solutions and scene data are unchanged. The table now binds the
+corrected map and inventory record; this narrow recheck adds no visual claim.
 
 The exact 2023 source PDF SHA256 is
 `3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72`.

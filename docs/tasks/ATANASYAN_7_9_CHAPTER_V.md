@@ -1,5 +1,9 @@
 # Атанасян 7–9: глава V, №331–412
 
+**Paused by owner, 26 October 2026.** Preparation is saved in Draft PR #354.
+Resume from [the checkpoint](ATANASYAN_7_9_CHAPTER_V_PAUSE.md); no release
+readiness or publication authorization is implied by this pause.
+
 ## Identity and approved scope
 
 - Task: `ATANASYAN_7_9_CHAPTER_V`.
@@ -55,10 +59,10 @@ and its four prerequisites.
 ## Acceptance and checks
 
 - [x] Independently inventory all source numbers, subparts, pages, theory and questions.
-- [ ] Author and independently review every condition, solution, case and model.
-- [ ] Reproducible preparation/build, geometry assertions and scope checks pass.
-- [ ] Preserve all previous cards, reviews, runtime and learner identifiers.
-- [ ] Retained-work and complete DOM progression checks pass.
+- [x] Author and independently review every condition, solution, case and model.
+- [x] Reproducible preparation/build, geometry assertions and scope checks pass.
+- [x] Preserve all previous cards, reviews, runtime and learner identifiers.
+- [x] Retained-work and complete DOM progression checks pass.
 - [ ] Actual browser checks cover 320 px and 1280 px and preserve image evidence.
 - [ ] Independently inspect every new view/width pair; close findings on fresh evidence.
 - [ ] Bind chapter-V review to exact authored/runtime hashes; do not promote drafts early.
