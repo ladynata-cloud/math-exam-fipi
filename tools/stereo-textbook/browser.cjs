@@ -184,7 +184,47 @@ async function checkLabels(id,width,stage,target=page,selector='[data-main-model
 }
 async function takeScreenshot(lesson,width,stage){
  const name=screenshotCases.get(lesson.id+'|'+stage);if(!name)return;
- const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
+ const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);await checkSection294Projection(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
+}
+async function checkSection294Projection(lesson,width,stage){
+ // A mathematically correct plane can collapse to a line in the standard
+ // learner camera. Measure its actual filled SVG projection, not label boxes
+ // or model-space area. Both source section types must have visible thickness.
+ const expected={'step-2':'vertical','step-3':'vertical-sides','step-4':'oblique','step-6':'oblique'}[stage];
+ if(lesson.id!=='ex-main-0294'||!expected)return;
+ const svg=page.locator('[data-main-model] svg'),kept=await camera();
+ async function measure(orientation){
+  await settle();
+  const actual=await svg.evaluate(node=>{
+   const paths=node.querySelectorAll('path.am-plane[data-highlight="plane"]');
+   if(paths.length!==1)return {pathCount:paths.length};
+   const path=paths[0],d=path.getAttribute('d'),numbers=d.match(/-?\d+(?:\.\d+)?/g)?.map(Number)||[],matrix=path.getScreenCTM(),bounds=node.getBoundingClientRect();
+   const points=[];for(let i=0;i<numbers.length;i+=2){const p=new DOMPoint(numbers[i],numbers[i+1]).matrixTransform(matrix);points.push({x:p.x,y:p.y});}
+   let twiceArea=0,diameter=0;
+   for(let i=0;i<points.length;i++){const p=points[i],q=points[(i+1)%points.length];twiceArea+=p.x*q.y-q.x*p.y;for(const other of points)diameter=Math.max(diameter,Math.hypot(p.x-other.x,p.y-other.y));}
+   const area=Math.abs(twiceArea)/2,boxWidth=Math.max(...points.map(p=>p.x))-Math.min(...points.map(p=>p.x)),boxHeight=Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y));
+   return {pathCount:paths.length,commands:d.replace(/[-\d.\s]/g,''),view:node.dataset.view,yaw:node.dataset.yaw,pitch:node.dataset.pitch,points,area,areaFraction:area/Math.min(bounds.width,bounds.height)**2,apparentThickness:area/diameter,boundingBoxFill:area/(boxWidth*boxHeight)};
+  });
+  const label=lesson.id+' '+width+' '+stage+' '+orientation+' section';
+  assert.equal(actual.pathCount,1,label+' exactly one highlighted polygon');assert.equal(actual.commands,'MLLLZ',label+' complete four-corner outline');assert.equal(actual.view,expected,label+' correct authored section');
+  for(const metric of ['area','areaFraction','apparentThickness','boundingBoxFill'])assert(Number.isFinite(actual[metric]),label+' finite '+metric);
+  assert(actual.areaFraction>=.04,label+' area fraction '+actual.areaFraction+' must be at least 0.04');
+  assert(actual.apparentThickness>=12,label+' apparent altitude '+actual.apparentThickness+' must be at least 12 screen pixels');
+  assert(actual.boundingBoxFill>=.10,label+' bounding-box fill '+actual.boundingBoxFill+' must be at least 0.10');
+  return actual;
+ }
+ const captured=await measure('captured'),row=evidence.labels.find(x=>x.ownerId===lesson.id&&x.id===lesson.id&&x.viewport===width&&x.stage===stage);
+ assert(row,'section projection belongs to a verified label state');row.sectionProjection={captured};
+ if(stage==='step-2'||stage==='step-4'){
+  // Check the actual reset orientation too, then restore the existing normal
+  // capture camera exactly. No screenshot, authored camera or saved end state
+  // is replaced by a test-selected attractive angle.
+  await page.locator('[data-main-model] button[aria-label="Вернуть исходный вид"]').click();
+  row.sectionProjection.default=await measure('default');
+  await page.locator('[data-main-model] button[aria-label="Повернуть влево"]').click();await settle();
+  assert.deepEqual(await camera(),kept,lesson.id+' section check restores original capture camera');
+ }
+ writeEvidence();
 }
 async function preserveCheck(lesson,keptCamera,draft){
  assert(await page.evaluate(()=>window.__textbookKept.svg===document.querySelector('[data-main-model] svg')&&window.__textbookKept.field===document.querySelector('#final-answer')),lesson.id+' original model/answer nodes retained');

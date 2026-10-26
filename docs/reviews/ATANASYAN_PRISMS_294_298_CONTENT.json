@@ -1,6 +1,6 @@
 {
   "reviewer": "independent_math_prisms",
-  "reviewedAt": "2026-10-26T11:02:55.461Z",
+  "reviewedAt": "2026-10-26T11:42:15.435Z",
   "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
   "authorBase": "9cf995d30c400a6e581a3168bb8ef8f5c76ed945",
   "authorReviewerSeparation": {
@@ -17,7 +17,7 @@
   "cards": [
     {
       "id": "ex-main-0294",
-      "sha256": "9b9e88746bbf5a5a74509238d3e19de26a9c0c44f6c905fd76598b8c44034bb5",
+      "sha256": "7167d38dc0831fae67f8fd5ba63a05b12e39dd3adc673675c25f3890d8de93dc",
       "steps": 7,
       "modelStates": 6,
       "findings": [],
@@ -137,7 +137,7 @@
     "actualCoordinatesAndTranslations": "PASS",
     "allSourceDomains": "PASS"
   },
-  "aggregateSHA256": "f696540c2d9453a619b7267b778b798dba248cd3868db9852a01ee7a7a3bf78f",
+  "aggregateSHA256": "3da8106a2541fcc2893b2babfe03497770b4c2027f66e0708a033c6eb7a07be5",
   "openFindings": [],
   "resolvedFindings": [
     {
@@ -176,5 +176,28 @@
     "Real-pupil efficacy trial.",
     "Physical-device or screen-reader trial.",
     "Paid external Claude review; the existing course deferral is not provider approval."
-  ]
+  ],
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-10-26T11:02:55.461Z",
+      "aggregateSHA256": "f696540c2d9453a619b7267b778b798dba248cd3868db9852a01ee7a7a3bf78f",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "changedCardPreviousHash": "9b9e88746bbf5a5a74509238d3e19de26a9c0c44f6c905fd76598b8c44034bb5"
+    }
+  ],
+  "revisionReview": {
+    "changedCard": "ex-main-0294",
+    "changedFields": [
+      "visualization.model.points.A1[2]",
+      "visualization.model.points.B1[2]",
+      "visualization.model.points.C1[2]",
+      "visualization.model.points.D1[2]"
+    ],
+    "change": "Illustrative upper-base height changes from3 to6; a remains4. No source, proof, help, answer, model connectivity, step or view changes. Nine other canonical cards match the original reviewed hashes.",
+    "reason": "Actual old cloud pixels showed the oblique section nearly edge-on. Author changed illustration aspect ratio; reviewer did not author lesson.",
+    "verification": "PASS independent source/mathematics/written pedagogy: the new model is a right square prism with positive height6. All six space-diagonal pair sections remain planar rectangles. Its lateral area is96; vertical section area24√2 and oblique section area8√13 give96 through the unchanged respective formulas. Re-ran all actual coordinate/theory checks, independent960 section-pair +160-per-family oracle, and committed400-family mathematical test.",
+    "oldCanonicalSHA256": "9b9e88746bbf5a5a74509238d3e19de26a9c0c44f6c905fd76598b8c44034bb5",
+    "newCanonicalSHA256": "7167d38dc0831fae67f8fd5ba63a05b12e39dd3adc673675c25f3890d8de93dc",
+    "actualPixels": "Old defect directly inspected. Fresh corrected-head browser/pixel verification remains required and is not claimed here."
+  }
 }

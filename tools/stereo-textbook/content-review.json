@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-26T11:02:55.461Z",
-  "registeredAt": "2026-10-26T11:03:25.620Z",
+  "reviewedAt": "2026-10-26T11:42:15.435Z",
+  "registeredAt": "2026-10-26T11:43:25.075Z",
   "scope": "Introduction and chapters I–III: main exercises 1–298, theory points 1–37, all 40 chapter self-check questions. Additional exercises 299 onward remain pending. Not the complete book.",
   "batches": [
     {
@@ -773,9 +773,9 @@
     },
     {
       "reviewer": "Codex independent_math_prisms",
-      "reviewedAt": "2026-10-26T11:02:55.461Z",
-      "registeredAt": "2026-10-26T11:03:25.620Z",
-      "sourceBundleSHA256": "f696540c2d9453a619b7267b778b798dba248cd3868db9852a01ee7a7a3bf78f",
+      "reviewedAt": "2026-10-26T11:42:15.435Z",
+      "registeredAt": "2026-10-26T11:43:25.075Z",
+      "sourceBundleSHA256": "3da8106a2541fcc2893b2babfe03497770b4c2027f66e0708a033c6eb7a07be5",
       "scope": "Ten cards for five additional prism exercises 294–298, including actual subparts. Source, complete mathematics and written pedagogy independently reviewed; actual browser pixels are a separate gate.",
       "report": "docs/reviews/ATANASYAN_PRISMS_294_298_CONTENT.json",
       "cardIds": [
@@ -2735,7 +2735,7 @@
     },
     {
       "id": "ex-main-0294",
-      "sha256": "9b9e88746bbf5a5a74509238d3e19de26a9c0c44f6c905fd76598b8c44034bb5"
+      "sha256": "7167d38dc0831fae67f8fd5ba63a05b12e39dd3adc673675c25f3890d8de93dc"
     },
     {
       "id": "ex-main-0295-a",

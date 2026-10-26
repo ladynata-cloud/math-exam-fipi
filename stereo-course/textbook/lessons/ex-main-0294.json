@@ -49,22 +49,22 @@
         "A1": [
           0,
           0,
-          3
+          6
         ],
         "B1": [
           4,
           0,
-          3
+          6
         ],
         "C1": [
           4,
           4,
-          3
+          6
         ],
         "D1": [
           0,
           4,
-          3
+          6
         ]
       },
       "edges": [
@@ -475,7 +475,7 @@
     "mathematics": "passed",
     "pedagogy": "passed",
     "reviewer": "Codex independent_math_prisms (no lesson authorship)",
-    "at": "2026-10-26T11:02:55.461Z"
+    "at": "2026-10-26T11:42:15.435Z"
   },
   "answer": {
     "mode": "manual",

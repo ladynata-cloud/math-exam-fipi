@@ -58,3 +58,11 @@ Resolved written-review findings: added the two intersecting perpendicular direc
 Local reproducible build, catalogue/schema, full integrated content and all historical suites, geometry, runtime, mathematical suites, partition/collector, full/four-shard browser-free preflights, SEO/sitemap and whitespace checks pass. The bundle SHA256 is `821b6bbdb9de61a711a9af5a86a23b97a7f2b573417e7ee4ef3f7e111ef503ce` (3,906,664 bytes).66 additive capture cases cover every new model state and full explanation at320/1280; eight additive formula-layout assertions use complete expressions. Fresh cloud targets are990 card-width journeys and2,202 screenshots, including132 new images. These are planned browser counts until the actual jobs complete.
 
 No actual-image verdict, pupil trial, paid-provider approval or publication is claimed at this authoring checkpoint. The PR records subsequently completed exact-head cloud and actual-image review evidence.
+
+## Actual-image correction
+
+The first remote head `c94a24efb92dcfe2e1636a297804bd6b7e97759d` passed all four workflows / eleven jobs, including990 card journeys,7,544 label states and2,202 screenshots. Actual pixel inspection found that294's oblique section appeared nearly edge-on at both widths, so its rectangular shape was not visually clear despite correct coordinates and proof.
+
+Only the illustrative prism's four upper-vertex heights were changed from3 to6, with side4 unchanged. Both sections and every source/proof statement remain mathematically valid; the independent reviewer rechecked the coordinates and all nine other canonical cards remain identical. The new exact ten-card aggregate is `3da8106a2541fcc2893b2babfe03497770b4c2027f66e0708a033c6eb7a07be5`, reviewed at2026-10-26T11:42:15.435Z. Review history is retained.
+
+An additive browser regression measures the actual projected section area and apparent thickness at the default and captured camera orientations. Runtime and prior checks remain unchanged. Fresh corrected-head cloud execution and actual294 image inspection are required; the first run is historical evidence, not a verdict on the corrected tree.
