@@ -1,7 +1,7 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-26T07:34:32.554Z",
-  "registeredAt": "2026-10-26T07:35:36.007Z",
+  "reviewedAt": "2026-10-26T08:04:47.191Z",
+  "registeredAt": "2026-10-26T08:05:30.172Z",
   "scope": "Introduction and chapters I–III: main exercises 1–293, theory points 1–37, all 40 chapter self-check questions. Additional exercises 294 onward remain pending. Not the complete book.",
   "batches": [
     {
@@ -757,9 +757,9 @@
     },
     {
       "reviewer": "Codex independent_math",
-      "reviewedAt": "2026-10-26T07:34:32.554Z",
-      "registeredAt": "2026-10-26T07:35:36.007Z",
-      "sourceBundleSHA256": "f912f1a153759975a59097d9385158799bd1354516115fcbe1d8e60644b5b6bd",
+      "reviewedAt": "2026-10-26T08:04:47.191Z",
+      "registeredAt": "2026-10-26T08:05:30.172Z",
+      "sourceBundleSHA256": "95c2c517cb60a4d79377f6ede4bdbe7f83ae60aae6b66710cc82a2449df174f0",
       "scope": "Six additional exercises 288–293; source, complete mathematics and written pedagogy independently reviewed. Actual browser pixels are a separate gate.",
       "report": "docs/reviews/ATANASYAN_POLYHEDRA_288_293_CONTENT.json",
       "cardIds": [
@@ -2703,7 +2703,7 @@
     },
     {
       "id": "ex-main-0291",
-      "sha256": "0f50f59c02d99ba769f74abf0fd322db35394a4a4cf3d50904d5c3a7082cabb8"
+      "sha256": "839626df73d477f4912428ac955e8082696a4766eed584af81f918dce1222e2a"
     },
     {
       "id": "ex-main-0292",

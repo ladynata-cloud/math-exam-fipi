@@ -45,3 +45,9 @@ Six independently reviewed cards are implemented: 33 justified steps and 33 mode
 Local source, schema, integrated historical/content, geometry, runtime, mathematical, partition/collector and five browser-free preflight checks pass, as do sitemap and whitespace checks. The fresh build is reproducible. Thirty-six additive capture cases cover every new model state and full explanation at 320/1280 pixels; nine new formula-layout regressions use actual complete fraction operands. The full cloud run plans 970 card journeys and 2,070 captures. These are planned counts, not claimed completed browser or pixel-review evidence.
 
 The Draft PR will record exact committed cloud and actual-image results separately. No merge, deployment, external-provider review or real-pupil trial is claimed at this checkpoint.
+
+## Visual-review correction
+
+The first remote head `5d87fe1ecf871802c6bb98696a0f9660275fc195` passed all four workflows / eleven jobs, including 970 completed card journeys, 7,316 label states and 2,070 captures. Actual inspection of all 72 new captures and twelve full explanation pages found one presentation defect: at 320 pixels, exercise 291 step 4 could split d from its superscript ² in a long equality chain.
+
+Only that explanation was rewritten into short, spaced equalities. The independent reviewer confirmed unchanged mathematics and all five other cards. The content-review record retains the original review history and new exact hashes. Additive DOM Range assertions now require both complete monomials to remain on one line on step 4 and the fully revealed page. Runtime, source conditions, models and old gate thresholds remain unchanged. Fresh exact-head CI and new 291 pixels are required; the earlier successful run is historical evidence, not a verdict on the corrected head.
