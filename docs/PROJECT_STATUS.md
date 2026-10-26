@@ -419,18 +419,42 @@ Updated: 2026-10-25 (Asia/Novosibirsk)
   and the legacy entry were checked. Gate:`ATANASYAN_7_9_CHAPTER_I_PUBLISHED_OK`.
   Later chapters and real-pupil validation remain pending.
 
-## In progress: Atanasyan remaining prism exercises 294–298
+## In progress: Atanasyan additional pyramid exercises 299–314
 
-- [Scope](tasks/TEXTBOOK_ATANASYAN_PRISMS_294_298.md), HIGH, branch
-  `content/atanasyan-294-298`, base `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`.
-- Owner requested continuation after the verified publication below. Five
-  source numbers become ten cards, preserving the actual parts of295 and297.
-- Distinguish both diagonal-section cases in294 and the actual midline in296;
-  give each proof its own progressively revealed model and contextual theory.
-- Preserve all485 prior cards,24 review batches,1,033 capture cases and runtime.
-  Target495 cards and all main exercises1–298. Pyramids299 onward remain pending.
-- Next: source-specific authoring and independent review; exact-head cloud and
-  actual mobile/desktop inspection; separate concrete release decision.
+- [Scope](tasks/TEXTBOOK_ATANASYAN_PYRAMIDS_299_314.md), HIGH, branch
+  `content/atanasyan-299-314`, base `6c7339a730ba3591859bd4c8c0d8ce9be64efd7c`.
+- Owner requested continuation after publication of PR345. Sixteen source
+  numbers become eighteen cards, preserving the actual parts of307 and311.
+- Heights, areas, plane sections, internal dihedral angles and regular frusta;
+  dedicated progressive models and fully justified source-specific proofs.
+- Preserve all495 prior raw cards,25 review batches,1,099 capture cases and
+  runtime/schema/builder contracts. Target513 cards and all main exercises1–314.
+- Next: independent source/math/model review; exact-head cloud and actual
+  mobile/desktop inspection; separate concrete release decision. Final
+  polyhedron exercises315–319 and chapterIV remain pending.
+
+## Published: Atanasyan remaining prism exercises 294–298
+
+- [PR345](https://github.com/ladynata-cloud/math-exam-fipi/pull/345) was explicitly
+  authorized and squash-merged as `6c7339a730ba3591859bd4c8c0d8ce9be64efd7c`,
+  sole parent `9cf995d30c400a6e581a3168bb8ef8f5c76ed945`. Reviewed head
+  `0c9e3fc537728f75495f0d3ebc62d4acd8d26311`; exact tree
+  `f36f8534811e2ae1c507585160f2ab154a5bae5c`. No base drift; all29 changed
+  blobs and the stable patch matched independently before and after merge.
+- Ten source-specific cards added56 justified steps and60 model states.
+  Published495 cards /1,819 steps /1,877 states cover all main exercises1–298,
+  37 theory points and40 self-check questions. Earlier content remains intact.
+- Independent source/math/model review passed. All11 exact-head cloud jobs
+  passed:990 card journeys,7,544 label states and2,202 screenshots. All132 new
+  images,20 initial pages and20 complete proofs were independently reviewed.
+  The edge-on section in294 was corrected and all16 affected images rereviewed;
+  the other116 images remained byte-identical to their reviewed versions.
+- Pages40322565353 and post-push Profile40322565854 passed all six jobs.
+  Eighteen public files /36 canonical and cache-busted requests returned200
+  and exact reviewed bytes. Live bundle SHA256
+  `ef3c30c8c415dfd79dccb393584f01899797bb2de73bfd0fe24a7d4929abb37e`.
+- Gate:`ATANASYAN_PRISMS_294_298_PUBLISHED_OK`. No rollback or unresolved
+  finding. Real-pupil/physical-device trials and paid Claude are not claimed.
 
 ## Published: Atanasyan practical nets271–275 and additional exercises288–293
 

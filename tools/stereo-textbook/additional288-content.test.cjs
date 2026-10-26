@@ -5,8 +5,9 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const root=path.resolve(__dirname,'../..'),dir=path.join(root,'stereo-course/textbook/lessons');
 const baseline=require('./additional288-baseline.cjs'),{sha,published,ids}=baseline;
 const later=require('./additional294-baseline.cjs');
-const sourceIndex=later.previousIndex(require(root+'/stereo-course/textbook/source-index.json'));
-const production=later.previousCourse(require(root+'/stereo-course/textbook/data/course.json'),sourceIndex);
+const currentIndex=require(root+'/stereo-course/textbook/source-index.json');
+const sourceIndex=later.previousIndex(currentIndex);
+const production=later.previousCourse(require(root+'/stereo-course/textbook/data/course.json'),currentIndex);
 const registry=later.previousRegistry(require('./content-review.json')),screenshots=later.previousCases(require('./browser-cases.cjs'));
 const report=require(root+'/docs/reviews/ATANASYAN_POLYHEDRA_288_293_CONTENT.json');
 const API=require(root+'/stereo-course/textbook/assets/engine.js');
@@ -22,7 +23,7 @@ const corruptRegistry=structuredClone(registry);corruptRegistry.cards[0].sha256=
 const corruptIndex=structuredClone(sourceIndex);corruptIndex.entries[0].source.printedPages=[999];assert.throws(()=>baseline.previousIndex(corruptIndex),/exact source index/);
 const corruptCases=new Map(screenshots);corruptCases.set([...corruptCases.keys()][0],'changed-historical-case');assert.throws(()=>baseline.previousCases(corruptCases),/all 997 prior browser cases/);
 assert.equal(sha([...screenshots].filter(([key])=>ids.has(key.split('|')[0]))),'7db73270fc1e9ec1dfe6db8fc69f2f530f0d08d467dca8ae7ff4fa1b62a98395','exact additive screenshot inventory');
-const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!ids.has(name.slice(0,-5))&&!later.ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
+const rawPrevious=fs.readdirSync(dir).filter(name=>name.endsWith('.json')&&!ids.has(name.slice(0,-5))&&!later.ids.has(name.slice(0,-5))&&!require('./additional299-baseline.cjs').ids.has(name.slice(0,-5))).sort().map(name=>[name,hash(fs.readFileSync(path.join(dir,name)))]);
 assert.equal(rawPrevious.length,479);assert.equal(sha(rawPrevious),published.rawLessonManifestSHA256,'all 479 prior authored files byte-identical');
 for(const[file,value]of Object.entries(published.immutableFiles))assert.equal(hash(fs.readFileSync(path.join(root,file))),value,'immutable runtime/schema/builder '+file);
 assert.equal(previous.lessons.length,479);assert.equal(previous.catalog.entries.length,1368);

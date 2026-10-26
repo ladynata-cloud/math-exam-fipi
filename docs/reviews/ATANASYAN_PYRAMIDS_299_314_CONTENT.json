@@ -1,0 +1,447 @@
+{
+  "reviewer": "independent_math_prisms",
+  "reviewedAt": "2026-10-26T13:24:09.368Z",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+  "authorBase": "6c7339a730ba3591859bd4c8c0d8ce9be64efd7c",
+  "authorReviewerSeparation": {
+    "reviewerAuthoredLessons": false,
+    "lessonAuthors": [
+      "prism_294_296",
+      "prism_295",
+      "prism_297_298",
+      "release_audit"
+    ],
+    "reviewerOwnedFiles": [
+      "tools/stereo-textbook/additional299-math.test.py",
+      "docs/reviews/ATANASYAN_PYRAMIDS_299_314_CONTENT.json"
+    ]
+  },
+  "scope": "All eighteen source statements and final prompts,106 step explanations and justifications, every help item,119 theory references and111 model states for exercises299–314. Visually inspected actual supplied2024 source printed87–88/PDF89–90 and actual answer page printed264/PDF266 before verdict. Both source subparts307а/б and311а/б retained; no invented source parts. Reviewer authored no lesson.",
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "canonicalization": "Remove top-level status and review; recursively sort object keys; JSON.stringify UTF-8; SHA256. Same algorithm as repository content-review.",
+  "cards": [
+    {
+      "id": "ex-main-0299",
+      "sha256": "9f68e6e32ac2d85c6f053cf5bdd644e56ff11a33e88e7dc8b318dbb0b148f390",
+      "steps": 6,
+      "modelStates": 4,
+      "findings": [],
+      "verification": "Preserves source parameter m. Three equal face areas give l=m/√3; the equilateral-base inradius is m/(2√3), so h=m/2 for every m>0. Actual model satisfies S_lateral=2S_base.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0300",
+      "sha256": "11502454e964d443037f569f05ec26be63aa6222ff7914ae0c8b853063d21961",
+      "steps": 7,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "Four exact edge-plane intersections form rectangle FEQP. Its sides are a/2 and b/2. AC is perpendicular to the plane DBM by the two intersecting perpendiculars BM and DM, hence AC⊥BD. Area ab/4; a>0 and b>a/√3 exclude zero height.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0301",
+      "sha256": "19aba978e09460c533704b3d3e4705935eb9a2f391563e9b73fb846851a0732a",
+      "steps": 8,
+      "modelStates": 8,
+      "findings": [],
+      "verification": "Preserves the internal lateral dihedral 120°, not its acute supplement. Equal face triangles give the common perpendicular foot K on the supporting line DA. BK=CK=16 and ∠BKC=120° give a=16√3. The two area expressions and Pythagoras give apothem4√6, edge12√2 and height4√2. AK/AD=4/3 puts K beyond D. The explicit supporting-line convention is corroborated by the actual printed answer4√6 on printed264/PDF266.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0302",
+      "sha256": "fdf1b7648add60df9622abf395da9fe91397e6a2161d78884c4c073c23757e80",
+      "steps": 6,
+      "modelStates": 5,
+      "findings": [],
+      "verification": "The parallelogram law gives diagonals6 and4√5. Their common midpoint is the specified height foot. Pythagoras with height4 gives two lateral edges5 and two6. Strict triangle inequalities verify existence. Rotated actual coordinates preserve all data.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0303",
+      "sha256": "a5531331540efbfea0c043c5b9f45804483d002afd5da57132c8d7ffafddeb36",
+      "steps": 7,
+      "modelStates": 8,
+      "findings": [],
+      "verification": "The vertical faces must be adjacent; their common line SA is the height. Their internal120° gives the obtuse rhombus angle at A. The other face inclinations30° give base distance12√3 and side24. Vertical face areas144 each, inclined face areas288 each and base288√3 give full surface288(3+√3). The scaled rhombus model and both perpendicular feet satisfy these relations.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0304",
+      "sha256": "75b637f2411e17f18a76a2c3851bb0dbe690e61cdf9859e424df7911db144a5f",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "Face apex60° makes all lateral faces equilateral. The internal base angle θ has cosθ=1/√3. The normal section BTD at midpoint T of SA gives the obtuse internal lateral angle φ with cosφ=−1/3. Strict monotonicity of cosine on0°…180° yields φ=2θ; no acute-plane-angle substitution.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0305",
+      "sha256": "e60c0d0756e455be4f831dd6727df81636f9005ce23d8b2f581b7057fce0b9a5",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "With lateral edge e, h²=e²cosα and four face areas give S_lateral=2h²tanα. Both necessity and constructive sufficiency of h>0 and0°<α<90° are explained. The illustrative square pyramid is not used to specialize the proof.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0306",
+      "sha256": "6c9aa024e999cd826accd840d383f044f4a7afb74ae4081b06baad43da6fcaaf",
+      "steps": 6,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "The projection Q of O on SM is shown to be perpendicular to the entire lateral face using two intersecting lines. Thus φ=∠OSM. Side2h tanφ and apothemh/cosφ give full surface4h²sinφ/(1−sinφ), equivalent to the printed answer. Necessary and sufficient domain h>0,0°<φ<90° is retained.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0307-a",
+      "sha256": "ed6f351c4003569b786bc9ba59db2dc83d54441ec4b47a1239e97d21ce7be196",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "The plane through BD parallel to MA meets MC at its midpoint K. Exact edge intersections give triangle BDK; KO=b/2 is perpendicular to BD=a√2 by the plane AMC criterion. Areaab√2/4, with a>0,b>a/√2. All remaining face intersections are accounted for.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0307-b",
+      "sha256": "70552775656da6d9ec724c2d46820cc13acf83d09562700b0ec07ccb51bf1514",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "Self-contained midpoint construction places K in the plane. The plane AMC contains the perpendicular MH to α, justified using OK and a through-H line parallel to BD. Central symmetry about K gives the second foot T and equal distances. The argument explicitly includes H=T=K, when b=a; independent oracle tests this special case.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0308",
+      "sha256": "971dcc8576283c4277948081c78ecb604f9321400932f7fe6c9e0794c83a2687",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "The source asks for all four face altitudes from the pyramid apex. Rhombus diagonal halves3 and4 give inradius2.4; each true face altitude is √(3.2²+2.4²)=4. All four actual feet E,F,G,H are independently checked on their corresponding sides.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0309",
+      "sha256": "d9c81bb108a49b77bea03eaa0735698d184119cd9dd2f3305d35a520b4ba1457",
+      "steps": 6,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "The exact source condition gives triangle ABK through the shorter leg AB6 and midpoint of the height6. Two midline arguments in CBK and MOT give MK=KT=TC, hence CK/CM=2/3. Therefore KR4,RQ16/3,KQ20/3, and area20. Final explanation explicitly records that the printed answer80/3 on printed264 differs from this condition. All auxiliary points and the exact cutting plane are independently verified; see sourceDiscrepancies.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0310",
+      "sha256": "53e554d3127f5ddc8ae754fa1b3fe35753228f8441f0c183afbd0050681015ee",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "Two right lateral faces have area100 each. The isosceles base altitude15 and perpendicular lateral edge8 give third face altitude17 by three perpendiculars and Pythagoras; its area340 gives total lateral area540. The source asks only for lateral surface.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0311-a",
+      "sha256": "5906eb74ede0d14a60aafb5dd3704e4a8bdfeeb6e3c23dfe13d2a6e8f227c80b",
+      "steps": 6,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "The13–14–15 base is acute. Difference of two Pythagorean identities gives CH5,AH12 and base area84. Lateral face areas67.5,58.5,105 give total315. The rotated model preserves all exact lengths.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0311-b",
+      "sha256": "faaac94968d0cdde80de7e80911997b025ff844685377cdd39b0d1a688814d30",
+      "steps": 7,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "The proof builds BC⊥ADH, identifies DH as the height of BDC, and places K inside DH. A through-K line KL parallel to BC supplies the second perpendicular needed for AK⊥BDC. Two triangle-area expressions give AK36/5=7.2. Actual K and L are checked against projection and intersection formulas.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0312",
+      "sha256": "49e13091e5a43a6de3b19f730e06bdb0071bd27ebcc1d7d7a55462fe354637c3",
+      "steps": 6,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "For arbitrary integer n≥3, the face-base angle satisfies tanφ=h/r and the lateral-edge angle satisfies tanβ=h/R. The base triangle gives r/R=cos(180°/n), hence tanβ=tanφ cos(180°/n). The proof and explicit model note retain the strict domain0°<φ<90°. Independent parameter checks cover n3…12, not merely the pictured pentagon.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0313",
+      "sha256": "2720c4fdb8d155e268eb813a5fa6f95e8785696213ca2aff7a969833f4ac6591",
+      "steps": 6,
+      "modelStates": 5,
+      "findings": [],
+      "verification": "The corresponding inradii of equilateral bases12 and6 are2√3 and√3. Same-direction parallel radii justify the containing plane before NH is drawn. Height1 and horizontal difference√3 give apothem2. Three face trapezoids have area18 each, so lateral surface54. Exact low-height proportions are preserved after a rigid model rotation.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0314",
+      "sha256": "6a33a04e0d0289c4c4f0fc5292ec9a4c562dcbc64fae3b327e03acc3fa6656c8",
+      "steps": 5,
+      "modelStates": 5,
+      "findings": [],
+      "verification": "An axial plane contains height63 and apothem65. Its horizontal leg is16, equal to half the difference of square side lengths. Difference32 and ratio7:3 yield sides56 and24. Strict positivity and reconstruction of the original apothem are verified.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    }
+  ],
+  "aggregateSHA256": "e3fc5a7de49703ba6e9c4e2606a9e3a9130e7525d4f6b36147079ac7a6fc7c28",
+  "numericalChecks": {
+    "independentParametricSeed": 299314,
+    "parameterFamilies": 160,
+    "actualModels": 18,
+    "authoredPlanarConvexPolygons": 142,
+    "authoredNonzeroSegments": 348,
+    "theoryReferences": 119,
+    "sourceAndTheoryMetadata": "PASS",
+    "actualCoordinatesAndAuxiliaryPoints": "PASS",
+    "allSourceDomains": "PASS",
+    "signedInternalDihedrals": [
+      301,
+      303,
+      304
+    ],
+    "exactEdgePlaneIntersections": [
+      300,
+      307,
+      309
+    ],
+    "polygonCounts312": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "specialCase307": "Three explicit positive scales with b=a and H=T=K pass the normal-foot symmetry checks.",
+    "testCommand": "python tools/stereo-textbook/additional299-math.test.py",
+    "testResult": "ATANASYAN_ADDITIONAL_299_314_MATH_OK"
+  },
+  "sourceDiscrepancies": [
+    {
+      "exercise": "309",
+      "conditionSource": {
+        "printedPage": 87,
+        "pdfPage": 89
+      },
+      "answerSource": {
+        "printedPage": 264,
+        "pdfPage": 266
+      },
+      "printedAnswer": "80/3 dm²",
+      "derivedAnswer": "20 dm²",
+      "resolution": "Retain the exact printed condition and mathematically justified20. The learner explanation explicitly notes the conflicting answer key; answer remains manually assessed. Root confirmed this handling after three independent derivations.",
+      "independentChecks": [
+        {
+          "reviewer": "independent_math_prisms",
+          "method": "Coordinate-free edge-plane intersection and cross-product area; for arbitrary short legu,long legv,height h the area is u√(v²+h²)/3. Substituting6,8,6 gives20."
+        },
+        {
+          "reviewer": "prism_297_298",
+          "method": "Synthetic two-midline construction gives MK=KT=TC; then three perpendiculars give section altitude20/3 and area20."
+        },
+        {
+          "reviewer": "root",
+          "method": "Independent coordinates A(0,0,0),B(6,0,0),C(0,8,0),M(3,4,6). The plane z=3y/4 intersects MC at(2,16/3,4), giving altitude20/3 and area20."
+        }
+      ]
+    }
+  ],
+  "openFindings": [],
+  "resolvedFindings": [
+    {
+      "card": "ex-main-0299",
+      "field": "learner-facing source parameter",
+      "finding": "An initial draft useda instead of the source parameterm.",
+      "resolution": "Author restoredm throughout statement, proof, help, captions and final prompt. Reviewer checked final text against source."
+    },
+    {
+      "card": "ex-main-0301",
+      "field": "distance convention and internal angle",
+      "finding": "The perpendicular foot to lateral edge DA lies beyond D, so distance must be interpreted to its supporting line; the120° internal dihedral must be retained.",
+      "resolution": "Author explicitly names the supporting line and continuation. Reviewer checked AK/AD=4/3 and the actual printed answer4√6, confirming the intended convention."
+    },
+    {
+      "card": "ex-main-0303",
+      "field": "visualization.model.views.section.label",
+      "finding": "Initial AK caption confused the base distance with a projection of the vertical height.",
+      "resolution": "Author names AK as the distance fromA toBC; final caption re-read and geometry independently checked."
+    },
+    {
+      "card": "ex-main-0305",
+      "field": "visualization.model.views.area.label",
+      "finding": "Four separate face bases should not be described as one common base.",
+      "resolution": "Final label specifies bases of lengtha."
+    },
+    {
+      "cards": [
+        "ex-main-0307-a",
+        "ex-main-0310"
+      ],
+      "field": "theory references for perpendicular-to-every-line fact",
+      "finding": "This definition/property was initially linked to criterion017.",
+      "resolution": "Author changed the property and corresponding help reference to theory016 with exactly matching source metadata; actual criterion references remain017."
+    },
+    {
+      "card": "ex-main-0307-b",
+      "field": "steps[3]",
+      "finding": "The central symmetry argument must allow coincident normal lines and H=T=K.",
+      "resolution": "Final proof explicitly permits parallel or coincident lines and the special case; oracle tests b=a."
+    },
+    {
+      "card": "ex-main-0312",
+      "field": "visualization.model.note",
+      "finding": "The illustrative note needed an explicitly strict angle domain.",
+      "resolution": "Final note states0°<φ<90°; proof was already strict."
+    },
+    {
+      "card": "ex-main-0313",
+      "field": "steps[2]",
+      "finding": "The containing plane for the upper midpoint needed justification before the projection construction.",
+      "resolution": "Final proof identifies parallel, same-direction corresponding radii before placingN in planeOMO₁."
+    },
+    {
+      "card": "ex-main-0302",
+      "field": "help[0].text",
+      "finding": "The word radii could incorrectly imply that an arbitrary parallelogram is cyclic.",
+      "resolution": "Author changed only radii OA and OB to segments OA and OB. Independently re-read and verified the exact one-field delta; prior review manifest preserved in reviewHistory."
+    }
+  ],
+  "pedagogicalAssessment": "Each construction names its containing plane, both subpart pairs are self-contained, the opening statement does not reveal the requested answer, relevant auxiliaries appear with the reasoning, and formula/proof answers remain manual. Internal dihedral angles, source301 supporting-line distance, source309 answer-key discrepancy and all free-parameter existence domains are explained explicitly. This is source, mathematical and written-design review, not evidence of pupil learning gains.",
+  "notRun": [
+    "Actual rendered browser pixel inspection; required separately by the root release review.",
+    "Real-pupil efficacy trial.",
+    "Physical-device or screen-reader trial.",
+    "Paid external Claude review; the existing course deferral is not provider approval."
+  ],
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-10-26T13:17:29.219Z",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "aggregateSHA256": "51b019bbe77c123dda5f376b4b8098e0eab45d94fbf01cf9a77d72b78f8963f6",
+      "cards": [
+        {
+          "id": "ex-main-0299",
+          "sha256": "9f68e6e32ac2d85c6f053cf5bdd644e56ff11a33e88e7dc8b318dbb0b148f390"
+        },
+        {
+          "id": "ex-main-0300",
+          "sha256": "11502454e964d443037f569f05ec26be63aa6222ff7914ae0c8b853063d21961"
+        },
+        {
+          "id": "ex-main-0301",
+          "sha256": "19aba978e09460c533704b3d3e4705935eb9a2f391563e9b73fb846851a0732a"
+        },
+        {
+          "id": "ex-main-0302",
+          "sha256": "e9f5166708abe34322b3769e4ae86a080ec0867b57c65ef852c244375bad52a0"
+        },
+        {
+          "id": "ex-main-0303",
+          "sha256": "a5531331540efbfea0c043c5b9f45804483d002afd5da57132c8d7ffafddeb36"
+        },
+        {
+          "id": "ex-main-0304",
+          "sha256": "75b637f2411e17f18a76a2c3851bb0dbe690e61cdf9859e424df7911db144a5f"
+        },
+        {
+          "id": "ex-main-0305",
+          "sha256": "e60c0d0756e455be4f831dd6727df81636f9005ce23d8b2f581b7057fce0b9a5"
+        },
+        {
+          "id": "ex-main-0306",
+          "sha256": "6c9aa024e999cd826accd840d383f044f4a7afb74ae4081b06baad43da6fcaaf"
+        },
+        {
+          "id": "ex-main-0307-a",
+          "sha256": "ed6f351c4003569b786bc9ba59db2dc83d54441ec4b47a1239e97d21ce7be196"
+        },
+        {
+          "id": "ex-main-0307-b",
+          "sha256": "70552775656da6d9ec724c2d46820cc13acf83d09562700b0ec07ccb51bf1514"
+        },
+        {
+          "id": "ex-main-0308",
+          "sha256": "971dcc8576283c4277948081c78ecb604f9321400932f7fe6c9e0794c83a2687"
+        },
+        {
+          "id": "ex-main-0309",
+          "sha256": "d9c81bb108a49b77bea03eaa0735698d184119cd9dd2f3305d35a520b4ba1457"
+        },
+        {
+          "id": "ex-main-0310",
+          "sha256": "53e554d3127f5ddc8ae754fa1b3fe35753228f8441f0c183afbd0050681015ee"
+        },
+        {
+          "id": "ex-main-0311-a",
+          "sha256": "5906eb74ede0d14a60aafb5dd3704e4a8bdfeeb6e3c23dfe13d2a6e8f227c80b"
+        },
+        {
+          "id": "ex-main-0311-b",
+          "sha256": "faaac94968d0cdde80de7e80911997b025ff844685377cdd39b0d1a688814d30"
+        },
+        {
+          "id": "ex-main-0312",
+          "sha256": "49e13091e5a43a6de3b19f730e06bdb0071bd27ebcc1d7d7a55462fe354637c3"
+        },
+        {
+          "id": "ex-main-0313",
+          "sha256": "2720c4fdb8d155e268eb813a5fa6f95e8785696213ca2aff7a969833f4ac6591"
+        },
+        {
+          "id": "ex-main-0314",
+          "sha256": "6a33a04e0d0289c4c4f0fc5292ec9a4c562dcbc64fae3b327e03acc3fa6656c8"
+        }
+      ]
+    }
+  ],
+  "revisionReview": {
+    "changedCard": "ex-main-0302",
+    "changedFields": [
+      "help[0].text"
+    ],
+    "change": "Replace the noun radii with segments for OA and OB in an arbitrary parallelogram. No mathematical result, construction, model, step, answer or source change.",
+    "verification": "Independently re-read corrected help in its full context. The arbitrary parallelogram need not have a circumcircle, so segments is the accurate term. Reconstructing the old word reproduces the exact preceding302 canonical hash; the other17 canonical cards remain byte-for-byte equal after canonicalization.",
+    "oldCanonicalSHA256": "e9f5166708abe34322b3769e4ae86a080ec0867b57c65ef852c244375bad52a0",
+    "newCanonicalSHA256": "fdf1b7648add60df9622abf395da9fe91397e6a2161d78884c4c073c23757e80"
+  }
+}

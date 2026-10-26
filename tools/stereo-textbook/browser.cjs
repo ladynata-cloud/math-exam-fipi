@@ -32,6 +32,32 @@ const screenshotCases=require('./browser-cases.cjs');
 // line may still break legitimately between operations or adjacent formulas.
 const explanation=stage=>'[data-step="'+stage+'"] > details > p';
 const mathLayoutCases=new Map([
+ // Additional299–314: whole compound operands and radicals, also retained on
+ // the fully revealed solution pages at both320px and1280px.
+ ['ex-main-0299|step-2',[{selector:explanation('step-2'),fractions:[['(m²√3)','4'],['(m·l)','2'],['(3ml)','2']]}]],
+ ['ex-main-0299|step-6',[{selector:explanation('step-3'),fractions:[['(3ml)','2'],['(m²√3)','2'],['(m√3)','3']]},{selector:explanation('step-4'),fractions:[['(m√3)','6']]},{selector:explanation('step-6'),fractions:[['m²','3'],['m²','12'],['m²','4'],['m','2']]}]],
+ ['ex-main-0300|step-6',[{selector:explanation('step-6'),fractions:[['a','2'],['b','2'],['(a·b)','4']]}]],
+ ['ex-main-0300|step-7',[{selector:explanation('step-6'),fractions:[['(a·b)','4']]},{selector:explanation('step-7'),fractions:[['a','√3']]}]],
+ ['ex-main-0301|step-4',[{selector:explanation('step-4'),fractions:[['(a·l)','2'],['(16b)','2']]}]],
+ ['ex-main-0301|step-8',[{selector:explanation('step-3'),atoms:['8√3','16√3']},{selector:explanation('step-4'),fractions:[['(a·l)','2'],['(16b)','2']]},{selector:explanation('step-7'),fractions:[['a²','(2b)']]},{selector:explanation('step-8'),atoms:['4√6'],fractions:[['a','√3']]}]],
+ ['ex-main-0302|step-6',[{selector:explanation('step-5'),atoms:['2√5']}]],
+ ['ex-main-0303|step-4',[{selector:explanation('step-4'),fractions:[['(12√3·2)','√3']]}]],
+ ['ex-main-0303|step-7',[{selector:explanation('step-4'),fractions:[['(12√3·2)','√3']]},{selector:explanation('step-5'),fractions:[['(a·SA)','2'],['(24·12)','2']]},{selector:explanation('step-6'),fractions:[['(24·24)','2']]},{selector:explanation('step-7'),atoms:['288√3'],fractions:[['(24²·√3)','2']]}]],
+ ['ex-main-0304|step-4',[{selector:explanation('step-4'),fractions:[['(a√3)','2'],['(BT² + DT² − BD²)','(2·BT·DT)'],['1','3']]}]],
+ ['ex-main-0304|step-5',[{selector:explanation('step-4'),fractions:[['(BT² + DT² − BD²)','(2·BT·DT)']]},{selector:explanation('step-5'),fractions:[['1','√3'],['1','3']]}]],
+ ['ex-main-0305|step-5',[{selector:explanation('step-4'),fractions:[['(a·l)','2'],['h²','cos α']]},{selector:explanation('step-5'),atoms:['√(cos α)'],fractions:[['h','√(cos α)']]}]],
+ ['ex-main-0306|step-4',[{selector:explanation('step-4'),fractions:[['(4a·l)','2'],['(4h²·tan φ)','(cos φ)'],['(4h²·sin φ)','(cos² φ)']]}]],
+ ['ex-main-0306|step-5',[{selector:explanation('step-5'),fractions:[['(4h²·(sin φ + sin² φ))','(cos² φ)'],['(4h²·sin φ)','(1 − sin φ)']]}]],
+ ['ex-main-0306|step-6',[{selector:explanation('step-5'),fractions:[['(4h²·(sin φ + sin² φ))','(cos² φ)']]},{selector:explanation('step-6'),fractions:[['(4h²·sin φ)','(1 − sin φ)']]}]],
+ ['ex-main-0307-a|step-5',[{selector:explanation('step-5'),fractions:[['(ab√2)','4'],['a','√2']]}]],
+ ['ex-main-0308|step-5',[{selector:explanation('step-2'),fractions:[['(2·6)','5'],['12','5']]},{selector:explanation('step-4'),atoms:['√(3,2² + 2,4²)','√(10,24 + 5,76)']}]],
+ ['ex-main-0309|step-6',[{selector:explanation('step-6'),atoms:['√(4² + (16/3)²)','√(400/9)'],fractions:[['16','3'],['400','9'],['20','3']]}]],
+ ['ex-main-0310|step-5',[{selector:explanation('step-2'),atoms:['√(25² − 20²)']},{selector:explanation('step-4'),atoms:['√(8² + 15²)']}]],
+ ['ex-main-0311-a|step-6',[{selector:explanation('step-2'),fractions:[['(14·12)','2']]},{selector:explanation('step-3'),fractions:[['(9·15)','2']]},{selector:explanation('step-4'),fractions:[['(9·13)','2']]},{selector:explanation('step-6'),fractions:[['(14·15)','2']]}]],
+ ['ex-main-0311-b|step-7',[{selector:explanation('step-7'),fractions:[['(9·12)','2'],['(15·AK)','2'],['108','15'],['36','5']]}]],
+ ['ex-main-0312|step-6',[{selector:explanation('step-4'),fractions:[['360°','n'],['180°','n'],['r','R']]},{selector:explanation('step-5'),fractions:[['h','r'],['h','R'],['r','R'],['180°','n']]},{selector:explanation('step-6'),fractions:[['180°','n']]}]],
+ ['ex-main-0313|step-6',[{selector:explanation('step-2'),fractions:[['(a√3)','2'],['(a√3)','6']]},{selector:explanation('step-5'),fractions:[['((12 + 6)·2)','2']]},{selector:explanation('step-6'),fractions:[['((36 + 18)·2)','2']]}]],
+ ['ex-main-0314|step-5',[{selector:explanation('step-4'),fractions:[['a','2'],['b','2'],['(a − b)','2']]},{selector:explanation('step-5'),atoms:['√(63² + 16²)']}]],
  // Actual294–298 paragraphs: complete radicals and stacked operands at both
  // widths, including their retained appearance on the final solution page.
  ['ex-main-0294|step-6',[{selector:explanation('step-6'),atoms:['√(S₀²−a⁴)','4√(S₀²−a⁴)']}]],
@@ -184,7 +210,7 @@ async function checkLabels(id,width,stage,target=page,selector='[data-main-model
 }
 async function takeScreenshot(lesson,width,stage){
  const name=screenshotCases.get(lesson.id+'|'+stage);if(!name)return;
- const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);await checkSection294Projection(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
+ const filename=name+'-'+width+'.png';await settle();await checkMathLayout(lesson,width,stage);await checkSection294Projection(lesson,width,stage);await checkPyramidProjection(lesson,width,stage);if(stage==='nested-theory')await page.locator('dialog .textbook-model').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,filename),fullPage:stage!=='nested-theory'});evidence.screenshots.push({id:lesson.id,width,stage,file:filename});writeEvidence();
 }
 async function checkSection294Projection(lesson,width,stage){
  // A mathematically correct plane can collapse to a line in the standard
@@ -225,6 +251,42 @@ async function checkSection294Projection(lesson,width,stage){
   assert.deepEqual(await camera(),kept,lesson.id+' section check restores original capture camera');
  }
  writeEvidence();
+}
+async function checkPyramidProjection(lesson,width,stage){
+ if(!require('./additional299-baseline.cjs').ids.has(lesson.id))return;
+ const svg=page.locator('[data-main-model] svg'),view=await svg.getAttribute('data-view'),model=lesson.visualization.model,polygon=model.views[view]?.polygon;
+ if(!polygon)return;
+ const points=polygon.map(key=>model.points[key]),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+ const areaVector=points.reduce((sum,p,i)=>cross(p,points[(i+1)%points.length]).map((x,j)=>x+sum[j]),[0,0,0]);
+ const area3D=Math.hypot(...areaVector)/2,radius=require(root+'/stereo-course/assets/task-scene-viewer.js').prepare(model).radius,kept=await camera();
+ assert(area3D>0&&radius>0,lesson.id+' nondegenerate source polygon');
+ async function measure(orientation){
+  await settle();
+  const actual=await svg.evaluate((node,{area3D,radius})=>{
+   const paths=node.querySelectorAll('path.am-plane[data-highlight="plane"]');if(paths.length!==1)return {pathCount:paths.length};
+   const path=paths[0],d=path.getAttribute('d'),numbers=d.match(/-?\d+(?:\.\d+)?/g)?.map(Number)||[],matrix=path.getScreenCTM(),points=[];
+   for(let i=0;i<numbers.length;i+=2){const p=new DOMPoint(numbers[i],numbers[i+1]).matrixTransform(matrix);points.push({x:p.x,y:p.y});}
+   let twiceArea=0,diameter=0;for(let i=0;i<points.length;i++){const p=points[i],q=points[(i+1)%points.length];twiceArea+=p.x*q.y-q.x*p.y;for(const other of points)diameter=Math.max(diameter,Math.hypot(p.x-other.x,p.y-other.y));}
+   const area=Math.abs(twiceArea)/2,viewBox=node.viewBox.baseVal,svgScale=.36*Math.min(viewBox.width,viewBox.height)/radius,screenAreaScale=Math.abs(matrix.a*matrix.d-matrix.b*matrix.c);
+   // The renderer is orthographic. Divide the measured screen area by the
+   // face-on area using its exact model scale and the SVG-to-screen Jacobian.
+   // This ratio is |cos(normal, viewing direction)|, independent of triangle
+   // size. A small source triangle therefore is not mistaken for an edge-on one.
+   return {pathCount:paths.length,commands:d.replace(/[-\d.\s]/g,''),view:node.dataset.view,yaw:node.dataset.yaw,pitch:node.dataset.pitch,points,area,area3D,radius,svgScale,screenAreaScale,normalProjection:area/(area3D*svgScale**2*screenAreaScale),apparentThickness:area/diameter};
+  },{area3D,radius});
+  const label=lesson.id+' '+width+' '+stage+' '+orientation+' pyramid polygon';
+  assert.equal(actual.pathCount,1,label+' exactly one highlighted polygon');assert.equal(actual.commands,'M'+'L'.repeat(polygon.length-1)+'Z',label+' complete authored outline');assert.equal(actual.view,view,label+' exact view');
+  for(const key of ['area','normalProjection','apparentThickness'])assert(Number.isFinite(actual[key]),label+' finite '+key);
+  assert(actual.normalProjection<=1.001,label+' projected area cannot exceed the face-on area');
+  assert(actual.normalProjection>=.10,label+' projected area ratio '+actual.normalProjection+' must be at least 0.10 of its face-on area');
+  assert(actual.apparentThickness>=2.5,label+' apparent thickness '+actual.apparentThickness+' must be at least 2.5 screen pixels');
+  return actual;
+ }
+ const row=evidence.labels.find(x=>x.ownerId===lesson.id&&x.id===lesson.id&&x.viewport===width&&x.stage===stage);assert(row,lesson.id+' projection belongs to verified label state');
+ row.pyramidProjection={captured:await measure('captured')};
+ await page.locator('[data-main-model] button[aria-label="Вернуть исходный вид"]').click();row.pyramidProjection.default=await measure('default');
+ await page.locator('[data-main-model] button[aria-label="Повернуть влево"]').click();await settle();
+ assert.deepEqual(await camera(),kept,lesson.id+' pyramid check restores the exact capture camera');writeEvidence();
 }
 async function preserveCheck(lesson,keptCamera,draft){
  assert(await page.evaluate(()=>window.__textbookKept.svg===document.querySelector('[data-main-model] svg')&&window.__textbookKept.field===document.querySelector('#final-answer')),lesson.id+' original model/answer nodes retained');
